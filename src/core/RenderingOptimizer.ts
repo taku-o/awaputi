@@ -7,23 +7,23 @@ export class RenderingOptimizer {
         // レンダリング設定
         this.config = {
             offscreenCanvas: {
-                enabled: true,
+                enabled: true;
     cacheSize: 10, // 最大10個のオフスクリーンキャンバスをキャッシュ
     }
-                reusable: true,;
-            differentialUpdate: { enabled: true,
-                trackDirtyRegions: true,
+                reusable: true;
+            differentialUpdate: { enabled: true;
+                trackDirtyRegions: true;
     mergeThreshold: 0.3, // 30%以上重複していればマージ;
                 maxRegions: 20 // 最大20の差分領域を追跡  };
-            viewportCulling: { enabled: true,
+            viewportCulling: { enabled: true;
     margin: 50, // ビューポート外でも50pxマージンは描画;
                 enableOcclusion: true // オクルージョンカリング  };
             performance: { targetFrameTime: 16, // 60fps = 16.67ms
                 warningThreshold: 20, // 20ms超過で警告;
                 emergencyThreshold: 33, // 33ms超過で緊急最適化;
                 frameSkipping: true // 重い処理時のフレームスキップ  };
-            layering: { enabled: true,
-                maxLayers: 5,
+            layering: { enabled: true;
+                maxLayers: 5;
     autoOptimize: true // レイヤーの自動最適化 
     };
         // オフスクリーンキャンバスプール
@@ -35,26 +35,26 @@ export class RenderingOptimizer {
         this.lastRenderState = new Map();
         
         // ビューポート管理
-        this.viewport = { x: 0, y: 0, width: 1920, height: 1080,
+        this.viewport = { x: 0, y: 0, width: 1920, height: 1080;
             scaleFactor: 1, rotation: 0  };
         
         // パフォーマンス監視
-        this.performanceMetrics = { frameCount: 0,
-            averageFrameTime: 0,
-            maxFrameTime: 0,
-            skippedFrames: 0,
-            dirtyRegionCount: 0,
-            culledObjects: 0,
+        this.performanceMetrics = { frameCount: 0;
+            averageFrameTime: 0;
+            maxFrameTime: 0;
+            skippedFrames: 0;
+            dirtyRegionCount: 0;
+            culledObjects: 0;
     lastFrameTime: 0  };
         // レイヤー管理
         this.layers = new Map();
         this.layerOrder = [];
         
         // レンダリング状態
-        this.renderingState = { isRendering: false,
-            lastRenderTime: 0,
-            frameRequestId: null,
-    emergencyMode: false,;
+        this.renderingState = { isRendering: false;
+            lastRenderTime: 0;
+            frameRequestId: null;
+    emergencyMode: false;
         // オクルージョンカリング
         this.occlusionMap = new Map();
         
@@ -65,7 +65,7 @@ export class RenderingOptimizer {
      * 初期化
      */
     initialize() {
-        this.setupOffscreenCanvasSupport(),
+        this.setupOffscreenCanvasSupport();
         this.setupPerformanceMonitoring() }
         this.setupLayers(); }
     }
@@ -105,7 +105,7 @@ export class RenderingOptimizer {
         const defaultLayers = ['background', 'charts', 'ui', 'overlay', 'debug'] }
         defaultLayers.forEach((layerName, index) => {  }
             this.createLayer(layerName, index); }
-        });
+        };
     }
     
     /**
@@ -142,14 +142,12 @@ export class RenderingOptimizer {
      * 最適化されたレンダリング
      */
     async renderOptimized(context, renderables, options = { ) {
-        const frameStartTime = performance.now(),
-        
+        const frameStartTime = performance.now();
         try {
             this.renderingState.isRendering = true,
             
             // ビューポートの更新
-            this.updateViewport(context, options),
-            
+            this.updateViewport(context, options);
             // 緊急モードチェック
             if (this.shouldEnterEmergencyMode() {
     
@@ -160,7 +158,7 @@ export class RenderingOptimizer {
             if (this.config.differentialUpdate.enabled && this.hasDirtyRegions() { return await this.renderDifferential(context, renderables, options) } else if (this.config.layering.enabled) { return await this.renderLayered(context, renderables, options) } else { return await this.renderDirect(context, renderables, options),' }'
 
             } catch (error) {
-            console.error('Optimized rendering failed:', error),
+            console.error('Optimized rendering failed:', error);
             throw error } finally { this.renderingState.isRendering = false,
             this.updatePerformanceMetrics(frameStartTime) }
     }
@@ -184,7 +182,7 @@ export class RenderingOptimizer {
      * 緊急モード判定
      */
     shouldEnterEmergencyMode() {
-        const recentFrameTimes = this.frameTimeHistory.slice(-5),
+        const recentFrameTimes = this.frameTimeHistory.slice(-5);
         const averageRecentTime = recentFrameTimes.reduce((sum, time) => sum + time, 0) / recentFrameTimes.length }
         return averageRecentTime > this.config.performance.emergencyThreshold;
     
@@ -194,15 +192,14 @@ export class RenderingOptimizer {
     async renderEmergencyMode(context, renderables, options) { this.renderingState.emergencyMode = true,
         
         // 最小限の描画のみ実行
-        const essentialRenderables = this.filterEssentialRenderables(renderables),
-        const culledRenderables = this.applyViewportCulling(essentialRenderables),
-        
+        const essentialRenderables = this.filterEssentialRenderables(renderables);
+        const culledRenderables = this.applyViewportCulling(essentialRenderables);
         // 品質を下げて描画
         const emergencyOptions = {
             ...options,
             quality: 'low',
             skipAnimations: true,
-    skipEffects: true,;
+    skipEffects: true,
         return await this.renderDirect(context, culledRenderables, emergencyOptions);
     }
     
@@ -216,11 +213,9 @@ export class RenderingOptimizer {
     /**
      * 差分更新レンダリング
      */
-    async renderDifferential(context, renderables, options) { const dirtyRegions = Array.from(this.dirtyRegions),
-        
+    async renderDifferential(context, renderables, options) { const dirtyRegions = Array.from(this.dirtyRegions);
         // 差分領域のマージ
-        const mergedRegions = this.mergeDirtyRegions(dirtyRegions),
-        
+        const mergedRegions = this.mergeDirtyRegions(dirtyRegions);
         // 各差分領域を描画
         for (const region of mergedRegions) {
     
@@ -231,7 +226,7 @@ export class RenderingOptimizer {
         // 差分領域をクリア
         this.dirtyRegions.clear()';'
             type: 'differential',
-    regionsUpdated: mergedRegions.length);
+    regionsUpdated: mergedRegions.length),
             totalArea: mergedRegions.reduce((sum, region) => sum + (region.width * region.height), 0);
         }
     
@@ -242,19 +237,17 @@ export class RenderingOptimizer {
         if (regions.length <= 1) return regions,
         
         const merged = [],
-        const processed = new Set(),
-        
+        const processed = new Set();
         for (let, i = 0, i < regions.length, i++) {
             if(processed.has(i) continue }
             let currentRegion = { ...regions[i],
-            processed.add(i),
-            
+            processed.add(i);
             // 他の領域との重複チェック
             for(let, j = i + 1, j < regions.length, j++) {
                 if(processed.has(j) continue,
                 
-                const overlap = this.calculateOverlap(currentRegion, regions[j]),
-                const mergedArea = this.calculateMergedArea(currentRegion, regions[j]),
+                const overlap = this.calculateOverlap(currentRegion, regions[j]);
+                const mergedArea = this.calculateMergedArea(currentRegion, regions[j]);
                 const totalArea = (currentRegion.width * currentRegion.height) + (regions[j].width * regions[j].height),
                 
                 // マージ判定
@@ -273,11 +266,10 @@ export class RenderingOptimizer {
      * 領域の重複計算
      */
     calculateOverlap(region1, region2) {
-        const x1 = Math.max(region1.x, region2.x),
-        const y1 = Math.max(region1.y, region2.y),
-        const x2 = Math.min(region1.x + region1.width, region2.x + region2.width),
-        const y2 = Math.min(region1.y + region1.height, region2.y + region2.height),
-        
+        const x1 = Math.max(region1.x, region2.x);
+        const y1 = Math.max(region1.y, region2.y);
+        const x2 = Math.min(region1.x + region1.width, region2.x + region2.width);
+        const y2 = Math.min(region1.y + region1.height, region2.y + region2.height);
         if (x2 <= x1 || y2 <= y1) return 0 }
         return (x2 - x1) * (y2 - y1);
     
@@ -285,9 +277,9 @@ export class RenderingOptimizer {
      * マージ後の面積計算
      */
     calculateMergedArea(region1, region2) {
-        const x1 = Math.min(region1.x, region2.x),
-        const y1 = Math.min(region1.y, region2.y),
-        const x2 = Math.max(region1.x + region1.width, region2.x + region2.width),
+        const x1 = Math.min(region1.x, region2.x);
+        const y1 = Math.min(region1.y, region2.y);
+        const x2 = Math.max(region1.x + region1.width, region2.x + region2.width);
         const y2 = Math.max(region1.y + region1.height, region2.y + region2.height) }
         return (x2 - x1) * (y2 - y1);
     
@@ -295,8 +287,8 @@ export class RenderingOptimizer {
      * 領域のマージ
      */
     mergeRegions(region1, region2) {
-        const x = Math.min(region1.x, region2.x),
-        const y = Math.min(region1.y, region2.y),
+        const x = Math.min(region1.x, region2.x);
+        const y = Math.min(region1.y, region2.y);
         const width = Math.max(region1.x + region1.width, region2.x + region2.width) - x,
         const height = Math.max(region1.y + region1.height, region2.y + region2.height) - y }
         return { x, y, width, height }
@@ -305,18 +297,15 @@ export class RenderingOptimizer {
      * 領域レンダリング
      */
     async renderRegion(context, renderables, region, options) { // クリッピング設定
-        context.save(),
-        context.beginPath(),
-        context.rect(region.x, region.y, region.width, region.height),
-        context.clip(),
-        
+        context.save();
+        context.beginPath();
+        context.rect(region.x, region.y, region.width, region.height);
+        context.clip();
         try {
             // 領域内のレンダラブルをフィルタリング
-            const regionRenderables = this.filterRenderablesInRegion(renderables, region),
-            
+            const regionRenderables = this.filterRenderablesInRegion(renderables, region);
             // ビューポートカリング適用
-            const culledRenderables = this.applyViewportCulling(regionRenderables),
-            
+            const culledRenderables = this.applyViewportCulling(regionRenderables);
             // レンダラブルを描画
             for (const renderable of culledRenderables) {
     
@@ -329,7 +318,7 @@ export class RenderingOptimizer {
      * 領域内レンダラブルのフィルタリング
      */
     filterRenderablesInRegion(renderables, region) {
-        return renderables.filter(renderable => { ),
+        return renderables.filter(renderable => { );
             if (!renderable.bounds) return true,
             return this.intersectsRegion(renderable.bounds, region)) }
     
@@ -347,12 +336,10 @@ export class RenderingOptimizer {
      * レイヤードレンダリング
      */
     async renderLayered(context, renderables, options) { // レンダラブルをレイヤーに分散
-        this.distributeRenderablesToLayers(renderables),
-        
+        this.distributeRenderablesToLayers(renderables);
         // 各レイヤーを順序通りに描画
         for (const layerName of this.layerOrder) {
-            const layer = this.layers.get(layerName),
-            
+            const layer = this.layers.get(layerName);
             if (!layer || !layer.visible || layer.renderables.length === 0) continue,
             ' }'
 
@@ -362,7 +349,7 @@ export class RenderingOptimizer {
 
         return { ''
             type: 'layered',
-    layersRendered: this.layerOrder.length };
+    layersRendered: this.layerOrder.length },
             totalRenderables: renderables.length 
     }
     
@@ -378,9 +365,8 @@ export class RenderingOptimizer {
         
         // レンダラブルを適切なレイヤーに配置
         for (const renderable of renderables) {
-            const layerName = this.determineLayer(renderable),
-            const layer = this.layers.get(layerName),
-            
+            const layerName = this.determineLayer(renderable);
+            const layer = this.layers.get(layerName);
             if (layer) {
                 layer.renderables.push(renderable) }
                 layer.isDirty = true; }
@@ -405,7 +391,7 @@ export class RenderingOptimizer {
             case 'tooltip': return 'overlay',
             case 'debug': return 'debug' }
 
-            default: return 'charts';
+            default: return 'charts',
     
     /**
      * レイヤーレンダリング
@@ -413,7 +399,7 @@ export class RenderingOptimizer {
     async renderLayer(context, layer, options) { if (!layer.isDirty && layer.canvas) {
             // キャッシュされたレイヤーを使用
             context.globalAlpha = layer.opacity,
-            context.drawImage(layer.canvas, 0, 0),
+            context.drawImage(layer.canvas, 0, 0);
             context.globalAlpha = 1.0,
             return }
         
@@ -460,8 +446,7 @@ export class RenderingOptimizer {
      * ダイレクトレンダリング
      */
     async renderDirect(context, renderables, options) { // ビューポートカリング適用
-        const culledRenderables = this.applyViewportCulling(renderables),
-        
+        const culledRenderables = this.applyViewportCulling(renderables);
         // 各レンダラブルを直接描画
         for (const renderable of culledRenderables) { }
 
@@ -471,7 +456,7 @@ export class RenderingOptimizer {
 
         return { ''
             type: 'direct',
-    renderablesProcessed: culledRenderables.length };
+    renderablesProcessed: culledRenderables.length },
             culledCount: renderables.length - culledRenderables.length 
     }
     
@@ -489,7 +474,7 @@ export class RenderingOptimizer {
             height: this.viewport.height + (margin * 2); 
     };
         
-        const visible = renderables.filter(renderable => {  ),
+        const visible = renderables.filter(renderable => {  );
             if (!renderable.bounds) return true, // 境界不明の場合は描画
              }
             return this.isInViewport(renderable.bounds, extendedViewport););
@@ -567,7 +552,7 @@ export class RenderingOptimizer {
                 bounds: renderable.bounds,
     lastRender: Date.now() }
                 version: renderable.version || 1 
-    });
+    };
         }
     }
     
@@ -576,12 +561,11 @@ export class RenderingOptimizer {
      */
     addDirtyRegion(region) { if (!this.config.differentialUpdate.enabled) return,
         
-        this.dirtyRegions.add(region),
-        
+        this.dirtyRegions.add(region);
         // 最大領域数制限
         if (this.dirtyRegions.size > this.config.differentialUpdate.maxRegions) {
             // 全画面更新に切り替え
-            this.dirtyRegions.clear(),
+            this.dirtyRegions.clear();
             this.addDirtyRegion({)
                 x: 0, y: 0,
     width: this.viewport.width }
@@ -624,15 +608,14 @@ export class RenderingOptimizer {
         
         this.performanceMetrics.frameCount++,
         this.performanceMetrics.lastFrameTime = frameTime,
-        this.performanceMetrics.maxFrameTime = Math.max(this.performanceMetrics.maxFrameTime, frameTime),
-        
+        this.performanceMetrics.maxFrameTime = Math.max(this.performanceMetrics.maxFrameTime, frameTime);
         // 移動平均の計算
         const count = this.performanceMetrics.frameCount,
         this.performanceMetrics.averageFrameTime = ,
             (this.performanceMetrics.averageFrameTime * (count - 1) + frameTime) / count,
         
         // フレーム時間履歴の更新
-        this.frameTimeHistory.push(frameTime),
+        this.frameTimeHistory.push(frameTime);
         if (this.frameTimeHistory.length > 100) {
     }
             this.frameTimeHistory = this.frameTimeHistory.slice(-100); }
@@ -655,9 +638,9 @@ export class RenderingOptimizer {
         this.performanceAlert = {''
             timestamp: Date.now('}'
 
-            type: frameTime > this.config.performance.emergencyThreshold ? 'emergency' : 'warning' }))
+            type: frameTime > this.config.performance.emergencyThreshold ? 'emergency' : 'warning' })
         );
-        console.warn(`Rendering, performance ${this.performanceAlert.type}: ${frameTime.toFixed(2})ms`);
+        console.warn(`Rendering, performance ${this.performanceAlert.type}: ${frameTime.toFixed(2}ms`);
         
         // 警告の自動クリア
         setTimeout(() => { this.performanceAlert = null }, 5000);
@@ -672,7 +655,7 @@ export class RenderingOptimizer {
             emergencyMode: this.renderingState.emergencyMode,
             dirtyRegionCount: this.dirtyRegions.size,
     layerCount: this.layers.size }
-            canvasCacheSize: this.canvasCache.size };
+            canvasCacheSize: this.canvasCache.size },
             offscreenCanvasSupported: this.offscreenCanvasSupported 
     }
     
@@ -680,8 +663,7 @@ export class RenderingOptimizer {
      * 設定の更新
      */
     updateConfig(newConfig) {
-        Object.assign(this.config, newConfig),
-        
+        Object.assign(this.config, newConfig);
         // 設定変更に応じた再初期化
         if (newConfig.layering) {
     }
@@ -692,12 +674,11 @@ export class RenderingOptimizer {
      * キャッシュのクリア
      */
     clearCache() {
-        this.canvasCache.clear(),
-        this.offscreenCanvasPool.clear(),
-        this.dirtyRegions.clear(),
-        this.lastRenderState.clear(),
-        this.occlusionMap.clear(),
-        
+        this.canvasCache.clear();
+        this.offscreenCanvasPool.clear();
+        this.dirtyRegions.clear();
+        this.lastRenderState.clear();
+        this.occlusionMap.clear();
         // レイヤーキャンバスのクリア
         for (const layer of this.layers.values() {
             layer.canvas = null,
@@ -710,8 +691,7 @@ export class RenderingOptimizer {
      * リソースの破棄
      */
     destroy() {
-        this.clearCache(),
-        
+        this.clearCache();
         if (this.renderingState.frameRequestId) {
     }
             cancelAnimationFrame(this.renderingState.frameRequestId); }

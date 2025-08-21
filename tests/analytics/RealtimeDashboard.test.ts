@@ -4,7 +4,7 @@ import { PerformanceDataCollector  } from '../../src/analytics/PerformanceDataCo
 import { RealtimeMonitor  } from '../../src/analytics/RealtimeMonitor';
 // Chart.jsのモック
 (global: any).Chart = jest.fn() as jest.Mock.mockImplementation(() => ({
-    data: { datasets: [{ data: [] }] };
+    data: { datasets: [{ data: [] }] },
     update: jest.fn(
         destroy: jest.fn()'),'
 describe('RealtimeDashboard', () => {
@@ -14,23 +14,23 @@ describe('RealtimeDashboard', () => {
     let dashboard: any,
     beforeEach((') => {'
         // DOM要素を作成
-        container = document.createElement('div'),
-        document.body.appendChild(container),
+        container = document.createElement('div');
+        document.body.appendChild(container);
         // 依存関係のモック
         dataCollector = {
             getCurrentStats: jest.fn().mockReturnValue({
                 currentFPS: 60,
-                currentMemoryUsage: { usagePercent: 45.5 };
+                currentMemoryUsage: { usagePercent: 45.5 },
                 errorCount: 3,
-                averageFrameTime: 16.67 });
+                averageFrameTime: 16.67 },
         };
         realtimeMonitor = {
             isMonitoring: false,
             startMonitoring: jest.fn(
-        stopMonitoring: jest.fn( };
+        stopMonitoring: jest.fn( },
         // ダッシュボードを作成
         dashboard = new RealtimeDashboard(container, dataCollector, realtimeMonitor);
-    });
+    };
     afterEach(() => {
         if (dashboard) {
             dashboard.destroy() }
@@ -45,48 +45,48 @@ describe('RealtimeDashboard', () => {
             expect(container.querySelector('.dashboard-grid').toBeTruthy('),'
             expect(container.querySelector('.dashboard-alerts').toBeTruthy() }');'
         test('FPSチャートが作成される', (') => {'
-            const fpsCanvas = container.querySelector('#fps-chart'),
+            const fpsCanvas = container.querySelector('#fps-chart');
             expect(fpsCanvas).toBeTruthy('),'
             expect(dashboard.charts.has('fps').toBe(true) }');'
         test('メモリチャートが作成される', (') => {'
-            const memoryCanvas = container.querySelector('#memory-chart'),
+            const memoryCanvas = container.querySelector('#memory-chart');
             expect(memoryCanvas).toBeTruthy('),'
             expect(dashboard.charts.has('memory').toBe(true) }');'
         test('エラーチャートが作成される', (') => {'
-            const errorsCanvas = container.querySelector('#errors-chart'),
+            const errorsCanvas = container.querySelector('#errors-chart');
             expect(errorsCanvas).toBeTruthy('),'
             expect(dashboard.charts.has('errors').toBe(true) }');'
         test('レイテンシチャートが作成される', (') => {'
-            const latencyCanvas = container.querySelector('#latency-chart'),
+            const latencyCanvas = container.querySelector('#latency-chart');
             expect(latencyCanvas).toBeTruthy('),'
             expect(dashboard.charts.has('latency').toBe(true) }');'
         test('監視開始ボタンが機能する', (') => {'
-            const toggleBtn = container.querySelector('#toggle-monitoring'),
-            expect(toggleBtn).toBeTruthy(),
+            const toggleBtn = container.querySelector('#toggle-monitoring');
+            expect(toggleBtn).toBeTruthy();
             expect(toggleBtn.textContent').toBe('監視開始'),'
             // 監視開始
-            toggleBtn.click(),
+            toggleBtn.click();
             expect(toggleBtn.textContent').toBe('監視停止'),'
-            expect(toggleBtn.classList.contains('active').toBe(true),
-            expect(dashboard.updateTimer).toBeTruthy(),
+            expect(toggleBtn.classList.contains('active').toBe(true);
+            expect(dashboard.updateTimer).toBeTruthy();
             expect(realtimeMonitor.startMonitoring).toHaveBeenCalled() }');'
         test('監視停止ボタンが機能する', (') => {'
-            const toggleBtn = container.querySelector('#toggle-monitoring'),
+            const toggleBtn = container.querySelector('#toggle-monitoring');
             // まず監視を開始
-            toggleBtn.click(),
+            toggleBtn.click();
             // 監視停止
-            toggleBtn.click(),
+            toggleBtn.click();
             expect(toggleBtn.textContent').toBe('監視開始'),'
-            expect(toggleBtn.classList.contains('active').toBe(false),
+            expect(toggleBtn.classList.contains('active').toBe(false);
             expect(dashboard.updateTimer).toBe(null) }');'
         test('データ更新が正しく実行される', () => {
             // データ更新を実行
-            dashboard.updateData(),
+            dashboard.updateData();
             // データ履歴が更新される
-            expect(dashboard.dataHistory.fps.length).toBe(1),
-            expect(dashboard.dataHistory.fps[0]).toBe(60),
-            expect(dashboard.dataHistory.memory[0]).toBe(45.5),
-            expect(dashboard.dataHistory.errors[0]).toBe(3),
+            expect(dashboard.dataHistory.fps.length).toBe(1);
+            expect(dashboard.dataHistory.fps[0]).toBe(60);
+            expect(dashboard.dataHistory.memory[0]).toBe(45.5);
+            expect(dashboard.dataHistory.errors[0]).toBe(3);
             expect(dashboard.dataHistory.latency[0]).toBe(16.67) }');'
         test('データ履歴が最大長を超えない', () => {
             // 履歴の最大長を超えるデータを追加
@@ -99,12 +99,12 @@ describe('RealtimeDashboard', () => {
         }');'
         test('チャートが更新される', () => {
             // データを追加
-            dashboard.updateData(),
-            dashboard.updateData(),
+            dashboard.updateData();
+            dashboard.updateData();
             // チャート更新
-            dashboard.updateCharts(),
+            dashboard.updateCharts();
             // 各チャートのupdateメソッドが呼ばれる
-            dashboard.charts.forEach(chart => {),
+            dashboard.charts.forEach(chart => {);
                 expect(chart.update).toHaveBeenCalled() }');'
         }
         test('統計情報が正しく計算される', () => {
@@ -120,15 +120,15 @@ describe('RealtimeDashboard', () => {
         }');'
         test('データクリアボタンが機能する', () => {
             // データを追加
-            dashboard.updateData(),
-            dashboard.updateData(),
+            dashboard.updateData();
+            dashboard.updateData();
             expect(dashboard.dataHistory.fps.length).toBe(2'),'
             // データクリア
-            const clearBtn = container.querySelector('#clear-data'),
-            clearBtn.click(),
-            expect(dashboard.dataHistory.fps.length).toBe(0),
-            expect(dashboard.dataHistory.memory.length).toBe(0),
-            expect(dashboard.dataHistory.errors.length).toBe(0),
+            const clearBtn = container.querySelector('#clear-data');
+            clearBtn.click();
+            expect(dashboard.dataHistory.fps.length).toBe(0);
+            expect(dashboard.dataHistory.memory.length).toBe(0);
+            expect(dashboard.dataHistory.errors.length).toBe(0);
             expect(dashboard.dataHistory.latency.length).toBe(0) }');'
         test('アラートが正しく表示される', () => {
             const alert = {
@@ -141,7 +141,7 @@ describe('RealtimeDashboard', () => {
             const alertItem = alertsContainer.querySelector('.alert-item');
             expect(alertItem).toBeTruthy(');'
             expect(alertItem.classList.contains('warning').toBe(true);
-            expect(alertItem.textContent').toContain('Low FPS detected: 25fps' }');
+            expect(alertItem.textContent').toContain('Low FPS detected: 25fps' }'),
         test('リアルタイムアラートイベントが処理される', () => {
             const alert = {
                 timestamp: Date.now(','
@@ -157,12 +157,12 @@ describe('RealtimeDashboard', () => {
         }');'
         test('データエクスポートが機能する', (') => {'
             // モックの設定
-            const createElementSpy = jest.spyOn(document, 'createElement'),
+            const createElementSpy = jest.spyOn(document, 'createElement');
             // URLオブジェクトをモック
             const originalURL = global.URL,
             (global: any).URL = {
                 createObjectURL: jest.fn(').mockReturnValue('blob:test','
-        revokeObjectURL: jest.fn( };
+        revokeObjectURL: jest.fn( },
             
             // データを追加
             dashboard.updateData(');'
@@ -175,17 +175,17 @@ describe('RealtimeDashboard', () => {
             expect(global.URL.revokeObjectURL').toHaveBeenCalledWith('blob: test','
             // 元に戻す
             createElementSpy.mockRestore();
-            (global: any).URL = originalURL;
+            (global: any).URL = originalURL,
         }');'
         test('平均値が正しく計算される', () => {
             const values = [10, 20, 30, 40, 50],
-            const average = dashboard.calculateAverage(values),
+            const average = dashboard.calculateAverage(values);
             expect(average).toBe(30) }');'
         test('エラー率が正しく計算される', () => {
             // エラーデータを設定
             dashboard.dataHistory.errors = [0, 0, 1, 1, 2, 2, 3, 4, 5, 6],
             
-            const errorRate = dashboard.calculateErrorRate(),
+            const errorRate = dashboard.calculateErrorRate();
             expect(errorRate).toBeGreaterThan(0) }');'
         test('オプション設定が正しく適用される', (') => {'
             const customDashboard = new RealtimeDashboard(container, dataCollector, realtimeMonitor, {
@@ -203,14 +203,14 @@ describe('RealtimeDashboard', () => {
         }');'
         test('destroyメソッドがリソースを正しく解放する', () => {
             // 監視を開始
-            dashboard.startUpdates(),
+            dashboard.startUpdates();
             // チャートが存在することを確認
-            expect(dashboard.charts.size).toBeGreaterThan(0),
+            expect(dashboard.charts.size).toBeGreaterThan(0);
             // 破棄
-            dashboard.destroy(),
+            dashboard.destroy();
             // リソースが解放される
-            expect(dashboard.charts.size).toBe(0),
-            expect(dashboard.updateTimer).toBe(null),
-            expect(container.innerHTML').toBe(') });
+            expect(dashboard.charts.size).toBe(0);
+            expect(dashboard.updateTimer).toBe(null);
+            expect(container.innerHTML').toBe(') };
     }
 }');'

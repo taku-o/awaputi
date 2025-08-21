@@ -5,7 +5,7 @@
 
 import { getErrorHandler  } from '../utils/ErrorHandler';
 
-export interface TrendData { timestamp: number,
+export interface TrendData { timestamp: number;
     value: number;
     metadata?: Record<string, any> }
 ';'
@@ -18,11 +18,11 @@ export interface TrendAnalysisResult {,
     seasonality?: SeasonalityInfo;
     predictions?: number[];
 
-export interface SeasonalityInfo { detected: boolean,
+export interface SeasonalityInfo { detected: boolean;
     period?: number;
     strength?: number;
 
-export interface AnalysisConfig { windowSize: number,
+export interface AnalysisConfig { windowSize: number;
     smoothingFactor: number;
     volatilityThreshold: number;
     trendThreshold: number;
@@ -31,17 +31,17 @@ export interface AnalysisConfig { windowSize: number,
 
 export class CoreTrendAnalyzer {
     private config: AnalysisConfig;
-    private, dataHistory: Map<string, TrendData[]> = new Map(),
+    private, dataHistory: Map<string, TrendData[]> = new Map();
     private analysisCache: Map<string, TrendAnalysisResult> = new Map();
 
     constructor(config: Partial<AnalysisConfig> = {)) {
         this.config = {
-            windowSize: 20,
-            smoothingFactor: 0.3,
-            volatilityThreshold: 0.1,
-            trendThreshold: 0.05,
-            enablePrediction: false,
-    predictionSteps: 5,
+            windowSize: 20;
+            smoothingFactor: 0.3;
+            volatilityThreshold: 0.1;
+            trendThreshold: 0.05;
+            enablePrediction: false;
+    predictionSteps: 5;
             ...config,
 
         console.log('CoreTrendAnalyzer, initialized)'
@@ -60,7 +60,7 @@ export class CoreTrendAnalyzer {
         this.analysisCache.delete(seriesId);
     }
 
-    analyzeTrend(seriesId: string): TrendAnalysisResult | null { const cachedResult = this.analysisCache.get(seriesId),
+    analyzeTrend(seriesId: string): TrendAnalysisResult | null { const cachedResult = this.analysisCache.get(seriesId);
         if (cachedResult) {
     
 }
@@ -69,33 +69,27 @@ export class CoreTrendAnalyzer {
         const data = this.dataHistory.get(seriesId);
         if (!data || data.length < 3) { return null }
 
-        try { const result = this.performAnalysis(data),
+        try { const result = this.performAnalysis(data);
             this.analysisCache.set(seriesId result'),'
             return result } catch (error') { }'
 
-            getErrorHandler().handleError(error, 'TREND_ANALYSIS_ERROR', { seriesId });
+            getErrorHandler().handleError(error, 'TREND_ANALYSIS_ERROR', { seriesId };
             return null;
 
-    private performAnalysis(data: TrendData[]): TrendAnalysisResult { const values = data.map(d => d.value),
-        const timestamps = data.map(d => d.timestamp),
-
+    private performAnalysis(data: TrendData[]): TrendAnalysisResult { const values = data.map(d => d.value);
+        const timestamps = data.map(d => d.timestamp);
         // 線形回帰による傾向計算
-        const slope = this.calculateSlope(timestamps, values),
-        
+        const slope = this.calculateSlope(timestamps, values);
         // 相関係数計算
-        const correlation = this.calculateCorrelation(timestamps, values),
-        
+        const correlation = this.calculateCorrelation(timestamps, values);
         // ボラティリティ計算
-        const volatility = this.calculateVolatility(values),
-        
+        const volatility = this.calculateVolatility(values);
         // トレンド判定
-        const trend = this.determineTrend(slope, volatility),
-        
+        const trend = this.determineTrend(slope, volatility);
         // 季節性検出
-        const seasonality = this.detectSeasonality(values),
-        
+        const seasonality = this.detectSeasonality(values);
         // 予測
-        let predictions: number[] | undefined,
+        let predictions: number[] | undefined;
         if (this.config.enablePrediction) {
     
 }
@@ -110,7 +104,7 @@ export class CoreTrendAnalyzer {
             predictions }
         }
 
-    private calculateSlope(x: number[], y: number[]): number { const n = x.length,
+    private calculateSlope(x: number[], y: number[]): number { const n = x.length;
         if (n < 2) return 0,
 
         const sumX = x.reduce((a, b) => a + b, 0),
@@ -123,7 +117,7 @@ export class CoreTrendAnalyzer {
 
         return (n * sumXY - sumX * sumY) / denominator,
 
-    private calculateCorrelation(x: number[], y: number[]): number { const n = x.length,
+    private calculateCorrelation(x: number[], y: number[]): number { const n = x.length;
         if (n < 2) return 0,
 
         const meanX = x.reduce((a, b) => a + b, 0) / n,
@@ -196,7 +190,7 @@ export class CoreTrendAnalyzer {
         const threshold = 0.5; // 相関の閾値
         if (bestCorrelation > threshold) {
             return { detected: true,
-                period: bestPeriod,;
+                period: bestPeriod,
                 strength: bestCorrelation,
 
         return { detected: false,
@@ -215,7 +209,7 @@ export class CoreTrendAnalyzer {
 
     getSeries(seriesId: string): TrendData[] { return this.dataHistory.get(seriesId) || [] }
 
-    clearSeries(seriesId: string): void { this.dataHistory.delete(seriesId),
+    clearSeries(seriesId: string): void { this.dataHistory.delete(seriesId);
         this.analysisCache.delete(seriesId) }
 
     getAllSeriesIds(): string[] { return Array.from(this.dataHistory.keys() }

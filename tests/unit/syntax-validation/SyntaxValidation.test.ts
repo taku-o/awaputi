@@ -7,7 +7,7 @@ import { HTMLJavaScriptChecker  } from '../../../src/utils/syntax-validation/HTM
 import { JavaScriptModuleValidator  } from '../../../src/utils/syntax-validation/JavaScriptModuleValidator';
 // Test interfaces
 interface ValidationResult {
-    isValid: boolean,
+    isValid: boolean;
     errors: ValidationError[];
     warnings: ValidationWarning[];
     scriptBlockCount: number;
@@ -23,14 +23,14 @@ interface ValidationWarning {
 interface ModuleValidationResult extends ValidationResult {
     statistics: ModuleStatistics;
 interface ModuleStatistics {
-    imports: number,
+    imports: number;
     exports: number;
     classes: number;
     functions: number;
     variables: number;
 describe('Syntax Validation', (') => {'
     describe('HTMLJavaScriptChecker', () => {
-        let checker: HTMLJavaScriptChecker,
+        let checker: HTMLJavaScriptChecker;
         beforeEach(() => {
             checker = new HTMLJavaScriptChecker() }');'
         test('should validate HTML with valid JavaScript', (') => {'
@@ -38,7 +38,7 @@ describe('Syntax Validation', (') => {'
                 <html>
                 <body>
                     <script>
-                        console.log('Hello World'),
+                        console.log('Hello World');
                         const x = 42,
                     </script>
                 </body>
@@ -46,8 +46,8 @@ describe('Syntax Validation', (') => {'
             `,
             const result = checker.validateHTML(validHTML) as ValidationResult,
             
-            expect(result.isValid).toBe(true),
-            expect(result.errors).toHaveLength(0),
+            expect(result.isValid).toBe(true);
+            expect(result.errors).toHaveLength(0);
             expect(result.scriptBlockCount).toBe(1) }');'
         test('should detect syntax errors in JavaScript blocks', (') => {'
             const invalidHTML = `
@@ -59,11 +59,11 @@ describe('Syntax Validation', (') => {'
                     </script>
                 </body>
                 </html>
-            `),
+            `);
             const result = checker.validateHTML(invalidHTML) as ValidationResult,
             
-            expect(result.isValid).toBe(false),
-            expect(result.errors.length).toBeGreaterThan(0),
+            expect(result.isValid).toBe(false);
+            expect(result.errors.length).toBeGreaterThan(0);
             expect(result.errors[0].type').toBe('SYNTAX_ERROR') }');
         test('should detect properly escaped XSS test code', (') => {'
             const htmlWithEscapedXSS = `
@@ -106,7 +106,7 @@ describe('Syntax Validation', (') => {'
             `,
             const result = checker.validateHTML(htmlWithEmptyScript) as ValidationResult,
             
-            expect(result.isValid).toBe(true),
+            expect(result.isValid).toBe(true);
             expect(result.warnings.some((w: ValidationWarning') => w.type === 'EMPTY_SCRIPT')).toBe(true) }');
         test('should skip ES6 module scripts', (') => {'
             const htmlWithModuleScript = `
@@ -124,15 +124,15 @@ describe('Syntax Validation', (') => {'
             expect(result.warnings.some((w: ValidationWarning') => w.type === 'MODULE_SCRIPT')).toBe(true);'
         }');'
         test('should validate escape sequences', (') => {'
-            const escapeSequences = 'Valid: \\n\\t\\"\\\\ , Invalid: \\z\\x\\u',
+            const escapeSequences = 'Valid: \\n\\t\\"\\\\ , Invalid: \\z\\x\\u';
             const errors = checker.validateEscapeSequences(escapeSequences) as ValidationError[],
             
-            expect(errors.length).toBeGreaterThan(0),
+            expect(errors.length).toBeGreaterThan(0);
             expect(errors[0].type').toBe('INVALID_ESCAPE') }');
         test('should generate proper summary', (') => {'
             const result: ValidationResult = {
-                isValid: true,
-                errors: [],
+                isValid: true;
+                errors: [];
                 warnings: [{ type: 'TEST_WARNING' }];
                 scriptBlockCount: 2
             };
@@ -143,7 +143,7 @@ describe('Syntax Validation', (') => {'
         }');'
     }
     describe('JavaScriptModuleValidator', () => {
-        let validator: JavaScriptModuleValidator,
+        let validator: JavaScriptModuleValidator;
         beforeEach(() => {
             validator = new JavaScriptModuleValidator() }');'
         test('should validate valid ES6 module', async (') => {'
@@ -258,7 +258,7 @@ describe('Syntax Validation', (') => {'
             const result: ModuleValidationResult = {
                 isValid: true,
                 errors: [],
-                warnings: [{ type: 'TEST_WARNING' }];
+                warnings: [{ type: 'TEST_WARNING' }],
                 scriptBlockCount: 0,
                 statistics: {
                     imports: 2,

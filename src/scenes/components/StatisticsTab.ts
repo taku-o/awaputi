@@ -7,26 +7,27 @@ import { StatisticsFilterUI  } from './StatisticsFilterUI.js';
 import { StatisticsRenderer  } from './StatisticsRenderer.js';
 import { StatisticsDashboardRenderer  } from './StatisticsDashboardRenderer.js';
 
-interface StatisticsDisplaySettings { showDashboard: boolean,
+interface StatisticsDisplaySettings { showDashboard: boolean;
     showCharts: boolean;
     showDetailedStats: boolean;
     enableAnimations: boolean;
     compactMode: boolean;
 
 interface GameEngine { statisticsManager?: {
-        getDetailedStatistics(period: string): Promise<any>,;
-    errorHandler?: { handleError(error: Error, context: any): void,
+        getDetailedStatistics(period: string): Promise<any>;
+    errorHandler?: { handleError(error: Error, context: any): void;
 
-interface EventBus { on(event: string, callback: Function): void,
+interface EventBus { on(event: string, callback: Function): void;
 
     off(event: string): void;
     emit(event: string, data?: any): void;
 
 interface StatisticsState { accessibilitySettings?: {
-        highContras,t: boolean,
-        largeText: boolean,
-    reducedMotion: boolean,
-
+        highContras,t: boolean;
+        largeText: boolean;
+    reducedMotion: boolean;
+    reducedMotion: boolean;
+        };
 type StatisticsViewMode = 'dashboard' | 'charts' | 'details';
 ';'
 export class StatisticsTab extends TabComponent { // 統計表示設定
@@ -47,17 +48,17 @@ export class StatisticsTab extends TabComponent { // 統計表示設定
         super(gameEngine, eventBus, state);
         
         this.statisticsDisplaySettings = {
-            showDashboard: true,
-            showCharts: true,
-            showDetailedStats: true,
-    enableAnimations: true,
-            compactMode: false,
-    
+            showDashboard: true;
+            showCharts: true;
+            showDetailedStats: true;
+    enableAnimations: true;
+            compactMode: false;
+            compactMode: false;
+        };
     /**
      * コンポーネントの初期化
      */
-    initialize(): void { super.initialize(),
-        
+    initialize(): void { super.initialize();
         try {
             // 子コンポーネントの初期化
             this.filterUI = new StatisticsFilterUI(this.gameEngine; this.eventBus, this.state);
@@ -94,7 +95,7 @@ export class StatisticsTab extends TabComponent { // 統計表示設定
     }');'
         ';'
         // 統計データ更新イベント
-        this.eventBus.on('statistics-data-updated', (data: any) => { this.statisticsData = data });
+        this.eventBus.on('statistics-data-updated', (data: any) => { this.statisticsData = data }),
     }
     
     /**
@@ -116,7 +117,7 @@ export class StatisticsTab extends TabComponent { // 統計表示設定
         } catch (error) { this.errorHandler?.handleError(error as Error, { : undefined)'
                 context: 'StatisticsTab.loadStatisticsData',')',
                 details: '統計データの読み込みに失敗しました'
-            });
+            };
             this.statisticsData = null;
         }
     }
@@ -132,7 +133,7 @@ export class StatisticsTab extends TabComponent { // 統計表示設定
     render(context: CanvasRenderingContext2D, x: number, y: number, width: number, height: number): void { try {
             this.renderStatistics(context, x, y, width, height) }
 
-        } catch (error) { this.renderErrorFallback(context, x, y, width, height, error as Error),
+        } catch (error) { this.renderErrorFallback(context, x, y, width, height, error as Error);
             this.eventBus.emit('component-error', { ')'
                 component: 'StatisticsTab'),
                 error: error,);
@@ -214,8 +215,7 @@ export class StatisticsTab extends TabComponent { // 統計表示設定
     private renderStatisticsCharts(context: CanvasRenderingContext2D, x: number, y: number, width: number, height: number): void { // チャート描画の暫定実装
         // TODO: 後続のコンポーネント抽出で詳細実装
         context.fillStyle = this.accessibilitySettings.highContrast ? '#444444' : '#f0f0f0',
-        context.fillRect(x, y, width, height),
-
+        context.fillRect(x, y, width, height);
         context.fillStyle = this.accessibilitySettings.highContrast ? '#FFFFFF' : '#333333',
         context.font = this.accessibilitySettings.largeText ? '18px Arial' : '16px Arial',
         context.textAlign = 'center',
@@ -253,8 +253,8 @@ export class StatisticsTab extends TabComponent { // 統計表示設定
 
         } catch (error) { this.errorHandler?.handleError(error as Error, { : undefined)'
                 context: 'StatisticsTab.handleClick', '
-                details: `クリック処理でエラーが発生しました: (${x }, ${y})`
-            });
+                details: `クリック処理でエラーが発生しました: (${x }, ${y}`
+            };
             return false;
     
     /**
@@ -315,7 +315,7 @@ export class StatisticsTab extends TabComponent { // 統計表示設定
      * 期間フィルターの設定
      * @param period - 期間フィルター'
      */''
-    setPeriodFilter(period: string): void { this.currentPeriodFilter = period;
+    setPeriodFilter(period: string): void { this.currentPeriodFilter = period,
         this.eventBus.emit('statistics-filter-changed', { period: period,
     
     /**
@@ -323,8 +323,8 @@ export class StatisticsTab extends TabComponent { // 統計表示設定
      */'
     cleanup(): void { ''
         super.cleanup()','
-        this.eventBus.off('statistics-filter-changed'),
-        this.eventBus.off('statistics-view-mode-changed'),
+        this.eventBus.off('statistics-filter-changed');
+        this.eventBus.off('statistics-view-mode-changed');
         this.eventBus.off('statistics-data-updated),'
         
         // 子コンポーネントのクリーンアップ

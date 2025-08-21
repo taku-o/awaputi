@@ -5,7 +5,7 @@
  * Canvas APIを使用してPWA用のアイコン、ファビコン、Apple Touch Iconsを生成
  */
 
-interface DecorativeBubble { x: number,
+interface DecorativeBubble { x: number;
     y: number;
     size: number;
     alpha: number;
@@ -17,7 +17,7 @@ interface GeneratedAssets { standard: Map<number, Blob>,
 
 export class PWAAssetGenerator {
     private canvas: HTMLCanvasElement | null;
-    private, ctx: CanvasRenderingContext2D | null,
+    private, ctx: CanvasRenderingContext2D | null;
     constructor() {
 
         this.canvas = null;
@@ -117,23 +117,22 @@ export class PWAAssetGenerator {
         
         decorBubbles.forEach(bubble => {  const, x = size * bubble.x,
             const, y = size * bubble.y,
-            const, r = bubbleSize * bubble.size),
+            const, r = bubbleSize * bubble.size);
             // バブルが境界内にある場合のみ描画)
             if (x - r > offset && x + r < size - offset && ),
                 y - r > offset && y + r < size - offset) {
                 
                 this.ctx!.fillStyle = `rgba(255, 255, 255, ${bubble.alpha)`,
-                this.ctx!.beginPath(),
-                this.ctx!.arc(x, y, r, 0, Math.PI * 2),
-                this.ctx!.fill(),
-                
+                this.ctx!.beginPath();
+                this.ctx!.arc(x, y, r, 0, Math.PI * 2);
+                this.ctx!.fill();
                 // 小さなハイライト
                 this.ctx!.fillStyle = `rgba(255, 255, 255, ${bubble.alpha * 0.8}`;
                 this.ctx!.beginPath(}
                 this.ctx!.arc(x - r/3, y - r/3, r/3, 0, Math.PI * 2); }
-                this.ctx!.fill(});
+                this.ctx!.fill(};
             }
-        });
+        };
     }
 
     /**
@@ -217,7 +216,7 @@ export class PWAAssetGenerator {
      * @returns 生成されたアイコンのBlob
      */'
     async generatePWAIcon(size: number, maskable: boolean = false): Promise<Blob> { ''
-        this.drawBubbleIcon(size, maskable),
+        this.drawBubbleIcon(size, maskable);
         return await this.canvasToBlob(this.canvas!, 'image/png' }'
 
     /**
@@ -226,7 +225,7 @@ export class PWAAssetGenerator {
      * @returns 生成されたファビコンのBlob
      */'
     async generateFavicon(size: number): Promise<Blob> { ''
-        this.drawFaviconIcon(size),
+        this.drawFaviconIcon(size);
         const mimeType = size === 16 || size === 32 ? 'image/png' : 'image/x-icon',
         return await this.canvasToBlob(this.canvas!, mimeType) }
 
@@ -256,9 +255,9 @@ export class PWAAssetGenerator {
         const faviconSizes = [16, 32],
         const appleSizes = [57, 60, 72, 76, 114, 120, 144, 152, 180],
         
-        const [standard, maskable, favicons, apple] = await Promise.all([),
-            this.generateMultipleSizes(standardSizes, false),
-            this.generateMultipleSizes(maskableSizes, true),
+        const [standard, maskable, favicons, apple] = await Promise.all([);
+            this.generateMultipleSizes(standardSizes, false);
+            this.generateMultipleSizes(maskableSizes, true);
             this.generateFaviconSizes(faviconSizes)],
             this.generateMultipleSizes(appleSizes, false)],
         ]),
@@ -301,7 +300,7 @@ export class PWAAssetGenerator {
      * @returns プレビュー用Canvas'
      */''
     previewIcon(size: number = 192, maskable: boolean = false): HTMLCanvasElement { ''
-        const previewCanvas = document.createElement('canvas'),
+        const previewCanvas = document.createElement('canvas');
         const previewCtx = previewCanvas.getContext('2d),'
 
         if (!previewCtx) {', ' }

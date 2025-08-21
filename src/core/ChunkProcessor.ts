@@ -11,7 +11,7 @@ export interface ChunkProcessorOptions { chunkSize?: number,
 /**
  * プロセス情報
  */
-interface ProcessInfo { id: string,
+interface ProcessInfo { id: string;
     totalItems: number;
     processedItems: number;
     totalChunks: number;
@@ -35,7 +35,7 @@ export interface ProcessOptions { chunkSize?: number,
 /**
  * 統計情報
  */
-interface ProcessorStats { totalProcessed: number,
+interface ProcessorStats { totalProcessed: number;
     totalChunks: number;
     averageChunkTime: number;
     memoryPeakUsage: number;
@@ -44,7 +44,7 @@ interface ProcessorStats { totalProcessed: number,
 /**
  * イベントデータ型
  */
-export interface ProcessEventData { id: string,
+export interface ProcessEventData { id: string;
     totalItems?: number;
     totalChunks?: number;
     processedItems?: number;
@@ -90,7 +90,7 @@ export class ChunkProcessor {
     private memoryUsage: number;
     private processCounter: number;
     private stats: ProcessorStats;
-    private, listeners: Map<string, Array<(data: ProcessEventData) => void>>,
+    private, listeners: Map<string, Array<(data: ProcessEventData) => void>>;
     
     constructor(options: ChunkProcessorOptions = {) {
     
@@ -107,9 +107,9 @@ export class ChunkProcessor {
         
         // 統計情報
         this.stats = {
-            totalProcessed: 0,
-            totalChunks: 0,
-            averageChunkTime: 0,
+            totalProcessed: 0;
+            totalChunks: 0;
+            averageChunkTime: 0;
     memoryPeakUsage: 0 }
     }
             totalProcessingTime: 0 
@@ -154,24 +154,21 @@ export class ChunkProcessor {
                 totalChunks: processInfo.totalChunks),
             // チャンクに分割して処理
             for(let, i = 0, i < data.length, i += chunkSize) {
-                const chunk = data.slice(i, i + chunkSize),
-                const chunkIndex = Math.floor(i / chunkSize),
-                
+                const chunk = data.slice(i, i + chunkSize);
+                const chunkIndex = Math.floor(i / chunkSize);
                 // メモリ使用量チェック
-                await this.checkMemoryUsage(),
-                
+                await this.checkMemoryUsage();
                 // チャンク処理
-                const chunkStartTime = Date.now(),
+                const chunkStartTime = Date.now();
                 const chunkResult = await this.processChunk(
                     chunk, ,
                     processor,
                     chunkIndex,
-                    processInfo),
+                    processInfo);
                     options,
                 
                 const chunkDuration = Date.now() - chunkStartTime,
-                this.updateChunkStats(chunkDuration),
-                
+                this.updateChunkStats(chunkDuration);
                 // 結果を保存
                 if (options.collectResults !== false) {
                     if (Array.isArray(chunkResult) {
@@ -188,7 +185,7 @@ export class ChunkProcessor {
                     chunkIndex,
                    , processedItems: processInfo.processedItems),
                     totalItems: processInfo.totalItems,
-    progress: (processInfo.processedItems / processInfo.totalItems) * 100  });
+    progress: (processInfo.processedItems / processInfo.totalItems) * 100  },
                 // 定期的にイベントループに制御を戻す
                 if (chunkIndex % this.yieldInterval === 0) { await this.yieldControl() }
             }
@@ -202,15 +199,13 @@ export class ChunkProcessor {
     duration: totalDuration),
                 results: options.collectResults !== false ? processInfo.results : undefined),
             const results = options.collectResults !== false ? processInfo.results: [],
-            this.activeProcesses.delete(processId),
-            
+            this.activeProcesses.delete(processId);
             return results as R[], catch (error) {
-            this.activeProcesses.delete(processId),
-
+            this.activeProcesses.delete(processId);
             this.emit('processError', {
                 id: processId,
     error: (error, as Error).message,
-                processedItems: this.activeProcesses.get(processId)?.processedItems || 0  });
+                processedItems: this.activeProcesses.get(processId)?.processedItems || 0  },
             getErrorHandler().handleError(error, 'CHUNK_PROCESSING_ERROR', { processId, : undefined)
                 dataLength: data.length),
                 chunkSize),
@@ -233,14 +228,14 @@ export class ChunkProcessor {
         
         const entries = Object.entries(data);
         
-        try { const results = await this.processArray(),
+        try { const results = await this.processArray();
                 entries,
 
                 async (entryChunk) => { }'
 
                     const chunkObject = Object.fromEntries(entryChunk);' }'
 
-                    return await processor(entryChunk, 0, { processId: '});'
+                    return await processor(entryChunk, 0, { processId: '};'
                 },
                 { ...options,
                     collectResults: true,
@@ -271,8 +266,7 @@ export class ChunkProcessor {
             while(hasMore) {
             
                 // データを取得
-                const item = await dataProvider(),
-                
+                const item = await dataProvider();
                 if (item === null || item === undefined) {
                     hasMore = false,
                     // 残りのバッチを処理
@@ -309,20 +303,20 @@ export class ChunkProcessor {
                         processedCount,
                     
                     // メモリチェックと制御移譲
-                    await this.checkMemoryUsage(),
+                    await this.checkMemoryUsage();
                     await this.yieldControl('',
             this.emit('streamCompleted', {
                 id: processId,
-    totalProcessed: processedCount),
+    totalProcessed: processedCount);
                 results: options.collectResults !== false ? results : undefined','
             return options.collectResults !== false ?, results: [],
             ' 
-            })'
+            }'
 
         } catch (error) {
             this.emit('streamError', {
                 id: processId,
-    error: (error, as Error).message  });
+    error: (error, as Error).message  };
             ;
             throw error;
         }
@@ -339,18 +333,17 @@ export class ChunkProcessor {
     options: ProcessOptions,
     ): Promise<R>,
         try { // メモリ使用量の推定更新
-            this.updateMemoryUsage(chunk),
-            
+            this.updateMemoryUsage(chunk);
             // チャンク処理実行
             const result = await processor(chunk, chunkIndex, {
-                processId: processInfo.id),
+                processId: processInfo.id);
                 totalItems: processInfo.totalItems,
     processedItems: processInfo.processedItems),
             ,
             return result } catch (error) { getErrorHandler().handleError(error, 'CHUNK_PROCESS_ERROR', {)
                 chunkIndex,
                 chunkSize: chunk.length),
-                processId: processInfo.id  });
+                processId: processInfo.id  },
             throw error;
         }
     }
@@ -389,8 +382,7 @@ export class ChunkProcessor {
     /**
      * イベントループに制御を戻す
      */
-    private async yieldControl(): Promise<void> { return new Promise(resolve => setImmediate(resolve),
-    
+    private async yieldControl(): Promise<void> { return new Promise(resolve => setImmediate(resolve);
     /**
      * チャンク統計の更新
      */
@@ -423,7 +415,7 @@ export class ChunkProcessor {
 
         } catch (error) { getErrorHandler().handleError(error, 'CHUNK_RESULT_MERGE_ERROR', {)
                 resultsCount: results.length),
-                mergeStrategy: options.mergeStrategy  });
+                mergeStrategy: options.mergeStrategy  },
             return results; // フォールバック
         }
     }
@@ -448,7 +440,7 @@ export class ChunkProcessor {
             processedItems: process.processedItems),
             progress: (process.processedItems / process.totalItems) * 100,
     duration: Date.now() - process.startTime  }
-        });
+        };
     }
     
     /**
@@ -456,7 +448,7 @@ export class ChunkProcessor {
      */
     getStats(): ProcessorStats & { currentMemoryUsage: number,
         activeProcesses: number, { return { ...this.stats,
-            currentMemoryUsage: this.memoryUsage };
+            currentMemoryUsage: this.memoryUsage },
             activeProcesses: this.activeProcesses.size 
     }
     
@@ -464,7 +456,7 @@ export class ChunkProcessor {
      * プロセスのキャンセル
      */
     cancelProcess(processId: string): boolean { if (this.activeProcesses.has(processId) {''
-            this.activeProcesses.delete(processId),
+            this.activeProcesses.delete(processId);
             this.emit('processCancelled', { id: processId ,
             return true }
         return false;
@@ -483,7 +475,7 @@ export class ChunkProcessor {
      */
     off(event: string, callback: (data: ProcessEventData) => void): void { if (this.listeners.has(event) {
             const callbacks = this.listeners.get(event)!,
-            const index = callbacks.indexOf(callback),
+            const index = callbacks.indexOf(callback);
             if (index > -1) {
     
 }
@@ -501,7 +493,7 @@ export class ChunkProcessor {
                 } catch (error) {
                     console.error(`Error in chunk processor event listener for ${event}:`, error);
                 }
-            });
+            };
         }
     }
     
@@ -509,7 +501,7 @@ export class ChunkProcessor {
      * リソースの解放
      */
     destroy(): void { // アクティブプロセスをクリア
-        this.activeProcesses.clear(),
+        this.activeProcesses.clear();
         this.listeners.clear()','
         console.log('ChunkProcessor, destroyed') }'
 }

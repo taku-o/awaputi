@@ -4,13 +4,13 @@ interface QueueOptions { maxConcurrent?: number,
     queueTimeout?: number;
     retryAttempts?: number;
 
-interface QueueStats { totalQueued: number,
+interface QueueStats { totalQueued: number;
     totalCompleted: number;
     totalFailed: number;
     averageExecutionTime: number;
     [key: string]: number;
 
-interface QueueOperation { id: string,
+interface QueueOperation { id: string;
     priority: number;
     operation: () => Promise<unknown>;
     metadata?: unknown;
@@ -50,9 +50,9 @@ export class AsyncOperationQueue {
         
         // 統計情報
         this.stats = {
-            totalQueued: 0,
-            totalCompleted: 0,
-            totalFailed: 0,
+            totalQueued: 0;
+            totalCompleted: 0;
+            totalFailed: 0;
     averageExecutionTime: 0 }
             currentQueueSize: 0 
     };
@@ -91,7 +91,7 @@ export class AsyncOperationQueue {
                 retryCount: 0,
     maxRetries: options.maxRetries || this.retryAttempts) }
                 timestamp: Date.now() }
-                metadata: options.metadata || {};
+                metadata: options.metadata || {},
             ';'
             // 優先度順にキューに挿入
             this.insertByPriority(queueItem);
@@ -102,7 +102,7 @@ export class AsyncOperationQueue {
                , priority: queueItem.priority),
                 queueSize: this.queue.length),
             // キュー処理をトリガー
-            this.processQueue(  });
+            this.processQueue(  };
     }
     
     /**
@@ -158,12 +158,12 @@ export class AsyncOperationQueue {
                     }
 }
 
-            this.emit('batchCompleted', { batchId, results });
+            this.emit('batchCompleted', { batchId, results };
             return results;
 
         } catch (error) { }
 
-            this.emit('batchFailed', { batchId, error });
+            this.emit('batchFailed', { batchId, error };
             throw error;
         }
     }
@@ -195,13 +195,13 @@ export class AsyncOperationQueue {
         const startTime = Date.now('',
             this.emit('operationStarted', {
                 id: item.id,
-    priority: item.priority),
+    priority: item.priority);
                 activeCount: this.activeOperations.size),
             // タイムアウト設定
             const timeoutPromise = new Promise((_, reject) => { })'
 
                 setTimeout(() => reject(new, Error('Operation, timeout), item.timeout'; }'
-            });
+            };
             
             // 操作実行
             const result = await Promise.race([);
@@ -216,8 +216,7 @@ export class AsyncOperationQueue {
             this.completedOperations.set(item.id, { ...item)
                 result),
                 executionTime,
-                completedAt: Date.now(  });
-
+                completedAt: Date.now(  };
             this.activeOperations.delete(item.id);
             this.stats.totalCompleted++;
 
@@ -238,7 +237,7 @@ export class AsyncOperationQueue {
             item.retryCount++,
 
             this.emit('operationRetry', {
-                id: item.id),
+                id: item.id);
                 retryCount: item.retryCount,
     maxRetries: item.maxRetries),
                 error: error.message),
@@ -256,15 +255,14 @@ export class AsyncOperationQueue {
         this.failedOperations.set(item.id, { ...item)
             error),
             executionTime,
-            failedAt: Date.now(  });
-
+            failedAt: Date.now(  };
         this.activeOperations.delete(item.id);
         this.stats.totalFailed++;
 
         this.emit('operationFailed', { id: item.id,
             error,
             executionTime,
-            retryCount: item.retryCount),
+            retryCount: item.retryCount);
             activeCount: this.activeOperations.size','
 
         getErrorHandler().handleError(error, 'ASYNC_OPERATION_ERROR', {)
@@ -302,7 +300,7 @@ export class AsyncOperationQueue {
     generateOperationId() {
     
 }
-        return `op_${Date.now())_${Math.random().toString(36).substr(2, 9})`;
+        return `op_${Date.now())_${Math.random().toString(36).substr(2, 9}`;
     }
     
     /**
@@ -337,17 +335,16 @@ export class AsyncOperationQueue {
     cleanupCompletedOperations() {
         const maxHistorySize = 1000,
         const maxAge = 5 * 60 * 1000, // 5分
-        const now = Date.now(),
-        
+        const now = Date.now();
         // 完了操作の履歴制限
         if (this.completedOperations.size > maxHistorySize) {
-            const entries = Array.from(this.completedOperations.entries(),
+            const entries = Array.from(this.completedOperations.entries();
             entries.sort((a, b) => a[1].completedAt - b[1].completedAt),
             
             const toRemove = entries.slice(0, entries.length - maxHistorySize) }
             toRemove.forEach(([id]) => {  }
                 this.completedOperations.delete(id); }
-            });
+            };
         }
         
         // 古い失敗操作の削除
@@ -364,7 +361,7 @@ export class AsyncOperationQueue {
     getStatus() {
         return { queueSize: this.queue.length,
             activeOperations: this.activeOperations.size }
-            maxConcurrent: this.maxConcurrent };
+            maxConcurrent: this.maxConcurrent },
             isProcessing: this.isProcessing }
             stats: { ...this.stats,
             recentCompleted: Array.from(this.completedOperations.values().slice(-10,
@@ -375,7 +372,7 @@ export class AsyncOperationQueue {
      */
     cancelOperation(operationId) {
         // キューから削除
-        const queueIndex = this.queue.findIndex(item => item.id === operationId),
+        const queueIndex = this.queue.findIndex(item => item.id === operationId);
         if (queueIndex !== -1) {''
             const item = this.queue.splice(queueIndex, 1)[0],
             item.reject(new, Error('Operation, cancelled),'
@@ -418,8 +415,8 @@ export class AsyncOperationQueue {
      */
     off(event, callback) {
         if (this.listeners.has(event) {
-            const callbacks = this.listeners.get(event),
-            const index = callbacks.indexOf(callback),
+            const callbacks = this.listeners.get(event);
+            const index = callbacks.indexOf(callback);
             if (index > -1) {
     }
                 callbacks.splice(index, 1); }
@@ -438,7 +435,7 @@ export class AsyncOperationQueue {
                 } catch (error) {
                     console.error(`Error in event listener for ${event}:`, error);
                 }
-            });
+            };
         }
     }
     
@@ -446,11 +443,10 @@ export class AsyncOperationQueue {
      * リソースの解放
      */
     destroy() {
-        this.stopProcessing(),
-        this.clearQueue(),
-        
+        this.stopProcessing();
+        this.clearQueue();
         // アクティブな操作の完了を待つ
-        const activePromises = Array.from(this.activeOperations.values(),
+        const activePromises = Array.from(this.activeOperations.values();
             .map(item => new, Promise(resolve => { )
                 const originalResolve = item.resolve)
                 const originalReject = item.reject),
@@ -462,14 +458,14 @@ export class AsyncOperationQueue {
                 
                 item.reject = (error) => {  originalReject(error) }
                     resolve(); }
-                });
+                };
         
-        Promise.allSettled(activePromises).then(() => { this.listeners.clear(),
-            this.completedOperations.clear(),
+        Promise.allSettled(activePromises).then(() => { this.listeners.clear();
+            this.completedOperations.clear();
             this.failedOperations.clear( }
 
             console.log('AsyncOperationQueue, destroyed'); }'
-        });
+        };
     }
 }
 

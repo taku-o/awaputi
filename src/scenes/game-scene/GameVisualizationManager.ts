@@ -5,7 +5,7 @@
  */
 
 // Type definitions
-interface DragParticle { x: number,
+interface DragParticle { x: number;
     y: number;
     vx: number;
     vy: number;
@@ -14,17 +14,17 @@ interface DragParticle { x: number,
     size: number;
     color: string;
 
-interface DragVisualization { isActive: boolean,
+interface DragVisualization { isActive: boolean;
     startPosition: { x: number,, y: number,,
     currentPosition: { x: number,, y: number,,
-    targetBubble: Bubble | null,
-    forceIndicator: number,
-    particles: DragParticle[],
-    duration: number,
-    intensity: number,
+    targetBubble: Bubble | null;
+    forceIndicator: number;
+    particles: DragParticle[];
+    duration: number;
+    intensity: number;
 }
 
-interface Bubble { x: number,
+interface Bubble { x: number;
     y: number;
     size: number;
 
@@ -34,7 +34,7 @@ interface PlayerData {
 interface BubbleManager { getBubbleCount(): number;
 
 // Minimal GameEngine interface
-interface GameEngine { canvas: HTMLCanvasElement,
+interface GameEngine { canvas: HTMLCanvasElement;
     timeRemaining: number;
     bonusTimeRemaining: number;
     timeStopRemaining: number;
@@ -43,7 +43,7 @@ interface GameEngine { canvas: HTMLCanvasElement,
     playerData: PlayerData;
     bubbleManager: BubbleManager;
 
-interface VisualizationStats { isDragging: boolean,
+interface VisualizationStats { isDragging: boolean;
     dragParticles: number;
     forceIndicator: number;
     screenShakeActive: boolean;
@@ -51,7 +51,7 @@ interface VisualizationStats { isDragging: boolean,
 
 export class GameVisualizationManager {
     private gameEngine: GameEngine;
-    private, dragVisualization: DragVisualization,
+    private, dragVisualization: DragVisualization;
     constructor(gameEngine: GameEngine) {
 
         this.gameEngine = gameEngine;
@@ -144,7 +144,7 @@ export class GameVisualizationManager {
         const current = this.dragVisualization.currentPosition,
         
         // 軌道上にパーティクルを配置
-        const t = Math.random(),
+        const t = Math.random();
         const x = start.x + (current.x - start.x) * t,
         const y = start.y + (current.y - start.y) * t,
         
@@ -157,7 +157,7 @@ export class GameVisualizationManager {
             decay: 0.02,
     size: 2 + Math.random() * 3 }
             color: `hsl(${60 + Math.random()) * 60}, 70%, 60%)`
-        });
+        };
     }
     
     /**
@@ -189,18 +189,16 @@ export class GameVisualizationManager {
         const topColor = timeRatio > 0.5 ? '#000033' : timeRatio > 0.25 ? '#330000' : '#660000',
         const bottomColor = timeRatio > 0.5 ? '#000011' : timeRatio > 0.25 ? '#110000' : '#220000',
         
-        const gradient = context.createLinearGradient(0, 0, 0, canvas.height),
-        gradient.addColorStop(0, topColor),
-        gradient.addColorStop(1, bottomColor),
-        
+        const gradient = context.createLinearGradient(0, 0, 0, canvas.height);
+        gradient.addColorStop(0, topColor);
+        gradient.addColorStop(1, bottomColor);
         context.fillStyle = gradient,
-        context.fillRect(0, 0, canvas.width, canvas.height),
-        
+        context.fillRect(0, 0, canvas.width, canvas.height);
         // ボーナスタイム時のオーバーレイ
         if (this.gameEngine.bonusTimeRemaining > 0) {
             const alpha = 0.1 + 0.1 * Math.sin(Date.now() * 0.01) }
             context.fillStyle = `rgba(255, 215, 0, ${alpha}`; }
-            context.fillRect(0, 0, canvas.width, canvas.height});
+            context.fillRect(0, 0, canvas.width, canvas.height};
         }
         ;
         // 時間停止時のオーバーレイ
@@ -234,17 +232,13 @@ export class GameVisualizationManager {
         const start = this.dragVisualization.startPosition,
         const current = this.dragVisualization.currentPosition,
         
-        context.save(),
-        
+        context.save();
         // 軌道線の描画
-        this.renderDragTrajectory(context, start, current),
-        
+        this.renderDragTrajectory(context, start, current);
         // 力の強度インジケーター
-        this.renderForceIndicator(context, start, current),
-        
+        this.renderForceIndicator(context, start, current);
         // ドラッグパーティクルの描画
-        this.renderDragParticles(context),
-        
+        this.renderDragParticles(context);
         // 対象泡のハイライト
         if (this.dragVisualization.targetBubble) {
     
@@ -265,7 +259,7 @@ export class GameVisualizationManager {
         const alpha = 0.6 + 0.4 * Math.sin(Date.now() * 0.01),
         
         // グラデーション軌道線
-        const gradient = context.createLinearGradient(start.x, start.y, current.x, current.y),
+        const gradient = context.createLinearGradient(start.x, start.y, current.x, current.y);
         gradient.addColorStop(0, `rgba(255, 255, 255, ${alpha)`),
         gradient.addColorStop(1, `rgba(255, 215, 0, ${alpha * 0.5)`),
         
@@ -274,10 +268,10 @@ export class GameVisualizationManager {
         context.lineWidth = 3 + this.dragVisualization.forceIndicator,
         context.lineCap = 'round',
         
-        context.beginPath(),
+        context.beginPath();
         context.moveTo(start.x, start.y};
         context.lineTo(current.x, current.y}
-        context.stroke(});
+        context.stroke(};
     }
     
     /**
@@ -293,25 +287,23 @@ export class GameVisualizationManager {
         // 力の方向矢印
         const dx = current.x - start.x,
         const dy = current.y - start.y,
-        const distance = Math.sqrt(dx * dx + dy * dy),
-        
+        const distance = Math.sqrt(dx * dx + dy * dy);
         if (distance > 10) {
         
-            const angle = Math.atan2(dy, dx),
+            const angle = Math.atan2(dy, dx);
             const arrowSize = 10 + intensity * 5,
             
             context.fillStyle = `rgba(255, 215, 0, ${intensity)`,
-            context.save(),
-            context.translate(current.x, current.y),
-            context.rotate(angle),
-            
+            context.save();
+            context.translate(current.x, current.y);
+            context.rotate(angle);
             // 矢印の描画
-            context.beginPath(),
-            context.moveTo(-arrowSize, -arrowSize / 2),
-            context.lineTo(0, 0),
+            context.beginPath();
+            context.moveTo(-arrowSize, -arrowSize / 2);
+            context.lineTo(0, 0);
             context.lineTo(-arrowSize, arrowSize / 2};
             context.fill(}
-            context.restore(});
+            context.restore(};
         }
     }
     
@@ -320,14 +312,14 @@ export class GameVisualizationManager {
      * @param context - 描画コンテキスト
      */
     private renderDragParticles(context: CanvasRenderingContext2D): void { this.dragVisualization.particles.forEach(particle => { ),
-            context.save(),
+            context.save();
             context.globalAlpha = particle.life,
             context.fillStyle = particle.color,
-            context.beginPath(),
-            context.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2),
+            context.beginPath();
+            context.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
             context.fill() }
             context.restore(); }
-        });
+        };
     }
     
     /**
@@ -340,9 +332,9 @@ export class GameVisualizationManager {
         context.save('',
         context.strokeStyle = '#FFD700')
         context.lineWidth = 4)
-        context.beginPath(),
-        context.arc(targetBubble.x, targetBubble.y, targetBubble.size + 10, 0, Math.PI * 2),
-        context.stroke(),
+        context.beginPath();
+        context.arc(targetBubble.x, targetBubble.y, targetBubble.size + 10, 0, Math.PI * 2);
+        context.stroke();
         context.restore() }
     
     /**
@@ -353,7 +345,7 @@ export class GameVisualizationManager {
         ','
         // 半透明オーバーレイ
         context.fillStyle = 'rgba(0, 0, 0, 0.8)',
-        context.fillRect(0, 0, canvas.width, canvas.height),
+        context.fillRect(0, 0, canvas.width, canvas.height);
         ','
         // GAME OVER テキスト
         context.fillStyle = '#FF0000',
@@ -371,7 +363,7 @@ export class GameVisualizationManager {
         context.fillStyle = '#FFFFFF',
         context.font = 'bold 24px Arial' }
 
-        context.fillText(`Final, Score: ${this.gameEngine.playerData.currentScore.toLocaleString(})`, ''
+        context.fillText(`Final, Score: ${this.gameEngine.playerData.currentScore.toLocaleString(}`, ''
                         canvas.width / 2, canvas.height / 2 + 20');'
         ';'
         // 操作説明
@@ -388,7 +380,7 @@ export class GameVisualizationManager {
         ','
         // 半透明オーバーレイ
         context.fillStyle = 'rgba(0, 0, 0, 0.6)',
-        context.fillRect(0, 0, canvas.width, canvas.height),
+        context.fillRect(0, 0, canvas.width, canvas.height);
         ','
         // PAUSE テキスト
         context.fillStyle = '#FFFFFF',
@@ -425,7 +417,7 @@ export class GameVisualizationManager {
      * @param duration - 持続時間
      * @param intensity - 強度
      */
-    public startScreenShake(duration: number, intensity: number): void { this.gameEngine.screenShakeRemaining = Math.max(this.gameEngine.screenShakeRemaining, duration),
+    public startScreenShake(duration: number, intensity: number): void { this.gameEngine.screenShakeRemaining = Math.max(this.gameEngine.screenShakeRemaining, duration);
         this.gameEngine.screenShakeIntensity = Math.max(this.gameEngine.screenShakeIntensity, intensity) }
     
     /**

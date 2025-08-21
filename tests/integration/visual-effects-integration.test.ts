@@ -31,11 +31,11 @@ global.HTMLCanvasElement.prototype.getContext = jest.fn((contextType') => {'
             canvas: {
                 width: 800,
         height: 600
-            });
+            };
         );
     }
     return null;
-});
+};
 // Mock performance API
 global.performance = {
     now: jest.fn(() => Date.now(),
@@ -43,7 +43,7 @@ global.performance = {
         usedJSHeapSize: 1000000,
         totalJSHeapSize: 2000000,
         jsHeapSizeLimit: 4000000
-            });
+            };
 );
 // Mock requestAnimationFrame
 global.requestAnimationFrame = jest.fn(cb => setTimeout(cb, 16);
@@ -61,15 +61,15 @@ describe('Visual Effects Integration Tests', () => {
     let qualityController: any,
     beforeEach((') => {'
         // Setup canvas
-        canvas = document.createElement('canvas'),
+        canvas = document.createElement('canvas');
         canvas.width = 800,
         canvas.height = 600,
-        context = canvas.getContext('2d'),
+        context = canvas.getContext('2d');
         // Initialize managers
-        particleManager = new EnhancedParticleManager(canvas),
-        effectManager = new EnhancedEffectManager(canvas),
-        animationManager = new AnimationManager(canvas),
-        qualityController = new EffectQualityController() });
+        particleManager = new EnhancedParticleManager(canvas);
+        effectManager = new EnhancedEffectManager(canvas);
+        animationManager = new AnimationManager(canvas);
+        qualityController = new EffectQualityController() };
     afterEach(() => {
         // Cleanup
         particleManager? .destroy?.(),
@@ -86,7 +86,7 @@ describe('Visual Effects Integration Tests', () => {
             const particleEffectId = particleManager.createAdvancedBubbleEffect? .(400, 300, 'normal', 20, { : undefined
                 particleCount: 15,
                 color: '#FF0000'
-            });
+            };
             // Both effects should exist
             expect(typeof flashEffectId').toBe('number');'
             if (particleEffectId) {
@@ -128,19 +128,19 @@ describe('Visual Effects Integration Tests', () => {
             const particles1 = particleManager.createAdvancedBubbleEffect?.(250, 250, 'rainbow', 15'),'
             const particles2 = particleManager.createAdvancedBubbleEffect?.(550, 350, 'electric', 18),
             // Update lighting
-            effectManager.updateLightSources(100),
+            effectManager.updateLightSources(100);
             // Render with lighting effects
             effectManager.renderLighting?.(context),
             particleManager.render?.(context),
             // Verify both systems rendered
-            expect(context.save).toHaveBeenCalled(),
+            expect(context.save).toHaveBeenCalled();
             expect(typeof light1').toBe('number'),'
             expect(typeof light2').toBe('number') }');
     }
     describe('Animation Integration', (') => {'
         test('should coordinate UI animations with particle effects', async (') => {'
             // Create UI element
-            const uiElement = document.createElement('div'),
+            const uiElement = document.createElement('div');
             uiElement.style.position = 'absolute',
             uiElement.style.left = '300px',
             uiElement.style.top = '200px',
@@ -219,7 +219,7 @@ describe('Visual Effects Integration Tests', () => {
                 const animation = animationManager.animateUIElement?.(document.createElement('div'), 'slide', 300),
                 // Update systems
                 particleManager.update?.(16),
-                effectManager.update(16),
+                effectManager.update(16);
                 animationManager.update?.(16'),'
                 // Quality should affect particle count, effect complexity, etc.
                 const particleCount = particleManager.particles?.length || 0,
@@ -269,7 +269,7 @@ describe('Visual Effects Integration Tests', () => {
                     Math.random(') * 600,'
                     'normal',
                     10,
-                effectManager.addLightSource(),
+                effectManager.addLightSource();
                     Math.random() * 800,
                     Math.random(') * 600,'
                     0.5,
@@ -292,17 +292,17 @@ describe('Visual Effects Integration Tests', () => {
             for (let iteration = 0, iteration < testIterations, iteration++') {'
                 // Create effects
                 const particleEffect = particleManager.createAdvancedBubbleEffect?.(400, 300, 'normal', 5'),'
-                const screenEffect = effectManager.addTransitionEffect('pulse', 200),
+                const screenEffect = effectManager.addTransitionEffect('pulse', 200);
                 // Let them complete quickly
                 particleManager.update?.(250), // More than 200ms
-                effectManager.update(250),
+                effectManager.update(250);
                 // Clean up expired effects
                 particleManager.cleanupExpiredParticles?.(),
                 effectManager.cleanupExpiredEffects?.() }
             // Pool should be maintaining resources efficiently
             const poolStats = particleManager.getPoolStatistics?.();
             if (poolStats) {
-                expect(poolStats.reusedCount).toBeGreaterThan(0),
+                expect(poolStats.reusedCount).toBeGreaterThan(0);
                 expect(poolStats.createdCount).toBeLessThan(testIterations * 5) }
         }');'
     }
@@ -322,7 +322,7 @@ describe('Visual Effects Integration Tests', () => {
             // Rendering should not crash despite errors
             expect(() => {
                 particleManager.render?.(errorContext),
-                effectManager.render(errorContext),
+                effectManager.render(errorContext);
                 animationManager.render?.(errorContext)).not.toThrow() }');'
         test('should maintain system stability during partial failures', async () => {
             // Mock one system to fail
@@ -333,10 +333,10 @@ describe('Visual Effects Integration Tests', () => {
             effectManager.addTransitionEffect('slide', 800'),'
             animationManager.animateUIElement?.(document.createElement('div'), 'fade', 400),
             expect(() => {
-                particleManager.update?.(16)).toThrow(),
+                particleManager.update?.(16)).toThrow();
             expect(() => {
-                effectManager.update(16),
-                animationManager.update?.(16)).not.toThrow(),
+                effectManager.update(16);
+                animationManager.update?.(16)).not.toThrow();
             // Restore original function
             particleManager.update = originalUpdate }');'
     }
@@ -355,11 +355,11 @@ describe('Visual Effects Integration Tests', () => {
             const startTime = performance.now();
             for (let frame = 0; frame < frameCount; frame++) {
                 particleManager.update?.(frameTime),
-                effectManager.update(frameTime),
+                effectManager.update(frameTime);
                 animationManager.update?.(frameTime),
                 // Simulate render time
                 particleManager.render?.(context),
-                effectManager.render(context),
+                effectManager.render(context);
                 animationManager.render?.(context) }
             const endTime = performance.now();
             const totalTime = endTime - startTime;
@@ -375,7 +375,7 @@ describe('Visual Effects Integration Tests', () => {
                     Math.random(') * 600,'
                     'boss',
                     20,
-                effectManager.addLightSource(),
+                effectManager.addLightSource();
                     Math.random() * 800,
                     Math.random(') * 600,'
                     1.0,
@@ -406,7 +406,7 @@ describe('Visual Effects Integration Tests', () => {
             const accessibilityConfig = { : undefined
                 reducedMotion: true,
                 highContrast: true,
-                colorBlindSupport: true,;
+                colorBlindSupport: true,
             // Apply accessibility settings
             particleManager.applyAccessibilitySettings? .(accessibilityConfig);
             effectManager.applyAccessibilitySettings?.(accessibilityConfig);
@@ -421,8 +421,8 @@ describe('Visual Effects Integration Tests', () => {
             // This is verified by the individual system's behavior'
             expect(() => {
                 particleManager.update?.(16),
-                effectManager.update(16),
-                animationManager.update?.(16) }).not.toThrow();
+                effectManager.update(16);
+                animationManager.update?.(16) }.not.toThrow();
         }
     }');'
     describe('System Lifecycle Integration', (') => {'
@@ -434,18 +434,18 @@ describe('Visual Effects Integration Tests', () => {
             const originalAnimationInit = animationManager.initialize,
             if (particleManager.initialize) {
                 particleManager.initialize = jest.fn(async (') => {'
-                    initOrder.push('particle'),
-                    return originalParticleInit? .call(particleManager) });
+                    initOrder.push('particle');
+                    return originalParticleInit? .call(particleManager) };
             }
             if (effectManager.initialize) {
                 effectManager.initialize = jest.fn(async (') => {'
-                    initOrder.push('effect'),
-                    return originalEffectInit?.call(effectManager) });
+                    initOrder.push('effect');
+                    return originalEffectInit?.call(effectManager) };
             }
             if (animationManager.initialize) {
                 animationManager.initialize = jest.fn(async (') => {'
-                    initOrder.push('animation'),
-                    return originalAnimationInit?.call(animationManager) });
+                    initOrder.push('animation');
+                    return originalAnimationInit?.call(animationManager) };
             }
             // Initialize systems
             await particleManager.initialize?.();
@@ -475,6 +475,6 @@ describe('Visual Effects Integration Tests', () => {
             // Verify cleanup
             expect(particleManager.particles?.length || 0).toBe(0);
             expect(effectManager.effects?.length || 0).toBe(0);
-        });
+        };
     }
 }'); : undefined'

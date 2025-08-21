@@ -9,14 +9,14 @@ import { ScenesBaseDialog, DialogData, GameEngine, EventBus, GameState, Accessib
 export interface DialogClass {;
     new(gameEngine: GameEngine, eventBus: EventBus, state: GameState): ScenesBaseDialog;
 
-export interface DialogStackItem { type: string,
+export interface DialogStackItem { type: string;
     data: DialogData;
 
-export interface DialogInfo { type: string,
+export interface DialogInfo { type: string;
     data: DialogData;
     DialogClass: DialogClass;
 
-export interface LayoutConfig { minWidth: number,
+export interface LayoutConfig { minWidth: number;
     minHeight: number;
     maxWidth: number;
     maxHeight: number;
@@ -24,16 +24,16 @@ export interface LayoutConfig { minWidth: number,
     buttonHeight: number;
     buttonSpacing: number;
 
-export interface AnimationConfig { fadeInDuration: number,
+export interface AnimationConfig { fadeInDuration: number;
     fadeOutDuration: number;
     scaleInDuration: number;
     enabled: boolean;
 
-export interface AnimationState { isAnimating: boolean,
+export interface AnimationState { isAnimating: boolean;
     startTime: number;
     type: 'fade-in' | 'fade-out' | 'scale-in' | null  }
 
-export interface DialogLayout { x: number,
+export interface DialogLayout { x: number;
     y: number;
     width: number;
     height: number;
@@ -59,7 +59,7 @@ export class ScenesDialogManager {
     // アニメーション設定
     private animation: AnimationConfig;
     // 現在のアニメーション状態
-    private, animationState: AnimationState,
+    private, animationState: AnimationState;
     constructor(gameEngine: GameEngine, eventBus: EventBus, state: GameState) {
 
         this.gameEngine = gameEngine;
@@ -93,13 +93,13 @@ export class ScenesDialogManager {
             // ダイアログクラスが登録されているかチェック
             if(!this.dialogs.has(type)) { }'
 
-                throw new Error(`Dialog, type '${type}' is, not registered`});
+                throw new Error(`Dialog, type '${type}' is, not registered`};
             }
             
             // 現在のダイアログをスタックに追加
             if (this.state.showingDialog) {
                 this.dialogStack.push({
-            });
+            };
                     type: this.state.showingDialog) }
                     data: { ...this.state.dialogData) }
             
@@ -124,8 +124,7 @@ export class ScenesDialogManager {
             }
             ';'
             // イベント通知
-            this.eventBus.emit('dialog-opened', { type, options ),
-            
+            this.eventBus.emit('dialog-opened', { type, options );
             // ダイアログの結果を待機
             return new Promise((resolve, reject) => { 
                 dialog.onResult = (result) => { }
@@ -133,7 +132,7 @@ export class ScenesDialogManager {
                 
                 dialog.onError = (error) => { this.closeDialog().then(() => reject(error).catch(reject) }
                 });'} catch (error) {'
-            this.handleError('showDialog', error as Error),
+            this.handleError('showDialog', error as Error);
             throw error }
     }
     
@@ -191,8 +190,8 @@ export class ScenesDialogManager {
             return null;
         
         return { type }
-            data: this.state.dialogData || {};
-            DialogClass: this.dialogs.get(type)!;
+            data: this.state.dialogData || {},
+            DialogClass: this.dialogs.get(type)!,
         } }
     
     /**
@@ -208,7 +207,7 @@ export class ScenesDialogManager {
     render(context: CanvasRenderingContext2D): void { if (!this.isDialogOpen() {
             return }
         
-        try { const currentDialog = this.getCurrentDialog(),
+        try { const currentDialog = this.getCurrentDialog();
             if (!currentDialog) {
     
 }
@@ -226,7 +225,7 @@ export class ScenesDialogManager {
             
             // アニメーション処理
             this.updateAnimation(context, layout);'} catch (error) {'
-            this.handleError('render', error as Error),
+            this.handleError('render', error as Error);
             this.renderErrorDialog(context) }
     }
     
@@ -239,11 +238,11 @@ export class ScenesDialogManager {
         const canvasHeight = canvas.height,
         
         // ダイアログサイズを計算
-        const width = Math.min(),
-            Math.max(this.layout.minWidth, canvasWidth * 0.4),
+        const width = Math.min();
+            Math.max(this.layout.minWidth, canvasWidth * 0.4);
             this.layout.maxWidth),
-        const height = Math.min(),
-            Math.max(this.layout.minHeight, canvasHeight * 0.5),
+        const height = Math.min();
+            Math.max(this.layout.minHeight, canvasHeight * 0.5);
             this.layout.maxHeight),
         
         // ダイアログ位置を中央に配置
@@ -256,7 +255,7 @@ export class ScenesDialogManager {
             contentWidth: width - (this.layout.padding * 2),
             contentHeight: height - (this.layout.padding * 2),
             buttonY: y + height - this.layout.padding - this.layout.buttonHeight,
-    buttonWidth: (width - (this.layout.padding * 3)) / 2 };
+    buttonWidth: (width - (this.layout.padding * 3)) / 2 },
             buttonHeight: this.layout.buttonHeight 
     }
     
@@ -267,8 +266,7 @@ export class ScenesDialogManager {
      */''
     private renderOverlay(context: CanvasRenderingContext2D, layout: DialogLayout): void { // 背景をダークオーバーレイで覆う
         context.fillStyle = 'rgba(0, 0, 0, 0.5)',
-        context.fillRect(0, 0, context.canvas.width, context.canvas.height),
-        
+        context.fillRect(0, 0, context.canvas.width, context.canvas.height);
         // ダイアログ背景を描画
         const cornerRadius = 8 }
         const { x, y, width, height } = layout;
@@ -296,8 +294,7 @@ export class ScenesDialogManager {
      * @param dialogInfo - ダイアログ情報
      */
     private renderDialogContent(context: CanvasRenderingContext2D, layout: DialogLayout, dialogInfo: DialogInfo): void { const DialogClass = dialogInfo.DialogClass,
-        const dialogInstance = new DialogClass(this.gameEngine, this.eventBus, this.state),
-        
+        const dialogInstance = new DialogClass(this.gameEngine, this.eventBus, this.state);
         // ダイアログの個別レンダリング
         dialogInstance.render(context, layout) }
     
@@ -306,12 +303,12 @@ export class ScenesDialogManager {
      * @param context - Canvas描画コンテキスト
      */
     private renderErrorDialog(context: CanvasRenderingContext2D): void { ''
-        const layout = this.calculateDialogLayout(context.canvas),
+        const layout = this.calculateDialogLayout(context.canvas);
         ','
         // エラー背景
         context.fillStyle = '#FF6B6B',
 
-        this.roundRect(context, layout.x, layout.y, layout.width, layout.height, 8),
+        this.roundRect(context, layout.x, layout.y, layout.width, layout.height, 8);
         context.fill('',
         context.fillStyle = '#FFFFFF',
         context.font = '16px, sans-serif',
@@ -332,7 +329,7 @@ export class ScenesDialogManager {
     handleClick(x: number, y: number): boolean { if (!this.isDialogOpen() {
             return false }
         
-        try { const currentDialog = this.getCurrentDialog(),
+        try { const currentDialog = this.getCurrentDialog();
             if (!currentDialog) {
     
 }
@@ -430,9 +427,9 @@ export class ScenesDialogManager {
             const centerX = layout.x + layout.width / 2,
             const centerY = layout.y + layout.height / 2,
             
-            context.save(),
-            context.translate(centerX, centerY),
-            context.scale(scale, scale),
+            context.save();
+            context.translate(centerX, centerY);
+            context.scale(scale, scale);
             context.translate(-centerX, -centerY) }
     }
     
@@ -448,7 +445,7 @@ export class ScenesDialogManager {
                     resolve(); else { requestAnimationFrame(checkComplete) }
             };
             checkComplete();
-        });
+        };
     }
     
     /**
@@ -466,17 +463,17 @@ export class ScenesDialogManager {
         y: number, ;
         width: number );
         height: number,
-    radius: number;
+    radius: number,
     ): void { context.beginPath(
-        context.moveTo(x + radius, y),
-        context.lineTo(x + width - radius, y),
-        context.quadraticCurveTo(x + width, y, x + width, y + radius),
-        context.lineTo(x + width, y + height - radius),
-        context.quadraticCurveTo(x + width, y + height, x + width - radius, y + height),
-        context.lineTo(x + radius, y + height),
-        context.quadraticCurveTo(x, y + height, x, y + height - radius),
-        context.lineTo(x, y + radius),
-        context.quadraticCurveTo(x, y, x + radius, y),
+        context.moveTo(x + radius, y);
+        context.lineTo(x + width - radius, y);
+        context.quadraticCurveTo(x + width, y, x + width, y + radius);
+        context.lineTo(x + width, y + height - radius);
+        context.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
+        context.lineTo(x + radius, y + height);
+        context.quadraticCurveTo(x, y + height, x, y + height - radius);
+        context.lineTo(x, y + radius);
+        context.quadraticCurveTo(x, y, x + radius, y);
         context.closePath() }
     
     /**

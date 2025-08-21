@@ -5,19 +5,19 @@
 
 import { getErrorHandler  } from '../utils/ErrorHandler';
 
-export interface HelpContext { scene: string,
+export interface HelpContext { scene: string;
     component: string;
     action?: string;
     element?: HTMLElement;
      }
 
-export interface HelpContent { title: string,
+export interface HelpContent { title: string;
     description: string;
     tips?: string[];
     links?: Array<{ text: string,, url: string;>;
 }
 
-export interface HelpManagerConfig { enabled: boolean,
+export interface HelpManagerConfig { enabled: boolean;
     showTips: boolean;
     autoShow: boolean;
     delay: number;
@@ -27,24 +27,24 @@ export interface HelpManagerConfig { enabled: boolean,
 export class ContextualHelpManager {
     private config: HelpManagerConfig;
     private currentContext: HelpContext | null = null;
-    private, helpContent: Map<string, HelpContent> = new Map(),
+    private, helpContent: Map<string, HelpContent> = new Map();
     private helpElement: HTMLElement | null = null;
     private, showTimer: NodeJS.Timeout | null = null','
 
     constructor(config: Partial<HelpManagerConfig> = {)) {
         this.config = {
-            enabled: true,
-            showTips: true,
-    autoShow: false,
-            delay: 1000,
-            position: 'bottom',
+            enabled: true;
+            showTips: true;
+    autoShow: false;
+            delay: 1000;
+            position: 'bottom';
             ...config,
 
         this.initialize()
 }
 ';'
 
-    private initialize(): void { this.loadHelpContent(),
+    private initialize(): void { this.loadHelpContent();
         this.setupEventListeners()','
         console.log('ContextualHelpManager, initialized') }'
 
@@ -53,7 +53,8 @@ export class ContextualHelpManager {
             title: 'バブル操作',';'
             description: 'バブルをクリックして割ります',')';
             tips: ['同じ色のバブルを連続で割るとボーナス', 'スペシャルバブルは特別な効果があります]');
-
+            tips: ['同じ色のバブルを連続で割るとボーナス', 'スペシャルバブルは特別な効果があります]');
+        };
         this.helpContent.set('game.settings', {''
             title: '設定画面',';'
             description: 'ゲームの設定を変更できます',')';
@@ -85,13 +86,13 @@ export class ContextualHelpManager {
     }
 
     private handleMouseOut(event: MouseEvent): void { if (this.showTimer) {
-            clearTimeout(this.showTimer),
+            clearTimeout(this.showTimer);
             this.showTimer = null }
         
         this.hideHelp();
     }
 
-    showHelp(contentKey: string, element?: HTMLElement): void { const content = this.helpContent.get(contentKey),
+    showHelp(contentKey: string, element?: HTMLElement): void { const content = this.helpContent.get(contentKey);
         if (!content) return,
 
         this.hideHelp()','
@@ -116,9 +117,8 @@ export class ContextualHelpManager {
 
     private positionHelp(targetElement: HTMLElement): void { if (!this.helpElement) return,
 
-        const rect = targetElement.getBoundingClientRect(),
-        const helpRect = this.helpElement.getBoundingClientRect(),
-
+        const rect = targetElement.getBoundingClientRect();
+        const helpRect = this.helpElement.getBoundingClientRect();
         let top = 0,
         let left = 0,
 
@@ -153,7 +153,7 @@ export class ContextualHelpManager {
     }
 
     hideHelp(): void { if (this.helpElement) {
-            this.helpElement.remove(),
+            this.helpElement.remove();
             this.helpElement = null }
     }
 
@@ -164,7 +164,7 @@ export class ContextualHelpManager {
     updateConfig(newConfig: Partial<HelpManagerConfig>): void {
         this.config = { ...this.config, ...newConfig }
 
-    destroy(): void { this.hideHelp(),
+    destroy(): void { this.hideHelp();
         if (this.showTimer) {', ' }
 
             clearTimeout(this.showTimer); }

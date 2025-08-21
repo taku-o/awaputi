@@ -8,7 +8,7 @@ type BackgroundEffectType = 'particles' | 'rain' | 'snow' | 'fog' | 'stars' | 'c
 /**
  * Background effect options interface
  */
-interface BackgroundEffectOptions { density: number,
+interface BackgroundEffectOptions { density: number;
     speed: number;
     color: string;
     size: number;
@@ -17,7 +17,7 @@ interface BackgroundEffectOptions { density: number,
 /**
  * Background effect interface
  */
-interface BackgroundEffect { effectType: BackgroundEffectType,
+interface BackgroundEffect { effectType: BackgroundEffectType;
     enabled: boolean;
     intensity: number;
     options: BackgroundEffectOptions;
@@ -33,7 +33,7 @@ interface ErrorHandler { handleError(error: any, details?: any): void;
  */
 export class BackgroundEffectRenderer {
     private canvas: HTMLCanvasElement;
-    private, errorHandler: ErrorHandler,
+    private, errorHandler: ErrorHandler;
     constructor(canvas: HTMLCanvasElement) {
 
         this.canvas = canvas
@@ -46,33 +46,29 @@ export class BackgroundEffectRenderer {
      * 背景効果をレンダリング
      */
     renderBackgroundEffects(context: CanvasRenderingContext2D, backgroundEffects: BackgroundEffect[]): void { try {
-            backgroundEffects.forEach(effect => { ),
+            backgroundEffects.forEach(effect => { );
                 if (!effect.enabled) return,
 
                 switch(effect.effectType) {
 
                     case 'particles':','
-                        this.renderParticleBackground(context, effect),
-
+                        this.renderParticleBackground(context, effect);
                         break,
                     case 'rain':','
-                        this.renderRainEffect(context, effect),
-
+                        this.renderRainEffect(context, effect);
                         break,
                     case 'snow':','
-                        this.renderSnowEffect(context, effect),
-
+                        this.renderSnowEffect(context, effect);
                         break,
                     case 'fog':','
-                        this.renderFogEffect(context, effect),
-
+                        this.renderFogEffect(context, effect);
                         break,
                     case 'stars': }
                         this.renderStarsEffect(context, effect); }
                         break; }
-});'} catch (error) { this.errorHandler.handleError(error, {)'
+};'} catch (error) { this.errorHandler.handleError(error, {)'
                 context: 'BackgroundEffectRenderer.renderBackgroundEffects'
-            });
+            };
         }
     }
     
@@ -80,10 +76,10 @@ export class BackgroundEffectRenderer {
      * パーティクル背景をレンダリング
      */
     renderParticleBackground(context: CanvasRenderingContext2D, effect: BackgroundEffect): void { try {
-            const particleCount = Math.floor(effect.intensity * effect.options.density * 50),
+            const particleCount = Math.floor(effect.intensity * effect.options.density * 50);
             const time = Date.now() * 0.001,
             
-            context.save(),
+            context.save();
             context.globalAlpha = effect.options.opacity,
             context.fillStyle = effect.options.color,
             
@@ -93,7 +89,7 @@ export class BackgroundEffectRenderer {
                 const y = (i * 78.9 + time * effect.options.speed * 5) % this.canvas.height,
                 const size = effect.options.size * (0.5 + Math.sin(i + time) * 0.5),
                 
-                context.beginPath(),
+                context.beginPath();
                 context.arc(x, y, size, 0, Math.PI * 2) }
                 context.fill(); }
             }
@@ -101,7 +97,7 @@ export class BackgroundEffectRenderer {
 
             context.restore();'} catch (error) { this.errorHandler.handleError(error, {)'
                 context: 'BackgroundEffectRenderer.renderParticleBackground'
-            });
+            };
         }
     }
     
@@ -109,10 +105,10 @@ export class BackgroundEffectRenderer {
      * 雨効果をレンダリング
      */
     renderRainEffect(context: CanvasRenderingContext2D, effect: BackgroundEffect): void { try {
-            const dropCount = Math.floor(effect.intensity * 100),
+            const dropCount = Math.floor(effect.intensity * 100);
             const time = Date.now() * 0.001,
             
-            context.save(),
+            context.save();
             context.globalAlpha = 0.7,
             context.strokeStyle = effect.options.color,
             context.lineWidth = 1,
@@ -123,8 +119,8 @@ export class BackgroundEffectRenderer {
                 const y = (i * 41.7 + time * effect.options.speed * 300) % (this.canvas.height + 100),
                 const length = 10 + Math.sin(i) * 5,
                 
-                context.beginPath(),
-                context.moveTo(x, y),
+                context.beginPath();
+                context.moveTo(x, y);
                 context.lineTo(x - length * 0.3, y + length) }
                 context.stroke(); }
             }
@@ -132,7 +128,7 @@ export class BackgroundEffectRenderer {
 
             context.restore();'} catch (error) { this.errorHandler.handleError(error, {)'
                 context: 'BackgroundEffectRenderer.renderRainEffect'
-            });
+            };
         }
     }
     
@@ -140,10 +136,10 @@ export class BackgroundEffectRenderer {
      * 雪効果をレンダリング
      */
     renderSnowEffect(context: CanvasRenderingContext2D, effect: BackgroundEffect): void { try {
-            const flakeCount = Math.floor(effect.intensity * 50),
+            const flakeCount = Math.floor(effect.intensity * 50);
             const time = Date.now() * 0.001,
             
-            context.save(),
+            context.save();
             context.globalAlpha = 0.8,
             context.fillStyle = effect.options.color,
             
@@ -153,7 +149,7 @@ export class BackgroundEffectRenderer {
                 const y = (i * 67.1 + time * effect.options.speed * 50) % (this.canvas.height + 20),
                 const size = 2 + Math.sin(i) * 2,
                 
-                context.beginPath(),
+                context.beginPath();
                 context.arc(x, y, size, 0, Math.PI * 2) }
                 context.fill(); }
             }
@@ -170,18 +166,18 @@ export class BackgroundEffectRenderer {
      */'
     renderFogEffect(context: CanvasRenderingContext2D, effect: BackgroundEffect): void { try {'
             context.save('',
-            context.globalCompositeOperation = 'multiply'),
+            context.globalCompositeOperation = 'multiply');
             // 簡単な霧効果)
-            const gradient = context.createLinearGradient(0, 0, this.canvas.width, this.canvas.height),
+            const gradient = context.createLinearGradient(0, 0, this.canvas.width, this.canvas.height);
             gradient.addColorStop(0, `rgba(200, 200, 200, ${effect.intensity * 0.1)`),
             gradient.addColorStop(0.5, `rgba(200, 200, 200, ${effect.intensity * 0.3)`),
             gradient.addColorStop(1, `rgba(200, 200, 200, ${effect.intensity * 0.1)`};
             
             context.fillStyle = gradient;
             context.fillRect(0, 0, this.canvas.width, this.canvas.height}
-            context.restore(});'} catch (error) { this.errorHandler.handleError(error, {)'
+            context.restore(};'} catch (error) { this.errorHandler.handleError(error, {)'
                 context: 'BackgroundEffectRenderer.renderFogEffect'
-            });
+            };
         }
     }
     
@@ -189,10 +185,10 @@ export class BackgroundEffectRenderer {
      * 星効果をレンダリング
      */
     renderStarsEffect(context: CanvasRenderingContext2D, effect: BackgroundEffect): void { try {
-            const starCount = Math.floor(effect.intensity * 100),
+            const starCount = Math.floor(effect.intensity * 100);
             const time = Date.now() * 0.001,
             
-            context.save(),
+            context.save();
             context.fillStyle = effect.options.color,
             
             for(let, i = 0, i < starCount, i++) {
@@ -203,7 +199,7 @@ export class BackgroundEffectRenderer {
                 const size = effect.options.size * twinkle,
                 
                 context.globalAlpha = effect.options.opacity * twinkle,
-                context.beginPath(),
+                context.beginPath();
                 context.arc(x, y, size, 0, Math.PI * 2) }
                 context.fill(); }
             }

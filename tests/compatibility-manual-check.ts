@@ -17,8 +17,7 @@ console.log('-'.repeat(50)');'
 try {
     // Constructor parameters check
     console.log('Constructor signature: ',
-    console.log('  AudioAccessibilitySupport(audioManager ✓'),
-    
+    console.log('  AudioAccessibilitySupport(audioManager ✓');
     // Expected public methods
     const audioAccessibilityMethods = [
         'initialize',
@@ -46,7 +45,7 @@ try {
     ],
     
     console.log('\nExpected public methods: ',
-    audioAccessibilityMethods.forEach(method => {),
+    audioAccessibilityMethods.forEach(method => {);
         console.log(`  ✓ ${method)()`});
     }');'
     
@@ -67,7 +66,7 @@ try {
     ];
     
     console.log('\nExpected properties: ',
-    audioAccessibilityProperties.forEach(prop => {),
+    audioAccessibilityProperties.forEach(prop => {);
         console.log(`  ✓ ${prop)`});
     }');'
     
@@ -99,7 +98,7 @@ try {
     ],
     
     console.log('\nExpected public methods: ',
-    visualFocusMethods.forEach(method => {),
+    visualFocusMethods.forEach(method => {);
         console.log(`  ✓ ${method)()`});
     }');'
     
@@ -119,7 +118,7 @@ try {
     ];
     
     console.log('\nExpected properties: ',
-    visualFocusProperties.forEach(prop => {),
+    visualFocusProperties.forEach(prop => {);
         console.log(`  ✓ ${prop)`});
     }');'
     
@@ -136,8 +135,7 @@ console.log('-'.repeat(50)');'
 try {
     // Constructor parameters check
     console.log('Constructor signature: ',
-    console.log('  VisualFeedbackManager(audioAccessibilityManager ✓'),
-    
+    console.log('  VisualFeedbackManager(audioAccessibilityManager ✓');
     // Expected public methods
     const visualFeedbackMethods = [
         'initialize',
@@ -160,7 +158,7 @@ try {
     ],
     
     console.log('\nExpected public methods: ',
-    visualFeedbackMethods.forEach(method => {),
+    visualFeedbackMethods.forEach(method => {);
         console.log(`  ✓ ${method)()`});
     }');'
     
@@ -183,7 +181,7 @@ try {
     ];
     
     console.log('\nExpected properties: ',
-    visualFeedbackProperties.forEach(prop => {),
+    visualFeedbackProperties.forEach(prop => {);
         console.log(`  ✓ ${prop)`});
     }');'
     

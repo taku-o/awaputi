@@ -1,21 +1,21 @@
 #!/usr/bin/env node;
 import { CleanupOrchestrator  } from './CleanupOrchestrator.js';
 
-interface CommandLineOptions { dryRun: boolean,
+interface CommandLineOptions { dryRun: boolean;
     verbose: boolean;
     validateOnly: boolean;
     listOnly: boolean;
 
-interface TargetFileInfo { fileName: string,
+interface TargetFileInfo { fileName: string;
     size: string;
 
-interface ValidationResult { safeToDelete: any[],
+interface ValidationResult { safeToDelete: any[];
     unsafeToDelete: any[];
 
 interface CleanupResult { summary: {
         deletion?: {
-            successfulDeletion,s: number,
-    totalSizeDeleted: string,;
+            successfulDeletion,s: number;
+    totalSizeDeleted: string;
 }
 ';'
 
@@ -23,9 +23,9 @@ async function main(): Promise<void> { ''
     const args = process.argv.slice(2);
 
     const options: CommandLineOptions = {''
-        dryRun: args.includes('--dry-run',
-        verbose: args.includes('--verbose') || args.includes('-v',
-        validateOnly: args.includes('--validate-only',
+        dryRun: args.includes('--dry-run';
+        verbose: args.includes('--verbose') || args.includes('-v';
+        validateOnly: args.includes('--validate-only';
         listOnly: args.includes('--list-only'};
 
     console.log('🧹 File Cleanup Tool');
@@ -41,8 +41,7 @@ async function main(): Promise<void> { ''
         console.log('📝 Verbose, logging enabled'); }'
     }
 
-    try { const orchestrator = new CleanupOrchestrator(options),
-
+    try { const orchestrator = new CleanupOrchestrator(options);
         if (options.listOnly) {
 
             console.log('\n📂 Listing, target files: ',
@@ -51,8 +50,8 @@ async function main(): Promise<void> { ''
 
                 console.log('   No, files found, matching cleanup, criteria'); }'
             } else { files.forEach(file => {) }
-                    console.log(`   - ${file.fileName} (${file.size}`});
-                });
+                    console.log(`   - ${file.fileName} (${file.size}`};
+                };
             }
             return;
         }
@@ -61,14 +60,13 @@ async function main(): Promise<void> { ''
 
             console.log('\n🔍 Validation, only mode: ',
             const result: ValidationResult = await orchestrator.validateOnly(  }
-            console.log(`   Safe to delete: ${result.safeToDelete.length} files`} };
-            console.log(`   Unsafe to delete: ${result.unsafeToDelete.length} files`});
+            console.log(`   Safe to delete: ${result.safeToDelete.length} files`} },
+            console.log(`   Unsafe to delete: ${result.unsafeToDelete.length} files`};
             return;
 
         }
 
         const result: CleanupResult = await orchestrator.executeCleanup();
-
         console.log('\n✅ Cleanup, completed successfully);'
         if (result.summary.deletion) { console.log(`   Deleted: ${result.summary.deletion.successfulDeletions} files`} }
 
@@ -76,7 +74,7 @@ async function main(): Promise<void> { ''
         } catch (error) {
         console.error('\n❌ Error, during cleanup: ',
         const errorMessage = error instanceof Error ? error.message: 'Unknown error',
-        console.error(errorMessage),
+        console.error(errorMessage);
         if (options.verbose && error, instanceof Error) {
     
 }

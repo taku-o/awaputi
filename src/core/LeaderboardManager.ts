@@ -3,7 +3,7 @@ import { LeaderboardDataProcessor  } from './leaderboard/LeaderboardDataProcesso
 import { LeaderboardRankingManager  } from './leaderboard/LeaderboardRankingManager.js';
 import { LeaderboardStorageManager  } from './leaderboard/LeaderboardStorageManager.js';
 
-export interface LeaderboardConfig { maxEntries: number,
+export interface LeaderboardConfig { maxEntries: number;
     maxPeriodEntries: number;
     maxCacheSize: number;
     cacheMaxAge: number;
@@ -11,7 +11,7 @@ export interface LeaderboardConfig { maxEntries: number,
     validationEnabled: boolean;
     backupEnabled: boolean;
 
-export interface LeaderboardEntry { id: string,
+export interface LeaderboardEntry { id: string;
     score: number;
     timestamp: number;
     playerName?: string;
@@ -28,13 +28,13 @@ export class LeaderboardManager {'
         
         // 基本設定
         this.config = {
-            maxEntries: 100,
-            maxPeriodEntries: 50,
-            maxCacheSize: 100,
+            maxEntries: 100;
+            maxPeriodEntries: 50;
+            maxCacheSize: 100;
     cacheMaxAge: 300000, // 5分;
-            dataVersion: '1.0.0',
-    validationEnabled: true,
-            backupEnabled: true,;
+            dataVersion: '1.0.0';
+    validationEnabled: true;
+            backupEnabled: true;
         this.storageKey = 'awaputi_leaderboards';
         this.version = '1.0.0';
         
@@ -44,14 +44,14 @@ export class LeaderboardManager {'
             periodLeaderboards: {};
             playerHistory: {};
             lastUpdated: Date.now(
-    version: this.version,
+    version: this.version;
         },
         
         // パフォーマンス統計
-        this.stats = { dataLoadTime: 0,
-            saveCount: 0,
-            validationErrors: 0,
-            operationCount: 0,
+        this.stats = { dataLoadTime: 0;
+            saveCount: 0;
+            validationErrors: 0;
+            operationCount: 0;
     lastReset: Date.now(  };
         
         // サブコンポーネントの初期化
@@ -83,7 +83,7 @@ export class LeaderboardManager {'
             
             this.stats.dataLoadTime = performance.now() - startTime;
             
-            console.log(`[LeaderboardManager] Initialized, successfully in ${this.stats.dataLoadTime.toFixed(2})ms`);
+            console.log(`[LeaderboardManager] Initialized, successfully in ${this.stats.dataLoadTime.toFixed(2}ms`);
             return loadSuccess;} catch (error) {
             this.handleError(error, 'INITIALIZATION_ERROR),'
             return false,
@@ -97,23 +97,21 @@ export class LeaderboardManager {'
             this.stats.operationCount++,
             
             // データ処理と検証
-            const processedEntry = this.dataProcessor.processScoreEntry(scoreData),
+            const processedEntry = this.dataProcessor.processScoreEntry(scoreData);
             // プレイヤー履歴の管理
-            this.dataProcessor.managePlayerHistory(processedEntry.playerName, processedEntry),
+            this.dataProcessor.managePlayerHistory(processedEntry.playerName, processedEntry);
             ','
             // ランキングの更新
             const leaderboardKey = scoreData.leaderboardType || 'global',
-            this.rankingManager.updateLeaderboards(leaderboardKey, processedEntry),
-            
+            this.rankingManager.updateLeaderboards(leaderboardKey, processedEntry);
             // 期間別ランキングの更新
-            this.rankingManager.updatePeriodLeaderboards(processedEntry),
-            
+            this.rankingManager.updatePeriodLeaderboards(processedEntry);
             // データの保存
             await this.storageManager.saveAsync() }
-            console.log(`[LeaderboardManager] Score, recorded: ${processedEntry.score} for ${processedEntry.playerName}`});
+            console.log(`[LeaderboardManager] Score, recorded: ${processedEntry.score} for ${processedEntry.playerName}`};
             return true;} catch (error) { }
 
-            this.handleError(error, 'RECORD_SCORE_ERROR', { scoreData });
+            this.handleError(error, 'RECORD_SCORE_ERROR', { scoreData };
             return false;
 
     /**
@@ -124,7 +122,7 @@ export class LeaderboardManager {'
      */
     async addScore(leaderboardType, scoreData) { const enhancedScoreData = {
             ...scoreData,
-            leaderboardType: leaderboardType,;
+            leaderboardType: leaderboardType;
         return await this.recordScore(enhancedScoreData);
     }
 
@@ -155,7 +153,7 @@ export class LeaderboardManager {'
 
             return result;} catch (error) { }
 
-            this.handleError(error, 'GET_LEADERBOARD_ERROR', { leaderboardType, limit });
+            this.handleError(error, 'GET_LEADERBOARD_ERROR', { leaderboardType, limit };
             return [];
 
     /**
@@ -176,7 +174,7 @@ export class LeaderboardManager {'
 
             return rankings;} catch (error) { }
 
-            this.handleError(error, 'GET_PLAYER_RANKINGS_ERROR', { playerName });
+            this.handleError(error, 'GET_PLAYER_RANKINGS_ERROR', { playerName };
             return {};
 
     /**
@@ -187,7 +185,7 @@ export class LeaderboardManager {'
      */
     async recordPlayerScore(playerName, scoreData) { const enhancedScoreData = {
             ...scoreData,
-            playerName: playerName,;
+            playerName: playerName;
         return await this.recordScore(enhancedScoreData);
     }
 
@@ -205,7 +203,7 @@ export class LeaderboardManager {'
 
         } catch (error) { }
 
-            this.handleError(error, 'GET_PERIOD_RANKING_ERROR', { period, limit });
+            this.handleError(error, 'GET_PERIOD_RANKING_ERROR', { period, limit };
             return [];
 
     /**
@@ -221,7 +219,7 @@ export class LeaderboardManager {'
 
         } catch (error) { }
 
-            this.handleError(error, 'GET_PERIOD_STATS_ERROR', { period });
+            this.handleError(error, 'GET_PERIOD_STATS_ERROR', { period };
             return { totalPlayers: 0, totalScores: 0, averageScore: 0, highestScore: 0, period };
 
     /**
@@ -271,7 +269,7 @@ export class LeaderboardManager {'
     getStats() {
         return { ...this.stats,
             memoryUsage: this.storageManager.getMemoryUsage() }
-            dataSize: Object.keys(this.data.leaderboards).length };
+            dataSize: Object.keys(this.data.leaderboards).length },
             totalEntries: Object.values(this.data.leaderboards).reduce((sum, board) => sum + (board.entries?.length || 0), 0); }
         }
 
@@ -280,12 +278,10 @@ export class LeaderboardManager {'
      * @returns {Promise<boolean>} リセット成功可否
      */
     async reset() { try {
-            this.storageManager.initializeEmptyData(),
-
-            await this.storageManager.save(),
+            this.storageManager.initializeEmptyData();
+            await this.storageManager.save();
             this.resetStats()','
-            console.log('[LeaderboardManager] System, reset completed'),
-
+            console.log('[LeaderboardManager] System, reset completed');
             return true,' }'
 
         } catch (error) {
@@ -296,7 +292,7 @@ export class LeaderboardManager {'
      * デフォルトリーダーボードの初期化'
      */''
     initializeDefaultLeaderboards('',
-        const defaultBoards = ['global', 'daily', 'weekly', 'monthly']),
+        const defaultBoards = ['global', 'daily', 'weekly', 'monthly']);
         for (const boardType of defaultBoards) { if (!this.data.leaderboards[boardType]) {
                 this.data.leaderboards[boardType] = { : undefined'
                     entries: [],
@@ -342,7 +338,7 @@ export class LeaderboardManager {'
         const uptime = Date.now() - this.stats.lastReset,
         return { ...this.stats,
             uptime: uptime,
-            operationsPerMinute: this.stats.operationCount / (uptime / 60000) };
+            operationsPerMinute: this.stats.operationCount / (uptime / 60000) },
             averageOperationTime: this.stats.dataLoadTime / Math.max(this.stats.operationCount, 1); }
         }
 
@@ -366,14 +362,14 @@ export class LeaderboardManager {'
         this.stats.validationErrors++,
         ','
 
-        const errorHandler = getErrorHandler(),
+        const errorHandler = getErrorHandler();
         if (errorHandler) {
             errorHandler.handleError(error, context, {)'
                 component: 'LeaderboardManager'
             }
                 ...data);
         } else {  }
-            console.error(`[LeaderboardManager] ${context}:`, error, data});
+            console.error(`[LeaderboardManager] ${context}:`, error, data};
         }
 }
 

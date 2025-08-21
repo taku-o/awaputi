@@ -3,56 +3,56 @@
  */
 import { jest  } from '@jest/globals';
 // モック用の型定義
-interface MockContext { drawImage: jest.Mock,
+interface MockContext { drawImage: jest.Mock;
     fillText: jest.Mock;
     strokeText: jest.Mock }
     measureText: jest.Mock<{ width: number;>;
-    fillRect: jest.Mock;
-    strokeRect: jest.Mock;
-    beginPath: jest.Mock;
-    moveTo: jest.Mock;
-    lineTo: jest.Mock;
-    quadraticCurveTo: jest.Mock;
-    closePath: jest.Mock;
-    fill: jest.Mock;
-    stroke: jest.Mock;
-    save: jest.Mock;
-    restore: jest.Mock;
-    setTransform: jest.Mock;
-    translate: jest.Mock;
-    rotate: jest.Mock;
-    scale: jest.Mock;
-    clip: jest.Mock;
-    font: string;
-    fillStyle: string;
-    strokeStyle: string;
-    lineWidth: number;
-    textAlign: string;
-    textBaseline: string;
-    shadowColor: string;
-    shadowBlur: number;
-    shadowOffsetX: number;
-    shadowOffsetY: number;
-    imageSmoothingEnabled: boolean;
+    fillRect: jest.Mock,
+    strokeRect: jest.Mock,
+    beginPath: jest.Mock,
+    moveTo: jest.Mock,
+    lineTo: jest.Mock,
+    quadraticCurveTo: jest.Mock,
+    closePath: jest.Mock,
+    fill: jest.Mock,
+    stroke: jest.Mock,
+    save: jest.Mock,
+    restore: jest.Mock,
+    setTransform: jest.Mock,
+    translate: jest.Mock,
+    rotate: jest.Mock,
+    scale: jest.Mock,
+    clip: jest.Mock,
+    font: string,
+    fillStyle: string,
+    strokeStyle: string,
+    lineWidth: number,
+    textAlign: string,
+    textBaseline: string,
+    shadowColor: string,
+    shadowBlur: number,
+    shadowOffsetX: number,
+    shadowOffsetY: number,
+    imageSmoothingEnabled: boolean,
     imageSmoothingQuality: string,
-    textRenderingOptimization: string;
+    textRenderingOptimization: string,
 }
-interface MockCanvas { width: number,
+interface MockCanvas { width: number;
     height: number;
     getContext: jest.Mock<MockContext>;
     remove: jest.Mock  }
 interface MockGameEngine {
     canvas: MockCanvas;
-interface ScoreData { score: number,
+interface ScoreData { score: number;
     combo?: number;
     accuracy?: number;
     stage?: string;
-interface AchievementData { name: string,
+interface AchievementData { name: string;
     description?: string;
     rarity?: string;
-interface CustomElement { type: string,
+interface CustomElement { type: string;
     text?: string;
-    position: { x: number,, y: number,
+    position: { x: number,, y: number;
     style?: { fontSize?: number,
         textColor?: string;
 interface OverlayData { elements: CustomElement[];
@@ -60,23 +60,23 @@ interface OverlayOptions { score?: {
         fontSiz,e?: number;
         textColor?: string;
         backgroundColor?: string;
-interface OverlayStats { overlaysCreated: number,
+interface OverlayStats { overlaysCreated: number;
     errors: number;
     successRate: number;
     averageTimeMs: number;
 interface ResponsiveConfig { score: {
-        fontSiz,e: number,;
-    logo: { fontSize: number,;
-    layout: { scorePosition: string,
+        fontSiz,e: number;
+    logo: { fontSize: number;
+    layout: { scorePosition: string;
         logoPosition?: string;
 interface PresetConfig { logo?: {
-        enable,d: boolean,
+        enable,d: boolean;
         textColor?: string;;
-    watermark?: { enabled: boolean,;
+    watermark?: { enabled: boolean;
     score?: { borderWidth?: number,
         backgroundColor?: string;
         fontSize?: number;
-interface ScreenshotOverlay { gameEngine: MockGameEngine,
+interface ScreenshotOverlay { gameEngine: MockGameEngine;
     config: any;
     stats: any;
     cache: {
@@ -94,17 +94,17 @@ interface ScreenshotOverlay { gameEngine: MockGameEngine,
     updateConfig: (newConfig: any) => void;
     clearCache: () => void;
     getStats: () => OverlayStats }''
-describe('ScreenshotOverlay', () => {  let screenshotOverlay: ScreenshotOverlay,
-    let mockGameEngine: MockGameEngine,
-    let mockCanvas: MockCanvas,
-    let mockContext: MockContext,
+describe('ScreenshotOverlay', () => {  let screenshotOverlay: ScreenshotOverlay;
+    let mockGameEngine: MockGameEngine;
+    let mockCanvas: MockCanvas;
+    let mockContext: MockContext;
     beforeEach(async () => {
         // Canvas Context APIのモック
         mockContext = {
             drawImage: jest.fn(
     fillText: jest.fn() }
             strokeText: jest.fn() }
-            measureText: jest.fn<{ width: number;>().mockReturnValue({ width: 100 });
+            measureText: jest.fn<{ width: number;>().mockReturnValue({ width: 100 };
             fillRect: jest.fn();
             strokeRect: jest.fn();
             beginPath: jest.fn();
@@ -120,26 +120,26 @@ describe('ScreenshotOverlay', () => {  let screenshotOverlay: ScreenshotOverlay,
             translate: jest.fn();
             rotate: jest.fn(
     scale: jest.fn(
-            clip: jest.fn('',
-    font: '16px Arial',
-            fillStyle: '#000000',
-            strokeStyle: '#000000',
-            lineWidth: 1,
-            textAlign: 'left',
-            textBaseline: 'top',
+            clip: jest.fn('';
+    font: '16px Arial';
+            fillStyle: '#000000';
+            strokeStyle: '#000000';
+            lineWidth: 1;
+            textAlign: 'left';
+            textBaseline: 'top';
             shadowColor: 'transparent';
             shadowBlur: 0;
-            shadowOffsetX: 0,
-    shadowOffsetY: 0,
-            imageSmoothingEnabled: true,
-            imageSmoothingQuality: 'high',
+            shadowOffsetX: 0;
+    shadowOffsetY: 0;
+            imageSmoothingEnabled: true;
+            imageSmoothingQuality: 'high';
             textRenderingOptimization: 'optimizeQuality';
         },
         
         // Canvas APIのモック)
         mockCanvas = { width: 800)
-           , height: 600),
-            getContext: jest.fn<MockContext>().mockReturnValue(mockContext),
+           , height: 600);
+            getContext: jest.fn<MockContext>().mockReturnValue(mockContext);
         remove: jest.fn(  };
         // document.createElement のモック
         document.createElement = jest.fn().mockImplementation((tagName: string) => { }'
@@ -153,15 +153,15 @@ describe('ScreenshotOverlay', () => {  let screenshotOverlay: ScreenshotOverlay,
 
         const { ScreenshotOverlay } = await import('../core/ScreenshotOverlay.ts);'
         screenshotOverlay = new ScreenshotOverlay(mockGameEngine);
-    });
+    };
 
     afterEach(() => { jest.clearAllMocks(),' }'
 
     }');'
     describe('初期化', () => {  ''
         test('正常に初期化される', () => {
-            expect(screenshotOverlay.gameEngine).toBe(mockGameEngine),
-            expect(screenshotOverlay.config).toBeDefined(),
+            expect(screenshotOverlay.gameEngine).toBe(mockGameEngine);
+            expect(screenshotOverlay.config).toBeDefined();
             expect(screenshotOverlay.stats).toBeDefined() }
 
             expect(screenshotOverlay.cache).toBeDefined();' }'
@@ -169,7 +169,7 @@ describe('ScreenshotOverlay', () => {  let screenshotOverlay: ScreenshotOverlay,
         }');'
         test('デフォルト設定が正しく設定される', () => {  ''
             expect(screenshotOverlay.config.layout.scorePosition).toBe('top-right),'
-            expect(screenshotOverlay.config.score.enabled).toBe(true),
+            expect(screenshotOverlay.config.score.enabled).toBe(true);
             expect(screenshotOverlay.config.logo.enabled).toBe(true) }
 
             expect(screenshotOverlay.config.watermark.enabled).toBe(true);' }'
@@ -305,20 +305,20 @@ describe('ScreenshotOverlay', () => {  let screenshotOverlay: ScreenshotOverlay,
     }''
     describe('位置計算', () => {  ''
         test('top-left位置が正しく計算される', () => {''
-            const position = screenshotOverlay.calculatePosition('top-left', 100, 50, 800, 600, 20),
+            const position = screenshotOverlay.calculatePosition('top-left', 100, 50, 800, 600, 20);
             expect(position.x).toBe(20) }
 
             expect(position.y).toBe(20);' }'
 
         }');'
         test('bottom-right位置が正しく計算される', () => {  ''
-            const position = screenshotOverlay.calculatePosition('bottom-right', 100, 50, 800, 600, 20),
+            const position = screenshotOverlay.calculatePosition('bottom-right', 100, 50, 800, 600, 20);
             expect(position.x).toBe(680), // 800 - 100 - 20 }
             expect(position.y).toBe(530); // 600 - 50 - 20' }'
 
         }');'
         test('center位置が正しく計算される', () => {  ''
-            const position = screenshotOverlay.calculatePosition('center', 100, 50, 800, 600, 0),
+            const position = screenshotOverlay.calculatePosition('center', 100, 50, 800, 600, 0);
             expect(position.x).toBe(350), // (800 - 100) / 2 }
             expect(position.y).toBe(275); // (600 - 50) / 2' }'
 
@@ -330,7 +330,7 @@ describe('ScreenshotOverlay', () => {  let screenshotOverlay: ScreenshotOverlay,
 
             expect(position.y).toBe(456);'}');
         test('負の座標が0に調整される', () => {  ''
-            const position = screenshotOverlay.calculatePosition('top-left', 100, 50, 800, 600, -10),
+            const position = screenshotOverlay.calculatePosition('top-left', 100, 50, 800, 600, -10);
             expect(position.x).toBe(0) }
 
             expect(position.y).toBe(0);' }'
@@ -343,8 +343,8 @@ describe('ScreenshotOverlay', () => {  let screenshotOverlay: ScreenshotOverlay,
         test('テキストが正しく折り返される', () => { }
 
             (mockContext.measureText, as jest.Mock<{ width: number;>)
-                .mockReturnValueOnce({ width: 80 })  // "Lorem ipsum"""
-                .mockReturnValueOnce({ width: 120 }) // "Lorem ipsum dolor"""
+                .mockReturnValueOnce({ width: 80 }  // "Lorem ipsum"""
+                .mockReturnValueOnce({ width: 120 } // "Lorem ipsum dolor"""
                 .mockReturnValueOnce({ width: 60 ))  // "dolor"""
                 .mockReturnValueOnce({ width: 90 ))  // "dolor sit"""
                 .mockReturnValueOnce({ width: 40 )), // "sit""
@@ -355,7 +355,7 @@ describe('ScreenshotOverlay', () => {  let screenshotOverlay: ScreenshotOverlay,
         }');'
         test('短いテキストは折り返されない', () => { }
 
-            (mockContext.measureText, as jest.Mock<{ width: number;>).mockReturnValue({ width: 50 });
+            (mockContext.measureText, as jest.Mock<{ width: number;>).mockReturnValue({ width: 50 },
             const wrapped = screenshotOverlay.wrapText(mockContext, 'Short text', 100';'
             expect(wrapped).toEqual(['Short, text]';}');'
         test('数値が正しくフォーマットされる', () => {  ''
@@ -391,7 +391,7 @@ describe('ScreenshotOverlay', () => {  let screenshotOverlay: ScreenshotOverlay,
     describe('プリセット設定', () => {  ''
         test('minimalプリセットが正しく取得される', () => {''
             const preset = screenshotOverlay.getPresetConfig('minimal),'
-            expect(preset.logo?.enabled).toBe(false),
+            expect(preset.logo?.enabled).toBe(false);
             expect(preset.watermark?.enabled).toBe(false) }
 
             expect(preset.score?.borderWidth).toBe(0);' }'
@@ -414,14 +414,14 @@ describe('ScreenshotOverlay', () => {  let screenshotOverlay: ScreenshotOverlay,
         test('存在しないプリセットで空オブジェクトが返される', () => { }
 
             const preset = screenshotOverlay.getPresetConfig('nonexistent'; }'
-            expect(preset).toEqual({});
+            expect(preset).toEqual({};
 
         }'}');
     describe('設定管理', () => {  ''
         test('設定が正しく更新される', () => { }
             const newConfig = { : undefined 
                 score: { fontSize: 30  },''
-                logo: { textColor: '#123456' };
+                logo: { textColor: '#123456' },
             screenshotOverlay.updateConfig(newConfig);
 
             expect(screenshotOverlay.config.score.fontSize).toBe(30);
@@ -429,7 +429,7 @@ describe('ScreenshotOverlay', () => {  let screenshotOverlay: ScreenshotOverlay,
             // 他の設定は保持される
             expect(screenshotOverlay.config.score.enabled).toBe(true);'}');
         test('深いマージが正しく動作する', () => { const newConfig = { }
-                layout: { padding: 30 };
+                layout: { padding: 30 },
             screenshotOverlay.updateConfig(newConfig);
             expect(screenshotOverlay.config.layout.padding).toBe(30);
 
@@ -439,15 +439,15 @@ describe('ScreenshotOverlay', () => {  let screenshotOverlay: ScreenshotOverlay,
     }''
     describe('エラーハンドリング', () => {  ''
         test('スコアデータなしでエラーが適切に処理される', async () => {
-            await expect(screenshotOverlay.createScoreOverlay(mockCanvas, null),
-                .rejects.toThrow(),
+            await expect(screenshotOverlay.createScoreOverlay(mockCanvas, null);
+                .rejects.toThrow();
             const stats = screenshotOverlay.getStats() }
 
             expect(stats.errors).toBe(1);' }'
 
         }');'
-        test('実績データなしでエラーが適切に処理される', async () => {  await expect(screenshotOverlay.createAchievementOverlay(mockCanvas, null),
-                .rejects.toThrow(),
+        test('実績データなしでエラーが適切に処理される', async () => {  await expect(screenshotOverlay.createAchievementOverlay(mockCanvas, null);
+                .rejects.toThrow();
             const stats = screenshotOverlay.getStats() }
 
             expect(stats.errors).toBe(1);' }'
@@ -459,28 +459,28 @@ describe('ScreenshotOverlay', () => {  let screenshotOverlay: ScreenshotOverlay,
 
             )'; }'
 
-            await expect(screenshotOverlay.createScoreOverlay(mockCanvas, { score: 1000 })';'
+            await expect(screenshotOverlay.createScoreOverlay(mockCanvas, { score: 1000 }';'
 
                 .rejects.toThrow('Canvas, error';}');'
 
     }''
     describe('パフォーマンス', () => {  ''
         test('キャッシュがクリアされる', () => {''
-            screenshotOverlay.cache.fonts.set('test', 'value'),
+            screenshotOverlay.cache.fonts.set('test', 'value');
             screenshotOverlay.cache.images.set('test', 'value),'
-            screenshotOverlay.clearCache(),
+            screenshotOverlay.clearCache();
             expect(screenshotOverlay.cache.fonts.size).toBe(0) }
 
             expect(screenshotOverlay.cache.images.size).toBe(0);' }'
 
         }');'
         test('統計が正しく計算される', async () => {  }
-            await screenshotOverlay.createScoreOverlay(mockCanvas, { score: 1000 });
-            await screenshotOverlay.createScoreOverlay(mockCanvas, { score: 2000 });
+            await screenshotOverlay.createScoreOverlay(mockCanvas, { score: 1000 };
+            await screenshotOverlay.createScoreOverlay(mockCanvas, { score: 2000 };
             const stats = screenshotOverlay.getStats();
             expect(stats.overlaysCreated).toBe(2);
             expect(stats.successRate).toBe(100);
             expect(stats.averageTimeMs).toBeGreaterThan(0);
-        });
+        };
 
     }'}');

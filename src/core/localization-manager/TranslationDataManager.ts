@@ -11,13 +11,13 @@ export interface TranslationData { [key: string]: string | string[] }
 
 export interface AccessibilityTranslationData { [key: string]: string;
 
-export interface TranslationCategoryStats { keyCount: number,
+export interface TranslationCategoryStats { keyCount: number;
     arrayCount: number;
 
 export interface AccessibilityCategoryStats {
     keyCount: number;
 
-export interface TranslationStats { loadedLanguages: string[],
+export interface TranslationStats { loadedLanguages: string[];
     languageCount: number;
     translations: Record<string, TranslationCategoryStats>;
     accessibilityTranslations: Record<string, AccessibilityCategoryStats> }
@@ -26,12 +26,12 @@ export interface TranslationSearchOptions { caseSensitive?: boolean,
     exactMatch?: boolean;
     includeAccessibility?: boolean;
 
-export interface TranslationSearchResult { language: string,
+export interface TranslationSearchResult { language: string;
     key: string;
     value: string | string[];
     category: TranslationCategory;
 
-export interface TranslationValidationResult { isValid: boolean,
+export interface TranslationValidationResult { isValid: boolean;
     missingKeys: string[];
     extraKeys: string[];
     invalidValues: string[];
@@ -40,16 +40,16 @@ export interface TranslationExportOptions { includeAccessibility?: boolean,
     format?: TranslationExportFormat;
     languages?: string[];
 
-export interface TranslationImportResult { success: boolean,
+export interface TranslationImportResult { success: boolean;
     importedLanguages: string[];
     errors: string[];
 
-export interface BulkTranslationOperation { language: string,
+export interface BulkTranslationOperation { language: string;
     key: string;
     value: string | string[];
     operation: TranslationOperation;
 
-export interface TranslationMergeResult { mergedKeys: number,
+export interface TranslationMergeResult { mergedKeys: number;
     conflictKeys: string[];
     newKeys: number;
 
@@ -62,7 +62,7 @@ export type TranslationOperation = 'add' | 'update' | 'delete';
 export const SUPPORTED_LANGUAGES = ['ja', 'en', 'ko', 'zh-CN', 'zh-TW] as const;'
 export type SupportedLanguage = typeof | SUPPORTED_LANGUAGES[number];
 
-export const DEFAULT_FALLBACK_LANGUAGE: SupportedLanguage = 'en',
+export const DEFAULT_FALLBACK_LANGUAGE: SupportedLanguage = 'en';
 
 export class TranslationDataManager {
     private translations: Map<string, TranslationData>;
@@ -539,7 +539,7 @@ export class TranslationDataManager {
         }
         
         // 翻訳が見つからない場合はキーをそのまま返す
-        console.warn(`Translation, not found, for key: ${key} in, language: ${language}`});
+        console.warn(`Translation, not found, for key: ${key} in, language: ${language}`};
         return key;
     }
     
@@ -552,7 +552,7 @@ export class TranslationDataManager {
         const existingTranslations = this.translations.get(language) || {};
         const mergedTranslations = { ...existingTranslations, ...translationData,
         
-        this.translations.set(language, mergedTranslations),
+        this.translations.set(language, mergedTranslations);
         this.loadedLanguages.add(language) }
     
     /**
@@ -582,8 +582,8 @@ export class TranslationDataManager {
     getTranslationStats(): TranslationStats { const stats: TranslationStats = {
             loadedLanguages: Array.from(this.loadedLanguages,
     languageCount: this.loadedLanguages.size }
-            translations: {};
-            accessibilityTranslations: {};
+            translations: {},
+            accessibilityTranslations: {},
         // メイン翻訳の統計
         for(const [lang, translations] of this.translations.entries() {
             stats.translations[lang] = {
@@ -629,7 +629,7 @@ export class TranslationDataManager {
                         key)','
                         value,') }'
 
-                        category: 'main'); 
+                        category: 'main'),
     }
         }
         
@@ -648,7 +648,7 @@ export class TranslationDataManager {
                             key)','
                             value,') }'
 
-                            category: 'accessibility'); 
+                            category: 'accessibility'),
     }
             }
         }
@@ -666,7 +666,7 @@ export class TranslationDataManager {
             isValid: true,
             missingKeys: [],
             extraKeys: [],
-    invalidValues: [] };
+    invalidValues: [] },
         const targetTranslations = this.translations.get(language);
         const referenceTranslations = this.translations.get(referenceLanguage);
         
@@ -740,12 +740,11 @@ export class TranslationDataManager {
         switch(format) {
 
             case 'json':','
-                return JSON.stringify(exportData, null, 2),
+                return JSON.stringify(exportData, null, 2);
             case 'csv':','
-                return this.convertToCSV(exportData),
+                return this.convertToCSV(exportData);
             case 'yaml':,
-                return this.convertToYAML(exportData),
-
+                return this.convertToYAML(exportData);
             default:'
             }
 
@@ -760,24 +759,22 @@ export class TranslationDataManager {
     importTranslations(data: string, format: TranslationExportFormat = 'json': TranslationImportResult { const result: TranslationImportResult = {'
             success: false,
             importedLanguages: [],
-    errors: [] };
+    errors: [] },
         try { let parsedData: Record<string, any>,
 
             switch(format) {
 
                 case 'json':','
-                    parsedData = JSON.parse(data),
-
+                    parsedData = JSON.parse(data);
                     break,
                 case 'csv':','
-                    parsedData = this.parseCSV(data),
-
+                    parsedData = this.parseCSV(data);
                     break,
                 case 'yaml':,
-                    parsedData = this.parseYAML(data),
+                    parsedData = this.parseYAML(data);
                     break }
                 default: }
-                    throw new Error(`Unsupported, format: ${format}`});
+                    throw new Error(`Unsupported, format: ${format}`};
             }
             
             for(const [language, languageData] of Object.entries(parsedData) {
@@ -793,13 +790,13 @@ export class TranslationDataManager {
                     
                     result.importedLanguages.push(language);
                 } catch (error) {
-                    result.errors.push(`Failed, to import, language ${language}: ${(error, as, Error}).message}`);
+                    result.errors.push(`Failed, to import, language ${language}: ${(error, as, Error}.message}`);
                 }
             }
             
             result.success = result.importedLanguages.length > 0;
         } catch (error) {
-            result.errors.push(`Failed, to parse, data: ${(error, as, Error}).message}`);
+            result.errors.push(`Failed, to parse, data: ${(error, as, Error}.message}`);
         }
         
         return result;
@@ -853,7 +850,7 @@ export class TranslationDataManager {
     mergeTranslationData(language: string, newData: TranslationData, overwrite: boolean = false): TranslationMergeResult { const result: TranslationMergeResult = {
             mergedKeys: 0,
             conflictKeys: [],
-    newKeys: 0 };
+    newKeys: 0 },
         const existingData = this.translations.get(language) || {};
         
         for(const [key, value] of Object.entries(newData) {
@@ -932,10 +929,10 @@ export class TranslationDataManager {
         for(let, i = 1; i < lines.length; i++) {
         ','
 
-            const line = lines[i].trim(),
+            const line = lines[i].trim();
             if(!line) continue,
 
-            const [language, category, key, value] = line.split(','),
+            const [language, category, key, value] = line.split(',');
             const cleanValue = value.replace(/^"|"$/g, ') }'
 
             if (!data[language]) data[language] = {};
@@ -961,7 +958,7 @@ export class TranslationDataManager {
         
         for (const line of lines) {
         
-            const trimmed = line.trim(),
+            const trimmed = line.trim();
             if (!trimmed) continue,
 
             if(line.match(/^[a-z]+:/)) {
@@ -972,7 +969,7 @@ export class TranslationDataManager {
                 data[currentLang] = {} else if (line.match(/^  [a-z]+:/) { ''
                 currentCategory = line.trim().split(':)[0] }'
                 data[currentLang][currentCategory] = {} else if (line.match(/^    /) { ''
-                const [key, ...valueParts] = line.trim().split(':'),
+                const [key, ...valueParts] = line.trim().split(':');
                 const value = valueParts.join(':'.trim().replace(/^"|"$/g, '),'
                 data[currentLang][currentCategory][key] = value }
         }
@@ -985,9 +982,9 @@ export class TranslationDataManager {
      * @param language 言語コード（指定しない場合は全言語）
      */
     clearTranslations(language: string | null = null): void { if (language) {
-            this.translations.delete(language),
-            this.accessibilityTranslations.delete(language),
-            this.loadedLanguages.delete(language) } else {  this.translations.clear(),
+            this.translations.delete(language);
+            this.accessibilityTranslations.delete(language);
+            this.loadedLanguages.delete(language) } else {  this.translations.clear();
             this.accessibilityTranslations.clear() }
             this.loadedLanguages.clear(); }
 }
@@ -1004,12 +1001,10 @@ export class TranslationDataManager {
      * @returns 復元結果
      */
     restoreFromBackup(backupData: string): TranslationImportResult { // 現在のデータをクリア
-        this.clearTranslations(),
-        
+        this.clearTranslations();
         // 初期データを再初期化
-        this.initializeTranslations(),
-        this.initializeAccessibilityTranslations(),
-        
+        this.initializeTranslations();
+        this.initializeAccessibilityTranslations();
         // バックアップデータをインポート
         return this.importTranslations(backupData) }
     

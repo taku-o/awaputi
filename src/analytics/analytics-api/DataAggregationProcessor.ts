@@ -17,7 +17,7 @@ export class DataAggregationProcessor {
      * @param {Object} options - オプション
      * @returns {Promise<Object>} 集計結果
      */
-    async getAggregatedData(aggregationRules, options: any = {}) {
+    async getAggregatedData(aggregationRules, options: any = {} {
         try {
             const {
                 dataType = 'sessionData',
@@ -43,9 +43,9 @@ export class DataAggregationProcessor {
             
             return this.createSuccessResponse(aggregatedData, {
                 aggregationRules,
-                sourceDataCount: rawData.length,
+                sourceDataCount: rawData.length;
     aggregatedGroupCount: Object.keys(aggregatedData).length 
-    });
+    };
         } catch (error) {
             console.error('Aggregation error:', error','
             return this.createErrorResponse('AGGREGATION_ERROR',,
@@ -58,8 +58,8 @@ export class DataAggregationProcessor {
      * @param {Object} options - オプション
      * @returns {Promise<Object>} 集計結果
      */
-    async getAdvancedAggregatedData(aggregationRules, options: any = {}) {
-        const startTime = performance.now(),
+    async getAdvancedAggregatedData(aggregationRules, options: any = {} {
+        const startTime = performance.now();
         const requestId = this.generateRequestId('',
                 dataTypes = ['sessionData'],
                 multiGroupBy = [] }
@@ -73,13 +73,13 @@ export class DataAggregationProcessor {
             
             // キャッシュチェック)
             if (cacheKey && this.aggregationCache && this.aggregationCache.has(cacheKey) {
-                const cachedResult = this.aggregationCache.get(cacheKey),
+                const cachedResult = this.aggregationCache.get(cacheKey);
                 if (Date.now() - cachedResult.timestamp < 300000) { // 5分間有効
                     return this.createSuccessResponse(cachedResult.data, {
                         cached: true,);
                         requestId }
                         responseTime: performance.now() - startTime 
-    });
+    };
                 }
             }
             
@@ -109,9 +109,9 @@ export class DataAggregationProcessor {
             // キャッシュに保存
             if (cacheKey && this.aggregationCache) {
                 this.aggregationCache.set(cacheKey, {
-                data: finalResult) })
+                data: finalResult) }
                     timestamp: Date.now(); 
-    });
+    };
             }
             
             const responseTime = Math.max(performance.now() - startTime, 0.1);
@@ -119,14 +119,14 @@ export class DataAggregationProcessor {
             return this.createSuccessResponse(finalResult, {
                 requestId
                 responseTime,
-                aggregationRules),
+                aggregationRules);
                 dataTypes,
                 totalGroups: this.countTotalGroups(finalResult,
     cached: false,);
         } catch (error) {
             console.error('Advanced aggregation error:', error','
             return this.createErrorResponse('ADVANCED_AGGREGATION_ERROR' }'
-                error.message, 500, { requestId });
+                error.message, 500, { requestId };
         }
     }
     
@@ -136,8 +136,8 @@ export class DataAggregationProcessor {
      * @param {Object} options - オプション
      * @returns {Promise<Object>} 時系列集計結果
      */
-    async getTimeSeriesAggregation(timeSeriesRules, options: any = {}) {
-        const startTime = performance.now(),
+    async getTimeSeriesAggregation(timeSeriesRules, options: any = {} {
+        const startTime = performance.now();
         const requestId = this.generateRequestId('',
                 dataType = 'sessionData',
                 timeField = 'timestamp',
@@ -157,24 +157,23 @@ export class DataAggregationProcessor {
             return this.createSuccessResponse([], {}
                     message: 'No data found for time series aggregation');
                     requestId,
-                    responseTime: Math.max(performance.now() - startTime, 0.1 });
+                    responseTime: Math.max(performance.now() - startTime, 0.1 };
             }
             
             // 時系列集計の実行
             const timeSeriesResult = this.performTimeSeriesAggregation(rawData, {
                 timeField
                 interval,
-                aggregateBy),
+                aggregateBy);
                 fillGaps,
                 startDate: new Date(startDate).getTime(
-    endDate: new Date(endDate).getTime(  });
-            
+    endDate: new Date(endDate).getTime(  };
             const responseTime = Math.max(performance.now() - startTime, 0.1);
             
             return this.createSuccessResponse(timeSeriesResult, { requestId,
                 responseTime,
                 timeSeriesRules,
-                interval),
+                interval);
                 dataPoints: timeSeriesResult.length),
             '
             }'
@@ -219,7 +218,7 @@ export class DataAggregationProcessor {
             return summary;
 
         } catch (error) {
-            console.error('Stats summary error:', error),
+            console.error('Stats summary error:', error);
             throw error }
     }
     
@@ -293,8 +292,7 @@ export class DataAggregationProcessor {
     };
         for(const [field, operations] of Object.entries(aggregateBy) {
         
-            const values = groupData.map(item => item[field]).filter(val => val != null),
-
+            const values = groupData.map(item => item[field]).filter(val => val != null);
             if(values.length === 0) continue,
 
             ','
@@ -340,7 +338,7 @@ export class DataAggregationProcessor {
         
         // 期間設定の処理
         if (period) {
-            const now = Date.now(),
+            const now = Date.now();
             switch(period) {''
                 case 'last24h': ,
                     query.startDate = now - 24 * 60 * 60 * 1000,
@@ -409,7 +407,7 @@ export class DataAggregationProcessor {
         return { totalInteractions: interactions.length,
             totalScore,
             averageReactionTime: reactionTimes.reduce((sum, rt) => sum + rt, 0) / reactionTimes.length || 0 };
-            bubbleTypeStats: bubbleTypes;
+            bubbleTypeStats: bubbleTypes,
     
     /**
      * パフォーマンス統計の計算
@@ -426,15 +424,14 @@ export class DataAggregationProcessor {
             totalRecords: performanceData.length,
     averageFPS: fpsValues.reduce((sum, fps) => sum + fps, 0) / fpsValues.length || 0,
             minFPS: fpsValues.length > 0 ? Math.min(...fpsValues) : 0,
-            maxFPS: fpsValues.length > 0 ? Math.max(...fpsValues) : 0 };
+            maxFPS: fpsValues.length > 0 ? Math.max(...fpsValues) : 0 },
             averageMemoryUsage: memoryValues.reduce((sum, mem) => sum + mem, 0) / memoryValues.length || 0 }
         }
     
     // 詳細な処理メソッド（元のコードから移植）
     async performAdvancedAggregation(dataType, rules) { // 高度集計実装（元の performAdvancedAggregation メソッド）
-        const query = this.buildAggregationQuery(rules.filters, rules.period),
-        const rawData = await this.storageManager.getData(dataType, query),
-        
+        const query = this.buildAggregationQuery(rules.filters, rules.period);
+        const rawData = await this.storageManager.getData(dataType, query);
         if (!Array.isArray(rawData) || rawData.length === 0) { }
             return { groups: {}, metadata: { totalRecords: 0 
     }
@@ -448,7 +445,7 @@ export class DataAggregationProcessor {
         return { groups: aggregatedResult,
             metadata: {
                 totalRecords: rawData.length,
-    processedRecords: rawData.length };
+    processedRecords: rawData.length },
                 groupCount: Object.keys(aggregatedResult).length 
     }
     
@@ -475,14 +472,13 @@ export class DataAggregationProcessor {
         for (const timeKey of sortedTimeKeys) {
         
             const groupData = timeGroups[timeKey],
-            const aggregated = this.aggregateGroup(groupData, aggregateBy),
-            
+            const aggregated = this.aggregateGroup(groupData, aggregateBy);
             result.push({)
                 timestamp: timeKey,
     datetime: new Date(timeKey).toISOString(),
                 interval }
                 ...aggregated
-            });
+            };
         }
         
         return result;
@@ -514,11 +510,11 @@ export class DataAggregationProcessor {
         return intervals[interval] || intervals['hour'];
     }
     
-    consolidateAggregationResults(aggregatedResults, options: any = {}) {
+    consolidateAggregationResults(aggregatedResults, options: any = {} {
     
 }
-        return { summary: this.createAggregationSummary(aggregatedResults) };
-            details: aggregatedResults;
+        return { summary: this.createAggregationSummary(aggregatedResults) },
+            details: aggregatedResults,
     
     createAggregationSummary(aggregatedResults) {
     
@@ -549,7 +545,7 @@ export class DataAggregationProcessor {
     generateRequestId() {
     
 }
-        return `agg_${Date.now())_${Math.random().toString(36).substr(2, 9})`;
+        return `agg_${Date.now())_${Math.random().toString(36).substr(2, 9}`;
     }
     
     createSuccessResponse(data, metadata = { ) {
@@ -560,7 +556,7 @@ export class DataAggregationProcessor {
             metadata: {
     
 }
-                timestamp: new Date().toISOString() };
+                timestamp: new Date().toISOString() },
                 ...metadata
             }
         }

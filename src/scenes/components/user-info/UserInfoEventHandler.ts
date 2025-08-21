@@ -8,52 +8,52 @@ import { GameEngine  } from '../../../types/gameEngine';
 import { EventBus  } from '../../../types/eventBus';
 
 // イベント関連の型定義
-interface DialogData { type: string,
+interface DialogData { type: string;
     [key: string]: any;
 
-interface ErrorData { message: string,
+interface ErrorData { message: string;
     error?: Error;
 
-interface TabData { tabId: string,
+interface TabData { tabId: string;
     previousTabId?: string;
 
-interface EventCoordinates { x: number,
+interface EventCoordinates { x: number;
     y: number;
 
-interface BackButton { x: number,
+interface BackButton { x: number;
     y: number;
     width: number;
     height: number;
 
-interface HitArea { x: number,
+interface HitArea { x: number;
     y: number;
     width: number;
     height: number;
     id: string;
 
-interface HitAreas { tabs: HitArea[],
+interface HitAreas { tabs: HitArea[];
     buttons?: HitArea[];
 
-interface Layout { contentPadding: number,
+interface Layout { contentPadding: number;
     headerHeight: number;
     tabHeight: number;
     [key: string]: any;
 
 // シーン状態のインターフェース
-interface SceneState { get(key: string): any,
+interface SceneState { get(key: string): any;
     set(key: string, value: any): void;
 
 // コンポーネントインターフェース
-interface TabManager { switchTab(tabId: string): void,
+interface TabManager { switchTab(tabId: string): void;
     handleTabContentClick(x: number, y: number, contentX: number, contentY: number, contentWidth: number, contentHeight: number): boolean;
 
 interface ProfileManager { handleClick?(x: number, y: number): boolean 
 interface HelpSystem { handleClick(x: number, y: number, canvas: HTMLCanvasElement): boolean;
 
-interface DialogManager { handleClick(x: number, y: number): boolean,
+interface DialogManager { handleClick(x: number, y: number): boolean;
     handleKeyboard(event: KeyboardEvent): boolean;
 
-interface Renderer { calculateHitAreas(canvas: HTMLCanvasElement, tabManager: TabManager): HitAreas,
+interface Renderer { calculateHitAreas(canvas: HTMLCanvasElement, tabManager: TabManager): HitAreas;
     calculateLayout(canvas: HTMLCanvasElement): Layout;
 
 export class UserInfoEventHandler {
@@ -63,7 +63,7 @@ export class UserInfoEventHandler {
     // イベント処理状態
     private lastClickTime: number = 0;
     private lastKeyTime: number = 0;
-    private readonly, debounceDelay: number = 200,
+    private readonly, debounceDelay: number = 200;
     
     constructor(gameEngine: GameEngine, eventBus: EventBus | null, sceneState: SceneState) {
     
@@ -107,14 +107,14 @@ export class UserInfoEventHandler {
         this.eventBus.on('tab-changed', (data: TabData) => { }
 
             console.log('Tab changed to:', data.tabId); }
-        });
+        };
     }
     
     /**
      * メインの入力処理
      */
     public handleInput(;
-        event: Event;
+        event: Event,
         tabManager?: TabManager;
         profileManager?: ProfileManager;
         helpSystem?: HelpSystem
@@ -135,11 +135,9 @@ export class UserInfoEventHandler {
                 case 'click':','
                 case 'mousedown':','
                 case 'touchstart':','
-                    return this.handleClickInput(event as MouseEvent | TouchEvent, tabManager, helpSystem, renderer, canvas),
-
+                    return this.handleClickInput(event as MouseEvent | TouchEvent, tabManager, helpSystem, renderer, canvas);
                 case 'keydown':','
-                    return this.handleKeyboardInput(event as KeyboardEvent, dialogManager),
-
+                    return this.handleKeyboardInput(event as KeyboardEvent, dialogManager);
                 case 'mousemove':','
                 case 'touchmove':,
                     return this.handleMouseMove(event as MouseEvent | TouchEvent, canvas) }
@@ -162,11 +160,10 @@ export class UserInfoEventHandler {
             case 'click':','
             case 'mousedown':','
             case 'touchstart':','
-                return dialogManager.handleClick(x, y),
-
+                return dialogManager.handleClick(x, y);
             case 'keydown':,
                 return dialogManager.handleKeyboard(event, as KeyboardEvent) }
-            default: return false;
+            default: return false,
     
     /**
      * クリック入力の処理
@@ -178,7 +175,7 @@ export class UserInfoEventHandler {
     );
         renderer?: Renderer);
         canvas?: HTMLCanvasElement;
-    ): boolean { const now = Date.now(),
+    ): boolean { const now = Date.now();
         if (now - this.lastClickTime < this.debounceDelay) {
     
 }
@@ -206,7 +203,7 @@ export class UserInfoEventHandler {
     /**
      * キーボード入力の処理
      */
-    private handleKeyboardInput(event: KeyboardEvent, dialogManager?: DialogManager): boolean { const now = Date.now(),
+    private handleKeyboardInput(event: KeyboardEvent, dialogManager?: DialogManager): boolean { const now = Date.now();
         if (now - this.lastKeyTime < this.debounceDelay) {
     
 }
@@ -225,11 +222,11 @@ export class UserInfoEventHandler {
             case '3':','
             case '4':','
             case '5':','
-            case '6':),
+            case '6':);
                 const tabIndex = parseInt(event.key) - 1,
-                this.handleTabShortcut(tabIndex),
+                this.handleTabShortcut(tabIndex);
                 return true }
-            default: return false;
+            default: return false,
     
     /**
      * マウス移動の処理
@@ -250,7 +247,7 @@ export class UserInfoEventHandler {
         const backButton = this.sceneState.get('backButton) as BackButton | null,'
         if (!backButton) return false,
         
-        if(x >= backButton.x && x <= backButton.x + backButton.width &&),
+        if(x >= backButton.x && x <= backButton.x + backButton.width &&);
             y >= backButton.y && y <= backButton.y + backButton.height) {
         
             this.handleBackAction() }
@@ -268,9 +265,8 @@ export class UserInfoEventHandler {
         tabManager: TabManager
     );
         renderer: Renderer,
-    canvas: HTMLCanvasElement;
-    ): boolean { const hitAreas = renderer.calculateHitAreas(canvas, tabManager),
-        
+    canvas: HTMLCanvasElement,
+    ): boolean { const hitAreas = renderer.calculateHitAreas(canvas, tabManager);
         for (const tabArea of hitAreas.tabs) {
         
             if (x >= tabArea.x && x <= tabArea.x + tabArea.width &&,
@@ -290,14 +286,14 @@ export class UserInfoEventHandler {
         tabManager: TabManager
     );
         renderer: Renderer,
-    canvas: HTMLCanvasElement;
+    canvas: HTMLCanvasElement,
     ): boolean { const layout = renderer.calculateLayout(canvas,
         const contentX = layout.contentPadding,
         const contentY = layout.headerHeight + layout.tabHeight,
-        const contentWidth = canvas.width - (layout.contentPadding * 2),
+        const contentWidth = canvas.width - (layout.contentPadding * 2);
         const contentHeight = canvas.height - contentY - 80,
         
-        if(x >= contentX && x <= contentX + contentWidth &&),
+        if(x >= contentX && x <= contentX + contentWidth &&);
             y >= contentY && y <= contentY + contentHeight) {
     
 }
@@ -321,7 +317,7 @@ export class UserInfoEventHandler {
      * タブショートカットの処理
      */
     private handleTabShortcut(tabIndex: number): void { // この機能は後で実装 }
-        console.log(`Tab, shortcut ${tabIndex + 1} pressed`});
+        console.log(`Tab, shortcut ${tabIndex + 1} pressed`};
     }
     
     /**
@@ -347,7 +343,7 @@ export class UserInfoEventHandler {
         if ('touches' in, event && event.touches && event.touches.length > 0) {
             // タッチイベント
             const rect = this.gameEngine.canvas.getBoundingClientRect() }
-            return { x: event.touches[0].clientX - rect.left };
+            return { x: event.touches[0].clientX - rect.left },
                 y: event.touches[0].clientY - rect.top 
     } else {  // マウスイベント
             const mouseEvent = event as MouseEvent }

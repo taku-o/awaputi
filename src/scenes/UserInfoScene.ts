@@ -46,16 +46,15 @@ export class UserInfoScene extends Scene { // コンポーネントシステム
     private userHelpIntegration!: UserHelpIntegration,
     // レガシー互換性プロパティ
     private lastCleanupTime: number = Date.now('''
-    public, currentTab: string = 'profile',
+    public, currentTab: string = 'profile';
     public isDialogOpen: boolean = false);
-    public, activeDialog: string | null = null)),
+    public, activeDialog: string | null = null));
     constructor(gameEngine: any) {
-        super(gameEngine),
-        
+        super(gameEngine);
         // Main Controller Pattern - サブコンポーネント初期化
-        this.initializeControllers(),
-        this.initializeComponentSystem(),
-        this.initializeUserComponents(),
+        this.initializeControllers();
+        this.initializeComponentSystem();
+        this.initializeUserComponents();
         // レガシー互換性プロパティ
         this.lastCleanupTime = Date.now()
 }
@@ -73,27 +72,24 @@ export class UserInfoScene extends Scene { // コンポーネントシステム
         this.sceneState = new SceneState(this.gameEngine);
         
         // サブコントローラーの初期化
-        this.uiController = new UserInterfaceController(this.gameEngine; this.eventBus, this.sceneState),
-        this.dataManager = new UserDataManager(this.gameEngine; this.eventBus, this.sceneState),
-
+        this.uiController = new UserInterfaceController(this.gameEngine; this.eventBus, this.sceneState);
+        this.dataManager = new UserDataManager(this.gameEngine; this.eventBus, this.sceneState);
         console.log('[UserInfoScene] メインコントローラーを初期化しました') }'
     
     /**
      * コンポーネントシステムの初期化
      */'
     private initializeComponentSystem(): void { // ダイアログマネージャー作成
-        this.dialogManager = new ScenesDialogManager(this.gameEngine; this.eventBus, this.sceneState),
+        this.dialogManager = new ScenesDialogManager(this.gameEngine; this.eventBus, this.sceneState);
         ','
         // ダイアログコンポーネントを登録
         this.dialogManager.registerDialog('username', UsernameDialog','
         this.dialogManager.registerDialog('export', ScenesExportDialog','
-        this.dialogManager.registerDialog('import', ScenesImportDialog),
-        
+        this.dialogManager.registerDialog('import', ScenesImportDialog);
         // 専用コンポーネントの初期化
-        this.tabManager = new UserInfoTabManager(this.gameEngine; this.eventBus, this.sceneState),
-        this.renderer = new UserInfoRenderer(this.gameEngine; this.eventBus, this.sceneState),
-        this.eventHandler = new UserInfoEventHandler(this.gameEngine; this.eventBus, this.sceneState),
-        
+        this.tabManager = new UserInfoTabManager(this.gameEngine; this.eventBus, this.sceneState);
+        this.renderer = new UserInfoRenderer(this.gameEngine; this.eventBus, this.sceneState);
+        this.eventHandler = new UserInfoEventHandler(this.gameEngine; this.eventBus, this.sceneState);
         // レガシー互換性の設定
         this.setupLegacyCompatibility() }
     
@@ -101,10 +97,10 @@ export class UserInfoScene extends Scene { // コンポーネントシステム
      * ユーザーコンポーネントの初期化
      */
     private initializeUserComponents(): void { // 既存の分離コンポーネント
-        this.userProfileManager = new UserProfileManager(this.gameEngine; this.eventBus, this.sceneState),
-        this.userStatisticsRenderer = new UserStatisticsRenderer(this.gameEngine; this.eventBus, this.sceneState),
-        this.userAchievementDisplay = new UserAchievementDisplay(this.gameEngine; this.eventBus, this.sceneState),
-        this.userDataExporter = new UserDataExporter(this.gameEngine; this.eventBus, this.sceneState),
+        this.userProfileManager = new UserProfileManager(this.gameEngine; this.eventBus, this.sceneState);
+        this.userStatisticsRenderer = new UserStatisticsRenderer(this.gameEngine; this.eventBus, this.sceneState);
+        this.userAchievementDisplay = new UserAchievementDisplay(this.gameEngine; this.eventBus, this.sceneState);
+        this.userDataExporter = new UserDataExporter(this.gameEngine; this.eventBus, this.sceneState);
         this.userHelpIntegration = new UserHelpIntegration(this.gameEngine; this.eventBus, this.sceneState) }
     
     /**
@@ -128,7 +124,7 @@ export class UserInfoScene extends Scene { // コンポーネントシステム
 
         this.eventBus.on('dialogClosed', () => {  this.isDialogOpen = false }
             this.activeDialog = null; }
-        });
+        };
     }
     
     // ========================================
@@ -137,11 +133,9 @@ export class UserInfoScene extends Scene { // コンポーネントシステム
     
     render(context: CanvasRenderingContext2D): void { try {
             // 基底クラスのレンダリング
-            super.render(context),
-            
+            super.render(context);
             // メインレンダラーに処理を委譲
-            this.renderer.render(context),
-            
+            this.renderer.render(context);
             // ダイアログレンダリング
             if (this.isDialogOpen && this.activeDialog) {
     
@@ -154,13 +148,11 @@ export class UserInfoScene extends Scene { // コンポーネントシステム
     
     update(deltaTime: number): void { try {
             // 基底クラスの更新
-            super.update(deltaTime),
-            
+            super.update(deltaTime);
             // 各コンポーネントの更新
-            this.updateComponents(deltaTime),
-            
+            this.updateComponents(deltaTime);
             // 定期クリーンアップ
-            this.performPeriodicCleanup(),
+            this.performPeriodicCleanup();
             ' }'
 
         } catch (error) {
@@ -169,8 +161,7 @@ export class UserInfoScene extends Scene { // コンポーネントシステム
     
     handleClick(x: number, y: number): void { try {
             // UIコントローラーに処理を委譲
-            const handled = this.uiController.handleClick(x, y),
-            
+            const handled = this.uiController.handleClick(x, y);
             // 処理されなかった場合は他のコンポーネントに委譲
             if (!handled) {
     
@@ -183,8 +174,7 @@ export class UserInfoScene extends Scene { // コンポーネントシステム
     
     handleKeyDown(key: string): void { try {
             // UIコントローラーに処理を委譲
-            const handled = this.uiController.handleKeyDown(key),
-            
+            const handled = this.uiController.handleKeyDown(key);
             // 処理されなかった場合は他のコンポーネントに委譲
             if (!handled) {
     
@@ -238,7 +228,7 @@ export class UserInfoScene extends Scene { // コンポーネントシステム
     /**
      * 定期クリーンアップ処理
      */
-    private performPeriodicCleanup(): void { const now = Date.now(),
+    private performPeriodicCleanup(): void { const now = Date.now();
         if (now - this.lastCleanupTime > this.CLEANUP_INTERVAL) {
             this.cleanup() }
             this.lastCleanupTime = now; }
@@ -275,8 +265,7 @@ export class UserInfoScene extends Scene { // コンポーネントシステム
      */
     destroy(): void { try {
             // 全コンポーネントのクリーンアップ
-            this.cleanup(),
-            
+            this.cleanup();
             // イベントリスナーの削除
             if (this.eventBus) {
 

@@ -22,28 +22,29 @@ export class AnalyticsTrendAnalyzer {
      * @returns {Promise<Object>} トレンド分析結果
      */
     async analyzeWeeklyTrend(dataType, startDate = null) {
-        const cacheKey = `weekly_${dataType}_${startDate?.getTime(}) || 'latest'}`;
+        const cacheKey = `weekly_${dataType}_${startDate?.getTime(} || 'latest'}`;
         
         // キャッシュチェック
         if (this.analysisCache.has(cacheKey) {
-            const cached = this.analysisCache.get(cacheKey),
+            const cached = this.analysisCache.get(cacheKey);
             if (Date.now() - cached.timestamp < this.cacheExpiration) {
         }
                 return cached.data;
 
         try { : undefined
-            const endDate = startDate ? new Date(startDate.getTime() + 7 * 24 * 60 * 60 * 1000) : new Date(),
+            const endDate = startDate ? new Date(startDate.getTime() + 7 * 24 * 60 * 60 * 1000) : new Date();
             const analysisStartDate = startDate || new Date(endDate.getTime() - 7 * 24 * 60 * 60 * 1000'),'
 ','
             // データ取得
             const data = await this.storageManager.getData('sessions', {
-                startDate: analysisStartDate),
+                startDate: analysisStartDate);
                 endDate: endDate,
-
+                endDate: endDate,
+        };
             if (data.length < this.MIN_DATA_POINTS) {
                 return { success: false,''
                     message: 'データが不足しています。7日以上のデータが必要です。' }
-                    dataPoints: data.length };
+                    dataPoints: data.length },
                     requiredPoints: this.MIN_DATA_POINTS 
     }
 ';'
@@ -54,15 +55,15 @@ export class AnalyticsTrendAnalyzer {
             this.analysisCache.set(cacheKey, {
                 data: trendResult,
     timestamp: Date.now( 
-            }));
+            });
 
             return trendResult;
 
         } catch (error) {
             console.error('週次トレンド分析エラー:', error','
             return { success: false,
-                error: error.message };
-                dataType: dataType;
+                error: error.message },
+                dataType: dataType,
     }
 
     /**
@@ -77,24 +78,25 @@ export class AnalyticsTrendAnalyzer {
         
         // キャッシュチェック
         if (this.analysisCache.has(cacheKey) {
-            const cached = this.analysisCache.get(cacheKey),
+            const cached = this.analysisCache.get(cacheKey);
             if (Date.now() - cached.timestamp < this.cacheExpiration) {
         }
                 return cached.data;
 
         try { : undefined
-            const endDate = startDate ? new Date(startDate.getTime() + 30 * 24 * 60 * 60 * 1000) : new Date(),
+            const endDate = startDate ? new Date(startDate.getTime() + 30 * 24 * 60 * 60 * 1000) : new Date();
             const analysisStartDate = startDate || new Date(endDate.getTime() - 30 * 24 * 60 * 60 * 1000'),'
 ','
             // データ取得
             const data = await this.storageManager.getData('sessions', {
-                startDate: analysisStartDate),
+                startDate: analysisStartDate);
                 endDate: endDate,
-
+                endDate: endDate,
+        };
             if (data.length < 30) {
                 return { success: false,''
                     message: 'データが不足しています。30日以上のデータが必要です。' }
-                    dataPoints: data.length };
+                    dataPoints: data.length },
                     requiredPoints: 30 
     }
 ';'
@@ -105,15 +107,15 @@ export class AnalyticsTrendAnalyzer {
             this.analysisCache.set(cacheKey, {
                 data: trendResult,
     timestamp: Date.now( 
-            }));
+            });
 
             return trendResult;
 
         } catch (error) {
             console.error('月次トレンド分析エラー:', error','
             return { success: false,
-                error: error.message };
-                dataType: dataType;
+                error: error.message },
+                dataType: dataType,
     }
 
     /**
@@ -123,9 +125,8 @@ export class AnalyticsTrendAnalyzer {
      * @param {string} period - 分析期間（'weekly' | 'monthly'）
      * @returns {Object} 計算結果
      */
-    calculateTrend(data, dataType, period) { const metrics = this.extractMetrics(data, dataType),
-        const timeSeriesData = this.groupByTimeUnit(metrics, period),
-        
+    calculateTrend(data, dataType, period) { const metrics = this.extractMetrics(data, dataType);
+        const timeSeriesData = this.groupByTimeUnit(metrics, period);
         // トレンド分析計算
         const trendAnalysis = {
             success: true,
@@ -142,7 +143,7 @@ export class AnalyticsTrendAnalyzer {
             trend: { ''
                 direction: null, // 'increasing', 'decreasing', 'stable',
                 strength: 0, // 0-1の値,
-                confidence: 0 // 0-1の値  };
+                confidence: 0 // 0-1の値  },
             timeSeriesData: timeSeriesData,
             summary: ';'
         },
@@ -176,7 +177,7 @@ export class AnalyticsTrendAnalyzer {
                 playTime: duration,
     accuracy: accuracy,
                 combo: session.maxCombo || 0 }
-                completed: session.completed || false };
+                completed: session.completed || false },
                 date: new Date(session.startTime).toDateString(); 
     };'}');
     }
@@ -188,11 +189,11 @@ export class AnalyticsTrendAnalyzer {
      * @returns {Array} グループ化されたデータ
      */
     groupByTimeUnit(metrics, period) {
-        const grouped = new Map(),
+        const grouped = new Map();
         ','
 
-        metrics.forEach(metric => { ),
-            const date = new Date(metric.timestamp),
+        metrics.forEach(metric => { );
+            const date = new Date(metric.timestamp);
             let key,
 
             if(period === 'weekly' {'
@@ -204,12 +205,12 @@ export class AnalyticsTrendAnalyzer {
 
             } else { // 月の開始日を基準にグループ化' }'
 
-                key = `${date.getFullYear(})-${String(date.getMonth(} + 1'}.padStart(2, '0'})`;'
+                key = `${date.getFullYear(}-${String(date.getMonth(} + 1'}.padStart(2, '0'}`;'
             }
             
             if (!grouped.has(key) { grouped.set(key, []) }
             grouped.get(key).push(metric);
-        });
+        };
 
         // 集計データ生成
         return Array.from(grouped.entries().map(([key, values]) => {  const totalSessions = values.length,
@@ -223,8 +224,8 @@ export class AnalyticsTrendAnalyzer {
                 averageScore: avgScore,
                 averagePlayTime: avgPlayTime,
     averageAccuracy: avgAccuracy,
-                completionRate: completionRate,;
-                maxCombo: Math.max(...values.map(v => v.combo), 
+                completionRate: completionRate,
+                maxCombo: Math.max(...values.map(v => v.combo);
     }).sort((a, b) => a.period.localeCompare(b.period);
     }
 
@@ -302,7 +303,7 @@ export class AnalyticsTrendAnalyzer {
         return { direction: direction,
             strength: strength,
     confidence: rSquared, // R²値を信頼度として使用 };
-            slope: slope;
+            slope: slope,
 
     /**
      * 線形回帰計算
@@ -329,7 +330,7 @@ export class AnalyticsTrendAnalyzer {
         const rSquared = ssTot > 0 ? 1 - (ssRes / ssTot) : 0,
 
         return { slope: slope,
-            intercept: intercept,;
+            intercept: intercept,
             rSquared: rSquared,
 
     /**
@@ -362,12 +363,12 @@ export class AnalyticsTrendAnalyzer {
         // 具体的な変化
         if (Math.abs(metrics.scoreImprovement) > 5') { ''
             const direction = metrics.scoreImprovement > 0 ? '向上' : '低下' }
-            summary += ` スコアが${Math.abs(metrics.scoreImprovement}.toFixed(1})%${direction}しました。`;
+            summary += ` スコアが${Math.abs(metrics.scoreImprovement}.toFixed(1}%${direction}しました。`;
         }
 
         if (Math.abs(metrics.accuracyChange) > 5') { ''
             const direction = metrics.accuracyChange > 0 ? '向上' : '低下' }
-            summary += ` 精度が${Math.abs(metrics.accuracyChange}.toFixed(1})%${direction}しました。`;
+            summary += ` 精度が${Math.abs(metrics.accuracyChange}.toFixed(1}%${direction}しました。`;
         }
 
         return summary;
@@ -402,7 +403,7 @@ export class AnalyticsTrendAnalyzer {
                     timestamp: dataPoint.timestamp || dataPoint.period,') }'
 
                     type: value > mean ? 'outlier_high' : 'outlier_low'); 
-    });
+    };
 
         return anomalies;
     }
@@ -438,15 +439,14 @@ export class AnalyticsTrendAnalyzer {
      * @returns {Array} 季節指数
      */
     calculateSeasonalIndices(values, period) {
-        const seasonalSums = new Array(period).fill(0),
-        const seasonalCounts = new Array(period).fill(0),
-        
+        const seasonalSums = new Array(period).fill(0);
+        const seasonalCounts = new Array(period).fill(0);
         // 各季節位置の平均を計算
         values.forEach((value, index) => { 
             const seasonalPos = index % period }
             seasonalSums[seasonalPos] += value; }
             seasonalCounts[seasonalPos]++; }
-        });
+        };
         
         const seasonalAverages = seasonalSums.map((sum, i) => ;
             seasonalCounts[i] > 0 ? sum / seasonalCounts[i] : 0;
@@ -457,7 +457,7 @@ export class AnalyticsTrendAnalyzer {
         
         // 季節指数（全体平均に対する各季節の比率）
         return seasonalAverages.map(avg => );
-            overallAverage > 0 ? avg / overallAverage : 1);
+            overallAverage > 0 ? avg / overallAverage: 1),
     }
 
     /**

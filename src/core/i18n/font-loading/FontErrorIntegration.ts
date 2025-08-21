@@ -19,7 +19,7 @@ export interface FontErrorMetadata { fontFamily?: string,
 
 export interface IErrorHandler { handleError(error: Error, context?: string, metadata?: FontErrorMetadata): any,
     registerErrorCategories?(categories: Record<string, ErrorCategory>): void 
-export interface IntegrationStats { initialized: boolean,
+export interface IntegrationStats { initialized: boolean;
     hasErrorHandler: boolean;
     hasFontErrorHandler: boolean;
     errorHandlerType: string;
@@ -28,7 +28,7 @@ export interface IntegrationStats { initialized: boolean,
 export class FontErrorIntegration {
     private errorHandler: IErrorHandler;
     private fontErrorHandler: FontErrorHandler;
-    private, initialized: boolean,
+    private, initialized: boolean;
     constructor(errorHandler: IErrorHandler, fontErrorHandler: FontErrorHandler) {
 
         this.errorHandler = errorHandler;
@@ -79,11 +79,10 @@ export class FontErrorIntegration {
     }
 ';'
     private _setupCustomErrorHandling(): void { // 元のhandleErrorメソッドをラップ
-        const originalHandleError = this.errorHandler.handleError.bind(this.errorHandler),
-
+        const originalHandleError = this.errorHandler.handleError.bind(this.errorHandler);
         ' }'
 
-        this.errorHandler.handleError = (error: Error, context: string = 'UNKNOWN', metadata: FontErrorMetadata = {}) => {  // フォント関連エラーかチェック
+        this.errorHandler.handleError = (error: Error, context: string = 'UNKNOWN', metadata: FontErrorMetadata = {} => {  // フォント関連エラーかチェック
             if (this._isFontRelatedError(error, context, metadata) { }
                 return this._handleFontError(error, context, metadata, originalHandleError);
             
@@ -91,7 +90,7 @@ export class FontErrorIntegration {
             return originalHandleError(error, context, metadata);
 ';'
 
-    private _isFontRelatedError(error: Error, context: string, metadata: FontErrorMetadata): boolean { const contextString = context.toString().toLowerCase(),
+    private _isFontRelatedError(error: Error, context: string, metadata: FontErrorMetadata): boolean { const contextString = context.toString().toLowerCase();
         const errorMessage = (error.message || error.toString().toLowerCase()','
         if (contextString.includes('font') || ','
             contextString.includes('i18n') || ','
@@ -115,7 +114,7 @@ export class FontErrorIntegration {
     }
 
     private _handleFontError(;
-        error: Error;
+        error: Error,
         context: string );
         metadata: FontErrorMetadata)','
     originalHandleError: (error: Error, context?: string, metadata?: FontErrorMetadata) => any';'
@@ -134,14 +133,13 @@ export class FontErrorIntegration {
             // 通常のErrorHandlerも実行（重複ログを避けるため、ログレベルを調整）
             const adjustedMetadata: FontErrorMetadata = { ...metadata,
                 suppressConsoleLog: true,
-    handledByFontErrorHandler: true,;
+    handledByFontErrorHandler: true,
             return originalHandleError(error, context, adjustedMetadata);
 
         } catch (fontHandlerError) {
-            console.warn('[FontErrorIntegration] Font error handler failed:', fontHandlerError),
-            
+            console.warn('[FontErrorIntegration] Font error handler failed:', fontHandlerError);
             // フォント専用ハンドラーが失敗した場合は通常のハンドラーを使用
-            return originalHandleError(error, context, metadata),
+            return originalHandleError(error, context, metadata);
 ','
 
     handleFontLoadingError(fontFamily: string, language: string, source: string, error: Error): any { if (!this.initialized) {''
@@ -200,7 +198,7 @@ export class FontErrorIntegration {
         console.warn(`[FontErrorIntegration] Fallback error handling for ${fontFamily} from ${ source}:`, error};
         
         // 最低限のエラー処理 }
-        if (this.fontErrorHandler}) {
+        if (this.fontErrorHandler} {
             const fontContext: FontErrorContext = {
                 source: source as any }
                 fontFamily: fontFamily; 

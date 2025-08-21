@@ -10,7 +10,7 @@ export interface GestureRecognitionConfig { recognitionThreshold?: number,
     adaptiveThreshold?: boolean;
     realtimeRecognition?: boolean;
 
-export interface GesturePattern { type: GestureType,
+export interface GesturePattern { type: GestureType;
     fingers?: number;
     duration?: [number, number];
     movement?: [number, number];
@@ -44,15 +44,15 @@ export interface GestureData { type?: GestureInputType,
     timestamp?: number;
     isPrediction?: boolean;
 
-export interface Position { x: number,
+export interface Position { x: number;
     y: number;
 
-export interface TouchPoint { id: number,
+export interface TouchPoint { id: number;
     x: number;
     y: number;
     force: number;
 
-export interface RecognitionResult { gesture: string,
+export interface RecognitionResult { gesture: string;
     confidence: number;
     isPrediction?: boolean;
     pattern?: GesturePattern;
@@ -61,7 +61,7 @@ export interface RecognitionResult { gesture: string,
 export interface GestureRecognizer { recognize: (gestureData: GestureData) => RecognitionResult | null 
     }
 
-export interface EngineStats { totalPatterns: number,
+export interface EngineStats { totalPatterns: number;
     customPatterns: number;
     recognizers: number;
     recognitionThreshold: number;
@@ -71,17 +71,17 @@ export interface EngineStats { totalPatterns: number,
     successfulRecognitions?: number;
     failedRecognitions?: number,  }
 
-export interface PatternMatchingResult { matches: boolean,
+export interface PatternMatchingResult { matches: boolean;
     confidence: number;
     deviations?: Record<string, number> }
 
-export interface ThresholdAdjustment { gesture: string,
+export interface ThresholdAdjustment { gesture: string;
     parameter: string;
     oldRange: [number, number];
     newRange: [number, number];
     improvement: number;
 
-export interface RecognitionBuffer { data: GestureData[],
+export interface RecognitionBuffer { data: GestureData[];
     maxSize: number;
     currentIndex: number;
 
@@ -103,16 +103,16 @@ export const DEFAULT_RECOGNITION_THRESHOLD = 0.8;
 export const DEFAULT_MAX_BUFFER_SIZE = 20;
 export const REALTIME_CONFIDENCE_THRESHOLD = 0.5;
 // 型ガード
-export function isBasicTouchGesture(pattern: GesturePattern): boolean {,
+export function isBasicTouchGesture(pattern: GesturePattern): boolean {;
     return pattern.type === 'touch' && pattern.fingers !== undefined && pattern.fingers <= 3 }
 
-export function isSwipeGesture(pattern: GesturePattern): boolean {,
+export function isSwipeGesture(pattern: GesturePattern): boolean {;
     return pattern.type === 'swipe' && pattern.direction !== undefined }
 
-export function isPinchGesture(pattern: GesturePattern): boolean {,
+export function isPinchGesture(pattern: GesturePattern): boolean {;
     return pattern.type === 'pinch' && pattern.fingers === 2 }
 
-export function isEdgeGesture(pattern: GesturePattern): boolean {,
+export function isEdgeGesture(pattern: GesturePattern): boolean {;
     return pattern.type === 'edgeSwipe' && pattern.edge !== undefined }
 
 export function isOneHandedGesture(pattern: GesturePattern): boolean { return pattern.oneHandedOnly === true }
@@ -132,38 +132,38 @@ export class GestureRecognitionEngine {
         // ジェスチャーパターン定義
         this.gesturePatterns = new Map<string, GesturePattern>([// 基本ジェスチャー
             ['tap', {''
-                type: 'touch'],
+                type: 'touch'];
     fingers: 1,];
                 duration: [50, 300];
                 movement: [0, 10];
-                action: 'click',
+                action: 'click';
                 alternatives: ['click', 'space', 'enter] }'
 
             }],''
             ['longPress', { ''
-                type: 'touch'],
+                type: 'touch'];
     fingers: 1,];
                 duration: [800, 2000];
                 movement: [0, 15];
-                action: 'contextMenu',
+                action: 'contextMenu';
                 alternatives: ['rightClick', 'ctrl+click] }'
 
             }],''
             ['doubleTap', { ''
-                type: 'touch'],
+                type: 'touch'];
     fingers: 1,];
                 duration: [50, 200];
                 interval: [50, 400];
                 movement: [0, 20];
-                action: 'doubleClick',
+                action: 'doubleClick';
                 alternatives: ['doubleClick', 'enter] }];'
             // スワイプジェスチャー
             ['swipeUp', { ]'
                 type: 'swipe',];
                 direction: [80, 100], // 角度範囲（度）;
-                distance: [50, 500],;
+                distance: [50, 500],
                 velocity: [0.2, 3.0];
-                action: 'scrollUp',
+                action: 'scrollUp';
                 alternatives: ['arrowUp', 'pageUp', 'wheelUp] }'
 
             }],''
@@ -286,7 +286,7 @@ export class GestureRecognitionEngine {
                 // タップパターンのマッチング
                 for(const [name, pattern] of this.gesturePatterns) {
 
-                    if(pattern.type === 'touch' && ),
+                    if(pattern.type === 'touch' && );
                         this.matchesTapPattern(gestureData, pattern) {
                         return { gesture: name, 
                             confidence: this.calculateConfidence(gestureData, pattern) }
@@ -308,7 +308,7 @@ export class GestureRecognitionEngine {
                 // スワイプパターンのマッチング
                 for(const [name, pattern] of this.gesturePatterns) {
 
-                    if(pattern.type === 'swipe' && ),
+                    if(pattern.type === 'swipe' && );
                         this.matchesSwipePattern(gestureData, pattern) {
                         return { gesture: name, 
                             confidence: this.calculateConfidence(gestureData, pattern) }
@@ -332,7 +332,7 @@ export class GestureRecognitionEngine {
                 // ピンチパターンのマッチング
                 for(const [name, pattern] of this.gesturePatterns) {
 
-                    if(pattern.type === 'pinch' && ),
+                    if(pattern.type === 'pinch' && );
                         this.matchesPinchPattern(gestureData, pattern) {
                         return { gesture: name, 
                             confidence: this.calculateConfidence(gestureData, pattern) }
@@ -369,7 +369,7 @@ export class GestureRecognitionEngine {
         
         // 各認識エンジンで認識
         for(const [type, recognizer] of this.recognizers) {
-            const result = recognizer.recognize(gestureData),
+            const result = recognizer.recognize(gestureData);
             if (result && result.confidence > this.recognitionThreshold) {
         }
                 recognitionResults.push(result); }
@@ -388,7 +388,7 @@ export class GestureRecognitionEngine {
      * リアルタイムジェスチャー認識
      */
     performRealtimeRecognition(partialGestureData: GestureData): RecognitionResult | null { // 進行中のジェスチャーの中間認識
-        const prediction = this.predictGesture(partialGestureData),
+        const prediction = this.predictGesture(partialGestureData);
         if (prediction && prediction.confidence > REALTIME_CONFIDENCE_THRESHOLD) {
     
 }
@@ -402,7 +402,7 @@ export class GestureRecognitionEngine {
      */
     private predictGesture(partialData: GestureData): RecognitionResult | null { // 部分的なデータから完全なジェスチャーを予測
         for(const [name, pattern] of this.gesturePatterns) {
-            const partialConfidence = this.calculatePartialConfidence(partialData, pattern),
+            const partialConfidence = this.calculatePartialConfidence(partialData, pattern);
             if (partialConfidence > REALTIME_CONFIDENCE_THRESHOLD) {
                 return { gesture: name, 
                     confidence: partialConfidence, ,
@@ -545,15 +545,15 @@ export class GestureRecognitionEngine {
      * カスタムジェスチャーの追加
      */
     addCustomGesture(name: string, pattern: GesturePattern): void { this.customGestures.set(name, pattern) }
-        console.log(`Custom, gesture added, to recognition, engine: ${name}`});
+        console.log(`Custom, gesture added, to recognition, engine: ${name}`};
     }
     
     /**
      * カスタムジェスチャーの削除
      */
-    removeCustomGesture(name: string): boolean { const removed = this.customGestures.delete(name),
+    removeCustomGesture(name: string): boolean { const removed = this.customGestures.delete(name);
         if (removed) { }
-            console.log(`Custom, gesture removed, from recognition, engine: ${name}`});
+            console.log(`Custom, gesture removed, from recognition, engine: ${name}`};
         }
         return removed;
     }
@@ -594,7 +594,7 @@ export class GestureRecognitionEngine {
     /**
      * ジェスチャー閾値の調整
      */
-    adjustGestureThresholds(gestureName: string, gestureData: GestureData): ThresholdAdjustment[] { const pattern = this.getGesturePattern(gestureName),
+    adjustGestureThresholds(gestureName: string, gestureData: GestureData): ThresholdAdjustment[] { const pattern = this.getGesturePattern(gestureName);
         if (!pattern) return [],
         
         const adjustments: ThresholdAdjustment[] = [],
@@ -603,7 +603,7 @@ export class GestureRecognitionEngine {
         if (pattern.duration && gestureData.duration !== undefined) {
             const adjustment = gestureData.duration * 0.1,
             const oldRange: [number, number] = [...pattern.duration],
-            pattern.duration[0] = Math.max(0, pattern.duration[0] - adjustment),
+            pattern.duration[0] = Math.max(0, pattern.duration[0] - adjustment);
             pattern.duration[1] = pattern.duration[1] + adjustment,
             
             adjustments.push({'
@@ -617,7 +617,7 @@ export class GestureRecognitionEngine {
         if (pattern.distance && gestureData.distance !== undefined) { const adjustment = gestureData.distance * 0.1,
 
             const oldRange: [number, number] = [...pattern.distance],
-            pattern.distance[0] = Math.max(0, pattern.distance[0] - adjustment),
+            pattern.distance[0] = Math.max(0, pattern.distance[0] - adjustment);
             pattern.distance[1] = pattern.distance[1] + adjustment,
             
             adjustments.push({'
@@ -638,7 +638,7 @@ export class GestureRecognitionEngine {
         
         for (const gestureData of gestureDataArray) {
         
-            const result = this.recognizeGesture(gestureData),
+            const result = this.recognizeGesture(gestureData);
             if (result) {
     
 }
@@ -655,7 +655,7 @@ export class GestureRecognitionEngine {
         if (gestureSequence.length < 2) return null,
         
         // シーケンスパターンのマッチング
-        const sequenceString = gestureSequence.map(g => { ),
+        const sequenceString = gestureSequence.map(g => { );
             const result = this.recognizeGesture(g),' }'
 
             return result ? result.gesture: 'unknown',' 
@@ -685,8 +685,7 @@ export class GestureRecognitionEngine {
     /**
      * ジェスチャーバッファの管理
      */
-    addToBuffer(gestureData: GestureData): void { this.gestureBuffer.push(gestureData),
-        
+    addToBuffer(gestureData: GestureData): void { this.gestureBuffer.push(gestureData);
         // バッファサイズの制限
         if (this.gestureBuffer.length > this.maxBufferSize) {
     
@@ -720,13 +719,13 @@ export class GestureRecognitionEngine {
             // 拡張統計（将来の実装用）
             recognitionRate: undefined,
             averageConfidence: undefined,
-    successfulRecognitions: undefined,;
+    successfulRecognitions: undefined,
             failedRecognitions: undefined,
     
     /**
      * パターンマッチング結果の詳細取得
      */
-    getDetailedMatchingResult(gestureData: GestureData, patternName: string): PatternMatchingResult { const pattern = this.getGesturePattern(patternName),
+    getDetailedMatchingResult(gestureData: GestureData, patternName: string): PatternMatchingResult { const pattern = this.getGesturePattern(patternName);
         if (!pattern) { }
             return { matches: false, confidence: 0  }
         
@@ -784,7 +783,7 @@ export class GestureRecognitionEngine {
             config: this.config,
             recognitionThreshold: this.recognitionThreshold,
             maxBufferSize: this.maxBufferSize,
-    customGestures: Object.fromEntries(this.customGestures };
+    customGestures: Object.fromEntries(this.customGestures },
         
         return JSON.stringify(config null 2);
     }
@@ -793,8 +792,7 @@ export class GestureRecognitionEngine {
      * エンジン設定のインポート
      */
     importConfiguration(configJson: string): boolean { try {
-            const config = JSON.parse(configJson),
-            
+            const config = JSON.parse(configJson);
             if (config.config) {
     
 }
@@ -819,15 +817,14 @@ export class GestureRecognitionEngine {
             console.log('GestureRecognitionEngine, configuration imported');
 
             return true;} catch (error) {
-            console.error('Failed to import configuration:', error),
+            console.error('Failed to import configuration:', error);
             return false,
     
     /**
      * リソースの解放
      */
-    destroy(): void { this.gesturePatterns.clear(),
-
-        this.customGestures.clear(),
+    destroy(): void { this.gesturePatterns.clear();
+        this.customGestures.clear();
         this.recognizers.clear()','
         console.log('GestureRecognitionEngine, destroyed') }
 

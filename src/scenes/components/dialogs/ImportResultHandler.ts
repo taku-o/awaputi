@@ -10,49 +10,50 @@ export interface ResultType { SUCCESS: 'success',''
     CANCELLED: 'cancelled';
     WARNING: 'warning'
             }
-export interface FeedbackAnimation { color: string,
+export interface FeedbackAnimation { color: string;
     icon: string;
     duration: number;
-export interface ImportStats { playerDataImported: boolean,
+export interface ImportStats { playerDataImported: boolean;
     statisticsImported: boolean;
     achievementsImported: boolean;
     settingsImported: boolean;
     dataSize: number;
     itemCount: number;
     version: string;
-export interface ImportResult { action: string,
+export interface ImportResult { action: string;
     data: {
-        succes,s: boolean,
-        method: string,
+        succes,s: boolean;
+        method: string;
         error?: string;
         importStats?: ImportStats | null;
-        timestamp: string,
-    duration: string,
-
-export interface Layout { contentX: number,
+        timestamp: string;
+    duration: string;
+    duration: string;
+        };
+export interface Layout { contentX: number;
     contentY: number;
     contentWidth: number;
     buttonY: number;
     x: number;
     width: number;
-export interface ComponentStatus { componentType: string,
+export interface ComponentStatus { componentType: string;
     supportedResultTypes: string[];
     animationTypes: string[];
     exportFormats: string[];
 export interface MainController { data: {
         succes,s?: boolean;
         error?: string;
-        importMethod: string,
+        importMethod: string;
         parsedData?: any;
-    step: string,;
-    textSettings: { contentFont: string,
-    contentColor: string,;
+    step: string;
+    textSettings: { contentFont: string;
+    contentColor: string;
     gameEngine: { eventBus?: {
-            emit(event: string, data: any): void,;
-    onResult?: (result: ImportResult) => void,
+            emit(event: string, data: any): void;
+    onResult?: (result: ImportResult) => void;
 }
 
-export interface AnimationResult { type: string,
+export interface AnimationResult { type: string;
     color: string;
     icon: string;
     startTime: number;
@@ -68,7 +69,7 @@ export class ImportResultHandler {
 
         this.resultTypes = {''
             SUCCESS: 'success';
-            ERROR: 'error',
+            ERROR: 'error';
             CANCELLED: 'cancelled' }
 
             WARNING: 'warning' ;
@@ -83,7 +84,7 @@ export class ImportResultHandler {
     /**
      * 完了ステップを描画'
      */''
-    renderCompleteStep(context: CanvasRenderingContext2D, layout: Layout, y: number): void { context.font = this.mainController.textSettings.contentFont,
+    renderCompleteStep(context: CanvasRenderingContext2D, layout: Layout, y: number): void { context.font = this.mainController.textSettings.contentFont;
         context.textAlign = 'center',
         context.textBaseline = 'top',
         
@@ -103,24 +104,23 @@ export class ImportResultHandler {
         
         // 成功アイコン (アニメーション効果付き),
         const iconScale = 1 + 0.1 * Math.sin(Date.now() / 200),
-        context.save(),
-        context.translate(layout.x + layout.width / 2, y + 20),
-        context.scale(iconScale, iconScale),
+        context.save();
+        context.translate(layout.x + layout.width / 2, y + 20);
+        context.scale(iconScale, iconScale);
         context.font = '32px sans-serif',
 
         context.fillStyle = animation.color,
         context.textAlign = 'center',
         context.textBaseline = 'middle',
 
-        context.fillText(animation.icon, 0, 0),
+        context.fillText(animation.icon, 0, 0);
         context.restore()','
         context.fillText('データのインポートが完了しました！', layout.x + layout.width / 2, y + 60','
         
         // 詳細情報
         context.fillStyle = this.mainController.textSettings.contentColor,
         context.font = '12px sans-serif',
-        context.fillText('ゲームを再開してください。', layout.x + layout.width / 2, y + 85),
-
+        context.fillText('ゲームを再開してください。', layout.x + layout.width / 2, y + 85);
         // 成功統計情報
         this.renderSuccessStats(context, layout, y + 110) }
     /**
@@ -134,8 +134,7 @@ export class ImportResultHandler {
         context.fillStyle = animation.color,
         context.textAlign = 'center',
         context.textBaseline = 'top',
-        context.fillText(animation.icon, layout.x + layout.width / 2, y),
-
+        context.fillText(animation.icon, layout.x + layout.width / 2, y);
         // エラーメッセージ
         context.fillStyle = animation.color,
         context.font = this.mainController.textSettings.contentFont,
@@ -147,7 +146,7 @@ export class ImportResultHandler {
             context.font = '12px sans-serif',
             context.fillStyle = this.mainController.textSettings.contentColor }
             const errorText = this.truncateErrorMessage(this.mainController.data.error); }
-            context.fillText(`エラー: ${errorText}`, layout.x + layout.width / 2, y + 65});
+            context.fillText(`エラー: ${errorText}`, layout.x + layout.width / 2, y + 65};
         }
 
         // トラブルシューティングヒント
@@ -159,9 +158,8 @@ export class ImportResultHandler {
      */
     renderSuccessStats(context: CanvasRenderingContext2D, layout: Layout, y: number): void { if (!this.mainController.data.parsedData) return,
 
-        const stats = this.generateImportStats(this.mainController.data.parsedData),
-        const statsHeight = Math.min(60, layout.buttonY - y - 20),
-
+        const stats = this.generateImportStats(this.mainController.data.parsedData);
+        const statsHeight = Math.min(60, layout.buttonY - y - 20);
         if(statsHeight <= 10) return,
 
         context.font = '11px sans-serif',
@@ -235,8 +233,7 @@ export class ImportResultHandler {
         context.textAlign = 'center',
         context.textBaseline = 'top',
 
-        const actions = this.getErrorActions(this.mainController.data.error),
-        
+        const actions = this.getErrorActions(this.mainController.data.error);
         let currentY = y,
         for (const action of actions) {
             if (currentY + 15 < layout.buttonY - 10) {
@@ -247,8 +244,7 @@ export class ImportResultHandler {
      * トラブルシューティングヒントを描画
      */'
     renderTroubleshootingHints(context: CanvasRenderingContext2D, layout: Layout, y: number): void { ''
-        const hints = this.getTroubleshootingHints(this.mainController.data.error),
-
+        const hints = this.getTroubleshootingHints(this.mainController.data.error);
         context.font = '10px sans-serif',
         context.fillStyle = '#FFC107',
         context.textAlign = 'left',
@@ -259,7 +255,7 @@ export class ImportResultHandler {
     
 }
             if (currentY + 12 < layout.buttonY - 10) { }
-                context.fillText(`💡 ${hint}`, layout.contentX, currentY});
+                context.fillText(`💡 ${hint}`, layout.contentX, currentY};
                 currentY += 14;
             }
     }
@@ -339,7 +335,7 @@ export class ImportResultHandler {
             dataSize: this.calculateDataSize(parsedData,
             itemCount: this.countImportedItems(parsedData),' };'
 
-            version: parsedData.version || 'unknown' ;
+            version: parsedData.version || 'unknown' ,
     } }
 
     /**
@@ -361,7 +357,7 @@ export class ImportResultHandler {
 
         const errorLower = error.toLowerCase()';'
         if(errorLower.includes('json)' { ''
-            hints.push('JSONデータの形式を確認してください'),
+            hints.push('JSONデータの形式を確認してください');
             hints.push('引用符やカンマの記述を確認してください') }
 
         if (errorLower.includes('バージョン') || errorLower.includes('version)' { ''
@@ -371,7 +367,7 @@ export class ImportResultHandler {
             hints.push('プレイヤーデータの構造を確認してください') }
 
         if (errorLower.includes('ファイル') || errorLower.includes('file)' { ''
-            hints.push('ファイルが破損していないか確認してください'),
+            hints.push('ファイルが破損していないか確認してください');
             hints.push('テキスト形式での入力を試してください' }
 ';'
         // 一般的なヒント
@@ -404,7 +400,7 @@ export class ImportResultHandler {
      * データサイズの計算
      */
     calculateDataSize(data: any): number { try {
-            const dataString = JSON.stringify(data),
+            const dataString = JSON.stringify(data);
             const sizeInBytes = new Blob([dataString]).size,
             return Math.round(sizeInBytes / 1024), // KB } catch (error) { return 0,
 
@@ -431,7 +427,7 @@ export class ImportResultHandler {
      */''
     private reportImportError(errorData: ImportResult['data]': void { // 開発環境でのデバッグ用'
         console.debug('Import Error Report:', {
-            error: errorData.error),
+            error: errorData.error);
             method: errorData.method','
     timestamp: errorData.timestamp,')',
             userAgent: typeof navigator !== 'undefined' ? navigator.userAgent : 'N/A'
@@ -440,7 +436,7 @@ export class ImportResultHandler {
      * 結果フィードバックアニメーション
      */
     animateResultFeedback(resultType: string, duration: number = 1000): AnimationResult { if (!this.feedbackAnimations[resultType]) { }
-            throw new Error(`Unsupported, result type: ${resultType}`});
+            throw new Error(`Unsupported, result type: ${resultType}`};
         }
         
         const animation = this.feedbackAnimations[resultType];
@@ -459,15 +455,15 @@ export class ImportResultHandler {
             success: this.mainController.data.success || false,
             method: this.mainController.data.importMethod,
             error: this.mainController.data.error,
-    stats: this.mainController.data.parsedData ? undefined : undefined,;
+    stats: this.mainController.data.parsedData ? undefined : undefined,
                 this.generateImportStats(this.mainController.data.parsedData) : null; as any,
 
         switch(format.toLowerCase()) { ''
             case 'json':','
-                return JSON.stringify(result, null, 2),
+                return JSON.stringify(result, null, 2);
             case 'text':,
-                return this.formatResultAsText(result, as any),
-            default: return result  };
+                return this.formatResultAsText(result, as any);
+            default: return result  },
 
     /**
      * 結果をテキスト形式でフォーマット'
@@ -479,14 +475,14 @@ export class ImportResultHandler {
         lines.push(`方法: ${result.method)`};
         
         if (result.error} { }
-            lines.push(`エラー: ${result.error}`});
+            lines.push(`エラー: ${result.error}`};
         }
 
         if (result.stats) {
 
-            lines.push('\n=== インポート統計 ==='),
-            lines.push(`プレイヤーデータ: ${result.stats.playerDataImported ? 'あり' : 'なし'`),
-            lines.push(`統計データ: ${result.stats.statisticsImported ? 'あり' : 'なし'`),
+            lines.push('\n=== インポート統計 ===');
+            lines.push(`プレイヤーデータ: ${result.stats.playerDataImported ? 'あり' : 'なし'`);
+            lines.push(`統計データ: ${result.stats.statisticsImported ? 'あり' : 'なし'`);
             lines.push(`実績データ: ${result.stats.achievementsImported ? 'あり' : 'なし}`}'
 
             lines.push(`データサイズ: ${result.stats.dataSize}KB`};' }'

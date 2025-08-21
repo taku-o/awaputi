@@ -14,7 +14,7 @@ interface CleanupOptions { dryRun?: boolean,
     autoSaveReports?: boolean;
     [key: string]: any;
 
-interface CleanupResults { scanReport: ScanReport | null,
+interface CleanupResults { scanReport: ScanReport | null;
     referenceReport: ReferenceReport | null;
     safetyReport: SafetyReport | null;
     deletionReport: DeletionReport | null;
@@ -22,11 +22,11 @@ interface CleanupResults { scanReport: ScanReport | null,
 
 type LogLevel = 'info' | 'warn' | 'error';
 
-interface ValidationOnlyResult { safeToDelete: any[],
+interface ValidationOnlyResult { safeToDelete: any[];
     unsafeToDelete: any[];
     summary: any;
 
-interface TargetFileInfo { fileName: string,
+interface TargetFileInfo { fileName: string;
     filePath: string;
     size: string;
     lastModified: string;
@@ -42,12 +42,12 @@ export class CleanupOrchestrator {
 
     constructor(options: CleanupOptions = {)) {
         this.options = {
-            dryRun: options.dryRun || false,
-            verbose: options.verbose || false,
+            dryRun: options.dryRun || false;
+            verbose: options.verbose || false;
             patterns: options.patterns || ['*_old*', '*_original*];'
             extensions: options.extensions || ['.js],'
             rootPath: options.rootPath || process.cwd(
-    autoSaveReports: options.autoSaveReports !== false,
+    autoSaveReports: options.autoSaveReports !== false;
             ...options,
 
         this.fileScanner = new FileScanner();
@@ -61,7 +61,7 @@ export class CleanupOrchestrator {
 
             const timestamp = new Date().toISOString(' }''
             const prefix = level === 'error' ? '❌' : level === 'warn' ? '⚠️' : 'ℹ️';) }
-            console.log(`${prefix} [${timestamp}] ${message}`});
+            console.log(`${prefix} [${timestamp}] ${message}`};
         }
     }
 
@@ -69,14 +69,11 @@ export class CleanupOrchestrator {
         this.log('Starting file cleanup process...', 'info);'
         
         try { // Step 1: Scan for files
-            await this.scanFiles(),
-            
+            await this.scanFiles();
             // Step 2: Check references
-            await this.checkReferences(),
-            
+            await this.checkReferences();
             // Step 3: Validate safety
-            await this.validateSafety(),
-            
+            await this.validateSafety();
             // Step, 4: Execute deletion (if, not dry, run),
             if (!this.options.dryRun) {
 
@@ -121,9 +118,9 @@ export class CleanupOrchestrator {
 }
             scannedFiles.forEach(file => {) }
 
-                const size = this.reportGenerator.formatBytes(file.fileSize});
-                this.log(`  - ${file.fileName} (${size})`, 'info');
-            });
+                const size = this.reportGenerator.formatBytes(file.fileSize};
+                this.log(`  - ${file.fileName} (${size}`, 'info');
+            };
         }
 
         return scannedFiles;
@@ -147,16 +144,14 @@ export class CleanupOrchestrator {
                 
             const referenceResult = await this.referenceChecker.generateReferenceReport(
                 originalPath,
-                this.options.rootPath),
-            
-            referenceResults.push(referenceResult),
-            
+                this.options.rootPath);
+            referenceResults.push(referenceResult);
             if (this.options.verbose) {
         }
 
                 const refCount = referenceResult.references.length;' }'
 
-                this.log(`  - ${fileInfo.fileName}: ${refCount} references found`, 'info'});
+                this.log(`  - ${fileInfo.fileName}: ${refCount} references found`, 'info'};
             }
         }
 
@@ -164,7 +159,7 @@ export class CleanupOrchestrator {
         ';'
 
         const totalWithRefs = referenceResults.filter(r => r.hasReferences).length;
-        this.log(`Reference check completed: ${totalWithRefs}/${referenceResults.length} files have references`, 'info'});
+        this.log(`Reference check completed: ${totalWithRefs}/${referenceResults.length} files have references`, 'info'};
 
         return referenceResults;
     }
@@ -197,7 +192,7 @@ export class CleanupOrchestrator {
 
         if (safetyResults.totalWarnings > 0) { }'
 
-            this.log(`Found ${safetyResults.totalWarnings} safety warnings`, 'warn'});
+            this.log(`Found ${safetyResults.totalWarnings} safety warnings`, 'warn'};
         }
 
         return safetyResults;
@@ -222,7 +217,7 @@ export class CleanupOrchestrator {
     successCount: 0),
                 failureCount: 0) }
                 timestamp: new Date().toISOString(); 
-    });
+    };
             return;
         }
 
@@ -248,8 +243,8 @@ export class CleanupOrchestrator {
             deletionResults.results.forEach(result => {) }
 
                 const status = result.deleted && result.verified ? '✅' : '❌'}';'
-                this.log(`  ${status} ${result.filePath}`, 'info'});
-            });
+                this.log(`  ${status} ${result.filePath}`, 'info'};
+            };
         }
 
         return deletionResults;
@@ -266,7 +261,7 @@ export class CleanupOrchestrator {
             const timestamp = new Date().toISOString().replace(/[:.]/g, '-),'
             
             // Save JSON report
-            const jsonResult = await this.reportGenerator.saveReport(),
+            const jsonResult = await this.reportGenerator.saveReport();
                 this.results.summaryReport),
                 `cleanup-summary-${timestamp}`;
             }
@@ -276,7 +271,7 @@ export class CleanupOrchestrator {
 
             } else { }'
 
-                this.log(`Failed to save summary report: ${jsonResult.error}`, 'error'});
+                this.log(`Failed to save summary report: ${jsonResult.error}`, 'error'};
             }
 
             // Save text report
@@ -292,7 +287,7 @@ export class CleanupOrchestrator {
 
             } else { }'
 
-                this.log(`Failed to save text report: ${textResult.error}`, 'error'});
+                this.log(`Failed to save text report: ${textResult.error}`, 'error'};
             }
         }
 
@@ -317,8 +312,7 @@ export class CleanupOrchestrator {
 
             const fullPath = possiblePath.startsWith('/' ? undefined : undefined'
                 possiblePath : ,
-                path.join(this.options.rootPath, possiblePath),
-            
+                path.join(this.options.rootPath, possiblePath);
             try {
                 fs.accessSync(fullPath, fs.constants.F_OK) }
                 return fullPath; catch { continue }
@@ -327,27 +321,26 @@ export class CleanupOrchestrator {
         return fileName; // fallback
     }
 
-    async listTargetFiles(): Promise<TargetFileInfo[]> { const scannedFiles = await this.scanFiles(),
+    async listTargetFiles(): Promise<TargetFileInfo[]> { const scannedFiles = await this.scanFiles();
         return scannedFiles.map(file => ({)
             fileName: file.fileName),
             filePath: file.filePath),
             size: this.reportGenerator.formatBytes(file.fileSize,
     lastModified: file.lastModified.toISOString()  }
-        });
+        };
     }
 
-    async validateOnly(): Promise<ValidationOnlyResult> { await this.scanFiles(),
-        await this.checkReferences(),
-        await this.validateSafety(),
-        await this.generateReports(),
-
+    async validateOnly(): Promise<ValidationOnlyResult> { await this.scanFiles();
+        await this.checkReferences();
+        await this.validateSafety();
+        await this.generateReports();
         if (!this.results.safetyReport || !this.results.summaryReport) {', ' }
 
             throw new Error('Safety, or summary, report is, not available'; }'
         }
         
         return { safeToDelete: this.results.safetyReport.safeFiles,
-            unsafeToDelete: this.results.safetyReport.unsafeFiles };
+            unsafeToDelete: this.results.safetyReport.unsafeFiles },
             summary: this.results.summaryReport.summary 
     }
 

@@ -8,11 +8,11 @@ import { ErrorHandler  } from '../../utils/ErrorHandler.js';
 import { LoggingSystem  } from '../LoggingSystem.js';
 
 // 型定義
-export interface TutorialStepData { id: string,
+export interface TutorialStepData { id: string;
     title?: string;
     estimatedTime?: number;
 
-export interface TutorialData { title: string,
+export interface TutorialData { title: string;
     steps: TutorialStepData[];
     prerequisites?: string[];
     difficulty?: DifficultyLevel;
@@ -20,7 +20,7 @@ export interface TutorialData { title: string,
 
 export type DifficultyLevel = 'beginner' | 'intermediate' | 'advanced';
 
-export interface TutorialStatsData { totalTime: number,
+export interface TutorialStatsData { totalTime: number;
     averageStepTime: Map<string, number>;
     skipCount: Map<string, number>;
     failureCount: Map<string, number>;
@@ -28,7 +28,7 @@ export interface TutorialStatsData { totalTime: number,
     completionRate: number;
     lastUpdated: number;
 
-export interface SerializedTutorialStatsData { totalTime: number,
+export interface SerializedTutorialStatsData { totalTime: number;
     averageStepTime: Array<[string, number]>;
     skipCount: Array<[string, number]>;
     failureCount: Array<[string, number]>;
@@ -36,7 +36,7 @@ export interface SerializedTutorialStatsData { totalTime: number,
     completionRate: number;
     lastUpdated: number;
 
-export interface TutorialStatistics { totalTutorials: number,
+export interface TutorialStatistics { totalTutorials: number;
     completedTutorials: number;
     completionRate: number;
     totalTime: number;
@@ -46,14 +46,14 @@ export interface TutorialStatistics { totalTutorials: number,
     currentTutorial: string | null;
     isRunning: boolean;
 
-export interface StepStatistics { index: number,
+export interface StepStatistics { index: number;
     title: string;
     averageTime: number;
     skipCount: number;
     failureCount: number;
     successRate: number;
 
-export interface TutorialProgressDetails { tutorialId: string,
+export interface TutorialProgressDetails { tutorialId: string;
     title: string;
     totalSteps: number;
     currentStep: number;
@@ -67,7 +67,7 @@ export interface TutorialProgressDetails { tutorialId: string,
     prerequisites?: string[];
     difficulty: DifficultyLevel;
 
-export interface LastAttemptInfo { timestamp: number,
+export interface LastAttemptInfo { timestamp: number;
     tutorialId: string;
     totalAttempts: number;
 
@@ -78,14 +78,14 @@ export type TutorialAction = 'start' | 'complete' | 'skip' | 'fail';
  */
 export class TutorialStatsManager {
     private loggingSystem: LoggingSystem;
-    private, stats: TutorialStatsData,
+    private, stats: TutorialStatsData;
     constructor(loggingSystem?: LoggingSystem) {
 
         this.loggingSystem = loggingSystem || LoggingSystem.getInstance();
         
         // チュートリアル統計
         this.stats = {
-            totalTime: 0,
+            totalTime: 0;
     averageStepTime: new Map<string, number>();
             skipCount: new Map<string, number>();
             failureCount: new Map<string, number>();
@@ -119,7 +119,7 @@ export class TutorialStatsManager {
                 const stats: SerializedTutorialStatsData = JSON.parse(saved,
                 this.stats = {
                     totalTime: stats.totalTime || 0,
-    averageStepTime: new Map<string, number>(stats.averageStepTime || []),
+    averageStepTime: new Map<string, number>(stats.averageStepTime || []);
                     skipCount: new Map<string, number>(stats.skipCount || []),
                     failureCount: new Map<string, number>(stats.failureCount || []),
                     attemptCount: new Map<string, number>(stats.attemptCount || []),
@@ -143,7 +143,7 @@ export class TutorialStatsManager {
     attemptCount: Array.from(this.stats.attemptCount.entries(
                 completionRate: this.stats.completionRate,
                 lastUpdated: Date.now()','
-            localStorage.setItem('awaputi_tutorial_stats', JSON.stringify(stats),
+            localStorage.setItem('awaputi_tutorial_stats', JSON.stringify(stats);
             this.stats.lastUpdated = Date.now() }
 
         } catch (error) { }
@@ -211,8 +211,8 @@ export class TutorialStatsManager {
         tutorialData: Map<string, TutorialData>, ;
         completedTutorials: Set<string>
     );
-        currentTutorialId: string | null);
-        currentTutorial: TutorialData | null;
+        currentTutorialId: string | null),
+        currentTutorial: TutorialData | null,
     ): TutorialStatistics { try {
             const totalTutorials = tutorialData.size,
             const completedCount = completedTutorials.size,
@@ -222,23 +222,23 @@ export class TutorialStatsManager {
                 completedTutorials: completedCount,
                 completionRate,
                 totalTime: this.stats.totalTime,
-                averageStepTimes: Object.fromEntries(this.stats.averageStepTime),
-                skipCounts: Object.fromEntries(this.stats.skipCount),
+                averageStepTimes: Object.fromEntries(this.stats.averageStepTime);
+                skipCounts: Object.fromEntries(this.stats.skipCount);
                 lastUpdated: this.stats.lastUpdated,
-    currentTutorial: currentTutorialId,;
+    currentTutorial: currentTutorialId,
                 isRunning: !!currentTutorial 
     } catch (error) { }
 
             this.loggingSystem.log(`統計取得エラー: ${(error, as, Error'}'.message}`, 'error', 'TutorialStatsManager');
             return { totalTutorials: 0,
                 completedTutorials: 0,
-    completionRate: 0 };
+    completionRate: 0 },
                 totalTime: 0 }
-                averageStepTimes: {};
-                skipCounts: {};
+                averageStepTimes: {},
+                skipCounts: {},
                 lastUpdated: Date.now();
                 currentTutorial: null,
-    isRunning: false;
+    isRunning: false,
             } }
     }
     
@@ -262,7 +262,7 @@ export class TutorialStatsManager {
                     averageTime: this.stats.averageStepTime.get(stepKey) || 0,
                     skipCount: this.stats.skipCount.get(stepKey) || 0,
                     failureCount: this.stats.failureCount.get(stepKey) || 0,
-    successRate: this.calculateStepSuccessRate(stepKey  };
+    successRate: this.calculateStepSuccessRate(stepKey  },
             
             return stats;
 
@@ -283,13 +283,13 @@ export class TutorialStatsManager {
      * @returns 進捗詳細
      */
     getTutorialProgressDetails(;
-        tutorialId: string;
-        tutorial: TutorialData;
-        completedTutorials: Set<string>;
-        currentTutorialId: string | null;
+        tutorialId: string,
+        tutorial: TutorialData,
+        completedTutorials: Set<string>,
+        currentTutorialId: string | null,
         currentStep: number);
-        currentTutorial: TutorialData | null);
-        pausedTime: number;
+        currentTutorial: TutorialData | null),
+        pausedTime: number,
     ): TutorialProgressDetails | null { try {
             if (!tutorial) {
     
@@ -307,8 +307,8 @@ export class TutorialStatsManager {
                 isCompleted,
                 isRunning: tutorialId === currentTutorialId && !!currentTutorial,
                 isPaused: !!pausedTime,
-    completionRate: this.calculateCompletionRate(tutorialId, tutorial, completedTutorials),
-                estimatedTimeRemaining: this.calculateEstimatedTimeRemaining(tutorialId, tutorial, currentStep),
+    completionRate: this.calculateCompletionRate(tutorialId, tutorial, completedTutorials);
+                estimatedTimeRemaining: this.calculateEstimatedTimeRemaining(tutorialId, tutorial, currentStep);
                 stepStatistics: stepStats,
                 lastAttempt: this.getLastAttemptInfo(tutorialId,
                 prerequisites: tutorial.prerequisites,' };'
@@ -341,7 +341,7 @@ export class TutorialStatsManager {
                 const, attempts = this.stats.attemptCount.get(stepKey} || 0;
                 const, failures = this.stats.failureCount.get(stepKey} || 0;
                  }
-                if (attempts > 0 && attempts > failures}) { completedSteps++ }
+                if (attempts > 0 && attempts > failures} { completedSteps++ }
             };
             
             return (completedSteps / tutorial.steps.length) * 100;
@@ -369,7 +369,7 @@ export class TutorialStatsManager {
             remainingSteps.forEach(step => { ) }
                 const stepKey = `${tutorialId}_${ step.id}`;
                 const averageTime = this.stats.averageStepTime.get(stepKey}
-                if (averageTime && averageTime > 0}) { totalEstimate += averageTime } else {  // 平均時間がない場合はデフォルト推定時間を使用
+                if (averageTime && averageTime > 0} { totalEstimate += averageTime } else {  // 平均時間がない場合はデフォルト推定時間を使用
                     const estimatedTime = step.estimatedTime || 60000, // 1分 }
                     totalEstimate += estimatedTime; }
 };
@@ -417,7 +417,7 @@ export class TutorialStatsManager {
 
             this.loggingSystem.log(`最後の試行情報取得エラー: ${(error, as, Error'}'.message}`, 'error', 'TutorialStatsManager');
             return { timestamp: Date.now(
-                tutorialId: tutorialId,;
+                tutorialId: tutorialId,
                 totalAttempts: 0 
     }
     }
@@ -446,7 +446,7 @@ export class TutorialStatsManager {
                 this.stats.failureCount.set(failKey, currentFails + 1);
             }
 
-            this.loggingSystem.log(`チュートリアル試行を記録: ${tutorialId} - ${action}`, 'info', 'TutorialStatsManager'});
+            this.loggingSystem.log(`チュートリアル試行を記録: ${tutorialId} - ${action}`, 'info', 'TutorialStatsManager'};
 
         } catch (error) { }
 
@@ -466,7 +466,7 @@ export class TutorialStatsManager {
                 attemptCount: new Map<string, number>(),
                 completionRate: 0,
                 lastUpdated: Date.now()','
-            localStorage.removeItem('awaputi_tutorial_stats'),
+            localStorage.removeItem('awaputi_tutorial_stats');
             this.loggingSystem.log('統計がリセットされました', 'info', 'TutorialStatsManager) }'
 
         } catch (error) { }

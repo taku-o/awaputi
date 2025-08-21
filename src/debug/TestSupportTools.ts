@@ -38,8 +38,7 @@ export class TestSupportTools extends BaseComponent { private gameEngine: GameEn
             this.components.set('executionManager', new TestExecutionManager(this)),
             this.components.set('mockDataManager', new MockDataManager(this)),
             this.components.set('benchmarkManager', new BenchmarkManager(this)),
-            this.components.set('resultProcessor', new TestResultProcessor(this),
-
+            this.components.set('resultProcessor', new TestResultProcessor(this);
             // 各コンポーネントを初期化
             for(const [name, component] of this.components) {
                 if (component.initialize) {
@@ -49,7 +48,7 @@ export class TestSupportTools extends BaseComponent { private gameEngine: GameEn
 ';'
 
             this.initialized = true;'} catch (error) {'
-            this._handleError('Failed to initialize TestSupportTools', error),
+            this._handleError('Failed to initialize TestSupportTools', error);
             throw error }
     }
 
@@ -57,7 +56,7 @@ export class TestSupportTools extends BaseComponent { private gameEngine: GameEn
         this.testEnvironment = {}
 
     private _handleError(message: string, error: any): void {
-        console.error(`[TestSupportTools] ${message}:`, error});
+        console.error(`[TestSupportTools] ${message}:`, error};
     }
 
     public getComponent(name: string): TestComponent | undefined { return this.components.get(name) }

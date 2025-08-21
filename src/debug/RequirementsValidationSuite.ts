@@ -3,7 +3,7 @@
  * デバッグツール強化の全要件が適切に実装されているかを検証
  */
 
-interface ValidationResult { category: string,
+interface ValidationResult { category: string;
     id: string;
     name: string;
     description: string;
@@ -13,7 +13,7 @@ interface ValidationResult { category: string,
     timestamp: string;
     error?: Error;
 
-interface Requirement { id: string,
+interface Requirement { id: string;
     name: string;
     description: string;
     validator: () => Promise<string> | string 
@@ -21,7 +21,7 @@ interface Requirement { id: string,
 
 interface RequirementCategories { [key: string]: string;
 
-interface Requirements { coreInfrastructure: Requirement[],
+interface Requirements { coreInfrastructure: Requirement[];
     performanceMonitoring: Requirement[];
     developerConsole: Requirement[];
     errorReporting: Requirement[];
@@ -30,33 +30,33 @@ interface Requirements { coreInfrastructure: Requirement[],
     uiUxIntegration: Requirement[];
 
 interface ValidationSummary { summary: {
-        tota,l: number,
-        passed: number,
-        failed: number,
-        successRate: number,
-    duration: number,;
+        tota,l: number;
+        passed: number;
+        failed: number;
+        successRate: number;
+    duration: number;
     categoryStats: { [category: string]: {
-            total: number,
-            passed: number,
-    failed: number,;
-    results: ValidationResult[],
-    timestamp: string,
+            total: number;
+            passed: number;
+    failed: number;
+    results: ValidationResult[];
+    timestamp: string;
 }
 
-interface ValidationStatus { running: boolean,
+interface ValidationStatus { running: boolean;
     startTime: number | null;
     resultsCount: number;
 
 interface GameEngine { enhancedDebugInterface?: { }
-        constructor: { name: string,
-        show: () => void,
-        hide: () => void,
-        switchPanel: (panel: string) => void,
-        createSettingsModal: () => void,
+        constructor: { name: string;
+        show: () => void;
+        hide: () => void;
+        switchPanel: (panel: string) => void;
+        createSettingsModal: () => void;
         panelManager?: any;
         keyboardShortcutManager?: { registerShortcut: (shortcut: any) => void 
     };
-        responsiveLayout?: { handleResize: () => void,
+        responsiveLayout?: { handleResize: () => void;
             touchDevice?: boolean;;
         themeManager?: { setTheme: (theme: string) => void 
     };
@@ -84,10 +84,10 @@ export class RequirementsValidationSuite {
         // 要件カテゴリ
         this.requirementCategories = {''
             coreInfrastructure: 'Core Infrastructure';
-            performanceMonitoring: 'Performance Monitoring',
-            developerConsole: 'Developer Console',
-            errorReporting: 'Error Reporting',
-            testSupport: 'Test Support',
+            performanceMonitoring: 'Performance Monitoring';
+            developerConsole: 'Developer Console';
+            errorReporting: 'Error Reporting';
+            testSupport: 'Test Support';
             documentation: 'Documentation' }
 
             uiUxIntegration: 'UI/UX Integration' 
@@ -218,8 +218,8 @@ export class RequirementsValidationSuite {
                     validator: () => this.validateMobileSupport('''
                     id: '7.4',
                     name: 'Performance Optimization',';'
-                    description: 'Lazy loading and memory optimization'),
-                    validator: () => this.validateUIPerformance(),
+                    description: 'Lazy loading and memory optimization');
+                    validator: () => this.validateUIPerformance();
                 }
             ];
         }
@@ -261,33 +261,33 @@ export class RequirementsValidationSuite {
     private async validateCategory(category: string, requirements: Requirement[]): Promise<void> { console.log(`Validating, category: ${this.requirementCategories[category])`},
 
         for (const requirement of requirements} { }
-            await this.validateRequirement(category, requirement});
+            await this.validateRequirement(category, requirement};
         }
     }
 
     /**
      * 個別要件を検証
      */
-    private async validateRequirement(category: string, requirement: Requirement): Promise<ValidationResult> { const startTime = performance.now(),
+    private async validateRequirement(category: string, requirement: Requirement): Promise<ValidationResult> { const startTime = performance.now();
         let result: ValidationResult,
         try {
-            const validationResult = await requirement.validator(),
+            const validationResult = await requirement.validator();
             const endTime = performance.now('''
                 status: 'passed),'
                 message: validationResult,
     duration: duration),
                 timestamp: new Date().toISOString(  }
 
-            console.log(`✓ ${requirement.id} ${requirement.name}: ${validationResult} (${duration.toFixed(2})ms)`);
+            console.log(`✓ ${requirement.id} ${requirement.name}: ${validationResult} (${duration.toFixed(2}ms)`);
 
         } catch (error) { const endTime = performance.now()','
                 status: 'failed'),
-                message: error instanceof Error ? error.message : String(error),
+                message: error instanceof Error ? error.message : String(error);
                 duration: duration,
-                timestamp: new Date().toISOString(),
+                timestamp: new Date().toISOString();
     error: error instanceof Error ? error : new Error(String(error  }
 
-            console.error(`✗ ${requirement.id} ${requirement.name}: ${result.message} (${duration.toFixed(2})ms)`);
+            console.error(`✗ ${requirement.id} ${requirement.name}: ${result.message} (${duration.toFixed(2}ms)`);
         }
 
         this.validationResults.push(result);
@@ -490,9 +490,9 @@ export class RequirementsValidationSuite {
         if (impact > 5) {
     
 }
-            throw new Error(`Performance, impact too, high: ${impact.toFixed(2})% (threshold: 5%)` }
+            throw new Error(`Performance, impact too, high: ${impact.toFixed(2}% (threshold: 5%)` }
         
-        return `Performance impact: ${impact.toFixed(2})% (acceptable)`;
+        return `Performance impact: ${impact.toFixed(2}% (acceptable)`,
     }
 
     /**
@@ -739,7 +739,7 @@ export class RequirementsValidationSuite {
      */ : undefined
     private async simulateWork(duration: number): Promise<void> { const endTime = performance.now() + duration,
         while (performance.now() < endTime) {
-            Math.random(),
+            Math.random();
             await new Promise(resolve => setTimeout(resolve, 1) }
 }
 
@@ -752,7 +752,7 @@ export class RequirementsValidationSuite {
         const categoryStats: { [category: string]: { total: number, passed: number,, failed: number, = {}
         for (const category of Object.values(this.requirementCategories) {
 
-            const categoryResults = this.validationResults.filter(r => r.category === category),
+            const categoryResults = this.validationResults.filter(r => r.category === category);
             categoryStats[category] = {'
                 total: categoryResults.length,
                 passed: categoryResults.filter(r => r.status === 'passed').length }
@@ -764,8 +764,8 @@ export class RequirementsValidationSuite {
                 total,
                 passed,
                 failed,
-                successRate: (passed / total) * 100 };
-                duration: duration,;
+                successRate: (passed / total) * 100 },
+                duration: duration,
             categoryStats,
             results: this.validationResults,
     timestamp: new Date().toISOString(),
@@ -782,9 +782,8 @@ export class RequirementsValidationSuite {
         const a = document.createElement('a);'
         a.href = url;
         a.download = `requirements-validation-results-${Date.now()).json`,
-        a.click(),
-        
-        URL.revokeObjectURL(url),
+        a.click();
+        URL.revokeObjectURL(url);
         return summary }
 
     /**

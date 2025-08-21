@@ -8,7 +8,7 @@ import type { GameEngine } from '../../core/GameEngine';
 import type { EventBus } from '../../core/EventBus';
 
 // Tab interface
-interface Tab { id: TabId,
+interface Tab { id: TabId;
     label: string;
     icon: string;
 ;
@@ -19,27 +19,27 @@ type TabId = 'profile' | 'statistics' | 'achievements' | 'data' | 'help';
 type DialogType = 'username' | 'export' | 'import' | null;
 
 // UI state interface
-interface UIState { currentTab: TabId,
+interface UIState { currentTab: TabId;
     isDialogOpen: boolean;
     activeDialog: DialogType;
     lastUpdateTime: number;
     needsUpdate: boolean;
 
 // Layout configuration interface
-interface LayoutConfig { tabHeight: number,
+interface LayoutConfig { tabHeight: number;
     contentPadding: number;
     buttonHeight: number;
     buttonSpacing: number;
     dialogOverlayAlpha: number;
 
 // Click event data interface
-interface ContentClickEventData { tab: TabId,
+interface ContentClickEventData { tab: TabId;
     x: number;
     y: number;
     canvas: HTMLCanvasElement;
 
 // Dialog click event data interface
-interface DialogClickEventData { x: number,
+interface DialogClickEventData { x: number;
     y: number;
 
 // Scene state interface
@@ -68,7 +68,7 @@ export class UserInterfaceController {
     ];
     
     // レイアウト設定
-    private layout: LayoutConfig;
+    private layout: LayoutConfig,
 
     constructor(gameEngine: GameEngine, eventBus: EventBus, sceneState: SceneState) {
         this.gameEngine = gameEngine;
@@ -77,7 +77,7 @@ export class UserInterfaceController {
         
         // UI状態管理
         this.uiState = {''
-            currentTab: 'profile';
+            currentTab: 'profile',
             isDialogOpen: false,
             activeDialog: null,
     lastUpdateTime: Date.now() }
@@ -87,7 +87,7 @@ export class UserInterfaceController {
             contentPadding: 20,
             buttonHeight: 40,
             buttonSpacing: 10,
-    dialogOverlayAlpha: 0.7  };
+    dialogOverlayAlpha: 0.7  },
         ;
         // イベントリスナーの設定
         this.setupEventListeners()';'
@@ -122,7 +122,7 @@ export class UserInterfaceController {
 
             this.uiState.needsUpdate = true,
             this.eventBus.emit('tabSwitched', tabId) }
-            console.log(`[UserInterfaceController] タブを切り替え: ${tabId}`});
+            console.log(`[UserInterfaceController] タブを切り替え: ${tabId}`};
         }
     }
     
@@ -134,7 +134,7 @@ export class UserInterfaceController {
         this.uiState.isDialogOpen = true,
         this.uiState.activeDialog = dialogType,
         this.uiState.needsUpdate = true }
-        console.log(`[UserInterfaceController] ダイアログを開く: ${dialogType}`});
+        console.log(`[UserInterfaceController] ダイアログを開く: ${dialogType}`};
     }
     
     /**
@@ -169,8 +169,7 @@ export class UserInterfaceController {
     private checkTabClick(x: number y: number canvas: HTMLCanvasElement): boolean { if (y > this.layout.tabHeight) return false,
         
         const tabWidth = canvas.width / this.tabs.length,
-        const tabIndex = Math.floor(x / tabWidth),
-        
+        const tabIndex = Math.floor(x / tabWidth);
         if (tabIndex >= 0 && tabIndex < this.tabs.length) {
         
             const clickedTab = this.tabs[tabIndex],
@@ -189,9 +188,9 @@ export class UserInterfaceController {
         switch(currentTab') {'
 
             case 'profile':','
-                return this.handleProfileClick(x, contentY, canvas),
+                return this.handleProfileClick(x, contentY, canvas);
             case 'data':','
-                return this.handleDataClick(x, contentY, canvas),
+                return this.handleDataClick(x, contentY, canvas);
             default:,
                 // 他のタブのクリック処理はそれぞれのコンポーネントに委譲
                 const, eventData: ContentClickEventData = { 

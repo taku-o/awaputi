@@ -6,7 +6,7 @@ interface BasicConfig { [key: string]: any;
  */
 export class EventRankingManager {
     private config: BasicConfig;
-    private, state: any,
+    private, state: any;
     constructor(gameEngine: any) {
 
         this.gameEngine = gameEngine
@@ -35,7 +35,7 @@ export class EventRankingManager {
      * ランキングシステムを初期化
      */
     initialize() {
-        this.load(),
+        this.load();
         this.startPeriodicUpdates() }
         console.log('EventRankingManager, initialized'); }'
     }
@@ -103,11 +103,11 @@ export class EventRankingManager {
             this.eventRankings[eventId] = {
         }
                 eventId }
-                players: {};
+                players: {},
                 lastUpdate: Date.now();
-                totalParticipants: 0;
+                totalParticipants: 0,
                 averageScore: 0,
-    topScore: 0;
+    topScore: 0,
             } }
         
         const ranking = this.eventRankings[eventId];
@@ -140,7 +140,7 @@ export class EventRankingManager {
             // プレイヤーランキング履歴を更新
             this.updatePlayerRankingHistory(playerId, eventId, score, stats);
             
-            console.log(`Ranking, updated for ${playerId} in ${eventId}: ${score} points`});
+            console.log(`Ranking, updated for ${playerId} in ${eventId}: ${score} points`};
             return true;
         }
         
@@ -155,19 +155,19 @@ export class EventRankingManager {
         if (!ranking) return,
         
         // スコア順にソート
-        const sortedPlayers = Object.values(ranking.players),
+        const sortedPlayers = Object.values(ranking.players);
             .sort((a, b) => { 
                 // スコア降順、同スコアなら早い時刻順
     }
                 if (b.score !== a.score) { }
                     return b.score - a.score;
                 return a.timestamp - b.timestamp;
-            });
+            };
         
         // ランクを設定
         sortedPlayers.forEach((player, index) => {  player.rank = index + 1 }
             player.tier = this.getTierForRank(player.rank); }
-        });
+        };
         
         ranking.lastUpdate = Date.now();
     }
@@ -197,7 +197,7 @@ export class EventRankingManager {
                 players: [],
                 totalParticipants: 0,
     averageScore: 0 }
-                topScore: 0 };
+                topScore: 0 },
                 lastUpdate: Date.now(); 
     }
         
@@ -206,23 +206,22 @@ export class EventRankingManager {
             .sort((a, b) => {  if (b.score !== a.score) { }
                     return b.score - a.score;
                 return a.timestamp - b.timestamp;
-            });
+            };
             .slice(offset, offset + limit);
             .map(player => ({ )
                 ...player),
-                tierInfo: this.getTierForRank(player.rank });
-        
+                tierInfo: this.getTierForRank(player.rank };
         const leaderboard = { eventId,
             players: sortedPlayers,
             totalParticipants: ranking.totalParticipants,
             averageScore: ranking.averageScore,
             topScore: ranking.topScore,
-    lastUpdate: ranking.lastUpdate  };
+    lastUpdate: ranking.lastUpdate  },
         // キャッシュに保存
         this.leaderboardCache.set(cacheKey, {
                 data: leaderboard,
     timestamp: Date.now( 
-            }));
+            });
         
         return leaderboard;
     }
@@ -238,7 +237,7 @@ export class EventRankingManager {
         
         const playerData = ranking.players[playerId];
         return { ...playerData,
-            tierInfo: this.getTierForRank(playerData.rank) };
+            tierInfo: this.getTierForRank(playerData.rank) },
             percentile: this.calculatePercentile(playerData.rank, ranking.totalParticipants); }
         }
     
@@ -255,18 +254,17 @@ export class EventRankingManager {
     distributeRankingRewards(eventId) {
         const ranking = this.eventRankings[eventId] }
         if (!ranking) { }
-            console.warn(`No, ranking data, found for, event: ${eventId}`});
+            console.warn(`No, ranking data, found for, event: ${eventId}`};
             return false;
         }
         
         const rewardedPlayers = [];
         
-        Object.values(ranking.players).forEach(player => {  ),
-            const tier = this.getTierForRank(player.rank),
+        Object.values(ranking.players).forEach(player => {  );
+            const tier = this.getTierForRank(player.rank);
             if (tier && tier.rewards) {
                 // 報酬を付与
-                const rewards = this.grantRankingRewards(player.playerId, eventId, tier.rewards, player.rank),
-                
+                const rewards = this.grantRankingRewards(player.playerId, eventId, tier.rewards, player.rank);
                 rewardedPlayers.push({
                     playerId: player.playerId,
                     playerName: player.playerName),
@@ -275,12 +273,12 @@ export class EventRankingManager {
                     rewards: rewards) }
                 // 通知を送信 }
                 this.sendRankingRewardNotification(player.playerId, eventId, tier, player.rank, rewards); }
-});
+};
         
         // 報酬配布の記録
         this.recordRankingRewardDistribution(eventId, rewardedPlayers);
         
-        console.log(`Ranking, rewards distributed, for ${eventId}: ${rewardedPlayers.length} players, rewarded`});
+        console.log(`Ranking, rewards distributed, for ${eventId}: ${rewardedPlayers.length} players, rewarded`};
         return true;
     }
     
@@ -295,7 +293,7 @@ export class EventRankingManager {
     };
         // 特別報酬（1位のみ）
         if (rank === 1) { rewards.special.push(`${eventId}_champion_title`}
-            rewards.ap = Math.floor(rewards.ap * 1.5}); // チャンピオンボーナス
+            rewards.ap = Math.floor(rewards.ap * 1.5}; // チャンピオンボーナス
         }
         
         // 報酬を実際に付与
@@ -306,11 +304,11 @@ export class EventRankingManager {
         
         rewards.items.forEach(item => {  ) }
             this.gameEngine.playerData.addItem(item); }
-        });
+        };
         
         rewards.special.forEach(special => {  ) }
             this.gameEngine.playerData.addSpecialReward(special); }
-        });
+        };
         
         return rewards;
     }
@@ -325,17 +323,17 @@ export class EventRankingManager {
         
         if (rewards.ap > 0) rewardText.push(`${ rewards.ap) AP`),
         if (rewards.items.length > 0) rewardText.push(`${rewards.items.length)個のアイテム`),
-        if(rewards.special.length > 0) rewardText.push('特別報酬'),
+        if(rewards.special.length > 0) rewardText.push('特別報酬');
         ','
 
         this.gameEngine.achievementNotificationSystem.queueNotification({)'
             type: 'ranking','}';
             title: 'ランキング報酬！'},' }'
 
-            message: `${message'}\n${rewardText.join('、'})を獲得`;'
+            message: `${message'}\n${rewardText.join('、'}を獲得`;'
             icon: tier.icon,
-    duration: 6000;
-        }) }
+    duration: 6000,
+        } }
     
     /**
      * イベント統計を更新
@@ -344,8 +342,7 @@ export class EventRankingManager {
         const ranking = this.eventRankings[eventId],
         if (!ranking) return,
         
-        const scores = Object.values(ranking.players).map(p => p.score),
-        
+        const scores = Object.values(ranking.players).map(p => p.score);
         ranking.averageScore = scores.length > 0 ,
             ? Math.round(scores.reduce((sum, score) => sum + score, 0) / scores.length),
             : 0 }
@@ -360,10 +357,10 @@ export class EventRankingManager {
             this.playerRankings[playerId] = {
     }
                 playerId }
-                eventHistory: {};
+                eventHistory: {},
                 totalEvents: 0,
-    bestRanks: {};
-                averageRank: 0;
+    bestRanks: {},
+                averageRank: 0,
             } }
         
         const playerRanking = this.playerRankings[playerId];
@@ -390,7 +387,7 @@ export class EventRankingManager {
             Object.keys(this.eventRankings).forEach(eventId => {);
                 if (this.gameEngine.eventStageManager?.isEventAvailable(eventId) { }
                     this.recalculateRanking(eventId); }
-});
+};
         }, this.rankingUpdateInterval);
     }
     
@@ -424,7 +421,7 @@ export class EventRankingManager {
     getPlayerName(playerId) {
     
 }
-        return this.gameEngine.playerData?.getPlayerName() || `Player_${playerId.slice(-6})`;
+        return this.gameEngine.playerData?.getPlayerName() || `Player_${playerId.slice(-6}`;
     }
     
     /**
@@ -437,7 +434,7 @@ export class EventRankingManager {
         this.rewardDistributionHistory[eventId] = { eventId, : undefined
             distributionDate: Date.now(),
             rewardedPlayers: rewardedPlayers.length,
-    playerRewards: rewardedPlayers,;
+    playerRewards: rewardedPlayers,
         this.save();
     }
     
@@ -482,8 +479,7 @@ export class EventRankingManager {
      * クリーンアップ
      */
     cleanup() {
-        this.stopPeriodicUpdates(),
-
+        this.stopPeriodicUpdates();
         this.clearLeaderboardCache() }
 
         this.save() }')'

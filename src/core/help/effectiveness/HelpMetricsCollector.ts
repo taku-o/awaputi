@@ -4,7 +4,7 @@
  */
 
 // 型定義
-export interface HelpEffectivenessAnalyzer { gameEngine: GameEngine,
+export interface HelpEffectivenessAnalyzer { gameEngine: GameEngine;
     loggingSystem: LoggingSystem;
     helpAnalytics?: HelpAnalytics;
     helpFeedbackSystem?: HelpFeedbackSystem;
@@ -25,7 +25,7 @@ export interface AnalyticsSession { pageViews?: PageView[],
     [key: string]: any;
 export interface PageView { timeSpent?: number,
     [key: string]: any;
-export interface SearchQuery { resultCount: number,
+export interface SearchQuery { resultCount: number;
     [key: string]: any;
 export interface AnalyticsReport { data?: AnalyticsData,
     error?: any;
@@ -38,7 +38,7 @@ export interface AnalyticsOverview { totalHelpSessions?: number,
 export interface TopContent { categories?: any[],
     topics?: any[];
     searchQueries?: any[];
-export interface FeedbackData { helpful: boolean | null,
+export interface FeedbackData { helpful: boolean | null;
     [key: string]: any;
 export interface FeedbackStatistics { averageRating?: number,
     helpfulPercentage?: number;
@@ -47,34 +47,34 @@ export interface FeedbackStatistics { averageRating?: number,
     topRatedContent?: any[];
     lowRatedContent?: any[];
     commonCategories?: Map<string, number> }
-export interface CollectorConfig { minDataThreshold: number,
+export interface CollectorConfig { minDataThreshold: number;
     dataCollectionInterval: number;
-export interface CollectionState { isActive: boolean,
+export interface CollectionState { isActive: boolean;
     lastCollectionTime: number;
     collectionQueue: any[];
-export interface RawData { analytics: AnalyticsReport | null,
+export interface RawData { analytics: AnalyticsReport | null;
     feedback: FeedbackStatistics | null;
     sessions: AnalyticsSession[];
     interactions: [string, FeedbackData][];
     timestamp: number;
-export interface UsageAnalysis { summary: UsageSummary,
+export interface UsageAnalysis { summary: UsageSummary;
     details: UsageDetails;
     insights: Insight[];
-export interface UsageSummary { totalSessions: number,
+export interface UsageSummary { totalSessions: number;
     uniqueUsers: number;
     averageSessionDuration: number;
     pageViewsPerSession: number;
     searchUsageRate: number;
     returnUserRate: number;
-export interface UsageDetails { topCategories: any[],
+export interface UsageDetails { topCategories: any[];
     topTopics: any[];
     searchQueries: any[];
     sessionDistribution: SessionDistribution;
     usagePatterns: UsagePatterns;
-export interface EngagementAnalysis { summary: EngagementSummary,
+export interface EngagementAnalysis { summary: EngagementSummary;
     details: EngagementDetails;
     insights: Insight[];
-export interface EngagementSummary { averageTimePerTopic: number,
+export interface EngagementSummary { averageTimePerTopic: number;
     interactionRate: number;
     searchSuccessRate: number;
     navigationEfficiency: number;
@@ -84,39 +84,39 @@ export interface EngagementDetails { topicEngagement: Record<string, any>,
     navigationPatterns: Record<string, any>;
     dropoffPoints: any[];
     peakUsageTimes: Record<string, any> }
-export interface SatisfactionAnalysis { summary: SatisfactionSummary,
+export interface SatisfactionAnalysis { summary: SatisfactionSummary;
     details: SatisfactionDetails;
     insights: Insight[];
-export interface SatisfactionSummary { averageRating: number,
+export interface SatisfactionSummary { averageRating: number;
     helpfulnessRate: number;
     totalFeedbacks: number;
     ratingDistribution: Record<string, number>;
     sentimentScore: number;
-export interface SatisfactionDetails { topRatedContent: any[],
+export interface SatisfactionDetails { topRatedContent: any[];
     lowRatedContent: any[];
     feedbackCategories: Map<string, number>;
     improvementAreas: any[];
     userSentiments: Record<string, any> }
 export interface SessionDistribution { byDuration: {
-        shor,t: number,
-        medium: number,
-    long: number,;
-    byPageViews: { few: number,
-        moderate: number,
-    many: number,;
+        shor,t: number;
+        medium: number;
+    long: number;
+    byPageViews: { few: number;
+        moderate: number;
+    many: number;
     byTime: Map<number, number> }
 
 export interface UsagePatterns { peakHours: Map<number, number>,
     commonJourneys: Map<string, number>;
     entryPoints: Map<string, number> }
-export interface Insight { type: string,
+export interface Insight { type: string;
     message: string;
     severity: 'low' | 'medium' | 'high'
             }
-export interface DataVolume { sessions: number,
+export interface DataVolume { sessions: number;
     feedback: number;
     analytics_events: number;
-export interface CollectionStats { isActive: boolean,
+export interface CollectionStats { isActive: boolean;
     lastCollectionTime: number;
     queueSize: number;
     config: CollectorConfig;
@@ -140,8 +140,8 @@ export class HelpMetricsCollector {
     },
         
         // メトリクス収集状態
-        this.collectionState = { isActive: false,
-            lastCollectionTime: 0,
+        this.collectionState = { isActive: false;
+            lastCollectionTime: 0;
     collectionQueue: [] 
  };
         console.log('[HelpMetricsCollector] Component, initialized';
@@ -157,7 +157,7 @@ export class HelpMetricsCollector {
             feedback: null,
             sessions: [],
             interactions: [],
-    timestamp: Date.now( };
+    timestamp: Date.now( },
         ';'
         try { // アナリティクスデータの収集
             if (this.helpEffectivenessAnalyzer.helpAnalytics) {
@@ -171,11 +171,11 @@ export class HelpMetricsCollector {
                 rawData.interactions = Array.from(this.helpEffectivenessAnalyzer.helpFeedbackSystem.feedbacks.entries()); }
             }
 
-            this.loggingSystem.debug('HelpMetricsCollector', `Raw data collected for period: ${period}`});
+            this.loggingSystem.debug('HelpMetricsCollector', `Raw data collected for period: ${period}`};
             return rawData;
 
         } catch (error) {
-            this.loggingSystem.error('HelpMetricsCollector', 'Failed to collect raw data', error),
+            this.loggingSystem.error('HelpMetricsCollector', 'Failed to collect raw data', error);
             throw error }
     }
     
@@ -186,9 +186,9 @@ export class HelpMetricsCollector {
      */
     analyzeUsageMetrics(rawData: RawData): UsageAnalysis { try {
             const analysis: UsageAnalysis = { }
-                summary: {} as UsageSummary;
-                details: {} as UsageDetails;
-                insights: [];
+                summary: {} as UsageSummary,
+                details: {} as UsageDetails,
+                insights: [],
             },
             
             if (rawData.analytics && rawData.analytics.data) { const analyticsData = rawData.analytics.data,
@@ -208,7 +208,7 @@ export class HelpMetricsCollector {
                     topTopics: analyticsData.topContent?.topics || [], : undefined
                     searchQueries: analyticsData.topContent?.searchQueries || [], : undefined
                     sessionDistribution: this.analyzeSessionDistribution(rawData.sessions,
-    usagePatterns: this.analyzeUsagePatterns(rawData.sessions  };
+    usagePatterns: this.analyzeUsagePatterns(rawData.sessions  },
                 
                 // インサイト生成
                 analysis.insights = this.generateUsageInsights(analysis.summary, analysis.details);
@@ -218,7 +218,7 @@ export class HelpMetricsCollector {
 
         } catch (error) {
             this.loggingSystem.error('HelpMetricsCollector', 'Failed to analyze usage metrics', error) }
-            return { summary: {} as UsageSummary, details: {} as UsageDetails, insights: [] };
+            return { summary: {} as UsageSummary, details: {} as UsageDetails, insights: [] },
     
     /**
      * エンゲージメント指標の分析
@@ -227,14 +227,14 @@ export class HelpMetricsCollector {
      */
     analyzeEngagementMetrics(rawData: RawData): EngagementAnalysis { try {
             const analysis: EngagementAnalysis = { }
-                summary: {} as EngagementSummary;
-                details: {} as EngagementDetails;
-                insights: [];
+                summary: {} as EngagementSummary,
+                details: {} as EngagementDetails,
+                insights: [],
             },
             
             // エンゲージメント指標の計算
             analysis.summary = { averageTimePerTopic: this.calculateAverageTimePerTopic(rawData.sessions,
-                interactionRate: this.calculateInteractionRate(rawData.sessions, rawData.interactions),
+                interactionRate: this.calculateInteractionRate(rawData.sessions, rawData.interactions);
                 searchSuccessRate: this.calculateSearchSuccessRate(rawData.sessions),
                 navigationEfficiency: this.calculateNavigationEfficiency(rawData.sessions,
     contentCompletionRate: this.calculateContentCompletionRate(rawData.sessions  }
@@ -244,7 +244,7 @@ export class HelpMetricsCollector {
                 searchBehavior: this.analyzeSearchBehavior(rawData.sessions),
                 navigationPatterns: this.analyzeNavigationPatterns(rawData.sessions),
                 dropoffPoints: this.identifyDropoffPoints(rawData.sessions,
-    peakUsageTimes: this.analyzePeakUsageTimes(rawData.sessions  };
+    peakUsageTimes: this.analyzePeakUsageTimes(rawData.sessions  },
             
             // エンゲージメントインサイト
             analysis.insights = this.generateEngagementInsights(analysis.summary, analysis.details);
@@ -253,7 +253,7 @@ export class HelpMetricsCollector {
 
         } catch (error) {
             this.loggingSystem.error('HelpMetricsCollector', 'Failed to analyze engagement metrics', error) }
-            return { summary: {} as EngagementSummary, details: {} as EngagementDetails, insights: [] };
+            return { summary: {} as EngagementSummary, details: {} as EngagementDetails, insights: [] },
     
     /**
      * 満足度指標の分析
@@ -262,9 +262,9 @@ export class HelpMetricsCollector {
      */
     analyzeSatisfactionMetrics(rawData: RawData): SatisfactionAnalysis { try {
             const analysis: SatisfactionAnalysis = { }
-                summary: {} as SatisfactionSummary;
-                details: {} as SatisfactionDetails;
-                insights: [];
+                summary: {} as SatisfactionSummary,
+                details: {} as SatisfactionDetails,
+                insights: [],
             },
             
             if (rawData.feedback) {
@@ -274,9 +274,9 @@ export class HelpMetricsCollector {
                     averageRating: rawData.feedback.averageRating || 0,
     helpfulnessRate: rawData.feedback.helpfulPercentage || 0
 }
-                    totalFeedbacks: rawData.feedback.totalFeedbacks || 0;
+                    totalFeedbacks: rawData.feedback.totalFeedbacks || 0,
 }
-                    ratingDistribution: rawData.feedback.ratingDistribution || {};
+                    ratingDistribution: rawData.feedback.ratingDistribution || {},
                     sentimentScore: this.calculateSentimentScore(rawData.interactions);
                 };
                 
@@ -285,7 +285,7 @@ export class HelpMetricsCollector {
                     lowRatedContent: rawData.feedback.lowRatedContent || [],
                     feedbackCategories: rawData.feedback.commonCategories || new Map(),
                     improvementAreas: this.identifyImprovementAreas(rawData.interactions,
-    userSentiments: this.analyzeUserSentiments(rawData.interactions  };
+    userSentiments: this.analyzeUserSentiments(rawData.interactions  },
                 
                 // 満足度インサイト
                 analysis.insights = this.generateSatisfactionInsights(analysis.summary, analysis.details);
@@ -295,7 +295,7 @@ export class HelpMetricsCollector {
 
         } catch (error) {
             this.loggingSystem.error('HelpMetricsCollector', 'Failed to analyze satisfaction metrics', error) }
-            return { summary: {} as SatisfactionSummary, details: {} as SatisfactionDetails, insights: [] };
+            return { summary: {} as SatisfactionSummary, details: {} as SatisfactionDetails, insights: [] },
     
     /**
      * データ品質の検証
@@ -322,7 +322,7 @@ export class HelpMetricsCollector {
             return true;
 
         } catch (error) {
-            this.loggingSystem.error('HelpMetricsCollector', 'Data quality validation failed', error),
+            this.loggingSystem.error('HelpMetricsCollector', 'Data quality validation failed', error);
             return false,
     
     /**
@@ -352,7 +352,7 @@ export class HelpMetricsCollector {
      */
     calculateDataVolume(rawData: RawData): DataVolume { return { sessions: rawData.sessions ? rawData.sessions.length : 0,
             feedback: rawData.interactions ? rawData.interactions.length : 0,
-    analytics_events: rawData.analytics ? undefined : undefined,;
+    analytics_events: rawData.analytics ? undefined : undefined,
                 (rawData.analytics.data?.overview?.totalPageViews || 0) : 0 
         } }
     
@@ -361,9 +361,8 @@ export class HelpMetricsCollector {
      * @param rawData - 生データ
      * @returns 信頼度 (0-1)
      */
-    calculateConfidenceLevel(rawData: RawData): number { const dataQuality = this.assessDataQuality(rawData),
-        const dataVolume = this.calculateDataVolume(rawData),
-        
+    calculateConfidenceLevel(rawData: RawData): number { const dataQuality = this.assessDataQuality(rawData);
+        const dataVolume = this.calculateDataVolume(rawData);
         // データ量とデータ品質から信頼度を計算
         let confidence = dataQuality * 0.6,
         
@@ -388,7 +387,7 @@ export class HelpMetricsCollector {
     
     private calculateSearchUsageRate(sessions: AnalyticsSession[]): number { if (!sessions || sessions.length === 0) return 0,
         
-        const sessionsWithSearch = sessions.filter(session => ),
+        const sessionsWithSearch = sessions.filter(session => );
             session.searchQueries && session.searchQueries.length > 0).length,
         
         return sessionsWithSearch / sessions.length,
@@ -400,7 +399,7 @@ export class HelpMetricsCollector {
             const entryPoint = session.entryPoint || 'unknown'),
             const count = entryPoints.get(entryPoint) || 0 }
             entryPoints.set(entryPoint, count + 1); }
-        });
+        };
         
         const returningSessions = Array.from(entryPoints.values().filter(count => count > 1).length;
         return returningSessions / entryPoints.size;
@@ -411,16 +410,16 @@ export class HelpMetricsCollector {
         let totalTime = 0,
         let topicCount = 0,
         
-        sessions.forEach(session => { ),
+        sessions.forEach(session => { );
             if (session.pageViews) {
-                session.pageViews.forEach(pageView => {),
+                session.pageViews.forEach(pageView => {);
                     if (pageView.timeSpent) {
             }
                         totalTime += pageView.timeSpent; }
                         topicCount++; }
-                });
+                };
             }
-        });
+        };
         
         return topicCount > 0 ? totalTime / topicCount / 1000 : 0; // 秒単位
     }
@@ -434,15 +433,15 @@ export class HelpMetricsCollector {
         let totalSearches = 0,
         let successfulSearches = 0,
         
-        sessions.forEach(session => { ),
+        sessions.forEach(session => { );
             if (session.searchQueries) {
                 session.searchQueries.forEach(query => {)
                     totalSearches++) }
                     if (query.resultCount > 0) { }
                         successfulSearches++; }
-                });
+                };
             }
-        });
+        };
         
         return totalSearches > 0 ? successfulSearches / totalSearches: 0,
     
@@ -452,14 +451,14 @@ export class HelpMetricsCollector {
         let totalNavigations = 0,
         let efficientNavigations = 0,
         
-        sessions.forEach(session => { ),
+        sessions.forEach(session => { );
             if (session.pageViews && session.pageViews.length > 1) {
                 totalNavigations++,
                 // 直帰率が低い場合を効率的とみなす
             }
                 if (session.pageViews.length >= 3) { }
                     efficientNavigations++; }
-});
+};
         
         return totalNavigations > 0 ? efficientNavigations / totalNavigations: 0,
     
@@ -468,10 +467,10 @@ export class HelpMetricsCollector {
         
         let completedSessions = 0,
         
-        sessions.forEach(session => { ),
+        sessions.forEach(session => { );
             if (session.duration && session.duration > 120000) { // 2分以上 }
                 completedSessions++; }
-        });
+        };
         
         return completedSessions / sessions.length;
     }
@@ -486,7 +485,7 @@ export class HelpMetricsCollector {
                 totalCount++ }
                 if (feedback.helpful) { }
                     positiveCount++; }
-});
+};
         
         return totalCount > 0 ? positiveCount / totalCount: 0.5,
     
@@ -508,7 +507,7 @@ export class HelpMetricsCollector {
             if (pageViews < 3) distribution.byPageViews.few++;
             else if (pageViews < 7) distribution.byPageViews.moderate++;
             else distribution.byPageViews.many++;
-        });
+        };
         
         return distribution;
     }
@@ -529,7 +528,7 @@ export class HelpMetricsCollector {
 }
                 const hour = new Date(session.startTime).getHours(); }
                 patterns.peakHours.set(hour, (patterns.peakHours.get(hour) || 0) + 1); }
-        });
+        };
         
         return patterns;
     }
@@ -579,8 +578,8 @@ export class HelpMetricsCollector {
      * @returns 収集統計
      */
     getCollectionStats(): CollectionStats { return { isActive: this.collectionState.isActive,
-            lastCollectionTime: this.collectionState.lastCollectionTime };
-            queueSize: this.collectionState.collectionQueue.length;
+            lastCollectionTime: this.collectionState.lastCollectionTime },
+            queueSize: this.collectionState.collectionQueue.length,
 }
             config: { ...this.config  } }
     

@@ -11,7 +11,7 @@ import { getErrorHandler, ErrorHandler  } from '../utils/ErrorHandler.js';
 /**
  * 音量設定の型定義
  */
-export interface VolumeConfig { master: number,
+export interface VolumeConfig { master: number;
     sfx: number;
     bgm: number;
     muted: boolean;
@@ -19,7 +19,7 @@ export interface VolumeConfig { master: number,
 /**
  * 音質設定の型定義
  */
-export interface QualityConfig { sampleRate: number,
+export interface QualityConfig { sampleRate: number;
     bufferSize: number;
     channels: number;
     bitDepth: number;
@@ -27,7 +27,7 @@ export interface QualityConfig { sampleRate: number,
 /**
  * コンプレッサー設定の型定義
  */
-export interface CompressorConfig { threshold: number,
+export interface CompressorConfig { threshold: number;
     knee: number;
     ratio: number;
     attack: number;
@@ -36,14 +36,14 @@ export interface CompressorConfig { threshold: number,
 /**
  * リバーブ設定の型定義
  */
-export interface ReverbConfig { duration: number,
+export interface ReverbConfig { duration: number;
     decay: number;
     wet: number;
 
 /**
  * イコライザーバンド設定の型定義
  */
-export interface EqualizerBands { bass: number,
+export interface EqualizerBands { bass: number;
     lowMid: number;
     mid: number;
     highMid: number;
@@ -52,13 +52,13 @@ export interface EqualizerBands { bass: number,
 /**
  * イコライザー設定の型定義
  */
-export interface EqualizerConfig { enabled: boolean,
+export interface EqualizerConfig { enabled: boolean;
     bands: EqualizerBands;
 
 /**
  * 音響効果設定の型定義
  */
-export interface EffectConfig { reverbEnabled: boolean,
+export interface EffectConfig { reverbEnabled: boolean;
     compression: boolean;
     compressor: CompressorConfig;
     reverb: ReverbConfig;
@@ -66,7 +66,7 @@ export interface EffectConfig { reverbEnabled: boolean,
 /**
  * 環境音設定の型定義
  */
-export interface EnvironmentalConfig { enabled: boolean,
+export interface EnvironmentalConfig { enabled: boolean;
     volume: number;
     currentBiome: string | null;
     currentWeather: string | null;
@@ -75,7 +75,7 @@ export interface EnvironmentalConfig { enabled: boolean,
 /**
  * アクセシビリティ設定の型定義
  */
-export interface AccessibilityConfig { visualFeedback: boolean,
+export interface AccessibilityConfig { visualFeedback: boolean;
     captioning: boolean;
     colorIndication: boolean;
     patternRecognition: boolean;
@@ -88,7 +88,7 @@ export interface AccessibilityConfig { visualFeedback: boolean,
 /**
  * AudioManagerステータスの型定義
  */
-export interface AudioManagerStatus { masterVolume: number,
+export interface AudioManagerStatus { masterVolume: number;
     sfxVolume: number;
     bgmVolume: number;
     isMuted: boolean;
@@ -96,7 +96,7 @@ export interface AudioManagerStatus { masterVolume: number,
 /**
  * AudioManagerインターフェースの型定義
  */
-export interface AudioManager { setVolume(type: string, volume: number): void,
+export interface AudioManager { setVolume(type: string, volume: number): void;
     isMuted: boolean;
     toggleMute(): void;
     getStatus(): AudioManagerStatus;
@@ -116,13 +116,11 @@ export class AudioConfig {
      */
     private _initialize(): void { try {
             // 音量設定の初期化
-            this._initializeVolumeConfig(),
-            
+            this._initializeVolumeConfig();
             // 音質設定の初期化
-            this._initializeQualityConfig(),
-            
+            this._initializeQualityConfig();
             // 音響効果設定の初期化
-            this._initializeEffectConfig(),
+            this._initializeEffectConfig();
             // 検証ルールの設定
             this._setupValidationRules()','
             console.log('[AudioConfig] 初期化完了') }'
@@ -213,17 +211,20 @@ export class AudioConfig {
             type: 'number')','
     min: 0,')',
             max: 1','
-
+            max: 1','
+        };
         this.configManager.setValidationRule('audio', 'volumes.sfx', {''
             type: 'number')','
     min: 0,')',
             max: 1','
-
+            max: 1','
+        };
         this.configManager.setValidationRule('audio', 'volumes.bgm', {''
             type: 'number')','
     min: 0,')',
             max: 1','
-
+            max: 1','
+        };
         this.configManager.setValidationRule('audio', 'volumes.muted', {''
             type: 'boolean')'),'
         ','
@@ -245,12 +246,14 @@ export class AudioConfig {
             type: 'number')','
     min: -100,')',
             max: 0','
-
+            max: 0','
+        };
         this.configManager.setValidationRule('audio', 'effects.compressor.knee', {''
             type: 'number')','
     min: 0,')',
             max: 40','
-
+            max: 40','
+        };
         this.configManager.setValidationRule('audio', 'effects.compressor.ratio', {''
             type: 'number')','
     min: 1,')',
@@ -263,7 +266,7 @@ export class AudioConfig {
         const bandValidation = {''
             type: 'number' as const,
             min: -20,
-    max: 20  };
+    max: 20  },
         this.configManager.setValidationRule('audio', 'effects.equalizer.bands.bass', bandValidation';'
         this.configManager.setValidationRule('audio', 'effects.equalizer.bands.lowMid', bandValidation';'
         this.configManager.setValidationRule('audio', 'effects.equalizer.bands.mid', bandValidation';'
@@ -273,7 +276,8 @@ export class AudioConfig {
         // 環境音設定の検証ルール
         this.configManager.setValidationRule('audio', 'environmental.enabled', { ')'
             type: 'boolean')','
-
+            type: 'boolean')','
+        };
         this.configManager.setValidationRule('audio', 'environmental.volume', {''
             type: 'number',
     min: 0,','
@@ -358,8 +362,8 @@ export class AudioConfig {
      * ミュート状態を切り替え
      * @returns {boolean} 新しいミュート状態
      */
-    toggleMute(): boolean { const currentState = this.isMuted(),
-        this.setMuted(!currentState),
+    toggleMute(): boolean { const currentState = this.isMuted();
+        this.setMuted(!currentState);
         return !currentState }
 
     /**
@@ -530,7 +534,7 @@ export class AudioConfig {
             console.log('[AudioConfig] AudioManagerから設定を同期しました);'
 
         } catch (error) { getErrorHandler()','
-                context: 'AudioConfig.syncFromAudioManager' });
+                context: 'AudioConfig.syncFromAudioManager' },
         }
 }
 

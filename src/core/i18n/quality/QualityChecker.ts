@@ -1,35 +1,35 @@
 import { getErrorHandler  } from '../../../utils/ErrorHandler.js';
 
 // 型定義
-export interface ValidationRule { id: string,
+export interface ValidationRule { id: string;
     name: string;
     description: string;
     severity: 'error' | 'warning';
     enabled: boolean;
     check: (key: string, translation: string, sourceLanguage: string, targetLanguage: string') => Promise<ValidationResult> | ValidationResult  }'
-export interface ValidationResult { passed: boolean,
+export interface ValidationResult { passed: boolean;
     message: string;
     suggestion?: string;
-export interface QualityThresholds { excellent: number,
+export interface QualityThresholds { excellent: number;
     good: number;
     acceptable: number;
     poor: number;
-export interface QualityStats { totalChecks: number,
+export interface QualityStats { totalChecks: number;
     passedChecks: number;
     failedChecks: number;
     warnings: number;
-export interface ValidationIssue { rule: string,
+export interface ValidationIssue { rule: string;
     name: string;
     message: string;
     suggestion?: string;
     severity: 'error' | 'warning'
             }
-export interface ItemValidationResult { key: string,
+export interface ItemValidationResult { key: string;
     translation: string;
     errors: ValidationIssue[];
     warnings: ValidationIssue[];
     passed: ValidationIssue[];
-export interface TranslationValidationResults { language: string,
+export interface TranslationValidationResults { language: string;
     sourceLanguage: string;
     timestamp: string;
     totalItems: number;
@@ -40,18 +40,18 @@ export interface TranslationValidationResults { language: string,
     qualityScore: number;
     qualityGrade: string;
 export interface QualityReport { summary: {
-        languag,e: string,
-        totalItems: number,
-        checkedItems: number,
-        qualityScore: number,
-        qualityGrade: string,
-        errorCount: number,
-    warningCount: number,;
-    details: { errors: ValidationIssue[],
-        warnings: ValidationIssue[],
-    passed: ValidationIssue[],;
-    recommendations: Recommendation[],
-    timestamp: string,
+        languag,e: string;
+        totalItems: number;
+        checkedItems: number;
+        qualityScore: number;
+        qualityGrade: string;
+        errorCount: number;
+    warningCount: number;
+    details: { errors: ValidationIssue[];
+        warnings: ValidationIssue[];
+    passed: ValidationIssue[];
+    recommendations: Recommendation[];
+    timestamp: string;
 }
 ';'
 
@@ -67,9 +67,9 @@ export interface QualitySettings { qualityThresholds?: Partial<QualityThresholds
         severity?: 'error' | 'warning' }>;
 }
 
-export interface CulturalRules { inappropriate: string[],
+export interface CulturalRules { inappropriate: string[];
     suggestions: string[];
-export interface LengthTolerance { min: number,
+export interface LengthTolerance { min: number;
     max: number;
 /**
  * 翻訳品質管理クラス - 翻訳データの品質検証とレポート生成
@@ -77,13 +77,13 @@ export interface LengthTolerance { min: number,
 export class QualityChecker {
     private validationRules: Map<string, ValidationRule>;
     private qualityThresholds: QualityThresholds;
-    private, qualityStats: QualityStats,
+    private, qualityStats: QualityStats;
     constructor() {
 
         this.validationRules = new Map<string, ValidationRule>(),
         this.qualityThresholds = {
-            excellent: 90,
-            good: 75,
+            excellent: 90;
+            good: 75;
     acceptable: 60
  }
             poor: 40 ;
@@ -163,17 +163,16 @@ export class QualityChecker {
             name: rule.name,
             description: rule.description || ',',
             severity: rule.severity || 'warning',
-    enabled: true),
-            check: rule.check  });
+    enabled: true);
+            check: rule.check  },
         
-        console.log(`Validation, rule added: ${id}`});
+        console.log(`Validation, rule added: ${id}`};
     }
     
     /**
      * 検証ルールを削除
      */
-    removeValidationRule(id: string): boolean { const removed = this.validationRules.delete(id),
-
+    removeValidationRule(id: string): boolean { const removed = this.validationRules.delete(id);
         if (removed) { }'
 
             console.log(`Validation, rule removed: ${id}`}';'
@@ -190,14 +189,14 @@ export class QualityChecker {
                 sourceLanguage: sourceLanguage,
                 timestamp: new Date().toISOString('',
     qualityGrade: 'unknown'
-            }))
+            })
             // 翻訳データを平坦化してチェック)
             const flatTranslations = this.flattenTranslations(translations);
             validationResults.totalItems = Object.keys(flatTranslations).length;
             
             for(const [key, value] of Object.entries(flatTranslations) {
             
-                const itemResult = await this.validateTranslationItem(key, value, sourceLanguage, targetLanguage),
+                const itemResult = await this.validateTranslationItem(key, value, sourceLanguage, targetLanguage);
                 validationResults.checkedItems++,
                 
                 if (itemResult.errors.length > 0) {
@@ -220,7 +219,7 @@ export class QualityChecker {
             ';'
 
         } catch (error) { getErrorHandler().handleError(error as Error, 'QUALITY_CHECKER_ERROR', {''
-                operation: 'validateTranslations'),
+                operation: 'validateTranslations');
                 targetLanguage: targetLanguage,);
             throw error; }
 }
@@ -239,8 +238,7 @@ export class QualityChecker {
                 if (!rule.enabled) continue,
                 
                 try {
-                    const ruleResult = await rule.check(key, translation, sourceLanguage, targetLanguage),
-                    
+                    const ruleResult = await rule.check(key, translation, sourceLanguage, targetLanguage);
                     if (ruleResult.passed) {
                         result.passed.push({)
                             rule: ruleId,
@@ -253,7 +251,7 @@ export class QualityChecker {
 
                             message: ruleResult.message || `${rule.name}に問題があります`,''
                             suggestion: ruleResult.suggestion || ','
-    severity: rule.severity;
+    severity: rule.severity,
                         },
 
                         if (rule.severity === 'error) { result.errors.push(issue) } else { result.warnings.push(issue) }'
@@ -263,15 +261,15 @@ export class QualityChecker {
                        , name: rule.name',' }'
 
                         message: `検証ルール実行エラー: ${(ruleError, as, Error'}'.message}`,''
-                        severity: 'warning';
+                        severity: 'warning',
                     }'
             }'} catch (error) { result.errors.push({)'
                 rule: 'system',')',
                 name: 'システムエラー'),' }'
 
                 message: `検証中にエラーが発生しました: ${(error, as, Error'}'.message}`,''
-                severity: 'error';
-            }) }
+                severity: 'error',
+            } }
         
         return result;
     }
@@ -280,14 +278,13 @@ export class QualityChecker {
      * パラメータ整合性チェック
      */
     private checkParameterConsistency(key: string, translation: string, sourceLanguage: string, targetLanguage: string): ValidationResult { // 基準となる日本語翻訳を取得（実際の実装では翻訳データベースから取得）
-        const sourceText = this.getSourceText(key, sourceLanguage),
-
+        const sourceText = this.getSourceText(key, sourceLanguage);
         if (!sourceText) {
             return { passed: false,
 
                 message: '元の翻訳文が見つかりません',' };'
 
-                suggestion: '翻訳キーが正しいか確認してください' ;
+                suggestion: '翻訳キーが正しいか確認してください' ,
     } }
         
         // パラメータを抽出（{param}, {{param}, %sなど）
@@ -295,10 +292,10 @@ export class QualityChecker {
         const translationParams = this.extractParameters(translation);
         // パラメータ数の比較
         if (sourceParams.length !== translationParams.length) { return {  };
-                passed: false;
+                passed: false,
 
                 message: `パラメータ数が一致しません（元: ${sourceParams.length}, 翻訳: ${translationParams.length}）`,''
-                suggestion: `パラメータ: ${sourceParams.join(', '}) を含めてください`
+                suggestion: `パラメータ: ${sourceParams.join(', '} を含めてください`
             }
 
         // パラメータ名の比較
@@ -314,14 +311,13 @@ export class QualityChecker {
 
         return { passed: true,' };'
 
-            message: 'パラメータが正しく含まれています' ;
+            message: 'パラメータが正しく含まれています' ,
     } }
     
     /**
      * 翻訳長制限チェック
      */
-    private checkLengthValidation(key: string, translation: string, sourceLanguage: string, targetLanguage: string): ValidationResult { const sourceText = this.getSourceText(key, sourceLanguage),
-
+    private checkLengthValidation(key: string, translation: string, sourceLanguage: string, targetLanguage: string): ValidationResult { const sourceText = this.getSourceText(key, sourceLanguage);
         if (!sourceText) { }'
 
             return { passed: true, message: '元の翻訳文が見つからないためスキップ'
@@ -344,7 +340,7 @@ export class QualityChecker {
                 passed: false,' }'
 
                 message: `翻訳が短すぎます（${translationLength}文字, 最小: ${Math.round(minLength'}'文字）`,''
-                suggestion: '翻訳が完全か確認してください';
+                suggestion: '翻訳が完全か確認してください',
             } }
         
         if (translationLength > maxLength) { return {  };
@@ -352,7 +348,7 @@ export class QualityChecker {
                 passed: false,' }'
 
                 message: `翻訳が長すぎます（${translationLength}文字, 最大: ${Math.round(maxLength'}'文字）`,''
-                suggestion: 'より簡潔な表現を検討してください';
+                suggestion: 'より簡潔な表現を検討してください',
             } }
         
         return { passed: true,
@@ -362,8 +358,7 @@ export class QualityChecker {
     /**
      * フォーマット検証
      */
-    private checkFormatValidation(key: string, translation: string, sourceLanguage: string, targetLanguage: string): ValidationResult { const sourceText = this.getSourceText(key, sourceLanguage),
-
+    private checkFormatValidation(key: string, translation: string, sourceLanguage: string, targetLanguage: string): ValidationResult { const sourceText = this.getSourceText(key, sourceLanguage);
         if (!sourceText) { }'
 
             return { passed: true, message: '元の翻訳文が見つからないためスキップ'
@@ -376,7 +371,7 @@ export class QualityChecker {
 
                 message: 'HTMLタグの数が一致しません',' }'
 
-                suggestion: `必要なタグ: ${sourceHtmlTags.join(', '})`
+                suggestion: `必要なタグ: ${sourceHtmlTags.join(', '}`
             }
         
         // マークダウン記法の検証
@@ -395,7 +390,7 @@ export class QualityChecker {
 
         return { passed: true,' };'
 
-            message: 'フォーマットが正しく保持されています' ;
+            message: 'フォーマットが正しく保持されています' ,
     } }
     
     /**
@@ -441,7 +436,7 @@ export class QualityChecker {
 
         return { passed: true,' };'
 
-            message: '文化的に適切な表現です' ;
+            message: '文化的に適切な表現です' ,
     } }
     
     /**
@@ -452,7 +447,7 @@ export class QualityChecker {
             return { passed: false,''
                 message: '翻訳が空です',' };'
 
-                suggestion: '翻訳を追加してください' ;
+                suggestion: '翻訳を追加してください' ,
     } }
         ';'
         // 未翻訳マーカーのチェック
@@ -465,7 +460,7 @@ export class QualityChecker {
 
                 message: '未翻訳マーカーが含まれています',' };'
 
-                suggestion: '翻訳を完成させてください' ;
+                suggestion: '翻訳を完成させてください' ,
     } }
         
         // 原文がそのまま含まれているかチェック（簡単な判定）
@@ -473,13 +468,13 @@ export class QualityChecker {
         if(sourceText && sourceText.length > 10 && translation.includes(sourceText)) { return { passed: false,''
                 message: '原文がそのまま含まれている可能性があります',' };'
 
-                suggestion: '適切に翻訳されているか確認してください' ;
+                suggestion: '適切に翻訳されているか確認してください' ,
     } }
         ';'
 
         return { passed: true,' };'
 
-            message: '翻訳が完成しています' ;
+            message: '翻訳が完成しています' ,
     } }
     
     /**
@@ -490,14 +485,14 @@ export class QualityChecker {
         ,
         // 大文字小文字の一貫性（英語の場合）
         if(targetLanguage === 'en' {'
-            const sentences = translation.split(/[.!? ]+/),
+            const sentences = translation.split(/[.!? ]+/);
             let inconsistentCapitalization = false,
             
-            sentences.forEach(sentence => { ),
+            sentences.forEach(sentence => { );
                 const trimmed = sentence.trim() }
                 if (trimmed.length > 0 && !/^[A-Z]/.test(trimmed) { }
                     inconsistentCapitalization = true; }
-            });
+            };
 
             if (inconsistentCapitalization) {
                 return { : undefined'
@@ -505,13 +500,13 @@ export class QualityChecker {
 
                     message: '文の始まりの大文字化が一貫していません',' };'
 
-                    suggestion: '各文の始まりを大文字にしてください' ;
+                    suggestion: '各文の始まりを大文字にしてください' ,
     } }
         // 句読点の一貫性チェック
         const sourceText = this.getSourceText(key, sourceLanguage);
         if (sourceText) {
-            const sourcePunctuation = this.extractPunctuation(sourceText),
-            const translationPunctuation = this.extractPunctuation(translation),
+            const sourcePunctuation = this.extractPunctuation(sourceText);
+            const translationPunctuation = this.extractPunctuation(translation);
             ','
             // 基本的な句読点の一貫性チェック
             if (sourcePunctuation.endsWith('.') && !translationPunctuation.endsWith('.)' {'
@@ -519,13 +514,13 @@ export class QualityChecker {
 
                     message: '文末の句読点が一致しません',' };'
 
-                    suggestion: '原文の句読点に合わせてください' ;
+                    suggestion: '原文の句読点に合わせてください' ,
     } }
         ';'
 
         return { passed: true,' };'
 
-            message: '翻訳の一貫性に問題ありません' ;
+            message: '翻訳の一貫性に問題ありません' ,
     } }
     
     /**
@@ -563,7 +558,7 @@ export class QualityChecker {
             let match),
             while((match = pattern.exec(text) !== null) { }
                 params.add(match[0]); }
-        });
+        };
         
         return Array.from(params);
     }
@@ -572,7 +567,7 @@ export class QualityChecker {
      * HTMLタグを抽出
      */
     private extractHtmlTags(text: string): string[] { const htmlTagPattern = /<\/? [^>]+>/g,
-        const matches = text.match(htmlTagPattern),
+        const matches = text.match(htmlTagPattern);
         return matches || [] }
     /**
      * マークダウン要素を抽出
@@ -586,12 +581,12 @@ export class QualityChecker {
         ]
         
         const elements: string[] = [],
-        patterns.forEach(pattern => {  ),
-            const matches = text.match(pattern),
+        patterns.forEach(pattern => {  );
+            const matches = text.match(pattern);
             if (matches) { }
                 elements.push(...matches);
 }
-        });
+        };
         
         return elements;
     }
@@ -630,8 +625,7 @@ export class QualityChecker {
         const warningPenalty = warningCount * 3,
         
         const baseScore = 100,
-        const finalScore = Math.max(0, baseScore - errorPenalty - warningPenalty),
-        
+        const finalScore = Math.max(0, baseScore - errorPenalty - warningPenalty);
         return Math.round(finalScore) }
     /**
      * 品質グレードを取得
@@ -691,7 +685,7 @@ export class QualityChecker {
                 type: 'error_fix'
             }''
                 message: `${results.errors.length}個のエラーを修正してください`,')'
-                action: 'すべてのエラーを解決してから公開してください');
+                action: 'すべてのエラーを解決してから公開してください'),
         }
 
         if (results.warnings.length > 5) {
@@ -701,7 +695,7 @@ export class QualityChecker {
                 type: 'warning_review'
             }''
                 message: `警告が多すぎます（${results.warnings.length}個）`,')'
-                action: '警告を確認し、可能な限り解決してください');
+                action: '警告を確認し、可能な限り解決してください'),
         }
 
         if (results.qualityScore < this.qualityThresholds.acceptable) {
@@ -719,7 +713,7 @@ export class QualityChecker {
      */
     getStats(): QualityStats & { activeRules: ValidationRule[],, qualityThresholds: QualityThresholds, { return { ...this.qualityStats,
             activeRules: Array.from(this.validationRules.values().filter(rule = > rule.enabled  }
-            qualityThresholds: this.qualityThresholds ;
+            qualityThresholds: this.qualityThresholds ,
     } }
     
     /**
@@ -729,8 +723,8 @@ export class QualityChecker {
             Object.assign(this.qualityThresholds, settings.qualityThresholds) }
         if (settings.rules) {
         
-            settings.rules.forEach(ruleSettings => { ),
-                const rule = this.validationRules.get(ruleSettings.id),
+            settings.rules.forEach(ruleSettings => { );
+                const rule = this.validationRules.get(ruleSettings.id);
                 if (rule) {
     
 }

@@ -12,47 +12,47 @@ import { NavigationStateManager  } from './keyboard-navigation/NavigationStateMa
 import { KeyboardAccessibilityReporter  } from './keyboard-navigation/KeyboardAccessibilityReporter.js';
 
 // Interfaces for keyboard navigation testing
-interface TestConfig { enabled: boolean,
+interface TestConfig { enabled: boolean;
     autoTest: boolean;
     testDepth: 'basic' | 'standard' | 'comprehensive';
     includeCustomElements: boolean;
     testShortcuts: boolean;
     monitorFocusChanges: boolean;
     generateReport: boolean;
-interface TestSuite { name: string,
+interface TestSuite { name: string;
     tests: string[];
-interface TestSuites { focusManagement: TestSuite,
+interface TestSuites { focusManagement: TestSuite;
     keyboardTraps: TestSuite;
     shortcutConflicts: TestSuite;
     customControls: TestSuite;
     navigationPatterns: TestSuite;
-interface TestResult { testName: string,
+interface TestResult { testName: string;
     passed: boolean;
     message: string;
     details?: any;
     severity?: 'error' | 'warning' | 'info' }
-interface SuiteResult { suiteName: string,
+interface SuiteResult { suiteName: string;
     tests: TestResult[];
     score: number;
     passed: number;
     failed: number;
     warnings: number;
-interface OverallResult { score: number,
+interface OverallResult { score: number;
     passed: number;
     failed: number;
     warnings: number;
     timestamp: number | null  }
-interface PerformanceMetrics { totalTestTime: number,
+interface PerformanceMetrics { totalTestTime: number;
     averageFocusTime: number;
     navigationErrors: number;
-interface TestResults { overall: OverallResult,
+interface TestResults { overall: OverallResult;
     suiteResults: Record<string, SuiteResult>;
     focusOrder: FocusOrderItem[];
     trapDetections: TrapDetection[];
     shortcutConflicts: ShortcutConflict[];
     performanceMetrics: PerformanceMetrics;
     recommendations: string[];
-interface FocusOrderItem { element: HTMLElement,
+interface FocusOrderItem { element: HTMLElement;
     selector: string;
     tabIndex: number;
     ariaLabel?: string;
@@ -66,14 +66,14 @@ interface TrapDetection { ''
     elements: HTMLElement[];
     severity: 'critical' | 'warning';
     suggestion: string;
-interface ShortcutConflict { key: string,
+interface ShortcutConflict { key: string;
 
     modifiers: string[];
     conflictType: 'browser' | 'system' | 'application';
     description: string;
     severity: 'high' | 'medium' | 'low'
             }
-interface NavigationState { isActive: boolean,
+interface NavigationState { isActive: boolean;
     currentElement: HTMLElement | null;
     focusHistory: HTMLElement[];
     shortcuts: Map<string, Function> }
@@ -95,7 +95,7 @@ export class KeyboardNavigationTester {
     private isTestRunning: boolean;
     private originalFocus: HTMLElement | null;
     private, observers: {
-        focus: MutationObserver | null,
+        focus: MutationObserver | null;
     dom: MutationObserver | null };
 
     constructor(accessibilityManager: AccessibilityManager | null) {
@@ -105,12 +105,12 @@ export class KeyboardNavigationTester {
         // テスト設定
         this.config = { : undefined
             enabled: true;
-    autoTest: false,
-            testDepth: 'comprehensive',
-            includeCustomElements: true,
-            testShortcuts: true,
-    monitorFocusChanges: true,
-            generateReport: true ,
+    autoTest: false;
+            testDepth: 'comprehensive';
+            includeCustomElements: true;
+            testShortcuts: true;
+    monitorFocusChanges: true;
+            generateReport: true ;
     },
         // サブコンポーネントの初期化
         this.initializeSubComponents('''
@@ -125,7 +125,7 @@ export class KeyboardNavigationTester {
             },
 
             keyboardTraps: { ''
-                name: 'キーボードトラップテスト',
+                name: 'キーボードトラップテスト';
                 tests: [','
                     'modalTraps',
                     'infiniteLoops',
@@ -134,7 +134,7 @@ export class KeyboardNavigationTester {
                 ] },
 
             shortcutConflicts: { ''
-                name: 'ショートカット競合テスト',
+                name: 'ショートカット競合テスト';
                 tests: [','
                     'browserConflicts',
                     'systemConflicts',
@@ -143,7 +143,7 @@ export class KeyboardNavigationTester {
                 ] },
 
             customControls: { ''
-                name: 'カスタムコントロールテスト',
+                name: 'カスタムコントロールテスト';
                 tests: [','
                     'ariaControls',
                     'compositeWidgets',
@@ -152,7 +152,7 @@ export class KeyboardNavigationTester {
                 ] },
 
             navigationPatterns: { ''
-                name: 'ナビゲーションパターンテスト',
+                name: 'ナビゲーションパターンテスト';
                 tests: [','
                     'landmarkNavigation',
                     'headingNavigation',
@@ -167,8 +167,8 @@ export class KeyboardNavigationTester {
                 passed: 0,
                 failed: 0,
                 warnings: 0,
-    timestamp: null,;
-            suiteResults: {};
+    timestamp: null,
+            suiteResults: {},
             focusOrder: [],
             trapDetections: [],
             shortcutConflicts: [],
@@ -184,7 +184,7 @@ export class KeyboardNavigationTester {
             currentElement: null,
     focusHistory: [],
             shortcuts: new Map()','
-        console.log('KeyboardNavigationTester, initialized'),
+        console.log('KeyboardNavigationTester, initialized');
         this.initialize() }
     /**
      * サブコンポーネントの初期化
@@ -195,7 +195,8 @@ export class KeyboardNavigationTester {
             preventDefaultConflicts: true),
             simulateRealEvents: true,
     captureEventTiming: true),
-        
+    captureEventTiming: true),
+        };
         // StateManagerの初期化
         this.stateManager = new NavigationStateManager({
             trackFocusHistory: true,
@@ -215,13 +216,11 @@ export class KeyboardNavigationTester {
      */
     private initialize(): void { try {
             // サブコンポーネントの初期化
-            this.eventHandler.initialize(),
-            this.stateManager.initialize(),
-            this.reporter.initialize(),
-            
+            this.eventHandler.initialize();
+            this.stateManager.initialize();
+            this.reporter.initialize();
             // イベントハンドラーのセットアップ
-            this.setupEventHandlers(),
-            
+            this.setupEventHandlers();
             // オブザーバーのセットアップ
             if (this.config.monitorFocusChanges) {
     
@@ -264,7 +263,7 @@ export class KeyboardNavigationTester {
             
             // 各テストスイートを実行
             for(const [suiteName, suite] of Object.entries(this.testSuites) {
-                const suiteResult = await this.runTestSuite(suiteName suite options),
+                const suiteResult = await this.runTestSuite(suiteName suite options);
                 this.results.suiteResults[suiteName] = suiteResult,
                 
                 // 全体結果の更新
@@ -286,15 +285,14 @@ export class KeyboardNavigationTester {
             // レポートの生成
             if (this.config.generateReport) {
 
-                await this.generateReport(),
-
-            console.log('Keyboard, navigation test, completed'),
+                await this.generateReport();
+            console.log('Keyboard, navigation test, completed');
             return this.results }
 
             ' }'
 
         } catch (error) {
-            console.error('Test execution failed:', error),
+            console.error('Test execution failed:', error);
             throw error } finally { this.isTestRunning = false;
             
             // フォーカスの復元
@@ -307,8 +305,7 @@ export class KeyboardNavigationTester {
      * 個別テストスイートの実行
      */
     private async runTestSuite(suiteName: string, suite: TestSuite, options: TestOptions): Promise<SuiteResult> {
-        console.log(`Running, test suite: ${suite.name}`});
-        
+        console.log(`Running, test suite: ${suite.name}`};
         const suiteResult: SuiteResult = { suiteName: suite.name,
             tests: [],
             score: 0,
@@ -323,9 +320,8 @@ export class KeyboardNavigationTester {
             const testMethod = (this, as any')[`test_${testName}`];'
             if(typeof, testMethod === 'function' {'
                 try {
-                    const result = await testMethod.call(this, options),
-                    suiteResult.tests.push(result),
-
+                    const result = await testMethod.call(this, options);
+                    suiteResult.tests.push(result);
                     if (result.passed) {
             }
 
@@ -337,8 +333,8 @@ export class KeyboardNavigationTester {
                         passed: false',' }'
 
                         message: `Test execution, error: ${(error, as, Error'}'.message}`,''
-                        severity: 'error';
-                    }),
+                        severity: 'error',
+                    },
                     suiteResult.failed++;
                 }
         }
@@ -355,7 +351,7 @@ export class KeyboardNavigationTester {
     /**
      * タブ順序テスト
      */
-    private async test_tabOrder(options: TestOptions): Promise<TestResult> { const focusableElements = this.stateManager.getFocusableElements(),
+    private async test_tabOrder(options: TestOptions): Promise<TestResult> { const focusableElements = this.stateManager.getFocusableElements();
         const issues: string[] = [],
         
         // タブ順序の検証
@@ -367,14 +363,14 @@ export class KeyboardNavigationTester {
             // 負のtabIndexの検出' }'
 
             if(tabIndex < 0 && !element.hasAttribute('aria-hidden' { }'
-                issues.push(`Element ${this.getElementSelector(element}) has negative tabindex but is not hidden`);
+                issues.push(`Element ${this.getElementSelector(element} has negative tabindex but is not hidden`);
             }
             
             // 非論理的なタブ順序
             if (tabIndex > 0 && tabIndex < previousTabIndex) {
     
 }
-                issues.push(`Non-logical, tab order, detected at ${this.getElementSelector(element})`);
+                issues.push(`Non-logical, tab order, detected at ${this.getElementSelector(element}`);
             }
             
             previousTabIndex = Math.max(previousTabIndex, tabIndex);
@@ -388,7 +384,7 @@ export class KeyboardNavigationTester {
                 role: element.getAttribute('role) || undefined,'
     isAccessible: this.isAccessibleElement(element  }
 
-            });'}');
+            };'}');
         ';'
 
         return { ''
@@ -397,9 +393,9 @@ export class KeyboardNavigationTester {
 
             passed: issues.length === 0,' }'
 
-            message: issues.length === 0 ? 'Tab order is logical and consistent' : `Found ${issues.length} tab order issues`;
+            message: issues.length === 0 ? 'Tab order is logical and consistent' : `Found ${issues.length} tab order issues`,
             details: { issues, elementCount: focusableElements.length  },''
-            severity: issues.length > 5 ? 'error' : 'warning';
+            severity: issues.length > 5 ? 'error' : 'warning',
         } }
     
     /**
@@ -413,7 +409,7 @@ export class KeyboardNavigationTester {
 
                 message: 'Visual test skipped',' };'
 
-                severity: 'info' ;
+                severity: 'info' ,
     } }
         
         const issues: string[] = [],
@@ -422,11 +418,9 @@ export class KeyboardNavigationTester {
         for(const element of focusableElements.slice(0, 10) {
         
             // サンプルテスト
-            element.focus(),
-            await this.delay(50),
-
-            const focusStyles = window.getComputedStyle(element),
-
+            element.focus();
+            await this.delay(50);
+            const focusStyles = window.getComputedStyle(element);
             const hasFocusIndicator = ','
                 focusStyles.outline !== 'none' ||','
                 focusStyles.boxShadow !== 'none' ||','
@@ -434,7 +428,7 @@ export class KeyboardNavigationTester {
 
             if (!hasFocusIndicator) { }'
 
-                issues.push(`No, focus indicator, for ${this.getElementSelector(element})`);
+                issues.push(`No, focus indicator, for ${this.getElementSelector(element}`);
             }
         ';'
 
@@ -444,9 +438,9 @@ export class KeyboardNavigationTester {
 
             passed: issues.length === 0,' }'
 
-            message: issues.length === 0 ? 'All tested elements have visible focus indicators' : `${issues.length} elements lack focus indicators`;
+            message: issues.length === 0 ? 'All tested elements have visible focus indicators' : `${issues.length} elements lack focus indicators`,
             details: { issues },''
-            severity: issues.length > 0 ? 'error' : undefined;
+            severity: issues.length > 0 ? 'error' : undefined,
     
     /**
      * モーダルトラップテスト'
@@ -455,22 +449,22 @@ export class KeyboardNavigationTester {
         const modals = document.querySelectorAll('[role="dialog"], [role="alertdialog"], .modal),'
         const traps: TrapDetection[] = [],
         
-        modals.forEach(modal => { ),
+        modals.forEach(modal => { );
             if (this.isVisible(modal, as HTMLElement) {
-                const focusableInModal = this.stateManager.getFocusableElements(modal, as HTMLElement),
-                const hasEscapeRoute = this.checkEscapeRoute(modal, as HTMLElement),
-
+                const focusableInModal = this.stateManager.getFocusableElements(modal, as HTMLElement);
+                const hasEscapeRoute = this.checkEscapeRoute(modal, as HTMLElement);
                 if (focusableInModal.length > 0 && !hasEscapeRoute) {
                     traps.push({)'
                         type: 'modal',
-                        location: this.getElementSelector(modal, as HTMLElement),
+                        location: this.getElementSelector(modal, as HTMLElement);
                         elements: focusableInModal,
-
+                        elements: focusableInModal,
+        };
                         severity: 'critical',' }'
 
-                        suggestion: 'Add escape key handler or close button' ;
-    }) }
-        });
+                        suggestion: 'Add escape key handler or close button' ,
+    } }
+        };
 
         this.results.trapDetections.push(...traps);
         ';'
@@ -481,9 +475,9 @@ export class KeyboardNavigationTester {
 
             passed: traps.length === 0,' }'
 
-            message: traps.length === 0 ? 'No modal keyboard traps detected' : `Found ${traps.length} potential keyboard traps`;
+            message: traps.length === 0 ? 'No modal keyboard traps detected' : `Found ${traps.length} potential keyboard traps`,
             details: { traps },''
-            severity: traps.length > 0 ? 'error' : undefined;
+            severity: traps.length > 0 ? 'error' : undefined,
     
     /**
      * ブラウザショートカット競合テスト'
@@ -519,8 +513,8 @@ export class KeyboardNavigationTester {
             }
 
                     description: `Conflicts with browser ${browserShortcut.description} function`,')'
-                    severity: 'high');
-    });
+                    severity: 'high'),
+    };
 
         this.results.shortcutConflicts.push(...conflicts);
         ';'
@@ -531,9 +525,9 @@ export class KeyboardNavigationTester {
 
             passed: conflicts.length === 0,' }'
 
-            message: conflicts.length === 0 ? 'No browser shortcut conflicts' : `Found ${conflicts.length} browser shortcut conflicts`;
+            message: conflicts.length === 0 ? 'No browser shortcut conflicts' : `Found ${conflicts.length} browser shortcut conflicts`,
             details: { conflicts },''
-            severity: conflicts.length > 0 ? 'error' : undefined;
+            severity: conflicts.length > 0 ? 'error' : undefined,
     
     /**
      * ARIAコントロールテスト'
@@ -544,15 +538,14 @@ export class KeyboardNavigationTester {
 
         ariaElements.forEach(element => { '),'
             const role = element.getAttribute('role),'
-            const required = this.getRequiredAriaAttributes(role!),
-            
+            const required = this.getRequiredAriaAttributes(role!);
             required.forEach(attr => {) }
 
                 if (!element.hasAttribute(attr) { }'
 
                     issues.push(`${this.getElementSelector(element, as, HTMLElement'}' with role="${role}" missing required ${attr}`);
                 }
-            });
+            };
             
             // インタラクティブロールのキーボードサポート確認
             if (this.isInteractiveRole(role!) {
@@ -569,9 +562,9 @@ export class KeyboardNavigationTester {
 
             passed: issues.length === 0,' }'
 
-            message: issues.length === 0 ? 'All ARIA controls properly implemented' : `Found ${issues.length} ARIA implementation issues`;
+            message: issues.length === 0 ? 'All ARIA controls properly implemented' : `Found ${issues.length} ARIA implementation issues`,
             details: { issues },''
-            severity: issues.length > 0 ? 'error' : undefined;
+            severity: issues.length > 0 ? 'error' : undefined,
     
     // ヘルパーメソッド
     
@@ -583,7 +576,7 @@ export class KeyboardNavigationTester {
         }''
         if (element.className) { }'
 
-            return `.${element.className.split(', '}.join('.'})`;
+            return `.${element.className.split(', '}.join('.'}`;
         }
         return element.tagName.toLowerCase();
     }
@@ -613,7 +606,7 @@ export class KeyboardNavigationTester {
      * エスケープルートの確認'
      */''
     private checkEscapeRoute(modal: HTMLElement): boolean { // Escapeキーハンドラーの存在確認
-        const hasEscapeHandler = this.eventHandler.hasShortcut('Escape'),
+        const hasEscapeHandler = this.eventHandler.hasShortcut('Escape');
         ','
         // 閉じるボタンの存在確認
         const closeButton = modal.querySelector('[aria-label*="close"], [aria-label*="閉じる"], .close, .modal-close",'
@@ -676,8 +669,8 @@ export class KeyboardNavigationTester {
                 passed: 0,
                 failed: 0,
                 warnings: 0,
-    timestamp: null,;
-            suiteResults: {};
+    timestamp: null,
+            suiteResults: {},
             focusOrder: [],
             trapDetections: [],
             shortcutConflicts: [],
@@ -717,7 +710,7 @@ export class KeyboardNavigationTester {
         if (unlabeledElements.length > 0) {
     
 }
-            recommendations.push(`${unlabeledElements.length}個の要素にアクセシビリティラベルがありません。aria-labelまたはaria-labelledbyを追加してください。`});
+            recommendations.push(`${unlabeledElements.length}個の要素にアクセシビリティラベルがありません。aria-labelまたはaria-labelledbyを追加してください。`};
         }
         
         this.results.recommendations = recommendations;
@@ -742,7 +735,7 @@ export class KeyboardNavigationTester {
     }');'
         ';'
         // フォーカスイベントの委譲
-        this.stateManager.on('focusChange', (element: HTMLElement) => { this.handleFocusChange(element) });
+        this.stateManager.on('focusChange', (element: HTMLElement) => { this.handleFocusChange(element) }),
     }
     
     /**
@@ -750,10 +743,10 @@ export class KeyboardNavigationTester {
      */
     private setupObservers(): void { // フォーカス変更の監視
         this.observers.focus = new MutationObserver((mutations) => { ''
-            mutations.forEach(mutation => {),
+            mutations.forEach(mutation => {);
                 if (mutation.type === 'attributes' && mutation.attributeName === 'tabindex) { }'
                     this.stateManager.updateFocusableElements(); }
-});'}');
+};'}');
         ';'
 
         this.observers.focus.observe(document.body, { attributes: true)'
@@ -761,11 +754,11 @@ export class KeyboardNavigationTester {
             subtree: true),
         // DOM変更の監視
         this.observers.dom = new MutationObserver((mutations) => { ''
-            mutations.forEach(mutation => {),
+            mutations.forEach(mutation => {);
                 if(mutation.type === 'childList' {  }'
                     this.stateManager.updateFocusableElements(); }
-            });
-        });
+            };
+        };
         
         this.observers.dom.observe(document.body, { childList: true)
            , subtree: true,);
@@ -788,7 +781,7 @@ export class KeyboardNavigationTester {
             handler: () => this.cycleLandmarks()','
             description: 'Cycle through landmarks') 
  }
-        });
+        };
     }
     
     /**
@@ -797,11 +790,9 @@ export class KeyboardNavigationTester {
     private handleKeyboardEvent(event: KeyboardEvent): void { if (!this.navigationState.isActive) return,
         
         // パフォーマンス計測
-        const startTime = performance.now(),
-        
+        const startTime = performance.now();
         // イベント処理（サブコンポーネントに委譲）
-        const handled = this.eventHandler.handleEvent(event),
-        
+        const handled = this.eventHandler.handleEvent(event);
         // フォーカス時間の更新
         const focusTime = performance.now() - startTime,
         this.updateAverageFocusTime(focusTime) }
@@ -809,8 +800,7 @@ export class KeyboardNavigationTester {
      * フォーカス変更の処理
      */
     private handleFocusChange(element: HTMLElement): void { this.navigationState.currentElement = element,
-        this.navigationState.focusHistory.push(element),
-        
+        this.navigationState.focusHistory.push(element);
         // 履歴の制限
         if (this.navigationState.focusHistory.length > 100) {
     
@@ -821,10 +811,10 @@ export class KeyboardNavigationTester {
     /**
      * ランドマーク間の循環
      */
-    private cycleLandmarks(): void { const landmarks = this.stateManager.getLandmarks(),
+    private cycleLandmarks(): void { const landmarks = this.stateManager.getLandmarks();
         if (landmarks.length === 0) return,
         
-        const currentIndex = landmarks.findIndex(l => l === document.activeElement),
+        const currentIndex = landmarks.findIndex(l => l === document.activeElement);
         const nextIndex = (currentIndex + 1) % landmarks.length,
         
         landmarks[nextIndex].focus() }
@@ -856,7 +846,7 @@ export class KeyboardNavigationTester {
     async runTestSuite(suiteName: keyof TestSuites, options: TestOptions = { ): Promise<SuiteResult> {
         const suite = this.testSuites[suiteName],
         if (!suite) { }
-            throw new Error(`Test, suite not, found: ${suiteName}`});
+            throw new Error(`Test, suite not, found: ${suiteName}`},
         }
         
         return this.runTestSuite(suiteName, suite, options);
@@ -873,7 +863,7 @@ export class KeyboardNavigationTester {
 
         ' }'
 
-        this.navigationState.shortcuts.set(`${modifiers.join('+'})+${key}`, handler';'
+        this.navigationState.shortcuts.set(`${modifiers.join('+'}+${key}`, handler';'
     }
     
     /**
@@ -882,7 +872,7 @@ export class KeyboardNavigationTester {
     unregisterShortcut(key: string, modifiers: string[]): void { ''
         this.eventHandler.unregisterShortcut(key, modifiers),' }'
 
-        this.navigationState.shortcuts.delete(`${modifiers.join('+'})+${key}`);
+        this.navigationState.shortcuts.delete(`${modifiers.join('+'}+${key}`);
     }
     
     /**
@@ -908,10 +898,9 @@ export class KeyboardNavigationTester {
      */
     applyConfig(config: { keyboardNavigation?: Partial<TestConfig> ): void {
         if (config.keyboardNavigation) {
-            Object.assign(this.config, config.keyboardNavigation),
-            
+            Object.assign(this.config, config.keyboardNavigation);
             // サブコンポーネントへの設定伝播
-            this.eventHandler.updateConfig({),
+            this.eventHandler.updateConfig({);
             this.stateManager.updateConfig({) }
 
             this.reporter.updateConfig({)) }

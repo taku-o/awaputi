@@ -15,7 +15,7 @@
  */
 
 // 型定義
-export interface Challenge { id: string,
+export interface Challenge { id: string;
     title: string;
     description: string;
     type: ChallengeType;
@@ -32,7 +32,7 @@ export interface ChallengeReward { ap?: number,
     items?: RewardItem[];
     badges?: string[];
 
-export interface RewardItem { type: string,
+export interface RewardItem { type: string;
     id: string;
     quantity: number;
     name?: string;
@@ -44,15 +44,15 @@ export interface ChallengeMetadata { category?: string,
     conditions?: ChallengeCondition[];
     customProperties?: Record<string, any> }
 
-export interface ChallengeCondition { type: ConditionType,
+export interface ChallengeCondition { type: ConditionType;
     parameter: string;
     value: number | string | boolean;
     operator?: ComparisonOperator;
 
-export interface ChallengeValidationResult { isValid: boolean,
+export interface ChallengeValidationResult { isValid: boolean;
     errors: string[];
 
-export interface ChallengeStatistics { total: number,
+export interface ChallengeStatistics { total: number;
     completed: number;
     active: number;
     completionRate: number;
@@ -65,36 +65,36 @@ export interface ChallengeFilterOptions { type?: ChallengeType | 'all',
     status?: ChallengeStatus | 'all';
     searchQuery?: string;
 
-export interface ChallengeSortOptions { field: ChallengeSortField,
+export interface ChallengeSortOptions { field: ChallengeSortField;
     order: SortOrder;
 
-export interface ChallengeImportResult { success: boolean,
+export interface ChallengeImportResult { success: boolean;
     imported: number;
     errors?: Array<{ index: number,, errors: string[];>;
     error?: string;
 }
 
-export interface ChallengeExportData { challenges: Challenge[],
+export interface ChallengeExportData { challenges: Challenge[];
     statistics: ChallengeStatistics;
     exportDate: string;
     version: string;
 
-export interface DataIntegrityResult { isValid: boolean,
+export interface DataIntegrityResult { isValid: boolean;
     issues: string[];
 
-export interface ChallengeProgressUpdate { challengeId: string,
+export interface ChallengeProgressUpdate { challengeId: string;
     oldProgress: number;
     newProgress: number;
     completed: boolean;
     timestamp: Date;
 
-export interface ChallengeDataControllerConfig { refreshInterval: number,
+export interface ChallengeDataControllerConfig { refreshInterval: number;
     autoRefresh: boolean;
     enableProgressAnnouncements: boolean;
     enableRewardAnnouncements: boolean;
     validateOnImport: boolean;
 
-export interface ChallengeDataControllerState { challenges: Challenge[],
+export interface ChallengeDataControllerState { challenges: Challenge[];
     loading: boolean;
     visible: boolean;
     filterBy: string;
@@ -102,7 +102,7 @@ export interface ChallengeDataControllerState { challenges: Challenge[],
     searchQuery: string;
     lastUpdated?: Date;
 
-export interface ChallengeUIReference { config: ChallengeDataControllerConfig,
+export interface ChallengeUIReference { config: ChallengeDataControllerConfig;
     state: ChallengeDataControllerState;
     stats: ChallengeStats;
     renderer: ChallengeRenderer;
@@ -113,28 +113,28 @@ export interface ChallengeUIReference { config: ChallengeDataControllerConfig,
     log: (action: string, data?: Record<string, any>) => void }
 }
 
-export interface ChallengeRenderer { showLoading: (show: boolean) => void,
+export interface ChallengeRenderer { showLoading: (show: boolean) => void;
     renderChallenges: () => void;
     updateProgressSection: () => void;
     updateFooter: () => void;
     showError: (message: string) => void  }
 }
 
-export interface ChallengeInteractionHandler { announceProgressUpdate: (challengeId: string, progress: number) => void,
+export interface ChallengeInteractionHandler { announceProgressUpdate: (challengeId: string, progress: number) => void;
     updateFocusableElements: () => void  }
 }
 
-export interface ChallengeSystem { getChallenges: () => Promise<Challenge[]>,
+export interface ChallengeSystem { getChallenges: () => Promise<Challenge[]>;
     onChallengeCompleted?: (challenge: Challenge) => void;
     onChallengeExpired?: (challenge: Challenge') => void }'
 }
 
-export interface ChallengeStats { completions: number,
+export interface ChallengeStats { completions: number;
     totalChallengesViewed?: number;
     averageCompletionTime?: number;
     lastCompletedChallenge?: string;
 
-export interface DemoChallenge { id: string,
+export interface DemoChallenge { id: string;
     title: string;
     description: string;
     type: ChallengeType;
@@ -145,20 +145,20 @@ export interface DemoChallenge { id: string,
     deadline: Date;
     priority: number;
 
-export interface ChallengeSearchOptions { query: string,
+export interface ChallengeSearchOptions { query: string;
     fields: ChallengeSearchField[];
     caseSensitive?: boolean;
     exactMatch?: boolean;
 
-export interface ChallengeSearchResult { challenge: Challenge,
+export interface ChallengeSearchResult { challenge: Challenge;
     matchedFields: ChallengeSearchField[];
     relevanceScore: number;
 
-export interface ExpiredChallengeResult { expired: Challenge[],
+export interface ExpiredChallengeResult { expired: Challenge[];
     processed: number;
     notifications: string[];
 
-export interface ChallengeUpdateResult { success: boolean,
+export interface ChallengeUpdateResult { success: boolean;
     challenge?: Challenge;
     oldValue?: any;
     newValue?: any;
@@ -176,13 +176,13 @@ export type AnnouncementPriority = 'polite' | 'assertive' | 'off';
 export type ChallengeSearchField = 'title' | 'description' | 'type' | 'difficulty' | 'tags';
 
 // 定数
-export const DEMO_CHALLENGES: DemoChallenge[] = [{,
-        id: 'daily-1',
-        title: '10個のバブルをポップ',
-        description: '今日中に10個のバブルをポップしよう',
-        type: 'daily',
-        difficulty: 'easy',
-        progress: 7,
+export const DEMO_CHALLENGES: DemoChallenge[] = [{;
+        id: 'daily-1';
+        title: '10個のバブルをポップ';
+        description: '今日中に10個のバブルをポップしよう';
+        type: 'daily';
+        difficulty: 'easy';
+        progress: 7;
     target: 10 }
 
         reward: { ap: 50 },''
@@ -201,7 +201,7 @@ export const DEMO_CHALLENGES: DemoChallenge[] = [{,
 
         reward: { ap: 200 },''
         deadline: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000','
-    priority: 2;
+    priority: 2,
     },
 
     { ''
@@ -216,20 +216,20 @@ export const DEMO_CHALLENGES: DemoChallenge[] = [{,
         reward: { ap: 300, title: 'コンボマスター'
             },''
         deadline: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000','
-    priority: 3];
+    priority: 3],
     }]
 ] as const,
 
 export const CHALLENGE_TYPES: readonly ChallengeType[] = ['daily', 'weekly', 'special', 'event] as const;'
 export const CHALLENGE_DIFFICULTIES: readonly ChallengeDifficulty[] = ['easy', 'medium', 'hard] as const;'
 
-export const CHALLENGE_SORT_FIELDS: readonly ChallengeSortField[] = [']';
+export const CHALLENGE_SORT_FIELDS: readonly ChallengeSortField[] = [']',
     'priority', 'difficulty', 'progress', 'deadline', 'title', 'type'];
 ] as const;
 
 export const DIFFICULTY_ORDER: Record<ChallengeDifficulty, number> = { easy: 1,
     medium: 2,
-    hard: 3  } as const;
+    hard: 3  } as const,
 export const DEFAULT_CHALLENGE_CONFIG: ChallengeDataControllerConfig = { refreshInterval: 30000, // 30秒
     autoRefresh: true,
     enableProgressAnnouncements: true,
@@ -240,7 +240,7 @@ export const VALIDATION_RULES = { minProgress: 0,
     maxTitleLength: 100,
     maxDescriptionLength: 500,
     maxPriority: 999,
-    minPriority: 1  } as const;
+    minPriority: 1  } as const,
 // ユーティリティ関数
 export function isValidChallengeType(type: string): type is ChallengeType { return CHALLENGE_TYPES.includes(type, as ChallengeType) }
 
@@ -249,9 +249,8 @@ export function isValidChallengeDifficulty(difficulty: string): difficulty is Ch
 export function calculateChallengeProgress(progress: number, target: number): number { return Math.min(Math.max(0, progress), target) }
 
 export function formatChallengeDeadline(deadline: Date): string { const now = new Date(),
-    const timeDiff = deadline.getTime() - now.getTime(),
-    const daysDiff = Math.ceil(timeDiff / (1000 * 60 * 60 * 24),
-
+    const timeDiff = deadline.getTime() - now.getTime();
+    const daysDiff = Math.ceil(timeDiff / (1000 * 60 * 60 * 24);
     if(daysDiff < 0) return '期限切れ',
     if(daysDiff === 0) return '今日まで',
     if(daysDiff === 1) return '明日まで' }
@@ -259,7 +258,7 @@ export function formatChallengeDeadline(deadline: Date): string { const now = ne
 }
 
 export function generateChallengeId(): string {
-    return `challenge_${Date.now())_${Math.random().toString(36).substr(2, 9})`;
+    return `challenge_${Date.now())_${Math.random().toString(36).substr(2, 9}`;
 }
 
 export class ChallengeDataController {
@@ -288,7 +287,7 @@ export class ChallengeDataController {
      * チャレンジデータの読み込み
      */'
     async loadChallenges(): Promise<void> { try {'
-            this.challengeUI.renderer.showLoading(true),
+            this.challengeUI.renderer.showLoading(true);
             this.state.loading = true,
             
             // チャレンジシステムからデータを取得
@@ -315,12 +314,12 @@ export class ChallengeDataController {
             this.challengeUI.renderer.showLoading(false);
             
             // アナウンス
-            this.challengeUI.announce(`${challenges.length}件のチャレンジを読み込みました`});
+            this.challengeUI.announce(`${challenges.length}件のチャレンジを読み込みました`};
             ';'
 
         } catch (error) { this.state.loading = false,
-            this.challengeUI.renderer.showLoading(false),
-            this.challengeUI.renderer.showError('チャレンジの読み込みに失敗しました'),
+            this.challengeUI.renderer.showLoading(false);
+            this.challengeUI.renderer.showError('チャレンジの読み込みに失敗しました');
             this.challengeUI.handleError('CHALLENGE_LOAD_FAILED', error as Error' }'
     }
     
@@ -331,8 +330,8 @@ export class ChallengeDataController {
                 category: 'demo')','
     tags: [demo.type, demo.difficulty],
                 source: 'demo_generator',
-                version: '1.0';
-            })) }
+                version: '1.0',
+            }) }
     
     /**
      * チャレンジのフィルタリング
@@ -342,14 +341,14 @@ export class ChallengeDataController {
         switch(filter) {
 
             case 'daily':','
-                return challenges.filter(c => c.type === 'daily'),
+                return challenges.filter(c => c.type === 'daily');
             case 'weekly':','
-                return challenges.filter(c => c.type === 'weekly'),
+                return challenges.filter(c => c.type === 'weekly');
             case 'active':','
-                return challenges.filter(c => c.progress < c.target),
+                return challenges.filter(c => c.progress < c.target);
             case 'completed':,
                 return challenges.filter(c => c.progress >= c.target) }
-            default: return challenges;
+            default: return challenges,
     
     /**
      * チャレンジのソート
@@ -372,7 +371,7 @@ export class ChallengeDataController {
                 case 'deadline':','
                     return a.deadline.getTime() - b.deadline.getTime()','
                 case 'title':')',
-                    return a.title.localeCompare(b.title),
+                    return a.title.localeCompare(b.title);
                 case 'type': }
                     return a.type.localeCompare(b.type); }
                 default: return 0;);
@@ -381,12 +380,11 @@ export class ChallengeDataController {
     /**
      * チャレンジの進捗更新
      */
-    updateChallengeProgress(challengeId: string, newProgress: number): boolean { const challenge = this.state.challenges.find(c => c.id === challengeId),
+    updateChallengeProgress(challengeId: string, newProgress: number): boolean { const challenge = this.state.challenges.find(c => c.id === challengeId);
         if (!challenge) return false,
 
         const oldProgress = challenge.progress,
-        challenge.progress = calculateChallengeProgress(newProgress, challenge.target),
-        
+        challenge.progress = calculateChallengeProgress(newProgress, challenge.target);
         // 完了チェック
         if (challenge.progress >= challenge.target && oldProgress < challenge.target) {
     
@@ -415,7 +413,7 @@ export class ChallengeDataController {
 }
             const rewardText = this.formatReward(challenge.reward);' }'
 
-            this.challengeUI.announce(`「${challenge.title}」が完了しました！報酬: ${rewardText}`, 'assertive'});
+            this.challengeUI.announce(`「${challenge.title}」が完了しました！報酬: ${rewardText}`, 'assertive'};
         }
         
         // チャレンジシステムへの通知
@@ -461,8 +459,8 @@ export class ChallengeDataController {
      * チャレンジマッチ評価
      */
     private evaluateChallengeMatch(;
-        challenge: Challenge;
-        searchTerm: string;
+        challenge: Challenge,
+        searchTerm: string,
         fields: ChallengeSearchField[]
     );
         caseSensitive: boolean)','
@@ -499,7 +497,7 @@ export class ChallengeDataController {
             if (isMatch) {
                 matchedFields.push(field) }
                 relevanceScore += fieldWeight; }
-});
+};
 
         return { challenge,
             matchedFields };
@@ -519,7 +517,7 @@ export class ChallengeDataController {
         
         // 文字列長の検証
         if (challenge.title && challenge.title.length > VALIDATION_RULES.maxTitleLength) { }
-            errors.push(`Title, must be ${VALIDATION_RULES.maxTitleLength} characters, or less`});
+            errors.push(`Title, must be ${VALIDATION_RULES.maxTitleLength} characters, or less`};
         }
         if (challenge.description && challenge.description.length > VALIDATION_RULES.maxDescriptionLength) { }'
 
@@ -535,7 +533,7 @@ export class ChallengeDataController {
         if(typeof, challenge.target !== 'number' || challenge.target < VALIDATION_RULES.minTarget) {
     
 }
-            errors.push(`Target, must be, a positive, number (>= ${VALIDATION_RULES.minTarget}`});
+            errors.push(`Target, must be, a positive, number (>= ${VALIDATION_RULES.minTarget}`};
 
         }''
         if (challenge.progress > challenge.target) {', ' }
@@ -549,7 +547,7 @@ export class ChallengeDataController {
             challenge.priority > VALIDATION_RULES.maxPriority) {
     
 }
-            errors.push(`Priority, must be, between ${VALIDATION_RULES.minPriority} and ${VALIDATION_RULES.maxPriority}`});
+            errors.push(`Priority, must be, between ${VALIDATION_RULES.minPriority} and ${VALIDATION_RULES.maxPriority}`};
         }
         ';'
         // 期限の検証
@@ -558,17 +556,17 @@ export class ChallengeDataController {
         // タイプの検証
         if(!isValidChallengeType(challenge.type)) { }'
 
-            errors.push(`Type must be one of: ${CHALLENGE_TYPES.join(', '})`;
+            errors.push(`Type must be one of: ${CHALLENGE_TYPES.join(', '}`;
         }
 
         ';'
         // 難易度の検証
         if(!isValidChallengeDifficulty(challenge.difficulty)) { }'
 
-            errors.push(`Difficulty must be one of: ${CHALLENGE_DIFFICULTIES.join(', '})`;
+            errors.push(`Difficulty must be one of: ${CHALLENGE_DIFFICULTIES.join(', '}`;
         }
         
-        return { isValid: errors.length = == 0 };
+        return { isValid: errors.length = == 0 },
             errors }
         }
     
@@ -576,14 +574,14 @@ export class ChallengeDataController {
      * チャレンジデータの正規化'
      */'
     normalizeChallengeData(challenge: Partial<Challenge>): Challenge { return { ''
-            id: String(challenge.id || generateChallengeId(),
+            id: String(challenge.id || generateChallengeId();
             title: String(challenge.title || ').trim()',
             description: String(challenge.description || ').trim()',
     type: isValidChallengeType(challenge.type || '') ? challenge.type : 'daily',
             difficulty: isValidChallengeDifficulty(challenge.difficulty || '') ? challenge.difficulty : 'easy',
     progress: Math.max(VALIDATION_RULES.minProgress, Number(challenge.progress || 0) };
             target: Math.max(VALIDATION_RULES.minTarget, Number(challenge.target || 1) }
-            reward: challenge.reward || {};
+            reward: challenge.reward || {},
             deadline: challenge.deadline instanceof Date ? challenge.deadline : new Date(Date.now() + 24 * 60 * 60 * 1000,
             priority: Math.max(VALIDATION_RULES.minPriority,
                       Math.min(VALIDATION_RULES.maxPriority, Number(challenge.priority || 999)),
@@ -599,10 +597,9 @@ export class ChallengeDataController {
      * チャレンジ表示の更新
      */
     refreshChallengeDisplay(): void { // レンダラーに委譲
-        this.challengeUI.renderer.renderChallenges(),
-        this.challengeUI.renderer.updateProgressSection(),
-        this.challengeUI.renderer.updateFooter(),
-        
+        this.challengeUI.renderer.renderChallenges();
+        this.challengeUI.renderer.updateProgressSection();
+        this.challengeUI.renderer.updateFooter();
         // フォーカス可能要素の更新
         this.challengeUI.interactionHandler.updateFocusableElements() }
     
@@ -627,7 +624,7 @@ export class ChallengeDataController {
      * 自動更新の停止
      */
     stopAutoRefresh(): void { if (this.refreshTimer) {
-            window.clearInterval(this.refreshTimer),
+            window.clearInterval(this.refreshTimer);
             this.refreshTimer = null }
     }
     
@@ -657,7 +654,7 @@ export class ChallengeDataController {
             completed,
             active,
             completionRate: total > 0 ? Math.round((completed / total) * 100) : 0,
-            averageProgress: Math.round(averageProgress),
+            averageProgress: Math.round(averageProgress);
             byType };
             byDifficulty }
         }
@@ -670,7 +667,7 @@ export class ChallengeDataController {
     statistics: this.getChallengeStatistics(
             exportDate: new Date().toISOString('',
     version: '1.0'
-            }))
+            })
         );
         return JSON.stringify(data, null, 2);
     }
@@ -689,30 +686,29 @@ export class ChallengeDataController {
             const errors: Array<{ index: number,, errors: string[];> = [];
             
             data.challenges.forEach((challenge, index) => {  if (this.config.validateOnImport) {
-                    const normalized = this.normalizeChallengeData(challenge),
-                    const validation = this.validateChallengeData(normalized),
-                    
+                    const normalized = this.normalizeChallengeData(challenge);
+                    const validation = this.validateChallengeData(normalized);
                     if (validation.isValid) { }
                         validatedChallenges.push(normalized); }
                     } else { errors.push({ index, errors: validation.errors  }
                 } else { validatedChallenges.push(this.normalizeChallengeData(challenge) }
-            });
+            };
             
             if (validatedChallenges.length > 0) {
             
                 this.state.challenges = validatedChallenges }
                 this.refreshChallengeDisplay(); }
-                this.challengeUI.announce(`${validatedChallenges.length}件のチャレンジをインポートしました`});
+                this.challengeUI.announce(`${validatedChallenges.length}件のチャレンジをインポートしました`};
             }
             
             return { success: true,
-                imported: validatedChallenges.length };
+                imported: validatedChallenges.length },
                 errors: errors.length > 0 ? errors : undefined; catch (error) {
             const errorMessage = error instanceof Error ? error.message: 'Unknown error',
-            this.challengeUI.handleError('CHALLENGE_IMPORT_FAILED', error as Error),
+            this.challengeUI.handleError('CHALLENGE_IMPORT_FAILED', error as Error);
             return { success: false,
-                imported: 0 };
-                error: errorMessage;
+                imported: 0 },
+                error: errorMessage,
     }
     
     /**
@@ -721,12 +717,12 @@ export class ChallengeDataController {
     formatReward(reward: ChallengeReward): string { const parts: string[] = [],
         
         if (reward.ap) { }
-            parts.push(`${reward.ap} AP`});
+            parts.push(`${reward.ap} AP`};
         }
         if (reward.title) {
     
 }
-            parts.push(`称号「${reward.title}」`});
+            parts.push(`称号「${reward.title}」`};
         }
         if (reward.items && reward.items.length > 0) { const itemTexts = reward.items.map(item => ) }
                 `${item.name || item.id}×${ item.quantity}`
@@ -745,7 +741,7 @@ export class ChallengeDataController {
     /**
      * チャレンジの優先度更新
      */'
-    updateChallengePriority(challengeId: string, newPriority: number): ChallengeUpdateResult { const challenge = this.state.challenges.find(c => c.id === challengeId),
+    updateChallengePriority(challengeId: string, newPriority: number): ChallengeUpdateResult { const challenge = this.state.challenges.find(c => c.id === challengeId);
         if (!challenge) { }'
 
             return { success: false, error: 'Challenge not found'
@@ -765,14 +761,14 @@ export class ChallengeDataController {
         
         return { success: true,
             challenge,
-            oldValue: oldPriority,;
+            oldValue: oldPriority,
             newValue: clampedPriority,
     
     /**
      * 期限切れチャレンジの確認
      */
-    checkExpiredChallenges(): ExpiredChallengeResult { const now = new Date(),
-        const expiredChallenges = this.state.challenges.filter(),
+    checkExpiredChallenges(): ExpiredChallengeResult { const now = new Date();
+        const expiredChallenges = this.state.challenges.filter();
             c => c.deadline < now && c.progress < c.target),
         
         const notifications: string[] = [],
@@ -786,11 +782,11 @@ export class ChallengeDataController {
             // 期限切れ処理
             expiredChallenges.forEach(challenge => {  ) }
                 this.onChallengeExpired(challenge); }
-            });
+            };
         }
         
         return { expired: expiredChallenges,
-            processed: expiredChallenges.length };
+            processed: expiredChallenges.length },
             notifications }
         }
     
@@ -812,11 +808,11 @@ export class ChallengeDataController {
     validateDataIntegrity(): DataIntegrityResult { const issues: string[] = [],
         
         // 重複IDのチェック
-        const ids = this.state.challenges.map(c => c.id),
+        const ids = this.state.challenges.map(c => c.id);
         const duplicateIds = ids.filter((id, index) => ids.indexOf(id) !== index),
         if (duplicateIds.length > 0) { }'
 
-            issues.push(`Duplicate challenge IDs found: ${duplicateIds.join(', '})`);
+            issues.push(`Duplicate challenge IDs found: ${duplicateIds.join(', '}`);
         }
         
         // データ型の整合性
@@ -824,9 +820,9 @@ export class ChallengeDataController {
 
             if (!validation.isValid) { }'
 
-                issues.push(`Challenge ${index} (${challenge.id}): ${validation.errors.join(', '})`);
+                issues.push(`Challenge ${index} (${challenge.id}: ${validation.errors.join(', '}`);
             }
-        });
+        };
         
         // 論理的整合性チェック
         const futureDeadlines = this.state.challenges.filter();
@@ -835,10 +831,10 @@ export class ChallengeDataController {
         if (futureDeadlines.length > 0) {
     
 }
-            issues.push(`${futureDeadlines.length} completed, challenges have, past deadlines`});
+            issues.push(`${futureDeadlines.length} completed, challenges have, past deadlines`};
         }
         
-        return { isValid: issues.length = == 0 };
+        return { isValid: issues.length = == 0 },
             issues }
         }
     
@@ -846,23 +842,23 @@ export class ChallengeDataController {
      * チャレンジフィルターの更新
      */
     updateFilter(filterBy: string): void { this.state.filterBy = filterBy,
-        const filteredChallenges = this.filterChallenges(this.state.challenges),
-        this.state.challenges = this.sortChallenges(filteredChallenges),
+        const filteredChallenges = this.filterChallenges(this.state.challenges);
+        this.state.challenges = this.sortChallenges(filteredChallenges);
         this.refreshChallengeDisplay() }
     
     /**
      * チャレンジソートの更新
      */
     updateSort(sortBy: ChallengeSortField): void { this.state.sortBy = sortBy,
-        this.state.challenges = this.sortChallenges(this.state.challenges),
+        this.state.challenges = this.sortChallenges(this.state.challenges);
         this.refreshChallengeDisplay() }
     
     /**
      * チャレンジの削除
      */
-    removeChallenge(challengeId: string): boolean { const index = this.state.challenges.findIndex(c => c.id === challengeId),
+    removeChallenge(challengeId: string): boolean { const index = this.state.challenges.findIndex(c => c.id === challengeId);
         if (index !== -1) {
-            this.state.challenges.splice(index, 1),
+            this.state.challenges.splice(index, 1);
             this.refreshChallengeDisplay() }
             return true;
         return false;
@@ -872,9 +868,8 @@ export class ChallengeDataController {
      * チャレンジの追加
      */
     addChallenge(challenge: Partial<Challenge>): ChallengeUpdateResult { try {
-            const normalized = this.normalizeChallengeData(challenge),
-            const validation = this.validateChallengeData(normalized),
-
+            const normalized = this.normalizeChallengeData(challenge);
+            const validation = this.validateChallengeData(normalized);
             if (!validation.isValid) {
     
 }
@@ -882,14 +877,14 @@ export class ChallengeDataController {
 
                     success: false,' }'
 
-                    error: `Validation, failed: ${validation.errors.join(', '})`
+                    error: `Validation, failed: ${validation.errors.join(', '}`
                 }
             
             this.state.challenges.push(normalized);
             this.state.challenges = this.sortChallenges(this.state.challenges);
             this.refreshChallengeDisplay();
             
-            return { success: true,;
+            return { success: true,
                 challenge: normalized; catch (error) { return { success: false,' };'
 
                 error: error instanceof Error ? error.message : 'Unknown error' 

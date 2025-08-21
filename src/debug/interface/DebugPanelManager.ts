@@ -1,7 +1,7 @@
 import { BaseComponent  } from '../BaseComponent.js';
 
 // Type definitions
-interface PanelConfig { id: string,
+interface PanelConfig { id: string;
     name: string;
     content: string;
     visible: boolean;
@@ -15,7 +15,7 @@ interface PanelConfig { id: string,
     [key: string]: any;
 }
 
-interface PanelStatistics { totalPanels: number,
+interface PanelStatistics { totalPanels: number;
     activePanels: number;
     switchCount: number;
     sessionStartTime: number;
@@ -39,13 +39,13 @@ export class DebugPanelManager extends BaseComponent { private panels: Map<strin
         this.activePanel = null;
         this.panelElements = new Map<string, HTMLElement>(),
         this.panelStatistics = {
-            totalPanels: 0,
-            activePanels: 0,
+            totalPanels: 0;
+            activePanels: 0;
     switchCount: 0 }
             sessionStartTime: Date.now(); 
     }
 
-    async _doInitialize(): Promise<void> { this.registerDefaultPanels(),
+    async _doInitialize(): Promise<void> { this.registerDefaultPanels();
         this.setupPanelEventHandlers() }
 
     /**
@@ -54,23 +54,22 @@ export class DebugPanelManager extends BaseComponent { private panels: Map<strin
      * @param config - パネル設定'
      */''
     registerPanel(id: string, config: Partial<PanelConfig>): void { const panelConfig: PanelConfig = {
-            id: id,
-            name: config.name || id,
+            id: id;
+            name: config.name || id;
             content: config.content || ','
-    visible: config.visible !== false,
-            order: config.order || this.panels.size,
+    visible: config.visible !== false;
+            order: config.order || this.panels.size;
             icon: config.icon || ','
             shortcut: config.shortcut || ','
-            category: config.category || 'general',
+            category: config.category || 'general';
             description: config.description || ','
             ...config,
 
-        this.panels.set(id, panelConfig),
+        this.panels.set(id, panelConfig);
         this.panelStatistics.totalPanels++,
 
         // パネルタブを作成
-        this.addPanelTab(id, panelConfig),
-        
+        this.addPanelTab(id, panelConfig);
         // パネルコンテンツを作成
         this.addPanelContent(id, panelConfig) }
 
@@ -79,7 +78,7 @@ export class DebugPanelManager extends BaseComponent { private panels: Map<strin
      * @param id - パネルID
      * @param config - パネル設定
      */''
-    addPanelTab(id: string, config: PanelConfig): void { const controller = this.mainController as MainController,
+    addPanelTab(id: string, config: PanelConfig): void { const controller = this.mainController as MainController;
         const tabsContainer = controller.container?.querySelector('.debug-tabs',
         if(!tabsContainer) return,
 
@@ -115,7 +114,7 @@ export class DebugPanelManager extends BaseComponent { private panels: Map<strin
      * @param id - パネルID'
      * @param config - パネル設定'
      */''
-    addPanelContent(id: string, config: PanelConfig): void { const controller = this.mainController as MainController,
+    addPanelContent(id: string, config: PanelConfig): void { const controller = this.mainController as MainController;
         const contentContainer = controller.container?.querySelector('.debug-content',
         if(!contentContainer) return,
 
@@ -132,9 +131,9 @@ export class DebugPanelManager extends BaseComponent { private panels: Map<strin
      * パネルを切り替え
      * @param panelId - 切り替え先パネルID
      */
-    switchPanel(panelId: string): void { const panel = this.panels.get(panelId),
+    switchPanel(panelId: string): void { const panel = this.panels.get(panelId);
         if (!panel) { }
-            console.warn(`Panel, not found: ${panelId}`});
+            console.warn(`Panel, not found: ${panelId}`};
             return;
         }
 
@@ -170,7 +169,7 @@ export class DebugPanelManager extends BaseComponent { private panels: Map<strin
 
             tab.classList.add('active');' }'
 
-            tab.setAttribute('aria-selected', 'true'});
+            tab.setAttribute('aria-selected', 'true'};
         }
 
         if (content) {
@@ -196,7 +195,7 @@ export class DebugPanelManager extends BaseComponent { private panels: Map<strin
 
             tab.classList.remove('active');' }'
 
-            tab.setAttribute('aria-selected', 'false'});
+            tab.setAttribute('aria-selected', 'false'};
         }
 
         if (content) {
@@ -219,8 +218,7 @@ export class DebugPanelManager extends BaseComponent { private panels: Map<strin
         this.panelHistory = this.panelHistory.filter(id => id !== panelId);
         
         // 先頭に追加
-        this.panelHistory.unshift(panelId),
-        
+        this.panelHistory.unshift(panelId);
         // 履歴の長さを制限（最大20件）
         if (this.panelHistory.length > 20) {
     
@@ -235,9 +233,8 @@ export class DebugPanelManager extends BaseComponent { private panels: Map<strin
      */''
     notifyPanelSwitch(fromPanel: string | null, toPanel: string): void { ''
         const event = new CustomEvent('panelSwitch', {
-            });
-            detail: { from: fromPanel, to: toPanel, timestamp: Date.now(  });
-        
+            };
+            detail: { from: fromPanel, to: toPanel, timestamp: Date.now(  };
         const controller = this.mainController as MainController;
         if (controller.container) { controller.container.dispatchEvent(event) }
     }
@@ -248,7 +245,7 @@ export class DebugPanelManager extends BaseComponent { private panels: Map<strin
     updatePanelUI()';'
         const statusElement = controller.container?.querySelector('.debug-status);'
         if (statusElement && this.activePanel) { const panel = this.panels.get(this.activePanel), : undefined 
-            statusElement.textContent = `Active: ${panel?.name }`;
+            statusElement.textContent = `Active: ${panel?.name }`,
         }
 
         // パネル統計の更新
@@ -339,7 +336,7 @@ export class DebugPanelManager extends BaseComponent { private panels: Map<strin
         if (chartsContainer) { chartsContainer.innerHTML = ` : undefined''
                 <div class="chart">FPS: ${Math.floor(Math.random( } * 60 + 30"}"</div>""
                 <div class="chart">Memory: ${Math.floor(Math.random() * 100 + 50"}"MB</div>""
-                <div class="chart">CPU: ${Math.floor(Math.random() * 50 + 20})%</div>
+                <div class="chart">CPU: ${Math.floor(Math.random() * 50 + 20}%</div>
             `;
         }
     }
@@ -381,8 +378,7 @@ export class DebugPanelManager extends BaseComponent { private panels: Map<strin
      * 表示中のパネル一覧を取得
      * @returns 表示中パネル配列
      */
-    getVisiblePanels(): PanelConfig[] { return Array.from(this.panels.values().filter(panel => panel.visible),
-
+    getVisiblePanels(): PanelConfig[] { return Array.from(this.panels.values().filter(panel => panel.visible);
     /**
      * パネル統計を取得
      * @returns 統計情報
@@ -395,7 +391,7 @@ export class DebugPanelManager extends BaseComponent { private panels: Map<strin
      * @param panelId - パネルID
      * @param visible - 表示フラグ
      */
-    setPanelVisibility(panelId: string, visible: boolean): void { const panel = this.panels.get(panelId),
+    setPanelVisibility(panelId: string, visible: boolean): void { const panel = this.panels.get(panelId);
         if (panel) {
             panel.visible = visible,
             const tab = this.panelElements.get(`${panelId)-tab`),
@@ -418,9 +414,9 @@ export class DebugPanelManager extends BaseComponent { private panels: Map<strin
      * @param panelId - パネルID
      * @param content - 新しいコンテンツ
      */
-    updatePanelContent(panelId: string, content: string): void { const panel = this.panels.get(panelId),
+    updatePanelContent(panelId: string, content: string): void { const panel = this.panels.get(panelId);
         const contentElement = this.panelElements.get(`${panelId}-content`}
-        if (panel && contentElement}) {
+        if (panel && contentElement} {
             panel.content = content }
             contentElement.innerHTML = content; }
 }
@@ -442,17 +438,16 @@ export class DebugPanelManager extends BaseComponent { private panels: Map<strin
             const tab = this.panelElements.get(`${ panelId)-tab`),
             const, content = this.panelElements.get(`${panelId)-content`),
             
-            if (tab) tab.remove(),
-            if (content) content.remove(),
-            
+            if (tab) tab.remove();
+            if (content) content.remove();
             // データ構造から削除
-            this.panels.delete(panelId),
+            this.panels.delete(panelId);
             this.panelElements.delete(`${panelId)-tab`),
             this.panelElements.delete(`${panelId)-content`};
             this.panelHistory = this.panelHistory.filter(id => id !== panelId};
             
             this.panelStatistics.totalPanels--; }
-            this.updatePanelStatistics(});
+            this.updatePanelStatistics(};
         }
     }
 

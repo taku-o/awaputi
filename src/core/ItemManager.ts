@@ -7,7 +7,7 @@
 
 import { GameEngine  } from './GameEngine.js';
 
-export interface Item { id: string,
+export interface Item { id: string;
     name: string;
     type: ItemType;
     quantity: number;
@@ -25,11 +25,11 @@ export enum ItemType {;
     SPECIAL = 'special',
     CURRENCY = 'currency' }
 
-export interface ItemEffect { type: string,
+export interface ItemEffect { type: string;
     value: number;
     duration?: number;
 
-export interface ItemConfig { enableRevivalItems: boolean,
+export interface ItemConfig { enableRevivalItems: boolean;
     maxRevivalsPerGame: number;
     revivalHPPercentage: number;
     itemCooldowns: boolean;
@@ -38,8 +38,8 @@ export class ItemManager {
     private gameEngine: GameEngine | null;
     private, inventory: Map<string, Item> }
     private activeEffects: Map<string, ItemEffect & { endTime: number;>;
-    private config: ItemConfig;
-    private revialsUsedThisGame: number;
+    private config: ItemConfig,
+    private revialsUsedThisGame: number,
     private, itemDefinitions: Map<string, Partial<Item>>;
 
     constructor(gameEngine?: GameEngine) {
@@ -99,15 +99,15 @@ export class ItemManager {
                 type: 'time_extend')],
     value: 30  }]
             }])
-            cooldown: 0);
+            cooldown: 0),
     }
 
     /**
      * アイテムを追加
      */
-    addItem(itemId: string, quantity: number = 1): boolean { const itemDef = this.itemDefinitions.get(itemId),
+    addItem(itemId: string, quantity: number = 1): boolean { const itemDef = this.itemDefinitions.get(itemId);
         if (!itemDef) { }
-            console.warn(`Item, definition not, found: ${itemId}`});
+            console.warn(`Item, definition not, found: ${itemId}`};
             return false;
         }
 
@@ -128,7 +128,7 @@ export class ItemManager {
         if (item.quantity > oldQuantity) {
     
 }
-            console.log(`Added ${item.quantity - oldQuantity} ${item.name}`});
+            console.log(`Added ${item.quantity - oldQuantity} ${item.name}`};
             return true;
         }
         
@@ -138,7 +138,7 @@ export class ItemManager {
     /**
      * アイテムを使用
      */
-    useItem(itemId: string): boolean { const item = this.inventory.get(itemId),
+    useItem(itemId: string): boolean { const item = this.inventory.get(itemId);
         if (!item || item.quantity <= 0) {
     
 }
@@ -150,7 +150,7 @@ export class ItemManager {
             if (timeSinceLastUse < item.cooldown) {
         }
                 const remainingCooldown = Math.ceil((item.cooldown - timeSinceLastUse) / 1000); }
-                console.log(`Item, on cooldown: ${remainingCooldown}秒`});
+                console.log(`Item, on cooldown: ${remainingCooldown}秒`};
                 return false;
 
         // アイテム効果を適用
@@ -164,7 +164,7 @@ export class ItemManager {
         item.quantity--;
         item.lastUsed = Date.now();
 
-        console.log(`Used ${item.name}. Remaining: ${item.quantity}`});
+        console.log(`Used ${item.name}. Remaining: ${item.quantity}`};
         return true;
     }
 
@@ -195,7 +195,7 @@ export class ItemManager {
         // HPを回復
         if (this.gameEngine && this.gameEngine.playerData) {
             const maxHP = this.gameEngine.playerData.maxHP || 100,
-            const revivalHP = Math.floor(maxHP * (this.config.revivalHPPercentage / 100),
+            const revivalHP = Math.floor(maxHP * (this.config.revivalHPPercentage / 100);
             this.gameEngine.playerData.currentHP = revivalHP }
             this.gameEngine.playerData.updateUI(); }
         }
@@ -209,7 +209,7 @@ export class ItemManager {
             this.gameEngine.audioManager.playSound('revival'; }'
         }
 
-        console.log(`Revival, used! ${revivalItem.name} remaining: ${revivalItem.quantity}`});
+        console.log(`Revival, used! ${revivalItem.name} remaining: ${revivalItem.quantity}`};
         return true;
     }
 
@@ -247,9 +247,9 @@ export class ItemManager {
                 if(effect.duration) {
 
                     this.activeEffects.set('shield', {
-                ...effect),
-                        endTime: Date.now() + effect.duration  })
-                    });
+                ...effect);
+                        endTime: Date.now() + effect.duration  }
+                    };
                 }
                 break;
                 
@@ -266,7 +266,7 @@ export class ItemManager {
     /**
      * アイテム効果を削除
      */
-    private removeItemEffect(effectType: string): void { this.activeEffects.delete(effectType),
+    private removeItemEffect(effectType: string): void { this.activeEffects.delete(effectType);
         // 効果の終了処理
         switch(effectType) {
 
@@ -281,12 +281,12 @@ export class ItemManager {
     /**
      * アクティブな効果をチェック
      */
-    hasActiveEffect(effectType: string): boolean { const effect = this.activeEffects.get(effectType),
+    hasActiveEffect(effectType: string): boolean { const effect = this.activeEffects.get(effectType);
         if (!effect) return false,
         
         // 時間切れチェック
         if (Date.now() > effect.endTime) {
-            this.activeEffects.delete(effectType),
+            this.activeEffects.delete(effectType);
             return false }
         
         return true;
@@ -300,14 +300,13 @@ export class ItemManager {
     /**
      * アイテム数を取得
      */
-    getItemCount(itemId: string): number { const item = this.inventory.get(itemId),
+    getItemCount(itemId: string): number { const item = this.inventory.get(itemId);
         return item ? item.quantity: 0 
     /**
      * ゲーム開始時の初期化
      */
     resetForNewGame(): void { this.revialsUsedThisGame = 0;
-        this.activeEffects.clear(),
-        
+        this.activeEffects.clear();
         // クールダウンをリセット
         for (const item of this.inventory.values() {
     
@@ -324,7 +323,7 @@ export class ItemManager {
     /**
      * セーブデータを生成
      */
-    getSaveData(): any { return { inventory: Array.from(this.inventory.entries() };
+    getSaveData(): any { return { inventory: Array.from(this.inventory.entries() },
             config: this.config 
     }
 
@@ -332,7 +331,7 @@ export class ItemManager {
      * セーブデータから復元
      */
     loadSaveData(data: any): void { if (data.inventory) {
-            this.inventory.clear(),
+            this.inventory.clear();
             for(const [id item] of data.inventory) {
     
 }

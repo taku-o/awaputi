@@ -4,14 +4,14 @@
  */
 
 // Type definitions for dialog components
-export interface DialogButton { text: string,
+export interface DialogButton { text: string;
     callback: () => void;
     color?: string;
     disabled?: boolean;
     action?: () => void,  }
 }
 
-export interface DialogLayout { x: number,
+export interface DialogLayout { x: number;
     y: number;
     width: number;
     height: number;
@@ -26,7 +26,7 @@ export interface DialogLayout { x: number,
 export interface DialogData { title?: string,
     [key: string]: unknown;
 
-export interface DialogResult { action: 'ok' | 'cancel' | string,
+export interface DialogResult { action: 'ok' | 'cancel' | string;
     data: unknown;
 
 export interface AccessibilitySettings { highContrast?: boolean,
@@ -92,7 +92,7 @@ export class ScenesBaseDialog {
             padding: 20,
             titleHeight: 40,
             buttonHeight: 35,
-    buttonSpacing: 10  };
+    buttonSpacing: 10  },
         // イベントリスナー
         this.onResult = null;
         this.onError = null;
@@ -140,14 +140,11 @@ export class ScenesBaseDialog {
             this.layout = { ...this.layout ...layout;
             
             // ダイアログ背景
-            this.renderBackground(context),
-            
+            this.renderBackground(context);
             // タイトルをレンダリング
-            this.renderTitle(context),
-            
+            this.renderTitle(context);
             // コンテンツをレンダリング
-            this.renderContent(context),
-            
+            this.renderContent(context);
             // ボタンをレンダリング
             this.renderButtons(context) } catch (error) { this.renderError(context error as Error') }'
     }
@@ -164,7 +161,7 @@ export class ScenesBaseDialog {
         context.textAlign = 'center',
         context.textBaseline = 'middle',
         context.fillText(
-            this.dialogData.title, as string),
+            this.dialogData.title, as string);
             this.layout.x + this.layout.width / 2),
             this.layout.y + this.layout.titleHeight / 2) }
     
@@ -205,7 +202,7 @@ export class ScenesBaseDialog {
         
         this.buttons.forEach((button, index) => {  const buttonX = startX + index * (100 + this.layout.buttonSpacing) }
             this.renderButton(context, buttonX, buttonY, 100, this.layout.buttonHeight, button, index === this.selectedButton); }
-        });
+        };
     }
     
     /**
@@ -228,11 +225,11 @@ export class ScenesBaseDialog {
     isSelected: boolean';'
     '): void { // ボタン背景'
         context.fillStyle = isSelected ? '#4CAF50' : '#CCCCCC',
-        this.roundRect(context, x, y, width, height, 5),
+        this.roundRect(context, x, y, width, height, 5);
         context.fill('''
         context.strokeStyle = isSelected ? '#45A049' : '#999999')
         context.lineWidth = 1,
-        this.roundRect(context, x, y, width, height, 5),
+        this.roundRect(context, x, y, width, height, 5);
         context.stroke('''
         context.fillStyle = isSelected ? '#FFFFFF' : '#333333',
         context.font = '14px Arial, sans-serif',
@@ -391,7 +388,7 @@ export class ScenesBaseDialog {
      * @returns 行配列'
      */''
     protected wrapText(context: CanvasRenderingContext2D, text: string, maxWidth: number): string[] { ''
-        const words = text.split(', '),
+        const words = text.split(', ');
         const lines: string[] = [],
 
         let currentLine = words[0],
@@ -425,17 +422,17 @@ export class ScenesBaseDialog {
         y: number, ;
         width: number );
         height: number,
-    radius: number;
+    radius: number,
     ): void { context.beginPath(
-        context.moveTo(x + radius, y),
-        context.lineTo(x + width - radius, y),
-        context.quadraticCurveTo(x + width, y, x + width, y + radius),
-        context.lineTo(x + width, y + height - radius),
-        context.quadraticCurveTo(x + width, y + height, x + width - radius, y + height),
-        context.lineTo(x + radius, y + height),
-        context.quadraticCurveTo(x, y + height, x, y + height - radius),
-        context.lineTo(x, y + radius),
-        context.quadraticCurveTo(x, y, x + radius, y),
+        context.moveTo(x + radius, y);
+        context.lineTo(x + width - radius, y);
+        context.quadraticCurveTo(x + width, y, x + width, y + radius);
+        context.lineTo(x + width, y + height - radius);
+        context.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
+        context.lineTo(x + radius, y + height);
+        context.quadraticCurveTo(x, y + height, x, y + height - radius);
+        context.lineTo(x, y + radius);
+        context.quadraticCurveTo(x, y, x + radius, y);
         context.closePath() }
     
     /**
@@ -484,16 +481,16 @@ export class ScenesBaseDialog {
      */''
     protected renderBackground(context: CanvasRenderingContext2D): void { // 背景オーバーレイ
         context.fillStyle = 'rgba(0, 0, 0, 0.5)',
-        context.fillRect(0, 0, context.canvas.width, context.canvas.height),
+        context.fillRect(0, 0, context.canvas.width, context.canvas.height);
         ','
         // ダイアログ背景
         context.fillStyle = '#F8F9FA',
 
-        this.roundRect(context, this.layout.x, this.layout.y, this.layout.width, this.layout.height, 8),
+        this.roundRect(context, this.layout.x, this.layout.y, this.layout.width, this.layout.height, 8);
         context.fill('',
         context.strokeStyle = '#DEE2E6')
         context.lineWidth = 1)
-        this.roundRect(context, this.layout.x, this.layout.y, this.layout.width, this.layout.height, 8),
+        this.roundRect(context, this.layout.x, this.layout.y, this.layout.width, this.layout.height, 8);
         context.stroke() }
     
     /**

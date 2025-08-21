@@ -46,7 +46,7 @@ export interface ChallengeUIConfig { // 表示設定
 /**
  * UI状態インターフェース
  */
-interface UIState { visible: boolean,
+interface UIState { visible: boolean;
     challenges: Challenge[];
     selectedChallenge: Challenge | null;
     focusedIndex: number;
@@ -57,7 +57,7 @@ interface UIState { visible: boolean,
 /**
  * UI統計インターフェース
  */
-interface UIStats { views: number,
+interface UIStats { views: number;
     challengeViews: number;
     completions: number;
     filterChanges: number;
@@ -67,7 +67,7 @@ interface UIStats { views: number,
 /**
  * DOM要素インターフェース
  */
-interface UIElements { container: HTMLElement | null,
+interface UIElements { container: HTMLElement | null;
     header: HTMLElement | null;
     filterControls: HTMLElement | null;
     sortControls: HTMLElement | null;
@@ -81,38 +81,39 @@ interface UIElements { container: HTMLElement | null,
 export class ChallengeUI {
     private challengeSystem: ChallengeSystem;
     private, config: {
-        maxVisibleChallenges: number,
-        autoRefresh: boolean,
-        refreshInterval: number,
-        showProgress: boolean,
-        showRewards: boolean,
-        showDifficulty: boolean,
+        maxVisibleChallenges: number;
+        autoRefresh: boolean;
+        refreshInterval: number;
+        showProgress: boolean;
+        showRewards: boolean;
+        showDifficulty: boolean;
     animations: {
-            enabled: boolean,
-            duration: number,
-    easing: string,;
-        accessibility: { enabled: boolean,
-            announcements: boolean,
-            keyboardNavigation: boolean,
-            highContrast: boolean,
-            reducedMotion: boolean,
-            progressAnnouncements: boolean,
-            rewardAnnouncements: boolean,
-    screenReaderOptimized: boolean,;
-        styles: { backgroundColor: string,
-            textColor: string,
-            accentColor: string,
-            borderRadius: string,
-            fontSize: string,
-    fontFamily: string,;
-    
-    private state: UIState,
-    public, elements: UIElements,
-    private stats: UIStats,
+            enabled: boolean;
+            duration: number;
+    easing: string;
+        accessibility: { enabled: boolean;
+            announcements: boolean;
+            keyboardNavigation: boolean;
+            highContrast: boolean;
+            reducedMotion: boolean;
+            progressAnnouncements: boolean;
+            rewardAnnouncements: boolean;
+    screenReaderOptimized: boolean;
+        styles: { backgroundColor: string;
+            textColor: string;
+            accentColor: string;
+            borderRadius: string;
+            fontSize: string;
+    fontFamily: string;
+    fontFamily: string;
+        };
+    private state: UIState;
+    public, elements: UIElements;
+    private stats: UIStats;
     // サブコンポーネント
-    public, renderer: ChallengeUIRenderer,
-    public interactionHandler: ChallengeInteractionHandler,
-    public dataController: ChallengeDataController,
+    public, renderer: ChallengeUIRenderer;
+    public interactionHandler: ChallengeInteractionHandler;
+    public dataController: ChallengeDataController;
 
     constructor(challengeSystem: ChallengeSystem, options: ChallengeUIConfig = { )) {
         this.challengeSystem = challengeSystem;
@@ -121,65 +122,65 @@ export class ChallengeUI {
         this.config = {
             // 表示設定
             maxVisibleChallenges: options.maxVisibleChallenges || 5;
-            autoRefresh: options.autoRefresh !== false,
+            autoRefresh: options.autoRefresh !== false;
     refreshInterval: options.refreshInterval || 60000, // 1分;
-            showProgress: options.showProgress !== false,
-            showRewards: options.showRewards !== false,
-            showDifficulty: options.showDifficulty !== false,
+            showProgress: options.showProgress !== false;
+            showRewards: options.showRewards !== false;
+            showDifficulty: options.showDifficulty !== false;
             // アニメーション設定
            , animations: {
-                enabled: options.animations !== false,
-    duration: options.animationDuration || 300,
+                enabled: options.animations !== false;
+    duration: options.animationDuration || 300;
                 easing: options.animationEasing || 'ease-in-out'
             };
             // アクセシビリティ設定
-            accessibility: { enabled: options.accessibility !== false,
-                announcements: options.announcements !== false,
-                keyboardNavigation: options.keyboardNavigation !== false,
-                highContrast: options.highContrast === true,
-                reducedMotion: options.reducedMotion === true,
-                progressAnnouncements: options.progressAnnouncements !== false,
-                rewardAnnouncements: options.rewardAnnouncements !== false,
+            accessibility: { enabled: options.accessibility !== false;
+                announcements: options.announcements !== false;
+                keyboardNavigation: options.keyboardNavigation !== false;
+                highContrast: options.highContrast === true;
+                reducedMotion: options.reducedMotion === true;
+                progressAnnouncements: options.progressAnnouncements !== false;
+                rewardAnnouncements: options.rewardAnnouncements !== false;
     screenReaderOptimized: options.screenReaderOptimized !== false 
 };
             // スタイル設定
             styles: { ''
-                backgroundColor: options.backgroundColor || '#FFFFFF',
-                textColor: options.textColor || '#333333',
-                accentColor: options.accentColor || '#007AFF',
-                borderRadius: options.borderRadius || '8px',
-                fontSize: options.fontSize || '14px',
+                backgroundColor: options.backgroundColor || '#FFFFFF';
+                textColor: options.textColor || '#333333';
+                accentColor: options.accentColor || '#007AFF';
+                borderRadius: options.borderRadius || '8px';
+                fontSize: options.fontSize || '14px';
                 fontFamily: options.fontFamily || 'system-ui, -apple-system, sans-serif' }
         };
         
         // 状态管理
-        this.state = { visible: false,
-            challenges: [],
-            selectedChallenge: null,
-    focusedIndex: 0,
-            sortBy: 'priority',
-            filterBy: 'all',
-            loading: false,
-    error: null,;
+        this.state = { visible: false;
+            challenges: [];
+            selectedChallenge: null;
+    focusedIndex: 0;
+            sortBy: 'priority';
+            filterBy: 'all';
+            loading: false;
+    error: null;
         // DOM要素
-        this.elements = { container: null,
-            header: null,
-            filterControls: null,
-            sortControls: null,
-            challengeList: null,
-            challengeItems: [],
-            progressSection: null,
-            footer: null,
-            announcer: null,
-            loadingIndicator: null,
-    errorMessage: null,;
+        this.elements = { container: null;
+            header: null;
+            filterControls: null;
+            sortControls: null;
+            challengeList: null;
+            challengeItems: [];
+            progressSection: null;
+            footer: null;
+            announcer: null;
+            loadingIndicator: null;
+    errorMessage: null;
         // 統計
-        this.stats = { views: 0,
-            challengeViews: 0,
-            completions: 0,
-            filterChanges: 0,
-            sortChanges: 0,
-            keyboardInteractions: 0,
+        this.stats = { views: 0;
+            challengeViews: 0;
+            completions: 0;
+            filterChanges: 0;
+            sortChanges: 0;
+            keyboardInteractions: 0;
     announcementsMade: 0 
  };
         // サブコンポーネントの初期化（依存注入）
@@ -197,14 +198,11 @@ export class ChallengeUI {
      */
     private initialize(): void { try {
             // DOM要素の作成（レンダラーに委譲）
-            this.renderer.createElements(),
-            
+            this.renderer.createElements();
             // スタイルの適用（レンダラーに委譲）
-            this.renderer.applyStyles(),
-            
+            this.renderer.applyStyles();
             // イベントリスナーの設定（インタラクションハンドラーに委譲）
-            this.interactionHandler.setupEventListeners(),
-            
+            this.interactionHandler.setupEventListeners();
             // アクセシビリティの設定（インタラクションハンドラーに委譲）
             if (this.config.accessibility.enabled) {
     
@@ -229,7 +227,7 @@ export class ChallengeUI {
             this.stats.views++,
             
             // チャレンジデータの読み込み（データコントローラーに委譲）
-            await this.dataController.loadChallenges(),
+            await this.dataController.loadChallenges();
             // コンテナの表示
             if (this.elements.container) {', ' }
 
@@ -283,7 +281,7 @@ export class ChallengeUI {
     /**
      * チャレンジデータのインポート（データコントローラーに委譲）
      */'
-    importChallengeData(jsonData: string): boolean {,
+    importChallengeData(jsonData: string): boolean {;
         return this.dataController.importChallengeData(jsonData) }
     // ========== アナウンス機能 ==========
     
@@ -331,17 +329,17 @@ export class ChallengeUI {
     /**
      * 現在の状態取得
      */
-    getCurrentState(): { visible: boolean,
-        challenges: number,
-        selectedChallenge: string | null,
-        loading: boolean,
-        error: string | null,
-        sortBy: string,
-    filterBy: string, { return { visible: this.state.visible,
-            challenges: this.state.challenges.length,
+    getCurrentState(): { visible: boolean;
+        challenges: number;
+        selectedChallenge: string | null;
+        loading: boolean;
+        error: string | null;
+        sortBy: string;
+    filterBy: string, { return { visible: this.state.visible;
+            challenges: this.state.challenges.length;
     selectedChallenge: this.state.selectedChallenge?.id || null, : undefined
-            loading: this.state.loading,
-            error: this.state.error,
+            loading: this.state.loading;
+            error: this.state.error;
     sortBy: this.state.sortBy };
             filterBy: this.state.filterBy ;
     } }
@@ -349,9 +347,9 @@ export class ChallengeUI {
     /**
      * 統計の取得
      */
-    getStats(): { main: UIStats,
+    getStats(): { main: UIStats;
         challenge: any; { return { }
-            main: { ...this.stats,
+            main: { ...this.stats;
             challenge: this.dataController.getChallengeStatistics() }
     
     // ========== DOM要素アクセス ==========
@@ -435,7 +433,7 @@ export class ChallengeUI {
             type,
             error: error.message || error,
             context,
-            timestamp: Date.now(  };
+            timestamp: Date.now(  },
 
         if (ErrorHandler) {', ' }
 

@@ -10,7 +10,7 @@ interface TestResult { name: string,''
     error?: string;
     duration: number;
 
-interface TestStats { totalTests: number,
+interface TestStats { totalTests: number;
     passedTests: number;
     failedTests: number;
     skippedTests: number;
@@ -22,35 +22,35 @@ interface TestOptions { suites?: string[],
     generateReport?: boolean;
     cleanup?: boolean;
 
-interface TestSummary { totalTests: number,
+interface TestSummary { totalTests: number;
     passedTests: number;
     failedTests: number;
     successRate: string;
 
-interface SuiteResult { passed: number,
+interface SuiteResult { passed: number;
     failed: number;
     totalTests: number;
     averageDuration: number;
     tests: TestResult[];
 
 interface TestReport { summary: {
-        totalTest,s: number,
-        passedTests: number,
-        failedTests: number,
-        successRate: string,
-        duration: string,
-        startTime: string,
-    endTime: string,;
-    suiteResults: { [suiteName: string]: SuiteResult,;
-    recommendations: string[],
+        totalTest,s: number;
+        passedTests: number;
+        failedTests: number;
+        successRate: string;
+        duration: string;
+        startTime: string;
+    endTime: string;
+    suiteResults: { [suiteName: string]: SuiteResult;
+    recommendations: string[];
 }
 
-interface MockFactory { gameEngine: () => any,
+interface MockFactory { gameEngine: () => any;
     settingsManager: () => any;
     domElement: () => HTMLDivElement  }
 }
 
-interface ValidationResult { valid: boolean,
+interface ValidationResult { valid: boolean;
     [key: string]: any;
 
 type TestFunction = () => Promise<TestResult[]>;
@@ -58,7 +58,7 @@ type TestFunction = () => Promise<TestResult[]>;
 /**
  * システム統合テスト - 多言語システムの全体統合テスト
  */
-export class SystemIntegrationTester { private localizationManager: any,
+export class SystemIntegrationTester { private localizationManager: any;
     private formatterEngine: any;
     private culturalSystem: any;
     private rtlDetector: any;
@@ -89,7 +89,7 @@ export class SystemIntegrationTester { private localizationManager: any,
         
         // モックファクトリ
         this.mockFactory = {
-            gameEngine: this.createGameEngineMock.bind(this,
+            gameEngine: this.createGameEngineMock.bind(this;
     settingsManager: this.createSettingsManagerMock.bind(this }
 
             domElement: this.createDOMElementMock.bind(this); 
@@ -111,8 +111,7 @@ export class SystemIntegrationTester { private localizationManager: any,
         console.log('🚀 Starting, system integration, tests...);'
         
         try { // テスト環境の準備
-            await this.setupTestEnvironment(),
-            
+            await this.setupTestEnvironment();
             // 各テストスイートを実行
             for(const, suiteName of suites) {
     
@@ -140,7 +139,7 @@ export class SystemIntegrationTester { private localizationManager: any,
 
                     if(failFast && failed > 0} { }'
 
-                        console.log('❌ Stopping, due to, fail-fast, mode'});
+                        console.log('❌ Stopping, due to, fail-fast, mode'};
                         break;
 
                     } catch (error) { }
@@ -150,7 +149,7 @@ export class SystemIntegrationTester { private localizationManager: any,
                         name: `${suiteName}-suite-error`;')'
                         status: 'failed',
     error: (error, as Error).message];
-                        duration: 0];
+                        duration: 0],
                     }]),
                     this.testStats.failedTests++;
                     this.testStats.totalTests++;
@@ -175,7 +174,7 @@ export class SystemIntegrationTester { private localizationManager: any,
             ';'
 
         } catch (error) { getErrorHandler().handleError(error, 'INTEGRATION_TEST_ERROR', {','
-                suites: suites.join(', ' });
+                suites: suites.join(', ' };
             throw error;
         }
     }
@@ -183,24 +182,23 @@ export class SystemIntegrationTester { private localizationManager: any,
     /**
      * 個別のテストスイートを実行
      */
-    async runTestSuite(suiteName: string): Promise<TestResult[]> { const testFunction = this.testSuites.get(suiteName),
+    async runTestSuite(suiteName: string): Promise<TestResult[]> { const testFunction = this.testSuites.get(suiteName);
         if (!testFunction) { }
-            throw new Error(`Test, suite not, found: ${suiteName}`});
+            throw new Error(`Test, suite not, found: ${suiteName}`};
         }
         
         const startTime = Date.now();
         const results: TestResult[] = [],
 
-        try { const suiteResults = await testFunction(),
-
+        try { const suiteResults = await testFunction();
             Array.isArray(suiteResults) ? results.push(...suiteResults) : results.push(suiteResults),' }'
 
-        } catch (error) { results.push({ })'
+        } catch (error) { results.push({ }'
                 name: `${suiteName}-execution`;')'
                 status: 'failed',
     error: (error, as Error).message;
-                duration: Date.now() - startTime;
-            }) }
+                duration: Date.now() - startTime,
+            } }
         
         return results;
     }
@@ -222,7 +220,7 @@ export class SystemIntegrationTester { private localizationManager: any,
 
             const key = 'common.cancel',
 
-            const firstCall = this.localizationManager.t(key),
+            const firstCall = this.localizationManager.t(key);
             const secondCall = this.localizationManager.t(key),' }'
 
             this.assert(firstCall === secondCall, 'Cache should return same result'; }
@@ -238,7 +236,7 @@ export class SystemIntegrationTester { private localizationManager: any,
         // フォールバック機能テスト
         results.push(await this.runSingleTest('fallback-mechanism', async () => {  ','
 
-            await this.localizationManager.setLanguage('unknown-lang'),
+            await this.localizationManager.setLanguage('unknown-lang');
             const translation = this.localizationManager.t('common.ok'),' }'
 
             this.assert(translation !== 'common.ok', 'Should fallback to default language); }'
@@ -262,8 +260,8 @@ export class SystemIntegrationTester { private localizationManager: any,
         // 複数カテゴリ読み込みテスト
         results.push(await this.runSingleTest('multi-category-loading', async () => {  ','
 
-            await this.localizationManager.setLanguage('en'),
-            const commonTrans = this.localizationManager.t('common.start'),
+            await this.localizationManager.setLanguage('en');
+            const commonTrans = this.localizationManager.t('common.start');
             const gameTrans = this.localizationManager.t('game.score'),' }'
 
             this.assert(commonTrans && gameTrans, 'Multiple categories should be loaded'; }
@@ -273,8 +271,7 @@ export class SystemIntegrationTester { private localizationManager: any,
         // エラーハンドリングテスト
         results.push(await this.runSingleTest('loading-error-handling', async () => {  try {,
 
-                await this.localizationManager.setLanguage('non-existent'),
-
+                await this.localizationManager.setLanguage('non-existent');
                 // エラーが発生しても処理が継続されることを確認
                 const translation = this.localizationManager.t('common.ok'),' }'
 
@@ -293,7 +290,7 @@ export class SystemIntegrationTester { private localizationManager: any,
     async testFormattingIntegration()';'
         results.push(await this.runSingleTest('plural-formatting', async () => {  ','
 
-            const singular = this.formatterEngine.formatPlural('item', 1, 'en'),
+            const singular = this.formatterEngine.formatPlural('item', 1, 'en');
             const plural = this.formatterEngine.formatPlural('item', 5, 'en'),' }'
 
             this.assert(singular !== plural, 'Plural formatting should differ for 1 vs 5 items'; }
@@ -303,7 +300,7 @@ export class SystemIntegrationTester { private localizationManager: any,
         // 文脈依存翻訳テスト
         results.push(await this.runSingleTest('contextual-translation', async () => {  ','
 
-            const casual = this.formatterEngine.formatContextual('greeting.hello', 'casual', 'ja'),
+            const casual = this.formatterEngine.formatContextual('greeting.hello', 'casual', 'ja');
             const formal = this.formatterEngine.formatContextual('greeting.hello', 'formal', 'ja'),' }'
 
             this.assert(casual !== formal, 'Contextual translation should differ by context'; }
@@ -346,7 +343,7 @@ export class SystemIntegrationTester { private localizationManager: any,
         // 色適応テスト
         results.push(await this.runSingleTest('color-adaptation', async () => {  ','
 
-            const element = document.createElement('div'),
+            const element = document.createElement('div');
             element.id = 'test-color-element',
             this.culturalSystem.setCulturalAdaptation('ja',
             const adapted = this.culturalSystem.adaptColors(element),' }'
@@ -358,7 +355,7 @@ export class SystemIntegrationTester { private localizationManager: any,
         // 数字適応テスト
         results.push(await this.runSingleTest('number-adaptation', async () => {  ','
 
-            const element = document.createElement('div'),
+            const element = document.createElement('div');
             element.textContent = 'Number: 4',
             this.culturalSystem.setCulturalAdaptation('ja',
             const adapted = this.culturalSystem.adaptNumbers(element),' }'
@@ -370,7 +367,7 @@ export class SystemIntegrationTester { private localizationManager: any,
         // タブー検証テスト
         results.push(await this.runSingleTest('taboo-validation', async () => {  ','
 
-            this.culturalSystem.setCulturalAdaptation('ja'),
+            this.culturalSystem.setCulturalAdaptation('ja');
             const validation = this.culturalSystem.validateAgainstTaboos('content with 4', 'content') as ValidationResult,' }'
 
             this.assert(validation.hasOwnProperty('valid'), 'Taboo validation should return validation object');;
@@ -384,9 +381,8 @@ export class SystemIntegrationTester { private localizationManager: any,
     async testRTLIntegration()';'
         results.push(await this.runSingleTest('rtl-detection', async () => {  ','
 
-            const isRTL = this.rtlDetector.isRTLLanguage('ar'),
-            this.assert(isRTL === true, 'Arabic should be detected as RTL'),
-
+            const isRTL = this.rtlDetector.isRTLLanguage('ar');
+            this.assert(isRTL === true, 'Arabic should be detected as RTL');
             const isLTR = this.rtlDetector.isRTLLanguage('en'),' }'
 
             this.assert(isLTR === false, 'English should not be detected as RTL'; }
@@ -396,9 +392,8 @@ export class SystemIntegrationTester { private localizationManager: any,
         // テキスト方向検出テスト
         results.push(await this.runSingleTest('text-direction-detection', async () => {  ','
 
-            const arabicDirection = this.rtlDetector.detectTextDirection('مرحبا'),
-            this.assert(arabicDirection.direction === 'rtl', 'Arabic text should be detected as RTL'),
-
+            const arabicDirection = this.rtlDetector.detectTextDirection('مرحبا');
+            this.assert(arabicDirection.direction === 'rtl', 'Arabic text should be detected as RTL');
             const englishDirection = this.rtlDetector.detectTextDirection('Hello'),' }'
 
             this.assert(englishDirection.direction === 'ltr', 'English text should be detected as LTR'; }
@@ -416,8 +411,7 @@ export class SystemIntegrationTester { private localizationManager: any,
         ';'
         // 双方向テキスト制御テスト
         results.push(await this.runSingleTest('bidi-control', async () => {  ''
-            const controlChars = this.rtlDetector.getBidiControlCharacters(),
-
+            const controlChars = this.rtlDetector.getBidiControlCharacters();
             this.assert(controlChars.hasOwnProperty('LRM'), 'Should provide LRM control character'),' }'
 
             this.assert(controlChars.hasOwnProperty('RLM'), 'Should provide RLM control character'); }
@@ -438,7 +432,7 @@ export class SystemIntegrationTester { private localizationManager: any,
                 this.assert(success, `Language switching to ${lang} should succeed`);
                 
                 const currentLang = this.localizationManager.getCurrentLanguage();
-                this.assert(currentLang === lang, `Current language should be ${lang}`});
+                this.assert(currentLang === lang, `Current language should be ${lang}`};
 
             }'}');
         ';'
@@ -459,10 +453,9 @@ export class SystemIntegrationTester { private localizationManager: any,
         // 翻訳整合性テスト
         results.push(await this.runSingleTest('translation-consistency', async () => {  ','
 
-            await this.localizationManager.setLanguage('en'),
-            const englishTranslation = this.localizationManager.t('common.ok'),
-
-            await this.localizationManager.setLanguage('ja'),
+            await this.localizationManager.setLanguage('en');
+            const englishTranslation = this.localizationManager.t('common.ok');
+            await this.localizationManager.setLanguage('ja');
             const japaneseTranslation = this.localizationManager.t('common.ok),'
 
             this.assert(englishTranslation !== japaneseTranslation)' }', 'Translations should differ between languages'); }
@@ -475,8 +468,7 @@ export class SystemIntegrationTester { private localizationManager: any,
      * パフォーマンス統合テスト'
      */''
     async testPerformanceIntegration()';'
-        results.push(await this.runSingleTest('translation-performance', async () => {  const startTime = performance.now(),
-
+        results.push(await this.runSingleTest('translation-performance', async () => {  const startTime = performance.now();
             for(let, i = 0, i < 1000, i++) { }'
 
                 this.localizationManager.t('common.ok'; }'
@@ -486,18 +478,17 @@ export class SystemIntegrationTester { private localizationManager: any,
             const duration = endTime - startTime;
             ';'
 
-            this.assert(duration < 100, `Translation should be fast: ${duration}ms for 1000 calls`});'}');
+            this.assert(duration < 100, `Translation should be fast: ${duration}ms for 1000 calls`};'}');
         ';'
         // 言語切り替えパフォーマンステスト
         results.push(await this.runSingleTest('language-switching-performance', async () => {  ''
-            const startTime = performance.now(),
-
+            const startTime = performance.now();
             await this.localizationManager.setLanguage('en),'
             
-            const endTime = performance.now(),
+            const endTime = performance.now();
             const duration = endTime - startTime }
 
-            this.assert(duration < 500, `Language switching should be fast: ${duration}ms`});'}');
+            this.assert(duration < 500, `Language switching should be fast: ${duration}ms`};'}');
         ';'
         // メモリ使用量テスト
         results.push(await this.runSingleTest('memory-usage', async () => {  ''
@@ -510,8 +501,8 @@ export class SystemIntegrationTester { private localizationManager: any,
             const memoryIncrease = finalMemory - initialMemory;
             
             this.assert(memoryIncrease < 10);
-                `Memory increase should be reasonable: ${memoryIncrease}MB`});
-        });
+                `Memory increase should be reasonable: ${memoryIncrease}MB`},
+        };
         
         return results;
     }
@@ -522,8 +513,7 @@ export class SystemIntegrationTester { private localizationManager: any,
     async testErrorHandling()';'
         results.push(await this.runSingleTest('invalid-language-code', async () => {  try {,
 
-                await this.localizationManager.setLanguage('invalid-lang-code'),
-
+                await this.localizationManager.setLanguage('invalid-lang-code');
                 // エラーが発生してもシステムが継続すること
                 const translation = this.localizationManager.t('common.ok'),' }'
 
@@ -577,11 +567,9 @@ export class SystemIntegrationTester { private localizationManager: any,
         }');'
         ';'
         // 翻訳メモリ管理テスト
-        results.push(await this.runSingleTest('translation-memory-management', async () => { const initialStats = this.formatterEngine.getStats(),
-            
+        results.push(await this.runSingleTest('translation-memory-management', async () => { const initialStats = this.formatterEngine.getStats();
             // メモリクリア
-            this.formatterEngine.clearMemory(),
-
+            this.formatterEngine.clearMemory();
             const clearedStats = this.formatterEngine.getStats( }
 
             this.assert(clearedStats.memorySize === 0, 'Translation memory should be cleared'; }'
@@ -610,11 +598,11 @@ export class SystemIntegrationTester { private localizationManager: any,
         results.push(await this.runSingleTest('concurrent-language-switching', async () => {  ','
 
             const languages = ['ja', 'en', 'zh-CN],'
-            const promises = languages.map(lang => ),
-                this.localizationManager.setLanguage(lang),
+            const promises = languages.map(lang => );
+                this.localizationManager.setLanguage(lang);
             ','
 
-            const switchResults = await Promise.all(promises),
+            const switchResults = await Promise.all(promises);
             const successCount = switchResults.filter(r => r === true).length,' }'
 
             this.assert(successCount >= 2, 'Most concurrent switches should succeed'; }'
@@ -629,7 +617,7 @@ export class SystemIntegrationTester { private localizationManager: any,
 
     private async setupTestEnvironment()';'
         if(!document.getElementById('test-container)' { ''
-            const container = document.createElement('div'),
+            const container = document.createElement('div');
             container.id = 'test-container',
             container.style.display = 'none',
             document.body.appendChild(container) }
@@ -653,7 +641,7 @@ export class SystemIntegrationTester { private localizationManager: any,
         console.log('✅ Test environment cleanup complete');
     }
     
-    private async runSingleTest(name: string, testFunction: () => Promise<void>): Promise<TestResult> { const startTime = Date.now(),
+    private async runSingleTest(name: string, testFunction: () => Promise<void>): Promise<TestResult> { const startTime = Date.now();
         ','
 
         try {'
@@ -678,8 +666,7 @@ export class SystemIntegrationTester { private localizationManager: any,
         return 0;
     }
     
-    private generateTestReport(): TestReport { const duration = this.testStats.endTime!.getTime() - this.testStats.startTime!.getTime(),
-
+    private generateTestReport(): TestReport { const duration = this.testStats.endTime!.getTime() - this.testStats.startTime!.getTime();
         const successRate = this.testStats.totalTests > 0 ? undefined : undefined','
             (this.testStats.passedTests / this.testStats.totalTests * 100).toFixed(2) : '0',
         
@@ -688,13 +675,13 @@ export class SystemIntegrationTester { private localizationManager: any,
                 totalTests: this.testStats.totalTests,
                 passedTests: this.testStats.passedTests,
     failedTests: this.testStats.failedTests }
-                successRate: `${successRate}%`;
-                duration: `${duration}ms`;
+                successRate: `${successRate}%`,
+                duration: `${duration}ms`,
                 startTime: this.testStats.startTime!.toISOString(),
     endTime: this.testStats.endTime!.toISOString(),
             },
-            suiteResults: {};
-            recommendations: [];
+            suiteResults: {},
+            recommendations: [],
         },
         // 各スイートの結果を追加
         for(const [suiteName, results] of this.testResults) {
@@ -741,17 +728,17 @@ export class SystemIntegrationTester { private localizationManager: any,
 
             getCurrentScene: () => ({ name: 'TestScene' },''
             getAllScenes: () => ['MainMenuScene', 'GameScene', 'SettingsScene'],
-            updateLocalization: () => true;
+            updateLocalization: () => true,
         } }
     ';'
 
     private createSettingsManagerMock(): any { return { ''
-            getSetting: (key: string') => key = == 'language' ? 'ja' : null,;'
+            getSetting: (key: string') => key = == 'language' ? 'ja' : null,'
 
             setSetting: (key: string, value: any) => true,' }'
 
             getAllSettings: () => ({ language: 'ja', theme: 'default'
-            });
+            };
         }
 
     private createDOMElementMock()';'
@@ -776,7 +763,7 @@ export class SystemIntegrationTester { private localizationManager: any,
      * テスト結果を取得
      */
     getTestResults(): { results: { [suiteName: string]: TestResult[];; stats: TestStats; { return { results: Object.fromEntries(this.testResults }
-            stats: this.testStats }))
+            stats: this.testStats })
     }
     
     /**

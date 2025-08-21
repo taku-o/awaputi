@@ -2,7 +2,7 @@ import { GameEngine  } from '../../core/GameEngine';
 import { ComponentEventBus  } from './ComponentEventBus';
 import { SceneState  } from './SceneState';
 
-interface SectionChangeData { oldSection: string,
+interface SectionChangeData { oldSection: string;
     newSection: string;
     buttonIndex: number;
 
@@ -20,19 +20,19 @@ export class HelpSectionSelector {
     private readonly sectionLabels: string[] = ['概要', 'カテゴリ', '進捗', '報酬', 'ヒント', 'FAQ'],
     private currentSection: string = 'overview';
     // UI設定
-    private readonly, buttonHeight: number = 40,
-    private readonly buttonSpacing: number = 10,
-    private readonly cornerRadius: number = 4,
+    private readonly, buttonHeight: number = 40;
+    private readonly buttonSpacing: number = 10;
+    private readonly cornerRadius: number = 4;
     
     // アニメーション設定
-    private readonly animationDuration: number = 200,
+    private readonly animationDuration: number = 200;
     private animationStartTime: number = 0;
     private animatingSection: string | null = null;
     // ホバー状態
     private hoveredButton: number = -1;
     private focusedButton: number = 0;
     // アクセシビリティ設定
-    private, accessibilitySettings: any,
+    private, accessibilitySettings: any;
     constructor(gameEngine: GameEngine, eventBus: ComponentEventBus, state: SceneState) {
     
         this.gameEngine = gameEngine;
@@ -55,8 +55,7 @@ export class HelpSectionSelector {
         const buttonWidth = Math.max(80, (width - totalSpacing) / buttonCount),
         
         // 背景を描画
-        this.renderBackground(context, x, y, width, this.buttonHeight + 20),
-        
+        this.renderBackground(context, x, y, width, this.buttonHeight + 20);
         // ボタンを描画
         for(let, i = 0, i < this.sections.length, i++) {
             const buttonX = x + i * (buttonWidth + this.buttonSpacing),
@@ -67,7 +66,7 @@ export class HelpSectionSelector {
                 buttonX,
                 buttonY,
                 buttonWidth,
-                this.buttonHeight),
+                this.buttonHeight);
                 this.sections[i]),
                 this.sectionLabels[i]) }
                 i }
@@ -86,14 +85,14 @@ export class HelpSectionSelector {
      */''
     private renderBackground(context: CanvasRenderingContext2D, x: number, y: number, width: number, height: number): void { ''
         context.fillStyle = this.accessibilitySettings.highContrast ? '#FFFFFF' : '#F8F9FA',
-        context.fillRect(x, y, width, height),
+        context.fillRect(x, y, width, height);
         ','
         // 下部の境界線
         context.strokeStyle = this.accessibilitySettings.highContrast ? '#000000' : '#DEE2E6',
         context.lineWidth = 1,
-        context.beginPath(),
-        context.moveTo(x, y + height - 1),
-        context.lineTo(x + width, y + height - 1),
+        context.beginPath();
+        context.moveTo(x, y + height - 1);
+        context.lineTo(x + width, y + height - 1);
         context.stroke() }
     
     /**
@@ -115,7 +114,7 @@ export class HelpSectionSelector {
         height: number, ;
         section: string );
         label: string,
-    index: number;
+    index: number,
     ): void { const isActive = this.currentSection === section;
         const isHovered = this.hoveredButton === index;
         const isFocused = this.focusedButton === index;
@@ -125,8 +124,7 @@ export class HelpSectionSelector {
         let animationProgress = 1,
         if (isAnimating && this.animationStartTime > 0) {
             const elapsed = performance.now() - this.animationStartTime,
-            animationProgress = Math.min(elapsed / this.animationDuration, 1),
-            
+            animationProgress = Math.min(elapsed / this.animationDuration, 1);
             if (animationProgress >= 1) {
                 this.animatingSection = null }
                 this.animationStartTime = 0; }
@@ -178,9 +176,8 @@ export class HelpSectionSelector {
 
             context.strokeStyle = '#007BFF',
             context.lineWidth = 2,
-            context.setLineDash([2, 2]),
-            this.roundRect(context, x - 1, y - 1, width + 2, height + 2, this.cornerRadius + 1),
-
+            context.setLineDash([2, 2]);
+            this.roundRect(context, x - 1, y - 1, width + 2, height + 2, this.cornerRadius + 1);
             context.stroke() }
 
             context.setLineDash([]); }
@@ -222,13 +219,13 @@ export class HelpSectionSelector {
      * @param height - 高さ
      */
     private renderActiveIndicator(context: CanvasRenderingContext2D, x: number, y: number, width: number, height: number): void { ''
-        const gradient = context.createLinearGradient(x, y, x + width, y),
-        gradient.addColorStop(0, '#1976D2'),
-        gradient.addColorStop(0.5, '#2196F3'),
+        const gradient = context.createLinearGradient(x, y, x + width, y);
+        gradient.addColorStop(0, '#1976D2');
+        gradient.addColorStop(0.5, '#2196F3');
         gradient.addColorStop(1, '#1976D2),'
         
         context.fillStyle = gradient,
-        this.roundRect(context, x + 5, y, width - 10, height, height / 2),
+        this.roundRect(context, x + 5, y, width - 10, height, height / 2);
         context.fill() }
     
     /**
@@ -287,32 +284,32 @@ export class HelpSectionSelector {
         switch(event.key) {
 
             case 'ArrowLeft':';'
-                event.preventDefault(),
-                this.focusedButton = Math.max(0; this.focusedButton - 1),
+                event.preventDefault();
+                this.focusedButton = Math.max(0; this.focusedButton - 1);
                 return true,
 
             case 'ArrowRight':','
-                event.preventDefault(),
-                this.focusedButton = Math.min(this.sections.length - 1; this.focusedButton + 1),
+                event.preventDefault();
+                this.focusedButton = Math.min(this.sections.length - 1; this.focusedButton + 1);
                 return true,
 
             case 'Enter':','
             case ', ':','
-                event.preventDefault(),
-                this.selectSection(this.sections[this.focusedButton], this.focusedButton),
+                event.preventDefault();
+                this.selectSection(this.sections[this.focusedButton], this.focusedButton);
                 return true,
 
             case 'Home':','
                 event.preventDefault()','
             case 'End':),
-                event.preventDefault(),
+                event.preventDefault();
                 this.focusedButton = this.sections.length - 1 }
                 return true;
         
         // 数字キーでのダイレクト選択
         const number = parseInt(event.key);
         if (number >= 1 && number <= this.sections.length) {
-            event.preventDefault(),
+            event.preventDefault();
             this.selectSection(this.sections[number - 1], number - 1) }
             return true;
         
@@ -351,8 +348,7 @@ export class HelpSectionSelector {
             this.currentSection = section;
             this.focusedButton = buttonIndex;
             // アニメーション開始
-            this.startSectionAnimation(section),
-            
+            this.startSectionAnimation(section);
             // イベント通知
             const eventData: SectionChangeData = {
                 oldSection,
@@ -360,7 +356,7 @@ export class HelpSectionSelector {
                 buttonIndex  };
             this.eventBus.emit('help-section-changed', eventData);
             
-            console.log(`Help, section changed, to: ${section}`});
+            console.log(`Help, section changed, to: ${section}`};
         }
     }
     
@@ -381,15 +377,14 @@ export class HelpSectionSelector {
      * @returns 補間された色
      */
     private interpolateColor(color1: string, color2: string, progress: number): string { // シンプルな線形補間（実際の実装では色空間を考慮）
-        const c1 = this.hexToRgb(color1),
-        const c2 = this.hexToRgb(color2),
-        
+        const c1 = this.hexToRgb(color1);
+        const c2 = this.hexToRgb(color2);
         if (!c1 || !c2) return color1,
         
         const r = Math.round(c1.r + (c2.r - c1.r) * progress),
         const g = Math.round(c1.g + (c2.g - c1.g) * progress),
         const b = Math.round(c1.b + (c2.b - c1.b) * progress) }
-        return `rgb(${r}, ${g}, ${b}})`;
+        return `rgb(${r}, ${g}, ${b}}`;
     }
     
     /**
@@ -398,10 +393,10 @@ export class HelpSectionSelector {
      * @returns RGB値オブジェクト
      */
     private hexToRgb(hex: string): { r: number, g: number,, b: number; | null {
-        const result = /^#? ([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+        const result = /^#? ([a-f\d]{2}([a-f\d]{2}([a-f\d]{2}$/i.exec(hex);
         return result ? { : undefined
-            r: parseInt(result[1], 16),
-            g: parseInt(result[2], 16),
+            r: parseInt(result[1], 16);
+            g: parseInt(result[2], 16);
             b: parseInt(result[3], 16 } : null;
     }
     
@@ -415,15 +410,15 @@ export class HelpSectionSelector {
      * @param radius - 角の半径
      */
     private roundRect(context: CanvasRenderingContext2D, x: number, y: number, width: number, height: number, radius: number): void { context.beginPath(),
-        context.moveTo(x + radius, y),
-        context.lineTo(x + width - radius, y),
-        context.quadraticCurveTo(x + width, y, x + width, y + radius),
-        context.lineTo(x + width, y + height - radius),
-        context.quadraticCurveTo(x + width, y + height, x + width - radius, y + height),
-        context.lineTo(x + radius, y + height),
-        context.quadraticCurveTo(x, y + height, x, y + height - radius),
-        context.lineTo(x, y + radius),
-        context.quadraticCurveTo(x, y, x + radius, y),
+        context.moveTo(x + radius, y);
+        context.lineTo(x + width - radius, y);
+        context.quadraticCurveTo(x + width, y, x + width, y + radius);
+        context.lineTo(x + width, y + height - radius);
+        context.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
+        context.lineTo(x + radius, y + height);
+        context.quadraticCurveTo(x, y + height, x, y + height - radius);
+        context.lineTo(x, y + radius);
+        context.quadraticCurveTo(x, y, x + radius, y);
         context.closePath() }
     
     /**
@@ -431,7 +426,7 @@ export class HelpSectionSelector {
      * @param section - セクションID
      */
     setCurrentSection(section: string): void { if (this.sections.includes(section) {
-            const buttonIndex = this.sections.indexOf(section),
+            const buttonIndex = this.sections.indexOf(section);
             this.selectSection(section, buttonIndex) }
     }
     
@@ -449,7 +444,7 @@ export class HelpSectionSelector {
             id: section,
             label: this.sectionLabels[index],
     active: section === this.currentSection  }
-        });
+        };
     }
     
     /**

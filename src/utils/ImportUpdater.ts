@@ -7,7 +7,7 @@ import { promises, as fs  } from 'fs';
 import path from 'path';
 
 // Type definitions
-interface ImportPatterns { namedImport: RegExp,
+interface ImportPatterns { namedImport: RegExp;
     defaultImport: RegExp;
     namespaceImport: RegExp;
     sideEffectImport: RegExp;
@@ -35,12 +35,12 @@ interface UpdateResult { file: string,''
     changes?: number;
     error?: string,  }
 
-interface ValidationIssue { type: string,
+interface ValidationIssue { type: string;
     line: number;
     content: string;
     message: string;
 
-interface ImportPathInfo { path: string,
+interface ImportPathInfo { path: string;
     line: number;
     type: string;
 
@@ -68,15 +68,14 @@ export class ImportUpdater {
     async findAllImports(className: string | null = null, fileName: string | null = null): Promise<ImportSearchResults> { const results: ImportSearchResults = {
             byClassName: new Map<string, ImportInfo[]>(),
             byFileName: new Map<string, ImportInfo[]>(),
-            total: 0  };
+            total: 0  },
         // プロジェクトのすべてのJSファイルを検索
         const jsFiles = await this.getAllJavaScriptFiles();"
 
         for (const filePath of jsFiles) {"
             try {""
                 const content = await fs.readFile(filePath, 'utf8),'
-                const imports = this.extractImportsFromContent(content, filePath),
-                
+                const imports = this.extractImportsFromContent(content, filePath);
                 for (const importInfo of imports) {
                     // クラス名での検索
                     if (className && this.matchesClassName(importInfo, className) {
@@ -115,8 +114,7 @@ export class ImportUpdater {
         for (const match of content.matchAll(this.importPatterns.namedImport)) {''
             const importedNames = match[1].split(').map(name => name.trim(),'
             const sourcePath = match[2],
-            const lineNumber = this.findLineNumber(content, match.index),
-
+            const lineNumber = this.findLineNumber(content, match.index);
             for (const name of importedNames) {
                 imports.push({''
                     type: 'named',
@@ -130,8 +128,7 @@ export class ImportUpdater {
     }
 
         // デフォルトインポート
-        for (const match of content.matchAll(this.importPatterns.defaultImport) { const lineNumber = this.findLineNumber(content, match.index),
-
+        for (const match of content.matchAll(this.importPatterns.defaultImport) { const lineNumber = this.findLineNumber(content, match.index);
             imports.push({''
                 type: 'default',
                 importedName: match[1],
@@ -143,8 +140,7 @@ export class ImportUpdater {
     }
 
         // 名前空間インポート
-        for (const match of content.matchAll(this.importPatterns.namespaceImport) { const lineNumber = this.findLineNumber(content, match.index),
-
+        for (const match of content.matchAll(this.importPatterns.namespaceImport) { const lineNumber = this.findLineNumber(content, match.index);
             imports.push({''
                 type: 'namespace',
                 importedName: match[1],
@@ -156,8 +152,7 @@ export class ImportUpdater {
     }
 
         // サイドエフェクトインポート
-        for (const match of content.matchAll(this.importPatterns.sideEffectImport) { const lineNumber = this.findLineNumber(content, match.index),
-
+        for (const match of content.matchAll(this.importPatterns.sideEffectImport) { const lineNumber = this.findLineNumber(content, match.index);
             imports.push({''
                 type: 'sideEffect',
                 importedName: null,
@@ -169,8 +164,7 @@ export class ImportUpdater {
     }
 
         // 動的インポート
-        for (const match of content.matchAll(this.importPatterns.dynamicImport) { const lineNumber = this.findLineNumber(content, match.index),
-
+        for (const match of content.matchAll(this.importPatterns.dynamicImport) { const lineNumber = this.findLineNumber(content, match.index);
             imports.push({''
                 type: 'dynamic',
                 importedName: null,
@@ -188,25 +182,24 @@ export class ImportUpdater {
      * インポートパスを更新
      */
     async updateImportPaths(oldPath: string, newPath: string, targetFiles: string[] | null = null): Promise<UpdateResult[]> { const results: UpdateResult[] = [],
-        const filesToUpdate = targetFiles || await this.getAllJavaScriptFiles(),
-
+        const filesToUpdate = targetFiles || await this.getAllJavaScriptFiles();
         for (const filePath of filesToUpdate) {
             try {'
                 const content = await fs.readFile(filePath, 'utf8),'
                 const updatedContent = this.updateImportPathsInContent(
                     content,
                     oldPath,
-                    newPath),
+                    newPath);
                     filePath,
 
                 if (updatedContent !== content) {''
-                    await fs.writeFile(filePath, updatedContent, 'utf8'),
+                    await fs.writeFile(filePath, updatedContent, 'utf8');
                     results.push({)'
                         file: filePath,')',
                         status: 'updated') }
                         changes: this.countChanges(content, updatedContent); }
 
-                    });'} catch (error) { results.push({'
+                    };'} catch (error) { results.push({'
                     file: filePath,','
                     status: 'failed',','
                     error: error.message',' }'
@@ -223,21 +216,18 @@ export class ImportUpdater {
      * ファイル内容のインポートパスを更新
      */
     updateImportPathsInContent(content: string, oldPath: string, newPath: string, currentFilePath: string): string { let updatedContent = content,
-        const currentDir = path.dirname(currentFilePath),
-        
+        const currentDir = path.dirname(currentFilePath);
         // 相対パスを絶対パスに変換してマッチング
-        const oldAbsolutePath = path.resolve(oldPath),
-        const newAbsolutePath = path.resolve(newPath),
-        
+        const oldAbsolutePath = path.resolve(oldPath);
+        const newAbsolutePath = path.resolve(newPath);
         // 各インポートパターンに対して更新処理
         for(const [patternName, pattern] of Object.entries(this.importPatterns) {
             updatedContent = updatedContent.replace(pattern, (match, ...groups) => { 
-                const sourcePath = this.extractSourcePathFromMatch(patternName, groups),
+                const sourcePath = this.extractSourcePathFromMatch(patternName, groups);
                 if (!sourcePath) return match,
                 
                 // 相対パスを絶対パスに変換
-                const resolvedSourcePath = this.resolveImportPath(sourcePath, currentDir),
-                
+                const resolvedSourcePath = this.resolveImportPath(sourcePath, currentDir);
                 // パスがマッチするかチェック
                 if (resolvedSourcePath === oldAbsolutePath) {
         }
@@ -245,7 +235,7 @@ export class ImportUpdater {
                     return match.replace(sourcePath, newRelativePath);
                 
                 return match;
-            });
+            };
         }
         
         return updatedContent;
@@ -255,21 +245,19 @@ export class ImportUpdater {
      * 名前付きインポートを更新
      */
     async updateNamedImports(oldName: string, newName: string, targetFiles: string[] | null = null): Promise<UpdateResult[]> { const results: UpdateResult[] = [],
-        const filesToUpdate = targetFiles || await this.getAllJavaScriptFiles(),
-
+        const filesToUpdate = targetFiles || await this.getAllJavaScriptFiles();
         for (const filePath of filesToUpdate) {
             try {'
                 const content = await fs.readFile(filePath, 'utf8),'
-                const updatedContent = this.updateNamedImportsInContent(content, oldName, newName),
-
+                const updatedContent = this.updateNamedImportsInContent(content, oldName, newName);
                 if (updatedContent !== content) {''
-                    await fs.writeFile(filePath, updatedContent, 'utf8'),
+                    await fs.writeFile(filePath, updatedContent, 'utf8');
                     results.push({)'
                         file: filePath,')',
                         status: 'updated') }
                         changes: this.countChanges(content, updatedContent); }
 
-                    });'} catch (error) { results.push({'
+                    };'} catch (error) { results.push({'
                     file: filePath,','
                     status: 'failed',','
                     error: error.message',' }'
@@ -298,8 +286,8 @@ export class ImportUpdater {
                 new RegExp(`\\b${oldName}\\b`, 'g),'
                 newName;
             );
-            return `import { ${updatedImportList.trim( }) } from ${fromClause}`;
-        });
+            return `import { ${updatedImportList.trim( } } from ${fromClause}`;
+        };
     }
 
     /**
@@ -373,8 +361,7 @@ export class ImportUpdater {
                 
                 for (const entry of entries) {
                 
-                    const fullPath = path.join(dir, entry.name),
-                    
+                    const fullPath = path.join(dir, entry.name);
                     if (entry.isDirectory() {
     
 }
@@ -408,7 +395,7 @@ export class ImportUpdater {
      * 相対パスを計算
      */
     calculateRelativePath(fromDir: string, toPath: string): string { ''
-        let relativePath = path.relative(fromDir, toPath),
+        let relativePath = path.relative(fromDir, toPath);
         ','
         // 拡張子を除去（.jsファイルの場合）
         if(relativePath.endsWith('.js' {', ' }
@@ -438,7 +425,7 @@ export class ImportUpdater {
             case 'requireCall':,
                 return groups[0], // 1番目のグループがパス
         }
-            default: return null;
+            default: return null,
 
     /**
      * クラス名マッチング
@@ -463,11 +450,11 @@ export class ImportUpdater {
      * 変更数をカウント'
      */''
     countChanges(oldContent: string, newContent: string): number { ''
-        const oldLines = oldContent.split('\n'),
+        const oldLines = oldContent.split('\n');
         const newLines = newContent.split('\n),'
         let changes = 0,
         
-        const maxLines = Math.max(oldLines.length, newLines.length),
+        const maxLines = Math.max(oldLines.length, newLines.length);
         for(let, i = 0, i < maxLines, i++) {
             if (oldLines[i] !== newLines[i]) {
         }
@@ -485,7 +472,7 @@ export class ImportUpdater {
         for(const [patternName, pattern] of Object.entries(this.importPatterns) {
         
             for (const match of content.matchAll(pattern) {
-                const sourcePath = this.extractSourcePathFromMatch(patternName, match.slice(1),
+                const sourcePath = this.extractSourcePathFromMatch(patternName, match.slice(1);
                 if (sourcePath) {
                     paths.push({)
                         path: sourcePath,

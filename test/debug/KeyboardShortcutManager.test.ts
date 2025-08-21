@@ -6,10 +6,10 @@ import { jest  } from '@jest/globals';
 // DOM environment setup''
 import { JSDOM  } from 'jsdom';
 const dom = new JSDOM('<!DOCTYPE html><html><body></body></html>');
-(global: any).document = dom.window.document;
-(global: any).window = dom.window;
-(global: any).localStorage = dom.window.localStorage;
-(global: any).performance = dom.window.performance;
+(global: any).document = dom.window.document,
+(global: any).window = dom.window,
+(global: any).localStorage = dom.window.localStorage,
+(global: any).performance = dom.window.performance,
 // Mock debug interface
 const mockDebugInterface = { isVisible: false,
     toggle: jest.fn(
@@ -34,7 +34,7 @@ describe('KeyboardShortcutManager', () => {  let shortcutManager: any,
         jest.clearAllMocks();
         // Create instance
         shortcutManager = new KeyboardShortcutManager(mockDebugInterface: any);
-    });
+    };
     afterEach(() => {  if (shortcutManager) { }
             shortcutManager.destroy(); }
         }
@@ -46,9 +46,9 @@ describe('KeyboardShortcutManager', () => {  let shortcutManager: any,
         jest.clearAllTimers();'}');
     describe('Initialization', (') => {  ''
         test('should initialize with default values', () => {
-            expect(shortcutManager.shortcuts).toBeInstanceOf(Map: any),
+            expect(shortcutManager.shortcuts).toBeInstanceOf(Map: any);
             expect(shortcutManager.shortcutGroups).toBeInstanceOf(Map: any),'
-            expect(shortcutManager.contexts).toBeInstanceOf(Map: any),
+            expect(shortcutManager.contexts).toBeInstanceOf(Map: any);
             expect(shortcutManager.activeContext').toBe('global'),'
             expect(shortcutManager.enabled).toBe(true) }'
             expect(shortcutManager.suspended).toBe(false););' }'
@@ -56,15 +56,15 @@ describe('KeyboardShortcutManager', () => {  let shortcutManager: any,
         test('should register default shortcuts', () => {  ''
             expect(shortcutManager.shortcuts.size).toBeGreaterThan(0'),' }'
             expect(shortcutManager.shortcuts.has('ctrl+shift+d').toBe(true);');' }'
-            expect(shortcutManager.shortcuts.has('escape'}).toBe(true');'
+            expect(shortcutManager.shortcuts.has('escape'}.toBe(true');'
         }''
         test('should setup default contexts', (') => {  ''
             expect(shortcutManager.contexts.has('global').toBe(true'),' }'
             expect(shortcutManager.contexts.has('console').toBe(true);');' }'
-            expect(shortcutManager.contexts.has('performance'}).toBe(true');'
+            expect(shortcutManager.contexts.has('performance'}.toBe(true');'
         }''
-        test('should initialize statistics', () => {  const stats = shortcutManager.getStatistics(),
-            expect(stats.totalExecuted).toBe(0),
+        test('should initialize statistics', () => {  const stats = shortcutManager.getStatistics();
+            expect(stats.totalExecuted).toBe(0);
             expect(stats.totalRegistered).toBeGreaterThan(0), // default shortcuts }'
             expect(stats.conflictsDetected).toBe(0););' }'
         }');'
@@ -74,7 +74,7 @@ describe('KeyboardShortcutManager', () => {  let shortcutManager: any,
             const callback = jest.fn(')',
             const result = shortcutManager.register('ctrl+x', callback),' }'
             expect(result).toBe(true);');' }'
-            expect(shortcutManager.shortcuts.has('ctrl+x'}).toBe(true');'
+            expect(shortcutManager.shortcuts.has('ctrl+x'}.toBe(true');'
             const shortcutData = shortcutManager.shortcuts.get('ctrl+x');'
             expect(shortcutData.callback).toBe(callback);
             expect(shortcutData.options.group').toBe('default');'
@@ -95,7 +95,7 @@ describe('KeyboardShortcutManager', () => {  let shortcutManager: any,
         test('should normalize shortcut keys', () => { }'
             const callback = jest.fn(') }';
             shortcutManager.register('Ctrl+Shift+X', callback}');'
-            expect(shortcutManager.shortcuts.has('ctrl+shift+x'}).toBe(true');'
+            expect(shortcutManager.shortcuts.has('ctrl+shift+x'}.toBe(true');'
         }''
         test('should handle invalid shortcuts', () => {  ''
             const callback = jest.fn(')',
@@ -105,33 +105,33 @@ describe('KeyboardShortcutManager', () => {  let shortcutManager: any,
         }');'
         test('should handle modifier-only shortcuts', () => {  ''
             const callback = jest.fn(')',
-            const result = shortcutManager.register('ctrl+shift', callback),
+            const result = shortcutManager.register('ctrl+shift', callback);
             expect(result).toBe(false'),' }'
             expect(consoleErrorSpy.toHaveBeenCalledWith('Invalid shortcut format: ctrl+shift'),' }'
         }');'
         test('should detect conflicts with warn strategy', () => {  const callback1 = jest.fn() as jest.Mock,
             const callback2 = jest.fn(')',
             shortcutManager.register('ctrl+x', callback1'),'
-            const result = shortcutManager.register('ctrl+x', callback2),
+            const result = shortcutManager.register('ctrl+x', callback2);
             expect(result).toBe(false'),'
             expect(consoleWarnSpy.toHaveBeenCalledWith('Shortcut conflict detected: ctrl+x'),' }'
             expect(shortcutManager.conflicts.has('ctrl+x').toBe(true'); }'
         }''
         test('should override with override strategy', () => {  const callback1 = jest.fn() as jest.Mock,
             const callback2 = jest.fn(')',
-            shortcutManager.setConflictResolutionStrategy('override'),
+            shortcutManager.setConflictResolutionStrategy('override');
             shortcutManager.register('ctrl+x', callback1'),'
-            const result = shortcutManager.register('ctrl+x', callback2),
+            const result = shortcutManager.register('ctrl+x', callback2);
             expect(result).toBe(true'),'
             expect(consoleWarnSpy.toHaveBeenCalledWith('Shortcut overridden: ctrl+x'),' }'
             expect(shortcutManager.shortcuts.get('ctrl+x').callback).toBe(callback2););' }'
         }');'
         test('should throw error with error strategy', () => {  const callback1 = jest.fn() as jest.Mock,
             const callback2 = jest.fn(')',
-            shortcutManager.setConflictResolutionStrategy('error'),
+            shortcutManager.setConflictResolutionStrategy('error');
             shortcutManager.register('ctrl+x', callback1),' }'
             expect((') => { }'
-                shortcutManager.register('ctrl+x', callback2});'}').toThrow('Shortcut conflict: ctrl+x is already registered'),'
+                shortcutManager.register('ctrl+x', callback2};'}').toThrow('Shortcut conflict: ctrl+x is already registered'),'
         }'}');
     describe('Shortcut Execution', (') => {  ''
         test('should execute registered shortcut', () => {''
@@ -154,7 +154,7 @@ describe('KeyboardShortcutManager', () => {  let shortcutManager: any,
             const event = new KeyboardEvent('keydown', { ')',
                 key: 'x'),
                 ctrlKey: true) }
-            });
+            };
             const result = shortcutManager.execute(event);
             expect(result).toBe(false);'
             expect(callback).not.toHaveBeenCalled();'}');
@@ -165,7 +165,7 @@ describe('KeyboardShortcutManager', () => {  let shortcutManager: any,
             const event = new KeyboardEvent('keydown', { ')',
                 key: 'x'),
                 ctrlKey: true) }
-            });
+            };
             const result = shortcutManager.execute(event);
             expect(result).toBe(false);'
             expect(callback).not.toHaveBeenCalled();'}');
@@ -179,7 +179,7 @@ describe('KeyboardShortcutManager', () => {  let shortcutManager: any,
                , preventDefault: jest.fn(
         stopPropagation: jest.fn()),
             const result = shortcutManager.execute(event),'
-            expect(result).toBe(false),
+            expect(result).toBe(false);
             expect(consoleErrorSpy).toHaveBeenCalledWith(')',
                 "Error executing shortcut 'ctrl+x':"),
                 expect.any(Error) }""
@@ -257,7 +257,7 @@ describe('KeyboardShortcutManager', () => {  let shortcutManager: any,
             const callback = jest.fn(')',
             const result = shortcutManager.register('ctrl+x>ctrl+s', callback),' }'
             expect(result).toBe(true);');' }'
-            expect(shortcutManager.shortcuts.has('ctrl+x>ctrl+s'}).toBe(true');'
+            expect(shortcutManager.shortcuts.has('ctrl+x>ctrl+s'}.toBe(true');'
         }''
         test('should execute sequence shortcuts', () => {  ''
             const callback = jest.fn(')',
@@ -392,7 +392,7 @@ describe('KeyboardShortcutManager', () => {  let shortcutManager: any,
             expect(shortcutManager.shortcuts.has('ctrl+x').toBe(true'),'
             const result = shortcutManager.unregister('ctrl+x'),' }'
             expect(result).toBe(true);');' }'
-            expect(shortcutManager.shortcuts.has('ctrl+x'}).toBe(false');'
+            expect(shortcutManager.shortcuts.has('ctrl+x'}.toBe(false');'
         }''
         test('should return false for non-existent shortcut', (') => {  ''
             const result = shortcutManager.unregister('ctrl+nonexistent') }'
@@ -410,7 +410,7 @@ describe('KeyboardShortcutManager', () => {  let shortcutManager: any,
         test('should get all shortcuts', () => {''
             const callback = jest.fn(')',
             shortcutManager.register('ctrl+x', callback),'
-            const allShortcuts = shortcutManager.getAllShortcuts(),
+            const allShortcuts = shortcutManager.getAllShortcuts();
             expect(allShortcuts.toBeInstanceOf(Map as any'),' }'
             expect(allShortcuts.has('ctrl+x').toBe(true'); }'
         }''
@@ -427,7 +427,7 @@ describe('KeyboardShortcutManager', () => {  let shortcutManager: any,
             const conflicts = shortcutManager.getConflicts(}');'
             expect(conflicts.has('ctrl+x').toBe(true');'
         }''
-        test('should get and update settings', () => {  const settings = shortcutManager.getSettings(),
+        test('should get and update settings', () => {  const settings = shortcutManager.getSettings();
             expect(settings.caseSensitive).toBe(false) }
 ); }
             shortcutManager.updateSettings({ caseSensitive: true,);
@@ -448,13 +448,13 @@ describe('KeyboardShortcutManager', () => {  let shortcutManager: any,
     describe('Cleanup', (') => {  ''
         test('should destroy cleanly', () => {''
             const callback = jest.fn(')',
-            shortcutManager.register('ctrl+x', callback),
-            shortcutManager.destroy(),
-            expect(shortcutManager.shortcuts.size).toBe(0),
+            shortcutManager.register('ctrl+x', callback);
+            shortcutManager.destroy();
+            expect(shortcutManager.shortcuts.size).toBe(0);
             expect(shortcutManager.shortcutGroups.size).toBe(0) }'
             expect(shortcutManager.contexts.size).toBe(0););' }'
         }');'
-        test('should clear sequence timer on destroy', () => {  jest.useFakeTimers(),
+        test('should clear sequence timer on destroy', () => {  jest.useFakeTimers();
             const callback = jest.fn(')',
             shortcutManager.register('ctrl+x>ctrl+s', callback'),'
             // Start sequence''
@@ -469,5 +469,5 @@ describe('KeyboardShortcutManager', () => {  let shortcutManager: any,
             shortcutManager.destroy();
             expect(shortcutManager.sequenceTimer).toBeNull();
             jest.useRealTimers();
-        });'
+        };'
     }'}');

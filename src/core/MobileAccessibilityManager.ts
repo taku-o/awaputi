@@ -18,36 +18,36 @@ class MobileAccessibilityManager { constructor(gameEngine) {
         
         // アクセシビリティ設定
         this.accessibilityConfig = { screenReader: {
-                enabled: false,
-                announcements: true,
-                liveRegions: true,
-                roleDescriptions: true,
-    keyboardNavigation: true,
-                focusManagement: true,;
-            visualSupport: { highContrast: false,
-                colorBlindnessSupport: false,
+                enabled: false;
+                announcements: true;
+                liveRegions: true;
+                roleDescriptions: true;
+    keyboardNavigation: true;
+                focusManagement: true;
+            visualSupport: { highContrast: false;
+                colorBlindnessSupport: false;
                 colorBlindnessType: 'none', // 'protanopia', 'deuteranopia', 'tritanopia'';'
                 fontSize: 'normal', // 'small', 'normal', 'large', 'xlarge'';'
                 lineHeight: 'normal', // 'normal', 'relaxed', 'loose'';'
                 letterSpacing: 'normal' // 'normal', 'wide', 'wider' };
-            motorSupport: { touchAreaEnlarged: false,
-                hoverAlternatives: true,
-                gestureAlternatives: true,
-    voiceControl: false,
-                switchControl: false,;
-            cognitiveSupport: { reducedMotion: false,
-                simplifiedUI: false,
-                contentPausing: true,
-    timeExtensions: false,
-                readingMode: false,;
-            auditorySupport: { visualIndicators: true,
-                hapticFeedback: true,
-    captions: false,
-                signLanguage: false,;
+            motorSupport: { touchAreaEnlarged: false;
+                hoverAlternatives: true;
+                gestureAlternatives: true;
+    voiceControl: false;
+                switchControl: false;
+            cognitiveSupport: { reducedMotion: false;
+                simplifiedUI: false;
+                contentPausing: true;
+    timeExtensions: false;
+                readingMode: false;
+            auditorySupport: { visualIndicators: true;
+                hapticFeedback: true;
+    captions: false;
+                signLanguage: false;
         // スクリーンリーダー状態
-        this.screenReaderState = { active: false,
-            currentFocus: null,
-            announceQueue: [],
+        this.screenReaderState = { active: false;
+            currentFocus: null;
+            announceQueue: [];
     liveRegions: new Map(
             navigationMode: 'normal' // 'normal', 'explore', 'reading' };
         
@@ -55,11 +55,11 @@ class MobileAccessibilityManager { constructor(gameEngine) {
         this.colorSupport = { filters: new Map(
             contrastRatios: new Map(
             colorPalettes: new Map(
-    currentFilter: null,;
+    currentFilter: null;
         // フォーカス管理
-        this.focusManager = { focusableElements: [],
-            currentIndex: -1,
-            focusHistory: [],
+        this.focusManager = { focusableElements: [];
+            currentIndex: -1;
+            focusHistory: [];
     trapStack: []  };
         // 音声・触覚フィードバック)
         this.feedbackSystems = { speechSynthesis: null)
@@ -74,13 +74,13 @@ class MobileAccessibilityManager { constructor(gameEngine) {
      */
     initialize() {
         try {
-            this.detectAccessibilityCapabilities(),
-            this.setupScreenReaderSupport(),
-            this.initializeColorSupport(),
-            this.setupKeyboardNavigation(),
-            this.initializeFeedbackSystems(),
-            this.setupAccessibilityEventListeners(),
-            this.loadAccessibilitySettings(),
+            this.detectAccessibilityCapabilities();
+            this.setupScreenReaderSupport();
+            this.initializeColorSupport();
+            this.setupKeyboardNavigation();
+            this.initializeFeedbackSystems();
+            this.setupAccessibilityEventListeners();
+            this.loadAccessibilitySettings();
             this.applyInitialSettings() }
 
             console.log('[MobileAccessibilityManager] モバイルアクセシビリティシステム初期化完了');' }'
@@ -130,18 +130,18 @@ class MobileAccessibilityManager { constructor(gameEngine) {
             // CSS色フィルターサポート')'
            , cssFilters: CSS.supports('filter', 'hue-rotate(0deg)'),
             // 振動API
-            haptics: 'vibrate' in navigator,
+            haptics: 'vibrate' in navigator;
             ','
             // プリファレンス検出
-           , prefersReducedMotion: window.matchMedia('(prefers-reduced-motion: reduce)').matches,
-            prefersHighContrast: window.matchMedia('(prefers-contrast: high)').matches,
+           , prefersReducedMotion: window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            prefersHighContrast: window.matchMedia('(prefers-contrast: high)').matches;
             prefersReducedTransparency: window.matchMedia('(prefers-reduced-transparency: reduce)).matches,'
             ','
             // デバイス機能
-            hasKeyboard: this.detectKeyboardSupport('',
+            hasKeyboard: this.detectKeyboardSupport('';
     hasTouch: 'ontouchstart' in window }
 '
-            hasPointer: 'PointerEvent' in window })', ')';'
+            hasPointer: 'PointerEvent' in window }', ')';'
         console.log('[MobileAccessibilityManager] アクセシビリティ機能検出完了', this.capabilities';'
     }
     
@@ -179,13 +179,11 @@ class MobileAccessibilityManager { constructor(gameEngine) {
         if (!this.capabilities.screenReader) return,
         
         // ARIA ライブリージョン作成
-        this.createLiveRegions(),
-        
+        this.createLiveRegions();
         // フォーカス管理設定
-        this.setupFocusManagement(),
-        
+        this.setupFocusManagement();
         // キーボードナビゲーション
-        this.setupScreenReaderKeyboardShortcuts(),
+        this.setupScreenReaderKeyboardShortcuts();
         // 動的コンテンツアナウンス
         this.setupDynamicAnnouncements() }
 
@@ -222,7 +220,7 @@ class MobileAccessibilityManager { constructor(gameEngine) {
             position: absolute;
             left: -10000px;
             width: 1px;
-            height: 1px,
+            height: 1px;
     overflow: hidden;
         `;
         
@@ -235,14 +233,11 @@ class MobileAccessibilityManager { constructor(gameEngine) {
      */
     setupFocusManagement() {
         // フォーカス可能要素の自動検出
-        this.updateFocusableElements(),
-        
+        this.updateFocusableElements();
         // フォーカストラップ設定
-        this.setupFocusTrap(),
-        
+        this.setupFocusTrap();
         // フォーカスインジケーター強化
-        this.enhanceFocusIndicators(),
-        
+        this.enhanceFocusIndicators();
         // タッチデバイスでのフォーカス管理
     }
         this.setupTouchFocusManagement(); }
@@ -264,8 +259,8 @@ class MobileAccessibilityManager { constructor(gameEngine) {
         // ゲームCanvas追加
         const canvas = this.gameEngine.canvas;
         if(canvas && !canvas.hasAttribute('tabindex)' { ''
-            canvas.setAttribute('tabindex', '0'),
-            canvas.setAttribute('role', 'application'),
+            canvas.setAttribute('tabindex', '0');
+            canvas.setAttribute('role', 'application');
             canvas.setAttribute('aria-label', 'BubblePop ゲーム領域),'
             this.focusManager.focusableElements.push(canvas) }
     }
@@ -277,7 +272,7 @@ class MobileAccessibilityManager { constructor(gameEngine) {
         document.addEventListener('keydown', (e) => {  ''
             if (e.key === 'Tab' && this.focusManager.trapStack.length > 0) { }
                 this.handleTrappedTabNavigation(e); }
-});
+};
     }
     
     /**
@@ -296,7 +291,7 @@ class MobileAccessibilityManager { constructor(gameEngine) {
         if (e.shiftKey) {
             // Shift+Tab: 後方移動
             if (document.activeElement === firstElement) {
-                e.preventDefault(  })
+                e.preventDefault(  }
                 lastElement.focus(); }
 } else {  // Tab: 前方移動
             if (document.activeElement === lastElement) {
@@ -368,7 +363,7 @@ class MobileAccessibilityManager { constructor(gameEngine) {
         document.querySelectorAll('.virtual-focus'.forEach(el => {  '),' }
 
             el.classList.remove('virtual-focus'; }'
-        });
+        };
     }
     
     /**
@@ -388,8 +383,7 @@ class MobileAccessibilityManager { constructor(gameEngine) {
                      element.alt,
 
         const role = element.getAttribute('role) || ,'
-                    element.tagName.toLowerCase(),
-        
+                    element.tagName.toLowerCase();
         const state = this.getElementState(element) }
 
         ' }'
@@ -407,8 +401,8 @@ class MobileAccessibilityManager { constructor(gameEngine) {
 
         if(element.disabled) states.push('無効',
         if(element.checked) states.push('チェック済み',
-        if(element.selected) states.push('選択済み'),
-        if (element.getAttribute('aria-expanded') === 'true') states.push('展開済み'),
+        if(element.selected) states.push('選択済み');
+        if (element.getAttribute('aria-expanded') === 'true') states.push('展開済み');
         if (element.getAttribute('aria-expanded') === 'false') states.push('折りたたみ済み',
         if(element.required) states.push('必須') }
 
@@ -451,7 +445,7 @@ class MobileAccessibilityManager { constructor(gameEngine) {
             
             // 一般的なスクリーンリーダーショートカット
             this.handleScreenReaderShortcuts(e);
-        });
+        };
     }
     
     /**
@@ -462,20 +456,20 @@ class MobileAccessibilityManager { constructor(gameEngine) {
         switch(e.key) {''
             case 'h':','
             case 'H':','
-                e.preventDefault(),
+                e.preventDefault();
                 this.announceGameHelp('','
             case 's':','
             case 'S':','
-                e.preventDefault(),
+                e.preventDefault();
                 this.announceGameStatus('','
             case 'r':','
-            case 'R':),
+            case 'R':);
                 if (e.ctrlKey) {
-                    e.preventDefault(),
+                    e.preventDefault();
                     this.announceGameRules('','
             case 'Enter':','
-            case ', ':),
-                e.preventDefault(),
+            case ', ':);
+                e.preventDefault();
                 this.handleGameAction(e) }
                 break; }
 }
@@ -486,7 +480,7 @@ class MobileAccessibilityManager { constructor(gameEngine) {
     handleScreenReaderShortcuts(e) {
         // Ctrl+, で読み上げモード切り替え
         if(e.ctrlKey && e.key === ',' {'
-            e.preventDefault(),
+            e.preventDefault();
             this.toggleReadingMode()','
         if(e.ctrlKey && e.key === '.' {'
             e.preventDefault() }
@@ -498,11 +492,9 @@ class MobileAccessibilityManager { constructor(gameEngine) {
      */
     setupDynamicAnnouncements() {
         // ゲーム状態変更の監視
-        this.setupGameStateAnnouncements(),
-        
+        this.setupGameStateAnnouncements();
         // UI変更の監視
-        this.setupUIChangeAnnouncements(),
-        
+        this.setupUIChangeAnnouncements();
         // エラー・成功メッセージの監視
     }
         this.setupNotificationAnnouncements(); }
@@ -525,7 +517,7 @@ class MobileAccessibilityManager { constructor(gameEngine) {
         if (this.gameEngine.playerData) {
             const originalSetHP = this.gameEngine.playerData.setHP,
             this.gameEngine.playerData.setHP = (hp) => { 
-                const oldHP = this.gameEngine.playerData.getHP(),
+                const oldHP = this.gameEngine.playerData.getHP();
                 const result = originalSetHP.call(this.gameEngine.playerData, hp) }
                 this.announceHPChange(oldHP, hp); }
                 return result;
@@ -561,13 +553,13 @@ class MobileAccessibilityManager { constructor(gameEngine) {
         mutation.addedNodes.forEach(node => { ) }
             if (node.nodeType === Node.ELEMENT_NODE) { }
                 this.announceNewElement(node); }
-});
+};
         
         // 削除された要素のアナウンス
-        mutation.removedNodes.forEach(node => {  ),
+        mutation.removedNodes.forEach(node => {  );
             if (node.nodeType === Node.ELEMENT_NODE) { }
                 this.announceRemovedElement(node); }
-});
+};
     }
     
     /**
@@ -597,9 +589,8 @@ class MobileAccessibilityManager { constructor(gameEngine) {
      * 色覚支援初期化
      */
     initializeColorSupport() {
-        this.setupColorFilters(),
-
-        this.setupContrastControls(),
+        this.setupColorFilters();
+        this.setupContrastControls();
         this.setupColorPalettes() }
 
         console.log('[MobileAccessibilityManager] 色覚支援システム初期化完了'); }'}'
@@ -615,8 +606,8 @@ class MobileAccessibilityManager { constructor(gameEngine) {
         };
         
         Object.entries(filters).forEach(([type, filter]) => {  }
-            this.colorSupport.filters.set(type, { filter, description: `${type }補正フィルター` });
-        });
+            this.colorSupport.filters.set(type, { filter, description: `${type }補正フィルター` };
+        };
     }
     
     /**
@@ -637,7 +628,7 @@ class MobileAccessibilityManager { constructor(gameEngine) {
         const observer = new MutationObserver(() => { ''
             if (this.accessibilityConfig.visualSupport.highContrast) {','
                 document.querySelectorAll('*).forEach(el => {),'
-                    const style = getComputedStyle(el),
+                    const style = getComputedStyle(el);
                     const bgColor = style.backgroundColor,
                     const textColor = style.color,
                     ','
@@ -647,7 +638,7 @@ class MobileAccessibilityManager { constructor(gameEngine) {
 
                         const target = this.colorSupport.contrastRatios.get('enhanced'; }'
                         if (ratio < target) this.enhanceElementContrast(el, ratio, target); }
-});
+};
 
             }'}');
         
@@ -706,8 +697,7 @@ class MobileAccessibilityManager { constructor(gameEngine) {
 
         switch(e.key) {''
             case 'Tab':','
-                this.handleTabNavigation(e),
-
+                this.handleTabNavigation(e);
                 break,
             case 'ArrowUp':','
             case 'ArrowDown':','
@@ -718,7 +708,7 @@ class MobileAccessibilityManager { constructor(gameEngine) {
 
                     e.preventDefault();' }'
 
-                    this.announceToScreenReader(`${e.key}方向に移動`, 'polite'});
+                    this.announceToScreenReader(`${e.key}方向に移動`, 'polite'};
                 }
                 break;
         }
@@ -729,8 +719,7 @@ class MobileAccessibilityManager { constructor(gameEngine) {
      */
     handleTabNavigation(e) {
         if (this.focusManager.focusableElements.length > 0) {
-            e.preventDefault(),
-            
+            e.preventDefault();
             let nextIndex = e.shiftKey ? undefined : undefined,
                 this.focusManager.currentIndex - 1 : ,
                 this.focusManager.currentIndex + 1,
@@ -773,7 +762,7 @@ class MobileAccessibilityManager { constructor(gameEngine) {
                 const newVoices = this.feedbackSystems.speechSynthesis.getVoices() }
 ;
                 this.selectedVoice = newVoices.find(voice => voice.lang.startsWith('ja' || newVoices[0]; }'
-            });
+            };
         }
     }
     
@@ -798,9 +787,9 @@ class MobileAccessibilityManager { constructor(gameEngine) {
             focus: { frequency: 800, duration: 100  },
             success: { frequency: 1000, duration: 200  },
             error: { frequency: 400, duration: 300  },
-            navigation: { frequency: 600, duration: 100  };
+            navigation: { frequency: 600, duration: 100  },
         
-        Object.entries(beepTypes).forEach(([type, config]) => { this.feedbackSystems.audioBeeps.set(type, config) });
+        Object.entries(beepTypes).forEach(([type, config]) => { this.feedbackSystems.audioBeeps.set(type, config) };
     }
     
     /**
@@ -809,19 +798,16 @@ class MobileAccessibilityManager { constructor(gameEngine) {
     playAudioBeep(type) {
         if(!this.audioContext || !this.feedbackSystems.audioBeeps.has(type) return,
         
-        const config = this.feedbackSystems.audioBeeps.get(type),
-        const oscillator = this.audioContext.createOscillator(),
-        const gainNode = this.audioContext.createGain(),
-        
-        oscillator.connect(gainNode),
-        gainNode.connect(this.audioContext.destination),
-
-        oscillator.frequency.setValueAtTime(config.frequency, this.audioContext.currentTime),
+        const config = this.feedbackSystems.audioBeeps.get(type);
+        const oscillator = this.audioContext.createOscillator();
+        const gainNode = this.audioContext.createGain();
+        oscillator.connect(gainNode);
+        gainNode.connect(this.audioContext.destination);
+        oscillator.frequency.setValueAtTime(config.frequency, this.audioContext.currentTime);
         oscillator.type = 'sine',
         
-        gainNode.gain.setValueAtTime(0.1, this.audioContext.currentTime),
-        gainNode.gain.exponentialRampToValueAtTime(0.01, this.audioContext.currentTime + config.duration / 1000),
-        
+        gainNode.gain.setValueAtTime(0.1, this.audioContext.currentTime);
+        gainNode.gain.exponentialRampToValueAtTime(0.01, this.audioContext.currentTime + config.duration / 1000);
         oscillator.start(this.audioContext.currentTime) }
         oscillator.stop(this.audioContext.currentTime + config.duration / 1000); }
     }
@@ -831,11 +817,9 @@ class MobileAccessibilityManager { constructor(gameEngine) {
      */
     setupAccessibilityEventListeners() {
         // メディアクエリ変更の監視
-        this.setupMediaQueryListeners(),
-        
+        this.setupMediaQueryListeners();
         // フォーカス状態の監視
-        this.setupFocusListeners(),
-        
+        this.setupFocusListeners();
         // カスタムアクセシビリティイベント
     }
         this.setupCustomAccessibilityEvents(); }
@@ -856,7 +840,7 @@ class MobileAccessibilityManager { constructor(gameEngine) {
         const contrastQuery = window.matchMedia('(prefers-contrast: high),'
         contrastQuery.addListener((e) => {  this.accessibilityConfig.visualSupport.highContrast = e.matches }
             this.applyContrastSettings(); }
-        });
+        };
     }
     
     /**
@@ -870,7 +854,7 @@ class MobileAccessibilityManager { constructor(gameEngine) {
         }');'
 
         document.addEventListener('focusout', (e) => {  // フォーカス履歴に追加
-            this.focusManager.focusHistory.push(e.target),
+            this.focusManager.focusHistory.push(e.target);
             if (this.focusManager.focusHistory.length > 10) { }
                 this.focusManager.focusHistory.shift(); }
             }'}');
@@ -884,8 +868,7 @@ class MobileAccessibilityManager { constructor(gameEngine) {
         if(!this.accessibilityConfig.screenReader.enabled) return,
 
         const regionId = priority === 'assertive' ? 'announcements' : 'game-status',
-        const region = this.screenReaderState.liveRegions.get(regionId),
-
+        const region = this.screenReaderState.liveRegions.get(regionId);
         if (region) {
             // 既存の内容をクリア
             region.textContent = ','
@@ -900,7 +883,7 @@ class MobileAccessibilityManager { constructor(gameEngine) {
         // 音声合成でも読み上げ
         if (this.capabilities.speechSynthesis && this.selectedVoice) { this.speakMessage(message) }
         
-        console.log(`[MobileAccessibilityManager] アナウンス (${priority}}): ${message}`);
+        console.log(`[MobileAccessibilityManager] アナウンス (${priority}}: ${message}`);
     }
     
     /**
@@ -908,9 +891,8 @@ class MobileAccessibilityManager { constructor(gameEngine) {
      */
     speakMessage(message) {
         // 既存の読み上げを停止
-        this.feedbackSystems.speechSynthesis.cancel(),
-        
-        const utterance = new SpeechSynthesisUtterance(message),
+        this.feedbackSystems.speechSynthesis.cancel();
+        const utterance = new SpeechSynthesisUtterance(message);
         utterance.voice = this.selectedVoice,
         utterance.rate = 0.9,
         utterance.pitch = 1.0,
@@ -941,12 +923,12 @@ class MobileAccessibilityManager { constructor(gameEngine) {
 
         this.announceToScreenReader(`${points}点獲得。合計: ${ totalScore}点`, 'polite'};' }'
 '
-        this.playAudioBeep('success'});
+        this.playAudioBeep('success'};
     }
     
     announceHPChange(oldHP, newHP) { const change = newHP - oldHP }
 
-        const message = change > 0 ? `HP回復: ${Math.abs(change})` : `HPダメージ: ${Math.abs(change})`;
+        const message = change > 0 ? `HP回復: ${Math.abs(change}` : `HPダメージ: ${Math.abs(change}`;
         this.announceToScreenReader(`${message}。現在: ${ newHP}`, 'polite'};' }'
 '
         this.playAudioBeep(change > 0 ? 'success' : 'error'}';'
@@ -976,7 +958,7 @@ class MobileAccessibilityManager { constructor(gameEngine) {
     applyColorFilter(type) {
     ','
 
-        const filter = this.colorSupport.filters.get(type),
+        const filter = this.colorSupport.filters.get(type);
         if (filter && type !== 'none') {
             document.body.style.filter = filter.filter }
             this.colorSupport.currentFilter = type; }
@@ -1023,9 +1005,8 @@ class MobileAccessibilityManager { constructor(gameEngine) {
     
     applyInitialSettings() {
     
-        this.applyFontSettings(),
-        this.applyColorFilter(this.accessibilityConfig.visualSupport.colorBlindnessType),
-        
+        this.applyFontSettings();
+        this.applyColorFilter(this.accessibilityConfig.visualSupport.colorBlindnessType);
         if (this.accessibilityConfig.visualSupport.highContrast) {
     
 }
@@ -1070,7 +1051,7 @@ class MobileAccessibilityManager { constructor(gameEngine) {
             colorBlindnessSupport: this.accessibilityConfig.visualSupport.colorBlindnessType,
             currentFilter: this.colorSupport.currentFilter,
     fontSize: this.accessibilityConfig.visualSupport.fontSize }
-            capabilities: this.capabilities };
+            capabilities: this.capabilities },
             focusableElementsCount: this.focusManager.focusableElements.length 
     }
     
@@ -1094,8 +1075,7 @@ class MobileAccessibilityManager { constructor(gameEngine) {
      */
     cleanup() {
         try {
-            this.saveAccessibilitySettings(),
-            
+            this.saveAccessibilitySettings();
             // 音声合成停止
             if (this.feedbackSystems.speechSynthesis) {''
                 this.feedbackSystems.speechSynthesis.cancel()','
@@ -1104,7 +1084,7 @@ class MobileAccessibilityManager { constructor(gameEngine) {
             }
             
             // ライブリージョン削除
-            this.screenReaderState.liveRegions.forEach(region => {  ),
+            this.screenReaderState.liveRegions.forEach(region => {  );
                 if (region.parentNode) { }
                     region.parentNode.removeChild(region); }
                 }'}');

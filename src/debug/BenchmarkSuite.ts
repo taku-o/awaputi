@@ -50,7 +50,7 @@ interface GameEngine { canvas?: HTMLCanvasElement,
     bubbleManager?: { getBubbleCount(): number | undefined };
     audioManager?: { getActiveNodeCount(): number | undefined }
 
-interface BenchmarkTest { name: string,
+interface BenchmarkTest { name: string;
     category: string;
     description: string;
     test: (options?: BenchmarkOptions') => Promise<BenchmarkResult>;'
@@ -63,7 +63,7 @@ interface BenchmarkOptions { iterations?: number,
     duration?: number;
     [key: string]: any;
 
-interface BenchmarkResult { success: boolean,
+interface BenchmarkResult { success: boolean;
     error?: string;
     avgFrameTime?: number;
     fps?: number;
@@ -105,23 +105,23 @@ interface SuiteResult { results: Record<string, BenchmarkResult>,
     timestamp: number;
     environment: EnvironmentInfo;
 
-interface BenchmarkSummary { total: number,
+interface BenchmarkSummary { total: number;
     passed: number;
     failed: number;
     warnings: number;
     categories: Record<string, CategoryStats>;
     performance: PerformanceStats;
 
-interface CategoryStats { passed: number,
+interface CategoryStats { passed: number;
     failed: number;
     warnings: number;
 
-interface PerformanceStats { avgExecutionTime: number,
+interface PerformanceStats { avgExecutionTime: number;
     totalExecutionTime: number;
     regressions: string[];
     improvements: string[];
 
-interface EnvironmentInfo { userAgent: string,
+interface EnvironmentInfo { userAgent: string;
     platform: string;
     language: string;
     hardwareConcurrency: number;
@@ -129,11 +129,11 @@ interface EnvironmentInfo { userAgent: string,
     screen: ScreenInfo;
     timestamp: number;
 
-interface MemoryInfo { usedJSHeapSize: number,
+interface MemoryInfo { usedJSHeapSize: number;
     totalJSHeapSize: number;
     jsHeapSizeLimit: number;
 
-interface ScreenInfo { width: number,
+interface ScreenInfo { width: number;
     height: number;
     pixelRatio: number;
 
@@ -156,7 +156,7 @@ export class BenchmarkSuite {
     private baselines: Map<string, any>;
     private results: Map<number, SuiteResult>;
     private isRunning: boolean;
-    private, currentBenchmark: any,
+    private, currentBenchmark: any;
     private performanceObserver?: PerformanceObserver,
 
     constructor(gameEngine: GameEngine) {
@@ -181,8 +181,8 @@ export class BenchmarkSuite {
         console.log('[BenchmarkSuite] Initialized, with Main, Controller Pattern'); }'
     }
 
-    private initialize(): void { this.setupBenchmarks(),
-        this.loadBaselines(),
+    private initialize(): void { this.setupBenchmarks();
+        this.loadBaselines();
         this.setupPerformanceObserver() }
 
     private setupBenchmarks('''
@@ -192,7 +192,7 @@ export class BenchmarkSuite {
             description: 'レンダリングパフォーマンスの測定',
     test: this.benchmarkRendering.bind(this) }
 
-            baseline: { avgFrameTime: 16.67, minFPS: 45  }'}');
+            baseline: { avgFrameTime: 16.67, minFPS: 45  }'}'),
 
         this.benchmarks.set('bubblePhysics', { ''
             name: 'Bubble Physics',','
@@ -200,7 +200,7 @@ export class BenchmarkSuite {
             description: 'バブル物理演算のパフォーマンス',
     test: this.benchmarkBubblePhysics.bind(this) }
 
-            baseline: { avgTimePerBubble: 0.1, maxBubbles: 100  }'}');
+            baseline: { avgTimePerBubble: 0.1, maxBubbles: 100  }'}'),
 
         this.benchmarks.set('particleEffects', { ''
             name: 'Particle Effects',','
@@ -208,7 +208,7 @@ export class BenchmarkSuite {
             description: 'パーティクルエフェクトのパフォーマンス',
     test: this.benchmarkParticleEffects.bind(this) }
 
-            baseline: { avgUpdateTime: 2.0, maxParticles: 500  }'}');
+            baseline: { avgUpdateTime: 2.0, maxParticles: 500  }'}'),
 
         this.benchmarks.set('memoryAllocation', { ''
             name: 'Memory Allocation',','
@@ -216,7 +216,7 @@ export class BenchmarkSuite {
             description: 'メモリ割り当てパフォーマンス',
     test: this.benchmarkMemoryAllocation.bind(this) }
 
-            baseline: { allocationRate: 1000, gcFrequency: 5  }'}');
+            baseline: { allocationRate: 1000, gcFrequency: 5  }'}'),
 
         this.benchmarks.set('audioProcessing', { ''
             name: 'Audio Processing',','
@@ -224,7 +224,7 @@ export class BenchmarkSuite {
             description: '音声処理のパフォーマンス',
     test: this.benchmarkAudioProcessing.bind(this) }
 
-            baseline: { latency: 100, concurrentSources: 10  }'}');
+            baseline: { latency: 100, concurrentSources: 10  }'}'),
 
         this.benchmarks.set('inputLatency', { ''
             name: 'Input Latency',','
@@ -232,7 +232,7 @@ export class BenchmarkSuite {
             description: '入力応答性の測定',
     test: this.benchmarkInputLatency.bind(this) }
 
-            baseline: { avgLatency: 50, maxLatency: 100  }'}');
+            baseline: { avgLatency: 50, maxLatency: 100  }'}'),
 
         this.benchmarks.set('sceneTransition', { ''
             name: 'Scene Transition',','
@@ -240,7 +240,7 @@ export class BenchmarkSuite {
             description: 'シーン遷移のパフォーマンス',
     test: this.benchmarkSceneTransition.bind(this) }
 
-            baseline: { transitionTime: 500, memoryCleanup: 95  }'}');
+            baseline: { transitionTime: 500, memoryCleanup: 95  }'}'),
 
         this.benchmarks.set('dataProcessing', { ''
             name: 'Data Processing',','
@@ -248,7 +248,7 @@ export class BenchmarkSuite {
             description: 'データ処理のパフォーマンス',
     test: this.benchmarkDataProcessing.bind(this) }
 
-            baseline: { processingRate: 10000, serializationTime: 100  }'}');
+            baseline: { processingRate: 10000, serializationTime: 100  }'}'),
 ';'
         // ストレステスト
         this.benchmarks.set('stressTest', { ''
@@ -257,14 +257,14 @@ export class BenchmarkSuite {
             description: '高負荷時のシステム安定性',
     test: this.benchmarkStressTest.bind(this) }
 
-            baseline: { stabilityScore: 90, recoveryTime: 2000  }'}');
+            baseline: { stabilityScore: 90, recoveryTime: 2000  }'}'),
 
         this.benchmarks.set('memoryStress', { ''
             name: 'Memory Stress',','
             category: 'stress',')',
             description: 'メモリ負荷テスト',
     test: this.benchmarkMemoryStress.bind(this) }
-            baseline: { maxMemoryUsage: 200, leakRate: 0  });
+            baseline: { maxMemoryUsage: 200, leakRate: 0  },
     }
 
     private loadBaselines()';'
@@ -274,12 +274,12 @@ export class BenchmarkSuite {
                 Object.entries(baselines).forEach(([name, baseline]) => {  }
                     this.baselines.set(name, baseline); }
 
-                });'} catch (error) { console.warn('Failed to load benchmark baselines:', error }'
+                };'} catch (error) { console.warn('Failed to load benchmark baselines:', error }'
     }
 ';'
 
     private saveBaselines(): void { try {'
-            const baselines = Object.fromEntries(this.baselines),
+            const baselines = Object.fromEntries(this.baselines);
             localStorage.setItem('benchmarkBaselines', JSON.stringify(baselines),' }'
 
         } catch (error) { console.warn('Failed to save benchmark baselines:', error }
@@ -288,16 +288,16 @@ export class BenchmarkSuite {
     private setupPerformanceObserver()';'
         if ('PerformanceObserver' in, window) {
             this.performanceObserver = new PerformanceObserver((list) => {;
-                const entries = list.getEntries(),
+                const entries = list.getEntries();
                 entries.forEach(entry => {) }
 
                     if(entry.name.startsWith('benchmark-' { }'
                         this.recordPerformanceEntry(entry); }
-});'}');
+};'}');
 ';'
 
             this.performanceObserver.observe({ ')'
-                entryTypes: ['measure', 'navigation', 'resource]});'
+                entryTypes: ['measure', 'navigation', 'resource]};'
         }
     }
 
@@ -310,7 +310,7 @@ export class BenchmarkSuite {
             this.currentBenchmark.performanceEntries.push({ name: entry.name)
                , duration: entry.duration),
                 startTime: entry.startTime,
-    timestamp: Date.now(  });
+    timestamp: Date.now(  };
         }
     }
 
@@ -333,7 +333,7 @@ export class BenchmarkSuite {
             
                 const, benchmark = this.benchmarks.get(name}
                 if (!benchmark) { }
-                    console.warn(`Unknown, benchmark: ${name}`});
+                    console.warn(`Unknown, benchmark: ${name}`};
                     continue;
                 }
 
@@ -350,7 +350,7 @@ export class BenchmarkSuite {
                 summary: this.generateSummary(results),
                 totalExecutionTime: totalTime,
                 timestamp: Date.now(
-    environment: this.captureEnvironment(  };
+    environment: this.captureEnvironment(  },
 
             this.results.set(Date.now(), suiteResult);
             return suiteResult;
@@ -368,7 +368,7 @@ export class BenchmarkSuite {
             passed: 0,
             failed: 0,
     warnings: 0 }
-            categories: {};
+            categories: {},
             performance: { avgExecutionTime: 0,
                 totalExecutionTime: 0,
                 regressions: [],
@@ -402,7 +402,7 @@ export class BenchmarkSuite {
             }
 
             totalExecutionTime += result.executionTime || 0;
-        });
+        };
 
         summary.performance.totalExecutionTime = totalExecutionTime;
         summary.performance.avgExecutionTime = totalExecutionTime / summary.total;
@@ -421,7 +421,7 @@ export class BenchmarkSuite {
             memory: memoryInfo,
     screen: {
                 width: screen.width,
-    height: screen.height };
+    height: screen.height },
                 pixelRatio: window.devicePixelRatio 
     };
             timestamp: Date.now();
@@ -443,12 +443,11 @@ export class BenchmarkSuite {
 
         for(let, i = 0; i < iterations; i++) {
 
-            const frameStart = performance.now(),
-            
+            const frameStart = performance.now();
             // 簡単な描画処理
-            ctx.clearRect(0, 0, canvas.width, canvas.height),
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
             for (let, j = 0, j < 25, j++) {
-                ctx.beginPath(),
+                ctx.beginPath();
                 ctx.arc(Math.random() * canvas.width, Math.random() * canvas.height, 10, 0, Math.PI * 2) }
                 ctx.fill(); }
             }
@@ -460,8 +459,8 @@ export class BenchmarkSuite {
         const avgFrameTime = frameTimes.reduce((sum, time) => sum + time, 0) / frameTimes.length;
         return { avgFrameTime,
             fps: 1000 / avgFrameTime,
-    minFPS: 1000 / Math.max(...frameTimes) };
-            success: true;
+    minFPS: 1000 / Math.max(...frameTimes) },
+            success: true,
 
     private async benchmarkBubblePhysics(options: BenchmarkOptions = { ): Promise<BenchmarkResult> {
         const bubbleCount = options.bubbleCount || 50,
@@ -470,8 +469,7 @@ export class BenchmarkSuite {
         // 簡略化された物理シミュレーション
         const updateTimes: number[] = [],
         for(let, i = 0, i < iterations, i++) {
-            const startTime = performance.now(),
-            
+            const startTime = performance.now();
             // 物理計算をシミュレート
             let sum = 0,
             for (let, j = 0, j < bubbleCount, j++) {
@@ -485,8 +483,8 @@ export class BenchmarkSuite {
         const avgUpdateTime = updateTimes.reduce((sum, time) => sum + time, 0) / updateTimes.length;
         return { bubbleCount,
             avgUpdateTime,
-            avgTimePerBubble: avgUpdateTime / bubbleCount };
-            success: true;
+            avgTimePerBubble: avgUpdateTime / bubbleCount },
+            success: true,
 
     // 個別ベンチマークメソッド（簡略化版）
     private async benchmarkParticleEffects(options: BenchmarkOptions = { ): Promise<BenchmarkResult> { }
@@ -499,7 +497,7 @@ export class BenchmarkSuite {
             }
         const initial = (performance, as any).memory.usedJSHeapSize;
         // 簡単なメモリ負荷テスト
-        new Array(1000).fill(0).map(() => ({ value: Math.random( });
+        new Array(1000).fill(0).map(() => ({ value: Math.random( }),
         const final = (performance, as any).memory.usedJSHeapSize;
         
         return { initialMemory: initial, finalMemory: final, allocationRate: 1000, success: true,
@@ -515,10 +513,9 @@ export class BenchmarkSuite {
 
     private async benchmarkDataProcessing(options: BenchmarkOptions = { ): Promise<BenchmarkResult> {
         const dataSize = options.dataSize || 1000,
-        const startTime = performance.now(),
-        
+        const startTime = performance.now();
         // 簡単なデータ処理シミュレート }
-        const data = new Array(dataSize).fill(0).map((_, i) => ({ id: i, value: Math.random(  });
+        const data = new Array(dataSize).fill(0).map((_, i) => ({ id: i, value: Math.random(  }),
         data.sort((a, b) => a.value - b.value);
         
         const totalTime = performance.now() - startTime;
@@ -526,8 +523,7 @@ export class BenchmarkSuite {
 
     private async benchmarkStressTest(options: BenchmarkOptions = { ): Promise<BenchmarkResult> {
         const duration = Math.min(options.duration || 5000, 10000), // 最大10秒
-        const startTime = performance.now(),
-        
+        const startTime = performance.now();
         // 簡単なストレステスト
         await new Promise(resolve => setTimeout(resolve, duration) }
         return { duration, stabilityScore: 95, avgFPS: 58, success: true,
@@ -543,9 +539,9 @@ export class BenchmarkSuite {
     // ベースライン管理
     updateBaseline(benchmarkName: string, results: BenchmarkResult): void { if (results.success) {
             this.baselines.set(benchmarkName, {
-                ...results),
+                ...results);
                 timestamp: Date.now(
-    environment: this.captureEnvironment(  }));
+    environment: this.captureEnvironment(  }),
             this.saveBaselines();
         }
     }
@@ -554,7 +550,7 @@ export class BenchmarkSuite {
 
     // レポート生成 (delegate, to reporter);
     generateReport(results: any, options: any = { ): any {
-        const analysis = this.resultAnalyzer.analyzeResults(results),
+        const analysis = this.resultAnalyzer.analyzeResults(results);
         return this.benchmarkReporter.generateBenchmarkReport(results, analysis, options) }
 
     // 結果可視化 (delegate, to reporter);
@@ -571,7 +567,7 @@ export class BenchmarkSuite {
             .slice(0, limit) }
         return allResults.map(([timestamp, result]) => ({ timestamp, ...result) }
 
-    getLatestResults(): SuiteResult | undefined { const latest = Math.max(...this.results.keys(),
+    getLatestResults(): SuiteResult | undefined { const latest = Math.max(...this.results.keys();
         return this.results.get(latest) }
 
     // 統計とステータス
@@ -605,10 +601,9 @@ export class BenchmarkSuite {
 
     // クリーンアップ
     destroy(): void { this.isRunning = false;
-        this.benchmarks.clear(),
-        this.baselines.clear(),
-        this.results.clear(),
-        
+        this.benchmarks.clear();
+        this.baselines.clear();
+        this.results.clear();
         // Destroy sub-components
         if (this.benchmarkExecutor) {
     

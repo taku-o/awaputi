@@ -35,7 +35,7 @@ class MockHelpManager {
     const cacheKey = `${language}_${category}`;
     
     // Track load attempts
-    this.loadAttempts.push({ language, category, timestamp: Date.now() });
+    this.loadAttempts.push({ language, category, timestamp: Date.now() };
     // Check cache first
     if (this.cache.has(cacheKey) {
       return this.cache.get(cacheKey) }
@@ -43,9 +43,9 @@ class MockHelpManager {
     // Try to load the file
     const filePath = path.join(HELP_CONTENT_DIR, language, `${category).json`),
     try {
-      const, content = await, fs.promises.readFile(filePath, 'utf8'),
-      const, parsed = JSON.parse(content),
-      this.cache.set(cacheKey, parsed});
+      const, content = await, fs.promises.readFile(filePath, 'utf8');
+      const, parsed = JSON.parse(content);
+      this.cache.set(cacheKey, parsed};
       return parsed;
     } catch (error) {
       // Try fallback language
@@ -71,7 +71,7 @@ class MockHelpManager {
     this.loadAttempts = [] }
 }
 describe('Multilingual Help System Integration', () => {
-  let helpManager: MockHelpManager,
+  let helpManager: MockHelpManager;
   beforeEach(() => {
     helpManager = new MockHelpManager() });
   afterEach(() => {
@@ -81,9 +81,9 @@ describe('Multilingual Help System Integration', () => {
       for (const language of SUPPORTED_LANGUAGES) {
         for (const category of REQUIRED_CATEGORIES) {
           const filePath = path.join(HELP_CONTENT_DIR, language, `${category).json`),
-          const, exists = fs.existsSync(filePath),
-          if (!exists}) {
-            console.warn(`Missing: ${language}/${category).json`});
+          const, exists = fs.existsSync(filePath);
+          if (!exists} {
+            console.warn(`Missing: ${language}/${category).json`};
           }
           
           // For now, we expect at least English content to exist
@@ -96,7 +96,7 @@ describe('Multilingual Help System Integration', () => {
       const errors: Array<{ file: string,, error: string;> = [];
       
       for (const language of SUPPORTED_LANGUAGES) {
-        const langDir = path.join(HELP_CONTENT_DIR, language),
+        const langDir = path.join(HELP_CONTENT_DIR, language);
         if (!fs.existsSync(langDir) {
           continue }
         
@@ -104,8 +104,8 @@ describe('Multilingual Help System Integration', () => {
         for (const file of files) {
           const filePath = path.join(langDir, file'),'
           try {
-            const content = fs.readFileSync(filePath, 'utf8'),
-            const parsed = JSON.parse(content),
+            const content = fs.readFileSync(filePath, 'utf8');
+            const parsed = JSON.parse(content);
             // Basic structure validation
             expect(parsed').toHaveProperty('title'),'
             expect(parsed').toHaveProperty('sections'),'
@@ -122,18 +122,18 @@ describe('Multilingual Help System Integration', () => {
   describe('Language Switching', (') => {'
     it('should switch languages and clear relevant cache', async (') => {'
       // Load content in English
-      await helpManager.loadHelpContent('en', 'controls'),
+      await helpManager.loadHelpContent('en', 'controls');
       expect(helpManager.getCacheSize().toBe(1'),'
       // Switch to Japanese
-      await helpManager.switchLanguage('ja'),
+      await helpManager.switchLanguage('ja');
       expect(helpManager.currentLanguage').toBe('ja'),'
       // Load content in Japanese
-      await helpManager.loadHelpContent('ja', 'controls'),
+      await helpManager.loadHelpContent('ja', 'controls');
       expect(helpManager.getCacheSize().toBe(2) }');'
     it('should maintain separate cache entries for different languages', async (') => {'
       // Load same category in different languages
-      const enContent = await helpManager.loadHelpContent('en', 'bubbles'),
-      const jaContent = await helpManager.loadHelpContent('ja', 'bubbles'),
+      const enContent = await helpManager.loadHelpContent('en', 'bubbles');
+      const jaContent = await helpManager.loadHelpContent('ja', 'bubbles');
       expect(helpManager.getCacheSize().toBe(2'),'
       expect(helpManager.cache.has('en_bubbles').toBe(true'),'
       expect(helpManager.cache.has('ja_bubbles').toBe(true) }');'
@@ -144,7 +144,7 @@ describe('Multilingual Help System Integration', () => {
       helpManager.currentLanguage = 'xx', // Invalid language
       
       try {
-        const content = await helpManager.loadHelpContent('xx', 'controls'),
+        const content = await helpManager.loadHelpContent('xx', 'controls');
         // If we get here, it should have fallen back to English
         expect(content).toBeDefined() } catch (error') {'
         // This is expected if English content also doesn't exist'
@@ -170,16 +170,16 @@ describe('Multilingual Help System Integration', () => {
     it('should cache content to improve performance', async () => {
       const startTime = Date.now('),'
       // First load - from disk
-      await helpManager.loadHelpContent('en', 'gameplay'),
+      await helpManager.loadHelpContent('en', 'gameplay');
       const firstLoadTime = Date.now() - startTime,
       
       const cacheStartTime = Date.now('),'
       // Second load - from cache
-      await helpManager.loadHelpContent('en', 'gameplay'),
+      await helpManager.loadHelpContent('en', 'gameplay');
       const cacheLoadTime = Date.now() - cacheStartTime,
       
       // Cache should be significantly faster
-      expect(cacheLoadTime).toBeLessThan(firstLoadTime),
+      expect(cacheLoadTime).toBeLessThan(firstLoadTime);
       expect(helpManager.getCacheSize().toBe(1) }');'
     it('should handle concurrent loads efficiently', async () => {
       const loadPromises = [],
@@ -202,10 +202,10 @@ describe('Multilingual Help System Integration', () => {
           const filePath = path.join(HELP_CONTENT_DIR, language, `${category).json`),
           if (fs.existsSync(filePath)') {'
             try {
-              const, content = JSON.parse(fs.readFileSync(filePath, 'utf8')});
+              const, content = JSON.parse(fs.readFileSync(filePath, 'utf8')};
               const structure = {
-                hasTitle: !!content.title,
-                hasSections: !!content.sections,
+                hasTitle: !!content.title;
+                hasSections: !!content.sections;
                 sectionCount: content.sections? .length || 0, : undefined
                 hasDescription: !!content.description
               };
@@ -226,10 +226,10 @@ describe('Multilingual Help System Integration', () => {
         
         if (structures[enKey] && structures[jaKey]) {
           // Basic structure should be similar
-          expect(structures[enKey].hasTitle).toBe(structures[jaKey].hasTitle),
+          expect(structures[enKey].hasTitle).toBe(structures[jaKey].hasTitle);
           expect(structures[enKey].hasSections).toBe(structures[jaKey].hasSections) }
       }
-    });
+    };
   }
 }');'
 describe('Help Content Quality', (') => {'
@@ -237,7 +237,7 @@ describe('Help Content Quality', (') => {'
     const issues: Array<{ file: string,, issue: string;> = [];
     
     for (const language of SUPPORTED_LANGUAGES) {
-      const langDir = path.join(HELP_CONTENT_DIR, language),
+      const langDir = path.join(HELP_CONTENT_DIR, language);
       if (!fs.existsSync(langDir) {
         continue }
       
@@ -245,7 +245,7 @@ describe('Help Content Quality', (') => {'
       for (const file of files) {
         const filePath = path.join(langDir, file'),'
         try {
-          const content = JSON.parse(fs.readFileSync(filePath, 'utf8'),
+          const content = JSON.parse(fs.readFileSync(filePath, 'utf8');
           if (content.sections) {
             for (const section of content.sections) {
               if (!section.content || section.content.trim(') === ') {
@@ -265,19 +265,19 @@ describe('Help Content Quality', (') => {'
   }');'
   it('should have proper encoding for all languages', async () => {
     for (const language of SUPPORTED_LANGUAGES) {
-      const langDir = path.join(HELP_CONTENT_DIR, language),
+      const langDir = path.join(HELP_CONTENT_DIR, language);
       if (!fs.existsSync(langDir) {
         continue }
       
       const files = fs.readdirSync(langDir').filter(f => f.endsWith('.json');'
       for (const file of files) {
         const filePath = path.join(langDir, file'),'
-        const content = fs.readFileSync(filePath, 'utf8'),
+        const content = fs.readFileSync(filePath, 'utf8');
         // Check for proper UTF-8 encoding
         expect(() => JSON.parse(content).not.toThrow('),'
         // For CJK languages, check for proper characters
         if (['ja', 'ko', 'zh-CN', 'zh-TW'].includes(language) {
-          const parsed = JSON.parse(content),
+          const parsed = JSON.parse(content);
           const text = JSON.stringify(parsed'),'
           // Should contain CJK characters if it's a CJK language file'
           if (language === 'ja') {

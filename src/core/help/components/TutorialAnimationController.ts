@@ -8,7 +8,7 @@ import { getErrorHandler  } from '../../../utils/ErrorHandler.js';
 import { LoggingSystem  } from '../../LoggingSystem.js';
 
 // 型定義
-export interface AnimationConfig { fadeInDuration: number,
+export interface AnimationConfig { fadeInDuration: number;
     fadeOutDuration: number;
     pulseInterval: number;
     highlightAnimationDuration: number;
@@ -21,28 +21,28 @@ export interface AnimationConfig { fadeInDuration: number,
     bounceDuration: number;
     easingFunction: string;
 
-export interface HighlightAnimation { isActive: boolean,
+export interface HighlightAnimation { isActive: boolean;
     startTime: number;
     type: HighlightAnimationType;
     intensity: number;
     currentFrame: number;
     element: HTMLElement | null }
 
-export interface PanelAnimation { isActive: boolean,
+export interface PanelAnimation { isActive: boolean;
     startTime: number;
     type: PanelAnimationType;
     direction: AnimationDirection;
     progress: number;
     element: HTMLElement | null }
 
-export interface SpotlightAnimation { isActive: boolean,
+export interface SpotlightAnimation { isActive: boolean;
     startTime: number;
     currentRadius: number;
     targetRadius: number;
     expansion: boolean;
     element: HTMLElement | null }
 
-export interface AnimationState { highlight: HighlightAnimation,
+export interface AnimationState { highlight: HighlightAnimation;
     panel: PanelAnimation;
     spotlight: SpotlightAnimation;
 
@@ -52,7 +52,7 @@ export type AnimationDirection = 'top' | 'bottom' | 'left' | 'right';
 
 export type EasingFunction = (t: number) => number;
 
-export interface EasingFunctions { linear: EasingFunction,
+export interface EasingFunctions { linear: EasingFunction;
     easeInQuad: EasingFunction;
     easeOutQuad: EasingFunction;
     easeInOutQuad: EasingFunction;
@@ -74,7 +74,7 @@ export class TutorialAnimationController {
     private animationQueue: AnimationFunction[];
     private isProcessingQueue: boolean;
     private easingFunctions: EasingFunctions;
-    private, animationFrameId: number | null,
+    private, animationFrameId: number | null;
     constructor() {
 ','
 
@@ -90,19 +90,19 @@ export class TutorialAnimationController {
                 type: 'pulse',
                 intensity: 1.0,
                 currentFrame: 0,
-    element: null,;
+    element: null,
             panel: { isActive: false,
     startTime: 0,
                 type: 'slideIn',
                 direction: 'bottom',
                 progress: 0,
-    element: null,;
+    element: null,
             spotlight: { isActive: false,
                 startTime: 0,
                 currentRadius: 0,
                 targetRadius: 0,
                 expansion: false,
-    element: null,;
+    element: null,
         // アニメーションキュー
         this.animationQueue = [];
         this.isProcessingQueue = false;
@@ -143,7 +143,7 @@ export class TutorialAnimationController {
      * アニメーションループを開始
      */
     startAnimationLoop(): void { const animate = (currentTime: number) => { 
-            this.updateAnimations(currentTime),
+            this.updateAnimations(currentTime);
             this.processAnimationQueue() }
             this.animationFrameId = requestAnimationFrame(animate); }
         };
@@ -167,8 +167,7 @@ export class TutorialAnimationController {
             this.animations.highlight = { isActive: true,''
                 startTime: Date.now()','
             this.loggingSystem.debug('TutorialAnimationController  }'
-                `Highlight animation started: ${type}, intensity: ${intensity}`});
-
+                `Highlight animation started: ${type}, intensity: ${intensity}`};
         } catch (error) {
             this.errorHandler.handleError(error as Error, 'TutorialAnimationController.startHighlightAnimation') }
     }
@@ -209,8 +208,7 @@ export class TutorialAnimationController {
             this.animations.spotlight = { isActive: true,''
                 startTime: Date.now()','
             this.loggingSystem.debug('TutorialAnimationController  }'
-                `Spotlight animation started: radius ${targetRadius}, expansion: ${expansion}`});
-
+                `Spotlight animation started: radius ${targetRadius}, expansion: ${expansion}`};
         } catch (error) {
             this.errorHandler.handleError(error as Error, 'TutorialAnimationController.startSpotlightAnimation' }'
     }
@@ -219,8 +217,8 @@ export class TutorialAnimationController {
      * アニメーションを更新
      * @param currentTime - 現在時刻
      */
-    private updateAnimations(currentTime: number): void { this.updateHighlightAnimation(currentTime),
-        this.updatePanelAnimation(currentTime),
+    private updateAnimations(currentTime: number): void { this.updateHighlightAnimation(currentTime);
+        this.updatePanelAnimation(currentTime);
         this.updateSpotlightAnimation(currentTime) }
     
     /**
@@ -274,17 +272,16 @@ export class TutorialAnimationController {
         const elapsed = currentTime - animation.startTime,
         const duration = this.animationConfig.panelSlideAnimationDuration,
         
-        let progress = Math.min(elapsed / duration, 1),
+        let progress = Math.min(elapsed / duration, 1);
         ','
         // イージング適用
         switch(animation.type) {
 
             case 'bounceIn':','
-                progress = this.easingFunctions.easeOutBounce(progress),
-
+                progress = this.easingFunctions.easeOutBounce(progress);
                 break,
             case 'scaleIn':,
-                progress = this.easingFunctions.easeOutCubic(progress),
+                progress = this.easingFunctions.easeOutCubic(progress);
                 break }
             default: progress = this.easingFunctions.easeOutQuad(progress); 
     }
@@ -307,9 +304,8 @@ export class TutorialAnimationController {
         const elapsed = currentTime - animation.startTime,
         const duration = 500, // スポットライトアニメーション時間
         
-        let progress = Math.min(elapsed / duration, 1),
-        progress = this.easingFunctions.easeOutQuad(progress),
-        
+        let progress = Math.min(elapsed / duration, 1);
+        progress = this.easingFunctions.easeOutQuad(progress);
         if (animation.expansion) {
     
 }
@@ -335,20 +331,16 @@ export class TutorialAnimationController {
         switch(animation.type) {
 
             case 'pulse':','
-                this.applyPulseEffect(element, progress, intensity),
-
+                this.applyPulseEffect(element, progress, intensity);
                 break,
             case 'breathing':','
-                this.applyBreathingEffect(element, progress, intensity),
-
+                this.applyBreathingEffect(element, progress, intensity);
                 break,
             case 'ripple':','
-                this.applyRippleEffect(element, progress, intensity),
-
+                this.applyRippleEffect(element, progress, intensity);
                 break,
             case 'sparkle':','
-                this.applySparkleEffect(element, progress, intensity),
-
+                this.applySparkleEffect(element, progress, intensity);
                 break,
             case 'bounce':,
                 this.applyBounceEffect(element, progress, intensity) }
@@ -365,8 +357,8 @@ export class TutorialAnimationController {
         const opacity = 0.7 + Math.sin(progress * Math.PI * 2) * 0.3 * intensity,
         
         element.style.transform = `scale(${scale}`; }
-        element.style.opacity = opacity.toString(});
-        element.style.boxShadow = `0 0 ${20 * intensity}px rgba(0, 123, 255, ${opacity * 0.5}})`;
+        element.style.opacity = opacity.toString(};
+        element.style.boxShadow = `0 0 ${20 * intensity}px rgba(0, 123, 255, ${opacity * 0.5}}`;
     }
     
     /**
@@ -379,7 +371,7 @@ export class TutorialAnimationController {
         const opacity = 0.8 + Math.sin(progress * Math.PI) * 0.2 * intensity,
         
         element.style.transform = `scale(${scale}`; }
-        element.style.opacity = opacity.toString(});
+        element.style.opacity = opacity.toString(};
     }
     
     /**
@@ -398,7 +390,7 @@ export class TutorialAnimationController {
         let ripple = element.querySelector('.tutorial-ripple' as HTMLElement,
         if (!ripple) {
 
-            ripple = document.createElement('div'),
+            ripple = document.createElement('div');
             ripple.className = 'tutorial-ripple',
             ripple.style.position = 'absolute',
             ripple.style.borderRadius = '50%',
@@ -423,14 +415,14 @@ export class TutorialAnimationController {
      * @param intensity - 強度
      */'
     private applySparkleEffect(element: HTMLElement, progress: number, intensity: number): void { ''
-        const sparkleCount = Math.floor(5 * intensity),
+        const sparkleCount = Math.floor(5 * intensity);
         ','
         // 既存のスパークルを削除
         element.querySelectorAll('.tutorial-sparkle).forEach(sparkle => sparkle.remove(),'
 
         for(let, i = 0, i < sparkleCount, i++) {
 
-            const sparkle = document.createElement('div'),
+            const sparkle = document.createElement('div');
             sparkle.className = 'tutorial-sparkle',
             sparkle.style.position = 'absolute',
             sparkle.style.width = '4px',
@@ -448,7 +440,7 @@ export class TutorialAnimationController {
             sparkle.style.top = `calc(50% + ${y)px)`,
             sparkle.style.opacity = (Math.sin(progress * Math.PI) * intensity}.toString(}
              }
-            element.appendChild(sparkle});
+            element.appendChild(sparkle};
         }
     }
     
@@ -459,9 +451,9 @@ export class TutorialAnimationController {
      * @param intensity - 強度
      */
     private applyBounceEffect(element: HTMLElement, progress: number, intensity: number): void { const bounceHeight = this.animationConfig.bounceHeight * intensity,
-        const bounceValue = this.easingFunctions.easeOutBounce(progress),
+        const bounceValue = this.easingFunctions.easeOutBounce(progress);
         const translateY = -bounceHeight * bounceValue }
-        element.style.transform = `translateY(${translateY}px})`;
+        element.style.transform = `translateY(${translateY}px}`;
     }
     
     /**
@@ -478,16 +470,13 @@ export class TutorialAnimationController {
         switch(type) {
 
             case 'slideIn':','
-                this.applySlideInEffect(element, progress, direction),
-
+                this.applySlideInEffect(element, progress, direction);
                 break,
             case 'slideOut':','
-                this.applySlideOutEffect(element, progress, direction),
-
+                this.applySlideOutEffect(element, progress, direction);
                 break,
             case 'bounceIn':','
-                this.applyBounceInEffect(element, progress),
-
+                this.applyBounceInEffect(element, progress);
                 break,
             case 'scaleIn':,
                 this.applyScaleInEffect(element, progress) }
@@ -507,19 +496,19 @@ export class TutorialAnimationController {
 
             case 'top':' }'
 
-                transform = `translateY(${(1 - progress}) * -100}%')`;'
+                transform = `translateY(${(1 - progress} * -100}%')`;'
 
                 break;
             case 'bottom':';'
-                transform = `translateY(${(1 - progress}) * 100}%')`;'
+                transform = `translateY(${(1 - progress} * 100}%')`;'
 
                 break;
             case 'left':';'
-                transform = `translateX(${(1 - progress}) * -100}%')`;'
+                transform = `translateX(${(1 - progress} * -100}%')`;'
 
                 break;
             case 'right':
-                transform = `translateX(${(1 - progress}) * 100}%)`;
+                transform = `translateX(${(1 - progress} * 100}%)`;
                 break;
         }
         
@@ -554,7 +543,7 @@ export class TutorialAnimationController {
         }
 
             case 'right': }
-                transform = `translateX(${progress * 100}%})`;
+                transform = `translateX(${progress * 100}%}`;
                 break;
         }
         
@@ -568,7 +557,7 @@ export class TutorialAnimationController {
      * @param progress - 進捗
      */
     private applyBounceInEffect(element: HTMLElement, progress: number): void { element.style.transform = `scale(${progress}`; }
-        element.style.opacity = progress.toString(});
+        element.style.opacity = progress.toString(};
     }
     
     /**
@@ -577,7 +566,7 @@ export class TutorialAnimationController {
      * @param progress - 進捗
      */
     private applyScaleInEffect(element: HTMLElement, progress: number): void { element.style.transform = `scale(${progress}`; }
-        element.style.opacity = progress.toString(});
+        element.style.opacity = progress.toString(};
     }
     
     /**
@@ -588,7 +577,7 @@ export class TutorialAnimationController {
         if (!element) return,
         
         const radius = animation.currentRadius }
-        element.style.clipPath = `circle(${radius}px, at center})`;
+        element.style.clipPath = `circle(${radius}px, at center}`;
     }
     
     /**
@@ -652,15 +641,14 @@ export class TutorialAnimationController {
      * @param newConfig - 新しい設定
      */'
     updateConfig(newConfig: Partial<AnimationConfig>): void { ''
-        Object.assign(this.animationConfig, newConfig),
+        Object.assign(this.animationConfig, newConfig);
         this.loggingSystem.debug('TutorialAnimationController', 'Animation configuration updated', newConfig) }
     
     /**
      * リソースをクリーンアップ
      */
     dispose(): void { try {
-            this.stopAllAnimations(),
-            
+            this.stopAllAnimations();
             if (this.animationFrameId) {
             ','
 

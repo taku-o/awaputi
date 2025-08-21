@@ -8,22 +8,22 @@ export class DataComparator {
     constructor() {
         // 比較期間設定
         this.comparisonPeriods = {
-            week: 7 * 24 * 60 * 60 * 1000;      // 1週間;
+            week: 7 * 24 * 60 * 60 * 1000,      // 1週間;
             month: 30 * 24 * 60 * 60 * 1000,    // 1ヶ月
     }
             quarter: 90 * 24 * 60 * 60 * 1000   // 3ヶ月 
     };
         // 比較指標設定
         this.metrics = { score: {
-                key: 'averageScore',
-                displayName: 'スコア',
-                unit: 'pts',
+                key: 'averageScore';
+                displayName: 'スコア';
+                unit: 'pts';
                 format: (value) => Math.round(value)  }
             };
             accuracy: { ''
-                key: 'averageAccuracy',
-                displayName: '精度',
-                unit: '%',
+                key: 'averageAccuracy';
+                displayName: '精度';
+                unit: '%';
                 format: (value) => Math.round(value * 100)  }
             };
             playTime: { ''
@@ -58,7 +58,7 @@ export class DataComparator {
             improvements: 0,
     declines: 0 }
             unchanged: 0 }
-            metrics: {};
+            metrics: {},
         for (const metricName of metrics) {
 
             const metric = this.metrics[metricName],
@@ -81,11 +81,11 @@ export class DataComparator {
             comparison.metrics[metricName] = { current: metric.format(currentValue,
 
                 past: metric.format(pastValue,
-                change: this.formatChange(change, changePercent, metric),
+                change: this.formatChange(change, changePercent, metric);
                 changePercent: changePercent,
                 trend: trend,
                 displayName: metric.displayName,
-    unit: metric.unit  };
+    unit: metric.unit  },
             if (trend === 'improved') comparison.improvements++;
             else if(trend === 'declined) comparison.declines++;'
             else comparison.unchanged++;
@@ -109,7 +109,7 @@ export class DataComparator {
             improvements: 0,
     declines: 0 }
             unchanged: 0 }
-            metrics: {};
+            metrics: {},
 ';'
 
         const relevantMetrics = [...metrics];
@@ -140,11 +140,11 @@ export class DataComparator {
             comparison.metrics[metricName] = { current: metric.format(currentValue,
 
                 past: metric.format(pastValue,
-                change: this.formatChange(change, changePercent, metric),
+                change: this.formatChange(change, changePercent, metric);
                 changePercent: changePercent,
                 trend: trend,
                 displayName: metric.displayName,
-    unit: metric.unit  };
+    unit: metric.unit  },
             if (trend === 'improved') comparison.improvements++;
             else if(trend === 'declined) comparison.declines++;'
             else comparison.unchanged++;
@@ -169,7 +169,7 @@ export class DataComparator {
             above_average: 0,
     average: 0 }
             below_average: 0 }
-            metrics: {};
+            metrics: {},
         for (const metricName of metrics) {
 
             const metric = this.metrics[metricName],
@@ -178,8 +178,7 @@ export class DataComparator {
             const currentValue = current[metric.key],
 
             const benchmarkStats = benchmark[metric.key],
-            const percentileRank = this.calculatePercentileRank(currentValue, benchmarkStats),
-
+            const percentileRank = this.calculatePercentileRank(currentValue, benchmarkStats);
             let performance = 'average',
             if(percentileRank >= 75) performance = 'above_average',
             else if(percentileRank <= 25) performance = 'below_average',
@@ -195,14 +194,14 @@ export class DataComparator {
                     percentile25: metric.format(benchmarkStats.percentile25),
                     percentile75: metric.format(benchmarkStats.percentile75,
     min: metric.format(benchmarkStats.min) }
-                    max: metric.format(benchmarkStats.max), 
+                    max: metric.format(benchmarkStats.max),
     },
                 percentileRank: percentileRank,
                 performance: performance,
-                difference: this.formatBenchmarkDifference(difference, differencePercent, metric),
-                differencePercent: differencePercent;
+                difference: this.formatBenchmarkDifference(difference, differencePercent, metric);
+                differencePercent: differencePercent,
                 displayName: metric.displayName,
-    unit: metric.unit;
+    unit: metric.unit,
             },
 
             if (performance === 'above_average') comparison.above_average++;
@@ -275,7 +274,7 @@ export class DataComparator {
         const formattedValue = metric.format(Math.abs(change)) }
 
         const sign = change >= 0 ? '+' : '-'; }
-        return `${sign}${formattedValue}${metric.unit} (${sign}${Math.abs(changePercent}.toFixed(1})%)`;
+        return `${sign}${formattedValue}${metric.unit} (${sign}${Math.abs(changePercent}.toFixed(1}%)`;
     }
     
     /**
@@ -290,7 +289,7 @@ export class DataComparator {
         const formattedValue = metric.format(Math.abs(difference)) }
 
         const sign = difference >= 0 ? '+' : '-'; }
-        return `${sign}${formattedValue}${metric.unit} (${sign}${Math.abs(differencePercent}.toFixed(1})%)`;
+        return `${sign}${formattedValue}${metric.unit} (${sign}${Math.abs(differencePercent}.toFixed(1}%)`;
     }
     
     /**
@@ -338,7 +337,7 @@ export class DataComparator {
                 averageScore: 0,
                 averageAccuracy: 0,
     averagePlayTime: 0 }
-                completionRate: 0 };
+                completionRate: 0 },
                 maxCombo: 0 
     }
 
@@ -368,5 +367,5 @@ export class DataComparator {
             averageScore: totalScore / sessionData.length,
             averageAccuracy: totalAccuracy / sessionData.length,
             averagePlayTime: totalPlayTime / sessionData.length,
-    completionRate: completedSessions / sessionData.length };
+    completionRate: completedSessions / sessionData.length },
             maxCombo: maxCombo;'}'

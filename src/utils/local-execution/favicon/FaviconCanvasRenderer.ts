@@ -7,7 +7,7 @@
  */
 
 // Type definitions
-interface CanvasContext { canvas: HTMLCanvasElement,
+interface CanvasContext { canvas: HTMLCanvasElement;
     ctx: CanvasRenderingContext2D;
 
 interface FaviconConfig { backgroundColor?: string,
@@ -15,7 +15,7 @@ interface FaviconConfig { backgroundColor?: string,
     fontFamily?: string;
     text?: string;
 
-interface FaviconRenderConfig { backgroundColor: string,
+interface FaviconRenderConfig { backgroundColor: string;
     textColor: string;
     fontFamily: string;
     text: string;
@@ -28,7 +28,7 @@ export default class FaviconCanvasRenderer { /**
      * @returns Canvas要素とコンテキスト'
      */''
     static createCanvas(size: number): CanvasContext {''
-        const canvas = document.createElement('canvas'),
+        const canvas = document.createElement('canvas');
         canvas.width = size,
 
         canvas.height = size,
@@ -48,8 +48,8 @@ export default class FaviconCanvasRenderer { /**
      * @param config - 設定オブジェクト'
      */''
     static renderFavicon(ctx: CanvasRenderingContext2D, size: number, config: FaviconConfig): void { const renderConfig: FaviconRenderConfig = {''
-            backgroundColor: config.backgroundColor || '#2196F3',
-            textColor: config.textColor || '#FFFFFF',
+            backgroundColor: config.backgroundColor || '#2196F3';
+            textColor: config.textColor || '#FFFFFF';
             fontFamily: config.fontFamily || 'Arial, sans-serif',
             text: config.text || 'B'
             };
@@ -94,7 +94,7 @@ export default class FaviconCanvasRenderer { /**
             // ICO形式の場合はPNGに変換してからICOヘッダーを付加
         }
             return this._convertToICO(canvas);
-        return canvas.toDataURL(`image/${format}`});
+        return canvas.toDataURL(`image/${format}`};
     }
 
     /**
@@ -104,10 +104,10 @@ export default class FaviconCanvasRenderer { /**
      * @returns ICO形式のData URL
      */''
     private static _convertToICO(canvas: HTMLCanvasElement): string { // 簡易ICO変換（実際の実装では複数サイズを含むICOを作成）
-        const pngData = canvas.toDataURL('image/png'),
+        const pngData = canvas.toDataURL('image/png');
         ','
         // ICOヘッダーを付加（簡易版）
-        const base64Data = pngData.replace(/^data:image\/png,base64,/, ''),
+        const base64Data = pngData.replace(/^data:image\/png,base64,/, '');
         const icoHeader = 'data:image/x-icon,base64,'
         
         return icoHeader + base64Data }

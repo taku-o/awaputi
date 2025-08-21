@@ -8,7 +8,7 @@ import { ErrorHandler  } from '../../utils/ErrorHandler.js';
 import { LoggingSystem  } from '../LoggingSystem.js';
 
 // 型定義
-export interface AccessibilityConfig { enabled: boolean,
+export interface AccessibilityConfig { enabled: boolean;
     highContrast: boolean;
     largeText: boolean;
     screenReaderMode: boolean;
@@ -22,7 +22,7 @@ export interface AccessibilityConfig { enabled: boolean,
     reducedMotion: boolean;
     audioDescriptions: boolean;
 
-export interface TutorialAccessibilitySettings { highContrast: boolean,
+export interface TutorialAccessibilitySettings { highContrast: boolean;
     largeText: boolean;
     screenReaderMode: boolean;
     reducedMotion: boolean;
@@ -58,7 +58,7 @@ export interface AccessibilitySystemPrefs { highContrast?: boolean,
     screenReader?: boolean;
     reducedMotion?: boolean;
 
-export interface AccessibilityEventData { config: AccessibilityConfig,
+export interface AccessibilityEventData { config: AccessibilityConfig;
     source: string;
 
 export interface ScreenReaderAnnouncementData {
@@ -81,7 +81,7 @@ export class TutorialAccessibilityManager {
     private accessibilityManager: AccessibilityManager | null;
     private loggingSystem: LoggingSystem;
     private config: AccessibilityConfig;
-    private, boundSettingsHandler: (event: AccessibilityManagerEvent) => void,
+    private, boundSettingsHandler: (event: AccessibilityManagerEvent) => void;
 
     constructor(accessibilityManager?: AccessibilityManager | null, loggingSystem?: LoggingSystem | null) {
 
@@ -90,18 +90,18 @@ export class TutorialAccessibilityManager {
         
         // アクセシビリティ設定
         this.config = {
-            enabled: false,
-            highContrast: false,
-            largeText: false,
-            screenReaderMode: false,
-            cognitiveAssistance: false,
-            alternativeInput: false,
-            voiceInstructions: false,
-            extendedTimeouts: false,
-            simplifiedMode: false,
-            keyboardNavigation: true,
-            focusIndicators: true,
-    reducedMotion: false,
+            enabled: false;
+            highContrast: false;
+            largeText: false;
+            screenReaderMode: false;
+            cognitiveAssistance: false;
+            alternativeInput: false;
+            voiceInstructions: false;
+            extendedTimeouts: false;
+            simplifiedMode: false;
+            keyboardNavigation: true;
+            focusIndicators: true;
+    reducedMotion: false;
     }
             audioDescriptions: false;;
         // イベントハンドラーをバインド
@@ -116,7 +116,7 @@ export class TutorialAccessibilityManager {
     private initialize(): void { try {
             // AccessibilityManagerから設定を取得
             if (this.accessibilityManager) {
-                const systemPrefs = this.accessibilityManager.getConfiguration(),
+                const systemPrefs = this.accessibilityManager.getConfiguration();
                 // システム設定に基づいてデフォルト値を更新
                 if (systemPrefs) {
                     this.config.highContrast = systemPrefs.highContrast || false,
@@ -273,8 +273,7 @@ export class TutorialAccessibilityManager {
      */
     private handleAccessibilitySettingsChange(event: AccessibilityManagerEvent): void { try {
             const newSettings = event.detail,
-            this.updateConfig(newSettings),
-            
+            this.updateConfig(newSettings);
             // 音声アナウンス（スクリーンリーダー対応）
             if (this.config.screenReaderMode) {
     
@@ -436,7 +435,7 @@ export class TutorialAccessibilityManager {
             keyboardNavigation: true,
             focusIndicators: true,
             reducedMotion: true,
-    audioDescriptions: true,;
+    audioDescriptions: true,
         this.updateConfig(allEnabled);
     }
     

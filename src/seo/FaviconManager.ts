@@ -24,7 +24,7 @@ interface FaviconSpec { size?: number,
     defaultSize?: number,  }
 
 // 生成されたファビコンインターフェース
-interface GeneratedFavicon { category: string,
+interface GeneratedFavicon { category: string;
     filename: string;
     size: number | string;
     type: string;
@@ -32,7 +32,7 @@ interface GeneratedFavicon { category: string,
     spec: FaviconSpec;
 
 // ファビコン生成結果インターフェース
-interface FaviconGenerationResult { generated: GeneratedFavicon[],
+interface FaviconGenerationResult { generated: GeneratedFavicon[];
     errors: Array<{
         categor,y: string;
         filename?: string;
@@ -41,7 +41,7 @@ interface FaviconGenerationResult { generated: GeneratedFavicon[],
     }
 
 // カテゴリ別生成結果インターフェース
-interface CategoryGenerationResult { generated: GeneratedFavicon[],
+interface CategoryGenerationResult { generated: GeneratedFavicon[];
     errors: Array<{
         categor,y: string;
         filename: string;
@@ -49,18 +49,18 @@ interface CategoryGenerationResult { generated: GeneratedFavicon[],
 }
 
 // ファビコンサマリーインターフェース
-interface FaviconSummary { totalGenerated: number,
+interface FaviconSummary { totalGenerated: number;
     totalErrors: number;
     byCategory: Record<string, number>;
     byType: Record<string, number>;
     generatedAt: string;
 
 // PNGデータインターフェース
-interface PngData { size: number,
+interface PngData { size: number;
     data: string;
 
 // ファビコン検証結果インターフェース
-interface FaviconValidationResult { isValid: boolean,
+interface FaviconValidationResult { isValid: boolean;
     issues: string[];
     warnings: string[];
     generatedCount: number;
@@ -79,7 +79,7 @@ interface FileSystemDirectoryHandle { getFileHandle(name: string, options?: { cr
 interface FileSystemFileHandle { createWritable(): Promise<FileSystemWritableFileStream>;
 
 // FileSystemWritableFileStream インターフェース
-interface FileSystemWritableFileStream { write(data: BufferSource | Blob | string): Promise<void>,
+interface FileSystemWritableFileStream { write(data: BufferSource | Blob | string): Promise<void>;
     close(): Promise<void>;
 
 export class FaviconManager {
@@ -107,7 +107,7 @@ export class FaviconManager {
      */
     private _initialize(): void { try {
             // ファビコン仕様の設定
-            this._setupFaviconSpecs(),
+            this._setupFaviconSpecs();
             // Canvas要素の作成（ファビコン生成用）
             this._setupCanvas()','
             seoLogger.info('FaviconManager, initialized successfully',' }'
@@ -238,23 +238,22 @@ export class FaviconManager {
             // 各カテゴリのファビコンを生成
             for(const [category, specs] of this.faviconSpecs) {
                 try {
-                    const categoryResults = await this._generateFaviconCategory(category, specs, options),
-                    results.generated.push(...categoryResults.generated),
+                    const categoryResults = await this._generateFaviconCategory(category, specs, options);
+                    results.generated.push(...categoryResults.generated);
                     results.errors.push(...categoryResults.errors) } catch (error) {
                     seoLogger.error(`Failed to generate ${category} favicons`, error as Error);
-                    results.errors.push({ category, error: (error as Error).message  });
+                    results.errors.push({ category, error: (error as Error).message  },
                 }
             }
             
             // サマリーの生成
             results.summary = this._generateFaviconSummary(results);
             
-            seoLogger.info(`Generated ${results.generated.length} favicons, with ${results.errors.length} errors`});
+            seoLogger.info(`Generated ${results.generated.length} favicons, with ${results.errors.length} errors`};
             ';'
 
             return results;} catch (error) {
-            return seoErrorHandler.handle(error as Error, 'generateAllFavicons', options),
-    
+            return seoErrorHandler.handle(error as Error, 'generateAllFavicons', options);
     /**
      * カテゴリ別ファビコン生成
      */
@@ -264,22 +263,22 @@ export class FaviconManager {
     options: { forceRegenerate?: boolean,
     ): Promise<CategoryGenerationResult>;
         const results: CategoryGenerationResult = { generated: [],
-            errors: []  };
+            errors: []  },
         for (const spec of specs) {
         
             try {
-                const faviconData = await this._generateSingleFavicon(spec, options),
+                const faviconData = await this._generateSingleFavicon(spec, options);
                 if (faviconData) {
                     results.generated.push({
                         category }
                         filename: spec.filename }
                         size: spec.size || `${spec.width}x${spec.height}`)
                         type: spec.type,
-    dataUrl: faviconData);
+    dataUrl: faviconData),
                         spec } catch (error) { results.errors.push({)
                     category),
                     filename: spec.filename,
-    error: (error, as Error).message  });
+    error: (error, as Error).message  };
             }
         }
         
@@ -322,7 +321,7 @@ export class FaviconManager {
     /**
      * PNGファビコンの生成
      */
-    private async _generatePNGFavicon(spec: FaviconSpec, options: { forceRegenerate?: boolean;): Promise<string> { const size = spec.size || Math.max(spec.width || 0, spec.height || 0),
+    private async _generatePNGFavicon(spec: FaviconSpec, options: { forceRegenerate?: boolean;): Promise<string> { const size = spec.size || Math.max(spec.width || 0, spec.height || 0);
         const width = spec.width || size,
         const height = spec.height || size,
         
@@ -331,9 +330,9 @@ export class FaviconManager {
         this.canvas!.height = height,
         
         // 背景のクリア
-        this.ctx!.clearRect(0, 0, width, height),
+        this.ctx!.clearRect(0, 0, width, height);
         // ファビコンのデザインを描画
-        await this._drawFaviconDesign(width, height, spec),
+        await this._drawFaviconDesign(width, height, spec);
         ','
         // PNG形式で出力
         return this.canvas!.toDataURL('image/png' }'
@@ -348,7 +347,7 @@ export class FaviconManager {
 
         // SVGテンプレートの生成' }'
 
-        let svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="0 0 ${size} ${size}">`;
+        let svg = `<svg xmlns="http: //www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="0 0 ${size} ${size}">`,
 
         if (isMonochrome") { // Safari pinned tab用のモノクローム版" }"
             svg += `<circle cx="${size/2}" cy="${size/2}" r="${size/3}" fill="black"/>`;""
@@ -368,7 +367,7 @@ export class FaviconManager {
         svg += '</svg>';
         
         // SVGをData URLとして返す
-        return `data:image/svg+xml;base64,${btoa(svg})`;
+        return `data:image/svg+xml;base64,${btoa(svg}`;
     }
     
     /**
@@ -405,26 +404,25 @@ export class FaviconManager {
         const centerY = height / 2,
         const radius = Math.min(width, height) / 3,
         // グラデーション背景
-        const gradient = this.ctx!.createLinearGradient(0, 0, width, height),
-        gradient.addColorStop(0, '#4CAF50'),
+        const gradient = this.ctx!.createLinearGradient(0, 0, width, height);
+        gradient.addColorStop(0, '#4CAF50');
         gradient.addColorStop(1, '#2E7D32),'
         
         // メインの泡
         this.ctx!.fillStyle = gradient,
-        this.ctx!.beginPath(),
-        this.ctx!.arc(centerX, centerY, radius, 0, Math.PI * 2),
+        this.ctx!.beginPath();
+        this.ctx!.arc(centerX, centerY, radius, 0, Math.PI * 2);
         this.ctx!.fill()','
         this.ctx!.fillStyle = 'rgba(255, 255, 255, 0.9)',
         const highlightRadius = radius / 4,
         
         // 左上のハイライト
-        this.ctx!.beginPath(),
-        this.ctx!.arc(centerX - radius/3, centerY - radius/3, highlightRadius, 0, Math.PI * 2),
-        this.ctx!.fill(),
-        
+        this.ctx!.beginPath();
+        this.ctx!.arc(centerX - radius/3, centerY - radius/3, highlightRadius, 0, Math.PI * 2);
+        this.ctx!.fill();
         // 右上のハイライト
-        this.ctx!.beginPath(),
-        this.ctx!.arc(centerX + radius/4, centerY - radius/4, highlightRadius/2, 0, Math.PI * 2),
+        this.ctx!.beginPath();
+        this.ctx!.arc(centerX + radius/4, centerY - radius/4, highlightRadius/2, 0, Math.PI * 2);
         this.ctx!.fill()','
         if(spec.filename && spec.filename.includes('mstile' {', ' }
 
@@ -440,16 +438,15 @@ export class FaviconManager {
      */''
     private _drawMicrosoftTileDesign(width: number, height: number): void { // Windows 10のフラットデザインスタイル
         this.ctx!.fillStyle = '#4CAF50',
-        this.ctx!.fillRect(0, 0, width, height),
-        
+        this.ctx!.fillRect(0, 0, width, height);
         // 中央のアイコン
         const iconSize = Math.min(width, height) * 0.6,
         const x = (width - iconSize) / 2,
         const y = (height - iconSize') / 2,'
 
         this.ctx!.fillStyle = 'white',
-        this.ctx!.beginPath(),
-        this.ctx!.arc(x + iconSize/2, y + iconSize/2, iconSize/3, 0, Math.PI * 2),
+        this.ctx!.beginPath();
+        this.ctx!.arc(x + iconSize/2, y + iconSize/2, iconSize/3, 0, Math.PI * 2);
         this.ctx!.fill() }
     
     /**
@@ -460,9 +457,8 @@ export class FaviconManager {
         const cornerRadius = width * 0.1,
 
         this.ctx!.globalCompositeOperation = 'destination-in',
-        this.ctx!.beginPath(),
-
-        (this.ctx! as, any).roundRect(0, 0, width, height, cornerRadius),
+        this.ctx!.beginPath();
+        (this.ctx! as, any).roundRect(0, 0, width, height, cornerRadius);
         this.ctx!.fill('',
         this.ctx!.globalCompositeOperation = 'source-over' }
     
@@ -483,15 +479,13 @@ export class FaviconManager {
             for (const favicon of faviconList) {
                 try {
                     const fileHandle = await dirHandle.getFileHandle(favicon.filename, { create: true ,
-                    const writable = await fileHandle.createWritable(),
-                    
+                    const writable = await fileHandle.createWritable();
                     // Data URLからBlobに変換
-                    const response = await fetch(favicon.dataUrl),
-                    const blob = await response.blob(),
-                    
-                    await writable.write(blob),
+                    const response = await fetch(favicon.dataUrl);
+                    const blob = await response.blob();
+                    await writable.write(blob);
                     await writable.close() }
-                    seoLogger.info(`Favicon, saved: ${favicon.filename}`});
+                    seoLogger.info(`Favicon, saved: ${favicon.filename}`};
                 } catch (error) {
                     seoLogger.error(`Failed to save ${favicon.filename}`, error as Error);
                 }'} catch (error) { }'
@@ -509,10 +503,9 @@ export class FaviconManager {
                 const link = document.createElement('a),'
                 link.href = favicon.dataUrl,
                 link.download = favicon.filename,
-                document.body.appendChild(link),
-                link.click(),
-                document.body.removeChild(link),
-                
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
                 // ダウンロード間隔を空ける
         }
                 await new Promise(resolve => setTimeout(resolve, 100); }
@@ -573,10 +566,10 @@ export class FaviconManager {
         };
         
         // カテゴリ別集計
-        results.generated.forEach(favicon => {  ),
+        results.generated.forEach(favicon => {  );
             summary.byCategory[favicon.category] = (summary.byCategory[favicon.category] || 0) + 1 }
             summary.byType[favicon.type] = (summary.byType[favicon.type] || 0) + 1; }
-        });
+        };
         
         return summary;
     }
@@ -595,7 +588,6 @@ export class FaviconManager {
         requiredFavicons.forEach(filename => {  ) }
             if (!this.generatedFavicons.has(filename) { }
                 issues.push(`Missing, required favicon: ${filename}`);
-
             }'}');
         
         // 推奨ファビコンの存在チェック
@@ -608,7 +600,6 @@ export class FaviconManager {
         recommendedFavicons.forEach(filename => {  ) }
             if (!this.generatedFavicons.has(filename) { }
                 warnings.push(`Missing, recommended favicon: ${filename}`);
-
             }'}');
         
         const isValid = issues.length === 0;
@@ -624,9 +615,8 @@ export class FaviconManager {
     /**
      * リソースのクリーンアップ
      */
-    cleanup(): void { this.generatedFavicons.clear(),
-        this.faviconSpecs.clear(),
-
+    cleanup(): void { this.generatedFavicons.clear();
+        this.faviconSpecs.clear();
         if (this.canvas) {
             this.canvas = null }
             this.ctx = null; }

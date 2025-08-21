@@ -45,12 +45,12 @@ describe('Bubble Class Tests', () => {
             shadowBlur: 0,
             shadowOffsetX: 0,
             shadowOffsetY: 0
-    });
+    };
         // Mock GameEngine
         mockGameEngine = {
             canvas: { width: 800, height: 600 ','
             ctx: mockContext,
-            currentStage: { name: 'normal' };
+            currentStage: { name: 'normal' },
             getInputManager: jest.fn(() => ({
                 isMousePressed: jest.fn(() => false),
                 getMousePosition: jest.fn(() => ({ x: 0, y: 0 ))))
@@ -60,7 +60,7 @@ describe('Bubble Class Tests', () => {
     describe('Constructor and Basic Properties', (') => {'
         test('should create bubble with correct initial properties', () => {
             // Bubble constructor expects (type, position}');'
-            const position: Position = { x: 100, y: 100 };
+            const position: Position = { x: 100, y: 100 },
             const bubble = new Bubble('normal', position);
             expect(bubble.type').toBe('normal');'
             expect(bubble.position.x).toBe(100);
@@ -69,7 +69,7 @@ describe('Bubble Class Tests', () => {
             expect(bubble.age).toBe(0);
         }');'
         test('should initialize with type-specific configuration', (') => {'
-            const position: Position = { x: 100, y: 100 };
+            const position: Position = { x: 100, y: 100 },
             const normalBubble = new Bubble('normal', position);
             const config: BubbleConfig = normalBubble.getTypeConfig(
             // 基本プロパティの存在確認
@@ -86,7 +86,7 @@ describe('Bubble Class Tests', () => {
     }
     describe('Configuration Values (Based on Current GameBalance.js')', (') => {
         test('normal bubble should have correct configuration', (') => {'
-            const position: Position = { x: 100, y: 100 };
+            const position: Position = { x: 100, y: 100 },
             const bubble = new Bubble('normal', position);
             const config = bubble.getTypeConfig();
             expect(config.health).toBe(1);
@@ -95,7 +95,7 @@ describe('Bubble Class Tests', () => {
             expect(config.maxAge).toBe(12000); // Updated from implementation
         }');'
         test('stone bubble should have correct configuration', (') => {'
-            const position: Position = { x: 100, y: 100 };
+            const position: Position = { x: 100, y: 100 },
             const bubble = new Bubble('stone', position);
             const config = bubble.getTypeConfig();
             expect(config.health).toBe(2);
@@ -103,7 +103,7 @@ describe('Bubble Class Tests', () => {
             expect(config.size).toBe(55);
         }');'
         test('boss bubble should have correct configuration', (') => {'
-            const position: Position = { x: 100, y: 100 };
+            const position: Position = { x: 100, y: 100 },
             const bubble = new Bubble('boss', position);
             const config = bubble.getTypeConfig();
             expect(config.health).toBe(8); // From hardcoded implementation
@@ -111,7 +111,7 @@ describe('Bubble Class Tests', () => {
             expect(config.size).toBe(90); // From hardcoded implementation
         }');'
         test('pink bubble should have healing properties', (') => {'
-            const position: Position = { x: 100, y: 100 };
+            const position: Position = { x: 100, y: 100 },
             const bubble = new Bubble('pink', position);
             const config = bubble.getTypeConfig();
             expect(config.score).toBe(20); // From hardcoded config
@@ -119,7 +119,7 @@ describe('Bubble Class Tests', () => {
             expect(config.color').toBe('#FFB6C1');'
         }');'
         test('electric bubble should have special effects', (') => {'
-            const position: Position = { x: 100, y: 100 };
+            const position: Position = { x: 100, y: 100 },
             const bubble = new Bubble('electric', position);
             const config = bubble.getTypeConfig();
             expect(config.shakeIntensity).toBeDefined();
@@ -127,7 +127,7 @@ describe('Bubble Class Tests', () => {
             expect(config.disableDuration).toBe(1500); // From hardcoded config
         }');'
         test('rainbow bubble should have special effects', (') => {'
-            const position: Position = { x: 100, y: 100 };
+            const position: Position = { x: 100, y: 100 },
             const bubble = new Bubble('rainbow', position);
             const config = bubble.getTypeConfig();
             expect(config.bonusTimeMs).toBeDefined();
@@ -136,7 +136,7 @@ describe('Bubble Class Tests', () => {
     }
     describe('Bubble Behavior', (') => {'
         test('should age correctly over time', (') => {'
-            const position: Position = { x: 100, y: 100 };
+            const position: Position = { x: 100, y: 100 },
             const bubble = new Bubble('normal', position);
             const initialAge = bubble.age;
             
@@ -144,7 +144,7 @@ describe('Bubble Class Tests', () => {
             expect(bubble.age).toBeGreaterThan(initialAge);
         }');'
         test('should handle damage correctly', (') => {'
-            const position: Position = { x: 100, y: 100 };
+            const position: Position = { x: 100, y: 100 },
             const bubble = new Bubble('normal', position);
             const initialHealth = bubble.health;
             
@@ -154,9 +154,9 @@ describe('Bubble Class Tests', () => {
             expect(bubble.isAlive).toBe(false);
         }');'
         test('should handle boundary collision', (') => {'
-            const position: Position = { x: 10, y: 10 };
+            const position: Position = { x: 10, y: 10 },
             const bubble = new Bubble('normal', position);
-            bubble.velocity = { x: -100, y: -100 };
+            bubble.velocity = { x: -100, y: -100 },
             
             bubble.handleBoundaryCollision();
             // Should bounce off boundaries
@@ -164,9 +164,9 @@ describe('Bubble Class Tests', () => {
             expect(bubble.velocity.y).toBeGreaterThanOrEqual(0);
         }');'
         test('escaping bubble should flee from mouse', (') => {'
-            const position: Position = { x: 100, y: 100 };
+            const position: Position = { x: 100, y: 100 },
             const bubble = new Bubble('escaping', position);
-            const mousePosition: Position = { x: 110, y: 110 };
+            const mousePosition: Position = { x: 110, y: 110 },
             
             bubble.handleEscapingBehavior(mousePosition, 16.67);
             // Should move away from mouse
@@ -176,7 +176,7 @@ describe('Bubble Class Tests', () => {
     }
     describe('Special Effects', (') => {'
         test('should trigger heal effect for pink bubble', (') => {'
-            const position: Position = { x: 100, y: 100 };
+            const position: Position = { x: 100, y: 100 },
             const bubble = new Bubble('pink', position);
             bubble.destroy();
             const effects = bubble.getAndClearEffects();
@@ -185,7 +185,7 @@ describe('Bubble Class Tests', () => {
             expect(effects[0].amount).toBe(25);
         }');'
         test('should trigger chain destroy effect for spiky bubble', (') => {'
-            const position: Position = { x: 100, y: 100 };
+            const position: Position = { x: 100, y: 100 },
             const bubble = new Bubble('spiky', position);
             bubble.destroy();
             const effects = bubble.getAndClearEffects();
@@ -194,7 +194,7 @@ describe('Bubble Class Tests', () => {
             expect(effects[0].radius).toBe(120);
         }');'
         test('should trigger time stop effect for clock bubble', (') => {'
-            const position: Position = { x: 100, y: 100 };
+            const position: Position = { x: 100, y: 100 },
             const bubble = new Bubble('clock', position);
             bubble.destroy();
             const effects = bubble.getAndClearEffects();
@@ -205,7 +205,7 @@ describe('Bubble Class Tests', () => {
     }
     describe('Rendering', (') => {'
         test('should render bubble correctly', (') => {'
-            const position: Position = { x: 100, y: 100 };
+            const position: Position = { x: 100, y: 100 },
             const bubble = new Bubble('normal', position);
             bubble.render(mockContext as CanvasRenderingContext2D);
             expect(mockContext.save).toHaveBeenCalled();
@@ -215,13 +215,13 @@ describe('Bubble Class Tests', () => {
             expect(mockContext.restore).toHaveBeenCalled();
         }');'
         test('should render special icon for special bubbles', (') => {'
-            const position: Position = { x: 100, y: 100 };
+            const position: Position = { x: 100, y: 100 },
             const bubble = new Bubble('pink', position);
             bubble.render(mockContext as CanvasRenderingContext2D);
             expect(mockContext.fillText').toHaveBeenCalledWith('♥', 100, 95);'
         }');'
         test('should display health for hard bubbles', (') => {'
-            const position: Position = { x: 100, y: 100 };
+            const position: Position = { x: 100, y: 100 },
             const bubble = new Bubble('stone', position);
             bubble.render(mockContext as CanvasRenderingContext2D);
             expect(mockContext.fillText').toHaveBeenCalledWith('2', 100, 100);'
@@ -229,13 +229,13 @@ describe('Bubble Class Tests', () => {
     }
     describe('Score Calculation', (') => {'
         test('should calculate base score correctly', (') => {'
-            const position: Position = { x: 100, y: 100 };
+            const position: Position = { x: 100, y: 100 },
             const bubble = new Bubble('normal', position);
             const score = bubble.getScore();
             expect(score).toBe(15);
         }');'
         test('should apply early pop bonus', (') => {'
-            const position: Position = { x: 100, y: 100 };
+            const position: Position = { x: 100, y: 100 },
             const bubble = new Bubble('normal', position);
             bubble.age = 100; // Very young
             
@@ -243,7 +243,7 @@ describe('Bubble Class Tests', () => {
             expect(score).toBe(30); // 2x bonus
         }');'
         test('should apply late pop bonus', (') => {'
-            const position: Position = { x: 100, y: 100 };
+            const position: Position = { x: 100, y: 100 },
             const bubble = new Bubble('normal', position);
             bubble.age = bubble.maxAge * 0.95; // Almost burst
             
@@ -260,7 +260,7 @@ describe('Bubble Class Tests', () => {
         ],
         
         test.each(bubbleTypes')('%s bubble should have valid configuration', (type) => {'
-            const position: Position = { x: 100, y: 100 };
+            const position: Position = { x: 100, y: 100 },
             const bubble = new Bubble(type, position);
             const config = bubble.getTypeConfig();
             expect(config.health).toBeGreaterThan(0);
@@ -268,6 +268,6 @@ describe('Bubble Class Tests', () => {
             expect(config.score).toBeGreaterThan(0);
             expect(config.maxAge).toBeGreaterThan(0);
             expect(config.color).toBeTruthy();
-        });
+        };
     }
 }');'

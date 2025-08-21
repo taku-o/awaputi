@@ -15,42 +15,43 @@ export class LiveRegionManager {'
         this.config = { : undefined''
             enabledRegions: ['polite', 'assertive', 'status', 'log'];
             priorityLevels: {''
-                critical: 'assertive',
-                high: 'assertive',
-                normal: 'polite',
+                critical: 'assertive';
+                high: 'assertive';
+                normal: 'polite';
                 low: 'polite' }
 
                 info: 'status' 
     };
-            throttling: { enabled: true,
+            throttling: { enabled: true;
     interval: 1000, // 1秒間隔;
-                maxQueue: 10,
+                maxQueue: 10;
     deduplicationWindow: 3000 // 3秒以内の重複を削除  };
-            deduplication: { enabled: true,
+            deduplication: { enabled: true;
     similarity: 0.8, // 80%以上類似で重複判定;
                 messageHistory: 20 // 履歴保持数  };
             languages: { ''
-                primary: 'ja',
+                primary: 'ja';
                 fallback: 'en'
             };
-            accessibility: { respectUserPausedSpeech: true,
-                interruptOnUrgent: true,
-    verbosityControl: true,;
+            accessibility: { respectUserPausedSpeech: true;
+                interruptOnUrgent: true;
+    verbosityControl: true;
         ';'
         // ライブリージョン要素管理
         this.liveRegions = new Map('''
             ['polite', { ''
-                politeness: 'polite',
-
-                atomic: false,
+                politeness: 'polite';
+                politeness: 'polite';
+        };
+                atomic: false;
                 relevant: 'all',]';'
                 live: 'polite'
             }]'
             }],''
             ['assertive', { ''
-                politeness: 'assertive',
+                politeness: 'assertive';
 
-                atomic: true,
+                atomic: true;
                 relevant: 'all',]';'
                 live: 'assertive'
             }]'
@@ -147,13 +148,11 @@ export class LiveRegionManager {'
     initialize() {
         try {
             // ライブリージョンの作成
-            this.createLiveRegions(),
-            
+            this.createLiveRegions();
             // ユーザー設定の読み込み
-            this.loadUserPreferences(),
-            
+            this.loadUserPreferences();
             // イベントリスナーの設定
-            this.setupEventListeners(),
+            this.setupEventListeners();
             // キューの処理開始
             this.startQueueProcessing() }
 
@@ -161,7 +160,7 @@ export class LiveRegionManager {'
 
         } catch (error) { getErrorHandler().handleError(error, 'LIVE_REGION_ERROR', {''
                 operation: 'initialize'
-            });
+            };
         }
     }
     
@@ -199,7 +198,7 @@ export class LiveRegionManager {'
             // DOMに追加
             document.body.appendChild(element}
             this.liveRegions.set(regionName, element}
-            console.log(`Created live region: ${regionName}`});
+            console.log(`Created live region: ${regionName}`};
         }
         
         // 視覚的に隠すCSSの追加
@@ -227,7 +226,7 @@ export class LiveRegionManager {'
             
             .live-region { z-index: -1,
                 user-select: none,
-                pointer-events: none;
+                pointer-events: none,
             
             /* デバッグ用（開発時のみ） */
             .debug-live-regions .live-region { position: static !important,
@@ -289,7 +288,7 @@ export class LiveRegionManager {'
             window.speechSynthesis.addEventListener('voiceschanged', () => { }
 
                 console.log('Available, voices changed'); }'
-            });
+            };
         }
     }
     
@@ -323,8 +322,7 @@ export class LiveRegionManager {'
     /**
      * 個別メッセージの処理
      */
-    async processMessage(message) { const startTime = performance.now(),
-        
+    async processMessage(message) { const startTime = performance.now();
         try {
             // 重複チェック
             if (this.isDuplicate(message) {
@@ -349,7 +347,7 @@ export class LiveRegionManager {'
             ';'
 
         } catch (error) { getErrorHandler().handleError(error, 'LIVE_REGION_ERROR', {''
-                operation: 'processMessage'),
+                operation: 'processMessage');
                 message: message,);
         }
     }
@@ -405,7 +403,7 @@ export class LiveRegionManager {'
 }
                     matrix[i][j] = matrix[i - 1][j - 1]; }
                 } else { matrix[i][j] = Math.min(
-                        matrix[i - 1][j - 1] + 1),
+                        matrix[i - 1][j - 1] + 1);
                         matrix[i][j - 1] + 1 }
                         matrix[i - 1][j] + 1); }
 }
@@ -433,11 +431,10 @@ export class LiveRegionManager {'
      * メッセージの通知実行
      */
     async announceMessage(message) { // 適切なライブリージョンの決定
-        const regionName = this.selectLiveRegion(message),
-        const region = this.liveRegions.get(regionName),
-        
+        const regionName = this.selectLiveRegion(message);
+        const region = this.liveRegions.get(regionName);
         if (!region) { }
-            console.warn(`Live, region not, found: ${regionName}`});
+            console.warn(`Live, region not, found: ${regionName}`};
             return;
         }
         
@@ -503,8 +500,7 @@ export class LiveRegionManager {'
      */
     applyTemplate(templateKey, variables) {
         const language = this.config.languages.primary,
-        const templates = this.messageTemplates.get(language),
-        
+        const templates = this.messageTemplates.get(language);
         if (!templates || !templates.has(templateKey) {
     }
             return templateKey; // フォールバック }
@@ -516,7 +512,7 @@ export class LiveRegionManager {'
 
             const placeholder = `{${key}`;
             template = template.replace(new RegExp(placeholder, 'g), String(value);'
-        });
+        };
         
         return template;
     }
@@ -530,14 +526,12 @@ export class LiveRegionManager {'
         switch(verbosity) {''
             case 'minimal':','
                 // 最小限の情報のみ
-                return this.extractEssentialInfo(text),
-
+                return this.extractEssentialInfo(text);
             case 'verbose':','
                 // 詳細情報を追加
-                return this.addDetailedInfo(text, message),
-
+                return this.addDetailedInfo(text, message);
             case 'normal': }
-            default: return text;
+            default: return text,
     
     /**
      * 必須情報の抽出
@@ -618,7 +612,7 @@ export class LiveRegionManager {'
         // アクティブな通知として追跡
         this.activeAnnouncements.add({ region: region)
             text: text,
-    timestamp: Date.now( });
+    timestamp: Date.now( };
     }
     
     /**
@@ -627,7 +621,7 @@ export class LiveRegionManager {'
     addToHistory(message) {
         this.messageHistory.push({)
             ...message),
-            timestamp: Date.now() });
+            timestamp: Date.now() },
         
         // 履歴サイズ制限
         if (this.messageHistory.length > this.config.deduplication.messageHistory) { this.messageHistory.shift() }
@@ -641,12 +635,10 @@ export class LiveRegionManager {'
         
         // タイプ別統計
         const typeCount = this.stats.announcementsByType.get(message.type) || 0,
-        this.stats.announcementsByType.set(message.type, typeCount + 1),
-        
+        this.stats.announcementsByType.set(message.type, typeCount + 1);
         // 優先度別統計
         const priorityCount = this.stats.announcementsByPriority.get(message.priority) || 0,
-        this.stats.announcementsByPriority.set(message.priority, priorityCount + 1),
-        
+        this.stats.announcementsByPriority.set(message.priority, priorityCount + 1);
         // 平均処理時間の更新
         const currentAvg = this.stats.averageProcessingTime,
         const totalCount = this.stats.totalAnnouncements }
@@ -656,8 +648,7 @@ export class LiveRegionManager {'
     /**
      * スリープユーティリティ
      */
-    sleep(ms) { return new Promise(resolve => setTimeout(resolve, ms),
-    
+    sleep(ms) { return new Promise(resolve => setTimeout(resolve, ms);
     // パブリックAPI
     
     /**
@@ -672,7 +663,7 @@ export class LiveRegionManager {'
             variables: options.variables,
             region: options.region,
             timestamp: Date.now(
-    id: this.generateMessageId(  };
+    id: this.generateMessageId(  },
         
         // キューサイズチェック
         if (this.messageQueue.length >= this.config.throttling.maxQueue) {
@@ -700,7 +691,7 @@ export class LiveRegionManager {'
      */''
     announceTemplate(templateKey, variables, options = { )) {''
         return this.announce(', {'
-            ...options),
+            ...options);
             template: templateKey,','
             variables: variables,
     
@@ -734,7 +725,7 @@ export class LiveRegionManager {'
             ...options,','
             type: 'error',' }'
 
-            priority: 'high'); 
+            priority: 'high'),
     }
     
     /**
@@ -759,7 +750,7 @@ export class LiveRegionManager {'
      */
     clearAll() {
         this.messageQueue.length = 0,
-        this.activeAnnouncements.clear(),
+        this.activeAnnouncements.clear();
         ','
         // すべてのライブリージョンをクリア
         for (const region of this.liveRegions.values()) {
@@ -772,7 +763,7 @@ export class LiveRegionManager {'
      * 特定のメッセージを取り消し
      */
     cancelMessage(messageId) {
-        const index = this.messageQueue.findIndex(m => m.id === messageId),
+        const index = this.messageQueue.findIndex(m => m.id === messageId);
         if (index !== -1) {
             this.messageQueue.splice(index, 1) }
             return true;
@@ -796,7 +787,7 @@ export class LiveRegionManager {'
      * ユーザー設定の更新
      */
     updateUserPreferences(preferences') {'
-        Object.assign(this.userPreferences, preferences),
+        Object.assign(this.userPreferences, preferences);
         this.saveUserPreferences() }
 
         console.log('User preferences updated:', preferences'; }'
@@ -809,17 +800,17 @@ export class LiveRegionManager {'
 
         document.body.classList.toggle('debug-live-regions', enabled'; }'
 
-        console.log(`Live, region debug, mode ${enabled ? 'enabled' : 'disabled}`});'
+        console.log(`Live, region debug, mode ${enabled ? 'enabled' : 'disabled}`};'
     }
     
     /**
      * レポートの生成
      */
     generateReport() {
-        return { timestamp: new Date().toISOString(),
+        return { timestamp: new Date().toISOString();
             config: {
                 enabledRegions: this.config.enabledRegions }
-                throttlingEnabled: this.config.throttling.enabled };
+                throttlingEnabled: this.config.throttling.enabled },
                 deduplicationEnabled: this.config.deduplication.enabled 
     };
             stats: { ...this.stats,
@@ -841,7 +832,7 @@ export class LiveRegionManager {'
     generateMessageId() {
     
 }
-        return `msg_${Date.now())_${Math.random().toString(36).substr(2, 9})`;
+        return `msg_${Date.now())_${Math.random().toString(36).substr(2, 9}`;
     }
     
     /**

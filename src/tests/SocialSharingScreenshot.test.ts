@@ -3,14 +3,14 @@
  */
 import { jest  } from '@jest/globals';
 // Mock interfaces
-interface MockCanvasContext { drawImage: jest.Mock,
+interface MockCanvasContext { drawImage: jest.Mock;
     imageSmoothingEnabled: boolean;
-interface MockCanvas { width: number,
+interface MockCanvas { width: number;
     height: number;
     getContext: jest.Mock<MockCanvasContext>;
     toBlob: jest.Mock;
     remove: jest.Mock }
-interface ScreenshotResult { data: ArrayBuffer,
+interface ScreenshotResult { data: ArrayBuffer;
     blob: Blob;
     url: string;
     format: string;
@@ -19,28 +19,28 @@ interface ScreenshotResult { data: ArrayBuffer,
     height: number;
     filename: string;
     optimized: boolean;
-interface CaptureOptions { format: string,
+interface CaptureOptions { format: string;
     quality: string;
     optimize?: boolean;
     maxWidth?: number;
     maxHeight?: number;
-interface ScreenshotStats { captures: number,
+interface ScreenshotStats { captures: number;
     successes: number;
     errors: number;
     successRate: number;
-interface MockScreenshotCapture { captureGameCanvas: jest.Mock<Promise<ScreenshotResult>>,
+interface MockScreenshotCapture { captureGameCanvas: jest.Mock<Promise<ScreenshotResult>>;
     captureRegion: jest.Mock<Promise<ScreenshotResult>>;
     generateFilename: jest.Mock<string>;
     getStats: jest.Mock<ScreenshotStats>;
     isWebPSupported: jest.Mock<boolean>;
     config: {
-        maxWidt,h: number,
-    maxHeight: number,
+        maxWidt,h: number;
+    maxHeight: number;
 interface MockStatisticsManager { recordSocialEvent: jest.Mock }
-interface MockLocalizationManager { getCurrentLanguage: jest.Mock<string>,
+interface MockLocalizationManager { getCurrentLanguage: jest.Mock<string>;
     translate: jest.Mock<string>  }
 interface MockSeoMetaManager { updateOpenGraphTags: jest.Mock }
-interface MockGameEngine { canvas: MockCanvas,
+interface MockGameEngine { canvas: MockCanvas;
     statisticsManager: MockStatisticsManager;
     localizationManager: MockLocalizationManager;
     seoMetaManager: MockSeoMetaManager;
@@ -48,7 +48,7 @@ interface MockGameEngine { canvas: MockCanvas,
     off: jest.Mock;
     emit: jest.Mock;
     isDebugMode: jest.Mock<boolean> }
-interface ShareData { type: string,
+interface ShareData { type: string;
     score?: number;
     text?: string;
     name?: string;
@@ -62,19 +62,19 @@ interface ShareOptions { imageFormat?: string,
     maxHeight?: number;
     platform?: string;
     fallback?: boolean;
-interface ShareResult { success: boolean,
+interface ShareResult { success: boolean;
     screenshot?: ScreenshotResult;
     platform?: string;
     method?: string;
     hasScreenshot?: boolean;
     error?: string;
-interface ScreenshotCapabilities { available: boolean,
+interface ScreenshotCapabilities { available: boolean;
     formats: string[];
     optimization: boolean;
     maxDimensions: {
-        widt,h: number,
-    height: number,;
-    webShareFiles: boolean,
+        widt,h: number;
+    height: number;
+    webShareFiles: boolean;
 }
 interface PerformanceStats { screenshotShare?: number,
     [key: string]: number | undefined }
@@ -83,7 +83,7 @@ interface MockNavigator { share?: jest.Mock<Promise<void>>,
     onLine: boolean;
     userAgent: string;
     language: string;
-interface SocialSharingManagerInstance { screenshotCapture: MockScreenshotCapture | null,
+interface SocialSharingManagerInstance { screenshotCapture: MockScreenshotCapture | null;
     share?: jest.Mock<Promise<ShareResult>>;
     shareWithScreenshot(data: ShareData, options?: ShareOptions): Promise<ShareResult>;
     shareRegionScreenshot(x: number, y: number, width: number, height: number, data: ShareData): Promise<ShareResult>;
@@ -113,10 +113,10 @@ describe('SocialSharing Screenshot Integration', () => {  let socialSharingManag
                 imageSmoothingEnabled: true,),''
             toBlob: jest.fn().mockImplementation((callback: (blob: Blob | null) => void, type?: string') => { }'
 
-                const mockBlob = new Blob(['mock-image], { type: type || 'image/png' }';
-                Object.defineProperty(mockBlob, 'size', { value: 1024 * 100 }); // 100KB
+                const mockBlob = new Blob(['mock-image], { type: type || 'image/png' }',
+                Object.defineProperty(mockBlob, 'size', { value: 1024 * 100 }, // 100KB
                 callback(mockBlob);
-            }),
+            },
         remove: jest.fn();
         };
         
@@ -171,7 +171,7 @@ describe('SocialSharing Screenshot Integration', () => {  let socialSharingManag
         // グローバルAPIのモック
         (global, as any).URL = { ''
             createObjectURL: jest.fn().mockReturnValue('blob:mock-url',
-    revokeObjectURL: jest.fn( };
+    revokeObjectURL: jest.fn( },
         ';'
 
         (global, as any).navigator = { share: jest.fn().mockResolvedValue(true),''
@@ -183,7 +183,7 @@ describe('SocialSharing Screenshot Integration', () => {  let socialSharingManag
         Object.defineProperty(window, 'location', { value: {''
                 origin: 'https://test.example.com',
                 pathname: '/game',
-                href: 'https://test.example.com/game  }),''
+                href: 'https://test.example.com/game  },''
             writable: true),
         window.open = jest.fn().mockReturnValue({ )
             closed: false,
@@ -198,7 +198,7 @@ describe('SocialSharing Screenshot Integration', () => {  let socialSharingManag
         socialSharingManager.screenshotCapture = mockScreenshotCapture;
         
         await socialSharingManager.initialize();
-    });
+    };
     afterEach(() => {  jest.clearAllMocks() }
         socialSharingManager.cleanup();' }'
 
@@ -220,7 +220,7 @@ describe('SocialSharing Screenshot Integration', () => {  let socialSharingManag
                     quality: 'high'),
                     optimize: true)),
 
-            expect(result.success).toBe(true),
+            expect(result.success).toBe(true);
             expect(result.screenshot).toHaveProperty('format', 'png',
             expect(result.screenshot).toHaveProperty('size', 1024 * 100',' }
 
@@ -234,7 +234,7 @@ describe('SocialSharing Screenshot Integration', () => {  let socialSharingManag
                 imageFormat: 'jpeg',
                 imageQuality: 'medium',
                 maxWidth: 800,
-    maxHeight: 400  };
+    maxHeight: 400  },
             ';'
 
             await socialSharingManager.shareWithScreenshot(shareData, options);
@@ -258,7 +258,7 @@ describe('SocialSharing Screenshot Integration', () => {  let socialSharingManag
 
             expect(result.hasScreenshot).toBe(true);
             expect(window.open).toHaveBeenCalledWith()';'
-                expect.stringContaining('twitter.com/intent/tweet'),
+                expect.stringContaining('twitter.com/intent/tweet');
                 'twitter-share',
                 expect.any(String);'}');
         test('プラットフォーム別スクリーンショット共有（Facebook）', async () => { }
@@ -286,7 +286,7 @@ describe('SocialSharing Screenshot Integration', () => {  let socialSharingManag
                 expect.objectContaining({ )
                     files: expect.arrayContaining([)],
                         expect.any(File)],
-                    ]) });
+                    ]) };
 
             );'}');
 
@@ -305,7 +305,7 @@ describe('SocialSharing Screenshot Integration', () => {  let socialSharingManag
                     format: 'png',')',
                     quality: 'high')),
 
-            expect(result.success).toBe(true),
+            expect(result.success).toBe(true);
             expect(result.screenshot).toHaveProperty('format', 'png',' }'
 
         }');'
@@ -322,13 +322,12 @@ describe('SocialSharing Screenshot Integration', () => {  let socialSharingManag
     }''
     describe('スクリーンショット機能の状態確認', () => {  ''
         test('スクリーンショット機能の対応状況確認', () => {
-            const capabilities = socialSharingManager.getScreenshotCapabilities(),
-
-            expect(capabilities.available).toBe(true),
+            const capabilities = socialSharingManager.getScreenshotCapabilities();
+            expect(capabilities.available).toBe(true);
             expect(capabilities.formats).toContain('png',
             expect(capabilities.formats).toContain('jpeg),'
 
-            expect(capabilities.optimization).toBe(true),
+            expect(capabilities.optimization).toBe(true);
             expect(capabilities.maxDimensions).toHaveProperty('width', 1200',' }
 
             expect(capabilities.maxDimensions).toHaveProperty('height', 630'; }'
@@ -344,13 +343,13 @@ describe('SocialSharing Screenshot Integration', () => {  let socialSharingManag
             expect(capabilities.webShareFiles).toBe(true);' }'
 
         }');'
-        test('スクリーンショット統計の取得', () => { const stats = socialSharingManager.getScreenshotStats(),
+        test('スクリーンショット統計の取得', () => { const stats = socialSharingManager.getScreenshotStats();
             expect(stats).toEqual({
                 captures: 5),
                 successes: 4,
     errors: 1 }
                 successRate: 80); 
-    });
+    };
 
         }'}');
     describe('エラーハンドリングとフォールバック', () => {  ''
@@ -372,7 +371,7 @@ describe('SocialSharing Screenshot Integration', () => {  let socialSharingManag
                 expect.objectContaining({ fallback: true )
             ),
 
-            expect(result.success).toBe(true),
+            expect(result.success).toBe(true);
             expect(result.method).toBe('fallback',' }'
 
         }');'
@@ -401,7 +400,7 @@ describe('SocialSharing Screenshot Integration', () => {  let socialSharingManag
 
                 .rejects.toThrow('Web, Share APIがサポートされていません';}');'
         test('ユーザーキャンセル時の適切な処理', async () => {  ''
-            const abortError = new Error('User, cancelled'),
+            const abortError = new Error('User, cancelled');
             abortError.name = 'AbortError',' }'
 
             (navigator, as MockNavigator).share = jest.fn().mockRejectedValue(abortError);' }'
@@ -426,7 +425,7 @@ describe('SocialSharing Screenshot Integration', () => {  let socialSharingManag
                     format: 'png),'
                     size: 1024 * 100,
     optimized: false),
-        captureTime: expect.any(Number  });
+        captureTime: expect.any(Number  };
     }
 
             );'}');
@@ -436,8 +435,7 @@ describe('SocialSharing Screenshot Integration', () => {  let socialSharingManag
 
             await socialSharingManager.shareScreenshotViaTwitter({ ...shareData }
 
-                screenshot: { format: 'png', size: 1024 * 100  });
-
+                screenshot: { format: 'png', size: 1024 * 100  };
             }';'
             expect(mockGameEngine.statisticsManager.recordSocialEvent).toHaveBeenCalledWith()';'
                 'twitterScreenshotShare')';'
@@ -454,8 +452,7 @@ describe('SocialSharing Screenshot Integration', () => {  let socialSharingManag
 
             await socialSharingManager.shareScreenshotViaFacebook({ ...shareData }
 
-                screenshot: { format: 'jpeg', size: 1024 * 80  });
-
+                screenshot: { format: 'jpeg', size: 1024 * 80  };
             }';'
             expect(mockGameEngine.statisticsManager.recordSocialEvent).toHaveBeenCalledWith()';'
                 'facebookScreenshotShare')';'
@@ -470,7 +467,7 @@ describe('SocialSharing Screenshot Integration', () => {  let socialSharingManag
 
                 name: 'デイリー',' }'
 
-                screenshot: { format: 'webp', size: 1024 * 60, blob: new Blob(  };
+                screenshot: { format: 'webp', size: 1024 * 60, blob: new Blob(  },
             ';'
 
             await socialSharingManager.shareScreenshotViaWebAPI(shareData);
@@ -501,6 +498,6 @@ describe('SocialSharing Screenshot Integration', () => {  let socialSharingManag
             await socialSharingManager.shareWithScreenshot(shareData);
             const stats = socialSharingManager.getPerformanceStats();
             expect(stats.screenshotShare).toBe(3);
-        });
+        };
 
     }'}');

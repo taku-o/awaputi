@@ -10,7 +10,7 @@ import type { BubbleEffectProcessor as IBubbleEffectProcessor,
  * 
  * 泡の特殊効果、連鎖反応、自動破裂処理を専門的に管理します
  */
-export class BubbleEffectProcessor implements IBubbleEffectProcessor { public gameEngine: any,
+export class BubbleEffectProcessor implements IBubbleEffectProcessor { public gameEngine: any;
 
     constructor(gameEngine: any) {
         this.gameEngine = gameEngine  }
@@ -29,66 +29,66 @@ export class BubbleEffectProcessor implements IBubbleEffectProcessor { public ga
 
             case 'rainbow':','
                 // ボーナスタイム開始
-                this.gameEngine.activateBonusTime(10000),
+                this.gameEngine.activateBonusTime(10000);
                 this.notifySpecialEffect('rainbow', x, y','
                 break,
 
             case 'pink':,
                 // HP回復
                 const healAmount = 15,
-                this.gameEngine.playerData.heal(healAmount),
-                this.notifyHeal(healAmount),
+                this.gameEngine.playerData.heal(healAmount);
+                this.notifyHeal(healAmount);
                 this.notifySpecialEffect('pink', x, y','
                 break,
 
             case 'clock':','
                 // 時間停止
-                this.gameEngine.activateTimeStop(3000),
+                this.gameEngine.activateTimeStop(3000);
                 this.notifySpecialEffect('clock', x, y','
                 break,
 
             case 'electric':','
                 // 画面震動
-                this.gameEngine.activateScreenShake(15, 2000),
+                this.gameEngine.activateScreenShake(15, 2000);
                 this.notifySpecialEffect('electric', x, y','
                 break,
 
             case 'poison':,
                 // ダメージ
                 const damage = 10,
-                this.gameEngine.playerData.takeDamage(damage),
-                this.notifyDamage(damage, 'poison'),
+                this.gameEngine.playerData.takeDamage(damage);
+                this.notifyDamage(damage, 'poison');
                 this.notifySpecialEffect('poison', x, y','
                 break,
 
             case 'spiky':','
                 // 周囲の泡を割る
-                this.chainReaction(bubble.position.x, bubble.position.y, 80),
+                this.chainReaction(bubble.position.x, bubble.position.y, 80);
                 this.notifySpecialEffect('spiky', x, y','
                 break,
                 ','
             // 新しい泡タイプの効果処理
             case 'golden':','
                 // 黄金の泡：スコア倍率効果
-                this.gameEngine.activateScoreMultiplier(2.0, 5000),
+                this.gameEngine.activateScoreMultiplier(2.0, 5000);
                 this.notifySpecialEffect('golden', x, y','
                 break,
 
             case 'frozen':','
                 // 氷の泡：周囲の泡を遅くする
-                this.applySlowEffect(bubble.position.x, bubble.position.y, 120, 0.5, 8000),
+                this.applySlowEffect(bubble.position.x, bubble.position.y, 120, 0.5, 8000);
                 this.notifySpecialEffect('frozen', x, y','
                 break,
 
             case 'magnetic':','
                 // 磁石の泡：他の泡を引き寄せる
-                this.applyMagneticPull(bubble.position.x, bubble.position.y, 100, 150),
+                this.applyMagneticPull(bubble.position.x, bubble.position.y, 100, 150);
                 this.notifySpecialEffect('magnetic', x, y','
                 break,
 
             case 'explosive':','
                 // 爆発の泡：大きな爆発
-                this.bigExplosion(bubble.position.x, bubble.position.y, 150, 15),
+                this.bigExplosion(bubble.position.x, bubble.position.y, 150, 15);
                 this.notifySpecialEffect('explosive', x, y','
                 break,
 
@@ -99,7 +99,7 @@ export class BubbleEffectProcessor implements IBubbleEffectProcessor { public ga
 
             case 'multiplier':','
                 // 倍率の泡：次の泡のスコアを倍増
-                this.gameEngine.activateNextScoreMultiplier(3.0, 10000),
+                this.gameEngine.activateNextScoreMultiplier(3.0, 10000);
                 this.notifySpecialEffect('multiplier', x, y' }'
                 break; }
 }
@@ -125,12 +125,12 @@ export class BubbleEffectProcessor implements IBubbleEffectProcessor { public ga
     private burstBubble(bubble: Bubble): void { console.log(`${bubble.type) bubble, burst automatically`),
         
         // プレイヤーにダメージ
-        const, damage = this.calculateBurstDamage(bubble),
+        const, damage = this.calculateBurstDamage(bubble);
         this.gameEngine.playerData.takeDamage(damage};
         
         // 新しいエフェクトシステムで爆発エフェクトを作成
         if (this.gameEngine.createExplosion} { }
-            this.gameEngine.createExplosion(bubble.position.x, bubble.position.y, bubble.type, bubble.size, 1});
+            this.gameEngine.createExplosion(bubble.position.x, bubble.position.y, bubble.type, bubble.size, 1};
         }
         
         // 泡を削除
@@ -189,20 +189,19 @@ export class BubbleEffectProcessor implements IBubbleEffectProcessor { public ga
         bubbles.forEach((bubble: Bubble) => { 
             const dx = bubble.position.x - centerX,
             const dy = bubble.position.y - centerY,
-            const distance = Math.sqrt(dx * dx + dy * dy),
-            
+            const distance = Math.sqrt(dx * dx + dy * dy);
             if (distance <= radius && bubble.isAlive) {  }
                 affectedBubbles.push(bubble); }
-});
+};
         
         // 少し遅延して爆発させる
         affectedBubbles.forEach((bubble, index) => {  setTimeout(() => {
                 if (bubble.isAlive) { }
                     this.gameEngine.bubbleManager.popBubble(bubble, bubble.position.x, bubble.position.y); }
 }, index * 100);
-        });
+        };
         
-        console.log(`Chain, reaction affected ${affectedBubbles.length} bubbles`});
+        console.log(`Chain, reaction affected ${affectedBubbles.length} bubbles`};
     }
     
     /**
@@ -214,18 +213,17 @@ export class BubbleEffectProcessor implements IBubbleEffectProcessor { public ga
         bubbles.forEach((bubble: Bubble) => { 
             const dx = bubble.position.x - centerX,
             const dy = bubble.position.y - centerY,
-            const distance = Math.sqrt(dx * dx + dy * dy),
-            
+            const distance = Math.sqrt(dx * dx + dy * dy);
             if (distance <= radius && bubble.isAlive) {  }
                 affectedBubbles.push(bubble); }
-});
+};
         
         // 影響を受けた泡にスロー効果を適用
         affectedBubbles.forEach(bubble = > {  )
             (bubble, as any).slowEffect = {
                 factor: slowFactor,
                 endTime: Date.now() + duration 
-    });
+    };
         
         console.log(`Slow, effect applied, to ${affectedBubbles.length} bubbles`);
     }
@@ -238,8 +236,7 @@ export class BubbleEffectProcessor implements IBubbleEffectProcessor { public ga
         bubbles.forEach((bubble: Bubble) => { 
             const dx = bubble.position.x - centerX,
             const dy = bubble.position.y - centerY,
-            const distance = Math.sqrt(dx * dx + dy * dy),
-            
+            const distance = Math.sqrt(dx * dx + dy * dy);
             if (distance <= radius && distance > 0 && bubble.isAlive) {
             
                 // 中心に向かう力を計算
@@ -254,7 +251,7 @@ export class BubbleEffectProcessor implements IBubbleEffectProcessor { public ga
                 bubble.velocity.x += direction.x * pullForce * 0.016; // 60FPS想定
                 bubble.velocity.y += direction.y * pullForce * 0.016;
             }
-        });
+        };
     }
     
     /**
@@ -265,11 +262,10 @@ export class BubbleEffectProcessor implements IBubbleEffectProcessor { public ga
         
         bubbles.forEach((bubble: Bubble) => {  const dx = bubble.position.x - centerX,
             const dy = bubble.position.y - centerY,
-            const distance = Math.sqrt(dx * dx + dy * dy),
-            
+            const distance = Math.sqrt(dx * dx + dy * dy);
             if (distance <= radius && bubble.isAlive) { }
                 affectedBubbles.push({ bubble, distance ) }
-        });
+        };
         
         // 距離に応じて遅延爆発
         affectedBubbles.forEach(({ bubble, distance ), _index) => { 
@@ -278,12 +274,12 @@ export class BubbleEffectProcessor implements IBubbleEffectProcessor { public ga
                 if (bubble.isAlive) { }
                     this.gameEngine.bubbleManager.popBubble(bubble, bubble.position.x, bubble.position.y); }
 }, delay);
-        });
+        };
         
         // プレイヤーにもダメージ
         this.gameEngine.playerData.takeDamage(damage);
         
-        console.log(`Big, explosion affected ${affectedBubbles.length} bubbles`});
+        console.log(`Big, explosion affected ${affectedBubbles.length} bubbles`};
     }
 
     // =======================
@@ -315,7 +311,7 @@ export class BubbleEffectProcessor implements IBubbleEffectProcessor { public ga
             this.chainBonuses[type] = bonus;
             ';'
 
-            console.log(`[BubbleEffectProcessor] ${type} のチェーンボーナス設定: ${bonus}`});
+            console.log(`[BubbleEffectProcessor] ${type} のチェーンボーナス設定: ${bonus}`};
         } catch (error) { console.error('[BubbleEffectProcessor] setChainBonus error:', error }
     }
 

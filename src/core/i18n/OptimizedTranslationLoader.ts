@@ -13,12 +13,12 @@ export interface LoadOptions { priority?: LoadPriority,
     noCache?: boolean;
     chunkSize?: number;
 
-export interface CacheEntry { data: any,
+export interface CacheEntry { data: any;
     timestamp: number;
     accessCount: number;
     size: number;
 
-export interface PreloadResult { language: string,
+export interface PreloadResult { language: string;
     success: boolean;
     data?: any;
     error?: Error;
@@ -26,40 +26,40 @@ export interface PreloadResult { language: string,
 export interface NetworkConnection {
     effectiveType: NetworkType;
 
-export interface MemoryInfo { usedJSHeapSize: number,
+export interface MemoryInfo { usedJSHeapSize: number;
     totalJSHeapSize: number;
     jsHeapSizeLimit?: number;
 
-export interface FileLoadResult { file: string,
+export interface FileLoadResult { file: string;
     data: any | null }
 
-export interface PerformanceStats { cache: CacheStats,
+export interface PerformanceStats { cache: CacheStats;
     network: NetworkStats;
     loadTimes: Record<string, string>;
     memory: MemoryStats;
 
-export interface CacheStats { hitRate: string,
+export interface CacheStats { hitRate: string;
     totalRequests: number;
     cacheHits: number;
     cacheSize: number;
     maxCacheSize: number;
 
-export interface NetworkStats { requests: number,
+export interface NetworkStats { requests: number;
     totalBytesLoaded: number;
     averageBytesPerRequest: number;
 
-export interface MemoryStats { pressure: boolean,
+export interface MemoryStats { pressure: boolean;
     cacheMemoryUsage: number;
 
-export interface TranslationData { [key: string]: any,
+export interface TranslationData { [key: string]: any;
     _compressed?: boolean;
     translations?: any;
 
-export interface LoadPromiseData { language: string,
+export interface LoadPromiseData { language: string;
     startTime: number;
     promise: Promise<any>;
 
-export interface CompressionSupport { compressionSupported: boolean,
+export interface CompressionSupport { compressionSupported: boolean;
     compressionEnabled: boolean;
     compressionThreshold: number;
 
@@ -98,7 +98,7 @@ export class OptimizedTranslationLoader {
     private serviceWorkerSupported: boolean;
     private compressionSupported: boolean;
     private networkConnection: NetworkConnection;
-    private, memoryInfo: MemoryInfo,
+    private, memoryInfo: MemoryInfo;
     // 現在の言語取得関数（オプション）
     private getCurrentLanguage?: () => string,
 
@@ -160,7 +160,7 @@ export class OptimizedTranslationLoader {
      * 言語の読み込み（最適化版）
      */
     async loadLanguage(language: string, options: LoadOptions = { ): Promise<any> {
-        const startTime = performance.now(),
+        const startTime = performance.now();
         this.totalRequests++,
         
         try {
@@ -200,7 +200,7 @@ export class OptimizedTranslationLoader {
             return result;
             ';'
 
-        } catch (error) { this.loadingPromises.delete(language),
+        } catch (error) { this.loadingPromises.delete(language);
             getErrorHandler().handleError(error as Error, 'TRANSLATION_LOAD_ERROR', {''
                 operation: 'loadLanguage',
     language: language),
@@ -213,16 +213,15 @@ export class OptimizedTranslationLoader {
      * 最適化された言語読み込み（内部メソッド）
      */
     private async _loadLanguageOptimized(language: string, priority: LoadPriority, options: LoadOptions): Promise<any> { const files = this.getLanguageFiles(language),
-        const loadStrategy = this.determineLoadStrategy(priority, options),
-
+        const loadStrategy = this.determineLoadStrategy(priority, options);
         switch(loadStrategy) {
 
             case 'parallel':','
-                return await this._loadParallel(language, files, options),
+                return await this._loadParallel(language, files, options);
             case 'sequential':','
-                return await this._loadSequential(language, files, options),
+                return await this._loadSequential(language, files, options);
             case 'chunked':,
-                return await this._loadChunked(language, files, options),
+                return await this._loadChunked(language, files, options);
             default:
 }
                 return await this._loadParallel(language, files, options);
@@ -238,14 +237,14 @@ export class OptimizedTranslationLoader {
                 return { file, data } catch (error) {
                 console.warn(`Failed to load ${file}.json for ${language}:`, error);
                 return { file, data: null,
-        });
+        };
         
         const results = await Promise.all(loadPromises);
         
         results.forEach(({ file, data ) => { 
             if (data) { }
                 translations[file] = data.translations || data; }
-});
+};
         
         return this.flattenTranslations(translations);
     }
@@ -259,7 +258,7 @@ export class OptimizedTranslationLoader {
         for (const file of files) {
         
             try {
-                const data = await this._loadSingleFile(language, file, options),
+                const data = await this._loadSingleFile(language, file, options);
                 if (data) {
     
 }
@@ -280,8 +279,7 @@ export class OptimizedTranslationLoader {
         
         for(let, i = 0; i < files.length; i += chunkSize) {
         
-            const chunk = files.slice(i, i + chunkSize),
-            
+            const chunk = files.slice(i, i + chunkSize);
             const chunkPromises = chunk.map(async (file): Promise<FileLoadResult> => {
     
 }
@@ -290,14 +288,14 @@ export class OptimizedTranslationLoader {
                     return { file, data } catch (error) {
                     console.warn(`Failed to load ${file}.json for ${language}:`, error);
                     return { file, data: null,
-            });
+            };
             
             const chunkResults = await Promise.all(chunkPromises);
             
             chunkResults.forEach(({ file, data ) => { 
                 if (data) { }
                     translations[file] = data.translations || data; }
-});
+};
             
             // チャンク間の短い遅延（ブラウザ負荷軽減）
             if (i + chunkSize < files.length) { await new Promise(resolve => setTimeout(resolve, 10) }
@@ -314,8 +312,8 @@ export class OptimizedTranslationLoader {
         const startTime = performance.now();
         
         try { // ネットワーク状態に応じたタイムアウト設定
-            const timeout = this.getNetworkTimeout(),
-            const controller = new AbortController(),
+            const timeout = this.getNetworkTimeout();
+            const controller = new AbortController();
             const timeoutId = setTimeout(() => controller.abort(), timeout'),'
             
             const response = await fetch(url, {'
@@ -356,12 +354,12 @@ export class OptimizedTranslationLoader {
             const loadTime = performance.now() - startTime;
             this.networkRequests++;
             
-            console.debug(`Loaded ${file}.json, for ${language} in ${loadTime.toFixed(2})ms`);
+            console.debug(`Loaded ${file}.json, for ${language} in ${loadTime.toFixed(2}ms`);
             
             return data;
             
         } catch (error) { const loadTime = performance.now() - startTime }
-            console.warn(`Failed, to load ${file}.json, for ${language} after ${loadTime.toFixed(2})ms:`, error);
+            console.warn(`Failed, to load ${file}.json, for ${language} after ${loadTime.toFixed(2}ms:`, error);
             throw error;
         }
     }
@@ -371,7 +369,7 @@ export class OptimizedTranslationLoader {
      */''
     async preloadLanguages(languages: string[], options: LoadOptions = { )): Promise<Map<string, any>> { }'
 
-        console.log(`Preloading languages: ${languages.join(', '})`);
+        console.log(`Preloading languages: ${languages.join(', '}`);
         
         const results = new Map<string, any>();
         const preloadPromises: Promise<PreloadResult>[] = [],
@@ -385,9 +383,9 @@ export class OptimizedTranslationLoader {
 
                 priority: 'preload').then(data = > {  }
                 results.set(language, data); }
-                return { language, success: true, data }).catch((error: Error) => {  }
+                return { language, success: true, data }.catch((error: Error) => {  }
                 console.warn(`Preload failed for ${language}:`, error);
-                return { language, success: false, error });
+                return { language, success: false, error };
             
             preloadPromises.push(preloadPromise);
             
@@ -401,7 +399,7 @@ export class OptimizedTranslationLoader {
             total: languages.length','
             successful: preloadResults.filter(r => r.status === 'fulfilled' && r.value?.success'.length, : undefined',
             failed: preloadResults.filter(r => r.status === 'rejected' || !r.value?.success).length  }
-        });
+        };
         return results;
     }
     
@@ -450,19 +448,18 @@ export class OptimizedTranslationLoader {
         if (this.memoryCache.size >= this.maxCacheSize) { this.evictLeastRecentlyUsed() }
         
         this.memoryCache.set(key, {
-                data: data),
-            timestamp: Date.now(),
+                data: data);
+            timestamp: Date.now();
             accessCount: 0,
     size: this.estimateDataSize(data 
-            }));
+            });
     }
     
     /**
      * LRU キャッシュエビクション
      */
     private evictLeastRecentlyUsed(): void { let oldestKey: string | null = null,
-        let oldestTime = Date.now(),
-        
+        let oldestTime = Date.now();
         for(const [key, cache] of this.memoryCache) {
         
             if (cache.timestamp < oldestTime) {
@@ -471,7 +468,7 @@ export class OptimizedTranslationLoader {
 }
         
         if (oldestKey) { this.memoryCache.delete(oldestKey) }
-            console.debug(`Evicted, cache entry: ${oldestKey}`});
+            console.debug(`Evicted, cache entry: ${oldestKey}`};
         }
     }
     
@@ -506,7 +503,7 @@ export class OptimizedTranslationLoader {
             case '3g':','
                 return baseTimeout * 2,
             case '4g': }
-            default: return baseTimeout;
+            default: return baseTimeout,
     
     /**
      * 読み込み戦略の決定
@@ -568,7 +565,7 @@ export class OptimizedTranslationLoader {
      * 優先度によるソート
      */ : undefined
     private sortByPriority(languages: string[]): string[] { const priorityOrder: Record<LoadPriority, number> = { 
-            critical: 4, high: 3, medium: 2, low: 1, preload: 2, lazy: 1   };
+            critical: 4, high: 3, medium: 2, low: 1, preload: 2, lazy: 1   },
         
         return languages.sort((a, b) => {  const aPriority = priorityOrder[this.getPriority(a)] || 1,
             const bPriority = priorityOrder[this.getPriority(b)] || 1 }
@@ -637,12 +634,12 @@ export class OptimizedTranslationLoader {
                 totalRequests: this.totalRequests,
                 cacheHits: this.cacheHits,
                 cacheSize: this.memoryCache.size,
-    maxCacheSize: this.maxCacheSize };
+    maxCacheSize: this.maxCacheSize },
             network: { requests: this.networkRequests,
                 totalBytesLoaded: this.totalBytesLoaded,
     averageBytesPerRequest: this.networkRequests > 0 ? undefined : undefined
                     Math.round(this.totalBytesLoaded / this.networkRequests) : 0 };
-            loadTimes: {};
+            loadTimes: {},
             memory: { pressure: this.isMemoryPressure(
     cacheMemoryUsage: Array.from(this.memoryCache.values(),
                     .reduce((total, cache) => total + cache.size, 0) }
@@ -650,7 +647,7 @@ export class OptimizedTranslationLoader {
         
         // 言語別の平均読み込み時間
         for (const [language, times] of this.loadTimes) { const avgTime = times.reduce((sum, time) => sum + time, 0) / times.length }
-            stats.loadTimes[language] = `${avgTime.toFixed(2})ms`;
+            stats.loadTimes[language] = `${avgTime.toFixed(2}ms`;
         }
         
         return stats;
@@ -671,7 +668,6 @@ export class OptimizedTranslationLoader {
     /**
      * クリーンアップ
      */
-    cleanup(): void { this.clearCache(),
-
-        this.loadingPromises.clear(),
+    cleanup(): void { this.clearCache();
+        this.loadingPromises.clear();
         this.priorityQueue.clear(' }'

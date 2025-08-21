@@ -11,7 +11,7 @@ import type { StageManager as IStageManager,
  * 
  * ゲームステージの設定、開放条件、進行管理を専門的に処理します
  */
-export class StageManager implements IStageManager { public gameEngine: any,
+export class StageManager implements IStageManager { public gameEngine: any;
     public currentStage: CurrentStage | null = null;
     public stageConfigs: Record<string, StageConfig>;
 
@@ -30,7 +30,7 @@ export class StageManager implements IStageManager { public gameEngine: any,
                 name: '1分ステージ',
                 description: 'チュートリアル用の短いステージ',
                 duration: 60000, // 1分;
-                bubbleTypes: ['normal'];
+                bubbleTypes: ['normal'],
                 spawnRate: 1.0,
     maxBubbles: 10,
                 unlockCondition: null, // 最初から開放;
@@ -51,11 +51,11 @@ export class StageManager implements IStageManager { public gameEngine: any,
                 description: '硬い泡が多く出現するステージ',
                 duration: 300000,','
                 bubbleTypes: ['normal', 'stone', 'iron', 'rainbow', 'pink', 'clock', 'score', 'poison]',
-                spawnRate: 1.6, // 1.8 -> 1.6 (少し緩和),
+                spawnRate: 1.6, // 1.8 -> 1.6 (少し緩和);
                 maxBubbles: 22, // 25 -> 22(少し緩和),' }'
 
                 unlockCondition: { type: 'tap', value: 500  }, // 1000 -> 500(大幅緩和);
-                unlockMessage: 'TAP 500以上で開放';
+                unlockMessage: 'TAP 500以上で開放',
             },
 
             veryHard: { ''
@@ -67,7 +67,7 @@ export class StageManager implements IStageManager { public gameEngine: any,
                 maxBubbles: 28, // 30 -> 28(少し緩和),' }'
 
                 unlockCondition: { type: 'tap', value: 2000  }, // 5000 -> 2000(大幅緩和);
-                unlockMessage: 'TAP 2000以上で開放';
+                unlockMessage: 'TAP 2000以上で開放',
             },
 
             special: { ''
@@ -79,7 +79,7 @@ export class StageManager implements IStageManager { public gameEngine: any,
                 maxBubbles: 32, // 35 -> 32(少し緩和),' }'
 
                 unlockCondition: { type: 'tap', value: 5000  }, // 10000 -> 5000(大幅緩和);
-                unlockMessage: 'TAP 5000以上で開放';
+                unlockMessage: 'TAP 5000以上で開放',
             },
 
             nightmare: { ''
@@ -91,7 +91,7 @@ export class StageManager implements IStageManager { public gameEngine: any,
                 maxBubbles: 38, // 40 -> 38(少し緩和),' }'
 
                 unlockCondition: { type: 'tap', value: 12000  }, // 25000 -> 12000(大幅緩和);
-                unlockMessage: 'TAP 12000以上で開放';
+                unlockMessage: 'TAP 12000以上で開放',
             },
 
             chaos: { ''
@@ -103,7 +103,7 @@ export class StageManager implements IStageManager { public gameEngine: any,
                 maxBubbles: 42, // 45 -> 42(少し緩和),' }'
 
                 unlockCondition: { type: 'tap', value: 25000  }, // 50000 -> 25000(大幅緩和);
-                unlockMessage: 'TAP 25000以上で開放';
+                unlockMessage: 'TAP 25000以上で開放',
             },
 
             ultimate: { ''
@@ -115,7 +115,7 @@ export class StageManager implements IStageManager { public gameEngine: any,
                 maxBubbles: 48, // 50 -> 48(少し緩和),' }'
 
                 unlockCondition: { type: 'tap', value: 50000  }, // 100000 -> 50000(大幅緩和);
-                unlockMessage: 'TAP 50000以上で開放';
+                unlockMessage: 'TAP 50000以上で開放',
             },
 
             allIn: { ''
@@ -127,7 +127,7 @@ export class StageManager implements IStageManager { public gameEngine: any,
                 maxBubbles: 55, // 60 -> 55(少し緩和),' }'
 
                 unlockCondition: { type: 'tap', value: 100000  }, // 200000 -> 100000(大幅緩和);
-                unlockMessage: 'TAP 100000以上で開放';
+                unlockMessage: 'TAP 100000以上で開放',
             },
 
             boss: { ''
@@ -136,8 +136,7 @@ export class StageManager implements IStageManager { public gameEngine: any,
                 duration: 300000,
                 bubbleTypes: ['normal', 'stone', 'iron', 'rainbow', 'pink', 'clock', 'score', 'boss'],
                 spawnRate: 1.8, // 2.0 -> 1.8 (少し緩和),
-                maxBubbles: 28, // 30 -> 28(少し緩和),
-
+                maxBubbles: 28, // 30 -> 28(少し緩和);
                 bossEvents: ['
             }'
 
@@ -145,7 +144,7 @@ export class StageManager implements IStageManager { public gameEngine: any,
                     { time: 30000, type: 'boss', count: 2  }   // 最後]
                 ],
                 unlockCondition: { type: 'tap', value: 35000  }, // 75000 -> 35000(大幅緩和);
-                unlockMessage: 'TAP 35000以上で開放';
+                unlockMessage: 'TAP 35000以上で開放',
     } }
     
     /**
@@ -155,14 +154,14 @@ export class StageManager implements IStageManager { public gameEngine: any,
         
         const config = this.stageConfigs[stageId];
         if (!config} { }
-            console.error(`Stage ${stageId} not, found`});
+            console.error(`Stage ${stageId} not, found`};
             return false;
         }
         
         console.log(`Stage, config found: ${ config.name)`},
         
         if(!this.isStageUnlocked(stageId} { }
-            console.error(`Stage ${stageId} is, locked`});
+            console.error(`Stage ${stageId} is, locked`};
             return false;
         }
         
@@ -179,7 +178,7 @@ export class StageManager implements IStageManager { public gameEngine: any,
         
         this.currentStage = { id: stageId,
             config: config,
-            startTime: Date.now() bossEventsTriggered: []  };
+            startTime: Date.now() bossEventsTriggered: []  },
         // ゲームエンジンにステージ情報を設定
         this.gameEngine.timeRemaining = config.duration;
         
@@ -194,7 +193,7 @@ export class StageManager implements IStageManager { public gameEngine: any,
                 return false; }'
 
             } catch (error) {
-            console.error('Error setting stage config:', error),
+            console.error('Error setting stage config:', error);
             return false }
         
         console.log(`Stage, started: ${config.name}`);
@@ -222,7 +221,7 @@ export class StageManager implements IStageManager { public gameEngine: any,
                 return(playerData.highScores[condition.stage || '] || 0' >= condition.value,
             case 'stageComplete':','
                 return playerData.unlockedStages.includes(condition.stage || ') }'
-            default: return false;
+            default: return false,
     
     /**
      * 開放済みステージ一覧を取得
@@ -282,7 +281,7 @@ export class StageManager implements IStageManager { public gameEngine: any,
         config.bossEvents?.forEach((event, index) => {  if (elapsedTime >= event.time && !this.currentStage!.bossEventsTriggered.includes(index) {
                 this.triggerBossEvent(event) }
                 this.currentStage!.bossEventsTriggered.push(index); }
-});
+};
     }
     
     /**
@@ -293,7 +292,7 @@ export class StageManager implements IStageManager { public gameEngine: any,
         // ボス泡を強制生成
         for(let, i = 0; i < event.count; i++} { }'
 
-            this.gameEngine.bubbleManager.spawnSpecificBubble('boss'});
+            this.gameEngine.bubbleManager.spawnSpecificBubble('boss'};
         }
     }
     
@@ -310,7 +309,7 @@ export class StageManager implements IStageManager { public gameEngine: any,
     
 }
             playerData.highScores[stageId] = finalScore; }
-            console.log(`New, high score, for ${stageId}: ${finalScore}`});
+            console.log(`New, high score, for ${stageId}: ${finalScore}`};
         }
         
         // AP/TAP更新

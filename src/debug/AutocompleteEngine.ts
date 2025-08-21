@@ -6,7 +6,7 @@
 interface Console { commands?: Map<string, any>,
     aliases?: Map<string, any> }
 
-interface Suggestion { text: string,
+interface Suggestion { text: string;
     type: 'exact' | 'prefix' | 'partial';
     score: number;
 
@@ -14,7 +14,7 @@ export class AutocompleteEngine {
     private console: Console | null;
     private, cache: Map<string, string[]>,
     private lastUpdate: number;
-    private, cacheTimeout: number,
+    private, cacheTimeout: number;
     constructor(console: Console) {
 
         this.console = console;
@@ -55,8 +55,7 @@ export class AutocompleteEngine {
      * 候補を生成
      */
     private generateSuggestions(input: string): string[] { const suggestions: Suggestion[] = [],
-        const allCommands = this.getAllCommands(),
-        
+        const allCommands = this.getAllCommands();
         // 完全一致
         const exactMatch = allCommands.find(cmd => cmd.toLowerCase() === input),
         if (exactMatch) {
@@ -73,11 +72,10 @@ export class AutocompleteEngine {
             .map(cmd => ({ text: cmd)'
                 type: 'prefix' as const),
                 score: 900 - cmd.length)),
-        suggestions.push(...prefixMatches),
-
+        suggestions.push(...prefixMatches);
         // 部分一致
         const partialMatches = allCommands,
-            .filter(cmd => ),
+            .filter(cmd => );
                 cmd.toLowerCase().includes(input) && ','
 
                 !cmd.toLowerCase().startsWith(input)','
@@ -87,7 +85,7 @@ export class AutocompleteEngine {
                 text: cmd,')',
                 type: 'partial' as const,
     score: 800 - cmd.length - cmd.toLowerCase().indexOf(input) * 10  }
-            });
+            };
         suggestions.push(...partialMatches);
 
         // スコア順にソートして上位10件を返す
@@ -121,7 +119,7 @@ export class AutocompleteEngine {
     /**
      * キャッシュをクリア
      */
-    clearCache(): void { this.cache.clear(),
+    clearCache(): void { this.cache.clear();
         this.lastUpdate = 0 }
 
     /**

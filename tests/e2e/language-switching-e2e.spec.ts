@@ -23,7 +23,7 @@ async function waitForLocalizationReady(page {
 
 async function changeLanguage(page, language') {'
     // 設定画面を開く
-    await page.keyboard.press('s'),
+    await page.keyboard.press('s');
     await page.waitForTimeout(500'),'
     
     // 言語選択ドロップダウンを見つける
@@ -32,18 +32,18 @@ async function changeLanguage(page, language') {'
         await languageSelector.selectOption(language) } else {
         // フォールバック: キーボードナビゲーション
         const currentLang = await page.evaluate(() => 
-            window.gameEngine.localizationManager.getCurrentLanguage(),
-        const currentIndex = SUPPORTED_LANGUAGES.indexOf(currentLang),
-        const targetIndex = SUPPORTED_LANGUAGES.indexOf(language),
+            window.gameEngine.localizationManager.getCurrentLanguage();
+        const currentIndex = SUPPORTED_LANGUAGES.indexOf(currentLang);
+        const targetIndex = SUPPORTED_LANGUAGES.indexOf(language);
         const diff = targetIndex - currentIndex,
         
         if (diff > 0) {
             for (let i = 0, i < diff, i++') {'
-                await page.keyboard.press('ArrowDown'),
+                await page.keyboard.press('ArrowDown');
                 await page.waitForTimeout(100) }
         } else {
             for (let i = 0, i < Math.abs(diff, i++') {'
-                await page.keyboard.press('ArrowUp'),
+                await page.keyboard.press('ArrowUp');
                 await page.waitForTimeout(100') }'
         }
         await page.keyboard.press('Enter');
@@ -56,53 +56,50 @@ async function changeLanguage(page, language') {'
 // テストスイート
 test.describe('言語切り替えE2Eテスト', () => {
     test.beforeEach(async ({ page }) => {
-        await page.goto(TEST_URL),
+        await page.goto(TEST_URL);
         await waitForLocalizationReady(page) }');'
 
-    test('基本的な言語切り替えが正しく動作する', async ({ page }) => {
+    test('基本的な言語切り替えが正しく動作する', async ({ page } => {
         // 初期言語の確認
         const initialLanguage = await page.evaluate(() => 
-            window.gameEngine.localizationManager.getCurrentLanguage(),
+            window.gameEngine.localizationManager.getCurrentLanguage();
         expect(initialLanguage').toBe('ja'),'
         
         // 英語に切り替え
-        await changeLanguage(page, 'en'),
-        
+        await changeLanguage(page, 'en');
         // 言語が変更されたことを確認
         const currentLanguage = await page.evaluate(() => 
-            window.gameEngine.localizationManager.getCurrentLanguage(),
+            window.gameEngine.localizationManager.getCurrentLanguage();
         expect(currentLanguage').toBe('en'),'
         
         // UIテキストが英語になっていることを確認
         const startButtonText = await page.evaluate((') => {'
-            const button = document.querySelector('[data-action="start-game"]'),
+            const button = document.querySelector('[data-action="start-game"]');
             return button ? button.textContent: null;);
         expect(startButtonText').toContain('Start Game');'
     }');'
 
     test('すべての対応言語で切り替えが可能', async ({ page ) => {
         for (const language of SUPPORTED_LANGUAGES) {
-            await changeLanguage(page, language),
-            
+            await changeLanguage(page, language);
             const currentLanguage = await page.evaluate(() => 
-                window.gameEngine.localizationManager.getCurrentLanguage(),
-            expect(currentLanguage).toBe(language),
-            
+                window.gameEngine.localizationManager.getCurrentLanguage();
+            expect(currentLanguage).toBe(language);
             // 言語情報の取得
             const languageInfo = await page.evaluate((lang) => 
                 window.gameEngine.localizationManager.getLanguageInfo(lang,
                 language,
-            expect(languageInfo).toBeTruthy(),
+            expect(languageInfo).toBeTruthy();
             expect(languageInfo.native).toBeTruthy() }
     }');'
 
     test('言語切り替え後もゲーム状態が保持される', async ({ page )') => {'
         // ゲームを開始
-        await page.keyboard.press('Enter'),
+        await page.keyboard.press('Enter');
         await page.waitForTimeout(1000'),'
         
         // スコアを獲得（泡をクリック）
-        await page.click('canvas', { position: { x: 400, y: 300 } });
+        await page.click('canvas', { position: { x: 400, y: 300 } },
         await page.waitForTimeout(500);
         
         // 現在のスコアを記録
@@ -123,15 +120,13 @@ test.describe('言語切り替えE2Eテスト', () => {
 
     test('ブラウザリロード後も言語設定が保持される', async ({ page )') => {'
         // 英語に切り替え
-        await changeLanguage(page, 'en'),
-        
+        await changeLanguage(page, 'en');
         // ページをリロード
-        await page.reload(),
-        await waitForLocalizationReady(page),
-        
+        await page.reload();
+        await waitForLocalizationReady(page);
         // 言語設定が保持されていることを確認
         const currentLanguage = await page.evaluate(() => 
-            window.gameEngine.localizationManager.getCurrentLanguage(),
+            window.gameEngine.localizationManager.getCurrentLanguage();
         expect(currentLanguage').toBe('en') }');
 
     test('URLパラメータでの言語指定が機能する', async ({ page ) => {
@@ -173,23 +168,22 @@ test.describe('言語切り替えE2Eテスト', () => {
         
         // UI要素が正しく更新されていることを確認
         const isUIUpdated = await page.evaluate((') => {'
-            const elements = document.querySelectorAll('[data-i18n]'),
+            const elements = document.querySelectorAll('[data-i18n]');
             return Array.from(elements.every(el => ')'
                 !el.textContent.includes('{{') && 
                 !el.textContent.includes('}}');
-        });
+        };
         expect(isUIUpdated).toBe(true);
     }');'
 
     test('キーボードナビゲーションでの言語切り替え', async ({ page )') => {'
         // 設定画面を開く
-        await page.keyboard.press('s'),
-        await page.waitForTimeout(500),
-        
+        await page.keyboard.press('s');
+        await page.waitForTimeout(500);
         // Tabキーで言語選択まで移動
         let focusedElement = null,
         for (let i = 0, i < 10, i++') {'
-            await page.keyboard.press('Tab'),
+            await page.keyboard.press('Tab');
             focusedElement = await page.evaluate(() => 
                 document.activeElement? .id || document.activeElement?.className
             '),'
@@ -208,24 +202,23 @@ test.describe('言語切り替えE2Eテスト', () => {
 
     test('スクリーンリーダー対応の確認', async ({ page )') => {'
         // ARIAラベルが適切に更新されることを確認
-        await changeLanguage(page, 'en'),
-        
+        await changeLanguage(page, 'en');
         const ariaLabels = await page.evaluate((') => {'
-            const elements = document.querySelectorAll('[aria-label]'),
+            const elements = document.querySelectorAll('[aria-label]');
             return Array.from(elements.map(el => ({ : undefined
                 element: el.tagName,
-                label: el.getAttribute('aria-label'});
-            });
-        });
+                label: el.getAttribute('aria-label'},
+            };
+        };
         
         // 英語のARIAラベルが設定されていることを確認
         expect(ariaLabels.length).toBeGreaterThan(0);
-        ariaLabels.forEach(item => {),
+        ariaLabels.forEach(item => {);
             expect(item.label').not.toContain('{{'),'
             expect(item.label').not.toContain('}}');'
             // 日本語が含まれていないことを確認（基本的なチェック）
             expect(item.label).not.toMatch(/[\u3040-\u309F\u30A0-\u30FF]/);
-        });
+        };
     }');'
 
     test('言語切り替え時のエラーハンドリング', async ({ page ) => {
@@ -237,18 +230,18 @@ test.describe('言語切り替えE2Eテスト', () => {
                     return Promise.reject(new Error('Network error') }
                 return originalFetch.apply(this, arguments);
             };
-        });
+        };
         
         // 言語切り替えを試行
         const errorOccurred = await page.evaluate(async (') => {'
             try {
-                await window.gameEngine.localizationManager.setLanguage('zh-CN'),
+                await window.gameEngine.localizationManager.setLanguage('zh-CN');
                 return false } catch (error) {
                 return true }
-        });
+        };
         
         // エラーが適切にハンドリングされることを確認
-        expect(errorOccurred).toBe(false: any); // エラーは内部でハンドリングされる
+        expect(errorOccurred).toBe(false: any), // エラーは内部でハンドリングされる
         
         // フォールバック言語が使用されることを確認
         const currentLanguage = await page.evaluate(() => 
@@ -262,11 +255,9 @@ test.describe('言語切り替えE2Eテスト', () => {
         
         for (let i = 0, i < 5, i++) {
             const language = SUPPORTED_LANGUAGES[i % SUPPORTED_LANGUAGES.length],
-            const startTime = Date.now(),
-            
-            await changeLanguage(page, language),
-            
-            const endTime = Date.now(),
+            const startTime = Date.now();
+            await changeLanguage(page, language);
+            const endTime = Date.now();
             switchTimes.push(endTime - startTime) }
         
         // 平均切り替え時間を計算
@@ -284,7 +275,7 @@ test.describe('言語切り替えE2Eテスト', () => {
                 };
             }
             return null;
-        });
+        };
         
         if (memoryUsage) {
             const heapUsageRatio = memoryUsage.usedJSHeapSize / memoryUsage.totalJSHeapSize,
@@ -320,11 +311,10 @@ test.describe('言語切り替えE2Eテスト', () => {
         const incompleteness: Record<string, any> = {};
         
         for (const language of SUPPORTED_LANGUAGES) {
-            await changeLanguage(page, language),
-            
+            await changeLanguage(page, language);
             // 未翻訳のテキストを検出
             const untranslated = await page.evaluate((') => {'
-                const elements = document.querySelectorAll('*'),
+                const elements = document.querySelectorAll('*');
                 const untranslatedTexts: any[] = [],
                 
                 elements.forEach(el => {
@@ -332,9 +322,9 @@ test.describe('言語切り替えE2Eテスト', () => {
                     if (text && (text.includes('{{') || text.includes('}}')) {
                         untranslatedTexts.push({
                             element: el.tagName),
-                           , text: text.substring(0, 100) });
+                           , text: text.substring(0, 100) };
                     }
-                });
+                };
                 
                 return untranslatedTexts;
             }');'
@@ -347,35 +337,33 @@ test.describe('言語切り替えE2Eテスト', () => {
         
         // 各言語で未翻訳テキストがないことを確認
         Object.entries(incompleteness.forEach(([language, untranslated]) => {
-            expect(untranslated.length).toBe(0) });
-    });
+            expect(untranslated.length).toBe(0) };
+    };
 }');'
 
 // アクセシビリティテスト
 test.describe('言語切り替えのアクセシビリティテスト', () => {
     test.beforeEach(async ({ page }) => {
-        await page.goto(TEST_URL),
+        await page.goto(TEST_URL);
         await waitForLocalizationReady(page) }');'
 
     test('言語切り替え時のフォーカス管理', async ({ page }') => {'
         // 設定画面を開く
-        await page.keyboard.press('s'),
-        await page.waitForTimeout(500),
-        
+        await page.keyboard.press('s');
+        await page.waitForTimeout(500);
         // 現在のフォーカス要素を記録
         const focusedBefore = await page.evaluate(() => 
             document.activeElement? .id || document.activeElement?.className
         '),'
         
         // 言語を切り替え
-        await changeLanguage(page, 'en'),
-        
+        await changeLanguage(page, 'en');
         // フォーカスが適切に保持されていることを確認
         const focusedAfter = await page.evaluate(() => 
             document.activeElement?.id || document.activeElement?.className
         ),
         
-        expect(focusedAfter).toBeTruthy(),
+        expect(focusedAfter).toBeTruthy();
         // フォーカスが失われていないことを確認
         expect(focusedAfter').not.toBe('body') }');
 
@@ -399,7 +387,7 @@ test.describe('言語切り替えのアクセシビリティテスト', () => {
     test('アニメーション軽減設定での言語切り替え', async ({ page ) => {
         // アニメーション軽減を有効化
         await page.evaluate((') => {'
-            window.gameEngine.settingsManager.set('reducedMotion', true) });
+            window.gameEngine.settingsManager.set('reducedMotion', true) };
         
         // 言語切り替えの開始時刻を記録
         const startTime = Date.now(');'
@@ -413,5 +401,5 @@ test.describe('言語切り替えのアクセシビリティテスト', () => {
         
         // アニメーションが軽減されていることを確認（素早く完了）
         expect(duration).toBeLessThan(1000);
-    });
+    };
 }');'

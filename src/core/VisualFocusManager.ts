@@ -41,48 +41,48 @@ export class VisualFocusManager {'
         // 視覚フィードバック設定
         this.config = {
             focusRing: {
-                enabled: true,
-    width: 3,
-                color: '#4A90E2',
-                offset: 2,
-                borderRadius: 4,
-                animationDuration: 200,
-    pulseAnimation: true,
-                customShadow: true,;
-            highContrast: { enabled: false,
-    width: 4,
-                color: '#FFFF00',
-                backgroundColor: '#000000',
-                textColor: '#FFFFFF',
+                enabled: true;
+    width: 3;
+                color: '#4A90E2';
+                offset: 2;
+                borderRadius: 4;
+                animationDuration: 200;
+    pulseAnimation: true;
+                customShadow: true;
+            highContrast: { enabled: false;
+    width: 4;
+                color: '#FFFF00';
+                backgroundColor: '#000000';
+                textColor: '#FFFFFF';
                 shadowColor: '#000000'
             };
-            navigationFeedback: { enabled: true,
-                showDirection: true,
-                showPosition: true,
-                fadeTimeout: 2000,
+            navigationFeedback: { enabled: true;
+                showDirection: true;
+                showPosition: true;
+                fadeTimeout: 2000;
     animationSpeed: 300 };
-            keyboardHints: { enabled: true,
-                showOnFocus: true,
-    autoHide: true,
-                hideDelay: 3000,
+            keyboardHints: { enabled: true;
+                showOnFocus: true;
+    autoHide: true;
+                hideDelay: 3000;
                 position: 'bottom-right'
             };
-            visualCues: { breadcrumbs: true,
-                pathHighlight: true,
-                groupIndicators: true,
-    landmarkHighlight: true,;
+            visualCues: { breadcrumbs: true;
+                pathHighlight: true;
+                groupIndicators: true;
+    landmarkHighlight: true;
         // 状態管理
-        this.state = { currentFocusElement: null,
-            previousFocusElement: null,
-            navigationPath: [],
+        this.state = { currentFocusElement: null;
+            previousFocusElement: null;
+            navigationPath: [];
     activeVisualCues: new Set(
-            animationTimers: new Map('',
-    focusVisible: 'visual-focus-visible',
-            highContrast: 'visual-focus-high-contrast',
-            navigationActive: 'visual-focus-navigation-active',
-            keyboardMode: 'visual-focus-keyboard-mode',
+            animationTimers: new Map('';
+    focusVisible: 'visual-focus-visible';
+            highContrast: 'visual-focus-high-contrast';
+            navigationActive: 'visual-focus-navigation-active';
+            keyboardMode: 'visual-focus-keyboard-mode';
             animating: 'visual-focus-animating'
-            }))
+            })
         // Main Controller Pattern: サブコンポーネント管理
         this.focusStateManager = new FocusStateManager(this);
         this.focusEffectRenderer = new FocusEffectRenderer(this);
@@ -99,13 +99,11 @@ export class VisualFocusManager {'
     initialize() {
         try {
             // CSS スタイルの設定
-            this.setupVisualStyles(),
-            
+            this.setupVisualStyles();
             // DOM 要素の作成
-            this.createVisualElements(),
-            
+            this.createVisualElements();
             // イベントリスナーの設定
-            this.focusEventHandler.setupEventListeners(),
+            this.focusEventHandler.setupEventListeners();
             // システム設定の検出と適用
             this.focusStateManager.detectAndApplySystemSettings() }
 
@@ -130,8 +128,7 @@ export class VisualFocusManager {'
             existingStyle.remove()','
         const style = document.createElement('style),'
         style.id = styleId,
-        style.textContent = this.generateVisualCSS(),
-
+        style.textContent = this.generateVisualCSS();
         document.head.appendChild(style) }
 
         console.log('Visual, focus styles, applied'); }'
@@ -148,13 +145,13 @@ export class VisualFocusManager {'
         return `;
             /* フォーカスリングの基本スタイル */
             .${this.cssClasses.focusVisible} { position: relative,
-                outline: ${focusRing.width}px solid ${focusRing.color} !important;
-                outline-offset: ${focusRing.offset}px !important;
+                outline: ${focusRing.width}px solid ${focusRing.color} !important,
+                outline-offset: ${focusRing.offset}px !important,
 
-                border-radius: ${focusRing.borderRadius}px !important;
+                border-radius: ${focusRing.borderRadius}px !important,
                 ${focusRing.customShadow ? `box-shadow: 0, 0 0, 4px rgba(74, 144, 226, 0.3}, 0 0 8px rgba(74, 144, 226, 0.2'}' !important;` : '}''
                 ${focusRing.pulseAnimation ? `animation: focus-pulse ${focusRing.animationDuration * 2}ms ease-in-out infinite alternate;` : '}'
-                transition: all ${focusRing.animationDuration}ms ease-out !important;
+                transition: all ${focusRing.animationDuration}ms ease-out !important,
                 z-index: 1000 }
             
             /* フォーカス中のパルスアニメーション */
@@ -163,7 +160,7 @@ export class VisualFocusManager {'
                     box-shadow: 0 0 0 4px rgba(74, 144, 226, 0.3), 0 0 8px rgba(74, 144, 226, 0.2);
                 }
                 100% { 
-                    outline-color: ${focusRing.color}dd;
+                    outline-color: ${focusRing.color}dd,
                     box-shadow: 0 0 0 6px rgba(74, 144, 226, 0.4), 0 0 12px rgba(74, 144, 226, 0.3);
                 }
             }
@@ -171,15 +168,15 @@ export class VisualFocusManager {'
             /* ハイコントラストモード */
             .${this.cssClasses.highContrast} .${this.cssClasses.focusVisible},
             body.high-contrast .${this.cssClasses.focusVisible} {
-                outline: ${highContrast.width}px solid ${highContrast.color} !important;
-                background-color: ${highContrast.backgroundColor} !important;
-                color: ${highContrast.textColor} !important;
+                outline: ${highContrast.width}px solid ${highContrast.color} !important,
+                background-color: ${highContrast.backgroundColor} !important,
+                color: ${highContrast.textColor} !important,
                 box-shadow: 0 0 0 2px ${highContrast.shadowColor}, 0 0 4px ${highContrast.shadowColor} !important;
-                animation: none !important;
+                animation: none !important,
             }
             
             /* キーボードモード専用表示 */
-            body:not(.${this.cssClasses.keyboardMode}}) .${this.cssClasses.focusVisible} { outline: none !important,
+            body:not(.${this.cssClasses.keyboardMode}} .${this.cssClasses.focusVisible} { outline: none !important,
                 box-shadow: none !important,
                 animation: none !important  }
             
@@ -189,10 +186,10 @@ export class VisualFocusManager {'
                 z-index: 9999 }
                 border: ${focusRing.width}px solid ${focusRing.color}
 
-                border-radius: ${focusRing.borderRadius}px;
+                border-radius: ${focusRing.borderRadius}px,
                 ${focusRing.customShadow ? `box-shadow: 0, 0 8px, rgba(74, 144, 226, 0.3'}';` : '}'
-                transition: all ${focusRing.animationDuration}ms ease-out;
-                opacity: 0;
+                transition: all ${focusRing.animationDuration}ms ease-out,
+                opacity: 0,
             }
             
             .visual-focus-ring.active { opacity: 1 }
@@ -201,7 +198,7 @@ export class VisualFocusManager {'
             .visual-focus-navigation { position: fixed,
                 top: 20px,
                 right: 20px,
-    background: rgba(0, 0, 0, 0.8),
+    background: rgba(0, 0, 0, 0.8);
                 color: white,
     padding: 12px 16px,
                 border-radius: 8px,
@@ -210,7 +207,7 @@ export class VisualFocusManager {'
                 z-index: 10000,
                 pointer-events: none,
                 opacity: 0 }
-                transform: translateY(-10px})
+                transform: translateY(-10px}
                 transition: all ${navigationFeedback.animationSpeed}ms ease-out)
                 backdrop-filter: blur(8px,
     border: 1px solid rgba(255, 255, 255, 0.1) }
@@ -222,7 +219,7 @@ export class VisualFocusManager {'
             .visual-focus-keyboard-hint { position: fixed,
                 bottom: 20px,
                 right: 20px,
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%),
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
                 color: white,
     padding: 16px 20px,
                 border-radius: 12px,
@@ -231,10 +228,10 @@ export class VisualFocusManager {'
                 z-index: 10000,
                 pointer-events: none,
                 opacity: 0 }
-                transform: translateY(20px})
-                transition: all ${ navigationFeedback.animationSpeed}ms ease-out;
+                transform: translateY(20px}
+                transition: all ${ navigationFeedback.animationSpeed}ms ease-out,
                 max-width: 300px }
-                box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3});
+                box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3};
             }
             
             .visual-focus-keyboard-hint.visible { opacity: 1,
@@ -244,7 +241,7 @@ export class VisualFocusManager {'
             .visual-focus-breadcrumb { position: fixed,
                 top: 20px,
                 left: 20px,
-    background: rgba(255, 255, 255, 0.95),
+    background: rgba(255, 255, 255, 0.95);
                 color: #333,
     padding: 8px 12px,
                 border-radius: 6px,
@@ -252,10 +249,10 @@ export class VisualFocusManager {'
                 z-index: 10000,
                 pointer-events: none,
                 opacity: 0 }
-                transform: translateY(-10px})
+                transform: translateY(-10px}
                 transition: all ${navigationFeedback.animationSpeed}ms ease-out)
                 backdrop-filter: blur(4px,
-    border: 1px solid rgba(0, 0, 0, 0.1),
+    border: 1px solid rgba(0, 0, 0, 0.1);
                 box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
             }
             
@@ -268,7 +265,7 @@ export class VisualFocusManager {'
                 z-index: 999,
                 background: linear-gradient(45deg, transparent 49%, rgba(74, 144, 226, 0.1) 50%, rgba(74, 144, 226, 0.1) 51%, transparent 52%),
                 opacity: 0 }
-                transition: opacity ${focusRing.animationDuration}ms ease-out;
+                transition: opacity ${focusRing.animationDuration}ms ease-out,
             }
             
             .visual-focus-overlay.active { opacity: 1 }
@@ -281,7 +278,7 @@ export class VisualFocusManager {'
                     left: 10px,
                     right: 10px,
     top: auto,
-                    max-width: none;
+                    max-width: none,
                 
                 .visual-focus-breadcrumb { top: 10px,
                     left: 10px,
@@ -364,14 +361,11 @@ export class VisualFocusManager {'
             
             // キーボードモードの設定
             if (keyboardMode) {
-                this.focusStateManager.setKeyboardMode(true),
-                
+                this.focusStateManager.setKeyboardMode(true);
                 // 視覚的フォーカス表示の更新
-                this.focusStateManager.updateFocusVisuals(element index),
-                
+                this.focusStateManager.updateFocusVisuals(element index);
                 // ナビゲーションフィードバックの表示
-                this.focusAccessibilitySupport.showNavigationFeedback(element index),
-                
+                this.focusAccessibilitySupport.showNavigationFeedback(element index);
                 // キーボードヒントの表示（必要に応じて）
                 if (this.config.keyboardHints.showOnFocus) {
     }
@@ -387,8 +381,8 @@ export class VisualFocusManager {'
             ';'
 
         } catch (error) { getErrorHandler().handleError(error, 'VISUAL_FOCUS_ERROR', {''
-                operation: 'handleFocusChange'),
-                element: element.tagName  });
+                operation: 'handleFocusChange');
+                element: element.tagName  },
         }
     }
     
@@ -411,7 +405,7 @@ export class VisualFocusManager {'
         this.currentFocusedElement = {
             id: elementId,
     bounds: bounds,
-            timestamp: Date.now(), 
+            timestamp: Date.now(),
     };
         this.handleFocusChange();
     }
@@ -473,14 +467,14 @@ export class VisualFocusManager {'
      */
     generateReport() {
         return { : undefined
-            isActive: document.body.classList.contains(this.cssClasses.keyboardMode),
+            isActive: document.body.classList.contains(this.cssClasses.keyboardMode);
             highContrastMode: this.state.isHighContrastMode,
     currentFocusElement: this.state.currentFocusElement?.tagName || null, : undefined
             navigationPathLength: this.state.navigationPath.length,
             activeVisualCues: this.state.activeVisualCues.size,
             keyboardHintVisible: this.state.keyboardHintVisible,
     activeTimers: this.state.animationTimers.size }
-            stateReport: this.focusStateManager.generateStateReport() };
+            stateReport: this.focusStateManager.generateStateReport() },
             accessibilityReport: this.focusAccessibilitySupport.generateAccessibilityReport(); 
     }
     
@@ -497,7 +491,7 @@ export class VisualFocusManager {'
 
             this.focusAccessibilitySupport.hideKeyboardHints() }
 
-        console.log(`VisualFocusManager ${enabled ? 'enabled' : 'disabled}`});'
+        console.log(`VisualFocusManager ${enabled ? 'enabled' : 'disabled}`};'
     }
     
     /**
@@ -561,7 +555,7 @@ export class VisualFocusManager {'
         this.state.animationTimers.clear();
         
         // DOM要素の削除
-        Object.values(this.elements).forEach(element => {  ),
+        Object.values(this.elements).forEach(element => {  );
             if (element && element.parentNode) { }
                 element.parentNode.removeChild(element'); }'
             }'}');
@@ -577,7 +571,7 @@ export class VisualFocusManager {'
         
         // 全てのフォーカス関連クラスを削除
         document.querySelectorAll(`.${ this.cssClasses.focusVisible)`}.forEach(el => {}
-            el.classList.remove(this.cssClasses.focusVisible});'}');
+            el.classList.remove(this.cssClasses.focusVisible};'}');
 
         document.querySelectorAll('.visual-focus-landmark'.forEach(el => {  '),' }
 

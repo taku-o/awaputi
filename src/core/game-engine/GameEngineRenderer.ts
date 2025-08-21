@@ -4,7 +4,7 @@
  */
 // import { getPerformanceOptimizer  } from '../../utils/PerformanceOptimizer.js';
 
-interface GameEngine { context: CanvasRenderingContext2D,
+interface GameEngine { context: CanvasRenderingContext2D;
     canvas: HTMLCanvasElement;
     renderOptimizer?: any;
     effectManager?: any;
@@ -18,12 +18,12 @@ interface GameEngine { context: CanvasRenderingContext2D,
     debugMode?: boolean;
     debugInterface?: any,  }
 export class GameEngineRenderer { private gameEngine: GameEngine;
-    private screenShake: { active: boolean, duration: number, intensity: number,, elapsed: number,;
+    private screenShake: { active: boolean, duration: number, intensity: number,, elapsed: number;
     constructor(gameEngine: GameEngine) {
         this.gameEngine = gameEngine;
         this.screenShake = {
-            active: false,
-            duration: 0,
+            active: false;
+            duration: 0;
     intensity: 0
 }
             elapsed: 0 ;
@@ -81,7 +81,7 @@ export class GameEngineRenderer { private gameEngine: GameEngine;
      * @param intensity - 揺れの強度
      */
     startScreenShake(duration: number, intensity: number): void { this.screenShake = {
-            active: true;
+            active: true,
             duration,
             intensity,
             elapsed: 0 

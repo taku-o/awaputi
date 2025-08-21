@@ -9,27 +9,27 @@ export class ComparisonResultRenderer {
         // レンダリング設定
         this.renderConfig = {
             colors: {
-                improved: '#4CAF50',
-                declined: '#F44336',
-                stable: '#9E9E9E',
-                excellent: '#FFD700',
+                improved: '#4CAF50';
+                declined: '#F44336';
+                stable: '#9E9E9E';
+                excellent: '#FFD700';
                 average: '#2196F3' }
 
                 needsImprovement: '#FF9800' 
     };
             icons: { ''
-                improved: '↑',
-                declined: '↓',
-                stable: '→',
-                excellent: '★',
-                average: '●',
+                improved: '↑';
+                declined: '↓';
+                stable: '→';
+                excellent: '★';
+                average: '●';
                 needsImprovement: '△'
             };
             formats: {
                 percentage: (value) => `${value.toFixed(1})%`;
-                number: (value) => value.toLocaleString(),
-                time: (value) => this.formatTime(value),
-                score: (value) => Math.round(value).toLocaleString(),
+                number: (value) => value.toLocaleString();
+                time: (value) => this.formatTime(value);
+                score: (value) => Math.round(value).toLocaleString();
     }
     
     /**
@@ -39,7 +39,7 @@ export class ComparisonResultRenderer {
      * @returns {Object} サマリー
      */
     generateComparisonSummary(comparisons, metrics) {
-        const availableComparisons = Object.values(comparisons).filter(c => c.available),
+        const availableComparisons = Object.values(comparisons).filter(c => c.available);
         if (availableComparisons.length === 0) {
     }
 
@@ -63,7 +63,7 @@ export class ComparisonResultRenderer {
         } else if (totalDeclines > totalImprovements) { ''
             overallAssessment = 'declining' }
 
-        return { available: true,
+        return { available: true;
             overallAssessment,
             totalImprovements,
             totalDeclines,
@@ -93,11 +93,11 @@ export class ComparisonResultRenderer {
 
         const performanceRatio = { above_average: total > 0 ? (above_average / total) * 100 : 0,
             average: total > 0 ? (average / total) * 100 : 0,
-            below_average: total > 0 ? (below_average / total) * 100 : 0  };
+            below_average: total > 0 ? (below_average / total) * 100 : 0  },
         return { overallPerformance,
             performanceRatio,
             strongMetrics: this.identifyStrongMetrics(comparison,
-    weakMetrics: this.identifyWeakMetrics(comparison) };
+    weakMetrics: this.identifyWeakMetrics(comparison) },
             analysis: this.generateBenchmarkAnalysis(comparison); 
     }
     
@@ -108,9 +108,8 @@ export class ComparisonResultRenderer {
      * @returns {Object} ステージサマリー
      */
     generateStageComparisonSummary(stageComparisons, metrics) {
-        const availableComparisons = Object.values(stageComparisons),
-            .filter(c => c.comparison && c.comparison.available),
-
+        const availableComparisons = Object.values(stageComparisons);
+            .filter(c => c.comparison && c.comparison.available);
         if (availableComparisons.length === 0) {
     }
 
@@ -123,7 +122,7 @@ export class ComparisonResultRenderer {
         let totalDeclines = 0;
         const stagesByCategory = { tutorial: [],
             normal: [],
-    special: []  };
+    special: []  },
         availableComparisons.forEach(stage => {  totalImprovements += stage.comparison.improvements || 0)
             totalDeclines += stage.comparison.declines || 0),
             const category = this.categorizeStage(stage.stageId) }
@@ -146,7 +145,7 @@ export class ComparisonResultRenderer {
             totalDeclines,
             stageCount: availableComparisons.length,
             stagesByCategory,
-            details: this.generateStageAnalysisDetails(stageComparisons) };
+            details: this.generateStageAnalysisDetails(stageComparisons) },
             recommendations: this.generateStageRecommendations(stageComparisons); 
     }
     
@@ -165,7 +164,7 @@ export class ComparisonResultRenderer {
 
 ' }'
 
-            Object.entries(comparison.metrics || {}).forEach(([metricName, metric]) => { ''
+            Object.entries(comparison.metrics || {}.forEach(([metricName, metric]) => { ''
                 if (metric.trend === 'improved' && Math.abs(metric.changePercent) > 10) {
                     analysis.strengths.push({
                         metric: metricName),
@@ -175,12 +174,12 @@ export class ComparisonResultRenderer {
                         value: metric.current),' }'
 
                     }');} else if (metric.trend === 'declined' && Math.abs(metric.changePercent) > 10) { analysis.weaknesses.push({'
-                        metric: metricName),
+                        metric: metricName);
                         period: period,
     decline: metric.changePercent),
                         value: metric.current  }
-            });
-        });
+            };
+        };
 
         if (analysis.weaknesses.length > 0) { analysis.opportunities = this.identifyOpportunities(analysis.weaknesses) }
 
@@ -198,7 +197,7 @@ export class ComparisonResultRenderer {
     improvements: [] }
             insights: [] 
     };
-        Object.entries(comparison.metrics || {}).forEach(([metricName, metric]) => { ''
+        Object.entries(comparison.metrics || {}.forEach(([metricName, metric]) => { ''
             if(metric.performance === 'above_average' {'
                 analysis.strengths.push({
                     metric: metricName,
@@ -209,11 +208,11 @@ export class ComparisonResultRenderer {
 
                 }');'} else if(metric.performance === 'below_average' { analysis.improvements.push({'
                     metric: metricName,
-                    percentileRank: metric.percentileRank),
+                    percentileRank: metric.percentileRank);
                     value: metric.current,
     difference: metric.differencePercent),
                     targetValue: metric.benchmark.median  }
-        });
+        };
 
         // インサイトの生成
         if (analysis.improvements.length > 0) {
@@ -224,9 +223,9 @@ export class ComparisonResultRenderer {
             analysis.insights.push({ }
 
                 type: 'improvement_priority'
-            });
+            };
                 message: `${worstMetric.metric}の改善を優先的に行うことで、全体的なパフォーマンスが向上する可能性があります`)
-                metric: worstMetric);
+                metric: worstMetric),
         }
 
         if (analysis.strengths.length > 0) {
@@ -246,17 +245,16 @@ export class ComparisonResultRenderer {
      * @returns {Object} ステージ分析詳細
      */
     generateStageAnalysisDetails(stageComparisons) { const details = { }
-            byCategory: {};
-            excellentStages: [];
+            byCategory: {},
+            excellentStages: [],
             improvingStages: [],
-    strugglingStages: [];
+    strugglingStages: [],
         },
 
         Object.entries(stageComparisons).forEach(([stageId, stageData]) => {  if (!stageData.comparison || !stageData.comparison.available) return,
 
-            const category = this.categorizeStage(stageId),
-            const performance = this.assessStagePerformance(stageData.current, stageData.comparison.metrics),
-
+            const category = this.categorizeStage(stageId);
+            const performance = this.assessStagePerformance(stageData.current, stageData.comparison.metrics);
             if (!details.byCategory[category]) {
 
                 details.byCategory[category] = {
@@ -283,7 +281,7 @@ export class ComparisonResultRenderer {
                 details.improvingStages.push(stageId),' }'
 
             } else if (performance.grade === 'D' || performance.grade === 'F) { details.strugglingStages.push(stageId) }'
-        });
+        };
 
         return details;
     }
@@ -304,7 +302,7 @@ export class ComparisonResultRenderer {
 
 ' }'
 
-            const performance = this.assessStagePerformance(stageData.current, {});
+            const performance = this.assessStagePerformance(stageData.current, {};
 
             if (performance.grade = == 'D' || performance.grade === 'F) { weakStages.push({)'
                     stageId,
@@ -313,7 +311,7 @@ export class ComparisonResultRenderer {
                     weaknesses: this.identifyStageWeaknesses(stageData.current),' }'
 
                 }');'} else if (stageData.comparison.overallTrend === 'improving) { improvingStages.push(stageId) }'
-        });
+        };
 
         if (weakStages.length > 0) {
             recommendations.push({''
@@ -342,8 +340,8 @@ export class ComparisonResultRenderer {
      * @returns {string} フォーマットされた時間
      */
     formatTime(milliseconds) {
-        const seconds = Math.floor(milliseconds / 1000),
-        const minutes = Math.floor(seconds / 60),
+        const seconds = Math.floor(milliseconds / 1000);
+        const minutes = Math.floor(seconds / 60);
         const hours = Math.floor(minutes / 60) }
         if (hours > 0) { }
             return `${hours}時間${minutes % 60}分`;
@@ -415,7 +413,7 @@ export class ComparisonResultRenderer {
 
         return { score: averageScore,
             grade,
-            strengths: this.identifyStageStrengths(stageData) };
+            strengths: this.identifyStageStrengths(stageData) },
             weaknesses: this.identifyStageWeaknesses(stageData); 
     }
     
@@ -492,11 +490,11 @@ export class ComparisonResultRenderer {
     
 }
 
-        return Object.entries(comparison.metrics || {})
+        return Object.entries(comparison.metrics || {}
             .filter(([_, metric]) => metric.performance === 'above_average');
             .map(([name, metric]) => ({ name,
                 percentileRank: metric.percentileRank,
-    value: metric.current  })
+    value: metric.current  }
             .sort((a, b) => b.percentileRank - a.percentileRank);
     }
     
@@ -509,12 +507,12 @@ export class ComparisonResultRenderer {
     
 }
 
-        return Object.entries(comparison.metrics || {})
+        return Object.entries(comparison.metrics || {}
             .filter(([_, metric]) => metric.performance === 'below_average');
             .map(([name, metric]) => ({ name,
                 percentileRank: metric.percentileRank,
                 value: metric.current,
-    targetValue: metric.benchmark.median  })
+    targetValue: metric.benchmark.median  }
             .sort((a, b) => a.percentileRank - b.percentileRank);
     }
     

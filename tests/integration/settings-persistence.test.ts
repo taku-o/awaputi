@@ -37,9 +37,9 @@ const mockAccessibilitySettingsManager = {
     switchProfile: jest.fn(
     exportSettings: jest.fn(
     importSettings: jest.fn(
-        getStats: jest.fn( };
+        getStats: jest.fn( },
 const mockErrorHandler = {
-    handleError: jest.fn( };
+    handleError: jest.fn( },
 const mockLocalizationManager = {
     getText: jest.fn()' };'
 // モジュールのモック
@@ -54,12 +54,12 @@ describe('Settings Persistence (Issue #170')', () => {'
     beforeEach((') => {'
         // DOM環境をセットアップ
         document.body.innerHTML = ','
-        parentContainer = document.createElement('div'),
-        document.body.appendChild(parentContainer),
+        parentContainer = document.createElement('div');
+        document.body.appendChild(parentContainer);
         // LocalStorage をクリア
-        localStorageMock.clear(),
+        localStorageMock.clear();
         // モックをリセット
-        jest.clearAllMocks(),
+        jest.clearAllMocks();
         // デフォルト翻訳を設定
         mockLocalizationManager.getText.mockImplementation((key') => {'
             const translations = {
@@ -67,7 +67,7 @@ describe('Settings Persistence (Issue #170')', () => {'
                 'settings.accessibility.profile': 'Accessibility Profile'
             };
             return translations[key] || key;
-        });
+        };
         // デフォルト設定を模倣
         mockGameEngine.settingsManager.getDefaultValue.mockImplementation((key') => {'
             const defaults = {
@@ -75,32 +75,32 @@ describe('Settings Persistence (Issue #170')', () => {'
                 'accessibility.currentProfile': 'default'
             };
             return defaults[key];
-        });
+        };
     }
     afterEach((') => {'
         document.body.innerHTML = ' }');
     describe('Volume Settings Persistence', (') => {'
         test('should save volume changes to localStorage through SettingsManager', () => {
             // 初期音量を設定
-            mockGameEngine.settingsManager.get.mockReturnValue(0.5),
-            const volumeComponent = new VolumeControlComponent(mockGameEngine),
-            volumeComponent.initialize(parentContainer),
+            mockGameEngine.settingsManager.get.mockReturnValue(0.5);
+            const volumeComponent = new VolumeControlComponent(mockGameEngine);
+            volumeComponent.initialize(parentContainer);
             // 音量を変更
-            volumeComponent.handleVolumeUp(),
+            volumeComponent.handleVolumeUp();
             // SettingsManager.set が呼ばれることを確認
             expect(mockGameEngine.settingsManager.set').toHaveBeenCalledWith('masterVolume', 0.6),'
             volumeComponent.dispose() }');'
         test('should restore volume settings on component initialization', () => {
             // 保存されている音量を模倣
-            mockGameEngine.settingsManager.get.mockReturnValue(0.8),
-            const volumeComponent = new VolumeControlComponent(mockGameEngine),
+            mockGameEngine.settingsManager.get.mockReturnValue(0.8);
+            const volumeComponent = new VolumeControlComponent(mockGameEngine);
             // コンポーネント初期化時に保存された値が読み込まれることを確認
-            expect(volumeComponent.currentVolume).toBe(0.8),
+            expect(volumeComponent.currentVolume).toBe(0.8);
             expect(mockGameEngine.settingsManager.get').toHaveBeenCalledWith('masterVolume'),'
             volumeComponent.dispose() }');'
         test('should handle volume settings persistence failure gracefully', () => {
             mockGameEngine.settingsManager.set.mockImplementation((') => {'
-                throw new Error('Storage error') });
+                throw new Error('Storage error') };
             const volumeComponent = new VolumeControlComponent(mockGameEngine);
             volumeComponent.initialize(parentContainer);
             // エラーが発生してもコンポーネントは動作継続
@@ -112,11 +112,11 @@ describe('Settings Persistence (Issue #170')', () => {'
         }');'
         test('should fallback to default when stored volume is invalid', () => {
             // 無効な値を返すように設定
-            mockGameEngine.settingsManager.get.mockReturnValue(null),
-            mockGameEngine.settingsManager.getDefaultValue.mockReturnValue(0.5),
-            const volumeComponent = new VolumeControlComponent(mockGameEngine),
+            mockGameEngine.settingsManager.get.mockReturnValue(null);
+            mockGameEngine.settingsManager.getDefaultValue.mockReturnValue(0.5);
+            const volumeComponent = new VolumeControlComponent(mockGameEngine);
             // デフォルト値にフォールバック
-            expect(volumeComponent.currentVolume).toBe(0.5),
+            expect(volumeComponent.currentVolume).toBe(0.5);
             volumeComponent.dispose() }');'
     }
     describe('Accessibility Profile Persistence', (') => {'
@@ -128,7 +128,7 @@ describe('Settings Persistence (Issue #170')', () => {'
             mockAccessibilitySettingsManager.getAvailableProfiles.mockReturnValue([
                 { name: 'default', displayName: 'Default' },
                 { name: 'highContrast', displayName: 'High Contrast'
-            });
+            };
             ]);
             mockAccessibilitySettingsManager.switchProfile.mockReturnValue(true);
             const profileComponent = new AccessibilityProfileComponent(mockGameEngine, mockAccessibilitySettingsManager);
@@ -147,7 +147,7 @@ describe('Settings Persistence (Issue #170')', () => {'
             mockAccessibilitySettingsManager.getAvailableProfiles.mockReturnValue([
                 { name: 'default', displayName: 'Default' },
                 { name: 'highContrast', displayName: 'High Contrast'
-            });
+            };
             ]);
             const profileComponent = new AccessibilityProfileComponent(mockGameEngine, mockAccessibilitySettingsManager);
             profileComponent.initialize(parentContainer);
@@ -158,7 +158,7 @@ describe('Settings Persistence (Issue #170')', () => {'
         }');'
         test('should handle profile persistence failure gracefully', () => {
             mockAccessibilitySettingsManager.switchProfile.mockImplementation((') => {'
-                throw new Error('Profile storage error') });
+                throw new Error('Profile storage error') };
             const profileComponent = new AccessibilityProfileComponent(mockGameEngine, mockAccessibilitySettingsManager);
             profileComponent.initialize(parentContainer');'
             // エラーが発生してもコンポーネントは動作継続
@@ -182,12 +182,12 @@ describe('Settings Persistence (Issue #170')', () => {'
             mockAccessibilitySettingsManager.exportSettings.mockReturnValue(true);
             mockAccessibilitySettingsManager.getStats.mockReturnValue({
                 exportCount: 1),
-            const importExportComponent = new SettingsImportExportComponent(mockGameEngine, mockAccessibilitySettingsManager),
-            importExportComponent.initialize(parentContainer),
+            const importExportComponent = new SettingsImportExportComponent(mockGameEngine, mockAccessibilitySettingsManager);
+            importExportComponent.initialize(parentContainer);
             // エクスポート実行
-            const result = importExportComponent.handleExport(),
-            expect(result.toBe(true),
-            expect(mockAccessibilitySettingsManager.exportSettings).toHaveBeenCalled(),
+            const result = importExportComponent.handleExport();
+            expect(result.toBe(true);
+            expect(mockAccessibilitySettingsManager.exportSettings).toHaveBeenCalled();
             importExportComponent.dispose() }');'
         test('should import and apply settings correctly', async (') => {'
             const mockImportData = {
@@ -203,22 +203,22 @@ describe('Settings Persistence (Issue #170')', () => {'
             const importExportComponent = new SettingsImportExportComponent(mockGameEngine, mockAccessibilitySettingsManager);
             importExportComponent.initialize(parentContainer');'
             // モックファイルを作成
-            const mockFile = new File([JSON.stringify(mockImportData], 'settings.json', { type: 'application/json' ),
+            const mockFile = new File([JSON.stringify(mockImportData], 'settings.json', { type: 'application/json' );
             // インポート実行
-            const result = await importExportComponent.handleImport(mockFile),
-            expect(result.toBe(true),
-            expect(mockAccessibilitySettingsManager.importSettings).toHaveBeenCalledWith(mockFile),
+            const result = await importExportComponent.handleImport(mockFile);
+            expect(result.toBe(true);
+            expect(mockAccessibilitySettingsManager.importSettings).toHaveBeenCalledWith(mockFile);
             importExportComponent.dispose() }');'
         test('should handle malformed import files gracefully', async (') => {'
-            mockAccessibilitySettingsManager.importSettings.mockRejectedValue(new Error('Invalid file format'),
-            const importExportComponent = new SettingsImportExportComponent(mockGameEngine, mockAccessibilitySettingsManager),
+            mockAccessibilitySettingsManager.importSettings.mockRejectedValue(new Error('Invalid file format');
+            const importExportComponent = new SettingsImportExportComponent(mockGameEngine, mockAccessibilitySettingsManager);
             importExportComponent.initialize(parentContainer'),'
             // 無効なファイルを作成
             const invalidFile = new File(['invalid json'], 'invalid.json', { type: 'application/json' ,
             // インポート実行（エラーを期待）
-            const result = await importExportComponent.handleImport(invalidFile),
-            expect(result.toBe(false),
-            expect(mockErrorHandler.handleError).toHaveBeenCalled(),
+            const result = await importExportComponent.handleImport(invalidFile);
+            expect(result.toBe(false);
+            expect(mockErrorHandler.handleError).toHaveBeenCalled();
             importExportComponent.dispose() }');'
         test('should include relevant settings in export', (') => {'
             const mockSettings = {
@@ -236,8 +236,9 @@ describe('Settings Persistence (Issue #170')', () => {'
                 // エクスポート処理のシミュレーション
                 const exportData = {
                     timestamp: new Date().toISOString(),
-                    settings: mockSettings,;
-                
+                    settings: mockSettings,
+                    settings: mockSettings,
+        };
                 if (includeProfiles') {'
                     exportData.profiles = {
                         'highContrast': { name: 'High Contrast', settings: {} }
@@ -245,7 +246,7 @@ describe('Settings Persistence (Issue #170')', () => {'
                 }
                 
                 return true;
-            });
+            };
             const importExportComponent = new SettingsImportExportComponent(mockGameEngine, mockAccessibilitySettingsManager);
             importExportComponent.initialize(parentContainer);
             const result = importExportComponent.handleExport();
@@ -256,23 +257,23 @@ describe('Settings Persistence (Issue #170')', () => {'
     describe('Settings Persistence Across Game Sessions', (') => {'
         test('should maintain settings after game restart simulation', () => {
             // 第1セッション: 設定を変更
-            mockGameEngine.settingsManager.get.mockReturnValue(0.5),
-            const volumeComponent1 = new VolumeControlComponent(mockGameEngine),
-            volumeComponent1.initialize(parentContainer),
-            volumeComponent1.handleVolumeUp(),
+            mockGameEngine.settingsManager.get.mockReturnValue(0.5);
+            const volumeComponent1 = new VolumeControlComponent(mockGameEngine);
+            volumeComponent1.initialize(parentContainer);
+            volumeComponent1.handleVolumeUp();
             expect(mockGameEngine.settingsManager.set').toHaveBeenCalledWith('masterVolume', 0.6),'
-            volumeComponent1.dispose(),
+            volumeComponent1.dispose();
             // ゲーム再起動をシミュレート（新しいコンポーネントインスタンス）
             mockGameEngine.settingsManager.get.mockReturnValue(0.6), // 保存された値
             
-            const volumeComponent2 = new VolumeControlComponent(mockGameEngine),
+            const volumeComponent2 = new VolumeControlComponent(mockGameEngine);
             // 設定が保持されていることを確認
-            expect(volumeComponent2.currentVolume).toBe(0.6),
+            expect(volumeComponent2.currentVolume).toBe(0.6);
             volumeComponent2.dispose() }');'
         test('should handle localStorage quota exceeded gracefully', () => {
             // localStorage の容量制限をシミュレート
             mockGameEngine.settingsManager.set.mockImplementation((') => {'
-                throw new Error('QuotaExceededError') });
+                throw new Error('QuotaExceededError') };
             const volumeComponent = new VolumeControlComponent(mockGameEngine);
             volumeComponent.initialize(parentContainer);
             // エラーが発生してもアプリケーションは動作継続
@@ -285,7 +286,7 @@ describe('Settings Persistence (Issue #170')', () => {'
         test('should fallback to defaults when settings fail to load', () => {
             // 設定読み込みエラーをシミュレート
             mockGameEngine.settingsManager.get.mockImplementation((') => {'
-                throw new Error('Settings load error') });
+                throw new Error('Settings load error') };
             mockGameEngine.settingsManager.getDefaultValue.mockReturnValue(0.5);
             const volumeComponent = new VolumeControlComponent(mockGameEngine);
             // デフォルト値にフォールバック
@@ -295,11 +296,11 @@ describe('Settings Persistence (Issue #170')', () => {'
         }');'
         test('should recover from corrupted settings data', (') => {'
             // 破損したデータをシミュレート
-            mockGameEngine.settingsManager.get.mockReturnValue('corrupted_data'),
-            mockGameEngine.settingsManager.getDefaultValue.mockReturnValue(0.5),
-            const volumeComponent = new VolumeControlComponent(mockGameEngine),
+            mockGameEngine.settingsManager.get.mockReturnValue('corrupted_data');
+            mockGameEngine.settingsManager.getDefaultValue.mockReturnValue(0.5);
+            const volumeComponent = new VolumeControlComponent(mockGameEngine);
             // 無効なデータの場合はデフォルト値を使用
-            expect(volumeComponent.currentVolume).toBe(0.5),
+            expect(volumeComponent.currentVolume).toBe(0.5);
             volumeComponent.dispose() }');'
         test('should validate imported settings data', async (') => {'
             // 無効なデータ構造をシミュレート
@@ -315,10 +316,10 @@ describe('Settings Persistence (Issue #170')', () => {'
             mockAccessibilitySettingsManager.importSettings.mockRejectedValue(new Error('Invalid settings data');
             const importExportComponent = new SettingsImportExportComponent(mockGameEngine, mockAccessibilitySettingsManager);
             importExportComponent.initialize(parentContainer');'
-            const invalidFile = new File([JSON.stringify(invalidImportData], 'invalid.json', { type: 'application/json' ),
-            const result = await importExportComponent.handleImport(invalidFile),
-            expect(result.toBe(false),
-            expect(mockErrorHandler.handleError).toHaveBeenCalled(),
-            importExportComponent.dispose() });
+            const invalidFile = new File([JSON.stringify(invalidImportData], 'invalid.json', { type: 'application/json' );
+            const result = await importExportComponent.handleImport(invalidFile);
+            expect(result.toBe(false);
+            expect(mockErrorHandler.handleError).toHaveBeenCalled();
+            importExportComponent.dispose() };
     }
 }');'

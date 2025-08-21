@@ -4,21 +4,21 @@
  */
 
 // Configuration change interfaces
-interface GlobalConfigChange { key: string,
+interface GlobalConfigChange { key: string;
     newValue: any;
     oldValue: any;
     metadata?: {
-        timestam,p: number,
+        timestam,p: number;
         source?: string;
         reason?: string,  }
 
-interface ConfigFileChange { type: 'modified' | 'added' | 'deleted',
+interface ConfigFileChange { type: 'modified' | 'added' | 'deleted';
     file: string;
     key?: string;
     timestamp: number;
 
 // Configuration recommendation interfaces
-interface ConfigRecommendation { key: string,
+interface ConfigRecommendation { key: string;
     value: any;
     reason: string;
     confidence: number;
@@ -38,13 +38,13 @@ interface ConfigNotification { ''
     timestamp: number;
 
 // System integration interfaces
-interface OptimizationSystems { frameStabilizer: any | null,
+interface OptimizationSystems { frameStabilizer: any | null;
     memoryManager: any | null;
     qualityController: any | null;
     renderOptimizer: any | null;
     mobileOptimizer: any | null }
 
-interface ActiveIntegrations { configurationManager: boolean,
+interface ActiveIntegrations { configurationManager: boolean;
     frameStabilizer: boolean;
     memoryManager: boolean;
     qualityController: boolean;
@@ -52,7 +52,7 @@ interface ActiveIntegrations { configurationManager: boolean,
     mobileOptimizer: boolean;
     monitoringSystem: boolean;
 
-interface MonitorStatus { integrations: ActiveIntegrations,
+interface MonitorStatus { integrations: ActiveIntegrations;
     lastSyncTime: number | null;
     pendingChanges: SyncChange[];
     watchingFiles: boolean;
@@ -101,16 +101,16 @@ export class ConfigurationMonitor {
     private configWatcher: ConfigFileWatcher | null;
     private syncManager: ConfigSyncManager;
     private notificationSystem: ConfigNotificationSystem;
-    private, errorHandler: ErrorHandler | null,
+    private, errorHandler: ErrorHandler | null;
     constructor(mainController: MainController) {
 
         this.mainController = mainController;
         this.optimizationSystems = {
-            frameStabilizer: null,
-            memoryManager: null,
-            qualityController: null,
-    renderOptimizer: null,
-            mobileOptimizer: null,;
+            frameStabilizer: null;
+            memoryManager: null;
+            qualityController: null;
+    renderOptimizer: null;
+            mobileOptimizer: null;
         this.globalConfigManager = null;
         this.monitoringSystem = null;
         this.configWatcher = null;
@@ -123,10 +123,9 @@ export class ConfigurationMonitor {
     /**
      * Initialize monitor components
      */
-    async initialize(): Promise<void> { await this.syncManager.initialize(),
-        await this.notificationSystem.initialize(),
-
-        await this.setupIntegrations(),
+    async initialize(): Promise<void> { await this.syncManager.initialize();
+        await this.notificationSystem.initialize();
+        await this.setupIntegrations();
         this.startConfigurationWatching()','
         console.log('[ConfigurationMonitor] All, monitor components, initialized') }'
     
@@ -134,11 +133,9 @@ export class ConfigurationMonitor {
      * Setup system integrations
      */
     private async setupIntegrations(): Promise<void> { // ConfigurationManager との統合
-        await this.integrateWithConfigurationManager(),
-        
+        await this.integrateWithConfigurationManager();
         // パフォーマンス最適化システムとの統合
-        await this.integrateWithOptimizationSystems(),
-        
+        await this.integrateWithOptimizationSystems();
         // 監視システムとの統合
         await this.integrateWithMonitoringSystems() }
     
@@ -159,7 +156,7 @@ export class ConfigurationMonitor {
 }
                 this.globalConfigManager.watch(key, (newValue: any, oldValue: any) => {  }
                     this.handleGlobalConfigChange(key, newValue, oldValue); }
-                });
+                };
             }
 }
     
@@ -212,7 +209,7 @@ export class ConfigurationMonitor {
          }
                 if (this.optimizationSystems.frameStabilizer) { }
                     this.optimizationSystems.frameStabilizer.updateConfiguration(config); }
-});
+};
         }
     }
     
@@ -226,7 +223,7 @@ export class ConfigurationMonitor {
          }
                 if (this.optimizationSystems.memoryManager) { }
                     this.optimizationSystems.memoryManager.updateConfiguration(config); }
-});
+};
         }
     }
     
@@ -240,7 +237,7 @@ export class ConfigurationMonitor {
          }
                 if (this.optimizationSystems.qualityController) { }
                     this.optimizationSystems.qualityController.updateConfiguration(config); }
-});
+};
         }
     }
     
@@ -254,7 +251,7 @@ export class ConfigurationMonitor {
          }
                 if (this.optimizationSystems.renderOptimizer) { }
                     this.optimizationSystems.renderOptimizer.updateConfiguration(config); }
-});
+};
         }
     }
     
@@ -268,7 +265,7 @@ export class ConfigurationMonitor {
          }
                 if (this.optimizationSystems.mobileOptimizer) { }
                     this.optimizationSystems.mobileOptimizer.updateConfiguration(config); }
-});
+};
         }
     }
     
@@ -293,7 +290,7 @@ export class ConfigurationMonitor {
     private startConfigurationWatching(): void { this.configWatcher = new ConfigFileWatcher();
         this.configWatcher.onConfigChange((changedConfigs: ConfigFileChange[]) => {  }
             this.handleConfigFileChanges(changedConfigs); }
-        });
+        };
         this.configWatcher.startWatching();
     }
     
@@ -304,8 +301,7 @@ export class ConfigurationMonitor {
      * @param oldValue - Old value
      */
     async handleGlobalConfigChange(key: string, newValue: any, oldValue: any): Promise<void> {
-        console.log(`[ConfigurationMonitor] Global config change detected: ${key}`, { newValue, oldValue ),
-        
+        console.log(`[ConfigurationMonitor] Global config change detected: ${key}`, { newValue, oldValue );
         try {
             // バックアップの作成
             if (this.mainController.backupManager) {
@@ -330,8 +326,7 @@ export class ConfigurationMonitor {
      * @param metrics - Performance metrics
      */
     async handlePerformanceFeedback(metrics: Map<string, any>): Promise<void> { // パフォーマンスメトリクスに基づく自動設定調整
-        const recommendations = await this.generateConfigRecommendations(metrics),
-        
+        const recommendations = await this.generateConfigRecommendations(metrics);
         for (const recommendation of recommendations) {
         ','
 
@@ -426,15 +421,14 @@ export class ConfigurationMonitor {
      * @param changedConfigs - Changed configuration files'
      */''
     async handleConfigFileChanges(changedConfigs: ConfigFileChange[]): Promise<void> { ''
-        console.log('[ConfigurationMonitor] Config file changes detected:', changedConfigs),
-        
+        console.log('[ConfigurationMonitor] Config file changes detected:', changedConfigs);
         for (const change of changedConfigs) {
         
             try {
     
 }
                 await this.processConfigFileChange(change); }
-            } catch (error) { console.error(`[ConfigurationMonitor] Failed to process config file change:`, error),
+            } catch (error) { console.error(`[ConfigurationMonitor] Failed to process config file change:`, error);
                 if (this.errorHandler) {
     
 }
@@ -451,12 +445,10 @@ export class ConfigurationMonitor {
         switch(change.type) {
 
             case 'modified':','
-                await this.handleConfigModification(change),
-
+                await this.handleConfigModification(change);
                 break,
             case 'added':','
-                await this.handleConfigAddition(change),
-
+                await this.handleConfigAddition(change);
                 break,
             case 'deleted':,
                 await this.handleConfigDeletion(change) }
@@ -505,8 +497,7 @@ export class ConfigurationMonitor {
      * @param value - Configuration value
      */
     private async notifySystemsOfChange(key: string, value: any): Promise<void> { // 関連する最適化システムへの通知
-        const category = this.categorizeConfigKey(key),
-
+        const category = this.categorizeConfigKey(key);
         switch(category) {
 
             case 'frameStabilization':','
@@ -566,7 +557,7 @@ export class ConfigurationMonitor {
             memoryManager: !!this.optimizationSystems.memoryManager,
             qualityController: !!this.optimizationSystems.qualityController,
             renderOptimizer: !!this.optimizationSystems.renderOptimizer,
-    mobileOptimizer: !!this.optimizationSystems.mobileOptimizer };
+    mobileOptimizer: !!this.optimizationSystems.mobileOptimizer },
             monitoringSystem: !!this.monitoringSystem 
     }
     
@@ -575,9 +566,9 @@ export class ConfigurationMonitor {
      * @returns Monitor status
      */
     getMonitorStatus(): MonitorStatus { return { integrations: this.getActiveIntegrations(
-            lastSyncTime: this.syncManager.getLastSyncTime(),
+            lastSyncTime: this.syncManager.getLastSyncTime();
             pendingChanges: this.syncManager.getPendingChanges(
-    watchingFiles: !!this.configWatcher };
+    watchingFiles: !!this.configWatcher },
             notificationSubscribers: this.notificationSystem.getSubscriberCount(); 
     }
     
@@ -591,7 +582,7 @@ export class ConfigurationMonitor {
      * Configure monitor settings
      * @param config - Monitor configuration
      */
-    configure(config: { syncInterval?: number;
+    configure(config: { syncInterval?: number,
         enableFileWatching?: boolean)
     ): void {
         if (config.syncInterval) {
@@ -606,7 +597,7 @@ export class ConfigurationMonitor {
     
 }
                 this.startConfigurationWatching(); }
-            } else if (!config.enableFileWatching && this.configWatcher) { this.configWatcher.stopWatching(),
+            } else if (!config.enableFileWatching && this.configWatcher) { this.configWatcher.stopWatching();
                 this.configWatcher = null }
 }
     
@@ -666,21 +657,21 @@ class ConfigSyncManager { private lastSyncTime: number | null
 
     async syncGlobalChange(key: string, value: any): Promise<void> { }'
 
-        this.pendingChanges.add({ type: 'global', key, value, timestamp: Date.now(  });
+        this.pendingChanges.add({ type: 'global', key, value, timestamp: Date.now(  };
     }
 
     async syncConfigChange(key: string, value: any): Promise<void> { }'
 
-        this.pendingChanges.add({ type: 'local', key, value, timestamp: Date.now(  });
+        this.pendingChanges.add({ type: 'local', key, value, timestamp: Date.now(  };
     }
 
     async syncFileChange(change: ConfigFileChange): Promise<void> { }'
 
-        this.pendingChanges.add({ type: 'file', ...change, timestamp: Date.now(  });
+        this.pendingChanges.add({ type: 'file', ...change, timestamp: Date.now(  };
     }
 
     private async syncChange(change: SyncChange): Promise<void> { ''
-        console.log('[ConfigSyncManager] Syncing change:', change),
+        console.log('[ConfigSyncManager] Syncing change:', change);
         // 実装は要件に応じて }
 
     getLastSyncTime(): number | null { return this.lastSyncTime }
@@ -693,7 +684,7 @@ class ConfigSyncManager { private lastSyncTime: number | null
     }
 
     destroy(): void { if (this.syncInterval) {
-            clearInterval(this.syncInterval),
+            clearInterval(this.syncInterval);
             this.syncInterval = null }
         this.pendingChanges.clear();
     }
@@ -710,16 +701,15 @@ class ConfigNotificationSystem { private subscribers: Set<NotificationCallback>
 
     async initialize(): Promise<void> {}
 
-    subscribe(callback: NotificationCallback): UnsubscribeFunction { this.subscribers.add(callback),
-        return () => this.subscribers.delete(callback),
-
+    subscribe(callback: NotificationCallback): UnsubscribeFunction { this.subscribers.add(callback);
+        return () => this.subscribers.delete(callback);
     async notifyConfigChange(key: string, newValue: any, oldValue: any, metadata?: any): Promise<void> { const notification: ConfigNotification = {''
             type: 'config_change',
             key,
             newValue,
             oldValue,
             metadata,
-            timestamp: Date.now(  };
+            timestamp: Date.now(  },
 
         this.broadcast(notification);
     }
@@ -727,7 +717,7 @@ class ConfigNotificationSystem { private subscribers: Set<NotificationCallback>
     async notifyRecommendation(recommendation: ConfigRecommendation): Promise<void> { const notification: ConfigNotification = {''
             type: 'recommendation',
             recommendation,
-            timestamp: Date.now(  };
+            timestamp: Date.now(  },
 
         this.broadcast(notification);
     }
@@ -754,9 +744,8 @@ class ConfigFileWatcher { private watchers: Map<string, any>,
         this.watching = false; }
     }
 
-    onConfigChange(callback: ConfigFileChangeCallback): UnsubscribeFunction { this.changeCallbacks.add(callback),
-        return () => this.changeCallbacks.delete(callback),
-
+    onConfigChange(callback: ConfigFileChangeCallback): UnsubscribeFunction { this.changeCallbacks.add(callback);
+        return () => this.changeCallbacks.delete(callback);
     private notifyChange(changes: ConfigFileChange[]): void { for (const callback of this.changeCallbacks) {
             try {
                 callback(changes),' }'

@@ -9,7 +9,7 @@ interface ErrorHandler { ''
     handleError: (error: Error, context: string') => void  }'
 }
 
-interface ThresholdConfig { metric: string,
+interface ThresholdConfig { metric: string;
     warning: number;
     critical: number;
     evaluateBelow: boolean;
@@ -18,14 +18,14 @@ interface ThresholdConfig { metric: string,
     suggestions: string[];
     enabled?: boolean;
 
-interface WarningSystem { notifications: Notification[],
+interface WarningSystem { notifications: Notification[];
     maxNotifications: number;
     alertQueue: Alert[];
     alertHistory: Alert[];
     suppressionRules: Map<string, number>;
     escalationLevels: Map<string, EscalationLevel> }
 
-interface Notification { id: string,
+interface Notification { id: string;
     title: string;
     message: string;
     severity: 'warning' | 'critical';
@@ -39,20 +39,20 @@ interface NotificationAction { label: string,''
     action: () => void  }'
 }
 
-interface Alert { id: string,
+interface Alert { id: string;
     name: string;
     metric: string;
     description: string;
-    value: number,
-    threshold: number,
+    value: number;
+    threshold: number;
     severity: 'warning' | 'critical';
     unit: string;
     timestamp: number;
     suggestions: string[];
-    acknowledged: boolean,
+    acknowledged: boolean;
     escalated: boolean;
 
-interface EscalationLevel { level: number,
+interface EscalationLevel { level: number;
     timestamp: number;
     nextEscalation: number;
 
@@ -61,32 +61,32 @@ interface SuggestionEngine { suggestions: Map<string, Suggestion>,
     maxSuggestions: number;
     cooldownPeriod: number;
 
-interface Suggestion { id: string,
-    alert: string,
-    type: string,
+interface Suggestion { id: string;
+    alert: string;
+    type: string;
     priority: 'high' | 'medium' | 'low';
     title: string;
     description: string;
     category: string;
     timestamp: number;
-    applied: boolean,
+    applied: boolean;
     effectiveness: number | null  }
 
-interface MonitoringState { enabled: boolean,
+interface MonitoringState { enabled: boolean;
     intervalId: number | null;
     checkInterval: number;
     lastCheck: number;
     suppressionTimeout: number;
     criticalAlertTimeout: number;
 
-interface Statistics { totalChecks: number,
+interface Statistics { totalChecks: number;
     warningsTriggered: number;
     criticalAlertsTriggered: number;
     suggestionsGenerated: number;
     falsePositives: number;
     thresholdViolations: Map<string, ViolationStats> }
 
-interface ViolationStats { warning: number,
+interface ViolationStats { warning: number;
     critical: number;
     lastViolation: number;
 ';'
@@ -117,7 +117,7 @@ export class PerformanceThresholdMonitor {
     private warningSystem: WarningSystem;
     private monitoring: MonitoringState;
     private suggestionEngine: SuggestionEngine;
-    private, statistics: Statistics,
+    private, statistics: Statistics;
     private visibilityChangeHandler?: () => void,
 
     constructor(monitor: PerformanceMonitor) {
@@ -127,13 +127,12 @@ export class PerformanceThresholdMonitor {
         
         // 閾値設定
         this.thresholds = new Map();
-        this.setupDefaultThresholds(),
-        
+        this.setupDefaultThresholds();
         // 警告システム
-        this.warningSystem = { notifications: [],
-            maxNotifications: 50,
-            alertQueue: [],
-            alertHistory: [],
+        this.warningSystem = { notifications: [];
+            maxNotifications: 50;
+            alertQueue: [];
+            alertHistory: [];
     suppressionRules: new Map() }
      }
     }
@@ -146,25 +145,25 @@ export class PerformanceThresholdMonitor {
     checkInterval: 1000, // 1秒ごと,
             lastCheck: 0,
     suppressionTimeout: 5000, // 5秒間同じ警告を抑制,
-            criticalAlertTimeout: 30000 // 30秒間重要な警告を記憶  };
+            criticalAlertTimeout: 30000 // 30秒間重要な警告を記憶  },
         // 提案エンジン
         this.suggestionEngine = { suggestions: new Map(
             suggestionHistory: [],
             maxSuggestions: 10,
-    cooldownPeriod: 60000 // 1分間同じ提案を抑制  };
+    cooldownPeriod: 60000 // 1分間同じ提案を抑制  },
         // 統計
         this.statistics = { totalChecks: 0,
             warningsTriggered: 0,
             criticalAlertsTriggered: 0)
             suggestionsGenerated: 0),
             falsePositives: 0,
-    thresholdViolations: new Map(  };
+    thresholdViolations: new Map(  },
         )
         this.initialize();
     }
 
-    private initialize(): void { this.setupErrorHandler(),
-        this.startMonitoring(),
+    private initialize(): void { this.setupErrorHandler();
+        this.startMonitoring();
         this.setupEventListeners()','
         console.log('[PerformanceThresholdMonitor] Threshold, monitoring initialized') }''
 
@@ -288,7 +287,7 @@ export class PerformanceThresholdMonitor {
                 'Reduce CPU spikes',]','
                 'Optimize resource loading')],
             ]) }
-        console.log(`[PerformanceThresholdMonitor] ${this.thresholds.size} default, thresholds configured`});
+        console.log(`[PerformanceThresholdMonitor] ${this.thresholds.size} default, thresholds configured`};
     }
 
     /**
@@ -302,9 +301,9 @@ export class PerformanceThresholdMonitor {
             unit: config.unit || ','
             description: config.description || name,
             suggestions: config.suggestions || [],
-    enabled: config.enabled !== false  };
+    enabled: config.enabled !== false  },
         this.thresholds.set(name, threshold);
-        console.log(`[PerformanceThresholdMonitor] Threshold '${name}' configured`});
+        console.log(`[PerformanceThresholdMonitor] Threshold '${name}' configured`};
     }
 
     /**
@@ -325,7 +324,7 @@ export class PerformanceThresholdMonitor {
      * 閾値監視停止
      */'
     public stopMonitoring(): void { if (this.monitoring.intervalId) {''
-            clearInterval(this.monitoring.intervalId),
+            clearInterval(this.monitoring.intervalId);
             this.monitoring.intervalId = null }
 
         console.log('[PerformanceThresholdMonitor] Monitoring, stopped';
@@ -334,20 +333,19 @@ export class PerformanceThresholdMonitor {
     /**
      * 閾値チェック実行
      */
-    private checkThresholds(): void { const now = Date.now(),
+    private checkThresholds(): void { const now = Date.now();
         this.monitoring.lastCheck = now,
         this.statistics.totalChecks++,
 
         try {
-            const metrics = this.monitor.getCurrentMetrics(),
-            
+            const metrics = this.monitor.getCurrentMetrics();
             this.thresholds.forEach((threshold, name) => { 
                 if (!threshold.enabled) return,
                 
-                const value = this.getMetricValue(metrics, threshold.metric),
+                const value = this.getMetricValue(metrics, threshold.metric);
                 if (value === null || value === undefined) return }
                 this.evaluateThreshold(name, threshold, value, now); }
-            });
+            };
 
             // 警告処理
             this.processAlertQueue();
@@ -422,8 +420,8 @@ export class PerformanceThresholdMonitor {
     private updateViolationStatistics(name: string, severity: 'warning' | 'critical): void { if (!this.statistics.thresholdViolations.has(name) {'
             this.statistics.thresholdViolations.set(name, {
                 warning: 0,
-    critical: 0),
-                lastViolation: 0  })
+    critical: 0);
+                lastViolation: 0  }
 
         const stats = this.statistics.thresholdViolations.get(name)!;
 
@@ -438,18 +436,18 @@ export class PerformanceThresholdMonitor {
      * 警告生成'
      */''
     private generateAlert(name: string, threshold: ThresholdConfig, value: number, severity: 'warning' | 'critical', timestamp: number': void { const alert: Alert = { }'
-            id: `${name}_${timestamp}`;
-            name: name;
+            id: `${name}_${timestamp}`,
+            name: name,
             metric: threshold.metric,
     description: threshold.description,
             value: value,
-            threshold: severity === 'critical' ? threshold.critical : threshold.warning;
-            severity: severity;
-            unit: threshold.unit;
-            timestamp: timestamp;
-            suggestions: threshold.suggestions || [];
+            threshold: severity === 'critical' ? threshold.critical : threshold.warning,
+            severity: severity,
+            unit: threshold.unit,
+            timestamp: timestamp,
+            suggestions: threshold.suggestions || [],
             acknowledged: false,
-    escalated: false;
+    escalated: false,
         },
 
         this.warningSystem.alertQueue.push(alert);
@@ -458,7 +456,7 @@ export class PerformanceThresholdMonitor {
         // 抑制ルール設定
         this.setSuppression(name, severity, timestamp);
 
-        console.log(`[PerformanceThresholdMonitor] ${severity.toUpperCase(}) alert: ${name} = ${value}${threshold.unit}`);'
+        console.log(`[PerformanceThresholdMonitor] ${severity.toUpperCase(} alert: ${name} = ${value}${threshold.unit}`);'
     }
 
     /**
@@ -499,9 +497,9 @@ export class PerformanceThresholdMonitor {
             const alert = this.warningSystem.alertQueue.shift()!,
             
             // 通知作成
-            this.createNotification(alert),
+            this.createNotification(alert);
             // 提案生成
-            this.generateSuggestions(alert),
+            this.generateSuggestions(alert);
             ','
             // エスカレーション処理
             if(alert.severity === 'critical' { }
@@ -515,8 +513,8 @@ export class PerformanceThresholdMonitor {
     private createNotification(alert: Alert): void { const notification: Notification = {
             id: alert.id }
 
-            title: `Performance ${alert.severity.toUpperCase(})`;
-            message: `${alert.description}: ${alert.value.toFixed(2})${alert.unit} (threshold: ${alert.threshold}${alert.unit}')`;'
+            title: `Performance ${alert.severity.toUpperCase(}`,
+            message: `${alert.description}: ${alert.value.toFixed(2}${alert.unit} (threshold: ${alert.threshold}${alert.unit}')`;'
             severity: alert.severity,
             timestamp: alert.timestamp,
             persistent: alert.severity === 'critical',
@@ -573,20 +571,20 @@ export class PerformanceThresholdMonitor {
             id: `${alert.name}_${Date.now())_${ Math.random()'
             type: 'performance','}';
             priority: (alert.severity = == 'critical' ? 'high' : 'medium'} as 'high' | 'medium' | 'low' }
-            title: `${alert.description} Optimization`;
-            description: suggestion;
+            title: `${alert.description} Optimization`,
+            description: suggestion,
             category: this.categorizeSuggestion(suggestion);
             timestamp: Date.now();
             applied: false,
-    effectiveness: null;
-        }),
+    effectiveness: null,
+        },
 
-        suggestions.forEach(suggestion => {  ),
+        suggestions.forEach(suggestion => {  );
             if (!this.isSuggestionInCooldown(suggestion) {
                 this.suggestionEngine.suggestions.set(suggestion.id, suggestion) }
                 this.suggestionEngine.suggestionHistory.push(suggestion); }
                 this.statistics.suggestionsGenerated++; }
-});
+};
 
         // 提案数制限
         if (this.suggestionEngine.suggestions.size > this.suggestionEngine.maxSuggestions) {
@@ -628,9 +626,9 @@ export class PerformanceThresholdMonitor {
      */
     private handleCriticalAlert(alert: Alert): void { // エスカレーション設定
         this.warningSystem.escalationLevels.set(alert.id, {
-            level: 1),
+            level: 1);
             timestamp: Date.now(
-    nextEscalation: Date.now() + 30000 // 30秒後  });
+    nextEscalation: Date.now() + 30000 // 30秒後  },
         // 自動修復試行
         this.attemptAutoRecovery(alert);
     }
@@ -656,7 +654,7 @@ export class PerformanceThresholdMonitor {
             try {
         }
                 action(); }'
-                console.log(`[PerformanceThresholdMonitor] Auto-recovery, attempted for ${alert.name}`});
+                console.log(`[PerformanceThresholdMonitor] Auto-recovery, attempted for ${alert.name}`};
             } catch (error) {
                 console.error(`[PerformanceThresholdMonitor] Auto-recovery failed for ${alert.name}:`, error);
             }
@@ -665,12 +663,12 @@ export class PerformanceThresholdMonitor {
     /**
      * 警告確認
      */
-    public acknowledgeAlert(alertId: string): void { const alert = this.warningSystem.alertHistory.find(a => a.id === alertId),
+    public acknowledgeAlert(alertId: string): void { const alert = this.warningSystem.alertHistory.find(a => a.id === alertId);
         if (alert) {
     
 }
             alert.acknowledged = true; }
-            console.log(`[PerformanceThresholdMonitor] Alert, acknowledged: ${alertId}`});
+            console.log(`[PerformanceThresholdMonitor] Alert, acknowledged: ${alertId}`};
         }
 
         // 通知からも削除
@@ -685,10 +683,10 @@ export class PerformanceThresholdMonitor {
         console.log('[PerformanceThresholdMonitor] Alert Details:', { name: alert.name)
             description: alert.description,
     value: alert.value) }
-            threshold: alert.threshold);
-            severity: alert.severity);
+            threshold: alert.threshold),
+            severity: alert.severity),
             timestamp: new Date(alert.timestamp).toLocaleString(
-    suggestions: alert.suggestions  });
+    suggestions: alert.suggestions  };
     }
 
     /**
@@ -700,7 +698,7 @@ export class PerformanceThresholdMonitor {
             notification => !notification.persistent && ),
                            currentTime - notification.timestamp < maxAge),
 
-        this.warningSystem.alertHistory = this.warningSystem.alertHistory.filter(),
+        this.warningSystem.alertHistory = this.warningSystem.alertHistory.filter();
             alert => currentTime - alert.timestamp < 60 * 60 * 1000 // 1時間) }
     }
 
@@ -709,8 +707,8 @@ export class PerformanceThresholdMonitor {
      */''
     private setupEventListeners()';'
         if ('Notification' in, window && Notification.permission === 'default) { Notification.requestPermission().then(permission => {) }'
-                console.log(`[PerformanceThresholdMonitor] Notification, permission: ${permission}`});
-            });
+                console.log(`[PerformanceThresholdMonitor] Notification, permission: ${permission}`};
+            };
         }
 
         // ページ非表示時の処理
@@ -726,19 +724,18 @@ export class PerformanceThresholdMonitor {
     /**
      * パブリックAPI
      */
-    public getCurrentAlerts(): Notification[] { return this.warningSystem.notifications.filter(n => !n.acknowledged),
-
+    public getCurrentAlerts(): Notification[] { return this.warningSystem.notifications.filter(n => !n.acknowledged);
     public getAllAlerts(): Alert[] { return [...this.warningSystem.alertHistory],
 
     public getCurrentSuggestions(): Suggestion[] { return Array.from(this.suggestionEngine.suggestions.values()
-            .filter(s => !s.applied),
+            .filter(s => !s.applied);
             .sort((a, b) => { }
-                const priorityOrder = { high: 3, medium: 2, low: 1  };
+                const priorityOrder = { high: 3, medium: 2, low: 1  },
                 return priorityOrder[b.priority] - priorityOrder[a.priority];
-            });
+            };
     }
 
-    public getThresholdConfiguration(): Record<string, ThresholdConfig> { return Object.fromEntries(),
+    public getThresholdConfiguration(): Record<string, ThresholdConfig> { return Object.fromEntries();
             Array.from(this.thresholds.entries().map(([name, config]) => [name }]
                 { ...config]
             ])) }
@@ -746,18 +743,18 @@ export class PerformanceThresholdMonitor {
     public getStatistics(): any { return { ...this.statistics,
             thresholdViolations: Object.fromEntries(this.statistics.thresholdViolations,
     monitoring: { enabled: this.monitoring.enabled }
-                lastCheck: this.monitoring.lastCheck };
+                lastCheck: this.monitoring.lastCheck },
                 checkInterval: this.monitoring.checkInterval 
     };
             notifications: this.warningSystem.notifications.length;)
-           , activeSuggestions: this.suggestionEngine.suggestions.size);
-            });
+           , activeSuggestions: this.suggestionEngine.suggestions.size),
+            };
     /**
      * 設定更新
      */)
     public updateSettings(settings: Settings): void { if (settings.checkInterval) {
             this.monitoring.checkInterval = settings.checkInterval,
-            this.stopMonitoring(),
+            this.stopMonitoring();
             this.startMonitoring() }
 
         if (settings.suppressionTimeout) { this.monitoring.suppressionTimeout = settings.suppressionTimeout }
@@ -773,10 +770,9 @@ export class PerformanceThresholdMonitor {
     public reset(): void { this.warningSystem.notifications = [],
         this.warningSystem.alertQueue = [],
         this.warningSystem.alertHistory = [],
-        this.warningSystem.suppressionRules.clear(),
-        this.warningSystem.escalationLevels.clear(),
-        
-        this.suggestionEngine.suggestions.clear(),
+        this.warningSystem.suppressionRules.clear();
+        this.warningSystem.escalationLevels.clear();
+        this.suggestionEngine.suggestions.clear();
         this.suggestionEngine.suggestionHistory = [],
         
         this.statistics = { totalChecks: 0,
@@ -790,7 +786,7 @@ export class PerformanceThresholdMonitor {
     /**
      * クリーンアップ
      */
-    public destroy(): void { this.stopMonitoring(),
+    public destroy(): void { this.stopMonitoring();
         ','
         // イベントリスナー削除
         if (this.visibilityChangeHandler) {', ' }

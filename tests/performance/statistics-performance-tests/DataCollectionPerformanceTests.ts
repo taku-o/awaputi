@@ -22,9 +22,9 @@ export class DataCollectionPerformanceTests {
         describe('データ収集パフォーマンステスト', (') => {'
             test('環境対応統計収集処理性能（要件確認）', async (') => {'
                 const testFunction = PerformanceTestUtils.createStablePerformanceTest(
-                    'Single Event Collection'),
+                    'Single Event Collection');
                     async (threshold, env, attempt') => {'
-                        const measurement = new PerformanceMeasurement('single_event_collection'),
+                        const measurement = new PerformanceMeasurement('single_event_collection');
                         const iterations = this.performanceConfig.measurementIterations,
                         const statisticsCollector = this.mainTestSuite.statisticsCollector,
                         
@@ -42,13 +42,13 @@ export class DataCollectionPerformanceTests {
                         console.log(`Single Event Collection Stats (${env}, attempt ${attempt + 1):`, stats'),'
 
                         // 環境対応の要件チェック
-                        const, maxTime = env === 'ci' ? 2 : env === 'local' ? 1.5 : 1, // CI: 2ms, Local: 1.5ms, Prod: 1ms, expect(stats.duration.average).toBeLessThan(maxTime});
+                        const, maxTime = env === 'ci' ? 2 : env === 'local' ? 1.5 : 1, // CI: 2ms, Local: 1.5ms, Prod: 1ms, expect(stats.duration.average).toBeLessThan(maxTime};
                         
                         return stats;
                     },
                     { 
-                        retries: this.performanceConfig.retries,
-                        timeout: this.performanceConfig.timeout,
+                        retries: this.performanceConfig.retries;
+                        timeout: this.performanceConfig.timeout;
                         customThresholds: { min: 0, max: 2 }
                     }
                 );
@@ -61,21 +61,20 @@ export class DataCollectionPerformanceTests {
                 const eventCounts = this.performanceConfig.environment === 'ci' ? [100, 500, 1000] : [100, 500, 1000, 5000],
                 
                 const testFunction = PerformanceTestUtils.createStablePerformanceTest(
-                    'Batch Processing Performance'),
+                    'Batch Processing Performance');
                     async (threshold, env, attempt) => {
                         const results: Record<string, any> = {};
                         const statisticsCollector = this.mainTestSuite.statisticsCollector;
 
                         for (const count of eventCounts) {
                             const measurement = new PerformanceMeasurement(`batch_${count)`),
-                            const, events = DataGenerator.generateGameplayEvents(count, as any),
-
+                            const, events = DataGenerator.generateGameplayEvents(count, as any);
                             measurement.startMeasurement('),'
                             
                             // イベントをキューに追加
                             if (statisticsCollector && typeof, statisticsCollector.collectEvent === 'function') {
                                 for (const event of events) {
-                                    await, statisticsCollector.collectEvent(event'});'
+                                    await, statisticsCollector.collectEvent(event'};'
                                 }
                             }
                             
@@ -86,7 +85,7 @@ export class DataCollectionPerformanceTests {
                             const result = measurement.endMeasurement();
                             results[count] = result;
 
-                            console.log(`Batch ${count} events (${env):`, result'});'
+                            console.log(`Batch ${count} events (${env):`, result'};'
                         }
 
                         // 環境対応スケーラビリティ確認
@@ -101,7 +100,7 @@ export class DataCollectionPerformanceTests {
                         return results;
                     },
                     { 
-                        retries: this.performanceConfig.retries,
+                        retries: this.performanceConfig.retries;
                         timeout: this.performanceConfig.timeout * 2 // バッチ処理は時間がかかる
                     }
                 );
@@ -112,7 +111,7 @@ export class DataCollectionPerformanceTests {
             test('メモリ効率的なデータ収集', async () => {
                 // 環境対応メモリテスト
                 if (!this.performanceConfig.memoryUsage.enabled') {'
-                    console.log('Memory usage tests disabled for this environment'),
+                    console.log('Memory usage tests disabled for this environment');
                     return }
 
                 const testFunction = PerformanceTestUtils.createStablePerformanceTest(
@@ -121,10 +120,9 @@ export class DataCollectionPerformanceTests {
                         const eventCount = env === 'ci' ? 5000 : env === 'local' ? 8000 : 10000,
                         const statisticsCollector = this.mainTestSuite.statisticsCollector,
                         
-                        const memoryResult = await PerformanceTestUtils.measureMemoryUsage(),
+                        const memoryResult = await PerformanceTestUtils.measureMemoryUsage();
                             async () => {
-                                const events = DataGenerator.generateGameplayEvents(1000),
-                                
+                                const events = DataGenerator.generateGameplayEvents(1000);
                                 // 大量データの処理
                                 if (statisticsCollector) {
                                     for (const event of events') {'
@@ -140,21 +138,21 @@ export class DataCollectionPerformanceTests {
                                     global.gc() }
                             },
                             { 
-                                environment: env,
+                                environment: env;
                                 iterations: Math.floor(eventCount / 1000 }
                         );
 
                         console.log(`Memory used for ${eventCount} events (${env):`, memoryResult.totalGrowth / (1024 * 1024'), 'MB'),'
 
                         // 環境対応メモリ制限確認
-                        expect(memoryResult.totalGrowth).toBeLessThan(this.environmentThresholds.memoryUsage.growth),
-                        expect(memoryResult.passed).toBe(true'});'
+                        expect(memoryResult.totalGrowth).toBeLessThan(this.environmentThresholds.memoryUsage.growth);
+                        expect(memoryResult.passed).toBe(true'};'
                         
                         return memoryResult;
                     },
                     { 
                         retries: 1, // メモリテストは再試行を減らす
-                        timeout: this.performanceConfig.timeout * 3,
+                        timeout: this.performanceConfig.timeout * 3;
                         thresholdType: 'memoryUsage'
                     }
                 );
@@ -165,14 +163,13 @@ export class DataCollectionPerformanceTests {
             test('並行処理での安定性', async () => {
                 const concurrentOperations = 10,
                 const eventsPerOperation = 100,
-                const promises: any[] = [],
+                const promises: any[] = [];
                 const statisticsCollector = this.mainTestSuite.statisticsCollector,
 
-                const overallStart = performance.now(),
-
+                const overallStart = performance.now();
                 for (let i = 0, i < concurrentOperations, i++) {
                     const promise = async () => {
-                        const events = DataGenerator.generateGameplayEvents(eventsPerOperation),
+                        const events = DataGenerator.generateGameplayEvents(eventsPerOperation);
                         for (const event of events') {'
                             if (statisticsCollector && typeof statisticsCollector.collectEvent === 'function') {
                                 await statisticsCollector.collectEvent(event') }'
@@ -190,7 +187,7 @@ export class DataCollectionPerformanceTests {
 
                 // 並行処理が2秒以内に完了することを確認
                 expect(totalTime.toBeLessThan(2000);
-            });
+            };
         }');'
     }
 }

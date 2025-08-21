@@ -25,7 +25,7 @@ export class AnalysisRenderingPerformanceTests {
                 this.mainTestSuite.statisticsManager.statistics = DataGenerator.generateLargeStatisticsData() }');'
 
             test('トレンド分析の処理時間', async (') => {'
-                const measurement = new PerformanceMeasurement('trend_analysis'),
+                const measurement = new PerformanceMeasurement('trend_analysis');
                 const statisticsAnalyzer = this.mainTestSuite.statisticsAnalyzer,
 
                 measurement.startMeasurement('),'
@@ -42,15 +42,15 @@ export class AnalysisRenderingPerformanceTests {
             }');'
 
             test('比較分析の処理時間', async (') => {'
-                const measurement = new PerformanceMeasurement('comparison_analysis'),
+                const measurement = new PerformanceMeasurement('comparison_analysis');
                 const statisticsAnalyzer = this.mainTestSuite.statisticsAnalyzer,
 
                 measurement.startMeasurement('),'
                 const comparison = statisticsAnalyzer && typeof statisticsAnalyzer.comparePerformance === 'function'
                     ? await statisticsAnalyzer.comparePerformance({), : undefined
                         startDate: Date.now() - 30 * 24 * 60 * 60 * 1000, // 30日前
-                        endDate: Date.now(});
-            });
+                        endDate: Date.now(};
+            };
                     : {};
                 const result = measurement.endMeasurement(');'
 
@@ -61,7 +61,7 @@ export class AnalysisRenderingPerformanceTests {
             }');'
 
             test('洞察生成の処理時間', async (') => {'
-                const measurement = new PerformanceMeasurement('insight_generation'),
+                const measurement = new PerformanceMeasurement('insight_generation');
                 const statisticsAnalyzer = this.mainTestSuite.statisticsAnalyzer,
 
                 measurement.startMeasurement('),'
@@ -81,13 +81,13 @@ export class AnalysisRenderingPerformanceTests {
                 const startTime = performance.now('),'
                 const statisticsAnalyzer = this.mainTestSuite.statisticsAnalyzer,
 
-                const promises: any[] = [],
+                const promises: any[] = [];
                 if (statisticsAnalyzer && typeof statisticsAnalyzer.analyzeTrends === 'function') {
                     promises.push(statisticsAnalyzer.analyzeTrends()') }'
                 if (statisticsAnalyzer && typeof statisticsAnalyzer.comparePerformance === 'function') {
-                    promises.push(statisticsAnalyzer.comparePerformance({),
-                        startDate: Date.now() - 7 * 24 * 60 * 60 * 1000,
-                        endDate: Date.now( })');'
+                    promises.push(statisticsAnalyzer.comparePerformance({);
+                        startDate: Date.now() - 7 * 24 * 60 * 60 * 1000;
+                        endDate: Date.now( }');'
                 }
                 if (statisticsAnalyzer && typeof statisticsAnalyzer.generateInsights === 'function') {
                     promises.push(statisticsAnalyzer.generateInsights() }
@@ -102,13 +102,13 @@ export class AnalysisRenderingPerformanceTests {
                 expect(trends.toBeDefined();
                 expect(comparison.toBeDefined();
                 expect(insights.toBeDefined();
-            });
+            };
         }');'
 
         describe('描画パフォーマンステスト', (') => {'
             test('環境対応統計画面初回表示性能（要件確認）', async (') => {'
                 const testFunction = PerformanceTestUtils.createStablePerformanceTest(
-                    'Initial Statistics Display'),
+                    'Initial Statistics Display');
                     async (threshold, env, attempt') => {'
                         // 環境に応じたデータセットサイズ調整
                         const dataSize = env === 'ci' ? 50 : env === 'local' ? 75 : 100,
@@ -120,7 +120,7 @@ export class AnalysisRenderingPerformanceTests {
                                 label: 'Large Dataset',
                                 data: Array.from({ length: dataSize ), () => Math.random() * 1000),
                                 backgroundColor: Array.from({ length: dataSize ), () => 
-                                    `hsl(${Math.random(}) * 360}, 70%, 50%)`
+                                    `hsl(${Math.random(} * 360}, 70%, 50%)`
                                 );
                             }]
                         };
@@ -150,8 +150,8 @@ export class AnalysisRenderingPerformanceTests {
                         console.log(`Initial render performance (${env}, attempt ${attempt + 1):`, renderResult'),'
 
                         // 環境対応要件: CI: 800ms, Local: 650ms, Prod: 500ms, const maxTime = env === 'ci' ? 800 : env === 'local' ? 650 : 500,
-                        expect(renderResult.averageTime).toBeLessThan(maxTime),
-                        expect(renderResult.passed).toBe(true'});'
+                        expect(renderResult.averageTime).toBeLessThan(maxTime);
+                        expect(renderResult.passed).toBe(true'};'
                         
                         return renderResult;
                     },
@@ -167,7 +167,7 @@ export class AnalysisRenderingPerformanceTests {
 
             test('環境対応データ更新時描画性能（要件確認）', async (') => {'
                 const testFunction = PerformanceTestUtils.createStablePerformanceTest(
-                    'Data Update Rendering'),
+                    'Data Update Rendering');
                     async (threshold, env, attempt') => {'
                         const smallDataset = {
                             labels: ['A', 'B', 'C', 'D', 'E'],
@@ -180,7 +180,7 @@ export class AnalysisRenderingPerformanceTests {
                         const updateResult = await PerformanceTestUtils.measureRenderTime();
                             async () => {
                                 // データ更新をシミュレーション
-                                smallDataset.datasets[0].data = smallDataset.datasets[0].data.map(),
+                                smallDataset.datasets[0].data = smallDataset.datasets[0].data.map();
                                     val => val + Math.random() * 10 - 5
                                 '),'
                                 
@@ -196,8 +196,8 @@ export class AnalysisRenderingPerformanceTests {
                         console.log(`Update render stats (${env}, attempt ${attempt + 1):`, updateResult'),'
 
                         // 環境対応要件: CI: 150ms, Local: 120ms, Prod: 100ms, const maxTime = env === 'ci' ? 150 : env === 'local' ? 120 : 100,
-                        expect(updateResult.averageTime).toBeLessThan(maxTime),
-                        expect(updateResult.passed).toBe(true'});'
+                        expect(updateResult.averageTime).toBeLessThan(maxTime);
+                        expect(updateResult.passed).toBe(true'};'
                         
                         return updateResult;
                     },
@@ -231,7 +231,7 @@ export class AnalysisRenderingPerformanceTests {
                     const measurement = new PerformanceMeasurement(`render_${size.width}x${size.height)`),
                     
                     const, dataset = {
-                        labels: Array.from({ length: 50 ), (_, i}) => `Item ${i}`),
+                        labels: Array.from({ length: 50 ), (_, i} => `Item ${i}`),
                         datasets: [{
                             data: Array.from({ length: 50 ), () => Math.random() * 1000) }]
                     };
@@ -242,17 +242,17 @@ export class AnalysisRenderingPerformanceTests {
                     const result = measurement.endMeasurement();
 
                     results[`${size.width}x${size.height}`] = result;
-                    console.log(`Render ${size.width}x${size.height):`, result});
+                    console.log(`Render ${size.width}x${size.height):`, result};
                 }
 
                 // 画面サイズに関係なく一定の性能を維持
-                Object.values(results.forEach(result => {),
-                    expect(result.duration).toBeLessThan(300) });
+                Object.values(results.forEach(result => {);
+                    expect(result.duration).toBeLessThan(300) };
             }');'
 
             test('アニメーション付き描画のパフォーマンス', async (') => {'
                 const animationFrames = 60, // 1秒間のアニメーション
-                const measurement = new PerformanceMeasurement('animated_render'),
+                const measurement = new PerformanceMeasurement('animated_render');
                 const chartRenderer = this.mainTestSuite.chartRenderer,
 
                 const dataset = {
@@ -283,7 +283,7 @@ export class AnalysisRenderingPerformanceTests {
                 // 60FPSを維持できることを確認（16.67ms/frame）
                 const averageFrameTime = result.duration / animationFrames;
                 expect(averageFrameTime.toBeLessThan(20); // 余裕を見て20ms
-            });
+            };
         }');'
     }
 }

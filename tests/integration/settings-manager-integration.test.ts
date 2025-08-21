@@ -32,13 +32,13 @@ describe('SettingsManager統合テスト', () => {
     let configManager: any,
     beforeEach(() => {
         // LocalStorageをクリア
-        localStorage.clear(),
+        localStorage.clear();
         // モックゲームエンジンを作成
-        mockGameEngine = new MockGameEngine(),
+        mockGameEngine = new MockGameEngine();
         // ConfigurationManagerのインスタンスを取得
-        configManager = getConfigurationManager(),
+        configManager = getConfigurationManager();
         // SettingsManagerを作成
-        settingsManager = new SettingsManager(mockGameEngine) });
+        settingsManager = new SettingsManager(mockGameEngine) };
     afterEach(() => {
         // クリーンアップ
         if (settingsManager && settingsManager.cleanup) {
@@ -50,7 +50,7 @@ describe('SettingsManager統合テスト', () => {
     }');'
     describe('ConfigurationManagerとの統合', (') => {'
         test('ConfigurationManagerが正しく初期化される', () => {
-            expect(settingsManager.configManager).toBeDefined(),
+            expect(settingsManager.configManager).toBeDefined();
             expect(settingsManager.configManager).toBe(configManager) }');'
         test('デフォルト値がConfigurationManagerに設定される', (') => {'
             // 音響設定のデフォルト値をチェック
@@ -75,7 +75,7 @@ describe('SettingsManager統合テスト', () => {
             expect(settingsManager.get('masterVolume').toBe(0.5) }');'
         test('SettingsManagerで設定した値がConfigurationManagerに反映される', (') => {'
             // SettingsManagerで設定
-            const result = settingsManager.set('masterVolume', 0.6),
+            const result = settingsManager.set('masterVolume', 0.6);
             expect(result.toBe(true)'),'
             // ConfigurationManagerから確認
             expect(configManager.get('audio', 'masterVolume').toBe(0.6) }');'
@@ -93,22 +93,22 @@ describe('SettingsManager統合テスト', () => {
         test('設定がlocalStorageに保存される', (') => {'
             // 設定を変更
             settingsManager.set('masterVolume', 0.8'),'
-            settingsManager.set('language', 'ja'),
+            settingsManager.set('language', 'ja');
             // 保存を実行
             settingsManager.save('),'
             // localStorageに保存されていることを確認
-            const savedSettings = localStorage.getItem('bubblePop_settings'),
+            const savedSettings = localStorage.getItem('bubblePop_settings');
             expect(savedSettings.toBeTruthy()'),'
-            const savedConfig = localStorage.getItem('bubblePop_configManager'),
-            expect(savedConfig.toBeTruthy(),
-            const parsedConfig = JSON.parse(savedConfig),
-            expect(parsedConfig.audio.masterVolume).toBe(0.8),
+            const savedConfig = localStorage.getItem('bubblePop_configManager');
+            expect(savedConfig.toBeTruthy();
+            const parsedConfig = JSON.parse(savedConfig);
+            expect(parsedConfig.audio.masterVolume).toBe(0.8);
             expect(parsedConfig.ui.language').toBe('ja') }');
         test('保存された設定が正しく読み込まれる', (') => {'
             // 設定を保存
             settingsManager.set('masterVolume', 0.9'),'
-            settingsManager.set('accessibility.highContrast', true),
-            settingsManager.save(),
+            settingsManager.set('accessibility.highContrast', true);
+            settingsManager.save();
             // 新しいインスタンスを作成
             const newSettingsManager = new SettingsManager(mockGameEngine'),'
             // 設定が復元されることを確認
@@ -116,12 +116,12 @@ describe('SettingsManager統合テスト', () => {
             expect(newSettingsManager.get('accessibility.highContrast').toBe(true'),'
             // ConfigurationManagerにも反映されることを確認
             expect(configManager.get('audio', 'masterVolume').toBe(0.9'),'
-            expect(configManager.get('accessibility', 'highContrast').toBe(true),
+            expect(configManager.get('accessibility', 'highContrast').toBe(true);
             newSettingsManager.cleanup() }');'
         test('破損したデータがある場合でもデフォルト値で動作する', (') => {'
             // 破損したデータを設定
-            localStorage.setItem('bubblePop_settings', 'invalid json'),
-            localStorage.setItem('bubblePop_configManager', 'invalid json'),
+            localStorage.setItem('bubblePop_settings', 'invalid json');
+            localStorage.setItem('bubblePop_configManager', 'invalid json');
             // 新しいインスタンスを作成
             const newSettingsManager = new SettingsManager(mockGameEngine'),'
             // デフォルト値が使用されることを確認
@@ -136,7 +136,7 @@ describe('SettingsManager統合テスト', () => {
             // リスナーを追加
             settingsManager.addListener('masterVolume', callback'),'
             // 設定を変更
-            settingsManager.set('masterVolume', 0.5),
+            settingsManager.set('masterVolume', 0.5);
             // コールバックが呼ばれることを確認
             expect(callback.toHaveBeenCalled() }');'
         test('ConfigurationManagerの監視機能も使用される', () => {
@@ -145,7 +145,7 @@ describe('SettingsManager統合テスト', () => {
             // リスナーを追加
             settingsManager.addListener('masterVolume', callback'),'
             // ConfigurationManagerから直接変更
-            configManager.set('audio', 'masterVolume', 0.3),
+            configManager.set('audio', 'masterVolume', 0.3);
             // コールバックが呼ばれることを確認
             expect(callback.toHaveBeenCalled() }');'
         test('リスナーが正しく削除される', () => {
@@ -156,7 +156,7 @@ describe('SettingsManager統合テスト', () => {
             // リスナーを削除
             settingsManager.removeListener('masterVolume', callback'),'
             // 設定を変更
-            settingsManager.set('masterVolume', 0.4),
+            settingsManager.set('masterVolume', 0.4);
             // コールバックが呼ばれないことを確認
             expect(callback.not.toHaveBeenCalled() }');'
     }
@@ -166,14 +166,14 @@ describe('SettingsManager統合テスト', () => {
             settingsManager.set('masterVolume', 0.2'),'
             expect(settingsManager.get('masterVolume').toBe(0.2'),'
             // リセット
-            settingsManager.reset('masterVolume'),
+            settingsManager.reset('masterVolume');
             // デフォルト値に戻ることを確認
             expect(settingsManager.get('masterVolume').toBe(0.7) }');'
         test('全設定をリセットできる', (') => {'
             // 複数の設定を変更
             settingsManager.set('masterVolume', 0.1'),'
-            settingsManager.set('language', 'ja'),
-            settingsManager.set('accessibility.highContrast', true),
+            settingsManager.set('language', 'ja');
+            settingsManager.set('accessibility.highContrast', true);
             // 全リセット
             settingsManager.reset('),'
             // 全てデフォルト値に戻ることを確認
@@ -183,39 +183,39 @@ describe('SettingsManager統合テスト', () => {
     }
     describe('統合状態の管理', (') => {'
         test('統合状態を取得できる', () => {
-            const status = settingsManager.getIntegrationStatus(),
-            expect(status.configManagerActive).toBe(true),
-            expect(status.watchersCount).toBe(0),
-            expect(status.categoriesInConfig).toHaveLength(5),
+            const status = settingsManager.getIntegrationStatus();
+            expect(status.configManagerActive).toBe(true);
+            expect(status.watchersCount).toBe(0);
+            expect(status.categoriesInConfig).toHaveLength(5);
             expect(status.legacySettingsCount).toBeGreaterThan(0) }');'
         test('同期状態をチェックできる', (') => {'
             // 設定を変更
-            settingsManager.set('masterVolume', 0.5),
-            const syncStatus = settingsManager.checkSyncStatus(),
-            expect(syncStatus.synchronized).toBe(true),
+            settingsManager.set('masterVolume', 0.5);
+            const syncStatus = settingsManager.checkSyncStatus();
+            expect(syncStatus.synchronized).toBe(true);
             expect(syncStatus.differences).toHaveLength(0) }');'
         test('強制同期が動作する', (') => {'
             // ConfigurationManagerに直接設定
-            configManager.set('audio', 'masterVolume', 0.3),
+            configManager.set('audio', 'masterVolume', 0.3);
             // 同期前は差異がある可能性
-            const beforeSync = settingsManager.checkSyncStatus(),
+            const beforeSync = settingsManager.checkSyncStatus();
             // 強制同期
-            const result = settingsManager.forceSynchronization(),
-            expect(result.toBe(true),
+            const result = settingsManager.forceSynchronization();
+            expect(result.toBe(true);
             // 同期後は一致する
-            const afterSync = settingsManager.checkSyncStatus(),
+            const afterSync = settingsManager.checkSyncStatus();
             expect(afterSync.synchronized).toBe(true) }');'
     }
     describe('エラーハンドリング', (') => {'
         test('無効な設定キーでもエラーにならない', () => {
             expect((') => {'
-                settingsManager.get('nonexistent.key') }).not.toThrow();
+                settingsManager.get('nonexistent.key') }.not.toThrow();
             expect((') => {'
-                settingsManager.set('nonexistent.key', 'value') }).not.toThrow(');'
+                settingsManager.set('nonexistent.key', 'value') }.not.toThrow(');'
         }
         test('無効な値を設定しようとした場合の処理', (') => {'
             // 範囲外の値
-            const result = settingsManager.set('masterVolume', 2.0),
+            const result = settingsManager.set('masterVolume', 2.0);
             expect(result.toBe(false)'),'
             // 元の値が保持される
             expect(settingsManager.get('masterVolume').toBe(0.7) }');'
@@ -226,18 +226,18 @@ describe('SettingsManager統合テスト', () => {
                 throw new Error('Storage error')),
             // エラーが発生してもクラッシュしない
             expect(() => {
-                settingsManager.save()).not.toThrow(),
+                settingsManager.save()).not.toThrow();
             // 復元
             localStorage.setItem = originalSetItem) }');'
     describe('ゲームエンジンとの連携', (') => {'
         test('音量設定がAudioManagerに反映される', (') => {'
-            settingsManager.set('masterVolume', 0.5),
+            settingsManager.set('masterVolume', 0.5);
             expect(mockGameEngine.audioManager.setVolume).toHaveBeenCalled() }');'
         test('言語設定がLocalizationManagerに反映される', (') => {'
-            settingsManager.set('language', 'ja'),
+            settingsManager.set('language', 'ja');
             expect(mockGameEngine.localizationManager.setLanguage).toHaveBeenCalled() }');'
         test('品質設定がPerformanceOptimizerに反映される', (') => {'
-            settingsManager.set('quality', 'high'),
+            settingsManager.set('quality', 'high');
             expect(mockGameEngine.performanceOptimizer.setQualityLevel).toHaveBeenCalled() }');'
         test('アクセシビリティ設定がDOMに反映される', (') => {'
             // ハイコントラストモード
@@ -245,6 +245,6 @@ describe('SettingsManager統合テスト', () => {
             expect(document.body.classList.contains('high-contrast').toBe(true'),'
             // 無効化
             settingsManager.set('accessibility.highContrast', false'),'
-            expect(document.body.classList.contains('high-contrast').toBe(false) });
+            expect(document.body.classList.contains('high-contrast').toBe(false) };
     }
 }');'

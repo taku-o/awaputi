@@ -10,7 +10,7 @@ test.describe('Shop Button Main Menu E2E Tests', () => {
     test.beforeEach(async ({ page }) => {
         // LocalStorageをクリア
         await page.evaluate(() => {
-            localStorage.clear(),
+            localStorage.clear();
             sessionStorage.clear() }');'
         
         // URLパラメータでユーザー名入力をスキップしてメインメニューに直接アクセス
@@ -31,18 +31,18 @@ test.describe('Shop Button Main Menu E2E Tests', () => {
     test('should access shop from main menu with keyboard navigation', async ({ page )') => {'
         // コンソールエラーの監視
         const consoleErrors: any[] = [],
-        page.on('console', msg => {),
+        page.on('console', msg => {);
             if (msg.type(') === 'error') {'
                 consoleErrors.push(msg.text() }
         }');'
 
         // JavaScript エラーの監視
         const jsErrors: any[] = [],
-        page.on('pageerror', error => {),
+        page.on('pageerror', error => {);
             jsErrors.push(error.message) }');'
 
         // Canvas要素が存在することを確認
-        const canvas = page.getByRole('img', { name: 'ゲーム画面' });
+        const canvas = page.getByRole('img', { name: 'ゲーム画面' },
         await expect(canvas).toBeVisible(');'
 
         // メインメニューでキーボードナビゲーションを使用してショップメニューに移動
@@ -69,7 +69,7 @@ test.describe('Shop Button Main Menu E2E Tests', () => {
 
     test('should access shop from main menu with multiple keyboard navigation', async ({ page )') => {'
         // Canvas要素が存在することを確認
-        const canvas = page.getByRole('img', { name: 'ゲーム画面' });
+        const canvas = page.getByRole('img', { name: 'ゲーム画面' },
         await expect(canvas).toBeVisible(');'
 
         // メインメニューで複数回ナビゲーション（上下移動）してショップにアクセス
@@ -95,7 +95,7 @@ test.describe('Shop Button Main Menu E2E Tests', () => {
 
     test('should handle shop menu navigation boundaries correctly', async ({ page )') => {'
         // Canvas要素が存在することを確認
-        const canvas = page.getByRole('img', { name: 'ゲーム画面' });
+        const canvas = page.getByRole('img', { name: 'ゲーム画面' },
         await expect(canvas).toBeVisible(');'
 
         // 境界テスト：最初の位置（ゲーム開始）から上に移動（最後の項目に循環）
@@ -113,14 +113,14 @@ test.describe('Shop Button Main Menu E2E Tests', () => {
         // Enterキーでショップを選択
         await page.keyboard.press('Enter');
         await page.waitForTimeout(1000);
-    });
+    };
 }');'
 
 test.describe('Stage Select S Key Disabled E2E Tests', () => {
     test.beforeEach(async ({ page }) => {
         // LocalStorageをクリア
         await page.evaluate(() => {
-            localStorage.clear(),
+            localStorage.clear();
             sessionStorage.clear() }');'
         
         // URLパラメータでユーザー名入力をスキップ
@@ -137,24 +137,24 @@ test.describe('Stage Select S Key Disabled E2E Tests', () => {
         await page.waitForTimeout(2000'),'
         
         // ゲーム開始を選択してステージ選択画面に移動
-        await page.keyboard.press('Enter'),
+        await page.keyboard.press('Enter');
         await page.waitForTimeout(2000) }');'
 
     test('should not navigate to shop with S key in stage select', async ({ page )') => {'
         // コンソールエラーの監視
         const consoleErrors: any[] = [],
-        page.on('console', msg => {),
+        page.on('console', msg => {);
             if (msg.type(') === 'error') {'
                 consoleErrors.push(msg.text() }
         }');'
 
         // JavaScript エラーの監視
         const jsErrors: any[] = [],
-        page.on('pageerror', error => {),
+        page.on('pageerror', error => {);
             jsErrors.push(error.message) }');'
 
         // Canvas要素が存在することを確認（ステージ選択画面）
-        const canvas = page.getByRole('img', { name: 'ゲーム画面' });
+        const canvas = page.getByRole('img', { name: 'ゲーム画面' },
         await expect(canvas).toBeVisible();
 
         // 現在の画面状態を記録（比較用）
@@ -190,7 +190,7 @@ test.describe('Stage Select S Key Disabled E2E Tests', () => {
 
     test('should confirm other keyboard shortcuts still work in stage select', async ({ page )') => {'
         // Canvas要素が存在することを確認
-        const canvas = page.getByRole('img', { name: 'ゲーム画面' });
+        const canvas = page.getByRole('img', { name: 'ゲーム画面' },
         await expect(canvas).toBeVisible(');'
 
         // 他のキーボードショートカットが正常に動作することを確認
@@ -217,17 +217,16 @@ test.describe('Stage Select S Key Disabled E2E Tests', () => {
         const consoleWarnings: any[] = [],
         const consoleErrors: any[] = [],
 
-        page.on('console', msg => {),
-            const text = msg.text(),
-            consoleMessages.push(text),
-            
+        page.on('console', msg => {);
+            const text = msg.text();
+            consoleMessages.push(text);
             if (msg.type(') === 'warning') {'
                 consoleWarnings.push(text) } else if (msg.type(') === 'error') {'
                 consoleErrors.push(text) }
         }');'
 
         // Canvas要素が存在することを確認
-        const canvas = page.getByRole('img', { name: 'ゲーム画面' });
+        const canvas = page.getByRole('img', { name: 'ゲーム画面' },
         await expect(canvas).toBeVisible(');'
 
         // Sキーを複数回押下
@@ -250,5 +249,5 @@ test.describe('Stage Select S Key Disabled E2E Tests', () => {
 
         expect(sKeyRelatedErrors).toEqual([]);
         expect(sKeyRelatedWarnings).toEqual([]);
-    });
+    };
 }');'

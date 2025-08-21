@@ -14,52 +14,52 @@ interface PerformanceTestSuite { baselines: Map<string, any>,
     calculateVariance(values: number[]): number;
     calculatePercentile(values: number[], percentile: number): number;
 
-interface TestEnvironment { canvas: HTMLCanvasElement | null,
+interface TestEnvironment { canvas: HTMLCanvasElement | null;
     context: CanvasRenderingContext2D | null;
     mockGameEngine: any;
     performanceObserver: PerformanceObserver | null  }
 
-interface TestResult { name: string,
+interface TestResult { name: string;
     result: number;
     expected: number;
     passed: boolean;
     details?: any;
 
-interface CategoryTestResult { category: string,
+interface CategoryTestResult { category: string;
     tests: Record<string, TestResult>;
     passed: boolean;
     summary: any;
 
-interface MemoryUsage { usedJSHeapSize: number,
+interface MemoryUsage { usedJSHeapSize: number;
     totalJSHeapSize: number;
     jsHeapSizeLimit: number;
 
-interface FrameRateTestResults { steadyState: TestResult,
+interface FrameRateTestResults { steadyState: TestResult;
     underLoad: TestResult;
     stabilityAfterSpike: TestResult;
     varianceAnalysis: TestResult;
 
-interface MemoryTestResults { baselineUsage: TestResult,
+interface MemoryTestResults { baselineUsage: TestResult;
     leakDetection: TestResult;
     gcEfficiency: TestResult;
     pressureHandling: TestResult;
 
-interface RenderingTestResults { dirtyRegionEfficiency: TestResult,
+interface RenderingTestResults { dirtyRegionEfficiency: TestResult;
     viewportCulling: TestResult;
     layerComposition: TestResult;
     renderTime: TestResult;
 
-interface NetworkTestResults { latency: TestResult,
+interface NetworkTestResults { latency: TestResult;
     throughput: TestResult;
     reliability: TestResult;
 
-interface BatteryTestResults { powerConsumption: TestResult,
+interface BatteryTestResults { powerConsumption: TestResult;
     efficiency: TestResult;
 
 export class PerformanceTestExecutor {
     private performanceTestSuite: PerformanceTestSuite;
     private testEnvironment: TestEnvironment | null;
-    private, lastFrameTime: number | null,
+    private, lastFrameTime: number | null;
     constructor(performanceTestSuite: PerformanceTestSuite) {
 
         this.performanceTestSuite = performanceTestSuite;
@@ -74,7 +74,7 @@ export class PerformanceTestExecutor {
             canvas: null,
             context: null,
             mockGameEngine: null,
-    performanceObserver: null,;
+    performanceObserver: null,
         // パフォーマンス監視の設定
         if ('PerformanceObserver' in, window) { this.testEnvironment.performanceObserver = new PerformanceObserver((list) => {  }
 
@@ -100,7 +100,7 @@ export class PerformanceTestExecutor {
             category: 'frameRate',
     tests: frameRateTests),
             passed: Object.values(frameRateTests).every(test => test.passed),
-            summary: this.performanceTestSuite.summarizeFrameRateResults(frameRateTests) };
+            summary: this.performanceTestSuite.summarizeFrameRateResults(frameRateTests) },
     }
 
     /**
@@ -108,15 +108,14 @@ export class PerformanceTestExecutor {
      */
     async testSteadyStateFrameRate(): Promise<TestResult> { const frameRates = [],
         const testDuration = 5000, // 5秒
-        const startTime = performance.now(),
-        
+        const startTime = performance.now();
         return new Promise((resolve) => { 
             const measureFrame = () => {
-                const currentTime = performance.now(),
+                const currentTime = performance.now();
                 if (currentTime - startTime >= testDuration) {
 
                     const avgFrameRate = frameRates.reduce((sum, fps) => sum + fps, 0') / frameRates.length,'
-                    const baseline = this.performanceTestSuite.baselines.get('frameRate'),
+                    const baseline = this.performanceTestSuite.baselines.get('frameRate');
                     ','
 
                     resolve({''
@@ -129,7 +128,7 @@ export class PerformanceTestExecutor {
     min: Math.min(...frameRates) }
                             max: Math.max(...frameRates) }
                             variance: this.performanceTestSuite.calculateVariance(frameRates); 
-    });
+    };
                 } else {  // フレームレート測定
                     const fps = 1000 / (currentTime - (this.lastFrameTime || currentTime)),
                     if (this.lastFrameTime) { }
@@ -141,7 +140,7 @@ export class PerformanceTestExecutor {
             };
             
             requestAnimationFrame(measureFrame);
-        });
+        };
     }
 
     /**
@@ -155,7 +154,7 @@ export class PerformanceTestExecutor {
 
         const result = await this.testSteadyStateFrameRate();
         await loadSimulator.removeLoad()';'
-            name: 'Frame Rate Under Load');
+            name: 'Frame Rate Under Load'),
             loadConditions: loadSimulator.getAppliedLoad();
         }
 
@@ -169,14 +168,15 @@ export class PerformanceTestExecutor {
         ';'
         // 安定化時間を測定
         const stabilizationTime = await this.measureStabilizationTime('''
-            name: 'Frame Stability After Spike';
+            name: 'Frame Stability After Spike',
             result: stabilizationTime,
     expected: 2000, // 2秒以内の安定化を期待);
-            passed: stabilizationTime <= 2000);
+            passed: stabilizationTime <= 2000),
             details: { )
                 spikeType: spikeSimulator.getSpikeType(
     recoveryTime: stabilizationTime,
-
+    recoveryTime: stabilizationTime,
+        };
     /**
      * フレームレート分散テスト
      */;
@@ -197,8 +197,8 @@ export class PerformanceTestExecutor {
             expected: baseline.variance,
             passed: variance <= baseline.variance,
             details: {
-                samples: frameRates.length };
-                standardDeviation: Math.sqrt(variance), 
+                samples: frameRates.length },
+                standardDeviation: Math.sqrt(variance);
     }
 
     /**
@@ -213,17 +213,16 @@ export class PerformanceTestExecutor {
             category: 'memory',
     tests: memoryTests),
             passed: Object.values(memoryTests).every(test => test.passed),
-            summary: this.performanceTestSuite.summarizeMemoryResults(memoryTests) };
+            summary: this.performanceTestSuite.summarizeMemoryResults(memoryTests) },
     }
 
     /**
      * ベースラインメモリ使用量テスト
      */
-    async testBaselineMemoryUsage(): Promise<TestResult> { const initialMemory = this.getMemoryUsage(),
-
+    async testBaselineMemoryUsage(): Promise<TestResult> { const initialMemory = this.getMemoryUsage();
         await this.simulateNormalGameplay(10000), // 10秒
         const finalMemory = this.getMemoryUsage()','
-        const baseline = this.performanceTestSuite.baselines.get('memoryUsage'),
+        const baseline = this.performanceTestSuite.baselines.get('memoryUsage');
         ','
 
         return { ''
@@ -234,7 +233,7 @@ export class PerformanceTestExecutor {
             details: {
                 initial: initialMemory.usedJSHeapSize,
                 final: finalMemory.usedJSHeapSize,
-    growth: growth,;
+    growth: growth,
                 growthRate: growth / 10 // per second 
     }
 
@@ -277,7 +276,7 @@ export class PerformanceTestExecutor {
             passed: gcStats.averagePauseTime <= 50,
             details: { gcCount: gcStats.collectionCount,
                 totalPauseTime: gcStats.totalPauseTime,
-    memoryReclaimed: gcStats.memoryReclaimed })'
+    memoryReclaimed: gcStats.memoryReclaimed }'
     }
 
     /**
@@ -292,14 +291,15 @@ export class PerformanceTestExecutor {
 
         const responseTime = await this.measureSystemResponse();
         await pressureSimulator.releasePressure('''
-            name: 'Memory Pressure Handling';
+            name: 'Memory Pressure Handling',
             result: responseTime,
     expected: 1000, // 1秒以内の応答を期待);
-            passed: responseTime <= 1000);
+            passed: responseTime <= 1000),
             details: { )
                 pressureLevel: pressureSimulator.getPressureLevel(
     systemResponse: responseTime,
-
+    systemResponse: responseTime,
+        };
     /**
      * レンダリングテストの実行
      */''
@@ -312,7 +312,7 @@ export class PerformanceTestExecutor {
             category: 'rendering',
     tests: renderingTests),
             passed: Object.values(renderingTests).every(test => test.passed),
-            summary: this.performanceTestSuite.summarizeRenderingResults(renderingTests) };
+            summary: this.performanceTestSuite.summarizeRenderingResults(renderingTests) },
     }
 
     /**
@@ -337,7 +337,7 @@ export class PerformanceTestExecutor {
             passed: efficiency.ratio <= baseline.dirtyRegionRatio,
             details: {
                 totalRegions: efficiency.totalRegions,
-    dirtyRegions: efficiency.dirtyRegions };
+    dirtyRegions: efficiency.dirtyRegions },
                 pixelsRendered: efficiency.pixelsRendered 
     }
 
@@ -349,13 +349,13 @@ export class PerformanceTestExecutor {
 
         const cullingTester = new ViewportCullingTester();
         const efficiency = await cullingTester.measureCullingEfficiency('''
-            name: 'Viewport Culling';
+            name: 'Viewport Culling',
             result: efficiency.cullRate,
     expected: 0.7, // 70%のカリング効率を期待;
-            passed: efficiency.cullRate >= 0.7;
+            passed: efficiency.cullRate >= 0.7,
             details: { totalObjects: efficiency.totalObjects,
                 culledObjects: efficiency.culledObjects,
-    renderTime: efficiency.renderTime })'
+    renderTime: efficiency.renderTime }'
     }
 
     /**
@@ -368,9 +368,9 @@ export class PerformanceTestExecutor {
         const layerTester = new LayerCompositionTester();
         const performance = await layerTester.measureCompositionPerformance()';'
             name: 'Layer Composition',
-    result: performance.compositionTime);
+    result: performance.compositionTime),
             expected: 8.33, // 120fps target (8.33ms, per frame);
-            passed: performance.compositionTime <= 8.33;
+            passed: performance.compositionTime <= 8.33,
             details: { layers: performance.layerCount,
                 complexity: performance.complexity,
     optimizations: performance.optimizations 
@@ -402,7 +402,7 @@ export class PerformanceTestExecutor {
             details: {
                 samples: times.length,
                 min: Math.min(...times,
-    max: Math.max(...times) };
+    max: Math.max(...times) },
                 p95: this.performanceTestSuite.calculatePercentile(times, 95); }
 }
 
@@ -418,7 +418,7 @@ export class PerformanceTestExecutor {
             category: 'network',
     tests: networkTests),
             passed: Object.values(networkTests).every(test => test.passed),
-            summary: this.performanceTestSuite.summarizeNetworkResults(networkTests) };
+            summary: this.performanceTestSuite.summarizeNetworkResults(networkTests) },
     }
 
     /**
@@ -426,8 +426,8 @@ export class PerformanceTestExecutor {
      */
     async testNetworkLatency(): Promise<TestResult> { const latencies = [],
         for(let, i = 0, i < 10, i++) {
-            const start = performance.now(),
-            await this.simulateNetworkRequest(),
+            const start = performance.now();
+            await this.simulateNetworkRequest();
             const latency = performance.now() - start }
             latencies.push(latency); }
         }
@@ -443,8 +443,8 @@ export class PerformanceTestExecutor {
             passed: averageLatency <= baseline.maxLatency,
             details: {
                 samples: latencies.length,
-    min: Math.min(...latencies) };
-                max: Math.max(...latencies),
+    min: Math.min(...latencies) },
+                max: Math.max(...latencies);
     }
 
     /**
@@ -465,8 +465,8 @@ export class PerformanceTestExecutor {
             expected: baseline.throughput,
             passed: throughput >= baseline.throughput,
             details: {
-                dataTransferred: throughputTester.getDataSize() };
-                duration: throughputTester.getDuration(), 
+                dataTransferred: throughputTester.getDataSize() },
+                duration: throughputTester.getDuration();
     }
 
     /**
@@ -487,8 +487,8 @@ export class PerformanceTestExecutor {
             expected: baseline.errorRate,
             passed: errorRate <= baseline.errorRate,
             details: {
-                totalRequests: reliabilityTester.getTotalRequests() };
-                failedRequests: reliabilityTester.getFailedRequests(), 
+                totalRequests: reliabilityTester.getTotalRequests() },
+                failedRequests: reliabilityTester.getFailedRequests();
     }
 
     /**
@@ -500,7 +500,7 @@ export class PerformanceTestExecutor {
 
                 category: 'battery'
             }
-                tests: {};
+                tests: {},
                 passed: true,
                 summary: 'Battery API not supported, skipping tests';
             }
@@ -511,7 +511,7 @@ export class PerformanceTestExecutor {
             category: 'battery',
     tests: batteryTests),
             passed: Object.values(batteryTests).every(test => test.passed),
-            summary: this.performanceTestSuite.summarizeBatteryResults(batteryTests) };
+            summary: this.performanceTestSuite.summarizeBatteryResults(batteryTests) },
     }
 
     /**
@@ -535,7 +535,7 @@ export class PerformanceTestExecutor {
             expected: baseline.maxPowerConsumption,
             passed: consumption <= baseline.maxPowerConsumption,
             details: {
-                testDuration: 60000 };
+                testDuration: 60000 },
                 averageConsumption: consumption,
 
     /**
@@ -555,8 +555,8 @@ export class PerformanceTestExecutor {
             result: efficiency,
             expected: baseline.targetEfficiency,
             passed: efficiency >= baseline.targetEfficiency,
-            details: { };
-                optimizationsActive: efficiencyTester.getActiveOptimizations(), 
+            details: { },
+                optimizationsActive: efficiencyTester.getActiveOptimizations();
     }
 
     // ユーティリティメソッド
@@ -564,14 +564,13 @@ export class PerformanceTestExecutor {
     /**
      * 次のフレームまで待機
      */
-    async waitForNextFrame(): Promise<void> { return new Promise(resolve => requestAnimationFrame(resolve),
-
+    async waitForNextFrame(): Promise<void> { return new Promise(resolve => requestAnimationFrame(resolve);
     /**
      * 通常のゲームプレイをシミュレート
      */
     async simulateNormalGameplay(duration: number): Promise<void> { const endTime = performance.now() + duration,
         while (performance.now() < endTime) {
-            await this.waitForNextFrame(),
+            await this.waitForNextFrame();
             // 軽い処理をシミュレート
             for(let, i = 0, i < 100, i++) {
     
@@ -602,21 +601,21 @@ export class PerformanceTestExecutor {
     /**
      * システム応答時間測定
      */
-    async measureSystemResponse(): Promise<number> { const start = performance.now(),
-        await this.waitForNextFrame(),
+    async measureSystemResponse(): Promise<number> { const start = performance.now();
+        await this.waitForNextFrame();
         return performance.now() - start }
 
     /**
      * 安定化時間測定
      */
-    async measureStabilizationTime(): Promise<number> { const start = performance.now(),
+    async measureStabilizationTime(): Promise<number> { const start = performance.now();
         let stableFrames = 0,
         const targetStableFrames = 60, // 1秒間安定
         
         while(stableFrames < targetStableFrames) {
         
-            await this.waitForNextFrame(),
-            const fps = this.getCurrentFrameRate(),
+            await this.waitForNextFrame();
+            const fps = this.getCurrentFrameRate();
             if (fps >= 55) { // 55fps以上を安定とみなす
         
         }
@@ -640,7 +639,7 @@ export class PerformanceTestExecutor {
      */
     getMemoryUsage(): MemoryUsage { if (performance.memory) {
             return { usedJSHeapSize: performance.memory.usedJSHeapSize,
-                totalJSHeapSize: performance.memory.totalJSHeapSize };
+                totalJSHeapSize: performance.memory.totalJSHeapSize },
                 jsHeapSizeLimit: performance.memory.jsHeapSizeLimit 
     }
         return { usedJSHeapSize: 0, totalJSHeapSize: 0, jsHeapSizeLimit: 0  }
@@ -648,7 +647,7 @@ export class PerformanceTestExecutor {
     /**
      * 現在のフレームレート取得
      */
-    getCurrentFrameRate(): number { const now = performance.now(),
+    getCurrentFrameRate(): number { const now = performance.now();
         if (this.lastFrameTime) { }
 
             return 1000 / (now - this.lastFrameTime);

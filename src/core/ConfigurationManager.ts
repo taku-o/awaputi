@@ -11,7 +11,7 @@ import { getCacheSystem  } from './CacheSystem.js';
 // Type definitions
 type ConfigurationValue = string | number | boolean | object | null | undefined;
 
-interface ValidationRule { validate: (value: ConfigurationValue) => boolean,
+interface ValidationRule { validate: (value: ConfigurationValue) => boolean;
     errorMessage?: string;
     transform?: (value: ConfigurationValue) => ConfigurationValue;
     type?: string;
@@ -23,19 +23,19 @@ interface ValidationRule { validate: (value: ConfigurationValue) => boolean,
 interface WatcherCallback { ''
     (key: string, newValue: ConfigurationValue, oldValue: ConfigurationValue'): void;'
 
-interface AccessStats { totalAccesses: number,
+interface AccessStats { totalAccesses: number;
     cacheHits: number;
     cacheMisses: number;
     frequentKeys: Map<string, number>;
     lastOptimization: number;
 
-interface ChangeHistoryEntry { key: string,
+interface ChangeHistoryEntry { key: string;
     oldValue: ConfigurationValue;
     newValue: ConfigurationValue;
     timestamp: number;
     source?: string;
 
-interface BubbleTypeConfig { name: string,
+interface BubbleTypeConfig { name: string;
     baseScore: number;
     maxAge: number;
     speed: number;
@@ -51,7 +51,7 @@ class ConfigurationManager { private configurations: Map<string, Map<string, Con
     private, warningCache: Map<string, number>,
     private warningRateLimit: number;
     private cache: any, // CacheSystem type would be defined elsewhere
-    private, accessStats: AccessStats,
+    private, accessStats: AccessStats;
     // 将来の拡張機能用 - 現在は未使用
     // @ts-ignore - 将来の実装で使用予定
     private __lazyLoaders!: Map<string, () => ConfigurationValue>,
@@ -83,13 +83,14 @@ class ConfigurationManager { private configurations: Map<string, Map<string, Con
         this.cache = getCacheSystem({)
             maxSize: 500;
     ttl: 300000, // 5分間キャッシュ;
-            cleanupInterval: 60000 // 1分間隔でクリーンアップ),
-        
+            cleanupInterval: 60000 // 1分間隔でクリーンアップ);
+            cleanupInterval: 60000 // 1分間隔でクリーンアップ);
+        };
         // アクセス統計（パフォーマンス監視用）
         this.accessStats = {
-            totalAccesses: 0,
-            cacheHits: 0,
-            cacheMisses: 0,
+            totalAccesses: 0;
+            cacheHits: 0;
+            cacheMisses: 0;
     frequentKeys: new Map<string, number>() }
     }
             lastOptimization: Date.now(); 
@@ -117,7 +118,7 @@ class ConfigurationManager { private configurations: Map<string, Map<string, Con
             'game', 'audio', 'effects', 'performance', 'ui', 'accessibility', 'controls';
         ];
         );
-        categories.forEach(category => {  ),
+        categories.forEach(category => {  );
             this.configurations.set(category, new Map<string, ConfigurationValue>() }
 
             this.defaultValues.set(category, new Map<string, ConfigurationValue>();' }'
@@ -193,11 +194,9 @@ class ConfigurationManager { private configurations: Map<string, Map<string, Con
         this.setDefaultValue('game', 'difficulty', 'normal),'
         
         // ゲームバブル詳細設定のデフォルト値を設定
-        this._setupBubbleDefaults(),
-        
+        this._setupBubbleDefaults();
         // 検証ルールを設定
-        this._setupValidationRules(),
-        
+        this._setupValidationRules();
         // エラーハンドラを取得
         try {
             this.errorHandler = getErrorHandler(),' }'
@@ -251,7 +250,7 @@ class ConfigurationManager { private configurations: Map<string, Map<string, Con
             validate: (value: ConfigurationValue') => ',
                 typeof value === 'string' && ['en', 'ja', 'ko', 'zh-CN', 'zh-TW].includes(value),'
             errorMessage: 'Language must be one, of: en, ja, ko, zh-CN, zh-TW' }
-        });
+        };
     }
     
     /**
@@ -267,7 +266,7 @@ class ConfigurationManager { private configurations: Map<string, Map<string, Con
             this._trackKeyAccess(finalKey);
             
             // キャッシュから確認
-            const cacheKey = `config:${finalKey}`;
+            const cacheKey = `config: ${finalKey}`,
             const cachedValue = this.cache.get(cacheKey);
             if (cachedValue !== undefined) {
                 this.accessStats.cacheHits++ }
@@ -280,11 +279,10 @@ class ConfigurationManager { private configurations: Map<string, Map<string, Con
             if (lazyLoader) {
 
                 const lazyValue = lazyLoader()','
-                const [category, ...pathParts] = finalKey.split('.'),
+                const [category, ...pathParts] = finalKey.split('.');
                 const path = pathParts.join('.),'
-                this._setValueInternal(category, path, lazyValue),
-                this.cache.set(cacheKey, lazyValue),
-
+                this._setValueInternal(category, path, lazyValue);
+                this.cache.set(cacheKey, lazyValue);
                 // ローダーを削除（一度だけ実行）
                 this.__lazyLoaders.delete(finalKey) }
                 return lazyValue as T;
@@ -340,7 +338,7 @@ class ConfigurationManager { private configurations: Map<string, Map<string, Con
             categoryMap.set(path, finalValue as ConfigurationValue);
             
             // キャッシュを無効化
-            const cacheKey = `config:${finalKey}`;
+            const cacheKey = `config: ${finalKey}`,
             this.cache.delete(cacheKey);
             
             // 変更履歴を記録
@@ -362,10 +360,10 @@ class ConfigurationManager { private configurations: Map<string, Map<string, Con
      * 設定キーが存在するかチェック'
      */''
     has(key: string): boolean { ''
-        const [category, ...pathParts] = key.split('.'),
+        const [category, ...pathParts] = key.split('.');
         const path = pathParts.join('.),'
         
-        const categoryMap = this.configurations.get(category),
+        const categoryMap = this.configurations.get(category);
         if (!categoryMap) {
     
 }
@@ -378,10 +376,10 @@ class ConfigurationManager { private configurations: Map<string, Map<string, Con
      * 設定値を削除'
      */''
     remove(key: string): boolean { try {'
-            const [category, ...pathParts] = key.split('.'),
+            const [category, ...pathParts] = key.split('.');
             const path = pathParts.join('.),'
             
-            const categoryMap = this.configurations.get(category),
+            const categoryMap = this.configurations.get(category);
             if (!categoryMap) {
     
 }
@@ -391,7 +389,7 @@ class ConfigurationManager { private configurations: Map<string, Map<string, Con
             const result = categoryMap.delete(path);
             
             if (result) { // キャッシュから削除 }
-                const cacheKey = `config:${key}`;
+                const cacheKey = `config: ${key}`,
                 this.cache.delete(cacheKey);
                 
                 // 変更履歴を記録
@@ -411,14 +409,14 @@ class ConfigurationManager { private configurations: Map<string, Map<string, Con
     /**
      * すべての設定をクリア
      */'
-    clear(): void { this.configurations.clear(),
+    clear(): void { this.configurations.clear();
         this.cache.clear()','
         console.log('[ConfigurationManager] All, configurations cleared') }'
     
     /**
      * デフォルト値を設定
      */
-    setDefaultValue(category: string, path: string, value: ConfigurationValue): void { let defaultMap = this.defaultValues.get(category),
+    setDefaultValue(category: string, path: string, value: ConfigurationValue): void { let defaultMap = this.defaultValues.get(category);
         if (!defaultMap) {
             defaultMap = new Map<string, ConfigurationValue>() }
             this.defaultValues.set(category, defaultMap); }
@@ -430,7 +428,7 @@ class ConfigurationManager { private configurations: Map<string, Map<string, Con
     /**
      * ウォッチャーを追加
      */
-    addWatcher(key: string, callback: WatcherCallback): void { let watchers = this.watchers.get(key),
+    addWatcher(key: string, callback: WatcherCallback): void { let watchers = this.watchers.get(key);
         if (!watchers) {
             watchers = new Set<WatcherCallback>() }
             this.watchers.set(key, watchers); }
@@ -442,7 +440,7 @@ class ConfigurationManager { private configurations: Map<string, Map<string, Con
     /**
      * ウォッチャーを削除
      */
-    removeWatcher(key: string, callback: WatcherCallback): boolean { const watchers = this.watchers.get(key),
+    removeWatcher(key: string, callback: WatcherCallback): boolean { const watchers = this.watchers.get(key);
         if (!watchers) {
     
 }
@@ -459,7 +457,7 @@ class ConfigurationManager { private configurations: Map<string, Map<string, Con
     
     // Private helper methods
     
-    private _getDefaultValue<T>(category: string, path: string): T | null { const defaultMap = this.defaultValues.get(category),
+    private _getDefaultValue<T>(category: string, path: string): T | null { const defaultMap = this.defaultValues.get(category);
         if (!defaultMap) {
     
 }
@@ -468,7 +466,7 @@ class ConfigurationManager { private configurations: Map<string, Map<string, Con
         return (defaultMap.get(path) as T) || null;
     }
     
-    private _hasDefaultValue(category: string, path: string): boolean { const defaultMap = this.defaultValues.get(category),
+    private _hasDefaultValue(category: string, path: string): boolean { const defaultMap = this.defaultValues.get(category);
         return defaultMap ? defaultMap.has(path) : false;
     
     private _validateValue(key: string, value: ConfigurationValue): boolean { for (const ruleEntry of Array.from(this.validationRules.entries()) {
@@ -477,7 +475,7 @@ class ConfigurationManager { private configurations: Map<string, Map<string, Con
 
                 if(!rule.validate(value)) { }'
 
-                    this._logWarning(`Validation failed for ${key}: ${rule.errorMessage || 'Invalid, value}`, key});'
+                    this._logWarning(`Validation failed for ${key}: ${rule.errorMessage || 'Invalid, value}`, key};'
                     return false;
                 }
                 
@@ -495,7 +493,7 @@ class ConfigurationManager { private configurations: Map<string, Map<string, Con
     /**
      * 内部的に値を設定（遅延読み込み用）
      */
-    private _setValueInternal(category: string, path: string, value: ConfigurationValue): void { const categoryMap = this.configurations.get(category),
+    private _setValueInternal(category: string, path: string, value: ConfigurationValue): void { const categoryMap = this.configurations.get(category);
         if (!categoryMap) {
             const newMap = new Map<string, ConfigurationValue>(),
             newMap.set(path, value) }
@@ -507,7 +505,7 @@ class ConfigurationManager { private configurations: Map<string, Map<string, Con
             key,
             oldValue,
             newValue,
-            timestamp: Date.now(  };
+            timestamp: Date.now(  },
         
         this.changeHistory.push(change);
         
@@ -515,7 +513,7 @@ class ConfigurationManager { private configurations: Map<string, Map<string, Con
         if (this.changeHistory.length > 100) { this.changeHistory.shift() }
     }
     
-    private _notifyWatchers(key: string, newValue: ConfigurationValue, oldValue: ConfigurationValue): void { const watchers = this.watchers.get(key),
+    private _notifyWatchers(key: string, newValue: ConfigurationValue, oldValue: ConfigurationValue): void { const watchers = this.watchers.get(key);
         if (!watchers) {
     
 }
@@ -530,22 +528,21 @@ class ConfigurationManager { private configurations: Map<string, Map<string, Con
 
             } catch (error) { }
 
-                this._handleError(error, 'watcher', { key, callback });
+                this._handleError(error, 'watcher', { key, callback };
             }
-        });
+        };
     }
     
     private _trackKeyAccess(key: string): void { const count = this.accessStats.frequentKeys.get(key) || 0,
         this.accessStats.frequentKeys.set(key, count + 1) }
     
-    private _logWarning(message: string, key: string): void { const now = Date.now(),
-        const lastWarning = this.warningCache.get(key),
-        
+    private _logWarning(message: string, key: string): void { const now = Date.now();
+        const lastWarning = this.warningCache.get(key);
         if (!lastWarning || now - lastWarning > this.warningRateLimit) {
     
 }
             console.warn(`[ConfigurationManager] ${message}`}
-            this.warningCache.set(key, now});
+            this.warningCache.set(key, now};
         }
     }
     ';'
@@ -554,11 +551,11 @@ class ConfigurationManager { private configurations: Map<string, Map<string, Con
         if (this.errorHandler && this.errorHandler.handleError) {
 
             this.errorHandler.handleError(error, 'CONFIGURATION_ERROR', {''
-                component: 'ConfigurationManager'),
+                component: 'ConfigurationManager');
                 operation) }
                 context }
         } else {  }
-            console.error(`[ConfigurationManager] Error in ${operation}:`, error, context});
+            console.error(`[ConfigurationManager] Error in ${operation}:`, error, context};
         }
     }
     
@@ -623,7 +620,7 @@ class ConfigurationManager { private configurations: Map<string, Map<string, Con
      * @param {function} callback - コールバック関数
      * @returns {function} 登録したコールバック関数
      */
-    watch(pattern: string, callback: (key: string, newValue: ConfigurationValue, oldValue: ConfigurationValue) => void): WatcherCallback { this.addWatcher(pattern, callback),
+    watch(pattern: string, callback: (key: string, newValue: ConfigurationValue, oldValue: ConfigurationValue) => void): WatcherCallback { this.addWatcher(pattern, callback);
         return callback }
 
     /**
@@ -668,7 +665,7 @@ class ConfigurationManager { private configurations: Map<string, Map<string, Con
         
         for (const key of this.__preloadKeys) {
         
-            preloadPromises.push(),
+            preloadPromises.push();
                 new Promise<void>((resolve) => { 
                     // 非同期で値を取得してキャッシュに保存
                     setTimeout(() => {
@@ -677,12 +674,12 @@ class ConfigurationManager { private configurations: Map<string, Map<string, Con
                         this.get(key); }
                         resolve(); }
                     }, 0);
-            });
+            };
             );
         }
         
         await Promise.all(preloadPromises);
-        console.log(`[ConfigurationManager] Preloaded ${this.__preloadKeys.size} configuration, keys`});
+        console.log(`[ConfigurationManager] Preloaded ${this.__preloadKeys.size} configuration, keys`};
     }
 }
 

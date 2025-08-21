@@ -1,5 +1,5 @@
 // UI component types
-export interface HelpColors { background: string,
+export interface HelpColors { background: string;
     panel: string;
     text: string;
     subtext: string;
@@ -9,23 +9,23 @@ export interface HelpColors { background: string,
     button: string;
     buttonHover: string;
 
-export interface HelpContent { title: string,
+export interface HelpContent { title: string;
     icon: string;
     content: string[];
 
 export interface HelpContentMap { [key: string]: HelpContent;
 
-export interface TutorialHighlight { x: number,
+export interface TutorialHighlight { x: number;
     y: number;
     width: number;
     height: number;
 
-export interface TutorialStep { title: string,
+export interface TutorialStep { title: string;
     content: string;
     target: string;
     highlight: TutorialHighlight;
 
-export interface HelpState { isVisible: boolean,
+export interface HelpState { isVisible: boolean;
     currentSection: string;
     tutorialProgress: number;
 
@@ -48,7 +48,7 @@ export class AchievementHelpSystem {
     // ヘルプコンテンツ
     private helpContent: HelpContentMap;
     // チュートリアルステップ
-    private, tutorialSteps: TutorialStep[],
+    private, tutorialSteps: TutorialStep[];
     constructor(achievementManager: any) {
 
         this.achievementManager = achievementManager;
@@ -66,12 +66,12 @@ export class AchievementHelpSystem {
         // 色設定
         this.colors = {''
             background: '#1a1a2e';
-            panel: '#16213e',
-            text: '#ffffff',
-            subtext: '#cccccc',
-            accent: '#4CAF50',
-            highlight: '#FFD700',
-            border: '#333',
+            panel: '#16213e';
+            text: '#ffffff';
+            subtext: '#cccccc';
+            accent: '#4CAF50';
+            highlight: '#FFD700';
+            border: '#333';
             button: '#2196F3' }
 
             buttonHover: '#1976D2' 
@@ -298,7 +298,7 @@ export class AchievementHelpSystem {
                 content: '条件を満たすと実績が解除され、APが獲得できます。',
                 target: 'achievement-unlock'
             }
-                highlight: { x: 200, y: 150, width: 300, height: 80  })
+                highlight: { x: 200, y: 150, width: 300, height: 80  }
             { ''
                 title: 'AP活用',
                 content: '獲得したAPはショップでアイテム購入に使用できます。',
@@ -339,7 +339,7 @@ export class AchievementHelpSystem {
     /**
      * チュートリアルを完了
      */
-    public completeTutorial(): void { this.hideHelp(),
+    public completeTutorial(): void { this.hideHelp();
         this.tutorialProgress = 0;
         ','
         // チュートリアル完了実績をトリガー
@@ -363,8 +363,7 @@ export class AchievementHelpSystem {
 
         context.save()','
         context.fillStyle = 'rgba(0, 0, 0, 0.8)',
-        context.fillRect(0, 0, canvas.width, canvas.height),
-
+        context.fillRect(0, 0, canvas.width, canvas.height);
         if(this.currentHelpSection === 'tutorial' { }
             this.renderTutorial(context, canvas); }
         } else { this.renderHelpContent(context, canvas) }
@@ -375,26 +374,22 @@ export class AchievementHelpSystem {
     /**
      * ヘルプコンテンツを描画
      */
-    private renderHelpContent(context: CanvasRenderingContext2D, canvas: HTMLCanvasElement): void { const panelWidth = Math.min(700, canvas.width - 40),
-        const panelHeight = Math.min(500, canvas.height - 40),
+    private renderHelpContent(context: CanvasRenderingContext2D, canvas: HTMLCanvasElement): void { const panelWidth = Math.min(700, canvas.width - 40);
+        const panelHeight = Math.min(500, canvas.height - 40);
         const panelX = (canvas.width - panelWidth) / 2,
         const panelY = (canvas.height - panelHeight) / 2,
         
         // ヘルプパネル背景
         context.fillStyle = this.colors.panel,
-        context.fillRect(panelX, panelY, panelWidth, panelHeight),
-        
+        context.fillRect(panelX, panelY, panelWidth, panelHeight);
         // 枠線
         context.strokeStyle = this.colors.border,
         context.lineWidth = 2,
-        context.strokeRect(panelX, panelY, panelWidth, panelHeight),
-        
+        context.strokeRect(panelX, panelY, panelWidth, panelHeight);
         // ヘルプナビゲーション
-        this.renderHelpNavigation(context, panelX, panelY, panelWidth),
-        
+        this.renderHelpNavigation(context, panelX, panelY, panelWidth);
         // ヘルプコンテンツ本体
-        this.renderHelpText(context, panelX, panelY + 60, panelWidth, panelHeight - 120),
-        
+        this.renderHelpText(context, panelX, panelY + 60, panelWidth, panelHeight - 120);
         // 閉じるボタン
         this.renderCloseButton(context, panelX + panelWidth - 40, panelY + 10) }
     
@@ -410,13 +405,11 @@ export class AchievementHelpSystem {
             
             // ボタン背景
             context.fillStyle = isActive ? this.colors.accent: this.colors.button,
-            context.fillRect(buttonX, y, buttonWidth, navHeight),
-            
+            context.fillRect(buttonX, y, buttonWidth, navHeight);
             // ボタン枠線
             context.strokeStyle = this.colors.border,
             context.lineWidth = 1,
-            context.strokeRect(buttonX, y, buttonWidth, navHeight),
-            
+            context.strokeRect(buttonX, y, buttonWidth, navHeight);
             // ボタンテキスト
             const content = this.helpContent[section],
             context.fillStyle = this.colors.text,
@@ -426,8 +419,8 @@ export class AchievementHelpSystem {
             context.fillText() }
                 `${content.icon} ${ content.title}`,
                 buttonX + buttonWidth / 2,
-                y + navHeight / 2 });
-        });
+                y + navHeight / 2 };
+        };
     }
     
     /**
@@ -447,7 +440,7 @@ export class AchievementHelpSystem {
         context.textBaseline = 'top',
         ','
 
-        content.content.forEach(line => { ),
+        content.content.forEach(line => { );
             if(currentY + this.lineHeight > y + height - padding) return,
 
             if (line === '') {
@@ -482,7 +475,7 @@ export class AchievementHelpSystem {
             // 文字列の折り返し処理
             this.renderWrappedText(context, line, textX, currentY, width - padding * 2);
             currentY += this.lineHeight;
-        });
+        };
     }
     
     /**
@@ -497,17 +490,15 @@ export class AchievementHelpSystem {
             const h = step.highlight,
             
             // ハイライト背景をクリア
-            context.clearRect(h.x, h.y, h.width, h.height),
-            
+            context.clearRect(h.x, h.y, h.width, h.height);
             // ハイライト枠線
             context.strokeStyle = this.colors.highlight,
             context.lineWidth = 3,
-            context.strokeRect(h.x - 5, h.y - 5, h.width + 10, h.height + 10),
-            
+            context.strokeRect(h.x - 5, h.y - 5, h.width + 10, h.height + 10);
             // パルス効果
             const pulseAlpha = 0.3 + 0.3 * Math.sin(Date.now() * 0.005) }
             context.fillStyle = `rgba(255, 215, 0, ${pulseAlpha}`; }
-            context.fillRect(h.x - 5, h.y - 5, h.width + 10, h.height + 10});
+            context.fillRect(h.x - 5, h.y - 5, h.width + 10, h.height + 10};
         }
         
         // チュートリアルパネル
@@ -553,7 +544,7 @@ export class AchievementHelpSystem {
 
         // スキップボタン' }'
 
-        this.renderTutorialButton(context, panelX + panelWidth - 150, buttonY, 'スキップ'});
+        this.renderTutorialButton(context, panelX + panelWidth - 150, buttonY, 'スキップ'};
     }
     
     /**
@@ -564,13 +555,11 @@ export class AchievementHelpSystem {
         
         // ボタン背景
         context.fillStyle = this.colors.button,
-        context.fillRect(x, y, buttonWidth, buttonHeight),
-        
+        context.fillRect(x, y, buttonWidth, buttonHeight);
         // ボタン枠線
         context.strokeStyle = this.colors.border,
         context.lineWidth = 1,
-        context.strokeRect(x, y, buttonWidth, buttonHeight),
-        
+        context.strokeRect(x, y, buttonWidth, buttonHeight);
         // ボタンテキスト
         context.fillStyle = this.colors.text,
         context.font = '12px Arial',
@@ -585,36 +574,35 @@ export class AchievementHelpSystem {
         
         // ボタン背景
         context.fillStyle = this.colors.button,
-        context.fillRect(x, y, buttonSize, buttonSize),
-        
+        context.fillRect(x, y, buttonSize, buttonSize);
         // X マーク
         context.strokeStyle = this.colors.text,
         context.lineWidth = 2,
-        context.beginPath(),
-        context.moveTo(x + 5, y + 5),
-        context.lineTo(x + 15, y + 15),
-        context.moveTo(x + 15, y + 5),
-        context.lineTo(x + 5, y + 15),
+        context.beginPath();
+        context.moveTo(x + 5, y + 5);
+        context.lineTo(x + 15, y + 15);
+        context.moveTo(x + 15, y + 5);
+        context.lineTo(x + 5, y + 15);
         context.stroke() }
     
     /**
      * 文字列の折り返し描画
      */''
     private renderWrappedText(context: CanvasRenderingContext2D, text: string, x: number, y: number, maxWidth: number): void { ''
-        const words = text.split(', '),
+        const words = text.split(', ');
         let line = ','
         let currentY = y,
 
         for(let, n = 0, n < words.length, n++) {
 
             const testLine = line + words[n] + ', ',
-            const metrics = context.measureText(testLine),
+            const metrics = context.measureText(testLine);
             const testWidth = metrics.width,
 
             ','
 
             if (testWidth > maxWidth && n > 0) {''
-                context.fillText(line, x, currentY),
+                context.fillText(line, x, currentY);
                 line = words[n] + ', ' }
                 currentY += this.lineHeight; }
             } else { line = testLine }
@@ -629,13 +617,12 @@ export class AchievementHelpSystem {
         if(!this.isHelpVisible) return false,
 
         if(this.currentHelpSection === 'tutorial' { }
-            return this.handleTutorialClick(x, y, canvas); else { return this.handleHelpClick(x, y, canvas),
-    
+            return this.handleTutorialClick(x, y, canvas); else { return this.handleHelpClick(x, y, canvas);
     /**
      * ヘルプクリック処理
      */
-    private handleHelpClick(x: number, y: number, canvas: HTMLCanvasElement): boolean { const panelWidth = Math.min(700, canvas.width - 40),
-        const panelHeight = Math.min(500, canvas.height - 40),
+    private handleHelpClick(x: number, y: number, canvas: HTMLCanvasElement): boolean { const panelWidth = Math.min(700, canvas.width - 40);
+        const panelHeight = Math.min(500, canvas.height - 40);
         const panelX = (canvas.width - panelWidth) / 2,
         const panelY = (canvas.height - panelHeight) / 2,
         
@@ -653,8 +640,7 @@ export class AchievementHelpSystem {
         if (y >= panelY && y <= panelY + navHeight) {
         
             const buttonIndex = Math.floor((x - panelX) / buttonWidth),
-            const sections = Object.keys(this.helpContent),
-            
+            const sections = Object.keys(this.helpContent);
             if (buttonIndex >= 0 && buttonIndex < sections.length) {
                 this.changeHelpSection(sections[buttonIndex]) }
                 return true;
@@ -690,14 +676,14 @@ export class AchievementHelpSystem {
      * ヘルプの状態を取得
      */
     public getHelpState(): HelpState { return { isVisible: this.isHelpVisible,
-            currentSection: this.currentHelpSection };
+            currentSection: this.currentHelpSection },
             tutorialProgress: this.tutorialProgress 
     }
     
     /**
      * コンテキストヘルプを表示
      */
-    public showContextHelp(achievementId: string): void { const achievement = this.achievementManager?.getAchievement(achievementId),
+    public showContextHelp(achievementId: string): void { const achievement = this.achievementManager?.getAchievement(achievementId);
         if (!achievement) return,
         // 該当実績のカテゴリに応じたヘルプセクションを表示
         const category = this.achievementManager.getAchievementCategory(achievementId), : undefined 

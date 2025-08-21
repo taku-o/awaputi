@@ -14,7 +14,7 @@ import { SoundEffectRenderer  } from './effects/SoundEffectRenderer';
 /**
  * サウンドカテゴリ設定インターフェース
  */
-interface SoundCategoryConfig { enabled: boolean,
+interface SoundCategoryConfig { enabled: boolean;
     volume: number;
 
 /**
@@ -28,7 +28,7 @@ interface PlaybackOptions { volume?: number,
 /**
  * AudioManager インターフェース
  */
-interface AudioManager { audioContext: AudioContext | null,
+interface AudioManager { audioContext: AudioContext | null;
     sfxGainNode: GainNode | null  }
 
 /**
@@ -47,11 +47,11 @@ interface ErrorHandler { ''
  * システム統計インターフェース
  */
 interface SystemStatistics {
-    categories: { [ke,y: string]: SoundCategoryConfig,
-    bubbleTypes: number,
-    comboLevels: number,
-    achievementRarities: number,
-    components: { pool?: any,
+    categories: { [ke,y: string]: SoundCategoryConfig;
+    bubbleTypes: number;
+    comboLevels: number;
+    achievementRarities: number;
+    components: { pool?: any;
         effects?: any;
         context?: any;
         renderer?: any;
@@ -132,11 +132,11 @@ export class SoundEffectSystem {
 
     }
         this.soundCategories = { }
-            bubble: { enabled: true, volume: 1.0  };
-            ui: { enabled: true, volume: 0.8  };
-            achievement: { enabled: true, volume: 1.2  };
-            gamestate: { enabled: true, volume: 0.9  };
-            combo: { enabled: true, volume: 1.1  };
+            bubble: { enabled: true, volume: 1.0  },
+            ui: { enabled: true, volume: 0.8  },
+            achievement: { enabled: true, volume: 1.2  },
+            gamestate: { enabled: true, volume: 0.9  },
+            combo: { enabled: true, volume: 1.1  },
         
         // バリエーション管理
         this.soundVariations = new Map();
@@ -277,14 +277,14 @@ export class SoundEffectSystem {
             for (const bubbleType of this.bubbleTypes) {
 
                 // メインサウンドを生成
-                const mainSound = (this.soundRenderer, as any).generateBubbleSound(bubbleType),
+                const mainSound = (this.soundRenderer, as any).generateBubbleSound(bubbleType);
                 // バリエーションを生成
                 const variations = (this.soundRenderer, as any').generateVariations('bubble', mainSound, 3',
                 ','
                 // プールに追加
                 (this.poolManager, as any').addToPool('bubble', bubbleType, mainSound, variations) }'
 
-                console.log(`[SoundEffectSystem] Generated, bubble sound: ${bubbleType}`});
+                console.log(`[SoundEffectSystem] Generated, bubble sound: ${bubbleType}`};
             } catch (error) {
             this.errorHandler.handleError(error, 'SoundEffectSystem.generateBubbleSounds' }'
     }
@@ -300,12 +300,12 @@ export class SoundEffectSystem {
             for (const uiType of uiTypes) {
             ','
 
-                const uiSound = (this.soundRenderer, as any).generateUISound(uiType),
+                const uiSound = (this.soundRenderer, as any).generateUISound(uiType);
                 const variations = (this.soundRenderer, as any').generateVariations('ui', uiSound, 2',
 
                 (this.poolManager, as any').addToPool('ui', uiType, uiSound, variations) }'
 
-                console.log(`[SoundEffectSystem] Generated, UI sound: ${uiType}`});
+                console.log(`[SoundEffectSystem] Generated, UI sound: ${uiType}`};
             } catch (error) {
             this.errorHandler.handleError(error, 'SoundEffectSystem.generateUISounds' }'
     }
@@ -318,11 +318,10 @@ export class SoundEffectSystem {
 
             for (const rarity of this.achievementRarities) {
 
-                const achievementSound = (this.soundRenderer, as any).generateAchievementSound(rarity),
-
+                const achievementSound = (this.soundRenderer, as any).generateAchievementSound(rarity);
                 (this.poolManager, as any').addToPool('achievement', rarity, achievementSound, []) }'
 
-                console.log(`[SoundEffectSystem] Generated, achievement sound: ${rarity}`});
+                console.log(`[SoundEffectSystem] Generated, achievement sound: ${rarity}`};
             } catch (error) {
             this.errorHandler.handleError(error, 'SoundEffectSystem.generateAchievementSounds' }'
     }
@@ -342,7 +341,7 @@ export class SoundEffectSystem {
 
                 (this.poolManager, as any').addToPool('gamestate', state, stateSound, []) }'
 
-                console.log(`[SoundEffectSystem] Generated, game state, sound: ${state}`});
+                console.log(`[SoundEffectSystem] Generated, game state, sound: ${state}`};
             } catch (error) {
             this.errorHandler.handleError(error, 'SoundEffectSystem.generateGameStateSounds' }'
     }
@@ -355,11 +354,10 @@ export class SoundEffectSystem {
 
             for (const level of this.comboLevels) {
 
-                const comboSound = (this.soundRenderer, as any).generateComboSound(level),
-
+                const comboSound = (this.soundRenderer, as any).generateComboSound(level);
                 (this.poolManager, as any').addToPool('combo', level.toString(), comboSound, []) }'
 
-                console.log(`[SoundEffectSystem] Generated, combo sound: level ${level}`});
+                console.log(`[SoundEffectSystem] Generated, combo sound: level ${level}`};
             } catch (error) {
             this.errorHandler.handleError(error, 'SoundEffectSystem.generateComboSounds' }'
     }
@@ -367,7 +365,7 @@ export class SoundEffectSystem {
     /**
      * 泡破壊音を再生
      */'
-    playBubbleSound(bubbleType: BubbleType, options: PlaybackOptions = {}): any { ''
+    playBubbleSound(bubbleType: BubbleType, options: PlaybackOptions = {}: any { ''
         if (this.disabled) {
 
             console.warn('[SoundEffectSystem] Sound, effect system is disabled - playBubbleSound ignored') }
@@ -401,7 +399,7 @@ export class SoundEffectSystem {
     /**
      * UI音を再生
      */'
-    playUISound(uiType: UISoundType, options: PlaybackOptions = { }): any { ''
+    playUISound(uiType: UISoundType, options: PlaybackOptions = { }: any { ''
         if (this.disabled) {
 
             console.warn('[SoundEffectSystem] Sound, effect system is disabled - playUISound ignored') }
@@ -433,7 +431,7 @@ export class SoundEffectSystem {
     /**
      * コンボ音を再生
      */'
-    playComboSound(level: number, options: PlaybackOptions = { }): any { ''
+    playComboSound(level: number, options: PlaybackOptions = { }: any { ''
         if (this.disabled) {
 
             console.warn('[SoundEffectSystem] Sound, effect system, is disabled - playComboSound, ignored) }'
@@ -455,7 +453,7 @@ export class SoundEffectSystem {
 
                 const effectVariation = (this.effectManager, as any').getEffectVariation('combo', `level${clampedLevel}`}; }'
 
-                (this.effectManager as any').applyEffect(playback.sourceWrapper.source, 'combo', effectVariation});'
+                (this.effectManager as any').applyEffect(playback.sourceWrapper.source, 'combo', effectVariation};'
             }
             
             return playback;
@@ -467,7 +465,7 @@ export class SoundEffectSystem {
     /**
      * 実績音を再生
      */'
-    playAchievementSound(rarity: AchievementRarity, options: PlaybackOptions = { }): any { ''
+    playAchievementSound(rarity: AchievementRarity, options: PlaybackOptions = { }: any { ''
         if (this.disabled) {
 
             console.warn('[SoundEffectSystem] Sound, effect system is disabled - playAchievementSound ignored') }
@@ -498,7 +496,7 @@ export class SoundEffectSystem {
     /**
      * ゲーム状態音を再生
      */'
-    playGameStateSound(state: GameState, options: PlaybackOptions = { }): any { ''
+    playGameStateSound(state: GameState, options: PlaybackOptions = { }: any { ''
         if (this.disabled) {
 
             console.warn('[SoundEffectSystem] Sound, effect system is disabled - playGameStateSound ignored') }
@@ -524,7 +522,7 @@ export class SoundEffectSystem {
 
             this.soundCategories[category].enabled = enabled; }'
 
-            console.log(`[SoundEffectSystem] Category ${category} ${enabled ? 'enabled' : 'disabled}`});'
+            console.log(`[SoundEffectSystem] Category ${category} ${enabled ? 'enabled' : 'disabled}`};'
         }
     }
     
@@ -533,7 +531,7 @@ export class SoundEffectSystem {
      */
     setCategoryVolume(category: SoundCategory, volume: number): void { if (this.soundCategories[category]) {
             this.soundCategories[category].volume = Math.max(0, Math.min(2, volume) }
-            console.log(`[SoundEffectSystem] Category ${category} volume, set to: ${volume}`});
+            console.log(`[SoundEffectSystem] Category ${category} volume, set to: ${volume}`};
         }
     }
     

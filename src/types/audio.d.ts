@@ -9,13 +9,13 @@ import { ConfigurationManager  } from '../core/ConfigurationManager';
 // ========== Core Audio Types ==========
 
 export interface AudioConfig { volumes: {
-    maste,r: number,
-    sfx: number,
-    bgm: number,
-   , muted: boolean,;
-  effects: { compression: boolean,
-   , reverb: boolean,;
-  quality: AudioQualityMode,
+    maste,r: number;
+    sfx: number;
+    bgm: number;
+   , muted: boolean;
+  effects: { compression: boolean;
+   , reverb: boolean;
+  quality: AudioQualityMode;
   sampleRate?: number;
   bufferSize?: number;
   
@@ -25,22 +25,22 @@ export interface AudioConfig { volumes: {
   isReverbEnabled(''';'
 export type AudioQualityMode = 'low' | 'medium' | 'high' | 'ultra';
 
-export interface AudioQualitySettings { sampleRate: number,
+export interface AudioQualitySettings { sampleRate: number;
   bufferSize: number;
  , effects: boolean;
 
-export interface CompressorConfig { threshold: number,
+export interface CompressorConfig { threshold: number;
   knee: number;
   ratio: number;
   attack: number;
  , release: number;
 
-export interface ReverbConfig { duration: number,
+export interface ReverbConfig { duration: number;
  , decay: number;
 
 // ========== Audio Context Management ==========
 
-export interface AudioContextManager { audioContext: AudioContext | null,
+export interface AudioContextManager { audioContext: AudioContext | null;
   masterGainNode: GainNode | null;
   sfxGainNode: GainNode | null;
   bgmGainNode: GainNode | null;
@@ -75,21 +75,21 @@ export interface AudioContextManager { audioContext: AudioContext | null,
   getCompressor(): DynamicsCompressorNode | null;
   getReverbConvolver(): ConvolverNode | null }
 
-export interface AudioContextStatus { isInitialized: boolean,
+export interface AudioContextStatus { isInitialized: boolean;
   isEnabled: boolean;
   contextState: AudioContextState;
   sampleRate: number;
   currentTime: number;
  , volumes: {
-    maste,r: number,
-    sfx: number,
-   , bgm: number,;
-  effects: { compression: boolean,
-   , reverb: boolean,
+    maste,r: number;
+    sfx: number;
+   , bgm: number;
+  effects: { compression: boolean;
+   , reverb: boolean;
 
 // ========== Audio Playback ==========
 
-export interface AudioPlaybackController { audioContext: AudioContext | null,
+export interface AudioPlaybackController { audioContext: AudioContext | null;
   sfxGainNode: GainNode | null;
   masterGainNode: GainNode | null;
  , soundBuffers: Map<string, AudioBuffer> | null;
@@ -98,12 +98,13 @@ export interface AudioPlaybackController { audioContext: AudioContext | null,
   playbackStats: PlaybackStats;
   effectConfig: EffectConfig;
   soundCategories: Record<string, SoundCategory>;
-
+  soundCategories: Record<string, SoundCategory>;
+        };
   setDependencies(
-    audioContext: AudioContext;
+    audioContext: AudioContext,
     sfxGainNode: GainNode
     );
-    masterGainNode: GainNode);
+    masterGainNode: GainNode),
    , soundBuffers: Map<string, AudioBuffer>): void;
   playSound(soundName: string, options?: PlaySoundOptions): AudioBufferSourceNode | null;
   playBubbleSound(bubbleType: string, comboLevel?: number, options?: PlaySoundOptions): AudioBufferSourceNode | null;
@@ -126,23 +127,23 @@ export interface PlaySoundOptions { volume?: number,
   category?: string;
   priority?: number;
 
-export interface PlaybackStats { totalPlayed: number,
+export interface PlaybackStats { totalPlayed: number;
   activeCount: number;
   peakConcurrency: number;
  , errors: number;
 
-export interface EffectConfig { maxPitchShift: number,
+export interface EffectConfig { maxPitchShift: number;
   maxVolumeScale: number;
   maxPan: number;
   fadeInDuration: number;
  , fadeOutDuration: number;
 
-export interface SoundCategory { volume: number,
+export interface SoundCategory { volume: number;
  , priority: number;
 
 // ========== BGM System ==========
 
-export interface BGMSystem extends Manager { audioManager: AudioManager,
+export interface BGMSystem extends Manager { audioManager: AudioManager;
   audioContext: AudioContext;
   configManager: ConfigurationManager;
  , tracks: Map<string, BGMTrack>;
@@ -165,14 +166,14 @@ export interface BGMSystem extends Manager { audioManager: AudioManager,
   crossfadeTo(trackName: string, duration?: number): Promise<boolean>;
   dispose(): void;
 
-export interface BGMTrack { name: string,
+export interface BGMTrack { name: string;
   buffer: AudioBuffer;
   duration: number;
   loop: boolean;
  , volume: number;
   metadata?: BGMMetadata;
 
-export interface BGMType { style: string,
+export interface BGMType { style: string;
   tempo: number;
   key: string;
  , duration: number;
@@ -189,7 +190,7 @@ export interface BGMMetadata { title?: string,
   bpm?: number;
   key?: string;
 
-export interface BGMGenerator { audioContext: AudioContext,
+export interface BGMGenerator { audioContext: AudioContext;
   generateBGM(type: string, options?: BGMGenerationOptions): Promise<AudioBuffer>;
   generateTrack(config: BGMTrackConfig): Promise<AudioBuffer>;
   dispose(): void;
@@ -199,14 +200,14 @@ export interface BGMGenerationOptions { duration?: number,
   key?: string;
   style?: string;
 
-export interface BGMTrackConfig { style: string,
+export interface BGMTrackConfig { style: string;
   tempo: number;
   key: string;
  , duration: number;
   instruments?: string[];
   effects?: string[],  }
 
-export interface BGMPlayer { audioContext: AudioContext,
+export interface BGMPlayer { audioContext: AudioContext;
   gainNode: GainNode;
   currentSource: AudioBufferSourceNode | null;
   currentBuffer: AudioBuffer | null;
@@ -226,7 +227,7 @@ export interface BGMPlayer { audioContext: AudioContext,
   seek(time: number): void;
   dispose(): void;
 
-export interface BGMTransitionManager { audioContext: AudioContext,
+export interface BGMTransitionManager { audioContext: AudioContext;
   bgmSystem: BGMSystem;
   isTransitioning: boolean;
  , currentTransition: BGMTransition | null;
@@ -244,7 +245,7 @@ export interface BGMTransitionManager { audioContext: AudioContext,
 
 // ========== Sound Effect System ==========
 
-export interface SoundEffectSystem extends Manager { audioManager: AudioManager,
+export interface SoundEffectSystem extends Manager { audioManager: AudioManager;
   audioContext: AudioContext;
   sfxGainNode: GainNode;
   configManager: ConfigurationManager;
@@ -277,7 +278,7 @@ export interface SoundEffectSystem extends Manager { audioManager: AudioManager,
 
 // ========== Audio Configuration ==========
 
-export interface AudioConfigurationManager { configManager: ConfigurationManager | null,
+export interface AudioConfigurationManager { configManager: ConfigurationManager | null;
   audioConfig: AudioConfig | null;
   audioNodes: AudioNodes | null;
   configWatchers: Set<any>;
@@ -298,26 +299,26 @@ export interface AudioConfigurationManager { configManager: ConfigurationManager
   getAllSettings(): AudioSettings;
   dispose(): void;
 
-export interface AudioNodes { masterGainNode: GainNode,
+export interface AudioNodes { masterGainNode: GainNode;
   sfxGainNode: GainNode;
   bgmGainNode: GainNode;
   compressor: DynamicsCompressorNode;
  , reverbConvolver: ConvolverNode;
 
 export interface AudioSettings { volumes: {
-    maste,r: number,
-    sfx: number,
-    bgm: number,
-   , muted: boolean,;
-  effects: { compression: boolean,
-   , reverb: boolean,
+    maste,r: number;
+    sfx: number;
+    bgm: number;
+   , muted: boolean;
+  effects: { compression: boolean;
+   , reverb: boolean;
     [key: string]: boolean,,
-  quality: AudioQualitySettings,
+  quality: AudioQualitySettings;
     }
 
 // ========== Main Audio Manager ==========
 
-export interface AudioManager { configManager: ConfigurationManager,
+export interface AudioManager { configManager: ConfigurationManager;
   audioConfig: AudioConfig;
   contextManager: AudioContextManager;
   soundGenerator: ProceduralSoundGenerator;
@@ -393,21 +394,21 @@ export interface AudioManager { configManager: ConfigurationManager,
   disable(): void;
   enable(): void;
 
-export interface AudioManagerState { isInitialized: boolean,
+export interface AudioManagerState { isInitialized: boolean;
   isEnabled: boolean;
  , volumes: {
-    maste,r: number,
-    sfx: number,
-    bgm: number,
-   , muted: boolean,;
-  context: AudioContextStatus,
-  playback: PlaybackStats,
-  configuration: AudioSettings,
-  subsystems: SubsystemStatus,
- , soundGeneration: GenerationStatus,
+    maste,r: number;
+    sfx: number;
+    bgm: number;
+   , muted: boolean;
+  context: AudioContextStatus;
+  playback: PlaybackStats;
+  configuration: AudioSettings;
+  subsystems: SubsystemStatus;
+ , soundGeneration: GenerationStatus;
     }
 
-export interface AudioStatus { isEnabled: boolean,
+export interface AudioStatus { isEnabled: boolean;
   masterVolume: number;
   soundEffectVolume: number;
   backgroundMusicVolume: number;
@@ -423,7 +424,7 @@ export interface AudioStatus { isEnabled: boolean,
 
 // ========== Additional Interfaces ==========
 
-export interface ProceduralSoundGenerator { audioContext: AudioContext | null,
+export interface ProceduralSoundGenerator { audioContext: AudioContext | null;
  , soundBuffers: Map<string, AudioBuffer>;
   isInitialized: boolean;
  , lastGenerationTime: number;
@@ -433,12 +434,12 @@ export interface ProceduralSoundGenerator { audioContext: AudioContext | null,
   getGenerationStatus(): GenerationStatus;
   dispose(): void;
 
-export interface GenerationStatus { isGenerated: boolean,
+export interface GenerationStatus { isGenerated: boolean;
   soundCount: number;
   generationTime: number;
  , lastGenerated: Date | null  }
 
-export interface AudioSubsystemCoordinator { audioManager: AudioManager | null,
+export interface AudioSubsystemCoordinator { audioManager: AudioManager | null;
   bgmSystem: BGMSystem | null;
   soundEffectSystem: SoundEffectSystem | null;
   audioController: AudioController | null;
@@ -454,7 +455,7 @@ export interface AudioSubsystemCoordinator { audioManager: AudioManager | null,
   getSubsystemStatus(): SubsystemStatus;
   disposeSubsystems(): void;
 
-export interface SubsystemStatus { bgmSystem: boolean,
+export interface SubsystemStatus { bgmSystem: boolean;
   soundEffectSystem: boolean;
   audioController: boolean;
   audioVisualizer: boolean;
@@ -492,13 +493,13 @@ export interface SoundEffectRenderer { // Sound effect renderer interface (place
 
 // ========== Utility Functions ==========
 
-export function getAudioManager(configManager: ConfigurationManager, audioConfig: AudioConfig): AudioManager,
-export function reinitializeAudioManager(configManager: ConfigurationManager, audioConfig: AudioConfig): AudioManager,
+export function getAudioManager(configManager: ConfigurationManager, audioConfig: AudioConfig): AudioManager;
+export function reinitializeAudioManager(configManager: ConfigurationManager, audioConfig: AudioConfig): AudioManager;
 export function getAudioContextManager(): AudioContextManager;
 export function reinitializeAudioContextManager(): AudioContextManager;
 
 // ========== Type Guards ==========
 
-export function isAudioManagerInitialized(audioManager: AudioManager): boolean,
+export function isAudioManagerInitialized(audioManager: AudioManager): boolean;
 export function isAudioContextAvailable(): boolean;''
 export function isSoundSupported(format: string): boolean;

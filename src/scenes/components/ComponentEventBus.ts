@@ -2,23 +2,23 @@
 interface ListenerOptions { once?: boolean,
     priority?: number;
 
-interface ListenerInfo { callback: EventCallback,
+interface ListenerInfo { callback: EventCallback;
     once: boolean;
     priority: number;
     id: string;
 
-interface EventHistoryEntry { event: string,
+interface EventHistoryEntry { event: string;
     data: any;
     timestamp: number;
 
-interface ErrorInfo { type: 'listener_error' | 'emit_error',
+interface ErrorInfo { type: 'listener_error' | 'emit_error';
     error: Error;
     event: string;
     listenerId?: string;
     data?: any;
     timestamp: number;
 
-interface DebugInfo { eventNames: string[],
+interface DebugInfo { eventNames: string[];
     listenerCounts: Record<string, number>;
     recentEvents: EventHistoryEntry[];
     totalEvents: number;
@@ -39,7 +39,7 @@ export class ComponentEventBus {
     private eventHistory: EventHistoryEntry[];
     private maxHistorySize: number;
     // エラーハンドリング
-    private, errorHandlers: ErrorHandler[],
+    private, errorHandlers: ErrorHandler[];
     constructor() {
 
         // イベントリスナーの管理
@@ -73,7 +73,7 @@ export class ComponentEventBus {
         const listenerInfo: ListenerInfo = { callback,
             once: options.once || false,
             priority: options.priority || 0,
-    id: this.generateListenerId(  };
+    id: this.generateListenerId(  },
         
         this.listeners.get(event)!.push(listenerInfo);
         
@@ -106,8 +106,7 @@ export class ComponentEventBus {
         
         if (index !== -1) {
         
-            listeners.splice(index, 1),
-            
+            listeners.splice(index, 1);
             // リスナーが空になった場合はイベント自体を削除
             if (listeners.length === 0) {
     
@@ -124,8 +123,7 @@ export class ComponentEventBus {
      */
     emit(event: string, data?: any): boolean { try {
             // イベント履歴に記録
-            this.addToHistory(event, data),
-            
+            this.addToHistory(event, data);
             if (!this.listeners.has(event) {
     
 }
@@ -138,7 +136,7 @@ export class ComponentEventBus {
             for (const listener of listeners) {
             
                 try {
-                    const result = listener.callback(data, event),
+                    const result = listener.callback(data, event);
                     if (result === true) {
     
 }
@@ -153,7 +151,7 @@ export class ComponentEventBus {
             for (const id of toRemove) { this.off(event, id) }
             
             return handled;
-        } catch (error) { this.handleEmitError(error as Error, event, data),
+        } catch (error) { this.handleEmitError(error as Error, event, data);
             return false,
     
     /**
@@ -189,9 +187,9 @@ export class ComponentEventBus {
      * @returns デバッグ情報
      */
     getDebugInfo(): DebugInfo { return { eventNames: this.getEventNames()
-           , listenerCounts: Object.fromEntries(),
+           , listenerCounts: Object.fromEntries();
                 this.getEventNames().map(event => [event, this.getListenerCount(event)])),
-            recentEvents: this.eventHistory.slice(-10) };
+            recentEvents: this.eventHistory.slice(-10) },
             totalEvents: this.eventHistory.length 
     }
     
@@ -211,8 +209,7 @@ export class ComponentEventBus {
     private addToHistory(event: string, data: any): void { this.eventHistory.push({)
             event,
             data: this.safeClone(data,
-    timestamp: Date.now( });
-        
+    timestamp: Date.now( };
         // 履歴サイズを制限
         if (this.eventHistory.length > this.maxHistorySize) { this.eventHistory.shift() }
     }
@@ -228,7 +225,7 @@ export class ComponentEventBus {
             error,
             event,
             listenerId: listener.id,
-    timestamp: Date.now(  };
+    timestamp: Date.now(  },
         
         // エラーハンドラーに通知
         for(const handler of this.errorHandlers) {
@@ -253,7 +250,7 @@ export class ComponentEventBus {
             error,
             event,
             data: this.safeClone(data,
-    timestamp: Date.now(  };
+    timestamp: Date.now(  },
         
         // エラーハンドラーに通知
         for(const handler of this.errorHandlers) {

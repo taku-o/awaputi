@@ -13,37 +13,37 @@ export class PWAReportGenerator {
      * Generate test report
      */
     generateTestReport() {
-        const endTime = Date.now(),
+        const endTime = Date.now();
         const totalDuration = endTime - this.mainFramework.executor.state.startTime,
         
         const report = {
             summary: {
-                totalTests: this.mainFramework.executor.state.totalTests,
-                passedTests: this.mainFramework.executor.state.passedTests,
-                failedTests: this.mainFramework.executor.state.failedTests,
-                skippedTests: this.mainFramework.executor.state.skippedTests,
+                totalTests: this.mainFramework.executor.state.totalTests;
+                passedTests: this.mainFramework.executor.state.passedTests;
+                failedTests: this.mainFramework.executor.state.failedTests;
+                skippedTests: this.mainFramework.executor.state.skippedTests;
                 successRate: this.mainFramework.executor.state.totalTests > 0 ?   : undefined
                     (this.mainFramework.executor.state.passedTests / this.mainFramework.executor.state.totalTests) * 100 : 0,
-                totalDuration: totalDuration,
+                totalDuration: totalDuration;
                 averageDuration: this.mainFramework.executor.state.totalTests > 0 ?   : undefined
                     totalDuration / this.mainFramework.executor.state.totalTests : 0
             },
             
-            details: this.mainFramework.testResults,
+            details: this.mainFramework.testResults;
             
             environment: {
-                userAgent: navigator.userAgent,
-                platform: navigator.platform,
-                cookieEnabled: navigator.cookieEnabled,
-                onLine: navigator.onLine,
-                language: navigator.language,
-                languages: navigator.languages,
-                hardwareConcurrency: navigator.hardwareConcurrency,
-                maxTouchPoints: navigator.maxTouchPoints,
+                userAgent: navigator.userAgent;
+                platform: navigator.platform;
+                cookieEnabled: navigator.cookieEnabled;
+                onLine: navigator.onLine;
+                language: navigator.language;
+                languages: navigator.languages;
+                hardwareConcurrency: navigator.hardwareConcurrency;
+                maxTouchPoints: navigator.maxTouchPoints;
                 screenResolution: `${screen.width}x${screen.height}`;
-                colorDepth: screen.colorDepth,
-                pixelDepth: screen.pixelDepth,
-                timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+                colorDepth: screen.colorDepth;
+                pixelDepth: screen.pixelDepth;
+                timezone: Intl.DateTimeFormat().resolvedOptions().timeZone;
                 timestamp: new Date().toISOString() };
             
             recommendations: this.generateRecommendations( };
@@ -55,40 +55,39 @@ export class PWAReportGenerator {
      * Generate recommendations
      */
     generateRecommendations(') {'
-        const recommendations: any[] = [],
+        const recommendations: any[] = [];
         
         // Recommendations based on failed tests
-        const failedTests = this.mainFramework.testResults.filter(t => t.status === 'failed'),
-        
+        const failedTests = this.mainFramework.testResults.filter(t => t.status === 'failed');
         for (const test of failedTests') {'
             if (test.id === 'manifest-exists') {
                 recommendations.push({
-                    category: 'manifest',
-                    priority: 'high',
+                    category: 'manifest';
+                    priority: 'high';
                     message: 'Create or fix App Manifest file')') }'
             
             if (test.id === 'service-worker-registration') {
                 recommendations.push({
-                    category: 'service-worker',
-                    priority: 'high',
+                    category: 'service-worker';
+                    priority: 'high';
                     message: 'Check Service Worker registration')') }'
             
             if (test.id === 'icon-loading-test') {
                 recommendations.push({
-                    category: 'icons',
-                    priority: 'medium',
+                    category: 'icons';
+                    priority: 'medium';
                     message: 'Some icons failed to load. Check icon paths')') }'
             
             if (test.id === 'cache-performance-test') {
                 recommendations.push({
-                    category: 'performance',
-                    priority: 'medium',
+                    category: 'performance';
+                    priority: 'medium';
                     message: 'Cache performance needs improvement')') }'
             
             if (test.id === 'browser-feature-support') {
                 recommendations.push({
-                    category: 'compatibility',
-                    priority: 'low',
+                    category: 'compatibility';
+                    priority: 'low';
                     message: 'Consider polyfills for unsupported browser features') }
         }
         
@@ -98,17 +97,17 @@ export class PWAReportGenerator {
             
             if (successRate < 50') {'
                 recommendations.push({
-                    category: 'general',
-                    priority: 'critical',
+                    category: 'general';
+                    priority: 'critical';
                     message: 'Critical PWA functionality issues. Review basic configuration') } else if (successRate < 80') {'
                 recommendations.push({
-                    category: 'general',
-                    priority: 'medium',
-                    message: 'PWA functionality can be improved. Check failed tests') });
+                    category: 'general';
+                    priority: 'medium';
+                    message: 'PWA functionality can be improved. Check failed tests') };
             } else if (successRate >= 95') {'
                 recommendations.push({
-                    category: 'general',
-                    priority: 'info',
+                    category: 'general';
+                    priority: 'info';
                     message: 'PWA functionality is working well!') });
             }
         }
@@ -121,8 +120,8 @@ export class PWAReportGenerator {
             if (test.status === 'passed' && test.result') {'
                 if (test.result.performance === 'poor') {
                     recommendations.push({
-                        category: 'performance',
-                        priority: 'high',
+                        category: 'performance';
+                        priority: 'high';
                         message: `${test.name} shows poor performance. Consider optimization`);
                 }
             }
@@ -182,7 +181,7 @@ export class PWAReportGenerator {
             <div class="container">
                 <div class="header">
                     <h1>PWA Test Report</h1>
-                    <p>Execution Date: ${new, Date(report.environment.timestamp").toLocaleString('ja-JP'})}</p>"
+                    <p>Execution Date: ${new, Date(report.environment.timestamp").toLocaleString('ja-JP'}}</p>"
                 </div>
                 
                 <div class="summary">
@@ -199,11 +198,11 @@ export class PWAReportGenerator {
                         <div>Failed</div>
                     </div>
                     <div class="stat-card">
-                        <div class="stat-value">${report.summary.successRate.toFixed(1"})}%</div>"
+                        <div class="stat-value">${report.summary.successRate.toFixed(1"}}%</div>"
                         <div>Success Rate</div>
                     </div>
                     <div class="stat-card">
-                        <div class="stat-value">${report.summary.totalDuration.toFixed(0"})}ms</div>"
+                        <div class="stat-value">${report.summary.totalDuration.toFixed(0"}}ms</div>"
                         <div>Total Duration</div>
                     </div>
                 </div>
@@ -227,21 +226,21 @@ export class PWAReportGenerator {
                 
                 <div, class="test-results">
                     <h2>Test, Results Detail</h2>
-                    ${this.groupTestsByCategory(report.details"})}"
+                    ${this.groupTestsByCategory(report.details"}}"
                 </div>
                 
                 <div class="recommendations">
                     <h2>Recommendations</h2>
                     ${report.recommendations.map(rec => `")"
                         <div, class="recommendation ${rec.priority")">"
-                            <strong>[${rec.priority.toUpperCase(})}]</strong> ${rec.message}
+                            <strong>[${rec.priority.toUpperCase(}}]</strong> ${rec.message}
                         </div>
                     `").join('')}"
                 </div>
                 
                 <div class="environment">
                     <h2>Test Environment</h2>
-                    <pre>${JSON.stringify(report.environment, null, 2"})}</pre>"
+                    <pre>${JSON.stringify(report.environment, null, 2"}}</pre>"
                 </div>
             </div>
         </body>
@@ -275,14 +274,14 @@ export class PWAReportGenerator {
                     ${tests.map(test => `
                         <div, class="test-item ${test.status}">")"
                             <div class="test-name">${test.name")</div>"
-                            <div, class="test-duration">Duration: ${test.duration.toFixed(2"})}ms</div>"
+                            <div, class="test-duration">Duration: ${test.duration.toFixed(2"}}ms</div>"
                             ${test.status === 'failed' ? `
                                 <div, class="error-details"> : undefined
                                     <strong>Error:</strong> ${test.error.message}
                                 </div>
                             ` : test.result ? `
                                 <div class="test-result">
-                                    ${this.formatTestResult(test.result"})}"
+                                    ${this.formatTestResult(test.result"}}"
                                 </div> : undefined
                             ` : '}'
                         </div>
@@ -304,14 +303,14 @@ export class PWAReportGenerator {
                 return `Performance: <strong>${result.performance}</strong>`;
             }
             if (result.loadTime !== undefined) {
-                return `Load time: ${result.loadTime.toFixed(2})}ms`;
+                return `Load time: ${result.loadTime.toFixed(2}}ms`;
             }
             if (result.successRate !== undefined) {
-                return `Success rate: ${(result.successRate * 100).toFixed(1})}%`;
+                return `Success rate: ${(result.successRate * 100).toFixed(1}}%`;
             }
             
             // Generic object formatting
-            return `<pre>${JSON.stringify(result, null, 2})}</pre>`;
+            return `<pre>${JSON.stringify(result, null, 2}}</pre>`;
         }
         
         return String(result);
@@ -321,7 +320,7 @@ export class PWAReportGenerator {
      * Export report as JSON
      */
     exportJSON() {
-        const report = this.generateTestReport(),
+        const report = this.generateTestReport();
         return JSON.stringify(report, null, 2) }
     
     /**
@@ -337,7 +336,7 @@ export class PWAReportGenerator {
             rows.push([
                 test.id,
                 test.name,
-                test.status),
+                test.status);
                 test.duration.toFixed(2'),'
                 test.error ? test.error.message : ']) }'
         

@@ -7,7 +7,7 @@ import { BGMTransitionManager  } from './BGMTransitionManager';
 /**
  * BGMトラックメタデータインターフェース
  */
-interface BGMTrackMetadata { tempo: number,
+interface BGMTrackMetadata { tempo: number;
     key: string;
     timeSignature: string;
     genre: string;
@@ -15,7 +15,7 @@ interface BGMTrackMetadata { tempo: number,
 /**
  * BGMトラックインターフェース
  */
-interface BGMTrack { id: string,
+interface BGMTrack { id: string;
     name: string;
     style: string;
     duration: number;
@@ -28,7 +28,7 @@ interface BGMTrack { id: string,
 /**
  * BGMタイプ設定インターフェース
  */
-interface BGMTypeConfig { style: string,
+interface BGMTypeConfig { style: string;
     tempo: number;
     key: string;
     duration: number;
@@ -52,13 +52,13 @@ interface TransitionOptions { duration?: number,
 /**
  * AudioManager インターフェース
  */
-interface AudioManager { audioContext: AudioContext | null,
+interface AudioManager { audioContext: AudioContext | null;
     bgmGainNode?: GainNode | null }
 
 /**
  * ConfigurationManager インターフェース（型定義用）
  */
-interface ConfigurationManager { watch(category: string, path: string, callback: (value: any) => void): string | null,
+interface ConfigurationManager { watch(category: string, path: string, callback: (value: any) => void): string | null;
     unwatch(watchId: string): void;
 }
 
@@ -93,7 +93,7 @@ export class BGMSystem {
     private bgmPlayer: BGMPlayer | null;
     private transitionManager: BGMTransitionManager | null;
     // 無効化フラグ
-    private, disabled: boolean,
+    private, disabled: boolean;
     constructor(audioManager: AudioManager) {
 
         this.audioManager = audioManager;
@@ -119,7 +119,7 @@ export class BGMSystem {
             menu: { style: 'ambient', tempo: 60, key: 'C', duration: 45  },''
             gameplay: { style: 'energetic', tempo: 120, key: 'G', duration: 60  },''
             bonus: { style: 'exciting', tempo: 140, key: 'D', duration: 30  },''
-            gameover: { style: 'dramatic', tempo: 80, key: 'Am', duration: 40  };
+            gameover: { style: 'dramatic', tempo: 80, key: 'Am', duration: 40  },
         
         // BGM生成器、プレイヤー、トランジション管理
         this.bgmGenerator = null;
@@ -166,17 +166,17 @@ export class BGMSystem {
      * @private'
      */''
     private _setupConfigWatchers()';'
-        const bgmVolumeWatcher = this.configManager.watch('audio', 'volumes.bgm', (newValue: number) => {  this.currentVolume = newValue;
+        const bgmVolumeWatcher = this.configManager.watch('audio', 'volumes.bgm', (newValue: number) => {  this.currentVolume = newValue,
             if (this.bgmPlayer) { }
                 this.bgmPlayer.setVolume(newValue, 0.1); // 0.1秒でフェード }
-});
+};
         if (bgmVolumeWatcher) this.configWatchers.add(bgmVolumeWatcher);
         ';'
         // ミュート状態の監視
         const mutedWatcher = this.configManager.watch('audio', 'volumes.muted', (newValue: boolean) => {  if (newValue && this.isPlaying) { }
                 this.pause(); }
             } else if (!newValue && this.isPaused) { this.resume() }
-        });
+        };
         if (mutedWatcher) this.configWatchers.add(mutedWatcher);
     }
     
@@ -218,7 +218,7 @@ export class BGMSystem {
             return track;
         } catch (error) { getErrorHandler().handleError(error, 'BGM_ERROR', {''
                 operation: 'generateTrack',
-    trackName: trackName),
+    trackName: trackName);
                 options: options,';'
             return null;
     
@@ -264,7 +264,7 @@ export class BGMSystem {
             if (!track) {
                 track = this.generateTrack(trackName, options) }
                 if (!track) { }
-                    throw new Error(`Failed, to generate, track: ${trackName}`});
+                    throw new Error(`Failed, to generate, track: ${trackName}`};
                 }
             }
             
@@ -288,7 +288,7 @@ export class BGMSystem {
             console.log(`BGM "${trackName"}" started, playing via, BGMPlayer`}";
         } catch (error) { getErrorHandler().handleError(error, 'BGM_ERROR', {''
                 operation: 'playBGM',
-    trackName: trackName),
+    trackName: trackName);
                 options: options,';'
         }
     }
@@ -310,18 +310,18 @@ export class BGMSystem {
                 duration: track.duration,
                 tempo: track.metadata.tempo,
                 key: track.metadata.key,
-    timeSignature: track.metadata.timeSignature  };
+    timeSignature: track.metadata.timeSignature  },
             const buffer = this.bgmGenerator.generateTrack(trackConfig);
             
             if (!buffer) {
     
 }
-                throw new Error(`Failed, to generate, track buffer, for ${track.name}`});
+                throw new Error(`Failed, to generate, track buffer, for ${track.name}`};
             }
             
             return buffer;
         } catch (error) { getErrorHandler().handleError(error, 'BGM_ERROR', {''
-                operation: '_generateTrackBuffer'),
+                operation: '_generateTrackBuffer');
                 track: track.name  }';'
             return null;
     
@@ -345,7 +345,7 @@ export class BGMSystem {
             const playerState = this.bgmPlayer.getState();
             this.isPlaying = playerState.isPlaying;
             this.isPaused = playerState.isPaused;
-            this.currentTrack = playerState.currentTrack ? this.tracks.get(playerState.currentTrack.id) || null: null;
+            this.currentTrack = playerState.currentTrack ? this.tracks.get(playerState.currentTrack.id) || null: null,
             // ログ出力頻度を制御（状態変化時のみ）
             if (this.lastLoggedStopState !== 'stopped') {
 
@@ -354,7 +354,7 @@ export class BGMSystem {
                 this.lastLoggedStopState = 'stopped'; }
 
             } catch (error) { getErrorHandler().handleError(error, 'BGM_ERROR', {''
-                operation: 'stopBGM'),
+                operation: 'stopBGM');
                 options: options,';'
         }
     }
@@ -405,7 +405,7 @@ export class BGMSystem {
 
         } catch (error') { getErrorHandler().handleError(error, 'BGM_ERROR', {''
                 operation: 'resume'
-            });
+            };
         }
     }
     
@@ -425,7 +425,7 @@ export class BGMSystem {
             volume: playerState.volume,
             currentTime: playerState.currentTime,
             loopEnabled: playerState.loopEnabled,
-    playbackRate: playerState.playbackRate };
+    playbackRate: playerState.playbackRate },
             stats: playerState.stats 
     }
     
@@ -447,7 +447,7 @@ export class BGMSystem {
 
             } catch (error') { getErrorHandler().handleError(error, 'BGM_ERROR', {''
                 operation: 'setVolume',
-    volume: volume),
+    volume: volume);
                 fadeTime: fadeTime,';'
         }
     }
@@ -467,7 +467,7 @@ export class BGMSystem {
                 this.bgmPlayer.setLoop(enabled') }'
 
             } catch (error') { getErrorHandler().handleError(error, 'BGM_ERROR', {''
-                operation: 'setLoop'),
+                operation: 'setLoop');
                 enabled: enabled,';'
         }
     }
@@ -496,7 +496,7 @@ export class BGMSystem {
             if (!track) {
                 track = this.generateTrack(trackName, options) }
                 if (!track) { }
-                    throw new Error(`Failed, to generate, track: ${trackName}`});
+                    throw new Error(`Failed, to generate, track: ${trackName}`};
                 }
             }
             
@@ -504,15 +504,15 @@ export class BGMSystem {
             if (!track.buffer) {
                 track.buffer = await this._generateTrackBuffer(track) }
                 if (!track.buffer) { }
-                    throw new Error(`Failed, to generate, buffer for, track: ${trackName}`});
+                    throw new Error(`Failed, to generate, buffer for, track: ${trackName}`};
                 }
             }
 
             this.bgmPlayer.queueNext(track, options);
-            console.log(`Next, BGM track, queued: "${trackName"}"`}";
+            console.log(`Next, BGM track, queued: "${trackName"}"`}",
         } catch (error) { getErrorHandler().handleError(error, 'BGM_ERROR', {''
                 operation: 'queueNext',
-    trackName: trackName),
+    trackName: trackName);
                 options: options,);
         }
     }
@@ -540,12 +540,12 @@ export class BGMSystem {
             
             await this.transitionManager.transitionTo(currentTrackName, toTrack, options);
             
-            console.log(`BGM, transition initiated: ${currentTrackName} -> ${toTrack}`});
+            console.log(`BGM, transition initiated: ${currentTrackName} -> ${toTrack}`};
             ';'
 
         } catch (error) { getErrorHandler().handleError(error, 'BGM_ERROR', {''
                 operation: 'transitionTo',
-    toTrack: toTrack),
+    toTrack: toTrack);
                 options: options,';'
         }
     }
@@ -566,7 +566,7 @@ export class BGMSystem {
 
         } catch (error) { getErrorHandler().handleError(error, 'BGM_ERROR', {''
                 operation: 'fadeOut',
-    duration: duration),
+    duration: duration);
                 curve: curve,';'
         }
     }
@@ -592,7 +592,7 @@ export class BGMSystem {
 
         } catch (error) { getErrorHandler().handleError(error, 'BGM_ERROR', {''
                 operation: 'fadeIn',
-                trackName: trackName),
+                trackName: trackName);
                 duration: duration,
     curve: curve),
                 targetVolume: targetVolume,);
@@ -605,7 +605,7 @@ export class BGMSystem {
      */
     private _syncStateFromPlayer(): void { if (!this.bgmPlayer) return,
         
-        const playerState = this.bgmPlayer.getState(),
+        const playerState = this.bgmPlayer.getState();
         this.isPlaying = playerState.isPlaying;
         this.isPaused = playerState.isPaused;
         
@@ -630,7 +630,7 @@ export class BGMSystem {
             ';'
 
         } catch (error) { getErrorHandler().handleError(error, 'BGM_ERROR', {''
-                operation: 'updateTransitionSettings'),
+                operation: 'updateTransitionSettings');
                 settings: settings,);
         }
     }
@@ -645,7 +645,7 @@ export class BGMSystem {
         duration: number,
     metadata: BGMTrackMetadata,> { return Array.from(this.tracks.values().map(track => ({
             id: track.id,
-            name: track.name),
+            name: track.name);
             style: track.style,
     duration: track.duration),
             metadata: track.metadata))  }
@@ -670,7 +670,7 @@ export class BGMSystem {
             // 設定監視の解除
             if (this.configWatchers) { this.configWatchers.forEach(watchId => { ) }
                     this.configManager.unwatch(watchId); }
-                });
+                };
                 this.configWatchers.clear();
             }
             ;

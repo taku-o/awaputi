@@ -15,18 +15,19 @@
  */
 export interface ScoringConfig { baseScores: Record<string, number>,
     combo: {
-        multiplierIncremen,t: number,
-    maxMultiplier: number,;
-    ageBonus: { earlyBonus: number,
-        midBonus: number,
-    lateBonus: number,
-
+        multiplierIncremen,t: number;
+    maxMultiplier: number;
+    ageBonus: { earlyBonus: number;
+        midBonus: number;
+    lateBonus: number;
+    lateBonus: number;
+        };
 /**
  * ステージ設定の型定義
  */
 export interface StagesConfig { unlockRequirements: Record<string, number>,
     difficulty: Record<string, {
-        spawnRate: number,
+        spawnRate: number;
     maxBubbles: number,>;
 }
 
@@ -46,13 +47,13 @@ export interface BubblesConfig { maxAge: Record<string, number>,
 /**
  * 変更ログエントリーの型定義
  */
-export interface ChangelogEntry { version: string,
+export interface ChangelogEntry { version: string;
     date: string;
     changes: string[];
 /**
  * 元のゲームバランス設定の型定義
  */
-export interface OriginalBalanceConfig { scoring: ScoringConfig,
+export interface OriginalBalanceConfig { scoring: ScoringConfig;
     stages: StagesConfig;
     items: ItemsConfig;
     bubbles: BubblesConfig;
@@ -63,84 +64,84 @@ export interface OriginalBalanceConfig { scoring: ScoringConfig,
  */
 export const ORIGINAL_BALANCE_CONFIG: OriginalBalanceConfig = { scoring: {
         baseScores: {
-            normal: 15,
-            stone: 25,
-            iron: 40,
-            diamond: 60,
-            boss: 100,
-            pink: 20,
-            poison: 30,
+            normal: 15;
+            stone: 25;
+            iron: 40;
+            diamond: 60;
+            boss: 100;
+            pink: 20;
+            poison: 30;
     spiky: 35 
 };
-        combo: { multiplierIncrement: 0.08,
+        combo: { multiplierIncrement: 0.08;
     maxMultiplier: 2.5 
 };
-        ageBonus: { earlyBonus: 2.0,
-            midBonus: 1.5,
+        ageBonus: { earlyBonus: 2.0;
+            midBonus: 1.5;
     lateBonus: 3.0 
     },
     stages: { unlockRequirements: {
-            hard: 500,
-            veryHard: 2000,
-            special: 5000,
+            hard: 500;
+            veryHard: 2000;
+            special: 5000;
     nightmare: 10000 
 };
         difficulty: { tutorial: {
-                spawnRate: 0.8,
+                spawnRate: 0.8;
     maxBubbles: 10 
 };
-            normal: { spawnRate: 1.0,
+            normal: { spawnRate: 1.0;
     maxBubbles: 15 
 };
-            hard: { spawnRate: 1.5,
+            hard: { spawnRate: 1.5;
     maxBubbles: 20 
 };
-            veryHard: { spawnRate: 2.0,
+            veryHard: { spawnRate: 2.0;
     maxBubbles: 25 
 };
-            special: { spawnRate: 2.5,
+            special: { spawnRate: 2.5;
     maxBubbles: 30 
 };
-            nightmare: { spawnRate: 3.0,
+            nightmare: { spawnRate: 3.0;
     maxBubbles: 35 
     },
     items: { baseCosts: {
-            scoreMultiplier: 75,
-            timeExtension: 50,
-            bubbleSlower: 60,
-            extraLife: 100,
+            scoreMultiplier: 75;
+            timeExtension: 50;
+            bubbleSlower: 60;
+            extraLife: 100;
     reset: 25 
 };
-        costMultiplier: 1.3,
-    effects: { scoreMultiplier: 1.3,
-            timeExtension: 10000,
-            bubbleSlower: 0.7,
-            extraLife: 1,
+        costMultiplier: 1.3;
+    effects: { scoreMultiplier: 1.3;
+            timeExtension: 10000;
+            bubbleSlower: 0.7;
+            extraLife: 1;
     reset: 1 
 };
-        maxLevels: { scoreMultiplier: 5,
-            timeExtension: 3,
-            bubbleSlower: 4,
-            extraLife: 2,
+        maxLevels: { scoreMultiplier: 5;
+            timeExtension: 3;
+            bubbleSlower: 4;
+            extraLife: 2;
     reset: 1 
     },
     bubbles: { maxAge: {
-            normal: 12000,
-            stone: 15000,
-            iron: 18000,
-            diamond: 20000,
-            boss: 25000,
-            pink: 10000,
-            poison: 8000,
+            normal: 12000;
+            stone: 15000;
+            iron: 18000;
+            diamond: 20000;
+            boss: 25000;
+            pink: 10000;
+            poison: 8000;
     spiky: 14000 
 };
-        health: { normal: 1,
-            stone: 2,
-            iron: 3,
-            diamond: 4,
-            boss: 5,
-            pink: 1,
-            poison: 1,
+        health: { normal: 1;
+            stone: 2;
+            iron: 3;
+            diamond: 4;
+            boss: 5;
+            pink: 1;
+            poison: 1;
     spiky: 2 
 };
         specialEffects: { pink: {
@@ -148,7 +149,7 @@ export const ORIGINAL_BALANCE_CONFIG: OriginalBalanceConfig = { scoring: {
 };
             poison: { damageAmount: 10 
 };
-            spiky: { chainRadius: 120,
+            spiky: { chainRadius: 120;
     chainDamage: 15 
     },
     changelog: [{ version: '1.0.0',]'
@@ -189,7 +190,7 @@ export class OriginalBalanceHelper {
     static calculateComboMultiplier(comboCount: number): number { if (comboCount <= 1) return 1,
         
         const config = ORIGINAL_BALANCE_CONFIG.scoring.combo,
-        return Math.min(),
+        return Math.min();
             1 + (comboCount - 1) * config.multiplierIncrement,
             config.maxMultiplier) }
     /**

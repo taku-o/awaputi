@@ -24,7 +24,7 @@ export class SocialSharingManager {
         this.platformAdapters = new SocialPlatformAdapters();
         this.analyticsTracker = new SocialAnalyticsTracker('}'
 
-            defaultPlatform: 'web-share' }))
+            defaultPlatform: 'web-share' })
         // 初期化
         this.init();
     }
@@ -37,16 +37,14 @@ export class SocialSharingManager {
             this.shareContentGenerator = new ShareContentGenerator();
             
             // 設定の読み込み
-            await this.loadSettings(),
-            
+            await this.loadSettings();
             // エラーハンドラーの設定
-            this.setupErrorHandler(),
+            this.setupErrorHandler();
             // イベントリスナーの設定
             this.setupEventListeners()','
-            this.analyticsTracker.trackShareEvent('system_init', {),
+            this.analyticsTracker.trackShareEvent('system_init', {);
                 platform: this.platformAdapters.detectPlatform(
-    webShareSupported: this.platformAdapters.isWebShareSupported(  });
-
+    webShareSupported: this.platformAdapters.isWebShareSupported(  };
         } catch (error) {
             this.errorHandler.handleError(error, 'SocialSharingManager.init' }'
     }
@@ -57,7 +55,7 @@ export class SocialSharingManager {
     setupErrorHandler()';'
         if (typeof, this.errorHandler.setRetryHandler === 'function) { this.errorHandler.setRetryHandler((errorInfo) => {  }'
                 this.handleRetryAction(errorInfo); }
-            });
+            };
         }
     }
 
@@ -154,10 +152,10 @@ export class SocialSharingManager {
 
         this.analyticsTracker.trackShareEvent('game_end', {
                 score: gameData.score,
-    level: gameData.level),
+    level: gameData.level);
             duration: gameData.duration),
         if (this.settings.autoPrompt && gameData.score > 0) {
-     })
+     }
             this.showScoreSharePrompt(gameData); }
 }
 
@@ -167,10 +165,10 @@ export class SocialSharingManager {
     handleHighScore(scoreData) {
 
         this.analyticsTracker.trackShareEvent('high_score', {
-                score: scoreData.score),
+                score: scoreData.score);
             previousBest: scoreData.previousBest),
         if (this.settings.shareOnHighScore) {
-     })
+     }
             this.showHighScoreSharePrompt(scoreData); }
 }
 
@@ -180,10 +178,10 @@ export class SocialSharingManager {
     handleAchievementUnlock(achievement) {
 
         this.analyticsTracker.trackShareEvent('achievement_unlock', {
-                achievementId: achievement.id),
+                achievementId: achievement.id);
             achievementType: achievement.type),
         if (this.settings.shareOnAchievement) {
-     })
+     }
             this.showAchievementSharePrompt(achievement); }
 }
 
@@ -193,7 +191,7 @@ export class SocialSharingManager {
     async showScoreSharePrompt(gameData) { ''
         this.analyticsTracker.trackUserBehavior('sharePromptView', { type: 'score ,'
         
-        const shareData = await this.shareContentGenerator.generateScoreShareContent(gameData),
+        const shareData = await this.shareContentGenerator.generateScoreShareContent(gameData);
         this.showShareDialog(shareData) }
 
     /**
@@ -202,7 +200,7 @@ export class SocialSharingManager {
     async showHighScoreSharePrompt(scoreData) { ''
         this.analyticsTracker.trackUserBehavior('sharePromptView', { type: 'highScore ,'
         
-        const shareData = await this.shareContentGenerator.generateHighScoreShareContent(scoreData),
+        const shareData = await this.shareContentGenerator.generateHighScoreShareContent(scoreData);
         this.showShareDialog(shareData) }
 
     /**
@@ -211,7 +209,7 @@ export class SocialSharingManager {
     async showAchievementSharePrompt(achievement) { ''
         this.analyticsTracker.trackUserBehavior('sharePromptView', { type: 'achievement ,'
         
-        const shareData = await this.shareContentGenerator.generateAchievementShareContent(achievement),
+        const shareData = await this.shareContentGenerator.generateAchievementShareContent(achievement);
         this.showShareDialog(shareData) }
 
     /**
@@ -225,7 +223,7 @@ export class SocialSharingManager {
                 startTime,
 
             // データ検証
-            const validation = this.platformAdapters.validateShareData(shareData),
+            const validation = this.platformAdapters.validateShareData(shareData);
             if (!validation.valid) { }'
 
                 throw new Error(`Share data validation failed: ${validation.errors.join(', '}'`);'
@@ -247,12 +245,12 @@ export class SocialSharingManager {
 
             this.analyticsTracker.trackShareEvent('share_success', {
                 platform: result.platform || shareData.platform,
-    endTime: Date.now(),
+    endTime: Date.now();
                 startTime,
 
-            return result }) catch (error) {
+            return result } catch (error) {
             this.analyticsTracker.trackShareEvent('share_failure', {
-                platform: shareData.platform),
+                platform: shareData.platform);
                 error: error.message,
     endTime: Date.now(
                 startTime' }'
@@ -312,14 +310,14 @@ export class SocialSharingManager {
     onOnlineStatusChange()';'
         this.analyticsTracker.trackShareEvent('online_status_change', {
                 isOnline: navigator.onLine 
-            })
+            }
 
     /**
      * ウィンドウ閉じる前の処理
      */
     onBeforeUnload(event) {
         // 未完了の共有処理があるかチェック
-        const stats = this.analyticsTracker.getPerformanceStats(),
+        const stats = this.analyticsTracker.getPerformanceStats();
         if (stats.shareRequests > stats.successfulShares + stats.failedShares) {''
             event.preventDefault(' }'
 
@@ -353,13 +351,13 @@ export class SocialSharingManager {
      */
     getDebugInfo() {
         return { settings: this.settings,
-            platformCapabilities: this.platformAdapters.getAllPlatformCapabilities(),
+            platformCapabilities: this.platformAdapters.getAllPlatformCapabilities();
             analytics: this.analyticsTracker.getDebugInfo(
     dependencies: {
                 statisticsManager: !!this.statisticsManager,
                 achievementManager: !!this.achievementManager,
     localizationManager: !!this.localizationManager }
-                screenshotCapture: !!this.screenshotCapture };
+                screenshotCapture: !!this.screenshotCapture },
                 shareContentGenerator: !!this.shareContentGenerator 
     }
 

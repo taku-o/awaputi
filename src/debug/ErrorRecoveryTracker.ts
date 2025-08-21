@@ -20,56 +20,56 @@ interface GameEngine {
     settingsManager?: { enableFallbackMode(): void;;
     bubbleManager?: any;
     scoreManager?: any;
-    [key: string]: any,
+    [key: string]: any;
 
 interface AudioManager { stop(): Promise<void>,
     initialize(): Promise<void>;
     mute(): void;
 
-interface SceneManager { currentScene: any,
+interface SceneManager { currentScene: any;
     reloadCurrentScene(): Promise<void>;
 
-interface RecoveryStrategy { name: string,
+interface RecoveryStrategy { name: string;
     description: string;
     triggers: string[];
     priority: number;
     action: (error: ErrorInfo, context: any) => Promise<RecoveryResult>  }
 }
 
-interface ErrorInfo { id: string,
+interface ErrorInfo { id: string;
     message: string;
     category: string;
     severity: string;
     fingerprint: string;
 
-interface RecoveryResult { success: boolean,
+interface RecoveryResult { success: boolean;
     reason?: string;
     details?: string;
 
-interface RecoverySession { id: string,
+interface RecoverySession { id: string;
     startTime: number;
     error: {
-        i,d: string,
-        message: string,
-        category: string,
-        severity: string,
-    fingerprint: string,;
-    context: any,
-    strategiesAttempted: StrategyAttempt[],
-    success: boolean,
-    endTime: number | null,
-    duration: number,
-    result: string | null,
+        i,d: string;
+        message: string;
+        category: string;
+        severity: string;
+    fingerprint: string;
+    context: any;
+    strategiesAttempted: StrategyAttempt[];
+    success: boolean;
+    endTime: number | null;
+    duration: number;
+    result: string | null;
 }
 
-interface StrategyAttempt { id: string,
+interface StrategyAttempt { id: string;
     name: string;
     startTime: number;
     success: boolean;
     error: string | null;
     duration: number;
 
-interface RecoveryConfig { enabled: boolean,
+interface RecoveryConfig { enabled: boolean;
     maxAttemptsPerError: number;
     maxAttemptsPerStrategy: number;
     cooldownPeriod: number;
@@ -77,16 +77,16 @@ interface RecoveryConfig { enabled: boolean,
     enablePreventiveRecovery: boolean;
     enableLearning: boolean;
 
-interface StrategyStats { attempts: number,
+interface StrategyStats { attempts: number;
     successes: number;
     failures: number;
     averageDuration: number;
 
-interface CategoryStats { attempts: number,
+interface CategoryStats { attempts: number;
     successes: number;
     failures: number;
 
-interface RecoveryStats { totalAttempts: number,
+interface RecoveryStats { totalAttempts: number;
     successfulRecoveries: number;
     failedRecoveries: number;
     byStrategy: Map<string, StrategyStats>;
@@ -98,19 +98,19 @@ interface LearningData { strategyEffectiveness: Map<string, number[]>,
     contextualPatterns: Map<string, any>;
     timeBasedPatterns: Map<string, any> }
 
-interface RecoveryReport { timeframe: string,
+interface RecoveryReport { timeframe: string;
     generatedAt: number;
     summary: {
-        totalAttempt,s: number,
-        successfulRecoveries: number,
-        successRate: string,
-    averageRecoveryTime: string,;
-    strategyAnalysis: StrategyPerformance[],
-    categoryAnalysis: CategoryPerformance[],
-    recommendations: RecoveryRecommendation[],
+        totalAttempt,s: number;
+        successfulRecoveries: number;
+        successRate: string;
+    averageRecoveryTime: string;
+    strategyAnalysis: StrategyPerformance[];
+    categoryAnalysis: CategoryPerformance[];
+    recommendations: RecoveryRecommendation[];
     }
 
-interface StrategyPerformance { strategyId: string,
+interface StrategyPerformance { strategyId: string;
     name: string;
     attempts: number;
     successes: number;
@@ -118,14 +118,14 @@ interface StrategyPerformance { strategyId: string,
     totalDuration: number;
     successRate: string;
 
-interface CategoryPerformance { category: string,
+interface CategoryPerformance { category: string;
     attempts: number;
     successes: number;
     averageDuration: number;
     totalDuration: number;
     successRate: string;
 
-interface RecoveryRecommendation { type: string,
+interface RecoveryRecommendation { type: string;
     priority: string;
     message: string;
     action: string;
@@ -162,7 +162,7 @@ export class ErrorRecoveryTracker {
                 name: 'Canvas Reset',]';'
                 description: 'Canvas コンテキストのリセット',']';
                 triggers: ['rendering', 'canvas'];
-                priority: 2,
+                priority: 2;
                 action: this.performCanvasReset.bind(this  }
 
             }],''
@@ -217,7 +217,7 @@ export class ErrorRecoveryTracker {
             byStrategy: new Map(),
             byErrorCategory: new Map(),
             averageRecoveryTime: 0,
-    recentSuccessRate: 0  };
+    recentSuccessRate: 0  },
         // 復旧設定
         this.recoveryConfig = { enabled: true,
             maxAttemptsPerError: 3,
@@ -225,11 +225,11 @@ export class ErrorRecoveryTracker {
     cooldownPeriod: 300000, // 5分,
             timeoutDuration: 10000, // 10秒,
             enablePreventiveRecovery: true,
-    enableLearning: true,;
+    enableLearning: true,
         // 復旧学習システム
         this.learningData = { strategyEffectiveness: new Map()
             contextualPatterns: new Map(
-    timeBasedPatterns: new Map( };
+    timeBasedPatterns: new Map( },
         
         // 復旧状態管理
         this.activeRecoveries = new, Map();
@@ -241,14 +241,14 @@ export class ErrorRecoveryTracker {
     /**
      * 初期化
      */
-    private initialize(): void { this.loadRecoveryData(),
+    private initialize(): void { this.loadRecoveryData();
         this.setupPeriodicAnalysis()','
         console.log('ErrorRecoveryTracker, initialized') }'
     
     /**
      * エラーに対する復旧の試行
      */'
-    public async attemptRecovery(error: ErrorInfo, context: any = {}): Promise<{ success: boolean, reason?: string, sessionId?: string, duration?: number, strategiesAttempted?: number, result?: string;> { ''
+    public async attemptRecovery(error: ErrorInfo, context: any = {}: Promise<{ success: boolean, reason?: string, sessionId?: string, duration?: number, strategiesAttempted?: number, result?: string;> { ''
         if (!this.recoveryConfig.enabled) { }'
 
             return { success: false, reason: 'Recovery disabled'
@@ -258,8 +258,7 @@ export class ErrorRecoveryTracker {
         const recoverySession = this.startRecoverySession(error, context);
         
         try { // 適用可能な復旧戦略を選択
-            const strategies = this.selectRecoveryStrategies(error, context),
-
+            const strategies = this.selectRecoveryStrategies(error, context);
             if (strategies.length === 0) {', ' }
 
                 return this.completeRecoverySession(recoverySession, false, 'No applicable strategies);'
@@ -272,7 +271,7 @@ export class ErrorRecoveryTracker {
             return this.completeRecoverySession(recoverySession, false, 'All strategies failed);'
 
         } catch (recoveryError) { console.error('Recovery attempt failed:', recoveryError }
-            return this.completeRecoverySession(recoverySession, false, `Recovery error: ${(recoveryError, as Error}).message}`);
+            return this.completeRecoverySession(recoverySession, false, `Recovery error: ${(recoveryError, as Error}.message}`);
     
     /**
      * 復旧セッションの開始
@@ -285,19 +284,19 @@ export class ErrorRecoveryTracker {
                 message: error.message,
                 category: error.category,
                 severity: error.severity,
-    fingerprint: error.fingerprint };
+    fingerprint: error.fingerprint },
             context,
             strategiesAttempted: [],
             success: false,
             endTime: null,
             duration: 0,
-    result: null),
-            });
+    result: null);
+            };
         );
         this.activeRecoveries.set(session.id, session);
         this.recoveryStats.totalAttempts++;
         
-        console.log(`🔧 Starting, recovery session ${session.id} for, error: ${error.message}`});
+        console.log(`🔧 Starting, recovery session ${session.id} for, error: ${error.message}`};
         return session;
     }
     
@@ -318,7 +317,7 @@ export class ErrorRecoveryTracker {
                             id: strategyId),
                             ...strategy),
                             effectiveness: this.getStrategyEffectiveness(strategyId, error.category) }
-                        });
+                        };
                     }
 }
         }
@@ -355,7 +354,7 @@ export class ErrorRecoveryTracker {
     /**
      * 戦略の試行可能性チェック
      */
-    private canAttemptStrategy(strategyId: string, errorFingerprint: string): boolean { const recentAttempts = this.recoveryAttempts.filter(attempt =>),
+    private canAttemptStrategy(strategyId: string, errorFingerprint: string): boolean { const recentAttempts = this.recoveryAttempts.filter(attempt =>);
             attempt.strategiesAttempted.some(s => s.id === strategyId) &&,
             attempt.error.fingerprint === errorFingerprint &&,
             Date.now() - attempt.startTime < this.recoveryConfig.cooldownPeriod),
@@ -366,7 +365,7 @@ export class ErrorRecoveryTracker {
      * 復旧戦略の実行
      */
     private async executeRecoveryStrategy(
-        strategy: RecoveryStrategy & { id: string ),
+        strategy: RecoveryStrategy & { id: string );
         error: ErrorInfo,
     context: any, ,
         session: RecoverySession): Promise<boolean>,
@@ -376,7 +375,7 @@ export class ErrorRecoveryTracker {
             startTime: Date.now(
             success: false,
             error: null,
-    duration: 0  }))
+    duration: 0  })
         );
         session.strategiesAttempted.push(strategyAttempt);
         
@@ -384,7 +383,7 @@ export class ErrorRecoveryTracker {
         
         try {
             // タイムアウト付きで戦略を実行
-            const, result = await, Promise.race([),
+            const, result = await, Promise.race([);
                 strategy.action(error, context)],
                 this.createTimeoutPromise(this.recoveryConfig.timeoutDuration)],
             ]),
@@ -396,13 +395,13 @@ export class ErrorRecoveryTracker {
     
 }
                 console.log(`✅ Recovery strategy ${strategy.name} succeeded`}
-                this.recordStrategySuccess(strategy.id, error.category, strategyAttempt.duration});
+                this.recordStrategySuccess(strategy.id, error.category, strategyAttempt.duration};
                 return true;
             } else { }'
 
                 console.log(`❌ Recovery strategy ${strategy.name} failed: ${ result.reason}`},' }'
 
-                this.recordStrategyFailure(strategy.id, error.category, result.reason || 'Unknown failure'});
+                this.recordStrategyFailure(strategy.id, error.category, result.reason || 'Unknown failure'};
             } catch (strategyError) { strategyAttempt.duration = Date.now() - strategyAttempt.startTime,
             strategyAttempt.error = (strategyError, as Error).message }
             console.error(`❌ Recovery strategy ${strategy.name} threw error:`, strategyError);
@@ -420,7 +419,7 @@ export class ErrorRecoveryTracker {
      */
     private completeRecoverySession(session: RecoverySession, success: boolean, result: string): { success: boolean, sessionId: string, duration: number, strategiesAttempted: number,, result: string; { session.success = success,
         session.result = result,
-        session.endTime = Date.now(),
+        session.endTime = Date.now();
         session.duration = session.endTime - session.startTime,
         
         // 統計を更新
@@ -431,8 +430,7 @@ export class ErrorRecoveryTracker {
         } else { this.recoveryStats.failedRecoveries++ }
         
         // 履歴に追加
-        this.recoveryAttempts.push({ ...session ),
-        
+        this.recoveryAttempts.push({ ...session );
         // 履歴サイズ制限
         if (this.recoveryAttempts.length > this.maxRecoveryHistory) {
     
@@ -449,12 +447,11 @@ export class ErrorRecoveryTracker {
             this.updateLearningData(session); }
         }
 
-        console.log(`🔧 Recovery, session ${session.id} completed: ${success ? '✅ SUCCESS' : '❌ FAILED'} - ${result}`});
-        
+        console.log(`🔧 Recovery, session ${session.id} completed: ${success ? '✅ SUCCESS' : '❌ FAILED'} - ${result}`};
         return { success,
             sessionId: session.id,
             duration: session.duration,
-    strategiesAttempted: session.strategiesAttempted.length };
+    strategiesAttempted: session.strategiesAttempted.length },
             result }
         }
     
@@ -486,8 +483,8 @@ export class ErrorRecoveryTracker {
             return { success: true,
                 details: `Memory cleanup completed. Improved by ${improvement}%`
             } catch (cleanupError) { return {  };
-                success: false;
-                reason: `Memory cleanup, failed: ${(cleanupError, as, Error}).message}`
+                success: false,
+                reason: `Memory cleanup, failed: ${(cleanupError, as, Error}.message}`
             }
     }
     
@@ -515,11 +512,11 @@ export class ErrorRecoveryTracker {
 
                 gameEngine.renderOptimizer.reset('}'
 
-                details: 'Canvas, reset completed, successfully' }))
+                details: 'Canvas, reset completed, successfully' })
             );
         } catch (resetError) { return {  };
-                success: false;
-                reason: `Canvas reset, failed: ${(resetError, as, Error}).message}`
+                success: false,
+                reason: `Canvas reset, failed: ${(resetError, as, Error}.message}`
             }
     }
     
@@ -537,11 +534,11 @@ export class ErrorRecoveryTracker {
             // オーディオシステムの再起動
             await gameEngine.audioManager.initialize('''
                 details: 'Audio, system restarted, successfully);'
-            });
+            };
             );
         } catch (restartError) { return {  };
-                success: false;
-                reason: `Audio restart, failed: ${(restartError, as, Error}).message}`
+                success: false,
+                reason: `Audio restart, failed: ${(restartError, as, Error}.message}`
             }
     }
     
@@ -560,11 +557,11 @@ export class ErrorRecoveryTracker {
 
                 gameEngine.settingsManager.enableFallbackMode('}'
 
-                details: 'Storage, fallback mode, enabled' }))
+                details: 'Storage, fallback mode, enabled' })
             );
         } catch (fallbackError) { return {  };
-                success: false;
-                reason: `Storage fallback, failed: ${(fallbackError, as, Error}).message}`
+                success: false,
+                reason: `Storage fallback, failed: ${(fallbackError, as, Error}.message}`
             }
     }
     
@@ -590,8 +587,8 @@ export class ErrorRecoveryTracker {
             return { success: true,
                 details: `Scene ${sceneName} reloaded successfully`
             } catch (reloadError) { return {  };
-                success: false;
-                reason: `Scene reload, failed: ${(reloadError, as, Error}).message}`
+                success: false,
+                reason: `Scene reload, failed: ${(reloadError, as, Error}.message}`
             }
     }
     
@@ -616,18 +613,17 @@ export class ErrorRecoveryTracker {
 
                 gameEngine.audioManager.mute('}'
 
-                details: 'Safe, mode activated, successfully' }))
+                details: 'Safe, mode activated, successfully' })
             );
         } catch (safeModeError) { return {  };
-                success: false;
-                reason: `Safe mode switch, failed: ${(safeModeError, as, Error}).message}`
+                success: false,
+                reason: `Safe mode switch, failed: ${(safeModeError, as, Error}.message}`
             }
     }
     
     private async performComponentRestart(error: ErrorInfo, context: any): Promise<RecoveryResult> { try {
             const gameEngine = this.errorReporter.gameEngine,
-            const componentName = this.identifyProblemComponent(error, context),
-
+            const componentName = this.identifyProblemComponent(error, context);
             if (!componentName) { }'
 
                 return { success: false, reason: 'Could not identify problem component'
@@ -646,15 +642,15 @@ export class ErrorRecoveryTracker {
             
             return { success: false, reason: `Component ${componentName } cannot be restarted` }
         } catch (restartError) { return {  };
-                success: false;
-                reason: `Component restart, failed: ${(restartError, as, Error}).message}`
+                success: false,
+                reason: `Component restart, failed: ${(restartError, as, Error}.message}`
             }
     }
     
     /**
      * ユーティリティメソッド群
      */'
-    private identifyProblemComponent(error: ErrorInfo, context: any): string | null { const message = error.message.toLowerCase(),
+    private identifyProblemComponent(error: ErrorInfo, context: any): string | null { const message = error.message.toLowerCase();
         const category = error.category.toLowerCase()','
         if (message.includes('bubble') || category.includes('bubble)' {''
             return 'bubbleManager' }
@@ -691,7 +687,7 @@ export class ErrorRecoveryTracker {
     private recordStrategySuccess(strategyId: string, errorCategory: string, duration: number): void { // 戦略別統計
         if (!this.recoveryStats.byStrategy.has(strategyId) {
             this.recoveryStats.byStrategy.set(strategyId, {
-                attempts: 0),
+                attempts: 0);
                 successes: 0,
     failures: 0 }
                 averageDuration: 0); 
@@ -706,7 +702,7 @@ export class ErrorRecoveryTracker {
         // カテゴリ別統計
         if (!this.recoveryStats.byErrorCategory.has(errorCategory) { this.recoveryStats.byErrorCategory.set(errorCategory, {
                 attempts: 0,
-    successes: 0 })
+    successes: 0 }
                 failures: 0); 
     }
         
@@ -718,7 +714,7 @@ export class ErrorRecoveryTracker {
     private recordStrategyFailure(strategyId: string, errorCategory: string, reason: string): void { // 戦略別統計
         if (!this.recoveryStats.byStrategy.has(strategyId) {
             this.recoveryStats.byStrategy.set(strategyId, {
-                attempts: 0),
+                attempts: 0);
                 successes: 0,
     failures: 0 }
                 averageDuration: 0); 
@@ -731,7 +727,7 @@ export class ErrorRecoveryTracker {
         // カテゴリ別統計
         if (!this.recoveryStats.byErrorCategory.has(errorCategory) { this.recoveryStats.byErrorCategory.set(errorCategory, {
                 attempts: 0,
-    successes: 0 })
+    successes: 0 }
                 failures: 0); 
     }
         
@@ -740,7 +736,7 @@ export class ErrorRecoveryTracker {
         categoryStats.failures++;
     }
     
-    private getStrategyEffectiveness(strategyId: string, errorCategory: string): number { const strategyStats = this.recoveryStats.byStrategy.get(strategyId),
+    private getStrategyEffectiveness(strategyId: string, errorCategory: string): number { const strategyStats = this.recoveryStats.byStrategy.get(strategyId);
         if (!strategyStats || strategyStats.attempts === 0) {
     
 }
@@ -780,14 +776,14 @@ export class ErrorRecoveryTracker {
                 successRate: recentRecoveries.length > 0 ? undefined : undefined','
                     (recentRecoveries.filter(r = > r.success).length / recentRecoveries.length * 100).toFixed(2) : '0'
             };
-                averageRecoveryTime: this.calculateAverageRecoveryTime(recentRecoveries), 
+                averageRecoveryTime: this.calculateAverageRecoveryTime(recentRecoveries);
     },
             strategyAnalysis: this.analyzeStrategyPerformance(recentRecoveries);
             categoryAnalysis: this.analyzeCategoryPerformance(recentRecoveries,
     recommendations: this.generateRecoveryRecommendations(recentRecoveries);
         }
     
-    private getRecoveriesForTimeframe(timeframe: TimeframeType): RecoverySession[] { const now = Date.now(),
+    private getRecoveriesForTimeframe(timeframe: TimeframeType): RecoverySession[] { const now = Date.now();
         let timeLimit = 0,
 
         switch(timeframe) {
@@ -813,8 +809,7 @@ export class ErrorRecoveryTracker {
         if(recoveries.length === 0) return '0',
         
         const totalTime = recoveries.reduce((sum, recovery) => sum + recovery.duration, 0),
-        return (totalTime / recoveries.length).toFixed(0),
-    
+        return (totalTime / recoveries.length).toFixed(0);
     private analyzeStrategyPerformance(recoveries: RecoverySession[]): StrategyPerformance[] { const strategyPerformance = new Map<string, {
             name: string,
             attempts: number,
@@ -823,7 +818,7 @@ export class ErrorRecoveryTracker {
     totalDuration: number,>();
         
         recoveries.forEach(recovery => {  )
-            recovery.strategiesAttempted.forEach(strategy => {),
+            recovery.strategiesAttempted.forEach(strategy => {);
                 if (!strategyPerformance.has(strategy.id) {
                     strategyPerformance.set(strategy.id, {
                         name: strategy.name,
@@ -832,7 +827,7 @@ export class ErrorRecoveryTracker {
                  }
                         averageDuration: 0) }
                         totalDuration: 0); 
-    });
+    };
                 }
                 
                 const perf = strategyPerformance.get(strategy.id)!;
@@ -841,13 +836,13 @@ export class ErrorRecoveryTracker {
                 perf.averageDuration = perf.totalDuration / perf.attempts;
                 
                 if (strategy.success) { perf.successes++ }
-            });
-        });
+            };
+        };
         
         return Array.from(strategyPerformance.entries().map(([id, data]) => ({ strategyId: id)'
             ...data,
             successRate: data.attempts > 0 ? (data.successes / data.attempts * 100).toFixed(2) : '0'
-            });
+            };
     }
     
     private analyzeCategoryPerformance(recoveries: RecoverySession[]): CategoryPerformance[] { const categoryPerformance = new Map<string, {
@@ -864,7 +859,7 @@ export class ErrorRecoveryTracker {
     successes: 0  }
                     averageDuration: 0) }
                     totalDuration: 0); 
-    });
+    };
             }
             
             const perf = categoryPerformance.get(category)!;
@@ -873,19 +868,19 @@ export class ErrorRecoveryTracker {
             perf.averageDuration = perf.totalDuration / perf.attempts;
             
             if (recovery.success) { perf.successes++ }
-        });
+        };
         
         return Array.from(categoryPerformance.entries().map(([category, data]) => ({ category)'
             ...data,
             successRate: data.attempts > 0 ? (data.successes / data.attempts * 100).toFixed(2) : '0'
-            });
+            };
     }
     
     private generateRecoveryRecommendations(recoveries: RecoverySession[]): RecoveryRecommendation[] { const recommendations: RecoveryRecommendation[] = [],
         
         // 低い成功率の戦略を特定
-        const strategyAnalysis = this.analyzeStrategyPerformance(recoveries),
-        const lowPerformanceStrategies = strategyAnalysis.filter(s => ),
+        const strategyAnalysis = this.analyzeStrategyPerformance(recoveries);
+        const lowPerformanceStrategies = strategyAnalysis.filter(s => );
             s.attempts > 5 && parseFloat(s.successRate) < 30),
 
         if (lowPerformanceStrategies.length > 0) {
@@ -934,7 +929,7 @@ export class ErrorRecoveryTracker {
         }, 3600000);
     }
     
-    private updateRecoveryStatistics(): void { const recentRecoveries = this.recoveryAttempts.filter(r => ),
+    private updateRecoveryStatistics(): void { const recentRecoveries = this.recoveryAttempts.filter(r => );
             Date.now() - r.startTime < 3600000 // 過去1時間),
         
         if (recentRecoveries.length > 0) {
@@ -949,7 +944,7 @@ export class ErrorRecoveryTracker {
     private loadRecoveryData()';'
             const stored = localStorage.getItem('error_recovery_data);'
             if (stored) {
-                const data = JSON.parse(stored),
+                const data = JSON.parse(stored);
                 if (data.recoveryStats) {
             }
                     Object.assign(this.recoveryStats, data.recoveryStats); }
@@ -968,17 +963,16 @@ export class ErrorRecoveryTracker {
     ';'
 
     public updateConfiguration(newConfig: Partial<RecoveryConfig>): void { ''
-        Object.assign(this.recoveryConfig, newConfig),
+        Object.assign(this.recoveryConfig, newConfig);
         console.log('Recovery configuration updated:', newConfig }
     
     /**
      * クリーンアップ
      */
-    public destroy(): void { this.saveRecoveryData(),
-        
+    public destroy(): void { this.saveRecoveryData();
         // アクティブな復旧セッションをキャンセル
         for (const session of this.activeRecoveries.values() { }
-            console.log(`Cancelling, active recovery, session: ${session.id}`});
+            console.log(`Cancelling, active recovery, session: ${session.id}`};
         }
         ';'
 

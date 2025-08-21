@@ -7,15 +7,15 @@ import { GameEngine  } from '../../core/GameEngine';
 import { ComponentEventBus  } from './ComponentEventBus';
 import { SceneState  } from './SceneState';
 
-interface HelpSectionContent { title: string,
+interface HelpSectionContent { title: string;
     content: string[];
 
 interface HelpContent { [sectionId: string]: HelpSectionContent;
 
-interface SectionChangeEvent { oldSection: string,
+interface SectionChangeEvent { oldSection: string;
     newSection: string;
 
-interface TextSettings { titleFont: string,
+interface TextSettings { titleFont: string;
     headerFont: string;
     contentFont: string;
     titleColor: string;
@@ -35,9 +35,9 @@ export class HelpTab extends TabComponent { // ヘルプセクション
     private scrollPosition: number = 0;
     private maxScrollPosition: number = 0;
     // レイアウト設定
-    private readonly, sectionButtonHeight: number = 40,
-    private readonly contentPadding: number = 20,
-    private readonly lineHeight: number = 20,
+    private readonly, sectionButtonHeight: number = 40;
+    private readonly contentPadding: number = 20;
+    private readonly lineHeight: number = 20;
     
     constructor(gameEngine: GameEngine, eventBus: ComponentEventBus, state: SceneState) {
     
@@ -48,8 +48,7 @@ export class HelpTab extends TabComponent { // ヘルプセクション
     /**
      * コンポーネントの初期化
      */
-    initialize(): void { super.initialize(),
-        
+    initialize(): void { super.initialize();
         // ヘルプシステムから既存のデータを取得
         if ((this.gameEngine, as any).achievementManager) {
             this.initializeHelpContent() }
@@ -198,7 +197,7 @@ export class HelpTab extends TabComponent { // ヘルプセクション
                     ] }
 
             };'} catch (error) {'
-            console.error('Help content initialization error:', error),
+            console.error('Help content initialization error:', error);
             this.helpContent = this.createFallbackContent() }
     }
     
@@ -221,16 +220,13 @@ export class HelpTab extends TabComponent { // ヘルプセクション
             if (!this.isActive) return,
             
             // 背景を描画
-            this.renderBackground(context, x, y, width, height),
-            
+            this.renderBackground(context, x, y, width, height);
             // ヘルプセクションセレクターを描画
-            const selectorHeight = this.renderHelpSectionSelector(context, x, y, width),
-            
+            const selectorHeight = this.renderHelpSectionSelector(context, x, y, width);
             // ヘルプコンテンツを描画
             const contentY = y + selectorHeight + 10,
             const contentHeight = height - selectorHeight - 10,
-            this.renderHelpContent(context, x, contentY, width, contentHeight),
-            
+            this.renderHelpContent(context, x, contentY, width, contentHeight);
             // スクロールバーを描画
             this.renderScrollbar(context, x + width - 16, contentY, 16, contentHeight) } catch (error) { this.renderErrorFallback(context, x, y, width, height, error as Error) }
     }
@@ -240,8 +236,7 @@ export class HelpTab extends TabComponent { // ヘルプセクション
      */''
     private renderBackground(context: CanvasRenderingContext2D, x: number, y: number, width: number, height: number): void { ''
         context.fillStyle = this.accessibilitySettings.highContrast ? '#FFFFFF' : '#F8F9FA',
-        context.fillRect(x, y, width, height),
-
+        context.fillRect(x, y, width, height);
         context.strokeStyle = this.accessibilitySettings.highContrast ? '#000000' : '#DEE2E6',
         context.lineWidth = 1,
         context.strokeRect(x, y, width, height) }
@@ -266,11 +261,11 @@ export class HelpTab extends TabComponent { // ヘルプセクション
             // ボタン背景
             context.fillStyle = isActive ? '#007BFF' : '#E9ECEF',
 
-            this.roundRect(context, buttonX, buttonY, buttonWidth, this.sectionButtonHeight, 4),
+            this.roundRect(context, buttonX, buttonY, buttonWidth, this.sectionButtonHeight, 4);
             context.fill('''
             context.strokeStyle = isActive ? '#0056B3' : '#CED4DA')
             context.lineWidth = 1,
-            this.roundRect(context, buttonX, buttonY, buttonWidth, this.sectionButtonHeight, 4),
+            this.roundRect(context, buttonX, buttonY, buttonWidth, this.sectionButtonHeight, 4);
             context.stroke('''
             context.fillStyle = isActive ? '#FFFFFF' : '#495057',
             context.textAlign = 'center',
@@ -328,7 +323,7 @@ export class HelpTab extends TabComponent { // ヘルプセクション
 
                     context.font = this.accessibilitySettings.largeText ? '16px bold sans-serif' : '14px bold sans-serif',
                     context.fillStyle = '#007BFF',
-                    context.fillText(line, contentX, currentY),
+                    context.fillText(line, contentX, currentY);
                     context.font = this.accessibilitySettings.largeText ? '16px sans-serif' : '14px sans-serif' }
 
                     context.fillStyle = this.accessibilitySettings.highContrast ? '#000000' : '#495057'; 
@@ -361,7 +356,7 @@ export class HelpTab extends TabComponent { // ヘルプセクション
      * 折り返しテキストを描画
      */''
     private renderWrappedText(context: CanvasRenderingContext2D, text: string, x: number, y: number, maxWidth: number): number { ''
-        const words = text.split(''),
+        const words = text.split('');
         let line = ','
         let currentY = y,
         
@@ -369,10 +364,9 @@ export class HelpTab extends TabComponent { // ヘルプセクション
         ','
 
             const testLine = line + words[i],
-            const metrics = context.measureText(testLine),
-
+            const metrics = context.measureText(testLine);
             if (metrics.width > maxWidth && line !== ') {''
-                context.fillText(line, x, currentY),
+                context.fillText(line, x, currentY);
                 line = words[i] }
                 currentY += this.lineHeight; }
             } else { line = testLine }
@@ -391,14 +385,13 @@ export class HelpTab extends TabComponent { // ヘルプセクション
         ','
         // スクロールバー背景
         context.fillStyle = '#E9ECEF',
-        context.fillRect(x, y, width, height),
-        
+        context.fillRect(x, y, width, height);
         // スクロールバートラック
         const trackHeight = height * (height / (height + this.maxScrollPosition)),
         const trackY = y + (this.scrollPosition / this.maxScrollPosition) * (height - trackHeight'),'
 
         context.fillStyle = '#6C757D',
-        context.fillRect(x + 2, trackY, width - 4, trackHeight),
+        context.fillRect(x + 2, trackY, width - 4, trackHeight);
         ','
         // スクロールバー枠線
         context.strokeStyle = '#CED4DA',
@@ -449,23 +442,23 @@ export class HelpTab extends TabComponent { // ヘルプセクション
             const keyEvent = event as KeyboardEvent,
             switch(keyEvent.key) {''
                 case 'ArrowUp':','
-                    keyEvent.preventDefault(),
-                    this.scroll(-this.lineHeight * 3),
+                    keyEvent.preventDefault();
+                    this.scroll(-this.lineHeight * 3);
                     return true,
 
                 case 'ArrowDown':','
-                    keyEvent.preventDefault(),
-                    this.scroll(this.lineHeight * 3),
+                    keyEvent.preventDefault();
+                    this.scroll(this.lineHeight * 3);
                     return true,
 
                 case 'PageUp':','
-                    keyEvent.preventDefault(),
-                    this.scroll(-200),
+                    keyEvent.preventDefault();
+                    this.scroll(-200);
                     return true,
 
                 case 'PageDown':','
-                    keyEvent.preventDefault(),
-                    this.scroll(200),
+                    keyEvent.preventDefault();
+                    this.scroll(200);
                     return true,
 
                 case 'Home':','
@@ -474,8 +467,8 @@ export class HelpTab extends TabComponent { // ヘルプセクション
                     keyEvent.preventDefault() }
 
         } else if (event.type === 'wheel) { const wheelEvent = event as WheelEvent,'
-            wheelEvent.preventDefault(),
-            this.scroll(wheelEvent.deltaY),
+            wheelEvent.preventDefault();
+            this.scroll(wheelEvent.deltaY);
             return true }
         
         return false;
@@ -493,7 +486,7 @@ export class HelpTab extends TabComponent { // ヘルプセクション
             // イベント通知
             const eventData: SectionChangeEvent = {
                 oldSection,
-                newSection: section,;
+                newSection: section,
             this.eventBus.emit('help-section-changed', eventData);
         }
     }
@@ -506,23 +499,22 @@ export class HelpTab extends TabComponent { // ヘルプセクション
     /**
      * 角丸矩形を描画
      */
-    private roundRect(context: CanvasRenderingContext2D, x: number, y: number, width: number, height: number, radius: number): void { context.beginPath(),
-        context.moveTo(x + radius, y),
-        context.lineTo(x + width - radius, y),
-        context.quadraticCurveTo(x + width, y, x + width, y + radius),
-        context.lineTo(x + width, y + height - radius),
-        context.quadraticCurveTo(x + width, y + height, x + width - radius, y + height),
-        context.lineTo(x + radius, y + height),
-        context.quadraticCurveTo(x, y + height, x, y + height - radius),
-        context.lineTo(x, y + radius),
-        context.quadraticCurveTo(x, y, x + radius, y),
+    private roundRect(context: CanvasRenderingContext2D, x: number, y: number, width: number, height: number, radius: number): void { context.beginPath();
+        context.moveTo(x + radius, y);
+        context.lineTo(x + width - radius, y);
+        context.quadraticCurveTo(x + width, y, x + width, y + radius);
+        context.lineTo(x + width, y + height - radius);
+        context.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
+        context.lineTo(x + radius, y + height);
+        context.quadraticCurveTo(x, y + height, x, y + height - radius);
+        context.lineTo(x, y + radius);
+        context.quadraticCurveTo(x, y, x + radius, y);
         context.closePath() }
     
     /**
      * クリーンアップ
      */
-    cleanup(): void { super.cleanup(),
-        
+    cleanup(): void { super.cleanup();
         if (this.contentRenderer) {
         ','
 
@@ -535,8 +527,8 @@ export class HelpTab extends TabComponent { // ヘルプセクション
         contentColor: '#495057',
         questionColor: '#DC3545' }
 
-        answerColor: '#28A745' }))
-    private isInitialized: boolean = false;
+        answerColor: '#28A745' })
+    private isInitialized: boolean = false,
     );
     constructor(gameEngine: GameEngine, eventBus: ComponentEventBus, state: SceneState) {
         this.gameEngine = gameEngine;
@@ -547,7 +539,7 @@ export class HelpTab extends TabComponent { // ヘルプセクション
     /**
      * 初期化
      */
-    initialize(): void { this.applyAccessibilitySettings(),
+    initialize(): void { this.applyAccessibilitySettings();
         this.isInitialized = true }
     
     /**

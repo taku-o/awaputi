@@ -6,7 +6,7 @@ import { ConfigurationManager, getConfigurationManager } from '../../src/core/Co
 describe('ConfigurationManager', (') => {'
     describe('基本機能', (') => {'
         test('ConfigurationManagerクラスが正しく初期化される', () => {
-            const configManager = new ConfigurationManager(),
+            const configManager = new ConfigurationManager();
             // 基本カテゴリの存在確認
             expect(configManager.getConfigurations(').has('game').toBe(true),'
             expect(configManager.getConfigurations(').has('audio').toBe(true),'
@@ -15,14 +15,14 @@ describe('ConfigurationManager', (') => {'
         test('設定値の設定と取得が正しく動作する', () => {
             const configManager = new ConfigurationManager('),'
             // 設定値の設定
-            const result = configManager.set('game', 'testKey', 'testValue'),
+            const result = configManager.set('game', 'testKey', 'testValue');
             expect(result).toBe(true'),'
             // 設定値の取得
-            const value = configManager.get('game', 'testKey'),
+            const value = configManager.get('game', 'testKey');
             expect(value').toBe('testValue') }');
         test('存在しない設定値はデフォルト値を返す', () => {
             const configManager = new ConfigurationManager('),'
-            const value = (configManager.get('game', 'nonExistentKey', 'defaultValue'),
+            const value = (configManager.get('game', 'nonExistentKey', 'defaultValue');
             expect(value').toBe('defaultValue') }');
         test('検証機能が正しく動作する', () => {
             const configManager = new ConfigurationManager('),'
@@ -35,9 +35,9 @@ describe('ConfigurationManager', (') => {'
     }
     describe('シングルトン機能', (') => {'
         test('同じインスタンスを返す', () => {
-            const instance1 = getConfigurationManager(),
-            const instance2 = getConfigurationManager(),
-            expect(instance1).toBe(instance2),
-            expect(instance1).toBeInstanceOf(ConfigurationManager) });
+            const instance1 = getConfigurationManager();
+            const instance2 = getConfigurationManager();
+            expect(instance1).toBe(instance2);
+            expect(instance1).toBeInstanceOf(ConfigurationManager) };
     }
 }');'

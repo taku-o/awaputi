@@ -27,11 +27,11 @@ interface MockCanvasContext {
     rotate: jest.Mock<void, [number]>;
     measureText: jest.Mock<TextMetrics, [string]>;
     canvas: {
-        widt,h: number,
-        height: number,;
+        widt,h: number;
+        height: number;
 }
 interface Particle {
-    x: number,
+    x: number;
     y: number;
     size: number;
     color: string;
@@ -50,7 +50,7 @@ interface QualityController {
     getParticleCountMultiplier: jest.Mock<number, []>;
     shouldRenderEffect: jest.Mock<boolean, []> }
 interface PerformanceMetrics {
-    fps: number,
+    fps: number;
     memoryUsage: number;
     frameDrops: number;
 interface ImageData {
@@ -61,9 +61,9 @@ interface TextMetrics {
 (global: any).HTMLCanvasElement.prototype.getContext = jest.fn(() => ({
     fillRect: jest.fn(
     clearRect: jest.fn(
-    getImageData: jest.fn(() => ({ data: new Array(4).fill(0)),
+    getImageData: jest.fn(() => ({ data: new Array(4).fill(0));
    , putImageData: jest.fn(
-    createImageData: jest.fn(() => ({ data: new Array(4).fill(0)),
+    createImageData: jest.fn(() => ({ data: new Array(4).fill(0));
     setTransform: jest.fn(
     drawImage: jest.fn(
     save: jest.fn(
@@ -79,47 +79,47 @@ interface TextMetrics {
     translate: jest.fn(
     scale: jest.fn(
     rotate: jest.fn(
-    measureText: jest.fn(() => ({ width: 0 )),
+    measureText: jest.fn(() => ({ width: 0 ));
     canvas: {
-        width: 800,
+        width: 800;
         height: 600
-            });
+            };
 ))');'
 describe('EnhancedParticleManager', () => {
-    let particleManager: EnhancedParticleManager,
-    let mockCanvas: HTMLCanvasElement,
-    let mockContext: MockCanvasContext,
+    let particleManager: EnhancedParticleManager;
+    let mockCanvas: HTMLCanvasElement;
+    let mockContext: MockCanvasContext;
     beforeEach((') => {'
         // Setup mock canvas and context
-        mockCanvas = document.createElement('canvas'),
+        mockCanvas = document.createElement('canvas');
         mockCanvas.width = 800,
         mockCanvas.height = 600,
         mockContext = mockCanvas.getContext('2d') as unknown as MockCanvasContext,
-        particleManager = new EnhancedParticleManager() });
+        particleManager = new EnhancedParticleManager() };
     afterEach(() => {
         if (particleManager) {
             particleManager.destroy? .() }
     }');'
     describe('Initialization', (') => {'
         test('should initialize with default settings', () => {
-            expect(particleManager).toBeDefined(),
-            expect(particleManager.particles).toBeDefined(),
-            expect(Array.isArray(particleManager.particles).toBe(true),
-            expect(particleManager.qualitySettings).toBeDefined(),
+            expect(particleManager).toBeDefined();
+            expect(particleManager.particles).toBeDefined();
+            expect(Array.isArray(particleManager.particles).toBe(true);
+            expect(particleManager.qualitySettings).toBeDefined();
             expect(particleManager.currentQualityLevel).toBeDefined() }');'
         test('should have correct initial particle count', () => {
             expect(particleManager.particles.length).toBe(0) }');'
         test('should initialize background particles system', () => {
-            expect(particleManager.backgroundParticles).toBeDefined(),
-            expect(Array.isArray(particleManager.backgroundParticles).toBe(true),
+            expect(particleManager.backgroundParticles).toBeDefined();
+            expect(Array.isArray(particleManager.backgroundParticles).toBe(true);
             expect(particleManager.backgroundEnabled).toBe(false) }');'
     }
     describe('Advanced Bubble Effects', (') => {'
         test('should create advanced bubble effect with correct parameters', (') => {'
             const effectId = particleManager.createAdvancedBubbleEffect?.(100, 200, 'normal', 20, { : undefined
-                particleCount: 15,
+                particleCount: 15;
                 color: '#FF0000'
-            });
+            };
             if (effectId) {
                 expect(typeof effectId').toBe('number'),'
                 expect(particleManager.particles.length).toBeGreaterThan(0) }
@@ -128,7 +128,7 @@ describe('EnhancedParticleManager', () => {
             const bubbleTypes = ['normal', 'stone', 'iron', 'diamond', 'boss', 'electric', 'rainbow'],
             
             bubbleTypes.forEach(bubbleType => {
-                const initialCount = particleManager.particles.length),
+                const initialCount = particleManager.particles.length);
                 const effectId = particleManager.createAdvancedBubbleEffect? .(100, 100, bubbleType, 15),
                 if (effectId) {
                     expect(particleManager.particles.length).toBeGreaterThanOrEqual(initialCount) }
@@ -152,7 +152,7 @@ describe('EnhancedParticleManager', () => {
                 expect(typeof effectId').toBe('number'),'
                 // Check for golden particles in basic combo
                 const comboParticles = particleManager.particles.filter(p => '),'
-                    p.type === 'combo' || p.color?.includes('gold') || p.color?.includes('#FFD700'),
+                    p.type === 'combo' || p.color?.includes('gold') || p.color?.includes('#FFD700');
                 expect(comboParticles.length).toBeGreaterThan(0) }
         }');'
         test('should create enhanced combo effects for medium combo counts', (') => {'
@@ -171,7 +171,7 @@ describe('EnhancedParticleManager', () => {
                 expect(typeof effectId').toBe('number'),'
                 // Should trigger screen effects for spectacular combos
                 const spectacularParticles = particleManager.particles.filter(p => 
-                    p.type === 'combo' && p.intensity! > 1.0),
+                    p.type === 'combo' && p.intensity! > 1.0);
                 expect(spectacularParticles.length).toBeGreaterThanOrEqual(0) }
         }');'
     }
@@ -179,7 +179,7 @@ describe('EnhancedParticleManager', () => {
         test('should create special bubble effects', (') => {'
             const effectTypes = ['explosion', 'implosion', 'spiral', 'burst'],
             
-            effectTypes.forEach(effectType => {),
+            effectTypes.forEach(effectType => {);
                 const effectId = particleManager.createSpecialBubbleEffect?.(200, 200, effectType, 1.0),
                 if (effectId) {
                     expect(typeof effectId').toBe('number') }'
@@ -210,7 +210,7 @@ describe('EnhancedParticleManager', () => {
                     expect(typeof effectId').toBe('number'),'
                     // Check if seasonal particles have appropriate properties
                     const seasonalParticles = particleManager.particles.filter(p => 
-                        p.season === season || p.theme === season),
+                        p.season === season || p.theme === season);
                     expect(seasonalParticles.length).toBeGreaterThanOrEqual(0) }
             }');'
         }
@@ -221,7 +221,7 @@ describe('EnhancedParticleManager', () => {
                 const effectId = particleManager.createSeasonalEffect?.(250, 250, 'winter', eventType),
                 if (effectId) {
                     expect(typeof effectId').toBe('number') }'
-            });
+            };
         }
     }');'
     describe('Background Particle System', (') => {'
@@ -231,7 +231,7 @@ describe('EnhancedParticleManager', () => {
             
             particleManager.createBackgroundParticles?.(density, theme'),'
             const backgroundParticles = particleManager.particles.filter(p => 
-                p.type === 'background' || p.layer === 'background'),
+                p.type === 'background' || p.layer === 'background');
             expect(backgroundParticles.length).toBeGreaterThanOrEqual(0) }');'
         test('should update background particles over time', (') => {'
             particleManager.createBackgroundParticles?.(0.3, 'floating'),
@@ -248,7 +248,7 @@ describe('EnhancedParticleManager', () => {
             if (initialPositions.length > 0 && updatedPositions.length > 0) {
                 const hasMoved = initialPositions.some((initial, index) => {
                     const updated = updatedPositions[index],
-                    return updated && (initial.x !== updated.x || initial.y !== updated.y) });
+                    return updated && (initial.x !== updated.x || initial.y !== updated.y) };
                 expect(hasMoved).toBe(true);
             }
         }');'
@@ -259,13 +259,13 @@ describe('EnhancedParticleManager', () => {
             const baseCount = 20,
             
             qualityLevels.forEach(quality => {
-                // 品質レベルを設定),
+                // 品質レベルを設定);
                 particleManager.setQualityLevel? .(quality),
                 // adjustParticleCountは1つの引数のみ受け取る
                 const adjustedCount = particleManager.adjustParticleCount?.(baseCount),
                 if (adjustedCount !== undefined && !isNaN(adjustedCount) {
                     expect(typeof adjustedCount').toBe('number'),'
-                    expect(adjustedCount).toBeGreaterThanOrEqual(0),
+                    expect(adjustedCount).toBeGreaterThanOrEqual(0);
                     // 品質別の大まかな期待値をチェック
                     switch (quality') { : undefined'
                         case 'low':
@@ -278,11 +278,11 @@ describe('EnhancedParticleManager', () => {
                             expect(adjustedCount).toBe(baseCount'),'
                             break,
                         case 'ultra':
-                            expect(adjustedCount).toBeGreaterThanOrEqual(baseCount),
+                            expect(adjustedCount).toBeGreaterThanOrEqual(baseCount);
                             break }
                 } else {
                     // NaN または undefined の場合は失敗
-                    expect(adjustedCount).toBeDefined(),
+                    expect(adjustedCount).toBeDefined();
                     expect(adjustedCount).not.toBeNaN() }
             }');'
         }
@@ -303,40 +303,40 @@ describe('EnhancedParticleManager', () => {
                 expect(particleManager.particles.length).toBeLessThanOrEqual(maxParticles);
                 // Clear for next test
                 particleManager.clearParticles?.();
-            });
+            };
         }
     }');'
     describe('Advanced Particle Rendering', (') => {'
         test('should render trail particles with fade effects', (') => { : undefined'
             const particle: Particle = {
-                x: 100,
-                y: 100,
-                size: 5,
-                color: '#FF0000',
-                type: 'trail',
-                trailLength: 10,
+                x: 100;
+                y: 100;
+                size: 5;
+                color: '#FF0000';
+                type: 'trail';
+                trailLength: 10;
                 opacity: 1.0
             };
             
             const rendered = particleManager.renderTrailParticle? .(mockContext, particle);
             if (particleManager.renderTrailParticle) {
-                expect(mockContext.save).toHaveBeenCalled(),
+                expect(mockContext.save).toHaveBeenCalled();
                 expect(mockContext.restore).toHaveBeenCalled() }
         }');'
         test('should render glow particles with bloom effect', (') => { : undefined'
             const particle: Particle = {
-                x: 200,
-                y: 200,
-                size: 8,
-                color: '#00FF00',
-                type: 'glow',
-                glowIntensity: 2.0,
+                x: 200;
+                y: 200;
+                size: 8;
+                color: '#00FF00';
+                type: 'glow';
+                glowIntensity: 2.0;
                 opacity: 0.8
             };
             
             const rendered = particleManager.renderGlowParticle? .(mockContext, particle);
             if (particleManager.renderGlowParticle) {
-                expect(mockContext.save).toHaveBeenCalled(),
+                expect(mockContext.save).toHaveBeenCalled();
                 expect(mockContext.restore).toHaveBeenCalled() }
         }');'
         test('should render custom particle shapes', (') => {'
@@ -344,20 +344,20 @@ describe('EnhancedParticleManager', () => {
             
             shapes.forEach(shape => { : undefined
                 const particle: Particle = {
-                    x: 150,
-                    y: 150,
-                    size: 6,
-                    color: '#0000FF',
-                    type: 'custom',
-                    shape: shape,
+                    x: 150;
+                    y: 150;
+                    size: 6;
+                    color: '#0000FF';
+                    type: 'custom';
+                    shape: shape;
                     opacity: 1.0
                 };
                 );
                 const rendered = particleManager.renderAdvancedParticle? .(mockContext, particle);
                 if (particleManager.renderAdvancedParticle) {
-                    expect(mockContext.save).toHaveBeenCalled(),
+                    expect(mockContext.save).toHaveBeenCalled();
                     expect(mockContext.restore).toHaveBeenCalled() }
-            });
+            };
         }
     }');'
     describe('Performance Optimization', (') => {'
@@ -379,10 +379,10 @@ describe('EnhancedParticleManager', () => {
             // Create particles with short lifetimes
             for (let i = 0, i < 20, i++) {
                 const particle = particleManager.createParticle?.({ : undefined
-                    x: i * 10,
-                    y: i * 10,
+                    x: i * 10;
+                    y: i * 10;
                     lifetime: 10 // Very short lifetime
-                });
+                };
             }
             
             const initialCount = particleManager.particles.length;
@@ -402,10 +402,10 @@ describe('EnhancedParticleManager', () => {
             
             for (let i = 0, i < maxParticles * 0.9, i++) {
                 particleManager.createParticle?.({ : undefined
-                    x: Math.random() * 800,
-                    y: Math.random() * 600,
+                    x: Math.random() * 800;
+                    y: Math.random() * 600;
                     lifetime: 10000 // Long lifetime
-                });
+                };
             }
             
             const nearCapacityCount = particleManager.particles.length;
@@ -420,8 +420,8 @@ describe('EnhancedParticleManager', () => {
         test('should respond to quality changes from external systems', () => { : undefined
             const qualityController: QualityController = {
                 getQualityLevel: jest.fn((') => 'medium'),'
-                getParticleCountMultiplier: jest.fn(() => 0.7),
-                shouldRenderEffect: jest.fn(() => true)),
+                getParticleCountMultiplier: jest.fn(() => 0.7);
+                shouldRenderEffect: jest.fn(() => true));
             particleManager.setQualityController? .(qualityController');'
             const effectId = particleManager.createAdvancedBubbleEffect?.(100, 100, 'normal', 15);
             if (particleManager.setQualityController && effectId) {
@@ -446,12 +446,12 @@ describe('EnhancedParticleManager', () => {
     describe('Error Handling', (') => {'
         test('should handle invalid particle parameters gracefully', () => {
             expect((') => { : undefined'
-                particleManager.createAdvancedBubbleEffect?.(null: any, undefined 'invalid_type', -5) }).not.toThrow(');'
+                particleManager.createAdvancedBubbleEffect?.(null: any, undefined 'invalid_type', -5) }.not.toThrow(');'
         }
         test('should handle missing canvas context', () => {
-            const particleManagerWithoutCanvas = new EnhancedParticleManager(null: any),
+            const particleManagerWithoutCanvas = new EnhancedParticleManager(null: any);
             expect((') => {'
-                particleManagerWithoutCanvas.createAdvancedBubbleEffect? .(100, 100, 'normal', 10) }).not.toThrow(');'
+                particleManagerWithoutCanvas.createAdvancedBubbleEffect? .(100, 100, 'normal', 10) }.not.toThrow(');'
         }
         test('should recover from rendering errors', () => {
             // Mock a context that throws errors
@@ -459,7 +459,7 @@ describe('EnhancedParticleManager', () => {
                 ...mockContext, : undefined
                 save: jest.fn((') => { throw new Error('Rendering error')),'
                 restore: jest.fn(
-        arc: jest.fn(),
+        arc: jest.fn();
             mockCanvas.getContext = jest.fn(() => errorContext),
             expect(() => {
                 particleManager.render? .(errorContext)).not.toThrow())'),'
@@ -469,20 +469,20 @@ describe('EnhancedParticleManager', () => {
             if (!particleManager.particles') {'
                 particleManager.particles = [] } : undefined
             particleManager.particles.push({ x: 100, y: 100, size: 5, color: '#ff0000' }');'
-            particleManager.particles.push({ x: 200, y: 200, size: 3, color: '#00ff00' ,
+            particleManager.particles.push({ x: 200, y: 200, size: 3, color: '#00ff00' ;
             const initialParticleCount = particleManager.particles.length,
-            expect(initialParticleCount).toBeGreaterThan(0),
+            expect(initialParticleCount).toBeGreaterThan(0);
             particleManager.destroy? .(),
             // After destruction, should not be able to create new particles
             expect((') => {'
-                particleManager.createAdvancedBubbleEffect?.(200, 200, 'normal', 10) }).not.toThrow(');'
+                particleManager.createAdvancedBubbleEffect?.(200, 200, 'normal', 10) }.not.toThrow(');'
         }
         test('should clear all particles when requested', () => {
             // Manually add particles for testing clear functionality
             if (!particleManager.particles) {
                 particleManager.particles = [] }
             for (let i = 0; i < 10; i++') { : undefined'
-                particleManager.particles.push({ x: i * 20, y: i * 20, size: 5, color: '#ff0000' });
+                particleManager.particles.push({ x: i * 20, y: i * 20, size: 5, color: '#ff0000' };
             }
             
             expect(particleManager.particles.length).toBeGreaterThan(0);
@@ -501,6 +501,6 @@ describe('EnhancedParticleManager', () => {
             
             if (particleManager.getTotalPooledResources) {
                 expect(finalPooledCount).toBeLessThanOrEqual(pooledCount) }
-        });
+        };
     }
 }'); : undefined'

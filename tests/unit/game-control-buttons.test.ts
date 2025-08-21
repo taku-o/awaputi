@@ -7,10 +7,10 @@ import { describe, test, expect, beforeEach, jest  } from '@jest/globals';
 import { GameControlButtons  } from '../../src/scenes/game-scene/GameControlButtons.js';
 // モック用の型定義
 interface MockCanvas {
-    width: number,
+    width: number;
     height: number;
 interface CanvasInfo {
-    baseWidth: number,
+    baseWidth: number;
     baseHeight: number;
     scale: number;
     scaleFactor?: number;
@@ -20,39 +20,39 @@ interface CanvasInfo {
     actualHeight?: number;
     pixelRatio?: number;
 interface ScaledCoordinates {
-    x: number,
+    x: number;
     y: number;
 interface MockResponsiveCanvasManager {
-    getCanvasInfo: jest.Mock<() => CanvasInfo>,
+    getCanvasInfo: jest.Mock<() => CanvasInfo>;
     getScaledCoordinates: jest.Mock<(x: number, y: number) => ScaledCoordinates> }
 interface MockGameEngine {
-    canvas: MockCanvas,
+    canvas: MockCanvas;
     responsiveCanvasManager: MockResponsiveCanvasManager | null }
 interface MockUIManager {
     showConfirmationDialog: jest.Mock }
 interface ButtonConfig {
-    text: string,
+    text: string;
     size: {
-        widt,h: number,
-        height: number,;
+        widt,h: number;
+        height: number;
     position?: {
-        x: number,
-        y: number,;
+        x: number;
+        y: number;
     style?: any;
 }
 interface ButtonConfigMap {
-    giveUp: ButtonConfig,
+    giveUp: ButtonConfig;
     restart: ButtonConfig;
 interface ButtonState {
-    enabled: boolean,
+    enabled: boolean;
     hoveredButton: string | null;
     activeButton: string | null;
     visibility: {
-        giveU,p: boolean,
-        restart: boolean,;
+        giveU,p: boolean;
+        restart: boolean;
 }
 interface GameState {
-    isGameStarted: boolean,
+    isGameStarted: boolean;
     isGameOver: boolean;
     isPaused: boolean;
     isPreGame: boolean;
@@ -61,7 +61,7 @@ interface TouchEvent {
     shiftKey?: boolean;
     preventDefault?: jest.Mock }
 interface MockRenderingContext {
-    save: jest.Mock,
+    save: jest.Mock;
     restore: jest.Mock;
     fillRect: jest.Mock;
     strokeRect: jest.Mock;
@@ -81,42 +81,42 @@ interface MockRenderingContext {
 interface MockGradient {
     addColorStop: jest.Mock }
 interface DeviceInfo {
-    isTouchDevice: boolean,
+    isTouchDevice: boolean;
     isMobile: boolean;
 interface AccessibilityState {
     focusedButton: string | null }
 interface ButtonBounds {
-    x: number,
+    x: number;
     y: number;
     width: number;
     height: number;
 describe('GameControlButtons', () => {
-    let gameEngine: MockGameEngine,
-    let uiManager: MockUIManager,
-    let gameControlButtons: GameControlButtons,
-    let mockCanvas: MockCanvas,
-    let mockResponsiveCanvasManager: MockResponsiveCanvasManager,
+    let gameEngine: MockGameEngine;
+    let uiManager: MockUIManager;
+    let gameControlButtons: GameControlButtons;
+    let mockCanvas: MockCanvas;
+    let mockResponsiveCanvasManager: MockResponsiveCanvasManager;
     beforeEach(() => {
         // Canvas mock setup
         mockCanvas = {
-            width: 800,
+            width: 800;
             height: 600
         };
         // ResponsiveCanvasManager mock setup
         mockResponsiveCanvasManager = {
             getCanvasInfo: jest.fn(() => ({
-                baseWidth: 800,
-                baseHeight: 600,
+                baseWidth: 800;
+                baseHeight: 600;
                 scale: 1.5
-    })),
+    }),
             getScaledCoordinates: jest.fn((x: number, y: number) => ({
-                x: x * 1.5,
+                x: x * 1.5;
                 y: y * 1.5
-    }))
+    })
         );
         // GameEngine mock setup
         gameEngine = {
-            canvas: mockCanvas,
+            canvas: mockCanvas;
             responsiveCanvasManager: mockResponsiveCanvasManager,);
         // UIManager mock setup
         uiManager = {
@@ -126,88 +126,88 @@ describe('GameControlButtons', () => {
     describe('Initialization', (') => {'
         test('should initialize with correct default configuration', () => {
             const config = (gameControlButtons.getButtonConfig() as ButtonConfigMap),
-            expect(config.giveUp).toBeDefined(),
-            expect(config.restart).toBeDefined(),
+            expect(config.giveUp).toBeDefined();
+            expect(config.restart).toBeDefined();
             expect(config.giveUp.text').toBe('ギブアップ'),'
             expect(config.restart.text').toBe('ゲーム再開始'),'
-            expect(config.giveUp.size.width).toBe(120),
+            expect(config.giveUp.size.width).toBe(120);
             expect(config.giveUp.size.height).toBe(44) }');'
         test('should initialize with buttons disabled by default', () => {
             const state = (gameControlButtons.getButtonState() as ButtonState),
-            expect(state.visibility.giveUp).toBe(false),
+            expect(state.visibility.giveUp).toBe(false);
             expect(state.visibility.restart).toBe(false) }');'
         test('should detect device capabilities correctly', () => {
             const deviceInfo = (gameControlButtons.deviceInfo as DeviceInfo),
-            expect(deviceInfo).toBeDefined(),
+            expect(deviceInfo).toBeDefined();
             expect(typeof deviceInfo.isTouchDevice').toBe('boolean'),'
             expect(typeof deviceInfo.isMobile').toBe('boolean') }');
     }
     describe('Button Positioning', (') => {'
         test('should calculate correct button positions with ResponsiveCanvasManager', () => {
-            (gameControlButtons.updateButtonPositions(),
+            (gameControlButtons.updateButtonPositions();
             const config = (gameControlButtons.getButtonConfig() as ButtonConfigMap),
             // Check that positions are calculated
-            expect(config.giveUp.position).toBeDefined(),
-            expect(config.restart.position).toBeDefined(),
+            expect(config.giveUp.position).toBeDefined();
+            expect(config.restart.position).toBeDefined();
             expect(typeof config.giveUp.position!.x').toBe('number'),'
             expect(typeof config.giveUp.position!.y').toBe('number') }');
         test('should handle missing ResponsiveCanvasManager gracefully', () => {
             gameEngine.responsiveCanvasManager = null,
             
-            (gameControlButtons.updateButtonPositions(),
+            (gameControlButtons.updateButtonPositions();
             const config = (gameControlButtons.getButtonConfig() as ButtonConfigMap),
-            expect(config.giveUp.position).toBeDefined(),
+            expect(config.giveUp.position).toBeDefined();
             expect(config.restart.position).toBeDefined() }');'
         test('should scale button bounds correctly', (') => {'
             const bounds = (gameControlButtons.getButtonBounds('giveUp') as ButtonBounds),
             // With scale factor 1.5, width should be 120 * 1.5 = 180
-            expect(bounds.width).toBe(180),
+            expect(bounds.width).toBe(180);
             expect(bounds.height).toBe(66), // 44 * 1.5
         }');'
     }
     describe('Button Visibility Control', (') => {'
         test('should show Give Up button only when game is started and not game over', () => {
             const gameState: GameState = {
-                isGameStarted: true,
-                isGameOver: false,
-                isPaused: false,
-                isPreGame: false,;
+                isGameStarted: true;
+                isGameOver: false;
+                isPaused: false;
+                isPreGame: false;
             (gameControlButtons.updateButtonVisibility(gameState)');'
             expect((gameControlButtons.isButtonVisible('giveUp').toBe(true);
         }');'
         test('should hide Give Up button when game is over', () => {
             const gameState: GameState = {
-                isGameStarted: true,
-                isGameOver: true,
-                isPaused: false,
-                isPreGame: false,;
+                isGameStarted: true;
+                isGameOver: true;
+                isPaused: false;
+                isPreGame: false;
             (gameControlButtons.updateButtonVisibility(gameState)');'
             expect((gameControlButtons.isButtonVisible('giveUp').toBe(false);
         }');'
         test('should show Restart button when game is started or game over', () => {
             // During game
             let gameState: GameState = {
-                isGameStarted: true,
-                isGameOver: false,
-                isPaused: false,
-                isPreGame: false,;
+                isGameStarted: true;
+                isGameOver: false;
+                isPaused: false;
+                isPreGame: false;
             (gameControlButtons.updateButtonVisibility(gameState)');'
             expect((gameControlButtons.isButtonVisible('restart').toBe(true);
             // Game over
             gameState = {
-                isGameStarted: false,
-                isGameOver: true,
-                isPaused: false,
+                isGameStarted: false;
+                isGameOver: true;
+                isPaused: false;
                 isPreGame: false,);
             (gameControlButtons.updateButtonVisibility(gameState)');'
             expect((gameControlButtons.isButtonVisible('restart').toBe(true);
         }');'
         test('should hide both buttons in pre-game state', () => {
             const gameState: GameState = {
-                isGameStarted: false,
-                isGameOver: false,
-                isPaused: false,
-                isPreGame: true,;
+                isGameStarted: false;
+                isGameOver: false;
+                isPaused: false;
+                isPreGame: true;
             (gameControlButtons.updateButtonVisibility(gameState)');'
             expect((gameControlButtons.isButtonVisible('giveUp').toBe(false)');'
             expect((gameControlButtons.isButtonVisible('restart').toBe(false);
@@ -217,10 +217,10 @@ describe('GameControlButtons', () => {
         beforeEach(() => {
             // Make buttons visible for click tests
             const gameState: GameState = {
-                isGameStarted: true,
-                isGameOver: false,
-                isPaused: false,
-                isPreGame: false,;
+                isGameStarted: true;
+                isGameOver: false;
+                isPaused: false;
+                isPreGame: false;
             (gameControlButtons.updateButtonVisibility(gameState);
         }');'
         test('should detect clicks within button bounds correctly', () => {
@@ -247,15 +247,15 @@ describe('GameControlButtons', () => {
             expect(clickedButton').toBe('giveUp');'
         }');'
         test('should ignore clicks when buttons are disabled', () => {
-            (gameControlButtons.setButtonsEnabled(false),
-            const clickedButton = (gameControlButtons.handleClick(150, 70),
+            (gameControlButtons.setButtonsEnabled(false);
+            const clickedButton = (gameControlButtons.handleClick(150, 70);
             expect(clickedButton).toBeNull() }');'
         test('should ignore clicks on invisible buttons', () => {
             const gameState: GameState = {
-                isGameStarted: false,
-                isGameOver: false,
-                isPaused: false,
-                isPreGame: true,;
+                isGameStarted: false;
+                isGameOver: false;
+                isPaused: false;
+                isPreGame: true;
             (gameControlButtons.updateButtonVisibility(gameState);
             const clickedButton = (gameControlButtons.handleClick(150, 70);
             expect(clickedButton).toBeNull();
@@ -264,10 +264,10 @@ describe('GameControlButtons', () => {
     describe('Hover State Management', () => {
         beforeEach(() => {
             const gameState: GameState = {
-                isGameStarted: true,
-                isGameOver: false,
-                isPaused: false,
-                isPreGame: false,;
+                isGameStarted: true;
+                isGameOver: false;
+                isPaused: false;
+                isPreGame: false;
             (gameControlButtons.updateButtonVisibility(gameState);
         }');'
         test('should update hover state correctly', () => {
@@ -279,28 +279,28 @@ describe('GameControlButtons', () => {
             expect(state.hoveredButton').toBe('giveUp');'
         }');'
         test('should clear hover state when mouse leaves button area', () => {
-            (gameControlButtons.updateMousePosition(50, 25),
+            (gameControlButtons.updateMousePosition(50, 25);
             const state = (gameControlButtons.getButtonState() as ButtonState),
             expect(state.hoveredButton).toBeNull() }');'
         test('should clear keyboard focus when mouse is used', (') => {'
-            (gameControlButtons.setKeyboardFocus('giveUp'),
-            (gameControlButtons.updateMousePosition(150, 70),
+            (gameControlButtons.setKeyboardFocus('giveUp');
+            (gameControlButtons.updateMousePosition(150, 70);
             const accessibilityState = (gameControlButtons.accessibilityState as AccessibilityState),
             expect(accessibilityState.focusedButton).toBeNull() }');'
     }
     describe('Keyboard Navigation', () => {
         beforeEach(() => {
             const gameState: GameState = {
-                isGameStarted: true,
-                isGameOver: false,
-                isPaused: false,
-                isPreGame: false,;
+                isGameStarted: true;
+                isGameOver: false;
+                isPaused: false;
+                isPreGame: false;
             (gameControlButtons.updateButtonVisibility(gameState);
         }');'
         test('should handle Tab navigation correctly', (') => {'
             const event: TouchEvent = {
-                key: 'Tab',
-                shiftKey: false,
+                key: 'Tab';
+                shiftKey: false;
         preventDefault: jest.fn( };
             
             const handled = (gameControlButtons.handleKeyboardNavigation(event);
@@ -310,7 +310,7 @@ describe('GameControlButtons', () => {
         test('should handle Enter key activation', (') => {'
             (gameControlButtons.setKeyboardFocus('giveUp')'),'
             const event: TouchEvent = {
-                key: 'Enter',
+                key: 'Enter';
         preventDefault: jest.fn( };
             
             const handled = (gameControlButtons.handleKeyboardNavigation(event);
@@ -339,19 +339,19 @@ describe('GameControlButtons', () => {
             const visibleButtons = (gameControlButtons.getVisibleButtons() as string[]),
             expect(visibleButtons').toContain('giveUp'),'
             expect(visibleButtons').toContain('restart'),'
-            (gameControlButtons.navigateButtons(1, visibleButtons),
+            (gameControlButtons.navigateButtons(1, visibleButtons);
             const accessibilityState = (gameControlButtons.accessibilityState as AccessibilityState),
             expect(accessibilityState.focusedButton').toBe('giveUp'),'
-            (gameControlButtons.navigateButtons(1, visibleButtons),
+            (gameControlButtons.navigateButtons(1, visibleButtons);
             expect(accessibilityState.focusedButton').toBe('restart') }');
     }
     describe('Touch Handling', () => {
         beforeEach(() => {
             const gameState: GameState = {
-                isGameStarted: true,
-                isGameOver: false,
-                isPaused: false,
-                isPreGame: false,;
+                isGameStarted: true;
+                isGameOver: false;
+                isPaused: false;
+                isPreGame: false;
             (gameControlButtons.updateButtonVisibility(gameState);
         }');'
         test('should handle touch start correctly', () => {
@@ -385,7 +385,7 @@ describe('GameControlButtons', () => {
             const buttonState = (gameControlButtons.buttonState as ButtonState'),'
             buttonState.activeButton = 'giveUp',
             
-            (gameControlButtons.handleTouchCancel(),
+            (gameControlButtons.handleTouchCancel();
             expect(buttonState.activeButton).toBeNull() }');'
     }
     describe('Responsive Behavior', (') => {'
@@ -403,8 +403,8 @@ describe('GameControlButtons', () => {
         }');'
         test('should handle different scale factors', () => {
             mockResponsiveCanvasManager.getCanvasInfo.mockReturnValue({
-                baseWidth: 800,
-                baseHeight: 600,
+                baseWidth: 800;
+                baseHeight: 600;
                 scale: 2.0 }');'
             const bounds = (gameControlButtons.getButtonBounds('giveUp') as ButtonBounds);
             // With scale factor 2.0, width should be 120 * 2.0 = 240
@@ -413,7 +413,7 @@ describe('GameControlButtons', () => {
         }');'
     }
     describe('Rendering', () => {
-        let mockContext: MockRenderingContext,
+        let mockContext: MockRenderingContext;
         beforeEach(() => {
             mockContext = {
                 save: jest.fn(
@@ -422,41 +422,41 @@ describe('GameControlButtons', () => {
                 strokeRect: jest.fn(
                 fillText: jest.fn(
                 createLinearGradient: jest.fn(() => ({
-                    addColorStop: jest.fn()),
+                    addColorStop: jest.fn());
                 setLineDash: jest.fn(','
                 fillStyle: ','
                 strokeStyle: ','
-                lineWidth: 0,
+                lineWidth: 0;
                 font: ','
                 textAlign: ','
                 textBaseline: ','
                 shadowColor: ','
-                shadowOffsetX: 0,
-                shadowOffsetY: 0,
+                shadowOffsetX: 0;
+                shadowOffsetY: 0;
                 shadowBlur: 0
-    });
+    };
         )');'
         test('should render visible buttons only', () => {
             const gameState: GameState = {
-                isGameStarted: true,
-                isGameOver: false,
-                isPaused: false,
-                isPreGame: false,;
+                isGameStarted: true;
+                isGameOver: false;
+                isPaused: false;
+                isPreGame: false;
             (gameControlButtons.updateButtonVisibility(gameState);
             (gameControlButtons.render(mockContext);
             expect(mockContext.save).toHaveBeenCalled();
             expect(mockContext.restore).toHaveBeenCalled();
         }');'
         test('should not render when buttons are disabled', () => {
-            (gameControlButtons.setButtonsEnabled(false),
-            (gameControlButtons.render(mockContext),
+            (gameControlButtons.setButtonsEnabled(false);
+            (gameControlButtons.render(mockContext);
             expect(mockContext.save).not.toHaveBeenCalled() }');'
         test('should render focus indicator for keyboard navigation', () => {
             const gameState: GameState = {
-                isGameStarted: true,
-                isGameOver: false,
-                isPaused: false,
-                isPreGame: false,;
+                isGameStarted: true;
+                isGameOver: false;
+                isPaused: false;
+                isPreGame: false;
             (gameControlButtons.updateButtonVisibility(gameState)');'
             (gameControlButtons.setKeyboardFocus('giveUp');
             (gameControlButtons.render(mockContext);
@@ -464,10 +464,10 @@ describe('GameControlButtons', () => {
         }');'
         test('should render touch feedback for active buttons', () => {
             const gameState: GameState = {
-                isGameStarted: true,
-                isGameOver: false,
-                isPaused: false,
-                isPreGame: false,;
+                isGameStarted: true;
+                isGameOver: false;
+                isPaused: false;
+                isPreGame: false;
             (gameControlButtons.updateButtonVisibility(gameState);
             const buttonState = (gameControlButtons.buttonState as ButtonState');'
             buttonState.activeButton = 'giveUp';
@@ -491,6 +491,6 @@ describe('GameControlButtons', () => {
             expect(config').toHaveProperty('restart'),'
             expect(config.giveUp').toHaveProperty('text'),'
             expect(config.giveUp').toHaveProperty('size'),'
-            expect(config.giveUp').toHaveProperty('style') });'
+            expect(config.giveUp').toHaveProperty('style') };'
     }
 }');'

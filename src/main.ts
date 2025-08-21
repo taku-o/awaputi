@@ -9,7 +9,7 @@ import LocalExecutionErrorHandler from './utils/local-execution/LocalExecutionEr
 /**
  * デバッグログエントリーの型定義
  */
-interface DebugLogEntry { timestamp: string,
+interface DebugLogEntry { timestamp: string;
     message: string;
     data: any;
 
@@ -25,7 +25,7 @@ interface DebugLogger { log: (message: string, data?: any) => void,
  * ローディング画面を管理
  */
 class LoadingManager { private loadingScreen: HTMLElement | null
-    private readonly loadingSteps: string[],
+    private readonly loadingSteps: string[];
     private, currentStep: number','
 
     constructor()','
@@ -50,7 +50,7 @@ class LoadingManager { private loadingScreen: HTMLElement | null
 }
     
     nextStep(): void { if (this.currentStep < this.loadingSteps.length) {
-            this.updateLoadingText(this.loadingSteps[this.currentStep]),
+            this.updateLoadingText(this.loadingSteps[this.currentStep]);
             this.currentStep++ }
     }
     ';'
@@ -70,7 +70,7 @@ class LoadingManager { private loadingScreen: HTMLElement | null
     }
 
     showError(message: string): void { ''
-        const errorDiv = document.createElement('div'),
+        const errorDiv = document.createElement('div');
         errorDiv.className = 'error-message',
         errorDiv.innerHTML = `,
             <h3>エラーが発生しました</h3> }
@@ -78,10 +78,10 @@ class LoadingManager { private loadingScreen: HTMLElement | null
             <p>${message}</p>''
             <button onclick="location.reload()" style=";"
                 margin-top: 10px,
-                padding: 10px 20px;
-                background: white;
+                padding: 10px 20px,
+                background: white,
                 color: red,
-    border: none;
+    border: none,
                 border-radius: 5px,
                 cursor: pointer,
                 font-size: 16px,
@@ -97,7 +97,7 @@ class LoadingManager { private loadingScreen: HTMLElement | null
  */
 function createDebugLogger(): DebugLogger { const logs: DebugLogEntry[] = [],
     
-    return { log: (message: string, data: any = null): void => {  };
+    return { log: (message: string, data: any = null): void => {  },
             const timestamp = new Date().toLocaleTimeString(); }
             const logEntry: DebugLogEntry = { timestamp, message, data };"
             logs.push(logEntry);""
@@ -121,7 +121,7 @@ function createDebugLogger(): DebugLogger { const logs: DebugLogEntry[] = [],
             let logElement = document.getElementById('debug-log',
             if (!logElement) {
 
-                logElement = document.createElement('div'),
+                logElement = document.createElement('div');
                 logElement.id = 'debug-log',
                 logElement.style.cssText = `,
                     position: fixed,
@@ -129,7 +129,7 @@ function createDebugLogger(): DebugLogger { const logs: DebugLogEntry[] = [],
                     right: 10px,
                     width: 400px,
                     height: 300px,
-    background: rgba(0,0,0,0.9),
+    background: rgba(0,0,0,0.9);
                     color: #00ff00,
                     font-family: monospace,
                     font-size: 10px,
@@ -143,7 +143,7 @@ function createDebugLogger(): DebugLogger { const logs: DebugLogEntry[] = [],
             }
             
             logElement.innerHTML = logs.map(log => )';'
-                `<div>[${log.timestamp}] ${ log.message}</div>`}', ').join('});'
+                `<div>[${log.timestamp}] ${ log.message}</div>`}', ').join('};'
             logElement.scrollTop = logElement.scrollHeight;
         }
     }
@@ -153,14 +153,14 @@ const debugLogger: DebugLogger = createDebugLogger(
 /**
  * 実行コンテキストの型定義
  */
-interface ExecutionContext { protocol: string,
+interface ExecutionContext { protocol: string;
     canUseModules: boolean;
     supportedFeatures: string[];
 
 /**
  * ローカルモードマネージャーのオプション型定義
  */
-interface LocalModeManagerOptions { enableMetaTagOptimization: boolean,
+interface LocalModeManagerOptions { enableMetaTagOptimization: boolean;
     enableFaviconGeneration: boolean;
     enableDeveloperGuidance: boolean;
     debugMode: boolean;
@@ -168,7 +168,7 @@ interface LocalModeManagerOptions { enableMetaTagOptimization: boolean,
 /**
  * ローカル実行エラーハンドラーのオプション型定義
  */
-interface LocalExecutionErrorHandlerOptions { enableGlobalHandling: boolean,
+interface LocalExecutionErrorHandlerOptions { enableGlobalHandling: boolean;
     enableUserNotifications: boolean;
     enableDebugLogging: boolean;
     enableFallbacks: boolean;
@@ -181,36 +181,35 @@ async function initGame(): Promise<void> { ''
     debugLogger.log('🚀 ゲーム初期化開始',
     debugLogger.showLogs()','
         debugLogger.log('🔍 ステップ0: ローカル実行環境チェック開始),'
-        loadingManager.nextStep(),
-        
+        loadingManager.nextStep();
         // ローカル実行検出
         const, isLocalExecution: boolean = LocalExecutionDetector.isLocalExecution(
         const executionContext: ExecutionContext = LocalExecutionDetector.getExecutionContext('''
         debugLogger.log('🌐 実行環境情報', {
-            isLocal: isLocalExecution),
+            isLocal: isLocalExecution);
             protocol: executionContext.protocol','
     canUseModules: executionContext.canUseModules,')',
             supportedFeatures: executionContext.supportedFeatures'),'
         // ローカル実行エラーハンドラーを初期化
         const, errorHandlerOptions: LocalExecutionErrorHandlerOptions = {
-            enableGlobalHandling: true,
-    enableUserNotifications: true,
-            enableDebugLogging: localStorage.getItem('debug') === 'true',
-    enableFallbacks: true,
+            enableGlobalHandling: true;
+    enableUserNotifications: true;
+            enableDebugLogging: localStorage.getItem('debug') === 'true';
+    enableFallbacks: true;
 
         };
         LocalExecutionErrorHandler.initialize(errorHandlerOptions);
         debugLogger.log('✅ ローカル実行エラーハンドラー初期化完了);'
 
         // ローカルモードマネージャーを初期化
-        let localModeManager: LocalModeManager | null = null,
+        let localModeManager: LocalModeManager | null = null;
         if (isLocalExecution) {
 
-            debugLogger.log('📁 ローカルファイル実行を検出、ローカルモード初期化中...'),
+            debugLogger.log('📁 ローカルファイル実行を検出、ローカルモード初期化中...');
             const localModeOptions: LocalModeManagerOptions = {
-                enableMetaTagOptimization: true,
-    enableFaviconGeneration: true,
-                enableDeveloperGuidance: true,
+                enableMetaTagOptimization: true;
+    enableFaviconGeneration: true;
+                enableDeveloperGuidance: true;
 
                 debugMode: localStorage.getItem('debug') === 'true' 
     };
@@ -247,7 +246,7 @@ async function initGame(): Promise<void> { ''
         // 重要な機能が利用できない場合はエラー
         if (!compatibilityReport.features.canvas) {
 
-            debugLogger.log('❌ Canvas, APIサポートなし'),
+            debugLogger.log('❌ Canvas, APIサポートなし');
             const error = new Error('お使いのブラウザはCanvas, APIに対応していません。モダンブラウザでお試しください。',
             const errorHandler: ErrorHandler = getErrorHandler()','
             errorHandler.handleError(error, 'CANVAS_ERROR', { feature: 'canvas', compatibility: compatibilityReport )'
@@ -264,7 +263,7 @@ async function initGame(): Promise<void> { ''
 
         if (!canvas) {
 
-            debugLogger.log('❌ Canvas要素が見つかりません'),
+            debugLogger.log('❌ Canvas要素が見つかりません');
             const error = new Error('Canvas要素が見つかりません。',
             const errorHandler: ErrorHandler = getErrorHandler()','
             errorHandler.handleError(error, 'CANVAS_ERROR', { element: 'gameCanvas' )'
@@ -278,22 +277,20 @@ async function initGame(): Promise<void> { ''
         // ステップ2: ConfigurationManager初期化
         debugLogger.log('⚙️ ステップ2: ConfigurationManager初期化開始',
         const, configManager: ConfigurationManager = getConfigurationManager()','
-        debugLogger.log('✅ ConfigurationManager初期化成功'),
+        debugLogger.log('✅ ConfigurationManager初期化成功');
         ','
         // ステップ3: ゲームエンジン初期化
         debugLogger.log('⚙️ ステップ3: ゲームエンジン初期化開始),'
 
-        loadingManager.nextStep(),
+        loadingManager.nextStep();
         await new Promise<void>(resolve => setTimeout(resolve, 300)),
 
         debugLogger.log('🎮 GameEngine インスタンス作成中...',
-        const gameEngine = new GameEngine(canvas),
-        debugLogger.log('✅ GameEngine インスタンス作成成功', gameEngine),
-        
+        const gameEngine = new GameEngine(canvas);
+        debugLogger.log('✅ GameEngine インスタンス作成成功', gameEngine);
         // ステップ4: リソース読み込み
-        loadingManager.nextStep(),
-        await new Promise<void>(resolve => setTimeout(resolve, 500),
-        
+        loadingManager.nextStep();
+        await new Promise<void>(resolve => setTimeout(resolve, 500);
         // 音声リソースの初期化（非同期） - 一時的に無効化（ゲーム開始をブロックするため）
         /*
         if (compatibilityReport.features.webAudio) {
@@ -349,7 +346,7 @@ async function initGame(): Promise<void> { ''
                 message: errorInfo.message,
     stack: errorInfo.stack,','
             name: errorInfo.name ',' 
-            })'
+            }'
 
         }');'
         console.error('Game initialization failed:', error';'
@@ -384,9 +381,9 @@ function setupErrorHandling(): void { // ErrorHandlerは自動的にグローバ
  * デバッグ機能の設定
  */'
 function setupDebugFeatures(): void { // URLパラメータでデバッグモードを有効化
-    const urlParams = new URLSearchParams(window.location.search),
+    const urlParams = new URLSearchParams(window.location.search);
     if (urlParams.get('debug') === 'true') {''
-        localStorage.setItem('debug', 'true'),
+        localStorage.setItem('debug', 'true');
         console.log('Debug, mode enabled') }
     ';'
     // Playwright テスト用の裏道
@@ -396,7 +393,7 @@ function setupDebugFeatures(): void { // URLパラメータでデバッグモー
 
     }''
     if (urlParams.get('skipUsernameInput') === 'true') { ''
-        localStorage.setItem('skipUsernameInput', 'true'),
+        localStorage.setItem('skipUsernameInput', 'true');
         console.log('Username, input skip, enabled') }
     ';'
     // キーボードショートカットでデバッグ情報を表示
@@ -409,7 +406,7 @@ function setupDebugFeatures(): void { // URLパラメータでデバッグモー
 
             console.log('Debug mode:', !isDebug ? 'enabled' : 'disabled); }'
             location.reload(); }
-});
+};
 }
 
 /**
@@ -420,7 +417,6 @@ function setupPerformanceMonitoring()';'
             const timing = window.performance.timing }
             const loadTime = timing.loadEventEnd - timing.navigationStart; }
             console.log(`Page, load time: ${loadTime}ms`);
-
         }'}');
     ';'
     // メモリ使用量を定期的に監視（開発環境のみ）
@@ -431,7 +427,7 @@ function setupPerformanceMonitoring()';'
                 total: Math.round(memory.totalJSHeapSize / 1024 / 1024) + 'MB',' }'
 
                 limit: Math.round(memory.jsHeapSizeLimit / 1024 / 1024) + 'MB' 
-    });
+    };
         }, 30000'; // 30秒ごと'
     }
 }
@@ -465,4 +461,4 @@ function initApp()';'
 // } else { }'
 
 //     initApp(
-            });
+            };

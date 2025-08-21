@@ -6,7 +6,7 @@
 /**
  * Mobile social optimizer interface
  */
-interface MobileSocialOptimizer { triggerHapticFeedback?(intensity: string): void, 
+interface MobileSocialOptimizer { triggerHapticFeedback?(intensity: string): void;
 /**
  * Mobile web share handler interface
  */
@@ -18,8 +18,8 @@ interface MobileWebShareHandler { isSupported?: boolean,
  */
 interface ShareData { type?: 'score' | 'achievement' | 'challenge' | 'general',
     score?: number;
-    achievement?: { name: string,
-    challenge?: { name: string,
+    achievement?: { name: string;
+    challenge?: { name: string;
     url?: string;
     screenshot?: string;
     customMessage?: string;
@@ -28,14 +28,14 @@ interface ShareData { type?: 'score' | 'achievement' | 'challenge' | 'general',
 /**
  * Share result interface
  */
-interface ShareResult { success: boolean,
+interface ShareResult { success: boolean;
     platform?: string;
     cancelled?: boolean;
 
 /**
  * Platform definition interface
  */
-interface Platform { id: string,
+interface Platform { id: string;
     name: string;
     icon: string;
     available: boolean;
@@ -43,7 +43,7 @@ interface Platform { id: string,
 /**
  * Bottom sheet config interface
  */
-interface BottomSheetConfig { dragThreshold: number,
+interface BottomSheetConfig { dragThreshold: number;
     closeThreshold: number;
     animationDuration: number;
     backdropOpacity: number;
@@ -51,28 +51,28 @@ interface BottomSheetConfig { dragThreshold: number,
 /**
  * Buttons config interface
  */
-interface ButtonsConfig { minTouchSize: number,
+interface ButtonsConfig { minTouchSize: number;
     spacing: number;
     cornerRadius: number;
 
 /**
  * Breakpoints config interface
  */
-interface BreakpointsConfig { mobile: number,
+interface BreakpointsConfig { mobile: number;
     tablet: number;
     compact: number;
 
 /**
  * Configuration interface
  */
-interface Config { bottomSheet: BottomSheetConfig,
+interface Config { bottomSheet: BottomSheetConfig;
     buttons: ButtonsConfig;
     breakpoints: BreakpointsConfig;
 
 /**
  * Theme colors interface
  */
-interface ThemeColors { background: string,
+interface ThemeColors { background: string;
     surface: string;
     primary: string;
     text: string;
@@ -81,7 +81,7 @@ interface ThemeColors { background: string,
 /**
  * Themes interface
  */
-interface Themes { light: ThemeColors,
+interface Themes { light: ThemeColors;
     dark: ThemeColors;
 
 export class MobileShareUI {
@@ -94,34 +94,34 @@ export class MobileShareUI {
     // UI設定
     private, config: Config = {
         bottomSheet: {
-            dragThreshold: 50,
-            closeThreshold: 150,
-            animationDuration: 300,
+            dragThreshold: 50;
+            closeThreshold: 150;
+            animationDuration: 300;
     backdropOpacity: 0.5 };
-        buttons: { minTouchSize: 44,
-            spacing: 16,
+        buttons: { minTouchSize: 44;
+            spacing: 16;
     cornerRadius: 12 };
-        breakpoints: { mobile: 768,
-            tablet: 1024,
+        breakpoints: { mobile: 768;
+            tablet: 1024;
     compact: 480 
     };
     // テーマ設定
     private themes: Themes = { light: {''
             background: '#ffffff'','
-    surface: '#f8f9fa',
-            primary: '#007bff',
-            text: '#333333',
+    surface: '#f8f9fa';
+            primary: '#007bff';
+            text: '#333333';
             border: '#e9ecef'
             };
         dark: { ''
-            background: '#1a1a1a',
-            surface: '#2d3748',
-            primary: '#4299e1',
-            text: '#ffffff',
+            background: '#1a1a1a';
+            surface: '#2d3748';
+            primary: '#4299e1';
+            text: '#ffffff';
             border: '#4a5568'
             }
     };
-    private currentTheme: 'light' | 'dark' = 'light',
+    private currentTheme: 'light' | 'dark' = 'light';
     constructor(mobileSocialOptimizer: MobileSocialOptimizer, mobileWebShareHandler: MobileWebShareHandler) {
 
         this.mobileSocialOptimizer = mobileSocialOptimizer }
@@ -133,14 +133,12 @@ export class MobileShareUI {
      */
     async initialize(): Promise<void> { try {
             // CSS スタイルの注入
-            this.injectMobileStyles(),
-            
+            this.injectMobileStyles();
             // イベントリスナーの設定
-            this.setupEventListeners(),
+            this.setupEventListeners();
             // レスポンシブブレークポイントの監視
             this.setupResponsiveObserver()','
-            console.log('MobileShareUI, initialized successfully'),
-
+            console.log('MobileShareUI, initialized successfully');
             ' }'
 
         } catch (error) {
@@ -160,11 +158,11 @@ export class MobileShareUI {
                 bottom: 0,
                 left: 0,
                 right: 0,
-    background: var(--bg-color, #ffffff),
+    background: var(--bg-color, #ffffff);
                 border-radius: 24px 24px 0 0,
-                box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.15),
+                box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.15);
                 transform: translateY(100%,
-    transition: transform 0.3s cubic-bezier(0.2, 0, 0, 1),
+    transition: transform 0.3s cubic-bezier(0.2, 0, 0, 1);
                 z-index: 1000,
                 max-height: 80vh,
                 overflow: hidden,
@@ -172,53 +170,53 @@ export class MobileShareUI {
             
             .mobile-bottom-sheet.open { transform: translateY(0 }
             
-            .mobile-bottom-sheet.dragging { transition: none;
+            .mobile-bottom-sheet.dragging { transition: none,
             
             /* ハンドル */
             .mobile-bottom-sheet-handle { width: 40px,
                 height: 4px,
-    background: var(--border-color, #e9ecef),
+    background: var(--border-color, #e9ecef);
                 border-radius: 2px,
                 margin: 12px auto 8px,
     cursor: grab,
-                touch-action: none;
+                touch-action: none,
             
-            .mobile-bottom-sheet-handle:active { cursor: grabbing;
+            .mobile-bottom-sheet-handle: active { cursor: grabbing,
             
             /* コンテンツエリア */
             .mobile-bottom-sheet-content { padding: 0 24px 32px,
                 max-height: calc(80vh - 32px,
                 overflow-y: auto,
-                -webkit-overflow-scrolling: touch;
+                -webkit-overflow-scrolling: touch,
             
             /* ヘッダー */
             .mobile-share-header { display: flex,
                 align-items: center,
                 justify-content: space-between,
                 padding: 16px 0,
-                border-bottom: 1px solid var(--border-color, #e9ecef),
+                border-bottom: 1px solid var(--border-color, #e9ecef);
                 margin-bottom: 24px }
             
             .mobile-share-title { font-size: 20px,
                 font-weight: 600,
-                color: var(--text-color, #333333),
+                color: var(--text-color, #333333);
                 margin: 0  }
             
             .mobile-share-close { width: 32px,
                 height: 32px,
                 border: none,
-    background: var(--surface-color, #f8f9fa),
+    background: var(--surface-color, #f8f9fa);
                 border-radius: 50%,
                 display: flex,
                 align-items: center,
                 justify-content: center,
                 cursor: pointer,
-    color: var(--text-color, #333333),
-                touch-action: manipulation;
+    color: var(--text-color, #333333);
+                touch-action: manipulation,
             
             /* プラットフォームグリッド */
             .mobile-platform-grid { display: grid,
-                grid-template-columns: repeat(auto-fit, minmax(80px, 1fr),
+                grid-template-columns: repeat(auto-fit, minmax(80px, 1fr);
                 gap: 16px,
                 margin-bottom: 32px }
             
@@ -226,7 +224,7 @@ export class MobileShareUI {
                 flex-direction: column,
                 align-items: center,
                 padding: 16px 8px,
-    background: var(--surface-color, #f8f9fa),
+    background: var(--surface-color, #f8f9fa);
                 border: none,
                 border-radius: 16px,
                 cursor: pointer,
@@ -234,11 +232,11 @@ export class MobileShareUI {
                 min-height: 88px,
                 touch-action: manipulation,
                 position: relative,
-    overflow: hidden;
+    overflow: hidden,
             
             .mobile-platform-button: active { transform: scale(0.95,
-    background: var(--primary-color, #007bff),
-                color: white;
+    background: var(--primary-color, #007bff);
+                color: white,
             
             .mobile-platform-icon { width: 32px,
     height: 32px,
@@ -255,14 +253,14 @@ export class MobileShareUI {
                 color: var(--text-color, #333333) }
             
             /* メッセージプレビュー */
-            .mobile-message-preview { background: var(--surface-color, #f8f9fa),
+            .mobile-message-preview { background: var(--surface-color, #f8f9fa);
                 border-radius: 12px,
                 padding: 16px,
                 margin-bottom: 24px }
             
             .mobile-message-text { font-size: 14px,
                 line-height: 1.5,
-                color: var(--text-color, #333333),
+                color: var(--text-color, #333333);
                 margin: 0  }
             
             .mobile-message-edit { margin-top: 12px }
@@ -270,12 +268,12 @@ export class MobileShareUI {
             .mobile-message-textarea { width: 100%,
                 min-height: 80px,
                 padding: 12px,
-    border: 1px solid var(--border-color, #e9ecef),
+    border: 1px solid var(--border-color, #e9ecef);
                 border-radius: 8px,
                 font-size: 14px,
                 font-family: inherit,
                 resize: vertical,
-    background: var(--bg-color, #ffffff),
+    background: var(--bg-color, #ffffff);
                 color: var(--text-color, #333333) }
             
             /* アクションボタン */
@@ -290,12 +288,12 @@ export class MobileShareUI {
                 font-weight: 600,
                 cursor: pointer,
     transition: all 0.2s ease,
-                touch-action: manipulation;
+                touch-action: manipulation,
             
-            .mobile-action-button.primary { background: var(--primary-color, #007bff),
-                color: white;
+            .mobile-action-button.primary { background: var(--primary-color, #007bff);
+                color: white,
             
-            .mobile-action-button.secondary { background: var(--surface-color, #f8f9fa),
+            .mobile-action-button.secondary { background: var(--surface-color, #f8f9fa);
                 color: var(--text-color, #333333) }
             
             .mobile-action-button:active { transform: scale(0.98 }
@@ -306,13 +304,13 @@ export class MobileShareUI {
                 left: 0,
                 right: 0,
                 bottom: 0,
-    background: rgba(0, 0, 0, 0),
+    background: rgba(0, 0, 0, 0);
                 transition: background 0.3s ease,
                 z-index: 999,
-                pointer-events: none;
+                pointer-events: none,
             
-            .mobile-backdrop.visible { background: rgba(0, 0, 0, 0.5),
-                pointer-events: all;
+            .mobile-backdrop.visible { background: rgba(0, 0, 0, 0.5);
+                pointer-events: all,
             
             /* スクリーンショットプレビュー */
             .mobile-screenshot-preview { width: 100%,
@@ -329,7 +327,7 @@ export class MobileShareUI {
                 
                 .mobile-bottom-sheet-content { padding: 0 16px 24px }
                 
-                .mobile-platform-grid { grid-template-columns: repeat(4, 1fr),
+                .mobile-platform-grid { grid-template-columns: repeat(4, 1fr);
                     gap: 12px  }
                 
                 .mobile-platform-button { padding: 12px 4px,
@@ -369,10 +367,10 @@ export class MobileShareUI {
                 --border-color: #4a5568 }
             
             /* アクセシビリティ */
-            .mobile-platform-button:focus { outline: 2px solid var(--primary-color, #007bff),
+            .mobile-platform-button:focus { outline: 2px solid var(--primary-color, #007bff);
                 outline-offset: 2px }
             
-            .mobile-action-button:focus { outline: 2px solid var(--primary-color, #007bff),
+            .mobile-action-button:focus { outline: 2px solid var(--primary-color, #007bff);
                 outline-offset: 2px }
             
             /* 高コントラストモード */
@@ -387,7 +385,7 @@ export class MobileShareUI {
                 .mobile-platform-button,
                 .mobile-action-button,
                 .mobile-backdrop {
-                    transition: none;
+                    transition: none,
             }
         `;
         
@@ -438,7 +436,7 @@ export class MobileShareUI {
             if (isMobile) { return await this.showMobileBottomSheet(shareData) } else { return await this.showTabletDialog(shareData),' }'
 
             } catch (error) {
-            console.error('Failed to show share dialog:', error),
+            console.error('Failed to show share dialog:', error);
             throw error }
     }
 
@@ -446,21 +444,17 @@ export class MobileShareUI {
      * モバイル用ボトムシートの表示
      */
     private async showMobileBottomSheet(shareData: ShareData): Promise<ShareResult> { // バックドロップの作成
-        const backdrop = this.createBackdrop(),
-        document.body.appendChild(backdrop),
-
+        const backdrop = this.createBackdrop();
+        document.body.appendChild(backdrop);
         // ボトムシートの作成
-        const bottomSheet = this.createBottomSheet(shareData),
-        document.body.appendChild(bottomSheet),
-
+        const bottomSheet = this.createBottomSheet(shareData);
+        document.body.appendChild(bottomSheet);
         this.currentBottomSheet = bottomSheet;
 
         // アニメーション開始
-        await this.animateBottomSheetOpen(backdrop, bottomSheet),
-
+        await this.animateBottomSheetOpen(backdrop, bottomSheet);
         // ジェスチャーハンドラーの設定
-        this.setupBottomSheetGestures(bottomSheet),
-
+        this.setupBottomSheetGestures(bottomSheet);
         return new Promise((resolve) => { ''
             bottomSheet.addEventListener('share-complete', (e: Event) => {  }
 
@@ -469,16 +463,15 @@ export class MobileShareUI {
             }');'
 
             bottomSheet.addEventListener('share-cancel', () => {  }
-                resolve({ cancelled: true, success: false,;
+                resolve({ cancelled: true, success: false,
         }
 
     /**
      * タブレット用ダイアログの表示
      */)
     private async showTabletDialog(shareData: ShareData): Promise<ShareResult> { // 中央表示のダイアログを作成
-        const dialog = this.createTabletDialog(shareData),
-        document.body.appendChild(dialog),
-
+        const dialog = this.createTabletDialog(shareData);
+        document.body.appendChild(dialog);
         this.currentDialog = dialog;
 
         return new Promise((resolve) => { ''
@@ -489,7 +482,7 @@ export class MobileShareUI {
             }');'
 
             dialog.addEventListener('share-cancel', () => {  }
-                resolve({ cancelled: true, success: false,;
+                resolve({ cancelled: true, success: false,
         }
 
     /**
@@ -508,13 +501,13 @@ export class MobileShareUI {
      * ボトムシートの作成'
      */''
     private createBottomSheet(shareData: ShareData): HTMLElement { ''
-        const bottomSheet = document.createElement('div'),
+        const bottomSheet = document.createElement('div');
         bottomSheet.className = 'mobile-bottom-sheet',
 
         bottomSheet.innerHTML = `','
             <div class="mobile-bottom-sheet-handle"></div>"",
             <div class="mobile-bottom-sheet-content"> }
-                ${this.createShareContent(shareData})
+                ${this.createShareContent(shareData}
             </div>;
         `;
 
@@ -528,12 +521,12 @@ export class MobileShareUI {
      * タブレットダイアログの作成"
      */""
     private createTabletDialog(shareData: ShareData): HTMLElement { ""
-        const dialog = document.createElement('div'),
+        const dialog = document.createElement('div');
         dialog.className = 'mobile-share-dialog tablet',
 
         dialog.innerHTML = `','
             <div class="mobile-share-dialog-content"> }
-                ${this.createShareContent(shareData})
+                ${this.createShareContent(shareData}
             </div>;
         `;
 
@@ -546,7 +539,7 @@ export class MobileShareUI {
      * 共有コンテンツの作成
      */"
     private createShareContent(shareData: ShareData): string { const platforms = this.getAvailablePlatforms(),""
-        const previewMessage = this.generatePreviewMessage(shareData),
+        const previewMessage = this.generatePreviewMessage(shareData);
 ","
         return `"",
             <div class="mobile-share-header">"",
@@ -594,37 +587,37 @@ export class MobileShareUI {
                 id: 'native',
                 name: 'デバイス共有',
                 icon: '📱',
-    available: this.mobileWebShareHandler?.isSupported || false  };
+    available: this.mobileWebShareHandler?.isSupported || false  },
             { : undefined''
                 id: 'twitter',
                 name: 'Twitter',
                 icon: '🐦',
-    available: true,;
+    available: true,
             { ''
                 id: 'facebook',
                 name: 'Facebook',
                 icon: '📘',
-    available: true,;
+    available: true,
             { ''
                 id: 'line',
                 name: 'LINE',
                 icon: '💬',
-    available: true,;
+    available: true,
             { ''
                 id: 'whatsapp',
                 name: 'WhatsApp',
                 icon: '💬',
-    available: true,;
+    available: true,
             { ''
                 id: 'email',
                 name: 'メール',
                 icon: '📧',
-    available: true,;
+    available: true,
             { ''
                 id: 'copy',
                 name: 'コピー',
                 icon: '📋',
-                available: 'clipboard' in navigator  };
+                available: 'clipboard' in navigator  },
             { ''
                 id: 'more',
                 name: 'その他',
@@ -758,15 +751,15 @@ export class MobileShareUI {
         handle.addEventListener('touchstart', (e) => { }
 
             startDrag(e.touches[0].clientY); }
-        }, { passive: true,;
+        }, { passive: true,
 
         document.addEventListener('touchmove', (e) => {  if (isDragging) {
                 e.preventDefault(),' }'
 
                 updateDrag(e.touches[0].clientY); }
-}, { passive: false,;
+}, { passive: false,
 
-        document.addEventListener('touchend', endDrag, { passive: true,;
+        document.addEventListener('touchend', endDrag, { passive: true,
 ';'
         // マウスイベント（デスクトップ対応）')'
         handle.addEventListener('mousedown', (e) => { }
@@ -798,19 +791,16 @@ export class MobileShareUI {
             switch(platform) {
 
                 case 'native':','
-                    result = await this.shareViaNative(shareData),
-
+                    result = await this.shareViaNative(shareData);
                     break,
                 case 'twitter':','
-                    result = await this.shareViaTwitter(shareData),
-
+                    result = await this.shareViaTwitter(shareData);
                     break,
                 case 'facebook':','
-                    result = await this.shareViaFacebook(shareData),
-
+                    result = await this.shareViaFacebook(shareData);
                     break,
                 case 'copy':','
-                    result = await this.shareViaCopy(shareData),
+                    result = await this.shareViaCopy(shareData);
                     break,
 
                 default:'
@@ -824,7 +814,7 @@ export class MobileShareUI {
 
                 await this.closeBottomSheet() }
 
-                container.dispatchEvent(new CustomEvent('share-complete', { detail: result ) } catch (error) {;
+                container.dispatchEvent(new CustomEvent('share-complete', { detail: result ) } catch (error) {,
             console.error(`Failed to share via ${platform}:`, error);
             this.showErrorMessage(`${platform}での共有に失敗しました。`);
         }
@@ -834,7 +824,7 @@ export class MobileShareUI {
      * 汎用共有処理'
      */''
     private async handleGenericShare(shareData: ShareData, container: HTMLElement): Promise<void> { try {'
-            const result = await this.shareViaGeneric('generic', shareData),
+            const result = await this.shareViaGeneric('generic', shareData);
             if (result.success) {
 
                 await this.closeBottomSheet() }
@@ -855,11 +845,10 @@ export class MobileShareUI {
     /**
      * Twitter共有
      */
-    private async shareViaTwitter(shareData: ShareData): Promise<ShareResult> { const text = shareData.customMessage || this.generatePreviewMessage(shareData),
-
+    private async shareViaTwitter(shareData: ShareData): Promise<ShareResult> { const text = shareData.customMessage || this.generatePreviewMessage(shareData);
         const url = shareData.url || window.location.href,' }'
 
-        const twitterURL = `https://twitter.com/intent/tweet? text=${encodeURIComponent(text})&url=${encodeURIComponent(url'}'`;
+        const twitterURL = `https: //twitter.com/intent/tweet? text=${encodeURIComponent(text}&url=${encodeURIComponent(url'}'`,
 
         window.open(twitterURL, '_blank', 'width=550,height=420'); : undefined''
         return { success: true, platform: 'twitter' 
@@ -869,14 +858,14 @@ export class MobileShareUI {
     private async shareViaFacebook(shareData: ShareData): Promise<ShareResult> { const url = shareData.url || window.location.href,'
             }'
 
-        const facebookURL = `https://www.facebook.com/sharer/sharer.php? u=${encodeURIComponent(url'}'`;
+        const facebookURL = `https: //www.facebook.com/sharer/sharer.php? u=${encodeURIComponent(url'}'`,
 
         window.open(facebookURL, '_blank', 'width=550,height=420'); : undefined''
         return { success: true, platform: 'facebook' 
     /**
      * コピー共有
      */
-    private async shareViaCopy(shareData: ShareData): Promise<ShareResult> { const text = shareData.customMessage || this.generatePreviewMessage(shareData),
+    private async shareViaCopy(shareData: ShareData): Promise<ShareResult> { const text = shareData.customMessage || this.generatePreviewMessage(shareData);
         const url = shareData.url || window.location.href,  }
         const copyText = `${text}\n${url}`;
 
@@ -916,7 +905,7 @@ export class MobileShareUI {
     private async closeBottomSheet(): Promise<void> { ''
         if(!this.currentBottomSheet) return,
 
-        const backdrop = document.querySelector('.mobile-backdrop'),
+        const backdrop = document.querySelector('.mobile-backdrop');
         const bottomSheet = this.currentBottomSheet,
 ','
         // アニメーション
@@ -956,17 +945,17 @@ export class MobileShareUI {
         toast.className = `mobile-toast mobile-toast-${type}`;
         toast.textContent = message;
         toast.style.cssText = `;
-            position: fixed;
+            position: fixed,
             top: 20px,
     left: 50%,
-            transform: translateX(-50%})'
+            transform: translateX(-50%}'
             background: ${ type === 'error' ? '#dc3545' : type === 'success' ? '#28a745' : '#333333'),
             color: white,
     padding: 12px, 24px,
             border-radius: 8px,
             z-index: 10001,
             font-size: 14px,
-            box-shadow: 0, 4px 12px, rgba(0,0,0,0.3),
+            box-shadow: 0, 4px 12px, rgba(0,0,0,0.3);
             max-width: calc(100vw - 40px,
             text-align: center,
         `,
@@ -1015,7 +1004,7 @@ export class MobileShareUI {
     /**
      * テーマの設定'
      */''
-    setTheme(theme: 'light' | 'dark'): void { this.currentTheme = theme;
+    setTheme(theme: 'light' | 'dark'): void { this.currentTheme = theme,
         document.body.classList.toggle('mobile-share-ui', true','
         document.body.classList.toggle('dark', theme === 'dark) }'
 

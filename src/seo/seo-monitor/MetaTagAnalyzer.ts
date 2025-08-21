@@ -6,13 +6,13 @@
 
 interface MetaTagThresholds { metaTags: {
         titleLength: {
-            mi,n: number,
-    max: number,;
-        descriptionLength: { min: number,
-    max: number,;
+            mi,n: number;
+    max: number;
+        descriptionLength: { min: number;
+    max: number;
 }
 
-interface MetaTagAlert { type: string,
+interface MetaTagAlert { type: string;
     severity: 'info' | 'warning' | 'critical';
     metric: string;
     current?: number;
@@ -20,7 +20,7 @@ interface MetaTagAlert { type: string,
     message: string;
     timestamp: string;
 
-interface MetaTags { title: string | null,
+interface MetaTags { title: string | null;
     description: string | null;
     keywords: string | null;
     ogTags: Record<string, string>;
@@ -37,23 +37,23 @@ export class MetaTagAnalyzer {
      */
     async checkMetaTags(): Promise<MetaTags | null> { try {
             const metaTags: MetaTags = {
-                title: this.extractTitleTag(),
-                description: this.extractDescriptionTag(),
-                keywords: this.extractKeywordsTag(),
-                ogTags: this.extractOGTags(),
+                title: this.extractTitleTag();
+                description: this.extractDescriptionTag();
+                keywords: this.extractKeywordsTag();
+                ogTags: this.extractOGTags();
                 twitterTags: this.extractTwitterTags(
     timestamp: new Date().toISOString( };
             
             return, metaTags;
 
         } catch (error) {
-            console.error('Failed to check meta tags', error),
+            console.error('Failed to check meta tags', error);
             return null,
     
     /**
      * メタタグアラートのチェック
      */
-    checkMetaTagAlerts(metaTags: MetaTags | null, alerts: MetaTagAlert[]): void { if (!metaTags) return,
+    checkMetaTagAlerts(metaTags: MetaTags | null, alerts: MetaTagAlert[]): void { if (!metaTags) return;
         
         // タイトル長のチェック
         if (metaTags.title) {
@@ -64,16 +64,16 @@ export class MetaTagAnalyzer {
 
             if (titleLength < min || titleLength > max) {
                 alerts.push({''
-                    type: 'metaTags',
+                    type: 'metaTags';
                     severity: 'warning',';'
                     metric: 'title_length'
             }
                     current: titleLength) }
                     threshold: `${min}-${max}`);
-                    message: `Title length (${titleLength}}) is outside optimal range(${min}-${ max}`
+                    message: `Title length (${titleLength}} is outside optimal range(${min}-${ max}`
             }
 
-                    timestamp: new Date().toISOString(});'}');
+                    timestamp: new Date().toISOString(};'}');
             }
 
         } else {  alerts.push({''
@@ -82,7 +82,7 @@ export class MetaTagAnalyzer {
                 metric: 'title_missing',')',
                 message: 'Title tag is missing') }
                 timestamp: new Date().toISOString(); 
-    });
+    };
         }
         
         // 説明文長のチェック
@@ -96,11 +96,11 @@ export class MetaTagAnalyzer {
                     metric: 'description_length'
             }
                     current: descLength) }
-                    threshold: `${min}-${max}`);
-                    message: `Description length (${descLength}}) is outside optimal range(${min}-${ max}`
+                    threshold: `${min}-${max}`),
+                    message: `Description length (${descLength}} is outside optimal range(${min}-${ max}`
             }
 
-                    timestamp: new Date().toISOString(});'}');
+                    timestamp: new Date().toISOString(};'}');
             }
 
         } else {  alerts.push({''
@@ -109,7 +109,7 @@ export class MetaTagAnalyzer {
                 metric: 'description_missing',')',
                 message: 'Description meta tag is missing') }
                 timestamp: new Date().toISOString(); 
-    });
+    };
         }
     }
     
@@ -153,11 +153,11 @@ export class MetaTagAnalyzer {
 
             const ogMetas = document.querySelectorAll('meta[property^="og: "]",'
             ogMetas.forEach(meta => { '),'
-                const property = meta.getAttribute('property'),
+                const property = meta.getAttribute('property');
                 const content = meta.getAttribute('content) }'
                 if (property && content) { }
                     ogTags[property] = content; }
-});
+};
         }
 
         return Object.keys(ogTags).length > 0 ? ogTags : { ', 'og:title': 'BubblePop','
@@ -173,11 +173,11 @@ export class MetaTagAnalyzer {
 
             const twitterMetas = document.querySelectorAll('meta[name^="twitter: "]",'
             twitterMetas.forEach(meta => { '),'
-                const name = meta.getAttribute('name'),
+                const name = meta.getAttribute('name');
                 const content = meta.getAttribute('content) }'
                 if (name && content) { }
                     twitterTags[name] = content; }
-});
+};
         }
 
         return Object.keys(twitterTags).length > 0 ? twitterTags : { ', 'twitter:card': 'summary_large_image','

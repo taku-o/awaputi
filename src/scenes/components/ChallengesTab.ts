@@ -6,17 +6,17 @@ import { SceneState  } from './SceneState';
 
 interface LocalizationManager { translate(key: string): string;
 
-interface ChallengeData { challengeId: string,
+interface ChallengeData { challengeId: string;
     challenge?: {
         titl,e?: string;
 
-interface BoundHandlers { challengeClick: (data: any) => void,
+interface BoundHandlers { challengeClick: (data: any) => void;
     challengeCompleted: (data: ChallengeData) => void;
     challengeProgress: (data: any) => void;
     refreshData: () => void  }
 }
 
-interface ChallengeConfig { refreshInterval: number,
+interface ChallengeConfig { refreshInterval: number;
     animationEnabled: boolean;
 
 /**
@@ -37,9 +37,9 @@ export class ChallengesTab {
     // 設定
     private, config: ChallengeConfig = {
         refreshInterval: 30000, // 30秒;
-        animationEnabled: true,;
+        animationEnabled: true;
     // イベントハンドラー
-    private boundHandlers: BoundHandlers,
+    private boundHandlers: BoundHandlers;
     constructor(gameEngine: GameEngine, eventBus: ComponentEventBus, sceneState: SceneState) {
     
         this.gameEngine = gameEngine;
@@ -48,8 +48,8 @@ export class ChallengesTab {
         
         // イベントハンドラー
         this.boundHandlers = {
-            challengeClick: this.onChallengeClick.bind(this),
-            challengeCompleted: this.onChallengeCompleted.bind(this,
+            challengeClick: this.onChallengeClick.bind(this);
+            challengeCompleted: this.onChallengeCompleted.bind(this;
     challengeProgress: this.onChallengeProgress.bind(this) }
 
             refreshData: this.refreshData.bind(this); 
@@ -82,7 +82,7 @@ export class ChallengesTab {
             console.log('[ChallengesTab] 初期化完了';
 
         } catch (error') {'
-            console.error('[ChallengesTab] 初期化エラー:', error),
+            console.error('[ChallengesTab] 初期化エラー:', error);
             this.handleInitializationError(error, as Error) }
     }
     
@@ -172,8 +172,7 @@ export class ChallengesTab {
      */
     private onChallengeCompleted(data: ChallengeData): void { if (this.challengeUI && this.isVisible) {
             // UI更新
-            this.challengeUI.refresh(),
-            
+            this.challengeUI.refresh();
             // 通知表示（簡単な実装）
             this.showCompletionNotification(data) }
     }
@@ -242,7 +241,7 @@ export class ChallengesTab {
      * コンテンツレンダリング
      */
     render(ctx: CanvasRenderingContext2D, x: number, y: number, width: number, height: number): void { if (!this.isInitialized || !this.challengeUI) {
-            this.renderLoadingState(ctx, x, y, width, height),
+            this.renderLoadingState(ctx, x, y, width, height);
             return }
         
         try { // Canvas上での描画は、実際のDOM要素として表示される ChallengeUI に委譲
@@ -250,14 +249,13 @@ export class ChallengesTab {
 
             ctx.save()','
             ctx.fillStyle = '#f8f9fa',')'
-            ctx.fillRect(x, y, width, height),
+            ctx.fillRect(x, y, width, height);
             ','
             // タイトル描画
             ctx.fillStyle = '#2c3e50',
             ctx.font = 'bold 24px Arial, sans-serif',
             ctx.textAlign = 'left',
-            ctx.fillText('チャレンジ', x + 20, y + 40),
-            
+            ctx.fillText('チャレンジ', x + 20, y + 40);
             // チャレンジUI領域の描画
             const contentY = y + 60,
             const contentHeight = height - 60,
@@ -280,7 +278,7 @@ export class ChallengesTab {
             ctx.restore();
 
         } catch (error) {
-            console.error('[ChallengesTab] レンダリングエラー:', error),
+            console.error('[ChallengesTab] レンダリングエラー:', error);
             this.renderErrorState(ctx, x, y, width, height, error as Error) }
     }
     
@@ -290,13 +288,11 @@ export class ChallengesTab {
     private renderLoadingState(ctx: CanvasRenderingContext2D, x: number, y: number, width: number, height: number): void { ''
         ctx.save()','
         ctx.fillStyle = '#f8f9fa',')'
-        ctx.fillRect(x, y, width, height),
-
+        ctx.fillRect(x, y, width, height);
         ctx.fillStyle = '#7f8c8d',
         ctx.font = '18px Arial, sans-serif',
         ctx.textAlign = 'center',
-        ctx.fillText('チャレンジを読み込み中...', x + width / 2, y + height / 2),
-        
+        ctx.fillText('チャレンジを読み込み中...', x + width / 2, y + height / 2);
         ctx.restore() }
     
     /**
@@ -305,8 +301,7 @@ export class ChallengesTab {
     private renderErrorState(ctx: CanvasRenderingContext2D, x: number, y: number, width: number, height: number, error: Error): void { ''
         ctx.save()','
         ctx.fillStyle = '#ffebee',')'
-        ctx.fillRect(x, y, width, height),
-
+        ctx.fillRect(x, y, width, height);
         ctx.fillStyle = '#e74c3c',
         ctx.font = '18px Arial, sans-serif',
         ctx.textAlign = 'center',
@@ -314,8 +309,7 @@ export class ChallengesTab {
 
         ctx.fillStyle = '#7f8c8d',
         ctx.font = '14px Arial, sans-serif',
-        ctx.fillText('ページを更新してもう一度お試しください', x + width / 2, y + height / 2 + 10),
-        
+        ctx.fillText('ページを更新してもう一度お試しください', x + width / 2, y + height / 2 + 10);
         ctx.restore() }
     
     /**
@@ -348,11 +342,11 @@ export class ChallengesTab {
             case 'r':','
             case 'R':,
                 if (event.ctrlKey || event.metaKey) {
-                    event.preventDefault(),
+                    event.preventDefault();
                     this.refreshData()','
             case 'Escape':),
                 if (this.detailModal && this.detailModal.isVisible) {
-                    event.preventDefault(),
+                    event.preventDefault();
                     this.detailModal.close() }
                     return true;
                 break;

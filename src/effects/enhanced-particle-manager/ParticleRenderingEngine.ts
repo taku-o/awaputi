@@ -7,7 +7,7 @@ interface ParticleManager { // Placeholder for particle manager interface
     [key: string]: any;
 
 // Export interfaces for rendering
-export interface ParticleType { renderMethod: string,
+export interface ParticleType { renderMethod: string;
     cost: RenderingCost;
 ;
 export interface ExtendedParticleTypes { // 高度な基本パーティクル
@@ -21,16 +21,16 @@ export interface ExtendedParticleTypes { // 高度な基本パーティクル
     
     [key: string]: ParticleType;
 
-export interface RenderingSettings { batchRendering: boolean,
+export interface RenderingSettings { batchRendering: boolean;
     antiAliasing: boolean;
     shadowQuality: ShadowQuality;
     textureFiltering: TextureFiltering;
 
-export interface TrailPoint { x: number,
+export interface TrailPoint { x: number;
     y: number;
     alpha?: number;
 
-export interface RenderableParticle { x: number,
+export interface RenderableParticle { x: number;
     y: number;
     size?: number;
     color?: string;
@@ -54,7 +54,7 @@ export class ParticleRenderingEngine {
     private particleManager: ParticleManager;
     private errorHandler: ErrorHandler;
     // 拡張パーティクルタイプの定義
-    private readonly, extendedParticleTypes: ExtendedParticleTypes,
+    private readonly, extendedParticleTypes: ExtendedParticleTypes;
     // レンダリング設定
     private renderingSettings: RenderingSettings;
     constructor(canvas: HTMLCanvasElement, particleManager: ParticleManager) {
@@ -85,7 +85,7 @@ export class ParticleRenderingEngine {
             antiAliasing: true,
             shadowQuality: 'medium',
             textureFiltering: 'linear'
-            });
+            };
         console.log('[ParticleRenderingEngine] パーティクルレンダリングエンジンを初期化しました');
     }
     
@@ -127,9 +127,9 @@ export class ParticleRenderingEngine {
             context.save('',
             context.fillStyle = particle.color || '#ffffff')
             ),
-            context.beginPath(),
-            context.arc(particle.x, particle.y, particle.size || 2, 0, Math.PI * 2),
-            context.fill(),
+            context.beginPath();
+            context.arc(particle.x, particle.y, particle.size || 2, 0, Math.PI * 2);
+            context.fill();
             ','
 
             context.restore(),' }'
@@ -145,14 +145,14 @@ export class ParticleRenderingEngine {
      */'
     renderAdvancedCircle(context: CanvasRenderingContext2D, particle: RenderableParticle): void { try {'
             context.save('',
-            context.fillStyle = particle.color || '#ffffff'),
+            context.fillStyle = particle.color || '#ffffff');
             // グラデーション効果)
             if (particle.gradient) {
                 const gradient = context.createRadialGradient(
-                    particle.x, particle.y, 0),
+                    particle.x, particle.y, 0);
                     particle.x, particle.y, particle.size || 2)','
                 '),'
-                gradient.addColorStop(0, particle.color || '#ffffff'),
+                gradient.addColorStop(0, particle.color || '#ffffff');
                 gradient.addColorStop(1, 'transparent) }'
                 context.fillStyle = gradient; }
             }
@@ -164,7 +164,7 @@ export class ParticleRenderingEngine {
 
             context.restore();'} catch (error) { this.errorHandler.handleError(error as Error, {)'
                 context: 'ParticleRenderingEngine.renderAdvancedCircle'
-            });
+            };
         }
     }
     
@@ -172,28 +172,27 @@ export class ParticleRenderingEngine {
      * 光るパーティクル描画
      */
     renderGlowCircle(context: CanvasRenderingContext2D, particle: RenderableParticle): void { try {
-            context.save(),
-            
+            context.save();
             const glowSize = (particle.size || 2) * 2,
             const gradient = context.createRadialGradient(
                 particle.x, particle.y, 0)','
                 particle.x, particle.y, glowSize'',
             '),'
 
-            gradient.addColorStop(0, particle.color || '#ffffff'),
-            gradient.addColorStop(0.5, `${particle.color || '#ffffff'80`),
+            gradient.addColorStop(0, particle.color || '#ffffff');
+            gradient.addColorStop(0.5, `${particle.color || '#ffffff'80`);
             gradient.addColorStop(1, 'transparent),'
             
             context.globalAlpha = particle.alpha || 1.0,
             context.fillStyle = gradient,
             
-            context.beginPath(),
+            context.beginPath();
             context.arc(particle.x, particle.y, glowSize, 0, Math.PI * 2};
             context.fill(}
 
-            context.restore(});'} catch (error) { this.errorHandler.handleError(error as Error, {)'
+            context.restore(};'} catch (error) { this.errorHandler.handleError(error as Error, {)'
                 context: 'ParticleRenderingEngine.renderGlowCircle'
-            });
+            };
         }
     }
     
@@ -201,7 +200,7 @@ export class ParticleRenderingEngine {
      * 軌跡付きパーティクル描画
      */
     renderTrailParticle(context: CanvasRenderingContext2D, particle: RenderableParticle): void { try {
-            context.save(),
+            context.save();
             ','
             // 軌跡描画
             if (particle.trail && particle.trail.length > 1) { }'
@@ -245,12 +244,11 @@ export class ParticleRenderingEngine {
             const, x = particle.x,
             const, y = particle.y)
             ),
-            context.beginPath(),
+            context.beginPath();
             for(let, i = 0, i < 6, i++) {
                 const angle = (i * Math.PI) / 3,
-                const px = x + size * Math.cos(angle),
-                const py = y + size * Math.sin(angle),
-                
+                const px = x + size * Math.cos(angle);
+                const py = y + size * Math.sin(angle);
                 if (i === 0) {
             }
                     context.moveTo(px, py); }
@@ -278,15 +276,14 @@ export class ParticleRenderingEngine {
             const, y = particle.y,
             const, rotation = particle.rotation || 0)
             ),
-            context.translate(x, y),
-            context.rotate(rotation),
-            
-            context.beginPath(),
-            context.moveTo(0, -size),
-            context.lineTo(-size * 0.866, size * 0.5),
-            context.lineTo(size * 0.866, size * 0.5),
-            context.closePath(),
-            context.fill(),
+            context.translate(x, y);
+            context.rotate(rotation);
+            context.beginPath();
+            context.moveTo(0, -size);
+            context.lineTo(-size * 0.866, size * 0.5);
+            context.lineTo(size * 0.866, size * 0.5);
+            context.closePath();
+            context.fill();
             ','
 
             context.restore(),' }'
@@ -311,23 +308,22 @@ export class ParticleRenderingEngine {
             const y = particle.y,
             
             // 縦線
-            context.beginPath(),
-            context.moveTo(x, y - size),
-            context.lineTo(x, y + size),
-            context.stroke(),
-            
+            context.beginPath();
+            context.moveTo(x, y - size);
+            context.lineTo(x, y + size);
+            context.stroke();
             // 横線
-            context.beginPath(),
-            context.moveTo(x - size, y),
-            context.lineTo(x + size, y),
-            context.stroke(),
+            context.beginPath();
+            context.moveTo(x - size, y);
+            context.lineTo(x + size, y);
+            context.stroke();
             ','
 
             context.restore(),' }'
 
         } catch (error) { this.errorHandler.handleError(error as Error, {)'
                 context: 'ParticleRenderingEngine.renderCross'
-            });
+            };
         }
     }
     
@@ -335,43 +331,41 @@ export class ParticleRenderingEngine {
      * エネルギーオーブ描画
      */
     renderEnergyOrb(context: CanvasRenderingContext2D, particle: RenderableParticle): void { try {
-            context.save(),
-            
+            context.save();
             const time = Date.now() * 0.001,
             const pulsation = 1 + Math.sin(time * 3 + particle.x * 0.01) * 0.3,
             const glowSize = (particle.size || 2) * pulsation * 3,
             
             // 外側の光
             const outerGradient = context.createRadialGradient(
-                particle.x, particle.y, 0),
+                particle.x, particle.y, 0);
                 particle.x, particle.y, glowSize)','
             '),'
-            outerGradient.addColorStop(0, `${particle.color || '#00ffff'80`),
-            outerGradient.addColorStop(0.7, `${particle.color || '#00ffff'20`),
+            outerGradient.addColorStop(0, `${particle.color || '#00ffff'80`);
+            outerGradient.addColorStop(0.7, `${particle.color || '#00ffff'20`);
             outerGradient.addColorStop(1, 'transparent),'
             
             context.globalAlpha = particle.alpha || 1.0,
             context.fillStyle = outerGradient,
             
-            context.beginPath(),
-            context.arc(particle.x, particle.y, glowSize, 0, Math.PI * 2),
-            context.fill(),
-            
+            context.beginPath();
+            context.arc(particle.x, particle.y, glowSize, 0, Math.PI * 2);
+            context.fill();
             // 内側のコア
-            const, coreGradient = context.createRadialGradient(),
+            const, coreGradient = context.createRadialGradient();
                 particle.x, particle.y, 0),
                 particle.x, particle.y, (particle.size || 2) * pulsation','
             '),'
-            coreGradient.addColorStop(0, '#ffffff'),
-            coreGradient.addColorStop(0.8, particle.color || '#00ffff'),
+            coreGradient.addColorStop(0, '#ffffff');
+            coreGradient.addColorStop(0.8, particle.color || '#00ffff');
             coreGradient.addColorStop(1, 'transparent),'
             
             context.fillStyle = coreGradient,
-            context.beginPath(),
+            context.beginPath();
             context.arc(particle.x, particle.y, (particle.size || 2) * pulsation, 0, Math.PI * 2};
             context.fill(}
 
-            context.restore(});'} catch (error) { this.errorHandler.handleError(error as Error, {)'
+            context.restore(};'} catch (error) { this.errorHandler.handleError(error as Error, {)'
                 context: 'ParticleRenderingEngine.renderEnergyOrb'
             }';'
         }

@@ -18,50 +18,50 @@ import { EffectsCalculator  } from '../../src/core/EffectsCalculator.js';
 import { ValidationSystem  } from '../../src/core/ValidationSystem.js';
 import { LoggingSystem  } from '../../src/core/LoggingSystem.js';
 interface ConfigChangeEntry {
-    category: string,
+    category: string;
     key: string;
     oldValue: any;
     newValue: any;
     timestamp: number;
 interface AccessStats {
-    totalAccesses: number,
+    totalAccesses: number;
     cacheHits: number;
     frequentKeys: Map<string, number> }
 interface CacheStats {
-    totalRequests: number,
+    totalRequests: number;
     hits: number;
     misses: number;
 interface PerformanceStats {
     memoryUsage?: number;
     cpuUsage?: number;
 describe('Configuration System Integration Tests', () => {
-    let configManager: ConfigurationManager,
-    let calculationEngine: CalculationEngine,
-    let __gameConfig: GameConfig,
-    let __audioConfig: AudioConfig,
-    let __effectsConfig: EffectsConfig,
-    let __performanceConfig: PerformanceConfig,
-    let scoreCalculator: ScoreCalculator,
-    let balanceCalculator: BalanceCalculator,
-    let effectsCalculator: EffectsCalculator,
-    let __validationSystem: ValidationSystem,
-    let loggingSystem: LoggingSystem,
-    let __mockCanvas: HTMLCanvasElement,
+    let configManager: ConfigurationManager;
+    let calculationEngine: CalculationEngine;
+    let __gameConfig: GameConfig;
+    let __audioConfig: AudioConfig;
+    let __effectsConfig: EffectsConfig;
+    let __performanceConfig: PerformanceConfig;
+    let scoreCalculator: ScoreCalculator;
+    let balanceCalculator: BalanceCalculator;
+    let effectsCalculator: EffectsCalculator;
+    let __validationSystem: ValidationSystem;
+    let loggingSystem: LoggingSystem;
+    let __mockCanvas: HTMLCanvasElement;
     beforeEach(() => {
         // 設定管理システムの初期化
-        configManager = new ConfigurationManager(),
-        calculationEngine = new CalculationEngine(),
+        configManager = new ConfigurationManager();
+        calculationEngine = new CalculationEngine();
         // 設定カテゴリクラスの初期化
-        __gameConfig = new GameConfig(),
-        __audioConfig = new AudioConfig(),
-        __effectsConfig = new EffectsConfig(),
-        __performanceConfig = new PerformanceConfig(),
+        __gameConfig = new GameConfig();
+        __audioConfig = new AudioConfig();
+        __effectsConfig = new EffectsConfig();
+        __performanceConfig = new PerformanceConfig();
         // 計算処理クラスの初期化
-        scoreCalculator = new ScoreCalculator(null),
-        balanceCalculator = new BalanceCalculator(null),
-        effectsCalculator = new EffectsCalculator(null),
+        scoreCalculator = new ScoreCalculator(null);
+        balanceCalculator = new BalanceCalculator(null);
+        effectsCalculator = new EffectsCalculator(null);
         // サポートシステムの初期化
-        __validationSystem = new ValidationSystem(),
+        __validationSystem = new ValidationSystem();
         loggingSystem = new LoggingSystem('),'
         // 計算エンジンに計算クラスを登録
         (calculationEngine.registerCalculator('score', scoreCalculator)'),'
@@ -73,7 +73,7 @@ describe('Configuration System Integration Tests', () => {
         configManager.setDefaultValue('game', 'bubbles.maxAge', 5000'),'
         configManager.setDefaultValue('audio', 'volumes.master', 0.7'),'
         configManager.setDefaultValue('effects', 'particles.maxCount', 500'),'
-        configManager.setDefaultValue('performance', 'optimization.maxBubbles', 20) });
+        configManager.setDefaultValue('performance', 'optimization.maxBubbles', 20) };
     afterEach((') => {'
         // クリーンアップ
         if (configManager && typeof configManager.reset === 'function') {
@@ -93,15 +93,15 @@ describe('Configuration System Integration Tests', () => {
             expect(configManager.get('game', 'scoring.combo.multiplier').toBe(1.5'),'
             // 計算エンジンを通じてスコア計算
             const score = (calculationEngine.calculate('score', 'calculateBaseScore', {
-                bubbleType: 'normal',
-                ageRatio: 0.5),
+                bubbleType: 'normal';
+                ageRatio: 0.5);
             // 計算結果が返されることを確認（具体的な値は実装に依存）
             expect(typeof score').toBe('number'),'
             // キャッシュが正しく動作することを確認
             const cachedScore = (calculationEngine.calculate('score', 'calculateBaseScore', {
-                bubbleType: 'normal',
-                ageRatio: 0.5),
-            expect(cachedScore).toBe(score),
+                bubbleType: 'normal';
+                ageRatio: 0.5);
+            expect(cachedScore).toBe(score);
             const, cacheStats: CacheStats = calculationEngine.getCacheStats(
             expect(cacheStats.hits).toBeGreaterThan(0) }');'
         test('設定カテゴリクラス間の連携', (') => {'
@@ -112,14 +112,14 @@ describe('Configuration System Integration Tests', () => {
             expect(configManager.get('game', 'bubbles.maxAge').toBe(6000'),'
             expect(configManager.get('effects', 'particles.maxCount').toBe(300'),'
             // 設定カテゴリ全体を取得
-            const gameCategory = configManager.getCategory('game'),
-            const effectsCategory = configManager.getCategory('effects'),
+            const gameCategory = configManager.getCategory('game');
+            const effectsCategory = configManager.getCategory('effects');
             expect(gameCategory['bubbles.maxAge']).toBe(6000'),'
             expect(effectsCategory['particles.maxCount']).toBe(300) }');'
         test('検証システムとの連携', (') => {'
             // 検証ルールを設定
             configManager.setValidationRule('game.scoring.baseScores.normal', {
-                validate: (value => typeof value === 'number' && value >= 1 && value <= 100,
+                validate: (value => typeof value === 'number' && value >= 1 && value <= 100;
                 errorMessage: 'Value must be a number between 1 and 100' }');'
             // 有効な値を設定
             const validResult = configManager.set('game.scoring.baseScores.normal', 20);
@@ -132,7 +132,7 @@ describe('Configuration System Integration Tests', () => {
         }');'
         test('設定監視機能の連携', () => {
             let callbackCalled = false,
-            let callbackArgs: any[] | null = null,
+            let callbackArgs: any[] | null = null;
             const callback = (...args: any[]') => {'
                 callbackCalled = true,
                 callbackArgs = args };
@@ -179,7 +179,7 @@ describe('Configuration System Integration Tests', () => {
             expect(configManager.get('effects', 'particles.maxCount').toBe(300) }');'
         test('設定の存在確認', (') => {'
             // 設定を追加
-            configManager.set('game', 'new.setting', 'test_value'),
+            configManager.set('game', 'new.setting', 'test_value');
             // 存在確認
             expect(configManager.has('game', 'new.setting').toBe(true'),'
             expect(configManager.has('game', 'nonexistent.setting').toBe(false'),'
@@ -187,11 +187,11 @@ describe('Configuration System Integration Tests', () => {
         test('変更履歴の記録', (') => {'
             // 設定を変更
             configManager.set('game', 'scoring.baseScores.normal', 18'),'
-            configManager.set('audio', 'volumes.master', 0.8),
+            configManager.set('audio', 'volumes.master', 0.8);
             // 変更履歴を取得
             const history: ConfigChangeEntry[] = configManager.getChangeHistory(
             // 履歴が記録されていることを確認
-            expect(history.length).toBeGreaterThan(0),
+            expect(history.length).toBeGreaterThan(0);
             expect(history.some((entry: ConfigChangeEntry') => '
                 entry.category === 'game' && 
                 entry.key === 'scoring.baseScores.normal' && 
@@ -205,18 +205,18 @@ describe('Configuration System Integration Tests', () => {
             expect(configManager.get('game', 'scoring.baseScores.normal').toBe(25'),'
             expect(configManager.get('game', 'bubbles.maxAge').toBe(7000'),'
             // ゲームカテゴリをリセット
-            configManager.reset('game'),
+            configManager.reset('game');
             // デフォルト値に戻ることを確認
             expect(configManager.get('game', 'scoring.baseScores.normal').toBe(15'),'
             expect(configManager.get('game', 'bubbles.maxAge.normal').toBe(12000) }');'
     }
     describe('パフォーマンス統合テスト', (') => {'
         test('大量設定アクセスのパフォーマンス', () => {
-            const startTime = performance.now(),
+            const startTime = performance.now();
             // 1000回の設定アクセス
             for (let i = 0, i < 1000, i++') {'
-                configManager.get('game', 'scoring.baseScores.normal'),
-                configManager.get('audio', 'volumes.master'),
+                configManager.get('game', 'scoring.baseScores.normal');
+                configManager.get('audio', 'volumes.master');
                 configManager.get('effects', 'particles.maxCount') }
             
             const endTime = performance.now();
@@ -229,13 +229,13 @@ describe('Configuration System Integration Tests', () => {
             expect(accessStats.totalAccesses).toBeGreaterThan(0);
         }');'
         test('大量計算処理のパフォーマンス', () => {
-            const startTime = performance.now(),
+            const startTime = performance.now();
             // 100回の計算処理（負荷を軽減）
             for (let i = 0, i < 100, i++') {'
                 (calculationEngine.calculate('score', 'calculateBaseScore', {
-                    bubbleType: 'normal',
-                    ageRatio: Math.random(});
-                });
+                    bubbleType: 'normal';
+                    ageRatio: Math.random(};
+                };
             }
             
             const endTime = performance.now();
@@ -253,10 +253,10 @@ describe('Configuration System Integration Tests', () => {
             const subkey = 'scoring.baseScores.normal',
             
             // 初回アクセス
-            const value1 = configManager.get(key, subkey),
+            const value1 = configManager.get(key, subkey);
             // 複数回アクセス
             for (let i = 0, i < 10, i++) {
-                const value = configManager.get(key, subkey),
+                const value = configManager.get(key, subkey);
                 expect(value).toBe(value1) }
             
             // キャッシュヒットが発生していることを確認
@@ -264,15 +264,15 @@ describe('Configuration System Integration Tests', () => {
             expect(accessStats.cacheHits).toBeGreaterThan(0);
         }');'
         test('同時アクセスの処理', async () => {
-            const promises: Promise<any>[] = [],
+            const promises: Promise<any>[] = [];
             
             // 50個の同時アクセス（負荷を軽減）
             for (let i = 0, i < 50, i++) {
-                promises.push(),
+                promises.push();
                     Promise.resolve().then((') => {'
                         configManager.set('test', `concurrent.${i}`, i');'
                         return configManager.get('test', `concurrent.${i}`);
-    });
+    };
                 );
             }
             
@@ -283,7 +283,7 @@ describe('Configuration System Integration Tests', () => {
         }
         test('計算結果のキャッシュ効果', (') => {'
             const params = {
-                bubbleType: 'normal',
+                bubbleType: 'normal';
                 ageRatio: 0.5
             };
             
@@ -302,7 +302,7 @@ describe('Configuration System Integration Tests', () => {
         test('設定システムエラーからのリカバリ', (') => {'
             // 検証ルールを設定
             configManager.setValidationRule('game', 'scoring.baseScores.normal', {
-                type: 'number',
+                type: 'number';
                 min: 1 }');'
             // 無効な設定を設定しようとする
             const result1 = configManager.set('game', 'scoring.baseScores.normal', null');'
@@ -320,13 +320,13 @@ describe('Configuration System Integration Tests', () => {
         }');'
         test('計算エンジンエラーからのリカバリ', (') => {'
             // 存在しない計算タイプでの計算を試行
-            const result1 = (calculationEngine.calculate('invalid', 'calculateSomething', {});
+            const result1 = (calculationEngine.calculate('invalid', 'calculateSomething', {};
             // エラーが適切に処理されることを確認
             expect(result1).toBeNull(');'
             // システムが正常に動作し続けることを確認
             const result2 = (calculationEngine.calculate('score', 'calculateBaseScore', {
-                bubbleType: 'normal',
-                ageRatio: 0.5),
+                bubbleType: 'normal';
+                ageRatio: 0.5);
             expect(typeof result2').toBe('number') }');
         test('設定監視エラーの処理', () => {
             // エラーを投げるコールバックを設定
@@ -336,7 +336,7 @@ describe('Configuration System Integration Tests', () => {
             const watchId = configManager.watch('game', 'scoring.baseScores.normal', errorCallback);
             // 設定変更がエラーを引き起こしても、システムが継続することを確認
             expect((') => {'
-                configManager.set('game', 'scoring.baseScores.normal', 20) }).not.toThrow(');'
+                configManager.set('game', 'scoring.baseScores.normal', 20) }.not.toThrow(');'
             // 設定値は正しく更新されることを確認
             expect(configManager.get('game', 'scoring.baseScores.normal').toBe(20);
             // 監視を解除
@@ -350,7 +350,7 @@ describe('Configuration System Integration Tests', () => {
             configManager.set('audio', 'volumes.master', 0.8'),'
             // 設定値が正しく変更されていることを確認
             expect(configManager.get('game', 'scoring.baseScores.normal').toBe(18'),'
-            expect(configManager.get('audio', 'volumes.master').toBe(0.8),
+            expect(configManager.get('audio', 'volumes.master').toBe(0.8);
             // ログシステムが存在することを確認
             expect(loggingSystem).toBeDefined() }');'
         test('アクセス統計の追跡', () => {
@@ -369,9 +369,9 @@ describe('Configuration System Integration Tests', () => {
             // 複数回計算を実行
             for (let i = 0, i < 10, i++') {'
                 (calculationEngine.calculate('score', 'calculateBaseScore', {
-                    bubbleType: 'normal',
-                    ageRatio: Math.random(});
-                });
+                    bubbleType: 'normal';
+                    ageRatio: Math.random(};
+                };
             }
             
             // パフォーマンス統計が収集されることを確認
@@ -388,7 +388,7 @@ describe('Configuration System Integration Tests', () => {
             
             // 全ての設定が正しく保存されることを確認
             for (let i = 0; i < 100; i++') {'
-                expect(configManager.get('test', `item.${i)`)).toBe(i'});'
+                expect(configManager.get('test', `item.${i)`)).toBe(i'};'
             }
             
             // システムが安定していることを確認
@@ -405,8 +405,8 @@ describe('Configuration System Integration Tests', () => {
             expect(configManager.get('audio', 'test.value').toBe(200'),'
             expect(configManager.get('effects', 'test.value').toBe(300'),'
             // カテゴリ全体の取得
-            const gameCategory = configManager.getCategory('game'),
-            const audioCategory = configManager.getCategory('audio'),
+            const gameCategory = configManager.getCategory('game');
+            const audioCategory = configManager.getCategory('audio');
             expect(gameCategory['test.value']).toBe(100'),'
             expect(audioCategory['test.value']).toBe(200) }');'
         test('長時間動作での安定性', () => {
@@ -416,8 +416,8 @@ describe('Configuration System Integration Tests', () => {
                 configManager.set('game', 'scoring.baseScores.normal', 10 + round'),'
                 // 計算の実行
                 const result = (calculationEngine.calculate('score', 'calculateBaseScore', {
-                    bubbleType: 'normal',
-                    ageRatio: 0.5),
+                    bubbleType: 'normal';
+                    ageRatio: 0.5);
                 // 結果が正常であることを確認
                 expect(typeof result').toBe('number'),'
                 expect(configManager.get('game', 'scoring.baseScores.normal').toBe(10 + round) }
@@ -427,6 +427,6 @@ describe('Configuration System Integration Tests', () => {
             expect(accessStats.totalAccesses).toBeGreaterThan(0);
             const cacheStats: CacheStats = calculationEngine.getCacheStats(
             expect(cacheStats.totalRequests).toBeGreaterThan(0);
-        });
+        };
     }
 }');'

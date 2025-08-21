@@ -76,17 +76,17 @@ describe('AnalyticsDashboard', () => {
     }');'
     describe('初期化', (') => {'
         test('正しく初期化される', () => {
-            expect(dashboard).toBeDefined(),
+            expect(dashboard).toBeDefined();
             expect(dashboard.containerId').toBe('test-dashboard'),'
-            expect(dashboard.container).toBe(mockContainer),
-            expect(dashboard.sections).toBeInstanceOf(Map),
+            expect(dashboard.container).toBe(mockContainer);
+            expect(dashboard.sections).toBeInstanceOf(Map);
             expect(dashboard.activeCharts).toBeInstanceOf(Map) }');'
         test('コンテナが存在しない場合はエラーログ', (') => {'
-            const consoleSpy = jest.spyOn(console, 'error').mockImplementation(),
+            const consoleSpy = jest.spyOn(console, 'error').mockImplementation();
             document.getElementById.mockReturnValue(null'),'
-            new AnalyticsDashboard('non-existent-container'),
+            new AnalyticsDashboard('non-existent-container');
             expect(consoleSpy).toHaveBeenCalledWith('),'
-                expect.stringContaining("Container element with ID 'non-existent-container' not found"),
+                expect.stringContaining("Container element with ID 'non-existent-container' not found");
             consoleSpy.mockRestore() }");"
         test('オプションが正しく設定される', (') => {'
             const customDashboard = new AnalyticsDashboard('test-custom', {
@@ -94,7 +94,7 @@ describe('AnalyticsDashboard', () => {
                 updateInterval: 10000,
                 layout: 'flex',
                 minDataPoints: 10
-            });
+            };
             expect(customDashboard.options.theme').toBe('dark');'
             expect(customDashboard.options.updateInterval).toBe(10000);
             expect(customDashboard.options.layout').toBe('flex');'
@@ -110,10 +110,10 @@ describe('AnalyticsDashboard', () => {
             expect(dashboard.sections.has('bubble-analysis').toBe(true'),'
             expect(dashboard.sections.has('performance-metrics').toBe(true) }');'
         test('セクション構造が正しく作成される', (') => {'
-            const section = dashboard.sections.get('basic-stats'),
-            expect(section).toBeDefined(),
-            expect(section.container).toBeDefined(),
-            expect(section.content).toBeDefined(),
+            const section = dashboard.sections.get('basic-stats');
+            expect(section).toBeDefined();
+            expect(section.container).toBeDefined();
+            expect(section.content).toBeDefined();
             expect(section.title').toBe('プレイ統計'),'
             expect(section.charts).toBeInstanceOf(Map) }');'
     }
@@ -169,7 +169,7 @@ describe('AnalyticsDashboard', () => {
                 ]
             };
             dashboard.activeCharts.set('playtime-chart', { id: 'mock-chart' ,
-            dashboard.updateBasicStatistics(mockData),
+            dashboard.updateBasicStatistics(mockData);
             expect(dashboard.chartRenderer.updateChartData').toHaveBeenCalledWith('
                 'playtime-chart-canvas',
                 {
@@ -212,7 +212,7 @@ describe('AnalyticsDashboard', () => {
             dashboard.activeCharts.set('bubble-success-rate-chart', { id: 'mock-chart' }');'
             dashboard.activeCharts.set('bubble-frequency-chart', { id: 'mock-chart' )','
             dashboard.activeCharts.set('bubble-score-contribution-chart', { id: 'mock-chart' ,
-            dashboard.updateBubbleAnalysis(mockData),
+            dashboard.updateBubbleAnalysis(mockData);
             expect(dashboard.chartRenderer.updateChartData).toHaveBeenCalledTimes(3) }');'
     }
     describe('パフォーマンス指標表示', (') => {'
@@ -252,18 +252,18 @@ describe('AnalyticsDashboard', () => {
             };
             dashboard.activeCharts.set('fps-chart', { id: 'mock-chart' )','
             dashboard.activeCharts.set('memory-usage-chart', { id: 'mock-chart' ,
-            dashboard.updatePerformanceMetrics(mockData),
+            dashboard.updatePerformanceMetrics(mockData);
             expect(dashboard.chartRenderer.updateChartData).toHaveBeenCalledTimes(2) }');'
     }
     describe('データ不足判定', (') => {'
         test('データがnullの場合は不足と判定', () => {
             expect(dashboard.isDataInsufficient(null).toBe(true) }');'
         test('特定プロパティが存在しない場合は不足と判定', (') => {'
-            const data = { playtime: [] };
+            const data = { playtime: [] },
             expect(dashboard.isDataInsufficient(data, 'bubbleStats').toBe(true);
         }');'
         test('配列データがminDataPoints未満の場合は不足と判定', (') => {'
-            const data = { playtime: [{ date: '2023-12-01', minutes: 30 }] };
+            const data = { playtime: [{ date: '2023-12-01', minutes: 30 }] },
             expect(dashboard.isDataInsufficient(data, 'playtime').toBe(true);
         }');'
         test('十分なデータがある場合は不足と判定されない', (') => {'
@@ -280,20 +280,20 @@ describe('AnalyticsDashboard', () => {
     describe('ユーザーインタラクション', (') => {'
         test('ダッシュボードを手動更新できる', () => {
             const mockCallback = jest.fn(() => ({ playtime: [] ))','
-            dashboard.dataCallbacks.set('test-section', mockCallback),
-            dashboard.refresh(),
+            dashboard.dataCallbacks.set('test-section', mockCallback);
+            dashboard.refresh();
             expect(mockCallback).toHaveBeenCalled())'),'
         test('時間範囲を変更できる', (') => {'
-            const consoleSpy = jest.spyOn(console, 'log').mockImplementation(),
+            const consoleSpy = jest.spyOn(console, 'log').mockImplementation();
             dashboard.refresh = jest.fn(') as jest.Mock,'
-            dashboard.changeTimeRange('7d'),
+            dashboard.changeTimeRange('7d');
             expect(dashboard.currentTimeRange').toBe('7d'),'
             expect(consoleSpy').toHaveBeenCalledWith('Time range changed to: 7d','
-            expect(dashboard.refresh).toHaveBeenCalled(),
+            expect(dashboard.refresh).toHaveBeenCalled();
             consoleSpy.mockRestore() }');'
         test('セクションを最小化/展開できる', (') => {'
-            const section = dashboard.sections.get('basic-stats'),
-            const mockToggleBtn = { textContent: '最小化' };
+            const section = dashboard.sections.get('basic-stats');
+            const mockToggleBtn = { textContent: '最小化' },
             section.container.querySelector = jest.fn(() => mockToggleBtn');'
             dashboard.toggleSection('basic-stats');
             expect(section.content.style.display').toBe('none');'
@@ -314,8 +314,8 @@ describe('AnalyticsDashboard', () => {
                 download: ','
         click: jest.fn()
             ),
-            document.createElement.mockReturnValue(mockAnchor),
-            dashboard.exportData(),
+            document.createElement.mockReturnValue(mockAnchor);
+            dashboard.exportData();
             expect(global.Blob).toHaveBeenCalledWith(')'
                 [expect.stringContaining('"sections"')],
                 { type: 'application/json' }
@@ -326,7 +326,7 @@ describe('AnalyticsDashboard', () => {
         }');'
         test('データ取得エラー時はエラー情報をエクスポート', () => {
             const errorCallback = jest.fn((') => { throw new Error('Test error'))'),
-            dashboard.dataCallbacks.set('error-section', errorCallback),
+            dashboard.dataCallbacks.set('error-section', errorCallback);
             const mockAnchor = { click: jest.fn() ),
             document.createElement.mockReturnValue(mockAnchor);
             dashboard.exportData();
@@ -374,13 +374,13 @@ describe('AnalyticsDashboard', () => {
     }
     describe('リアルタイム更新', (') => {'
         test('リアルタイム更新を開始できる', () => {
-            jest.useFakeTimers(),
+            jest.useFakeTimers();
             const mockCallback = jest.fn((') => ({ data: 'test' ))',
-            dashboard.dataCallbacks.set('test-section', mockCallback),
+            dashboard.dataCallbacks.set('test-section', mockCallback);
             dashboard.updateSection = jest.fn(') as jest.Mock,'
-            dashboard.startRealtimeUpdate('test-section'),
-            expect(dashboard.realtimeTimers.has('test-section').toBe(true),
-            jest.advanceTimersByTime(dashboard.options.updateInterval),
+            dashboard.startRealtimeUpdate('test-section');
+            expect(dashboard.realtimeTimers.has('test-section').toBe(true);
+            jest.advanceTimersByTime(dashboard.options.updateInterval);
             expect(dashboard.updateSection').toHaveBeenCalledWith('test-section'),'
             jest.useRealTimers())'),'
         test('既存のタイマーは停止される', () => {
@@ -397,12 +397,12 @@ describe('AnalyticsDashboard', () => {
             dashboard.sections.set('test2', {}');'
             dashboard.activeCharts.set('chart1', {}');'
             dashboard.realtimeTimers.set('timer1', {}');'
-            dashboard.dataCallbacks.set('callback1', {),
-            const stats = dashboard.getDashboardStatistics(),
+            dashboard.dataCallbacks.set('callback1', {);
+            const stats = dashboard.getDashboardStatistics();
             expect(stats.totalSections).toBe(5), // 初期3セクション + テスト2セクション
-            expect(stats.activeCharts).toBe(1),
-            expect(stats.realtimeUpdates).toBe(1),
-            expect(stats.dataCallbacks).toBe(1),
+            expect(stats.activeCharts).toBe(1);
+            expect(stats.realtimeUpdates).toBe(1);
+            expect(stats.dataCallbacks).toBe(1);
             expect(stats.theme').toBe('default') }');
     }
     describe('リソース管理', (') => {'
@@ -421,7 +421,7 @@ describe('AnalyticsDashboard', () => {
             expect(dashboard.dataVisualizer.destroy).toHaveBeenCalled();
         }');'
         test('スタイルシートが削除される', () => {
-            const mockStyleSheet = { remove: jest.fn() };
+            const mockStyleSheet = { remove: jest.fn() },
             document.getElementById.mockReturnValue(mockStyleSheet);
             dashboard.destroy();
             expect(mockStyleSheet.remove).toHaveBeenCalled();
@@ -429,15 +429,15 @@ describe('AnalyticsDashboard', () => {
     }
     describe('エラーハンドリング', (') => {'
         test('セクション更新中のエラーを適切に処理する', (') => {'
-            const consoleSpy = jest.spyOn(console, 'error').mockImplementation(),
+            const consoleSpy = jest.spyOn(console, 'error').mockImplementation();
             const errorCallback = jest.fn((') => { throw new Error('Update failed'))'),
             dashboard.dataCallbacks.set('error-section', errorCallback'),'
-            dashboard.updateSection('error-section'),
+            dashboard.updateSection('error-section');
             expect(consoleSpy').toHaveBeenCalledWith('
                 'Failed to update section error-section:', 
-                expect.any(Error),
+                expect.any(Error);
             consoleSpy.mockRestore())'),'
         test('存在しないセクションの更新は何もしない', () => {
-            expect((') => dashboard.updateSection('non-existent-section').not.toThrow() });'
+            expect((') => dashboard.updateSection('non-existent-section').not.toThrow() };'
     }
 }');'

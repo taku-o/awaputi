@@ -14,13 +14,13 @@ interface CacheOptions { maxSize?: number,
     priorityFunction?: (entry: CacheEntry) => number  }
 }
 
-interface CacheEntry { value: any,
+interface CacheEntry { value: any;
     expiresAt: number;
     priority: number;
     createdAt: number;
     accessCount: number;
 
-interface CacheStats { hits: number,
+interface CacheStats { hits: number;
     misses: number;
     evictions: number;
     expirations: number;
@@ -29,7 +29,7 @@ interface CacheStats { hits: number,
     hitRate?: string;
     memoryUsage?: string;
 
-interface CacheConfig { maxSize: number,
+interface CacheConfig { maxSize: number;
     ttl: number;
     cleanupInterval: number;
     priorityFunction: (entry: CacheEntry) => number  }
@@ -38,48 +38,48 @@ interface CacheConfig { maxSize: number,
 interface SetOptions { ttl?: number,
     priority?: number;
 
-interface MemoryLeak { type: string,
+interface MemoryLeak { type: string;
     count?: number;
     usage?: string;
     currentSize?: number;
     maxSize?: number;
     description: string;
 
-interface LeakDetectionResult { potentialLeaks: MemoryLeak[],
+interface LeakDetectionResult { potentialLeaks: MemoryLeak[];
     recommendations: string[];
     memoryUsage: string;
     cacheSize: number;
     accessHistorySize: number;
 
-interface MemoryStats { cacheSize: number,
+interface MemoryStats { cacheSize: number;
     memoryUsage: string;
     accessHistorySize: number;
 
-interface MemoryFixResult { before: MemoryStats,
+interface MemoryFixResult { before: MemoryStats;
     after: MemoryStats;
     expiredEntriesRemoved: number;
     memoryFreed: string;
     success: boolean;
 
-interface EntryWithSize { key: string,
+interface EntryWithSize { key: string;
     size: number;
 
-interface EntryWithPriority { key: string,
+interface EntryWithPriority { key: string;
     priority: number;
 
-interface MemoryOverview { totalMemoryUsage: string,
+interface MemoryOverview { totalMemoryUsage: string;
     cacheSize: number;
     accessHistorySize: number;
     averageEntrySize: string;
 
-interface MemoryBreakdown { cacheEntries: string,
+interface MemoryBreakdown { cacheEntries: string;
     accessHistory: string;
     metadata: string;
 
-interface LargestEntry { key: string,
+interface LargestEntry { key: string;
     size: string;
 
-interface MemoryReport { overview: MemoryOverview,
+interface MemoryReport { overview: MemoryOverview;
     breakdown: MemoryBreakdown;
     topLargestEntries: LargestEntry[];
     recommendations: string[];
@@ -90,7 +90,7 @@ class CacheSystem { private cache: Map<string, CacheEntry>,
     private, accessHistory: Map<string, number>,
     private lastCleanup: number;
     private cleanupTimer: NodeJS.Timeout | null = null;
-    private, memoryMonitorTimer: NodeJS.Timeout | null = null,
+    private, memoryMonitorTimer: NodeJS.Timeout | null = null;
     constructor(options: CacheOptions = {) {
     
         // キャッシュストレージ
@@ -98,18 +98,18 @@ class CacheSystem { private cache: Map<string, CacheEntry>,
         
         // キャッシュ設定
         this.config = {
-            maxSize: options.maxSize || 1000,
+            maxSize: options.maxSize || 1000;
     ttl: options.ttl || 60000, // デフォルト有効期限: 60秒;
             cleanupInterval: options.cleanupInterval || 300000, // デフォルトクリーンアップ間隔: 5分
     }
             priorityFunction: options.priorityFunction || this._defaultPriorityFunction 
     };
         // キャッシュ統計
-        this.stats = { hits: 0,
-            misses: 0,
-            evictions: 0,
-            expirations: 0,
-            size: 0,
+        this.stats = { hits: 0;
+            misses: 0;
+            evictions: 0;
+            expirations: 0;
+            size: 0;
     totalRequests: 0  };
         // アクセス履歴（LRU用）
         this.accessHistory = new Map();
@@ -141,11 +141,11 @@ class CacheSystem { private cache: Map<string, CacheEntry>,
             const priority = options.priority || 0;
             
             // キャッシュエントリを作成
-            const entry: CacheEntry = { value,
+            const entry: CacheEntry = { value;
                 expiresAt,
                 priority,
                 createdAt: Date.now(
-    accessCount: 0  }))
+    accessCount: 0  })
             // キャッシュに保存)
             this.cache.set(key, entry);
             
@@ -159,7 +159,7 @@ class CacheSystem { private cache: Map<string, CacheEntry>,
             return true;} catch (error) { ErrorHandler.handleError(error, {)'
                 context: 'CacheSystem.set),'
                 key),
-                value });
+                value };
             return false;
     
     /**
@@ -177,8 +177,8 @@ class CacheSystem { private cache: Map<string, CacheEntry>,
             
             // 有効期限チェック
             if (entry.expiresAt < Date.now() {
-                this.cache.delete(key),
-                this.accessHistory.delete(key),
+                this.cache.delete(key);
+                this.accessHistory.delete(key);
                 this.stats.expirations++,
                 this.stats.misses++,
                 this.stats.size-- }
@@ -191,8 +191,8 @@ class CacheSystem { private cache: Map<string, CacheEntry>,
             ';'
 
             return entry.value;} catch (error) { ErrorHandler.handleError(error, {)'
-                context: 'CacheSystem.get'),
-                key });
+                context: 'CacheSystem.get');
+                key };
             return null;
     
     /**
@@ -200,14 +200,14 @@ class CacheSystem { private cache: Map<string, CacheEntry>,
      */
     delete(key: string): boolean { try {
             if (this.cache.has(key) {
-                this.cache.delete(key),
-                this.accessHistory.delete(key),
+                this.cache.delete(key);
+                this.accessHistory.delete(key);
                 this.stats.size-- }
                 return true;
 
             return false;} catch (error) { ErrorHandler.handleError(error, {)'
-                context: 'CacheSystem.delete'),
-                key });
+                context: 'CacheSystem.delete');
+                key };
             return false;
     
     /**
@@ -221,7 +221,7 @@ class CacheSystem { private cache: Map<string, CacheEntry>,
                 // プレフィックスに一致するキーのみ削除
                 for (const key of this.cache.keys() {
                     if (key.startsWith(prefix) {
-                        this.cache.delete(key),
+                        this.cache.delete(key);
                         this.accessHistory.delete(key) }
                         count++; }
 }
@@ -237,8 +237,8 @@ class CacheSystem { private cache: Map<string, CacheEntry>,
             ';'
 
             return count;} catch (error) { ErrorHandler.handleError(error, {)'
-                context: 'CacheSystem.clear'),
-                prefix });
+                context: 'CacheSystem.clear');
+                prefix };
             return 0;
     
     /**
@@ -258,7 +258,7 @@ class CacheSystem { private cache: Map<string, CacheEntry>,
             return true;} catch (error) { ErrorHandler.handleError(error, {)'
                 context: 'CacheSystem.updateExpiry),'
                 key),
-                ttl });
+                ttl };
             return false;
     
     /**
@@ -274,16 +274,16 @@ class CacheSystem { private cache: Map<string, CacheEntry>,
             
             // 有効期限チェック
             if (entry.expiresAt < Date.now() {
-                this.cache.delete(key),
-                this.accessHistory.delete(key),
+                this.cache.delete(key);
+                this.accessHistory.delete(key);
                 this.stats.expirations++,
                 this.stats.size-- }
                 return false;
             ';'
 
             return true;} catch (error) { ErrorHandler.handleError(error, {)'
-                context: 'CacheSystem.has'),
-                key });
+                context: 'CacheSystem.has');
+                key };
             return false;
     
     /**
@@ -295,15 +295,14 @@ class CacheSystem { private cache: Map<string, CacheEntry>,
         
         return {  };
             ...this.stats }
-            hitRate: `${hitRate.toFixed(2})%`;
+            hitRate: `${hitRate.toFixed(2}%`;
             memoryUsage: this._estimateMemoryUsage();
         }
     
     /**
      * キャッシュ設定を更新
      */
-    updateConfig(newConfig: Partial<CacheConfig>): void { Object.assign(this.config, newConfig),
-        
+    updateConfig(newConfig: Partial<CacheConfig>): void { Object.assign(this.config, newConfig);
         // クリーンアップタイマーを再設定
         if (newConfig.cleanupInterval) {
             this._stopCleanupTimer() }
@@ -315,13 +314,12 @@ class CacheSystem { private cache: Map<string, CacheEntry>,
      */
     cleanup(): number { try {
             let count = 0,
-            const now = Date.now(),
-            
+            const now = Date.now();
             // 期限切れエントリを削除
             for(const [key, entry] of this.cache.entries() {
                 if (entry.expiresAt < now) {
-                    this.cache.delete(key),
-                    this.accessHistory.delete(key),
+                    this.cache.delete(key);
+                    this.accessHistory.delete(key);
                     count++ }
                     this.stats.expirations++; }
 }
@@ -333,7 +331,7 @@ class CacheSystem { private cache: Map<string, CacheEntry>,
 
             return count;} catch (error) { ErrorHandler.handleError(error, {)'
                 context: 'CacheSystem.cleanup'
-            });
+            };
             return 0;
     
     /**
@@ -345,7 +343,7 @@ class CacheSystem { private cache: Map<string, CacheEntry>,
             // 優先度に基づいて追い出し候補を選定
             const candidates: EntryWithPriority[] = Array.from(this.cache.entries().map(([key, entry]) => {  }
                 const priority = this.config.priorityFunction(entry); }
-                return { key, priority });
+                return { key, priority };
             
             // 優先度の低い順にソート
             candidates.sort((a, b) => a.priority - b.priority);
@@ -354,16 +352,16 @@ class CacheSystem { private cache: Map<string, CacheEntry>,
             const toEvict = candidates.slice(0, count);
             
             for (const { key ) of toEvict) {
-                this.cache.delete(key),
-                this.accessHistory.delete(key),
+                this.cache.delete(key);
+                this.accessHistory.delete(key);
                 this.stats.evictions++ }
             
             this.stats.size -= toEvict.length;
             if (this.stats.size < 0) this.stats.size = 0;
 
         } catch (error) { ErrorHandler.handleError(error, {)'
-                context: 'CacheSystem._evictItems'),
-                count });
+                context: 'CacheSystem._evictItems');
+                count };
         }
     }
     
@@ -399,8 +397,7 @@ class CacheSystem { private cache: Map<string, CacheEntry>,
                 totalSize += key.length * 2, // 文字列は約2バイト/文字
                 
                 // エントリのサイズ
-                totalSize += this._estimateObjectSize(entry.value),
-                
+                totalSize += this._estimateObjectSize(entry.value);
                 // メタデータのサイズ（固定値として推定）
             }
                 totalSize += 40; // 数値4つ + オブジェクトオーバーヘッド }
@@ -413,7 +410,7 @@ class CacheSystem { private cache: Map<string, CacheEntry>,
             totalSize += 48; // 数値6つ + オブジェクトオーバーヘッド
             ';'
 
-            return `${Math.round(totalSize / 1024}) KB`;} catch (error) {
+            return `${Math.round(totalSize / 1024} KB`;} catch (error) {
             return 'unknown',
     
     /**
@@ -438,7 +435,7 @@ class CacheSystem { private cache: Map<string, CacheEntry>,
                 let size = 16, // 配列オーバーヘッド
                 
                 // 最初の10要素のみ計算（パフォーマンス対策）
-                const sampleSize = Math.min(obj.length, 10),
+                const sampleSize = Math.min(obj.length, 10);
                 if (sampleSize > 0) {
                     let totalSampleSize = 0,
                     for (let, i = 0, i < sampleSize, i++) {
@@ -457,9 +454,8 @@ class CacheSystem { private cache: Map<string, CacheEntry>,
                 let size = 32, // オブジェクトオーバーヘッド
                 
                 // 最初の10プロパティのみ計算（パフォーマンス対策）
-                const keys = Object.keys(obj),
-                const sampleSize = Math.min(keys.length, 10),
-                
+                const keys = Object.keys(obj);
+                const sampleSize = Math.min(keys.length, 10);
                 if (sampleSize > 0) {
                     let totalSampleSize = 0,
                     for (let, i = 0, i < sampleSize, i++) {
@@ -494,7 +490,7 @@ class CacheSystem { private cache: Map<string, CacheEntry>,
      * クリーンアップタイマーを停止
      */
     private _stopCleanupTimer(): void { if (this.cleanupTimer) {
-            clearInterval(this.cleanupTimer),
+            clearInterval(this.cleanupTimer);
             this.cleanupTimer = null }
     }
     
@@ -513,7 +509,7 @@ class CacheSystem { private cache: Map<string, CacheEntry>,
      * メモリ監視タイマーを停止
      */
     private _stopMemoryMonitoring(): void { if (this.memoryMonitorTimer) {
-            clearInterval(this.memoryMonitorTimer),
+            clearInterval(this.memoryMonitorTimer);
             this.memoryMonitorTimer = null }
     }
     
@@ -522,13 +518,11 @@ class CacheSystem { private cache: Map<string, CacheEntry>,
      */
     private _performMemoryOptimization(): void { try {
             const beforeSize = this.cache.size;
-            const beforeMemory = this._estimateMemoryUsage(),
-            
+            const beforeMemory = this._estimateMemoryUsage();
             // 1. 期限切れエントリの削除
-            const expiredCount = this._cleanupExpiredEntries(),
-            
+            const expiredCount = this._cleanupExpiredEntries();
             // 2. 低優先度エントリの削除（メモリ使用量が高い場合）
-            const memoryKB = parseInt(beforeMemory),
+            const memoryKB = parseInt(beforeMemory);
             if (memoryKB > 5000) {
                 // 5MB以上の場合
             }
@@ -547,21 +541,21 @@ class CacheSystem { private cache: Map<string, CacheEntry>,
             if (beforeSize !== afterSize) {
     
 }
-                console.log(`[CacheSystem] Memory optimization: ${beforeSize} -> ${afterSize} entries, ${beforeMemory} -> ${afterMemory}`});
+                console.log(`[CacheSystem] Memory optimization: ${beforeSize} -> ${afterSize} entries, ${beforeMemory} -> ${afterMemory}`};
             } catch (error) { console.error('[CacheSystem] Memory optimization error:', error }
     }
     
     /**
      * 期限切れエントリをクリーンアップ
      */
-    private _cleanupExpiredEntries(): number { const now = Date.now(),
+    private _cleanupExpiredEntries(): number { const now = Date.now();
         let count = 0,
         
         for(const [key, entry] of this.cache.entries() {
         
             if (entry.expiresAt < now) {
-                this.cache.delete(key),
-                this.accessHistory.delete(key),
+                this.cache.delete(key);
+                this.accessHistory.delete(key);
                 count++ }
                 this.stats.expirations++; }
 }
@@ -580,7 +574,7 @@ class CacheSystem { private cache: Map<string, CacheEntry>,
         // 優先度スコアを計算してソート
         const entries: EntryWithPriority[] = Array.from(this.cache.entries().map(([key, entry]) => {  }
             const priority = this.config.priorityFunction(entry); }
-            return { key, priority });
+            return { key, priority };
         
         // 優先度の低い順にソート
         entries.sort((a, b) => a.priority - b.priority);
@@ -591,8 +585,8 @@ class CacheSystem { private cache: Map<string, CacheEntry>,
         
         for (const { key ) of toDelete) {
             if (this.cache.has(key) {
-                this.cache.delete(key),
-                this.accessHistory.delete(key),
+                this.cache.delete(key);
+                this.accessHistory.delete(key);
                 deletedCount++ }
                 this.stats.evictions++; }
 }
@@ -606,7 +600,7 @@ class CacheSystem { private cache: Map<string, CacheEntry>,
     /**
      * 古いアクセス履歴をクリーンアップ
      */
-    private _cleanupOldAccessHistory(): void { const now = Date.now(),
+    private _cleanupOldAccessHistory(): void { const now = Date.now();
         const maxAge = 3600000, // 1時間
         const keysToDelete: string[] = [],
         
@@ -629,8 +623,7 @@ class CacheSystem { private cache: Map<string, CacheEntry>,
         
         for(const [key, entry] of this.cache.entries() {
         
-            const valueStr = JSON.stringify(entry.value),
-            
+            const valueStr = JSON.stringify(entry.value);
             if (!valueMap.has(valueStr) {
     
 }
@@ -665,7 +658,7 @@ class CacheSystem { private cache: Map<string, CacheEntry>,
             recommendations: [],
             memoryUsage: this._estimateMemoryUsage(
             cacheSize: this.cache.size,
-    accessHistorySize: this.accessHistory.size }))
+    accessHistorySize: this.accessHistory.size })
         );
         const now = Date.now();
         
@@ -745,7 +738,7 @@ class CacheSystem { private cache: Map<string, CacheEntry>,
     fixMemoryLeaks(): MemoryFixResult { const beforeStats: MemoryStats = {
             cacheSize: this.cache.size,
             memoryUsage: this._estimateMemoryUsage(
-    accessHistorySize: this.accessHistory.size }))
+    accessHistorySize: this.accessHistory.size })
         // 1. 期限切れエントリの削除)
         const expiredCount = this._cleanupExpiredEntries();
         
@@ -766,10 +759,10 @@ class CacheSystem { private cache: Map<string, CacheEntry>,
     accessHistorySize: this.accessHistory.size  }
         );
         return { before: beforeStats)
-           , after: afterStats,;
+           , after: afterStats,
             expiredEntriesRemoved: expiredCount) }
-            memoryFreed: `${parseInt(beforeStats.memoryUsage} - parseInt(afterStats.memoryUsage}) KB`;
-            success: true;
+            memoryFreed: `${parseInt(beforeStats.memoryUsage} - parseInt(afterStats.memoryUsage} KB`,
+            success: true,
         } }
     
     /**
@@ -786,7 +779,7 @@ class CacheSystem { private cache: Map<string, CacheEntry>,
             return true;
 
         } catch (error') {'
-            console.warn('[CacheSystem] Could not force garbage collection:', error),
+            console.warn('[CacheSystem] Could not force garbage collection:', error);
             return false,
     
     /**
@@ -797,7 +790,7 @@ class CacheSystem { private cache: Map<string, CacheEntry>,
         
         for(const [key, entry] of this.cache.entries() {
         
-            const estimatedSize = this._estimateObjectSize(entry.value),
+            const estimatedSize = this._estimateObjectSize(entry.value);
             if (estimatedSize > 10000) { // 10KB以上
         
         }
@@ -811,8 +804,8 @@ class CacheSystem { private cache: Map<string, CacheEntry>,
         const toDelete = largeEntries.slice(0, Math.ceil(largeEntries.length * 0.1);
         
         for (const { key ) of toDelete) {
-            this.cache.delete(key),
-            this.accessHistory.delete(key),
+            this.cache.delete(key);
+            this.accessHistory.delete(key);
             this.stats.evictions++ }
         
         this.stats.size = this.cache.size;
@@ -836,7 +829,7 @@ class CacheSystem { private cache: Map<string, CacheEntry>,
                 metadata: '0 KB'
             };
             topLargestEntries: [],
-    recommendations: [];
+    recommendations: [],
         },
         
         // エントリサイズの分析
@@ -845,7 +838,7 @@ class CacheSystem { private cache: Map<string, CacheEntry>,
         
         for(const [key, entry] of this.cache.entries() {
         
-            const size = this._estimateObjectSize(entry),
+            const size = this._estimateObjectSize(entry);
             entrySizes.push({ key, size ) }
             totalCacheSize += size; }
         }
@@ -854,12 +847,12 @@ class CacheSystem { private cache: Map<string, CacheEntry>,
         entrySizes.sort((a, b) => b.size - a.size);
         report.topLargestEntries = entrySizes.slice(0, 10).map(({ key, size ): LargestEntry => ({''
             key: key.length > 50 ? key.substring(0, 50) + '...' : key, 
-            size: `${Math.round(size / 1024 }) KB`
-        });
+            size: `${Math.round(size / 1024 } KB`
+        };
         // 詳細な内訳
-        report.breakdown.cacheEntries = `${Math.round(totalCacheSize / 1024}) KB`;
-        report.breakdown.accessHistory = `${Math.round(this.accessHistory.size * 16 / 1024}) KB`;
-        report.breakdown.metadata = `${Math.round(48 / 1024}) KB`;
+        report.breakdown.cacheEntries = `${Math.round(totalCacheSize / 1024} KB`;
+        report.breakdown.accessHistory = `${Math.round(this.accessHistory.size * 16 / 1024} KB`;
+        report.breakdown.metadata = `${Math.round(48 / 1024} KB`;
         
         // 推奨事項
         const memoryKB = parseInt(report.overview.totalMemoryUsage);
@@ -888,20 +881,18 @@ class CacheSystem { private cache: Map<string, CacheEntry>,
      * リソースを破棄（メモリリーク防止強化版）
      */
     destroy(): void { // タイマーを停止
-        this._stopCleanupTimer(),
-        this._stopMemoryMonitoring(),
-        
+        this._stopCleanupTimer();
+        this._stopMemoryMonitoring();
         // キャッシュを段階的にクリア（大量データの場合のメモリ負荷軽減）
         const batchSize = 100,
-        const keys = Array.from(this.cache.keys(),
-        
+        const keys = Array.from(this.cache.keys();
         for(let, i = 0, i < keys.length, i += batchSize) {
         
-            const batch = keys.slice(i, i + batchSize),
+            const batch = keys.slice(i, i + batchSize);
             batch.forEach(key => { ) }
                 this.cache.delete(key); }
                 this.accessHistory.delete(key); }
-            });
+            };
             
             // 大量データの場合は少し待機
             if (keys.length > 1000 && i % (batchSize * 10) === 0) {

@@ -3,20 +3,21 @@ import { getErrorHandler  } from '../utils/ErrorHandler';
 /**
  * 色覚サポート設定インターフェース
  */
-interface ColorBlindnessSupportConfig { enabled: boolean,
+interface ColorBlindnessSupportConfig { enabled: boolean;
 
     colorBlindnessType: ColorBlindnessType;
     severity: 'mild' | 'moderate' | 'complete';
     enhancements: {
-        pattern,s: boolean,
-        shapes: boolean,
-        textures: boolean,
-        labels: boolean,
-        borders: boolean,
-    animations: boolean,;
-    simulation: { enabled: boolean,
-    type: ColorBlindnessType,
-
+        pattern,s: boolean;
+        shapes: boolean;
+        textures: boolean;
+        labels: boolean;
+        borders: boolean;
+    animations: boolean;
+    simulation: { enabled: boolean;
+    type: ColorBlindnessType;
+    type: ColorBlindnessType;
+        };
 /**
  * 色覚タイプ'
  */''
@@ -25,42 +26,45 @@ type ColorBlindnessType = 'none' | 'protanopia' | 'deuteranopia' | 'tritanopia' 
 /**
  * 色覚タイプ情報インターフェース
  */
-interface ColorBlindnessTypeInfo { name: string,
+interface ColorBlindnessTypeInfo { name: string;
     description: string;
     affectedColors: string[];
     prevalence: number;
     matrix: number[][];
-
+    matrix: number[][];
+        };
 /**
  * ビジュアルパターン情報インターフェース
  */
-interface VisualPatternInfo { name: string,
+interface VisualPatternInfo { name: string;
     svg: string;
     description: string;
-
+    description: string;
+        };
 /**
  * ゲーム要素マッピングインターフェース
  */
-interface GameElementMapping { pattern: string,
+interface GameElementMapping { pattern: string;
     shape: string;
     color: string;
-
+    color: string;
+        };
 /**
  * 要素拡張情報インターフェース
  */
-interface ElementEnhancement { element: HTMLElement,
+interface ElementEnhancement { element: HTMLElement;
     type: string;
     originalStyle: {
-        backgroundColo,r: string,
-        border: string,
-    backgroundImage: string,;
-    appliedEnhancements: string[],
+        backgroundColo,r: string;
+        border: string;
+    backgroundImage: string;
+    appliedEnhancements: string[];
 }
 
 /**
  * ユーザー設定インターフェース
  */
-interface UserPreferences { colorBlindnessType: ColorBlindnessType,
+interface UserPreferences { colorBlindnessType: ColorBlindnessType;
     preferredPatterns: string[];
     preferredShapes: string[];
     patternIntensity: 'low' | 'medium' | 'high';
@@ -72,7 +76,7 @@ interface UserPreferences { colorBlindnessType: ColorBlindnessType,
 /**
  * 統計情報インターフェース
  */
-interface ColorBlindnessStats { elementsEnhanced: number,
+interface ColorBlindnessStats { elementsEnhanced: number;
     patternsApplied: number;
     shapesApplied: number;
     labelsAdded: number;
@@ -108,65 +112,65 @@ export class ColorBlindnessSupport {
         // 色覚支援設定
         this.config = { : undefined
             enabled: false;
-            colorBlindnessType: 'none',
-            severity: 'complete',
+            colorBlindnessType: 'none';
+            severity: 'complete';
     enhancements: {
-                patterns: true,
-                shapes: true,
-                textures: true,
-                labels: true,
-    borders: true,
-                animations: true,;
+                patterns: true;
+                shapes: true;
+                textures: true;
+                labels: true;
+    borders: true;
+                animations: true;
             simulation: { enabled: false,''
                 type: 'protanopia'
             }
         };
         // 色覚タイプ定義
         this.colorBlindnessTypes = { none: {''
-                name: '通常視覚',
-                description: '色覚支援なし',
-                affectedColors: [],
-                prevalence: 0,
+                name: '通常視覚';
+                description: '色覚支援なし';
+                affectedColors: [];
+                prevalence: 0;
     matrix: []  };
             protanopia: { ''
-                name: '1型色覚（プロタノピア）',
-                description: '赤色の知覚が困難',
+                name: '1型色覚（プロタノピア）';
+                description: '赤色の知覚が困難';
                 affectedColors: ['red', 'green'];
-                prevalence: 0.01,
-    matrix: [,
+                prevalence: 0.01;
+    matrix: [;
                     [0.567, 0.433, 0],
                     [0.558, 0.442, 0],
                     [0, 0.242, 0.758],
                 ] },
 
             deuteranopia: { ''
-                name: '2型色覚（デューテラノピア）',
-                description: '緑色の知覚が困難',
+                name: '2型色覚（デューテラノピア）';
+                description: '緑色の知覚が困難';
                 affectedColors: ['red', 'green'];
-                prevalence: 0.01,
-    matrix: [,
+                prevalence: 0.01;
+    matrix: [;
                     [0.625, 0.375, 0],
                     [0.7, 0.3, 0],
                     [0, 0.3, 0.7],
                 ] },
 
             tritanopia: { ''
-                name: '3型色覚（トリタノピア）',
-                description: '青色の知覚が困難',
+                name: '3型色覚（トリタノピア）';
+                description: '青色の知覚が困難';
                 affectedColors: ['blue', 'yellow'];
-                prevalence: 0.0001,
-    matrix: [,
+                prevalence: 0.0001;
+    matrix: [;
                     [0.95, 0.05, 0],
                     [0, 0.433, 0.567],
                     [0, 0.475, 0.525],
                 ] },
 
             achromatopsia: { ''
-                name: '全色盲（アクロマトプシア）',
-                description: 'すべての色の知覚が困難',
-                affectedColors: ['all'],
-                prevalence: 0.00003,
-    matrix: [,
+                name: '全色盲（アクロマトプシア）';
+                description: 'すべての色の知覚が困難';
+                affectedColors: ['all'];
+                prevalence: 0.00003;
+    matrix: [;
                     [0.299, 0.587, 0.114],
                     [0.299, 0.587, 0.114],
                     [0.299, 0.587, 0.114],
@@ -176,19 +180,19 @@ export class ColorBlindnessSupport {
         // パターン定義
         this.visualPatterns = new Map([''
             ['dots', { ''
-                name: 'ドット',
+                name: 'ドット';
                 svg: 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="8" height="8"><circle cx="4" cy="4" r="2" fill="currentColor"/></svg>',]';'
                 description: '円形のドットパターン'
             }]'
             }],''
             ['stripes-horizontal', { ''
-                name: '横縞',
+                name: '横縞';
                 svg: 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="8" height="8"><rect x="0" y="0" width="8" height="2" fill="currentColor"/><rect x="0" y="4" width="8" height="2" fill="currentColor"/></svg>',]','
                 description: '水平方向の縞模様'
             }]'
             }],''
             ['stripes-vertical', { ''
-                name: '縦縞',
+                name: '縦縞';
                 svg: 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="8" height="8"><rect x="0" y="0" width="2" height="8" fill="currentColor"/><rect x="4" y="0" width="2" height="8" fill="currentColor"/></svg>',]','
                 description: '垂直方向の縞模様'
             }]'
@@ -293,7 +297,7 @@ export class ColorBlindnessSupport {
             enableBorders: true','
     enableAnimations: false,
             customMappings: new Map()','
-        console.log('ColorBlindnessSupport, initialized'),
+        console.log('ColorBlindnessSupport, initialized');
         this.initialize() }'
     
     /**
@@ -301,16 +305,13 @@ export class ColorBlindnessSupport {
      */
     private initialize(): void { try {
             // ユーザー設定の読み込み
-            this.loadUserPreferences(),
-            
+            this.loadUserPreferences();
             // 動的スタイルシートの作成
-            this.createDynamicStyleSheet(),
-            
+            this.createDynamicStyleSheet();
             // パターンの生成
-            this.generatePatterns(),
-            
+            this.generatePatterns();
             // イベントリスナーの設定
-            this.setupEventListeners(),
+            this.setupEventListeners();
             // 自動検出の実行
             this.performAutoDetection()','
             console.log('ColorBlindnessSupport, initialized successfully') }'
@@ -327,9 +328,8 @@ export class ColorBlindnessSupport {
     private loadUserPreferences()';'
             const saved = localStorage.getItem('colorBlindnessSupport_preferences);'
             if (saved) {
-                const preferences = JSON.parse(saved),
-                Object.assign(this.userPreferences, preferences),
-                
+                const preferences = JSON.parse(saved);
+                Object.assign(this.userPreferences, preferences);
                 // カスタムマッピングの復元
                 if (preferences.customMappings) {
             }
@@ -351,7 +351,7 @@ export class ColorBlindnessSupport {
     private saveUserPreferences(): void { try {
             const preferences = {'
                 ...this.userPreferences,
-                customMappings: Array.from(this.userPreferences.customMappings.entries()  };
+                customMappings: Array.from(this.userPreferences.customMappings.entries()  },
 
             localStorage.setItem('colorBlindnessSupport_preferences);'
 
@@ -369,12 +369,12 @@ export class ColorBlindnessSupport {
             .color-blind-support { --pattern-opacity: 0.7,
 
                 --border-width: 2px,
-                --label-bg: rgba(0, 0, 0, 0.8),
-                --label-color: white;
+                --label-bg: rgba(0, 0, 0, 0.8);
+                --label-color: white,
             
             /* パターン適用要素 */
             .cb-pattern { position: relative,
-                background-blend-mode: overlay;
+                background-blend-mode: overlay,
             ';'
 
             .cb-pattern::before { ''
@@ -384,7 +384,7 @@ export class ColorBlindnessSupport {
                 left: 0,
                 right: 0,
                 bottom: 0,
-    opacity: var(--pattern-opacity),
+    opacity: var(--pattern-opacity);
                 pointer-events: none,
                 z-index: 1 }
             
@@ -392,22 +392,22 @@ export class ColorBlindnessSupport {
             .cb-shape-enhanced { position: relative,
                 border-width: var(--border-width,
                 border-style: solid,
-                border-color: currentColor;
+                border-color: currentColor,
             
             /* ラベル */
             .cb-label { position: absolute,
                 top: -8px,
                 left: 50%,
-                transform: translateX(-50%),
+                transform: translateX(-50%);
                 background: var(--label-bg,
-    color: var(--label-color),
+    color: var(--label-color);
                 font-size: 10px,
                 font-weight: bold,
                 padding: 2px 4px,
                 border-radius: 2px,
                 white-space: nowrap,
                 z-index: 10,
-                pointer-events: none;
+                pointer-events: none,
             
             /* アニメーション効果 */
             .cb-animated { animation: colorBlindPulse 2s infinite ease-in-out }
@@ -454,7 +454,7 @@ export class ColorBlindnessSupport {
         const rule = `;
             .${className}::before { }'
 
-                background-image: url("${pattern.svg"}"});"
+                background-image: url("${pattern.svg"}"};"
                 background-repeat: repeat,
                 background-size: 8px 8px }
         `;
@@ -466,7 +466,7 @@ export class ColorBlindnessSupport {
      * イベントリスナーの設定
      */
     private setupEventListeners(): void { // DOM変更の監視
-        this.observeDOM(),
+        this.observeDOM();
         ","
         // ゲーム状態変更の監視""
         if (this.gameEngine) {", " }"
@@ -475,7 +475,7 @@ export class ColorBlindnessSupport {
 
             }');'
 
-            this.gameEngine.addEventListener?.('sceneChanged', (event: any) => { this.enhanceSceneElements(event.newScene) });
+            this.gameEngine.addEventListener?.('sceneChanged', (event: any) => { this.enhanceSceneElements(event.newScene) }),
         }
     }
     
@@ -491,10 +491,10 @@ export class ColorBlindnessSupport {
                 }
                         if (node.nodeType === Node.ELEMENT_NODE) { }
                             this.analyzeAndEnhanceElement(node, as HTMLElement); }
-});
+};
                 }
-            });
-        });
+            };
+        };
         
         this.domObserver.observe(document.body, { childList: true)
            , subtree: true,
@@ -502,11 +502,10 @@ export class ColorBlindnessSupport {
     /**
      * 自動検出の実行
      */
-    private performAutoDetection(): void { const startTime = performance.now(),
-        
+    private performAutoDetection(): void { const startTime = performance.now();
         try {
             // システム設定の確認
-            this.checkSystemSettings(),
+            this.checkSystemSettings();
             ' }'
 
         } catch (error) { console.warn('Auto-detection failed:', error } finally { this.stats.detectionTime = performance.now() - startTime }
@@ -561,8 +560,7 @@ export class ColorBlindnessSupport {
      * 要素の強化
      */
     private enhanceElement(element: HTMLElement, elementType: string): void { const mapping = this.gameElementMapping.get(elementType) || 
-                       this.userPreferences.customMappings.get(elementType),
-        
+                       this.userPreferences.customMappings.get(elementType);
         if (!mapping) {
     
 }
@@ -574,14 +572,14 @@ export class ColorBlindnessSupport {
     originalStyle: {
                 backgroundColor: element.style.backgroundColor,
                 border: element.style.border,
-    backgroundImage: element.style.backgroundImage  };
+    backgroundImage: element.style.backgroundImage  },
             appliedEnhancements: [],
         },
         
         // パターンの適用
         if (this.config.enhancements.patterns && mapping.pattern) {
 
-            this.applyPattern(element, mapping.pattern),
+            this.applyPattern(element, mapping.pattern);
             enhancement.appliedEnhancements.push('pattern) }'
             this.stats.patternsApplied++; }
         }
@@ -589,7 +587,7 @@ export class ColorBlindnessSupport {
         // 形状の適用
         if (this.config.enhancements.shapes && mapping.shape) {
 
-            this.applyShape(element, mapping.shape),
+            this.applyShape(element, mapping.shape);
             enhancement.appliedEnhancements.push('shape) }'
             this.stats.shapesApplied++; }
         }
@@ -605,7 +603,7 @@ export class ColorBlindnessSupport {
         // ラベルの適用
         if (this.config.enhancements.labels && this.userPreferences.enableLabels) {
 
-            this.applyLabel(element, elementType),
+            this.applyLabel(element, elementType);
             enhancement.appliedEnhancements.push('label) }'
             this.stats.labelsAdded++; }
         }
@@ -627,19 +625,19 @@ export class ColorBlindnessSupport {
      */''
     private applyPattern(element: HTMLElement, patternName: string): void { ''
         element.classList.add('cb-pattern', `cb-pattern-${patternName}`}
-        this.patternElements.add(element});
+        this.patternElements.add(element};
     }
     
     /**
      * 形状の適用
      */'
-    private applyShape(element: HTMLElement, shapeName: string): void { const shapeEnhancement = this.shapeEnhancements.get(shapeName),
+    private applyShape(element: HTMLElement, shapeName: string): void { const shapeEnhancement = this.shapeEnhancements.get(shapeName);
         if (shapeEnhancement) {
 
             element.classList.add('cb-shape-enhanced) }'
             Object.entries(shapeEnhancement).forEach(([property, value]) => {  }
                 element.style.setProperty(property, value); }
-            });
+            };
         }
     }
     
@@ -656,9 +654,9 @@ export class ColorBlindnessSupport {
      * ラベルの適用'
      */''
     private applyLabel(element: HTMLElement, elementType: string): void { ''
-        const label = document.createElement('div'),
+        const label = document.createElement('div');
         label.className = 'cb-label',
-        label.textContent = this.getLabelText(elementType),
+        label.textContent = this.getLabelText(elementType);
         label.setAttribute('aria-hidden', 'true',
         ','
         // 相対位置指定が必要
@@ -716,7 +714,7 @@ export class ColorBlindnessSupport {
         const elements = scene.container?.querySelectorAll('*' || [], : undefined'
         elements.forEach((element: HTMLElement) => {  
             this.analyzeAndEnhanceElement(element) }
-        });
+        };
     }
     
     /**
@@ -756,7 +754,7 @@ export class ColorBlindnessSupport {
         this.config.simulation.enabled = true;
         this.config.simulation.type = type
          }
-        console.log(`Color, blindness simulation, applied: ${cbType.name}`});
+        console.log(`Color, blindness simulation, applied: ${cbType.name}`};
     }
     
     /**
@@ -792,7 +790,7 @@ export class ColorBlindnessSupport {
         this.enhanceAllElements();
         
         this.saveUserPreferences();
-        console.log(`Color, blindness support, enabled: ${this.colorBlindnessTypes[colorBlindnessType].name}`});
+        console.log(`Color, blindness support, enabled: ${this.colorBlindnessTypes[colorBlindnessType].name}`};
     }
     
     /**
@@ -821,7 +819,7 @@ export class ColorBlindnessSupport {
         const elements = document.querySelectorAll('*);'
         elements.forEach(element => {  ) }
             this.analyzeAndEnhanceElement(element, as HTMLElement); }
-        });
+        };
     }
     
     /**
@@ -835,7 +833,7 @@ export class ColorBlindnessSupport {
             // パターンクラスを削除
         }
             for (const patternName of this.visualPatterns.keys() { }
-                element.classList.remove(`cb-pattern-${patternName}`});
+                element.classList.remove(`cb-pattern-${patternName}`};
             }
             
             // 元のスタイルを復元
@@ -855,9 +853,9 @@ export class ColorBlindnessSupport {
     /**
      * カスタムマッピングの追加
      */
-    addCustomMapping(elementType: string, mapping: GameElementMapping): void { this.userPreferences.customMappings.set(elementType, mapping),
+    addCustomMapping(elementType: string, mapping: GameElementMapping): void { this.userPreferences.customMappings.set(elementType, mapping);
         this.saveUserPreferences() }
-        console.log(`Custom mapping added for ${elementType}:`, mapping});
+        console.log(`Custom mapping added for ${elementType}:`, mapping};
     }
     
     /**
@@ -866,7 +864,7 @@ export class ColorBlindnessSupport {
     getAvailableTypes(): Array<{ key: string,
         name: string,
         description: string,
-    prevalence: number;
+    prevalence: number,
 
     }> { return Object.entries(this.colorBlindnessTypes)
             .filter(([key]) => key !== 'none'),
@@ -875,7 +873,7 @@ export class ColorBlindnessSupport {
                 name: type.name,
                 description: type.description,
     prevalence: type.prevalence  }
-            });
+            };
     }
     
     /**
@@ -887,7 +885,7 @@ export class ColorBlindnessSupport {
             key,
             name: pattern.name,
     description: pattern.description  }
-        });
+        };
     }
     
     /**
@@ -912,7 +910,7 @@ export class ColorBlindnessSupport {
             enhancedElements: this.enhancedElements.size,
             patternElements: this.patternElements.size,
             availablePatterns: this.visualPatterns.size,
-    availableShapes: this.shapeEnhancements.size };
+    availableShapes: this.shapeEnhancements.size },
             simulation: this.config.simulation 
     }
     
@@ -921,17 +919,17 @@ export class ColorBlindnessSupport {
      */
     generateReport(): any { const sessionDuration = Date.now() - this.stats.sessionStart,
         
-        return { timestamp: new Date().toISOString(),
+        return { timestamp: new Date().toISOString();
             configuration: {
                 enabled: this.config.enabled,
-    type: this.config.colorBlindnessType };
+    type: this.config.colorBlindnessType },
                 enhancements: this.config.enhancements 
     };
             statistics: { ...this.stats,
                 sessionDuration,
                 enhancementRate: this.stats.elementsEnhanced / (sessionDuration / 1000  }
             userPreferences: { ...this.userPreferences,
-                customMappings: Array.from(this.userPreferences.customMappings.entries( };
+                customMappings: Array.from(this.userPreferences.customMappings.entries( },
             elements: { enhanced: this.enhancedElements.size,
     patterns: this.patternElements.size 
     }

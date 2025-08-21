@@ -17,24 +17,24 @@ export interface PriorityLevel {;
     INFORMATIONAL: 'informational'
             }
 export interface InsightConfig { thresholds: {
-        significant_chang,e: number,
-        concerning_decline: number,
-        excellent_improvement: number,
-        volatility_warning: number,
-    streak_achievement: number,;
-    patterns: { min_data_points: number,
-        trend_consistency: number,
-        cycle_detection_window: number,
-    outlier_threshold: number,;
-    recommendations: { max_recommendations: number,
-        action_confidence_threshold: number,
+        significant_chang,e: number;
+        concerning_decline: number;
+        excellent_improvement: number;
+        volatility_warning: number;
+    streak_achievement: number;
+    patterns: { min_data_points: number;
+        trend_consistency: number;
+        cycle_detection_window: number;
+    outlier_threshold: number;
+    recommendations: { max_recommendations: number;
+        action_confidence_threshold: number;
     priority_scoring_weights: {
-            impact: number,
-            urgency: number,
-    feasibility: number,;
+            impact: number;
+            urgency: number;
+    feasibility: number;
 }
 
-export interface Insight { id: string,
+export interface Insight { id: string;
     type: string;
     title: string;
     description: string;
@@ -42,7 +42,7 @@ export interface Insight { id: string,
     timestamp: number;
     context: Record<string, any>;
     confidence: number;
-export interface Recommendation { id: string,
+export interface Recommendation { id: string;
     type: string;
     title: string;
     description: string;
@@ -59,18 +59,19 @@ export interface StatisticsData { basic?: any,
     progress?: any;
     timeSeries?: any;
     session?: any;
-export interface InsightResult { generationId: string,
+export interface InsightResult { generationId: string;
     timestamp: number;
     dataSource: string;
     insights: Insight[];
     recommendations: Recommendation[];
     summary: any;
     metadata: {
-        totalInsight,s: number,
-        criticalInsights: number,
-        dataQuality: any,
-    analysisConfidence: number,
-
+        totalInsight,s: number;
+        criticalInsights: number;
+        dataQuality: any;
+    analysisConfidence: number;
+    analysisConfidence: number;
+        };
 /**
  * 洞察生成クラス
  * 統計データから意味のある洞察、推奨事項、アクションアイテムを生成する
@@ -102,7 +103,7 @@ export class InsightGenerator {
             };
         this.insightConfigs = { // 洞察生成の閾値
             thresholds: {
-                significant_change: 15;      // 15%以上の変化で有意な変化;
+                significant_change: 15,      // 15%以上の変化で有意な変化;
                 concerning_decline: -10,     // 10%以上の低下で警告;
                 excellent_improvement: 25,   // 25%以上の向上で優秀;
                 volatility_warning: 30,      // 変動係数30%以上で不安定;
@@ -121,7 +122,7 @@ export class InsightGenerator {
                     impact: 0.4,
                     urgency: 0.3,
     feasibility: 0.3 
-    }))
+    })
         // 洞察テンプレート
         this.insightTemplates = this.initializeInsightTemplates();
     }
@@ -169,7 +170,7 @@ export class InsightGenerator {
            , metadata: {
                 totalInsights: filteredInsights.length,
                 criticalInsights: filteredInsights.filter(i => i.priority === this.priorityLevels.CRITICAL).length,
-                dataQuality: this.assessDataQuality(statisticsData) };
+                dataQuality: this.assessDataQuality(statisticsData) },
                 analysisConfidence: this.calculateAnalysisConfidence(statisticsData, filteredInsights); }
         }
     
@@ -229,7 +230,7 @@ export class InsightGenerator {
         if (!bubbleStats) return insights,
         
         // 精度の分析
-        const accuracy = parseFloat(bubbleStats.accuracy),
+        const accuracy = parseFloat(bubbleStats.accuracy);
         if (accuracy > 85) {
             insights.push(this.createInsight()','
                 this.insightTypes.ACHIEVEMENT,') }'
@@ -357,7 +358,7 @@ export class InsightGenerator {
         if (!healthStats) return insights,
         
         // 生存率の分析
-        const survivalRate = parseFloat(healthStats.survivalRate),
+        const survivalRate = parseFloat(healthStats.survivalRate);
         if (survivalRate > 90) {
             insights.push(this.createInsight()','
                 this.insightTypes.ACHIEVEMENT,') }'
@@ -486,7 +487,7 @@ export class InsightGenerator {
         if (!progressStats) return insights,
         
         // AP効率の分析
-        const efficiency = parseFloat(progressStats.efficiency),
+        const efficiency = parseFloat(progressStats.efficiency);
         if (efficiency > 100) {
             insights.push(this.createInsight(','
                 this.insightTypes.PERFORMANCE }
@@ -556,7 +557,7 @@ export class InsightGenerator {
         
         // 精度とスコアの関係分析
         if (statisticsData.bubbles && statisticsData.basic) {
-            const accuracy = parseFloat(statisticsData.bubbles.accuracy),
+            const accuracy = parseFloat(statisticsData.bubbles.accuracy);
             const avgScore = statisticsData.basic.averageScore,
 
             if (accuracy > 80 && avgScore > 5000) {
@@ -598,13 +599,13 @@ export class InsightGenerator {
             if (insight.type === this.insightTypes.OPPORTUNITY || ),
                 insight.type === this.insightTypes.WARNING) {
                 
-                const recommendation = this.createRecommendationFromInsight(insight, statisticsData),
+                const recommendation = this.createRecommendationFromInsight(insight, statisticsData);
                 if (recommendation) { }
                     recommendations.push(recommendation); }
-});
+};
         
         // 一般的な推奨事項
-        if (statisticsData.bubbles && parseFloat(statisticsData.bubbles.accuracy) < 70) { recommendations.push({),
+        if (statisticsData.bubbles && parseFloat(statisticsData.bubbles.accuracy) < 70) { recommendations.push({);
                 id: this.generateRecommendationId('',
     type: 'skill_improvement',
                 title: '精度向上のための練習',
@@ -612,12 +613,12 @@ export class InsightGenerator {
                 actionItems: [','
                     '5分間の精度重視プレイ',
                     '特定バブルタイプに特化した練習',]','
-                    '反応時間の測定と改善']),
+                    '反応時間の測定と改善']);
                 ]','
                 priority: this.priorityLevels.HIGH,
                 estimatedImpact: 'medium',
                 timeToImplement: 'short'
-            });
+            };
         }
         
         return recommendations.slice(0, this.insightConfigs.recommendations.max_recommendations);
@@ -633,8 +634,8 @@ export class InsightGenerator {
             description: description,
             priority: priority,
             timestamp: Date.now(
-    context: context,;
-            confidence: this.calculateInsightConfidence(context), 
+    context: context,
+            confidence: this.calculateInsightConfidence(context),
     }
 
     private createRecommendationFromInsight(insight: Insight, statisticsData: StatisticsData): Recommendation | null { // 簡略化された実装
@@ -649,14 +650,14 @@ export class InsightGenerator {
 
                 estimatedImpact: 'high',' };'
 
-                timeToImplement: 'short' }))
+                timeToImplement: 'short' })
         }
         return null;
     }
     );
     private filterAndPrioritizeInsights(insights: Insight[], config: InsightConfig): Insight[] { // 重複除去と優先順位付け
         const filtered = insights,
-            .filter(insight => insight.confidence > 0.5),
+            .filter(insight => insight.confidence > 0.5);
             .sort((a, b) => { 
                 const priorityOrder = {
                     [this.priorityLevels.CRITICAL]: 5,
@@ -666,7 +667,7 @@ export class InsightGenerator {
                     [this.priorityLevels.INFORMATIONAL]: 1 
     };
                 return priorityOrder[b.priority] - priorityOrder[a.priority];
-            });
+            };
         
         return filtered.slice(0, 20); // 最大20個の洞察
     }
@@ -675,26 +676,26 @@ export class InsightGenerator {
         const categories = {};
         const priorities = {};
         
-        insights.forEach(insight => {  ),
+        insights.forEach(insight => {  );
             categories[insight.type] = (categories[insight.type] || 0) + 1 }
             priorities[insight.priority] = (priorities[insight.priority] || 0) + 1; }
-        });
+        };
         
         return { totalInsights: insights.length,
             byCategory: categories,
             byPriority: priorities,
-    topInsight: insights[0] || null };
+    topInsight: insights[0] || null },
             keyTakeaways: this.extractKeyTakeaways(insights); 
     }
     
     private extractKeyTakeaways(insights: Insight[]): string[] { // 上位3つの重要な洞察をキーテイクアウェイとして抽出
         return insights,
-            .filter(insight => ),
+            .filter(insight => );
                 insight.priority === this.priorityLevels.CRITICAL || ),
                 insight.priority === this.priorityLevels.HIGH),
-            .slice(0, 3),
+            .slice(0, 3);
             .map(insight => insight.description) }
-    private formatTime(milliseconds: number): string { const minutes = Math.floor(milliseconds / 60000),
+    private formatTime(milliseconds: number): string { const minutes = Math.floor(milliseconds / 60000);
         const seconds = Math.floor((milliseconds % 60000) / 1000) }
         return `${minutes}分${seconds}秒`;
     }
@@ -702,11 +703,11 @@ export class InsightGenerator {
     private calculateInsightConfidence(context: Record<string, any>): number { // 簡易的な信頼度計算
         return 0.8 }
     private generateInsightId(): string {
-        return `insight_${Date.now())_${Math.random().toString(36).substr(2, 9})`;
+        return `insight_${Date.now())_${Math.random().toString(36).substr(2, 9}`;
     }
     
     private generateRecommendationId(): string {
-        return `rec_${Date.now())_${Math.random().toString(36).substr(2, 9})`;
+        return `rec_${Date.now())_${Math.random().toString(36).substr(2, 9}`;
     }
 
     private identifyDataSource(statisticsData: StatisticsData): string { ''
@@ -714,10 +715,10 @@ export class InsightGenerator {
     private assessDataQuality(statisticsData: StatisticsData): any {
         return { score: 0.9, issues: []  }
     private calculateAnalysisConfidence(statisticsData: StatisticsData, insights: Insight[]): number { return 0.85 }
-    private createEmptyInsights(): InsightResult { return { insights: [] };
-            recommendations: [];
+    private createEmptyInsights(): InsightResult { return { insights: [] },
+            recommendations: [],
 }
-            summary: { totalInsights: 0 };
+            summary: { totalInsights: 0 },
             metadata: { totalInsights: 0 
 }
 

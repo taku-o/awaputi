@@ -10,7 +10,7 @@ import { LoggingSystem  } from '../LoggingSystem.js';
 // 型定義
 export interface GameEngine { // ゲームエンジンの基本型定義 }
 
-export interface ErrorStatistics { count: number,
+export interface ErrorStatistics { count: number;
     lastOccurred: number | null;
     resolved: number;
     unresolved: number;
@@ -21,7 +21,7 @@ export interface OverallErrorStatistics { categories: Record<string, ErrorStatis
     totalResolved: number;
     overallResolutionRate: number;
 
-export interface ErrorResult { success: boolean,
+export interface ErrorResult { success: boolean;
     strategy: string;
     suggestions: string[];
     data?: any;
@@ -32,7 +32,7 @@ export interface FallbackOptions { useCache?: boolean,
     clearCache?: boolean;
     rebuildIndex?: boolean;
 
-export interface TutorialStep { stepIndex: number,
+export interface TutorialStep { stepIndex: number;
     id: string;
     title?: string;
     targetElement?: string,  }
@@ -43,7 +43,7 @@ export interface TutorialOptions { currentStep?: TutorialStep | null,
 export interface SearchOptions { query?: string,
     rebuildIndex?: boolean;
 
-export interface UserErrorData { message: string,
+export interface UserErrorData { message: string;
     suggestions: string[];
     timestamp: number;
     canRetry: boolean;
@@ -56,7 +56,7 @@ export interface ErrorContext { currentStep?: TutorialStep,
     rebuildIndex?: boolean;
     [key: string]: any;
 
-export interface DefaultHelpContent { version: string,
+export interface DefaultHelpContent { version: string;
     category: string;
     language: string;
     sections: Array<{
@@ -92,7 +92,7 @@ export class HelpErrorHandler {
             TOOLTIP_DISPLAY: 'tooltip_display';
             CONTEXT_DETECTION: 'context_detection' }
 
-            USER_INTERACTION: 'user_interaction' }))
+            USER_INTERACTION: 'user_interaction' })
         // エラー統計
         this.errorStats = new Map<string, ErrorStatistics>();
         this.recoveryAttempts = new Map<string, number>();
@@ -115,7 +115,7 @@ export class HelpErrorHandler {
             
             // エラー統計の初期化
             Object.values(this.errorCategories).forEach(category => { this.errorStats.set(category, {
-                    count: 0),
+                    count: 0);
                     lastOccurred: null,
     resolved: 0 }
                     unresolved: 0);' }'
@@ -134,9 +134,8 @@ export class HelpErrorHandler {
      */
     handleContentLoadError(error: Error, fallbackOptions: FallbackOptions = { ): ErrorResult {
         try {
-            this.logError(this.errorCategories.CONTENT_LOAD, error, fallbackOptions),
-            
-            const strategy = this.fallbackStrategies.get(this.errorCategories.CONTENT_LOAD),
+            this.logError(this.errorCategories.CONTENT_LOAD, error, fallbackOptions);
+            const strategy = this.fallbackStrategies.get(this.errorCategories.CONTENT_LOAD);
             if (!strategy) {
     
 }
@@ -151,16 +150,15 @@ export class HelpErrorHandler {
 
                 this.incrementResolvedCount(this.errorCategories.CONTENT_LOAD);' }'
 
-                this.loggingSystem.info('HelpErrorHandler', `Content load error resolved using: ${result.strategy}`});
+                this.loggingSystem.info('HelpErrorHandler', `Content load error resolved using: ${result.strategy}`},
             } else {  this.incrementUnresolvedCount(this.errorCategories.CONTENT_LOAD) }
                 this.showUserFriendlyError(error, result.suggestions); }
             }
             ';'
 
             return result;} catch (handlingError) {
-            this.loggingSystem.error('HelpErrorHandler', 'Failed to handle content load error', handlingError),
-            return this.getDefaultErrorResult(),
-
+            this.loggingSystem.error('HelpErrorHandler', 'Failed to handle content load error', handlingError);
+            return this.getDefaultErrorResult();
     /**
      * チュートリアル実行エラーの処理
      * @param error - エラーオブジェクト
@@ -168,16 +166,14 @@ export class HelpErrorHandler {
      * @returns 処理結果
      */
     handleTutorialError(error: Error, currentStep: TutorialStep | null = null): ErrorResult { try {
-            this.logError(this.errorCategories.TUTORIAL_EXECUTION, error, { currentStep ),
-            
-            const strategy = this.fallbackStrategies.get(this.errorCategories.TUTORIAL_EXECUTION),
+            this.logError(this.errorCategories.TUTORIAL_EXECUTION, error, { currentStep );
+            const strategy = this.fallbackStrategies.get(this.errorCategories.TUTORIAL_EXECUTION);
             if (!strategy) {
     
 }
                 return this.getDefaultErrorResult();
             
-            const result = strategy(error, { currentStep ),
-            
+            const result = strategy(error, { currentStep );
             if (result.success) {
             ','
 
@@ -185,7 +181,7 @@ export class HelpErrorHandler {
 
                 this.incrementResolvedCount(this.errorCategories.TUTORIAL_EXECUTION);' }'
 
-                this.loggingSystem.info('HelpErrorHandler', `Tutorial error resolved: ${result.strategy}`});
+                this.loggingSystem.info('HelpErrorHandler', `Tutorial error resolved: ${result.strategy}`};
             } else {  this.incrementUnresolvedCount(this.errorCategories.TUTORIAL_EXECUTION) }
                 this.showUserFriendlyError(error, result.suggestions); }
             }
@@ -196,16 +192,14 @@ export class HelpErrorHandler {
             return this.getDefaultErrorResult()','
     handleSearchError(error: Error, query: string = '): ErrorResult {'
         try {
-            this.logError(this.errorCategories.SEARCH_OPERATION, error, { query ),
-            
-            const strategy = this.fallbackStrategies.get(this.errorCategories.SEARCH_OPERATION),
+            this.logError(this.errorCategories.SEARCH_OPERATION, error, { query );
+            const strategy = this.fallbackStrategies.get(this.errorCategories.SEARCH_OPERATION);
             if (!strategy) {
     
 }
                 return this.getDefaultErrorResult();
             
-            const result = strategy(error, { query ),
-            
+            const result = strategy(error, { query );
             if (result.success) {
             ','
 
@@ -213,16 +207,15 @@ export class HelpErrorHandler {
 
                 this.incrementResolvedCount(this.errorCategories.SEARCH_OPERATION);' }'
 
-                this.loggingSystem.info('HelpErrorHandler', `Search error resolved: ${result.strategy}`});
+                this.loggingSystem.info('HelpErrorHandler', `Search error resolved: ${result.strategy}`};
             } else {  this.incrementUnresolvedCount(this.errorCategories.SEARCH_OPERATION) }
                 this.showUserFriendlyError(error, result.suggestions); }
             }
             ';'
 
             return result;} catch (handlingError) {
-            this.loggingSystem.error('HelpErrorHandler', 'Failed to handle search error', handlingError),
-            return this.getDefaultErrorResult(),
-
+            this.loggingSystem.error('HelpErrorHandler', 'Failed to handle search error', handlingError);
+            return this.getDefaultErrorResult();
     /**
      * エラー復旧の試行
      * @param errorType - エラータイプ
@@ -230,12 +223,12 @@ export class HelpErrorHandler {
      * @returns 復旧成功フラグ
      */
     async attemptRecovery(errorType: string, context: ErrorContext): Promise<boolean> { try {  }
-            const attemptKey = `${errorType}_${JSON.stringify(context})`;
+            const attemptKey = `${errorType}_${JSON.stringify(context}`;
             const currentAttempts = this.recoveryAttempts.get(attemptKey) || 0;
 
             if (currentAttempts >= this.maxRecoveryAttempts) { }'
 
-                this.loggingSystem.warn('HelpErrorHandler', `Max recovery attempts reached for: ${errorType}`});
+                this.loggingSystem.warn('HelpErrorHandler', `Max recovery attempts reached for: ${errorType}`};
                 return false;
             }
             
@@ -266,13 +259,13 @@ export class HelpErrorHandler {
      * @param suggestions - 提案一覧
      */
     showUserFriendlyError(error: Error, suggestions: string[] = []): void { try {
-            const userMessage = this.translateErrorToUserMessage(error),
+            const userMessage = this.translateErrorToUserMessage(error);
             const errorData: UserErrorData = {
                 message: userMessage,
                 suggestions,
                 timestamp: Date.now(
                 canRetry: this.canRetryError(error,
-                helpAvailable: this.isHelpAvailable(error  };
+                helpAvailable: this.isHelpAvailable(error  },
             '
             // エラー表示UI（後続のタスクで実装）
             this.loggingSystem.info('HelpErrorHandler', `User-friendly error: ${ userMessage'`),''
@@ -293,7 +286,7 @@ export class HelpErrorHandler {
     logError(category: string, error: Error, context: ErrorContext = { ): void {
         try {
             // エラー統計の更新
-            const stats = this.errorStats.get(category),
+            const stats = this.errorStats.get(category);
             if (stats) {
                 stats.count++,
                 stats.lastOccurred = Date.now()','
@@ -301,9 +294,9 @@ export class HelpErrorHandler {
                 error: error.message,
     stack: error.stack }
                 context }
-                timestamp: Date.now());
-                userAgent: navigator.userAgent;
-            }) } catch (loggingError) { console.error('Failed to log help error:', loggingError }
+                timestamp: Date.now()),
+                userAgent: navigator.userAgent,
+            } } catch (loggingError) { console.error('Failed to log help error:', loggingError }
     }
 
     /**
@@ -345,7 +338,7 @@ export class HelpErrorHandler {
         return { categories: statistics,
             totalErrors: Array.from(this.errorStats.values().reduce((sum, stats) => sum + stats.count, 0),
             totalResolved: Array.from(this.errorStats.values().reduce((sum, stats) => sum + stats.resolved, 0) };
-            overallResolutionRate: this.calculateOverallResolutionRate(); 
+            overallResolutionRate: this.calculateOverallResolutionRate(),
     }
 
     // ---- プライベートメソッド ----
@@ -372,7 +365,7 @@ export class HelpErrorHandler {
                 strategy: 'default_content',
                 data: this.getDefaultHelpContent('}'
 
-                suggestions: ['基本的なヘルプを表示しています]});});'
+                suggestions: ['基本的なヘルプを表示しています]};};'
 
         // チュートリアルエラー戦略
         this.fallbackStrategies.set(this.errorCategories.TUTORIAL_EXECUTION, (error: Error, options: TutorialOptions): ErrorResult => {  }
@@ -387,7 +380,7 @@ export class HelpErrorHandler {
                 strategy: 'skip_tutorial',' };'
 
                 suggestions: ['チュートリアルをスキップして、基本的なヘルプを表示します] }'
-            });
+            };
 
         // 検索エラー戦略
         this.fallbackStrategies.set(this.errorCategories.SEARCH_OPERATION, (error: Error, options: SearchOptions): ErrorResult => {  }
@@ -429,7 +422,7 @@ export class HelpErrorHandler {
                 strategy: 'manual_mode',' };'
 
                 suggestions: ['手動でヘルプを確認できます] }'
-            });
+            };
     }
 
     /**
@@ -439,12 +432,12 @@ export class HelpErrorHandler {
      * @returns 復旧成功フラグ
      */
     private async executeRecoveryStrategy(errorType: string, context: ErrorContext): Promise<boolean> { switch (errorType) {
-            case this.errorCategories.CONTENT_LOAD: return await this.recoverContentLoad(context),
-            case this.errorCategories.TUTORIAL_EXECUTION: return await this.recoverTutorialExecution(context),
+            case this.errorCategories.CONTENT_LOAD: return await this.recoverContentLoad(context);
+            case this.errorCategories.TUTORIAL_EXECUTION: return await this.recoverTutorialExecution(context);
             case this.errorCategories.SEARCH_OPERATION: }
-                return await this.recoverSearchOperation(context})
-            default: return false);
-            });
+                return await this.recoverSearchOperation(context}
+            default: return false),
+            };
     /**
      * コンテンツ読み込み復旧
      * @param context - コンテキスト
@@ -473,7 +466,7 @@ export class HelpErrorHandler {
     private async recoverTutorialExecution(context: ErrorContext): Promise<boolean> { try {
             // DOM要素の再確認
             if (context.targetElement) {
-                const element = document.querySelector(context.targetElement),
+                const element = document.querySelector(context.targetElement);
                 if (element) {
             }
                     return true;
@@ -555,12 +548,12 @@ export class HelpErrorHandler {
             strategy: 'none',
             suggestions: ['しばらく時間をおいてから再度お試しください],'
     data: null);
-            });
+            };
     /**
      * 解決済みカウントの増加
      * @param category - カテゴリ
      */
-    private incrementResolvedCount(category: string): void { const stats = this.errorStats.get(category),
+    private incrementResolvedCount(category: string): void { const stats = this.errorStats.get(category);
         if (stats) {
     
 }
@@ -571,7 +564,7 @@ export class HelpErrorHandler {
      * 未解決カウントの増加
      * @param category - カテゴリ
      */
-    private incrementUnresolvedCount(category: string): void { const stats = this.errorStats.get(category),
+    private incrementUnresolvedCount(category: string): void { const stats = this.errorStats.get(category);
         if (stats) {
     
 }
@@ -598,9 +591,8 @@ export class HelpErrorHandler {
      * リソースのクリーンアップ
      */
     destroy(): void { try {
-            this.errorStats.clear(),
-
-            this.recoveryAttempts.clear(),
+            this.errorStats.clear();
+            this.recoveryAttempts.clear();
             this.fallbackStrategies.clear()','
             this.loggingSystem.info('HelpErrorHandler', 'Help error handler destroyed',' }'
 

@@ -12,10 +12,10 @@ import { getErrorHandler  } from './ErrorHandler.js';
  */
 
 // 型定義
-interface PreciseFrameTime { time: number,
+interface PreciseFrameTime { time: number;
     timestamp: number;
 
-interface FrameTimingAnalysis { preciseFrameTimes: PreciseFrameTime[],
+interface FrameTimingAnalysis { preciseFrameTimes: PreciseFrameTime[];
     frameTimeBuffer: number[];
     bufferIndex: number;
     bufferFull: boolean;
@@ -30,13 +30,13 @@ interface FrameTimingAnalysis { preciseFrameTimes: PreciseFrameTime[],
     jitterLevel: number;
     smoothnessIndex: number;
 
-interface TargetAdjustment { from: number,
+interface TargetAdjustment { from: number;
     to: number;
     timestamp: number;
     reason: string;
     stabilityScore: number;
 
-interface AdaptiveTargeting { baseTargetFPS: number,
+interface AdaptiveTargeting { baseTargetFPS: number;
     currentTargetFPS: number;
     adaptiveTargetFPS: number;
     confidenceLevel: number;
@@ -49,10 +49,10 @@ interface AdaptiveTargeting { baseTargetFPS: number,
     aggressiveOptimization: boolean;
     gradualAdjustment: boolean;
 
-interface PredictionData { prediction: number,
+interface PredictionData { prediction: number;
     timestamp: number;
 
-interface FramePacing { enabled: boolean,
+interface FramePacing { enabled: boolean;
     targetInterval: number;
     actualInterval: number;
     pacingError: number;
@@ -64,10 +64,10 @@ interface FramePacing { enabled: boolean,
     refreshRate: number;
     tearingRisk: number;
 
-interface QualityLevel { multiplier: number,
+interface QualityLevel { multiplier: number;
     threshold: number;
 
-interface QualityAdjustment { currentLevel: string,
+interface QualityAdjustment { currentLevel: string;
     targetLevel: string;
     transitionProgress: number;
     transitionDuration: number;
@@ -76,7 +76,7 @@ interface QualityAdjustment { currentLevel: string,
     hysteresisThreshold: number;
     qualityLevels: Record<string, QualityLevel> }
 
-interface StabilizationThresholds { excellentStability: number,
+interface StabilizationThresholds { excellentStability: number;
     goodStability: number;
     acceptableStability: number;
     poorStability: number;
@@ -86,12 +86,12 @@ interface StabilizationThresholds { excellentStability: number,
     emergencyFPS: number;
     panicModeThreshold: number;
 
-interface Recommendations { immediate: string[],
+interface Recommendations { immediate: string[];
     shortTerm: string[];
     longTerm: string[];
     technical: string[];
 
-interface StabilizationStatus { timing: FrameTimingAnalysis,
+interface StabilizationStatus { timing: FrameTimingAnalysis;
     adaptive: AdaptiveTargeting;
     pacing: FramePacing;
     quality: QualityAdjustment;
@@ -112,7 +112,7 @@ export class FrameStabilizer {
     private adaptiveTargeting: AdaptiveTargeting;
     private framePacing: FramePacing;
     private qualityAdjustment: QualityAdjustment;
-    private, stabilizationThresholds: StabilizationThresholds,
+    private, stabilizationThresholds: StabilizationThresholds;
     constructor(targetFPS: number = 60) {
 
         this.errorHandler = getErrorHandler();
@@ -124,17 +124,17 @@ export class FrameStabilizer {
             // High-resolution frame time tracking
             preciseFrameTimes: [];
             frameTimeBuffer: new Array(120).fill(16.67), // 2 seconds at 60fps;
-            bufferIndex: 0,
-            bufferFull: false,
+            bufferIndex: 0;
+            bufferFull: false;
             // Statistical analysis
-            variance: 0,
-            standardDeviation: 0,
-            mean: 16.67,
-            median: 16.67,
-            percentile95: 16.67,
-            percentile99: 16.67,
+            variance: 0;
+            standardDeviation: 0;
+            mean: 16.67;
+            median: 16.67;
+            percentile95: 16.67;
+            percentile99: 16.67;
             // Stability metrics
-           , stabilityScore: 1.0,
+           , stabilityScore: 1.0;
             consistencyRating: 'excellent', // 'excellent', 'good', 'fair', 'poor', 'critical';
             jitterLevel: 0, // 0-10 scale
     }
@@ -155,7 +155,7 @@ export class FrameStabilizer {
             // Adjustment parameters
             conservativeMode: false,
             aggressiveOptimization: false,
-    gradualAdjustment: true,;
+    gradualAdjustment: true,
         // Frame pacing optimization
         this.framePacing = { enabled: true,
             targetInterval: 16.67,
@@ -169,7 +169,7 @@ export class FrameStabilizer {
             // Synchronization
             vsyncDetected: false,
             refreshRate: 60,
-    tearingRisk: 0  };
+    tearingRisk: 0  },
         // Quality adjustment algorithms
         this.qualityAdjustment = {;
             currentLevel: 'high',
@@ -186,7 +186,7 @@ export class FrameStabilizer {
         };
         
         // Performance thresholds
-        this.stabilizationThresholds = { excellentStability: 2.0; // variance < 2ms
+        this.stabilizationThresholds = { excellentStability: 2.0, // variance < 2ms
             goodStability: 5.0,      // variance < 5ms,
             acceptableStability: 10.0, // variance < 10ms,
             poorStability: 20.0,      // variance < 20ms,
@@ -195,7 +195,7 @@ export class FrameStabilizer {
             // Critical thresholds
             criticalVariance: 25.0,
             emergencyFPS: 20,
-    panicModeThreshold: 15  };
+    panicModeThreshold: 15  },
         console.log('[FrameStabilizer] Initialized with target FPS:', targetFPS);
     }
     
@@ -212,30 +212,24 @@ export class FrameStabilizer {
             // Keep only recent data (last, 5 seconds),
             const cutoffTime = timestamp - 5000,
             this.frameTimingAnalysis.preciseFrameTimes = ,
-                this.frameTimingAnalysis.preciseFrameTimes.filter(ft => ft.timestamp > cutoffTime),
-            
+                this.frameTimingAnalysis.preciseFrameTimes.filter(ft => ft.timestamp > cutoffTime);
             // Update circular buffer
-            this.updateFrameTimeBuffer(frameTime),
-            
+            this.updateFrameTimeBuffer(frameTime);
             // Perform statistical analysis
-            this.updateStatisticalAnalysis(),
-            
+            this.updateStatisticalAnalysis();
             // Update stability metrics
-            this.updateStabilityMetrics(),
-            
+            this.updateStabilityMetrics();
             // Update frame pacing
-            this.updateFramePacing(frameTime, timestamp),
-            
+            this.updateFramePacing(frameTime, timestamp);
             // Adaptive targeting
-            this.updateAdaptiveTargeting(),
-            
+            this.updateAdaptiveTargeting();
             // Quality adjustment recommendations
-            this.evaluateQualityAdjustments(),
+            this.evaluateQualityAdjustments();
             ' }'
 
         } catch (error) { this.errorHandler.handleError(error, {)'
                 context: 'FrameStabilizer.processFrameTiming'
-            });
+            };
         }
     }
     
@@ -262,24 +256,22 @@ export class FrameStabilizer {
         if (dataSize < 10) return, // Need minimum data
         
         const data = this.frameTimingAnalysis.bufferFull ? undefined : undefined
-            buffer : buffer.slice(0, this.frameTimingAnalysis.bufferIndex),
-        
+            buffer : buffer.slice(0, this.frameTimingAnalysis.bufferIndex);
         // Calculate mean
         this.frameTimingAnalysis.mean = data.reduce((sum, time) => sum + time, 0) / dataSize,
         
         // Calculate variance and standard deviation
-        const squaredDiffs = data.map(time => Math.pow(time - this.frameTimingAnalysis.mean, 2),
+        const squaredDiffs = data.map(time => Math.pow(time - this.frameTimingAnalysis.mean, 2);
         this.frameTimingAnalysis.variance = squaredDiffs.reduce((sum, diff) => sum + diff, 0) / dataSize,
-        this.frameTimingAnalysis.standardDeviation = Math.sqrt(this.frameTimingAnalysis.variance),
-        
+        this.frameTimingAnalysis.standardDeviation = Math.sqrt(this.frameTimingAnalysis.variance);
         // Calculate median
         const sortedData = [...data].sort((a, b) => a - b),
-        const mid = Math.floor(dataSize / 2),
+        const mid = Math.floor(dataSize / 2);
         this.frameTimingAnalysis.median = dataSize % 2 === 0 ? undefined : undefined
             (sortedData[mid - 1] + sortedData[mid]) / 2 : sortedData[mid],
         
         // Calculate percentiles
-        this.frameTimingAnalysis.percentile95 = this.calculatePercentile(sortedData, 0.95),
+        this.frameTimingAnalysis.percentile95 = this.calculatePercentile(sortedData, 0.95);
         this.frameTimingAnalysis.percentile99 = this.calculatePercentile(sortedData, 0.99) }
     }
     
@@ -290,8 +282,8 @@ export class FrameStabilizer {
      * @returns Percentile value
      */
     private calculatePercentile(sortedData: number[], percentile: number): number { const index = percentile * (sortedData.length - 1),
-        const lower = Math.floor(index),
-        const upper = Math.ceil(index),
+        const lower = Math.floor(index);
+        const upper = Math.ceil(index);
         const weight = index % 1,
         
         if (upper >= sortedData.length) return sortedData[sortedData.length - 1],
@@ -305,7 +297,7 @@ export class FrameStabilizer {
         
         // Calculate stability score (0-1, higher is better),
         const maxAcceptableVariance = this.stabilizationThresholds.excellentStability,
-        this.frameTimingAnalysis.stabilityScore = Math.max(0),
+        this.frameTimingAnalysis.stabilityScore = Math.max(0);
             1 - (variance / (maxAcceptableVariance * 4)), // Scale to make it more gradual
         ,
         // Determine consistency rating
@@ -354,18 +346,16 @@ export class FrameStabilizer {
         this.framePacing.correctionFactor = Math.max(0.5, Math.min(2.0, 1 - (errorRatio * 0.1)),
         
         // Predict next frame time
-        this.predictNextFrameTime(),
-        
+        this.predictNextFrameTime();
         // Detect VSync and refresh rate
-        this.detectDisplaySynchronization(),
-        
+        this.detectDisplaySynchronization();
         // Calculate tearing risk
         this.calculateTearingRisk() }
     
     /**
      * Predict next frame time using historical data
      */
-    private predictNextFrameTime(): void { const recentFrames = this.frameTimingAnalysis.preciseFrameTimes.slice(-10),
+    private predictNextFrameTime(): void { const recentFrames = this.frameTimingAnalysis.preciseFrameTimes.slice(-10);
         if (recentFrames.length < 5) {
             this.framePacing.nextFramePrediction = this.frameTimingAnalysis.mean }
             return; }
@@ -385,8 +375,7 @@ export class FrameStabilizer {
         // Store prediction for accuracy tracking
         this.framePacing.predictionHistory.push({ )
             prediction: this.framePacing.nextFramePrediction,
-    timestamp: Date.now( });
-        
+    timestamp: Date.now( };
         // Keep only recent predictions
         if (this.framePacing.predictionHistory.length > 20) { this.framePacing.predictionHistory.shift() }
         
@@ -405,11 +394,11 @@ export class FrameStabilizer {
         
         for (let, i = 1, i < predictions.length, i++) {
             const prediction = predictions[i - 1].prediction,
-            const actual = this.frameTimingAnalysis.preciseFrameTimes.find(ft => ),
+            const actual = this.frameTimingAnalysis.preciseFrameTimes.find(ft => );
                 Math.abs(ft.timestamp - predictions[i].timestamp) < 20), // 20ms tolerance
             
             if (actual) {
-                const error = Math.abs(prediction - actual.time),
+                const error = Math.abs(prediction - actual.time);
                 const accuracy = Math.max(0, 1 - (error / prediction) }
                 accuracies.push(accuracy); }
 }
@@ -424,13 +413,12 @@ export class FrameStabilizer {
      * Detect display synchronization patterns
      */
     detectDisplaySynchronization() {
-        const recentFrames = this.frameTimingAnalysis.preciseFrameTimes.slice(-60),
+        const recentFrames = this.frameTimingAnalysis.preciseFrameTimes.slice(-60);
         if (recentFrames.length < 30) return,
         
         // Analyze frame time patterns for VSync detection
-        const frameTimes = recentFrames.map(ft => ft.time),
-        const commonIntervals = this.detectCommonIntervals(frameTimes),
-        
+        const frameTimes = recentFrames.map(ft => ft.time);
+        const commonIntervals = this.detectCommonIntervals(frameTimes);
         // Check for standard refresh rates
         const standardRates = [144, 120, 100, 90, 75, 60, 50, 30],
         let detectedRate = 60, // default
@@ -494,7 +482,7 @@ export class FrameStabilizer {
      * Update adaptive targeting system
      */
     updateAdaptiveTargeting() {
-        const now = Date.now(),
+        const now = Date.now();
         if (now - this.adaptiveTargeting.lastAdjustmentTime < this.adaptiveTargeting.adjustmentCooldown) {
     }
             return; // Still in cooldown period }
@@ -559,7 +547,7 @@ export class FrameStabilizer {
             case 'critical':','
                 return Math.max(baseFPS * 0.7, 30), // Dont go below 30 FPS
     }
-            default: return baseFPS;
+            default: return baseFPS,
     
     /**
      * Adjust target FPS
@@ -571,7 +559,7 @@ export class FrameStabilizer {
             to: newTargetFPS,
             timestamp: Date.now(
     reason: this.adaptiveTargeting.performanceZone }
-            stabilityScore: this.frameTimingAnalysis.stabilityScore }))
+            stabilityScore: this.frameTimingAnalysis.stabilityScore })
         );
         this.adaptiveTargeting.adjustmentHistory.push(adjustment);
         this.adaptiveTargeting.currentTargetFPS = newTargetFPS;
@@ -582,7 +570,7 @@ export class FrameStabilizer {
         // Keep adjustment history manageable
         if (this.adaptiveTargeting.adjustmentHistory.length > 20) { this.adaptiveTargeting.adjustmentHistory.shift() }
         
-        console.log(`[FrameStabilizer] Adjusted, target FPS: ${adjustment.from} → ${adjustment.to} (${adjustment.reason}`});
+        console.log(`[FrameStabilizer] Adjusted, target FPS: ${adjustment.from} → ${adjustment.to} (${adjustment.reason}`};
     }
     
     /**
@@ -591,9 +579,8 @@ export class FrameStabilizer {
     evaluateQualityAdjustments() {
         const zone = this.adaptiveTargeting.performanceZone,
         const currentLevel = this.qualityAdjustment.currentLevel,
-        const levels = Object.keys(this.qualityAdjustment.qualityLevels),
-        const currentIndex = levels.indexOf(currentLevel),
-        
+        const levels = Object.keys(this.qualityAdjustment.qualityLevels);
+        const currentIndex = levels.indexOf(currentLevel);
         let recommendedLevel = currentLevel,
         ','
         // Determine recommended quality level based on performance zone
@@ -619,7 +606,7 @@ export class FrameStabilizer {
         // Apply hysteresis to prevent oscillation
         if (recommendedLevel !== this.qualityAdjustment.targetLevel) {
             const threshold = this.qualityAdjustment.hysteresisThreshold,
-            if(this.frameTimingAnalysis.stabilityScore > threshold || ),
+            if(this.frameTimingAnalysis.stabilityScore > threshold || );
                 this.frameTimingAnalysis.stabilityScore < (1 - threshold) {
         }
                 this.qualityAdjustment.targetLevel = recommendedLevel; }
@@ -633,13 +620,13 @@ export class FrameStabilizer {
     getStabilizationRecommendations()';'
         if (zone === 'critical') {
 
-            recommendations.immediate.push('Reduce, quality settings, immediately'),
+            recommendations.immediate.push('Reduce, quality settings, immediately');
             recommendations.immediate.push('Close, background applications') }
 
             recommendations.immediate.push('Enable, conservative performance, mode');' }'
 
         } else if (zone === 'poor') { ''
-            recommendations.immediate.push('Lower, particle effects, quality'),
+            recommendations.immediate.push('Lower, particle effects, quality');
             recommendations.immediate.push('Reduce, rendering resolution' }', ';
         // Short-term improvements
         if (analysis.jitterLevel > 5) {
@@ -670,10 +657,10 @@ export class FrameStabilizer {
         }
         
         // Technical details
-        recommendations.technical.push(`Current, stability score: ${(analysis.stabilityScore * 100}.toFixed(1})%`);
-        recommendations.technical.push(`Frame, variance: ${analysis.variance.toFixed(2})ms`);
+        recommendations.technical.push(`Current, stability score: ${(analysis.stabilityScore * 100}.toFixed(1}%`),
+        recommendations.technical.push(`Frame, variance: ${analysis.variance.toFixed(2}ms`),
         recommendations.technical.push(`Performance zone: ${ zone}`} }
-        recommendations.technical.push(`Jitter level: ${analysis.jitterLevel.toFixed(1})/10`);
+        recommendations.technical.push(`Jitter level: ${analysis.jitterLevel.toFixed(1}/10`),
         
         return recommendations;
     }
@@ -732,7 +719,7 @@ export class FrameStabilizer {
      * Reset analysis data for fresh start
      */
     resetAnalysisData(): void { ''
-        this.frameTimingAnalysis.frameTimeBuffer.fill(this.targetFrameTime),
+        this.frameTimingAnalysis.frameTimeBuffer.fill(this.targetFrameTime);
         this.frameTimingAnalysis.bufferIndex = 0,
         this.frameTimingAnalysis.bufferFull = false,
         this.frameTimingAnalysis.preciseFrameTimes = [],
@@ -747,11 +734,11 @@ let _frameStabilizer: FrameStabilizer | null = null,
 
 export function getFrameStabilizer(targetFPS: number = 60): FrameStabilizer { if (!_frameStabilizer) {
         try {'
-            _frameStabilizer = new FrameStabilizer(targetFPS),
+            _frameStabilizer = new FrameStabilizer(targetFPS);
             console.log('[FrameStabilizer] グローバルインスタンスを作成しました'),' }'
 
         } catch (error) {
-            console.error('[FrameStabilizer] インスタンス作成エラー:', error),
+            console.error('[FrameStabilizer] インスタンス作成エラー:', error);
             // フォールバック: 基本的なインスタンスを作成
             _frameStabilizer = new FrameStabilizer(targetFPS) }
     }
@@ -763,7 +750,7 @@ export function getFrameStabilizer(targetFPS: number = 60): FrameStabilizer { if
  * @param targetFPS - 新しい目標FPS
  */
 export function reinitializeFrameStabilizer(targetFPS: number = 60): void { try {'
-        _frameStabilizer = new FrameStabilizer(targetFPS),
+        _frameStabilizer = new FrameStabilizer(targetFPS);
         console.log('[FrameStabilizer] 再初期化完了'),' }'
 
     } catch (error) {

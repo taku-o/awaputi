@@ -12,9 +12,9 @@ const mockDocument = {
     fullscreenElement: null,
     documentElement: {
         requestFullscreen: jest.fn( },
-        exitFullscreen: jest.fn( };
+        exitFullscreen: jest.fn( },
 // グローバル変数のモック
-(global: any).document = mockDocument;
+(global: any).document = mockDocument,
 (global as any').navigator = {'
     userAgent: 'test-agent'
 };
@@ -49,7 +49,7 @@ describe('MainMenuScene Shop Button Tests', () => {
             textAlign: ','
             textBaseline: ','
             lineWidth: 0
-    });
+    };
         // Mock GameEngine
         mockGameEngine = {
             canvas: mockCanvas,
@@ -58,7 +58,7 @@ describe('MainMenuScene Shop Button Tests', () => {
                , switchScene: jest.fn(').mockReturnValue(true,'
                 currentScene: {
                     constructor: { name: 'MainMenuScene' }
-                }),
+                };
             localizationManager: {
                 getCurrentLanguage: jest.fn(').mockReturnValue('ja','
                 t: jest.fn((key') => {'
@@ -85,8 +85,8 @@ describe('MainMenuScene Shop Button Tests', () => {
     }');'
     describe('ショップメニュー項目の存在確認', (') => {'
         test('menuItemsにショップ項目が含まれている', (') => {'
-            const shopMenuItem = mainMenuScene.menuItems.find(item => item.id === 'shop'),
-            expect(shopMenuItem).toBeDefined(),
+            const shopMenuItem = mainMenuScene.menuItems.find(item => item.id === 'shop');
+            expect(shopMenuItem).toBeDefined();
             expect(shopMenuItem.id').toBe('shop'),'
             expect(shopMenuItem.key').toBe('menu.shop'),'
             expect(shopMenuItem.action).toBeInstanceOf(Function) }');'
@@ -94,36 +94,36 @@ describe('MainMenuScene Shop Button Tests', () => {
             expect(mainMenuScene.menuItems[1].id').toBe('shop') }');
         test('メニュー項目の順序が正しい', (') => {'
             const expectedOrder = ['start', 'shop', 'settings', 'userInfo', 'help'],
-            const actualOrder = mainMenuScene.menuItems.map(item => item.id),
+            const actualOrder = mainMenuScene.menuItems.map(item => item.id);
             expect(actualOrder).toEqual(expectedOrder) }');'
         test('updateMenuLabelsでショップラベルが正しく設定される', () => {
             mainMenuScene.updateMenuLabels('),'
-            const shopMenuItem = mainMenuScene.menuItems.find(item => item.id === 'shop'),
+            const shopMenuItem = mainMenuScene.menuItems.find(item => item.id === 'shop');
             expect(shopMenuItem.label').toBe('ショップ') }');
     }
     describe('ショップ選択時のシーン遷移テスト', (') => {'
         test('openShopメソッドが存在する', () => {
             expect(typeof mainMenuScene.openShop').toBe('function') }');
         test('openShopでショップシーンに遷移する', () => {
-            mainMenuScene.openShop(),
+            mainMenuScene.openShop();
             expect(mockGameEngine.sceneManager.switchScene').toHaveBeenCalledWith('shop') }');
         test('ショップメニュー項目のactionがopenShopを呼び出す', (') => {'
-            const shopMenuItem = mainMenuScene.menuItems.find(item => item.id === 'shop'),
-            const spy = jest.spyOn(mainMenuScene, 'openShop'),
-            shopMenuItem.action(),
-            expect(spy).toHaveBeenCalled(),
+            const shopMenuItem = mainMenuScene.menuItems.find(item => item.id === 'shop');
+            const spy = jest.spyOn(mainMenuScene, 'openShop');
+            shopMenuItem.action();
+            expect(spy).toHaveBeenCalled();
             spy.mockRestore() }');'
         test('selectMenuItemでショップが選択された時にopenShopが呼ばれる', (') => {'
-            const spy = jest.spyOn(mainMenuScene, 'openShop'),
+            const spy = jest.spyOn(mainMenuScene, 'openShop');
             mainMenuScene.selectedMenuIndex = 1, // ショップのインデックス
             
-            mainMenuScene.selectMenuItem(),
-            expect(spy).toHaveBeenCalled(),
+            mainMenuScene.selectMenuItem();
+            expect(spy).toHaveBeenCalled();
             spy.mockRestore() }');'
         test('openShopでシーン切り替えが失敗した場合のエラーハンドリング', () => {
             mockGameEngine.sceneManager.switchScene.mockReturnValue(false'),'
-            const consoleSpy = jest.spyOn(console, 'error').mockImplementation(),
-            mainMenuScene.openShop(),
+            const consoleSpy = jest.spyOn(console, 'error').mockImplementation();
+            mainMenuScene.openShop();
             expect(consoleSpy').toHaveBeenCalledWith('[MainMenuScene] Failed to switch to shop scene'),'
             consoleSpy.mockRestore() }');'
     }
@@ -135,11 +135,11 @@ describe('MainMenuScene Shop Button Tests', () => {
         test('moveSelectionで境界値を正しく処理する', () => {
             // 最初から上に移動（最後に循環）
             mainMenuScene.selectedMenuIndex = 0,
-            mainMenuScene.moveSelection(-1),
-            expect(mainMenuScene.selectedMenuIndex).toBe(mainMenuScene.menuItems.length - 1),
+            mainMenuScene.moveSelection(-1);
+            expect(mainMenuScene.selectedMenuIndex).toBe(mainMenuScene.menuItems.length - 1);
             // 最後から下に移動（最初に循環）
             mainMenuScene.selectedMenuIndex = mainMenuScene.menuItems.length - 1,
-            mainMenuScene.moveSelection(1),
+            mainMenuScene.moveSelection(1);
             expect(mainMenuScene.selectedMenuIndex).toBe(0) }');'
         test('キーボードナビゲーションでショップにアクセスできる', (') => {'
             const mockEvent = {
@@ -166,17 +166,17 @@ describe('MainMenuScene Shop Button Tests', () => {
             mainMenuScene.openShop();
             expect(errorHandlerSpy').toHaveBeenCalledWith('
                 expect.any(Error,
-                { context: 'MainMenuScene.openShop' });
+                { context: 'MainMenuScene.openShop' },
             errorHandlerSpy.mockRestore();
         }');'
     }
     describe('初期化テスト', (') => {'
         test('コンストラクタでmenuItemsが正しく初期化される', () => {
-            expect(mainMenuScene.menuItems).toHaveLength(5),
+            expect(mainMenuScene.menuItems).toHaveLength(5);
             expect(mainMenuScene.menuItems[1].id').toBe('shop') }');
         test('enterメソッドでselectedMenuIndexが0にリセットされる', () => {
             mainMenuScene.selectedMenuIndex = 3,
-            mainMenuScene.enter(),
-            expect(mainMenuScene.selectedMenuIndex).toBe(0) });
+            mainMenuScene.enter();
+            expect(mainMenuScene.selectedMenuIndex).toBe(0) };
     }
 }');'

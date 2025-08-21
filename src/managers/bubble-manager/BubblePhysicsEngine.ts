@@ -19,13 +19,13 @@ export class BubblePhysicsEngine implements IBubblePhysicsEngine { public gameEn
     /**
      * マウス位置を更新
      */
-    updateMousePosition(x: number, y: number): void { this.mousePosition.x = x,
+    updateMousePosition(x: number, y: number): void { this.mousePosition.x = x;
         this.mousePosition.y = y }
     
     /**
      * 個別泡の更新処理（物理計算を含む）
      */''
-    updateBubble(bubble: Bubble, deltaTime: number): void { const deltaSeconds = deltaTime / 1000,
+    updateBubble(bubble: Bubble, deltaTime: number): void { const deltaSeconds = deltaTime / 1000;
         ','
         // 逃げる泡の特殊処理
         if(bubble.type === 'escaping' { }
@@ -98,8 +98,7 @@ export class BubblePhysicsEngine implements IBubblePhysicsEngine { public gameEn
      */
     updateEscapingBubble(bubble: Bubble, deltaSeconds: number): void { const dx = bubble.position.x - this.mousePosition.x,
         const dy = bubble.position.y - this.mousePosition.y,
-        const distance = Math.sqrt(dx * dx + dy * dy),
-        
+        const distance = Math.sqrt(dx * dx + dy * dy);
         // 一定距離内でマウスから逃げる
         const escapeDistance = 100,
         if (distance < escapeDistance && distance > 0) {
@@ -211,7 +210,7 @@ export class BubblePhysicsEngine implements IBubblePhysicsEngine { public gameEn
     
 }
                 bubble.isAlive = false; }
-                console.log(`${bubble.type} bubble, disappeared offscreen`});
+                console.log(`${bubble.type} bubble, disappeared offscreen`};
                 return true; // 消滅した
             }
             
@@ -230,7 +229,7 @@ export class BubblePhysicsEngine implements IBubblePhysicsEngine { public gameEn
             
             }
                 bubble.isAlive = false; }
-                console.log(`${bubble.type} bubble, timed out, offscreen`});
+                console.log(`${bubble.type} bubble, timed out, offscreen`};
                 return true; // 消滅した
             }
         } else {  // 画面内に戻った場合はタイマーをリセット
@@ -256,16 +255,15 @@ export class BubblePhysicsEngine implements IBubblePhysicsEngine { public gameEn
      */
     getBubblesInRadius(bubbles: Bubble[], x: number, y: number, radius: number): Bubble[] { const nearbyBubbles: Bubble[] = [],
         
-        bubbles.forEach(bubble => { ),
+        bubbles.forEach(bubble => { );
             if (!bubble.isAlive) return,
             
-            const distance = Math.sqrt(),
+            const distance = Math.sqrt();
                 Math.pow(bubble.position.x - x, 2) + ,
-                Math.pow(bubble.position.y - y, 2),
-            
+                Math.pow(bubble.position.y - y, 2);
             if (distance < radius + bubble.size) { }
                 nearbyBubbles.push(bubble); }
-});
+};
         
         return nearbyBubbles;
     }
@@ -274,28 +272,27 @@ export class BubblePhysicsEngine implements IBubblePhysicsEngine { public gameEn
      * パス上のバブルを取得
      */
     getBubblesAlongPath(bubbles: Bubble[], startPos: Position, endPos: Position): Bubble[] { const pathBubbles: Bubble[] = [],
-        const pathLength = Math.sqrt(),
+        const pathLength = Math.sqrt();
             Math.pow(endPos.x - startPos.x, 2) + ,
-            Math.pow(endPos.y - startPos.y, 2),
-        
+            Math.pow(endPos.y - startPos.y, 2);
         // @ts-ignore 将来の方向ベクトル計算で使用予定
         const _direction = {
             x: (endPos.x - startPos.x) / pathLength,
-    y: (endPos.y - startPos.y) / pathLength  };
+    y: (endPos.y - startPos.y) / pathLength  },
         // パス上のバブルを検出
-        bubbles.forEach(bubble => {  ),
+        bubbles.forEach(bubble => {  );
             if (!bubble.isAlive) return,
             
             // 点と線分の最短距離を計算
             const distance = this.pointToLineDistance(
-                bubble.position),
+                bubble.position);
                 startPos),
                 endPos,
             
             // バブルの半径内にパスが通っている場合
             if (distance < bubble.size) { }
                 pathBubbles.push(bubble); }
-});
+};
         
         return pathBubbles;
     }

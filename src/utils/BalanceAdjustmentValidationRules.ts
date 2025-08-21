@@ -19,25 +19,25 @@ interface ValidationContext { configKey?: string,
     stage?: any;
     [key: string]: any;
 
-interface ValidationError { rule: string,
+interface ValidationError { rule: string;
     message: string;
     severity: 'low' | 'medium' | 'high' | 'critical';
     category: string;
     context?: any;
 
-interface ValidationWarning { rule: string,
+interface ValidationWarning { rule: string;
     message: string;
     severity: 'low' | 'medium' | 'high';
     category: string;
     context?: any;
 
-interface ValidationSuggestion { rule: string,
+interface ValidationSuggestion { rule: string;
     message: string;
     recommendedValue?: any;
     action?: string;
     category: string;
 
-interface ValidationResult { valid: boolean,
+interface ValidationResult { valid: boolean;
     errors: ValidationError[];
     warnings: ValidationWarning[];
     suggestions: ValidationSuggestion[];
@@ -47,7 +47,7 @@ interface ValidationResult { valid: boolean,
     timestamp: number;
     engineSummary?: any;
 
-interface ValidationRule { name: string,
+interface ValidationRule { name: string;
     category: string;
     enabled: boolean;
     priority: number;
@@ -61,32 +61,32 @@ interface RuleFilters { category?: string,
     priority?: number;
     [key: string]: any;
 
-interface BubbleHealthLimits { min: number,
+interface BubbleHealthLimits { min: number;
     max: number;
     default: number;
 
-interface ScoreLimits { min: number,
+interface ScoreLimits { min: number;
     max: number;
     default: number;
 
-interface ValidationAnalytics { totalValidations: number,
+interface ValidationAnalytics { totalValidations: number;
     successRate: number;
     errorRate: number;
     warningRate: number;
     mostCommonErrors: string[];
     averageExecutionTime: number;
 
-interface EngineMetrics { totalExecutions: number,
+interface EngineMetrics { totalExecutions: number;
     averageExecutionTime: number;
     rulesExecuted: number;
     errorsEncountered: number;
 
-interface EngineStatistics { rulesCount: number,
+interface EngineStatistics { rulesCount: number;
     activeRules: number;
     disabledRules: number;
     categoryCounts: Record<string, number> }
 
-interface ExecutionHistoryEntry { timestamp: number,
+interface ExecutionHistoryEntry { timestamp: number;
     ruleCount: number;
     executionTime: number;
     result: ValidationResult;
@@ -103,24 +103,26 @@ interface ProcessorConfig { enableAnalytics?: boolean,
 interface SystemConfig { engine?: EngineConfig,
     processor?: ProcessorConfig;
 
-interface ComponentHealth { status: string,
+interface ComponentHealth { status: string;
     metrics?: any;
     ruleCount?: number;
     statistics?: any;
     analytics?: any;
 
-interface SystemHealth { engine: ComponentHealth,
+interface SystemHealth { engine: ComponentHealth;
     definitions: ComponentHealth;
     processor: ComponentHealth;
     overall: {
-        initialize,d: boolean,
-        totalRules: number,
-    lastSyncTime: number,
-
-interface ComponentReferences { engine: ValidationRuleEngine,
+        initialize,d: boolean;
+        totalRules: number;
+    lastSyncTime: number;
+    lastSyncTime: number;
+        };
+interface ComponentReferences { engine: ValidationRuleEngine;
     definitions: ValidationRuleDefinitions;
     processor: ValidationResultProcessor;
-
+    processor: ValidationResultProcessor;
+        };
 export class BalanceAdjustmentValidationRules {
     private errorHandler: ErrorHandler;
     private ruleEngine: ValidationRuleEngine;
@@ -156,13 +158,12 @@ export class BalanceAdjustmentValidationRules {
      */
     private initialize(): void { try {
             // Initialize rule definitions
-            this.ruleDefinitions.initializeRules(),
-            
+            this.ruleDefinitions.initializeRules();
             // Sync legacy properties for backward compatibility
             this.syncLegacyProperties() }
-            console.log(`[BalanceAdjustmentValidationRules] Validation, system initialized, with ${this.rules.size} rules`});
+            console.log(`[BalanceAdjustmentValidationRules] Validation, system initialized, with ${this.rules.size} rules`};
         } catch (error) {
-            this.errorHandler.handleError(error, 'VALIDATION_SYSTEM_INIT'),
+            this.errorHandler.handleError(error, 'VALIDATION_SYSTEM_INIT');
             console.error('[BalanceAdjustmentValidationRules] Failed, to initialize, validation system') }'
     }
     
@@ -181,15 +182,13 @@ export class BalanceAdjustmentValidationRules {
     public validate(oldValue: any, newValue: any, context: ValidationContext = { ): ValidationResult {
         try {
             // Get applicable rules using the engine
-            const allRules = this.ruleDefinitions.getRules(),
-            const applicableRules = this.ruleEngine.getApplicableRules(allRules, context),
-            
+            const allRules = this.ruleDefinitions.getRules();
+            const applicableRules = this.ruleEngine.getApplicableRules(allRules, context);
             // Execute rules using the engine
-            const engineResult = this.ruleEngine.executeRules(applicableRules, oldValue, newValue, context),
-            
+            const engineResult = this.ruleEngine.executeRules(applicableRules, oldValue, newValue, context);
             // Process results using the processor
             const processedResult = this.resultProcessor.processResults(
-                engineResult.results ),
+                engineResult.results );
                 oldValue,
                 newValue),
                 context,
@@ -210,18 +209,18 @@ export class BalanceAdjustmentValidationRules {
             
             return { valid: false,
 
-                errors: [{ };
+                errors: [{ },
 
                     rule: 'system', ' }'
 
-                    message: `Validation process, failed: ${error, instanceof Error ? error.message : String(error'}'`;
+                    message: `Validation process, failed: ${error, instanceof Error ? error.message: String(error'}'`,
                     severity: 'high',]';'
                     category: 'system'],
                 }],
-                warnings: [];
-                suggestions: [];
-                autoFixAvailable: false;
-                autoFixedValue: newValue;
+                warnings: [],
+                suggestions: [],
+                autoFixAvailable: false,
+                autoFixedValue: newValue,
                 rulesApplied: [],
     timestamp: Date.now();
     }
@@ -232,12 +231,12 @@ export class BalanceAdjustmentValidationRules {
      * Add validation rule - delegated to rule definitions
      */
     public addRule(name: string, rule: ValidationRule): void { try {
-            this.ruleDefinitions.addRule(name, rule),
+            this.ruleDefinitions.addRule(name, rule);
             this.syncLegacyProperties(),' }'
 
         } catch (error) { }
 
-            this.errorHandler.handleError(error, 'VALIDATION_RULE_ADD', { name, rule });
+            this.errorHandler.handleError(error, 'VALIDATION_RULE_ADD', { name, rule };
         }
     }
     
@@ -245,14 +244,13 @@ export class BalanceAdjustmentValidationRules {
      * Remove validation rule - delegated to rule definitions
      */
     public removeRule(name: string): boolean { try {
-            const result = this.ruleDefinitions.removeRule(name),
-            this.syncLegacyProperties(),
-
+            const result = this.ruleDefinitions.removeRule(name);
+            this.syncLegacyProperties();
             return result,' }'
 
         } catch (error) { }
 
-            this.errorHandler.handleError(error, 'VALIDATION_RULE_REMOVE', { name });
+            this.errorHandler.handleError(error, 'VALIDATION_RULE_REMOVE', { name };
             return false;
     
     /**
@@ -264,28 +262,26 @@ export class BalanceAdjustmentValidationRules {
      * Enable/disable rule - delegated to rule definitions
      */
     public setRuleEnabled(ruleName: string, enabled: boolean): boolean { try {
-            const result = this.ruleDefinitions.setRuleEnabled(ruleName, enabled),
-            this.syncLegacyProperties(),
-
+            const result = this.ruleDefinitions.setRuleEnabled(ruleName, enabled);
+            this.syncLegacyProperties();
             return result,' }'
 
         } catch (error) { }
 
-            this.errorHandler.handleError(error, 'VALIDATION_RULE_TOGGLE', { ruleName, enabled });
+            this.errorHandler.handleError(error, 'VALIDATION_RULE_TOGGLE', { ruleName, enabled };
             return false;
     
     /**
      * Enable/disable rules by category - delegated to rule definitions
      */
     public setCategoryEnabled(category: string, enabled: boolean): number { try {
-            const result = this.ruleDefinitions.setCategoryEnabled(category, enabled),
-            this.syncLegacyProperties(),
-
+            const result = this.ruleDefinitions.setCategoryEnabled(category, enabled);
+            this.syncLegacyProperties();
             return result,' }'
 
         } catch (error) { }
 
-            this.errorHandler.handleError(error, 'VALIDATION_CATEGORY_TOGGLE', { category, enabled });
+            this.errorHandler.handleError(error, 'VALIDATION_CATEGORY_TOGGLE', { category, enabled };
             return 0;
     
     /**
@@ -297,7 +293,7 @@ export class BalanceAdjustmentValidationRules {
 
         } catch (error) { }
 
-            this.errorHandler.handleError(error, 'VALIDATION_GET_RULES', { filters });
+            this.errorHandler.handleError(error, 'VALIDATION_GET_RULES', { filters };
             return [];
     
     // ===== LEGACY HELPER METHODS - Maintained for compatibility =====
@@ -328,43 +324,43 @@ export class BalanceAdjustmentValidationRules {
     /**
      * Initialize rules - delegated to rule definitions
      */
-    public _initializeRules(): void { this.ruleDefinitions.initializeRules(),
+    public _initializeRules(): void { this.ruleDefinitions.initializeRules();
         this.syncLegacyProperties() }
     
     /**
      * Add bubble health rules - delegated to rule definitions
      */
-    public _addBubbleHealthRules(): void { this.ruleDefinitions.addBubbleHealthRules(),
+    public _addBubbleHealthRules(): void { this.ruleDefinitions.addBubbleHealthRules();
         this.syncLegacyProperties() }
     
     /**
      * Add score rules - delegated to rule definitions
      */
-    public _addScoreRules(): void { this.ruleDefinitions.addScoreRules(),
+    public _addScoreRules(): void { this.ruleDefinitions.addScoreRules();
         this.syncLegacyProperties() }
     
     /**
      * Add size rules - delegated to rule definitions
      */
-    public _addSizeRules(): void { this.ruleDefinitions.addSizeRules(),
+    public _addSizeRules(): void { this.ruleDefinitions.addSizeRules();
         this.syncLegacyProperties() }
     
     /**
      * Add time rules - delegated to rule definitions
      */
-    public _addTimeRules(): void { this.ruleDefinitions.addTimeRules(),
+    public _addTimeRules(): void { this.ruleDefinitions.addTimeRules();
         this.syncLegacyProperties() }
     
     /**
      * Add special effect rules - delegated to rule definitions
      */
-    public _addSpecialEffectRules(): void { this.ruleDefinitions.addSpecialEffectRules(),
+    public _addSpecialEffectRules(): void { this.ruleDefinitions.addSpecialEffectRules();
         this.syncLegacyProperties() }
     
     /**
      * Add system rules - delegated to rule definitions
      */
-    public _addSystemRules(): void { this.ruleDefinitions.addSystemRules(),
+    public _addSystemRules(): void { this.ruleDefinitions.addSystemRules();
         this.syncLegacyProperties() }
     
     // ===== PUBLIC API METHODS - Enhanced with sub-component functionality =====
@@ -415,7 +411,7 @@ export class BalanceAdjustmentValidationRules {
     /**
      * Clear all history and metrics
      */'
-    public clearHistory(): void { this.ruleEngine.clearHistory(),
+    public clearHistory(): void { this.ruleEngine.clearHistory();
         this.resultProcessor.clearHistory()','
         console.log('[BalanceAdjustmentValidationRules] All, history cleared') }'
     
@@ -430,7 +426,7 @@ export class BalanceAdjustmentValidationRules {
      * Get component references for advanced usage
      */
     public getComponents(): ComponentReferences { return { engine: this.ruleEngine,
-            definitions: this.ruleDefinitions };
+            definitions: this.ruleDefinitions },
             processor: this.resultProcessor 
     }
     
@@ -443,7 +439,7 @@ export class BalanceAdjustmentValidationRules {
                 status: 'active')','
     ruleCount: this.ruleDefinitions.rules.size,
                 statistics: this.ruleDefinitions.getStatistics()','
-    status: 'active');
+    status: 'active'),
                 analytics: this.resultProcessor.getAnalytics();
             },
             overall: { initialized: true,
@@ -456,9 +452,9 @@ export class BalanceAdjustmentValidationRules {
      */
     public, destroy(): void { try {
             // Destroy sub-components
-            this.ruleEngine.destroy(),
-            this.ruleDefinitions.destroy(),
-            this.resultProcessor.destroy(),
+            this.ruleEngine.destroy();
+            this.ruleDefinitions.destroy();
+            this.resultProcessor.destroy();
             // Clear legacy properties
             this.rules.clear()','
             console.log('[BalanceAdjustmentValidationRules] Main, controller destroyed'),' }'

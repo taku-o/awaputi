@@ -28,7 +28,7 @@ class MockStorageManager {
     constructor() {
         this.data = new Map() }
     async getData(storeName, query) {
-        const storeData = this.data.get(storeName || []),
+        const storeData = this.data.get(storeName || []);
         if (!query') return storeData,'
         if (query.range && query.index === 'startTime') {
             return storeData.filter(item => {
@@ -43,19 +43,20 @@ class MockStorageManager {
 class TestDataFactory {
     static createSessionData(options = {)') {'
         const defaults = {
-            sessionId: 'test_session',
-            startTime: Date.now() - 300000,
+            sessionId: 'test_session';
+            startTime: Date.now() - 300000;
             endTime: Date.now(
-            finalScore: 1000,
-            bubblesPopped: 80,
-            bubblesMissed: 20,
-            maxCombo: 15,
-            completed: true,;
-        
+            finalScore: 1000;
+            bubblesPopped: 80;
+            bubblesMissed: 20;
+            maxCombo: 15;
+            completed: true;
+            completed: true;
+        };
         return { ...defaults, ...options };
     }
     static createBenchmarkData(playerCount = 3) {
-        const sessions: any[] = [],
+        const sessions: any[] = [];
         for (let i = 1, i <= playerCount, i++) {
             for (let j = 1, j <= 3, j++) {
                 sessions.push(this.createSessionData({
@@ -64,35 +65,35 @@ class TestDataFactory {
                     startTime: Date.now() - (i * 7 + j) * 24 * 60 * 60 * 1000;
                     finalScore: 800 + i * 200 + Math.random() * 100;
                     bubblesPopped: 70 + i * 10 + Math.random() * 20;
-                    bubblesMissed: 30 - i * 5 + Math.random(}) * 10
-                });
+                    bubblesMissed: 30 - i * 5 + Math.random(} * 10
+                };
             }
         }
         return sessions;
     }
     static createStageData(stageId, sessionCount = 3) {
-        const sessions: any[] = [],
+        const sessions: any[] = [];
         for (let i = 0, i < sessionCount, i++) {
-            sessions.push(this.createSessionData({),
+            sessions.push(this.createSessionData({);
                 sessionId: `${stageId}_session_${i)`;
                 stageId: stageId;
                 startTime: Date.now() - (i + 1) * 24 * 60 * 60 * 1000;
                 finalScore: 900 + Math.random() * 200;
-                completed: Math.random(}) > 0.3
-            })');'
+                completed: Math.random(} > 0.3
+            }');'
         }
         return sessions;
     }
 }
 // Main test suite with shared utilities
 describe('ComparisonEngine - Main Test Suite', () => {
-    let comparisonEngine: any,
-    let coreComparisonEngine: any,
-    let mockStorageManager: any,
+    let comparisonEngine: any;
+    let coreComparisonEngine: any;
+    let mockStorageManager: any;
     beforeEach(() => {
-        mockStorageManager = new MockStorageManager(),
-        comparisonEngine = new ComparisonEngine(mockStorageManager),
-        coreComparisonEngine = new CoreComparisonEngine() });
+        mockStorageManager = new MockStorageManager();
+        comparisonEngine = new ComparisonEngine(mockStorageManager);
+        coreComparisonEngine = new CoreComparisonEngine() };
     afterEach(() => {
         // Clean up any shared state
         if (comparisonEngine && comparisonEngine.clearCache) {
@@ -101,9 +102,9 @@ describe('ComparisonEngine - Main Test Suite', () => {
     describe('Test Suite Integration', (') => {'
         test('分割テストコンポーネントが正しく読み込まれている', () => {
             // Verify that all test components are properly loaded
-            expect(ComparisonEngine).toBeDefined(),
-            expect(CoreComparisonEngine).toBeDefined(),
-            expect(MockStorageManager).toBeDefined(),
+            expect(ComparisonEngine).toBeDefined();
+            expect(CoreComparisonEngine).toBeDefined();
+            expect(MockStorageManager).toBeDefined();
             expect(TestDataFactory).toBeDefined() }');'
         test('共有ユーティリティが正常に動作する', () => {
             // Test MockStorageManager
@@ -121,10 +122,10 @@ describe('ComparisonEngine - Main Test Suite', () => {
             expect(stageData[0].stageId').toBe('stage1');'
         }');'
         test('ComparisonEngineインスタンスが正常に作成される', () => {
-            expect(comparisonEngine).toBeInstanceOf(ComparisonEngine),
+            expect(comparisonEngine).toBeInstanceOf(ComparisonEngine);
             expect(comparisonEngine.storageManager).toBe(mockStorageManager) }');'
         test('CoreComparisonEngineインスタンスが正常に作成される', () => {
-            expect(coreComparisonEngine).toBeInstanceOf(CoreComparisonEngine) });
+            expect(coreComparisonEngine).toBeInstanceOf(CoreComparisonEngine) };
     }
 }');'
 // Export shared utilities for use in split test components

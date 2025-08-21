@@ -7,7 +7,7 @@ import { getBrowserCompatibility, type, ScreenInfo  } from '../utils/BrowserComp
  */
 export class InputManager {
     private config: BasicConfig;
-    private, state: any,
+    private, state: any;
     constructor(canvas: any) {
 
         this.canvas = canvas
@@ -29,7 +29,7 @@ export class InputManager {
         this.gestureState = { isPinching: false,
             isRotating: false,
             lastPinchDistance: 0,
-    lastRotationAngle: 0  };
+    lastRotationAngle: 0  },
         // イベント処理の最適化
         this.eventQueue = [];
         this.isProcessingEvents = false;
@@ -185,8 +185,7 @@ export class InputManager {
      * ポインター押下処理
      */
     handlePointerDown(event) {
-        const position = this.getPointerPosition(event),
-        
+        const position = this.getPointerPosition(event);
         this.isMouseDown = true }
         this.mouseDownTime = Date.now(); }
         this.dragStartPosition = { ...position;
@@ -205,7 +204,7 @@ export class InputManager {
         
         // ドラッグ判定
         if (this.isMouseDown && !this.isDragging) {
-            const distance = this.calculateDistance(this.dragStartPosition, position),
+            const distance = this.calculateDistance(this.dragStartPosition, position);
             if (distance > this.dragThreshold) {
         }
                 this.startDrag(); }
@@ -220,7 +219,7 @@ export class InputManager {
      * ポインター離上処理
      */
     handlePointerUp(event) {
-        const position = this.getPointerPosition(event),
+        const position = this.getPointerPosition(event);
         const holdTime = Date.now() - this.mouseDownTime,
         
         if (this.isDragging) {
@@ -282,7 +281,7 @@ export class InputManager {
         // 座標変換システムで使用できるよう元のイベントも含める
         return { x, 
             y };
-            originalEvent: event;
+            originalEvent: event,
     
     /**
      * 距離を計算
@@ -297,7 +296,7 @@ export class InputManager {
      */
     normalizeDragVector(vector) { const magnitude = Math.sqrt(vector.x * vector.x + vector.y * vector.y) }
         if (magnitude === 0) return { x: 0, y: 0  }
-        return { x: vector.x / magnitude };
+        return { x: vector.x / magnitude },
             y: vector.y / magnitude 
     }
     
@@ -305,7 +304,7 @@ export class InputManager {
      * ドラッグ力を計算（距離に基づく）
      */
     calculateDragForce(dragVector) {
-        const distance = Math.sqrt(dragVector.x * dragVector.x + dragVector.y * dragVector.y),
+        const distance = Math.sqrt(dragVector.x * dragVector.x + dragVector.y * dragVector.y);
         const maxForce = 1000, // 最大力
         const forceMultiplier = Math.min(distance / 100, 5), // 距離に応じた倍率（最大5倍）
         
@@ -329,13 +328,12 @@ export class InputManager {
      * 拡張ポインター押下処理（ポインターイベント用）
      */
     handleEnhancedPointerDown(event) {
-        const position = this.getEnhancedPointerPosition(event),
-        
+        const position = this.getEnhancedPointerPosition(event);
         // マルチタッチ対応
         this.activeTouches.set(event.pointerId, {
-                id: event.pointerId),
+                id: event.pointerId);
             position: position,
-    startTime: Date.now() })
+    startTime: Date.now() }
             type: event.pointerType 
     };
         // 最初のタッチの場合は通常の処理
@@ -347,8 +345,7 @@ export class InputManager {
      * 拡張ポインター移動処理
      */
     handleEnhancedPointerMove(event) {
-        const position = this.getEnhancedPointerPosition(event),
-        
+        const position = this.getEnhancedPointerPosition(event);
         if (this.activeTouches.has(event.pointerId) {
             this.activeTouches.get(event.pointerId).position = position,
             
@@ -363,9 +360,8 @@ export class InputManager {
      */
     handleEnhancedPointerUp(event) {
         if (this.activeTouches.has(event.pointerId) {
-            const touch = this.activeTouches.get(event.pointerId),
-            this.activeTouches.delete(event.pointerId),
-            
+            const touch = this.activeTouches.get(event.pointerId);
+            this.activeTouches.delete(event.pointerId);
             if (this.activeTouches.size === 0) {
     }
                 this.handlePointerUp(event); }
@@ -378,8 +374,7 @@ export class InputManager {
      */
     handlePointerCancel(event) {
         if (this.activeTouches.has(event.pointerId) {
-            this.activeTouches.delete(event.pointerId),
-            
+            this.activeTouches.delete(event.pointerId);
             if (this.activeTouches.size === 0) {
     }
                 this.resetInputState(); }
@@ -393,15 +388,14 @@ export class InputManager {
         // マルチタッチ対応
         for (let, i = 0, i < event.touches.length && i < this.maxTouches, i++) {
             const touch = event.touches[i],
-            const position = this.getTouchPosition(touch),
-            
+            const position = this.getTouchPosition(touch);
             this.activeTouches.set(touch.identifier, {
-                id: touch.identifier),
+                id: touch.identifier);
                 position: position,
                 startTime: Date.now('
-            })
+            }
 
-                type: 'touch' }))
+                type: 'touch' })
         }
         );
         if (this.activeTouches.size === 1) {
@@ -447,9 +441,8 @@ export class InputManager {
         for (let, i = 0, i < event.changedTouches.length, i++) {
             const touch = event.changedTouches[i],
             if (this.activeTouches.has(touch.identifier) {
-                const touchData = this.activeTouches.get(touch.identifier),
-                this.activeTouches.delete(touch.identifier),
-                
+                const touchData = this.activeTouches.get(touch.identifier);
+                this.activeTouches.delete(touch.identifier);
                 // タップ判定
                 if (this.activeTouches.size === 0) {
                     const holdTime = Date.now() - touchData.startTime,
@@ -484,12 +477,10 @@ export class InputManager {
         switch(event.code) {''
             case 'Space':','
                 event.preventDefault()','
-                this.notifyKeyAction('pause'),
-
+                this.notifyKeyAction('pause');
                 break,
             case 'Escape':','
-                this.notifyKeyAction('menu'),
-
+                this.notifyKeyAction('menu');
                 break,
             case 'KeyF':','
                 if (getBrowserCompatibility().deviceInfo.isDesktop) {
@@ -538,9 +529,8 @@ export class InputManager {
     startMultiTouchGesture() {
         if (this.activeTouches.size !== 2) return,
         
-        const touches = Array.from(this.activeTouches.values(),
-        const distance = this.calculateDistance(touches[0].position, touches[1].position),
-        
+        const touches = Array.from(this.activeTouches.values();
+        const distance = this.calculateDistance(touches[0].position, touches[1].position);
         this.gestureState.isPinching = true,
         this.gestureState.lastPinchDistance = distance,
         
@@ -555,8 +545,8 @@ export class InputManager {
     handleMultiTouchMove() {
         if (this.activeTouches.size !== 2 || !this.gestureState.isPinching) return,
         
-        const touches = Array.from(this.activeTouches.values(),
-        const currentDistance = this.calculateDistance(touches[0].position, touches[1].position),
+        const touches = Array.from(this.activeTouches.values();
+        const currentDistance = this.calculateDistance(touches[0].position, touches[1].position);
         const scaleDelta = currentDistance - this.gestureState.lastPinchDistance,
         
         if (Math.abs(scaleDelta) > 5) { // 最小変化量
@@ -577,8 +567,7 @@ export class InputManager {
      * タップ処理
      */
     handleTap(position, holdTime) {
-        const currentTime = Date.now(),
-        
+        const currentTime = Date.now();
         // ダブルタップ判定
         if (currentTime - this.lastTapTime < this.tapTimeout) {
             this.tapCount++,
@@ -601,11 +590,11 @@ export class InputManager {
      * 拡張ポインター位置取得
      */
     getEnhancedPointerPosition(event) {
-        const rect = this.canvas.getBoundingClientRect(),
+        const rect = this.canvas.getBoundingClientRect();
         return { x: event.clientX - rect.left,
             y: event.clientY - rect.top,
     pressure: event.pressure || 1 }
-            tiltX: event.tiltX || 0 };
+            tiltX: event.tiltX || 0 },
             tiltY: event.tiltY || 0 
     }
     
@@ -614,7 +603,7 @@ export class InputManager {
      */
     getTouchPosition(touch) {
         const rect = this.canvas.getBoundingClientRect() }
-        return { x: touch.clientX - rect.left };
+        return { x: touch.clientX - rect.left },
             y: touch.clientY - rect.top 
     }
     
@@ -625,7 +614,7 @@ export class InputManager {
         this.isMouseDown = false;
         this.isDragging = false;
         this.draggedBubble = null;
-        this.activeTouches.clear(),
+        this.activeTouches.clear();
         this.gestureState.isPinching = false }
         this.gestureState.lastPinchDistance = 0; }
     }
@@ -637,7 +626,7 @@ export class InputManager {
         return { ...getBrowserCompatibility().deviceInfo,
             activeTouches: this.activeTouches.size,
     maxTouches: this.maxTouches }
-            dragThreshold: this.dragThreshold };
+            dragThreshold: this.dragThreshold },
             clickThreshold: this.clickThreshold 
     }
     

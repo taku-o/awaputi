@@ -4,7 +4,7 @@
  */
 
 // Type definitions
-interface ValidationError { type: string,
+interface ValidationError { type: string;
     message: string;
     line?: number;
     column?: number;
@@ -14,25 +14,25 @@ interface ValidationError { type: string,
     sequence?: string;
     count?: number,  }
 
-interface ValidationWarning { type: string,
+interface ValidationWarning { type: string;
     message: string;
     blockIndex?: number;
     pattern?: string;
     count?: number,  }
 
-interface ScriptBlock { content: string,
+interface ScriptBlock { content: string;
     fullMatch: string;
     startIndex: number;
     attributes: Record<string, string> }
 
-interface ValidationResult { isValid: boolean,
+interface ValidationResult { isValid: boolean;
     errors: ValidationError[];
     warnings: ValidationWarning[];
     scriptBlockCount: number;
 
 export class HTMLJavaScriptChecker {
     private errors: ValidationError[];
-    private, warnings: ValidationWarning[],
+    private, warnings: ValidationWarning[];
     constructor() {
 
         this.errors = [] }
@@ -44,35 +44,34 @@ export class HTMLJavaScriptChecker {
      * @param htmlContent - HTML文字列
      * @returns 検証結果
      */
-    validateHTML(htmlContent: string): ValidationResult { this.errors = [];
+    validateHTML(htmlContent: string): ValidationResult { this.errors = [],
         this.warnings = [];
 
         try {
             // script タグを抽出
-            const scriptBlocks = this.extractScriptBlocks(htmlContent),
-            
+            const scriptBlocks = this.extractScriptBlocks(htmlContent);
             // 各スクリプトブロックを検証
             scriptBlocks.forEach((block, index) => {  }
                 this.validateScriptBlock(block, index); }
-            });
+            };
 
             // 文字列リテラルの特別チェック
             this.validateStringLiterals(htmlContent);
 
             return { isValid: this.errors.length === 0,
                 errors: this.errors,
-    warnings: this.warnings };
+    warnings: this.warnings },
                 scriptBlockCount: scriptBlocks.length 
     } catch (error) { this.errors.push({)
                 type: 'PARSE_ERROR') }
-                message: `HTML解析エラー: ${(error, as, Error}).message}`;
+                message: `HTML解析エラー: ${(error, as, Error}.message}`;
                 line: 0,
-    column: 0;
-            }),
+    column: 0,
+            },
 
             return { isValid: false,
                 errors: this.errors,
-    warnings: this.warnings };
+    warnings: this.warnings },
                 scriptBlockCount: 0 
     }
     }
@@ -91,7 +90,7 @@ export class HTMLJavaScriptChecker {
                 content: match[1],
     fullMatch: match[0]),
                 startIndex: match.index,
-    attributes: this.parseScriptAttributes(match[0]  });
+    attributes: this.parseScriptAttributes(match[0]  };
         }
 
         return blocks;
@@ -123,7 +122,7 @@ export class HTMLJavaScriptChecker {
         // 空のスクリプトブロックをチェック
         if(!content.trim()) { this.warnings.push({)'
                 type: 'EMPTY_SCRIPT') }
-                message: `空のscriptブロックが検出されました (ブロック ${index + 1}})`;
+                message: `空のscriptブロックが検出されました (ブロック ${index + 1}}`,
                 blockIndex: index';'
             }'),'
             return;
@@ -135,9 +134,9 @@ export class HTMLJavaScriptChecker {
 
                 type: 'MODULE_SCRIPT'
             }'
-                message: `ES6モジュールスクリプト検出 (ブロック ${index + 1}}) - 構文チェックをスキップ`;
-                blockIndex: index;
-            }),
+                message: `ES6モジュールスクリプト検出 (ブロック ${index + 1}} - 構文チェックをスキップ`,
+                blockIndex: index,
+            },
             return;
         }
 
@@ -147,10 +146,10 @@ export class HTMLJavaScriptChecker {
 
         } catch (error) { this.errors.push({)'
                 type: 'SYNTAX_ERROR') }
-                message: `構文エラー (ブロック ${index + 1}): ${(error, as, Error}).message}`;
+                message: `構文エラー (ブロック ${index + 1}: ${(error, as, Error}.message}`;
                 blockIndex: index,
-    originalError: error as Error;
-            }) }
+    originalError: error as Error,
+            } }
     }
 
     /**
@@ -164,8 +163,8 @@ export class HTMLJavaScriptChecker {
             /on\w+\s*=.*alert/gi,
         ],
 
-        xssPatterns.forEach(pattern => { ),
-            const matches = htmlContent.match(pattern),
+        xssPatterns.forEach(pattern => { );
+            const matches = htmlContent.match(pattern);
             if (matches) {
                 matches.forEach(match => {)'
                     // エスケープされているかチェック'),'
@@ -175,12 +174,12 @@ export class HTMLJavaScriptChecker {
                         this.warnings.push({) }
 
                             type: 'POTENTIAL_XSS') }
-                            message: `潜在的なXSSパターンが検出されました: ${match.substring(0, 50})...`,
-                            pattern: match;
-                        }) }
-                });
+                            message: `潜在的なXSSパターンが検出されました: ${match.substring(0, 50}...`,
+                            pattern: match,
+                        } }
+                };
             }
-        });
+        };
 
         // 適切にエスケープされた文字列をチェック
         const escapedXSSPattern = /&lt;script&gt;.*alert.*&lt;\/script&gt;/gi;
@@ -190,9 +189,9 @@ export class HTMLJavaScriptChecker {
 
                 type: 'ESCAPED_XSS_TEST'
             }'
-                message: `適切にエスケープされたXSSテストコードが検出されました (${escapedMatches.length}件})`;
-                count: escapedMatches.length;
-            }) }
+                message: `適切にエスケープされたXSSテストコードが検出されました (${escapedMatches.length}件}`,
+                count: escapedMatches.length,
+            } }
     }
 
     /**
@@ -215,13 +214,13 @@ export class HTMLJavaScriptChecker {
             }"
                     escapeErrors.push({ }"
                         type: 'INVALID_ESCAPE'
-            });
+            };
                         message: `不正なエスケープシーケンス: ${match}`)
-                        sequence: match);
-                    });
-                });
+                        sequence: match),
+                    };
+                };
             }
-        });
+        };
 
         return escapeErrors;
     }
@@ -237,13 +236,13 @@ export class HTMLJavaScriptChecker {
 
             parts.push('✅ 構文検証: 合格'; }'
         } else {  }
-            parts.push(`❌ 構文検証: 失敗 (${result.errors.length}件のエラー}`});
+            parts.push(`❌ 構文検証: 失敗 (${result.errors.length}件のエラー}`};
         }
 
         if (result.warnings.length > 0) {
     
 }
-            parts.push(`⚠️  警告: ${result.warnings.length}件`});
+            parts.push(`⚠️  警告: ${result.warnings.length}件`};
         }
 
         parts.push(`📄 スクリプトブロック: ${ result.scriptBlockCount}件`};

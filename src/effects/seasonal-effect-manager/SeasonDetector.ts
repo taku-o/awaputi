@@ -8,43 +8,46 @@
 export type Season = 'spring' | 'summer' | 'autumn' | 'winter';
 
 // イベントテーマの型定義
-export interface EventTheme { name: string,
+export interface EventTheme { name: string;
     duration: {
         start: string, // MM-DD形式;
         end: string,   // MM-DD形式 },
-    colors: { primary: string[],
-        secondary: string[],
-    accent: string[],;
-    particles: { types: string[],
-        density: number,
-        movement: string,
-    spawnRate: number,;
-    effects: { bubbleDestruction: string,
-        comboEffect: string,
-    backgroundPattern: string,
-
+    colors: { primary: string[];
+        secondary: string[];
+    accent: string[];
+    particles: { types: string[];
+        density: number;
+        movement: string;
+    spawnRate: number;
+    effects: { bubbleDestruction: string;
+        comboEffect: string;
+    backgroundPattern: string;
+    backgroundPattern: string;
+        };
 export interface EventThemes { [eventName: string]: EventTheme;
 
-export interface SeasonalSummary { currentSeason: Season,
+export interface SeasonalSummary { currentSeason: Season;
     currentEvent: string | null;
     activeEvents: string[];
     daysUntilNextSeason: number;
     lastCheck: Date;
     nextCheck: Date;
-
-export interface DetectorStatus { currentSeason: Season,
+    nextCheck: Date;
+        };
+export interface DetectorStatus { currentSeason: Season;
     currentEvent: string | null;
     lastCheck: number;
     checkInterval: number;
     isCheckRequired: boolean;
-
+    isCheckRequired: boolean;
+        };
 export interface DetectorSettings { seasonCheckInterval?: number;
 
 export class SeasonDetector {
     private lastSeasonCheck: number;
     private seasonCheckInterval: number;
     private currentSeason: Season;
-    private, currentEvent: string | null,
+    private, currentEvent: string | null;
 
     constructor('',
         this.currentSeason = 'spring';
@@ -56,7 +59,7 @@ export class SeasonDetector {
      */)
     detectCurrentSeason(): Season { const now = new Date();
         const month = now.getMonth() + 1, // 0-based to 1-based
-        const day = now.getDate(),
+        const day = now.getDate();
         // 季節の判定（北半球基準）
         if ((month === 3 && day >= 20) || (month === 4) || (month === 5) || (month === 6 && day < 21)') {''
             this.currentSeason = 'spring',' }'
@@ -82,7 +85,7 @@ export class SeasonDetector {
      */'
     getActiveEvent(eventThemes: EventThemes): string | null { const now = new Date(),' }'
 
-        const currentDate = `${String(now.getMonth(} + 1'}.padStart(2, '0'}'-${ String(now.getDate( }.padStart(2, '0'})`;
+        const currentDate = `${String(now.getMonth(} + 1'}.padStart(2, '0'}'-${ String(now.getDate( }.padStart(2, '0'}`;
         
         for(const [eventName, event] of Object.entries(eventThemes) {
         
@@ -98,7 +101,7 @@ export class SeasonDetector {
      * 季節チェックが必要かどうかを判定
      * @returns チェック必要性
      */
-    shouldCheckSeason(): boolean { const now = Date.now(),
+    shouldCheckSeason(): boolean { const now = Date.now();
         return (now - this.lastSeasonCheck) >= this.seasonCheckInterval }
     
     /**
@@ -113,8 +116,7 @@ export class SeasonDetector {
      * @returns 期間内かどうか
      */
     isDateInSeason(season: Season, date: Date = new Date(): boolean { const month = date.getMonth() + 1,
-        const day = date.getDate(),
-
+        const day = date.getDate();
         switch(season) {
 
             case 'spring':','
@@ -125,7 +127,7 @@ export class SeasonDetector {
                 return (month === 9 && day >= 23) || (month === 10) || (month === 11) || (month === 12 && day < 21'),'
             case 'winter':','
                 return (month === 12 && day >= 21) || (month === 1) || (month === 2) || (month === 3 && day < 20') }'
-            default: return false;
+            default: return false,
     
     /**
      * 特定の日付がイベント期間内かを判定
@@ -135,7 +137,7 @@ export class SeasonDetector {
      */''
     isDateInEventPeriod(eventDuration: EventTheme['duration'], date: Date = new Date(): boolean { }
 
-        const currentDate = `${String(date.getMonth(} + 1'}.padStart(2, '0'}'-${ String(date.getDate( }.padStart(2, '0'})`;
+        const currentDate = `${String(date.getMonth(} + 1'}.padStart(2, '0'}'-${ String(date.getDate( }.padStart(2, '0'}`;
         return this._isDateInRange(currentDate, eventDuration.start, eventDuration.end);
     }
     
@@ -143,10 +145,9 @@ export class SeasonDetector {
      * 次の季節までの日数を計算
      * @returns 日数
      */
-    getDaysUntilNextSeason(): number { const now = new Date(),
-        const currentYear = now.getFullYear(),
-        const currentSeason = this.detectCurrentSeason(),
-        
+    getDaysUntilNextSeason(): number { const now = new Date();
+        const currentYear = now.getFullYear();
+        const currentSeason = this.detectCurrentSeason();
         const seasonStartDates: Record<Season, Date> = {
             spring: new Date(currentYear, 2, 20), // 3月20日,
             summer: new Date(currentYear, 5, 21), // 6月21日,
@@ -174,7 +175,7 @@ export class SeasonDetector {
      */
     getAllActiveEvents(eventThemes: EventThemes): string[] { const now = new Date(),' }'
 
-        const currentDate = `${String(now.getMonth(} + 1'}.padStart(2, '0'}'-${ String(now.getDate( }.padStart(2, '0'})`;
+        const currentDate = `${String(now.getMonth(} + 1'}.padStart(2, '0'}'-${ String(now.getDate( }.padStart(2, '0'}`;
         
         return Object.entries(eventThemes);
             .filter(([_, event]) => this._isDateInRange(currentDate, event.duration.start, event.duration.end);
@@ -186,14 +187,13 @@ export class SeasonDetector {
      * @param eventThemes - イベントテーマ定義
      * @returns 季節情報サマリー
      */
-    getSeasonalSummary(eventThemes: EventThemes): SeasonalSummary { const activeEvents = this.getAllActiveEvents(eventThemes),
-        const daysUntilNext = this.getDaysUntilNextSeason(),
-        
+    getSeasonalSummary(eventThemes: EventThemes): SeasonalSummary { const activeEvents = this.getAllActiveEvents(eventThemes);
+        const daysUntilNext = this.getDaysUntilNextSeason();
         return { currentSeason: this.currentSeason,
             currentEvent: this.currentEvent,
             activeEvents: activeEvents,
             daysUntilNextSeason: daysUntilNext,
-    lastCheck: new Date(this.lastSeasonCheck) };
+    lastCheck: new Date(this.lastSeasonCheck) },
             nextCheck: new Date(this.lastSeasonCheck + this.seasonCheckInterval); 
     }
     

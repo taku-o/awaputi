@@ -8,7 +8,7 @@ const createMockErrorReporter = (') => ({ ''
     sessionId: 'test_session_123' }
     errorPatterns: new Map(}
     developerNotifications: { enabled: true,
-            });
+            };
 ),
 // DOM環境のセットアップ
 const setupDOMEnvironment = () => {  (global: any).document = {
@@ -24,7 +24,7 @@ const setupDOMEnvironment = () => {  (global: any).document = {
         addEventListener: jest.fn(); }
             };
             return element;
-        }),
+        },
         head: { appendChild: jest.fn() }
         },
         body: { appendChild: jest.fn() }
@@ -44,7 +44,7 @@ describe('ErrorNotificationSystem', () => {  let notificationSystem: any,
     
     beforeEach(() => {
         setupDOMEnvironment(),'
-        mockErrorReporter = createMockErrorReporter(),
+        mockErrorReporter = createMockErrorReporter();
         notificationSystem = new ErrorNotificationSystem(mockErrorReporter as any'),'
         // コンソールのモック''
         jest.spyOn(console, 'log').mockImplementation(')',
@@ -53,15 +53,15 @@ describe('ErrorNotificationSystem', () => {  let notificationSystem: any,
         jest.spyOn(console, 'group').mockImplementation(')',
         jest.spyOn(console, 'groupEnd').mockImplementation() }
         // タイマーのモック }
-        jest.useFakeTimers(});
-    afterEach(() => {  notificationSystem.destroy(),
+        jest.useFakeTimers(};
+    afterEach(() => {  notificationSystem.destroy();
         jest.restoreAllMocks() }
         jest.runOnlyPendingTimers(); }'
-        jest.useRealTimers(});'}');
+        jest.useRealTimers(};'}');
     describe('初期化', (') => {  ''
         test('ErrorNotificationSystemが正しく初期化される', () => {
-            expect(notificationSystem).toBeDefined(),
-            expect(notificationSystem.notificationConfig.enabled).toBe(true),
+            expect(notificationSystem).toBeDefined();
+            expect(notificationSystem.notificationConfig.enabled).toBe(true);
             expect(notificationSystem.notificationHistory).toEqual([]) }'
             expect(notificationSystem.pendingNotifications).toBeInstanceOf(Map: any);' }'
         }');'
@@ -71,8 +71,8 @@ describe('ErrorNotificationSystem', () => {  let notificationSystem: any,
         }');'
         test('設定が正しく初期化される', () => {  const config = notificationSystem.notificationConfig,
             
-            expect(config.channels.console.enabled).toBe(true),
-            expect(config.channels.ui.enabled).toBe(true),
+            expect(config.channels.console.enabled).toBe(true);
+            expect(config.channels.ui.enabled).toBe(true);
             expect(config.channels.storage.enabled).toBe(true) }'
             expect(config.rateLimit.maxPerMinute).toBe(10););' }'
         }');'
@@ -198,10 +198,10 @@ describe('ErrorNotificationSystem', () => {  let notificationSystem: any,
             for(let i = 0, i < 4, i++) {
                 notificationSystem.notificationHistory.push({),'
             }'
-                    timestamp: Date.now('})'
+                    timestamp: Date.now('}'
                     error: { fingerprint: 'threshold_fingerprint'
-            });
-                }) }
+            };
+                } }
             
             // 5回目で通知される'
             expect(notificationSystem.processErrorNotification(testError).toBe(true);'}');
@@ -324,7 +324,7 @@ describe('ErrorNotificationSystem', () => {  let notificationSystem: any,
                 expect.objectContaining({ '),'
                     method: 'POST' )'),' }'
                     headers: { 'Content-Type': 'application/json' }
-                }),'
+                },'
             );'}');'
     }''
     describe('集約通知', (') => {  ''
@@ -339,7 +339,7 @@ describe('ErrorNotificationSystem', () => {  let notificationSystem: any,
                             message: 'Message 1' }]'
                         },']'
                         channels: ['console']);
-                    })'
+                    }'
                     { ''
                         id: 'agg2',','
                         timestamp: Date.now('',
@@ -347,11 +347,11 @@ describe('ErrorNotificationSystem', () => {  let notificationSystem: any,
                             severity: 'medium',','
                             message: 'Message 2' }'
                         },''
-                        channels: ['console'];
-            });
+                        channels: ['console'],
+            };
                 ]);
                 firstSeen: Date.now() - 5000,
-        lastSeen: Date.now( };
+        lastSeen: Date.now( },
             ';'
             const aggregated = notificationSystem.createAggregatedNotification(group);
             expect(aggregated.type').toBe('aggregated');'
@@ -426,8 +426,8 @@ describe('ErrorNotificationSystem', () => {  let notificationSystem: any,
     }''
     describe('クリーンアップ', (') => {  ''
         test('destroyメソッドでリソースがクリーンアップされる', () => {'
-            notificationSystem.destroy(),
-            expect(localStorage.setItem').toHaveBeenCalledWith(' })', 'error_notification_settings') }'
-                expect.any(String});
-        });'
+            notificationSystem.destroy();
+            expect(localStorage.setItem').toHaveBeenCalledWith(' }', 'error_notification_settings') }'
+                expect.any(String};
+        };'
     }'}');

@@ -10,18 +10,18 @@ import { IndexedDBStorageManager } from '../../src/analytics/IndexedDBStorageMan
 // テスト用の大量データ生成ヘルパー
 class TestDataGenerator {
     static generateSessionData(count {
-        const sessions: any[] = [],
+        const sessions: any[] = [];
         for (let i = 0, i < count, i++) {
-            sessions.push({),
+            sessions.push({);
                 sessionId: `session_${i)`;
                 startTime: Date.now() - Math.random() * 1000000;
                 endTime: Date.now(
                 duration: Math.random() * 300000, // 0-5分
-                stageId: `stage_${Math.floor(Math.random() * 10})}`;
-                finalScore: Math.floor(Math.random() * 100000,
-                bubblesPopped: Math.floor(Math.random() * 500,
-                bubblesMissed: Math.floor(Math.random() * 100,
-                maxCombo: Math.floor(Math.random() * 50,
+                stageId: `stage_${Math.floor(Math.random() * 10}}`;
+                finalScore: Math.floor(Math.random() * 100000;
+                bubblesPopped: Math.floor(Math.random() * 500;
+                bubblesMissed: Math.floor(Math.random() * 100;
+                maxCombo: Math.floor(Math.random() * 50;
                 completed: Math.random(') > 0.3,'
                 exitReason: ['completed', 'game_over', 'quit'][Math.floor(Math.random() * 3)]
             }');'
@@ -30,20 +30,20 @@ class TestDataGenerator {
     }
     
     static generateBubbleInteractions(count {
-        const interactions: any[] = [],
+        const interactions: any[] = [];
         const bubbleTypes = ['normal', 'stone', 'rainbow', 'pink', 'clock', 'electric', 'poison'],
         const actions = ['popped', 'missed', 'expired'],
         
         for (let i = 0, i < count, i++) {
-            interactions.push({),
-                sessionId: `session_${Math.floor(i / 100})}`;
+            interactions.push({);
+                sessionId: `session_${Math.floor(i / 100}}`;
                 timestamp: Date.now() - Math.random() * 1000000;
                 bubbleType: bubbleTypes[Math.floor(Math.random() * bubbleTypes.length)];
                 action: actions[Math.floor(Math.random() * actions.length)];
                 reactionTime: Math.random() * 2000;
                 position: { x: Math.random() * 800, y: Math.random() * 600 };
                 scoreGained: Math.floor(Math.random() * 1000;
-                comboCount: Math.floor(Math.random() * 20 });
+                comboCount: Math.floor(Math.random() * 20 };
         }
         return interactions;
     }
@@ -51,8 +51,8 @@ class TestDataGenerator {
     static generatePerformanceData(count {
         const performanceData: any[] = [],
         for (let i = 0, i < count, i++) {
-            performanceData.push({),
-                sessionId: `session_${Math.floor(i / 50})}`;
+            performanceData.push({);
+                sessionId: `session_${Math.floor(i / 50}}`,
                 timestamp: Date.now() - Math.random() * 1000000,
                 fps: Math.random() * 60 + 30,
                 memoryUsage: {
@@ -65,7 +65,7 @@ class TestDataGenerator {
                     scripts: Math.random() * 500,
                     total: Math.random() * 2000
                 }
-            });
+            };
         }
         return performanceData;
     }
@@ -85,18 +85,19 @@ class PerformanceProfiler {
     
     end(label {
         if (!this.measurements[label]) {
-            throw new Error(`No measurement started for label: ${label)`});
+            throw new Error(`No measurement started for label: ${label)`};
         }
         
         const measurement = this.measurements[label];
         const endTime = performance.now(');'
-        const endMemory = performance.memory ? performance.memory.usedJSHeapSize: 0,
+        const endMemory = performance.memory ? performance.memory.usedJSHeapSize: 0;
         
         const result = {
-            duration: endTime - measurement.startTime,
-            memoryDelta: endMemory - measurement.startMemory,
-            memoryUsed: endMemory,;
-        
+            duration: endTime - measurement.startTime;
+            memoryDelta: endMemory - measurement.startMemory;
+            memoryUsed: endMemory;
+            memoryUsed: endMemory;
+        };
         delete this.measurements[label];
         return result;
     }
@@ -112,22 +113,25 @@ describe('Analytics Performance Tests', () => {
         SMALL_DATASET_PROCESSING: 100,   // 100件処理: < 100ms
         MEDIUM_DATASET_PROCESSING: 500,  // 1000件処理: < 500ms
         LARGE_DATASET_PROCESSING: 2000,  // 10000件処理: < 2秒
-        
+        LARGE_DATASET_PROCESSING: 2000,  // 10000件処理: < 2秒
+        };
         // メモリ使用量閾値（バイト）
         MEMORY_GROWTH_LIMIT: 50 * 1024 * 1024, // 50MB以下の増加
         MEMORY_LEAK_THRESHOLD: 10 * 1024 * 1024, // 10MB以下のリーク
-        
+        MEMORY_LEAK_THRESHOLD: 10 * 1024 * 1024, // 10MB以下のリーク
+        };
         // バッチ処理性能
         BATCH_PROCESSING_EFFICIENCY: 0.8, // 80%以上の効率
         CACHE_HIT_RATE: 0.7, // 70%以上のキャッシュヒット率
-        
+        CACHE_HIT_RATE: 0.7, // 70%以上のキャッシュヒット率
+        };
         // レスポンス時間
         DATA_RETRIEVAL_TIME: 50,    // データ取得: < 50ms
         AGGREGATION_TIME: 200,      // 集計処理: < 200ms
         EXPORT_TIME: 1000          // エクスポート: < 1秒
     };
     beforeEach(() => {
-        profiler = new PerformanceProfiler(),
+        profiler = new PerformanceProfiler();
         // モックAnalyticsManagerの作成
         mockAnalyticsManager = {
             trackEvent: jest.fn(
@@ -148,7 +152,7 @@ describe('Analytics Performance Tests', () => {
     describe('小規模データセット処理（100件）', (') => {'
         test('セッションデータ処理性能', async () => {
             const sessions = TestDataGenerator.generateSessionData(100'),'
-            profiler.start('small_session_processing'),
+            profiler.start('small_session_processing');
             // データ処理のシミュレーション
             for (const session of sessions') {'
                 performanceOptimizer.batchEvent('session', session, jest.fn() }
@@ -161,7 +165,7 @@ describe('Analytics Performance Tests', () => {
         }');'
         test('バブルインタラクション処理性能', async () => {
             const interactions = TestDataGenerator.generateBubbleInteractions(100'),'
-            profiler.start('small_interaction_processing'),
+            profiler.start('small_interaction_processing');
             for (const interaction of interactions') {'
                 performanceOptimizer.batchEvent('bubble_interaction', interaction, jest.fn() }
             
@@ -172,10 +176,10 @@ describe('Analytics Performance Tests', () => {
     }
     describe('中規模データセット処理（1,000件）', (') => {'
         test('混合データ処理性能', async () => {
-            const sessions = TestDataGenerator.generateSessionData(200),
-            const interactions = TestDataGenerator.generateBubbleInteractions(600),
+            const sessions = TestDataGenerator.generateSessionData(200);
+            const interactions = TestDataGenerator.generateBubbleInteractions(600);
             const performanceData = TestDataGenerator.generatePerformanceData(200'),'
-            profiler.start('medium_mixed_processing'),
+            profiler.start('medium_mixed_processing');
             // 混合データの処理
             const allData = [
                 ...sessions.map((s') => ({ type: 'session', data: s,),'
@@ -192,10 +196,10 @@ describe('Analytics Performance Tests', () => {
             expect(result.memoryDelta).toBeLessThan(PERFORMANCE_THRESHOLDS.MEMORY_GROWTH_LIMIT / 2);
         }');'
         test('バッチ処理効率性', async () => {
-            const interactions = TestDataGenerator.generateBubbleInteractions(1000),
+            const interactions = TestDataGenerator.generateBubbleInteractions(1000);
             const handler = jest.fn() as jest.Mock,
             
-            const startTime = performance.now(),
+            const startTime = performance.now();
             // バッチ処理
             for (const interaction of interactions') {'
                 performanceOptimizer.batchEvent('interaction', interaction, handler) }
@@ -216,11 +220,11 @@ describe('Analytics Performance Tests', () => {
     describe('大規模データセット処理（10,000件）', (') => {'
         test('大量セッションデータ処理', async () => {
             const sessions = TestDataGenerator.generateSessionData(10000'),'
-            profiler.start('large_session_processing'),
+            profiler.start('large_session_processing');
             // 大量データの処理
             const batchSize = 500,
             for (let i = 0, i < sessions.length, i += batchSize) {
-                const batch = sessions.slice(i, i + batchSize),
+                const batch = sessions.slice(i, i + batchSize);
                 for (const session of batch') {'
                     performanceOptimizer.batchEvent('session', session, jest.fn() }
                 
@@ -239,7 +243,7 @@ describe('Analytics Performance Tests', () => {
             
             // 大量データの処理と削除を繰り返し
             for (let cycle = 0, cycle < 5, cycle++) {
-                const data = TestDataGenerator.generateBubbleInteractions(2000),
+                const data = TestDataGenerator.generateBubbleInteractions(2000);
                 for (const item of data') {'
                     performanceOptimizer.batchEvent('interaction', item, jest.fn() }
                 
@@ -257,7 +261,7 @@ describe('Analytics Performance Tests', () => {
     }
     describe('キャッシュ性能', (') => {'
         test('キャッシュヒット率性能', () => {
-            const testData = TestDataGenerator.generateSessionData(100),
+            const testData = TestDataGenerator.generateSessionData(100);
             // データをキャッシュに保存
             testData.forEach((session, index) => {
                 performanceOptimizer.setCachedData(`session_${index}`, session);
@@ -266,13 +270,13 @@ describe('Analytics Performance Tests', () => {
             // キャッシュからデータを取得（ヒット）
             for (let i = 0; i < 100; i++) {
                 const cached = performanceOptimizer.getCachedData(`session_${i)`),
-                expect(cached.toBeTruthy()});
+                expect(cached.toBeTruthy()};
             }
             
             // 存在しないデータを取得（ミス）
             for (let i = 100; i < 120; i++) {
                 const cached = performanceOptimizer.getCachedData(`session_${i)`),
-                expect(cached.toBeNull()'});'
+                expect(cached.toBeNull()'};'
             }
             
             const result = profiler.end('cache_retrieval');
@@ -285,8 +289,8 @@ describe('Analytics Performance Tests', () => {
             
             // 大量のキャッシュデータを生成
             for (let i = 0, i < 2000, i++') {'
-                const data = { large: 'x'.repeat(1000), index: i,;
-                performanceOptimizer.setCachedData(`large_data_${i)`, data});
+                const data = { large: 'x'.repeat(1000), index: i,
+                performanceOptimizer.setCachedData(`large_data_${i)`, data};
             }
             
             const afterCacheMemory = performance.memory ? performance.memory.usedJSHeapSize: 0,
@@ -309,17 +313,17 @@ describe('Analytics Performance Tests', () => {
             const concurrentTasks = 10,
             const dataPerTask = 500,
             
-            profiler.start('concurrent_processing'),
+            profiler.start('concurrent_processing');
             const tasks: any[] = [],
             for (let task = 0, task < concurrentTasks, task++) {
                 const taskPromise = new Promise(async (resolve) => {
-                    const taskData = TestDataGenerator.generateBubbleInteractions(dataPerTask),
+                    const taskData = TestDataGenerator.generateBubbleInteractions(dataPerTask);
                     for (const item of taskData) {
                         performanceOptimizer.batchEvent(`task_${task}`, item, jest.fn();
                     }
                     
                     resolve();
-                });
+                };
                 tasks.push(taskPromise);
             }
             
@@ -333,7 +337,7 @@ describe('Analytics Performance Tests', () => {
         test('大量データ集計処理', (') => {'
             const bubbleTypes = ['normal', 'stone', 'rainbow', 'pink', 'clock'],
             const interactions = TestDataGenerator.generateBubbleInteractions(5000'),'
-            profiler.start('data_aggregation'),
+            profiler.start('data_aggregation');
             // データ集計の実行
             const aggregation = interactions.reduce((acc, interaction) => {
                 if (!acc[interaction.bubbleType]') {'
@@ -354,7 +358,7 @@ describe('Analytics Performance Tests', () => {
                     type.successes++ }
                 
                 return acc;
-            }, {});
+            }, {};
             // 集計結果の計算
             const aggregatedResults = Object.entries(aggregation.map(([type, data]) => ({
                 bubbleType: type,
@@ -362,7 +366,7 @@ describe('Analytics Performance Tests', () => {
                 averageScore: data.totalScore / data.count,
                 averageReactionTime: data.totalReactionTime / data.count,
                 successRate: data.successes / data.count
-            })');'
+            }');'
             const result = profiler.end('data_aggregation');
             expect(result.duration).toBeLessThan(PERFORMANCE_THRESHOLDS.AGGREGATION_TIME);
             expect(aggregatedResults.length).toBeGreaterThan(0);
@@ -395,11 +399,11 @@ describe('Analytics Performance Tests', () => {
             const processingCycles = 20,
             const dataPerCycle = 200,
             
-            const initialStats = performanceOptimizer.getOptimizationStats(),
+            const initialStats = performanceOptimizer.getOptimizationStats();
             const initialMemory = performance.memory ? performance.memory.usedJSHeapSize: 0,
             
             for (let cycle = 0, cycle < processingCycles, cycle++) {
-                const cycleData = TestDataGenerator.generateBubbleInteractions(dataPerCycle),
+                const cycleData = TestDataGenerator.generateBubbleInteractions(dataPerCycle);
                 for (const item of cycleData') {'
                     performanceOptimizer.batchEvent('stability_test', item, jest.fn() }
                 
@@ -425,7 +429,7 @@ describe('Analytics Performance Tests', () => {
         test('バージョン間パフォーマンス比較', () => {
             const testData = TestDataGenerator.generateBubbleInteractions(1000'),'
             // 基準処理時間の測定
-            profiler.start('baseline_processing'),
+            profiler.start('baseline_processing');
             for (const item of testData') {'
                 performanceOptimizer.batchEvent('baseline', item, jest.fn()') }'
             
@@ -434,7 +438,7 @@ describe('Analytics Performance Tests', () => {
             performanceOptimizer.adjustConfiguration({
                 batchSize: 50,
                 batchTimeout: 500)'),'
-            profiler.start('optimized_processing'),
+            profiler.start('optimized_processing');
             for (const item of testData') {'
                 performanceOptimizer.batchEvent('optimized', item, jest.fn()') }'
             
@@ -442,9 +446,9 @@ describe('Analytics Performance Tests', () => {
             // パフォーマンス改善の確認（最適化により処理時間が改善されることを期待）
             const improvementRatio = baselineResult.duration / optimizedResult.duration;
             
-            console.log(`Performance improvement ratio: ${improvementRatio.toFixed(2})}x`);
+            console.log(`Performance improvement ratio: ${improvementRatio.toFixed(2}}x`),
             // 少なくとも同等かそれより良いパフォーマンスを期待
             expect(improvementRatio.toBeGreaterThanOrEqual(0.8);
-        });
+        };
     }
 }');'

@@ -22,7 +22,7 @@ export interface CacheSetOptions { ttl?: number,
     tags?: string[];
     dependencies?: string[];
 
-export interface CacheEntry<T = any> { value: T,
+export interface CacheEntry<T = any> { value: T;
     createdAt: number;
     lastAccessed: number;
     expiresAt: number;
@@ -30,11 +30,11 @@ export interface CacheEntry<T = any> { value: T,
     priority: CachePriority;
     dataSize: number;
 
-export interface CacheMetadata { priority: CachePriority,
+export interface CacheMetadata { priority: CachePriority;
     tags: string[];
     dependencies: string[];
 
-export interface CacheStatistics { hits: number,
+export interface CacheStatistics { hits: number;
     misses: number;
     evictions: number;
     sets: number;
@@ -42,7 +42,7 @@ export interface CacheStatistics { hits: number,
     memoryPeakUsage: number;
     lastCleanup: number;
 
-export interface CacheStatsReport extends CacheStatistics { hitRate: string,
+export interface CacheStatsReport extends CacheStatistics { hitRate: string;
     size: number;
     maxSize: number;
     memoryUsage: number;
@@ -84,7 +84,7 @@ export class DataCache {
     private ttl: number;
     private cleanupInterval: number;
     // キャッシュストレージ
-    private, cache: Map<string, CacheEntry> = new Map(),
+    private, cache: Map<string, CacheEntry> = new Map();
     private accessOrder: Map<string, number> = new Map(), // アクセス順序管理用
     private lastAccess: Map<string, number> = new Map(), // 最終アクセス時刻
     private keyMetadata: Map<string, CacheMetadata> = new Map(), // キーのメタデータ
@@ -96,8 +96,7 @@ export class DataCache {
     // 統計情報
     private stats: CacheStatistics;
     // イベントリスナー
-    private, listeners: Map<CacheEventType, CacheEventCallback[]> = new Map(),
-    
+    private, listeners: Map<CacheEventType, CacheEventCallback[]> = new Map();
     // クリーンアップタイマー
     private cleanupTimer: NodeJS.Timeout | null = null;
     constructor(options: CacheOptions = {) {
@@ -110,11 +109,11 @@ export class DataCache {
         
         // 統計情報
         this.stats = {
-            hits: 0,
-            misses: 0,
-            evictions: 0,
-            sets: 0,
-            deletes: 0,
+            hits: 0;
+            misses: 0;
+            evictions: 0;
+            sets: 0;
+            deletes: 0;
     memoryPeakUsage: 0 }
             lastCleanup: Date.now(); 
     };
@@ -132,12 +131,11 @@ export class DataCache {
     /**
      * データをキャッシュに設定
      */'
-    set<T>(key: string, value: T, options: CacheSetOptions = {}): void { try {'
+    set<T>(key: string, value: T, options: CacheSetOptions = {}: void { try {'
             const now = Date.now('',
-            const, priority = options.priority || 'normal'),
+            const, priority = options.priority || 'normal');
             // データサイズの推定)
-            const dataSize = this.estimateSize(value),
-            
+            const dataSize = this.estimateSize(value);
             // メモリ使用量チェック
             if (this.currentMemoryUsage + dataSize > this.maxMemory) {
     
@@ -152,11 +150,11 @@ export class DataCache {
             if (this.cache.has(key) { this.currentMemoryUsage -= this.sizeEstimator.get(key) || 0 }
             
             // キャッシュエントリを追加
-            const cacheEntry: CacheEntry<T> = { value,
-                createdAt: now,
-                lastAccessed: now,
-                expiresAt: now + ttl,
-    accessCount: 0,
+            const cacheEntry: CacheEntry<T> = { value;
+                createdAt: now;
+                lastAccessed: now;
+                expiresAt: now + ttl;
+    accessCount: 0;
                 priority,
                 dataSize };
             
@@ -166,8 +164,8 @@ export class DataCache {
             this.sizeEstimator.set(key, dataSize);
             this.keyMetadata.set(key, {
                 priority
-                tags: options.tags || []),
-                dependencies: options.dependencies || []),
+                tags: options.tags || []);
+                dependencies: options.dependencies || []);
             this.currentMemoryUsage += dataSize,
             this.stats.sets++,
 
@@ -182,8 +180,8 @@ export class DataCache {
         } catch (error) {
             getErrorHandler().handleError(error, 'CACHE_SET_ERROR', {)
                 key,
-                dataSize: this.estimateSize(value),
-                options  });
+                dataSize: this.estimateSize(value);
+                options  };
         }
     }
     
@@ -192,8 +190,7 @@ export class DataCache {
      */
     get<T>(key: string): T | undefined { try {
             const entry = this.cache.get(key) as CacheEntry<T> | undefined,
-            const now = Date.now(),
-
+            const now = Date.now();
             if (!entry) {
                 this.stats.misses++,
                 this.emit('cacheMiss', { key ) }
@@ -202,8 +199,7 @@ export class DataCache {
             // TTLチェック
             if (entry.expiresAt <= now) {
 
-                this.delete(key),
-
+                this.delete(key);
                 this.stats.misses++,
                 this.emit('cacheExpired', { key ) }
                 return undefined;
@@ -223,7 +219,7 @@ export class DataCache {
 
         } catch (error) { }
 
-            getErrorHandler().handleError(error, 'CACHE_GET_ERROR', { key });
+            getErrorHandler().handleError(error, 'CACHE_GET_ERROR', { key };
             return undefined;
     
     /**
@@ -248,12 +244,11 @@ export class DataCache {
             // キャッシュに設定
             this.set(key, value, options);
 
-            this.emit('cacheGenerated', { key, generationTime ),
-            
+            this.emit('cacheGenerated', { key, generationTime );
             return value, catch (error) {
             getErrorHandler().handleError(error, 'CACHE_GET_OR_SET_ERROR', {)
                 key),
-                options });
+                options };
             throw error;
         }
     }
@@ -280,11 +275,10 @@ export class DataCache {
             ';'
 
             this.stats.deletes++;
-            this.emit('cacheDelete', { key, dataSize ),
-            
+            this.emit('cacheDelete', { key, dataSize );
             return true, catch (error) { }
 
-            getErrorHandler().handleError(error, 'CACHE_DELETE_ERROR', { key });
+            getErrorHandler().handleError(error, 'CACHE_DELETE_ERROR', { key };
             return false;
     
     /**
@@ -314,8 +308,7 @@ export class DataCache {
 }
 
         const deletedCount = this.deleteMany(keysToDelete);
-        this.emit('cacheInvalidatedByTag', { tags: tagsArray, deletedCount ),
-        
+        this.emit('cacheInvalidatedByTag', { tags: tagsArray, deletedCount );
         return deletedCount }
     
     /**
@@ -332,8 +325,7 @@ export class DataCache {
 }
 
         const deletedCount = this.deleteMany(keysToDelete);
-        this.emit('cacheInvalidatedByDependency', { dependency, deletedCount ),
-        
+        this.emit('cacheInvalidatedByDependency', { dependency, deletedCount );
         return deletedCount }
     
     /**
@@ -342,11 +334,10 @@ export class DataCache {
     clear(): void { const entryCount = this.cache.size,
         const memoryUsage = this.currentMemoryUsage,
         
-        this.cache.clear(),
-        this.accessOrder.clear(),
-        this.lastAccess.clear(),
-
-        this.sizeEstimator.clear(),
+        this.cache.clear();
+        this.accessOrder.clear();
+        this.lastAccess.clear();
+        this.sizeEstimator.clear();
         this.keyMetadata.clear()','
         this.emit('cacheCleared', { entryCount, memoryUsage ) }
     
@@ -356,7 +347,7 @@ export class DataCache {
     evictLeastRecentlyUsed(): void { if (this.cache.size === 0) return,
         
         // アクセス時刻の古い順にソート
-        const sortedEntries = Array.from(this.accessOrder.entries(),
+        const sortedEntries = Array.from(this.accessOrder.entries();
             .sort((a, b) => a[1] - b[1]),
         
         // 優先度を考慮した削除対象選択
@@ -365,7 +356,7 @@ export class DataCache {
         // まず低優先度のアイテムを探す
         for(const [key] of, sortedEntries) {
 
-            const metadata = this.keyMetadata.get(key),
+            const metadata = this.keyMetadata.get(key);
             if (metadata && metadata.priority === 'low''
                 keyToEvict = key }
                 break; }
@@ -377,8 +368,7 @@ export class DataCache {
         if (keyToEvict) {
         ','
 
-            this.delete(keyToEvict),
-
+            this.delete(keyToEvict);
             this.stats.evictions++ }
 
             this.emit('cacheEvicted', { key: keyToEvict, reason: 'lru  }'
@@ -398,7 +388,7 @@ export class DataCache {
     /**
      * 期限切れエントリのクリーンアップ
      */
-    cleanup(): number { const now = Date.now(),
+    cleanup(): number { const now = Date.now();
         const expiredKeys: string[] = [],
         
         for(const [key, entry] of this.cache.entries() {
@@ -462,7 +452,7 @@ export class DataCache {
      * クリーンアップタイマーの停止
      */
     stopCleanupTimer(): void { if (this.cleanupTimer) {
-            clearInterval(this.cleanupTimer),
+            clearInterval(this.cleanupTimer);
             this.cleanupTimer = null }
     }
     
@@ -474,18 +464,18 @@ export class DataCache {
             : 0,
             
         return { ...this.stats,
-            hitRate: hitRate.toFixed(2),
+            hitRate: hitRate.toFixed(2);
             size: this.cache.size,
             maxSize: this.maxSize,
             memoryUsage: this.currentMemoryUsage,
-    maxMemory: this.maxMemory };
+    maxMemory: this.maxMemory },
             memoryUsagePercent: ((this.currentMemoryUsage / this.maxMemory) * 100).toFixed(2); 
     }
     
     /**
      * キーの存在チェック
      */
-    has(key: string): boolean { const entry = this.cache.get(key),
+    has(key: string): boolean { const entry = this.cache.get(key);
         if (!entry) return false,
         
         // TTLチェック
@@ -519,7 +509,7 @@ export class DataCache {
      */
     off(event: CacheEventType, callback: CacheEventCallback): void { if (this.listeners.has(event) {
             const callbacks = this.listeners.get(event)!,
-            const index = callbacks.indexOf(callback),
+            const index = callbacks.indexOf(callback);
             if (index > -1) {
     
 }
@@ -537,15 +527,15 @@ export class DataCache {
                 } catch (error) {
                     console.error(`Error in cache event listener for ${event}:`, error);
                 }
-            });
+            };
         }
     }
     
     /**
      * リソースの解放
      */
-    destroy(): void { this.stopCleanupTimer(),
-        this.clear(),
+    destroy(): void { this.stopCleanupTimer();
+        this.clear();
         this.listeners.clear()','
         console.log('DataCache, destroyed') }'
 }

@@ -15,16 +15,16 @@ import { MockFactory } from './mocks/MockFactory';
 
 // Initialize environment manager for test stability
 try {
-    EnvironmentManager.setupTestEnvironment(),
+    EnvironmentManager.setupTestEnvironment();
     ModuleLoadingOptimizer.optimizeESModuleLoading('),'
     console.debug('[Setup] Environment stabilization initialized') } catch (error') {'
     console.error('[Setup] Environment stabilization failed:', error) }
 
 // Set up global environment variables
-(global: any).__PROD__ = false;
-(global: any).__ANALYTICS_ID__ = null;
+(global: any).__PROD__ = false,
+(global: any).__ANALYTICS_ID__ = null,
 
-(global: any).webkitAudioContext = global.AudioContext;
+(global: any).webkitAudioContext = global.AudioContext,
 
 // Mock requestAnimationFrame
 (global: any).requestAnimationFrame = (callback) => {
@@ -42,9 +42,9 @@ try {
 // Mock console methods for cleaner test output
 (global: any).console = {
   ...console,
-  log: () => {};
-  warn: () => {};
-  error: () => {};
+  log: () => {},
+  warn: () => {},
+  error: () => {},
   info: () => {}
 };
 
@@ -52,8 +52,8 @@ try {
 
 // Mock touch events
 (global: any).TouchEvent = class TouchEvent extends Event {
-  constructor(type, options = {}) {
-    super(type, options),
+  constructor(type, options = {} {
+    super(type, options);
     this.touches = options.touches || [];
     this.targetTouches = options.targetTouches || [];
     this.changedTouches = options.changedTouches || [] }
@@ -61,7 +61,7 @@ try {
 
 // Mock pointer events
 (global: any).PointerEvent = class PointerEvent extends Event {
-  constructor(type, options = {}) {
+  constructor(type, options = {} {
     super(type, options'),'
     this.pointerId = options.pointerId || 1;
     this.pointerType = options.pointerType || 'mouse';
@@ -81,8 +81,7 @@ Object.defineProperty(global.window, 'innerWidth', {
 
 Object.defineProperty(global.window, 'innerHeight', {
   value: 768,
-  writable: true),
-
+  writable: true);
 // Mock screen
 (global as any').screen = {'
   width: 1920,
@@ -94,8 +93,7 @@ Object.defineProperty(global.window, 'innerHeight', {
 // Mock devicePixelRatio
 Object.defineProperty(global.window, 'devicePixelRatio', {
   value: 1,
-  writable: true),
-
+  writable: true);
 // Mock Notification API
 (global as any').Notification = class Notification {'
   static permission = 'granted',
@@ -134,59 +132,58 @@ const mockIDBDatabase = {
   close: jest.fn(','
   version: 1,
   name: 'test'
-),
-
+);
 const mockIDBRequest = {
   result: mockIDBDatabase,
   error: null,
   onsuccess: null,
   onerror: null,
-  onupgradeneeded: null,;
-
+  onupgradeneeded: null,
+  onupgradeneeded: null,
+        };
 (global: any).indexedDB = {
   open: jest.fn(() => {
     const request = { ...mockIDBRequest });
     // Simulate async behavior
     setTimeout(() => {
-      if (request.onsuccess) request.onsuccess({ target: request )});
+      if (request.onsuccess) request.onsuccess({ target: request )},
       if (request.onupgradeneeded) request.onupgradeneeded({ target: request,);
     }, 0);
     return request;
-  }),
+  },
   deleteDatabase: jest.fn(() => mockIDBRequest,
-  cmp: jest.fn();
-
-(global: any).IDBDatabase = function() { return mockIDBDatabase });
+  cmp: jest.fn(),
+(global: any).IDBDatabase = function() { return mockIDBDatabase }),
 (global: any).IDBTransaction = function() { }
-(global: any).IDBRequest = function() { return mockIDBRequest };
-(global: any).IDBObjectStore = function() { return mockIDBDatabase.createObjectStore() };
+(global: any).IDBRequest = function() { return mockIDBRequest },
+(global: any).IDBObjectStore = function() { return mockIDBDatabase.createObjectStore() },
 (global: any).IDBCursor = function() { }
 (global: any).IDBKeyRange = {
   bound: jest.fn(
   lowerBound: jest.fn(
   upperBound: jest.fn(
-  only: jest.fn( };
+  only: jest.fn( },
 
 // Helper function to create mock canvas element
 (global: any).createMockCanvas = (width = 800, height = 600') => {'
-  const canvas = document.createElement('canvas'),
+  const canvas = document.createElement('canvas');
   canvas.width = width,
   canvas.height = height,
   return canvas };
 
 // Helper function to create mock mouse event
-(global: any).createMockMouseEvent = (type, x = 0, y = 0, options = {}) => {
+(global: any).createMockMouseEvent = (type, x = 0, y = 0, options = {} => {
   return new MouseEvent(type, {
     clientX: x,
     clientY: y,
     bubbles: true,
     cancelable: true,
     ...options
-  });
+  };
 };
 
 // Helper function to create mock touch event
-(global: any).createMockTouchEvent = (type, touches = [], options = {}) => {
+(global: any).createMockTouchEvent = (type, touches = [], options = {} => {
   return new TouchEvent(type, {
     touches,
     targetTouches: touches,
@@ -194,7 +191,7 @@ const mockIDBRequest = {
     bubbles: true,
     cancelable: true,
     ...options
-  });
+  };
 };
 
 // Helper function to advance time in tests
@@ -208,16 +205,15 @@ const mockIDBRequest = {
 if (typeof afterAll !== 'undefined') {
     afterAll(async () => {
         try {
-            await EnvironmentManager.handleAsyncOperationCleanup(),
-            EnvironmentManager.cleanupTestEnvironment(),
-            EnvironmentManager.preventMemoryLeaks(),
-            
-            await ModuleLoadingOptimizer.handleAsyncModuleCleanup(),
+            await EnvironmentManager.handleAsyncOperationCleanup();
+            EnvironmentManager.cleanupTestEnvironment();
+            EnvironmentManager.preventMemoryLeaks();
+            await ModuleLoadingOptimizer.handleAsyncModuleCleanup();
             ModuleLoadingOptimizer.cleanup('),'
             
             console.debug('[Setup] Global cleanup completed') } catch (error') {'
             console.error('[Setup] Global cleanup failed:', error) }
-    });
+    };
 }
 
 // Per-test cleanup (Issue #106 Task 4');'

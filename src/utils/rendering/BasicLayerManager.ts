@@ -10,12 +10,12 @@
  */
 
 // Type definitions
-interface BoundingBox { x: number,
+interface BoundingBox { x: number;
     y: number;
     width: number;
     height: number;
 
-interface Layer { name: string,
+interface Layer { name: string;
     order: number;
     enabled: boolean;
     visible: boolean;
@@ -34,13 +34,13 @@ interface Layer { name: string,
 interface LayerProperties { static?: boolean,
     cacheable?: boolean;
 
-interface LayerStats { totalLayers: number,
+interface LayerStats { totalLayers: number;
     cachedLayers: number;
     compositedLayers: number;
     cacheHitRate: number;
     compositionTime: number;
 
-interface LayerManagerConfig { enabled: boolean,
+interface LayerManagerConfig { enabled: boolean;
     layers: Map<string, Layer>;
     layerOrder: string[];
     staticLayers: Set<string>;
@@ -72,7 +72,7 @@ interface RenderObject { type?: string,
     align?: string;
     shape?: string,  }
 
-interface DirtyRegion { x: number,
+interface DirtyRegion { x: number;
     y: number;
     width: number;
     height: number;
@@ -87,31 +87,31 @@ interface ConfigurationOptions { enabled?: boolean,
 
 export class BasicLayerManager {
     private canvas: HTMLCanvasElement;
-    private, config: LayerManagerConfig,
+    private, config: LayerManagerConfig;
     constructor(canvas: HTMLCanvasElement) {
 
         this.canvas = canvas;
         
         // Layer management system
         this.config = {
-            enabled: true,
-            layers: new Map(),
-            layerOrder: [],
-            staticLayers: new Set(),
-            dynamicLayers: new Set(),
+            enabled: true;
+            layers: new Map();
+            layerOrder: [];
+            staticLayers: new Set();
+            dynamicLayers: new Set();
             ,
             // Layer caching
-            layerCache: new Map('',
+            layerCache: new Map('';
     compositionMode: 'smart', // 'simple', 'smart', 'advanced);'
-            blendOptimization: true,
+            blendOptimization: true;
     layerFusion: true, // Merge compatible layers;
             // Layer properties
-            layerProperties: new Map(),
+            layerProperties: new Map();
             // Statistics
            , stats: {
-                totalLayers: 0,
-                cachedLayers: 0,
-                compositedLayers: 0,
+                totalLayers: 0;
+                cachedLayers: 0;
+                compositedLayers: 0;
     cacheHitRate: 0 }
                 compositionTime: 0 
     };
@@ -125,7 +125,7 @@ export class BasicLayerManager {
         this.createLayer('background', 0, { static: true, cacheable: true )',''
         this.createLayer('game', 1, { static: false, cacheable: false )',''
         this.createLayer('ui', 2, { static: true, cacheable: true )',''
-        this.createLayer('overlay', 3, { static: false, cacheable: false,
+        this.createLayer('overlay', 3, { static: false, cacheable: false;
 
     /**
      * Create a rendering layer
@@ -138,17 +138,17 @@ export class BasicLayerManager {
         const layer: Layer = {
             name,
             order,
-            enabled: true,
-    visible: true,
-            opacity: 1.0,
-            blendMode: 'source-over',
+            enabled: true;
+    visible: true;
+            opacity: 1.0;
+            blendMode: 'source-over';
             // Layer canvas for caching
-            canvas: null,
-            context: null,
+            canvas: null;
+            context: null;
             // Properties
-            static: properties.static || false,
-            cacheable: properties.cacheable || false,
-            dirty: true,
+            static: properties.static || false;
+            cacheable: properties.cacheable || false;
+            dirty: true;
             // Content tracking
            , objects: new Set() }
             boundingBox: { x: 0, y: 0, width: 0, height: 0  };
@@ -161,7 +161,7 @@ export class BasicLayerManager {
         // Create layer canvas if cacheable
         if (layer.cacheable) {
 
-            layer.canvas = document.createElement('canvas'),
+            layer.canvas = document.createElement('canvas');
             layer.canvas.width = this.canvas.width,
 
             layer.canvas.height = this.canvas.height }
@@ -171,7 +171,7 @@ export class BasicLayerManager {
         
         this.config.layers.set(name, layer);
         this.config.layerOrder.push(name);
-        this.config.layerOrder.sort((a, b) => {  const layerA = this.config.layers.get(a),
+        this.config.layerOrder.sort((a, b) => {  const layerA = this.config.layers.get(a);
             const layerB = this.config.layers.get(b) }
             return (layerA?.order || 0) - (layerB?.order || 0);
         
@@ -187,7 +187,7 @@ export class BasicLayerManager {
      * Remove a layer
      * @param name - Layer name
      */ : undefined
-    removeLayer(name: string): void { const layer = this.config.layers.get(name),
+    removeLayer(name: string): void { const layer = this.config.layers.get(name);
         if (!layer) return,
 
         // Clean up layer canvas
@@ -223,7 +223,7 @@ export class BasicLayerManager {
      * @param name - Layer name
      * @param visible - Visibility state
      */
-    setLayerVisibility(name: string, visible: boolean): void { const layer = this.config.layers.get(name),
+    setLayerVisibility(name: string, visible: boolean): void { const layer = this.config.layers.get(name);
         if (layer) {
     
 }
@@ -235,7 +235,7 @@ export class BasicLayerManager {
      * @param name - Layer name
      * @param opacity - Opacity (0-1)
      */
-    setLayerOpacity(name: string, opacity: number): void { const layer = this.config.layers.get(name),
+    setLayerOpacity(name: string, opacity: number): void { const layer = this.config.layers.get(name);
         if (layer) {
     
 }
@@ -246,7 +246,7 @@ export class BasicLayerManager {
      * Mark layer as dirty
      * @param name - Layer name
      */
-    markLayerDirty(name: string): void { const layer = this.config.layers.get(name),
+    markLayerDirty(name: string): void { const layer = this.config.layers.get(name);
         if (layer) {
     
 }
@@ -272,7 +272,7 @@ export class BasicLayerManager {
         
         // Optimize each layer batch
         for(const [layerName, objects] of layerBatches) {
-            const layer = this.config.layers.get(layerName),
+            const layer = this.config.layers.get(layerName);
             if (layer) {
         }
                 this.optimizeLayerBatch(layer, objects); }
@@ -304,8 +304,7 @@ export class BasicLayerManager {
     private updateLayerCache(layer: Layer, objects: RenderObject[]): void { if (!layer.canvas || !layer.context) return,
 
         // Clear canvas
-        layer.context.clearRect(0, 0, layer.canvas.width, layer.canvas.height),
-        
+        layer.context.clearRect(0, 0, layer.canvas.width, layer.canvas.height);
         // Render objects to layer canvas
         for (const obj of objects) {
     
@@ -322,13 +321,12 @@ export class BasicLayerManager {
      * @param obj - Object to render
      * @param ctx - Context to render to
      */
-    private renderObjectToLayerContext(obj: RenderObject, ctx: CanvasRenderingContext2D): void { ctx.save(),
-        
+    private renderObjectToLayerContext(obj: RenderObject, ctx: CanvasRenderingContext2D): void { ctx.save();
         // Apply object transformations
         if (obj.rotation) {
             const centerX = obj.x + obj.width / 2,
             const centerY = obj.y + obj.height / 2,
-            ctx.translate(centerX, centerY),
+            ctx.translate(centerX, centerY);
             ctx.rotate(obj.rotation) }
             ctx.translate(-centerX, -centerY); }
         }
@@ -341,15 +339,13 @@ export class BasicLayerManager {
         switch(obj.type) {
 
             case 'sprite':','
-                this.renderSprite(obj, ctx),
-
+                this.renderSprite(obj, ctx);
                 break,
             case 'text':','
-                this.renderText(obj, ctx),
-
+                this.renderText(obj, ctx);
                 break,
             case 'shape':,
-                this.renderShape(obj, ctx),
+                this.renderShape(obj, ctx);
                 break,
             default:,
                 this.renderDefault(obj, ctx) }
@@ -394,12 +390,11 @@ export class BasicLayerManager {
         switch(obj.shape) {
 
             case 'rect':','
-                ctx.fillRect(obj.x, obj.y, obj.width, obj.height),
-
+                ctx.fillRect(obj.x, obj.y, obj.width, obj.height);
                 break,
             case 'circle':,
-                ctx.beginPath(),
-                ctx.arc(obj.x + obj.width/2, obj.y + obj.height/2, obj.width/2, 0, Math.PI * 2),
+                ctx.beginPath();
+                ctx.arc(obj.x + obj.width/2, obj.y + obj.height/2, obj.width/2, 0, Math.PI * 2);
                 ctx.fill() }
                 break; }
 }
@@ -422,7 +417,7 @@ export class BasicLayerManager {
         
         for (const obj of objects) {
         
-            const batchKey = this.getBatchKey(obj),
+            const batchKey = this.getBatchKey(obj);
             if (!batches.has(batchKey) {
     
 }
@@ -450,10 +445,10 @@ export class BasicLayerManager {
      * @param mainCtx - Main rendering context
      * @param dirtyRegions - Dirty regions to update
      */
-    renderLayerToContext(layerName: string, mainCtx: CanvasRenderingContext2D, dirtyRegions: DirtyRegion[] = []): void { const layer = this.config.layers.get(layerName),
+    renderLayerToContext(layerName: string, mainCtx: CanvasRenderingContext2D, dirtyRegions: DirtyRegion[] = []): void { const layer = this.config.layers.get(layerName);
         if (!layer || !layer.enabled || !layer.visible) return,
 
-        mainCtx.save(),
+        mainCtx.save();
         ','
         // Apply layer properties
         if (layer.opacity !== 1) {
@@ -471,7 +466,7 @@ export class BasicLayerManager {
                 // Only update dirty regions
                 for (const region of dirtyRegions) {
                     mainCtx.drawImage(
-                        layer.canvas),
+                        layer.canvas);
                         region.x, region.y, region.width, region.height) }
                         region.x, region.y, region.width, region.height); }
 } else {  // Render full layer }
@@ -528,5 +523,5 @@ export class BasicLayerManager {
     /**
      * Reset layer manager
      */
-    reset(): void { this.clearAllLayers(),
+    reset(): void { this.clearAllLayers();
         this.config.layerCache.clear(' }'

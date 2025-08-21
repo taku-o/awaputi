@@ -11,26 +11,26 @@
  */
 
 // 型定義インターフェース
-interface BrowserSupportConfig { minVersion: number,
+interface BrowserSupportConfig { minVersion: number;
     features: string[];
     restrictions?: string[];
     fallbackRequired?: boolean,  }
 
-interface BrowserInfo { name: string,
+interface BrowserInfo { name: string;
     version: number;
     isSupported: boolean;
     supportedFeatures: string[];
     restrictions: string[];
     fallbacksRequired: string[];
 
-interface CanvasSupport { available: boolean,
+interface CanvasSupport { available: boolean;
     context2d: boolean;
     toDataURL: boolean;
     toBlob: boolean;
     fallbackMethod: string | null;
     errorMessage: string | null }
 
-interface LocalStorageSupport { available: boolean,
+interface LocalStorageSupport { available: boolean;
     readable: boolean;
     writable: boolean;
     quotaExceeded: boolean;
@@ -38,7 +38,7 @@ interface LocalStorageSupport { available: boolean,
     errorMessage: string | null;
     estimatedQuota: number;
 
-interface ModulesSupport { available: boolean,
+interface ModulesSupport { available: boolean;
     dynamicImport: boolean;
     staticImport: boolean;
     workerModules: boolean;
@@ -46,17 +46,18 @@ interface ModulesSupport { available: boolean,
     errorMessage: string | null }
 
 interface FallbackConfig { canvas: {
-        enableSVGFallbac,k: boolean,
-        enableStaticIconFallback: boolean,
-    enableTextFallback: boolean,;
-    localStorage: { enableCookieFallback: boolean,
-        enableMemoryFallback: boolean,
-    enableNoStorageFallback: boolean,;
-    modules: { enableBundleFallback: boolean,
-        enableInlineFallback: boolean,
-    enableLegacyScriptFallback: boolean,
-
-interface CanvasFallbackResult { success: boolean,
+        enableSVGFallbac,k: boolean;
+        enableStaticIconFallback: boolean;
+    enableTextFallback: boolean;
+    localStorage: { enableCookieFallback: boolean;
+        enableMemoryFallback: boolean;
+    enableNoStorageFallback: boolean;
+    modules: { enableBundleFallback: boolean;
+        enableInlineFallback: boolean;
+    enableLegacyScriptFallback: boolean;
+    enableLegacyScriptFallback: boolean;
+        };
+interface CanvasFallbackResult { success: boolean;
     dataUrl?: string;
     method: string;
     size: number;
@@ -64,18 +65,18 @@ interface CanvasFallbackResult { success: boolean,
     error?: string;
     recommendation?: string,  }
 
-interface StorageFallback { getItem: (key: string) => string | null,
+interface StorageFallback { getItem: (key: string) => string | null;
     setItem: (key: string, value: string) => void;
     removeItem: (key: string) => void;
     clear?: () => void;
     _storageType: string;
 }
 
-interface Recommendation { type: string,
+interface Recommendation { type: string;
     message: string;
     priority: 'high' | 'medium' | 'low' }
 
-interface ComprehensiveSupport { browser: BrowserInfo,
+interface ComprehensiveSupport { browser: BrowserInfo;
     canvas: CanvasSupport;
     localStorage: LocalStorageSupport;
     modules: ModulesSupport;
@@ -90,31 +91,32 @@ class BrowserCompatibilityManager { /**
         firefox: { minVersion: 55, features: ['canvas', 'localStorage'], restrictions: ['localStorage-file-protocol]  },''
         safari: { minVersion: 12, features: ['canvas'], restrictions: ['localStorage-private', 'canvas-limited] },''
         edge: { minVersion: 79, features: ['canvas', 'localStorage', 'es6modules] };'
-        ie: { minVersion: 11, features: [], fallbackRequired: true,;
-
+        ie: { minVersion: 11, features: [], fallbackRequired: true;
+        ie: { minVersion: 11, features: [], fallbackRequired: true;
+        };
     /**
      * フォールバック設定
      */
     static FALLBACK_CONFIG: FallbackConfig = { canvas: {
-            enableSVGFallback: true,
-            enableStaticIconFallback: true,
-    enableTextFallback: true,;
-        localStorage: { enableCookieFallback: true,
-            enableMemoryFallback: true,
-    enableNoStorageFallback: true,;
-        modules: { enableBundleFallback: true,
-            enableInlineFallback: true,
-    enableLegacyScriptFallback: true,;
+            enableSVGFallback: true;
+            enableStaticIconFallback: true;
+    enableTextFallback: true;
+        localStorage: { enableCookieFallback: true;
+            enableMemoryFallback: true;
+    enableNoStorageFallback: true;
+        modules: { enableBundleFallback: true;
+            enableInlineFallback: true;
+    enableLegacyScriptFallback: true;
     /**
      * ブラウザ情報とサポート状況を取得'
      */''
     static getBrowserInfo('''
-                name: 'unknown',
-                version: 0,
-                isSupported: false,
-                supportedFeatures: [],
-                restrictions: [],
-    fallbacksRequired: []),
+                name: 'unknown';
+                version: 0;
+                isSupported: false;
+                supportedFeatures: [];
+                restrictions: [];
+    fallbacksRequired: []);
             }''
             // Chrome detection
             if (userAgent.includes('Chrome') && !userAgent.includes('Edg' { ''
@@ -164,10 +166,10 @@ class BrowserCompatibilityManager { /**
             console.warn('BrowserCompatibilityManager: Browser detection failed', error','
 
             return { ''
-                name: 'unknown',
-                version: 0,
-                isSupported: false,
-    supportedFeatures: [],
+                name: 'unknown';
+                version: 0;
+                isSupported: false;
+    supportedFeatures: [];
                 restrictions: [],' };'
 
                 fallbacksRequired: ['all] }'
@@ -200,7 +202,7 @@ class BrowserCompatibilityManager { /**
 
                 // toDataURL サポートテスト
                 try {'
-                    const dataUrl = canvas.toDataURL('image/png'),
+                    const dataUrl = canvas.toDataURL('image/png');
                     if (dataUrl && dataUrl.startsWith('data:image/png' }
 
                         support.toDataURL = true;' }'
@@ -272,7 +274,7 @@ class BrowserCompatibilityManager { /**
 
             // 書き込みテスト
             try {'
-                localStorage.setItem('__compatibility_test__', 'test'),
+                localStorage.setItem('__compatibility_test__', 'test');
                 localStorage.removeItem('__compatibility_test__',
 
                 support.writable = true,' }'
@@ -308,12 +310,12 @@ class BrowserCompatibilityManager { /**
             staticImport: false,
             workerModules: false,
             fallbackMethod: null,
-    errorMessage: null,;
+    errorMessage: null,
 ';'
 
         try {'
             // 静的インポートサポート（スクリプトタグ type="module" を確認）""
-            const testScript = document.createElement('script'),
+            const testScript = document.createElement('script');
             testScript.type = 'module',
             if (testScript.type === 'module') {
                 support.staticImport = true }
@@ -415,9 +417,9 @@ class BrowserCompatibilityManager { /**
                 <svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="0 0 ${size} ${size}">"
                     <defs>"";
                         <radialGradient id="bubbleGradient" cx="50%" cy="50%" r="50%">"";
-                            <stop offset="0%" style="stop-color:#E3F2FD"/>"";
+                            <stop offset="0%" style="stop-color: #E3F2FD"/>"",
                             <stop offset="70%" style="stop-color:${config.backgroundColor || '#2196F3'}"/>""
-                            <stop offset="100%" style="stop-color:#1565C0"/>;
+                            <stop offset="100%" style="stop-color: #1565C0"/>,
                         </radialGradient>";"
                     </defs>"";
                     <circle cx="${size/2}" cy="${size/2}" r="${size * 0.4}" fill="url(#bubbleGradient)"/>""
@@ -435,9 +437,8 @@ class BrowserCompatibilityManager { /**
             };
                 size }
             } catch (error) {
-            console.error('SVG fallback generation failed', error),
-            return this._generateStaticIconFallback(size, config),
-
+            console.error('SVG fallback generation failed', error);
+            return this._generateStaticIconFallback(size, config);
     /**
      * 静的アイコンフォールバック
      * @private'
@@ -474,7 +475,7 @@ class BrowserCompatibilityManager { /**
             getItem: (key: string'): string | null => { '
                 try {'
                     const name = 'awaputi_' + key + '=',
-                    const decodedCookie = decodeURIComponent(document.cookie),
+                    const decodedCookie = decodeURIComponent(document.cookie);
                     const cookies = decodedCookie.split('),'
                     
                     for(let, cookie of, cookies) {
@@ -489,7 +490,7 @@ class BrowserCompatibilityManager { /**
             setItem: (key: string, value: string): void => {  try {
                     const expires = new Date() }
                     expires.setTime(expires.getTime() + (365 * 24 * 60 * 60 * 1000)); // 1年 }
-                    document.cookie = `awaputi_${key}=${value}; expires=${expires.toUTCString(}); path=/`;'} catch (e) {'
+                    document.cookie = `awaputi_${key}=${value}; expires=${expires.toUTCString(}; path=/`;'} catch (e) {'
                     console.warn('Cookie storage failed', e) }
             },
             
@@ -499,7 +500,7 @@ class BrowserCompatibilityManager { /**
                     console.warn('Cookie removal failed', e' }'
             },
 
-            _storageType: 'cookie-fallback';
+            _storageType: 'cookie-fallback',
         } }
 
     /**
@@ -508,13 +509,13 @@ class BrowserCompatibilityManager { /**
      */
     static _createMemoryStorageFallback(): StorageFallback { const memoryStorage = new Map<string, string>(),
         
-        return { getItem: (key: string): string | null = > memoryStorage.get(key) || null  };
+        return { getItem: (key: string): string | null = > memoryStorage.get(key) || null  },
             setItem: (key: string, value: string): void => memoryStorage.set(key, value) }
 
             removeItem: (key: string): void => { memoryStorage.delete(key) },''
             clear: (): void => memoryStorage.clear(
             _storageType: 'memory-fallback);'
-            });
+            };
     /**
      * ストレージなしフォールバック
      * @private
@@ -525,7 +526,7 @@ class BrowserCompatibilityManager { /**
 
             removeItem: (): void => {}''
             clear: (): void => {}''
-            _storageType: 'no-storage-fallback';
+            _storageType: 'no-storage-fallback',
         } }
 
     /**
@@ -536,7 +537,7 @@ class BrowserCompatibilityManager { /**
             const testData = 'a'.repeat(1024); // 1KB
             
             for (let, i = 0; i < 100; i++) { try { }
-                    localStorage.setItem(`__quota_test_${i}__`, testData});
+                    localStorage.setItem(`__quota_test_${i}__`, testData};
                     estimate += 1024;
                 } catch (e) { break }
             }
@@ -589,7 +590,7 @@ class BrowserCompatibilityManager { /**
      * 包括的ブラウザサポート情報の取得
      */
     static getComprehensiveSupport(): ComprehensiveSupport { return { browser: this.getBrowserInfo(
-            canvas: this.getCanvasSupport(),
+            canvas: this.getCanvasSupport();
             localStorage: this.getLocalStorageSupport(
     modules: this.getModulesSupport(  }
             recommendations: this._generateRecommendations(); 
@@ -600,18 +601,17 @@ class BrowserCompatibilityManager { /**
      * @private
      */
     static _generateRecommendations(): Recommendation[] { const recommendations: Recommendation[] = [],
-        const browserInfo = this.getBrowserInfo(),
-        const canvasSupport = this.getCanvasSupport(),
-        const storageSupport = this.getLocalStorageSupport(),
-        const modulesSupport = this.getModulesSupport(),
-
+        const browserInfo = this.getBrowserInfo();
+        const canvasSupport = this.getCanvasSupport();
+        const storageSupport = this.getLocalStorageSupport();
+        const modulesSupport = this.getModulesSupport();
         if (!browserInfo.isSupported) {
             recommendations.push({ }
 
                 type: 'browser-upgrade'
             }''
                 message: `Consider upgrading ${browserInfo.name} for better compatibility`;')'
-                priority: 'high');
+                priority: 'high'),
         }
 
         if (!canvasSupport.available) {

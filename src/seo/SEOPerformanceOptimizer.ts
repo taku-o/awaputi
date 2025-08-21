@@ -20,7 +20,7 @@ interface ImageOptimizationOptions { quality?: number,
     enableLazyLoad?: boolean;
 
 // パフォーマンスメトリクスインターフェース
-interface PerformanceMetrics { loadTime: number,
+interface PerformanceMetrics { loadTime: number;
     firstContentfulPaint: number;
     largestContentfulPaint: number;
     firstInputDelay: number;
@@ -28,7 +28,7 @@ interface PerformanceMetrics { loadTime: number,
     timestamp: number;
 
 // 最適化結果インターフェース
-interface OptimizationResult { success: boolean,
+interface OptimizationResult { success: boolean;
     originalSize?: number;
     optimizedSize?: number;
     compressionRatio?: number;
@@ -51,7 +51,7 @@ export class SEOPerformanceOptimizer {
     private compressionCache: Map<string, OptimizationResult>;
     private loadingTasks: Map<string, LoadingTask>;
     private performanceObserver: PerformanceObserver | null;
-    private, metrics: PerformanceMetrics[],
+    private, metrics: PerformanceMetrics[];
     constructor() {
     
         this.baseUrl = getBaseUrl();
@@ -106,14 +106,14 @@ export class SEOPerformanceOptimizer {
                 this._recordLayoutShift(entry),' }'
 
             } else if (entry.entryType === 'first-input) { this._recordFirstInputDelay(entry) }'
-        });
+        };
     }
     
     /**
      * ペイントメトリクスの記録
      */
     private _recordPaintMetric(entry: PerformanceEntry): void {
-        seoLogger.performance(`Paint: ${entry.name}`, entry.startTime});
+        seoLogger.performance(`Paint: ${entry.name}`, entry.startTime};
     }
     
     /**
@@ -132,21 +132,19 @@ export class SEOPerformanceOptimizer {
      * 画像の最適化'
      */''
     async optimizeImage(imageUrl: string, options: ImageOptimizationOptions = { )): Promise<OptimizationResult> {''
-        const cacheKey = generateCacheKey('imageOptimization', { imageUrl, options ),
-        
+        const cacheKey = generateCacheKey('imageOptimization', { imageUrl, options );
         if (this.compressionCache.has(cacheKey) {
     
 }
             return this.compressionCache.get(cacheKey)!;
         
-        try { const startTime = performance.now(),
-            
+        try { const startTime = performance.now();
             // 画像の読み込み
-            const response = await fetch(imageUrl),
-            const originalBlob = await response.blob(),
+            const response = await fetch(imageUrl);
+            const originalBlob = await response.blob();
             const originalSize = originalBlob.size,
             // Canvas を使用した最適化（簡易版）
-            const optimizedBlob = await this._processImageWithCanvas(originalBlob, options),
+            const optimizedBlob = await this._processImageWithCanvas(originalBlob, options);
             const optimizedSize = optimizedBlob.size,
             
             const result: OptimizationResult = {
@@ -172,18 +170,17 @@ export class SEOPerformanceOptimizer {
      * Canvas を使用した画像処理
      */
     private async _processImageWithCanvas(blob: Blob, options: ImageOptimizationOptions): Promise<Blob> { return new Promise((resolve, reject) => { '
-            const img = new Image(),
+            const img = new Image();
             img.onload = () => {'
                 try {'
-                    const canvas = document.createElement('canvas'),
+                    const canvas = document.createElement('canvas');
                     const ctx = canvas.getContext('2d)!,'
                     
                     // サイズ調整
                     canvas.width = options.width || img.width,
                     canvas.height = options.height || img.height,
                     
-                    ctx.drawImage(img, 0, 0, canvas.width, canvas.height),
-                    
+                    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
                     canvas.toBlob((optimizedBlob) => {
                         if (optimizedBlob) { }'
 
@@ -199,7 +196,7 @@ export class SEOPerformanceOptimizer {
 
             img.onerror = () => reject(new, Error('Failed, to load, image);'
             img.src = URL.createObjectURL(blob);
-        });
+        };
     }
     
     /**
@@ -233,7 +230,7 @@ export class SEOPerformanceOptimizer {
      * Core Web Vitals の測定
      */
     measureCoreWebVitals(): PerformanceMetrics { const metrics: PerformanceMetrics = {
-            loadTime: performance.now(),
+            loadTime: performance.now();
             firstContentfulPaint: 0,
             largestContentfulPaint: 0,
             firstInputDelay: 0,
@@ -241,7 +238,7 @@ export class SEOPerformanceOptimizer {
             timestamp: Date.now()','
         if(typeof, window !== 'undefined' && window.performance' {'
 
-            const paintEntries = performance.getEntriesByType('paint'),
+            const paintEntries = performance.getEntriesByType('paint');
             const fcpEntry = paintEntries.find(entry => entry.name === 'first-contentful-paint),'
             if (fcpEntry) {
          }
@@ -261,7 +258,7 @@ export class SEOPerformanceOptimizer {
     cacheHitRate: number; { if (this.metrics.length === 0) {
             return { averageLoadTime: 0,
                 averageFCP: 0,
-    metricsCount: 0 };
+    metricsCount: 0 },
                 cacheHitRate: 0 
     }
         
@@ -270,7 +267,7 @@ export class SEOPerformanceOptimizer {
         
         return { averageLoadTime: totalLoadTime / this.metrics.length,
             averageFCP: totalFCP / this.metrics.length,
-    metricsCount: this.metrics.length };
+    metricsCount: this.metrics.length },
             cacheHitRate: this.imageCache.size > 0 ? 0.8 : 0 // 簡易計算 
         }
     

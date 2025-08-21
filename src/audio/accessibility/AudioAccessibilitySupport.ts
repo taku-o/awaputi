@@ -63,7 +63,7 @@ interface ColorIndicatorOptions { color?: string,
 /**
  * コンポーネント状態インターフェース
  */
-interface ComponentStatus { descriptionManager: any,
+interface ComponentStatus { descriptionManager: any;
     cueManager: any;
     feedbackManager: any;
     settingsManager: any;
@@ -73,7 +73,7 @@ interface ComponentStatus { descriptionManager: any,
 /**
  * システム状態インターフェース
  */
-interface SystemStatus { initialized: boolean,
+interface SystemStatus { initialized: boolean;
     components: ComponentStatus;
     eventHistorySize: number;
     capabilities: any;
@@ -82,7 +82,7 @@ interface SystemStatus { initialized: boolean,
 /**
  * デバイス機能インターフェース
  */
-interface DeviceCapabilities { vibration: boolean,
+interface DeviceCapabilities { vibration: boolean;
     screenReader: boolean;
     reduceMotion: boolean;
     prefersContrast: boolean;
@@ -91,7 +91,7 @@ interface DeviceCapabilities { vibration: boolean,
 /**
  * 統計情報インターフェース
  */
-interface Statistics { componentsActive: number,
+interface Statistics { componentsActive: number;
     settingsConfigured: number;
     [key: string]: any;
 
@@ -103,7 +103,7 @@ interface AudioManager { // AudioManager specific methods }
 /**
  * ConfigurationManager インターフェース（型定義用）
  */
-interface ConfigurationManager { get(category: string): any,
+interface ConfigurationManager { get(category: string): any;
     set(category: string, key: string, value: any): void;
 
 /**
@@ -147,7 +147,7 @@ export class ComponentAudioAccessibilitySupport {
     private legacyAdapter: AudioLegacyAdapter;
     // Legacy compatibility properties
     private vibrationManager: VibrationManager;
-    private, visualNotifications: any[],
+    private, visualNotifications: any[];
     constructor(audioManager: AudioManager) {
 
         this.audioManager = audioManager;
@@ -175,11 +175,10 @@ export class ComponentAudioAccessibilitySupport {
      */
     async initialize(): Promise<boolean> { try {
             // Settings initialization
-            await this.settingsManager.initializeSettings(),
+            await this.settingsManager.initializeSettings();
             // Setup event listeners
             this.setupEventListeners()','
-            console.log('Audio, accessibility support, fully initialized'),
-            
+            console.log('Audio, accessibility support, fully initialized');
             return true,
 
             ' }'
@@ -187,7 +186,7 @@ export class ComponentAudioAccessibilitySupport {
         } catch (error) { this.errorHandler.handleError(error, {)'
                 context: 'AudioAccessibilitySupport.initialize',')',
                 severity: 'high'
-            });
+            };
             return false;
 
     /**
@@ -196,7 +195,7 @@ export class ComponentAudioAccessibilitySupport {
     private setupEventListeners(): void { // 設定変更の監視
         this.settingsManager.addChangeListener((event: SettingsChangeEvent) => {  }
             this.legacyAdapter.handleSettingsChange(event); }
-        });
+        };
     }
 ;
     // ========================================
@@ -210,7 +209,7 @@ export class ComponentAudioAccessibilitySupport {
      * @param options - 表示オプション'
      */''
     showVisualNotification(message: string, type: NotificationType = 'info', options: NotificationOptions = { ': void {''
-        this.feedbackManager.showVisualNotification(message, type, options),
+        this.feedbackManager.showVisualNotification(message, type, options);
         ','
         // イベント履歴に記録
         this.eventManager.recordEvent('visual_notification', { message, type, options ' }'
@@ -221,7 +220,7 @@ export class ComponentAudioAccessibilitySupport {
      * @param options - 表示オプション
      */'
     showCaption(text: string, options: CaptionOptions = { ): void {''
-        this.feedbackManager.showCaption(text, options),
+        this.feedbackManager.showCaption(text, options);
         this.eventManager.recordEvent('caption', { text, options ' }'
 
     /**
@@ -232,7 +231,7 @@ export class ComponentAudioAccessibilitySupport {
      * @param priority - 優先度
      */'
     addAudioDescription(category: string, type: string, params: any = { ), priority: number = 3): void {''
-        this.descriptionManager.addDescription(category, type, params, priority),
+        this.descriptionManager.addDescription(category, type, params, priority);
         this.eventManager.recordEvent('audio_description', { category, type, params, priority ' }'
 
     /**
@@ -242,7 +241,7 @@ export class ComponentAudioAccessibilitySupport {
      * @param audioData - 音響データ
      */'
     processAudioEvent(eventType: string, eventData: any = {}, audioData: any = { ): void {''
-        this.cueManager.processAudioEvent(eventType, eventData, audioData),
+        this.cueManager.processAudioEvent(eventType, eventData, audioData);
         this.eventManager.recordEvent('audio_event', { eventType, eventData, audioData ' }'
 
     /**
@@ -251,7 +250,7 @@ export class ComponentAudioAccessibilitySupport {
      * @param options - 表示オプション
      */'
     updateColorIndicator(level: string, options: ColorIndicatorOptions = { ): void {''
-        this.feedbackManager.updateColorIndicator(level, options),
+        this.feedbackManager.updateColorIndicator(level, options);
         this.eventManager.recordEvent('color_indicator', { level, options ' }'
 
     /**
@@ -259,7 +258,7 @@ export class ComponentAudioAccessibilitySupport {
      * @param type - フィードバックタイプ
      */'
     triggerHapticFeedback(type: string): void { ''
-        this.feedbackManager.triggerVibration(type),
+        this.feedbackManager.triggerVibration(type);
         this.eventManager.recordEvent('haptic_feedback', { type ) }
 
     // ========================================
@@ -324,7 +323,7 @@ export class ComponentAudioAccessibilitySupport {
      * @param enabled - 有効化フラグ
      */
     enableAudioDescriptions(enabled: boolean = true): void { ''
-        this.descriptionManager.setEnabled(enabled),
+        this.descriptionManager.setEnabled(enabled);
         this.eventManager.recordEvent('audio_descriptions_enabled', { enabled ' }'
 
     /**
@@ -333,7 +332,7 @@ export class ComponentAudioAccessibilitySupport {
      * @param options - 再生オプション
      */'
     playAudioCue(cueType: string, options: AudioCueOptions = { ): void {''
-        this.cueManager.playCue(cueType, options),
+        this.cueManager.playCue(cueType, options);
         this.eventManager.recordEvent('audio_cue_played', { cueType, options ' }'
 
     /**
@@ -342,7 +341,7 @@ export class ComponentAudioAccessibilitySupport {
      * @param options - アナウンスオプション
      */'
     announceText(text: string, options: AnnounceOptions = { ): void {''
-        this.descriptionManager.announce(text, options),
+        this.descriptionManager.announce(text, options);
         this.eventManager.recordEvent('text_announced', { text, options ) }
 
     // ========================================
@@ -375,12 +374,12 @@ export class ComponentAudioAccessibilitySupport {
                 cueManager: this.cueManager.getStatus(),
                 feedbackManager: this.feedbackManager.getStatus(),
                 settingsManager: this.settingsManager.getStatus(
-    eventManager: this.eventManager.getStatus() };
-                legacyAdapter: this.legacyAdapter.getStatus(), 
+    eventManager: this.eventManager.getStatus() },
+                legacyAdapter: this.legacyAdapter.getStatus(),
     },
-            eventHistorySize: this.eventManager.getEventHistory().length;
+            eventHistorySize: this.eventManager.getEventHistory().length,
             capabilities: this.getCapabilities(
-    settings: this.getSettings();
+    settings: this.getSettings(),
         }
 
     /**
@@ -393,10 +392,9 @@ export class ComponentAudioAccessibilitySupport {
      * 統計情報の取得
      * @returns 使用統計
      */
-    getStatistics(): Statistics { const eventStats = this.eventManager.getStatistics(),
-        
+    getStatistics(): Statistics { const eventStats = this.eventManager.getStatistics();
         return { ...eventStats,
-            componentsActive: 6 };
+            componentsActive: 6 },
             settingsConfigured: Object.keys(this.getSettings().length 
     }
 
@@ -434,5 +432,5 @@ export class ComponentAudioAccessibilitySupport {
     /**
      * 再初期化
      */'
-    async reinitialize(): Promise<void> { this.destroy(),
+    async reinitialize(): Promise<void> { this.destroy();
         await this.initialize(' }';

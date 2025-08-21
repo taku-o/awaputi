@@ -4,7 +4,7 @@
  */
 
 // Type definitions for error analyzer system
-interface ErrorInfo { id: string,
+interface ErrorInfo { id: string;
     name: string;
     message: string;
     stack?: string;
@@ -14,7 +14,7 @@ interface ErrorInfo { id: string,
     recovered?: boolean;
 
 interface MainController { logger?: {
-        generateErrorI,d: () => string,
+        generateErrorI,d: () => string;
         getErrorLog: () => ErrorInfo[]  }
     };
     isBrowser?: boolean;
@@ -24,8 +24,8 @@ interface MainController { logger?: {
 interface ErrorMetadata { userAgent?: string,
     url?: string;
     viewport?: {
-        widt,h: number,
-    height: number,;
+        widt,h: number;
+    height: number;
     performanceNow?: number;
     memory?: { used?: number,
         total?: number;
@@ -45,7 +45,7 @@ interface ErrorMetadata { userAgent?: string,
     performance?: { level?: string,
         quality?: string;
         optimizationsActive?: string[];;
-    [key: string]: any,
+    [key: string]: any;
 
 interface PatternAnalysis { recurring: Record<string, number>,
     byContext: Record<string, number>;
@@ -54,24 +54,24 @@ interface PatternAnalysis { recurring: Record<string, number>,
         timestam,p: string;
         context: string;
     severity: string;>;
-    correlations: Array<{ type: string,
+    correlations: Array<{ type: string;
         description: string;
     contexts: string[];>;
 }
 
-interface AnalysisReport { errorId: string,
+interface AnalysisReport { errorId: string;
     severity: string;
     context: string;
     analysis: {
-        isRecurrin,g: boolean,
-        similarCount: number,
-        riskLevel: string,
-        impactAssessment: ImpactAssessment,
-    recommendedActions: string[],;
-    technical: { classification: ErrorClassification,
-        rootCause: string,
-    affectedSystems: string[],;
-    timestamp: string,
+        isRecurrin,g: boolean;
+        similarCount: number;
+        riskLevel: string;
+        impactAssessment: ImpactAssessment;
+    recommendedActions: string[];
+    technical: { classification: ErrorClassification;
+        rootCause: string;
+    affectedSystems: string[];
+    timestamp: string;
 }
 
 interface ImpactAssessment { userExperience: 'minimal' | 'moderate' | 'severe',''
@@ -79,7 +79,7 @@ interface ImpactAssessment { userExperience: 'minimal' | 'moderate' | 'severe','
     dataIntegrity: 'secure' | 'at_risk' | 'compromised'
             }
 
-interface ErrorClassification { category: string,
+interface ErrorClassification { category: string;
     type: string;
     source: string;
     recoverable: boolean;
@@ -87,7 +87,7 @@ interface ErrorClassification { category: string,
 interface AnalyzerConfig { severityRules?: Record<string, string>,
     contextPatterns?: Record<string, string> }
 
-interface AnalyzerStats { severityRulesCount: number,
+interface AnalyzerStats { severityRulesCount: number;
     contextPatternsCount: number;
     criticalPatternsCount: number;
     highSeverityPatternsCount: number;
@@ -99,19 +99,19 @@ declare global { interface Window {
         gameEngine?: {
             currentScene?: {
                 constructor: {
-                    nam,e: string,;
-            performanceOptimizer?: { getCurrentFPS: () => number,
-                currentLevel: string,
-                currentQuality: string,
-                activeOptimizations: string[],;
+                    nam,e: string;
+            performanceOptimizer?: { getCurrentFPS: () => number;
+                currentLevel: string;
+                currentQuality: string;
+                activeOptimizations: string[];
             memoryManager?: { getUsage: () => any 
     };
     }
 
     interface Performance { memory?: {
-            usedJSHeapSiz,e: number,
-            totalJSHeapSize: number,
-    jsHeapSizeLimit: number,
+            usedJSHeapSiz,e: number;
+            totalJSHeapSize: number;
+    jsHeapSizeLimit: number;
 }
 
 export class UtilsErrorAnalyzer {
@@ -119,7 +119,7 @@ export class UtilsErrorAnalyzer {
     private, contextPatterns: Map<string, RegExp>,
     private severityRules: Map<string, string>;
     private criticalPatterns: RegExp[];
-    private, highSeverityPatterns: RegExp[],
+    private, highSeverityPatterns: RegExp[];
 
     constructor(mainController: MainController) {
         this.mainController = mainController;
@@ -200,7 +200,7 @@ export class UtilsErrorAnalyzer {
 
                 context: this.determineContext(error),' };'
 
-                metadata: this.extractErrorMetadata(error), 
+                metadata: this.extractErrorMetadata(error);
     }
 
         if (typeof, error === 'string') {
@@ -224,7 +224,8 @@ export class UtilsErrorAnalyzer {
             context: 'UNKNOWN'
             }
             metadata: { originalError: error,
-    
+            metadata: { originalError: error,
+        };
     /**
      * Determine error context from error information
      * @param error - Error object
@@ -306,7 +307,7 @@ export class UtilsErrorAnalyzer {
 
             ' }'
 
-            default: return 'LOW';
+            default: return 'LOW',
     
     /**
      * Extract metadata from error
@@ -352,7 +353,8 @@ export class UtilsErrorAnalyzer {
             metadata.gameState = {
                 scene: gameEngine.currentScene?.constructor.name, : undefined
                 fps: gameEngine.performanceOptimizer?.getCurrentFPS(), : undefined
-        
+                fps: gameEngine.performanceOptimizer?.getCurrentFPS(), : undefined
+        };
                 memoryUsage: gameEngine.memoryManager?.getUsage() }
             };
             
@@ -405,7 +407,7 @@ export class UtilsErrorAnalyzer {
         // Find correlations (simplified);
         const recentErrors = errors.slice(-10);
         if (recentErrors.length > 1) {
-            const contexts = recentErrors.map(e => e.context),
+            const contexts = recentErrors.map(e => e.context);
             const uniqueContexts = [...new Set(contexts)],
 
             if (uniqueContexts.length < contexts.length) {
@@ -417,9 +419,9 @@ export class UtilsErrorAnalyzer {
     }
         
         return { recurring: Object.fromEntries(patterns.recurring,
-            byContext: Object.fromEntries(patterns.byContext),
+            byContext: Object.fromEntries(patterns.byContext);
             bySeverity: Object.fromEntries(patterns.bySeverity,
-    timeline: patterns.timeline };
+    timeline: patterns.timeline },
             correlations: patterns.correlations 
     }
     
@@ -428,16 +430,15 @@ export class UtilsErrorAnalyzer {
      * @param errorInfo - Error information
      * @returns Analysis report
      */
-    generateAnalysisReport(errorInfo: ErrorInfo): AnalysisReport { const severity = this.determineSeverity(errorInfo),
-        const similar = this.findSimilarErrors(errorInfo),
-        
+    generateAnalysisReport(errorInfo: ErrorInfo): AnalysisReport { const severity = this.determineSeverity(errorInfo);
+        const similar = this.findSimilarErrors(errorInfo);
         return { errorId: errorInfo.id,
             severity,
             context: errorInfo.context,
     analysis: {
                 isRecurring: similar.length > 0,
                 similarCount: similar.length,
-                riskLevel: this.calculateRiskLevel(errorInfo, severity),
+                riskLevel: this.calculateRiskLevel(errorInfo, severity);
                 impactAssessment: this.assessImpact(errorInfo, severity) };
                 recommendedActions: this.generateRecommendations(errorInfo, severity); }
             },
@@ -455,7 +456,7 @@ export class UtilsErrorAnalyzer {
     private findSimilarErrors(errorInfo: ErrorInfo): ErrorInfo[] { const errorLog = this.mainController.logger?.getErrorLog() || [],
         
         return errorLog.filter(logError => ,
-            logError.id !== errorInfo.id &&),
+            logError.id !== errorInfo.id &&);
             (logError.name === errorInfo.name ||),
              logError.context === errorInfo.context ||),
              this.calculateSimilarity(logError.message, errorInfo.message) > 0.7)) }
@@ -467,9 +468,9 @@ export class UtilsErrorAnalyzer {
      * @param message2 - Second message
      * @returns Similarity score (0-1)
      */ : undefined
-    private calculateSimilarity(message1: string, message2: string): number { const words1 = message1.toLowerCase().split(/\s+/),
-        const words2 = message2.toLowerCase().split(/\s+/),
-        const intersection = words1.filter(word => words2.includes(word),
+    private calculateSimilarity(message1: string, message2: string): number { const words1 = message1.toLowerCase().split(/\s+/);
+        const words2 = message2.toLowerCase().split(/\s+/);
+        const intersection = words1.filter(word => words2.includes(word);
         const union = [...new Set([...words1, ...words2])],
         
         return intersection.length / union.length,
@@ -482,12 +483,12 @@ export class UtilsErrorAnalyzer {
      */''
     private calculateRiskLevel(errorInfo: ErrorInfo, severity: string): string { const factors: string[] = [],
 
-        if (severity === 'CRITICAL') factors.push('critical_severity'),
-        if (errorInfo.context === 'CANVAS_ERROR') factors.push('rendering_failure'),
+        if (severity === 'CRITICAL') factors.push('critical_severity');
+        if (errorInfo.context === 'CANVAS_ERROR') factors.push('rendering_failure');
         if (errorInfo.context === 'SECURITY_ERROR') factors.push('security_issue',
         ','
 
-        const similar = this.findSimilarErrors(errorInfo),
+        const similar = this.findSimilarErrors(errorInfo);
         if(similar.length > 5) factors.push('recurring_issue),'
 
         if(factors.length >= 3) return 'HIGH',
@@ -549,25 +550,21 @@ export class UtilsErrorAnalyzer {
         switch(errorInfo.context) {
 
             case 'CANVAS_ERROR':','
-                recommendations.push('check_browser_compatibility'),
-                recommendations.push('implement_canvas_fallback'),
-
+                recommendations.push('check_browser_compatibility');
+                recommendations.push('implement_canvas_fallback');
                 break,
             case 'AUDIO_ERROR':','
-                recommendations.push('graceful_audio_degradation'),
-
+                recommendations.push('graceful_audio_degradation');
                 break,
             case 'STORAGE_ERROR':','
-                recommendations.push('implement_memory_storage_fallback'),
-
+                recommendations.push('implement_memory_storage_fallback');
                 break,
             case 'MEMORY_WARNING':','
-                recommendations.push('optimize_memory_usage'),
-                recommendations.push('enable_garbage_collection'),
-
+                recommendations.push('optimize_memory_usage');
+                recommendations.push('enable_garbage_collection');
                 break,
             case 'PERFORMANCE_WARNING':','
-                recommendations.push('reduce_quality_settings'),
+                recommendations.push('reduce_quality_settings');
                 recommendations.push('optimize_rendering' }
                 break; }
         }
@@ -591,7 +588,7 @@ export class UtilsErrorAnalyzer {
      */
     private classifyError(errorInfo: ErrorInfo): ErrorClassification { return { category: this.getCategoryFromContext(errorInfo.context,
             type: errorInfo.name,
-    source: this.identifyErrorSource(errorInfo) };
+    source: this.identifyErrorSource(errorInfo) },
             recoverable: this.isRecoverable(errorInfo); 
     }
     
@@ -730,7 +727,7 @@ export class UtilsErrorAnalyzer {
      * @param severity - Severity level
      */
     addSeverityRule(errorName: string, severity: string): void { this.severityRules.set(errorName, severity) }
-        console.log(`[ErrorAnalyzer] Added, severity rule: ${errorName} -> ${severity}`});
+        console.log(`[ErrorAnalyzer] Added, severity rule: ${errorName} -> ${severity}`};
     }
     
     /**
@@ -748,14 +745,14 @@ export class UtilsErrorAnalyzer {
      */
     getAnalyzerStats(): AnalyzerStats { return { severityRulesCount: this.severityRules.size,
             contextPatternsCount: this.contextPatterns.size,
-    criticalPatternsCount: this.criticalPatterns.length };
+    criticalPatternsCount: this.criticalPatterns.length },
             highSeverityPatternsCount: this.highSeverityPatterns.length 
     }
     
     /**
      * Cleanup analyzer resources
      */'
-    destroy(): void { this.contextPatterns.clear(),
+    destroy(): void { this.contextPatterns.clear();
         this.severityRules.clear()','
         console.log('[ErrorAnalyzer] Analyzer, destroyed') }
 

@@ -17,7 +17,7 @@
 // 型定義
 export interface LineChartContext extends CanvasRenderingContext2D { canvas: HTMLCanvasElement;
 
-export interface LineChartData { value: number,
+export interface LineChartData { value: number;
     x?: number;
     label?: string;
     color?: string;
@@ -25,7 +25,7 @@ export interface LineChartData { value: number,
     category?: string;
     metadata?: Record<string, any> }
 
-export interface ProcessedLineData extends LineChartData { x: number,
+export interface ProcessedLineData extends LineChartData { x: number;
     index: number;
     interpolated?: boolean;
     confidence?: number,  }
@@ -51,14 +51,14 @@ export interface LineChartOptions { padding?: number,
     interaction?: LineInteractionOptions;
      }
 
-export interface LineChartTheme { colors: LineThemeColors,
+export interface LineChartTheme { colors: LineThemeColors;
     palette: string[];
     background?: string;
     font?: LineFontTheme;
     lineStyles?: LineStyleTheme;
      }
 
-export interface LineThemeColors { primary: string,
+export interface LineThemeColors { primary: string;
     secondary: string;
     accent: string;
     dark: string;
@@ -69,12 +69,12 @@ export interface LineThemeColors { primary: string,
     axis: string;
     point: string;
 
-export interface LineFontTheme { family: string,
+export interface LineFontTheme { family: string;
     size: number;
     weight: string;
     color: string;
 
-export interface LineStyleTheme { defaultWidth: number,
+export interface LineStyleTheme { defaultWidth: number;
     defaultColor: string;
     defaultStyle: LineStyle;
     pointRadius: number;
@@ -97,13 +97,13 @@ export interface PointStyleOptions { radius?: number,
     fill?: boolean;
     shadow?: PointShadowOptions;
 
-export interface PointShadowOptions { enabled: boolean,
+export interface PointShadowOptions { enabled: boolean;
     color: string;
     blur: number;
     offsetX: number;
     offsetY: number;
 
-export interface LineAxesOptions { x: LineAxisOptions,
+export interface LineAxesOptions { x: LineAxisOptions;
     y: LineAxisOptions;
 
 export interface LineAxisOptions { show?: boolean,
@@ -219,12 +219,12 @@ export interface CrosshairOptions { enabled?: boolean,
     dashArray?: number[];
     showValues?: boolean;
 
-export interface LineChartArea { x: number,
+export interface LineChartArea { x: number;
     y: number;
     width: number;
     height: number;
 
-export interface LineChartScales { xScale: number,
+export interface LineChartScales { xScale: number;
     yScale: number;
     xMin: number;
     xMax: number;
@@ -233,16 +233,16 @@ export interface LineChartScales { xScale: number,
     xRange: number;
     yRange: number;
 
-export interface LineSegment { start: Point2D,
+export interface LineSegment { start: Point2D;
     end: Point2D;
     control1?: Point2D;
     control2?: Point2D;
     length: number;
 
-export interface Point2D { x: number,
+export interface Point2D { x: number;
     y: number;
 
-export interface LineRenderResult { type: ChartType,
+export interface LineRenderResult { type: ChartType;
     dataPoints: number;
     xMin: number;
     xMax: number;
@@ -255,21 +255,21 @@ export interface LineRenderResult { type: ChartType,
     performance?: LineRenderPerformance;
     error?: string;
 
-export interface LineRenderPerformance { renderTime: number,
+export interface LineRenderPerformance { renderTime: number;
     dataProcessingTime: number;
     lineDrawTime: number;
     pointDrawTime: number;
     interpolationTime?: number;
     memoryUsage?: number,  }
 
-export interface LineData { path: ProcessedLineData[],
+export interface LineData { path: ProcessedLineData[];
     color: string;
     width: number;
     style: LineStyle;
     series?: string;
     segments: LineSegment[];
 
-export interface PointData { x: number,
+export interface PointData { x: number;
     y: number;
     dataX: number;
     dataY: number;
@@ -279,28 +279,28 @@ export interface PointData { x: number,
     shape: PointShape;
     data: ProcessedLineData;
 
-export interface LineValidationResult { isValid: boolean,
+export interface LineValidationResult { isValid: boolean;
     errors: LineValidationError[];
     warnings: LineValidationWarning[];
 
-export interface LineValidationError { field: string,
+export interface LineValidationError { field: string;
     message: string;
     code: string;
 
-export interface LineValidationWarning { field: string,
+export interface LineValidationWarning { field: string;
     message: string;
     suggestion: string;
 
-export interface LineBounds { minX: number,
+export interface LineBounds { minX: number;
     maxX: number;
     minY: number;
     maxY: number;
 
-export interface InterpolationResult { points: Point2D[],
+export interface InterpolationResult { points: Point2D[];
     segments: LineSegment[];
     smoothness: number;
 
-export interface TrendAnalysis { slope: number,
+export interface TrendAnalysis { slope: number;
     intercept: number;
     correlation: number;
     trend: TrendDirection;
@@ -320,60 +320,60 @@ export type TooltipAnchor = 'cursor' | 'point' | 'fixed';
 export type TrendDirection = 'up' | 'down' | 'flat' | 'volatile';
 
 // 定数
-export const DEFAULT_LINE_OPTIONS: Partial<LineChartOptions> = { padding: 20,
-    showAxes: true,
-    showGrid: true,
-    showPoints: true,
-    lineWidth: 2,
-    pointRadius: 4,
-    fontSize: 12,
+export const DEFAULT_LINE_OPTIONS: Partial<LineChartOptions> = { padding: 20;
+    showAxes: true;
+    showGrid: true;
+    showPoints: true;
+    lineWidth: 2;
+    pointRadius: 4;
+    fontSize: 12;
     fontFamily: 'Arial, sans-serif' } as const;
 ';'
 
 export const DEFAULT_LINE_THEME: LineChartTheme = { colors: {''
-        primary: '#3B82F6',
-        secondary: '#10B981',
-        accent: '#F59E0B',
-        dark: '#1F2937',
-        light: '#F9FAFB',
-        background: '#FFFFFF',
-        text: '#374151',
-        grid: '#E5E7EB',
-        axis: '#6B7280',
+        primary: '#3B82F6';
+        secondary: '#10B981';
+        accent: '#F59E0B';
+        dark: '#1F2937';
+        light: '#F9FAFB';
+        background: '#FFFFFF';
+        text: '#374151';
+        grid: '#E5E7EB';
+        axis: '#6B7280';
         point: '#FFFFFF'
             };
     palette: [','
         '#3B82F6', '#10B981', '#F59E0B', '#EF4444', '#8B5CF6',]';'
         '#06B6D4', '#84CC16', '#F97316', '#EC4899', '#14B8A6']';'
     ],
-    background: '#FFFFFF',
+    background: '#FFFFFF';
     lineStyles: { defaultWidth: 2,''
-        defaultColor: '#3B82F6',
-        defaultStyle: 'solid',
+        defaultColor: '#3B82F6';
+        defaultStyle: 'solid';
     pointRadius: 4  }
 } as const;
-export const LINE_CONFIG = { MIN_POINTS: 2,
-    MAX_POINTS_FOR_ANIMATION: 100,
-    DEFAULT_TENSION: 0.4,
-    SMOOTHING_SEGMENTS: 20,
+export const LINE_CONFIG = { MIN_POINTS: 2;
+    MAX_POINTS_FOR_ANIMATION: 100;
+    DEFAULT_TENSION: 0.4;
+    SMOOTHING_SEGMENTS: 20;
     MAX_LINE_WIDTH: 10  } as const;
-export const POINT_CONFIG = { MIN_RADIUS: 1,
-    MAX_RADIUS: 20,
-    DEFAULT_BORDER_WIDTH: 2,
+export const POINT_CONFIG = { MIN_RADIUS: 1;
+    MAX_RADIUS: 20;
+    DEFAULT_BORDER_WIDTH: 2;
     HOVER_SCALE: 1.3  } as const;
-export const INTERPOLATION_CONFIG = { CUBIC_SEGMENTS: 50,
-    BEZIER_SEGMENTS: 30,
+export const INTERPOLATION_CONFIG = { CUBIC_SEGMENTS: 50;
+    BEZIER_SEGMENTS: 30;
     SPLINE_SEGMENTS: 40  } as const;
 // ユーティリティ関数
-export function validateLineData(data: any[]): LineValidationResult { const errors: LineValidationError[] = [],
-    const warnings: LineValidationWarning[] = [],
+export function validateLineData(data: any[]): LineValidationResult { const errors: LineValidationError[] = [];
+    const warnings: LineValidationWarning[] = [];
 
     if(!Array.isArray(data)) {
         errors.push({''
             field: 'data',','
             message: 'Line chart data must be an array',')',
             code: 'INVALID_DATA_TYPE'
-            });
+            };
         return { isValid: false, errors, warnings }
 
     if (data.length < LINE_CONFIG.MIN_POINTS) {
@@ -411,7 +411,7 @@ export function validateLineData(data: any[]): LineValidationResult { const erro
             message: 'X coordinates must be valid numbers when specified',' }'
 
             code: 'INVALID_X_VALUES'); 
-    });
+    };
     }
 
     if (data.length > LINE_CONFIG.MAX_POINTS_FOR_ANIMATION) {
@@ -420,8 +420,8 @@ export function validateLineData(data: any[]): LineValidationResult { const erro
             field: 'data',' }'
 
             message: `Large dataset (>${LINE_CONFIG.MAX_POINTS_FOR_ANIMATION} points'}' may affect animation performance`,''
-            suggestion: 'Consider disabling animations for large datasets';
-        }) }
+            suggestion: 'Consider disabling animations for large datasets',
+        } }
     
     return { isValid: errors.length === 0,
         errors };
@@ -441,7 +441,7 @@ export function calculateLineLength(points: Point2D[]): number { let totalLength
     return totalLength;
 }
 
-export function interpolatePoint(p1: Point2D, p2: Point2D, t: number): Point2D { return { x: p1.x + (p2.x - p1.x) * t };
+export function interpolatePoint(p1: Point2D, p2: Point2D, t: number): Point2D { return { x: p1.x + (p2.x - p1.x) * t },
         y: p1.y + (p2.y - p1.y) * t 
     }
 
@@ -451,7 +451,7 @@ export function calculateBezierPoint(p0: Point2D, p1: Point2D, p2: Point2D, p3: 
     const t2 = t * t,
     const t3 = t2 * t,
     
-    return { x: mt3 * p0.x + 3 * mt2 * t * p1.x + 3 * mt * t2 * p2.x + t3 * p3.x };
+    return { x: mt3 * p0.x + 3 * mt2 * t * p1.x + 3 * mt * t2 * p2.x + t3 * p3.x },
         y: mt3 * p0.y + 3 * mt2 * t * p1.y + 3 * mt * t2 * p2.y + t3 * p3.y 
     }
 ';'
@@ -494,7 +494,7 @@ export function calculateTrendLine(data: ProcessedLineData[]): TrendAnalysis { c
     }
 
 export function formatLineValue(value: number, decimals: number = 2): string { return value.toLocaleString(undefined, {
-        minimumFractionDigits: 0),
+        minimumFractionDigits: 0);
         maximumFractionDigits: decimals,);
 }
 
@@ -503,8 +503,8 @@ export class LineChartRenderer {
     constructor() {
 
         this.performance = {
-            renderTime: 0,
-            dataProcessingTime: 0,
+            renderTime: 0;
+            dataProcessingTime: 0;
     lineDrawTime: 0 }
             pointDrawTime: 0 
     }
@@ -513,10 +513,9 @@ export class LineChartRenderer {
      * メインレンダリング関数
      */
     render(context: LineChartContext, data: (number | LineChartData)[], options: LineChartOptions): LineRenderResult { try {
-            const startTime = performance.now(),
-            
+            const startTime = performance.now();
             // データの検証
-            const validation = validateLineData(data),
+            const validation = validateLineData(data);
             if (!validation.isValid) { }'
 
                 throw new Error(`Data validation failed: ${validation.errors.map(e => e.message}.join(', '})`);
@@ -565,11 +564,11 @@ export class LineChartRenderer {
 
             return { ''
                 type: 'line', ;
-                dataPoints: 0,
-                xMin: 0,
-                xMax: 0,
-                yMin: 0,
-                yMax: 0,
+                dataPoints: 0;
+                xMin: 0;
+                xMax: 0;
+                yMin: 0;
+                yMax: 0;
     lines: [] };
                 points: [] }
                 chartArea: { x: 0, y: 0, width: 0, height: 0  };
@@ -584,7 +583,7 @@ export class LineChartRenderer {
     private calculateChartArea(canvas: HTMLCanvasElement, options: LineChartOptions): LineChartArea { const padding = options.padding || DEFAULT_LINE_OPTIONS.padding!,
         return { x: padding,
             y: padding,
-    width: canvas.width - (padding * 2) };
+    width: canvas.width - (padding * 2) },
             height: canvas.height - (padding * 2); 
     }
 
@@ -594,29 +593,27 @@ export class LineChartRenderer {
     private processData(data: (number | LineChartData)[]): ProcessedLineData[] { ''
         return data.map((item, index) => { ''
             if(typeof, item === 'number' { }'
-                return { value: item,;
+                return { value: item,
                     x: index,
-                    label: `Point ${index + 1}`;
+                    label: `Point ${index + 1}`,
                     index,
                     interpolated: false,
                 } } else {  return { ...item,
                     x: item.x ? ? index }
                     index, : undefined;;
-                    interpolated: false;
-        });
+                    interpolated: false,
+        };
     }
 
     /**
      * スケールの計算
      */
-    private calculateScales(data: ProcessedLineData[], chartArea: LineChartArea): LineChartScales { const values = data.map(d => d.value),
-        const xValues = data.map(d => d.x),
-        
-        const yMin = Math.min(...values),
-        const yMax = Math.max(...values),
-        const xMin = Math.min(...xValues),
-        const xMax = Math.max(...xValues),
-        
+    private calculateScales(data: ProcessedLineData[], chartArea: LineChartArea): LineChartScales { const values = data.map(d => d.value);
+        const xValues = data.map(d => d.x);
+        const yMin = Math.min(...values);
+        const yMax = Math.max(...values);
+        const xMin = Math.min(...xValues);
+        const xMax = Math.max(...xValues);
         const xRange = xMax - xMin || 1,
         const yRange = yMax - yMin || 1,
         
@@ -643,16 +640,16 @@ export class LineChartRenderer {
         
         // Y軸
         if (axesOptions.y.show !== false) {
-            context.beginPath(),
-            context.moveTo(chartArea.x, chartArea.y),
+            context.beginPath();
+            context.moveTo(chartArea.x, chartArea.y);
             context.lineTo(chartArea.x, chartArea.y + chartArea.height) }
             context.stroke(); }
         }
         
         // X軸
         if (axesOptions.x.show !== false) {
-            context.beginPath(),
-            context.moveTo(chartArea.x, chartArea.y + chartArea.height),
+            context.beginPath();
+            context.moveTo(chartArea.x, chartArea.y + chartArea.height);
             context.lineTo(chartArea.x + chartArea.width, chartArea.y + chartArea.height) }
             context.stroke(); }
 }
@@ -673,8 +670,8 @@ export class LineChartRenderer {
             const ySteps = gridOptions.y?.count || 5,
             for (let, i = 0, i <= ySteps, i++) {
                 const y = chartArea.y + (chartArea.height / ySteps) * i,
-                context.beginPath(),
-                context.moveTo(chartArea.x, y),
+                context.beginPath();
+                context.moveTo(chartArea.x, y);
                 context.lineTo(chartArea.x + chartArea.width, y) }
                 context.stroke(); }
 }
@@ -684,8 +681,8 @@ export class LineChartRenderer {
             const xSteps = gridOptions.x?.count || 5,
             for (let, i = 0, i <= xSteps, i++) {
                 const x = chartArea.x + (chartArea.width / xSteps) * i,
-                context.beginPath(),
-                context.moveTo(x, chartArea.y),
+                context.beginPath();
+                context.moveTo(x, chartArea.y);
                 context.lineTo(x, chartArea.y + chartArea.height) }
                 context.stroke(); }
 }
@@ -718,22 +715,21 @@ export class LineChartRenderer {
             
             if (index === 0) { }
                 context.moveTo(x, y); }
-            } else {  context.lineTo(x, y),
-                
+            } else {  context.lineTo(x, y);
                 // セグメント情報の記録
                 const prevItem = data[index - 1],
                 const prevX = chartArea.x + (prevItem.x - scales.xMin) * scales.xScale,
                 const prevY = chartArea.y + chartArea.height - (prevItem.value - scales.yMin) * scales.yScale }
                 segments.push({
-            });
+            };
                     start: { x: prevX, y: prevY,)
-                    end: { x, y });
-                    length: calculateDistance({ x: prevX, y: prevY,, { x, y ) });
+                    end: { x, y };
+                    length: calculateDistance({ x: prevX, y: prevY,, { x, y ) };
             }
-        });
+        };
 
         context.stroke()';'
-            style: 'solid');
+            style: 'solid'),
             segments;
         }];
     }
@@ -757,10 +753,9 @@ export class LineChartRenderer {
             
             // データポイントの描画
             context.fillStyle = item.color || pointColor,
-            context.beginPath(),
-            context.arc(x, y, pointRadius, 0, 2 * Math.PI),
-            context.fill(),
-            
+            context.beginPath();
+            context.arc(x, y, pointRadius, 0, 2 * Math.PI);
+            context.fill();
             // ポイントの枠線
             if (borderWidth > 0) {
                 context.strokeStyle = borderColor,
@@ -768,7 +763,7 @@ export class LineChartRenderer {
                 context.stroke(' }''
                 shape: 'circle') }
                 data: item); 
-    });
+    };
         
         return points;
     }
@@ -796,13 +791,13 @@ export class LineChartRenderer {
                 field: 'lineWidth'
             }''
                 message: `Line width must be between 0 and ${LINE_CONFIG.MAX_LINE_WIDTH}`,')'
-                code: 'INVALID_LINE_WIDTH');
+                code: 'INVALID_LINE_WIDTH'),
         }
 
         if(options.pointRadius && (options.pointRadius < POINT_CONFIG.MIN_RADIUS || options.pointRadius > POINT_CONFIG.MAX_RADIUS)) { warnings.push({)'
                 field: 'pointRadius') }
-                message: `Point radius is outside recommended range (${POINT_CONFIG.MIN_RADIUS}-${POINT_CONFIG.MAX_RADIUS}px})`;
-                suggestion: `Use point radius between ${POINT_CONFIG.MIN_RADIUS} and ${POINT_CONFIG.MAX_RADIUS} pixels`'}');
+                message: `Point radius is outside recommended range (${POINT_CONFIG.MIN_RADIUS}-${POINT_CONFIG.MAX_RADIUS}px}`,
+                suggestion: `Use point radius between ${POINT_CONFIG.MIN_RADIUS} and ${POINT_CONFIG.MAX_RADIUS} pixels`'}'),
         }
         
         return { isValid: errors.length === 0,

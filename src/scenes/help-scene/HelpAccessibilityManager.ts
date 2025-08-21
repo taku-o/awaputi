@@ -13,12 +13,12 @@ interface FocusableElement { id: string,''
     label: string;
 
 // ARIAラベル情報インターフェース
-interface AriaLabelInfo { label: string,
+interface AriaLabelInfo { label: string;
     role: string;
     description: string;
 
 // アクセシビリティ状態インターフェース
-interface AccessibilityState { screenReaderMode: boolean,
+interface AccessibilityState { screenReaderMode: boolean;
     highContrastMode: boolean;
     largeTextMode: boolean;
     currentFocusIndex: number;
@@ -52,7 +52,7 @@ export class HelpAccessibilityManager {
     // 詳細設定
     private enableDetailedDescriptions: boolean = false;
     private enableNavigationAnnouncements: boolean = false;
-    private, enableProgressAnnouncements: boolean = false,
+    private, enableProgressAnnouncements: boolean = false;
     constructor(gameEngine: GameEngine, accessibilityManager?: AccessibilityManager) {
     
         this.gameEngine = gameEngine;
@@ -99,48 +99,46 @@ export class HelpAccessibilityManager {
      * ARIAラベルの設定
      */'
     private setupAriaLabels(): void { ''
-        const t = this.gameEngine.localizationManager.t.bind(this.gameEngine.localizationManager),
-
+        const t = this.gameEngine.localizationManager.t.bind(this.gameEngine.localizationManager);
         this.ariaLabels.set('searchBar', {','
-            label: t('help.accessibility.searchBar', 'ヘルプを検索するための入力フィールド'),
+            label: t('help.accessibility.searchBar', 'ヘルプを検索するための入力フィールド');
             role: 'searchbox',
             description: t('help.accessibility.searchBarDesc', 'キーワードを入力してヘルプコンテンツを検索できます',' }'
 
         }');'
 
         this.ariaLabels.set('categoryList', { '),'
-            label: t('help.accessibility.categoryList', 'ヘルプカテゴリ一覧'),
+            label: t('help.accessibility.categoryList', 'ヘルプカテゴリ一覧');
             role: 'listbox',
             description: t('help.accessibility.categoryListDesc', '矢印キーで移動、Enterで選択',' }'
 
         }');'
 
         this.ariaLabels.set('topicList', { '),'
-            label: t('help.accessibility.topicList', 'トピック一覧'),
+            label: t('help.accessibility.topicList', 'トピック一覧');
             role: 'listbox',
             description: t('help.accessibility.topicListDesc', '選択されたカテゴリのトピック一覧',' }'
 
         }');'
 
         this.ariaLabels.set('contentArea', { '),'
-            label: t('help.accessibility.contentArea', 'ヘルプコンテンツ表示エリア'),
+            label: t('help.accessibility.contentArea', 'ヘルプコンテンツ表示エリア');
             role: 'region',
             description: t('help.accessibility.contentAreaDesc', '選択されたトピックの詳細情報',' }'
 
         }');'
 
         this.ariaLabels.set('backButton', { '),'
-            label: t('help.accessibility.backButton', '戻るボタン'),
+            label: t('help.accessibility.backButton', '戻るボタン');
             role: 'button',
-            description: t('help.accessibility.backButtonDesc', 'メインメニューに戻ります });'
+            description: t('help.accessibility.backButtonDesc', 'メインメニューに戻ります };'
     }
 
     /**
      * スクリーンリーダー対応の準備
      */
     private prepareScreenReaderSupport(): void { // スクリーンリーダーの検出
-        this.detectScreenReader(),
-        
+        this.detectScreenReader();
         // 自動アナウンス設定
         this.setupAutoAnnouncements() }
 ;
@@ -172,7 +170,7 @@ export class HelpAccessibilityManager {
         if (this.screenReaderMode && this.accessibilityManager) {', ' }
 
             this.safeCall(this.accessibilityManager, 'announce', message, priority); }
-            this.announcementQueue.push({ message, priority, timestamp: Date.now(  });
+            this.announcementQueue.push({ message, priority, timestamp: Date.now(  };
         }
     }
 
@@ -194,13 +192,13 @@ export class HelpAccessibilityManager {
      */''
     public handleAccessibilityKeys(event: KeyboardEvent): boolean { // F1: アクセシビリティヘルプ
         if(event.key === 'F1' {'
-            event.preventDefault(),
+            event.preventDefault();
             this.showAccessibilityHelp()','
         if(event.altKey && event.key === 'h' {'
-            event.preventDefault(),
+            event.preventDefault();
             this.announceKeyboardShortcuts()','
         if (event.ctrlKey && event.shiftKey && event.key === '? ') {
-            event.preventDefault(),
+            event.preventDefault();
             this.toggleAccessibilityFeatures() }
             return true;
 
@@ -284,9 +282,9 @@ export class HelpAccessibilityManager {
     public enableAccessibilityFeatures(): void { this.screenReaderMode = true;
         if (this.accessibilityManager) {
             // Safe call mechanism - call methods only if they exist
-            this.safeCall(this.accessibilityManager, 'enableHighContrast'),
-            this.safeCall(this.accessibilityManager, 'enableLargeText'),
-            this.safeCall(this.accessibilityManager, 'enableAudioCues'),
+            this.safeCall(this.accessibilityManager, 'enableHighContrast');
+            this.safeCall(this.accessibilityManager, 'enableLargeText');
+            this.safeCall(this.accessibilityManager, 'enableAudioCues');
             this.safeCall(this.accessibilityManager, 'enableKeyboardNavigation') }
 
             this.safeCall(this.accessibilityManager, 'enableScreenReaderSupport'; }'
@@ -302,7 +300,7 @@ export class HelpAccessibilityManager {
 
         if (this.accessibilityManager) {
             // Safe call mechanism - call methods only if they exist
-            this.safeCall(this.accessibilityManager, 'disableHighContrast'),
+            this.safeCall(this.accessibilityManager, 'disableHighContrast');
             this.safeCall(this.accessibilityManager, 'disableLargeText') }
 
             this.safeCall(this.accessibilityManager, 'disableAudioCues'; }'
@@ -335,8 +333,7 @@ export class HelpAccessibilityManager {
     /**
      * タブナビゲーション処理
      */
-    public handleTabNavigation(event: KeyboardEvent): void { event.preventDefault(),
-        
+    public handleTabNavigation(event: KeyboardEvent): void { event.preventDefault();
         if (event.shiftKey) {
     
 }
@@ -364,14 +361,14 @@ export class HelpAccessibilityManager {
     public getAccessibilityState(): AccessibilityState { return { screenReaderMode: this.screenReaderMode,
             highContrastMode: this.highContrastMode,
             largeTextMode: this.largeTextMode,
-    currentFocusIndex: this.currentFocusIndex };
+    currentFocusIndex: this.currentFocusIndex },
             announcementQueueLength: this.announcementQueue.length 
     }
 
     // クリーンアップ
-    public destroy(): void { this.disableAccessibilityFeatures(),
+    public destroy(): void { this.disableAccessibilityFeatures();
         this.announcementQueue.length = 0,
-        this.ariaLabels.clear(),
+        this.ariaLabels.clear();
         this.focusableElements.length = 0 }
 }
 
@@ -389,20 +386,19 @@ export class HelpAccessibilityRenderer {
      */
     public renderFocusIndicator(;
         ctx: CanvasRenderingContext2D;
-    rect: { x: number, y: number, width: number,, height: number ),
+    rect: { x: number, y: number, width: number,, height: number );
         focused: boolean = false): void {
-        const state = this.accessibilityManager.getAccessibilityState(),
+        const state = this.accessibilityManager.getAccessibilityState();
         if (!focused || !state.screenReaderMode) return,
 
         ctx.save('''
         ctx.strokeStyle = state.highContrastMode ? '#FFFF00' : '#4A90E2')
         ctx.lineWidth = 3)
-        ctx.setLineDash([5, 5]),
-
-        ctx.strokeRect(rect.x - 2, rect.y - 2, rect.width + 4, rect.height + 4),
+        ctx.setLineDash([5, 5]);
+        ctx.strokeRect(rect.x - 2, rect.y - 2, rect.width + 4, rect.height + 4);
         ctx.restore()','
     public getAccessibleColor(baseColor: string, type: 'text' | 'background' | 'selected' | 'border' = 'text): string {'
-        const state = this.accessibilityManager.getAccessibilityState(),
+        const state = this.accessibilityManager.getAccessibilityState();
         if (!state.highContrastMode) {
     
 }
@@ -423,7 +419,7 @@ export class HelpAccessibilityRenderer {
     /**
      * 大きなテキスト対応フォントサイズ
      */
-    public getAccessibleFontSize(baseFontSize: number): number { const state = this.accessibilityManager.getAccessibilityState(),
+    public getAccessibleFontSize(baseFontSize: number): number { const state = this.accessibilityManager.getAccessibilityState();
         if (state.largeTextMode) {
     
 }
@@ -445,7 +441,7 @@ export class HelpAccessibilityRenderer {
             align?: CanvasTextAlign,
             baseline?: CanvasTextBaseline,
             outline?: boolean; = { ): void {''
-        const fontSize = this.getAccessibleFontSize(options.fontSize || 16),
+        const fontSize = this.getAccessibleFontSize(options.fontSize || 16);
         const color = this.getAccessibleColor(options.color || '#FFFFFF', 'text',
 
         ctx.save('}'

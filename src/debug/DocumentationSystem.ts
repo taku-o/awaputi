@@ -4,14 +4,14 @@
  */
 
 // Type definitions
-interface DocumentationItem { id: string,
+interface DocumentationItem { id: string;
     title: string;
     category: string;
     content: string;
     keywords: string[];
     lastUpdated: number;
 
-interface SearchResult { docId: string,
+interface SearchResult { docId: string;
     title: string;
     score: number;
     matches: string[];
@@ -19,16 +19,16 @@ interface SearchResult { docId: string,
 
 interface SearchOptions { limit?: number;
 
-interface ContextualHelpResult { context: string,
+interface ContextualHelpResult { context: string;
     suggestedDocs: string[];
     currentDoc?: string;
     tips: string[];
 
-interface ContextInfo { docId: string,
+interface ContextInfo { docId: string;
     doc: DocumentationItem;
     timestamp: number;
 
-interface TokenInfo { docId: string,
+interface TokenInfo { docId: string;
     title: string;
     frequency: number;
 
@@ -37,7 +37,7 @@ export class DocumentationSystem {
     private searchEngine: DocumentationSearchEngine;
     private contextualHelp: ContextualHelpProvider;
     private helpPanel: HTMLElement | null;
-    private, isVisible: boolean,
+    private, isVisible: boolean;
     constructor() {
 
         this.docs = new Map<string, DocumentationItem>(),
@@ -48,8 +48,8 @@ export class DocumentationSystem {
         this.initialize(); }
     }
 
-    initialize(): void { this.loadDocumentation(),
-        this.createHelpPanel(),
+    initialize(): void { this.loadDocumentation();
+        this.createHelpPanel();
         this.setupEventHandlers() }
 
     loadDocumentation(): void { // コアドキュメント
@@ -76,7 +76,8 @@ export class DocumentationSystem {
                 </ul>','
             `,')',
             keywords: ['overview', 'help', 'getting started', 'introduction]'),
-
+            keywords: ['overview', 'help', 'getting started', 'introduction]'),
+        };
         this.registerDocumentation('performance-monitor', {')'
             title: 'Performance Monitor',','
             category: 'tools',
@@ -106,7 +107,8 @@ export class DocumentationSystem {
                 </ul>','
             `,')',
             keywords: ['performance', 'fps', 'monitoring', 'optimization]'),
-
+            keywords: ['performance', 'fps', 'monitoring', 'optimization]'),
+        };
         this.registerDocumentation('developer-console', {')'
             title: 'Developer Console',','
             category: 'tools',
@@ -166,7 +168,8 @@ export class DocumentationSystem {
                 </ol>','
             `,')',
             keywords: ['error', 'debugging', 'troubleshooting', 'logs]'),
-
+            keywords: ['error', 'debugging', 'troubleshooting', 'logs]'),
+        };
         this.registerDocumentation('test-support', {')'
             title: 'Test Support Tools',','
             category: 'tools',
@@ -203,7 +206,8 @@ export class DocumentationSystem {
                 </ul>','
             `,')',
             keywords: ['testing', 'test', 'mock', 'benchmark]'),
-
+            keywords: ['testing', 'test', 'mock', 'benchmark]'),
+        };
         this.registerDocumentation('visual-debugger', {')'
             title: 'Visual Debugger',','
             category: 'tools',
@@ -233,7 +237,8 @@ export class DocumentationSystem {
                 </ul>','
             `,')',
             keywords: ['visual', 'debug', 'editor', 'inspector]'),
-
+            keywords: ['visual', 'debug', 'editor', 'inspector]'),
+        };
         this.registerDocumentation('shortcuts', {')'
             title: 'Keyboard Shortcuts',','
             category: 'reference',
@@ -270,7 +275,8 @@ export class DocumentationSystem {
                 </ul>','
             `,')',
             keywords: ['shortcuts', 'keyboard', 'hotkeys', 'keys]'),
-
+            keywords: ['shortcuts', 'keyboard', 'hotkeys', 'keys]'),
+        };
         this.registerDocumentation('troubleshooting', {')'
             title: 'Troubleshooting Guide',','
             category: 'guides',
@@ -315,7 +321,8 @@ export class DocumentationSystem {
                 </ul>','
             `,')',
             keywords: ['troubleshooting', 'problems', 'issues', 'help', 'support]'),
-
+            keywords: ['troubleshooting', 'problems', 'issues', 'help', 'support]'),
+        };
         this.registerDocumentation('best-practices', {')'
             title: 'Best Practices',','
             category: 'guides',
@@ -370,12 +377,12 @@ export class DocumentationSystem {
                 <pre><code>,
 class EnhancedDebugInterface {)
     // パネル管理),
-    registerPanel(name: string, panel: Panel): void,
-    switchPanel(name: string): void,
+    registerPanel(name: string, panel: Panel): void;
+    switchPanel(name: string): void;
     closePanel(): void,
     // ショートカット
     registerShortcut(key: string, handler: Function): void','
-    unregisterShortcut(key: string): void,
+    unregisterShortcut(key: string): void;
     ','
     // レイアウト
     setLayout(layout: 'docked' | 'floating' | 'fullscreen): void,'
@@ -385,20 +392,20 @@ class EnhancedDebugInterface {)
                 <pre><code>;
 class PerformanceMonitor { // メトリクス収集
     collectMetrics(): Metrics,
-    startProfiling(label: string): void,
-    stopProfiling(label: string): ProfileResult,
+    startProfiling(label: string): void;
+    stopProfiling(label: string): ProfileResult;
     // 分析
     analyzePerformance(): Analysis,
     compareWithBaseline(): Comparison,
     // 設定
-    setThreshold(metric: string, value: number): void,
+    setThreshold(metric: string, value: number): void;
     enableWarnings(enabled: boolean): void;
                 </code></pre>;
                 <h4>DeveloperConsole</h4>;
                 <pre><code>;
 class DeveloperConsole { // コマンド管理
-    registerCommand(name: string, handler: Function): void,
-    executeCommand(command: string): any,
+    registerCommand(name: string, handler: Function): void;
+    executeCommand(command: string): any;
     // 履歴
     getHistory(): string[],
     clearHistory(): void,
@@ -411,8 +418,8 @@ class TestSupportTools { // テスト実行
     runTests(suites?: string[]): TestResults,
     runBenchmarks(names?: string[]): BenchmarkResults,
     // モックデータ
-    generateMockData(type: string, count: number): any[],
-    createScenario(name: string): Scenario,
+    generateMockData(type: string, count: number): any[];
+    createScenario(name: string): Scenario;
     // 分析
     analyzeResults(results: TestResults): Analysis','
     generateReport('','
@@ -421,7 +428,7 @@ class TestSupportTools { // テスト実行
 
     registerDocumentation(id: string, doc: Omit<DocumentationItem, 'id' | 'lastUpdated'>): void { const fullDoc: DocumentationItem = { id: id,
             ...doc,
-            lastUpdated: Date.now(  };
+            lastUpdated: Date.now(  },
         )
         this.docs.set(id, fullDoc);
         
@@ -434,11 +441,11 @@ class TestSupportTools { // テスト実行
         this.helpPanel.id = 'debug-help-panel';
         this.helpPanel.className = 'debug-help-panel';
         this.helpPanel.style.cssText = `;
-            position: fixed;
-            top: 50%;
+            position: fixed,
+            top: 50%,
             left: 50%,
     transform: translate(-50%, -50%);
-            width: 800px;
+            width: 800px,
             max-width: 90vw,
             height: 600px,
             max-height: 90vh,
@@ -449,7 +456,7 @@ class TestSupportTools { // テスト実行
             font-family: 'Segoe UI', system-ui, sans-serif;
             font-size: 14px,
             z-index: 20000,
-            display: none;
+            display: none,
             box-shadow: 0 10px 50px rgba(0, 0, 0, 0.5);
             border: 1px solid rgba(255, 255, 255, 0.1);
         `;
@@ -614,7 +621,7 @@ class TestSupportTools { // テスト実行
 }
                 e.preventDefault(); }
                 this.toggle(); }
-});
+};
     }
  : undefined';'
     show(): void { this.isVisible = true;
@@ -660,7 +667,7 @@ class TestSupportTools { // テスト実行
     showCategoryDocuments(category: string): void { ''
         const docs = category === 'all' ? undefined : undefined','
             Array.from(this.docs.values() :','
-            Array.from(this.docs.values().filter(doc => doc.category === category),
+            Array.from(this.docs.values().filter(doc => doc.category === category);
 ','
 
         const content = `}'
@@ -684,7 +691,7 @@ class TestSupportTools { // テスト実行
     }
 ';'
 
-    showDocument(docId: string): void { const doc = this.docs.get(docId),
+    showDocument(docId: string): void { const doc = this.docs.get(docId);
         if (!doc) {
 
             this.showError('Document, not found') }
@@ -699,7 +706,7 @@ class TestSupportTools { // テスト実行
     }
 
     handleSearch(query: string): void { if (!query || query.length < 2) {
-            this.hideSearchResults(),
+            this.hideSearchResults();
             return }
 
         const results = this.searchEngine.search(query);
@@ -719,7 +726,7 @@ class TestSupportTools { // テスト実行
                      onclick="window.debugDocs.showDocument('${ result.docId' }; window.debugDocs.hideSearchResults('}';">""
                     <div style="font-weight: bold;, color: #00ff88;">${result.title}</div>""
                     <div style="font-size: 12px;, color: #ccc;">${result.excerpt}</div>""
-                    <div style="font-size: 11px;, color: #888; margin-top: 2px;">Score: ${result.score.toFixed(2})</div>""
+                    <div style="font-size: 11px;, color: #888; margin-top: 2px;">Score: ${result.score.toFixed(2}</div>""
                 </div>"";
             `").join('');"
         }
@@ -757,11 +764,10 @@ class TestSupportTools { // テスト実行
 
     getAllDocuments(): DocumentationItem[] { return Array.from(this.docs.values() }
 
-    getDocumentsByCategory(category: string): DocumentationItem[] { return Array.from(this.docs.values().filter(doc => doc.category === category),
-
-    updateDocument(docId: string, updates: Partial<DocumentationItem>): void { const doc = this.docs.get(docId),
+    getDocumentsByCategory(category: string): DocumentationItem[] { return Array.from(this.docs.values().filter(doc => doc.category === category);
+    updateDocument(docId: string, updates: Partial<DocumentationItem>): void { const doc = this.docs.get(docId);
         if (doc) {  }
-            Object.assign(doc, updates, { lastUpdated: Date.now( });
+            Object.assign(doc, updates, { lastUpdated: Date.now( };
             this.searchEngine.reindexDocument(docId, doc);
         }
     }
@@ -792,14 +798,13 @@ class DocumentationSearchEngine { private index: Map<string, Map<string, TokenIn
         this.stopWords = new Set([ "", ]
             'the', 'is', 'at', 'which', 'on', 'and', 'a', 'an', 'as', 'are',]','
             'の', 'は', 'が', 'を', 'に', 'で', 'と', 'も', 'や', 'から'])
-            });
+            };
         ]); }
     }
 
     indexDocument(docId: string, doc: DocumentationItem): void { ''
-        const tokens = this.tokenize(doc.title + ', ' + doc.content + '' + doc.keywords.join(', '),
-        
-        tokens.forEach(token => { ),
+        const tokens = this.tokenize(doc.title + ', ' + doc.content + '' + doc.keywords.join(', ');
+        tokens.forEach(token => { );
             if (!this.index.has(token) { }
                 this.index.set(token, new Map<string, TokenInfo>(); }
             }
@@ -808,14 +813,14 @@ class DocumentationSearchEngine { private index: Map<string, Map<string, TokenIn
             const existing = tokenIndex.get(docId);
             tokenIndex.set(docId, { docId: docId)
                , title: doc.title) }
-                frequency: (existing?.frequency || 0) + 1 });
-        });
+                frequency: (existing?.frequency || 0) + 1 },
+        };
     }
  : undefined
     reindexDocument(docId: string, doc: DocumentationItem): void { // 既存のインデックスを削除
         this.index.forEach(tokenIndex => { ) }
             tokenIndex.delete(docId); }
-        });
+        };
         
         // 再インデックス
         this.indexDocument(docId, doc);
@@ -824,18 +829,17 @@ class DocumentationSearchEngine { private index: Map<string, Map<string, TokenIn
 
     tokenize(text: string): string[] { return text''
             .toLowerCase()','
-            .replace(/[^\w\s\u3040-\u309f\u30a0-\u30ff\u4e00-\u9faf]/g, ', '),
-            .split(/\s+/),
+            .replace(/[^\w\s\u3040-\u309f\u30a0-\u30ff\u4e00-\u9faf]/g, ', ');
+            .split(/\s+/);
             .filter(token => token.length > 1 && !this.stopWords.has(token) }
     }
 
     search(query: string, options: SearchOptions = { ): SearchResult[] {
-        const queryTokens = this.tokenize(query),
+        const queryTokens = this.tokenize(query);
         const results = new Map<string, SearchResult>(),
 
-        queryTokens.forEach(token => { ),
-            const tokenIndex = this.index.get(token),
-
+        queryTokens.forEach(token => { );
+            const tokenIndex = this.index.get(token);
             if (tokenIndex) {
                 tokenIndex.forEach((docInfo, docId) => {''
                     if(!results.has(docId)) {
@@ -847,13 +851,13 @@ class DocumentationSearchEngine { private index: Map<string, Map<string, TokenIn
                             matches: [],') }'
 
                             excerpt: '); '
-    });
+    };
                     }
                     
                     const result = results.get(docId)!;
                     result.score += docInfo.frequency;
                     result.matches.push(token);
-                });
+                };
             }
 
             // 部分一致検索
@@ -866,16 +870,16 @@ class DocumentationSearchEngine { private index: Map<string, Map<string, TokenIn
                                 matches: [],') }'
 
                                 excerpt: '); '
-    });
+    };
                         }
                         
                         const result = results.get(docId)!;
                         result.score += docInfo.frequency * 0.5; // 部分一致は低いスコア
                         result.matches.push(indexToken);
-                    });
+                    };
                 }
-            });
-        });
+            };
+        };
 
         // スコアでソート
         const sortedResults = Array.from(results.values();
@@ -885,7 +889,7 @@ class DocumentationSearchEngine { private index: Map<string, Map<string, TokenIn
         // 抜粋を生成
         sortedResults.forEach(result => {  ) }
             result.excerpt = this.generateExcerpt(result.docId, queryTokens); }
-        });
+        };
 
         return sortedResults;
     }
@@ -945,12 +949,12 @@ class ContextualHelpProvider { private currentContext: ContextInfo | null
     updateContext(docId: string, doc: DocumentationItem): void { this.currentContext = { docId: docId,
     doc: doc,
             timestamp: Date.now(
-            });
+            };
     getHelp(context: string): ContextualHelpResult { const relatedDocs = this.contextMappings.get(context) || [],
         return { context: context,
             suggestedDocs: relatedDocs,
     currentDoc: this.currentContext?.docId, : undefined;;
-            tips: this.getContextualTips(context), 
+            tips: this.getContextualTips(context);
     }
 
     getSuggestedDocs(context: string): string[] { return this.contextMappings.get(context) || [] }

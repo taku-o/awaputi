@@ -5,23 +5,23 @@
 import { jest  } from '@jest/globals';
 // Mock interfaces
 interface MockElement extends HTMLElement { click(): Promise<void>;
-interface MockGameEngine { on: jest.Mock,
+interface MockGameEngine { on: jest.Mock;
     off: jest.Mock;
     emit: jest.Mock  }
-interface MockSocialSharingManager { gameEngine: MockGameEngine,
+interface MockSocialSharingManager { gameEngine: MockGameEngine;
     share: jest.Mock<Promise<ShareResult>>;
     shareViaTwitterUrl: jest.Mock<Promise<ShareResult>>;
     shareViaFacebookUrl: jest.Mock<Promise<ShareResult>> }
-interface ShareResult { success: boolean,
+interface ShareResult { success: boolean;
     method: string;
-interface ShareData { type: string,
+interface ShareData { type: string;
     score?: number;
     text?: string;
     name?: string;
-interface ShareButtonElements { container: HTMLElement,
+interface ShareButtonElements { container: HTMLElement;
     mainButton: HTMLElement;
     platformButtons: MockElement[];
-interface ShareDialogElements { dialog: HTMLElement,
+interface ShareDialogElements { dialog: HTMLElement;
     backdrop: HTMLElement;
     platforms: MockElement[];
 interface ShareButtonInstance { socialSharingManager: MockSocialSharingManager | null }
@@ -57,20 +57,20 @@ interface ShareDialogInstance { socialSharingManager: MockSocialSharingManager |
 interface ShareButtonConstructor { new (container: HTMLElement, manager: MockSocialSharingManager, options?: any): ShareButtonInstance;
 interface ShareDialogConstructor { ''
     new(manager: MockSocialSharingManager, options?: any): ShareDialogInstance;''
-describe('ShareUI Integration', () => {  let shareButton: ShareButtonInstance,
-    let shareDialog: ShareDialogInstance,
-    let mockSocialSharingManager: MockSocialSharingManager,
-    let mockContainer: HTMLElement,
-    let mockGameEngine: MockGameEngine,
+describe('ShareUI Integration', () => {  let shareButton: ShareButtonInstance;
+    let shareDialog: ShareDialogInstance;
+    let mockSocialSharingManager: MockSocialSharingManager;
+    let mockContainer: HTMLElement;
+    let mockGameEngine: MockGameEngine;
 
     beforeEach(async () => {'
         // DOM環境のセットアップ
         document.body.innerHTML = ','
         ','
         // テスト用コンテナ
-        mockContainer = document.createElement('div'),
+        mockContainer = document.createElement('div');
         mockContainer.id = 'test-container',
-        document.body.appendChild(mockContainer),
+        document.body.appendChild(mockContainer);
         // GameEngineのモック
         mockGameEngine = {
             on: jest.fn(
@@ -83,8 +83,9 @@ describe('ShareUI Integration', () => {  let shareButton: ShareButtonInstance,
             share: jest.fn<Promise<ShareResult>>().mockResolvedValue({ success: true, method: 'web-share ',''
             shareViaTwitterUrl: jest.fn<Promise<ShareResult>>().mockResolvedValue({ success: true, method: 'twitter ',''
             shareViaFacebookUrl: jest.fn<Promise<ShareResult>>().mockResolvedValue({ success: true,'
-
-        method: 'facebook' });
+            shareViaFacebookUrl: jest.fn<Promise<ShareResult>>().mockResolvedValue({ success: true,'
+        };
+        method: 'facebook' };
         // DOM APIのモック
         global.ResizeObserver = jest.fn().mockImplementation(() => ({ observe: jest.fn(
             unobserve: jest.fn(
@@ -93,13 +94,13 @@ describe('ShareUI Integration', () => {  let shareButton: ShareButtonInstance,
         }') as any;'
 
         Object.defineProperty(window, 'matchMedia', { )
-            writable: true,
+            writable: true;
     value: jest.fn().mockImplementation((query: string) => ({
-                matches: false,
-                media: query,
-                onchange: null),
-                addListener: jest.fn(),
-                removeListener: jest.fn(),
+                matches: false;
+                media: query;
+                onchange: null);
+                addListener: jest.fn();
+                removeListener: jest.fn();
                 addEventListener: jest.fn(
     removeEventListener: jest.fn(
         dispatchEvent: jest.fn(),' }'
@@ -108,10 +109,10 @@ describe('ShareUI Integration', () => {  let shareButton: ShareButtonInstance,
 
         }''
         Object.defineProperty(navigator, 'clipboard', { )
-            value: {),
+            value: {);
                 writeText: jest.fn<Promise<void>>().mockResolvedValue( }
-            writable: true,
-        }),
+            writable: true;
+        };
         global.requestAnimationFrame = jest.fn((callback: FrameRequestCallback) => {  setTimeout(() => callback(0), 0) }
 
             return 1; }'
@@ -123,7 +124,7 @@ describe('ShareUI Integration', () => {  let shareButton: ShareButtonInstance,
         const { ShareDialog } = await import('../core/ShareDialog.js) as { ShareDialog: ShareDialogConstructor;;'
         shareButton = new ShareButton(mockContainer, mockSocialSharingManager);
         shareDialog = new ShareDialog(mockSocialSharingManager);
-    });
+    };
     afterEach(() => {  if (shareButton) { }
             shareButton.destroy(); }
         }
@@ -135,20 +136,20 @@ describe('ShareUI Integration', () => {  let shareButton: ShareButtonInstance,
     }');'
     describe('UI統合の基本動作', () => {  ''
         test('両コンポーネントが正常に初期化される', () => {
-            expect(shareButton).toBeDefined(),
-            expect(shareDialog).toBeDefined(),
+            expect(shareButton).toBeDefined();
+            expect(shareDialog).toBeDefined();
             expect(shareButton.socialSharingManager).toBe(mockSocialSharingManager) }
 
             expect(shareDialog.socialSharingManager).toBe(mockSocialSharingManager);' }'
 
         }');'
         test('ShareButtonとShareDialogが独立して動作する', async () => {  // ShareButton表示
-            shareButton.show(),
+            shareButton.show();
             expect(shareButton.state.visible).toBe(true) }
 
             // ShareDialog表示' }'
 
-            await shareDialog.show({ type: 'score', score: 1000  });
+            await shareDialog.show({ type: 'score', score: 1000  };
             expect(shareDialog.state.visible).toBe(true);
             // 両方とも表示状態
             expect(shareButton.state.visible).toBe(true);
@@ -255,9 +256,8 @@ describe('ShareUI Integration', () => {  let shareButton: ShareButtonInstance,
     describe('アクセシビリティ統合', () => {  ''
         test('両コンポーネントが適切なWAI-ARIA属性を持つ', () => {'
             // ShareButton
-            expect(shareButton.elements.container.getAttribute('role)'.toBe('toolbar'),
-            expect(shareButton.elements.mainButton.getAttribute('aria-expanded)'.toBe('false'),
-
+            expect(shareButton.elements.container.getAttribute('role)'.toBe('toolbar');
+            expect(shareButton.elements.mainButton.getAttribute('aria-expanded)'.toBe('false');
             // ShareDialog
             expect(shareDialog.elements.dialog.getAttribute('role)'.toBe('dialog'),' }'
 
@@ -275,9 +275,9 @@ describe('ShareUI Integration', () => {  let shareButton: ShareButtonInstance,
             // ShareDialogのキーボードナビゲーション
             shareDialog.show({ type: 'score', score: 1000  }';'
             const dialogEscEvent = new KeyboardEvent('keydown', { key: 'Escape ,'
-            document.dispatchEvent(dialogEscEvent),
+            document.dispatchEvent(dialogEscEvent);
             // 適切にイベントが処理されることを確認
-            expect(shareButton.handlers.keydown).toBeDefined(),
+            expect(shareButton.handlers.keydown).toBeDefined();
             expect(shareDialog.handlers.keydown).toBeDefined(),' }'
 
         }');'
@@ -334,7 +334,7 @@ describe('ShareUI Integration', () => {  let shareButton: ShareButtonInstance,
                 value: jest.fn().mockImplementation((query: string) => ({''
                     matches: query.includes('max-width: 768px' ? true : false, '
                     media: query,
-                });
+                };
             }
             shareButton.applyResponsiveStyles();
             shareDialog.applyResponsiveStyles();
@@ -344,7 +344,7 @@ describe('ShareUI Integration', () => {  let shareButton: ShareButtonInstance,
             expect(shareDialog.elements.dialog.style.width).toBe('100%';}');'
         test('リサイズイベントで両コンポーネントが再調整される', () => {  ''
             const resizeEvent = new Event('resize),'
-            window.dispatchEvent(resizeEvent),
+            window.dispatchEvent(resizeEvent);
             // リサイズハンドラーが設定されていることを確認
             expect(shareButton.handlers.resize).toBeDefined() }
             expect(shareDialog.handlers.resize).toBeDefined();' }'
@@ -376,8 +376,8 @@ describe('ShareUI Integration', () => {  let shareButton: ShareButtonInstance,
 
                 await shareButton.handlePlatformShare('web-share'; }
 
-            }).rejects.toThrow()'
-            await shareDialog.show({ type: 'score', score: 1000  });
+            }.rejects.toThrow()'
+            await shareDialog.show({ type: 'score', score: 1000  };
             await shareDialog.elements.platforms[0].click();
             // エラーが適切に処理されることを確認
             expect(shareDialog.stats.shares).toBe(0);'}');
@@ -385,13 +385,13 @@ describe('ShareUI Integration', () => {  let shareButton: ShareButtonInstance,
     }''
     describe('パフォーマンス統合', () => {  ''
         test('複数コンポーネント同時使用時のパフォーマンス', async () => {
-            const startTime = performance.now(),
+            const startTime = performance.now();
             // 複数操作を同時実行
             const operations = [' }'
 
                 shareButton.show() }
 
-                shareDialog.show({ type: 'score', score: 1000  }),
+                shareDialog.show({ type: 'score', score: 1000  };
                 shareButton.expand()];
                 shareDialog.hide()];
             ];
@@ -407,8 +407,8 @@ describe('ShareUI Integration', () => {  let shareButton: ShareButtonInstance,
             const shareData: ShareData = { type: 'score', score: 1000  }
             // 大量の共有操作を実行
             for(let, i = 0; i < 50; i++) {
-                shareButton.showWithData(shareData),
-                shareButton.hide(),
+                shareButton.showWithData(shareData);
+                shareButton.hide();
                 await shareDialog.show(shareData) }
                 await shareDialog.hide(); }
             }
@@ -435,18 +435,17 @@ describe('ShareUI Integration', () => {  let shareButton: ShareButtonInstance,
             expect(shareDialog.config.theme).toBe('elegant);'
 
             expect(shareDialog.config.width).toBe(600);'}');
-        test('プラットフォーム設定の統合', async () => {  shareButton.destroy(),
+        test('プラットフォーム設定の統合', async () => {  shareButton.destroy();
             shareDialog.destroy('',
             const platforms = ['twitter', 'facebook', 'copy'] }', ') }'
 
             const { ShareButton } = await import('../core/ShareButton.js') as { ShareButton: ShareButtonConstructor;''
             const { ShareDialog } = await import('../core/ShareDialog.js) as { ShareDialog: ShareDialogConstructor;;'
-            shareButton = new ShareButton(mockContainer, mockSocialSharingManager, { platforms ),
-            shareDialog = new ShareDialog(mockSocialSharingManager, { platforms ),
-            expect(shareButton.config.platforms).toEqual(platforms),
-            expect(shareDialog.config.platforms).toEqual(platforms),
-            expect(shareButton.elements.platformButtons.length).toBe(platforms.length),
-
+            shareButton = new ShareButton(mockContainer, mockSocialSharingManager, { platforms );
+            shareDialog = new ShareDialog(mockSocialSharingManager, { platforms );
+            expect(shareButton.config.platforms).toEqual(platforms);
+            expect(shareDialog.config.platforms).toEqual(platforms);
+            expect(shareButton.elements.platformButtons.length).toBe(platforms.length);
             expect(shareDialog.elements.platforms.length).toBe(platforms.length),' }'
 
         }');'
@@ -458,7 +457,7 @@ describe('ShareUI Integration', () => {  let shareButton: ShareButtonInstance,
 
             shareButton.show() }
 
-            await shareDialog.show({ type: 'score', score: 1000  });
+            await shareDialog.show({ type: 'score', score: 1000  };
             // クリーンアップ実行
             shareButton.destroy();
             shareDialog.destroy();
@@ -466,10 +465,10 @@ describe('ShareUI Integration', () => {  let shareButton: ShareButtonInstance,
             expect(shareButton.elements.container.parentNode).toBeNull();
             expect(shareDialog.elements.backdrop.parentNode).toBeNull();'}');
         test('イベントリスナーが全て削除される', () => {  ''
-            const removeEventListenerSpy = jest.spyOn(window, 'removeEventListener'),
+            const removeEventListenerSpy = jest.spyOn(window, 'removeEventListener');
             const documentRemoveEventListenerSpy = jest.spyOn(document, 'removeEventListener),'
-            shareButton.destroy(),
-            shareDialog.destroy(),
+            shareButton.destroy();
+            shareDialog.destroy();
             expect(removeEventListenerSpy).toHaveBeenCalled() }
 
             expect(documentRemoveEventListenerSpy).toHaveBeenCalled();' }'
@@ -477,9 +476,9 @@ describe('ShareUI Integration', () => {  let shareButton: ShareButtonInstance,
         }');'
         test('同じSocialSharingManagerを共有していてもクリーンアップに影響しない', () => {  const manager = shareButton.socialSharingManager,
             
-            shareButton.destroy(),
+            shareButton.destroy();
             // ShareDialogは引き続き同じManagerを使用できる
             expect(shareDialog.socialSharingManager).toBe(manager) }
             expect(shareDialog.socialSharingManager).toBeDefined(); }
-        });
+        };
     }'}');

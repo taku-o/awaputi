@@ -4,14 +4,14 @@
 import { jest, describe, test, expect, beforeAll  } from '@jest/globals';
 // Interfaces for Configuration Error Handler
 interface ErrorStats {
-    total: number,
+    total: number;
     recovered: number;
     failed: number;
     byType: Map<string, number>;
     errorRate: string;
     recoveryRate: string;
 interface FallbackState {
-    useDefaultValues: boolean,
+    useDefaultValues: boolean;
     disableValidation: boolean;
     disableCache: boolean;
     safeMode: boolean;
@@ -31,86 +31,86 @@ interface CalculationParams {
 // Type definitions for the Configuration Error Handler
 interface ConfigurationErrorHandlerType {
     errorTypes: {
-        CONFIGURATION_ACCES,S: string,
-        CALCULATION_ERROR: string,
+        CONFIGURATION_ACCES,S: string;
+        CALCULATION_ERROR: string;
         CACHE_ERROR: string,,
     recoveryStrategies: Map<string, any>;
     errorStats: {
-        total: number,
-        recovered: number,
-        failed: number,
+        total: number;
+        recovered: number;
+        failed: number;
         byType: Map<string, number> };
-    fallbackState: FallbackState,
-    _correctValue(value: any, constraints: ValidationConstraints): any,
-    _correctCalculationParams(params: CalculationParams, calculationType: string): CalculationParams,
-    _generateFallbackValue(category: string, key: string): any,
-    _getSafeCalculationResult(calculationType: string, expectedType: string): any,
+    fallbackState: FallbackState;
+    _correctValue(value: any, constraints: ValidationConstraints): any;
+    _correctCalculationParams(params: CalculationParams, calculationType: string): CalculationParams;
+    _generateFallbackValue(category: string, key: string): any;
+    _getSafeCalculationResult(calculationType: string, expectedType: string): any;
     getErrorStats(): ErrorStats;
     getFallbackState(): FallbackState;
     resetFallbackState(): void;
     _shouldBePositive(paramName: string, calculationType: string'): boolean,'
 describe('ConfigurationErrorHandler', () => {
-    let ConfigurationErrorHandler: new () => ConfigurationErrorHandlerType,
-    let getConfigurationErrorHandler: () => ConfigurationErrorHandlerType,
+    let ConfigurationErrorHandler: new () => ConfigurationErrorHandlerType;
+    let getConfigurationErrorHandler: () => ConfigurationErrorHandlerType;
     
     beforeAll(async (') => {'
         // モジュールを動的にインポート
-        const module = await import('../../src/core/ConfigurationErrorHandler.js'),
+        const module = await import('../../src/core/ConfigurationErrorHandler.js');
         ConfigurationErrorHandler = module.ConfigurationErrorHandler,
         getConfigurationErrorHandler = module.getConfigurationErrorHandler }');'
     describe('基本機能', (') => {'
         test('クラスが正常にインスタンス化される', () => {
-            const errorHandler = new ConfigurationErrorHandler(),
-            expect(errorHandler).toBeDefined(),
-            expect(errorHandler.errorTypes).toBeDefined(),
+            const errorHandler = new ConfigurationErrorHandler();
+            expect(errorHandler).toBeDefined();
+            expect(errorHandler.errorTypes).toBeDefined();
             expect(errorHandler.recoveryStrategies).toBeDefined() }');'
         test('エラータイプが定義されている', () => {
-            const errorHandler = new ConfigurationErrorHandler(),
+            const errorHandler = new ConfigurationErrorHandler();
             expect(errorHandler.errorTypes.CONFIGURATION_ACCESS').toBe('CONFIGURATION_ACCESS'),'
             expect(errorHandler.errorTypes.CALCULATION_ERROR').toBe('CALCULATION_ERROR'),'
             expect(errorHandler.errorTypes.CACHE_ERROR').toBe('CACHE_ERROR') }');
         test('復旧戦略が設定されている', () => {
-            const errorHandler = new ConfigurationErrorHandler(),
+            const errorHandler = new ConfigurationErrorHandler();
             expect(errorHandler.recoveryStrategies.size).toBeGreaterThan(0'),'
             expect(errorHandler.recoveryStrategies.has('CONFIGURATION_ACCESS').toBe(true'),'
             expect(errorHandler.recoveryStrategies.has('CALCULATION_ERROR').toBe(true) }');'
         test('エラー統計が初期化されている', () => {
-            const errorHandler = new ConfigurationErrorHandler(),
-            expect(errorHandler.errorStats.total).toBe(0),
-            expect(errorHandler.errorStats.recovered).toBe(0),
-            expect(errorHandler.errorStats.failed).toBe(0),
+            const errorHandler = new ConfigurationErrorHandler();
+            expect(errorHandler.errorStats.total).toBe(0);
+            expect(errorHandler.errorStats.recovered).toBe(0);
+            expect(errorHandler.errorStats.failed).toBe(0);
             expect(errorHandler.errorStats.byType).toBeInstanceOf(Map) }');'
         test('フォールバック状態が初期化されている', () => {
-            const errorHandler = new ConfigurationErrorHandler(),
-            expect(errorHandler.fallbackState.useDefaultValues).toBe(false),
-            expect(errorHandler.fallbackState.disableValidation).toBe(false),
-            expect(errorHandler.fallbackState.disableCache).toBe(false),
+            const errorHandler = new ConfigurationErrorHandler();
+            expect(errorHandler.fallbackState.useDefaultValues).toBe(false);
+            expect(errorHandler.fallbackState.disableValidation).toBe(false);
+            expect(errorHandler.fallbackState.disableCache).toBe(false);
             expect(errorHandler.fallbackState.safeMode).toBe(false) }');'
     }
     describe('値の修正機能', (') => {'
         test('数値の範囲修正', () => {
             const errorHandler = new ConfigurationErrorHandler('),'
             // 最大値を超えた場合
-            const result1 = errorHandler._correctValue(150, { type: 'number', max: 100 });
+            const result1 = errorHandler._correctValue(150, { type: 'number', max: 100 };
             expect(result1).toBe(100');'
             // 最小値を下回った場合
-            const result2 = errorHandler._correctValue(-10, { type: 'number', min: 0 ,
+            const result2 = errorHandler._correctValue(-10, { type: 'number', min: 0 ;
             expect(result2).toBe(0'),'
             // 整数でない場合
-            const result3 = errorHandler._correctValue(3.7, { type: 'number', integer: true ,
+            const result3 = errorHandler._correctValue(3.7, { type: 'number', integer: true ;
             expect(result3).toBe(4) }');'
         test('文字列の長さ修正', () => {
             const errorHandler = new ConfigurationErrorHandler('),'
             // 長すぎる場合
-            const result1 = errorHandler._correctValue('長い文字列です', { type: 'string', maxLength: 5 });
+            const result1 = errorHandler._correctValue('長い文字列です', { type: 'string', maxLength: 5 };
             expect(result1').toBe('長い文字列');'
             // 短すぎる場合
-            const result2 = errorHandler._correctValue('短', { type: 'string', minLength: 5 ,
+            const result2 = errorHandler._correctValue('短', { type: 'string', minLength: 5 ;
             expect(result2').toBe('短    ') }');
         test('ブール値の修正', () => {
             const errorHandler = new ConfigurationErrorHandler('),'
-            expect(errorHandler._correctValue('true', { type: 'boolean' }).toBe(true');'
-            expect(errorHandler._correctValue('false', { type: 'boolean' }).toBe(false');'
+            expect(errorHandler._correctValue('true', { type: 'boolean' }.toBe(true');'
+            expect(errorHandler._correctValue('false', { type: 'boolean' }.toBe(false');'
             expect(errorHandler._correctValue(1, { type: 'boolean' )).toBe(true','
             expect(errorHandler._correctValue(0, { type: 'boolean' )).toBe(false','
             expect(errorHandler._correctValue('invalid', { type: 'boolean' )).toBe(false }
@@ -119,8 +119,8 @@ describe('ConfigurationErrorHandler', () => {
         test('NaNと無限値の修正', () => {
             const errorHandler = new ConfigurationErrorHandler('),'
             const params: CalculationParams = {
-                score: NaN,
-                multiplier: Infinity,
+                score: NaN;
+                multiplier: Infinity;
                 count: -5
             };
             
@@ -172,31 +172,31 @@ describe('ConfigurationErrorHandler', () => {
     }
     describe('統計機能', (') => {'
         test('エラー統計の取得', () => {
-            const errorHandler = new ConfigurationErrorHandler(),
+            const errorHandler = new ConfigurationErrorHandler();
             // 初期状態
-            const initialStats = errorHandler.getErrorStats(),
-            expect(initialStats.total).toBe(0),
+            const initialStats = errorHandler.getErrorStats();
+            expect(initialStats.total).toBe(0);
             expect(initialStats.errorRate').toBe('0.00%'),'
             expect(initialStats.recoveryRate').toBe('0.00%') }');
         test('フォールバック状態の取得と操作', () => {
-            const errorHandler = new ConfigurationErrorHandler(),
+            const errorHandler = new ConfigurationErrorHandler();
             // 初期状態
-            const initialState = errorHandler.getFallbackState(),
-            expect(initialState.safeMode).toBe(false),
+            const initialState = errorHandler.getFallbackState();
+            expect(initialState.safeMode).toBe(false);
             // 状態変更
             errorHandler.fallbackState.safeMode = true,
-            const changedState = errorHandler.getFallbackState(),
-            expect(changedState.safeMode).toBe(true),
+            const changedState = errorHandler.getFallbackState();
+            expect(changedState.safeMode).toBe(true);
             // リセット
-            errorHandler.resetFallbackState(),
-            const resetState = errorHandler.getFallbackState(),
+            errorHandler.resetFallbackState();
+            const resetState = errorHandler.getFallbackState();
             expect(resetState.safeMode).toBe(false) }');'
     }
     describe('シングルトンパターン', (') => {'
         test('同じインスタンスが返される', () => {
-            const instance1 = getConfigurationErrorHandler(),
-            const instance2 = getConfigurationErrorHandler(),
-            expect(instance1).toBe(instance2),
+            const instance1 = getConfigurationErrorHandler();
+            const instance2 = getConfigurationErrorHandler();
+            expect(instance1).toBe(instance2);
             expect(instance1).toBeInstanceOf(ConfigurationErrorHandler) }');'
     }
     describe('パラメータ検証ヘルパー', (') => {'
@@ -205,6 +205,6 @@ describe('ConfigurationErrorHandler', () => {
             expect(errorHandler._shouldBePositive('score', 'scoreCalculation').toBe(true'),'
             expect(errorHandler._shouldBePositive('count', 'countCalculation').toBe(true'),'
             expect(errorHandler._shouldBePositive('level', 'levelCalculation').toBe(true'),'
-            expect(errorHandler._shouldBePositive('offset', 'positionCalculation').toBe(false) });
+            expect(errorHandler._shouldBePositive('offset', 'positionCalculation').toBe(false) };
     }
 }');'

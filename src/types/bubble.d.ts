@@ -4,10 +4,10 @@
  */
 
 // 基本データ構造
-export interface Position { x: number,
+export interface Position { x: number;
     y: number;
 
-export interface Velocity { x: number,
+export interface Velocity { x: number;
    , y: number;
 
 // バブルタイプ定義
@@ -19,7 +19,7 @@ export type BubbleType = ;
     | 'magnetic' | 'explosive' | 'phantom' | 'multiplier';
 
 // バブル設定インターフェース
-export interface BubbleConfig { health: number,
+export interface BubbleConfig { health: number;
     size: number;
     maxAge: number;
     color: string;
@@ -43,7 +43,7 @@ export interface BubbleConfig { health: number,
     scoreMultiplier?: number,  }
 
 // バブル効果定義
-export interface BubbleEffect { type: BubbleEffectType,
+export interface BubbleEffect { type: BubbleEffectType;
     amount?: number;
     position?: Position;
     radius?: number;
@@ -94,4 +94,4 @@ export interface BubbleInterface { // 基本プロパティ
     getAndClearEffects(''';'
     animationQuality: 'high' | 'medium' | 'low',' }'
 
-})
+}

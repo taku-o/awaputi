@@ -13,13 +13,13 @@ interface BubbleConfig {
     bonusTimeMs?: number;
 interface ConfigMap {
     bubbles: {
-        [bubbleTyp,e: string]: BubbleConfig,;
+        [bubbleTyp,e: string]: BubbleConfig;
 }
 interface SourceInfo {
-    name: string,
+    name: string;
     priority: number;
 interface SourceConfig {
-    config: ConfigMap,
+    config: ConfigMap;
     source: SourceInfo;
 interface Discrepancy {
     type: string;
@@ -31,19 +31,19 @@ interface Discrepancy {
         priority: number;>;
     severity: string;
 interface ValidationResult {
-    timestamp: Date,
+    timestamp: Date;
     sourceCount: number;
     discrepancyCount: number;
     discrepancies: Discrepancy[];
     sourceConfigs: Map<string, SourceConfig>;
     recommendations: Recommendation[];
 interface Recommendation {
-    action: string,
+    action: string;
     targetValue: any;
     priority: string;
     affectedFiles: string[];
 interface SyncReport {
-    timestamp: Date,
+    timestamp: Date;
     discrepancyCount: number;
     discrepancies: Discrepancy[];
     syncHistory: any[];
@@ -58,7 +58,7 @@ interface MockConfigManager {
     getCategory: jest.MockedFunction<(categor,y: string) => any> }
 // Jest の設定
 const mockErrorHandler: MockErrorHandler = {
-    handleError: jest.fn( };
+    handleError: jest.fn( },
 const mockConfigManager: MockConfigManager = {
     get: jest.fn(
     set: jest.fn(
@@ -73,15 +73,15 @@ describe('ConfigurationSynchronizer', () => {
     let synchronizer: ConfigurationSynchronizer,
     beforeEach(() => {
         // モックをリセット
-        jest.clearAllMocks(),
+        jest.clearAllMocks();
         // インスタンスを作成
         synchronizer = new ConfigurationSynchronizer())'),'
     describe('Constructor', (') => {'
         test('should initialize with correct properties', () => {
-            expect(synchronizer.configManager).toBe(mockConfigManager),
-            expect(synchronizer.errorHandler).toBe(mockErrorHandler),
-            expect(synchronizer.discrepancies).toEqual([]),
-            expect(synchronizer.syncHistory).toEqual([]),
+            expect(synchronizer.configManager).toBe(mockConfigManager);
+            expect(synchronizer.errorHandler).toBe(mockErrorHandler);
+            expect(synchronizer.discrepancies).toEqual([]);
+            expect(synchronizer.syncHistory).toEqual([]);
             expect(synchronizer.configurationSources).toBeInstanceOf(Map) }');'
         test('should register configuration sources', () => {
             expect(synchronizer.configurationSources.size).toBe(4'),'
@@ -95,25 +95,25 @@ describe('ConfigurationSynchronizer', () => {
             // モックデータの設定
             (synchronizer._loadGameBalanceConfig = jest.fn().mockResolvedValue({
                 bubbles: {
-                    normal: { score: 15 };
+                    normal: { score: 15 },
                     boss: { health: 5 }
-                });
-            });
+                };
+            };
             (synchronizer._loadBubbleImplementationConfig = jest.fn().mockResolvedValue({
                 bubbles: {
-                    normal: { score: 15 };
+                    normal: { score: 15 },
                     boss: { health: 8, size: 90 }
-                });
+                };
             (synchronizer._loadTestExpectationConfig = jest.fn().mockResolvedValue({
                 bubbles: {
-                    normal: { score: 10 };
+                    normal: { score: 10 },
                     boss: { health: 5, size: 100 }
-                });
+                };
             (synchronizer._loadConfigurationManagerConfig = jest.fn().mockResolvedValue({
                 bubbles: {
-                    normal: { score: 15 };
+                    normal: { score: 15 },
                     boss: { health: 8, size: 90 }
-                });
+                };
             const result: ValidationResult = await synchronizer.validateConsistency(
             expect(result').toHaveProperty('timestamp');'
             expect(result').toHaveProperty('sourceCount', 4);'
@@ -308,8 +308,8 @@ describe('ConfigurationSynchronizer', () => {
     }
     describe('Singleton pattern', (') => {'
         test('should return same instance for getConfigurationSynchronizer', () => {
-            const instance1 = getConfigurationSynchronizer(),
-            const instance2 = getConfigurationSynchronizer(),
+            const instance1 = getConfigurationSynchronizer();
+            const instance2 = getConfigurationSynchronizer();
             expect(instance1).toBe(instance2) }');'
     }
     describe('Value extraction methods', (') => {'
@@ -351,6 +351,6 @@ describe('ConfigurationSynchronizer', () => {
             const values = (synchronizer._extractElectricIntensityValues(sourceConfigs);
             expect(values.size).toBe(1');'
             expect(values.get('source1').value).toBe(20);
-        });
+        };
     }
 }');'

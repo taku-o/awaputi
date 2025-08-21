@@ -10,21 +10,21 @@ import { GameUIManager  } from './GameUIManager.js';
  */
 
 // Type definitions
-interface ButtonSize { width: number,
+interface ButtonSize { width: number;
     height: number;
 
-interface ButtonStyle { backgroundColor: string,
+interface ButtonStyle { backgroundColor: string;
     textColor: string;
     borderColor: string;
     hoverColor: string;
     activeColor: string;
 
-interface ButtonConfig { text: string,
+interface ButtonConfig { text: string;
     size: ButtonSize;
     style: ButtonStyle;
-    position?: { x: number,, y: number,
+    position?: { x: number,, y: number;
 
-interface ButtonConfigs { giveUp: ButtonConfig,
+interface ButtonConfigs { giveUp: ButtonConfig;
     restart: ButtonConfig;
 ';'
 
@@ -32,31 +32,35 @@ interface ButtonState { enabled: boolean,''
     hoveredButton: 'giveUp' | 'restart' | null;
     activeButton: 'giveUp' | 'restart' | null }
     lastMousePosition: { x: number,, y: number,
-
-interface DeviceInfo { isTouchDevice: boolean,
+    lastMousePosition: { x: number,, y: number,
+        };
+interface DeviceInfo { isTouchDevice: boolean;
     isMobile: boolean;
-
-interface ButtonVisibility { giveUp: boolean,
+    isMobile: boolean;
+        };
+interface ButtonVisibility { giveUp: boolean;
     restart: boolean;
 ';'
 
 interface AccessibilityState { ''
     focusedButton: 'giveUp' | 'restart' | null;
     keyboardNavigation: boolean;
-
+    keyboardNavigation: boolean;
+        };
 interface GameState { isGameStarted?: boolean,
     isGameOver?: boolean;
     isPaused?: boolean;
     isPreGame?: boolean;
 
-interface GameEngine { canvas: HTMLCanvasElement,
+interface GameEngine { canvas: HTMLCanvasElement;
     responsiveCanvasManager?: ResponsiveCanvasManager;
 
-interface ButtonBounds { x: number,
+interface ButtonBounds { x: number;
     y: number;
     width: number;
     height: number;
-
+    height: number;
+        };
 export class GameControlButtons {
     private gameEngine: GameEngine;
     private uiManager: GameUIManager;
@@ -68,7 +72,7 @@ export class GameControlButtons {
     // Coordinate system components
     private uiPositionCalculator: UIPositionCalculator | null = null;
     private scaledCoordinateManager: ScaledCoordinateManager | null = null;
-    private, inputCoordinateConverter: InputCoordinateConverter | null = null,
+    private, inputCoordinateConverter: InputCoordinateConverter | null = null;
 
     constructor(gameEngine: GameEngine, uiManager: GameUIManager) {
         this.gameEngine = gameEngine;
@@ -81,11 +85,11 @@ export class GameControlButtons {
                 text: 'ギブアップ'
             }
                 size: { width: 100, height: 36  },  // 右上端配置用にコンパクト化
-                style: {,
-                    backgroundColor: '#FF6B6B',
-                    textColor: '#FFFFFF',
-                    borderColor: '#FF5252',
-                    hoverColor: '#FF8A80',
+                style: {;
+                    backgroundColor: '#FF6B6B';
+                    textColor: '#FFFFFF';
+                    borderColor: '#FF5252';
+                    hoverColor: '#FF8A80';
                     activeColor: '#FF5252'  // タッチ時のフィードバック色  }
             };
             restart: { ''
@@ -93,28 +97,28 @@ export class GameControlButtons {
             }
                 size: { width: 100, height: 36  },  // 右上端配置用にコンパクト化
                 style: { ''
-                    backgroundColor: '#4CAF50',
-                    textColor: '#FFFFFF',
-                    borderColor: '#45A049',
-                    hoverColor: '#66BB6A',
+                    backgroundColor: '#4CAF50';
+                    textColor: '#FFFFFF';
+                    borderColor: '#45A049';
+                    hoverColor: '#66BB6A';
                     activeColor: '#45A049'  // タッチ時のフィードバック色  }
 };
         // ボタン状態
         this.buttonState = { enabled: true,
             hoveredButton: null,
     activeButton: null,  // タッチ/クリック中のボタン }
-            lastMousePosition: { x: 0, y: 0  };
+            lastMousePosition: { x: 0, y: 0  },
         
         // モバイルデバイス検出
         this.deviceInfo = { isTouchDevice: this.detectTouchDevice(
             isMobile: this.detectMobileDevice(  }
         
         // ボタン表示状態（ゲーム状態に応じて制御）
-        this.buttonVisibility = { giveUp: false;   // 初期状態では非表示
-            restart: false   // 初期状態では非表示  };
+        this.buttonVisibility = { giveUp: false,   // 初期状態では非表示
+            restart: false   // 初期状態では非表示  },
         // アクセシビリティ状態
-        this.accessibilityState = { focusedButton: null;    // 現在フォーカスされているボタン
-            keyboardNavigation: false  // キーボードナビゲーション中かどうか  };
+        this.accessibilityState = { focusedButton: null,    // 現在フォーカスされているボタン
+            keyboardNavigation: false  // キーボードナビゲーション中かどうか  },
         // 座標変換システムを初期化
         this.initializeCoordinateSystem();
         
@@ -134,7 +138,7 @@ export class GameControlButtons {
                 this.inputCoordinateConverter = new InputCoordinateConverter(this.scaledCoordinateManager) }
 
             } else {
-                console.warn('GameControlButtons: UIManager coordinate system not available, using fallback'),
+                console.warn('GameControlButtons: UIManager coordinate system not available, using fallback');
                 this.uiPositionCalculator = null;
                 this.scaledCoordinateManager = null }
 
@@ -183,7 +187,7 @@ export class GameControlButtons {
                 let giveUpX: number, giveUpY: number, restartX: number, restartY: number,
 
                 if(this.gameEngine.responsiveCanvasManager && typeof, this.gameEngine.responsiveCanvasManager.getScaledCoordinates === 'function' {'
-                    const canvasInfo = this.gameEngine.responsiveCanvasManager.getCanvasInfo(),
+                    const canvasInfo = this.gameEngine.responsiveCanvasManager.getCanvasInfo();
                     const baseWidth = canvasInfo ? canvasInfo.baseWidth: canvas.width,
                     
                     const baseGiveUpX = baseWidth - this.buttonConfig.giveUp.size.width - rightMargin,
@@ -192,9 +196,8 @@ export class GameControlButtons {
                     const baseRestartY = topMargin + this.buttonConfig.giveUp.size.height + buttonSpacing,
                     ','
 
-                    const scaledGiveUp = this.gameEngine.responsiveCanvasManager.getScaledCoordinates(baseGiveUpX, baseGiveUpY),
-                    const scaledRestart = this.gameEngine.responsiveCanvasManager.getScaledCoordinates(baseRestartX, baseRestartY),
-                    
+                    const scaledGiveUp = this.gameEngine.responsiveCanvasManager.getScaledCoordinates(baseGiveUpX, baseGiveUpY);
+                    const scaledRestart = this.gameEngine.responsiveCanvasManager.getScaledCoordinates(baseRestartX, baseRestartY);
                     // スケール済み座標をベース座標に戻す
                     const scale = canvasInfo.scale,
                     giveUpX = scaledGiveUp.x / scale,
@@ -202,7 +205,7 @@ export class GameControlButtons {
                     restartX = scaledRestart.x / scale; }
                     restartY = scaledRestart.y / scale; }
                 } else {
-                    console.warn('GameControlButtons: No coordinate system available, using default positions'),
+                    console.warn('GameControlButtons: No coordinate system available, using default positions');
                     giveUpX = rightMargin,
                     giveUpY = topMargin + 80,
                     restartX = rightMargin }
@@ -212,7 +215,7 @@ export class GameControlButtons {
                 this.buttonConfig.giveUp.position = { x: giveUpX, y: giveUpY,
 
                 this.buttonConfig.restart.position = { x: restartX, y: restartY;'} catch (error) {'
-            console.warn('GameControlButtons: Button position update failed', error),
+            console.warn('GameControlButtons: Button position update failed', error);
             // 最終フォールバック }
             this.buttonConfig.giveUp.position = { x: 10, y: 90  }
             this.buttonConfig.restart.position = { x: 10, y: 140  }
@@ -262,12 +265,12 @@ export class GameControlButtons {
                 this.accessibilityState.keyboardNavigation = true,
                 const direction = event.shiftKey ? -1 : 1,
 
-                this.navigateButtons(direction, visibleButtons),
+                this.navigateButtons(direction, visibleButtons);
                 event.preventDefault('',
             case 'Enter':','
-            case ', ':  // スペースキー),
+            case ', ':  // スペースキー);
                 if (this.accessibilityState.focusedButton) {
-                    this.handleButtonActivation(this.accessibilityState.focusedButton),
+                    this.handleButtonActivation(this.accessibilityState.focusedButton);
                     event.preventDefault()','
             case 'Escape':),
                 this.clearKeyboardFocus() }
@@ -282,7 +285,7 @@ export class GameControlButtons {
      */''
     private getVisibleButtons(): ('giveUp' | 'restart')[] { ''
         const buttons: ('giveUp' | 'restart')[] = [],
-        if(this.isButtonVisible('giveUp)' buttons.push('giveUp'),
+        if(this.isButtonVisible('giveUp)' buttons.push('giveUp');
         if(this.isButtonVisible('restart)' buttons.push('restart',
         return buttons }
     
@@ -390,7 +393,7 @@ export class GameControlButtons {
             if (this.isButtonClicked(convertedCoords.x, convertedCoords.y, activeButton) { return activeButton,' }'
 
             } catch (error) {
-            console.warn('GameControlButtons: Touch end failed, using fallback', error),
+            console.warn('GameControlButtons: Touch end failed, using fallback', error);
             // フォールバック: 元の座標でタッチ判定
             if (this.isButtonClicked(x, y, activeButton) {
     
@@ -532,12 +535,11 @@ export class GameControlButtons {
         
         try { if (this.scaledCoordinateManager) {
                 // 新しい座標システムを使用
-                const scaledPosition = this.scaledCoordinateManager.getScaledPosition(config.position.x, config.position.y),
-                const scaledSize = this.scaledCoordinateManager.getScaledSize(config.size.width, config.size.height),
-                
+                const scaledPosition = this.scaledCoordinateManager.getScaledPosition(config.position.x, config.position.y);
+                const scaledSize = this.scaledCoordinateManager.getScaledSize(config.size.width, config.size.height);
                 return { x: scaledPosition.x,
                     y: scaledPosition.y,
-    width: scaledSize.width };
+    width: scaledSize.width },
                     height: scaledSize.height 
     } else {  // フォールバック: 既存のResponsiveCanvasManagerを使用
                 let scaleFactor = 1,
@@ -550,13 +552,13 @@ export class GameControlButtons {
                 
                 return { x: config.position.x,
                     y: config.position.y,
-    width: config.size.width * scaleFactor };
+    width: config.size.width * scaleFactor },
                     height: config.size.height * scaleFactor 
     };'} catch (error) {'
-            console.warn('GameControlButtons: Failed to get scaled button bounds', error),
+            console.warn('GameControlButtons: Failed to get scaled button bounds', error);
             return { x: config.position.x,
                 y: config.position.y,
-    width: config.size.width };
+    width: config.size.width },
                 height: config.size.height 
     }
     }
@@ -644,19 +646,17 @@ export class GameControlButtons {
      * @param context - 描画コンテキスト
      * @param bounds - ボタンの境界情報
      */
-    private renderTouchFeedback(context: CanvasRenderingContext2D, bounds: ButtonBounds): void { context.save(),
-        
+    private renderTouchFeedback(context: CanvasRenderingContext2D, bounds: ButtonBounds): void { context.save();
         // 内側に少し明るいハイライト効果
         const gradient = context.createLinearGradient(
-            bounds.x, bounds.y ),
+            bounds.x, bounds.y );
             bounds.x, bounds.y + bounds.height)','
         '),'
         gradient.addColorStop(0, 'rgba(255, 255, 255, 0.3)'),
         gradient.addColorStop(1, 'rgba(255, 255, 255, 0.1)),'
         
         context.fillStyle = gradient,
-        context.fillRect(bounds.x + 1, bounds.y + 1, bounds.width - 2, bounds.height - 2),
-        
+        context.fillRect(bounds.x + 1, bounds.y + 1, bounds.width - 2, bounds.height - 2);
         context.restore() }
     
     /**
@@ -674,7 +674,7 @@ export class GameControlButtons {
         
         // フォーカス枠を描画
         context.strokeRect(
-            bounds.x - focusOffset),
+            bounds.x - focusOffset);
             bounds.y - focusOffset),
             bounds.width + focusOffset * 2),
             bounds.height + focusOffset * 2),

@@ -3,7 +3,7 @@
  * エラーの永続化ストレージクラス
  */
 
-interface StoredError { id: string,
+interface StoredError { id: string;
     timestamp: number;
     severity: string;
     category: string;
@@ -12,29 +12,30 @@ interface StoredError { id: string,
     context?: any;
     sessionId: string;
 
-interface StorageConfig { maxItems: number,
+interface StorageConfig { maxItems: number;
     storageKey: string;
     useIndexedDB: boolean;
     compressionEnabled: boolean;
 
-interface StorageStatistics { totalStored: number,
+interface StorageStatistics { totalStored: number;
     totalSize: number;
     oldestTimestamp?: number;
     newestTimestamp?: number;
-    errorsByCategory: { [category: string]: number,
-
+    errorsByCategory: { [category: string]: number;
+    errorsByCategory: { [category: string]: number;
+        };
 export class ErrorStorage {
     private config: StorageConfig;
-    private, cache: StoredError[] = [],
+    private, cache: StoredError[] = [];
     private initialized = false,
 
     constructor(config: Partial<StorageConfig> = {) {
 
         this.config = {
-            maxItems: 1000,
-            storageKey: 'bubblePop_errors',
-            useIndexedDB: true,
-    compressionEnabled: false,
+            maxItems: 1000;
+            storageKey: 'bubblePop_errors';
+            useIndexedDB: true;
+    compressionEnabled: false;
             ...config
         }
 
@@ -50,7 +51,7 @@ export class ErrorStorage {
             await this.loadFromStorage();
 
             this.initialized = true;'} catch (error) {'
-            console.warn('[ErrorStorage] Failed to initialize, falling back to memory storage:', error),
+            console.warn('[ErrorStorage] Failed to initialize, falling back to memory storage:', error);
             this.initialized = true }
     }
 
@@ -136,7 +137,7 @@ export class ErrorStorage {
         let oldestTimestamp: number | undefined,
         let newestTimestamp: number | undefined,
 
-        this.cache.forEach(error => {  ),
+        this.cache.forEach(error => {  );
             errorsByCategory[error.category] = (errorsByCategory[error.category] || 0) + 1,
             totalSize += JSON.stringify(error).length,
             
@@ -185,7 +186,7 @@ export class ErrorStorage {
     private async loadFromIndexedDB(): Promise<void> { // IndexedDB loading would go here }
 
     private loadFromLocalStorage(): void { try {
-            const stored = localStorage.getItem(this.config.storageKey),
+            const stored = localStorage.getItem(this.config.storageKey);
             if (stored) {
                 const parsed = JSON.parse(stored) }
                 this.cache = Array.isArray(parsed) ? parsed: [],';'
@@ -206,7 +207,7 @@ export class ErrorStorage {
     private async persistToIndexedDB(): Promise<void> { // IndexedDB persistence would go here }
 
     private persistToLocalStorage(): void { try {
-            const data = JSON.stringify(this.cache),
+            const data = JSON.stringify(this.cache);
             localStorage.setItem(this.config.storageKey, data),' }'
 
         } catch (error) { console.warn('[ErrorStorage] Failed to persist to localStorage:', error }

@@ -1,39 +1,39 @@
 import { getErrorHandler  } from '../../utils/ErrorHandler.js';
 
 // インターフェース定義
-interface CanvasInfo { scale: number,
+interface CanvasInfo { scale: number;
     displayWidth: number;
     displayHeight: number;
     actualWidth: number;
     actualHeight: number;
     pixelRatio?: number;
 
-interface Coordinates { x: number,
+interface Coordinates { x: number;
     y: number;
 
-interface BaseCoordinates { x: number,
+interface BaseCoordinates { x: number;
     y: number;
 
-interface Layout { title: Coordinates,
+interface Layout { title: Coordinates;
     description: Coordinates;
     inputBox: {
-        ,x: number,
-        y: number,
-        width: number,
-    height: number,;
+        ,x: number;
+        y: number;
+        width: number;
+    height: number;
     buttons: { ok: {
-            x: number,
-            y: number,
-            width: number,
-    height: number,;
-        cancel: { x: number,
-            y: number,
-            width: number,
-    height: number,;
-    helpText: Coordinates,
+            x: number;
+            y: number;
+            width: number;
+    height: number;
+        cancel: { x: number;
+            y: number;
+            width: number;
+    height: number;
+    helpText: Coordinates;
     }
 
-interface CacheStats { canvasInfoCached: boolean,
+interface CacheStats { canvasInfoCached: boolean;
     canvasInfoCacheAge: number;
     coordinateCacheSize: number;
     coordinateCacheMaxSize: number;
@@ -44,7 +44,7 @@ interface CacheStats { canvasInfoCached: boolean,
  */
 export class UsernameInputManager {
     public gameEngine: any;
-    public, errorHandler: any,
+    public, errorHandler: any;
     public usernameInput: string;
     public isEditingUsername: boolean;
     
@@ -75,7 +75,7 @@ export class UsernameInputManager {
     /**
      * ResponsiveCanvasManagerから座標情報を安全に取得
      */
-    getCanvasInfo(): CanvasInfo | null { const now = performance.now(),
+    getCanvasInfo(): CanvasInfo | null { const now = performance.now();
         // Return cached canvas info if still valid
         if (this._canvasInfoCache && (now - this._canvasInfoCacheTime) < this._cacheValidDuration) {
             return this._canvasInfoCache }
@@ -115,7 +115,7 @@ export class UsernameInputManager {
         // Calculate transformation
         const { scale } = canvasInfo;
         const result: Coordinates = { x: baseX * scale,
-            y: baseY * scale  };
+            y: baseY * scale  },
         // Cache result (with, size limit);
         if (this._coordinateCache.size >= this._maxCacheSize) {
             // Remove oldest entry (first, added),
@@ -150,8 +150,8 @@ export class UsernameInputManager {
                     actualSize: canvasInfo ? `${canvasInfo.actualWidth}x${canvasInfo.actualHeight}` : 'N/A')
                     pixelRatio: canvasInfo?.pixelRatio,
                 }, : undefined
-                transformedCoordinates: transformedCoords);
-                fallbackMode: !canvasInfo);
+                transformedCoordinates: transformedCoords),
+                fallbackMode: !canvasInfo),
     }
 
     /**
@@ -159,7 +159,7 @@ export class UsernameInputManager {
      */
     transformCoordinatesBatch(coordinates: BaseCoordinates[], canvasInfo: CanvasInfo): Coordinates[] { if(!canvasInfo || !Array.isArray(coordinates) return [],
         
-        return coordinates.map(coord => ),
+        return coordinates.map(coord => );
             this.transformCoordinates(coord.x, coord.y, canvasInfo).filter((result): result is Coordinates => result !== null) }
 
     /**
@@ -174,7 +174,7 @@ export class UsernameInputManager {
      */
     getCacheStats(): CacheStats { return { canvasInfoCached: !!this._canvasInfoCache,
             canvasInfoCacheAge: this._canvasInfoCacheTime > 0 ? performance.now() - this._canvasInfoCacheTime : 0,
-            coordinateCacheSize: this._coordinateCache.size };
+            coordinateCacheSize: this._coordinateCache.size },
             coordinateCacheMaxSize: this._maxCacheSize 
     }
     
@@ -182,8 +182,7 @@ export class UsernameInputManager {
      * ユーザー名入力画面を描画
      */
     renderUsernameInput(context: CanvasRenderingContext2D): void { try {
-            const canvasInfo = this.getCanvasInfo(),
-            
+            const canvasInfo = this.getCanvasInfo();
             if (canvasInfo) {
     
 }
@@ -216,7 +215,7 @@ export class UsernameInputManager {
             buttons: {
                 ok: { x: 290, y: 360, width: 100, height: 40  },
                 cancel: { x: 410, y: 360, width: 100, height: 40  },
-            helpText: { x: 400, y: 450  };
+            helpText: { x: 400, y: 450  },
         // デバッグログ出力
         this.logCoordinateDebug('context', canvasInfo, LAYOUT';'
 ';'
@@ -341,12 +340,11 @@ export class UsernameInputManager {
             const scaledInputHeight = inputHeight * scaleY,
 
             context.fillStyle = '#FFFFFF',
-            context.fillRect(scaledInputX, scaledInputY, scaledInputWidth, scaledInputHeight),
-
+            context.fillRect(scaledInputX, scaledInputY, scaledInputWidth, scaledInputHeight);
             context.strokeStyle = '#0066CC',
 
-            context.lineWidth = 3 * Math.min(scaleX, scaleY),
-            context.strokeRect(scaledInputX, scaledInputY, scaledInputWidth, scaledInputHeight),
+            context.lineWidth = 3 * Math.min(scaleX, scaleY);
+            context.strokeRect(scaledInputX, scaledInputY, scaledInputWidth, scaledInputHeight);
             ','
             // 入力テキスト
             context.fillStyle = '#000000',' }'
@@ -357,7 +355,7 @@ export class UsernameInputManager {
             const displayText = this.usernameInput + (Date.now() % 1000 < 500 ? '|' : '); // カーソル点滅'
             context.fillText(displayText, scaledInputX + 10 * scaleX, scaledInputY + scaledInputHeight / 2);'} catch (error) { this.errorHandler.handleError(error, 'RENDER_ERROR', {''
                 context: 'UsernameInputManager.renderInputBox'
-            });
+            };
         }
     }
 
@@ -365,7 +363,7 @@ export class UsernameInputManager {
      * ResponsiveCanvasManager座標システムを使用した入力ボックス描画
      */
     renderInputBoxWithResponsiveCoords(context: CanvasRenderingContext2D, canvasInfo: CanvasInfo, layout: Layout): void { try {
-            const inputCoords = this.transformCoordinates(layout.inputBox.x, layout.inputBox.y, canvasInfo),
+            const inputCoords = this.transformCoordinates(layout.inputBox.x, layout.inputBox.y, canvasInfo);
             const inputWidth = layout.inputBox.width * canvasInfo.scale,
             const inputHeight = layout.inputBox.height * canvasInfo.scale,
             
@@ -405,7 +403,7 @@ export class UsernameInputManager {
 
             context.fillText(displayText, textX, textY);'} catch (error) { this.errorHandler.handleError(error, 'RENDER_ERROR', {''
                 context: 'UsernameInputManager.renderInputBoxWithResponsiveCoords'
-            });
+            };
         }
     }
     
@@ -426,13 +424,11 @@ export class UsernameInputManager {
             // OKボタン（Canvas座標系）
             const okButtonX = (baseWidth / 2 - buttonWidth - 10') * scaleX,'
             context.fillStyle = this.usernameInput.length > 0 ? '#00AA00' : '#666666',
-            context.fillRect(okButtonX, scaledButtonY, scaledButtonWidth, scaledButtonHeight),
-
+            context.fillRect(okButtonX, scaledButtonY, scaledButtonWidth, scaledButtonHeight);
             context.strokeStyle = '#FFFFFF',
 
-            context.lineWidth = 2 * Math.min(scaleX, scaleY),
-            context.strokeRect(okButtonX, scaledButtonY, scaledButtonWidth, scaledButtonHeight),
-
+            context.lineWidth = 2 * Math.min(scaleX, scaleY);
+            context.strokeRect(okButtonX, scaledButtonY, scaledButtonWidth, scaledButtonHeight);
             context.fillStyle = '#FFFFFF',' }'
 
             context.font = `bold ${16 * Math.min(scaleX, scaleY'}'px Arial`;
@@ -453,7 +449,7 @@ export class UsernameInputManager {
             context.fillStyle = '#FFFFFF';
             context.fillText('キャンセル', cancelButtonX + scaledButtonWidth / 2, scaledButtonY + scaledButtonHeight / 2';} catch (error) { this.errorHandler.handleError(error, 'RENDER_ERROR', {''
                 context: 'UsernameInputManager.renderUsernameInputButtons'
-            });
+            };
         }
     }
 
@@ -462,20 +458,20 @@ export class UsernameInputManager {
      */
     renderButtonsWithResponsiveCoords(context: CanvasRenderingContext2D, canvasInfo: CanvasInfo, layout: Layout): void { try {
             // OKボタンの描画
-            const okCoords = this.transformCoordinates(layout.buttons.ok.x, layout.buttons.ok.y, canvasInfo),
+            const okCoords = this.transformCoordinates(layout.buttons.ok.x, layout.buttons.ok.y, canvasInfo);
             const okWidth = layout.buttons.ok.width * canvasInfo.scale,
             const okHeight = layout.buttons.ok.height * canvasInfo.scale,
 
             if(okCoords && this.validateCoordinates(okCoords.x, okCoords.y, canvasInfo)) {
                 // OKボタン背景
                 context.fillStyle = this.usernameInput.length > 0 ? '#00AA00' : '#666666',
-                context.fillRect(okCoords.x, okCoords.y, okWidth, okHeight),
+                context.fillRect(okCoords.x, okCoords.y, okWidth, okHeight);
                 ','
                 // OKボタン枠線
                 context.strokeStyle = '#FFFFFF',
 
                 context.lineWidth = 2 * canvasInfo.scale,
-                context.strokeRect(okCoords.x, okCoords.y, okWidth, okHeight),
+                context.strokeRect(okCoords.x, okCoords.y, okWidth, okHeight);
                 ','
                 // OKボタンテキスト
                 context.fillStyle = '#FFFFFF' }
@@ -493,13 +489,13 @@ export class UsernameInputManager {
 
             if(cancelCoords && this.validateCoordinates(cancelCoords.x, cancelCoords.y, canvasInfo)) { // キャンセルボタン背景
                 context.fillStyle = '#AA0000',
-                context.fillRect(cancelCoords.x, cancelCoords.y, cancelWidth, cancelHeight),
+                context.fillRect(cancelCoords.x, cancelCoords.y, cancelWidth, cancelHeight);
                 ','
                 // キャンセルボタン枠線
                 context.strokeStyle = '#FFFFFF',
 
                 context.lineWidth = 2 * canvasInfo.scale,
-                context.strokeRect(cancelCoords.x, cancelCoords.y, cancelWidth, cancelHeight),
+                context.strokeRect(cancelCoords.x, cancelCoords.y, cancelWidth, cancelHeight);
                 ','
                 // キャンセルボタンテキスト
                 context.fillStyle = '#FFFFFF' }
@@ -535,7 +531,7 @@ export class UsernameInputManager {
      * バックスペース処理
      */
     handleBackspace(): boolean { if (this.usernameInput.length > 0) {
-            this.usernameInput = this.usernameInput.slice(0, -1),
+            this.usernameInput = this.usernameInput.slice(0, -1);
             return true }
         return false;
     }

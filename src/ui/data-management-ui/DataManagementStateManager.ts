@@ -6,27 +6,27 @@
 /**
  * State change callback type
  */
-type StateChangeCallback = (type: string, data: any) => void;
+type StateChangeCallback = (type: string, data: any) => void,
 
 /**
  * Dialog change callback type
  */
-type DialogChangeCallback = (action: string, data: any) => void;
+type DialogChangeCallback = (action: string, data: any) => void,
 
 /**
  * Operation change callback type
  */
-type OperationChangeCallback = (action: string, data: any) => void;
+type OperationChangeCallback = (action: string, data: any) => void,
 
 /**
  * Backup update callback type
  */
-type BackupUpdateCallback = (action: string, data: any) => void;
+type BackupUpdateCallback = (action: string, data: any) => void,
 
 /**
  * UI state interface
  */
-interface UIState { isVisible: boolean,
+interface UIState { isVisible: boolean;
     currentView: string;
     selectedItem: number;
     scrollPosition: number;
@@ -35,14 +35,14 @@ interface UIState { isVisible: boolean,
 /**
  * Dialog history entry interface
  */
-interface DialogHistoryEntry { type: string,
+interface DialogHistoryEntry { type: string;
     data: any;
     timestamp: number;
 
 /**
  * Dialog state interface
  */
-interface DialogState { showingDialog: string | null,
+interface DialogState { showingDialog: string | null;
     dialogData: any;
     dialogInput: string;
     isVisible: boolean;
@@ -50,7 +50,7 @@ interface DialogState { showingDialog: string | null,
 /**
  * Operation history entry interface
  */
-interface OperationHistoryEntry { type: string,
+interface OperationHistoryEntry { type: string;
     result: string;
     message: string;
     duration: number;
@@ -61,7 +61,7 @@ interface OperationHistoryEntry { type: string,
 /**
  * Operation state interface
  */
-interface OperationState { operationInProgress: boolean,
+interface OperationState { operationInProgress: boolean;
     operationType: string | null;
     operationProgress: number;
     operationMessage: string;
@@ -70,7 +70,7 @@ interface OperationState { operationInProgress: boolean,
 /**
  * Backup status interface
  */
-interface BackupStatus { lastBackup: string | number | Date | null,
+interface BackupStatus { lastBackup: string | number | Date | null;
     backupCount: number;
     totalSize: number;
     autoBackupEnabled: boolean;
@@ -80,7 +80,7 @@ interface BackupStatus { lastBackup: string | number | Date | null,
 /**
  * Backup history entry interface
  */
-interface BackupHistoryEntry { timestamp: number,
+interface BackupHistoryEntry { timestamp: number;
     size?: number;
     [key: string]: any;
 
@@ -154,8 +154,7 @@ export class UIStateManager {
     moveSelectionDown(maxItems: number): void { this.setSelectedItem(Math.min(maxItems - 1, this.selectedItem + 1) }
 
     showError(message: string, duration: number = 5000): void { this.errorMessage = message;
-        this.notifyStateChange('error', { message ),
-
+        this.notifyStateChange('error', { message );
         if (this.errorTimeout) {
     
 }
@@ -192,13 +191,13 @@ export class UIStateManager {
                 callback(type, data); }'
 
             } catch (error) { console.error('State change callback error:', error }
-        });
+        };
     }
 
     getState(): UIState { return { isVisible: this.isVisible,
             currentView: this.currentView,
             selectedItem: this.selectedItem,
-    scrollPosition: this.scrollPosition };
+    scrollPosition: this.scrollPosition },
             errorMessage: this.errorMessage 
     }
 
@@ -221,10 +220,10 @@ export class DialogStateManager {'
 
     private dialogData: any = {}''
     private dialogInput: string = ';'
-    private dialogCallbacks: DialogChangeCallback[] = [];
+    private dialogCallbacks: DialogChangeCallback[] = [],
     // 履歴管理
-    private dialogHistory: DialogHistoryEntry[] = [];
-    private, maxHistorySize: number = 10;
+    private dialogHistory: DialogHistoryEntry[] = [],
+    private, maxHistorySize: number = 10,
     showDialog(type: string, data: any = { ): void {
         if (this.showingDialog) {
 
@@ -232,8 +231,7 @@ export class DialogStateManager {'
         this.dialogInput = data.defaultInput || ' }''
         // Add to history') }'
 
-        this.addToHistory({ type, data, timestamp: Date.now(  });
-
+        this.addToHistory({ type, data, timestamp: Date.now(  },
         this.notifyDialogChange('show', { type, data ' }'
 ';'
 
@@ -259,15 +257,14 @@ export class DialogStateManager {'
 
     getDialogInput(): string { return this.dialogInput }
 
-    setDialogInput(input: string): void { this.dialogInput = input;
+    setDialogInput(input: string): void { this.dialogInput = input,
         this.notifyDialogChange('inputUpdate', { input ) }
 
     isDialogVisible(): boolean { return this.showingDialog !== null }
 
     isSpecificDialogVisible(type: string): boolean { return this.showingDialog === type }
 
-    private addToHistory(entry: DialogHistoryEntry): void { this.dialogHistory.push(entry);
-        
+    private addToHistory(entry: DialogHistoryEntry): void { this.dialogHistory.push(entry),
         if (this.dialogHistory.length > this.maxHistorySize) {
     
 }
@@ -284,12 +281,12 @@ export class DialogStateManager {'
                 callback(action, data); }'
 
             } catch (error) { console.error('Dialog change callback error:', error }
-        });
+        };
     }
 
     getState(): DialogState { return { showingDialog: this.showingDialog,
             dialogData: this.dialogData,
-    dialogInput: this.dialogInput };
+    dialogInput: this.dialogInput },
             isVisible: this.isDialogVisible(); 
     }
 ';'
@@ -339,7 +336,7 @@ export class DialogStateManager {'
     updateOperation(progress: number, message: string = '): void { if (!this.operationInProgress) return,'
 ','
 
-        this.operationProgress = Math.max(0, Math.min(100, progress),
+        this.operationProgress = Math.max(0, Math.min(100, progress);
         if (message) {
     
 }
@@ -364,7 +361,7 @@ export class DialogStateManager {'
                 type: this.operationType,
                 result,
                 message,
-                duration),
+                duration);
                 startTime: this.operationStartTime,
     endTime: Date.now() }
                 data' }'
@@ -382,7 +379,7 @@ export class DialogStateManager {'
         this.notifyOperationChange('end', {
                 result
             message,
-            duration),
+            duration);
             data }
 
     isOperationInProgress(): boolean { return this.operationInProgress }
@@ -394,8 +391,7 @@ export class DialogStateManager {'
     getOperationMessage(): string { return this.operationMessage }
 
     getOperationDuration(): number { return this.operationStartTime ? Date.now() - this.operationStartTime: 0, 
-    private addOperationToHistory(operation: OperationHistoryEntry): void { this.operationHistory.push(operation),
-        
+    private addOperationToHistory(operation: OperationHistoryEntry): void { this.operationHistory.push(operation);
         if (this.operationHistory.length > this.maxHistorySize) {
     
 }
@@ -406,8 +402,7 @@ export class DialogStateManager {'
 
     getLastOperation(): OperationHistoryEntry | null { return this.operationHistory[this.operationHistory.length - 1] || null }
 
-    getOperationsByType(type: string): OperationHistoryEntry[] { return this.operationHistory.filter(op => op.type === type),
-
+    getOperationsByType(type: string): OperationHistoryEntry[] { return this.operationHistory.filter(op => op.type === type);
     onOperationChange(callback: OperationChangeCallback): void { this.operationCallbacks.push(callback) }
 
     private notifyOperationChange(action: string, data: any): void { this.operationCallbacks.forEach(callback => { )
@@ -416,13 +411,13 @@ export class DialogStateManager {'
                 callback(action, data); }'
 
             } catch (error) { console.error('Operation change callback error:', error }
-        });
+        };
     }
 
     getState(): OperationState { return { operationInProgress: this.operationInProgress,
             operationType: this.operationType,
             operationProgress: this.operationProgress,
-    operationMessage: this.operationMessage };
+    operationMessage: this.operationMessage },
             operationDuration: this.getOperationDuration(); 
     }
 ';'
@@ -443,11 +438,11 @@ export class DialogStateManager {'
 export class BackupStatusManager {
     // バックアップ状況データ
     private backupStatus: BackupStatus = {
-        lastBackup: null,
-        backupCount: 0,
-        totalSize: 0,
-        autoBackupEnabled: true,
-        nextBackup: null,
+        lastBackup: null;
+        backupCount: 0;
+        totalSize: 0;
+        autoBackupEnabled: true;
+        nextBackup: null;
     backupHistory: [] };
     // 更新コールバック
     private updateCallbacks: BackupUpdateCallback[] = [];
@@ -458,7 +453,7 @@ export class BackupStatusManager {
     async initialize(dataManager: DataManager): Promise<void> { this.dataManager = dataManager;
         
         try {
-            await this.loadBackupStatus(),
+            await this.loadBackupStatus();
             this.startPeriodicUpdates(),' }'
 
         } catch (error) { console.error('Failed to initialize backup status:', error }
@@ -479,7 +474,7 @@ export class BackupStatusManager {
         } catch (error) {
             console.error('Failed to load backup status:', error',' }
 
-            this.notifyUpdate('error', { error: (error as Error).message });
+            this.notifyUpdate('error', { error: (error as Error).message },
         }
     }
 
@@ -511,15 +506,14 @@ export class BackupStatusManager {
 
         this.backupStatus.backupHistory.push({ )
             ...backupInfo),
-            timestamp: Date.now( });
-
+            timestamp: Date.now( },
         // Keep only last 20 backups
         if (this.backupStatus.backupHistory.length > 20) { this.backupStatus.backupHistory.shift() }
 
-        this.updateBackupStatus({ ),
+        this.updateBackupStatus({ );
             lastBackup: backupInfo.timestamp || Date.now(),
             backupCount: this.backupStatus.backupCount + 1,
-    totalSize: this.backupStatus.totalSize + (backupInfo.size || 0 });
+    totalSize: this.backupStatus.totalSize + (backupInfo.size || 0 },
     }
 ';'
 
@@ -529,8 +523,7 @@ export class BackupStatusManager {
 
         const k = 1024,
         const sizes = ['B', 'KB', 'MB', 'GB'],
-        const i = Math.floor(Math.log(bytes) / Math.log(k),
-
+        const i = Math.floor(Math.log(bytes) / Math.log(k);
         return parseFloat((bytes / Math.pow(k, i).toFixed(1)) + ', ' + sizes[i] }
 
 ';'
@@ -538,12 +531,11 @@ export class BackupStatusManager {
     formatBackupTime(timestamp: string | number | Date | null): string { ''
         if(!timestamp) return 'Never',
         
-        const date = new Date(timestamp),
-        const now = new Date(),
-        const diffMs = now.getTime() - date.getTime(),
-        const diffHours = Math.floor(diffMs / (1000 * 60 * 60),
-        const diffDays = Math.floor(diffHours / 24),
-
+        const date = new Date(timestamp);
+        const now = new Date();
+        const diffMs = now.getTime() - date.getTime();
+        const diffHours = Math.floor(diffMs / (1000 * 60 * 60);
+        const diffDays = Math.floor(diffHours / 24);
         if (diffDays > 0) { }'
 
             return `${diffDays} day${diffDays > 1 ? 's' : '} ago`;} else if (diffHours > 0) { }'
@@ -557,19 +549,19 @@ export class BackupStatusManager {
             return diffMinutes > 0 ? `${diffMinutes} minute${diffMinutes > 1 ? 's' : '} ago` : 'Just now';'
 
     startPeriodicUpdates(interval: number = 30000): void { // 30 seconds
-        this.stopPeriodicUpdates(),
+        this.stopPeriodicUpdates();
         ','
 
         this.updateInterval = setInterval(() => {;
             this.loadBackupStatus().catch(error => {),' }'
 
                 console.error('Periodic backup status update failed:', error); }
-            });
+            };
         }, interval);
     }
 
     stopPeriodicUpdates(): void { if (this.updateInterval) {
-            clearInterval(this.updateInterval),
+            clearInterval(this.updateInterval);
             this.updateInterval = null }
     }
 

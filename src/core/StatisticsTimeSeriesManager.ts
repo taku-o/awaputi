@@ -14,8 +14,8 @@ export class StatisticsTimeSeriesManager {
         this.timeSeriesData = [];
         this.maxDataPoints = 1000; // 最大データポイント数
         this.aggregationIntervals = {
-            hourly: 60 * 60 * 1000,
-            daily: 24 * 60 * 60 * 1000,
+            hourly: 60 * 60 * 1000;
+            daily: 24 * 60 * 60 * 1000;
     weekly: 7 * 24 * 60 * 60 * 1000 }
             monthly: 30 * 24 * 60 * 60 * 1000 
     }
@@ -30,7 +30,7 @@ export class StatisticsTimeSeriesManager {
     recordTimeSeriesData(score, playTime, completed, additionalData = { ) {
         try {
             const dataPoint = {
-                timestamp: Date.now(),
+                timestamp: Date.now();
                 score,
                 playTime,
                 completed,
@@ -98,7 +98,7 @@ export class StatisticsTimeSeriesManager {
 
             const aggregated = {};
 
-            data.forEach(point => {  ),
+            data.forEach(point => {  );
                 const bucketTime = Math.floor(point.timestamp / intervalMs) * intervalMs,
                 
                 if (!aggregated[bucketTime]) {
@@ -113,7 +113,7 @@ export class StatisticsTimeSeriesManager {
                 aggregated[bucketTime].count++;
                 aggregated[bucketTime].sum += point[metric] || 0;
                 aggregated[bucketTime].values.push(point[metric] || 0);
-            });
+            };
 
             return Object.values(aggregated).map(bucket => ({ timestamp: bucket.timestamp)
                 value: bucket.sum / bucket.count,
@@ -121,7 +121,7 @@ export class StatisticsTimeSeriesManager {
                 sum: bucket.sum),
                 min: Math.min(...bucket.values,
     max: Math.max(...bucket.values)).sort((a, b) => a.timestamp - b.timestamp) } catch (error) {
-            ErrorHandler.handleError(error, 'StatisticsTimeSeriesManager', 'aggregateData'),
+            ErrorHandler.handleError(error, 'StatisticsTimeSeriesManager', 'aggregateData');
             return [],
 
     /**'
@@ -132,7 +132,7 @@ export class StatisticsTimeSeriesManager {
      */''
     getAggregatedTimeSeriesData(period = 'daily', days = 30) {
         try {
-            const now = Date.now(),
+            const now = Date.now();
             const startDate = now - (days * 24 * 60 * 60 * 1000'),'
 
             const scoreData = this.getTimeSeriesData({)
@@ -166,10 +166,10 @@ export class StatisticsTimeSeriesManager {
         try {
             if (this.timeSeriesData.length === 0) {
     }
-                return { totalDataPoints: 0 };
-                    dateRange: null;
-                    trends: {};
-                    peaks: {};
+                return { totalDataPoints: 0 },
+                    dateRange: null,
+                    trends: {},
+                    peaks: {},
                     averages: {}
 
             const dataPoints = this.timeSeriesData.length;
@@ -179,7 +179,7 @@ export class StatisticsTimeSeriesManager {
             return { totalDataPoints: dataPoints,
                 dateRange: {
                     start: firstPoint.timestamp,
-    end: lastPoint.timestamp };
+    end: lastPoint.timestamp },
                     duration: lastPoint.timestamp - firstPoint.timestamp 
     };
                 trends: this.calculateTrends();
@@ -187,10 +187,10 @@ export class StatisticsTimeSeriesManager {
     averages: this.calculateAverages();
             } catch (error) {
             ErrorHandler.handleError(error, 'StatisticsTimeSeriesManager', 'getTimeSeriesStatisticsSummary),'
-            return { totalDataPoints: 0 };
-                dateRange: null;
-                trends: {};
-                peaks: {};
+            return { totalDataPoints: 0 },
+                dateRange: null,
+                trends: {},
+                peaks: {},
                 averages: {
     }
 
@@ -202,8 +202,7 @@ export class StatisticsTimeSeriesManager {
     getRecentPerformance(days = 7) {
         try {
             const cutoffTime = Date.now() - (days * 24 * 60 * 60 * 1000),
-            const recentData = this.timeSeriesData.filter(point => point.timestamp >= cutoffTime),
-
+            const recentData = this.timeSeriesData.filter(point => point.timestamp >= cutoffTime);
             if (recentData.length === 0) {
                 return { period: days,
                     gamesPlayed: 0,
@@ -246,7 +245,7 @@ export class StatisticsTimeSeriesManager {
                 bestScore: Math.max(...recentData.map(point = > point.score  }
                 worstScore: Math.min(...recentData.map(point => point.score); 
     } catch (error) {
-            ErrorHandler.handleError(error, 'StatisticsTimeSeriesManager', 'getRecentPerformance'),
+            ErrorHandler.handleError(error, 'StatisticsTimeSeriesManager', 'getRecentPerformance');
             return { period: days,
                 gamesPlayed: 0,
     averageScore: 0,
@@ -262,14 +261,13 @@ export class StatisticsTimeSeriesManager {
      */
     getPeakPlayingTimes() {
         try {
-            const hourCounts = new Array(24).fill(0),
-            const dayCounts = new Array(7).fill(0),
-
-            this.timeSeriesData.forEach(point => { ),
+            const hourCounts = new Array(24).fill(0);
+            const dayCounts = new Array(7).fill(0);
+            this.timeSeriesData.forEach(point => { );
                 const date = new Date(point.timestamp) }
                 hourCounts[date.getHours()]++; }
                 dayCounts[date.getDay()]++; }
-            });
+            };
 ';'
 
             const peakHour = hourCounts.indexOf(Math.max(...hourCounts);
@@ -278,18 +276,17 @@ export class StatisticsTimeSeriesManager {
             const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
             return { peakHour: {
-                    hour: peakHour,;
+                    hour: peakHour,
                     count: hourCounts[peakHour],
                     timeRange: `${peakHour}:00-${peakHour + 1}:00`
                 };
                 peakDay: { day: peakDay,
                     name: dayNames[peakDay],
-    count: dayCounts[peakDay],;
+    count: dayCounts[peakDay],
                 hourDistribution: hourCounts,
     dayDistribution: dayCounts,
             } } catch (error) {
-            ErrorHandler.handleError(error, 'StatisticsTimeSeriesManager', 'getPeakPlayingTimes'),
-
+            ErrorHandler.handleError(error, 'StatisticsTimeSeriesManager', 'getPeakPlayingTimes');
             return { }'
 
                 peakHour: { hour: 0, count: 0, timeRange: '0:00-1:00'
@@ -305,15 +302,14 @@ export class StatisticsTimeSeriesManager {
      */
     getPlayTimeDistribution() {
         try {
-            const playTimes = this.timeSeriesData.map(point => point.playTime),
-
+            const playTimes = this.timeSeriesData.map(point => point.playTime);
             if (playTimes.length === 0) {
     }
                 return { }
-                    distribution: {};
-                    average: 0;
+                    distribution: {},
+                    average: 0,
                     median: 0,
-    mode: 0;
+    mode: 0,
                 } }
 
             // 時間を分単位のバケットに分類
@@ -324,8 +320,7 @@ export class StatisticsTimeSeriesManager {
                 '10-15min': 0,
                 '15+min': 0 };
 
-            playTimes.forEach(time => {  ),
-
+            playTimes.forEach(time => {  );
                 const minutes = time / (60 * 1000),
                 if(minutes <= 1) buckets['0-1min]++,'
                 else if(minutes <= 3) buckets['1-3min]++,'
@@ -334,24 +329,24 @@ export class StatisticsTimeSeriesManager {
                 else if(minutes <= 15) buckets['10-15min]++,' }
 
                 else buckets['15+min]++; }'
-            });
+            };
 
             const sortedTimes = [...playTimes].sort((a, b) => a - b);
             const average = playTimes.reduce((sum, time) => sum + time, 0) / playTimes.length;
             const median = sortedTimes[Math.floor(sortedTimes.length / 2)];
 
             return { distribution: buckets,
-                average: Math.round(average),
+                average: Math.round(average);
                 median: Math.round(median,
-    shortest: sortedTimes[0],;
+    shortest: sortedTimes[0],
                 longest: sortedTimes[sortedTimes.length - 1] 
     } catch (error) {
-            ErrorHandler.handleError(error, 'StatisticsTimeSeriesManager', 'getPlayTimeDistribution'),
+            ErrorHandler.handleError(error, 'StatisticsTimeSeriesManager', 'getPlayTimeDistribution');
             return { }
-                distribution: {};
-                average: 0;
+                distribution: {},
+                average: 0,
                 median: 0,
-    mode: 0;
+    mode: 0,
             } }
     }
 
@@ -367,21 +362,21 @@ export class StatisticsTimeSeriesManager {
             const days1 = parseInt(period1.replace('d', ')',
             const days2 = parseInt(period2.replace('d', '),'
 
-            const data1 = this.timeSeriesData.filter(point => ),
+            const data1 = this.timeSeriesData.filter(point => );
                 point.timestamp >= now - (days1 * 24 * 60 * 60 * 1000)),
 
-            const data2 = this.timeSeriesData.filter(point => ),
+            const data2 = this.timeSeriesData.filter(point => );
                 point.timestamp >= now - (days2 * 24 * 60 * 60 * 1000) &&,
                 point.timestamp < now - (days1 * 24 * 60 * 60 * 1000)),
 
-            const stats1 = this.calculatePeriodStats(data1),
+            const stats1 = this.calculatePeriodStats(data1);
             const stats2 = this.calculatePeriodStats(data2) }
             return { }
                 period1: { period: period1, ...stats1,
                 period2: { period: period2, ...stats2,
-                comparison: { scoreChange: this.calculatePercentageChange(stats2.averageScore, stats1.averageScore),
-                    efficiencyChange: this.calculatePercentageChange(stats2.averageEfficiency, stats1.averageEfficiency),
-                    playTimeChange: this.calculatePercentageChange(stats2.totalPlayTime, stats1.totalPlayTime),
+                comparison: { scoreChange: this.calculatePercentageChange(stats2.averageScore, stats1.averageScore);
+                    efficiencyChange: this.calculatePercentageChange(stats2.averageEfficiency, stats1.averageEfficiency);
+                    playTimeChange: this.calculatePercentageChange(stats2.totalPlayTime, stats1.totalPlayTime);
                     gamesChange: this.calculatePercentageChange(stats2.totalGames, stats1.totalGames }
             } catch (error) {
             ErrorHandler.handleError(error, 'StatisticsTimeSeriesManager', 'compareTimePeriods) }'
@@ -398,7 +393,7 @@ export class StatisticsTimeSeriesManager {
             return { totalGames: 0,
                 averageScore: 0,
     averageEfficiency: 0 }
-                totalPlayTime: 0 };
+                totalPlayTime: 0 },
                 bestScore: 0 
     }
 
@@ -453,10 +448,9 @@ export class StatisticsTimeSeriesManager {
 
         if(data.length < 3) return 'stable',
 
-        const values = data.map(point => point[metric] || 0),
-        const firstHalf = values.slice(0, Math.floor(values.length / 2),
-        const secondHalf = values.slice(Math.floor(values.length / 2),
-
+        const values = data.map(point => point[metric] || 0);
+        const firstHalf = values.slice(0, Math.floor(values.length / 2);
+        const secondHalf = values.slice(Math.floor(values.length / 2);
         const firstAvg = firstHalf.reduce((sum, val) => sum + val, 0) / firstHalf.length,
         const secondAvg = secondHalf.reduce((sum, val) => sum + val, 0) / secondHalf.length,
 
@@ -480,10 +474,10 @@ export class StatisticsTimeSeriesManager {
         const efficiencies = this.timeSeriesData.map(point => point.efficiency);
 
         return { score: {
-                max: Math.max(...scores),
+                max: Math.max(...scores);
                 maxIndex: scores.indexOf(Math.max(...scores,
-    min: Math.min(...scores) };
-                minIndex: scores.indexOf(Math.min(...scores),
+    min: Math.min(...scores) },
+                minIndex: scores.indexOf(Math.min(...scores);
             },
             efficiency: { max: Math.max(...efficiencies),
                 maxIndex: efficiencies.indexOf(Math.max(...efficiencies),
@@ -502,12 +496,12 @@ export class StatisticsTimeSeriesManager {
         const totals = this.timeSeriesData.reduce((acc, point) => {  acc.score += point.score,
             acc.efficiency += point.efficiency,
             acc.playTime += point.playTime }
-            return acc;, { score: 0, efficiency: 0, playTime: 0  });
+            return acc;, { score: 0, efficiency: 0, playTime: 0  },
 
         const count = this.timeSeriesData.length;
 
         return { score: totals.score / count,
-            efficiency: totals.efficiency / count };
+            efficiency: totals.efficiency / count },
             playTime: totals.playTime / count 
     }
 
@@ -522,7 +516,7 @@ export class StatisticsTimeSeriesManager {
         return { totalDataPoints: scoreData.length,
             scoreAverage: scoreData.length > 0 ? scoreData.reduce((sum, point) => sum + point.value, 0) / scoreData.length : 0,
     
-            efficiencyAverage: efficiencyData.length > 0 ? efficiencyData.reduce((sum, point) => sum + point.value, 0) / efficiencyData.length : 0 };
+            efficiencyAverage: efficiencyData.length > 0 ? efficiencyData.reduce((sum, point) => sum + point.value, 0) / efficiencyData.length: 0 },
             playTimeTotal: playTimeData.length > 0 ? playTimeData.reduce((sum, point) => sum + point.value, 0) : 0 
         }
 

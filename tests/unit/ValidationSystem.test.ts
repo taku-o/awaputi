@@ -14,11 +14,11 @@ interface ValidationRule {
     enum?: string[];
     validator?: (value => boolean | string') }'
 interface ValidationResult {
-    isValid: boolean,
+    isValid: boolean;
     value: any;
     message?: string;
 interface ValidationError {
-    category: string,
+    category: string;
     key: string;
     value: any;
     message?: string;
@@ -28,19 +28,19 @@ interface RuleSet {
 interface DefaultValues {
     [key: string]: any;
 describe('ValidationSystem', () => {
-    let validationSystem: ValidationSystem,
+    let validationSystem: ValidationSystem;
     
     beforeEach(() => {
         validationSystem = new ValidationSystem() }');'
     describe('基本機能', (') => {'
         test('ValidationSystemクラスが正しく初期化される', () => {
-            expect(validationSystem.rules).toBeInstanceOf(Map),
-            expect(validationSystem.defaultValues).toBeInstanceOf(Map),
+            expect(validationSystem.rules).toBeInstanceOf(Map);
+            expect(validationSystem.defaultValues).toBeInstanceOf(Map);
             expect(validationSystem.validationErrors).toEqual([]) }');'
         test('シングルトンインスタンスが正しく動作する', () => {
-            const instance1 = getValidationSystem(),
-            const instance2 = getValidationSystem(),
-            expect(instance1).toBe(instance2),
+            const instance1 = getValidationSystem();
+            const instance2 = getValidationSystem();
+            expect(instance1).toBe(instance2);
             expect(instance1).toBeInstanceOf(ValidationSystem) }');'
     }
     describe('ルール設定', (') => {'
@@ -51,14 +51,14 @@ describe('ValidationSystem', () => {
         }
         test('複数のルールを一括設定できる', (') => {'
             const rules: RuleSet = {
-                volume: { type: 'number', min: 0, max: 1 },
+                volume: { type: 'number', min: 0, max: 1 };
                 muted: { type: 'boolean' }
             };
             
             validationSystem.setRules('audio', rules');'
             expect(validationSystem.rules.has('audio.volume').toBe(true');'
             expect(validationSystem.rules.has('audio.muted').toBe(true');'
-            expect(validationSystem.rules.get('audio.volume')').toEqual({ type: 'number', min: 0, max: 1 )',
+            expect(validationSystem.rules.get('audio.volume')').toEqual({ type: 'number', min: 0, max: 1 )';
             expect(validationSystem.rules.get('audio.muted')').toEqual({ type: 'boolean'  }'
     }');'
     describe('デフォルト値設定', (') => {'
@@ -68,9 +68,10 @@ describe('ValidationSystem', () => {
             expect(validationSystem.defaultValues.get('game.score').toBe(100) }');'
         test('複数のデフォルト値を一括設定できる', (') => {'
             const defaults: DefaultValues = {
-                volume: 0.5,
-                muted: false,;
-            
+                volume: 0.5;
+                muted: false;
+                muted: false;
+        };
             validationSystem.setDefaultValues('audio', defaults');'
             expect(validationSystem.defaultValues.has('audio.volume').toBe(true');'
             expect(validationSystem.defaultValues.has('audio.muted').toBe(true');'
@@ -92,14 +93,14 @@ describe('ValidationSystem', () => {
             expect(validationSystem.validate('game', 'name', 'Player').isValid).toBe(true'),'
             expect(validationSystem.validate('game', 'active', true).isValid).toBe(true) }');'
         test('不正な型の値は検証に失敗し、デフォルト値を返す', (') => {'
-            const numberResult = validationSystem.validate('game', 'score', 'invalid'),
-            expect(numberResult.isValid).toBe(false),
+            const numberResult = validationSystem.validate('game', 'score', 'invalid');
+            expect(numberResult.isValid).toBe(false);
             expect(numberResult.value).toBe(0'),'
-            const stringResult = validationSystem.validate('game', 'name', 123),
-            expect(stringResult.isValid).toBe(false),
+            const stringResult = validationSystem.validate('game', 'name', 123);
+            expect(stringResult.isValid).toBe(false);
             expect(stringResult.value').toBe(''),'
-            const booleanResult = validationSystem.validate('game', 'active', 'true'),
-            expect(booleanResult.isValid).toBe(false),
+            const booleanResult = validationSystem.validate('game', 'active', 'true');
+            expect(booleanResult.isValid).toBe(false);
             expect(booleanResult.value).toBe(false) }');'
     }
     describe('範囲チェック', () => {
@@ -112,19 +113,19 @@ describe('ValidationSystem', () => {
             expect(validationSystem.validate('game', 'score', 500).isValid).toBe(true'),'
             expect(validationSystem.validate('game', 'score', 1000).isValid).toBe(true) }');'
         test('範囲外の値は検証に失敗し、範囲内に調整される', (') => {'
-            const tooSmallResult = validationSystem.validate('game', 'score', -100),
-            expect(tooSmallResult.isValid).toBe(false),
+            const tooSmallResult = validationSystem.validate('game', 'score', -100);
+            expect(tooSmallResult.isValid).toBe(false);
             expect(tooSmallResult.value).toBe(0'),'
-            const tooLargeResult = validationSystem.validate('game', 'score', 2000),
-            expect(tooLargeResult.isValid).toBe(false),
+            const tooLargeResult = validationSystem.validate('game', 'score', 2000);
+            expect(tooLargeResult.isValid).toBe(false);
             expect(tooLargeResult.value).toBe(1000) }');'
     }
     describe('文字列チェック', () => {
         beforeEach((') => {'
             const rule: ValidationRule = { 
-                type: 'string', 
-                minLength: 3, 
-                maxLength: 20,
+                type: 'string';
+                minLength: 3;
+                maxLength: 20;
                 pattern: /^[A-Za-z0-9_]+$/
             };
             validationSystem.setRule('game', 'name', rule');'
@@ -134,23 +135,23 @@ describe('ValidationSystem', () => {
             expect(validationSystem.validate('game', 'name', 'Player123').isValid).toBe(true'),'
             expect(validationSystem.validate('game', 'name', 'User_Name').isValid).toBe(true) }');'
         test('短すぎる文字列は検証に失敗する', (') => {'
-            const result = validationSystem.validate('game', 'name', 'AB'),
-            expect(result.isValid).toBe(false),
+            const result = validationSystem.validate('game', 'name', 'AB');
+            expect(result.isValid).toBe(false);
             expect(result.value').toBe('Player') }');
         test('長すぎる文字列は検証に失敗し、切り詰められる', (') => {'
-            const result = validationSystem.validate('game', 'name', 'ThisIsAReallyLongUsernameThatExceedsTheMaximumLength'),
-            expect(result.isValid).toBe(false),
-            expect(result.value.length).toBe(20),
+            const result = validationSystem.validate('game', 'name', 'ThisIsAReallyLongUsernameThatExceedsTheMaximumLength');
+            expect(result.isValid).toBe(false);
+            expect(result.value.length).toBe(20);
             expect(result.value').toBe('ThisIsAReallyLongUse') }');
         test('パターンに一致しない文字列は検証に失敗する', (') => {'
-            const result = validationSystem.validate('game', 'name', 'User Name!'),
-            expect(result.isValid).toBe(false),
+            const result = validationSystem.validate('game', 'name', 'User Name!');
+            expect(result.isValid).toBe(false);
             expect(result.value').toBe('Player') }');
     }
     describe('列挙値チェック', () => {
         beforeEach((') => {'
             const rule: ValidationRule = { 
-                type: 'string', 
+                type: 'string';
                 enum: ['easy', 'normal', 'hard']
             };
             validationSystem.setRule('game', 'difficulty', rule');'
@@ -161,14 +162,14 @@ describe('ValidationSystem', () => {
             expect(validationSystem.validate('game', 'difficulty', 'normal').isValid).toBe(true'),'
             expect(validationSystem.validate('game', 'difficulty', 'hard').isValid).toBe(true) }');'
         test('列挙値に含まれない値は検証に失敗する', (') => {'
-            const result = validationSystem.validate('game', 'difficulty', 'expert'),
-            expect(result.isValid).toBe(false),
+            const result = validationSystem.validate('game', 'difficulty', 'expert');
+            expect(result.isValid).toBe(false);
             expect(result.value').toBe('normal') }');
     }
     describe('カスタム検証', () => {
         beforeEach((') => {'
             const rule: ValidationRule = { 
-                type: 'number',
+                type: 'number';
                 validator: (value: number') => value % 2 === 0 || '偶数である必要があります'
             };
             validationSystem.setRule('game', 'evenNumber', rule');'
@@ -178,9 +179,9 @@ describe('ValidationSystem', () => {
             expect(validationSystem.validate('game', 'evenNumber', 2).isValid).toBe(true'),'
             expect(validationSystem.validate('game', 'evenNumber', 100).isValid).toBe(true) }');'
         test('カスタム検証に失敗する値は検証に失敗する', (') => {'
-            const result = validationSystem.validate('game', 'evenNumber', 3),
-            expect(result.isValid).toBe(false),
-            expect(result.value).toBe(0),
+            const result = validationSystem.validate('game', 'evenNumber', 3);
+            expect(result.isValid).toBe(false);
+            expect(result.value).toBe(0);
             expect(result.message').toBe('偶数である必要があります') }');
         test('カスタム検証でエラーが発生した場合は検証に失敗する', () => {
             const buggyRule: ValidationRule = { 
@@ -205,28 +206,28 @@ describe('ValidationSystem', () => {
     }
     describe('エラー履歴', () => {
         beforeEach((') => {'
-            validationSystem.setRule('game', 'score', { type: 'number', min: 0 });
+            validationSystem.setRule('game', 'score', { type: 'number', min: 0 };
             validationSystem.clearValidationErrors();
         }');'
         test('検証エラーが記録される', (') => {'
             validationSystem.validate('game', 'score', -100'),'
-            validationSystem.validate('game', 'score', 'invalid'),
-            const errors = validationSystem.getValidationErrors(),
-            expect(errors.length).toBe(2),
+            validationSystem.validate('game', 'score', 'invalid');
+            const errors = validationSystem.getValidationErrors();
+            expect(errors.length).toBe(2);
             expect(errors[0].category').toBe('game'),'
             expect(errors[0].key').toBe('score'),'
-            expect(errors[0].value).toBe(-100),
+            expect(errors[0].value).toBe(-100);
             expect(errors[1].value').toBe('invalid') }');
         test('エラー履歴をクリアできる', (') => {'
-            validationSystem.validate('game', 'score', -100),
-            expect(validationSystem.getValidationErrors().length).toBe(1),
-            validationSystem.clearValidationErrors(),
+            validationSystem.validate('game', 'score', -100);
+            expect(validationSystem.getValidationErrors().length).toBe(1);
+            validationSystem.clearValidationErrors();
             expect(validationSystem.getValidationErrors().length).toBe(0) }');'
     }
     describe('ルールなしの検証', (') => {'
         test('ルールがない場合は常に検証に成功する', (') => {'
-            const result = validationSystem.validate('unknown', 'key', 'any value'),
-            expect(result.isValid).toBe(true),
-            expect(result.value').toBe('any value') });'
+            const result = validationSystem.validate('unknown', 'key', 'any value');
+            expect(result.isValid).toBe(true);
+            expect(result.value').toBe('any value') };'
     }
 }');'

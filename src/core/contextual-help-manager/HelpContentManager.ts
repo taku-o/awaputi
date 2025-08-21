@@ -15,18 +15,18 @@
  */
 
 // 型定義
-export interface HelpDatabase { gameBasics: HelpItem,
+export interface HelpDatabase { gameBasics: HelpItem;
     scoring: HelpItem;
     specialBubbles: HelpItem;
     strategy: HelpItem;
     accessibility: HelpItem;
     [key: string]: HelpItem;
 
-export interface HelpItem { category: HelpCategory,
+export interface HelpItem { category: HelpCategory;
     priority: HelpPriority;
     content: HelpContent;
 
-export interface HelpContent { title: string,
+export interface HelpContent { title: string;
     description: string;
     difficulty: DifficultyLevel;
     relatedTopics?: string[];
@@ -37,7 +37,7 @@ export interface HelpContent { title: string,
     features?: AccessibilityFeature[];
     metadata?: ContentMetadata;
 
-export interface HelpStep { step: number,
+export interface HelpStep { step: number;
     title: string;
     description: string;
     visual?: string;
@@ -47,7 +47,7 @@ export interface HelpStep { step: number,
     duration?: number;
     prerequisites?: string[],  }
 
-export interface HelpSection { title: string,
+export interface HelpSection { title: string;
     content: string;
     details?: Record<string, string>;
     formula?: string;
@@ -55,19 +55,19 @@ export interface HelpSection { title: string,
     examples?: SectionExample[];
     subSections?: HelpSubSection[];
 
-export interface HelpSubSection { title: string,
+export interface HelpSubSection { title: string;
     content: string;
     codeExample?: string;
     links?: HelpLink[];
      }
 
-export interface SectionExample { title: string,
+export interface SectionExample { title: string;
     description: string;
     input?: string;
     output?: string;
     explanation?: string,  }
 
-export interface BubbleType { name: string,
+export interface BubbleType { name: string;
     color: BubbleColor;
     effect: string;
     points: number;
@@ -78,11 +78,11 @@ export interface BubbleType { name: string,
     conditions?: BubbleCondition[];
      }
 
-export interface BubbleCondition { type: ConditionType,
+export interface BubbleCondition { type: ConditionType;
     value: string | number;
     operator?: ComparisonOperator;
 
-export interface Strategy { name: string,
+export interface Strategy { name: string;
     description: string;
     techniques: string[];
     difficulty: DifficultyLevel;
@@ -91,11 +91,11 @@ export interface Strategy { name: string,
     skillLevel?: SkillLevel;
     situations?: GameSituation[];
 
-export interface GameSituation { scenario: string,
+export interface GameSituation { scenario: string;
     recommendation: string;
     priority: number;
 
-export interface AccessibilityFeature { name: string,
+export interface AccessibilityFeature { name: string;
     description: string;
     shortcuts?: Record<string, string>;
     features?: string[];
@@ -111,13 +111,13 @@ export interface ContentMetadata { author?: string,
     readingTime?: number;
     mediaAssets?: MediaAsset[];
 
-export interface MediaAsset { type: MediaType,
+export interface MediaAsset { type: MediaType;
     url: string;
     alt?: string;
     caption?: string;
     duration?: number,  }
 
-export interface HelpLink { title: string,
+export interface HelpLink { title: string;
     url: string;
     type: LinkType;
     description?: string;
@@ -130,32 +130,32 @@ export interface SearchOptions { category?: HelpCategory,
     maxResults?: number;
     fuzzySearch?: boolean;
 
-export interface SearchResult { key: string,
+export interface SearchResult { key: string;
     item: HelpItem;
     score: number;
     matches: SearchMatch[];
 
-export interface SearchMatch { field: string,
+export interface SearchMatch { field: string;
     text: string;
     position: number;
     context: string;
 
-export interface SearchIndexEntry { key: string,
+export interface SearchIndexEntry { key: string;
     keywords: string[];
     weight: number;
     lastIndexed: Date;
 
-export interface CategoryIndex { category: HelpCategory,
+export interface CategoryIndex { category: HelpCategory;
     keys: string[];
     count: number;
     priority: HelpPriority;
 
-export interface DifficultyIndex { difficulty: DifficultyLevel,
+export interface DifficultyIndex { difficulty: DifficultyLevel;
     keys: string[];
     count: number;
     averageComplexity: number;
 
-export interface ContentStatistics { totalItems: number,
+export interface ContentStatistics { totalItems: number;
     categoryCounts: Record<HelpCategory, number>;
     difficultyCounts: Record<DifficultyLevel, number>;
     priorityCounts: Record<HelpPriority, number>;
@@ -167,15 +167,15 @@ export interface RelatedContentOptions { maxResults?: number,
     includeHigherDifficulty?: boolean;
     weightByPopularity?: boolean;
 
-export interface ContentValidation { isValid: boolean,
+export interface ContentValidation { isValid: boolean;
     errors: ValidationError[];
     warnings: ValidationWarning[];
 
-export interface ValidationError { field: string,
+export interface ValidationError { field: string;
     message: string;
     severity: ErrorSeverity;
 
-export interface ValidationWarning { field: string,
+export interface ValidationWarning { field: string;
     message: string;
     suggestion: string;
 
@@ -215,17 +215,17 @@ export const BUBBLE_COLORS: readonly BubbleColor[] = [']';
     'normal', 'rainbow', 'pink', 'blue', 'yellow', 'green', 'red', 'purple', 'orange'];
 ] as const;
 
-export const DEFAULT_SEARCH_OPTIONS: SearchOptions = { maxResults: 10,
-    includeMetadata: true,
+export const DEFAULT_SEARCH_OPTIONS: SearchOptions = { maxResults: 10;
+    includeMetadata: true;
     fuzzySearch: false, as const;
-export const KEYWORD_WEIGHTS = { title: 3,
-    description: 2,
-    sections: 1.5,
-    tags: 1,
+export const KEYWORD_WEIGHTS = { title: 3;
+    description: 2;
+    sections: 1.5;
+    tags: 1;
     relatedTopics: 0.8  } as const;
-export const SEARCH_INDEX_CONFIG = { minKeywordLength: 2,
+export const SEARCH_INDEX_CONFIG = { minKeywordLength: 2;
 
-    maxKeywordLength: 50,
+    maxKeywordLength: 50;
     stopWords: ['の', 'を', 'に', 'は', 'が', 'で', 'と', 'や', 'から', 'まで],'
     rebuildThreshold: 100  } as const;
 // ユーティリティ関数
@@ -250,7 +250,7 @@ export function calculateReadingTime(content: HelpContent): number { const words
             if (section.tips) { }'
 
                 wordCount += section.tips.join(', ').split(').length; }'
-});
+};
     }
     
     if (content.steps) {', ',
@@ -260,14 +260,14 @@ export function calculateReadingTime(content: HelpContent): number { const words
         content.steps.forEach(step => { '),' }
 
             wordCount += step.description.split(', ').length; }
-        });
+        };
     }
     
     return Math.ceil(wordCount / wordsPerMinute);
 }
 
 export function generateContentId(): string {
-    return `help_${Date.now())_${Math.random().toString(36).substr(2, 9})`;
+    return `help_${Date.now())_${Math.random().toString(36).substr(2, 9}`;
 }
 
 ';'
@@ -311,13 +311,13 @@ export class HelpContentManager {
                             description: 'バブルをクリックしてポップしましょう',
                             visual: 'cursor-pointer',
                             keyboardAlternative: 'Tabキーで選択、Enterキーでポップ',
-    duration: 5  };
+    duration: 5  },
                         { step: 2,''
                             title: 'スコアを獲得',
                             description: 'バブルをポップするとスコアが増えます',]','
                             visual: 'score-increase',']',
                             tips: ['連続でポップするとコンボボーナス', '特殊バブルで高得点],'
-                            duration: 10  };
+                            duration: 10  },
                         { step: 3,''
                             title: '時間制限に注意',
                             description: 'バブルが破裂する前にポップしましょう',
@@ -522,7 +522,7 @@ export class HelpContentManager {
                                 'F1': 'ヘルプ表示' 
     },''
                             category: 'motor',
-    enabled: true;
+    enabled: true,
                         },
 
                         { ''
@@ -534,7 +534,7 @@ export class HelpContentManager {
                                 'ゲーム状況の詳細説明']','
                             ],
                             category: 'visual',
-    enabled: true,;
+    enabled: true,
                         { ''
                             name: '視覚サポート',
                             description: '見やすさを向上させる機能',
@@ -545,7 +545,7 @@ export class HelpContentManager {
                                 'アニメーション軽減']','
                             ],
                             category: 'visual',
-    enabled: false,;
+    enabled: false,
                         { ''
                             name: '時間調整',
                             description: 'プレイ時間の調整機能',
@@ -570,21 +570,18 @@ export class HelpContentManager {
     /**
      * 検索インデックスを構築
      */
-    buildSearchIndexes(): void { this.searchIndex.clear(),
-        this.categoryIndex.clear(),
-        this.difficultyIndex.clear(),
-        this.indexedEntries.clear(),
-
+    buildSearchIndexes(): void { this.searchIndex.clear();
+        this.categoryIndex.clear();
+        this.difficultyIndex.clear();
+        this.indexedEntries.clear();
         Object.entries(this.helpDatabase).forEach(([key, item]) => { 
             // カテゴリ別インデックス
-            this.updateCategoryIndex(key, item),
-            
+            this.updateCategoryIndex(key, item);
             // 難易度別インデックス
-            this.updateDifficultyIndex(key, item),
-            
+            this.updateDifficultyIndex(key, item);
             // 検索用キーワードインデックス }
             this.updateSearchIndex(key, item); }
-        });
+        };
 
         this.lastRebuild = new Date();
     }
@@ -600,7 +597,7 @@ export class HelpContentManager {
                 category,
                 keys: [],
     count: 0 }
-                priority: item.priority); 
+                priority: item.priority),
     }
         
         const index = this.categoryIndex.get(category)!;
@@ -619,7 +616,7 @@ export class HelpContentManager {
                 difficulty,
                 keys: [],
     count: 0 }
-                averageComplexity: 0); 
+                averageComplexity: 0),
     }
         
         const index = this.difficultyIndex.get(difficulty)!;
@@ -635,19 +632,18 @@ export class HelpContentManager {
      * 検索インデックスの更新
      */
     private updateSearchIndex(key: string, item: HelpItem): void { const keywords = this.extractKeywords(item),
-        
         this.indexedEntries.set(key, {
-                key),
+                key);
             keywords,
             weight: this.calculateContentWeight(item,
-    lastIndexed: new Date(  }));
+    lastIndexed: new Date(  }),
         
-        keywords.forEach(keyword => {  ),
+        keywords.forEach(keyword => {  );
             if (!this.searchIndex.has(keyword) { }
                 this.searchIndex.set(keyword, []); }
             }
             this.searchIndex.get(keyword)!.push(key);
-        });
+        };
     }
 
     /**
@@ -666,7 +662,7 @@ export class HelpContentManager {
             beginner: 1,
             intermediate: 2,
             advanced: 3,
-    expert: 4  };
+    expert: 4  },
         complexity *= difficultyWeights[content.difficulty] || 1;
         
         return complexity;
@@ -682,7 +678,7 @@ export class HelpContentManager {
             low: 0.5,
             medium: 1,
             high: 2,
-    critical: 3 };
+    critical: 3 },
         weight *= priorityWeights[item.priority] || 1;
         
         // カテゴリによる重み付け
@@ -690,7 +686,7 @@ export class HelpContentManager {
             gameplay: 1.5,
             advanced: 1,
             settings: 1.2,
-    troubleshooting: 1.8  };
+    troubleshooting: 1.8  },
         weight *= categoryWeights[item.category] || 1;
         
         return weight;
@@ -703,9 +699,8 @@ export class HelpContentManager {
         const content = item.content,
         
         // タイトルと説明からキーワードを抽出
-        this.tokenize(content.title).forEach(token => keywords.add(token),
-        this.tokenize(content.description).forEach(token => keywords.add(token),
-        
+        this.tokenize(content.title).forEach(token => keywords.add(token);
+        this.tokenize(content.description).forEach(token => keywords.add(token);
         // 関連トピック
         if (content.relatedTopics) {
     
@@ -715,7 +710,7 @@ export class HelpContentManager {
         
         // メタデータのタグ
         if (content.metadata?.tags) {
-            content.metadata.tags.forEach(tag => ),
+            content.metadata.tags.forEach(tag => );
                 this.tokenize(tag).forEach(token => keywords.add(token) }
             ); }
         }
@@ -746,7 +741,7 @@ export class HelpContentManager {
      * テキストをトークン化
      */ : undefined
     tokenize(text: string): string[] { return sanitizeKeyword(text)
-            .split(/\s+/),
+            .split(/\s+/);
             .filter(token => token.length > 1) }
     }
 
@@ -756,9 +751,8 @@ export class HelpContentManager {
     searchContent(query: string, options: SearchOptions = { ): SearchResult[] { }
         const mergedOptions = { ...DEFAULT_SEARCH_OPTIONS, ...options,
         const results = new Map<string, SearchResult>(),
-        const keywords = this.tokenize(query),
-        
-        keywords.forEach(keyword => {  ),
+        const keywords = this.tokenize(query);
+        keywords.forEach(keyword => {  );
             if (this.searchIndex.has(keyword) {
                 this.searchIndex.get(keyword)!.forEach(key => {)
                     const item = this.helpDatabase[key]),
@@ -767,9 +761,8 @@ export class HelpContentManager {
                     // フィルタリング
                     if(this.shouldExcludeFromResults(item, mergedOptions) return,
                     
-                    const score = this.calculateSearchScore(keyword, key, query),
-                    const matches = this.findMatches(keyword, item),
-                    
+                    const score = this.calculateSearchScore(keyword, key, query);
+                    const matches = this.findMatches(keyword, item);
                     if (results.has(key) {
                         const existing = results.get(key)! }
                         existing.score += score; }
@@ -779,9 +772,9 @@ export class HelpContentManager {
                             item,
                             score }
                             matches }
-});
+};
             }
-        });
+        };
         
         return Array.from(results.values();
             .sort((a, b) => b.score - a.score);
@@ -806,7 +799,7 @@ export class HelpContentManager {
     /**
      * 検索スコアを計算
      */ : undefined
-    private calculateSearchScore(keyword: string, key: string, originalQuery: string): number { const entry = this.indexedEntries.get(key),
+    private calculateSearchScore(keyword: string, key: string, originalQuery: string): number { const entry = this.indexedEntries.get(key);
         if (!entry) return 0,
         
         let score = entry.weight,
@@ -831,7 +824,7 @@ export class HelpContentManager {
         const content = item.content,
         
         // タイトルでのマッチ
-        const titleIndex = content.title.toLowerCase().indexOf(keyword),
+        const titleIndex = content.title.toLowerCase().indexOf(keyword);
         if (titleIndex !== -1) {
             matches.push({''
                 field: 'title),'
@@ -856,13 +849,13 @@ export class HelpContentManager {
     /**
      * カテゴリ別ヘルプを取得
      */
-    getByCategory(category: HelpCategory): string[] { const index = this.categoryIndex.get(category),
+    getByCategory(category: HelpCategory): string[] { const index = this.categoryIndex.get(category);
         return index ? [...index.keys] : [] }
 
     /**
      * 難易度別ヘルプを取得
      */
-    getByDifficulty(difficulty: DifficultyLevel): string[] { const index = this.difficultyIndex.get(difficulty),
+    getByDifficulty(difficulty: DifficultyLevel): string[] { const index = this.difficultyIndex.get(difficulty);
         return index ? [...index.keys] : [] }
 
     /**
@@ -874,7 +867,7 @@ export class HelpContentManager {
      * 関連ヘルプを取得
      */
     getRelatedContent(key: string, options: RelatedContentOptions = { ): HelpItem[] {
-        const content = this.getContent(key),
+        const content = this.getContent(key);
         if (!content || !content.content.relatedTopics) {
     
 }
@@ -887,9 +880,9 @@ export class HelpContentManager {
         
         // 同じカテゴリのアイテムを含めるかどうか
         if (options.includeSameCategory) {
-            const sameCategoryItems = this.getByCategory(content.category),
-                .filter(k => k !== key),
-                .map(k => this.getContent(k),
+            const sameCategoryItems = this.getByCategory(content.category);
+                .filter(k => k !== key);
+                .map(k => this.getContent(k);
                 .filter((item): item is HelpItem => item !== null),
                 .slice(0, 2) }
             relatedItems = relatedItems.concat(sameCategoryItems); }
@@ -897,8 +890,8 @@ export class HelpContentManager {
         
         // より高い難易度のアイテムを含めるかどうか
         if (!options.includeHigherDifficulty) {
-            const currentDifficultyLevel = DIFFICULTY_LEVELS.indexOf(content.content.difficulty),
-            relatedItems = relatedItems.filter(item => ),
+            const currentDifficultyLevel = DIFFICULTY_LEVELS.indexOf(content.content.difficulty);
+            relatedItems = relatedItems.filter(item => );
                 DIFFICULTY_LEVELS.indexOf(item.content.difficulty) <= currentDifficultyLevel }
             ); }
         }
@@ -912,7 +905,7 @@ export class HelpContentManager {
      * 優先度順でヘルプを取得
      */
     getByPriority(priority: HelpPriority): string[] { return Object.keys(this.helpDatabase)
-            .filter(key => this.helpDatabase[key].priority === priority),
+            .filter(key => this.helpDatabase[key].priority === priority);
             .sort((a, b) => this.helpDatabase[a].category.localeCompare(this.helpDatabase[b].category) }
     }
 
@@ -944,7 +937,7 @@ export class HelpContentManager {
         const priorityCounts = {} as Record<HelpPriority, number>;
         Object.values(this.helpDatabase).forEach(item => {  ) }
             priorityCounts[item.priority] = (priorityCounts[item.priority] || 0) + 1; }
-        });
+        };
         
         const totalReadingTime = Object.values(this.helpDatabase);
             .reduce((sum, item) => sum + (item.content.metadata?.readingTime || 0), 0); : undefined
@@ -961,7 +954,7 @@ export class HelpContentManager {
     /**
      * コンテンツの妥当性を検証
      */
-    validateContent(key: string): ContentValidation { const item = this.getContent(key),
+    validateContent(key: string): ContentValidation { const item = this.getContent(key);
         if (!item) {
     
 }
@@ -971,7 +964,7 @@ export class HelpContentManager {
 
                 errors: [{ field: 'key', message: 'Content not found', severity: 'critical'
             }],
-                warnings: [];
+                warnings: [],
             } }
         
         const errors: ValidationError[] = [],

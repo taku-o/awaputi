@@ -6,13 +6,13 @@
 /**
  * Position interface
  */
-export interface Position { x: number,
+export interface Position { x: number;
     y: number;
 
 /**
  * Loading animation options interface
  */
-export interface LoadingAnimationOptions { color: string,
+export interface LoadingAnimationOptions { color: string;
     thickness: number;
     elements?: number;
     progress?: number;
@@ -24,7 +24,7 @@ export interface LoadingAnimationOptions { color: string,
 /**
  * Loading animation interface
  */
-export interface LoadingAnimation { position: Position,
+export interface LoadingAnimation { position: Position;
     size: number;
     options: LoadingAnimationOptions;
     loadingType: 'spinner' | 'dots' | 'pulse' | 'wave' | 'progress';
@@ -36,13 +36,13 @@ export interface LoadingAnimation { position: Position,
 /**
  * Ripple effect options interface
  */
-export interface RippleEffectOptions { color: string,
+export interface RippleEffectOptions { color: string;
     maxAlpha: number;
 
 /**
  * Ripple animation interface
  */
-export interface RippleAnimation { position: Position,
+export interface RippleAnimation { position: Position;
     startRadius?: number;
     endRadius?: number;
     options: RippleEffectOptions;
@@ -50,7 +50,7 @@ export interface RippleAnimation { position: Position,
 /**
  * Focus glow state interface
  */
-export interface FocusGlowState { active: boolean,
+export interface FocusGlowState { active: boolean;
     intensity: number;
     color: string;
     phase?: number;
@@ -58,13 +58,13 @@ export interface FocusGlowState { active: boolean,
 /**
  * Hover state interface
  */
-export interface HoverState { active: boolean,
+export interface HoverState { active: boolean;
     scale?: number;
 
 /**
  * Element with position and dimensions interface
  */
-export interface ElementBounds { x: number,
+export interface ElementBounds { x: number;
     y: number;
     width: number;
     height: number;
@@ -83,7 +83,7 @@ export interface HoverOptions { shadow?: boolean,
 /**
  * Particle interface
  */
-export interface Particle { startX: number,
+export interface Particle { startX: number;
     startY: number;
     velocityX: number;
     velocityY: number;
@@ -103,7 +103,7 @@ export interface ExplosionAnimation { particles?: Particle[],
 /**
  * Trail point interface
  */
-export interface TrailPoint { x: number,
+export interface TrailPoint { x: number;
     y: number;
 
 /**
@@ -115,13 +115,13 @@ export interface TrailAnimation { trail?: TrailPoint[],
 /**
  * Trail options interface
  */
-export interface TrailOptions { color: string,
+export interface TrailOptions { color: string;
     thickness?: number;
 
 /**
  * Sparkle particle interface
  */
-export interface SparkleParticle { x: number,
+export interface SparkleParticle { x: number;
     y: number;
     size: number;
     alpha: number;
@@ -144,12 +144,12 @@ export interface ParticleOptions { color?: string,
 /**
  * Renderable element interface
  */
-export interface RenderableElement { render?(context: CanvasRenderingContext2D): void,
+export interface RenderableElement { render?(context: CanvasRenderingContext2D): void;
     [key: string]: any;
 /**
  * Bezier curve point interface
  */
-export interface BezierPoint { x: number,
+export interface BezierPoint { x: number;
     y: number;
 
 /**
@@ -178,20 +178,16 @@ export class LoadingAnimationRenderer {
         switch(animation.loadingType) {
 
             case 'spinner':','
-                this.renderSpinner(context, pos, size, animation.rotation || 0, options),
-
+                this.renderSpinner(context, pos, size, animation.rotation || 0, options);
                 break,
             case 'dots':','
-                this.renderDots(context, pos, size, animation.dotPhases || [], options),
-
+                this.renderDots(context, pos, size, animation.dotPhases || [], options);
                 break,
             case 'pulse':','
-                this.renderPulse(context, pos, size, animation.phase || 0, options),
-
+                this.renderPulse(context, pos, size, animation.phase || 0, options);
                 break,
             case 'wave':','
-                this.renderWave(context, pos, size, animation.waveOffset || 0, options),
-
+                this.renderWave(context, pos, size, animation.waveOffset || 0, options);
                 break,
             case 'progress':,
                 this.renderProgress(context, pos, size, options) }
@@ -204,9 +200,8 @@ export class LoadingAnimationRenderer {
     /**
      * スピナーをレンダリング
      */
-    static renderSpinner(context: CanvasRenderingContext2D, pos: Position, size: number, rotation: number, options: LoadingAnimationOptions): void { context.translate(pos.x, pos.y),
-        context.rotate(rotation),
-        
+    static renderSpinner(context: CanvasRenderingContext2D, pos: Position, size: number, rotation: number, options: LoadingAnimationOptions): void { context.translate(pos.x, pos.y);
+        context.rotate(rotation);
         const segments = 8,
         for(let, i = 0, i < segments, i++) {
             const angle = (i / segments) * Math.PI * 2,
@@ -215,7 +210,7 @@ export class LoadingAnimationRenderer {
             const endRadius = size,
             
             context.globalAlpha = alpha,
-            context.beginPath(),
+            context.beginPath();
             context.moveTo(Math.cos(angle) * startRadius, Math.sin(angle) * startRadius),
             context.lineTo(Math.cos(angle) * endRadius, Math.sin(angle) * endRadius) }
             context.stroke(); }
@@ -238,7 +233,7 @@ export class LoadingAnimationRenderer {
             const radius = size * 0.1 * scale,
             
             context.globalAlpha = scale,
-            context.beginPath(),
+            context.beginPath();
             context.arc(dotX, pos.y, radius, 0, Math.PI * 2) }
             context.fill(); }
 }
@@ -251,8 +246,8 @@ export class LoadingAnimationRenderer {
         
         context.globalAlpha = 1 - scale,
         context.strokeStyle = options.color,
-        context.beginPath(),
-        context.arc(pos.x, pos.y, radius, 0, Math.PI * 2),
+        context.beginPath();
+        context.arc(pos.x, pos.y, radius, 0, Math.PI * 2);
         context.stroke() }
     
     /**
@@ -263,8 +258,7 @@ export class LoadingAnimationRenderer {
         const segments = 20,
         
         context.strokeStyle = options.color,
-        context.beginPath(),
-        
+        context.beginPath();
         for(let, i = 0, i <= segments, i++) {
         
             const x = pos.x - waveWidth / 2 + (i / segments) * waveWidth,
@@ -289,16 +283,14 @@ export class LoadingAnimationRenderer {
         ','
         // 背景バー
         context.fillStyle = options.backgroundColor || '#CCCCCC',
-        context.fillRect(pos.x - barWidth / 2, pos.y - barHeight / 2, barWidth, barHeight),
-        
+        context.fillRect(pos.x - barWidth / 2, pos.y - barHeight / 2, barWidth, barHeight);
         // 進行バー
         context.fillStyle = options.foregroundColor || options.color,
-        context.fillRect(pos.x - barWidth / 2, pos.y - barHeight / 2, barWidth * progress, barHeight),
-        
+        context.fillRect(pos.x - barWidth / 2, pos.y - barHeight / 2, barWidth * progress, barHeight);
         // 境界線
         context.strokeStyle = options.color,
         context.lineWidth = 1,
-        context.strokeRect(pos.x - barWidth / 2, pos.y - barHeight / 2, barWidth, barHeight),
+        context.strokeRect(pos.x - barWidth / 2, pos.y - barHeight / 2, barWidth, barHeight);
         // パーセンテージ表示
         if (options.showPercentage) {
     
@@ -308,7 +300,7 @@ export class LoadingAnimationRenderer {
             context.font = `${size * 0.3}px Arial`;
             context.textAlign = 'center';
             context.textBaseline = 'middle';
-            context.fillText(`${Math.round(progress * 100})%`, pos.x, pos.y + size * 0.8);
+            context.fillText(`${Math.round(progress * 100}%`, pos.x, pos.y + size * 0.8);
         }
 }
 
@@ -327,13 +319,13 @@ export class InteractiveEffectRenderer {
         const currentRadius = startRadius + (endRadius - startRadius) * progress,
         const alpha = animation.options.maxAlpha * (1 - progress),
         
-        context.save(),
+        context.save();
         context.globalAlpha = alpha,
         context.strokeStyle = animation.options.color,
         context.lineWidth = 2,
-        context.beginPath(),
-        context.arc(pos.x, pos.y, currentRadius, 0, Math.PI * 2),
-        context.stroke(),
+        context.beginPath();
+        context.arc(pos.x, pos.y, currentRadius, 0, Math.PI * 2);
+        context.stroke();
         context.restore() }
     
     /**
@@ -345,7 +337,7 @@ export class InteractiveEffectRenderer {
         const pulse = Math.sin(glow.phase || 0) * 0.3 + 0.7,
         const glowIntensity = glow.intensity * pulse,
         
-        context.save(),
+        context.save();
         context.shadowColor = glow.color,
         context.shadowBlur = 20 * glowIntensity,
         context.globalAlpha = glowIntensity,
@@ -353,10 +345,8 @@ export class InteractiveEffectRenderer {
         // グロー効果の描画（要素に応じて調整）
         context.strokeStyle = glow.color,
         context.lineWidth = 3,
-        context.strokeRect(element.x - 5, element.y - 5, element.width + 10, element.height + 10),
-        
-        context.restore(),
-        
+        context.strokeRect(element.x - 5, element.y - 5, element.width + 10, element.height + 10);
+        context.restore();
         // フェーズ更新
         glow.phase = (glow.phase || 0) + 0.1 }
     
@@ -368,14 +358,13 @@ export class InteractiveEffectRenderer {
         const hover = element.hoverState,
         const scale = hover.scale || 1,
         
-        context.save(),
-        
+        context.save();
         // スケール効果
         if (scale !== 1) {
             const centerX = element.x + element.width / 2,
             const centerY = element.y + element.height / 2,
             
-            context.translate(centerX, centerY),
+            context.translate(centerX, centerY);
             context.scale(scale, scale) }
             context.translate(-centerX, -centerY); }
         }
@@ -405,21 +394,19 @@ export class ParticleEffectRenderer {
         const particles = animation.particles || [],
         const options = animation.options,
         
-        context.save(),
-        
-        particles.forEach(particle => { ),
+        context.save();
+        particles.forEach(particle => { );
             const alpha = (1 - progress) * particle.alpha,
             const size = particle.size * (1 + progress * particle.growth),
             const x = particle.startX + particle.velocityX * progress * animation.duration,
             const y = particle.startY + particle.velocityY * progress * animation.duration + ,
-                      0.5 * particle.gravity * Math.pow(progress * animation.duration, 2),
-            
+                      0.5 * particle.gravity * Math.pow(progress * animation.duration, 2);
             context.globalAlpha = alpha,
             context.fillStyle = particle.color,
-            context.beginPath(),
+            context.beginPath();
             context.arc(x, y, size, 0, Math.PI * 2) }
             context.fill(); }
-        });
+        };
         
         context.restore();
     }
@@ -434,9 +421,8 @@ export class ParticleEffectRenderer {
         context.lineCap = 'round')
         ),
         if (trail.length > 1) {
-            context.beginPath(),
-            context.moveTo(trail[0].x, trail[0].y),
-            
+            context.beginPath();
+            context.moveTo(trail[0].x, trail[0].y);
             for (let, i = 1, i < trail.length, i++) {
                 const alpha = i / trail.length,
                 context.globalAlpha = alpha }
@@ -455,9 +441,8 @@ export class ParticleEffectRenderer {
     static renderSparkleParticles(context: CanvasRenderingContext2D, animation: SparkleAnimation, progress: number): void { const sparkles = animation.sparkles || [],
         const options = animation.options,
         
-        context.save(),
-        
-        sparkles.forEach(sparkle => { ),
+        context.save();
+        sparkles.forEach(sparkle => { );
             const phase = (sparkle.phase + progress * sparkle.speed) % (Math.PI * 2),
             const alpha = (Math.sin(phase) + 1) * 0.5 * sparkle.alpha,
             const size = sparkle.size * (Math.sin(phase * 2) * 0.5 + 1),
@@ -467,7 +452,7 @@ export class ParticleEffectRenderer {
             
             // 星形の描画 }
             this.drawStar(context, sparkle.x, sparkle.y, size, 5); }
-        });
+        };
         
         context.restore();
     }
@@ -478,8 +463,7 @@ export class ParticleEffectRenderer {
     static drawStar(context: CanvasRenderingContext2D, x: number, y: number, size: number, points: number): void { const outerRadius = size,
         const innerRadius = size * 0.4,
         
-        context.beginPath(),
-        
+        context.beginPath();
         for(let, i = 0, i < points * 2, i++) {
         
             const angle = (i * Math.PI) / points,
@@ -509,7 +493,7 @@ export class TransitionEffectRenderer {
      */
     static renderFadeTransition(context: CanvasRenderingContext2D, fromElement: RenderableElement | null, toElement: RenderableElement | null, progress: number): void {
         if (fromElement) {
-            context.save(),
+            context.save();
             context.globalAlpha = 1 - progress,
             this.renderElement(context, fromElement) }
             context.restore(); }
@@ -517,9 +501,9 @@ export class TransitionEffectRenderer {
         
         if (toElement) {
         
-            context.save(),
+            context.save();
             context.globalAlpha = progress,
-            this.renderElement(context, toElement),
+            this.renderElement(context, toElement);
             context.restore()','
     static renderSlideTransition(context: CanvasRenderingContext2D, fromElement: RenderableElement | null, toElement: RenderableElement | null, progress: number, direction: 'horizontal' | 'vertical' = 'horizontal': void {
         const canvasWidth = context.canvas.width,
@@ -555,22 +539,22 @@ export class TransitionEffectRenderer {
         
         if (fromElement) {
         
-            context.save(),
-            context.translate(centerX, centerY),
-            context.scale(1 + progress * 0.5, 1 + progress * 0.5),
+            context.save();
+            context.translate(centerX, centerY);
+            context.scale(1 + progress * 0.5, 1 + progress * 0.5);
             context.globalAlpha = 1 - progress,
-            context.translate(-centerX, -centerY),
+            context.translate(-centerX, -centerY);
             this.renderElement(context, fromElement) }
             context.restore(); }
         }
         
         if (toElement) {
         
-            context.save(),
-            context.translate(centerX, centerY),
-            context.scale(0.5 + progress * 0.5, 0.5 + progress * 0.5),
+            context.save();
+            context.translate(centerX, centerY);
+            context.scale(0.5 + progress * 0.5, 0.5 + progress * 0.5);
             context.globalAlpha = progress,
-            context.translate(-centerX, -centerY),
+            context.translate(-centerX, -centerY);
             this.renderElement(context, toElement) }
             context.restore(); }
 }
@@ -595,7 +579,7 @@ export class AnimationEffectUtils {
      * パーティクル群を生成
      */ : undefined
     static createExplosionParticles(centerX: number, centerY: number, count: number = 10, options: ColorInterpolationOptions = {): Particle[] {
-        const particles: Particle[] = [],
+        const particles: Particle[] = [];
         
         for(let, i = 0, i < count, i++) {
         
@@ -603,20 +587,20 @@ export class AnimationEffectUtils {
             const speed = (Math.random() * 100 + 50) * (options.intensity || 1),
             
             particles.push({)
-                startX: centerX),
-                startY: centerY),
-                velocityX: Math.cos(angle) * speed,
-                velocityY: Math.sin(angle) * speed,
-                gravity: options.gravity || 98,
-                size: Math.random() * 3 + 1,
-                growth: Math.random() * 2,
-                alpha: Math.random() * 0.5 + 0.5,
+                startX: centerX);
+                startY: centerY);
+                velocityX: Math.cos(angle) * speed;
+                velocityY: Math.sin(angle) * speed;
+                gravity: options.gravity || 98;
+                size: Math.random() * 3 + 1;
+                growth: Math.random() * 2;
+                alpha: Math.random() * 0.5 + 0.5;
     color: options.colors ? undefined : undefined','
                        options.colors[Math.floor(Math.random() * options.colors.length)] : '
 }
 
                        '#FFFFFF' }
-            }) }
+            } }
         
         return particles;
     }
@@ -633,7 +617,7 @@ export class AnimationEffectUtils {
             const angle = (i / count) * Math.PI * 2,
             const distance = Math.random() * radius,
             
-            sparkles.push({),
+            sparkles.push({);
                 x: centerX + Math.cos(angle) * distance,
                 y: centerY + Math.sin(angle) * distance,
                 size: Math.random() * 4 + 2,
@@ -645,7 +629,7 @@ export class AnimationEffectUtils {
 }
 
                        '#FFD700' }
-            }) }
+            } }
         
         return sparkles;
     }
@@ -679,6 +663,6 @@ export class AnimationEffectUtils {
         const t2 = t * t,
         const t3 = t2 * t,
         
-        return { x: mt3 * p0.x + 3 * mt2 * t * p1.x + 3 * mt * t2 * p2.x + t3 * p3.x };
+        return { x: mt3 * p0.x + 3 * mt2 * t * p1.x + 3 * mt * t2 * p2.x + t3 * p3.x },
             y: mt3 * p0.y + 3 * mt2 * t * p1.y + 3 * mt * t2 * p2.y + t3 * p3.y 
     }'}'

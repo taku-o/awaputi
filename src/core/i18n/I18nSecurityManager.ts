@@ -8,7 +8,7 @@
 import { getErrorHandler  } from '../../utils/ErrorHandler.js';
 
 // 型定義
-export interface SecurityConfiguration { xssProtection: boolean,
+export interface SecurityConfiguration { xssProtection: boolean;
     parameterValidation: boolean;
     contentValidation: boolean;
     injectionPrevention: boolean;
@@ -17,13 +17,13 @@ export interface SecurityConfiguration { xssProtection: boolean,
     maxTranslationLength: number;
     maxParameterCount: number;
 
-export interface SecurityRules { forbiddenTags: string[],
+export interface SecurityRules { forbiddenTags: string[];
     forbiddenAttributes: string[];
     suspiciousPatterns: RegExp[];
     allowedTags: string[];
     allowedAttributes: string[];
 
-export interface SecurityStatistics { totalValidations: number,
+export interface SecurityStatistics { totalValidations: number;
     blockedAttempts: number;
     xssAttempts: number;
     injectionAttempts: number;
@@ -31,7 +31,7 @@ export interface SecurityStatistics { totalValidations: number,
     contentViolations: number;
     lastThreat: ThreatInfo | null }
 
-export interface ThreatInfo { timestamp: number,
+export interface ThreatInfo { timestamp: number;
     type: string;
     details: any;
 ';'
@@ -39,7 +39,7 @@ export interface ThreatInfo { timestamp: number,
 export interface CSPConfiguration {,
     'default-src': string,', 'script-src': string,', 'style-src': string,', 'img-src': string,', 'font-src': string,', 'connect-src': string,', 'object-src': string,', 'base-uri': string,', 'form-action': string;
 
-export interface SecurityViolation { type: SecurityViolationType,
+export interface SecurityViolation { type: SecurityViolationType;
     path?: string;
     message: string;
     severity: SecuritySeverity;
@@ -49,11 +49,11 @@ export interface SecurityViolationDetails { tag?: string,
     fullMatch?: string;
     attribute?: string;
 
-export interface ValidationResult { isValid: boolean,
+export interface ValidationResult { isValid: boolean;
     violations: SecurityViolation[];
     source?: string;
 
-export interface SecurityStats { totalValidations: number,
+export interface SecurityStats { totalValidations: number;
     blockedAttempts: number;
     xssAttempts: number;
     injectionAttempts: number;
@@ -64,18 +64,18 @@ export interface SecurityStats { totalValidations: number,
     securityLevel: SecurityLevel;
     threatLevel: ThreatLevel;
 
-export interface SecurityReport { timestamp: number,
+export interface SecurityReport { timestamp: number;
     securityConfig: SecurityConfiguration;
     statistics: SecurityStats;
     cspConfig: CSPConfiguration;
     recentThreats: ThreatInfo[];
     recommendations: SecurityRecommendation[];
 
-export interface SecurityRecommendation { priority: RecommendationPriority,
+export interface SecurityRecommendation { priority: RecommendationPriority;
     message: string;
     action: SecurityAction;
 
-export interface SecurityPolicyViolationEvent { violatedDirective: string,
+export interface SecurityPolicyViolationEvent { violatedDirective: string;
     blockedURI: string;
     sourceFile: string;
     lineNumber: number;
@@ -129,7 +129,7 @@ export class I18nSecurityManager {
     // CSP設定
     private cspConfig: CSPConfiguration;
     // 初期化時刻
-    private, initTime: number,
+    private, initTime: number;
     constructor() {
 ','
 
@@ -143,14 +143,14 @@ export class I18nSecurityManager {
             forbiddenAttributes: [';'
                 'onload', 'onerror', 'onclick', 'onmouseover', 'onmouseout',
                 'onfocus', 'onblur', 'onchange', 'onsubmit', 'onreset',]','
-                'javascript:', 'vbscript:', 'data:', 'file:', 'ftp:'],
+                'javascript:', 'vbscript:', 'data:', 'file:', 'ftp: '];
             ],
             
             // 危険な文字列パターン
             suspiciousPatterns: [;
                 /<script[^>]*>.*? <\/script>/gi, : undefined
-                /javascript:/gi,
-                /vbscript:/gi,
+                /javascript: /gi;
+                /vbscript: /gi;
                 /on\w+\s*=/gi,
                 /expression\s*\(/gi,
                 /eval\s*\(/gi,
@@ -202,7 +202,7 @@ export class I18nSecurityManager {
      * 初期化
      */
     private initialize(): void { // CSPヘッダーの設定
-        this.setupCSP(),
+        this.setupCSP();
         ","
         // セキュリティイベントリスナーの設定""
         this.setupSecurityEventListeners(),"
@@ -217,7 +217,7 @@ export class I18nSecurityManager {
                 // CSPメタタグが存在しない場合は作成
                 let cspMeta = document.querySelector('meta[http-equiv="Content-Security-Policy"]" as HTMLMetaElement,'
                 if (!cspMeta) {''
-                    cspMeta = document.createElement('meta'),
+                    cspMeta = document.createElement('meta');
                     cspMeta.setAttribute('http-equiv', 'Content-Security-Policy) }'
                     document.head.appendChild(cspMeta); }
                 }
@@ -279,7 +279,8 @@ export class I18nSecurityManager {
                     if(!this.validateTranslationKey(key)) { violations.push({)'
                             type: 'invalid_key',
     path: currentPath,
-
+    path: currentPath,
+        };
                             message: `Invalid translation, key: ${key}`,')'
                             severity: 'medium')'),'
                     }
@@ -340,7 +341,7 @@ export class I18nSecurityManager {
         
         // 長さ制限
         if (key.length > 200) { }
-            console.log(`I18nSecurityManager: Key, too long: ${key} (${key.length} characters}`});
+            console.log(`I18nSecurityManager: Key, too long: ${key} (${key.length} characters}`};
             return false;
         }
         
@@ -388,10 +389,10 @@ export class I18nSecurityManager {
             violations.push({)'
                 type: 'content_too_long'
             }
-                path: path;
+                path: path,
 
                 message: `Translation content exceeds maximum, length: ${str.length}`,')'
-                severity: 'medium');
+                severity: 'medium'),
         }
         ';'
         // 危険なコンテンツのチェック
@@ -432,7 +433,7 @@ export class I18nSecurityManager {
         let match: RegExpExecArray | null,
         
         while((match = tagPattern.exec(content) !== null) {
-            const tagName = match[1].toLowerCase(),
+            const tagName = match[1].toLowerCase();
             // 禁止されたタグのチェック
             if(this.securityRules.forbiddenTags.includes(tagName)) {
                 violations.push({)'
@@ -462,12 +463,12 @@ export class I18nSecurityManager {
                 violations.push({)'
                     type: 'forbidden_html_attribute'
             }
-                    path: path;
+                    path: path,
 
                     message: `Forbidden HTML attribute, found: ${attr}`,''
-                    severity: 'high');
+                    severity: 'high'),
                     details: { attribute: attr,);
-                });
+                };
             }
         }';'
         
@@ -493,13 +494,13 @@ export class I18nSecurityManager {
     
 }
                 this.securityStats.parameterViolations++; }
-                console.warn(`Parameter, count limit, exceeded: ${paramCount}`});
+                console.warn(`Parameter, count limit, exceeded: ${paramCount}`};
                 break;
             }
             
             // キーの検証
             if (!this.validateParameterKey(key) { this.securityStats.parameterViolations++ }
-                console.warn(`Invalid, parameter key: ${key}`});
+                console.warn(`Invalid, parameter key: ${key}`};
                 continue;
             }
             
@@ -509,7 +510,7 @@ export class I18nSecurityManager {
                 sanitizedParams[key] = sanitizedValue }
                 paramCount++; }
             } else { this.securityStats.parameterViolations++ }
-                console.warn(`Invalid, parameter value, for key: ${key}`});
+                console.warn(`Invalid, parameter value, for key: ${key}`};
             }
         }
         
@@ -572,7 +573,7 @@ export class I18nSecurityManager {
     generateSafeTranslation(template: string, params: Record<string, any> = { ): string {
         try {
             // パラメータのサニタイゼーション
-            const safeParams = this.sanitizeTranslationParameters(params),
+            const safeParams = this.sanitizeTranslationParameters(params);
             // テンプレート文字列のセキュリティチェック
             if(this.containsSuspiciousContent(template)) {''
                 console.warn('Suspicious, content in translation template),'
@@ -610,7 +611,7 @@ export class I18nSecurityManager {
                 violatedDirective: event.violatedDirective,
                 blockedURI: event.blockedURI,
                 sourceFile: event.sourceFile,
-    lineNumber: event.lineNumber })', ')';'
+    lineNumber: event.lineNumber }', ')';'
         console.warn('CSP Violation detected:', event';'
         ';'
         // 重要な違反の場合は追加の処理
@@ -624,7 +625,7 @@ export class I18nSecurityManager {
     private handleSuspiciousActivity(type: SuspiciousActivityType, details: any): void { this.securityStats.lastThreat = {
             timestamp: Date.now(),
             type: type,
-    details: details,;
+    details: details,
         switch(type) {
 
             case 'script_injection':,
@@ -639,7 +640,7 @@ export class I18nSecurityManager {
         console.warn(`Suspicious activity detected: ${ type}`, details};
         
         // 必要に応じて追加のセキュリティ対策を実行 }
-        this.triggerSecurityResponse(type, details});
+        this.triggerSecurityResponse(type, details};
     }
     
     /**
@@ -652,7 +653,7 @@ export class I18nSecurityManager {
             case 'xss_attempt':','
                 // 厳格モードの有効化
                 this.enableStrictMode('',
-            case 'multiple_violations':),
+            case 'multiple_violations':);
                 // より厳しい制限の適用)
                 this.applyStricterSecurity() }
                 break; }
@@ -681,10 +682,10 @@ export class I18nSecurityManager {
         if (highSeverityViolations.length > 0) {
 
             console.error('High severity security violations detected:', {
-                source: source),
-                violations: highSeverityViolations) })
+                source: source);
+                violations: highSeverityViolations) }
                 timestamp: new Date().toISOString(); 
-    });
+    };
             ';'
             // 高重要度の違反が複数ある場合
             if (highSeverityViolations.length > 3) {
@@ -698,7 +699,7 @@ export class I18nSecurityManager {
         // すべての違反をデバッグログに記録
         console.debug('Translation security violations:', { source: source)
             violations: violations,
-    timestamp: new Date().toISOString( });
+    timestamp: new Date().toISOString( };
     }
     
     /**
@@ -706,14 +707,14 @@ export class I18nSecurityManager {
      */
     getSecurityStats(): SecurityStats { return { ...this.securityStats,
             uptime: Date.now() - this.initTime,
-    securityLevel: this.calculateSecurityLevel() };
+    securityLevel: this.calculateSecurityLevel() },
             threatLevel: this.calculateThreatLevel(); 
     }
     
     /**
      * セキュリティレベルの計算
      */
-    private calculateSecurityLevel(): SecurityLevel { const configs = Object.values(this.security),
+    private calculateSecurityLevel(): SecurityLevel { const configs = Object.values(this.security);
         const enabledCount = configs.filter(Boolean).length,
         const percentage = (enabledCount / configs.length) * 100,
 
@@ -770,7 +771,7 @@ export class I18nSecurityManager {
             return true;
 
         } catch (error') {'
-            console.error('Failed to update security config:', error),
+            console.error('Failed to update security config:', error);
             return false,
     
     /**
@@ -794,7 +795,7 @@ export class I18nSecurityManager {
                 priority: 'high',','
                 message: 'High threat level detected. Consider enabling stricter security policies.',' }'
 
-                action: 'enable_strict_mode'); 
+                action: 'enable_strict_mode'),
     }
 
         if (stats.xssAttempts > 0) {
@@ -810,7 +811,7 @@ export class I18nSecurityManager {
                 priority: 'medium',','
                 message: 'Security level is low. Enable more security features.',' }'
 
-                action: 'enable_security_features'); 
+                action: 'enable_security_features'),
     }
         
         return recommendations;
@@ -835,7 +836,7 @@ export class I18nSecurityManager {
             injectionAttempts: 0,
             parameterViolations: 0,
             contentViolations: 0,
-    lastThreat: null,;
+    lastThreat: null,
         console.log('I18nSecurityManager, cleaned up');
 
     }'}'

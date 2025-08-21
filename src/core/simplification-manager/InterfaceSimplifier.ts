@@ -15,25 +15,25 @@
  */
 
 // 型定義
-export interface SimplificationRules { hideElements: HideElementsRules,
+export interface SimplificationRules { hideElements: HideElementsRules;
     animations: AnimationRules;
     effects: EffectRules;
     typography: TypographyRules;
     colors: ColorRules;
     layout: LayoutRules;
 
-export interface HideElementsRules { decorative: string[],
+export interface HideElementsRules { decorative: string[];
     secondary: string[];
     advanced: string[];
     nonEssential: string[];
 
-export interface AnimationRules { disable: string[],
+export interface AnimationRules { disable: string[];
     reduce: AnimationReductionConfig;
 
-export interface AnimationReductionConfig { duration: string,
+export interface AnimationReductionConfig { duration: string;
     easing: string;
 
-export interface EffectRules { disable: string[],
+export interface EffectRules { disable: string[];
     reduce: Record<string, string> }
 
 export interface TypographyRules { simplify: Record<string, string>,
@@ -56,18 +56,18 @@ export interface SimplificationOptions { highContrast?: boolean,
     customSelectors?: string[];
     preserveElements?: string[];
 
-export interface SimplificationOperation { type: OperationType,
+export interface SimplificationOperation { type: OperationType;
     target?: ElementCategory;
     parameters?: Record<string, any>;
     priority?: number;
     reversible?: boolean;
 
-export interface ActiveSimplification { level: SimplificationLevel,
+export interface ActiveSimplification { level: SimplificationLevel;
     options: SimplificationOptions;
     operations: OperationResult[];
     timestamp: number;
 
-export interface OperationResult { success: boolean,
+export interface OperationResult { success: boolean;
     operation: OperationType;
     category?: ElementCategory;
     elementsAffected?: number;
@@ -75,54 +75,54 @@ export interface OperationResult { success: boolean,
     styleElement?: HTMLStyleElement;
     error?: string;
 
-export interface OriginalState { element: HTMLElement,
+export interface OriginalState { element: HTMLElement;
     property: string;
     value: string;
 
-export interface SimplificationResult { success: boolean,
+export interface SimplificationResult { success: boolean;
     id?: string;
     operationsApplied?: number;
     details?: OperationResult[];
     error?: string;
 
-export interface RevertResult { success: boolean,
+export interface RevertResult { success: boolean;
     operationsReverted?: number;
     error?: string;
 
-export interface RevertAllResult { success: boolean,
+export interface RevertAllResult { success: boolean;
     revertedSimplifications: number;
     results: RevertResult[];
 
-export interface SimplificationStats { activeSimplifications: number,
+export interface SimplificationStats { activeSimplifications: number;
     totalOperations: number;
     originalStatesStored: number;
     observedElements: number;
 
-export interface StyleInjection { id: string,
+export interface StyleInjection { id: string;
     css: string;
     element: HTMLStyleElement;
     timestamp: number;
 
-export interface ElementMatch { element: HTMLElement,
+export interface ElementMatch { element: HTMLElement;
     selector: string;
     category: ElementCategory;
     affectedProperties: string[];
 
-export interface TransformationContext { level: SimplificationLevel,
+export interface TransformationContext { level: SimplificationLevel;
     options: SimplificationOptions;
     targetElements: Set<HTMLElement>;
     appliedStyles: Map<string, StyleInjection>;
     preservedElements: Set<HTMLElement>;
 
-export interface ValidationResult { isValid: boolean,
+export interface ValidationResult { isValid: boolean;
     errors: ValidationError[];
     warnings: ValidationWarning[];
 
-export interface ValidationError { field: string,
+export interface ValidationError { field: string;
     message: string;
     code: string;
 
-export interface ValidationWarning { field: string,
+export interface ValidationWarning { field: string;
     message: string;
     suggestion: string;
 
@@ -165,7 +165,7 @@ export const DEFAULT_SIMPLIFICATION_RULES: SimplificationRules = { hideElements:
     animations: { disable: [']', 'animation', 'transition', 'transform'],
         ],
         reduce: {''
-            duration: '0.1s',
+            duration: '0.1s';
             easing: 'linear'
             }
     };
@@ -202,71 +202,71 @@ export const DEFAULT_SIMPLIFICATION_RULES: SimplificationRules = { hideElements:
             'position': 'static' 
     } as const;
 
-export const OPERATION_PRIORITIES: Record<OperationType, number> = { hideElements: 1,
-    disableAnimations: 2,
-    reduceAnimations: 3,
-    disableEffects: 4,
-    reduceEffects: 5,
-    simplifyTypography: 6,
-    simplifyColors: 7,
-    simplifyLayout: 8,
-    applyHighContrast: 9,
-    applyMonochrome: 10,
+export const OPERATION_PRIORITIES: Record<OperationType, number> = { hideElements: 1;
+    disableAnimations: 2;
+    reduceAnimations: 3;
+    disableEffects: 4;
+    reduceEffects: 5;
+    simplifyTypography: 6;
+    simplifyColors: 7;
+    simplifyLayout: 8;
+    applyHighContrast: 9;
+    applyMonochrome: 10;
     increaseFontSize: 11  } as const;
 export const CSS_TEMPLATES = { DISABLE_ANIMATIONS: `
         *, *::before, *::after {
-            animation-duration: 0.01ms !important,
-            animation-iteration-count: 1 !important,
-            transition-duration: 0.01ms !important,
+            animation-duration: 0.01ms !important;
+            animation-iteration-count: 1 !important;
+            transition-duration: 0.01ms !important;
             scroll-behavior: auto !important }
     `,
-    REDUCE_ANIMATIONS: `,
-        *, *::before, *::after { animation-duration: 0.1s !important,
-            transition-duration: 0.1s !important,
+    REDUCE_ANIMATIONS: `;
+        *, *::before, *::after { animation-duration: 0.1s !important;
+            transition-duration: 0.1s !important;
             transition-timing-function: linear !important }
         }
     `,
-    DISABLE_EFFECTS: `,
-        * { box-shadow: none !important,
-            text-shadow: none !important,
-            filter: none !important,
-            backdrop-filter: none !important,
+    DISABLE_EFFECTS: `;
+        * { box-shadow: none !important;
+            text-shadow: none !important;
+            filter: none !important;
+            backdrop-filter: none !important;
             clip-path: none !important }
     `,
-    REDUCE_EFFECTS: `,
+    REDUCE_EFFECTS: `;
         * { box-shadow: 0 1px 3px rgba(0,0,0,0.1) !important,
-            text-shadow: none !important,
+            text-shadow: none !important;
             filter: none !important  }
     `;
-    SIMPLIFY_TYPOGRAPHY: `,
+    SIMPLIFY_TYPOGRAPHY: `;
         * { font-family: Arial, sans-serif !important,
-            font-weight: normal !important,
-            text-decoration: none !important,
+            font-weight: normal !important;
+            text-decoration: none !important;
             font-style: normal !important }
     `,
-    SIMPLIFY_COLORS: `,
-        * { background-image: none !important,
+    SIMPLIFY_COLORS: `;
+        * { background-image: none !important;
             background-gradient: none !important }
     `,
-    SIMPLIFY_LAYOUT: `,
-        * { border-radius: 0 !important,
-            padding: 8px !important,
+    SIMPLIFY_LAYOUT: `;
+        * { border-radius: 0 !important;
+            padding: 8px !important;
     margin: 4px !important  }
     `;
-    HIGH_CONTRAST: `,
-        * { color: #000000 !important,
-            background-color: #ffffff !important,
+    HIGH_CONTRAST: `;
+        * { color: #000000 !important;
+            background-color: #ffffff !important;
             border-color: #666666 !important }
         
         a, button { color: #0000ff !important }
         
         a:visited { color: #800080 !important }
     `;
-    MONOCHROME: `,
+    MONOCHROME: `;
         * { filter: grayscale(100%) !important }
     `,
-    LARGE_TEXT: `,
-        * { font-size: 18px !important,
+    LARGE_TEXT: `;
+        * { font-size: 18px !important;
             line-height: 1.6 !important }
         
         h1 { font-size: 28px !important }
@@ -276,8 +276,8 @@ export const CSS_TEMPLATES = { DISABLE_ANIMATIONS: `
 } as const;
 
 // ユーティリティ関数
-export function validateSimplificationOptions(options: Partial<SimplificationOptions>): ValidationResult { const errors: ValidationError[] = [],
-    const warnings: ValidationWarning[] = [],
+export function validateSimplificationOptions(options: Partial<SimplificationOptions>): ValidationResult { const errors: ValidationError[] = [];
+    const warnings: ValidationWarning[] = [];
     
     // カスタムセレクタの検証
     if (options.customSelectors) {
@@ -287,13 +287,13 @@ export function validateSimplificationOptions(options: Partial<SimplificationOpt
                 document.querySelector(selector);' }'
 
             } catch (error) { errors.push({
-            });
+            };
                     field: `customSelectors[${index}]`)'
                     message: `Invalid CSS, selector: ${selector}`,')'
                     code: 'INVALID_SELECTOR');
-                });
+                };
             }
-        });
+        };
     }
     
     // 保存要素セレクタの検証
@@ -304,11 +304,11 @@ export function validateSimplificationOptions(options: Partial<SimplificationOpt
                 document.querySelector(selector);' }'
 
             } catch (error) { errors.push({
-            });
+            };
                     field: `preserveElements[${index}]`)'
                     message: `Invalid CSS, selector: ${selector}`,')'
                     code: 'INVALID_PRESERVE_SELECTOR');
-                });
+                };
             }
         }';'
     }
@@ -330,7 +330,7 @@ export function validateSimplificationOptions(options: Partial<SimplificationOpt
 
 export function generateStyleId(operationType: OperationType): string { }'
 
-    return `simplification-${operationType.toLowerCase(}.replace(/([A-Z]}/g, '-$1'})`;
+    return `simplification-${operationType.toLowerCase(}.replace(/([A-Z]}/g, '-$1'}`;
 }
 
 export function sortOperationsByPriority(operations: SimplificationOperation[]): SimplificationOperation[] { return [...operations].sort((a, b) => { 
@@ -341,7 +341,7 @@ export function sortOperationsByPriority(operations: SimplificationOperation[]):
 ';'
 
 export function isElementVisible(element: HTMLElement): boolean {,
-    const style = window.getComputedStyle(element),
+    const style = window.getComputedStyle(element);
     return style.display !== 'none' && ','
            style.visibility !== 'hidden' && ','
            style.opacity !== '0' }
@@ -350,9 +350,8 @@ export function findAffectedElements(selectors: string[]): ElementMatch[] { cons
     
     selectors.forEach(selector => { )
         try {),
-            const elements = document.querySelectorAll(selector),
-
-            elements.forEach(element => {),
+            const elements = document.querySelectorAll(selector);
+            elements.forEach(element => {);
                 if (element, instanceof HTMLElement) {
                     matches.push({)
                         element)','
@@ -361,13 +360,13 @@ export function findAffectedElements(selectors: string[]): ElementMatch[] { cons
                         category: 'decorative', // デフォルト') }'
 
                         affectedProperties: ['display]'; }'
-                    });
+                    };
                 }
-            });
+            };
         } catch (error) {
             console.warn(`Invalid selector: ${selector}`, error);
         }
-    });
+    };
     
     return matches;
 }
@@ -394,15 +393,15 @@ export class InterfaceSimplifier {
      * Mutation Observerを設定
      */'
     private setupMutationObserver(): void { this.mutationObserver = new MutationObserver((mutations) => {;
-            mutations.forEach(mutation => {),
+            mutations.forEach(mutation => {);
                 if(mutation.type === 'childList' {'
                     mutation.addedNodes.forEach(node => {) }
                         if (node.nodeType === Node.ELEMENT_NODE) { }
                             this.applyActiveSimplifications(node, as HTMLElement); }
-});
+};
                 }
 
-            });'}');
+            };'}');
 
         if (typeof, document !== 'undefined) { this.mutationObserver.observe(document.body, {)'
                 childList: true,
@@ -416,7 +415,7 @@ export class InterfaceSimplifier {
         const simplificationId = `simplification_${Date.now())`,
         
         try { // オプションの検証
-            const validation = validateSimplificationOptions(options),
+            const validation = validateSimplificationOptions(options);
             if (!validation.isValid) { }'
 
                 throw new Error(`Invalid options: ${validation.errors.map(e => e.message}.join(', '})`);
@@ -426,25 +425,24 @@ export class InterfaceSimplifier {
             const sortedOperations = sortOperationsByPriority(operations);
             const appliedOperations: OperationResult[] = [],
 
-            sortedOperations.forEach(operation => {  ),
-                const result = this.executeOperation(operation),
+            sortedOperations.forEach(operation => {  );
+                const result = this.executeOperation(operation);
                 if (result.success) { }
                     appliedOperations.push(result); }
-});
+};
 
             // アクティブな簡素化を記録
             this.activeSimplifications.set(simplificationId, {
                 level
-                options),
+                options);
                 operations: appliedOperations,
-    timestamp: Date.now(  });
-
+    timestamp: Date.now(  };
             return { success: true,
                 id: simplificationId,
-    operationsApplied: appliedOperations.length };
+    operationsApplied: appliedOperations.length },
                 details: appliedOperations; catch (error) {
-            console.error('Simplification failed:', error),
-            return { success: false,;
+            console.error('Simplification failed:', error);
+            return { success: false,
                 error: (error, as Error).message }
             }
     }
@@ -535,8 +533,7 @@ export class InterfaceSimplifier {
             switch(operation.type) {
 
                 case 'hideElements':','
-                    return this.hideElements(operation.target!),
-
+                    return this.hideElements(operation.target!);
                 case 'disableAnimations':','
                     return this.disableAnimations('''
                 case 'reduceAnimations': ','
@@ -558,9 +555,9 @@ export class InterfaceSimplifier {
                 case 'increaseFontSize':),
                     return this.increaseFontSize() }
                 default: }
-                    throw new Error(`Unknown, operation: ${operation.type}`});
+                    throw new Error(`Unknown, operation: ${operation.type}`};
             } catch (error) { return { success: false,
-                operation: operation.type };
+                operation: operation.type },
                 error: (error, as Error).message }
             }
     }
@@ -575,24 +572,23 @@ export class InterfaceSimplifier {
             }
 
         const hiddenElements: HTMLElement[] = [],
-        selectors.forEach(selector => {  ),
-            const elements = document.querySelectorAll(selector),
-
-            elements.forEach(element => {),
+        selectors.forEach(selector => {  );
+            const elements = document.querySelectorAll(selector);
+            elements.forEach(element => {);
                 if (element, instanceof HTMLElement) {
 
-                    this.saveOriginalState(element, 'display'),
+                    this.saveOriginalState(element, 'display');
                     element.style.display = 'none' }
                     hiddenElements.push(element); }
                     this.observedElements.add(element); }
-});'}');
+};'}');
 ';'
 
         return { success: true,''
             operation: 'hideElements',
             category,
-            elementsAffected: hiddenElements.length };
-            elements: hiddenElements;
+            elementsAffected: hiddenElements.length },
+            elements: hiddenElements,
 
     /**
      * アニメーションを無効化'
@@ -727,7 +723,7 @@ export class InterfaceSimplifier {
     /**
      * グローバルスタイルを作成または更新
      */
-    private createOrUpdateGlobalStyle(id: string, css: string): HTMLStyleElement { const styleId = generateStyleId(id, as OperationType),
+    private createOrUpdateGlobalStyle(id: string, css: string): HTMLStyleElement { const styleId = generateStyleId(id, as OperationType);
         let styleElement = document.getElementById(styleId) as HTMLStyleElement,
 
         if (!styleElement) {
@@ -743,8 +739,7 @@ export class InterfaceSimplifier {
         this.appliedStyles.set(styleId, { id: styleId)
             css),
             element: styleElement,
-    timestamp: Date.now(  });
-        
+    timestamp: Date.now(  };
         return styleElement;
     }
 
@@ -755,16 +750,16 @@ export class InterfaceSimplifier {
         const key = `${element.tagName}_${element.className}_${property}`;
         if (!this.originalStates.has(key) {
             this.originalStates.set(key, {
-                element),
-                property })
-                value: element.style[property as any] || window.getComputedStyle(element)[property as any]});
+                element);
+                property }
+                value: element.style[property as any] || window.getComputedStyle(element)[property as any]},
         }
     }
 
     /**
      * 簡素化を元に戻す
      */
-    revertSimplification(simplificationId: string): RevertResult { const simplification = this.activeSimplifications.get(simplificationId),
+    revertSimplification(simplificationId: string): RevertResult { const simplification = this.activeSimplifications.get(simplificationId);
         if (!simplification) { }'
 
             return { success: false, error: 'Simplification not found'
@@ -772,15 +767,15 @@ export class InterfaceSimplifier {
 
         try { let revertedOperations = 0,
 
-            simplification.operations.forEach(operation => { ),
+            simplification.operations.forEach(operation => { );
                 if (this.revertOperation(operation) { }
                     revertedOperations++; }
-});
+};
 
             this.activeSimplifications.delete(simplificationId);
 
-            return { success: true,;
-                operationsReverted: revertedOperations, catch (error) { return { success: false,;
+            return { success: true,
+                operationsReverted: revertedOperations, catch (error) { return { success: false,
                 error: (error, as Error).message }
             }
     }
@@ -797,24 +792,24 @@ export class InterfaceSimplifier {
 
                         element.style.display = '); }'
                         this.observedElements.delete(element); }
-                    });
+                    };
                     return true;
  : undefined
                 default:;
                     // グローバルスタイルを削除
                     if (operation.styleElement) {
                         const styleId = operation.styleElement.id,
-                        operation.styleElement.remove(),
+                        operation.styleElement.remove();
                         this.appliedStyles.delete(styleId) }
                         return true;
                     return false;} catch (error) {
-            console.error('Failed to revert operation:', error),
+            console.error('Failed to revert operation:', error);
             return false,
 
     /**
      * 全ての簡素化を元に戻す
      */
-    revertAllSimplifications(): RevertAllResult { const simplificationIds = Array.from(this.activeSimplifications.keys(),
+    revertAllSimplifications(): RevertAllResult { const simplificationIds = Array.from(this.activeSimplifications.keys();
         const results: RevertResult[] = [],
 
         simplificationIds.forEach(id => { ) }
@@ -833,7 +828,7 @@ export class InterfaceSimplifier {
         this.observedElements.clear();
 
         return { success: true,
-            revertedSimplifications: results.filter(r = > r.success).length  };
+            revertedSimplifications: results.filter(r = > r.success).length  },
             results }
         }
 
@@ -841,7 +836,7 @@ export class InterfaceSimplifier {
      * アクティブな簡素化に新しい要素を適用
      */
     private applyActiveSimplifications(element: HTMLElement): void { this.activeSimplifications.forEach(simplification => { ')'
-            simplification.operations.forEach(operation => {),
+            simplification.operations.forEach(operation => {);
                 if (operation.operation === 'hideElements' && operation.category) {
                     const selectors = this.simplificationRules.hideElements[operation.category],
                     selectors.forEach(selector => {)'
@@ -854,10 +849,10 @@ export class InterfaceSimplifier {
                             } catch (error) {
                             console.warn(`Invalid selector: ${selector}`, error);
                         }
-                    });
+                    };
                 }
-            });
-        });
+            };
+        };
     }
 
     /**
@@ -866,7 +861,7 @@ export class InterfaceSimplifier {
     getActiveSimplifications(): Array<{ id: string, & ActiveSimplification> { return Array.from(this.activeSimplifications.entries().map(([id, simplification]) => ({
             id,
             ...simplification
-        });
+        };
     }
 
     /**
@@ -883,12 +878,12 @@ export class InterfaceSimplifier {
      * 簡素化統計を取得
      */
     getStats(): SimplificationStats { const active = this.activeSimplifications.size,
-        const totalOperations = Array.from(this.activeSimplifications.values(),
+        const totalOperations = Array.from(this.activeSimplifications.values();
             .reduce((sum, s) => sum + s.operations.length, 0),
 
         return { activeSimplifications: active,
             totalOperations,
-            originalStatesStored: this.originalStates.size };
+            originalStatesStored: this.originalStates.size },
             observedElements: this.observedElements.size 
     }
 
@@ -906,21 +901,19 @@ export class InterfaceSimplifier {
      * 特定レベルの簡素化が適用されているか確認
      */
     hasSimplificationLevel(level: SimplificationLevel): boolean { return Array.from(this.activeSimplifications.values()
-            .some(simplification => simplification.level === level),
-
+            .some(simplification => simplification.level === level);
     /**
      * 特定操作が適用されているか確認
      */
     hasOperationType(operationType: OperationType): boolean { return Array.from(this.activeSimplifications.values()
-            .some(simplification => ),
+            .some(simplification => );
                 simplification.operations.some(op => op.operation === operationType) }
     }
 
     /**
      * クリーンアップ
      */
-    destroy(): void { this.revertAllSimplifications(),
-        
+    destroy(): void { this.revertAllSimplifications();
         if (this.mutationObserver) {
     
 }

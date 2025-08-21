@@ -9,21 +9,21 @@ interface ProfilingDataInput { frame?: FrameAnalysis,
     particles?: Record<string, ParticleEffectAnalysis>;
     effects?: Record<string, EffectAnalysis> }
 
-interface FrameAnalysis { averageFPS: number,
+interface FrameAnalysis { averageFPS: number;
     averageRenderTime?: number;
 
-interface MemoryAnalysis { averageMemory: number,
+interface MemoryAnalysis { averageMemory: number;
     hasMemoryLeak: boolean;
 
-interface ParticleEffectAnalysis { averageDuration: number,
+interface ParticleEffectAnalysis { averageDuration: number;
     rating: PerformanceRating;
 
-interface EffectAnalysis { averageDuration: number,
+interface EffectAnalysis { averageDuration: number;
     rating: PerformanceRating;
 
 type PerformanceRating = 'excellent' | 'good' | 'acceptable' | 'poor';
 
-interface PerformanceIssue { type: IssueType,
+interface PerformanceIssue { type: IssueType;
     severity: SeverityLevel;
     value?: number;
     description: string;
@@ -32,19 +32,19 @@ interface PerformanceIssue { type: IssueType,
 type IssueType = 'low_fps' | 'high_memory' | 'slow_rendering' | 'poor_particle_performance' | 'memory_leak';
 type SeverityLevel = 'critical' | 'high' | 'medium' | 'low';
 
-interface AnalysisResult { issues: PerformanceIssue[],
+interface AnalysisResult { issues: PerformanceIssue[];
     overallScore: number;
     performanceCategory: PerformanceCategory;
 
 type PerformanceCategory = 'excellent' | 'good' | 'acceptable' | 'poor';
 
-interface OptimizationStrategy { name: string,
+interface OptimizationStrategy { name: string;
     description: string;
     severity: SeverityLevel;
     execute: (intensity: number) => OptimizationResult  }
 }
 
-interface OptimizationRecommendation { id: string,
+interface OptimizationRecommendation { id: string;
     name: string;
     description: string;
     severity: SeverityLevel;
@@ -52,7 +52,7 @@ interface OptimizationRecommendation { id: string,
     estimatedImpact: number;
     canAutoApply: boolean;
 
-interface OptimizationResult { action: string,
+interface OptimizationResult { action: string;
     status?: string;
     reason?: string;
     previousValue?: any;
@@ -65,31 +65,31 @@ interface OptimizationResult { action: string,
     cleanedItems?: number;
     gcRequested?: boolean;
 
-interface AppliedOptimization { recommendation: OptimizationRecommendation,
+interface AppliedOptimization { recommendation: OptimizationRecommendation;
     result: OptimizationResult;
     timestamp: number;
 
-interface OptimizationHistoryEntry { timestamp: number,
+interface OptimizationHistoryEntry { timestamp: number;
     recommendation: OptimizationRecommendation;
     result: OptimizationResult;
     beforeStats: any;
 
-interface AdvisorResult { analysis: AnalysisResult,
+interface AdvisorResult { analysis: AnalysisResult;
     recommendations: OptimizationRecommendation[];
     autoApplied: AppliedOptimization[];
 
 // Game engine interface for optimization operations
 interface GameEngineInterface { enhancedParticleManager?: {
         particleMultiplie,r?: number;
-        setParticleMultiplier?(multiplier: number): void,
-        setRenderFrequency?(frequency: number): void,
-        setCullingMargin?(margin: number): void,
+        setParticleMultiplier?(multiplier: number): void;
+        setRenderFrequency?(frequency: number): void;
+        setCullingMargin?(margin: number): void;
         forceCleanup?(): number;;
     effectQualityController?: { getCurrentQualityLevel(): string,
-        setQualityLevel(level: string): void,;
-    seasonalEffectManager?: { setEnabled(enabled: boolean): void,;
-    enhancedEffectManager?: { setScreenEffectsEnabled?(enabled: boolean): void,
-        setCullingMargin?(margin: number): void,
+        setQualityLevel(level: string): void;
+    seasonalEffectManager?: { setEnabled(enabled: boolean): void;
+    enhancedEffectManager?: { setScreenEffectsEnabled?(enabled: boolean): void;
+        setCullingMargin?(margin: number): void;
         forceCleanup?(): number;;
     performanceOptimizer?: { getStats(): any;
 
@@ -161,9 +161,8 @@ export class EffectOptimizationAdvisor {
         });
     }
 
-    analyzeAndOptimize(profilingData: ProfilingDataInput): AdvisorResult { const analysis = this.analyzePerformanceIssues(profilingData),
-        const recommendations = this.generateOptimizationPlan(analysis),
-        
+    analyzeAndOptimize(profilingData: ProfilingDataInput): AdvisorResult { const analysis = this.analyzePerformanceIssues(profilingData);
+        const recommendations = this.generateOptimizationPlan(analysis);
         return { analysis,
             recommendations };
             autoApplied: this.autoApplyOptimizations(recommendations); 
@@ -178,8 +177,8 @@ export class EffectOptimizationAdvisor {
                 type: 'low_fps',','
                 severity: frame.averageFPS < 15 ? 'critical' : 'high', 
                 value: frame.averageFPS) }
-                description: `平均FPSが低い (${frame.averageFPS.toFixed(1}))`
-            });
+                description: `平均FPSが低い (${frame.averageFPS.toFixed(1})`
+            };
         }
 ';'
         // メモリ問題の分析
@@ -188,8 +187,8 @@ export class EffectOptimizationAdvisor {
                 type: 'high_memory',','
                 severity: memory.averageMemory > 500 ? 'critical' : 'high', 
                 value: memory.averageMemory) }
-                description: `メモリ使用量が高い (${memory.averageMemory.toFixed(1})MB)`
-            });
+                description: `メモリ使用量が高い (${memory.averageMemory.toFixed(1}MB)`
+            };
         }
 ';'
         // レンダリング時間の分析
@@ -198,8 +197,8 @@ export class EffectOptimizationAdvisor {
                 type: 'slow_rendering',','
                 severity: frame.averageRenderTime > 50 ? 'high' : 'medium', 
                 value: frame.averageRenderTime) }
-                description: `レンダリング時間が長い (${frame.averageRenderTime.toFixed(2})ms)`
-            });
+                description: `レンダリング時間が長い (${frame.averageRenderTime.toFixed(2}ms)`
+            };
         }
 
         // パーティクル性能の分析
@@ -210,7 +209,7 @@ export class EffectOptimizationAdvisor {
                         severity: 'medium,'
     value: metrics.averageDuration  }
                         effectType) }
-                        description: `${effectType}パーティクルの性能が悪い`;
+                        description: `${effectType}パーティクルの性能が悪い`,
                 }
 }
 ';'
@@ -224,7 +223,7 @@ export class EffectOptimizationAdvisor {
     }
 
         return { issues,
-            overallScore: this.calculateOverallScore(issues) };
+            overallScore: this.calculateOverallScore(issues) },
             performanceCategory: this.categorizePerformance(frame?.averageFPS || 0); 
     }
  : undefined
@@ -300,7 +299,7 @@ export class EffectOptimizationAdvisor {
     private deduplicateRecommendations(recommendations: OptimizationRecommendation[]): OptimizationRecommendation[] { const unique = new Map<string, OptimizationRecommendation>(),
         
         for (const rec of recommendations) { }
-            const key = `${rec.id}_${JSON.stringify(rec.context})`;
+            const key = `${rec.id}_${JSON.stringify(rec.context}`;
             if (!unique.has(key) || this.compareSeverity(unique.get(key)!.severity, rec.severity) < 0) { unique.set(key, rec) }
         }
         
@@ -321,13 +320,12 @@ export class EffectOptimizationAdvisor {
             if(rec.canAutoApply && rec.severity !== 'critical' {'
                 try {
                     const strategy = this.optimizationStrategies.get(rec.id)!,
-                    const result = strategy.execute(this.calculateIntensity(rec.severity),
-                    
+                    const result = strategy.execute(this.calculateIntensity(rec.severity);
                     applied.push({)
                         recommendation: rec),
                         result }
                         timestamp: Date.now(); 
-    });
+    };
                     
                     this.logOptimization(rec, result);
                 } catch (error) {
@@ -344,7 +342,7 @@ export class EffectOptimizationAdvisor {
         if (this.gameEngine.enhancedParticleManager) {
         
             const currentMultiplier = this.gameEngine.enhancedParticleManager.particleMultiplier || 1.0,
-            const newMultiplier = Math.max(0.1, currentMultiplier * (1 - reduction),
+            const newMultiplier = Math.max(0.1, currentMultiplier * (1 - reduction);
             ','
 
             if (this.gameEngine.enhancedParticleManager.setParticleMultiplier) {
@@ -358,7 +356,7 @@ export class EffectOptimizationAdvisor {
             return { ''
                 action: 'パーティクル数削減',
                 previousValue: currentMultiplier,
-    newValue: newMultiplier,;
+    newValue: newMultiplier,
                 reductionPercent: reduction * 100 
     }
 
@@ -368,22 +366,23 @@ export class EffectOptimizationAdvisor {
     private lowerQualitySettings(intensity: number): OptimizationResult { ''
         const qualityLevels = ['ultra', 'high', 'medium', 'low'],
         const currentQuality = this.gameEngine.effectQualityController?.getCurrentQualityLevel() || 'high',
-        const currentIndex = qualityLevels.indexOf(currentQuality),
+        const currentIndex = qualityLevels.indexOf(currentQuality);
         const stepsDown = Math.ceil(intensity * 2) + 1,
-        const newIndex = Math.min(qualityLevels.length - 1, currentIndex + stepsDown),
+        const newIndex = Math.min(qualityLevels.length - 1, currentIndex + stepsDown);
         const newQuality = qualityLevels[newIndex],
         
         if (this.gameEngine.effectQualityController && newQuality !== currentQuality) {
         ','
 
-            this.gameEngine.effectQualityController.setQualityLevel(newQuality),
+            this.gameEngine.effectQualityController.setQualityLevel(newQuality);
             ','
 
             return { : undefined''
                 action: '品質設定低下' 
-               , previousValue: currentQuality,;
+               , previousValue: currentQuality,
                 newValue: newQuality,
-
+                newValue: newQuality,
+        };
         return { action: '品質設定低下', status: 'no_change'
             }
 
@@ -409,7 +408,7 @@ export class EffectOptimizationAdvisor {
         return { : undefined''
             action: '複雑エフェクト無効化'
             };
-            disabledEffects: effects;
+            disabledEffects: effects,
 
     private optimizeRenderFrequency(intensity: number): OptimizationResult { // レンダリング頻度の調整（フレームスキッピング）
         const skipFrames = Math.floor(intensity * 3), // 0-3フレームスキップ
@@ -471,7 +470,7 @@ export class EffectOptimizationAdvisor {
             (window, as any).gc('''
             action: 'メモリクリーンアップ',
             cleanedItems,
-            gcRequested: intensity > 0.7  }))
+            gcRequested: intensity > 0.7  })
     }
 
     // ユーティリティメソッド)
@@ -482,7 +481,7 @@ export class EffectOptimizationAdvisor {
             case 'high': return 0.7,
             case 'medium': return 0.4,
             case 'low': return 0.2 }
-            default: return 0.5;
+            default: return 0.5,
 
     private estimateImpact(strategyId: string, severity: SeverityLevel): number { const baseImpacts: Record<string, number> = {
             reduce_particle_count: 30,
@@ -490,11 +489,11 @@ export class EffectOptimizationAdvisor {
             disable_complex_effects: 40,
             optimize_render_frequency: 15,
             enable_culling: 10,
-    cleanup_memory: 20  };
+    cleanup_memory: 20  },
         const severityMultiplier: Record<SeverityLevel, number> = { critical: 1.5,
             high: 1.2,
             medium: 1.0,
-    low: 0.8  };
+    low: 0.8  },
         return (baseImpacts[strategyId] || 10) * (severityMultiplier[severity] || 1.0);
     }
 
@@ -540,10 +539,10 @@ export class EffectOptimizationAdvisor {
     }
 
     private logOptimization(recommendation: OptimizationRecommendation, result: OptimizationResult): void { const logEntry: OptimizationHistoryEntry = {
-            timestamp: Date.now(),
+            timestamp: Date.now();
             recommendation,
             result }
-            beforeStats: this.gameEngine.performanceOptimizer?.getStats() || {};
+            beforeStats: this.gameEngine.performanceOptimizer?.getStats() || {},
         this.optimizationHistory.push(logEntry);
         
         // 履歴サイズ制限
@@ -566,7 +565,7 @@ export class EffectOptimizationAdvisor {
         const lastOptimization = this.optimizationHistory.pop()!;
         // リバート実装は複雑なため、ここでは基本的な復元のみ
         
-        return { success: true,;
+        return { success: true,
             reverted: lastOptimization.recommendation.name 
     }
 }

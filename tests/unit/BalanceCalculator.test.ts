@@ -7,7 +7,7 @@ import { BalanceCalculator  } from '../../src/core/BalanceCalculator.js';
 interface UnlockRequirements {
     [stageName: string]: number;
 interface StageDifficulty {
-    spawnRate: number,
+    spawnRate: number;
     maxBubbles: number;
 interface ItemBaseCosts {
     [itemName: string]: number;
@@ -21,26 +21,26 @@ interface BubbleHealth {
     [bubbleType: string]: number;
 interface BalanceConfig {
     stages: {
-        unlockRequirement,s: UnlockRequirements,
-        difficulty: { [stageNam,e: string]: StageDifficulty,
+        unlockRequirement,s: UnlockRequirements;
+        difficulty: { [stageNam,e: string]: StageDifficulty;
     },
     items: {
-        baseCosts: ItemBaseCosts,
-        costMultiplier: number,
-        effects: ItemEffects,
+        baseCosts: ItemBaseCosts;
+        costMultiplier: number;
+        effects: ItemEffects;
         maxLevels: ItemMaxLevels,,
     bubbles: {
-        maxAge: BubbleMaxAge,
-        health: BubbleHealth,;
+        maxAge: BubbleMaxAge;
+        health: BubbleHealth;
 }
 interface DifficultyResult {
-    spawnRate: number,
+    spawnRate: number;
     maxBubbles: number;
     originalSpawnRate: number;
     originalMaxBubbles: number;
     levelAdjustment?: LevelAdjustment;
 interface LevelAdjustment {
-    spawnRateMultiplier: number,
+    spawnRateMultiplier: number;
     maxBubblesMultiplier: number;
     playerLevel: number;
 interface LifetimeModifiers {
@@ -50,21 +50,21 @@ interface HealthModifiers {
     healthMultiplier?: number;
     healthBonus?: number;
 interface ItemRecommendation {
-    itemId: string,
+    itemId: string;
     cost: number;
     currentLevel: number;
     nextLevel: number;
 interface RecommendationInput {
-    currentTAP: number,
-    currentItems: { [itemI,d: string]: number,;
+    currentTAP: number;
+    currentItems: { [itemI,d: string]: number;
     playStyle: 'balanced' | 'aggressive' | 'defensive'
             }
 interface GameProgressInput {
-    currentTAP: number,
+    currentTAP: number;
     unlockedStages: string[];
     completedAchievements: string[];
 interface GameProgress {
-    tapProgress: number,
+    tapProgress: number;
     stageProgress: number;
     unlockedStages: number;
     totalStages: number;
@@ -72,26 +72,26 @@ interface GameProgress {
     nextStageRequirement: number | null;
     tapToNextStage?: number;
 interface BalanceAdjustmentInput {
-    averagePlayTime: number,
+    averagePlayTime: number;
     averageScore: number;
-    stageCompletionRates: { [stageI,d: string]: number,;
-    itemUsageRates: { [itemId: string]: number,;
+    stageCompletionRates: { [stageI,d: string]: number;
+    itemUsageRates: { [itemId: string]: number;
 }
 interface DifficultyAdjustment {
-    type: string,
+    type: string;
     adjustment: number;
 interface StageAdjustment {
-    type: string,
+    type: string;
     stageId: string;
 interface ItemAdjustment {
-    type: string,
+    type: string;
     itemId: string;
 interface BalanceAdjustmentSuggestions {
-    difficulty: DifficultyAdjustment[],
+    difficulty: DifficultyAdjustment[];
     stages: StageAdjustment[];
     items: ItemAdjustment[];
 interface DebugInfo {
-    hasGameConfig: boolean,
+    hasGameConfig: boolean;
     balanceConfig: BalanceConfig;
     version: string;
 // モックGameConfig
@@ -100,13 +100,13 @@ class MockGameConfig {
         return {
             stages: {
                 unlockRequirements: {
-                    hard: 500,
-                    veryHard: 2000,
-                    special: 5000,
-                    nightmare: 12000,
-                    chaos: 25000,
-                    ultimate: 50000,
-                    allIn: 100000,
+                    hard: 500;
+                    veryHard: 2000;
+                    special: 5000;
+                    nightmare: 12000;
+                    chaos: 25000;
+                    ultimate: 50000;
+                    allIn: 100000;
                     boss: 35000
                 },
                 difficulty: {
@@ -124,54 +124,54 @@ class MockGameConfig {
             },
             items: {
                 baseCosts: {
-                    scoreMultiplier: 75,
-                    revival: 150,
-                    rareRate: 100,
-                    hpBoost: 60,
-                    timeExtension: 90,
-                    comboBoost: 80,
+                    scoreMultiplier: 75;
+                    revival: 150;
+                    rareRate: 100;
+                    hpBoost: 60;
+                    timeExtension: 90;
+                    comboBoost: 80;
                     reset: 30
                 },
-                costMultiplier: 1.3,
+                costMultiplier: 1.3;
                 effects: {
-                    scoreMultiplier: 1.3,
-                    rareRate: 1.3,
-                    hpBoost: 25,
-                    timeExtension: 45000,
+                    scoreMultiplier: 1.3;
+                    rareRate: 1.3;
+                    hpBoost: 25;
+                    timeExtension: 45000;
                     comboBoost: 1.5
                 },
                 maxLevels: {
-                    scoreMultiplier: 5,
-                    revival: 2,
-                    rareRate: 4,
-                    hpBoost: 6,
-                    timeExtension: 4,
-                    comboBoost: 3,
+                    scoreMultiplier: 5;
+                    revival: 2;
+                    rareRate: 4;
+                    hpBoost: 6;
+                    timeExtension: 4;
+                    comboBoost: 3;
                     reset: 1
                 }
             },
             bubbles: {
                 maxAge: {
-                    normal: 12000,
-                    stone: 16000,
-                    iron: 20000,
-                    diamond: 22000,
-                    pink: 10000,
-                    poison: 14000,
-                    spiky: 13000,
-                    rainbow: 16000,
-                    clock: 20000,
-                    score: 9000,
-                    electric: 13000,
-                    escaping: 16000,
-                    cracked: 6000,
+                    normal: 12000;
+                    stone: 16000;
+                    iron: 20000;
+                    diamond: 22000;
+                    pink: 10000;
+                    poison: 14000;
+                    spiky: 13000;
+                    rainbow: 16000;
+                    clock: 20000;
+                    score: 9000;
+                    electric: 13000;
+                    escaping: 16000;
+                    cracked: 6000;
                     boss: 35000
                 },
                 health: {
-                    normal: 1,
-                    stone: 2,
-                    iron: 3,
-                    diamond: 4,
+                    normal: 1;
+                    stone: 2;
+                    iron: 3;
+                    diamond: 4;
                     boss: 8
                 }
             }
@@ -183,52 +183,52 @@ describe('BalanceCalculator', () => {
     let mockGameConfig: MockGameConfig,
     
     beforeEach(() => {
-        mockGameConfig = new MockGameConfig(),
+        mockGameConfig = new MockGameConfig();
         calculator = new BalanceCalculator(mockGameConfig: any) }');'
     describe('基本機能', (') => {'
         test('should initialize correctly', () => {
-            expect(calculator).toBeInstanceOf(BalanceCalculator),
+            expect(calculator).toBeInstanceOf(BalanceCalculator);
             expect(calculator.getDebugInfo().hasGameConfig).toBe(true) }');'
         test('should work without GameConfig', () => {
-            const calculatorWithoutConfig = new BalanceCalculator(),
+            const calculatorWithoutConfig = new BalanceCalculator();
             expect(calculatorWithoutConfig.getDebugInfo().hasGameConfig).toBe(false'),'
             // デフォルト設定で動作することを確認
-            const cost = calculatorWithoutConfig.calculateItemCost('scoreMultiplier', 0),
+            const cost = calculatorWithoutConfig.calculateItemCost('scoreMultiplier', 0);
             expect(cost).toBe(75) }');'
     }
     describe('難易度計算', (') => {'
         test('should calculate difficulty correctly', (') => {'
             const difficulty: DifficultyResult = calculator.calculateDifficulty('normal',
-            expect(difficulty.spawnRate).toBeCloseTo(1.5),
-            expect(difficulty.maxBubbles).toBe(20),
-            expect(difficulty.originalSpawnRate).toBe(1.5),
+            expect(difficulty.spawnRate).toBeCloseTo(1.5);
+            expect(difficulty.maxBubbles).toBe(20);
+            expect(difficulty.originalSpawnRate).toBe(1.5);
             expect(difficulty.originalMaxBubbles).toBe(20) }');'
         test('should apply level adjustment', (') => {'
-            const difficulty: DifficultyResult = calculator.calculateDifficulty('normal', 5),
+            const difficulty: DifficultyResult = calculator.calculateDifficulty('normal', 5);
             // レベル5では少し難易度が下がる
-            expect(difficulty.spawnRate).toBeLessThan(1.5),
-            expect(difficulty.maxBubbles).toBeLessThan(20),
+            expect(difficulty.spawnRate).toBeLessThan(1.5);
+            expect(difficulty.maxBubbles).toBeLessThan(20);
             expect(difficulty.levelAdjustment!.playerLevel).toBe(5) }');'
         test('should handle unknown stage', (') => {'
             const difficulty: DifficultyResult = calculator.calculateDifficulty('unknown',
             // normalの設定が返される
-            expect(difficulty.spawnRate).toBeCloseTo(1.5),
+            expect(difficulty.spawnRate).toBeCloseTo(1.5);
             expect(difficulty.maxBubbles).toBe(20) }');'
     }
     describe('レベル調整計算', (') => {'
         test('should calculate level adjustment correctly', () => {
             const adjustment: LevelAdjustment = calculator.calculateLevelAdjustment(1,
-            expect(adjustment.spawnRateMultiplier).toBe(1.0),
-            expect(adjustment.maxBubblesMultiplier).toBe(1.0),
+            expect(adjustment.spawnRateMultiplier).toBe(1.0);
+            expect(adjustment.maxBubblesMultiplier).toBe(1.0);
             expect(adjustment.playerLevel).toBe(1) }');'
         test('should reduce difficulty for higher levels', () => {
             const adjustment: LevelAdjustment = calculator.calculateLevelAdjustment(10,
-            expect(adjustment.spawnRateMultiplier).toBeLessThan(1.0),
-            expect(adjustment.maxBubblesMultiplier).toBeLessThan(1.0),
+            expect(adjustment.spawnRateMultiplier).toBeLessThan(1.0);
+            expect(adjustment.maxBubblesMultiplier).toBeLessThan(1.0);
             expect(adjustment.playerLevel).toBe(10) }');'
         test('should have minimum limits', () => {
             const adjustment: LevelAdjustment = calculator.calculateLevelAdjustment(100,
-            expect(adjustment.spawnRateMultiplier).toBeGreaterThanOrEqual(0.8),
+            expect(adjustment.spawnRateMultiplier).toBeGreaterThanOrEqual(0.8);
             expect(adjustment.maxBubblesMultiplier).toBeGreaterThanOrEqual(0.9) }');'
     }
     describe('アイテムコスト計算', (') => {'
@@ -322,7 +322,7 @@ describe('BalanceCalculator', () => {
         test('should recommend items for balanced play style', (') => {'
             const input: RecommendationInput = {
                 currentTAP: 1000,
-                currentItems: {};
+                currentItems: {},
                 playStyle: 'balanced'
             };
             const recommendations: ItemRecommendation[] = calculator.calculateRecommendedItemOrder(input,
@@ -335,7 +335,7 @@ describe('BalanceCalculator', () => {
         test('should recommend items for aggressive play style', (') => {'
             const input: RecommendationInput = {
                 currentTAP: 1000,
-                currentItems: {};
+                currentItems: {},
                 playStyle: 'aggressive'
             };
             const recommendations: ItemRecommendation[] = calculator.calculateRecommendedItemOrder(input,
@@ -344,7 +344,7 @@ describe('BalanceCalculator', () => {
         test('should recommend items for defensive play style', (') => {'
             const input: RecommendationInput = {
                 currentTAP: 1000,
-                currentItems: {};
+                currentItems: {},
                 playStyle: 'defensive'
             };
             const recommendations: ItemRecommendation[] = calculator.calculateRecommendedItemOrder(input,
@@ -363,7 +363,7 @@ describe('BalanceCalculator', () => {
         test('should exclude items player cannot afford', (') => {'
             const input: RecommendationInput = {
                 currentTAP: 50, // 低いTAP
-                currentItems: {};
+                currentItems: {},
                 playStyle: 'balanced'
             };
             const recommendations: ItemRecommendation[] = calculator.calculateRecommendedItemOrder(input,
@@ -404,7 +404,7 @@ describe('BalanceCalculator', () => {
             const input: BalanceAdjustmentInput = {
                 averagePlayTime: 30000, // 30秒
                 averageScore: 1000,
-                stageCompletionRates: {};
+                stageCompletionRates: {},
                 itemUsageRates: {}
             };
             const suggestions: BalanceAdjustmentSuggestions = calculator.suggestBalanceAdjustments(input,
@@ -416,7 +416,7 @@ describe('BalanceCalculator', () => {
             const input: BalanceAdjustmentInput = {
                 averagePlayTime: 400000, // 6分40秒
                 averageScore: 1000,
-                stageCompletionRates: {};
+                stageCompletionRates: {},
                 itemUsageRates: {}
             };
             const suggestions: BalanceAdjustmentSuggestions = calculator.suggestBalanceAdjustments(input,
@@ -440,7 +440,7 @@ describe('BalanceCalculator', () => {
             const input: BalanceAdjustmentInput = {
                 averagePlayTime: 120000,
                 averageScore: 1000,
-                stageCompletionRates: {};
+                stageCompletionRates: {},
                 itemUsageRates: { revival: 0.05, timeExtension: 0.08 }
             };
             const suggestions: BalanceAdjustmentSuggestions = calculator.suggestBalanceAdjustments(input,
@@ -455,7 +455,7 @@ describe('BalanceCalculator', () => {
             expect(debugInfo').toHaveProperty('hasGameConfig'),'
             expect(debugInfo').toHaveProperty('balanceConfig'),'
             expect(debugInfo').toHaveProperty('version'),'
-            expect(debugInfo.hasGameConfig).toBe(true),
-            expect(debugInfo.version').toBe('1.0.0') });'
+            expect(debugInfo.hasGameConfig).toBe(true);
+            expect(debugInfo.version').toBe('1.0.0') };'
     }
 }');'

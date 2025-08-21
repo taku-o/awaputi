@@ -1,5 +1,5 @@
 // Type definitions
-interface PerformanceMetrics { frameTime: number,
+interface PerformanceMetrics { frameTime: number;
     renderTime: number;
     cullTime: number;
     compositionTime: number;
@@ -10,16 +10,16 @@ interface PerformanceMetrics { frameTime: number,
     overallEfficiency: number;
     performanceGain?: number;
 
-interface PerformanceBaseline { renderTime: number,
+interface PerformanceBaseline { renderTime: number;
     drawCalls: number;
     pixelsRendered: number;
 
-interface PerformanceFrameData { timestamp: number,
+interface PerformanceFrameData { timestamp: number;
     renderTime: number;
     totalObjects: number;
     efficiency: number;
 
-interface PerformanceConfig { enabled: boolean,
+interface PerformanceConfig { enabled: boolean;
     metrics: PerformanceMetrics;
     history: PerformanceFrameData[];
     historySize: number;
@@ -28,7 +28,7 @@ interface PerformanceConfig { enabled: boolean,
     optimizationTrigger: number;
     baseline: PerformanceBaseline;
 
-interface PerformanceStats extends PerformanceMetrics { uptime: number,
+interface PerformanceStats extends PerformanceMetrics { uptime: number;
     totalFrames: number;
     avgFPS: number;
     baseline: PerformanceBaseline;
@@ -58,23 +58,23 @@ interface PerformanceConfigUpdate { enabled?: boolean,
 export class RenderingPerformanceMonitor {
     private config: PerformanceConfig;
     private performanceInterval: NodeJS.Timeout | null;
-    private, monitoringStartTime: number,
+    private, monitoringStartTime: number;
     private optimizationLevel?: OptimizationLevel,
 
     constructor() {
 
         // Performance monitoring
         this.config = {
-            enabled: true,
+            enabled: true;
     metrics: {
-                frameTime: 0,
-                renderTime: 0,
-                cullTime: 0,
-                compositionTime: 0,
-                dirtyRegionTime: 0,
+                frameTime: 0;
+                renderTime: 0;
+                cullTime: 0;
+                compositionTime: 0;
+                dirtyRegionTime: 0;
                 // Efficiency metrics
-                renderEfficiency: 1.0,
-                cullingEfficiency: 1.0,
+                renderEfficiency: 1.0;
+                cullingEfficiency: 1.0;
     cacheEfficiency: 1.0 }
                 overallEfficiency: 1.0 
     };
@@ -86,8 +86,8 @@ export class RenderingPerformanceMonitor {
     performanceTarget: 16.67, // 60fps target;
             optimizationTrigger: 20.0, // Trigger optimization at 50fps;
             // Benchmarking
-            baseline: { renderTime: 16.67,
-                drawCalls: 500,
+            baseline: { renderTime: 16.67;
+                drawCalls: 500;
     pixelsRendered: 0 
     };
         // Performance intervals
@@ -115,7 +115,7 @@ export class RenderingPerformanceMonitor {
      * Stop performance monitoring
      */
     stopPerformanceMonitoring(): void { if (this.performanceInterval) {
-            clearInterval(this.performanceInterval),
+            clearInterval(this.performanceInterval);
             this.performanceInterval = null }
     }
 
@@ -141,14 +141,13 @@ export class RenderingPerformanceMonitor {
         metrics.renderTime = renderTime,
         
         // Calculate efficiency metrics
-        metrics.renderEfficiency = Math.min(1.0, this.config.baseline.renderTime / renderTime),
-        
+        metrics.renderEfficiency = Math.min(1.0, this.config.baseline.renderTime / renderTime);
         // Update performance history
-        this.config.history.push({),
+        this.config.history.push({);
             timestamp: performance.now(),
             renderTime,
             totalObjects,
-            efficiency: metrics.renderEfficiency  });
+            efficiency: metrics.renderEfficiency  },
         // Limit history size
         if (this.config.history.length > this.config.historySize) { this.config.history.shift() }
         
@@ -174,9 +173,8 @@ export class RenderingPerformanceMonitor {
         metrics.renderEfficiency = avgEfficiency,
         
         // Calculate cache and culling efficiency
-        metrics.cacheEfficiency = this.calculateCacheEfficiency(),
-        metrics.cullingEfficiency = this.calculateCullingEfficiency(),
-        
+        metrics.cacheEfficiency = this.calculateCacheEfficiency();
+        metrics.cullingEfficiency = this.calculateCullingEfficiency();
         // Calculate overall efficiency
         metrics.overallEfficiency = (
             metrics.renderEfficiency * 0.4 +,
@@ -184,7 +182,7 @@ export class RenderingPerformanceMonitor {
             metrics.cullingEfficiency * 0.3),
         
         // Calculate performance gain
-        const performanceGain = this.calculatePerformanceGain(),
+        const performanceGain = this.calculatePerformanceGain();
         metrics.performanceGain = performanceGain }
     }
 
@@ -318,9 +316,8 @@ export class RenderingPerformanceMonitor {
     getPerformanceTrend(): PerformanceTrend { const history = this.config.history,
         if(history.length < 10) return 'stable',
         
-        const recent = history.slice(-5),
-        const older = history.slice(-10, -5),
-        
+        const recent = history.slice(-5);
+        const older = history.slice(-10, -5);
         const recentAvg = recent.reduce((sum, frame) => sum + frame.renderTime, 0) / recent.length,
         const olderAvg = older.reduce((sum, frame) => sum + frame.renderTime, 0) / older.length,
         
@@ -358,12 +355,12 @@ export class RenderingPerformanceMonitor {
             renderEfficiency: 1.0,
             cullingEfficiency: 1.0,
             cacheEfficiency: 1.0,
-    overallEfficiency: 1.0 };
+    overallEfficiency: 1.0 },
         this.monitoringStartTime = performance.now();
     }
 
     /**
      * Destroy performance monitor
      */'
-    destroy(): void { this.stopPerformanceMonitoring(),
+    destroy(): void { this.stopPerformanceMonitoring();
         this.reset(' }''

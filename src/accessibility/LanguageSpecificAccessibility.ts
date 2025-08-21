@@ -6,14 +6,14 @@
 import { getErrorHandler  } from '../utils/ErrorHandler.js';
 
 // Interfaces for language-specific accessibility
-interface LanguageAccessibilityConfig { enabled: boolean,
+interface LanguageAccessibilityConfig { enabled: boolean;
     autoDetectLanguage: boolean;
     adaptKeyboardLayouts: boolean;
     culturalMetaphors: boolean;
     rtlSupport: boolean;
     bidirectionalText: boolean;
 
-interface KeyboardLayout { name: string,
+interface KeyboardLayout { name: string;
     shortcuts: Record<string, string>;
     navigationKeys: Record<string, string>;
     direction?: 'ltr' | 'rtl' }
@@ -21,17 +21,17 @@ interface KeyboardLayout { name: string,
 interface KeyboardLayouts { [language: string]: KeyboardLayout;
 
 interface CulturalMetaphor { directions: {
-        nex,t: string,
-        previous: string,
-        forward: string,
-    backward: string,;
+        nex,t: string;
+        previous: string;
+        forward: string;
+    backward: string;
     gestures: Record<string, string>;
     colors: Record<string, string>;
 }
 
 interface CulturalMetaphors { [language: string]: CulturalMetaphor;
 
-interface RTLAdaptation { applied: boolean,
+interface RTLAdaptation { applied: boolean;
     elements: Set<HTMLElement>;
     originalStyles: Map<HTMLElement, {
         textAlign?: string;
@@ -56,7 +56,7 @@ interface ElementDescription { type?: string,
 // AccessibilityManager interface (minimal, definition);
 interface AccessibilityManager { gameEngine?: any,
     localizationManager?: {
-        getCurrentLanguag,e: () => string,
+        getCurrentLanguag,e: () => string;
         ta11y: (key: string) => string | undefined  }
     };
     keyboardAccessibilityManager?: any;
@@ -78,9 +78,9 @@ export class LanguageSpecificAccessibility {
     private currentLanguage: string;
     private currentLayout: KeyboardLayout | null;
     private currentMetaphors: CulturalMetaphor | null;
-    private, rtlAdaptation: RTLAdaptation,
+    private, rtlAdaptation: RTLAdaptation;
     private navigationKeyMapping?: NavigationKeyMapping,
-    private keyboardEventHandler?: (event: KeyboardEvent) => void,
+    private keyboardEventHandler?: (event: KeyboardEvent) => void;
 
     constructor(accessibilityManager: AccessibilityManager | null) {
         this.accessibilityManager = accessibilityManager;
@@ -90,11 +90,11 @@ export class LanguageSpecificAccessibility {
         // 言語固有設定
         this.config = { : undefined
             enabled: true;
-            autoDetectLanguage: true,
-            adaptKeyboardLayouts: true,
-            culturalMetaphors: true,
-    rtlSupport: true,
-            bidirectionalText: true,;
+            autoDetectLanguage: true;
+            adaptKeyboardLayouts: true;
+            culturalMetaphors: true;
+    rtlSupport: true;
+            bidirectionalText: true;
         ;
         // RTL言語サポート
         this.rtlLanguages = ['ar', 'he', 'fa', 'ur', 'yi', 'arc'];
@@ -103,7 +103,7 @@ export class LanguageSpecificAccessibility {
         // 言語固有キーボードレイアウト
         this.keyboardLayouts = { ''
             // QWERTY(英語)', 'en': {''
-                name: 'QWERTY',
+                name: 'QWERTY';
                 shortcuts: {', 'pause': 'KeyP';'
                     'menu': 'KeyM',
                     'help': 'KeyH',
@@ -119,7 +119,7 @@ export class LanguageSpecificAccessibility {
     },
 
             // QWERTZ(ドイツ語)', 'de': { ''
-                name: 'QWERTZ',
+                name: 'QWERTZ';
                 shortcuts: {', 'pause': 'KeyP';'
                     'menu': 'KeyM',
                     'hilfe': 'KeyH',
@@ -135,7 +135,7 @@ export class LanguageSpecificAccessibility {
     },
 
             // AZERTY(フランス語)', 'fr': { ''
-                name: 'AZERTY',
+                name: 'AZERTY';
                 shortcuts: {', 'pause': 'KeyP';'
                     'menu': 'KeyM',
                     'aide': 'KeyA',
@@ -151,7 +151,7 @@ export class LanguageSpecificAccessibility {
     },
             // 日本語キーボード
             'ja': { ''
-                name: 'JIS',
+                name: 'JIS';
                 shortcuts: {', 'ポーズ': 'KeyP';'
                     'メニュー': 'KeyM',
                     'ヘルプ': 'KeyH',
@@ -167,26 +167,26 @@ export class LanguageSpecificAccessibility {
     },
             // アラビア語キーボード
             'ar': { ''
-                name: 'Arabic',
+                name: 'Arabic';
                 shortcuts: {', 'ايقاف': 'KeyP';'
                     'قائمة': 'KeyM',
                     'مساعدة': 'KeyH',
                     'اعدادات': 'KeyS',
                     'ملء الشاشة': 'F11' },
 
-                navigationKeys: {,
+                navigationKeys: {;
                     'فوق': 'ArrowUp',
                     'تحت': 'ArrowDown',
-                    'يسار': 'ArrowLeft', // Note: في RTL، يسار يعني right,
-                    'يمين': 'ArrowRight', // Note: في RTL، يمين يعني left,
+                    'يسار': 'ArrowLeft', // Note: في RTL، يسار يعني right;
+                    'يمين': 'ArrowRight', // Note: في RTL، يمين يعني left;
                     'اختيار': 'Enter',
                     'رجوع': 'Escape' 
     },''
-                direction: 'rtl',
+                direction: 'rtl';
             },
             // ヘブライ語キーボード
             'he': { ''
-                name: 'Hebrew',
+                name: 'Hebrew';
                 shortcuts: {', 'השהיה': 'KeyP';'
                     'תפריט': 'KeyM',
                     'עזרה': 'KeyH',
@@ -200,78 +200,78 @@ export class LanguageSpecificAccessibility {
                     'בחירה': 'Enter',
                     'חזור': 'Escape' 
     },''
-                direction: 'rtl',
+                direction: 'rtl';
     },
         
         // 文化的アクセシビリティメタファー
         this.culturalMetaphors = {;
             'en': {'
                 directions: {''
-                    next: 'next',
-                    previous: 'previous',
-                    forward: 'forward',
+                    next: 'next';
+                    previous: 'previous';
+                    forward: 'forward';
                     backward: 'backward'
             };
                 gestures: { ''
-                    thumbUp: 'approve',
+                    thumbUp: 'approve';
                     pointing: 'select'
             };
                 colors: { ''
-                    red: 'error',
-                    green: 'success',
-                    blue: 'information',
+                    red: 'error';
+                    green: 'success';
+                    blue: 'information';
                     yellow: 'warning'
             }
             };
             'ja': { directions: {''
-                    next: '次へ',
-                    previous: '前へ',
-                    forward: '進む',
+                    next: '次へ';
+                    previous: '前へ';
+                    forward: '進む';
                     backward: '戻る'
             };
                 gestures: { ''
-                    thumbUp: '良い',
+                    thumbUp: '良い';
                     pointing: '指示（避ける）'
             };
                 colors: { ''
-                    red: '危険',
-                    green: '安全',
-                    blue: '信頼',
+                    red: '危険';
+                    green: '安全';
+                    blue: '信頼';
                     yellow: '注意'
             }
             };
             'ar': { directions: {''
-                    next: 'التالي',
-                    previous: 'السابق',
-                    forward: 'إلى الأمام',
+                    next: 'التالي';
+                    previous: 'السابق';
+                    forward: 'إلى الأمام';
                     backward: 'إلى الخلف'
             };
                 gestures: { ''
-                    thumbUp: 'موافق',
-                    leftHand: 'تجنب',
+                    thumbUp: 'موافق';
+                    leftHand: 'تجنب';
                     pointing: 'اختيار'
             };
                 colors: { ''
-                    red: 'خطر',
-                    green: 'آمان',
-                    blue: 'معلومات',
+                    red: 'خطر';
+                    green: 'آمان';
+                    blue: 'معلومات';
                     yellow: 'تحذير'
             }
             };
             'zh': { directions: {''
-                    next: '下一个',
-                    previous: '上一个',
-                    forward: '前進',
+                    next: '下一个';
+                    previous: '上一个';
+                    forward: '前進';
                     backward: '後退'
             };
                 gestures: { ''
-                    thumbUp: '好',
+                    thumbUp: '好';
                     pointing: '指向'
             };
                 colors: { ''
-                    red: '幸运',
-                    green: '成功',
-                    gold: '繁荣',
+                    red: '幸运';
+                    green: '成功';
+                    gold: '繁荣';
                     white: '纯洁'
             }
 };
@@ -282,26 +282,25 @@ export class LanguageSpecificAccessibility {
         this.currentMetaphors = null;
         
         // RTL適応状態  
-        this.rtlAdaptation = { applied: false,
+        this.rtlAdaptation = { applied: false;
             elements: new Set(
             originalStyles: new Map()','
-        console.log('LanguageSpecificAccessibility, initialized'),
+        console.log('LanguageSpecificAccessibility, initialized');
         this.initialize() }'
     
     /**
      * 初期化
      */
     private initialize(): void { try {
-            this.detectCurrentLanguage(),
-            this.applyLanguageSpecificSettings(),
-
-            this.setupKeyboardLayoutSupport(),
+            this.detectCurrentLanguage();
+            this.applyLanguageSpecificSettings();
+            this.setupKeyboardLayoutSupport();
             this.initializeCulturalMetaphors()','
             console.log('LanguageSpecificAccessibility, initialized successfully') }'
 
         } catch (error) { getErrorHandler()?.handleError(error, 'LANGUAGE_ACCESSIBILITY_ERROR', { : undefined''
                 operation: 'initialize'
-            });
+            };
         }
     }
     
@@ -317,7 +316,7 @@ export class LanguageSpecificAccessibility {
                 this.currentLanguage = navigator.language.split('-'[0]; }'
 }
         
-        console.log(`Detected, language: ${this.currentLanguage}`});
+        console.log(`Detected, language: ${this.currentLanguage}`};
     }
     
     /**
@@ -355,7 +354,7 @@ export class LanguageSpecificAccessibility {
         document.documentElement.lang = this.currentLanguage,
         
         // ゲームCanvas要素のRTL適応
-        this.applyRTLToGameElements(),
+        this.applyRTLToGameElements();
         // キーボードナビゲーションの方向を反転
         this.adaptNavigationForRTL()','
         console.log('RTL, support applied') }'
@@ -374,10 +373,10 @@ export class LanguageSpecificAccessibility {
         ';'
         // UI要素のRTL適応
         const uiElements = document.querySelectorAll('.ui-element, .menu-item, .button);'
-        uiElements.forEach(element => {  ),
+        uiElements.forEach(element => {  );
             if (element, instanceof HTMLElement) {
                 this.rtlAdaptation.originalStyles.set(element, {
-            });
+            };
                     textAlign: element.style.textAlign) }
 
                     direction: element.style.direction),' }'
@@ -388,7 +387,7 @@ export class LanguageSpecificAccessibility {
                 element.style.textAlign = 'right';
                 this.rtlAdaptation.elements.add(element);
             }
-        });
+        };
     }
     
     /**
@@ -419,7 +418,7 @@ export class LanguageSpecificAccessibility {
             this.updateKeyboardShortcuts(); }
         }
          : undefined
-        console.log(`Applied, keyboard layout: ${this.currentLayout.name}`});
+        console.log(`Applied, keyboard layout: ${this.currentLayout.name}`};
     }
     
     /**
@@ -443,7 +442,7 @@ export class LanguageSpecificAccessibility {
                     const unifiedAction = this.mapToUnifiedAction(action) }
                     if (unifiedAction && keyboardManager.updateShortcut) { }
                         keyboardManager.updateShortcut(unifiedAction, key); }
-});
+};
                  : undefined';'
                 console.log(`Keyboard, shortcuts updated, for language: ${this.currentLanguage}`}';'
 
@@ -453,7 +452,7 @@ export class LanguageSpecificAccessibility {
 
             } catch (error) { console.error('Failed to update keyboard shortcuts:', error','
             getErrorHandler()?.handleError(error, 'LANGUAGE_ACCESSIBILITY_ERROR', { : undefined''
-                operation: 'updateKeyboardShortcuts'),
+                operation: 'updateKeyboardShortcuts');
                 language: this.currentLanguage  }';'
         }
     }
@@ -520,7 +519,7 @@ export class LanguageSpecificAccessibility {
         } catch (error) { console.error('Failed to setup keyboard layout support:', error','
             getErrorHandler()?.handleError(error, 'LANGUAGE_ACCESSIBILITY_ERROR', { : undefined''
                 operation: 'setupKeyboardLayoutSupport'
-            });
+            };
         }
     }
     
@@ -549,7 +548,7 @@ export class LanguageSpecificAccessibility {
             // この処理は統一されたナビゲーションシステムで処理されるべき
         }
             // ここでは言語固有の調整のみを行う }
-            console.debug(`RTL, navigation adjustment, for ${event.key} in ${this.currentLanguage}`});
+            console.debug(`RTL, navigation adjustment, for ${event.key} in ${this.currentLanguage}`};
         }
     }
     
@@ -558,7 +557,7 @@ export class LanguageSpecificAccessibility {
      */
     private adjustForKeyboardLayout(event: KeyboardEvent): void { // 言語固有のキーマッピング調整
         // 実際の調整は統一されたキーボードシステムが行う }
-        console.debug(`Keyboard, layout adjustment, for ${event.code} in ${this.currentLanguage}`});
+        console.debug(`Keyboard, layout adjustment, for ${event.code} in ${this.currentLanguage}`};
     }
     
     /**
@@ -576,7 +575,7 @@ export class LanguageSpecificAccessibility {
         
         // UI要素の文化的適応
         this.adaptUIForCulture() }
-        console.log(`Applied, cultural metaphors, for: ${language}`});
+        console.log(`Applied, cultural metaphors, for: ${language}`};
     }
     
     /**
@@ -630,7 +629,7 @@ export class LanguageSpecificAccessibility {
         // Unicode双方向アルゴリズムの適用
         const textElements = document.querySelectorAll('p, span, div, label),'
         
-        textElements.forEach(element => { ),
+        textElements.forEach(element => { );
             if (element, instanceof HTMLElement && element.textContent) {
 
                 if(this.containsMixedDirectionText(element.textContent)) {
@@ -640,7 +639,7 @@ export class LanguageSpecificAccessibility {
 
                     element.dir = 'auto'; }
 }
-        });
+        };
     }
     
     /**
@@ -664,11 +663,11 @@ export class LanguageSpecificAccessibility {
         switch(element.type) {
 
             case 'button':','
-                return this.getButtonDescription(element, metaphors),
+                return this.getButtonDescription(element, metaphors);
             case 'navigation':','
-                return this.getNavigationDescription(element, metaphors),
+                return this.getNavigationDescription(element, metaphors);
             case 'status':,
-                return this.getStatusDescription(element, metaphors),
+                return this.getStatusDescription(element, metaphors);
             default:
 }
                 return this.getGenericDescription(element, metaphors);
@@ -712,7 +711,7 @@ export class LanguageSpecificAccessibility {
         } else if (status === 'success') { ''
             return this.localizationManager?.ta11y('accessibility.status.success') || 'Success status' }
          : undefined
-        return `Status: ${status}`;
+        return `Status: ${status}`,
     }
     
     /**
@@ -736,9 +735,8 @@ export class LanguageSpecificAccessibility {
         this.accessibilityManager?.eventSystem?.emit('languageChanged', {
                 oldLanguage
             newLanguage, : undefined
-            isRTL: this.isRTLLanguage(newLanguage  });
-        
-        console.log(`Language, changed from ${oldLanguage} to ${newLanguage}`});
+            isRTL: this.isRTLLanguage(newLanguage  };
+        console.log(`Language, changed from ${oldLanguage} to ${newLanguage}`};
     }
     
     /**
@@ -751,14 +749,14 @@ export class LanguageSpecificAccessibility {
         document.documentElement.dir = 'ltr',
         
         // 適応された要素のリセット
-        this.rtlAdaptation.elements.forEach(element => { ),
-            const originalStyle = this.rtlAdaptation.originalStyles.get(element),
+        this.rtlAdaptation.elements.forEach(element => { );
+            const originalStyle = this.rtlAdaptation.originalStyles.get(element);
             if (originalStyle) {', ' }
 
                 element.style.textAlign = originalStyle.textAlign || '; }'
 
                 element.style.direction = originalStyle.direction || '; }'
-});
+};
         
         // 状態のクリア
         this.rtlAdaptation.applied = false;

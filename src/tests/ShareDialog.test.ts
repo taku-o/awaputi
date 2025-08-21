@@ -6,24 +6,24 @@ import type { ShareDialog } from '../core/ShareDialog';
 import type { SocialSharingManager } from '../core/SocialSharingManager';
 import type { GameEngine } from '../core/GameEngine';
 // Mock interfaces
-interface MockGameEngine extends Partial<GameEngine> { on: jest.Mock,
+interface MockGameEngine extends Partial<GameEngine> { on: jest.Mock;
     off: jest.Mock;
     emit: jest.Mock  }
-interface MockSocialSharingManager extends Partial<SocialSharingManager> { gameEngine: MockGameEngine,
+interface MockSocialSharingManager extends Partial<SocialSharingManager> { gameEngine: MockGameEngine;
     share: jest.Mock;
     shareViaTwitterUrl: jest.Mock }
     shareViaFacebookUrl: jest.Mock }
-interface ShareData { type: string,
+interface ShareData { type: string;
     score?: number;
     text?: string;
     url?: string;
     name?: string; }
-interface Screenshot { url: string,
+interface Screenshot { url: string;
     width: number;
     height: number;''
-describe('ShareDialog', () => {  let shareDialog: ShareDialog,
-    let mockSocialSharingManager: MockSocialSharingManager,
-    let mockGameEngine: MockGameEngine,
+describe('ShareDialog', () => {  let shareDialog: ShareDialog;
+    let mockSocialSharingManager: MockSocialSharingManager;
+    let mockGameEngine: MockGameEngine;
 
     beforeEach(async () => {'
         // DOM環境のセットアップ
@@ -45,13 +45,13 @@ describe('ShareDialog', () => {  let shareDialog: ShareDialog,
         ';'
         // matchMediaのモック
         Object.defineProperty(window, 'matchMedia', { ''
-            writable: true,
+            writable: true;
             value: jest.fn().mockImplementation((query: string) => ({''
                 matches: query.includes('max-width: 768px) ? false : true,'
-                media: query,
-                onchange: null,
-                addListener: jest.fn(),
-                removeListener: jest.fn(),
+                media: query;
+                onchange: null;
+                addListener: jest.fn();
+                removeListener: jest.fn();
                 addEventListener: jest.fn(
     removeEventListener: jest.fn(
         dispatchEvent: jest.fn(),' }'
@@ -61,10 +61,10 @@ describe('ShareDialog', () => {  let shareDialog: ShareDialog,
 
         // Clipboard APIのモック
         Object.defineProperty(navigator, 'clipboard', { )
-            value: {),
+            value: {);
                 writeText: jest.fn().mockResolvedValue(undefined }
             writable: true,)
-        }),
+        },
         // requestAnimationFrameのモック
         global.requestAnimationFrame = jest.fn((callback: FrameRequestCallback) => {  setTimeout(() => callback(0), 0) }
             return 1; }'
@@ -73,7 +73,7 @@ describe('ShareDialog', () => {  let shareDialog: ShareDialog,
 
         const { ShareDialog } = await import('../core/ShareDialog.js);'
         shareDialog = new ShareDialog(mockSocialSharingManager, as any);
-    });
+    };
     afterEach(() => {  if (shareDialog) { }
             shareDialog.destroy(); }
 
@@ -83,8 +83,8 @@ describe('ShareDialog', () => {  let shareDialog: ShareDialog,
     }');'
     describe('初期化', () => {  ''
         test('正常に初期化される', () => {
-            expect(shareDialog.socialSharingManager).toBe(mockSocialSharingManager),
-            expect(shareDialog.config).toBeDefined(),
+            expect(shareDialog.socialSharingManager).toBe(mockSocialSharingManager);
+            expect(shareDialog.config).toBeDefined();
             expect(shareDialog.state).toBeDefined() }
 
             expect(shareDialog.elements).toBeDefined();' }'
@@ -93,7 +93,7 @@ describe('ShareDialog', () => {  let shareDialog: ShareDialog,
         test('デフォルト設定が正しく設定される', () => {  ''
             expect(shareDialog.config.title).toBe('共有),'
 
-            expect(shareDialog.config.width).toBe(480),
+            expect(shareDialog.config.width).toBe(480);
             expect(shareDialog.config.position).toBe('center',
             expect(shareDialog.config.platforms).toContain('web-share),'
             expect(shareDialog.config.backdrop).toBe(true) }
@@ -101,11 +101,11 @@ describe('ShareDialog', () => {  let shareDialog: ShareDialog,
             expect(shareDialog.config.animation).toBe(true);' }'
 
         }');'
-        test('DOM要素が作成される', () => {  expect(shareDialog.elements.backdrop).toBeDefined(),
-            expect(shareDialog.elements.dialog).toBeDefined(),
-            expect(shareDialog.elements.container).toBeDefined(),
-            expect(shareDialog.elements.header).toBeDefined(),
-            expect(shareDialog.elements.body).toBeDefined(),
+        test('DOM要素が作成される', () => {  expect(shareDialog.elements.backdrop).toBeDefined();
+            expect(shareDialog.elements.dialog).toBeDefined();
+            expect(shareDialog.elements.container).toBeDefined();
+            expect(shareDialog.elements.header).toBeDefined();
+            expect(shareDialog.elements.body).toBeDefined();
             expect(shareDialog.elements.footer).toBeDefined() }
 
             expect(shareDialog.elements.closeButton).toBeDefined();' }'
@@ -135,10 +135,10 @@ describe('ShareDialog', () => {  let shareDialog: ShareDialog,
     describe('DOM構造', () => {  ''
         test('ヘッダーが正しく作成される', () => {'
             const header = shareDialog.elements.header,
-            const title = header.querySelector('#share-dialog-title'),
+            const title = header.querySelector('#share-dialog-title');
             const closeButton = header.querySelector('.share-dialog-close),'
 
-            expect(title).toBeDefined(),
+            expect(title).toBeDefined();
             expect(title?.textContent).toBe('共有',
             expect(closeButton).toBeDefined() }
 
@@ -149,12 +149,12 @@ describe('ShareDialog', () => {  let shareDialog: ShareDialog,
             const platformsContainer = body.querySelector('.share-dialog-platforms',
             expect(body.id).toBe('share-dialog-content',
             expect(platformsContainer).toBeDefined(
-            });
+            };
             expect(platformsContainer?.getAttribute('role)'.toBe('group'; }
 
         }');'
-        test('プラットフォームボタンが作成される', () => {  expect(shareDialog.elements.platforms.length).toBeGreaterThan(0),
-            shareDialog.elements.platforms.forEach(button => {),
+        test('プラットフォームボタンが作成される', () => {  expect(shareDialog.elements.platforms.length).toBeGreaterThan(0);
+            shareDialog.elements.platforms.forEach(button => {);
                 expect(button.getAttribute('data-platform).toBeDefined()',
                 expect(button.getAttribute('aria-label)'.toContain('で共有'),' }'
 
@@ -184,8 +184,7 @@ describe('ShareDialog', () => {  let shareDialog: ShareDialog,
             expect(shareDialog.elements.screenshotPreview?.style.display).toBe('none';}');'
         test('フッターが正しく作成される', () => {  const footer = shareDialog.elements.footer,
             const cancelButton = footer.querySelector('.share-dialog-cancel),'
-            expect(footer).toBeDefined(),
-
+            expect(footer).toBeDefined();
             expect(cancelButton).toBeDefined(),' }'
 
             expect(cancelButton?.textContent).toBe('キャンセル'; }
@@ -207,7 +206,7 @@ describe('ShareDialog', () => {  let shareDialog: ShareDialog,
             expect(shareDialog.stats.shows).toBe(1);'}');
         test('ダイアログが非表示になる', async () => { }
 
-            await shareDialog.show({ type: 'score', score: 1000  });
+            await shareDialog.show({ type: 'score', score: 1000  };
             await shareDialog.hide();
 
             expect(shareDialog.state.visible).toBe(false);
@@ -227,7 +226,7 @@ describe('ShareDialog', () => {  let shareDialog: ShareDialog,
             expect(shareDialog.elements.screenshotPreview?.style.display).toBe('block';}');'
         test('重複表示が防がれる', async () => { : undefined' 
             await shareDialog.show({ type: 'score', score: 1000  }';'
-            await shareDialog.show({ type: 'score', score: 2000  }'; // 2回目の表示'
+            await shareDialog.show({ type: 'score', score: 2000  }', // 2回目の表示'
             ';'
 
             expect(shareDialog.stats.shows).toBe(1);'}');
@@ -257,8 +256,7 @@ describe('ShareDialog', () => {  let shareDialog: ShareDialog,
             const webShareButton = shareDialog.elements.platforms.find()','
                 btn => btn.getAttribute('data-platform') === 'web-share'),
             if (webShareButton) {
-                await webShareButton.click(),
-
+                await webShareButton.click();
                 expect(mockSocialSharingManager.share).toHaveBeenCalled() }
 
                 expect(shareDialog.stats.shares).toBe(1);' }'
@@ -295,7 +293,7 @@ describe('ShareDialog', () => {  let shareDialog: ShareDialog,
             const { ShareDialog } = await import('../core/ShareDialog.js');
 
             shareDialog = new ShareDialog(mockSocialSharingManager as any, { ')'
-                platforms: ['copy]' }'}');
+                platforms: ['copy]' }'}'),
             await shareDialog.show({ ')'
                 type: 'score', ')',
                 text: 'コピーテスト','),'
@@ -304,7 +302,7 @@ describe('ShareDialog', () => {  let shareDialog: ShareDialog,
             const copyButton = shareDialog.elements.platforms.find()','
                 btn => btn.getAttribute('data-platform') === 'copy'),
             if (copyButton) {
-                await copyButton.click(),
+                await copyButton.click();
                 expect(navigator.clipboard.writeText).toHaveBeenCalledWith()','
                     'コピーテスト https://test.example.com'','
                 ')'
@@ -315,7 +313,7 @@ describe('ShareDialog', () => {  let shareDialog: ShareDialog,
             }'}');
         test('共有成功後にダイアログが閉じる', async () => {  const webShareButton = shareDialog.elements.platforms[0],
             
-            await webShareButton.click(),
+            await webShareButton.click();
             // 共有成功後、ダイアログが非表示になることを確認 }
             expect(shareDialog.state.visible).toBe(false);' }'
 
@@ -387,17 +385,17 @@ describe('ShareDialog', () => {  let shareDialog: ShareDialog,
             await shareDialog.show({ type: 'score', score: 1000  }';'
 
         }''
-        test('閉じるボタンでダイアログが閉じる', async () => {  shareDialog.elements.closeButton.click(),
+        test('閉じるボタンでダイアログが閉じる', async () => {  shareDialog.elements.closeButton.click();
             // 非同期的に閉じる処理を待つ
-            await new Promise(resolve => setTimeout(resolve, 50),
+            await new Promise(resolve => setTimeout(resolve, 50);
             expect(shareDialog.state.visible).toBe(false) }
             expect(shareDialog.stats.cancellations).toBe(1);' }'
 
         }');'
         test('キャンセルボタンでダイアログが閉じる', async () => {  ''
             const cancelButton = shareDialog.elements.footer.querySelector('.share-dialog-cancel) as HTMLButtonElement,'
-            cancelButton.click(),
-            await new Promise(resolve => setTimeout(resolve, 50),
+            cancelButton.click();
+            await new Promise(resolve => setTimeout(resolve, 50);
             expect(shareDialog.state.visible).toBe(false) }
 
             expect(shareDialog.stats.cancellations).toBe(1);' }'
@@ -405,7 +403,7 @@ describe('ShareDialog', () => {  let shareDialog: ShareDialog,
         }');'
         test('ESCキーでダイアログが閉じる', async () => { }
 
-            const escEvent = new KeyboardEvent('keydown', { key: 'Escape' });
+            const escEvent = new KeyboardEvent('keydown', { key: 'Escape' };
             document.dispatchEvent(escEvent);
             await new Promise(resolve => setTimeout(resolve, 50);
             expect(shareDialog.state.visible).toBe(false);
@@ -446,8 +444,8 @@ describe('ShareDialog', () => {  let shareDialog: ShareDialog,
             await shareDialog.show({ type: 'score', score: 1000  }';'
 
         }''
-        test('フォーカス可能要素が正しく収集される', () => {  shareDialog.updateFocusableElements(),
-            expect(shareDialog.focusableElements.length).toBeGreaterThan(0),
+        test('フォーカス可能要素が正しく収集される', () => {  shareDialog.updateFocusableElements();
+            expect(shareDialog.focusableElements.length).toBeGreaterThan(0);
             expect(shareDialog.focusableElements).toContain(shareDialog.elements.closeButton) }
 
             expect(shareDialog.focusableElements).toContain(shareDialog.elements.platforms[0]);' }'
@@ -459,7 +457,7 @@ describe('ShareDialog', () => {  let shareDialog: ShareDialog,
                 value: lastElement,')',
                 writable: true'),'
             const tabEvent = new KeyboardEvent('keydown', { key: 'Tab ,'
-            shareDialog.elements.dialog.dispatchEvent(tabEvent),
+            shareDialog.elements.dialog.dispatchEvent(tabEvent);
             // フォーカストラップの動作を確認 }
             expect(shareDialog.focusableElements.length).toBeGreaterThan(0);' }'
 
@@ -475,8 +473,7 @@ describe('ShareDialog', () => {  let shareDialog: ShareDialog,
             const shiftTabEvent = new KeyboardEvent('keydown', { ')',
                 key: 'Tab',
     shiftKey: true ),
-            shareDialog.elements.dialog.dispatchEvent(shiftTabEvent),
-
+            shareDialog.elements.dialog.dispatchEvent(shiftTabEvent);
             expect(shareDialog.focusableElements.length).toBeGreaterThan(0),' }'
 
         }');'
@@ -484,8 +481,8 @@ describe('ShareDialog', () => {  let shareDialog: ShareDialog,
     }''
     describe('アクセシビリティ機能', () => {  ''
         test('ARIA属性が正しく設定される', () => {''
-            expect(shareDialog.elements.dialog.getAttribute('role)'.toBe('dialog'),
-            expect(shareDialog.elements.dialog.getAttribute('aria-modal)'.toBe('true'),
+            expect(shareDialog.elements.dialog.getAttribute('role)'.toBe('dialog');
+            expect(shareDialog.elements.dialog.getAttribute('aria-modal)'.toBe('true');
             expect(shareDialog.elements.dialog.getAttribute('aria-labelledby)'.toBe('share-dialog-title'),' }'
 
             expect(shareDialog.elements.dialog.getAttribute('aria-describedby)'.toBe('share-dialog-content'; }
@@ -505,7 +502,7 @@ describe('ShareDialog', () => {  let shareDialog: ShareDialog,
 
             const mockFocus = jest.fn() }
 ;
-            await shareDialog.show({ type: 'score', score: 1000  });
+            await shareDialog.show({ type: 'score', score: 1000  };
             // 初期フォーカスが設定されることを確認
             setTimeout(() => { expect(mockFocus).toHaveBeenCalled() }, 150);'}');
         test('高コントラストモードが適用される', async () => { }
@@ -535,7 +532,7 @@ describe('ShareDialog', () => {  let shareDialog: ShareDialog,
             const { ShareDialog } = await import('../core/ShareDialog.js');
 
             shareDialog = new ShareDialog(mockSocialSharingManager as any, { ')'
-                theme: 'minimal' })';'
+                theme: 'minimal' }';'
             const dialog = shareDialog.elements.dialog;
             expect(dialog.style.backgroundColor).toBe('#FAFAFA';}');'
         test('elegantテーマが適用される', async () => { }
@@ -545,7 +542,7 @@ describe('ShareDialog', () => {  let shareDialog: ShareDialog,
             const { ShareDialog } = await import('../core/ShareDialog.js');
 
             shareDialog = new ShareDialog(mockSocialSharingManager as any, { ')'
-                theme: 'elegant' })';'
+                theme: 'elegant' }';'
             const dialog = shareDialog.elements.dialog;
             expect(dialog.style.backgroundColor).toBe('#2D2D3A';}');'
         test('gamingテーマが適用される', async () => { }
@@ -555,7 +552,7 @@ describe('ShareDialog', () => {  let shareDialog: ShareDialog,
             const { ShareDialog } = await import('../core/ShareDialog.js');
 
             shareDialog = new ShareDialog(mockSocialSharingManager as any, { ')'
-                theme: 'gaming' })';'
+                theme: 'gaming' }';'
             const dialog = shareDialog.elements.dialog;
             expect(dialog.style.backgroundColor).toBe('#0A0A0F';
             expect(dialog.style.color).toBe('#00FF41';}');'
@@ -565,7 +562,7 @@ describe('ShareDialog', () => {  let shareDialog: ShareDialog,
                 value: jest.fn().mockImplementation((query: string) => ({''
                     matches: query.includes('max-width: 768px' ? true : false, '
                     media: query,
-                });
+                };
             }
             shareDialog.applyResponsiveStyles();
 
@@ -578,13 +575,13 @@ describe('ShareDialog', () => {  let shareDialog: ShareDialog,
 
         test('表示統計が記録される', async () => { }
 
-            await shareDialog.show({ type: 'score', score: 1000  });
+            await shareDialog.show({ type: 'score', score: 1000  };
             const stats = shareDialog.getStats();
 
             expect(stats.shows).toBe(1);'}');
         test('共有統計が記録される', async () => { }
 
-            await shareDialog.show({ type: 'score', score: 1000  });
+            await shareDialog.show({ type: 'score', score: 1000  };
             const platformButton = shareDialog.elements.platforms[0];
             await platformButton.click();
             const stats = shareDialog.getStats();
@@ -592,7 +589,7 @@ describe('ShareDialog', () => {  let shareDialog: ShareDialog,
             expect(stats.shares).toBe(1);'}');
         test('キャンセル統計が記録される', async () => { }
 
-            await shareDialog.show({ type: 'score', score: 1000  });
+            await shareDialog.show({ type: 'score', score: 1000  };
             shareDialog.elements.closeButton.click();
             const stats = shareDialog.getStats();
 
@@ -622,7 +619,7 @@ describe('ShareDialog', () => {  let shareDialog: ShareDialog,
 
             mockSocialSharingManager.share.mockRejectedValue(new, Error('共有失敗)'; }
 
-            await shareDialog.show({ type: 'score', score: 1000  });
+            await shareDialog.show({ type: 'score', score: 1000  };
             const platformButton = shareDialog.elements.platforms[0];
             await platformButton.click();
             // エラーハンドリングが動作することを確認
@@ -631,7 +628,7 @@ describe('ShareDialog', () => {  let shareDialog: ShareDialog,
             shareDialog.state.opening = true }
             ' }'
 
-            await expect(shareDialog.show({ type: 'score', score: 1000  }).resolves.toBeUndefined()'
+            await expect(shareDialog.show({ type: 'score', score: 1000  }.resolves.toBeUndefined()'
         test('非表示中のエラー処理', async () => {  // 非表示状態を操作,
             shareDialog.state.closing = true }
             await expect(shareDialog.hide().resolves.toBeUndefined();' }'
@@ -645,7 +642,7 @@ describe('ShareDialog', () => {  let shareDialog: ShareDialog,
                 title: '新しいタイトル',
                 width: 600,' }'
 
-                theme: 'gaming' };
+                theme: 'gaming' },
             };
             ';'
 
@@ -658,8 +655,8 @@ describe('ShareDialog', () => {  let shareDialog: ShareDialog,
 
             shareDialog.updateConfig({) }
 
-                styles: { backgroundColor: '#FF0000' });
-            });
+                styles: { backgroundColor: '#FF0000' },
+            };
             const newBackground = shareDialog.elements.dialog.style.backgroundColor;
 
             expect(newBackground).not.toBe(originalBackground);'}');
@@ -669,23 +666,23 @@ describe('ShareDialog', () => {  let shareDialog: ShareDialog,
 
         test('正常にクリーンアップされる', async () => { }
 
-            await shareDialog.show({ type: 'score', score: 1000  });
+            await shareDialog.show({ type: 'score', score: 1000  };
             shareDialog.destroy();
 
             expect(shareDialog.elements.backdrop.parentNode).toBeNull();'}');
         test('表示中でもクリーンアップされる', async () => { }
 
-            await shareDialog.show({ type: 'score', score: 1000  });
+            await shareDialog.show({ type: 'score', score: 1000  };
             expect(shareDialog.state.visible).toBe(true);
             shareDialog.destroy();
 
             expect(shareDialog.elements.backdrop.parentNode).toBeNull();'}');
         test('イベントリスナーが削除される', () => {  ''
-            const removeEventListenerSpy = jest.spyOn(document, 'removeEventListener'),
+            const removeEventListenerSpy = jest.spyOn(document, 'removeEventListener');
             const windowRemoveEventListenerSpy = jest.spyOn(window, 'removeEventListener),'
-            shareDialog.destroy(),
+            shareDialog.destroy();
             expect(removeEventListenerSpy).toHaveBeenCalled() }
             expect(windowRemoveEventListenerSpy).toHaveBeenCalled(); }
-        });
+        };
 
     }'}');

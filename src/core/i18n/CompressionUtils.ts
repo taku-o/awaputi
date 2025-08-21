@@ -8,7 +8,7 @@ export interface CompressionOptions { level?: CompressionLevel,
     preserveStructure?: boolean;
     customPatterns?: Map<string, string> }
 
-export interface CompressionResult { data: any,
+export interface CompressionResult { data: any;
     compressed: boolean;
     reason?: string;
     error?: string;
@@ -24,19 +24,19 @@ export interface CompressionResult { data: any,
     byteOptimization?: string[];
     structureFlattened?: boolean;
 
-export interface FastCompressionResult { data: string,
+export interface FastCompressionResult { data: string;
     compressed: boolean;
     level: CompressionLevel;
     patterns: Map<string, string> }
 
-export interface BalancedCompressionResult { data: string,
+export interface BalancedCompressionResult { data: string;
     compressed: boolean;
     level: CompressionLevel;
     patterns: Map<string, string>;
     duplicateReplacements: Map<string, string>;
     keyMappings: Map<string, string> }
 
-export interface MaximumCompressionResult { data: string,
+export interface MaximumCompressionResult { data: string;
     compressed: boolean;
     level: CompressionLevel;
     patterns: Map<string, string>;
@@ -46,10 +46,10 @@ export interface MaximumCompressionResult { data: string,
     byteOptimization: string[];
     structureFlattened: boolean;
 
-export interface ByteOptimizationResult { data: string,
+export interface ByteOptimizationResult { data: string;
     optimizations: string[];
 
-export interface CompressionStats { totalCompressions: number,
+export interface CompressionStats { totalCompressions: number;
     totalDecompressions: number;
     bytesBeforeCompression: number;
     bytesAfterCompression: number;
@@ -63,7 +63,7 @@ export interface CompressionSettings { compressionLevel?: CompressionLevel,
     minCompressionSize?: number;
     compressionThreshold?: number;
 
-export interface PatternFrequency { pattern: string,
+export interface PatternFrequency { pattern: string;
     frequency: number;
     estimatedSavings: number;
 
@@ -79,7 +79,7 @@ export interface AdvancedPatternResult { patterns: Map<string, string>,
     matchCount: number;
     estimatedSavings: number;
 
-export interface StructureAnalysis { depth: number,
+export interface StructureAnalysis { depth: number;
     totalKeys: number;
     duplicateKeys: number;
     flatteningSavings: number;
@@ -129,8 +129,7 @@ export class CompressionUtils {
             ['message', 'msg'],
             ['information', 'info'],
             ['accessibility', 'a11y'],
-        ]),
-        
+        ]);
         // 逆変換用マップ
         this.reversePatterns = new Map<string, string>(),
         for(const [key, value] of this.commonPatterns) {
@@ -152,8 +151,7 @@ export class CompressionUtils {
      * 翻訳データを圧縮
      */
     compress(data: any, options: CompressionOptions = { ): CompressionResult {
-        const startTime = performance.now(),
-        
+        const startTime = performance.now();
         try {
             const { level = this.compressionLevel,,
                 preserveStructure = true,
@@ -177,15 +175,13 @@ export class CompressionUtils {
             switch(level) {
 
                 case 'fast':','
-                    compressedData = this._fastCompress(data, customPatterns),
-
+                    compressedData = this._fastCompress(data, customPatterns);
                     break,
                 case 'balanced':','
-                    compressedData = this._balancedCompress(data, customPatterns),
-
+                    compressedData = this._balancedCompress(data, customPatterns);
                     break,
                 case 'maximum':,
-                    compressedData = this._maximumCompress(data, customPatterns, preserveStructure),
+                    compressedData = this._maximumCompress(data, customPatterns, preserveStructure);
                     break,
                 default:
 }
@@ -217,8 +213,7 @@ export class CompressionUtils {
      * 高速圧縮
      */'
     private _fastCompress(data: any, customPatterns: Map<string, string>): FastCompressionResult { ''
-        const jsonString = JSON.stringify(data),
-        
+        const jsonString = JSON.stringify(data);
         // 基本的な空白とパターン圧縮
         let compressed = jsonString','
             .replace(/\s+/g, ', ')  // 複数空白を単一空白に,
@@ -248,13 +243,12 @@ export class CompressionUtils {
      * バランス圧縮
      */
     private _balancedCompress(data: any, customPatterns: Map<string, string>): BalancedCompressionResult { // 高速圧縮を適用
-        const fastResult = this._fastCompress(data, customPatterns),
-        
+        const fastResult = this._fastCompress(data, customPatterns);
         // 追加の最適化
         let compressed = fastResult.data,
         
         // 重複する長い文字列の検出と置換
-        const duplicates = this._findDuplicateStrings(compressed),
+        const duplicates = this._findDuplicateStrings(compressed);
         const replacementMap = new Map<string, string>(),
         
         let replacementIndex = 0,
@@ -280,15 +274,14 @@ export class CompressionUtils {
             compressed: true,
             level: 'balanced',
             patterns: fastResult.patterns,
-    duplicateReplacements: replacementMap,;
+    duplicateReplacements: replacementMap,
             keyMappings: keyMappings,
     
     /**
      * 最大圧縮
      */
     private _maximumCompress(data: any, customPatterns: Map<string, string>, preserveStructure: boolean): MaximumCompressionResult { // バランス圧縮を適用
-        const balancedResult = this._balancedCompress(data, customPatterns),
-        
+        const balancedResult = this._balancedCompress(data, customPatterns);
         let compressed = balancedResult.data,
         
         // より積極的な最適化
@@ -316,7 +309,7 @@ export class CompressionUtils {
             duplicateReplacements: balancedResult.duplicateReplacements,
             keyMappings: balancedResult.keyMappings,
             advancedPatterns: advancedPatterns,
-    byteOptimization: encodedResult.optimizations };
+    byteOptimization: encodedResult.optimizations },
             structureFlattened: !preserveStructure 
     }
     
@@ -329,8 +322,7 @@ export class CompressionUtils {
         // 文字列を分析
         for(let, i = 0, i <= text.length - minLength, i++) {
             for (let len = minLength, len <= Math.min(50, text.length - i), len++) {
-                const substring = text.substring(i, i + len),
-                
+                const substring = text.substring(i, i + len);
                 // 英数字とよく使われる文字のみ
                 if (/^[a-zA-Z0-9一-龯ひらがなカタカナ\s\.]+$/.test(substring) {
         }
@@ -345,7 +337,7 @@ export class CompressionUtils {
     /**
      * キーマッピングを作成
      */
-    private _createKeyMappings(data: any): Map<string, string> { const keys = this._extractAllKeys(data),
+    private _createKeyMappings(data: any): Map<string, string> { const keys = this._extractAllKeys(data);
         const mappings = new Map<string, string>(),
         
         let shortKeyIndex = 0,
@@ -364,7 +356,7 @@ export class CompressionUtils {
     private _extractAllKeys(obj: any, keys: Set<string> = new Set<string>()): Set<string> { ''
         if (typeof, obj === 'object' && obj !== null''
             for (const, key in, obj) {''
-                keys.add(key),
+                keys.add(key);
                 if(typeof, obj[key] === 'object' { }
                     this._extractAllKeys(obj[key], keys); }
 }
@@ -397,15 +389,14 @@ export class CompressionUtils {
         patterns.set('<([^>]+)>', '<$1>'),
         ','
         // Repeated punctuation
-        patterns.set('\\.{2', '..'),
-        patterns.set('\\s{2', ', '),
-
-        // Common word endings(Japanese),
-        patterns.set('です。', 'だ。'),
+        patterns.set('\\.{2', '..');
+        patterns.set('\\s{2', ', ');
+        // Common word endings(Japanese);
+        patterns.set('です。', 'だ。');
         patterns.set('ます。', 'る。),'
 
-        // Common word endings(English),
-        patterns.set('tion', 'n'),
+        // Common word endings(English);
+        patterns.set('tion', 'n');
         patterns.set('sion', 'n),'
         
         return patterns }
@@ -414,9 +405,8 @@ export class CompressionUtils {
      * 構造をフラット化
      */
     private _flattenStructure(jsonString: string): string { try {
-            const obj = JSON.parse(jsonString),
-            const flattened = this._flattenObject(obj),
-
+            const obj = JSON.parse(jsonString);
+            const flattened = this._flattenObject(obj);
             return JSON.stringify(flattened),' }'
 
         } catch (error) { return jsonString,
@@ -445,22 +435,21 @@ export class CompressionUtils {
         let optimized = text,
         ','
         // Unicode正規化
-        optimized = optimized.normalize('NFD'),
-        optimizations.push('unicode-normalization'),
+        optimized = optimized.normalize('NFD');
+        optimizations.push('unicode-normalization');
         ','
         // 制御文字の削除
-        optimized = optimized.replace(/[\x00-\x1F\x7F]/g, ''),
+        optimized = optimized.replace(/[\x00-\x1F\x7F]/g, '');
         optimizations.push('control-char-removal),'
         
-        return { data: optimized,;
+        return { data: optimized,
             optimizations }
         }
     
     /**
      * データを展開
      */
-    decompress(compressedData: CompressionResult): any { const startTime = performance.now(),
-        
+    decompress(compressedData: CompressionResult): any { const startTime = performance.now();
         try {
             if (!compressedData.compressed) {
     
@@ -518,7 +507,7 @@ export class CompressionUtils {
             return result;
 
         } catch (error) { console.error('Decompression failed:', error }
-            throw new Error(`Decompression failed: ${(error, as Error}).message}`);
+            throw new Error(`Decompression failed: ${(error, as Error}.message}`);
         }
     }
     
@@ -603,7 +592,7 @@ export class CompressionUtils {
     getStats(): DetailedCompressionStats { return { ...this.stats,
             compressionRatio: Math.round(this.stats.compressionRatio * 100) / 100,
             averageCompressionTime: Math.round(this.stats.averageCompressionTime * 100) / 100,
-    averageDecompressionTime: Math.round(this.stats.averageDecompressionTime * 100) / 100 };
+    averageDecompressionTime: Math.round(this.stats.averageDecompressionTime * 100) / 100 },
             totalBytesSaved: this.stats.bytesBeforeCompression - this.stats.bytesAfterCompression 
     }
     
@@ -613,10 +602,9 @@ export class CompressionUtils {
     getDetailedAnalysis(data: any): { duplicateAnalysis: DuplicateAnalysis,
         keyMappingResult: KeyMappingResult,
         patternFrequencies: PatternFrequency[],
-    structureAnalysis: StructureAnalysis; { const jsonString = JSON.stringify(data),
-        
+    structureAnalysis: StructureAnalysis; { const jsonString = JSON.stringify(data);
         // 重複分析
-        const duplicates = this._findDuplicateStrings(jsonString),
+        const duplicates = this._findDuplicateStrings(jsonString);
         const duplicateAnalysis: DuplicateAnalysis = {
             duplicates,
             totalOccurrences: Array.from(duplicates.values().reduce((sum, count) => sum + count, 0),
@@ -693,13 +681,12 @@ export class CompressionUtils {
             depth: 0,
             totalKeys: 0,
             duplicateKeys: 0,
-    flatteningSavings: 0 };
+    flatteningSavings: 0 },
         const keyFrequency = new Map<string, number>();
         ';'
 
         const traverse = (current: any, currentDepth: number) => {  ''
-            analysis.depth = Math.max(analysis.depth, currentDepth),
-
+            analysis.depth = Math.max(analysis.depth, currentDepth);
             if (typeof, current === 'object' && current !== null) {
                 for (const, key in, current) {
                     analysis.totalKeys++,
@@ -734,7 +721,7 @@ export class CompressionUtils {
     private _estimateFlatteningSavings(depth: number, totalKeys: number): number { if (depth <= 2) return 0,
         
         // 深い構造ほど節約効果が高い
-        const complexityFactor = Math.min(depth * 0.1, 0.3),
+        const complexityFactor = Math.min(depth * 0.1, 0.3);
         return Math.round(totalKeys * complexityFactor) }
     
     /**
@@ -751,15 +738,15 @@ export class CompressionUtils {
     /**
      * カスタムパターンを追加
      */
-    addCustomPattern(pattern: string, replacement: string): void { this.commonPatterns.set(pattern, replacement),
+    addCustomPattern(pattern: string, replacement: string): void { this.commonPatterns.set(pattern, replacement);
         this.reversePatterns.set(replacement, pattern) }
     
     /**
      * カスタムパターンを削除
      */
-    removeCustomPattern(pattern: string): boolean { const replacement = this.commonPatterns.get(pattern),
+    removeCustomPattern(pattern: string): boolean { const replacement = this.commonPatterns.get(pattern);
         if (replacement) {
-            this.commonPatterns.delete(pattern),
+            this.commonPatterns.delete(pattern);
             this.reversePatterns.delete(replacement) }
             return true;
         return false;

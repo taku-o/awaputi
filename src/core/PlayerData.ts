@@ -8,12 +8,12 @@ function getErrorHandler(): ErrorHandler { if (!errorHandlerInstance) {
 }
 ;
 // Simple validation for PlayerData (fallback, implementation);
-function validateInput(value: any, type: string, constraints: any = {}): ValidationResult { const result: ValidationResult = {
+function validateInput(value: any, type: string, constraints: any = {}: ValidationResult { const result: ValidationResult = {
         isValid: false,
         sanitizedValue: value,
-    errors: [] };
+    errors: [] },
     if(type === 'number' {'
-        const num = Number(value),
+        const num = Number(value);
         if(isNaN(num)) {''
             result.errors.push('Value, must be, a number) }'
             result.sanitizedValue = 0; }
@@ -24,7 +24,7 @@ function validateInput(value: any, type: string, constraints: any = {}): Validat
             if (constraints.min !== undefined && num < constraints.min) {
     
 }
-                result.errors.push(`Value, must be, at least ${constraints.min}`});
+                result.errors.push(`Value, must be, at least ${constraints.min}`};
                 result.sanitizedValue = constraints.min;
             }
 
@@ -34,13 +34,13 @@ function validateInput(value: any, type: string, constraints: any = {}): Validat
                 result.sanitizedValue = constraints.max;
             }
 
-        }'} else if (type === 'string) { const str = String(value),
+        }'} else if (type === 'string) { const str = String(value);
         result.sanitizedValue = str,
         if (constraints.maxLength && str.length > constraints.maxLength) {
     
 }
             result.errors.push(`String too long (max ${constraints.maxLength}`}
-            result.sanitizedValue = str.substring(0, constraints.maxLength});
+            result.sanitizedValue = str.substring(0, constraints.maxLength};
 
         }''
         if (constraints.escapeHtml) {
@@ -69,17 +69,17 @@ function validateInput(value: any, type: string, constraints: any = {}): Validat
  */
 
 // Type definitions
-interface OwnedItem { id: string,
+interface OwnedItem { id: string;
     level?: number;
 
-interface PlayerDataSave { username: string,
+interface PlayerDataSave { username: string;
     ap: number;
     tap: number;
     highScores: Record<string, number>;
     unlockedStages: string[];
     ownedItems: (string | OwnedItem)[]  }
 
-interface ValidationResult { isValid: boolean,
+interface ValidationResult { isValid: boolean;
     sanitizedValue: any;
     errors: string[];
 
@@ -122,14 +122,14 @@ export class PlayerData {
     addScore(points: number): void { try {
             // 入力値を検証
             const validation = validateInput(points, 'number', {
-                min: 0),
+                min: 0);
                 max: 1000000,
     integer: true),
 
             if (!validation.isValid) { }'
 
                 getErrorHandler().handleError(new Error(`Invalid score points: ${validation.errors.join(', '}'`), 'VALIDATION_ERROR', { input: points,'
-                    errors: validation.errors  });
+                    errors: validation.errors  },
                 return;
             }
             
@@ -156,7 +156,7 @@ export class PlayerData {
             if (!validation.isValid) { }'
 
                 getErrorHandler().handleError(new Error(`Invalid damage amount: ${validation.errors.join(', '}'`), 'VALIDATION_ERROR', { input: amount,'
-                    errors: validation.errors  });
+                    errors: validation.errors  },
                 return { died: false,
             
             this.currentHP = Math.max(0; this.currentHP - validation.sanitizedValue);
@@ -171,12 +171,12 @@ export class PlayerData {
 }
 
                         console.log('Revival, item activated!'); }'
-                        return { died: false, revived: true,; // 復活したのでゲームオーバーではない
+                        return { died: false, revived: true, // 復活したのでゲームオーバーではない
                     } catch (error) { }
 
-                    getErrorHandler().handleError(error, 'ITEM_SYSTEM_ERROR', { operation: 'useRevival' });
+                    getErrorHandler().handleError(error, 'ITEM_SYSTEM_ERROR', { operation: 'useRevival' },
                 }
-                return { died: true, revived: false,; // ゲームオーバー
+                return { died: true, revived: false, // ゲームオーバー
             }
             return { died: false, catch (error) { }
 
@@ -196,7 +196,7 @@ export class PlayerData {
             if (!validation.isValid) { }'
 
                 getErrorHandler().handleError(new Error(`Invalid heal amount: ${validation.errors.join(', '}'`), 'VALIDATION_ERROR', { input: amount,'
-                    errors: validation.errors  });
+                    errors: validation.errors  },
                 return;
             }
             
@@ -240,13 +240,13 @@ export class PlayerData {
             if (!validation.isValid) { }'
 
                 getErrorHandler().handleError(new Error(`Invalid username: ${validation.errors.join(', '}'`), 'VALIDATION_ERROR', { input: this.username,'
-                    errors: validation.errors  });
+                    errors: validation.errors  },
                 // サニタイズされた値を使用
                 this.username = validation.sanitizedValue;
             }
             
             const data: PlayerDataSave = { username: this.username,
-                ap: Math.max(0, Math.floor(this.ap),
+                ap: Math.max(0, Math.floor(this.ap);
                 tap: Math.max(0, Math.floor(this.tap) }
                 highScores: this.highScores || {}''
                 unlockedStages: Array.isArray(this.unlockedStages) ? this.unlockedStages : ['tutorial', 'normal'],
@@ -296,7 +296,7 @@ export class PlayerData {
                     getErrorHandler().handleError(parseError, 'STORAGE_ERROR', { ')'
                         operation: 'parse',')',
                         data: 'playerData',
-    savedData: savedData.substring(0, 100) // 最初の100文字のみログ });
+    savedData: savedData.substring(0, 100) // 最初の100文字のみログ };
                     return; // パースエラーの場合はデフォルト値を使用
                 }
                 
@@ -322,21 +322,21 @@ export class PlayerData {
             this.username = usernameValidation.isValid ? usernameValidation.sanitizedValue: ';'
             // APを検証
             const apValidation = validateInput(data.ap, 'number', {
-                min: 0),
+                min: 0);
                 max: 999999999','
     integer: true','
             '),'
-            this.ap = apValidation.isValid ? apValidation.sanitizedValue: 0;
+            this.ap = apValidation.isValid ? apValidation.sanitizedValue: 0,
             // TAPを検証
             const tapValidation = validateInput(data.tap, 'number', {
-                min: 0),
+                min: 0);
                 max: 999999999','
     integer: true','
             '),'
-            this.tap = tapValidation.isValid ? tapValidation.sanitizedValue: 0;
+            this.tap = tapValidation.isValid ? tapValidation.sanitizedValue: 0,
             // ハイスコアを検証
             const highScoresValidation = validateInput(data.highScores, 'object', {)' }'
-            this.highScores = highScoresValidation.isValid ? highScoresValidation.sanitizedValue : {};
+            this.highScores = highScoresValidation.isValid ? highScoresValidation.sanitizedValue: {},
             ';'
             // 開放済みステージを検証
             const stagesValidation = validateInput(data.unlockedStages, 'array', { ''
@@ -344,7 +344,7 @@ export class PlayerData {
             }
 
                 itemConstraints: { maxLength: 20
-            });
+            };
             '),'
             this.unlockedStages = stagesValidation.isValid ? undefined: undefined';'
                 stagesValidation.sanitizedValue : ['tutorial', 'normal'];
@@ -354,7 +354,7 @@ export class PlayerData {
                 itemType: 'string'
             }
                 itemConstraints: { maxLength: 30
-            });
+            };
             );
             this.ownedItems = itemsValidation.isValid ? itemsValidation.sanitizedValue: [] } catch (error) { getErrorHandler().handleError(error, 'VALIDATION_ERROR', { ')'
                 operation: 'loadValidatedData'),
@@ -399,7 +399,7 @@ export class PlayerData {
             tap: this.tap,
     combo: this.combo,
             totalHighScore,
-            unlockedStagesCount: this.unlockedStages.length };
+            unlockedStagesCount: this.unlockedStages.length },
             itemsCount: this.ownedItems.length 
     }
     
@@ -407,8 +407,8 @@ export class PlayerData {
      * ステージをアンロック
      */
     unlockStage(stageName: string): boolean { if (!this.unlockedStages.includes(stageName) {
-            this.unlockedStages.push(stageName),
-            this.save(),
+            this.unlockedStages.push(stageName);
+            this.save();
             return true }
         return false;
     }
@@ -417,7 +417,7 @@ export class PlayerData {
      * アイテムを追加
      */
     addItem(itemName: string): void { if (!this.ownedItems.includes(itemName) {
-            this.ownedItems.push(itemName),
+            this.ownedItems.push(itemName);
             this.save() }
     }
     
@@ -426,7 +426,7 @@ export class PlayerData {
      */
     removeItem(itemName: string): boolean { const index = this.ownedItems.indexOf(itemName),
         if (index !== -1) {
-            this.ownedItems.splice(index, 1),
+            this.ownedItems.splice(index, 1);
             this.save() }
             return true;
         return false;
@@ -526,21 +526,21 @@ export class PlayerData {
     addAP(amount: number): void { try {
             // 入力値を検証
             const validation = validateInput(amount, 'number', {
-                min: 0),
+                min: 0);
                 max: 100000,
     integer: true),
 
             if (!validation.isValid) { }'
 
                 getErrorHandler().handleError(new Error(`Invalid AP amount: ${validation.errors.join(', '}'`), 'VALIDATION_ERROR', { input: amount,'
-                    errors: validation.errors  });
+                    errors: validation.errors  },
                 return;
             }
             
             this.ap += validation.sanitizedValue;
             this.save(); // APが更新されたら保存
             
-            console.log(`[PlayerData] AP追加: +${validation.sanitizedValue} (総計: ${this.ap}`});
+            console.log(`[PlayerData] AP追加: +${validation.sanitizedValue} (総計: ${this.ap}`};
             ';'
 
         } catch (error) { }

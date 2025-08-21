@@ -10,7 +10,7 @@ describe('データ管理 - クラウド対応統合テスト', () => {
     let mockFetch: any,
     
     // テストタイムアウトを30秒に延長
-    jest.setTimeout(30000),
+    jest.setTimeout(30000);
     beforeEach(async () => {
         // fetchのモック
         mockFetch = jest.fn(') as jest.Mock,'
@@ -35,12 +35,13 @@ describe('データ管理 - クラウド対応統合テスト', () => {
         // documentのモック
         global.document = {
             addEventListener: jest.fn(
-            hidden: false,;
-        
+            hidden: false,
+            hidden: false,
+        };
         // windowのモック
         global.window = {
             addEventListener: jest.fn(
-        removeEventListener: jest.fn( };
+        removeEventListener: jest.fn( },
         
         // GameEngineのモック
         mockGameEngine = {
@@ -55,19 +56,19 @@ describe('データ管理 - クラウド対応統合テスト', () => {
                             enabled: true,
                             provider: 'test',
                             apiEndpoint: 'https://api.test.com'
-    });
+    };
                     );
                     return null;
-    });
+    };
             },
             statisticsManager: {
-                getStatistics: jest.fn(() => ({ totalGames: 10, totalScore: 5000 )) });
+                getStatistics: jest.fn(() => ({ totalGames: 10, totalScore: 5000 )) }),
         
         // setInterval/clearIntervalのモック
         jest.useFakeTimers();
         dataManager = new DataManager(mockGameEngine);
         await dataManager.initialize();
-    });
+    };
     afterEach(() => {
         if (dataManager) {
             dataManager.destroy() }
@@ -76,18 +77,18 @@ describe('データ管理 - クラウド対応統合テスト', () => {
     }');'
     describe('DataManager統合', (') => {'
         test('クラウド機能付きで正常に初期化される', () => {
-            expect(dataManager.isInitialized).toBe(true),
+            expect(dataManager.isInitialized).toBe(true);
             expect(dataManager.storage).toBeInstanceOf(DataStorage) }');'
         test('クラウド設定が正しく読み込まれる', () => {
-            const cloudConfig = dataManager.getCloudConfig(),
-            expect(cloudConfig.enabled).toBe(true),
+            const cloudConfig = dataManager.getCloudConfig();
+            expect(cloudConfig.enabled).toBe(true);
             expect(cloudConfig.provider').toBe('test'),'
-            expect(cloudConfig.apiEndpoint').toBe('https: //api.test.com' }');
+            expect(cloudConfig.apiEndpoint').toBe('https: //api.test.com' }'),
         test('クラウドコンポーネントが初期化される', async () => {
             // クラウド機能が有効化されていることを確認
-            await dataManager.initializeCloudComponents(),
+            await dataManager.initializeCloudComponents();
             // 設定によってはクラウドストレージが初期化される
-            const cloudConfig = dataManager.getCloudConfig(),
+            const cloudConfig = dataManager.getCloudConfig();
             if (cloudConfig.enabled) {
                 expect(dataManager.cloudStorage).toBeDefined() }
         }');'
@@ -105,7 +106,7 @@ describe('データ管理 - クラウド対応統合テスト', () => {
                , json: () => Promise.resolve({ success: true ) }
         }');'
         test('ローカルデータがクラウドにアップロードされる', async (') => {'
-            const testData = { playerName: 'Test', score: 1500 };
+            const testData = { playerName: 'Test', score: 1500 },
             
             // ローカルに保存
             await dataManager.save('playerData', testData);
@@ -116,17 +117,17 @@ describe('データ管理 - クラウド対応統合テスト', () => {
                     synchronized: 1,
                     conflicts: 0,
                     errors: 0),
-                const result = await dataManager.syncToCloud(),
-                expect(result.synchronized).toBe(1),
+                const result = await dataManager.syncToCloud();
+                expect(result.synchronized).toBe(1);
                 expect(dataManager.syncManager.sync).toHaveBeenCalled() }
         }');'
         test('クラウドデータがローカルにダウンロードされる', async (') => {'
             // クラウドから取得されるデータをモック
-            const cloudData = { playerName: 'CloudPlayer', score: 2000 };
+            const cloudData = { playerName: 'CloudPlayer', score: 2000 },
             
             if (dataManager.syncManager && dataManager.cloudStorage) {
                 // CloudStorageのgetメソッドをモック
-                dataManager.cloudStorage.get = jest.fn().mockResolvedValue(cloudData as jest.Mock),
+                dataManager.cloudStorage.get = jest.fn().mockResolvedValue(cloudData as jest.Mock);
                 // SyncManagerの同期をモック
                 dataManager.syncManager.sync = jest.fn() as jest.Mock.mockResolvedValue({
                     synchronized: 1,
@@ -149,13 +150,13 @@ describe('データ管理 - クラウド対応統合テスト', () => {
             
             if (dataManager.syncManager) {
                 // 競合データをモック
-                dataManager.storage.load = jest.fn().mockResolvedValue(localData as jest.Mock),
-                dataManager.cloudStorage.get = jest.fn().mockResolvedValue(cloudData as jest.Mock),
+                dataManager.storage.load = jest.fn().mockResolvedValue(localData as jest.Mock);
+                dataManager.cloudStorage.get = jest.fn().mockResolvedValue(cloudData as jest.Mock);
                 dataManager.syncManager.sync = jest.fn() as jest.Mock.mockResolvedValue({
                     synchronized: 1,
                     conflicts: 1,
                     errors: 0),
-                const result = await dataManager.syncToCloud(),
+                const result = await dataManager.syncToCloud();
                 expect(result.conflicts).toBe(1) }
         }');'
     }
@@ -167,7 +168,7 @@ describe('データ管理 - クラウド対応統合テスト', () => {
             if (dataManager.offlineManager') {'
                 dataManager.offlineManager.state.isOnline = false,
                 
-                const testData = { playerName: 'OfflinePlayer', score: 800 };
+                const testData = { playerName: 'OfflinePlayer', score: 800 },
                 
                 // オフライン操作の記録をモック
                 dataManager.offlineManager.recordOfflineOperation = jest.fn(').mockResolvedValue('op123') as jest.Mock;'
@@ -196,9 +197,9 @@ describe('データ管理 - クラウド対応統合テスト', () => {
                     synchronized: 2,
                     conflicts: 0,
                     errors: 0),
-                await dataManager.offlineManager.handleOnlineRecovery(),
+                await dataManager.offlineManager.handleOnlineRecovery();
                 // 設定により自動同期が実行される（遅延後）
-                jest.advanceTimersByTime(3000),
+                jest.advanceTimersByTime(3000);
                 await jest.runAllTimersAsync() }
         }');'
         test('接続品質が監視される', async () => {
@@ -219,17 +220,17 @@ describe('データ管理 - クラウド対応統合テスト', () => {
         test('LocalStorageからIndexedDBへのフォールバック', async () => {
             // DataManagerの実装がない場合はスキップ
             if (!dataManager || !dataManager.save') {'
-                console.warn('DataManager not properly initialized, skipping test'),
+                console.warn('DataManager not properly initialized, skipping test');
                 return }
             
             // LocalStorageエラーをシミュレート
             localStorage.setItem = jest.fn() as jest.Mock.mockImplementation((') => {'
                 throw new Error('QuotaExceededError') }');'
-            const testData = { test: 'fallback data' };
+            const testData = { test: 'fallback data' },
             
             try {
                 await Promise.race(['),'
-                    dataManager.save('testKey', testData),
+                    dataManager.save('testKey', testData);
                     new Promise((_, reject) => setTimeout((') => reject(new Error('Test timeout'), 5000))'
                 ]),
                 // フォールバック動作のテスト（実際の実装依存）
@@ -240,16 +241,16 @@ describe('データ管理 - クラウド対応統合テスト', () => {
         test('ストレージエラー時の適切なエラーハンドリング', async () => {
             // DataManagerの実装がない場合はスキップ
             if (!dataManager || !dataManager.save') {'
-                console.warn('DataManager not properly initialized, skipping test'),
+                console.warn('DataManager not properly initialized, skipping test');
                 return }
             
             // 全ストレージが失敗する場合
             localStorage.setItem = jest.fn() as jest.Mock.mockImplementation((') => {'
                 throw new Error('Storage not available') }');'
-            const testData = { test: 'error data' };
+            const testData = { test: 'error data' },
             
             await expect(Promise.race([');'
-                dataManager.save('errorKey', testData),
+                dataManager.save('errorKey', testData);
                 new Promise((_, reject) => setTimeout((') => reject(new Error('Test timeout'), 5000))'
             ])).rejects.toThrow();
         }');'
@@ -267,16 +268,16 @@ describe('データ管理 - クラウド対応統合テスト', () => {
         test('同期エラーが適切に処理される', async () => {
             if (dataManager.syncManager) {
                 dataManager.syncManager.sync = jest.fn() as jest.Mock.mockRejectedValue('),'
-                    new Error('Sync failed'),
+                    new Error('Sync failed');
                 await expect(dataManager.syncToCloud(')}'
                     .rejects.toThrow('Sync failed');
             }
         }');'
         test('ネットワーク断絶が適切に処理される', async (') => {'
             // ネットワークエラーをシミュレート
-            mockFetch.mockRejectedValue(new Error('Network error'),
+            mockFetch.mockRejectedValue(new Error('Network error');
             if (dataManager.offlineManager) {
-                const quality = await dataManager.offlineManager.checkConnectionQuality(),
+                const quality = await dataManager.offlineManager.checkConnectionQuality();
                 expect(dataManager.offlineManager.state.heartbeatFailures).toBeGreaterThan(0) }
         }');'
     }
@@ -284,14 +285,14 @@ describe('データ管理 - クラウド対応統合テスト', () => {
         test('データ保存が100ms以内に完了する', async () => {
             // DataManagerの実装がない場合はスキップ
             if (!dataManager || !dataManager.save') {'
-                console.warn('DataManager not properly initialized, skipping test'),
+                console.warn('DataManager not properly initialized, skipping test');
                 return }
             
-            const testData = { performance: 'test', timestamp: Date.now() };
+            const testData = { performance: 'test', timestamp: Date.now() },
             
             const startTime = performance.now();
             await Promise.race([');'
-                dataManager.save('performanceTest', testData),
+                dataManager.save('performanceTest', testData);
                 new Promise((_, reject) => setTimeout((') => reject(new Error('Test timeout'), 3000))'
             ]);
             const endTime = performance.now();
@@ -301,17 +302,17 @@ describe('データ管理 - クラウド対応統合テスト', () => {
         test('データ読み込みが50ms以内に完了する', async () => {
             // DataManagerの実装がない場合はスキップ
             if (!dataManager || !dataManager.save || !dataManager.load') {'
-                console.warn('DataManager not properly initialized, skipping test'),
+                console.warn('DataManager not properly initialized, skipping test');
                 return }
             
-            const testData = { performance: 'test' };
+            const testData = { performance: 'test' },
             await Promise.race([');'
-                dataManager.save('performanceRead', testData),
+                dataManager.save('performanceRead', testData);
                 new Promise((_, reject) => setTimeout((') => reject(new Error('Test timeout'), 3000))'
             ]);
             const startTime = performance.now();
             await Promise.race([');'
-                dataManager.load('performanceRead'),
+                dataManager.load('performanceRead');
                 new Promise((_, reject) => setTimeout((') => reject(new Error('Test timeout'), 3000))'
             ]);
             const endTime = performance.now();
@@ -321,15 +322,15 @@ describe('データ管理 - クラウド対応統合テスト', () => {
         test('大量データのチャンク処理が効率的に実行される', async (') => {'
             const largeData = {
                 data: 'x'.repeat(1000000), // 1MB
-                timestamp: Date.now( };
+                timestamp: Date.now( },
             
             if (dataManager.cloudStorage) {
                 // チャンク処理のモック
-                dataManager.cloudStorage.setChunked = jest.fn().mockResolvedValue(true as jest.Mock),
+                dataManager.cloudStorage.setChunked = jest.fn().mockResolvedValue(true as jest.Mock);
                 const startTime = performance.now('),'
                 // 大容量データの処理をシミュレート
-                await dataManager.cloudStorage.setChunked('largeData', largeData),
-                const endTime = performance.now(),
+                await dataManager.cloudStorage.setChunked('largeData', largeData);
+                const endTime = performance.now();
                 const duration = endTime - startTime,
                 
                 // チャンク処理が呼ばれることを確認
@@ -338,7 +339,7 @@ describe('データ管理 - クラウド対応統合テスト', () => {
     }
     describe('システム状態統合', (') => {'
         test('統合システム状態が正しく取得される', () => {
-            const offlineStatus = dataManager.getOfflineStatus(),
+            const offlineStatus = dataManager.getOfflineStatus();
             const syncStatus = dataManager.getSyncStatus('),'
             expect(offlineStatus.toHaveProperty('isOnline')'),'
             expect(offlineStatus.toHaveProperty('connectionQuality')'),'
@@ -348,7 +349,7 @@ describe('データ管理 - クラウド対応統合テスト', () => {
             if (dataManager.syncManager && dataManager.offlineManager) {
                 // 同期設定の更新
                 dataManager.syncManager.updateConfig({
-                    autoSyncInterval: 10 * 60 * 1000 });
+                    autoSyncInterval: 10 * 60 * 1000 },
                 expect(dataManager.syncManager.config.autoSyncInterval).toBe(10 * 60 * 1000);
                 // オフライン設定の更新
                 dataManager.offlineManager.updateConfig({
@@ -360,17 +361,17 @@ describe('データ管理 - クラウド対応統合テスト', () => {
         test('複数システム間でのデータ一貫性が保たれる', async () => {
             // DataManagerの実装がない場合はスキップ
             if (!dataManager || !dataManager.save || !dataManager.load') {'
-                console.warn('DataManager not properly initialized, skipping test'),
+                console.warn('DataManager not properly initialized, skipping test');
                 return }
             
             const testData = { 
                 consistency: 'test',
                 value: 12345,
-        timestamp: Date.now( };
+        timestamp: Date.now( },
             
             // DataManagerを通じてデータ保存
             await Promise.race([');'
-                dataManager.save('consistencyTest', testData),
+                dataManager.save('consistencyTest', testData);
                 new Promise((_, reject) => setTimeout((') => reject(new Error('Test timeout'), 5000))'
             ]');'
             // 直接読み込んで一貫性を確認
@@ -381,22 +382,22 @@ describe('データ管理 - クラウド対応統合テスト', () => {
         test('バックアップからの復旧でデータ一貫性が保たれる', async () => {
             // DataManagerの実装がない場合はスキップ
             if (!dataManager || !dataManager.save || !dataManager.load') {'
-                console.warn('DataManager not properly initialized, skipping test'),
+                console.warn('DataManager not properly initialized, skipping test');
                 return }
             
-            const originalData = { backup: 'test', value: 999 };
+            const originalData = { backup: 'test', value: 999 },
             
             // データ保存
             await Promise.race([');'
-                dataManager.save('backupTest', originalData),
+                dataManager.save('backupTest', originalData);
                 new Promise((_, reject) => setTimeout((') => reject(new Error('Test timeout'), 5000))'
             ]);
             // バックアップが利用可能な場合のテスト
             if (dataManager.backup) {
                 // バックアップ作成をモック
-                dataManager.backup.createBackup = jest.fn().mockResolvedValue(true as jest.Mock),
-                await dataManager.backup.createBackup(),
+                dataManager.backup.createBackup = jest.fn().mockResolvedValue(true as jest.Mock);
+                await dataManager.backup.createBackup();
                 expect(dataManager.backup.createBackup).toHaveBeenCalled() }
-        });
+        };
     }
 }');'

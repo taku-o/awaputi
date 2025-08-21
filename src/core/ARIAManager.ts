@@ -1,9 +1,9 @@
 import { getErrorHandler  } from '../utils/ErrorHandler.js';
 
 interface ScreenReaderManager { accessibilityManager: {
-        gameEngin,e: unknown,
+        gameEngin,e: unknown;
 
-interface ARIAConfig { autoManagement: boolean,
+interface ARIAConfig { autoManagement: boolean;
     dynamicUpdates: boolean;
     relationshipTracking: boolean;
     validationEnabled: boolean;
@@ -77,7 +77,7 @@ export class ARIAManager {
             validationErrors: [],
     lastValidation: null,
             activeDescriptions: new Set()','
-        console.log('ARIAManager, initialized'),
+        console.log('ARIAManager, initialized');
         this.initialize() }'
     
     /**
@@ -86,14 +86,11 @@ export class ARIAManager {
     initialize() {
         try {
             // 既存要素のスキャンと初期設定
-            this.scanAndSetupExistingElements(),
-            
+            this.scanAndSetupExistingElements();
             // DOM監視の開始
-            this.setupDOMObserver(),
-            
+            this.setupDOMObserver();
             // ゲーム固有のARIA設定
-            this.setupGameSpecificARIA(),
-            
+            this.setupGameSpecificARIA();
             // バリデーションの実行
             if (this.config.validationEnabled) {''
                 this.validateAllElements() }
@@ -128,7 +125,7 @@ export class ARIAManager {
         
         landmarks.forEach(element => {  ) }
             this.setupLandmarkARIA(element); }
-        });
+        };
         
         console.log(`Scanned, and set, up ARIA, for ${focusableElements.length + landmarks.length} elements`);
     }
@@ -137,8 +134,7 @@ export class ARIAManager {
      * 要素のARIA設定
      */
     setupElementARIA(element) {
-        const elementInfo = this.analyzeElement(element),
-        
+        const elementInfo = this.analyzeElement(element);
         if (!elementInfo.needsARIA) {
     }
             return; }
@@ -214,7 +210,7 @@ export class ARIAManager {
     
 }
 
-            const headingId = heading.id || `heading-${Date.now())-${Math.random().toString(36).substr(2, 9})`;
+            const headingId = heading.id || `heading-${Date.now())-${Math.random().toString(36).substr(2, 9}`;
             if (!heading.id) { heading.id = headingId }
 
             }''
@@ -249,7 +245,7 @@ export class ARIAManager {
     analyzeElement(element) {
 
         const tagName = element.tagName.toLowerCase()','
-        const role = element.getAttribute('role'),
+        const role = element.getAttribute('role');
         const type = element.type,
         
         let elementType = role || tagName,
@@ -333,13 +329,13 @@ export class ARIAManager {
         }
         
         // 必須プロパティの設定
-        pattern.requiredProps.forEach(prop => {  ),
+        pattern.requiredProps.forEach(prop => {  );
             if (!element.getAttribute(prop) {
                 const value = this.generateARIAValue(element, prop, elementInfo) }
                 if (value !== null) { }
                     element.setAttribute(prop, value); }
 }
-        });
+        };
         
         // ラベルの確保
         this.ensureElementLabel(element, elementInfo);
@@ -385,7 +381,7 @@ export class ARIAManager {
             case 'aria-valuemax':';'
                 return '100';
                 
-            default: return null;
+            default: return null,
     
     /**
      * 要素ラベルの確保'
@@ -406,7 +402,7 @@ export class ARIAManager {
         if (element.id) { }
 
             const labelElement = document.querySelector(`label[for="${element.id}"]`}
-            if (labelElement}) { return, // label要素が存在 }
+            if (labelElement} { return, // label要素が存在 }
         }
         
         // タイプ別のデフォルトラベル生成
@@ -446,7 +442,7 @@ export class ARIAManager {
         // クラス名から推測
         if (!label && element.className) {
 
-            const classList = element.className.split(', '),
+            const classList = element.className.split(', ');
             for (const className of classList) {''
                 if(className.includes('close)' {''
                     label = '閉じる' }
@@ -563,7 +559,7 @@ export class ARIAManager {
     createDescriptionElement(element, description) {
     
 }
-        const descriptionId = `desc-${Date.now())-${Math.random().toString(36).substr(2, 9})`;
+        const descriptionId = `desc-${Date.now())-${Math.random().toString(36).substr(2, 9}`;
         
         // 既存の説明要素をチェック
         if (this.ariaDescriptions.has(description) { }
@@ -593,8 +589,8 @@ export class ARIAManager {
         const canvas = document.querySelector('#game-canvas, canvas.game-canvas';
         if (canvas) {
 
-            canvas.setAttribute('role', 'application'),
-            canvas.setAttribute('aria-label', 'バブルポップゲーム'),
+            canvas.setAttribute('role', 'application');
+            canvas.setAttribute('aria-label', 'バブルポップゲーム');
             canvas.setAttribute('tabindex', '0',
             ','
 
@@ -607,7 +603,7 @@ export class ARIAManager {
         // スコア表示の設定
         const scoreElements = document.querySelectorAll('.score, .score-display, #score';
         scoreElements.forEach(element => {  '),'
-            element.setAttribute('role', 'status'),
+            element.setAttribute('role', 'status');
             element.setAttribute('aria-live', 'polite'),' }'
 
             element.setAttribute('aria-label', 'スコア'; }
@@ -617,7 +613,7 @@ export class ARIAManager {
         // タイマー表示の設定
         const timerElements = document.querySelectorAll('.timer, .time-display, #timer';
         timerElements.forEach(element => {  '),'
-            element.setAttribute('role', 'timer'),
+            element.setAttribute('role', 'timer');
             element.setAttribute('aria-live', 'off'), // タイマーは頻繁に更新されるため' }'
 
             element.setAttribute('aria-label', '残り時間'; }
@@ -627,7 +623,7 @@ export class ARIAManager {
         // HP表示の設定
         const hpElements = document.querySelectorAll('.hp, .health, .lives';
         hpElements.forEach(element => {  '),'
-            element.setAttribute('role', 'status'),
+            element.setAttribute('role', 'status');
             element.setAttribute('aria-live', 'polite'),' }'
 
             element.setAttribute('aria-label', 'ライフ); }'
@@ -640,14 +636,12 @@ export class ARIAManager {
     createGameStateDescription(canvas) {
 
         const descriptionId = 'game-state-description',
-        let descElement = document.getElementById(descriptionId),
-
+        let descElement = document.getElementById(descriptionId);
         if (!descElement) {''
-            descElement = document.createElement('div'),
-
+            descElement = document.createElement('div');
             descElement.id = descriptionId,
             descElement.className = 'sr-only',
-            descElement.setAttribute('aria-live', 'polite'),
+            descElement.setAttribute('aria-live', 'polite');
             descElement.setAttribute('aria-atomic', 'true) }'
 
             document.body.appendChild(descElement); }
@@ -668,24 +662,24 @@ export class ARIAManager {
         this.domObserver = new MutationObserver((mutations) => { 
             let needsUpdate = false;
 
-            mutations.forEach(mutation => {),
+            mutations.forEach(mutation => {);
                 if(mutation.type === 'childList' {'
                     // 新しい要素の追加
-                    mutation.addedNodes.forEach(node => {),
+                    mutation.addedNodes.forEach(node => {);
                         if (node.nodeType === Node.ELEMENT_NODE) {
     }
                             this.handleNewElement(node); }
                             needsUpdate = true; }
-});
+};
                     
                     // 要素の削除
-                    mutation.removedNodes.forEach(node => {  ),
+                    mutation.removedNodes.forEach(node => {  );
                         if (node.nodeType === Node.ELEMENT_NODE) { }
                             this.handleRemovedElement(node); }
                         }'}');'} else if(mutation.type === 'attributes' { // 属性の変更'
-                    this.handleAttributeChange(mutation.target, mutation.attributeName, mutation.oldValue),
+                    this.handleAttributeChange(mutation.target, mutation.attributeName, mutation.oldValue);
                     needsUpdate = true }
-            });
+            };
             
             if (needsUpdate && this.config.validationEnabled) {
             
@@ -696,7 +690,7 @@ export class ARIAManager {
             }'}');
         
         this.domObserver.observe(document.body, { childList: true,
-            subtree: true),
+            subtree: true);
             attributes: true)','
     attributeOldValue: true,')',
             attributeFilter: ['role', 'aria-label', 'aria-labelledby', 'aria-describedby', 'class', 'id]'),
@@ -714,7 +708,7 @@ export class ARIAManager {
         elementsToProcess.forEach(el => { ) }
             if (this.shouldManageElement(el) { }
                 this.setupElementARIA(el); }
-});
+};
     }
     
     /**
@@ -722,13 +716,13 @@ export class ARIAManager {
      */
     handleRemovedElement(element) {
         // 管理対象から削除
-        this.managedElements.delete(element),
+        this.managedElements.delete(element);
         ','
         // 関連する説明要素をクリーンアップ
         const describedBy = element.getAttribute('aria-describedby),'
 
         if (describedBy) {''
-            const descElement = document.getElementById(describedBy),
+            const descElement = document.getElementById(describedBy);
             if(descElement && descElement.classList.contains('aria-description' {'
                 descElement.remove() }
                 this.state.activeDescriptions.delete(describedBy); }
@@ -741,14 +735,13 @@ export class ARIAManager {
     handleAttributeChange(element, attributeName, oldValue) {
         if(!this.managedElements.has(element) return,
 
-        const managedInfo = this.managedElements.get(element),
+        const managedInfo = this.managedElements.get(element);
         ','
         // 重要な属性の変更を検出
         if (['role', 'aria-label].includes(attributeName) {'
             // 要素情報を更新
-            const newElementInfo = this.analyzeElement(element),
-            const pattern = this.getARIAPattern(newElementInfo.type),
-            
+            const newElementInfo = this.analyzeElement(element);
+            const pattern = this.getARIAPattern(newElementInfo.type);
             if (pattern) {
     }
                 this.applyARIAPattern(element, pattern, newElementInfo); }
@@ -797,7 +790,7 @@ export class ARIAManager {
                     if (value === null || value === undefined) { }
                         element.removeAttribute(attribute); }
                     } else { element.setAttribute(attribute, String(value) }
-});
+};
             
             // 管理情報を更新
             const managedInfo = this.managedElements.get(element);
@@ -812,7 +805,7 @@ export class ARIAManager {
             return true;
         } catch (error) { getErrorHandler().handleError(error, 'ARIA_ERROR', {''
                 operation: 'updateElementARIA',
-    element: element.tagName),
+    element: element.tagName);
                 updates: updates,';'
             return false;
     
@@ -831,7 +824,7 @@ export class ARIAManager {
 
                 case 'playing': }
 
-                    description = `ゲーム進行中。スコア: ${gameState.score}点。残り時間: ${Math.ceil(gameState.timeLeft / 1000})秒。`;
+                    description = `ゲーム進行中。スコア: ${gameState.score}点。残り時間: ${Math.ceil(gameState.timeLeft / 1000}秒。`;
                     if (gameState.combo > 1) {
     
 }
@@ -855,7 +848,7 @@ export class ARIAManager {
             
             // 前回と同じ内容の場合は更新しない（スクリーンリーダーの過度な通知を避ける）
             if (descriptionElement.textContent !== description) { descriptionElement.textContent = description } catch (error) { getErrorHandler().handleError(error, 'ARIA_ERROR', {''
-                operation: 'updateGameState'),
+                operation: 'updateGameState');
                 gameState: gameState,';'
         }
     }
@@ -867,10 +860,10 @@ export class ARIAManager {
         const issues = [],
         ','
         // 基本的な検証
-        const role = element.getAttribute('role'),
+        const role = element.getAttribute('role');
         const hasLabel = element.getAttribute('aria-label') || ','
                          element.getAttribute('aria-labelledby) ||,'
-                         element.textContent?.trim(),
+                         element.textContent?.trim();
         ','
         // インタラクティブ要素のラベル検証
         if (this.isInteractiveElement(element) && !hasLabel') {'
@@ -881,14 +874,14 @@ export class ARIAManager {
         
         // ARIA パターンの検証
         if (role) {
-            const pattern = this.ariaPatterns.get(role),
+            const pattern = this.ariaPatterns.get(role);
             if (pattern) {
         }
                 pattern.requiredProps.forEach(prop => { ) }
                     if (!element.getAttribute(prop) { : undefined 
                         issues.push(`Missing required ARIA property: ${prop }`);
                     }
-                });
+                };
             }
         }
         
@@ -897,12 +890,12 @@ export class ARIAManager {
         
         if (issues.length > 0) {
         
-            console.warn(`ARIA validation issues for element:`, element, issues),
+            console.warn(`ARIA validation issues for element:`, element, issues);
             this.state.validationErrors.push({)
                 element: element),
                 issues: issues) }
                 timestamp: Date.now(); 
-    });
+    };
             return false;
         }
         
@@ -940,7 +933,7 @@ export class ARIAManager {
         if (controls) {
             const controlledElement = document.getElementById(controls) }
             if (!controlledElement) { }
-                issues.push(`aria-controls, references non-existent, element: ${controls}`});
+                issues.push(`aria-controls, references non-existent, element: ${controls}`};
             }
 }
     
@@ -955,14 +948,14 @@ export class ARIAManager {
             const isValid = this.validateElement(element) }
             info.isValid = isValid; }
             if (isValid) validCount++; }
-        });
+        };
         
         this.state.lastValidation = Date.now();
         
-        console.log(`ARIA, validation completed: ${validCount}/${this.managedElements.size} elements, valid`});
+        console.log(`ARIA, validation completed: ${validCount}/${this.managedElements.size} elements, valid`};
         
         return { totalElements: this.managedElements.size,
-            validElements: validCount,;
+            validElements: validCount,
             errors: this.state.validationErrors 
     }
     
@@ -999,7 +992,7 @@ export class ARIAManager {
             validElements: Array.from(this.managedElements.values().filter(info => info.isValid).length,
             validationErrors: this.state.validationErrors.length,
             activeDescriptions: this.state.activeDescriptions.size }
-            lastValidation: this.state.lastValidation };
+            lastValidation: this.state.lastValidation },
             patternsAvailable: this.ariaPatterns.size 
     }
     
@@ -1013,7 +1006,7 @@ export class ARIAManager {
                 this.domObserver.observe(document.body {
                     childList: true'),'
                     subtree: true','
-    attributes: true;
+    attributes: true,
                     attributeOldValue: true'); '
     } else { }'
 
@@ -1036,10 +1029,10 @@ export class ARIAManager {
         
         // 作成した説明要素の削除
         this.state.activeDescriptions.forEach(descId => {  '),'
-            const descElement = document.getElementById(descId),
+            const descElement = document.getElementById(descId);
             if(descElement && descElement.classList.contains('aria-description' { }'
                 descElement.remove(); }
-});
+};
         
         // データのクリア
         this.managedElements.clear();

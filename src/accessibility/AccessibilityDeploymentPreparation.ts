@@ -6,22 +6,22 @@
 import { getErrorHandler  } from '../utils/ErrorHandler.js';
 
 // Interfaces for component structures
-interface ChecklistItem { id: string,
+interface ChecklistItem { id: string;
     name: string;
     status: 'pending' | 'passed' | 'failed' | 'error' | 'warning' | 'skipped'
             }
 
-interface ChecklistCategory { name: string,
+interface ChecklistCategory { name: string;
     items: ChecklistItem[];
 
-interface IntegrationChecklist { coreComponents: ChecklistCategory,
+interface IntegrationChecklist { coreComponents: ChecklistCategory;
     wcagCompliance: ChecklistCategory;
     gameIntegration: ChecklistCategory;
     performance: ChecklistCategory;
     crossBrowser: ChecklistCategory;
     documentation: ChecklistCategory;
 
-interface WCAGGuideline { name: string,
+interface WCAGGuideline { name: string;
     criteria: string[];
 
 interface WCAGGuidelines { perceivable: Record<string, WCAGGuideline>,
@@ -45,24 +45,24 @@ interface ValidationWarning { ''
     details?: any;
     timestamp: number;
 
-interface ChecklistSummary { total: number,
+interface ChecklistSummary { total: number;
     passed: number;
     failed: number;
     errors: number;
 
-interface WCAGComplianceResult { principle: string,
+interface WCAGComplianceResult { principle: string;
     compliant: boolean;
     violations: WCAGViolation[];
     warnings: string[];
     checksPassed: number;
     totalChecks: number;
 
-interface WCAGViolation { guideline: string,
+interface WCAGViolation { guideline: string;
     message: string;
     severity: 'error' | 'warning'
             }
 
-interface WCAGCheckResult { passed: boolean,
+interface WCAGCheckResult { passed: boolean;
     message: string;
     violations?: string[];
     warnings?: string[];
@@ -73,12 +73,12 @@ interface PerformanceMetric { duration?: number,
     usedJSHeapSize?: number;
     totalJSHeapSize?: number,  }
 
-interface PerformanceMetrics { renderingPerformance: PerformanceMetric,
+interface PerformanceMetrics { renderingPerformance: PerformanceMetric;
     memoryUsage: PerformanceMetric;
     loadingTime: PerformanceMetric;
     responsiveness: PerformanceMetric;
 
-interface ValidationResults { startTime: number | null,
+interface ValidationResults { startTime: number | null;
     endTime: number | null;
     overallStatus: 'pending' | 'passed' | 'failed' | 'warning';
     checklist: Record<string, ChecklistSummary>;
@@ -88,7 +88,7 @@ interface ValidationResults { startTime: number | null,
     warnings: ValidationWarning[];
     recommendations: DeploymentRecommendation[];
 
-interface DeploymentConfig { enabled: boolean,
+interface DeploymentConfig { enabled: boolean;
     strictValidation: boolean;
     generateDocumentation: boolean;
     createUserGuides: boolean;
@@ -97,27 +97,27 @@ interface DeploymentConfig { enabled: boolean,
     crossBrowserValidation: boolean;
     deploymentChecklist: boolean;
 
-interface DocumentationConfig { outputFormat: string[],
+interface DocumentationConfig { outputFormat: string[];
     includeScreenshots: boolean;
     includeCodeExamples: boolean;
     includeApiReference: boolean;
     languages: string[];
 
-interface DocumentationSection { title: string,
+interface DocumentationSection { title: string;
     content: string;
 
-interface Documentation { title: string,
+interface Documentation { title: string;
     sections: DocumentationSection[];
 
-interface APIMethod { name: string,
+interface APIMethod { name: string;
     description: string;
     parameters: any[];
     returns: string;
 
-interface APIDocumentation { title: string,
+interface APIDocumentation { title: string;
     methods: APIMethod[];
 
-interface GeneratedDocumentation { userGuide: Documentation,
+interface GeneratedDocumentation { userGuide: Documentation;
     developerGuide: Documentation;
     apiDocumentation: APIDocumentation;
     troubleshooting: Documentation;
@@ -135,7 +135,7 @@ interface DeploymentReportSummary { overallScore: number,''
     timestamp: string;
     validationDuration: number;
 
-interface DeploymentReport { summary: DeploymentReportSummary,
+interface DeploymentReport { summary: DeploymentReportSummary;
     checklist: Record<string, ChecklistSummary>;
     wcagCompliance: Record<string, WCAGComplianceResult>;
     performance: Partial<PerformanceMetrics>;
@@ -168,7 +168,7 @@ export class AccessibilityDeploymentPreparation {
     private integrationChecklist: IntegrationChecklist;
     private wcagGuidelines: WCAGGuidelines;
     private validationResults: ValidationResults;
-    private, documentationConfig: DocumentationConfig,
+    private, documentationConfig: DocumentationConfig;
 
     constructor(accessibilityManager: AccessibilityManager | null) {
         this.accessibilityManager = accessibilityManager;
@@ -177,16 +177,16 @@ export class AccessibilityDeploymentPreparation {
         // デプロイ準備設定
         this.config = { : undefined
             enabled: true;
-            strictValidation: true,
-            generateDocumentation: true,
-            createUserGuides: true,
-            performanceValidation: true,
-            wcagComplianceCheck: true,
-    crossBrowserValidation: true,
-            deploymentChecklist: true,;
+            strictValidation: true;
+            generateDocumentation: true;
+            createUserGuides: true;
+            performanceValidation: true;
+            wcagComplianceCheck: true;
+    crossBrowserValidation: true;
+            deploymentChecklist: true;
         // 統合検証チェックリスト
         this.integrationChecklist = { coreComponents: {''
-                name: 'コア コンポーネント統合',
+                name: 'コア コンポーネント統合';
                 items: ['
             }'
 
@@ -208,7 +208,7 @@ export class AccessibilityDeploymentPreparation {
             },
 
             wcagCompliance: { ''
-                name: 'WCAG 2.1 AA準拠',
+                name: 'WCAG 2.1 AA準拠';
                 items: ['
             }'
 
@@ -224,7 +224,7 @@ export class AccessibilityDeploymentPreparation {
             },
 
             gameIntegration: { ''
-                name: 'ゲームシステム統合',
+                name: 'ゲームシステム統合';
                 items: ['
             }'
 
@@ -242,7 +242,7 @@ export class AccessibilityDeploymentPreparation {
             },
 
             performance: { ''
-                name: 'パフォーマンス検証',
+                name: 'パフォーマンス検証';
                 items: ['
             }'
 
@@ -314,12 +314,12 @@ export class AccessibilityDeploymentPreparation {
             endTime: null,
             overallStatus: 'pending'
             }
-            checklist: {};
-            wcagCompliance: {};
-            performanceMetrics: {};
-            issues: [];
+            checklist: {},
+            wcagCompliance: {},
+            performanceMetrics: {},
+            issues: [],
             warnings: [],
-    recommendations: [];
+    recommendations: [],
         },
         
         // ドキュメント生成設定
@@ -342,20 +342,15 @@ export class AccessibilityDeploymentPreparation {
         this.validationResults.startTime = Date.now();
         
         try { // 1. コアコンポーネント統合検証
-            await this.validateCoreComponents(),
-            
+            await this.validateCoreComponents();
             // 2. WCAG 2.1 AA準拠検証
-            await this.validateWCAGCompliance(),
-            
+            await this.validateWCAGCompliance();
             // 3. ゲームシステム統合検証
-            await this.validateGameIntegration(),
-            
+            await this.validateGameIntegration();
             // 4. パフォーマンス検証
-            await this.validatePerformance(),
-            
+            await this.validatePerformance();
             // 5. クロスブラウザ検証
-            await this.validateCrossBrowser(),
-            
+            await this.validateCrossBrowser();
             // 6. ドキュメント生成
             if (this.config.generateDocumentation) {
     
@@ -373,9 +368,9 @@ export class AccessibilityDeploymentPreparation {
             this.validationResults.issues.push({)'
                 type: 'critical',')',
                 component: 'validation') }
-                message: `Validation process, failed: ${(error, as, Error}).message}`;
+                message: `Validation process, failed: ${(error, as, Error}.message}`;
                 timestamp: Date.now();
-            });
+            };
         } finally { this.validationResults.endTime = Date.now() }
         
         return this.validationResults;
@@ -393,7 +388,7 @@ export class AccessibilityDeploymentPreparation {
         ','
 
             try {'
-                const isValid = await this.validateComponent(component.id),
+                const isValid = await this.validateComponent(component.id);
                 component.status = isValid ? 'passed' : 'failed',
 
                 if (!isValid) {
@@ -402,14 +397,14 @@ export class AccessibilityDeploymentPreparation {
                         component: component.id) }
                         message: `Core component validation, failed: ${component.name}`
             }
-                        timestamp: Date.now());
-                    });'} catch (error) {'
+                        timestamp: Date.now()),
+                    };'} catch (error) {'
                 component.status = 'error',
 
                 this.validationResults.issues.push({)'
                     type: 'error'),
                     component: component.id) }
-                    message: `Component validation, error: ${(error, as, Error}).message}`;
+                    message: `Component validation, error: ${(error, as, Error}.message}`;
                     timestamp: Date.now( }');'
             }
         }
@@ -446,9 +441,9 @@ export class AccessibilityDeploymentPreparation {
             case 'motorAccessibility':','
                 return, this.accessibilityManager?.motorAccessibilityManager !== undefined && ','
                        this.validateMotorAccessibility('',
-            case 'cognitiveSupport':),
+            case 'cognitiveSupport':);
                 return this.accessibilityManager?.cognitiveAccessibilityManager !== undefined && ),
-                       this.validateCognitiveSupport(),
+                       this.validateCognitiveSupport();
              : undefined
         
             default: return false,
@@ -457,15 +452,14 @@ export class AccessibilityDeploymentPreparation {
      * WCAG 2.1 AA準拠検証'
      */''
     private async validateWCAGCompliance()','
-        console.log('Validating WCAG 2.1 AA compliance...'),
-        
+        console.log('Validating WCAG 2.1 AA compliance...');
         const wcagItems = this.integrationChecklist.wcagCompliance.items,
         
         for (const item of wcagItems') {'
         ','
 
             try {'
-                const complianceResult = await this.checkWCAGCompliance(item.id),
+                const complianceResult = await this.checkWCAGCompliance(item.id);
                 item.status = complianceResult.compliant ? 'passed' : 'failed',
                 
                 this.validationResults.wcagCompliance[item.id] = complianceResult,
@@ -479,17 +473,17 @@ export class AccessibilityDeploymentPreparation {
         }
                             message: violation.message) }
                             timestamp: Date.now(); 
-    });
+    };
 
-                    });'} catch (error) {'
+                    };'} catch (error) {'
                 item.status = 'error',
 
                 this.validationResults.issues.push({)'
                     type: 'error'),
                     component: item.id) }
-                    message: `WCAG compliance check, error: ${(error, as, Error}).message}`;
+                    message: `WCAG compliance check, error: ${(error, as, Error}.message}`;
                     timestamp: Date.now();
-                });
+                };
             }
 }
     
@@ -502,7 +496,7 @@ export class AccessibilityDeploymentPreparation {
             violations: [],
             warnings: [],
             checksPassed: 0,
-    totalChecks: 0  };
+    totalChecks: 0  },
         const guidelines = this.wcagGuidelines[principle as keyof WCAGGuidelines];
         if (!guidelines) { return result }
         
@@ -511,18 +505,17 @@ export class AccessibilityDeploymentPreparation {
             for (const criterion of guideline.criteria) {
                 result.totalChecks++,
                 
-                const checkResult = await this.performWCAGCheck(principle, guidelineNum, criterion),
-
+                const checkResult = await this.performWCAGCheck(principle, guidelineNum, criterion);
                 if (checkResult.passed) {
     
 }
                     result.checksPassed++; }
                 } else {  result.compliant = false }
                     result.violations.push({
-            });
+            };
                         guideline: `${guidelineNum}.${criterion}`)'
                         message: checkResult.message,')';
-                        severity: 'error');
+                        severity: 'error'),
                 }
                 
                 if (checkResult.warnings) { result.warnings.push(...checkResult.warnings) }
@@ -560,12 +553,11 @@ export class AccessibilityDeploymentPreparation {
             case 'robust-4.1-4.1.1': // 構文解析,
                 return, this.checkMarkupValidity()','
             case 'robust-4.1-4.1.2': // 名前・役割・値),
-                return this.checkAriaImplementation(),
-            
+                return this.checkAriaImplementation();
             default:
 }
                 return {  };
-                    passed: true;
+                    passed: true,
                     message: `Check ${checkId} not implemented - assuming compliant`
                 }
     }
@@ -584,7 +576,7 @@ export class AccessibilityDeploymentPreparation {
 
             }'}');
         
-        return { passed: violations.length = == 0 };
+        return { passed: violations.length = == 0 },
             message: violations.length > 0 ? undefined : undefined 
                 `${violations.length} images missing alt text` : ', 'All images have appropriate alt text';'
             violations;
@@ -598,17 +590,17 @@ export class AccessibilityDeploymentPreparation {
         let violationCount = 0;
         let checkedCount = 0;
         
-        textElements.forEach(element => {  ),
+        textElements.forEach(element => {  );
             if (element.textContent?.trim() {
                 checkedCount++,
                 const contrast = this.calculateContrastRatio(element) }
                 if (contrast !== null && contrast < 4.5) { }
                     violationCount++; }
 }
-        });
+        };
         
         return { : undefined
-            passed: violationCount = == 0  };
+            passed: violationCount = == 0  },
             message: violationCount > 0 ? undefined : undefined 
                 `${violationCount}/${checkedCount} elements fail contrast requirements` :
                 `All ${checkedCount} text elements meet contrast requirements`
@@ -621,13 +613,12 @@ export class AccessibilityDeploymentPreparation {
         const interactiveElements = document.querySelectorAll()','
             'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"]"),'
         
-        const nonKeyboardAccessible = Array.from(interactiveElements).filter(element => { ),
-
+        const nonKeyboardAccessible = Array.from(interactiveElements).filter(element => { );
             const tabIndex = (element, as HTMLElement).tabIndex,' }'
 
             return tabIndex === -1 || (tabIndex === 0 && (element, as HTMLElement').style.display === 'none');;'
         
-        return { passed: nonKeyboardAccessible.length = == 0 };
+        return { passed: nonKeyboardAccessible.length = == 0 },
             message: nonKeyboardAccessible.length === 0 ? }
                 `All ${interactiveElements.length} interactive elements are keyboard accessible` :
                 `${nonKeyboardAccessible.length} elements are not keyboard accessible`
@@ -645,7 +636,7 @@ export class AccessibilityDeploymentPreparation {
         ','
 
             try {'
-                const isIntegrated = await this.validateGameSystemIntegration(item.id),
+                const isIntegrated = await this.validateGameSystemIntegration(item.id);
                 item.status = isIntegrated ? 'passed' : 'failed',
 
                 if (!isIntegrated) {
@@ -654,16 +645,16 @@ export class AccessibilityDeploymentPreparation {
                         component: item.id) }
                         message: `Game system integration, failed: ${item.name}`
             }
-                        timestamp: Date.now());
-                    });'} catch (error) {'
+                        timestamp: Date.now()),
+                    };'} catch (error) {'
                 item.status = 'error',
 
                 this.validationResults.issues.push({)'
                     type: 'error'),
                     component: item.id) }
-                    message: `Game integration validation, error: ${(error, as, Error}).message}`;
+                    message: `Game integration validation, error: ${(error, as, Error}.message}`;
                     timestamp: Date.now();
-                });
+                };
             }
 }
     
@@ -675,7 +666,7 @@ export class AccessibilityDeploymentPreparation {
         
         const performanceResults: PerformanceMetrics = { renderingPerformance: await this.measureRenderingPerformance() memoryUsage: await this.measureMemoryUsage(),
             loadingTime: await this.measureLoadingTime(
-    responsiveness: await this.measureResponsiveness() };
+    responsiveness: await this.measureResponsiveness() },
         
         this.validationResults.performanceMetrics = performanceResults;
         
@@ -694,7 +685,7 @@ export class AccessibilityDeploymentPreparation {
                         component: item.id) }
                         message: `Performance, warning: ${item.name}`
             }
-                        details: metric;
+                        details: metric,
 
                         timestamp: Date.now());'}');
                 }
@@ -713,7 +704,7 @@ export class AccessibilityDeploymentPreparation {
         
         const documentation: GeneratedDocumentation = { userGuide: this.generateUserGuide() developerGuide: this.generateDeveloperGuide(),
             apiDocumentation: this.generateAPIDocumentation(
-    troubleshooting: this.generateTroubleshootingGuide(  };
+    troubleshooting: this.generateTroubleshootingGuide(  },
         ';'
         // ドキュメントの保存
         this.saveDocumentation(documentation);
@@ -796,7 +787,7 @@ export class AccessibilityDeploymentPreparation {
     private generateAPIDocumentation(): APIDocumentation { ''
         const apiMethods = this.extractAPIMethods('''
             title: 'BubblePop アクセシビリティ API リファレンス',
-    methods: apiMethods;
+    methods: apiMethods,
     
     /**
      * トラブルシューティングガイドの生成'
@@ -817,23 +808,22 @@ export class AccessibilityDeploymentPreparation {
             }]
                 }]
             ]);
-            });
+            };
     /**
      * デプロイメントレポートの生成
      */)
-    generateDeploymentReport(): DeploymentReport { const overallScore = this.calculateOverallScore(),
-        const readinessLevel = this.determineReadinessLevel(overallScore),
-        
+    generateDeploymentReport(): DeploymentReport { const overallScore = this.calculateOverallScore();
+        const readinessLevel = this.determineReadinessLevel(overallScore);
         return { summary: {
                 overallScore,
                 readinessLevel,
-                timestamp: new Date().toISOString() };
+                timestamp: new Date().toISOString() },
                 validationDuration: (this.validationResults.endTime || 0) - (this.validationResults.startTime || 0), 
     },
-            checklist: this.validationResults.checklist;
-            wcagCompliance: this.validationResults.wcagCompliance;
-            performance: this.validationResults.performanceMetrics;
-            issues: this.validationResults.issues;
+            checklist: this.validationResults.checklist,
+            wcagCompliance: this.validationResults.wcagCompliance,
+            performance: this.validationResults.performanceMetrics,
+            issues: this.validationResults.issues,
             warnings: this.validationResults.warnings,
     recommendations: this.generateDeploymentRecommendations();
         }
@@ -853,8 +843,8 @@ export class AccessibilityDeploymentPreparation {
                     totalPoints += 10;' }'
 
                 } else if(item.status === 'warning' { totalPoints += 5 }'
-            });
-        });
+            };
+        };
         
         return maxPoints > 0 ? Math.round((totalPoints / maxPoints) * 100) : 0;
     }
@@ -904,7 +894,7 @@ export class AccessibilityDeploymentPreparation {
                 category: 'optimization'
             }''
                 message: `${performanceWarnings.length} performance warnings detected`,')'
-                action: 'Optimize performance to improve user experience');
+                action: 'Optimize performance to improve user experience'),
         }
         
         return recommendations;
@@ -916,7 +906,7 @@ export class AccessibilityDeploymentPreparation {
         // (AccessibilityIntegrationTester.jsから再利用),
         return 4.5, // 簡略化のため固定値 }
     
-    private async measureRenderingPerformance(): Promise<PerformanceMetric> { const startTime = performance.now(),
+    private async measureRenderingPerformance(): Promise<PerformanceMetric> { const startTime = performance.now();
         // レンダリング性能測定のシミュレーション
         for(let, i = 0, i < 100, i++) {', ' }
 
@@ -929,7 +919,7 @@ export class AccessibilityDeploymentPreparation {
         const duration = performance.now() - startTime;
         
         return { duration,
-            available: true,;
+            available: true,
             acceptable: duration < 100 // 100ms以内 
     }
     
@@ -944,13 +934,13 @@ export class AccessibilityDeploymentPreparation {
     
     private async measureLoadingTime(): Promise<PerformanceMetric> { // Stub implementation
         return { available: true,
-            acceptable: true,;
+            acceptable: true,
             duration: 100 
     }
     
     private async measureResponsiveness(): Promise<PerformanceMetric> { // Stub implementation
         return { available: true,
-            acceptable: true,;
+            acceptable: true,
             duration: 50 
     }
     
@@ -959,9 +949,8 @@ export class AccessibilityDeploymentPreparation {
         
         if (this.accessibilityManager) {
         
-            const prototype = Object.getPrototypeOf(this.accessibilityManager),
-            const methodNames = Object.getOwnPropertyNames(prototype),
-
+            const prototype = Object.getPrototypeOf(this.accessibilityManager);
+            const methodNames = Object.getOwnPropertyNames(prototype);
             methodNames.forEach(name => { '),'
                 if (typeof, this.accessibilityManager![name, as keyof, AccessibilityManager] === 'function' && !name.startsWith('_) {'
     
@@ -970,11 +959,11 @@ export class AccessibilityDeploymentPreparation {
 
                         name,' }'
 
-                        description: `AccessibilityManager.${name}() method`;
+                        description: `AccessibilityManager.${name}() method`,
                         parameters: [],
-                        returns: 'Mixed';
-                    }) }
-            });
+                        returns: 'Mixed',
+                    } }
+            };
         }
         
         return methods;
@@ -1003,23 +992,23 @@ export class AccessibilityDeploymentPreparation {
     }
 
     private checkTextResize('''
-            message: 'Text resize functionality is supported';
+            message: 'Text resize functionality is supported',
         } }
 
     private checkKeyboardTraps('';
-            message: 'No keyboard traps detected';
+            message: 'No keyboard traps detected',
         } }
 
     private checkSkipLinks('';
-            message: 'Skip links are properly implemented';
+            message: 'Skip links are properly implemented',
         } }
 
     private checkPageTitle('';
-            message: document.title.length > 0 ? 'Page has a title' : 'Page is missing a title';
+            message: document.title.length > 0 ? 'Page has a title' : 'Page is missing a title',
         } }
 
     private checkFocusOrder('';
-            message: 'Focus order is logical and consistent';
+            message: 'Focus order is logical and consistent',
         } }
 
     private checkPageLanguage('';
@@ -1027,7 +1016,7 @@ export class AccessibilityDeploymentPreparation {
         }
 
     private checkMarkupValidity('';
-            message: 'Markup is valid and well-formed';
+            message: 'Markup is valid and well-formed',
         } }
 
     private checkAriaImplementation('';
@@ -1053,8 +1042,8 @@ export class AccessibilityDeploymentPreparation {
             this.validationResults.overallStatus = 'passed'; }
         }
         
-        console.log(`Integration, validation completed: ${this.validationResults.overallStatus}`});
-        console.log(`Issues: ${totalIssues}, Warnings: ${this.validationResults.warnings.length}`});
+        console.log(`Integration, validation completed: ${this.validationResults.overallStatus}`};
+        console.log(`Issues: ${totalIssues}, Warnings: ${this.validationResults.warnings.length}`};
     }
     
     // パブリックAPI
@@ -1062,14 +1051,14 @@ export class AccessibilityDeploymentPreparation {
     /**
      * デプロイメント準備状況の取得
      */
-    getDeploymentReadiness(): DeploymentReadiness { const overallScore = this.calculateOverallScore(),
+    getDeploymentReadiness(): DeploymentReadiness { const overallScore = this.calculateOverallScore();
         ','
 
         return { score: overallScore,''
             level: this.determineReadinessLevel(overallScore,
             status: this.validationResults.overallStatus,
             criticalIssues: this.validationResults.issues.filter(i => i.type === 'critical).length,'
-            totalIssues: this.validationResults.issues.length };
+            totalIssues: this.validationResults.issues.length },
             recommendations: this.generateDeploymentRecommendations().slice(0, 3); }
         }
     

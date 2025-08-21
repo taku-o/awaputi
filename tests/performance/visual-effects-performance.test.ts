@@ -9,10 +9,10 @@ let renderCallCount = 0;
 let renderTime = 0;
 global.HTMLCanvasElement.prototype.getContext = jest.fn(() => ({
     fillRect: jest.fn(() => {
-        const start = performance.now(),
+        const start = performance.now();
         renderCallCount++,
         // Simulate small render time
-        const end = performance.now(),
+        const end = performance.now();
         renderTime += (end - start)),
     strokeRect: jest.fn(
     clearRect: jest.fn(
@@ -38,7 +38,7 @@ global.HTMLCanvasElement.prototype.getContext = jest.fn(() => ({
     canvas: {
         width: 800,
         height: 600
-            });
+            };
 ));
 // Enhanced performance API mock
 (global: any).performance = {
@@ -47,7 +47,7 @@ global.HTMLCanvasElement.prototype.getContext = jest.fn(() => ({
         usedJSHeapSize: 1000000,
         totalJSHeapSize: 2000000,
         jsHeapSizeLimit: 4000000
-    }),
+    },
     mark: jest.fn(
     measure: jest.fn(
     getEntriesByType: jest.fn(() => [],
@@ -71,15 +71,15 @@ describe('Visual Effects Performance Tests', () => {
         renderTime = 0,
         
         // Setup canvas
-        canvas = document.createElement('canvas'),
+        canvas = document.createElement('canvas');
         canvas.width = 800,
         canvas.height = 600,
-        context = canvas.getContext('2d'),
+        context = canvas.getContext('2d');
         // Initialize managers
-        particleManager = new EnhancedParticleManager(canvas),
-        effectManager = new EnhancedEffectManager(canvas),
-        animationManager = new AnimationManager(canvas),
-        qualityController = new EffectQualityController() });
+        particleManager = new EnhancedParticleManager(canvas);
+        effectManager = new EnhancedEffectManager(canvas);
+        animationManager = new AnimationManager(canvas);
+        qualityController = new EffectQualityController() };
     afterEach(() => {
         // Cleanup
         particleManager? .destroy?.(),
@@ -119,7 +119,7 @@ describe('Visual Effects Performance Tests', () => {
             const iterations = 100,
             const particlesPerIteration = 50,
             const startMemory = performance.memory.usedJSHeapSize,
-            const startTime = performance.now(),
+            const startTime = performance.now();
             for (let i = 0, i < iterations, i++) {
                 // Create particles
                 particleManager.createAdvancedBubbleEffect?.(
@@ -150,7 +150,7 @@ describe('Visual Effects Performance Tests', () => {
             const baseParticleCount = 100,
             for (const quality of qualityLevels) {
                 particleManager.setParticleQuality?.(quality),
-                const startTime = performance.now(),
+                const startTime = performance.now();
                 // Create effects
                 for (let i = 0, i < 10, i++') {'
                     particleManager.createAdvancedBubbleEffect?.(
@@ -188,7 +188,7 @@ describe('Visual Effects Performance Tests', () => {
                 const effectType = ['fade', 'slide', 'zoom', 'pulse'][i % 4],
                 effectManager.addTransitionEffect(effectType, 1000 + (i * 20), { : undefined
                     intensity: 0.5 + (i % 5) * 0.1
-                });
+                };
             }
             const startTime = performance.now();
             for (let frame = 0; frame < frames; frame++) {
@@ -205,17 +205,17 @@ describe('Visual Effects Performance Tests', () => {
             const testFrames = 100,
             // Create multiple light sources
             for (let i = 0, i < lightCount, i++) {
-                effectManager.addLightSource(),
+                effectManager.addLightSource();
                     Math.random() * 800,
                     Math.random() * 600,
                     0.5 + Math.random() * 0.5,
                     `hsl(${i * 18), 70%, 50%)`,
                     40 + Math.random() * 60
-                });
+                };
             }
             const startTime = performance.now();
             for (let frame = 0; frame < testFrames; frame++) {
-                effectManager.updateLightSources(16),
+                effectManager.updateLightSources(16);
                 effectManager.renderLighting?.(context) }
             const endTime = performance.now();
             const totalTime = endTime - startTime;
@@ -232,11 +232,11 @@ describe('Visual Effects Performance Tests', () => {
                 // Create standard set of effects
                 effectManager.addTransitionEffect('fade', 1000'),'
                 effectManager.addLightSource(200, 200, 1.0, '#FFFFFF', 100'),'
-                effectManager.addBackgroundEffect('floating_particles', 0.5, 5000),
-                const startTime = performance.now(),
+                effectManager.addBackgroundEffect('floating_particles', 0.5, 5000);
+                const startTime = performance.now();
                 // Render multiple frames
                 for (let frame = 0, frame < 60, frame++) {
-                    effectManager.update(16),
+                    effectManager.update(16);
                     effectManager.render(context) }
                 const endTime = performance.now();
                 renderTimes[quality] = endTime - startTime;
@@ -255,7 +255,7 @@ describe('Visual Effects Performance Tests', () => {
             const elements: any[] = [],
             // Create UI elements
             for (let i = 0, i < elementCount, i++') {'
-                const element = document.createElement('div'),
+                const element = document.createElement('div');
                 element.style.position = 'absolute',
                 element.style.left = `${i * 20}px`;
                 element.style.top = `${i * 15}px`;
@@ -265,7 +265,7 @@ describe('Visual Effects Performance Tests', () => {
             // Start animations
             elements.forEach((element, index') => {'
                 const animationType = ['slide', 'fade', 'bounce', 'scale'][index % 4],
-                animationManager.animateUIElement? .(element, animationType, animationDuration) });
+                animationManager.animateUIElement? .(element, animationType, animationDuration) };
             // Update animations
             const frames = 60; // 1 second worth
             for (let frame = 0; frame < frames; frame++) {
@@ -281,17 +281,17 @@ describe('Visual Effects Performance Tests', () => {
             const bubbles: any[] = [],
             // Create bubble objects
             for (let i = 0, i < bubbleCount, i++) {
-                bubbles.push({),
+                bubbles.push({);
                     x: Math.random() * 800,
                     y: Math.random() * 600,
                     size: 15 + Math.random(') * 20,'
                     type: ['normal', 'stone', 'rainbow'][i % 3]
-                });
+                };
             }
             const startTime = performance.now();
             // Animate all bubbles spawning
             bubbles.forEach(bubble => {'),'
-                animationManager.animateBubbleSpawn? .(bubble, 'scale') });
+                animationManager.animateBubbleSpawn? .(bubble, 'scale') };
             // Update spawn animations
             for (let frame = 0; frame < 30; frame++) { // 0.5 seconds
                 animationManager.update?.(16) }
@@ -313,10 +313,10 @@ describe('Visual Effects Performance Tests', () => {
                     'normal',
                     10
                 '),'
-                effectManager.addTransitionEffect('pulse', 200),
+                effectManager.addTransitionEffect('pulse', 200);
                 // Update and cleanup
                 particleManager.update?.(250), // Long enough to expire
-                effectManager.update(250),
+                effectManager.update(250);
                 particleManager.cleanupExpiredParticles?.(),
                 effectManager.cleanupExpiredEffects?.(),
                 // Take memory snapshot every 10 iterations
@@ -325,8 +325,8 @@ describe('Visual Effects Performance Tests', () => {
             }
             // Memory should stabilize (not grow indefinitely);
             if (memorySnapshots.length >= 3) {
-                const firstHalf = memorySnapshots.slice(0, Math.floor(memorySnapshots.length / 2),
-                const secondHalf = memorySnapshots.slice(Math.floor(memorySnapshots.length / 2),
+                const firstHalf = memorySnapshots.slice(0, Math.floor(memorySnapshots.length / 2);
+                const secondHalf = memorySnapshots.slice(Math.floor(memorySnapshots.length / 2);
                 const firstAvg = firstHalf.reduce((a, b) => a + b, 0) / firstHalf.length,
                 const secondAvg = secondHalf.reduce((a, b) => a + b, 0) / secondHalf.length,
                 
@@ -389,7 +389,7 @@ describe('Visual Effects Performance Tests', () => {
             const frameCount = 60;
             for (let frame = 0; frame < frameCount; frame++) {
                 particleManager.render?.(context),
-                effectManager.render(context),
+                effectManager.render(context);
                 animationManager.render?.(context) }
             const endTime = performance.now();
             const totalRenderTime = endTime - startTime;
@@ -461,7 +461,7 @@ describe('Visual Effects Performance Tests', () => {
         test('should handle rapid quality changes efficiently', async (') => {'
             const qualityChanges = 100,
             const qualities = ['low', 'medium', 'high', 'ultra'],
-            const startTime = performance.now(),
+            const startTime = performance.now();
             for (let i = 0, i < qualityChanges, i++) {
                 const quality = qualities[i % qualities.length],
                 qualityController.setQualityLevel?.(quality),
@@ -506,7 +506,7 @@ describe('Visual Effects Performance Tests', () => {
         }, PERFORMANCE_TIMEOUT');'
         test('should handle continuous effect creation and destruction', async () => {
             const duration = 5000, // 5 seconds
-            const startTime = performance.now(),
+            const startTime = performance.now();
             let iterations = 0,
             while (performance.now() - startTime < duration) {
                 // Create effects
@@ -516,10 +516,10 @@ describe('Visual Effects Performance Tests', () => {
                     'normal',
                     10
                 '),'
-                effectManager.addTransitionEffect('pulse', 100),
+                effectManager.addTransitionEffect('pulse', 100);
                 // Update and cleanup
                 particleManager.update?.(50),
-                effectManager.update(50),
+                effectManager.update(50);
                 iterations++,
                 // Periodic cleanup
                 if (iterations % 100 === 0) {

@@ -9,60 +9,60 @@
  */
 
 // 型定義
-export interface DataProcessorConfig { outlierThreshold: number,
+export interface DataProcessorConfig { outlierThreshold: number;
     minimumSampleSize: number;
     maximumSampleSize: number;
     defaultSamplingRate: number;
     maxProcessingTime: number;
 
-export interface QualityMetrics { completeness: number,
+export interface QualityMetrics { completeness: number;
     consistency: number;
     accuracy: number;
     validity: number;
 
-export interface ProcessedComparisonData { timestamp: string,
+export interface ProcessedComparisonData { timestamp: string;
     original?: ComparisonInputData;
     processed: NormalizedComparisonData;
     metadata: ProcessingMetadata;
     error?: string;
 
-export interface ComparisonInputData { dataset1: number[],
+export interface ComparisonInputData { dataset1: number[];
     dataset2: number[];
     metadata?: Record<string, any> }
 
-export interface NormalizedComparisonData { dataset1: number[],
+export interface NormalizedComparisonData { dataset1: number[];
     dataset2: number[];
     metadata: NormalizationMetadata;
 
-export interface NormalizationMetadata { normalizationType: NormalizationType,
+export interface NormalizationMetadata { normalizationType: NormalizationType;
     timestamp: string;
     outlierRemoval?: OutlierRemovalMetadata;
     sampling?: SamplingMetadata;
     [key: string]: any;
 
-export interface ProcessingMetadata { processingTime: number,
+export interface ProcessingMetadata { processingTime: number;
     qualityScore: number;
     warnings: string[];
     errors: string[];
 
-export interface ValidationResult { valid: boolean,
+export interface ValidationResult { valid: boolean;
     errors: string[];
     warnings: string[];
     quality?: number;
 
-export interface DatasetValidationResult { errors: string[],
+export interface DatasetValidationResult { errors: string[];
     warnings: string[];
 
-export interface OutlierRemovalMetadata { threshold: number,
+export interface OutlierRemovalMetadata { threshold: number;
     timestamp: string;
     dataset1: OutlierStats;
     dataset2: OutlierStats;
 
-export interface OutlierStats { original: number,
+export interface OutlierStats { original: number;
     cleaned: number;
     removed: number;
 
-export interface SamplingMetadata { method: SamplingMethod,
+export interface SamplingMetadata { method: SamplingMethod;
     rate: number;
     timestamp: string;
 
@@ -76,13 +76,13 @@ export interface ProcessingOptions { removeOutliers?: boolean,
 export interface SamplingOptions { method?: SamplingMethod,
     rate?: number;
 
-export interface StatisticalSummary { mean: number,
+export interface StatisticalSummary { mean: number;
     median: number;
     stddev: number;
     range: number;
     count: number;
 
-export interface DataQualityReport { overallQuality: number,
+export interface DataQualityReport { overallQuality: number;
     dataset1Quality: number;
     dataset2Quality: number;
     completenessScore: number;
@@ -90,7 +90,7 @@ export interface DataQualityReport { overallQuality: number,
     sizeScore: number;
     balanceScore: number;
 
-export interface NormalizationResult { data: number[],
+export interface NormalizationResult { data: number[];
     method: NormalizationType;
     parameters: NormalizationParameters;
 
@@ -101,13 +101,13 @@ export interface NormalizationParameters { mean?: number,
     median?: number;
     iqr?: number;
 
-export interface SamplingResult { originalSize: number,
+export interface SamplingResult { originalSize: number;
     sampledSize: number;
     method: SamplingMethod;
     rate: number;
     data: number[];
 
-export interface QuantileResult { value: number,
+export interface QuantileResult { value: number;
     quantile: number;
     position: number;
 
@@ -119,29 +119,29 @@ export type QualityDimension = 'completeness' | 'consistency' | 'accuracy' | 'va
 
 // 定数
 export const DEFAULT_CONFIG: DataProcessorConfig = { outlierThreshold: 2.5, // Z-score閾値
-    minimumSampleSize: 5,
-    maximumSampleSize: 10000,
-    defaultSamplingRate: 0.1,
+    minimumSampleSize: 5;
+    maximumSampleSize: 10000;
+    defaultSamplingRate: 0.1;
     maxProcessingTime: 5000 // 5秒  };
-export const DEFAULT_QUALITY_METRICS: QualityMetrics = { completeness: 0,
-    consistency: 0,
-    accuracy: 0,
+export const DEFAULT_QUALITY_METRICS: QualityMetrics = { completeness: 0;
+    consistency: 0;
+    accuracy: 0;
     validity: 0  };
 export const NORMALIZATION_TYPES: NormalizationType[] = ['none', 'z-score', 'min-max', 'robust'];
 export const SAMPLING_METHODS: SamplingMethod[] = ['random', 'systematic', 'stratified'];
 export const METRIC_TYPES: MetricType[] = ['mean', 'median', 'stddev', 'range', 'count'];
 
-export const QUALITY_THRESHOLDS = { excellent: 0.9,
-    good: 0.7,
-    acceptable: 0.5,
+export const QUALITY_THRESHOLDS = { excellent: 0.9;
+    good: 0.7;
+    acceptable: 0.5;
     poor: 0.3  } as const;
-export const VALIDATION_THRESHOLDS = { minValidRatio: 0.5,
-    warningValidRatio: 0.8,
-    maxOutlierRatio: 0.1,
+export const VALIDATION_THRESHOLDS = { minValidRatio: 0.5;
+    warningValidRatio: 0.8;
+    maxOutlierRatio: 0.1;
     minBalanceRatio: 0.5  } as const;
 ';'
 // ユーティリティ関数
-export function isValidNumber(value: any): value is number {,
+export function isValidNumber(value: any): value is number {;
     return typeof value === 'number' && !isNaN(value) && isFinite(value) }
 
 export function isValidDataset(dataset: any): dataset is number[] { return Array.isArray(dataset) && dataset.length > 0 }
@@ -161,13 +161,13 @@ export function calculateBasicStats(data: number[]): StatisticalSummary { if (da
     const variance = data.reduce((sum, val) => sum + Math.pow(val - mean, 2), 0) / data.length;
     
     return { mean,
-        median: calculateMedianFromSorted(sorted),
-        stddev: Math.sqrt(variance,
+        median: calculateMedianFromSorted(sorted);
+        stddev: Math.sqrt(variance;
     range: sorted[sorted.length - 1] - sorted[0] };
         count: data.length 
     }
 
-export function calculateMedianFromSorted(sortedData: number[]): number { const n = sortedData.length,
+export function calculateMedianFromSorted(sortedData: number[]): number { const n = sortedData.length;
     if (n === 0) return 0,
     
     if (n % 2 === 0) {
@@ -175,14 +175,13 @@ export function calculateMedianFromSorted(sortedData: number[]): number { const 
 }
         return (sortedData[n / 2 - 1] + sortedData[n / 2]) / 2; else { return sortedData[Math.floor(n / 2)],
 
-export function calculateQuantileFromSorted(sortedData: number[], quantile: number): number { if (sortedData.length === 0) return 0,
+export function calculateQuantileFromSorted(sortedData: number[], quantile: number): number { if (sortedData.length === 0) return 0;
     if (quantile <= 0) return sortedData[0],
     if (quantile >= 1) return sortedData[sortedData.length - 1],
     
     const index = (sortedData.length - 1) * quantile,
-    const lower = Math.floor(index),
-    const upper = Math.ceil(index),
-    
+    const lower = Math.floor(index);
+    const upper = Math.ceil(index);
     if (lower === upper) {
     
 }
@@ -193,7 +192,7 @@ export function calculateQuantileFromSorted(sortedData: number[], quantile: numb
 }
 ';'
 
-export function interpretQualityScore(score: number): string {,
+export function interpretQualityScore(score: number): string {;
     if(score >= QUALITY_THRESHOLDS.excellent) return 'excellent',
     if(score >= QUALITY_THRESHOLDS.good) return 'good',
     if(score >= QUALITY_THRESHOLDS.acceptable) return 'acceptable',
@@ -201,22 +200,22 @@ export function interpretQualityScore(score: number): string {,
     return 'very_poor' }
 ';'
 
-export function createProcessingError(message: string, processingTime: number = 0): ProcessedComparisonData { return {,
+export function createProcessingError(message: string, processingTime: number = 0): ProcessedComparisonData { return {;
         timestamp: new Date().toISOString()','
     normalizationType: 'none'
             };
                 timestamp: new Date().toISOString(); 
     },
-        metadata: { processingTime,
-            qualityScore: 0,
-            warnings: [],
+        metadata: { processingTime;
+            qualityScore: 0;
+            warnings: [];
     errors: [message] };
         error: message;
     } }
 
 export class ComparisonDataProcessor {
     private config: DataProcessorConfig;
-    private, qualityMetrics: QualityMetrics,
+    private, qualityMetrics: QualityMetrics;
     constructor(config: Partial<DataProcessorConfig> = {) {
         this.config = { ...DEFAULT_CONFIG, ...config,
         this.qualityMetrics = { ...DEFAULT_QUALITY_METRICS }
@@ -225,17 +224,16 @@ export class ComparisonDataProcessor {
      * 比較データを前処理
      */
     preprocessComparisonData(rawData: any, options: ProcessingOptions = { ): ProcessedComparisonData {
-        const startTime = Date.now(),
-        
+        const startTime = Date.now();
         try {
             const processedData: ProcessedComparisonData = {''
                 timestamp: new Date().toISOString()','
-    normalizationType: 'none'),
+    normalizationType: 'none');
                         timestamp: new Date().toISOString(  }
                 }
-                metadata: { processingTime: 0,
-                    qualityScore: 0,
-                    warnings: [],
+                metadata: { processingTime: 0;
+                    qualityScore: 0;
+                    warnings: [];
     errors: [] 
     };
             // データ検証
@@ -263,15 +261,15 @@ export class ComparisonDataProcessor {
             return processedData;
 
         } catch (error) {
-            const errorMessage = error instanceof Error ? error.message: 'Unknown processing error',
-            console.error('Error in preprocessComparisonData:', error),
+            const errorMessage = error instanceof Error ? error.message: 'Unknown processing error';
+            console.error('Error in preprocessComparisonData:', error);
             return createProcessingError(errorMessage, Date.now() - startTime),
 
     /**
      * 比較データを検証'
      */''
-    validateComparisonData(data: any): ValidationResult { const errors: string[] = [],
-        const warnings: string[] = [],
+    validateComparisonData(data: any): ValidationResult { const errors: string[] = [];
+        const warnings: string[] = [];
         // 基本構造チェック
         if (!data || typeof, data !== 'object') {', ' }
 
@@ -281,7 +279,7 @@ export class ComparisonDataProcessor {
         // データセットの存在チェック
         const requiredFields = ['dataset1', 'dataset2'];
         for (const field of requiredFields) { if (!data[field]) { }
-                errors.push(`Missing, required field: ${field}`});
+                errors.push(`Missing, required field: ${field}`};
             }
         }
 
@@ -303,13 +301,13 @@ export class ComparisonDataProcessor {
         if (data.dataset1.length < this.config.minimumSampleSize) {
     
 }
-            warnings.push(`Dataset1, sample size (${data.dataset1.length} below, recommended minimum(${this.config.minimumSampleSize}`});
+            warnings.push(`Dataset1, sample size (${data.dataset1.length} below, recommended minimum(${this.config.minimumSampleSize}`};
         }
         
         if (data.dataset2.length < this.config.minimumSampleSize) {
     
 }
-            warnings.push(`Dataset2, sample size (${data.dataset2.length} below, recommended minimum(${this.config.minimumSampleSize}`});
+            warnings.push(`Dataset2, sample size (${data.dataset2.length} below, recommended minimum(${this.config.minimumSampleSize}`};
         }
         
         return { valid: errors.length === 0,
@@ -325,13 +323,13 @@ export class ComparisonDataProcessor {
         const warnings: string[] = [],
         
         if (!Array.isArray(dataset) { }
-            errors.push(`${datasetName} must, be an, array`});
+            errors.push(`${datasetName} must, be an, array`};
             return { errors, warnings }
         
         if (dataset.length === 0) {
     
 }
-            errors.push(`${datasetName} cannot, be empty`});
+            errors.push(`${datasetName} cannot, be empty`};
             return { errors, warnings }
         
         // データ型チェック
@@ -341,16 +339,16 @@ export class ComparisonDataProcessor {
         if (validRatio < VALIDATION_THRESHOLDS.minValidRatio) {
     
 }
-            errors.push(`${datasetName} has, less than, 50% valid, numeric data`});
+            errors.push(`${datasetName} has, less than, 50% valid, numeric data`};
         } else if (validRatio < VALIDATION_THRESHOLDS.warningValidRatio) {
-            warnings.push(`${datasetName} has, less than, 80% valid, numeric data`});
+            warnings.push(`${datasetName} has, less than, 80% valid, numeric data`};
         }
         
         // 値の範囲チェック
         if (validNumbers.length > 0) {
             const stats = calculateBasicStats(validNumbers) }
             if (stats.range === 0) { }
-                warnings.push(`${datasetName} has, no variance (all, values are, the same}`});
+                warnings.push(`${datasetName} has, no variance (all, values are, the same}`};
             }
             
             // 極端な値の検出
@@ -361,7 +359,7 @@ export class ComparisonDataProcessor {
             if (outliers.length > validNumbers.length * VALIDATION_THRESHOLDS.maxOutlierRatio) {
     
 }
-                warnings.push(`${datasetName} contains ${outliers.length} potential, outliers (${Math.round(outliers.length / validNumbers.length * 100})%)`);
+                warnings.push(`${datasetName} contains ${outliers.length} potential, outliers (${Math.round(outliers.length / validNumbers.length * 100}%)`);
             }
         }
         
@@ -372,8 +370,8 @@ export class ComparisonDataProcessor {
      */
     normalizeData(data: ComparisonInputData, options: ProcessingOptions = { ): NormalizedComparisonData {
         const normalized: NormalizedComparisonData = {
-            dataset1: this.normalizeDataset(data.dataset1, options),
-            dataset2: this.normalizeDataset(data.dataset2, options),
+            dataset1: this.normalizeDataset(data.dataset1, options);
+            dataset2: this.normalizeDataset(data.dataset2, options);
             metadata: {''
                 normalizationType: options.normalizationType || 'none',
     timestamp: new Date().toISOString(  }
@@ -406,8 +404,7 @@ export class ComparisonDataProcessor {
         switch(normalizationType) {
 
             case 'z-score':','
-                return this.zScoreNormalization(validNumbers),
-
+                return this.zScoreNormalization(validNumbers);
             case 'min-max':,
                 return this.minMaxNormalization(
                     validNumbers,
@@ -416,16 +413,14 @@ export class ComparisonDataProcessor {
                 '),'
 
             case 'robust':','
-                return this.robustNormalization(validNumbers),
-
+                return this.robustNormalization(validNumbers);
             case 'none': }
-            default: return validNumbers;
+            default: return validNumbers,
 
     /**
      * Z-score正規化
      */
     private zScoreNormalization(data: number[]): number[] { const stats = calculateBasicStats(data),
-        
         if (stats.stddev === 0) return data,
         
         return data.map(val => (val - stats.mean) / stats.stddev),
@@ -434,7 +429,7 @@ export class ComparisonDataProcessor {
      * Min-Max正規化
      */
     private minMaxNormalization(data: number[], targetMin: number = 0, targetMax: number = 1): number[] { const min = Math.min(...data),
-        const max = Math.max(...data),
+        const max = Math.max(...data);
         const range = max - min,
         
         if (range === 0) return data,
@@ -446,9 +441,9 @@ export class ComparisonDataProcessor {
      * ロバスト正規化（中央値とIQRを使用）
      */
     private robustNormalization(data: number[]): number[] { const sorted = [...data].sort((a, b) => a - b),
-        const median = calculateMedianFromSorted(sorted),
-        const q1 = calculateQuantileFromSorted(sorted, 0.25),
-        const q3 = calculateQuantileFromSorted(sorted, 0.75),
+        const median = calculateMedianFromSorted(sorted);
+        const q1 = calculateQuantileFromSorted(sorted, 0.25);
+        const q3 = calculateQuantileFromSorted(sorted, 0.75);
         const iqr = q3 - q1,
         
         if (iqr === 0) return data,
@@ -462,8 +457,8 @@ export class ComparisonDataProcessor {
         const threshold = options.outlierThreshold || this.config.outlierThreshold,
         
         const cleanedData: NormalizedComparisonData = {
-            dataset1: this.removeDatasetOutliers(data.dataset1, threshold),
-            dataset2: this.removeDatasetOutliers(data.dataset2, threshold),
+            dataset1: this.removeDatasetOutliers(data.dataset1, threshold);
+            dataset2: this.removeDatasetOutliers(data.dataset2, threshold);
             metadata: {
                 ...data.metadata,
                 outlierRemoval: {
@@ -472,7 +467,7 @@ export class ComparisonDataProcessor {
     dataset1: {
                         original: data.dataset1.length,
                         cleaned: 0,
-    removed: 0  };
+    removed: 0  },
                     dataset2: { original: data.dataset2.length,
                         cleaned: 0,
     removed: 0 
@@ -507,14 +502,14 @@ export class ComparisonDataProcessor {
         const method = samplingOptions.method || 'random',
         const rate = samplingOptions.rate || this.config.defaultSamplingRate,
         
-        return { dataset1: this.sampleDataset(data.dataset1, method, rate),
-            dataset2: this.sampleDataset(data.dataset2, method, rate),
+        return { dataset1: this.sampleDataset(data.dataset1, method, rate);
+            dataset2: this.sampleDataset(data.dataset2, method, rate);
             metadata: {
                 ...data.metadata,
                 sampling: {
                     method,
                     rate };
-                    timestamp: new Date().toISOString(), 
+                    timestamp: new Date().toISOString(),
     }
         }
 
@@ -529,11 +524,9 @@ export class ComparisonDataProcessor {
         switch(method) {
 
             case 'systematic':','
-                return this.systematicSample(dataset, sampleSize),
-
+                return this.systematicSample(dataset, sampleSize);
             case 'stratified':','
-                return this.stratifiedSample(dataset, sampleSize),
-
+                return this.stratifiedSample(dataset, sampleSize);
             case 'random':,
             default:
 }
@@ -543,15 +536,14 @@ export class ComparisonDataProcessor {
      * ランダムサンプリング
      */
     private randomSample(dataset: number[], sampleSize: number): number[] { const shuffled = [...dataset].sort(() => Math.random() - 0.5),
-        return shuffled.slice(0, sampleSize),
-
+        return shuffled.slice(0, sampleSize);
     /**
      * 系統サンプリング
      */
     private systematicSample(dataset: number[], sampleSize: number): number[] { if (sampleSize >= dataset.length) {
             return [...dataset],
         
-        const interval = Math.floor(dataset.length / sampleSize),
+        const interval = Math.floor(dataset.length / sampleSize);
         const start = Math.floor(Math.random() * interval),
         const sample: number[] = [],
         
@@ -569,14 +561,13 @@ export class ComparisonDataProcessor {
      */
     private stratifiedSample(dataset: number[], sampleSize: number): number[] { // 簡易的な層化：値の範囲を3つに分割
         const sorted = [...dataset].sort((a, b) => a - b),
-        const tercileSize = Math.floor(sorted.length / 3),
-        
-        const strata = [sorted.slice(0, tercileSize),
+        const tercileSize = Math.floor(sorted.length / 3);
+        const strata = [sorted.slice(0, tercileSize);
             sorted.slice(tercileSize, tercileSize * 2)],
             sorted.slice(tercileSize * 2)],
         ],
         
-        const samplePerStratum = Math.floor(sampleSize / 3),
+        const samplePerStratum = Math.floor(sampleSize / 3);
         const sample: number[] = [],
         
         for (const stratum of strata) {
@@ -600,14 +591,13 @@ export class ComparisonDataProcessor {
      * データ品質スコアを計算
      */
     calculateDataQuality(data: NormalizedComparisonData): number { try {
-            const dataset1Quality = this.calculateDatasetQuality(data.dataset1),
-            const dataset2Quality = this.calculateDatasetQuality(data.dataset2),
-            
+            const dataset1Quality = this.calculateDatasetQuality(data.dataset1);
+            const dataset2Quality = this.calculateDatasetQuality(data.dataset2);
             return (dataset1Quality + dataset2Quality) / 2,
             ' }'
 
         } catch (error) {
-            console.error('Error calculating data quality:', error),
+            console.error('Error calculating data quality:', error);
             return 0,
 
     /**
@@ -635,8 +625,7 @@ export class ComparisonDataProcessor {
      * 検証品質を計算
      */
     private calculateValidationQuality(dataset1: any[], dataset2: any[]): number { const quality1 = this.calculateDatasetQuality(filterValidNumbers(dataset1),
-        const quality2 = this.calculateDatasetQuality(filterValidNumbers(dataset2),
-        
+        const quality2 = this.calculateDatasetQuality(filterValidNumbers(dataset2);
         // データセット間のバランスチェック
         const size1 = Array.isArray(dataset1) ? dataset1.length: 0,
         const size2 = Array.isArray(dataset2) ? dataset2.length: 0,
@@ -654,18 +643,18 @@ export class ComparisonDataProcessor {
         
         // サンプルサイズ警告
         if (dataset1Size < this.config.minimumSampleSize) { }
-            warnings.push(`Dataset1, sample size (${dataset1Size} is, below recommended, minimum`});
+            warnings.push(`Dataset1, sample size (${dataset1Size} is, below recommended, minimum`};
         }
         
         if (dataset2Size < this.config.minimumSampleSize) {
     
 }
-            warnings.push(`Dataset2, sample size (${dataset2Size} is, below recommended, minimum`});
+            warnings.push(`Dataset2, sample size (${dataset2Size} is, below recommended, minimum`};
         }
         
         // サイズ不均衡警告
         if (dataset1Size > 0 && dataset2Size > 0) {
-            const ratio = Math.min(dataset1Size, dataset2Size) / Math.max(dataset1Size, dataset2Size),
+            const ratio = Math.min(dataset1Size, dataset2Size) / Math.max(dataset1Size, dataset2Size);
             if (ratio < VALIDATION_THRESHOLDS.minBalanceRatio) {
         }
 
@@ -714,19 +703,19 @@ export class ComparisonDataProcessor {
                 return stats.stddev;
 
             case 'range': { ''
-                const stats = calculateBasicStats(validNumbers),
+                const stats = calculateBasicStats(validNumbers);
                 return stats.range }
 
             case 'count':
                 return validNumbers.length;
                 
-            default: return 0;
+            default: return 0,
 
     /**
      * データ品質レポートを生成
      */
     generateDataQualityReport(data: NormalizedComparisonData): DataQualityReport { const dataset1Quality = this.calculateDatasetQuality(data.dataset1),
-        const dataset2Quality = this.calculateDatasetQuality(data.dataset2),
+        const dataset2Quality = this.calculateDatasetQuality(data.dataset2);
         const overallQuality = (dataset1Quality + dataset2Quality) / 2,
 
         const size1 = data.dataset1.length,
@@ -739,13 +728,13 @@ export class ComparisonDataProcessor {
         const completeness2 = size2 > 0 ? filterValidNumbers(data.dataset2).length / size2: 0,
         const completenessScore = (completeness1 + completeness2) / 2,
 
-        const stats1 = calculateBasicStats(data.dataset1),
-        const stats2 = calculateBasicStats(data.dataset2),
+        const stats1 = calculateBasicStats(data.dataset1);
+        const stats2 = calculateBasicStats(data.dataset2);
         const varianceScore = (
             (stats1.stddev > 0 ? 1 : 0) + ,
             (stats2.stddev > 0 ? 1 : 0)) / 2,
 
-        const sizeScore = Math.min(1),
+        const sizeScore = Math.min(1);
             (size1 + size2) / (this.config.minimumSampleSize * 2)),
 
         return { overallQuality,
@@ -790,17 +779,17 @@ export class ComparisonDataProcessor {
      * 正規化結果を生成
      */
     generateNormalizationResult(;
-        data: number[] );
+        data: number[] ),
         method: NormalizationType,
     parameters: Partial<NormalizationParameters> = { ): NormalizationResult {
-        let normalizedData: number[];
+        let normalizedData: number[],
 
         let fullParameters: NormalizationParameters = {}''
         switch(method) {
 
             case 'z-score': {'
-                const stats = calculateBasicStats(data),
-                normalizedData = this.zScoreNormalization(data),
+                const stats = calculateBasicStats(data);
+                normalizedData = this.zScoreNormalization(data);
                 fullParameters = { 
                     mean: stats.mean, ,
                     stddev: stats.stddev }
@@ -809,8 +798,8 @@ export class ComparisonDataProcessor {
                 break;
 
             }''
-            case 'min-max': { const min = Math.min(...data),
-                const max = Math.max(...data),
+            case 'min-max': { const min = Math.min(...data);
+                const max = Math.max(...data);
                 normalizedData = this.minMaxNormalization(
                     data,
                     parameters.min || 0)','
@@ -823,11 +812,11 @@ export class ComparisonDataProcessor {
 
                 break }''
             case 'robust': { const sorted = [...data].sort((a, b) => a - b),
-                const median = calculateMedianFromSorted(sorted),
+                const median = calculateMedianFromSorted(sorted);
                 const iqr = calculateQuantileFromSorted(sorted, 0.75) - ','
 
-                          calculateQuantileFromSorted(sorted, 0.25),
-                normalizedData = this.robustNormalization(data),
+                          calculateQuantileFromSorted(sorted, 0.25);
+                normalizedData = this.robustNormalization(data);
                 fullParameters = { 
                     median, ,
                     iqr,

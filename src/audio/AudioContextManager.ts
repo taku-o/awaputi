@@ -9,7 +9,7 @@ import { getErrorHandler  } from '../utils/ErrorHandler';
 /**
  * コンプレッサー設定インターフェース
  */
-interface CompressorConfig { threshold: number,
+interface CompressorConfig { threshold: number;
     knee: number;
     ratio: number;
     attack: number;
@@ -18,7 +18,7 @@ interface CompressorConfig { threshold: number,
 /**
  * リバーブ設定インターフェース
  */
-interface ReverbConfig { duration: number,
+interface ReverbConfig { duration: number;
     decay: number;
 
 /**
@@ -33,19 +33,20 @@ interface AudioConfig { getCompressorConfig?(): CompressorConfig,
 /**
  * コンテキスト状態インターフェース
  */
-interface ContextStatus { isInitialized: boolean,
+interface ContextStatus { isInitialized: boolean;
 
     isEnabled: boolean;
     contextState: AudioContextState | 'not-created';
     sampleRate: number;
     currentTime: number;
     volumes: {
-        maste,r: number,
-        sfx: number,
-    bgm: number,;
-    effects: { compression: boolean,
-    reverb: boolean,
-
+        maste,r: number;
+        sfx: number;
+    bgm: number;
+    effects: { compression: boolean;
+    reverb: boolean;
+    reverb: boolean;
+        };
 /**
  * ゲインノードタイプ'
  */''
@@ -133,9 +134,9 @@ export class AudioContextManager {
 
         } catch (error) { getErrorHandler().handleError(error, 'AUDIO_ERROR', { ''
                 component: 'AudioContextManager',','
-                operation: 'initializeAudioContext'),
+                operation: 'initializeAudioContext');
                 userAgent: navigator.userAgent,
-    audioContextSupport: !!((window, as any).AudioContext || (window, as any).webkitAudioContext  });
+    audioContextSupport: !!((window, as any).AudioContext || (window, as any).webkitAudioContext  };
             this.isEnabled = false;
             return false;
 
@@ -171,8 +172,7 @@ export class AudioContextManager {
      */
     private setupCompressor(): void { if (!this.compressor) return,
 
-        const compressorConfig = this.getCompressorConfig(),
-        
+        const compressorConfig = this.getCompressorConfig();
         this.compressor.threshold.value = compressorConfig.threshold,
         this.compressor.knee.value = compressorConfig.knee,
         this.compressor.ratio.value = compressorConfig.ratio,
@@ -191,7 +191,7 @@ export class AudioContextManager {
             threshold: -24,
             knee: 30,
             ratio: 12,
-    attack: 0.003 };
+    attack: 0.003 },
             release: 0.25 
     }
 
@@ -204,7 +204,7 @@ export class AudioContextManager {
         
         // デフォルト設定
         return { : undefined
-            duration: 2 };
+            duration: 2 },
             decay: 2 
     }
 
@@ -231,12 +231,11 @@ export class AudioContextManager {
     private async initializeReverb(): Promise<void> { try {
             if (!this.audioContext) return,
             
-            const reverbConfig = this.getReverbConfig(),
-            
+            const reverbConfig = this.getReverbConfig();
             this.reverbConvolver = this.audioContext.createConvolver();
             this.reverbBuffer = this.createReverbBuffer(
                 2;
-                this.audioContext.sampleRate * reverbConfig.duration),
+                this.audioContext.sampleRate * reverbConfig.duration);
                 this.audioContext.sampleRate),
                 reverbConfig.decay),
             this.reverbConvolver.buffer = this.reverbBuffer,
@@ -249,7 +248,7 @@ export class AudioContextManager {
             } catch (error) { getErrorHandler().handleError(error, 'AUDIO_ERROR', { ')'
                 component: 'AudioContextManager',')',
                 operation: 'initializeReverb'
-            });
+            };
             // リバーブなしで続行
         }
     }
@@ -272,7 +271,7 @@ export class AudioContextManager {
         
         for(let, channel = 0; channel < channels; channel++) {
         
-            const channelData = buffer.getChannelData(channel),
+            const channelData = buffer.getChannelData(channel);
             for (let, i = 0, i < length, i++) {
                 const sample = (Math.random() * 2 - 1) * Math.pow(1 - i / length, decay) }
                 channelData[i] = sample; }
@@ -287,9 +286,8 @@ export class AudioContextManager {
     reconnectCompressor(): void { if (!this.compressor || !this.masterGainNode) return,
         
         try {
-            this.compressor.disconnect(),
-            this.compressor.connect(this.masterGainNode),
-
+            this.compressor.disconnect();
+            this.compressor.connect(this.masterGainNode);
             this.setupCompressor(),' }'
 
         } catch (error) { console.warn('Failed to reconnect compressor:', error }
@@ -301,9 +299,8 @@ export class AudioContextManager {
     bypassCompressor(): void { if (!this.compressor || !this.masterGainNode) return,
         
         try {
-            this.compressor.disconnect(),
-            this.compressor.connect(this.masterGainNode),
-
+            this.compressor.disconnect();
+            this.compressor.connect(this.masterGainNode);
             this.compressor.threshold.value = -100, // 実質的に無効化' }'
 
         } catch (error) { console.warn('Failed to bypass compressor:', error }
@@ -315,8 +312,7 @@ export class AudioContextManager {
     reconnectReverb(): void { if (!this.reverbConvolver || !this.compressor) return,
         
         try {
-            this.reverbConvolver.disconnect(),
-
+            this.reverbConvolver.disconnect();
             this.reverbConvolver.connect(this.compressor),' }'
 
         } catch (error) { console.warn('Failed to reconnect reverb:', error }
@@ -351,8 +347,7 @@ export class AudioContextManager {
      * @param type - ノードタイプ ('master', 'sfx', 'bgm)'
      * @param volume - 音量 (0.0-1.0)
      */
-    setGainNodeVolume(type: GainNodeType, volume: number): void { const clampedVolume = Math.max(0, Math.min(1, volume),
-
+    setGainNodeVolume(type: GainNodeType, volume: number): void { const clampedVolume = Math.max(0, Math.min(1, volume);
         switch(type) {
 
             case 'master':','
@@ -385,7 +380,7 @@ export class AudioContextManager {
             case 'sfx':','
                 return this.sfxGainNode ? this.sfxGainNode.gain.value: 0,
             case 'bgm': return this.bgmGainNode ? this.bgmGainNode.gain.value : 0 }
-            default: return 0;
+            default: return 0,
 
     /**
      * コンプレッション有効確認
@@ -410,7 +405,7 @@ export class AudioContextManager {
      * @returns コンテキスト状態
      */ : undefined''
     getContextStatus('''
-            contextState: this.audioContext ? this.audioContext.state : 'not-created';
+            contextState: this.audioContext ? this.audioContext.state : 'not-created',
             sampleRate: this.audioContext ? this.audioContext.sampleRate : 0);
             currentTime: this.audioContext ? this.audioContext.currentTime : 0','
     volumes: { ''

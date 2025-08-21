@@ -7,25 +7,26 @@
 
 import { ErrorHandler  } from '../utils/ErrorHandler.js';
 
-interface GameEngine { canvas: HTMLCanvasElement,
+interface GameEngine { canvas: HTMLCanvasElement;
     bubbleManager?: {
-        handleSwipeUp(gesture: GestureData): void,
-        handleSwipeDown(gesture: GestureData): void,
-        handleSwipeLeft(gesture: GestureData): void,
-        handleSwipeRight(gesture: GestureData): void,
-        handleTap(position: Position): void,
-        handleDoubleTap(position: Position): void,;
-    cameraManager?: { zoomIn(scale: number, center: Position): void,
-        zoomOut(scale: number, center: Position): void,
-        rotate(angle: number): void,;
-    uiManager?: { showContextMenu(position: Position): void,;
-    effectsManager?: { createWhirlwindEffect(center: Position, direction: string): void,;
-    customGestureHandler?: { handle(gesture: GestureData): void,
+        handleSwipeUp(gesture: GestureData): void;
+        handleSwipeDown(gesture: GestureData): void;
+        handleSwipeLeft(gesture: GestureData): void;
+        handleSwipeRight(gesture: GestureData): void;
+        handleTap(position: Position): void;
+        handleDoubleTap(position: Position): void;
+    cameraManager?: { zoomIn(scale: number, center: Position): void;
+        zoomOut(scale: number, center: Position): void;
+        rotate(angle: number): void;
+    uiManager?: { showContextMenu(position: Position): void;
+    effectsManager?: { createWhirlwindEffect(center: Position, direction: string): void;
+    customGestureHandler?: { handle(gesture: GestureData): void;
 
-interface Position { x: number,
+interface Position { x: number;
     y: number;
-
-interface Touch { identifier: number,
+    y: number;
+        };
+interface Touch { identifier: number;
     clientX: number;
     clientY: number;
     pageX?: number;
@@ -39,27 +40,28 @@ interface Touch { identifier: number,
     rotationAngle?: number;
 
 interface GestureConfig { swipe: {
-        minDistanc,e: number,
-        maxDuration: number,
-        velocityThreshold: number,
-        angleThreshold: number,
-    directions: string[],;
-    pinch: { minScale: number,
-        maxScale: number,
-        scaleThreshold: number,
-        centerThreshold: number,
-    simultaneousTouch: boolean,;
-    tap: { maxDuration: number,
-        maxMovement: number,
-        doubleTapInterval: number,
-        longPressDelay: number,
-    multiTapSupport: boolean,;
-    advanced: { circularGesture: boolean,
-        customPatterns: boolean,
-        gestureChaining: boolean,
-    machinesLearning: boolean,
-
-interface GestureState { active: boolean,
+        minDistanc,e: number;
+        maxDuration: number;
+        velocityThreshold: number;
+        angleThreshold: number;
+    directions: string[];
+    pinch: { minScale: number;
+        maxScale: number;
+        scaleThreshold: number;
+        centerThreshold: number;
+    simultaneousTouch: boolean;
+    tap: { maxDuration: number;
+        maxMovement: number;
+        doubleTapInterval: number;
+        longPressDelay: number;
+    multiTapSupport: boolean;
+    advanced: { circularGesture: boolean;
+        customPatterns: boolean;
+        gestureChaining: boolean;
+    machinesLearning: boolean;
+    machinesLearning: boolean;
+        };
+interface GestureState { active: boolean;
     type: string | null;
     startTime: number;
     startPosition: Position;
@@ -72,28 +74,28 @@ interface GestureState { active: boolean,
     rotation?: RotationState;
      }
 
-interface TouchState { id: number,
+interface TouchState { id: number;
     startX: number;
     startY: number;
     currentX: number;
     currentY: number;
     path: PathPoint[];
 
-interface PathPoint { x: number,
+interface PathPoint { x: number;
     y: number;
     time: number;
 
-interface PinchState { initialDistance: number,
+interface PinchState { initialDistance: number;
     currentDistance: number;
     initialScale: number;
     currentScale: number;
     center: Position;
 
-interface RotationState { initialAngle: number,
+interface RotationState { initialAngle: number;
     currentAngle: number;
     totalRotation: number;
 
-interface GestureData { type: string,
+interface GestureData { type: string;
     direction?: string;
     velocity?: number;
     distance?: number;
@@ -111,7 +113,7 @@ interface GestureData { type: string,
     pattern?: unknown;
     similarity?: number;
 
-interface GesturePattern { type: string,
+interface GesturePattern { type: string;
     direction?: string;
     scale?: string;
     count?: number;
@@ -121,7 +123,7 @@ interface GesturePatterns { basic: Record<string, GesturePattern>,
     advanced: Record<string, GesturePattern>;
     custom: Map<string, GesturePattern> }
 
-interface GestureHistory { type: string | null,
+interface GestureHistory { type: string | null;
     timestamp: number;
     duration: number;
     touches: number;
@@ -132,23 +134,23 @@ interface LearningData { patterns: Map<string, unknown>,
     accuracy: Map<string, number>;
     adaptiveThresholds: Map<string, number> }
 
-interface CircularResult { isCircular: boolean,
+interface CircularResult { isCircular: boolean;
     direction?: string;
     center?: Position;
     radius?: number;
     totalAngle?: number;
 
-interface MovementData { dx: number,
+interface MovementData { dx: number;
     dy: number;
     distance: number;
     angle: number;
     velocity: number;
 
-interface GestureAnalyzer { pathAnalyzer: PathAnalyzer,
+interface GestureAnalyzer { pathAnalyzer: PathAnalyzer;
     patternMatcher: PatternMatcher;
     learningEngine: LearningEngine;
 
-interface GestureStatistics { totalGestures: number,
+interface GestureStatistics { totalGestures: number;
     typeDistribution: Record<string, number>;
     averageDuration: number;
     customGestureCount: number;
@@ -161,7 +163,7 @@ class AdvancedGestureRecognitionSystem { private gameEngine: GameEngine
     private gestureHistory: GestureHistory[];
     private maxHistoryLength: number;
     private learningData: LearningData;
-    private, longPressTimer: ReturnType<typeof setTimeout> | null,
+    private, longPressTimer: ReturnType<typeof setTimeout> | null;
     private gestureAnalyzer?: GestureAnalyzer,
 
     constructor(gameEngine: GameEngine) {
@@ -176,16 +178,16 @@ class AdvancedGestureRecognitionSystem { private gameEngine: GameEngine
                 maxScale: 5.0,
                 scaleThreshold: 0.05,
                 centerThreshold: 20,
-    simultaneousTouch: true,;
+    simultaneousTouch: true,
             tap: { maxDuration: 200,
                 maxMovement: 10,
                 doubleTapInterval: 300,
                 longPressDelay: 500,
-    multiTapSupport: true,;
+    multiTapSupport: true,
             advanced: { circularGesture: true,
                 customPatterns: true,
                 gestureChaining: true,
-    machinesLearning: false,;
+    machinesLearning: false,
         // ジェスチャー状態管理
         this.gestureState = { active: false,
             type: null,
@@ -216,7 +218,7 @@ class AdvancedGestureRecognitionSystem { private gameEngine: GameEngine
             },''
                 tap: { type: 'tap', count: 1  },''
                 doubleTap: { type: 'tap', count: 2  },''
-                longPress: { type: 'longpress' };
+                longPress: { type: 'longpress' },
             // 高度なジェスチャー
             advanced: { }'
 
@@ -229,7 +231,7 @@ class AdvancedGestureRecognitionSystem { private gameEngine: GameEngine
                 heart: { type: 'path', pattern: 'heart'
             },''
                 star: { type: 'path', pattern: 'star'
-            }))
+            })
             // カスタムジェスチャー)
             custom: new Map(),
         };
@@ -250,8 +252,8 @@ class AdvancedGestureRecognitionSystem { private gameEngine: GameEngine
      * システム初期化
      */
     private initialize(): void { try {
-            this.setupEventListeners(),
-            this.loadGestureSettings(),
+            this.setupEventListeners();
+            this.loadGestureSettings();
             this.initializeGestureAnalysis()','
             console.log('[AdvancedGestureRecognitionSystem] 高度ジェスチャー認識システム初期化完了'),' }'
 
@@ -291,12 +293,10 @@ class AdvancedGestureRecognitionSystem { private gameEngine: GameEngine
     /**
      * タッチ開始処理
      */
-    private handleTouchStart(e: TouchEvent): void { e.preventDefault(),
-        
+    private handleTouchStart(e: TouchEvent): void { e.preventDefault();
         try {
-            const touches = Array.from(e.touches),
-            this.startGestureRecognition(touches),
-            
+            const touches = Array.from(e.touches);
+            this.startGestureRecognition(touches);
             // マルチタッチ検出
             if (touches.length > 1) {
     
@@ -311,12 +311,10 @@ class AdvancedGestureRecognitionSystem { private gameEngine: GameEngine
     /**
      * タッチ移動処理
      */
-    private handleTouchMove(e: TouchEvent): void { e.preventDefault(),
-        
+    private handleTouchMove(e: TouchEvent): void { e.preventDefault();
         try {
-            const touches = Array.from(e.touches),
-            this.updateGestureRecognition(touches),
-            
+            const touches = Array.from(e.touches);
+            this.updateGestureRecognition(touches);
             if (this.gestureState.active) {
     
 }
@@ -331,9 +329,8 @@ class AdvancedGestureRecognitionSystem { private gameEngine: GameEngine
      * タッチ終了処理
      */
     private handleTouchEnd(e: TouchEvent): void { try {
-            const touches = Array.from(e.changedTouches),
-            this.endGestureRecognition(touches),
-            
+            const touches = Array.from(e.changedTouches);
+            this.endGestureRecognition(touches);
             // ジェスチャー完了判定
             if (e.touches.length === 0) {
     
@@ -357,11 +354,11 @@ class AdvancedGestureRecognitionSystem { private gameEngine: GameEngine
     /**
      * マウス処理（デスクトップ対応）
      */
-    private handleMouseDown(e: MouseEvent): void { const touch = this.mouseEventToTouch(e),
+    private handleMouseDown(e: MouseEvent): void { const touch = this.mouseEventToTouch(e);
         this.startSingleTouchGesture(touch) }
     
     private handleMouseMove(e: MouseEvent): void { if (this.gestureState.active) {
-            const touch = this.mouseEventToTouch(e),
+            const touch = this.mouseEventToTouch(e);
             this.updateGestureRecognition([touch]) }
     }
     
@@ -372,7 +369,7 @@ class AdvancedGestureRecognitionSystem { private gameEngine: GameEngine
     /**
      * マウスイベントをタッチイベントに変換
      */
-    private mouseEventToTouch(e: MouseEvent): Touch { const rect = this.gameEngine.canvas.getBoundingClientRect(),
+    private mouseEventToTouch(e: MouseEvent): Touch { const rect = this.gameEngine.canvas.getBoundingClientRect();
         return { identifier: 0,
             clientX: e.clientX,
             clientY: e.clientY,
@@ -383,7 +380,7 @@ class AdvancedGestureRecognitionSystem { private gameEngine: GameEngine
             target: e.target,
             force: e.pressure || 1.0,
             radiusX: 10,
-    radiusY: 10 };
+    radiusY: 10 },
             rotationAngle: 0 
     }
     
@@ -391,7 +388,7 @@ class AdvancedGestureRecognitionSystem { private gameEngine: GameEngine
      * ポインターイベント処理
      */'
     private handlePointerDown(e: PointerEvent): void { ''
-        const touch = this.pointerEventToTouch(e),
+        const touch = this.pointerEventToTouch(e);
         if(e.pointerType === 'touch' { }
             this.startSingleTouchGesture(touch); }
 }
@@ -420,35 +417,34 @@ class AdvancedGestureRecognitionSystem { private gameEngine: GameEngine
             target: e.target,
             force: e.pressure || 1.0,
             radiusX: e.width / 2 || 10,
-    radiusY: e.height / 2 || 10 };
+    radiusY: e.height / 2 || 10 },
             rotationAngle: e.tiltX || 0 
     }
     
     /**
      * iOS ジェスチャーイベント処理
      */
-    private handleGestureStart(e: Event): void { e.preventDefault(),
+    private handleGestureStart(e: Event): void { e.preventDefault();
         this.startPinchGesture(e) }
     
-    private handleGestureChange(e: Event): void { e.preventDefault(),
+    private handleGestureChange(e: Event): void { e.preventDefault();
         this.updatePinchGesture(e) }
     
-    private handleGestureEnd(e: Event): void { e.preventDefault(),
+    private handleGestureEnd(e: Event): void { e.preventDefault();
         this.endPinchGesture(e) }
     
     /**
      * ジェスチャー認識開始
      */
     private startGestureRecognition(touches: Touch[]): void { this.gestureState.active = true,
-        this.gestureState.startTime = Date.now(),
+        this.gestureState.startTime = Date.now();
         this.gestureState.touches = touches.map(touch => ({
             id: touch.identifier,
             startX: touch.clientX),
             startY: touch.clientY,
     currentX: touch.clientX),
             currentY: touch.clientY) }
-            path: [{ x: touch.clientX, y: touch.clientY, time: Date.now(  }]});
-        
+            path: [{ x: touch.clientX, y: touch.clientY, time: Date.now(  }]};
         if (touches.length = == 1) {
         
             this.gestureState.startPosition = {
@@ -493,15 +489,14 @@ class AdvancedGestureRecognitionSystem { private gameEngine: GameEngine
      * ピンチジェスチャー検出開始
      */
     startPinchGestureDetection(touches) {
-        const distance = this.calculateDistance(touches[0], touches[1]),
-        const center = this.calculateCenter(touches[0], touches[1]),
-        
+        const distance = this.calculateDistance(touches[0], touches[1]);
+        const center = this.calculateCenter(touches[0], touches[1]);
         this.gestureState.pinch = {
             initialDistance: distance,
             currentDistance: distance,
             initialScale: 1.0,
     currentScale: 1.0 }
-            center: center;
+            center: center,
     
     /**
      * ジェスチャー認識更新
@@ -510,8 +505,8 @@ class AdvancedGestureRecognitionSystem { private gameEngine: GameEngine
         if (!this.gestureState.active) return,
         
         // タッチパス記録
-        touches.forEach(touch => { ),
-            const existingTouch = this.gestureState.touches.find(t => t.id === touch.identifier),
+        touches.forEach(touch => { );
+            const existingTouch = this.gestureState.touches.find(t => t.id === touch.identifier);
             if (existingTouch) {
                 existingTouch.currentX = touch.clientX,
                 existingTouch.currentY = touch.clientY,
@@ -520,9 +515,9 @@ class AdvancedGestureRecognitionSystem { private gameEngine: GameEngine
     }
                     y: touch.clientY) }
                     time: Date.now(); 
-    });
+    };
             }
-        });
+        };
         
         // 位置更新
         if (touches.length = == 1) {
@@ -542,15 +537,14 @@ class AdvancedGestureRecognitionSystem { private gameEngine: GameEngine
      * ピンチジェスチャー更新
      */
     updatePinchGestureDetection(touches) {
-        const distance = this.calculateDistance(touches[0], touches[1]),
-        const center = this.calculateCenter(touches[0], touches[1]),
-        
+        const distance = this.calculateDistance(touches[0], touches[1]);
+        const center = this.calculateCenter(touches[0], touches[1]);
         this.gestureState.pinch.currentDistance = distance,
         this.gestureState.pinch.currentScale = distance / this.gestureState.pinch.initialDistance,
         this.gestureState.pinch.center = center,
         
         // ピンチ閾値チェック
-        const scaleDiff = Math.abs(this.gestureState.pinch.currentScale - 1.0),
+        const scaleDiff = Math.abs(this.gestureState.pinch.currentScale - 1.0);
         if (scaleDiff > this.gestureConfig.pinch.scaleThreshold) {
     }
             this.recognizePinchGesture(); }
@@ -573,8 +567,7 @@ class AdvancedGestureRecognitionSystem { private gameEngine: GameEngine
      * シングルタッチ移動分析
      */
     analyzeSingleTouchMovement(touch) {
-        const movement = this.calculateMovement(),
-        
+        const movement = this.calculateMovement();
         // スワイプ検出
         if (movement.distance > this.gestureConfig.swipe.minDistance) {
             const duration = Date.now() - this.gestureState.startTime,
@@ -634,7 +627,7 @@ class AdvancedGestureRecognitionSystem { private gameEngine: GameEngine
     analyzeCircularGesture() {
         const touch = this.gestureState.touches[0],
         if (touch && touch.path.length > 10) {
-            const circularResult = this.detectCircularPath(touch.path),
+            const circularResult = this.detectCircularPath(touch.path);
             if (circularResult.isCircular) {
     }
                 this.recognizeCircularGesture(circularResult); }
@@ -659,7 +652,7 @@ class AdvancedGestureRecognitionSystem { private gameEngine: GameEngine
         // 角度変化チェック
         let totalAngleChange = 0;
         for(let, i = 1; i < path.length; i++) {
-            const angle1 = Math.atan2(path[i-1].y - center.y, path[i-1].x - center.x),
+            const angle1 = Math.atan2(path[i-1].y - center.y, path[i-1].x - center.x);
             const angle2 = Math.atan2(path[i].y - center.y, path[i].x - center.x) }
             totalAngleChange += this.normalizeAngleDifference(angle2 - angle1); }
         }
@@ -670,8 +663,8 @@ class AdvancedGestureRecognitionSystem { private gameEngine: GameEngine
         return { isCircular,
             direction,
             center,
-            radius: avgRadius,;
-            totalAngle: Math.abs(totalAngleChange), 
+            radius: avgRadius,
+            totalAngle: Math.abs(totalAngleChange);
     }
     
     /**
@@ -680,7 +673,7 @@ class AdvancedGestureRecognitionSystem { private gameEngine: GameEngine
     analyzeRotationGesture(touches) {
         if (!this.gestureState.rotation) {
             this.gestureState.rotation = {
-                initialAngle: this.calculateAngleBetweenTouches(touches[0], touches[1]),
+                initialAngle: this.calculateAngleBetweenTouches(touches[0], touches[1]);
                 currentAngle: 0 }
                 totalRotation: 0 
     }
@@ -707,7 +700,7 @@ class AdvancedGestureRecognitionSystem { private gameEngine: GameEngine
             const similarity = this.calculatePatternSimilarity(pattern) }
             if (similarity > 0.8) { // 80%以上の類似度 }
                 this.recognizeCustomGesture(name, pattern, similarity); }
-});
+};
     }
     
     /**
@@ -718,8 +711,7 @@ class AdvancedGestureRecognitionSystem { private gameEngine: GameEngine
             if (!this.gestureState.active) return,
             
             const duration = Date.now() - this.gestureState.startTime,
-            const movement = this.calculateMovement(),
-            
+            const movement = this.calculateMovement();
             // タップ判定
             if (duration < this.gestureConfig.tap.maxDuration && ,
                 movement.distance < this.gestureConfig.tap.maxMovement) {
@@ -838,7 +830,7 @@ class AdvancedGestureRecognitionSystem { private gameEngine: GameEngine
             type: 'custom',
             name: name,
     pattern: pattern,
-            similarity: similarity,;
+            similarity: similarity,
         this.dispatchGestureEvent('custom', gesture);
         this.handleCustomGameAction(gesture);
     }
@@ -850,16 +842,13 @@ class AdvancedGestureRecognitionSystem { private gameEngine: GameEngine
 
         switch(gesture.direction) {''
             case 'up':','
-                this.gameEngine.bubbleManager?.handleSwipeUp(gesture),
-
+                this.gameEngine.bubbleManager?.handleSwipeUp(gesture);
                 break, : undefined''
             case 'down':','
-                this.gameEngine.bubbleManager?.handleSwipeDown(gesture),
-
+                this.gameEngine.bubbleManager?.handleSwipeDown(gesture);
                 break, : undefined''
             case 'left':','
-                this.gameEngine.bubbleManager?.handleSwipeLeft(gesture),
-
+                this.gameEngine.bubbleManager?.handleSwipeLeft(gesture);
                 break, : undefined''
             case 'right':,
                 this.gameEngine.bubbleManager?.handleSwipeRight(gesture) }
@@ -932,7 +921,7 @@ class AdvancedGestureRecognitionSystem { private gameEngine: GameEngine
         return { : undefined
     
     
-            x: ((point1.clientX || point1.x) + (point2.clientX || point2.x)) / 2 };
+            x: ((point1.clientX || point1.x) + (point2.clientX || point2.x)) / 2 },
             y: ((point1.clientY || point1.y) + (point2.clientY || point2.y) / 2 
     }
     
@@ -940,7 +929,7 @@ class AdvancedGestureRecognitionSystem { private gameEngine: GameEngine
     
         const dx = this.gestureState.currentPosition.x - this.gestureState.startPosition.x,
         const dy = this.gestureState.currentPosition.y - this.gestureState.startPosition.y,
-        const distance = Math.sqrt(dx * dx + dy * dy),
+        const distance = Math.sqrt(dx * dx + dy * dy);
         const angle = Math.atan2(dy, dx) * (180 / Math.PI),
         const duration = Date.now() - this.gestureState.startTime,
         const velocity = duration > 0 ? distance / duration: 0 
@@ -977,7 +966,7 @@ class AdvancedGestureRecognitionSystem { private gameEngine: GameEngine
     
         const sumX = path.reduce((sum, point) => sum + point.x, 0),
         const sumY = path.reduce((sum, point) => sum + point.y, 0) }
-        return { x: sumX / path.length };
+        return { x: sumX / path.length },
             y: sumY / path.length 
     }
     
@@ -1007,7 +996,7 @@ class AdvancedGestureRecognitionSystem { private gameEngine: GameEngine
         const event = new CustomEvent(`gesture:${type}`, { detail: gesture)
         ),
         this.gameEngine.canvas.dispatchEvent(event }
-        console.log(`[AdvancedGestureRecognitionSystem] ジェスチャー認識: ${type}`, gesture});
+        console.log(`[AdvancedGestureRecognitionSystem] ジェスチャー認識: ${type}`, gesture};
     }
     
     /**
@@ -1091,7 +1080,7 @@ class AdvancedGestureRecognitionSystem { private gameEngine: GameEngine
         const typeCount = {};
         this.gestureHistory.forEach(gesture => {  ) }
             typeCount[gesture.type] = (typeCount[gesture.type] || 0) + 1; }
-        });
+        };
         
         return { totalGestures: this.gestureHistory.length,
             typeDistribution: typeCount,
@@ -1104,7 +1093,7 @@ class AdvancedGestureRecognitionSystem { private gameEngine: GameEngine
      */
     cleanup() {
         try {
-            this.resetGestureState(),
+            this.resetGestureState();
             this.saveGestureSettings() }
             console.log('[AdvancedGestureRecognitionSystem] クリーンアップ完了');' }'
 

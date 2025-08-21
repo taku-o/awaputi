@@ -7,10 +7,10 @@ import { SEOConfig  } from './SEOConfig';
 import { seoLogger  } from './SEOLogger';
 
 // エラーハンドラー型
-type ErrorHandler = (error: Error, context: string, data: ErrorHandlerData) => Promise<any> | any;
+type ErrorHandler = (error: Error, context: string, data: ErrorHandlerData) => Promise<any> | any,
 
 // フォールバック戦略型
-type FallbackStrategy = (data: any) => any;
+type FallbackStrategy = (data: any) => any,
 
 // エラーハンドラーデータ型
 interface ErrorHandlerData { cached?: any,
@@ -18,20 +18,21 @@ interface ErrorHandlerData { cached?: any,
     [key: string]: any;
 
 // リトライ設定インターフェース
-interface RetryConfig { maxRetries: number,
+interface RetryConfig { maxRetries: number;
     retryDelay: number;
     backoffMultiplier: number;
 
 // エラー統計インターフェース
-interface ErrorStatistics { errorCount: number,
+interface ErrorStatistics { errorCount: number;
     errorTypes: Record<string, number>;
     recoveryRate: number;
     commonErrors: Record<string, number>;
     lastError?: {
-        timestam,p: string,
-        message: string,
-    context: string,
-
+        timestam,p: string;
+        message: string;
+    context: string;
+    context: string;
+        };
 // ネットワークエラークラス
 class NetworkError extends Error { constructor(message: string) {
 
@@ -49,7 +50,7 @@ export class SEOErrorHandler {
         this.errorHandlers = new Map();
         this.fallbackStrategies = new Map();
         this.retryConfig = {
-            maxRetries: 3,
+            maxRetries: 3;
     retryDelay: 1000 }
             backoffMultiplier: 2 
     };
@@ -82,7 +83,7 @@ export class SEOErrorHandler {
 }
             try { }
 
-                return await handler(error, context, data});} catch (handlerError) {
+                return await handler(error, context, data};} catch (handlerError) {
                 seoLogger.error('Error handler failed', handlerError as Error) }
         }
         
@@ -106,7 +107,7 @@ export class SEOErrorHandler {
             try {
                 const result = await operation() }
                 if (attempt > 0) { }
-                    seoLogger.info(`${context} succeeded, after ${attempt} retries`});
+                    seoLogger.info(`${context} succeeded, after ${attempt} retries`};
                 }
                 
                 return result;
@@ -118,8 +119,8 @@ export class SEOErrorHandler {
                     const delay = config.retryDelay * Math.pow(config.backoffMultiplier, attempt); }
                     seoLogger.warn(`${context} failed, retrying in ${ delay}ms`, {
                         attempt: attempt + 1 }
-                        error: (error as Error}).message
-                    });
+                        error: (error as Error}.message
+                    };
                     await this._delay(delay);
                 }
 }
@@ -138,10 +139,10 @@ export class SEOErrorHandler {
     
 }
             seoLogger.info(`Executing, fallback for ${context}`}
-            return, fallback(data});
+            return, fallback(data};
         }
         
-        seoLogger.error(`No, fallback available, for ${context}`});
+        seoLogger.error(`No, fallback available, for ${context}`};
         return null;
     }
     
@@ -160,18 +161,18 @@ export class SEOErrorHandler {
         this.registerHandler('TypeError', (error: Error, context: string, data: ErrorHandlerData) => { ''
             seoLogger.error('Type error in SEO operation', {
                 context,
-                message: error.message })
+                message: error.message }
                 stack: error.stack); 
-    });
+    };
 
             return this._executeFallback(context, data);}');'
         ';'
         // 参照エラー
         this.registerHandler('ReferenceError', (error: Error, context: string, data: ErrorHandlerData) => { ''
             seoLogger.error('Reference error in SEO operation', {
-                context })
+                context }
                 message: error.message); 
-    });
+    };
 
             return this._executeFallback(context, data);}');'
         ';'
@@ -179,11 +180,11 @@ export class SEOErrorHandler {
         this.registerHandler('default', (error: Error, context: string, data: ErrorHandlerData) => { ''
             seoLogger.error('Unhandled error in SEO operation', {
                 context,
-                errorType: error.constructor.name })
+                errorType: error.constructor.name }
                 message: error.message); 
-    });
+    };
             return this._executeFallback(context, data);
-        });
+        };
     }
     
     /**
@@ -191,7 +192,7 @@ export class SEOErrorHandler {
      */''
     private _registerDefaultFallbacks()';'
         this.registerFallback('metaTags', () => {  return { title: SEOConfig.siteName }
-                description: SEOConfig.metadata.defaultDescription[SEOConfig.defaultLanguage] };
+                description: SEOConfig.metadata.defaultDescription[SEOConfig.defaultLanguage] },
                 image: SEOConfig.socialImages.fallback 
     };'}');
         ';'
@@ -199,7 +200,7 @@ export class SEOErrorHandler {
         this.registerFallback('structuredData', () => {  return { ', '@context': 'https://schema.org','
                 '@type': 'WebSite'
             }
-                name: SEOConfig.siteName };
+                name: SEOConfig.siteName },
                 url: SEOConfig.baseUrl 
     };'}');
         ';'
@@ -229,10 +230,9 @@ export class SEOErrorHandler {
     /**
      * エラー統計の取得
      */
-    getErrorStatistics(): ErrorStatistics { const errorSummary = seoLogger.getErrorSummary(),
-        
+    getErrorStatistics(): ErrorStatistics { const errorSummary = seoLogger.getErrorSummary();
         return { ...errorSummary,
-            recoveryRate: this._calculateRecoveryRate() };
+            recoveryRate: this._calculateRecoveryRate() },
             commonErrors: this._getCommonErrors(); 
     }
     

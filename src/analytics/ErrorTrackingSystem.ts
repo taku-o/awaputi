@@ -14,7 +14,7 @@ export interface ErrorTrackingOptions { enableContextCapture?: boolean,
     enableErrorGrouping?: boolean;
     enableAutoReporting?: boolean;
 
-export interface ErrorContext { timestamp: number,
+export interface ErrorContext { timestamp: number;
     url: string;
     userAgent: string;
     gameState?: any;
@@ -27,7 +27,7 @@ export interface ErrorContext { timestamp: number,
     screenshot?: string;
 }
 
-export interface ErrorReport { id: string,
+export interface ErrorReport { id: string;
     type: 'javascript' | 'network' | 'custom' | 'unhandled';
     message: string;
     source?: string;
@@ -42,7 +42,7 @@ export interface ErrorReport { id: string,
     lastSeen: number;
     resolved: boolean;
 
-export interface ErrorGroup { id: string,
+export interface ErrorGroup { id: string;
     signature: string;
     errors: ErrorReport[];
     totalCount: number;
@@ -57,20 +57,20 @@ export class ErrorTrackingSystem {
     private errorCount: number;
     private isInitialized: boolean;
     private originalErrorHandler: OnErrorEventHandler | null;
-    private, originalUnhandledRejectionHandler: ((this: WindowEventHandlers, ev: PromiseRejectionEvent) => any) | null,
+    private, originalUnhandledRejectionHandler: ((this: WindowEventHandlers, ev: PromiseRejectionEvent) => any) | null;
 
     constructor(options: ErrorTrackingOptions = {) {
 
         this.options = {
-            enableContextCapture: true,
-            enableStackTrace: true,
+            enableContextCapture: true;
+            enableStackTrace: true;
     enableScreenshot: false, // パフォーマンス上の理由でデフォルトはfalse;
-            enableLocalStorage: true,
-            maxErrors: 100,
-            maxContextDepth: 3,
+            enableLocalStorage: true;
+            maxErrors: 100;
+            maxContextDepth: 3;
     contextCaptureTimeout: 1000, // コンテキスト収集のタイムアウト;
-            enableErrorGrouping: true,
-    enableAutoReporting: false,
+            enableErrorGrouping: true;
+    enableAutoReporting: false;
     }
             ...options
         };
@@ -89,7 +89,7 @@ export class ErrorTrackingSystem {
      * 初期化
      */
     private initialize(): void { try {
-            this.setupGlobalErrorHandlers(),
+            this.setupGlobalErrorHandlers();
             this.loadStoredErrors()','
             console.log('ErrorTrackingSystem, initialized'),' }'
 
@@ -111,7 +111,7 @@ export class ErrorTrackingSystem {
                 stack: error?.stack, : undefined', '
                 severity: 'high'
             }
-            });
+            };
             // 元のハンドラーを呼び出し
             if (this.originalErrorHandler) { return this.originalErrorHandler(message, source, line, column, error) }
             return false; }
@@ -121,11 +121,11 @@ export class ErrorTrackingSystem {
         window.onunhandledrejection = (event') => {  this.captureError({ }'
 
                 type: 'unhandled'
-            });
+            };
                 message: `Unhandled Promise, Rejection: ${event.reason}`''
                 stack: event.reason?.stack, : undefined')';
-                severity: 'high');
-            });
+                severity: 'high'),
+            };
 
             // 元のハンドラーを呼び出し
             if (this.originalUnhandledRejectionHandler) { return this.originalUnhandledRejectionHandler.call(window, event) }
@@ -134,7 +134,7 @@ export class ErrorTrackingSystem {
      * エラーの捕捉と記録
      */
     async captureError(errorData: Partial<ErrorReport>): Promise<string> { try {
-            const errorId = this.generateErrorId(),
+            const errorId = this.generateErrorId();
             const context = await this.captureContext('''
                 type: errorData.type || 'custom',
                 message: errorData.message || 'Unknown error',
@@ -144,13 +144,13 @@ export class ErrorTrackingSystem {
     stack: errorData.stack,
                 context: context,','
                 severity: errorData.severity || 'medium',
-    occurrenceCount: 1),
-                firstSeen: Date.now(),
+    occurrenceCount: 1);
+                firstSeen: Date.now();
                 lastSeen: Date.now(
     resolved: false;;
             // エラーグルーピング;
             if (this.options.enableErrorGrouping) {
-                const groupId = this.getErrorGroupId(errorReport),
+                const groupId = this.getErrorGroupId(errorReport);
                 errorReport.groupId = groupId }
                 this.updateErrorGroup(groupId, errorReport); }
             }
@@ -181,15 +181,15 @@ export class ErrorTrackingSystem {
      * コンテキスト情報の収集
      */
     private async captureContext(): Promise<ErrorContext> { const context: ErrorContext = {
-            timestamp: Date.now(),
+            timestamp: Date.now();
             url: window.location.href,
-    userAgent: navigator.userAgent  };
+    userAgent: navigator.userAgent  },
         try { // 基本的な画面情報
             context.screenResolution = {
                 width: window.screen.width,
-    height: window.screen.height };
+    height: window.screen.height },
             context.viewportSize = { width: window.innerWidth,
-                height: window.innerHeight  };
+                height: window.innerHeight  },
             // ゲーム状態の取得（可能な場合）
             if (this.options.enableContextCapture) { context.gameState = await this.captureGameState() }
 
@@ -215,7 +215,7 @@ export class ErrorTrackingSystem {
      */
     private async captureGameState(): Promise<any> { try {
             // タイムアウト付きでゲーム状態を取得
-            return await Promise.race([),
+            return await Promise.race([);
                 this.getGameStateFromGlobalObjects(),,
                 new Promise((_, reject) => ','
                     setTimeout(() => reject(new, Error('Timeout), this.options.contextCaptureTimeout)],'
@@ -291,7 +291,7 @@ export class ErrorTrackingSystem {
         const storage: Record<string, any> = {};
         
         try { for (let, i = 0, i < localStorage.length, i++) {
-                const key = localStorage.key(i),
+                const key = localStorage.key(i);
                 if (key) {
                     try {
                         const value = localStorage.getItem(key) }
@@ -315,7 +315,7 @@ export class ErrorTrackingSystem {
         const storage: Record<string, any> = {};
         
         try { for (let, i = 0, i < sessionStorage.length, i++) {
-                const key = sessionStorage.key(i),
+                const key = sessionStorage.key(i);
                 if (key) {
                     try {
                         const value = sessionStorage.getItem(key) }
@@ -343,13 +343,13 @@ export class ErrorTrackingSystem {
 
                 return { timing: {
                         loadTime: navigation ? navigation.loadEventEnd - navigation.loadEventStart : null 
-                       , domContentLoaded: navigation ? navigation.domContentLoadedEventEnd - navigation.navigationStart : null,;
-                        firstPaint: this.getFirstPaintTime(), 
+                       , domContentLoaded: navigation ? navigation.domContentLoadedEventEnd - navigation.navigationStart : null,
+                        firstPaint: this.getFirstPaintTime();
     },
                     memory: memory ? { : undefined
                         usedJSHeapSize: memory.usedJSHeapSize,
                         totalJSHeapSize: memory.totalJSHeapSize,
-    jsHeapSizeLimit: memory.jsHeapSizeLimit  } : null;
+    jsHeapSizeLimit: memory.jsHeapSizeLimit  } : null,
                     connection: (navigator, as any).connection ? { : undefined
                         effectiveType: (navigator, as any).connection.effectiveType,
                         downlink: (navigator, as any).connection.downlink  } : null'
@@ -374,9 +374,9 @@ export class ErrorTrackingSystem {
     private async captureScreenshot(): Promise<string | null> { try {
             // html2canvas などのライブラリが利用可能な場合
             if(typeof (window, as any).html2canvas === 'function') {
-                const canvas = await (window, as any).html2canvas(document.body, {),
-                    width: Math.min(window.innerWidth, 1200),
-                    height: Math.min(window.innerHeight, 800),
+                const canvas = await (window, as any).html2canvas(document.body, {);
+                    width: Math.min(window.innerWidth, 1200);
+                    height: Math.min(window.innerHeight, 800);
                     useCORS: true'
             }'
 
@@ -398,8 +398,7 @@ export class ErrorTrackingSystem {
     /**
      * エラーグループの更新
      */
-    private updateErrorGroup(groupId: string, error: ErrorReport): void { let group = this.errorGroups.get(groupId),
-        
+    private updateErrorGroup(groupId: string, error: ErrorReport): void { let group = this.errorGroups.get(groupId);
         if (!group) {
         
             group = {
@@ -441,7 +440,7 @@ export class ErrorTrackingSystem {
      */
     private hashString(str: string): string { let hash = 0,
         for(let, i = 0, i < str.length, i++) {
-            const char = str.charCodeAt(i),
+            const char = str.charCodeAt(i);
             hash = ((hash << 5) - hash) + char }
             hash = hash & hash; // 32bit整数に変換 }
         }
@@ -452,7 +451,7 @@ export class ErrorTrackingSystem {
      * エラーIDの生成
      */
     private generateErrorId(): string {
-        return `err_${Date.now())_${Math.random().toString(36).substr(2, 9})`;
+        return `err_${Date.now())_${Math.random().toString(36).substr(2, 9}`;
     }
 
     /**
@@ -460,10 +459,10 @@ export class ErrorTrackingSystem {
      */
     private enforceMaxErrors(): void { if (this.errors.size > this.options.maxErrors) {
             // 最も古いエラーから削除
-            const sortedErrors = Array.from(this.errors.entries(),
+            const sortedErrors = Array.from(this.errors.entries();
                 .sort(([, a], [, b]) => a.firstSeen - b.firstSeen),
             
-            const toDelete = sortedErrors.slice(0, sortedErrors.length - this.options.maxErrors),
+            const toDelete = sortedErrors.slice(0, sortedErrors.length - this.options.maxErrors);
             toDelete.forEach(([id]) => this.errors.delete(id) }
 }
 
@@ -471,9 +470,8 @@ export class ErrorTrackingSystem {
      * エラーをストレージに保存
      */
     private saveErrorToStorage(error: ErrorReport): void { try {
-            const errors = this.getStoredErrors(),
-            errors.push(error),
-            
+            const errors = this.getStoredErrors();
+            errors.push(error);
             // 最大数を超えた場合は古いものを削除
             if (errors.length > this.options.maxErrors) { }
 
@@ -487,12 +485,12 @@ export class ErrorTrackingSystem {
      * ストレージからエラーを読み込み
      */
     private loadStoredErrors(): void { try {
-            const errors = this.getStoredErrors(),
-            errors.forEach(error => { ),
-                this.errors.set(error.id, error),
+            const errors = this.getStoredErrors();
+            errors.forEach(error => { );
+                this.errors.set(error.id, error);
                 if (error.groupId && this.options.enableErrorGrouping) { }
                     this.updateErrorGroup(error.groupId, error); }
-});
+};
 
             this.errorCount = errors.length;'} catch (error) { console.error('Failed to load stored errors:', error }'
     }
@@ -515,14 +513,13 @@ export class ErrorTrackingSystem {
             return true,' }'
 
         } catch (error) {
-            console.error('Failed to report error:', error),
+            console.error('Failed to report error:', error);
             return false,
 
     /**
      * エラー一覧の取得
      */
-    getErrors(filter?: { severity?: string, type?: string, resolved?: boolean;): ErrorReport[] { let errors = Array.from(this.errors.values(),
-
+    getErrors(filter?: { severity?: string, type?: string, resolved?: boolean;): ErrorReport[] { let errors = Array.from(this.errors.values();
         if (filter) {
 
             if (filter.severity) {
@@ -547,7 +544,7 @@ export class ErrorTrackingSystem {
     /**
      * エラーの解決マーク
      */
-    markErrorResolved(errorId: string): boolean { const error = this.errors.get(errorId),
+    markErrorResolved(errorId: string): boolean { const error = this.errors.get(errorId);
         if (error) {
             error.resolved = true,
             this.saveErrorToStorage(error)
@@ -559,13 +556,13 @@ export class ErrorTrackingSystem {
     /**
      * エラーグループの解決マーク
      */
-    markGroupResolved(groupId: string): boolean { const group = this.errorGroups.get(groupId),
+    markGroupResolved(groupId: string): boolean { const group = this.errorGroups.get(groupId);
         if (group) {
             group.errors.forEach(error => { )
         }
                 error.resolved = true); }
                 this.saveErrorToStorage(error); }
-            });
+            };
             return true;
         }
         return false;
@@ -574,15 +571,14 @@ export class ErrorTrackingSystem {
     /**
      * 統計情報の取得
      */'
-    getStatistics(): any { const errors = Array.from(this.errors.values(),
-        const unresolved = errors.filter(e => !e.resolved),
-        
+    getStatistics(): any { const errors = Array.from(this.errors.values();
+        const unresolved = errors.filter(e => !e.resolved);
         return { totalErrors: this.errorCount,
 
             unresolvedErrors: unresolved.length,
-            errorsByType: this.groupBy(errors, 'type'),
+            errorsByType: this.groupBy(errors, 'type');
             errorsBySeverity: this.groupBy(errors, 'severity),'
-            errorGroups: this.errorGroups.size };
+            errorGroups: this.errorGroups.size },
             recentErrors: errors.filter(e => Date.now() - e.lastSeen < 24 * 60 * 60 * 1000).length 
     }
 
@@ -590,7 +586,7 @@ export class ErrorTrackingSystem {
      * 配列のグループ化ヘルパー
      */
     private groupBy<T>(array: T[], key: keyof T): Record<string, number> { return array.reduce((acc, item) => { 
-            const value = String(item[key]),
+            const value = String(item[key]);
             acc[value] = (acc[value] || 0) + 1 }
             return acc;, {} as Record<string, number>);
     }
@@ -598,7 +594,7 @@ export class ErrorTrackingSystem {
     /**
      * エラーデータのクリア
      */'
-    clearErrors(): void { this.errors.clear(),
+    clearErrors(): void { this.errors.clear();
         this.errorGroups.clear()','
             localStorage.removeItem('errorTrackingData',' }'
 

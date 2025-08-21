@@ -5,49 +5,49 @@ import { jest, describe, test, expect, beforeEach, afterEach  } from '@jest/glob
 import { ConfigurationErrorHandler, getConfigurationErrorHandler  } from '../../src/core/ConfigurationErrorHandler.js';
 // Error handling result interface
 interface ErrorHandlingResult {
-    success: boolean,
+    success: boolean;
     recovered: boolean;
     value?: any;
     params?: any;
     message: string;
 // Error context interfaces
 interface ConfigurationAccessContext {
-    category: string,
+    category: string;
     key: string;
     defaultValue?: any;
 interface ValidationContext {
-    category: string,
+    category: string;
     key: string;
     value: any;
     rule: {
-        typ,e: string,
+        typ,e: string;
         min?: number;
         max?: number;
         maxLength?: number;;
 }
 interface CalculationContext {
-    calculationType: string,
-    params: { [ke,y: string]: any,;
-    expectedType: string,
+    calculationType: string;
+    params: { [ke,y: string]: any;
+    expectedType: string;
     maxValue?: number;
 }
 interface CacheContext {
-    operation: string,
+    operation: string;
     key: string;
 interface DependencyContext {
-    dependency: string,
+    dependency: string;
     operation: string;
 // Error stats interface
 interface ErrorStats {
-    total: number,
+    total: number;
     recovered: number;
     failed: number;
     recoveryRate: string;
-    byType: { [ke,y: string]: number,;
+    byType: { [ke,y: string]: number;
 }
 // Fallback state interface
 interface FallbackState {
-    useDefaultValues: boolean,
+    useDefaultValues: boolean;
     disableValidation: boolean;
     disableCache: boolean;
     safeMode: boolean;
@@ -71,22 +71,22 @@ jest.mock('../../src/core/ValidationSystem.js', () => ({
     getValidationSystem: () => mockValidationSystem
 })');'
 describe('ConfigurationErrorHandler', () => {
-    let errorHandler: ConfigurationErrorHandler,
+    let errorHandler: ConfigurationErrorHandler;
     
     beforeEach(() => {
         // モックをリセット
-        jest.clearAllMocks(),
+        jest.clearAllMocks();
         // 新しいインスタンスを作成
-        errorHandler = new ConfigurationErrorHandler(),
+        errorHandler = new ConfigurationErrorHandler();
         // タイマーをモック
-        jest.useFakeTimers() });
+        jest.useFakeTimers() };
     afterEach(() => {
         jest.useRealTimers() }');'
     describe('初期化', (') => {'
         test('正常に初期化される', () => {
-            expect(errorHandler).toBeInstanceOf(ConfigurationErrorHandler),
-            expect(errorHandler.errorTypes).toBeDefined(),
-            expect(errorHandler.recoveryStrategies).toBeInstanceOf(Map),
+            expect(errorHandler).toBeInstanceOf(ConfigurationErrorHandler);
+            expect(errorHandler.errorTypes).toBeDefined();
+            expect(errorHandler.recoveryStrategies).toBeInstanceOf(Map);
             expect(errorHandler.errorStats).toBeDefined() }');'
         test('復旧戦略が設定される', () => {
             expect(errorHandler.recoveryStrategies.size).toBeGreaterThan(0'),'
@@ -100,10 +100,10 @@ describe('ConfigurationErrorHandler', () => {
     }
     describe('設定アクセスエラーの処理', (') => {'
         test('デフォルト値がある場合の復旧', (') => {'
-            const error = new Error('設定が見つかりません'),
+            const error = new Error('設定が見つかりません');
             const context: ConfigurationAccessContext = {
-                category: 'game',
-                key: 'score',
+                category: 'game';
+                key: 'score';
                 defaultValue: 100
             };
             
@@ -117,9 +117,9 @@ describe('ConfigurationErrorHandler', () => {
             expect(result.message').toBe('デフォルト値を使用');'
         }');'
         test('デフォルト値がない場合のフォールバック値生成', (') => {'
-            const error = new Error('設定が見つかりません'),
+            const error = new Error('設定が見つかりません');
             const context: ConfigurationAccessContext = {
-                category: 'game',
+                category: 'game';
                 key: 'maxScore'
             };
             
@@ -133,7 +133,7 @@ describe('ConfigurationErrorHandler', () => {
             expect(result.message').toBe('フォールバック値を生成');'
         }');'
         test('エラー統計が更新される', (') => {'
-            const error = new Error('テストエラー'),
+            const error = new Error('テストエラー');
             const context: ConfigurationAccessContext = { category: 'test', key: 'test' };
             
             const initialTotal = errorHandler.errorStats.total;
@@ -148,11 +148,11 @@ describe('ConfigurationErrorHandler', () => {
     }
     describe('設定検証エラーの処理', (') => {'
         test('数値の自動修正', (') => {'
-            const error = new Error('値が範囲外です'),
+            const error = new Error('値が範囲外です');
             const context: ValidationContext = {
-                category: 'game',
-                key: 'level',
-                value: 150,
+                category: 'game';
+                key: 'level';
+                value: 150;
                 rule: { type: 'number', min: 1, max: 100 }
             };
             
@@ -166,11 +166,11 @@ describe('ConfigurationErrorHandler', () => {
             expect(result.message').toBe('値を自動修正');'
         }');'
         test('文字列の長さ修正', (') => {'
-            const error = new Error('文字列が長すぎます'),
+            const error = new Error('文字列が長すぎます');
             const context: ValidationContext = {
-                category: 'user',
-                key: 'name',
-                value: 'とても長い名前です',
+                category: 'user';
+                key: 'name';
+                value: 'とても長い名前です';
                 rule: { type: 'string', maxLength: 5 }
             };
             
@@ -184,11 +184,11 @@ describe('ConfigurationErrorHandler', () => {
             expect(result.message').toBe('値を自動修正');'
         }');'
         test('修正不可能な場合のデフォルト値使用', (') => {'
-            mockValidationSystem._getDefaultValue.mockReturnValue('デフォルト値'),
-            const error = new Error('修正不可能な値'),
+            mockValidationSystem._getDefaultValue.mockReturnValue('デフォルト値');
+            const error = new Error('修正不可能な値');
             const context: ValidationContext = {
-                category: 'test',
-                key: 'test',
+                category: 'test';
+                key: 'test';
                 value: { invalid: 'object' };
                 rule: { type: 'string' }
             };
@@ -205,9 +205,9 @@ describe('ConfigurationErrorHandler', () => {
     }
     describe('計算エラーの処理', (') => {'
         test('パラメータの修正', (') => {'
-            const error = new Error('計算エラー'),
+            const error = new Error('計算エラー');
             const context: CalculationContext = {
-                calculationType: 'scoreCalculation',
+                calculationType: 'scoreCalculation';
                 params: { score: -10, multiplier: NaN,,
                 expectedType: 'number'
             };
@@ -223,9 +223,9 @@ describe('ConfigurationErrorHandler', () => {
             expect(result.message').toBe('パラメータを修正');'
         }');'
         test('安全な値の返却', (') => {'
-            const error = new Error('計算不可能'),
+            const error = new Error('計算不可能');
             const context: CalculationContext = {
-                calculationType: 'scoreCalculation',
+                calculationType: 'scoreCalculation';
                 params: { invalid: 'params' };
                 expectedType: 'number'
             };
@@ -242,11 +242,11 @@ describe('ConfigurationErrorHandler', () => {
     }
     describe('計算オーバーフローエラーの処理', (') => {'
         test('値の制限', (') => {'
-            const error = new Error('オーバーフロー'),
+            const error = new Error('オーバーフロー');
             const context: CalculationContext = {
-                calculationType: 'scoreCalculation',
+                calculationType: 'scoreCalculation';
                 params: { score: Number.MAX_VALUE };
-                expectedType: 'number',
+                expectedType: 'number';
                 maxValue: 999999
             };
             
@@ -262,9 +262,9 @@ describe('ConfigurationErrorHandler', () => {
     }
     describe('キャッシュエラーの処理', (') => {'
         test('直接アクセスへの切り替え', (') => {'
-            const error = new Error('キャッシュエラー'),
+            const error = new Error('キャッシュエラー');
             const context: CacheContext = {
-                operation: 'get',
+                operation: 'get';
                 key: 'test.key'
             };
             
@@ -280,9 +280,9 @@ describe('ConfigurationErrorHandler', () => {
     }
     describe('依存関係エラーの処理', (') => {'
         test('セーフモードの有効化', (') => {'
-            const error = new Error('依存関係エラー'),
+            const error = new Error('依存関係エラー');
             const context: DependencyContext = {
-                dependency: 'TestModule',
+                dependency: 'TestModule';
                 operation: 'initialize'
             };
             
@@ -298,7 +298,7 @@ describe('ConfigurationErrorHandler', () => {
     }
     describe('復旧試行制限', (') => {'
         test('最大試行回数に達した場合の処理', (') => {'
-            const error = new Error('繰り返しエラー'),
+            const error = new Error('繰り返しエラー');
             const context: ConfigurationAccessContext = { category: 'test', key: 'test' };
             
             // 最大試行回数まで実行
@@ -324,7 +324,7 @@ describe('ConfigurationErrorHandler', () => {
             for (let i = 0, i < 10, i++) {
                 const error = new Error(`エラー${i}`);
                 // 復旧不可能なエラータイプを使用
-                errorHandler.handleError(error, 'UNKNOWN_ERROR', {});
+                errorHandler.handleError(error, 'UNKNOWN_ERROR', {};
             }
             
             // エラー率監視を実行
@@ -335,11 +335,11 @@ describe('ConfigurationErrorHandler', () => {
     }
     describe('統計とレポート', (') => {'
         test('エラー統計の取得', (') => {'
-            const error = new Error('テストエラー'),
+            const error = new Error('テストエラー');
             errorHandler.handleError(
                 error,
                 errorHandler.errorTypes.CONFIGURATION_ACCESS,
-                { category: 'test', key: 'test', defaultValue: 'default' });
+                { category: 'test', key: 'test', defaultValue: 'default' };
             const stats: ErrorStats = errorHandler.getErrorStats(
             expect(stats.total).toBe(1);
             expect(stats.recovered).toBe(1);
@@ -352,32 +352,32 @@ describe('ConfigurationErrorHandler', () => {
             errorHandler.fallbackState.disableCache = true,
             
             const state: FallbackState = errorHandler.getFallbackState(
-            expect(state.safeMode).toBe(true),
-            expect(state.disableCache).toBe(true),
+            expect(state.safeMode).toBe(true);
+            expect(state.disableCache).toBe(true);
             expect(state.useDefaultValues).toBe(false) }');'
         test('フォールバック状態のリセット', () => {
             errorHandler.fallbackState.safeMode = true,
             errorHandler.fallbackState.disableCache = true,
             
-            errorHandler.resetFallbackState(),
-            expect(errorHandler.fallbackState.safeMode).toBe(false),
+            errorHandler.resetFallbackState();
+            expect(errorHandler.fallbackState.safeMode).toBe(false);
             expect(errorHandler.fallbackState.disableCache).toBe(false) }');'
     }
     describe('シングルトンパターン', (') => {'
         test('同じインスタンスが返される', () => {
-            const instance1 = getConfigurationErrorHandler(),
-            const instance2 = getConfigurationErrorHandler(),
+            const instance1 = getConfigurationErrorHandler();
+            const instance2 = getConfigurationErrorHandler();
             expect(instance1).toBe(instance2) }');'
     }
     describe('エラーハンドラー内でのエラー処理', (') => {'
         test('復旧戦略でエラーが発生した場合の処理', () => {
             // 復旧戦略を破壊的に変更
             const originalStrategy = errorHandler.recoveryStrategies.get(
-                errorHandler.errorTypes.CONFIGURATION_ACCESS),
+                errorHandler.errorTypes.CONFIGURATION_ACCESS);
             errorHandler.recoveryStrategies.set(
                 errorHandler.errorTypes.CONFIGURATION_ACCESS,
                 {
-                    maxAttempts: 1),
+                    maxAttempts: 1);
                    , strategy: (') => {'
                         throw new Error('復旧戦略エラー') }
                 }
@@ -386,7 +386,7 @@ describe('ConfigurationErrorHandler', () => {
             const result: ErrorHandlingResult = errorHandler.handleError(
                 error,
                 errorHandler.errorTypes.CONFIGURATION_ACCESS,
-                { category: 'test', key: 'test' });
+                { category: 'test', key: 'test' };
             expect(result.success).toBe(false);
             expect(result.message').toContain('復旧戦略実行エラー');'
             // 元の戦略を復元
@@ -411,12 +411,12 @@ describe('ConfigurationErrorHandler', () => {
             const result: ErrorHandlingResult = errorHandler.handleError(
                 error,
                 errorHandler.errorTypes.CONFIGURATION_ACCESS,
-                { category: 'test', key: 'test' });
+                { category: 'test', key: 'test' };
             expect(result.success).toBe(false);
             expect(result.message').toBe('エラーハンドラー内でエラー発生');'
             expect(errorHandler.fallbackState.safeMode).toBe(true);
             // 元のメソッドを復元
             errorHandler.handleError = originalHandleError;
-        });
+        };
     }
 }');'

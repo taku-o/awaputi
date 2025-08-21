@@ -10,20 +10,20 @@ import { AudioSettingsUIComponentFactory  } from './audio-settings/AudioSettings
 import { AudioSettingsDataManager  } from './audio-settings/AudioSettingsDataManager.js';
 
 // Audio Settings UI types
-export interface AudioSettingsUIState { isOpen: boolean,
+export interface AudioSettingsUIState { isOpen: boolean;
     container: HTMLElement | null  }
 
-export interface AudioSettingsUIComponents { audioTestPanel: AudioTestPanel,
+export interface AudioSettingsUIComponents { audioTestPanel: AudioTestPanel;
     tabManager: AudioSettingsTabManager;
     uiComponentFactory: AudioSettingsUIComponentFactory;
     tabRenderers: AudioSettingsTabRenderers;
     dataManager: AudioSettingsDataManager;
 
-export interface NotificationColors { bg: string,
+export interface NotificationColors { bg: string;
     border: string;
     text: string;
 
-export interface NotificationColorsMap { success: NotificationColors,
+export interface NotificationColorsMap { success: NotificationColors;
     error: NotificationColors;
     info: NotificationColors;
 
@@ -42,7 +42,7 @@ export class AudioSettingsUI implements AudioSettingsUIState { private audioMana
     private localizationManager: any;
     private errorHandler: any;
     // UI要素
-    public, container: HTMLElement | null,
+    public, container: HTMLElement | null;
     public isOpen: boolean;
     
     // Components
@@ -75,8 +75,7 @@ export class AudioSettingsUI implements AudioSettingsUIState { private audioMana
         this.audioTestPanel = new AudioTestPanel(audioManager);
         
         // サブコンポーネントの初期化
-        this._initializeSubComponents(),
-        
+        this._initializeSubComponents();
         // イベントリスナー
         this.eventListeners = new Map();
         
@@ -98,35 +97,30 @@ export class AudioSettingsUI implements AudioSettingsUIState { private audioMana
      */
     private _initializeSubComponents(): void { try {
             // タブマネージャー
-            this.tabManager = new AudioSettingsTabManager(this.audioManager; this.configManager),
-            
+            this.tabManager = new AudioSettingsTabManager(this.audioManager; this.configManager);
             // UIコンポーネントファクトリー
-            this.uiComponentFactory = new AudioSettingsUIComponentFactory(this.audioManager; this.configManager),
-            
+            this.uiComponentFactory = new AudioSettingsUIComponentFactory(this.audioManager; this.configManager);
             // タブレンダラー
             this.tabRenderers = new AudioSettingsTabRenderers(
                 this.audioManager, ,
-                this.configManager ),
+                this.configManager );
                 this.uiComponentFactory),
                 this.audioTestPanel),
             
             // データマネージャー
-            this.dataManager = new AudioSettingsDataManager(this.audioManager; this.configManager),
-            
+            this.dataManager = new AudioSettingsDataManager(this.audioManager; this.configManager);
             // 相互連携の設定
-            this.tabManager.setTabRenderers(this.tabRenderers),
-            this.uiComponentFactory.setSettingsChangeCallback(() => this.showSaveStatus(),
+            this.tabManager.setTabRenderers(this.tabRenderers);
+            this.uiComponentFactory.setSettingsChangeCallback(() => this.showSaveStatus();
             this.dataManager.setNotificationCallback((message: string, type: string) => this.showNotification(message, type)),
 
-            console.log('[AudioSettingsUI] サブコンポーネントを初期化しました'),
-
+            console.log('[AudioSettingsUI] サブコンポーネントを初期化しました');
             ' }'
 
-        } catch (error) { console.error('AudioSettingsUI サブコンポーネント初期化に失敗:', error),
-
+        } catch (error) { console.error('AudioSettingsUI サブコンポーネント初期化に失敗:', error);
             this.errorHandler.handleError(error, {)'
                 context: 'AudioSettingsUI._initializeSubComponents'
-            });
+            };
         }
     }
     
@@ -135,7 +129,7 @@ export class AudioSettingsUI implements AudioSettingsUIState { private audioMana
      */
     private initialize(): void { try {
             // コンテナ作成
-            this.createContainer(),
+            this.createContainer();
             // 設定変更の監視を設定
             this.setupConfigWatchers()','
             console.log('AudioSettingsUI, initialized'),' }'
@@ -155,22 +149,22 @@ export class AudioSettingsUI implements AudioSettingsUIState { private audioMana
         this.container = document.createElement('div');
         this.container.className = 'audio-settings-ui';
         this.container.style.cssText = `;
-            display: none;
-            position: fixed;
-            top: 50%;
+            display: none,
+            position: fixed,
+            top: 50%,
             left: 50%,
-    transform: translate(-50%, -50%),
-            width: 600px;
+    transform: translate(-50%, -50%);
+            width: 600px,
             max-width: 90vw,
             max-height: 80vh,
             background-color: rgba(0, 0, 0, 0.9);
-            border: 2px solid #00ffff;
+            border: 2px solid #00ffff,
             border-radius: 15px,
-            padding: 20px;
+            padding: 20px,
             z-index: 10000,
             overflow: hidden,
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            color: #ffffff;
+            color: #ffffff,
             box-shadow: 0 0 30px rgba(0, 255, 255, 0.5);
         `;
         
@@ -215,7 +209,7 @@ export class AudioSettingsUI implements AudioSettingsUIState { private audioMana
         const header = document.createElement('div');
         header.className = 'audio-settings-header';
         header.style.cssText = `;
-            display: flex;
+            display: flex,
             justify-content: space-between,
             align-items: center,
             margin-bottom: 20px,
@@ -227,9 +221,9 @@ export class AudioSettingsUI implements AudioSettingsUIState { private audioMana
         const title = document.createElement('h2');
         title.textContent = this.localizationManager.getText('audio.settings.title);'
         title.style.cssText = `;
-            margin: 0;
+            margin: 0,
             font-size: 24px,
-            color: #00ffff;
+            color: #00ffff,
             text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
 
         `;
@@ -240,11 +234,11 @@ export class AudioSettingsUI implements AudioSettingsUIState { private audioMana
         closeButton.className = 'audio-settings-close';
         closeButton.textContent = '✖';
         closeButton.style.cssText = `;
-            background: none;
+            background: none,
             border: none,
-    color: #ffffff;
+    color: #ffffff,
             font-size: 24px,
-            cursor: pointer;
+            cursor: pointer,
             padding: 5px 10px,
     transition: all 0.3s ease,
         `;
@@ -259,7 +253,7 @@ export class AudioSettingsUI implements AudioSettingsUIState { private audioMana
             closeButton.style.color = '#ffffff',' }'
 
             closeButton.style.textShadow = 'none'; }
-        });
+        };
         header.appendChild(closeButton);
         
         return header;
@@ -276,7 +270,7 @@ export class AudioSettingsUI implements AudioSettingsUIState { private audioMana
         const footer = document.createElement('div');
         footer.className = 'audio-settings-footer';
         footer.style.cssText = `;
-            display: flex;
+            display: flex,
             justify-content: space-between,
             align-items: center,
             margin-top: 20px,
@@ -291,11 +285,11 @@ export class AudioSettingsUI implements AudioSettingsUIState { private audioMana
 
         resetButton.style.cssText = `';'
             background-color: rgba(255, 0, 0, 0.2);
-            border: 2px solid #ff0000;
+            border: 2px solid #ff0000,
             color: #ff0000,
-    padding: 10px 20px;
+    padding: 10px 20px,
             border-radius: 8px,
-            cursor: pointer;
+            cursor: pointer,
             font-size: 16px,
             transition: all 0.3s ease,
         `;
@@ -320,7 +314,7 @@ export class AudioSettingsUI implements AudioSettingsUIState { private audioMana
         const middleGroup = document.createElement('div');
         middleGroup.style.cssText = `;
             display: flex,
-    gap: 10px;
+    gap: 10px,
         `;
         ';'
         // インポートボタン
@@ -330,11 +324,11 @@ export class AudioSettingsUI implements AudioSettingsUIState { private audioMana
 
         importButton.style.cssText = `';'
             background-color: rgba(0, 255, 0, 0.2);
-            border: 2px solid #00ff00;
+            border: 2px solid #00ff00,
             color: #00ff00,
-    padding: 10px 15px;
+    padding: 10px 15px,
             border-radius: 8px,
-            cursor: pointer;
+            cursor: pointer,
             font-size: 14px,
             transition: all 0.3s ease,
         `;
@@ -362,11 +356,11 @@ export class AudioSettingsUI implements AudioSettingsUIState { private audioMana
 
         exportButton.style.cssText = `';'
             background-color: rgba(0, 255, 255, 0.2);
-            border: 2px solid #00ffff;
+            border: 2px solid #00ffff,
             color: #00ffff,
-    padding: 10px 15px;
+    padding: 10px 15px,
             border-radius: 8px,
-            cursor: pointer;
+            cursor: pointer,
             font-size: 14px,
             transition: all 0.3s ease,
         `;
@@ -381,7 +375,7 @@ export class AudioSettingsUI implements AudioSettingsUIState { private audioMana
             exportButton.style.backgroundColor = 'rgba(0, 255, 255, 0.2)',' }'
 
             exportButton.style.boxShadow = 'none'; }
-        });
+        };
         middleGroup.appendChild(exportButton);
 
         footer.appendChild(middleGroup);
@@ -391,7 +385,7 @@ export class AudioSettingsUI implements AudioSettingsUIState { private audioMana
         saveStatus.className = 'audio-settings-save-status';
         saveStatus.textContent = this.localizationManager.getText('audio.settings.saved');
         saveStatus.style.cssText = `;
-            color: #00ff00;
+            color: #00ff00,
             font-size: 14px,
             opacity: 0,
     transition: opacity 0.3s ease,
@@ -449,7 +443,7 @@ export class AudioSettingsUI implements AudioSettingsUIState { private audioMana
         if (existingNotification) {
 
             existingNotification.remove()','
-        const notification = document.createElement('div'),
+        const notification = document.createElement('div');
         notification.className = 'audio-settings-notification',
         notification.textContent = message }
 
@@ -465,23 +459,23 @@ export class AudioSettingsUI implements AudioSettingsUIState { private audioMana
         const color = colors[type as keyof NotificationColorsMap] || colors.info;
         
         notification.style.cssText = `;
-            position: fixed;
+            position: fixed,
             top: 20px,
-    right: 20px;
+    right: 20px,
             background-color: ${color.bg},
-            border: 2px solid ${color.border};
-            color: ${color.text};
-            padding: 15px 20px;
+            border: 2px solid ${color.border},
+            color: ${color.text},
+            padding: 15px 20px,
             border-radius: 10px,
             z-index: 10001,
             font-size: 14px,
             box-shadow: 0 0 20px ${color.bg},
-            animation: slideInFromRight 0.3s ease-out;
+            animation: slideInFromRight 0.3s ease-out,
         `;
         ';'
         // アニメーション定義
         if(!document.querySelector('#audio-notification-styles)' { ''
-            const style = document.createElement('style'),
+            const style = document.createElement('style');
             style.id = 'audio-notification-styles',
             style.textContent = `,
                 @keyframes slideInFromRight { }
@@ -605,7 +599,7 @@ export class AudioSettingsUI implements AudioSettingsUIState { private audioMana
         // 設定監視を解除
         this.configWatchers.forEach(watchId => {  ) }
             this.configManager.unwatch(watchId); }
-        });
+        };
         this.configWatchers.clear();
         // イベントリスナーを削除
         if (this.escapeHandler) {', ' }

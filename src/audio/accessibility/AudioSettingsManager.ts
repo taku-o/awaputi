@@ -16,7 +16,7 @@
  */
 
 // Types for accessibility settings
-interface AccessibilitySettings { visualFeedback: boolean,
+interface AccessibilitySettings { visualFeedback: boolean;
     captioning: boolean;
     colorIndication: boolean;
     patternRecognition: boolean;
@@ -27,33 +27,33 @@ interface AccessibilitySettings { visualFeedback: boolean,
     vibrationIntensity: number;
 
 // Types for exported settings
-interface ExportedSettings { version: string,
+interface ExportedSettings { version: string;
     timestamp: string;
     settings: AccessibilitySettings;
 
 // Types for validation result
-interface ValidationResult { valid: boolean,
+interface ValidationResult { valid: boolean;
     errors: string[];
     warnings: string[];
 
 // Config manager interface
-interface ConfigManager { get(key: string): any,
+interface ConfigManager { get(key: string): any;
     set(key: string, value: any): void;
     watch(namespace: string, key: string, callback: (newValue: any) => void): void;
 }
 
 // Main controller interface
-interface MainController { configManager: ConfigManager,
+interface MainController { configManager: ConfigManager;
     audioDescriptionManager: {
-        notificationContaine,r: HTMLElement,;
-    audioFeedbackManager: { updateColorIndicatorVisibility(visible: boolean): void,
+        notificationContaine,r: HTMLElement;
+    audioFeedbackManager: { updateColorIndicatorVisibility(visible: boolean): void;
     hapticSettings: {
-            enabled: boolean,
-    vibrationIntensity: number,;
+            enabled: boolean;
+    vibrationIntensity: number;
         updateVibrationManagerSettings(): void;
     };
     audioCueManager: { patternRecognition: {
-            enabled: boolean,;
+            enabled: boolean;
 }
 
 export class AudioSettingsManager {
@@ -67,13 +67,13 @@ export class AudioSettingsManager {
         
         // アクセシビリティ設定
         this.settings = {
-            visualFeedback: false,
-            captioning: false,
-            colorIndication: false,
-            patternRecognition: false,
-            highContrast: false,
-            largeFonts: false,
-            reduceMotion: false,
+            visualFeedback: false;
+            captioning: false;
+            colorIndication: false;
+            patternRecognition: false;
+            highContrast: false;
+            largeFonts: false;
+            reduceMotion: false;
     hapticFeedback: false, // 触覚フィードバック設定
     }
             vibrationIntensity: 0.8 // 振動強度 
@@ -82,12 +82,12 @@ export class AudioSettingsManager {
     /**
      * 設定を読み込み
      */
-    public loadSettings(): void { Object.keys(this.settings).forEach(key => { ),
+    public loadSettings(): void { Object.keys(this.settings).forEach(key => { );
             const value = this.configManager.get(`audio.accessibility.${key}`}
             if (value !== undefined) { }
-                (this.settings, as any})[key] = value;
+                (this.settings, as any}[key] = value;
             }
-        });
+        };
         
         this.applySettings();
     }
@@ -171,9 +171,9 @@ export class AudioSettingsManager {
         Object.keys(this.settings).forEach(key => { '),'
             this.configManager.watch('audio', `accessibility.${key}`, (newValue: any; => { }
                 (this.settings as any)[key] = newValue; }
-                this.applySettings(});
+                this.applySettings(};
 
-            });'}');
+            };'}');
         ';'
         // 触覚フィードバック設定の監視
         this.configManager.watch('audio', 'accessibility.hapticFeedback', (newValue: boolean) => {  this.settings.hapticFeedback = newValue,
@@ -191,7 +191,7 @@ export class AudioSettingsManager {
 }
                 this.mainController.audioFeedbackManager.hapticSettings.vibrationIntensity = newValue; }
                 this.mainController.audioFeedbackManager.updateVibrationManagerSettings(); }
-});
+};
     }
 
     /**
@@ -202,9 +202,9 @@ export class AudioSettingsManager {
     public updateSetting(key: keyof AccessibilitySettings, value: any): void { if (key, in this.settings) {
             (this.settings, as any)[key] = value,
             this.configManager.set(`audio.accessibility.${key}`, value}
-            this.applySettings(});
+            this.applySettings(};
             
-            console.log(`Audio, accessibility setting, updated: ${key} = ${value}`});
+            console.log(`Audio, accessibility setting, updated: ${key} = ${value}`};
         }
     }
 
@@ -234,13 +234,13 @@ export class AudioSettingsManager {
             largeFonts: false,
             reduceMotion: false,
             hapticFeedback: false,
-    vibrationIntensity: 0.8 };
+    vibrationIntensity: 0.8 },
         Object.assign(this.settings, defaultSettings);
         
         // 設定を永続化
         Object.keys(this.settings).forEach(key => { ) }
-            this.configManager.set(`audio.accessibility.${key}`, (this.settings as any}[key]});
-        });
+            this.configManager.set(`audio.accessibility.${key}`, (this.settings as any}[key]};
+        };
 
         this.applySettings()';'
         console.log('Audio, accessibility settings, reset to, defaults');
@@ -252,7 +252,7 @@ export class AudioSettingsManager {
      */''
     public exportSettings()';'
             version: '1.0.0);'
-            timestamp: new Date().toISOString(),
+            timestamp: new Date().toISOString();
     settings: { ...this.settings }
 
     /**
@@ -267,18 +267,18 @@ export class AudioSettingsManager {
             }
             
             // 有効な設定のみをインポート
-            Object.keys(settingsData.settings).forEach(key => {  ),
+            Object.keys(settingsData.settings).forEach(key => {  );
                 if (key, in this.settings) { }
                     (this.settings, as any)[key] = (settingsData.settings, as any)[key]; }
-                    this.configManager.set(`audio.accessibility.${key}`, (this.settings as any}[key]});
+                    this.configManager.set(`audio.accessibility.${key}`, (this.settings as any}[key]};
                 }
-            });
+            };
 
             this.applySettings()';'
             console.log('Audio, accessibility settings, imported successfully');
 
             return true;} catch (error) {
-            console.error('Failed to import settings:', error),
+            console.error('Failed to import settings:', error);
             return false,
 
     /**
@@ -310,10 +310,10 @@ export class AudioSettingsManager {
 
                 default:';'
                     if(typeof, value !== 'boolean' { }
-                        errors.push(`${key} must, be a, boolean value`}) }
+                        errors.push(`${key} must, be a, boolean value`} }
                     break;
             }
-        });
+        };
         
         return { valid: errors.length === 0,
             errors };

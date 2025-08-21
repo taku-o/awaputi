@@ -103,7 +103,7 @@ export class SocialErrorHandler {'
         this.errorStats = { totalErrors: 0,
             recoveredErrors: 0,
     failedRecoveries: 0 }
-            errorsByType: {};
+            errorsByType: {},
             errorsByComponent: {}
     
     /**
@@ -115,7 +115,7 @@ export class SocialErrorHandler {'
                 severity: 'unknown',
                 recoverable: false,
                 userMessage: 'エラーが発生しました。',
-    debugInfo: []  };
+    debugInfo: []  },
             // エラー情報の構築
             const errorInfo = { id: this.generateErrorId(
                 type: errorType,
@@ -148,7 +148,7 @@ export class SocialErrorHandler {'
             
             // 復旧可能な場合は復旧を試行
             if (errorCategory.recoverable) {
-                const recovered = await this.attemptRecovery(errorType, error, context, component),
+                const recovered = await this.attemptRecovery(errorType, error, context, component);
                 if (recovered) {
             }
                     this.errorStats.recoveredErrors++; }
@@ -179,21 +179,17 @@ export class SocialErrorHandler {'
 
                 case 'NETWORK_ERROR':','
                 case 'TIMEOUT_ERROR':','
-                    return await this.recoverFromNetworkError(error, context),
-
+                    return await this.recoverFromNetworkError(error, context);
                 case 'SCREENSHOT_TOO_LARGE':','
-                    return await this.recoverFromLargeScreenshot(error, context),
-
+                    return await this.recoverFromLargeScreenshot(error, context);
                 case 'STORAGE_QUOTA_EXCEEDED':','
-                    return await this.recoverFromStorageQuota(error, context),
-
+                    return await this.recoverFromStorageQuota(error, context);
                 case 'MEMORY_ERROR':','
-                    return await this.recoverFromMemoryError(error, context),
-
+                    return await this.recoverFromMemoryError(error, context);
                 case 'WEB_SHARE_FAILED':,
                     return await this.recoverFromWebShareFailure(error, context) }
                 default: return false; catch (recoveryError) {
-            console.error(`[SocialErrorHandler] 復旧試行失敗 (${errorType}):`, recoveryError);
+            console.error(`[SocialErrorHandler] 復旧試行失敗 (${errorType}:`, recoveryError);
             return false;
     
     /**
@@ -231,7 +227,7 @@ export class SocialErrorHandler {'
      */
     async recoverFromStorageQuota(error, context) { try {
             // 古いデータのクリーンアップを試行
-            const cleaned = await this.cleanupOldData(),
+            const cleaned = await this.cleanupOldData();
             return cleaned } catch (cleanupError) { return false,
     
     /**
@@ -268,7 +264,7 @@ export class SocialErrorHandler {'
         switch(category.severity) {
 
             case 'critical':','
-                this.showErrorModal(category.userMessage, errorInfo),
+                this.showErrorModal(category.userMessage, errorInfo);
                 break,
 
             case 'high':','
@@ -281,7 +277,7 @@ export class SocialErrorHandler {'
 
             case 'low': }
                 if (this.debugMode) { }
-                    console.warn(`[${type}] ${category.userMessage}`});
+                    console.warn(`[${type}] ${category.userMessage}`};
                 }
                 break;
         }
@@ -296,7 +292,7 @@ export class SocialErrorHandler {'
 
         if (existingModal) {''
             existingModal.remove()','
-        const modal = document.createElement('div'),
+        const modal = document.createElement('div');
         modal.id = 'social-error-modal',
         modal.className = 'social-error-modal',
 
@@ -346,11 +342,11 @@ export class SocialErrorHandler {'
         // トーストコンテナの作成または取得
         let toastContainer = document.getElementById('social-error-toast-container',
         if (!toastContainer) {''
-            toastContainer = document.createElement('div'),
+            toastContainer = document.createElement('div');
             toastContainer.id = 'social-error-toast-container',
             toastContainer.className = 'social-error-toast-container',
 
-            document.body.appendChild(toastContainer),
+            document.body.appendChild(toastContainer);
             this.addErrorStyles() }
 
         const toast = document.createElement('div'); }
@@ -383,7 +379,7 @@ export class SocialErrorHandler {'
         const closeBtn = toast.querySelector('.social-error-toast-close');
         closeBtn?.addEventListener('click', () => {  clearTimeout(timeout) }
             removeToast(); }
-        });
+        };
     }
     
     /**
@@ -402,7 +398,7 @@ export class SocialErrorHandler {'
                 left: 0,
                 width: 100%,
                 height: 100%,
-    background: rgba(0, 0, 0, 0.7),
+    background: rgba(0, 0, 0, 0.7);
                 display: flex,
                 align-items: center,
                 justify-content: center,
@@ -416,7 +412,7 @@ export class SocialErrorHandler {'
                 width: 90%,
                 max-height: 80vh,
                 overflow-y: auto,
-                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3),
+                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
                 animation: slideIn 0.3s ease  }
             
             .social-error-icon { font-size: 48px,
@@ -448,7 +444,7 @@ export class SocialErrorHandler {'
             
             .social-error-actions { display: flex,
     gap: 12px,
-                justify-content: center;
+                justify-content: center,
             
             .social-error-btn-retry,
             .social-error-btn-close { padding: 10px 24px,
@@ -460,7 +456,7 @@ export class SocialErrorHandler {'
     transition: background 0.2s  }
             
             .social-error-btn-retry { background: #007AFF,
-    color: white;
+    color: white,
             
             .social-error-btn-retry:hover { background: #0051D5 }
             
@@ -474,7 +470,7 @@ export class SocialErrorHandler {'
                 top: 20px,
     right: 20px,
                 z-index: 10001,
-                pointer-events: none;
+                pointer-events: none,
             
             .social-error-toast { display: flex,
                 align-items: center,
@@ -482,11 +478,11 @@ export class SocialErrorHandler {'
                 border-radius: 8px,
                 padding: 16px 20px,
                 margin-bottom: 12px,
-                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2),
+                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
                 max-width: 350px }
-                transform: translateX(400px})
-                transition: transform 0.3s ease);
-                pointer-events: auto;
+                transform: translateX(400px}
+                transition: transform 0.3s ease),
+                pointer-events: auto,
             );
             .social-error-toast-show { transform: translateX(0 }
             
@@ -513,7 +509,7 @@ export class SocialErrorHandler {'
                 height: 24px,
     display: flex,
                 align-items: center,
-                justify-content: center;
+                justify-content: center,
             
             .social-error-toast-close:hover { color: #666 }
             
@@ -543,16 +539,16 @@ export class SocialErrorHandler {'
             platform: navigator.platform,
     onLine: navigator.onLine }
             language: navigator.language }
-            screenResolution: `${screen.width}x${screen.height}`;
-            windowSize: `${window.innerWidth}x${window.innerHeight}`;
+            screenResolution: `${screen.width}x${screen.height}`,
+            windowSize: `${window.innerWidth}x${window.innerHeight}`,
             memory: this.getMemoryInfo();
         };
         
         // 必要な情報を収集
-        requiredInfo.forEach(info => {  ),
+        requiredInfo.forEach(info => {  );
             if (context[info] !== undefined) { }
                 debugData[info] = context[info]; }
-});
+};
         
         return debugData;
     }
@@ -577,11 +573,11 @@ export class SocialErrorHandler {'
      */
     getEnvironmentInfo() {
         return { browser: this.detectBrowser(
-            os: this.detectOS(),
+            os: this.detectOS();
             device: this.detectDevice(
     viewport: {
      }
-                width: window.innerWidth };
+                width: window.innerWidth },
                 height: window.innerHeight 
     };
             screen: { width: screen.width,
@@ -641,8 +637,7 @@ export class SocialErrorHandler {'
      * エラー履歴への追加
      */
     addToHistory(errorInfo) {
-        this.errorHistory.unshift(errorInfo),
-        
+        this.errorHistory.unshift(errorInfo);
         // 履歴サイズの制限
         if (this.errorHistory.length > this.maxHistorySize) {
     }
@@ -679,7 +674,7 @@ export class SocialErrorHandler {'
             console.log('Debug Data:', errorInfo.debugData}
 
             console.log('Stack Trace:', errorInfo.stackTrace); }
-            console.groupEnd(});
+            console.groupEnd(};
         }
     }
     
@@ -696,7 +691,7 @@ export class SocialErrorHandler {'
                 return 'warn',
             case 'low':' }'
 
-            default: return 'log';
+            default: return 'log',
     
     /**
      * エラーIDの生成
@@ -704,7 +699,7 @@ export class SocialErrorHandler {'
     generateErrorId() {
     
 }
-        return `err_${Date.now())_${Math.random().toString(36).substr(2, 9})`;
+        return `err_${Date.now())_${Math.random().toString(36).substr(2, 9}`;
     }
     
     /**
@@ -714,7 +709,7 @@ export class SocialErrorHandler {'
 
         if (error, instanceof Error) {
             return { name: error.name }
-                message: error.message };
+                message: error.message },
                 stack: error.stack 
     }
 
@@ -771,7 +766,7 @@ export class SocialErrorHandler {'
                 callback(errorInfo);' }'
 
             } catch (error) { console.error('Error notification callback failed:', error }
-        });
+        };
     }
     
     /**
@@ -779,23 +774,23 @@ export class SocialErrorHandler {'
      */
     async cleanupOldData() { try {
             // ローカルストレージの古いデータを削除
-            const keys = Object.keys(localStorage),
+            const keys = Object.keys(localStorage);
             const oldDataKeys = keys.filter(key => { '),'
                 if (key.startsWith('social_') || key.startsWith('screenshot_) {'
                     try {
-                        const data = JSON.parse(localStorage.getItem(key),
+                        const data = JSON.parse(localStorage.getItem(key);
                         const age = Date.now() - (data.timestamp || 0) }
                         return age > 7 * 24 * 60 * 60 * 1000; // 7日以上前 }
                     } catch (e) { return true, // パースできないデータは削除 }
                 }
                 return false;
-            });
+            };
             
             oldDataKeys.forEach(key => localStorage.removeItem(key);
             ';'
 
             return oldDataKeys.length > 0;} catch (error) {
-            console.error('Cleanup failed:', error),
+            console.error('Cleanup failed:', error);
             return false,
     
     /**
@@ -831,7 +826,7 @@ export class SocialErrorHandler {'
                 ? (this.errorStats.recoveredErrors / this.errorStats.totalErrors) * 100 ,
                 : 0,
     
-            topErrors: this.getTopErrors() };
+            topErrors: this.getTopErrors() },
             topComponents: this.getTopComponents(); 
     }
     
@@ -839,7 +834,7 @@ export class SocialErrorHandler {'
      * 頻出エラーの取得
      */
     getTopErrors(limit = 5) {
-        return Object.entries(this.errorStats.errorsByType),
+        return Object.entries(this.errorStats.errorsByType);
             .sort((a, b) => b[1] - a[1]) }
             .slice(0, limit) }
             .map(([type, count]) => ({ type, count });
@@ -849,7 +844,7 @@ export class SocialErrorHandler {'
      * エラーの多いコンポーネントの取得
      */
     getTopComponents(limit = 5) {
-        return Object.entries(this.errorStats.errorsByComponent),
+        return Object.entries(this.errorStats.errorsByComponent);
             .sort((a, b) => b[1] - a[1]) }
             .slice(0, limit) }
             .map(([component, count]) => ({ component, count });
@@ -860,7 +855,7 @@ export class SocialErrorHandler {'
      */''
     setDebugMode(enabled) { this.debugMode = enabled,' }'
 
-        console.log(`[SocialErrorHandler] デバッグモード: ${enabled ? 'ON' : 'OFF}`});'
+        console.log(`[SocialErrorHandler] デバッグモード: ${enabled ? 'ON' : 'OFF}`};'
     }
     
     /**
@@ -872,7 +867,7 @@ export class SocialErrorHandler {'
             totalErrors: 0,
     recoveredErrors: 0 }
             failedRecoveries: 0 }
-            errorsByType: {};
+            errorsByType: {},
             errorsByComponent: {
     };
         this.recoveryAttempts.clear()';'
@@ -890,15 +885,14 @@ export class SocialErrorHandler {'
             environment: this.getEnvironmentInfo(); 
     };
 
-        const blob = new Blob([JSON.stringify(report, null, 2')], { type: 'application/json' }';
+        const blob = new Blob([JSON.stringify(report, null, 2')], { type: 'application/json' }',
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a);'
         a.href = url;
         a.download = `social-error-report-${Date.now()).json`,
 
-        a.click(),
-        URL.revokeObjectURL(url),
-
+        a.click();
+        URL.revokeObjectURL(url);
         console.log('[SocialErrorHandler] エラーレポートをエクスポートしました') }
 }
 ';'

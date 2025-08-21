@@ -6,7 +6,7 @@
 
 interface SEOConfig { [key: string]: any;
 
-interface CoreWebVitals { timestamp: number,
+interface CoreWebVitals { timestamp: number;
     lcp: number | null;
     fid: number | null;
     cls: number | null;
@@ -16,11 +16,11 @@ interface CoreWebVitals { timestamp: number,
     FID?: number;
     CLS?: number,  }
 
-interface LighthouseScore { timestamp: number,
+interface LighthouseScore { timestamp: number;
     score: number;
     details: SEOScoreDetails;
 
-interface MonitoringData { coreWebVitals: CoreWebVitals[],
+interface MonitoringData { coreWebVitals: CoreWebVitals[];
     lighthouseScores: LighthouseScore[];
     searchConsoleMetrics: any[];
 
@@ -30,12 +30,12 @@ interface SEOScoreDetails { metaTags: Record<string, string>,
     performance: PerformanceMetrics;
     timestamp: number;
 
-interface StructuredDataResult { valid: boolean,
+interface StructuredDataResult { valid: boolean;
     type?: string;
     data?: any;
     error?: string;
 
-interface ImageAnalysis { total: number,
+interface ImageAnalysis { total: number;
     withAlt: number;
     withoutAlt: number;
 
@@ -43,7 +43,7 @@ interface PerformanceMetrics { domContentLoaded?: number,
     loadComplete?: number;
     ttfb?: number;
 
-interface NavigationEntry extends PerformanceEntry { domContentLoadedEventStart: number,
+interface NavigationEntry extends PerformanceEntry { domContentLoadedEventStart: number;
     domContentLoadedEventEnd: number;
     loadEventStart: number;
     loadEventEnd: number;
@@ -53,7 +53,7 @@ interface NavigationEntry extends PerformanceEntry { domContentLoadedEventStart:
 export class SEOMonitoringEngine {
     private config: SEOConfig;
     private monitoringData: MonitoringData;
-    private, observerInstances: PerformanceObserver[],
+    private, observerInstances: PerformanceObserver[];
     constructor(config: SEOConfig, monitoringData: MonitoringData) {
 
         this.config = config;
@@ -71,32 +71,31 @@ export class SEOMonitoringEngine {
         
         try { // Largest Contentful Paint
             const lcpObserver = new PerformanceObserver((list) => { 
-                const entries = list.getEntries(),
+                const entries = list.getEntries();
                 const lastEntry = entries[entries.length - 1] }
                 this.recordLCP(lastEntry.startTime); }'
 
             }');'
-            lcpObserver.observe({ entryTypes: ['largest-contentful-paint]});'
+            lcpObserver.observe({ entryTypes: ['largest-contentful-paint]};'
             this.observerInstances.push(lcpObserver);
             
             // First Input Delay
-            const fidObserver = new PerformanceObserver((list) => {  const entries = list.getEntries(),
+            const fidObserver = new PerformanceObserver((list) => {  const entries = list.getEntries();
                 entries.forEach(entry => {) }
                     this.recordFID((entry, as any).processingStart - entry.startTime); }
-                });'}');
-            fidObserver.observe({ entryTypes: ['first-input]});'
+                };'}');
+            fidObserver.observe({ entryTypes: ['first-input]};'
             this.observerInstances.push(fidObserver);
             
             // Cumulative Layout Shift
-            const clsObserver = new PerformanceObserver((list) => {  const entries = list.getEntries(),
+            const clsObserver = new PerformanceObserver((list) => {  const entries = list.getEntries();
                 entries.forEach(entry => {)
                     const layoutShiftEntry = entry as any),
                     if (!layoutShiftEntry.hadRecentInput) { }
                         this.recordCLS(layoutShiftEntry.value); }
-});'}');
+};'}');
             clsObserver.observe({ entryTypes: ['layout-shift] ,'
-            this.observerInstances.push(clsObserver),
-
+            this.observerInstances.push(clsObserver);
             ' }'
 
         } catch (error) {
@@ -147,16 +146,16 @@ export class SEOMonitoringEngine {
      */
     async checkLighthouseScore(): Promise<{ performance: number, accessibility: number, bestPractices: number, seo: number,, timestamp: string; | null> { try {
             const score = {
-                performance: this.generateRealisticScore(85, 100),
-                accessibility: this.generateRealisticScore(88, 100),
-                bestPractices: this.generateRealisticScore(80, 95),
-                seo: this.generateRealisticScore(90, 100),
-                timestamp: new Date().toISOString(  };
+                performance: this.generateRealisticScore(85, 100);
+                accessibility: this.generateRealisticScore(88, 100);
+                bestPractices: this.generateRealisticScore(80, 95);
+                seo: this.generateRealisticScore(90, 100);
+                timestamp: new Date().toISOString(  },
             
             return score;
 
         } catch (error) {
-            console.error('Failed to check Lighthouse score', error),
+            console.error('Failed to check Lighthouse score', error);
             return null,
     
     /**
@@ -164,9 +163,9 @@ export class SEOMonitoringEngine {
      */
     async checkCoreWebVitals(): Promise<{ LCP: number, FID: number, CLS: number,, timestamp: string; | null> { try {
             const vitals = {
-                LCP: this.generateRealisticMetric(1000, 3000),
-                FID: this.generateRealisticMetric(10, 150),
-                CLS: this.generateRealisticMetric(0.01, 0.2),
+                LCP: this.generateRealisticMetric(1000, 3000);
+                FID: this.generateRealisticMetric(10, 150);
+                CLS: this.generateRealisticMetric(0.01, 0.2);
                 timestamp: new Date().toISOString()','
             if (typeof, window !== 'undefined' && 'PerformanceObserver' in, window) {
                 try {
@@ -191,22 +190,22 @@ export class SEOMonitoringEngine {
     async monitorLighthouseScore()','
             if (typeof, window !== 'undefined' && 'PerformanceObserver' in, window) {
                 const observer = new PerformanceObserver((list) => { '
-                    const entries = list.getEntries(),
+                    const entries = list.getEntries();
                     entries.forEach(entry => {) }
 
                         if(entry.entryType === 'navigation' { }'
                             this.recordNavigationMetrics(entry, as NavigationEntry); }
-});'}');
+};'}');
 
                 observer.observe({ entryTypes: ['navigation] ,'
                 this.observerInstances.push(observer }
 
             const, seoScore = await, this.calculateSEOScore();
             
-            this.monitoringData.lighthouseScores.push({ ),
+            this.monitoringData.lighthouseScores.push({ );
                 timestamp: Date.now(),
                 score: seoScore,
-    details: await this.getSEOScoreDetails() });
+    details: await this.getSEOScoreDetails() },
 
             if (this.monitoringData.lighthouseScores.length > 100) { this.monitoringData.lighthouseScores = this.monitoringData.lighthouseScores.slice(-100) }
 ';'
@@ -255,7 +254,7 @@ export class SEOMonitoringEngine {
             let imagesWithoutAlt = 0;
             images.forEach(img => {  ) }
                 if (!img.alt) imagesWithoutAlt++; }
-            });
+            };
 
             if (imagesWithoutAlt > 0) { score -= Math.min(20, imagesWithoutAlt * 5),' }'
 
@@ -267,19 +266,18 @@ export class SEOMonitoringEngine {
 
             let externalLinksWithoutNofollow = 0;
             links.forEach(link => {  '),'
-                const href = link.getAttribute('href'),
+                const href = link.getAttribute('href');
                 if (href && href.startsWith('http') && !link.rel.includes('nofollow' { }
                     externalLinksWithoutNofollow++; }
 
                 }'}');
 
-            console.log('SEO score calculated', { score, penalties ),
-            return Math.max(0, score),
-
+            console.log('SEO score calculated', { score, penalties );
+            return Math.max(0, score);
 ' }'
 
         } catch (error) {
-            console.error('Error calculating SEO score', error),
+            console.error('Error calculating SEO score', error);
             return 0,
     
     /**
@@ -314,16 +312,16 @@ export class SEOMonitoringEngine {
      */''
     private recordNavigationMetrics(entry: NavigationEntry): void { ''
         console.log('Navigation metrics recorded', {
-            domContentLoaded: entry.domContentLoadedEventEnd - entry.domContentLoadedEventStart),
+            domContentLoaded: entry.domContentLoadedEventEnd - entry.domContentLoadedEventStart);
             loadComplete: entry.loadEventEnd - entry.loadEventStart  }
     
     /**
      * SEOスコア詳細の取得
      */
-    private async getSEOScoreDetails(): Promise<SEOScoreDetails> { return { metaTags: this.analyzeMetaTags(),
-            structuredData: this.validateStructuredData(),
+    private async getSEOScoreDetails(): Promise<SEOScoreDetails> { return { metaTags: this.analyzeMetaTags();
+            structuredData: this.validateStructuredData();
             images: this.analyzeImages(
-    performance: await this.getPerformanceMetrics() };
+    performance: await this.getPerformanceMetrics() },
             timestamp: Date.now(); 
     }
     
@@ -365,7 +363,7 @@ export class SEOMonitoringEngine {
                 results.push({ valid: true, type: data['@type], data }';} catch (error) { results.push({ )'
                     valid: false, ')',
                     error: error instanceof Error ? error.message : 'Unknown error'
-            });
+            };
             }
         }';'
         
@@ -383,7 +381,7 @@ export class SEOMonitoringEngine {
 
         const images = document.querySelectorAll('img);'
         return { total: images.length,
-            withAlt: Array.from(images).filter(img = > img.alt).length  };
+            withAlt: Array.from(images).filter(img = > img.alt).length  },
             withoutAlt: Array.from(images).filter(img => !img.alt).length 
     }
     
@@ -403,7 +401,7 @@ export class SEOMonitoringEngine {
             return {}
         
         return { domContentLoaded: navigation.domContentLoadedEventEnd - navigation.domContentLoadedEventStart,
-            loadComplete: navigation.loadEventEnd - navigation.loadEventStart };
+            loadComplete: navigation.loadEventEnd - navigation.loadEventStart },
             ttfb: navigation.responseStart - navigation.requestStart 
     }
     

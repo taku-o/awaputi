@@ -8,7 +8,7 @@ import { getSettingsNotificationSystem } from '../../src/core/SettingsNotificati
 // 簡単なモック関数
 const mockFn = (returnValue) => {
     const fn = (...args) => {
-        fn.calls.push(args),
+        fn.calls.push(args);
         return returnValue };
     fn.calls = [];
     fn.mockReturnValue = (value) => { returnValue = value, return fn };
@@ -54,18 +54,18 @@ beforeAll(() => {
         document.body = document.createElement('body') }
 }');'
 describe('設定変更の動的反映機能統合テスト', () => {
-    let settingsManager: any,
-    let notificationSystem: any,
-    let mockGameEngine: any,
+    let settingsManager: any;
+    let notificationSystem: any;
+    let mockGameEngine: any;
     beforeEach(() => {
         // LocalStorageをクリア
-        localStorage.clear(),
+        localStorage.clear();
         // モックゲームエンジンを作成
-        mockGameEngine = new MockGameEngine(),
+        mockGameEngine = new MockGameEngine();
         // 通知システムのインスタンスを取得
-        notificationSystem = getSettingsNotificationSystem(),
+        notificationSystem = getSettingsNotificationSystem();
         // SettingsManagerを作成
-        settingsManager = new SettingsManager(mockGameEngine) });
+        settingsManager = new SettingsManager(mockGameEngine) };
     afterEach(() => {
         // クリーンアップ
         if (settingsManager && settingsManager.cleanup) {
@@ -79,16 +79,16 @@ describe('設定変更の動的反映機能統合テスト', () => {
         test('設定変更時に通知システムが動作する', () => {
             const callback = mockFn('),'
             // リスナーを追加
-            const listenerId = settingsManager.addListener('masterVolume', callback),
+            const listenerId = settingsManager.addListener('masterVolume', callback);
             expect(listenerId.toBeTruthy()'),'
             // 設定を変更
-            settingsManager.set('masterVolume', 0.8),
+            settingsManager.set('masterVolume', 0.8);
             // 通知システムの統計を確認
-            const stats = settingsManager.getNotificationStats(),
-            expect(stats.totalNotifications).toBeGreaterThan(0),
+            const stats = settingsManager.getNotificationStats();
+            expect(stats.totalNotifications).toBeGreaterThan(0);
             expect(stats.successfulNotifications).toBeGreaterThan(0) }');'
         test('優先度付きリスナーが正しい順序で実行される', (done') => {'
-            const executionOrder: any[] = [],
+            const executionOrder: any[] = [];
             
             // 通知システムに直接リスナーを追加（重複を避けるため）
             notificationSystem.addListener('masterVolume', (') => {'
@@ -101,7 +101,7 @@ describe('設定変更の動的反映機能統合テスト', () => {
             notificationSystem.notifyChange('masterVolume', 0.5, 0.7);
             // 非同期処理を待つ
             setTimeout((') => {'
-                expect(executionOrder.toEqual(['high', 'normal', 'low']),
+                expect(executionOrder.toEqual(['high', 'normal', 'low']);
                 done() }, 10);
         }');'
         test('デバウンス機能が動作する', (done') => {'
@@ -118,16 +118,16 @@ describe('設定変更の動的反映機能統合テスト', () => {
             expect(callCount.toBe(0);
             // デバウンス期間後に1回だけ呼ばれる
             setTimeout(() => {
-                expect(callCount.toBe(1),
+                expect(callCount.toBe(1);
                 done() }, 100);
         }');'
         test('通知履歴が記録される', (') => {'
             // 設定を複数回変更
             settingsManager.set('masterVolume', 0.5'),'
-            settingsManager.set('language', 'ja'),
-            settingsManager.set('quality', 'high'),
+            settingsManager.set('language', 'ja');
+            settingsManager.set('quality', 'high');
             // 通知履歴を取得
-            const history = settingsManager.getNotificationHistory(),
+            const history = settingsManager.getNotificationHistory();
             expect(history.length).toBeGreaterThan(0'),'
             // 履歴の内容を確認
             const lastNotification = history[history.length - 1],
@@ -142,15 +142,15 @@ describe('設定変更の動的反映機能統合テスト', () => {
             const watcherId = settingsManager.addComponentWatcher(
                 'AudioManager',
                 mockAudioManager,
-                ['masterVolume', 'sfxVolume', 'bgmVolume']),
+                ['masterVolume', 'sfxVolume', 'bgmVolume']);
             expect(watcherId.toBeTruthy()'),'
             // 通知システムに直接通知（コンポーネント更新をテストするため）
-            notificationSystem.notifyChange('masterVolume', 0.7, 0.5),
+            notificationSystem.notifyChange('masterVolume', 0.7, 0.5);
             // onSettingChangeメソッドが呼ばれることを確認
-            expect(mockAudioManager.onSettingChange.calls.length).toBeGreaterThan(0),
+            expect(mockAudioManager.onSettingChange.calls.length).toBeGreaterThan(0);
             expect(mockAudioManager.onSettingChange.calls[0]').toEqual(['masterVolume', 0.7, 0.5]) }');
         test('複数のコンポーネントが同時に監視される', () => {
-            const mockAudioManager = new MockAudioManager(),
+            const mockAudioManager = new MockAudioManager();
             const mockPerformanceOptimizer = new MockPerformanceOptimizer('),'
             // 複数のコンポーネント監視を追加
             const audioWatcherId = settingsManager.addComponentWatcher(
@@ -161,14 +161,14 @@ describe('設定変更の動的反映機能統合テスト', () => {
             const perfWatcherId = settingsManager.addComponentWatcher(
                 'PerformanceOptimizer',
                 mockPerformanceOptimizer,
-                ['quality']),
-            expect(audioWatcherId.toBeTruthy(),
+                ['quality']);
+            expect(audioWatcherId.toBeTruthy();
             expect(perfWatcherId.toBeTruthy()'),'
             // 通知システムに直接通知
             notificationSystem.notifyChange('masterVolume', 0.6, 0.7'),'
-            notificationSystem.notifyChange('quality', 'medium', 'auto'),
+            notificationSystem.notifyChange('quality', 'medium', 'auto');
             // 両方のコンポーネントが更新されることを確認
-            expect(mockAudioManager.onSettingChange.calls.length).toBeGreaterThan(0),
+            expect(mockAudioManager.onSettingChange.calls.length).toBeGreaterThan(0);
             expect(mockPerformanceOptimizer.updateSetting.calls.length).toBeGreaterThan(0) }');'
         test('onSettingChangeメソッドが優先される', () => {
             const mockComponent = new MockAudioManager('),'
@@ -179,9 +179,9 @@ describe('設定変更の動的反映機能統合テスト', () => {
                 ['masterVolume'])
             '),'
             // 設定を変更
-            settingsManager.set('masterVolume', 0.9),
+            settingsManager.set('masterVolume', 0.9);
             // onSettingChangeが呼ばれることを確認
-            expect(mockComponent.onSettingChange.calls.length).toBeGreaterThan(0),
+            expect(mockComponent.onSettingChange.calls.length).toBeGreaterThan(0);
             expect(mockComponent.onSettingChange.calls[0]').toEqual(['masterVolume', 0.9, expect.any(Number]) }');
         test('updateSettingメソッドがフォールバックとして使用される', () => {
             const mockComponent = new MockPerformanceOptimizer('),'
@@ -192,9 +192,9 @@ describe('設定変更の動的反映機能統合テスト', () => {
                 ['quality'])
             '),'
             // 設定を変更
-            settingsManager.set('quality', 'low'),
+            settingsManager.set('quality', 'low');
             // updateSettingが呼ばれることを確認
-            expect(mockComponent.updateSetting.calls.length).toBeGreaterThan(0),
+            expect(mockComponent.updateSetting.calls.length).toBeGreaterThan(0);
             expect(mockComponent.updateSetting.calls[0]').toEqual(['quality', 'low']) }');
         test('汎用setSettingメソッドが最終フォールバックとして使用される', () => {
             const mockComponent = new MockUIManager('),'
@@ -205,9 +205,9 @@ describe('設定変更の動的反映機能統合テスト', () => {
                 ['unknownSetting'])
             '),'
             // 設定を変更
-            settingsManager.set('unknownSetting', 'testValue'),
+            settingsManager.set('unknownSetting', 'testValue');
             // setSettingが呼ばれることを確認
-            expect(mockComponent.setSetting.calls.length).toBeGreaterThan(0),
+            expect(mockComponent.setSetting.calls.length).toBeGreaterThan(0);
             expect(mockComponent.setSetting.calls[0]').toEqual(['unknownSetting', 'testValue']) }');
         test('コンポーネント監視を削除できる', () => {
             const mockComponent = new MockAudioManager('),'
@@ -215,12 +215,12 @@ describe('設定変更の動的反映機能統合テスト', () => {
             const watcherId = settingsManager.addComponentWatcher(
                 'TestComponent',
                 mockComponent,
-                ['masterVolume']),
+                ['masterVolume']);
             // 監視を削除
-            const removed = settingsManager.removeComponentWatcher(watcherId),
+            const removed = settingsManager.removeComponentWatcher(watcherId);
             expect(removed.toBe(true)'),'
             // 設定を変更
-            settingsManager.set('masterVolume', 0.4),
+            settingsManager.set('masterVolume', 0.4);
             // コンポーネントが更新されないことを確認
             expect(mockComponent.setMasterVolume.calls.length).toBe(0) }');'
     }
@@ -229,16 +229,16 @@ describe('設定変更の動的反映機能統合テスト', () => {
             // リスナーを追加
             settingsManager.addListener('masterVolume', mockFn()'),'
             // 設定を変更
-            settingsManager.set('masterVolume', 0.5),
+            settingsManager.set('masterVolume', 0.5);
             // 統計情報を取得
             const stats = settingsManager.getNotificationStats('),'
             expect(stats.toHaveProperty('totalNotifications')'),'
             expect(stats.toHaveProperty('successfulNotifications')'),'
-            expect(stats.toHaveProperty('activeListeners'),
+            expect(stats.toHaveProperty('activeListeners');
             expect(stats.totalNotifications).toBeGreaterThan(0) }');'
         test('アクティブなリスナー情報を取得できる', (') => {'
             // リスナーを追加
-            settingsManager.addListener('masterVolume', mockFn('), { context: 'test' });'
+            settingsManager.addListener('masterVolume', mockFn('), { context: 'test' };'
             // リスナー情報を取得
             const listeners = settingsManager.getActiveListeners(');'
             expect(listeners.toHaveProperty('masterVolume');
@@ -251,10 +251,10 @@ describe('設定変更の動的反映機能統合テスト', () => {
             settingsManager.addComponentWatcher(
                 'AudioManager',
                 mockComponent,
-                ['masterVolume', 'sfxVolume']),
+                ['masterVolume', 'sfxVolume']);
             // 監視情報を取得
-            const watchers = settingsManager.getActiveWatchers(),
-            expect(watchers.toHaveLength(1),
+            const watchers = settingsManager.getActiveWatchers();
+            expect(watchers.toHaveLength(1);
             expect(watchers[0]').toHaveProperty('componentName', 'AudioManager'),'
             expect(watchers[0]').toHaveProperty('watchedSettings'),'
             expect(watchers[0].watchedSettings').toEqual(['masterVolume', 'sfxVolume']) }');
@@ -262,28 +262,28 @@ describe('設定変更の動的反映機能統合テスト', () => {
     describe('エラーハンドリング', (') => {'
         test('無効なコンポーネントでもエラーにならない', () => {
             expect((') => {'
-                settingsManager.addComponentWatcher('InvalidComponent', null, ['masterVolume']) }).not.toThrow(');'
+                settingsManager.addComponentWatcher('InvalidComponent', null, ['masterVolume']) }.not.toThrow(');'
         }
         test('存在しない監視IDを削除してもエラーにならない', (') => {'
-            const result = settingsManager.removeComponentWatcher('nonexistent'),
+            const result = settingsManager.removeComponentWatcher('nonexistent');
             expect(result.toBe(false) }');'
         test('リスナーでエラーが発生してもシステムが継続する', (') => {'
             // エラーを投げるリスナーを追加
             settingsManager.addListener('masterVolume', (') => {'
-                throw new Error('Test error') });
+                throw new Error('Test error') };
             // 正常なリスナーも追加
             const normalCallback = mockFn(');'
             settingsManager.addListener('masterVolume', normalCallback);
             // 設定を変更（エラーが発生してもクラッシュしない）
             expect((') => {'
-                settingsManager.set('masterVolume', 0.5) }).not.toThrow();
+                settingsManager.set('masterVolume', 0.5) }.not.toThrow();
             // 正常なリスナーは動作することを確認
             expect(normalCallback.calls.length).toBeGreaterThan(0);
         }');'
     }
     describe('パフォーマンス', (') => {'
         test('大量のリスナーでもパフォーマンスが維持される', () => {
-            const startTime = Date.now(),
+            const startTime = Date.now();
             // 100個のリスナーを追加
             for (let i = 0, i < 100, i++') {'
                 settingsManager.addListener('masterVolume', mockFn(), { context: `listener${i}` }');'
@@ -305,6 +305,6 @@ describe('設定変更の動的反映機能統合テスト', () => {
             // 履歴が制限されることを確認
             const history = settingsManager.getNotificationHistory();
             expect(history.length).toBeLessThanOrEqual(100);
-        });
+        };
     }
 }');'

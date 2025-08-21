@@ -19,7 +19,7 @@ import { MenuInputHandler  } from './main-menu/MenuInputHandler.js';
  * - DialogManager: 確認ダイアログ、ヘルプ画面の管理
  * -, MenuInputHandler: 入力処理とクリック判定の統制
  */
-export class MainMenuScene extends Scene implements IMainMenuScene { public errorHandler: any,
+export class MainMenuScene extends Scene implements IMainMenuScene { public errorHandler: any;
     public selectedMenuIndex: number = 0;
     public menuItems: MenuItem[];
     public showingUsernameInput: boolean = false;
@@ -37,7 +37,7 @@ export class MainMenuScene extends Scene implements IMainMenuScene { public erro
     constructor(gameEngine: any) {
 ','
 
-        super(gameEngine),
+        super(gameEngine);
         this.errorHandler = getErrorHandler()';'
             { id: 'start', key: 'menu.start', action: () => this.startGame()'
             { id: 'shop', key: 'menu.shop', action: () => this.openShop()'
@@ -77,7 +77,7 @@ export class MainMenuScene extends Scene implements IMainMenuScene { public erro
 
         } catch (error) { this.errorHandler.handleError(error, {)'
                 context: 'MainMenuScene._initializeSubComponents'
-            });
+            };
         }
     }
     
@@ -85,21 +85,20 @@ export class MainMenuScene extends Scene implements IMainMenuScene { public erro
      * メニューラベルを現在の言語で更新
      */
     updateMenuLabels(): void { try {
-            const t = this.gameEngine.localizationManager.t.bind(this.gameEngine.localizationManager),
-            
+            const t = this.gameEngine.localizationManager.t.bind(this.gameEngine.localizationManager);
             this.menuItems.forEach(item => { ) }
                 item.label = t(item.key); }
 
-            });'} catch (error) { this.errorHandler.handleError(error, {)'
+            };'} catch (error) { this.errorHandler.handleError(error, {)'
                 context: 'MainMenuScene.updateMenuLabels'
-            });
+            };
         }
     }
     
     /**
      * シーン開始時の処理
      */
-    enter(): void { super.enter(),
+    enter(): void { super.enter();
         try {
             this.selectedMenuIndex = 0;
             this.showingUsernameInput = false;
@@ -108,8 +107,7 @@ export class MainMenuScene extends Scene implements IMainMenuScene { public erro
             this.showingControlsHelp = false;
             
             // メニューラベルを現在の言語で更新
-            this.updateMenuLabels(),
-            
+            this.updateMenuLabels();
             // リサイズハンドラーを登録
             if (this.gameEngine.responsiveCanvas) {
 
@@ -141,25 +139,25 @@ export class MainMenuScene extends Scene implements IMainMenuScene { public erro
 
             } catch (error) { this.errorHandler.handleError(error, {)'
                 context: 'MainMenuScene.enter'
-            });
+            };
         }
     }
     
     /**
      * シーン終了時の処理
      */
-    exit(): void { super.exit(),
+    exit(): void { super.exit();
         try {
             // リサイズハンドラーを削除
             if (this.gameEngine.responsiveCanvas && this.resizeCallback) {
-                const index = this.gameEngine.responsiveCanvas.onResizeCallbacks.indexOf(this.resizeCallback),
+                const index = this.gameEngine.responsiveCanvas.onResizeCallbacks.indexOf(this.resizeCallback);
                 if (index > -1) {
             }
                     this.gameEngine.responsiveCanvas.onResizeCallbacks.splice(index, 1); }
                 }
                 this.resizeCallback = undefined;'} catch (error) { this.errorHandler.handleError(error, {)'
                 context: 'MainMenuScene.exit'
-            });
+            };
         }
     }
     
@@ -176,8 +174,7 @@ export class MainMenuScene extends Scene implements IMainMenuScene { public erro
             ','
             // 背景
             context.fillStyle = '#001122',
-            context.fillRect(0, 0, canvas.width, canvas.height),
-            
+            context.fillRect(0, 0, canvas.width, canvas.height);
             if (this.showingUsernameInput) {
     
 }
@@ -188,7 +185,7 @@ export class MainMenuScene extends Scene implements IMainMenuScene { public erro
 
             } catch (error) { this.errorHandler.handleError(error, {)'
                 context: 'MainMenuScene.render'
-            });
+            };
         }
     }
     
@@ -220,12 +217,10 @@ export class MainMenuScene extends Scene implements IMainMenuScene { public erro
 
             switch(keyboardEvent.code) {''
                 case 'ArrowUp':','
-                    this.moveSelection(-1),
-
+                    this.moveSelection(-1);
                     break,
                 case 'ArrowDown':','
-                    this.moveSelection(1),
-
+                    this.moveSelection(1);
                     break,
                 case 'Enter':','
                     this.selectMenuItem()','
@@ -235,7 +230,7 @@ export class MainMenuScene extends Scene implements IMainMenuScene { public erro
 
             }'} else if(event.type === 'click' { this.menuInputHandler.handleMainMenuClick('
                 mouseEvent,
-                this.selectedMenuIndex),
+                this.selectedMenuIndex);
                 this.menuItems),
                 (index: number) => { 
                     this.selectedMenuIndex = index  }
@@ -257,7 +252,7 @@ export class MainMenuScene extends Scene implements IMainMenuScene { public erro
                 case 'Escape': ','
                     this.cancelUsernameInput()','
                 case 'Backspace':),
-                    this.usernameInputManager.handleBackspace(),
+                    this.usernameInputManager.handleBackspace();
                     break,
                 default:','
                     if (keyboardEvent.key.length === 1) {
@@ -269,7 +264,7 @@ export class MainMenuScene extends Scene implements IMainMenuScene { public erro
 
             }'} else if (event.type === 'click) { this.menuInputHandler.handleUsernameInputClick()'
                 mouseEvent,
-                () => this.confirmUsername(),
+                () => this.confirmUsername();
                 () => this.cancelUsernameInput() }
 }
     
@@ -287,7 +282,7 @@ export class MainMenuScene extends Scene implements IMainMenuScene { public erro
 
         } else if (event.type === 'click) { this.menuInputHandler.handleDataClearConfirmationClick()'
                 mouseEvent,
-                () => this.executeDataClear(),
+                () => this.executeDataClear();
                 () => this.cancelDataClear() }
 }
     
@@ -305,7 +300,7 @@ export class MainMenuScene extends Scene implements IMainMenuScene { public erro
 
         } else if (event.type === 'click) { this.menuInputHandler.handleBackButtonClick()'
                 mouseEvent,
-                () => this.closeControlsHelp(),
+                () => this.closeControlsHelp();
                 this.gameEngine.canvas.height - 80) }
 }
     
@@ -373,11 +368,10 @@ export class MainMenuScene extends Scene implements IMainMenuScene { public erro
             }
 
             console.log('[MainMenuScene] Settings, opened from, menu');
-        } catch (error) { console.error('[MainMenuScene] Error opening settings:', error),
-
+        } catch (error) { console.error('[MainMenuScene] Error opening settings:', error);
             this.errorHandler.handleError(error, {)'
                 context: 'MainMenuScene.openSettings'
-            });
+            };
         }
     }
     
@@ -421,11 +415,10 @@ export class MainMenuScene extends Scene implements IMainMenuScene { public erro
             }
 
             console.log('[MainMenuScene] Help, opened from, menu');
-        } catch (error) { console.error('[MainMenuScene] Error opening help:', error),
-
+        } catch (error) { console.error('[MainMenuScene] Error opening help:', error);
             this.errorHandler.handleError(error, {)'
                 context: 'MainMenuScene.openHelp'
-            });
+            };
         }
     }
     

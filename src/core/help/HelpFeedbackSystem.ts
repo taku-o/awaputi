@@ -3,7 +3,7 @@ import { ErrorHandler  } from '../../utils/ErrorHandler.js';
 import { ScenesBaseDialog  } from '../../scenes/components/ScenesBaseDialog.js';
 
 // 型定義
-export interface FeedbackConfig { enableRatingPrompts: boolean,
+export interface FeedbackConfig { enableRatingPrompts: boolean;
     enableTextFeedback: boolean;
     enableQuickFeedback: boolean;
     showAfterViewTime: number;
@@ -11,14 +11,14 @@ export interface FeedbackConfig { enableRatingPrompts: boolean,
     enableOfflineStorage: boolean;
     submitRetryAttempts: number;
 
-export interface FeedbackState { feedbacksShownThisSession: number,
+export interface FeedbackState { feedbacksShownThisSession: number;
     contentViewTimes: Map<string, number>;
     viewStartTimes: Map<string, number>;
     suppressedContent: Set<string>;
     lastFeedbackTime: number;
     feedbackData: Map<string, FeedbackStatistics> }
 
-export interface FeedbackData { contentId: string,
+export interface FeedbackData { contentId: string;
     rating?: number;
     comment: string;
     helpful?: boolean;
@@ -29,7 +29,7 @@ export interface FeedbackData { contentId: string,
     screenSize: string;
     language: string;
 
-export interface FeedbackStatistics { ratings: number[],
+export interface FeedbackStatistics { ratings: number[];
     comments: string[];
     totalFeedbacks: number;
 
@@ -38,10 +38,10 @@ export interface FeedbackSubmissionData { rating?: number,
     comment?: string;
     categories?: string[];
 
-export interface FeedbackSubmissionResult { success: boolean,
+export interface FeedbackSubmissionResult { success: boolean;
     error?: string;
 
-export interface FeedbackAnalytics { totalFeedbacks: number,
+export interface FeedbackAnalytics { totalFeedbacks: number;
     averageRating: number;
     ratingDistribution: Record<number, number>;
     helpfulPercentage: number;
@@ -54,21 +54,21 @@ export interface SavedFeedbackData { feedbacks: [string, FeedbackData][],
     state: SavedFeedbackState;
     lastSaved: number;
 
-export interface SavedFeedbackState { feedbacksShownThisSession: number,
+export interface SavedFeedbackState { feedbacksShownThisSession: number;
     suppressedContent: string[];
     contentViewTimes: [string, number][];
     viewStartTimes: [string, number][];
     lastFeedbackTime: number;
     feedbackData: [string, FeedbackStatistics][] }
 
-export interface PendingFeedback { contentId: string,
+export interface PendingFeedback { contentId: string;
     feedbackData: FeedbackSubmissionData;
 
-export interface DialogButton { text: string,
+export interface DialogButton { text: string;
     action: () => void;
     isPrimary?: boolean;
 
-export interface DialogConfig { title: string,
+export interface DialogConfig { title: string;
     content: string;
     buttons: DialogButton[];
 
@@ -100,7 +100,7 @@ export class HelpFeedbackSystem {
     // 設定
     private config: FeedbackConfig;
     // フィードバック状態
-    private, state: FeedbackState,
+    private, state: FeedbackState;
     constructor(gameEngine: GameEngine) {
 
         this.gameEngine = gameEngine;
@@ -116,20 +116,20 @@ export class HelpFeedbackSystem {
         
         // 設定
         this.config = {
-            enableRatingPrompts: true,
-            enableTextFeedback: true,
-            enableQuickFeedback: true,
+            enableRatingPrompts: true;
+            enableTextFeedback: true;
+            enableQuickFeedback: true;
     showAfterViewTime: 30000, // 30秒後に表示;
-            maxFeedbacksPerSession: 3,
-    enableOfflineStorage: true,
+            maxFeedbacksPerSession: 3;
+    enableOfflineStorage: true;
             submitRetryAttempts: 3 
     };
         // フィードバック状態
-        this.state = { feedbacksShownThisSession: 0,
+        this.state = { feedbacksShownThisSession: 0;
             contentViewTimes: new Map<string, number>();
             viewStartTimes: new Map<string, number>();
-            suppressedContent: new Set<string>(),
-            lastFeedbackTime: 0,
+            suppressedContent: new Set<string>();
+            lastFeedbackTime: 0;
             feedbackData: new Map<string, FeedbackStatistics>( };
         
         this.initialize();
@@ -140,7 +140,7 @@ export class HelpFeedbackSystem {
      */
     private initialize(): void { try {
             // 保存されたフィードバックデータの読み込み
-            this.loadFeedbackData(),
+            this.loadFeedbackData();
             // イベントリスナーの設定
             this.setupEventListeners()','
             this.loggingSystem.info('HelpFeedbackSystem', 'Help feedback system initialized',' }'
@@ -157,13 +157,11 @@ export class HelpFeedbackSystem {
      */
     startContentView(contentId: string, contentData: Record<string, any> = { ): void {
         try {
-            const now = Date.now(),
-            this.state.viewStartTimes.set(contentId, now),
-            
+            const now = Date.now();
+            this.state.viewStartTimes.set(contentId, now);
             // 既存のビュータイムがある場合は累積
             const existingTime = this.state.contentViewTimes.get(contentId) || 0,
-            this.state.contentViewTimes.set(contentId, existingTime),
-
+            this.state.contentViewTimes.set(contentId, existingTime);
             ' }'
 
             this.loggingSystem.debug('HelpFeedbackSystem', `Content view started: ${contentId}`}';} catch (error) {'
@@ -175,19 +173,18 @@ export class HelpFeedbackSystem {
      * @param contentId - コンテンツID
      */
     endContentView(contentId: string): void { try {
-            const startTime = this.state.viewStartTimes.get(contentId),
+            const startTime = this.state.viewStartTimes.get(contentId);
             if (!startTime) return,
             
             const viewDuration = Date.now() - startTime,
             const existingTime = this.state.contentViewTimes.get(contentId) || 0,
             const totalViewTime = existingTime + viewDuration,
             
-            this.state.contentViewTimes.set(contentId, totalViewTime),
-            this.state.viewStartTimes.delete(contentId),
+            this.state.contentViewTimes.set(contentId, totalViewTime);
+            this.state.viewStartTimes.delete(contentId);
             ','
             // フィードバック表示の判定
-            this.checkShouldShowFeedback(contentId, totalViewTime),
-
+            this.checkShouldShowFeedback(contentId, totalViewTime);
             ' }'
 
             this.loggingSystem.debug('HelpFeedbackSystem', `Content view ended: ${contentId}, duration: ${viewDuration}ms`}';} catch (error) {'
@@ -214,7 +211,7 @@ export class HelpFeedbackSystem {
             if (timeSinceLastFeedback < 60000) return, // 1分間隔
             
             // フィードバックダイアログを表示
-            this.showFeedbackDialog(contentId),
+            this.showFeedbackDialog(contentId);
             ' }'
 
         } catch (error) {
@@ -253,9 +250,8 @@ export class HelpFeedbackSystem {
             if (!this.config.enableQuickFeedback) return,
             ','
 
-            const quickFeedback = new QuickFeedbackWidget(this.gameEngine, this),
-            quickFeedback.show(contentId, x, y),
-
+            const quickFeedback = new QuickFeedbackWidget(this.gameEngine, this);
+            quickFeedback.show(contentId, x, y);
             ' }'
 
             this.loggingSystem.debug('HelpFeedbackSystem', `Quick feedback shown for: ${contentId}`}';} catch (error) {'
@@ -279,7 +275,7 @@ export class HelpFeedbackSystem {
     userAgent: navigator.userAgent }
 
                 screenSize: `${window.innerWidth}x${window.innerHeight}`,''
-                language: this.gameEngine.localizationManager?.getCurrentLanguage?.() || 'ja';
+                language: this.gameEngine.localizationManager?.getCurrentLanguage?.() || 'ja',
             },
             
             // フィードバックを保存
@@ -291,7 +287,7 @@ export class HelpFeedbackSystem {
             // アナリティクスに送信
             if (this.gameEngine.helpAnalytics) { this.gameEngine.helpAnalytics.trackUserFeedback(
                     contentId,
-                    feedback.rating),
+                    feedback.rating);
                     feedback.comment),
                     { : undefined
                         helpful: feedback.helpful),
@@ -304,8 +300,7 @@ export class HelpFeedbackSystem {
             this.loggingSystem.info('HelpFeedbackSystem', `Feedback submitted for: ${contentId}`}';'
 
             return { success: true;'} catch (error) {'
-            this.loggingSystem.error('HelpFeedbackSystem', 'Failed to submit feedback', error),
-            
+            this.loggingSystem.error('HelpFeedbackSystem', 'Failed to submit feedback', error);
             // 失敗時は保留キューに追加 }
             this.pendingFeedbacks.push({ contentId, feedbackData };)
             return { success: false, error: (error, as Error).message  }
@@ -315,9 +310,8 @@ export class HelpFeedbackSystem {
      * フィードバック感謝メッセージの表示
      */
     private showFeedbackThankYou(): void { try {
-            const thankYouDialog = new FeedbackThankYouDialog(this.gameEngine),
-            thankYouDialog.show(),
-            
+            const thankYouDialog = new FeedbackThankYouDialog(this.gameEngine);
+            thankYouDialog.show();
             // 3秒後に自動で閉じる
             setTimeout(() => {  }
                 thankYouDialog.hide(); }
@@ -332,7 +326,7 @@ export class HelpFeedbackSystem {
     suppressFeedbackForContent(contentId: string): void { ''
         this.state.suppressedContent.add(contentId),' }'
 
-        this.loggingSystem.debug('HelpFeedbackSystem', `Feedback suppressed for: ${contentId}`});
+        this.loggingSystem.debug('HelpFeedbackSystem', `Feedback suppressed for: ${contentId}`};
     }
 
     /**
@@ -342,7 +336,7 @@ export class HelpFeedbackSystem {
      */
     recordTopicExit(topicId: string, content?: Record<string, any>): void { try {
             // コンテンツ表示を終了
-            this.endContentView(topicId),
+            this.endContentView(topicId);
             ','
 
             // 終了ログ記録' }'
@@ -358,7 +352,7 @@ export class HelpFeedbackSystem {
      */
     recordTopicView(topicId: string, content?: Record<string, any>): void { try {
             // コンテンツ表示を開始
-            this.startContentView(topicId, content),
+            this.startContentView(topicId, content);
             ','
 
             // 表示ログ記録' }'
@@ -378,7 +372,7 @@ export class HelpFeedbackSystem {
             if (!this.state.feedbackData.has(topicId) {
                 this.state.feedbackData.set(topicId, {
                 ratings: [],
-    comments: [] })
+    comments: [] }
                     totalFeedbacks: 0); 
     }
             
@@ -407,7 +401,7 @@ export class HelpFeedbackSystem {
                 helpfulPercentage: 0,
     commonCategories: new Map<string, number>(),
                 topRatedContent: [],
-    lowRatedContent: [];
+    lowRatedContent: [],
             },
             
             let totalRating = 0;
@@ -450,14 +444,14 @@ export class HelpFeedbackSystem {
             return stats;
 
         } catch (error) {
-            this.loggingSystem.error('HelpFeedbackSystem', 'Failed to generate feedback statistics', error),
-            return { totalFeedbacks: 0 };
+            this.loggingSystem.error('HelpFeedbackSystem', 'Failed to generate feedback statistics', error);
+            return { totalFeedbacks: 0 },
                 averageRating: 0 }
                 ratingDistribution: { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0  },
-                helpfulPercentage: 0;
+                helpfulPercentage: 0,
                 commonCategories: new Map();
                 topRatedContent: [],
-    lowRatedContent: [];
+    lowRatedContent: [],
             } }
     }
     
@@ -609,11 +603,11 @@ class HelpFeedbackDialog extends ScenesBaseDialog { private feedbackSystem: Help
     private rating: number;
     private helpful: boolean | null;
     private comment: string;
-    private, categories: string[],
+    private, categories: string[];
     constructor(gameEngine: GameEngine, feedbackSystem: HelpFeedbackSystem) {
 ','
 
-        super(gameEngine),
+        super(gameEngine);
         this.feedbackSystem = feedbackSystem;
         this.contentId = null;
         this.rating = 0;
@@ -628,12 +622,12 @@ class HelpFeedbackDialog extends ScenesBaseDialog { private feedbackSystem: Help
      * フィードバックダイアログの表示
      * @param contentId - コンテンツID
      */
-    show(contentId: string): void { this.contentId = contentId;
+    show(contentId: string): void { this.contentId = contentId,
         
         const t = this.gameEngine.localizationManager?.t?.bind(this.gameEngine.localizationManager) || ((key: string, defaultValue: string) => defaultValue),
 
-        this.showDialog({),
-            title: t('help.feedback.title', 'このヘルプは役に立ちましたか？'),
+        this.showDialog({);
+            title: t('help.feedback.title', 'このヘルプは役に立ちましたか？');
             content: this.buildFeedbackContent()','
     buttons: [{')'
                     text: t('help.feedback.submit', '送信',
@@ -693,7 +687,7 @@ class HelpFeedbackDialog extends ScenesBaseDialog { private feedbackSystem: Help
                         <label><input type="checkbox" value="accurate"> ${t('help.feedback.accurate', '正確'}'</label>''
                         <label><input type="checkbox" value="outdated"> ${t('help.feedback.outdated', '情報が古い'}'</label>''
                         <label><input type="checkbox" value="confusing"> ${t('help.feedback.confusing', '分かりにくい'}'</label>''
-                        <label><input type="checkbox" value="missing"> ${t('help.feedback.missing', '情報不足'})</label>
+                        <label><input type="checkbox" value="missing"> ${t('help.feedback.missing', '情報不足'}</label>
                     </div>;
                 </div>;
             </div>;
@@ -799,7 +793,7 @@ class HelpFeedbackDialog extends ScenesBaseDialog { private feedbackSystem: Help
                 rating: this.rating,
                 helpful: this.helpful || undefined,
                 comment: this.comment.trim(
-    categories: this.categories }))
+    categories: this.categories })
             );
             const result = await this.feedbackSystem.submitFeedback(this.contentId, feedbackData);
             
@@ -828,7 +822,7 @@ class HelpFeedbackDialog extends ScenesBaseDialog { private feedbackSystem: Help
  */
 class QuickFeedbackWidget { private gameEngine: GameEngine
     private feedbackSystem: HelpFeedbackSystem;
-    private, element: HTMLElement | null,
+    private, element: HTMLElement | null;
     constructor(gameEngine: GameEngine, feedbackSystem: HelpFeedbackSystem) {
 
         this.gameEngine = gameEngine;
@@ -850,11 +844,11 @@ class QuickFeedbackWidget { private gameEngine: GameEngine
         this.element = document.createElement('div');
         this.element.className = 'quick-feedback-widget',
         this.element.style.cssText = `,
-            position: fixed;
-            left: ${x}px;
-            top: ${y}px;
+            position: fixed,
+            left: ${x}px,
+            top: ${y}px,
             background: white,
-    border: 1px solid #ccc;
+    border: 1px solid #ccc,
             border-radius: 8px,
             padding: 12px,
             box-shadow: 0 4px 12px rgba(0,0,0,0.15);
@@ -916,10 +910,10 @@ class QuickFeedbackWidget { private gameEngine: GameEngine
 
             this.hide(),'
             
-            })'
+            }'
 
         } catch (error) {
-            console.error('Failed to submit quick feedback:', error),
+            console.error('Failed to submit quick feedback:', error);
             this.hide() }
     }
     
@@ -927,7 +921,7 @@ class QuickFeedbackWidget { private gameEngine: GameEngine
      * ウィジェットを隠す
      */
     hide(): void { if (this.element && this.element.parentNode) {
-            this.element.parentNode.removeChild(this.element),
+            this.element.parentNode.removeChild(this.element);
             this.element = null }
 }
 
@@ -940,9 +934,9 @@ class FeedbackThankYouDialog extends ScenesBaseDialog { constructor(gameEngine: 
     /**
      * 感謝ダイアログの表示
      */
-    show(): void { const t = this.gameEngine.localizationManager?.t?.bind(this.gameEngine.localizationManager) || ((key: string, defaultValue: string) => defaultValue),
+    show(): void { const t = this.gameEngine.localizationManager?.t?.bind(this.gameEngine.localizationManager) || ((key: string, defaultValue: string) => defaultValue);
 
-        this.showDialog({),
+        this.showDialog({);
             title: t('help.feedback.thankYou', 'ありがとうございました');
             content: `','
                 <div class="thank-you-content">"",
@@ -962,7 +956,7 @@ class FeedbackThankYouDialog extends ScenesBaseDialog { constructor(gameEngine: 
 }
 
 // シングルトンインスタンス管理)
-let helpFeedbackSystemInstance: HelpFeedbackSystem | null = null);
+let helpFeedbackSystemInstance: HelpFeedbackSystem | null = null),
 /**
  * HelpFeedbackSystemのシングルトンインスタンスを取得
  * @param gameEngine - ゲームエンジンインスタンス

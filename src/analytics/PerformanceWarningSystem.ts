@@ -4,16 +4,16 @@
  */
 
 export class PerformanceWarningSystem {
-    constructor(realtimeMonitor, options: any = { }) {
+    constructor(realtimeMonitor, options: any = { } {
         this.realtimeMonitor = realtimeMonitor;
         this.options = {
-            enableVisualWarnings: true,
-            enableAudioWarnings: false,
-            enableBrowserNotifications: true,
+            enableVisualWarnings: true;
+            enableAudioWarnings: false;
+            enableBrowserNotifications: true;
     warningDisplayDuration: 10000, // 10秒;
             criticalWarningDuration: 15000, // 15秒;
-            maxVisibleWarnings: 5,
-    autoAcknowledge: false,
+            maxVisibleWarnings: 5;
+    autoAcknowledge: false;
             ...options
         };
 
@@ -30,7 +30,7 @@ export class PerformanceWarningSystem {
      * 初期化
      */
     initialize() {
-        this.setupWarningCategories(),
+        this.setupWarningCategories();
         this.createWarningContainer() }
         this.setupEventListeners(); }
     }
@@ -51,21 +51,24 @@ export class PerformanceWarningSystem {
             icon: '🧠')','
     priority: 3,')',
             actions: ['メモリクリア', '詳細表示]'),
-
+            actions: ['メモリクリア', '詳細表示]'),
+        };
         this.warningCategories.set('fps', {''
             name: 'フレームレート',
             color: '#ff5722',','
             icon: '🎯')','
     priority: 2,')',
             actions: ['品質調整', '詳細表示]'),
-
+            actions: ['品質調整', '詳細表示]'),
+        };
         this.warningCategories.set('error', {''
             name: 'エラー',
             color: '#d32f2f',','
             icon: '❌')','
     priority: 4,')',
             actions: ['エラー詳細', 'レポート送信]'),
-
+            actions: ['エラー詳細', 'レポート送信]'),
+        };
         this.warningCategories.set('network', {''
             name: 'ネットワーク',
             color: '#2196f3',','
@@ -94,7 +97,7 @@ export class PerformanceWarningSystem {
             fontFamily: 'Arial, sans-serif',','
             fontSize: '14px',')',
             pointerEvents: 'none'),
-        document.body.appendChild(this.warningContainer),
+        document.body.appendChild(this.warningContainer);
         this.applyWarningStyles(),  }
 
     /**
@@ -106,12 +109,12 @@ export class PerformanceWarningSystem {
             .warning-container { display: flex,
                 flex-direction: column,
                 gap: 10px  }
-            .warning-item { background: rgba(0, 0, 0, 0.9),
+            .warning-item { background: rgba(0, 0, 0, 0.9);
                 border-radius: 8px,
                 padding: 16px,
-                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3),
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
                 border-left: 4px solid,
-                pointer-events: auto;
+                pointer-events: auto,
                 transform: translateX(100%}
                 animation: slideInWarning 0.3s ease-out forwards,
     transition: all 0.3s ease,
@@ -124,32 +127,32 @@ export class PerformanceWarningSystem {
                 margin-bottom: 8px }
             .warning-title { display: flex,
                 align-items: center,
-                gap: 8px),
+                gap: 8px);
                 font-weight: bold,
-    color: white;
+    color: white,
             .warning-icon { font-size: 16px
             ),
             .warning-severity {
                 font-size: 12px,
                 padding: 2px 6px,
                 border-radius: 4px,
-                background: rgba(255, 255, 255, 0.2),
+                background: rgba(255, 255, 255, 0.2);
                 color: white,
-                text-transform: uppercase;
+                text-transform: uppercase,
             .warning-message { color: #e0e0e0,
                 margin-bottom: 12px,
                 line-height: 1.4 }
-            .warning-details { background: rgba(255, 255, 255, 0.1),
+            .warning-details { background: rgba(255, 255, 255, 0.1);
                 padding: 8px,
                 border-radius: 4px,
                 font-size: 12px,
                 color: #ccc,
                 margin-bottom: 12px,
-                font-family: monospace;
+                font-family: monospace,
             .warning-actions { display: flex,
                 gap: 8px,
-                flex-wrap: wrap;
-            .warning-action { background: rgba(255, 255, 255, 0.2),
+                flex-wrap: wrap,
+            .warning-action { background: rgba(255, 255, 255, 0.2);
                 color: white,
                 border: none,
     padding: 6px 12px,
@@ -170,14 +173,14 @@ export class PerformanceWarningSystem {
                 border-radius: 50%,
                 display: flex,
                 align-items: center,
-                justify-content: center;
-            .warning-close:hover { background: rgba(255, 255, 255, 0.2),
-                color: white;
+                justify-content: center,
+            .warning-close:hover { background: rgba(255, 255, 255, 0.2);
+                color: white,
             .warning-progress { position: absolute,
                 bottom: 0,
                 left: 0,
                 height: 3px,
-    background: rgba(255, 255, 255, 0.5),
+    background: rgba(255, 255, 255, 0.5);
                 transition: width 0.1s linear  }
             .warning-timestamp { font-size: 11px,
     color: #999,
@@ -250,7 +253,7 @@ export class PerformanceWarningSystem {
             timestamp: Date.now('',
     source: 'performance_monitor' }
 
-            category: 'performance' }))
+            category: 'performance' })
 );
         this.showWarning(processedWarning);
     }
@@ -309,7 +312,7 @@ export class PerformanceWarningSystem {
             this.options.criticalWarningDuration: this.options.warningDisplayDuration,
 
         warningElement.innerHTML = `';'
-            <div class="warning-progress" style="width: 100%"></div>"";
+            <div class="warning-progress" style="width: 100%"></div>"",
             <div class="warning-header">"";
                 <div class="warning-title">"";
                     <span class="warning-icon">${category.icon}</span>
@@ -389,14 +392,13 @@ export class PerformanceWarningSystem {
         if (!audioContext) return,
 
         try {
-            const ctx = new audioContext(),
-            const oscillator = ctx.createOscillator(),
-            const gainNode = ctx.createGain(),
+            const ctx = new audioContext();
+            const oscillator = ctx.createOscillator();
+            const gainNode = ctx.createGain();
 ','
 
-            oscillator.connect(gainNode),
-            gainNode.connect(ctx.destination),
-
+            oscillator.connect(gainNode);
+            gainNode.connect(ctx.destination);
             // 警告レベルに応じた音程と長さ
             const frequencies = {', 'info': 440,'
                 'warning': 660,
@@ -434,7 +436,7 @@ export class PerformanceWarningSystem {
                 requireInteraction: warningData.severity === 'critical);'
             ),
 
-            notification.onclick = () => {  window.focus(),
+            notification.onclick = () => {  window.focus();
                 this.highlightWarning(warningData.id) }
                 notification.close(); }
             };
@@ -453,8 +455,8 @@ export class PerformanceWarningSystem {
      * 警告の重複チェック
      */
     isDuplicateWarning(warningData) {
-        const recentWarnings = this.warningHistory.slice(-10),
-        return recentWarnings.some(warning => ),
+        const recentWarnings = this.warningHistory.slice(-10);
+        return recentWarnings.some(warning => );
             warning.type === warningData.type &&),
             warning.message === warningData.message &&),
             (Date.now() - warning.timestamp) < 30000 // 30秒以内 }
@@ -481,7 +483,7 @@ export class PerformanceWarningSystem {
      */
     generateTitle(alertData) {
 
-        const category = this.warningCategories.get(alertData.type),
+        const category = this.warningCategories.get(alertData.type);
         const icon = category?.icon || '⚠️',
         const name = category?.name || 'システム' }
         return `${icon} ${name}警告`;
@@ -523,7 +525,7 @@ export class PerformanceWarningSystem {
             warningElement.classList.add('dismissing}'
             setTimeout(() => {  }
                 if (warningElement.parentNode) { }
-                    warningElement.parentNode.removeChild(warningElement});
+                    warningElement.parentNode.removeChild(warningElement};
                 }
             }, 300);
         }
@@ -543,31 +545,26 @@ export class PerformanceWarningSystem {
      * 警告アクションの処理
      */
     handleWarningAction(warningId, action) {
-        const warningData = this.activeWarnings.get(warningId),
+        const warningData = this.activeWarnings.get(warningId);
         if (!warningData) return,
 
         switch(action) { : undefined''
             case '詳細表示':','
-                this.showWarningDetails(warningData),
-
+                this.showWarningDetails(warningData);
                 break,
             case '最適化提案':','
-                this.showOptimizationSuggestions(warningData),
-
+                this.showOptimizationSuggestions(warningData);
                 break,
             case 'メモリクリア':','
                 this.triggerMemoryCleanup()','
             case '品質調整':')',
-                this.suggestQualityAdjustment(warningData),
-
+                this.suggestQualityAdjustment(warningData);
                 break,
             case 'エラー詳細':','
-                this.showErrorDetails(warningData),
-
+                this.showErrorDetails(warningData);
                 break,
             case 'レポート送信':','
-                this.sendErrorReport(warningData),
-
+                this.sendErrorReport(warningData);
                 break,
             case '再試行':,
                 this.retryOperation(warningData) }
@@ -580,7 +577,7 @@ export class PerformanceWarningSystem {
     showWarningDetails(warningData) {
     
 }
-        alert(`警告詳細:\n\nタイプ: ${warningData.type}\n重要度: ${warningData.severity}\nメッセージ: ${warningData.message}\n時刻: ${new, Date(warningData.timestamp}.toLocaleString(})\n\n詳細: ${JSON.stringify(warningData.details, null, 2})`);
+        alert(`警告詳細:\n\nタイプ: ${warningData.type}\n重要度: ${warningData.severity}\nメッセージ: ${warningData.message}\n時刻: ${new, Date(warningData.timestamp}.toLocaleString(}\n\n詳細: ${JSON.stringify(warningData.details, null, 2}`);
     }
 
     /**
@@ -590,7 +587,7 @@ export class PerformanceWarningSystem {
 
         const suggestions = this.generateOptimizationSuggestions(warningData);' }'
 
-        alert(`最適化提案:\n\n${suggestions.join('\n'})`;
+        alert(`最適化提案:\n\n${suggestions.join('\n'}`;
     }
 
     /**
@@ -600,7 +597,7 @@ export class PerformanceWarningSystem {
         const suggestions = [],
 
         if (warningData.type === 'performance' || warningData.category === 'fps') {''
-            suggestions.push('• エフェクトの品質を下げてください'),
+            suggestions.push('• エフェクトの品質を下げてください');
             suggestions.push('• 他のアプリケーションを閉じてください') }
 
             suggestions.push('• ブラウザのタブ数を減らしてください'); }
@@ -608,7 +605,7 @@ export class PerformanceWarningSystem {
 
         if (warningData.category === 'memory') {
 
-            suggestions.push('• ブラウザを再起動してください'),
+            suggestions.push('• ブラウザを再起動してください');
             suggestions.push('• 不要なタブを閉じてください') }
 
             suggestions.push('• ゲームを一度終了して再開してください'); }
@@ -645,7 +642,7 @@ export class PerformanceWarningSystem {
     generateWarningId() {
     
 }
-        return `warning_${Date.now())_${Math.random().toString(36).substr(2, 6})`;
+        return `warning_${Date.now())_${Math.random().toString(36).substr(2, 6}`;
     }
 
     /**
@@ -688,21 +685,20 @@ export class PerformanceWarningSystem {
      * 統計情報の取得
      */
     getWarningStatistics() {
-        const now = Date.now(),
+        const now = Date.now();
         const oneHourAgo = now - (60 * 60 * 1000),
-        const recentWarnings = this.warningHistory.filter(w => w.timestamp > oneHourAgo),
-        
+        const recentWarnings = this.warningHistory.filter(w => w.timestamp > oneHourAgo);
         const statistics = {
             totalWarnings: this.warningHistory.length,
             recentWarnings: recentWarnings.length,
     activeWarnings: this.activeWarnings.size }
             acknowledgedWarnings: this.acknowledgements.size }
-            warningsByType: {};
-            warningsBySeverity: {};
-        recentWarnings.forEach(warning => {  ),
+            warningsByType: {},
+            warningsBySeverity: {},
+        recentWarnings.forEach(warning => {  );
             statistics.warningsByType[warning.type] = (statistics.warningsByType[warning.type] || 0) + 1 }
             statistics.warningsBySeverity[warning.severity] = (statistics.warningsBySeverity[warning.severity] || 0) + 1; }
-        });
+        };
         
         return statistics;
     }
@@ -728,8 +724,7 @@ export class PerformanceWarningSystem {
      * リソースの解放
      */
     destroy() {
-        this.clearAllWarnings(),
-        
+        this.clearAllWarnings();
         if (this.warningContainer) {
             this.warningContainer.remove() }
             this.warningContainer = null; }

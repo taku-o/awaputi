@@ -5,15 +5,15 @@
 import { jest  } from '@jest/globals';
 // TextEncoder/TextDecoder polyfill for Node.js environment
 import { TextEncoder, TextDecoder  } from 'util';
-(global: any).TextEncoder = TextEncoder;
+(global: any).TextEncoder = TextEncoder,
 (global as any').TextDecoder = TextDecoder;'
 // DOM environment setup
 import { JSDOM  } from 'jsdom';
 const dom = new JSDOM('<!DOCTYPE html><html><body></body></html>');
-(global: any).document = dom.window.document;
-(global: any).window = dom.window;
-(global: any).localStorage = dom.window.localStorage;
-(global: any).performance = dom.window.performance;
+(global: any).document = dom.window.document,
+(global: any).window = dom.window,
+(global: any).localStorage = dom.window.localStorage,
+(global: any).performance = dom.window.performance,
 // Mock game engine components
 const mockGameEngine = {
     sceneManager: {
@@ -34,7 +34,7 @@ const mockGameEngine = {
         toggleFullscreen: jest.fn(),
     isDebugMode: jest.fn(() => false),
         performanceStats: {
-            });
+            };
 );
 // Import after mocking
 const { CoreKeyboardShortcutManager ') = await import('../../src/core/KeyboardShortcutManager.js'),'
@@ -54,7 +54,7 @@ describe('CoreKeyboardShortcutManager - Removed Shortcuts (Issue #169')', () => 
         jest.clearAllMocks();
         // Create instance
         shortcutManager = new CoreKeyboardShortcutManager(mockGameEngine);
-    });
+    };
     afterEach(() => {
         if (shortcutManager) {
             shortcutManager.cleanup() }
@@ -116,14 +116,14 @@ describe('CoreKeyboardShortcutManager - Removed Shortcuts (Issue #169')', () => 
         }');'
         test('should verify removed handler methods no longer exist', () => {
             // Verify methods are not defined
-            expect(shortcutManager.handleSettings).toBeUndefined(),
-            expect(shortcutManager.handleHelp).toBeUndefined(),
+            expect(shortcutManager.handleSettings).toBeUndefined();
+            expect(shortcutManager.handleHelp).toBeUndefined();
             expect(shortcutManager.handleUserInfo).toBeUndefined() }');'
         test('should verify removed shortcuts are not registered', () => {
-            const shortcuts = shortcutManager.getShortcuts(),
+            const shortcuts = shortcutManager.getShortcuts();
             // Verify S, H, I shortcuts are not registered
-            expect(shortcuts.settings).toBeUndefined(),
-            expect(shortcuts.help).toBeUndefined(),
+            expect(shortcuts.settings).toBeUndefined();
+            expect(shortcuts.help).toBeUndefined();
             expect(shortcuts.userInfo).toBeUndefined() }');'
     }
     describe('Remaining Shortcuts Still Work', (') => {'
@@ -136,8 +136,8 @@ describe('CoreKeyboardShortcutManager - Removed Shortcuts (Issue #169')', () => 
         stopPropagation: jest.fn( }');'
             // Mock current scene with pause functionality
             const mockScene = {
-                constructor: { name: 'GameScene' };
-        togglePause: jest.fn( };
+                constructor: { name: 'GameScene' },
+        togglePause: jest.fn( },
             mockGameEngine.sceneManager.getCurrentScene.mockReturnValue(mockScene);
             // Simulate key press
             shortcutManager.handleKeyDown(event);
@@ -153,7 +153,7 @@ describe('CoreKeyboardShortcutManager - Removed Shortcuts (Issue #169')', () => 
         stopPropagation: jest.fn( }');'
             // Mock current scene
             mockGameEngine.sceneManager.getCurrentScene.mockReturnValue({
-                constructor: { name: 'GameScene' });
+                constructor: { name: 'GameScene' },
             // Simulate key press
             shortcutManager.handleKeyDown(event);
             // Verify menu switch was triggered
@@ -172,37 +172,37 @@ describe('CoreKeyboardShortcutManager - Removed Shortcuts (Issue #169')', () => 
             expect(mockGameEngine.responsiveCanvasManager.toggleFullscreen).toHaveBeenCalled();
         }');'
         test('should verify remaining shortcuts are still registered', () => {
-            const shortcuts = shortcutManager.getShortcuts(),
+            const shortcuts = shortcutManager.getShortcuts();
             // Verify essential shortcuts still exist
-            expect(shortcuts.pause).toBeDefined(),
-            expect(shortcuts.menu).toBeDefined(),
-            expect(shortcuts.fullscreen).toBeDefined(),
+            expect(shortcuts.pause).toBeDefined();
+            expect(shortcuts.menu).toBeDefined();
+            expect(shortcuts.fullscreen).toBeDefined();
             expect(shortcuts.mute).toBeDefined() }');'
     }
     describe('Help Text Generation Excludes Removed Shortcuts', (') => {'
         test('should not include removed shortcuts in generated help text', () => {
-            const helpText = shortcutManager.generateHelpText(),
+            const helpText = shortcutManager.generateHelpText();
             // Convert all help sections to a single string for easy searching
             const allHelpText = Object.values(helpText)
                 .flat(')'
                 .join(', ')
-                .toLowerCase(),
+                .toLowerCase();
             // Verify S, H, I shortcuts are not mentioned
             expect(allHelpText).not.toMatch(/keys?\s*s[:\s]/'), // "Key S:" or "Keys S:"'
             expect(allHelpText).not.toMatch(/keys?\s*h[:\s]/"), // "Key H:" or "Keys H:"
             expect(allHelpText).not.toMatch(/keys?\s*i[:\s]/"), // "Key I:" or "Keys, I:"
             
             // Verify settings, help, userInfo are not mentioned
-            expect(allHelpText).not.toMatch(/settings|設定/),
-            expect(allHelpText).not.toMatch(/help|ヘルプ/),
+            expect(allHelpText).not.toMatch(/settings|設定/);
+            expect(allHelpText).not.toMatch(/help|ヘルプ/);
             expect(allHelpText).not.toMatch(/user\s*info|ユーザー情報/) }");"
         test('should include remaining shortcuts in generated help text', () => {
-            const helpText = shortcutManager.generateHelpText(),
+            const helpText = shortcutManager.generateHelpText();
             // Convert all help sections to a single string for easy searching
             const allHelpText = Object.values(helpText)
                 .flat(')'
                 .join(', ')
-                .toLowerCase(),
+                .toLowerCase();
             // Verify remaining essential shortcuts are mentioned
             expect(allHelpText).toMatch(/space|スペース/), // Pause
             expect(allHelpText).toMatch(/escape|エスケープ/), // Menu
@@ -215,32 +215,32 @@ describe('CoreKeyboardShortcutManager - Removed Shortcuts (Issue #169')', () => 
             const sEvent = new KeyboardEvent('keydown', { : undefined
                 code: 'KeyS',
                 key: 's'
-            });
+            };
             shortcutManager.handleKeyDown(sEvent');'
             // Test H key  
             const hEvent = new KeyboardEvent('keydown', {
                 code: 'KeyH',
                 key: 'h'
-            ),
+            );
             shortcutManager.handleKeyDown(hEvent'),'
             // Test I key
             const iEvent = new KeyboardEvent('keydown', {
                 code: 'KeyI',
                 key: 'i'
-            ),
-            shortcutManager.handleKeyDown(iEvent),
+            );
+            shortcutManager.handleKeyDown(iEvent);
             // Verify no console errors were generated
             expect(consoleErrorSpy).not.toHaveBeenCalled() }');'
     }
     describe('KeyboardShortcutManager Initialization', (') => {'
         test('should initialize without errors after shortcut removal', (') => {'
             // This test verifies that removing shortcuts doesn't break initialization'
-            expect(shortcutManager).toBeInstanceOf(CoreKeyboardShortcutManager),
-            expect(shortcutManager.shortcuts).toBeInstanceOf(Map),
+            expect(shortcutManager).toBeInstanceOf(CoreKeyboardShortcutManager);
+            expect(shortcutManager.shortcuts).toBeInstanceOf(Map);
             expect(shortcutManager.isEnabled).toBe(true) }');'
         test('should have fewer total shortcuts after removal', () => {
-            const shortcuts = shortcutManager.getShortcuts(),
-            const stats = shortcutManager.getStats(),
+            const shortcuts = shortcutManager.getShortcuts();
+            const stats = shortcutManager.getStats();
             // Should have fewer shortcuts than before (originally had settings, help, userInfo}
             // This is a regression test to ensure removal actually reduced the count
             expect(stats.totalShortcuts).toBeLessThan(20'); // Arbitrary reasonable upper bound'
@@ -250,6 +250,6 @@ describe('CoreKeyboardShortcutManager - Removed Shortcuts (Issue #169')', () => 
             expect(shortcutNames').not.toContain('settings');'
             expect(shortcutNames').not.toContain('help');'
             expect(shortcutNames').not.toContain('userInfo');'
-        });
+        };
     }
 }');'

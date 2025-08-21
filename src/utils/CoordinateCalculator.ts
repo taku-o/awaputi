@@ -6,27 +6,28 @@
  */
 
 // 型定義
-interface Coordinates { x: number,
+interface Coordinates { x: number;
     y: number;
 
-interface Size { width: number,
+interface Size { width: number;
     height: number;
 
-interface SafeArea { x: number,
+interface SafeArea { x: number;
     y: number;
     width: number;
     height: number;
 
-interface VerticalPosition { y: number,
+interface VerticalPosition { y: number;
     height: number;
 
-interface DebugInfo { canvasSize: Size,
+interface DebugInfo { canvasSize: Size;
     baseSize: Size;
     scale: {
-        ,x: number,
-        y: number,
-    uniform: number,
-
+        ,x: number;
+        y: number;
+    uniform: number;
+    uniform: number;
+        };
 export class CoordinateCalculator {
     private canvasWidth: number;
     private canvasHeight: number;
@@ -56,7 +57,7 @@ export class CoordinateCalculator {
     /**
      * Canvas寸法の更新
      */
-    updateCanvasDimensions(width: number, height: number): void { this.canvasWidth = width;
+    updateCanvasDimensions(width: number, height: number): void { this.canvasWidth = width,
         this.canvasHeight = height;
         this.scaleX = width / this.baseWidth;
         this.scaleY = height / this.baseHeight;
@@ -65,14 +66,14 @@ export class CoordinateCalculator {
     /**
      * ベース座標系から実際のCanvas座標系への変換
      */
-    toCanvasCoordinates(baseX: number, baseY: number): Coordinates { return { x: baseX * this.scaleX };
+    toCanvasCoordinates(baseX: number, baseY: number): Coordinates { return { x: baseX * this.scaleX },
             y: baseY * this.scaleY 
     }
     
     /**
      * ベース座標系のサイズを実際のCanvasサイズに変換
      */
-    toCanvasSize(baseWidth: number, baseHeight: number): Size { return { width: baseWidth * this.scaleX };
+    toCanvasSize(baseWidth: number, baseHeight: number): Size { return { width: baseWidth * this.scaleX },
             height: baseHeight * this.scaleY 
     }
     
@@ -115,7 +116,7 @@ export class CoordinateCalculator {
      * @returns {boolean} テキストがCanvas内に収まる場合true
      */'
     validateTextBounds(context: CanvasRenderingContext2D, text: string, x: number, y: number, maxWidth: number | null = null): boolean { ''
-        const metrics = context.measureText(text),
+        const metrics = context.measureText(text);
         const textWidth = metrics.width,
 
         // textAlign = 'center'の場合、xは中央座標なので左右に半分ずつ伸びる
@@ -153,7 +154,7 @@ export class CoordinateCalculator {
     getSafeArea(margin: number = 20): SafeArea { const scaledMargin = margin * this.uniformScale,
         return { x: scaledMargin,
             y: scaledMargin,
-    width: this.canvasWidth - (scaledMargin * 2) };
+    width: this.canvasWidth - (scaledMargin * 2) },
             height: this.canvasHeight - (scaledMargin * 2); 
     }
     

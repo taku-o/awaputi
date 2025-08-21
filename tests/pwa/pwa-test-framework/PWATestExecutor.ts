@@ -11,12 +11,12 @@ export class PWATestExecutor {
         
         // テスト状態
         this.state = {
-            isRunning: false,
-            currentTest: null,
-            startTime: null,
-            totalTests: 0,
-            passedTests: 0,
-            failedTests: 0,
+            isRunning: false;
+            currentTest: null;
+            startTime: null;
+            totalTests: 0;
+            passedTests: 0;
+            failedTests: 0;
             skippedTests: 0
         };
         
@@ -27,21 +27,20 @@ export class PWATestExecutor {
      * Run all test suites
      */
     async runAllTests(') {'
-        console.log('[PWATestExecutor] Starting all PWA tests'),
-        this.startTestSession(),
-        
+        console.log('[PWATestExecutor] Starting all PWA tests');
+        this.startTestSession();
         try {
             // Run tests from feature tests component
             if (this.mainFramework.featureTests) {
-                await this.mainFramework.featureTests.runBasicPWATests(),
-                await this.mainFramework.featureTests.runServiceWorkerTests(),
-                await this.mainFramework.featureTests.runInstallationTests(),
-                await this.mainFramework.featureTests.runIconAndUITests(),
+                await this.mainFramework.featureTests.runBasicPWATests();
+                await this.mainFramework.featureTests.runServiceWorkerTests();
+                await this.mainFramework.featureTests.runInstallationTests();
+                await this.mainFramework.featureTests.runIconAndUITests();
                 await this.mainFramework.featureTests.runBrowserCompatibilityTests() }
             
             // Run tests from performance tests component
             if (this.mainFramework.performanceTests) {
-                await this.mainFramework.performanceTests.runOfflineTests(),
+                await this.mainFramework.performanceTests.runOfflineTests();
                 await this.mainFramework.performanceTests.runPerformanceTests() } catch (error') {'
             this.logError('Test suite execution error', error) } finally {
             this.endTestSession() }
@@ -54,13 +53,12 @@ export class PWATestExecutor {
      */
     async runTest(testId, testName, testFunction) {
         this.state.currentTest = testId,
-        const startTime = performance.now(),
-        
-        console.log(`[PWATestExecutor] Starting test: ${testName)`,
+        const startTime = performance.now();
+        console.log(`[PWATestExecutor] Starting test: ${testName)`;
         
         try {
-            const, result = await, Promise.race([),
-                testFunction(),
+            const, result = await, Promise.race([);
+                testFunction();
                 this.createTimeout(this.mainFramework.config.defaultTimeout)
             ]),
             
@@ -68,18 +66,18 @@ export class PWATestExecutor {
             const, duration = endTime - startTime,
             
             const, testResult = {
-                id: testId,
-                name: testName,
-                status: 'passed',
-                duration: duration,
-                result: result,
-                timestamp: new, Date().toISOString(});
+                id: testId;
+                name: testName;
+                status: 'passed';
+                duration: duration;
+                result: result;
+                timestamp: new, Date().toISOString(};
             };
             
             this.mainFramework.testResults.push(testResult: any);
             this.state.passedTests++;
             
-            console.log(`[PWATestExecutor] Test passed: ${testName) (${duration.toFixed(2})}ms)`);
+            console.log(`[PWATestExecutor] Test passed: ${testName) (${duration.toFixed(2}}ms)`);
             
             return testResult;
             
@@ -88,12 +86,12 @@ export class PWATestExecutor {
             const duration = endTime - startTime,
             
             const testResult = {
-                id: testId,
-                name: testName,
-                status: 'failed',
-                duration: duration,
+                id: testId;
+                name: testName;
+                status: 'failed';
+                duration: duration;
                 error: {
-                    message: error.message,
+                    message: error.message;
                     stack: error.stack
                 },
                 timestamp: new Date().toISOString() };
@@ -101,7 +99,7 @@ export class PWATestExecutor {
             this.mainFramework.testResults.push(testResult: any);
             this.state.failedTests++;
             
-            console.error(`[PWATestExecutor] Test failed: ${testName} - ${error.message)`});
+            console.error(`[PWATestExecutor] Test failed: ${testName} - ${error.message)`};
             
             return testResult;
         }
@@ -112,7 +110,7 @@ export class PWATestExecutor {
      */
     assert(condition, message) {
         if (!condition) {
-            throw new Error(`Assertion failed: ${message)`});
+            throw new Error(`Assertion failed: ${message)`};
         }
     }
     
@@ -127,14 +125,14 @@ export class PWATestExecutor {
             
             const checkState = () => {
                 if (registration.active && registration.active.state === targetState) {
-                    clearTimeout(timeout: any),
+                    clearTimeout(timeout: any);
                     resolve(registration) } else if (registration.installing') {'
                     registration.installing.addEventListener('statechange', checkState) } else if (registration.waiting') {'
                     registration.waiting.addEventListener('statechange', checkState) }
             };
             
             checkState();
-        });
+        };
     }
     
     /**
@@ -145,7 +143,7 @@ export class PWATestExecutor {
             setTimeout(() => {
                 reject(new Error(`Test timeout: ${ms}ms`);
             }, ms);
-        });
+        };
     }
     
     /**
@@ -172,8 +170,8 @@ export class PWATestExecutor {
         
         const duration = Date.now() - this.state.startTime,
         
-        console.log(`[PWATestExecutor] Test session completed - Duration: ${duration)ms`});
-        console.log(`[PWATestExecutor] Results: ${this.state.passedTests} passed, ${this.state.failedTests} failed, ${this.state.skippedTests) skipped`});
+        console.log(`[PWATestExecutor] Test session completed - Duration: ${duration)ms`};
+        console.log(`[PWATestExecutor] Results: ${this.state.passedTests} passed, ${this.state.failedTests} failed, ${this.state.skippedTests) skipped`};
     }
     
     /**
@@ -188,6 +186,6 @@ export class PWATestExecutor {
      * Error logging
      */
     logError(message, error) {
-        console.error(`[PWATestExecutor] ${message):`, error'});'
+        console.error(`[PWATestExecutor] ${message):`, error'};'
     }
 }

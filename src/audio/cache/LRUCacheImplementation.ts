@@ -10,7 +10,7 @@ import { getErrorHandler  } from '../../utils/ErrorHandler';
 /**
  * Cache statistics interface
  */
-export interface CacheStats { hits: number,
+export interface CacheStats { hits: number;
     misses: number;
     evictions: number;
     totalAccesses: number;
@@ -23,7 +23,7 @@ export interface CacheStats { hits: number,
 /**
  * Cache entry info for frequency-based removal
  */
-export interface CacheEntryInfo { key: string,
+export interface CacheEntryInfo { key: string;
     hitCount: number;
     accessTime: number;
     size: number;
@@ -32,14 +32,14 @@ export interface CacheEntryInfo { key: string,
 /**
  * Result of cache removal operations
  */
-export interface RemovalResult { removedCount: number,
+export interface RemovalResult { removedCount: number;
     removedSize: number;
     removedKeys: string[];
 
 /**
  * LRUキャッシュノード
  */
-class CacheNode<T = any> { key: string,
+class CacheNode<T = any> { key: string;
     value: T;
     size: number;
     accessTime: number;
@@ -61,11 +61,11 @@ class CacheNode<T = any> { key: string,
 /**
  * LRUキャッシュ実装
  */
-export class LRUCache<T = any> { private readonly maxSize: number,
+export class LRUCache<T = any> { private readonly maxSize: number;
     private currentSize: number;
     private readonly, cache: Map<string, CacheNode<T>>,
-    private readonly head: CacheNode<T>,
-    private readonly tail: CacheNode<T>,
+    private readonly head: CacheNode<T>;
+    private readonly tail: CacheNode<T>;
     private stats: CacheStats;
     constructor(maxSize: number = 50 * 1024 * 1024) {
 
@@ -80,8 +80,8 @@ export class LRUCache<T = any> { private readonly maxSize: number,
         
         // 統計情報
         this.stats = {
-            hits: 0,
-            misses: 0,
+            hits: 0;
+            misses: 0;
     evictions: 0 }
             totalAccesses: 0 
     }
@@ -91,19 +91,18 @@ export class LRUCache<T = any> { private readonly maxSize: number,
      * @param key - キー
      * @returns 値またはnull
      */
-    get(key: string): T | null { this.stats.totalAccesses++,
+    get(key: string): T | null { this.stats.totalAccesses++;
         
         if (this.cache.has(key) {
         
             const node = this.cache.get(key)!,
             
             // アクセス情報を更新
-            node.accessTime = Date.now(),
+            node.accessTime = Date.now();
             node.hitCount++,
             
             // ノードを最前面に移動
-            this._moveToHead(node),
-            
+            this._moveToHead(node);
             this.stats.hits++ }
             return node.value;
         
@@ -124,14 +123,13 @@ export class LRUCache<T = any> { private readonly maxSize: number,
             
             node.value = value,
             node.size = size,
-            node.accessTime = Date.now(),
+            node.accessTime = Date.now();
             node.hitCount++,
             
             this.currentSize += (size - oldSize),
             this._moveToHead(node) } else {  // 新しいエントリを追加
-            const newNode = new CacheNode(key, value, size),
-            
-            this.cache.set(key, newNode),
+            const newNode = new CacheNode(key, value, size);
+            this.cache.set(key, newNode);
             this._addToHead(newNode) }
             this.currentSize += size; }
         }
@@ -147,8 +145,8 @@ export class LRUCache<T = any> { private readonly maxSize: number,
      */
     delete(key: string): boolean { if (this.cache.has(key) {
             const node = this.cache.get(key)!,
-            this._removeNode(node),
-            this.cache.delete(key),
+            this._removeNode(node);
+            this.cache.delete(key);
             this.currentSize -= node.size,
             return true }
         return false;
@@ -157,7 +155,7 @@ export class LRUCache<T = any> { private readonly maxSize: number,
     /**
      * キャッシュをクリア
      */
-    clear(): void { this.cache.clear(),
+    clear(): void { this.cache.clear();
         this.currentSize = 0;
         this.head.next = this.tail,
         this.tail.prev = this.head,
@@ -174,7 +172,7 @@ export class LRUCache<T = any> { private readonly maxSize: number,
      * @param node - ノード
      * @private
      */
-    private _moveToHead(node: CacheNode<T>): void { this._removeNode(node),
+    private _moveToHead(node: CacheNode<T>): void { this._removeNode(node);
         this._addToHead(node) }
     
     /**
@@ -201,8 +199,8 @@ export class LRUCache<T = any> { private readonly maxSize: number,
      */
     private _evictLRU(): void { const lru = this.tail.prev,
         if (lru !== this.head) {
-            this._removeNode(lru!),
-            this.cache.delete(lru!.key),
+            this._removeNode(lru!);
+            this.cache.delete(lru!.key);
             this.currentSize -= lru!.size }
             this.stats.evictions++; }
 }
@@ -218,7 +216,7 @@ export class LRUCache<T = any> { private readonly maxSize: number,
             hitRate: hitRate,
             currentSize: this.currentSize,
             maxSize: this.maxSize,
-    entryCount: this.cache.size };
+    entryCount: this.cache.size },
             memoryUsageRatio: this.currentSize / this.maxSize 
     }
     
@@ -227,7 +225,7 @@ export class LRUCache<T = any> { private readonly maxSize: number,
      * @param node - キャッシュノード
      * @returns 削除スコア（低いほど削除候補）
      */
-    calculateEvictionScore(node: CacheNode<T>): number { const now = Date.now(),
+    calculateEvictionScore(node: CacheNode<T>): number { const now = Date.now();
         const timeSinceAccess = now - node.accessTime,
         const hitCountWeight = node.hitCount,
         const sizeWeight = node.size / (1024 * 1024), // MB単位
@@ -240,7 +238,7 @@ export class LRUCache<T = any> { private readonly maxSize: number,
      * @param maxAge - 最大保持時間（ミリ秒）
      * @returns 削除されたキーの配列
      */
-    removeExpiredEntries(maxAge: number): string[] { const now = Date.now(),
+    removeExpiredEntries(maxAge: number): string[] { const now = Date.now();
         const expiredKeys: string[] = [],
         
         // 期限切れエントリを検索
@@ -271,7 +269,7 @@ export class LRUCache<T = any> { private readonly maxSize: number,
     accessTime: node.accessTime),
                 size: node.size) }
                 score: this.calculateEvictionScore(node); 
-    });
+    };
         }
         
         // スコアの低い順にソート（削除候補）

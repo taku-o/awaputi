@@ -6,30 +6,30 @@ import type { ShareButton } from '../core/ShareButton';
 import type { SocialSharingManager } from '../core/SocialSharingManager';
 import type { GameEngine } from '../core/GameEngine';
 // Mock interfaces
-interface MockGameEngine extends Partial<GameEngine> { on: jest.Mock,
+interface MockGameEngine extends Partial<GameEngine> { on: jest.Mock;
     off: jest.Mock;
     emit: jest.Mock  }
-interface MockSocialSharingManager extends Partial<SocialSharingManager> { gameEngine: MockGameEngine,
+interface MockSocialSharingManager extends Partial<SocialSharingManager> { gameEngine: MockGameEngine;
     share: jest.Mock;
     shareViaTwitterUrl: jest.Mock;
     shareViaFacebookUrl: jest.Mock }
-interface ShareData { type: string,
+interface ShareData { type: string;
     score?: number;
     text?: string;
     url?: string;''
-describe('ShareButton', () => {  let shareButton: ShareButton,
-    let mockSocialSharingManager: MockSocialSharingManager,
-    let mockContainer: HTMLDivElement,
-    let mockGameEngine: MockGameEngine,
+describe('ShareButton', () => {  let shareButton: ShareButton;
+    let mockSocialSharingManager: MockSocialSharingManager;
+    let mockContainer: HTMLDivElement;
+    let mockGameEngine: MockGameEngine;
 
     beforeEach(async () => {'
         // DOM環境のセットアップ
         document.body.innerHTML = ','
         ','
         // テスト用コンテナ
-        mockContainer = document.createElement('div'),
+        mockContainer = document.createElement('div');
         mockContainer.id = 'test-container',
-        document.body.appendChild(mockContainer),
+        document.body.appendChild(mockContainer);
         // GameEngineのモック
         mockGameEngine = {
             on: jest.fn(
@@ -43,7 +43,7 @@ describe('ShareButton', () => {  let shareButton: ShareButton,
             shareViaTwitterUrl: jest.fn().mockResolvedValue({ success: true, method: 'twitter ',''
             shareViaFacebookUrl: jest.fn(  }
 
-        method: 'facebook' ),
+        method: 'facebook' );
         // ResizeObserverのモック
         global.ResizeObserver = jest.fn().mockImplementation(() => ({ observe: jest.fn(
             unobserve: jest.fn(
@@ -53,13 +53,13 @@ describe('ShareButton', () => {  let shareButton: ShareButton,
         ';'
         // matchMediaのモック
         Object.defineProperty(window, 'matchMedia', { ''
-            writable: true,
+            writable: true;
             value: jest.fn().mockImplementation((query: string) => ({''
                 matches: query.includes('max-width: 768px) ? false : true,'
-                media: query,
-                onchange: null,
-                addListener: jest.fn(),
-                removeListener: jest.fn(),
+                media: query;
+                onchange: null;
+                addListener: jest.fn();
+                removeListener: jest.fn();
                 addEventListener: jest.fn(
     removeEventListener: jest.fn(
         dispatchEvent: jest.fn(),' }'
@@ -69,13 +69,13 @@ describe('ShareButton', () => {  let shareButton: ShareButton,
 
         // Clipboard APIのモック
         Object.defineProperty(navigator, 'clipboard', { )
-            value: {),
+            value: {);
                 writeText: jest.fn().mockResolvedValue(undefined }
             writable: true','
         }';'
         const { ShareButton } = await import('../core/ShareButton.js);'
         shareButton = new ShareButton(mockContainer, mockSocialSharingManager as any);
-    });
+    };
     afterEach(() => {  if (shareButton) { }
             shareButton.destroy(); }
 
@@ -85,9 +85,9 @@ describe('ShareButton', () => {  let shareButton: ShareButton,
     }');'
     describe('初期化', () => {  ''
         test('正常に初期化される', () => {
-            expect(shareButton.container).toBe(mockContainer),
-            expect(shareButton.socialSharingManager).toBe(mockSocialSharingManager),
-            expect(shareButton.config).toBeDefined(),
+            expect(shareButton.container).toBe(mockContainer);
+            expect(shareButton.socialSharingManager).toBe(mockSocialSharingManager);
+            expect(shareButton.config).toBeDefined();
             expect(shareButton.state).toBeDefined() }
 
             expect(shareButton.elements).toBeDefined();' }'
@@ -102,7 +102,7 @@ describe('ShareButton', () => {  let shareButton: ShareButton,
             expect(shareButton.config.platforms).toContain('facebook'; }
 
         }');'
-        test('DOM要素が作成される', () => {  expect(shareButton.elements.container).toBeDefined(),
+        test('DOM要素が作成される', () => {  expect(shareButton.elements.container).toBeDefined();
             expect(shareButton.elements.mainButton).toBeDefined() }
 
             expect(shareButton.elements.platformButtons.length).toBeGreaterThan(0);' }'
@@ -126,16 +126,15 @@ describe('ShareButton', () => {  let shareButton: ShareButton,
     }''
     describe('表示・非表示機能', () => {  ''
         test('ボタンが表示される', () => {
-            shareButton.show(),
-
-            expect(shareButton.state.visible).toBe(true),
+            shareButton.show();
+            expect(shareButton.state.visible).toBe(true);
             expect(shareButton.elements.container.style.display).toBe('block' }'
 
             expect(shareButton.stats.shows).toBe(1);' }'
 
         }');'
-        test('ボタンが非表示になる', () => {  shareButton.show(),
-            shareButton.hide(),
+        test('ボタンが非表示になる', () => {  shareButton.show();
+            shareButton.hide();
             expect(shareButton.state.visible).toBe(false) }
 
             expect(shareButton.stats.shows).toBe(1);' }'
@@ -151,12 +150,12 @@ describe('ShareButton', () => {  let shareButton: ShareButton,
             expect(shareButton.state.lastTriggeredBy).toBe('score';}');'
         test('自動非表示が動作する', (done) => {  shareButton.config.autoHide = true,
             shareButton.config.hideDelay = 100 }
-            shareButton.showWithData({ score: 1000 });
+            shareButton.showWithData({ score: 1000 };
             setTimeout(() => {  expect(shareButton.state.visible).toBe(false) }
                 done(); }
 
             }, 150);'}');
-        test('重複表示が防がれる', () => {  shareButton.show(),
+        test('重複表示が防がれる', () => {  shareButton.show();
             shareButton.show(), // 2回目の表示
              }
             expect(shareButton.stats.shows).toBe(1);' }'
@@ -169,23 +168,22 @@ describe('ShareButton', () => {  let shareButton: ShareButton,
             shareButton.show();' }'
 
         }');'
-        test('ボタンが展開される', () => {  shareButton.expand(),
+        test('ボタンが展開される', () => {  shareButton.expand();
             expect(shareButton.state.expanded).toBe(true),' }'
 
             expect(shareButton.elements.mainButton.getAttribute('aria-expanded)'.toBe('true'; }
 
         }');'
-        test('ボタンが折りたたまれる', () => {  shareButton.expand(),
-
-            shareButton.collapse(),
+        test('ボタンが折りたたまれる', () => {  shareButton.expand();
+            shareButton.collapse();
             expect(shareButton.state.expanded).toBe(false),' }'
 
             expect(shareButton.elements.mainButton.getAttribute('aria-expanded)'.toBe('false'; }
 
         }');'
         test('メインボタンクリックで展開・折りたたみが切り替わる', () => {  // 展開
-            shareButton.elements.mainButton.click(),
-            expect(shareButton.state.expanded).toBe(true),
+            shareButton.elements.mainButton.click();
+            expect(shareButton.state.expanded).toBe(true);
             // 折りたたみ
             shareButton.elements.mainButton.click() }
             expect(shareButton.state.expanded).toBe(false);' }'
@@ -203,8 +201,7 @@ describe('ShareButton', () => {  let shareButton: ShareButton,
             const platformButton = shareButton.elements.platformButtons.find()','
                 btn => btn.getAttribute('data-platform') === 'web-share'),
             if (platformButton) {
-                await platformButton.click(),
-
+                await platformButton.click();
                 expect(mockSocialSharingManager.share).toHaveBeenCalled() }
 
                 expect(shareButton.stats.shares).toBe(1);' }'
@@ -243,13 +240,12 @@ describe('ShareButton', () => {  let shareButton: ShareButton,
 
             shareButton = new ShareButton(mockContainer, mockSocialSharingManager as any, { ''
                 platforms: ['copy])),'
-            shareButton.show(),
-
-            shareButton.expand(),
+            shareButton.show();
+            shareButton.expand();
             const platformButton = shareButton.elements.platformButtons.find()','
                 btn => btn.getAttribute('data-platform') === 'copy'),
             if (platformButton) {
-                await platformButton.click(),
+                await platformButton.click();
                 expect(navigator.clipboard.writeText).toHaveBeenCalled() }
 
                 expect(shareButton.stats.platforms['copy]).toBe(1); }'
@@ -280,7 +276,7 @@ describe('ShareButton', () => {  let shareButton: ShareButton,
         }');'
         test('Enterキーでメインボタンが動作する', () => { }
 
-            const enterEvent = new KeyboardEvent('keydown', { key: 'Enter' });
+            const enterEvent = new KeyboardEvent('keydown', { key: 'Enter' };
             shareButton.elements.mainButton.dispatchEvent(enterEvent);
             // 展開状態の切り替えを確認
             expect(shareButton.state.expanded).toBe(false);'}');
@@ -288,7 +284,7 @@ describe('ShareButton', () => {  let shareButton: ShareButton,
 
             shareButton.collapse() }
 
-            const spaceEvent = new KeyboardEvent('keydown', { key: ', ' });
+            const spaceEvent = new KeyboardEvent('keydown', { key: ', ' };
 
             shareButton.elements.mainButton.dispatchEvent(spaceEvent);
 
@@ -307,9 +303,9 @@ describe('ShareButton', () => {  let shareButton: ShareButton,
             }'}');
         test('Homeキーで最初のプラットフォームボタンにフォーカス', () => { const firstButton = shareButton.elements.platformButtons[0],' }'
 
-            const homeEvent = new KeyboardEvent('keydown', { key: 'Home' });
+            const homeEvent = new KeyboardEvent('keydown', { key: 'Home' };
             if (firstButton) {
-                firstButton.dispatchEvent(homeEvent),
+                firstButton.dispatchEvent(homeEvent);
                 // フォーカス移動の確認は実際のDOMでテストする必要がある
             }
                 expect(shareButton.state.expanded).toBe(true); }
@@ -318,16 +314,16 @@ describe('ShareButton', () => {  let shareButton: ShareButton,
     }''
     describe('アクセシビリティ機能', () => {  ''
         test('ARIA属性が正しく設定される', () => {''
-            expect(shareButton.elements.mainButton.getAttribute('aria-label)'.toBe('共有オプションを表示'),
-            expect(shareButton.elements.mainButton.getAttribute('aria-expanded)'.toBe('false'),
+            expect(shareButton.elements.mainButton.getAttribute('aria-label)'.toBe('共有オプションを表示');
+            expect(shareButton.elements.mainButton.getAttribute('aria-expanded)'.toBe('false');
             const platformContainer = shareButton.elements.container.querySelector('.share-button-platforms'),' }'
 
             expect(platformContainer?.getAttribute('role)'.toBe('menu'; }
 
         }');'
         test('プラットフォームボタンのARIA属性が設定される', () => {  ''
-            shareButton.elements.platformButtons.forEach(button => {),
-                const platform = button.getAttribute('data-platform'),
+            shareButton.elements.platformButtons.forEach(button => {);
+                const platform = button.getAttribute('data-platform');
                 expect(button.getAttribute('aria-label)'.toContain('で共有'),' }'
 
                 expect(button.getAttribute('role)'.toBe('menuitem'; }
@@ -335,7 +331,7 @@ describe('ShareButton', () => {  let shareButton: ShareButton,
             }');'
 
         }''
-        test('スクリーンリーダー用アナウンサーが機能する', () => {  shareButton.show(),
+        test('スクリーンリーダー用アナウンサーが機能する', () => {  shareButton.show();
             if (shareButton.elements.announcer) {', ' }
 
                 expect(shareButton.elements.announcer.getAttribute('aria-live)'.toBe('polite'; }
@@ -370,7 +366,7 @@ describe('ShareButton', () => {  let shareButton: ShareButton,
             const { ShareButton } = await import('../core/ShareButton.js');
 
             shareButton = new ShareButton(mockContainer, mockSocialSharingManager as any, { ''
-                theme: 'minimal' })';'
+                theme: 'minimal' }';'
             const container = shareButton.elements.container;
             expect(container.style.backgroundColor).toBe('rgba(255, 255, 255, 0.95));'}');'
         test('gamingテーマが適用される', async () => { }
@@ -380,7 +376,7 @@ describe('ShareButton', () => {  let shareButton: ShareButton,
             const { ShareButton } = await import('../core/ShareButton.js');
 
             shareButton = new ShareButton(mockContainer, mockSocialSharingManager as any, { ''
-                theme: 'gaming' })';'
+                theme: 'gaming' }';'
             const container = shareButton.elements.container;
             expect(container.style.backgroundColor).toBe('rgba(0, 255, 0, 0.9));'}');'
         test('elegantテーマが適用される', async () => { }
@@ -390,7 +386,7 @@ describe('ShareButton', () => {  let shareButton: ShareButton,
             const { ShareButton } = await import('../core/ShareButton.js');
 
             shareButton = new ShareButton(mockContainer, mockSocialSharingManager as any, { ''
-                theme: 'elegant' })';'
+                theme: 'elegant' }';'
             const container = shareButton.elements.container;
             expect(container.style.backgroundColor).toBe('rgba(50, 50, 70, 0.95));'}');'
         test('カスタムスタイルが適用される', async () => {  ''
@@ -422,7 +418,7 @@ describe('ShareButton', () => {  let shareButton: ShareButton,
                     removeListener: jest.fn(),
                     addEventListener: jest.fn(
     removeEventListener: jest.fn() }
-        dispatchEvent: jest.fn(), 
+        dispatchEvent: jest.fn();
     );
             }
             shareButton.applyResponsiveStyles();
@@ -432,7 +428,7 @@ describe('ShareButton', () => {  let shareButton: ShareButton,
             expect(container.style.padding).toBe('14px, 18px';}');'
         test('リサイズイベントで再調整される', () => {  ''
             const resizeEvent = new Event('resize),'
-            window.dispatchEvent(resizeEvent),
+            window.dispatchEvent(resizeEvent);
             // リサイズハンドラーが呼ばれることを確認 }
             expect(shareButton.handlers.resize).toBeDefined();' }'
 
@@ -441,32 +437,31 @@ describe('ShareButton', () => {  let shareButton: ShareButton,
     }''
     describe('統計機能', () => {  ''
         test('表示統計が記録される', () => {
-            shareButton.show(),
+            shareButton.show();
             shareButton.show(), // 重複表示
             
             const stats = shareButton.getStats() }
             expect(stats.shows).toBe(1); // 重複は無視される' }'
 
         }');'
-        test('クリック統計が記録される', () => {  shareButton.show(),
-            shareButton.elements.mainButton.click(),
+        test('クリック統計が記録される', () => {  shareButton.show();
+            shareButton.elements.mainButton.click();
             const stats = shareButton.getStats() }
 
             expect(stats.clicks).toBe(1);' }'
 
         }');'
-        test('共有統計が記録される', async () => {  shareButton.show(),
-            shareButton.expand(),
+        test('共有統計が記録される', async () => {  shareButton.show();
+            shareButton.expand();
             const platformButton = shareButton.elements.platformButtons[0],
-            await platformButton.click(),
+            await platformButton.click();
             const stats = shareButton.getStats() }
 
             expect(stats.shares).toBe(1);' }'
 
         }');'
-        test('プラットフォーム別統計が記録される', async () => {  shareButton.show(),
-
-            shareButton.expand(),
+        test('プラットフォーム別統計が記録される', async () => {  shareButton.show();
+            shareButton.expand();
             const twitterButton = shareButton.elements.platformButtons.find()','
                 btn => btn.getAttribute('data-platform') === 'twitter'),
             if (twitterButton) {
@@ -480,8 +475,8 @@ describe('ShareButton', () => {  let shareButton: ShareButton,
     describe('エラーハンドリング', () => {  ''
         test('SocialSharingManager未設定時のエラー', async () => {
             shareButton.socialSharingManager = null as any,
-            shareButton.show(),
-            shareButton.expand(),
+            shareButton.show();
+            shareButton.expand();
             const platformButton = shareButton.elements.platformButtons[0],
 
             await expect(async () => { };
@@ -493,23 +488,22 @@ describe('ShareButton', () => {  let shareButton: ShareButton,
         }''
         test('共有失敗時のエラー処理', async () => {  ''
             mockSocialSharingManager.share.mockRejectedValue(new, Error('共有失敗),'
-            shareButton.show(),
-            shareButton.expand(),
+            shareButton.show();
+            shareButton.expand();
             const platformButton = shareButton.elements.platformButtons[0],
             
             // エラーが適切に処理されることを確認
-            await platformButton.click(),
+            await platformButton.click();
             // エラーハンドリングメソッドが呼ばれることを確認 }
             expect(shareButton.handleError).toBeDefined();' }'
 
         }');'
-        test('無効なプラットフォームでのエラー', async () => {  shareButton.show(),
-
-            shareButton.expand(),
+        test('無効なプラットフォームでのエラー', async () => {  shareButton.show();
+            shareButton.expand();
             await expect(async () => { };
 
                 await shareButton.handlePlatformShare('invalid-platform'; }'
-            }).rejects.toBeDefined();
+            }.rejects.toBeDefined();
 
         }'}');
     describe('設定更新', () => {  ''
@@ -532,7 +526,7 @@ describe('ShareButton', () => {  let shareButton: ShareButton,
 
             shareButton.updateConfig({),' }'
 
-                styles: { backgroundColor: 'rgba(255, 0, 0, 0.8)' });
+                styles: { backgroundColor: 'rgba(255, 0, 0, 0.8)' };
             const newBackground = shareButton.elements.container.style.backgroundColor;
 
             expect(newBackground).not.toBe(originalBackground);'}');
@@ -540,8 +534,8 @@ describe('ShareButton', () => {  let shareButton: ShareButton,
     }''
     describe('クリーンアップ', () => {  ''
         test('正常にクリーンアップされる', () => {
-            shareButton.show(),
-            shareButton.destroy(),
+            shareButton.show();
+            shareButton.destroy();
             expect(shareButton.elements.container.parentNode).toBeNull() }
 
             expect(shareButton.hideTimer).toBeNull();' }'
@@ -555,10 +549,10 @@ describe('ShareButton', () => {  let shareButton: ShareButton,
             expect(removeEventListenerSpy).toHaveBeenCalledWith('resize', shareButton.handlers.resize'; }'
 
         }');'
-        test('タイマーがクリアされる', () => {  shareButton.scheduleHide(),
-            expect(shareButton.hideTimer).not.toBeNull(),
+        test('タイマーがクリアされる', () => {  shareButton.scheduleHide();
+            expect(shareButton.hideTimer).not.toBeNull();
             shareButton.destroy() }
             expect(shareButton.hideTimer).toBeNull(); }
-        });
+        };
 
     }'}');

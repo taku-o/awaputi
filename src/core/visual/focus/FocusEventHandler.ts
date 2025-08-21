@@ -15,7 +15,7 @@
  */
 
 // 型定義
-export interface MainController { focusManager: FocusManager,
+export interface MainController { focusManager: FocusManager;
     config: FocusConfig;
     state: FocusState;
     cssClasses: CSSClasses;
@@ -29,65 +29,65 @@ export interface MainController { focusManager: FocusManager,
     applyConfig: (config: any) => void  }
 }
 
-export interface FocusManager { addEventListener: (event: string, handler: (dat,a: any) => void) => void,
+export interface FocusManager { addEventListener: (event: string, handler: (dat,a: any) => void) => void;
     removeEventListener: (event: string, handler: (dat,a: any) => void) => void  }
 }
 
-export interface FocusConfig { focusRing: FocusRingConfig,
+export interface FocusConfig { focusRing: FocusRingConfig;
     keyboard: KeyboardConfig;
     mouse: MouseConfig;
 
-export interface FocusRingConfig { enabled: boolean,
+export interface FocusRingConfig { enabled: boolean;
     color: string;
     width: string;
     offset: string;
 
-export interface KeyboardConfig { shortcuts: KeyboardShortcuts,
+export interface KeyboardConfig { shortcuts: KeyboardShortcuts;
     navigation: NavigationSettings;
 
-export interface MouseConfig { disableKeyboardHints: boolean,
+export interface MouseConfig { disableKeyboardHints: boolean;
     clearEffectsOnClick: boolean;
 
-export interface KeyboardShortcuts { help: string,
+export interface KeyboardShortcuts { help: string;
     contrast: string;
     focus: string;
     escape: string;
 
-export interface NavigationSettings { feedback: boolean,
+export interface NavigationSettings { feedback: boolean;
     directions: boolean;
 
-export interface FocusState { keyboardHintVisible: boolean,
+export interface FocusState { keyboardHintVisible: boolean;
     isHighContrastMode: boolean;
     currentElement: HTMLElement | null;
     keyboardMode: boolean;
 
-export interface CSSClasses { focusRing: string,
+export interface CSSClasses { focusRing: string;
     keyboardMode: string;
     mouseMode: string;
     highContrast: string;
 
-export interface FocusElements { navigationIndicator: HTMLElement,
+export interface FocusElements { navigationIndicator: HTMLElement;
     keyboardHint: HTMLElement;
     announcement: HTMLElement;
 
-export interface FocusStateManager { setKeyboardMode: (enabled: boolean) => void,
+export interface FocusStateManager { setKeyboardMode: (enabled: boolean) => void;
     setHighContrastMode: (enabled: boolean) => void 
     }
 
-export interface FocusAccessibilitySupport { toggleKeyboardHints: () => void,
+export interface FocusAccessibilitySupport { toggleKeyboardHints: () => void;
     hideKeyboardHints: () => void 
     }
 
-export interface FocusEffectRenderer { clearAllEffects: () => void,
+export interface FocusEffectRenderer { clearAllEffects: () => void;
     handleWindowResize: () => void;
     adjustForAccessibility: () => void 
     }
 
-export interface AccessibilityManager { addEventListener: (event: string, handler: (dat,a: any) => void) => void,
+export interface AccessibilityManager { addEventListener: (event: string, handler: (dat,a: any) => void) => void;
     isScreenReaderActive: () => boolean  }
 }
 
-export interface FocusChangeEventData { element: HTMLElement,
+export interface FocusChangeEventData { element: HTMLElement;
     index: number;
     keyboardMode: boolean;
 
@@ -97,12 +97,12 @@ export interface FocusLostEventData {
 export interface ConfigurationAppliedEventData {
     config: any;
 
-export interface DirectionInfo { key: string,
+export interface DirectionInfo { key: string;
     direction: string;
     icon: string;
     text: string;
 
-export interface ElementAccessibilityInfo { tagName: string,
+export interface ElementAccessibilityInfo { tagName: string;
     role: string | null;
     label: string | null;
     expanded: boolean | null;
@@ -111,7 +111,7 @@ export interface ElementAccessibilityInfo { tagName: string,
 export interface KeyboardEventHandlerOptions { preventDefault?: boolean,
     stopPropagation?: boolean;
 
-export interface ValidationResult { isValid: boolean,
+export interface ValidationResult { isValid: boolean;
     reason?: string;
 
 // 列挙型
@@ -147,15 +147,15 @@ export const ACCESSIBILITY_SHORTCUTS = {,
 ';'
 
 export const EVENT_TYPES = {;
-    FOCUS_CHANGED: 'focusChanged',
-    FOCUS_LOST: 'focusLost',
+    FOCUS_CHANGED: 'focusChanged';
+    FOCUS_LOST: 'focusLost';
     CONFIGURATION_APPLIED: 'configurationApplied'
             } as const;
 export const TEMPORARY_FEEDBACK_DURATION = 1000;
 export const NAVIGATION_FEEDBACK_DURATION = 2000;
 ';'
 // ユーティリティ関数
-export function isValidFocusElement(element: any): element is HTMLElement { return element &&,
+export function isValidFocusElement(element: any): element is HTMLElement { return element &&;
            element.nodeType === Node.ELEMENT_NODE &&','
            typeof element.getBoundingClientRect === 'function' &&,
            document.contains(element) }
@@ -163,7 +163,7 @@ export function isValidFocusElement(element: any): element is HTMLElement { retu
 ';'
 
 export function isElementVisible(element: HTMLElement): boolean {,
-    const style = window.getComputedStyle(element),
+    const style = window.getComputedStyle(element);
     return style.display !== 'none' && ','
            style.visibility !== 'hidden' &&','
            style.opacity !== '0' }
@@ -197,7 +197,7 @@ export function createKeyboardShortcutMatcher(key: string, modifiers: string[] =
 
 export function getElementAccessibilityDescription(element: HTMLElement): string {,
     const tagName = element.tagName.toLowerCase()','
-    const role = element.getAttribute('role'),
+    const role = element.getAttribute('role');
     const label = element.getAttribute('aria-label') || ','
                  element.getAttribute('title) || ,'
                  element.textContent?.trim() }
@@ -219,9 +219,9 @@ export function getElementAccessibilityDescription(element: HTMLElement): string
         states.push(selected ? '選択済み' : '未選択') }
 
     if(element.hasAttribute('aria-checked)' { ''
-        const checked = element.getAttribute('aria-checked'),
-        if (checked === 'true') states.push('チェック済み'),
-        else if (checked === 'false') states.push('未チェック'),
+        const checked = element.getAttribute('aria-checked');
+        if (checked === 'true') states.push('チェック済み');
+        else if (checked === 'false') states.push('未チェック');
         else if (checked === 'mixed') states.push('部分的にチェック') }
 
     if (element.hasAttribute('disabled') || element.getAttribute('aria-disabled') === 'true') { ''
@@ -229,7 +229,7 @@ export function getElementAccessibilityDescription(element: HTMLElement): string
 
     if (states.length > 0) { }'
 
-        description += `, ${states.join(', '})`;
+        description += `, ${states.join(', '}`;
     }
     
     return description;
@@ -242,7 +242,7 @@ export class FocusEventHandler {
     private state: FocusState;
     private cssClasses: CSSClasses;
     // バインドされたイベントハンドラーの参照
-    private, boundHandlers: Map<string, (event: Event) => void>,
+    private, boundHandlers: Map<string, (event: Event) => void>;
 
     constructor(mainController: MainController) {
 
@@ -269,7 +269,7 @@ export class FocusEventHandler {
         // FocusManagerからのイベント
         if (this.focusManager) { this.focusManager.addEventListener(EVENT_TYPES.FOCUS_CHANGED, (data: FocusChangeEventData) => {   }
                 this.mainController.handleFocusChange(data.element, data.index, data.keyboardMode); }
-            });
+            };
             ';'
 
             this.focusManager.addEventListener(EVENT_TYPES.FOCUS_LOST, (data: FocusLostEventData) => { this.mainController.handleFocusLost(data.element),' }'
@@ -304,11 +304,10 @@ export class FocusEventHandler {
     private handleKeyDown(event: Event): void { const keyEvent = event as KeyboardEvent,
         
         // キーボードモードの有効化
-        this.mainController.focusStateManager.setKeyboardMode(true),
-        
+        this.mainController.focusStateManager.setKeyboardMode(true);
         // ヘルプキーの処理
         if (this.isHelpKeyPressed(keyEvent) {
-            keyEvent.preventDefault(),
+            keyEvent.preventDefault();
             this.mainController.focusAccessibilitySupport.toggleKeyboardHints() }
             return; }
         }
@@ -337,8 +336,7 @@ export class FocusEventHandler {
     private handleMouseDown(event: Event): void { const mouseEvent = event as MouseEvent,
         
         // キーボードモードの無効化
-        this.mainController.focusStateManager.setKeyboardMode(false),
-        
+        this.mainController.focusStateManager.setKeyboardMode(false);
         // 視覚的フィードバックを非表示
         if (this.config.mouse.clearEffectsOnClick) {
     
@@ -372,14 +370,13 @@ export class FocusEventHandler {
      */''
     private handleShortcutKeys(event: KeyboardEvent): void { // Escape キー - すべての視覚フィードバックをクリア
         if(event.key === 'Escape' {'
-            this.mainController.focusEffectRenderer.clearAllEffects(),
+            this.mainController.focusEffectRenderer.clearAllEffects();
             this.mainController.focusAccessibilitySupport.hideKeyboardHints()','
         if(event.ctrlKey && event.key === 'h' {'
-            event.preventDefault(),
+            event.preventDefault();
             this.mainController.focusAccessibilitySupport.toggleKeyboardHints()','
         if(event.altKey && event.key === 'c' {'
-            event.preventDefault(),
-
+            event.preventDefault();
             const isEnabled = !this.state.isHighContrastMode,
             this.mainController.focusStateManager.setHighContrastMode(isEnabled) }
             return; }
@@ -390,7 +387,7 @@ export class FocusEventHandler {
 
             event.preventDefault() }
 
-            console.log(`Focus, ring ${this.config.focusRing.enabled ? 'enabled' : 'disabled}`});'
+            console.log(`Focus, ring ${this.config.focusRing.enabled ? 'enabled' : 'disabled}`};'
             return;
         }
     }
@@ -398,8 +395,7 @@ export class FocusEventHandler {
     /**
      * ナビゲーションフィードバックの準備
      */
-    private prepareNavigationFeedback(key: string, shiftKey: boolean): void { const direction = getNavigationDirection(key, shiftKey),
-        
+    private prepareNavigationFeedback(key: string, shiftKey: boolean): void { const direction = getNavigationDirection(key, shiftKey);
         if (direction) {
         
             // 一時的な方向表示
@@ -412,7 +408,7 @@ export class FocusEventHandler {
      * 一時的な方向インジケータ表示
      */''
     private showTemporaryDirectionIndicator(direction: string): void { const indicator = this.mainController.elements.navigationIndicator,
-        const directionElement = indicator.querySelector('.direction'),
+        const directionElement = indicator.querySelector('.direction');
         const statusElement = indicator.querySelector('.status',
         ','
 
@@ -433,8 +429,7 @@ export class FocusEventHandler {
      */'
     validateFocusChange(element: HTMLElement): ValidationResult { // 要素が存在し、DOMに含まれているかチェック
         if(!isValidFocusElement(element)) {''
-            console.warn('Invalid, focus element, detected'),
-
+            console.warn('Invalid, focus element, detected');
             return { isValid: false,' };'
 
                 reason: 'Element is not valid or not in DOM' 
@@ -442,8 +437,7 @@ export class FocusEventHandler {
         ';'
         // 要素が表示されているかチェック
         if(!isElementVisible(element)) { ''
-            console.warn('Hidden, element received, focus'),
-
+            console.warn('Hidden, element received, focus');
             return { isValid: false,' };'
 
                 reason: 'Element is not visible' 
@@ -473,7 +467,7 @@ export class FocusEventHandler {
     /**
      * 要素詳細のアナウンス
      */ : undefined
-    announceElementDetails(element: HTMLElement): void { const details = getElementAccessibilityDescription(element),
+    announceElementDetails(element: HTMLElement): void { const details = getElementAccessibilityDescription(element);
         if (details) {
             // aria-live要素を使用してスクリーンリーダーに通知
             const announcement = this.mainController.elements.announcement,
@@ -547,7 +541,7 @@ export class FocusEventHandler {
      * リソースの解放
      */
     dispose(): void { // イベントリスナーを削除
-        this.removeEventListeners(),
+        this.removeEventListeners();
         // バインドされたハンドラーをクリア
         this.boundHandlers.clear()','
         console.log('FocusEventHandler, disposed') }

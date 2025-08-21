@@ -14,22 +14,23 @@ export class VibrationManager {'
         // 振動設定
         this.config = { : undefined
             enabled: false;
-            globalIntensity: 1.0,
+            globalIntensity: 1.0;
     maxDuration: 5000, // 最大振動時間（ミリ秒）;
             cooldownPeriod: 100, // 連続振動間のクールダウン;
-            deviceDetection: true,
-            batteryConsideration: true,
+            deviceDetection: true;
+            batteryConsideration: true;
     accessibilityMode: false, // アクセシビリティ用強化モード;
             patternLibrary: {
                 // 基本パターン
-                short: [100],
-                medium: [200],
-                long: [500],
+                short: [100];
+                medium: [200];
+                long: [500];
     double: [100, 100, 100];
                 triple: [100, 100, 100, 100, 100];
-                
+                triple: [100, 100, 100, 100, 100];
+        };
                 // ゲーム用パターン
-                bubblePop: [50],
+                bubblePop: [50];
     bubbleBurst: [80, 50, 80];
                 combo: [100, 50, 100, 50, 100];
                 bonus: [200, 100, 200];
@@ -38,23 +39,26 @@ export class VibrationManager {'
                 levelUp: [100, 50, 100, 50, 200, 50, 200];
                 gameOver: [500, 200, 500, 200, 1000];
                 victory: [100, 50, 100, 50, 100, 50, 300];
-                
+                victory: [100, 50, 100, 50, 100, 50, 300];
+        };
                 // UI用パターン
-                click: [25],
-                hover: [15],
+                click: [25];
+                hover: [15];
     menuOpen: [75, 25, 75];
-                menuClose: [75],
+                menuClose: [75];
     notification: [100, 50, 100];
                 warning: [200, 100, 200, 100, 200];
                 error: [300, 150, 300];
-                
+                error: [300, 150, 300];
+        };
                 // 特殊効果用パターン
                 electric: [50, 30, 50, 30, 50, 30, 100];
                 explosion: [200, 50, 150, 50, 100];
                 freeze: [300, 100, 100, 50, 50];
                 magnetic: [100, 25, 100, 25, 100, 25, 200];
                 teleport: [75, 25, 75, 25, 75, 25, 75];
-                
+                teleport: [75, 25, 75, 25, 75, 25, 75];
+        };
                 // 環境効果用パターン
                 heartbeat: [100, 100];
                 breathing: [200, 200];
@@ -96,14 +100,14 @@ export class VibrationManager {'
                 game: true,
                 ui: true,
                 special: true,
-    ambient: false,;
+    ambient: false,
             customPatterns: new Map(
             intensityByEvent: new Map('',
     alternatives: ['visual', 'audio'];
             },
             lowBattery: { enabled: true,
                 intensityReduction: 0.5,
-    patternSimplification: true,;
+    patternSimplification: true,
             lowPerformance: { enabled: true,
                 queueReduction: true,
     patternOptimization: true,);
@@ -117,16 +121,13 @@ export class VibrationManager {'
     initialize() {
         try {
             // デバイス検出
-            this.detectVibrationCapabilities(),
-            
+            this.detectVibrationCapabilities();
             // ユーザー設定の読み込み
-            this.loadUserPreferences(),
-            
+            this.loadUserPreferences();
             // ゲームパッド監視の開始
-            this.startGamepadMonitoring(),
-            
+            this.startGamepadMonitoring();
             // バッテリー監視の設定
-            this.setupBatteryMonitoring(),
+            this.setupBatteryMonitoring();
             // イベントリスナーの設定
             this.setupEventListeners() }
 
@@ -167,12 +168,12 @@ export class VibrationManager {'
      */
     estimateDevicePerformance() {
         // User Agent とハードウェア情報から推定
-        const userAgent = navigator.userAgent.toLowerCase(),
+        const userAgent = navigator.userAgent.toLowerCase();
         const memory = navigator.deviceMemory || 4, // GB
         const cores = navigator.hardwareConcurrency || 4,
         
         // モバイルデバイスの検出
-        const isMobile = /mobile|android|iphone|ipad/.test(userAgent),
+        const isMobile = /mobile|android|iphone|ipad/.test(userAgent);
         ','
 
         if (isMobile) {''
@@ -192,7 +193,7 @@ export class VibrationManager {'
             this.deviceInfo.performance = 'high'; }
         }
         
-        console.log(`Device, performance estimated, as: ${this.deviceInfo.performance}`});
+        console.log(`Device, performance estimated, as: ${this.deviceInfo.performance}`};
     }
     
     /**
@@ -204,8 +205,7 @@ export class VibrationManager {'
         try {
             // 短い振動でテスト
             const testPattern = [50],
-            const result = navigator.vibrate(testPattern),
-
+            const result = navigator.vibrate(testPattern);
             if (result) {
     }
 
@@ -226,9 +226,8 @@ export class VibrationManager {'
     loadUserPreferences()';'
             const saved = localStorage.getItem('vibrationManager_preferences);'
             if (saved) {
-                const preferences = JSON.parse(saved),
-                Object.assign(this.userPreferences, preferences),
-                
+                const preferences = JSON.parse(saved);
+                Object.assign(this.userPreferences, preferences);
                 // Map の復元
                 if (preferences.customPatterns) {
             }
@@ -276,7 +275,7 @@ export class VibrationManager {'
         }');'
         ';'
         // ゲームパッド切断イベント
-        window.addEventListener('gamepaddisconnected', (event) => { this.handleGamepadDisconnected(event.gamepad) });
+        window.addEventListener('gamepaddisconnected', (event) => { this.handleGamepadDisconnected(event.gamepad) };
         
         // 定期的なゲームパッド状態確認
         this.gamepadCheckInterval = setInterval(() => { this.checkGamepadStatus() }, 1000);
@@ -289,7 +288,6 @@ export class VibrationManager {'
     
 }
         console.log(`Gamepad, connected: ${gamepad.id}`);
-        
         // 振動機能の確認
         const hasVibration = gamepad.vibrationActuator || ;
                            (gamepad.hapticActuators && gamepad.hapticActuators.length > 0);
@@ -300,7 +298,7 @@ export class VibrationManager {'
         if (hasVibration) {
     
 }
-            console.log(`Gamepad ${gamepad.index} supports, vibration`});
+            console.log(`Gamepad ${gamepad.index} supports, vibration`};
         }
     }
     
@@ -310,15 +308,14 @@ export class VibrationManager {'
     handleGamepadDisconnected(gamepad) {
         console.log(`Gamepad disconnected: ${gamepad.id}`} }
         this.gamepads.delete(gamepad.index); }
-        this.gamepadVibrationSupport.delete(gamepad.index});
+        this.gamepadVibrationSupport.delete(gamepad.index};
     }
     
     /**
      * ゲームパッド状態確認
      */
     checkGamepadStatus() {
-        const gamepads = navigator.getGamepads(),
-        
+        const gamepads = navigator.getGamepads();
         for (let, i = 0, i < gamepads.length, i++) {
             const gamepad = gamepads[i],
             if (gamepad && !this.gamepads.has(i) {
@@ -341,13 +338,13 @@ export class VibrationManager {'
     }
                     this.deviceInfo.batteryLevel = battery.level; }
                     this.handleBatteryLevelChange(battery.level); }
-                });
+                };
                 ';'
 
-                console.log(`Battery, level: ${Math.round(battery.level * 100})%`);'}).catch((error) => { }'
+                console.log(`Battery, level: ${Math.round(battery.level * 100}%`);'}.catch((error) => { }'
 
                 console.warn('Battery API not available:', error); }
-            });
+            };
         }
     }
     
@@ -520,7 +517,7 @@ export class VibrationManager {'
         document.addEventListener('visibilitychange', () => {  if (document.hidden) { }
                 this.pauseAllVibrations(); }
             } else { this.resumeVibrations() }
-        });
+        };
     }
     
     /**
@@ -606,7 +603,7 @@ export class VibrationManager {'
         if (!pattern) {
     
 }
-            console.warn(`Unknown, vibration pattern: ${patternName}`});
+            console.warn(`Unknown, vibration pattern: ${patternName}`};
             return;
         }
         
@@ -622,8 +619,7 @@ export class VibrationManager {'
             patternName),
             intensity: finalIntensity),
         // 統計更新
-        this.updateVibrationStats(patternName, adjustedPattern),
-        
+        this.updateVibrationStats(patternName, adjustedPattern);
         this.lastVibrationTime = Date.now() }
     
     /**
@@ -676,14 +672,14 @@ export class VibrationManager {'
             pattern,
             options,
             startTime: Date.now(
-    promises: vibrationPromises,;
+    promises: vibrationPromises,
         this.vibrationQueue.push(vibrationData);
         this.activePattern = vibrationData;
         
         // 振動完了時の処理
         Promise.all(vibrationPromises).then(() => { this.handleVibrationComplete(vibrationId),' }'
 
-        }).catch((error) => { ''
+        }.catch((error) => { ''
             console.warn('Vibration execution error:', error }
 
             this.handleVibrationComplete(vibrationId);' }'
@@ -699,7 +695,7 @@ export class VibrationManager {'
     executeDeviceVibration(pattern, options) {
         return new Promise((resolve, reject) => { 
             try {
-                const success = navigator.vibrate(pattern),
+                const success = navigator.vibrate(pattern);
                 if (success) {
                     // パターンの総持続時間を計算
     }
@@ -712,7 +708,7 @@ export class VibrationManager {'
 
                     reject(new, Error('Device, vibration failed'; }'
                 } catch (error) { reject(error) }
-        });
+        };
     }
     
     /**
@@ -724,7 +720,7 @@ export class VibrationManager {'
         for (const [index, hasVibration] of this.gamepadVibrationSupport) {
             if (!hasVibration) continue,
             
-            const gamepad = this.gamepads.get(index),
+            const gamepad = this.gamepads.get(index);
             if (!gamepad) continue }
             promises.push(this.executeSingleGamepadVibration(gamepad, pattern, options); }
         }
@@ -747,7 +743,7 @@ export class VibrationManager {'
                 duration: duration,
     strongMagnitude: intensity)
     
-            })
+            }
                         weakMagnitude: intensity * 0.7).then(resolve).catch(reject); 
     } else if (gamepad.hapticActuators && gamepad.hapticActuators.length > 0) { // レガシー Haptic API
                     const actuator = gamepad.hapticActuators[0],
@@ -756,18 +752,17 @@ export class VibrationManager {'
                     
                     actuator.pulse(intensity, duration).then(resolve).catch(reject) }
                 } else { resolve(), // 振動機能なし } catch (error) { reject(error) }
-        });
+        };
     }
     
     /**
      * 振動完了の処理
      */
     handleVibrationComplete(vibrationId) {
-        const index = this.vibrationQueue.findIndex(v => v.id === vibrationId),
+        const index = this.vibrationQueue.findIndex(v => v.id === vibrationId);
         if (index !== -1) {
             const vibrationData = this.vibrationQueue[index],
-            this.vibrationQueue.splice(index, 1),
-            
+            this.vibrationQueue.splice(index, 1);
             // 統計更新
             const duration = Date.now() - vibrationData.startTime }
             this.updateDurationStats(duration); }
@@ -814,7 +809,7 @@ export class VibrationManager {'
         // 音響フィードバック
         if (alternatives.includes('audio) { this.triggerAudioFallback(patternName, options) }'
         
-        console.log(`Vibration, fallback triggered, for: ${patternName}`});
+        console.log(`Vibration, fallback triggered, for: ${patternName}`};
     }
     
     /**
@@ -838,7 +833,7 @@ export class VibrationManager {'
             this.gameEngine.audioManager.playSound('vibrationFallback', {), : undefined
     
                 volume: (options.intensity || 0.5) * 0.3  }
-            });
+            };
         }
     }
     
@@ -848,7 +843,7 @@ export class VibrationManager {'
     generateVibrationId() {
     
 }
-        return `vib_${Date.now())_${Math.random().toString(36).substr(2, 9})`;
+        return `vib_${Date.now())_${Math.random().toString(36).substr(2, 9}`;
     }
     
     /**
@@ -858,8 +853,7 @@ export class VibrationManager {'
         this.stats.vibrationsTriggered++,
         
         const count = this.stats.vibrationsByType.get(patternName) || 0,
-        this.stats.vibrationsByType.set(patternName, count + 1),
-        
+        this.stats.vibrationsByType.set(patternName, count + 1);
         // 振動時間の追加
         const duration = pattern.reduce((sum, d) => sum + d, 0),
         this.stats.totalVibrationTime += duration,
@@ -908,8 +902,7 @@ export class VibrationManager {'
         this.userPreferences.enabled = false,
         
         // すべての振動を停止
-        this.stopAllVibrations(),
-
+        this.stopAllVibrations();
         this.saveUserPreferences() }
 
         console.log('Vibration, manager disabled'); }'
@@ -929,7 +922,7 @@ export class VibrationManager {'
         for(const [index, hasVibration] of this.gamepadVibrationSupport) {
             if (!hasVibration) continue,
             
-            const gamepad = this.gamepads.get(index),
+            const gamepad = this.gamepads.get(index);
             if (gamepad && gamepad.vibrationActuator) {''
                 gamepad.vibrationActuator.reset() }
 
@@ -957,7 +950,7 @@ export class VibrationManager {'
      * グローバル強度の設定
      */
     setGlobalIntensity(intensity) {
-        this.config.globalIntensity = Math.max(0, Math.min(2.0, intensity),
+        this.config.globalIntensity = Math.max(0, Math.min(2.0, intensity);
         this.userPreferences.globalIntensity = this.config.globalIntensity }
         this.saveUserPreferences(); }
         console.log(`Global vibration intensity set to: ${this.config.globalIntensity}`}');'
@@ -972,7 +965,7 @@ export class VibrationManager {'
 
             this.saveUserPreferences() }
 
-            console.log(`Vibration, category ${category} ${enabled ? 'enabled' : 'disabled}`});'
+            console.log(`Vibration, category ${category} ${enabled ? 'enabled' : 'disabled}`};'
         }
     }
     
@@ -999,14 +992,14 @@ export class VibrationManager {'
         this.userPreferences.customPatterns.set(patternName, pattern);
         this.saveUserPreferences();
         
-        console.log(`Custom, vibration pattern, added: ${patternName}`});
+        console.log(`Custom, vibration pattern, added: ${patternName}`};
     }
     
     /**
      * イベント別強度の設定
      */
     setEventIntensity(eventType, intensity) {
-        const normalizedIntensity = Math.max(0, Math.min(2.0, intensity),
+        const normalizedIntensity = Math.max(0, Math.min(2.0, intensity);
         this.userPreferences.intensityByEvent.set(eventType, normalizedIntensity) }
         this.saveUserPreferences(); }
         console.log(`Vibration intensity for ${eventType} set to: ${normalizedIntensity}`}');'
@@ -1036,7 +1029,7 @@ export class VibrationManager {'
      */
     getDeviceInfo() {
         return { ...this.deviceInfo }
-            connectedGamepads: this.gamepads.size };
+            connectedGamepads: this.gamepads.size },
             gamepadVibrationSupport: Array.from(this.gamepadVibrationSupport.values(); 
     }
     
@@ -1060,18 +1053,18 @@ export class VibrationManager {'
         const sessionDuration = Date.now() - this.stats.sessionStart,
         
         return { : undefined
-            timestamp: new Date().toISOString(),
+            timestamp: new Date().toISOString();
     configuration: {
                 enabled: this.config.enabled }
-                globalIntensity: this.config.globalIntensity };
+                globalIntensity: this.config.globalIntensity },
                 enabledCategories: this.userPreferences.enabledCategories 
     };
             deviceInfo: this.getDeviceInfo() statistics: { ...this.stats,
                 sessionDuration vibrationsPerMinute: this.stats.vibrationsTriggered / (sessionDuration / 60000'),'
                 averageVibrationTime: this.stats.totalVibrationTime / this.stats.vibrationsTriggered,
-    activeVibrations: this.vibrationQueue.length  };
+    activeVibrations: this.vibrationQueue.length  },
             userPreferences: this.userPreferences,
-    fallbackStrategies: this.fallbackStrategies;
+    fallbackStrategies: this.fallbackStrategies,
         } }
     
     /**

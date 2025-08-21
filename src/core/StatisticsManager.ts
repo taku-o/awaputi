@@ -18,50 +18,50 @@
 // } from './statistics/index.js';
 
 // Type definitions
-interface BubbleData { type: string,
+interface BubbleData { type: string;
     score: number;
-    position?: { x: number,, y: number,
+    position?: { x: number,, y: number;
     size?: number;
 }
 
-interface ComboData { count: number,
+interface ComboData { count: number;
     multiplier: number;
     type?: string;
 
-interface DamageData { amount: number,
+interface DamageData { amount: number;
     source?: string;
 
-interface HealData { amount: number,
+interface HealData { amount: number;
     source?: string;
 
-interface EffectData { type: string,
+interface EffectData { type: string;
     duration?: number;
     intensity?: number;
 
 interface DragData {
-    startPosition: { ,x: number,, y: number,;
-    endPosition: { x: number,, y: number,;
-    duration: number,
+    startPosition: { ,x: number,, y: number;
+    endPosition: { x: number,, y: number;
+    duration: number;
 }
 
-interface AchievementData { id: string,
+interface AchievementData { id: string;
     name: string;
     progress?: number;
 
-interface ApData { amount: number,
+interface ApData { amount: number;
     source?: string;
 
-interface ItemData { id: string,
+interface ItemData { id: string;
     name: string;
     cost: number;
 
-interface GameEndData { finalScore: number,
+interface GameEndData { finalScore: number;
     playTime: number;
     completed: boolean;
     stageId: string;
     bubblesPopped: number;
 
-interface Statistics { totalGamesPlayed: number,
+interface Statistics { totalGamesPlayed: number;
     totalScore: number;
     totalPlayTime: number;
     highestScore: number;
@@ -73,12 +73,12 @@ interface Statistics { totalGamesPlayed: number,
     averageScore: number;
     bubbleAccuracy: number;
 
-interface SessionStats { bubblesThisSession: number,
+interface SessionStats { bubblesThisSession: number;
     missedThisSession: number;
     scoreThisSession: number;
     startTime: number;
 
-interface ValidationResult { isValid: boolean,
+interface ValidationResult { isValid: boolean;
     repaired: Statistics;
 
 interface GenerateTestStatisticsOptions { gamesCount?: number,
@@ -90,11 +90,11 @@ interface StatisticsDataManager { initializeStatistics(): Statistics,
     initializeSessionStats(): SessionStats;
     validateStatistics(stats: Statistics): ValidationResult;
 
-interface StatisticsCalculator { getDetailedStatistics(stats: Statistics, sessionStats: SessionStats): any,
+interface StatisticsCalculator { getDetailedStatistics(stats: Statistics, sessionStats: SessionStats): any;
     calculateRankings(stats: Statistics): any;
     getFavoriteStage(stats: Statistics): string;
 
-interface StatisticsTimeSeriesManager { recordTimeSeriesData(score: number, playTime: number, completed: boolean, metadata: any): void,
+interface StatisticsTimeSeriesManager { recordTimeSeriesData(score: number, playTime: number, completed: boolean, metadata: any): void;
     getAggregatedTimeSeriesData(period: string, days: number): any;
     getTimeSeriesStatisticsSummary(): any;
     getRecentPerformance(days: number): any;
@@ -105,7 +105,7 @@ interface StatisticsTimeSeriesManager { recordTimeSeriesData(score: number, play
 
 interface StatisticsExporter { exportData(stats: Statistics, format: string, options: any): string;
 
-interface StatisticsEventHandler { onGameStart(stageId: string): void,
+interface StatisticsEventHandler { onGameStart(stageId: string): void;
     onGameEnd(data: GameEndData): void;
     onBubblePopped(bubbleData: BubbleData): void;
     onComboUpdate(comboData: ComboData): void;
@@ -135,7 +135,7 @@ export class StatisticsManager {
     private collector: StatisticsCollector | null;
     private analyzer: StatisticsAnalyzer | null;
     private statistics: Statistics;
-    private, sessionStats: SessionStats,
+    private, sessionStats: SessionStats;
     constructor(gameEngine: GameEngine) {
     
         this.__gameEngine = gameEngine;
@@ -156,8 +156,7 @@ export class StatisticsManager {
         // 外部システムとの統合（遅延読み込み）
         this.collector = null;
         this.analyzer = null;
-        this.initializeExternalSystems(),
-        
+        this.initializeExternalSystems();
         // データの読み込み
     
     }
@@ -173,33 +172,33 @@ export class StatisticsManager {
                 highestScore: 0,
                 stagesCompleted: 0,
                 stagesFailed: 0,
-    totalBubblesPopped: 0 };
+    totalBubblesPopped: 0 },
                 totalBubblesMissed: 0 }
                 bubbleTypeStats: { normal: 0, fast: 0, large: 0, bonus: 0  },
                 averageScore: 0,
-    bubbleAccuracy: 0;
-            }),
+    bubbleAccuracy: 0,
+            },
             initializeSessionStats: () => ({ bubblesThisSession: 0,
                 missedThisSession: 0,
                 scoreThisSession: 0,
-    startTime: Date.now( });
+    startTime: Date.now( };
             validateStatistics: (stats: Statistics) => ({ isValid: true, repaired: stats,);
         }
     
     private createStubCalculator(): StatisticsCalculator { return { }
-            getDetailedStatistics: () => ({});
+            getDetailedStatistics: () => ({}),
             calculateRankings: () => ({}),''
-            getFavoriteStage: () => 'None';
+            getFavoriteStage: () => 'None',
         } }
     
     private createStubTimeSeriesManager(): StatisticsTimeSeriesManager { return { }
-            recordTimeSeriesData: () => {};
-            getAggregatedTimeSeriesData: () => ({});
-            getTimeSeriesStatisticsSummary: () => ({});
-            getRecentPerformance: () => ({});
-            getPeakPlayingTimes: () => ({});
-            getPlayTimeDistribution: () => ({});
-            compareTimePeriods: () => ({});
+            recordTimeSeriesData: () => {},
+            getAggregatedTimeSeriesData: () => ({}),
+            getTimeSeriesStatisticsSummary: () => ({}),
+            getRecentPerformance: () => ({}),
+            getPeakPlayingTimes: () => ({}),
+            getPlayTimeDistribution: () => ({}),
+            compareTimePeriods: () => ({}),
             clearData: () => {}
     ';'
 
@@ -209,17 +208,17 @@ export class StatisticsManager {
     }
     
     private createStubEventHandler(): StatisticsEventHandler { return { }
-            onGameStart: () => {};
-            onGameEnd: () => {};
-            onBubblePopped: () => {};
-            onComboUpdate: () => {};
-            onDamageTaken: () => {};
-            onHpHealed: () => {};
-            onRevived: () => {};
-            onSpecialEffect: () => {};
-            onDragOperation: () => {};
-            onAchievementUnlocked: () => {};
-            onApEarned: () => {};
+            onGameStart: () => {},
+            onGameEnd: () => {},
+            onBubblePopped: () => {},
+            onComboUpdate: () => {},
+            onDamageTaken: () => {},
+            onHpHealed: () => {},
+            onRevived: () => {},
+            onSpecialEffect: () => {},
+            onDragOperation: () => {},
+            onAchievementUnlocked: () => {},
+            onApEarned: () => {},
             onItemPurchased: () => {}
     
     /**
@@ -248,7 +247,7 @@ export class StatisticsManager {
      * @param stageId - ステージID
      */
     onGameStart(stageId: string): void { try {
-            this.eventHandler.onGameStart(stageId),
+            this.eventHandler.onGameStart(stageId);
             // StatisticsCollectorでのイベント収集
             if (this.collector) {', ' }
 
@@ -262,11 +261,10 @@ export class StatisticsManager {
      * @param data - ゲーム終了データ
      */
     onGameEnd(data: GameEndData): void { try {
-            this.eventHandler.onGameEnd(data),
-            
+            this.eventHandler.onGameEnd(data);
             // 時系列データの記録
             this.timeSeriesManager.recordTimeSeriesData(
-                data.finalScore),
+                data.finalScore);
                 data.playTime),
                 data.completed),
                 { stageId: data.stageId, bubbles: data.bubblesPopped )
@@ -485,7 +483,7 @@ export class StatisticsManager {
      * @returns お気に入り泡タイプ'
      */''
     getFavoriteBubbleType('',
-            let, favoriteType = 'normal'),
+            let, favoriteType = 'normal');
             for(const [type, count] of Object.entries(bubbleStats) {
         if (count > maxCount) {
                     maxCount = count }
@@ -522,7 +520,7 @@ export class StatisticsManager {
                 const savedData = localStorage.getItem('awaputi_statistics),'
                 if (savedData) {
                     try {
-                        const loadedData = JSON.parse(savedData),
+                        const loadedData = JSON.parse(savedData);
                         if (loadedData) {
                             // 読み込んだデータをマージ
     }
@@ -544,8 +542,7 @@ export class StatisticsManager {
     private integrateLoadedData(loadedData: any): void { try {
             if (loadedData.statistics) {
                 // データの整合性チェック
-                const validation = this.dataManager.validateStatistics(loadedData.statistics),
-
+                const validation = this.dataManager.validateStatistics(loadedData.statistics);
                 if (validation.isValid) {
             }
                     this.statistics = loadedData.statistics; }
@@ -599,8 +596,7 @@ export class StatisticsManager {
                 testStats.totalGamesPlayed++,
                 testStats.totalScore += score,
                 testStats.totalPlayTime += playTime,
-                testStats.highestScore = Math.max(testStats.highestScore, score),
-                
+                testStats.highestScore = Math.max(testStats.highestScore, score);
                 if (completed) {
             }
                     testStats.stagesCompleted++; }
@@ -608,7 +604,7 @@ export class StatisticsManager {
                 
                 // 泡統計生成
                 if (bubbleTypesEnabled) {
-                    const bubbleTypes = Object.keys(testStats.bubbleTypeStats),
+                    const bubbleTypes = Object.keys(testStats.bubbleTypeStats);
                     const bubblesPopped = Math.floor(Math.random() * 50) + 10,
                     
                     for (let, j = 0, j < bubblesPopped, j++) {
@@ -628,17 +624,15 @@ export class StatisticsManager {
             ';'
 
             return testStats;} catch (error) {
-            console.error('Error generating test statistics:', error),
-            return this.dataManager.initializeStatistics(),
-
+            console.error('Error generating test statistics:', error);
+            return this.dataManager.initializeStatistics();
     /**
      * 統計をリセット
      */
     reset(): void { try {
             this.statistics = this.dataManager.initializeStatistics();
             this.sessionStats = this.dataManager.initializeSessionStats();
-            this.timeSeriesManager.clearData(),
-
+            this.timeSeriesManager.clearData();
             this.save(),' }'
 
         } catch (error) { console.error('Error resetting statistics:', error }
@@ -655,7 +649,7 @@ export class StatisticsManager {
 
             return totalMinutes > 0 ? totalClicks / totalMinutes: 0,', '
         } catch (error) {
-            console.error('Error calculating clicks per minute:', error),
+            console.error('Error calculating clicks per minute:', error);
             return 0,
 
     /**
@@ -668,7 +662,7 @@ export class StatisticsManager {
             return sessionTotal > 0 ? (this.sessionStats.bubblesThisSession / sessionTotal) * 100 : 0,' }'
 
         } catch (error) {
-            console.error('Error calculating session accuracy:', error),
+            console.error('Error calculating session accuracy:', error);
             return 0,
 
     // 分析が利用可能かチェック

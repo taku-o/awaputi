@@ -6,7 +6,7 @@ interface EventListener {
     (event: void;
 
 export class GameEngine {
-    isRunning: boolean,
+    isRunning: boolean;
     config: Record<string, any>;
     eventListeners: Map<string, EventListener[]>;
 
@@ -35,13 +35,13 @@ export class GameEngine {
     removeEventListener(event: string, listener: EventListener): void {
         if (this.eventListeners.has(event) {
             const listeners = this.eventListeners.get(event)!,
-            const index = listeners.indexOf(listener),
+            const index = listeners.indexOf(listener);
             if (index > -1) {
                 listeners.splice(index, 1) }
         }
     }
 
     cleanup(): void {
-        this.eventListeners.clear(),
+        this.eventListeners.clear();
         this.isRunning = false }
 }

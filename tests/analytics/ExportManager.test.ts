@@ -6,15 +6,15 @@ class MockStorageManager {
         this.data = new Map() }
     
     async getData(dataType, query = {) {
-        const data = this.data.get(dataType || []),
+        const data = this.data.get(dataType || []);
         // 簡単なクエリ処理
         let filteredData = [...data],
         
         if (query.timestamp) {
-            filteredData = filteredData.filter(item => {),
+            filteredData = filteredData.filter(item => {);
                 if (query.timestamp.$gte && item.timestamp < query.timestamp.$gte) return false,
                 if (query.timestamp.$lte && item.timestamp > query.timestamp.$lte) return false,
-                return true });
+                return true };
         }
         
         if (query.sessionId) {
@@ -36,10 +36,10 @@ class MockStorageManager {
 class MockPrivacyManager {
     async anonymizeData(data {
         // 簡単な匿名化処理
-        const anonymized = JSON.parse(JSON.stringify(data),
+        const anonymized = JSON.parse(JSON.stringify(data);
         for (const [dataType, records] of Object.entries(anonymized) {
             if (Array.isArray(records) {
-                records.forEach(record => {),
+                records.forEach(record => {);
                     if (record.playerId') {'
                         record.playerId = 'anonymous_' + Math.random().toString(36).substr(2, 9) }
                     if (record.userAgent') {'
@@ -57,8 +57,8 @@ describe('ExportManager', () => {
     let mockPrivacyManager: any,
     
     beforeEach(() => {
-        mockStorageManager = new MockStorageManager(),
-        mockPrivacyManager = new MockPrivacyManager(),
+        mockStorageManager = new MockStorageManager();
+        mockPrivacyManager = new MockPrivacyManager();
         exportManager = new ExportManager(mockStorageManager, mockPrivacyManager'),'
         // サンプルデータの設定
         mockStorageManager.setData('sessionData', [
@@ -96,24 +96,24 @@ describe('ExportManager', () => {
         ]) }');'
     describe('コンストラクタ', (') => {'
         test('正しく初期化される', () => {
-            expect(exportManager).toBeDefined(),
-            expect(exportManager.storageManager).toBe(mockStorageManager),
-            expect(exportManager.privacyManager).toBe(mockPrivacyManager),
+            expect(exportManager).toBeDefined();
+            expect(exportManager.storageManager).toBe(mockStorageManager);
+            expect(exportManager.privacyManager).toBe(mockPrivacyManager);
             expect(exportManager.config.defaultFormat').toBe('json') }');
         test('サポートされるデータタイプが設定される', () => {
-            const supportedTypes = exportManager.getSupportedDataTypes(),
+            const supportedTypes = exportManager.getSupportedDataTypes();
             expect(supportedTypes').toContain('sessionData'),'
             expect(supportedTypes').toContain('bubbleInteractions'),'
             expect(supportedTypes').toContain('performanceData') }');
         test('サポートされる形式が設定される', () => {
-            const supportedFormats = exportManager.getSupportedFormats(),
+            const supportedFormats = exportManager.getSupportedFormats();
             expect(supportedFormats').toEqual(['json', 'csv', 'xml']) }');
     }
     describe('データエクスポート機能', (') => {'
         test('基本的なJSONエクスポートが動作する', async (') => {'
             const result = await exportManager.exportData({
                 dataTypes: ['sessionData'],
-                format: 'json' });
+                format: 'json' };
             expect(result.success).toBe(true);
             expect(result.format').toBe('json');'
             expect(result.data.data.sessionData).toHaveLength(2);
@@ -122,7 +122,7 @@ describe('ExportManager', () => {
         test('複数データタイプのエクスポートが動作する', async (') => {'
             const result = await exportManager.exportData({
                 dataTypes: ['sessionData', 'bubbleInteractions'],
-                format: 'json' });
+                format: 'json' };
             expect(result.success).toBe(true);
             expect(result.data.data.sessionData).toHaveLength(2);
             expect(result.data.data.bubbleInteractions).toHaveLength(2);
@@ -130,17 +130,17 @@ describe('ExportManager', () => {
         test('全データのエクスポートが動作する', async (') => {'
             const result = await exportManager.exportData({
                 dataTypes: 'all',
-                format: 'json' });
+                format: 'json' };
             expect(result.success).toBe(true);
             expect(result.data.data.sessionData).toBeDefined();
             expect(result.data.data.bubbleInteractions).toBeDefined();
         }');'
         test('空のデータでもエラーにならない', async () => {
-            const emptyStorageManager = new MockStorageManager(),
+            const emptyStorageManager = new MockStorageManager();
             const emptyExportManager = new ExportManager(emptyStorageManager'),'
             const result = await emptyExportManager.exportData({
                 dataTypes: ['sessionData'],
-                format: 'json' });
+                format: 'json' };
             expect(result.success).toBe(true);
             expect(result.data.data).toEqual({) }
     }');'
@@ -152,8 +152,8 @@ describe('ExportManager', () => {
                 filters: {
                     startDate: '2022-01-01T00:00:00Z',
                     endDate: '2022-01-01T23:59:59Z'
-                });
-            });
+                };
+            };
             expect(result.success).toBe(true);
             expect(result.data.data.sessionData).toBeDefined();
             expect(result.data.data.sessionData).toHaveLength(1);
@@ -165,8 +165,8 @@ describe('ExportManager', () => {
                 format: 'json',
                 filters: {
                     sessionId: 'session_1'
-                });
-            });
+                };
+            };
             expect(result.success).toBe(true);
             expect(result.data.data.sessionData).toHaveLength(1);
             expect(result.data.data.sessionData[0].sessionId').toBe('session_1');'
@@ -177,8 +177,8 @@ describe('ExportManager', () => {
                 format: 'json',
                 filters: {
                     bubbleType: 'rainbow'
-                });
-            });
+                };
+            };
             expect(result.success).toBe(true);
             expect(result.data.data.bubbleInteractions).toHaveLength(1);
             expect(result.data.data.bubbleInteractions[0].bubbleType').toBe('rainbow');'
@@ -189,8 +189,8 @@ describe('ExportManager', () => {
                 format: 'json',
                 filters: {
                     limit: 1
-                });
-            });
+                };
+            };
             expect(result.success).toBe(true);
             expect(result.data.data.sessionData).toHaveLength(1);
         }');'
@@ -201,7 +201,7 @@ describe('ExportManager', () => {
                 filters: {,
                     customFilter: (item) => item.completed === true
                 }
-            });
+            };
             expect(result.success).toBe(true);
             expect(result.data.data.sessionData).toHaveLength(1);
             expect(result.data.data.sessionData[0].completed).toBe(true);
@@ -211,7 +211,7 @@ describe('ExportManager', () => {
         test('CSV形式への変換が動作する', async (') => {'
             const result = await exportManager.exportData({
                 dataTypes: ['sessionData'],
-                format: 'csv' });
+                format: 'csv' };
             expect(result.success).toBe(true);
             expect(typeof result.data.data').toBe('string');'
             expect(result.data.data').toContain('# SESSIONDATA');'
@@ -222,7 +222,7 @@ describe('ExportManager', () => {
         test('XML形式への変換が動作する', async (') => {'
             const result = await exportManager.exportData({
                 dataTypes: ['sessionData'],
-                format: 'xml' });
+                format: 'xml' };
             expect(result.success).toBe(true);
             expect(typeof result.data.data').toBe('string');'
             expect(result.data.data').toContain('<? xml version="1.0" encoding="UTF-8"?>');'
@@ -234,7 +234,7 @@ describe('ExportManager', () => {
         test('サポートされていない形式でエラーになる', async (') => {'
             const result = await exportManager.exportData({ : undefined
                 dataTypes: ['sessionData'],
-                format: 'unsupported' });
+                format: 'unsupported' };
             expect(result.success).toBe(false);
             expect(result.error').toContain('Unsupported format');'
         }');'
@@ -296,18 +296,18 @@ describe('ExportManager', () => {
         test('サポートされていないデータタイプでエラーになる', async (') => {'
             const result = await exportManager.exportData({
                 dataTypes: ['unsupportedType'],
-                format: 'json' });
+                format: 'json' };
             expect(result.success).toBe(false);
             expect(result.error').toContain('Unsupported data type');'
         }');'
         test('ストレージエラーが適切に処理される', async () => {
             const errorStorageManager = {
-                getData: jest.fn(').mockRejectedValue(new Error('Storage error')});'
+                getData: jest.fn(').mockRejectedValue(new Error('Storage error')};'
             
             const errorExportManager = new ExportManager(errorStorageManager');'
             const result = await errorExportManager.exportData({
                 dataTypes: ['sessionData'],
-                format: 'json' });
+                format: 'json' };
             expect(result.success).toBe(false);
             expect(result.error').toContain('Failed to collect analytics data');'
         }');'
@@ -316,7 +316,7 @@ describe('ExportManager', () => {
         test('エクスポート時間が記録される', async (') => {'
             const result = await exportManager.exportData({
                 dataTypes: ['sessionData'],
-                format: 'json' });
+                format: 'json' };
             expect(result.success).toBe(true);
             expect(result.duration).toBeDefined();
             expect(typeof result.duration').toBe('number');'
@@ -325,17 +325,17 @@ describe('ExportManager', () => {
         test('大きなデータセットでも適切に処理される', async () => {
             // 大量のデータを設定
             const largeDataset = Array.from({ length: 1000 }, (_, i) => ({
-                sessionId: `session_${i}`;
+                sessionId: `session_${i}`,
                 timestamp: Date.now() + i * 1000,
-                playerId: `player_${i}`;
+                playerId: `player_${i}`,
                 duration: 300000 + i * 1000,
                 finalScore: 1000 + i * 10,
                 completed: i % 2 === 0
-            })');'
+            }');'
             mockStorageManager.setData('sessionData', largeDataset');'
             const result = await exportManager.exportData({
                 dataTypes: ['sessionData'],
-                format: 'json' });
+                format: 'json' };
             expect(result.success).toBe(true);
             expect(result.data.data.sessionData).toHaveLength(1000);
             expect(result.duration).toBeLessThan(2000); // < 2秒の要件
@@ -343,11 +343,11 @@ describe('ExportManager', () => {
     }
     describe('統計機能', (') => {'
         test('エクスポート統計が更新される', async () => {
-            const initialStats = exportManager.getExportStats(),
+            const initialStats = exportManager.getExportStats();
             expect(initialStats.totalExports).toBe(0'),'
             await exportManager.exportData({
                 dataTypes: ['sessionData'],
-                format: 'json' });
+                format: 'json' };
             const updatedStats = exportManager.getExportStats();
             expect(updatedStats.totalExports).toBe(1);
             expect(updatedStats.successfulExports).toBe(1);
@@ -356,7 +356,7 @@ describe('ExportManager', () => {
         test('失敗した場合の統計が更新される', async (') => {'
             await exportManager.exportData({
                 dataTypes: ['unsupportedType'],
-                format: 'json' });
+                format: 'json' };
             const stats = exportManager.getExportStats();
             expect(stats.totalExports).toBe(1);
             expect(stats.successfulExports).toBe(0);
@@ -378,17 +378,17 @@ describe('ExportManager', () => {
             expect(config.includeMetadata).toBe(true); // 元の値は保持
         }');'
         test('設定の取得が動作する', () => {
-            const config = exportManager.getConfig(),
+            const config = exportManager.getConfig();
             expect(config.defaultFormat').toBe('json'),'
-            expect(config.includeMetadata).toBe(true),
+            expect(config.includeMetadata).toBe(true);
             expect(config.anonymizeData).toBe(true) }');'
     }
     describe('ユーティリティ機能', (') => {'
         test('ファイル名が正しく生成される', (') => {'
-            const filename = exportManager.generateFilename('sessionData', 'json'),
+            const filename = exportManager.generateFilename('sessionData', 'json');
             expect(filename).toMatch(/^bubblePop_analytics_sessionData_\d+\.json$/) }');'
         test('配列データタイプのファイル名が正しく生成される', (') => {'
-            const filename = exportManager.generateFilename(['sessionData', 'bubbleInteractions'], 'csv'),
+            const filename = exportManager.generateFilename(['sessionData', 'bubbleInteractions'], 'csv');
             expect(filename).toMatch(/^bubblePop_analytics_sessionData-bubbleInteractions_\d+\.csv$/) }');'
         test('ファイル拡張子が正しく取得される', (') => {'
             expect(exportManager.getFileExtension('json')').toBe('json'),'
@@ -396,7 +396,7 @@ describe('ExportManager', () => {
             expect(exportManager.getFileExtension('xml')').toBe('xml'),'
             expect(exportManager.getFileExtension('unknown')').toBe('dat') }');
         test('データサイズが正しく計算される', (') => {'
-            const testData = { test: 'data' };
+            const testData = { test: 'data' },
             const size = exportManager.calculateDataSize(testData);
             expect(typeof size').toBe('number');'
             expect(size).toBeGreaterThan(0);
@@ -413,7 +413,7 @@ describe('ExportManager', () => {
             mockStorageManager.setData('sessionData', specialData');'
             const result = await exportManager.exportData({
                 dataTypes: ['sessionData'],
-                format: 'csv' });
+                format: 'csv' };
             expect(result.success).toBe(true);
             expect(result.data.data').toContain('"Test with ""quotes"" and, commas");
         }');'
@@ -427,17 +427,17 @@ describe('ExportManager', () => {
             mockStorageManager.setData('sessionData', specialData');'
             const result = await exportManager.exportData({
                 dataTypes: ['sessionData'],
-                format: 'xml' });
+                format: 'xml' };
             expect(result.success).toBe(true);
             expect(result.data.data').toContain('&lt;tags&gt; &amp; &quot;quotes&quot; and &apos;apostrophes&apos;');'
         }');'
     }
     describe('リソース管理', (') => {'
         test('destroyメソッドが正しく動作する', (') => {'
-            const consoleSpy = jest.spyOn(console, 'log').mockImplementation(),
-            exportManager.destroy(),
+            const consoleSpy = jest.spyOn(console, 'log').mockImplementation();
+            exportManager.destroy();
             expect(consoleSpy').toHaveBeenCalledWith('Analytics ExportManager destroyed'),'
-            expect(exportManager.getSupportedDataTypes().toEqual([]),
-            consoleSpy.mockRestore() });
+            expect(exportManager.getSupportedDataTypes().toEqual([]);
+            consoleSpy.mockRestore() };
     }
 }');'

@@ -21,7 +21,7 @@ export class ComponentErrorHandler {
         
         // 回復可能性の確認
         if (this.canRecover(error, component} { }
-            return this.attemptRecovery(error, component});
+            return this.attemptRecovery(error, component};
         }
         
         // 優雅な劣化
@@ -80,7 +80,7 @@ export class ComponentErrorHandler {
         console.warn(`[${component}] Providing, fallback functionality`}
         
         // コンポーネントタイプに応じたフォールバック処理
-        const, fallbacks: FallbackMap = { }', 'MockDataGenerator': (}) => ({}'),', 'DebugInterface': () => ({ render: () => {}'),', 'TestSupport': () => ({ execute: () => true }'),', 'default': () => null;'
+        const, fallbacks: FallbackMap = { }', 'MockDataGenerator': (} => ({}'),', 'DebugInterface': () => ({ render: () => {}'),', 'TestSupport': () => ({ execute: () => true }'),', 'default': () => null;'
         };
         ';'
 

@@ -10,7 +10,7 @@ const mockPerformance = {
         usedJSHeapSize: 10000000,
         totalJSHeapSize: 50000000,
         jsHeapSizeLimit: 100000000
-    }),
+    },
     timing: {
         navigationStart: 1000,
         domContentLoadedEventEnd: 2000,
@@ -24,11 +24,11 @@ const mockPerformance = {
         responseEnd: 1600,
         domLoading: 1600,
         loadEventStart: 2800
-    }),
+    },
     navigation: {
         type: 0,
         redirectCount: 0
-    }),
+    },
     mark: jest.fn(
     measure: jest.fn(
     getEntriesByName: jest.fn(() => []),
@@ -40,16 +40,16 @@ const mockPerformance = {
 )),
 // requestAnimationFrame のモック
 (global: any).requestAnimationFrame = jest.fn((callback) => {
-    setTimeout(callback, 16),
+    setTimeout(callback, 16);
     return 1)'),'
 describe('PerformanceDataCollector', () => {
     let collector: any,
     beforeEach(() => {
-        jest.clearAllMocks(),
+        jest.clearAllMocks();
         collector = new PerformanceDataCollector({
             fpsInterval: 100, // テスト用に短縮
             memoryInterval: 200
-    });
+    };
     );
     afterEach(() => {
         if (collector) {
@@ -57,10 +57,10 @@ describe('PerformanceDataCollector', () => {
     }');'
     describe('初期化', (') => {'
         test('正しく初期化される', () => {
-            expect(collector).toBeDefined(),
-            expect(collector.isRunning).toBe(false),
-            expect(collector.performanceData).toBeDefined(),
-            expect(collector.performanceData.fps).toEqual([]),
+            expect(collector).toBeDefined();
+            expect(collector.isRunning).toBe(false);
+            expect(collector.performanceData).toBeDefined();
+            expect(collector.performanceData.fps).toEqual([]);
             expect(collector.performanceData.memory).toEqual([]) }');'
         test('オプションが正しく設定される', () => {
             const customCollector = new PerformanceDataCollector({
@@ -122,7 +122,7 @@ describe('PerformanceDataCollector', () => {
     }
     describe('警告システム', (') => {'
         test('低FPS警告を発火する', (') => {'
-            const mockDispatchEvent = jest.spyOn(window, 'dispatchEvent'),
+            const mockDispatchEvent = jest.spyOn(window, 'dispatchEvent');
             const lowFpsData = {
                 timestamp: Date.now(','
                 fps: 25, // 閾値30未満
@@ -139,7 +139,7 @@ describe('PerformanceDataCollector', () => {
             mockDispatchEvent.mockRestore();
         }');'
         test('高メモリ使用量警告を発火する', (') => {'
-            const mockDispatchEvent = jest.spyOn(window, 'dispatchEvent'),
+            const mockDispatchEvent = jest.spyOn(window, 'dispatchEvent');
             const highMemoryData = {
                 timestamp: Date.now(','
                 used: 85000000,
@@ -163,12 +163,12 @@ describe('PerformanceDataCollector', () => {
             // テストデータを追加
             const fpsValues = [30, 45, 60, 55, 50],
             fpsValues.forEach(fps => {
-                collector.recordFPSData({),
+                collector.recordFPSData({);
                     timestamp: Date.now(','
                     fps: fps,
                     frameTime: 1000 / fps,
                     sessionId: 'test-session'
-                });
+                };
             }
             const stats = collector.calculateFPSStatistics();
             expect(stats.current).toBe(50);
@@ -186,13 +186,13 @@ describe('PerformanceDataCollector', () => {
                 { used: 30000000, usagePercent: 30 }
             ];
             memoryData.forEach(data => {
-                collector.recordMemoryData({),
+                collector.recordMemoryData({);
                     timestamp: Date.now(','
                     ...data,
                     total: 50000000,
                     limit: 100000000,
                     sessionId: 'test-session'
-                });
+                };
             }
             const stats = collector.calculateMemoryStatistics();
             expect(stats.current.used).toBe(30000000);
@@ -204,7 +204,7 @@ describe('PerformanceDataCollector', () => {
     }
     describe('カスタム測定', (') => {'
         test('カスタム測定を開始・終了できる', (') => {'
-            const startMark = collector.startMeasure('test-operation'),
+            const startMark = collector.startMeasure('test-operation');
             expect(mockPerformance.mark').toHaveBeenCalledWith('test-operation-start'),'
             const mockMeasure = {
                 name: 'test-operation',
@@ -225,26 +225,26 @@ describe('PerformanceDataCollector', () => {
         test('データポイント数を制限する', () => {
             const limitedCollector = new PerformanceDataCollector({
                 maxDataPoints: 3
-            });
+            };
             // 制限を超えるデータを追加
             for (let i = 0; i < 5; i++) {
-                limitedCollector.recordFPSData({),
+                limitedCollector.recordFPSData({);
                     timestamp: Date.now(','
                     fps: 60,
                     frameTime: 16.67,
                     sessionId: 'test-session'
-                });
+                };
             }
             expect(limitedCollector.performanceData.fps).toHaveLength(3);
             limitedCollector.destroy();
         }');'
         test('データをクリアできる', () => {
-            collector.recordFPSData({),
+            collector.recordFPSData({);
                 timestamp: Date.now(','
                 fps: 60,
                 frameTime: 16.67,
                 sessionId: 'test-session'
-            });
+            };
             expect(collector.performanceData.fps).toHaveLength(1);
             collector.clearData();
             expect(collector.performanceData.fps).toHaveLength(0);
@@ -252,7 +252,7 @@ describe('PerformanceDataCollector', () => {
     }
     describe('データエクスポート', (') => {'
         test('JSON形式でエクスポートできる', () => {
-            collector.recordFPSData({),
+            collector.recordFPSData({);
                 timestamp: Date.now(','
                 fps: 60,
                 frameTime: 16.67,
@@ -265,7 +265,7 @@ describe('PerformanceDataCollector', () => {
             expect(data.rawData.fps).toHaveLength(1);
         }');'
         test('CSV形式でエクスポートできる', () => {
-            collector.recordFPSData({),
+            collector.recordFPSData({);
                 timestamp: Date.now(','
                 fps: 60,
                 frameTime: 16.67,
@@ -279,28 +279,28 @@ describe('PerformanceDataCollector', () => {
     }
     describe('収集制御', (') => {'
         test('データ収集を開始・停止できる', () => {
-            expect(collector.isRunning).toBe(false),
-            collector.start(),
-            expect(collector.isRunning).toBe(true),
-            collector.stop(),
+            expect(collector.isRunning).toBe(false);
+            collector.start();
+            expect(collector.isRunning).toBe(true);
+            collector.stop();
             expect(collector.isRunning).toBe(false) }');'
     }
     describe('現在の統計', (') => {'
         test('現在の統計を取得できる', () => {
-            collector.recordFPSData({),
+            collector.recordFPSData({);
                 timestamp: Date.now(','
                 fps: 60,
                 frameTime: 16.67,
                 sessionId: 'test-session'
-            });
-            collector.recordMemoryData({),
+            };
+            collector.recordMemoryData({);
                 timestamp: Date.now(','
                 used: 10000000,
                 total: 50000000,
                 limit: 100000000,
                 usagePercent: 10,
                 sessionId: 'test-session'
-            });
+            };
             const stats = collector.getCurrentStats();
             expect(stats.sessionId).toBeDefined();
             expect(stats.currentFPS).toBe(60);
@@ -310,10 +310,10 @@ describe('PerformanceDataCollector', () => {
     }
     describe('リソース管理', (') => {'
         test('destroy(')でリソースを解放する', () => {'
-            collector.start(),
-            expect(collector.isRunning).toBe(true),
-            collector.destroy(),
-            expect(collector.isRunning).toBe(false),
-            expect(collector.performanceData.fps).toHaveLength(0) });
+            collector.start();
+            expect(collector.isRunning).toBe(true);
+            collector.destroy();
+            expect(collector.isRunning).toBe(false);
+            expect(collector.performanceData.fps).toHaveLength(0) };
     }
 }');'

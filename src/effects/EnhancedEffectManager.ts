@@ -28,19 +28,19 @@ interface TransitionOptions { easing?: string,
     pattern?: string;
 }
 
-interface ShadowObject { x: number,
+interface ShadowObject { x: number;
     y: number;
     width: number;
     height: number;
 
-interface LightSource { x: number,
+interface LightSource { x: number;
     y: number;
     intensity: number;
     color: string;
     radius: number;
     type: string;
 
-interface ReflectionObject { x: number,
+interface ReflectionObject { x: number;
     y: number;
     width: number;
     height: number;
@@ -50,34 +50,38 @@ interface BackgroundEffectOptions { intensity?: number,
     speed?: number;
     density?: number;
 
-interface RenderSettings { enableLighting: boolean,
+interface RenderSettings { enableLighting: boolean;
     enableShadows: boolean;
     enableReflections: boolean;
     enablePostProcessing: boolean;
     quality: string;
     optimization: boolean;
 
-interface EnhancedTransform { scale: number,
+interface EnhancedTransform { scale: number;
     rotation: number;
-    translate: { x: number,, y: number,
-
-interface TransitionEffect { id: string,
+    translate: { x: number,, y: number;
+    translate: { x: number,, y: number;
+        };
+interface TransitionEffect { id: string;
     type: string;
     duration: number;
     startTime: number;
     options: TransitionOptions;
-
-interface Shadow { id: string,
+    options: TransitionOptions;
+        };
+interface Shadow { id: string;
     object: ShadowObject;
     lightSource: LightSource;
-
-interface Reflection { id: string,
+    lightSource: LightSource;
+        };
+interface Reflection { id: string;
     object: ReflectionObject;
     surfaceY: number;
     intensity: number;
     distortion: number;
-
-interface WaterRipple { id: string,
+    distortion: number;
+        };
+interface WaterRipple { id: string;
     x: number;
     y: number;
     maxRadius: number;
@@ -85,19 +89,23 @@ interface WaterRipple { id: string,
     intensity: number;
     currentRadius: number;
     startTime: number;
-
-interface BackgroundEffect { id: string,
+    startTime: number;
+        };
+interface BackgroundEffect { id: string;
     type: string;
     options: BackgroundEffectOptions;
-
-interface PerformanceMetrics { renderTime: number,
+    options: BackgroundEffectOptions;
+        };
+interface PerformanceMetrics { renderTime: number;
     effectCount: number;
     fps: number;
-
-interface CurrentSettings { renderSettings: RenderSettings,
+    fps: number;
+        };
+interface CurrentSettings { renderSettings: RenderSettings;
     effectCount: number;
     quality: string;
-
+    quality: string;
+        };
 /**
  * 拡張画面効果管理クラス (Main, Controller Pattern)
  * 既存のEffectManagerを拡張し、より高度な視覚効果を実現
@@ -119,20 +127,18 @@ export class EnhancedEffectManager extends EffectManager { private effectControl
     private backgroundRenderer: BackgroundEffectRenderer;
     private postProcessingRenderer: PostProcessingRenderer;
     private accessibilityIntegrator: AccessibilityEffectIntegrator | null;
-    private, accessibilityEnabled: boolean,
+    private, accessibilityEnabled: boolean;
     constructor(canvas: Canvas) {
 
-        super(canvas),
-        
+        super(canvas);
         // サブコンポーネントの初期化
         this.effectController = new EnhancedEffectController(canvas);
-        this.apiManager = new EffectApiManager(canvas; this.effectController),
-        
+        this.apiManager = new EffectApiManager(canvas; this.effectController);
         this.accessibilityIntegrator = null;
         this.accessibilityEnabled = false;
         ','
 
-        this._initializeRenderers(),
+        this._initializeRenderers();
         this._initializeAccessibility() }
 
         console.log('[EnhancedEffectManager] Main, Controller Pattern初期化完了'); }'
@@ -208,7 +214,7 @@ export class EnhancedEffectManager extends EffectManager { private effectControl
     public removeEffect(effectId: string): void { this.effectController.removeEffect(effectId),
         super.removeEffect(effectId), // 基底クラスのeffects配列からも削除 }
     
-    public clearAllEffects(): void { this.effectController.clearAllEffects(),
+    public clearAllEffects(): void { this.effectController.clearAllEffects();
         super.clearAllEffects(), // 基底クラスの効果もクリア }
     
     // ========================================
@@ -238,21 +244,18 @@ export class EnhancedEffectManager extends EffectManager { private effectControl
     // ========================================
     
     public render(context: CanvasRenderingContext2D, deltaTime: number): void { try {
-            const startTime = Date.now(),
-            
+            const startTime = Date.now();
             // 基底クラスのレンダリングは存在しないため削除
             // super.render(context, deltaTime), // この行が無限ループエラーの原因
             
             // 基底クラスの効果を更新
-            this.update(deltaTime),
-            
+            this.update(deltaTime);
             // 拡張効果のレンダリング
-            this._renderEnhancedEffects(context, deltaTime),
-            
+            this._renderEnhancedEffects(context, deltaTime);
             // パフォーマンスメトリクス更新
             const renderTime = Date.now() - startTime,
             this.effectController.updatePerformanceMetrics(renderTime) } catch (error) { getErrorHandler()','
-                context: 'EnhancedEffectManager.render' });
+                context: 'EnhancedEffectManager.render' },
         }
     }
     
@@ -263,32 +266,32 @@ export class EnhancedEffectManager extends EffectManager { private effectControl
             // 遷移効果
             this.effectController.transitionEffects.forEach((effect: TransitionEffect) => {  }
                 this.transitionRenderer.renderTransitionEffect(context, effect, deltaTime); }
-            });
+            };
             
             // 光源効果
             if (this.apiManager.renderSettings.enableLighting) { this.effectController.lightSources.forEach((light: LightSource) => {  }
                     this.lightingRenderer.renderLightSource(context, light); }
-                });
+                };
             }
             
             // 影効果
             if (this.apiManager.renderSettings.enableShadows) { this.effectController.shadowCasters.forEach((shadow: Shadow) => {  }
                     this.lightingRenderer.renderShadow(context, shadow); }
-                });
+                };
             }
             
             // 反射効果
             if (this.apiManager.renderSettings.enableReflections) { this.effectController.reflectionSurfaces.forEach((reflection: Reflection) => {  }
                     this.reflectionRenderer.renderReflection(context, reflection); }
-                });
+                };
             }
             
             // 背景効果
-            this.effectController.backgroundEffects.forEach((bg: BackgroundEffect) => { this.backgroundRenderer.renderBackgroundEffect(context, bg, deltaTime) });
+            this.effectController.backgroundEffects.forEach((bg: BackgroundEffect) => { this.backgroundRenderer.renderBackgroundEffect(context, bg, deltaTime) };
             
             // ポストプロセッシング
             if (this.apiManager.renderSettings.enablePostProcessing) { this.postProcessingRenderer.renderPostProcessingEffects(context, this.apiManager.enhancedTransform, this.apiManager.renderSettings) } catch (error) { getErrorHandler()','
-                context: 'EnhancedEffectManager._renderEnhancedEffects' });
+                context: 'EnhancedEffectManager._renderEnhancedEffects' },
         }
     }
     
@@ -305,10 +308,10 @@ export class EnhancedEffectManager extends EffectManager { private effectControl
             ';'
 
             this.accessibilityEnabled = enabled;
-            console.log(`[EnhancedEffectManager] アクセシビリティサポート: ${enabled ? '有効' : '無効}`});'
+            console.log(`[EnhancedEffectManager] アクセシビリティサポート: ${enabled ? '有効' : '無効}`};'
 
         } catch (error) { getErrorHandler()','
-                context: 'EnhancedEffectManager.enableAccessibilitySupport' });
+                context: 'EnhancedEffectManager.enableAccessibilitySupport' },
         }
     }
     

@@ -5,7 +5,7 @@
  */
 
 // 型定義
-export interface CulturalAdaptationConfig { enabled: boolean,
+export interface CulturalAdaptationConfig { enabled: boolean;
     rtlLanguages: string[];
     numeralSystems: Record<string, NumeralSystem>;
     dateFormats: Record<string, string>;
@@ -16,25 +16,25 @@ export interface ColorMeanings { [color: string]: string;
 
 export interface GestureConventions { [gesture: string]: GestureAppropriateness;
 
-export interface RegionalUISettings { textDirection: TextDirection,
+export interface RegionalUISettings { textDirection: TextDirection;
     fontFamily: string;
     fontSize: string;
     lineHeight: number;
     spacing: SpacingMode;
     preferredInputMethod: InputMethod;
 
-export interface TimeFormatSettings { time12: boolean,
+export interface TimeFormatSettings { time12: boolean;
     dateFormat: string;
     timeFormat: string;
     weekStart: number;
     era: CalendarEra;
 
-export interface NumberFormatSettings { decimal: string,
+export interface NumberFormatSettings { decimal: string;
     thousands: string;
     currency: string;
     currencyPosition: CurrencyPosition;
 
-export interface CulturalAdaptationStats { supportedRTLLanguages: number,
+export interface CulturalAdaptationStats { supportedRTLLanguages: number;
     supportedNumeralSystems: number;
     supportedDateFormats: number;
     supportedColorMeanings: number;
@@ -43,7 +43,7 @@ export interface CulturalAdaptationStats { supportedRTLLanguages: number,
     timeFormatLanguages: number;
     numberFormatLanguages: number;
 
-export interface CulturalDebugInfo { language: string,
+export interface CulturalDebugInfo { language: string;
     isRTL: boolean;
     textDirection: TextDirection;
     numeralSystem: NumeralSystem;
@@ -53,7 +53,7 @@ export interface CulturalDebugInfo { language: string,
     numberFormat: NumberFormatSettings;
     stats: CulturalAdaptationStats;
 
-export interface NumberFormatOptions { style: NumberFormatType,
+export interface NumberFormatOptions { style: NumberFormatType;
     currency?: string;
 
 // 列挙型
@@ -183,7 +183,7 @@ export class CulturalAdaptationHandler {
                 thousands: ',',
                 currency: 'ر.س',
                 currencyPosition: 'after'
-            })'
+            }'
     }
     
     /**
@@ -266,18 +266,17 @@ export class CulturalAdaptationHandler {
      * @param language 言語コード
      * @returns フォーマットされた日付文字列
      */'
-    formatDate(date: Date, language: string): string { const format = this.getDateFormat(language),
-        const timeSettings = this.getTimeFormat(language),
-        
+    formatDate(date: Date, language: string): string { const format = this.getDateFormat(language);
+        const timeSettings = this.getTimeFormat(language);
         try {
             return new Intl.DateTimeFormat(language, {''
                 year: 'numeric',
                 month: '2-digit',','
                 day: '2-digit',')',
                 calendar: timeSettings.era === 'hijri' ? 'islamic' : 'gregory')).format(date  } catch (error) { // フォールバック
-            const year = date.getFullYear(),
+            const year = date.getFullYear();
             const month = String(date.getMonth() + 1').padStart(2, '0','
-            const day = String(date.getDate()).padStart(2, '0'),
+            const day = String(date.getDate()).padStart(2, '0');
             ','
 
             return format','
@@ -293,16 +292,15 @@ export class CulturalAdaptationHandler {
      * @returns フォーマットされた時刻文字列
      */'
     formatTime(date: Date, language: string): string { ''
-        const timeSettings = this.getTimeFormat(language),
-        
+        const timeSettings = this.getTimeFormat(language);
         try {
             return new Intl.DateTimeFormat(language, {''
                 hour: '2-digit',','
-                minute: '2-digit'),
+                minute: '2-digit');
                 hour12: timeSettings.time12)).format(date  } catch (error) { // フォールバック
             const hours = timeSettings.time12 ,
                 ? date.getHours() % 12 || 12,
-                : date.getHours(),
+                : date.getHours();
             const minutes = String(date.getMinutes()).padStart(2, '0',
 
             const ampm = timeSettings.time12 ','
@@ -316,8 +314,7 @@ export class CulturalAdaptationHandler {
      * @returns フォーマットされた数値文字列''
      */')'
     formatNumber(number: number, language: string, type: NumberFormatType = 'decimal': string { ''
-        const numberSettings = this.getNumberFormat(language),
-        
+        const numberSettings = this.getNumberFormat(language);
         try { }
 
             const options: NumberFormatOptions = { style: type,''
@@ -360,7 +357,7 @@ export class CulturalAdaptationHandler {
      * @param language 言語コード
      */
     applyCSSDirection(element: HTMLElement, language: string): void { if (element) {
-            element.dir = this.getTextDirection(language),
+            element.dir = this.getTextDirection(language);
             element.style.direction = this.getTextDirection(language) }
     }
     
@@ -370,7 +367,7 @@ export class CulturalAdaptationHandler {
      * @param language 言語コード
      */
     applyRegionalFont(element: HTMLElement, language: string): void { if (element) {
-            const settings = this.getRegionalUISettings(language),
+            const settings = this.getRegionalUISettings(language);
             element.style.fontFamily = settings.fontFamily,
             element.style.fontSize = settings.fontSize,
             element.style.lineHeight = settings.lineHeight.toString() }
@@ -416,13 +413,11 @@ export class CulturalAdaptationHandler {
     getSupportedLanguages(): string[] { const languageSet = new Set<string>(),
         
         // 各設定から言語コードを収集
-        Object.keys(this.culturalAdaptation.dateFormats).forEach(lang => languageSet.add(lang),
-        Object.keys(this.regionalUISettings).forEach(lang => languageSet.add(lang),
-        Object.keys(this.timeFormats).forEach(lang => languageSet.add(lang),
-        Object.keys(this.numberFormats).forEach(lang => languageSet.add(lang),
-        
-        return Array.from(languageSet).sort(),
-    
+        Object.keys(this.culturalAdaptation.dateFormats).forEach(lang => languageSet.add(lang);
+        Object.keys(this.regionalUISettings).forEach(lang => languageSet.add(lang);
+        Object.keys(this.timeFormats).forEach(lang => languageSet.add(lang);
+        Object.keys(this.numberFormats).forEach(lang => languageSet.add(lang);
+        return Array.from(languageSet).sort();
     /**
      * 言語がサポートされているかチェック
      * @param language 言語コード
@@ -440,7 +435,7 @@ export class CulturalAdaptationHandler {
             supportedColorMeanings: Object.keys(this.culturalAdaptation.colorMeanings).length,
             supportedGestureConventions: Object.keys(this.culturalAdaptation.gestureConventions).length,
             regionalUILanguages: Object.keys(this.regionalUISettings).length,
-    timeFormatLanguages: Object.keys(this.timeFormats).length };
+    timeFormatLanguages: Object.keys(this.timeFormats).length },
             numberFormatLanguages: Object.keys(this.numberFormats).length 
     }
     
@@ -450,13 +445,13 @@ export class CulturalAdaptationHandler {
      * @returns デバッグ情報
      */
     getDebugInfo(language: string): CulturalDebugInfo { return { language,
-            isRTL: this.isRTLLanguage(language),
-            textDirection: this.getTextDirection(language),
-            numeralSystem: this.getNumeralSystem(language),
-            dateFormat: this.getDateFormat(language),
-            uiSettings: this.getRegionalUISettings(language),
+            isRTL: this.isRTLLanguage(language);
+            textDirection: this.getTextDirection(language);
+            numeralSystem: this.getNumeralSystem(language);
+            dateFormat: this.getDateFormat(language);
+            uiSettings: this.getRegionalUISettings(language);
             timeFormat: this.getTimeFormat(language,
-    numberFormat: this.getNumberFormat(language) };
+    numberFormat: this.getNumberFormat(language) },
             stats: this.getCulturalAdaptationStats(); 
     }
     
@@ -465,7 +460,7 @@ export class CulturalAdaptationHandler {
      * @returns 全設定のJSON表現
      */
     exportSettings(): string { return JSON.stringify({
-            culturalAdaptation: this.culturalAdaptation),
+            culturalAdaptation: this.culturalAdaptation);
             regionalUISettings: this.regionalUISettings,
     timeFormats: this.timeFormats),
             numberFormats: this.numberFormats), null, 2 }
@@ -475,8 +470,7 @@ export class CulturalAdaptationHandler {
      * @param jsonSettings JSON形式の設定
      */
     importSettings(jsonSettings: string): void { try {
-            const settings = JSON.parse(jsonSettings),
-            
+            const settings = JSON.parse(jsonSettings);
             if (settings.culturalAdaptation) { }
                 this.culturalAdaptation = { ...this.culturalAdaptation, ...settings.culturalAdaptation }
             if (settings.regionalUISettings) {

@@ -9,7 +9,7 @@ interface AccessibilityManager { getConfiguration(): AccessibilityConfiguration,
 interface AudioManager { ''
     playTone?(frequency: number, duration: number, volume: number'): Promise<boolean>;'
     // Basic audio manager interface 
-interface AlternativeFeedbackState { hapticEnabled: boolean,
+interface AlternativeFeedbackState { hapticEnabled: boolean;
     audioAlternativesEnabled: boolean;
     visualAlternativesEnabled: boolean;
     deviceSupportsVibration: boolean;
@@ -19,16 +19,16 @@ interface AlternativeFeedbackState { hapticEnabled: boolean,
 // Accessibility configuration interface
 interface AccessibilityConfiguration { visual?: {
         highContrast?: {
-            enable,d: boolean,;
-        colorBlindness?: { enabled: boolean,;
-        motion?: { reduced: boolean,;
+            enable,d: boolean;
+        colorBlindness?: { enabled: boolean;
+        motion?: { reduced: boolean;
     audio?: { visualFeedback?: {
-            enabled: boolean,
+            enabled: boolean;
             intensity?: string;
             type?: string,  };
-        vibration?: { enabled: boolean,
+        vibration?: { enabled: boolean;
             intensity?: number;;
-        captions?: { enabled: boolean,
+        captions?: { enabled: boolean;
             position?: string;
             size?: string;
             background?: boolean;;
@@ -56,7 +56,7 @@ interface VisualAlternativePattern { ''
     duration?: number;
     position?: 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right';
     size?: number;
-    center?: { x: number,, y: number,
+    center?: { x: number,, y: number;
     radius?: number;
 }
 
@@ -85,23 +85,24 @@ interface SpeechOptions { rate?: number,
     language?: string;
 
 // Device capability detection
-interface DeviceCapabilities { vibration: boolean,
+interface DeviceCapabilities { vibration: boolean;
     audioContext: boolean;
     speechSynthesis: boolean;
 
 // Alternative feedback report
-interface AlternativeFeedbackReport { component: string,
+interface AlternativeFeedbackReport { component: string;
     state: AlternativeFeedbackState;
     deviceCapabilities: DeviceCapabilities;
     patterns: {
-        hapticPattern,s: number,
-        audioAlternatives: number,
-    visualAlternatives: number,;
-    features: { hapticFeedback: boolean,
-        audioAlternatives: boolean,
-        visualAlternatives: boolean,
-    speechAnnouncements: boolean,
-
+        hapticPattern,s: number;
+        audioAlternatives: number;
+    visualAlternatives: number;
+    features: { hapticFeedback: boolean;
+        audioAlternatives: boolean;
+        visualAlternatives: boolean;
+    speechAnnouncements: boolean;
+    speechAnnouncements: boolean;
+        };
 /**
  * 代替フィードバック管理クラス
  * 触覚フィードバック、音響代替、視覚的代替手段を提供
@@ -112,10 +113,10 @@ export class AlternativeFeedbackManager {
     private config: AccessibilityConfiguration | null = null;
     private audioContext: AudioContext | null = null;
     private, state: AlternativeFeedbackState = {
-        hapticEnabled: false,
-        audioAlternativesEnabled: false,
-        visualAlternativesEnabled: false,
-    deviceSupportsVibration: false,;
+        hapticEnabled: false;
+        audioAlternativesEnabled: false;
+        visualAlternativesEnabled: false;
+    deviceSupportsVibration: false;
     // 触覚フィードバックパターン
     private hapticPatterns = new Map<string, HapticPattern>([']';
         ['bubble-pop', [100, 50, 100]];
@@ -154,8 +155,7 @@ export class AlternativeFeedbackManager {
      */
     async initialize(): Promise<boolean> { try {
             // デバイス機能の検出
-            await this.detectDeviceCapabilities(),
-            
+            await this.detectDeviceCapabilities();
             // アクセシビリティ設定の取得
             if (this.accessibilityManager) {
                 this.config = this.accessibilityManager.getConfiguration() }
@@ -170,7 +170,7 @@ export class AlternativeFeedbackManager {
         } catch (error') { getErrorHandler().handleError(error, 'ACCESSIBILITY_ERROR', {''
                 operation: 'initialize',')',
                 component: 'AlternativeFeedbackManager'
-            });
+            };
             return false;
     
     /**
@@ -186,8 +186,8 @@ export class AlternativeFeedbackManager {
 
         console.log('Device capabilities detected:', {
                 vibration: this.state.deviceSupportsVibration,
-    audioContext: this.state.audioContextSupported),
-            speechSynthesis: this.state.speechSynthesisSupported  })
+    audioContext: this.state.audioContextSupported);
+            speechSynthesis: this.state.speechSynthesisSupported  }
     
     /**
      * 触覚フィードバックの実行
@@ -199,13 +199,12 @@ export class AlternativeFeedbackManager {
         if (!pattern) {
     
 }
-            console.warn(`Unknown, haptic pattern: ${patternName}`});
+            console.warn(`Unknown, haptic pattern: ${patternName}`};
             return false;
         }
         
         try { // 強度を適用
-            const adjustedPattern = pattern.map(duration => Math.round(duration * intensity),
-            
+            const adjustedPattern = pattern.map(duration => Math.round(duration * intensity);
             // 振動を実行
             if (navigator.vibrate) {
     
@@ -213,36 +212,35 @@ export class AlternativeFeedbackManager {
                 navigator.vibrate(adjustedPattern); }
             } else if ((navigator, as any).webkitVibrate) { (navigator, as any).webkitVibrate(adjustedPattern) } else if ((navigator, as any).mozVibrate) { (navigator, as any).mozVibrate(adjustedPattern) }
             
-            console.log(`Haptic, feedback triggered: ${patternName} with, intensity ${intensity}`});
+            console.log(`Haptic, feedback triggered: ${patternName} with, intensity ${intensity}`};
             return true;} catch (error) {
-            console.warn('Failed to trigger haptic feedback:', error),
+            console.warn('Failed to trigger haptic feedback:', error);
             return false,
     
     /**
      * 音響代替フィードバックの実行
      */
-    async triggerAudioAlternative(visualEffectType: string, options: AudioPlaybackOptions = { }): Promise<boolean> { if (!this.state.audioAlternativesEnabled || !this.state.audioContextSupported) {
+    async triggerAudioAlternative(visualEffectType: string, options: AudioPlaybackOptions = { }: Promise<boolean> { if (!this.state.audioAlternativesEnabled || !this.state.audioContextSupported) {
             return false }
         
         const alternative = this.audioAlternatives.get(visualEffectType);
         if (!alternative) {
     
 }
-            console.warn(`No, audio alternative, for visual, effect: ${visualEffectType}`});
+            console.warn(`No, audio alternative, for visual, effect: ${visualEffectType}`};
             return false;
         }
         
         try { await this.playAudioAlternative(alternative, options) }
-            console.log(`Audio, alternative played, for: ${visualEffectType}`});
-
+            console.log(`Audio, alternative played, for: ${visualEffectType}`};
             return true;} catch (error) {
-            console.warn('Failed to play audio alternative:', error),
+            console.warn('Failed to play audio alternative:', error);
             return false,
     
     /**
      * 音響代替の再生
      */
-    private async playAudioAlternative(alternative: AudioAlternativePattern, options: AudioPlaybackOptions = { }): Promise<boolean> { // AudioManagerが利用可能な場合は連携
+    private async playAudioAlternative(alternative: AudioAlternativePattern, options: AudioPlaybackOptions = { }: Promise<boolean> { // AudioManagerが利用可能な場合は連携
         if (this.audioManager && this.audioManager.playTone) {
     
 }
@@ -271,7 +269,7 @@ export class AlternativeFeedbackManager {
             case 'chord':
                 // 複数の音を同時に再生
                 if (frequencies && this.audioManager!.playTone) {
-                    const promises = frequencies.map(freq => ),
+                    const promises = frequencies.map(freq => );
                         this.audioManager!.playTone!(freq, duration, volume * 0.7)),
                     const results = await Promise.all(promises) }
 
@@ -316,9 +314,8 @@ export class AlternativeFeedbackManager {
 
             case 'chord':
                 if (frequencies) {
-                    const promises = frequencies.map(freq => ),
-
-                        this.playTone(freq, duration, gainNode),
+                    const promises = frequencies.map(freq => );
+                        this.playTone(freq, duration, gainNode);
                     await Promise.all(promises) }
                     return true;
                 break;
@@ -346,12 +343,10 @@ export class AlternativeFeedbackManager {
     private playTone(frequency: number, duration: number, gainNode: GainNode): Promise<boolean> { ''
         const oscillator = this.audioContext!.createOscillator()','
         oscillator.type = 'sine')
-        oscillator.frequency.setValueAtTime(frequency, this.audioContext!.currentTime),
-        oscillator.connect(gainNode),
-        
-        oscillator.start(this.audioContext!.currentTime),
-        oscillator.stop(this.audioContext!.currentTime + duration / 1000),
-        
+        oscillator.frequency.setValueAtTime(frequency, this.audioContext!.currentTime);
+        oscillator.connect(gainNode);
+        oscillator.start(this.audioContext!.currentTime);
+        oscillator.stop(this.audioContext!.currentTime + duration / 1000);
         return new Promise(resolve => {
             });
             oscillator.onended = () => resolve(true););
@@ -360,24 +355,20 @@ export class AlternativeFeedbackManager {
     /**
      * 周波数スイープの再生
      */
-    private playFrequencySweep(startFreq: number, endFreq: number, duration: number, volume: number): Promise<boolean> { if (!this.audioContext) return Promise.resolve(false),
+    private playFrequencySweep(startFreq: number, endFreq: number, duration: number, volume: number): Promise<boolean> { if (!this.audioContext) return Promise.resolve(false);
         ','
 
-        const oscillator = this.audioContext.createOscillator(),
+        const oscillator = this.audioContext.createOscillator();
         const gainNode = this.audioContext.createGain()','
         oscillator.type = 'sine')
-        oscillator.frequency.setValueAtTime(startFreq, this.audioContext.currentTime),
-        oscillator.frequency.exponentialRampToValueAtTime(endFreq, this.audioContext.currentTime + duration / 1000),
-        
-        gainNode.gain.setValueAtTime(volume, this.audioContext.currentTime),
-        gainNode.gain.exponentialRampToValueAtTime(0.01, this.audioContext.currentTime + duration / 1000),
-        
-        oscillator.connect(gainNode),
-        gainNode.connect(this.audioContext.destination),
-        
-        oscillator.start(this.audioContext.currentTime),
-        oscillator.stop(this.audioContext.currentTime + duration / 1000),
-        
+        oscillator.frequency.setValueAtTime(startFreq, this.audioContext.currentTime);
+        oscillator.frequency.exponentialRampToValueAtTime(endFreq, this.audioContext.currentTime + duration / 1000);
+        gainNode.gain.setValueAtTime(volume, this.audioContext.currentTime);
+        gainNode.gain.exponentialRampToValueAtTime(0.01, this.audioContext.currentTime + duration / 1000);
+        oscillator.connect(gainNode);
+        gainNode.connect(this.audioContext.destination);
+        oscillator.start(this.audioContext.currentTime);
+        oscillator.stop(this.audioContext.currentTime + duration / 1000);
         return new Promise(resolve => {
             });
             oscillator.onended = () => resolve(true););
@@ -386,12 +377,10 @@ export class AlternativeFeedbackManager {
     /**
      * ノイズの再生
      */
-    private playNoise(duration: number, filterType: BiquadFilterType | undefined, gainNode: GainNode): Promise<boolean> { if (!this.audioContext) return Promise.resolve(false),
-        
+    private playNoise(duration: number, filterType: BiquadFilterType | undefined, gainNode: GainNode): Promise<boolean> { if (!this.audioContext) return Promise.resolve(false);
         const bufferSize = this.audioContext.sampleRate * duration / 1000,
-        const buffer = this.audioContext.createBuffer(1, bufferSize, this.audioContext.sampleRate),
-        const data = buffer.getChannelData(0),
-        
+        const buffer = this.audioContext.createBuffer(1, bufferSize, this.audioContext.sampleRate);
+        const data = buffer.getChannelData(0);
         // ホワイトノイズ生成
         for(let, i = 0, i < bufferSize, i++) {
     
@@ -404,10 +393,9 @@ export class AlternativeFeedbackManager {
         
         // フィルター適用
         if (filterType) {
-            const filter = this.audioContext.createBiquadFilter(),
+            const filter = this.audioContext.createBiquadFilter();
             filter.type = filterType,
-            filter.frequency.setValueAtTime(1000, this.audioContext.currentTime),
-            
+            filter.frequency.setValueAtTime(1000, this.audioContext.currentTime);
             source.connect(filter) }
             filter.connect(gainNode); }
         } else { source.connect(gainNode) }
@@ -419,21 +407,21 @@ export class AlternativeFeedbackManager {
     /**
      * 視覚代替フィードバックの実行
      */
-    triggerVisualAlternative(audioEffectType: string, canvasContext: CanvasRenderingContext2D | null, options: any = {}): boolean { if (!this.state.visualAlternativesEnabled || !canvasContext) {
+    triggerVisualAlternative(audioEffectType: string, canvasContext: CanvasRenderingContext2D | null, options: any = {}: boolean { if (!this.state.visualAlternativesEnabled || !canvasContext) {
             return false }
         
         const alternative = this.visualAlternatives.get(audioEffectType);
         if (!alternative) {
     
 }
-            console.warn(`No, visual alternative, for audio, effect: ${audioEffectType}`});
+            console.warn(`No, visual alternative, for audio, effect: ${audioEffectType}`};
             return false;
         }
         
         try { this.renderVisualAlternative(canvasContext, alternative, options) }
-            console.log(`Visual, alternative rendered, for: ${audioEffectType}`});
+            console.log(`Visual, alternative rendered, for: ${audioEffectType}`};
             return true;} catch (error) {
-            console.warn('Failed to render visual alternative:', error),
+            console.warn('Failed to render visual alternative:', error);
             return false,
     
     /**
@@ -484,8 +472,7 @@ export class AlternativeFeedbackManager {
         context.lineWidth = borderWidth,
         context.globalAlpha = intensity,
         
-        context.strokeRect(0, 0, canvas.width, canvas.height),
-        
+        context.strokeRect(0, 0, canvas.width, canvas.height);
         // 指定時間後にフラッシュを停止
         setTimeout(() => { 
             context.clearRect(0, 0, borderWidth, canvas.height), // 左
@@ -546,8 +533,8 @@ export class AlternativeFeedbackManager {
 
         context.fillStyle = color || '#00BFFF',
         context.globalAlpha = 0.6,
-        context.beginPath(),
-        context.arc(x, y, adjustedRadius, 0, Math.PI * 2),
+        context.beginPath();
+        context.arc(x, y, adjustedRadius, 0, Math.PI * 2);
         context.fill() }
     
     /**
@@ -559,7 +546,7 @@ export class AlternativeFeedbackManager {
 }
             return false;
         
-        try { const utterance = new SpeechSynthesisUtterance(effectDescription),
+        try { const utterance = new SpeechSynthesisUtterance(effectDescription);
             utterance.rate = options.rate || this.config.screenReader.speechRate || 1.0,
             utterance.volume = options.volume || 0.8,
             utterance.pitch = options.pitch || 1.0,
@@ -571,16 +558,15 @@ export class AlternativeFeedbackManager {
             }
             
             window.speechSynthesis.speak(utterance); : undefined
-            console.log(`Announced: ${effectDescription}`});
-
+            console.log(`Announced: ${effectDescription}`},
             return true;} catch (error) {
-            console.warn('Failed to announce visual effect:', error),
+            console.warn('Failed to announce visual effect:', error);
             return false,
     
     /**
      * 統合フィードバックの提供
      */
-    provideIntegratedFeedback(effectType: string, visualEffect: any, options: FeedbackOptions = { }): FeedbackResult[] { const feedbacks: FeedbackResult[] = [],
+    provideIntegratedFeedback(effectType: string, visualEffect: any, options: FeedbackOptions = { }: FeedbackResult[] { const feedbacks: FeedbackResult[] = [],
         
         // 触覚フィードバック
         if (this.state.hapticEnabled) {
@@ -641,7 +627,7 @@ export class AlternativeFeedbackManager {
         
                 this.config = event.config }
                 this.applyConfiguration(); }
-            });
+            };
         }
     }
     
@@ -649,15 +635,15 @@ export class AlternativeFeedbackManager {
      * カスタムパターンの追加
      */
     addHapticPattern(name: string, pattern: HapticPattern): void { this.hapticPatterns.set(name, pattern) }
-        console.log(`Custom, haptic pattern, added: ${name}`});
+        console.log(`Custom, haptic pattern, added: ${name}`};
     }
     
     addAudioAlternative(visualEffect: string, audioConfig: AudioAlternativePattern): void { this.audioAlternatives.set(visualEffect, audioConfig) }
-        console.log(`Custom, audio alternative, added for: ${visualEffect}`});
+        console.log(`Custom, audio alternative, added for: ${visualEffect}`};
     }
     
     addVisualAlternative(audioEffect: string, visualConfig: VisualAlternativePattern): void { this.visualAlternatives.set(audioEffect, visualConfig) }
-        console.log(`Custom, visual alternative, added for: ${audioEffect}`});
+        console.log(`Custom, visual alternative, added for: ${audioEffect}`};
     }
     
     /**
@@ -668,14 +654,14 @@ export class AlternativeFeedbackManager {
     state: { ...this.state,
             deviceCapabilities: { vibration: this.state.deviceSupportsVibration,
                 audioContext: this.state.audioContextSupported || false,
-    speechSynthesis: this.state.speechSynthesisSupported || false };
+    speechSynthesis: this.state.speechSynthesisSupported || false },
             patterns: { hapticPatterns: this.hapticPatterns.size,
                 audioAlternatives: this.audioAlternatives.size,
-    visualAlternatives: this.visualAlternatives.size };
+    visualAlternatives: this.visualAlternatives.size },
             features: { hapticFeedback: this.state.hapticEnabled,
                 audioAlternatives: this.state.audioAlternativesEnabled,
                 visualAlternatives: this.state.visualAlternativesEnabled,
-    speechAnnouncements: this.state.speechSynthesisSupported || false })'
+    speechAnnouncements: this.state.speechSynthesisSupported || false }'
     }
     
     /**

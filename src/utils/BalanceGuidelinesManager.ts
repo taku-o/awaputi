@@ -10,11 +10,11 @@ import { getBalanceConfigurationValidator  } from './BalanceConfigurationValidat
 import { getErrorHandler, ErrorHandler  } from './ErrorHandler.js';
 
 // Type definitions
-interface RecommendedRange { min: number,
+interface RecommendedRange { min: number;
     max: number;
     recommended: number | string  }
 
-interface Guideline { category: string,
+interface Guideline { category: string;
     property: string;
     description: string;
     principles: string[];
@@ -23,14 +23,14 @@ interface Guideline { category: string,
     testingRequirements: string[];
     retrievedAt?: number;
 
-interface ChangeRecord { id: string,
+interface ChangeRecord { id: string;
     timestamp: number;
     change: any;
     rationale: string;
     author: string;
     reviewStatus: string;
 
-interface ValidationResult { validationId: string,
+interface ValidationResult { validationId: string;
     isValid: boolean;
     issues: string[];
     recommendations: string[];
@@ -39,7 +39,7 @@ interface ValidationResult { validationId: string,
     timestamp: number;
     error?: string;
 
-interface ValidationSubResult { isValid: boolean,
+interface ValidationSubResult { isValid: boolean;
     issues: string[];
     recommendations: string[];
 ';'
@@ -47,14 +47,15 @@ interface ValidationSubResult { isValid: boolean,
 interface ImpactCalculation { ''
     (oldValue: any, newValue: any'): number | string  }'
 
-interface ImpactRule { affectedSystems: string[],
+interface ImpactRule { affectedSystems: string[];
     calculations: Record<string, ImpactCalculation>;
     thresholds: {
-        mino,r: number,
-        moderate: number,
-    major: number,
-
-interface SystemImpact { system: string,
+        mino,r: number;
+        moderate: number;
+    major: number;
+    major: number;
+        };
+interface SystemImpact { system: string;
 
     magnitude: number;
     direction: 'increase' | 'decrease' | 'neutral';
@@ -62,7 +63,7 @@ interface SystemImpact { system: string,
     confidence: 'low' | 'medium' | 'high'
             }
 
-interface ImpactReport { changeId: string,
+interface ImpactReport { changeId: string;
     configType: string;
     bubbleType: string;
     propertyType: string;
@@ -74,11 +75,11 @@ interface ImpactReport { changeId: string,
     timestamp: number;
     error?: string;
 
-interface AdjustmentContext { bubbleType: string,
+interface AdjustmentContext { bubbleType: string;
     propertyType: string;
     configType: string;
 
-interface ChangeContext { oldValue: any,
+interface ChangeContext { oldValue: any;
     newValue: any;
     configType: string;
     bubbleType: string;
@@ -89,18 +90,18 @@ interface HistoryFilters { bubbleType?: string,
     dateFrom?: number;
     dateTo?: number;
 
-interface GuidelineInfo { key: string,
+interface GuidelineInfo { key: string;
     category: string;
     property: string;
     description: string;
 
-interface Statistics { totalChanges: number,
+interface Statistics { totalChanges: number;
     recentChanges: number;
     changesByType: Record<string, number>;
     availableGuidelines: number;
     impactRules: number;
 
-interface DocumentChangeResult { success: boolean,
+interface DocumentChangeResult { success: boolean;
     changeId?: string;
     timestamp?: number;
     error?: string;
@@ -129,7 +130,7 @@ export class BalanceGuidelinesManager {
         this.impactRules = new Map();
         
         // ガイドラインを初期化
-        this._initializeGuidelines(),
+        this._initializeGuidelines();
         this._initializeImpactRules() }
 
         console.log('[BalanceGuidelinesManager] 初期化完了'); }'
@@ -155,7 +156,7 @@ export class BalanceGuidelinesManager {
                 iron: { min: 3, max: 4, recommended: 3  },
                 diamond: { min: 4, max: 6, recommended: 4  },
                 boss: { min: 5, max: 15, recommended: 8  },
-                special: { min: 1, max: 2, recommended: 1  })
+                special: { min: 1, max: 2, recommended: 1  }
             adjustmentSteps: 1','
     testingRequirements: [','
                 '破壊時間の計測',
@@ -181,7 +182,7 @@ export class BalanceGuidelinesManager {
 
                 boss: { min: 500, max: 1200, recommended: 800  },''
                 special: { min: 20, max: 500, recommended: 'varies'
-            });
+            };
             adjustmentSteps: 5','
     testingRequirements: [','
                 'スコア進行の検証',
@@ -207,7 +208,7 @@ export class BalanceGuidelinesManager {
 
                 boss: { min: 80, max: 120, recommended: 90  },''
                 special: { min: 40, max: 60, recommended: 'varies'
-            });
+            };
             adjustmentSteps: 5','
     testingRequirements: [','
                 'タップ精度の測定',
@@ -233,7 +234,7 @@ export class BalanceGuidelinesManager {
 
                 boss: { min: 30000, max: 40000, recommended: 35000  },''
                 special: { min: 8000, max: 25000, recommended: 'varies'
-            });
+            };
             adjustmentSteps: 1000','
     testingRequirements: [','
                 'プレッシャー感の測定',
@@ -252,7 +253,7 @@ export class BalanceGuidelinesManager {
                 '過度な回復はゲームを簡単にしすぎる'],
             ],
             recommendedRanges: {  }
-                pink: { min: 15, max: 35, recommended: 25  })
+                pink: { min: 15, max: 35, recommended: 25  }
             adjustmentSteps: 5','
     testingRequirements: [','
                 '生存率の測定',
@@ -270,7 +271,7 @@ export class BalanceGuidelinesManager {
                 '即死レベルのダメージは避ける'],
             ],
             recommendedRanges: {  }
-                poison: { min: 5, max: 15, recommended: 8  })
+                poison: { min: 5, max: 15, recommended: 8  }
             adjustmentSteps: 1','
     testingRequirements: [','
                 'プレイヤー死亡率の測定',
@@ -290,7 +291,7 @@ export class BalanceGuidelinesManager {
             ],
             recommendedRanges: {  }
                 comboMultiplier: { min: 1.5, max: 3.0, recommended: 2.5  },
-                ageBonus: { min: 1.5, max: 4.0, recommended: 2.0  })
+                ageBonus: { min: 1.5, max: 4.0, recommended: 2.0  }
             adjustmentSteps: 0.1','
     testingRequirements: [','
                 'スコア分布の分析',
@@ -339,25 +340,25 @@ export class BalanceGuidelinesManager {
             thresholds: { minor: 0.1,
                 moderate: 0.2,
     major: 0.3 
-    });
+    };
     }
     
     /**
      * 特定タイプの調整ガイドラインを取得
      */
     public getAdjustmentGuidelines(configType: string): Guideline | null { try {
-            const guideline = this.guidelines.get(configType),
+            const guideline = this.guidelines.get(configType);
             if (!guideline) { }
-                console.warn(`[BalanceGuidelinesManager] ガイドラインが見つかりません: ${configType}`});
+                console.warn(`[BalanceGuidelinesManager] ガイドラインが見つかりません: ${configType}`};
                 return null;
             }
             
             return { ...guideline };
-                retrievedAt: Date.now(), 
+                retrievedAt: Date.now();
     } catch (error) {
             this.errorHandler.handleError(error, 'GUIDELINES_ERROR', {''
-                context: 'BalanceGuidelinesManager.getAdjustmentGuidelines'),
-                configType });
+                context: 'BalanceGuidelinesManager.getAdjustmentGuidelines');
+                configType };
             return null;
     
     /**
@@ -375,7 +376,7 @@ export class BalanceGuidelinesManager {
 
                     isValid: false,
                     issues: ['ガイドラインが見つかりません] }'
-                    recommendations: [] };
+                    recommendations: [] },
                     timestamp: Date.now(); 
     }
             
@@ -385,31 +386,30 @@ export class BalanceGuidelinesManager {
             // 範囲チェック
             const rangeCheck = this._validateRange(newValue, bubbleType, guideline);
             if (!rangeCheck.isValid) {
-                issues.push(...rangeCheck.issues),
+                issues.push(...rangeCheck.issues);
                 recommendations.push(...rangeCheck.recommendations) }
             
             // 調整ステップチェック
             const stepCheck = this._validateAdjustmentStep(oldValue, newValue, guideline);
             if (!stepCheck.isValid) {
-                issues.push(...stepCheck.issues),
+                issues.push(...stepCheck.issues);
                 recommendations.push(...stepCheck.recommendations) }
             
             // 論理的整合性チェック
             const consistencyCheck = this._validateLogicalConsistency(newValue, bubbleType, propertyType);
             if (!consistencyCheck.isValid) {
-                issues.push(...consistencyCheck.issues),
+                issues.push(...consistencyCheck.issues);
                 recommendations.push(...consistencyCheck.recommendations) }
             
             // 影響分析
-            const impactAnalysis = this.generateImpactReport({ oldValue, newValue, ...context ),
-            
+            const impactAnalysis = this.generateImpactReport({ oldValue, newValue, ...context );
             return { validationId,
                 isValid: issues.length === 0,
                 issues,
                 recommendations,
                 impactAnalysis,
-                guideline: guideline.description };
-                timestamp: Date.now(), 
+                guideline: guideline.description },
+                timestamp: Date.now(),
     } catch (error) { this.errorHandler.handleError(error, 'GUIDELINES_ERROR', {''
                 context: 'BalanceGuidelinesManager.validateAdjustment),'
                 oldValue,
@@ -420,8 +420,8 @@ export class BalanceGuidelinesManager {
                 isValid: false,
                 issues: [],
                 recommendations: [],
-    error: error instanceof Error ? error.message : String(error) };
-                timestamp: Date.now(), 
+    error: error instanceof Error ? error.message : String(error) },
+                timestamp: Date.now();
     }
     }
     
@@ -451,14 +451,14 @@ export class BalanceGuidelinesManager {
 
         if (typeof, value === 'number) { if (value < range.min) { }'
                 issues.push(`値 ${value} が最小値 ${ range.min} を下回っています`}
-                recommendations.push(`値を ${range.recommended} 付近に設定することを推奨します`});
+                recommendations.push(`値を ${range.recommended} 付近に設定することを推奨します`};
             }
             
             if (value > range.max) {
     
 }
                 issues.push(`値 ${value} が最大値 ${ range.max} を上回っています`}
-                recommendations.push(`値を ${range.recommended} 付近に設定することを推奨します`});
+                recommendations.push(`値を ${range.recommended} 付近に設定することを推奨します`};
             }
         }
         
@@ -482,7 +482,7 @@ export class BalanceGuidelinesManager {
         // 大きすぎる変更の警告
         if (changeRatio > 0.5) { }'
 
-            issues.push(`変更量が大きすぎます（${(changeRatio * 100}.toFixed(1})%）`);
+            issues.push(`変更量が大きすぎます（${(changeRatio * 100}.toFixed(1}%）`);
             recommendations.push('段階的な調整を推奨します);'
         }
         
@@ -490,7 +490,7 @@ export class BalanceGuidelinesManager {
         if (guideline.adjustmentSteps && changeAmount > 0) {
             const step = guideline.adjustmentSteps }
             if (changeAmount % step !== 0) { }
-                recommendations.push(`推奨ステップサイズ ${step} の倍数で調整することを推奨します`});
+                recommendations.push(`推奨ステップサイズ ${step} の倍数で調整することを推奨します`};
             }
         }
         
@@ -529,7 +529,7 @@ export class BalanceGuidelinesManager {
 
                 issues.push(`${bubbleType}泡の耐久値は${ expectedMin}以上であるべきです`};' }'
 
-                recommendations.push('硬い泡の段階的な強化を維持してください'});
+                recommendations.push('硬い泡の段階的な強化を維持してください'};
             }
         }
         
@@ -547,26 +547,26 @@ export class BalanceGuidelinesManager {
                 id: `change_${Date.now())`,''
                 timestamp: Date.now('',
     author: 'system', // 実際の実装では認証情報から取得,
-                reviewStatus: 'pending) });'
+                reviewStatus: 'pending) };'
             );
             this.changeHistory.push(changeRecord);
             
             // 履歴が長くなりすぎないよう制限
             if (this.changeHistory.length > 1000) { this.changeHistory.splice(0, 100) }
             
-            console.log(`[BalanceGuidelinesManager] 変更を記録: ${changeRecord.id}`});
+            console.log(`[BalanceGuidelinesManager] 変更を記録: ${changeRecord.id}`};
             
             return { success: true,
-                changeId: changeRecord.id };
+                changeId: changeRecord.id },
                 timestamp: changeRecord.timestamp 
     } catch (error) {
             this.errorHandler.handleError(error, 'GUIDELINES_ERROR', {''
                 context: 'BalanceGuidelinesManager.documentChange),'
                 change),
-                rationale });
+                rationale };
             
-            return { success: false,;
-                error: error instanceof Error ? error.message : String(error), 
+            return { success: false,
+                error: error instanceof Error ? error.message : String(error);
     }
     }
     
@@ -581,7 +581,7 @@ export class BalanceGuidelinesManager {
                 changeId: `impact_${Date.now()'
                 riskLevel: 'low'
             };
-                timestamp: Date.now() };
+                timestamp: Date.now() },
             
             // 影響分析ルールを適用
             const, impactRule = this.impactRules.get(configType);
@@ -610,7 +610,7 @@ export class BalanceGuidelinesManager {
 
         } catch (error) {
             this.errorHandler.handleError(error, 'GUIDELINES_ERROR', {''
-                context: 'BalanceGuidelinesManager.generateImpactReport'),
+                context: 'BalanceGuidelinesManager.generateImpactReport');
                 changes }';'
             ';'
 
@@ -637,15 +637,14 @@ export class BalanceGuidelinesManager {
                 // システム別の計算を実行
                 for(const [calcType, calcFunction] of Object.entries(impactRule.calculations)) {''
                     if(system.includes(calcType.replace('Impact', ')' {''
-                        const result = calcFunction(oldValue, newValue),
-
+                        const result = calcFunction(oldValue, newValue);
                         if(typeof, result === 'number' {'
 
                             impact.magnitude = Math.abs(result) }
 
                             impact.direction = result > 0 ? 'increase' : result < 0 ? 'decrease' : 'neutral'; }
 
-                            impact.description = `${system}への影響: ${result > 0 ? '+' : '}${(result * 100}.toFixed(1})%`;'
+                            impact.description = `${system}への影響: ${result > 0 ? '+' : '}${(result * 100}.toFixed(1}%`;'
                         } else {  }
                             impact.description = `${system}への影響: ${result}`;
                         }
@@ -720,14 +719,14 @@ export class BalanceGuidelinesManager {
             category: guideline.category,
             property: guideline.property,
     description: guideline.description  }
-        });
+        };
     }
     
     /**
      * 統計情報を取得
      */
     public getStatistics(): Statistics { const totalChanges = this.changeHistory.length,
-        const recentChanges = this.changeHistory.filter(),
+        const recentChanges = this.changeHistory.filter();
             h => Date.now() - h.timestamp < 24 * 60 * 60 * 1000 // 24時間以内,
         ').length }'
 
@@ -736,12 +735,12 @@ export class BalanceGuidelinesManager {
         this.changeHistory.forEach(h => {  ')'
             const type = h.change.propertyType || 'unknown') }
             changesByType[type] = (changesByType[type] || 0) + 1; }
-        });
+        };
         
         return { totalChanges,
             recentChanges,
             changesByType,
-            availableGuidelines: this.guidelines.size };
+            availableGuidelines: this.guidelines.size },
             impactRules: this.impactRules.size 
     }
 }

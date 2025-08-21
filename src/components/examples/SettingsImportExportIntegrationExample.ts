@@ -12,7 +12,7 @@ import { SettingsImportExportComponent  } from '../SettingsImportExportComponent
 
 interface GameEngine { // Define game engine interface properties as needed }
 
-interface SettingItem { key: string,
+interface SettingItem { key: string;
     label: string;
     type: string;
     component?: string;
@@ -30,7 +30,7 @@ interface ExtendedSettingItems { accessibility: SettingItem[];
 export class SettingsImportExportIntegrationExample {
     private gameEngine: GameEngine;
     private settingsImportExportComponent: SettingsImportExportComponent | null;
-    private, isIntegrated: boolean,
+    private, isIntegrated: boolean;
     constructor(gameEngine: GameEngine) {
 
         this.gameEngine = gameEngine;
@@ -61,7 +61,7 @@ export class SettingsImportExportIntegrationExample {
                     category: 'management'
             }
             ]);
-            });
+            };
     /**
      * SettingsSceneでのカスタムコンポーネント処理
      * 
@@ -81,7 +81,7 @@ export class SettingsImportExportIntegrationExample {
             if (componentElement) {
             ,
                 // イベントリスナーの設定
-                this.setupEventListeners(componentElement),
+                this.setupEventListeners(componentElement);
                 ','
 
                 this.isIntegrated = true }
@@ -109,7 +109,7 @@ export class SettingsImportExportIntegrationExample {
         // インポート成功時
         componentElement.addEventListener('settingsImported', (event) => {  const customEvent = event as CustomEvent }
             this.handleSettingsImported(customEvent.detail); }
-        });
+        };
     }
     
     /**
@@ -123,7 +123,7 @@ export class SettingsImportExportIntegrationExample {
         ','
         // アナリティクス記録
         this.recordAnalytics('settings_exported', {
-                filename: detail.filename });
+                filename: detail.filename };
             dataSize: detail.dataSize } }
             timestamp: detail.timestamp)}';'
     }
@@ -149,14 +149,14 @@ export class SettingsImportExportIntegrationExample {
     settingsCount: detail.settingsCount }';'
             warnings: detail.warnings,'} }'
 
-            timestamp: detail.timestamp'}';
+            timestamp: detail.timestamp'}',
     }
     
     /**
      * ユーザーフィードバック表示'
      */''
     private showUserFeedback(type: 'success' | 'error' | 'warning', message: string): void { // SettingsSceneのメッセージ表示システムを使用 }
-        console.log(`[${type.toUpperCase(})] ${message}`);
+        console.log(`[${type.toUpperCase(}] ${message}`);
     }
     
     /**

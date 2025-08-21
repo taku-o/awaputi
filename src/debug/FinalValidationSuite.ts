@@ -3,7 +3,7 @@
  * デバッグツール強化の最終品質保証テスト
  */
 
-interface ValidationResult { category: string,
+interface ValidationResult { category: string;
     name: string;
     status: 'passed' | 'failed';
     message: string;
@@ -11,33 +11,33 @@ interface ValidationResult { category: string,
     timestamp: string;
     error?: Error;
 
-interface PerformanceMetrics { averageFPS: number,
+interface PerformanceMetrics { averageFPS: number;
     averageFrameTime: number;
     frameCount: number;
     duration: number;
     memoryUsage: number;
 
-interface PerformanceImpact { fpsImpact: number,
+interface PerformanceImpact { fpsImpact: number;
     frameTimeImpact: number;
     memoryImpact: number;
     overallImpact: number;
 
-interface PerformanceTargets { debugOverhead: number,
+interface PerformanceTargets { debugOverhead: number;
     memoryIncrease: number;
     initializationTime: number;
     panelSwitchTime: number;
     testExecutionTime: number;
     frameRateImpact: number;
 
-interface CompatibilityTargets { browsers: string[],
+interface CompatibilityTargets { browsers: string[];
     features: string[];
     screenSizes: {
-        widt,h: number,
-        height: number,
+        widt,h: number;
+        height: number;
     name: string,[];
 }
 
-interface ValidationCategories { performance: string,
+interface ValidationCategories { performance: string;
     compatibility: string;
     memory: string;
     accessibility: string;
@@ -45,21 +45,21 @@ interface ValidationCategories { performance: string,
     stability: string;
 
 interface CategoryStats { [category: string]: {
-        tota,l: number,
-        passed: number,
-    failed: number,
+        tota,l: number;
+        passed: number;
+    failed: number;
 
 interface ValidationSummary { summary: {
-        tota,l: number,
-        passed: number,
-        failed: number,
-        successRate: number,
-    duration: number,;
-    categoryStats: CategoryStats,
-    results: ValidationResult[],
-    timestamp: string,
-    targets: PerformanceTargets,
-    compatibility: CompatibilityTargets,
+        tota,l: number;
+        passed: number;
+        failed: number;
+        successRate: number;
+    duration: number;
+    categoryStats: CategoryStats;
+    results: ValidationResult[];
+    timestamp: string;
+    targets: PerformanceTargets;
+    compatibility: CompatibilityTargets;
     }
 ';'
 
@@ -84,15 +84,15 @@ export class FinalValidationSuite {
         // 検証カテゴリ
         this.validationCategories = {''
             performance: 'Performance Validation';
-            compatibility: 'Browser Compatibility',
-            memory: 'Memory Management',
-            accessibility: 'Accessibility Compliance',
+            compatibility: 'Browser Compatibility';
+            memory: 'Memory Management';
+            accessibility: 'Accessibility Compliance';
             security: 'Security Validation' }
 
             stability: 'System Stability' 
     };
         // パフォーマンス目標値
-        this.performanceTargets = { debugOverhead: 5; // %以下
+        this.performanceTargets = { debugOverhead: 5, // %以下
             memoryIncrease: 10, // MB以下;
             initializationTime: 1000, // ms以下;
             panelSwitchTime: 200, // ms以下;
@@ -131,14 +131,13 @@ export class FinalValidationSuite {
         console.log('Starting final validation suite...);'
 
         try { // カテゴリ別に検証を実行
-            await this.validatePerformance(),
-            await this.validateCompatibility(),
-            await this.validateMemoryManagement(),
-            await this.validateAccessibility(),
-            await this.validateSecurity(),
-            await this.validateStability(),
-
-            const endTime = performance.now(),
+            await this.validatePerformance();
+            await this.validateCompatibility();
+            await this.validateMemoryManagement();
+            await this.validateAccessibility();
+            await this.validateSecurity();
+            await this.validateStability();
+            const endTime = performance.now();
             const duration = endTime - this.startTime,
 
             const summary = this.generateValidationSummary(duration'),'
@@ -154,20 +153,18 @@ export class FinalValidationSuite {
         await this.runValidation(category, 'Debug Interface Performance Impact', async () => {  const debugInterface = this.gameEngine.enhancedDebugInterface,
             
             // ベースライン測定
-            debugInterface.hide(),
-            const baselineMetrics = await this.measurePerformance(5000),
-            
+            debugInterface.hide();
+            const baselineMetrics = await this.measurePerformance(5000);
             // デバッグインターフェース有効時の測定
-            debugInterface.show(),
-            const debugMetrics = await this.measurePerformance(5000),
-            
+            debugInterface.show();
+            const debugMetrics = await this.measurePerformance(5000);
             const impact = this.calculatePerformanceImpact(baselineMetrics, debugMetrics) }
             if (impact.overallImpact > this.performanceTargets.debugOverhead) { }
-                throw new Error(`Debug, overhead ${impact.overallImpact.toFixed(2})% exceeds target ${this.performanceTargets.debugOverhead}%`);
+                throw new Error(`Debug, overhead ${impact.overallImpact.toFixed(2}% exceeds target ${this.performanceTargets.debugOverhead}%`);
             }
             ';'
 
-            return `Debug performance impact: ${impact.overallImpact.toFixed(2})% (target: <${this.performanceTargets.debugOverhead}%)`;}');'
+            return `Debug performance impact: ${impact.overallImpact.toFixed(2}% (target: <${this.performanceTargets.debugOverhead}%)`;}');'
 
         await this.runValidation(category, 'Memory Usage Validation', async () => {  ''
             if (!performance.memory) { }
@@ -191,11 +188,11 @@ export class FinalValidationSuite {
             if (memoryIncrease > this.performanceTargets.memoryIncrease) {
     
 }
-                throw new Error(`Memory, increase ${memoryIncrease.toFixed(2})MB exceeds target ${this.performanceTargets.memoryIncrease}MB`);
+                throw new Error(`Memory, increase ${memoryIncrease.toFixed(2}MB exceeds target ${this.performanceTargets.memoryIncrease}MB`);
             }
             ';'
 
-            return `Memory increase: ${memoryIncrease.toFixed(2})MB (target: <${this.performanceTargets.memoryIncrease}MB})`;}');'
+            return `Memory increase: ${memoryIncrease.toFixed(2}MB (target: <${this.performanceTargets.memoryIncrease}MB}`;}');'
 
         await this.runValidation(category, 'Panel Switch Performance', async () => {  const debugInterface = this.gameEngine.enhancedDebugInterface,
             const panels = ['overview', 'performance', 'console', 'errors', 'tests'],
@@ -203,23 +200,22 @@ export class FinalValidationSuite {
             
             for (const panel of panels) {
             
-                const startTime = performance.now(),
-                debugInterface.switchPanel(panel),
+                const startTime = performance.now();
+                debugInterface.switchPanel(panel);
                 await this.wait(50), // Allow panel to render
-                const endTime = performance.now(),
-                
+                const endTime = performance.now();
                 const switchTime = endTime - startTime,
                 totalTime += switchTime }
                 if (switchTime > this.performanceTargets.panelSwitchTime) { }
-                    throw new Error(`Panel, switch time ${switchTime.toFixed(2})ms exceeds target ${this.performanceTargets.panelSwitchTime}ms`);
+                    throw new Error(`Panel, switch time ${switchTime.toFixed(2}ms exceeds target ${this.performanceTargets.panelSwitchTime}ms`);
                 }
             }
             
             const averageTime = totalTime / panels.length;
-            return `Average panel switch time: ${averageTime.toFixed(2})ms (target: <${this.performanceTargets.panelSwitchTime}ms})`;}');'
+            return `Average panel switch time: ${averageTime.toFixed(2}ms (target: <${this.performanceTargets.panelSwitchTime}ms}`;}');'
 
         await this.runValidation(category, 'Initialization Performance', async () => {  // デバッグインターフェースを再初期化して測定,
-            const startTime = performance.now(),
+            const startTime = performance.now();
             ','
 
             if (this.gameEngine.enhancedDebugInterface) { }'
@@ -237,11 +233,11 @@ export class FinalValidationSuite {
             if (initTime > this.performanceTargets.initializationTime) {
     
 }
-                throw new Error(`Initialization, time ${initTime.toFixed(2})ms exceeds target ${this.performanceTargets.initializationTime}ms`);
+                throw new Error(`Initialization, time ${initTime.toFixed(2}ms exceeds target ${this.performanceTargets.initializationTime}ms`);
             }
              : undefined
-            return `Initialization time: ${initTime.toFixed(2})ms (target: <${this.performanceTargets.initializationTime}ms})`;
-        });
+            return `Initialization time: ${initTime.toFixed(2}ms (target: <${this.performanceTargets.initializationTime}ms}`,
+        };
     }
 
     /**
@@ -259,10 +255,10 @@ export class FinalValidationSuite {
             ','
             // オプショナルAPI（グレースフルデグラデーション）
             if (!(window, as any).ResizeObserver) partialAPIs.push('ResizeObserver',
-            if (!(window, as any).IntersectionObserver) partialAPIs.push('IntersectionObserver'),
+            if (!(window, as any).IntersectionObserver) partialAPIs.push('IntersectionObserver');
             ','
             // CSS機能
-            if(!CSS.supports('display', 'grid)' partialAPIs.push('CSS, Grid'),
+            if(!CSS.supports('display', 'grid)' partialAPIs.push('CSS, Grid');
             if(!CSS.supports('display', 'flex)' partialAPIs.push('CSS, Flexbox',
 
             ' }'
@@ -289,14 +285,13 @@ export class FinalValidationSuite {
             
                 // レスポンシブレイアウトをテスト
                 if (debugInterface.responsiveLayout) {
-                    debugInterface.responsiveLayout.simulateResize(size.width, size.height),
-                    await this.wait(100),
-                    
+                    debugInterface.responsiveLayout.simulateResize(size.width, size.height);
+                    await this.wait(100);
                     // インターフェースが正常に表示されるかチェック
                     const isVisible = debugInterface.debugPanel && ','
                                      debugInterface.debugPanel.style.display !== 'none' }
                     if (!isVisible) { }
-                        throw new Error(`Interface, not visible, at ${size.name} resolution (${size.width}x${size.height}`});
+                        throw new Error(`Interface, not visible, at ${size.name} resolution (${size.width}x${size.height}`};
                     }
 
                     results.push(`${size.name}: OK`}';'
@@ -315,8 +310,8 @@ export class FinalValidationSuite {
             // タッチデバイスをシミュレート
             const mockTouchEvent = {
                 touches: [{ clientX: 100, clientY: 100  }],
-                preventDefault: () => {};
-                stopPropagation: () => {};
+                preventDefault: () => {},
+                stopPropagation: () => {},
             // タッチイベントが処理されるかテスト
             let touchHandled = false;
             const originalHandler = debugInterface.responsiveLayout.handleTouch;
@@ -353,7 +348,7 @@ export class FinalValidationSuite {
                 debugInterface.show()','
                 debugInterface.switchPanel('performance',
                 debugInterface.hide()','
-                const testPanel = debugInterface.panelManager?.createPanel('test-panel-' + i),
+                const testPanel = debugInterface.panelManager?.createPanel('test-panel-' + i);
                 if (testPanel && testPanel.destroy) {
             }
                     testPanel.destroy(); }
@@ -377,11 +372,11 @@ export class FinalValidationSuite {
             // 許容できるメモリ増加量をチェック
             const acceptableIncrease = 5; // MB
             if (memoryIncrease > acceptableIncrease) { : undefined 
-                throw new Error(`Potential memory leak detected: ${memoryIncrease.toFixed(2 })MB increase`);
+                throw new Error(`Potential memory leak detected: ${memoryIncrease.toFixed(2 }MB increase`),
             }
             ';'
 
-            return `Memory increase after stress test: ${memoryIncrease.toFixed(2})MB (acceptable)`;}');'
+            return `Memory increase after stress test: ${memoryIncrease.toFixed(2}MB (acceptable)`;}');'
 
         await this.runValidation(category, 'Event Listener Cleanup', async () => {  const debugInterface = this.gameEngine.enhancedDebugInterface,
             ','
@@ -412,7 +407,7 @@ export class FinalValidationSuite {
             // 適度な増加は許容（基本的なイベントリスナー）
             const acceptableIncrease = 10;
             if (increase > acceptableIncrease) { : undefined 
-                console.warn(`Event listener increase: ${increase } (may indicate cleanup issues}`});
+                console.warn(`Event listener increase: ${increase } (may indicate cleanup issues}`};
             }
             ';'
 
@@ -421,8 +416,7 @@ export class FinalValidationSuite {
         await this.runValidation(category, 'Resource Cleanup Validation', async () => {  const debugInterface = this.gameEngine.enhancedDebugInterface,
             
             // リソースクリーンアップをテスト
-            debugInterface.show(),
-            
+            debugInterface.show();
             // パフォーマンス監視を開始
             if (debugInterface.performanceMonitor) {
                 debugInterface.performanceMonitor.startMonitoring() }
@@ -463,13 +457,13 @@ export class FinalValidationSuite {
             ';'
             // ARIAラベルの存在をチェック
             const elementsNeedingLabels = debugInterface.debugPanel.querySelectorAll()';'
-                'button:not([aria-label]):not([aria-labelledby])';
+                'button: not([aria-label]):not([aria-labelledby])',
             );
             
             if (elementsNeedingLabels.length > 0) {
     
 }
-                console.warn(`${elementsNeedingLabels.length} elements, missing ARIA, labels`});
+                console.warn(`${elementsNeedingLabels.length} elements, missing ARIA, labels`};
             }
             ';'
 
@@ -492,8 +486,7 @@ export class FinalValidationSuite {
             return `Screen reader support: ${semanticElements.length} semantic elements, ${liveRegions.length} live regions, ${focusableElements.length} focusable elements`;}');'
 
         await this.runValidation(category, 'Color Contrast Validation', async () => {  const debugInterface = this.gameEngine.enhancedDebugInterface,
-            debugInterface.show(),
-            
+            debugInterface.show();
             // 高コントラストテーマが利用可能かチェック
             if (debugInterface.themeManager) {
 
@@ -512,7 +505,7 @@ export class FinalValidationSuite {
                 await this.wait(100);
                 debugInterface.themeManager.setTheme('dark'); // Reset
 
-                return 'Color contrast: High contrast theme available and functional';
+                return 'Color contrast: High contrast theme available and functional',
             }
 
             return 'Color contrast: Theme manager not available'
@@ -532,8 +525,7 @@ export class FinalValidationSuite {
             const consolePanel = debugInterface.panels?.get('console),'
             if (consolePanel && consolePanel.executeCommand) {
                 try {'
-                    const result = consolePanel.executeCommand(maliciousInput),
-
+                    const result = consolePanel.executeCommand(maliciousInput);
                     // 結果にscriptタグが含まれていないことを確認
             }
 
@@ -570,7 +562,7 @@ export class FinalValidationSuite {
     
 }
                         vulnerabilities++; }
-                        console.warn(`Setting, validation weakness: ${key} accepts, invalid value`});
+                        console.warn(`Setting, validation weakness: ${key} accepts, invalid value`};
                     } catch (error) { // エラーが投げられるのは良い（適切な検証） }
             }
             ';'
@@ -590,10 +582,9 @@ export class FinalValidationSuite {
             const originalConsole = window.console,
             const originalPerformance = window.performance,
             
-            debugInterface.show(),
-            await this.wait(100),
-            debugInterface.hide(),
-
+            debugInterface.show();
+            await this.wait(100);
+            debugInterface.hide();
             if (window.console !== originalConsole) { }'
 
                 throw new Error('Debug, interface modified, global console, object'; }'
@@ -684,10 +675,10 @@ export class FinalValidationSuite {
             if (successRate < 95) {
     
 }
-                throw new Error(`Stability, test failed: ${successRate.toFixed(1})% success rate (target: >95%)` }
+                throw new Error(`Stability, test failed: ${successRate.toFixed(1}% success rate (target: >95%)` }
             ';'
 
-            return `Long duration stability: ${successRate.toFixed(1})% success rate over ${operations} operations`;}');'
+            return `Long duration stability: ${successRate.toFixed(1}% success rate over ${operations} operations`;}');'
 
         await this.runValidation(category, 'Concurrent Operations', async () => {  const debugInterface = this.gameEngine.enhancedDebugInterface,
             
@@ -701,7 +692,7 @@ export class FinalValidationSuite {
 
                         debugInterface.switchPanel(['overview', 'performance][i % 2]); }'
                         await this.wait(50); }
-            });
+            };
             );
 
             concurrentPromises.push()';'
@@ -712,14 +703,14 @@ export class FinalValidationSuite {
                             debugInterface.performanceMonitor.getPerformanceStats(); }
                             await this.wait(25); }
 }
-            });
+            };
             );
 
             concurrentPromises.push()';'
                 this.simulateConcurrentOperation('settings-modification', async () => {  for (let, i = 0, i < 5, i++) {
                         debugInterface.settings.fontSize = 12 + (i % 4) }
                         await this.wait(100); }
-            });
+            };
             );
 
             const results = await Promise.allSettled(concurrentPromises);
@@ -731,11 +722,11 @@ export class FinalValidationSuite {
                 ' }'
 
                 const reasons = failures.map(f => (f, as PromiseRejectedResult).reason).join(', '); }
-                throw new Error(`${failures.length} concurrent, operations failed: ${reasons}`});
+                throw new Error(`${failures.length} concurrent, operations failed: ${reasons}`};
             }
             
-            return `Concurrent operations: All ${concurrentPromises.length} operations completed successfully`;
-        });
+            return `Concurrent operations: All ${concurrentPromises.length} operations completed successfully`,
+        };
     }
 
     // ============================================
@@ -745,26 +736,26 @@ export class FinalValidationSuite {
     /**
      * 個別検証を実行
      */
-    private async runValidation(category: string, validationName: string, validationFunction: () => Promise<string>): Promise<ValidationResult> { const startTime = performance.now(),
+    private async runValidation(category: string, validationName: string, validationFunction: () => Promise<string>): Promise<ValidationResult> { const startTime = performance.now();
         let result: ValidationResult,
         try {
-            const validationResult = await validationFunction(),
+            const validationResult = await validationFunction();
             const endTime = performance.now('''
                 status: 'passed),'
                 message: validationResult,
     duration: duration),
                 timestamp: new Date().toISOString(  }
 
-            console.log(`✓ ${validationName}: ${validationResult} (${duration.toFixed(2})ms)`);
+            console.log(`✓ ${validationName}: ${validationResult} (${duration.toFixed(2}ms)`);
 
         } catch (error) {
             const endTime = performance.now()','
                 status: 'failed'),
                 message: (error, as Error).message,
                 duration: duration,
-                timestamp: new Date().toISOString(),
-    error: error as Error  };
-            console.error(`✗ ${validationName}: ${(error, as, Error}).message} (${duration.toFixed(2})ms)`);
+                timestamp: new Date().toISOString();
+    error: error as Error  },
+            console.error(`✗ ${validationName}: ${(error, as, Error}.message} (${duration.toFixed(2}ms)`);
         }
 
         this.validationResults.push(result);
@@ -777,19 +768,18 @@ export class FinalValidationSuite {
     private async measurePerformance(duration: number): Promise<PerformanceMetrics> { const metrics = {
             fps: [] as number[],
             frameTime: [] as number[],
-    memoryUsage: [] as number[] };
+    memoryUsage: [] as number[] },
         const startTime = performance.now();
         let frameCount = 0;
         let lastFrameTime = startTime;
 
         return new Promise((resolve) => {  const measureFrame = () => {
-                const currentTime = performance.now(),
+                const currentTime = performance.now();
                 const frameTime = currentTime - lastFrameTime,
                 const fps = 1000 / frameTime,
 
-                metrics.fps.push(fps),
-                metrics.frameTime.push(frameTime),
-
+                metrics.fps.push(fps);
+                metrics.frameTime.push(frameTime);
                 if (performance.memory) { }
                     metrics.memoryUsage.push(performance.memory.usedJSHeapSize); }
                 }
@@ -804,12 +794,12 @@ export class FinalValidationSuite {
                         duration: currentTime - startTime,
     memoryUsage: metrics.memoryUsage.length > 0 ? undefined : undefined 
                             metrics.memoryUsage[metrics.memoryUsage.length - 1] - metrics.memoryUsage[0] : 0  }
-                    });
+                    };
                 }
             };
 
             requestAnimationFrame(measureFrame);
-        });
+        };
     }
 
     /**
@@ -819,8 +809,8 @@ export class FinalValidationSuite {
         const frameTimeImpact = ((debug.averageFrameTime - baseline.averageFrameTime) / baseline.averageFrameTime) * 100,
         const memoryImpact = debug.memoryUsage - baseline.memoryUsage,
 
-        return { fpsImpact: Math.max(0, fpsImpact),
-            frameTimeImpact: Math.max(0, frameTimeImpact),
+        return { fpsImpact: Math.max(0, fpsImpact);
+            frameTimeImpact: Math.max(0, frameTimeImpact);
             memoryImpact: memoryImpact,,
             overallImpact: Math.max(fpsImpact, frameTimeImpact) }
         }
@@ -832,16 +822,15 @@ export class FinalValidationSuite {
             await operation('}'
 
             return { name, status: 'success'
-            }) catch (error) {;
-            throw new Error(`${name}: ${(error, as, Error}).message}`);
+            } catch (error) {;
+            throw new Error(`${name}: ${(error, as, Error}.message}`);
         }
     }
 
     /**
      * 待機
      */
-    private async wait(ms: number): Promise<void> { return new Promise(resolve => setTimeout(resolve, ms),
-
+    private async wait(ms: number): Promise<void> { return new Promise(resolve => setTimeout(resolve, ms);
     /**
      * 検証結果サマリーを生成'
      */''
@@ -852,7 +841,7 @@ export class FinalValidationSuite {
         const categoryStats: CategoryStats = {}
         for (const category of Object.values(this.validationCategories) {
 
-            const categoryResults = this.validationResults.filter(r => r.category === category),
+            const categoryResults = this.validationResults.filter(r => r.category === category);
             categoryStats[category] = {'
                 total: categoryResults.length,
                 passed: categoryResults.filter(r => r.status === 'passed').length }
@@ -864,11 +853,11 @@ export class FinalValidationSuite {
                 total,
                 passed,
                 failed,
-                successRate: (passed / total) * 100 };
-                duration: duration,;
+                successRate: (passed / total) * 100 },
+                duration: duration,
             categoryStats,
             results: this.validationResults,
-            timestamp: new Date().toISOString(),
+            timestamp: new Date().toISOString();
             targets: this.performanceTargets,
     compatibility: this.compatibilityTargets,
         } }
@@ -884,9 +873,8 @@ export class FinalValidationSuite {
         const a = document.createElement('a);'
         a.href = url;
         a.download = `final-validation-results-${Date.now()).json`,
-        a.click(),
-
-        URL.revokeObjectURL(url),
+        a.click();
+        URL.revokeObjectURL(url);
         return summary }
 
     /**

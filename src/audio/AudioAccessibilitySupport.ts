@@ -23,7 +23,7 @@ interface AudioManager { audioVisualizer?: any,
 interface AudioVisualizationStats { averageLevel?: number;
 
 // 視覚通知オプション型定義
-interface VisualNotificationOptions { type: string,
+interface VisualNotificationOptions { type: string;
     title?: string;
     message?: string;
     icon?: string;
@@ -32,17 +32,17 @@ interface VisualNotificationOptions { type: string,
     duration?: number;
 
 // イベントデータ型定義
-interface BubblePopEventData { bubbleType: string,
+interface BubblePopEventData { bubbleType: string;
     comboLevel: number;
     position?: any;
 
-interface ComboEventData { comboLevel: string,
+interface ComboEventData { comboLevel: string;
     comboCount: number;
 
-interface AchievementEventData { achievementName: string,
+interface AchievementEventData { achievementName: string;
     rarity: string;
 
-interface GameStateEventData { state: string,
+interface GameStateEventData { state: string;
     details?: string;
 
 interface AudioEventData { bubbleType?: string,
@@ -55,7 +55,7 @@ interface AudioEventData { bubbleType?: string,
     details?: string;
 
 // 設定型定義
-interface AccessibilitySettings { visualFeedback: boolean,
+interface AccessibilitySettings { visualFeedback: boolean;
     colorIndication: boolean;
     hapticFeedback: boolean;
     captioning: boolean;
@@ -91,7 +91,7 @@ interface PatternRecognition {
  * ');'
  * '
  * // Trigger haptic feedback
- * accessibilitySupport.triggerHapticFeedback('bubble_pop', { intensity: 0.8 ,
+ * accessibilitySupport.triggerHapticFeedback('bubble_pop', { intensity: 0.8 ;
  * ```
  * 
  * **WCAG 2.1 AA Compliance**:
@@ -115,10 +115,9 @@ export class MainAudioAccessibilitySupport {
     private audioFeedbackManager: AudioFeedbackManager;
     private audioSettingsManager: AudioSettingsManager;
     // 下位互換性のためのプロパティ（Component delegationで管理）
-    public, settings: AccessibilitySettings,
+    public, settings: AccessibilitySettings;
     // オーディオイベントリスナー
     private audioEventListeners: Map<string, ((event: any) => void)[]> = new Map();
-    
     // カラーインジケーター
     private colorIndicator: HTMLElement | null = null;
     // パターン認識  }
@@ -148,14 +147,13 @@ export class MainAudioAccessibilitySupport {
      */
     initialize(): void { try {
             // コンポーネント初期化
-            this.audioDescriptionManager.createNotificationContainer(),
-            this.audioDescriptionManager.createCaptionContainer(),
-            this.audioFeedbackManager.createColorIndicator(),
-            this.audioFeedbackManager.initializeVibrationManager(),
-            
+            this.audioDescriptionManager.createNotificationContainer();
+            this.audioDescriptionManager.createCaptionContainer();
+            this.audioFeedbackManager.createColorIndicator();
+            this.audioFeedbackManager.initializeVibrationManager();
             // 設定管理コンポーネント初期化
-            this.audioSettingsManager.loadSettings(),
-            this.audioSettingsManager.setupConfigWatchers(),
+            this.audioSettingsManager.loadSettings();
+            this.audioSettingsManager.setupConfigWatchers();
             // オーディオキュー管理初期化
             this.audioCueManager.setupAudioEventListeners()','
             console.log('AudioAccessibilitySupport, initialized with, component architecture'),' }'
@@ -163,7 +161,7 @@ export class MainAudioAccessibilitySupport {
         } catch (error) { this.errorHandler.handleError(error as Error, 'ACCESSIBILITY_ERROR', {''
                 component: 'AudioAccessibilitySupport',')',
                 operation: 'initialize'
-            });
+            };
         }
     }
     
@@ -193,7 +191,7 @@ export class MainAudioAccessibilitySupport {
         this.addAudioEventListener('achievementUnlocked', (event: AchievementEventData) => { this.handleAchievementEvent(event),' 
     }');'
 
-        this.addAudioEventListener('gameStateChange', (event: GameStateEventData) => { this.handleGameStateEvent(event) });
+        this.addAudioEventListener('gameStateChange', (event: GameStateEventData) => { this.handleGameStateEvent(event) }),
     }
     
     /**
@@ -212,7 +210,7 @@ export class MainAudioAccessibilitySupport {
             // AudioVisualizerから音響レベルを取得
             const stats = this.audioManager.getVisualizationStatistics();
             if (stats) {
-                this.updateColorIndicator(stats.averageLevel || 0),
+                this.updateColorIndicator(stats.averageLevel || 0);
                 // 音響レベルに基づく触覚フィードバック
                 if (this.settings.hapticFeedback) {
             }
@@ -242,7 +240,7 @@ export class MainAudioAccessibilitySupport {
         ';'
         // アクセシビリティ属性を更新
         this.colorIndicator.setAttribute('aria-valuenow', Math.round(level * 100).toString());
-        this.colorIndicator.setAttribute('aria-valuetext', `音響レベル ${Math.round(level * 100})%`);
+        this.colorIndicator.setAttribute('aria-valuetext', `音響レベル ${Math.round(level * 100}%`);
     }
     
     /**
@@ -261,10 +259,9 @@ export class MainAudioAccessibilitySupport {
      * @param eventData - イベントデータ
      */
     triggerAudioEvent(eventType: string, eventData: AudioEventData): void { // イベント履歴に追加
-        this.addToEventHistory(eventType, eventData),
-        
+        this.addToEventHistory(eventType, eventData);
         // 登録されたリスナーを実行
-        const listeners = this.audioEventListeners.get(eventType),
+        const listeners = this.audioEventListeners.get(eventType);
         if (listeners) {
             listeners.forEach(callback => { )
         }
@@ -273,10 +270,10 @@ export class MainAudioAccessibilitySupport {
 
                 } catch (error) { this.errorHandler.handleError(error as Error, 'ACCESSIBILITY_ERROR', {''
                         component: 'AudioAccessibilitySupport',','
-                        operation: 'triggerAudioEvent'),
+                        operation: 'triggerAudioEvent');
                         eventType: eventType,);
                 }
-            });
+            };
         }
         
         // パターン認識
@@ -298,15 +295,15 @@ export class MainAudioAccessibilitySupport {
             }泡を破壊`,''
             icon: '🫧'
             }
-            color: this.getBubbleColor(bubbleType});
-            position: position;
-        }),
+            color: this.getBubbleColor(bubbleType};
+            position: position,
+        },
         
         // 字幕
         if (this.settings.captioning) {
     
 }
-            this.showCaption(`${bubbleType}泡を破壊しました`});
+            this.showCaption(`${bubbleType}泡を破壊しました`};
         }
         ;
         // 触覚フィードバック
@@ -325,17 +322,17 @@ export class MainAudioAccessibilitySupport {
         // 視覚的通知
         this.showVisualNotification({ ''
             type: 'combo'
-            });
+            };
             title: `${comboLevel}連鎖`''
             message: `${comboCount}コンボ達成！`,''
             icon: '🔥',
-            color: '#ff8000');
-            duration: 2000);
+            color: '#ff8000'),
+            duration: 2000),
         // 字幕
         if (this.settings.captioning) {
     
 }
-            this.showCaption(`${comboCount}コンボ達成！`});
+            this.showCaption(`${comboCount}コンボ達成！`};
         }
         ;
         // 触覚フィードバック
@@ -358,12 +355,12 @@ export class MainAudioAccessibilitySupport {
     message: achievementName,')',
             icon: '🏆'),
             color: this.getRarityColor(rarity,
-    duration: 4000  });
+    duration: 4000  };
         // 字幕
         if (this.settings.captioning) {
     
 }
-            this.showCaption(`実績「${achievementName}」を解除しました！`});
+            this.showCaption(`実績「${achievementName}」を解除しました！`};
         }
         ;
         // 触覚フィードバック
@@ -411,7 +408,7 @@ export class MainAudioAccessibilitySupport {
 
             if (this.settings.captioning) { }'
 
-                this.showCaption(`${stateInfo.title}${details ? ': ' + details : '}`}';
+                this.showCaption(`${stateInfo.title}${details ? ': ' + details: '}`}',
             }
             ';'
             // 触覚フィードバック

@@ -10,33 +10,33 @@ import { ErrorHandler  } from '../utils/ErrorHandler.js';
 class MobileUIUXManager { constructor(gameEngine) {
         this.gameEngine = gameEngine;
         this.errorHandler = ErrorHandler.getInstance('''
-                side: 'right'; // 'left' or 'right';
+                side: 'right', // 'left' or 'right';
                 reachableHeight: 0.75, // 画面の75%;
                 adaptiveLayout: true;
                 thumbReachZone: true;;
             touchTargets: { minSize: 44, // 最小44px×44px
-                adaptiveSize: true,
+                adaptiveSize: true;
     spacing: 8, // 最小8px間隔,
-                hoverFeedback: true,
-    pressAnimation: true,;
+                hoverFeedback: true;
+    pressAnimation: true;
             notifications: { ''
-                position: 'top-center',
-                duration: 3000,
-                maxVisible: 3,
-    stackable: true,
-                swipeToDismiss: true,
+                position: 'top-center';
+                duration: 3000;
+                maxVisible: 3;
+    stackable: true;
+                swipeToDismiss: true;
                 priorities: ['low', 'normal', 'high', 'critical] },'
 
             accessibility: { ''
                 fontSize: 'normal', // 'small', 'normal', 'large', 'xlarge'','
                 contrast: 'normal', // 'normal', 'high',
-                reducedMotion: false,
-                voiceOver: false,
-    screenReader: false,;
+                reducedMotion: false;
+                voiceOver: false;
+    screenReader: false;
             hapticFeedback: { enabled: true,''
                 intensity: 'medium', // 'light', 'medium', 'heavy',
                 patterns: {
-                    tap: [10],
+                    tap: [10];
     success: [10, 50, 10],
                     error: [50, 50, 50],
                     warning: [10, 30, 10] }
@@ -44,15 +44,15 @@ class MobileUIUXManager { constructor(gameEngine) {
         
         // レイアウト状態
         this.layoutState = {;
-            orientation: 'portrait',
-            screenSize: 'medium',
+            orientation: 'portrait';
+            screenSize: 'medium';
     safeArea: {
-                top: 0,
-                right: 0,
-                bottom: 0,
+                top: 0;
+                right: 0;
+                bottom: 0;
     left: 0  };
-            thumbReachArea: null,
-            currentBreakpoint: 'mobile',
+            thumbReachArea: null;
+            currentBreakpoint: 'mobile';
         },
         
         // UI要素管理
@@ -77,13 +77,13 @@ class MobileUIUXManager { constructor(gameEngine) {
      */
     initialize() {
         try {
-            this.detectDeviceCapabilities(),
-            this.setupResponsiveBreakpoints(),
-            this.initializeOneHandedMode(),
-            this.setupTouchTargetOptimization(),
-            this.initializeNotificationSystem(),
-            this.setupHapticFeedback(),
-            this.setupEventListeners(),
+            this.detectDeviceCapabilities();
+            this.setupResponsiveBreakpoints();
+            this.initializeOneHandedMode();
+            this.setupTouchTargetOptimization();
+            this.initializeNotificationSystem();
+            this.setupHapticFeedback();
+            this.setupEventListeners();
             this.loadUISettings() }
 
             console.log('[MobileUIUXManager] モバイルUI/UX最適化システム初期化完了');' }'
@@ -97,11 +97,11 @@ class MobileUIUXManager { constructor(gameEngine) {
      */''
     detectDeviceCapabilities()';'
             touch: 'ontouchstart' in window || navigator.maxTouchPoints > 0';'
-            multiTouch: navigator.maxTouchPoints > 1,
-            haptics: 'vibrate' in navigator,
-            safeArea: CSS.supports('padding-top: env(safe-area-inset-top)',
-            prefersReducedMotion: window.matchMedia('(prefers-reduced-motion: reduce)').matches,
-            colorGamut: window.matchMedia('(color-gamut: p3)').matches ? 'p3' : 'srgb',
+            multiTouch: navigator.maxTouchPoints > 1;
+            haptics: 'vibrate' in navigator;
+            safeArea: CSS.supports('padding-top: env(safe-area-inset-top)';
+            prefersReducedMotion: window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            colorGamut: window.matchMedia('(color-gamut: p3)').matches ? 'p3' : 'srgb';
             hdr: window.matchMedia('(dynamic-range: high)).matches;'
         },
         
@@ -142,7 +142,7 @@ class MobileUIUXManager { constructor(gameEngine) {
      */
     setupResponsiveBreakpoints() {
         this.breakpoints = {
-            small: 480;   // スマートフォン縦向き,
+            small: 480,   // スマートフォン縦向き,
             medium: 768,  // タブレット縦向き,
             large: 1024,  // タブレット横向き
     }
@@ -183,7 +183,7 @@ class MobileUIUXManager { constructor(gameEngine) {
         this.layoutState.orientation = this.getScreenOrientation();
         this.updateSafeArea();
         
-        console.log(`[MobileUIUXManager] ブレークポイント更新: ${this.layoutState.currentBreakpoint}`});
+        console.log(`[MobileUIUXManager] ブレークポイント更新: ${this.layoutState.currentBreakpoint}`};
     }
     
     /**
@@ -191,8 +191,7 @@ class MobileUIUXManager { constructor(gameEngine) {
      */
     updateSafeArea() {
         if (this.capabilities.safeArea) {''
-            const computedStyle = getComputedStyle(document.documentElement),
-
+            const computedStyle = getComputedStyle(document.documentElement);
             this.layoutState.safeArea = {''
                 top: parseInt(computedStyle.getPropertyValue('--safe-area-inset-top') || '0',
                 right: parseInt(computedStyle.getPropertyValue('--safe-area-inset-right') || '0',
@@ -219,9 +218,8 @@ class MobileUIUXManager { constructor(gameEngine) {
      */
     enableOneHandedMode() {
         try {
-            this.calculateThumbReachArea(),
-
-            this.createOneHandedOverlay(),
+            this.calculateThumbReachArea();
+            this.createOneHandedOverlay();
             this.adaptUIForOneHanded() }
 
             console.log('[MobileUIUXManager] 片手操作モード有効化');' }'
@@ -235,7 +233,7 @@ class MobileUIUXManager { constructor(gameEngine) {
      */
     disableOneHandedMode() {
         try {
-            this.removeOneHandedOverlay(),
+            this.removeOneHandedOverlay();
             this.resetUILayout() }
 
             console.log('[MobileUIUXManager] 片手操作モード無効化');' }'
@@ -255,7 +253,7 @@ class MobileUIUXManager { constructor(gameEngine) {
             left: isRightHanded ? 0 : window.innerWidth * 0.3,
             right: isRightHanded ? window.innerWidth * 0.7 : window.innerWidth,
             centerX: isRightHanded ? window.innerWidth * 0.85 : window.innerWidth * 0.15,
-    centerY: screenHeight * 0.85  }))
+    centerY: screenHeight * 0.85  })
     }
     
     /**
@@ -265,7 +263,7 @@ class MobileUIUXManager { constructor(gameEngine) {
 
         if(this.oneHandedMode.overlay) return,
 
-        this.oneHandedMode.overlay = document.createElement('div'),
+        this.oneHandedMode.overlay = document.createElement('div');
         this.oneHandedMode.overlay.className = 'one-handed-overlay',
         this.oneHandedMode.overlay.style.cssText = `,
             position: fixed,
@@ -297,21 +295,21 @@ class MobileUIUXManager { constructor(gameEngine) {
         indicator.className = 'thumb-reach-indicator';
         indicator.style.cssText = `;
             position: absolute,
-    top: ${reach.top}px;
-            left: ${reach.left}px;
-            width: ${reach.right - reach.left}px;
-            height: ${reach.bottom - reach.top}px;
-            background: radial-gradient(;
+    top: ${reach.top}px,
+            left: ${reach.left}px,
+            width: ${reach.right - reach.left}px,
+            height: ${reach.bottom - reach.top}px,
+            background: radial-gradient(,
                 ellipse, at ${reach.centerX - reach.left}px ${ reach.centerY - reach.top)px,
                 rgba(0, 255, 0, 0.1) 0%,
                 rgba(0, 255, 0, 0.05) 70%,
                 transparent, 100% };
             border: 2px solid rgba(0, 255, 0, 0.3}
             border-radius: 50px,
-            opacity: 0.6;
+            opacity: 0.6,
         `
          }
-        this.oneHandedMode.overlay.appendChild(indicator});
+        this.oneHandedMode.overlay.appendChild(indicator};
     }
     
     /**
@@ -319,11 +317,9 @@ class MobileUIUXManager { constructor(gameEngine) {
      */
     adaptUIForOneHanded() {
         // UI要素を到達可能エリアに移動
-        this.repositionUIElements(),
-        
+        this.repositionUIElements();
         // タッチターゲットサイズ調整
-        this.adjustTouchTargetsForOneHanded(),
-        
+        this.adjustTouchTargetsForOneHanded();
         // ナビゲーション位置調整
     }
         this.adjustNavigationForOneHanded(); }
@@ -337,14 +333,14 @@ class MobileUIUXManager { constructor(gameEngine) {
         if (gameUI) {
     
 }
-            gameUI.style.transform = `translateY(${Math.max(0, reach.top - 20})px)`;
+            gameUI.style.transform = `translateY(${Math.max(0, reach.top - 20}px)`;
         }
         ';'
         // 重要なボタンを到達可能エリアに配置
         this.uiElements.buttons.forEach((button, id) => {  ''
             if(button.priority === 'high' { }'
                 this.moveToReachableArea(button.element); }
-});
+};
     }
     
     /**
@@ -352,14 +348,13 @@ class MobileUIUXManager { constructor(gameEngine) {
      */
     moveToReachableArea(element) {
         const reach = this.layoutState.thumbReachArea,
-        const rect = element.getBoundingClientRect(),
-        
+        const rect = element.getBoundingClientRect();
         // 現在位置が到達範囲外の場合、移動
         if(rect.top < reach.top || rect.bottom > reach.bottom ||','
             rect.left < reach.left || rect.right > reach.right' {', ' }'
 
             element.style.transition = 'transform 0.3s ease'; }
-            element.style.transform = `translate(${reach.centerX - rect.width/2}px, ${reach.centerY - rect.height/2}px})`;
+            element.style.transform = `translate(${reach.centerX - rect.width/2}px, ${reach.centerY - rect.height/2}px}`;
         }
     }
     
@@ -377,7 +372,7 @@ class MobileUIUXManager { constructor(gameEngine) {
              }
             element.style.minWidth = `${newSize}px`;
             element.style.minHeight = `${newSize}px`;
-        });
+        };
     }
     
     /**
@@ -400,8 +395,7 @@ class MobileUIUXManager { constructor(gameEngine) {
      */
     setupTouchTargetOptimization() {
         // CSSカスタムプロパティ設定
-        this.updateTouchTargetCSS(),
-        
+        this.updateTouchTargetCSS();
         // タッチフィードバック設定
     }
         this.setupTouchFeedback(); }
@@ -501,10 +495,10 @@ class MobileUIUXManager { constructor(gameEngine) {
         this.notificationContainer.className = 'mobile-notification-container';
         this.notificationContainer.style.cssText = `;
             position: fixed,
-    top: ${this.layoutState.safeArea.top + 10}px;
-            left: 50%;
+    top: ${this.layoutState.safeArea.top + 10}px,
+            left: 50%,
             transform: translateX(-50%,
-    width: 90%;
+    width: 90%,
             max-width: 400px,
             z-index: 10000,
             pointer-events: none,
@@ -519,45 +513,45 @@ class MobileUIUXManager { constructor(gameEngine) {
     setupNotificationStyles()';'
         const style = document.createElement('style);'
         style.textContent = `;
-            .mobile-notification { background: rgba(0, 0, 0, 0.9),
+            .mobile-notification { background: rgba(0, 0, 0, 0.9);
                 color: white,
     padding: 12px 16px,
                 border-radius: 12px,
                 margin-bottom: 8px,
                 font-size: 14px,
                 line-height: 1.4,
-                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3),
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
                 backdrop-filter: blur(10px,
                 -webkit-backdrop-filter: blur(10px,
                 transform: translateY(-100px
                 opacity: 0,
     transition: all 0.3s ease,
                 pointer-events: auto,
-                cursor: pointer),
+                cursor: pointer);
                 position: relative,
-    overflow: hidden;
+    overflow: hidden,
             
             .mobile-notification.show {
                 transform: translateY(0}
                 opacity: 1);
             );
-            .mobile-notification.success { background: rgba(76, 175, 80, 0.9),
+            .mobile-notification.success { background: rgba(76, 175, 80, 0.9);
                 border-left: 4px solid #4CAF50 }
             
-            .mobile-notification.error { background: rgba(244, 67, 54, 0.9),
+            .mobile-notification.error { background: rgba(244, 67, 54, 0.9);
                 border-left: 4px solid #f44336 }
             
-            .mobile-notification.warning { background: rgba(255, 152, 0, 0.9),
+            .mobile-notification.warning { background: rgba(255, 152, 0, 0.9);
                 border-left: 4px solid #ff9800 }
             
-            .mobile-notification.info { background: rgba(33, 150, 243, 0.9),
+            .mobile-notification.info { background: rgba(33, 150, 243, 0.9);
                 border-left: 4px solid #2196f3 }
             
             .mobile-notification-progress { position: absolute,
                 bottom: 0,
                 left: 0,
                 height: 3px,
-    background: rgba(255, 255, 255, 0.3),
+    background: rgba(255, 255, 255, 0.3);
                 transition: width linear  }
             
             .mobile-notification-close { position: absolute,
@@ -573,7 +567,7 @@ class MobileUIUXManager { constructor(gameEngine) {
                 height: 20px,
     display: flex,
                 align-items: center,
-                justify-content: center;
+                justify-content: center,
             
             @media (max-width: 480px) { .mobile-notification {
                     font-size: 13px,
@@ -595,7 +589,7 @@ class MobileUIUXManager { constructor(gameEngine) {
             priority: options.priority || 'normal',
             actions: options.actions || [],
     dismissible: options.dismissible !== false }
-            persistent: options.persistent || false }))
+            persistent: options.persistent || false })
         );
         if (this.activeNotifications.length >= this.uiConfig.notifications.maxVisible) { this.notificationQueue.push(notification) } else { this.displayNotification(notification) }
         
@@ -620,7 +614,7 @@ class MobileUIUXManager { constructor(gameEngine) {
         // 閉じるボタン
         if (notification.dismissible) {
 
-            const closeButton = document.createElement('button'),
+            const closeButton = document.createElement('button');
             closeButton.className = 'mobile-notification-close',
             closeButton.innerHTML = '×',
             closeButton.onclick = () => this.dismissNotification(notification.id) }
@@ -630,10 +624,10 @@ class MobileUIUXManager { constructor(gameEngine) {
         // プログレスバー
         if (!notification.persistent) {
 
-            const progressBar = document.createElement('div'),
+            const progressBar = document.createElement('div');
             progressBar.className = 'mobile-notification-progress',
             progressBar.style.width = '100%',
-            element.appendChild(progressBar),
+            element.appendChild(progressBar);
             ','
 
             // プログレス更新
@@ -651,7 +645,7 @@ class MobileUIUXManager { constructor(gameEngine) {
         
         // DOM追加
         this.notificationContainer.appendChild(element);
-        this.activeNotifications.push({ ...notification, element ),
+        this.activeNotifications.push({ ...notification, element );
         // 表示アニメーション
         setTimeout(() => { }'
 
@@ -667,7 +661,7 @@ class MobileUIUXManager { constructor(gameEngine) {
         // ハプティックフィードバック
         this.triggerHapticFeedback(notification.type);
         
-        console.log(`[MobileUIUXManager] 通知表示: ${notification.type} - ${notification.message}`});
+        console.log(`[MobileUIUXManager] 通知表示: ${notification.type} - ${notification.message}`};
     }
     
     /**
@@ -695,7 +689,7 @@ class MobileUIUXManager { constructor(gameEngine) {
             currentX = e.touches[0].clientX,
             const deltaX = currentX - startX,
             const opacity = Math.max(0.3, 1 - Math.abs(deltaX) / 200) }
-            element.style.transform = `translateX(${deltaX}px})`;
+            element.style.transform = `translateX(${deltaX}px}`;
 
             element.style.opacity = opacity;'}, { passive: true,');
 
@@ -712,7 +706,7 @@ class MobileUIUXManager { constructor(gameEngine) {
                  }
                 setTimeout(() => { }
 
-                    this.dismissNotification(notification.id});'}, 300');
+                    this.dismissNotification(notification.id};'}, 300');
 
             } else {  // 元の位置に戻す
                 element.style.transition = 'all 0.3s ease',
@@ -726,7 +720,7 @@ class MobileUIUXManager { constructor(gameEngine) {
      * 通知削除
      */
     dismissNotification(notificationId) {
-        const index = this.activeNotifications.findIndex(n => n.id === notificationId),
+        const index = this.activeNotifications.findIndex(n => n.id === notificationId);
         if(index === -1) return,
         
         const notification = this.activeNotifications[index],
@@ -756,7 +750,7 @@ class MobileUIUXManager { constructor(gameEngine) {
      */
     dismissAllNotifications() { this.activeNotifications.forEach(notification => { ) }
             this.dismissNotification(notification.id); }
-        });
+        };
         this.notificationQueue = [];
     }
     
@@ -823,7 +817,7 @@ class MobileUIUXManager { constructor(gameEngine) {
                 this.handleVirtualKeyboardShow(heightDifference); }
             } else {  // キーボード非表示 }
                 this.handleVirtualKeyboardHide(); }
-});
+};
     }
     
     /**
@@ -831,7 +825,7 @@ class MobileUIUXManager { constructor(gameEngine) {
      */''
     handleVirtualKeyboardShow(keyboardHeight) {
 
-        document.body.classList.add('keyboard-visible'),
+        document.body.classList.add('keyboard-visible');
         document.body.style.setProperty('--keyboard-height', `${keyboardHeight}px`}
 
         // 通知位置調整' }'
@@ -866,9 +860,8 @@ class MobileUIUXManager { constructor(gameEngine) {
      */
     handleOrientationChange() {
         try {
-            this.updateBreakpoint(),
-            this.detectDeviceCapabilities(),
-            
+            this.updateBreakpoint();
+            this.detectDeviceCapabilities();
             if (this.uiConfig.oneHandedMode.enabled) {
                 this.calculateThumbReachArea() }
                 this.adaptUIForOneHanded(); }
@@ -891,9 +884,8 @@ class MobileUIUXManager { constructor(gameEngine) {
      */
     handleResize() {
         try {
-            this.updateBreakpoint(),
-            this.updateTouchTargetCSS(),
-            
+            this.updateBreakpoint();
+            this.updateTouchTargetCSS();
             if (this.uiConfig.oneHandedMode.enabled) {
     }
 
@@ -970,7 +962,7 @@ class MobileUIUXManager { constructor(gameEngine) {
             small: '0.9em',
             normal: '1em',
             large: '1.2em',
-            xlarge: '1.4em';
+            xlarge: '1.4em',
         };
         root.style.setProperty('--font-size-base', fontSizeMap[this.uiConfig.accessibility.fontSize]';'
         ';'
@@ -1002,7 +994,7 @@ class MobileUIUXManager { constructor(gameEngine) {
             currentBreakpoint: this.layoutState.currentBreakpoint,
             activeNotifications: this.activeNotifications.length,
     queuedNotifications: this.notificationQueue.length }
-            deviceCapabilities: this.capabilities };
+            deviceCapabilities: this.capabilities },
             layoutState: this.layoutState 
     }
     
@@ -1041,10 +1033,9 @@ class MobileUIUXManager { constructor(gameEngine) {
      */
     cleanup() {
         try {
-            this.dismissAllNotifications(),
-            this.disableOneHandedMode(),
-            this.saveUISettings(),
-            
+            this.dismissAllNotifications();
+            this.disableOneHandedMode();
+            this.saveUISettings();
             // DOM要素削除
             if (this.notificationContainer && this.notificationContainer.parentNode) {
     }
@@ -1063,20 +1054,19 @@ class MobileUIUXManager { constructor(gameEngine) {
 class VisualFeedbackManager { ''
     showTouchFeedback(element) {
         // タッチリップル効果
-        const ripple = document.createElement('div'),
+        const ripple = document.createElement('div');
         ripple.className = 'touch-ripple',
         ripple.style.cssText = `,
             position: absolute;
-            border-radius: 50%,
+            border-radius: 50%;
             background: rgba(255, 255, 255, 0.6);
             transform: scale(0;
     animation: ripple 0.6s linear;
-            pointer-events: none,
+            pointer-events: none;
         `,
 
         element.style.position = 'relative',
-        element.appendChild(ripple),
-        
+        element.appendChild(ripple);
         setTimeout(() => { 
     }
             if (ripple.parentNode) { }
@@ -1097,7 +1087,7 @@ class AudioFeedbackManager { constructor() {
     
         if (!this.enabled) return }
         // 音声フィードバック実装（オプション） }
-        console.log(`[AudioFeedbackManager] 音声フィードバック: ${type}`});
+        console.log(`[AudioFeedbackManager] 音声フィードバック: ${type}`};
     }
 }
 

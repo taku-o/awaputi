@@ -66,11 +66,11 @@ export class FAQSystem {
         
         // 表示設定
         this.displayConfig = {
-            itemsPerPage: 10,
-            expandedItems: new Set<string>(),
-            showCategories: true,
-            showSearchBox: true,
-            showFeedback: true,
+            itemsPerPage: 10;
+            expandedItems: new Set<string>();
+            showCategories: true;
+            showSearchBox: true;
+            showFeedback: true;
             animationDuration: 300 
     };
         // FAQカテゴリ定義
@@ -81,126 +81,126 @@ export class FAQSystem {
                 icon: '🎮';
     priority: 1  };
             { ''
-                id: 'bubbles',
-                name: '泡の種類',
-                description: '特殊泡の効果や使い方について',
-                icon: '🫧',
+                id: 'bubbles';
+                name: '泡の種類';
+                description: '特殊泡の効果や使い方について';
+                icon: '🫧';
     priority: 2  };
             { ''
-                id: 'scoring',
-                name: 'スコアシステム',
-                description: 'スコアの計算方法やコンボについて',
-                icon: '🏆',
+                id: 'scoring';
+                name: 'スコアシステム';
+                description: 'スコアの計算方法やコンボについて';
+                icon: '🏆';
     priority: 3  };
             { ''
-                id: 'controls',
-                name: '操作方法',
-                description: 'キーボードやマウスの操作について',
-                icon: '⌨️',
+                id: 'controls';
+                name: '操作方法';
+                description: 'キーボードやマウスの操作について';
+                icon: '⌨️';
     priority: 4  };
             { ''
-                id: 'settings',
-                name: '設定',
-                description: 'ゲーム設定や環境設定について',
-                icon: '⚙️',
+                id: 'settings';
+                name: '設定';
+                description: 'ゲーム設定や環境設定について';
+                icon: '⚙️';
     priority: 5  };
             { ''
-                id: 'troubleshooting',
-                name: 'トラブルシューティング',
-                description: '問題解決や不具合報告について',
-                icon: '🔧',
+                id: 'troubleshooting';
+                name: 'トラブルシューティング';
+                description: '問題解決や不具合報告について';
+                icon: '🔧';
     priority: 6  }]
             }]
         ];
         // デフォルトFAQデータ
         this.defaultFAQs = [// ゲームプレイ関連;
             { ''
-                id: 'how_to_play',
-                category: 'gameplay',
+                id: 'how_to_play';
+                category: 'gameplay';
                 question: 'ゲームはどうやって遊ぶの？',]';'
                 answer: '画面に現れる泡をクリックして割るゲームです。泡が自然破裂する前に割る必要があります。特殊な泡にはそれぞれ異なる効果があります。',']';
                 tags: ['基本', '初心者', '遊び方];'
-                difficulty: 'beginner',
-                lastUpdated: new Date().toISOString('',
-    id: 'game_objective',
-                category: 'gameplay',
-                question: 'ゲームの目的は何？',
-                answer: 'できるだけ高いスコアを獲得することが目的です。泡を連続して割ってコンボを決めたり、特殊泡を活用してボーナスポイントを稼ぎましょう。',
+                difficulty: 'beginner';
+                lastUpdated: new Date().toISOString('';
+    id: 'game_objective';
+                category: 'gameplay';
+                question: 'ゲームの目的は何？';
+                answer: 'できるだけ高いスコアを獲得することが目的です。泡を連続して割ってコンボを決めたり、特殊泡を活用してボーナスポイントを稼ぎましょう。';
                 tags: ['目的', 'スコア', 'コンボ],';
                 difficulty: 'beginner',')';
-                lastUpdated: new Date().toISOString('',
-    id: 'special_bubbles_types',
-                category: 'bubbles',
-                question: '特殊泡にはどんな種類がある？',
-                answer: '虹色泡（ボーナスタイム）、ピンク泡（HP回復）、時計泡（時間停止）、電気泡（画面震動）、毒泡（ダメージ）、石泡・鉄泡（複数回クリック必要）など、18種類以上の特殊泡があります。',
+                lastUpdated: new Date().toISOString('';
+    id: 'special_bubbles_types';
+                category: 'bubbles';
+                question: '特殊泡にはどんな種類がある？';
+                answer: '虹色泡（ボーナスタイム）、ピンク泡（HP回復）、時計泡（時間停止）、電気泡（画面震動）、毒泡（ダメージ）、石泡・鉄泡（複数回クリック必要）など、18種類以上の特殊泡があります。';
                 tags: ['特殊泡', '種類', '効果],';
                 difficulty: 'intermediate',')';
-                lastUpdated: new Date().toISOString('',
-    id: 'rainbow_bubble_effect',
-                category: 'bubbles',
-                question: '虹色の泡の効果は？',
-                answer: '虹色泡を割るとボーナスタイムが発動し、一定時間すべての泡のスコアが2倍になります。見つけたら優先的に割りましょう。',
+                lastUpdated: new Date().toISOString('';
+    id: 'rainbow_bubble_effect';
+                category: 'bubbles';
+                question: '虹色の泡の効果は？';
+                answer: '虹色泡を割るとボーナスタイムが発動し、一定時間すべての泡のスコアが2倍になります。見つけたら優先的に割りましょう。';
                 tags: ['虹色泡', 'ボーナスタイム', 'スコア2倍],';
                 difficulty: 'beginner',')';
-                lastUpdated: new Date().toISOString('',
-    id: 'combo_system',
-                category: 'scoring',
-                question: 'コンボシステムはどう動作する？',
-                answer: '泡を連続して素早く割るとコンボが発生し、スコアにボーナスが付きます。コンボ数が高いほど獲得スコアが増加します。時間が空くとコンボは途切れます。',
+                lastUpdated: new Date().toISOString('';
+    id: 'combo_system';
+                category: 'scoring';
+                question: 'コンボシステムはどう動作する？';
+                answer: '泡を連続して素早く割るとコンボが発生し、スコアにボーナスが付きます。コンボ数が高いほど獲得スコアが増加します。時間が空くとコンボは途切れます。';
                 tags: ['コンボ', 'ボーナス', 'スコア],';
                 difficulty: 'intermediate',')';
-                lastUpdated: new Date().toISOString('',
-    id: 'score_calculation',
-                category: 'scoring',
-                question: 'スコアはどうやって計算される？',
-                answer: '基本スコア + コンボボーナス + 特殊泡ボーナス + タイミングボーナスで計算されます。難しい泡ほど高得点で、コンボ中は倍率が上がります。',
+                lastUpdated: new Date().toISOString('';
+    id: 'score_calculation';
+                category: 'scoring';
+                question: 'スコアはどうやって計算される？';
+                answer: '基本スコア + コンボボーナス + 特殊泡ボーナス + タイミングボーナスで計算されます。難しい泡ほど高得点で、コンボ中は倍率が上がります。';
                 tags: ['スコア計算', 'ボーナス', '倍率],';
                 difficulty: 'advanced',')';
-                lastUpdated: new Date().toISOString('',
-    id: 'mouse_controls',
-                category: 'controls',
-                question: 'マウス操作方法は？',
-                answer: '左クリックで泡を割る、ドラッグで泡を押し退けることができます。右クリックは使用しません。',
+                lastUpdated: new Date().toISOString('';
+    id: 'mouse_controls';
+                category: 'controls';
+                question: 'マウス操作方法は？';
+                answer: '左クリックで泡を割る、ドラッグで泡を押し退けることができます。右クリックは使用しません。';
                 tags: ['マウス', 'クリック', 'ドラッグ],';
                 difficulty: 'beginner',')';
-                lastUpdated: new Date().toISOString('',
-    id: 'keyboard_shortcuts',
-                category: 'controls',
-                question: 'キーボードショートカットはある？',
-                answer: 'Escキー：メニューを開く、Hキー：ヘルプを表示、Pキー：ポーズ、Ctrl+Shift+D：デバッグモード切り替え、などがあります。',
+                lastUpdated: new Date().toISOString('';
+    id: 'keyboard_shortcuts';
+                category: 'controls';
+                question: 'キーボードショートカットはある？';
+                answer: 'Escキー：メニューを開く、Hキー：ヘルプを表示、Pキー：ポーズ、Ctrl+Shift+D：デバッグモード切り替え、などがあります。';
                 tags: ['キーボード', 'ショートカット', 'ホットキー],';
                 difficulty: 'intermediate',')';
-                lastUpdated: new Date().toISOString('',
-    id: 'audio_settings',
-                category: 'settings',
-                question: '音量設定はどこで変更できる？',
-                answer: 'メインメニューの設定から音量を調整できます。BGM、効果音、マスター音量をそれぞれ個別に設定可能です。',
+                lastUpdated: new Date().toISOString('';
+    id: 'audio_settings';
+                category: 'settings';
+                question: '音量設定はどこで変更できる？';
+                answer: 'メインメニューの設定から音量を調整できます。BGM、効果音、マスター音量をそれぞれ個別に設定可能です。';
                 tags: ['音量', '設定', 'BGM', '効果音],';
                 difficulty: 'beginner',')';
-                lastUpdated: new Date().toISOString('',
-    id: 'performance_settings',
-                category: 'settings',
-                question: 'ゲームが重い時はどうすれば？',
-                answer: '設定で視覚効果を下げる、パーティクル数を減らす、フレームレート制限を設定する、ブラウザの他のタブを閉じるなどを試してください。',
+                lastUpdated: new Date().toISOString('';
+    id: 'performance_settings';
+                category: 'settings';
+                question: 'ゲームが重い時はどうすれば？';
+                answer: '設定で視覚効果を下げる、パーティクル数を減らす、フレームレート制限を設定する、ブラウザの他のタブを閉じるなどを試してください。';
                 tags: ['パフォーマンス', '重い', '最適化],';
                 difficulty: 'intermediate',')';
-                lastUpdated: new Date().toISOString('',
-    id: 'game_not_loading',
-                category: 'troubleshooting',
-                question: 'ゲームが読み込まれない',
-                answer: 'ブラウザを更新する、キャッシュをクリアする、JavaScriptが有効になっているか確認する、対応ブラウザ（Chrome、Firefox、Safari、Edge）を使用しているか確認してください。',
+                lastUpdated: new Date().toISOString('';
+    id: 'game_not_loading';
+                category: 'troubleshooting';
+                question: 'ゲームが読み込まれない';
+                answer: 'ブラウザを更新する、キャッシュをクリアする、JavaScriptが有効になっているか確認する、対応ブラウザ（Chrome、Firefox、Safari、Edge）を使用しているか確認してください。';
                 tags: ['読み込み', 'エラー', 'ブラウザ],';
                 difficulty: 'beginner',')';
-                lastUpdated: new Date().toISOString('',
-    id: 'save_data_lost',
-                category: 'troubleshooting',
-                question: 'セーブデータが消えた',
-                answer: 'ブラウザのローカルストレージが削除された可能性があります。プライベートモード使用、クッキー削除、ブラウザのストレージクリアが原因の場合があります。バックアップ機能を使用することをお勧めします。',
+                lastUpdated: new Date().toISOString('';
+    id: 'save_data_lost';
+                category: 'troubleshooting';
+                question: 'セーブデータが消えた';
+                answer: 'ブラウザのローカルストレージが削除された可能性があります。プライベートモード使用、クッキー削除、ブラウザのストレージクリアが原因の場合があります。バックアップ機能を使用することをお勧めします。';
                 tags: ['セーブデータ', '消失', 'ローカルストレージ],';
-                difficulty: 'intermediate'),
-                lastUpdated: new Date().toISOString(),
-                viewCount: 0,
-                helpfulCount: 0,
+                difficulty: 'intermediate');
+                lastUpdated: new Date().toISOString();
+                viewCount: 0;
+                helpfulCount: 0;
     notHelpfulCount: 0  }
         ];
         this.initialize();
@@ -211,13 +211,11 @@ export class FAQSystem {
      */
     async initialize(): Promise<void> { try {
             // カテゴリの初期化
-            this.initializeCategories(),
-            
+            this.initializeCategories();
             // FAQ データの初期化
-            await this.initializeFAQData(),
-            
+            await this.initializeFAQData();
             // 検索インデックスの構築
-            this.buildSearchIndex(),
+            this.buildSearchIndex();
             // ユーザー統計の読み込み
             this.loadUserStatistics()','
             this.loggingSystem.info('FAQSystem', 'FAQ system initialized',' }'
@@ -232,11 +230,11 @@ export class FAQSystem {
      */
     private initializeCategories(): void { this.defaultCategories.forEach(category => { 
             this.categories.set(category.id, {
-                ...category),
+                ...category);
                 faqCount: 0,
     viewCount: 0) }
                 lastAccessed: null); 
-    });
+    };
     }
     
     /**
@@ -245,16 +243,16 @@ export class FAQSystem {
     private async initializeFAQData(): Promise<void> { // デフォルトFAQをデータベースに追加
         this.defaultFAQs.forEach(faq => { 
             this.faqDatabase.set(faq.id, {
-                ...faq),
+                ...faq);
                 id: faq.id),
-                createdAt: new Date().toISOString(),
-    popularity: 0 })
+                createdAt: new Date().toISOString();
+    popularity: 0 }
                 relevanceScore: 0 
-    });
+    };
             // カテゴリのFAQ数を更新
             const category = this.categories.get(faq.category);
             if (category) { category.faqCount!++ }
-        });
+        };
         
         // 外部FAQデータの読み込み（必要に応じて）
         await this.loadExternalFAQData();
@@ -265,27 +263,25 @@ export class FAQSystem {
      */
     private async loadExternalFAQData(): Promise<void> { try {
             if (this.gameEngine.helpManager?.contentLoader) {
-                const faqContent = await this.gameEngine.helpManager.contentLoader.loadFAQData(),
+                const faqContent = await this.gameEngine.helpManager.contentLoader.loadFAQData();
                 if (faqContent && Array.isArray(faqContent) {
-                    faqContent.forEach(faq => { ),
+                    faqContent.forEach(faq => { );
                         if (!this.faqDatabase.has(faq.id) {
-                            this.faqDatabase.set(faq.id, faq),
-                            
+                            this.faqDatabase.set(faq.id, faq);
                             const category = this.categories.get(faq.category) }
                             if (category) { }
                                 category.faqCount!++; }
 }
-                    });
+                    };
                 }'} catch (error) {'
-            this.loggingSystem.warn('FAQSystem', 'Failed to load external FAQ data', error),
+            this.loggingSystem.warn('FAQSystem', 'Failed to load external FAQ data', error);
             // エラーが発生してもデフォルトデータで継続 }
     }
     
     /**
      * 検索インデックスの構築
      */ : undefined
-    private buildSearchIndex(): void { this.searchIndex.clear(),
-        
+    private buildSearchIndex(): void { this.searchIndex.clear();
         for(const [faqId, faq] of this.faqDatabase) {
         
             // 検索可能なテキストを抽出
@@ -295,8 +291,8 @@ export class FAQSystem {
             ].join(').toLowerCase(),'
             
             // キーワードごとにインデックス化
-            const words = searchableText.split(/\s+/),
-            words.forEach(word => { ),
+            const words = searchableText.split(/\s+/);
+            words.forEach(word => { );
                 if (word.length >= 2) { // 2文字以上のワードのみ
         
         }
@@ -305,7 +301,7 @@ export class FAQSystem {
                     }
                     this.searchIndex.get(word)!.add(faqId);
                 }
-            });
+            };
         }
     }
     
@@ -324,7 +320,7 @@ export class FAQSystem {
             const matchingFAQs = new Map<string, number>(); // FAQ ID -> スコア
             
             // 検索語ごとにマッチングFAQを収集
-            searchTerms.forEach(term => {  ),
+            searchTerms.forEach(term => {  );
                 if (this.searchIndex.has(term) {
                     const faqIds = this.searchIndex.get(term)!,
                     for (const faqId of faqIds) {
@@ -332,13 +328,12 @@ export class FAQSystem {
                         const currentScore = matchingFAQs.get(faqId) || 0; }
                         matchingFAQs.set(faqId, currentScore + 1); }
 }
-            });
+            };
             
             // 完全一致・部分一致のボーナススコア
             for(const [faqId, faq] of this.faqDatabase) {
-                const questionLower = faq.question.toLowerCase(),
-                const answerLower = faq.answer.toLowerCase(),
-                
+                const questionLower = faq.question.toLowerCase();
+                const answerLower = faq.answer.toLowerCase();
                 let bonusScore = 0,
                 
                 // 質問での完全一致
@@ -374,12 +369,12 @@ export class FAQSystem {
             return this.applyFiltersAndPagination(sortedResults, options);
 
         } catch (error) {
-            this.loggingSystem.error('FAQSystem', 'FAQ search error', error),
+            this.loggingSystem.error('FAQSystem', 'FAQ search error', error);
             return { faqs: [],
                 totalCount: 0,
                 page: 1,
-    totalPages: 0 };
-                hasMore: false;
+    totalPages: 0 },
+                hasMore: false,
     }
     
     /**
@@ -388,7 +383,7 @@ export class FAQSystem {
      * @returns FAQ一覧
      */
     getAllFAQs(options: SearchOptions = { ): SearchResult {
-        const allFAQs = Array.from(this.faqDatabase.values(),
+        const allFAQs = Array.from(this.faqDatabase.values();
         return this.applyFiltersAndPagination(allFAQs, options) }
     
     /**
@@ -398,11 +393,9 @@ export class FAQSystem {
      * @returns FAQ一覧
      */
     getFAQsByCategory(categoryId: string, options: SearchOptions = { ): SearchResult {
-        const categoryFAQs = Array.from(this.faqDatabase.values(),
-            .filter(faq => faq.category === categoryId),
-        
-        return this.applyFiltersAndPagination(categoryFAQs, options),
-    
+        const categoryFAQs = Array.from(this.faqDatabase.values();
+            .filter(faq => faq.category === categoryId);
+        return this.applyFiltersAndPagination(categoryFAQs, options);
     /**
      * フィルタリングとページネーションの適用
      * @param faqs - FAQ配列
@@ -420,7 +413,7 @@ export class FAQSystem {
         
         // タグフィルター
         if (options.tags && options.tags.length > 0) {
-            filteredFAQs = filteredFAQs.filter(faq => ),
+            filteredFAQs = filteredFAQs.filter(faq => );
                 faq.tags && faq.tags.some(tag => options.tags!.includes(tag) }
             ); }
         }
@@ -434,10 +427,10 @@ export class FAQSystem {
         const startIndex = (page - 1) * itemsPerPage;
         const endIndex = startIndex + itemsPerPage;
         
-        return { faqs: filteredFAQs.slice(startIndex, endIndex),
+        return { faqs: filteredFAQs.slice(startIndex, endIndex);
             totalCount: filteredFAQs.length,
             page: page,
-    totalPages: Math.ceil(filteredFAQs.length / itemsPerPage) };
+    totalPages: Math.ceil(filteredFAQs.length / itemsPerPage) },
             hasMore: endIndex < filteredFAQs.length 
     }
     
@@ -472,14 +465,13 @@ export class FAQSystem {
      * @param faqId - FAQ ID
      * @returns FAQ詳細
      */
-    getFAQ(faqId: string): FAQData | null { const faq = this.faqDatabase.get(faqId),
+    getFAQ(faqId: string): FAQData | null { const faq = this.faqDatabase.get(faqId);
         if (faq) {
             // 閲覧数を増加
             faq.viewCount = (faq.viewCount || 0) + 1,
-            faq.lastViewed = new Date().toISOString(),
-            
+            faq.lastViewed = new Date().toISOString();
             // カテゴリの閲覧数も更新
-            const category = this.categories.get(faq.category),
+            const category = this.categories.get(faq.category);
             if (category) {
                 category.viewCount = (category.viewCount || 0) + 1,
                 category.lastAccessed = new Date().toISOString()','
@@ -495,7 +487,7 @@ export class FAQSystem {
      * @param comment - コメント（オプション）'
      */''
     recordFeedback(faqId: string, feedbackType: FeedbackType, comment: string = '): void { try {'
-            const faq = this.faqDatabase.get(faqId),
+            const faq = this.faqDatabase.get(faqId);
             if (!faq) return,
             ','
             // FAQのフィードバック統計を更新
@@ -515,7 +507,7 @@ export class FAQSystem {
             this.feedbackData.set(feedbackId, { faqId: faqId)
                , type: feedbackType),
                 comment: comment),
-                timestamp: new Date().toISOString(),
+                timestamp: new Date().toISOString();
     userAgent: navigator.userAgent'
             }'
 
@@ -538,14 +530,14 @@ export class FAQSystem {
         const statsKey = `${faqId}_${action}`;
         const currentStats = this.usageStatistics.get(statsKey) || { count: 0,
             lastAction: null,
-    details: []  };
+    details: []  },
         currentStats.count++;
         currentStats.lastAction = new Date().toISOString();
         
         if (details) { currentStats.details.push({)
                 value: details,
-                timestamp: new Date().toISOString(), 
-    });
+                timestamp: new Date().toISOString();
+    };
             
             // 詳細は最新10件のみ保持
             if (currentStats.details.length > 10) { currentStats.details = currentStats.details.slice(-10) }
@@ -605,7 +597,7 @@ export class FAQSystem {
      * @returns 最近のFAQ一覧
      */
     getRecentFAQs(limit: number = 5): FAQData[] { return Array.from(this.faqDatabase.values()
-            .sort((a, b) => new Date(b.lastUpdated).getTime() - new Date(a.lastUpdated).getTime(),
+            .sort((a, b) => new Date(b.lastUpdated).getTime() - new Date(a.lastUpdated).getTime();
             .slice(0, limit) }
     }
     
@@ -615,11 +607,11 @@ export class FAQSystem {
      * @param limit - 取得件数
      * @returns 関連FAQ一覧
      */
-    getRelatedFAQs(faqId: string, limit: number = 3): RelatedFAQ[] { const targetFAQ = this.faqDatabase.get(faqId),
+    getRelatedFAQs(faqId: string, limit: number = 3): RelatedFAQ[] { const targetFAQ = this.faqDatabase.get(faqId);
         if (!targetFAQ) return [],
         
-        const relatedFAQs = Array.from(this.faqDatabase.values(),
-            .filter(faq => faq.id !== faqId),
+        const relatedFAQs = Array.from(this.faqDatabase.values();
+            .filter(faq => faq.id !== faqId);
             .map(faq => { 
                 let, score = 0)
                 ),
@@ -638,10 +630,9 @@ export class FAQSystem {
                 if (faq.difficulty === targetFAQ.difficulty) { score += 1 }
                 
                 return { ...faq, relationScore: score,)
-            .filter(faq => faq.relationScore > 0),
+            .filter(faq => faq.relationScore > 0);
             .sort((a, b) => b.relationScore - a.relationScore),
-            .slice(0, limit),
-        
+            .slice(0, limit);
         return relatedFAQs }
     
     /**
@@ -652,12 +643,12 @@ export class FAQSystem {
      */
     getSearchSuggestions(query: string, limit: number = 5): string[] { if (!query || query.length < 2) return [],
         
-        const queryLower = query.toLowerCase(),
+        const queryLower = query.toLowerCase();
         const suggestions = new Set<string>(),
         
         // 質問からの抽出
         for (const faq of this.faqDatabase.values() {
-            const question = faq.question.toLowerCase(),
+            const question = faq.question.toLowerCase();
             if (question.includes(queryLower) {
         }
                 suggestions.add(faq.question); }
@@ -687,11 +678,11 @@ export class FAQSystem {
     totalViews: Array.from(this.faqDatabase.values().reduce((sum, faq) => sum + (faq.viewCount || 0), 0),
             totalFeedback: this.feedbackData.size,
             mostPopularFAQ: this.getPopularFAQs(1)[0],
-    categoryStats: Object.fromEntries(),
+    categoryStats: Object.fromEntries();
                 Array.from(this.categories.entries().map(([id, category]) => [id,
                     {
                         name: category.name,
-    faqCount: category.faqCount || 0 };
+    faqCount: category.faqCount || 0 },
                         viewCount: category.viewCount || 0 }]
                     }]
                 ]);
@@ -702,14 +693,13 @@ export class FAQSystem {
      */
     cleanup(): void { try {
             // 統計データの保存
-            this.saveUserStatistics(),
-            
+            this.saveUserStatistics();
             // データのクリア
-            this.faqDatabase.clear(),
-            this.categories.clear(),
-            this.searchIndex.clear(),
-            this.feedbackData.clear(),
-            this.usageStatistics.clear(),
+            this.faqDatabase.clear();
+            this.categories.clear();
+            this.searchIndex.clear();
+            this.feedbackData.clear();
+            this.usageStatistics.clear();
             this.userPreferences.clear()','
             this.loggingSystem.info('FAQSystem', 'FAQ system cleaned up',' }'
 

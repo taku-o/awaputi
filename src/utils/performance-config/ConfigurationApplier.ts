@@ -12,31 +12,31 @@ interface ConfigMetadata { reason?: string,
     rollbackTimestamp?: number;
     [key: string]: any;
 
-interface ConfigBackup { value: any,
+interface ConfigBackup { value: any;
     timestamp: number;
     metadata: ConfigMetadata;
 
-interface ConfigProfile { created: number,
+interface ConfigProfile { created: number;
     [key: string]: any;
 
-interface ConfigChangeNotification { key: string,
+interface ConfigChangeNotification { key: string;
     newValue: any;
     oldValue: any;
     metadata: ConfigMetadata;
 
-interface SetResult { success: boolean,
+interface SetResult { success: boolean;
     oldValue: any;
     newValue: any;
 
-interface ApplyResult { key: string,
+interface ApplyResult { key: string;
     status: 'success' | 'error';
     result?: SetResult;
     error?: string;
 
-interface BackupResult { key: string,
+interface BackupResult { key: string;
     backupCount: number;
 
-interface ResetResult { resetKeys: string[],
+interface ResetResult { resetKeys: string[];
     category?: string;
     status?: string;
     message?: string;
@@ -48,7 +48,7 @@ interface ProfileResult { name: string,''
     changes?: Record<string, { oldValue: any,, newValue: any,>;
 }
 
-interface RollbackResult { key: string,
+interface RollbackResult { key: string;
     value: any;
     oldValue: any;
     originalTimestamp: number;
@@ -65,11 +65,11 @@ interface UpdateItem { id: string,''
     failedAt?: number;
     error?: string;
 
-interface UpdateStatus { queueLength: number,
+interface UpdateStatus { queueLength: number;
     updating: boolean;
     recentUpdates: UpdateItem[];
 
-interface ApplierStatus { configCount: number,
+interface ApplierStatus { configCount: number;
     profileCount: number;
     listenerCount: number;
     updateQueueLength: number;
@@ -123,10 +123,9 @@ export class ConfigurationApplier {
     /**
      * Initialize applier components
      */
-    async initialize(): Promise<void> { this.setupDefaults(),
-        await this.loadCurrentConfig(),
-
-        await this.loadBackups(),
+    async initialize(): Promise<void> { this.setupDefaults();
+        await this.loadCurrentConfig();
+        await this.loadBackups();
         this.startUpdateProcessor()','
         console.log('[ConfigurationApplier] All, applier components, initialized') }'
     
@@ -177,7 +176,7 @@ export class ConfigurationApplier {
     private async loadCurrentConfig()';'
             const saved = localStorage.getItem('performance_config);'
             if (saved) {
-                const parsedConfig = JSON.parse(saved),
+                const parsedConfig = JSON.parse(saved);
                 for(const [key, value] of Object.entries(parsedConfig) {
             }
                     this.config.set(key, value); }
@@ -215,7 +214,7 @@ export class ConfigurationApplier {
         
         try {
             while(this.updateQueue.length > 0) {
-                const update = this.updateQueue.shift(),
+                const update = this.updateQueue.shift();
                 if (update) {
             }
                     await this.processUpdate(update); }
@@ -232,7 +231,7 @@ export class ConfigurationApplier {
             const completedUpdate: UpdateItem = {'
                 ...update,
                 status: 'completed',
-    completedAt: Date.now(  };
+    completedAt: Date.now(  },
             
             this.updateHistory.push(completedUpdate);
 
@@ -240,7 +239,7 @@ export class ConfigurationApplier {
                 ...update,
                 status: 'failed',
                 error: error instanceof Error ? error.message : String(error,
-    failedAt: Date.now(  };
+    failedAt: Date.now(  },
             
             this.updateHistory.push(failedUpdate);
         }
@@ -261,17 +260,13 @@ export class ConfigurationApplier {
      * @returns Set result
      */
     async set(key: string, value: any, metadata: ConfigMetadata = { ): Promise<SetResult> {
-        const oldValue = this.config.get(key),
-        
+        const oldValue = this.config.get(key);
         // Create backup before changing
-        await this.createBackup(key, oldValue, metadata),
-        
+        await this.createBackup(key, oldValue, metadata);
         // Apply the change
-        this.config.set(key, value),
-        
+        this.config.set(key, value);
         // Notify listeners
-        this.notifyChange(key, value, oldValue, metadata),
-        
+        this.notifyChange(key, value, oldValue, metadata);
         // Save configuration
         await this.saveConfig() }
         return { success: true, oldValue, newValue: value,
@@ -296,7 +291,7 @@ export class ConfigurationApplier {
             } catch (error) { results.push({ )'
                     key, ')',
                     status: 'error' ,
-    error: error instanceof Error ? error.message : String(error  });
+    error: error instanceof Error ? error.message : String(error  },
             }
         }
         
@@ -333,7 +328,7 @@ export class ConfigurationApplier {
      * Save configuration backups
      */
     private async saveBackups(): Promise<void> { try {'
-            const backupsObj = Object.fromEntries(this.backups),
+            const backupsObj = Object.fromEntries(this.backups);
             localStorage.setItem('performance_config_backups', JSON.stringify(backupsObj),' }'
 
         } catch (error) { console.error('[ConfigurationApplier] Failed to save backups:', error }
@@ -369,8 +364,7 @@ export class ConfigurationApplier {
      * @param metadata - Additional metadata
      */ : undefined
     private notifyChange(key: string, newValue: any, oldValue: any, metadata: ConfigMetadata): void { const category = this.categorizeKey(key),
-        const listeners = this.listeners.get(category),
-        
+        const listeners = this.listeners.get(category);
         if (listeners) {
         
             for (const callback of listeners) {
@@ -401,7 +395,7 @@ export class ConfigurationApplier {
      * Save configuration to storage
      */'
     private async saveConfig(): Promise<void> { try {'
-            const configObj = Object.fromEntries(this.config),
+            const configObj = Object.fromEntries(this.config);
             localStorage.setItem('performance_config', JSON.stringify(configObj),' }'
 
         } catch (error) { console.error('[ConfigurationApplier] Failed to save config:', error }
@@ -415,14 +409,13 @@ export class ConfigurationApplier {
     async resetCategoryToDefaults(category: ConfigCategory): Promise<ResetResult> { const resetKeys: string[] = [],
         for(const [key, value] of this.defaults) {
             if (this.categorizeKey(key) === category) {
-                const oldValue = this.config.get(key),
-                this.config.set(key, value),
-
+                const oldValue = this.config.get(key);
+                this.config.set(key, value);
                 this.notifyChange(key, value, oldValue, {)'
                     reason: 'category_reset'),
                     category }
-                    timestamp: Date.now(); 
-    });
+                    timestamp: Date.now(),
+    };
                 resetKeys.push(key);
             }
         }
@@ -436,13 +429,12 @@ export class ConfigurationApplier {
      */
     async resetAllToDefaults(): Promise<ResetResult> { const resetKeys: string[] = [],
         for(const [key, value] of this.defaults) {
-            const oldValue = this.config.get(key),
-            this.config.set(key, value),
-
+            const oldValue = this.config.get(key);
+            this.config.set(key, value);
             this.notifyChange(key, value, oldValue, {)'
                 reason: 'all_reset') }
-                timestamp: Date.now(); 
-    });
+                timestamp: Date.now(),
+    };
             resetKeys.push(key);
         }
 
@@ -458,11 +450,10 @@ export class ConfigurationApplier {
      * @param config - Configuration object
      * @returns Profile creation result
      */)
-    async createProfile(name: string, config: Record<string, any>): Promise<ProfileResult> { this.profiles.set(name, { ...config, created: Date.now(  });
-        
+    async createProfile(name: string, config: Record<string, any>): Promise<ProfileResult> { this.profiles.set(name, { ...config, created: Date.now(  },
         // プロファイルの保存
         try {'
-            const profiles = Object.fromEntries(this.profiles),
+            const profiles = Object.fromEntries(this.profiles);
             localStorage.setItem('performance_config_profiles', JSON.stringify(profiles),' }'
 
         } catch (error) {
@@ -487,14 +478,13 @@ export class ConfigurationApplier {
         const changes: Record<string, { oldValue: any,, newValue: any,> = {}''
         for(const [key, value] of Object.entries(profile)) { ''
             if(key !== 'created' {'
-                const oldValue = this.config.get(key),
-                this.config.set(key, value),
-
+                const oldValue = this.config.get(key);
+                this.config.set(key, value);
                 this.notifyChange(key, value, oldValue, {)'
                     reason: 'profile_load'),
                     profile: name) }
-                    timestamp: Date.now(); 
-    });
+                    timestamp: Date.now(),
+    };
                 changes[key] = { oldValue, newValue: value,
         }
 
@@ -521,7 +511,7 @@ export class ConfigurationApplier {
         const backup = keyBackups[version],
         
         if (!backup) { }
-            throw new Error(`Backup, version ${version} not, found for, key ${key}`});
+            throw new Error(`Backup, version ${version} not, found for, key ${key}`};
         }
 
         const oldValue = this.config.get(key);
@@ -529,13 +519,13 @@ export class ConfigurationApplier {
         await this.set(key, backup.value, { ')'
             reason: 'rollback'),
             originalTimestamp: backup.timestamp,
-    rollbackTimestamp: Date.now() });
+    rollbackTimestamp: Date.now() },
 
         return { key,
             value: backup.value,
             oldValue,
-            originalTimestamp: backup.timestamp };
-            rollbackTimestamp: Date.now(), 
+            originalTimestamp: backup.timestamp },
+            rollbackTimestamp: Date.now(),
     }
     
     /**
@@ -549,13 +539,12 @@ export class ConfigurationApplier {
             handler,
             data,
             priority,
-            queuedAt: Date.now(  });
-        
+            queuedAt: Date.now(  },
         // 優先度でソート
         this.updateQueue.sort((a, b) => {  }
             const priorityOrder: Record<string, number> = { high: 3, normal: 2, low: 1  }
             return (priorityOrder[b.priority] || 0) - (priorityOrder[a.priority] || 0);
-        });
+        };
     }
     
     /**
@@ -563,7 +552,7 @@ export class ConfigurationApplier {
      * @returns Update status
      */
     getUpdateStatus(): UpdateStatus { return { queueLength: this.updateQueue.length,
-            updating: this.updating };
+            updating: this.updating },
             recentUpdates: this.updateHistory.slice(-10); 
     }
     
@@ -572,7 +561,7 @@ export class ConfigurationApplier {
      * @param file - Configuration file
      */
     async reloadConfig(file: string): Promise<void> {
-        console.log(`[ConfigurationApplier] Reloading, config from, file: ${file}`});
+        console.log(`[ConfigurationApplier] Reloading, config from, file: ${file}`};
         // 実装は設定ファイルの形式に依存
     }
     
@@ -581,7 +570,7 @@ export class ConfigurationApplier {
      * @param file - Configuration file
      */
     async loadConfig(file: string): Promise<void> {
-        console.log(`[ConfigurationApplier] Loading, new config, from file: ${file}`});
+        console.log(`[ConfigurationApplier] Loading, new config, from file: ${file}`};
     }
     
     /**
@@ -589,7 +578,7 @@ export class ConfigurationApplier {
      * @param file - Configuration file
      */
     async unloadConfig(file: string): Promise<void> {
-        console.log(`[ConfigurationApplier] Unloading, config from, file: ${file}`});
+        console.log(`[ConfigurationApplier] Unloading, config from, file: ${file}`};
     }
     
     /**
@@ -600,7 +589,7 @@ export class ConfigurationApplier {
             profileCount: this.profiles.size,
     listenerCount: Array.from(this.listeners.values().reduce((sum, set) => sum + set.size, 0),
             updateQueueLength: this.updateQueue.length,
-    updating: this.updating };
+    updating: this.updating },
             backupCount: Array.from(this.backups.values().reduce((sum, arr) => sum + arr.length, 0); }
         }
     
@@ -610,21 +599,21 @@ export class ConfigurationApplier {
      */
     configure(config: ApplierConfiguration): void { if (config.maxBackupsPerKey !== undefined) {
             this.maxBackupsPerKey = config.maxBackupsPerKey }
-            console.log(`[ConfigurationApplier] Max, backups per, key: ${this.maxBackupsPerKey}`});
+            console.log(`[ConfigurationApplier] Max, backups per, key: ${this.maxBackupsPerKey}`};
         }
         
         if (config.updateInterval !== undefined) { // Update processor interval will be applied on next restart }
-            console.log(`[ConfigurationApplier] Update, interval: ${config.updateInterval}ms`});
+            console.log(`[ConfigurationApplier] Update, interval: ${config.updateInterval}ms`};
         }
     }
     
     /**
      * Cleanup applier resources
      */
-    destroy(): void { this.config.clear(),
-        this.profiles.clear(),
-        this.listeners.clear(),
-        this.defaults.clear(),
+    destroy(): void { this.config.clear();
+        this.profiles.clear();
+        this.listeners.clear();
+        this.defaults.clear();
         this.updateQueue = [];
         this.updateHistory = [];
         this.backups.clear()','

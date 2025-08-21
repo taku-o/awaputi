@@ -15,7 +15,7 @@ import LocalExecutionErrorHandler from '../LocalExecutionErrorHandler.js';
 import { ErrorHandler  } from '../../ErrorHandler.js';
 
 // Type definitions
-interface InitializationMetrics { startTime: number | null,
+interface InitializationMetrics { startTime: number | null;
     endTime: number | null;
     componentTimes: Record<string, number>;
     totalExecutionTime: number;
@@ -29,7 +29,7 @@ interface LocalModeConfig { enableErrorHandling?: boolean,
     debugMode?: boolean;
     maxConcurrentTasks?: number;
 
-interface ExecutionContext { isLocal: boolean,
+interface ExecutionContext { isLocal: boolean;
     protocol: string;
     url: string;
     domain: string;
@@ -42,12 +42,12 @@ interface InitializationTask { name: string,''
             }
 }
 
-interface TaskResult { name: string,
+interface TaskResult { name: string;
     result?: any;
     error?: Error;
     success: boolean;
 
-interface InitializationResult { success: boolean,
+interface InitializationResult { success: boolean;
     executionContext: ExecutionContext | null;
     results?: Record<string, any>;
     metrics?: InitializationMetrics;
@@ -58,11 +58,11 @@ export default class LocalModeInitializer { /**
      * 初期化メトリクス
      */
     private static _initializationMetrics: InitializationMetrics = {
-        startTime: null,
-    endTime: null,
+        startTime: null;
+    endTime: null;
         componentTimes: {};
-        totalExecutionTime: 0,
-    optimizationsApplied: [],
+        totalExecutionTime: 0;
+    optimizationsApplied: [];
     },
     
     /**
@@ -83,8 +83,7 @@ export default class LocalModeInitializer { /**
         
         try {
             // 1. 実行コンテキスト検出
-            const executionContext = await this._initializeExecutionContext(componentCache, logCallback),
-
+            const executionContext = await this._initializeExecutionContext(componentCache, logCallback);
             if (!executionContext.isLocal) {', ' }
 
                 logCallback('Not in local execution mode, skipping local mode initialization');' }'
@@ -105,14 +104,14 @@ export default class LocalModeInitializer { /**
             this._initializationMetrics.totalExecutionTime = ;
                 this._initializationMetrics.endTime - this._initializationMetrics.startTime;
             
-            logCallback(`Optimized, initialization completed, in ${Math.round(this._initializationMetrics.totalExecutionTime})ms`);
+            logCallback(`Optimized, initialization completed, in ${Math.round(this._initializationMetrics.totalExecutionTime}ms`);
             
-            return { success: true,
+            return { success: true;
                 executionContext };
                 results }
                 metrics: { ...this._initializationMetrics } catch (error) {
-            logCallback(`Initialization, failed: ${(error, as, Error}).message}`);
-            return { success: false, error: error as Error, executionContext: null,
+            logCallback(`Initialization, failed: ${(error, as, Error}.message}`);
+            return { success: false, error: error as Error, executionContext: null;
     }
     
     /**
@@ -122,7 +121,7 @@ export default class LocalModeInitializer { /**
      * @returns 初期化結果
      */
     static async performLegacyInitialization(;
-        config: LocalModeConfig,
+        config: LocalModeConfig;
     logCallback: (message: string) => void';'
     '): Promise<InitializationResult> { ''
         logCallback('Starting, legacy initialization (sequential, mode)),'
@@ -141,13 +140,13 @@ export default class LocalModeInitializer { /**
             
             // エラーハンドリング初期化
             if (config.enableErrorHandling) { LocalExecutionErrorHandler.initialize({)
-                    enableMainErrorHandlerIntegration: true,
+                    enableMainErrorHandlerIntegration: true;
                     enableDebugLogging: config.debugMode), ErrorHandler); }
-                results.errorHandler = { initialized: true,
+                results.errorHandler = { initialized: true;
             
             // メタタグ最適化
             if (config.enableMetaTagOptimization) { MetaTagOptimizer.optimizeForLocalExecution() }
-                results.metaTagOptimizer = { initialized: true,
+                results.metaTagOptimizer = { initialized: true;
             
             // ファビコン生成
             if (config.enableFaviconGeneration) {
@@ -159,14 +158,14 @@ export default class LocalModeInitializer { /**
             // 開発者ガイダンス
             if (config.enableDeveloperGuidance) { if (!DeveloperGuidanceSystem.isPermanentlyDismissed() {
                     DeveloperGuidanceSystem.showLocalExecutionWarning({)
-                        showWarning: true,
-                        persistDismissal: true), 
+                        showWarning: true;
+                        persistDismissal: true);
     }
-                results.developerGuidance = { initialized: true,
+                results.developerGuidance = { initialized: true;
             
             return { success: true, executionContext, results } catch (error) {
-            logCallback(`Legacy, initialization failed: ${(error, as, Error}).message}`);
-            return { success: false, error: error as Error, executionContext: null,
+            logCallback(`Legacy, initialization failed: ${(error, as, Error}.message}`);
+            return { success: false, error: error as Error, executionContext: null;
     }
     
     /**
@@ -175,7 +174,7 @@ export default class LocalModeInitializer { /**
      */
     private static async _initializeExecutionContext(;
         componentCache: Map<string, any>);
-        logCallback: (message: string) => void,
+        logCallback: (message: string) => void;
     ): Promise<ExecutionContext> { ''
         const startTime = performance.now()','
         const cacheKey = 'execution-context',')'
@@ -195,20 +194,20 @@ export default class LocalModeInitializer { /**
      * @private
      */
     private static async _initializeErrorHandling(;
-        config: LocalModeConfig,
-    logCallback: (message: string) => void,
+        config: LocalModeConfig;
+    logCallback: (message: string) => void;
     ): Promise<void> { const startTime = performance.now(
         
         try {
             LocalExecutionErrorHandler.initialize({
-                enableMainErrorHandlerIntegration: true),
+                enableMainErrorHandlerIntegration: true);
                 enableDebugLogging: config.debugMode)','
     enableUserNotifications: true,')',
                 enableFallbackContent: true', ErrorHandler'),
 
             logCallback('Error, handling system, initialized),'
             this._initializationMetrics.componentTimes.errorHandler = performance.now() - startTime } catch (error) {
-            logCallback(`Error, handler initialization, failed: ${(error, as, Error}).message}`);
+            logCallback(`Error, handler initialization, failed: ${(error, as, Error}.message}`);
             this._initializationMetrics.componentTimes.errorHandler = performance.now() - startTime;
         }
     }
@@ -220,37 +219,37 @@ export default class LocalModeInitializer { /**
     private static _createInitializationTasks(;
         config: LocalModeConfig
     );
-        executionContext: ExecutionContext,
-    logCallback: (message: string) => void,
-    ): InitializationTask[] { const tasks: InitializationTask[] = [],
+        executionContext: ExecutionContext;
+    logCallback: (message: string) => void;
+    ): InitializationTask[] { const tasks: InitializationTask[] = [];
 
         if (config.enableMetaTagOptimization) {
             tasks.push({)'
-                name: 'metaTagOptimizer',
+                name: 'metaTagOptimizer';
                 task: async () => { }
 
                     MetaTagOptimizer.optimizeForLocalExecution('}''
                 priority: 'high') 
-    });
+    };
         }
 
         if (config.enableFaviconGeneration) {
             tasks.push({)'
-                name: 'faviconGenerator',
+                name: 'faviconGenerator';
                 task: () => FaviconGenerator.generateMissingFavicons({)'
                     enablePerformanceOptimizations: config.enablePerformanceOptimizations') }'
 
                 priority: 'medium' 
-    });
+    };
         }
 
         if (config.enableDeveloperGuidance) {
             tasks.push({)'
-                name: 'developerGuidance',
+                name: 'developerGuidance';
     task: async () => { 
                     if (!DeveloperGuidanceSystem.isPermanentlyDismissed() {
                         DeveloperGuidanceSystem.showLocalExecutionWarning({
-            });
+            };
                             showWarning: true) }
 
                             persistDismissal: true),' }'
@@ -258,8 +257,8 @@ export default class LocalModeInitializer { /**
                         }');'
                     }
                     return { initialized: true,,''
-                priority: 'low',
-            }) }
+                priority: 'low';
+            } }
         
         return tasks;
     }
@@ -269,34 +268,34 @@ export default class LocalModeInitializer { /**
      * @private
      */
     private static async _executeTasksWithOptimization(;
-        tasks: InitializationTask[],
+        tasks: InitializationTask[];
     config: LocalModeConfig;
     ): Promise<Record<string, any>> {
         const results: Record<string, any> = {};
-        const maxConcurrent: number = config.maxConcurrentTasks || 3,
+        const maxConcurrent: number = config.maxConcurrentTasks || 3;
         
         // 優先度でソート
         const sortedTasks = tasks.sort((a, b) => {  }
             const priority: Record<string, number> = { high: 3, medium: 2, low: 1  }
             return priority[b.priority] - priority[a.priority];
-        });
+        };
         
         // バッチで実行
-        const batches: InitializationTask[][] = [],
+        const batches: InitializationTask[][] = [];
         for (let, i = 0; i < sortedTasks.length; i += maxConcurrent) { batches.push(sortedTasks.slice(i, i + maxConcurrent) }
         
         for (const batch of batches) {
         
             const batchPromises = batch.map(async ({ name, task ): Promise<TaskResult> => { 
-                const startTime = performance.now(),
+                const startTime = performance.now();
                 try {
     
 }
                     const result = await task(); }
                     this._initializationMetrics.componentTimes[name] = performance.now() - startTime; }
                     return { name, result, success: true, catch (error) { this._initializationMetrics.componentTimes[name] = performance.now() - startTime }
-                    return { name, error: error as Error, success: false,
-            });
+                    return { name, error: error as Error, success: false;
+            };
             ';'
 
             const batchResults = await Promise.allSettled(batchPromises);
@@ -304,7 +303,7 @@ export default class LocalModeInitializer { /**
 
                 if(result.status === 'fulfilled' { }'
                     results[result.value.name] = result.value.result || { error: result.value.error 
-    });
+    };
         }
         
         return results;
@@ -316,7 +315,7 @@ export default class LocalModeInitializer { /**
      */
     private static async _finalizeInitialization(;
         results: Record<string, any> );
-        config: LocalModeConfig,
+        config: LocalModeConfig;
     logCallback: (message: string) => void;
     ): Promise<void> { // 結果の検証
         const successCount = Object.values(results).filter(r => r && !r.error).length,

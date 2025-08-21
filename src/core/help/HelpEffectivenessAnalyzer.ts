@@ -9,12 +9,12 @@ export interface GameEngine { helpAnalytics?: any,
     helpFeedbackSystem?: any;
 export interface HelpAnalyzer { [key: string]: any;
 export interface HelpFeedbackSystem { [key: string]: any;
-export interface EffectivenessConfig { minDataThreshold: number,
+export interface EffectivenessConfig { minDataThreshold: number;
     effectivenessThreshold: number;
     trendAnalysisPeriod: number;
     improvementThreshold: number;
     reportCacheTimeout: number;
-export interface UsageMetrics { totalSessions: number,
+export interface UsageMetrics { totalSessions: number;
     uniqueUsers: number;
     averageSessionDuration: number;
     pageViewsPerSession: number;
@@ -25,17 +25,17 @@ export interface EngagementMetrics { timeSpentPerTopic: Map<string, number>,
     searchSuccessRate: number;
     navigationPatterns: Map<string, number>;
     exitPoints: Map<string, number> }
-export interface SatisfactionMetrics { averageRating: number,
+export interface SatisfactionMetrics { averageRating: number;
     helpfulnessRate: number;
     feedbackVolume: number;
     sentimentScore: number;
     improvementRequests: string[];
-export interface EffectivenessMetrics { problemSolvingRate: number,
+export interface EffectivenessMetrics { problemSolvingRate: number;
     contentUtilization: Map<string, number>;
     userSuccessRate: number;
     knowledgeGapIdentification: Map<string, number>;
     contentQualityScore: number;
-export interface AnalysisMetrics { usage: UsageMetrics,
+export interface AnalysisMetrics { usage: UsageMetrics;
     engagement: EngagementMetrics;
     satisfaction: SatisfactionMetrics;
     effectiveness: EffectivenessMetrics;
@@ -45,47 +45,48 @@ export interface AnalysisOptions { period?: string,
     detailLevel?: string;
     [key: string]: any;
 export interface RawData { [key: string]: any;
-export interface UsageAnalysis { summary: any,
+export interface UsageAnalysis { summary: any;
     [key: string]: any;
-export interface EngagementAnalysis { summary: any,
+export interface EngagementAnalysis { summary: any;
     [key: string]: any;
-export interface SatisfactionAnalysis { summary: any,
+export interface SatisfactionAnalysis { summary: any;
     [key: string]: any;
-export interface EffectivenessScore { overall: number,
+export interface EffectivenessScore { overall: number;
     [key: string]: any;
 export interface TrendAnalysis { [key: string]: any;
 export interface Recommendations { [key: string]: any;
 export interface DataQuality { [key: string]: any;
-export interface AnalysisResult { timestamp: number,
+export interface AnalysisResult { timestamp: number;
     period: string;
     dataQuality: DataQuality;
     overallEffectivenessScore: number;
     keyMetrics: {
-        usag,e: any,
-        engagement: any,
-    satisfaction: any,;
-    detailedAnalysis: { usage: UsageAnalysis,
-        engagement: EngagementAnalysis,
-        satisfaction: SatisfactionAnalysis,
-    effectiveness: EffectivenessScore,;
-    trends: TrendAnalysis | null,
-    recommendations: Recommendations | null,
-    metadata: { analysisOptions: AnalysisOptions,
-        dataVolume: any,
-    confidenceLevel: any,
-
-export interface SystemStatus { initialized: boolean,
+        usag,e: any;
+        engagement: any;
+    satisfaction: any;
+    detailedAnalysis: { usage: UsageAnalysis;
+        engagement: EngagementAnalysis;
+        satisfaction: SatisfactionAnalysis;
+    effectiveness: EffectivenessScore;
+    trends: TrendAnalysis | null;
+    recommendations: Recommendations | null;
+    metadata: { analysisOptions: AnalysisOptions;
+        dataVolume: any;
+    confidenceLevel: any;
+    confidenceLevel: any;
+        };
+export interface SystemStatus { initialized: boolean;
     components: {
-        metricsCollecto,r: boolean,
-        dataAnalyzer: boolean,
-    reportGenerator: boolean,;
-    metrics: AnalysisMetrics,
-    lastActivity: number,
+        metricsCollecto,r: boolean;
+        dataAnalyzer: boolean;
+    reportGenerator: boolean;
+    metrics: AnalysisMetrics;
+    lastActivity: number;
 }
-export interface PerformanceStats { metricsCollection: any,
+export interface PerformanceStats { metricsCollection: any;
     dataAnalysis: any;
     reportGeneration: any;
-export interface ConfigResult { main: EffectivenessConfig,
+export interface ConfigResult { main: EffectivenessConfig;
     metricsCollector: any;
     dataAnalyzer: any;
     reportGenerator: any;
@@ -103,7 +104,7 @@ export class HelpEffectivenessAnalyzer {
     private metrics: AnalysisMetrics;
     private metricsCollector: HelpMetricsCollector;
     private dataAnalyzer: HelpDataAnalyzer;
-    private, reportGenerator: HelpReportGenerator,
+    private, reportGenerator: HelpReportGenerator;
     constructor(gameEngine: GameEngine) {
 
         this.gameEngine = gameEngine;
@@ -115,7 +116,7 @@ export class HelpEffectivenessAnalyzer {
         
         // 分析設定
         this.config = {
-            minDataThreshold: 5;          // 最小データ数の閾値;
+            minDataThreshold: 5,          // 最小データ数の閾値;
             effectivenessThreshold: 0.7,  // 効果性判定閾値（70%）;
             trendAnalysisPeriod: 30,      // トレンド分析期間（日）;
             improvementThreshold: 0.1,    // 改善提案閾値（10%）
@@ -126,31 +127,31 @@ export class HelpEffectivenessAnalyzer {
         // 効果測定指標
         this.metrics = { // 使用率指標
             usage: {
-                totalSessions: 0,
-                uniqueUsers: 0,
-                averageSessionDuration: 0,
-                pageViewsPerSession: 0,
-                searchUsageRate: 0,
+                totalSessions: 0;
+                uniqueUsers: 0;
+                averageSessionDuration: 0;
+                pageViewsPerSession: 0;
+                searchUsageRate: 0;
     returnUserRate: 0 
 };
             // エンゲージメント指標
             engagement: { timeSpentPerTopic: new Map<string, number>();
-                interactionRate: 0,
-                searchSuccessRate: 0,
+                interactionRate: 0;
+                searchSuccessRate: 0;
     navigationPatterns: new Map<string, number>();
                 exitPoints: new Map<string, number>( };
             
             // 満足度指標
-            satisfaction: { averageRating: 0,
-                helpfulnessRate: 0,
-                feedbackVolume: 0,
-                sentimentScore: 0,
+            satisfaction: { averageRating: 0;
+                helpfulnessRate: 0;
+                feedbackVolume: 0;
+                sentimentScore: 0;
     improvementRequests: [] 
 };
             // 効果性指標
-            effectiveness: { problemSolvingRate: 0,
+            effectiveness: { problemSolvingRate: 0;
     contentUtilization: new Map<string, number>();
-                userSuccessRate: 0,
+                userSuccessRate: 0;
     knowledgeGapIdentification: new Map<string, number>();
                 contentQualityScore: 0 
  }
@@ -170,7 +171,7 @@ export class HelpEffectivenessAnalyzer {
      */
     initialize(): void { try {
             // 依存システムの取得
-            this.initializeDependentSystems(),
+            this.initializeDependentSystems();
             // 定期分析の開始
             this.startPeriodicAnalysis()','
             this.loggingSystem.info('HelpEffectivenessAnalyzer', 'Help effectiveness analyzer initialized',' }'
@@ -211,7 +212,7 @@ export class HelpEffectivenessAnalyzer {
                 detailLevel: options.detailLevel || 'comprehensive',
                 ...options,
 
-            this.loggingSystem.info('HelpEffectivenessAnalyzer', 'Starting comprehensive effectiveness analysis'),
+            this.loggingSystem.info('HelpEffectivenessAnalyzer', 'Starting comprehensive effectiveness analysis');
             ','
             // 1. データ収集と検証（メトリクス収集に委譲）
             const rawData = await this.metricsCollector.collectRawData(analysisOptions.period || 'all',
@@ -259,7 +260,7 @@ export class HelpEffectivenessAnalyzer {
                 detailedAnalysis: { usage: usageAnalysis,
                     engagement: engagementAnalysis,
                     satisfaction: satisfactionAnalysis,
-    effectiveness: effectivenessScore,;
+    effectiveness: effectivenessScore,
                 // 追加分析
                 trends: trendAnalysis,
                 recommendations: recommendations,
@@ -270,7 +271,7 @@ export class HelpEffectivenessAnalyzer {
             };
 
             this.loggingSystem.info('HelpEffectivenessAnalyzer);'
-                `Effectiveness analysis completed. Overall score: ${effectivenessScore.overall.toFixed(2})`);
+                `Effectiveness analysis completed. Overall score: ${effectivenessScore.overall.toFixed(2}`),
             
             return analysisResult;
 
@@ -322,8 +323,7 @@ export class HelpEffectivenessAnalyzer {
      * 設定の更新
      * @param newConfig - 新しい設定
      */
-    updateConfig(newConfig: Partial<EffectivenessConfig>): void { Object.assign(this.config, newConfig),
-        
+    updateConfig(newConfig: Partial<EffectivenessConfig>): void { Object.assign(this.config, newConfig);
         // サブコンポーネントにも設定を伝播
         if ((this.metricsCollector, as any).config) {
             Object.assign((this.metricsCollector, as any).config, newConfig) }
@@ -351,7 +351,7 @@ export class HelpEffectivenessAnalyzer {
     getSystemStatus(): SystemStatus { return { initialized: !!(this.helpAnalytics && this.helpFeedbackSystem,
             components: {
                 metricsCollector: !!this.metricsCollector,
-    dataAnalyzer: !!this.dataAnalyzer };
+    dataAnalyzer: !!this.dataAnalyzer },
                 reportGenerator: !!this.reportGenerator ,
     },
             metrics: { ...this.metrics,
@@ -362,8 +362,8 @@ export class HelpEffectivenessAnalyzer {
      * @returns パフォーマンス統計
      */
     getPerformanceStats(): PerformanceStats { return { metricsCollection: this.metricsCollector.getCollectionStats(
-            dataAnalysis: this.dataAnalyzer.getAnalysisStats() };
-            reportGeneration: this.reportGenerator.getGenerationStats(); 
+            dataAnalysis: this.dataAnalyzer.getAnalysisStats() },
+            reportGeneration: this.reportGenerator.getGenerationStats(),
     }
     
     // ========== 後方互換性メソッド ==========

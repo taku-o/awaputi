@@ -4,7 +4,7 @@ import { getEffectQualityController  } from './EffectQualityController.js';
 import { getSeasonalEffectManager  } from './SeasonalEffectManager.js';
 
 // Type definitions for configuration integration system
-interface ConfigurationManager { has(key: string): boolean,
+interface ConfigurationManager { has(key: string): boolean;
     get<T = any>(key: string, defaultValue?: T): T;
     set<T = any>(key: string, value: T): void;
     watch<T = any>(key: string, callback: (newValue: T, oldValue?: T) => void): ConfigWatchListener;
@@ -13,15 +13,15 @@ interface ConfigurationManager { has(key: string): boolean,
 
 interface ErrorHandler { handleError(error: Error, context: string): void;
 
-interface QualityController { setQualityLevel(level: string): void,
+interface QualityController { setQualityLevel(level: string): void;
     setAutoAdjustment(enabled: boolean): void;
 
-interface SeasonalManager { setSeasonalEffectsEnabled(enabled: boolean): void,
+interface SeasonalManager { setSeasonalEffectsEnabled(enabled: boolean): void;
     setAutoSeasonDetection(enabled: boolean): void;
     setSeason(season: string): void;
     autoSeasonDetection?: boolean;
 
-interface AudioManager { setEffectsEnabled?(enabled: boolean): void,
+interface AudioManager { setEffectsEnabled?(enabled: boolean): void;
     setVolumeSync?(enabled: boolean): void;
 type ConfigWatchListener = (newValue: any, oldValue?: any') => void;'
 
@@ -42,25 +42,26 @@ interface DefaultAudioSettings { ', 'effects.audio.enabled': boolean,', 'effects
 interface DefaultPerformanceSettings { ', 'effects.performance.monitoring': boolean,', 'effects.performance.autoOptimization': boolean,', 'effects.performance.culling': boolean,', 'effects.performance.lowLatencyMode': boolean,', 'effects.performance.resourceCleanup': boolean,', 'effects.performance.frameTimeLimit': number;
 
 interface ExportedEffectSettings { quality: {
-        leve,l: string,
-        autoAdjust: boolean,
-        targetFPS: number,
-    maxParticles: number,;
-    seasonal: { enabled: boolean,
-        autoDetection: boolean,
-        events: boolean,
-    customThemes: boolean,;
-    audio: { enabled: boolean,
-        volumeSync: boolean,
-        visualFeedback: boolean,
-    seasonalSounds: boolean,;
-    performance: { monitoring: boolean,
-        autoOptimization: boolean,
-        culling: boolean,
-    resourceCleanup: boolean,;
-    metadata: { version: string,
-    exportTime: number,
-
+        leve,l: string;
+        autoAdjust: boolean;
+        targetFPS: number;
+    maxParticles: number;
+    seasonal: { enabled: boolean;
+        autoDetection: boolean;
+        events: boolean;
+    customThemes: boolean;
+    audio: { enabled: boolean;
+        volumeSync: boolean;
+        visualFeedback: boolean;
+    seasonalSounds: boolean;
+    performance: { monitoring: boolean;
+        autoOptimization: boolean;
+        culling: boolean;
+    resourceCleanup: boolean;
+    metadata: { version: string;
+    exportTime: number;
+    exportTime: number;
+        };
 interface ImportedSettings { quality?: {
         leve,l?: string;
         autoAdjust?: boolean;
@@ -79,14 +80,15 @@ interface ImportedSettings { quality?: {
         culling?: boolean;
         resourceCleanup?: boolean;
 
-interface ConfigurationStats { totalSettings: number,
+interface ConfigurationStats { totalSettings: number;
     lastSyncTime: number;
     syncInProgress: boolean;
     registeredSystems: {
-        qualityControlle,r: boolean,
-        seasonalManager: boolean,
-    audioManager: boolean,
-
+        qualityControlle,r: boolean;
+        seasonalManager: boolean;
+    audioManager: boolean;
+    audioManager: boolean;
+        };
 /**
  * エフェクト設定統合クラス
  * 
@@ -125,17 +127,14 @@ export class EffectConfigurationIntegrator {
      */
     private _initializeConfiguration(): void { try {
             // エフェクト品質設定の初期化
-            this._initializeQualitySettings(),
-            
+            this._initializeQualitySettings();
             // 季節エフェクト設定の初期化
-            this._initializeSeasonalSettings(),
-            
+            this._initializeSeasonalSettings();
             // オーディオ統合設定の初期化
-            this._initializeAudioIntegrationSettings(),
+            this._initializeAudioIntegrationSettings();
             // パフォーマンス設定の初期化
             this._initializePerformanceSettings()','
-            console.log('[EffectConfigurationIntegrator] 設定初期化完了'),
-
+            console.log('[EffectConfigurationIntegrator] 設定初期化完了');
             ' }'
 
         } catch (error) {
@@ -258,7 +257,7 @@ export class EffectConfigurationIntegrator {
     }');'
         ';'
         // パフォーマンス設定の監視
-        this._watchConfig('effects.performance.monitoring', (newValue: boolean) => { this._onPerformanceMonitoringChanged(newValue) });
+        this._watchConfig('effects.performance.monitoring', (newValue: boolean) => { this._onPerformanceMonitoringChanged(newValue) },
     }
     
     /**
@@ -267,7 +266,7 @@ export class EffectConfigurationIntegrator {
      * @param callback - コールバック
      * @private
      */
-    private _watchConfig(key: string, callback: ConfigWatchListener): void { const listener = this.configManager.watch(key, callback),
+    private _watchConfig(key: string, callback: ConfigWatchListener): void { const listener = this.configManager.watch(key, callback);
         this.configListeners.set(key, listener) }
     
     /**
@@ -312,9 +311,8 @@ export class EffectConfigurationIntegrator {
                 const autoDetection = this.configManager.get<boolean>('effects.seasonal.autoDetection'),
                 const currentSeason = this.configManager.get<string>('effects.seasonal.currentSeason),'
                 
-                this.seasonalManager.setSeasonalEffectsEnabled(seasonalEnabled),
-                this.seasonalManager.setAutoSeasonDetection(autoDetection),
-                
+                this.seasonalManager.setSeasonalEffectsEnabled(seasonalEnabled);
+                this.seasonalManager.setAutoSeasonDetection(autoDetection);
                 if (currentSeason && !autoDetection) {
             }
                     this.seasonalManager.setSeason(currentSeason); }
@@ -345,7 +343,7 @@ export class EffectConfigurationIntegrator {
     private _onQualityLevelChanged(newValue: string, oldValue?: string): void { if (this.qualityController) {
             this.qualityController.setQualityLevel(newValue) }
         
-        console.log(`[EffectConfigurationIntegrator] 品質レベル変更: ${oldValue} → ${newValue}`});
+        console.log(`[EffectConfigurationIntegrator] 品質レベル変更: ${oldValue} → ${newValue}`};
     }
     
     /**
@@ -356,7 +354,7 @@ export class EffectConfigurationIntegrator {
     private _onAutoAdjustChanged(newValue: boolean): void { if (this.qualityController) {
             this.qualityController.setAutoAdjustment(newValue) }
         
-        console.log(`[EffectConfigurationIntegrator] 自動品質調整: ${newValue}`});
+        console.log(`[EffectConfigurationIntegrator] 自動品質調整: ${newValue}`};
     }
     
     /**
@@ -367,7 +365,7 @@ export class EffectConfigurationIntegrator {
     private _onSeasonalEffectsEnabledChanged(newValue: boolean): void { if (this.seasonalManager) {
             this.seasonalManager.setSeasonalEffectsEnabled(newValue) }
         
-        console.log(`[EffectConfigurationIntegrator] 季節エフェクト: ${newValue}`});
+        console.log(`[EffectConfigurationIntegrator] 季節エフェクト: ${newValue}`};
     }
     
     /**
@@ -378,7 +376,7 @@ export class EffectConfigurationIntegrator {
     private _onSeasonChanged(newValue: string): void { if (this.seasonalManager && !this.seasonalManager.autoSeasonDetection) {
             this.seasonalManager.setSeason(newValue) }
         
-        console.log(`[EffectConfigurationIntegrator] 季節変更: ${newValue}`});
+        console.log(`[EffectConfigurationIntegrator] 季節変更: ${newValue}`};
     }
     
     /**
@@ -389,7 +387,7 @@ export class EffectConfigurationIntegrator {
     private _onAudioEffectsEnabledChanged(newValue: boolean): void { if (this.audioManager) {
             this.audioManager.setEffectsEnabled?.(newValue) }
          : undefined
-        console.log(`[EffectConfigurationIntegrator] オーディオエフェクト: ${newValue}`});
+        console.log(`[EffectConfigurationIntegrator] オーディオエフェクト: ${newValue}`};
     }
     
     /**
@@ -400,7 +398,7 @@ export class EffectConfigurationIntegrator {
     private _onAudioVolumeSyncChanged(newValue: boolean): void { if (this.audioManager) {
             this.audioManager.setVolumeSync?.(newValue) }
          : undefined
-        console.log(`[EffectConfigurationIntegrator] オーディオボリューム同期: ${newValue}`});
+        console.log(`[EffectConfigurationIntegrator] オーディオボリューム同期: ${newValue}`};
     }
     
     /**
@@ -409,7 +407,7 @@ export class EffectConfigurationIntegrator {
      * @private
      */
     private _onPerformanceMonitoringChanged(newValue: boolean): void { // パフォーマンス監視の有効/無効設定 }
-        console.log(`[EffectConfigurationIntegrator] パフォーマンス監視: ${newValue}`});
+        console.log(`[EffectConfigurationIntegrator] パフォーマンス監視: ${newValue}`};
     }
     
     /**
@@ -419,7 +417,7 @@ export class EffectConfigurationIntegrator {
      */
     public updateConfiguration(key: string, value: any): void { try {
             this.configManager.set(key, value) }
-            console.log(`[EffectConfigurationIntegrator] 設定更新: ${key} = ${value}`});
+            console.log(`[EffectConfigurationIntegrator] 設定更新: ${key} = ${value}`};
         } catch (error) {
             this.errorHandler.handleError(error as Error, 'EffectConfigurationIntegrator.updateConfiguration' }'
     }
@@ -439,7 +437,7 @@ export class EffectConfigurationIntegrator {
             this._syncConfigurationToSystems();
             ';'
 
-            console.log(`[EffectConfigurationIntegrator] 設定一括更新: ${Object.keys(settings}).length}件`);'} catch (error) {'
+            console.log(`[EffectConfigurationIntegrator] 設定一括更新: ${Object.keys(settings}.length}件`);'} catch (error) {'
             this.errorHandler.handleError(error as Error, 'EffectConfigurationIntegrator.updateMultipleConfigurations' }'
     }
     
@@ -536,7 +534,7 @@ export class EffectConfigurationIntegrator {
             // 一括更新
             this.updateMultipleConfigurations(configUpdates);
             
-            console.log(`[EffectConfigurationIntegrator] 設定インポート完了: ${Object.keys(configUpdates}).length}件`);
+            console.log(`[EffectConfigurationIntegrator] 設定インポート完了: ${Object.keys(configUpdates}.length}件`);
             return true;
 
         } catch (error) {
@@ -552,7 +550,7 @@ export class EffectConfigurationIntegrator {
             syncInProgress: this.syncInProgress,
     registeredSystems: {
                 qualityController: !!this.qualityController,
-    seasonalManager: !!this.seasonalManager };
+    seasonalManager: !!this.seasonalManager },
                 audioManager: !!this.audioManager 
     }
     

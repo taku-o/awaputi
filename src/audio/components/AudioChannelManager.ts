@@ -16,7 +16,7 @@ type AudioChannel = 'master' | 'music' | 'sfx' | 'ui' | 'voice' | 'environmental
 /**
  * 音量マップインターフェース
  */
-interface VolumeMap { master: number,
+interface VolumeMap { master: number;
     music: number;
     sfx: number;
     ui: number;
@@ -26,7 +26,7 @@ interface VolumeMap { master: number,
 /**
  * ミュート状態マップインターフェース
  */
-interface MuteStateMap { master: boolean,
+interface MuteStateMap { master: boolean;
     music: boolean;
     sfx: boolean;
     ui: boolean;
@@ -36,7 +36,7 @@ interface MuteStateMap { master: boolean,
 /**
  * ゲインノードマップインターフェース
  */
-interface GainNodeMap { master: GainNode | null,
+interface GainNodeMap { master: GainNode | null;
     music: GainNode | null;
     sfx: GainNode | null;
     ui: GainNode | null;
@@ -46,7 +46,7 @@ interface GainNodeMap { master: GainNode | null,
 /**
  * チャンネル設定インターフェース
  */
-interface ChannelConfig { defaultVolumes: VolumeMap,
+interface ChannelConfig { defaultVolumes: VolumeMap;
     volumeStep: number;
     minVolume: number;
     maxVolume: number;
@@ -55,7 +55,7 @@ interface ChannelConfig { defaultVolumes: VolumeMap,
 /**
  * マネージャー状態インターフェース
  */
-interface ManagerState { volumes: VolumeMap,
+interface ManagerState { volumes: VolumeMap;
     muteStates: MuteStateMap;
     effectiveVolumes: VolumeMap;
     channelConfig: ChannelConfig;
@@ -64,7 +64,7 @@ interface ManagerState { volumes: VolumeMap,
 /**
  * ConfigurationManager インターフェース（型定義用）
  */
-interface ConfigurationManager { get(category: string): any,
+interface ConfigurationManager { get(category: string): any;
     set(category: string, path: string, value: any): void;
     watch(category: string, path: string, callback: (value: any) => void): string | null  }
 }
@@ -77,7 +77,7 @@ interface ErrorHandler { handleError(error: any, context: string): void;
 /**
  * AudioManager インターフェース（統合用）
  */
-interface AudioManager { registerGainNodes?(gainNodes: GainNodeMap): void, 
+interface AudioManager { registerGainNodes?(gainNodes: GainNodeMap): void;
 export class AudioChannelManager {
     private audioContext: AudioContext;
     private configManager: ConfigurationManager;
@@ -104,26 +104,26 @@ export class AudioChannelManager {
         
         // オーディオノード階層
         this.gainNodes = {
-            master: null,
-            music: null,
-            sfx: null,
-            ui: null,
-    voice: null,
-            environmental: null,;
+            master: null;
+            music: null;
+            sfx: null;
+            ui: null;
+    voice: null;
+            environmental: null;
         // 音量設定
-        this.volumes = { master: 1.0,
-            music: 0.7,
-            sfx: 0.8,
-            ui: 0.6,
-            voice: 1.0,
+        this.volumes = { master: 1.0;
+            music: 0.7;
+            sfx: 0.8;
+            ui: 0.6;
+            voice: 1.0;
     environmental: 0.5  };
         // ミュート状態
-        this.muteStates = { master: false,
-            music: false,
-            sfx: false,
-            ui: false,
-            voice: false,
-    environmental: false,;
+        this.muteStates = { master: false;
+            music: false;
+            sfx: false;
+            ui: false;
+            voice: false;
+    environmental: false;
         // 前回の音量（ミュート解除時の復元用）
         this.previousVolumes = { ...this.volumes;
         
@@ -132,16 +132,16 @@ export class AudioChannelManager {
         
         // チャンネル設定
         this.channelConfig = { defaultVolumes: {
-                master: 1.0,
-                music: 0.7,
-                sfx: 0.8,
-                ui: 0.6,
-                voice: 1.0,
+                master: 1.0;
+                music: 0.7;
+                sfx: 0.8;
+                ui: 0.6;
+                voice: 1.0;
     environmental: 0.5 };
-            volumeStep: 0.1,
-            minVolume: 0.0,
-            maxVolume: 2.0,
-    fadeStep: 0.02,
+            volumeStep: 0.1;
+            minVolume: 0.0;
+            maxVolume: 2.0;
+    fadeStep: 0.02;
         },
         
         this.initialize();
@@ -176,7 +176,7 @@ export class AudioChannelManager {
                 if(channel !== 'master' { }
                     this.gainNodes[channel] = this.audioContext.createGain(); }
                     this.gainNodes[channel]!.connect(this.gainNodes.master!); }
-});
+};
             ';'
             // 初期音量を設定
             this.applyVolumeToGainNodes()';'
@@ -195,7 +195,7 @@ export class AudioChannelManager {
                 (Object.keys(this.volumes) as AudioChannel[]).forEach(channel => { ) }
                     if (audioConfig.volumes[channel] !== undefined) { }
                         this.volumes[channel] = audioConfig.volumes[channel]; }
-});
+};
             }
             
             if (audioConfig && audioConfig.mute) {
@@ -203,7 +203,7 @@ export class AudioChannelManager {
                 (Object.keys(this.muteStates) as AudioChannel[]).forEach(channel => { ) }
                     if (audioConfig.mute[channel] !== undefined) { }
                         this.muteStates[channel] = audioConfig.mute[channel]; }
-});
+};
             }
 
             this.applyVolumeToGainNodes()';'
@@ -215,13 +215,13 @@ export class AudioChannelManager {
      * 音量をゲインノードに適用
      */
     private applyVolumeToGainNodes(): void { try {
-            (Object.keys(this.gainNodes) as AudioChannel[]).forEach(channel => { ),
+            (Object.keys(this.gainNodes) as AudioChannel[]).forEach(channel => { );
                 if (this.gainNodes[channel]) {
     
 }
                     const volume = this.muteStates[channel] ? 0 : this.volumes[channel]; }
                     this.gainNodes[channel]!.gain.value = Math.max(0, Math.min(2, volume); }
-});'} catch (error) {'
+};'} catch (error) {'
             this.errorHandler.handleError(error, 'AudioChannelManager.applyVolumeToGainNodes' }'
     }
     
@@ -233,18 +233,18 @@ export class AudioChannelManager {
             (Object.keys(this.volumes) as AudioChannel[]).forEach(channel => { '),'
                 const watcher = this.configManager.watch('audio', `volumes.${channel}`, (newValue: number; => { }
                     if (newValue !== undefined) { }
-                        this.setVolume(channel, newValue, false}); // 設定保存をスキップ
+                        this.setVolume(channel, newValue, false}; // 設定保存をスキップ
                     }
-                });
+                };
                 if (watcher) this.configWatchers.add(watcher);
-            });
+            };
             // ミュート設定の監視
             (Object.keys(this.muteStates) as AudioChannel[]).forEach(channel => {  '),'
                 const watcher = this.configManager.watch('audio', `mute.${channel}`, (newValue: boolean; => { }
                     if (newValue !== undefined) { }
-                        this.setMute(channel, newValue, false}); // 設定保存をスキップ
+                        this.setMute(channel, newValue, false}; // 設定保存をスキップ
                     }
-                });
+                };
                 if (watcher) this.configWatchers.add(watcher);'}');
 
             this.loggingSystem.debug('AudioChannelManager', 'Config watchers setup completed';} catch (error) {
@@ -259,7 +259,7 @@ export class AudioChannelManager {
      */
     setVolume(channel: AudioChannel, volume: number, saveToConfig: boolean = true): number { try {
             if (!(channel, in this.volumes) { }
-                throw new Error(`Unknown, audio channel: ${channel}`});
+                throw new Error(`Unknown, audio channel: ${channel}`};
             }
             
             const clampedVolume = Math.max(this.channelConfig.minVolume, Math.min(this.channelConfig.maxVolume, volume);
@@ -288,7 +288,7 @@ export class AudioChannelManager {
      */
     getVolume(channel: AudioChannel): number { try {
             if (!(channel, in this.volumes) {  }
-                throw new Error(`Unknown, audio channel: ${channel}`});
+                throw new Error(`Unknown, audio channel: ${channel}`};
             }
             ';'
 
@@ -304,7 +304,7 @@ export class AudioChannelManager {
      */
     setMute(channel: AudioChannel, muted: boolean, saveToConfig: boolean = true): boolean { try {
             if (!(channel, in this.muteStates) {  }
-                throw new Error(`Unknown, audio channel: ${channel}`});
+                throw new Error(`Unknown, audio channel: ${channel}`};
             }
             
             // 現在の音量を保存（ミュート解除時の復元用）
@@ -335,7 +335,7 @@ export class AudioChannelManager {
      */
     getMute(channel: AudioChannel): boolean { try {
             if (!(channel, in this.muteStates) {  }
-                throw new Error(`Unknown, audio channel: ${channel}`});
+                throw new Error(`Unknown, audio channel: ${channel}`};
             }
             ';'
 
@@ -373,7 +373,7 @@ export class AudioChannelManager {
      * @param increase - 音量を上げるかどうか
      */
     adjustVolumeByStep(channel: AudioChannel, increase: boolean): number { try {
-            const currentVolume = this.getVolume(channel),
+            const currentVolume = this.getVolume(channel);
             const step = this.channelConfig.volumeStep,
             const newVolume = increase ? currentVolume + step: currentVolume - step,
 
@@ -381,8 +381,7 @@ export class AudioChannelManager {
 
         } catch (error) {
             this.errorHandler.handleError(error, 'AudioChannelManager.adjustVolumeByStep),'
-            return this.getVolume(channel),
-    
+            return this.getVolume(channel);
     /**
      * 音量をリセット
      * @param channel - チャンネル名（指定しない場合は全チャンネル）
@@ -444,9 +443,9 @@ export class AudioChannelManager {
      * @returns 状態情報
      */
     getManagerState(): ManagerState { return { volumes: this.getAllVolumes(
-            muteStates: this.getAllMuteStates(),
+            muteStates: this.getAllMuteStates();
             effectiveVolumes: this.getEffectiveVolumes(
-    channelConfig: this.channelConfig };
+    channelConfig: this.channelConfig },
             availableChannels: Object.keys(this.gainNodes); 
     }
     
@@ -477,7 +476,7 @@ export class AudioChannelManager {
      * @param newConfig - 新しい設定
      */'
     updateChannelConfig(newConfig: Partial<ChannelConfig>): void { ''
-        Object.assign(this.channelConfig, newConfig),
+        Object.assign(this.channelConfig, newConfig);
         this.loggingSystem.debug('AudioChannelManager', 'Channel configuration updated', newConfig' }'
     
     /**
@@ -502,14 +501,14 @@ export class AudioChannelManager {
             this.configWatchers.forEach(watcher => { '),'
                 if(typeof, watcher === 'function' { }'
                     watcher(); // アンサブスクライブ }
-});
+};
             this.configWatchers.clear();
             
             // ゲインノードを切断
-            Object.values(this.gainNodes).forEach(gainNode => {  ),
+            Object.values(this.gainNodes).forEach(gainNode => {  );
                 if (gainNode && gainNode.disconnect) { }
                     gainNode.disconnect(); }
-});
+};
             
             // 状態をクリア
             (Object.keys(this.gainNodes) as AudioChannel[]).forEach(channel => {  }

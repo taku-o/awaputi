@@ -4,46 +4,46 @@
  */
 
 // Recovery strategy interfaces
-interface RecoveryStrategy { name: string,
+interface RecoveryStrategy { name: string;
     priority: number;
     execute: (error: ClassifiedError) => Promise<RecoveryResult>;
     conditions: {
-        severit,y: SeverityLevel[],
+        severit,y: SeverityLevel[];
     }
 
-interface RecoveryResult { action: string,
+interface RecoveryResult { action: string;
     [key: string]: any;
 
 interface RecoveryStrategyMap extends Map<string, RecoveryStrategy[]> {}
 
-interface ExecutionResult { success: boolean,
+interface ExecutionResult { success: boolean;
     strategy?: string;
     result?: RecoveryResult;
     error?: string;
     executionTime: number;
     executedAt: number;
 
-interface RecoveryStrategyDecision { strategy: RecoveryStrategy | null,
+interface RecoveryStrategyDecision { strategy: RecoveryStrategy | null;
     alternatives?: RecoveryStrategy[];
     error: ClassifiedError;
     reason?: string;
     determinedAt?: number;
 
 // Error classification from ErrorDetectionSystem
-interface ClassifiedError { detector: string,
+interface ClassifiedError { detector: string;
     timestamp: number;
     baseline: any;
     classification?: {
         severity?: {
-            leve,l: SeverityLevel,;
-    [key: string]: any,
+            leve,l: SeverityLevel;
+    [key: string]: any;
 
 type SeverityLevel = 'low' | 'medium' | 'high' | 'critical';
 
 type RecoveryCallback = (result: ExecutionResult') => void,'
 
 // Degradation interfaces
-interface DegradationLevel { name: string,
+interface DegradationLevel { name: string;
     description: string;
     actions: DegradationAction[];
 ';'
@@ -54,11 +54,12 @@ interface DegradationAction { ''
     amount?: number;
     level?: string;
 
-interface FeatureState { enabled: boolean,
+interface FeatureState { enabled: boolean;
     quality: number;
     lastModified: number;
-
-interface DegradationResult { success: boolean,
+    lastModified: number;
+        };
+interface DegradationResult { success: boolean;
     previousLevel?: number;
     currentLevel: number;
     actionsExecuted?: Array<{
@@ -71,7 +72,7 @@ interface DegradationResult { success: boolean,
     error?: string;
 }
 
-interface ActionExecutionResult { success: boolean,
+interface ActionExecutionResult { success: boolean;
     reason?: string;
     newQuality?: number;
     disabled?: string;
@@ -81,15 +82,15 @@ interface ActionExecutionResult { success: boolean,
     amount?: number;
     level?: string;
 
-interface RecoveryStatistics { total: number,
+interface RecoveryStatistics { total: number;
     successful: number;
     successRate: number;
     byStrategy: Record<string, {
-        total: number,
+        total: number;
     successful: number,>;
 }
 
-interface DegradationStatistics { currentLevel: number,
+interface DegradationStatistics { currentLevel: number;
     maxLevel: number;
     totalDegradations: number;
     averageDegradationLevel: number;
@@ -109,7 +110,7 @@ export class PerformanceRecoveryEngine {
     private executionHistory: ExecutionResult[];
     private recoveryCallbacks: RecoveryCallback[];
     private maxHistorySize: number;
-    private, initialized: boolean,
+    private, initialized: boolean;
     constructor() {
 
         this.recoveryStrategies = new Map<string, RecoveryStrategy[]>(),
@@ -258,7 +259,7 @@ export class PerformanceRecoveryEngine {
 
                 reason: 'no_applicable_strategy'
             };
-                error: classifiedError;
+                error: classifiedError,
 
         // Sort by priority and select the best strategy
         applicableStrategies.sort((a, b) => a.priority - b.priority);
@@ -266,8 +267,8 @@ export class PerformanceRecoveryEngine {
 
         return { strategy: selectedStrategy,
             alternatives: applicableStrategies.slice(1,
-    error: classifiedError,;
-            determinedAt: Date.now(), 
+    error: classifiedError,
+            determinedAt: Date.now();
     }
 ';'
 
@@ -275,7 +276,7 @@ export class PerformanceRecoveryEngine {
         if (!recoveryStrategy.strategy) {
             return { success: false,''
                 reason: 'no_strategy' }
-                executionTime: 0 };
+                executionTime: 0 },
                 executedAt: Date.now(); 
     }
 
@@ -290,7 +291,7 @@ export class PerformanceRecoveryEngine {
                 strategy: recoveryStrategy.strategy.name,
                 result,
                 executionTime: endTime - startTime,
-    executedAt: startTime,;
+    executedAt: startTime,
             this.recordExecution(executionResult);
             this.notifyRecoveryCallbacks(executionResult);
             
@@ -303,12 +304,11 @@ export class PerformanceRecoveryEngine {
                 strategy: recoveryStrategy.strategy.name,
                 error: error instanceof Error ? error.message : String(error),
                 executionTime: Date.now() - startTime,
-    executedAt: startTime,;
+    executedAt: startTime,
             this.recordExecution(failureResult);
             return failureResult;
 
     private recordExecution(result: ExecutionResult): void { this.executionHistory.push(result),
-        
         if (this.executionHistory.length > this.maxHistorySize) {
     
 }
@@ -421,11 +421,11 @@ export class PerformanceRecoveryEngine {
                     byStrategy[strategy] = { total: 0, successful: 0  }
                 byStrategy[strategy].total++;
                 if (result.success) { byStrategy[strategy].successful++ }
-});
+};
 
         return { total,
             successful,
-            successRate: total > 0 ? successful / total : 0 };
+            successRate: total > 0 ? successful / total : 0 },
             byStrategy }
         }
 }
@@ -532,7 +532,7 @@ export class GracefulDegradationManager {
             },''
                 { type: 'reduce_quality', target: 'everything', amount: 0.9  },]'
                 { type: 'enable', target: 'aggressive_cleanup'
-            })]
+            }]
             ]';'
     }
 
@@ -544,11 +544,11 @@ export class GracefulDegradationManager {
         ];
 
         features.forEach(feature => {  this.featureStates.set(feature, {
-                enabled: true),
-                quality: 1.0) })
+                enabled: true);
+                quality: 1.0) }
                 lastModified: Date.now(); 
-    });
-        });
+    };
+        };
     }
 ';'
 
@@ -602,7 +602,7 @@ export class GracefulDegradationManager {
         if (targetLevel <= this.currentDegradationLevel) {
             return { success: true,''
                 action: 'no_change' }
-                currentLevel: this.currentDegradationLevel };
+                currentLevel: this.currentDegradationLevel },
                 executionTime: 0 
     }
 
@@ -614,7 +614,7 @@ export class GracefulDegradationManager {
 
         try { // Execute degradation actions for each level
             for(let, level = this.currentDegradationLevel + 1, level <= targetLevel, level++) {
-                const levelConfig = this.degradationLevels.get(level),
+                const levelConfig = this.degradationLevels.get(level);
                 if (levelConfig) {
                     for (const action of levelConfig.actions) {
                         const result = await this.executeAction(action) }
@@ -629,13 +629,12 @@ export class GracefulDegradationManager {
                 currentLevel: targetLevel,
                 actionsExecuted,
                 executionTime: Date.now() - degradationStart,
-    timestamp: degradationStart,;
+    timestamp: degradationStart,
             this.recordDegradation(degradationResult);
             return degradationResult;
 
         } catch (error) {
-            console.error('Degradation execution failed:', error),
-            
+            console.error('Degradation execution failed:', error);
             return { success: false,
                 error: error instanceof Error ? error.message : String(error,
     currentLevel: this.currentDegradationLevel,
@@ -650,14 +649,11 @@ export class GracefulDegradationManager {
         switch(action.type) {
 
             case 'reduce_quality':','
-                return, this.reduceQuality(action.target, action.amount || 0),
-
+                return, this.reduceQuality(action.target, action.amount || 0);
             case 'disable':','
-                return, this.disableFeature(action.target),
-
+                return, this.disableFeature(action.target);
             case 'enable':','
-                return, this.enableFeature(action.target),
-
+                return, this.enableFeature(action.target);
             case 'reduce':','
                 return, this.reduceParameter(action.target, action.amount || 0}
 
@@ -671,38 +667,37 @@ export class GracefulDegradationManager {
             }
     }
 
-    private reduceQuality(target: string, amount: number): ActionExecutionResult { const feature = this.featureStates.get(target),
+    private reduceQuality(target: string, amount: number): ActionExecutionResult { const feature = this.featureStates.get(target);
         if (feature) {
             feature.quality = Math.max(0.1, feature.quality - amount) }
 
             feature.lastModified = Date.now('}'
 
         return { success: false, reason: 'feature_not_found'
-            });
+            };
 );
-    private disableFeature(target: string): ActionExecutionResult { const feature = this.featureStates.get(target),
+    private disableFeature(target: string): ActionExecutionResult { const feature = this.featureStates.get(target);
         if (feature) {
             feature.enabled = false }
 
             feature.lastModified = Date.now('}'
 
         return { success: false, reason: 'feature_not_found'
-            });
+            };
 );
     private enableFeature(target: string): ActionExecutionResult { // For enabling special modes like safe_mode }
-        console.log(`Enabling, special mode: ${target}`});
+        console.log(`Enabling, special mode: ${target}`};
         return { success: true, enabled: target,
 
     private reduceParameter(target: string, amount: number): ActionExecutionResult {
-        console.log(`Reducing ${target} by ${amount * 100}%`});
+        console.log(`Reducing ${target} by ${amount * 100}%`};
         return { success: true, reduced: target, amount }
 
     private optimizeFeature(target: string, level: string): ActionExecutionResult {
-        console.log(`Optimizing ${target} to ${level} level`});
+        console.log(`Optimizing ${target} to ${level} level`};
         return { success: true, optimized: target, level }
 
-    private recordDegradation(result: DegradationResult): void { this.degradationHistory.push(result),
-        
+    private recordDegradation(result: DegradationResult): void { this.degradationHistory.push(result);
         // Keep only last 20 degradation events
         if (this.degradationHistory.length > 20) {
     
@@ -723,7 +718,7 @@ export class GracefulDegradationManager {
         if (targetLevel >= this.currentDegradationLevel) {
             return { success: true, ''
                 action: 'no_change' }
-                currentLevel: this.currentDegradationLevel };
+                currentLevel: this.currentDegradationLevel },
                 executionTime: 0 
     }
 
@@ -734,12 +729,12 @@ export class GracefulDegradationManager {
         
         // Re-apply, degradation actions, only up, to target, level
         if (targetLevel > 0} { }
-            await, this.degradeToLevel(targetLevel});
+            await, this.degradeToLevel(targetLevel};
         }
 
         return { success: true,
             currentLevel: targetLevel,
-    executionTime: 0 };
+    executionTime: 0 },
             timestamp: Date.now(); 
     }
 
@@ -749,7 +744,7 @@ export class GracefulDegradationManager {
     averageDegradationLevel: this.degradationHistory.length > 0 ? undefined : undefined
                 this.degradationHistory.reduce((sum, d) => sum + d.currentLevel, 0) / this.degradationHistory.length : 0,
             featureStatesCount: this.featureStates.size,
-    disabledFeatures: Array.from(this.featureStates.entries(),
+    disabledFeatures: Array.from(this.featureStates.entries();
                 .filter(([_, state]) => !state.enabled)' };'
 
                 .map(([name, _]) => name'); }'

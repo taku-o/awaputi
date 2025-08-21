@@ -17,7 +17,7 @@
 import { getErrorHandler  } from '../../../utils/ErrorHandler.js';
 
 // 型定義
-export interface VisualFeedbackManager { config: FeedbackSystemConfig,
+export interface VisualFeedbackManager { config: FeedbackSystemConfig;
     userPreferences: UserPreferences;
     feedbackElements: Map<string, HTMLElement>;
     gameEngine: GameEngine;
@@ -29,35 +29,35 @@ export interface VisualFeedbackManager { config: FeedbackSystemConfig,
     analyser: AnalyserNode;
     dataArray: Uint8Array;
 
-export interface FeedbackSystemConfig { enabled: boolean,
+export interface FeedbackSystemConfig { enabled: boolean;
     globalIntensity: number;
     positioning: PositioningConfig;
     accessibility: AccessibilityConfig;
     performance: PerformanceConfig;
     animations: AnimationSystemConfig;
 
-export interface PositioningConfig { screenEdges: boolean,
+export interface PositioningConfig { screenEdges: boolean;
     gameArea: boolean;
     customPositions: boolean;
     relativeToViewport: boolean;
 
-export interface AccessibilityConfig { respectReducedMotion: boolean,
+export interface AccessibilityConfig { respectReducedMotion: boolean;
     highContrast: boolean;
     alternativeText: boolean;
     audioFeedback: boolean;
     keyboardNavigation: boolean;
 
-export interface PerformanceConfig { maxConcurrentEffects: number,
+export interface PerformanceConfig { maxConcurrentEffects: number;
     frameRate: number;
     gpuAcceleration: boolean;
     memoryThreshold: number;
 
-export interface AnimationSystemConfig { defaultDuration: number,
+export interface AnimationSystemConfig { defaultDuration: number;
     easingFunction: string;
     hardwareAcceleration: boolean;
     batchUpdates: boolean;
 
-export interface UserPreferences { enabled: boolean,
+export interface UserPreferences { enabled: boolean;
     globalIntensity: number;
     preferredPatterns: EffectPattern[];
     colorPreferences: Map<string, string>;
@@ -67,7 +67,7 @@ export interface UserPreferences { enabled: boolean,
     customMappings: Map<string, EventMapping>;
     accessibilitySettings: UserAccessibilitySettings;
 
-export interface UserAccessibilitySettings { screenReader: boolean,
+export interface UserAccessibilitySettings { screenReader: boolean;
     highContrast: boolean;
     largeText: boolean;
     reducedAnimation: boolean;
@@ -82,7 +82,7 @@ export interface AudioManager { audioContext?: AudioContext,
     musicGain?: GainNode;
     sfxGain?: GainNode;
 
-export interface AudioAccessibilityManager { isEnabled: () => boolean,
+export interface AudioAccessibilityManager { isEnabled: () => boolean;
     getVolume: () => number;
     setVolume: (volume: number) => void  }
 }
@@ -92,7 +92,7 @@ export interface EventSystem { addEventListener: (event: string, handler: (dat,a
     removeEventListener: (event: string, handler: (dat,a: any) => void') => void  }'
 }
 
-export interface EventMapping { effectType: EffectPattern,
+export interface EventMapping { effectType: EffectPattern;
     color: string;
     intensity: number;
     duration?: number;
@@ -100,47 +100,47 @@ export interface EventMapping { effectType: EffectPattern,
     conditions?: TriggerCondition[];
      }
 
-export interface TriggerCondition { property: string,
+export interface TriggerCondition { property: string;
     operator: ComparisonOperator;
     value: any;
 
-export interface PositionPreference { area: PositionArea,
+export interface PositionPreference { area: PositionArea;
     alignment: Alignment;
     offset: Offset;
 
-export interface Offset { x: number,
+export interface Offset { x: number;
     y: number;
 
-export interface EdgeFeedbackElement { element: HTMLElement,
+export interface EdgeFeedbackElement { element: HTMLElement;
     edge: EdgeType;
     isActive: boolean;
     lastUpdate: number;
 
-export interface GameAreaFeedback { overlay: HTMLElement,
+export interface GameAreaFeedback { overlay: HTMLElement;
     gameCanvas: HTMLElement;
     gameContainer: HTMLElement;
     isActive: boolean;
 
-export interface VisualizationCanvas { canvas: HTMLCanvasElement,
+export interface VisualizationCanvas { canvas: HTMLCanvasElement;
     context: CanvasRenderingContext2D;
     width: number;
     height: number;
     frameRate: number;
     isActive: boolean;
 
-export interface AudioAnalysisSetup { audioContext: AudioContext,
+export interface AudioAnalysisSetup { audioContext: AudioContext;
     analyser: AnalyserNode;
     dataArray: Uint8Array;
     connected: boolean;
     sampleRate: number;
 
-export interface ConfigurationState { config: FeedbackSystemConfig,
+export interface ConfigurationState { config: FeedbackSystemConfig;
     userPreferences: SerializableUserPreferences;
     elements: ElementsState;
     audio: AudioState;
     performance: PerformanceState;
 
-export interface SerializableUserPreferences { enabled: boolean,
+export interface SerializableUserPreferences { enabled: boolean;
     globalIntensity: number;
     preferredPatterns: EffectPattern[];
     colorPreferences: Array<[string, string]>;
@@ -150,30 +150,30 @@ export interface SerializableUserPreferences { enabled: boolean,
     customMappings: Array<[string, EventMapping]>;
     accessibilitySettings: UserAccessibilitySettings;
 
-export interface ElementsState { containerCreated: boolean,
+export interface ElementsState { containerCreated: boolean;
     visualizationCanvasCreated: boolean;
     edgeElementsCount: number;
     gameAreaSetup: boolean;
     totalElements: number;
 
-export interface AudioState { contextInitialized: boolean,
+export interface AudioState { contextInitialized: boolean;
     analyserCreated: boolean;
     gameAudioConnected: boolean;
     sampleRate: number;
 
-export interface PerformanceState { memoryUsage: number,
+export interface PerformanceState { memoryUsage: number;
     activeElements: number;
     frameRate: number;
     lastUpdate: number;
 
-export interface ConfigUpdateResult { success: boolean,
+export interface ConfigUpdateResult { success: boolean;
     changedProperties: string[];
     errors: Error[];
 
-export interface ValidationResult { isValid: boolean,
+export interface ValidationResult { isValid: boolean;
     issues: ValidationIssue[];
 
-export interface ValidationIssue { property: string,
+export interface ValidationIssue { property: string;
     message: string;
     severity: IssueSeverity;
 ';'
@@ -187,23 +187,23 @@ export type IssueSeverity = 'error' | 'warning' | 'info';
 export type ConfigurationScope = 'global' | 'session' | 'temporary';
 
 // 定数
-export const DEFAULT_USER_PREFERENCES: UserPreferences = { enabled: false,
-    globalIntensity: 0.8,
+export const DEFAULT_USER_PREFERENCES: UserPreferences = { enabled: false;
+    globalIntensity: 0.8;
     preferredPatterns: ['flash', 'glow', 'pulse'],
-    colorPreferences: new Map(),
-    reducedMotion: false,
-    audioVisualization: true,
-    gameEventFeedback: true,
+    colorPreferences: new Map();
+    reducedMotion: false;
+    audioVisualization: true;
+    gameEventFeedback: true;
     customMappings: new Map()','
     BACKGROUND: 'rgba(0, 0, 0, 0.8)',
-        BORDER_RADIUS: '8px',
-        OPACITY: '0.8',
+        BORDER_RADIUS: '8px';
+        OPACITY: '0.8';
     Z_INDEX: 10000  }
 } as const;
 export const AUDIO_ANALYSIS_CONFIG = { FFT_SIZE: 256,
     SAMPLE_RATE: 44100,
     FREQUENCY_BINS: 128,
-    SMOOTHING_TIME_CONSTANT: 0.8  } as const;
+    SMOOTHING_TIME_CONSTANT: 0.8  } as const,
 export const CONFIG_STORAGE_KEY = 'visualFeedback_preferences';
 export const CONFIG_VERSION = '1.0.0';
 
@@ -250,22 +250,22 @@ export function createEdgeStyles(edge: EdgeType): string { const baseStyles = `
 export function serializeUserPreferences(preferences: UserPreferences): SerializableUserPreferences { return { enabled: preferences.enabled,
         globalIntensity: preferences.globalIntensity,
         preferredPatterns: preferences.preferredPatterns,
-        colorPreferences: Array.from(preferences.colorPreferences.entries(),
+        colorPreferences: Array.from(preferences.colorPreferences.entries();
         reducedMotion: preferences.reducedMotion,
         audioVisualization: preferences.audioVisualization,
         gameEventFeedback: preferences.gameEventFeedback,
-    customMappings: Array.from(preferences.customMappings.entries() };
+    customMappings: Array.from(preferences.customMappings.entries() },
         accessibilitySettings: preferences.accessibilitySettings 
     }
 
 export function deserializeUserPreferences(data: SerializableUserPreferences): UserPreferences { return { enabled: data.enabled,
         globalIntensity: data.globalIntensity,
         preferredPatterns: data.preferredPatterns,
-        colorPreferences: new Map(data.colorPreferences),
+        colorPreferences: new Map(data.colorPreferences);
         reducedMotion: data.reducedMotion,
         audioVisualization: data.audioVisualization,
         gameEventFeedback: data.gameEventFeedback,
-    customMappings: new Map(data.customMappings) };
+    customMappings: new Map(data.customMappings) },
         accessibilitySettings: data.accessibilitySettings 
     }
 
@@ -285,7 +285,7 @@ export class FeedbackConfigManager {
     // Audio API
     private audioContext: AudioContext | null = null;
     private analyser: AnalyserNode | null = null;
-    private, dataArray: Uint8Array | null = null,
+    private, dataArray: Uint8Array | null = null;
 
     constructor(mainController: VisualFeedbackManager) {
         this.mainController = mainController;
@@ -307,13 +307,11 @@ export class FeedbackConfigManager {
      * ユーザー設定の読み込み
      */
     loadUserPreferences(): void { try {
-            const saved = localStorage.getItem(CONFIG_STORAGE_KEY),
+            const saved = localStorage.getItem(CONFIG_STORAGE_KEY);
             if (saved) {
                 const data = JSON.parse(saved) as SerializableUserPreferences,
-                const preferences = deserializeUserPreferences(data),
-
-                Object.assign(this.userPreferences, preferences),
-                
+                const preferences = deserializeUserPreferences(data);
+                Object.assign(this.userPreferences, preferences);
                 // 設定を適用
                 this.config.enabled = this.userPreferences.enabled,
                 this.config.globalIntensity = this.userPreferences.globalIntensity,
@@ -335,7 +333,7 @@ export class FeedbackConfigManager {
      * ユーザー設定の保存
      */
     saveUserPreferences(): void { try {
-            const serializable = serializeUserPreferences(this.userPreferences),
+            const serializable = serializeUserPreferences(this.userPreferences);
             localStorage.setItem(CONFIG_STORAGE_KEY, JSON.stringify(serializable)),
             console.log('Visual, feedback preferences, saved successfully') }'
 
@@ -356,14 +354,14 @@ export class FeedbackConfigManager {
             this.feedbackContainer = document.createElement('div');
             this.feedbackContainer.id = 'visual-feedback-container';
             this.feedbackContainer.style.cssText = `;
-                position: fixed;
-                top: 0;
-                left: 0;
+                position: fixed,
+                top: 0,
+                left: 0,
                 width: 100vw,
-    height: 100vh;
+    height: 100vh,
                 pointer-events: none,
                 z-index: 9999,
-                overflow: hidden;
+                overflow: hidden,
             `;
             document.body.appendChild(this.feedbackContainer);
             
@@ -407,9 +405,9 @@ export class FeedbackConfigManager {
             element.style.cssText = createEdgeStyles(edge);
             
             if (this.feedbackContainer) { this.feedbackContainer.appendChild(element) }
-                this.feedbackElements.set(`edge-${edge}`, element});
+                this.feedbackElements.set(`edge-${edge}`, element};
             }
-        });
+        };
     }
 
     /**
@@ -426,15 +424,15 @@ export class FeedbackConfigManager {
         const overlay = document.createElement('div');
         overlay.className = 'feedback-game-overlay';
         overlay.style.cssText = `;
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            position: absolute,
+            top: 0,
+            left: 0,
+            width: 100%,
+            height: 100%,
             background: transparent,
-    opacity: 0;
+    opacity: 0,
             border-radius: 8px,
-            transition: all 0.2s ease;
+            transition: all 0.2s ease,
         `;
         
         // ゲームキャンバスの親要素に追加
@@ -460,12 +458,12 @@ export class FeedbackConfigManager {
         this.visualCanvas.id = 'audio-visualization-canvas';
         this.visualCanvas.style.cssText = `;
             position: fixed,
-    bottom: ${CANVAS_CONFIG.POSITION.BOTTOM}px;
-            right: ${CANVAS_CONFIG.POSITION.RIGHT}px;
-            width: ${CANVAS_CONFIG.DEFAULT_WIDTH}px;
-            height: ${CANVAS_CONFIG.DEFAULT_HEIGHT}px;
+    bottom: ${CANVAS_CONFIG.POSITION.BOTTOM}px,
+            right: ${CANVAS_CONFIG.POSITION.RIGHT}px,
+            width: ${CANVAS_CONFIG.DEFAULT_WIDTH}px,
+            height: ${CANVAS_CONFIG.DEFAULT_HEIGHT}px,
             background: ${CANVAS_CONFIG.STYLE.BACKGROUND}
-            border-radius: ${CANVAS_CONFIG.STYLE.BORDER_RADIUS};
+            border-radius: ${CANVAS_CONFIG.STYLE.BORDER_RADIUS},
             opacity: ${CANVAS_CONFIG.STYLE.OPACITY}
             z-index: ${CANVAS_CONFIG.STYLE.Z_INDEX}
         `;
@@ -490,7 +488,7 @@ export class FeedbackConfigManager {
                 return }
             
             // Web Audio API の初期化
-            const AudioContextClass = window.AudioContext || (window: any).webkitAudioContext;
+            const AudioContextClass = window.AudioContext || (window: any).webkitAudioContext,
             this.audioContext = new AudioContextClass();
             this.analyser = this.audioContext.createAnalyser();
             
@@ -526,7 +524,7 @@ export class FeedbackConfigManager {
                 if (audioManager.audioContext?.destination) {
                     // 既存のオーディオノードに接続
                     if(typeof, audioManager.audioContext.destination.connect === 'function' {'
-                        audioManager.audioContext.destination.connect(this.analyser),
+                        audioManager.audioContext.destination.connect(this.analyser);
                         this.analyser.connect(this.audioContext.destination) }
 
                         console.log('Connected, to game, audio successfully'); }'
@@ -548,7 +546,7 @@ export class FeedbackConfigManager {
     updateConfig(newConfig: Partial<FeedbackSystemConfig>): ConfigUpdateResult { const result: ConfigUpdateResult = {
             success: false,
             changedProperties: [],
-    errors: [] };
+    errors: [] },
         ';'
 
         try {'
@@ -565,7 +563,7 @@ export class FeedbackConfigManager {
 
                     .map(issue => issue.message);' }'
 
-                throw new Error(`Configuration validation failed: ${errorMessages.join(', '})`);
+                throw new Error(`Configuration validation failed: ${errorMessages.join(', '}`);
             }
             
             // 変更された属性を追跡
@@ -581,7 +579,7 @@ export class FeedbackConfigManager {
             console.log('Configuration updated successfully', result.changedProperties';'
             ';'
 
-        } catch (error) { result.errors.push(error, as Error),
+        } catch (error) { result.errors.push(error, as Error);
             getErrorHandler().handleError(error as Error, 'CONFIG_UPDATE_ERROR', {''
                 operation: 'updateConfig',')',
                 component: 'FeedbackConfigManager'),' }'
@@ -596,21 +594,21 @@ export class FeedbackConfigManager {
     /**
      * グローバル強度の設定
      */
-    setGlobalIntensity(intensity: number): void { const clampedIntensity = validateIntensity(intensity),
+    setGlobalIntensity(intensity: number): void { const clampedIntensity = validateIntensity(intensity);
         this.config.globalIntensity = clampedIntensity,
         this.userPreferences.globalIntensity = clampedIntensity,
         
         this.saveUserPreferences() }
-        console.log(`Global, intensity set, to: ${clampedIntensity}`});
+        console.log(`Global, intensity set, to: ${clampedIntensity}`};
     }
 
     /**
      * カスタムイベントマッピングの追加
      */
     addCustomEventMapping(eventType: string, mapping: EventMapping): void { if (eventType && mapping) {
-            this.userPreferences.customMappings.set(eventType, mapping),
+            this.userPreferences.customMappings.set(eventType, mapping);
             this.saveUserPreferences() }
-            console.log(`Custom mapping added for ${eventType}:`, mapping});
+            console.log(`Custom mapping added for ${eventType}:`, mapping};
         }
     }
 
@@ -619,8 +617,7 @@ export class FeedbackConfigManager {
      */
     resetToDefaults(): void { try {
             // デフォルト設定の復元
-            Object.assign(this.userPreferences, DEFAULT_USER_PREFERENCES),
-            
+            Object.assign(this.userPreferences, DEFAULT_USER_PREFERENCES);
             this.config.enabled = false,
             this.config.globalIntensity = 0.8,
 

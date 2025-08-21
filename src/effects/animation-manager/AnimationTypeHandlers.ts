@@ -9,7 +9,7 @@ import { EasingType  } from './AnimationEngineCore.js';
 /**
  * Position interface
  */
-export interface Position { x: number,
+export interface Position { x: number;
     y: number;
 
 /**
@@ -55,7 +55,7 @@ export type MenuSlideDirection = 'left' | 'right' | 'up' | 'down';
 /**
  * Bubble interface
  */
-export interface Bubble { x: number,
+export interface Bubble { x: number;
     y: number;
     size: number;
     alpha?: number;
@@ -66,7 +66,7 @@ export interface Bubble { x: number,
 /**
  * Type settings interface
  */
-export interface TypeSettings { enabled: boolean,
+export interface TypeSettings { enabled: boolean;
     speedMultiplier: number;
 
 /**
@@ -204,7 +204,7 @@ export interface ScoreChangeAnimation {,
     easing: EasingType;
     startValues: AnimationValues & { score: number;;
     endValues: AnimationValues & { score: number;;
-    scoreDiff: number,
+    scoreDiff: number;
     options: ScoreChangeOptions;
     }
 
@@ -286,7 +286,7 @@ export interface LoadingAnimation {,
 /**
  * Canvas interface
  */
-export interface Canvas { width: number,
+export interface Canvas { width: number;
     height: number;
 
 /**
@@ -300,17 +300,17 @@ export class BubbleAnimationHandler {
     createBubbleSpawnAnimation(bubble: Bubble, spawnType: BubbleSpawnType = 'scale', options: BubbleSpawnOptions = {)': BubbleSpawnAnimation | null {'
         try {
             return { ''
-                type: 'bubbleSpawn',
-    target: bubble,
+                type: 'bubbleSpawn';
+    target: bubble;
                 spawnType,
-                duration: options.duration || 800,
-                elapsed: 0,
-                easing: options.easing || 'easeOutBounce',
+                duration: options.duration || 800;
+                elapsed: 0;
+                easing: options.easing || 'easeOutBounce';
     startValues: this.getBubbleStartValues(bubble, spawnType);
                 endValues: this.getBubbleEndValues(bubble, spawnType);
                 options: {
-                    delay: options.delay || 0,
-                    intensity: options.intensity || 1.0,
+                    delay: options.delay || 0;
+                    intensity: options.intensity || 1.0;
     direction: options.direction || 0 };
                     ...options
                 }
@@ -327,16 +327,16 @@ export class BubbleAnimationHandler {
     createBubbleDestroyAnimation(bubble: Bubble, destroyType: BubbleDestroyType = 'shrink', options: BubbleDestroyOptions = { )': BubbleDestroyAnimation | null {'
         try {
             return { ''
-                type: 'bubbleDestroy',
-    target: bubble,
+                type: 'bubbleDestroy';
+    target: bubble;
                 destroyType,
-                duration: options.duration || 600,
-                elapsed: 0,
-                easing: options.easing || 'easeInQuad',
+                duration: options.duration || 600;
+                elapsed: 0;
+                easing: options.easing || 'easeInQuad';
     startValues: this.getBubbleStartValues(bubble, destroyType);
                 endValues: this.getBubbleDestroyEndValues(bubble, destroyType);
                 options: {
-                    intensity: options.intensity || 1.0,
+                    intensity: options.intensity || 1.0;
     fragments: options.fragments || 8 };
                     ...options
                 }
@@ -350,8 +350,8 @@ export class BubbleAnimationHandler {
     createBubbleMovementAnimation(bubble: Bubble, targetPosition: Position, duration: number = 1000, options: BubbleMovementOptions = { )): BubbleMovementAnimation | null {
         try {
             return { ''
-                type: 'bubbleMovement',
-    target: bubble,
+                type: 'bubbleMovement';
+    target: bubble;
                 duration,
                 elapsed: 0,' };'
 
@@ -361,9 +361,9 @@ export class BubbleAnimationHandler {
                 endValues: { x: targetPosition.x, y: targetPosition.y  };
 
                 options: { ''
-                    path: options.path || 'linear',
-                    controlPoints: options.controlPoints || [],
-    rotation: options.rotation || false,
+                    path: options.path || 'linear';
+                    controlPoints: options.controlPoints || [];
+    rotation: options.rotation || false;
                     ...options
             } catch (error) { getErrorHandler()','
                 context: 'BubbleAnimationHandler.createBubbleMovementAnimation' }';'
@@ -376,12 +376,10 @@ export class BubbleAnimationHandler {
         switch(animation.type) {
 
             case 'bubbleSpawn':','
-                this.updateBubbleSpawnAnimation(animation, easedProgress),
-
+                this.updateBubbleSpawnAnimation(animation, easedProgress);
                 break,
             case 'bubbleDestroy':','
-                this.updateBubbleDestroyAnimation(animation, easedProgress),
-
+                this.updateBubbleDestroyAnimation(animation, easedProgress);
                 break,
             case 'bubbleMovement':,
                 this.updateBubbleMovementAnimation(animation, easedProgress) }
@@ -391,7 +389,7 @@ export class BubbleAnimationHandler {
     /**
      * バブルスポーンアニメーション更新
      */
-    private updateBubbleSpawnAnimation(animation: BubbleSpawnAnimation, progress: number): void { const start = animation.startValues,
+    private updateBubbleSpawnAnimation(animation: BubbleSpawnAnimation, progress: number): void { const start = animation.startValues;
         const end = animation.endValues,
         const target = animation.target,
         
@@ -513,7 +511,7 @@ export class BubbleAnimationHandler {
             size: bubble.size,
             alpha: bubble.alpha || 1,
             rotation: bubble.rotation || 0,
-    scale: bubble.scale || 1 };
+    scale: bubble.scale || 1 },
         switch(animationType) {', ' }
 
             case 'scale': }
@@ -527,7 +525,7 @@ export class BubbleAnimationHandler {
                 return { ...baseValues, scale: 0, rotation: -Math.PI * 2  }''
             case 'pop':
                 return { ...baseValues, scale: 1.5, alpha: 0  },
-            default: return baseValues;
+            default: return baseValues,
     
     /**
      * バブル終了値を取得
@@ -536,7 +534,7 @@ export class BubbleAnimationHandler {
             y: bubble.y,
             size: bubble.size,
             alpha: 1,
-    rotation: 0 };
+    rotation: 0 },
             scale: 1 
     }
     
@@ -549,7 +547,7 @@ export class BubbleAnimationHandler {
             size: bubble.size,
             alpha: 0,
             rotation: 0,
-    scale: 1 };
+    scale: 1 },
         switch(destroyType) {', ' }
 
             case 'shrink': }
@@ -563,7 +561,7 @@ export class BubbleAnimationHandler {
                 return { ...baseValues, scale: 0.1, rotation: Math.PI  }''
             case 'vaporize':
                 return { ...baseValues, scale: 3, alpha: 0, y: bubble.y - 100  },
-            default: return baseValues;
+            default: return baseValues,
 
 /**
  * UI Animation Handler
@@ -574,7 +572,7 @@ export class UIAnimationHandler {
     constructor() {
     
         this.typeSettings = {
-            enabled: true,
+            enabled: true;
             speedMultiplier: 1.0 
     }
     
@@ -584,17 +582,17 @@ export class UIAnimationHandler {
     createUIElementAnimation(element: UIElement, animationType: UIAnimationType, duration: number = 500, options: UIAnimationOptions = { )): UIElementAnimation | null {
         try {
             return {,
-                type: 'uiElement',
-    target: element,
+                type: 'uiElement';
+    target: element;
                 animationType,
                 duration,
-                elapsed: 0,
-                easing: options.easing || 'easeOutQuad',
+                elapsed: 0;
+                easing: options.easing || 'easeOutQuad';
                 startValues: this.getUIStartValues(element, animationType, options);
                 endValues: this.getUIEndValues(element, animationType, options);
                 options: {''
-                    direction: options.direction || 'up',
-                    distance: options.distance || 50,
+                    direction: options.direction || 'up';
+                    distance: options.distance || 50;
     intensity: options.intensity || 1.0 };
                     ...options
                 }
@@ -610,8 +608,8 @@ export class UIAnimationHandler {
             const scoreDiff = newScore - oldScore,
 
             return { ''
-                type: 'scoreChange',
-    target: element,
+                type: 'scoreChange';
+    target: element;
                 duration,
                 elapsed: 0,' };'
 
@@ -620,9 +618,9 @@ export class UIAnimationHandler {
                 startValues: { score: oldScore, scale: 1, alpha: 1  };
                 endValues: { score: newScore, scale: 1, alpha: 1  };
                 scoreDiff,
-                options: { showDifference: options.showDifference !== false,
-    animateScale: options.animateScale !== false,
-                    color: scoreDiff > 0 ? '#00FF00' : '#FF0000',
+                options: { showDifference: options.showDifference !== false;
+    animateScale: options.animateScale !== false;
+                    color: scoreDiff > 0 ? '#00FF00' : '#FF0000';
                     ...options
              } catch (error) { getErrorHandler()','
                 context: 'UIAnimationHandler.createScoreChangeAnimation' }';'
@@ -635,8 +633,7 @@ export class UIAnimationHandler {
         switch(animation.type) {
 
             case 'uiElement':','
-                this.updateUIElementAnimation(animation, easedProgress),
-
+                this.updateUIElementAnimation(animation, easedProgress);
                 break,
             case 'scoreChange':,
                 this.updateScoreChangeAnimation(animation, easedProgress) }
@@ -646,7 +643,7 @@ export class UIAnimationHandler {
     /**
      * UIエレメントアニメーション更新
      */
-    private updateUIElementAnimation(animation: UIElementAnimation, progress: number): void { const start = animation.startValues,
+    private updateUIElementAnimation(animation: UIElementAnimation, progress: number): void { const start = animation.startValues;
         const end = animation.endValues,
         const target = animation.target,
         
@@ -678,7 +675,7 @@ export class UIAnimationHandler {
     /**
      * スコア変更アニメーション更新
      */
-    private updateScoreChangeAnimation(animation: ScoreChangeAnimation, progress: number): void { const start = animation.startValues,
+    private updateScoreChangeAnimation(animation: ScoreChangeAnimation, progress: number): void { const start = animation.startValues;
         const end = animation.endValues,
         const target = animation.target,
         
@@ -709,7 +706,7 @@ export class UIAnimationHandler {
             height: element.height || 50,
             alpha: element.alpha || 1,
             scale: element.scale || 1,
-    rotation: element.rotation || 0 };
+    rotation: element.rotation || 0 },
         switch(animationType) {', ' }
 
             case 'fadeIn': }
@@ -732,7 +729,7 @@ export class UIAnimationHandler {
                 return baseValues;
             case 'shake':
                 return baseValues;
-            default: return baseValues;
+            default: return baseValues,
     
     /**
      * UI終了値を取得
@@ -744,7 +741,7 @@ export class UIAnimationHandler {
             height: element.height || 50,
             alpha: element.alpha || 1,
             scale: element.scale || 1,
-    rotation: element.rotation || 0 };
+    rotation: element.rotation || 0 },
         switch(animationType) {
 
             case 'fadeIn':','
@@ -770,7 +767,7 @@ export class UIAnimationHandler {
                 return { ...baseValues, scale: 1.1  }''
             case 'shake':
                 return baseValues;
-            default: return baseValues;
+            default: return baseValues,
 
 /**
  * Menu Animation Handler
@@ -783,7 +780,7 @@ export class MenuAnimationHandler {
     constructor(canvas: Canvas) {
         this.canvas = canvas;
         this.typeSettings = {
-            enabled: true,
+            enabled: true;
             speedMultiplier: 0.8 
     }
     
@@ -791,37 +788,37 @@ export class MenuAnimationHandler {
      * メニュー遷移アニメーション作成'
      */''
     createMenuTransitionAnimations(fromMenu: MenuElement | null, toMenu: MenuElement | null, transitionType: MenuTransitionType = 'slide', options: MenuTransitionOptions = { ): (MenuExitAnimation | MenuEnterAnimation)[] {
-        const animations: (MenuExitAnimation | MenuEnterAnimation)[] = [],
+        const animations: (MenuExitAnimation | MenuEnterAnimation)[] = [];
         
         try {
             // 退出アニメーション
             if (fromMenu) {
                 const exitAnimation: MenuExitAnimation = {''
-                    type: 'menuExit',
-    target: fromMenu,
+                    type: 'menuExit';
+    target: fromMenu;
                     transitionType,
-                    duration: options.duration || 600,
+                    duration: options.duration || 600;
                     elapsed: 0 }
 
                     easing: options.exitEasing || 'easeInQuad'
             }
                     startValues: { alpha: 1, x: 0, y: 0, scale: 1  };
                     endValues: this.getMenuExitEndValues(transitionType, options);
-                    options: { ...options,
+                    options: { ...options;
                 animations.push(exitAnimation) }
             ';'
             // 入場アニメーション
             if (toMenu) {
                 const enterAnimation: MenuEnterAnimation = {''
-                    type: 'menuEnter',
-    target: toMenu,
+                    type: 'menuEnter';
+    target: toMenu;
                     transitionType,
-                    duration: options.duration || 600,
-                    elapsed: 0,
+                    duration: options.duration || 600;
+                    elapsed: 0;
                     easing: options.enterEasing || 'easeOutQuad' }
                     startValues: this.getMenuEnterStartValues(transitionType, options) }
                     endValues: { alpha: 1, x: 0, y: 0, scale: 1  };
-                    options: { delay: options.overlap ? (options.duration || 600) * 0.3 : (options.duration || 600) * 0.5,
+                    options: { delay: options.overlap ? (options.duration || 600) * 0.3 : (options.duration || 600) * 0.5;
                         ...options
                 };
                 animations.push(enterAnimation);
@@ -830,13 +827,13 @@ export class MenuAnimationHandler {
             return animations;
 
         } catch (error) { getErrorHandler()','
-                context: 'MenuAnimationHandler.createMenuTransitionAnimations' });
+                context: 'MenuAnimationHandler.createMenuTransitionAnimations' };
             return [];
     
     /**
      * メニューアニメーション更新
      */
-    updateMenuAnimation(animation: MenuExitAnimation | MenuEnterAnimation, progress: number): void { const start = animation.startValues,
+    updateMenuAnimation(animation: MenuExitAnimation | MenuEnterAnimation, progress: number): void { const start = animation.startValues;
         const end = animation.endValues,
         const target = animation.target,
         
@@ -864,14 +861,14 @@ export class MenuAnimationHandler {
                     case 'left': return { alpha: 1, x: -this.canvas.width, y: 0, scale: 1  }''
                     case 'right': return { alpha: 1, x: this.canvas.width, y: 0, scale: 1  }''
                     case 'up': return { alpha: 1, x: 0, y: -this.canvas.height, scale: 1  }''
-                    case 'down': return { alpha: 1, x: 0, y: this.canvas.height, scale: 1  },
+                    case 'down': return { alpha: 1, x: 0, y: this.canvas.height, scale: 1  };
                     default: return { alpha: 1, x: -this.canvas.width, y: 0, scale: 1  } }''
             case 'fade':';'
                 return { alpha: 0, x: 0, y: 0, scale: 1  }''
             case 'scale':';'
                 return { alpha: 0, x: 0, y: 0, scale: 0  }''
             case 'zoom':
-                return { alpha: 0, x: 0, y: 0, scale: 2  },
+                return { alpha: 0, x: 0, y: 0, scale: 2  };
             default:;
                 return { alpha: 0, x: 0, y: 0, scale: 1  }
     }
@@ -913,7 +910,7 @@ export class LoadingAnimationHandler {
     constructor(canvas: Canvas) {
         this.canvas = canvas;
         this.typeSettings = {
-            enabled: true,
+            enabled: true;
             speedMultiplier: 1.2 
     }
     
@@ -930,25 +927,25 @@ export class LoadingAnimationHandler {
                 type: 'loading'
             };
                 loadingType: type;
-                position: { x: centerX, y: centerY,;
+                position: { x: centerX, y: centerY;
                 size,
                 duration: options.duration || Number.MAX_SAFE_INTEGER, // 無限ループ;
-                elapsed: 0,
-                easing: 'linear',
+                elapsed: 0;
+                easing: 'linear';
                 options: { ''
-                    color: options.color || '#4A90E2',
-                    speed: options.speed || 1.0,
-                    elements: options.elements || 8,
-    thickness: options.thickness || 4,
+                    color: options.color || '#4A90E2';
+                    speed: options.speed || 1.0;
+                    elements: options.elements || 8;
+    thickness: options.thickness || 4;
                     ...options
             } catch (error) { getErrorHandler()','
-                context: 'LoadingAnimationHandler.createLoadingAnimation' });
+                context: 'LoadingAnimationHandler.createLoadingAnimation' };
             return null;
     
     /**
      * ローディングアニメーション更新
      */
-    updateLoadingAnimation(animation: LoadingAnimation, deltaTime: number): void { animation.rotation = (animation.rotation || 0) + (deltaTime * 0.003 * animation.options.speed!),
+    updateLoadingAnimation(animation: LoadingAnimation, deltaTime: number): void { animation.rotation = (animation.rotation || 0) + (deltaTime * 0.003 * animation.options.speed!);
         animation.phase = (animation.phase || 0) + (deltaTime * 0.002 * animation.options.speed!),
         ','
         // ローディングタイプ別の状態更新
@@ -977,9 +974,9 @@ export class LoadingAnimationHandler {
         const animation = this.createLoadingAnimation('progress', position, size, {)
             ...options','
             progress: 0, // 初期進行状況;
-            showPercentage: options.showPercentage !== false,
+            showPercentage: options.showPercentage !== false;
             backgroundColor: options.backgroundColor || '#EEEEEE',')';
-            foregroundColor: options.foregroundColor || '#4A90E2'),
+            foregroundColor: options.foregroundColor || '#4A90E2');
         return animation  }
     
     /**
@@ -987,7 +984,7 @@ export class LoadingAnimationHandler {
      */''
     updateLoadingProgress(animation: LoadingAnimation | null, progress: number): boolean { ''
         if(animation && animation.loadingType === 'progress' {'
-            animation.options.progress = Math.max(0, Math.min(1, progress),
+            animation.options.progress = Math.max(0, Math.min(1, progress);
             ','
             // 100%完了時の特別アニメーション
             if (animation.options.progress >= 1 && !animation.completionTriggered) {

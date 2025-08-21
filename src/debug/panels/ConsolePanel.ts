@@ -21,7 +21,7 @@ type OutputType = 'info' | 'command' | 'result' | 'error';
 export class ConsolePanel {
     private gameEngine: GameEngine;
     private debugInterface: DebugInterface;
-    private, element: HTMLElement | null,
+    private, element: HTMLElement | null;
     private developerConsole?: DeveloperConsole,
 
     constructor(gameEngine: GameEngine, debugInterface: DebugInterface) {
@@ -82,7 +82,7 @@ export class ConsolePanel {
         
         // コマンド実行
         const executeCommand = () => { 
-            const command = input.value.trim(),
+            const command = input.value.trim();
             if (command) { }
 
                 this.executeCommand(command);' }'
@@ -108,7 +108,7 @@ export class ConsolePanel {
                     this.executeCommand(command);' }'
 
                     input.value = '; }'
-});
+};
         }';'
     }
 
@@ -125,7 +125,7 @@ export class ConsolePanel {
 
                 const, result = this.developerConsole.executeCommand(command);' }'
 
-                this.addOutput(result, 'result'});
+                this.addOutput(result, 'result'};
 
             } else {  // フォールバック：基本的なコマンド処理
                 const result = this.executeBasicCommand(command),' }'
@@ -172,8 +172,7 @@ export class ConsolePanel {
                 this.gameEngine.start('',
                 return 'ゲームを再開しました'
         }
-            default:
-            });
+            default: };
                 return `未知のゲームコマンド: ${command}`)
         }
     }
@@ -199,7 +198,7 @@ export class ConsolePanel {
     
 }
                 const value = this.gameEngine.configManager.get(key); : undefined 
-                return `${key}: ${JSON.stringify(value})`;
+                return `${key}: ${JSON.stringify(value}`;
         return `設定コマンド実行結果（未実装）: ${command}`;
     }
 
@@ -241,7 +240,7 @@ export class ConsolePanel {
         const history = this.element.querySelector('#command-history' as HTMLElement,
         if (history) {
 
-            const div = document.createElement('div'),
+            const div = document.createElement('div');
             div.className = 'history-item',
 
             div.textContent = command,
@@ -249,7 +248,7 @@ export class ConsolePanel {
                 const input = this.element?.querySelector('#console-input) as HTMLInputElement }'
                 if (input) { }
                     input.value = command; }
-});
+};
             history.appendChild(div);
             
             // 履歴を最大10件に制限

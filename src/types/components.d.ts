@@ -7,19 +7,19 @@ import { Position, Size, Color, EventListener, UIComponent  } from './global';'
 import { Scene, InputState  } from './game';
 
 // Base component interfaces
-export interface Component { id: string,
+export interface Component { id: string;
   name: string;
  , enabled: boolean;
   init(): Promise<void>;
   update(deltaTime: number): void;
   destroy(): void;
 
-export interface RenderableComponent extends Component { visible: boolean,
+export interface RenderableComponent extends Component { visible: boolean;
   zIndex: number;
   render(context: CanvasRenderingContext2D): void;
 
 // Manager interfaces
-export interface Manager extends Component { initialized: boolean,
+export interface Manager extends Component { initialized: boolean;
   
   reset(): void;
   pause(): void;
@@ -37,7 +37,7 @@ export interface UIManager extends Manager { components: Map<string, UIComponent
   render(context: CanvasRenderingContext2D): void;
 
 // Menu system components
-export interface MenuItem { id: string,
+export interface MenuItem { id: string;
   text: string;
   action: () => void;
   enabled: boolean;
@@ -47,7 +47,7 @@ export interface MenuItem { id: string,
      }
 }
 
-export interface Menu extends UIComponent { items: MenuItem[],
+export interface Menu extends UIComponent { items: MenuItem[];
   selectedIndex: number;
  , title: string;
   addItem(item: MenuItem): void;
@@ -57,7 +57,7 @@ export interface Menu extends UIComponent { items: MenuItem[],
   navigateUp(): void;
   navigateDown(): void;
 
-export interface MenuManager extends UIManager { currentMenu: Menu | null,
+export interface MenuManager extends UIManager { currentMenu: Menu | null;
   menuStack: Menu[];
   openMenu(menu: Menu): void;
   closeMenu(): void;
@@ -65,7 +65,7 @@ export interface MenuManager extends UIManager { currentMenu: Menu | null,
   clearMenuStack(): void;
 
 // Dialog and modal components
-export interface Dialog extends UIComponent { title: string,
+export interface Dialog extends UIComponent { title: string;
   message: string;
   buttons: DialogButton[];
  , modal: boolean;
@@ -73,19 +73,19 @@ export interface Dialog extends UIComponent { title: string,
   hide(): void,''
   addButton(button: DialogButton): void;
 
-export interface DialogButton { id: string,
+export interface DialogButton { id: string;
 
   text: string;
   style: 'primary' | 'secondary' | 'danger';
  , onClick: () => void  }
 }
 
-export interface ConfirmDialog extends Dialog { onConfirm: () => void,
+export interface ConfirmDialog extends Dialog { onConfirm: () => void;
   onCancel: () => void }
 }
 
 // Settings components
-export interface SettingsPanel extends UIComponent { categories: SettingsCategory[],
+export interface SettingsPanel extends UIComponent { categories: SettingsCategory[];
  , activeCategory: string;
   addCategory(category: SettingsCategory): void;
   switchCategory(categoryId: string): void;
@@ -105,12 +105,12 @@ export interface SettingsPanel extends UIComponent { categories: SettingsCategor
   resetToDefault(): void;
   validate(value: any): boolean;
 
-export interface SettingOption { value: any,
+export interface SettingOption { value: any;
   label: string;
   description?: string;
 
 // Help and tutorial components
-export interface HelpSystem extends UIComponent { topics: HelpTopic[],
+export interface HelpSystem extends UIComponent { topics: HelpTopic[];
   currentTopic: string | null;
  , searchQuery: string;
   showTopic(topicId: string): void;
@@ -118,14 +118,14 @@ export interface HelpSystem extends UIComponent { topics: HelpTopic[],
   navigateBack(): void;
   navigateForward(): void;
 
-export interface HelpTopic { id: string,
+export interface HelpTopic { id: string;
   title: string;
   content: string;
   category: string;
   tags: string[];
  , relatedTopics: string[];
 
-export interface Tutorial extends Component { steps: TutorialStep[],
+export interface Tutorial extends Component { steps: TutorialStep[];
   currentStep: number;
  , completed: boolean;
   start(): void;
@@ -139,7 +139,7 @@ export interface Tutorial extends Component { steps: TutorialStep[],
   execute(): void;
 
 // Input and control components
-export interface InputField extends UIComponent { value: string,
+export interface InputField extends UIComponent { value: string;
   placeholder: string;
   maxLength: number;
   focused: boolean;
@@ -150,7 +150,7 @@ export interface InputField extends UIComponent { value: string,
   setValue(value: string): void;
   getValue(): string;
 
-export interface Button extends UIComponent { text: string,
+export interface Button extends UIComponent { text: string;
   icon?: string;
   style: ButtonStyle;
  , state: ButtonState;
@@ -163,7 +163,7 @@ export, type ButtonState = 'normal' | 'hover' | 'pressed' | 'disabled';
 
 // Layout, and container, components
 export, interface Container, extends UIComponent {
-  children: UIComponent[],
+  children: UIComponent[];
   layout: LayoutType;
   padding: number);
  , spacing: number);
@@ -179,7 +179,7 @@ export interface Panel extends Container {
   backgroundColor: Color;
  , borderColor: Color;
 
-export interface ScrollContainer extends Container { scrollX: number,
+export interface ScrollContainer extends Container { scrollX: number;
   scrollY: number;
   scrollWidth: number);
  , scrollHeight: number)';'
@@ -194,7 +194,7 @@ export interface Label extends UIComponent { text: string,''
   fontFamily: string;
  , textColor: Color;
 
-export interface ProgressBar extends UIComponent { value: number,
+export interface ProgressBar extends UIComponent { value: number;
   maxValue: number;
   showText: boolean;
   fillColor: Color;
@@ -204,7 +204,7 @@ export interface ProgressBar extends UIComponent { value: number,
   setMaxValue(maxValue: number): void;
   getProgress(): number;
 
-export interface Chart extends UIComponent { data: ChartData[],
+export interface Chart extends UIComponent { data: ChartData[];
   type: ChartType;
  , colors: Color[];
   setData(data: ChartData[]): void;
@@ -213,7 +213,7 @@ export interface Chart extends UIComponent { data: ChartData[],
 export, type ChartType = 'bar' | 'line' | 'pie' | 'area';
 
 // Game-specific, UI components, export interface, ScoreDisplay extends, Label {
-  score: number,
+  score: number;
   animatedScore: number);
  , animationSpeed: number);
   setScore(score: number, animate?: boolean): void,''
@@ -229,7 +229,7 @@ export interface TimerDisplay extends Label { time: number,''
   reset(): void;
   formatTime(time: number): string;
 
-export interface HealthBar extends ProgressBar { maxHealth: number,
+export interface HealthBar extends ProgressBar { maxHealth: number;
   currentHealth: number;
   criticalThreshold: number;
  , criticalColor: Color;
@@ -239,14 +239,14 @@ export interface HealthBar extends ProgressBar { maxHealth: number,
   isCritical(): boolean;
 
 // Notification and feedback components
-export interface NotificationManager extends Manager { notifications: Notification[],
+export interface NotificationManager extends Manager { notifications: Notification[];
   maxNotifications: number;
  , defaultDuration: number;
   show(message: string, type?: NotificationType, duration?: number): void;
   hide(id: string): void;
   clear(): void;
 
-export interface Notification extends UIComponent { id: string,
+export interface Notification extends UIComponent { id: string;
   message: string;
   type: NotificationType;
   duration: number;
@@ -265,7 +265,7 @@ export type ToastPosition = 'top' | 'bottom' | 'center';'
 export type ToastAnimation = 'slide' | 'fade' | 'bounce';
 
 // Performance and debugging components
-export interface PerformanceMonitor extends Component { fps: number,
+export interface PerformanceMonitor extends Component { fps: number;
   frameTime: number;
   memoryUsage: number;
   renderTime: number);
@@ -275,7 +275,7 @@ export interface PerformanceMonitor extends Component { fps: number,
   getStats(): PerformanceStats;
      }
 
-export interface PerformanceStats { fps: number,
+export interface PerformanceStats { fps: number;
   frameTime: number;
   memory: number;
   renderTime: number;
@@ -290,7 +290,7 @@ export interface DebugConsole extends UIComponent { commands: Map<string, Consol
   log(message: string): void;
   clear(): void;
 
-export interface ConsoleCommand { name: string,
+export interface ConsoleCommand { name: string;
   description: string;
  , usage: string;
   execute: (arg,s: string[]') => string,' }

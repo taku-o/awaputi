@@ -21,7 +21,7 @@ describe('EventStageManager Integration Tests', () => {  let eventStageManager: 
             addItem: jest.fn(),','
             addSpecialReward: jest.fn(),' }'
             getPlayerName: jest.fn(').mockReturnValue('TestPlayer')'
-            clearedStages: []);
+            clearedStages: []),
             eventParticipationHistory: {},
         mockStatisticsManager = { recordEventParticipation: jest.fn(
             getDetailedEventStatistics: jest.fn().mockReturnValue({,
@@ -35,78 +35,78 @@ describe('EventStageManager Integration Tests', () => {  let eventStageManager: 
         // Clear localStorage before each test
         localStorage.clear();
         eventStageManager = new EventStageManager(mockGameEngine: any),
-    });
+    };
     afterEach(() => { localStorage.clear() }'
-        jest.clearAllMocks(});'}');
+        jest.clearAllMocks(};'}');
     describe('Seasonal Event Management', (') => {  ''
         test('should schedule seasonal events automatically', (') => {'
             // Mock current date to spring''
-            const springDate = new Date('2024-04-15'),
+            const springDate = new Date('2024-04-15');
             jest.spyOn(Date, 'now').mockReturnValue(springDate.getTime()'),'
             jest.spyOn(global, 'Date').mockImplementation(() => springDate),'
-            eventStageManager.scheduleSeasonalEvents(),
+            eventStageManager.scheduleSeasonalEvents();
             const availableEvents = eventStageManager.getAvailableEvents(')',
-            const springEvents = availableEvents.filter(event => event.season === 'spring'),
+            const springEvents = availableEvents.filter(event => event.season === 'spring');
             expect(springEvents.length).toBeGreaterThan(0'),' }'
             expect(springEvents.some(event => event.id === 'spring-cherry-blossom').toBe(true as any'); }'
         }''
         test('should activate appropriate seasonal events for current season', (') => {  // Test summer period''
-            const summerDate = new Date('2024-07-15'),
+            const summerDate = new Date('2024-07-15');
             jest.spyOn(Date, 'now').mockReturnValue(summerDate.getTime()'),'
             jest.spyOn(global, 'Date').mockImplementation(() => summerDate),'
-            eventStageManager.checkSeasonalEventActivation(summerDate: any),
+            eventStageManager.checkSeasonalEventActivation(summerDate: any);
             const availableEvents = eventStageManager.getAvailableEvents(')',
-            const summerEvents = availableEvents.filter(event => event.season === 'summer'),
+            const summerEvents = availableEvents.filter(event => event.season === 'summer');
             expect(summerEvents.length).toBeGreaterThan(0'),' }'
             expect(summerEvents.some(event => event.id === 'summer-fireworks').toBe(true'); }'
         }''
         test('should deactivate events when season changes', (') => {  // Start with spring''
-            const springDate = new Date('2024-04-15'),
+            const springDate = new Date('2024-04-15');
             jest.spyOn(Date, 'now').mockReturnValue(springDate.getTime()'),'
             jest.spyOn(global, 'Date').mockImplementation(() => springDate),'
-            eventStageManager.scheduleSeasonalEvents(),
+            eventStageManager.scheduleSeasonalEvents();
             let availableEvents = eventStageManager.getAvailableEvents(')',
             const springEventsCount = availableEvents.filter(event => event.season === 'spring').length,
             expect(springEventsCount.toBeGreaterThan(0'),'
             // Change to autumn''
-            const autumnDate = new Date('2024-10-15'),
+            const autumnDate = new Date('2024-10-15');
             jest.spyOn(Date, 'now').mockReturnValue(autumnDate.getTime()'),'
             jest.spyOn(global, 'Date').mockImplementation(() => autumnDate),'
-            eventStageManager.checkSeasonalEventActivation(autumnDate: any),
+            eventStageManager.checkSeasonalEventActivation(autumnDate: any);
             availableEvents = eventStageManager.getAvailableEvents(')',
-            const activeSpringEvents = availableEvents.filter(event => event.season === 'spring'),
-            const activeAutumnEvents = availableEvents.filter(event => event.season === 'autumn'),
+            const activeSpringEvents = availableEvents.filter(event => event.season === 'spring');
+            const activeAutumnEvents = availableEvents.filter(event => event.season === 'autumn');
             expect(activeSpringEvents.length).toBe(0) }'
             expect(activeAutumnEvents.length).toBeGreaterThan(0);' }'
         }');'
         test('should apply seasonal effects correctly', (') => {  ''
-            const springEvent = eventStageManager.getEventById('spring-cherry-blossom'),
+            const springEvent = eventStageManager.getEventById('spring-cherry-blossom');
             expect(springEvent).toBeDefined(')',
-            const result = eventStageManager.startEventStage('spring-cherry-blossom'),
-            expect(result).toBe(true),
+            const result = eventStageManager.startEventStage('spring-cherry-blossom');
+            expect(result).toBe(true);
             // Check if seasonal effects are applied
-            const activeEvent = eventStageManager.getCurrentEvent(),
-            expect(activeEvent).toBeDefined(),
+            const activeEvent = eventStageManager.getCurrentEvent();
+            expect(activeEvent).toBeDefined();
             expect(activeEvent.specialRules.cherryBlossomEffect).toBe(true) }'
             expect(activeEvent.specialRules.windEffect).toBe(true););' }'
         }');'
     }''
     describe('Event Notification System', (') => { }'
         test('should send notification when event starts', (') => { }'
-            eventStageManager.sendEventNotification('spring-cherry-blossom', 'EVENT_STARTED'});
+            eventStageManager.sendEventNotification('spring-cherry-blossom', 'EVENT_STARTED'};
             expect(mockAchievementNotificationSystem.queueNotification').toHaveBeenCalledWith(';
                 expect.objectContaining({ ''
                     type: 'event',')',
                     subType: 'EVENT_STARTED',')',
         eventId: 'spring-cherry-blossom') }
-    });
+    };
                 }'
             );'}');
         test('should send warning notification when event is ending', (') => {  // Mock event with end time soon'
             const mockEvent = {''
                 id: 'test-event',','
                 name: 'Test Event',' }'
-                endTime: Date.now('})'
+                endTime: Date.now('}'
             eventStageManager.events = { 'test-event': mockEvent;;')'
             eventStageManager.sendEventNotification('test-event', 'EVENT_ENDING');
             expect(mockAchievementNotificationSystem.queueNotification').toHaveBeenCalledWith(';
@@ -123,18 +123,18 @@ describe('EventStageManager Integration Tests', () => {  let eventStageManager: 
                 startTime: Date.now() - 3600000, // started 1 hour ago','
                 endTime: Date.now(')',
             eventStageManager.events['test-notification-event'] = testEvent)
-            eventStageManager.checkEventNotifications(),
+            eventStageManager.checkEventNotifications();
             // Should have sent at least one notification }'
             expect(mockAchievementNotificationSystem.queueNotification).toHaveBeenCalled();' }'
         }');'
         test('should handle notification errors gracefully', () => {  ''
             mockAchievementNotificationSystem.queueNotification.mockImplementation((') => { }'
                 throw new Error('Notification system error'); }
-            });'
+            };'
             // Should not throw error''
             expect((') => { }'
-                eventStageManager.sendEventNotification('spring-cherry-blossom', 'EVENT_STARTED'});
-            }).not.toThrow();'
+                eventStageManager.sendEventNotification('spring-cherry-blossom', 'EVENT_STARTED'};
+            }.not.toThrow();'
         }'}');
     describe('Event Statistics Collection', (') => {  ''
         test('should record event participation', (') => {''
@@ -151,11 +151,11 @@ describe('EventStageManager Integration Tests', () => {  let eventStageManager: 
                 eventId, playerId, stats);'
             );'}');
         test('should get detailed event statistics', (') => {  mockStatisticsManager.getDetailedEventStatistics.mockReturnValue({'
-                totalEvents: 5),
+                totalEvents: 5);
                 completionRate: 0.8)','
                , averageScore: 12500,') }'
                 favoriteEvent: 'spring-cherry-blossom'); }
-            });
+            };
             const stats = eventStageManager.getDetailedEventStatistics();
             expect(stats).toBeDefined();
             expect(stats.totalEvents).toBe(5);
@@ -193,7 +193,7 @@ describe('EventStageManager Integration Tests', () => {  let eventStageManager: 
             const eventId = 'special-admin-event',
             const duration = 3600000, // 1 hour
             const options = { }
-                notifications: true;
+                notifications: true,
                 rewards: { ap: 500 }
             },
             const result = eventStageManager.adminActivateEvent(eventId, duration, options);
@@ -203,15 +203,15 @@ describe('EventStageManager Integration Tests', () => {  let eventStageManager: 
             eventStageManager.adminActivateEvent('test-deactivation-event', 3600000'),'
             expect(eventStageManager.isEventAvailable('test-deactivation-event').toBe(true'),'
             // Then deactivate it''
-            const result = eventStageManager.adminDeactivateEvent('test-deactivation-event'),
+            const result = eventStageManager.adminDeactivateEvent('test-deactivation-event');
             expect(result).toBe(true),'),' }'
             expect(eventStageManager.isEventAvailable('test-deactivation-event').toBe(false'); }'
         }''
         test('should provide event management status', (') => {  // Activate some test events''
             eventStageManager.adminActivateEvent('test-event-1', 3600000'),'
-            eventStageManager.adminActivateEvent('test-event-2', 7200000),
-            const managementStatus = eventStageManager.getEventManagementStatus(),
-            expect(managementStatus).toBeDefined(),
+            eventStageManager.adminActivateEvent('test-event-2', 7200000);
+            const managementStatus = eventStageManager.getEventManagementStatus();
+            expect(managementStatus).toBeDefined();
             expect(managementStatus.activeEvents).toBeDefined(),'
             expect(managementStatus.totalActiveEvents).toBeGreaterThan(0),' }'
             expect(managementStatus.systemStatus').toBe('operational'););' }'
@@ -225,8 +225,8 @@ describe('EventStageManager Integration Tests', () => {  let eventStageManager: 
             const completed = true,
             mockPlayerData.ap = 1000,
             mockPlayerData.tap = 5000,
-            const rewards = eventStageManager.grantEventRewards(eventId, playerId, score, completed),
-            expect(rewards).toBeDefined(),
+            const rewards = eventStageManager.grantEventRewards(eventId, playerId, score, completed);
+            expect(rewards).toBeDefined();
             expect(rewards.ap).toBeGreaterThan(0) }'
             expect(mockPlayerData.ap).toBeGreaterThan(1000); // AP should increase' }'
         }');'
@@ -307,9 +307,9 @@ describe('EventStageManager Integration Tests', () => {  let eventStageManager: 
             expect(currentData.version').toBe('1.2.0');'
             expect(currentData.eventParticipationHistory).toBeDefined();'}');
         test('should handle data validation errors', (') => {  // Setup invalid data''
-            localStorage.setItem('eventStageData', 'invalid json'),
-            const result = eventStageManager.loadEventData(),
-            expect(result).toBe(false),
+            localStorage.setItem('eventStageData', 'invalid json');
+            const result = eventStageManager.loadEventData();
+            expect(result).toBe(false);
             // Should initialize with default data) }
             expect(eventStageManager.eventParticipationHistory).toEqual({) }'
         }'}');
@@ -321,17 +321,17 @@ describe('EventStageManager Integration Tests', () => {  let eventStageManager: 
         test('should handle missing dependencies gracefully', () => {  // Create manager without notification system
             const gameEngineWithoutNotifications = {
                 ...mockGameEngine }
-                achievementNotificationSystem: null;
+                achievementNotificationSystem: null,
             },
             const managerWithoutNotifications = new EventStageManager(gameEngineWithoutNotifications: any);'
             // Should not throw error''
             expect((') => { }'
-                managerWithoutNotifications.sendEventNotification('test-event', 'EVENT_STARTED'});'}).not.toThrow(')'
+                managerWithoutNotifications.sendEventNotification('test-event', 'EVENT_STARTED'};'}.not.toThrow(')'
         test('should handle localStorage errors gracefully', () => {  // Mock localStorage to throw error'
             const originalSetItem = localStorage.setItem,
             localStorage.setItem = jest.fn().mockImplementation((') => { }'
                 throw new Error('Storage quota exceeded'); }
-            });
+            };
             const result = eventStageManager.saveEventData();
             expect(result).toBe(false);
             // Restore original localStorage'
@@ -369,5 +369,5 @@ describe('EventStageManager Integration Tests', () => {  let eventStageManager: 
             expect(leaderboard).toBeDefined();
             expect(leaderboard.eventId).toBe(eventId);
             expect(leaderboard.players.length).toBe(2);
-        });'
+        };'
     }'}');

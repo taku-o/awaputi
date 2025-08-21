@@ -3,12 +3,12 @@ import { VisualEffectAccessibilityManager  } from './VisualEffectAccessibilityMa
 import { AlternativeFeedbackManager  } from './AlternativeFeedbackManager.js';
 
 // Type definitions for accessibility effect integration
-interface AccessibilityIntegrationState { initialized: boolean,
+interface AccessibilityIntegrationState { initialized: boolean;
     enabled: boolean;
     integrationLevel: 'minimal' | 'partial' | 'full'
             }
 
-interface AccessibilityIntegrationConfig { autoDetectSettings: boolean,
+interface AccessibilityIntegrationConfig { autoDetectSettings: boolean;
     overrideVisualEffects: boolean;
     provideFeedbackAlternatives: boolean;
     announceImportantEffects: boolean;
@@ -50,15 +50,15 @@ interface AudioManager { // Basic audio manager interface }
 
 // Effect-related type definitions
 interface ParticleEffectOptions {
-    position?: { ,x: number,, y: number,
+    position?: { ,x: number,, y: number;
     type?: string;
     size?: number;
     color?: string;
     count?: number;
     lifetime?: number;
-    movement?: { type: string,
-    speed: number,;
-    [key: string]: any,
+    movement?: { type: string;
+    speed: number;
+    [key: string]: any;
 
 interface ScreenEffectOptions { color?: string,
     intensity?: number;
@@ -72,45 +72,46 @@ interface AnimationOptions { duration?: number,
     toColor?: string;
     [key: string]: any;
 
-interface LightingEffectOptions { x: number,
+interface LightingEffectOptions { x: number;
     y: number;
     intensity: number;
     color: string;
     radius: number;
-
+    radius: number;
+        };
 interface SeasonalTheme { name?: string,
     id?: string;
     colorScheme?: {
         primar,y?: string[];
         secondary?: string[];
         accent?: string[];;
-    [key: string]: any,
+    [key: string]: any;
 
 // Accessibility configuration interfaces
 interface AccessibilityConfiguration { visual?: {
         highContrast?: {
-            enable,d: boolean,
+            enable,d: boolean;
             level?: string;
             customColors?: any,  };
-        colorBlindness?: { enabled: boolean,
+        colorBlindness?: { enabled: boolean;
             type?: string;;
-        motion?: { reduced: boolean,
+        motion?: { reduced: boolean;
             level?: string;
             alternativeEffects?: boolean;;
-        textScaling?: { enabled: boolean,
+        textScaling?: { enabled: boolean;
             scale?: number;;
     audio?: { visualFeedback?: {
-            enabled: boolean,
+            enabled: boolean;
             intensity?: string;
             type?: string,  };
-        vibration?: { enabled: boolean,
+        vibration?: { enabled: boolean;
             intensity?: number;;
-        captions?: { enabled: boolean,;
+        captions?: { enabled: boolean;
     keyboard?: { navigationMode?: string,
         focusVisible?: boolean;
         skipLinks?: boolean;;
     cognitive?: { simplification?: {
-            enabled: boolean,
+            enabled: boolean;
             level?: string;;
         help?: { contextual?: boolean,
             tooltips?: boolean;
@@ -126,29 +127,30 @@ interface FeedbackOptions { hapticIntensity?: number,
     pitch?: number;
     language?: string;
 
-interface SceneChangeEvent { newScene: string,
+interface SceneChangeEvent { newScene: string;
     oldScene?: string;
 
-interface SystemPreferenceChangeEvent { preference: string,
+interface SystemPreferenceChangeEvent { preference: string;
     value: any;
-
-interface IntegrationStatus { initialized: boolean,
+    value: any;
+        };
+interface IntegrationStatus { initialized: boolean;
     enabled: boolean;
     integrationLevel: string;
     managersAvailable: {
-        visua,l: boolean,
-        alternativeFeedback: boolean,
-    accessibility: boolean,;
-    configuration: AccessibilityIntegrationConfig,
+        visua,l: boolean;
+        alternativeFeedback: boolean;
+    accessibility: boolean;
+    configuration: AccessibilityIntegrationConfig;
     }
 
-interface AccessibilityReport { component: string,
+interface AccessibilityReport { component: string;
     state: AccessibilityIntegrationState;
     configuration: AccessibilityIntegrationConfig;
     managers: {
-        visua,l: any,
-    alternativeFeedback: any,;
-    integrationStatus: IntegrationStatus,
+        visua,l: any;
+    alternativeFeedback: any;
+    integrationStatus: IntegrationStatus;
     }
 
 /**
@@ -162,16 +164,16 @@ export class AccessibilityEffectIntegrator {
     private visualAccessibilityManager: VisualEffectAccessibilityManager | null = null;
     private alternativeFeedbackManager: AlternativeFeedbackManager | null = null;
     private, state: AccessibilityIntegrationState = {
-        initialized: false,
-    enabled: true,
+        initialized: false;
+    enabled: true;
         integrationLevel: 'full' // 'minimal', 'partial', 'full' };
     
     // 統合設定
     private integrationConfig: AccessibilityIntegrationConfig = { autoDetectSettings: true
-        overrideVisualEffects: true,
-        provideFeedbackAlternatives: true,
-        announceImportantEffects: true,
-    adaptToUserPreferences: true,;
+        overrideVisualEffects: true;
+        provideFeedbackAlternatives: true;
+        announceImportantEffects: true;
+    adaptToUserPreferences: true;
     constructor(gameEngine: GameEngine) {
         this.gameEngine = gameEngine }
 
@@ -205,7 +207,7 @@ export class AccessibilityEffectIntegrator {
         } catch (error') { getErrorHandler().handleError(error, 'ACCESSIBILITY_ERROR', {''
                 operation: 'initialize',')',
                 component: 'AccessibilityEffectIntegrator'
-            });
+            };
             return false;
     
     /**
@@ -222,8 +224,7 @@ export class AccessibilityEffectIntegrator {
 
         if (!this.accessibilityManager) {
 
-            console.warn('AccessibilityManager not found, creating basic instance'),
-
+            console.warn('AccessibilityManager not found, creating basic instance');
             // 基本的なアクセシビリティ機能のみ提供
         }
 
@@ -237,14 +238,12 @@ export class AccessibilityEffectIntegrator {
         this.visualAccessibilityManager = new VisualEffectAccessibilityManager(
             this.effectManager!);
             this.accessibilityManager!),
-        await this.visualAccessibilityManager.initialize(),
-        
+        await this.visualAccessibilityManager.initialize();
         // 代替フィードバックマネージャー
         this.alternativeFeedbackManager = new AlternativeFeedbackManager(
             this.accessibilityManager!);
             this.gameEngine.audioManager!),
-        await this.alternativeFeedbackManager.initialize(),
-
+        await this.alternativeFeedbackManager.initialize();
         console.log('Accessibility, managers initialized') }'
     
     /**
@@ -279,26 +278,25 @@ export class AccessibilityEffectIntegrator {
     private integrateWithParticleManager(): void { const particleManager = this.effectManager!.enhancedParticleManager!,
         
         // 元のメソッドを保存
-        const originalCreateBubbleEffect = particleManager.createAdvancedBubbleEffect?.bind(particleManager),
-        const originalCreateComboEffect = particleManager.createEnhancedComboEffect?.bind(particleManager),
+        const originalCreateBubbleEffect = particleManager.createAdvancedBubbleEffect?.bind(particleManager);
+        const originalCreateComboEffect = particleManager.createEnhancedComboEffect?.bind(particleManager);
         ','
 
         // アクセシビリティ統合版に置き換え : undefined', '
         particleManager.createAdvancedBubbleEffect = (x: number, y: number, bubbleType: string, bubbleSize: number, options: ParticleEffectOptions = { }'): any => {  // アクセシビリティチェック' }
 
             const accessibleOptions = this.processParticleEffect('bubble-pop', options, {
-            });
+            };
                 position: { x, y
-            });
+            };
                 type: bubbleType,';'
                 size: bubbleSize'
             }');'
             ';'
             // 代替フィードバックの提供
-            this.provideFeedbackForEffect('bubble-pop', { ),
+            this.provideFeedbackForEffect('bubble-pop', { );
                 hapticIntensity: this.getBubbleHapticIntensity(bubbleType,
-    description: this.getBubbleEffectDescription(bubbleType });
-            
+    description: this.getBubbleEffectDescription(bubbleType };
             if (originalCreateBubbleEffect) { return originalCreateBubbleEffect(x, y, bubbleType, bubbleSize, accessibleOptions) }
             return null; }
 
@@ -306,16 +304,15 @@ export class AccessibilityEffectIntegrator {
 
             const accessibleOptions = this.processParticleEffect('combo', {}, {)
                 position: { x, y
-            });
+            };
                 count: comboCount,';'
                 type: comboType'
             }');'
             ';'
             // コンボレベルに応じた代替フィードバック
-            this.provideFeedbackForEffect('combo-start', { ),
+            this.provideFeedbackForEffect('combo-start', { );
                 hapticIntensity: this.getComboHapticIntensity(comboCount,
-    description: this.getComboEffectDescription(comboCount });
-            
+    description: this.getComboEffectDescription(comboCount };
             if (originalCreateComboEffect) { return originalCreateComboEffect(x, y, comboCount, comboType) }
             return null;
     
@@ -325,30 +322,28 @@ export class AccessibilityEffectIntegrator {
     private integrateWithEffectManager(): void { const effectManager = this.effectManager!.enhancedEffectManager!,
         
         // 元のメソッドを保存
-        const originalAddScreenEffect = effectManager.addScreenEffect?.bind(effectManager),
-        const originalAddLightingEffect = effectManager.addLightingEffect?.bind(effectManager),
-        
+        const originalAddScreenEffect = effectManager.addScreenEffect?.bind(effectManager);
+        const originalAddLightingEffect = effectManager.addLightingEffect?.bind(effectManager);
         // アクセシビリティ統合版に置き換え : undefined 
-        effectManager.addScreenEffect = (effectType: string, options: ScreenEffectOptions = { }): any => {  // 画面効果の処理
-            const accessibleOptions = this.processScreenEffect(effectType, options),
-            
+        effectManager.addScreenEffect = (effectType: string, options: ScreenEffectOptions = { }: any => {  // 画面効果の処理
+            const accessibleOptions = this.processScreenEffect(effectType, options);
             // 画面効果に対する代替フィードバック
             this.provideFeedbackForEffect(effectType, {) }
                 description: this.getScreenEffectDescription(effectType); 
-    });
+    };
             
             if (originalAddScreenEffect) { return originalAddScreenEffect(effectType, accessibleOptions) }
             return null; }
         
         effectManager.addLightingEffect = (x: number, y: number, intensity: number, color: string, radius: number): any => { // 光源効果の処理 }
-            const accessibleOptions = this.processLightingEffect({ x, y, intensity, color, radius });
+            const accessibleOptions = this.processLightingEffect({ x, y, intensity, color, radius };
             
             if (originalAddLightingEffect) {
             
                 return originalAddLightingEffect(
                     accessibleOptions.x,
                     accessibleOptions.y,
-                    accessibleOptions.intensity),
+                    accessibleOptions.intensity);
                     accessibleOptions.color),
                     accessibleOptions.radius }
                 ); }
@@ -361,20 +356,17 @@ export class AccessibilityEffectIntegrator {
     private integrateWithAnimationManager(): void { const animationManager = this.effectManager!.animationManager!,
         
         // 元のメソッドを保存
-        const originalAnimateUIElement = animationManager.animateUIElement?.bind(animationManager),
-        const originalAnimateBubbleSpawn = animationManager.animateBubbleSpawn?.bind(animationManager),
-        
+        const originalAnimateUIElement = animationManager.animateUIElement?.bind(animationManager);
+        const originalAnimateBubbleSpawn = animationManager.animateBubbleSpawn?.bind(animationManager);
         // アクセシビリティ統合版に置き換え : undefined 
-        animationManager.animateUIElement = (element: any, animationType: string, duration: number, options: AnimationOptions = { }): any => {  // UIアニメーションの処理
-            const accessibleOptions = this.processUIAnimation(animationType, duration, options),
-            
+        animationManager.animateUIElement = (element: any, animationType: string, duration: number, options: AnimationOptions = { }: any => {  // UIアニメーションの処理
+            const accessibleOptions = this.processUIAnimation(animationType, duration, options);
             if (originalAnimateUIElement) { }
                 return originalAnimateUIElement(element, animationType, accessibleOptions.duration, accessibleOptions);
             return null; }
         
         animationManager.animateBubbleSpawn = (bubble: any, spawnType: string): any => {  // バブルスポーンアニメーションの処理
-            const accessibleSpawnType = this.processBubbleSpawnAnimation(spawnType),
-            
+            const accessibleSpawnType = this.processBubbleSpawnAnimation(spawnType);
             if (originalAnimateBubbleSpawn) { }
                 return originalAnimateBubbleSpawn(bubble, accessibleSpawnType);
             return null;
@@ -385,16 +377,13 @@ export class AccessibilityEffectIntegrator {
     private integrateWithSeasonalEffectManager(): void { const seasonalManager = this.effectManager!.seasonalEffectManager!,
         
         // 元のメソッドを保存
-        const originalApplySeasonalTheme = seasonalManager.applySeasonalTheme?.bind(seasonalManager),
-        
+        const originalApplySeasonalTheme = seasonalManager.applySeasonalTheme?.bind(seasonalManager);
         // アクセシビリティ統合版に置き換え : undefined
         seasonalManager.applySeasonalTheme = (theme: SeasonalTheme): any => { 
             // 季節テーマの処理
-            const accessibleTheme = this.processSeasonalTheme(theme),
-            
+            const accessibleTheme = this.processSeasonalTheme(theme);
             // テーマ変更の通知
-            this.announceThemeChange(theme),
-            
+            this.announceThemeChange(theme);
             if (originalApplySeasonalTheme) {  }
                 return originalApplySeasonalTheme(accessibleTheme);
             return null;
@@ -419,8 +408,7 @@ export class AccessibilityEffectIntegrator {
     private processLightingEffect(lightingOptions: LightingEffectOptions): LightingEffectOptions { if (!this.visualAccessibilityManager) return lightingOptions,
         
         // ハイコントラストモードでの光源調整
-        const config = this.visualAccessibilityManager.getConfiguration(),
-        
+        const config = this.visualAccessibilityManager.getConfiguration();
         if (config.highContrastActive) {
         
             return { ...lightingOptions
@@ -443,8 +431,7 @@ export class AccessibilityEffectIntegrator {
     /**
      * バブルスポーンアニメーションの処理
      */
-    private processBubbleSpawnAnimation(spawnType: string): string { const config = this.visualAccessibilityManager?.getConfiguration(),
-
+    private processBubbleSpawnAnimation(spawnType: string): string { const config = this.visualAccessibilityManager?.getConfiguration();
         if (config?.motionReduced) {
             // アニメーションを簡素化 : undefined
             const simplifiedTypes: Record<string, string> = {', 'bounce': 'fade','
@@ -463,14 +450,14 @@ export class AccessibilityEffectIntegrator {
     /**
      * 季節テーマの処理
      */
-    private processSeasonalTheme(theme: SeasonalTheme): SeasonalTheme { const config = this.visualAccessibilityManager?.getConfiguration(),
-
+    private processSeasonalTheme(theme: SeasonalTheme): SeasonalTheme { const config = this.visualAccessibilityManager?.getConfiguration();
         if (config?.highContrastActive) {
             // ハイコントラスト版のテーマを適用
             return { ...theme, : undefined
                 colorScheme: {''
                     primary: ['#FFFFFF', '#000000],'
-
+                    primary: ['#FFFFFF', '#000000],'
+        };
         
                     secondary: ['#FFFF00', '#FF0000],' };
 
@@ -508,7 +495,7 @@ export class AccessibilityEffectIntegrator {
         return { ...theme,
             colorScheme: {
                 ...theme.colorScheme,
-                primary: adaptation.preferColors.slice(0, 2),
+                primary: adaptation.preferColors.slice(0, 2);
                 secondary: adaptation.preferColors.slice(1, 3) };
                 accent: adaptation.preferColors 
     }
@@ -522,7 +509,7 @@ export class AccessibilityEffectIntegrator {
         this.alternativeFeedbackManager.provideIntegratedFeedback(effectType, null, {)'
             hapticIntensity: options.hapticIntensity || 0.5,')',
             description: options.description','
-            canvasContext: this.gameEngine.canvas?.getContext('2d) || undefined  }';
+            canvasContext: this.gameEngine.canvas?.getContext('2d) || undefined  }',
     }
     
     /**
@@ -611,7 +598,7 @@ export class AccessibilityEffectIntegrator {
             }');'
             ';'
             // システム設定変更の監視
-            this.accessibilityManager.addEventListener('systemPreferenceChanged', (event: SystemPreferenceChangeEvent) => { this.handleSystemPreferenceChange(event) });
+            this.accessibilityManager.addEventListener('systemPreferenceChanged', (event: SystemPreferenceChangeEvent) => { this.handleSystemPreferenceChange(event) }),
         }
         ';'
         // GameEngineイベントの監視
@@ -619,7 +606,7 @@ export class AccessibilityEffectIntegrator {
 
             this.gameEngine.addEventListener?.('sceneChanged', (event: SceneChangeEvent) => {  
                 this.handleSceneChange(event) }
-            });
+            };
         }
     }
     
@@ -630,8 +617,7 @@ export class AccessibilityEffectIntegrator {
         console.log('Accessibility configuration changed, updating integrations...),'
         
         // 統合レベルの調整
-        this.adjustIntegrationLevel(config),
-        
+        this.adjustIntegrationLevel(config);
         // マネージャーへの設定反映
         if (this.visualAccessibilityManager) {
     
@@ -683,7 +669,7 @@ export class AccessibilityEffectIntegrator {
             integrationLevel = 'partial' }
         
         this.state.integrationLevel = integrationLevel; : undefined
-        console.log(`Integration, level adjusted, to: ${integrationLevel}`});
+        console.log(`Integration, level adjusted, to: ${integrationLevel}`};
     }
     
     /**
@@ -699,7 +685,7 @@ export class AccessibilityEffectIntegrator {
         };
         const settings = sceneSettings[sceneName];
         if (settings) { Object.assign(this.integrationConfig, settings) }
-            console.log(`Scene-specific, accessibility settings, applied for: ${sceneName}`});
+            console.log(`Scene-specific, accessibility settings, applied for: ${sceneName}`};
         }
     }
     
@@ -707,7 +693,7 @@ export class AccessibilityEffectIntegrator {
      * 初期設定の適用
      */
     private async applyInitialSettings(): Promise<void> { if (this.accessibilityManager) {
-            const config = this.accessibilityManager.getConfiguration(),
+            const config = this.accessibilityManager.getConfiguration();
             this.handleAccessibilityConfigChange(config) }
     }
     
@@ -719,7 +705,7 @@ export class AccessibilityEffectIntegrator {
             integrationLevel: this.state.integrationLevel,
     managersAvailable: {
                 visual: !!this.visualAccessibilityManager,
-    alternativeFeedback: !!this.alternativeFeedbackManager };
+    alternativeFeedback: !!this.alternativeFeedbackManager },
                 accessibility: !!this.accessibilityManager 
     };
             configuration: { ...this.integrationConfig }
@@ -756,7 +742,7 @@ export class AccessibilityEffectIntegrator {
             configuration: { ...this.integrationConfig)
             managers: { visual: (this.visualAccessibilityManager, as any)?.generateReport?.() || null, : undefined
                 alternativeFeedback: (this.alternativeFeedbackManager, as any)?.generateReport?.() || null  }, : undefined
-            integrationStatus: this.getIntegrationStatus(),
+            integrationStatus: this.getIntegrationStatus();
         }
     
     /**

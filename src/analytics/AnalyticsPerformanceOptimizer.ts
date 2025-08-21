@@ -4,7 +4,7 @@
  */
 
 export class AnalyticsPerformanceOptimizer {
-    constructor(analyticsManager, options: any = { }) {
+    constructor(analyticsManager, options: any = { } {
         this.analyticsManager = analyticsManager;
         
         // 設定
@@ -14,14 +14,14 @@ export class AnalyticsPerformanceOptimizer {
     batchTimeout: options.batchTimeout || 5000, // 5秒;
             maxBatchDelay: options.maxBatchDelay || 30000, // 30秒;
             // キャッシュ設定
-            cacheSize: options.cacheSize || 1000,
+            cacheSize: options.cacheSize || 1000;
     cacheTimeout: options.cacheTimeout || 300000, // 5分;
             // メモリ管理設定
             memoryCleanupInterval: options.memoryCleanupInterval || 60000, // 1分;
             maxMemoryThreshold: options.maxMemoryThreshold || 100 * 1024 * 1024, // 100MB;
             // パフォーマンス監視設定
             performanceCheckInterval: options.performanceCheckInterval || 1000, // 1秒;
-            fpsThreshold: options.fpsThreshold || 30,
+            fpsThreshold: options.fpsThreshold || 30;
     memoryWarningThreshold: options.memoryWarningThreshold || 80 * 1024 * 1024, // 80MB
     }
             ...options
@@ -37,21 +37,21 @@ export class AnalyticsPerformanceOptimizer {
         this.cacheTimestamps = new Map();
         
         // メモリ管理
-        this.memoryUsage = { current: 0,
-            peak: 0,
+        this.memoryUsage = { current: 0;
+            peak: 0;
     lastCleanup: Date.now(  }
         
         // パフォーマンス監視
-        this.performanceMetrics = { fps: 60,
-            frameTime: 16.67,
-            memoryUsage: 0,
-            eventProcessingTime: 0,
+        this.performanceMetrics = { fps: 60;
+            frameTime: 16.67;
+            memoryUsage: 0;
+            eventProcessingTime: 0;
     cacheHitRate: 0  };
         // 最適化統計
-        this.optimizationStats = { batchesProcessed: 0,
-            cacheHits: 0,
-            cacheMisses: 0,
-            memoryCleanups: 0,
+        this.optimizationStats = { batchesProcessed: 0;
+            cacheHits: 0;
+            cacheMisses: 0;
+            memoryCleanups: 0;
     performanceWarnings: 0  };
         // 初期化
         this.initialize();
@@ -61,7 +61,7 @@ export class AnalyticsPerformanceOptimizer {
      * 初期化
      */
     initialize() {
-        this.startPerformanceMonitoring(),
+        this.startPerformanceMonitoring();
         this.startMemoryCleanup() }
         this.optimizeEventProcessing(); }
     }
@@ -78,19 +78,16 @@ export class AnalyticsPerformanceOptimizer {
      * パフォーマンスメトリクスチェック
      */
     checkPerformanceMetrics() {
-        const now = Date.now(),
-        
+        const now = Date.now();
         // FPS測定（近似値）
         const expectedFrameTime = 1000 / 60, // 60fps期待値
         const actualFrameTime = this.performanceMetrics.frameTime,
-        this.performanceMetrics.fps = Math.min(60, Math.round(1000 / actualFrameTime),
-        
+        this.performanceMetrics.fps = Math.min(60, Math.round(1000 / actualFrameTime);
         // メモリ使用量チェック
         if (performance.memory) {
             this.performanceMetrics.memoryUsage = performance.memory.usedJSHeapSize,
             this.memoryUsage.current = performance.memory.usedJSHeapSize,
-            this.memoryUsage.peak = Math.max(this.memoryUsage.peak, this.memoryUsage.current),
-            
+            this.memoryUsage.peak = Math.max(this.memoryUsage.peak, this.memoryUsage.current);
             // メモリ警告チェック
             if (this.memoryUsage.current > this.config.memoryWarningThreshold) {
     }
@@ -105,7 +102,7 @@ export class AnalyticsPerformanceOptimizer {
         
         // FPS警告チェック
         if (this.performanceMetrics.fps < this.config.fpsThreshold) { this.handlePerformanceWarning('Low FPS detected', {
-                fps: this.performanceMetrics.fps })
+                fps: this.performanceMetrics.fps }
                 threshold: this.config.fpsThreshold); 
     }
     
@@ -114,8 +111,7 @@ export class AnalyticsPerformanceOptimizer {
      */
     optimizeEventProcessing() {
         // 元のイベント送信メソッドをオーバーライド
-        const originalTrackEvent = this.analyticsManager.trackEvent?.bind(this.analyticsManager),
-        
+        const originalTrackEvent = this.analyticsManager.trackEvent?.bind(this.analyticsManager);
         if (originalTrackEvent) {
     }
             this.analyticsManager.trackEvent = (eventType, data) => {  }
@@ -132,8 +128,7 @@ export class AnalyticsPerformanceOptimizer {
 
             this.analyticsManager.trackPlayerBehavior = (eventType, data') => { }'
 
-                return this.batchEvent('player_behavior', { eventType, ...data, originalTrackPlayerBehavior),
-    
+                return this.batchEvent('player_behavior', { eventType, ...data, originalTrackPlayerBehavior);
     /**
      * イベントのバッチ処理
      */
@@ -164,9 +159,8 @@ export class AnalyticsPerformanceOptimizer {
      */
     async processBatch() { if (this.eventQueue.length === 0) return,
         
-        const startTime = Date.now(),
-        const batchEvents = this.eventQueue.splice(0),
-        
+        const startTime = Date.now();
+        const batchEvents = this.eventQueue.splice(0);
         // タイマーをクリア
         if (this.batchTimer) {
             clearTimeout(this.batchTimer) }
@@ -174,8 +168,7 @@ export class AnalyticsPerformanceOptimizer {
         }
         
         try { // 非同期でバッチ処理
-            await this.processBatchAsync(batchEvents),
-            
+            await this.processBatchAsync(batchEvents);
             // 統計更新
             this.optimizationStats.batchesProcessed++,
             this.lastBatchTime = Date.now();
@@ -185,8 +178,7 @@ export class AnalyticsPerformanceOptimizer {
             ' }'
 
         } catch (error) {
-            console.error('Batch processing failed:', error),
-            
+            console.error('Batch processing failed:', error);
             // エラー時は個別処理にフォールバック
             this.fallbackToIndividualProcessing(batchEvents) }
     }
@@ -195,8 +187,7 @@ export class AnalyticsPerformanceOptimizer {
      * 非同期バッチ処理
      */
     async processBatchAsync(events) { // イベントをタイプ別にグループ化
-        const groupedEvents = this.groupEventsByType(events),
-        
+        const groupedEvents = this.groupEventsByType(events);
         // 各グループを並列処理
         const processingPromises = Object.entries(groupedEvents).map(([type, typeEvents]) => {  }
             return this.processEventGroup(type, typeEvents););
@@ -214,15 +205,14 @@ export class AnalyticsPerformanceOptimizer {
                 groups[event.type] = [];
             groups[event.type].push(event);
             return groups;
-        }, {});
+        }, {};
     }
     
     /**
      * イベントグループ処理
      */
     async processEventGroup(type, events) { // 同種のイベントを効率的に処理
-        const batchData = events.map(event => event.data),
-        
+        const batchData = events.map(event => event.data);
         // 最初のイベントのハンドラーを使用
         const handler = events[0].handler,
         if (handler) {
@@ -255,9 +245,8 @@ export class AnalyticsPerformanceOptimizer {
      * キャッシュ機能
      */
     getCachedData(key) {
-        const cacheEntry = this.cache.get(key),
-        const timestamp = this.cacheTimestamps.get(key),
-        
+        const cacheEntry = this.cache.get(key);
+        const timestamp = this.cacheTimestamps.get(key);
         if (cacheEntry && timestamp && (Date.now() - timestamp < this.config.cacheTimeout)) {
             this.optimizationStats.cacheHits++ }
             return cacheEntry;
@@ -284,7 +273,7 @@ export class AnalyticsPerformanceOptimizer {
      * キャッシュクリーンアップ
      */
     cleanupCache() {
-        const now = Date.now(),
+        const now = Date.now();
         const keysToDelete = [],
         
         for(const [key, timestamp] of this.cacheTimestamps.entries() {
@@ -293,14 +282,14 @@ export class AnalyticsPerformanceOptimizer {
                 keysToDelete.push(key); }
 }
         
-        keysToDelete.forEach(key => {  ),
+        keysToDelete.forEach(key => {  );
             this.cache.delete(key) }
             this.cacheTimestamps.delete(key); }
-        });
+        };
         
         // サイズ制限に達している場合、古いエントリから削除
         if (this.cache.size >= this.config.cacheSize) {
-            const sortedEntries = Array.from(this.cacheTimestamps.entries(),
+            const sortedEntries = Array.from(this.cacheTimestamps.entries();
                 .sort((a, b) => a[1] - b[1]),
             
             const deleteCount = Math.floor(this.config.cacheSize * 0.2), // 20%削除
@@ -323,11 +312,9 @@ export class AnalyticsPerformanceOptimizer {
      * メモリクリーンアップ実行
      */
     performMemoryCleanup() {
-        const now = Date.now(),
-        
+        const now = Date.now();
         // キャッシュクリーンアップ
-        this.cleanupCache(),
-        
+        this.cleanupCache();
         // イベントキューの古いデータをクリーンアップ
         const oldEventThreshold = now - 300000, // 5分前
         this.eventQueue = this.eventQueue.filter(event => );
@@ -378,7 +365,7 @@ export class AnalyticsPerformanceOptimizer {
         if (details.fps < this.config.fpsThreshold} {
     }
             this.config.batchSize = Math.max(10, Math.floor(this.config.batchSize * 0.8); }
-            this.config.batchTimeout = Math.min(10000, this.config.batchTimeout * 1.2});
+            this.config.batchTimeout = Math.min(10000, this.config.batchTimeout * 1.2};
         }
         
         this.optimizationStats.performanceWarnings++;
@@ -409,8 +396,7 @@ export class AnalyticsPerformanceOptimizer {
      * パフォーマンス最適化レポート生成
      */
     generatePerformanceReport() {
-        const stats = this.getOptimizationStats(),
-        
+        const stats = this.getOptimizationStats();
         return { summary: {'
                 batchesProcessed: stats.batchesProcessed,
                 cacheHitRate: stats.performanceMetrics.cacheHitRate.toFixed(2) + '%',

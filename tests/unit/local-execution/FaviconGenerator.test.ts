@@ -14,7 +14,7 @@ import { jest  } from '@jest/globals';
 import FaviconGenerator from '../../../src/utils/local-execution/FaviconGenerator.js';
 // Type definitions
 interface MockContext {
-    fillStyle: string,
+    fillStyle: string;
     strokeStyle: string;
     lineWidth: number;
     fillRect: jest.Mock<void, [number, number, number, number]>;
@@ -30,14 +30,14 @@ interface MockContext {
     getImageData: jest.Mock<ImageData, [number, number, number, number]>;
     putImageData: jest.Mock<void, [ImageData, number, number]> }
 interface MockCanvas {
-    width: number,
+    width: number;
     height: number;
     getContext: jest.Mock<MockContext | null, [string]>;
     toDataURL: jest.Mock<string, [string? , number?]>, : undefined
     toBlob?: jest.Mock<void, [(blob: Blob | null') => void, string? , number?]>, : undefined'
     style: Partial<CSSStyleDeclaration>;
 interface MockLink {
-    rel: string,
+    rel: string;
     type: string;
     sizes: string;
     href: string;
@@ -69,7 +69,7 @@ interface GenerateConfig {
     enableHighDPI?: boolean;
     preferBlob?: boolean;
 interface GenerateResult {
-    success: boolean,
+    success: boolean;
     generated: number;
     fromCache?: number;
     error?: string;
@@ -103,7 +103,7 @@ describe('FaviconGenerator', () => {
                 data: new Uint8ClampedArray(4), // RGBA pixel data
                 width: 32,
                 height: 32
-    }) as ImageData),
+    } as ImageData),
         putImageData: jest.fn(),
         mockCanvas = {
             width: 32,
@@ -122,9 +122,9 @@ describe('FaviconGenerator', () => {
                     type: ','
                     sizes: ','
                     href: ','
-                    id: '}) as MockLink;'
-                return {});
-            }),
+                    id: '} as MockLink;'
+                return {};
+            },
             head: {
                 appendChild: jest.fn(
                 removeChild: jest.fn(
@@ -150,16 +150,16 @@ describe('FaviconGenerator', () => {
         jest.clearAllMocks() }');'
     describe('generateMissingFavicons', (') => {'
         test('should generate basic favicon with default settings', async () => {
-            const result = await FaviconGenerator.generateMissingFavicons(),
-            expect(result.success).toBe(true),
-            expect(result.generated).toBeGreaterThan(0),
+            const result = await FaviconGenerator.generateMissingFavicons();
+            expect(result.success).toBe(true);
+            expect(result.generated).toBeGreaterThan(0);
             expect(mockDocument.createElement').toHaveBeenCalledWith('canvas'),'
             expect(mockCanvas.getContext').toHaveBeenCalledWith('2d'),'
             expect(mockContext.fillRect).toHaveBeenCalled() }');'
         test('should generate multiple favicon sizes', async () => {
             const config: GenerateConfig = {
                 sizes: [16, 32, 48],
-                enableCaching: false,;
+                enableCaching: false,
             const result = await FaviconGenerator.generateMissingFavicons(config);
             expect(result.success).toBe(true);
             expect(result.generated).toBe(3);
@@ -171,7 +171,7 @@ describe('FaviconGenerator', () => {
                 bubbleColor: '#FF5722',
                 backgroundColor: '#E3F2FD',
                 highlightColor: '#FFF',
-                enableCaching: false,;
+                enableCaching: false,
             const result = await FaviconGenerator.generateMissingFavicons(config);
             expect(result.success).toBe(true);
             // Verify colors were applied to context
@@ -179,21 +179,21 @@ describe('FaviconGenerator', () => {
         }');'
         test('should handle Canvas creation failure', async () => {
             mockDocument.createElement.mockImplementation((tag: string') => {'
-                if (tag === 'canvas') throw new Error('Canvas not supported'),
+                if (tag === 'canvas') throw new Error('Canvas not supported');
                 return {};
-            });
+            };
             const result = await FaviconGenerator.generateMissingFavicons();
             expect(result.success).toBe(false);
             expect(result.error').toContain('Canvas not supported');'
         }');'
         test('should handle getContext failure', async () => {
-            mockCanvas.getContext.mockReturnValue(null),
-            const result = await FaviconGenerator.generateMissingFavicons(),
-            expect(result.success).toBe(false),
+            mockCanvas.getContext.mockReturnValue(null);
+            const result = await FaviconGenerator.generateMissingFavicons();
+            expect(result.success).toBe(false);
             expect(result.error').toContain('Canvas context') }');
         test('should handle toDataURL failure', async () => {
             mockCanvas.toDataURL.mockImplementation((') => {'
-                throw new Error('toDataURL failed') });
+                throw new Error('toDataURL failed') };
             const result = await FaviconGenerator.generateMissingFavicons();
             expect(result.success).toBe(false);
             expect(result.error').toContain('toDataURL failed');'
@@ -203,7 +203,7 @@ describe('FaviconGenerator', () => {
         test('should cache generated favicons in localStorage', async () => {
             const config: GenerateConfig = {
                 sizes: [16],
-                enableCaching: true,;
+                enableCaching: true,
             const result = await FaviconGenerator.generateMissingFavicons(config);
             expect(result.success).toBe(true);
             expect(mockLocalStorage.setItem).toHaveBeenCalled(');'
@@ -215,12 +215,12 @@ describe('FaviconGenerator', () => {
         test('should retrieve cached favicons', async (') => {'
             // Mock existing cache
             const cachedData = JSON.stringify({
-                '16': 'data:image/png,base64,cached-favicon-16'),
-        timestamp: Date.now( });
+                '16': 'data:image/png,base64,cached-favicon-16');
+        timestamp: Date.now( },
             mockLocalStorage.getItem.mockReturnValue(cachedData);
             const config: GenerateConfig = {
                 sizes: [16],
-                enableCaching: true,;
+                enableCaching: true,
             const result = await FaviconGenerator.generateMissingFavicons(config);
             expect(result.success).toBe(true);
             expect(result.fromCache).toBeGreaterThan(0);
@@ -230,9 +230,9 @@ describe('FaviconGenerator', () => {
         test('should handle cache expiration', async () => {
             // Mock expired cache (older than 24 hours}');'
             const expiredData = JSON.stringify({
-                '16': 'data:image/png,base64,expired-favicon-16'),
+                '16': 'data:image/png,base64,expired-favicon-16');
                 timestamp: Date.now() - (25 * 60 * 60 * 1000) // 25 hours ago
-            });
+            };
             mockLocalStorage.getItem.mockReturnValue(expiredData);
             const config: GenerateConfig = {
                 sizes: [16],
@@ -247,10 +247,10 @@ describe('FaviconGenerator', () => {
             expect(mockDocument.createElement').toHaveBeenCalledWith('canvas');'
         }');'
         test('should handle corrupted cache data', async (') => {'
-            mockLocalStorage.getItem.mockReturnValue('invalid-json-data'),
+            mockLocalStorage.getItem.mockReturnValue('invalid-json-data');
             const config: GenerateConfig = {
                 sizes: [16],
-                enableCaching: true,;
+                enableCaching: true,
             const result = await FaviconGenerator.generateMissingFavicons(config);
             expect(result.success).toBe(true);
             expect(result.generated).toBe(1);
@@ -261,7 +261,7 @@ describe('FaviconGenerator', () => {
             (global: any).localStorage = null,
             const config: GenerateConfig = {
                 sizes: [16],
-                enableCaching: true,;
+                enableCaching: true,
             const result = await FaviconGenerator.generateMissingFavicons(config);
             expect(result.success).toBe(true);
             expect(result.generated).toBe(1);
@@ -274,7 +274,7 @@ describe('FaviconGenerator', () => {
             const config: GenerateConfig = {
                 sizes: [16, 32],
                 injectIntoDOM: true,
-                enableCaching: false,;
+                enableCaching: false,
             const result = await FaviconGenerator.generateMissingFavicons(config);
             expect(result.success).toBe(true);
             expect(mockDocument.createElement').toHaveBeenCalledWith('link');'
@@ -282,25 +282,25 @@ describe('FaviconGenerator', () => {
         }');'
         test('should replace existing favicon links', async (') => {'
             // Mock existing favicon link
-            const existingLink: MockLink = { rel: 'icon', href: '/old-favicon.png', remove: jest.fn('), type: ', sizes: ', id: '};
+            const existingLink: MockLink = { rel: 'icon', href: '/old-favicon.png', remove: jest.fn('), type: ', sizes: ', id: '},
             mockDocument.head!.querySelector.mockReturnValue(existingLink);
             const config: GenerateConfig = {
                 sizes: [16],
                 injectIntoDOM: true,
                 replaceExisting: true,
-                enableCaching: false,;
+                enableCaching: false,
             const result = await FaviconGenerator.generateMissingFavicons(config);
             expect(result.success).toBe(true);
             expect(existingLink.remove).toHaveBeenCalled();
         }');'
         test('should preserve existing favicon links when replaceExisting is false', async (') => {'
-            const existingLink: MockLink = { rel: 'icon', href: '/old-favicon.png', remove: jest.fn('), type: ', sizes: ', id: '};
+            const existingLink: MockLink = { rel: 'icon', href: '/old-favicon.png', remove: jest.fn('), type: ', sizes: ', id: '},
             mockDocument.head!.querySelector.mockReturnValue(existingLink);
             const config: GenerateConfig = {
                 sizes: [16],
                 injectIntoDOM: true,
                 replaceExisting: false,
-                enableCaching: false,;
+                enableCaching: false,
             const result = await FaviconGenerator.generateMissingFavicons(config);
             expect(result.success).toBe(true);
             expect(existingLink.remove).not.toHaveBeenCalled();
@@ -311,7 +311,7 @@ describe('FaviconGenerator', () => {
             const config: GenerateConfig = {
                 sizes: [32],
                 enableBubbleDesign: true,
-                enableCaching: false,;
+                enableCaching: false,
             const result = await FaviconGenerator.generateMissingFavicons(config);
             expect(result.success).toBe(true);
             expect(mockContext.createRadialGradient).toHaveBeenCalled();
@@ -321,7 +321,7 @@ describe('FaviconGenerator', () => {
         test('should create appropriate sizes for different favicon uses', async () => {
             const config: GenerateConfig = {
                 sizes: [16, 32, 48, 192], // Different use cases
-                enableCaching: false,;
+                enableCaching: false,
             const result = await FaviconGenerator.generateMissingFavicons(config);
             expect(result.success).toBe(true);
             expect(result.generated).toBe(4');'
@@ -333,7 +333,7 @@ describe('FaviconGenerator', () => {
             const config: GenerateConfig = {
                 sizes: [32],
                 enableHighDPI: true,
-                enableCaching: false,;
+                enableCaching: false,
             // Mock high DPI environment
             (global: any).devicePixelRatio = 2,
             const result = await FaviconGenerator.generateMissingFavicons(config);
@@ -344,10 +344,10 @@ describe('FaviconGenerator', () => {
     }
     describe('Performance and optimization', (') => {'
         test('should complete favicon generation quickly', async () => {
-            const startTime = Date.now(),
+            const startTime = Date.now();
             const config: GenerateConfig = {
                 sizes: [16, 32, 48],
-                enableCaching: false,;
+                enableCaching: false,
             const result = await FaviconGenerator.generateMissingFavicons(config);
             const endTime = Date.now();
             const executionTime = endTime - startTime;
@@ -357,7 +357,7 @@ describe('FaviconGenerator', () => {
         test('should clean up Canvas elements', async () => {
             const config: GenerateConfig = {
                 sizes: [16, 32],
-                enableCaching: false,;
+                enableCaching: false,
             const result = await FaviconGenerator.generateMissingFavicons(config);
             expect(result.success).toBe(true);
             // Canvas elements should be created but not left in DOM
@@ -371,10 +371,10 @@ describe('FaviconGenerator', () => {
                 if (callCount > 2') {'
                     throw new Error('Out of memory') }
                 return 'data:image/png;base64,valid-data';
-            });
+            };
             const config: GenerateConfig = {
                 sizes: [16, 32, 48], // Third one will fail
-                enableCaching: false,;
+                enableCaching: false,
             const result = await FaviconGenerator.generateMissingFavicons(config);
             expect(result.success).toBe(true);
             expect(result.generated).toBe(2); // First two should succeed
@@ -388,7 +388,7 @@ describe('FaviconGenerator', () => {
             delete (mockContext.createLinearGradient),
             const config: GenerateConfig = {
                 sizes: [16],
-                enableCaching: false,;
+                enableCaching: false,
             const result = await FaviconGenerator.generateMissingFavicons(config);
             expect(result.success).toBe(true);
             // Should fallback to solid colors when gradients unavailable
@@ -399,7 +399,7 @@ describe('FaviconGenerator', () => {
             const config: GenerateConfig = {
                 sizes: [16],
                 preferBlob: true,
-                enableCaching: false,;
+                enableCaching: false,
             const result = await FaviconGenerator.generateMissingFavicons(config);
             expect(result.success).toBe(true);
             // Should fallback to toDataURL
@@ -410,11 +410,11 @@ describe('FaviconGenerator', () => {
             const config: GenerateConfig = {
                 sizes: [16],
                 injectIntoDOM: true,
-                enableCaching: false,;
+                enableCaching: false,
             const result = await FaviconGenerator.generateMissingFavicons(config);
             expect(result.success).toBe(true);
             // Should generate favicon even if DOM injection fails
             expect(result.generated).toBe(1);
-        });
+        };
     }
 }');'

@@ -9,34 +9,34 @@ export class StatisticsExporter {
         // エクスポート設定
         this.exportConfig = {
             formats: ['json', 'csv', 'txt'];
-            includeMetadata: true,
-            includeSensitiveData: false,
-    compressData: false,
+            includeMetadata: true;
+            includeSensitiveData: false;
+    compressData: false;
             maxFileSize: 50 * 1024 * 1024, // 50MB制限
     }
 
             dateFormat: 'YYYY-MM-DD, HH: mm:ss' 
     };
         // プライバシー設定
-        this.privacySettings = { excludePersonalInfo: true,
-            anonymizeUserData: true,
-            excludeIpAddresses: true,
-    excludeDeviceInfo: false,;
+        this.privacySettings = { excludePersonalInfo: true;
+            anonymizeUserData: true;
+            excludeIpAddresses: true;
+    excludeDeviceInfo: false;
         // データ変換設定
-        this.transformSettings = { roundNumbers: true,
-            decimals: 2,
-            normalizeTimestamps: true,
-    includeCalculatedFields: true,;
+        this.transformSettings = { roundNumbers: true;
+            decimals: 2;
+            normalizeTimestamps: true;
+    includeCalculatedFields: true;
         // インポート設定
         this.importConfig = { validateSchema: true,''
             mergeStrategy: 'append', // 'overwrite', 'append', 'merge'';'
             conflictResolution: 'keep_existing', // 'keep_existing', 'use_new', 'merge';
-            backupBeforeImport: true,;
+            backupBeforeImport: true;
         // エクスポート状態
-        this.exportState = { isExporting: false,
-            isImporting: false,
-            lastExportTime: null,
-            lastImportTime: null,
+        this.exportState = { isExporting: false;
+            isImporting: false;
+            lastExportTime: null;
+            lastImportTime: null;
     exportHistory: []  };
         // データ検証スキーマ
         this.validationSchema = this.createValidationSchema();
@@ -51,15 +51,14 @@ export class StatisticsExporter {
         try { this.exportState.isExporting = true,
             
             // 統計データの取得
-            const statisticsData = await this.collectStatisticsData(mergedOptions),
-            
+            const statisticsData = await this.collectStatisticsData(mergedOptions);
             // JSONデータの構築
             const jsonData = {''
-                metadata: this.generateMetadata(mergedOptions,
-    statistics: statisticsData,
+                metadata: this.generateMetadata(mergedOptions;
+    statistics: statisticsData;
                 schema: {''
-                    version: '1.0',
-                    format: 'json',
+                    version: '1.0';
+                    format: 'json';
     exported: new Date().toISOString(  }
             };
             
@@ -77,11 +76,11 @@ export class StatisticsExporter {
             ';'
 
             const exportResult = {,
-                format: 'json',
-                data: jsonString,
-                filename: this.generateFilename('json', mergedOptions),
-                size: jsonString.length,
-                recordCount: this.countRecords(sanitizedData.statistics,
+                format: 'json';
+                data: jsonString;
+                filename: this.generateFilename('json', mergedOptions);
+                size: jsonString.length;
+                recordCount: this.countRecords(sanitizedData.statistics;
     timestamp: Date.now(  };
             
             this.recordExportHistory(exportResult);
@@ -102,8 +101,7 @@ export class StatisticsExporter {
         try { this.exportState.isExporting = true,
             
             // 統計データの取得
-            const statisticsData = await this.collectStatisticsData(mergedOptions),
-            
+            const statisticsData = await this.collectStatisticsData(mergedOptions);
             // CSVデータの生成
             const csvSections = [],
             // 基本統計セクション
@@ -143,10 +141,10 @@ export class StatisticsExporter {
             const exportResult = {,
                 format: 'csv',
                 data: csvString,
-                filename: this.generateFilename('csv', mergedOptions),
+                filename: this.generateFilename('csv', mergedOptions);
                 size: csvString.length,
                 recordCount: this.countRecords(statisticsData,
-    timestamp: Date.now(  };
+    timestamp: Date.now(  },
             
             this.recordExportHistory(exportResult);
             return exportResult;
@@ -165,20 +163,16 @@ export class StatisticsExporter {
         try { this.exportState.isExporting = true,
             
             // 統計データの取得
-            const statisticsData = await this.collectStatisticsData(mergedOptions),
-            
+            const statisticsData = await this.collectStatisticsData(mergedOptions);
             // テキストレポートの生成
             const textSections = [],
             
             // ヘッダー
-            textSections.push(this.generateTextHeader(mergedOptions),
-            
+            textSections.push(this.generateTextHeader(mergedOptions);
             // 統計サマリー
-            textSections.push(this.generateTextSummary(statisticsData),
-            
+            textSections.push(this.generateTextSummary(statisticsData);
             // 詳細統計
-            textSections.push(this.generateDetailedTextReport(statisticsData),
-            
+            textSections.push(this.generateDetailedTextReport(statisticsData);
             // メタデータ
             if (mergedOptions.includeMetadata) { }
 
@@ -192,10 +186,10 @@ export class StatisticsExporter {
             const exportResult = {,
                 format: 'txt',
                 data: textString,
-                filename: this.generateFilename('txt', mergedOptions),
+                filename: this.generateFilename('txt', mergedOptions);
                 size: textString.length,
                 recordCount: this.countRecords(statisticsData,
-    timestamp: Date.now(  };
+    timestamp: Date.now(  },
             
             this.recordExportHistory(exportResult);
             return exportResult;
@@ -225,17 +219,15 @@ export class StatisticsExporter {
             let parsedData;
             switch(format.toLowerCase()) { ''
                 case 'json':','
-                    parsedData = this.parseJSONData(data),
-
+                    parsedData = this.parseJSONData(data);
                     break,
                 case 'csv':','
-                    parsedData = this.parseCSVData(data),
-
+                    parsedData = this.parseCSVData(data);
                     break,
                 case 'txt':','
                     throw new Error('テキストフォーマットのインポートは対応していません),'
                 default:  }
-                    throw new Error(`未対応のフォーマット: ${format}`});
+                    throw new Error(`未対応のフォーマット: ${format}`};
             }
             
             // データの検証
@@ -253,14 +245,13 @@ export class StatisticsExporter {
                 mergeStrategy: mergedOptions.mergeStrategy,
                 conflicts: mergeResult.conflicts || [],
                 backup: backupData ? backupData.id : null,
-    timestamp: Date.now(  };
+    timestamp: Date.now(  },
             
             this.exportState.lastImportTime = Date.now();
             return importResult;
 
         } catch (error) {
-            console.error('Data import failed:', error),
-            
+            console.error('Data import failed:', error);
             // エラー時はバックアップから復元
             if (mergedOptions.backupBeforeImport && backupData) {
     
@@ -268,7 +259,7 @@ export class StatisticsExporter {
                 await this.restoreFromBackup(backupData); }
             }
             
-            throw new Error(`データインポートに失敗しました: ${error.message}`});
+            throw new Error(`データインポートに失敗しました: ${error.message}`};
         } finally { this.exportState.isImporting = false }
     }
     
@@ -300,8 +291,8 @@ export class StatisticsExporter {
     async collectTimeSeriesData() {
         const timeSeriesData = {};
         
-        try { const endDate = new Date(),
-            const startDate = new Date(),
+        try { const endDate = new Date();
+            const startDate = new Date();
             startDate.setDate(startDate.getDate() - 90'), // 過去90日'
             
             // 日別データ
@@ -317,8 +308,7 @@ export class StatisticsExporter {
             '),'
 
             // 月別データ
-            timeSeriesData.monthly = await this.statisticsManager.timeSeriesDataManager.getDataInRange(),
-
+            timeSeriesData.monthly = await this.statisticsManager.timeSeriesDataManager.getDataInRange();
                 'monthly', startDate, endDate','
 
             ' }'
@@ -386,7 +376,7 @@ export class StatisticsExporter {
 
         if(typeof, data === 'object' && data !== null' {'
             // ヘッダー行
-            const headers = Object.keys(data),
+            const headers = Object.keys(data);
             lines.push(headers.join(',',
             ','
             // データ行
@@ -407,14 +397,13 @@ export class StatisticsExporter {
         ','
         // 日別データ
         if (timeSeriesData.daily && timeSeriesData.daily.length > 0) {''
-            lines.push('## Daily, Data'),
-            lines.push('Date,Total Score,Games Played,Play Time,Accuracy'),
-            
+            lines.push('## Daily, Data');
+            lines.push('Date,Total Score,Games Played,Play Time,Accuracy');
             timeSeriesData.daily.forEach(day => { '
                 const row = [','
                     day.date || ','
                     day.totalScore || 0,
-                    day.gamesPlayed || 0),
+                    day.gamesPlayed || 0);
                     day.playTime || 0']',
                     day.avgAccuracy || 0')] }'
 
@@ -461,24 +450,24 @@ export class StatisticsExporter {
         if (data.gamePlayStats) {
     }
             lines.push(`総ゲーム数: ${data.gamePlayStats.totalGames || 0}`}
-            lines.push(`総プレイ時間: ${this.formatTime(data.gamePlayStats.totalPlayTime || 0})`);
-            lines.push(`平均セッション時間: ${this.formatTime(data.gamePlayStats.averageSessionTime || 0})`);
+            lines.push(`総プレイ時間: ${this.formatTime(data.gamePlayStats.totalPlayTime || 0}`);
+            lines.push(`平均セッション時間: ${this.formatTime(data.gamePlayStats.averageSessionTime || 0}`);
         }
         
         if (data.scoreStats) {
     
 }
-            lines.push(`最高スコア: ${(data.scoreStats.highestScore || 0}.toLocaleString(})`);
-            lines.push(`平均スコア: ${(data.scoreStats.averageScore || 0}.toLocaleString(})`);
-            lines.push(`総獲得スコア: ${(data.scoreStats.totalScore || 0}.toLocaleString(})`);
+            lines.push(`最高スコア: ${(data.scoreStats.highestScore || 0}.toLocaleString(}`);
+            lines.push(`平均スコア: ${(data.scoreStats.averageScore || 0}.toLocaleString(}`);
+            lines.push(`総獲得スコア: ${(data.scoreStats.totalScore || 0}.toLocaleString(}`);
         }
         
         if (data.bubbleStats) {
     
 }
 
-            lines.push(`総バブル破壊数: ${(data.bubbleStats.totalPopped || 0}.toLocaleString(})`);
-            lines.push(`平均精度: ${((data.bubbleStats.accuracy || 0} * 100}.toFixed(1})%`);
+            lines.push(`総バブル破壊数: ${(data.bubbleStats.totalPopped || 0}.toLocaleString(}`);
+            lines.push(`平均精度: ${((data.bubbleStats.accuracy || 0} * 100}.toFixed(1}%`);
         }
 
         return lines.join('\n);'
@@ -541,8 +530,8 @@ export class StatisticsExporter {
             gameVersion: 'Awaputi v1.0',
             format: options.format || 'unknown',
     includeMetadata: options.includeMetadata }
-            privacySettings: this.privacySettings };
-            recordCount: null // 後で設定 }))
+            privacySettings: this.privacySettings },
+            recordCount: null // 後で設定 })
     }
     
     /**
@@ -577,7 +566,7 @@ export class StatisticsExporter {
      */
     parseJSONData(jsonString) {
         try {
-            const data = JSON.parse(jsonString),
+            const data = JSON.parse(jsonString);
             ','
             // 基本構造の検証
             if (!data.statistics) {
@@ -625,11 +614,11 @@ export class StatisticsExporter {
     /**
      * バックアップの作成
      */
-    async createBackup() { const backupData = await this.exportToJSON({ includeMetadata: true,;
+    async createBackup() { const backupData = await this.exportToJSON({ includeMetadata: true,
         const, backupId = `backup_${Date.now())`,
         
         // LocalStorageに保存（実際の実装では適切なストレージを使用）
-        localStorage.setItem(`statistics_backup_${backupId}`, backupData.data});
+        localStorage.setItem(`statistics_backup_${backupId}`, backupData.data};
         
         return { id: backupId, data: backupData,
     
@@ -656,7 +645,7 @@ export class StatisticsExporter {
     recordExportHistory(result) { this.exportState.exportHistory.push({ }
             ...result);
             id: `export_${Date.now())`
-        });
+        };
         // 履歴の制限（最新20件まで）
         if (this.exportState.exportHistory.length > 20) { this.exportState.exportHistory = this.exportState.exportHistory.slice(-20) }
     }
@@ -677,7 +666,7 @@ export class StatisticsExporter {
     
     formatTime(seconds) {
     
-        const hours = Math.floor(seconds / 3600),
+        const hours = Math.floor(seconds / 3600);
         const minutes = Math.floor((seconds % 3600) / 60) }
         if (hours > 0) { }
             return `${hours}時間${minutes}分`;
@@ -708,7 +697,7 @@ export class StatisticsExporter {
 
                 if(typeof, value === 'object' { }'
                     this.removeField(value, fieldName); }
-});
+};
         }
     }
     
@@ -722,7 +711,7 @@ export class StatisticsExporter {
                 obj[key] = Number(obj[key].toFixed(decimals));' }'
 
             } else if (typeof, obj[key] === 'object' && obj[key] !== null) { this.roundNumbersInObject(obj[key], decimals) }
-        });
+        };
     }
     
     normalizeTimestamps(obj) {
@@ -736,7 +725,7 @@ export class StatisticsExporter {
                     obj[key] = new Date(obj[key]).toISOString() }
 
             } else if (typeof, obj[key] === 'object' && obj[key] !== null) { this.normalizeTimestamps(obj[key]) }
-        });
+        };
     }
     
     /**

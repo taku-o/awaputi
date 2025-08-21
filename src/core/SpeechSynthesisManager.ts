@@ -18,12 +18,12 @@ export class SpeechSynthesisManager {'
         // 設定
         this.config = { : undefined
             enabled: this.isSupported;
-            fallbackToScreenReader: true,
-            autoLanguageDetection: true,
+            fallbackToScreenReader: true;
+            autoLanguageDetection: true;
     queueManagement: {
-                maxQueueSize: 10,
-    interruptOnUrgent: true,
-                respectPause: true,;
+                maxQueueSize: 10;
+    interruptOnUrgent: true;
+                respectPause: true;
             voice: { autoSelection: true,''
                 preferredLanguages: ['ja-JP', 'en-US];'
                 genderPreference: 'female', // 'male', 'female', 'none'';'
@@ -32,12 +32,12 @@ export class SpeechSynthesisManager {'
                 pitch: 1.0,       // 0 - 2;
                 volume: 1.0,      // 0 - 1;
                 pauseLength: 300  // ポーズの長さ（ms）  };
-            interruption: { allowUserInterrupt: true,
-                allowSystemInterrupt: true,
-    gracefulStop: true,;
-            pronunciation: { customDictionary: new Map(),
-                numberFormatting: true,
-    abbreviationExpansion: true,;
+            interruption: { allowUserInterrupt: true;
+                allowSystemInterrupt: true;
+    gracefulStop: true;
+            pronunciation: { customDictionary: new Map();
+                numberFormatting: true;
+    abbreviationExpansion: true;
         // 音声関連
         this.availableVoices = [];
         this.selectedVoices = new Map(); // 言語別の選択された音声
@@ -52,24 +52,24 @@ export class SpeechSynthesisManager {'
         this.eventListeners = new Map();
         
         // 統計情報
-        this.stats = { totalUtterances: 0,
-            completedUtterances: 0,
-            interruptedUtterances: 0,
-            errorCount: 0,
-            averageDuration: 0,
-            languageUsage: new Map(),
+        this.stats = { totalUtterances: 0;
+            completedUtterances: 0;
+            interruptedUtterances: 0;
+            errorCount: 0;
+            averageDuration: 0;
+            languageUsage: new Map();
             voiceUsage: new Map(
     sessionStart: Date.now(  }
         
         // ユーザー設定
-        this.userPreferences = { enabled: true,
-            rate: 1.0,
-            pitch: 1.0,
-            volume: 0.8,
-            preferredVoice: null,
-            autoPlay: true,
-            respectGamePause: true,
-    skipRepeatedMessages: true,;
+        this.userPreferences = { enabled: true;
+            rate: 1.0;
+            pitch: 1.0;
+            volume: 0.8;
+            preferredVoice: null;
+            autoPlay: true;
+            respectGamePause: true;
+    skipRepeatedMessages: true;
         ;
         // カスタム発音辞書（日本語）
         this.initializeCustomDictionary()';'
@@ -87,13 +87,11 @@ export class SpeechSynthesisManager {'
         }
         
         try { // 音声の読み込み
-            await this.loadVoices(),
-            
+            await this.loadVoices();
             // ユーザー設定の読み込み
-            this.loadUserPreferences(),
-            
+            this.loadUserPreferences();
             // イベントリスナーの設定
-            this.setupEventListeners(),
+            this.setupEventListeners();
             // 音声の自動選択
             this.autoSelectVoices()','
             console.log('SpeechSynthesisManager, initialized successfully') }'
@@ -163,15 +161,14 @@ export class SpeechSynthesisManager {'
             
             // 即座に試行
             loadVoicesOnce();
-        });
+        };
     }
     
     /**
      * 音声の分析
      */
     analyzeVoices() {
-        const voicesByLanguage = new Map(),
-
+        const voicesByLanguage = new Map();
         this.availableVoices.forEach(voice => { '),'
             const lang = voice.lang.split('-')[0], // 'ja-JP' -> 'ja'
             
@@ -187,7 +184,7 @@ export class SpeechSynthesisManager {'
                 gender: this.detectGender(voice.name,
     quality: this.estimateQuality(voice  }
 
-            });'}');
+            };'}');
 
         console.log('Voice analysis complete:', Object.fromEntries(voicesByLanguage);
         this.voicesByLanguage = voicesByLanguage;
@@ -262,16 +259,16 @@ export class SpeechSynthesisManager {'
                             case 'medium': return 2 }
 
                             case 'low': return 1; }
-                            default: return 0;
+                            default: return 0,
                     
                     const scoreA = qualityScore(a) + (a.voice.localService ? 1 : 0);
                     const scoreB = qualityScore(b) + (b.voice.localService ? 1 : 0);
                     
                     return scoreB - scoreA;
-                })[0];
+                }[0];
             
             if (selectedVoice) { this.selectedVoices.set(lang, selectedVoice.voice) }
-                console.log(`Selected voice for ${lang}:`, selectedVoice.voice.name});
+                console.log(`Selected voice for ${lang}:`, selectedVoice.voice.name};
             }
 }
     
@@ -281,9 +278,8 @@ export class SpeechSynthesisManager {'
     loadUserPreferences()';'
             const saved = localStorage.getItem('speechSynthesis_preferences);'
             if (saved) {
-                const preferences = JSON.parse(saved),
-                Object.assign(this.userPreferences, preferences),
-                
+                const preferences = JSON.parse(saved);
+                Object.assign(this.userPreferences, preferences);
                 // 設定を適用
             }
                 this.applyUserPreferences();' }'
@@ -337,9 +333,9 @@ export class SpeechSynthesisManager {'
 
                     this.stop() }
 
-                } else if (event.key === ', ' && event.ctrlKey) { event.preventDefault(),
+                } else if (event.key === ', ' && event.ctrlKey) { event.preventDefault();
                     this.toggle() }
-});
+};
     }
     
     /**
@@ -421,7 +417,7 @@ export class SpeechSynthesisManager {'
     }
 
             const regex = new RegExp(`\\b${abbr}\\b`, 'gi'}
-            text = text.replace(regex, expansion});
+            text = text.replace(regex, expansion};
         }
         
         return text;
@@ -433,7 +429,7 @@ export class SpeechSynthesisManager {'
     formatSymbols(text, language) {
 
         if (language === 'ja') {''
-            text = text.replace(/!/g, '！'),
+            text = text.replace(/!/g, '！');
             text = text.replace(/\? /g, '？') }
 
             text = text.replace(/\.\.\./g, '…'; }'
@@ -447,12 +443,10 @@ export class SpeechSynthesisManager {'
      */''
     createUtterance(text, options = { )) {''
         const processedText = this.preprocessText(text, options.language || 'ja),'
-        const utterance = new SpeechSynthesisUtterance(processedText),
-        
+        const utterance = new SpeechSynthesisUtterance(processedText);
         // 言語設定
-        const language = options.language || this.detectLanguage(text),
-        const voice = options.voice || this.selectedVoices.get(language),
-
+        const language = options.language || this.detectLanguage(text);
+        const voice = options.voice || this.selectedVoices.get(language);
         if (voice) {
             utterance.voice = voice }
             utterance.lang = voice.lang; }
@@ -478,7 +472,7 @@ export class SpeechSynthesisManager {'
 
             this.stats.completedUtterances++;' }'
 
-            this.emit('speechEnd', { text: processedText, utterance });
+            this.emit('speechEnd', { text: processedText, utterance };
             this.processNextInQueue();
         };
 
@@ -486,7 +480,7 @@ export class SpeechSynthesisManager {'
 
             console.error('Speech synthesis error:', event.error'; }'
 
-            this.emit('speechError', { error: event.error, utterance });
+            this.emit('speechError', { error: event.error, utterance };
             this.processNextInQueue();
         };
 
@@ -497,7 +491,7 @@ export class SpeechSynthesisManager {'
 
         utterance.onresume = () => { this.isPaused = false,' }'
 
-            this.emit('speechResume', { utterance });
+            this.emit('speechResume', { utterance };
         };
         
         return utterance;
@@ -517,21 +511,20 @@ export class SpeechSynthesisManager {'
      */
     speakImmediate(utterance) {
         try {'
-            this.speechSynthesis.speak(utterance),
+            this.speechSynthesis.speak(utterance);
             this.stats.totalUtterances++,
             ','
             // 統計更新
             const language = utterance.lang?.split('-')[0] || 'unknown',
             const langCount = this.stats.languageUsage.get(language) || 0,
-            this.stats.languageUsage.set(language, langCount + 1),
-            
+            this.stats.languageUsage.set(language, langCount + 1);
             if (utterance.voice) {
                 const voiceCount = this.stats.voiceUsage.get(utterance.voice.name) || 0 }
                 this.stats.voiceUsage.set(utterance.voice.name, voiceCount + 1); }
 
             } catch (error) { this.stats.errorCount++,
             getErrorHandler().handleError(error, 'SPEECH_SYNTHESIS_ERROR', { : undefined''
-                operation: 'speakImmediate'),
+                operation: 'speakImmediate');
                 utterance: utterance,);
         }
     }
@@ -595,7 +588,7 @@ export class SpeechSynthesisManager {'
      * キューをクリアして発話
      */
     speakNow(text, options = { ) {
-        this.clearQueue(),
+        this.clearQueue();
         this.stop() }
         return this.speak(text, options);
     
@@ -623,8 +616,7 @@ export class SpeechSynthesisManager {'
     stop() {
         if (this.isSupported) {
             this.isStopping = true;
-            this.speechSynthesis.cancel(),
-            
+            this.speechSynthesis.cancel();
             setTimeout(() => { 
                 this.isStopping = false;
                 this.isPlaying = false }
@@ -670,17 +662,16 @@ export class SpeechSynthesisManager {'
      * 音声の選択
      */
     setVoice(language, voiceName) {
-        const voice = this.availableVoices.find(v => ),
-            v.name === voiceName && v.lang.startsWith(language),
-        
+        const voice = this.availableVoices.find(v => );
+            v.name === voiceName && v.lang.startsWith(language);
         if (voice) {
     }
             this.selectedVoices.set(language, voice); }
-            console.log(`Voice set for ${language}:`, voiceName});
+            console.log(`Voice set for ${language}:`, voiceName};
             return true;
         }
         
-        console.warn(`Voice, not found: ${voiceName} for ${language}`});
+        console.warn(`Voice, not found: ${voiceName} for ${language}`};
         return false;
     }
     
@@ -707,7 +698,7 @@ export class SpeechSynthesisManager {'
     currentVoice: this.currentUtterance?.voice?.name || null, : undefined
             settings: {
                 rate: this.config.speech.rate }
-                pitch: this.config.speech.pitch };
+                pitch: this.config.speech.pitch },
                 volume: this.config.speech.volume 
     }
     
@@ -716,7 +707,7 @@ export class SpeechSynthesisManager {'
      */
     applyConfig(config) {
         if (config.speechSynthesis) {
-            Object.assign(this.config, config.speechSynthesis),
+            Object.assign(this.config, config.speechSynthesis);
             this.applyUserPreferences() }
 
         console.log('SpeechSynthesisManager, configuration applied'); }
@@ -762,7 +753,7 @@ export class SpeechSynthesisManager {'
                 try {) }
                     callback(data); }
                 } catch (error) { console.error(`Error in speech synthesis event listener:`, error }
-            });
+            };
         }
     }
     
@@ -772,23 +763,23 @@ export class SpeechSynthesisManager {'
     generateReport() {
         const sessionDuration = Date.now() - this.stats.sessionStart,
         
-        return { timestamp: new Date().toISOString(),
+        return { timestamp: new Date().toISOString();
             system: {
                 isSupported: this.isSupported }
-                availableVoicesCount: this.availableVoices.length };
+                availableVoicesCount: this.availableVoices.length },
                 selectedVoices: Object.fromEntries(this.selectedVoices.entries(); 
     },
             configuration: { enabled: this.config.enabled,
                 autoLanguageDetection: this.config.autoLanguageDetection,
                 queueManagement: this.config.queueManagement,
-    speech: this.config.speech };
+    speech: this.config.speech },
             statistics: { ...this.stats,
                 sessionDuration: sessionDuration,
                 successRate: this.stats.totalUtterances > 0 ? undefined : undefined
                     this.stats.completedUtterances / this.stats.totalUtterances : 0,
                 utterancesPerMinute: this.stats.totalUtterances / (sessionDuration / 60000 }
             currentStatus: this.getStatus(
-    userPreferences: this.userPreferences;
+    userPreferences: this.userPreferences,
         } }
     
     /**

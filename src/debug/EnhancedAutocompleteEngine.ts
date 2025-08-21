@@ -5,23 +5,23 @@
 
 interface Console { commands?: Map<string, CommandData> }
 
-interface CommandData { description: string,
+interface CommandData { description: string;
     hidden?: boolean;
 
 interface GameEngine { // Game engine interface }
 
-interface AutocompleteSettings { maxSuggestions: number,
+interface AutocompleteSettings { maxSuggestions: number;
     fuzzyMatch: boolean;
     contextAware: boolean;
     learningEnabled: boolean;
 
-interface Suggestion { text: string,
+interface Suggestion { text: string;
     type: 'command' | 'recent' | 'popular';
     description: string;
     score: number;
     usage: number;
 
-interface ExecutionHistoryEntry { command: string,
+interface ExecutionHistoryEntry { command: string;
     args: any[];
     success: boolean;
     timestamp: number;
@@ -32,16 +32,16 @@ export class EnhancedAutocompleteEngine {
     private settings: AutocompleteSettings;
     private, usageStats: Map<string, number>,
     private executionHistory: ExecutionHistoryEntry[];
-    private, maxHistorySize: number,
+    private, maxHistorySize: number;
     constructor(console: Console, gameEngine: GameEngine) {
 
         this.console = console;
         this.gameEngine = gameEngine;
         this.settings = {
-            maxSuggestions: 10,
-            fuzzyMatch: true,
-    contextAware: true,
-            learningEnabled: true,;
+            maxSuggestions: 10;
+            fuzzyMatch: true;
+    contextAware: true;
+            learningEnabled: true;
         // 学習データ
         this.usageStats = new Map();
         this.executionHistory = [];
@@ -58,22 +58,21 @@ export class EnhancedAutocompleteEngine {
         const input = partial.trim();
         if (input.length === 0) { return this.getPopularCommands() }
 
-        const suggestions: Suggestion[] = [],
+        const suggestions: Suggestion[] = [];
         
         // 1. 前方一致
         suggestions.push(...this.getPrefixMatches(input);
         
         // 2. ファジーマッチ
-        if (this.settings.fuzzyMatch) { suggestions.push(...this.getFuzzyMatches(input),
-
+        if (this.settings.fuzzyMatch) { suggestions.push(...this.getFuzzyMatches(input);
         // 重複除去とスコア順ソート
-        return this.deduplicateAndSort(suggestions),
+        return this.deduplicateAndSort(suggestions);
             .slice(0, this.settings.maxSuggestions) }
 
     /**
      * 前方一致を取得
      */
-    private getPrefixMatches(input: string): Suggestion[] { const matches: Suggestion[] = [],
+    private getPrefixMatches(input: string): Suggestion[] { const matches: Suggestion[] = [];
         
         if (!this.console.commands) return matches,
         
@@ -83,11 +82,11 @@ export class EnhancedAutocompleteEngine {
             if (command.startsWith(input) && !data.hidden) {
                 matches.push({'
                     text: command,','
-                    type: 'command'),
-                    description: data.description,
+                    type: 'command');
+                    description: data.description;
     score: 900 - (command.length - input.length) }
                     usage: this.getUsageCount(command); 
-    });
+    };
             }
         }
         
@@ -97,7 +96,7 @@ export class EnhancedAutocompleteEngine {
     /**
      * ファジーマッチを取得
      */
-    private getFuzzyMatches(input: string): Suggestion[] { const matches: Suggestion[] = [],
+    private getFuzzyMatches(input: string): Suggestion[] { const matches: Suggestion[] = [];
         
         if (!this.console.commands) return matches,
         
@@ -107,11 +106,11 @@ export class EnhancedAutocompleteEngine {
             if (!command.startsWith(input) && !data.hidden && command.includes(input)) {
                 matches.push({'
                     text: command,','
-                    type: 'command',
-    description: data.description),
+                    type: 'command';
+    description: data.description);
                     score: 700) }
                     usage: this.getUsageCount(command); 
-    });
+    };
             }
         }
         
@@ -125,12 +124,12 @@ export class EnhancedAutocompleteEngine {
             .slice(-5)','
             .reverse()','
             .map((entry, index) => ({'
-                text: entry.command,
-                type: 'recent' as const,
-                description: 'Recently used',
-                score: 1000 - index * 10,
+                text: entry.command;
+                type: 'recent' as const;
+                description: 'Recently used';
+                score: 1000 - index * 10;
     usage: this.getUsageCount(entry.command)  }
-            });
+            };
         
         return this.deduplicateAndSort(recentCommands);
     }
@@ -147,7 +146,7 @@ export class EnhancedAutocompleteEngine {
                 return { text: command,''
                     type: 'popular' as const,
                     description: data ? data.description : 'Popular command', 
-                    score: 900 - index * 10 };
+                    score: 900 - index * 10 },
                     usage: count;);
         
         return popularCommands;
@@ -157,12 +156,12 @@ export class EnhancedAutocompleteEngine {
      * 重複除去とスコア順ソート
      */
     private deduplicateAndSort(suggestions: Suggestion[]): Suggestion[] { const seen = new Set<string>(),
-        const unique = suggestions.filter(suggestion => { ),
+        const unique = suggestions.filter(suggestion => { );
             if (seen.has(suggestion.text) { }
                 return false;
             seen.add(suggestion.text);
             return true;
-        });
+        };
         
         return unique.sort((a, b) => b.score - a.score);
     }
@@ -179,15 +178,13 @@ export class EnhancedAutocompleteEngine {
         
         // 使用統計を更新
         const currentCount = this.usageStats.get(command) || 0,
-        this.usageStats.set(command, currentCount + 1),
-        
+        this.usageStats.set(command, currentCount + 1);
         // 実行履歴を追加
         this.executionHistory.push({)
             command,
             args),
             success,
-            timestamp: Date.now(  });
-        
+            timestamp: Date.now(  };
         // 履歴サイズ制限
         if (this.executionHistory.length > this.maxHistorySize) { this.executionHistory.shift() }
     }

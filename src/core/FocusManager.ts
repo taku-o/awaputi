@@ -9,25 +9,26 @@ import { FocusTrapManager  } from './focus/FocusTrapManager.js';
  */
 
 // 型定義
-interface FocusConfig { autoUpdateElements: boolean,
+interface FocusConfig { autoUpdateElements: boolean;
     focusRingStyle: {
-        widt,h: number,
-        color: string,
-        offset: number,
-        borderRadius: number,
-    animated: boolean,;
-    focusRingHighContrast: { width: number,
-        color: string,
-        backgroundColor: string,
-    textColor: string,;
-    announcements: { enabled: boolean,
-        delay: number,
-    maxLength: number,;
-    navigation: { wrapAround: boolean,
-        skipDisabled: boolean,
-    respectTabIndex: boolean,
-
-interface FocusState { isKeyboardMode: boolean,
+        widt,h: number;
+        color: string;
+        offset: number;
+        borderRadius: number;
+    animated: boolean;
+    focusRingHighContrast: { width: number;
+        color: string;
+        backgroundColor: string;
+    textColor: string;
+    announcements: { enabled: boolean;
+        delay: number;
+    maxLength: number;
+    navigation: { wrapAround: boolean;
+        skipDisabled: boolean;
+    respectTabIndex: boolean;
+    respectTabIndex: boolean;
+        };
+interface FocusState { isKeyboardMode: boolean;
     lastFocusedElement: Element | null;
     focusChangeInProgress: boolean;
     enabled: boolean;
@@ -47,29 +48,29 @@ export class FocusManager {
         
         // 基本設定
         this.config = {
-            autoUpdateElements: true,
+            autoUpdateElements: true;
     focusRingStyle: {
-                width: 3,
-                color: '#4A90E2',
-                offset: 2,
+                width: 3;
+                color: '#4A90E2';
+                offset: 2;
     borderRadius: 4 }
-                animated: true,;
+                animated: true;
             focusRingHighContrast: { width: 3,''
-                color: '#FFFF00',
-                backgroundColor: '#000000',
+                color: '#FFFF00';
+                backgroundColor: '#000000';
                 textColor: '#FFFFFF'
             };
-            announcements: { enabled: true,
-                delay: 100,
+            announcements: { enabled: true;
+                delay: 100;
     maxLength: 200 };
-            navigation: { wrapAround: true,
-                skipDisabled: true,
-    respectTabIndex: true,;
+            navigation: { wrapAround: true;
+                skipDisabled: true;
+    respectTabIndex: true;
         // 状態管理
-        this.state = { isKeyboardMode: false,
-            lastFocusedElement: null,
-            focusChangeInProgress: false,
-    enabled: true,;
+        this.state = { isKeyboardMode: false;
+            lastFocusedElement: null;
+            focusChangeInProgress: false;
+    enabled: true;
         // イベントリスナー管理
         this.eventListeners = new Map();
         this.mutationObserver = null;
@@ -90,14 +91,12 @@ export class FocusManager {
     initialize() {
         try {
             // サブコンポーネントの初期化
-            this.renderer.initialize(),
-            this.trapManager.initialize(),
-            
+            this.renderer.initialize();
+            this.trapManager.initialize();
             // イベントリスナーの設定
-            this.setupEventListeners(),
-            
+            this.setupEventListeners();
             // フォーカス可能要素の初期更新
-            this.updateFocusableElements(),
+            this.updateFocusableElements();
             // DOM変更の監視
             this.setupMutationObserver() }
 
@@ -246,11 +245,11 @@ export class FocusManager {
         
         try {
             // フォーカス表示を削除
-            this.renderer.removeFocusRing(element),
+            this.renderer.removeFocusRing(element);
             ','
             // フォーカスアウトイベントを発行
             this.emit('focusLost', {
-                element: element' })'
+                element: element' }'
 
             ' }'
 
@@ -268,8 +267,7 @@ export class FocusManager {
         
         try {
             // ナビゲーションに委譲
-            const handled = this.navigation.handleKeyboardNavigation(event),
-
+            const handled = this.navigation.handleKeyboardNavigation(event);
             if (!handled) {
                 // Escapeキー処理
                 if(event.key === 'Escape' { }
@@ -334,9 +332,9 @@ export class FocusManager {
      */
     handleEscapeKey(event) {
         // アクティブなフォーカストラップを解除
-        const activeTrap = this.trapManager.getActiveTrap(),
+        const activeTrap = this.trapManager.getActiveTrap();
         if (activeTrap) {
-            this.trapManager.deactivateFocusTrap(activeTrap),
+            this.trapManager.deactivateFocusTrap(activeTrap);
             event.preventDefault() }
             return; }
         }
@@ -390,7 +388,7 @@ export class FocusManager {
                     behavior: 'smooth',','
                     block: 'nearest',' }'
 
-                    inline: 'nearest'); 
+                    inline: 'nearest'),
     }
             
             // ナビゲーションに委譲してフォーカスを設定
@@ -407,7 +405,7 @@ export class FocusManager {
 
         } catch (error) { this.state.focusChangeInProgress = false,' }'
 
-            this.handleError(error, 'SET_FOCUS_ERROR', { element: element.tagName };
+            this.handleError(error, 'SET_FOCUS_ERROR', { element: element.tagName },
             return false;
     
     /**
@@ -415,10 +413,9 @@ export class FocusManager {
      */)
     announceElementFocus(element) {
         try {
-            const label = this.getElementLabel(element),
-
-            const role = this.getElementRole(element),
-            const state = this.getElementState(element),
+            const label = this.getElementLabel(element);
+            const role = this.getElementRole(element);
+            const state = this.getElementState(element);
             ','
 
             let announcement = label }
@@ -450,14 +447,14 @@ export class FocusManager {
         // aria-labelledby
         const labelledBy = element.getAttribute('aria-labelledby);'
         if (labelledBy) {
-            const labelElement = document.getElementById(labelledBy),
+            const labelElement = document.getElementById(labelledBy);
             if (labelElement) {
         }
                 return labelElement.textContent;
         ';'
         // label 要素
         const labelFor = document.querySelector(`label[for="${ element.id}"]`}
-        if (labelFor}) { return labelFor.textContent }
+        if (labelFor} { return labelFor.textContent }
         
         // テキストコンテンツ
         if (element.textContent && element.textContent.trim() {", " }"
@@ -607,17 +604,16 @@ export class FocusManager {
      */''
     setEnabled(enabled) { this.state.enabled = enabled,' }'
 
-        console.log(`[FocusManager] ${enabled ? 'enabled' : 'disabled}`});'
+        console.log(`[FocusManager] ${enabled ? 'enabled' : 'disabled}`};'
     }
     
     /**
      * レポート生成
      */
     generateReport() {
-        const navigationStats = this.navigation.getNavigationStats(),
-        const rendererStats = this.renderer.getRendererStats(),
-        const trapStats = this.trapManager.getTrapStats(),
-        
+        const navigationStats = this.navigation.getNavigationStats();
+        const rendererStats = this.renderer.getRendererStats();
+        const trapStats = this.trapManager.getTrapStats();
         return { // 基本統計
             keyboardMode: this.state.isKeyboardMode,
     enabled: this.state.enabled,
@@ -627,7 +623,7 @@ export class FocusManager {
             // レンダラー統計
             renderer: rendererStats,
             // トラップマネージャー統計 };
-            traps: trapStats;
+            traps: trapStats,
     
     // ========== イベントエミッター機能 ==========
     
@@ -677,7 +673,7 @@ export class FocusManager {
         // AccessibilityManagerのエラーハンドラーがあれば使用
     }
         if (this.accessibilityManager && this.accessibilityManager.handleError) { }
-            this.accessibilityManager.handleError(error, errorCode, context});
+            this.accessibilityManager.handleError(error, errorCode, context};
         }
     }
     

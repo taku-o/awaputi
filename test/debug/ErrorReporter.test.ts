@@ -10,16 +10,16 @@ const createMockGameEngine = (') => ({ sceneManager: { }'
     gameTime: 1000,
     isRunning: true,
     isPaused: false,
-    targetFPS: 60);
+    targetFPS: 60),
        , bubbleManager: {
-        bubbles: new Array(10})
+        bubbles: new Array(10}
     ) },
     scoreManager: { score: 1500 }
     },
     playerData: { currentHP: 100 }'
     }'}');
 describe('ErrorReporter', () => {  let errorReporter: any,
-    let mockGameEngine: any;
+    let mockGameEngine: any,
     beforeEach(() => { }
         mockGameEngine = createMockGameEngine(};
         // Canvasモックを追加
@@ -29,7 +29,7 @@ describe('ErrorReporter', () => {  let errorReporter: any,
                 drawImage: jest.fn() }'
     )),''
             toDataURL: jest.fn((') => 'data:image/jpeg,base64,/9j/4AAQSkZJRgABAQEA...');'
-    });
+    };
         errorReporter = new ErrorReporter(mockGameEngine: any);
         // LocalStorageのモック
         const localStorageMock = { getItem: jest.fn(
@@ -54,19 +54,19 @@ describe('ErrorReporter', () => {  let errorReporter: any,
         jest.spyOn(console, 'error').mockImplementation(')';
         jest.spyOn(console, 'group').mockImplementation(')';
         jest.spyOn(console, 'groupEnd').mockImplementation();
-    });
+    };
     afterEach(() => { errorReporter.destroy() }'
-        jest.restoreAllMocks(});'}');
+        jest.restoreAllMocks(};'}');
     describe('初期化', (') => {  ''
         test('ErrorReporterが正しく初期化される', () => {
-            expect(errorReporter).toBeDefined(),
-            expect(errorReporter.sessionId).toMatch(/^session_/),
-            expect(errorReporter.errorCollector).toBeDefined(),
-            expect(errorReporter.errorAnalyzer).toBeDefined(),
+            expect(errorReporter).toBeDefined();
+            expect(errorReporter.sessionId).toMatch(/^session_/);
+            expect(errorReporter.errorCollector).toBeDefined();
+            expect(errorReporter.errorAnalyzer).toBeDefined();
             expect(errorReporter.errorStorage).toBeDefined() }'
             expect(errorReporter.screenshotCapture).toBeDefined();' }'
         }');'
-        test('セッションIDが一意である', () => {  const anotherReporter = new ErrorReporter(mockGameEngine: any),
+        test('セッションIDが一意である', () => {  const anotherReporter = new ErrorReporter(mockGameEngine: any);
             expect(errorReporter.sessionId).not.toBe(anotherReporter.sessionId) }'
             anotherReporter.destroy();' }'
         }');'
@@ -85,9 +85,9 @@ describe('ErrorReporter', () => {  let errorReporter: any,
             expect(collectedError.context.component').toBe('TestComponent');'
             expect(collectedError.sessionId).toBe(errorReporter.sessionId);'}');
         test('ゲーム状態が正しくキャプチャされる', (') => {  ''
-            const testError = new Error('Game state test'),
+            const testError = new Error('Game state test');
             const collectedError = errorReporter.collectEnhancedError(testError: any),'
-            expect(collectedError.context.gameState).toBeDefined(),
+            expect(collectedError.context.gameState).toBeDefined();
             expect(collectedError.context.gameState.currentScene').toBe('TestScene'),'
             expect(collectedError.context.gameState.bubbleCount).toBe(10) }'
             expect(collectedError.context.gameState.score).toBe(1500););' }'
@@ -100,7 +100,7 @@ describe('ErrorReporter', () => {  let errorReporter: any,
             expect(typeof collectedError.fingerprint').toBe('string');'}');'
         test('エラー重要度が正しく計算される', async (') => {  ''
             const typeError = new TypeError('Type error test'),'
-            const collectedError1 = await errorReporter.collectEnhancedError(typeError: any),
+            const collectedError1 = await errorReporter.collectEnhancedError(typeError: any);
             expect(collectedError1.severity').toBe('high'),'
             const genericError = new Error('Generic error test'),'
             const collectedError2 = await errorReporter.collectEnhancedError(genericError: any),' }'
@@ -108,7 +108,7 @@ describe('ErrorReporter', () => {  let errorReporter: any,
         }');'
         test('エラーカテゴリが正しく分類される', async (') => {  ''
             const networkError = new Error('Network request failed'),'
-            const collectedError1 = await errorReporter.collectEnhancedError(networkError: any),
+            const collectedError1 = await errorReporter.collectEnhancedError(networkError: any);
             expect(collectedError1.category').toBe('network'),'
             const renderError = new Error('Canvas rendering failed'),'
             const collectedError2 = await errorReporter.collectEnhancedError(renderError: any),' }'
@@ -123,14 +123,14 @@ describe('ErrorReporter', () => {  let errorReporter: any,
             expect(mockGameEngine.canvas.toDataURL).toHaveBeenCalled();'}');
         test('高重要度エラーでスクリーンショットが取得される', async (') => {  ''
             const highSeverityError = new TypeError('Type error causing screenshot'),'
-            const collectedError = await errorReporter.collectEnhancedError(highSeverityError: any),
+            const collectedError = await errorReporter.collectEnhancedError(highSeverityError: any);
             expect(collectedError.severity').toBe('high'),'
             expect(collectedError.screenshot).toBeDefined() }'
             expect(mockGameEngine.canvas.toDataURL).toHaveBeenCalled();' }'
         }');'
         test('低重要度エラーではスクリーンショットが取得されない', async (') => {  ''
             const lowSeverityError = new Error('Minor error'),'
-            const collectedError = await errorReporter.collectEnhancedError(lowSeverityError: any),
+            const collectedError = await errorReporter.collectEnhancedError(lowSeverityError: any);
             expect(collectedError.severity').toBe('low') }'
             expect(collectedError.screenshot).toBeUndefined();' }'
         }');'
@@ -160,9 +160,9 @@ describe('ErrorReporter', () => {  let errorReporter: any,
             const pattern = patterns.values().next().value;'
             expect(pattern.count).toBe(3);'}');
         test('パターン別にエラーが分類される', (') => {  ''
-            const error1 = new Error('Error type 1'),
-            const error2 = new Error('Error type 2'),
-            errorReporter.collectEnhancedError(error1: any),
+            const error1 = new Error('Error type 1');
+            const error2 = new Error('Error type 2');
+            errorReporter.collectEnhancedError(error1: any);
             errorReporter.collectEnhancedError(error2) }'
             expect(errorReporter.errorPatterns.size).toBe(2););' }'
         }');'
@@ -195,11 +195,11 @@ describe('ErrorReporter', () => {  let errorReporter: any,
     describe('ストレージ機能', (') => {  ''
         test('エラーがローカルストレージに保存される', (') => { }'
             const testError = new Error('Storage test'); }
-            errorReporter.collectEnhancedError(testError as any})'
+            errorReporter.collectEnhancedError(testError as any}'
             );
             expect(localStorage.setItem').toHaveBeenCalledWith(')';'
                 'errorReporter_data')';'
-                expect.any(String});'}');
+                expect.any(String};'}');
         test('ストレージサイズ制限が適用される', () => {  // ストレージサイズを小さく設定
             errorReporter.errorStorage.maxStorageSize = 2,
             
@@ -215,24 +215,24 @@ describe('ErrorReporter', () => {  let errorReporter: any,
     describe('レポート生成', (') => {  ''
         test('セッションレポートが正しく生成される', (') => {'
             // テストエラーを追加''
-            const error1 = new Error('Report test 1'),
+            const error1 = new Error('Report test 1');
             const error2 = new TypeError('Report test 2'),'
-            errorReporter.collectEnhancedError(error1: any),
+            errorReporter.collectEnhancedError(error1: any);
             errorReporter.collectEnhancedError(error2'),'
-            const report = errorReporter.generateErrorReport('session'),
-            expect(report).toBeDefined(),
-            expect(report.summary.total).toBe(2),
-            expect(report.summary.bySeverity.low).toBe(1),
+            const report = errorReporter.generateErrorReport('session');
+            expect(report).toBeDefined();
+            expect(report.summary.total).toBe(2);
+            expect(report.summary.bySeverity.low).toBe(1);
             expect(report.summary.bySeverity.high).toBe(1) }'
             expect(report.sessionId).toBe(errorReporter.sessionId););' }'
         }');'
         test('統計情報が正しく計算される', (') => {  ''
-            const error1 = new Error('Stats test 1'),
-            const error2 = new Error('Stats test 2'),
-            errorReporter.collectEnhancedError(error1: any),
-            errorReporter.collectEnhancedError(error2),
-            const stats = errorReporter.getErrorStatistics(),
-            expect(stats.totalErrors).toBe(2),
+            const error1 = new Error('Stats test 1');
+            const error2 = new Error('Stats test 2');
+            errorReporter.collectEnhancedError(error1: any);
+            errorReporter.collectEnhancedError(error2);
+            const stats = errorReporter.getErrorStatistics();
+            expect(stats.totalErrors).toBe(2);
             expect(stats.sessionDuration).toBeGreaterThan(0) }'
             expect(stats.errorRate).toBeDefined();' }'
         }');'
@@ -248,13 +248,13 @@ describe('ErrorReporter', () => {  let errorReporter: any,
     }''
     describe('ブラウザ情報キャプチャ', (') => {  ''
         test('ブラウザ情報が正しくキャプチャされる', () => {
-            const browserInfo = errorReporter.captureBrowserInfo(),
-            expect(browserInfo).toBeDefined(),
-            expect(browserInfo.userAgent).toBeDefined(),
+            const browserInfo = errorReporter.captureBrowserInfo();
+            expect(browserInfo).toBeDefined();
+            expect(browserInfo.userAgent).toBeDefined();
             expect(browserInfo.platform).toBeDefined() }'
             expect(browserInfo.language).toBeDefined();' }'
         }');'
-        test('パフォーマンス情報が正しくキャプチャされる', () => {  const performanceInfo = errorReporter.capturePerformanceInfo(),
+        test('パフォーマンス情報が正しくキャプチャされる', () => {  const performanceInfo = errorReporter.capturePerformanceInfo();
             expect(performanceInfo).toBeDefined() }'
             expect(performanceInfo.timing).toBeDefined();' }'
         }');'
@@ -267,27 +267,27 @@ describe('ErrorReporter', () => {  let errorReporter: any,
                 fingerprint: 'old_pattern'),
                , count: 1) }
                 lastSeen: oldTimestamp); }'
-            });
+            };
             errorReporter.cleanupOldPatterns(')';
             expect(errorReporter.errorPatterns.has('old_pattern').toBe(false);'}');
-        test('destroyメソッドでリソースがクリーンアップされる', () => {  errorReporter.destroy(),
-            expect(localStorage.setItem').toHaveBeenCalledWith(' })', 'errorReporter_settings') }'
-                expect.any(String});'}');'
+        test('destroyメソッドでリソースがクリーンアップされる', () => {  errorReporter.destroy();
+            expect(localStorage.setItem').toHaveBeenCalledWith(' }', 'errorReporter_settings') }'
+                expect.any(String};'}');'
     }''
     describe('エラーハンドリング統合', (') => {  ''
         test('既存のErrorHandlerとの統合が正しく動作する', (') => {''
             const testError = new Error('Integration test') }'
             // handleErrorメソッドが拡張されていることを確認' }'
-            const result = errorReporter.handleError(testError, { component: 'IntegrationTest' });
+            const result = errorReporter.handleError(testError, { component: 'IntegrationTest' };
             // 元のエラーハンドリングと拡張エラー収集の両方が実行されることを確認
             expect(result).toBeDefined();
             expect(errorReporter.errorCollector.collectedErrors.length).toBeGreaterThan(0);
-        });'
+        };'
     }'}');
 describe('ErrorCollector', () => {  let errorReporter: any,
-    let errorCollector: any;
+    let errorCollector: any,
     beforeEach(() => { }
-        errorReporter = new ErrorReporter(createMockGameEngine()});
+        errorReporter = new ErrorReporter(createMockGameEngine()};
         errorCollector = errorReporter.errorCollector;
         
         // LocalStorageのモック
@@ -321,16 +321,16 @@ describe('ErrorCollector', () => {  let errorReporter: any,
         errorCollector.collect(error1);
         errorCollector.collect(error2');'
         const highSeverityErrors = errorCollector.getErrors({ severity: 'high' ),'
-        expect(highSeverityErrors.toHaveLength(1),
+        expect(highSeverityErrors.toHaveLength(1);
         expect(highSeverityErrors[0].id').toBe('error_2'),' }'
     }');'
 }''
 describe('ErrorAnalyzer', () => {  let errorReporter: any,
-    let errorAnalyzer: any;
+    let errorAnalyzer: any,
     beforeEach(() => { }
-        errorReporter = new ErrorReporter(createMockGameEngine()});
+        errorReporter = new ErrorReporter(createMockGameEngine()};
         errorAnalyzer = errorReporter.errorAnalyzer;
-    });'
+    };'
     afterEach(() => { errorReporter.destroy(),' }'
     }');'
     test('パターン分析が正しく動作する', (') => {  const testError = {''
@@ -351,23 +351,23 @@ describe('ErrorAnalyzer', () => {  let errorReporter: any,
             fingerprint: 'trend_fingerprint'
             }
             timestamp: baseTimestamp;);
-            });
+            };
         // パターンを作成)
         const pattern = errorAnalyzer.analyzePattern(testError);'
         // 追加のエラーでトレンド更新をテスト''
         for (let i = 0; i < 5; i++') { errorAnalyzer.analyzePattern({ }'
                 id: `trend_test_${i}`,')'
-                fingerprint: 'trend_fingerprint');
-        timestamp: baseTimestamp + (i * 1000);
+                fingerprint: 'trend_fingerprint'),
+        timestamp: baseTimestamp + (i * 1000),
             }
         }', ';
         expect(pattern.trend).toBeDefined(')';
         expect(['increasing', 'stable', 'decreasing']).toContain(pattern.trend);'}');'
 }''
 describe('ErrorStorage', () => {  let errorReporter: any,
-    let errorStorage: any;
+    let errorStorage: any,
     beforeEach(() => { }
-        errorReporter = new ErrorReporter(createMockGameEngine()});
+        errorReporter = new ErrorReporter(createMockGameEngine()};
         errorStorage = errorReporter.errorStorage;
         
         (global: any).localStorage = { getItem: jest.fn(
@@ -416,7 +416,7 @@ describe('ErrorStorage', () => {  let errorReporter: any,
             notifications: []),
             sessions: [],
         lastUpdated: Date.now() }
-        });
+        };
         errorStorage.cleanup();'
         // 新しいデータのみが保存されることを確認''
         expect(localStorage.setItem).toHaveBeenCalledWith(')';

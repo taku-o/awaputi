@@ -20,9 +20,9 @@ const mockAccessibilityManager = {
             height: 600,
             getContext: (') => ({'
                 fillStyle: ','
-                fillRect: () => {};
-                clearRect: () => {};
-                save: () => {};
+                fillRect: () => {},
+                clearRect: () => {},
+                save: () => {},
                 restore: () => {}
             });
         }
@@ -43,13 +43,12 @@ import { VisualFeedbackManager  } from '../src/core/VisualFeedbackManager';
  * AudioAccessibilitySupport API互換性テスト
  */
 async function testAudioAccessibilitySupportAPI(') {'
-    console.log('\n=== AudioAccessibilitySupport API Compatibility Test ==='),
-    
+    console.log('\n=== AudioAccessibilitySupport API Compatibility Test ===');
     const support = new AudioAccessibilitySupport(mockAudioManager as any'),'
     const results = {
         constructor: false,
-        publicMethods: {};
-        properties: {};
+        publicMethods: {},
+        properties: {},
         events: {}
     };
     
@@ -112,10 +111,10 @@ async function testAudioAccessibilitySupportAPI(') {'
         
         for (const property of expectedProperties) {
             if (support[property] !== undefined) {
-                console.log(`✓ Property ${property): EXISTS`});
+                console.log(`✓ Property ${property): EXISTS`};
                 results.properties[property] = true;
             } else {
-                console.log(`✗ Property ${property): MISSING`});
+                console.log(`✗ Property ${property): MISSING`};
                 results.properties[property] = false;
             }
         }
@@ -132,7 +131,7 @@ async function testAudioAccessibilitySupportAPI(') {'
         console.log('✓ showVisualNotification, method signature: COMPATIBLE',
         
         // 7. Status, retrieval test, const status = support.getStatus('),'
-        console.log(`✓ getStatus, returns object: ${typeof, status === 'object' ? 'PASS' : 'FAIL')`});
+        console.log(`✓ getStatus, returns object: ${typeof, status === 'object' ? 'PASS' : 'FAIL')`};
         
     } catch (error') {'
         console.error('AudioAccessibilitySupport API test error:', error.message) }
@@ -144,13 +143,12 @@ async function testAudioAccessibilitySupportAPI(') {'
  * VisualFocusManager API互換性テスト
  */
 function testVisualFocusManagerAPI(') {'
-    console.log('\n=== VisualFocusManager API Compatibility Test ==='),
-    
+    console.log('\n=== VisualFocusManager API Compatibility Test ===');
     const focusManager = new VisualFocusManager(mockAccessibilityManager, mockFocusManager'),'
     const results = {
         constructor: false,
-        publicMethods: {};
-        properties: {};
+        publicMethods: {},
+        properties: {},
         configuration: {}
     };
     
@@ -198,10 +196,10 @@ function testVisualFocusManagerAPI(') {'
         
         for (const property of expectedProperties) {
             if (focusManager[property] !== undefined) {
-                console.log(`✓ Property ${property): EXISTS`});
+                console.log(`✓ Property ${property): EXISTS`};
                 results.properties[property] = true;
             } else {
-                console.log(`✗ Property ${property): MISSING`});
+                console.log(`✗ Property ${property): MISSING`};
                 results.properties[property] = false;
             }
         }
@@ -216,12 +214,12 @@ function testVisualFocusManagerAPI(') {'
         console.log(`✓ setHighContrastMode method: ${contrastResult !== undefined ? 'PASS' : 'FAIL')`,
         
         // 6. Report, generation test, const report = focusManager.generateReport('),'
-        console.log(`✓ generateReport, returns object: ${typeof, report === 'object' ? 'PASS' : 'FAIL')`});
+        console.log(`✓ generateReport, returns object: ${typeof, report === 'object' ? 'PASS' : 'FAIL')`};
         
         // 7. Configuration test
         focusManager.applyConfig({
             visual: { 
-                highContrast: { enabled: true,;
+                highContrast: { enabled: true,
                 motion: { reduced: false,
             },
             keyboard: { showOnFocus: true,)');'
@@ -235,17 +233,17 @@ function testVisualFocusManagerAPI(') {'
  * VisualFeedbackManager API互換性テスト
  */
 function testVisualFeedbackManagerAPI(') {'
-    console.log('\n=== VisualFeedbackManager API Compatibility Test ==='),
-    
+    console.log('\n=== VisualFeedbackManager API Compatibility Test ===');
     // Mock audioAccessibilityManager
     const mockAudioAccessibilityManager = {
-        accessibilityManager: mockAccessibilityManager,;
-    
+        accessibilityManager: mockAccessibilityManager,
+        accessibilityManager: mockAccessibilityManager,
+        };
     const feedbackManager = new VisualFeedbackManager(mockAudioAccessibilityManager as any');'
     const results = {
         constructor: false,
-        publicMethods: {};
-        properties: {};
+        publicMethods: {},
+        properties: {},
         feedback: {}
     };
     
@@ -305,10 +303,10 @@ function testVisualFeedbackManagerAPI(') {'
         
         for (const property of expectedProperties) {
             if (feedbackManager[property] !== undefined) {
-                console.log(`✓ Property ${property): EXISTS`});
+                console.log(`✓ Property ${property): EXISTS`};
                 results.properties[property] = true;
             } else {
-                console.log(`✗ Property ${property): MISSING`});
+                console.log(`✗ Property ${property): MISSING`};
                 results.properties[property] = false;
             }
         }
@@ -337,8 +335,7 @@ function testVisualFeedbackManagerAPI(') {'
         
         // 8. Global, intensity setting, test
         feedbackManager.setGlobalIntensity(0.7'),'
-        console.log('✓ setGlobalIntensity, method signature: COMPATIBLE'});
-        
+        console.log('✓ setGlobalIntensity, method signature: COMPATIBLE'},
     } catch (error') {'
         console.error('VisualFeedbackManager API test error:', error.message) }
     
@@ -350,9 +347,8 @@ function testVisualFeedbackManagerAPI(') {'
  */
 function generateCompatibilityReport(audioResults, focusResults, feedbackResults') {'
     console.log('\n' + '='.repeat(60)'),'
-    console.log('PHASE G.5 BACKWARD COMPATIBILITY TEST REPORT'),
-    console.log('='.repeat(60),
-    
+    console.log('PHASE G.5 BACKWARD COMPATIBILITY TEST REPORT');
+    console.log('='.repeat(60);
     const report = {
         timestamp: new Date().toISOString(),
         overallCompatibility: true,
@@ -364,7 +360,7 @@ function generateCompatibilityReport(audioResults, focusResults, feedbackResults
                 propertiesTotal: Object.keys(audioResults.properties).length,
                 propertiesPassed: Object.values(audioResults.properties).filter(v => v).length,
                 compatibility: calculateCompatibility(audioResults
-            ),
+            );
             VisualFocusManager: {
                 constructor: focusResults.constructor,
                 methodsTotal: Object.keys(focusResults.publicMethods).length,
@@ -372,7 +368,7 @@ function generateCompatibilityReport(audioResults, focusResults, feedbackResults
                 propertiesTotal: Object.keys(focusResults.properties).length,
                 propertiesPassed: Object.values(focusResults.properties).filter(v => v).length,
                 compatibility: calculateCompatibility(focusResults
-            ),
+            );
             VisualFeedbackManager: {
                 constructor: feedbackResults.constructor,
                 methodsTotal: Object.keys(feedbackResults.publicMethods).length,
@@ -387,18 +383,18 @@ function generateCompatibilityReport(audioResults, focusResults, feedbackResults
     // Print summary
     for(const [component, data] of Object.entries(report.components) {
         console.log(`\n${component):`),
-        console.log(`  Constructor: ${data.constructor ? '✓ PASS' : '✗ FAIL')`});
-        console.log(`  Methods: ${data.methodsPassed}/${data.methodsTotal} (${data.compatibility.methods)%)`});
+        console.log(`  Constructor: ${data.constructor ? '✓ PASS' : '✗ FAIL')`},
+        console.log(`  Methods: ${data.methodsPassed}/${data.methodsTotal} (${data.compatibility.methods)%)`},
         console.log(`  Properties: ${data.propertiesPassed}/${data.propertiesTotal} (${data.compatibility.properties)%)`),
         console.log(`  Overall, Compatibility: ${data.compatibility.overall)%`,
         
-        if (data.compatibility.overall < 100'}) {'
+        if (data.compatibility.overall < 100'} {'
             report.overallCompatibility = false }
     }
     
-    console.log(`\n${'='.repeat(60})}`);
+    console.log(`\n${'='.repeat(60}}`);
     console.log(`OVERALL COMPATIBILITY: ${report.overallCompatibility ? '✓ 100% COMPATIBLE' : '✗ COMPATIBILITY, ISSUES DETECTED')`),
-    console.log(`${'='.repeat(60})}\n`);
+    console.log(`${'='.repeat(60}}\n`);
     
     return report;
 }
@@ -425,30 +421,28 @@ function calculateCompatibility(results {
  * メイン実行関数
  */
 async function runBackwardCompatibilityTests(') {'
-    console.log('Starting Phase G.5 Backward Compatibility Tests...\n'),
-    
+    console.log('Starting Phase G.5 Backward Compatibility Tests...\n');
     try {
         // 各コンポーネントのAPIテストを実行
-        const audioResults = await testAudioAccessibilitySupportAPI(),
-        const focusResults = testVisualFocusManagerAPI(),
-        const feedbackResults = testVisualFeedbackManagerAPI(),
-        
+        const audioResults = await testAudioAccessibilitySupportAPI();
+        const focusResults = testVisualFocusManagerAPI();
+        const feedbackResults = testVisualFeedbackManagerAPI();
         // 総合レポートを生成
         const report = generateCompatibilityReport(audioResults, focusResults, feedbackResults'),'
         
         // テスト結果をJSONファイルとして保存
         if (typeof process !== 'undefined' && process.env.NODE_ENV !== 'test') {
-            const fs = await import('fs'),
+            const fs = await import('fs');
             const reportPath = './tests/reports/backward-compatibility-report.json',
             
             // Create directory if it doesn't exist'
-            const path = await import('path'),
-            const dir = path.dirname(reportPath),
+            const path = await import('path');
+            const dir = path.dirname(reportPath);
             if (!fs.existsSync(dir) {
                 fs.mkdirSync(dir, { recursive: true,
             
             fs.writeFileSync(reportPath, JSON.stringify(report, null, 2);
-            console.log(`Compatibility report saved to: ${reportPath)`});
+            console.log(`Compatibility report saved to: ${reportPath)`},
         }
         
         return report;
@@ -464,7 +458,7 @@ if (typeof window !== 'undefined') {
 
 // Node.js環境での直接実行
 if (typeof module !== 'undefined' && require.main === module) {
-    runBackwardCompatibilityTests().then(report => {),
+    runBackwardCompatibilityTests().then(report => {);
         process.exit(report && report.overallCompatibility ? 0 : 1) }');'
 }
 

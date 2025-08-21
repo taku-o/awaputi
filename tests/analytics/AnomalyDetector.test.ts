@@ -5,14 +5,14 @@ class MockStorageManager {
     constructor() {
         this.data = new Map() }
     async getData(storeName, query) {
-        const storeData = this.data.get(storeName || []),
+        const storeData = this.data.get(storeName || []);
         if (!query) return storeData,
-        return storeData.filter(item => {),
+        return storeData.filter(item => {);
             if (query.startDate && query.endDate) {
-                const itemDate = new Date(item.startTime || item.timestamp),
+                const itemDate = new Date(item.startTime || item.timestamp);
                 return itemDate >= query.startDate && itemDate <= query.endDate }
             return true;
-        });
+        };
     }
     setTestData(storeName, data) {
         this.data.set(storeName, data') }'
@@ -21,8 +21,8 @@ describe('AnomalyDetector', () => {
     let anomalyDetector: any,
     let mockStorageManager: any,
     beforeEach(() => {
-        mockStorageManager = new MockStorageManager(),
-        anomalyDetector = new AnomalyDetector(mockStorageManager) });
+        mockStorageManager = new MockStorageManager();
+        anomalyDetector = new AnomalyDetector(mockStorageManager) };
     afterEach(() => {
         // 閾値をリセット
         anomalyDetector.thresholds.statistical = 2.5,
@@ -31,38 +31,38 @@ describe('AnomalyDetector', () => {
         anomalyDetector.thresholds.temporal = 0.9 }');'
     describe('コンストラクタ', (') => {'
         test('正しく初期化される', () => {
-            expect(anomalyDetector.storageManager).toBe(mockStorageManager),
-            expect(anomalyDetector.detectionRules).toBeInstanceOf(Map),
-            expect(anomalyDetector.alertHistory).toEqual([]),
-            expect(anomalyDetector.maxAlertHistory).toBe(100),
+            expect(anomalyDetector.storageManager).toBe(mockStorageManager);
+            expect(anomalyDetector.detectionRules).toBeInstanceOf(Map);
+            expect(anomalyDetector.alertHistory).toEqual([]);
+            expect(anomalyDetector.maxAlertHistory).toBe(100);
             // 閾値の確認
-            expect(anomalyDetector.thresholds.statistical).toBe(2.5),
-            expect(anomalyDetector.thresholds.behavioral).toBe(0.8),
-            expect(anomalyDetector.thresholds.performance).toBe(3.0),
+            expect(anomalyDetector.thresholds.statistical).toBe(2.5);
+            expect(anomalyDetector.thresholds.behavioral).toBe(0.8);
+            expect(anomalyDetector.thresholds.performance).toBe(3.0);
             expect(anomalyDetector.thresholds.temporal).toBe(0.9) }');'
         test('検出ルールが正しく初期化される', () => {
-            expect(anomalyDetector.detectionRules.size).toBe(8),
-            expect(anomalyDetector.detectionRules.has(anomalyDetector.anomalyTypes.SCORE_OUTLIER).toBe(true),
-            expect(anomalyDetector.detectionRules.has(anomalyDetector.anomalyTypes.ACCURACY_DROP).toBe(true),
+            expect(anomalyDetector.detectionRules.size).toBe(8);
+            expect(anomalyDetector.detectionRules.has(anomalyDetector.anomalyTypes.SCORE_OUTLIER).toBe(true);
+            expect(anomalyDetector.detectionRules.has(anomalyDetector.anomalyTypes.ACCURACY_DROP).toBe(true);
             expect(anomalyDetector.detectionRules.has(anomalyDetector.anomalyTypes.PERFORMANCE_DEGRADATION).toBe(true) }');'
     }
     describe('異常パターン検出', (') => {'
         test('データが不足している場合、適切なメッセージを返す', async (') => {'
             mockStorageManager.setTestData('sessions', []'),'
             mockStorageManager.setTestData('interactions', []'),'
-            mockStorageManager.setTestData('performance', []),
-            const result = await anomalyDetector.detectAnomalies(),
-            expect(result.success).toBe(true),
-            expect(result.anomalies).toEqual([]),
+            mockStorageManager.setTestData('performance', []);
+            const result = await anomalyDetector.detectAnomalies();
+            expect(result.success).toBe(true);
+            expect(result.anomalies).toEqual([]);
             expect(result.summary').toContain('分析対象データが不足しています'),'
             expect(result.recommendations).toEqual([]) }');'
         test('正常データの場合、異常が検出されない', async (') => {'
             // 正常なセッションデータ
             const normalSessions: any[] = [],
-            const baseDate = new Date('2024-01-01'),
+            const baseDate = new Date('2024-01-01');
             for (let i = 0, i < 10, i++) {
                 const sessionDate = new Date(baseDate.getTime() + i * 24 * 60 * 60 * 1000),
-                normalSessions.push({),
+                normalSessions.push({);
                     sessionId: `session-${i)`,
                     startTime: sessionDate.getTime(
                     endTime: sessionDate.getTime() + 300000, // 5分
@@ -136,7 +136,7 @@ describe('AnomalyDetector', () => {
                     { sessionId: 's2', startTime: 2000, bubblesPopped: 85, bubblesMissed: 15 }, // 85%
                     { sessionId: 's3', startTime: 3000, bubblesPopped: 40,
         bubblesMissed: 60 }  // 40% (急降下
-            });
+            };
                 ]
             };
             const drops = anomalyDetector.detectAccuracyDrop(testData);
@@ -240,7 +240,7 @@ describe('AnomalyDetector', () => {
             expect(anomalies[0].slowReactionRatio).toBeGreaterThan(0.2);
         }');'
         test('インタラクションデータがない場合、空配列を返す', () => {
-            const testData = { interactions: [] };
+            const testData = { interactions: [] },
             const anomalies = anomalyDetector.detectBubbleInteractionAnomaly(testData);
             expect(anomalies).toEqual([]);
         }');'
@@ -261,7 +261,7 @@ describe('AnomalyDetector', () => {
             expect(anomalies[0].lowPerformanceRatio).toBeGreaterThan(0.3);
         }');'
         test('パフォーマンスデータが不足している場合、空配列を返す', () => {
-            const testData = { performance: [] };
+            const testData = { performance: [] },
             const anomalies = anomalyDetector.detectPerformanceDegradation(testData);
             expect(anomalies).toEqual([]);
         }');'
@@ -306,7 +306,7 @@ describe('AnomalyDetector', () => {
     }
     describe('サマリー生成', (') => {'
         test('異常なしの場合、適切なメッセージを生成する', () => {
-            const summary = anomalyDetector.generateAnomalySummary([]),
+            const summary = anomalyDetector.generateAnomalySummary([]);
             expect(summary').toBe('異常なパターンは検出されませんでした。') }');
         test('異常ありの場合、詳細なサマリーを生成する', (') => {'
             const results = [
@@ -351,7 +351,7 @@ describe('AnomalyDetector', () => {
             for (let i = 0, i < 5, i++') {'
                 anomalyDetector.saveToAlertHistory([
                     { type: `test_${i}`, severity: 'low', description: `Test ${i}`
-            });
+            };
                 ]);
             }
             const history = anomalyDetector.getAlertHistory();
@@ -371,9 +371,9 @@ describe('AnomalyDetector', () => {
         }');'
         test('表示名を正しく取得する', () => {
             const displayName = anomalyDetector.getTypeDisplayName(
-                anomalyDetector.anomalyTypes.SCORE_OUTLIER),
+                anomalyDetector.anomalyTypes.SCORE_OUTLIER);
             expect(displayName').toBe('スコア異常'),'
-            const unknownDisplayName = anomalyDetector.getTypeDisplayName('unknown_type'),
+            const unknownDisplayName = anomalyDetector.getTypeDisplayName('unknown_type');
             expect(unknownDisplayName').toBe('unknown_type') }');
     }
     describe('キャッシュ管理', (') => {'
@@ -381,7 +381,7 @@ describe('AnomalyDetector', () => {
             // アラート履歴を追加
             anomalyDetector.saveToAlertHistory([
                 { type: 'test', severity: 'low', description: 'Test'
-            });
+            };
             ]);
             expect(anomalyDetector.alertHistory.length).toBe(1);
             anomalyDetector.clearCache();
@@ -391,9 +391,9 @@ describe('AnomalyDetector', () => {
     describe('エラーハンドリング', (') => {'
         test('ストレージエラーが適切に処理される', async () => {
             mockStorageManager.getData = jest.fn(') as jest.Mock.mockRejectedValue(new Error('Database error'),'
-            const result = await anomalyDetector.detectAnomalies(),
-            expect(result.success).toBe(false),
+            const result = await anomalyDetector.detectAnomalies();
+            expect(result.success).toBe(false);
             expect(result.error').toBe('Database error'),'
-            expect(result.anomalies).toEqual([]) });
+            expect(result.anomalies).toEqual([]) };
     }
 }');'

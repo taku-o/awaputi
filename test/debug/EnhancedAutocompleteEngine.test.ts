@@ -14,7 +14,7 @@ describe('EnhancedAutocompleteEngine', () => {  let mockConsole: any,
                 ['game.pause', { description: 'Pause game', group: 'game', parameters: [] }],''
                 ['help', { description: 'Show help', group: 'system', parameters: [] }]')'
             ]'),';
-            aliases: new Map([']';
+            aliases: new Map([']',
                 ['h', 'help'],';'
                 ['cfg', 'config.get']);
             ]),';'
@@ -29,7 +29,7 @@ describe('EnhancedAutocompleteEngine', () => {  let mockConsole: any,
         autocompleteEngine = new EnhancedAutocompleteEngine(mockConsole, mockGameEngine);'}');
     describe('getSuggestions', (') => {  ''
         test('should get command suggestions', (') => {''
-            const suggestions = autocompleteEngine.getSuggestions('config'),
+            const suggestions = autocompleteEngine.getSuggestions('config');
             expect(suggestions.length).toBeGreaterThan(0'),'
             expect(suggestions.some(s => s.text === 'config.get').toBe(true: any),'),' }'
             expect(suggestions.some(s => s.text === 'config.set').toBe(true'); }'
@@ -105,10 +105,10 @@ describe('EnhancedAutocompleteEngine', () => {  let mockConsole: any,
     }''
     describe('calculateFuzzyScore', (') => {  ''
         test('should calculate fuzzy scores correctly', (') => {''
-            const score1 = autocompleteEngine.calculateFuzzyScore('config.get', 'cfg'),
-            const score2 = autocompleteEngine.calculateFuzzyScore('config.get', 'conf'),
-            const score3 = autocompleteEngine.calculateFuzzyScore('game.pause', 'cfg'),
-            expect(score1.toBeGreaterThan(0.5),
+            const score1 = autocompleteEngine.calculateFuzzyScore('config.get', 'cfg');
+            const score2 = autocompleteEngine.calculateFuzzyScore('config.get', 'conf');
+            const score3 = autocompleteEngine.calculateFuzzyScore('game.pause', 'cfg');
+            expect(score1.toBeGreaterThan(0.5);
             expect(score2.toBeGreaterThan(0.5) }'
             expect(score3.toBeLessThan(0.5);' }'
         }');'
@@ -147,7 +147,7 @@ describe('EnhancedAutocompleteEngine', () => {  let mockConsole: any,
             const newSettings = {
                 maxSuggestions: 30,
                 fuzzyMatchThreshold: 0.8 }
-                enableSmartSuggestions: false;
+                enableSmartSuggestions: false,
             },
             autocompleteEngine.updateSettings(newSettings);
             expect(autocompleteEngine.maxSuggestions).toBe(30);
@@ -172,11 +172,11 @@ describe('EnhancedAutocompleteEngine', () => {  let mockConsole: any,
     }''
     describe('destroy', (') => {  ''
         test('should clean up properly', (') => {''
-            autocompleteEngine.learnFromExecution('test', [], true),
-            expect(autocompleteEngine.frequencyMap.size).toBeGreaterThan(0),
-            expect(autocompleteEngine.recentCommands.length).toBeGreaterThan(0),
-            autocompleteEngine.destroy(),
+            autocompleteEngine.learnFromExecution('test', [], true);
+            expect(autocompleteEngine.frequencyMap.size).toBeGreaterThan(0);
+            expect(autocompleteEngine.recentCommands.length).toBeGreaterThan(0);
+            autocompleteEngine.destroy();
             expect(autocompleteEngine.frequencyMap.size).toBe(0) }
             expect(autocompleteEngine.recentCommands.length).toBe(0);); }
-        });'
+        };'
     }'}');

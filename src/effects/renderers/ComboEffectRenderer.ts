@@ -3,7 +3,7 @@ import { getErrorHandler  } from '../../utils/ErrorHandler.js';
 /**
  * Combo tier configuration interface
  */
-interface ComboTier { minCombo: number,
+interface ComboTier { minCombo: number;
     maxCombo: number;
     name: string;
     particleCount: number;
@@ -25,14 +25,14 @@ interface ComboTierWithKey extends ComboTier { key: string;
 /**
  * Combo break effect configuration
  */
-interface ComboBreakEffect { fadeParticleCount: number,
+interface ComboBreakEffect { fadeParticleCount: number;
     fadeColor: string;
     fadeDuration: number;
 
 /**
  * Particle interface
  */
-interface Particle { x: number,
+interface Particle { x: number;
     y: number;
     vx: number;
     vy: number;
@@ -63,7 +63,7 @@ interface QualitySettings {
 /**
  * Particle manager interface
  */
-interface ParticleManager { particles: Particle[],
+interface ParticleManager { particles: Particle[];
     getParticleFromPool(): Particle;
     shouldRenderEffect(effectType: string, priority: number): boolean;
     adjustParticleCount(count: number): number;
@@ -87,29 +87,29 @@ export class ComboEffectRenderer {
         // コンボ段階の定義
         this.comboTiers = {
             basic: { // 2-5コンボ
-                minCombo: 2,
-    maxCombo: 5,
-                name: '基本',
-                particleCount: 8,
+                minCombo: 2;
+    maxCombo: 5;
+                name: '基本';
+                particleCount: 8;
                 colors: ['#FFD700', '#FFA500];'
                 effects: ['golden_particles', 'sparkle'];
                 screenEffects: [] }
                 priority: 5 
     };
             enhanced: { // 6-10コンボ
-                minCombo: 6,
-    maxCombo: 10,
-                name: '強化',
-                particleCount: 15,
+                minCombo: 6;
+    maxCombo: 10;
+                name: '強化';
+                particleCount: 15;
                 colors: ['#FFD700', '#FFA500', '#FF8C00', '#FF4500];'
                 effects: ['golden_particles', 'enhanced_sparkle', 'screen_flash'];
-                screenEffects: ['flash'],
+                screenEffects: ['flash'];
     priority: 7  };
             spectacular: { // 11+コンボ
-                minCombo: 11,
-    maxCombo: Infinity,
-                name: '絶大',
-                particleCount: 25,
+                minCombo: 11;
+    maxCombo: Infinity;
+                name: '絶大';
+                particleCount: 25;
                 colors: ['#FF0000', '#FF7F00', '#FFFF00', '#00FF00', '#0000FF', '#4B0082', '#9400D3];'
                 effects: ['rainbow_burst', 'screen_shake', 'screen_zoom', 'magical_explosion'];
                 screenEffects: ['shake', 'zoom', 'rainbow_flash'];
@@ -121,7 +121,7 @@ export class ComboEffectRenderer {
         
         // コンボブレイク時の演出
         this.comboBreakEffect = { fadeParticleCount: 5,''
-            fadeColor: '#666666',
+            fadeColor: '#666666';
     fadeDuration: 800  };
         console.log('[ComboEffectRenderer] 初期化完了');
     }
@@ -134,7 +134,7 @@ export class ComboEffectRenderer {
      * @param {string} comboType - コンボタイプ'
      */''
     createEnhancedComboEffect(x: number, y: number, comboCount: number, comboType: string = 'normal': void { try {'
-            const tier = this.getComboTier(comboCount),
+            const tier = this.getComboTier(comboCount);
             if(!tier) return,
             ','
             // 品質チェック
@@ -149,7 +149,7 @@ export class ComboEffectRenderer {
             // 段階別追加効果
             tier.effects.forEach(effectType => {  ) }
                 this.createComboSpecialEffect(x, y, effectType, comboCount, tier); }
-            });
+            };
             
             // 画面効果（必要に応じて）
             if (tier.screenEffects.length > 0) { this.triggerScreenEffects(tier.screenEffects, comboCount) }
@@ -160,7 +160,7 @@ export class ComboEffectRenderer {
 
         } catch (error) { getErrorHandler().handleError(error, 'COMBO_EFFECT_ERROR', {''
                 context: 'ComboEffectRenderer.createEnhancedComboEffect'
-            });
+            };
         }
     }
     
@@ -182,13 +182,11 @@ export class ComboEffectRenderer {
      * @param {number} comboCount - コンボ数
      * @param {Object} tier - コンボ段階
      */
-    createMainComboParticles(x: number, y: number, comboCount: number, tier: ComboTierWithKey): void { const adjustedCount = this.particleManager.adjustParticleCount(tier.particleCount),
-        const intensityMultiplier = this.particleManager.getEffectIntensityMultiplier(),
-        
+    createMainComboParticles(x: number, y: number, comboCount: number, tier: ComboTierWithKey): void { const adjustedCount = this.particleManager.adjustParticleCount(tier.particleCount);
+        const intensityMultiplier = this.particleManager.getEffectIntensityMultiplier();
         for(let, i = 0, i < adjustedCount, i++) {
         
-            const particle = this.particleManager.getParticleFromPool(),
-            
+            const particle = this.particleManager.getParticleFromPool();
             // 螺旋状配置
             const angle = (Math.PI * 2 * i) / adjustedCount + (Date.now() * 0.001),
             const radius = 40 + (i / adjustedCount) * 60 + Math.sin(angle * 3) * 15,
@@ -198,7 +196,7 @@ export class ComboEffectRenderer {
             particle.y = y + Math.sin(angle + spiralOffset) * radius,
             
             // 動的な速度（中心に向かって収束後拡散）
-            const convergencePhase = Math.min(1, i / (adjustedCount * 0.3),
+            const convergencePhase = Math.min(1, i / (adjustedCount * 0.3);
             if (convergencePhase < 1) {
                 // 収束フェーズ
                 particle.vx = -Math.cos(angle) * 80 * convergencePhase }
@@ -248,7 +246,7 @@ export class ComboEffectRenderer {
      * @param {number} totalCount - 総数
      * @returns {string} パーティクルタイプ
      */
-    selectComboParticleType(tier: ComboTierWithKey, index: number, totalCount: number): string { const qualitySettings = this.particleManager.getCurrentQualitySettings(),
+    selectComboParticleType(tier: ComboTierWithKey, index: number, totalCount: number): string { const qualitySettings = this.particleManager.getCurrentQualitySettings();
         const ratio = index / totalCount,
 
         switch(tier.key) {
@@ -279,7 +277,7 @@ export class ComboEffectRenderer {
                     return 'plasma_burst';
                 return ratio < 0.5 ? 'glow_circle' : 'star';
 
-            default: return 'star';
+            default: return 'star',
     
     /**
      * コンボ特殊効果を作成
@@ -293,20 +291,16 @@ export class ComboEffectRenderer {
         switch(effectType) {
 
             case 'golden_particles':','
-                this.createGoldenParticles(x, y, comboCount),
-
+                this.createGoldenParticles(x, y, comboCount);
                 break,
             case 'sparkle':','
-                this.createComboSparkle(x, y, comboCount),
-
+                this.createComboSparkle(x, y, comboCount);
                 break,
             case 'enhanced_sparkle':','
-                this.createEnhancedSparkle(x, y, comboCount),
-
+                this.createEnhancedSparkle(x, y, comboCount);
                 break,
             case 'rainbow_burst':','
-                this.createRainbowBurst(x, y, comboCount),
-
+                this.createRainbowBurst(x, y, comboCount);
                 break,
             case 'magical_explosion':,
                 this.createMagicalExplosion(x, y, comboCount) }
@@ -319,12 +313,10 @@ export class ComboEffectRenderer {
      * @param {number} y - Y座標
      * @param {number} comboCount - コンボ数
      */
-    createGoldenParticles(x: number, y: number, comboCount: number): void { const goldenCount = this.particleManager.adjustParticleCount(5 + comboCount),
-        
+    createGoldenParticles(x: number, y: number, comboCount: number): void { const goldenCount = this.particleManager.adjustParticleCount(5 + comboCount);
         for(let, i = 0, i < goldenCount, i++) {
         
-            const particle = this.particleManager.getParticleFromPool(),
-            
+            const particle = this.particleManager.getParticleFromPool();
             const angle = Math.random() * Math.PI * 2,
             const distance = Math.random() * 80,
             
@@ -364,13 +356,12 @@ export class ComboEffectRenderer {
      * @param {number} comboCount - コンボ数
      */
     createRainbowBurst(x: number, y: number, comboCount: number): void { ''
-        const rainbowCount = this.particleManager.adjustParticleCount(20),
+        const rainbowCount = this.particleManager.adjustParticleCount(20);
         const colors = ['#FF0000', '#FF7F00', '#FFFF00', '#00FF00', '#0000FF', '#4B0082', '#9400D3],'
         
         for(let, i = 0, i < rainbowCount, i++) {
         
-            const particle = this.particleManager.getParticleFromPool(),
-            
+            const particle = this.particleManager.getParticleFromPool();
             const angle = (Math.PI * 2 * i) / rainbowCount,
             const speed = 100 + Math.random() * 50,
             
@@ -394,16 +385,13 @@ export class ComboEffectRenderer {
      * @param {number} y - Y座標
      * @param {number} comboCount - コンボ数
      */
-    createMagicalExplosion(x: number, y: number, comboCount: number): void { const explosionCount = this.particleManager.adjustParticleCount(15),
-        
+    createMagicalExplosion(x: number, y: number, comboCount: number): void { const explosionCount = this.particleManager.adjustParticleCount(15);
         // 内側から外側への波状展開
         for(let, wave = 0, wave < 3, wave++) {
             setTimeout(() => { 
-                const waveCount = Math.floor(explosionCount / 3),
-                
+                const waveCount = Math.floor(explosionCount / 3);
                 for (let, i = 0, i < waveCount, i++) {
-                    const particle = this.particleManager.getParticleFromPool(),
-                    
+                    const particle = this.particleManager.getParticleFromPool();
                     const angle = Math.random() * Math.PI * 2,
                     const speed = 80 + wave * 40 + Math.random() * 60,
                     
@@ -439,8 +427,7 @@ export class ComboEffectRenderer {
         
         for(let, i = 0, i < digitCount, i++) {
         
-            const particle = this.particleManager.getParticleFromPool(),
-            
+            const particle = this.particleManager.getParticleFromPool();
             particle.x = x - (digitCount * 15) / 2 + i * 15,
             particle.y = y - 40,
             particle.vx = (Math.random() - 0.5) * 20,
@@ -456,8 +443,7 @@ export class ComboEffectRenderer {
         // マルチプライヤー強調リング
         if (tier.key === 'spectacular''
             for (let, i = 0, i < 8, i++) {
-                const particle = this.particleManager.getParticleFromPool(),
-                
+                const particle = this.particleManager.getParticleFromPool();
                 const angle = (Math.PI * 2 * i) / 8,
                 const radius = 50,
                 
@@ -489,8 +475,8 @@ export class ComboEffectRenderer {
     triggerScreenEffects(effects: string[], comboCount: number): void { // このメソッドは実際の画面効果システムと連携する必要がある
         // ここでは効果の種類を記録するのみ
         effects.forEach(effect => {) }
-            console.log(`[ComboEffectRenderer] 画面効果トリガー: ${effect}, コンボ数: ${comboCount}`});
-        });
+            console.log(`[ComboEffectRenderer] 画面効果トリガー: ${effect}, コンボ数: ${comboCount}`};
+        };
     }
     
     /**
@@ -502,12 +488,10 @@ export class ComboEffectRenderer {
     createComboBreakEffect(x: number, y: number, lastComboCount: number): void { if (lastComboCount < 2) return, // 2コンボ未満はブレイク演出なし
         
         try {
-            const breakCount = this.particleManager.adjustParticleCount(this.comboBreakEffect.fadeParticleCount),
-            
+            const breakCount = this.particleManager.adjustParticleCount(this.comboBreakEffect.fadeParticleCount);
             for(let, i = 0, i < breakCount, i++) {
             
-                const particle = this.particleManager.getParticleFromPool(),
-                
+                const particle = this.particleManager.getParticleFromPool();
                 const angle = Math.random() * Math.PI * 2,
                 const distance = Math.random() * 60,
                 
@@ -522,7 +506,7 @@ export class ComboEffectRenderer {
                 this.particleManager.particles.push(particle); }
             }
             
-            console.log(`[ComboEffectRenderer] コンボブレイク演出: ${lastComboCount}コンボ終了`});
+            console.log(`[ComboEffectRenderer] コンボブレイク演出: ${lastComboCount}コンボ終了`};
             ';'
 
         } catch (error) { getErrorHandler().handleError(error, 'COMBO_BREAK_ERROR', {''
@@ -538,13 +522,12 @@ export class ComboEffectRenderer {
      * @param {number} comboCount - コンボ数
      */'
     createSimplifiedComboEffect(x: number, y: number, comboCount: number): void { ''
-        const simpleCount = Math.min(5, comboCount),
+        const simpleCount = Math.min(5, comboCount);
         const color = comboCount >= 11 ? '#FF69B4' : (comboCount >= 6 ? '#FF8C00' : '#FFD700'),
         
         for(let, i = 0, i < simpleCount, i++) {
         
-            const particle = this.particleManager.getParticleFromPool(),
-            
+            const particle = this.particleManager.getParticleFromPool();
             const angle = (Math.PI * 2 * i) / simpleCount,
             particle.x = x + Math.cos(angle) * 30,
             particle.y = y + Math.sin(angle) * 30,
@@ -573,12 +556,10 @@ export class ComboEffectRenderer {
     createComboProgressEffect(x: number, y: number, currentCombo: number, nextTierThreshold: number): void { if (nextTierThreshold === Infinity) return,
         
         const progress = (currentCombo - 1) / (nextTierThreshold - 1),
-        const progressParticles = Math.floor(progress * 8),
-        
+        const progressParticles = Math.floor(progress * 8);
         for(let, i = 0, i < progressParticles, i++) {
         
-            const particle = this.particleManager.getParticleFromPool(),
-            
+            const particle = this.particleManager.getParticleFromPool();
             const angle = (Math.PI * 2 * i) / 8,
             const radius = 25,
             ','

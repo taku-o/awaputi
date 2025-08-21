@@ -5,10 +5,9 @@
 import { chromium } from '@playwright/test';
 
 async function globalTeardown(') {'
-  console.log('🧹 Cleaning up E2E test environment...'),
-  
+  console.log('🧹 Cleaning up E2E test environment...');
   // Launch browser for cleanup
-  const browser = await chromium.launch(),
+  const browser = await chromium.launch();
   const page = await browser.newPage('),'
   
   try {
@@ -17,12 +16,11 @@ async function globalTeardown(') {'
     
     // Clean up test data
     await page.evaluate(() => {
-      localStorage.clear(),
-      sessionStorage.clear(),
-      
+      localStorage.clear();
+      sessionStorage.clear();
       if (window.indexedDB') {'
         // Clear IndexedDB if used
-        const deleteReq = indexedDB.deleteDatabase('BubblePopDB'),
+        const deleteReq = indexedDB.deleteDatabase('BubblePopDB');
         deleteReq.onsuccess = (') => console.log('IndexedDB cleared') }'
     }');'
     

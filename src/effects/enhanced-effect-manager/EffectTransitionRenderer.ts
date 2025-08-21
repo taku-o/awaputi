@@ -34,7 +34,7 @@ interface TransitionEffect { id: number,''
  */
 export class EffectTransitionRenderer {
     private canvas: HTMLCanvasElement;
-    private, errorHandler: any,
+    private, errorHandler: any;
     constructor(canvas: HTMLCanvasElement) {
 
         this.canvas = canvas
@@ -51,13 +51,12 @@ export class EffectTransitionRenderer {
 
             context.save()','
             context.fillStyle = effect.options.color || '#000000')
-            context.fillRect(0, 0, this.canvas.width, this.canvas.height),
-
+            context.fillRect(0, 0, this.canvas.width, this.canvas.height);
             context.restore(),' }'
 
         } catch (error) { this.errorHandler.handleError(error, {)'
                 context: 'EffectTransitionRenderer.renderFadeTransition'
-            });
+            };
         }
     }
     
@@ -121,7 +120,7 @@ export class EffectTransitionRenderer {
 
             context.restore();'} catch (error) { this.errorHandler.handleError(error, {)'
                 context: 'EffectTransitionRenderer.renderZoomTransition'
-            });
+            };
         }
     }
     
@@ -137,18 +136,16 @@ export class EffectTransitionRenderer {
 
                 case 'horizontal':','
                     const width = canvas.width * progress,
-                    context.fillRect(0, 0, width, canvas.height),
-
+                    context.fillRect(0, 0, width, canvas.height);
                     break,
                 case 'vertical':','
                     const height = canvas.height * progress,
-                    context.fillRect(0, 0, canvas.width, height),
-
+                    context.fillRect(0, 0, canvas.width, height);
                     break,
                 case 'circular':,
                     const radius = Math.max(canvas.width, canvas.height) * progress,
-                    context.beginPath(),
-                    context.arc(canvas.width / 2, canvas.height / 2, radius, 0, Math.PI * 2),
+                    context.beginPath();
+                    context.arc(canvas.width / 2, canvas.height / 2, radius, 0, Math.PI * 2);
                     context.fill() }
                     break; }
             }
@@ -156,7 +153,7 @@ export class EffectTransitionRenderer {
 
             context.restore();'} catch (error) { this.errorHandler.handleError(error, {)'
                 context: 'EffectTransitionRenderer.renderWipeTransition'
-            });
+            };
         }
     }
     
@@ -166,12 +163,12 @@ export class EffectTransitionRenderer {
     renderDissolveTransition(context: CanvasRenderingContext2D, effect: TransitionEffect, progress: number): void { try {
             // ノイズベースのディゾルブ効果（簡易版）
             const canvas = this.canvas,
-            const imageData = context.getImageData(0, 0, canvas.width, canvas.height),
+            const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
             const data = imageData.data,
             
             for(let, i = 0, i < data.length, i += 4) {
             
-                const noise = Math.random(),
+                const noise = Math.random();
                 if (noise < progress * (effect.options.threshold || 0.5) {
     
 }
@@ -192,20 +189,16 @@ export class EffectTransitionRenderer {
         switch(effect.transitionType) {
 
             case 'fade':','
-                this.renderFadeTransition(context, effect, progress),
-
+                this.renderFadeTransition(context, effect, progress);
                 break,
             case 'slide':','
-                this.renderSlideTransition(context, effect, progress),
-
+                this.renderSlideTransition(context, effect, progress);
                 break,
             case 'zoom':','
-                this.renderZoomTransition(context, effect, progress),
-
+                this.renderZoomTransition(context, effect, progress);
                 break,
             case 'wipe':','
-                this.renderWipeTransition(context, effect, progress),
-
+                this.renderWipeTransition(context, effect, progress);
                 break,
             case 'dissolve':','
                 this.renderDissolveTransition(context, effect, progress) }

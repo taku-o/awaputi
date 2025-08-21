@@ -3,7 +3,7 @@ import { getErrorHandler  } from '../../utils/ErrorHandler.js';
 /**
  * Shadow object interface
  */
-interface ShadowObject { x: number,
+interface ShadowObject { x: number;
     y: number;
     width?: number;
     height?: number;
@@ -12,7 +12,7 @@ interface ShadowObject { x: number,
 /**
  * Light source base interface
  */
-interface LightSourceBase { x: number,
+interface LightSourceBase { x: number;
     y: number;
     intensity: number;
     color: string;
@@ -26,7 +26,7 @@ type LightSourceType = 'point' | 'directional' | 'spot';
 /**
  * Light source interface
  */
-interface LightSource extends LightSourceBase { id: number,
+interface LightSource extends LightSourceBase { id: number;
     type: LightSourceType;
     animated: boolean;
     animation: any | null;
@@ -48,7 +48,7 @@ interface ShadowEffect { id: number,''
 /**
  * Reflection object interface
  */
-interface ReflectionObject { x: number,
+interface ReflectionObject { x: number;
     y: number;
     width?: number;
     height?: number;
@@ -57,7 +57,7 @@ interface ReflectionObject { x: number,
 /**
  * Water ripple interface
  */
-interface WaterRipple { x: number,
+interface WaterRipple { x: number;
     y: number;
     radius: number;
     maxRadius: number;
@@ -95,7 +95,7 @@ interface BackgroundEffectOptions { density?: number,
 /**
  * Background effect interface
  */
-interface BackgroundEffect { id: number,
+interface BackgroundEffect { id: number;
     type: BackgroundEffectType;
     options: BackgroundEffectOptions;
     particles: any[];
@@ -105,14 +105,14 @@ interface BackgroundEffect { id: number,
 /**
  * Transition effect interface
  */
-interface TransitionEffect { id: number,
+interface TransitionEffect { id: number;
     type: string;
     [key: string]: any;
 
 /**
  * Performance metrics interface
  */
-interface PerformanceMetrics { effectCount: number,
+interface PerformanceMetrics { effectCount: number;
     renderTime: number;
     memoryUsage: number;
     lastFrameTime: number;
@@ -135,7 +135,7 @@ export class EnhancedEffectController {
     private shadowCasters: ShadowEffect[];
     private reflectionSurfaces: ReflectionEffect[];
     private effectId: number;
-    private, performanceMetrics: PerformanceMetrics,
+    private, performanceMetrics: PerformanceMetrics;
     constructor(canvas: HTMLCanvasElement) {
 ','
 
@@ -155,12 +155,12 @@ export class EnhancedEffectController {
                 lightSource: lightSource,
                 opacity: 0.6,
                 blur: 2,
-    direction: this._calculateShadowDirection(shadowObject, lightSource),
-                distance: this._calculateShadowDistance(shadowObject, lightSource),
-                created: Date.now(  };
+    direction: this._calculateShadowDirection(shadowObject, lightSource);
+                distance: this._calculateShadowDistance(shadowObject, lightSource);
+                created: Date.now(  },
             
             this.shadowCasters.push(shadowEffect);
-            console.log(`[EnhancedEffectController] 影効果を追加: ID ${shadowEffect.id}`});
+            console.log(`[EnhancedEffectController] 影効果を追加: ID ${shadowEffect.id}`};
 
             return shadowEffect.id;} catch (error) { this.errorHandler.handleError(error, {)'
                 context: 'EnhancedEffectController.addShadowEffect'
@@ -179,14 +179,14 @@ export class EnhancedEffectController {
                 intensity: intensity,
                 distortion: distortion,
                 ripples: [],
-    created: Date.now(  };
+    created: Date.now(  },
             
             this.reflectionSurfaces.push(reflectionEffect);
-            console.log(`[EnhancedEffectController] 反射効果を追加: ID ${reflectionEffect.id}`});
+            console.log(`[EnhancedEffectController] 反射効果を追加: ID ${reflectionEffect.id}`};
 
             return reflectionEffect.id;} catch (error) { this.errorHandler.handleError(error, {)'
                 context: 'EnhancedEffectController.addReflectionEffect'
-            });
+            };
             return -1;
     
     /**
@@ -194,7 +194,7 @@ export class EnhancedEffectController {
      */
     addWaterRipple(x: number, y: number, maxRadius: number = 50, speed: number = 2, intensity: number = 1.0): void { try {
             // 対応する反射効果を検索して追加
-            this.reflectionSurfaces.forEach(surface => { ),
+            this.reflectionSurfaces.forEach(surface => { );
                 if (Math.abs(surface.surfaceY - y) < 10) {
                     surface.ripples.push({
                         x, y,
@@ -203,12 +203,12 @@ export class EnhancedEffectController {
                         speed,
                         intensity) }
                         lifetime: 0); 
-    });
+    };
                 }
-            });
+            };
             ';'
 
-            console.log(`[EnhancedEffectController] 水面リップル効果を追加: (${x}, ${y}`});
+            console.log(`[EnhancedEffectController] 水面リップル効果を追加: (${x}, ${y}`};
         } catch (error) { this.errorHandler.handleError(error, {)'
                 context: 'EnhancedEffectController.addWaterRipple',' }'
 
@@ -229,10 +229,10 @@ export class EnhancedEffectController {
                 type, // 'point', 'directional', 'spot',
                 animated: false,
                 animation: null,
-    created: Date.now(  };
+    created: Date.now(  },
             
             this.lightSources.push(lightSource);
-            console.log(`[EnhancedEffectController] 光源を追加: ${type} at (${x}, ${y}`});
+            console.log(`[EnhancedEffectController] 光源を追加: ${type} at (${x}, ${y}`};
 
             return lightSource.id;} catch (error) { this.errorHandler.handleError(error, {)'
                 context: 'EnhancedEffectController.addLightSource'
@@ -256,14 +256,14 @@ export class EnhancedEffectController {
                     ...options,
                 particles: [],
                 active: true,
-    created: Date.now() };
+    created: Date.now() },
             
             this.backgroundEffects.push(backgroundEffect);
-            console.log(`[EnhancedEffectController] 背景効果を追加: ${type}`});
+            console.log(`[EnhancedEffectController] 背景効果を追加: ${type}`};
 
             return backgroundEffect.id;} catch (error) { this.errorHandler.handleError(error, {)'
                 context: 'EnhancedEffectController.addBackgroundEffect'
-            });
+            };
             return -1;
     
     /**
@@ -276,7 +276,7 @@ export class EnhancedEffectController {
             this.backgroundEffects = this.backgroundEffects.filter(bg => bg.id !== effectId);
             this.shadowCasters = this.shadowCasters.filter(shadow => shadow.id !== effectId);
             this.reflectionSurfaces = this.reflectionSurfaces.filter(reflection => reflection.id !== effectId) }
-            console.log(`[EnhancedEffectController] 効果を削除: ID ${effectId}`});
+            console.log(`[EnhancedEffectController] 効果を削除: ID ${effectId}`};
         } catch (error) { this.errorHandler.handleError(error, {)'
                 context: 'EnhancedEffectController.removeEffect'
             }';'
@@ -290,7 +290,7 @@ export class EnhancedEffectController {
             console.log('[EnhancedEffectController] すべての効果をクリアしました');
         } catch (error) { this.errorHandler.handleError(error, {)'
                 context: 'EnhancedEffectController.clearAllEffects'
-            });
+            };
         }
     }
     
@@ -306,15 +306,14 @@ export class EnhancedEffectController {
                 this.reflectionSurfaces.length,
             
             this.performanceMetrics.renderTime = renderTime,
-            this.performanceMetrics.lastFrameTime = Date.now(),
-            
+            this.performanceMetrics.lastFrameTime = Date.now();
             // メモリ使用量の概算
             this.performanceMetrics.memoryUsage = this.performanceMetrics.effectCount * 1024, // 簡易計算
             ' }'
 
         } catch (error) { this.errorHandler.handleError(error, {)'
                 context: 'EnhancedEffectController.updatePerformanceMetrics'
-            });
+            };
         }
     }
     
@@ -331,5 +330,5 @@ export class EnhancedEffectController {
     private _calculateShadowDistance(shadowObject: ShadowObject, lightSource: LightSourceBase): number { const dx = shadowObject.x - lightSource.x,
         const dy = shadowObject.y - lightSource.y,
 
-        const distance = Math.sqrt(dx * dx + dy * dy),
+        const distance = Math.sqrt(dx * dx + dy * dy);
         return Math.min(distance * 0.1, 20), // 最大20ピクセル }'}'

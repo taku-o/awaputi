@@ -15,7 +15,7 @@ interface GameEngine { // Add specific properties/methods as needed }
 /**
  * Animation configuration interface
  */
-interface AnimationConfig { fadeSpeed: number,
+interface AnimationConfig { fadeSpeed: number;
     scrollSpeed: number;
     hoverScale: number;
     selectScale: number;
@@ -28,7 +28,7 @@ interface AnimationConfig { fadeSpeed: number,
 /**
  * Entry animation interface
  */
-interface EntryAnimation { startTime: number,
+interface EntryAnimation { startTime: number;
     duration: number;
     startValue: number;
     endValue: number;
@@ -40,7 +40,7 @@ interface EntryAnimation { startTime: number,
 /**
  * Hover animation interface
  */
-interface HoverAnimation { startTime: number,
+interface HoverAnimation { startTime: number;
     duration: number;
     startScale: number;
     targetScale: number;
@@ -53,7 +53,7 @@ interface HoverAnimation { startTime: number,
 /**
  * Select animation interface
  */
-interface SelectAnimation { startTime: number,
+interface SelectAnimation { startTime: number;
     duration: number;
     maxIntensity: number;
     currentIntensity: number;
@@ -62,7 +62,7 @@ interface SelectAnimation { startTime: number,
 /**
  * Animation state interface
  */
-interface AnimationState { scrollOffset: number,
+interface AnimationState { scrollOffset: number;
     targetScrollOffset: number;
     scrollVelocity: number;
     isScrolling: boolean;
@@ -75,7 +75,7 @@ interface AnimationState { scrollOffset: number,
 /**
  * Interaction state interface
  */
-interface InteractionState { hoveredEntry: any | null,
+interface InteractionState { hoveredEntry: any | null;
     hoveredButton: any | null;
     selectedEntry: any | null;
     lastHoverTime: number;
@@ -85,18 +85,18 @@ interface InteractionState { hoveredEntry: any | null,
 /**
  * Scroll configuration interface
  */
-interface ScrollConfig { wheelSensitivity: number,
+interface ScrollConfig { wheelSensitivity: number;
     touchSensitivity: number;
     scrollBounds: { min: number,, max: number,,
-    snapToEntry: boolean,
-    smoothScrolling: boolean,
-    momentumScrolling: boolean,
+    snapToEntry: boolean;
+    smoothScrolling: boolean;
+    momentumScrolling: boolean;
 }
 
 /**
  * Performance metrics interface
  */
-interface PerformanceMetrics { frameCount: number,
+interface PerformanceMetrics { frameCount: number;
     averageFPS: number;
     lastFrameTime: number;
     animationLoad: number;
@@ -132,11 +132,11 @@ interface EntryAnimationConfig { duration?: number,
  * Performance info interface
  */
 interface PerformanceInfo extends PerformanceMetrics { activeAnimations: {
-        entries: number,
-        hovers: number,
-        selects: number,
-    total: number,;
-    scrolling: boolean,
+        entries: number;
+        hovers: number;
+        selects: number;
+    total: number;
+    scrolling: boolean;
 }
 
 /**
@@ -152,32 +152,32 @@ export class LeaderboardAnimationController {
     private errorHandler: ErrorHandler;
     // アニメーション設定
     private, animationConfig: AnimationConfig = {
-        fadeSpeed: 0.1,
-        scrollSpeed: 0.2,
-        hoverScale: 1.05,
-        selectScale: 1.1,
-        entryHeight: 50,
-    transitionDuration: 300,
-        easingFunction: 'easeInOutCubic',
-        maxScrollVelocity: 10,
+        fadeSpeed: 0.1;
+        scrollSpeed: 0.2;
+        hoverScale: 1.05;
+        selectScale: 1.1;
+        entryHeight: 50;
+    transitionDuration: 300;
+        easingFunction: 'easeInOutCubic';
+        maxScrollVelocity: 10;
     scrollDamping: 0.85  };
     // アニメーション状態
     private animationState: AnimationState = { scrollOffset: 0
-        targetScrollOffset: 0,
-        scrollVelocity: 0,
-        isScrolling: false,
-        fadeOpacity: 1.0,
-        targetFadeOpacity: 1.0,
-        entryAnimations: new Map(),
+        targetScrollOffset: 0;
+        scrollVelocity: 0;
+        isScrolling: false;
+        fadeOpacity: 1.0;
+        targetFadeOpacity: 1.0;
+        entryAnimations: new Map();
         hoverAnimations: new Map(
     selectAnimations: new Map( }
     
     // ホバー・選択状態
     private interactionState: InteractionState = { hoveredEntry: null
-        hoveredButton: null,
-        selectedEntry: null,
-        lastHoverTime: 0,
-        lastClickTime: 0,
+        hoveredButton: null;
+        selectedEntry: null;
+        lastHoverTime: 0;
+        lastClickTime: 0;
     hoverDelay: 100 // ms };
     // スクロール制御
     private scrollConfig: ScrollConfig = { wheelSensitivity: 1.0
@@ -189,13 +189,13 @@ export class LeaderboardAnimationController {
     },
     
     // アニメーションタイマー
-    private animationFrame: number | null = null;
-    private isAnimating: boolean = false;
+    private animationFrame: number | null = null,
+    private isAnimating: boolean = false,
     // パフォーマンス監視
     private, performanceMetrics: PerformanceMetrics = { frameCount: 0
         averageFPS: 60,
         lastFrameTime: 0,
-    animationLoad: 0 };
+    animationLoad: 0 },
     constructor(gameEngine: GameEngine) {
 
         this.gameEngine = gameEngine;
@@ -221,9 +221,8 @@ export class LeaderboardAnimationController {
     startAnimationLoop(): void { if (this.animationFrame) {
             cancelAnimationFrame(this.animationFrame) }
         
-        const animate = (currentTime: number) => {  this.updateAnimations(currentTime),
-            this.updatePerformanceMetrics(currentTime),
-            
+        const animate = (currentTime: number) => {  this.updateAnimations(currentTime);
+            this.updatePerformanceMetrics(currentTime);
             if (this.isAnimating || this.hasActiveAnimations() { }
                 this.animationFrame = requestAnimationFrame(animate); }
             } else { this.animationFrame = null }
@@ -248,19 +247,15 @@ export class LeaderboardAnimationController {
      */
     updateAnimations(currentTime: number): void { try {
             // スクロールアニメーション
-            this.updateScrollAnimation(),
-            
+            this.updateScrollAnimation();
             // フェードアニメーション
-            this.updateFadeAnimation(),
-            
+            this.updateFadeAnimation();
             // エントリーアニメーション
-            this.updateEntryAnimations(currentTime),
-            
+            this.updateEntryAnimations(currentTime);
             // ホバーアニメーション
-            this.updateHoverAnimations(currentTime),
-            
+            this.updateHoverAnimations(currentTime);
             // 選択アニメーション
-            this.updateSelectAnimations(currentTime),
+            this.updateSelectAnimations(currentTime);
             ' }'
 
         } catch (error) {
@@ -280,17 +275,15 @@ export class LeaderboardAnimationController {
             this.animationState.scrollVelocity *= this.scrollConfig.scrollDamping,
             
             // 速度制限
-            this.animationState.scrollVelocity = Math.max(),
+            this.animationState.scrollVelocity = Math.max();
                 -this.animationConfig.maxScrollVelocity),
-                Math.min(this.animationConfig.maxScrollVelocity, this.animationState.scrollVelocity),
-            
+                Math.min(this.animationConfig.maxScrollVelocity, this.animationState.scrollVelocity);
             this.animationState.scrollOffset += this.animationState.scrollVelocity,
             
             // 境界チェック
-            this.animationState.scrollOffset = Math.max(),
+            this.animationState.scrollOffset = Math.max();
                 this.scrollConfig.scrollBounds.min),
-                Math.min(this.scrollConfig.scrollBounds.max, this.animationState.scrollOffset),
-            
+                Math.min(this.scrollConfig.scrollBounds.max, this.animationState.scrollOffset);
             this.animationState.isScrolling = true } else {  this.animationState.scrollOffset = target,
             this.animationState.scrollVelocity = 0 }
             this.animationState.isScrolling = false; }
@@ -313,14 +306,12 @@ export class LeaderboardAnimationController {
      */
     updateEntryAnimations(currentTime: number): void { for(const [entryId, animation] of this.animationState.entryAnimations.entries() {
             const elapsed = currentTime - animation.startTime,
-            const progress = Math.min(elapsed / animation.duration, 1),
-            
+            const progress = Math.min(elapsed / animation.duration, 1);
             // イージング適用
-            const easedProgress = this.applyEasing(progress, animation.easing as EasingType),
-            
+            const easedProgress = this.applyEasing(progress, animation.easing as EasingType);
             // アニメーション値を更新
             animation.currentValue = this.interpolate(
-                animation.startValue),
+                animation.startValue);
                 animation.endValue),
                 easedProgress,
             
@@ -341,19 +332,18 @@ export class LeaderboardAnimationController {
      */
     updateHoverAnimations(currentTime: number): void { for(const [elementId, animation] of this.animationState.hoverAnimations.entries() {
             const elapsed = currentTime - animation.startTime,
-            const progress = Math.min(elapsed / animation.duration, 1),
-
+            const progress = Math.min(elapsed / animation.duration, 1);
             const easedProgress = this.applyEasing(progress, 'easeOutQuart),'
             
             // スケール値を更新
             animation.currentScale = this.interpolate(
-                animation.startScale),
+                animation.startScale);
                 animation.targetScale),
                 easedProgress,
             
             // 透明度を更新
             animation.currentOpacity = this.interpolate(
-                animation.startOpacity),
+                animation.startOpacity);
                 animation.targetOpacity),
                 easedProgress,
             
@@ -376,14 +366,13 @@ export class LeaderboardAnimationController {
      */
     updateSelectAnimations(currentTime: number): void { for(const [elementId, animation] of this.animationState.selectAnimations.entries() {
             const elapsed = currentTime - animation.startTime,
-            const progress = Math.min(elapsed / animation.duration, 1),
-
+            const progress = Math.min(elapsed / animation.duration, 1);
             const easedProgress = this.applyEasing(progress, 'easeOutBounce),'
             
             // 選択効果を更新
             animation.currentIntensity = this.interpolate(
                 0,
-                animation.maxIntensity),
+                animation.maxIntensity);
                 easedProgress,
             
             if (progress >= 1) {
@@ -432,8 +421,7 @@ export class LeaderboardAnimationController {
      */
     snapToNearestEntry(): void { const entryHeight = this.animationConfig.entryHeight,
         const currentOffset = this.animationState.targetScrollOffset,
-        const nearestEntry = Math.round(currentOffset / entryHeight),
-        
+        const nearestEntry = Math.round(currentOffset / entryHeight);
         this.animationState.targetScrollOffset = nearestEntry * entryHeight }
     
     /**
@@ -444,8 +432,7 @@ export class LeaderboardAnimationController {
     startHover(target: string | { id: string;, options: HoverOptions = { )): void {'
         try {'
             const targetId = typeof target === 'string' ? target: target.id,
-            const currentTime = Date.now(),
-            
+            const currentTime = Date.now();
             // ホバー遅延チェック
             if (currentTime - this.interactionState.lastHoverTime < this.interactionState.hoverDelay) {
     
@@ -462,11 +449,11 @@ export class LeaderboardAnimationController {
                 startScale: 1.0,
                 targetScale: this.animationConfig.hoverScale,
                 currentScale: 1.0,
-                startOpacity: 1.0),
+                startOpacity: 1.0);
                 targetOpacity: options.targetOpacity || 1.0,
     currentOpacity: 1.0),
                 persistent: true),
-            this.startAnimationLoop(),
+            this.startAnimationLoop();
             '
             }'
 
@@ -481,12 +468,11 @@ export class LeaderboardAnimationController {
     endHover(target: string | { id: string )): void {'
         try {'
             const targetId = typeof target === 'string' ? target: target.id,
-            const currentTime = Date.now(),
-            
+            const currentTime = Date.now();
             this.interactionState.hoveredEntry = null,
             
             // ホバーアニメーション終了
-            const existingAnimation = this.animationState.hoverAnimations.get(targetId),
+            const existingAnimation = this.animationState.hoverAnimations.get(targetId);
             if (existingAnimation) {
                 this.animationState.hoverAnimations.set(targetId, {
                     startTime: currentTime,
@@ -494,7 +480,7 @@ export class LeaderboardAnimationController {
                     startScale: existingAnimation.currentScale,
                     targetScale: 1.0,
                     currentScale: existingAnimation.currentScale,
-                    startOpacity: existingAnimation.currentOpacity),
+                    startOpacity: existingAnimation.currentOpacity);
                     targetOpacity: 1.0,
     currentOpacity: existingAnimation.currentOpacity }
                     persistent: false); 
@@ -516,8 +502,7 @@ export class LeaderboardAnimationController {
             const targetId = typeof target === 'string' ? target: target.id,
             const currentTime = Date.now()','
                 type: options.type || 'pulse'),
-            this.startAnimationLoop(),
-
+            this.startAnimationLoop();
             '
             }'
 
@@ -531,18 +516,16 @@ export class LeaderboardAnimationController {
      * @param {Object} animationConfig - アニメーション設定
      */
     startEntryAnimation(entryId: string, animationConfig: EntryAnimationConfig): void { try {
-            const currentTime = Date.now(),
-            
+            const currentTime = Date.now();
             this.animationState.entryAnimations.set(entryId, {
                 startTime: currentTime,
                 duration: animationConfig.duration || this.animationConfig.transitionDuration,
                 startValue: animationConfig.startValue || 0,
-                endValue: animationConfig.endValue || 1),
+                endValue: animationConfig.endValue || 1);
                 currentValue: animationConfig.startValue || 0,
     easing: animationConfig.easing || this.animationConfig.easingFunction),
                 onComplete: animationConfig.onComplete || null),
-            this.startAnimationLoop(),
-
+            this.startAnimationLoop();
             '
             }'
 
@@ -571,8 +554,7 @@ export class LeaderboardAnimationController {
      */
     setScrollPosition(position: number, animated: boolean = true): void { const clampedPosition = Math.max()
             this.scrollConfig.scrollBounds.min),
-            Math.min(this.scrollConfig.scrollBounds.max, position),
-        
+            Math.min(this.scrollConfig.scrollBounds.max, position);
         if (animated) {
         
             this.animationState.targetScrollOffset = clampedPosition }
@@ -636,8 +618,7 @@ export class LeaderboardAnimationController {
                 return progress * progress * progress,
 
             case 'easeOutCubic':','
-                return 1 - Math.pow(1 - progress, 3),
-
+                return 1 - Math.pow(1 - progress, 3);
             case 'easeInOutCubic':,
                 return progress < 0.5 ? undefined : undefined','
                     4 * progress * progress * progress : ','
@@ -656,7 +637,7 @@ export class LeaderboardAnimationController {
             case 'easeOutQuart':
                 return 1 - Math.pow(1 - progress, 4);
                 
-            default: return progress;
+            default: return progress,
     
     /**
      * 値を補間
@@ -703,7 +684,7 @@ export class LeaderboardAnimationController {
                        this.animationState.hoverAnimations.size +  };
                        this.animationState.selectAnimations.size }
             },
-            scrolling: this.animationState.isScrolling;
+            scrolling: this.animationState.isScrolling,
         } }
     
     /**
@@ -723,16 +704,15 @@ export class LeaderboardAnimationController {
     /**
      * 全アニメーションをクリア
      */
-    clearAllAnimations(): void { this.animationState.entryAnimations.clear(),
-
-        this.animationState.hoverAnimations.clear(),
+    clearAllAnimations(): void { this.animationState.entryAnimations.clear();
+        this.animationState.hoverAnimations.clear();
         this.animationState.selectAnimations.clear()','
         console.log('[LeaderboardAnimationController] All, animations cleared') }'
     
     /**
      * アニメーションコントローラーを破棄
      */'
-    dispose(): void { this.stopAnimationLoop(),
+    dispose(): void { this.stopAnimationLoop();
         this.clearAllAnimations()','
         console.log('[LeaderboardAnimationController] Animation, controller disposed') }
 

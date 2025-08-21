@@ -3,7 +3,7 @@ import { getErrorHandler  } from '../../utils/ErrorHandler';
 /**
  * Sound characteristics interface (from, BiomeDefinitionManager)
  */
-export interface SoundCharacteristics { frequency: number,
+export interface SoundCharacteristics { frequency: number;
     amplitude: number;
     noiseLevel: number;
     modulation: number;
@@ -14,7 +14,7 @@ export interface SoundCharacteristics { frequency: number,
  * 風・波・雨・森・機械・洞窟音など各種環境音の生成を専門的に管理します
  */
 export class EnvironmentalSoundGenerator {
-    private readonly audioContext: AudioContext,
+    private readonly audioContext: AudioContext;
     private readonly, environmentBuffers: Map<string, AudioBuffer>,
 
     constructor(audioContext: AudioContext) {
@@ -30,7 +30,7 @@ export class EnvironmentalSoundGenerator {
      */
     generateBasicEnvironmentalSounds(): void { try {
             // 風音の生成
-            const windBuffer = this._generateWindSound(),
+            const windBuffer = this._generateWindSound();
             if (windBuffer) {', ' }
 
                 this.environmentBuffers.set('wind', windBuffer); }
@@ -71,12 +71,12 @@ export class EnvironmentalSoundGenerator {
                 this.environmentBuffers.set('cave_resonance', caveBuffer); }
             }
             
-            console.log(`Generated ${this.environmentBuffers.size} basic, environmental sounds`});
+            console.log(`Generated ${this.environmentBuffers.size} basic, environmental sounds`};
 
         } catch (error) { getErrorHandler().handleError(error, 'AUDIO_ERROR', {''
                 operation: 'generateBasicEnvironmentalSounds',')',
                 component: 'EnvironmentalSoundGenerator'
-            });
+            };
         }
     }
     
@@ -111,7 +111,7 @@ export class EnvironmentalSoundGenerator {
                 case 'traffic':','
                     buffer = this._generateMachinerySound()','
                 case 'cave_resonance':),
-                    buffer = this._generateCaveResonanceSound(),
+                    buffer = this._generateCaveResonanceSound();
                     break,
                 default:,
                     // 汎用環境音を生成
@@ -124,7 +124,7 @@ export class EnvironmentalSoundGenerator {
             return buffer;
         } catch (error) { getErrorHandler().handleError(error, 'AUDIO_ERROR', {''
                 operation: 'getOrGenerateSound',','
-                component: 'EnvironmentalSoundGenerator'),
+                component: 'EnvironmentalSoundGenerator');
                 soundType: soundType,);
             return null;
     
@@ -135,11 +135,9 @@ export class EnvironmentalSoundGenerator {
     private _generateWindSound(): AudioBuffer | null { try {
             const duration = 10, // 10秒ループ
             const sampleRate = this.audioContext.sampleRate,
-            const buffer = this.audioContext.createBuffer(2, duration * sampleRate, sampleRate),
-            
-            const leftChannel = buffer.getChannelData(0),
-            const rightChannel = buffer.getChannelData(1),
-            
+            const buffer = this.audioContext.createBuffer(2, duration * sampleRate, sampleRate);
+            const leftChannel = buffer.getChannelData(0);
+            const rightChannel = buffer.getChannelData(1);
             for(let, i = 0, i < buffer.length, i++) {
             
                 const t = i / sampleRate,
@@ -164,7 +162,7 @@ export class EnvironmentalSoundGenerator {
             return buffer;
         } catch (error) { getErrorHandler().handleError(error, 'AUDIO_ERROR', {''
                 operation: '_generateWindSound'
-            });
+            };
             return null;
     
     /**
@@ -174,18 +172,16 @@ export class EnvironmentalSoundGenerator {
     private _generateWaveSound(): AudioBuffer | null { try {
             const duration = 8, // 8秒ループ
             const sampleRate = this.audioContext.sampleRate,
-            const buffer = this.audioContext.createBuffer(2, duration * sampleRate, sampleRate),
-            
-            const leftChannel = buffer.getChannelData(0),
-            const rightChannel = buffer.getChannelData(1),
-            
+            const buffer = this.audioContext.createBuffer(2, duration * sampleRate, sampleRate);
+            const leftChannel = buffer.getChannelData(0);
+            const rightChannel = buffer.getChannelData(1);
             for(let, i = 0, i < buffer.length, i++) {
             
                 const t = i / sampleRate,
                 
                 // 波の周期的な音
                 const waveFreq = 0.3,
-                const waveEnvelope = Math.sin(2 * Math.PI * waveFreq * t),
+                const waveEnvelope = Math.sin(2 * Math.PI * waveFreq * t);
                 const waveEnvelopeSquared = waveEnvelope * waveEnvelope,
                 
                 // ホワイトノイズでザーザー音を表現
@@ -203,7 +199,7 @@ export class EnvironmentalSoundGenerator {
             return buffer;
         } catch (error) { getErrorHandler().handleError(error, 'AUDIO_ERROR', {''
                 operation: '_generateWaveSound'
-            });
+            };
             return null;
     
     /**
@@ -213,11 +209,9 @@ export class EnvironmentalSoundGenerator {
     private _generateRainSound(): AudioBuffer | null { try {
             const duration = 6, // 6秒ループ
             const sampleRate = this.audioContext.sampleRate,
-            const buffer = this.audioContext.createBuffer(2, duration * sampleRate, sampleRate),
-            
-            const leftChannel = buffer.getChannelData(0),
-            const rightChannel = buffer.getChannelData(1),
-            
+            const buffer = this.audioContext.createBuffer(2, duration * sampleRate, sampleRate);
+            const leftChannel = buffer.getChannelData(0);
+            const rightChannel = buffer.getChannelData(1);
             for(let, i = 0, i < buffer.length, i++) {
             
                 const t = i / sampleRate,
@@ -230,8 +224,7 @@ export class EnvironmentalSoundGenerator {
                 
                 // 高周波成分をフィルタリング（自然な雨音）
                 const filterCutoff = 800, // Hz
-                const filterRatio = Math.min(1, filterCutoff / (sampleRate / 2),
-                
+                const filterRatio = Math.min(1, filterCutoff / (sampleRate / 2);
                 const sample = rainNoise * intensity * filterRatio * 0.5,
                 
                 leftChannel[i] = sample }
@@ -241,7 +234,7 @@ export class EnvironmentalSoundGenerator {
             return buffer;
         } catch (error) { getErrorHandler().handleError(error, 'AUDIO_ERROR', {''
                 operation: '_generateRainSound'
-            });
+            };
             return null;
     
     /**
@@ -251,23 +244,20 @@ export class EnvironmentalSoundGenerator {
     private _generateForestSound(): AudioBuffer | null { try {
             const duration = 12, // 12秒ループ
             const sampleRate = this.audioContext.sampleRate,
-            const buffer = this.audioContext.createBuffer(2, duration * sampleRate, sampleRate),
-            
-            const leftChannel = buffer.getChannelData(0),
-            const rightChannel = buffer.getChannelData(1),
-            
+            const buffer = this.audioContext.createBuffer(2, duration * sampleRate, sampleRate);
+            const leftChannel = buffer.getChannelData(0);
+            const rightChannel = buffer.getChannelData(1);
             for(let, i = 0, i < buffer.length, i++) {
             
                 const t = i / sampleRate,
                 
                 // 葉擦れ音（高周波ノイズ）
-                const leaves = (Math.random() - 0.5) * 0.3 * Math.sin(2 * Math.PI * 0.05 * t + 0.5),
-                
+                const leaves = (Math.random() - 0.5) * 0.3 * Math.sin(2 * Math.PI * 0.05 * t + 0.5);
                 // 風音（低周波）
                 const windInTrees = Math.sin(2 * Math.PI * 0.3 * t) * 0.2,
                 
                 // 時々の鳥の声（ランダム）
-                const birdChance = Math.random(),
+                const birdChance = Math.random();
                 const birdSound = birdChance < 0.001 ? Math.sin(2 * Math.PI * 800 * t) * 0.1 : 0,
                 
                 const sample = (leaves + windInTrees + birdSound) * 0.4,
@@ -279,7 +269,7 @@ export class EnvironmentalSoundGenerator {
             return buffer;
         } catch (error) { getErrorHandler().handleError(error, 'AUDIO_ERROR', {''
                 operation: '_generateForestSound'
-            });
+            };
             return null;
     
     /**
@@ -289,11 +279,9 @@ export class EnvironmentalSoundGenerator {
     private _generateMachinerySound(): AudioBuffer | null { try {
             const duration = 5, // 5秒ループ
             const sampleRate = this.audioContext.sampleRate,
-            const buffer = this.audioContext.createBuffer(2, duration * sampleRate, sampleRate),
-            
-            const leftChannel = buffer.getChannelData(0),
-            const rightChannel = buffer.getChannelData(1),
-            
+            const buffer = this.audioContext.createBuffer(2, duration * sampleRate, sampleRate);
+            const leftChannel = buffer.getChannelData(0);
+            const rightChannel = buffer.getChannelData(1);
             for(let, i = 0, i < buffer.length, i++) {
             
                 const t = i / sampleRate,
@@ -305,7 +293,7 @@ export class EnvironmentalSoundGenerator {
                 const machinery = Math.sin(2 * Math.PI * 120 * t) * 0.2,
                 
                 // 時々のクリック音
-                const clickChance = Math.random(),
+                const clickChance = Math.random();
                 const click = clickChance < 0.01 ? Math.sin(2 * Math.PI * 2000 * t) * 0.1 : 0,
                 
                 // 電気的なノイズ
@@ -320,7 +308,7 @@ export class EnvironmentalSoundGenerator {
             return buffer;
         } catch (error) { getErrorHandler().handleError(error, 'AUDIO_ERROR', {''
                 operation: '_generateMachinerySound'
-            });
+            };
             return null;
     
     /**
@@ -330,11 +318,9 @@ export class EnvironmentalSoundGenerator {
     private _generateCaveResonanceSound(): AudioBuffer | null { try {
             const duration = 15, // 15秒ループ
             const sampleRate = this.audioContext.sampleRate,
-            const buffer = this.audioContext.createBuffer(2, duration * sampleRate, sampleRate),
-            
-            const leftChannel = buffer.getChannelData(0),
-            const rightChannel = buffer.getChannelData(1),
-            
+            const buffer = this.audioContext.createBuffer(2, duration * sampleRate, sampleRate);
+            const leftChannel = buffer.getChannelData(0);
+            const rightChannel = buffer.getChannelData(1);
             for(let, i = 0, i < buffer.length, i++) {
             
                 const t = i / sampleRate,
@@ -343,7 +329,7 @@ export class EnvironmentalSoundGenerator {
                 const resonance = Math.sin(2 * Math.PI * 40 * t) * 0.4,
                 
                 // 時々の水滴音
-                const dripChance = Math.random(),
+                const dripChance = Math.random();
                 const drip = dripChance < 0.005 ? undefined : undefined
                     Math.sin(2 * Math.PI * 800 * t) * Math.exp(-t * 10) * 0.2 : 0,
                 
@@ -361,7 +347,7 @@ export class EnvironmentalSoundGenerator {
             return buffer;
         } catch (error) { getErrorHandler().handleError(error, 'AUDIO_ERROR', {''
                 operation: '_generateCaveResonanceSound'
-            });
+            };
             return null;
     
     /**
@@ -374,17 +360,15 @@ export class EnvironmentalSoundGenerator {
     ): AudioBuffer | null { try {
             const duration = 8, // 8秒ループ
             const sampleRate = this.audioContext.sampleRate,
-            const buffer = this.audioContext.createBuffer(2, duration * sampleRate, sampleRate),
-            
-            const leftChannel = buffer.getChannelData(0),
-            const rightChannel = buffer.getChannelData(1),
-            
+            const buffer = this.audioContext.createBuffer(2, duration * sampleRate, sampleRate);
+            const leftChannel = buffer.getChannelData(0);
+            const rightChannel = buffer.getChannelData(1);
             // デフォルト特性
             const defaultCharacteristics: SoundCharacteristics = {
                 frequency: 1.0,
                 amplitude: 0.3,
                 noiseLevel: 0.2,
-    modulation: 0.1  };
+    modulation: 0.1  },
             const soundChars = characteristics || defaultCharacteristics;
             
             for(let, i = 0; i < buffer.length; i++) {
@@ -408,7 +392,7 @@ export class EnvironmentalSoundGenerator {
             
             return buffer;
         } catch (error) { getErrorHandler().handleError(error, 'AUDIO_ERROR', {''
-                operation: '_generateGenericEnvironmentalSound'),
+                operation: '_generateGenericEnvironmentalSound');
                 soundType: soundType,);
             return null;
     

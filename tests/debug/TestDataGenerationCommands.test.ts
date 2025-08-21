@@ -22,7 +22,7 @@ const mockGameEngine = {
         save: jest.fn( },
     statisticsManager: {
         importTestData: jest.fn().mockReturnValue({ success: true, imported: 5,
-        total: 5 });
+        total: 5 },
     },
     errorHandler: {
         handleError: jest.fn( }
@@ -33,13 +33,13 @@ const mockConsole = {
 describe('TestDataGenerationCommands', () => {
     let testDataCommands: any,
     beforeEach(() => {
-        testDataCommands = new TestDataGenerationCommands(mockGameEngine),
+        testDataCommands = new TestDataGenerationCommands(mockGameEngine);
         jest.clearAllMocks() }');'
     describe('Constructor', (') => {'
         test('should initialize with correct properties', () => {
-            expect(testDataCommands.gameEngine).toBe(mockGameEngine),
-            expect(testDataCommands.mockDataGenerators).toBeInstanceOf(Map),
-            expect(testDataCommands.testScenarios).toBeInstanceOf(Map),
+            expect(testDataCommands.gameEngine).toBe(mockGameEngine);
+            expect(testDataCommands.mockDataGenerators).toBeInstanceOf(Map);
+            expect(testDataCommands.testScenarios).toBeInstanceOf(Map);
             expect(testDataCommands.generatedData).toBeInstanceOf(Map) }');'
         test('should initialize generators and scenarios', (') => {'
             expect(testDataCommands.mockDataGenerators.has('bubbles').toBe(true'),'
@@ -51,10 +51,10 @@ describe('TestDataGenerationCommands', () => {
     }
     describe('registerCommands', (') => {'
         test('should register all test commands', () => {
-            testDataCommands.registerCommands(mockConsole),
-            expect(mockConsole.register).toHaveBeenCalledTimes(10),
+            testDataCommands.registerCommands(mockConsole);
+            expect(mockConsole.register).toHaveBeenCalledTimes(10);
             // コマンド名の確認
-            const registeredCommands = mockConsole.register.mock.calls.map(call => call[0]),
+            const registeredCommands = mockConsole.register.mock.calls.map(call => call[0]);
             expect(registeredCommands').toContain('test.bubbles'),'
             expect(registeredCommands').toContain('test.gamestate'),'
             expect(registeredCommands').toContain('test.playerdata'),'
@@ -69,9 +69,9 @@ describe('TestDataGenerationCommands', () => {
     describe('Data Generators', (') => {'
         describe('Bubble Generator', (') => {'
             test('should generate bubbles with default parameters', (') => {'
-                const generator = testDataCommands.mockDataGenerators.get('bubbles'),
-                const bubbles = generator.generate(),
-                expect(bubbles).toHaveLength(10),
+                const generator = testDataCommands.mockDataGenerators.get('bubbles');
+                const bubbles = generator.generate();
+                expect(bubbles).toHaveLength(10);
                 expect(bubbles[0]').toHaveProperty('id'),'
                 expect(bubbles[0]').toHaveProperty('type'),'
                 expect(bubbles[0]').toHaveProperty('x'),'
@@ -79,74 +79,74 @@ describe('TestDataGenerationCommands', () => {
                 expect(bubbles[0]').toHaveProperty('size'),'
                 expect(bubbles[0]').toHaveProperty('health') }');
             test('should generate bubbles with custom parameters', (') => {'
-                const generator = testDataCommands.mockDataGenerators.get('bubbles'),
-                const bubbles = generator.generate({ count: 5, type: 'electric' });
+                const generator = testDataCommands.mockDataGenerators.get('bubbles');
+                const bubbles = generator.generate({ count: 5, type: 'electric' },
                 expect(bubbles).toHaveLength(5);
-                bubbles.forEach(bubble => {),
+                bubbles.forEach(bubble => {);
                     expect(bubble.type').toBe('electric') }');
             }
             test('should generate random bubble types', (') => {'
-                const generator = testDataCommands.mockDataGenerators.get('bubbles'),
-                const bubbles = generator.generate({ count: 20, type: 'random' });
+                const generator = testDataCommands.mockDataGenerators.get('bubbles');
+                const bubbles = generator.generate({ count: 20, type: 'random' },
                 const types = new Set(bubbles.map(bubble => bubble.type);
                 expect(types.size).toBeGreaterThan(1); // 複数のタイプが生成されることを確認
             }');'
         }
         describe('Player Data Generator', (') => {'
             test('should generate beginner profile', (') => {'
-                const generator = testDataCommands.mockDataGenerators.get('playerData'),
-                const playerData = generator.generate('beginner'),
-                expect(playerData.totalScore).toBeLessThan(1000),
-                expect(playerData.level).toBe(1),
+                const generator = testDataCommands.mockDataGenerators.get('playerData');
+                const playerData = generator.generate('beginner');
+                expect(playerData.totalScore).toBeLessThan(1000);
+                expect(playerData.level).toBe(1);
                 expect(playerData.sessionsPlayed).toBeLessThan(11) }');'
             test('should generate expert profile', (') => {'
-                const generator = testDataCommands.mockDataGenerators.get('playerData'),
-                const playerData = generator.generate('expert'),
-                expect(playerData.totalScore).toBeGreaterThan(50000),
-                expect(playerData.level).toBeGreaterThan(7),
+                const generator = testDataCommands.mockDataGenerators.get('playerData');
+                const playerData = generator.generate('expert');
+                expect(playerData.totalScore).toBeGreaterThan(50000);
+                expect(playerData.level).toBeGreaterThan(7);
                 expect(playerData.sessionsPlayed).toBeGreaterThan(99) }');'
             test('should apply overrides', (') => {'
-                const generator = testDataCommands.mockDataGenerators.get('playerData'),
-                const playerData = generator.generate('beginner', { totalScore: 5000 });
+                const generator = testDataCommands.mockDataGenerators.get('playerData');
+                const playerData = generator.generate('beginner', { totalScore: 5000 },
                 expect(playerData.totalScore).toBe(5000);
             }');'
         }
         describe('Statistics Generator', (') => {'
             test('should generate daily statistics', (') => {'
-                const generator = testDataCommands.mockDataGenerators.get('statistics'),
-                const statistics = generator.generate('daily'),
-                expect(statistics).toHaveLength(1),
+                const generator = testDataCommands.mockDataGenerators.get('statistics');
+                const statistics = generator.generate('daily');
+                expect(statistics).toHaveLength(1);
                 expect(statistics[0]').toHaveProperty('timestamp'),'
                 expect(statistics[0]').toHaveProperty('sessionsPlayed'),'
                 expect(statistics[0]').toHaveProperty('totalScore') }');
             test('should generate weekly statistics', (') => {'
-                const generator = testDataCommands.mockDataGenerators.get('statistics'),
-                const statistics = generator.generate('weekly'),
-                expect(statistics).toHaveLength(7),
-                statistics.forEach(stat => {),
+                const generator = testDataCommands.mockDataGenerators.get('statistics');
+                const statistics = generator.generate('weekly');
+                expect(statistics).toHaveLength(7);
+                statistics.forEach(stat => {);
                     expect(stat').toHaveProperty('date'),'
-                    expect(stat').toHaveProperty('sessionsPlayed') });'
+                    expect(stat').toHaveProperty('sessionsPlayed') };'
             }
         }');'
     }
     describe('Test Scenarios', (') => {'
         test('should setup normal scenario', (') => {'
-            const scenario = testDataCommands.testScenarios.get('normal'),
-            const gameState = scenario.setup(),
-            expect(gameState.bubbleCount).toBe(15),
-            expect(gameState.playerHP).toBe(3),
-            expect(gameState.timeRemaining).toBe(300000),
+            const scenario = testDataCommands.testScenarios.get('normal');
+            const gameState = scenario.setup();
+            expect(gameState.bubbleCount).toBe(15);
+            expect(gameState.playerHP).toBe(3);
+            expect(gameState.timeRemaining).toBe(300000);
             expect(gameState.activeBubbleTypes').toContain('normal') }');
         test('should setup stress scenario', (') => {'
-            const scenario = testDataCommands.testScenarios.get('stress'),
-            const gameState = scenario.setup(),
-            expect(gameState.bubbleCount).toBe(50),
-            expect(gameState.playerHP).toBe(1),
-            expect(gameState.gameSpeed).toBe(1.5),
+            const scenario = testDataCommands.testScenarios.get('stress');
+            const gameState = scenario.setup();
+            expect(gameState.bubbleCount).toBe(50);
+            expect(gameState.playerHP).toBe(1);
+            expect(gameState.gameSpeed).toBe(1.5);
             expect(gameState.activeBubbleTypes').toContain('boss') }');
         test('should apply custom parameters', (') => {'
-            const scenario = testDataCommands.testScenarios.get('normal'),
-            const gameState = scenario.setup({ bubbleCount: 25, playerHP: 5 });
+            const scenario = testDataCommands.testScenarios.get('normal');
+            const gameState = scenario.setup({ bubbleCount: 25, playerHP: 5 },
             expect(gameState.bubbleCount).toBe(25);
             expect(gameState.playerHP).toBe(5);
         }');'
@@ -215,7 +215,7 @@ describe('TestDataGenerationCommands', () => {
                     expect.objectContaining({ name: 'MemoryError' }','
                     expect.objectContaining({ simulated: true,
         type: 'memory'
-            });
+            };
                 );
                 expect(result').toBe('Simulated memory error');'
             }');'
@@ -229,19 +229,19 @@ describe('TestDataGenerationCommands', () => {
         }
         describe('clearTestDataCommand', (') => {'
             test('should clear all test data', async (') => {'
-                testDataCommands.generatedData.set('test1', 'data1'),
-                testDataCommands.generatedData.set('test2', 'data2'),
+                testDataCommands.generatedData.set('test1', 'data1');
+                testDataCommands.generatedData.set('test2', 'data2');
                 const result = await testDataCommands.clearTestDataCommand(['all'], {}, mockConsole);
                 expect(testDataCommands.generatedData.size).toBe(0);
                 expect(result').toBe('Cleared all test data');'
             }');'
             test('should clear specific test data', async (') => {'
-                testDataCommands.generatedData.set('test1', 'data1'),
-                testDataCommands.generatedData.set('test2', 'data2'),
+                testDataCommands.generatedData.set('test1', 'data1');
+                testDataCommands.generatedData.set('test2', 'data2');
                 const result = await testDataCommands.clearTestDataCommand(['test1'], {}, mockConsole');'
                 expect(testDataCommands.generatedData.has('test1').toBe(false');'
                 expect(testDataCommands.generatedData.has('test2').toBe(true);
-                expect(result').toBe('Cleared test data: test1' }');
+                expect(result').toBe('Cleared test data: test1' }'),
         }
         describe('listTestDataCommand', (') => {'
             test('should list all categories', async () => {
@@ -258,7 +258,7 @@ describe('TestDataGenerationCommands', () => {
                 expect(result').not.toContain('Available Test Scenarios: ','
                 expect(result').toContain('bubbles');'
                 expect(result').toContain('playerData');'
-            });
+            };
         }
     }');'
     describe('Utility Methods', (') => {'
@@ -271,16 +271,16 @@ describe('TestDataGenerationCommands', () => {
         }
         describe('getBubbleProperties', (') => {'
             test('should return correct properties', (') => {'
-                const props = testDataCommands.getBubbleProperties('electric'),
+                const props = testDataCommands.getBubbleProperties('electric');
                 expect(props').toHaveProperty('special', 'shock'),'
-                expect(props').toHaveProperty('intensity', 15'),
-                const normalProps = testDataCommands.getBubbleProperties('normal'),
-                expect(Object.keys(normalProps).toHaveLength(0) });
+                expect(props').toHaveProperty('intensity', 15');
+                const normalProps = testDataCommands.getBubbleProperties('normal');
+                expect(Object.keys(normalProps).toHaveLength(0) };
         }
     }');'
     describe('Error Handling', (') => {'
         test('should handle missing bubble manager gracefully', async () => {
-            const mockGameEngineNoManager = { currentScene: {} };
+            const mockGameEngineNoManager = { currentScene: {} },
             const commands = new TestDataGenerationCommands(mockGameEngineNoManager');'
             const result = await commands.generateBubblesCommand(['5'], {}, mockConsole);
             expect(result').toContain('Generated 5 random bubbles');'
@@ -300,7 +300,7 @@ describe('TestDataGenerationCommands', () => {
     }
     describe('Integration', (') => {'
         test('should work with DeveloperConsole', () => {
-            const console = new DeveloperConsole(mockGameEngine),
+            const console = new DeveloperConsole(mockGameEngine);
             testDataCommands.registerCommands(console'),'
             expect(console.commands.has('test.bubbles').toBe(true'),'
             expect(console.commands.has('test.gamestate').toBe(true'),'
@@ -308,12 +308,12 @@ describe('TestDataGenerationCommands', () => {
     }
     describe('Cleanup', (') => {'
         test('should destroy resources properly', (') => {'
-            testDataCommands.mockDataGenerators.set('test', 'data'),
-            testDataCommands.testScenarios.set('test', 'scenario'),
-            testDataCommands.generatedData.set('test', 'generated'),
-            testDataCommands.destroy(),
-            expect(testDataCommands.mockDataGenerators.size).toBe(0),
-            expect(testDataCommands.testScenarios.size).toBe(0),
-            expect(testDataCommands.generatedData.size).toBe(0) });
+            testDataCommands.mockDataGenerators.set('test', 'data');
+            testDataCommands.testScenarios.set('test', 'scenario');
+            testDataCommands.generatedData.set('test', 'generated');
+            testDataCommands.destroy();
+            expect(testDataCommands.mockDataGenerators.size).toBe(0);
+            expect(testDataCommands.testScenarios.size).toBe(0);
+            expect(testDataCommands.generatedData.size).toBe(0) };
     }
 }');'

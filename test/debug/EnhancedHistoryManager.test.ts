@@ -21,9 +21,9 @@ describe('EnhancedHistoryManager', () => {  let mockConsole: any,
     describe('addCommand', (') => {  ''
         test('should add command to history', (') => {''
             const entry = historyManager.addCommand('config.get game.scoring'),'
-            expect(historyManager.history.length).toBe(1),
+            expect(historyManager.history.length).toBe(1);
             expect(historyManager.history[0].command').toBe('config.get game.scoring'),'
-            expect(entry.id).toBeDefined(),
+            expect(entry.id).toBeDefined();
             expect(entry.timestamp).toBeDefined() }'
             expect(entry.metadata.success).toBe(true););' }'
         }');'
@@ -46,11 +46,11 @@ describe('EnhancedHistoryManager', () => {  let mockConsole: any,
             expect(duplicateEntry).toBeDefined(); // Returns the duplicate entry info'}');
         test('should trim history when max size is exceeded', (') => {  const originalMaxSize = historyManager.maxHistorySize,'
             historyManager.maxHistorySize = 3,
-            historyManager.addCommand('command1'),
-            historyManager.addCommand('command2'),
-            historyManager.addCommand('command3'),
+            historyManager.addCommand('command1');
+            historyManager.addCommand('command2');
+            historyManager.addCommand('command3');
             historyManager.addCommand('command4'),'
-            expect(historyManager.history.length).toBe(3),
+            expect(historyManager.history.length).toBe(3);
             expect(historyManager.history[0].command').toBe('command2'),'
             expect(historyManager.history[2].command').toBe('command4') }'
             historyManager.maxHistorySize = originalMaxSize;);' }'
@@ -60,84 +60,84 @@ describe('EnhancedHistoryManager', () => {  let mockConsole: any,
         beforeEach((') => {''
             historyManager.addCommand('command1'),' }'
             historyManager.addCommand('command2');' }'
-            historyManager.addCommand('command3'});'}');
+            historyManager.addCommand('command3'};'}');
         test('should navigate up through history', (') => {  ''
-            const entry1 = historyManager.navigate('up'),
+            const entry1 = historyManager.navigate('up');
             expect(entry1.command').toBe('command2'),'
-            const entry2 = historyManager.navigate('up'),
+            const entry2 = historyManager.navigate('up');
             expect(entry2.command').toBe('command1'),'
             const entry3 = historyManager.navigate('up'),' }'
             expect(entry3.command').toBe('command1'); // Should stay at first);' }'
         }');'
         test('should navigate down through history', (') => {  ''
-            historyManager.navigate('up'),
-            historyManager.navigate('up'),
-            const entry1 = historyManager.navigate('down'),
+            historyManager.navigate('up');
+            historyManager.navigate('up');
+            const entry1 = historyManager.navigate('down');
             expect(entry1.command').toBe('command2'),'
-            const entry2 = historyManager.navigate('down'),
+            const entry2 = historyManager.navigate('down');
             expect(entry2.command').toBe('command3'),'
             const entry3 = historyManager.navigate('down') }'
             expect(entry3.toBeNull(); // Should return null at end' }'
         }');'
         test('should navigate to first and last', (') => {  ''
-            const first = historyManager.navigate('first'),
+            const first = historyManager.navigate('first');
             expect(first.command').toBe('command1'),'
             const last = historyManager.navigate('last'),' }'
             expect(last.command').toBe('command3'););' }'
         }');'
         test('should handle empty history', () => {  ''
             const emptyManager = new EnhancedHistoryManager(mockConsole as any'),'
-            const result = emptyManager.navigate('up'),
+            const result = emptyManager.navigate('up');
             expect(result.toBeNull() }'
             emptyManager.destroy();' }'
         }');'
     }''
     describe('search', () => {  ''
         beforeEach((') => {''
-            historyManager.addCommand('config.get game.scoring'),
+            historyManager.addCommand('config.get game.scoring');
             historyManager.addCommand('config.set audio.volume 0.8'),' }'
             historyManager.addCommand('game.pause');' }'
-            historyManager.addCommand('help config'});'}');
+            historyManager.addCommand('help config'};'}');
         test('should perform exact search', (') => { }'
-            const results = historyManager.search('game.pause', { type: 'exact' });'
+            const results = historyManager.search('game.pause', { type: 'exact' };'
             expect(results.length).toBe(1);
             expect(results[0].command').toBe('game.pause');'}');'
         test('should perform contains search', (') => { }'
-            const results = historyManager.search('config', { type: 'contains' });
+            const results = historyManager.search('config', { type: 'contains' };
             expect(results.length).toBe(3');'
             expect(results.every(r => r.command.includes('config')).toBe(true);'}');
         test('should perform fuzzy search', (') => { }'
-            const results = historyManager.search('gm', { type: 'fuzzy' });
+            const results = historyManager.search('gm', { type: 'fuzzy' };
             expect(results.length).toBeGreaterThan(0');'
             expect(results.some(r => r.command === 'game.pause').toBe(true);'}');
         test('should perform regex search', (') => { }'
-            const results = historyManager.search('config\\.(get|set')', { type: 'regex' });'
+            const results = historyManager.search('config\\.(get|set')', { type: 'regex' };'
             expect(results.length).toBe(2);'
             expect(results.every(r => r.command.match(/config\.(get|set)/)).toBe(true);'}');
         test('should handle invalid regex gracefully', (') => { }'
-            const results = historyManager.search('config\\.(get|set', { type: 'regex' });'
+            const results = historyManager.search('config\\.(get|set', { type: 'regex' };'
             expect(results.length).toBe(0);'}');
         test('should limit search results', (') => { }'
-            const results = historyManager.search('config', { type: 'contains', limit: 2 });'
+            const results = historyManager.search('config', { type: 'contains', limit: 2 };'
             expect(results.length).toBe(2);'}');
         test('should sort results by relevance', (') => {  ''
             const results = historyManager.search('config', { ')'
                 type: 'contains', ') }'
                 sortBy: 'relevance' ); }
-            });
+            };
             expect(results.length).toBeGreaterThan(1);'
             // Results should be sorted by relevance score''
             for(let i = 1; i < results.length; i++') {', ','
-                const prevScore = historyManager.calculateRelevanceScore(results[i-1], 'config'),
+                const prevScore = historyManager.calculateRelevanceScore(results[i-1], 'config');
                 const currScore = historyManager.calculateRelevanceScore(results[i], 'config') }
                 expect(prevScore.toBeGreaterThanOrEqual(currScore); }'
             }'}');
         test('should filter by time range', () => {  ''
             const now = Date.now('',
-            const results = historyManager.search('config', { })'
+            const results = historyManager.search('config', { }'
                 type: 'contains') }
-                timeRange: { start: now - 1000, end: now + 1000 });
-            });'
+                timeRange: { start: now - 1000, end: now + 1000 },
+            };'
             expect(results.length).toBeGreaterThan(0);'}');
         test('should use search cache', (') => { }'
             const query = 'config'; }'
@@ -153,9 +153,9 @@ describe('EnhancedHistoryManager', () => {  let mockConsole: any,
             historyManager.addCommand('invalid.command', { success: false,');'
             historyManager.addCommand('config.get game.difficulty', { success: true )') }'
         }''
-        test('should calculate statistics correctly', () => {  const stats = historyManager.getStatistics(),
-            expect(stats.totalCommands).toBe(4),
-            expect(stats.sessionCommands).toBe(4),
+        test('should calculate statistics correctly', () => {  const stats = historyManager.getStatistics();
+            expect(stats.totalCommands).toBe(4);
+            expect(stats.sessionCommands).toBe(4);
             expect(stats.averageCommandLength).toBeGreaterThan(0) }'
             expect(stats.historySize).toBe(4););' }'
         }');'
@@ -168,10 +168,10 @@ describe('EnhancedHistoryManager', () => {  let mockConsole: any,
         test('should track error commands', () => {  ''
             const stats = historyManager.getStatistics(') }'
             expect(stats.errorCommands.has('invalid.command').toBe(true);');' }'
-            expect(stats.errorCommands.has('config.get'}).toBe(false');'
+            expect(stats.errorCommands.has('config.get'}.toBe(false');'
         }''
         test('should provide top commands', () => {  const stats = historyManager.getStatistics(),'
-            expect(stats.topCommands.length).toBeGreaterThan(0),
+            expect(stats.topCommands.length).toBeGreaterThan(0);
             expect(stats.topCommands[0][0]').toBe('config.get') }'
             expect(stats.topCommands[0][1]).toBe(2););' }'
         }');'
@@ -179,21 +179,21 @@ describe('EnhancedHistoryManager', () => {  let mockConsole: any,
     describe('exportHistory', () => {  ''
         beforeEach((') => { }'
             historyManager.addCommand('config.get game.scoring');' }'
-            historyManager.addCommand('game.pause'});'}');
+            historyManager.addCommand('game.pause'};'}');
         test('should export to JSON', (') => { }'
             const exported = historyManager.exportHistory('json'); }
-            const parsed = JSON.parse(exported});
-            expect(Array.isArray(parsed}).toBe(true);'
+            const parsed = JSON.parse(exported};
+            expect(Array.isArray(parsed}.toBe(true);'
             expect(parsed.length).toBe(2);
             expect(parsed[0].command').toBe('config.get game.scoring');'}');'
         test('should export to CSV', (') => {  ''
-            const exported = historyManager.exportHistory('csv'),
-            expect(exported.toContain('Command,Timestamp'),
+            const exported = historyManager.exportHistory('csv');
+            expect(exported.toContain('Command,Timestamp');
             expect(exported.toContain('config.get game.scoring'),' }'
             expect(exported.toContain('game.pause');' }'
         }');'
         test('should export to text', (') => {  ''
-            const exported = historyManager.exportHistory('text'),
+            const exported = historyManager.exportHistory('text');
             expect(exported.toContain('config.get game.scoring'),' }'
             expect(exported.toContain('game.pause');' }'
         }');'
@@ -221,7 +221,7 @@ describe('EnhancedHistoryManager', () => {  let mockConsole: any,
         }');'
         test('should validate imported entries', () => {  ''
             const importData = JSON.stringify([')' }'
-                { command: 'valid.command', timestamp: Date.now('})'
+                { command: 'valid.command', timestamp: Date.now('}'
                 { invalid: 'entry' }, // Invalid entry')]'
                 { command: 'another.valid', timestamp: Date.now() }']'
             ]');'
@@ -241,10 +241,10 @@ describe('EnhancedHistoryManager', () => {  let mockConsole: any,
     describe('Storage persistence', (') => {  ''
         test('should save history to localStorage', (') => { }'
             historyManager.addCommand('test.command'); }'
-            historyManager.saveHistory(});
+            historyManager.saveHistory(};
             expect(localStorage.setItem').toHaveBeenCalledWith(')';'
                 'debug-console-history-enhanced')';'
-                expect.any(String});'}');
+                expect.any(String};'}');
         test('should load history from localStorage', (') => {  const saveData = {'
                 history: [{ ''
                         id: 'test1', ','
@@ -269,11 +269,11 @@ describe('EnhancedHistoryManager', () => {  let mockConsole: any,
     }''
     describe('destroy', (') => {  ''
         test('should clean up properly', (') => {''
-            historyManager.addCommand('test.command'),
-            expect(historyManager.history.length).toBe(1),
-            expect(historyManager.searchIndex.size).toBeGreaterThan(0),
-            historyManager.destroy(),
+            historyManager.addCommand('test.command');
+            expect(historyManager.history.length).toBe(1);
+            expect(historyManager.searchIndex.size).toBeGreaterThan(0);
+            historyManager.destroy();
             expect(historyManager.history.length).toBe(0) }
             expect(historyManager.searchIndex.size).toBe(0);); }
-        });'
+        };'
     }'}');

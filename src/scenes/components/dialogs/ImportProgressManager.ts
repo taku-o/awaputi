@@ -5,24 +5,24 @@
  * Main Controller Patternの一部として設計
  */
 
-export interface ProgressStep { id: string,
+export interface ProgressStep { id: string;
     label: string;
     duration: number;
 
-export interface Layout { contentX: number,
+export interface Layout { contentX: number;
     contentY: number;
     contentWidth: number;
     buttonY: number;
     x: number;
     width: number;
 
-export interface ProgressStatus { currentStep: number,
+export interface ProgressStatus { currentStep: number;
     stepProgress: number;
     overallProgress: number;
     currentStepLabel: string;
     cancelled: boolean;
 
-export interface ComponentStatus { componentType: string,
+export interface ComponentStatus { componentType: string;
     totalSteps: number;
     currentStep: number;
     stepProgress: number;
@@ -31,18 +31,18 @@ export interface ComponentStatus { componentType: string,
     estimatedTimeRemaining: number;
 
 export interface MainController { data: {
-        ste,p: string,
-    importProgress: number,
+        ste,p: string;
+    importProgress: number;
         error?: string;
         processingText?: string;
         success?: boolean;
         parsedData?: any;;
-    textSettings: { contentFont: string,
-    contentColor: string,;
+    textSettings: { contentFont: string;
+    contentColor: string;
     importDataProcessor: {
         validateImportData(data: any): Promise<{ valid: boolean, error?: string;>;
-        checkDataIntegrity(data: any): { valid: boolean,, issues: string[],
-        restoreData(data: any): Promise<void>,;
+        checkDataIntegrity(data: any): { valid: boolean,, issues: string[];
+        restoreData(data: any): Promise<void>;
     setupButtons(): void;
 }
 
@@ -51,7 +51,7 @@ export class ImportProgressManager {
     private progressSteps: ProgressStep[];
     private currentStepIndex: number;
     private stepProgress: number;
-    private, cancelled: boolean,
+    private, cancelled: boolean;
     constructor(mainController: MainController) {
 
         this.mainController = mainController
@@ -77,22 +77,20 @@ export class ImportProgressManager {
         context.textAlign = 'center',
         context.textBaseline = 'top',
 
-        context.fillText('データをインポート中...', layout.x + layout.width / 2, y),
-        
+        context.fillText('データをインポート中...', layout.x + layout.width / 2, y);
         // プログレスバー
         const barWidth = layout.contentWidth * 0.8,
         const barHeight = 20,
         const barX = layout.x + (layout.width - barWidth) / 2,
         const barY = y + 40,
 
-        this.renderProgressBar(context, barX, barY, barWidth, barHeight),
+        this.renderProgressBar(context, barX, barY, barWidth, barHeight);
         ','
         // 処理内容を表示
         const processingText = this.mainController.data.processingText || 'データを処理中...',
         context.font = '12px sans-serif',
         context.fillStyle = '#6C757D',
-        context.fillText(processingText, layout.x + layout.width / 2, barY + 35),
-        
+        context.fillText(processingText, layout.x + layout.width / 2, barY + 35);
         // 詳細ステップを表示
         this.renderDetailedProgress(context, layout, barY + 60) }
 
@@ -101,19 +99,19 @@ export class ImportProgressManager {
      */''
     renderProgressBar(context: CanvasRenderingContext2D, x: number, y: number, width: number, height: number): void { // 背景
         context.fillStyle = '#E9ECEF',
-        context.fillRect(x, y, width, height),
+        context.fillRect(x, y, width, height);
         ','
         // 進捗
         context.fillStyle = this.cancelled ? '#DC3545' : '#007BFF',
 
         const progress = this.mainController.data.importProgress || 0,
-        context.fillRect(x, y, width * progress, height),
+        context.fillRect(x, y, width * progress, height);
         ','
         // 枠線
         context.strokeStyle = '#DEE2E6',
 
         context.lineWidth = 1,
-        context.strokeRect(x, y, width, height),
+        context.strokeRect(x, y, width, height);
         ','
         // パーセンテージ表示
         context.fillStyle = '#FFFFFF',
@@ -121,7 +119,7 @@ export class ImportProgressManager {
         context.textAlign = 'center',
         context.textBaseline = 'middle',
         const percentage = Math.round(progress * 100) }
-        context.fillText(`${percentage}%`, x + width / 2, y + height / 2});
+        context.fillText(`${percentage}%`, x + width / 2, y + height / 2};
     }
 
     /**
@@ -139,14 +137,14 @@ export class ImportProgressManager {
             
             // ステップアイコン
             const iconX = layout.contentX + 20,
-            this.renderStepIcon(context, iconX, stepY + 10, isCompleted, isCurrentStep),
+            this.renderStepIcon(context, iconX, stepY + 10, isCompleted, isCurrentStep);
             ','
             // ステップテキスト
             context.font = '12px sans-serif',
             context.fillStyle = isCompleted ? '#28A745' : isCurrentStep ? this.mainController.textSettings.contentColor: '#6C757D',
             context.textAlign = 'left',
             context.textBaseline = 'middle',
-            context.fillText(step.label, iconX + 25, stepY + 10),
+            context.fillText(step.label, iconX + 25, stepY + 10);
             ','
             // 現在のステップの小さなプログレスバー
             if (isCurrentStep && this.stepProgress > 0) {
@@ -156,8 +154,7 @@ export class ImportProgressManager {
                 const miniBarY = stepY + 18,
 
                 context.fillStyle = '#E9ECEF',
-                context.fillRect(miniBarX, miniBarY, miniBarWidth, miniBarHeight),
-
+                context.fillRect(miniBarX, miniBarY, miniBarWidth, miniBarHeight);
                 context.fillStyle = '#007BFF' }
                 context.fillRect(miniBarX, miniBarY, miniBarWidth * this.stepProgress, miniBarHeight); }
 }
@@ -171,42 +168,39 @@ export class ImportProgressManager {
         if (completed) {
             // 完了アイコン（チェックマーク）
             context.fillStyle = '#28A745',
-            context.beginPath(),
-
-            context.arc(x, y, radius, 0, 2 * Math.PI),
+            context.beginPath();
+            context.arc(x, y, radius, 0, 2 * Math.PI);
             context.fill('',
             context.strokeStyle = '#FFFFFF')
             context.lineWidth = 2)
-            context.beginPath(),
-            context.moveTo(x - 3, y),
-            context.lineTo(x - 1, y + 2),
+            context.beginPath();
+            context.moveTo(x - 3, y);
+            context.lineTo(x - 1, y + 2);
             context.lineTo(x + 3, y - 2) }
 
             context.stroke();' }'
 
         } else if (current) { // 現在のステップ（回転する円）
             context.fillStyle = '#007BFF',
-            context.beginPath(),
-            context.arc(x, y, radius, 0, 2 * Math.PI),
-            context.fill(),
+            context.beginPath();
+            context.arc(x, y, radius, 0, 2 * Math.PI);
+            context.fill();
             ','
             // 回転アニメーション効果
             const angle = (Date.now() / 100) % (2 * Math.PI),
             context.strokeStyle = '#FFFFFF',
             context.lineWidth = 2,
-            context.beginPath(),
-
-            context.arc(x, y, radius - 2, angle, angle + Math.PI),
+            context.beginPath();
+            context.arc(x, y, radius - 2, angle, angle + Math.PI);
             context.stroke()','
             context.fillStyle = '#E9ECEF')
-            context.beginPath(),
-
-            context.arc(x, y, radius, 0, 2 * Math.PI),
+            context.beginPath();
+            context.arc(x, y, radius, 0, 2 * Math.PI);
             context.fill('',
             context.strokeStyle = '#DEE2E6')
             context.lineWidth = 1)
-            context.beginPath(),
-            context.arc(x, y, radius, 0, 2 * Math.PI),
+            context.beginPath();
+            context.arc(x, y, radius, 0, 2 * Math.PI);
             context.stroke() }
     }
 
@@ -269,16 +263,13 @@ export class ImportProgressManager {
         switch(step.id) {
 
             case 'validation':','
-                await this.executeValidationStep(baseProgress, stepWeight),
-
+                await this.executeValidationStep(baseProgress, stepWeight);
                 break,
             case 'parsing':','
-                await this.executeParsingStep(baseProgress, stepWeight),
-
+                await this.executeParsingStep(baseProgress, stepWeight);
                 break,
             case 'restoration':','
-                await this.executeRestorationStep(baseProgress, stepWeight),
-
+                await this.executeRestorationStep(baseProgress, stepWeight);
                 break,
             case 'completion':,
                 await this.executeCompletionStep(baseProgress, stepWeight) }
@@ -288,7 +279,7 @@ export class ImportProgressManager {
     /**
      * データ検証ステップを実行
      */
-    private async executeValidationStep(baseProgress: number, stepWeight: number): Promise<void> { this.stepProgress = 0;
+    private async executeValidationStep(baseProgress: number, stepWeight: number): Promise<void> { this.stepProgress = 0,
         
         // データバリデーション
         for(let, i = 0, i <= 10, i++) {
@@ -306,7 +297,7 @@ export class ImportProgressManager {
     /**
      * データ解析ステップを実行
      */
-    private async executeParsingStep(baseProgress: number, stepWeight: number): Promise<void> { this.stepProgress = 0;
+    private async executeParsingStep(baseProgress: number, stepWeight: number): Promise<void> { this.stepProgress = 0,
         
         // データ構造解析
         for(let, i = 0, i <= 10, i++) {
@@ -327,7 +318,7 @@ export class ImportProgressManager {
     /**
      * データ復元ステップを実行
      */
-    private async executeRestorationStep(baseProgress: number, stepWeight: number): Promise<void> { this.stepProgress = 0;
+    private async executeRestorationStep(baseProgress: number, stepWeight: number): Promise<void> { this.stepProgress = 0,
         
         const totalSubSteps = 20,
         
@@ -352,7 +343,7 @@ export class ImportProgressManager {
     /**
      * 完了ステップを実行
      */
-    private async executeCompletionStep(baseProgress: number, stepWeight: number): Promise<void> { this.stepProgress = 0;
+    private async executeCompletionStep(baseProgress: number, stepWeight: number): Promise<void> { this.stepProgress = 0,
         
         for(let, i = 0, i <= 5, i++) {
         
@@ -379,8 +370,8 @@ export class ImportProgressManager {
     /**
      * 進捗の手動設定
      */
-    setProgress(stepIndex: number, stepProgress: number, overallProgress: number): void { this.currentStepIndex = Math.max(0, Math.min(stepIndex, this.progressSteps.length - 1),
-        this.stepProgress = Math.max(0, Math.min(stepProgress, 1),
+    setProgress(stepIndex: number, stepProgress: number, overallProgress: number): void { this.currentStepIndex = Math.max(0, Math.min(stepIndex, this.progressSteps.length - 1);
+        this.stepProgress = Math.max(0, Math.min(stepProgress, 1);
         this.mainController.data.importProgress = Math.max(0, Math.min(overallProgress, 1) }
 
     /**
@@ -401,8 +392,7 @@ export class ImportProgressManager {
     /**
      * 遅延ユーティリティ
      */)
-    private delay(ms: number): Promise<void> { return new Promise(resolve => setTimeout(resolve, ms),
-
+    private delay(ms: number): Promise<void> { return new Promise(resolve => setTimeout(resolve, ms);
     /**
      * 進捗ステップの追加
      */
@@ -433,9 +423,9 @@ export class ImportProgressManager {
      * ステータス取得
      */''
     getStatus('''
-            componentType: 'ImportProgressManager';
-            totalSteps: this.progressSteps.length;
-            currentStep: this.currentStepIndex;
+            componentType: 'ImportProgressManager',
+            totalSteps: this.progressSteps.length,
+            currentStep: this.currentStepIndex,
             stepProgress: this.stepProgress);
             overallProgress: this.mainController.data.importProgress || 0','
     cancelled: this.cancelled,

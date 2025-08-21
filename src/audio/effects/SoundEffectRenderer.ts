@@ -10,7 +10,7 @@ import { getConfigurationManager  } from '../../core/ConfigurationManager';
 /**
  * エンベロープ設定インターフェース
  */
-interface EnvelopeConfig { attack: number,
+interface EnvelopeConfig { attack: number;
     decay: number;
     sustain: number;
     release: number;
@@ -24,27 +24,27 @@ interface HarmonicsConfig { harmonics?: number[];
  * モジュレーション設定インターフェース
  */
 interface ModulationConfig { modulation?: {
-        rat,e: number,
-    depth: number,
+        rat,e: number;
+    depth: number;
 
 /**
  * フィルタースイープ設定インターフェース
  */
 interface FilterSweepConfig { filterSweep?: {
-        start: number,
-    end: number,
+        start: number;
+    end: number;
 
 /**
  * ピッチスライド設定インターフェース
  */
 interface PitchSlideConfig { pitchSlide?: {
-        start: number,
-    end: number,
+        start: number;
+    end: number;
 
 /**
  * サウンド設定ベースインターフェース
  */
-interface BaseSoundConfig { baseFreq: number,
+interface BaseSoundConfig { baseFreq: number;
 
     duration: number;
     waveType: OscillatorType | 'noise';
@@ -63,14 +63,14 @@ interface UISoundConfig extends BaseSoundConfig { chord?: number[];
 /**
  * コンボサウンド設定インターフェース
  */
-interface ComboSoundConfig { baseFreq: number,
+interface ComboSoundConfig { baseFreq: number;
     duration: number;
     harmonics: number[];
 
 /**
  * 実績サウンド設定インターフェース
  */
-interface AchievementSoundConfig { baseFreq: number,
+interface AchievementSoundConfig { baseFreq: number;
     duration: number;
     waveType: OscillatorType | 'noise';
     melody: number[];
@@ -78,7 +78,7 @@ interface AchievementSoundConfig { baseFreq: number,
 /**
  * サウンド生成設定インターフェース
  */
-interface GenerationConfig { sampleRate: number,
+interface GenerationConfig { sampleRate: number;
     defaultDuration: number;
     fadeTime: number;
     maxFrequency: number;
@@ -102,14 +102,14 @@ type AchievementRarity = 'common' | 'rare' | 'epic' | 'legendary';
 /**
  * バリエーションオプションインターフェース
  */
-interface VariationOptions { pitchShift: number,
+interface VariationOptions { pitchShift: number;
     timeStretch: number;
     volumeVariation: number;
 
 /**
  * レンダリング統計インターフェース
  */
-interface RenderingStatistics { supportedBubbleTypes: number,
+interface RenderingStatistics { supportedBubbleTypes: number;
     supportedUITypes: number;
     supportedComboLevels: number;
     supportedAchievementRarities: number;
@@ -212,7 +212,8 @@ export class SoundEffectRenderer {
         // UIサウンド設定
         this.uiSoundConfigs = { click: { 
                 baseFreq: 1000,
-
+                baseFreq: 1000,
+        };
                 duration: 0.1,
                 waveType: 'square'
             }
@@ -247,7 +248,8 @@ export class SoundEffectRenderer {
         // 実績サウンド設定
         this.achievementSoundConfigs = { common: { 
                 baseFreq: 600,
-
+                baseFreq: 600,
+        };
                 duration: 0.8,
                 waveType: 'triangle',
     melody: [1, 1.25, 1.5, 2] },
@@ -274,7 +276,7 @@ export class SoundEffectRenderer {
 
                 console.warn(`[SoundEffectRenderer] Unknown bubble type: ${bubbleType}`},' }'
 
-                return this.generateBubbleSound('normal', variation});
+                return this.generateBubbleSound('normal', variation};
             }
             
             const duration = config.duration;
@@ -294,11 +296,9 @@ export class SoundEffectRenderer {
             // サウンド生成
             for(let, i = 0; i < channelData.length; i++) {
                 const time = i / this.generationConfig.sampleRate,
-                let amplitude = this.calculateEnvelope(i, attackSamples, decaySamples, sustainSamples, releaseSamples, channelData.length),
-                
+                let amplitude = this.calculateEnvelope(i, attackSamples, decaySamples, sustainSamples, releaseSamples, channelData.length);
                 // 基本波形
-                let sample = this.generateWaveform(config.waveType, baseFreq, time),
-                
+                let sample = this.generateWaveform(config.waveType, baseFreq, time);
                 // ハーモニクス追加
                 if (config.harmonics) {
                     config.harmonics.forEach((harmonic, index) => { 
@@ -306,7 +306,7 @@ export class SoundEffectRenderer {
                             const harmonicFreq = baseFreq * harmonic }
                             const harmonicAmp = 1 / (index + 1); // 高次倍音ほど小さく }
                             sample += this.generateWaveform(config.waveType, harmonicFreq, time) * harmonicAmp; }
-});
+};
                     sample /= config.harmonics.length; // 正規化
                 }
                 
@@ -333,8 +333,7 @@ export class SoundEffectRenderer {
 
         } catch (error) {
             this.errorHandler.handleError(error, 'SoundEffectRenderer.generateBubbleSound),'
-            return this.generateFallbackSound(0.3),
-    
+            return this.generateFallbackSound(0.3);
     /**
      * UIサウンドを生成
      */
@@ -344,7 +343,7 @@ export class SoundEffectRenderer {
     
 }
                 console.warn(`[SoundEffectRenderer] Unknown UI sound type: ${uiType}`} }
-                return this.generateFallbackSound(0.1});
+                return this.generateFallbackSound(0.1};
             }
             
             const duration = config.duration;
@@ -354,8 +353,7 @@ export class SoundEffectRenderer {
             for(let, i = 0; i < channelData.length; i++) {
             
                 const time = i / this.generationConfig.sampleRate,
-                let amplitude = this.calculateSimpleEnvelope(i, channelData.length, config.envelope),
-                
+                let amplitude = this.calculateSimpleEnvelope(i, channelData.length, config.envelope);
                 let sample = 0,
                 
                 // コード音の場合
@@ -364,7 +362,7 @@ export class SoundEffectRenderer {
 }
                     config.chord.forEach(ratio => { ) }
                         sample += this.generateWaveform(config.waveType, config.baseFreq * ratio, time); }
-                    });
+                    };
                     sample /= config.chord.length;
                 } else { sample = this.generateWaveform(config.waveType, config.baseFreq, time) }
                 
@@ -375,22 +373,19 @@ export class SoundEffectRenderer {
 
         } catch (error) {
             this.errorHandler.handleError(error, 'SoundEffectRenderer.generateUISound),'
-            return this.generateFallbackSound(0.1),
-    
+            return this.generateFallbackSound(0.1);
     /**
      * コンボサウンドを生成
      */
     generateComboSound(level: number): AudioBuffer | null { try {
             const config = this.comboSoundConfigs[level] || this.comboSoundConfigs[5],
             const duration = config.duration,
-            const buffer = this.audioContext.createBuffer(1, this.generationConfig.sampleRate * duration, this.generationConfig.sampleRate),
-            const channelData = buffer.getChannelData(0),
-            
+            const buffer = this.audioContext.createBuffer(1, this.generationConfig.sampleRate * duration, this.generationConfig.sampleRate);
+            const channelData = buffer.getChannelData(0);
             for(let, i = 0, i < channelData.length, i++) {
             
                 const time = i / this.generationConfig.sampleRate,
-                let amplitude = this.calculateSimpleEnvelope(i, channelData.length),
-                
+                let amplitude = this.calculateSimpleEnvelope(i, channelData.length);
                 let sample = 0,
                 
                 // ハーモニクスでコンボの豪華さを表現
@@ -400,7 +395,7 @@ export class SoundEffectRenderer {
                     const harmonicAmp = 1 / (index + 1'); }'
 
                     sample += this.generateWaveform('sine', harmonicFreq, time) * harmonicAmp; }
-                });
+                };
                 
                 sample /= config.harmonics.length;
                 channelData[i] = sample * amplitude * 0.25;
@@ -410,29 +405,27 @@ export class SoundEffectRenderer {
 
         } catch (error) {
             this.errorHandler.handleError(error, 'SoundEffectRenderer.generateComboSound),'
-            return this.generateFallbackSound(0.3),
-    
+            return this.generateFallbackSound(0.3);
     /**
      * 実績サウンドを生成
      */
     generateAchievementSound(rarity: AchievementRarity): AudioBuffer | null { try {
             const config = this.achievementSoundConfigs[rarity] || this.achievementSoundConfigs.common,
             const duration = config.duration,
-            const buffer = this.audioContext.createBuffer(1, this.generationConfig.sampleRate * duration, this.generationConfig.sampleRate),
-            const channelData = buffer.getChannelData(0),
-            
+            const buffer = this.audioContext.createBuffer(1, this.generationConfig.sampleRate * duration, this.generationConfig.sampleRate);
+            const channelData = buffer.getChannelData(0);
             const melody = config.melody,
             const noteLength = duration / melody.length,
             
             for(let, i = 0, i < channelData.length, i++) {
             
                 const time = i / this.generationConfig.sampleRate,
-                const noteIndex = Math.floor(time / noteLength),
+                const noteIndex = Math.floor(time / noteLength);
                 const noteTime = (time % noteLength) / noteLength,
                 
                 if (noteIndex < melody.length) {
                     const frequency = config.baseFreq * melody[noteIndex],
-                    let amplitude = this.calculateNoteEnvelope(noteTime),
+                    let amplitude = this.calculateNoteEnvelope(noteTime);
                     let sample = this.generateWaveform(config.waveType, frequency, time) }
                     channelData[i] = sample * amplitude * 0.3; }
                 } else { channelData[i] = 0 }
@@ -442,8 +435,7 @@ export class SoundEffectRenderer {
 
         } catch (error) {
             this.errorHandler.handleError(error, 'SoundEffectRenderer.generateAchievementSound',
-            return this.generateFallbackSound(0.8),
-    
+            return this.generateFallbackSound(0.8);
     /**
      * 波形を生成'
      */''
@@ -452,8 +444,7 @@ export class SoundEffectRenderer {
         switch(waveType) {
 
             case 'sine':','
-                return Math.sin(omega),
-
+                return Math.sin(omega);
             case 'square':','
                 return Math.sin(omega) > 0 ? 1 : -1,
 
@@ -468,7 +459,6 @@ export class SoundEffectRenderer {
                 return Math.random() * 2 - 1
 }
             default: return Math.sin(omega);
-    
     /**
      * エンベロープを計算
      */
@@ -512,9 +502,8 @@ export class SoundEffectRenderer {
      * フォールバックサウンドを生成
      */
     private generateFallbackSound(duration: number): AudioBuffer | null { try {
-            const buffer = this.audioContext.createBuffer(1, this.generationConfig.sampleRate * duration, this.generationConfig.sampleRate),
-            const channelData = buffer.getChannelData(0),
-            
+            const buffer = this.audioContext.createBuffer(1, this.generationConfig.sampleRate * duration, this.generationConfig.sampleRate);
+            const channelData = buffer.getChannelData(0);
             for(let, i = 0, i < channelData.length, i++) {
             
                 const time = i / this.generationConfig.sampleRate,
@@ -529,7 +518,7 @@ export class SoundEffectRenderer {
             return buffer;
 
         } catch (error) {
-            console.error('[SoundEffectRenderer] Failed to generate fallback sound:', error),
+            console.error('[SoundEffectRenderer] Failed to generate fallback sound:', error);
             return null,
     
     /**
@@ -540,12 +529,12 @@ export class SoundEffectRenderer {
         for(let, i = 0, i < variationCount, i++) {
         
             try {
-                const variation = this.createVariation(baseBuffer, {),
+                const variation = this.createVariation(baseBuffer, {);
                     pitchShift: (Math.random() - 0.5) * 0.2, // ±10%のピッチ変化,
                     timeStretch: 1 + (Math.random() - 0.5) * 0.1, // ±5%の時間変化
         }
                     volumeVariation: 0.8 + Math.random() * 0.4 // 80-120%の音量変化 
-    });
+    };
                 ';'
 
                 variations.push(variation);'} catch (error) {'
@@ -568,7 +557,7 @@ export class SoundEffectRenderer {
         for(let, i = 0; i < targetData.length; i++) {
         
             // タイムストレッチ
-            const sourceIndex = Math.floor(i / timeStretch),
+            const sourceIndex = Math.floor(i / timeStretch);
             if (sourceIndex < sourceData.length) {
                 let sample = sourceData[sourceIndex],
                 
@@ -594,7 +583,7 @@ export class SoundEffectRenderer {
      * 設定を更新
      */
     updateGenerationConfig(newConfig: Partial<GenerationConfig>): void { ''
-        Object.assign(this.generationConfig, newConfig),
+        Object.assign(this.generationConfig, newConfig);
         console.log('[SoundEffectRenderer] Generation configuration updated:', newConfig }
     
     /**
@@ -602,7 +591,7 @@ export class SoundEffectRenderer {
      */
     updateBubbleSoundConfig(bubbleType: BubbleType, config: Partial<BubbleSoundConfig>): void { if (this.bubbleSoundConfigs[bubbleType]) {
             Object.assign(this.bubbleSoundConfigs[bubbleType], config) }
-            console.log(`[SoundEffectRenderer] Bubble sound config updated for ${bubbleType}:`, config});
+            console.log(`[SoundEffectRenderer] Bubble sound config updated for ${bubbleType}:`, config};
         }
     }
     
@@ -613,6 +602,6 @@ export class SoundEffectRenderer {
             supportedUITypes: Object.keys(this.uiSoundConfigs).length,
             supportedComboLevels: Object.keys(this.comboSoundConfigs).length,
             supportedAchievementRarities: Object.keys(this.achievementSoundConfigs).length,
-    sampleRate: this.generationConfig.sampleRate };
+    sampleRate: this.generationConfig.sampleRate },
             defaultDuration: this.generationConfig.defaultDuration 
     }'}'

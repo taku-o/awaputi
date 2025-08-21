@@ -6,43 +6,43 @@ interface ViewportCullerConfig { enabled?: boolean,
     gridSize?: number;
     historySize?: number;
 
-interface Viewport { x: number,
+interface Viewport { x: number;
     y: number;
     width: number;
     height: number;
 
-interface Frustum { left: number,
+interface Frustum { left: number;
     right: number;
     top: number;
     bottom: number;
     near: number;
     far: number;
 
-interface ObjectBounds { x: number,
+interface ObjectBounds { x: number;
     y: number;
     width: number;
     height: number;
 
-interface RenderableObject { id: string,
+interface RenderableObject { id: string;
     bounds: ObjectBounds;
     metadata: Record<string, any>;
     visible: boolean;
     lastCullCheck: number;
     gridCells: Set<string>;
 
-interface CullingStats { totalObjects: number,
+interface CullingStats { totalObjects: number;
     culledObjects: number;
     cullingEfficiency: number;
     renderTime: number;
     cullingTime: number;
 
-interface PerformanceEntry { timestamp: number,
+interface PerformanceEntry { timestamp: number;
     cullingTime: number;
     cullingEfficiency: number;
     totalObjects: number;
     culledObjects: number;
 
-interface VisibleObjectData { id: string,
+interface VisibleObjectData { id: string;
     bounds: ObjectBounds;
     metadata: Record<string, any> }
 
@@ -63,7 +63,7 @@ export class AdvancedViewportCuller {
     private frustum: Frustum;
     private stats: CullingStats;
     private performanceHistory: PerformanceEntry[];
-    private, historySize: number,
+    private, historySize: number;
     constructor(config: ViewportCullerConfig = {) {
 
         this.errorHandler = getErrorHandler();
@@ -85,14 +85,14 @@ export class AdvancedViewportCuller {
         this.visibilityCache = new Map<string, boolean>();
         
         // Frustum culling
-        this.frustum = { left: 0, right: 0, top: 0, bottom: 0,
+        this.frustum = { left: 0, right: 0, top: 0, bottom: 0;
             near: 0, far: 1000  };
         
         // Statistics
-        this.stats = { totalObjects: 0,
-            culledObjects: 0,
-            cullingEfficiency: 0,
-            renderTime: 0,
+        this.stats = { totalObjects: 0;
+            culledObjects: 0;
+            cullingEfficiency: 0;
+            renderTime: 0;
     cullingTime: 0  };
         // Performance tracking
         this.performanceHistory = [];
@@ -106,11 +106,11 @@ export class AdvancedViewportCuller {
             this.viewport = { x, y, width, height };
             
             // Update frustum
-            this.frustum = { left: x - this.cullingMargin,
-                right: x + width + this.cullingMargin,
-                top: y - this.cullingMargin,
-                bottom: y + height + this.cullingMargin,
-                near: 0,
+            this.frustum = { left: x - this.cullingMargin;
+                right: x + width + this.cullingMargin;
+                top: y - this.cullingMargin;
+                bottom: y + height + this.cullingMargin;
+                near: 0;
     far: 1000  };
             // Clear visibility cache when viewport changes
             this.visibilityCache.clear();
@@ -125,7 +125,7 @@ export class AdvancedViewportCuller {
     /**
      * Add object to culling system
      */
-    addObject(id: string, bounds: ObjectBounds, metadata: Record<string, any> = {}): void { if (!this.enabled) return,
+    addObject(id: string, bounds: ObjectBounds, metadata: Record<string, any> = {}: void { if (!this.enabled) return,
         
         try {
             const object: RenderableObject = {
@@ -134,7 +134,7 @@ export class AdvancedViewportCuller {
                 metadata,
                 visible: false,
                 lastCullCheck: 0,
-    gridCells: new Set<string>() };
+    gridCells: new Set<string>() },
             
             this.renderableObjects.set(id, object);
             this._assignToGrid(object);
@@ -147,10 +147,10 @@ export class AdvancedViewportCuller {
      * Remove object from culling system
      */
     removeObject(id: string): void { try {
-            const object = this.renderableObjects.get(id),
+            const object = this.renderableObjects.get(id);
             if (object) {
-                this._removeFromGrid(object),
-                this.renderableObjects.delete(id),
+                this._removeFromGrid(object);
+                this.renderableObjects.delete(id);
                 this.culledObjects.delete(id) }
 
                 this.visibilityCache.delete(id);' }'
@@ -163,14 +163,13 @@ export class AdvancedViewportCuller {
      * Update object bounds
      */
     updateObject(id: string, newBounds: ObjectBounds): void { try {
-            const object = this.renderableObjects.get(id),
+            const object = this.renderableObjects.get(id);
             if (object) {
     
 }
                 this._removeFromGrid(object); }
                 object.bounds = { ...newBounds,
-                this._assignToGrid(object),
-                
+                this._assignToGrid(object);
                 // Invalidate cached visibility
                 this.visibilityCache.delete(id),'} catch (error) {'
             this.errorHandler.logError('Failed to update object in culler', error) }
@@ -185,15 +184,14 @@ export class AdvancedViewportCuller {
         const startTime = performance.now();
         const visibleObjects: string[] = [],
         
-        try { this.culledObjects.clear(),
-            
+        try { this.culledObjects.clear();
             // Use spatial grid for efficient culling
-            const relevantCells = this._getRelevantGridCells(),
+            const relevantCells = this._getRelevantGridCells();
             const objectsToCheck = new Set<string>(),
             
             // Collect objects from relevant grid cells
             for (const cellKey of relevantCells) {
-                const cell = this.spatialGrid.get(cellKey),
+                const cell = this.spatialGrid.get(cellKey);
                 if (cell) {
                     for (const objectId of cell) {
             }
@@ -203,7 +201,7 @@ export class AdvancedViewportCuller {
             
             // Perform visibility test on collected objects
             for (const objectId of objectsToCheck) {
-                const object = this.renderableObjects.get(objectId),
+                const object = this.renderableObjects.get(objectId);
                 if (object && this._isVisible(object) {
                     object.visible = true }
                     visibleObjects.push(objectId); }
@@ -226,13 +224,12 @@ export class AdvancedViewportCuller {
             return visibleObjects;
 
         } catch (error) {
-            this.errorHandler.logError('Failed to cull objects', error),
-            return Array.from(this.renderableObjects.keys(),
-    
+            this.errorHandler.logError('Failed to cull objects', error);
+            return Array.from(this.renderableObjects.keys();
     /**
      * Check if specific object is visible
      */
-    isObjectVisible(id: string): boolean { const object = this.renderableObjects.get(id),
+    isObjectVisible(id: string): boolean { const object = this.renderableObjects.get(id);
         return object ? object.visible: false 
     /**
      * Get all visible objects
@@ -260,7 +257,7 @@ export class AdvancedViewportCuller {
             culledObjects: 0,
             cullingEfficiency: 0,
             renderTime: 0,
-    cullingTime: 0 };
+    cullingTime: 0 },
         this.performanceHistory = [];
     }
     
@@ -281,8 +278,8 @@ export class AdvancedViewportCuller {
      * Assign object to spatial grid cells
      */
     private _assignToGrid(object: RenderableObject): void { const bounds = object.bounds,
-        const startX = Math.floor(bounds.x / this.gridSize),
-        const startY = Math.floor(bounds.y / this.gridSize),
+        const startX = Math.floor(bounds.x / this.gridSize);
+        const startY = Math.floor(bounds.y / this.gridSize);
         const endX = Math.floor((bounds.x + bounds.width) / this.gridSize),
         const endY = Math.floor((bounds.y + bounds.height) / this.gridSize),
         
@@ -303,9 +300,9 @@ export class AdvancedViewportCuller {
      * Remove object from spatial grid cells
      */
     private _removeFromGrid(object: RenderableObject): void { for (const cellKey of object.gridCells) {
-            const cell = this.spatialGrid.get(cellKey),
+            const cell = this.spatialGrid.get(cellKey);
             if (cell) {
-                cell.delete(object.id),
+                cell.delete(object.id);
                 if (cell.size === 0) {
             }
                     this.spatialGrid.delete(cellKey); }
@@ -320,16 +317,15 @@ export class AdvancedViewportCuller {
     private _getRelevantGridCells(): Set<string> { const cells = new Set<string>(),
         const viewport = this.frustum,
         
-        const startX = Math.floor(viewport.left / this.gridSize),
-        const startY = Math.floor(viewport.top / this.gridSize),
-        const endX = Math.floor(viewport.right / this.gridSize),
-        const endY = Math.floor(viewport.bottom / this.gridSize),
-        
+        const startX = Math.floor(viewport.left / this.gridSize);
+        const startY = Math.floor(viewport.top / this.gridSize);
+        const endX = Math.floor(viewport.right / this.gridSize);
+        const endY = Math.floor(viewport.bottom / this.gridSize);
         for(let, x = startX, x <= endX, x++) {
     
 }
             for (let, y = startY; y <= endY; y++) { }
-                cells.add(`${x},${y}`});
+                cells.add(`${x},${y}`};
             }
         }
         
@@ -345,11 +341,11 @@ export class AdvancedViewportCuller {
      * Track performance metrics
      */
     private _trackPerformance(): void { const entry: PerformanceEntry = {
-            timestamp: Date.now(),
+            timestamp: Date.now();
             cullingTime: this.stats.cullingTime,
             cullingEfficiency: this.stats.cullingEfficiency,
             totalObjects: this.stats.totalObjects,
-    culledObjects: this.stats.culledObjects };
+    culledObjects: this.stats.culledObjects },
         this.performanceHistory.push(entry);
         
         if (this.performanceHistory.length > this.historySize) {

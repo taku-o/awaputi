@@ -27,7 +27,7 @@ const mockGameEngine = {
 // Mock DOM environment
 global.window = { 
     addEventListener: jest.fn(
-        removeEventListener: jest.fn( };
+        removeEventListener: jest.fn( },
 global.document = {
     addEventListener: jest.fn(
         removeEventListener: jest.fn()' };'
@@ -37,23 +37,23 @@ describe('Unified Help Screen Access Integration Tests', () => {
     
     beforeEach(() => {
         // Clear all mocks
-        jest.clearAllMocks(),
+        jest.clearAllMocks();
         // Reset scene manager mocks
         mockGameEngine.sceneManager.switchScene.mockReturnValue(true'),'
-        mockGameEngine.sceneManager.getCurrentScene.mockReturnValue({ constructor: { name: 'MenuScene' } });
+        mockGameEngine.sceneManager.getCurrentScene.mockReturnValue({ constructor: { name: 'MenuScene' } },
         // Initialize components
         navigationContextManager = new NavigationContextManager(mockGameEngine);
         keyboardShortcutRouter = new KeyboardShortcutRouter(mockGameEngine);
-    });
+    };
     afterEach(() => {
         // Cleanup
-        navigationContextManager? .cleanup(),
+        navigationContextManager? .cleanup();
         keyboardShortcutRouter?.cleanup() }');'
     describe('Main Menu to Help Navigation', (') => {'
         test('should navigate from main menu to help scene successfully', (') => {'
             // Arrange
             mockGameEngine.sceneManager.getCurrentScene.mockReturnValue({ : undefined
-                constructor: { name: 'MenuScene' });
+                constructor: { name: 'MenuScene' },
             }');'
             // Act
             const success = keyboardShortcutRouter.handleHelpShortcut('MenuScene');
@@ -65,9 +65,9 @@ describe('Unified Help Screen Access Integration Tests', () => {
             // Arrange
             mockGameEngine.sceneManager.switchScene.mockReturnValue(false'),'
             // Act
-            const success = keyboardShortcutRouter.handleHelpShortcut('MenuScene'),
+            const success = keyboardShortcutRouter.handleHelpShortcut('MenuScene');
             // Assert
-            expect(success.toBe(false),
+            expect(success.toBe(false);
             expect(mockGameEngine.sceneManager.switchScene).toHaveBeenCalled() }');'
     }
     describe('H Key Shortcut from Different Scenes', (') => {'
@@ -83,7 +83,7 @@ describe('Unified Help Screen Access Integration Tests', () => {
             // Arrange
             mockGameEngine.sceneManager.getCurrentScene.mockReturnValue({
                 constructor: { name: sceneName,);
-            });
+            };
             // Act
             const success = keyboardShortcutRouter.handleHelpShortcut(sceneName);
             // Assert - Core requirement: H key should navigate to help from any scene
@@ -93,18 +93,18 @@ describe('Unified Help Screen Access Integration Tests', () => {
         test('should handle unknown source scenes', (') => {'
             // Arrange
             mockGameEngine.sceneManager.getCurrentScene.mockReturnValue({
-                constructor: { name: 'UnknownScene' });
-            });
+                constructor: { name: 'UnknownScene' },
+            };
             // Act & Assert - Should not throw
             expect((') => {'
-                keyboardShortcutRouter.handleHelpShortcut('UnknownScene') }).not.toThrow();
+                keyboardShortcutRouter.handleHelpShortcut('UnknownScene') }.not.toThrow();
         }
     }');'
     describe('F1 Contextual Help Access', (') => {'
         test('should handle F1 key for contextual help', (') => {'
             // Arrange
             mockGameEngine.sceneManager.getCurrentScene.mockReturnValue({
-                constructor: { name: 'GameScene' });
+                constructor: { name: 'GameScene' },
             }');'
             // Act
             const success = keyboardShortcutRouter.handleContextualHelp('GameScene');
@@ -117,17 +117,17 @@ describe('Unified Help Screen Access Integration Tests', () => {
             const testScenes = ['GameScene', 'SettingsScene', 'MenuScene'],
             
             testScenes.forEach(sceneName => {
-                // Setup),
-                jest.clearAllMocks(),
+                // Setup);
+                jest.clearAllMocks();
                 mockGameEngine.sceneManager.getCurrentScene.mockReturnValue({
                     constructor: { name: sceneName,);
-                });
+                };
                 // Act
                 const success = keyboardShortcutRouter.handleContextualHelp(sceneName);
                 // Assert
                 expect(success.toBe(true);
                 expect(mockGameEngine.sceneManager.switchScene').toHaveBeenCalledWith('help');'
-            });
+            };
         }
     }');'
     describe('Navigation Context Management', (') => {'
@@ -137,22 +137,22 @@ describe('Unified Help Screen Access Integration Tests', () => {
             const accessMethod = 'keyboard_h',
             
             // Act
-            navigationContextManager.pushContext(sourceScene, accessMethod),
+            navigationContextManager.pushContext(sourceScene, accessMethod);
             const returnDestination = navigationContextManager.getReturnDestination('),'
             // Assert - Core requirement: context should be preserved
             expect(returnDestination.toBe('menu') }');'
         test('should handle context stack operations', (') => {'
             // Arrange
-            navigationContextManager.pushContext('MenuScene', 'keyboard_h'),
+            navigationContextManager.pushContext('MenuScene', 'keyboard_h');
             const stackDepth1 = navigationContextManager.getStackDepth('),'
-            navigationContextManager.pushContext('SettingsScene', 'keyboard_s'),
-            const stackDepth2 = navigationContextManager.getStackDepth(),
+            navigationContextManager.pushContext('SettingsScene', 'keyboard_s');
+            const stackDepth2 = navigationContextManager.getStackDepth();
             // Act
-            navigationContextManager.popContext(),
-            const stackDepth3 = navigationContextManager.getStackDepth(),
+            navigationContextManager.popContext();
+            const stackDepth3 = navigationContextManager.getStackDepth();
             // Assert - Test stack operations
-            expect(stackDepth1.toBe(1),
-            expect(stackDepth2.toBe(2),
+            expect(stackDepth1.toBe(1);
+            expect(stackDepth2.toBe(2);
             expect(stackDepth3.toBe(1) }');'
         test('should provide fallback when stack is empty', () => {
             // Arrange - Empty stack
@@ -166,24 +166,24 @@ describe('Unified Help Screen Access Integration Tests', () => {
     describe('Keyboard Event Integration', (') => {'
         test('should provide shortcut mapping for H key', (') => {'
             // Arrange - Check shortcut mapping
-            const shortcutExists = keyboardShortcutRouter.shortcuts.has('KeyH'),
-            const shortcutConfig = keyboardShortcutRouter.shortcuts.get('KeyH'),
+            const shortcutExists = keyboardShortcutRouter.shortcuts.has('KeyH');
+            const shortcutConfig = keyboardShortcutRouter.shortcuts.get('KeyH');
             // Assert - Should have proper mapping
-            expect(shortcutExists.toBe(true),
+            expect(shortcutExists.toBe(true);
             expect(shortcutConfig.action').toBe('help'),'
             expect(shortcutConfig.scene').toBe('help') }');
         test('should provide shortcut mapping for F1 key', (') => {'
             // Arrange - Check shortcut mapping
-            const shortcutExists = keyboardShortcutRouter.shortcuts.has('F1'),
-            const shortcutConfig = keyboardShortcutRouter.shortcuts.get('F1'),
+            const shortcutExists = keyboardShortcutRouter.shortcuts.has('F1');
+            const shortcutConfig = keyboardShortcutRouter.shortcuts.get('F1');
             // Assert - Should have proper mapping  
-            expect(shortcutExists.toBe(true),
+            expect(shortcutExists.toBe(true);
             expect(shortcutConfig.action').toBe('contextualHelp'),'
             expect(shortcutConfig.scene').toBe('help') }');
         test('should handle inactive state', (') => {'
             // Arrange
-            const keyEvent = new KeyboardEvent('keydown', { key: 'h', code: 'KeyH' });
-            keyboardShortcutRouter.state = { isActive: false, lastKeyTime: 0 };
+            const keyEvent = new KeyboardEvent('keydown', { key: 'h', code: 'KeyH' },
+            keyboardShortcutRouter.state = { isActive: false, lastKeyTime: 0 },
             
             // Act
             keyboardShortcutRouter.handleKeyDown(keyEvent);
@@ -200,15 +200,15 @@ describe('Unified Help Screen Access Integration Tests', () => {
             // Act & Assert
             expect(() => {
                 const testRouter = new KeyboardShortcutRouter(faultyGameEngine'),'
-                testRouter.handleHelpShortcut('MenuScene') }).not.toThrow(');'
+                testRouter.handleHelpShortcut('MenuScene') }.not.toThrow(');'
         }
         test('should handle scene manager errors', () => {
             // Arrange
             mockGameEngine.sceneManager.switchScene.mockImplementation((') => {'
-                throw new Error('Scene switch failed') });
+                throw new Error('Scene switch failed') };
             // Act & Assert - Should not crash
             expect((') => {'
-                keyboardShortcutRouter.handleHelpShortcut('MenuScene') }).not.toThrow(');'
+                keyboardShortcutRouter.handleHelpShortcut('MenuScene') }.not.toThrow(');'
         }
         test('should handle navigation context errors', () => {
             // Arrange
@@ -218,7 +218,7 @@ describe('Unified Help Screen Access Integration Tests', () => {
             // Act & Assert
             expect(() => {
                 const testNavigation = new NavigationContextManager(faultyGameEngine'),'
-                testNavigation.pushContext('MenuScene', 'keyboard_h') }).not.toThrow();
+                testNavigation.pushContext('MenuScene', 'keyboard_h') }.not.toThrow();
         }
     }');'
     describe('Integration Requirements Validation', (') => {'
@@ -229,37 +229,37 @@ describe('Unified Help Screen Access Integration Tests', () => {
                 (') => keyboardShortcutRouter.handleContextualHelp('GameScene'}'
             ];
             
-            accessMethods.forEach(method => {),
-                jest.clearAllMocks(),
-                method(),
+            accessMethods.forEach(method => {);
+                jest.clearAllMocks();
+                method();
                 expect(mockGameEngine.sceneManager.switchScene').toHaveBeenCalledWith('help') }');
         }
         test('should satisfy requirement 1.2: Context-dependent help routing', (') => {'
             // Test that F1 provides contextual help
-            const success = keyboardShortcutRouter.handleContextualHelp('GameScene'),
-            expect(success.toBe(true),
+            const success = keyboardShortcutRouter.handleContextualHelp('GameScene');
+            expect(success.toBe(true);
             expect(mockGameEngine.sceneManager.switchScene').toHaveBeenCalledWith('help') }');
         test('should satisfy requirement 1.4: Consistent keyboard shortcuts', (') => {'
             // Test that H key works from multiple scenes
             const scenes = ['MenuScene', 'GameScene', 'SettingsScene'],
             
-            scenes.forEach(sceneName => {),
-                jest.clearAllMocks(),
+            scenes.forEach(sceneName => {);
+                jest.clearAllMocks();
                 mockGameEngine.sceneManager.getCurrentScene.mockReturnValue({
                     constructor: { name: sceneName,);
-                });
+                };
                 keyboardShortcutRouter.handleHelpShortcut(sceneName);
                 expect(mockGameEngine.sceneManager.switchScene').toHaveBeenCalledWith('help');'
             }');'
         }
         test('should satisfy requirement 4.1: Navigation context preservation', (') => {'
             // Test that navigation context is properly managed
-            navigationContextManager.pushContext('MenuScene', 'keyboard_h'),
-            const context1 = navigationContextManager.getCurrentContext(),
+            navigationContextManager.pushContext('MenuScene', 'keyboard_h');
+            const context1 = navigationContextManager.getCurrentContext();
             expect(context1.scene').toBe('MenuScene'),'
             expect(context1.method').toBe('keyboard_h'),'
-            navigationContextManager.pushContext('GameScene', 'keyboard_h'),
-            const context2 = navigationContextManager.getCurrentContext(),
+            navigationContextManager.pushContext('GameScene', 'keyboard_h');
+            const context2 = navigationContextManager.getCurrentContext();
             expect(context2.scene').toBe('GameScene'),'
             expect(context2.method').toBe('keyboard_h') }');
     }
@@ -273,7 +273,7 @@ describe('Unified Help Screen Access Integration Tests', () => {
             // Act - Multiple rapid calls to shortcut handler
             let callCount = 0,
             for (let i = 0, i < 5, i++') {'
-                const result = keyboardShortcutRouter.handleHelpShortcut('MenuScene'),
+                const result = keyboardShortcutRouter.handleHelpShortcut('MenuScene');
                 if (result) callCount++ }
             
             // Assert - Should process all calls (debounce is handled in handleKeyDown, not in direct method calls);
@@ -282,17 +282,17 @@ describe('Unified Help Screen Access Integration Tests', () => {
         }');'
         test('should cleanup resources properly', (') => {'
             // Arrange
-            navigationContextManager.pushContext('MenuScene', 'keyboard_h'),
-            const beforeCleanup = navigationContextManager.getStackDepth(),
+            navigationContextManager.pushContext('MenuScene', 'keyboard_h');
+            const beforeCleanup = navigationContextManager.getStackDepth();
             // Act
-            navigationContextManager.clear(),
-            const afterCleanup = navigationContextManager.getStackDepth(),
-            keyboardShortcutRouter.cleanup(),
+            navigationContextManager.clear();
+            const afterCleanup = navigationContextManager.getStackDepth();
+            keyboardShortcutRouter.cleanup();
             // Assert - Should clear contexts and not throw
-            expect(beforeCleanup.toBe(1),
-            expect(afterCleanup.toBe(0),
+            expect(beforeCleanup.toBe(1);
+            expect(afterCleanup.toBe(0);
             expect((') => {'
-                keyboardShortcutRouter.handleHelpShortcut('MenuScene') }).not.toThrow();
+                keyboardShortcutRouter.handleHelpShortcut('MenuScene') }.not.toThrow();
         }
     }');'
 }

@@ -85,7 +85,7 @@ describe('Username Input Positioning Visual Regression Tests', (') => {'
         // Mock browser instance
         browser = {
             newPage: jest.fn(
-        close: jest.fn( };
+        close: jest.fn( },
         // Mock page instance
         page = {
             setViewport: jest.fn(
@@ -97,7 +97,7 @@ describe('Username Input Positioning Visual Regression Tests', (') => {'
             keyboard: { press: jest.fn() }
         };
         browser.newPage.mockResolvedValue(page);
-    });
+    };
     afterAll(async () => {
         if (browser) {
             await browser.close() }
@@ -174,13 +174,13 @@ describe('Username Input Positioning Visual Regression Tests', (') => {'
                     const transformCoordinates = (baseX, baseY) => ({
                         x: baseX * canvasInfo.scale,
                         y: baseY * canvasInfo.scale
-                    });
+                    };
                     return {
                         title: {
-                            ...transformCoordinates(BASE_LAYOUT.title.x, BASE_LAYOUT.title.y),
+                            ...transformCoordinates(BASE_LAYOUT.title.x, BASE_LAYOUT.title.y);
                             visible: true,,
                         inputBox: {
-                            ...transformCoordinates(BASE_LAYOUT.inputBox.x, BASE_LAYOUT.inputBox.y),
+                            ...transformCoordinates(BASE_LAYOUT.inputBox.x, BASE_LAYOUT.inputBox.y);
                             width: BASE_LAYOUT.inputBox.width * canvasInfo.scale,
                             height: BASE_LAYOUT.inputBox.height * canvasInfo.scale,
                             visible: true,
@@ -188,18 +188,18 @@ describe('Username Input Positioning Visual Regression Tests', (') => {'
                         },
                         buttons: {
                             ok: {
-                                ...transformCoordinates(BASE_LAYOUT.buttons.ok.x, BASE_LAYOUT.buttons.ok.y),
+                                ...transformCoordinates(BASE_LAYOUT.buttons.ok.x, BASE_LAYOUT.buttons.ok.y);
                                 width: BASE_LAYOUT.buttons.ok.width * canvasInfo.scale,
                                 height: BASE_LAYOUT.buttons.ok.height * canvasInfo.scale,
                                 visible: true,,
                             cancel: {
-                                ...transformCoordinates(BASE_LAYOUT.buttons.cancel.x, BASE_LAYOUT.buttons.cancel.y),
+                                ...transformCoordinates(BASE_LAYOUT.buttons.cancel.x, BASE_LAYOUT.buttons.cancel.y);
                                 width: BASE_LAYOUT.buttons.cancel.width * canvasInfo.scale,
                                 height: BASE_LAYOUT.buttons.cancel.height * canvasInfo.scale,
                                 visible: true,
                         },
                         helpText: {
-                            ...transformCoordinates(BASE_LAYOUT.helpText.x, BASE_LAYOUT.helpText.y),
+                            ...transformCoordinates(BASE_LAYOUT.helpText.x, BASE_LAYOUT.helpText.y);
                             visible: true,,
                         canvasInfo: {
                             width: canvasInfo.actualWidth,
@@ -207,7 +207,7 @@ describe('Username Input Positioning Visual Regression Tests', (') => {'
                             scale: canvasInfo.scale
                         }
                     };
-                });
+                };
                 expect(result).not.toBeNull();
                 // Verify title is centered horizontally
                 expect(Math.abs(result.title.x - config.expected.centerX).toBeLessThanOrEqual(config.expected.tolerance);
@@ -223,7 +223,7 @@ describe('Username Input Positioning Visual Regression Tests', (') => {'
                 expect(result.buttons.ok.visible).toBe(true);
                 expect(result.buttons.cancel.visible).toBe(true);
                 expect(result.helpText.visible).toBe(true);
-            });
+            };
         }
     }');'
     describe('Zoom Level Tests', () => {
@@ -263,7 +263,7 @@ describe('Username Input Positioning Visual Regression Tests', (') => {'
                 expect(result.inputBox.centered).toBe(true);
                 // Verify input box remains proportional
                 expect(result.inputBox.width / result.inputBox.height).toBeCloseTo(8, 1); // 400/50 = 8
-            });
+            };
         }
     }');'
     describe('Aspect Ratio Tests', (') => {'
@@ -279,7 +279,7 @@ describe('Username Input Positioning Visual Regression Tests', (') => {'
                 await page.setViewport({
                     width: aspect.width,
                     height: aspect.height,
-                    deviceScaleFactor: 1 });
+                    deviceScaleFactor: 1 },
                 const expectedCenterX = aspect.width / 2;
                 const expectedCenterY = aspect.height / 2;
                 page.evaluate.mockResolvedValue({
@@ -298,10 +298,10 @@ describe('Username Input Positioning Visual Regression Tests', (') => {'
                         width: 400,
                         height: 50,
                         centered: true,
-                }), aspect.width, aspect.height);
+                }, aspect.width, aspect.height);
                 expect(result.inputBox.centered).toBe(true);
                 expect(result.title.x).toBeCloseTo(expectedCenterX, 1);
-            });
+            };
         }
     }');'
     describe('Visual Screenshot Tests', (') => {'
@@ -316,14 +316,14 @@ describe('Username Input Positioning Visual Regression Tests', (') => {'
             expect(page.screenshot).toHaveBeenCalledWith({
                 path: mockScreenshotPath,
                 fullPage: false),
-            expect(screenshotPath).toBe(mockScreenshotPath) });
+            expect(screenshotPath).toBe(mockScreenshotPath) };
         testConfigurations.slice(0, 3).forEach((config) => {
             it(`should capture screenshot for ${config.name} configuration`, async () => {
                 await page.setViewport({
                     width: config.viewport.width,
                     height: config.viewport.height,
-                    deviceScaleFactor: config.deviceScaleFactor });
-                const screenshotPath = `/tmp/username-input-${config.name.toLowerCase(').replace(/\s+/g, '-'})}.png`;'
+                    deviceScaleFactor: config.deviceScaleFactor },
+                const screenshotPath = `/tmp/username-input-${config.name.toLowerCase(').replace(/\s+/g, '-'}}.png`;'
                 page.screenshot.mockResolvedValue(screenshotPath);
                 const result = await page.screenshot({
                     path: screenshotPath,
@@ -338,7 +338,7 @@ describe('Username Input Positioning Visual Regression Tests', (') => {'
             await page.setViewport({
                 width: 240,
                 height: 320,
-                deviceScaleFactor: 1 });
+                deviceScaleFactor: 1 },
             page.evaluate.mockResolvedValue({
                 inputBox: {
                     x: 20, // Adjusted for small screen
@@ -347,7 +347,7 @@ describe('Username Input Positioning Visual Regression Tests', (') => {'
                     height: 25,
                     visible: true,
                     withinBounds: true,);
-            });
+            };
             const result = await page.evaluate(() => ({
                 inputBox: {
                     x: 20,
@@ -356,7 +356,7 @@ describe('Username Input Positioning Visual Regression Tests', (') => {'
                     height: 25,
                     visible: true,
                     withinBounds: true,
-            });
+            };
             expect(result.inputBox.visible).toBe(true);
             expect(result.inputBox.withinBounds).toBe(true);
             expect(result.inputBox.x + result.inputBox.width).toBeLessThanOrEqual(240);
@@ -365,7 +365,7 @@ describe('Username Input Positioning Visual Regression Tests', (') => {'
             await page.setViewport({
                 width: 5120,
                 height: 2880,
-                deviceScaleFactor: 1 });
+                deviceScaleFactor: 1 },
             const expectedCenterX = 2560;
             const expectedCenterY = 1440;
             page.evaluate.mockResolvedValue({
@@ -382,10 +382,10 @@ describe('Username Input Positioning Visual Regression Tests', (') => {'
                     width: 800,
                     height: 100,
                     centered: true,
-            });
+            };
             expect(result.inputBox.centered).toBe(true);
             const actualCenterX = result.inputBox.x + result.inputBox.width / 2;
             expect(Math.abs(actualCenterX - expectedCenterX).toBeLessThanOrEqual(10);
-        });
+        };
     }
 }');'

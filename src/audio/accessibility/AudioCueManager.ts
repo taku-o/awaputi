@@ -15,38 +15,42 @@
  */
 
 // Types for audio cue management
-interface AudioEvent { timestamp: number,
+interface AudioEvent { timestamp: number;
     type: string;
     data: any;
 
-interface AudioEventData { type: string,
+interface AudioEventData { type: string;
     [key: string]: any;
 
-interface BubblePopEvent { bubbleType: string,
+interface BubblePopEvent { bubbleType: string;
     comboLevel: number;
-    position: { x: number,, y: number,
-
-interface ComboEvent { comboLevel: number,
+    position: { x: number,, y: number;
+    position: { x: number,, y: number;
+        };
+interface ComboEvent { comboLevel: number;
     comboCount: number;
-
-interface AchievementEvent { achievementName: string,
+    comboCount: number;
+        };
+interface AchievementEvent { achievementName: string;
     rarity: string;
-
-interface GameStateEvent { state: 'gameStart' | 'gameOver' | 'levelUp' | 'warning' | 'bonusStart',
+    rarity: string;
+        };
+interface GameStateEvent { state: 'gameStart' | 'gameOver' | 'levelUp' | 'warning' | 'bonusStart';
     details?: string;
 
-interface AudioPattern { name: string,
+interface AudioPattern { name: string;
     description: string;
     pattern: string[];
     timeWindow: number;
     notification: string;
-
-interface PatternRecognition { enabled: boolean,
+    notification: string;
+        };
+interface PatternRecognition { enabled: boolean;
     patterns: Map<string, AudioPattern>;
     currentPattern: AudioEvent[] | null;
     patternTimeout: number | null  }
 
-interface AudioStatistics { totalEvents: number,
+interface AudioStatistics { totalEvents: number;
     eventTypes: Record<string, number>;
     recentActivity: AudioEvent[];
 
@@ -54,7 +58,7 @@ interface AudioVisualizationStats { averageLevel?: number,
     peakLevel?: number;
     frequency?: number;
 
-interface MainController { audioManager: any,
+interface MainController { audioManager: any;
     errorHandler: any;
     audioFeedbackManager: any;
     audioDescriptionManager: any;
@@ -85,9 +89,9 @@ export class AudioCueManager {
         
         // パターン認識
         this.patternRecognition = {
-            enabled: false,
+            enabled: false;
             patterns: new Map(
-    currentPattern: null,
+    currentPattern: null;
     }
             patternTimeout: null;;
         // 音響イベントリスナー
@@ -119,7 +123,7 @@ export class AudioCueManager {
 
         }');'
 
-        this.addAudioEventListener('gameStateChange', (event) => { this.handleGameStateEvent(event, as GameStateEvent) });
+        this.addAudioEventListener('gameStateChange', (event) => { this.handleGameStateEvent(event, as GameStateEvent) };
     }
 
     /**
@@ -139,7 +143,7 @@ export class AudioCueManager {
             // AudioVisualizerから音響レベルを取得
             const stats: AudioVisualizationStats = this.audioManager.getVisualizationStatistics(
             if (stats) {
-                this.mainController.audioFeedbackManager.updateColorIndicator(stats.averageLevel || 0),
+                this.mainController.audioFeedbackManager.updateColorIndicator(stats.averageLevel || 0);
                 // 音響レベルに基づく触覚フィードバック
                 if (this.mainController.settings.hapticFeedback) {
             }
@@ -169,10 +173,9 @@ export class AudioCueManager {
      * @param eventData - イベントデータ
      */
     public triggerAudioEvent(eventType: string, eventData: AudioEventData): void { // イベント履歴に追加
-        this.addToEventHistory(eventType, eventData),
-        
+        this.addToEventHistory(eventType, eventData);
         // 登録されたリスナーを実行
-        const listeners = this.audioEventListeners.get(eventType),
+        const listeners = this.audioEventListeners.get(eventType);
         if (listeners) {
             listeners.forEach(callback => { )
         }
@@ -181,10 +184,10 @@ export class AudioCueManager {
 
                 } catch (error) { this.errorHandler.handleError(error, 'ACCESSIBILITY_ERROR', {''
                         component: 'AudioCueManager',','
-                        operation: 'triggerAudioEvent'),
+                        operation: 'triggerAudioEvent');
                         eventType: eventType,);
                 }
-            });
+            };
         }
         
         // パターン認識
@@ -206,15 +209,15 @@ export class AudioCueManager {
             }泡を破壊`,''
             icon: '🫧'
             }
-            color: this.mainController.audioDescriptionManager.getBubbleColor(bubbleType});
-            position: position;
-        }),
+            color: this.mainController.audioDescriptionManager.getBubbleColor(bubbleType};
+            position: position,
+        },
         
         // 字幕
         if (this.mainController.settings.captioning) {
     
 }
-            this.mainController.audioDescriptionManager.showCaption(`${bubbleType}泡を破壊しました`});
+            this.mainController.audioDescriptionManager.showCaption(`${bubbleType}泡を破壊しました`};
         }
         ;
         // 触覚フィードバック
@@ -233,17 +236,17 @@ export class AudioCueManager {
         // 視覚的通知
         this.mainController.audioDescriptionManager.showVisualNotification({ ''
             type: 'combo'
-            });
+            };
             title: `${comboLevel}連鎖`''
             message: `${comboCount}コンボ達成！`,''
             icon: '🔥',
-            color: '#ff8000');
-            duration: 2000);
+            color: '#ff8000'),
+            duration: 2000),
         // 字幕
         if (this.mainController.settings.captioning) {
     
 }
-            this.mainController.audioDescriptionManager.showCaption(`${comboCount}コンボ達成！`});
+            this.mainController.audioDescriptionManager.showCaption(`${comboCount}コンボ達成！`};
         }
         ;
         // 触覚フィードバック
@@ -266,12 +269,12 @@ export class AudioCueManager {
     message: achievementName,')',
             icon: '🏆'),
             color: this.mainController.audioDescriptionManager.getRarityColor(rarity,
-    duration: 4000  });
+    duration: 4000  };
         // 字幕
         if (this.mainController.settings.captioning) {
     
 }
-            this.mainController.audioDescriptionManager.showCaption(`実績「${achievementName}」を解除しました！`});
+            this.mainController.audioDescriptionManager.showCaption(`実績「${achievementName}」を解除しました！`};
         }
         ;
         // 触覚フィードバック
@@ -319,7 +322,7 @@ export class AudioCueManager {
 
             if (this.mainController.settings.captioning) { }'
 
-                this.mainController.audioDescriptionManager.showCaption(`${stateInfo.title}${details ? ': ' + details : '}`}';
+                this.mainController.audioDescriptionManager.showCaption(`${stateInfo.title}${details ? ': ' + details: '}`}',
             }
             ';'
             // 触覚フィードバック
@@ -335,9 +338,9 @@ export class AudioCueManager {
      * @param eventData - イベントデータ
      */
     private addToEventHistory(eventType: string, eventData: AudioEventData): void { const historyEntry: AudioEvent = {
-            timestamp: Date.now(),
+            timestamp: Date.now();
             type: eventType,
-    data: eventData,;
+    data: eventData,
         this.eventHistory.push(historyEntry);
         
         // 履歴サイズを制限
@@ -404,7 +407,7 @@ export class AudioCueManager {
     private checkPatternMatches(): void { this.patternRecognition.patterns.forEach((pattern, patternName) => { 
             if (this.matchesPattern(pattern) { }
                 this.handlePatternMatch(patternName, pattern); }
-});
+};
     }
 
     /**
@@ -455,12 +458,12 @@ export class AudioCueManager {
                 color: '#ff00ff'
             }
                 duration: 4000); 
-    });
+    };
             
             // 字幕
             if (this.mainController.settings.captioning) { this.mainController.audioDescriptionManager.showCaption(pattern.notification) }
             
-            console.log(`Pattern, recognized: ${patternName}`});
+            console.log(`Pattern, recognized: ${patternName}`};
         }, 500);
         }
 
@@ -476,13 +479,13 @@ export class AudioCueManager {
      */
     public getStatistics(): AudioStatistics { const stats: AudioStatistics = {
             totalEvents: this.eventHistory.length  }
-            eventTypes: {};
+            eventTypes: {},
             recentActivity: this.eventHistory.slice(-10);
         };
         
         this.eventHistory.forEach(event => {  ) }
             stats.eventTypes[event.type] = (stats.eventTypes[event.type] || 0) + 1; }
-        });
+        };
         
         return stats;
     }
@@ -506,7 +509,7 @@ export class AudioCueManager {
      * @returns ステータス情報
      */
     public getStatus(): { initialized: boolean, activeListeners: number,, patternsActive: number, { return { initialized: true,
-            activeListeners: this.eventHistory ? this.eventHistory.length : 0 };
+            activeListeners: this.eventHistory ? this.eventHistory.length : 0 },
             patternsActive: this.patternRecognition.patterns.size 
     }
 

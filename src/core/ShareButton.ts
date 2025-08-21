@@ -28,7 +28,7 @@ interface ShareButtonOptions { position?: string,
     highContrast?: boolean;
     reducedMotion?: boolean;
 
-interface ShareButtonConfig { position: string,
+interface ShareButtonConfig { position: string;
     theme: string;
     size: string;
     animation: boolean;
@@ -39,24 +39,26 @@ interface ShareButtonConfig { position: string,
     autoHide: boolean;
     triggerEvents: string[];
     styles: {
-        backgroundColo,r: string,
-        textColor: string,
-        borderRadius: string,
-        fontSize: string,
-        padding: string,
-    zIndex: number,;
-    accessibility: { enabled: boolean,
-        announcements: boolean,
-        keyboardNavigation: boolean,
-        highContrast: boolean,
-    reducedMotion: boolean,
-
-interface ShareButtonState { isVisible: boolean,
+        backgroundColo,r: string;
+        textColor: string;
+        borderRadius: string;
+        fontSize: string;
+        padding: string;
+    zIndex: number;
+    accessibility: { enabled: boolean;
+        announcements: boolean;
+        keyboardNavigation: boolean;
+        highContrast: boolean;
+    reducedMotion: boolean;
+    reducedMotion: boolean;
+        };
+interface ShareButtonState { isVisible: boolean;
     isAnimating: boolean;
     currentPlatform: string | null;
     hideTimeout: number | null;
     keyboardFocus: number;
-
+    keyboardFocus: number;
+        };
 export class ShareButton {
     private container: HTMLElement;
     private socialSharingManager: any;
@@ -64,7 +66,7 @@ export class ShareButton {
     private state: ShareButtonState;
     private element?: HTMLElement,
     private buttonElements: HTMLElement[] = [];
-    private, isInitialized: boolean = false,
+    private, isInitialized: boolean = false;
 
     constructor(container: HTMLElement, socialSharingManager: any, options: ShareButtonOptions = {)) {
         this.container = container;
@@ -73,61 +75,62 @@ export class ShareButton {
         // 設定
         this.config = {
             // 表示設定
-            position: options.position || 'bottom-right'; // top-left, top-right, bottom-left, bottom-right, center;
+            position: options.position || 'bottom-right', // top-left, top-right, bottom-left, bottom-right, center;
             theme: options.theme || 'default', // default, minimal, gaming, elegant;
             size: options.size || 'medium', // small, medium, large;
-            animation: options.animation !== false,
-            hideDelay: options.hideDelay || 3000,
+            animation: options.animation !== false;
+            hideDelay: options.hideDelay || 3000;
             ,
             // 機能設定
            , platforms: options.platforms || ['web-share', 'twitter', 'facebook'],
-            showLabels: options.showLabels !== false,
-    showIcons: options.showIcons !== false,
-            autoHide: options.autoHide === true,
+            showLabels: options.showLabels !== false;
+    showIcons: options.showIcons !== false;
+            autoHide: options.autoHide === true;
             triggerEvents: options.triggerEvents || ['score', 'achievement'];
-            
+            triggerEvents: options.triggerEvents || ['score', 'achievement'];
+        };
             // スタイル設定
             styles: {''
                 backgroundColor: options.backgroundColor || 'rgba(0, 0, 0, 0.8)';
-                textColor: options.textColor || '#FFFFFF',
-                borderRadius: options.borderRadius || '8px',
-                fontSize: options.fontSize || '14px',
-                padding: options.padding || '12px 16px',
+                textColor: options.textColor || '#FFFFFF';
+                borderRadius: options.borderRadius || '8px';
+                fontSize: options.fontSize || '14px';
+                padding: options.padding || '12px 16px';
     zIndex: options.zIndex || 1000  };
             // アクセシビリティ設定
-            accessibility: { enabled: options.accessibility !== false,
-                announcements: options.announcements !== false,
-                keyboardNavigation: options.keyboardNavigation !== false,
-                highContrast: options.highContrast === true,
+            accessibility: { enabled: options.accessibility !== false;
+                announcements: options.announcements !== false;
+                keyboardNavigation: options.keyboardNavigation !== false;
+                highContrast: options.highContrast === true;
     reducedMotion: options.reducedMotion === true 
     };
         // 状態管理
-        this.state = { visible: false,
-            expanded: false,
-            activeButton: null,
-            shareData: null,
-    lastTriggeredBy: null,;
+        this.state = { visible: false;
+            expanded: false;
+            activeButton: null;
+            shareData: null;
+    lastTriggeredBy: null;
         // DOM要素
-        this.elements = { container: null,
-            mainButton: null,
-            platformButtons: [],
-            tooltip: null,
-    announcer: null,;
+        this.elements = { container: null;
+            mainButton: null;
+            platformButtons: [];
+            tooltip: null;
+    announcer: null;
         // イベントハンドラー
-        this.handlers = { click: this.handleClick.bind(this,
-            keydown: this.handleKeydown.bind(this),
-            focus: this.handleFocus.bind(this),
-            blur: this.handleBlur.bind(this),
-            mouseenter: this.handleMouseEnter.bind(this),
-            mouseleave: this.handleMouseLeave.bind(this,
+        this.handlers = { click: this.handleClick.bind(this;
+            keydown: this.handleKeydown.bind(this);
+            focus: this.handleFocus.bind(this);
+            blur: this.handleBlur.bind(this);
+            mouseenter: this.handleMouseEnter.bind(this);
+            mouseleave: this.handleMouseLeave.bind(this;
     resize: this.handleResize.bind(this  };
         
         // タイマー
         this.hideTimer = null
         
         // 統計
-        this.stats = { shows: 0,
-            clicks: 0,
+        this.stats = { shows: 0;
+            clicks: 0;
     shares: 0 }
             platforms: {};
         this.initialize()';'
@@ -140,14 +143,11 @@ export class ShareButton {
     initialize() {
         try {
             // DOM要素の作成
-            this.createElements(),
-            
+            this.createElements();
             // スタイルの適用
-            this.applyStyles(),
-            
+            this.applyStyles();
             // イベントリスナーの設定
-            this.setupEventListeners(),
-            
+            this.setupEventListeners();
             // アクセシビリティの設定
             if (this.config.accessibility.enabled) {
     }
@@ -183,14 +183,14 @@ export class ShareButton {
         platformContainer.setAttribute('aria-label', '共有プラットフォーム);'
         
         // プラットフォーム別ボタンの作成
-        this.config.platforms.forEach((platform, index) => {  const button = this.createPlatformButton(platform, index),
+        this.config.platforms.forEach((platform, index) => {  const button = this.createPlatformButton(platform, index);
             this.elements.platformButtons.push(button) }
             platformContainer.appendChild(button); }
-        });
+        };
         // ツールチップ
         if (this.config.showLabels) {
 
-            this.elements.tooltip = document.createElement('div'),
+            this.elements.tooltip = document.createElement('div');
             this.elements.tooltip.className = 'share-button-tooltip',
             this.elements.tooltip.setAttribute('role', 'tooltip') }
 
@@ -200,10 +200,10 @@ export class ShareButton {
         // スクリーンリーダー用アナウンサー
         if (this.config.accessibility.enabled) {
 
-            this.elements.announcer = document.createElement('div'),
+            this.elements.announcer = document.createElement('div');
             this.elements.announcer.className = 'share-button-announcer',
-            this.elements.announcer.setAttribute('aria-live', 'polite'),
-            this.elements.announcer.setAttribute('aria-atomic', 'true'),
+            this.elements.announcer.setAttribute('aria-live', 'polite');
+            this.elements.announcer.setAttribute('aria-atomic', 'true');
             this.elements.announcer.style.position = 'absolute',
             this.elements.announcer.style.left = '-10000px',
             this.elements.announcer.style.width = '1px',
@@ -314,14 +314,13 @@ export class ShareButton {
         const isMobile = window.innerWidth <= 768,
         
         // 位置の設定
-        const position = this.getPositionStyles(),
-        Object.assign(container.style, position),
-        
+        const position = this.getPositionStyles();
+        Object.assign(container.style, position);
         // 基本スタイル（モバイル対応の改善）
         Object.assign(container.style, {''
             position: 'fixed',
             zIndex: styles.zIndex,
-            backgroundColor: styles.backgroundColor),
+            backgroundColor: styles.backgroundColor);
             color: styles.textColor','
     borderRadius: styles.borderRadius,
             fontSize: isMobile ? '16px' : styles.fontSize, // モバイルで最小16px（ズーム防止）')',
@@ -367,7 +366,7 @@ export class ShareButton {
                 borderRadius: '6px',' }'
 
                 transition: 'all 0.2s ease'); 
-    });
+    };
         
         // テーマ別スタイル
         this.applyThemeStyles();
@@ -418,7 +417,7 @@ export class ShareButton {
 
         switch(this.config.theme) {''
             case 'minimal':','
-                Object.assign(container.style, {),
+                Object.assign(container.style, {);
                     backgroundColor: 'rgba(255, 255, 255, 0.95)',
                     color: '#333333',
                     boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)'
@@ -514,8 +513,7 @@ export class ShareButton {
             button.addEventListener('click', this.handlers.click','
             button.addEventListener('keydown', this.handlers.keydown','
             button.addEventListener('focus', this.handlers.focus','
-            button.addEventListener('blur', this.handlers.blur),
-
+            button.addEventListener('blur', this.handlers.blur);
             if (this.elements.tooltip) {', ' }
 
                 button.addEventListener('mouseenter', this.handlers.mouseenter'; }'
@@ -540,7 +538,7 @@ export class ShareButton {
 }
                 this.collapse(); }
                 this.elements.mainButton.focus(); }
-});
+};
     }
     
     /**
@@ -564,7 +562,7 @@ export class ShareButton {
         this.elements.platformButtons.forEach((button, index) => { }'
 
             button.setAttribute('data-index', index); }
-        });
+        };
     }
     
     /**
@@ -579,8 +577,8 @@ export class ShareButton {
             this.config.triggerEvents.forEach(eventType => { ) }
                 gameEngine.on(eventType, (data) => { }
                     this.showWithData(data, eventType); }
-                });
-            });
+                };
+            };
         }
     }
     
@@ -590,8 +588,7 @@ export class ShareButton {
     showWithData(shareData, triggeredBy = null) {
         this.state.shareData = shareData,
         this.state.lastTriggeredBy = triggeredBy,
-        this.show(),
-        
+        this.show();
         // 自動非表示の設定
         if (this.config.autoHide && this.config.hideDelay > 0) {
     }
@@ -614,8 +611,7 @@ export class ShareButton {
 
         if (this.config.animation) {''
             container.style.opacity = '0',
-            container.style.transform = this.getShowAnimation(),
-
+            container.style.transform = this.getShowAnimation();
             requestAnimationFrame(() => { }
 
                 container.style.opacity = '1'; }
@@ -640,14 +636,12 @@ export class ShareButton {
         if (!this.state.visible) return,
         
         this.state.visible = false,
-        this.collapse(),
-        
+        this.collapse();
         const container = this.elements.container,
 
         if (this.config.animation) {''
             container.style.opacity = '0',
-            container.style.transform = this.getHideAnimation(),
-
+            container.style.transform = this.getHideAnimation();
             ' }'
 
             setTimeout(() => { }'
@@ -674,9 +668,8 @@ export class ShareButton {
         ','
 
         this.state.expanded = true,
-        this.elements.mainButton.setAttribute('aria-expanded', 'true'),
-
-        const platformContainer = this.elements.container.querySelector('.share-button-platforms'),
+        this.elements.mainButton.setAttribute('aria-expanded', 'true');
+        const platformContainer = this.elements.container.querySelector('.share-button-platforms');
         platformContainer.style.display = 'block',
         
         // 最初のプラットフォームボタンにフォーカス
@@ -700,9 +693,8 @@ export class ShareButton {
         ','
 
         this.state.expanded = false,
-        this.elements.mainButton.setAttribute('aria-expanded', 'false'),
-
-        const platformContainer = this.elements.container.querySelector('.share-button-platforms'),
+        this.elements.mainButton.setAttribute('aria-expanded', 'false');
+        const platformContainer = this.elements.container.querySelector('.share-button-platforms');
         platformContainer.style.display = 'none',
         ','
         // ツールチップを非表示
@@ -749,7 +741,7 @@ export class ShareButton {
             case 'top-left':','
                 return 'translateY(-100px)' }
 
-            default: return 'scale(0.8)';
+            default: return 'scale(0.8)',
     
     /**
      * 非表示アニメーションの取得
@@ -786,7 +778,7 @@ export class ShareButton {
         switch(event.key) {''
             case 'Enter':','
             case ', ':','
-                event.preventDefault(),
+                event.preventDefault();
                 this.handleClick({ target )),
                 break,
 
@@ -810,7 +802,7 @@ export class ShareButton {
 
             case 'Home':
                 if (this.state.expanded) {
-                    event.preventDefault(),
+                    event.preventDefault();
                     this.elements.platformButtons[0]?.focus()','
             case 'End':),
                 if (this.state.expanded) {
@@ -826,8 +818,7 @@ export class ShareButton {
      */
     focusNext(currentElement) {
         const buttons = this.elements.platformButtons,
-        const currentIndex = buttons.indexOf(currentElement),
-        
+        const currentIndex = buttons.indexOf(currentElement);
         if (currentIndex >= 0) {
             const nextIndex = (currentIndex + 1) % buttons.length }
             buttons[nextIndex].focus(); }
@@ -838,8 +829,7 @@ export class ShareButton {
      */
     focusPrevious(currentElement) {
         const buttons = this.elements.platformButtons,
-        const currentIndex = buttons.indexOf(currentElement),
-        
+        const currentIndex = buttons.indexOf(currentElement);
         if (currentIndex >= 0) { : undefined
             const prevIndex = currentIndex === 0 ? buttons.length - 1 : currentIndex - 1 }
             buttons[prevIndex].focus(); }
@@ -925,7 +915,7 @@ export class ShareButton {
         const tooltipRect = this.elements.tooltip.getBoundingClientRect('';
         this.elements.tooltip.style.position = 'absolute';)
         this.elements.tooltip.style.top = `${buttonRect.top - tooltipRect.height - 8}px`;)
-        this.elements.tooltip.style.left = `${buttonRect.left + (buttonRect.width - tooltipRect.width}) / 2}px`;
+        this.elements.tooltip.style.left = `${buttonRect.left + (buttonRect.width - tooltipRect.width} / 2}px`;
     }
     
     /**
@@ -965,19 +955,16 @@ export class ShareButton {
             switch(platform) {
 
                 case 'web-share':','
-                    result = await this.socialSharingManager.share(shareData),
-
+                    result = await this.socialSharingManager.share(shareData);
                     break,
                 case 'twitter':','
-                    result = await this.socialSharingManager.shareViaTwitterUrl(shareData),
-
+                    result = await this.socialSharingManager.shareViaTwitterUrl(shareData);
                     break,
                 case 'facebook':','
-                    result = await this.socialSharingManager.shareViaFacebookUrl(shareData),
-
+                    result = await this.socialSharingManager.shareViaFacebookUrl(shareData);
                     break,
                 case 'copy':,
-                    result = await this.copyToClipboard(shareData),
+                    result = await this.copyToClipboard(shareData);
                     break,
                 default:
 }
@@ -1007,7 +994,7 @@ export class ShareButton {
             title: 'BubblePop',
             text: 'BubblePopをプレイ中！',
     url: window.location.href);
-            });
+            };
     /**
      * クリップボードにコピー
      */
@@ -1025,7 +1012,7 @@ export class ShareButton {
                 const textArea = document.createElement('textarea),'
                 textArea.value = text,
 
-                document.body.appendChild(textArea),
+                document.body.appendChild(textArea);
                 textArea.select()','
                 document.execCommand('copy',' }'
 
@@ -1145,7 +1132,7 @@ export class ShareButton {
             type, : undefined
             error: error.message || error,
             context }
-            timestamp: Date.now(); 
+            timestamp: Date.now(),
     };
 
         if (ErrorHandler) {', ' }

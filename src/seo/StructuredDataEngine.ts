@@ -89,11 +89,11 @@ interface GameplayData { score?: number,
 // コンテキストインターフェース
 interface StructuredDataContext {
     breadcrumbs?: Array<{ nam,e: string,, url: string;>;
-    event?: { name: string,
-        description: string,
-        startDate: string,
-        endDate: string,
-    location: string,;
+    event?: { name: string;
+        description: string;
+        startDate: string;
+        endDate: string;
+    location: string;
     pageType?: string;
     gameState?: any;
 }
@@ -145,7 +145,7 @@ export class StructuredDataEngine {
             }
                     this.currentLang = normalizeLanguageCode(newLang); }
                     this.clearCache(); }
-                });
+                };
             }
             ;
             // スキーマ生成関数の登録
@@ -157,7 +157,7 @@ export class StructuredDataEngine {
     /**
      * 包括的な構造化データの生成
      */'
-    async generateStructuredData(context: StructuredDataContext = {}): Promise<BaseSchema[]> { ''
+    async generateStructuredData(context: StructuredDataContext = {}: Promise<BaseSchema[]> { ''
         if (!this.initialized) {
 
             seoLogger.warn('StructuredDataEngine, not initialized) }'
@@ -166,17 +166,14 @@ export class StructuredDataEngine {
         try { const schemas: BaseSchema[] = [],
             
             // VideoGameスキーマ
-            const videoGame = await this.generateVideoGameSchema(context),
-            if (videoGame) schemas.push(videoGame),
-            
+            const videoGame = await this.generateVideoGameSchema(context);
+            if (videoGame) schemas.push(videoGame);
             // Organizationスキーマ
-            const organization = await this.generateOrganizationSchema(context),
-            if (organization) schemas.push(organization),
-            
+            const organization = await this.generateOrganizationSchema(context);
+            if (organization) schemas.push(organization);
             // WebApplicationスキーマ
-            const webApp = await this.generateWebApplicationSchema(context),
-            if (webApp) schemas.push(webApp),
-            
+            const webApp = await this.generateWebApplicationSchema(context);
+            if (webApp) schemas.push(webApp);
             // BreadcrumbListスキーマ（ページ固有）
             if (context.breadcrumbs) {
                 const breadcrumbs = await this.generateBreadcrumbSchema(context.breadcrumbs) }
@@ -260,29 +257,29 @@ export class StructuredDataEngine {
                 existingScript.textContent = JSON.stringify(newSchema, null, 2);" }"
                 seoLogger.debug(`Updated ${schemaType} schema, in DOM`"}";
             } else {  // 新しいスクリプトタグを作成""
-                const scriptTag = document.createElement('script'),
+                const scriptTag = document.createElement('script');
                 scriptTag.type = 'application/ld+json',
                 scriptTag.setAttribute('data-schema', schemaType','
-                scriptTag.textContent = JSON.stringify(newSchema, null, 2),
+                scriptTag.textContent = JSON.stringify(newSchema, null, 2);
                 ','
                 // 構造化データ注入ポイントに追加
                 const injectionPoint = document.getElementById('structured-data-injection-point),'
                 if (injectionPoint) { }
                     injectionPoint.appendChild(scriptTag); }
-                    seoLogger.debug(`Added ${schemaType} schema, to DOM`});
+                    seoLogger.debug(`Added ${schemaType} schema, to DOM`};
                 } else {  // フォールバック: headに追加 }
                     document.head.appendChild(scriptTag); }
-                    seoLogger.debug(`Added ${schemaType} schema, to head`});
+                    seoLogger.debug(`Added ${schemaType} schema, to head`};
                 }'} catch (error) { }'
 
-            seoErrorHandler.handle(error as Error, '_updateSchemaInDOM', { schemaType });
+            seoErrorHandler.handle(error as Error, '_updateSchemaInDOM', { schemaType };
         }
     }
     
     /**
      * VideoGameスキーマの生成
      */
-    async generateVideoGameSchema(context: StructuredDataContext = {}): Promise<VideoGameSchema | null> { try { }
+    async generateVideoGameSchema(context: StructuredDataContext = {}: Promise<VideoGameSchema | null> { try { }
             const cacheKey = `videoGame_${this.currentLang}`;
             
             if (this.schemaCache.has(cacheKey) {
@@ -303,7 +300,7 @@ export class StructuredDataEngine {
                 operatingSystem: SEOConfig.structuredData.game.operatingSystem,
                 genre: SEOConfig.structuredData.game.genre,
                 inLanguage: SEOConfig.structuredData.game.inLanguage,
-    isAccessibleForFree: SEOConfig.structuredData.game.isAccessibleForFree  };
+    isAccessibleForFree: SEOConfig.structuredData.game.isAccessibleForFree  },
             this.schemaCache.set(cacheKey, schema);
 
             return schema;} catch (error) {
@@ -313,13 +310,13 @@ export class StructuredDataEngine {
     /**
      * Organizationスキーマの生成'
      */''
-    async generateOrganizationSchema(context: StructuredDataContext = { }): Promise<OrganizationSchema | null> { try {
+    async generateOrganizationSchema(context: StructuredDataContext = { }: Promise<OrganizationSchema | null> { try {
             const schema: OrganizationSchema = {', '@context': 'https://schema.org','
                 '@type': 'Organization',
                 name: SEOConfig.structuredData.organization.name,
                 url: SEOConfig.structuredData.organization.url,
                 logo: SEOConfig.structuredData.organization.logo,
-    sameAs: SEOConfig.structuredData.organization.sameAs  };
+    sameAs: SEOConfig.structuredData.organization.sameAs  },
             ';'
 
             return schema;} catch (error) {
@@ -329,15 +326,15 @@ export class StructuredDataEngine {
     /**
      * WebApplicationスキーマの生成'
      */''
-    async generateWebApplicationSchema(context: StructuredDataContext = { }): Promise<WebApplicationSchema | null> { try {
+    async generateWebApplicationSchema(context: StructuredDataContext = { }: Promise<WebApplicationSchema | null> { try {
             const schema: WebApplicationSchema = {', '@context': 'https://schema.org','
                 '@type': 'WebApplication',
                 name: this._getLocalizedText('app.name', SEOConfig.siteName','
-                description: this._getLocalizedText('app.description', 'BubblePop Web Application'),
+                description: this._getLocalizedText('app.description', 'BubblePop Web Application');
                 url: this.baseUrl,
                 applicationCategory: SEOConfig.structuredData.webApplication.applicationCategory,
                 operatingSystem: ['Any'],
-    browserRequirements: SEOConfig.structuredData.webApplication.browserRequirements  };
+    browserRequirements: SEOConfig.structuredData.webApplication.browserRequirements  },
             ';'
 
             return schema;} catch (error) {
@@ -363,7 +360,7 @@ export class StructuredDataEngine {
             ';'
 
             return schema;} catch (error) {
-            seoErrorHandler.handle(error as Error, 'generateBreadcrumbSchema', breadcrumbs),
+            seoErrorHandler.handle(error as Error, 'generateBreadcrumbSchema', breadcrumbs);
             return null,
     
     /**
@@ -375,7 +372,7 @@ export class StructuredDataEngine {
         endDate: string,
     location: string,): Promise<EventSchema | null>;
 
-        try { const organizer = await this.generateOrganizationSchema(),
+        try { const organizer = await this.generateOrganizationSchema();
             if(!organizer) return null,
             ','
 
@@ -386,7 +383,7 @@ export class StructuredDataEngine {
                 startDate: eventData.startDate,
                 endDate: eventData.endDate,
                 location: eventData.location,
-    organizer: organizer,;
+    organizer: organizer,
             ';'
 
             return schema;} catch (error) {
@@ -419,7 +416,7 @@ export class StructuredDataEngine {
     /**
      * リソースのクリーンアップ
      */'
-    cleanup(): void { this.schemas.clear(),
+    cleanup(): void { this.schemas.clear();
         this.schemaCache.clear()','
         seoLogger.info('StructuredDataEngine, cleaned up') }
 

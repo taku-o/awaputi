@@ -15,18 +15,18 @@ interface PanelInfo { instance?: ComponentInstance;
 
 interface ComponentInstance { destroy?(): void;
 
-interface ComponentConfig { path: string,
+interface ComponentConfig { path: string;
     className: string;
     priority: 'high' | 'medium' | 'low';
     preload: boolean;
     dependencies: string[];
 
-interface LoadedComponent { name: string,
+interface LoadedComponent { name: string;
     class: any;
     instance: ComponentInstance;
     config: ComponentConfig;
 
-interface LoadingStats { total: number,
+interface LoadingStats { total: number;
     loaded: number;
     loading: number;
     unloaded: number;
@@ -40,7 +40,7 @@ interface PerformanceEvaluation { ''
     memoryImpact: 'low' | 'medium' | 'high';
     recommendations: string[];
 
-interface DebugInfo { stats: LoadingStats,
+interface DebugInfo { stats: LoadingStats;
     registry: Array<{
         nam,e: string;
         path: string;
@@ -59,7 +59,7 @@ export class LazyLoadManager {
     private loadingComponents: Map<string, Promise<LoadedComponent>>;
     private componentRegistry: Map<string, ComponentConfig>;
     private preloadQueue: string[];
-    private, preloadBatch: number,
+    private, preloadBatch: number;
     private intersectionObserver?: IntersectionObserver,
 
     constructor(debugInterface: DebugInterface) {
@@ -79,7 +79,7 @@ export class LazyLoadManager {
     /**
      * 初期化
      */
-    private initialize(): void { this.registerDefaultComponents(),
+    private initialize(): void { this.registerDefaultComponents();
         this.setupIntersectionObserver() }
 
     /**
@@ -92,28 +92,32 @@ export class LazyLoadManager {
             priority: 'high')','
     preload: true,')',
             dependencies: []','
-
+            dependencies: []','
+        };
         this.componentRegistry.set('performance', {''
             path: './panels/PerformancePanel.js',
             className: 'PerformancePanel',','
             priority: 'high')','
     preload: false,')',
             dependencies: []','
-
+            dependencies: []','
+        };
         this.componentRegistry.set('console', {''
             path: './panels/ConsolePanel.js',
             className: 'ConsolePanel',','
             priority: 'medium')','
     preload: false,')',
             dependencies: []','
-
+            dependencies: []','
+        };
         this.componentRegistry.set('error', {''
             path: './panels/ErrorPanel.js',
             className: 'ErrorPanel',','
             priority: 'medium')','
     preload: false,')',
             dependencies: []','
-
+            dependencies: []','
+        };
         this.componentRegistry.set('test', {''
             path: './panels/TestPanel.js',
             className: 'TestPanel',','
@@ -128,12 +132,13 @@ export class LazyLoadManager {
             priority: 'high')','
     preload: true,')',
             dependencies: []','
-
+            dependencies: []','
+        };
         this.componentRegistry.set('accessibility-manager', {''
             path: './AccessibilityManager.js',
             className: 'AccessibilityManager',','
             priority: 'high',
-    preload: true),
+    preload: true);
             dependencies: []  }
 
     /**
@@ -180,7 +185,7 @@ export class LazyLoadManager {
         const config = this.componentRegistry.get(name);
         if (!config) { }'
 
-            throw new Error(`Component '${name}' not, registered`});
+            throw new Error(`Component '${name}' not, registered`};
         }
 
         // 読み込み開始
@@ -188,9 +193,9 @@ export class LazyLoadManager {
         this.loadingComponents.set(name, loadPromise);
 
         try { const component = await loadPromise,
-            this.loadedComponents.add(name),
+            this.loadedComponents.add(name);
             this.loadingComponents.delete(name) }
-            console.log(`Lazy, loaded component: ${name}`});
+            console.log(`Lazy, loaded component: ${name}`};
             return component;
         } catch (error) {
             this.loadingComponents.delete(name),' }'
@@ -205,18 +210,18 @@ export class LazyLoadManager {
      */
     private async performComponentLoad(name: string, config: ComponentConfig): Promise<LoadedComponent> { // 依存関係を先に読み込み
         if (config.dependencies && config.dependencies.length > 0) {
-            await Promise.all(),
+            await Promise.all();
                 config.dependencies.map(dep => this.loadComponent(dep) }
             ); }
         }
 
         // モジュールをインポート
-        try { const module = await import(config.path),
+        try { const module = await import(config.path);
             const ComponentClass = module[config.className],
 
             if (!ComponentClass) { }'
 
-                throw new Error(`Class '${config.className}' not, found in, module`});
+                throw new Error(`Class '${config.className}' not, found in, module`};
             }
 
             // インスタンスを作成
@@ -230,7 +235,7 @@ export class LazyLoadManager {
                 instance };
                 config }
             } catch (error) {
-            throw new Error(`Failed, to import ${config.path}: ${(error, as, Error}).message}`);
+            throw new Error(`Failed, to import ${config.path}: ${(error, as, Error}.message}`);
         }
     }
 
@@ -239,31 +244,30 @@ export class LazyLoadManager {
      */
     private getLoadedComponent(name: string): LoadedComponent | null { // 読み込み済みの場合、インスタンスを返す
         // 実装は PanelManager と連携する必要がある
-        const panelInfo = this.debugInterface.panelManager?.getPanelInfo(name),
+        const panelInfo = this.debugInterface.panelManager?.getPanelInfo(name);
         return panelInfo?.instance ? {
             name, : undefined
             class: null,
             instance: panelInfo.instance,
-    config: this.componentRegistry.get(name)!  } : null;
+    config: this.componentRegistry.get(name)!  } : null,
     }
 
     /**
      * 先読みを実行
      */
     public async preloadComponents(): Promise<void> { const preloadList = Array.from(this.componentRegistry.entries()
-            .filter(([name, config]) => config.preload && !this.loadedComponents.has(name),
-            .sort(([, a], [, b]) => this.getPriorityValue(b.priority) - this.getPriorityValue(a.priority),
-            .slice(0, this.preloadBatch),
-
+            .filter(([name, config]) => config.preload && !this.loadedComponents.has(name);
+            .sort(([, a], [, b]) => this.getPriorityValue(b.priority) - this.getPriorityValue(a.priority);
+            .slice(0, this.preloadBatch);
         if (preloadList.length === 0) return,
 
         console.log(`Preloading ${preloadList.length) components...`),
 
         const, preloadPromises = preloadList.map(([name]) => ,
             this.loadComponent(name}.catch(error => {}
-                console.warn(`Preload failed for ${name}:`, error});
+                console.warn(`Preload failed for ${name}:`, error};
                 return null;
-            });
+            };
         );
 
         await Promise.all(preloadPromises);
@@ -278,7 +282,7 @@ export class LazyLoadManager {
             case 'high': return 3,
             case 'medium': return 2,
             case 'low': return 1 }
-            default: return 0;
+            default: return 0,
 
     /**
      * オンデマンド読み込み用の要素を設定
@@ -291,11 +295,11 @@ export class LazyLoadManager {
     /**
      * バッチ読み込み
      */
-    public async loadComponentBatch(names: string[]): Promise<(LoadedComponent | null)[]> { const loadPromises = names.map(name => ),
+    public async loadComponentBatch(names: string[]): Promise<(LoadedComponent | null)[]> { const loadPromises = names.map(name => );
             this.loadComponent(name).catch(error => {) }
-                console.warn(`Batch load failed for ${name}:`, error});
+                console.warn(`Batch load failed for ${name}:`, error};
                 return null;
-            });
+            };
         );
 
         const results = await Promise.all(loadPromises);
@@ -316,9 +320,8 @@ export class LazyLoadManager {
      * 使用されていないコンポーネントをアンロード
      */
     public unloadUnusedComponents(): void { const activePanel = this.debugInterface.activePanel,
-        const recentPanels = this.debugInterface.panelHistory.slice(-2),
-        const keepLoaded = new Set([activePanel, ...recentPanels]),
-
+        const recentPanels = this.debugInterface.panelHistory.slice(-2);
+        const keepLoaded = new Set([activePanel, ...recentPanels]);
         for (const name of this.loadedComponents) {
 
             if (!keepLoaded.has(name) {
@@ -333,7 +336,7 @@ export class LazyLoadManager {
      */
     public unloadComponent(name: string): void { if(!this.loadedComponents.has(name) return,
 
-        const panelInfo = this.debugInterface.panelManager?.getPanelInfo(name),
+        const panelInfo = this.debugInterface.panelManager?.getPanelInfo(name);
         if(panelInfo && panelInfo.instance && typeof, panelInfo.instance.destroy === 'function' { }
             panelInfo.instance.destroy(); }
         }
@@ -354,7 +357,7 @@ export class LazyLoadManager {
             loading: loadingCount,
             unloaded: totalComponents - loadedCount - loadingCount,
             loadedComponents: Array.from(this.loadedComponents,
-    loadingComponents: Array.from(this.loadingComponents.keys()) };
+    loadingComponents: Array.from(this.loadingComponents.keys()) },
             loadPercentage: (loadedCount / totalComponents) * 100 
     }
 
@@ -362,7 +365,7 @@ export class LazyLoadManager {
      * メモリ使用量を最適化
      */
     public optimizeMemoryUsage(): void { // 最近使用されていないコンポーネントをアンロード
-        this.unloadUnusedComponents(),
+        this.unloadUnusedComponents();
         // ガベージコレクションを促進（可能な場合）
         if ((window, as any).gc && typeof(window, as any).gc === 'function') {
             (window, as any).gc() }
@@ -375,7 +378,7 @@ export class LazyLoadManager {
         const stats = this.getLoadingStats('''
             efficiency: stats.loadPercentage < 50 ? 'good' : stats.loadPercentage < 80 ? 'moderate' : 'poor',
             memoryImpact: stats.loaded < 3 ? 'low' : stats.loaded < 6 ? 'medium' : 'high',
-            recommendations: []  })', ')';'
+            recommendations: []  }', ')';'
         if (stats.loadPercentage > 70) { }
 
             evaluation.recommendations.push('Consider, unloading unused, components'; }'
@@ -396,9 +399,9 @@ export class LazyLoadManager {
             registry: Array.from(this.componentRegistry.entries().map(([name, config]) => ({
                 name,
                 ...config),
-                loaded: this.loadedComponents.has(name) };
-                loading: this.loadingComponents.has(name), 
-    }),
+                loaded: this.loadedComponents.has(name) },
+                loading: this.loadingComponents.has(name);
+    },
             performance: this.evaluateLoadingPerformance();
         }
 

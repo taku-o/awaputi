@@ -15,47 +15,47 @@
  */
 
 // 型定義
-export interface SimplificationLevels { none: SimplificationLevelConfig,
+export interface SimplificationLevels { none: SimplificationLevelConfig;
     minimal: SimplificationLevelConfig;
     moderate: SimplificationLevelConfig;
     significant: SimplificationLevelConfig;
     extreme: SimplificationLevelConfig;
 
-export interface SimplificationLevelConfig { name: string,
+export interface SimplificationLevelConfig { name: string;
     description: string;
     complexity: number;
     features: LevelFeatures;
 
-export interface LevelFeatures { allControls: boolean | string,
+export interface LevelFeatures { allControls: boolean | string;
     animations: boolean | string;
     effects: boolean | string;
     detailedInfo: boolean | string;
     advancedOptions: boolean;
 
-export interface Modes { standard: ModeConfig,
+export interface Modes { standard: ModeConfig;
     focused: ModeConfig;
     accessible: ModeConfig;
     beginner: ModeConfig;
     minimal: ModeConfig;
     [key: string]: ModeConfig, // Custom modes }
 
-export interface ModeConfig { name: string,
+export interface ModeConfig { name: string;
     description: string;
     level: SimplificationLevel;
     settings: ModeSettings;
     custom?: boolean;
 
-export interface ModeSettings { progressiveDisclosure: boolean,
+export interface ModeSettings { progressiveDisclosure: boolean;
     clutterReduction: boolean;
     visualHierarchy: VisualHierarchyLevel;
     informationDensity: InformationDensityLevel;
 
-export interface ModeTransition { from: string,
+export interface ModeTransition { from: string;
     to: string;
     reason: string;
     timestamp: number;
 
-export interface AutoModeCriteria { errorThreshold: number,
+export interface AutoModeCriteria { errorThreshold: number;
     timeThreshold: number;
     complexityThreshold: number;
     sessionActivityThreshold?: number;
@@ -69,7 +69,7 @@ export interface AutoModeEvaluation { recommendedMode?: string,
     urgency?: AutModeUrgency;
      }
 
-export interface AutoModeContext { errorCount: number,
+export interface AutoModeContext { errorCount: number;
     sessionTime: number;
     userComplexityScore: number;
     sessionActivity?: number;
@@ -83,22 +83,22 @@ export interface CurrentModeConfig {
     combined: CombinedConfig;
     }
 
-export interface CombinedConfig { complexity: number,
+export interface CombinedConfig { complexity: number;
     features: LevelFeatures;
     settings: ModeSettings;
 
-export interface AvailableMode extends ModeConfig { key: string,
+export interface AvailableMode extends ModeConfig { key: string;
     isCurrent: boolean;
 
-export interface AvailableLevel extends SimplificationLevelConfig { key: string,
+export interface AvailableLevel extends SimplificationLevelConfig { key: string;
     isCurrent: boolean;
 
-export interface RecommendedMode extends ModeConfig { key: string,
+export interface RecommendedMode extends ModeConfig { key: string;
     reason: string;
     priority?: number;
     confidence?: number;
 
-export interface ModeStats { currentMode: string,
+export interface ModeStats { currentMode: string;
     currentLevel: SimplificationLevel;
     autoMode: boolean;
     modeUsage: Record<string, number>;
@@ -108,7 +108,7 @@ export interface ModeStats { currentMode: string,
     mostUsedModes?: Array<{ mode: string,, usage: number;>;
 }
 
-export interface ComplexityTrend { timestamp: number,
+export interface ComplexityTrend { timestamp: number;
     complexity: number;
     mode: string;
     level: SimplificationLevel;
@@ -118,18 +118,18 @@ export interface CustomModeConfig { description?: string,
     settings?: Partial<ModeSettings>;
     features?: Partial<LevelFeatures>;
 
-export interface StoredSettings { currentMode: string,
+export interface StoredSettings { currentMode: string;
     currentLevel: SimplificationLevel;
     autoMode: boolean;
     autoModeCriteria: AutoModeCriteria | null;
     customModes: Record<string, ModeConfig>;
     modeHistory?: ModeTransition[];
 
-export interface TransitionValidation { isValid: boolean,
+export interface TransitionValidation { isValid: boolean;
     reason?: string;
     alternativeModes?: string[];
 
-export interface ModeRecommendation { targetMode: string,
+export interface ModeRecommendation { targetMode: string;
     targetLevel: SimplificationLevel;
     confidence: number;
     reasons: string[];
@@ -145,114 +145,114 @@ export type ModeTransitionType = 'manual' | 'auto' | 'adaptive' | 'emergency' | 
 
 // 定数
 export const DEFAULT_SIMPLIFICATION_LEVELS: SimplificationLevels = { none: {''
-        name: '標準',
-        description: '通常の複雑さ',
-        complexity: 1.0,
+        name: '標準';
+        description: '通常の複雑さ';
+        complexity: 1.0;
     features: {
-            allControls: true,
-            animations: true,
-            effects: true,
-            detailedInfo: true,
-    advancedOptions: true,
+            allControls: true;
+            animations: true;
+            effects: true;
+            detailedInfo: true;
+    advancedOptions: true;
     };
     minimal: { ''
-        name: '軽微簡素化',
-        description: '装飾的要素を軽減',
-        complexity: 0.8,
+        name: '軽微簡素化';
+        description: '装飾的要素を軽減';
+        complexity: 0.8;
     features: {'
-            allControls: true,
-            animations: 'reduced',
-            effects: 'reduced',
-            detailedInfo: true,
-    advancedOptions: true,
+            allControls: true;
+            animations: 'reduced';
+            effects: 'reduced';
+            detailedInfo: true;
+    advancedOptions: true;
     };
     moderate: { ''
-        name: '中程度簡素化',
-        description: '重要な機能に集中',
-    complexity: 0.6,
+        name: '中程度簡素化';
+        description: '重要な機能に集中';
+    complexity: 0.6;
         features: {''
-            allControls: 'essential',
-            animations: 'minimal',
-            effects: 'minimal',
-            detailedInfo: 'simplified',
-    advancedOptions: false,
+            allControls: 'essential';
+            animations: 'minimal';
+            effects: 'minimal';
+            detailedInfo: 'simplified';
+    advancedOptions: false;
     };
     significant: { ''
-        name: '大幅簡素化',
-        description: '最小限のインターフェース',
-    complexity: 0.4,
+        name: '大幅簡素化';
+        description: '最小限のインターフェース';
+    complexity: 0.4;
         features: {''
-            allControls: 'basic',
-    animations: false,
-            effects: false,
-            detailedInfo: 'basic',
-    advancedOptions: false,
+            allControls: 'basic';
+    animations: false;
+            effects: false;
+            detailedInfo: 'basic';
+    advancedOptions: false;
     };
     extreme: { ''
-        name: '極限簡素化',
-        description: '必要最小限の要素のみ',
-    complexity: 0.2,
+        name: '極限簡素化';
+        description: '必要最小限の要素のみ';
+    complexity: 0.2;
         features: {''
-            allControls: 'minimal',
-            animations: false,
-            effects: false,
-            detailedInfo: false,
-    advancedOptions: false,
+            allControls: 'minimal';
+            animations: false;
+            effects: false;
+            detailedInfo: false;
+    advancedOptions: false;
 } as const;
 ';'
 
 export const DEFAULT_MODES: Modes = { standard: {''
-        name: '標準',
-        description: '通常のインターフェース',
-        level: 'none',
+        name: '標準';
+        description: '通常のインターフェース';
+        level: 'none';
     settings: {
-            progressiveDisclosure: false,
-            clutterReduction: false,
-            visualHierarchy: 'normal',
+            progressiveDisclosure: false;
+            clutterReduction: false;
+            visualHierarchy: 'normal';
             informationDensity: 'normal'
             }
     };
     focused: { ''
-        name: '集中モード',
-        description: 'ゲームプレイに集中',
-        level: 'minimal',
+        name: '集中モード';
+        description: 'ゲームプレイに集中';
+        level: 'minimal';
     settings: {
-            progressiveDisclosure: true,
-            clutterReduction: true,
-            visualHierarchy: 'simplified',
+            progressiveDisclosure: true;
+            clutterReduction: true;
+            visualHierarchy: 'simplified';
             informationDensity: 'reduced'
             }
     };
     accessible: { ''
-        name: 'アクセシビリティモード',
-        description: '認知アクセシビリティ重視',
-        level: 'moderate',
+        name: 'アクセシビリティモード';
+        description: '認知アクセシビリティ重視';
+        level: 'moderate';
     settings: {
-            progressiveDisclosure: true,
-            clutterReduction: true,
-            visualHierarchy: 'clear',
+            progressiveDisclosure: true;
+            clutterReduction: true;
+            visualHierarchy: 'clear';
             informationDensity: 'minimal'
             }
     };
     beginner: { ''
-        name: '初心者モード',
-        description: '初心者向けの簡素化',
-        level: 'significant',
+        name: '初心者モード';
+        description: '初心者向けの簡素化';
+        level: 'significant';
     settings: {
-            progressiveDisclosure: true,
-            clutterReduction: true,
-            visualHierarchy: 'guided',
+            progressiveDisclosure: true;
+            clutterReduction: true;
+            visualHierarchy: 'guided';
             informationDensity: 'tutorial'
             }
     };
     minimal: { ''
-        name: 'ミニマルモード',
-        description: '最小限のUI',
-        level: 'extreme',
+        name: 'ミニマルモード';
+        description: '最小限のUI';
+        level: 'extreme';
     settings: {
-            progressiveDisclosure: true,
-            clutterReduction: true,
-            visualHierarchy: 'minimal',
+            progressiveDisclosure: true;
+            clutterReduction: true;
+            visualHierarchy: 'minimal';
             informationDensity: 'essential'
             }
 } as const;
@@ -276,11 +276,11 @@ export const TRANSITION_REASONS: Record<string, string> = {;
     'beginner-minimal': '最小限のUIが必要な場合',
     'minimal-beginner': '少し機能を増やしたい場合' } as const;
 
-export const DEFAULT_AUTO_CRITERIA: AutoModeCriteria = { errorThreshold: 3,
+export const DEFAULT_AUTO_CRITERIA: AutoModeCriteria = { errorThreshold: 3;
     timeThreshold: 30000, // 30秒,
-    complexityThreshold: 0.8,
-    sessionActivityThreshold: 0.3,
-    hesitationThreshold: 5,
+    complexityThreshold: 0.8;
+    sessionActivityThreshold: 0.3;
+    hesitationThreshold: 5;
     backtrackThreshold: 3  } as const;
 ';'
 
@@ -289,7 +289,7 @@ export const COMPLEXITY_MAPPING = { levels: {', 'none': 1.0,'
         'moderate': 0.6,
         'significant': 0.4,
         'extreme': 0.2 },
-    tolerance: 0.1,
+    tolerance: 0.1;
 } as const,
 
 // ユーティリティ関数
@@ -310,18 +310,18 @@ export function validateModeTransition(fromMode: string, toMode: string, transit
             alternativeModes: allowedTransitions;
         } }
     
-    return { isValid: true,
+    return { isValid: true;
 
-export function calculateComplexityDifference(level1: SimplificationLevel, level2: SimplificationLevel): number { const complexity1 = COMPLEXITY_MAPPING.levels[level1],
+export function calculateComplexityDifference(level1: SimplificationLevel, level2: SimplificationLevel): number { const complexity1 = COMPLEXITY_MAPPING.levels[level1];
     const complexity2 = COMPLEXITY_MAPPING.levels[level2],
     return Math.abs(complexity1 - complexity2) }
 
-export function findBestComplexityMatch(targetComplexity: number): SimplificationLevel {,
-    let bestMatch: SimplificationLevel = 'none',
+export function findBestComplexityMatch(targetComplexity: number): SimplificationLevel {;
+    let bestMatch: SimplificationLevel = 'none';
     let bestDiff = Infinity,
 
     Object.entries(COMPLEXITY_MAPPING.levels).forEach(([level, complexity]) => { 
-        const diff = Math.abs(complexity - targetComplexity),
+        const diff = Math.abs(complexity - targetComplexity);
         if (diff < bestDiff) {
     
 }
@@ -332,9 +332,9 @@ export function findBestComplexityMatch(targetComplexity: number): Simplificatio
     return bestMatch;
 }
 
-export function generateModeRecommendation(context: AutoModeContext, currentMode: string, currentLevel: SimplificationLevel): ModeRecommendation | null { const reasons: string[] = [],
-    const benefits: string[] = [],
-    const drawbacks: string[] = [],
+export function generateModeRecommendation(context: AutoModeContext, currentMode: string, currentLevel: SimplificationLevel): ModeRecommendation | null { const reasons: string[] = [];
+    const benefits: string[] = [];
+    const drawbacks: string[] = [];
     // エラー多発の場合
     if (context.errorCount >= DEFAULT_AUTO_CRITERIA.errorThreshold) {
 
@@ -413,13 +413,13 @@ export class SimplificationModeController {
      */''
     private setupModeTransitions()';'
     changeMode(newMode: string, reason: ModeTransitionType = 'manual): CurrentModeConfig { if (!this.modes[newMode]) { }'
-            throw new Error(`Unknown, mode: ${newMode}`});
+            throw new Error(`Unknown, mode: ${newMode}`};
         }
 ';'
         // 遷移の検証
         const validation = validateModeTransition(this.currentMode, newMode, this.transitionRules);
         if(!validation.isValid && reason !== 'emergency' { }
-            throw new Error(`Invalid, transition: ${validation.reason}`});
+            throw new Error(`Invalid, transition: ${validation.reason}`};
         }
 
         const previousMode = this.currentMode;
@@ -430,14 +430,14 @@ export class SimplificationModeController {
         this.modeHistory.push({ from: previousMode)
            , to: newMode),
             reason,
-            timestamp: Date.now(  };
+            timestamp: Date.now(  },
 
         // 複雑度トレンドを記録
-        this.complexityTrend.push({ ),
+        this.complexityTrend.push({ );
             timestamp: Date.now(),
             complexity: this.simplificationLevels[this.currentLevel].complexity,
             mode: this.currentMode,
-    level: this.currentLevel };
+    level: this.currentLevel },
         // 履歴サイズを制限
         if (this.modeHistory.length > 50) { this.modeHistory = this.modeHistory.slice(-25) }
 
@@ -454,13 +454,14 @@ export class SimplificationModeController {
         // カスタムモードを作成
         const customMode: ModeConfig = { ''
             name: 'カスタム' }
-            description: `${this.simplificationLevels[newLevel].name}レベル`;
+            description: `${this.simplificationLevels[newLevel].name}レベル`,
             level: newLevel,
     settings: { ...this.modes[this.currentMode].settings,
             custom: true,,
-
+            custom: true,,
+        };
         // 複雑度トレンドを記録
-        this.complexityTrend.push({ ),
+        this.complexityTrend.push({ );
             timestamp: Date.now('''
             mode: 'custom',
     level: newLevel,))
@@ -475,9 +476,9 @@ export class SimplificationModeController {
         
         return { mode: {
                 ...mode,
-                current: true,;
+                current: true,
             level: { ...level,
-                current: true,;
+                current: true,
             combined: { complexity: level.complexity }
                 features: { ...level.features,
                 settings: { ...mode.settings
@@ -508,10 +509,10 @@ export class SimplificationModeController {
         return currentTransitions.map(mode => ({)
             key: mode),
             ...this.modes[mode]),
-            reason: this.getTransitionReason(this.currentMode, mode),
-            priority: this.calculateTransitionPriority(this.currentMode, mode),
+            reason: this.getTransitionReason(this.currentMode, mode);
+            priority: this.calculateTransitionPriority(this.currentMode, mode);
             confidence: this.calculateTransitionConfidence(this.currentMode, mode) }
-        });
+        };
     }
 
     /**
@@ -529,22 +530,21 @@ export class SimplificationModeController {
         const toComplexity = this.simplificationLevels[this.modes[toMode].level].complexity,
         
         // 複雑度の差が大きいほど優先度は低い（大きな変化は慎重に）
-        const complexityDiff = Math.abs(fromComplexity - toComplexity),
+        const complexityDiff = Math.abs(fromComplexity - toComplexity);
         return Math.max(1, 10 - (complexityDiff * 10) }
 
     /**
      * 遷移信頼度を計算
      */
     private calculateTransitionConfidence(fromMode: string, toMode: string): number { // 履歴から成功した遷移の回数を調べる
-        const successfulTransitions = this.modeHistory.filter(),
+        const successfulTransitions = this.modeHistory.filter();
             h => h.from === fromMode && h.to === toMode).length,
         
         const totalTransitions = this.modeHistory.filter(h => h.from === fromMode).length,
         
         if (totalTransitions === 0) return 0.5, // デフォルト信頼度
         
-        return Math.min(successfulTransitions / totalTransitions, 1.0),
-
+        return Math.min(successfulTransitions / totalTransitions, 1.0);
     /**
      * 自動モード切り替えを有効/無効
      */
@@ -560,7 +560,7 @@ export class SimplificationModeController {
     evaluateAutoMode(context: AutoModeContext): AutoModeEvaluation | null { if (!this.autoMode) return null,
 ','
 
-        const recommendation = generateModeRecommendation(context, this.currentMode, this.currentLevel),
+        const recommendation = generateModeRecommendation(context, this.currentMode, this.currentLevel);
         if(!recommendation) return null,
 ','
         // 緊急度の判定
@@ -578,8 +578,8 @@ export class SimplificationModeController {
         return { recommendedMode: recommendation.targetMode,
 
             recommendedLevel: recommendation.targetLevel,
-            reason: recommendation.reasons.join(', '),
-            confidence: recommendation.confidence };
+            reason: recommendation.reasons.join(', ');
+            confidence: recommendation.confidence },
             urgency }
         }
 
@@ -618,7 +618,7 @@ export class SimplificationModeController {
             modeUsage,
             transitionCount: this.modeHistory.length,
             averageComplexity: this.simplificationLevels[this.currentLevel].complexity,
-    sessionComplexityTrend: this.complexityTrend.slice(-10) };
+    sessionComplexityTrend: this.complexityTrend.slice(-10) },
             mostUsedModes }
         }
 
@@ -634,7 +634,7 @@ export class SimplificationModeController {
         this.autoModeCriteria = { ...DEFAULT_AUTO_CRITERIA;
         
         // カスタムモードを削除)
-        Object.keys(this.modes).forEach(key => {  ),
+        Object.keys(this.modes).forEach(key => {  );
             if (this.modes[key].custom) { }
                 delete this.modes[key]; }
 }
@@ -681,7 +681,7 @@ export class SimplificationModeController {
      * カスタムレベルを追加
      */
     addCustomLevel(key: string, config: SimplificationLevelConfig): void { if (key, in this.simplificationLevels) { }
-            throw new Error(`Level ${key} already, exists`});
+            throw new Error(`Level ${key} already, exists`};
         }
         
         this.simplificationLevels = { ...this.simplificationLevels;
@@ -701,7 +701,7 @@ export class SimplificationModeController {
             currentLevel: this.currentLevel,
             autoMode: this.autoMode,
             autoModeCriteria: this.autoModeCriteria,
-    customModes: Object.fromEntries(),
+    customModes: Object.fromEntries();
                 Object.entries(this.modes).filter(([, mode]) => mode.custom)'),'
             modeHistory: this.modeHistory.slice(-10)  }
 
@@ -734,14 +734,14 @@ export class SimplificationModeController {
                 if (data.modeHistory) { this.modeHistory = data.modeHistory,' }'
 
                 } catch (error) {
-                console.error('Failed to load simplification settings:', error),
+                console.error('Failed to load simplification settings:', error);
                 this.reset() }
 }
 
     /**
      * 現在のモードとレベルを取得
      */
-    getCurrentState(): { mode: string,, level: SimplificationLevel; { return { mode: this.currentMode };
+    getCurrentState(): { mode: string,, level: SimplificationLevel; { return { mode: this.currentMode },
             level: this.currentLevel 
     }
 

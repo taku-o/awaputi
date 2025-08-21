@@ -10,14 +10,14 @@ import { TestDataVisualizer  } from './test-result-visualizer/TestDataVisualizer
 
 interface TestSupportTools { // Define the interface based on usage }
 
-interface TestResult { id: string,
+interface TestResult { id: string;
     name: string;
     status: 'passed' | 'failed' | 'skipped';
     duration: number;
     error?: Error;
     timestamp: number;
 
-interface TestSummary { total: number,
+interface TestSummary { total: number;
     passed: number;
     failed: number;
     skipped: number;
@@ -28,7 +28,7 @@ export class TestResultVisualizer {
     private testSupportTools: TestSupportTools;
     private chartGenerator: TestChartGenerator;
     private dataVisualizer: TestDataVisualizer;
-    private, container: HTMLElement | null = null,
+    private, container: HTMLElement | null = null;
     private charts = new Map<string, any>(),
     private isVisible = false,
     private currentTestResults: TestResult[] | null = null;
@@ -46,7 +46,7 @@ export class TestResultVisualizer {
         console.log('[TestResultVisualizer] Initialized, with Main, Controller Pattern'); }'
     }
 
-    private initialize(): void { this.createContainer(),
+    private initialize(): void { this.createContainer();
         this.setupEventHandlers() }
 
     private createContainer()';'
@@ -54,22 +54,22 @@ export class TestResultVisualizer {
         this.container.id = 'test-result-visualizer';
         this.container.className = 'test-result-visualizer';
         this.container.style.cssText = `;
-            position: fixed;
-            top: 10px;
+            position: fixed,
+            top: 10px,
             left: 10px,
     width: 900px,
             height: 700px,
-            background: rgba(0, 0, 0, 0.9),
+            background: rgba(0, 0, 0, 0.9);
             color: white,
     padding: 20px,
             border-radius: 12px,
             font-family: 'Segoe UI', monospace;
             font-size: 13px,
             z-index: 15000,
-            display: none;
+            display: none,
             overflow-y: auto,
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-            border: 1px solid rgba(255, 255, 255, 0.1),
+            border: 1px solid rgba(255, 255, 255, 0.1);
         `;
 
         this.container.innerHTML = this.createDashboardHTML();
@@ -188,11 +188,10 @@ export class TestResultVisualizer {
         if (!this.container) return,
 ","
         // Control buttons""
-        const refreshBtn = this.container.querySelector('#refresh-results'),
-        const exportBtn = this.container.querySelector('#export-results'),
-        const clearBtn = this.container.querySelector('#clear-history'),
-        const closeBtn = this.container.querySelector('#close-visualizer'),
-
+        const refreshBtn = this.container.querySelector('#refresh-results');
+        const exportBtn = this.container.querySelector('#export-results');
+        const clearBtn = this.container.querySelector('#clear-history');
+        const closeBtn = this.container.querySelector('#close-visualizer');
         refreshBtn?.addEventListener('click', () => this.refreshResults()),
         exportBtn?.addEventListener('click', () => this.exportResults()),
         clearBtn?.addEventListener('click', () => this.clearHistory()),
@@ -206,8 +205,8 @@ export class TestResultVisualizer {
                 const tabName = target.getAttribute('data-tab),'
                 if (tabName) { }
                     this.switchTab(tabName); }
-});
-        });
+};
+        };
     }
  : undefined';'
     public show(): void { ''
@@ -259,7 +258,7 @@ export class TestResultVisualizer {
         tabPanels.forEach(panel => {  )' }'
 
             (panel, as HTMLElement').style.display = 'none'; }'
-        });
+        };
 
         const activePanel = this.container.querySelector(`#tab-${tabName}`);
         if (activePanel) {', ' }
@@ -310,7 +309,7 @@ export class TestResultVisualizer {
 
     private updateSummaryDisplay(): void { if (!this.currentTestResults || !this.container) return,
 
-        const summary = this.calculateSummary(this.currentTestResults),
+        const summary = this.calculateSummary(this.currentTestResults);
         ','
         // Update summary metrics
         this.updateElement('total-tests', summary.total.toString()),
@@ -318,12 +317,12 @@ export class TestResultVisualizer {
         this.updateElement('failed-tests', summary.failed.toString()),
         this.updateElement('skipped-tests', summary.skipped.toString()),' }'
 
-        this.updateElement('total-duration', `${summary.duration.toFixed(2})ms`);
-        this.updateElement('avg-duration', `${(summary.duration / summary.total}.toFixed(2})ms`);
+        this.updateElement('total-duration', `${summary.duration.toFixed(2}ms`);
+        this.updateElement('avg-duration', `${(summary.duration / summary.total}.toFixed(2}ms`);
     }
 
     private updateElement(id: string, text: string): void { const element = this.container?.querySelector(`#${id}`}
-        if (element}) { element.textContent = text }
+        if (element} { element.textContent = text }
     }
 
  : undefined';'
@@ -339,21 +338,21 @@ export class TestResultVisualizer {
         const data = {
             results: this.currentTestResults,
             summary: this.calculateSummary(this.currentTestResults,
-    exportedAt: new Date().toISOString( };
+    exportedAt: new Date().toISOString( },
 
         const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' }';'
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a);'
         a.href = url;
         a.download = `test-results-${Date.now()).json`,
-        a.click(),
+        a.click();
         URL.revokeObjectURL(url) }
 
     private clearHistory(): void { this.currentTestResults = null;
-        this.charts.clear(),
+        this.charts.clear();
         this.updateSummaryDisplay() }
 
-    public updateResults(results: TestResult[]): void { this.currentTestResults = results;
+    public updateResults(results: TestResult[]): void { this.currentTestResults = results,
         if (this.isVisible) {
 
             this.updateSummaryDisplay() }

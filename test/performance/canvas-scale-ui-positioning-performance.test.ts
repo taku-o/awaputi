@@ -22,33 +22,33 @@ describe('Canvas Scale UI Positioning Performance Tests', () => {  let dom: any,
         `, {"
             pretendToBeVisual: true," }"
             resources: "usable"
-            });
-        }),
-        (global: any).window = dom.window;
-        (global: any).document = dom.window.document;
-        (global: any).HTMLElement = dom.window.HTMLElement;
-        (global: any).HTMLCanvasElement = dom.window.HTMLCanvasElement;
-        (global: any).CanvasRenderingContext2D = dom.window.CanvasRenderingContext2D;
-        (global: any).performance = dom.window.performance;
-        (global: any).requestAnimationFrame = dom.window.requestAnimationFrame;
+            };
+        },
+        (global: any).window = dom.window,
+        (global: any).document = dom.window.document,
+        (global: any).HTMLElement = dom.window.HTMLElement,
+        (global: any).HTMLCanvasElement = dom.window.HTMLCanvasElement,
+        (global: any).CanvasRenderingContext2D = dom.window.CanvasRenderingContext2D,
+        (global: any).performance = dom.window.performance,
+        (global: any).requestAnimationFrame = dom.window.requestAnimationFrame,
         
         // Performance monitoring utilities
         performanceMonitor = { marks: new Map(
             measures: [],
-            
+            measures: [],
+        };
             mark(name) { }
-                this.marks.set(name, performance.now(}),
-            
+                this.marks.set(name, performance.now(};
             measure(name, startMark, endMark) { const startTime = this.marks.get(startMark || performance.now() }
                 const endTime = this.marks.get(endMark || performance.now(};)
                 const duration = endTime - startTime);
-                this.measures.push({ name, duration, startTime, endTime ),
+                this.measures.push({ name, duration, startTime, endTime );
                 return duration }
             },
             
             getAverageTime(measureName) {
             
-                const measures = this.measures.filter(m => m.name === measureName),
+                const measures = this.measures.filter(m => m.name === measureName);
                 if (measures.length === 0) return 0 }
                 return measures.reduce((sum, m) => sum + m.duration, 0) / measures.length; }
             },
@@ -58,7 +58,7 @@ describe('Canvas Scale UI Positioning Performance Tests', () => {  let dom: any,
 }
                 this.marks.clear(};)
                 this.measures = [];)
-            });
+            };
         
         // Canvas context のモック
         const mockContext = { save: jest.fn(
@@ -90,7 +90,7 @@ describe('Canvas Scale UI Positioning Performance Tests', () => {  let dom: any,
             textAlign: 'start',','
             textBaseline: 'alphabetic',
             canvas: null,'
-    });
+    };
         HTMLCanvasElement.prototype.getContext = jest.fn(() => mockContext');'
         canvas = document.getElementById('gameCanvas');
         mockContext.canvas = canvas;
@@ -129,14 +129,14 @@ describe('Canvas Scale UI Positioning Performance Tests', () => {  let dom: any,
             // 10,000回のサイズスケーリングが50ms以下で完了することを確認'
             expect(totalTime.toBeLessThan(50);'}');
         test('should handle coordinate validation efficiently', async (') => {  const iterationCount = 5000,', ','
-            performanceMonitor.mark('validation-start'),
+            performanceMonitor.mark('validation-start');
             for(let i = 0, i < iterationCount, i++) {
                 // 有効と無効な座標を混在させてテスト
                 const x = i % 4 === 0 ? -10 : (i % 800), // 25%が無効座標
             }
                 const y = i % 4 === 1 ? -10 : (i % 600); // 25%が無効座標 }
                  }'
-                scaledCoordinateManager.getScaledPosition(x, y})', ')';'
+                scaledCoordinateManager.getScaledPosition(x, y}', ')';'
             ;
             performanceMonitor.mark('validation-end');
             const totalTime = performanceMonitor.measure('validation', 'validation-start', 'validation-end');
@@ -167,16 +167,16 @@ describe('Canvas Scale UI Positioning Performance Tests', () => {  let dom: any,
             // UIレンダリング時間がフレーム予算の20%以下であることを確認'
             expect(renderTime.toBeLessThan(frameBudget * 0.2); // 約3.3ms以下'}');
         test('should handle multiple UI updates efficiently', async (') => {  const updateCount = 1000,'
-            const context = canvas.getContext('2d'),
-            performanceMonitor.mark('multiple-updates-start'),
+            const context = canvas.getContext('2d');
+            performanceMonitor.mark('multiple-updates-start');
             for(let i = 0, i < updateCount, i++) {
                 const mockGameState = {
             }
                     score: 1000 + i }
                     hp: 80 + (i % 20) }
                     timeRemaining: 300 - (i % 300},
-                    combo: i % 15;
-                })'
+                    combo: i % 15,
+                }'
                 gameUIManager.renderAnimatedScore(context, mockGameState.score);
                 gameUIManager.renderHPDisplay(context, mockGameState.hp');'
             }', ';
@@ -188,8 +188,8 @@ describe('Canvas Scale UI Positioning Performance Tests', () => {  let dom: any,
             const averageUpdateTime = totalTime / updateCount;'
             expect(averageUpdateTime.toBeLessThan(0.5); // 0.5ms以下'}');
         test('should maintain performance during canvas resizing', async (') => {  const resizeCount = 50,'
-            const context = canvas.getContext('2d'),
-            performanceMonitor.mark('resize-render-start'),
+            const context = canvas.getContext('2d');
+            performanceMonitor.mark('resize-render-start');
             for(let i = 0, i < resizeCount, i++) {
                 // キャンバスサイズを変更
             }
@@ -199,7 +199,7 @@ describe('Canvas Scale UI Positioning Performance Tests', () => {  let dom: any,
                 
                 // リサイズ後にUI要素をレンダリング)
                 const mockGameState = { score: 12345, hp: 85 ),'
-                gameUIManager.renderAnimatedScore(context, mockGameState.score),
+                gameUIManager.renderAnimatedScore(context, mockGameState.score);
                 gameUIManager.renderHPDisplay(context, mockGameState.hp') }'
             }', ';
             performanceMonitor.mark('resize-render-end');
@@ -252,13 +252,13 @@ describe('Canvas Scale UI Positioning Performance Tests', () => {  let dom: any,
             // 大量の座標変換を実行（キャッシュシステムのテスト）
             for (let i = 0, i < 10000, i++) { }
                 scaledCoordinateManager.getScaledPosition(i % 100, i % 100); // 同じ座標を繰り返し変換 }
-                scaledCoordinateManager.getScaledSize(50, 30})
+                scaledCoordinateManager.getScaledSize(50, 30}
             
             // ガベージコレクションを強制実行
             if (global.gc) {
     
 }
-                global.gc(})
+                global.gc(}
             ;
             const finalMemory = process.memoryUsage().heapUsed;
             const memoryIncrease = finalMemory - initialMemory;
@@ -266,13 +266,13 @@ describe('Canvas Scale UI Positioning Performance Tests', () => {  let dom: any,
             // メモリ使用量の増加が許容範囲内であることを確認'
             expect(memoryIncrease.toBeLessThan(10 * 1024 * 1024); // 10MB以下'}');
         test('should efficiently handle coordinate system cleanup', async (') => {  const cleanupIterations = 100 }', ' }'
-            performanceMonitor.mark('cleanup-test-start'})'
+            performanceMonitor.mark('cleanup-test-start'}'
             );
             for(let i = 0; i < cleanupIterations; i++') {'
                 // 新しい座標システムを作成''
-                const testManager = new(await import('../../src/utils/ScaledCoordinateManager.js').ScaledCoordinateManager(responsiveCanvasManager),
+                const testManager = new(await import('../../src/utils/ScaledCoordinateManager.js').ScaledCoordinateManager(responsiveCanvasManager);
                 // 座標変換を実行'
-                testManager.getScaledPosition(100, 100),
+                testManager.getScaledPosition(100, 100);
                 testManager.getScaledSize(50, 50') }'
                 // クリーンアップ（通常はガベージコレクションで処理される） }
             }', ';
@@ -283,9 +283,9 @@ describe('Canvas Scale UI Positioning Performance Tests', () => {  let dom: any,
     }''
     describe('Stress Testing', (') => {  ''
         test('should maintain performance under high load conditions', async (') => {''
-            const context = canvas.getContext('2d'),
+            const context = canvas.getContext('2d');
             const highLoadIterations = 200,', ',
-            performanceMonitor.mark('stress-test-start'),
+            performanceMonitor.mark('stress-test-start');
             for(let i = 0, i < highLoadIterations, i++) {
     
 }
@@ -298,8 +298,8 @@ describe('Canvas Scale UI Positioning Performance Tests', () => {  let dom: any,
                 const mockGameState = { score: 1000 + i * 10 }
                     hp: 50 + (i % 50},
                     timeRemaining: 300 - i,
-                    combo: i % 20;
-            });
+                    combo: i % 20,
+            };
                 gameUIManager.renderAnimatedScore(context, mockGameState.score);
                 gameUIManager.renderHPDisplay(context, mockGameState.hp);
                 gameUIManager.renderHPBar(context, mockGameState.hp);'
@@ -329,18 +329,18 @@ describe('Canvas Scale UI Positioning Performance Tests', () => {  let dom: any,
             for(let i = 0; i < heavyOperations; i++) {
                 performanceMonitor.mark(`heavy-op-${i)-start`) }
                 // 重い処理をシミュレート }
-                simulateCanvasResize(800 + (i % 1000), 600 + (i % 1000)});
+                simulateCanvasResize(800 + (i % 1000), 600 + (i % 1000)};
                 const mockGameState = { score: i * 100, hp: 85 }
                 gameUIManager.renderAnimatedScore(context, mockGameState.score);
-                performanceMonitor.mark(`heavy-op-${i)-end`});
+                performanceMonitor.mark(`heavy-op-${i)-end`};
                 const operationTime = performanceMonitor.measure(`heavy-op-${i}`, `heavy-op-${i}-start`, `heavy-op-${ i)-end`),
-                processingTimes.push(operationTime),
+                processingTimes.push(operationTime);
                 // パフォーマンス監視：処理時間が増加している場合の対応
                 if (i > 100 && i % 100 === 0) {
                     const, recentAverage = processingTimes.slice(-100).reduce((sum, time) => sum + time, 0) / 100,
                     const, initialAverage = processingTimes.slice(0, 100).reduce((sum, time) => sum + time, 0) / 100 }
                     // パフォーマンスの著しい低下がないことを確認 }
-                    expect(recentAverage.toBeLessThan(initialAverage * 3}); // 3倍以上の低下はNG
+                    expect(recentAverage.toBeLessThan(initialAverage * 3}; // 3倍以上の低下はNG
                 }
             }
             
@@ -364,8 +364,8 @@ describe('Canvas Scale UI Positioning Performance Tests', () => {  let dom: any,
                     score: 5000 + (frame * 100},
                     hp: 90 - (frame % 10},
                     timeRemaining: 300 - frame,
-                    combo: frame % 15;
-            });
+                    combo: frame % 15,
+            };
                 // UI要素のレンダリング
                 gameUIManager.renderAnimatedScore(context, mockGameState.score);
                 gameUIManager.renderHPDisplay(context, mockGameState.hp);
@@ -384,9 +384,9 @@ describe('Canvas Scale UI Positioning Performance Tests', () => {  let dom: any,
                     inputConverter.convertMouseEvent(mockEvent);
                 }
                 
-                performanceMonitor.mark(`frame-${frame)-end`});
+                performanceMonitor.mark(`frame-${frame)-end`};
                 const frameTime = performanceMonitor.measure(`frame-${frame}`, `frame-${frame}-start`, `frame-${ frame)-end`) }
-                frameimes.push(frameTime});
+                frameimes.push(frameTime};
             }
             
             // フレーム時間の分析
@@ -398,7 +398,7 @@ describe('Canvas Scale UI Positioning Performance Tests', () => {  let dom: any,
             expect(averageFrameTime.toBeLessThan(frameBudget * 0.5); // 平均は予算の50%以下
             expect(maxFrameTime.toBeLessThan(frameBudget * 1.5); // 最大でも予算の150%以下
             expect(framesWithinBudget / frameCount).toBeGreaterThan(0.9); // 90%以上のフレームが予算内
-        });
+        };
     }'
     // ヘルパー関数''
     function simulateCanvasResize(width, height') { }'

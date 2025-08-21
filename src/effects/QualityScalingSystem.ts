@@ -1,14 +1,14 @@
 import { getErrorHandler  } from '../utils/ErrorHandler.js';
 
 // Type definitions for quality scaling and performance optimization
-interface ParticleManager { setQualityLevel(quality: string): void,
+interface ParticleManager { setQualityLevel(quality: string): void;
     maxParticles: number;
     particles: Particle[];
     backgroundEnabled: boolean;
     backgroundParticles: Particle[];
     returnParticleToPool(particle: Particle): void;
 
-interface Particle { type: string,
+interface Particle { type: string;
     life: number;
     maxLife: number;
     size: number;
@@ -40,45 +40,45 @@ export, class QualityScalingSystem {
         
         // 品質レベル定義
         this.qualityLevels = {', 'potato': {''
-                name: 'ポテト',
-                countMultiplier: 0.1,
-    sizeMultiplier: 0.6,
-                complexityLevel: 0,
-                enabledEffects: ['circle'],
+                name: 'ポテト';
+                countMultiplier: 0.1;
+    sizeMultiplier: 0.6;
+                complexityLevel: 0;
+                enabledEffects: ['circle'];
                 disabledFeatures: ['trail', 'glow', 'background', 'lighting'];
                 maxParticles: 50 }
 
                 description: '最低品質 - 古い端末向け' 
     },', 'low': { ''
-                name: '低',
-                countMultiplier: 0.25,
-    sizeMultiplier: 0.8,
-                complexityLevel: 1,
+                name: '低';
+                countMultiplier: 0.25;
+    sizeMultiplier: 0.8;
+                complexityLevel: 1;
                 enabledEffects: ['circle', 'star', 'diamond'];
                 disabledFeatures: ['trail', 'glow', 'background'];
-                maxParticles: 150,
+                maxParticles: 150;
                 description: '低品質 - 軽量モード'
             }
 
             },', 'medium': { ''
-                name: '中',
-                countMultiplier: 0.5,
-    sizeMultiplier: 0.9,
-                complexityLevel: 2,
+                name: '中';
+                countMultiplier: 0.5;
+    sizeMultiplier: 0.9;
+                complexityLevel: 2;
                 enabledEffects: ['circle', 'star', 'diamond', 'advanced_circle', 'hexagon'];
-                disabledFeatures: ['background'],
-                maxParticles: 300,
+                disabledFeatures: ['background'];
+                maxParticles: 300;
                 description: '中品質 - バランス重視'
             }
 
             },', 'high': { ''
-                name: '高',
-                countMultiplier: 1.0,
-    sizeMultiplier: 1.0,
-                complexityLevel: 3,
+                name: '高';
+                countMultiplier: 1.0;
+    sizeMultiplier: 1.0;
+                complexityLevel: 3;
                 enabledEffects: ['*],'
-    disabledFeatures: [],
-                maxParticles: 500,
+    disabledFeatures: [];
+                maxParticles: 500;
                 description: '高品質 - 標準設定'
             }
 
@@ -114,7 +114,7 @@ export, class QualityScalingSystem {
             minFPS: 30,
             criticalFPS: 15,
     memoryThreshold: 50 * 1024 * 1024, // 50MB,
-            particleCountThreshold: 300  };
+            particleCountThreshold: 300  },
         // 調整履歴
         this.adjustmentHistory = [];
         this.lastAdjustmentTime = 0;
@@ -141,7 +141,7 @@ export, class QualityScalingSystem {
      * @param force - 強制設定
      */
     public setQualityLevel(quality: string, force: boolean = false): boolean { if (!this.qualityLevels[quality]) { }
-            console.warn(`[QualityScalingSystem] 不正な品質レベル: ${quality}`});
+            console.warn(`[QualityScalingSystem] 不正な品質レベル: ${quality}`};
             return false;
         }
         
@@ -150,10 +150,10 @@ export, class QualityScalingSystem {
         
         // パーティクルマネージャーに品質設定を適用
         if (this.particleManager) {
-            this.particleManager.setQualityLevel(quality),
+            this.particleManager.setQualityLevel(quality);
             this.applyQualitySettings()','
         this.recordAdjustment(oldQuality, quality, force ? 'manual' : 'auto) }'
-        console.log(`[QualityScalingSystem] 品質レベル変更: ${oldQuality} → ${quality}`});
+        console.log(`[QualityScalingSystem] 品質レベル変更: ${oldQuality} → ${quality}`};
         return true;
     }
     
@@ -188,13 +188,13 @@ export, class QualityScalingSystem {
      */
     private removeExcessParticles(count: number): void { // 優先度の低いパーティクルから削除
         const sortedParticles = this.particleManager.particles.sort((a, b) => { 
-            const priorityA = this.getParticlePriority(a),
+            const priorityA = this.getParticlePriority(a);
             const priorityB = this.getParticlePriority(b) }
             return priorityA - priorityB;);
         
         for(let, i = 0; i < count && sortedParticles.length > 0; i++) {
         
-            const particle = sortedParticles.shift(),
+            const particle = sortedParticles.shift();
             if (particle) {
     
 }
@@ -233,7 +233,7 @@ export, class QualityScalingSystem {
      */
     public autoAdjustQuality(performanceData: PerformanceData): void { if (!this.autoAdjustEnabled) return,
         
-        const now = Date.now(),
+        const now = Date.now();
         if (now - this.lastAdjustmentTime < this.adjustmentCooldown) return,
         
         try { }
@@ -258,7 +258,7 @@ export, class QualityScalingSystem {
             ';'
 
         } catch (error) { getErrorHandler()','
-                context: 'QualityScalingSystem.autoAdjustQuality' });
+                context: 'QualityScalingSystem.autoAdjustQuality' },
         }
     }
     
@@ -270,11 +270,9 @@ export, class QualityScalingSystem {
         if(direction === 0) return,
 
         const qualityOrder: QualityLevelName[] = ['potato', 'low', 'medium', 'high', 'ultra', 'insane'],
-        const currentIndex = qualityOrder.indexOf(this.currentQuality, as QualityLevelName),
-        
+        const currentIndex = qualityOrder.indexOf(this.currentQuality, as QualityLevelName);
         let newIndex = currentIndex + direction,
-        newIndex = Math.max(0, Math.min(qualityOrder.length - 1, newIndex),
-        
+        newIndex = Math.max(0, Math.min(qualityOrder.length - 1, newIndex);
         if (newIndex !== currentIndex) {
         
             const newQuality = qualityOrder[newIndex] }
@@ -325,8 +323,8 @@ export, class QualityScalingSystem {
      * @param to - 変更後品質
      * @param reason - 変更理由
      */
-    private recordAdjustment(from: string, to: string, reason: string): void { this.adjustmentHistory.push({),
-            timestamp: Date.now(),
+    private recordAdjustment(from: string, to: string, reason: string): void { this.adjustmentHistory.push({);
+            timestamp: Date.now();
             from,
             to,
             reason,
@@ -357,7 +355,7 @@ export, class QualityScalingSystem {
             maxParticles: currentSettings.maxParticles,
             enabledEffects: currentSettings.enabledEffects.length,
             disabledFeatures: currentSettings.disabledFeatures.length,
-    adjustmentCount: this.adjustmentHistory.length };
+    adjustmentCount: this.adjustmentHistory.length },
             lastAdjustment: this.adjustmentHistory[this.adjustmentHistory.length - 1] || null 
     }
     
@@ -379,7 +377,7 @@ export, class QualityScalingSystem {
             const debugInfo = gl.getExtension('WEBGL_debug_renderer_info),'
 
             if (debugInfo) {''
-                const renderer = gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL),
+                const renderer = gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL);
                 if (renderer && (renderer.includes('NVIDIA') || renderer.includes('AMD)' {
         }
                     score += 2; }

@@ -3,7 +3,7 @@
  * Main Controller Patternで使用するサブコンポーネントの共通インターフェース
  */
 
-type ErrorHandler = (error: Error, componentName: string, context: string) => void;
+type ErrorHandler = (error: Error, componentName: string, context: string) => void,
 
 export class BaseComponent {
     protected mainController: any;
@@ -25,12 +25,11 @@ export class BaseComponent {
      * @returns {Promise<void>}
      */
     async initialize(): Promise<void> { try {
-            await this._doInitialize(),
-
+            await this._doInitialize();
             this.initialized = true,' }'
 
         } catch (error) {
-            this._handleError('Initialization failed', error as Error),
+            this._handleError('Initialization failed', error as Error);
             throw error }
     }
 

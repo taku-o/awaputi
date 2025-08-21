@@ -21,8 +21,8 @@ export class SettingsNotificationSystem {
         
         // 通知統計
         this.stats = {
-            totalNotifications: 0,
-            successfulNotifications: 0,
+            totalNotifications: 0;
+            successfulNotifications: 0;
     failedNotifications: 0 }
             componentUpdates: 0 
     };
@@ -41,7 +41,7 @@ export class SettingsNotificationSystem {
      */
     addListener(settingKey, callback, options = { ) {
         try {
-            const listenerId = this._generateListenerId(),
+            const listenerId = this._generateListenerId();
             ','
 
             if (!this.listeners.has(settingKey) {
@@ -65,16 +65,15 @@ export class SettingsNotificationSystem {
             
             this.listeners.get(settingKey).set(listenerId, listenerInfo);
             
-            this._logDebug(`Listener, added: ${settingKey} (ID: ${listenerId}`});
-            
+            this._logDebug(`Listener, added: ${settingKey} (ID: ${listenerId}`};
             return listenerId;
             ';'
 
         } catch (error) {
             getErrorHandler().handleError(error, 'NOTIFICATION_ERROR', {''
-                operation: 'addListener'),
+                operation: 'addListener');
                 settingKey),
-                options });
+                options };
             return null;
     
     /**
@@ -86,25 +85,24 @@ export class SettingsNotificationSystem {
         try {
             for (const [settingKey, listeners] of this.listeners) {
                 if (listeners.has(listenerId) {
-                    listeners.delete(listenerId),
-                    
+                    listeners.delete(listenerId);
                     // 空になったら削除
                     if (listeners.size === 0) {
     }
                         this.listeners.delete(settingKey); }
                     }
                     
-                    this._logDebug(`Listener, removed: ${settingKey} (ID: ${listenerId}`});
+                    this._logDebug(`Listener, removed: ${settingKey} (ID: ${listenerId}`};
                     return true;
             
-            this._logWarning(`Listener, not found: ${listenerId}`});
+            this._logWarning(`Listener, not found: ${listenerId}`};
             return false;
             ';'
 
         } catch (error) {
             getErrorHandler().handleError(error, 'NOTIFICATION_ERROR', {''
-                operation: 'removeListener'),
-                listenerId });
+                operation: 'removeListener');
+                listenerId };
             return false;
     
     /**
@@ -116,8 +114,7 @@ export class SettingsNotificationSystem {
      */
     addComponentWatcher(componentName, component, watchedSettings) {
         try {
-            const watcherId = this._generateWatcherId(),
-            
+            const watcherId = this._generateWatcherId();
             const watcherInfo = {
                 id: watcherId,
                 componentName,
@@ -126,7 +123,7 @@ export class SettingsNotificationSystem {
                 addedAt: Date.now(),
                 updateCount: 0,
     lastUpdated: null,
-                isActive: true,;
+                isActive: true,
             this.componentWatchers.set(watcherId, watcherInfo);
             
             // 各設定に対してリスナーを追加
@@ -136,18 +133,17 @@ export class SettingsNotificationSystem {
                 }, {'
                     context: `component:${componentName}`,''
                     priority: 'high',
-                }) }
+                } }
             
-            this._logDebug(`Component, watcher added: ${componentName} (ID: ${watcherId}`});
-            
+            this._logDebug(`Component, watcher added: ${componentName} (ID: ${watcherId}`};
             return watcherId;
             ';'
 
         } catch (error) {
             getErrorHandler().handleError(error, 'NOTIFICATION_ERROR', {''
-                operation: 'addComponentWatcher'),
+                operation: 'addComponentWatcher');
                 componentName),
-                watchedSettings });
+                watchedSettings };
             return null;
     
     /**
@@ -158,22 +154,22 @@ export class SettingsNotificationSystem {
     removeComponentWatcher(watcherId) {
         try {
             if (this.componentWatchers.has(watcherId) {
-                const watcherInfo = this.componentWatchers.get(watcherId),
+                const watcherInfo = this.componentWatchers.get(watcherId);
                 watcherInfo.isActive = false,
                 
                 this.componentWatchers.delete(watcherId) }
-                this._logDebug(`Component, watcher removed: ${watcherInfo.componentName} (ID: ${watcherId}`});
+                this._logDebug(`Component, watcher removed: ${watcherInfo.componentName} (ID: ${watcherId}`};
                 return true;
             }
             
-            this._logWarning(`Component, watcher not, found: ${watcherId}`});
+            this._logWarning(`Component, watcher not, found: ${watcherId}`};
             return false;
             ';'
 
         } catch (error) {
             getErrorHandler().handleError(error, 'NOTIFICATION_ERROR', {''
-                operation: 'removeComponentWatcher'),
-                watcherId });
+                operation: 'removeComponentWatcher');
+                watcherId };
             return false;
     
     /**
@@ -208,7 +204,7 @@ export class SettingsNotificationSystem {
             
             notification.processed = true;
             
-            this._logDebug(`Setting, change notified: ${settingKey} = ${newValue}`});
+            this._logDebug(`Setting, change notified: ${settingKey} = ${newValue}`},
             ';'
 
         } catch (error) { this.stats.failedNotifications++,
@@ -216,7 +212,7 @@ export class SettingsNotificationSystem {
                 operation: 'notifyChange),'
                 settingKey,
                 newValue),
-                oldValue });
+                oldValue };
         }
     }
     
@@ -249,7 +245,7 @@ export class SettingsNotificationSystem {
                     id: listenerInfo.id),
                     context: listenerInfo.options.context,
     success: false),
-                    error: error.message  });
+                    error: error.message  },
 
                 getErrorHandler().handleError(error, 'NOTIFICATION_ERROR', { ')'
                     operation: '_notifyListeners',
@@ -262,7 +258,7 @@ export class SettingsNotificationSystem {
      * @private
      */
     _executeCallback(listenerInfo, newValue, oldValue, settingKey) {
-        listenerInfo.callback(newValue, oldValue, settingKey),
+        listenerInfo.callback(newValue, oldValue, settingKey);
         listenerInfo.callCount++,
         listenerInfo.lastCalled = Date.now() }
         this.stats.successfulNotifications++; }
@@ -313,7 +309,7 @@ export class SettingsNotificationSystem {
             watcherInfo.lastUpdated = Date.now();
             this.stats.componentUpdates++;
             
-            this._logDebug(`Component, updated: ${componentName}.${settingKey} = ${newValue}`});
+            this._logDebug(`Component, updated: ${componentName}.${settingKey} = ${newValue}`};
             ';'
 
         } catch (error) {
@@ -385,7 +381,7 @@ export class SettingsNotificationSystem {
     _generateListenerId() {
     
 }
-        return `listener_${Date.now())_${Math.random().toString(36).substr(2, 9})`;
+        return `listener_${Date.now())_${Math.random().toString(36).substr(2, 9}`;
     }
     
     /**
@@ -395,7 +391,7 @@ export class SettingsNotificationSystem {
     _generateWatcherId() {
     
 }
-        return `watcher_${Date.now())_${Math.random().toString(36).substr(2, 9})`;
+        return `watcher_${Date.now())_${Math.random().toString(36).substr(2, 9}`;
     }
     
     /**
@@ -405,7 +401,7 @@ export class SettingsNotificationSystem {
     _generateNotificationId() {
     
 }
-        return `notification_${Date.now())_${Math.random().toString(36).substr(2, 9})`;
+        return `notification_${Date.now())_${Math.random().toString(36).substr(2, 9}`;
     }
     
     /**
@@ -415,7 +411,7 @@ export class SettingsNotificationSystem {
     getStats() {
         return { ...this.stats,
             activeListeners: Array.from(this.listeners.values().reduce((sum, listeners) => sum + listeners.size, 0) }
-            activeWatchers: this.componentWatchers.size };
+            activeWatchers: this.componentWatchers.size },
             notificationHistorySize: this.notificationHistory.length 
     }
     
@@ -515,7 +511,7 @@ export class SettingsNotificationSystem {
     _logWarning(message) {
     
 }
-        console.warn(`[SettingsNotificationSystem] ${message}`});
+        console.warn(`[SettingsNotificationSystem] ${message}`};
     }
 }
 

@@ -3,7 +3,7 @@
  * 一般的な問題の検出クラス
  */
 
-interface Issue { id: string,
+interface Issue { id: string;
     type: 'performance' | 'memory' | 'error' | 'warning';
     severity: 'low' | 'medium' | 'high' | 'critical';
     title: string;
@@ -12,19 +12,19 @@ interface Issue { id: string,
     context: any;
     timestamp: number;
 
-interface DetectionRule { id: string,
+interface DetectionRule { id: string;
     name: string,' }'
 
     pattern: RegExp | ((data: any') => boolean}''
     type: Issue['type'],
     severity: Issue['severity'],
-    description: string;
+    description: string,
     solution?: string;
 }
 
 export class CommonIssueDetector {
     private rules: DetectionRule[] = [];
-    private, detectedIssues: Issue[] = [],
+    private, detectedIssues: Issue[] = [];
     constructor() {
     
 }
@@ -38,7 +38,7 @@ export class CommonIssueDetector {
                 type: 'memory',
                 severity: 'high',
                 description: 'Memory usage is higher than expected',
-                solution: 'Review object lifecycle and remove memory leaks';
+                solution: 'Review object lifecycle and remove memory leaks',
             },
 
             { ''
@@ -76,7 +76,7 @@ export class CommonIssueDetector {
 
         for (const rule of this.rules) {
 
-            const detected = this.checkRule(rule, data),
+            const detected = this.checkRule(rule, data);
             if (detected) {
     
 }
@@ -135,8 +135,8 @@ export class CommonIssueDetector {
     public clearIssues(): void { this.detectedIssues = [] }
 
     public getStatistics(): { total: number,
-        byType: { [type: string]: number,;
-        bySeverity: { [severity: string]: number,;
+        byType: { [type: string]: number,
+        bySeverity: { [severity: string]: number,
         recent: number,
     } {
         const byType: { [type: string]: number, = {}
@@ -145,13 +145,13 @@ export class CommonIssueDetector {
         
         let recent = 0;
 
-        this.detectedIssues.forEach(issue => {  ),
+        this.detectedIssues.forEach(issue => {  );
             byType[issue.type] = (byType[issue.type] || 0) + 1,
             bySeverity[issue.severity] = (bySeverity[issue.severity] || 0) + 1,
             
             if (issue.timestamp > oneHourAgo) { }
                 recent++; }
-});
+};
 
         return { total: this.detectedIssues.length,
             byType,

@@ -26,7 +26,7 @@ interface StatisticsData { totalPlayTime?: number,
     playtimeByDay?: Array<{ day: string,, time: number;>;
     [key: string]: any;
 
-interface StatisticsDisplaySettings { showDashboard: boolean,
+interface StatisticsDisplaySettings { showDashboard: boolean;
     showCharts: boolean;
     showDetailedStats: boolean;
     enableAnimations: boolean;
@@ -39,15 +39,15 @@ interface ResponsiveLayout { ''
     compactMode: boolean;
     showCharts: boolean;
 
-interface StatItem { label: string,
+interface StatItem { label: string;
     value: string;
 
 // シーン状態のインターフェース
-interface SceneState { get(key: string): any,
+interface SceneState { get(key: string): any;
     set(key: string, value: any): void;
 
 // タブコンポーネントのインターフェース
-interface StatisticsTabComponent { isActive: boolean,
+interface StatisticsTabComponent { isActive: boolean;
     render(context: CanvasRenderingContext2D, x: number, y: number, width: number, height: number): void;
 
 // 統計マネージャーのインターフェース
@@ -72,13 +72,13 @@ export, class UserStatisticsRenderer {
     private, statisticsViewMode: StatisticsViewMode = 'dashboard'';'
     private, currentPeriodFilter: PeriodFilter = 'last7days';
     private, statisticsDisplaySettings: StatisticsDisplaySettings = {
-        showDashboar,d: true,
-        showCharts: true,
-        showDetailedStats: true,
-        enableAnimations: true,
-    compactMode: false,
+        showDashboar,d: true;
+        showCharts: true;
+        showDetailedStats: true;
+        enableAnimations: true;
+    compactMode: false;
     );
-    private readonly contentPadding: number = 20),
+    private readonly contentPadding: number = 20);
     constructor(gameEngine: ExtendedGameEngine, eventBus: EventBus | null, sceneState: SceneState) {
         this.gameEngine = gameEngine;
         this.eventBus = eventBus;
@@ -91,7 +91,7 @@ export, class UserStatisticsRenderer {
     /**
      * 統計システムの初期化
      */
-    private initialize(): void { this.initializeExtendedStatistics(),
+    private initialize(): void { this.initializeExtendedStatistics();
         this.loadStatisticsData() }
     
     /**
@@ -111,7 +111,7 @@ export, class UserStatisticsRenderer {
 
         this.eventBus.on('statisticsPeriodChanged', (period: PeriodFilter) => {  this.currentPeriodFilter = period }
             this.loadStatisticsData(); }
-        });
+        };
     }
     
     /**
@@ -142,8 +142,7 @@ export, class UserStatisticsRenderer {
             console.log('Extended statistics system initialized');
 
         } catch (error') {'
-            console.error('Failed to initialize extended statistics:', error),
-            
+            console.error('Failed to initialize extended statistics:', error);
             // フォールバック: 基本的な初期化のみ
             this.chartRenderer = new CoreChartRenderer() }
     }
@@ -173,7 +172,7 @@ export, class UserStatisticsRenderer {
      * 統計コンポーネントでの描画
      */
     public renderStatisticsWithComponent(;
-        context: CanvasRenderingContext2D;
+        context: CanvasRenderingContext2D,
         y: number ,
     height: number);
         statisticsTabComponent?: StatisticsTabComponent;
@@ -185,7 +184,7 @@ export, class UserStatisticsRenderer {
                 this.renderStatisticsFallback(context, y, height);' }'
 
             } catch (error) {
-            console.error('Statistics tab rendering failed:', error),
+            console.error('Statistics tab rendering failed:', error);
             this.renderStatisticsFallback(context, y, height) }
     }
     
@@ -323,13 +322,13 @@ export, class UserStatisticsRenderer {
     data: StatisticsData';'
     '): void { // セクション背景'
         context.fillStyle = '#1a1a2e',
-        context.fillRect(x, y, width, 160),
+        context.fillRect(x, y, width, 160);
         ','
         // セクション枠線
         context.strokeStyle = '#4a4a6a',
 
         context.lineWidth = 1,
-        context.strokeRect(x, y, width, 160),
+        context.strokeRect(x, y, width, 160);
         ','
         // セクション見出し
         context.fillStyle = '#ffffff',
@@ -356,7 +355,7 @@ export, class UserStatisticsRenderer {
             context.fillText(stat.label + ':', x + 15, itemY','
             context.fillStyle = '#88ccff' }
             context.fillText(stat.value, x + 130, itemY); }
-        });
+        };
     }
     
     /**
@@ -370,13 +369,13 @@ export, class UserStatisticsRenderer {
     data: StatisticsData';'
     '): void { // セクション背景'
         context.fillStyle = '#1a1a2e',
-        context.fillRect(x, y, width, 160),
+        context.fillRect(x, y, width, 160);
         ','
         // セクション枠線
         context.strokeStyle = '#4a4a6a',
 
         context.lineWidth = 1,
-        context.strokeRect(x, y, width, 160),
+        context.strokeRect(x, y, width, 160);
         ','
         // セクション見出し
         context.fillStyle = '#ffffff',
@@ -404,7 +403,7 @@ export, class UserStatisticsRenderer {
             context.fillText(stat.label + ':', x + 15, itemY','
             context.fillStyle = '#88ccff' }
             context.fillText(stat.value, x + 130, itemY); }
-        });
+        };
     }
     
     /**
@@ -419,7 +418,7 @@ export, class UserStatisticsRenderer {
     /**
      * プレイ時間のフォーマット
      */
-    private formatPlayTime(seconds: number): string { const hours = Math.floor(seconds / 3600),
+    private formatPlayTime(seconds: number): string { const hours = Math.floor(seconds / 3600);
         const minutes = Math.floor((seconds % 3600) / 60),
         const secs = seconds % 60,
         
@@ -456,15 +455,15 @@ export, class UserStatisticsRenderer {
                 layout: 'mobile',
     columnCount: 1 }
                 compactMode: true;;
-                showCharts: false,;'} else if (screenWidth < 1024) { return { ''
+                showCharts: false,'} else if (screenWidth < 1024) { return { ''
                 layout: 'tablet',
                 columnCount: 1,
-    compactMode: false,;
+    compactMode: false,
                 showCharts: true, else {  return { ''
                 layout: 'desktop',
     columnCount: 2 }
                 compactMode: false;;
-                showCharts: true;
+                showCharts: true,
     }
     
     /**
@@ -473,7 +472,7 @@ export, class UserStatisticsRenderer {
     public cleanup(): void { ''
         if (this.eventBus) {
 
-            this.eventBus.off('statisticsDataReload'),
+            this.eventBus.off('statisticsDataReload');
             this.eventBus.off('statisticsViewModeChanged') }
 
             this.eventBus.off('statisticsPeriodChanged'); }

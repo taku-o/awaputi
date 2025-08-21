@@ -13,18 +13,18 @@
 import BrowserCompatibilityManager from './BrowserCompatibilityManager.js';
 
 // 型定義インターフェース
-interface FaviconInfo { rel: string,
+interface FaviconInfo { rel: string;
     type?: string;
     href: string;
     sizes?: string;
 
-interface MetaTagInfo { total: number,
+interface MetaTagInfo { total: number;
     byType: Record<string, number> }
     problematicTags: Array<{ name: string,, content: string;>,
     localExecutionTags: Array<{ name: string,, content: string;>;
 }
 
-interface BrowserInfo { name: string,
+interface BrowserInfo { name: string;
     version: number;
     isSupported: boolean;
     supportedFeatures: string[];
@@ -35,12 +35,10 @@ class MetaTagOptimizer { /**
      * ローカル実行用にメタタグを最適化
      */''
     static optimizeForLocalExecution()','
-        console.log('MetaTagOptimizer: Optimizing, meta tags, for local, execution'),
-        
-        this.removeProblematicMetaTags(),
-        this.addLocalExecutionMetaTags(),
-
-        this.optimizeContentSecurityPolicy(),
+        console.log('MetaTagOptimizer: Optimizing, meta tags, for local, execution');
+        this.removeProblematicMetaTags();
+        this.addLocalExecutionMetaTags();
+        this.optimizeContentSecurityPolicy();
         this.addBrowserSpecificOptimizations()','
         console.log('MetaTagOptimizer: Meta, tag optimization, completed') }'
 
@@ -76,7 +74,7 @@ class MetaTagOptimizer { /**
 );
         problematicTags.forEach(tagSelector => {  ) }
             this._removeMetaTagByAttribute(tagSelector); }
-        });
+        };
 
         // X-Frame-Options の個別処理
         this._removeXFrameOptionsTag();
@@ -130,7 +128,7 @@ class MetaTagOptimizer { /**
         xFrameOptionsTags.forEach(tag => { '),'
             console.log('MetaTagOptimizer: Removing, X-Frame-Options, meta tag }'
             tag.remove(); }
-        });
+        };
     }
 
     /**
@@ -142,8 +140,8 @@ class MetaTagOptimizer { /**
         const tags = document.querySelectorAll(`meta[http-equiv="${httpEquiv""]`};""
         tags.forEach(tag => { }" }"
             console.log(`MetaTagOptimizer: Removing, meta tag, with http-equiv = "${httpEquiv}"`} }
-            tag.remove(});
-        });
+            tag.remove(};
+        };
     }
 
     /**
@@ -151,11 +149,11 @@ class MetaTagOptimizer { /**
      * @param {string} selector - セレクター文字列
      * @private
      */
-    static _removeMetaTagByAttribute(selector: string): void { const tags = document.querySelectorAll(`meta[${selector)]`};
+    static _removeMetaTagByAttribute(selector: string): void { const tags = document.querySelectorAll(`meta[${selector)]`},
         tags.forEach(tag => { }
             console.log(`MetaTagOptimizer: Removing meta tag matching ${selector}`} }
-            tag.remove(});
-        });
+            tag.remove(};
+        };
     }
 
     /**
@@ -174,9 +172,8 @@ class MetaTagOptimizer { /**
 
         } else {  // 新しいタグを作成
             const metaTag = document.createElement('meta',
-            metaTag.setAttribute(attributeName, attributeValue),
-            metaTag.setAttribute('content', content),
-            
+            metaTag.setAttribute(attributeName, attributeValue);
+            metaTag.setAttribute('content', content);
             // head要素に追加 }
             document.head.appendChild(metaTag); }
 }
@@ -200,7 +197,7 @@ class MetaTagOptimizer { /**
 );
         requiredFavicons.forEach(faviconInfo => {  ) }
             this._addFaviconTagIfMissing(faviconInfo); }
-        });
+        };
     }
 
     /**
@@ -214,7 +211,7 @@ class MetaTagOptimizer { /**
 
         if (!existingTag) {"
 
-            const, linkTag = document.createElement('link'),
+            const, linkTag = document.createElement('link');
             linkTag.setAttribute('rel', faviconInfo.rel};
             linkTag.setAttribute('href', faviconInfo.href};
 
@@ -224,7 +221,7 @@ class MetaTagOptimizer { /**
 
             if (faviconInfo.type) { }'
 
-                linkTag.setAttribute('type', faviconInfo.type});
+                linkTag.setAttribute('type', faviconInfo.type};
             }
 
             if (faviconInfo.sizes) {', ' }
@@ -237,7 +234,7 @@ class MetaTagOptimizer { /**
                 console.warn(`MetaTagOptimizer: Favicon, not found: ${faviconInfo.href}`);
                 // ファイルが見つからない場合はタグを削除
                 linkTag.remove();
-            });
+            };
             
             document.head.appendChild(linkTag);
         }
@@ -266,7 +263,7 @@ class MetaTagOptimizer { /**
         const metaTagInfo: MetaTagInfo = { total: allMetaTags.length }
             byType: {}
             problematicTags: [],
-    localExecutionTags: [];
+    localExecutionTags: [],
         },
 
         allMetaTags.forEach(tag => {  '),'
@@ -338,7 +335,7 @@ class MetaTagOptimizer { /**
 
             `${browserInfo.name}-${ browserInfo.version'`),'
 
-        this._addOrUpdateMetaTag('name', 'local-execution-supported-features'),
+        this._addOrUpdateMetaTag('name', 'local-execution-supported-features');
             browserInfo.supportedFeatures.join('
             };
 

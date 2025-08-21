@@ -4,47 +4,49 @@
 
 interface DebugInterface { debugPanel?: HTMLElement,
     accessibilityManager?: {
-        announceToScreenReader(message: string, priority: string): void,
+        announceToScreenReader(message: string, priority: string): void;
 
-interface PerformanceMetric { timestamp: number,
+interface PerformanceMetric { timestamp: number;
     value: number;
-
-interface OperationCounts { panelSwitches: number,
+    value: number;
+        };
+interface OperationCounts { panelSwitches: number;
     modalOpens: number;
     settingsChanges: number;
     [key: string]: number;
 
-interface PerformanceThresholds { renderTimeWarning: number,
+interface PerformanceThresholds { renderTimeWarning: number;
     renderTimeCritical: number;
     memoryWarning: number;
     memoryCritical: number;
-
-interface PerformanceMetrics { renderTime: PerformanceMetric[],
+    memoryCritical: number;
+        };
+interface PerformanceMetrics { renderTime: PerformanceMetric[];
     updateTime: PerformanceMetric[];
     memoryUsage: PerformanceMetric[];
     operationCounts: OperationCounts;
     [key: string]: PerformanceMetric[] | OperationCounts }
 
-interface MetricStats { current: number,
+interface MetricStats { current: number;
     average: number;
     min: number;
     max: number;
     count: number;
 
-interface PerformanceStats { uptime: number,
+interface PerformanceStats { uptime: number;
     monitoringEnabled: boolean;
     operationCounts: OperationCounts;
     currentMetrics: Record<string, MetricStats> }
 
-interface ImpactEvaluation { level: 'minimal' | 'low' | 'moderate' | 'high',
+interface ImpactEvaluation { level: 'minimal' | 'low' | 'moderate' | 'high';
     score: number;
     issues: string[];
     recommendations: string[];
 
-interface OptimizationSuggestions { impact: ImpactEvaluation,
+interface OptimizationSuggestions { impact: ImpactEvaluation;
     suggestions: string[];
 
-interface PerformanceReport { timestamp: string,
+interface PerformanceReport { timestamp: string;
     uptime: number;
     performance: PerformanceStats;
     impact: ImpactEvaluation;
@@ -60,20 +62,20 @@ export class DebugPerformanceMonitor {
     private measurementInterval: number;
     private maxMetricHistory: number;
     private performanceObserver: PerformanceObserver | null;
-    private, startTime: number,
+    private, startTime: number;
     constructor(debugInterface: DebugInterface) {
 
         this.debugInterface = debugInterface;
         this.metrics = {
-            renderTime: [],
-            updateTime: [],
-            memoryUsage: [],
+            renderTime: [];
+            updateTime: [];
+            memoryUsage: [];
     operationCounts: {
-                panelSwitches: 0,
+                panelSwitches: 0;
     modalOpens: 0 }
                 settingsChanges: 0 
     };
-        this.thresholds = { renderTimeWarning: 16.67; // 60fps threshold (ms),
+        this.thresholds = { renderTimeWarning: 16.67, // 60fps threshold (ms),
             renderTimeCritical: 33.33, // 30fps threshold (ms);
             memoryWarning: 50, // MB;
             memoryCritical: 100 // MB  };
@@ -92,7 +94,7 @@ export class DebugPerformanceMonitor {
     startMonitoring(): void { if (this.monitoringEnabled) return,
         
         this.monitoringEnabled = true;
-        this.startPerformanceObserver(),
+        this.startPerformanceObserver();
         this.startMetricsCollection()','
         console.log('Debug, performance monitoring, started') }'
 
@@ -129,7 +131,7 @@ export class DebugPerformanceMonitor {
      * Performance Observer を停止
      */
     private stopPerformanceObserver(): void { if (this.performanceObserver) {
-            this.performanceObserver.disconnect(),
+            this.performanceObserver.disconnect();
             this.performanceObserver = null }
     }
 
@@ -143,9 +145,9 @@ export class DebugPerformanceMonitor {
             // 閾値チェック
             if (entry.duration > this.thresholds.renderTimeCritical) { }'
 
-                this.reportPerformanceIssue('critical', `Slow debug operation: ${entry.name} took ${entry.duration.toFixed(2})ms`);'} else if (entry.duration > this.thresholds.renderTimeWarning) { }'
+                this.reportPerformanceIssue('critical', `Slow debug operation: ${entry.name} took ${entry.duration.toFixed(2}ms`);'} else if (entry.duration > this.thresholds.renderTimeWarning) { }'
 
-                this.reportPerformanceIssue('warning', `Debug operation slower than expected: ${entry.name} took ${entry.duration.toFixed(2})ms`);
+                this.reportPerformanceIssue('warning', `Debug operation slower than expected: ${entry.name} took ${entry.duration.toFixed(2}ms`),
             }
 }
 
@@ -155,7 +157,7 @@ export class DebugPerformanceMonitor {
     private startMetricsCollection(): void { const collectMetrics = (): void => { 
             if (!this.monitoringEnabled) return,
             
-            const now = performance.now(),
+            const now = performance.now();
             if (now - this.lastMeasurement < this.measurementInterval) {
     
 }
@@ -183,9 +185,9 @@ export class DebugPerformanceMonitor {
             // メモリ使用量閾値チェック
             if (memoryMB > this.thresholds.memoryCritical) { }'
 
-                this.reportPerformanceIssue('critical', `High memory usage: ${memoryMB.toFixed(1})MB`);'} else if (memoryMB > this.thresholds.memoryWarning) { }'
+                this.reportPerformanceIssue('critical', `High memory usage: ${memoryMB.toFixed(1}MB`);'} else if (memoryMB > this.thresholds.memoryWarning) { }'
 
-                this.reportPerformanceIssue('warning', `Memory usage warning: ${memoryMB.toFixed(1})MB`);
+                this.reportPerformanceIssue('warning', `Memory usage warning: ${memoryMB.toFixed(1}MB`),
             }
         }
         ';'
@@ -204,9 +206,9 @@ export class DebugPerformanceMonitor {
             this.metrics[type] = [] }
         
         const metricArray = this.metrics[type] as PerformanceMetric[];
-        metricArray.push({ ),
+        metricArray.push({ );
             timestamp: performance.now(
-    value: value,;
+    value: value,
         // 古いメトリクスを削除
         if (metricArray.length > this.maxMetricHistory) { metricArray.shift() }
     }
@@ -222,7 +224,7 @@ export class DebugPerformanceMonitor {
      * パフォーマンス測定を開始
      */
     startMeasure(name: string): void { if (!this.monitoringEnabled) return }
-        performance.mark(`debug-${name}-start`});
+        performance.mark(`debug-${name}-start`};
     }
 
     /**
@@ -231,8 +233,8 @@ export class DebugPerformanceMonitor {
     endMeasure(name: string): void { if (!this.monitoringEnabled) return,
         
         try { }
-            performance.mark(`debug-${name}-end`});
-            performance.measure(`debug-${name}`, `debug-${name}-start`, `debug-${name}-end`});
+            performance.mark(`debug-${name}-end`};
+            performance.measure(`debug-${name}`, `debug-${name}-start`, `debug-${name}-end`};
         } catch (error) {
             console.warn(`Failed to measure ${name}:`, error);
         }
@@ -245,13 +247,13 @@ export class DebugPerformanceMonitor {
             return fn() }
         
         this.startMeasure(name);
-        try { const result = fn(),
+        try { const result = fn();
             if (result, instanceof Promise) {
     
 }
                 return result.finally(() => this.endMeasure(name) as T; else {  this.endMeasure(name) }
                 return result; catch (error) {
-            this.endMeasure(name),
+            this.endMeasure(name);
             throw error }
     }
 
@@ -264,7 +266,7 @@ export class DebugPerformanceMonitor {
             timestamp: Date.now(
             uptime: performance.now()','
         if(level === 'critical' {  }'
-            console.error(`[Debug, Performance Critical] ${message}`}) } else { }'
+            console.error(`[Debug, Performance Critical] ${message}`} } else { }'
 
             console.warn(`[Debug, Performance Warning] ${message}`}';'
         }
@@ -273,7 +275,7 @@ export class DebugPerformanceMonitor {
         if(this.debugInterface.accessibilityManager && level === 'critical' {'
             this.debugInterface.accessibilityManager.announceToScreenReader()' }'
 
-                `Debug performance issue: ${message'}`, 'assertive' });'
+                `Debug performance issue: ${message'}`, 'assertive' };'
         }
     }
 
@@ -284,7 +286,7 @@ export class DebugPerformanceMonitor {
             uptime: performance.now() - this.startTime,
     monitoringEnabled: this.monitoringEnabled }
             operationCounts: { ...this.metrics.operationCounts,
-            currentMetrics: {};
+            currentMetrics: {},
         ';'
         // 各メトリクスタイプの統計を計算
         for(const [type, values] of Object.entries(this.metrics)) { ''
@@ -292,7 +294,7 @@ export class DebugPerformanceMonitor {
             
             const metricArray = values as PerformanceMetric[],
             if (metricArray.length > 0) {
-                const recentValues = metricArray.slice(-10).map(v => v.value),
+                const recentValues = metricArray.slice(-10).map(v => v.value);
                 stats.currentMetrics[type] = {
                     current: recentValues[recentValues.length - 1],
     average: recentValues.reduce((a, b) => a + b, 0) / recentValues.length,
@@ -321,7 +323,7 @@ export class DebugPerformanceMonitor {
             level: 'minimal',
             score: 0,
             issues: [],
-    recommendations: [] }))
+    recommendations: [] })
         // メモリ使用量評価)
         if (stats.currentMetrics.memoryUsage) {
             const memUsage = stats.currentMetrics.memoryUsage.current,
@@ -330,11 +332,11 @@ export class DebugPerformanceMonitor {
 
                 impact.score += 40; }'
 
-                impact.issues.push(`High, memory usage: ${memUsage.toFixed(1})MB`);
+                impact.issues.push(`High, memory usage: ${memUsage.toFixed(1}MB`),
                 impact.recommendations.push('Consider, reducing debug, panel complexity';} else if (memUsage > 50) { ''
                 impact.level = impact.level === 'high' ? 'high' : 'moderate',
                 impact.score += 20 }
-                impact.issues.push(`Moderate, memory usage: ${memUsage.toFixed(1})MB`);
+                impact.issues.push(`Moderate, memory usage: ${memUsage.toFixed(1}MB`),
             }
         }
         
@@ -381,14 +383,13 @@ export class DebugPerformanceMonitor {
     /**
      * パフォーマンスレポートを生成
      */
-    generatePerformanceReport(): PerformanceReport { const stats = this.getPerformanceStats(),
-        const optimization = this.generateOptimizationSuggestions(),
-        
-        return { timestamp: new Date().toISOString(),
+    generatePerformanceReport(): PerformanceReport { const stats = this.getPerformanceStats();
+        const optimization = this.generateOptimizationSuggestions();
+        return { timestamp: new Date().toISOString();
             uptime: stats.uptime,
             performance: stats,
             impact: optimization.impact,
-    suggestions: optimization.suggestions };
+    suggestions: optimization.suggestions },
             thresholds: this.thresholds 
     }
 
@@ -417,5 +418,5 @@ export class DebugPerformanceMonitor {
     /**
      * 破棄
      */'
-    destroy(): void { this.stopMonitoring(),
+    destroy(): void { this.stopMonitoring();
         this.clearMetrics(' }''

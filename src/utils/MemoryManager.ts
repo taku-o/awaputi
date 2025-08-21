@@ -7,7 +7,7 @@ interface MemoryManagerConfig { cleanupInterval?: number,
     enableLeakDetection?: boolean;
     enableProactiveCleanup?: boolean;
 
-interface MemoryStats { objectsCreated: number,
+interface MemoryStats { objectsCreated: number;
     objectsDestroyed: number;
     timersCreated: number;
     timersCleared: number;
@@ -24,7 +24,7 @@ interface MemoryStats { objectsCreated: number,
     leakRiskLevel: 'low' | 'medium' | 'high' | 'critical';
     memoryHealthScore: number;
 
-interface TrackedObject { id: string,
+interface TrackedObject { id: string;
     type: string;
     createdAt: number;
     lastAccessed?: number;
@@ -48,29 +48,28 @@ export class MemoryManager {
     private usageAnalyzer!: MemoryUsageAnalyzer,
     
     // Statistics
-    public, stats: MemoryStats,
+    public, stats: MemoryStats;
     constructor(config: MemoryManagerConfig = {) {
         // Basic tracking
         this.trackedObjects = new WeakMap<object, TrackedObject>(),
         // Initialize sub-components
-        this._initializeSubComponents(config),
-        
+        this._initializeSubComponents(config);
         // Main statistics
         this.stats = {
-            objectsCreated: 0,
-            objectsDestroyed: 0,
-            timersCreated: 0,
-            timersCleared: 0,
-            listenersAdded: 0,
-            listenersRemoved: 0,
+            objectsCreated: 0;
+            objectsDestroyed: 0;
+            timersCreated: 0;
+            timersCleared: 0;
+            listenersAdded: 0;
+            listenersRemoved: 0;
             // Component-aggregated stats
-            memoryLeaksDetected: 0,
-            memoryLeaksSuspected: 0,
-            proactiveCleanups: 0,
-            memoryPressureEvents: 0,
-            cleanupEfficiency: 1.0,
+            memoryLeaksDetected: 0;
+            memoryLeaksSuspected: 0;
+            proactiveCleanups: 0;
+            memoryPressureEvents: 0;
+            cleanupEfficiency: 1.0;
             // Current state
-           , currentMemoryPressure: 0,
+           , currentMemoryPressure: 0;
             leakRiskLevel: 'low' }
             memoryHealthScore: 1.0 
     };
@@ -103,12 +102,11 @@ export class MemoryManager {
                 ...config')';
             '),'
 
-            console.log('[MemoryManager] All, sub-components, initialized successfully'),
-
+            console.log('[MemoryManager] All, sub-components, initialized successfully');
             ' }'
 
         } catch (error) {
-            console.error('[MemoryManager] Failed to initialize sub-components:', error),
+            console.error('[MemoryManager] Failed to initialize sub-components:', error);
             throw error }
     }
     
@@ -145,7 +143,7 @@ export class MemoryManager {
                 id: this.generateObjectId(),
                 type,
                 createdAt: Date.now(
-    size: this.estimateObjectSize(obj  };
+    size: this.estimateObjectSize(obj  },
             
             this.trackedObjects.set(obj, trackedInfo);
             this.stats.objectsCreated++;
@@ -164,9 +162,9 @@ export class MemoryManager {
         if(!obj || typeof, obj !== 'object) return,'
         
         try {
-            const trackedInfo = this.trackedObjects.get(obj),
+            const trackedInfo = this.trackedObjects.get(obj);
             if (trackedInfo) {
-                this.trackedObjects.delete(obj),
+                this.trackedObjects.delete(obj);
                 this.stats.objectsDestroyed++,
                 
                 // Notify sub-components
@@ -196,19 +194,15 @@ export class MemoryManager {
      */
     performIntelligentCleanup(): void { try {
             // Get usage analysis
-            const usageReport = this.usageAnalyzer.getUsageReport(),
-            
+            const usageReport = this.usageAnalyzer.getUsageReport();
             // Perform leak detection
-            const leakReport = this.leakDetector.detectLeaks(),
-            
+            const leakReport = this.leakDetector.detectLeaks();
             // Execute intelligent cleanup
-            const cleanupResult = this.proactiveCleanup.performIntelligentCleanup(usageReport, leakReport),
-            
+            const cleanupResult = this.proactiveCleanup.performIntelligentCleanup(usageReport, leakReport);
             // Update aggregated statistics
-            this.updateAggregatedStats(usageReport, leakReport, cleanupResult),
-            
+            this.updateAggregatedStats(usageReport, leakReport, cleanupResult);
             // Check memory health
-            this.assessMemoryHealth(),
+            this.assessMemoryHealth();
             ' }'
 
         } catch (error) { console.error('[MemoryManager] Error during intelligent cleanup:', error }
@@ -279,7 +273,7 @@ export class MemoryManager {
      * Generate unique object ID
      */
     private generateObjectId(): string {
-        return `obj_${Date.now())_${Math.random().toString(36).substr(2, 9})`;
+        return `obj_${Date.now())_${Math.random().toString(36).substr(2, 9}`;
     }
     
     /**
@@ -300,7 +294,7 @@ export class MemoryManager {
      */
     getMemoryReport(): any { return { stats: this.getStats(
             usageReport: this.usageAnalyzer.getUsageReport(
-    leakReport: this.leakDetector.getLeakReport() };
+    leakReport: this.leakDetector.getLeakReport() },
             cleanupReport: (this.proactiveCleanup, as any).getCleanupReport ? (this.proactiveCleanup, as any).getCleanupReport() : null;
     
     /**
@@ -343,8 +337,7 @@ export function getMemoryManager(): MemoryManager { if (!memoryManagerInstance) 
 /**
  * Leak Detector - メモリリーク検出
  */
-class LeakDetector { private trackedObjects: Map<object, any> = new Map(),
-    
+class LeakDetector { private trackedObjects: Map<object, any> = new Map();
     constructor(_config?: any) {
     
 }
@@ -352,29 +345,29 @@ class LeakDetector { private trackedObjects: Map<object, any> = new Map(),
     }
 
     trackObject(obj: object, trackedInfo: any): void { this.trackedObjects.set(obj, {
-                ...trackedInfo),
-            trackedAt: Date.now(  }));
+                ...trackedInfo);
+            trackedAt: Date.now(  }),
     }
     
     untrackObject(obj: object): void { this.trackedObjects.delete(obj) }
 
     detectLeaks(): any[] { // 基本的なリーク検出ロジック
-        const now = Date.now(),
+        const now = Date.now();
         const leaks: any[] = [],
         
         this.trackedObjects.forEach((info, obj) => {  }
             if (now - info.trackedAt > 300000) { // 5分以上古いオブジェクト }
-                leaks.push({ object: obj, info });
+                leaks.push({ object: obj, info };
             }
-        });
+        };
         
         return leaks;
     }
 
-    getLeakReport(): any { const leaks = this.detectLeaks(),
+    getLeakReport(): any { const leaks = this.detectLeaks();
         return { leakCount: leaks.length,
-            leaks: leaks,;
-            timestamp: new Date().toISOString(), 
+            leaks: leaks,
+            timestamp: new Date().toISOString();
     }
 }
 
@@ -391,8 +384,7 @@ class MemoryUsageAnalyzer { private creationHistory: any[] = []
 
     recordObjectCreation(trackedInfo: any): void { this.creationHistory.push({)
             ...trackedInfo),
-            timestamp: Date.now( });
-        
+            timestamp: Date.now( };
         // 履歴の上限管理
         if (this.creationHistory.length > 1000) { this.creationHistory = this.creationHistory.slice(-500) }
     }
@@ -401,7 +393,7 @@ class MemoryUsageAnalyzer { private creationHistory: any[] = []
         // This could be implemented to track destruction patterns }
 
     getUsageAnalysis(): any { return { totalCreations: this.creationHistory.length,
-            recentCreations: this.creationHistory.filter(),
+            recentCreations: this.creationHistory.filter();
                 item = > Date.now() - item.timestamp < 60000).length  };
             typeBreakdown: this.getTypeBreakdown(); 
     }
@@ -410,7 +402,7 @@ class MemoryUsageAnalyzer { private creationHistory: any[] = []
     private getTypeBreakdown()';'
             const type = item.type || 'unknown');
             breakdown[type] = (breakdown[type] || 0) + 1;
-        });
+        };
         return breakdown;
     }
 
@@ -423,8 +415,7 @@ class MemoryUsageAnalyzer { private creationHistory: any[] = []
 /**
  * Proactive Cleanup Manager - プロアクティブクリーンアップ管理
  */
-class ProactiveCleanupManager { private cleanupHandlers: Map<string, () => void> = new Map(),
-    
+class ProactiveCleanupManager { private cleanupHandlers: Map<string, () => void> = new Map();
     constructor(_config?: any) {
     
 }
@@ -439,13 +430,13 @@ class ProactiveCleanupManager { private cleanupHandlers: Map<string, () => void>
             } catch (error) {
                 console.error(`[ProactiveCleanupManager] Error in cleanup handler ${key}:`, error);
             }
-        });
+        };
     }
 
     performIntelligentCleanup(_usageReport: any, leakReport: any): any { const result = {
             performedActions: [] as string[],
             freedMemory: 0,
-    timestamp: new Date().toISOString( };
+    timestamp: new Date().toISOString( },
         // 基本クリーンアップ実行
         this.performCleanup()';'
         result.performedActions.push('basic_cleanup';

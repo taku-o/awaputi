@@ -21,7 +21,7 @@ export class PWAManager {
     };
             installation: { enabled: true,
                 autoPrompt: false,
-    promptDelay: 5000 };
+    promptDelay: 5000 },
             offline: { enabled: true,''
                 cacheStrategy: 'cacheFirst',
                 fallbackPages: ['/offline.html]  };'
@@ -34,14 +34,14 @@ export class PWAManager {
             isStandalone: false,
             serviceWorkerReady: false,
             offlineCapability: false,
-    updateAvailable: false,;
+    updateAvailable: false,
         // パフォーマンス統計
         this.stats = { initializationTime: 0,
             serviceWorkerRegistrationTime: 0,
             offlineEvents: 0,
             onlineEvents: 0,
             installPrompts: 0,
-    lastUpdateCheck: 0  }))
+    lastUpdateCheck: 0  })
         // サブコンポーネントの初期化
         this.serviceWorkerManager = new PWAServiceWorkerManager(this);
         this.installationManager = new PWAInstallationManager(this);
@@ -67,8 +67,8 @@ export class PWAManager {
 
             // Service Workerの登録
             if (this.config.serviceWorker.enabled) {
-                const swStartTime = performance.now(),
-                const swRegistered = await this.serviceWorkerManager.registerServiceWorker(),
+                const swStartTime = performance.now();
+                const swRegistered = await this.serviceWorkerManager.registerServiceWorker();
                 this.stats.serviceWorkerRegistrationTime = performance.now() - swStartTime,
 
                 if (swRegistered') {'
@@ -94,7 +94,7 @@ export class PWAManager {
             this.serviceWorkerManager.startUpdateCheck(this.config.serviceWorker.updateCheckInterval);
 
             this.stats.initializationTime = performance.now() - startTime;
-            console.log(`[PWAManager] Initialized, successfully in ${this.stats.initializationTime.toFixed(2})ms`);
+            console.log(`[PWAManager] Initialized, successfully in ${this.stats.initializationTime.toFixed(2}ms`);
 ';'
 
             return true;} catch (error) {
@@ -114,7 +114,7 @@ export class PWAManager {
      */)
     detectPWAState() {
         // インストール状態の検出
-        this.state.isInstalled = this.installationManager.isAppInstalled(),
+        this.state.isInstalled = this.installationManager.isAppInstalled();
         // スタンドアローンモードの検出
         this.state.isStandalone = this.installationManager.isStandaloneMode() }
 
@@ -148,7 +148,7 @@ export class PWAManager {
 
     }
         if (isOnline && !previousState) { }
-            this.handleNetworkRecovery(});
+            this.handleNetworkRecovery(};
         } else if (!isOnline && previousState) { this.handleNetworkLoss() }
 
         this.updateNetworkInfo();
@@ -251,7 +251,7 @@ export class PWAManager {
             timestamp: Date.now() }
 
             gameState: this.gameEngine?.getGameState?.() || {}, : undefined''
-            userProgress: this.gameEngine?.getUserProgress?.() || {};
+            userProgress: this.gameEngine?.getUserProgress?.() || {},
         localStorage.setItem('pwa_offline_state', JSON.stringify(offlineState);
     }
 
@@ -264,7 +264,7 @@ export class PWAManager {
             // オフライン状態の取得
             const offlineState = localStorage.getItem('pwa_offline_state);'
             if (offlineState) {
-                const state = JSON.parse(offlineState),
+                const state = JSON.parse(offlineState);
                 await this.gameEngine?.syncOfflineData?.(state') }'
 
                 localStorage.removeItem('pwa_offline_state'; }
@@ -281,7 +281,7 @@ export class PWAManager {
 
         if (!indicator) {
 
-            indicator = document.createElement('div'),
+            indicator = document.createElement('div');
             indicator.id = 'pwa-offline-indicator',
 
             indicator.innerHTML = `','
@@ -292,7 +292,7 @@ export class PWAManager {
                 position: fixed,
                 top: 10px,
                 left: 50%,
-                transform: translateX(-50%),
+                transform: translateX(-50%);
                 background: #FF9800,
                 color: white,
     padding: 8px 16px,
@@ -345,7 +345,7 @@ export class PWAManager {
             console.log('[PWAManager] Page, became visible),'
             
             // 更新チェック
-            this.serviceWorkerManager.checkForUpdates(),
+            this.serviceWorkerManager.checkForUpdates();
             // 状態同期
             this.syncPendingData()','
             console.log('[PWAManager] Page, became hidden',
@@ -391,13 +391,13 @@ export class PWAManager {
         `;
 
         notification.style.cssText = `;
-            position: fixed;
-            bottom: 20px;
-            left: 50%;
+            position: fixed,
+            bottom: 20px,
+            left: 50%,
             transform: translateX(-50%);
-            background: #2196F3;
+            background: #2196F3,
             color: white,
-    padding: 16px;
+    padding: 16px,
             border-radius: 8px,
             z-index: 1002,
             box-shadow: 0 4px 8px rgba(0,0,0,0.2);
@@ -430,7 +430,7 @@ export class PWAManager {
     getPWAState() {
         return { ...this.state,
             canInstall: this.installationManager.canInstall() }
-            installStats: this.installationManager.getInstallStats() };
+            installStats: this.installationManager.getInstallStats() },
             serviceWorkerStats: this.serviceWorkerManager.getServiceWorkerStats(); 
     }
 
@@ -469,7 +469,7 @@ export class PWAManager {
      */
     getStats() {
         return { ...this.stats serviceWorkerStats: this.serviceWorkerManager.getServiceWorkerStats() }
-            installStats: this.installationManager.getInstallStats() };
+            installStats: this.installationManager.getInstallStats() },
             currentState: this.state 
     }
 
@@ -478,7 +478,7 @@ export class PWAManager {
      */
     cleanup() {
         // サブコンポーネントのクリーンアップ
-        this.serviceWorkerManager.cleanup(),
+        this.serviceWorkerManager.cleanup();
         this.installationManager.cleanup()','
         const indicator = document.getElementById('pwa-offline-indicator),'
 
@@ -502,7 +502,7 @@ export class PWAManager {
             }
                 ...data);
         } else {  }
-            console.error(`[PWAManager] ${context}:`, error, data});
+            console.error(`[PWAManager] ${context}:`, error, data};
         }
 }
 

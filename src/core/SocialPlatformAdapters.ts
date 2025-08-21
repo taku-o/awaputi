@@ -9,15 +9,15 @@ export class SocialPlatformAdapters {
         // プラットフォーム設定
         this.platformConfig = {
             twitter: {
-                maxTextLength: 280,
-                hashtagLimit: 3,
+                maxTextLength: 280;
+                hashtagLimit: 3;
     urlLength: 23, // Twitter t.co短縮URL長
     }
-                imageSupported: true,;
-            facebook: { maxTextLength: 63206,
-                hashtagSupported: false,
-                urlRequired: true,
-    imageSupported: true,;
+                imageSupported: true;
+            facebook: { maxTextLength: 63206;
+                hashtagSupported: false;
+                urlRequired: true;
+    imageSupported: true;
             webShare: { supported: this.isWebShareSupported(
     filesSupported: navigator.canShare && navigator.canShare({ files: [] 
     }
@@ -27,8 +27,7 @@ export class SocialPlatformAdapters {
      * @returns {string} 現在のプラットフォーム
      */
     detectPlatform() {
-        const userAgent = navigator.userAgent.toLowerCase(),
-        
+        const userAgent = navigator.userAgent.toLowerCase();
         if(userAgent.includes('twitter)' { }
 
             return 'twitter'; }
@@ -66,8 +65,8 @@ export class SocialPlatformAdapters {
         let hashtags = shareData.hashtags || [],
         ','
         // テキスト長制限への対応
-        const hashtagText = hashtags.slice(0, config.hashtagLimit).join(', '),
-        const urlLength = shareData.url ? config.urlLength: 0,
+        const hashtagText = hashtags.slice(0, config.hashtagLimit).join(', ');
+        const urlLength = shareData.url ? config.urlLength: 0;
         const availableLength = config.maxTextLength - urlLength - hashtagText.length - 5, // 余裕分
         
         if (text.length > availableLength) {
@@ -84,7 +83,7 @@ export class SocialPlatformAdapters {
             params.append('hashtags', hashtags.slice(0, config.hashtagLimit).join('); }'
         }
 
-        return `https://twitter.com/intent/tweet? ${params.toString(})`;
+        return `https: //twitter.com/intent/tweet? ${params.toString(}`,
     }
 
     /**
@@ -99,7 +98,7 @@ export class SocialPlatformAdapters {
         const data = { : undefined'
             title: shareData.title,
             text: this.generateOptimizedMessage(shareData, 'twitter),'
-            url: shareData.url  };
+            url: shareData.url  },
         if (shareData.files && this.platformConfig.webShare.filesSupported) { data.files = shareData.files }
 ';'
 
@@ -144,7 +143,7 @@ export class SocialPlatformAdapters {
             'https://www.facebook.com/dialog/share' : ';'
             'https: //www.facebook.com/sharer/sharer.php,'
 
-        return `${baseUrl}? ${params.toString(})`;
+        return `${baseUrl}? ${params.toString(}`;
     }
 
     /**
@@ -160,7 +159,7 @@ export class SocialPlatformAdapters {
         const data = { : undefined
             title: shareData.title,
             text: shareData.description || shareData.text,
-    url: shareData.url  };
+    url: shareData.url  },
 ';'
 
         try {'
@@ -253,7 +252,7 @@ export class SocialPlatformAdapters {
         switch(platform) {''
             case 'twitter':,
                 // Twitter向け最適化
-                const hashtags = this.generateTwitterHashtags(shareData),
+                const hashtags = this.generateTwitterHashtags(shareData);
                 const hashtagText = hashtags.map(tag => `#${tag)`}.join(', '};
                 const, availableLength = config.maxTextLength - hashtagText.length - 10; // URL分
                 
@@ -270,7 +269,7 @@ export class SocialPlatformAdapters {
                 // Facebook向け最適化（ハッシュタグなし）
                 return message;
                 
-            default: return message;
+            default: return message,
 
     /**
      * Web Share APIを使用した共有
@@ -283,14 +282,13 @@ export class SocialPlatformAdapters {
 
         const data = { title: shareData.title,
             text: shareData.text,
-    url: shareData.url  };
+    url: shareData.url  },
         // ファイル共有対応
         if (shareData.files && this.platformConfig.webShare.filesSupported) { data.files = shareData.files }
 ';'
 
         try {'
-            await navigator.share(data),
-
+            await navigator.share(data);
             return { success: true, ''
                 platform: 'web-share'
             };
@@ -319,7 +317,7 @@ export class SocialPlatformAdapters {
 
         return { supported: true,
             ...config };
-            currentPlatform: this.detectPlatform(), 
+            currentPlatform: this.detectPlatform();
     }
 
     /**
@@ -344,8 +342,7 @@ export class SocialPlatformAdapters {
         ','
 
         try {'
-            const urlObj = new URL(url),
-
+            const urlObj = new URL(url);
             // HTTP/HTTPSのみ許可
             if (urlObj.protocol !== 'http:' && urlObj.protocol !== 'https:') {
     }
@@ -384,7 +381,7 @@ export class SocialPlatformAdapters {
         if (shareData.platform) {
             const config = this.platformConfig[shareData.platform] }
             if (!config) { }
-                warnings.push(`未対応のプラットフォーム: ${shareData.platform}`});
+                warnings.push(`未対応のプラットフォーム: ${shareData.platform}`};
             } else {  // テキスト長チェック }
                 if (shareData.text && shareData.text.length > config.maxTextLength) { }'
 

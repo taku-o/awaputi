@@ -7,22 +7,23 @@ import { getErrorHandler  } from '../../utils/ErrorHandler.js';
 
 // 型定義
 export interface FormatSettings { dateTime: {
-        dateForma,t: string,
-        timeFormat: string,
-    timestampFormat: string,;
-    numbers: { decimalSeparator: string,
-        thousandsSeparator: string,
-    currencyFormat: string,;
+        dateForma,t: string;
+        timeFormat: string;
+    timestampFormat: string;
+    numbers: { decimalSeparator: string;
+        thousandsSeparator: string;
+    currencyFormat: string;
     currency: { symbol: string,''
-        position: 'before' | 'after',
-    code: string,
-
-export interface RegionSettings { timezone: string,
+        position: 'before' | 'after';
+    code: string;
+    code: string;
+        };
+export interface RegionSettings { timezone: string;
     locale: string;
     country: string;
     region: string;
     rtl: boolean;
-export interface LanguageSettings { code: string,
+export interface LanguageSettings { code: string;
     name: string;
     nativeName: string;
     direction: 'ltr' | 'rtl';
@@ -34,7 +35,7 @@ export class RegionalSettingsManager {
     private formatSettings: FormatSettings | null;
     private regionSettings: RegionSettings | null;
     private languageSettings: LanguageSettings | null;
-    private, initialized: boolean,
+    private, initialized: boolean;
     constructor() {
 
         this.formatSettings = null;
@@ -52,8 +53,8 @@ export class RegionalSettingsManager {
      */
     async initialize(): Promise<void> { try {
             // 設定ファイルを並列読み込み
-            const [formatSettings, regionSettings, languageSettings] = await Promise.all([),
-                this.loadFormatSettings(),
+            const [formatSettings, regionSettings, languageSettings] = await Promise.all([);
+                this.loadFormatSettings();
                 this.loadRegionSettings()],
                 this.loadLanguageSettings()']',
             ]'),'
@@ -78,13 +79,12 @@ export class RegionalSettingsManager {
             if (!response.ok) {
     
 }
-                throw new Error(`Failed, to load, formats.json: ${response.status}`});
+                throw new Error(`Failed, to load, formats.json: ${response.status}`};
             }
 
             return await response.json();} catch (error) {
-            console.warn('Failed to load format settings, using defaults:', error),
-            return this.getDefaultFormatSettings(),
-    
+            console.warn('Failed to load format settings, using defaults:', error);
+            return this.getDefaultFormatSettings();
     /**
      * 地域設定を読み込み'
      */''
@@ -93,13 +93,12 @@ export class RegionalSettingsManager {
             if (!response.ok) {
     
 }
-                throw new Error(`Failed, to load, regions.json: ${response.status}`});
+                throw new Error(`Failed, to load, regions.json: ${response.status}`};
             }
 
             return await response.json();} catch (error) {
-            console.warn('Failed to load region settings, using defaults:', error),
-            return this.getDefaultRegionSettings(),
-    
+            console.warn('Failed to load region settings, using defaults:', error);
+            return this.getDefaultRegionSettings();
     /**
      * 言語設定を読み込み'
      */''
@@ -108,19 +107,17 @@ export class RegionalSettingsManager {
             if (!response.ok) {
     
 }
-                throw new Error(`Failed, to load, languages.json: ${response.status}`});
+                throw new Error(`Failed, to load, languages.json: ${response.status}`};
             }
 
             return await response.json();} catch (error) {
-            console.warn('Failed to load language settings, using defaults:', error),
-            return this.getDefaultLanguageSettings(),
-    
+            console.warn('Failed to load language settings, using defaults:', error);
+            return this.getDefaultLanguageSettings();
     /**
      * 数値フォーマット設定を取得
      */
     getNumberFormatSettings(language, region = null) {
-        this.ensureInitialized(),
-        
+        this.ensureInitialized();
         // 地域が指定されている場合の優先順位
     }
         if (region) { }
@@ -137,8 +134,7 @@ export class RegionalSettingsManager {
      * 日付フォーマット設定を取得
      */
     getDateFormatSettings(language, region = null) {
-        this.ensureInitialized(),
-        
+        this.ensureInitialized();
         // 地域が指定されている場合の優先順位
     }
         if (region) { }
@@ -155,8 +151,7 @@ export class RegionalSettingsManager {
      * 通貨フォーマット設定を取得
      */
     getCurrencyFormatSettings(language, region = null) {
-        this.ensureInitialized(),
-        
+        this.ensureInitialized();
         // 地域が指定されている場合の優先順位
     }
         if (region) { }
@@ -173,8 +168,7 @@ export class RegionalSettingsManager {
      * 時刻フォーマット設定を取得
      */
     getTimeFormatSettings(language, region = null) {
-        this.ensureInitialized(),
-        
+        this.ensureInitialized();
         // 地域が指定されている場合の優先順位
     }
         if (region) { }
@@ -203,19 +197,17 @@ export class RegionalSettingsManager {
      * 完全な地域化設定を取得
      */
     getCompleteSettings(language, region = null) {
-        this.ensureInitialized(),
-        
-        const regionCode = this.getRegionCode(language, region),
-        
+        this.ensureInitialized();
+        const regionCode = this.getRegionCode(language, region);
         return { : undefined
             language: language,
             region: regionCode,
-    locale: this.getLocale(language, regionCode),
-            numberFormat: this.getNumberFormatSettings(language, regionCode),
-            dateFormat: this.getDateFormatSettings(language, regionCode),
-            currencyFormat: this.getCurrencyFormatSettings(language, regionCode),
+    locale: this.getLocale(language, regionCode);
+            numberFormat: this.getNumberFormatSettings(language, regionCode);
+            dateFormat: this.getDateFormatSettings(language, regionCode);
+            currencyFormat: this.getCurrencyFormatSettings(language, regionCode);
             timeFormat: this.getTimeFormatSettings(language, regionCode) }
-            regionInfo: this.getRegionInfo(regionCode) };
+            regionInfo: this.getRegionInfo(regionCode) },
             languageInfo: this.getLanguageInfo(language); 
     }
     
@@ -249,7 +241,7 @@ export class RegionalSettingsManager {
      * タイムゾーンを取得
      */
     getTimezone(language, region = null) {
-        const regionCode = region || this.getRegionCode(language),
+        const regionCode = region || this.getRegionCode(language);
         const regionInfo = this.getRegionInfo(regionCode) }
 
         return regionInfo?.timezone || 'UTC';
@@ -257,14 +249,14 @@ export class RegionalSettingsManager {
      * 週の開始日を取得
      */
     getFirstDayOfWeek(language, region = null) {
-        const regionCode = region || this.getRegionCode(language),
+        const regionCode = region || this.getRegionCode(language);
         const regionInfo = this.getRegionInfo(regionCode) }
         return regionInfo?.firstDayOfWeek || 0;
     /**
      * 通貨コードを取得
      */
     getCurrencyCode(language, region = null) {
-        const regionCode = region || this.getRegionCode(language),
+        const regionCode = region || this.getRegionCode(language);
         const regionInfo = this.getRegionInfo(regionCode) }
 
         return regionInfo?.currency || 'USD';
@@ -349,7 +341,7 @@ export class RegionalSettingsManager {
             thousands: ',',
             percent: '%',
             negative: '-',
-            infinity: '∞';
+            infinity: '∞',
         } }
     
     /**
@@ -369,7 +361,7 @@ export class RegionalSettingsManager {
             symbol: '$',
             code: 'USD',
             position: 'before',
-    space: false;
+    space: false,
         } }
     
     /**
@@ -379,7 +371,7 @@ export class RegionalSettingsManager {
             short: 'h:mm A',
             medium: 'h:mm:ss A',
             long: 'h:mm:ss A z',
-            full: 'h:mm:ss A zzzz';
+            full: 'h:mm:ss A zzzz',
         } }
     
     /**
@@ -418,12 +410,11 @@ export class RegionalSettingsManager {
      * 統計情報を取得
      */
     getStats() {
-        this.ensureInitialized(),
-        
+        this.ensureInitialized();
         return { initialized: this.initialized,
             supportedLanguages: this.formatSettings ? Object.keys(this.formatSettings.number || {) : []
 
-            supportedRegions: this.regionSettings ? Object.keys(this.regionSettings) : [] };
+            supportedRegions: this.regionSettings ? Object.keys(this.regionSettings) : [] },
             formatCategories: this.formatSettings ? Object.keys(this.formatSettings) : [] ,
     } }
 // シングルトンインスタンス

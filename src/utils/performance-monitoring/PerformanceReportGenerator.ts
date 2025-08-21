@@ -4,13 +4,13 @@
  */
 
 // Type definitions
-interface InsightGenerator { priority: 'low' | 'medium' | 'high' | 'critical',
+interface InsightGenerator { priority: 'low' | 'medium' | 'high' | 'critical';
     frequency: number;
     lastGenerated: number;
     generate: (data: AnalysisData') => Promise<Insight[]> | Insight[]  }'
 }
 
-interface AnalysisData { timestamp: number,
+interface AnalysisData { timestamp: number;
     metrics: Map<string, any>;
     history: AnalysisHistoryPoint[];
     trends: Map<string, TrendData>;
@@ -18,7 +18,7 @@ interface AnalysisData { timestamp: number,
     baseline: Map<string, number>;
     stats: Map<string, StatisticalData> }
 
-interface AnalysisHistoryPoint { timestamp: number,
+interface AnalysisHistoryPoint { timestamp: number;
     metrics: Map<string, any> }
 ';'
 
@@ -28,14 +28,14 @@ interface TrendData { ''
     timestamp: number;
     analyzer: string;
 
-interface Anomaly { timestamp: number,
+interface Anomaly { timestamp: number;
     metricId: string;
     value: number;
     severity: 'low' | 'medium' | 'high' | 'critical';
     score: number;
     type: string;
 
-interface StatisticalData { timestamp: number,
+interface StatisticalData { timestamp: number;
     stats: any;
     dataPoints: number;
 ';'
@@ -53,33 +53,33 @@ interface Insight { ''
     generator?: string;
     priority?: string;
 
-interface ReportSummary { total_insights: number,
+interface ReportSummary { total_insights: number;
     recent_insights: number;
     critical_issues: number;
     high_priority_issues: number;
     categories: Record<string, number> }
 
-interface ReportInsights { recent: Insight[],
+interface ReportInsights { recent: Insight[];
     critical: Insight[];
     high_priority: Insight[];
     by_category: Record<string, Insight[]> }
 
-interface Recommendation { action: string,
+interface Recommendation { action: string;
 
     frequency: number;
     priority: 'low' | 'medium' | 'high';
     description: string;
 
-interface PerformanceReport { timestamp: number,
+interface PerformanceReport { timestamp: number;
     summary: ReportSummary;
     insights: ReportInsights;
     recommendations: Recommendation[];
 
-interface ExportedInsights { timestamp: number,
+interface ExportedInsights { timestamp: number;
     insights: Insight[];
     generators: Record<string, InsightGenerator> }
 
-interface MainController { errorHandler: any,
+interface MainController { errorHandler: any;
     anomalies?: Anomaly[];
     performanceBaseline: Map<string, number>;
     metricsCollector: {
@@ -156,9 +156,8 @@ export class PerformanceReportGenerator {
      * @param timestamp - Current timestamp
      * @param metrics - Current metrics
      */
-    async generateInsights(timestamp?: number, metrics?: Map<string, any>): Promise<void> { const currentTimestamp = timestamp || Date.now(),
-        const currentMetrics = metrics || new Map(),
-
+    async generateInsights(timestamp?: number, metrics?: Map<string, any>): Promise<void> { const currentTimestamp = timestamp || Date.now();
+        const currentMetrics = metrics || new Map();
         for(const [generatorId, generator] of this.insightGenerators) {
             try {'
                 // Check if its time to generate insights
@@ -173,12 +172,12 @@ export class PerformanceReportGenerator {
                     trends: this.mainController.dataProcessor.getAllTrends(),
                     anomalies: this.mainController.anomalies || [],
                     baseline: this.mainController.performanceBaseline,
-    stats: this.mainController.dataProcessor.getAllStatisticalData() });
+    stats: this.mainController.dataProcessor.getAllStatisticalData() },
                 
                 if (insights && insights.length > 0) {
                 
                     this.insights.push(...insights.map(insight => ({
-                        ...insight),
+                        ...insight);
                         timestamp: currentTimestamp,
     generator: generatorId),
                         priority: generator.priority)) }
@@ -210,7 +209,7 @@ export class PerformanceReportGenerator {
 
                 title: 'FPS Performance Bottleneck'),' }'
 
-                description: `Current FPS (${fps.toFixed(1})) is significantly below baseline(${fpsBaseline.toFixed(1}))`,''
+                description: `Current FPS (${fps.toFixed(1}) is significantly below baseline(${fpsBaseline.toFixed(1})`,''
                 impact: 'high',
                 suggestions: ['reduce_graphics_quality', 'optimize_rendering'],
                 severity: this.calculateSeverity(fps, fpsBaseline, 'fps',
@@ -221,8 +220,8 @@ export class PerformanceReportGenerator {
         const memoryTrend = trends.get('memory_used');
         if (memoryTrend && memoryTrend.trend === 'increasing') {
 
-            const memoryUsed = metrics.get('memory_used'),
-            const memoryBaseline = baseline.get('memory_used'),
+            const memoryUsed = metrics.get('memory_used');
+            const memoryBaseline = baseline.get('memory_used');
             ','
 
             insights.push({''
@@ -251,7 +250,7 @@ export class PerformanceReportGenerator {
 
                 title: 'Frame Time Bottleneck'),' }'
 
-                description: `Frame time (${frameTime.toFixed(2})ms') is significantly above baseline`,''
+                description: `Frame time (${frameTime.toFixed(2}ms') is significantly above baseline`,''
                 impact: 'high',
                 suggestions: ['optimize_rendering', 'reduce_complexity'],
                 severity: this.calculateSeverity(frameTime, frameTimeBaseline, 'frame_time),'
@@ -282,7 +281,7 @@ export class PerformanceReportGenerator {
                 impact: 'low',
                 suggestions: ['increase_graphics_quality', 'enable_advanced_features'] }''
                 severity: 'low') }
-                metrics: { p95_fps: descriptiveStats.fps.p95, threshold: 55  });
+                metrics: { p95_fps: descriptiveStats.fps.p95, threshold: 55  },
         }
         
         // Check for memory optimization opportunities
@@ -314,7 +313,7 @@ export class PerformanceReportGenerator {
                 impact: 'low',
                 suggestions: ['enable_network_features', 'increase_sync_frequency'] }''
                 severity: 'low') }
-                metrics: { current: networkLatency, baseline: networkBaseline, ratio: networkLatency / networkBaseline  });
+                metrics: { current: networkLatency, baseline: networkBaseline, ratio: networkLatency / networkBaseline  },
         }
         
         return insights;
@@ -399,11 +398,11 @@ export class PerformanceReportGenerator {
 
                 title: 'High Memory Utilization'),' }'
 
-                description: `Memory usage (${memoryUsed.toFixed(1})MB') is 50% above baseline`,''
+                description: `Memory usage (${memoryUsed.toFixed(1}MB') is 50% above baseline`,''
                 impact: 'medium',
                 suggestions: ['memory_cleanup', 'close_unused_features'],
                 severity: this.calculateSeverity(memoryUsed, memoryBaseline, 'memory),'
-                metrics: { current: memoryUsed, baseline: memoryBaseline, ratio: memoryUsed / memoryBaseline  });
+                metrics: { current: memoryUsed, baseline: memoryBaseline, ratio: memoryUsed / memoryBaseline  },
         }
 
         // Check CPU utilization(if, available);
@@ -415,11 +414,11 @@ export class PerformanceReportGenerator {
 
                 title: 'High CPU Utilization'),' }'
 
-                description: `CPU usage (${cpuUsage.toFixed(1})%') is very high`,''
+                description: `CPU usage (${cpuUsage.toFixed(1}%') is very high`,''
                 impact: 'high',
                 suggestions: ['reduce_cpu_load', 'optimize_algorithms'],
                 severity: cpuUsage > 90 ? 'high' : 'medium',
-                metrics: { current: cpuUsage, threshold: 80  }'}');
+                metrics: { current: cpuUsage, threshold: 80  }'}'),
         }
         ';'
         // Check network utilization
@@ -432,7 +431,7 @@ export class PerformanceReportGenerator {
 
                 title: 'High Network Latency'),' }'
 
-                description: `Network latency (${networkLatency.toFixed(1})ms') is significantly elevated`,''
+                description: `Network latency (${networkLatency.toFixed(1}ms') is significantly elevated`,''
                 impact: 'medium',
                 suggestions: ['check_network', 'reduce_network_load'],
                 severity: this.calculateSeverity(networkLatency, networkBaseline, 'network),'
@@ -472,14 +471,14 @@ export class PerformanceReportGenerator {
 
                 ' }'
 
-            default: return 'medium';
+            default: return 'medium',
     
     /**
      * Get recent insights
      * @param category - Insight category filter
      * @returns Recent insights
      */
-    getRecentInsights(category: string | null = null): Insight[] { const recent = this.insights.slice(-20),
+    getRecentInsights(category: string | null = null): Insight[] { const recent = this.insights.slice(-20);
         return category ? recent.filter(i => i.category === category) : recent,
     
     /**
@@ -487,22 +486,20 @@ export class PerformanceReportGenerator {
      * @param type - Insight type
      * @returns Filtered insights
      */
-    getInsightsByType(type: string): Insight[] { return this.insights.filter(insight => insight.type === type),
-    
+    getInsightsByType(type: string): Insight[] { return this.insights.filter(insight => insight.type === type);
     /**
      * Get insights by severity
      * @param severity - Severity level
      * @returns Filtered insights
      */
-    getInsightsBySeverity(severity: string): Insight[] { return this.insights.filter(insight => insight.severity === severity),
-    
+    getInsightsBySeverity(severity: string): Insight[] { return this.insights.filter(insight => insight.severity === severity);
     /**
      * Generate comprehensive report
      * @returns Comprehensive performance report
      */'
     generateReport(): PerformanceReport { ''
         const recentInsights = this.getRecentInsights()','
-        const criticalInsights = this.getInsightsBySeverity('critical'),
+        const criticalInsights = this.getInsightsBySeverity('critical');
         const highInsights = this.getInsightsBySeverity('high),'
         
         return { timestamp: Date.now(
@@ -510,8 +507,8 @@ export class PerformanceReportGenerator {
                 total_insights: this.insights.length,
                 recent_insights: recentInsights.length,
                 critical_issues: criticalInsights.length,
-    high_priority_issues: highInsights.length };
-                categories: this.getInsightCategorySummary(), 
+    high_priority_issues: highInsights.length },
+                categories: this.getInsightCategorySummary();
     },
             insights: { recent: recentInsights,
                 critical: criticalInsights,
@@ -573,7 +570,7 @@ export class PerformanceReportGenerator {
     frequency: count,')',
                 priority: count >= 3 ? 'high' : count >= 2 ? 'medium' : 'low') }
                 description: this.getRecommendationDescription(suggestion); 
-    });
+    };
         }
         
         return recommendations;
@@ -595,7 +592,7 @@ export class PerformanceReportGenerator {
             'enable_advanced_features': 'Performance headroom available for advanced features',
             'close_unused_features': 'Close or disable unused features to free resources' };
         
-        return descriptions[suggestion] || `Execute action: ${suggestion}`;
+        return descriptions[suggestion] || `Execute action: ${suggestion}`,
     }
     
     /**
@@ -610,7 +607,7 @@ export class PerformanceReportGenerator {
      * @returns Exported insights
      */
     exportInsights(): ExportedInsights { return { timestamp: Date.now(
-            insights: this.insights };
+            insights: this.insights },
             generators: Object.fromEntries(this.insightGenerators'); '
     }
     

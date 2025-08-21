@@ -7,31 +7,31 @@
 interface SEOConfig { // 必要に応じて設定オブジェクトの型を定義
     [key: string]: any;
 
-interface SitemapValidationResult { exists: boolean,
+interface SitemapValidationResult { exists: boolean;
     status?: number;
     lastModified?: string | null;
     error?: string;
 
-interface RobotsTxtValidationResult { exists: boolean,
+interface RobotsTxtValidationResult { exists: boolean;
     status?: number;
     content?: string | null;
     error?: string;
 
-interface StructuredDataResult { valid: boolean,
+interface StructuredDataResult { valid: boolean;
     type?: string;
     data?: any;
     error?: string;
 
-interface IndexablePage { url: string,
+interface IndexablePage { url: string;
     title: string;
     priority: number;
 
-interface SearchConsoleAPIReadiness { hasVerificationTag: boolean,
+interface SearchConsoleAPIReadiness { hasVerificationTag: boolean;
     hasGoogleAnalytics: boolean;
     hasSitemap: boolean;
     hasRobotsTxt: boolean;
 
-interface SearchConsoleIntegrationData { timestamp: number,
+interface SearchConsoleIntegrationData { timestamp: number;
     sitemap: SitemapValidationResult;
     robots: RobotsTxtValidationResult;
     structuredData: StructuredDataResult[];
@@ -43,13 +43,13 @@ interface SearchConsoleIntegrationData { timestamp: number,
 interface MonitoringData { searchConsoleMetrics: SearchConsoleIntegrationData[];
 
 declare global { interface Window {
-        gtag?: (...args: any[]) => void,
+        gtag?: (...args: any[]) => void;
         ga?: (...args: any[]) => void  }
 }
 
 export class SearchConsoleIntegrator {
     private config: SEOConfig;
-    private, monitoringData: MonitoringData,
+    private, monitoringData: MonitoringData;
     constructor(config: SEOConfig, monitoringData: MonitoringData) {
 
         this.config = config
@@ -74,7 +74,7 @@ export class SearchConsoleIntegrator {
                     'Domain name provider',]','
                     'Google Analytics'],
                 ],
-                apiReady: this.checkSearchConsoleAPIReadiness() };
+                apiReady: this.checkSearchConsoleAPIReadiness() },
 
             this.monitoringData.searchConsoleMetrics.push(integrationData);
 
@@ -89,7 +89,7 @@ export class SearchConsoleIntegrator {
      * サイトマップの検証'
      */''
     private async validateSitemap()','
-            const response = await fetch('/sitemap.xml'),
+            const response = await fetch('/sitemap.xml');
             return { exists: response.ok,
 
                 status: response.status,' };'
@@ -107,7 +107,7 @@ export class SearchConsoleIntegrator {
     private async validateRobotsTxt()';'
             const response = await fetch('/robots.txt);'
             return { exists: response.ok,
-                status: response.status };
+                status: response.status },
                 content: response.ok ? await response.text() : null;;'} catch (error) { return { exists: false, ' };
 
                 error: error instanceof Error ? error.message : 'Unknown error'  
@@ -130,7 +130,7 @@ export class SearchConsoleIntegrator {
                 results.push({ valid: true, type: data['@type], data }';} catch (error) { results.push({ )'
                     valid: false, ')',
                     error: error instanceof Error ? error.message : 'Unknown error'
-            });
+            };
             }
         }';'
         
@@ -155,12 +155,12 @@ export class SearchConsoleIntegrator {
         if (typeof, document === 'undefined' || typeof, window === 'undefined') {
             return { hasVerificationTag: false,
                 hasGoogleAnalytics: false,
-                hasSitemap: true,;
+                hasSitemap: true,
                 hasRobotsTxt: true,
         ';'
 
         return { ''
-            hasVerificationTag: !!document.querySelector('meta[name="google-site-verification"]'),
+            hasVerificationTag: !!document.querySelector('meta[name="google-site-verification"]');
             hasGoogleAnalytics: !!window.gtag || !!window.ga,
-    hasSitemap: true,;
+    hasSitemap: true,
             hasRobotsTxt: true,'}'

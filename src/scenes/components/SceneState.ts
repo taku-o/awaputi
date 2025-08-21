@@ -1,30 +1,30 @@
 // インターフェース定義
-interface AccessibilitySettings { highContrast: boolean,
+interface AccessibilitySettings { highContrast: boolean;
     largeText: boolean;
     reducedMotion: boolean;
 
-interface StatisticsDisplaySettings { showDashboard: boolean,
+interface StatisticsDisplaySettings { showDashboard: boolean;
     showCharts: boolean;
     showDetailedStats: boolean;
     enableAnimations: boolean;
     compactMode: boolean;
 
-interface LayoutSettings { tabHeight: number,
+interface LayoutSettings { tabHeight: number;
     headerHeight: number;
     contentPadding: number;
     scrollbarWidth: number;
 
-interface UserPreferences { currentTab: string,
+interface UserPreferences { currentTab: string;
     statisticsViewMode: string;
     currentPeriodFilter: string;
     statisticsDisplaySettings: StatisticsDisplaySettings;
     currentAchievementCategory: string;
 
-interface StateChange { key: string,
+interface StateChange { key: string;
     value: any;
     oldValue: any;
 
-interface SerializedState { currentTab: string,
+interface SerializedState { currentTab: string;
     showingDialog: string | null;
     currentAchievementCategory: string;
     statisticsViewMode: string;
@@ -82,7 +82,7 @@ export class SceneState {
     public errorMessage: string | null;
     private errorTimeout: NodeJS.Timeout | null;
     // レイアウト設定
-    public, layout: LayoutSettings,
+    public, layout: LayoutSettings;
     // 変更通知のためのイベントリスナー
     private changeListeners: Map<string, ChangeListener[]>;
 
@@ -115,7 +115,7 @@ export class SceneState {
             showCharts: true,
             showDetailedStats: true,
             enableAnimations: true,
-    compactMode: false,;
+    compactMode: false,
         // データキャッシュ
         this.statisticsData = null;
         this.achievementsData = null;
@@ -124,7 +124,7 @@ export class SceneState {
         // アクセシビリティ設定
         this.accessibilitySettings = { highContrast: false,
             largeText: false,
-    reducedMotion: false,;
+    reducedMotion: false,
         // エラー状態管理
         this.errorMessage = null;
         this.errorTimeout = null;
@@ -133,7 +133,7 @@ export class SceneState {
         this.layout = { tabHeight: 60,
             headerHeight: 120,
             contentPadding: 20,
-    scrollbarWidth: 16  };
+    scrollbarWidth: 16  },
         // 変更通知のためのイベントリスナー
         this.changeListeners = new Map();
         
@@ -144,7 +144,7 @@ export class SceneState {
     /**
      * 状態の初期化
      */
-    initialize(): void { this.loadAccessibilitySettings(),
+    initialize(): void { this.loadAccessibilitySettings();
         this.loadUserPreferences() }
     
     /**
@@ -163,8 +163,7 @@ export class SceneState {
     loadUserPreferences()';'
             const saved = localStorage.getItem('awaputi_userinfo_preferences);'
             if (saved) {
-                const preferences = JSON.parse(saved),
-                
+                const preferences = JSON.parse(saved);
                 // 安全に設定を復元
                 if (preferences.currentTab && this.tabs.includes(preferences.currentTab) {
             }
@@ -211,8 +210,7 @@ export class SceneState {
      * @param notify - 変更通知を行うかどうか
      */'
     set(key: string, value: any, notify: boolean = true): void { ''
-        const oldValue = this.get(key),
-
+        const oldValue = this.get(key);
         if(key.includes('.' { }
             this.setNestedValue(key, value); }
         } else { (this, as any)[key] = value }
@@ -232,9 +230,8 @@ export class SceneState {
         
         for(const [key, value] of Object.entries(updates) {
         
-            const oldValue = this.get(key),
-            this.set(key, value, false),
-            
+            const oldValue = this.get(key);
+            this.set(key, value, false);
             if (oldValue !== value) {
     
 }
@@ -259,7 +256,7 @@ export class SceneState {
         this.changeListeners.get(key)!.push(listener);
         
         // リスナー削除用の関数を返す
-        return () => {  const listeners = this.changeListeners.get(key),
+        return () => {  const listeners = this.changeListeners.get(key);
             if (listeners) {
                 const index = listeners.indexOf(listener) }
                 if (index !== -1) { }
@@ -272,7 +269,7 @@ export class SceneState {
      * @param message - エラーメッセージ
      * @param duration - 表示時間（ミリ秒）
      */
-    setError(message: string, duration: number = 5000): void { this.errorMessage = message;
+    setError(message: string, duration: number = 5000): void { this.errorMessage = message,
         
         if (this.errorTimeout) {
     
@@ -293,7 +290,7 @@ export class SceneState {
      * エラー状態をクリア
      */
     clearError(): void { if (this.errorTimeout) {
-            clearTimeout(this.errorTimeout),
+            clearTimeout(this.errorTimeout);
             this.errorTimeout = null }
         
         const oldMessage = this.errorMessage;
@@ -338,7 +335,7 @@ export class SceneState {
      * @param value - 新しい値
      * @param oldValue - 古い値
      */
-    private notifyChange(key: string, value: any, oldValue: any): void { const listeners = this.changeListeners.get(key),
+    private notifyChange(key: string, value: any, oldValue: any): void { const listeners = this.changeListeners.get(key);
         if (listeners) {
             for (const listener of listeners) {
                 try {
@@ -429,14 +426,13 @@ export class SceneState {
             statisticsDisplaySettings: this.statisticsDisplaySettings,
             accessibilitySettings: this.accessibilitySettings,
             scrollPosition: this.scrollPosition,
-    selectedItem: this.selectedItem };
+    selectedItem: this.selectedItem },
             focusedElement: this.focusedElement 
     }
     
     /**
      * 状態のクリーンアップ
      */
-    cleanup(): void { this.clearError(),
-
-        this.changeListeners.clear(),
+    cleanup(): void { this.clearError();
+        this.changeListeners.clear();
         this.clearCache(' }''

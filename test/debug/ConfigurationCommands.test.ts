@@ -25,7 +25,7 @@ describe('ConfigurationCommands', () => {  let mockGameEngine: any,
         configCommands = new ConfigurationCommands(mockGameEngine: any);'}');
     describe('registerCommands', (') => {  ''
         test('should register all configuration commands', () => {'
-            configCommands.registerCommands(mockConsole),
+            configCommands.registerCommands(mockConsole);
             expect(mockConsole.register').toHaveBeenCalledWith('config.get', expect.any(Function), expect.any(Object),'
             expect(mockConsole.register').toHaveBeenCalledWith('config.set', expect.any(Function), expect.any(Object),'
             expect(mockConsole.register').toHaveBeenCalledWith('config.reset', expect.any(Function), expect.any(Object),'
@@ -41,7 +41,7 @@ describe('ConfigurationCommands', () => {  let mockGameEngine: any,
     describe('getConfig', (') => {  ''
         test('should get configuration value successfully', () => {''
             mockConfigManager.get.mockReturnValue(25'),'
-            const result = configCommands.getConfig(['game.scoring.baseScores.normal']),
+            const result = configCommands.getConfig(['game.scoring.baseScores.normal']);
             expect(mockConfigManager.get').toHaveBeenCalledWith('game.scoring.baseScores.normal'),' }'
             expect(result').toBe('game.scoring.baseScores.normal = 25 (number')');' }'
         }');'
@@ -61,18 +61,18 @@ describe('ConfigurationCommands', () => {  let mockGameEngine: any,
         test('should set configuration value successfully', () => {'
             mockConfigManager.get.mockReturnValue(10), // original value' }'
             mockConfigManager.set.mockReturnValue(true');' }'
-            const result = configCommands.setConfig(['game.scoring.baseScores.normal', '25']});
+            const result = configCommands.setConfig(['game.scoring.baseScores.normal', '25']};
             expect(mockConfigManager.set').toHaveBeenCalledWith('game.scoring.baseScores.normal', 25, { validate: true)'
         saveToStorage: false) }'
             }''
             expect(result').toBe('Set game.scoring.baseScores.normal = 25 (number')');'}');
-        test('should convert string to boolean', () => {  mockConfigManager.get.mockReturnValue(false),
+        test('should convert string to boolean', () => {  mockConfigManager.get.mockReturnValue(false);
             mockConfigManager.set.mockReturnValue(true'),'
             configCommands.setConfig(['debug.enabled', 'true']),' }'
             expect(mockConfigManager.set').toHaveBeenCalledWith('debug.enabled', true, expect.any(Object);' }'
         }');'
         test('should convert string to JSON object', () => {  }'
-            mockConfigManager.get.mockReturnValue({});
+            mockConfigManager.get.mockReturnValue({};
             mockConfigManager.set.mockReturnValue(true');'
             configCommands.setConfig(['test.object', '{"key":"value"}']);
             expect(mockConfigManager.set').toHaveBeenCalledWith('test.object', { key: 'value' }, expect.any(Object);'}');'
@@ -83,19 +83,19 @@ describe('ConfigurationCommands', () => {  let mockGameEngine: any,
             const result = configCommands.setConfig(['invalid.path', 'value']);
             expect(result').toBe('Error setting configuration: Validation failed'),';
         }');'
-        test('should store original values for revert', () => {  mockConfigManager.get.mockReturnValue(10),
+        test('should store original values for revert', () => {  mockConfigManager.get.mockReturnValue(10);
             mockConfigManager.set.mockReturnValue(true'),' }'
             configCommands.setConfig(['test.path', '20']');' }'
             configCommands.setConfig(['test.path', '30']}; // 2回目')'
             // 元の値は1回目のsetConfigで保存される');'
-            expect(configCommands.originalValues.get('test.path'}).toBe(10);'
+            expect(configCommands.originalValues.get('test.path'}.toBe(10);'
         }'}');
     describe('resetConfig', (') => {  ''
         test('should reset configuration to default value', () => {
             mockConfigManager.getDefault.mockReturnValue(15),'
             mockConfigManager.get.mockReturnValue(25), // current value''
             mockConfigManager.set.mockReturnValue(true'),'
-            const result = configCommands.resetConfig(['game.scoring.baseScores.normal']),
+            const result = configCommands.resetConfig(['game.scoring.baseScores.normal']);
             expect(mockConfigManager.getDefault').toHaveBeenCalledWith('game.scoring.baseScores.normal'),'
             expect(mockConfigManager.set').toHaveBeenCalledWith('game.scoring.baseScores.normal', 15, {)'
                 validate: true) }
@@ -117,13 +117,13 @@ describe('ConfigurationCommands', () => {  let mockGameEngine: any,
                         baseScores: { }
                             normal: 10 }
                         }
-            });
-            });
+            };
+            };
                 audio: { volume: {
                         master: 1.0 }
-            });
-                }),'
-            });
+            };
+                },'
+            };
             const result = configCommands.listConfig([]');'
             expect(result.toContain('All configuration values: '),';'
             expect(result.toContain('game: '),';'
@@ -135,12 +135,12 @@ describe('ConfigurationCommands', () => {  let mockGameEngine: any,
                         baseScores: { }
                             normal: 10 }
                         }
-            });
-            });
+            };
+            };
                 audio: { volume: {
                         master: 1.0 }
-                    })'
-                });'}');
+                    }'
+                };'}');
             const result = configCommands.listConfig(['game']');'
             expect(result.toContain('Configuration values (prefix: game'):'),';
             expect(result.toContain('scoring: '),';'
@@ -152,7 +152,7 @@ describe('ConfigurationCommands', () => {  let mockGameEngine: any,
             mockConfigManager.validateAll.mockReturnValue({)
                 isValid: true) }
                 errors: []); }
-            });
+            };
             const result = configCommands.validateConfig([]);'
             expect(mockConfigManager.validateAll).toHaveBeenCalled();
             expect(result').toBe('All configuration is valid.');'}');'
@@ -167,9 +167,9 @@ describe('ConfigurationCommands', () => {  let mockGameEngine: any,
         test('should handle validation errors', (') => {  mockConfigManager.validateAll.mockReturnValue({)'
                 isValid: false) }'
                 errors: [' }]'
-                    { path: 'game.scoring.baseScores.normal', message: 'Value must be positive' })]
+                    { path: 'game.scoring.baseScores.normal', message: 'Value must be positive' }]
                 ]);'
-            });
+            };
             const result = configCommands.validateConfig([]');'
             expect(result.toContain('Configuration validation errors found: '),';'
             expect(result.toContain('game.scoring.baseScores.normal: Value must be positive'),';'
@@ -222,11 +222,11 @@ describe('ConfigurationCommands', () => {  let mockGameEngine: any,
             expect(result').toBe('No configuration changes made during this session.'););' }'
         }');'
         test('should show change history', () => {  // 履歴を追加するために設定変更を実行'
-            mockConfigManager.get.mockReturnValue(10),
+            mockConfigManager.get.mockReturnValue(10);
             mockConfigManager.set.mockReturnValue(true'),'
             configCommands.setConfig(['test.path', '20']'),'
             const result = configCommands.showHistory(['1']'),'
-            expect(result.toContain('Recent configuration changes'),
+            expect(result.toContain('Recent configuration changes');
             expect(result.toContain('test.path'),' }'
             expect(result.toContain('console');' }'
         }');'
@@ -237,12 +237,12 @@ describe('ConfigurationCommands', () => {  let mockGameEngine: any,
             expect(result').toBe('No configuration changes to revert.'););' }'
         }');'
         test('should revert all changes', () => {  // 変更を加える'
-            mockConfigManager.get.mockReturnValue(10),
+            mockConfigManager.get.mockReturnValue(10);
             mockConfigManager.set.mockReturnValue(true'),'
             configCommands.setConfig(['test.path1', '20']'),'
-            configCommands.setConfig(['test.path2', '30']),
+            configCommands.setConfig(['test.path2', '30']);
             mockConfigManager.set.mockClear(),'
-            const result = configCommands.revertChanges(),
+            const result = configCommands.revertChanges();
             expect(mockConfigManager.set').toHaveBeenCalledWith('test.path1', 10, {)'
                 validate: true) }
         saveToStorage: false); }'
@@ -256,7 +256,7 @@ describe('ConfigurationCommands', () => {  let mockGameEngine: any,
         test('should apply development template', () => {'
             mockConfigManager.get.mockReturnValue(60), // original value' }'
             mockConfigManager.set.mockReturnValue(true');' }'
-            const result = configCommands.applyTemplate(['development']});
+            const result = configCommands.applyTemplate(['development']};
             expect(mockConfigManager.set').toHaveBeenCalledWith('performance.targetFPS', 60, { validate: true)'
         saveToStorage: false) }'
             }''
@@ -274,18 +274,18 @@ describe('ConfigurationCommands', () => {  let mockGameEngine: any,
     describe('convertValue', (') => {  ''
         test('should convert boolean strings', (') => { }'
             expect(configCommands.convertValue('true').toBe(true);');' }'
-            expect(configCommands.convertValue('false'}).toBe(false');'
+            expect(configCommands.convertValue('false'}.toBe(false');'
         }''
         test('should convert number strings', (') => { }'
             expect(configCommands.convertValue('123').toBe(123);');' }'
-            expect(configCommands.convertValue('12.34'}).toBe(12.34');'
+            expect(configCommands.convertValue('12.34'}.toBe(12.34');'
         }''
         test('should convert JSON strings', (') => { }'
             expect(configCommands.convertValue('{"key":"value"}')').toEqual({ key: 'value' }');
             expect(configCommands.convertValue('[1,2,3]').toEqual([1, 2, 3]);'}');
         test('should handle null and undefined', (') => { }'
             expect(configCommands.convertValue('null').toBe(null);');' }'
-            expect(configCommands.convertValue('undefined'}).toBe(undefined');'
+            expect(configCommands.convertValue('undefined'}.toBe(undefined');'
         }''
         test('should keep strings as strings', (') => { }'
             expect(configCommands.convertValue('hello'}').toBe('hello');'
@@ -293,11 +293,11 @@ describe('ConfigurationCommands', () => {  let mockGameEngine: any,
     describe('destroy', (') => {  ''
         test('should clear all data', () => {
             // データを追加'
-            mockConfigManager.get.mockReturnValue(10),
+            mockConfigManager.get.mockReturnValue(10);
             mockConfigManager.set.mockReturnValue(true'),'
-            configCommands.setConfig(['test.path', '20']),
-            configCommands.destroy(),
+            configCommands.setConfig(['test.path', '20']);
+            configCommands.destroy();
             expect(configCommands.originalValues.size).toBe(0) }
             expect(configCommands.changeHistory.length).toBe(0);); }
-        });'
+        };'
     }'}');

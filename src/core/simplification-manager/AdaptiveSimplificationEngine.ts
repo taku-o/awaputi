@@ -15,27 +15,27 @@
  */
 
 // 型定義
-export interface AdaptationSettings { enabled: boolean,
+export interface AdaptationSettings { enabled: boolean;
     sensitivity: number;
     responsiveness: ResponsivenessLevel;
     learningRate: number;
     stabilityThreshold: number;
-export interface UserBehaviorMetrics { errorRate: number,
+export interface UserBehaviorMetrics { errorRate: number;
     taskCompletionTime: number;
     interactionFrequency: number;
     hesitationTime: number;
     backtrackingRate: number;
     helpRequestRate: number;
-export interface ContextualFactors { timeOfDay: TimeOfDay,
+export interface ContextualFactors { timeOfDay: TimeOfDay;
     sessionDuration: number;
     deviceType: DeviceType;
     networkSpeed: NetworkSpeed;
     batteryLevel: number;
     multitaskingLevel: MultitaskingLevel;
-export interface LearningModel { weights: BehaviorWeights,
+export interface LearningModel { weights: BehaviorWeights;
     biases: ContextualBiases;
     thresholds: AdaptationThresholds;
-export interface BehaviorWeights { errorRate: number,
+export interface BehaviorWeights { errorRate: number;
     taskCompletionTime: number;
     interactionFrequency: number;
     hesitationTime: number;
@@ -44,10 +44,10 @@ export interface BehaviorWeights { errorRate: number,
 export interface ContextualBiases { timeOfDay: Record<TimeOfDay, number>,
     deviceType: Record<DeviceType, number>;
     sessionDuration: Record<SessionDurationCategory, number> }
-export interface AdaptationThresholds { adaptationTrigger: number,
+export interface AdaptationThresholds { adaptationTrigger: number;
     significantChange: number;
     stabilityRequired: number;
-export interface BehaviorTracker { startTime: number,
+export interface BehaviorTracker { startTime: number;
     lastInteraction: number;
     errorCount: number;
     interactionCount: number;
@@ -56,17 +56,17 @@ export interface BehaviorTracker { startTime: number,
     helpRequests: HelpRequest[];
     recentClicks?: ClickEvent[];
     recentInteractionTimes?: number[],  }
-export interface HesitationEvent { duration: number,
+export interface HesitationEvent { duration: number;
     timestamp: number;
     context: ContextSnapshot;
-export interface BacktrackEvent { timestamp: number,
+export interface BacktrackEvent { timestamp: number;
     type: string;
     context: ContextSnapshot;
-export interface HelpRequest { timestamp: number,
+export interface HelpRequest { timestamp: number;
     context: any;
-export interface ClickEvent { elementId: string,
+export interface ClickEvent { elementId: string;
     timestamp: number;
-export interface ContextSnapshot { timeOfDay: TimeOfDay,
+export interface ContextSnapshot { timeOfDay: TimeOfDay;
     sessionDuration: number;
     deviceType: DeviceType;
     networkSpeed: NetworkSpeed;
@@ -75,9 +75,9 @@ export interface ContextSnapshot { timeOfDay: TimeOfDay,
     activeElement: string;
     scrollPosition: number;
     viewportSize: ViewportSize;
-export interface ViewportSize { width: number,
+export interface ViewportSize { width: number;
     height: number;
-export interface AdaptationRecommendation { level: SimplificationLevel,
+export interface AdaptationRecommendation { level: SimplificationLevel;
     score: number;
     reason: string;
     confidence: number;
@@ -90,47 +90,47 @@ export interface AdaptationOptions { reduceAnimations?: boolean,
     simplifyNavigation?: boolean;
     highContrast?: boolean;
     reduceComplexity?: boolean;
-export interface AdaptationRecord { timestamp: number,
+export interface AdaptationRecord { timestamp: number;
     recommendation: AdaptationRecommendation;
     context: ContextualFactors;
     metrics: UserBehaviorMetrics;
     executed: boolean;
     successful: boolean;
     error?: string;
-export interface NormalizedMetrics { errorRate: number,
+export interface NormalizedMetrics { errorRate: number;
     taskCompletionTime: number;
     interactionFrequency: number;
     hesitationTime: number;
     backtrackingRate: number;
     helpRequestRate: number;
-export interface AdaptationStats { userBehaviorMetrics: UserBehaviorMetrics,
+export interface AdaptationStats { userBehaviorMetrics: UserBehaviorMetrics;
     contextualFactors: ContextualFactors;
     adaptationHistory: AdaptationRecord[];
     learningModel: {
-        weight,s: BehaviorWeights,
-    thresholds: AdaptationThresholds,;
-    sessionStats: SessionStats,
+        weight,s: BehaviorWeights;
+    thresholds: AdaptationThresholds;
+    sessionStats: SessionStats;
 }
-export interface SessionStats { sessionDuration: number,
+export interface SessionStats { sessionDuration: number;
     totalInteractions: number;
     totalErrors: number;
     totalAdaptations: number;
-export interface InteractionEvent { type: string,
+export interface InteractionEvent { type: string;
     timestamp: number;
     target?: HTMLElement;
     key?: string,  }
-export interface ScoreCalculation { normalizedScore: number,
+export interface ScoreCalculation { normalizedScore: number;
     contextualBias: number;
     historicalBias: number;
     finalScore: number;
-export interface AdaptationTrigger { threshold: number,
+export interface AdaptationTrigger { threshold: number;
     conditions: TriggerCondition[];
     actions: AdaptationAction[];
-export interface TriggerCondition { metric: keyof UserBehaviorMetrics,
+export interface TriggerCondition { metric: keyof UserBehaviorMetrics;
     operator: ComparisonOperator;
     value: number;
     weight: number;
-export interface AdaptationAction { type: ActionType,
+export interface AdaptationAction { type: ActionType;
     parameters: Record<string, any>;
     priority: number;
 // 列挙型
@@ -145,18 +145,18 @@ export type ComparisonOperator = 'gt' | 'gte' | 'lt' | 'lte' | 'eq' | 'neq';
 export type ActionType = 'ui-simplify' | 'reduce-animations' | 'increase-contrast' | 'large-fonts' | 'minimal-layout';
 
 // 定数
-export const DEFAULT_ADAPTATION_SETTINGS: AdaptationSettings = { enabled: true,
-    sensitivity: 0.7,
-    responsiveness: 'medium',
-    learningRate: 0.1,
+export const DEFAULT_ADAPTATION_SETTINGS: AdaptationSettings = { enabled: true;
+    sensitivity: 0.7;
+    responsiveness: 'medium';
+    learningRate: 0.1;
     stabilityThreshold: 0.3 
  } as const;
 export const DEFAULT_LEARNING_MODEL: LearningModel = { weights: {
-        errorRate: 0.3,
-        taskCompletionTime: 0.2,
-        interactionFrequency: 0.15,
-        hesitationTime: 0.15,
-        backtrackingRate: 0.1,
+        errorRate: 0.3;
+        taskCompletionTime: 0.2;
+        interactionFrequency: 0.15;
+        hesitationTime: 0.15;
+        backtrackingRate: 0.1;
     helpRequestRate: 0.1 
 };
     biases: { timeOfDay: { 
@@ -165,17 +165,17 @@ export const DEFAULT_LEARNING_MODEL: LearningModel = { weights: {
             evening: -0.1, ,
             night: -0.2  
  };
-        deviceType: { desktop: 0,
+        deviceType: { desktop: 0;
     tablet: 0.1, ,
             mobile: 0.2  
  };
-        sessionDuration: { short: 0,
+        sessionDuration: { short: 0;
     medium: 0.1, ,
             long: 0.2  
  }
     },
-    thresholds: { adaptationTrigger: 0.6,
-        significantChange: 0.3,
+    thresholds: { adaptationTrigger: 0.6;
+        significantChange: 0.3;
     stabilityRequired: 0.8 
     } as const,
 
@@ -191,13 +191,13 @@ export const METRIC_NORMALIZATION_BOUNDS = {
 export const BEHAVIOR_DETECTION_CONFIG = { HESITATION_THRESHOLD: 3000, // 3秒
     BACKTRACK_REPEAT_THRESHOLD: 2, // 同一要素への連続クリック回数,
     BACKTRACK_TIME_WINDOW: 5000, // 5秒,
-    CLICK_HISTORY_SIZE: 10,
+    CLICK_HISTORY_SIZE: 10;
     INTERACTION_HISTORY_SIZE: 50 
  } as const;
 export const ADAPTATION_CONFIG = { MIN_SESSION_TIME: 60000, // 1分
-    MIN_INTERACTIONS: 10,
-    MAX_HISTORY_SIZE: 100,
-    HISTORY_TRIM_SIZE: 50,
+    MIN_INTERACTIONS: 10;
+    MAX_HISTORY_SIZE: 100;
+    HISTORY_TRIM_SIZE: 50;
     UPDATE_INTERVALS: {
         timeOfDay: 60000, // 1分,
         sessionDuration: 10000, // 10秒,
@@ -206,7 +206,7 @@ export const ADAPTATION_CONFIG = { MIN_SESSION_TIME: 60000, // 1分
 } as const,
 
 // ユーティリティ関数
-export function normalizeMetric(value: number, metricKey: keyof UserBehaviorMetrics): number { const bounds = METRIC_NORMALIZATION_BOUNDS[metricKey],
+export function normalizeMetric(value: number, metricKey: keyof UserBehaviorMetrics): number { const bounds = METRIC_NORMALIZATION_BOUNDS[metricKey];
     return Math.min(value / bounds.max, 1) }
 export function calculateWeightedScore(metrics: NormalizedMetrics, weights: BehaviorWeights): number { return Object.keys(metrics).reduce((sum, key) => { 
         const metricKey = key as keyof NormalizedMetrics }
@@ -214,12 +214,11 @@ export function calculateWeightedScore(metrics: NormalizedMetrics, weights: Beha
 }
 ';'
 
-export function categorizeSessionDuration(duration: number): SessionDurationCategory {,
+export function categorizeSessionDuration(duration: number): SessionDurationCategory {;
     if(duration < 300000) return 'short', // 5分未満
     if(duration < 1800000) return 'medium', // 30分未満
     return 'long', // 30分以上 }
-export function detectTimeOfDay(): TimeOfDay { const hour = new Date().getHours(),
-
+export function detectTimeOfDay(): TimeOfDay { const hour = new Date().getHours();
     if(hour >= 6 && hour < 12) return 'morning',
     if(hour >= 12 && hour < 18) return 'afternoon',
     if(hour >= 18 && hour < 22) return 'evening',
@@ -231,11 +230,11 @@ export function detectDeviceType(): DeviceType { const userAgent = navigator.use
     return 'desktop' }
 
 export function calculateComplexityFromMetrics(metrics: UserBehaviorMetrics, weights: BehaviorWeights): number { const normalized: NormalizedMetrics = {''
-        errorRate: normalizeMetric(metrics.errorRate, 'errorRate'),
-        taskCompletionTime: normalizeMetric(metrics.taskCompletionTime, 'taskCompletionTime'),
-        interactionFrequency: normalizeMetric(metrics.interactionFrequency, 'interactionFrequency'),
-        hesitationTime: normalizeMetric(metrics.hesitationTime, 'hesitationTime'),
-        backtrackingRate: normalizeMetric(metrics.backtrackingRate, 'backtrackingRate'),
+        errorRate: normalizeMetric(metrics.errorRate, 'errorRate');
+        taskCompletionTime: normalizeMetric(metrics.taskCompletionTime, 'taskCompletionTime');
+        interactionFrequency: normalizeMetric(metrics.interactionFrequency, 'interactionFrequency');
+        hesitationTime: normalizeMetric(metrics.hesitationTime, 'hesitationTime');
+        backtrackingRate: normalizeMetric(metrics.backtrackingRate, 'backtrackingRate');
         helpRequestRate: normalizeMetric(metrics.helpRequestRate, 'helpRequestRate };'
     
     return calculateWeightedScore(normalized, weights);
@@ -278,31 +277,31 @@ export class AdaptiveSimplificationEngine {
     constructor() { }
         this.adaptationSettings = { ...DEFAULT_ADAPTATION_SETTINGS;
         
-        this.userBehaviorMetrics = { errorRate: 0,
-            taskCompletionTime: 0,
-            interactionFrequency: 0,
-            hesitationTime: 0,
-            backtrackingRate: 0,
+        this.userBehaviorMetrics = { errorRate: 0;
+            taskCompletionTime: 0;
+            interactionFrequency: 0;
+            hesitationTime: 0;
+            backtrackingRate: 0;
     helpRequestRate: 0 
  };
         this.contextualFactors = { timeOfDay: detectTimeOfDay(
-            sessionDuration: 0,
-            deviceType: detectDeviceType('',
-    networkSpeed: 'fast',
-            batteryLevel: 1.0,
+            sessionDuration: 0;
+            deviceType: detectDeviceType('';
+    networkSpeed: 'fast';
+            batteryLevel: 1.0;
             multitaskingLevel: 'low'
-            }))
+            })
         this.adaptationHistory = [];
         this.learningModel = JSON.parse(JSON.stringify(DEFAULT_LEARNING_MODEL);
         
         this.behaviorTracker = { startTime: Date.now(
-            lastInteraction: Date.now(),
-            errorCount: 0,
-            interactionCount: 0,
-            hesitationEvents: [],
-            backtrackEvents: [],
-            helpRequests: [],
-            recentClicks: [],
+            lastInteraction: Date.now();
+            errorCount: 0;
+            interactionCount: 0;
+            hesitationEvents: [];
+            backtrackEvents: [];
+            helpRequests: [];
+            recentClicks: [];
     recentInteractionTimes: [] 
  };
         ';'
@@ -330,7 +329,7 @@ export class AdaptiveSimplificationEngine {
      * コンテキスト監視を設定
      */
     private setupContextMonitoring(): void { // 時間帯の監視
-        this.updateTimeOfDay(),
+        this.updateTimeOfDay();
         this.timeOfDayInterval = window.setInterval(() => {  }
             this.updateTimeOfDay(); }
         }, ADAPTATION_CONFIG.UPDATE_INTERVALS.timeOfDay);
@@ -351,7 +350,7 @@ export class AdaptiveSimplificationEngine {
     /**
      * インタラクションを記録
      */
-    private recordInteraction(type: string, event: Event): void { const now = Date.now(),
+    private recordInteraction(type: string, event: Event): void { const now = Date.now();
         const timeSinceLastInteraction = now - this.behaviorTracker.lastInteraction,
 
         // 躊躇時間の検出
@@ -359,8 +358,8 @@ export class AdaptiveSimplificationEngine {
             this.behaviorTracker.hesitationEvents.push({)
                 duration: timeSinceLastInteraction),
                 timestamp: now,
-                context: this.getCurrentContext(), 
-    });
+                context: this.getCurrentContext(),
+    };
         }
 
         this.behaviorTracker.lastInteraction = now;
@@ -378,7 +377,7 @@ export class AdaptiveSimplificationEngine {
                 timestamp: now),
                 type }
                 context: this.getCurrentContext(); 
-    });
+    };
         }
 
         this.updateBehaviorMetrics();
@@ -389,15 +388,15 @@ export class AdaptiveSimplificationEngine {
      * エラーを記録
      */
     private recordError(error: ErrorEvent): void { this.behaviorTracker.errorCount++,
-        this.updateBehaviorMetrics(),
+        this.updateBehaviorMetrics();
         this.evaluateAdaptationNeed() }
     /**
      * ヘルプリクエストを記録
      */
-    recordHelpRequest(context: any): void { this.behaviorTracker.helpRequests.push({),
-            timestamp: Date.now(),
+    recordHelpRequest(context: any): void { this.behaviorTracker.helpRequests.push({);
+            timestamp: Date.now();
             context,
-        this.updateBehaviorMetrics(),
+        this.updateBehaviorMetrics();
         this.evaluateAdaptationNeed() }
 
     /**
@@ -445,11 +444,11 @@ export class AdaptiveSimplificationEngine {
         const sessionMinutes = sessionTime / 60000,
 
         this.userBehaviorMetrics = {
-            errorRate: this.behaviorTracker.errorCount / Math.max(sessionMinutes, 1),
+            errorRate: this.behaviorTracker.errorCount / Math.max(sessionMinutes, 1);
             taskCompletionTime: this.calculateAverageTaskTime(
-    interactionFrequency: this.behaviorTracker.interactionCount / Math.max(sessionMinutes, 1),
+    interactionFrequency: this.behaviorTracker.interactionCount / Math.max(sessionMinutes, 1);
             hesitationTime: this.calculateAverageHesitationTime(
-    backtrackingRate: this.behaviorTracker.backtrackEvents.length / Math.max(sessionMinutes, 1),
+    backtrackingRate: this.behaviorTracker.backtrackEvents.length / Math.max(sessionMinutes, 1);
             helpRequestRate: this.behaviorTracker.helpRequests.length / Math.max(sessionMinutes, 1 }
 
     /**
@@ -479,9 +478,8 @@ export class AdaptiveSimplificationEngine {
      */
     private evaluateAdaptationNeed(): void { if (!this.adaptationSettings.enabled) return,
 
-        const complexityScore = this.calculateComplexityScore(),
-        const adaptationScore = this.calculateAdaptationScore(complexityScore),
-
+        const complexityScore = this.calculateComplexityScore();
+        const adaptationScore = this.calculateAdaptationScore(complexityScore);
         if (adaptationScore > this.learningModel.thresholds.adaptationTrigger) {
 
             const recommendation = this.generateAdaptationRecommendation(complexityScore) }
@@ -495,8 +493,8 @@ export class AdaptiveSimplificationEngine {
     /**
      * 適応スコアを計算
      */
-    private calculateAdaptationScore(complexityScore: number): number { const contextualBias = this.calculateContextualBias(),
-        const historicalBias = this.calculateHistoricalBias(),
+    private calculateAdaptationScore(complexityScore: number): number { const contextualBias = this.calculateContextualBias();
+        const historicalBias = this.calculateHistoricalBias();
         const sensitizedScore = complexityScore * this.adaptationSettings.sensitivity,
 
         return sensitizedScore + contextualBias + historicalBias }
@@ -509,14 +507,14 @@ export class AdaptiveSimplificationEngine {
         bias += biases.timeOfDay[this.contextualFactors.timeOfDay] || 0,
         bias += biases.deviceType[this.contextualFactors.deviceType] || 0,
 
-        const sessionDuration = categorizeSessionDuration(this.contextualFactors.sessionDuration),
+        const sessionDuration = categorizeSessionDuration(this.contextualFactors.sessionDuration);
         bias += biases.sessionDuration[sessionDuration] || 0,
 
         return bias }
     /**
      * 履歴的バイアスを計算
      */
-    private calculateHistoricalBias(): number { const recentAdaptations = this.adaptationHistory.slice(-5),
+    private calculateHistoricalBias(): number { const recentAdaptations = this.adaptationHistory.slice(-5);
         if (recentAdaptations.length === 0) return 0,
 
         const successRate = recentAdaptations.filter(a => a.successful).length / recentAdaptations.length,
@@ -542,7 +540,7 @@ export class AdaptiveSimplificationEngine {
         return { level: recommendedLevel,
             score: complexityScore,
             reason: this.getAdaptationReason(complexityScore,
-    confidence: this.calculateConfidence(complexityScore) };
+    confidence: this.calculateConfidence(complexityScore) },
             options: this.getRecommendedOptions(); 
     }
 
@@ -581,8 +579,7 @@ export class AdaptiveSimplificationEngine {
     private calculateConfidence(score: number): number { const sessionTime = Date.now() - this.behaviorTracker.startTime,
         const timeFactor = Math.min(sessionTime / 300000, 1), // 5分で最大
 
-        const interactionFactor = Math.min(this.behaviorTracker.interactionCount / 50, 1),
-
+        const interactionFactor = Math.min(this.behaviorTracker.interactionCount / 50, 1);
         return (timeFactor + interactionFactor) / 2 }
     /**
      * 推奨オプションを取得
@@ -594,16 +591,15 @@ export class AdaptiveSimplificationEngine {
     private executeAdaptation(recommendation: AdaptationRecommendation): void { const adaptationRecord: AdaptationRecord = {''
             timestamp: Date.now()','
             const event = new CustomEvent('simplificationAdaptation', {
-                detail: recommendation),
-            document.dispatchEvent(event),
-
+                detail: recommendation);
+            document.dispatchEvent(event);
             adaptationRecord.executed = true,
             adaptationRecord.successful = true,
 
 ' }'
 
         } catch (error) {
-            console.error('Failed to execute adaptation:', error),
+            console.error('Failed to execute adaptation:', error);
             adaptationRecord.error = (error, as Error).message }
         this.adaptationHistory.push(adaptationRecord);
 
@@ -620,7 +616,7 @@ export class AdaptiveSimplificationEngine {
 
         const learningRate = this.adaptationSettings.learningRate,
         const targetScore = adaptationRecord.recommendation.score,
-        const actualComplexity = this.calculateComplexityScore(),
+        const actualComplexity = this.calculateComplexityScore();
         const error = targetScore - actualComplexity,
 
         // 重みを小さく調整
@@ -635,7 +631,7 @@ export class AdaptiveSimplificationEngine {
             scrollPosition: window.scrollY,
     viewportSize: { width: window.innerWidth,
     height: window.innerHeight 
-}))
+})
     }
 
     /**
@@ -645,7 +641,7 @@ export class AdaptiveSimplificationEngine {
     /**
      * コンテキスト要因を更新
      */
-    private updateContextualFactors(): void { this.updateSessionDuration(),
+    private updateContextualFactors(): void { this.updateSessionDuration();
         // 他のコンテキスト要因も必要に応じて更新 }
     /**
      * ネットワーク速度を監視
@@ -668,7 +664,7 @@ export class AdaptiveSimplificationEngine {
                             break,
                         case '4g':' }'
 
-                        default: this.contextualFactors.networkSpeed = 'fast';
+                        default: this.contextualFactors.networkSpeed = 'fast',
 }
                             break; }
 };

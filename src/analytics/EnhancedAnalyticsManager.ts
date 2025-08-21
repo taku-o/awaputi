@@ -31,13 +31,13 @@ export interface AnalyticsData { sessionData?: any[],
     balanceData?: any[];
     performanceData?: any[];
 export interface AnalyticsReport { summary: {
-        totalSession,s: number,
-        totalEvents: number,
-        avgSessionDuration: number,
-    errorRate: number,;
-    trends: any[],
-    recommendations: string[],
-    issues: any[],
+        totalSession,s: number;
+        totalEvents: number;
+        avgSessionDuration: number;
+    errorRate: number;
+    trends: any[];
+    recommendations: string[];
+    issues: any[];
 }
 export interface Analytics { trackEvent(event: string, data?: any): void,
     startSession(): void;
@@ -57,11 +57,11 @@ export class EnhancedAnalyticsManager {
     constructor(options: AnalyticsOptions = {) {
 
         this.options = {
-            enableBehaviorAnalysis: true,
-            enableBalanceAnalysis: true,
-            enablePerformanceMonitoring: true,
-            enableSessionTracking: true,
-            enablePrivacyProtection: true,
+            enableBehaviorAnalysis: true;
+            enableBalanceAnalysis: true;
+            enablePerformanceMonitoring: true;
+            enableSessionTracking: true;
+            enablePrivacyProtection: true;
     storageQuota: 50 * 1024 * 1024, // 50MB;
             retentionDays: 30
  }
@@ -110,14 +110,14 @@ export class EnhancedAnalyticsManager {
     /**
      * ゲームイベントの追跡
      */
-    trackGameEvent(eventType: string, eventData: any): void { if(!this.isInitialized || !this.analytics.isEnabled() return,
+    trackGameEvent(eventType: string, eventData: any): void { if(!this.isInitialized || !this.analytics.isEnabled() return;
 
         try {
             // Enhanced event data with context
             const enhancedData = {
                 ...eventData,
-                timestamp: Date.now(),
-                sessionId: this.sessionManager.getCurrentSessionId(),
+                timestamp: Date.now();
+                sessionId: this.sessionManager.getCurrentSessionId();
                 performanceMetrics: this.performanceMonitor.getCurrentMetrics(
     contextData: this.captureEventContext(  };
 
@@ -193,22 +193,22 @@ export class EnhancedAnalyticsManager {
 
         try { // Session statistics
             if (this.options.enableSessionTracking) {
-                const sessionStats = await this.sessionManager.getStatistics(timeRange),
+                const sessionStats = await this.sessionManager.getStatistics(timeRange);
                 report.summary.totalSessions = sessionStats.totalSessions }
                 report.summary.avgSessionDuration = sessionStats.avgDuration; }
             // Behavior analysis
             if (this.options.enableBehaviorAnalysis) {
-                const behaviorReport = await this.playerBehaviorAnalyzer.generateReport(timeRange),
-                report.trends.push(...behaviorReport.trends),
+                const behaviorReport = await this.playerBehaviorAnalyzer.generateReport(timeRange);
+                report.trends.push(...behaviorReport.trends);
                 report.recommendations.push(...behaviorReport.recommendations) }
             // Balance analysis
             if (this.options.enableBalanceAnalysis) {
-                const balanceReport = await this.gameBalanceAnalyzer.generateReport(timeRange),
-                report.issues.push(...balanceReport.issues),
+                const balanceReport = await this.gameBalanceAnalyzer.generateReport(timeRange);
+                report.issues.push(...balanceReport.issues);
                 report.recommendations.push(...balanceReport.recommendations) }
             // Performance analysis
             if (this.options.enablePerformanceMonitoring) {
-                const perfMetrics = this.performanceMonitor.getMetrics(),
+                const perfMetrics = this.performanceMonitor.getMetrics();
                 report.summary.errorRate = perfMetrics.errorRate,
                 if (perfMetrics.issues) {
             }
@@ -218,7 +218,7 @@ export class EnhancedAnalyticsManager {
             report.issues.push({)'
                 type: 'error',')',
                 message: 'Failed to generate complete report',
-    timestamp: Date.now(  });
+    timestamp: Date.now(  },
         }
 
         return report;
@@ -236,25 +236,24 @@ export class EnhancedAnalyticsManager {
             if (this.options.enableSessionTracking) {
 ','
 
-                await this.sessionManager.syncData(),
-
+                await this.sessionManager.syncData();
             console.log('Analytics, data synchronized, successfully') }
 
             return true; }'
 
         } catch (error) {
-            console.error('Failed to sync analytics data:', error),
+            console.error('Failed to sync analytics data:', error);
             return false,
 
     /**
      * 古いデータのクリーンアップ
      */
-    async cleanupOldData(): Promise<void> { const cutoffDate = new Date(),
+    async cleanupOldData(): Promise<void> { const cutoffDate = new Date();
         cutoffDate.setDate(cutoffDate.getDate() - this.options.retentionDays),
 ','
 
         try {'
-            await this.storageManager.deleteOldData(cutoffDate),
+            await this.storageManager.deleteOldData(cutoffDate);
             console.log('Old, analytics data, cleaned up'),' }'
 
         } catch (error) { console.error('Failed to cleanup old data:', error }
@@ -283,7 +282,7 @@ export class EnhancedAnalyticsManager {
             userAgent: navigator.userAgent,
             timestamp: Date.now(
     screenResolution: {
-                width: window.screen.width };
+                width: window.screen.width },
                 height: window.screen.height ,
     },
             viewportSize: { width: window.innerWidth,
@@ -329,17 +328,17 @@ export class EnhancedAnalyticsManager {
     components: {
                 behaviorAnalyzer: this.options.enableBehaviorAnalysis,
                 balanceAnalyzer: this.options.enableBalanceAnalysis,
-    performanceMonitor: this.options.enablePerformanceMonitoring };
+    performanceMonitor: this.options.enablePerformanceMonitoring },
                 sessionManager: this.options.enableSessionTracking ,
     },
-            storage: this.storageManager ? this.storageManager.getStorageStats() : null;
+            storage: this.storageManager ? this.storageManager.getStorageStats() : null,
         } }
 
     /**
      * リソースの解放
      */
     destroy(): void { if (this.analysisTimer) {
-            clearInterval(this.analysisTimer),
+            clearInterval(this.analysisTimer);
             this.analysisTimer = null }
         if (this.playerBehaviorAnalyzer) { this.playerBehaviorAnalyzer.destroy() }
         if (this.gameBalanceAnalyzer) { this.gameBalanceAnalyzer.destroy() }

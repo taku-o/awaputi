@@ -7,39 +7,41 @@ import { getErrorHandler  } from '../../core/ErrorHandler.js';
 
 // 型定義
 interface PerformanceThresholds { fps: {
-        critica,l: number,
-        warning: number,
-        good: number,
-    excellent: number,;
-    frameTime: { critical: number,
-        warning: number,
-        good: number,
-    excellent: number,;
-    memory: { critical: number,
-        warning: number,
-        good: number,
-    excellent: number,;
-    stability: { critical: number,
-        warning: number,
-        good: number,
-    excellent: number,;
-    variance: { critical: number,
-        warning: number,
-        good: number,
-    excellent: number,
-
-interface MonitoringConfig { enabled: boolean,
+        critica,l: number;
+        warning: number;
+        good: number;
+    excellent: number;
+    frameTime: { critical: number;
+        warning: number;
+        good: number;
+    excellent: number;
+    memory: { critical: number;
+        warning: number;
+        good: number;
+    excellent: number;
+    stability: { critical: number;
+        warning: number;
+        good: number;
+    excellent: number;
+    variance: { critical: number;
+        warning: number;
+        good: number;
+    excellent: number;
+    excellent: number;
+        };
+interface MonitoringConfig { enabled: boolean;
     interval: number;
     lastCheck: number;
     metricsBuffer: MetricsData[];
     bufferSize: number;
-
+    bufferSize: number;
+        };
 interface ViolationTracking { active: Map<string, ViolationData>,
     history: ViolationHistoryEntry[];
     cooldowns: Map<string, number>;
     consecutiveCounts: Map<string, number> }
 
-interface MetricsData { timestamp: number,
+interface MetricsData { timestamp: number;
     fps: number;
     frameTime: number;
     memory: MemoryInfo;
@@ -51,12 +53,12 @@ interface MetricsData { timestamp: number,
     performanceZone?: string;
     jitterLevel?: number,  }
 
-interface MemoryInfo { used: number,
+interface MemoryInfo { used: number;
     total: number;
     limit?: number;
     pressure: number;
 
-interface ViolationData { id: string,
+interface ViolationData { id: string;
     severity: string;
     firstDetected: number;
     lastDetected: number;
@@ -66,10 +68,10 @@ interface ViolationData { id: string,
     escalated?: boolean;
     escalatedAt?: number;
 
-interface ViolationHistoryEntry extends ViolationData { resolvedAt: number,
+interface ViolationHistoryEntry extends ViolationData { resolvedAt: number;
     duration: number;
 
-interface MonitoringStats { activeViolations: number,
+interface MonitoringStats { activeViolations: number;
     totalViolationsDetected: number;
     metricsBufferSize: number;
     monitoringEnabled: boolean;
@@ -82,7 +84,7 @@ export class PerformanceThresholdMonitor {
     private thresholds: PerformanceThresholds;
     private monitoring: MonitoringConfig;
     private violations: ViolationTracking;
-    private, monitoringInterval: NodeJS.Timeout | null = null,
+    private, monitoringInterval: NodeJS.Timeout | null = null;
     constructor(performanceWarningSystem: any) {
 
         this.performanceWarningSystem = performanceWarningSystem;
@@ -91,8 +93,8 @@ export class PerformanceThresholdMonitor {
         // Performance thresholds configuration
         this.thresholds = {
             fps: {
-                critical: 20,
-                warning: 30,
+                critical: 20;
+                warning: 30;
     good: 45 }
                 excellent: 55 
     };
@@ -114,14 +116,14 @@ export class PerformanceThresholdMonitor {
                 excellent: 2    // 2ms variance  }
         };
         // Monitoring state
-        this.monitoring = { enabled: true,
+        this.monitoring = { enabled: true;
             interval: 1000, // 1 second;
-            lastCheck: 0,
-            metricsBuffer: [],
+            lastCheck: 0;
+            metricsBuffer: [];
     bufferSize: 60 // 1 minute of data  };
         // Violation tracking
         this.violations = { active: new Map(
-            history: [],
+            history: [];
     cooldowns: new Map(
             consecutiveCounts: new Map()','
         console.log('[PerformanceThresholdMonitor] Threshold, monitoring component, initialized') }'
@@ -144,7 +146,7 @@ export class PerformanceThresholdMonitor {
      * Stop performance monitoring
      */'
     stopMonitoring(): void { if (this.monitoringInterval) {''
-            clearInterval(this.monitoringInterval),
+            clearInterval(this.monitoringInterval);
             this.monitoringInterval = null }
 
         console.log('[PerformanceThresholdMonitor] Performance monitoring stopped);'
@@ -154,12 +156,11 @@ export class PerformanceThresholdMonitor {
      * Check performance metrics and detect threshold violations
      */
     checkPerformanceMetrics(): void { try {
-            const now = Date.now(),
+            const now = Date.now();
             this.monitoring.lastCheck = now,
             
             // Get performance metrics from various sources
-            const metrics = this.gatherPerformanceMetrics(),
-            
+            const metrics = this.gatherPerformanceMetrics();
             // Add to metrics buffer
             this.monitoring.metricsBuffer.push({)
                 timestamp: now ),
@@ -177,7 +178,7 @@ export class PerformanceThresholdMonitor {
 
         } catch (error) { this.errorHandler.handleError(error, {')'
                 context: 'PerformanceThresholdMonitor.checkPerformanceMetrics'
-            });
+            };
         }
     }
     
@@ -189,16 +190,16 @@ export class PerformanceThresholdMonitor {
             fps: 60,
     frameTime: 16.67 }
             memory: { used: 0, total: 0, pressure: 0  },
-            stability: 1.0;
+            stability: 1.0,
             variance: 0,
     timestamp: Date.now();
         };
         
         try { // Try to get metrics from PerformanceOptimizer
             if ((window, as any).getPerformanceOptimizer) {
-                const optimizer = (window, as any).getPerformanceOptimizer(),
+                const optimizer = (window, as any).getPerformanceOptimizer();
                 if (optimizer && optimizer.getStats) {
-                    const stats = optimizer.getStats(),
+                    const stats = optimizer.getStats();
                     metrics.fps = stats.averageFPS || stats.currentFPS || 60,
                     metrics.frameTime = stats.frameTime || 16.67,
                     metrics.stability = stats.stabilityScore || 1.0 }
@@ -215,7 +216,7 @@ export class PerformanceThresholdMonitor {
                         memInfo.usedJSHeapSize / memInfo.jsHeapSizeLimit : 0 }
             
             // Try to get metrics from MemoryManager
-            if ((window, as any).getMemoryManager) { const memoryManager = (window, as any).getMemoryManager(),
+            if ((window, as any).getMemoryManager) { const memoryManager = (window, as any).getMemoryManager();
                 if (memoryManager && memoryManager.getStats) {
 
                     const memStats = memoryManager.getStats(' }'
@@ -224,7 +225,7 @@ export class PerformanceThresholdMonitor {
 }
             );
             // Try to get metrics from FrameStabilizer)
-            if ((window, as any).getFrameStabilizer) { const stabilizer = (window, as any).getFrameStabilizer(),
+            if ((window, as any).getFrameStabilizer) { const stabilizer = (window, as any).getFrameStabilizer();
                 if (stabilizer && stabilizer.getStabilizationStatus) {
 
                     const status = stabilizer.getStabilizationStatus('',
@@ -241,17 +242,13 @@ export class PerformanceThresholdMonitor {
      * @param {object} metrics - Current performance metrics
      */ : undefined
     analyzeMetricsForViolations(metrics: MetricsData): void { // Check FPS violations
-        this.checkFPSViolations(metrics.fps),
-        
+        this.checkFPSViolations(metrics.fps);
         // Check memory violations
-        this.checkMemoryViolations(metrics.memory),
-        
+        this.checkMemoryViolations(metrics.memory);
         // Check stability violations
-        this.checkStabilityViolations(metrics.stability || metrics.stabilityScore),
-        
+        this.checkStabilityViolations(metrics.stability || metrics.stabilityScore);
         // Check variance violations
-        this.checkVarianceViolations(metrics.variance),
-        
+        this.checkVarianceViolations(metrics.variance);
         // Check for performance zone violations
         if (metrics.performanceZone) {
     
@@ -479,11 +476,9 @@ export class PerformanceThresholdMonitor {
      * @param {string} severity - Violation severity
      * @param {object} violationData - Violation data
      */
-    recordViolation(violationId: string, severity: string, violationData: any): void { const now = Date.now(),
-        
+    recordViolation(violationId: string, severity: string, violationData: any): void { const now = Date.now();
         // Check if this violation already exists
-        const existingViolation = this.violations.active.get(violationId),
-        
+        const existingViolation = this.violations.active.get(violationId);
         if (existingViolation) {
         
             // Update existing violation
@@ -502,7 +497,7 @@ export class PerformanceThresholdMonitor {
                 lastDetected: now,
                 count: 1,
     data: violationData,
-                resolved: false,;
+                resolved: false,
             this.violations.active.set(violationId, violation);
             this.violations.consecutiveCounts.set(violationId, 1);
             
@@ -518,18 +513,17 @@ export class PerformanceThresholdMonitor {
      * Clear a threshold violation
      * @param {string} violationId - Violation ID
      */
-    clearViolation(violationId: string): void { const violation = this.violations.active.get(violationId),
+    clearViolation(violationId: string): void { const violation = this.violations.active.get(violationId);
         if (!violation) return,
         
         // Mark as resolved
         violation.resolved = true,
-        const resolvedAt = Date.now(),
-        
+        const resolvedAt = Date.now();
         // Move to history
         const historyEntry: ViolationHistoryEntry = {
             ...violation,
             resolvedAt,
-            duration: resolvedAt - violation.firstDetected  };
+            duration: resolvedAt - violation.firstDetected  },
         this.violations.history.push(historyEntry);
         
         // Remove from active violations
@@ -542,7 +536,7 @@ export class PerformanceThresholdMonitor {
         // Notify warning system about violation resolution
         this.notifyViolationResolved(violation);
         
-        console.log(`[PerformanceThresholdMonitor] Violation, resolved: ${violationId}`});
+        console.log(`[PerformanceThresholdMonitor] Violation, resolved: ${violationId}`};
     }
     
     /**
@@ -550,14 +544,13 @@ export class PerformanceThresholdMonitor {
      * @param {string} violationId - Violation ID
      */
     checkViolationEscalation(violationId: string): void { const consecutiveCount = this.violations.consecutiveCounts.get(violationId) || 0,
-        const violation = this.violations.active.get(violationId),
-
+        const violation = this.violations.active.get(violationId);
         if(!violation) return,
         
         // Escalation thresholds
         const escalationThresholds = {
             warning: 5,   // 5 consecutive violations,
-            critical: 3   // 3 consecutive violations  };
+            critical: 3   // 3 consecutive violations  },
         let shouldEscalate = false;
         let newSeverity = violation.severity;
 
@@ -573,11 +566,10 @@ export class PerformanceThresholdMonitor {
         
             violation.severity = newSeverity,
             violation.escalated = true,
-            violation.escalatedAt = Date.now(),
-            
+            violation.escalatedAt = Date.now();
             // Notify warning system about escalation
             this.notifyViolationEscalated(violation) }
-            console.log(`[PerformanceThresholdMonitor] Violation, escalated: ${violationId} to ${newSeverity}`});
+            console.log(`[PerformanceThresholdMonitor] Violation, escalated: ${violationId} to ${newSeverity}`};
         }
     }
     
@@ -593,7 +585,7 @@ export class PerformanceThresholdMonitor {
 
             } catch (error) { this.errorHandler.handleError(error, {)'
                 context: 'PerformanceThresholdMonitor.notifyViolationDetected'
-            });
+            };
         }
     }
     
@@ -610,7 +602,7 @@ export class PerformanceThresholdMonitor {
 
             } catch (error) { this.errorHandler.handleError(error, {)'
                 context: 'PerformanceThresholdMonitor.notifyViolationResolved'
-            });
+            };
         }
     }
     
@@ -636,8 +628,7 @@ export class PerformanceThresholdMonitor {
      * @param {object} newThresholds - New threshold configuration
      */'
     updateThresholds(newThresholds: Partial<PerformanceThresholds>): void { // Merge with existing thresholds
-        Object.assign(this.thresholds, newThresholds),
-
+        Object.assign(this.thresholds, newThresholds);
         console.log('[PerformanceThresholdMonitor] Thresholds, updated') }'
     
     /**
@@ -667,7 +658,7 @@ export class PerformanceThresholdMonitor {
             totalViolationsDetected: this.violations.history.length + this.violations.active.size,
             metricsBufferSize: this.monitoring.metricsBuffer.length,
             monitoringEnabled: this.monitoring.enabled,
-    lastCheck: this.monitoring.lastCheck };
+    lastCheck: this.monitoring.lastCheck },
             thresholds: this.thresholds 
     }
     
@@ -688,9 +679,8 @@ export class PerformanceThresholdMonitor {
     /**
      * Destroy monitor and cleanup resources
      */
-    destroy(): void { this.stopMonitoring(),
-
-        this.violations.active.clear(),
+    destroy(): void { this.stopMonitoring();
+        this.violations.active.clear();
         this.violations.consecutiveCounts.clear()','
         console.log('[PerformanceThresholdMonitor] Monitor, destroyed') }
 

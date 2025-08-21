@@ -23,7 +23,7 @@ interface SEOMetaManager { updateMetaTags(context: any): Promise<void>,''
     updateLanguage(language: string): void;
 
 // hreflangタグインターフェース
-interface HreflangTag { hreflang: string,
+interface HreflangTag { hreflang: string;
     href: string;
     rel: 'alternate'
             }
@@ -37,7 +37,7 @@ export class SEOI18nManager {
     private baseUrl: string;
     private, hreflangCache: Map<string, HreflangTag[]>,
     private currentLanguage: LanguageCode;
-    private, initialized: boolean,
+    private, initialized: boolean;
     constructor(localizationManager: LocalizationManager | null = null, seoMetaManager: SEOMetaManager | null = null) {
     
         this.localizationManager = localizationManager;
@@ -75,8 +75,7 @@ export class SEOI18nManager {
      * hreflangタグの生成'
      */''
     generateHreflangTags(path: string = ''): HreflangTag[] { ''
-        const cacheKey = generateCacheKey('hreflang', { path ),
-        
+        const cacheKey = generateCacheKey('hreflang', { path );
         if (this.hreflangCache.has(cacheKey) {
     
 }
@@ -85,14 +84,14 @@ export class SEOI18nManager {
         const hreflangTags: HreflangTag[] = [],
         
         // 各サポート言語のhreflangタグを生成
-        SEOConfig.supportedLanguages.forEach(lang => {  ),
-            const localizedUrl = getLocalizedUrl(lang, path),
+        SEOConfig.supportedLanguages.forEach(lang => {  );
+            const localizedUrl = getLocalizedUrl(lang, path);
             hreflangTags.push({)
                 hreflang: lang,
                 href: normalizeUrl(localizedUrl),' }'
 
                 rel: 'alternate' 
-    });
+    };
         }';'
         ';'
         // x-default タグの追加
@@ -102,7 +101,7 @@ export class SEOI18nManager {
             hreflang: 'x-default',
             href: normalizeUrl(defaultUrl,
             rel: 'alternate'
-            });
+            };
         this.hreflangCache.set(cacheKey, hreflangTags);
         return hreflangTags;
     }
@@ -110,9 +109,8 @@ export class SEOI18nManager {
     /**
      * 言語変更の処理
      */
-    private handleLanguageChange(newLanguage: LanguageCode): void { this.currentLanguage = newLanguage;
-        this.hreflangCache.clear(),
-        
+    private handleLanguageChange(newLanguage: LanguageCode): void { this.currentLanguage = newLanguage,
+        this.hreflangCache.clear();
         // SEOMetaManagerに言語変更を通知
         if (this.seoMetaManager) {
     
@@ -120,7 +118,7 @@ export class SEOI18nManager {
             this.seoMetaManager.updateLanguage(newLanguage); }
         }
         
-        seoLogger.info(`Language, changed to ${newLanguage}`});
+        seoLogger.info(`Language, changed to ${newLanguage}`};
     }
     
     /**
@@ -131,7 +129,7 @@ export class SEOI18nManager {
         const mapping: LanguageUrlMapping = {}
         SEOConfig.supportedLanguages.forEach(lang => {  ) }
             mapping[lang] = getLocalizedUrl(lang, path); }
-        });
+        };
         
         return mapping;
     }

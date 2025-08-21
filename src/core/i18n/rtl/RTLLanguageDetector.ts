@@ -1,7 +1,7 @@
 import { getErrorHandler  } from '../../../utils/ErrorHandler.js';
 
 // インターフェース定義
-interface RTLLanguageInfo { name: string,
+interface RTLLanguageInfo { name: string;
     script: string;
     direction: 'rtl' | 'ltr';
     family: string;
@@ -18,7 +18,7 @@ interface BidiControlCharacters { LRM: string,  // Left-to-Right Mark
     FSI: string,  // First Strong Isolate
    , PDI: string,  // Pop Directional Isolate }
 
-interface RTLSettings { fontFamily: string,
+interface RTLSettings { fontFamily: string;
     fontSize: string;
     lineHeight: string;
     textAlign: string;
@@ -30,40 +30,42 @@ interface TextDirectionResult { ''
     direction: 'rtl' | 'ltr';
     confidence: number;
     details: {
-        rtlChar,s: number,
-        ltrChars: number,
-    neutralChars: number,
+        rtlChar,s: number;
+        ltrChars: number;
+    neutralChars: number;
         rtlRatio?: number;
 
-interface BidiTextSegment { text: string,
+interface BidiTextSegment { text: string;
 
     language?: string;
     direction?: 'rtl' | 'ltr' }
 
-interface BidiTextResult { text: string,
+interface BidiTextResult { text: string;
     hasRTL: boolean;
 
 interface RTLCSSOptions { includeLayout?: boolean,
     includeTypography?: boolean;
     includeSpacing?: boolean;
-    customProperties?: { [key: string]: string,
+    customProperties?: { [key: string]: string;
 
-interface RTLCSSResult { css: string,
+interface RTLCSSResult { css: string;
     isRTL: boolean;
     language?: string;
     settings?: RTLSettings;
 
-interface RTLLanguageData { code: string,
+interface RTLLanguageData { code: string;
     name: string;
     script: string;
     direction: 'rtl' | 'ltr';
     family: string;
-
-interface RTLStats { supportedRTLLanguages: number,
+    family: string;
+        };
+interface RTLStats { supportedRTLLanguages: number;
     rtlCharacterRanges: number;
     bidiControlChars: number;
     languageFamilies: string[];
-
+    languageFamilies: string[];
+        };
 /**
  * RTL言語検出システム - Right-to-Left言語の識別と方向制御
  */
@@ -146,9 +148,9 @@ export class RTLLanguageDetector {
         this.rtlSettings = new Map([''
             ['ar', { ''
                 fontFamily: 'Arial, "Arabic UI", "Tahoma", sans-serif';
-                fontSize: '1.1em',
-                lineHeight: '1.6',
-                textAlign: 'right',
+                fontSize: '1.1em';
+                lineHeight: '1.6';
+                textAlign: 'right';
                 wordSpacing: '0.1em',]';'
                 letterSpacing: 'normal'
             }]'
@@ -196,8 +198,7 @@ export class RTLLanguageDetector {
         
         for(let, i = 0, i < text.length, i++) {
         
-            const charCode = text.charCodeAt(i),
-            
+            const charCode = text.charCodeAt(i);
             for (const [start, end] of this.rtlCharacterRanges) {
                 if (charCode >= start && charCode <= end) {
     
@@ -223,8 +224,7 @@ export class RTLLanguageDetector {
         
         for(let, i = 0; i < text.length; i++) {
         
-            const charCode = text.charCodeAt(i),
-            
+            const charCode = text.charCodeAt(i);
             // RTL文字チェック
             if (this.isRTLCharacter(charCode) {
     
@@ -255,9 +255,10 @@ export class RTLLanguageDetector {
             details: {
                 rtlChars: rtlCharCount,
                 ltrChars: ltrCharCount,
-    neutralChars: neutralCharCount,;
+    neutralChars: neutralCharCount,
                 rtlRatio: rtlRatio,
-    
+                rtlRatio: rtlRatio,
+        };
     /**
      * 複数言語混在テキストの方向制御
      */'
@@ -323,15 +324,15 @@ export class RTLLanguageDetector {
 
             }''
             if(settings.letterSpacing !== 'normal' { }
-                css.push(`letter-spacing: ${settings.letterSpacing};`});
+                css.push(`letter-spacing: ${settings.letterSpacing};`};
             }
         }
         ';'
         // 間隔設定
         if (includeSpacing) {
 
-            css.push('margin-right: 0,'),
-            css.push('margin-left: auto,'),
+            css.push('margin-right: 0,');
+            css.push('margin-left: auto,');
             css.push('padding-right: inherit,') }
 
             css.push('padding-left: 0,'; }'
@@ -343,9 +344,9 @@ export class RTLLanguageDetector {
         ';'
 
         return { ''
-            css: css.join(', '),
+            css: css.join(', ');
             isRTL: true,
-    language: language,;
+    language: language,
             settings: settings,
     
     /**
@@ -360,12 +361,12 @@ export class RTLLanguageDetector {
         ';'
 
         try {'
-            const rtlCSS = this.generateRTLCSS(language, options),
+            const rtlCSS = this.generateRTLCSS(language, options);
             ','
             // CSS プロパティを適用
             element.style.direction = 'rtl',
             element.style.textAlign = 'right',
-            element.setAttribute('dir', 'rtl'),
+            element.setAttribute('dir', 'rtl');
             element.setAttribute('lang', language','
             ','
             // 追加のスタイル適用
@@ -377,7 +378,7 @@ export class RTLLanguageDetector {
             ';'
             // RTLクラスを追加
             element.classList.add('rtl-content');
-            element.classList.add(`rtl-${language.split('-'})[0]}`;
+            element.classList.add(`rtl-${language.split('-'}[0]}`;
             
             return true;
             ';'
@@ -402,7 +403,7 @@ export class RTLLanguageDetector {
         // 入力イベントリスナー
         const handleInput = (event: Event): void => {  const target = event.target as HTMLInputElement | HTMLTextAreaElement,
             const text = target.value,
-            const direction = this.detectTextDirection(text),
+            const direction = this.detectTextDirection(text);
             // 動的方向調整
             if (direction.confidence > 0.7) {
     
@@ -458,7 +459,7 @@ export class RTLLanguageDetector {
     /**
      * RTL言語情報を取得
      */
-    getRTLLanguageInfo(language: string): RTLLanguageInfo | null { const info = this.rtlLanguages.get(language),
+    getRTLLanguageInfo(language: string): RTLLanguageInfo | null { const info = this.rtlLanguages.get(language);
         if(info) return info,
         ','
         // 主要言語コードで再検索
@@ -474,7 +475,7 @@ export class RTLLanguageDetector {
             script: info.script,
             direction: info.direction,
     family: info.family  }
-        });
+        };
     }
     
     /**

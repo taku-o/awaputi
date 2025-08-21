@@ -26,7 +26,7 @@ test.describe('Visual Effects Regression Tests', () => {
         test('main menu should match visual baseline', async ({ page }') => {  // メインメニューのスクリーンショット''
             await expect(page.toHaveScreenshot('main-menu-baseline.png', {
                 fullPage: true) 
-            })'
+            }'
                 threshold: 0.2),' };'
             }');'
         }''
@@ -34,12 +34,12 @@ test.describe('Visual Effects Regression Tests', () => {
             await page.click('text=ゲーム開始'); }
             await page.waitForTimeout(1000};', ')';'
             await expect(page.toHaveScreenshot('stage-select-baseline.png', { fullPage: true)
-                threshold: 0.2) };
-            });'
+                threshold: 0.2) },
+            };'
         }'}');
     test.describe('Game Scene Visual Consistency', (') => { }'
         test('game scene initial state should match baseline', async ({ page }') => {  ''
-            await page.click('text=ゲーム開始'),
+            await page.click('text=ゲーム開始');
             await page.waitForTimeout(500'),' }'
             await page.click('text=ちょっとだけ (1分')'); }'
             await page.waitForTimeout(1500};)', ')';'
@@ -48,12 +48,12 @@ test.describe('Visual Effects Regression Tests', () => {
                 threshold: 0.3)') }'
         }''
         test('bubble effects should have consistent appearance', async ({ page )') => { ','
-            await page.click('text=ゲーム開始'),
+            await page.click('text=ゲーム開始');
             await page.waitForTimeout(500'),'
             await page.click('text=ちょっとだけ (1分')'),'
             await page.waitForTimeout(1500'),'
             // デバッグインターフェースを使用してエフェクトを発動''
-            await page.keyboard.press('Control+Shift+E'),
+            await page.keyboard.press('Control+Shift+E');
             await page.waitForTimeout(300'),'
             // 通常の泡エフェクト''
             await page.selectOption('#preview-effect-type', 'bubble-normal'),' }'
@@ -63,11 +63,11 @@ test.describe('Visual Effects Regression Tests', () => {
                 threshold: 0.4)') }'
         }''
         test('rainbow bubble effects should have consistent appearance', async ({ page )') => { ','
-            await page.click('text=ゲーム開始'),
+            await page.click('text=ゲーム開始');
             await page.waitForTimeout(500'),'
             await page.click('text=ちょっとだけ (1分')'),'
             await page.waitForTimeout(1500'),'
-            await page.keyboard.press('Control+Shift+E'),
+            await page.keyboard.press('Control+Shift+E');
             await page.waitForTimeout(300'),'
             // レインボー泡エフェクト''
             await page.selectOption('#preview-effect-type', 'bubble-rainbow'),' }'
@@ -77,27 +77,27 @@ test.describe('Visual Effects Regression Tests', () => {
                 threshold: 0.4)') }'
         }''
         test('electric bubble effects should have consistent appearance', async ({ page )') => { ','
-            await page.click('text=ゲーム開始'),
+            await page.click('text=ゲーム開始');
             await page.waitForTimeout(500'),'
             await page.click('text=ちょっとだけ (1分')'),'
             await page.waitForTimeout(1500'),'
-            await page.keyboard.press('Control+Shift+E'),
+            await page.keyboard.press('Control+Shift+E');
             await page.waitForTimeout(300'),'
             // エレクトリック泡エフェクト''
             await page.selectOption('#preview-effect-type', 'bubble-electric'),' }'
             await page.click('#trigger-preview'); }'
             await page.waitForTimeout(200}');', ');'
             await expect(page.locator('#gameCanvas')').toHaveScreenshot('bubble-electric-effect.png', {'
-                threshold: 0.4) })'
+                threshold: 0.4) }'
         }';'
     }');'
     test.describe('Combo Effects Visual Consistency', (') => { }'
         test('basic combo effects should match baseline', async ({ page }') => {  ''
-            await page.click('text=ゲーム開始'),
+            await page.click('text=ゲーム開始');
             await page.waitForTimeout(500'),'
             await page.click('text=ちょっとだけ (1分')'),'
             await page.waitForTimeout(1500'),'
-            await page.keyboard.press('Control+Shift+E'),
+            await page.keyboard.press('Control+Shift+E');
             await page.waitForTimeout(300'),'
             // 基本コンボエフェクト''
             await page.selectOption('#preview-effect-type', 'combo-basic'),' }'
@@ -107,11 +107,11 @@ test.describe('Visual Effects Regression Tests', () => {
                 threshold: 0.4)') }'
         }''
         test('enhanced combo effects should match baseline', async ({ page )') => { ','
-            await page.click('text=ゲーム開始'),
+            await page.click('text=ゲーム開始');
             await page.waitForTimeout(500'),'
             await page.click('text=ちょっとだけ (1分')'),'
             await page.waitForTimeout(1500'),'
-            await page.keyboard.press('Control+Shift+E'),
+            await page.keyboard.press('Control+Shift+E');
             await page.waitForTimeout(300'),'
             // 強化コンボエフェクト''
             await page.selectOption('#preview-effect-type', 'combo-enhanced'),' }'
@@ -121,46 +121,46 @@ test.describe('Visual Effects Regression Tests', () => {
                 threshold: 0.4)') }'
         }''
         test('spectacular combo effects should match baseline', async ({ page )') => { ','
-            await page.click('text=ゲーム開始'),
+            await page.click('text=ゲーム開始');
             await page.waitForTimeout(500'),'
             await page.click('text=ちょっとだけ (1分')'),'
             await page.waitForTimeout(1500'),'
-            await page.keyboard.press('Control+Shift+E'),
+            await page.keyboard.press('Control+Shift+E');
             await page.waitForTimeout(300'),'
             // 派手なコンボエフェクト''
             await page.selectOption('#preview-effect-type', 'combo-spectacular'),' }'
             await page.click('#trigger-preview'); }'
             await page.waitForTimeout(400}; // さらに長い待機')', ');'
             await expect(page.locator('#gameCanvas')').toHaveScreenshot('combo-spectacular-effect.png', {'
-                threshold: 0.5 // より高い閾値) })'
+                threshold: 0.5 // より高い閾値) }'
         }';'
     }');'
     test.describe('Screen Effects Visual Consistency', (') => { }'
         test('screen flash effect should match baseline', async ({ page }') => {  ''
-            await page.click('text=ゲーム開始'),
+            await page.click('text=ゲーム開始');
             await page.waitForTimeout(500'),'
             await page.click('text=ちょっとだけ (1分')'),'
             await page.waitForTimeout(1500'),'
-            await page.keyboard.press('Control+Shift+E'),
+            await page.keyboard.press('Control+Shift+E');
             await page.waitForTimeout(300'),'
             // スクリーンフラッシュエフェクト''
             await page.selectOption('#preview-effect-type', 'screen-flash'),' }'
             await page.click('#trigger-preview'); }'
             await page.waitForTimeout(100}; // フラッシュの瞬間をキャプチャ')', ');'
             await expect(page.locator('#gameCanvas')').toHaveScreenshot('screen-flash-effect.png', {'
-                threshold: 0.6 // フラッシュは変動が大きいため高い閾値) })'
+                threshold: 0.6 // フラッシュは変動が大きいため高い閾値) }'
         }';'
     }');'
     test.describe('Quality Level Visual Consistency', (') => { }'
         test('low quality effects should match baseline', async ({ page }') => {  ''
-            await page.click('text=ゲーム開始'),
+            await page.click('text=ゲーム開始');
             await page.waitForTimeout(500'),'
             await page.click('text=ちょっとだけ (1分')'),'
             await page.waitForTimeout(1500'),'
-            await page.keyboard.press('Control+Shift+E'),
+            await page.keyboard.press('Control+Shift+E');
             await page.waitForTimeout(300'),'
             // 低品質設定''
-            await page.selectOption('#quality-select', 'low'),
+            await page.selectOption('#quality-select', 'low');
             await page.waitForTimeout(500'),'
             await page.selectOption('#preview-effect-type', 'bubble-normal'),' }'
             await page.click('#trigger-preview'); }'
@@ -169,14 +169,14 @@ test.describe('Visual Effects Regression Tests', () => {
                 threshold: 0.3)') }'
         }''
         test('high quality effects should match baseline', async ({ page )') => { ','
-            await page.click('text=ゲーム開始'),
+            await page.click('text=ゲーム開始');
             await page.waitForTimeout(500'),'
             await page.click('text=ちょっとだけ (1分')'),'
             await page.waitForTimeout(1500'),'
-            await page.keyboard.press('Control+Shift+E'),
+            await page.keyboard.press('Control+Shift+E');
             await page.waitForTimeout(300'),'
             // 高品質設定''
-            await page.selectOption('#quality-select', 'high'),
+            await page.selectOption('#quality-select', 'high');
             await page.waitForTimeout(500'),'
             await page.selectOption('#preview-effect-type', 'bubble-normal'),' }'
             await page.click('#trigger-preview'); }'
@@ -185,24 +185,24 @@ test.describe('Visual Effects Regression Tests', () => {
                 threshold: 0.3)') }'
         }''
         test('ultra quality effects should match baseline', async ({ page )') => { ','
-            await page.click('text=ゲーム開始'),
+            await page.click('text=ゲーム開始');
             await page.waitForTimeout(500'),'
             await page.click('text=ちょっとだけ (1分')'),'
             await page.waitForTimeout(1500'),'
-            await page.keyboard.press('Control+Shift+E'),
+            await page.keyboard.press('Control+Shift+E');
             await page.waitForTimeout(300'),'
             // 最高品質設定''
-            await page.selectOption('#quality-select', 'ultra'),
+            await page.selectOption('#quality-select', 'ultra');
             await page.waitForTimeout(500'),'
             await page.selectOption('#preview-effect-type', 'bubble-normal'),' }'
             await page.click('#trigger-preview'); }'
             await page.waitForTimeout(200}');', ');'
             await expect(page.locator('#gameCanvas')').toHaveScreenshot('effects-quality-ultra.png', {'
-                threshold: 0.3) })'
+                threshold: 0.3) }'
         }';'
     }');'
     test.describe('Mobile Visual Consistency', (') => { }'
-        test('mobile layout should match baseline', async ({ page }) => { }'
+        test('mobile layout should match baseline', async ({ page } => { }'
             await page.setViewportSize({ width: 375, height: 812 }');'
             await page.goto('http: //localhost:8000'),';'
             await page.waitForTimeout(2000');'
@@ -219,7 +219,7 @@ test.describe('Visual Effects Regression Tests', () => {
             await page.click('text=ちょっとだけ (1分')');'
             await page.waitForTimeout(1500');'
             await expect(page.locator('#gameCanvas')').toHaveScreenshot('mobile-game-scene.png', {'
-                threshold: 0.3) })'
+                threshold: 0.3) }'
         }';'
     }');'
     test.describe('Accessibility Visual Consistency', (') => { }'
@@ -229,7 +229,7 @@ test.describe('Visual Effects Regression Tests', () => {
             await page.waitForTimeout(2000);
             // 高コントラストスタイルを適用
             await page.addStyleTag({ )
-                content: `) };
+                content: `) },
                     body { filter: contrast(150%) brightness(120%}; }
                     canvas { border: 2px solid #ffffff }'
                 `)';'
@@ -248,7 +248,7 @@ test.describe('Visual Effects Regression Tests', () => {
             }');'
         }''
         test('debug interface with metrics should match baseline', async ({ page )') => { ''
-            await page.click('text=ゲーム開始'),
+            await page.click('text=ゲーム開始');
             await page.waitForTimeout(500'),'
             await page.click('text=ちょっとだけ (1分')'),'
             await page.waitForTimeout(1500'),' }'
@@ -256,7 +256,7 @@ test.describe('Visual Effects Regression Tests', () => {
             await page.waitForTimeout(1000}; // メトリクスが更新されるまで待機)', ')';'
             // メトリクス付きデバッグパネル');'
             await expect(page.locator('#effect-debug-panel')').toHaveScreenshot('debug-interface-with-metrics.png', {'
-                threshold: 0.3 // メトリクス値は変動するため高い閾値) })'
+                threshold: 0.3 // メトリクス値は変動するため高い閾値) }'
         }';'
     }');'
 }'

@@ -9,7 +9,7 @@ declare namespace jest { interface Matchers<R> {
         toMatchSnapshot(propertyMatchers?: any, hint?: string): R,
         toMatchInlineSnapshot(propertyMatchers?: any, snapshot?: string): R;
     
-    interface Expect { <T = any>(actual: T): Matchers<T>,
+    interface Expect { <T = any>(actual: T): Matchers<T>;
         any(classType: any): any;
         anything(): any;
         arrayContaining(array: any[]): any;
@@ -20,14 +20,14 @@ declare namespace jest { interface Matchers<R> {
         stringContaining(string: string): any;
         stringMatching(regexp: string | RegExp): any;
     
-    interface InverseAsymmetricMatchers { arrayContaining(array: any[]): any,
+    interface InverseAsymmetricMatchers { arrayContaining(array: any[]): any;
         objectContaining(object: any): any;
         stringContaining(string: string): any;
         stringMatching(regexp: string | RegExp): any;
 }
 
 // モック関数の型
-export interface MockedFunction<T extends (...args: any[]) => any> extends jest.MockedFunction<T> { mockName(name: string): this,
+export interface MockedFunction<T extends (...args: any[]) => any> extends jest.MockedFunction<T> { mockName(name: string): this;
     getMockName(): string;
 
 // テスト用のCanvasコンテキストモック
@@ -50,7 +50,7 @@ export interface TestFixture<T> { setup(): Promise<T> | T,
     reset(): Promise<void> | void }
 
 // 共通のテストデータ型
-export interface TestData { validData: any,
+export interface TestData { validData: any;
     invalidData: any;
     edgeCases: any[];
    , mockResponses: any[];
@@ -63,7 +63,7 @@ export interface AsyncTestUtils { waitFor(condition: () => boolean, timeout?: nu
 }
 
 // パフォーマンステスト用の型
-export interface PerformanceTestResult { name: string,
+export interface PerformanceTestResult { name: string;
     duration: number;
     memoryUsage?: number;
     operations?: number;
@@ -80,15 +80,15 @@ export interface SnapshotTestOptions { name?: string,
     hint?: string;
 
 // エラーテスト用の型
-export interface ErrorTestCase { name: string,
+export interface ErrorTestCase { name: string;
     input: any;
    , expectedError: string | RegExp | Error;
     expectedErrorType?: any;
 
 // モックストレージ実装
 export interface MockStorage extends Storage { __clear(): void;
-    __getStore(): { [key: string]: string,
-    __setStore(store: { [key: string]: string ): void,
+    __getStore(): { [key: string]: string;
+    __setStore(store: { [key: string]: string ): void;
 
 // タイマーモック
 export interface MockTimers { useFakeTimers(): void,
@@ -108,12 +108,12 @@ export interface EventTestUtils { simulateClick(element: Element, options?: Mous
 
 // デバッグユーティリティ
 export interface DebugUtils { logTestState(state: any): void;
-    captureConsoleOutput(): { logs: string[], errors: string[],, warnings: string[],
+    captureConsoleOutput(): { logs: string[], errors: string[],, warnings: string[];
     suppressConsoleOutput(): () => void;
-    measureExecutionTime<T>(fn: () => T): { result: T,, time: number,
+    measureExecutionTime<T>(fn: () => T): { result: T,, time: number;
 
 // テストデータビルダー
-export interface TestDataBuilder<T> { with(key: keyof T, value: any): this,
+export interface TestDataBuilder<T> { with(key: keyof T, value: any): this;
     withDefaults(): this;
     withInvalid(key: keyof, T): this;
     build(): T;

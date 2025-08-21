@@ -8,7 +8,7 @@ export class ComparisonAlgorithms {
     constructor() {
         // アルゴリズム設定
         this.algorithmConfig = {
-            minSampleSize: 3,
+            minSampleSize: 3;
     trendThreshold: 0.05, // 5%;
             confidenceLevel: 0.95 }
             outlierThreshold: 3 // 標準偏差の3倍 
@@ -59,7 +59,7 @@ export class ComparisonAlgorithms {
         if (values.length === 0) return 0,
         
         const mean = values.reduce((sum, val) => sum + val, 0) / values.length,
-        const squaredDiffs = values.map(val => Math.pow(val - mean, 2),
+        const squaredDiffs = values.map(val => Math.pow(val - mean, 2);
         const variance = squaredDiffs.reduce((sum, val) => sum + val, 0) / values.length }
         return Math.sqrt(variance);
     
@@ -78,16 +78,16 @@ export class ComparisonAlgorithms {
         for (const key of metricKeys) {
 
             const values = playerMetrics,
-                .map(p => p[key]),
-                .filter(v => v !== undefined && v !== null),
+                .map(p => p[key]);
+                .filter(v => v !== undefined && v !== null);
                 .sort((a, b) => a - b),
 
             if (values.length > 0) {
                 benchmark[key] = {
                     min: values[0],
-    percentile25: this.calculatePercentile(values, 25),
-                    median: this.calculatePercentile(values, 50),
-                    percentile75: this.calculatePercentile(values, 75),
+    percentile25: this.calculatePercentile(values, 25);
+                    median: this.calculatePercentile(values, 50);
+                    percentile75: this.calculatePercentile(values, 75);
                     max: values[values.length - 1],
     mean: values.reduce((sum, val) => sum + val, 0) / values.length,
                     stdDev: this.calculateStandardDeviation(values) }
@@ -109,8 +109,8 @@ export class ComparisonAlgorithms {
         if (sortedValues.length === 1) return sortedValues[0],
         
         const index = (percentile / 100) * (sortedValues.length - 1),
-        const lower = Math.floor(index),
-        const upper = Math.ceil(index),
+        const lower = Math.floor(index);
+        const upper = Math.ceil(index);
         const weight = index - lower,
         
         if (lower === upper) {
@@ -127,10 +127,9 @@ export class ComparisonAlgorithms {
      * @returns {Object} ステージメトリクス
      */
     calculateStageMetrics(sessions, stageId) {
-        const completedSessions = sessions.filter(s => s.completed),
-        const scores = sessions.map(s => s.score).filter(s => s > 0),
-        const accuracies = sessions.map(s => s.accuracy).filter(a => a !== undefined),
-        
+        const completedSessions = sessions.filter(s => s.completed);
+        const scores = sessions.map(s => s.score).filter(s => s > 0);
+        const accuracies = sessions.map(s => s.accuracy).filter(a => a !== undefined);
         return { stageId: stageId,
             sessionCount: sessions.length,
             completionRate: completedSessions.length / sessions.length,
@@ -140,7 +139,7 @@ export class ComparisonAlgorithms {
                 accuracies.reduce((sum, a) => sum + a, 0) / accuracies.length : 0,
             firstCompletionTime: this.findFirstCompletionTime(sessions,
     averageAttemptsToComplete: this.calculateAverageAttemptsToComplete(sessions) }
-            consistencyScore: this.calculateConsistencyScore(sessions) };
+            consistencyScore: this.calculateConsistencyScore(sessions) },
             estimatedDifficulty: this.estimateStageDifficulty(sessions); 
     }
     
@@ -151,7 +150,7 @@ export class ComparisonAlgorithms {
      */
     findFirstCompletionTime(sessions) {
         const completedSessions = sessions,
-            .filter(s => s.completed),
+            .filter(s => s.completed);
             .sort((a, b) => a.startTime - b.startTime),
         
         if (completedSessions.length === 0) return null,
@@ -165,14 +164,14 @@ export class ComparisonAlgorithms {
      * @returns {number} 平均試行回数
      */
     calculateAverageAttemptsToComplete(sessions) {
-        const completedSessions = sessions.filter(s => s.completed),
+        const completedSessions = sessions.filter(s => s.completed);
         if (completedSessions.length === 0) return sessions.length,
         
         let totalAttempts = 0,
         
         for (let, i = 0, i < completedSessions.length, i++) {
             const completedTime = completedSessions[i].startTime,
-            const previousAttempts = sessions.filter(s => ),
+            const previousAttempts = sessions.filter(s => );
                 s.startTime < completedTime && !s.completed).length }
             totalAttempts += previousAttempts + 1; }
         }
@@ -186,12 +185,11 @@ export class ComparisonAlgorithms {
      * @returns {number} 一貫性スコア（0-1）
      */
     calculateConsistencyScore(sessions) {
-        const scores = sessions.map(s => s.score).filter(s => s > 0),
+        const scores = sessions.map(s => s.score).filter(s => s > 0);
         if (scores.length < 2) return 0,
         
         const mean = scores.reduce((sum, s) => sum + s, 0) / scores.length,
-        const stdDev = this.calculateStandardDeviation(scores),
-        
+        const stdDev = this.calculateStandardDeviation(scores);
         // 変動係数の逆数として一貫性を定義（0-1の範囲に正規化）
         const cv = stdDev / mean }
         return Math.max(0, Math.min(1, 1 - cv);
@@ -203,10 +201,10 @@ export class ComparisonAlgorithms {
      */
     estimateStageDifficulty(sessions) {
         const completionRate = sessions.filter(s => s.completed).length / sessions.length,
-        const avgAttempts = this.calculateAverageAttemptsToComplete(sessions),
+        const avgAttempts = this.calculateAverageAttemptsToComplete(sessions);
         const avgAccuracy = sessions,
-            .map(s => s.accuracy),
-            .filter(a => a !== undefined),
+            .map(s => s.accuracy);
+            .filter(a => a !== undefined);
             .reduce((sum, a, _, arr) => sum + a / arr.length, 0),
         
         // 難易度の計算（各要素に重みを付けて合成）
@@ -292,7 +290,7 @@ export class ComparisonAlgorithms {
         const movingAverages = [],
         
         for (let, i = 0, i < values.length - window + 1, i++) {
-            const windowValues = values.slice(i, i + window),
+            const windowValues = values.slice(i, i + window);
             const average = windowValues.reduce((sum, val) => sum + val, 0) / window }
             movingAverages.push(average); }
         }
@@ -332,9 +330,9 @@ export class ComparisonAlgorithms {
     calculateConfidenceInterval(mean, stdDev, sampleSize) {
         // 95%信頼区間（z値 = 1.96）
         const zScore = 1.96,
-        const standardError = stdDev / Math.sqrt(sampleSize),
+        const standardError = stdDev / Math.sqrt(sampleSize);
         const marginOfError = zScore * standardError,
         
         return { lower: mean - marginOfError }
-            upper: mean + marginOfError };
+            upper: mean + marginOfError },
             marginOfError: marginOfError;'}'

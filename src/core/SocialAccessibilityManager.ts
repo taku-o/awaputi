@@ -14,53 +14,53 @@ export class SocialAccessibilityManager {'
         this.config = {
             // WCAG 準拠設定
             wcag: {''
-                level: 'AA'; // A, AA, AAA;
+                level: 'AA', // A, AA, AAA;
                 colorContrast: {
                     normal: 4.5 }
                     large: 3.0 
     };
                 focusIndicator: { ''
-                    width: '3px',
+                    width: '3px';
                     color: '#005fcc'
             }
             };
             // スクリーンリーダー設定
-            screenReader: { enabled: true,
-                announcements: true,
-    verbose: false,
+            screenReader: { enabled: true;
+                announcements: true;
+    verbose: false;
                 language: 'ja'
             };
             // キーボードナビゲーション設定
             keyboard: { enabled: true,''
-                tabSequence: 'logical',
-                shortcuts: true,
-    focusTrapping: true,;
+                tabSequence: 'logical';
+                shortcuts: true;
+    focusTrapping: true;
             // 高コントラスト設定
             highContrast: { enabled: false,''
-                backgroundColor: '#000000',
-                textColor: '#ffffff',
+                backgroundColor: '#000000';
+                textColor: '#ffffff';
                 borderColor: '#ffffff'
             };
             // 動きの軽減設定
-            reducedMotion: { enabled: false,
-                animations: false,
-    transitions: false,;
+            reducedMotion: { enabled: false;
+                animations: false;
+    transitions: false;
         // 状態管理
-        this.state = { enabled: true,
-            currentFocus: null,
-            focusHistory: [],
-            announcements: [],
-    screenReaderActive: false,;
+        this.state = { enabled: true;
+            currentFocus: null;
+            focusHistory: [];
+            announcements: [];
+    screenReaderActive: false;
         // DOM要素管理
-        this.elements = { announcer: null,
-            skipLinks: null,
-            focusIndicator: null,
-    contrastOverlay: null,;
+        this.elements = { announcer: null;
+            skipLinks: null;
+            focusIndicator: null;
+    contrastOverlay: null;
         // イベントハンドラー
-        this.handlers = { keydown: this.handleKeydown.bind(this,
-            focus: this.handleFocus.bind(this),
-            blur: this.handleBlur.bind(this,
-    preferredColorSchemeChange: this.handlePreferredColorSchemeChange.bind(this,
+        this.handlers = { keydown: this.handleKeydown.bind(this;
+            focus: this.handleFocus.bind(this);
+            blur: this.handleBlur.bind(this;
+    preferredColorSchemeChange: this.handlePreferredColorSchemeChange.bind(this;
             preferredReducedMotionChange: this.handlePreferredReducedMotionChange.bind(this  };
         
         // ショートカットキー定義
@@ -72,11 +72,11 @@ export class SocialAccessibilityManager {'
             'Escape': 'closeCurrentDialog' };
         
         // 統計
-        this.stats = { focusChanges: 0,
-            announcements: 0,
+        this.stats = { focusChanges: 0;
+            announcements: 0;
     keyboardInteractions: 0 }
             shortcutUses: {};
-            accessibilityViolations: 0,
+            accessibilityViolations: 0;
         },
         
         this.initialize();
@@ -88,19 +88,15 @@ export class SocialAccessibilityManager {'
     initialize() {
         try {
             // ユーザー設定の検出
-            this.detectUserPreferences(),
-            
+            this.detectUserPreferences();
             // DOM要素の作成
-            this.createAccessibilityElements(),
-            
+            this.createAccessibilityElements();
             // イベントリスナーの設定
-            this.setupEventListeners(),
-            
+            this.setupEventListeners();
             // スクリーンリーダー検出
-            this.detectScreenReader(),
-            
+            this.detectScreenReader();
             // 初期設定の適用
-            this.applyInitialSettings(),
+            this.applyInitialSettings();
             // ARIA Live Regionsの設定
             this.setupLiveRegions()','
             this.log('SocialAccessibilityManager初期化完了' }
@@ -145,9 +141,9 @@ export class SocialAccessibilityManager {'
         this.elements.announcer.setAttribute('aria-atomic', 'true');
         this.elements.announcer.className = 'sr-only';
         this.elements.announcer.style.cssText = `;
-            position: absolute !important;
-            left: -10000px !important;
-            width: 1px !important;
+            position: absolute !important,
+            left: -10000px !important,
+            width: 1px !important,
             height: 1px !important,
     overflow: hidden !important,
             clip: rect(1px, 1px, 1px, 1px) !important,
@@ -191,11 +187,11 @@ export class SocialAccessibilityManager {'
             .share-button-main:focus,
             .share-button-platform:focus,
             .share-dialog button:focus,
-            .leaderboard-entry: focus;
+            .leaderboard-entry: focus,
             .challenge-item:focus { }
-                outline: ${focusWidth} solid ${focusColor} !important;
+                outline: ${focusWidth} solid ${focusColor} !important,
                 outline-offset: 2px !important,
-                box-shadow: 0 0 0 ${focusWidth} ${focusColor} !important;
+                box-shadow: 0 0 0 ${focusWidth} ${focusColor} !important,
             }
             
             /* スキップリンクのスタイル */
@@ -228,9 +224,9 @@ export class SocialAccessibilityManager {'
             .high-contrast-mode .share-button-container,
             .high-contrast-mode .share-dialog,
             .high-contrast-mode .leaderboard-container {
-                background: ${this.config.highContrast.backgroundColor} !important;
-                color: ${this.config.highContrast.textColor} !important;
-                border: 2px solid ${this.config.highContrast.borderColor} !important;
+                background: ${this.config.highContrast.backgroundColor} !important,
+                color: ${this.config.highContrast.textColor} !important,
+                border: 2px solid ${this.config.highContrast.borderColor} !important,
             }
             
             /* 動きの軽減 */
@@ -281,7 +277,7 @@ export class SocialAccessibilityManager {'
                 // より詳細な検出ロジック)'; }'
         }
 
-        this.log('スクリーンリーダー検出', { active: this.state.screenReaderActive });
+        this.log('スクリーンリーダー検出', { active: this.state.screenReaderActive };
     }
     
     /**
@@ -310,15 +306,14 @@ export class SocialAccessibilityManager {'
 
         ')';
         liveRegions.forEach(region => {  '),'
-            const element = document.createElement('div'),
-
+            const element = document.createElement('div');
             element.id = region.id,
             element.setAttribute('aria-live', region.priority','
             element.setAttribute('aria-label', region.label','
             element.className = 'sr-only',
             element.style.cssText = this.elements.announcer.style.cssText }
             document.body.appendChild(element); }
-        });
+        };
     }
     
     /**
@@ -328,9 +323,9 @@ export class SocialAccessibilityManager {'
         this.stats.keyboardInteractions++,
         
         // ショートカットキーの処理
-        const shortcutKey = this.getShortcutKey(event),
+        const shortcutKey = this.getShortcutKey(event);
         if (shortcutKey && this.shortcuts[shortcutKey]) {
-            event.preventDefault(),
+            event.preventDefault();
             this.executeShortcut(this.shortcuts[shortcutKey]) }
             return; }
         }
@@ -363,7 +358,7 @@ export class SocialAccessibilityManager {'
 
         const key = event.key;' }'
 
-        return modifiers.length > 0 ? `${modifiers.join('+'})+${key}` : key;
+        return modifiers.length > 0 ? `${modifiers.join('+'}+${key}` : key;
     }
     
     /**
@@ -394,7 +389,7 @@ export class SocialAccessibilityManager {'
         this.state.focusHistory.push({)
             element: event.target }
             timestamp: Date.now(); 
-    });
+    };
         
         // フォーカス履歴の管理（最新100件まで）
         if (this.state.focusHistory.length > 100) { this.state.focusHistory.shift() }
@@ -428,7 +423,7 @@ export class SocialAccessibilityManager {'
         ';'
         // ダイアログの状態更新
         if(element.closest('.share-dialog)' { ''
-            const dialog = element.closest('.share-dialog'),
+            const dialog = element.closest('.share-dialog');
             if (dialog.style.display !== 'none') {', ' }
 
                 this.announce('共有ダイアログが開いています'); }
@@ -697,8 +692,7 @@ export class SocialAccessibilityManager {'
     handlePlatformButtonNavigation(event) {
 
         const buttons = Array.from(document.querySelectorAll('.share-button-platform),'
-        const currentIndex = buttons.indexOf(event.target),
-        
+        const currentIndex = buttons.indexOf(event.target);
         if (currentIndex === -1) return,
         ','
 
@@ -708,8 +702,8 @@ export class SocialAccessibilityManager {'
             case 'ArrowLeft':','
                 event.preventDefault('',
             case 'ArrowDown':','
-            case 'ArrowRight':),
-                event.preventDefault(),
+            case 'ArrowRight':);
+                event.preventDefault();
                 nextIndex = currentIndex === buttons.length - 1 ? 0 : currentIndex + 1,
                 break }
             default: return; 
@@ -724,8 +718,7 @@ export class SocialAccessibilityManager {'
     handleLeaderboardNavigation(event) {
 
         const entries = Array.from(document.querySelectorAll('.leaderboard-entry),'
-        const currentIndex = entries.indexOf(event.target),
-        
+        const currentIndex = entries.indexOf(event.target);
         if (currentIndex === -1) return,
         ','
 
@@ -734,7 +727,7 @@ export class SocialAccessibilityManager {'
             case 'ArrowUp':','
                 event.preventDefault()','
             case 'ArrowDown':),
-                event.preventDefault(),
+                event.preventDefault();
                 nextIndex = currentIndex === entries.length - 1 ? 0 : currentIndex + 1,
                 break }
             default: return; 
@@ -769,24 +762,23 @@ export class SocialAccessibilityManager {'
 
                     element,') }'
 
-                    message: `aria-labelledbyで参照されているID "${labelledby}" が存在しません`);
+                    message: `aria-labelledbyで参照されているID "${labelledby}" が存在しません`),
                 }";"
             }""
         }");"
         ";"
         // カラーコントラストの検証""
         const buttons = document.querySelectorAll('button);'
-        buttons.forEach(button => {  ),
-
-            const contrast = this.calculateColorContrast(button),
+        buttons.forEach(button => {  );
+            const contrast = this.calculateColorContrast(button);
             if (contrast < this.config.wcag.colorContrast.normal) {
                 violations.push({ }''
                     type: 'INSUFFICIENT_COLOR_CONTRAST') }
                     element: button) }
-                    message: `カラーコントラストが不十分です (${contrast.toFixed(2}):1)`
-                });
+                    message: `カラーコントラストが不十分です (${contrast.toFixed(2}:1)`
+                };
             }
-        });
+        };
         
         this.stats.accessibilityViolations = violations.length;
 
@@ -801,15 +793,14 @@ export class SocialAccessibilityManager {'
      * カラーコントラスト計算
      */
     calculateColorContrast(element) {
-        const styles = window.getComputedStyle(element),
+        const styles = window.getComputedStyle(element);
         const bgcolor = styles.backgroundColor,
         const color = styles.color,
         
         // 簡易的な計算（実際の実装ではより詳細な計算が必要）
-        const bgLuminance = this.calculateLuminance(bgcolor),
-        const fgLuminance = this.calculateLuminance(color),
-        
-        const lighter = Math.max(bgLuminance, fgLuminance),
+        const bgLuminance = this.calculateLuminance(bgcolor);
+        const fgLuminance = this.calculateLuminance(color);
+        const lighter = Math.max(bgLuminance, fgLuminance);
         const darker = Math.min(bgLuminance, fgLuminance) }
         return (lighter + 0.05) / (darker + 0.05);
     
@@ -818,15 +809,15 @@ export class SocialAccessibilityManager {'
      */
     calculateLuminance(color) {
         // RGB値の抽出と正規化
-        const rgb = color.match(/\d+/g),
+        const rgb = color.match(/\d+/g);
         if (!rgb || rgb.length < 3) return 0,
         
-        const [r, g, b] = rgb.map(val => { ),
+        const [r, g, b] = rgb.map(val => { );
             const normalized = parseInt(val) / 255,
             return normalized <= 0.03928  }
                 ? normalized / 12.92  }
                 : Math.pow((normalized + 0.055) / 1.055, 2.4); }
-        });
+        };
         
         return 0.2126 * r + 0.7152 * g + 0.0722 * b;
     }
@@ -842,7 +833,7 @@ export class SocialAccessibilityManager {'
             reducedMotionEnabled: this.config.reducedMotion.enabled,
     currentFocus: this.state.currentFocus?.tagName || null, : undefined
     
-            focusHistoryLength: this.state.focusHistory.length };
+            focusHistoryLength: this.state.focusHistory.length },
             announcementsCount: this.state.announcements.length 
     }
     
@@ -860,16 +851,15 @@ export class SocialAccessibilityManager {'
      * アクセシビリティレポートの生成
      */
     generateAccessibilityReport() {
-        const violations = this.validateAccessibility(),
-        
-        return { timestamp: new Date().toISOString(),
+        const violations = this.validateAccessibility();
+        return { timestamp: new Date().toISOString();
             wcagLevel: this.config.wcag.level,
-    stats: this.getStats(),
+    stats: this.getStats();
             violations,
             recommendations: this.generateRecommendations(violations,
     userPreferences: {
                 highContrast: this.config.highContrast.enabled }
-                reducedMotion: this.config.reducedMotion.enabled };
+                reducedMotion: this.config.reducedMotion.enabled },
                 screenReader: this.state.screenReaderActive 
     }
     
@@ -902,7 +892,7 @@ export class SocialAccessibilityManager {'
         document.removeEventListener('focusout', this.handlers.blur);
         
         // DOM要素の削除
-        Object.values(this.elements).forEach(element => {  ),
+        Object.values(this.elements).forEach(element => {  );
             if (element && element.parentNode) { }
                 element.parentNode.removeChild(element); }
             }'}');
@@ -918,7 +908,7 @@ export class SocialAccessibilityManager {'
             type,
             error: error.message || error,
             context }
-            timestamp: Date.now(); 
+            timestamp: Date.now(),
     };
 
         if (ErrorHandler) {', ' }

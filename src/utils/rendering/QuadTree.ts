@@ -6,12 +6,12 @@
  */
 
 // Type definitions
-interface Bounds { x: number,
+interface Bounds { x: number;
     y: number;
     width: number;
     height: number;
 
-interface QuadTreeObject { bounds: Bounds,
+interface QuadTreeObject { bounds: Bounds;
     [key: string]: any;
 
 export class QuadTree {
@@ -20,7 +20,7 @@ export class QuadTree {
     private maxLevels: number;
     private level: number;
     private objects: QuadTreeObject[];
-    private, nodes: QuadTree[],
+    private, nodes: QuadTree[];
     constructor(bounds: Bounds, maxObjects: number = 10, maxLevels: number = 5, level: number = 0) {
     
         this.bounds = bounds;
@@ -45,19 +45,22 @@ export class QuadTree {
             y: y),
             width: subWidth,
     height: subHeight), this.maxObjects, this.maxLevels, this.level + 1),
-        
+    height: subHeight), this.maxObjects, this.maxLevels, this.level + 1),
+        };
         this.nodes[1] = new QuadTree({
             x: x,
             y: y),
             width: subWidth,
     height: subHeight), this.maxObjects, this.maxLevels, this.level + 1),
-        
+    height: subHeight), this.maxObjects, this.maxLevels, this.level + 1),
+        };
         this.nodes[2] = new QuadTree({
             x: x,
             y: y + subHeight),
             width: subWidth,
     height: subHeight), this.maxObjects, this.maxLevels, this.level + 1),
-        
+    height: subHeight), this.maxObjects, this.maxLevels, this.level + 1),
+        };
         this.nodes[3] = new QuadTree({
             x: x + subWidth,
             y: y + subHeight),
@@ -86,8 +89,7 @@ export class QuadTree {
     }
     
     insert(object: QuadTreeObject): void { if (this.nodes.length > 0) {
-            const index = this.getIndex(object.bounds),
-            
+            const index = this.getIndex(object.bounds);
             if (index !== -1) {
             
                 this.nodes[index].insert(object) }
@@ -106,7 +108,7 @@ export class QuadTree {
             
             let i = 0;
             while(i < this.objects.length) {
-                const index = this.getIndex(this.objects[i].bounds),
+                const index = this.getIndex(this.objects[i].bounds);
                 if (index !== -1) {
             }
                     this.nodes[index].insert(this.objects.splice(i, 1)[0]); }
@@ -114,12 +116,10 @@ export class QuadTree {
 }
     }
     
-    retrieve(bounds: Bounds): QuadTreeObject[] { const returnObjects = this.objects.slice(),
-        
+    retrieve(bounds: Bounds): QuadTreeObject[] { const returnObjects = this.objects.slice();
         if (this.nodes.length > 0) {
         
-            const index = this.getIndex(bounds),
-            
+            const index = this.getIndex(bounds);
             if (index !== -1) {
     
 }

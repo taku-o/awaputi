@@ -16,17 +16,17 @@ export class StatisticsAnalyzer {
         this.analysisConfigs = {
             // デフォルト分析設定
             defaultTimeWindows: {
-                short: 7;    // 7日;
+                short: 7,    // 7日;
                 medium: 30,  // 30日
     }
                 long: 90     // 90日 
     };
             // 分析品質設定
-            qualityThresholds: { minDataPoints: 5,
-                confidenceThreshold: 0.6,
+            qualityThresholds: { minDataPoints: 5;
+                confidenceThreshold: 0.6;
     significanceLevel: 0.05 };
             // キャッシュ設定
-            cache: { enabled: true,
+            cache: { enabled: true;
     ttl: 300000, // 5分;
                 maxSize: 100  }
         };
@@ -54,7 +54,7 @@ export class StatisticsAnalyzer {
                 { CoreComparisonEngine }]'
                 { InsightGenerator }']'
             ] = await Promise.all([);
-                import('./CoreTrendAnalyzer.js'),
+                import('./CoreTrendAnalyzer.js');
                 import('./CoreComparisonEngine.js'),]';'
                 import('./InsightGenerator.js)];'
             ]);
@@ -69,13 +69,13 @@ export class StatisticsAnalyzer {
     /**
      * 包括的分析の実行'
      */''
-    async performComprehensiveAnalysis(options = {}) {
+    async performComprehensiveAnalysis(options = {} {
         const analysisOptions = { ...this.analysisConfigs, ...options,
         ','
         // キャッシュチェック
-        const cacheKey = this.generateCacheKey('comprehensive', analysisOptions),
+        const cacheKey = this.generateCacheKey('comprehensive', analysisOptions);
         if (this.analysisConfigs.cache.enabled && this.analysisCache.has(cacheKey) {
-            const cached = this.analysisCache.get(cacheKey),
+            const cached = this.analysisCache.get(cacheKey);
             if (Date.now() - cached.timestamp < this.analysisConfigs.cache.ttl) {
         }
                 return cached.result;
@@ -102,8 +102,7 @@ export class StatisticsAnalyzer {
         };
         
         try { // 1. 基本統計データの取得
-            analysisResult.basicStatistics = this.statisticsManager.getDetailedStatistics(),
-            
+            analysisResult.basicStatistics = this.statisticsManager.getDetailedStatistics();
             // 2. トレンド分析
             if (this.trendAnalyzer && analysisResult.basicStatistics.timeSeries.available) {
     
@@ -151,8 +150,7 @@ export class StatisticsAnalyzer {
         for (const category of categories) {
             try {
                 // 時系列データの取得
-                const timeSeriesData = this.statisticsManager.getTimeSeriesData('daily', category),
-                
+                const timeSeriesData = this.statisticsManager.getTimeSeriesData('daily', category);
                 if (timeSeriesData.length >= this.analysisConfigs.qualityThresholds.minDataPoints) {
                     // トレンド分析の実行
                     const trendAnalysis = this.trendAnalyzer.analyze(timeSeriesData, category, options) }
@@ -163,8 +161,8 @@ export class StatisticsAnalyzer {
     }
         
         return { categories: trendResults,
-            summary: this.summarizeTrendAnalysis(trendResults) };
-            recommendations: this.generateTrendRecommendations(trendResults); 
+            summary: this.summarizeTrendAnalysis(trendResults) },
+            recommendations: this.generateTrendRecommendations(trendResults),
     }
     
     /**
@@ -178,7 +176,7 @@ export class StatisticsAnalyzer {
         const comparisonResults = {};
         ';'
         try { // 期間比較（今週 vs 先週）
-            const thisWeekData = this.getWeeklyData('current'),
+            const thisWeekData = this.getWeeklyData('current');
             const lastWeekData = this.getWeeklyData('previous),'
 
             if (thisWeekData && lastWeekData) {
@@ -216,11 +214,11 @@ export class StatisticsAnalyzer {
                     options,' }'
 
             } catch (error) {
-            console.error('Comparison analysis failed:', error),
+            console.error('Comparison analysis failed:', error);
             comparisonResults.error = error.message }
         
         return { results: comparisonResults,
-            summary: this.summarizeComparisonAnalysis(comparisonResults) };
+            summary: this.summarizeComparisonAnalysis(comparisonResults) },
             significantChanges: this.identifySignificantChanges(comparisonResults); 
     }
     
@@ -232,11 +230,10 @@ export class StatisticsAnalyzer {
 
             return { error: 'InsightGenerator not available' }
         
-        try { const insights = this.insightGenerator.generate(statisticsData, options),
-            
+        try { const insights = this.insightGenerator.generate(statisticsData, options);
             // 追加的な洞察の生成
-            insights.contextualInsights = this.generateContextualInsights(statisticsData),
-            insights.predictiveInsights = this.generatePredictiveInsights(statisticsData),
+            insights.contextualInsights = this.generateContextualInsights(statisticsData);
+            insights.predictiveInsights = this.generatePredictiveInsights(statisticsData);
             ','
 
             return insights,' }'
@@ -254,7 +251,7 @@ export class StatisticsAnalyzer {
             keyFindings: this.extractKeyFindings(analysisResult),
             priorityAreas: this.identifyPriorityAreas(analysisResult,
     actionPlan: this.generateActionPlan(analysisResult) }
-            progressSummary: this.generateProgressSummary(analysisResult); 
+            progressSummary: this.generateProgressSummary(analysisResult),
     };
         
         return integrated;
@@ -272,14 +269,14 @@ export class StatisticsAnalyzer {
         
         // 精度スコア（30%）
         if (stats.bubbles && stats.bubbles.accuracy) {
-            const accuracy = parseFloat(stats.bubbles.accuracy),
+            const accuracy = parseFloat(stats.bubbles.accuracy);
             score += (accuracy / 100) * 30 }
             components++; }
         }
         
         // 効率スコア（25%）
         if (stats.bubbles && stats.bubbles.efficiencyStats) {
-            const efficiency = Math.min(stats.bubbles.efficiencyStats.bubblesPerMinute / 60, 1),
+            const efficiency = Math.min(stats.bubbles.efficiencyStats.bubblesPerMinute / 60, 1);
             score += efficiency * 25 }
             components++; }
         }
@@ -317,8 +314,8 @@ export class StatisticsAnalyzer {
                         category: category'),' }
 
                         finding: `${category}に強い${analysis.trends.overall.trendType.includes('improving'}' ? '改善' : '悪化'}トレンド`,''
-                        significance: 'high';
-                    }) }
+                        significance: 'high',
+                    } }
             }';'
         }
         ';'
@@ -326,8 +323,7 @@ export class StatisticsAnalyzer {
         if (analysisResult.insights && analysisResult.insights.insights) {
             const highPriorityInsights = analysisResult.insights.insights','
                 .filter(insight => insight.priority === 'high' || insight.priority === 'critical'','
-                .slice(0, 3),
-            
+                .slice(0, 3);
             highPriorityInsights.forEach(insight => { '
                 findings.push({''
                     type: 'insight,'
@@ -335,7 +331,7 @@ export class StatisticsAnalyzer {
          }
                     finding: insight.description) }
                     significance: insight.priority); 
-    });
+    };
         }
         
         return findings;
@@ -369,7 +365,7 @@ export class StatisticsAnalyzer {
 
                     currentValue: `${stats.basic.completionRate.toFixed(1'}'%`,''
                     targetValue: '70%+',
-                    impact: 'high';
+                    impact: 'high',
                 }'
             }
             ';'
@@ -400,28 +396,28 @@ export class StatisticsAnalyzer {
         const priorityAreas = this.identifyPriorityAreas(analysisResult);
         ';'
 
-        priorityAreas.forEach(area => {  ),
+        priorityAreas.forEach(area => {  );
             switch(area.area) {
 
                 case 'accuracy':','
-                    plan.immediate.push('慎重なクリックを心がける'),
-                    plan.shortTerm.push('精度重視の練習セッションを実施'),
-                    plan.longTerm.push('反応時間の改善トレーニング'),
+                    plan.immediate.push('慎重なクリックを心がける');
+                    plan.shortTerm.push('精度重視の練習セッションを実施');
+                    plan.longTerm.push('反応時間の改善トレーニング');
                     break,
 
                 case 'completion_rate':','
-                    plan.immediate.push('防御的な戦略を採用'),
-                    plan.shortTerm.push('HP管理の改善'),
-                    plan.longTerm.push('ステージ特性の理解向上'),
+                    plan.immediate.push('防御的な戦略を採用');
+                    plan.shortTerm.push('HP管理の改善');
+                    plan.longTerm.push('ステージ特性の理解向上');
                     break,
 
                 case 'combo_performance':','
-                    plan.immediate.push('コンボ継続を意識'),
+                    plan.immediate.push('コンボ継続を意識');
                     plan.shortTerm.push('コンボ練習モード活用') }
 
                     plan.longTerm.push('コンボ戦略の最適化'; }'
                     break; }
-});
+};
         
         return plan;
     }
@@ -438,7 +434,7 @@ export class StatisticsAnalyzer {
             totalPlayTime: stats.basic.totalPlayTime,
             currentLevel: this.calculatePlayerLevel(stats,
     achievements: stats.progress.achievementsUnlocked }
-            recentTrend: this.getRecentTrendSummary(analysisResult) };
+            recentTrend: this.getRecentTrendSummary(analysisResult) },
             nextMilestone: this.getNextMilestone(stats); 
     }
     
@@ -447,14 +443,14 @@ export class StatisticsAnalyzer {
      */
     getComponentsStatus() {
         return { trendAnalyzer: !!this.trendAnalyzer }
-            comparisonEngine: !!this.comparisonEngine };
+            comparisonEngine: !!this.comparisonEngine },
             insightGenerator: !!this.insightGenerator 
     }
     
     generateCacheKey(type, options) {
     
 }
-        return `${type}_${JSON.stringify(options})_${this.statisticsManager.statistics.totalGamesPlayed}`;
+        return `${type}_${JSON.stringify(options}_${this.statisticsManager.statistics.totalGamesPlayed}`;
     }
     
     cacheAnalysisResult(key, result) {
@@ -467,13 +463,13 @@ export class StatisticsAnalyzer {
         this.analysisCache.set(key, {
                 result: result,
     timestamp: Date.now( 
-            }));
+            });
     }
     
     generateAnalysisId() {
     
 }
-        return `analysis_${Date.now())_${Math.random().toString(36).substr(2, 9})`;
+        return `analysis_${Date.now())_${Math.random().toString(36).substr(2, 9}`;
     }
     
     assessDataQuality(analysisResult) {
@@ -494,11 +490,11 @@ export class StatisticsAnalyzer {
         }
         
         return { score: Math.max(0, qualityScore) };
-            issues: issues;
+            issues: issues,
     
     calculateAnalysisConfidence(analysisResult) {
     
-        const dataQuality = this.assessDataQuality(analysisResult),
+        const dataQuality = this.assessDataQuality(analysisResult);
         const componentsAvailable = Object.values(this.getComponentsStatus().filter(Boolean).length / 3 }
         return Math.min(dataQuality.score * 0.6 + componentsAvailable * 0.4, 1.0);
     ';'

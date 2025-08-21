@@ -27,21 +27,20 @@ export interface PrivacyManager { checkConsent(): boolean,
     anonymize?: boolean;
 
 export, class AnalyticsAPI {
-    private, storageManager: StorageManager,
-    private, privacyManager: PrivacyManager | null,
-    private, endpointManager: APIEndpointManager,
-    private, aggregationProcessor: DataAggregationProcessor,
-    private, exportHandler: DataExportHandler,
-    private, isInitialized: boolean),
+    private, storageManager: StorageManager;
+    private, privacyManager: PrivacyManager | null;
+    private, endpointManager: APIEndpointManager;
+    private, aggregationProcessor: DataAggregationProcessor;
+    private, exportHandler: DataExportHandler;
+    private, isInitialized: boolean);
     constructor(storageManager: StorageManager, privacyManager: PrivacyManager | null = null) {
         this.storageManager = storageManager;
         this.privacyManager = privacyManager;
         
         // 専門化されたコンポーネントを初期化
-        this.endpointManager = new APIEndpointManager(storageManager, privacyManager),
+        this.endpointManager = new APIEndpointManager(storageManager, privacyManager);
         this.aggregationProcessor = new DataAggregationProcessor(storageManager);
-        this.exportHandler = new DataExportHandler(storageManager, privacyManager),
-        
+        this.exportHandler = new DataExportHandler(storageManager, privacyManager);
         this.isInitialized = false }
         this.initialize(); }
     }
@@ -50,8 +49,7 @@ export, class AnalyticsAPI {
      * APIの初期化
      */
     private async initialize(): Promise<void> { try {'
-            await this.storageManager.healthCheck(),
-
+            await this.storageManager.healthCheck();
             console.log('AnalyticsAPI, initialized successfully'),' }'
 
         } catch (error) { console.error('Failed to initialize AnalyticsAPI:', error }
@@ -60,31 +58,31 @@ export, class AnalyticsAPI {
     /**
      * セッションデータの取得
      */'
-    async getSessions(options: AggregationOptions = {}): Promise<APIResponse> { ''
+    async getSessions(options: AggregationOptions = {}: Promise<APIResponse> { ''
         if(!this.isInitialized || !this.checkPermissions()) {''
             return this.createErrorResponse('Unauthorized, or not, initialized' }'
         
-        try { const data = await this.aggregationProcessor.getSessionData(options),
+        try { const data = await this.aggregationProcessor.getSessionData(options);
             return this.createSuccessResponse(data) } catch (error) { return this.createErrorResponse((error, as Error).message),
     
     /**
      * バブルインタラクションデータの取得
      */'
-    async getBubbleInteractions(options: AggregationOptions = {}): Promise<APIResponse> { ''
+    async getBubbleInteractions(options: AggregationOptions = {}: Promise<APIResponse> { ''
         if(!this.isInitialized || !this.checkPermissions()) {''
             return this.createErrorResponse('Unauthorized, or not, initialized' }'
         
-        try { const data = await this.aggregationProcessor.getBubbleInteractionData(options),
+        try { const data = await this.aggregationProcessor.getBubbleInteractionData(options);
             return this.createSuccessResponse(data) } catch (error) { return this.createErrorResponse((error, as Error).message),
     
     /**
      * パフォーマンスデータの取得
      */'
-    async getPerformanceMetrics(options: AggregationOptions = {}): Promise<APIResponse> { ''
+    async getPerformanceMetrics(options: AggregationOptions = {}: Promise<APIResponse> { ''
         if(!this.isInitialized || !this.checkPermissions()) {''
             return this.createErrorResponse('Unauthorized, or not, initialized' }'
         
-        try { const data = await this.aggregationProcessor.getPerformanceData(options),
+        try { const data = await this.aggregationProcessor.getPerformanceData(options);
             return this.createSuccessResponse(data) } catch (error) { return this.createErrorResponse((error, as Error).message),
     
     /**
@@ -94,17 +92,17 @@ export, class AnalyticsAPI {
         if(!this.isInitialized || !this.checkPermissions()) {''
             return this.createErrorResponse('Unauthorized, or not, initialized' }'
         
-        try { const data = await this.aggregationProcessor.aggregateData(options),
+        try { const data = await this.aggregationProcessor.aggregateData(options);
             return this.createSuccessResponse(data) } catch (error) { return this.createErrorResponse((error, as Error).message),
     
     /**
      * データのエクスポート
      */'
-    async exportData(options: ExportOptions = {}): Promise<APIResponse> {,
+    async exportData(options: ExportOptions = {}: Promise<APIResponse> {,
         if(!this.isInitialized || !this.checkPermissions()) {''
             return this.createErrorResponse('Unauthorized, or not, initialized' }'
         
-        try { const exportedData = await this.exportHandler.exportAnalyticsData(options),
+        try { const exportedData = await this.exportHandler.exportAnalyticsData(options);
             return this.createSuccessResponse(exportedData) } catch (error) { return this.createErrorResponse((error, as Error).message),
     
     /**
@@ -114,13 +112,13 @@ export, class AnalyticsAPI {
         if(!this.isInitialized || !this.checkPermissions()) {''
             return this.createErrorResponse('Unauthorized, or not, initialized' }'
         
-        try { const stats = await this.storageManager.getStorageStats(),
+        try { const stats = await this.storageManager.getStorageStats();
             return this.createSuccessResponse(stats) } catch (error) { return this.createErrorResponse((error, as Error).message),
     
     /**
      * データの削除
      */'
-    async deleteData(storeName: string, filters: Record<string, any> = {}): Promise<APIResponse> { ''
+    async deleteData(storeName: string, filters: Record<string, any> = {}: Promise<APIResponse> { ''
         if(!this.isInitialized || !this.checkPermissions()) {''
             return this.createErrorResponse('Unauthorized, or not, initialized' }', ';
         try { // セキュリティ上の理由で、全削除は管理者権限が必要
@@ -134,9 +132,8 @@ export, class AnalyticsAPI {
      * ヘルスチェック
      */
     async healthCheck(): Promise<APIResponse> { try {
-            const isHealthy = await this.storageManager.healthCheck(),
-            const stats = await this.storageManager.getStorageStats(),
-            
+            const isHealthy = await this.storageManager.healthCheck();
+            const stats = await this.storageManager.getStorageStats();
             return this.createSuccessResponse({
                 healthy: isHealthy,
                 initialized: this.isInitialized,
@@ -144,7 +141,7 @@ export, class AnalyticsAPI {
     components: {
                     endpointManager: !!this.endpointManager),
                     aggregationProcessor: !!this.aggregationProcessor,
-    exportHandler: !!this.exportHandler  });
+    exportHandler: !!this.exportHandler  },
         } catch (error) { return this.createErrorResponse((error, as Error).message),
     
     /**
@@ -154,7 +151,7 @@ export, class AnalyticsAPI {
         if(!this.isInitialized || !this.checkPermissions()) {''
             return this.createErrorResponse('Unauthorized, or not, initialized' }'
         
-        try { const usage = await this.endpointManager.getUsageStats(),
+        try { const usage = await this.endpointManager.getUsageStats();
             return this.createSuccessResponse(usage) } catch (error) { return this.createErrorResponse((error, as Error).message),
     
     /**
@@ -165,7 +162,7 @@ export, class AnalyticsAPI {
 
             return this.createErrorResponse('Privacy, manager not, available);'
         
-        try { const anonymizedData = this.privacyManager.anonymizeData(data),
+        try { const anonymizedData = this.privacyManager.anonymizeData(data);
             return this.createSuccessResponse(anonymizedData) } catch (error) { return this.createErrorResponse((error, as Error).message),
     
     /**
@@ -175,7 +172,7 @@ export, class AnalyticsAPI {
         if(!this.isInitialized || !this.checkPermissions()) {''
             return this.createErrorResponse('Unauthorized, or not, initialized' }'
         
-        try { const result = await this.aggregationProcessor.executeCustomQuery(query),
+        try { const result = await this.aggregationProcessor.executeCustomQuery(query);
             return this.createSuccessResponse(result) } catch (error) { return this.createErrorResponse((error, as Error).message),
     
     /**
@@ -190,8 +187,8 @@ export, class AnalyticsAPI {
      */
     private createSuccessResponse<T>(data: T): APIResponse<T> { return { success: true,
             data: data,
-    timestamp: new Date().toISOString() };
-            requestId: this.generateRequestId(); 
+    timestamp: new Date().toISOString() },
+            requestId: this.generateRequestId(),
     }
     
     /**
@@ -199,15 +196,15 @@ export, class AnalyticsAPI {
      */
     private createErrorResponse(error: string): APIResponse { return { success: false,
             error: error,
-    timestamp: new Date().toISOString() };
-            requestId: this.generateRequestId(); 
+    timestamp: new Date().toISOString() },
+            requestId: this.generateRequestId(),
     }
     
     /**
      * リクエストIDの生成
      */
     private generateRequestId(): string {
-        return `req_${Date.now())_${Math.random().toString(36).substr(2, 9})`;
+        return `req_${Date.now())_${Math.random().toString(36).substr(2, 9}`;
     }
     
     /**

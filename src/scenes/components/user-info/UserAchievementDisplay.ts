@@ -10,7 +10,7 @@ import { GameEngine  } from '../../../types/gameEngine';
 import { EventBus  } from '../../../types/eventBus';
 
 // 実績データ型定義
-interface Achievement { id: string,
+interface Achievement { id: string;
     name: string;
     description: string;
     unlocked: boolean;
@@ -19,11 +19,11 @@ interface Achievement { id: string,
     apReward: number;
 
 // カテゴリ定義
-interface AchievementCategory { id: string,
+interface AchievementCategory { id: string;
     name: string;
 
 // シーン状態のインターフェース
-interface SceneState { get(key: string): any,
+interface SceneState { get(key: string): any;
     set(key: string, value: any): void;
 
 // タブコンポーネントのインターフェース
@@ -43,7 +43,7 @@ export class UserAchievementDisplay {
     // 実績ヘルプシステム
     private achievementHelpSystem: AchievementHelpSystem | null = null;
     // レイアウト設定
-    private readonly, contentPadding: number = 20,
+    private readonly, contentPadding: number = 20;
     
     constructor(gameEngine: GameEngine, eventBus: EventBus | null, sceneState: SceneState) {
     
@@ -59,7 +59,7 @@ export class UserAchievementDisplay {
     /**
      * コンポーネントの初期化
      */
-    private initialize(): void { this.loadAchievementData(),
+    private initialize(): void { this.loadAchievementData();
         this.initializeAchievementSystems() }
     
     /**
@@ -77,7 +77,7 @@ export class UserAchievementDisplay {
             this.eventBus.on('achievementCategoryChanged', (category: string) => { this.currentAchievementCategory = category,' 
     }');'
 
-            this.eventBus.on('achievementUnlocked', (achievementId: string) => { this.handleAchievementUnlocked(achievementId) });
+            this.eventBus.on('achievementUnlocked', (achievementId: string) => { this.handleAchievementUnlocked(achievementId) },
         }
     }
     
@@ -119,10 +119,10 @@ export class UserAchievementDisplay {
      * 実績コンポーネントでの描画
      */
     public renderAchievementsWithComponent(;
-        context: CanvasRenderingContext2D;
+        context: CanvasRenderingContext2D,
         y: number );
         height: number,
-    achievementsTabComponent: AchievementsTabComponent;
+    achievementsTabComponent: AchievementsTabComponent,
     ): void { const canvas = this.gameEngine.canvas,
         const contentWidth = canvas.width - this.contentPadding * 2,
         const contentX = this.contentPadding,
@@ -182,8 +182,7 @@ export class UserAchievementDisplay {
         context.fillStyle = '#00aa00',
         context.font = 'bold 20px Arial',
         context.textAlign = 'left',
-        context.fillText('解除済み実績', x, y + 25),
-        
+        context.fillText('解除済み実績', x, y + 25);
         let currentY = y + 40,
         const spacing = 10,
         
@@ -209,8 +208,7 @@ export class UserAchievementDisplay {
         context.fillStyle = '#cc6600',
         context.font = 'bold 20px Arial',
         context.textAlign = 'left',
-        context.fillText('進行中の実績', x, y + 25),
-        
+        context.fillText('進行中の実績', x, y + 25);
         let currentY = y + 40,
         const spacing = 10,
         
@@ -236,23 +234,21 @@ export class UserAchievementDisplay {
     '): number { const itemHeight = 70,'
         // 背景
         context.fillStyle = isUnlocked ? '#1a2e1a' : '#1a1a2e',
-        context.fillRect(x, y, width, itemHeight),
+        context.fillRect(x, y, width, itemHeight);
         ','
         // 枠線
         context.strokeStyle = isUnlocked ? '#00aa00' : '#333',
 
         context.lineWidth = 1,
-        context.strokeRect(x, y, width, itemHeight),
-        
+        context.strokeRect(x, y, width, itemHeight);
         // アイコン（簡単な円）
         const iconSize = 40,
         const iconX = x + 15,
         const iconY = y + 15,
 
         context.fillStyle = isUnlocked ? '#00ff00' : '#666',
-        context.beginPath(),
-
-        context.arc(iconX + iconSize/2, iconY + iconSize/2, iconSize/2, 0, Math.PI * 2),
+        context.beginPath();
+        context.arc(iconX + iconSize/2, iconY + iconSize/2, iconSize/2, 0, Math.PI * 2);
         context.fill('''
         context.fillStyle = isUnlocked ? '#00ff00' : '#ffffff',
         context.font = 'bold, 16px Arial',
@@ -271,21 +267,21 @@ export class UserAchievementDisplay {
             context.font = '12px Arial' }
 
             context.textAlign = 'right'; }
-            context.fillText(`+${achievement.apReward || 0} AP`, x + width - 15, y + 25});
+            context.fillText(`+${achievement.apReward || 0} AP`, x + width - 15, y + 25};
         } else {  // 進捗バー
             const progressBarX = iconX + iconSize + 15,
             const progressBarY = y + 50,
             const progressBarWidth = width - (progressBarX - x) - 100,
             const progressBarHeight = 8,
 
-            this.renderEnhancedProgressBar(context, progressBarX, progressBarY, progressBarWidth, achievement.progress || 0),
+            this.renderEnhancedProgressBar(context, progressBarX, progressBarY, progressBarWidth, achievement.progress || 0);
             ','
             // 進捗テキスト
             context.fillStyle = '#cccccc',
             context.font = '12px Arial',' }'
 
             context.textAlign = 'right'; }
-            context.fillText(`${Math.round((achievement.progress || 0} * 100})%`, x + width - 15, y + 58);
+            context.fillText(`${Math.round((achievement.progress || 0} * 100}%`, x + width - 15, y + 58);
         }
         
         return y + itemHeight;
@@ -322,13 +318,13 @@ export class UserAchievementDisplay {
             ','
             // ボタン背景
             context.fillStyle = isSelected ? '#4a4a6a' : '#2a2a4a',
-            context.fillRect(currentX, y, buttonWidth, buttonHeight),
+            context.fillRect(currentX, y, buttonWidth, buttonHeight);
             ','
             // ボタン枠線
             context.strokeStyle = isSelected ? '#6a6a8a' : '#4a4a6a',
 
             context.lineWidth = 1,
-            context.strokeRect(currentX, y, buttonWidth, buttonHeight),
+            context.strokeRect(currentX, y, buttonWidth, buttonHeight);
             ','
             // ボタンテキスト
             context.fillStyle = isSelected ? '#ffffff' : '#cccccc',
@@ -369,15 +365,14 @@ export class UserAchievementDisplay {
         ','
         // 背景
         context.fillStyle = '#333333',
-        this.drawRoundedRect(context, x, y, width, height, radius),
-        context.fill(),
-        
+        this.drawRoundedRect(context, x, y, width, height, radius);
+        context.fill();
         // 進捗
         if (progress > 0) {
-            const progressWidth = width * Math.min(progress, 1),
+            const progressWidth = width * Math.min(progress, 1);
             // グラデーション効果
-            const gradient = context.createLinearGradient(x, y, x + progressWidth, y),
-            gradient.addColorStop(0, '#4CAF50'),
+            const gradient = context.createLinearGradient(x, y, x + progressWidth, y);
+            gradient.addColorStop(0, '#4CAF50');
             gradient.addColorStop(1, '#8BC34A),'
             
             context.fillStyle = gradient,
@@ -394,24 +389,24 @@ export class UserAchievementDisplay {
         y: number, ;
         width: number );
         height: number,
-    radius: number;
+    radius: number,
     ): void { context.beginPath(
-        context.moveTo(x + radius, y),
-        context.lineTo(x + width - radius, y),
-        context.quadraticCurveTo(x + width, y, x + width, y + radius),
-        context.lineTo(x + width, y + height - radius),
-        context.quadraticCurveTo(x + width, y + height, x + width - radius, y + height),
-        context.lineTo(x + radius, y + height),
-        context.quadraticCurveTo(x, y + height, x, y + height - radius),
-        context.lineTo(x, y + radius),
-        context.quadraticCurveTo(x, y, x + radius, y),
+        context.moveTo(x + radius, y);
+        context.lineTo(x + width - radius, y);
+        context.quadraticCurveTo(x + width, y, x + width, y + radius);
+        context.lineTo(x + width, y + height - radius);
+        context.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
+        context.lineTo(x + radius, y + height);
+        context.quadraticCurveTo(x, y + height, x, y + height - radius);
+        context.lineTo(x, y + radius);
+        context.quadraticCurveTo(x, y, x + radius, y);
         context.closePath() }
     
     /**
      * 実績統計セクションを描画
      */
     public renderAchievementStatsSection(;
-        context: CanvasRenderingContext2D;
+        context: CanvasRenderingContext2D,
         x: number );
         y: number,
     width: number';'
@@ -425,19 +420,18 @@ export class UserAchievementDisplay {
         context.fillStyle = '#4CAF50',
         context.font = 'bold 20px Arial',
         context.textAlign = 'left',
-        context.fillText('実績統計', x, currentY + 25),
+        context.fillText('実績統計', x, currentY + 25);
         currentY += 40,
         
         try {
             // 実績統計UIを使用して描画
-            this.achievementStatsUI.render(context, x, currentY, width, sectionHeight - 40),
+            this.achievementStatsUI.render(context, x, currentY, width, sectionHeight - 40);
             currentY += sectionHeight - 40,' }'
 
         } catch (error) {
-            console.error('Achievement stats rendering failed:', error),
-            
+            console.error('Achievement stats rendering failed:', error);
             // フォールバック: 基本統計表示
-            this.renderBasicAchievementStats(context, x, currentY, width),
+            this.renderBasicAchievementStats(context, x, currentY, width);
             currentY += 100 }
         
         return currentY;
@@ -447,10 +441,10 @@ export class UserAchievementDisplay {
      * 基本実績統計の描画（フォールバック）
      */
     private renderBasicAchievementStats(;
-        context: CanvasRenderingContext2D;
+        context: CanvasRenderingContext2D,
         x: number );
         y: number,
-    width: number;
+    width: number,
     ): void { if (!this.achievementsData) return,
         
         const unlockedCount = this.achievementsData.filter(a => a.unlocked).length,
@@ -459,20 +453,20 @@ export class UserAchievementDisplay {
         ','
         // 背景
         context.fillStyle = '#1a1a2e',
-        context.fillRect(x, y, width, 80),
+        context.fillRect(x, y, width, 80);
         ','
         // 枠線
         context.strokeStyle = '#4a4a6a',
 
         context.lineWidth = 1,
-        context.strokeRect(x, y, width, 80),
+        context.strokeRect(x, y, width, 80);
         ','
         // 統計情報
         context.fillStyle = '#ffffff',
         context.font = '16px Arial',
         context.textAlign = 'left' }
         context.fillText(`解除済み実績: ${unlockedCount} / ${ totalCount}`, x + 15, y + 30}
-        context.fillText(`達成率: ${completionRate}%`, x + 15, y + 55});
+        context.fillText(`達成率: ${completionRate}%`, x + 15, y + 55};
     }
     
     /**
@@ -514,8 +508,7 @@ export class UserAchievementDisplay {
      * 実績解除時の処理
      */
     private handleAchievementUnlocked(achievementId: string): void { // データを再読み込みして最新状態を反映
-        this.loadAchievementData(),
-        
+        this.loadAchievementData();
         // 統計UIも更新
         if (this.achievementStatsUI) {
     
@@ -571,7 +564,7 @@ export class UserAchievementDisplay {
     public cleanup(): void { ''
         if (this.eventBus) {
 
-            this.eventBus.off('achievementDataReload'),
+            this.eventBus.off('achievementDataReload');
             this.eventBus.off('achievementCategoryChanged') }
 
             this.eventBus.off('achievementUnlocked'); }

@@ -14,7 +14,7 @@ interface AnalysisResults { bottlenecks?: Bottleneck[],
     anomalies?: Anomaly[];
     rootCauses?: RootCause[];
 
-interface Bottleneck { type: string,
+interface Bottleneck { type: string;
     severity: 'low' | 'medium' | 'high' | 'critical';
     component: string;
     description: string;
@@ -35,7 +35,7 @@ interface Anomaly { ''
     metric: string;
     deviation: number;
 
-interface RootCause { issue: string,
+interface RootCause { issue: string;
     potentialCauses: string[];
     confidence: number;
     recommendedActions: string[];
@@ -48,7 +48,7 @@ interface OverallAssessment { healthScore: number,''
     improvements: any[];
     summary: string;
 
-interface CriticalIssue { type: string,
+interface CriticalIssue { type: string;
     description: string;
     component?: string;
     impact?: string;
@@ -56,22 +56,22 @@ interface CriticalIssue { type: string,
     deviation?: number;
 
 interface CollectedData { rawData: {
-        sample,s: DataSample[],
+        sample,s: DataSample[];
     metrics: Record<string, any>;
-        startTime: number,
-        endTime: number,
-    collectionDuration: number,;
+        startTime: number;
+        endTime: number;
+    collectionDuration: number;
     summary?: any;
 }
 
-interface DataSample { timestamp: number,
+interface DataSample { timestamp: number;
     frameRate: number;
     memoryUsage: number;
     renderTime: number;
     networkLatency: number;
     inputLag: number;
 
-interface AnalysisCapabilities { bottleneckAnalysis: boolean,
+interface AnalysisCapabilities { bottleneckAnalysis: boolean;
     anomalyDetection: boolean;
     rootCauseAnalysis: boolean;
     performanceAssessment: boolean;
@@ -80,11 +80,11 @@ interface AnalysisCapabilities { bottleneckAnalysis: boolean,
 interface AnalyzerConfig { bottleneckThresholds?: Record<string, any>,
     anomalyBaselines?: Record<string, any> }
 
-interface Threshold { critical: number,
+interface Threshold { critical: number;
     high: number;
     medium: number;
 
-interface Baseline { mean: number,
+interface Baseline { mean: number;
     stdDev: number;
 
 export class DiagnosticAnalyzer {
@@ -93,7 +93,7 @@ export class DiagnosticAnalyzer {
     private bottleneckIdentifier: BottleneckIdentifier;
     private issueAnalyzer: IssueAnalyzer;
     private anomalyDetector: AnomalyDetector;
-    private, rootCauseAnalyzer: RootCauseAnalyzer,
+    private, rootCauseAnalyzer: RootCauseAnalyzer;
     constructor(mainController: MainController) {
 
         this.mainController = mainController;
@@ -111,17 +111,15 @@ export class DiagnosticAnalyzer {
      * Initialize all analysis components
      */
     async initialize(): Promise<void> { try {
-            await this.diagnosticEngine.initialize(),
-            await this.bottleneckIdentifier.initialize(),
-            await this.issueAnalyzer.initialize(),
-
-            await this.anomalyDetector.initialize(),
-            await this.rootCauseAnalyzer.initialize(),
-
+            await this.diagnosticEngine.initialize();
+            await this.bottleneckIdentifier.initialize();
+            await this.issueAnalyzer.initialize();
+            await this.anomalyDetector.initialize();
+            await this.rootCauseAnalyzer.initialize();
             console.log('[DiagnosticAnalyzer] All, analysis components, initialized'),' }'
 
         } catch (error) {
-            console.error('[DiagnosticAnalyzer] Failed to initialize analysis components:', error),
+            console.error('[DiagnosticAnalyzer] Failed to initialize analysis components:', error);
             throw error }
     }
     
@@ -148,7 +146,7 @@ export class DiagnosticAnalyzer {
         // 根本原因分析
         if (options.includeRootCauseAnalysis) {
 
-            console.log('[DiagnosticAnalyzer] Running root cause analysis...'),
+            console.log('[DiagnosticAnalyzer] Running root cause analysis...');
             results.rootCauses = await this.rootCauseAnalyzer.analyze(collectedData, results') }'
         }
         
@@ -169,9 +167,8 @@ export class DiagnosticAnalyzer {
         // ボトルネック評価
         if (analysisResults.bottlenecks) {
 
-            const criticalBottlenecks = analysisResults.bottlenecks.filter(b => b.severity === 'critical'),
-            const majorBottlenecks = analysisResults.bottlenecks.filter(b => b.severity === 'high'),
-            
+            const criticalBottlenecks = analysisResults.bottlenecks.filter(b => b.severity === 'critical');
+            const majorBottlenecks = analysisResults.bottlenecks.filter(b => b.severity === 'high');
             assessment.healthScore -= criticalBottlenecks.length * 20,
             assessment.healthScore -= majorBottlenecks.length * 10,
             ','
@@ -187,9 +184,8 @@ export class DiagnosticAnalyzer {
         // 異常評価
         if (analysisResults.anomalies) {
 
-            const criticalAnomalies = analysisResults.anomalies.filter(a => a.severity === 'critical'),
-            const majorAnomalies = analysisResults.anomalies.filter(a => a.severity === 'high'),
-            
+            const criticalAnomalies = analysisResults.anomalies.filter(a => a.severity === 'critical');
+            const majorAnomalies = analysisResults.anomalies.filter(a => a.severity === 'high');
             assessment.healthScore -= criticalAnomalies.length * 15,
             assessment.healthScore -= majorAnomalies.length * 8,
             ','
@@ -238,7 +234,7 @@ export class DiagnosticAnalyzer {
     async performQuickDiagnosis(collectedData: CollectedData): Promise<AnalysisResults> { const options: AnalysisOptions = {
             includeBottleneckAnalysis: true,
             includeAnomalyDetection: true,
-    includeRootCauseAnalysis: false,;
+    includeRootCauseAnalysis: false,
         return await this.runAnalyses(collectedData, options);
     }
 
@@ -303,7 +299,7 @@ export class DiagnosticAnalyzer {
 }
 
 // 診断エンジン
-class DiagnosticEngine { private processors: Map<string any>,
+class DiagnosticEngine { private processors: Map<string any>;
     private ruleEngine: DiagnosticRuleEngine;
     constructor() {
 
@@ -311,7 +307,7 @@ class DiagnosticEngine { private processors: Map<string any>,
         this.ruleEngine = new DiagnosticRuleEngine(); }
     }
 
-    async initialize(): Promise<void> { await this.setupProcessors(),
+    async initialize(): Promise<void> { await this.setupProcessors();
         await this.ruleEngine.initialize() }
 
     private async setupProcessors()';'
@@ -324,16 +320,15 @@ class DiagnosticEngine { private processors: Map<string any>,
         for (const processor of this.processors.values() { await processor.initialize() }
     }
 
-    async processData(data: any, analysisType: string): Promise<any> { const processor = this.processors.get(analysisType),
+    async processData(data: any, analysisType: string): Promise<any> { const processor = this.processors.get(analysisType);
         if (!processor) { }
-            throw new Error(`Unknown, analysis type: ${analysisType}`});
+            throw new Error(`Unknown, analysis type: ${analysisType}`};
         }
 
         return await processor.process(data);
     }
 
-    async applyRules(data: any, context: any): Promise<any> { return await this.ruleEngine.apply(data, context),
-
+    async applyRules(data: any, context: any): Promise<any> { return await this.ruleEngine.apply(data, context);
 // ボトルネック特定器
 class BottleneckIdentifier { private detectors: Map<string, any>,
     private thresholds: Map<string, Threshold>;
@@ -344,7 +339,7 @@ class BottleneckIdentifier { private detectors: Map<string, any>,
         this.thresholds = new Map(); }
     }
 
-    async initialize(): Promise<void> { this.setupDetectors(),
+    async initialize(): Promise<void> { this.setupDetectors();
         this.setupThresholds() }
 
     private setupDetectors()';'
@@ -366,7 +361,7 @@ class BottleneckIdentifier { private detectors: Map<string, any>,
             medium: 1 * 1024 * 1024    // 1MB/s以上は中優先度','
 
         this.thresholds.set('render_time', {
-            critical: 50, // 50ms以上は致命的),
+            critical: 50, // 50ms以上は致命的);
             high: 33.33,  // 30fps相当以上は高優先度),
             medium: 20    // 20ms以上は中優先度  }
 
@@ -390,7 +385,7 @@ class BottleneckIdentifier { private detectors: Map<string, any>,
         return bottlenecks.sort((a, b) => {  }
             const severityOrder: Record<string, number> = { critical: 4, high: 3, medium: 2, low: 1  }
             return (severityOrder[b.severity] || 0) - (severityOrder[a.severity] || 0);
-        });
+        };
     }
 }
 
@@ -435,7 +430,7 @@ class AnomalyDetector { private detectors: Map<string, any>,
         this.baselines = new Map(); }
     }
 
-    async initialize(): Promise<void> { this.setupDetectors(),
+    async initialize(): Promise<void> { this.setupDetectors();
         this.loadBaselines() }
 
     private setupDetectors()';'
@@ -471,14 +466,14 @@ class AnomalyDetector { private detectors: Map<string, any>,
         return anomalies.sort((a, b) => {  }
             const severityOrder: Record<string, number> = { critical: 4, high: 3, medium: 2, low: 1  }
             return (severityOrder[b.severity] || 0) - (severityOrder[a.severity] || 0);
-        });
+        };
     }
 }
 
 // 根本原因分析器
 class RootCauseAnalyzer { private correlationAnalyzer: CorrelationAnalyzer
     private causalityDetector: CausalityDetector;
-    private, dependencyMapper: DependencyMapper,
+    private, dependencyMapper: DependencyMapper;
     constructor() {
 
         this.correlationAnalyzer = new CorrelationAnalyzer();
@@ -486,24 +481,21 @@ class RootCauseAnalyzer { private correlationAnalyzer: CorrelationAnalyzer
         this.dependencyMapper = new DependencyMapper(); }
     }
 
-    async initialize(): Promise<void> { await this.correlationAnalyzer.initialize(),
-        await this.causalityDetector.initialize(),
+    async initialize(): Promise<void> { await this.correlationAnalyzer.initialize();
+        await this.causalityDetector.initialize();
         await this.dependencyMapper.initialize() }
 
     async analyze(collectedData: CollectedData, analysisResults: AnalysisResults): Promise<RootCause[]> { const rootCauses: RootCause[] = [],
 
         // 相関分析
-        const correlations = await this.correlationAnalyzer.analyze(collectedData),
-        
+        const correlations = await this.correlationAnalyzer.analyze(collectedData);
         // 因果関係検出
-        const causalities = await this.causalityDetector.detect(collectedData, analysisResults),
-        
+        const causalities = await this.causalityDetector.detect(collectedData, analysisResults);
         // 依存関係マッピング
-        const dependencies = await this.dependencyMapper.map(analysisResults),
-
+        const dependencies = await this.dependencyMapper.map(analysisResults);
         // 根本原因の特定
         for (const bottleneck of analysisResults.bottlenecks || []) {
-            const cause = await this.identifyRootCause(bottleneck, correlations, causalities, dependencies),
+            const cause = await this.identifyRootCause(bottleneck, correlations, causalities, dependencies);
             if (cause) {
         }
                 rootCauses.push(cause); }
@@ -532,7 +524,7 @@ class RootCauseAnalyzer { private correlationAnalyzer: CorrelationAnalyzer
 // 基本的な検出器の実装
 class FrameRateBottleneckDetector { ''
     async detect(data: CollectedData, thresholds: Map<string, Threshold>): Promise<Bottleneck[]> {'
-        const bottlenecks: Bottleneck[] = [],
+        const bottlenecks: Bottleneck[] = [];
         const frameRateThreshold = thresholds.get('frame_rate)!,'
         
         for (const sample of data.rawData.samples) {
@@ -560,7 +552,7 @@ class FrameRateBottleneckDetector { ''
     value: sample.frameRate;
                     threshold: frameRateThreshold.high;
                     impact: 'noticeable_performance_impact';
-                }) }
+                } }
         }
 
         return this.deduplicateBottlenecks(bottlenecks);
@@ -574,7 +566,7 @@ class FrameRateBottleneckDetector { ''
             if (!grouped.has(key) { grouped.set(key, {
                     ...bottleneck,
                     occurrences: 1,
-                    firstSeen: bottleneck.timestamp),
+                    firstSeen: bottleneck.timestamp);
                     lastSeen: bottleneck.timestamp,
     minValue: bottleneck.value }
                     maxValue: bottleneck.value); 

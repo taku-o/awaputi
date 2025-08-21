@@ -31,7 +31,7 @@ interface OptimizationConfig { targetFPS?: number,
     maxBubbles: number;
     maxParticles: number;
 
-interface QualityConfig { renderQuality: number,
+interface QualityConfig { renderQuality: number;
     particleQuality: number;
     effectQuality: number;
     audioQuality: number;
@@ -46,19 +46,19 @@ interface QualityConfig { renderQuality: number,
 interface StabilizationStatus { currentZone?: string;
 
 // Component interfaces (will, be replaced, when actual, files are, converted);
-interface PerformanceAnalyzer { recordFrameTime(frameTime: number): void,
+interface PerformanceAnalyzer { recordFrameTime(frameTime: number): void;
     getStats?(): any;
     getAnalysis?(): any;
 
-interface PerformanceAdaptiveController { setPerformanceLevel(level: string): void,
+interface PerformanceAdaptiveController { setPerformanceLevel(level: string): void;
     setAdaptiveMode(enabled: boolean): void;
     calculateAdjustments?(analysis: any): any;
     getStats?(): any 
-interface PerformanceStabilizerIntegrator { integrateWithStabilizer?(stabilizer: any, analysis: any): void,
+interface PerformanceStabilizerIntegrator { integrateWithStabilizer?(stabilizer: any, analysis: any): void;
     getStats?(): any 
 // Dummy implementations for missing dependencies
 class DummyPerformanceAnalyzer implements PerformanceAnalyzer { recordFrameTime(frameTime: number): void {  }
-        console.log(`[PerformanceAnalyzer] Frame, time recorded: ${frameTime}ms`});
+        console.log(`[PerformanceAnalyzer] Frame, time recorded: ${frameTime}ms`};
     }
     
     getStats(): any {
@@ -69,12 +69,12 @@ class DummyPerformanceAnalyzer implements PerformanceAnalyzer { recordFrameTime(
 }
 
 class DummyPerformanceAdaptiveController implements PerformanceAdaptiveController { setPerformanceLevel(level: string): void { }
-        console.log(`[PerformanceAdaptiveController] Performance, level set, to: ${level}`});
+        console.log(`[PerformanceAdaptiveController] Performance, level set, to: ${level}`};
     }
 
     setAdaptiveMode(enabled: boolean): void { }'
 
-        console.log(`[PerformanceAdaptiveController] Adaptive, mode: ${enabled ? 'enabled' : 'disabled}`});'
+        console.log(`[PerformanceAdaptiveController] Adaptive, mode: ${enabled ? 'enabled' : 'disabled}`};'
     }
 
     calculateAdjustments(analysis: any): any { }'
@@ -96,7 +96,7 @@ class DummyPerformanceStabilizerIntegrator implements PerformanceStabilizerInteg
     }
 
 // Type definitions
-interface PerformanceStats { currentFPS: number,
+interface PerformanceStats { currentFPS: number;
     averageFPS: number;
     frameTime: number;
     droppedFrames: number;
@@ -119,7 +119,7 @@ interface PerformanceStats { currentFPS: number,
     issuesPredicted: number;
     issuesActual: number;
 
-interface PerformanceSettings { maxBubbles: number,
+interface PerformanceSettings { maxBubbles: number;
     maxParticles: number;
     renderQuality: number;
     particleQuality: number;
@@ -161,7 +161,7 @@ export class PerformanceOptimizer {
     private __lastLoggedStabilizerZone!: string | null,
     
     // 統合コンポーネント
-    private, frameStabilizer: any,
+    private, frameStabilizer: any;
     // サブコンポーネント
     private analyzer!: PerformanceAnalyzer,
     private adaptiveController!: PerformanceAdaptiveController,
@@ -179,8 +179,7 @@ export class PerformanceOptimizer {
             this.errorHandler = getErrorHandler();
             
             // 設定から初期値を取得
-            this._initializeFromConfig(),
-            
+            this._initializeFromConfig();
             // 基本フレーム処理データ
             this.frameTimeHistory = [];
             this.__lastFrameTime = null;
@@ -193,8 +192,7 @@ export class PerformanceOptimizer {
             this.frameStabilizer = getFrameStabilizer(this.targetFPS);
             
             // サブコンポーネント初期化
-            this._initializeSubComponents(),
-            
+            this._initializeSubComponents();
             // 基本統計（サブコンポーネントから集約）
             this.stats = this._initializeStats();
             // 設定変更の監視
@@ -224,7 +222,7 @@ export class PerformanceOptimizer {
             const componentConfig: ComponentConfig = {
                 maxHistorySize: this.maxHistorySize,
                 targetFPS: this.targetFPS,
-    performanceLevel: this.performanceLevel };
+    performanceLevel: this.performanceLevel },
             // フレーム解析コンポーネント
             this.analyzer = new PerformanceAnalyzer(componentConfig);
             
@@ -250,23 +248,22 @@ export class PerformanceOptimizer {
      */''
     private _initializeStats('''
             performanceTrend: 'stable',
-            stabilityTrend: 'stable';
+            stabilityTrend: 'stable',
             issuesPredicted: 0,
     issuesActual: 0);
-            });
+            };
     /**
      * 設定から初期値を設定
      */
     private _initializeFromConfig(): void { try {
-            const optimizationConfig = this.performanceConfig.getOptimizationConfig(),
-            const qualityConfig = this.performanceConfig.getQualityConfig(),
-            
+            const optimizationConfig = this.performanceConfig.getOptimizationConfig();
+            const qualityConfig = this.performanceConfig.getQualityConfig();
             this.targetFPS = optimizationConfig ? optimizationConfig.targetFPS || 60 : 60;
             this.targetFrameTime = 1000 / this.targetFPS;
 
             this.maxHistorySize = optimizationConfig ? optimizationConfig.maxHistorySize || 30 : 30;
             this.performanceLevel = optimizationConfig ? optimizationConfig.performanceLevel || "medium" : "medium";
-            this.adaptiveMode = optimizationConfig ? (optimizationConfig.adaptiveMode !== undefined ? optimizationConfig.adaptiveMode: true) : true;
+            this.adaptiveMode = optimizationConfig ? (optimizationConfig.adaptiveMode !== undefined ? optimizationConfig.adaptiveMode: true) : true,
             this.optimizationInterval = optimizationConfig ? optimizationConfig.optimizationInterval || 1000 : 1000;
             
             this.settings = {
@@ -282,7 +279,7 @@ export class PerformanceOptimizer {
         } catch (error") { this.errorHandler.handleError(error, 'PERFORMANCE_ERROR', {''"
                 component: 'PerformanceOptimizer',')',
                 operation: 'initializeFromConfig'
-            });
+            };
             this._setFallbackSettings();
         }
     }
@@ -307,7 +304,8 @@ export class PerformanceOptimizer {
             antialiasing: false,
             backgroundEffects: true,
     audioProcessing: true,
-    
+    audioProcessing: true,
+        };
     /**
      * 設定変更の監視を設定"
      */""
@@ -319,7 +317,7 @@ export class PerformanceOptimizer {
      * フレーム時間を記録し最適化を実行
      */
     recordFrameTime(frameTime: number): void { try {
-            this.frameTimeHistory.push(frameTime),
+            this.frameTimeHistory.push(frameTime);
             if (this.frameTimeHistory.length > this.maxHistorySize) {
     
 }
@@ -339,8 +337,8 @@ export class PerformanceOptimizer {
             this.__lastFrameTime = frameTime;'} catch (error) {'
             this.errorHandler.handleError(error, 'PERFORMANCE_ERROR', {''
                 component: 'PerformanceOptimizer',','
-                operation: 'recordFrameTime'),
-                frameTime });
+                operation: 'recordFrameTime');
+                frameTime };
         }
     }
     
@@ -368,7 +366,7 @@ export class PerformanceOptimizer {
         } catch (error) { this.errorHandler.handleError(error, 'PERFORMANCE_ERROR', {''
                 component: 'PerformanceOptimizer',')',
                 operation: 'optimize'
-            });
+            };
         }
     }
     
@@ -404,7 +402,7 @@ export class PerformanceOptimizer {
     /**
      * パフォーマンスレベルを設定
      */
-    setPerformanceLevel(level: PerformanceLevel): void { this.performanceLevel = level;
+    setPerformanceLevel(level: PerformanceLevel): void { this.performanceLevel = level,
         if (this.adaptiveController) {
     
 }
@@ -414,7 +412,7 @@ export class PerformanceOptimizer {
     /**
      * 適応モードを切り替え
      */
-    setAdaptiveMode(enabled: boolean): void { this.adaptiveMode = enabled;
+    setAdaptiveMode(enabled: boolean): void { this.adaptiveMode = enabled,
         if (this.adaptiveController) {
     
 }
@@ -439,7 +437,7 @@ export class PerformanceOptimizer {
                 return this.settings.particleQuality > 0.3,
             case 'background_effect':,
                 return this.settings.backgroundEffects }
-            default: return true;
+            default: return true,
     
     /**
      * エフェクトの品質レベルを取得

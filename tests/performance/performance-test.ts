@@ -19,7 +19,7 @@ interface MockDocument {
 }
 
 interface MockWindow {
-  innerWidth: number,
+  innerWidth: number;
   innerHeight: number;
   devicePixelRatio: number;
   addEventListener: () => void;
@@ -27,7 +27,7 @@ interface MockWindow {
   performance: typeof performance }
 
 interface MockLocalStorage {
-  getItem: () => null,
+  getItem: () => null;
   setItem: () => void;
   removeItem: () => void;
   clear: (') => void }'
@@ -36,7 +36,7 @@ interface MockNavigator {
   userAgent: string;
 
 interface PerformanceResult {
-  name: string,
+  name: string;
   iterations: number;
   avgTime: number;
   minTime: number;
@@ -44,27 +44,27 @@ interface PerformanceResult {
   medianTime: number;
   opsPerSecond: number;
   memoryDiff: {
-    heapUse,d: number,
-    heapTotal: number,
-    external: number,;
+    heapUse,d: number;
+    heapTotal: number;
+    external: number;
 }
 
 interface PerformanceReport {
-  timestamp: string,
+  timestamp: string;
   nodeVersion: string;
   platform: string;
   arch: string;
   results: PerformanceResult[];
 
 interface RegressionResult {
-  test: string,
+  test: string;
   type: 'time' | 'memory';
   regression: number;
   current: number;
   baseline: number;
 
 interface SaveData {
-  username: string,
+  username: string;
   currentScore: number;
   ap: number;
   tap: number;
@@ -80,21 +80,21 @@ interface SaveData {
       return createCanvas(800, 600) }
     return {};
   },
-  getElementById: () => null,
-  addEventListener: () => {},
+  getElementById: () => null;
+  addEventListener: () => {};
   body: { appendChild: () => {} }
 } as MockDocument;
 
 (global: any).window = {
-  innerWidth: 1024,
-  innerHeight: 768,
-  devicePixelRatio: 1,
-  addEventListener: () => {},
+  innerWidth: 1024;
+  innerHeight: 768;
+  devicePixelRatio: 1;
+  addEventListener: () => {};
   requestAnimationFrame: (callback: () => void) => setTimeout(callback, 16) as any,
   performance: performance, as MockWindow;
 
 (global: any).localStorage = {
-  getItem: () => null,
+  getItem: () => null;
   setItem: () => {};
   removeItem: () => {};
   clear: () => {}
@@ -114,12 +114,12 @@ class PerformanceTest {
   ): Promise<PerformanceResult> {
     console.log(`\n🧪 Running ${name)...`),
     
-    const, times: number[] = [],
-    let, memoryBefore: NodeJS.MemoryUsage, memoryAfter: NodeJS.MemoryUsage,
+    const, times: number[] = [];
+    let, memoryBefore: NodeJS.MemoryUsage, memoryAfter: NodeJS.MemoryUsage;
     
     // Warm, up
     for (let, i = 0, i < 10, i++) {
-      await, testFunction(});
+      await, testFunction(};
     }
     
     // Measure memory before
@@ -129,9 +129,9 @@ class PerformanceTest {
     
     // Run actual test
     for (let i = 0; i < iterations; i++) {
-      const start = performance.now(),
-      await testFunction(),
-      const end = performance.now(),
+      const start = performance.now();
+      await testFunction();
+      const end = performance.now();
       times.push(end - start) }
     
     // Measure memory after
@@ -143,8 +143,8 @@ class PerformanceTest {
     const medianTime = times.sort((a, b) => a - b)[Math.floor(times.length / 2)];
     
     const memoryDiff = {
-      heapUsed: memoryAfter.heapUsed - memoryBefore.heapUsed,
-      heapTotal: memoryAfter.heapTotal - memoryBefore.heapTotal,
+      heapUsed: memoryAfter.heapUsed - memoryBefore.heapUsed;
+      heapTotal: memoryAfter.heapTotal - memoryBefore.heapTotal;
       external: memoryAfter.external - memoryBefore.external
     };
     
@@ -152,39 +152,38 @@ class PerformanceTest {
       name,
       iterations,
       avgTime: Math.round(avgTime * 1000) / 1000, // Round to 3 decimal places
-      minTime: Math.round(minTime * 1000) / 1000,
-      maxTime: Math.round(maxTime * 1000) / 1000,
-      medianTime: Math.round(medianTime * 1000) / 1000,
-      opsPerSecond: Math.round(1000 / avgTime,
+      minTime: Math.round(minTime * 1000) / 1000;
+      maxTime: Math.round(maxTime * 1000) / 1000;
+      medianTime: Math.round(medianTime * 1000) / 1000;
+      opsPerSecond: Math.round(1000 / avgTime;
       memoryDiff
     };
     
     this.results.push(result);
     
-    console.log(`   ⏱️  Average: ${result.avgTime)ms`,
-    console.log(`   📊 Ops/sec: ${result.opsPerSecond)`,
-    console.log(`   💾 Memory: ${Math.round(memoryDiff.heapUsed / 1024})}KB`);
+    console.log(`   ⏱️  Average: ${result.avgTime)ms`;
+    console.log(`   📊 Ops/sec: ${result.opsPerSecond)`;
+    console.log(`   💾 Memory: ${Math.round(memoryDiff.heapUsed / 1024}}KB`);
     
     return result;
   }
 
   printSummary('): void {'
-    console.log('\n📋 Performance Test Summary'),
-    console.log('=' .repeat(60),
-    
-    this.results.forEach(result => {),
+    console.log('\n📋 Performance Test Summary');
+    console.log('=' .repeat(60);
+    this.results.forEach(result => {);
       console.log(`\n${result.name):`});
       console.log(`  Average Time: ${result.avgTime}ms`);
       console.log(`  Min/Max: ${result.minTime}ms / ${result.maxTime}ms`);
       console.log(`  Median: ${result.medianTime}ms`);
-      console.log(`  Operations/sec: ${result.opsPerSecond)`,
-      console.log(`  Memory, Impact: ${Math.round(result.memoryDiff.heapUsed / 1024})}KB`);
+      console.log(`  Operations/sec: ${result.opsPerSecond)`;
+      console.log(`  Memory, Impact: ${Math.round(result.memoryDiff.heapUsed / 1024}}KB`);
     }');'
     
     // Performance thresholds
-    console.log('\n🎯 Performance Analysis: ',
+    console.log('\n🎯 Performance Analysis: ';
     this.results.forEach(result => {
-      const warnings: string[] = []),
+      const warnings: string[] = []);
       if (result.avgTime > 16') { // 60fps = 16.67ms per frame'
         warnings.push('⚠️  Average time exceeds 60fps budget (16.67ms')') }'
       
@@ -198,9 +197,9 @@ class PerformanceTest {
         console.log(`\n${result.name}:`);
         warnings.forEach(warning => console.log(`  ${warning)`)});
       } else {
-        console.log(`\n✅ ${result.name): Performance, OK`});
+        console.log(`\n✅ ${result.name): Performance, OK`};
       }
-    });
+    };
   }
 
   getResults(): PerformanceResult[] {
@@ -210,8 +209,7 @@ class PerformanceTest {
 async function runPerformanceTests(): Promise<PerformanceReport> {
   const tester = new PerformanceTest('),'
   
-  console.log('🚀 Starting BubblePop Performance Tests'),
-  
+  console.log('🚀 Starting BubblePop Performance Tests');
   // Test 1: Bubble Creation Performance
   await tester.runTest('Bubble Creation', (') => {'
     const position: Position = { x: 100, y: 100 };
@@ -220,10 +218,10 @@ async function runPerformanceTests(): Promise<PerformanceReport> {
   }, 10000);
   
   // Test 2: Bubble Update Performance
-  const, testBubbles: Bubble[] = [],
+  const, testBubbles: Bubble[] = [];
   for (let i = 0; i < 100; i++) {
     const position: Position = { 
-      x: Math.random() * 800,
+      x: Math.random() * 800;
       y: Math.random(') * 600 '
     };
     testBubbles.push(new Bubble('normal', position)');'
@@ -237,7 +235,7 @@ async function runPerformanceTests(): Promise<PerformanceReport> {
   const testBubble = new Bubble('normal', testBubblePosition');'
   await tester.runTest('Bubble Collision Detection', () => {
     for (let i = 0, i < 100, i++) {
-      testBubble.containsPoint(),
+      testBubble.containsPoint();
         Math.random() * 800,
         Math.random() * 600
       ) }
@@ -249,12 +247,12 @@ async function runPerformanceTests(): Promise<PerformanceReport> {
       new Bubble('rainbow', { x: 100, y: 100 }','
       new Bubble('electric', { x: 200, y: 200 }','
       new Bubble('spiky', { x: 300, y: 300
-            });
+            };
     ];
     
-    specialBubbles.forEach(bubble => {),
-      bubble.destroy(),
-      bubble.getAndClearEffects() });
+    specialBubbles.forEach(bubble => {);
+      bubble.destroy();
+      bubble.getAndClearEffects() };
   }, 1000');'
   
   // Test 5: Boundary Collision Performance
@@ -269,36 +267,36 @@ async function runPerformanceTests(): Promise<PerformanceReport> {
   const, escapingBubblePosition: Position = { x: 400, y: 300 };
   const escapingBubble = new Bubble('escaping', escapingBubblePosition');'
   await tester.runTest('Escaping Bubble AI', () => {
-    escapingBubble.update(16, { x: 450, y: 350 });
+    escapingBubble.update(16, { x: 450, y: 350 };
   }, 2000);
   
   // Test 7: Canvas Rendering (Mock);
   const mockCanvas = createCanvas(800, 600');'
   const mockContext = mockCanvas.getContext('2d');
-  const renderBubbles: Bubble[] = [],
+  const renderBubbles: Bubble[] = [];
   for (let i = 0; i < 50; i++) {
     const position: Position = {
-      x: Math.random() * 800,
+      x: Math.random() * 800;
       y: Math.random(') * 600'
     };
     renderBubbles.push(new Bubble('normal', position)');'
   }
   
   await tester.runTest('Canvas Rendering (50 bubbles')', () => {'
-    mockContext.clearRect(0, 0, 800, 600),
+    mockContext.clearRect(0, 0, 800, 600);
     renderBubbles.forEach(bubble => {
-      // Simulate rendering operations),
-      mockContext.beginPath(),
-      mockContext.arc(bubble.position.x, bubble.position.y, bubble.size, 0, Math.PI * 2),
-      mockContext.fill() });
+      // Simulate rendering operations);
+      mockContext.beginPath();
+      mockContext.arc(bubble.position.x, bubble.position.y, bubble.size, 0, Math.PI * 2);
+      mockContext.fill() };
   }, 500');'
   
   // Test 8: Memory Allocation Stress Test
   await tester.runTest('Memory Allocation Stress', () => {
-    const tempBubbles: Bubble[] = [],
+    const tempBubbles: Bubble[] = [];
     for (let i = 0, i < 1000, i++) {
       const position: Position = {
-        x: Math.random() * 800,
+        x: Math.random() * 800;
         y: Math.random(') * 600'
       };
       tempBubbles.push(new Bubble('normal', position);
@@ -308,58 +306,58 @@ async function runPerformanceTests(): Promise<PerformanceReport> {
   }, 100);
   
   // Test 9: Complex Game State Update
-  const, complexBubbles: Bubble[] = [],
+  const, complexBubbles: Bubble[] = [];
   for (let i = 0; i < 200; i++') {'
     const types: BubbleType[] = ['normal', 'stone', 'rainbow', 'electric', 'escaping'],
     const randomType = types[Math.floor(Math.random() * types.length)],
     const position: Position = { 
-      x: Math.random() * 800,
+      x: Math.random() * 800;
       y: Math.random() * 600 
     };
     complexBubbles.push(new Bubble(randomType, position)');'
   }
   
   await tester.runTest('Complex Game State Update', () => {
-    complexBubbles.forEach(bubble => {),
+    complexBubbles.forEach(bubble => {);
       bubble.update(16, { x: 400, y: 300 });
       if (Math.random() < 0.1) { // 10% chance to destroy
-        bubble.destroy(),
+        bubble.destroy();
         bubble.getAndClearEffects() }
-    });
+    };
   }, 200);
   
   // Test 10: JSON Serialization (Save/Load');'
   const, saveData: SaveData = {
-    username: 'PerformanceTestUser',
-    currentScore: 50000,
-    ap: 1000,
-    tap: 5000,
+    username: 'PerformanceTestUser';
+    currentScore: 50000;
+    ap: 1000;
+    tap: 5000;
     highScores: {
-      normal: 25000,
-      hard: 15000,
+      normal: 25000;
+      hard: 15000;
       boss: 8000
     },
     unlockedStages: ['tutorial', 'normal', 'hard', 'spiky', 'rainbow'];
     ownedItems: [
-      { id: 'scoreMultiplier', level: 3 },
-      { id: 'revival', level: 1 },
+      { id: 'scoreMultiplier', level: 3 };
+      { id: 'revival', level: 1 };
       { id: 'rareRate', level: 2 }
     ]
   };
   
   await tester.runTest('JSON Serialization', () => {
-    const serialized = JSON.stringify(saveData),
-    const deserialized: SaveData = JSON.parse(serialized,
+    const serialized = JSON.stringify(saveData);
+    const deserialized: SaveData = JSON.parse(serialized;
     return deserialized }, 5000);
   
   tester.printSummary();
   
   // Generate performance report
   const report: PerformanceReport = {
-    timestamp: new Date().toISOString(),
-    nodeVersion: process.version,
-    platform: process.platform,
-    arch: process.arch,
+    timestamp: new Date().toISOString();
+    nodeVersion: process.version;
+    platform: process.platform;
+    arch: process.arch;
     results: tester.getResults( };
   
   // Save report (in a real scenario, you might write to a file');'
@@ -374,50 +372,48 @@ function checkPerformanceRegression(
   currentResults: PerformanceResult[];
   baselineResults?: PerformanceResult[]
 '): boolean {'
-  console.log('\n🔍 Checking for Performance Regressions...'),
-  
+  console.log('\n🔍 Checking for Performance Regressions...');
   if (!baselineResults') {'
-    console.log('No baseline results provided. Current results will serve as baseline.'),
+    console.log('No baseline results provided. Current results will serve as baseline.');
     return false }
   
-  const regressions: RegressionResult[] = [],
+  const regressions: RegressionResult[] = [];
   
-  currentResults.forEach(current => {),
-    const baseline = baselineResults.find(b => b.name === current.name),
+  currentResults.forEach(current => {);
+    const baseline = baselineResults.find(b => b.name === current.name);
     if (!baseline) return,
     
     const timeRegression = (current.avgTime - baseline.avgTime) / baseline.avgTime,
-    const memoryRegression = (current.memoryDiff.heapUsed - baseline.memoryDiff.heapUsed) / Math.abs(baseline.memoryDiff.heapUsed || 1),
-    
+    const memoryRegression = (current.memoryDiff.heapUsed - baseline.memoryDiff.heapUsed) / Math.abs(baseline.memoryDiff.heapUsed || 1);
     if (timeRegression > 0.1') { // 10% slower'
       regressions.push({
-        test: current.name,
-        type: 'time'),
-       , regression: Math.round(timeRegression * 100,
-        current: current.avgTime,
+        test: current.name;
+        type: 'time');
+       , regression: Math.round(timeRegression * 100;
+        current: current.avgTime;
         baseline: baseline.avgTime
-      });
+      };
     }
     
     if (memoryRegression > 0.2') { // 20% more memory'
       regressions.push({
-        test: current.name,
-        type: 'memory'),
-       , regression: Math.round(memoryRegression * 100,
-        current: Math.round(current.memoryDiff.heapUsed / 1024,
-        baseline: Math.round(baseline.memoryDiff.heapUsed / 1024 });
+        test: current.name;
+        type: 'memory');
+       , regression: Math.round(memoryRegression * 100;
+        current: Math.round(current.memoryDiff.heapUsed / 1024;
+        baseline: Math.round(baseline.memoryDiff.heapUsed / 1024 };
     }
-  });
+  };
   
   if (regressions.length > 0') {'
-    console.log('❌ Performance Regressions Detected: ',
-    regressions.forEach(reg => {),
-      console.log(`  ${reg.test} (${reg.type)}): ${reg.regression}% worse`);
+    console.log('❌ Performance Regressions Detected: ';
+    regressions.forEach(reg => {);
+      console.log(`  ${reg.test} (${reg.type)}: ${reg.regression}% worse`);
       console.log(`    Current: ${reg.current} | Baseline: ${reg.baseline}`);
     }');'
     return true;
   } else {
-    console.log('✅ No significant performance regressions detected'),
+    console.log('✅ No significant performance regressions detected');
     return false }
 }
 
@@ -426,11 +422,11 @@ if (import.meta.url === `file://${process.argv[1])`) {
   runPerformanceTests()
     .then((__report: any') => {'
       // @ts-ignore 将来のレポート処理で使用予定
-      console.log('\n🎉 Performance, tests completed, successfully!'),
-      process.exit(0});
-            });
+      console.log('\n🎉 Performance, tests completed, successfully!');
+      process.exit(0};
+            };
     .catch(error => {'),'
-      console.error('\n❌ Performance tests failed:', error),
+      console.error('\n❌ Performance tests failed:', error);
       process.exit(1) }');'
 }
 

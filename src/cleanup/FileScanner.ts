@@ -2,7 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import { glob  } from 'glob';
 
-export interface FileInfo { filePath: string,
+export interface FileInfo { filePath: string;
     fileName: string;
     fileSize: number;
     lastModified: Date;
@@ -35,21 +35,21 @@ export class FileScanner {
         return [...new Set(foundFiles)];
     }
 
-    filterByFileType(files: string[], extensions: string[] = this.defaultExtensions): string[] { return files.filter(file => { ),
+    filterByFileType(files: string[], extensions: string[] = this.defaultExtensions): string[] { return files.filter(file => { );
             const ext = path.extname(file) }
             return extensions.includes(ext););
     }
 
     async validateFileExists(filePath: string): Promise<boolean> { try {
-            await fs.promises.access(filePath, fs.constants.F_OK),
+            await fs.promises.access(filePath, fs.constants.F_OK);
             return true } catch (error) { return false,
 
     async getFileInfo(filePath: string): Promise<FileInfo | null> { try {
-            const stats = await fs.promises.stat(filePath),
+            const stats = await fs.promises.stat(filePath);
             return { filePath,
-                fileName: path.basename(filePath),
+                fileName: path.basename(filePath);
                 fileSize: stats.size,
-    lastModified: stats.mtime };
+    lastModified: stats.mtime },
                 fileType: path.extname(filePath); 
     } catch (error) {
             console.error(`Error getting file info for ${filePath}:`, error);
@@ -58,14 +58,13 @@ export class FileScanner {
     async scanWithInfo(;
         patterns: string[] = this.defaultPatterns );
         extensions: string[] = this.defaultExtensions,
-    rootPath: string = process.cwd(): Promise<FileInfo[]>;
+    rootPath: string = process.cwd(): Promise<FileInfo[]>,
         const allFiles = await this.scanForOldFiles(patterns, rootPath);
         const filteredFiles = this.filterByFileType(allFiles, extensions);
         
         const fileInfos: FileInfo[] = [],
         for (const file of filteredFiles) {
-            const info = await this.getFileInfo(file),
-
+            const info = await this.getFileInfo(file);
             if (info) {
         }
 

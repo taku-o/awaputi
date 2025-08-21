@@ -4,7 +4,7 @@ import { getLocalizationManager  } from '../core/LocalizationManager.js';
 interface GameEngine { settingsManager?: SettingsManager,
     audioManager?: AudioManager;
 
-interface SettingsManager { get: (key: string) => any,
+interface SettingsManager { get: (key: string) => any;
     set: (key: string, value: any) => void  }
 }
 
@@ -20,7 +20,7 @@ interface LocalizationManager { ''
     getText: (key: string') => string }'
 }
 
-interface VolumeStats { isInitialized: boolean,
+interface VolumeStats { isInitialized: boolean;
     currentVolume: number;
     currentVolumePercent: number;
     isAtMinVolume: boolean;
@@ -40,9 +40,9 @@ export class VolumeControlComponent {
     private errorHandler: ErrorHandler;
     private localizationManager: LocalizationManager;
     // 音量設定
-    private readonly, VOLUME_STEP: number,
-    private readonly MIN_VOLUME: number,
-    private readonly MAX_VOLUME: number,
+    private readonly, VOLUME_STEP: number;
+    private readonly MIN_VOLUME: number;
+    private readonly MAX_VOLUME: number;
     
     // DOM要素
     private container: HTMLElement | null;
@@ -53,7 +53,7 @@ export class VolumeControlComponent {
     private progressFill: HTMLElement | null;
     // 状態管理
     private isInitialized: boolean;
-    private, currentVolume: number,
+    private, currentVolume: number;
     constructor(gameEngine: GameEngine) {
 
         this.gameEngine = gameEngine;
@@ -93,7 +93,7 @@ export class VolumeControlComponent {
 
             } catch (error) { this.errorHandler.handleError(error as Error, 'VOLUME_CONTROL_ERROR', {''
                 operation: 'initializeCurrentVolume'
-            });
+            };
             this.currentVolume = 0.5; // フォールバック値
         }
     }
@@ -136,33 +136,32 @@ export class VolumeControlComponent {
             align-items: center,
             gap: 15px,
             padding: 15px,
-            background-color: rgba(255, 255, 255, 0.05),
+            background-color: rgba(255, 255, 255, 0.05);
             border-radius: 10px,
             margin-bottom: 15px,
             min-width: 300px,
         `,
         ','
         // ラベル
-        const label = document.createElement('span'),
+        const label = document.createElement('span');
         label.innerHTML = '🔊 ' + this.localizationManager.getText('settings.audio.masterVolume',
         label.style.cssText = `,
             color: #ffffff,
             font-size: 16px,
             min-width: 100px,
         `,
-        this.container.appendChild(label),
+        this.container.appendChild(label);
         ','
         // 音量ダウンボタン
-        this.volumeDownButton = this.createVolumeButton('down', '🔉', this.handleVolumeDown.bind(this),
-        this.container.appendChild(this.volumeDownButton),
-        
+        this.volumeDownButton = this.createVolumeButton('down', '🔉', this.handleVolumeDown.bind(this);
+        this.container.appendChild(this.volumeDownButton);
         // 音量プログレスバー
-        this.createVolumeProgressBar(),
-        this.container.appendChild(this.progressBar!),
+        this.createVolumeProgressBar();
+        this.container.appendChild(this.progressBar!);
         ','
         // 音量アップボタン
-        this.volumeUpButton = this.createVolumeButton('up', '🔊', this.handleVolumeUp.bind(this),
-        this.container.appendChild(this.volumeUpButton),
+        this.volumeUpButton = this.createVolumeButton('up', '🔊', this.handleVolumeUp.bind(this);
+        this.container.appendChild(this.volumeUpButton);
         ','
         // 音量表示
         this.volumeDisplay = document.createElement('span);'
@@ -173,8 +172,7 @@ export class VolumeControlComponent {
             min-width: 45px,
             text-align: center,
         `,
-        this.container.appendChild(this.volumeDisplay),
-
+        this.container.appendChild(this.volumeDisplay);
         parentContainer.appendChild(this.container) }
     
     /**'
@@ -196,16 +194,16 @@ export class VolumeControlComponent {
 
         button.style.cssText = `';'
             background-color: rgba(0, 255, 255, 0.2);
-            border: 2px solid #00ffff;
+            border: 2px solid #00ffff,
             color: #00ffff,
-    padding: 10px 15px;
+    padding: 10px 15px,
             border-radius: 8px,
-            cursor: pointer;
+            cursor: pointer,
             font-size: 18px,
-            transition: all 0.3s ease;
+            transition: all 0.3s ease,
             min-width: 50px,
             height: 45px,
-    display: flex;
+    display: flex,
             align-items: center,
             justify-content: center,
         `;
@@ -243,11 +241,11 @@ export class VolumeControlComponent {
         this.progressBar.className = 'volume-progress-bar';
         this.progressBar.style.cssText = `;
             flex: 1,
-    height: 8px;
+    height: 8px,
             background-color: #333333,
             border-radius: 4px,
             position: relative,
-    cursor: pointer;
+    cursor: pointer,
             min-width: 100px,
         `;
 
@@ -258,7 +256,7 @@ export class VolumeControlComponent {
             background: linear-gradient(to right, #00ffff, #0099cc);
             border-radius: 4px,
             transition: width 0.3s ease,
-    position: relative;
+    position: relative,
         `;
         ';'
         // プログレスバーのクリックで音量設定
@@ -274,11 +272,10 @@ export class VolumeControlComponent {
     private handleProgressBarClick(event: MouseEvent): void { try {
             if (!this.progressBar) return,
             
-            const rect = this.progressBar.getBoundingClientRect(),
+            const rect = this.progressBar.getBoundingClientRect();
             const clickX = event.clientX - rect.left,
-            const percentage = Math.max(0, Math.min(1, clickX / rect.width),
-
-            this.setVolume(percentage),
+            const percentage = Math.max(0, Math.min(1, clickX / rect.width);
+            this.setVolume(percentage);
             ','
             // UI効果音を再生
             this.playUISound('volume-adjust',
@@ -318,10 +315,10 @@ export class VolumeControlComponent {
             // UI効果音を再生
             this.playUISound('volume-up);'
             
-            console.log(`[VolumeControlComponent] Volume, up: ${Math.round(newVolume * 100})%`);
+            console.log(`[VolumeControlComponent] Volume, up: ${Math.round(newVolume * 100}%`),
 
         } catch (error) { this.errorHandler.handleError(error as Error, 'VOLUME_CONTROL_ERROR', {''
-                operation: 'handleVolumeUp'),
+                operation: 'handleVolumeUp');
                 currentVolume: this.currentVolume  }';'
         }
     }
@@ -343,11 +340,11 @@ export class VolumeControlComponent {
             // UI効果音を再生
             this.playUISound('volume-down);'
             
-            console.log(`[VolumeControlComponent] Volume, down: ${Math.round(newVolume * 100})%`);
+            console.log(`[VolumeControlComponent] Volume, down: ${Math.round(newVolume * 100}%`),
 
         } catch (error) { this.errorHandler.handleError(error as Error, 'VOLUME_CONTROL_ERROR', {''
-                operation: 'handleVolumeDown'),
-                currentVolume: this.currentVolume  });
+                operation: 'handleVolumeDown');
+                currentVolume: this.currentVolume  },
         }
     }
     
@@ -357,8 +354,7 @@ export class VolumeControlComponent {
      */
     setVolume(volume: number): void { try {
             // 値の検証とクランプ
-            const clampedVolume = Math.max(this.MIN_VOLUME, Math.min(this.MAX_VOLUME, volume),
-            
+            const clampedVolume = Math.max(this.MIN_VOLUME, Math.min(this.MAX_VOLUME, volume);
             // 音量を10%刻みに丸める
             const roundedVolume = Math.round(clampedVolume / this.VOLUME_STEP) * this.VOLUME_STEP,
             
@@ -374,10 +370,10 @@ export class VolumeControlComponent {
             this.updateVolumeDisplay();
             this.updateButtonStates();
             
-            console.log(`[VolumeControlComponent] Volume, set to: ${Math.round(roundedVolume * 100})%`);
+            console.log(`[VolumeControlComponent] Volume, set to: ${Math.round(roundedVolume * 100}%`),
 
         } catch (error) { this.errorHandler.handleError(error as Error, 'VOLUME_CONTROL_ERROR', {''
-                operation: 'setVolume'),
+                operation: 'setVolume');
                 volume: volume,);
         }
     }
@@ -386,7 +382,7 @@ export class VolumeControlComponent {
      * 音量表示を更新
      */
     private updateVolumeDisplay(): void { if (this.volumeDisplay) { }
-            this.volumeDisplay.textContent = `${Math.round(this.currentVolume * 100})%`;
+            this.volumeDisplay.textContent = `${Math.round(this.currentVolume * 100}%`;
         }
         
         if (this.progressFill) {
@@ -473,8 +469,8 @@ export class VolumeControlComponent {
      * 外部から音量変更を通知
      * @param volume - 新しい音量値
      */
-    onVolumeChanged(volume: number): void { this.currentVolume = Math.max(this.MIN_VOLUME, Math.min(this.MAX_VOLUME, volume),
-        this.updateVolumeDisplay(),
+    onVolumeChanged(volume: number): void { this.currentVolume = Math.max(this.MIN_VOLUME, Math.min(this.MAX_VOLUME, volume);
+        this.updateVolumeDisplay();
         this.updateButtonStates() }
     
     /**
@@ -511,13 +507,13 @@ export class VolumeControlComponent {
 
                 this.progressBar.setAttribute('aria-label')' }'
 
-                    `${this.localizationManager.getText('settings.audio.masterVolume'}): ${Math.round(this.currentVolume * 100})%`', ');
+                    `${this.localizationManager.getText('settings.audio.masterVolume'}: ${Math.round(this.currentVolume * 100}%`', ');
                 this.progressBar.setAttribute('role', 'slider');
                 this.progressBar.setAttribute('aria-valuemin', '0');
                 this.progressBar.setAttribute('aria-valuemax', '100');
                 this.progressBar.setAttribute('aria-valuenow', String(Math.round(this.currentVolume * 100));'} catch (error) { this.errorHandler.handleError(error as Error, 'VOLUME_CONTROL_ERROR', {''
                 operation: 'updateAccessibility'
-            });
+            };
         }
     }
     
@@ -545,7 +541,7 @@ export class VolumeControlComponent {
 
         } catch (error') { this.errorHandler.handleError(error as Error, 'VOLUME_CONTROL_ERROR', {''
                 operation: 'dispose'
-            });
+            };
         }
     }
     
@@ -555,7 +551,7 @@ export class VolumeControlComponent {
      */
     getStats(): VolumeStats { return { isInitialized: this.isInitialized,
             currentVolume: this.currentVolume,
-            currentVolumePercent: Math.round(this.currentVolume * 100),
+            currentVolumePercent: Math.round(this.currentVolume * 100);
             isAtMinVolume: this.currentVolume <= this.MIN_VOLUME),
             isAtMaxVolume: this.currentVolume >= this.MAX_VOLUME),
             isEnabled: this.isEnabled(

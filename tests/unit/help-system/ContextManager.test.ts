@@ -9,17 +9,17 @@ interface MockGameEngine {
         getCurrentScen,e: jest.Mock<() => MockScene>
     },
     bubbleManager: {
-        getBubbles: jest.Mock<() => any[]>,
+        getBubbles: jest.Mock<() => any[]>;
         getActiveBubbleTypes: jest.Mock<() => string[]>
     },
     scoreManager: {
-        getCurrentScore: jest.Mock<() => number>,
+        getCurrentScore: jest.Mock<() => number>;
         getCurrentCombo: jest.Mock<() => number>
     },
-    canvas: { width: number,, height: number,;
+    canvas: { width: number,, height: number;
 }
 interface MockScene {
-    constructor: { nam,e: string,;
+    constructor: { nam,e: string;
     getCurrentState: jest.Mock<(') => SceneState>,'
 }
 interface SceneState {
@@ -33,24 +33,24 @@ interface GameContext {
     gameState?: GameState;
     error?: boolean;
 interface GameState {
-    bubbleCount: number,
+    bubbleCount: number;
     timeRemaining: number;
     currentScore: number;
     currentCombo: number;
     activeBubbleTypes: string[];
 interface HelpItem {
-    priority: 'high' | 'medium' | 'low',
+    priority: 'high' | 'medium' | 'low';
     category: string;
     content?: string;
 interface TooltipContent {
     title: string;
     description?: string;
 interface Tooltip {
-    x: number,
+    x: number;
     y: number;
     content: TooltipContent;
 interface SuggestedAction {
-    action: string,
+    action: string;
     reason: string;
     priority?: 'urgent' | 'normal' }
 interface UserBehavior {
@@ -59,10 +59,10 @@ interface UserBehavior {
     preferredBubbleTypes?: string[];
     sessionTime: number;
 interface SmartHelp {
-    category: 'basic' | 'intermediate' | 'advanced',
+    category: 'basic' | 'intermediate' | 'advanced';
     suggestions: string[];
 interface MockDOMRect {
-    left: number,
+    left: number;
     top: number;
     width: number;
     height: number;
@@ -84,41 +84,41 @@ const mockGameEngine: MockGameEngine = {
         getCurrentCombo: jest.fn(() => 3)),
     canvas: { width: 800,
         height: 600
-            });
+            };
 ');'
 describe('ContextManager', () => {
     let contextManager: ContextManager,
     
     beforeEach(() => {
-        jest.clearAllMocks(),
-        contextManager = new ContextManager(mockGameEngine) });
+        jest.clearAllMocks();
+        contextManager = new ContextManager(mockGameEngine) };
     afterEach(() => {
         if (contextManager) {
             contextManager.destroy() }
     }');'
     describe('初期化', (') => {'
         test('正常に初期化される', () => {
-            expect(contextManager).toBeInstanceOf(ContextManager),
-            expect(contextManager.gameEngine).toBe(mockGameEngine),
+            expect(contextManager).toBeInstanceOf(ContextManager);
+            expect(contextManager.gameEngine).toBe(mockGameEngine);
             expect(contextManager.tooltipElements).toBeInstanceOf(Map) }');'
         test('初期状態が正しく設定される', () => {
-            expect(contextManager.currentTooltip).toBeNull(),
-            expect(contextManager.contextCache).toBeInstanceOf(Map),
+            expect(contextManager.currentTooltip).toBeNull();
+            expect(contextManager.contextCache).toBeInstanceOf(Map);
             expect(contextManager.tooltipElements.size).toBe(0) }');'
     }
     describe('コンテキスト検出', (') => {'
         test('現在のコンテキストを検出できる', () => {
             const context = contextManager.detectCurrentContext() as GameContext,
-            expect(context).toBeDefined(),
+            expect(context).toBeDefined();
             expect(context.sceneName').toBe('GameScene'),'
-            expect(context.sceneState).toBeDefined(),
+            expect(context.sceneState).toBeDefined();
             expect(context.gameState).toBeDefined() }');'
         test('GameSceneの詳細コンテキストを検出', () => {
             const context = contextManager.detectCurrentContext() as GameContext,
-            expect(context.gameState!.bubbleCount).toBe(5),
-            expect(context.gameState!.timeRemaining).toBe(120),
-            expect(context.gameState!.currentScore).toBe(1500),
-            expect(context.gameState!.currentCombo).toBe(3),
+            expect(context.gameState!.bubbleCount).toBe(5);
+            expect(context.gameState!.timeRemaining).toBe(120);
+            expect(context.gameState!.currentScore).toBe(1500);
+            expect(context.gameState!.currentCombo).toBe(3);
             expect(context.gameState!.activeBubbleTypes').toEqual(['normal', 'stone']) }');
         test('異なるシーンのコンテキストを検出', (') => {'
             mockGameEngine.sceneManager.getCurrentScene.mockReturnValue({
@@ -129,8 +129,8 @@ describe('ContextManager', () => {
             expect(context.sceneState!.menuSelection').toBe('start');'
         )');'
         test('コンテキストキャッシュが機能する', () => {
-            const context1 = contextManager.detectCurrentContext(),
-            const context2 = contextManager.detectCurrentContext(),
+            const context1 = contextManager.detectCurrentContext();
+            const context2 = contextManager.detectCurrentContext();
             // Same object returned within same frame
             expect(context1).toBe(context2) }');'
     }
@@ -213,7 +213,7 @@ describe('ContextManager', () => {
             expect(contextManager.currentTooltip!.content).toEqual(content);
         }');'
         test('ツールチップ位置が画面境界に調整される', (') => {'
-            const content: TooltipContent = { title: 'テスト', description: 'テスト' };
+            const content: TooltipContent = { title: 'テスト', description: 'テスト' },
             
             // Try to show near right edge
             contextManager.showContextualTooltip(750, 150, content);
@@ -222,16 +222,16 @@ describe('ContextManager', () => {
             expect(tooltip.x).toBeLessThan(750);
         }');'
         test('ツールチップを非表示にできる', (') => {'
-            const content: TooltipContent = { title: 'テスト', description: 'テスト' };
+            const content: TooltipContent = { title: 'テスト', description: 'テスト' },
             contextManager.showContextualTooltip(100, 100, content);
             contextManager.hideTooltip();
             expect(contextManager.currentTooltip).toBeNull();
         }');'
         test('複数のツールチップ要素を管理できる', (') => {'
-            const element1: MockElement = { id: 'element1' };
-            const element2: MockElement = { id: 'element2' };
-            const content1: TooltipContent = { title: 'ツールチップ1' };
-            const content2: TooltipContent = { title: 'ツールチップ2' };
+            const element1: MockElement = { id: 'element1' },
+            const element2: MockElement = { id: 'element2' },
+            const content1: TooltipContent = { title: 'ツールチップ1' },
+            const content2: TooltipContent = { title: 'ツールチップ2' },
             contextManager.registerTooltip(element1, content1);
             contextManager.registerTooltip(element2, content2);
             expect(contextManager.tooltipElements.size).toBe(2);
@@ -308,23 +308,23 @@ describe('ContextManager', () => {
     }
     describe('パフォーマンス', (') => {'
         test('コンテキスト検出のキャッシュ機能', (') => {'
-            const spy = jest.spyOn(mockGameEngine.sceneManager, 'getCurrentScene'),
+            const spy = jest.spyOn(mockGameEngine.sceneManager, 'getCurrentScene');
             // Multiple calls within same frame
-            contextManager.detectCurrentContext(),
-            contextManager.detectCurrentContext(),
-            contextManager.detectCurrentContext(),
+            contextManager.detectCurrentContext();
+            contextManager.detectCurrentContext();
+            contextManager.detectCurrentContext();
             // Cache prevents multiple actual calls
             expect(spy).toHaveBeenCalledTimes(1) }');'
         test('フレーム更新時にキャッシュがクリアされる', () => {
-            contextManager.detectCurrentContext(),
+            contextManager.detectCurrentContext();
             // Simulate frame update
-            contextManager.clearContextCache(),
+            contextManager.clearContextCache();
             expect(contextManager.contextCache.size).toBe(0) }');'
     }
     describe('エラーハンドリング', (') => {'
         test('シーン取得エラーが処理される', () => {
             mockGameEngine.sceneManager.getCurrentScene.mockImplementation((') => {'
-                throw new Error('Scene error') });
+                throw new Error('Scene error') };
             const context = contextManager.detectCurrentContext() as GameContext;
             expect(context).toBeDefined();
             expect(context.sceneName').toBe('unknown');'
@@ -332,11 +332,11 @@ describe('ContextManager', () => {
         }');'
         test('ツールチップ表示エラーが処理される', () => {
             const invalidContent = null as any,
-            const result = contextManager.showContextualTooltip(100, 100, invalidContent),
-            expect(result).toBe(false),
+            const result = contextManager.showContextualTooltip(100, 100, invalidContent);
+            expect(result).toBe(false);
             expect(contextManager.currentTooltip).toBeNull() }');'
         test('不正な座標でのツールチップ表示', (') => {'
-            const content: TooltipContent = { title: 'テスト' };
+            const content: TooltipContent = { title: 'テスト' },
             const result = contextManager.showContextualTooltip(-100, -100, content);
             expect(result).toBe(true);
             // Coordinates are automatically adjusted
@@ -346,14 +346,14 @@ describe('ContextManager', () => {
     }
     describe('クリーンアップ', (') => {'
         test('cleanup時にリソースが適切に解放される', (') => {'
-            const element: MockElement = { id: 'test' };
-            const content: TooltipContent = { title: 'テスト' };
+            const element: MockElement = { id: 'test' },
+            const content: TooltipContent = { title: 'テスト' },
             contextManager.registerTooltip(element, content);
             contextManager.showContextualTooltip(100, 100, content);
             contextManager.destroy();
             expect(contextManager.tooltipElements.size).toBe(0);
             expect(contextManager.currentTooltip).toBeNull();
             expect(contextManager.contextCache.size).toBe(0);
-        });
+        };
     }
 }');'

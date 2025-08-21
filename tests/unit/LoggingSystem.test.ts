@@ -5,33 +5,33 @@ import { jest, describe, test, expect, beforeEach, afterEach } from '@jest/globa
 import { LoggingSystem, getLoggingSystem } from '../../src/core/LoggingSystem';
 // Type definitions
 interface LogLevel {
-    debug: number,
+    debug: number;
     info: number;
     warn: number;
     error: number;
 interface LogEntry {
-    timestamp: number,
+    timestamp: number;
     level: keyof LogLevel;
     message: string;
     data?: any;
     source?: string;
 interface LogConfig {
-    maxLogSize: number,
+    maxLogSize: number;
     logLevel: keyof LogLevel;
     enableConsole: boolean;
 interface LogStats {
-    total: number,
+    total: number;
     byLevel: Record<keyof LogLevel, number>;
     byCategory: Record<string, number> }
 interface ConfigChangeData {
-    category: string,
+    category: string;
     key: string;
     oldValue: any;
     newValue: any;
     changeType: 'create' | 'update' | 'delete'
             }
 interface ConfigConflictData {
-    category: string,
+    category: string;
     key: string;
     value1: any;
     value2: any;
@@ -42,28 +42,28 @@ interface LogFilter {
     limit?: number;
     newest?: boolean;
 interface ConsoleOutput {
-    debug: any[][],
+    debug: any[][];
     info: any[][];
     warn: any[][];
     error: any[][];
 describe('LoggingSystem', () => {
-    let loggingSystem: LoggingSystem,
+    let loggingSystem: LoggingSystem;
     
     // Mock console output
     const originalConsole = { ...console };
     let consoleOutput: ConsoleOutput = {
-        debug: [],
-        info: [],
-        warn: [],
+        debug: [];
+        info: [];
+        warn: [];
         error: []
     };
     
     beforeEach(() => {
         // Mock console output
         consoleOutput = {
-            debug: [],
-            info: [],
-            warn: [],
+            debug: [];
+            info: [];
+            warn: [];
             error: []
         };
         
@@ -73,8 +73,8 @@ describe('LoggingSystem', () => {
         console.error = (...args) => { consoleOutput.error.push(args') };'
         
         loggingSystem = new LoggingSystem({
-            maxLogSize: 10,
-            logLevel: 'debug',
+            maxLogSize: 10;
+            logLevel: 'debug';
             enableConsole: true,);
     }
     afterEach(() => {
@@ -85,29 +85,29 @@ describe('LoggingSystem', () => {
         console.error = originalConsole.error }');'
     describe('基本機能', (') => {'
         test('LoggingSystemクラスが正しく初期化される', () => {
-            expect(loggingSystem.logs).toEqual([]),
-            expect(loggingSystem.config.maxLogSize).toBe(10),
+            expect(loggingSystem.logs).toEqual([]);
+            expect(loggingSystem.config.maxLogSize).toBe(10);
             expect(loggingSystem.config.logLevel').toBe('debug'),'
             expect(loggingSystem.stats.total).toBe(0) }');'
         test('シングルトンインスタンスが正しく動作する', () => {
-            const instance1 = getLoggingSystem(),
-            const instance2 = getLoggingSystem(),
-            expect(instance1).toBe(instance2),
+            const instance1 = getLoggingSystem();
+            const instance2 = getLoggingSystem();
+            expect(instance1).toBe(instance2);
             expect(instance1).toBeInstanceOf(LoggingSystem) }');'
         test('シングルトンインスタンスの設定を更新できる', () => {
             const instance1 = getLoggingSystem('),'
-            const instance2 = getLoggingSystem({ logLevel: 'warn' });
+            const instance2 = getLoggingSystem({ logLevel: 'warn' };
             expect(instance1).toBe(instance2);
             expect(instance1.config.logLevel').toBe('warn');'
         }');'
     }
     describe('ログ記録', (') => {'
         test('各レベルのログを記録できる', (') => {'
-            loggingSystem.debug('デバッグメッセージ'),
-            loggingSystem.info('情報メッセージ'),
-            loggingSystem.warn('警告メッセージ'),
-            loggingSystem.error('エラーメッセージ'),
-            expect(loggingSystem.logs.length).toBe(4),
+            loggingSystem.debug('デバッグメッセージ');
+            loggingSystem.info('情報メッセージ');
+            loggingSystem.warn('警告メッセージ');
+            loggingSystem.error('エラーメッセージ');
+            expect(loggingSystem.logs.length).toBe(4);
             expect(loggingSystem.logs[0].level').toBe('debug'),'
             expect(loggingSystem.logs[1].level').toBe('info'),'
             expect(loggingSystem.logs[2].level').toBe('warn'),'
@@ -128,66 +128,66 @@ describe('LoggingSystem', () => {
             expect(loggingSystem.logs[0].data).toEqual(data);
         }');'
         test('ソース情報を記録できる', (') => {'
-            loggingSystem.info('ソース付きメッセージ', null, 'TestSource'),
+            loggingSystem.info('ソース付きメッセージ', null, 'TestSource');
             expect(loggingSystem.logs[0].source').toBe('TestSource') }');
     }
     describe('設定変更記録', (') => {'
         test('設定変更を記録できる', (') => {'
-            loggingSystem.logConfigChange('game', 'score', 100, 200, 'TestSource'),
-            expect(loggingSystem.logs.length).toBe(1),
+            loggingSystem.logConfigChange('game', 'score', 100, 200, 'TestSource');
+            expect(loggingSystem.logs.length).toBe(1);
             expect(loggingSystem.logs[0].message').toContain('設定変更'),'
             const data = loggingSystem.logs[0].data as ConfigChangeData,
             expect(data.category').toBe('game'),'
             expect(data.key').toBe('score'),'
-            expect(data.oldValue).toBe(100),
-            expect(data.newValue).toBe(200),
+            expect(data.oldValue).toBe(100);
+            expect(data.newValue).toBe(200);
             expect(data.changeType').toBe('update') }');
         test('設定作成を記録できる', (') => {'
-            loggingSystem.logConfigChange('game', 'newSetting', undefined, 'value', 'TestSource'),
+            loggingSystem.logConfigChange('game', 'newSetting', undefined, 'value', 'TestSource');
             const data = loggingSystem.logs[0].data as ConfigChangeData,
             expect(data.changeType').toBe('create') }');
         test('設定削除を記録できる', (') => {'
-            loggingSystem.logConfigChange('game', 'oldSetting', 'value', undefined, 'TestSource'),
+            loggingSystem.logConfigChange('game', 'oldSetting', 'value', undefined, 'TestSource');
             const data = loggingSystem.logs[0].data as ConfigChangeData,
             expect(data.changeType').toBe('delete') }');
     }
     describe('設定競合記録', (') => {'
         test('設定競合を記録できる', (') => {'
-            loggingSystem.logConfigConflict('game', 'score', 100, 200, 200, 'TestSource'),
-            expect(loggingSystem.logs.length).toBe(1),
+            loggingSystem.logConfigConflict('game', 'score', 100, 200, 200, 'TestSource');
+            expect(loggingSystem.logs.length).toBe(1);
             expect(loggingSystem.logs[0].message').toContain('設定競合'),'
             expect(loggingSystem.logs[0].level').toBe('warn'),'
             const data = loggingSystem.logs[0].data as ConfigConflictData,
             expect(data.category').toBe('game'),'
             expect(data.key').toBe('score'),'
-            expect(data.value1).toBe(100),
-            expect(data.value2).toBe(200),
+            expect(data.value1).toBe(100);
+            expect(data.value2).toBe(200);
             expect(data.resolvedValue).toBe(200) }');'
     }
     describe('ログ取得', () => {
         beforeEach((') => {'
-            loggingSystem.debug('デバッグメッセージ'),
+            loggingSystem.debug('デバッグメッセージ');
             loggingSystem.info('情報メッセージ', { category: 'game' }');'
             loggingSystem.warn('警告メッセージ', { category: 'audio' }');'
             loggingSystem.error('エラーメッセージ', { category: 'game' }');'
         }
         test('全てのログを取得できる', () => {
-            const logs = loggingSystem.getLogs(),
+            const logs = loggingSystem.getLogs();
             expect(logs.length).toBe(4) }');'
         test('レベルでフィルタリングできる', (') => {'
-            const logs = loggingSystem.getLogs({ level: 'warn' });
+            const logs = loggingSystem.getLogs({ level: 'warn' };
             expect(logs.length).toBe(2);
             expect(logs[0].level').toBe('warn');'
             expect(logs[1].level').toBe('error');'
         }');'
         test('カテゴリでフィルタリングできる', (') => {'
-            const logs = loggingSystem.getLogs({ category: 'game' });
+            const logs = loggingSystem.getLogs({ category: 'game' };
             expect(logs.length).toBe(2);
             expect(logs[0].data.category').toBe('game');'
             expect(logs[1].data.category').toBe('game');'
         }');'
         test('件数制限できる', () => {
-            const logs = loggingSystem.getLogs({ limit: 2 });
+            const logs = loggingSystem.getLogs({ limit: 2 };
             expect(logs.length).toBe(2);
         }');'
         test('最新順に取得できる', () => {
@@ -203,50 +203,50 @@ describe('LoggingSystem', () => {
             loggingSystem.logConfigChange('audio', 'volume', 0.5, 0.7'),'
             loggingSystem.info('通常ログ') }');'
         test('全ての設定履歴を取得できる', () => {
-            const history = loggingSystem.getConfigHistory(),
+            const history = loggingSystem.getConfigHistory();
             expect(history.length).toBe(3) }');'
         test('カテゴリでフィルタリングできる', (') => {'
-            const history = loggingSystem.getConfigHistory('game'),
-            expect(history.length).toBe(2),
+            const history = loggingSystem.getConfigHistory('game');
+            expect(history.length).toBe(2);
             expect((history[0].data as ConfigChangeData).category').toBe('game'),'
             expect((history[1].data as ConfigChangeData).category').toBe('game') }');
         test('キーでフィルタリングできる', (') => {'
-            const history = loggingSystem.getConfigHistory('game', 'score'),
-            expect(history.length).toBe(1),
+            const history = loggingSystem.getConfigHistory('game', 'score');
+            expect(history.length).toBe(1);
             expect((history[0].data as ConfigChangeData).key').toBe('score') }');
         test('件数制限できる', () => {
-            const history = loggingSystem.getConfigHistory(null, null, 2),
+            const history = loggingSystem.getConfigHistory(null, null, 2);
             expect(history.length).toBe(2) }');'
     }
     describe('ログクリア', (') => {'
         test('ログをクリアできる', (') => {'
-            loggingSystem.info('テストメッセージ'),
-            expect(loggingSystem.logs.length).toBe(1),
-            loggingSystem.clearLogs(),
+            loggingSystem.info('テストメッセージ');
+            expect(loggingSystem.logs.length).toBe(1);
+            loggingSystem.clearLogs();
             expect(loggingSystem.logs.length).toBe(0) }');'
         test('統計情報もリセットされる', (') => {'
-            loggingSystem.info('テストメッセージ'),
-            expect(loggingSystem.stats.total).toBe(1),
-            loggingSystem.clearLogs(),
+            loggingSystem.info('テストメッセージ');
+            expect(loggingSystem.stats.total).toBe(1);
+            loggingSystem.clearLogs();
             expect(loggingSystem.stats.total).toBe(0) }');'
     }
     describe('統計情報', (') => {'
         test('ログレベル別の統計が記録される', (') => {'
-            loggingSystem.debug('デバッグメッセージ'),
-            loggingSystem.info('情報メッセージ'),
-            loggingSystem.info('情報メッセージ2'),
-            loggingSystem.warn('警告メッセージ'),
-            loggingSystem.error('エラーメッセージ'),
+            loggingSystem.debug('デバッグメッセージ');
+            loggingSystem.info('情報メッセージ');
+            loggingSystem.info('情報メッセージ2');
+            loggingSystem.warn('警告メッセージ');
+            loggingSystem.error('エラーメッセージ');
             const stats = loggingSystem.getStats() as LogStats,
-            expect(stats.total).toBe(5),
-            expect(stats.byLevel.debug).toBe(1),
-            expect(stats.byLevel.info).toBe(2),
-            expect(stats.byLevel.warn).toBe(1),
+            expect(stats.total).toBe(5);
+            expect(stats.byLevel.debug).toBe(1);
+            expect(stats.byLevel.info).toBe(2);
+            expect(stats.byLevel.warn).toBe(1);
             expect(stats.byLevel.error).toBe(1) }');'
         test('カテゴリ別の統計が記録される', (') => {'
             loggingSystem.info('メッセージ1', { category: 'game' }');'
             loggingSystem.info('メッセージ2', { category: 'game' }');'
-            loggingSystem.info('メッセージ3', { category: 'audio' });
+            loggingSystem.info('メッセージ3', { category: 'audio' };
             const stats = loggingSystem.getStats() as LogStats;
             expect(stats.byCategory.game).toBe(2);
             expect(stats.byCategory.audio).toBe(1);
@@ -257,39 +257,39 @@ describe('LoggingSystem', () => {
             loggingSystem.info('テストメッセージ', { key: 'value' }');'
         }
         test('JSONとしてエクスポートできる', (') => {'
-            const json = loggingSystem.exportLogs('json'),
+            const json = loggingSystem.exportLogs('json');
             expect(typeof json').toBe('string'),'
             const parsed = JSON.parse(json) as LogEntry[],
-            expect(parsed.length).toBe(1),
+            expect(parsed.length).toBe(1);
             expect(parsed[0].message').toBe('テストメッセージ') }');
         test('CSVとしてエクスポートできる', (') => {'
-            const csv = loggingSystem.exportLogs('csv'),
+            const csv = loggingSystem.exportLogs('csv');
             expect(typeof csv').toBe('string'),'
             expect(csv').toContain('timestamp,level,source,message,data'),'
             expect(csv').toContain('テストメッセージ') }');
         test('未対応の形式では空文字列を返す', (') => {'
-            const result = loggingSystem.exportLogs('unknown' as any),
+            const result = loggingSystem.exportLogs('unknown' as any);
             expect(result').toBe(') }');'
     }
     describe('コンソール出力', (') => {'
         test('デバッグレベルのログがコンソールに出力される', (') => {'
-            loggingSystem.debug('デバッグメッセージ'),
-            expect(consoleOutput.debug.length).toBe(1),
+            loggingSystem.debug('デバッグメッセージ');
+            expect(consoleOutput.debug.length).toBe(1);
             expect(consoleOutput.debug[0][0]').toContain('[DEBUG]'),'
             expect(consoleOutput.debug[0][0]').toContain('デバッグメッセージ') }');
         test('情報レベルのログがコンソールに出力される', (') => {'
-            loggingSystem.info('情報メッセージ'),
-            expect(consoleOutput.info.length).toBe(1),
+            loggingSystem.info('情報メッセージ');
+            expect(consoleOutput.info.length).toBe(1);
             expect(consoleOutput.info[0][0]').toContain('[INFO]'),'
             expect(consoleOutput.info[0][0]').toContain('情報メッセージ') }');
         test('警告レベルのログがコンソールに出力される', (') => {'
-            loggingSystem.warn('警告メッセージ'),
-            expect(consoleOutput.warn.length).toBe(1),
+            loggingSystem.warn('警告メッセージ');
+            expect(consoleOutput.warn.length).toBe(1);
             expect(consoleOutput.warn[0][0]').toContain('[WARN]'),'
             expect(consoleOutput.warn[0][0]').toContain('警告メッセージ') }');
         test('エラーレベルのログがコンソールに出力される', (') => {'
-            loggingSystem.error('エラーメッセージ'),
-            expect(consoleOutput.error.length).toBe(1),
+            loggingSystem.error('エラーメッセージ');
+            expect(consoleOutput.error.length).toBe(1);
             expect(consoleOutput.error[0][0]').toContain('[ERROR]'),'
             expect(consoleOutput.error[0][0]').toContain('エラーメッセージ') }');
         test('コンソール出力を無効にできる', () => {
@@ -300,12 +300,12 @@ describe('LoggingSystem', () => {
     }
     describe('サイズ制限', (') => {'
         test('最大サイズを超えるとログが削除される', () => {
-            // Add logs exceeding max size (10});
+            // Add logs exceeding max size (10};
             for (let i = 0; i < 15; i++) {
                 loggingSystem.info(`メッセージ${i}`);
             }
             
             expect(loggingSystem.logs.length).toBeLessThanOrEqual(10);
-        });
+        };
     }
 }');'

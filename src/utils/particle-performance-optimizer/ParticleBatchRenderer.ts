@@ -4,7 +4,7 @@
  */
 
 // Types for particle batch rendering
-interface BatchConfig { enabled: boolean,
+interface BatchConfig { enabled: boolean;
     maxBatchSize: number;
     maxInstances: number;
     sortByTexture: boolean;
@@ -15,7 +15,7 @@ interface BatchConfig { enabled: boolean,
     instancing: boolean;
     atlasOptimization: boolean;
 
-interface Batch { material: string,
+interface Batch { material: string;
     particles: Particle[];
     vertexBuffer: Float32Array | null;
     indexBuffer: Uint16Array | null;
@@ -36,7 +36,7 @@ interface BatchManager { batches: Map<string, Batch>,
     currentBuffer: any;
     bufferPool: any[];
 
-interface TextureAtlas { enabled: boolean,
+interface TextureAtlas { enabled: boolean;
     atlas: any;
     atlasSize: number;
     atlasSlots: Map<string, number>;
@@ -47,13 +47,13 @@ interface TextureAtlas { enabled: boolean,
     totalSlots: number;
     usedSlots: number;
 
-interface InstanceBuffer { transforms: Float32Array | null,
+interface InstanceBuffer { transforms: Float32Array | null;
     colors: Float32Array | null;
     uvs: Float32Array | null;
     count: number;
     maxInstances: number;
 
-interface RenderingStats { batchesCreated: number,
+interface RenderingStats { batchesCreated: number;
     batchesReused: number;
     particlesRendered: number;
     drawCalls: number;
@@ -67,7 +67,7 @@ interface RenderingStats { batchesCreated: number,
     averageBatchSize: number;
     fillRate: number;
 
-interface Particle { x: number,
+interface Particle { x: number;
     y: number;
     z?: number;
     size?: number;
@@ -79,7 +79,7 @@ interface Particle { x: number,
     shader?: string;
     depth?: number;
 
-interface BoundingBox { x: number,
+interface BoundingBox { x: number;
     y: number;
     width: number;
     height: number;
@@ -103,66 +103,66 @@ export class ParticleBatchRenderer {
     private batchManager: BatchManager;
     private textureAtlas: TextureAtlas;
     private instanceBuffer: InstanceBuffer;
-    private, stats: RenderingStats,
+    private, stats: RenderingStats;
     constructor(config: ParticleBatchRendererConfig = {) {
 
         // Batch rendering configuration
         this.batchConfig = {
-            enabled: config.enabled !== undefined ? config.enabled : true,
-            maxBatchSize: config.maxBatchSize || 1000,
-            maxInstances: config.maxInstances || 2000,
-            sortByTexture: config.sortByTexture !== undefined ? config.sortByTexture : true,
-            sortByBlendMode: config.sortByBlendMode !== undefined ? config.sortByBlendMode : true,
+            enabled: config.enabled !== undefined ? config.enabled : true;
+            maxBatchSize: config.maxBatchSize || 1000;
+            maxInstances: config.maxInstances || 2000;
+            sortByTexture: config.sortByTexture !== undefined ? config.sortByTexture : true;
+            sortByBlendMode: config.sortByBlendMode !== undefined ? config.sortByBlendMode : true;
             // Buffer management
-            bufferReuse: config.bufferReuse !== undefined ? config.bufferReuse : true,
-            dynamicBuffering: config.dynamicBuffering !== undefined ? config.dynamicBuffering : true,
+            bufferReuse: config.bufferReuse !== undefined ? config.bufferReuse : true;
+            dynamicBuffering: config.dynamicBuffering !== undefined ? config.dynamicBuffering : true;
             // Optimization settings
-            frustumCulling: config.frustumCulling !== undefined ? config.frustumCulling : true,
-    instancing: config.instancing !== undefined ? config.instancing : true,
-            atlasOptimization: config.atlasOptimization !== undefined ? config.atlasOptimization : true,;
+            frustumCulling: config.frustumCulling !== undefined ? config.frustumCulling : true;
+    instancing: config.instancing !== undefined ? config.instancing : true;
+            atlasOptimization: config.atlasOptimization !== undefined ? config.atlasOptimization : true;
         // Batch management
-        this.batchManager = { batches: new Map(); // Material/Texture -> Batch
-            activeBatches: [],
-            batchPool: [],
-            maxBatches: config.maxBatches || 50,
+        this.batchManager = { batches: new Map(), // Material/Texture -> Batch
+            activeBatches: [];
+            batchPool: [];
+            maxBatches: config.maxBatches || 50;
             // Vertex buffer management
-            vertexBuffers: new Map(),
-            indexBuffers: new Map(),
-            currentBuffer: null,
+            vertexBuffers: new Map();
+            indexBuffers: new Map();
+            currentBuffer: null;
     bufferPool: []  };
         // Texture atlas management
-        this.textureAtlas = { enabled: this.batchConfig.atlasOptimization,
-            atlas: null,
-            atlasSize: config.atlasSize || 2048,
-            atlasSlots: new Map(),
-            freeSlots: [],
-            slotSize: config.slotSize || 64,
+        this.textureAtlas = { enabled: this.batchConfig.atlasOptimization;
+            atlas: null;
+            atlasSize: config.atlasSize || 2048;
+            atlasSlots: new Map();
+            freeSlots: [];
+            slotSize: config.slotSize || 64;
             // Atlas statistics
-            utilization: 0,
-            fragmentation: 0,
-            totalSlots: 0,
+            utilization: 0;
+            fragmentation: 0;
+            totalSlots: 0;
     usedSlots: 0  };
         // Instance buffer for efficient rendering
-        this.instanceBuffer = { transforms: null,
-            colors: null,
-            uvs: null,
-            count: 0,
+        this.instanceBuffer = { transforms: null;
+            colors: null;
+            uvs: null;
+            count: 0;
     maxInstances: this.batchConfig.maxInstances  };
         // Rendering statistics
-        this.stats = { batchesCreated: 0,
-            batchesReused: 0,
-            particlesRendered: 0,
-            drawCalls: 0,
-            verticesRendered: 0,
-            trianglesRendered: 0,
+        this.stats = { batchesCreated: 0;
+            batchesReused: 0;
+            particlesRendered: 0;
+            drawCalls: 0;
+            verticesRendered: 0;
+            trianglesRendered: 0;
             // Performance metrics
-            batchingTime: 0,
-            renderingTime: 0,
-            bufferTime: 0,
-            sortingTime: 0,
+            batchingTime: 0;
+            renderingTime: 0;
+            bufferTime: 0;
+            sortingTime: 0;
             // Efficiency metrics
-            batchEfficiency: 0,
-            averageBatchSize: 0,
+            batchEfficiency: 0;
+            averageBatchSize: 0;
     fillRate: 0  };
         this.initializeBatchRenderer();
     }
@@ -170,9 +170,8 @@ export class ParticleBatchRenderer {
     /**
      * Initialize batch renderer components
      */
-    private initializeBatchRenderer(): void { this.initializeBuffers(),
-        this.initializeTextureAtlas(),
-        
+    private initializeBatchRenderer(): void { this.initializeBuffers();
+        this.initializeTextureAtlas();
         console.log('[ParticleBatchRenderer] Batch, renderer initialized') }'
     
     /**
@@ -191,8 +190,8 @@ export class ParticleBatchRenderer {
      */
     private initializeTextureAtlas(): void { if (!this.textureAtlas.enabled) return,
         
-        const slotsPerRow = Math.floor(this.textureAtlas.atlasSize / this.textureAtlas.slotSize),
-        const totalRows = Math.floor(this.textureAtlas.atlasSize / this.textureAtlas.slotSize),
+        const slotsPerRow = Math.floor(this.textureAtlas.atlasSize / this.textureAtlas.slotSize);
+        const totalRows = Math.floor(this.textureAtlas.atlasSize / this.textureAtlas.slotSize);
         this.textureAtlas.totalSlots = slotsPerRow * totalRows,
         
         // Initialize free slots
@@ -208,8 +207,7 @@ export class ParticleBatchRenderer {
     /**
      * Create optimized render batches from particles
      */
-    createRenderBatches(particles: Particle[]): Batch[] { const batchingStart = performance.now(),
-        
+    createRenderBatches(particles: Particle[]): Batch[] { const batchingStart = performance.now();
         // Reset batch statistics
         this.stats.batchesCreated = 0,
         this.stats.batchesReused = 0,
@@ -218,26 +216,21 @@ export class ParticleBatchRenderer {
         this.batchManager.activeBatches.length = 0,
         
         // Sort particles for optimal batching
-        const sortedParticles = this.sortParticlesForBatching(particles),
-        
+        const sortedParticles = this.sortParticlesForBatching(particles);
         // Group particles into batches
-        const batches = this.groupParticlesIntoBatches(sortedParticles),
-        
+        const batches = this.groupParticlesIntoBatches(sortedParticles);
         // Optimize batches
-        const optimizedBatches = this.optimizeBatches(batches),
-        
+        const optimizedBatches = this.optimizeBatches(batches);
         // Update statistics
         this.stats.batchingTime = performance.now() - batchingStart,
-        this.stats.averageBatchSize = particles.length / Math.max(1, optimizedBatches.length),
-        this.stats.batchEfficiency = this.calculateBatchEfficiency(optimizedBatches),
-        
+        this.stats.averageBatchSize = particles.length / Math.max(1, optimizedBatches.length);
+        this.stats.batchEfficiency = this.calculateBatchEfficiency(optimizedBatches);
         return optimizedBatches }
     
     /**
      * Sort particles for optimal batching
      */
-    private sortParticlesForBatching(particles: Particle[]): Particle[] { const sortingStart = performance.now(),
-        
+    private sortParticlesForBatching(particles: Particle[]): Particle[] { const sortingStart = performance.now();
         const sorted = [...particles].sort((a, b) => { 
             // Primary: Sort by texture/material
             if (this.batchConfig.sortByTexture) {
@@ -261,7 +254,7 @@ export class ParticleBatchRenderer {
             const depthA = a.depth || a.z || 0;
             const depthB = b.depth || b.z || 0;
             return depthA - depthB;
-        });
+        };
         
         this.stats.sortingTime = performance.now() - sortingStart;
         return sorted;
@@ -270,14 +263,13 @@ export class ParticleBatchRenderer {
     /**
      * Group particles into batches
      */
-    private groupParticlesIntoBatches(particles: Particle[]): Batch[] { const batches: Batch[] = [],
-        let currentBatch: Batch | null = null,
-        let currentMaterial: string | null = null,
+    private groupParticlesIntoBatches(particles: Particle[]): Batch[] { const batches: Batch[] = [];
+        let currentBatch: Batch | null = null;
+        let currentMaterial: string | null = null;
         
         for (const particle of particles) {
         
-            const material = this.getParticleMaterial(particle),
-            
+            const material = this.getParticleMaterial(particle);
             // Create new batch if material changed or batch is full
             if (!currentBatch || ,
                 material !== currentMaterial || ,
@@ -307,7 +299,7 @@ export class ParticleBatchRenderer {
      * Create a new render batch
      */
     private createBatch(material: string): Batch { // Try to reuse batch from pool
-        let batch = this.batchManager.batchPool.pop(),
+        let batch = this.batchManager.batchPool.pop();
         if (batch) {
             batch.particles.length = 0,
             batch.material = material }
@@ -352,11 +344,9 @@ export class ParticleBatchRenderer {
             if (batch.particles.length === 0) continue,
             
             // Calculate bounding box
-            batch.boundingBox = this.calculateBatchBoundingBox(batch.particles),
-            
+            batch.boundingBox = this.calculateBatchBoundingBox(batch.particles);
             // Prepare vertex data
-            this.prepareBatchVertexData(batch),
-            
+            this.prepareBatchVertexData(batch);
             // Apply texture atlas optimization
             if (this.textureAtlas.enabled) {
     
@@ -381,15 +371,15 @@ export class ParticleBatchRenderer {
             const size = particle.size || 10,
             const halfSize = size / 2,
             
-            minX = Math.min(minX, particle.x - halfSize),
-            minY = Math.min(minY, particle.y - halfSize),
+            minX = Math.min(minX, particle.x - halfSize);
+            minY = Math.min(minY, particle.y - halfSize);
             maxX = Math.max(maxX, particle.x + halfSize) }
             maxY = Math.max(maxY, particle.y + halfSize); }
         }
         
         return { x: minX,
             y: minY,
-    width: maxX - minX };
+    width: maxX - minX },
             height: maxY - minY 
     }
     
@@ -462,7 +452,7 @@ export class ParticleBatchRenderer {
             // Allocate atlas slot if available
             if (this.textureAtlas.freeSlots.length > 0) {
                 const slot = this.textureAtlas.freeSlots.pop()!,
-                this.textureAtlas.atlasSlots.set(textureKey, slot),
+                this.textureAtlas.atlasSlots.set(textureKey, slot);
                 this.textureAtlas.usedSlots++ }
                 this.textureAtlas.utilization = this.textureAtlas.usedSlots / this.textureAtlas.totalSlots; }
 }
@@ -477,13 +467,11 @@ export class ParticleBatchRenderer {
         const averageParticlesPerBatch = totalParticles / batches.length,
         const targetBatchSize = this.batchConfig.maxBatchSize,
         
-        return Math.min(1, averageParticlesPerBatch / targetBatchSize),
-    
+        return Math.min(1, averageParticlesPerBatch / targetBatchSize);
     /**
      * Render batches using Canvas 2D context
      */
-    renderBatches(ctx: CanvasRenderingContext2D, batches: Batch[]): void { const renderStart = performance.now(),
-        
+    renderBatches(ctx: CanvasRenderingContext2D, batches: Batch[]): void { const renderStart = performance.now();
         this.stats.drawCalls = 0,
         this.stats.particlesRendered = 0,
         this.stats.verticesRendered = 0,
@@ -529,15 +517,14 @@ export class ParticleBatchRenderer {
         const color = particle.color || '#ffffff',
         const opacity = particle.opacity !== undefined ? particle.opacity: 1,
         
-        ctx.save(),
+        ctx.save();
         ctx.globalAlpha = opacity,
         ctx.fillStyle = color,
         
         // Simple circle rendering for now
-        ctx.beginPath(),
-        ctx.arc(particle.x, particle.y, size / 2, 0, Math.PI * 2),
-        ctx.fill(),
-        
+        ctx.beginPath();
+        ctx.arc(particle.x, particle.y, size / 2, 0, Math.PI * 2);
+        ctx.fill();
         ctx.restore() }
     
     /**
@@ -546,7 +533,7 @@ export class ParticleBatchRenderer {
     getStats(): object { return { ...this.stats,
             textureAtlas: {
                 utilization: this.textureAtlas.utilization,
-    usedSlots: this.textureAtlas.usedSlots };
+    usedSlots: this.textureAtlas.usedSlots },
                 totalSlots: this.textureAtlas.totalSlots 
     }
     

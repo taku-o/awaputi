@@ -6,7 +6,7 @@ import type { Scene as IScene } from '../types/game';
  * 全てのゲームシーンの基底となるクラス
  * オーバーライド可能なメソッドを提供し、共通のライフサイクル管理を行います
  */
-export class Scene implements IScene { public gameEngine: any,
+export class Scene implements IScene { public gameEngine: any;
     public sceneManager: any;
     public name?: string,
     public isActive?: boolean,

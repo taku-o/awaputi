@@ -8,7 +8,7 @@ class MockStorageManager {
         this.data = new Map() }
 
     async getData(storeName, query) {
-        const storeData = this.data.get(storeName || []),
+        const storeData = this.data.get(storeName || []);
         if (!query') return storeData,'
 
         if (query.range && query.index === 'startTime') {
@@ -24,11 +24,11 @@ class MockStorageManager {
 }
 
 describe('ComparisonEngine - Advanced Features Tests', () => {
-    let comparisonEngine: any,
-    let mockStorageManager: any,
+    let comparisonEngine: any;
+    let mockStorageManager: any;
 
     beforeEach(() => {
-        mockStorageManager = new MockStorageManager(),
+        mockStorageManager = new MockStorageManager();
         comparisonEngine = new ComparisonEngine(mockStorageManager: any) }');'
 
     describe('過去データとの比較', () => {
@@ -36,27 +36,27 @@ describe('ComparisonEngine - Advanced Features Tests', () => {
             // 現在のデータ（直近1週間）
             const currentSessions = [
                 {
-                    sessionId: 'current1',
+                    sessionId: 'current1';
                     startTime: Date.now() - 2 * 24 * 60 * 60 * 1000, // 2日前
                     endTime: Date.now(') - 2 * 24 * 60 * 60 * 1000 + 300000,'
-                    finalScore: 1200,
-                    bubblesPopped: 90,
-                    bubblesMissed: 10,
-                    maxCombo: 20,
-                    completed: true,
+                    finalScore: 1200;
+                    bubblesPopped: 90;
+                    bubblesMissed: 10;
+                    maxCombo: 20;
+                    completed: true;
             ];
 
             // 過去のデータ（1週間前の1週間）
             const pastSessions = [
                 {
-                    sessionId: 'past1',
+                    sessionId: 'past1';
                     startTime: Date.now() - 14 * 24 * 60 * 60 * 1000, // 2週間前
                     endTime: Date.now(') - 14 * 24 * 60 * 60 * 1000 + 300000,'
-                    finalScore: 1000,
-                    bubblesPopped: 80,
-                    bubblesMissed: 20,
-                    maxCombo: 15,
-                    completed: true,
+                    finalScore: 1000;
+                    bubblesPopped: 80;
+                    bubblesMissed: 20;
+                    maxCombo: 15;
+                    completed: true;
             ];
 
             mockStorageManager.setTestData('sessions', [...currentSessions, ...pastSessions]);
@@ -64,8 +64,8 @@ describe('ComparisonEngine - Advanced Features Tests', () => {
 
         test('過去データとの比較が実行される', async (') => {'
             const result = await comparisonEngine.compareWithPastData({
-                periods: ['week'],
-                metrics: ['score', 'accuracy']) });
+                periods: ['week'];
+                metrics: ['score', 'accuracy']) };
 
             expect(result.success).toBe(true);
             expect(result.comparisons.week.available).toBe(true);
@@ -75,26 +75,24 @@ describe('ComparisonEngine - Advanced Features Tests', () => {
         test('データ不足時の適切な処理', async (') => {'
             mockStorageManager.setTestData('sessions', []), // 空のデータ
 
-            const result = await comparisonEngine.compareWithPastData(),
-
-            expect(result.success).toBe(false),
-            expect(result.error').toBe('Current performance data is insufficient') });'
+            const result = await comparisonEngine.compareWithPastData();
+            expect(result.success).toBe(false);
+            expect(result.error').toBe('Current performance data is insufficient') };'
     }');'
 
     describe('エラーハンドリング', (') => {'
         test('ストレージエラーが適切に処理される', async () => {
             mockStorageManager.getData = jest.fn(') as jest.Mock.mockRejectedValue(new Error('Database error'),'
 
-            const result = await comparisonEngine.compareWithPastData(),
-
-            expect(result.success).toBe(false: any),
-            expect(result.error').toBe('Database error') });'
-    });
+            const result = await comparisonEngine.compareWithPastData();
+            expect(result.success).toBe(false: any);
+            expect(result.error').toBe('Database error') };'
+    };
 }');'
 
 // Task 8.3とTask 8.4で実装した機能のテスト
 describe('CoreComparisonEngine (Task 8.3 & 8.4')', () => {'
-    let coreComparisonEngine: any,
+    let coreComparisonEngine: any;
 
     beforeEach(() => {
         coreComparisonEngine = new CoreComparisonEngine() }');'
@@ -104,41 +102,41 @@ describe('CoreComparisonEngine (Task 8.3 & 8.4')', () => {'
             const stageData = {
                 'stage_tutorial': [
                     {
-                        sessionId: 's1',
-                        stageId: 'stage_tutorial',
-                        finalScore: 800,
-                        bubblesPopped: 70,
-                        bubblesMissed: 30,
-                        maxCombo: 10,
-                        completed: true,
-                        startTime: Date.now() - 1000000,
+                        sessionId: 's1';
+                        stageId: 'stage_tutorial';
+                        finalScore: 800;
+                        bubblesPopped: 70;
+                        bubblesMissed: 30;
+                        maxCombo: 10;
+                        completed: true;
+                        startTime: Date.now() - 1000000;
                         endTime: Date.now(') - 700000,'
                         stageDifficulty: 1
                     },
                     {
-                        sessionId: 's2',
-                        stageId: 'stage_tutorial',
-                        finalScore: 900,
-                        bubblesPopped: 80,
-                        bubblesMissed: 20,
-                        maxCombo: 12,
-                        completed: true,
-                        startTime: Date.now() - 900000,
+                        sessionId: 's2';
+                        stageId: 'stage_tutorial';
+                        finalScore: 900;
+                        bubblesPopped: 80;
+                        bubblesMissed: 20;
+                        maxCombo: 12;
+                        completed: true;
+                        startTime: Date.now() - 900000;
                         endTime: Date.now(') - 600000,'
                         stageDifficulty: 1
                     }
                 ],
                 'stage_normal': [
                     {
-                        sessionId: 's3',
-                        stageId: 'stage_normal',
-                        finalScore: 1200,
-                        bubblesPopped: 90,
-                        bubblesMissed: 10,
-                        maxCombo: 20,
-                        completed: true,
-                        startTime: Date.now() - 800000,
-                        endTime: Date.now() - 500000,
+                        sessionId: 's3';
+                        stageId: 'stage_normal';
+                        finalScore: 1200;
+                        bubblesPopped: 90;
+                        bubblesMissed: 10;
+                        maxCombo: 20;
+                        completed: true;
+                        startTime: Date.now() - 800000;
+                        endTime: Date.now() - 500000;
                         stageDifficulty: 2
                     }
                 ]
@@ -159,33 +157,32 @@ describe('CoreComparisonEngine (Task 8.3 & 8.4')', () => {'
             const stageData = {
                 'stage_easy': [
                     {
-                        sessionId: 's1',
-                        stageId: 'stage_easy',
-                        finalScore: 1000,
-                        bubblesPopped: 80,
-                        bubblesMissed: 20,
-                        maxCombo: 15,
-                        completed: true,
+                        sessionId: 's1';
+                        stageId: 'stage_easy';
+                        finalScore: 1000;
+                        bubblesPopped: 80;
+                        bubblesMissed: 20;
+                        maxCombo: 15;
+                        completed: true;
                         stageDifficulty: 1
                     }
                 ],
                 'stage_hard': [
                     {
-                        sessionId: 's2',
-                        stageId: 'stage_hard',
-                        finalScore: 800,
-                        bubblesPopped: 70,
-                        bubblesMissed: 30,
-                        maxCombo: 12,
-                        completed: true,
+                        sessionId: 's2';
+                        stageId: 'stage_hard';
+                        finalScore: 800;
+                        bubblesPopped: 70;
+                        bubblesMissed: 30;
+                        maxCombo: 12;
+                        completed: true;
                         stageDifficulty: 3
                     }
                 ]
             };
 
             const result = coreComparisonEngine.compareStagePerformance(stageData, {
-                includeDifficultyAdjustment: true),
-
+                includeDifficultyAdjustment: true);
             // 実際の実装に合わせたテスト
             expect(result.stageStatistics').toHaveProperty('stage_easy'),'
             expect(result.stageStatistics').toHaveProperty('stage_hard'),'
@@ -194,17 +191,17 @@ describe('CoreComparisonEngine (Task 8.3 & 8.4')', () => {'
             const easyStage = result.stageStatistics.stage_easy,
             const hardStage = result.stageStatistics.stage_hard,
             
-            expect(easyStage.difficultyAdjustedMetrics).toBeDefined(),
+            expect(easyStage.difficultyAdjustedMetrics).toBeDefined();
             expect(hardStage.difficultyAdjustedMetrics).toBeDefined() }');'
 
         test('ステージランキングが正しく生成される', (') => {'
             const stageData = {
                 'stage_tutorial': [
-                    { finalScore: 1000, stageDifficulty: 1 },
+                    { finalScore: 1000, stageDifficulty: 1 };
                     { finalScore: 1100, stageDifficulty: 1 }
                 ],
                 'stage_normal': [
-                    { finalScore: 1200, stageDifficulty: 2 },
+                    { finalScore: 1200, stageDifficulty: 2 };
                     { finalScore: 900, stageDifficulty: 2 }
                 ]
             };
@@ -227,34 +224,34 @@ describe('CoreComparisonEngine (Task 8.3 & 8.4')', () => {'
             const result = coreComparisonEngine.compareStagePerformance(insufficientData);
             expect(result.error').toBe('insufficient_stages');'
             expect(result.message').toContain('At least 2 stages required');'
-        });
+        };
     }');'
 
     describe('Task 8.4: 改善提案システム', (') => {'
         test('個人化された改善計画が生成される', (') => {'
             const playerData = {
-                totalSessions: 50,
+                totalSessions: 50;
                 totalPlayTime: 15000, // 250分
-                averageScore: 1100,
-                averageAccuracy: 0.75,
-                maxCombo: 25,
-                completionRate: 0.8,
+                averageScore: 1100;
+                averageAccuracy: 0.75;
+                maxCombo: 25;
+                completionRate: 0.8;
                 preferredStages: ['stage_normal', 'stage_time_attack'];
                 recentSessions: [
                     { 
-                        finalScore: 1200,
-                        accuracy: 0.8,
-                        maxCombo: 20,
-                        completed: true,
-                        playTime: 300,
+                        finalScore: 1200;
+                        accuracy: 0.8;
+                        maxCombo: 20;
+                        completed: true;
+                        playTime: 300;
                         stageId: 'stage_normal'
                     },
                     { 
-                        finalScore: 1000,
-                        accuracy: 0.7,
-                        maxCombo: 15,
-                        completed: false,
-                        playTime: 250,
+                        finalScore: 1000;
+                        accuracy: 0.7;
+                        maxCombo: 15;
+                        completed: false;
+                        playTime: 250;
                         stageId: 'stage_time_attack'
                     }
                 ]
@@ -289,23 +286,24 @@ describe('CoreComparisonEngine (Task 8.3 & 8.4')', () => {'
 
         test('カスタムオプションが正しく適用される', (') => {'
             const playerData = {
-                averageScore: 1000,
-                averageAccuracy: 0.75,
+                averageScore: 1000;
+                averageAccuracy: 0.75;
                 totalSessions: 30
             };
 
             const comparisonAnalysis = {
-                strengths: ['スコア'],
-                weaknesses: ['精度'],
+                strengths: ['スコア'];
+                weaknesses: ['精度'];
                 overallTrend: 'improving'
             };
 
             const customOptions = {
-                focusAreas: 3,
+                focusAreas: 3;
                 timeHorizon: 14, // 2週間
-                difficultyPreference: 'gradual',
-                includeMotivationalElements: true,;
-
+                difficultyPreference: 'gradual';
+                includeMotivationalElements: true;
+                includeMotivationalElements: true;
+        };
             const result = coreComparisonEngine.generatePersonalizedImprovementPlan(
                 playerData, 
                 comparisonAnalysis,
@@ -315,6 +313,6 @@ describe('CoreComparisonEngine (Task 8.3 & 8.4')', () => {'
             expect(result.actionPlan).toBeDefined();
             expect(result.motivation).toBeDefined(); // includeMotivationalElements: true
             expect(result.followUp).toBeDefined();
-        });
-    });
+        };
+    };
 }');'

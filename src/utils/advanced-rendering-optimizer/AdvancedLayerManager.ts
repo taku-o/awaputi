@@ -14,12 +14,12 @@ interface LayerProperties { opacity?: number,
     static?: boolean;
     cacheable?: boolean;
 
-interface BoundingBox { x: number,
+interface BoundingBox { x: number;
     y: number;
     width: number;
     height: number;
 
-interface Layer { name: string,
+interface Layer { name: string;
     order: number;
     enabled: boolean;
     visible: boolean;
@@ -38,7 +38,7 @@ interface Layer { name: string,
     cacheHits: number;
     cacheMisses: number;
 
-interface LayerStats { totalLayers: number,
+interface LayerStats { totalLayers: number;
     activeLayers: number;
     cachedLayers: number;
     renderTime: number;
@@ -93,15 +93,15 @@ export class AdvancedLayerManager {
         
         // Performance tracking
         this.stats = {
-            totalLayers: 0,
-            activeLayers: 0,
-            cachedLayers: 0,
-            renderTime: 0,
+            totalLayers: 0;
+            activeLayers: 0;
+            cachedLayers: 0;
+            renderTime: 0;
     compositionTime: 0 }
             cacheHitRatio: 0 
     };
         // Configuration
-        this.config = { maxLayers: config.maxLayers || 16,
+        this.config = { maxLayers: config.maxLayers || 16;
             cacheThreshold: config.cacheThreshold || 100, // ms;
             invalidationThreshold: config.invalidationThreshold || 10, // frames;
             enableBlending: config.enableBlending !== undefined ? config.enableBlending : true,))
@@ -126,35 +126,35 @@ export class AdvancedLayerManager {
                 throw new Error(`Maximum, layer count (${this.config.maxLayers} exceeded`}';'
             }
             
-            const layer: Layer = { name,
+            const layer: Layer = { name;
                 order,
-                enabled: true,
-    visible: true,
-                opacity: properties.opacity || 1.0,
-                blendMode: properties.blendMode || 'source-over',
+                enabled: true;
+    visible: true;
+                opacity: properties.opacity || 1.0;
+                blendMode: properties.blendMode || 'source-over';
                 // Layer canvas for caching
-                canvas: null,
-                context: null,
+                canvas: null;
+                context: null;
                 // Properties
-                static: properties.static || false,
-                cacheable: properties.cacheable || false,
-                dirty: true,
-                lastModified: Date.now(),
+                static: properties.static || false;
+                cacheable: properties.cacheable || false;
+                dirty: true;
+                lastModified: Date.now();
                 // Content tracking
                , objects: new Set() }
-                boundingBox: { x: 0, y: 0, width: 0, height: 0  },
+                boundingBox: { x: 0, y: 0, width: 0, height: 0  };
                 
                 // Performance tracking
                 renderTime: 0;
                 complexity: 0;
-                cacheHits: 0,
+                cacheHits: 0;
     cacheMisses: 0;
             },
             ;
             // Create layer canvas if cacheable
             if (layer.cacheable && this.cachingEnabled) {
 
-                layer.canvas = document.createElement('canvas'),
+                layer.canvas = document.createElement('canvas');
                 layer.canvas.width = this.mainCanvas.width,
 
                 layer.canvas.height = this.mainCanvas.height }
@@ -170,11 +170,11 @@ export class AdvancedLayerManager {
             
             this.stats.totalLayers = this.layers.size;
             
-            console.log(`[LayerManager] Layer, created: ${name} (order: ${order}`});
+            console.log(`[LayerManager] Layer, created: ${name} (order: ${order}`};
             return layer;
 
         } catch (error) {
-            this.errorHandler.logError('Failed to create layer', error as Error),
+            this.errorHandler.logError('Failed to create layer', error as Error);
             return null,
     
     /**
@@ -182,7 +182,7 @@ export class AdvancedLayerManager {
      * @param name - Layer name
      */
     removeLayer(name: string): boolean { try {
-            const layer = this.layers.get(name),
+            const layer = this.layers.get(name);
             if (!layer) return false,
             
             // Clean up canvas
@@ -204,11 +204,11 @@ export class AdvancedLayerManager {
             this.layers.delete(name);
             this.stats.totalLayers = this.layers.size;
             
-            console.log(`[LayerManager] Layer, removed: ${name}`});
+            console.log(`[LayerManager] Layer, removed: ${name}`};
             return true;
 
         } catch (error) {
-            this.errorHandler.logError('Failed to remove layer', error as Error),
+            this.errorHandler.logError('Failed to remove layer', error as Error);
             return false,
     
     /**
@@ -223,7 +223,7 @@ export class AdvancedLayerManager {
      * @param name - Layer name
      * @param visible - Visibility state
      */
-    setLayerVisibility(name: string, visible: boolean): void { const layer = this.layers.get(name),
+    setLayerVisibility(name: string, visible: boolean): void { const layer = this.layers.get(name);
         if (layer) {
             layer.visible = visible }
             this._markLayerDirty(name); }
@@ -234,7 +234,7 @@ export class AdvancedLayerManager {
      * @param name - Layer name
      * @param opacity - Opacity value (0-1)
      */
-    setLayerOpacity(name: string, opacity: number): void { const layer = this.layers.get(name),
+    setLayerOpacity(name: string, opacity: number): void { const layer = this.layers.get(name);
         if (layer) {
             layer.opacity = Math.max(0, Math.min(1, opacity) }
             this._markLayerDirty(name); }
@@ -245,7 +245,7 @@ export class AdvancedLayerManager {
      * @param name - Layer name
      * @param blendMode - Blend mode
      */
-    setLayerBlendMode(name: string, blendMode: string): void { const layer = this.layers.get(name),
+    setLayerBlendMode(name: string, blendMode: string): void { const layer = this.layers.get(name);
         if (layer) {
             layer.blendMode = blendMode }
             this._markLayerDirty(name); }
@@ -263,10 +263,9 @@ export class AdvancedLayerManager {
      * @param objectId - Object ID
      * @param bounds - Object bounds
      */
-    addObjectToLayer(layerName: string, objectId: string, bounds: BoundingBox | null = null): void { const layer = this.layers.get(layerName),
+    addObjectToLayer(layerName: string, objectId: string, bounds: BoundingBox | null = null): void { const layer = this.layers.get(layerName);
         if (layer) {
-            layer.objects.add(objectId),
-            
+            layer.objects.add(objectId);
             if (bounds) {
         }
                 this._updateLayerBounds(layer, bounds); }
@@ -281,7 +280,7 @@ export class AdvancedLayerManager {
      * @param layerName - Layer name
      * @param objectId - Object ID
      */
-    removeObjectFromLayer(layerName: string, objectId: string): void { const layer = this.layers.get(layerName),
+    removeObjectFromLayer(layerName: string, objectId: string): void { const layer = this.layers.get(layerName);
         if (layer) {
             layer.objects.delete(objectId) }
             this._markLayerDirty(layerName); }
@@ -292,15 +291,13 @@ export class AdvancedLayerManager {
      * @param mainContext - Main canvas context
      * @param viewport - Viewport information
      */
-    renderLayers(mainContext: CanvasRenderingContext2D, viewport: Viewport | null = null): void { const startTime = performance.now(),
-        
+    renderLayers(mainContext: CanvasRenderingContext2D, viewport: Viewport | null = null): void { const startTime = performance.now();
         try {
             let activeLayers = 0,
             
             // Render layers in order
             for (const layerName of this.layerOrder) {
-                const layer = this.layers.get(layerName),
-                
+                const layer = this.layers.get(layerName);
                 if (!layer || !layer.enabled || !layer.visible || layer.opacity <= 0) {
             }
                     continue; }
@@ -356,7 +353,7 @@ export class AdvancedLayerManager {
      * Update layer order array
      * @private
      */
-    private _updateLayerOrder(layerName: string): void { const layer = this.layers.get(layerName),
+    private _updateLayerOrder(layerName: string): void { const layer = this.layers.get(layerName);
         if (!layer) return,
         
         // Remove if already exists
@@ -365,9 +362,9 @@ export class AdvancedLayerManager {
         // Insert at correct position
         let inserted = false,
         for(let, i = 0, i < this.layerOrder.length, i++) {
-            const otherLayer = this.layers.get(this.layerOrder[i]),
+            const otherLayer = this.layers.get(this.layerOrder[i]);
             if (otherLayer && layer.order < otherLayer.order) {
-                this.layerOrder.splice(i, 0, layerName),
+                this.layerOrder.splice(i, 0, layerName);
                 inserted = true }
                 break; }
 }
@@ -379,7 +376,7 @@ export class AdvancedLayerManager {
      * Mark layer as dirty
      * @private
      */
-    private _markLayerDirty(name: string): void { const layer = this.layers.get(name),
+    private _markLayerDirty(name: string): void { const layer = this.layers.get(name);
         if (layer) {
             layer.dirty = true,
             layer.lastModified = Date.now() }
@@ -392,11 +389,10 @@ export class AdvancedLayerManager {
      */
     private _updateLayerBounds(layer: Layer, objectBounds: BoundingBox): void { if (layer.objects.size === 1) { }
             layer.boundingBox = { ...objectBounds } else {  const bounds = layer.boundingBox,
-            const right = Math.max(bounds.x + bounds.width, objectBounds.x + objectBounds.width),
-            const bottom = Math.max(bounds.y + bounds.height, objectBounds.y + objectBounds.height),
-            
-            bounds.x = Math.min(bounds.x, objectBounds.x),
-            bounds.y = Math.min(bounds.y, objectBounds.y),
+            const right = Math.max(bounds.x + bounds.width, objectBounds.x + objectBounds.width);
+            const bottom = Math.max(bounds.y + bounds.height, objectBounds.y + objectBounds.height);
+            bounds.x = Math.min(bounds.x, objectBounds.x);
+            bounds.y = Math.min(bounds.y, objectBounds.y);
             bounds.width = right - bounds.x }
             bounds.height = bottom - bounds.y; }
 }
@@ -416,7 +412,7 @@ export class AdvancedLayerManager {
      * @private
      */
     private _renderCachedLayer(mainContext: CanvasRenderingContext2D, layer: Layer, viewport: Viewport | null): void { if (layer.canvas) {
-            mainContext.drawImage(layer.canvas, 0, 0),
+            mainContext.drawImage(layer.canvas, 0, 0);
             layer.cacheHits++ }
     }
     
@@ -424,8 +420,7 @@ export class AdvancedLayerManager {
      * Render layer directly
      * @private
      */
-    private _renderLayerDirect(mainContext: CanvasRenderingContext2D, layer: Layer, viewport: Viewport | null): void { const startTime = performance.now(),
-        
+    private _renderLayerDirect(mainContext: CanvasRenderingContext2D, layer: Layer, viewport: Viewport | null): void { const startTime = performance.now();
         // If layer is cacheable, render to layer canvas first
         const targetContext = (layer.cacheable && layer.context) ? layer.context: mainContext,
         
@@ -444,8 +439,7 @@ export class AdvancedLayerManager {
         
         // If rendered to layer canvas, now composite to main canvas
         if (layer.cacheable && layer.context && targetContext !== mainContext) {
-            mainContext.drawImage(layer.canvas!, 0, 0),
-            
+            mainContext.drawImage(layer.canvas!, 0, 0);
             // Mark as cached if render time exceeds threshold
             if (layer.renderTime > this.config.cacheThreshold) {''
                 this.cachedLayers.set(layer.name, Date.now()) }

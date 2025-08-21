@@ -5,14 +5,14 @@ class MockStorageManager {
     constructor() {
         this.data = new Map() }
     async getData(storeName, query) {
-        const storeData = this.data.get(storeName || []),
+        const storeData = this.data.get(storeName || []);
         if (!query) return storeData,
-        return storeData.filter(item => {),
+        return storeData.filter(item => {);
             if (query.startDate && query.endDate) {
-                const itemDate = new Date(item.startTime),
+                const itemDate = new Date(item.startTime);
                 return itemDate >= query.startDate && itemDate <= query.endDate }
             return true;
-        });
+        };
     }
     setTestData(storeName, data) {
         this.data.set(storeName, data') }'
@@ -21,28 +21,28 @@ describe('TrendAnalyzer', () => {
     let trendAnalyzer: any,
     let mockStorageManager: any,
     beforeEach(() => {
-        mockStorageManager = new MockStorageManager(),
+        mockStorageManager = new MockStorageManager();
         trendAnalyzer = new TrendAnalyzer(mockStorageManager) }');'
     describe('コンストラクタ', (') => {'
         test('正しく初期化される', () => {
-            expect(trendAnalyzer.storageManager).toBe(mockStorageManager),
-            expect(trendAnalyzer.analysisCache).toBeInstanceOf(Map),
-            expect(trendAnalyzer.cacheExpiration).toBe(5 * 60 * 1000),
-            expect(trendAnalyzer.ANOMALY_THRESHOLD).toBe(2.0),
-            expect(trendAnalyzer.MIN_DATA_POINTS).toBe(7),
+            expect(trendAnalyzer.storageManager).toBe(mockStorageManager);
+            expect(trendAnalyzer.analysisCache).toBeInstanceOf(Map);
+            expect(trendAnalyzer.cacheExpiration).toBe(5 * 60 * 1000);
+            expect(trendAnalyzer.ANOMALY_THRESHOLD).toBe(2.0);
+            expect(trendAnalyzer.MIN_DATA_POINTS).toBe(7);
             expect(trendAnalyzer.SEASONAL_PERIOD).toBe(7) }');'
     }
     describe('週次トレンド分析', (') => {'
         test('十分なデータがある場合、正常に分析が実行される', async (') => {'
             // テストデータ準備（10日分）
             const testData: any[] = [],
-            const baseDate = new Date('2024-01-01'),
+            const baseDate = new Date('2024-01-01');
             for (let i = 0, i < 10, i++) {
                 const sessionDate = new Date(baseDate.getTime() + i * 24 * 60 * 60 * 1000),
-                testData.push({),
+                testData.push({);
                     sessionId: `session-${i)`,
                     startTime: sessionDate.getTime(
-                    endTime: sessionDate.getTime(}) + 300000, // 5分
+                    endTime: sessionDate.getTime(} + 300000, // 5分
                     duration: 300,
                     finalScore: 1000 + i * 100, // 徐々にスコア向上
                     bubblesPopped: 50 + i * 2,
@@ -68,12 +68,12 @@ describe('TrendAnalyzer', () => {
         test('データが不足している場合、適切なエラーメッセージを返す', async (') => {'
             // 不十分なデータ（5日分のみ）
             const testData: any[] = [],
-            const baseDate = new Date('2024-01-01'),
+            const baseDate = new Date('2024-01-01');
             for (let i = 0, i < 5, i++) {
                 const sessionDate = new Date(baseDate.getTime() + i * 24 * 60 * 60 * 1000),
-                testData.push({),
+                testData.push({);
                     sessionId: `session-${i)`,
-                    startTime: sessionDate.getTime(});
+                    startTime: sessionDate.getTime(},
                     finalScore: 1000
                 }');'
             }
@@ -86,12 +86,12 @@ describe('TrendAnalyzer', () => {
         }');'
         test('キャッシュが正常に動作する', async (') => {'
             const testData: any[] = [],
-            const baseDate = new Date('2024-01-01'),
+            const baseDate = new Date('2024-01-01');
             for (let i = 0, i < 10, i++) {
                 const sessionDate = new Date(baseDate.getTime() + i * 24 * 60 * 60 * 1000),
-                testData.push({),
+                testData.push({);
                     sessionId: `session-${i)`,
-                    startTime: sessionDate.getTime(});
+                    startTime: sessionDate.getTime(},
                     finalScore: 1000
                 }');'
             }
@@ -113,13 +113,13 @@ describe('TrendAnalyzer', () => {
         test('十分なデータがある場合、正常に分析が実行される', async (') => {'
             // テストデータ準備（35日分）
             const testData: any[] = [],
-            const baseDate = new Date('2024-01-01'),
+            const baseDate = new Date('2024-01-01');
             for (let i = 0, i < 35, i++) {
                 const sessionDate = new Date(baseDate.getTime() + i * 24 * 60 * 60 * 1000),
-                testData.push({),
+                testData.push({);
                     sessionId: `session-${i)`,
                     startTime: sessionDate.getTime(
-                    endTime: sessionDate.getTime(}) + 300000;
+                    endTime: sessionDate.getTime(} + 300000,
                     finalScore: 1000 + i * 50,
                     bubblesPopped: 50,
                     bubblesMissed: 10,
@@ -134,12 +134,12 @@ describe('TrendAnalyzer', () => {
         test('データが不足している場合、適切なエラーメッセージを返す', async (') => {'
             // 不十分なデータ（20日分のみ）
             const testData: any[] = [],
-            const baseDate = new Date('2024-01-01'),
+            const baseDate = new Date('2024-01-01');
             for (let i = 0, i < 20, i++) {
                 const sessionDate = new Date(baseDate.getTime() + i * 24 * 60 * 60 * 1000),
-                testData.push({),
+                testData.push({);
                     sessionId: `session-${i)`,
-                    startTime: sessionDate.getTime(});
+                    startTime: sessionDate.getTime(},
                     finalScore: 1000
                 }');'
             }
@@ -231,14 +231,14 @@ describe('TrendAnalyzer', () => {
                 // 曜日効果をシミュレート（週末にスコアが高い）
                 const dayOfWeek = i % 7,
                 const weekendBonus = (dayOfWeek === 5 || dayOfWeek === 6) ? 200 : 0,
-                testData.push({),
+                testData.push({);
                     period: `day-${i)`,
-                    score: 1000 + weekendBonus + Math.random(}) * 100
-                });
+                    score: 1000 + weekendBonus + Math.random(} * 100
+                };
             }
             const adjustedData = trendAnalyzer.seasonalAdjustment(testData, 7);
             expect(adjustedData).toHaveLength(14);
-            adjustedData.forEach(dataPoint => {),
+            adjustedData.forEach(dataPoint => {);
                 expect(dataPoint').toHaveProperty('originalValue'),'
                 expect(dataPoint').toHaveProperty('seasonallyAdjusted'),'
                 expect(dataPoint').toHaveProperty('seasonalIndex') }');
@@ -256,9 +256,9 @@ describe('TrendAnalyzer', () => {
         test('正しい傾きと切片を計算する', () => {
             const x = [1, 2, 3, 4, 5],
             const y = [2, 4, 6, 8, 10], // y = 2x の関係
-            const regression = trendAnalyzer.linearRegression(x, y),
-            expect(regression.slope).toBeCloseTo(2, 5),
-            expect(regression.intercept).toBeCloseTo(0, 5),
+            const regression = trendAnalyzer.linearRegression(x, y);
+            expect(regression.slope).toBeCloseTo(2, 5);
+            expect(regression.intercept).toBeCloseTo(0, 5);
             expect(regression.rSquared).toBeCloseTo(1, 5), // 完全な線形関係
         }');'
     }
@@ -354,7 +354,7 @@ describe('TrendAnalyzer', () => {
     }
     describe('キャッシュ管理', (') => {'
         test('キャッシュがクリアされる', (') => {'
-            trendAnalyzer.analysisCache.set('test', { data: 'test' });
+            trendAnalyzer.analysisCache.set('test', { data: 'test' };
             expect(trendAnalyzer.analysisCache.size).toBe(1);
             trendAnalyzer.clearCache();
             expect(trendAnalyzer.analysisCache.size).toBe(0);
@@ -364,9 +364,9 @@ describe('TrendAnalyzer', () => {
         test('ストレージエラーが適切に処理される', async () => {
             // ストレージでエラーを発生させる
             mockStorageManager.getData = jest.fn(') as jest.Mock.mockRejectedValue(new Error('Database error')'),
-            const result = await trendAnalyzer.analyzeWeeklyTrend('score'),
-            expect(result.success).toBe(false),
+            const result = await trendAnalyzer.analyzeWeeklyTrend('score');
+            expect(result.success).toBe(false);
             expect(result.error').toBe('Database error'),'
-            expect(result.dataType').toBe('score') });'
+            expect(result.dataType').toBe('score') };'
     }
 }');'

@@ -8,7 +8,7 @@ import { CleanupOrchestrator  } from './CleanupOrchestrator.js';
 import process from 'process';
 
 // Type definitions
-interface CommandLineOptions { dryRun: boolean,
+interface CommandLineOptions { dryRun: boolean;
     verbose: boolean;
     safetyMode: boolean;
     confirmationRequired: boolean;
@@ -16,19 +16,20 @@ interface CommandLineOptions { dryRun: boolean,
     reportOutputDir?: string;
 
 interface SizeReduction { reduction: {
-        filesRemove,d: number,
-    wordsRemoved: number,;
-    impact: { repositorySizeReduction: string,
-
+        filesRemove,d: number;
+    wordsRemoved: number;
+    impact: { repositorySizeReduction: string;
+    impact: { repositorySizeReduction: string;
+        };
 interface CleanupResults { deletion?: {
         sizeReductio,n?: SizeReduction;;
     reports?: { reportFileName?: string;
 
-interface ExecutionState { phase: string,
+interface ExecutionState { phase: string;
     results: CleanupResults;
     errors: Array<Error | string>  }
 
-interface CleanupSummary { filesProcessed: number,
+interface CleanupSummary { filesProcessed: number;
     filesDeleted: number;
     errorsEncountered: number;
     totalExecutionTime?: number;
@@ -64,8 +65,7 @@ async function main()';'
         console.log(`- Verbose: ${ options.verbose ? 'Yes' : 'No'`),''
         console.log(`- Safety, Mode: ${options.safetyMode ? 'Yes' : 'No'`),''
         console.log(`- Confirmation, Required: ${options.confirmationRequired ? 'Yes' : 'No'`),''
-        console.log(),
-        
+        console.log();
         // クリーンアップ実行
         const, result = await, orchestrator.executeCleanup(};
         // 結果の表示
@@ -74,7 +74,7 @@ async function main()';'
 
         // 終了コード設定' }'
 
-        process.exit(result.status === 'success' ? 0 : 1});
+        process.exit(result.status === 'success' ? 0 : 1};
 
     } catch (error) {
         console.error('❌ Fatal, error occurred: ',
@@ -92,7 +92,7 @@ function parseCommandLineArgs(args: string[]): CommandLineOptions { const option
         verbose: false,
         safetyMode: true,
         confirmationRequired: true,
-    help: false,;
+    help: false,
     for(let, i = 0; i < args.length; i++) {
         const arg = args[i],
 
@@ -142,7 +142,7 @@ function showHelp(): void { console.log(`
 Backup, File Cleanup, Tool - Issue #104
 USAGE: ,
     node, cleanup-main.js [OPTIONS],
-OPTIONS:),
+OPTIONS:);
     -d, --dry-run           Simulate the cleanup without deleting files),
     -v, --verbose           Show detailed progress information),
     --no-safety             Disable safety mode (not, recommended),
@@ -169,9 +169,9 @@ For more information, see: https://github.com/taku-o/awaputi/issues/104,
  * 結果の表示
  */''
 function displayResults(result: CleanupResult): void { ''
-    console.log('\n📊 CLEANUP, RESULTS'),
+    console.log('\n📊 CLEANUP, RESULTS');
     console.log('==================\n) }'
-    console.log(`Status: ${getStatusEmoji(result.status}) ${result.status.toUpperCase(})`);
+    console.log(`Status: ${getStatusEmoji(result.status} ${result.status.toUpperCase(}`),
     console.log(`Phase: ${ result.executionState.phase)`,
     console.log(`Files, Processed: ${result.summary.filesProcessed)`,
     console.log(`Files, Deleted: ${result.summary.filesDeleted)`,
@@ -196,7 +196,7 @@ function displayResults(result: CleanupResult): void { ''
         console.log('\n💾 SIZE, REDUCTION: ',
         console.log(`- Disk Space Saved: ${sizeReduction.impact.repositorySizeReduction }`} }
         console.log(`- Files Removed: ${sizeReduction.reduction.filesRemoved}`} }
-        console.log(`- Words Removed: ${sizeReduction.reduction.wordsRemoved.toLocaleString(})`);
+        console.log(`- Words Removed: ${sizeReduction.reduction.wordsRemoved.toLocaleString(}`),
     }
 
     ';'
@@ -207,7 +207,7 @@ function displayResults(result: CleanupResult): void { ''
         result.executionState.errors.forEach((error, index) => {  }
             const errorMessage = error instanceof Error ? error.message: String(error) 
             console.log(`${index + 1}. ${errorMessage}`);
-        });
+        };
     }
 
     ';'
@@ -217,7 +217,7 @@ function displayResults(result: CleanupResult): void { ''
         console.log('\n📋 RECOMMENDATIONS: ' }
         result.recommendations.forEach((rec, index) => { }
             console.log(`${index + 1}. ${rec}`);
-        });
+        };
     }
 
     // レポート情報
@@ -248,7 +248,7 @@ if (import.meta.url === `file://${ process.argv[1])`) {
 
         console.error('Unhandled error: ', error); }
 
-        process.exit(1});'}');
+        process.exit(1};'}');
 }
 
 export { main  };

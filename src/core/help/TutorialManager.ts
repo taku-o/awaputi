@@ -22,7 +22,7 @@ export interface GameEngine { eventBus?: any,
     state?: any;
     accessibilityManager?: any;
 
-export interface TutorialStep { id: string,
+export interface TutorialStep { id: string;
     title: string;
     instructions: string;
     action?: string;
@@ -34,7 +34,7 @@ export interface TutorialStep { id: string,
     validationFunction?: (...args: any[]') => boolean  }'
 }
 
-export interface Tutorial { id: string,
+export interface Tutorial { id: string;
     title: string;
     description: string;
     steps: TutorialStep[];
@@ -43,7 +43,7 @@ export interface Tutorial { id: string,
     estimatedTime?: number;
     tourType?: string;
 
-export interface TutorialConfig { autoAdvance: boolean,
+export interface TutorialConfig { autoAdvance: boolean;
     autoAdvanceDelay: number;
     showProgress: boolean;
     allowSkip: boolean;
@@ -57,7 +57,7 @@ export interface TutorialProgress { tutorialId?: string,
     completedTutorials?: string[];
     currentTutorialId?: string,  }
 
-export interface AvailableTutorial { id: string,
+export interface AvailableTutorial { id: string;
     title: string;
     description: string;
     difficulty: 'beginner' | 'intermediate' | 'advanced';
@@ -67,7 +67,7 @@ export interface AvailableTutorial { id: string,
 export interface ActionResult { timeout?: boolean,
     [key: string]: any;
 
-export interface ValidationResult { success: boolean,
+export interface ValidationResult { success: boolean;
     error?: string;
 ';'
 
@@ -75,17 +75,17 @@ export interface NavigationData {;
     direction: 'next' | 'previous' | 'skip' }
 
 export interface TutorialAccessibilityManager { applyToTutorial(overlay: any, config: TutorialConfig): TutorialConfig;
-    getConfig(): { simplifiedMode: boolean,
-    applySimplifiedMode(tutorial: Tutorial): Tutorial,
-    updateConfig(config: any): void,
+    getConfig(): { simplifiedMode: boolean;
+    applySimplifiedMode(tutorial: Tutorial): Tutorial;
+    updateConfig(config: any): void;
     destroy()';'
     recordTutorialAttempt(tutorialId: string, result: 'complete' | 'skip): void,'
-    updateStepStats(stepId: string, tutorialId: string, duration: number, success: boolean, skipped: boolean): void,
+    updateStepStats(stepId: string, tutorialId: string, duration: number, success: boolean, skipped: boolean): void;
     getTutorialStatistics(tutorialData: Map<string, Tutorial>, completedTutorials: Set<string>, currentTutorialId?: string, currentTutorial?: Tutorial | null): Record<string, any>;
     destroy(): void;
 }
 
-export interface TutorialProgressManager { startTutorial(tutorialId: string): void,
+export interface TutorialProgressManager { startTutorial(tutorialId: string): void;
     pauseTutorial(): void;
     resumeTutorial(): void;
     advanceToStep(stepIndex: number): void;
@@ -95,7 +95,7 @@ export interface TutorialProgressManager { startTutorial(tutorialId: string): vo
     destroy(): void;
 }
 
-export interface TutorialValidationEngine { determineValidationFunction(step: TutorialStep): ((...args: any[]) => boolean) | null,
+export interface TutorialValidationEngine { determineValidationFunction(step: TutorialStep): ((...args: any[]) => boolean) | null;
     validateStep(step: TutorialStep, actionResult: ActionResult): Promise<ValidationResult>;
     showValidationError(error: string, overlay: TutorialOverlay, tutorial: Tutorial, currentStep: number): Promise<void>;
     setStepTimer(timeout: number, callback: () => void): void;
@@ -132,14 +132,12 @@ export class TutorialManager {
         this.loggingSystem = LoggingSystem.getInstance ? LoggingSystem.getInstance() : new LoggingSystem();
         this.cacheSystem = CacheSystem.getInstance ? CacheSystem.getInstance() : new CacheSystem();
         this.contentLoader = getContentLoader();
-        this.tutorialOverlay = getTutorialOverlay(gameEngine, gameEngine?.eventBus, gameEngine?.state),
-        
+        this.tutorialOverlay = getTutorialOverlay(gameEngine, gameEngine?.eventBus, gameEngine?.state);
         // 分割されたコンポーネントを初期化
-        this.accessibilityManager = getTutorialAccessibilityManager(gameEngine?.accessibilityManager; this.loggingSystem),
+        this.accessibilityManager = getTutorialAccessibilityManager(gameEngine?.accessibilityManager; this.loggingSystem);
         this.statsManager = getTutorialStatsManager(this.loggingSystem);
         this.progressManager = getTutorialProgressManager(this.loggingSystem);
-        this.validationEngine = getTutorialValidationEngine(gameEngine; this.loggingSystem),
-        
+        this.validationEngine = getTutorialValidationEngine(gameEngine; this.loggingSystem);
         // チュートリアル状態
         this.currentTutorial = null;
         this.currentStep = 0;
@@ -148,10 +146,10 @@ export class TutorialManager {
         // チュートリアル設定
         this.config = { : undefined
             autoAdvance: true;
-            autoAdvanceDelay: 1000,
-            showProgress: true,
-            allowSkip: true,
-            allowBackNavigation: true,
+            autoAdvanceDelay: 1000;
+            showProgress: true;
+            allowSkip: true;
+            allowBackNavigation: true;
     defaultTimeout: 30000 }
             highlightEnabled: true;;
         this.initialize();
@@ -178,10 +176,10 @@ export class TutorialManager {
      * @returns 開始成功フラグ
      */
     async startTutorial(tutorialId: string): Promise<boolean> { try {
-            const tutorial = this.tutorialData.get(tutorialId),
+            const tutorial = this.tutorialData.get(tutorialId);
             if (!tutorial) { }'
 
-                this.loggingSystem.error('TutorialManager', `Tutorial not found: ${tutorialId}`});
+                this.loggingSystem.error('TutorialManager', `Tutorial not found: ${tutorialId}`};
                 return false;
             }
 
@@ -205,7 +203,7 @@ export class TutorialManager {
             // 最初のステップを実行
             await this.executeStep(0);
 
-            this.loggingSystem.info('TutorialManager', `Started tutorial: ${tutorialId}`});
+            this.loggingSystem.info('TutorialManager', `Started tutorial: ${tutorialId}`};
             return true;
 
         } catch (error) { }
@@ -217,8 +215,7 @@ export class TutorialManager {
      * チュートリアルを一時停止
      */
     pauseTutorial(): void { try {
-            this.progressManager.pauseTutorial(),
-            
+            this.progressManager.pauseTutorial();
             if (this.tutorialOverlay) {
             ','
 
@@ -234,8 +231,7 @@ export class TutorialManager {
      * チュートリアルを再開
      */
     resumeTutorial(): void { try {
-            this.progressManager.resumeTutorial(),
-            
+            this.progressManager.resumeTutorial();
             if (this.tutorialOverlay) {
             ','
 
@@ -318,9 +314,9 @@ export class TutorialManager {
      * チュートリアル進捗を取得
      * @returns 進捗情報
      */
-    getTutorialProgress(): TutorialProgress { const progress = this.progressManager.getProgress(),
+    getTutorialProgress(): TutorialProgress { const progress = this.progressManager.getProgress();
         return { ...progress,
-            currentStep: this.currentStep };
+            currentStep: this.currentStep },
             totalSteps: this.currentTutorial?.steps.length || 0 
     }
 
@@ -331,7 +327,7 @@ export class TutorialManager {
     async executeStep(stepIndex: number): Promise<void> { try {
             const step = this.currentTutorial?.steps[stepIndex],
             if (!step) { : undefined', '
-                this.loggingSystem.error('TutorialManager', `Step not found: ${stepIndex }`});
+                this.loggingSystem.error('TutorialManager', `Step not found: ${stepIndex }`};
                 return;
             }
 
@@ -358,8 +354,7 @@ export class TutorialManager {
 
                 // 成功時の統計更新
                 const duration = Date.now() - stepStartTime,
-                this.statsManager.updateStepStats(step.id, this.currentTutorial!.id, duration, true, false),
-
+                this.statsManager.updateStepStats(step.id, this.currentTutorial!.id, duration, true, false);
                 // 自動進行の処理
                 if (this.config.autoAdvance) {
     
@@ -370,7 +365,7 @@ export class TutorialManager {
                 }
             } else {  // バリデーション失敗時
                 const duration = Date.now() - stepStartTime,
-                this.statsManager.updateStepStats(step.id, this.currentTutorial!.id, duration, false, false),
+                this.statsManager.updateStepStats(step.id, this.currentTutorial!.id, duration, false, false);
                 ','
 
                 await this.validationEngine.showValidationError(','
@@ -400,7 +395,7 @@ export class TutorialManager {
             this.validationEngine.setStepTimer(timeout, async () => { }
                 await this.validationEngine.showTimeoutMessage(step, this.tutorialOverlay, this.currentTutorial!); }
                 resolve({ timeout: true,);
-            });
+            };
 
             // アクション待機の設定
             const waitAction = this.validationEngine.determineWaitAction(step);
@@ -412,7 +407,7 @@ export class TutorialManager {
 
             // ゲームエンジンのイベントバスにリスナーを追加
             if (this.gameEngine && this.gameEngine.eventBus) { this.gameEngine.eventBus.once(waitAction, handleAction) }
-        });
+        };
     }
 
     /**
@@ -471,7 +466,7 @@ export class TutorialManager {
 
             if(!this.progressManager.isCompleted(prerequisite)) { }'
 
-                this.loggingSystem.warn('TutorialManager', `Prerequisite not met: ${prerequisite}`});
+                this.loggingSystem.warn('TutorialManager', `Prerequisite not met: ${prerequisite}`};
                 return false;
 
         return true;
@@ -538,7 +533,7 @@ export class TutorialManager {
             );
             for (const tutorialId of tutorialIds) {
             
-                const tutorial = await this.contentLoader.loadTutorial(tutorialId),
+                const tutorial = await this.contentLoader.loadTutorial(tutorialId);
                 if (tutorial) {
     
 }
@@ -556,7 +551,7 @@ export class TutorialManager {
      * ガイドツアーデータを読み込み
      */
     async loadGuidedTourData(): Promise<void> { try {
-            const guidedTours = await this.contentLoader.loadGuidedTours(),
+            const guidedTours = await this.contentLoader.loadGuidedTours();
             if (guidedTours) {
                 for(const [tourId, tourData] of Object.entries(guidedTours) {
                     const tutorial = this.convertTourToTutorial(tourData) }
@@ -585,7 +580,7 @@ export class TutorialManager {
                 this.gameEngine.eventBus.on('tutorial_navigate', (data: NavigationData) => {  }
                     this.handleOverlayNavigation(data); }
 
-                });'} catch (error) {'
+                };'} catch (error) {'
             this.loggingSystem.error('TutorialManager', 'Failed to setup overlay integration', error) }
     }
 
@@ -627,12 +622,12 @@ export class TutorialManager {
                         difficulty: tutorial.difficulty || 'beginner'),
                         estimatedTime: tutorial.estimatedTime || 300000) }
                         isCompleted: this.progressManager.isCompleted(id); 
-    });
+    };
                 }
             }
 
             return tutorials;} catch (error) {
-            this.loggingSystem.error('TutorialManager', 'Failed to get available tutorials', error),
+            this.loggingSystem.error('TutorialManager', 'Failed to get available tutorials', error);
             return [],
 
     /**
@@ -640,10 +635,10 @@ export class TutorialManager {
      * @returns 統計情報
      */
     getTutorialStatistics(): Record<string, any> { try {
-            const progress = this.progressManager.getProgress(),
-            return this.statsManager.getTutorialStatistics(),
+            const progress = this.progressManager.getProgress();
+            return this.statsManager.getTutorialStatistics();
                 this.tutorialData),
-                new Set(progress.completedTutorials),
+                new Set(progress.completedTutorials);
                 progress.currentTutorialId,
                 this.currentTutorial','
             ',' }'
@@ -657,12 +652,10 @@ export class TutorialManager {
      * @param accessibilityConfig - アクセシビリティ設定
      */
     updateAccessibilityConfig(accessibilityConfig: any): void { try {
-            this.accessibilityManager.updateConfig(accessibilityConfig),
-            
+            this.accessibilityManager.updateConfig(accessibilityConfig);
             // 現在実行中のチュートリアルに設定を適用
             if (this.currentTutorial && this.tutorialOverlay) {
-                this.config = this.accessibilityManager.applyToTutorial(this.tutorialOverlay; this.config),
-                
+                this.config = this.accessibilityManager.applyToTutorial(this.tutorialOverlay; this.config);
                 if (this.accessibilityManager.getConfig().simplifiedMode) {
             }
                     this.currentTutorial = this.accessibilityManager.applySimplifiedMode(this.currentTutorial); }
@@ -674,12 +667,11 @@ export class TutorialManager {
      * リソースをクリーンアップ
      */
     destroy(): void { try {
-            this.stopTutorial(),
-            
+            this.stopTutorial();
             // 分割されたコンポーネントをクリーンアップ
-            this.accessibilityManager?.destroy(),
-            this.statsManager?.destroy(),
-            this.progressManager?.destroy(),
+            this.accessibilityManager?.destroy();
+            this.statsManager?.destroy();
+            this.progressManager?.destroy();
             this.validationEngine?.destroy()','
             this.loggingSystem.info('TutorialManager', 'Tutorial manager destroyed',' }'
 

@@ -8,24 +8,24 @@ interface DirtyRegionConfig { enabled?: boolean,
     expansionFactor?: number;
     historySize?: number;
 
-interface DirtyRegion { x: number,
+interface DirtyRegion { x: number;
     y: number;
     width: number;
     height: number;
     timestamp: number;
     frame: number;
 
-interface RegionHistory { frame: number,
+interface RegionHistory { frame: number;
     regions: DirtyRegion[];
     timestamp: number;
 
-interface RegionStats { totalRegions: number,
+interface RegionStats { totalRegions: number;
     mergedRegions: number;
     skippedRedraws: number;
     pixelsSaved: number;
     performanceGain: number;
 
-interface Hotspot { x: number,
+interface Hotspot { x: number;
     y: number;
     count: number;
 
@@ -70,9 +70,9 @@ export class AdvancedDirtyRegionManager {
         
         // Optimization statistics
         this.stats = {
-            totalRegions: 0,
-            mergedRegions: 0,
-            skippedRedraws: 0,
+            totalRegions: 0;
+            mergedRegions: 0;
+            skippedRedraws: 0;
     pixelsSaved: 0 }
             performanceGain: 0 
     }
@@ -80,24 +80,23 @@ export class AdvancedDirtyRegionManager {
     /**
      * Add dirty region to be redrawn
      */
-    addDirtyRegion(x: number, y: number, width: number, height: number): void { if (!this.enabled) return,
+    addDirtyRegion(x: number, y: number, width: number, height: number): void { if (!this.enabled) return;
         
         try {
             // Expand region by expansion factor to reduce edge effects
-            const expandedWidth = Math.ceil(width * this.expansionFactor),
-            const expandedHeight = Math.ceil(height * this.expansionFactor),
+            const expandedWidth = Math.ceil(width * this.expansionFactor);
+            const expandedHeight = Math.ceil(height * this.expansionFactor);
             const expandedX = Math.floor(x - (expandedWidth - width) / 2),
             const expandedY = Math.floor(y - (expandedHeight - height) / 2),
             
             // Ensure minimum region size
-            const finalWidth = Math.max(expandedWidth, this.minRegionSize),
-            const finalHeight = Math.max(expandedHeight, this.minRegionSize),
-            
+            const finalWidth = Math.max(expandedWidth, this.minRegionSize);
+            const finalHeight = Math.max(expandedHeight, this.minRegionSize);
             const region: DirtyRegion = {
-                x: expandedX,
-                y: expandedY,
-                width: finalWidth,
-                height: finalHeight,
+                x: expandedX;
+                y: expandedY;
+                width: finalWidth;
+                height: finalHeight;
                 timestamp: Date.now(
     frame: this._getCurrentFrame(  };
             
@@ -117,26 +116,25 @@ export class AdvancedDirtyRegionManager {
     mergeRegions(): DirtyRegion[] { if (!this.enabled || this.regions.size === 0) {
             return [] }
         
-        try { const regionsArray = Array.from(this.regions),
-            const merged: DirtyRegion[] = [],
+        try { const regionsArray = Array.from(this.regions);
+            const merged: DirtyRegion[] = [];
             const processed = new Set<number>(),
             
             for(let, i = 0, i < regionsArray.length, i++) {
             
                 if(processed.has(i) continue }
                 let currentRegion = { ...regionsArray[i],
-                processed.add(i),
-                
+                processed.add(i);
                 // Find overlapping regions
                 for(let, j = i + 1, j < regionsArray.length, j++) {
                     if(processed.has(j) continue,
                     
-                    const overlap = this._calculateOverlap(currentRegion, regionsArray[j]),
-                    const unionArea = this._calculateUnionArea(currentRegion, regionsArray[j]),
+                    const overlap = this._calculateOverlap(currentRegion, regionsArray[j]);
+                    const unionArea = this._calculateUnionArea(currentRegion, regionsArray[j]);
                     const overlapRatio = overlap / unionArea,
                     
                     if (overlapRatio > this.mergeThreshold) {
-                        currentRegion = this._mergeRegions(currentRegion, regionsArray[j]),
+                        currentRegion = this._mergeRegions(currentRegion, regionsArray[j]);
                         processed.add(j) }
                         this.stats.mergedRegions++; }
 }
@@ -151,20 +149,19 @@ export class AdvancedDirtyRegionManager {
             return merged;
 
         } catch (error) {
-            this.errorHandler.logError('Failed to merge regions', error),
-            return Array.from(this.regions),
-    
+            this.errorHandler.logError('Failed to merge regions', error);
+            return Array.from(this.regions);
     /**
      * Clear all dirty regions
      */
     clearRegions(): void { try {
             // Store regions in history
             if (this.regions.size > 0) {
-                this.regionHistory.push({),
+                this.regionHistory.push({);
                     frame: this._getCurrentFrame(
     regions: Array.from(this.regions) }
                     timestamp: Date.now(); 
-    });
+    };
                 
                 // Limit history size
                 if (this.regionHistory.length > this.historySize) { this.regionHistory.shift() }
@@ -191,7 +188,7 @@ export class AdvancedDirtyRegionManager {
      * Check if point is in any dirty region
      */
     isPointDirty(x: number, y: number): boolean { for (const region of this.regions) {
-            if(x >= region.x && x < region.x + region.width &&),
+            if(x >= region.x && x < region.x + region.width &&);
                 y >= region.y && y < region.y + region.height) {
     
 }
@@ -212,17 +209,17 @@ export class AdvancedDirtyRegionManager {
         return Array.from(this.hotspots.entries().map(([key, count]) => { }'
 
             const [x, y] = key.split(').map(Number); }'
-            return { x, y, count });
+            return { x, y, count };
     }
     
     /**
      * Reset statistics
      */
     resetStats(): void { this.stats = {
-            totalRegions: 0,
-            mergedRegions: 0,
-            skippedRedraws: 0,
-            pixelsSaved: 0,
+            totalRegions: 0;
+            mergedRegions: 0;
+            skippedRedraws: 0;
+            pixelsSaved: 0;
     performanceGain: 0 }
     
     // Private methods
@@ -230,34 +227,32 @@ export class AdvancedDirtyRegionManager {
     /**
      * Calculate overlap area between two regions
      */
-    private _calculateOverlap(region1: DirtyRegion, region2: DirtyRegion): number { const x1 = Math.max(region1.x, region2.x),
-        const y1 = Math.max(region1.y, region2.y),
-        const x2 = Math.min(region1.x + region1.width, region2.x + region2.width),
-        const y2 = Math.min(region1.y + region1.height, region2.y + region2.height),
-        
+    private _calculateOverlap(region1: DirtyRegion, region2: DirtyRegion): number { const x1 = Math.max(region1.x, region2.x);
+        const y1 = Math.max(region1.y, region2.y);
+        const x2 = Math.min(region1.x + region1.width, region2.x + region2.width);
+        const y2 = Math.min(region1.y + region1.height, region2.y + region2.height);
         if (x2 <= x1 || y2 <= y1) return 0,
         return (x2 - x1) * (y2 - y1) }
     
     /**
      * Calculate union area of two regions
      */
-    private _calculateUnionArea(region1: DirtyRegion, region2: DirtyRegion): number { const area1 = region1.width * region1.height,
+    private _calculateUnionArea(region1: DirtyRegion, region2: DirtyRegion): number { const area1 = region1.width * region1.height;
         const area2 = region2.width * region2.height,
-        const overlap = this._calculateOverlap(region1, region2),
+        const overlap = this._calculateOverlap(region1, region2);
         return area1 + area2 - overlap }
     
     /**
      * Merge two regions into one
      */
-    private _mergeRegions(region1: DirtyRegion, region2: DirtyRegion): DirtyRegion { const x = Math.min(region1.x, region2.x),
-        const y = Math.min(region1.y, region2.y),
-        const right = Math.max(region1.x + region1.width, region2.x + region2.width),
-        const bottom = Math.max(region1.y + region1.height, region2.y + region2.height),
-        
+    private _mergeRegions(region1: DirtyRegion, region2: DirtyRegion): DirtyRegion { const x = Math.min(region1.x, region2.x);
+        const y = Math.min(region1.y, region2.y);
+        const right = Math.max(region1.x + region1.width, region2.x + region2.width);
+        const bottom = Math.max(region1.y + region1.height, region2.y + region2.height);
         return { x,
             y,
-            width: right - x,
-            height: bottom - y,
+            width: right - x;
+            height: bottom - y;
     timestamp: Math.max(region1.timestamp, region2.timestamp) };
             frame: Math.max(region1.frame, region2.frame); }
         }

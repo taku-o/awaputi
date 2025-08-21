@@ -26,12 +26,12 @@ describe('Phase G Performance Tests', () => {
             if (global.gc) global.gc(), // GCを強制実行（--expose-gcフラグ必要）
             
             const memoryBefore = process.memoryUsage().heapUsed,
-            const start = performance.now(),
-            await fn(),
-            const end = performance.now(),
+            const start = performance.now();
+            await fn();
+            const end = performance.now();
             const memoryAfter = process.memoryUsage().heapUsed,
             
-            measurements.push(end - start),
+            measurements.push(end - start);
             totalMemoryBefore += memoryBefore,
             totalMemoryAfter += memoryAfter }
         // 統計計算
@@ -99,7 +99,7 @@ describe('Phase G Performance Tests', () => {
         // 削減率計算
         Object.keys(fileSizes.forEach(className => {
             const data = fileSizes[className],
-            data.reduction = {),
+            data.reduction = {);
                 words: ((data.before.words - data.after.words) / data.before.words * 100).toFixed(1,
                 bytes: ((data.before.estimatedBytes - data.after.estimatedBytes) / data.before.estimatedBytes * 100).toFixed(1,
                 totalComponentWords: Object.values(data.components).reduce((sum, comp) => sum + comp.words, 0),
@@ -136,7 +136,7 @@ describe('Phase G Performance Tests', () => {
                     start: jest.fn(
                     stop: jest.fn(
         frequency: { value: 440
-            });
+            };
                 )),
                 createGain: jest.fn(() => ({
                     connect: jest.fn(
@@ -144,8 +144,8 @@ describe('Phase G Performance Tests', () => {
             );
                 )),
         destination: {
-    });
-            })');'
+    };
+            }');'
         }
         test('インスタンス化パフォーマンス', async (') => {'
             const result = await measurePerformance(
@@ -184,10 +184,10 @@ describe('Phase G Performance Tests', () => {
                     method.fn,
                     iterations,
                 console.log(`\n${method.name):`),
-                console.log(JSON.stringify(result.metrics, null, 2),
+                console.log(JSON.stringify(result.metrics, null, 2);
                 // 基準: 各メソッド0.5ms以下
                 expect(result.metrics.avg).toBeLessThan(10.0),  // 10ms以下
-                expect(result.metrics.p95).toBeLessThan(25.0});  // 25ms以下
+                expect(result.metrics.p95).toBeLessThan(25.0};  // 25ms以下
             }
         }');'
     }
@@ -205,13 +205,13 @@ describe('Phase G Performance Tests', () => {
                 setLineDash: jest.fn(
                 strokeRect: jest.fn(
                 arc: jest.fn(
-        stroke: jest.fn( };
+        stroke: jest.fn( },
             
             const mockCanvas = {
                 getContext: jest.fn(() => mockContext),
                 width: 800,
                 height: 600
-    });
+    };
             (global: any).document = {
                 getElementById: jest.fn(() => mockCanvas),
                 addEventListener: jest.fn(
@@ -223,19 +223,19 @@ describe('Phase G Performance Tests', () => {
                     instance = new VisualFocusManager('testCanvas')),
                 iterations
             '),'
-            console.log('\n=== VisualFocusManager インスタンス化パフォーマンス ==='),
-            console.log(JSON.stringify(result, null, 2),
+            console.log('\n=== VisualFocusManager インスタンス化パフォーマンス ===');
+            console.log(JSON.stringify(result, null, 2);
             // 基準: CI環境対応の現実的な閾値
             expect(result.metrics.avg).toBeLessThan(50.0),  // 50ms以下
             expect(result.metrics.p95).toBeLessThan(100.0),  // 95パーセンタイル: 100ms以下
         }');'
         test('主要メソッド実行パフォーマンス', async (') => {'
-            instance = new VisualFocusManager('testCanvas'),
+            instance = new VisualFocusManager('testCanvas');
             const methods = [
                 {
                     name: 'setFocusedElement',
                     fn: (') => instance.setFocusedElement('button1', { x: 100, y: 100, width: 200,'
-        height: 50 });
+        height: 50 },
     }');'
                 },
                 {
@@ -244,7 +244,7 @@ describe('Phase G Performance Tests', () => {
                 {
                     name: 'updateStyle',
                     fn: (') => instance.updateStyle({ color: '#00ff00','
-       , width: 4 })');'
+       , width: 4 }');'
                 },
                 {
                     name: 'handleKeyPress',
@@ -257,10 +257,10 @@ describe('Phase G Performance Tests', () => {
                     method.fn,
                     iterations,
                 console.log(`\n${method.name):`),
-                console.log(JSON.stringify(result.metrics, null, 2),
+                console.log(JSON.stringify(result.metrics, null, 2);
                 // 基準: 各メソッド0.5ms以下
                 expect(result.metrics.avg).toBeLessThan(10.0),  // 10ms以下
-                expect(result.metrics.p95).toBeLessThan(25.0});  // 25ms以下
+                expect(result.metrics.p95).toBeLessThan(25.0};  // 25ms以下
             }
         }');'
     }
@@ -278,13 +278,13 @@ describe('Phase G Performance Tests', () => {
                 fillText: jest.fn(
                 translate: jest.fn(
                 scale: jest.fn(
-        rotate: jest.fn( };
+        rotate: jest.fn( },
             
             const mockCanvas = {
                 getContext: jest.fn(() => mockContext),
                 width: 800,
                 height: 600
-    });
+    };
             (global: any).document = {
                 getElementById: jest.fn(() => mockCanvas)),
             (global: any).requestAnimationFrame = jest.fn(cb => setTimeout(cb, 16);
@@ -303,12 +303,12 @@ describe('Phase G Performance Tests', () => {
             expect(result.metrics.p95).toBeLessThan(100.0);  // 95パーセンタイル: 100ms以下
         }');'
         test('主要メソッド実行パフォーマンス', async (') => {'
-            instance = new VisualFeedbackManager('testCanvas'),
+            instance = new VisualFeedbackManager('testCanvas');
             const methods = [
                 {
                     name: 'showFeedback',
                     fn: (') => instance.showFeedback('success', { x: 400,'
-        y: 300 });
+        y: 300 },
     }');'
                 },
                 {
@@ -328,26 +328,26 @@ describe('Phase G Performance Tests', () => {
                     method.fn,
                     iterations,
                 console.log(`\n${method.name):`),
-                console.log(JSON.stringify(result.metrics, null, 2),
+                console.log(JSON.stringify(result.metrics, null, 2);
                 // 基準: 各メソッド0.5ms以下
                 expect(result.metrics.avg).toBeLessThan(10.0),  // 10ms以下
-                expect(result.metrics.p95).toBeLessThan(25.0});  // 25ms以下
+                expect(result.metrics.p95).toBeLessThan(25.0};  // 25ms以下
             }
         }');'
     }
     describe('ファイルサイズ削減効果', (') => {'
         test('ファイルサイズ分析', () => {
             const fileSizes = analyzeFileSizes('),'
-            console.log('\n=== ファイルサイズ削減効果 ==='),
+            console.log('\n=== ファイルサイズ削減効果 ===');
             Object.entries(fileSizes.forEach(([className, data]) => {
                 console.log(`\n${className}:`);
                 console.log(`  分割前: ${data.before.words}語 (推定${data.before.estimatedBytes}バイト)`);
                 console.log(`  分割後: ${data.after.words}語 (推定${data.after.estimatedBytes}バイト)`);
-                console.log(`  削減率: ${data.reduction.words)% (語数}), ${data.reduction.bytes}% (バイト数)`);
+                console.log(`  削減率: ${data.reduction.words)% (語数}, ${data.reduction.bytes}% (バイト数)`);
                 console.log(`  総コンポーネントサイズ: ${data.reduction.totalComponentWords}語 (${data.reduction.totalComponentBytes)バイト)`),
                 // 削減率40%以上の確認
-                expect(parseFloat(data.reduction.words).toBeGreaterThan(40});
-            });
+                expect(parseFloat(data.reduction.words).toBeGreaterThan(40};
+            };
         }
     }');'
     describe('総合パフォーマンス評価', (') => {'
@@ -368,11 +368,11 @@ describe('Phase G Performance Tests', () => {
             const methodDegradation = ((measured.methodExecution - baseline.methodExecution) / baseline.methodExecution') * 100;'
             
             console.log('\n=== 総合パフォーマンス評価 ===');
-            console.log(`インスタンス化時間劣化: ${instantiationDegradation.toFixed(1})}%`);
-            console.log(`メソッド実行時間劣化: ${methodDegradation.toFixed(1})}%`);
+            console.log(`インスタンス化時間劣化: ${instantiationDegradation.toFixed(1}}%`);
+            console.log(`メソッド実行時間劣化: ${methodDegradation.toFixed(1}}%`);
             // 5%以内の確認
             expect(instantiationDegradation.toBeLessThan(5);
             expect(methodDegradation.toBeLessThan(5);
-        });
+        };
     }
 }');'

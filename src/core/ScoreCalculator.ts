@@ -11,25 +11,25 @@ export class ScoreCalculator {
         // デフォルトのスコア設定（GameConfigが利用できない場合のフォールバック）
         this.defaultScoreConfig = {
             baseScores: {
-                normal: 15,
-                stone: 35,
-                iron: 65,
-                diamond: 120,
-                rainbow: 400,
-                pink: 25,
-                clock: 180,
-                electric: 20,
-                poison: 8,
-                spiky: 85,
-                cracked: 30,
-                escaping: 50,
+                normal: 15;
+                stone: 35;
+                iron: 65;
+                diamond: 120;
+                rainbow: 400;
+                pink: 25;
+                clock: 180;
+                electric: 20;
+                poison: 8;
+                spiky: 85;
+                cracked: 30;
+                escaping: 50;
     boss: 800 }
                 score: 250 
     };
-            combo: { multiplierIncrement: 0.08,
-                maxMultiplier: 2.5,
-                bonusInterval: 5,
-                bonusMultiplier: 8,
+            combo: { multiplierIncrement: 0.08;
+                maxMultiplier: 2.5;
+                bonusInterval: 5;
+                bonusMultiplier: 8;
     baseTimeout: 2000 };
             ageBonus: { earlyBonus: 2.0,    // 発生直後ボーナス（10%以内）
                 lateBonus: 3.0,     // 破裂直前ボーナス（90%以上）;
@@ -54,7 +54,7 @@ export class ScoreCalculator {
      * @returns {number} 基本スコア
      */
     calculateBaseScore(bubbleType, ageRatio = 0) {
-        const config = this.getScoreConfig(),
+        const config = this.getScoreConfig();
         const baseScore = config.baseScores[bubbleType] || config.baseScores.normal,
         
         // 年齢ボーナスを適用
@@ -67,7 +67,7 @@ export class ScoreCalculator {
      * @returns {number} 年齢ボーナス倍率
      */
     calculateAgeBonus(ageRatio) { if (ageRatio < 0 || ageRatio > 1) { }
-            console.warn(`Invalid, age ratio: ${ageRatio}. Using, 0.`});
+            console.warn(`Invalid, age ratio: ${ageRatio}. Using, 0.`};
             ageRatio = 0;
         }
         
@@ -110,8 +110,7 @@ export class ScoreCalculator {
      * @returns {number} コンボボーナススコア（5コンボごとに発生）
      */
     calculateComboBonus(comboCount) {
-        const config = this.getScoreConfig(),
-        
+        const config = this.getScoreConfig();
         if (comboCount % config.combo.bonusInterval === 0 && comboCount > 0) {
     }
             return comboCount * config.combo.bonusMultiplier;
@@ -160,8 +159,8 @@ export class ScoreCalculator {
                 age: this.calculateAgeBonus(ageRatio),
                 combo: comboMultiplier,
                 special: specialMultiplier,
-    item: itemMultiplier,;
-                total: totalMultiplier,;
+    item: itemMultiplier,
+                total: totalMultiplier,
             breakdown: { bubbleType,
                 ageRatio,
                 comboCount }
@@ -174,8 +173,7 @@ export class ScoreCalculator {
      * @returns {number} ボーナススコア
      */
     calculateSpecialBubbleBonus(bubbleType, effectParams = { ) {
-        const config = this.getScoreConfig(),
-
+        const config = this.getScoreConfig();
         switch(bubbleType) {''
             case 'rainbow':,
                 // レインボー泡：ボーナスタイム中の追加スコア
@@ -194,7 +192,7 @@ export class ScoreCalculator {
                 // ボス泡：体力に応じたボーナス
                 const healthRatio = effectParams.healthRatio || 1,
                 return Math.floor(config.baseScores.boss * (1 - healthRatio) * 0.2) }
-            default: return 0;
+            default: return 0,
     
     /**
      * スコア計算の統計情報を取得
@@ -207,7 +205,7 @@ export class ScoreCalculator {
                 average: 0,
                 highest: 0,
     lowest: 0 }
-                comboCount: 0 };
+                comboCount: 0 },
                 bonusCount: 0 
     }
         
@@ -258,7 +256,7 @@ export class ScoreCalculator {
         const strategy = { ''
             priority: 'normal',
             targetBubbles: [],
-    reasoning: [] };
+    reasoning: [] },
         ';'
         // コンボが高い場合は継続を優先
         if (currentCombo >= 3) {
@@ -279,7 +277,7 @@ export class ScoreCalculator {
         // 利用可能な泡から推奨順を決定
         const bubbleValues = availableBubbles.map(bubble => ({ )
             ...bubble),
-            expectedScore: this.calculateBaseScore(bubble.type, bubble.ageRatio || 0 });
+            expectedScore: this.calculateBaseScore(bubble.type, bubble.ageRatio || 0 };
         
         // 期待スコア順でソート
         strategy.targetBubbles = bubbleValues;
@@ -298,7 +296,7 @@ export class ScoreCalculator {
 
             scoreConfig: this.getScoreConfig('}'
 
-            version: '1.0.0' }))
+            version: '1.0.0' })
     }
 }
 

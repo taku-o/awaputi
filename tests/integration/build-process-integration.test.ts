@@ -11,7 +11,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename');'
 const projectRoot = path.join(__dirname, '..', '..');
 describe('Build Process Integration Tests', (') => {'
-  const localesDir = path.join(projectRoot, 'src', 'locales'),
+  const localesDir = path.join(projectRoot, 'src', 'locales');
   const supportedLanguages = ['en', 'ja', 'ko', 'zh-CN', 'zh-TW'],
   const categories = ['achievements', 'common', 'errors', 'game', 'help', 'menu', 'settings'],
   
@@ -20,15 +20,15 @@ describe('Build Process Integration Tests', (') => {'
   /**
    * コマンド実行ヘルパー
    */
-  const execCommand = (command, options = {}) => {
+  const execCommand = (command, options = {} => {
     return new Promise((resolve, reject) => {
       exec(command, { cwd: projectRoot, ...options }, (error, stdout, stderr) => {
         if (error) {
-          reject({ error, stdout, stderr });
+          reject({ error, stdout, stderr };
         } else {
-          resolve({ stdout, stderr });
+          resolve({ stdout, stderr };
         }
-      });
+      };
     }
   };
   /**
@@ -42,8 +42,8 @@ describe('Build Process Integration Tests', (') => {'
       for (const category of categories) {
         const filePath = path.join(localesDir, lang, `${category}.json`);
         try {
-          const content = await fs.readFile(filePath, 'utf-8'),
-          const stat = await fs.stat(filePath),
+          const content = await fs.readFile(filePath, 'utf-8');
+          const stat = await fs.stat(filePath);
           states[lang][category] = {
             content,
             size: stat.size,
@@ -70,14 +70,14 @@ describe('Build Process Integration Tests', (') => {'
   };
   beforeAll(async () => {
     // 初期状態を記録
-    initialFileStates = await getFileStates(),
+    initialFileStates = await getFileStates();
     initialGitStatus = await getGitStatus('),'
-    console.log('Initial file states captured'),
+    console.log('Initial file states captured');
     console.log('Initial git status:', initialGitStatus.trim(') || 'clean') }, 30000');
   describe('npm run build idempotency', (') => {'
     test('should not change translation files when running build once', async (') => {'
       // npm run buildを実行
-      const buildResult = await execCommand('npm run build', { timeout: 120000 });
+      const buildResult = await execCommand('npm run build', { timeout: 120000 };
       // ビルドが成功することを確認
       expect(buildResult.stdout').toContain('翻訳ファイルの最適化完了');'
       expect(buildResult.stdout').toContain('built in');'
@@ -91,25 +91,25 @@ describe('Build Process Integration Tests', (') => {'
           
           if (initial && afterBuild) {
             // ファイル内容が同じであることを確認
-            expect(afterBuild.content).toBe(initial.content),
+            expect(afterBuild.content).toBe(initial.content);
             // optimizedAtフィールドが存在しないことを確認
-            expect(afterBuild.parsed.meta? .optimizedAt).toBeUndefined(),
+            expect(afterBuild.parsed.meta? .optimizedAt).toBeUndefined();
             // 基本メタデータが保持されていることを確認
-            expect(afterBuild.parsed.meta?.language).toBe(initial.parsed.meta?.language),
-            expect(afterBuild.parsed.meta?.version).toBe(initial.parsed.meta?.version),
+            expect(afterBuild.parsed.meta?.language).toBe(initial.parsed.meta?.language);
+            expect(afterBuild.parsed.meta?.version).toBe(initial.parsed.meta?.version);
             expect(afterBuild.parsed.meta?.completeness).toBe(initial.parsed.meta?.completeness) }
         }
       }
     }, 180000');'
     test('should not change translation files when running build multiple times', async (') => {'
       // 最初のビルド : undefined
-      await execCommand('npm run build', { timeout: 120000 });
+      await execCommand('npm run build', { timeout: 120000 };
       const firstBuildStates = await getFileStates(');'
       // 2回目のビルド
-      await execCommand('npm run build', { timeout: 120000 });
+      await execCommand('npm run build', { timeout: 120000 };
       const secondBuildStates = await getFileStates(');'
       // 3回目のビルド
-      await execCommand('npm run build', { timeout: 120000 });
+      await execCommand('npm run build', { timeout: 120000 };
       const thirdBuildStates = await getFileStates();
       // 全ての実行で同じ結果であることを確認
       for (const lang of supportedLanguages) {
@@ -119,11 +119,11 @@ describe('Build Process Integration Tests', (') => {'
           const third = thirdBuildStates[lang][category],
           
           if (first && second && third) {
-            expect(second.content).toBe(first.content),
-            expect(third.content).toBe(first.content),
+            expect(second.content).toBe(first.content);
+            expect(third.content).toBe(first.content);
             // optimizedAtフィールドが存在しないことを再確認
-            expect(first.parsed.meta? .optimizedAt).toBeUndefined(),
-            expect(second.parsed.meta?.optimizedAt).toBeUndefined(),
+            expect(first.parsed.meta? .optimizedAt).toBeUndefined();
+            expect(second.parsed.meta?.optimizedAt).toBeUndefined();
             expect(third.parsed.meta?.optimizedAt).toBeUndefined() }
         }
       }
@@ -132,7 +132,7 @@ describe('Build Process Integration Tests', (') => {'
   describe('Git integration verification', (') => {'
     test('should not show translation files as modified after build', async (') => {'
       // ビルドを実行 : undefined
-      await execCommand('npm run build', { timeout: 120000 });
+      await execCommand('npm run build', { timeout: 120000 };
       // git statusを確認
       const gitStatus = await getGitStatus(');'
       // 翻訳ファイルが変更として検出されていないことを確認
@@ -149,7 +149,7 @@ describe('Build Process Integration Tests', (') => {'
         (line.includes('FontPreloadConfig.js') || line.includes('I18nPerformanceConfig.js')
       );
       // 設定ファイルの変更は許可される
-      console.log(`Config file changes detected: ${configFileChanges.length)`});
+      console.log(`Config file changes detected: ${configFileChanges.length)`},
     }, 150000');'
     test('should maintain clean working directory for translation files', async (') => {'
       // 初期状態をクリーンにする
@@ -159,7 +159,7 @@ describe('Build Process Integration Tests', (') => {'
       }
       
       // ビルド実行
-      await execCommand('npm run build', { timeout: 120000 });
+      await execCommand('npm run build', { timeout: 120000 };
       // 翻訳ファイルの差分を確認
       let hasDiff = false;
       
@@ -167,9 +167,9 @@ describe('Build Process Integration Tests', (') => {'
         for (const category of categories) {
           try {
             const { stdout } = await execCommand(`git diff src/locales/${lang}/${category).json`),
-            if (stdout.trim()}) {
+            if (stdout.trim()} {
               hasDiff = true,
-              console.error(`Unexpected diff in ${lang}/${category).json:`, stdout});
+              console.error(`Unexpected diff in ${lang}/${category).json:`, stdout};
             } catch (error) {
             // ファイルが存在しない場合はスキップ
           }
@@ -181,7 +181,7 @@ describe('Build Process Integration Tests', (') => {'
   }');'
   describe('prebuild process validation', (') => {'
     test('should complete prebuild tasks without errors', async (') => {'
-      const prebuildResult = await execCommand('npm run prebuild', { timeout: 60000 });
+      const prebuildResult = await execCommand('npm run prebuild', { timeout: 60000 };
       // prebuildが正常に完了することを確認
       expect(prebuildResult.stdout').toContain('設定検証が正常に完了しました');'
       expect(prebuildResult.stdout').toContain('翻訳ファイルの最適化完了');'
@@ -207,19 +207,19 @@ describe('Build Process Integration Tests', (') => {'
   describe('Performance and reliability', (') => {'
     test('should complete build process within reasonable time', async () => {
       const startTime = Date.now('),'
-      await execCommand('npm run build', { timeout: 120000 });
+      await execCommand('npm run build', { timeout: 120000 };
       const duration = Date.now() - startTime;
       const maxDuration = 120000; // 2分以内
       
       expect(duration.toBeLessThan(maxDuration);
-      console.log(`Build completed in ${Math.round(duration / 1000})}s`);
+      console.log(`Build completed in ${Math.round(duration / 1000}}s`);
     }, 150000');'
     test('should handle concurrent build processes gracefully', async (') => {'
       // 同時に複数のprebuildプロセスを実行
       const promises = [
         execCommand('npm run i18n:setup', { timeout: 30000 }','
         execCommand('npm run i18n:setup', { timeout: 30000
-            });
+            };
       ];
       
       const results = await Promise.allSettled(promises');'
@@ -250,7 +250,7 @@ describe('Build Process Integration Tests', (') => {'
       ];
       
       for (const artifact of expectedArtifacts) {
-        const artifactPath = path.join(distPath, artifact),
+        const artifactPath = path.join(distPath, artifact);
         expect(await fs.access(artifactPath.then(() => true).catch(() => false)).toBe(true) }
     }, 150000');'
     test('should not include source translation files in build artifacts', async (') => {'

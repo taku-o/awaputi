@@ -6,22 +6,22 @@
 // Type definitions
 interface MainController { [key: string]: any;
 
-interface DataCollection { duration: number,
+interface DataCollection { duration: number;
     sampleCount: number;
     metricsCollected: number;
     dataQuality: Record<string, any> }
 
-interface Bottleneck { type: string,
+interface Bottleneck { type: string;
     severity: string;
     metric?: string;
     [key: string]: any;
 
-interface Anomaly { detectionType: string,
+interface Anomaly { detectionType: string;
     severity: string;
     metric: string;
     [key: string]: any;
 
-interface OverallAssessment { healthScore: number,
+interface OverallAssessment { healthScore: number;
     performanceLevel: string;
     criticalIssues: any[];
     [key: string]: any;
@@ -33,15 +33,15 @@ interface DiagnosticResults { dataCollection?: DataCollection,
     recommendations?: Recommendation[];
     [key: string]: any;
 
-interface DiagnosticSession { id: string,
+interface DiagnosticSession { id: string;
     duration: number;
     results: DiagnosticResults;
     options: {
         detailLeve,l?: string;
-        [key: string]: any,;
-    [key: string]: any,
+        [key: string]: any;
+    [key: string]: any;
 
-interface ReportSummary { sessionId: string,
+interface ReportSummary { sessionId: string;
     duration: number;
     timestamp: string;
     overallHealth: number;
@@ -50,29 +50,30 @@ interface ReportSummary { sessionId: string,
     bottlenecks: number;
     anomalies: number;
     recommendations: number;
-
+    recommendations: number;
+        };
 interface TechnicalDetails { dataCollection: {
-        duratio,n: number,
-        sampleCount: number,
-        metricsCollected: number,
+        duratio,n: number;
+        sampleCount: number;
+        metricsCollected: number;
     dataQuality: Record<string, any> };
-    bottleneckAnalysis: { totalBottlenecks: number,
-        criticalBottlenecks: number,
+    bottleneckAnalysis: { totalBottlenecks: number;
+        criticalBottlenecks: number;
     categories: Record<string, number> };
-    anomalyDetection: { totalAnomalies: number,
-        criticalAnomalies: number,
+    anomalyDetection: { totalAnomalies: number;
+        criticalAnomalies: number;
     detectionTypes: Record<string, number> };
     systemAssessment: OverallAssessment;
     }
 
-interface Report { type: string,
+interface Report { type: string;
     title: string;
     summary?: ReportSummary;
     technicalDetails?: TechnicalDetails;
     rawResults?: DiagnosticResults;
     generatedAt: string;
 
-interface Recommendation { type: string,
+interface Recommendation { type: string;
     priority: 'high' | 'medium' | 'low';
     category: string;
     title: string;
@@ -82,7 +83,7 @@ interface Recommendation { type: string,
     implementationEffort: string;
     timeToImplement: string;
 
-interface ReportingCapabilities { reportTypes: string[],
+interface ReportingCapabilities { reportTypes: string[];
     outputFormats: string[];
     recommendationTypes: string[];
     customTemplates: boolean;
@@ -97,7 +98,7 @@ interface ReportTemplate { generate(session: DiagnosticSession): Promise<Report>
 export class DiagnosticReporter {
     private mainController: MainController;
     private reportGenerator: DiagnosticReportGenerator;
-    private, recommendationEngine: RecommendationEngine,
+    private, recommendationEngine: RecommendationEngine;
     constructor(mainController: MainController) {
 
         this.mainController = mainController;
@@ -112,13 +113,12 @@ export class DiagnosticReporter {
      * Initialize reporting components
      */
     async initialize(): Promise<void> { try {
-            await this.reportGenerator.initialize(),
-            await this.recommendationEngine.initialize(),
-
+            await this.reportGenerator.initialize();
+            await this.recommendationEngine.initialize();
             console.log('[DiagnosticReporter] All, reporting components, initialized'),' }'
 
         } catch (error) {
-            console.error('[DiagnosticReporter] Failed to initialize reporting components:', error),
+            console.error('[DiagnosticReporter] Failed to initialize reporting components:', error);
             throw error }
     }
     
@@ -143,14 +143,14 @@ export class DiagnosticReporter {
             criticalIssues: diagnosticSession.results.overallAssessment?.criticalIssues?.length || 0, : undefined
             bottlenecks: diagnosticSession.results.bottlenecks?.length || 0, : undefined
             anomalies: diagnosticSession.results.anomalies?.length || 0, : undefined
-            recommendations: diagnosticSession.results.recommendations?.length || 0  };
+            recommendations: diagnosticSession.results.recommendations?.length || 0  },
         ';'
 
         return { : undefined''
             type: 'summary',','
             title: 'Performance Diagnostic Summary',
-    summary: summary,;
-            generatedAt: new Date().toISOString(), 
+    summary: summary,
+            generatedAt: new Date().toISOString();
     }
     
     /**
@@ -178,7 +178,7 @@ export class DiagnosticReporter {
             type: 'technical',
             title: 'Technical Performance Analysis Report',
             technicalDetails: technicalDetails,
-    rawResults: diagnosticSession.results };
+    rawResults: diagnosticSession.results },
             generatedAt: new Date().toISOString(); 
     }
     
@@ -192,7 +192,7 @@ export class DiagnosticReporter {
         issues.forEach(issue => {  ')'
             const category = issue.type || 'unknown') }
             categories[category] = (categories[category] || 0) + 1; }
-        });
+        };
         
         return categories;
     }
@@ -221,12 +221,11 @@ export class DiagnosticReporter {
         switch(format) {
 
             case 'html':','
-                return this.formatReportAsHTML(report),
+                return this.formatReportAsHTML(report);
             case 'json':','
-                return JSON.stringify(report, null, 2),
+                return JSON.stringify(report, null, 2);
             case 'text': }
             default: return this.formatReportAsText(report);
-    
     /**
      * Format report as text'
      */''
@@ -234,8 +233,7 @@ export class DiagnosticReporter {
 
         lines.push(`=== ${report.title || 'Diagnostic, Report) ===`,'
         lines.push(`Generated: ${report.generatedAt)`),''
-        lines.push(),
-
+        lines.push();
         if (report.summary) {
 
             lines.push('Summary: ',
@@ -248,7 +246,7 @@ export class DiagnosticReporter {
 
             lines.push(`  Total Anomalies: ${report.summary.anomalies}`},' }'
 
-            lines.push('});'
+            lines.push('};'
         }
 
         if (report.technicalDetails) {
@@ -280,11 +278,11 @@ export class DiagnosticReporter {
             html += `<div class="summary">`,
             html += `<h2>Summary</h2>` }
             html += `<ul>`; }
-            html += `<li>Health Score: ${report.summary.overallHealth}/100</li>`;
-            html += `<li>Performance Level: ${report.summary.performanceLevel}</li>`;
-            html += `<li>Critical Issues: ${report.summary.criticalIssues}</li>`;
-            html += `<li>Total Bottlenecks: ${report.summary.bottlenecks}</li>`;
-            html += `<li>Total Anomalies: ${report.summary.anomalies}</li>`;
+            html += `<li>Health Score: ${report.summary.overallHealth}/100</li>`,
+            html += `<li>Performance Level: ${report.summary.performanceLevel}</li>`,
+            html += `<li>Critical Issues: ${report.summary.criticalIssues}</li>`,
+            html += `<li>Total Bottlenecks: ${report.summary.bottlenecks}</li>`,
+            html += `<li>Total Anomalies: ${report.summary.anomalies}</li>`,
             html += `</ul>`;
             html += `</div>`;
         }
@@ -300,7 +298,7 @@ export class DiagnosticReporter {
             reportTypes: ['comprehensive', 'summary', 'technical'],
             outputFormats: ['text', 'html', 'json'],
             recommendationTypes: ['optimization', 'configuration', 'architecture', 'monitoring'],
-            customTemplates: true,;
+            customTemplates: true,
             realTimeReporting: true,
     
     /**
@@ -344,7 +342,7 @@ class RecommendationEngine { private generators: Map<string, any>,
         this.knowledgeBase = new PerformanceKnowledgeBase(); }
     }
 
-    async initialize(): Promise<void> { await this.knowledgeBase.initialize(),
+    async initialize(): Promise<void> { await this.knowledgeBase.initialize();
         this.setupGenerators() }
 
     setupGenerators()';'
@@ -446,8 +444,8 @@ class RecommendationEngine { private generators: Map<string, any>,
             priority: 'medium',
             category: 'anomaly_resolution'
             }
-            title: `${anomaly.metric}異常の調査`;
-            description: `${anomaly.metric}で検出された異常パターンの調査と対策`;
+            title: `${anomaly.metric}異常の調査`,
+            description: `${anomaly.metric}で検出された異常パターンの調査と対策`,
             actions: [';'
                 '異常発生パターンの詳細分析',
                 '関連システムとの相関調査',
@@ -456,7 +454,7 @@ class RecommendationEngine { private generators: Map<string, any>,
             ],
             estimatedImpact: 'medium',
             implementationEffort: 'low',
-            timeToImplement: '1-2 days';
+            timeToImplement: '1-2 days',
         }] }
 
     async generateGeneralRecommendations(analysisResults: DiagnosticResults): Promise<Recommendation[]> { return [{''
@@ -538,7 +536,7 @@ class PerformanceKnowledgeBase {
 class ComprehensiveReportTemplate implements ReportTemplate { ''
     async generate(session: DiagnosticSession): Promise<Report> {'
         return { ''
-            type: 'comprehensive',
+            type: 'comprehensive';
             title: 'Comprehensive Performance Diagnostic Report'
             };
             generatedAt: new Date().toISOString(); 
@@ -549,7 +547,7 @@ class ComprehensiveReportTemplate implements ReportTemplate { ''
 class SummaryReportTemplate implements ReportTemplate { ''
     async generate(session: DiagnosticSession): Promise<Report> {'
         return { ''
-            type: 'summary',
+            type: 'summary';
             title: 'Performance Diagnostic Summary'
             };
             generatedAt: new Date().toISOString(); 
@@ -560,7 +558,7 @@ class SummaryReportTemplate implements ReportTemplate { ''
 class TechnicalReportTemplate implements ReportTemplate { ''
     async generate(session: DiagnosticSession): Promise<Report> {'
         return { ''
-            type: 'technical',
+            type: 'technical';
             title: 'Technical Performance Analysis Report',' };'
 
             generatedAt: new Date().toISOString() }'

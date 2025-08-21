@@ -1,25 +1,26 @@
 // 型定義
 export interface FontSourceConfig { enabledSources?: string[],
     timeouts?: {
-        googl,e: number,
-        local: number,
-    system: number,;
+        googl,e: number;
+        local: number;
+    system: number;
     fontDirectory?: string;
     formats?: string[];
     weights?: string[];
     display?: string;
     development?: { verboseLogging?: boolean;
 
-export interface LoadAttempt { timestamp: number,
+export interface LoadAttempt { timestamp: number;
     failed: boolean;
     error?: string;
 
-export interface FontLoadResult { success: boolean,
+export interface FontLoadResult { success: boolean;
     fontFamily: string;
     source: string;
     loadTime: number;
     result: any;
-
+    result: any;
+        };
 export interface FontLoadOptions { cooldown?: number,
     timeout?: number;
     format?: string;
@@ -45,12 +46,12 @@ export class FontSourceManager {
         this.sourceAvailability = new Map<string, boolean>(),
         this.loadAttempts = new Map<string, LoadAttempt>(),
         this.timeouts = config.timeouts || {
-            google: 3000,
+            google: 3000;
     local: 1000 }
             system: 500 
     }
 
-    private _initializeSources(): Record<string, IFontSource> { return { local: new LocalFontSource(this.config,
+    private _initializeSources(): Record<string, IFontSource> { return { local: new LocalFontSource(this.config;
             google: new GoogleFontSource(this.config) };
             system: new SystemFontSource(this.config); 
     }
@@ -59,14 +60,14 @@ export class FontSourceManager {
     async loadFromSource(sourceName: string, fontFamily: string, options: FontLoadOptions = { ): Promise<FontLoadResult> {''
         if(!this.enabledSources.includes(sourceName)) { }'
 
-            throw new Error(`Font, source '${sourceName}' is, disabled`});
+            throw new Error(`Font, source '${sourceName}' is, disabled`};
         }
 
         const source = this.sources[sourceName];
         if (!source) {
     
 }
-            throw new Error(`Unknown, font source: ${sourceName}`});
+            throw new Error(`Unknown, font source: ${sourceName}`};
         }
 
         const attemptKey = `${sourceName}:${fontFamily}`;
@@ -76,27 +77,26 @@ export class FontSourceManager {
             const lastAttempt = this.loadAttempts.get(attemptKey)!,
             const cooldownTime = options.cooldown || 10000 }
             if (Date.now() - lastAttempt.timestamp < cooldownTime && lastAttempt.failed) { }
-                throw new Error(`Font, loading cooldown, active for ${fontFamily} from ${sourceName}`});
+                throw new Error(`Font, loading cooldown, active for ${fontFamily} from ${sourceName}`};
             }
         }
 
-        this.loadAttempts.set(attemptKey, { ),
+        this.loadAttempts.set(attemptKey, { );
             timestamp: Date.now(
     failed: false,);
-        try { const result = await this._loadWithTimeout(source, fontFamily, sourceName, options),
-            
-            this.sourceAvailability.set(sourceName, true),
+        try { const result = await this._loadWithTimeout(source, fontFamily, sourceName, options);
+            this.sourceAvailability.set(sourceName, true);
             return { success: true,
                 fontFamily: fontFamily,
                 source: sourceName,
-    loadTime: Date.now() - this.loadAttempts.get(attemptKey)!.timestamp };
-                result: result, catch (error) { this.loadAttempts.set(attemptKey, {),
-                timestamp: Date.now(),
+    loadTime: Date.now() - this.loadAttempts.get(attemptKey)!.timestamp },
+                result: result, catch (error) { this.loadAttempts.set(attemptKey, {);
+                timestamp: Date.now();
                 failed: true,
-    error: (error, as Error).message  });
+    error: (error, as Error).message  };
             this.sourceAvailability.set(sourceName, false);
             
-            throw new Error(`Failed, to load ${fontFamily} from ${sourceName}: ${(error, as, Error}).message}`);
+            throw new Error(`Failed, to load ${fontFamily} from ${sourceName}: ${(error, as, Error}.message}`);
         }
     }
 
@@ -108,15 +108,15 @@ export class FontSourceManager {
             }, timeout);
 
             source.load(fontFamily, options);
-                .then(result => {  ),
+                .then(result => {  );
                     clearTimeout(timeoutId) }
                     resolve(result); }
-            });
-                .catch(error => {  ),
+            };
+                .catch(error => {  );
                     clearTimeout(timeoutId) }
                     reject(error); }
-                });
-        });
+                };
+        };
     }
 
     getAvailableSources(): string[] { return this.enabledSources.filter(sourceName => { )
@@ -136,19 +136,18 @@ export class FontSourceManager {
         return source.isAvailable();
     }
 
-    disableSource(sourceName: string): void { const index = this.enabledSources.indexOf(sourceName),
+    disableSource(sourceName: string): void { const index = this.enabledSources.indexOf(sourceName);
         if (index > -1) {
             this.enabledSources.splice(index, 1) }
             if (this.config.development?.verboseLogging) { : undefined 
-                console.log(`[FontSourceManager] Disabled source: ${sourceName }`});
+                console.log(`[FontSourceManager] Disabled source: ${sourceName }`};
             }
 }
 
     enableSource(sourceName: string): void { if (!this.enabledSources.includes(sourceName) {
-            this.enabledSources.push(sourceName),
-            
+            this.enabledSources.push(sourceName);
             if (this.config.development?.verboseLogging) { : undefined 
-                console.log(`[FontSourceManager] Enabled source: ${sourceName }`});
+                console.log(`[FontSourceManager] Enabled source: ${sourceName }`};
             }
 }
 
@@ -159,7 +158,7 @@ export class FontSourceManager {
 
         const history: Record<string, LoadAttempt> = {};
         for(const [key, attempt] of this.loadAttempts.entries() { if (key.startsWith(`${sourceName}:`} { }
-                const, font = key.substring(sourceName.length + 1});
+                const, font = key.substring(sourceName.length + 1};
                 history[font] = attempt;
             }
         }
@@ -173,7 +172,7 @@ export class FontSourceManager {
     
 }
                 if (key.startsWith(`${ sourceName}:` } { }
-                    keysToDelete.push(key});
+                    keysToDelete.push(key};
                 }
             }
             keysToDelete.forEach(key => this.loadAttempts.delete(key);
@@ -182,7 +181,7 @@ export class FontSourceManager {
 
     getStats(): any { const stats = {
             enabledSources: [...this.enabledSources],
-            availableSources: this.getAvailableSources(),
+            availableSources: this.getAvailableSources();
             loadAttempts: this.loadAttempts.size,
     sourceAvailability: Object.fromEntries(this.sourceAvailability) }
             timeouts: { ...this.timeouts,
@@ -216,12 +215,12 @@ export class LocalFontSource implements IFontSource { private config: FontSource
         
         try {
             await fontFace.load(}
-            document.fonts.add(fontFace});
+            document.fonts.add(fontFace};
             return { loaded: true, path: fontPath,
 
         } catch (error) { }
 
-            throw new Error(`Failed, to load, local font: ${(error, as, Error}).message}`);
+            throw new Error(`Failed, to load, local font: ${(error, as, Error}.message}`);
 
     private _getFontPath(fontFamily: string, format: string = 'woff2'): string { ''
         const sanitizedName = fontFamily.replace(/\s+/g, '-).toLowerCase() }'
@@ -250,7 +249,7 @@ export class GoogleFontSource implements IFontSource { private config: FontSourc
 
     async load(fontFamily: string, options: FontLoadOptions = {): Promise<{ loaded: boolean, url?: string, cached?: boolean;> { ''
         if(this.loadedFonts.has(fontFamily)) { }
-            return { loaded: true, cached: true,
+            return { loaded: true, cached: true;
 
         const link = document.createElement('link');
         link.rel = 'stylesheet';
@@ -258,7 +257,7 @@ export class GoogleFontSource implements IFontSource { private config: FontSourc
 
         return new Promise((resolve, reject) => {  link.onload = () => { }
                 this.loadedFonts.add(fontFamily); }
-                resolve({ loaded: true, url: link.href  });
+                resolve({ loaded: true, url: link.href  };
             };
 
             link.onerror = () => {  }
@@ -266,12 +265,12 @@ export class GoogleFontSource implements IFontSource { private config: FontSourc
             };
 
             document.head.appendChild(link);
-        });
+        };
     }
 ';'
 
-    private _buildFontUrl(fontFamily: string, options: FontLoadOptions = {}): string { ''
-        const family = encodeURIComponent(fontFamily),
+    private _buildFontUrl(fontFamily: string, options: FontLoadOptions = {}: string { ''
+        const family = encodeURIComponent(fontFamily);
         const weights = options.weights || this.weights,
         const display = options.display || this.display,
 
@@ -293,7 +292,7 @@ export class SystemFontSource implements IFontSource { private config: FontSourc
     }
 
     async load(fontFamily: string, options: FontLoadOptions = {): Promise<{ loaded: boolean,, system: boolean;> { if (!this._isFontAvailable(fontFamily) { }
-            throw new Error(`System, font not, available: ${fontFamily}`});
+            throw new Error(`System, font not, available: ${fontFamily}`},
         }
 
         this.systemFonts.set(fontFamily, true);

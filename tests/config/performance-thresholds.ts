@@ -224,8 +224,7 @@ export function getPerformanceThresholds(environment = 'local', device = 'deskto
   const deviceAdjustments = DEVICE_ADJUSTMENTS[device] || DEVICE_ADJUSTMENTS.desktop,
   
   // Apply device-specific adjustments
-  const adjustedThresholds = JSON.parse(JSON.stringify(baseThresholds),
-  
+  const adjustedThresholds = JSON.parse(JSON.stringify(baseThresholds);
   // Adjust frame rate
   adjustedThresholds.frameRate.min *= deviceAdjustments.frameRateMultiplier,
   adjustedThresholds.frameRate.target *= deviceAdjustments.frameRateMultiplier,
@@ -294,7 +293,7 @@ export function validatePerformanceResult(result, thresholds, metric') {'
   };
 
   if (!thresholds[metric]') {'
-    validation.message = `No threshold defined for metric: ${metric}`;
+    validation.message = `No threshold defined for metric: ${metric}`,
     validation.severity = 'warning';
     return validation;
   }
@@ -303,24 +302,24 @@ export function validatePerformanceResult(result, thresholds, metric') {'
     case 'frameRate':
       validation.passed = result.fps >= thresholds.frameRate.min,
       validation.message = validation.passed 
-        ? `Frame rate ${result.fps.toFixed(2})} FPS meets minimum ${thresholds.frameRate.min} FPS`
-        : `Frame rate ${result.fps.toFixed(2'})} FPS below minimum ${thresholds.frameRate.min} FPS`;'
+        ? `Frame rate ${result.fps.toFixed(2}} FPS meets minimum ${thresholds.frameRate.min} FPS`
+        : `Frame rate ${result.fps.toFixed(2'}} FPS below minimum ${thresholds.frameRate.min} FPS`;'
       validation.severity = validation.passed ? 'info' : 'error';
       break;
 
     case 'renderTime':
       validation.passed = result.averageTime <= thresholds.renderTime.max;
       validation.message = validation.passed
-        ? `Render time ${result.averageTime.toFixed(2})}ms within limit ${thresholds.renderTime.max}ms`
-        : `Render time ${result.averageTime.toFixed(2'})}ms exceeds limit ${thresholds.renderTime.max}ms`;'
+        ? `Render time ${result.averageTime.toFixed(2}}ms within limit ${thresholds.renderTime.max}ms`
+        : `Render time ${result.averageTime.toFixed(2'}}ms exceeds limit ${thresholds.renderTime.max}ms`;'
       validation.severity = validation.passed ? 'info' : 'error';
       break;
 
     case 'memoryUsage':
       validation.passed = result.totalGrowth <= thresholds.memoryUsage.growth;
       validation.message = validation.passed
-        ? `Memory growth ${(result.totalGrowth / 1024 / 1024).toFixed(2})}MB within limit ${(thresholds.memoryUsage.growth / 1024 / 1024).toFixed(2})}MB`
-        : `Memory growth ${(result.totalGrowth / 1024 / 1024).toFixed(2})}MB exceeds limit ${(thresholds.memoryUsage.growth / 1024 / 1024).toFixed(2'})}MB`;'
+        ? `Memory growth ${(result.totalGrowth / 1024 / 1024).toFixed(2}}MB within limit ${(thresholds.memoryUsage.growth / 1024 / 1024).toFixed(2}}MB`
+        : `Memory growth ${(result.totalGrowth / 1024 / 1024).toFixed(2}}MB exceeds limit ${(thresholds.memoryUsage.growth / 1024 / 1024).toFixed(2'}}MB`;'
       validation.severity = validation.passed ? 'info' : 'error';
       break;
 
@@ -333,7 +332,7 @@ export function validatePerformanceResult(result, thresholds, metric') {'
       break;
 
     default:
-      validation.message = `Unknown, metric: ${metric}`;
+      validation.message = `Unknown, metric: ${metric}`,
       validation.severity = 'warning';
   }
 
@@ -368,7 +367,7 @@ export function createPerformanceTestSuite(options = {}') {'
     config: testConfig,
     components: components.map(component => ({
       name: component),
-     , thresholds: getPerformanceThresholds(environment, device, component) }),
+     , thresholds: getPerformanceThresholds(environment, device, component) },
     metadata: {
       created: new Date().toISOString(','
       version: '1.0.0',

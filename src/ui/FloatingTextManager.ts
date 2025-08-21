@@ -18,7 +18,7 @@ export interface FloatingTextOptions { duration?: number,
     outlineColor?: string;
     easing?: string;
 
-export interface FloatingText { id: number,
+export interface FloatingText { id: number;
     x: number;
     y: number;
     originalY: number;
@@ -45,7 +45,7 @@ export interface FloatingText { id: number,
     outlineColor: string;
     easing: string;
 
-export interface AnimationConfig { color: string,
+export interface AnimationConfig { color: string;
     fontSize: number;
     velocityX?: number;
     velocityY: number;
@@ -64,7 +64,7 @@ export interface AnimationConfigMap { [key: string]: AnimationConfig;
  */
 export class FloatingTextManager {
     private texts: FloatingText[];
-    private, textId: number,
+    private, textId: number;
     constructor() {
 
         this.texts = [] }
@@ -122,7 +122,8 @@ export class FloatingTextManager {
             duration: 1500,
     scaleAnimation: true,','
             shadow: true,
-    
+            shadow: true,
+        };
     /**
      * ダメージ表示用のフローティングテキスト
      */'
@@ -132,11 +133,11 @@ export class FloatingTextManager {
             fontSize: 28,
             fontWeight: 'bold',
     velocityY: -60 }
-            velocityX: (Math.random() - 0.5}) * 40;
+            velocityX: (Math.random() - 0.5} * 40,
             duration: 2000,
             bounceAnimation: true,
     shadow: true,
-        }) }
+        } }
     
     /**
      * 回復表示用のフローティングテキスト'
@@ -146,11 +147,12 @@ export class FloatingTextManager {
             color: '#44FF44',
             fontSize: 26,
             fontWeight: 'bold',
-            velocityY: -70),
+            velocityY: -70);
             duration: 1800,
     pulseAnimation: true,','
             shadow: true,
-    
+            shadow: true,
+        };
     /**
      * コンボ表示用のフローティングテキスト'
      */''
@@ -181,26 +183,26 @@ export class FloatingTextManager {
                 velocityY: -120,
                 duration: 3000,
                 scaleAnimation: true,
-    pulseAnimation: true,;
+    pulseAnimation: true,
             timeStop: { ''
                 color: '#00AAFF',
                 fontSize: 32,
                 velocityY: -90,
                 duration: 2500,
-    bounceAnimation: true,;
+    bounceAnimation: true,
             shock: { ''
                 color: '#FFFF00',
                 fontSize: 28,
                 velocityX: (Math.random() - 0.5) * 100,
     velocityY: -60,
                 duration: 2000,
-                rotationSpeed: (Math.random() - 0.5) * 10  };
+                rotationSpeed: (Math.random() - 0.5) * 10  },
             chain: { ''
                 color: '#FF6600',
                 fontSize: 30,
                 velocityY: -80,
                 duration: 2200,
-    scaleAnimation: true,;
+    scaleAnimation: true,
             normal: { ''
                 color: '#FFFFFF',
                 fontSize: 24,
@@ -214,7 +216,8 @@ export class FloatingTextManager {
             fontWeight: 'bold',
     outline: true,','
             shadow: true,
-    
+            shadow: true,
+        };
     /**
      * カスタムアニメーション付きテキスト'
      */''
@@ -224,7 +227,7 @@ export class FloatingTextManager {
                 fontSize: 28,
                 velocityY: -70,
                 duration: 2000,
-    pulseAnimation: true,;
+    pulseAnimation: true,
             explosive: { ''
                 color: '#FF4500',
                 fontSize: 32,
@@ -232,20 +235,21 @@ export class FloatingTextManager {
                 velocityY: -150,
     gravity: 80,
                 duration: 2500,
-                rotationSpeed: (Math.random() - 0.5) * 15  };
+                rotationSpeed: (Math.random() - 0.5) * 15  },
             gentle: { ''
                 color: '#87CEEB',
                 fontSize: 22,
                 velocityY: -40,
                 duration: 3000,
-    scaleAnimation: true,;
+    scaleAnimation: true,
         const config = animations[animationType] || animations.gentle;
         ';'
 
         return this.addText(x, y, text, { ...config)'
             fontWeight: 'bold'),
             shadow: true,
-    
+            shadow: true,
+        };
     /**
      * 更新処理
      */
@@ -272,7 +276,7 @@ export class FloatingTextManager {
             this.updateAnimations(text, deltaTime);
             
             return true;
-        });
+        };
     }
     
     /**
@@ -306,21 +310,20 @@ export class FloatingTextManager {
         ';'
         // 虹色アニメーション（特殊）
         if (text.color === '#FF0000' && text.pulseAnimation) { const hue = (time * 100) % 360 }
-            text.color = `hsl(${hue}, 100%, 50%})`;
+            text.color = `hsl(${hue}, 100%, 50%}`;
         }
     }
     
     /**
      * 描画処理
      */
-    public render(context: CanvasRenderingContext2D): void { this.texts.forEach(text => { ),
-            context.save(),
-            
+    public render(context: CanvasRenderingContext2D): void { this.texts.forEach(text => { );
+            context.save();
             // 透明度設定
             context.globalAlpha = text.alpha,
             
             // 位置とスケールを適用
-            context.translate(text.x, text.y),
+            context.translate(text.x, text.y);
             if (text.scale !== 1) { }
                 context.scale(text.scale, text.scale); }
             }
@@ -355,7 +358,7 @@ export class FloatingTextManager {
             context.fillText(text.text, 0, 0);
             
             context.restore();
-        });
+        };
     }
     
     /**

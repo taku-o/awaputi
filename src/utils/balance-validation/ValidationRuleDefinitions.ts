@@ -10,16 +10,16 @@ interface ValidationContext { bubbleType?: string,
     propertyType?: string;
     relatedValues?: Record<string, any>;
     canvasSize?: {
-        widt,h: number,
-    height: number,;
-    [key: string]: any,
+        widt,h: number;
+    height: number;
+    [key: string]: any;
 
-interface RuleResult { valid: boolean,
+interface RuleResult { valid: boolean;
     message?: string;
     severity?: 'low' | 'warning' | 'medium' | 'high' | 'critical';
     suggestion?: string;
 
-interface RuleDefinition { name: string,
+interface RuleDefinition { name: string;
     category: string;
     description: string;
     check: (oldValue: any, newValue: any, context: ValidationContext') => boolean | RuleResult;'
@@ -30,13 +30,13 @@ interface RuleDefinition { name: string,
     priority: number;
 }
 
-interface BubbleHealthLimits { min: number,
+interface BubbleHealthLimits { min: number;
     max: number;
 
 interface ScoreLimits {
     max: number;
 
-interface RuleCategories { VALUE_RANGE: string,
+interface RuleCategories { VALUE_RANGE: string;
     BALANCE_IMPACT: string;
     COMPATIBILITY: string;
     PROGRESSION: string;
@@ -48,7 +48,7 @@ interface RuleFilters { category?: string,
     enabled?: boolean;
     autoFix?: boolean;
 
-interface RuleStatistics { totalRules: number,
+interface RuleStatistics { totalRules: number;
     enabledRules: number;
     disabledRules: number;
     byCategory: Record<string, number>;
@@ -75,14 +75,14 @@ export class ValidationRuleDefinitions {
         ','
         // Rule storage
         this.rules = new Map('''
-            VALUE_RANGE: 'value_range';        // 値の範囲チェック;
+            VALUE_RANGE: 'value_range',        // 値の範囲チェック;
             BALANCE_IMPACT: 'balance_impact',  // ゲームバランスへの影響;
             COMPATIBILITY: 'compatibility',    // 他設定との互換性;
             PROGRESSION: 'progression',        // 進行性・一貫性;
             SAFETY: 'safety',                 // 安全性・エラー防止
     }
 
-            PERFORMANCE: 'performance'         // パフォーマンス影響 })'
+            PERFORMANCE: 'performance'         // パフォーマンス影響 }'
 
         console.log('[ValidationRuleDefinitions] Rule definitions component initialized);'
     }
@@ -90,11 +90,11 @@ export class ValidationRuleDefinitions {
     /**
      * Initialize all rules
      */
-    initializeRules(): void { this.addBubbleHealthRules(),
-        this.addScoreRules(),
-        this.addSizeRules(),
-        this.addTimeRules(),
-        this.addSpecialEffectRules(),
+    initializeRules(): void { this.addBubbleHealthRules();
+        this.addScoreRules();
+        this.addSizeRules();
+        this.addTimeRules();
+        this.addSpecialEffectRules();
         this.addSystemRules() }
         console.log(`[ValidationRuleDefinitions] Initialized ${this.rules.size} rules`}');'
     }
@@ -121,7 +121,7 @@ export class ValidationRuleDefinitions {
                 const limits = this.getBubbleHealthLimits(bubbleType);
 
                 if (newValue < limits.min || newValue > limits.max) { return {  };
-                        valid: false;
+                        valid: false,
                         message: `${bubbleType}バブルの体力値は${limits.min}〜${limits.max}の範囲で設定してください` 
                     }
                 
@@ -135,16 +135,16 @@ export class ValidationRuleDefinitions {
             check: (oldValue, newValue, context') => { }'
 
                 if (typeof, oldValue !== 'number' || typeof, newValue !== 'number) { }'
-                    return { valid: true,; // 数値以外は他のルールで処理
+                    return { valid: true, // 数値以外は他のルールで処理
                 }
 
                 const changeRatio = Math.abs(newValue - oldValue) / oldValue;
                 const threshold = this.getChangeThreshold(context.bubbleType || 'normal', 'health);'
                 
                 if (changeRatio > threshold) { return {  };
-                        valid: false;
+                        valid: false,
 
-                        message: `体力値の変更が大きすぎます（${(changeRatio * 100}.toFixed(1})% > ${(threshold * 100})%）。段階的な調整を推奨します`,''
+                        message: `体力値の変更が大きすぎます（${(changeRatio * 100}.toFixed(1}% > ${(threshold * 100}%）。段階的な調整を推奨します`,''
                         suggestion: `段階的調整: ${oldValue} → ${Math.round(oldValue * (1 + Math.sign(newValue - oldValue} * threshold}'}' → ${newValue}`}
                 
                 return { valid: true,,''
@@ -170,7 +170,7 @@ export class ValidationRuleDefinitions {
                 
                 if (healthRatio < 3) { return { : undefined;;
                         valid: false,
-                        message: `Bossバブルの体力は通常バブルの少なくとも3倍以上に設定してください（現在: ${healthRatio.toFixed(1})倍）` 
+                        message: `Bossバブルの体力は通常バブルの少なくとも3倍以上に設定してください（現在: ${healthRatio.toFixed(1}倍）` 
                     }
                 
                 if (healthRatio > 20) { return {  };
@@ -206,7 +206,7 @@ export class ValidationRuleDefinitions {
                 const limits = this.getScoreLimits(bubbleType);
 
                 if (newValue > limits.max) { return {  };
-                        valid: false;
+                        valid: false,
                         message: `${bubbleType}バブルのスコアが上限（${limits.max}）を超えています` 
                     }
                 
@@ -236,7 +236,7 @@ export class ValidationRuleDefinitions {
                     rainbow: min: 3.0, max: 6.0  },
                     boss: min: 8.0, max: 15.0  },
                     golden: min: 5.0, max: 10.0  },
-                    explosive: min: 2.0, max: 4.0  };
+                    explosive: min: 2.0, max: 4.0  },
 
                 const bubbleType = context.bubbleType || 'normal';
                 const expectedRatio = expectedRatios[bubbleType];
@@ -275,14 +275,14 @@ export class ValidationRuleDefinitions {
                 const maxAllowedSize = Math.min(canvasSize.width, canvasSize.height) * 0.3;
                 
                 if (newValue > maxAllowedSize) { return {  };
-                        valid: false;
+                        valid: false,
                         message: `サイズが大きすぎます（${newValue} > ${maxAllowedSize}）。画面サイズとの比率を考慮してください` 
                     }
                 ';'
 
                 const minSize = 10;
                 if (newValue < minSize) { return {  };
-                        valid: false;
+                        valid: false,
                         message: `サイズが小さすぎます（${newValue} < ${minSize}）。クリック可能性を考慮してください` 
                     }
                 
@@ -374,14 +374,14 @@ export class ValidationRuleDefinitions {
                 // Maximum time limit (10 minutes = 600,000ms);
                 const maxTime = 600000;
                 if (newValue > maxTime) { return {  };
-                        valid: false;
+                        valid: false,
                         message: `時間値が長すぎます（${newValue}ms > ${maxTime}ms）` 
                     }
                 
                 // Minimum time limit (100ms);
                 const minTime = 100;
                 if (newValue < minTime) { return {  };
-                        valid: false;
+                        valid: false,
                         message: `時間値が短すぎます（${newValue}ms < ${minTime}ms）` 
                     }
                 
@@ -401,7 +401,7 @@ export class ValidationRuleDefinitions {
                     return { valid: true,
 
                 if(typeof, newValue !== 'number' { }
-                    return { valid: true,; // 他のルールで処理
+                    return { valid: true, // 他のルールで処理
                 }
                 
                 // Relationship with stage time (5 minutes = 300,000ms);
@@ -409,8 +409,8 @@ export class ValidationRuleDefinitions {
                 const lifetimeRatio = newValue / stageTime;
                 
                 if (lifetimeRatio > 0.8) { return {  };
-                        valid: false;
-                        message: `バブル寿命がステージ時間の${(lifetimeRatio * 100}.toFixed(1})%です。ゲームの緊張感を損なう可能性があります` 
+                        valid: false,
+                        message: `バブル寿命がステージ時間の${(lifetimeRatio * 100}.toFixed(1}%です。ゲームの緊張感を損なう可能性があります` 
                     }
                 
                 if (lifetimeRatio < 0.01) { return {  };
@@ -441,16 +441,16 @@ export class ValidationRuleDefinitions {
             }
                 
                 if (newValue < 1 || newValue > 50) { return {  };
-                        valid: false;
+                        valid: false,
                         message: `電気効果の強度は1〜50の範囲で設定してください（現在: ${newValue}）` 
                     }
                 ';'
                 // High intensity warning
                 if (newValue > 30) { return {  };
-                        valid: false;
+                        valid: false,
 
                         message: `電気効果の強度が高すぎます（${newValue}）。プレイヤーの操作性に深刻な影響を与える可能性があります`,''
-                        severity: 'warning';
+                        severity: 'warning',
                     } }
                 
                 return { valid: true,,''
@@ -467,7 +467,7 @@ export class ValidationRuleDefinitions {
                     return { valid: true,
 
                 if (typeof, newValue !== 'number' }
-                    return valid: true,; // 他のルールで処理
+                    return valid: true, // 他のルールで処理
                 }
                 
                 // Recommended range: 3-15 seconds
@@ -475,12 +475,12 @@ export class ValidationRuleDefinitions {
                 const maxDuration = 15000;
                 
                 if (newValue < minDuration) { return {  };
-                        valid: false;
+                        valid: false,
                         message: `Rainbow効果の持続時間が短すぎます（${newValue}ms）。最低${minDuration}ms推奨` 
                     }
 
                 if (newValue > maxDuration) { return {  };
-                        valid: false;
+                        valid: false,
                         message: `Rainbow効果の持続時間が長すぎます（${newValue}ms）。ゲームバランスを崩す可能性があります` 
                     }
                 
@@ -503,7 +503,7 @@ export class ValidationRuleDefinitions {
 
                     if (typeof, newValue === 'number' && newValue > 100' }'
                         return  };
-                            valid: false;
+                            valid: false,
                             message: `パーティクル数が多すぎます（${newValue}）。パフォーマンスに影響する可能性があります` 
                         }
                 }
@@ -514,7 +514,7 @@ export class ValidationRuleDefinitions {
                     if(typeof, newValue === 'number' && newValue > 60' {'
                 }
                         return {  };
-                            valid: false;
+                            valid: false,
                             message: `アニメーション頻度が高すぎます（${newValue}fps）。60fps以下を推奨` 
                         }
                 }
@@ -549,7 +549,7 @@ export class ValidationRuleDefinitions {
                 }
                         return { : undefined;;
                             valid: false,
-                            message: `体力に対してスコアが低すぎます（比率: ${healthScoreRatio.toFixed(2})）。バランス調整を推奨` 
+                            message: `体力に対してスコアが低すぎます（比率: ${healthScoreRatio.toFixed(2}）。バランス調整を推奨` 
                         }
                     
                     if (healthScoreRatio > 10) { return {  };
@@ -588,17 +588,17 @@ export class ValidationRuleDefinitions {
             autoFix: rule.autoFix || false,
             autoFixFn: rule.autoFixFn || null,
             enabled: rule.enabled !== false,
-    priority: rule.priority || 1  };
+    priority: rule.priority || 1  },
         this.rules.set(name, ruleDefinition);
-        console.log(`[ValidationRuleDefinitions] Rule, added: ${name}`});
+        console.log(`[ValidationRuleDefinitions] Rule, added: ${name}`};
     }
     
     /**
      * Remove validation rule
      */
-    removeRule(name: string): boolean { const deleted = this.rules.delete(name),
+    removeRule(name: string): boolean { const deleted = this.rules.delete(name);
         if (deleted) { }
-            console.log(`[ValidationRuleDefinitions] Rule, removed: ${name}`});
+            console.log(`[ValidationRuleDefinitions] Rule, removed: ${name}`};
         }
         return deleted;
     }
@@ -612,8 +612,7 @@ export class ValidationRuleDefinitions {
      * Get all rules
      */
     getRules(filters: RuleFilters = { ): RuleDefinition[] {
-        let rules = Array.from(this.rules.values(),
-        
+        let rules = Array.from(this.rules.values();
         if (filters.category) {
     
 }
@@ -653,7 +652,7 @@ export class ValidationRuleDefinitions {
             magnetic: { min: 1, max: 8  },
             explosive: { min: 1, max: 6  },
             phantom: { min: 1, max: 4  },
-            multiplier: { min: 1, max: 3  };
+            multiplier: { min: 1, max: 3  },
         
         return limits[bubbleType] || { min: 1, max: 10  }
     
@@ -661,24 +660,24 @@ export class ValidationRuleDefinitions {
      * Get score limits
      */
     getScoreLimits(bubbleType: string): ScoreLimits { const limits: Record<string, ScoreLimits> = { }
-            normal: { max: 50 };
-            stone: { max: 100 };
-            iron: { max: 150 };
-            diamond: { max: 200 };
-            rainbow: { max: 300 };
-            pink: { max: 80 };
-            clock: { max: 100 };
-            electric: { max: 120 };
-            poison: { max: 60 };
-            spiky: { max: 100 };
-            escaping: { max: 80 };
-            boss: { max: 500 };
-            golden: { max: 400 };
-            frozen: { max: 120 };
-            magnetic: { max: 100 };
-            explosive: { max: 180 };
-            phantom: { max: 150 };
-            multiplier: { max: 250 };
+            normal: { max: 50 },
+            stone: { max: 100 },
+            iron: { max: 150 },
+            diamond: { max: 200 },
+            rainbow: { max: 300 },
+            pink: { max: 80 },
+            clock: { max: 100 },
+            electric: { max: 120 },
+            poison: { max: 60 },
+            spiky: { max: 100 },
+            escaping: { max: 80 },
+            boss: { max: 500 },
+            golden: { max: 400 },
+            frozen: { max: 120 },
+            magnetic: { max: 100 },
+            explosive: { max: 180 },
+            phantom: { max: 150 },
+            multiplier: { max: 250 },
         return limits[bubbleType] || { max: 100 }
     
     /**
@@ -695,7 +694,7 @@ export class ValidationRuleDefinitions {
             size: 0.6,
             maxAge: 1.2,
             duration: 1.0,
-    intensity: 0.4  };
+    intensity: 0.4  },
         const modifier = propertyModifiers[propertyType] || 1.0;
         return baseThreshold * modifier;
     }
@@ -703,7 +702,7 @@ export class ValidationRuleDefinitions {
     /**
      * Enable/disable rule
      */
-    setRuleEnabled(ruleName: string, enabled: boolean): boolean { const rule = this.rules.get(ruleName),
+    setRuleEnabled(ruleName: string, enabled: boolean): boolean { const rule = this.rules.get(ruleName);
         if (!rule) { }'
 
             console.warn(`[ValidationRuleDefinitions] Rule, not found: ${ruleName}`}';'
@@ -712,7 +711,7 @@ export class ValidationRuleDefinitions {
         ';'
 
         rule.enabled = enabled;
-        console.log(`[ValidationRuleDefinitions] Rule ${enabled ? 'enabled' : 'disabled'}: ${ruleName}`});
+        console.log(`[ValidationRuleDefinitions] Rule ${enabled ? 'enabled' : 'disabled'}: ${ruleName}`};
         return true;
     }
     
@@ -729,7 +728,7 @@ export class ValidationRuleDefinitions {
                 changedCount++; }
 }
 
-        console.log(`[ValidationRuleDefinitions] Category ${enabled ? 'enabled' : 'disabled'}: ${category} (${changedCount} rules}`});
+        console.log(`[ValidationRuleDefinitions] Category ${enabled ? 'enabled' : 'disabled'}: ${category} (${changedCount} rules}`};
         return changedCount;
     }
     
@@ -740,9 +739,9 @@ export class ValidationRuleDefinitions {
             totalRules: this.rules.size,
             enabledRules: 0,
     disabledRules: 0 }
-            byCategory: {};
-            bySeverity: {};
-            autoFixableRules: 0;
+            byCategory: {},
+            bySeverity: {},
+            autoFixableRules: 0,
         },
         
         for (const rule of this.rules.values() {

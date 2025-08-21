@@ -4,26 +4,26 @@
  */
 
 // 型定義
-interface Position { x: number,
+interface Position { x: number;
     y: number;
 
-interface Margins { top: number,
+interface Margins { top: number;
     right: number;
     bottom: number;
     left: number;
 
-interface Breakpoints { mobile: number,
+interface Breakpoints { mobile: number;
     tablet: number;
     desktop: number;
 
-interface CanvasInfo { baseWidth: number,
+interface CanvasInfo { baseWidth: number;
     baseHeight: number;
     displayWidth: number;
     displayHeight: number;
 
 interface ScaledCoordinateManager { getCanvasInfo(): CanvasInfo;
 
-interface UIElement { type: string,
+interface UIElement { type: string;
     name: string;
     offset?: Position;
 
@@ -32,7 +32,7 @@ interface Container { x?: number,
     width?: number;
     height?: number;
 
-interface LayoutResult { element: UIElement,
+interface LayoutResult { element: UIElement;
     position: Position;
 
 type DeviceType = 'mobile' | 'tablet' | 'desktop';
@@ -50,14 +50,14 @@ export class UIPositionCalculator {
         
         // デフォルトマージン（ベース座標系）
         this.defaultMargins = {
-            top: 5;  // ボタンを上端により近く;
+            top: 5,  // ボタンを上端により近く;
             right: 5, // ボタンを右端により近く;
             bottom: 20 }
             left: 20 
     };
         // ブレークポイント設定
-        this.breakpoints = { mobile: 480,
-            tablet: 768,
+        this.breakpoints = { mobile: 480;
+            tablet: 768;
     desktop: 1024  };
         // ステータス要素の垂直間隔
         this.statusVerticalSpacing = 40;
@@ -69,7 +69,7 @@ export class UIPositionCalculator {
      * @returns ベース座標系の位置
      */
     getStatusPosition(element: StatusElement): Position { try {
-            const margins = this.getResponsiveMargins(),
+            const margins = this.getResponsiveMargins();
             let baseY = margins.top,
             ','
             // 要素タイプに応じてY座標を調整
@@ -105,9 +105,8 @@ export class UIPositionCalculator {
      * @returns ベース座標系の位置
      */
     getButtonPosition(buttonType: string, index: number = 0): Position { try {
-            const canvasInfo = this.scaledCoordinateManager.getCanvasInfo(),
-            const margins = this.getResponsiveMargins(),
-            
+            const canvasInfo = this.scaledCoordinateManager.getCanvasInfo();
+            const margins = this.getResponsiveMargins();
             // 右上配置（ベース座標系）
             const baseX = canvasInfo.baseWidth - margins.right - 100, // ボタン幅100pxを考慮
             const baseY = margins.top + (index * 42), // ボタン間隔も縮小（36px + 6px余白）
@@ -124,8 +123,7 @@ export class UIPositionCalculator {
      * @returns ベース座標系の位置（中央配置）
      */
     getDialogPosition(dialogType: string): Position { try {
-            const canvasInfo = this.scaledCoordinateManager.getCanvasInfo(),
-            
+            const canvasInfo = this.scaledCoordinateManager.getCanvasInfo();
             // 中央配置（ベース座標系）
             const baseX = canvasInfo.baseWidth / 2,
             const baseY = canvasInfo.baseHeight / 2,
@@ -140,26 +138,25 @@ export class UIPositionCalculator {
      * @returns デバイスに適応したマージン値
      */
     getResponsiveMargins(): Margins { try {
-            const canvasInfo = this.scaledCoordinateManager.getCanvasInfo(),
-            const deviceType = this.getDeviceType(canvasInfo.displayWidth),
-
+            const canvasInfo = this.scaledCoordinateManager.getCanvasInfo();
+            const deviceType = this.getDeviceType(canvasInfo.displayWidth);
             switch(deviceType) {
 
                 case 'mobile':,
                     return { top: 5,   // すべてのデバイスで右上端配置
                         right: 5 }
-                        bottom: 15 };
+                        bottom: 15 },
                         left: 15 
     };
                 case 'tablet':
                     return { top: 5,   // すべてのデバイスで右上端配置
                         right: 5,
-    bottom: 18 };
+    bottom: 18 },
                         left: 18 
     };
                 case 'desktop':';'
                 default: return this.defaultMargins } catch (error) {
-            console.warn('UIPositionCalculator: Responsive margins calculation failed, using defaults', error),
+            console.warn('UIPositionCalculator: Responsive margins calculation failed, using defaults', error);
             return this.defaultMargins,
     
     /**
@@ -170,8 +167,7 @@ export class UIPositionCalculator {
      */
     calculateLayout(elements: UIElement[], containerBounds: Container): LayoutResult[] { try {
             const positions: LayoutResult[] = [],
-            const margins = this.getResponsiveMargins(),
-
+            const margins = this.getResponsiveMargins();
             elements.forEach((element, index) => { 
                 let position: Position,
 
@@ -203,7 +199,7 @@ export class UIPositionCalculator {
      * @returns ベース座標系の位置
      */
     alignToEdge(element: UIElement, edge: Edge, margin: number = 20): Position { try {
-            const canvasInfo = this.scaledCoordinateManager.getCanvasInfo(),
+            const canvasInfo = this.scaledCoordinateManager.getCanvasInfo();
             let baseX: number, baseY: number,
 
             switch(edge) {
@@ -237,7 +233,7 @@ export class UIPositionCalculator {
             
             // ベース座標をそのまま返す（一貫性のため）
             return { x: baseX, y: baseY;'} catch (error) {'
-            console.warn('UIPositionCalculator: Edge alignment failed, using center', error),
+            console.warn('UIPositionCalculator: Edge alignment failed, using center', error);
             // フォールバック: ベース座標 }
             return { x: 400, y: 300  }
     }
@@ -249,8 +245,7 @@ export class UIPositionCalculator {
      * @returns ベース座標系の位置
      */
     centerElement(element: UIElement, container: Container | null = null): Position { try {
-            const canvasInfo = this.scaledCoordinateManager.getCanvasInfo(),
-            
+            const canvasInfo = this.scaledCoordinateManager.getCanvasInfo();
             // コンテナが指定されていない場合はキャンバス全体を使用
             const containerWidth = container?.width || canvasInfo.baseWidth,
             const containerHeight = container?.height || canvasInfo.baseHeight,

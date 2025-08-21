@@ -51,7 +51,7 @@ describe('Local Execution Integration', () => {
                         )),
                         toDataURL: jest.fn((') => 'data:image/png,base64,mock-favicon'),'
         style: {
-            });
+            };
                     );
                 ');'
                 if (tag === 'div') {
@@ -74,10 +74,10 @@ describe('Local Execution Integration', () => {
                 }
                 return {
                     innerHTML: ','
-                    style: {};
+                    style: {},
                     appendChild: jest.fn(
-        remove: jest.fn( };
-            ),
+        remove: jest.fn( },
+            );
             head: {
                 appendChild: jest.fn(
                 removeChild: jest.fn(
@@ -95,7 +95,7 @@ describe('Local Execution Integration', () => {
             location: {
                 protocol: 'file:',
                 href: 'file:///Users/test/game/index.html'
-    }),
+    },
             localStorage: mockLocalStorage,
             document: mockDocument,
             HTMLCanvasElement: function() {,
@@ -110,7 +110,7 @@ describe('Local Execution Integration', () => {
         global.localStorage = mockLocalStorage;
         // Clear all mocks
         jest.clearAllMocks();
-    });
+    };
     afterEach(() => {
         // Restore original globals
         global.window = originalWindow,
@@ -145,10 +145,10 @@ describe('Local Execution Integration', () => {
                 enableMetaTagOptimization: true,
                 enableFaviconGeneration: true,
                 enableDeveloperGuidance: true
-            ),
-            const initResult = await localModeManager.initialize(),
+            );
+            const initResult = await localModeManager.initialize();
             //, Assert: Should continue initialization despite favicon failure
-            expect(initResult.toBe(true),
+            expect(initResult.toBe(true);
             expect(mockDocument.body.appendChild).toHaveBeenCalled(), // Developer guidance should still work
         }');'
         test('should integrate with main.js initialization sequence', async () => {
@@ -158,22 +158,22 @@ describe('Local Execution Integration', () => {
         start: jest.fn()
             ),
             // Simulate the main.js flow
-            const isLocalExecution = LocalExecutionDetector.isLocalExecution(),
-            expect(isLocalExecution.toBe(true),
+            const isLocalExecution = LocalExecutionDetector.isLocalExecution();
+            expect(isLocalExecution.toBe(true);
             // Initialize local mode as main.js would
             const localModeManager = new LocalModeManager({
                 enableMetaTagOptimization: true,
                 enableFaviconGeneration: true,
                 enableDeveloperGuidance: true
     )),
-            const initSuccess = await localModeManager.initialize(),
+            const initSuccess = await localModeManager.initialize();
             // Continue with game engine initialization
             if (initSuccess) {
-                await mockGameEngine.initialize(),
+                await mockGameEngine.initialize();
                 mockGameEngine.start())
             // Assert: Integration should work smoothly
-            expect(initSuccess.toBe(true),
-            expect(mockGameEngine.initialize).toHaveBeenCalled(),
+            expect(initSuccess.toBe(true);
+            expect(mockGameEngine.initialize).toHaveBeenCalled();
             expect(mockGameEngine.start).toHaveBeenCalled() }');'
     }
     describe('Component Interaction and Coordination', (') => {'
@@ -191,7 +191,7 @@ describe('Local Execution Integration', () => {
             // Mock localStorage to simulate user has not dismissed guidance
             mockLocalStorage.getItem.mockImplementation((key') => {'
                 if (key === 'awaputi_local_guidance_dismissed') return null,
-                return null });
+                return null };
             const localModeManager = new LocalModeManager({
                 enableMetaTagOptimization: false,
                 enableFaviconGeneration: false,
@@ -205,7 +205,7 @@ describe('Local Execution Integration', () => {
             // Mock localStorage to simulate user has dismissed guidance
             mockLocalStorage.getItem.mockImplementation((key') => {'
                 if (key === 'awaputi_local_guidance_dismissed') return 'true',
-                return null });
+                return null };
             const localModeManager = new LocalModeManager({
                 enableMetaTagOptimization: false,
                 enableFaviconGeneration: false,
@@ -218,7 +218,7 @@ describe('Local Execution Integration', () => {
     }
     describe('Error Recovery and Fallback Mechanisms', (') => {'
         test('should initialize LocalExecutionErrorHandler', async (') => {'
-            const initSpy = jest.spyOn(LocalExecutionErrorHandler, 'initialize'),
+            const initSpy = jest.spyOn(LocalExecutionErrorHandler, 'initialize');
             // Simulate main.js error handler initialization
             LocalExecutionErrorHandler.initialize({
                 enableGlobalHandling: true,
@@ -232,18 +232,18 @@ describe('Local Execution Integration', () => {
         test('should handle complete component failure gracefully', async () => {
             // Mock all components to fail
             mockDocument.createElement.mockImplementation((') => {'
-                throw new Error('DOM not available') });
+                throw new Error('DOM not available') };
             mockDocument.head.querySelector.mockImplementation((') => {'
-                throw new Error('DOM query failed') });
+                throw new Error('DOM query failed') };
             const localModeManager = new LocalModeManager({
                 enableMetaTagOptimization: true,
                 enableFaviconGeneration: true,
                 enableDeveloperGuidance: true
-            ),
+            );
             // Should not throw error even when all components fail
             let, initResult: any,
             expect(async () => {
-                initResult = await localModeManager.initialize() }).not.toThrow(');'
+                initResult = await localModeManager.initialize() }.not.toThrow(');'
             // Result might be false, but shouldn't crash the application'
             expect(typeof initResult').toBe('boolean');'
         }');'
@@ -263,21 +263,21 @@ describe('Local Execution Integration', () => {
             global.localStorage = null;
             const localModeManager2 = new LocalModeManager({
                 enableDeveloperGuidance: true
-            ),
-            const result2 = await localModeManager2.initialize(),
+            );
+            const result2 = await localModeManager2.initialize();
             expect(result2.toBe(true), // Should still work without localStorage
         }');'
     }
     describe('Performance and Resource Management', (') => {'
         test('should complete initialization within reasonable time', async () => {
-            const startTime = Date.now(),
+            const startTime = Date.now();
             const localModeManager = new LocalModeManager({
                 enableMetaTagOptimization: true,
                 enableFaviconGeneration: true,
                 enableDeveloperGuidance: true
-            ),
-            await localModeManager.initialize(),
-            const endTime = Date.now(),
+            );
+            await localModeManager.initialize();
+            const endTime = Date.now();
             const executionTime = endTime - startTime,
             // Should complete initialization in under 2 seconds
             expect(executionTime.toBeLessThan(2000) }');'
@@ -289,7 +289,7 @@ describe('Local Execution Integration', () => {
                     enableMetaTagOptimization: true,
                     enableFaviconGeneration: true,
                     enableDeveloperGuidance: false // Disable to avoid DOM pollution
-                });
+                };
                 await localModeManager.initialize();
             }
             // Force garbage collection if available
@@ -304,11 +304,11 @@ describe('Local Execution Integration', () => {
                 enableMetaTagOptimization: true,
                 enableFaviconGeneration: true,
                 enableDeveloperGuidance: true
-            ),
+            );
             await localModeManager.initialize('),'
             // Verify no temporary Canvas elements are left in DOM
             const canvasElements = mockDocument.querySelectorAll.mock.calls
-                .filter(call => call[0] === 'canvas'),
+                .filter(call => call[0] === 'canvas');
             expect(canvasElements.length).toBe(0), // No canvas queries expected in final DOM
         }');'
     }
@@ -316,29 +316,29 @@ describe('Local Execution Integration', () => {
         test('should provide accessible developer guidance', async () => {
             const localModeManager = new LocalModeManager({
                 enableDeveloperGuidance: true
-            ),
+            );
             await localModeManager.initialize('),'
             // Check if created div has appropriate accessibility attributes
-            const divCalls = mockDocument.createElement.mock.calls.filter(call => call[0] === 'div'),
+            const divCalls = mockDocument.createElement.mock.calls.filter(call => call[0] === 'div');
             expect(divCalls.length).toBeGreaterThan(0) }');'
         test('should respect user preferences for guidance display', async () => {
             // Test showing guidance for new users
-            mockLocalStorage.getItem.mockReturnValue(null),
+            mockLocalStorage.getItem.mockReturnValue(null);
             const localModeManager1 = new LocalModeManager({
                 enableDeveloperGuidance: true
-            ),
-            await localModeManager1.initialize(),
-            expect(mockDocument.body.appendChild).toHaveBeenCalled(),
+            );
+            await localModeManager1.initialize();
+            expect(mockDocument.body.appendChild).toHaveBeenCalled();
             // Reset mocks
-            jest.clearAllMocks(),
+            jest.clearAllMocks();
             // Test hiding guidance for users who dismissed it
             mockLocalStorage.getItem.mockImplementation((key') => {'
                 if (key === 'awaputi_local_guidance_dismissed') return 'true',
-                return null });
+                return null };
             const localModeManager2 = new LocalModeManager({
                 enableDeveloperGuidance: true
-            ),
-            await localModeManager2.initialize(),
+            );
+            await localModeManager2.initialize();
             expect(mockDocument.body.appendChild).not.toHaveBeenCalled() }');'
     }
     describe('Cross-browser Compatibility', (') => {'
@@ -350,17 +350,17 @@ describe('Local Execution Integration', () => {
                 enableMetaTagOptimization: true,
                 enableFaviconGeneration: true,
                 enableDeveloperGuidance: true
-            ),
-            const result = await localModeManager.initialize(),
+            );
+            const result = await localModeManager.initialize();
             expect(result.toBe(true) }');'
         test('should handle Firefox local storage restrictions', async () => {
             // Firefox might restrict localStorage in file://
             mockLocalStorage.setItem.mockImplementation((') => {'
-                throw new Error('localStorage disabled in file: // protocol' });
+                throw new Error('localStorage disabled in file: // protocol' },
             const localModeManager = new LocalModeManager({
                 enableDeveloperGuidance: true
-            ),
-            const result = await localModeManager.initialize(),
+            );
+            const result = await localModeManager.initialize();
             // Should still work even without localStorage
             expect(result.toBe(true) }');'
         test('should adapt to Safari security restrictions', async () => {
@@ -379,6 +379,6 @@ describe('Local Execution Integration', () => {
             const result = await localModeManager.initialize();
             // Should handle canvas failure gracefully
             expect(result.toBe(true);
-        });
+        };
     }
 }');'

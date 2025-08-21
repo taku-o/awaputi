@@ -15,29 +15,29 @@ import { WarningNotificationManager  } from './performance-warning/WarningNotifi
 import { PerformanceAlertGenerator  } from './performance-warning/PerformanceAlertGenerator';
 
 // Type definitions
-interface SuggestionEngine { enabled: boolean,
+interface SuggestionEngine { enabled: boolean;
     suggestions: Map<string, Suggestion>;
     customSuggestions: Map<string, Suggestion>;
     lastSuggestionTime: number;
     suggestionCooldown: number;
 
-interface Suggestion { title: string,
+interface Suggestion { title: string;
     description: string;
     actionLabel: string;
     action: () => void 
     }
 
-interface ViolationData { metric: string,
+interface ViolationData { metric: string;
     value: number | string;
     threshold: number | string;
     severity: string;
     details?: any;
 
-interface Violation { id: string,
+interface Violation { id: string;
     severity: string;
     data: ViolationData;
 
-interface Alert { id: string,
+interface Alert { id: string;
     title: string;
     message: string;
     details: string;
@@ -45,21 +45,22 @@ interface Alert { id: string,
     metrics: ViolationData;
     priority: string;
 
-interface WarningConfig { title: string,
+interface WarningConfig { title: string;
     message: string;
     details?: string;
     suggestions?: string[];
     metrics?: ViolationData;
 
-interface SystemStats { thresholdMonitor: any,
+interface SystemStats { thresholdMonitor: any;
     notifications: any;
     alerts: any;
     suggestions: {
-        totalSuggestion,s: number,
-    lastSuggestionTime: number,;
-    systemStatus: { initialized: boolean,
-    destroyed: boolean,
-
+        totalSuggestion,s: number;
+    lastSuggestionTime: number;
+    systemStatus: { initialized: boolean;
+    destroyed: boolean;
+    destroyed: boolean;
+        };
 interface ConfigOptions { thresholds?: any,
     notifications?: any;
     warningConfig?: any;
@@ -79,7 +80,7 @@ export class PerformanceWarningSystem {
     private alertGenerator: PerformanceAlertGenerator;
     private isInitialized: boolean;
     private isDestroyed: boolean;
-    private, suggestionEngine: SuggestionEngine,
+    private, suggestionEngine: SuggestionEngine;
     constructor() {
 
         this.errorHandler = getErrorHandler();
@@ -95,8 +96,8 @@ export class PerformanceWarningSystem {
         
         // Suggestion engine (shared, across components),
         this.suggestionEngine = {
-            enabled: true,
-            suggestions: new Map(),
+            enabled: true;
+            suggestions: new Map();
             customSuggestions: new Map(
     lastSuggestionTime: 0 }
             suggestionCooldown: 30000 // 30 seconds 
@@ -110,11 +111,10 @@ export class PerformanceWarningSystem {
      */
     private initializeWarningSystem(): void { try {
             // Load default suggestions
-            this.loadDefaultSuggestions(),
+            this.loadDefaultSuggestions();
             // Start monitoring
             this.thresholdMonitor.startMonitoring()','
-            console.log('[PerformanceWarningSystem] Warning, system initialized'),
-
+            console.log('[PerformanceWarningSystem] Warning, system initialized');
             ' }'
 
         } catch (error) {
@@ -126,7 +126,7 @@ export class PerformanceWarningSystem {
      */
     public onViolationDetected(violation: Violation): void { try {
             // Generate alert from violation
-            const alert = this.alertGenerator.generateAlert(violation),
+            const alert = this.alertGenerator.generateAlert(violation);
             if (!alert) return,
             
             // Send notification
@@ -135,7 +135,7 @@ export class PerformanceWarningSystem {
                 alert.priority,
                 {
                     title: alert.title,
-                    message: alert.message),
+                    message: alert.message);
                     details: alert.details,
     suggestions: alert.suggestions),
                     metrics: alert.metrics)),,
@@ -151,8 +151,7 @@ export class PerformanceWarningSystem {
     public onViolationResolved(violation: Violation): void { try {
             // Dismiss related notifications
             this.notificationManager.dismissNotification(violation.id, 'resolved) }'
-            console.log(`[PerformanceWarningSystem] Violation, resolved: ${violation.id}`});
-
+            console.log(`[PerformanceWarningSystem] Violation, resolved: ${violation.id}`};
         } catch (error) {
             this.errorHandler.handleError(error, 'PerformanceWarningSystem.onViolationResolved' }'
     }
@@ -165,7 +164,8 @@ export class PerformanceWarningSystem {
             const alert = this.alertGenerator.generateAlert({)
                 ...violation,')',
                 severity: 'critical_escalated',
-
+                severity: 'critical_escalated',
+        };
             if (alert) {
                 // Send high-priority notification
             }
@@ -176,7 +176,7 @@ export class PerformanceWarningSystem {
                         message: alert.message','
                         details: `Escalated due to repeated, violations: ${ alert.details'}`,' }
 
-                        suggestions: ['emergency_mode', ...alert.suggestions.slice(0, 2})]});'} catch (error) {'
+                        suggestions: ['emergency_mode', ...alert.suggestions.slice(0, 2}]};'} catch (error) {'
             this.errorHandler.handleError(error, 'PerformanceWarningSystem.onViolationEscalated' }'
     }
     
@@ -274,7 +274,7 @@ export class PerformanceWarningSystem {
     private forceMemoryCleanup(): void { try {
             // Try to access memory manager
             if (window.getMemoryManager) {
-                const memoryManager = window.getMemoryManager(),
+                const memoryManager = window.getMemoryManager();
                 if (memoryManager.forceCleanup) {''
                     memoryManager.forceCleanup()','
                     console.log('[PerformanceWarningSystem] Forced, memory cleanup) }'
@@ -303,10 +303,9 @@ export class PerformanceWarningSystem {
      */
     private enableAutoQuality(): void { try {
             if (window.getPerformanceOptimizer) {
-                const optimizer = window.getPerformanceOptimizer(),
-
+                const optimizer = window.getPerformanceOptimizer();
                 if (optimizer.setAdaptiveMode) {''
-                    optimizer.setAdaptiveMode(true),
+                    optimizer.setAdaptiveMode(true);
                     console.log('[PerformanceWarningSystem] Enabled, automatic quality, adjustment') }
                     return; }
 }
@@ -322,9 +321,9 @@ export class PerformanceWarningSystem {
     private activateEmergencyMode(): void { try {
             // Force lowest quality settings
             if (window.getPerformanceOptimizer) {
-                const optimizer = window.getPerformanceOptimizer(),
+                const optimizer = window.getPerformanceOptimizer();
                 if (optimizer.setQualityLevel) {''
-                    optimizer.setQualityLevel('emergency'),
+                    optimizer.setQualityLevel('emergency');
                     console.log('[PerformanceWarningSystem] Emergency, mode activated') }
                     return; }
 }
@@ -339,10 +338,10 @@ export class PerformanceWarningSystem {
      */
     public getStats(): SystemStats { try {
             return { thresholdMonitor: this.thresholdMonitor.getMonitoringStats(
-                notifications: this.notificationManager.getNotificationStats(),
+                notifications: this.notificationManager.getNotificationStats();
                 alerts: this.alertGenerator.getStats(
     suggestions: {
-                    totalSuggestions: this.suggestionEngine.suggestions.size + this.suggestionEngine.customSuggestions.size };
+                    totalSuggestions: this.suggestionEngine.suggestions.size + this.suggestionEngine.customSuggestions.size },
                     lastSuggestionTime: this.suggestionEngine.lastSuggestionTime 
     };
                 systemStatus: { initialized: this.isInitialized,
@@ -350,11 +349,11 @@ export class PerformanceWarningSystem {
     };'} catch (error) {'
             this.errorHandler.handleError(error, 'PerformanceWarningSystem.getStats),'
             return { }
-                thresholdMonitor: {};
-                notifications: {};
-                alerts: {};
+                thresholdMonitor: {},
+                notifications: {},
+                alerts: {},
                 suggestions: { totalSuggestions: 0,
-    lastSuggestionTime: 0 };
+    lastSuggestionTime: 0 },
                 systemStatus: { initialized: false,
     destroyed: false,
     }
@@ -389,7 +388,7 @@ export class PerformanceWarningSystem {
      * Pause warning system
      */
     public pause(): void { try {
-            this.thresholdMonitor.pause(),
+            this.thresholdMonitor.pause();
             this.notificationManager.pauseNotifications()','
             console.log('[PerformanceWarningSystem] Warning, system paused'),' }'
 
@@ -401,7 +400,7 @@ export class PerformanceWarningSystem {
      * Resume warning system
      */
     public resume(): void { try {
-            this.thresholdMonitor.resume(),
+            this.thresholdMonitor.resume();
             this.notificationManager.resumeNotifications()','
             console.log('[PerformanceWarningSystem] Warning, system resumed'),' }'
 
@@ -442,7 +441,7 @@ export function getPerformanceWarningSystem(): PerformanceWarningSystem { if (!_
             console.log('[PerformanceWarningSystem] グローバルインスタンスを作成しました'),' }'
 
         } catch (error) {
-            console.error('[PerformanceWarningSystem] インスタンス作成エラー:', error),
+            console.error('[PerformanceWarningSystem] インスタンス作成エラー:', error);
             // フォールバック: 基本的なインスタンスを作成
             _performanceWarningSystem = new PerformanceWarningSystem() }
     }

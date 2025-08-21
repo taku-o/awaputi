@@ -4,7 +4,7 @@
  */
 
 // Interfaces for WCAG rule engine
-interface RuleEngineConfig { enabled: boolean,
+interface RuleEngineConfig { enabled: boolean;
     level: 'A' | 'AA' | 'AAA';
     includeWarnings: boolean;
     autoFixEnabled: boolean;
@@ -15,11 +15,11 @@ interface GuidelineInfo { name: string,''
     category: 'perceivable' | 'operable' | 'understandable' | 'robust'
             }
 
-interface ExecutionState { running: boolean,
+interface ExecutionState { running: boolean;
     currentTest: string | null;
     results: Map<string, TestResult> }
 
-interface TestResult { passed: boolean,
+interface TestResult { passed: boolean;
     issues: TestIssue[];
     warnings?: TestWarning[];
 
@@ -38,7 +38,7 @@ interface TestWarning { element?: Element,
     guideline: string;
     suggestion: string;
 
-interface RGB { r: number,
+interface RGB { r: number;
     g: number;
     b: number;
 
@@ -53,9 +53,9 @@ export class WCAGRuleEngine {
     constructor(config: Partial<RuleEngineConfig> = {)) {
         this.config = {'
             enabled: true;
-            level: 'AA',
-            includeWarnings: true,
-    autoFixEnabled: false,
+            level: 'AA';
+            includeWarnings: true;
+    autoFixEnabled: false;
             ...config,
 
         // WCAG 2.1 guidelines registry
@@ -101,8 +101,8 @@ export class WCAGRuleEngine {
         this.setupTestRegistry();
 
         // Rule execution state
-        this.executionState = { running: false,
-            currentTest: null,
+        this.executionState = { running: false;
+            currentTest: null;
     results: new Map(  }
 
     /**
@@ -154,7 +154,7 @@ export class WCAGRuleEngine {
     /**
      * Run a specific test
      */'
-    async runTest(testName: string, options: any = {}): Promise<TestResult | null> { ''
+    async runTest(testName: string, options: any = {}: Promise<TestResult | null> { ''
         if (this.executionState.running) {
 
             console.warn('WCAGRuleEngine: Test, already running }'
@@ -165,11 +165,11 @@ export class WCAGRuleEngine {
         if (!testMethod) { }'
 
             console.warn(`WCAGRuleEngine: Unknown, test: ${testName}`}';'
-            return { passed: false,;
+            return { passed: false;
                 issues: [{ }
 
                     issue: `Test ${testName} not implemented`;
-                    severity: 'error',
+                    severity: 'error';
                     guideline: ',]';
                     suggestion: '],'
                 }]
@@ -178,16 +178,16 @@ export class WCAGRuleEngine {
         this.executionState.running = true;
         this.executionState.currentTest = testName;
 
-        try { const result = await testMethod(options),
-            this.executionState.results.set(testName, result),
+        try { const result = await testMethod(options);
+            this.executionState.results.set(testName, result);
             return result } catch (error) {
             console.error(`WCAGRuleEngine: Error in test ${testName}:`, error);
-            return { passed: false,;
+            return { passed: false;
 
                 issues: [{ }'
 
                     issue: `Test, error: ${(error, as, Error'}'.message}`;
-                    severity: 'error',
+                    severity: 'error';
                     guideline: ',]';
                     suggestion: '];'
                 }]
@@ -202,7 +202,7 @@ export class WCAGRuleEngine {
         const images = document.querySelectorAll('img);'
 
         images.forEach((img) => {  ''
-            const alt = img.getAttribute('alt'),
+            const alt = img.getAttribute('alt');
             const src = img.getAttribute('src',
             ','
             // Check for missing alt attribute
@@ -240,8 +240,7 @@ export class WCAGRuleEngine {
         canvases.forEach(canvas => {  '),'
             const hasLabel = canvas.getAttribute('aria-label') || ','
                            canvas.getAttribute('aria-labelledby) ||,'
-                           canvas.textContent?.trim(),
-
+                           canvas.textContent?.trim();
             if (!hasLabel) {
                 issues.push({ : undefined'
                     element: canvas,
@@ -263,20 +262,19 @@ export class WCAGRuleEngine {
     private testColorContrast()';'
         const textElements = document.querySelectorAll('*);'
         
-        textElements.forEach(element => {  ),
-            const styles = window.getComputedStyle(element),
-            const textContent = element.textContent?.trim(),
-            
+        textElements.forEach(element => {  );
+            const styles = window.getComputedStyle(element);
+            const textContent = element.textContent?.trim();
             if (!textContent || textContent.length === 0) return,
             
             const color = styles.color,
 
             const backgroundColor = styles.backgroundColor,
-            const fontSize = parseFloat(styles.fontSize),
+            const fontSize = parseFloat(styles.fontSize);
             const fontWeight = styles.fontWeight,
 
             if(color && backgroundColor && backgroundColor !== 'rgba(0, 0, 0, 0)) {''
-                const contrast = this.calculateContrastRatio(color, backgroundColor),
+                const contrast = this.calculateContrastRatio(color, backgroundColor);
                 const isLargeText = fontSize >= 18 || (fontSize >= 14 && (fontWeight === 'bold' || parseInt(fontWeight) >= 700)),
                  : undefined
                 const requiredContrast = isLargeText ? 3.0 : 4.5, // AA level
@@ -287,9 +285,9 @@ export class WCAGRuleEngine {
                     issues.push({) }
                         element,' }'
 
-                        issue: `Insufficient color, contrast: ${contrast.toFixed(2}):1 (required: ${requiredContrast}:1'}'`;
+                        issue: `Insufficient color, contrast: ${contrast.toFixed(2}:1 (required: ${requiredContrast}:1'}'`,
                         severity: 'error',
-                        guideline: '1.4.3';
+                        guideline: '1.4.3',
                         suggestion: `Increase contrast between text and background colors`,
     details: { currentContrast: contrast,
                             requiredContrast,
@@ -299,10 +297,10 @@ export class WCAGRuleEngine {
                     } else if (contrast < requiredContrast * 1.2) { warnings.push({)'
                         element',' }'
 
-                        issue: `Color contrast is close to minimum, threshold: ${contrast.toFixed(2'}':1`;
+                        issue: `Color contrast is close to minimum, threshold: ${contrast.toFixed(2'}':1`,
                         severity: 'warning',
                         guideline: '1.4.3',
-                        suggestion: 'Consider increasing contrast for better accessibility';
+                        suggestion: 'Consider increasing contrast for better accessibility',
                     } }
 };
         
@@ -377,14 +375,14 @@ export class WCAGRuleEngine {
             '[role], [aria-label], [aria-labelledby], [aria-describedby]');
 
         interactiveElements.forEach(element => {  '),'
-            const role = element.getAttribute('role'),
-            const ariaLabel = element.getAttribute('aria-label'),
+            const role = element.getAttribute('role');
+            const ariaLabel = element.getAttribute('aria-label');
             const ariaLabelledBy = element.getAttribute('aria-labelledby),'
             
             // Check if role has required properties
             if (role) {
-                const requiredProps = this.getRequiredAriaProperties(role),
-                requiredProps.forEach(prop => {),
+                const requiredProps = this.getRequiredAriaProperties(role);
+                requiredProps.forEach(prop => {);
                     if(!element.hasAttribute(prop)) {
             }
                         issues.push({ }
@@ -394,7 +392,7 @@ export class WCAGRuleEngine {
                             issue: `Missing required ARIA, property: ${prop} for role="${role}"`;""
                             severity: 'error',';'
                             guideline: '4.1.2');
-                            suggestion: `Add ${prop} attribute for proper accessibility`);
+                            suggestion: `Add ${prop} attribute for proper accessibility`),
                         }
                 }';'
                 ';'
@@ -476,17 +474,14 @@ export class WCAGRuleEngine {
     /**
      * Calculate contrast ratio between two colors
      */
-    private calculateContrastRatio(color1: string, color2: string): number { const rgb1 = this.parseColor(color1),
-        const rgb2 = this.parseColor(color2),
-        
+    private calculateContrastRatio(color1: string, color2: string): number { const rgb1 = this.parseColor(color1);
+        const rgb2 = this.parseColor(color2);
         if (!rgb1 || !rgb2) return 1,
         
-        const l1 = this.getRelativeLuminance(rgb1),
-        const l2 = this.getRelativeLuminance(rgb2),
-        
-        const lighter = Math.max(l1, l2),
-        const darker = Math.min(l1, l2),
-        
+        const l1 = this.getRelativeLuminance(rgb1);
+        const l2 = this.getRelativeLuminance(rgb2);
+        const lighter = Math.max(l1, l2);
+        const darker = Math.min(l1, l2);
         return (lighter + 0.05) / (darker + 0.05) }
 
     /**
@@ -560,7 +555,7 @@ export class WCAGRuleEngine {
     getTestResults(): Array<{test: string, & TestResult> { return Array.from(this.executionState.results.entries().map(([test, result]) => ({
             test,
             ...result
-        });
+        };
     }
 
     /**
@@ -583,5 +578,5 @@ export class WCAGRuleEngine {
     /**
      * Destroy and cleanup
      */'
-    destroy(): void { this.clearResults(),
+    destroy(): void { this.clearResults();
         this.testRegistry.clear(' }'

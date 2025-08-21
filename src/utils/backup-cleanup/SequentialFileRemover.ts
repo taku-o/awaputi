@@ -3,27 +3,27 @@ import path from 'path';
 import { SafetyVerifier  } from './SafetyVerifier.js';
 
 // Type definitions
-interface FileInfo { filePath: string,
+interface FileInfo { filePath: string;
     [key: string]: any;
 
-interface DeletionSummary { totalFiles: number,
+interface DeletionSummary { totalFiles: number;
     attempted: number;
     succeeded: number;
     failed: number;
     skipped: number;
 
-interface SafetyCheck { overallSafety: boolean,
+interface SafetyCheck { overallSafety: boolean;
     [key: string]: any;
 
-interface BackupFileInfo { size: number,
+interface BackupFileInfo { size: number;
     lastModified: string;
     contentHash: string;
     lineCount: number;
 
-interface GitCommitInfo { hash: string,
+interface GitCommitInfo { hash: string;
     message: string;
 
-interface GitInfo { hasHistory: boolean,
+interface GitInfo { hasHistory: boolean;
     lastCommit: GitCommitInfo | null;
     branch: string | null;
     error?: string;
@@ -34,7 +34,7 @@ interface RecoveryInstructions { ''
     commands: string[];
     notes: string[];
 
-interface BackupRecord { filePath: string,
+interface BackupRecord { filePath: string;
     createdAt: string;
     backupCreated: boolean;
     fileInfo?: BackupFileInfo;
@@ -42,21 +42,21 @@ interface BackupRecord { filePath: string,
     recoveryInstructions?: RecoveryInstructions;
     error?: string;
 
-interface DeletionResult { filePath: string,
+interface DeletionResult { filePath: string;
     success: boolean;
     deletedAt: string | null;
     error: string | null  }
 
-interface VerificationResult { filePath: string,
+interface VerificationResult { filePath: string;
     deleted: boolean;
     verifiedAt: string;
     error?: string;
 
-interface TestResults { basicImportTest: boolean,
+interface TestResults { basicImportTest: boolean;
     buildTest: boolean;
     syntaxTest: boolean;
 
-interface PostDeletionTestResult { passed: boolean,
+interface PostDeletionTestResult { passed: boolean;
     tests: TestResults;
     errors: string[];
     executedAt: string;
@@ -73,7 +73,7 @@ interface DeletionRecord { filePath: string,''
     safetyCheck?: SafetyCheck;
      }
 
-interface DeletionError { filePath: string,
+interface DeletionError { filePath: string;
     error: string;
     timestamp?: string;
     testResult?: PostDeletionTestResult;
@@ -81,24 +81,24 @@ interface DeletionError { filePath: string,
     deletionResult?: DeletionResult;
      }
 
-interface DeletionResults { summary: DeletionSummary,
+interface DeletionResults { summary: DeletionSummary;
     deletions: DeletionRecord[];
     errors: DeletionError[];
     startTime: string;
     endTime?: string;
     duration?: number,  }
 
-interface SizeReduction { filesDeleted: number,
+interface SizeReduction { filesDeleted: number;
     estimatedBytesFreed: number;
 
-interface DeletionReport { summary: DeletionSummary,
+interface DeletionReport { summary: DeletionSummary;
     successfulDeletions: DeletionRecord[];
     skippedDeletions: DeletionRecord[];
     errors: DeletionError[];
     recoveryInfo: {
         backupRecord,s: Record<string, BackupRecord>;
-        deletionLog: DeletionRecord[],;
-    generatedAt: string,
+        deletionLog: DeletionRecord[];
+    generatedAt: string;
     sizeReduction?: SizeReduction;
     }
 
@@ -126,10 +126,10 @@ export class SequentialFileRemover {
                 attempted: 0,
                 succeeded: 0,
                 failed: 0,
-    skipped: 0 };
+    skipped: 0 },
             deletions: [],
             errors: [],
-    startTime: new Date().toISOString(),
+    startTime: new Date().toISOString();
         };
 
         for (const fileInfo of verifiedFiles) {
@@ -138,8 +138,7 @@ export class SequentialFileRemover {
                 results.summary.attempted++,
                 
                 // 事前安全性確認
-                const finalSafetyCheck = await this.safetyVerifier.verifyDeletionSafety(fileInfo.filePath),
-
+                const finalSafetyCheck = await this.safetyVerifier.verifyDeletionSafety(fileInfo.filePath);
                 if (!finalSafetyCheck.overallSafety) {
                     results.summary.skipped++,
                     results.deletions.push({'
@@ -148,7 +147,7 @@ export class SequentialFileRemover {
                         reason: 'Final safety check failed'),
                         safetyCheck: finalSafetyCheck) }
                         timestamp: new Date().toISOString(); 
-    });
+    };
                     continue;
                 }
 
@@ -161,8 +160,7 @@ export class SequentialFileRemover {
                 if (deletionResult.success) {
                 
                     // 削除確認
-                    const verificationResult = await this.verifyDeletion(fileInfo.filePath),
-                    
+                    const verificationResult = await this.verifyDeletion(fileInfo.filePath);
                     if (verificationResult.deleted) {
                         // 削除後テスト実行
                         const testResult = await this.runPostDeletionTests('''
@@ -171,7 +169,7 @@ export class SequentialFileRemover {
                             deletionResult,
                             verificationResult,
                             testResult) }
-                            timestamp: new Date().toISOString() };
+                            timestamp: new Date().toISOString() },
                         
                         results.deletions.push(deletionRecord);
                         this.deletionLog.push(deletionRecord);
@@ -198,7 +196,7 @@ export class SequentialFileRemover {
                 results.errors.push({)
                     filePath: fileInfo.filePath,
     error: (error, as Error).message,
-                    timestamp: new Date().toISOString( });
+                    timestamp: new Date().toISOString( };
             }
         }
 
@@ -215,11 +213,9 @@ export class SequentialFileRemover {
             filePath,
             createdAt: new Date().toISOString()','
             const content = await fs.readFile(filePath, 'utf8),'
-            const stats = await fs.stat(filePath),
-            
+            const stats = await fs.stat(filePath);
             // Git情報取得
-            const gitInfo = await this.getGitFileInfo(filePath),
-            
+            const gitInfo = await this.getGitFileInfo(filePath);
             backup.fileInfo = {
                 size: stats.size,
     lastModified: stats.mtime.toISOString(),
@@ -245,13 +241,11 @@ export class SequentialFileRemover {
             filePath,
             success: false,
             deletedAt: null,
-    error: null,;
+    error: null,
         try { // ファイル存在確認
-            await fs.access(filePath),
-            
+            await fs.access(filePath);
             // ファイル削除
-            await fs.unlink(filePath),
-            
+            await fs.unlink(filePath);
             result.success = true,
             result.deletedAt = new Date().toISOString() } catch (error) { result.error = (error, as Error).message,
             result.success = false }
@@ -265,10 +259,9 @@ export class SequentialFileRemover {
     async verifyDeletion(filePath: string): Promise<VerificationResult> { const verification: VerificationResult = {
             filePath,
             deleted: false,
-    verifiedAt: new Date().toISOString(  };
+    verifiedAt: new Date().toISOString(  },
         try { // ファイルが存在しないことを確認
-            await fs.access(filePath),
-
+            await fs.access(filePath);
             verification.deleted = false,
             verification.error = 'File still exists' } catch (error) { // ファイルが存在しない場合はエラーが発生する（期待される動作）
             verification.deleted = true }
@@ -284,20 +277,17 @@ export class SequentialFileRemover {
     tests: {
                 basicImportTest: false,
                 buildTest: false,
-    syntaxTest: false,;
+    syntaxTest: false,
             errors: [],
     executedAt: new Date().toISOString(),
         };
 
         try { // 基本的なインポートテスト
-            testResult.tests.basicImportTest = await this.runBasicImportTest(),
-            
+            testResult.tests.basicImportTest = await this.runBasicImportTest();
             // ビルドテスト（簡易）
-            testResult.tests.buildTest = await this.runBasicBuildTest(),
-            
+            testResult.tests.buildTest = await this.runBasicBuildTest();
             // 構文テスト
-            testResult.tests.syntaxTest = await this.runBasicSyntaxTest(),
-            
+            testResult.tests.syntaxTest = await this.runBasicSyntaxTest();
             // 全テストが通過した場合
             testResult.passed = Object.values(testResult.tests).every(test => test === true) }
         } catch (error) { testResult.errors.push((error, as Error).message),
@@ -318,8 +308,8 @@ export class SequentialFileRemover {
             ','
 
                 try {'
-                    await fs.access(coreFile),
-                    const content = await fs.readFile(coreFile, 'utf8'),
+                    await fs.access(coreFile);
+                    const content = await fs.readFile(coreFile, 'utf8');
                     ','
                     // 基本的な構文チェック
                     if(content.includes('SyntaxError) || content.length === 0' { }
@@ -332,7 +322,7 @@ export class SequentialFileRemover {
      * 基本ビルドテストの実行
      */''
     async runBasicBuildTest()','
-            await fs.access('./package.json'),
+            await fs.access('./package.json');
             ','
             // 基本的なプロジェクト構造の確認
             const requiredDirs = ['src', 'src/core', 'src/scenes],'
@@ -340,7 +330,7 @@ export class SequentialFileRemover {
             for (const dir of requiredDirs) {
             
                 try {
-                    const stats = await fs.stat(dir),
+                    const stats = await fs.stat(dir);
                     if (!stats.isDirectory() {
     
 }
@@ -353,14 +343,14 @@ export class SequentialFileRemover {
      */
     async runBasicSyntaxTest(): Promise<boolean> { try {
             // プロジェクト内のJSファイルの基本構文チェック
-            const jsFiles = await this.findJavaScriptFiles(),
+            const jsFiles = await this.findJavaScriptFiles();
             const sampleSize = Math.min(jsFiles.length, 10), // 最大10ファイルをサンプル
 
             for(let, i = 0, i < sampleSize, i++) {
                 const file = jsFiles[i],
 
                 try {'
-                    const content = await fs.readFile(file, 'utf8'),
+                    const content = await fs.readFile(file, 'utf8');
                     ','
                     // 明らかな構文エラーをチェック
                     if (content.includes('SyntaxError') || ','
@@ -416,7 +406,7 @@ export class SequentialFileRemover {
     async getGitFileInfo(filePath: string): Promise<GitInfo> { const gitInfo: GitInfo = {
             hasHistory: false,
             lastCommit: null,
-    branch: null,;
+    branch: null,
 ';'
 
         try { }
@@ -457,7 +447,7 @@ export class SequentialFileRemover {
     generateRecoveryInstructions(filePath: string, gitInfo: GitInfo): RecoveryInstructions { const instructions: RecoveryInstructions = {''
             method: 'git_history',
             commands: [],
-    notes: [] };
+    notes: [] },
 ';'
 
         if (gitInfo.hasHistory && gitInfo.lastCommit) { instructions.commands.push(' }'
@@ -489,7 +479,7 @@ export class SequentialFileRemover {
     calculateHash(content: string): string { // シンプルなハッシュ計算
         let hash = 0,
         for(let, i = 0, i < content.length, i++) {
-            const char = content.charCodeAt(i),
+            const char = content.charCodeAt(i);
             hash = ((hash << 5) - hash) + char }
             hash = hash & hash; // 32bit整数に変換 }
         }

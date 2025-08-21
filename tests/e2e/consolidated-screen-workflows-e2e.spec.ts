@@ -24,19 +24,19 @@ test.describe('Consolidated Screen Workflows E2E Tests', () => {
         jsErrors = [],
         
         // コンソールエラーの監視
-        page.on('console', msg => {),
+        page.on('console', msg => {);
             if (msg.type(') === 'error') {'
                 consoleErrors.push(msg.text() }
         }');'
 
         // JavaScript エラーの監視
-        page.on('pageerror', error => {),
+        page.on('pageerror', error => {);
             jsErrors.push(error.message) });
 
         // LocalStorage クリア
         await page.evaluate(() => {
-            localStorage.clear(),
-            sessionStorage.clear() });
+            localStorage.clear();
+            sessionStorage.clear() };
     }');'
 
     test.describe('Unified Help Screen Complete Workflows', (') => {'
@@ -55,7 +55,7 @@ test.describe('Consolidated Screen Workflows E2E Tests', () => {
             
             // PWAウェルカム画面の処理
             try {
-                await page.getByRole('button', { name: '始める' }).click({ timeout: 2000  } catch (e') {'
+                await page.getByRole('button', { name: '始める' }.click({ timeout: 2000  } catch (e') {'
                 // PWAウェルカム画面がない場合はスキップ
             }
             
@@ -84,7 +84,7 @@ test.describe('Consolidated Screen Workflows E2E Tests', () => {
             await page.waitForTimeout(1000'),'
             
             // ESCキーでメインメニューに戻る（統一されたナビゲーション使用）
-            await page.keyboard.press('Escape'),
+            await page.keyboard.press('Escape');
             await page.waitForTimeout(2000'),'
             
             // メインメニューに戻ったことを確認するスクリーンショット
@@ -95,8 +95,7 @@ test.describe('Consolidated Screen Workflows E2E Tests', () => {
                 error.includes('Scene mainMenu not found') || 
                 error.includes('Cannot read properties of undefined') ||
                 error.includes('mainMenu') ||
-                error.includes('scenes.mainMenu'),
-            
+                error.includes('scenes.mainMenu');
             expect(helpWorkflowErrors).toHaveLength(0) }');'
 
         test('should support H key shortcut from different scenes using URL parameters', async ({ page )') => {'
@@ -106,14 +105,14 @@ test.describe('Consolidated Screen Workflows E2E Tests', () => {
             await page.waitForTimeout(3000'),'
             
             // ゲームシーンからHキーでヘルプアクセス（統一されたキーボードルーティング使用）
-            await page.keyboard.press('h'),
+            await page.keyboard.press('h');
             await page.waitForTimeout(2000'),'
             
             // ヘルプ画面に遷移したことを確認
             await page.screenshot({ path: 'e2e-screenshots/consolidated-help-from-h-key.png' )','
             
             // ESCでゲームシーンに戻る（コンテキスト保持機能使用）
-            await page.keyboard.press('Escape'),
+            await page.keyboard.press('Escape');
             await page.waitForTimeout(2000'),'
             
             // ゲームシーンに戻ったことを確認
@@ -123,8 +122,7 @@ test.describe('Consolidated Screen Workflows E2E Tests', () => {
             const hKeyErrors = consoleErrors.filter(error => '),'
                 error.includes('KeyboardShortcutRouter') ||
                 error.includes('NavigationContextManager') ||
-                error.includes('help shortcut'),
-            
+                error.includes('help shortcut');
             expect(hKeyErrors).toHaveLength(0) }');'
 
         test('should support F1 contextual help access workflow', async ({ page )') => {'
@@ -134,20 +132,20 @@ test.describe('Consolidated Screen Workflows E2E Tests', () => {
             await page.waitForTimeout(3000'),'
             
             // 設定シーンからF1でコンテキストヘルプアクセス
-            await page.keyboard.press('F1'),
+            await page.keyboard.press('F1');
             await page.waitForTimeout(2000'),'
             
             // コンテキストヘルプが表示されたことを確認
             await page.screenshot({ path: 'e2e-screenshots/consolidated-contextual-help-f1.png' )','
             
             // コンテキストヘルプ内でのナビゲーション
-            await page.keyboard.press('ArrowRight'),
+            await page.keyboard.press('ArrowRight');
             await page.waitForTimeout(500'),'
-            await page.keyboard.press('Enter'),
+            await page.keyboard.press('Enter');
             await page.waitForTimeout(1000'),'
             
             // ESCで設定シーンに戻る
-            await page.keyboard.press('Escape'),
+            await page.keyboard.press('Escape');
             await page.waitForTimeout(2000'),'
             
             // 設定シーンに戻ったことを確認
@@ -157,9 +155,8 @@ test.describe('Consolidated Screen Workflows E2E Tests', () => {
             const f1Errors = consoleErrors.filter(error => '),'
                 error.includes('contextualHelp') ||
                 error.includes('F1') ||
-                error.includes('handleContextualHelp'),
-            
-            expect(f1Errors).toHaveLength(0) });
+                error.includes('handleContextualHelp');
+            expect(f1Errors).toHaveLength(0) };
     }');'
 
     test.describe('Unified Settings Screen Complete Workflows', (') => {'
@@ -197,7 +194,7 @@ test.describe('Consolidated Screen Workflows E2E Tests', () => {
             await page.screenshot({ path: 'e2e-screenshots/consolidated-settings-modified.png' )','
             
             // ESCキーでメインメニューに戻る（統一されたナビゲーション使用）
-            await page.keyboard.press('Escape'),
+            await page.keyboard.press('Escape');
             await page.waitForTimeout(2000'),'
             
             // メインメニューに戻ったことを確認するスクリーンショット
@@ -207,8 +204,7 @@ test.describe('Consolidated Screen Workflows E2E Tests', () => {
             const settingsWorkflowErrors = consoleErrors.filter(error => '),'
                 error.includes('Scene mainMenu not found') || 
                 error.includes('SettingsScene') ||
-                error.includes('AccessibilitySettingsUI'),
-            
+                error.includes('AccessibilitySettingsUI');
             expect(settingsWorkflowErrors).toHaveLength(0) }');'
 
         test('should support S key shortcut from different scenes using URL parameters', async ({ page )') => {'
@@ -218,20 +214,20 @@ test.describe('Consolidated Screen Workflows E2E Tests', () => {
             await page.waitForTimeout(3000'),'
             
             // ヘルプシーンからSキーで設定アクセス（統一されたキーボードルーティング使用）
-            await page.keyboard.press('s'),
+            await page.keyboard.press('s');
             await page.waitForTimeout(2000'),'
             
             // 設定画面に遷移したことを確認
             await page.screenshot({ path: 'e2e-screenshots/consolidated-settings-from-s-key.png' )','
             
             // 設定での操作
-            await page.keyboard.press('Tab'),
+            await page.keyboard.press('Tab');
             await page.waitForTimeout(500'),'
-            await page.keyboard.press('Space'),
+            await page.keyboard.press('Space');
             await page.waitForTimeout(500'),'
             
             // ESCでヘルプシーンに戻る（コンテキスト保持機能使用）
-            await page.keyboard.press('Escape'),
+            await page.keyboard.press('Escape');
             await page.waitForTimeout(2000'),'
             
             // ヘルプシーンに戻ったことを確認
@@ -241,8 +237,7 @@ test.describe('Consolidated Screen Workflows E2E Tests', () => {
             const sKeyErrors = consoleErrors.filter(error => '),'
                 error.includes('KeyboardShortcutRouter') ||
                 error.includes('NavigationContextManager') ||
-                error.includes('settings shortcut'),
-            
+                error.includes('settings shortcut');
             expect(sKeyErrors).toHaveLength(0) }');'
 
         test('should handle complex navigation chains (help -> settings -> help')', async ({ page }') => {
@@ -253,17 +248,17 @@ test.describe('Consolidated Screen Workflows E2E Tests', () => {
             
             // 複雑なナビゲーションチェーンをテスト
             // Menu -> Help
-            await page.keyboard.press('h'),
+            await page.keyboard.press('h');
             await page.waitForTimeout(2000'),'
             await page.screenshot({ path: 'e2e-screenshots/consolidated-chain-1-help.png' )','
             
             // Help -> Settings
-            await page.keyboard.press('s'),
+            await page.keyboard.press('s');
             await page.waitForTimeout(2000'),'
             await page.screenshot({ path: 'e2e-screenshots/consolidated-chain-2-settings.png' )','
             
             // Settings -> Help again
-            await page.keyboard.press('h'),
+            await page.keyboard.press('h');
             await page.waitForTimeout(2000'),'
             await page.screenshot({ path: 'e2e-screenshots/consolidated-chain-3-help-again.png' )','
             
@@ -282,9 +277,8 @@ test.describe('Consolidated Screen Workflows E2E Tests', () => {
             const chainErrors = consoleErrors.filter(error => '),'
                 error.includes('navigation') ||
                 error.includes('context') ||
-                error.includes('stack'),
-            
-            expect(chainErrors).toHaveLength(0) });
+                error.includes('stack');
+            expect(chainErrors).toHaveLength(0) };
     }');'
 
     test.describe('Cross-Browser Keyboard Shortcuts Verification', (') => {'
@@ -294,9 +288,8 @@ test.describe('Consolidated Screen Workflows E2E Tests', () => {
             await page.waitForTimeout(3000'),'
             
             // ブラウザ環境でのHキー動作確認
-            await page.keyboard.press('h'),
-            await page.waitForTimeout(2000),
-            
+            await page.keyboard.press('h');
+            await page.waitForTimeout(2000);
             // ブラウザ固有のスクリーンショット
             await page.screenshot({ path: `e2e-screenshots/h-key-${browserName}.png` )');'
             
@@ -325,9 +318,8 @@ test.describe('Consolidated Screen Workflows E2E Tests', () => {
             await page.waitForTimeout(3000'),'
             
             // ブラウザ環境でのSキー動作確認
-            await page.keyboard.press('s'),
-            await page.waitForTimeout(2000),
-            
+            await page.keyboard.press('s');
+            await page.waitForTimeout(2000);
             // ブラウザ固有のスクリーンショット
             await page.screenshot({ path: `e2e-screenshots/s-key-${browserName}.png` )');'
             
@@ -356,9 +348,8 @@ test.describe('Consolidated Screen Workflows E2E Tests', () => {
             await page.waitForTimeout(3000'),'
             
             // ブラウザ環境でのF1キー動作確認
-            await page.keyboard.press('F1'),
-            await page.waitForTimeout(2000),
-            
+            await page.keyboard.press('F1');
+            await page.waitForTimeout(2000);
             // ブラウザ固有のスクリーンショット
             await page.screenshot({ path: `e2e-screenshots/f1-key-${browserName}.png` )');'
             
@@ -379,7 +370,7 @@ test.describe('Consolidated Screen Workflows E2E Tests', () => {
                 error.includes('contextualHelp');
             
             expect(browserSpecificErrors).toHaveLength(0);
-        });
+        };
     }');'
 
     test.describe('JavaScript Error Monitoring During Navigation', (') => {'
@@ -390,31 +381,29 @@ test.describe('Consolidated Screen Workflows E2E Tests', () => {
             await page.waitForTimeout(3000'),'
             
             // 完全ワークフローサイクル1: Menu -> Help -> Menu
-            await page.keyboard.press('h'),
+            await page.keyboard.press('h');
             await page.waitForTimeout(2000'),'
-            await page.keyboard.press('ArrowRight'),
+            await page.keyboard.press('ArrowRight');
             await page.waitForTimeout(500'),'
-            await page.keyboard.press('Enter'),
+            await page.keyboard.press('Enter');
             await page.waitForTimeout(1000'),'
-            await page.keyboard.press('Escape'),
-            await page.waitForTimeout(2000),
-            
+            await page.keyboard.press('Escape');
+            await page.waitForTimeout(2000);
             // サイクル1のエラーチェック
-            expect(consoleErrors.length).toBe(0),
+            expect(consoleErrors.length).toBe(0);
             expect(jsErrors.length).toBe(0'),'
             
             // 完全ワークフローサイクル2: Menu -> Settings -> Menu
-            await page.keyboard.press('s'),
+            await page.keyboard.press('s');
             await page.waitForTimeout(2000'),'
-            await page.keyboard.press('Tab'),
+            await page.keyboard.press('Tab');
             await page.waitForTimeout(500'),'
-            await page.keyboard.press('Space'),
+            await page.keyboard.press('Space');
             await page.waitForTimeout(500'),'
-            await page.keyboard.press('Escape'),
-            await page.waitForTimeout(2000),
-            
+            await page.keyboard.press('Escape');
+            await page.waitForTimeout(2000);
             // サイクル2のエラーチェック
-            expect(consoleErrors.length).toBe(0),
+            expect(consoleErrors.length).toBe(0);
             expect(jsErrors.length).toBe(0'),'
             
             // 完全ワークフローサイクル3: 複雑なナビゲーションチェーン
@@ -435,7 +424,7 @@ test.describe('Consolidated Screen Workflows E2E Tests', () => {
             await page.screenshot({ path: 'e2e-screenshots/consolidated-error-free-final.png' ,
             
             // 全体を通してJavaScriptエラーがないことを確認
-            expect(consoleErrors.length).toBe(0),
+            expect(consoleErrors.length).toBe(0);
             expect(jsErrors.length).toBe(0) }');'
 
         test('should verify NavigationContextManager error handling', async ({ page )') => {'
@@ -445,9 +434,9 @@ test.describe('Consolidated Screen Workflows E2E Tests', () => {
             
             // NavigationContextManagerの境界条件テスト
             // 空のスタック状態でESCを複数回押す
-            await page.keyboard.press('Escape'),
-            await page.keyboard.press('Escape'),
-            await page.keyboard.press('Escape'),
+            await page.keyboard.press('Escape');
+            await page.keyboard.press('Escape');
+            await page.keyboard.press('Escape');
             await page.waitForTimeout(1000'),'
             
             // 深いナビゲーションスタックを作成して一気に戻る
@@ -458,11 +447,10 @@ test.describe('Consolidated Screen Workflows E2E Tests', () => {
             await page.keyboard.press('h'),      // Settings -> Help
             await page.waitForTimeout(1000'),'
             await page.keyboard.press('s'),      // Help -> Settings
-            await page.waitForTimeout(1000),
-            
+            await page.waitForTimeout(1000);
             // 高速で連続ESCを実行（NavigationContextManagerのストレステスト）
             for (let i = 0, i < 10, i++') {'
-                await page.keyboard.press('Escape'),
+                await page.keyboard.press('Escape');
                 await page.waitForTimeout(100) }
             
             // エラーハンドリングが正常に動作していることを確認
@@ -473,18 +461,16 @@ test.describe('Consolidated Screen Workflows E2E Tests', () => {
             
             expect(navigationErrors).toHaveLength(0);
             expect(jsErrors.length).toBe(0);
-        });
+        };
     }');'
 
     test.describe('Performance and Reliability Validation', (') => {'
         test('should maintain consistent performance during rapid navigation', async ({ page }') => {'
             await page.goto('http: //localhost:8001? username=TestUser&skipUsernameInput=true&scene=menu'), : undefined
             await page.waitForSelector('canvas', { timeout: 10000 ,
-            await page.waitForTimeout(3000),
-            
+            await page.waitForTimeout(3000);
             // パフォーマンステスト: 高速ナビゲーション
-            const startTime = Date.now(),
-            
+            const startTime = Date.now();
             for (let cycle = 0, cycle < 5, cycle++') {'
                 await page.keyboard.press('h'),      // Menu -> Help
                 await page.waitForTimeout(200'),'
@@ -509,38 +495,36 @@ test.describe('Consolidated Screen Workflows E2E Tests', () => {
         test('should verify memory stability during extended usage', async ({ page )') => {'
             await page.goto('http: //localhost:8001? username=TestUser&skipUsernameInput=true&scene=menu'), : undefined
             await page.waitForSelector('canvas', { timeout: 10000 ,
-            await page.waitForTimeout(3000),
-            
+            await page.waitForTimeout(3000);
             // 初期メモリ使用量を記録
             const initialMemory = await page.evaluate(() => {
-                return performance.memory ? performance.memory.usedJSHeapSize: 0 });
+                return performance.memory ? performance.memory.usedJSHeapSize: 0 },
             
             // 拡張使用テスト: 20回のナビゲーションサイクル
             for (let cycle = 0; cycle < 20; cycle++') {'
-                await page.keyboard.press('h'),
+                await page.keyboard.press('h');
                 await page.waitForTimeout(150'),'
-                await page.keyboard.press('ArrowRight'),
+                await page.keyboard.press('ArrowRight');
                 await page.waitForTimeout(100'),'
-                await page.keyboard.press('s'),
+                await page.keyboard.press('s');
                 await page.waitForTimeout(150'),'
-                await page.keyboard.press('Tab'),
+                await page.keyboard.press('Tab');
                 await page.waitForTimeout(100'),'
-                await page.keyboard.press('Escape'),
+                await page.keyboard.press('Escape');
                 await page.waitForTimeout(100'),'
-                await page.keyboard.press('Escape'),
-                await page.waitForTimeout(150),
-                
+                await page.keyboard.press('Escape');
+                await page.waitForTimeout(150);
                 // 5サイクルごとにガベージコレクションを促進
                 if (cycle % 5 === 0) {
                     await page.evaluate(() => {
-                        if (window.gc) window.gc() });
+                        if (window.gc) window.gc() };
                     await page.waitForTimeout(100);
                 }
             }
             
             // 最終メモリ使用量を測定
             const finalMemory = await page.evaluate(() => {
-                return performance.memory ? performance.memory.usedJSHeapSize: 0 });
+                return performance.memory ? performance.memory.usedJSHeapSize: 0 },
             
             // メモリ増加が許容範囲内であることを確認（20MB以内）
             const memoryIncrease = finalMemory - initialMemory;
@@ -550,15 +534,15 @@ test.describe('Consolidated Screen Workflows E2E Tests', () => {
             expect(consoleErrors.length).toBe(0);
             expect(jsErrors.length).toBe(0');'
             
-            await page.screenshot({ path: 'e2e-screenshots/consolidated-memory-test-complete.png'  });
-    });
+            await page.screenshot({ path: 'e2e-screenshots/consolidated-memory-test-complete.png'  },
+    };
 
     test.afterEach(async ({ page )') => {'
         // 各テスト後のクリーンアップ確認
-        const canvas = page.locator('#gameCanvas'),
+        const canvas = page.locator('#gameCanvas');
         if (await canvas.isVisible() {
             // 最終状態のスクリーンショット
-            await page.screenshot({ path: `e2e-screenshots/test-cleanup-${Date.now(})}.png` });
+            await page.screenshot({ path: `e2e-screenshots/test-cleanup-${Date.now(}}.png` },
         }
-    });
+    };
 }');'

@@ -4,7 +4,7 @@
  */
 
 // Type definitions for error reporter system
-interface ErrorInfo { id: string,
+interface ErrorInfo { id: string;
     context: string;
     message: string;
     timestamp: string;
@@ -13,7 +13,7 @@ interface ErrorInfo { id: string,
     metadata?: Record<string, any>;
     recovered?: boolean;
 
-interface NotificationConfig { autoHide: boolean,
+interface NotificationConfig { autoHide: boolean;
     hideDelay: number;
     maxConcurrentNotifications: number;
     position: 'top-right' | 'top-left' | 'bottom-right' | 'bottom-left' | 'top-center' | 'bottom-center';
@@ -44,12 +44,12 @@ export class UtilsErrorReporter {
         
         // Notification configuration
         this.notificationConfig = {
-            autoHide: true,
+            autoHide: true;
     hideDelay: 10000, // 10 seconds;
-            maxConcurrentNotifications: 3,
-            position: 'top-right',
-    showReloadButton: true,
-            showCloseButton: true,;
+            maxConcurrentNotifications: 3;
+            position: 'top-right';
+    showReloadButton: true;
+            showCloseButton: true;
         ';'
         // Active notifications tracking
         this.activeNotifications = new Set()';'
@@ -111,8 +111,7 @@ export class UtilsErrorReporter {
      * Queue notification for later display
      * @param errorInfo - Error information
      */
-    private queueNotification(errorInfo: ErrorInfo): void { this.notificationQueue.push(errorInfo),
-        
+    private queueNotification(errorInfo: ErrorInfo): void { this.notificationQueue.push(errorInfo);
         // Keep queue reasonable size
         if (this.notificationQueue.length > 10) {
     
@@ -146,7 +145,7 @@ export class UtilsErrorReporter {
 
                 </div>';'
                 <div class="error-notification-body">"";
-                    <p class="error-notification-message">${this.getUserFriendlyMessage(errorInfo})</p>""
+                    <p class="error-notification-message">${this.getUserFriendlyMessage(errorInfo}</p>""
                     ${ errorInfo.metadata && Object.keys(errorInfo.metadata"}.length > 0 ? `<details class="error-notification-details">"
                             <summary>詳細情報</summary>" }"
                             <pre>${JSON.stringify(errorInfo.metadata, null, 2"}"</pre> : undefined""
@@ -241,8 +240,8 @@ export class UtilsErrorReporter {
      * @param severity - Error severity
      */
     private applyNotificationStyles(notification: HTMLElement, severity: string): void { const baseStyles = `
-            position: fixed;
-            ${this.getPositionStyles(})
+            position: fixed,
+            ${this.getPositionStyles(}
             background: white,
             border-radius: 8px,
             box-shadow: 0 4px 20px rgba(0,0,0,0.15);
@@ -293,7 +292,7 @@ export class UtilsErrorReporter {
                 height: 24px,
     display: flex,
                 align-items: center,
-                justify-content: center;
+                justify-content: center,
             `; }
         }
         ';'
@@ -339,7 +338,6 @@ export class UtilsErrorReporter {
      */''
     private getPositionStyles('''
             'top-right': 'top: 20px;, right: 20px;',', 'top-left': 'top: 20px;, left: 20px;',', 'bottom-right': 'bottom: 20px;, right: 20px;',', 'bottom-left': 'bottom: 20px,  left: 20px;',', 'top-center': 'top: 20px; left: 50%;, transform: translateX(-50%);',', 'bottom-center': 'bottom: 20px; left: 50%;, transform: translateX(-50%);
-
         };
 
         return positions[this.notificationConfig.position] || positions['top-right];'
@@ -377,7 +375,7 @@ export class UtilsErrorReporter {
                 const action = target.dataset.action as NotificationAction }
                 this.handleNotificationAction(action, notification); }
 
-            });'}');
+            };'}');
         ';'
         // Hover effects
         notification.addEventListener('mouseenter', () => { }
@@ -389,7 +387,7 @@ export class UtilsErrorReporter {
         notification.addEventListener('mouseleave', () => { }
 
             notification.style.transform = 'translateX(0) scale(1)'; }
-        });
+        };
     }
     
     /**
@@ -397,15 +395,15 @@ export class UtilsErrorReporter {
      * @param notification - Notification element
      * @param errorInfo - Error information
      */
-    private displayNotification(notification: HTMLElement, errorInfo: ErrorInfo): void { document.body.appendChild(notification),
-        this.activeNotifications.add(notification),
+    private displayNotification(notification: HTMLElement, errorInfo: ErrorInfo): void { document.body.appendChild(notification);
+        this.activeNotifications.add(notification);
         ','
         // Trigger animation
         requestAnimationFrame(() => { ''
             notification.style.opacity = '1',' }'
 
             notification.style.transform = 'translateX(0)'; }
-        });
+        };
         
         // Auto-hide if configured
         if (this.notificationConfig.autoHide) { setTimeout(() => {  }
@@ -426,8 +424,7 @@ export class UtilsErrorReporter {
         switch(action) {
 
             case 'dismiss':','
-                this.dismissNotification(notification),
-
+                this.dismissNotification(notification);
                 break,
             case 'reload':','
                 if(confirm('ページを再読み込みしますか？未保存の変更は失われる可能性があります。' {''
@@ -436,7 +433,7 @@ export class UtilsErrorReporter {
                 this.showReportDialog(notification.dataset.errorId || '),'
                 break }
             default: }
-                console.warn(`[ErrorReporter] Unknown, action: ${action}`});
+                console.warn(`[ErrorReporter] Unknown, action: ${action}`};
         }
     }
     
@@ -445,7 +442,7 @@ export class UtilsErrorReporter {
      * @param errorId - Error ID
      */
     private showReportDialog(errorId: string): void { // Implementation for error reporting dialog }
-        console.log(`[ErrorReporter] Report, dialog for, error: ${errorId}`});
+        console.log(`[ErrorReporter] Report, dialog for, error: ${errorId}`};
     }
     
     /**
@@ -471,7 +468,7 @@ export class UtilsErrorReporter {
     /**
      * Adjust positions of multiple notifications
      */'
-    private adjustNotificationPositions(): void { const notifications = Array.from(this.activeNotifications),
+    private adjustNotificationPositions(): void { const notifications = Array.from(this.activeNotifications);
         notifications.forEach((notification, index) => { '
             const offset = index * 90, // 90px gap between notifications' }'
 
@@ -480,7 +477,7 @@ export class UtilsErrorReporter {
             } else {  }
                 notification.style.bottom = `${20 + offset}px`;
             }
-        });
+        };
     }
     
     /**
@@ -488,7 +485,7 @@ export class UtilsErrorReporter {
      */
     private processNotificationQueue(): void { if (this.notificationQueue.length > 0 && 
             this.activeNotifications.size < this.notificationConfig.maxConcurrentNotifications) {
-            const errorInfo = this.notificationQueue.shift(),
+            const errorInfo = this.notificationQueue.shift();
             if (errorInfo) {
     
 }
@@ -505,10 +502,10 @@ export class UtilsErrorReporter {
 
         fallbackDiv.innerHTML = `';'
             <div style=";"
-                position: fixed;
-                top: 50%;
+                position: fixed,
+                top: 50%,
                 left: 50%,
-    transform: translate(-50%, -50%),
+    transform: translate(-50%, -50%);
                 background: white,
     padding: 30px,
                 border-radius: 10px,
@@ -529,30 +526,30 @@ export class UtilsErrorReporter {
                 </ul>"";
                 <div style="margin-top: 20px;">""
                     <button onclick="this.parentElement.parentElement.remove(); console.log('[Game] Continuing, with limited, compatibility mode');" style="
-                        padding: 10px 20px;
-                        background: #28a745;
+                        padding: 10px 20px,
+                        background: #28a745,
                         color: white,
-    border: none;
+    border: none,
                         border-radius: 5px,
-                        cursor: pointer;
+                        cursor: pointer,
                         font-size: 16px,
                         margin-right: 10px,
                     ">このまま続行</button>"";"
                     <button onclick="location.reload()" style=";"
-                        padding: 10px 20px;
-                        background: #007bff;
+                        padding: 10px 20px,
+                        background: #007bff,
                         color: white,
-    border: none;
+    border: none,
                         border-radius: 5px,
-                        cursor: pointer;
+                        cursor: pointer,
                         font-size: 16px,
                         margin-right: 10px,
                     ">再試行</button>"";"
                     <button onclick="this.parentElement.parentElement.remove()" style=";"
-                        padding: 10px 20px;
-                        background: #6c757d;
+                        padding: 10px 20px,
+                        background: #6c757d,
                         color: white,
-    border: none;
+    border: none,
                         border-radius: 5px,
                         cursor: pointer,
                         font-size: 16px,
@@ -577,7 +574,7 @@ export class UtilsErrorReporter {
      */
     clearAllNotifications(): void { this.activeNotifications.forEach(notification => { ) }
             this.dismissNotification(notification); }
-        });
+        };
         this.notificationQueue = [];
     }
     

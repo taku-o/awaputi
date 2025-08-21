@@ -5,7 +5,7 @@ import type { ScoreManager as IScoreManager, Bubble, ScoreDebugInfo } from '../t
  * 
  * スコア計算、コンボ管理、倍率適用、UI通知を専門的に管理します
  */
-export class ScoreManager implements IScoreManager { public gameEngine: any,
+export class ScoreManager implements IScoreManager { public gameEngine: any;
     public combo: number = 0;
     public comboTimer: number = 0;
     public comboTimeout: number = 2000, // 2秒でコンボリセット
@@ -39,7 +39,7 @@ export class ScoreManager implements IScoreManager { public gameEngine: any,
     /**
      * スコアを追加（泡をクリック/ポップした時）
      */
-    addScore(bubble: Bubble, x: number, y: number): void { const baseScore = this.calculateBaseScore(bubble),
+    addScore(bubble: Bubble, x: number, y: number): void { const baseScore = this.calculateBaseScore(bubble);
         let finalScore = baseScore,
         let totalMultiplier = 1,
         
@@ -77,7 +77,7 @@ export class ScoreManager implements IScoreManager { public gameEngine: any,
         // フローティングテキスト表示（GameSceneに通知）
         this.notifyScoreGained(finalScore, x, y, totalMultiplier);
         
-        console.log(`Score added: ${finalScore} (base: ${baseScore}, multiplier: ${totalMultiplier.toFixed(2}))`);
+        console.log(`Score added: ${finalScore} (base: ${baseScore}, multiplier: ${totalMultiplier.toFixed(2})`),
     }
     
     /**
@@ -126,7 +126,7 @@ export class ScoreManager implements IScoreManager { public gameEngine: any,
      * アイテムスコア倍率を追加
      */
     addScoreMultiplier(multiplier: number): void { this.scoreMultipliers.push(multiplier) }
-        console.log(`Score, multiplier added: ${multiplier}x (total: ${this.getItemScoreMultiplier(})x)`);
+        console.log(`Score, multiplier added: ${multiplier}x (total: ${this.getItemScoreMultiplier(}x)`),
     }
     
     /**
@@ -147,8 +147,7 @@ export class ScoreManager implements IScoreManager { public gameEngine: any,
         // より頻繁なコンボボーナス（5コンボごと）
         if (this.combo % 5 === 0) {
             const bonusScore = this.combo * 8, // 10 -> 8 (少し下げてバランス調整),
-            this.gameEngine.playerData.addScore(bonusScore),
-            
+            this.gameEngine.playerData.addScore(bonusScore);
             // ボーナス通知
             if (x !== undefined && y !== undefined) {
         }
@@ -163,7 +162,7 @@ export class ScoreManager implements IScoreManager { public gameEngine: any,
     /**
      * コンボボーナス通知
      */
-    notifyComboBonus(bonusScore: number, x: number, y: number, _combo: number): void { const gameScene = this.gameEngine.sceneManager.getCurrentScene(),
+    notifyComboBonus(bonusScore: number, x: number, y: number, _combo: number): void { const gameScene = this.gameEngine.sceneManager.getCurrentScene();
         if (gameScene && gameScene.floatingTextManager) {
             gameScene.floatingTextManager.addEffectText()','
                 x, y - 50'',
@@ -171,7 +170,7 @@ export class ScoreManager implements IScoreManager { public gameEngine: any,
             }
 
                 'bonus' }
-            });
+            };
         }
     }
     
@@ -179,7 +178,7 @@ export class ScoreManager implements IScoreManager { public gameEngine: any,
      * コンボをリセット
      */
     resetCombo(): void { if (this.combo > 0) { }
-            console.log(`Combo, ended at ${this.combo}`});
+            console.log(`Combo, ended at ${this.combo}`};
         }
         this.combo = 0;
         this.comboTimer = 0;
@@ -216,14 +215,11 @@ export class ScoreManager implements IScoreManager { public gameEngine: any,
     getTotalMultiplier(): number { let total = 1,
         
         // コンボ倍率
-        total *= this.getComboMultiplier(),
-        
+        total *= this.getComboMultiplier();
         // 特殊効果倍率
-        total *= this.gameEngine.getScoreMultiplier(),
-        
+        total *= this.gameEngine.getScoreMultiplier();
         // アイテム倍率
-        total *= this.getItemScoreMultiplier(),
-        
+        total *= this.getItemScoreMultiplier();
         return total }
     
     /**
@@ -232,7 +228,7 @@ export class ScoreManager implements IScoreManager { public gameEngine: any,
     setMultiplier(multiplier: number, duration: number): void { ''
         const endTime = Date.now()','
             source: 'item' }
-        console.log(`Score, multiplier x${multiplier} active, for ${duration}ms`});
+        console.log(`Score, multiplier x${multiplier} active, for ${duration}ms`};
     }
     
     /**
@@ -252,10 +248,10 @@ export class ScoreManager implements IScoreManager { public gameEngine: any,
      * デバッグ情報を取得
      */
     getDebugInfo(): ScoreDebugInfo { return { combo: this.combo,
-            comboMultiplier: this.getComboMultiplier(),
-            itemMultiplier: this.getItemScoreMultiplier(),
+            comboMultiplier: this.getComboMultiplier();
+            itemMultiplier: this.getItemScoreMultiplier();
             specialMultiplier: this.gameEngine.getScoreMultiplier(
-    totalMultiplier: this.getTotalMultiplier() };
+    totalMultiplier: this.getTotalMultiplier() },
             comboTimer: this.comboTimer 
     }
 

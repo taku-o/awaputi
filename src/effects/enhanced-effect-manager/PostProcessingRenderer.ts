@@ -3,18 +3,19 @@ import { getErrorHandler  } from '../../utils/ErrorHandler';
 /**
  * 拡張変換状態インターフェース
  */
-interface EnhancedTransform { depthOfField: number,
+interface EnhancedTransform { depthOfField: number;
     motionBlur: {
-        ,x: number,
-        y: number,
-    intensity: number,;
-    chromatic: number,
-    vignette: number,
-    noise: number,
-    scanlines: number,
-    glitch: { intensity: number,
-    frequency: number,
-
+        ,x: number;
+        y: number;
+    intensity: number;
+    chromatic: number;
+    vignette: number;
+    noise: number;
+    scanlines: number;
+    glitch: { intensity: number;
+    frequency: number;
+    frequency: number;
+        };
 /**
  * レンダリング設定インターフェース
  */'
@@ -25,13 +26,13 @@ interface RenderSettings { enablePostProcessing: boolean,''
 /**
  * グリッチ効果設定インターフェース
  */
-interface GlitchEffect { intensity: number,
+interface GlitchEffect { intensity: number;
     frequency: number;
 
 /**
  * フォーカスポイントインターフェース
  */
-interface FocusPoint { x: number,
+interface FocusPoint { x: number;
     y: number;
 
 /**
@@ -40,7 +41,7 @@ interface FocusPoint { x: number,
  */
 export class PostProcessingRenderer {
     private canvas: HTMLCanvasElement;
-    private, errorHandler: any,
+    private, errorHandler: any;
     constructor(canvas: HTMLCanvasElement) {
 
         this.canvas = canvas
@@ -73,7 +74,7 @@ export class PostProcessingRenderer {
 
             } catch (error) { this.errorHandler.handleError(error, {)'
                 context: 'PostProcessingRenderer.renderPostProcessingEffects'
-            });
+            };
         }
     }
     
@@ -83,8 +84,8 @@ export class PostProcessingRenderer {
     renderVignetteEffect(context: CanvasRenderingContext2D, intensity: number): void { try {
             const canvas = this.canvas,
             
-            context.save(),
-            const gradient = context.createRadialGradient(),
+            context.save();
+            const gradient = context.createRadialGradient();
                 canvas.width / 2, canvas.height / 2, 0),
 
                 canvas.width / 2, canvas.height / 2, Math.max(canvas.width, canvas.height) / 2','
@@ -96,9 +97,9 @@ export class PostProcessingRenderer {
             context.fillStyle = gradient;
             context.fillRect(0, 0, canvas.width, canvas.height}
 
-            context.restore(});'} catch (error) { this.errorHandler.handleError(error, {)'
+            context.restore(};'} catch (error) { this.errorHandler.handleError(error, {)'
                 context: 'PostProcessingRenderer.renderVignetteEffect'
-            });
+            };
         }
     }
     
@@ -107,7 +108,7 @@ export class PostProcessingRenderer {
      */
     renderNoiseEffect(context: CanvasRenderingContext2D, intensity: number): void { try {
             const canvas = this.canvas,
-            const imageData = context.getImageData(0, 0, canvas.width, canvas.height),
+            const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
             const data = imageData.data,
             const noiseIntensity = intensity * 50,
             
@@ -124,7 +125,7 @@ export class PostProcessingRenderer {
 
             context.putImageData(imageData, 0, 0);'} catch (error) { this.errorHandler.handleError(error, {)'
                 context: 'PostProcessingRenderer.renderNoiseEffect'
-            });
+            };
         }
     }
     
@@ -144,7 +145,7 @@ export class PostProcessingRenderer {
 
             context.restore();'} catch (error) { this.errorHandler.handleError(error, {)'
                 context: 'PostProcessingRenderer.renderScanlinesEffect'
-            });
+            };
         }
     }
     
@@ -167,7 +168,7 @@ export class PostProcessingRenderer {
                         context.putImageData(imageData, offset, y); }
 }'} catch (error) { this.errorHandler.handleError(error, {)'
                 context: 'PostProcessingRenderer.renderGlitchEffect'
-            });
+            };
         }
     }
     
@@ -180,13 +181,13 @@ export class PostProcessingRenderer {
     
 }
                 const blur = enhancedTransform.motionBlur.intensity; }
-                context.filter += ` blur(${blur}px})`;
+                context.filter += ` blur(${blur}px}`;
             }
             ;
             // 色収差は後処理で実装
         } catch (error) { this.errorHandler.handleError(error, {)'
                 context: 'PostProcessingRenderer.applyEnhancedTransform'
-            });
+            };
         }
     }
     
@@ -198,13 +199,13 @@ export class PostProcessingRenderer {
             // 実際の実装では、深度バッファーやフォーカスポイントからの距離計算が必要
             const canvas = this.canvas,
             
-            context.save(),
+            context.save();
             context.filter = `blur(${blurRadius)px)`,
             
             // フォーカスポイント周辺はシャープに保つ
             const, focusRadius = 100,
             const, gradient = context.createRadialGradient(
-                focusPoint.x, focusPoint.y, 0),
+                focusPoint.x, focusPoint.y, 0);
                 focusPoint.x, focusPoint.y, focusRadius)','
             '),'
             gradient.addColorStop(0, 'rgba(0, 0, 0, 0)'),
@@ -214,7 +215,7 @@ export class PostProcessingRenderer {
             context.fillStyle = gradient;
             context.fillRect(0, 0, canvas.width, canvas.height}
 
-            context.restore(});'} catch (error) { this.errorHandler.handleError(error, {)'
+            context.restore(};'} catch (error) { this.errorHandler.handleError(error, {)'
                 context: 'PostProcessingRenderer.renderDepthBlurEffect',' }'
 
             }');'

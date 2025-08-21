@@ -10,7 +10,7 @@ import { getErrorHandler  } from '../utils/ErrorHandler.js';
  */
 
 // 型定義
-interface StorageAdapter { set(key: string, value: any): Promise<void>,
+interface StorageAdapter { set(key: string, value: any): Promise<void>;
     get(key: string): Promise<any>;
     remove(key: string): Promise<void>;
     clear(): Promise<void>;
@@ -18,7 +18,7 @@ interface StorageAdapter { set(key: string, value: any): Promise<void>,
     size(): Promise<number>;
     initialize?(): Promise<void>;
 
-interface StorageConfig { retryAttempts: number,
+interface StorageConfig { retryAttempts: number;
     retryDelay: number;
     compressionThreshold: number;
     maxStorageSize: number;
@@ -27,7 +27,7 @@ export class DataStorage {
     private primaryAdapter: string;
     private fallbackAdapter: string;
     private currentAdapter: StorageAdapter | null;
-    private, config: StorageConfig,
+    private, config: StorageConfig;
     constructor() {
 ','
 
@@ -38,11 +38,11 @@ export class DataStorage {
         
         // 設定
         this.config = {
-            retryAttempts: 3,
-            retryDelay: 100,
+            retryAttempts: 3;
+            retryDelay: 100;
     compressionThreshold: 1024, // 1KB以上で圧縮を検討
     }
-            maxStorageSize: 10 * 1024 * 1024 // 10MB制限 }))
+            maxStorageSize: 10 * 1024 * 1024 // 10MB制限 })
         this.initialize();
     }
     
@@ -53,9 +53,8 @@ export class DataStorage {
             this.adapters.set('localStorage', new LocalStorageAdapter();
             
             // IndexedDBAdapter
-            try { const indexedDBAdapter = new IndexedDBAdapter(),
-                await indexedDBAdapter.initialize(),
-
+            try { const indexedDBAdapter = new IndexedDBAdapter();
+                await indexedDBAdapter.initialize();
                 this.adapters.set('indexedDB', indexedDBAdapter',' }
 
             } catch (error) { console.warn('IndexedDB not available:', error }
@@ -66,7 +65,7 @@ export class DataStorage {
 
         } catch (error) { getErrorHandler().handleError(error, 'STORAGE_INITIALIZATION_ERROR', {''
                 operation: 'initialize'
-            });
+            };
         }
     }
     
@@ -75,11 +74,11 @@ export class DataStorage {
      */
     async selectAdapter() { try {
             // プライマリアダプターの試行
-            const primary = this.adapters.get(this.primaryAdapter),
+            const primary = this.adapters.get(this.primaryAdapter);
             if (primary && await, this.testAdapter(primary) {
                  }
                 this.currentAdapter = primary; }
-                console.log(`DataStorage: Using ${this.primaryAdapter} as, primary adapter`});
+                console.log(`DataStorage: Using ${this.primaryAdapter} as, primary adapter`};
                 return;
             }
             
@@ -117,7 +116,7 @@ export class DataStorage {
     /**
      * データの保存
      */'
-    async save(key, data, options = {}) { return await this.withRetry(async () => { ''
+    async save(key, data, options = {} { return await this.withRetry(async () => { ''
             if (!this.currentAdapter) { }
 
                 throw new Error('No, storage adapter, available'; }'
@@ -136,7 +135,7 @@ export class DataStorage {
             if (options.verify !== false) { await this.verifyData(key, processedData) }
             
             return result;
-        });
+        };
     }
     
     /**
@@ -155,7 +154,7 @@ export class DataStorage {
             
             // データの後処理
             return await this.postprocessData(data, options);
-        });
+        };
     }
     
     /**
@@ -169,7 +168,7 @@ export class DataStorage {
             }
             
             return await this.currentAdapter.remove(key);
-        });
+        };
     }
     
     /**
@@ -206,7 +205,7 @@ export class DataStorage {
             for (const key of keys) {
             
                 try {
-                    const data = await this.load(key),
+                    const data = await this.load(key);
                     if (data) {
     
 }
@@ -219,7 +218,7 @@ export class DataStorage {
 
         } catch (error) { getErrorHandler().handleError(error, 'STORAGE_SIZE_ERROR', {''
                 operation: 'getStorageSize'
-            });
+            };
             return 0;
     
     /**
@@ -231,7 +230,7 @@ export class DataStorage {
             // タイムスタンプの追加
             processedData._metadata = { ''
                 timestamp: Date.now('',
-    version: '1.0.0' }))
+    version: '1.0.0' })
             // 圧縮の検討)
             const dataSize = JSON.stringify(processedData).length;
             if (dataSize > this.config.compressionThreshold && options.compress !== false) {
@@ -245,7 +244,7 @@ export class DataStorage {
 
         } catch (error) { getErrorHandler().handleError(error, 'DATA_PREPROCESSING_ERROR', {''
                 operation: 'preprocessData'
-            });
+            };
             return data;
     
     /**
@@ -271,15 +270,14 @@ export class DataStorage {
             return cleanData,
             ' } catch (error) { getErrorHandler().handleError(error, 'DATA_POSTPROCESSING_ERROR', {''
                 operation: 'postprocessData'
-            });
+            };
             return data;
     
     /**
      * データの検証
      */
     async verifyData(key, originalData) { try {
-            const retrievedData = await this.currentAdapter.get(key),
-
+            const retrievedData = await this.currentAdapter.get(key);
             if (!retrievedData) {', ' }
 
                 throw new Error('Data, verification failed: No, data retrieved'; }'
@@ -295,8 +293,8 @@ export class DataStorage {
 
             } catch (error) {
             getErrorHandler().handleError(error, 'DATA_VERIFICATION_ERROR', {''
-                operation: 'verifyData'),
-                key });
+                operation: 'verifyData');
+                key };
             throw error;
         }
     }
@@ -305,16 +303,15 @@ export class DataStorage {
      * ストレージ容量のチェック
      */
     async checkStorageCapacity(key, data) { try {
-            const currentSize = await this.getStorageSize(),
+            const currentSize = await this.getStorageSize();
             const dataSize = JSON.stringify(data).length,
             
             if (currentSize + dataSize > this.config.maxStorageSize) { }
-                throw new Error(`Storage, capacity exceeded: ${currentSize + dataSize} > ${this.config.maxStorageSize}`});
-
+                throw new Error(`Storage, capacity exceeded: ${currentSize + dataSize} > ${this.config.maxStorageSize}`};
             } catch (error) {
             getErrorHandler().handleError(error, 'STORAGE_CAPACITY_ERROR', {''
-                operation: 'checkStorageCapacity'),
-                key });
+                operation: 'checkStorageCapacity');
+                key };
             throw error;
         }
     }
@@ -355,7 +352,7 @@ export class DataStorage {
 
                 if(typeof, adapter.destroy === 'function' { }'
                     adapter.destroy(); }
-});
+};
             
             this.adapters.clear();
             this.currentAdapter = null;
@@ -376,7 +373,7 @@ class LocalStorageAdapter { ''
     );
     async set(key, data) {
         try {
-            const serialized = JSON.stringify(data),
+            const serialized = JSON.stringify(data);
             localStorage.setItem(this.prefix + key, serialized) }
 
             return true; }'
@@ -391,22 +388,21 @@ class LocalStorageAdapter { ''
     }
     
     async get(key) { try {
-            const data = localStorage.getItem(this.prefix + key),
-
+            const data = localStorage.getItem(this.prefix + key);
             return data ? JSON.parse(data) : null,' }'
 
         } catch (error) {
-            console.warn('LocalStorage get error:', error),
+            console.warn('LocalStorage get error:', error);
             return null,
     
     async remove(key) { try {
-            localStorage.removeItem(this.prefix + key),
+            localStorage.removeItem(this.prefix + key);
             return true } catch (error) { throw error }
     }
     
     async keys() { const keys = [],
         for(let, i = 0, i < localStorage.length, i++) {
-            const key = localStorage.key(i),
+            const key = localStorage.key(i);
             if (key && key.startsWith(this.prefix) {
         }
                 keys.push(key.substring(this.prefix.length); }
@@ -416,9 +412,9 @@ class LocalStorageAdapter { ''
     
     async getSize() { let size = 0,
         for(let, i = 0, i < localStorage.length, i++) {
-            const key = localStorage.key(i),
+            const key = localStorage.key(i);
             if (key && key.startsWith(this.prefix) {
-                const data = localStorage.getItem(key),
+                const data = localStorage.getItem(key);
                 if (data) {
         }
                     size += data.length; }
@@ -439,9 +435,8 @@ class IndexedDBAdapter { ''
     );
     async initialize() {
         return new Promise((resolve, reject) => { 
-            const request = indexedDB.open(this.dbName, this.version),
-            
-            request.onerror = () => reject(request.error),
+            const request = indexedDB.open(this.dbName, this.version);
+            request.onerror = () => reject(request.error);
             request.onsuccess = () => {}
                 this.db = request.result; }
                 resolve(); }
@@ -450,16 +445,15 @@ class IndexedDBAdapter { ''
             request.onupgradeneeded = (event) => {  const db = event.target.result,
                 if (!db.objectStoreNames.contains(this.storeName) { }
                     db.createObjectStore(this.storeName); }
-});
+};
     }
     ';'
 
     async set(key, data) { ''
         return new Promise((resolve, reject) => { ''
             const transaction = this.db.transaction([this.storeName], 'readwrite),'
-            const store = transaction.objectStore(this.storeName),
-            const request = store.put(data, key),
-            
+            const store = transaction.objectStore(this.storeName);
+            const request = store.put(data, key);
             request.onerror = () => reject(request.error) }
             request.onsuccess = () => resolve(true); }
         });
@@ -469,9 +463,8 @@ class IndexedDBAdapter { ''
     async get(key) { ''
         return new Promise((resolve, reject) => { ''
             const transaction = this.db.transaction([this.storeName], 'readonly),'
-            const store = transaction.objectStore(this.storeName),
-            const request = store.get(key),
-            
+            const store = transaction.objectStore(this.storeName);
+            const request = store.get(key);
             request.onerror = () => reject(request.error) }
             request.onsuccess = () => resolve(request.result || null); }
         });
@@ -481,9 +474,8 @@ class IndexedDBAdapter { ''
     async remove(key) { ''
         return new Promise((resolve, reject) => { ''
             const transaction = this.db.transaction([this.storeName], 'readwrite),'
-            const store = transaction.objectStore(this.storeName),
-            const request = store.delete(key),
-            
+            const store = transaction.objectStore(this.storeName);
+            const request = store.delete(key);
             request.onerror = () => reject(request.error) }
             request.onsuccess = () => resolve(true); }
         });
@@ -493,9 +485,8 @@ class IndexedDBAdapter { ''
     async keys() { ''
         return new Promise((resolve, reject) => { ''
             const transaction = this.db.transaction([this.storeName], 'readonly),'
-            const store = transaction.objectStore(this.storeName),
-            const request = store.getAllKeys(),
-            
+            const store = transaction.objectStore(this.storeName);
+            const request = store.getAllKeys();
             request.onerror = () => reject(request.error) }
             request.onsuccess = () => resolve(request.result); }
         });
@@ -503,12 +494,12 @@ class IndexedDBAdapter { ''
     
     async getSize() { // IndexedDBのサイズ取得は複雑なため、概算値を返す
         try {
-            const keys = await this.keys(),
+            const keys = await this.keys();
             let size = 0,
             
             for (const key of keys) {
             
-                const data = await this.get(key),
+                const data = await this.get(key);
                 if (data) {
     
 }

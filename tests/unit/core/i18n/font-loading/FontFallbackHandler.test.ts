@@ -2,7 +2,7 @@ import { jest  } from '@jest/globals';
 import { FontFallbackHandler  } from '../../../../../src/core/i18n/font-loading/FontFallbackHandler.js';
 // Type definitions
 interface MockCanvasContext {
-    font: string,
+    font: string;
     measureText: jest.Mock<{ widt,h: number;, [string]>;
 }
 interface MockCanvas {
@@ -14,14 +14,14 @@ interface MockElement {
     setAttribute?: jest.Mock<void, [string, string]>;
 }
 interface FallbackInfo {
-    language: string,
+    language: string;
     originalFont: string;
 interface FallbackStats {
-    totalApplied: number,
+    totalApplied: number;
     byLanguage: {
         [languag,e: string]: number,,
-    systemFontsCount: number,
-    availableSystemFonts: string[],
+    systemFontsCount: number;
+    availableSystemFonts: string[];
 interface FontFallbackConfig {
     development?: {
         verboseLoggin,g?: boolean;;
@@ -46,37 +46,37 @@ describe('FontFallbackHandler', () => {
             log: jest.spyOn(console, 'log').mockImplementation(() => {)) };
         
         // Reset canvas mock
-        (mockCanvas.getContext() as MockCanvasContext).measureText.mockReturnValue({ width: 100 });
+        (mockCanvas.getContext() as MockCanvasContext).measureText.mockReturnValue({ width: 100 },
     }
     afterEach(() => {
-        Object.values(consoleSpy).forEach(spy => spy.mockRestore(),
+        Object.values(consoleSpy).forEach(spy => spy.mockRestore();
         fontFallbackHandler.clearFallbackHistory() }');'
     describe('Fallback Chain Management', (') => {'
         test('should return language-specific fallback chain for Japanese', (') => {'
-            const chain = fontFallbackHandler.getFallbackChain('ja'),
+            const chain = fontFallbackHandler.getFallbackChain('ja');
             expect(chain').toContain('Noto Sans JP'),'
             expect(chain').toContain('Hiragino Sans'),'
             expect(chain').toContain('sans-serif') }');
         test('should return language-specific fallback chain for Chinese Simplified', (') => {'
-            const chain = fontFallbackHandler.getFallbackChain('zh-CN'),
+            const chain = fontFallbackHandler.getFallbackChain('zh-CN');
             expect(chain').toContain('Noto Sans SC'),'
             expect(chain').toContain('PingFang SC'),'
             expect(chain').toContain('sans-serif') }');
         test('should return language-specific fallback chain for Korean', (') => {'
-            const chain = fontFallbackHandler.getFallbackChain('ko'),
+            const chain = fontFallbackHandler.getFallbackChain('ko');
             expect(chain').toContain('Noto Sans KR'),'
             expect(chain').toContain('Apple SD Gothic Neo'),'
             expect(chain').toContain('sans-serif') }');
         test('should return default fallback chain for unknown language', (') => {'
-            const chain = fontFallbackHandler.getFallbackChain('unknown'),
+            const chain = fontFallbackHandler.getFallbackChain('unknown');
             expect(chain').toContain('Arial'),'
             expect(chain').toContain('Helvetica'),'
             expect(chain').toContain('sans-serif') }');
         test('should filter unavailable system fonts from fallback chain', () => {
             // Mock font detection to return different results
             (mockCanvas.getContext() as MockCanvasContext).measureText
-                .mockReturnValueOnce({ width: 100 })  // baseline
-                .mockReturnValue({ width: 100 }');     // same width = not available'
+                .mockReturnValueOnce({ width: 100 }  // baseline
+                .mockReturnValue({ width: 100 }'),     // same width = not available'
             
             const chain = fontFallbackHandler.getFallbackChain('ja');
             // Should still include generic families
@@ -87,10 +87,10 @@ describe('FontFallbackHandler', () => {
         test('should detect available system fonts', () => {
             // Mock different widths to simulate font availability
             (mockCanvas.getContext() as MockCanvasContext).measureText
-                .mockReturnValueOnce({ width: 100 })  // baseline
+                .mockReturnValueOnce({ width: 100 }  // baseline
                 .mockReturnValue({ width: 120 )'),     // different width = available'
             
-            const isAvailable = fontFallbackHandler._isFontAvailable('Arial'),
+            const isAvailable = fontFallbackHandler._isFontAvailable('Arial');
             expect(isAvailable).toBe(true) }');'
         test('should detect unavailable system fonts', () => {
             // Mock same widths to simulate font unavailability
@@ -100,7 +100,7 @@ describe('FontFallbackHandler', () => {
         }');'
         test('should refresh system fonts on demand', () => {
             const originalSize = fontFallbackHandler.systemFonts.size,
-            const newSize = fontFallbackHandler.refreshSystemFonts(),
+            const newSize = fontFallbackHandler.refreshSystemFonts();
             expect(typeof newSize').toBe('number'),'
             expect(newSize).toBeGreaterThanOrEqual(0) }');'
     }
@@ -108,28 +108,28 @@ describe('FontFallbackHandler', () => {
         let mockElement: MockElement,
         beforeEach(() => {
             mockElement = {
-                style: {};
+                style: {},
                 getAttribute: jest.fn(
-        setAttribute: jest.fn( };
+        setAttribute: jest.fn( },
         }');'
         test('should apply fallback to element', (') => {'
-            const result = fontFallbackHandler.applyFallback(mockElement, 'ja', 'OriginalFont'),
-            expect(result).toBe(true),
-            expect(mockElement.style.fontFamily).toBeDefined(),
+            const result = fontFallbackHandler.applyFallback(mockElement, 'ja', 'OriginalFont');
+            expect(result).toBe(true);
+            expect(mockElement.style.fontFamily).toBeDefined();
             expect(mockElement.style.fontFamily').toContain('OriginalFont'),'
             expect(mockElement.style.fontFamily').toContain('sans-serif') }');
         test('should apply fallback without original font', (') => {'
-            const result = fontFallbackHandler.applyFallback(mockElement, 'ja'),
-            expect(result).toBe(true),
-            expect(mockElement.style.fontFamily).toBeDefined(),
+            const result = fontFallbackHandler.applyFallback(mockElement, 'ja');
+            expect(result).toBe(true);
+            expect(mockElement.style.fontFamily).toBeDefined();
             expect(mockElement.style.fontFamily').toContain('sans-serif') }');
         test('should handle null element gracefully', (') => {'
-            const result = fontFallbackHandler.applyFallback(null 'ja', 'TestFont'),
+            const result = fontFallbackHandler.applyFallback(null 'ja', 'TestFont');
             expect(result).toBe(false) }');'
         test('should track applied fallbacks', (') => {'
-            fontFallbackHandler.applyFallback(mockElement, 'ja', 'TestFont'),
-            const fallbackInfo = fontFallbackHandler.getFallbackInfo(mockElement),
-            expect(fallbackInfo).toBeDefined(),
+            fontFallbackHandler.applyFallback(mockElement, 'ja', 'TestFont');
+            const fallbackInfo = fontFallbackHandler.getFallbackInfo(mockElement);
+            expect(fallbackInfo).toBeDefined();
             expect(fallbackInfo!.language').toBe('ja'),'
             expect(fallbackInfo!.originalFont').toBe('TestFont') }');
     }
@@ -145,11 +145,11 @@ describe('FontFallbackHandler', () => {
             document.querySelectorAll = jest.fn(() => mockElements as any);
         )');'
         test('should apply fallback to multiple elements', (') => {'
-            const appliedCount = fontFallbackHandler.applyFallbackToElements('.test', 'ja', 'TestFont'),
+            const appliedCount = fontFallbackHandler.applyFallbackToElements('.test', 'ja', 'TestFont');
             expect(appliedCount).toBe(3))'),'
         test('should handle empty selector results', () => {
             document.querySelectorAll = jest.fn(() => [] as any'),'
-            const appliedCount = fontFallbackHandler.applyFallbackToElements('.nonexistent', 'ja'),
+            const appliedCount = fontFallbackHandler.applyFallbackToElements('.nonexistent', 'ja');
             expect(appliedCount).toBe(0))'),'
     describe('Font Selection Logic', (') => {'
         test('should return best available font for language', () => {
@@ -158,7 +158,7 @@ describe('FontFallbackHandler', () => {
                 .mockReturnValueOnce({ width: 100 )  // baseline
                 .mockReturnValue({ width: 120 )'),     // different = available'
             
-            const bestFont = fontFallbackHandler.getBestFontForLanguage('ja', ['Arial', 'NonexistentFont']),
+            const bestFont = fontFallbackHandler.getBestFontForLanguage('ja', ['Arial', 'NonexistentFont']);
             expect(bestFont').toBe('Arial') }');
         test('should fallback to system font when preferred fonts unavailable', () => {
             // Mock all fonts as unavailable
@@ -167,7 +167,7 @@ describe('FontFallbackHandler', () => {
             expect(bestFont').toBe('sans-serif');'
         }');'
         test('should get system font for specific language', (') => {'
-            const systemFont = fontFallbackHandler.getSystemFontForLanguage('ja'),
+            const systemFont = fontFallbackHandler.getSystemFontForLanguage('ja');
             expect(typeof systemFont').toBe('string'),'
             expect(systemFont.length).toBeGreaterThan(0) }');'
     }
@@ -175,9 +175,9 @@ describe('FontFallbackHandler', () => {
         test('should validate and clean font stack', () => {
             // Mock some fonts as available
             (mockCanvas.getContext() as MockCanvasContext).measureText
-                .mockReturnValueOnce({ width: 100 })   // baseline
-                .mockReturnValueOnce({ width: 120 })   // Arial available
-                .mockReturnValueOnce({ width: 100 })   // NonexistentFont not available
+                .mockReturnValueOnce({ width: 100 }   // baseline
+                .mockReturnValueOnce({ width: 120 }   // Arial available
+                .mockReturnValueOnce({ width: 100 }   // NonexistentFont not available
                 .mockReturnValue({ width: 100 }');'
             const validStack = fontFallbackHandler.validateFontStack('Arial, NonexistentFont, sans-serif', 'en');
             expect(validStack').toContain('Arial');'
@@ -191,13 +191,13 @@ describe('FontFallbackHandler', () => {
             expect(validStack').toContain('sans-serif');'
         }');'
         test('should handle font names with quotes', (') => {'
-            const validStack = fontFallbackHandler.validateFontStack('"Comic Sans MS", \'Arial\', sans-serif', 'en'),
+            const validStack = fontFallbackHandler.validateFontStack('"Comic Sans MS", \'Arial\', sans-serif', 'en');
             expect(validStack').toContain('sans-serif') }');
     }
     describe('Statistics and Management', (') => {'
         test('should provide fallback statistics', (') => {'
-            const mockElement1: MockElement = { style: {} };
-            const mockElement2: MockElement = { style: {} };
+            const mockElement1: MockElement = { style: {} },
+            const mockElement2: MockElement = { style: {} },
             
             fontFallbackHandler.applyFallback(mockElement1, 'ja', 'TestFont');
             fontFallbackHandler.applyFallback(mockElement2, 'ko', 'TestFont');
@@ -209,7 +209,7 @@ describe('FontFallbackHandler', () => {
             expect(Array.isArray(stats.availableSystemFonts).toBe(true);
         }');'
         test('should clear fallback history', (') => {'
-            const mockElement: MockElement = { style: {} };
+            const mockElement: MockElement = { style: {} },
             fontFallbackHandler.applyFallback(mockElement, 'ja', 'TestFont');
             fontFallbackHandler.clearFallbackHistory();
             const stats = fontFallbackHandler.getStats();
@@ -231,11 +231,11 @@ describe('FontFallbackHandler', () => {
             };
             
             const handler = new FontFallbackHandler(config');'
-            const mockElement: MockElement = { style: {} };
+            const mockElement: MockElement = { style: {} },
             
             handler.applyFallback(mockElement, 'ja', 'TestFont');
             expect(consoleSpy.log).toHaveBeenCalledWith(');'
                 expect.stringContaining('[FontFallbackHandler] Applied fallback for ja: '),
-        });
+        };
     }
 }');'

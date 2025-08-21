@@ -9,7 +9,7 @@ type SeverityLevel = 'high' | 'medium' | 'low';
 type ConflictStatus = 'pending' | 'in_progress' | 'completed' | 'failed';
 type OperationType = 'file' | 'class';
 
-interface ConflictSummary { name: string,
+interface ConflictSummary { name: string;
     type: ConflictType;
     severity: SeverityLevel;
     status: ConflictStatus;
@@ -17,7 +17,7 @@ interface ConflictSummary { name: string,
     progress: string;
     canResolve: boolean;
 
-interface ConflictJSON { name: string,
+interface ConflictJSON { name: string;
     type: ConflictType;
     files: string[];
     severity: SeverityLevel;
@@ -33,7 +33,7 @@ interface ConflictJSON { name: string,
     updatedAt: string;
 }
 
-interface RenameOperationJSON { type: OperationType,
+interface RenameOperationJSON { type: OperationType;
     oldName: string;
     newName: string;
     filePath: string;
@@ -46,7 +46,7 @@ interface RenameOperationJSON { type: OperationType,
 
 export class ConflictInfo {
     public name: string;
-    public, type: ConflictType,
+    public, type: ConflictType;
     public files: string[];
     public severity: SeverityLevel;
     public strategy: string | null;
@@ -73,25 +73,25 @@ export class ConflictInfo {
     /**
      * 解決戦略を設定
      */
-    setStrategy(strategy: string): void { this.strategy = strategy;
+    setStrategy(strategy: string): void { this.strategy = strategy,
         this.updatedAt = new Date() }
 
     /**
      * 新しい名前を設定
      */
-    setNewNames(names: string | string[]): void { this.newNames = Array.isArray(names) ? names: [names];
+    setNewNames(names: string | string[]): void { this.newNames = Array.isArray(names) ? names: [names],
         this.updatedAt = new Date( 
     /**
      * ステータスを更新
      */
-    updateStatus(status: ConflictStatus): void { this.status = status;
+    updateStatus(status: ConflictStatus): void { this.status = status,
         this.updatedAt = new Date(),  }
 
     /**
      * 依存関係を追加
      */
     addDependency(conflictInfo: ConflictInfo): void { if (!this.dependencies.find(dep => dep.name === conflictInfo.name) {
-            this.dependencies.push(conflictInfo),
+            this.dependencies.push(conflictInfo);
             this.updatedAt = new Date() }
 }
 
@@ -112,7 +112,7 @@ export class ConflictInfo {
             case 'in_progress': return 50,
             case 'completed': return 100,
             case 'failed': return 0 }
-            default: return 0;
+            default: return 0,
 
     /**
      * 競合情報をJSON形式で出力
@@ -129,8 +129,8 @@ export class ConflictInfo {
     type: dep.type),
                 status: dep.status)),
             progress: this.getProgress(
-    createdAt: this.createdAt.toISOString() };
-            updatedAt: this.updatedAt.toISOString(), 
+    createdAt: this.createdAt.toISOString() },
+            updatedAt: this.updatedAt.toISOString();
     }
 
     /**
@@ -139,9 +139,9 @@ export class ConflictInfo {
     getSummary(): ConflictSummary { return { name: this.name,
             type: this.type,
             severity: this.severity,
-    status: this.status };
+    status: this.status },
             filesCount: Array.isArray(this.files) ? this.files.length : 0, 
-            progress: `${this.getProgress(})%`;
+            progress: `${this.getProgress(}%`,
             canResolve: this.canResolve();
     }
 

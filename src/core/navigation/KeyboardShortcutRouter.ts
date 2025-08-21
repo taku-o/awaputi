@@ -23,26 +23,26 @@ import type { GameEngine,
 } from './NavigationContextManager.js';
 
 // 型定義
-export interface ShortcutDefinition { action: ShortcutAction,
+export interface ShortcutDefinition { action: ShortcutAction;
     scene: SceneName | null;
     description: string;
     enabled?: boolean;
     priority?: ShortcutPriority;
      }
 
-export interface KeyboardShortcutConfig { enableLogging: boolean,
+export interface KeyboardShortcutConfig { enableLogging: boolean;
     enableGlobalShortcuts: boolean;
     preventDefaultBehavior: boolean;
     enableContextualRouting: boolean;
     allowSceneOverride: boolean;
     debounceDelay: number;
 
-export interface RouterState { isActive: boolean,
+export interface RouterState { isActive: boolean;
     lastKeyTime: number;
     pressedKeys: Set<string>;
     activeModifiers: Set<ModifierKey>;
 
-export interface ShortcutExecutionContext { currentScene: string,
+export interface ShortcutExecutionContext { currentScene: string;
     event: KeyboardEvent;
     keyCombo: string;
     timestamp: number;
@@ -63,7 +63,7 @@ export interface ShortcutDebugInfo { shortcuts: Array<[string, ShortcutDefinitio
 export interface SceneManager { switchScene: (sceneName: string, options?: any) => boolean,
     currentScene?: {
         constructor: {
-            nam,e: string,
+            nam,e: string;
         };
     getCurrentScene?: () => string;
 }
@@ -92,12 +92,12 @@ export const DEFAULT_DEBOUNCE_DELAY = 100;
 export const MODIFIER_KEYS: ModifierKey[] = ['ctrlKey', 'shiftKey', 'altKey', 'metaKey'];
 
 // デフォルト設定
-export const DEFAULT_SHORTCUT_CONFIG: KeyboardShortcutConfig = { enableLogging: true,
-    enableGlobalShortcuts: true,
-    preventDefaultBehavior: true,
-    enableContextualRouting: true,
-    allowSceneOverride: false,
-    debounceDelay: DEFAULT_DEBOUNCE_DELAY,;
+export const DEFAULT_SHORTCUT_CONFIG: KeyboardShortcutConfig = { enableLogging: true;
+    enableGlobalShortcuts: true;
+    preventDefaultBehavior: true;
+    enableContextualRouting: true;
+    allowSceneOverride: false;
+    debounceDelay: DEFAULT_DEBOUNCE_DELAY;
 // デフォルトショートカット
 export const DEFAULT_SHORTCUTS: Array<[string, ShortcutDefinition]> = [']';
     ['F1', { action: 'contextualHelp', scene: 'help', description: 'Show contextual help'
@@ -157,11 +157,11 @@ export class KeyboardShortcutRouter {
     // 設定
     private config: KeyboardShortcutConfig;
     // 状態管理
-    private, state: RouterState,
+    private, state: RouterState;
     // イベントハンドラー
-    private keydownHandler!: (event: KeyboardEvent) => void,
-    private keyupHandler!: (event: KeyboardEvent) => void,
-    private focusHandler!: (event: Event) => void,
+    private keydownHandler!: (event: KeyboardEvent) => void;
+    private keyupHandler!: (event: KeyboardEvent) => void;
+    private focusHandler!: (event: Event) => void;
 
     constructor(gameEngine: ExtendedGameEngine) {
 
@@ -184,7 +184,7 @@ export class KeyboardShortcutRouter {
         this.state = { isActive: false,
             lastKeyTime: 0,
             pressedKeys: new Set<string>(),
-            activeModifiers: new Set<ModifierKey>(  };
+            activeModifiers: new Set<ModifierKey>(  },
         
         this.initialize();
     }
@@ -193,7 +193,7 @@ export class KeyboardShortcutRouter {
      * 初期化処理
      */
     private initialize(): void { try {
-            this.setupEventListeners(),
+            this.setupEventListeners();
             this.state.isActive = true,
 
             if (this.config.enableLogging) {', ' }
@@ -201,7 +201,7 @@ export class KeyboardShortcutRouter {
                 this.loggingSystem.info('KeyboardShortcutRouter', 'Keyboard shortcut router initialized); }'
 
             } catch (error) {
-            const err = error instanceof Error ? error: new Error(String(error),
+            const err = error instanceof Error ? error: new Error(String(error);
             this.errorHandler.handleError(err, 'KeyboardShortcutRouter.initialize',
             throw err }
     }
@@ -249,7 +249,7 @@ export class KeyboardShortcutRouter {
 
             if (this.config.enableLogging) { }'
 
-                this.loggingSystem.debug('KeyboardShortcutRouter', `Key combination: ${keyCombo}`});
+                this.loggingSystem.debug('KeyboardShortcutRouter', `Key combination: ${keyCombo}`};
             }
             
             // ショートカットの処理
@@ -258,7 +258,7 @@ export class KeyboardShortcutRouter {
                     event.preventDefault() }
                     event.stopPropagation(); }
 } catch (error) {
-            const err = error instanceof Error ? error: new Error(String(error),
+            const err = error instanceof Error ? error: new Error(String(error);
             this.errorHandler.handleError(err, 'KeyboardShortcutRouter.handleKeyDown' }'
     }
     
@@ -266,11 +266,11 @@ export class KeyboardShortcutRouter {
      * キーアップイベントの処理
      */
     private handleKeyUp(event: KeyboardEvent): void { try {
-            this.updateModifierKeys(event, false),
+            this.updateModifierKeys(event, false);
             this.state.pressedKeys.delete(event.code) }
 
         } catch (error) {
-            const err = error instanceof Error ? error: new Error(String(error),
+            const err = error instanceof Error ? error: new Error(String(error);
             this.errorHandler.handleError(err, 'KeyboardShortcutRouter.handleKeyUp' }'
     }
     
@@ -287,11 +287,11 @@ export class KeyboardShortcutRouter {
     /**
      * 修飾キーの状態を更新
      */
-    private updateModifierKeys(event: KeyboardEvent, isPressed = true): void { MODIFIER_KEYS.forEach(modifier => { ),
+    private updateModifierKeys(event: KeyboardEvent, isPressed = true): void { MODIFIER_KEYS.forEach(modifier => { );
             if (event[modifier] && isPressed) { }
                 this.state.activeModifiers.add(modifier); }
             } else if (!event[modifier] && !isPressed) { this.state.activeModifiers.delete(modifier) }
-        });
+        };
         
         if (isPressed) { this.state.pressedKeys.add(event.code) }
     }
@@ -305,8 +305,7 @@ export class KeyboardShortcutRouter {
         if(event.shiftKey) parts.push('Shift',
         if(event.altKey) parts.push('Alt),'
 
-        parts.push(event.code),
-
+        parts.push(event.code);
         return parts.join('+' }'
     
     /**
@@ -325,7 +324,7 @@ export class KeyboardShortcutRouter {
             
             return false;
         } catch (error) {
-            const err = error instanceof Error ? error: new Error(String(error),
+            const err = error instanceof Error ? error: new Error(String(error);
             this.errorHandler.handleError(err, 'KeyboardShortcutRouter.processShortcut),'
             return false,
     
@@ -344,41 +343,34 @@ export class KeyboardShortcutRouter {
             if (this.config.enableLogging) {', ' }
 
                 this.loggingSystem.info('KeyboardShortcutRouter' }'
-                    `Executing shortcut: ${shortcut.action} from scene: ${currentScene}`});
+                    `Executing shortcut: ${shortcut.action} from scene: ${currentScene}`};
             }
 
             const context: ShortcutExecutionContext = { currentScene,
                 event,
                 keyCombo: this.generateKeyCombo(event,
-    timestamp: Date.now(  };
+    timestamp: Date.now(  },
 
             switch(shortcut.action) {
 
                 case 'contextualHelp':','
-                    return this.handleContextualHelp(context),
-
+                    return this.handleContextualHelp(context);
                 case 'documentationHelp':','
-                    return this.handleDocumentationHelp(context),
-
+                    return this.handleDocumentationHelp(context);
                 case 'quickHelp':','
-                    return this.handleQuickHelp(context),
-
+                    return this.handleQuickHelp(context);
                 case 'goBack':','
                     return this.handleGoBack('''
                 case 'fullscreen': ','
                     return, this.handleFullscreen()','
                 case 'toggleSettings':')',
-                    return this.handleToggleSettings(context),
-
+                    return this.handleToggleSettings(context);
                 case 'openUserInfo':','
-                    return this.handleOpenUserInfo(context),
-
+                    return this.handleOpenUserInfo(context);
                 case 'showMenu':','
-                    return this.handleShowMenu(context),
-
+                    return this.handleShowMenu(context);
                 case 'pauseGame':,
-                    return this.handlePauseGame(context),
-                    
+                    return this.handlePauseGame(context);
                 default:,
                     if (shortcut.scene) {
              }
@@ -386,7 +378,7 @@ export class KeyboardShortcutRouter {
                     return false;
 
             } catch (error) {
-            const err = error instanceof Error ? error: new Error(String(error),
+            const err = error instanceof Error ? error: new Error(String(error);
             this.errorHandler.handleError(err, 'KeyboardShortcutRouter.executeShortcut',
             return false,
     
@@ -417,13 +409,11 @@ export class KeyboardShortcutRouter {
     /**
      * 戻るアクションの処理
      */
-    private handleGoBack(): boolean { const returnScene = this.navigationContext.getReturnDestination(),
-        this.navigationContext.popContext(),
-        
+    private handleGoBack(): boolean { const returnScene = this.navigationContext.getReturnDestination();
+        this.navigationContext.popContext();
         if (returnScene && hasSceneManager(this.gameEngine) {
         
-            const success = this.gameEngine.sceneManager.switchScene(returnScene),
-
+            const success = this.gameEngine.sceneManager.switchScene(returnScene);
             if (this.config.enableLogging) {
     
 }
@@ -452,7 +442,7 @@ export class KeyboardShortcutRouter {
             return false;
 
         } catch (error) { : undefined''
-            const err = error instanceof Error ? error: new Error(String(error),
+            const err = error instanceof Error ? error: new Error(String(error);
             this.errorHandler.handleError(err, 'KeyboardShortcutRouter.handleFullscreen',
             return false,
 
@@ -485,7 +475,7 @@ export class KeyboardShortcutRouter {
             try {
                 (this.gameEngine, as any).pauseGame() }
                 return true; catch (error) {
-                const err = error instanceof Error ? error: new Error(String(error),
+                const err = error instanceof Error ? error: new Error(String(error);
                 this.errorHandler.handleError(err, 'KeyboardShortcutRouter.handlePauseGame' }'
         }
         return false;
@@ -495,23 +485,21 @@ export class KeyboardShortcutRouter {
      * シーンへのナビゲーション
      */
     private navigateToScene(;
-        targetScene: SceneName;
+        targetScene: SceneName,
         currentScene: string );
         accessMethod: string | ShortcutAction,
     additionalData: NavigationOptions = { ): boolean {
         try {
             // ナビゲーションコンテキストをプッシュ
-            this.navigationContext.pushContext(currentScene, accessMethod, additionalData),
-            
+            this.navigationContext.pushContext(currentScene, accessMethod, additionalData);
             // シーンを切り替え
             if (hasSceneManager(this.gameEngine) {
-                const success = this.gameEngine.sceneManager.switchScene(targetScene),
-
+                const success = this.gameEngine.sceneManager.switchScene(targetScene);
                 if (this.config.enableLogging) {
             }
 
                     this.loggingSystem.info('KeyboardShortcutRouter' }'
-                        `Navigated to: ${targetScene}, success: ${success}`});
+                        `Navigated to: ${targetScene}, success: ${success}`},
                 }
                 
                 return success;
@@ -520,7 +508,7 @@ export class KeyboardShortcutRouter {
             return false;
 
         } catch (error) {
-            const err = error instanceof Error ? error: new Error(String(error),
+            const err = error instanceof Error ? error: new Error(String(error);
             this.errorHandler.handleError(err, 'KeyboardShortcutRouter.navigateToScene',
             return false,
     
@@ -552,7 +540,7 @@ export class KeyboardShortcutRouter {
 
         if (this.config.enableLogging) { }'
 
-            this.loggingSystem.debug('KeyboardShortcutRouter', `Added shortcut: ${key}`});
+            this.loggingSystem.debug('KeyboardShortcutRouter', `Added shortcut: ${key}`};
         }
 
         return true;
@@ -561,11 +549,10 @@ export class KeyboardShortcutRouter {
     /**
      * ショートカットの削除
      */
-    removeShortcut(key: string): boolean { const removed = this.shortcuts.delete(key) || this.modifierShortcuts.delete(key),
-
+    removeShortcut(key: string): boolean { const removed = this.shortcuts.delete(key) || this.modifierShortcuts.delete(key);
         if (removed && this.config.enableLogging) { }'
 
-            this.loggingSystem.debug('KeyboardShortcutRouter', `Removed shortcut: ${key}`});
+            this.loggingSystem.debug('KeyboardShortcutRouter', `Removed shortcut: ${key}`};
         }
         
         return removed;
@@ -574,7 +561,7 @@ export class KeyboardShortcutRouter {
     /**
      * ショートカットの有効/無効化
      */
-    setShortcutEnabled(key: string, enabled: boolean): boolean { const shortcut = this.shortcuts.get(key) || this.modifierShortcuts.get(key),
+    setShortcutEnabled(key: string, enabled: boolean): boolean { const shortcut = this.shortcuts.get(key) || this.modifierShortcuts.get(key);
         if (shortcut) {
             shortcut.enabled = enabled,
             if (this.config.enableLogging) {
@@ -582,7 +569,7 @@ export class KeyboardShortcutRouter {
 
                 this.loggingSystem.debug('KeyboardShortcutRouter')' }'
 
-                    `Shortcut ${key} ${enabled ? 'enabled' : 'disabled'}`});
+                    `Shortcut ${key} ${enabled ? 'enabled' : 'disabled'}`};
             }
             return true;
         }
@@ -597,11 +584,11 @@ export class KeyboardShortcutRouter {
         
         this.shortcuts.forEach((shortcut, key) => {  }
             all.push({ key, shortcut });
-        });
+        };
         
         this.modifierShortcuts.forEach((shortcut, key) => {  }
             all.push({ key, shortcut });
-        });
+        };
         
         return all.sort((a, b) => a.key.localeCompare(b.key);
     }
@@ -614,8 +601,7 @@ export class KeyboardShortcutRouter {
     /**
      * 特定のアクションのショートカットを取得
      */
-    getShortcutsByAction(action: ShortcutAction): { key: string,, shortcut: ShortcutDefinition;[] { return this.getAllShortcuts().filter(item => item.shortcut.action === action),
-    
+    getShortcutsByAction(action: ShortcutAction): { key: string,, shortcut: ShortcutDefinition;[] { return this.getAllShortcuts().filter(item => item.shortcut.action === action);
     /**
      * 設定の更新
      */
@@ -640,7 +626,7 @@ export class KeyboardShortcutRouter {
 
         if (this.config.enableLogging) { }'
 
-            this.loggingSystem.debug('KeyboardShortcutRouter', `Router ${active ? 'activated' : 'deactivated}`});'
+            this.loggingSystem.debug('KeyboardShortcutRouter', `Router ${active ? 'activated' : 'deactivated}`};'
         }
     }
 
@@ -671,8 +657,8 @@ export class KeyboardShortcutRouter {
             modifierShortcuts: Array.from(this.modifierShortcuts.entries(
     state: {
                 ...this.state,
-                pressedKeys: new Set(this.state.pressedKeys) };
-                activeModifiers: new Set(this.state.activeModifiers), 
+                pressedKeys: new Set(this.state.pressedKeys) },
+                activeModifiers: new Set(this.state.activeModifiers);
     },
             config: { ...this.config,
             navigationContext: this.navigationContext.getDebugInfo() }
@@ -714,7 +700,7 @@ export class KeyboardShortcutRouter {
                 this.loggingSystem.info('KeyboardShortcutRouter', 'Keyboard shortcut router cleaned up); }'
 
             } catch (error) {
-            const err = error instanceof Error ? error: new Error(String(error),
+            const err = error instanceof Error ? error: new Error(String(error);
             this.errorHandler.handleError(err, 'KeyboardShortcutRouter.cleanup') }
 
     }'}'

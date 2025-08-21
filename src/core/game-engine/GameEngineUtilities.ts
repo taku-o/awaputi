@@ -84,7 +84,7 @@ export class GameEngineUtilities {
             this.gameEngine.errorHandler.handleError(error, 'GAME_ENGINE_ERROR', { : undefined'
         }''
                 component: 'GameEngineUtilities') }
-                context)});
+                context)};
         }
     }
     
@@ -95,22 +95,22 @@ export class GameEngineUtilities {
             platform: navigator.platform,
             language: navigator.language,
     screenResolution: {
-                width: window.screen.width };
+                width: window.screen.width },
                 height: window.screen.height 
     };
             windowSize: { width: window.innerWidth,
-    height: window.innerHeight };
+    height: window.innerHeight },
             devicePixelRatio: window.devicePixelRatio || 1,
             memory: (navigator, as any').deviceMemory || 'unknown','
-            hardwareConcurrency: navigator.hardwareConcurrency || 'unknown';
+            hardwareConcurrency: navigator.hardwareConcurrency || 'unknown',
         } }
     
     /**
      * ゲーム状態のスナップショット取得
      */
-    getGameSnapshot(): object { return { timestamp: Date.now() };
+    getGameSnapshot(): object { return { timestamp: Date.now() },
             systemInfo: this.getSystemInfo() }
-            performanceStats: this.gameEngine.performanceStats || {};
+            performanceStats: this.gameEngine.performanceStats || {},
             audioEnabled: this.gameEngine.audioManager?.isEnabled || false, : undefined
             debugMode: this.isDebugMode();
         }

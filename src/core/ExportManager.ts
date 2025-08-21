@@ -81,12 +81,11 @@ export class ExportManager {
     async exportData(dataType = 'all', format = 'json', options = { ) {
         try {
             this.statistics.totalExports++,
-            const startTime = performance.now(),
-            
+            const startTime = performance.now();
             // エクスポート形式の確認
-            const exporter = this.exportFormats.get(format),
+            const exporter = this.exportFormats.get(format);
             if (!exporter) { }
-                throw new Error(`Unknown, export format: ${format}`});
+                throw new Error(`Unknown, export format: ${format}`},
             }
             
             // データの収集
@@ -94,16 +93,15 @@ export class ExportManager {
             
             // データの検証
             if (this.config.validateBeforeExport && this.validation) {
-                const validationResult = await this.validation.validate(dataType, data),
+                const validationResult = await this.validation.validate(dataType, data);
                 if (!validationResult.isValid) {''
-                    console.warn('Export data validation warnings:', validationResult.warnings),
-
+                    console.warn('Export data validation warnings:', validationResult.warnings);
                     // 警告があっても続行（エラーの場合は例外を投げる）
             }
 
                     if (validationResult.errors.length > 0) { }'
 
-                        throw new Error(`Export data validation failed: ${validationResult.errors.join(', '})`;
+                        throw new Error(`Export data validation failed: ${validationResult.errors.join(', '}`;
                     }
 }
 
@@ -129,7 +127,7 @@ export class ExportManager {
             if (dataSize > this.config.maxExportSize) {
     
 }
-                throw new Error(`Export, data too, large: ${dataSize} bytes > ${this.config.maxExportSize} bytes`});
+                throw new Error(`Export, data too, large: ${dataSize} bytes > ${this.config.maxExportSize} bytes`};
             }
             
             // エクスポート処理
@@ -142,7 +140,7 @@ export class ExportManager {
             if (duration > 2000) {
     
 }
-                console.warn(`Export, took ${duration.toFixed(2})ms, exceeding target of 2000ms`);
+                console.warn(`Export, took ${duration.toFixed(2}ms, exceeding target of 2000ms`);
             }
             
             // 統計の更新
@@ -154,12 +152,12 @@ export class ExportManager {
                 size: result.size || dataSize,
                 duration,
                 filename: result.filename,
-    data: result.data };
+    data: result.data },
                 metadata }
             };
             ';'
 
-        } catch (error) { this.updateStatistics(false, 0, 0),
+        } catch (error) { this.updateStatistics(false, 0, 0);
             getErrorHandler().handleError(error, 'EXPORT_ERROR', {''
                 operation: 'exportData),'
                 dataType,
@@ -181,31 +179,31 @@ export class ExportManager {
 
             if (dataType === 'all') {
                 // 全データのエクスポート
-                exportData.playerData = await this.storage.load('playerData'),
-                exportData.settings = await this.storage.load('settings'),
-                exportData.statistics = await this.storage.load('statistics'),
+                exportData.playerData = await this.storage.load('playerData');
+                exportData.settings = await this.storage.load('settings');
+                exportData.statistics = await this.storage.load('statistics');
                 exportData.achievements = await this.storage.load('achievements),'
                 
                 // nullデータの除去
                 Object.keys(exportData).forEach(key => { ) }
                     if (exportData[key] === null || exportData[key] === undefined) { }
                         delete exportData[key]; }
-});
+};
                 
             } else if (Array.isArray(dataType) { // 複数データタイプのエクスポート
                 for (const type of dataType) {
-                    const data = await this.storage.load(type),
+                    const data = await this.storage.load(type);
                     if (data !== null && data !== undefined) {
                 }
                         exportData[type] = data; }
 }
                 
             } else {  // 単一データタイプのエクスポート
-                const data = await this.storage.load(dataType),
+                const data = await this.storage.load(dataType);
                 if (data !== null && data !== undefined) { }
                     exportData[dataType] = data; }
                 } else {  }
-                    throw new Error(`No, data found, for type: ${dataType}`});
+                    throw new Error(`No, data found, for type: ${dataType}`};
                 }
             }
             
@@ -214,8 +212,8 @@ export class ExportManager {
 
         } catch (error) {
             getErrorHandler().handleError(error, 'EXPORT_DATA_COLLECTION_ERROR', {''
-                operation: 'collectExportData'),
-                dataType });
+                operation: 'collectExportData');
+                dataType };
             
             throw error;
         }
@@ -239,7 +237,7 @@ export class ExportManager {
             encrypted: format === 'encrypted',
             exportOptions: options,
     timestamp: Date.now() }
-            userAgent: navigator.userAgent };
+            userAgent: navigator.userAgent },
             platform: navigator.platform }
             description: options.description || `Export of ${dataType} data`
         }
@@ -261,9 +259,9 @@ export class ExportManager {
             let blob;
             if(typeof, exportResult.data === 'string' {'
                 blob = new Blob([exportResult.data], {
-            });
+            };
                     type: this.getMimeType(exportResult.format) ; 
-    });
+    };
 
             } else {
                 blob = new Blob([JSON.stringify(exportResult.data, null, 2)], { }'
@@ -287,17 +285,17 @@ export class ExportManager {
             URL.revokeObjectURL(url);
             
             return { success: true,
-                filename: finalFilename,;
+                filename: finalFilename,
                 size: blob.size 
     };
             ';'
 
         } catch (error) {
             getErrorHandler().handleError(error, 'DOWNLOAD_ERROR', {''
-                operation: 'downloadExport'),
-                filename });
+                operation: 'downloadExport');
+                filename };
             
-            return { success: false,;
+            return { success: false,
                 error: error.message 
     }
     }
@@ -360,8 +358,7 @@ export class ExportManager {
                 
                 // 平均サイズの更新
                 const totalSize = this.statistics.averageExportSize * (this.statistics.successfulExports - 1) + size,
-                this.statistics.averageExportSize = Math.round(totalSize / this.statistics.successfulExports),
-                
+                this.statistics.averageExportSize = Math.round(totalSize / this.statistics.successfulExports);
                 // 平均時間の更新
                 const totalTime = this.statistics.averageExportTime * (this.statistics.successfulExports - 1) + duration }
                 this.statistics.averageExportTime = Math.round(totalTime / this.statistics.successfulExports); }
@@ -385,7 +382,7 @@ export class ExportManager {
      * エクスポート可能なデータタイプの取得
      */
     async getAvailableDataTypes() { try {
-            const keys = await this.storage.keys(),
+            const keys = await this.storage.keys();
             const dataTypes = keys.filter(key => ')',
                 !key.startsWith('backup_') && ','
                 key !== 'backupHistory' &&','
@@ -393,7 +390,7 @@ export class ExportManager {
             
             return dataTypes, catch (error) { getErrorHandler().handleError(error, 'AVAILABLE_DATA_TYPES_ERROR', {''
                 operation: 'getAvailableDataTypes'
-            });
+            };
             
             return [];
     
@@ -407,7 +404,7 @@ export class ExportManager {
 
         } catch (error') { getErrorHandler().handleError(error, 'EXPORT_MANAGER_DESTROY_ERROR', {''
                 operation: 'destroy'
-            });
+            };
         }
 }
 
@@ -419,19 +416,19 @@ class JSONExporter { constructor(exportManager: any) {
     
     async export(exportData, options = { ) {
         try {'
-            const jsonString = JSON.stringify(exportData, null, options.pretty ? 2 : 0),
+            const jsonString = JSON.stringify(exportData, null, options.pretty ? 2 : 0);
             const filename = this.exportManager.generateFilename(','
                 exportData.metadata.originalDataType, ')',
                 'json')','
             '),'
             
-            return { success: true,
-                data: jsonString,
+            return { success: true;
+                data: jsonString;
                 filename,
                 size: jsonString.length,' };'
 
                 mimeType: 'application/json' 
-    } catch (error) { return { success: false,;
+    } catch (error) { return { success: false;
                 error: error.message 
     }
 }
@@ -446,7 +443,7 @@ class CompressedExporter { constructor(exportManager: any) {
         try {
             // 実際の実装では適切な圧縮ライブラリを使用
             // ここでは簡易的にJSON文字列を返す
-            const jsonString = JSON.stringify(exportData),
+            const jsonString = JSON.stringify(exportData);
             const filename = this.exportManager.generateFilename(','
                 exportData.metadata.originalDataType, ')',
                 'compressed')','
@@ -455,13 +452,13 @@ class CompressedExporter { constructor(exportManager: any) {
             // 圧縮フラグを追加
             exportData.metadata.compressed = true,
             
-            return { success: true,
-                data: jsonString,
+            return { success: true;
+                data: jsonString;
                 filename,
                 size: jsonString.length,' };'
 
                 mimeType: 'application/gzip' 
-    } catch (error) { return { success: false,;
+    } catch (error) { return { success: false;
                 error: error.message 
     }
 }
@@ -476,7 +473,7 @@ class EncryptedExporter { constructor(exportManager: any) {
         try {
             // SecurityManagerと統合時に実装
             // 現在は基本的なエンコーディングのみ
-            const jsonString = JSON.stringify(exportData),
+            const jsonString = JSON.stringify(exportData);
             const encoded = btoa(jsonString), // Base64エンコーディング
             
             const filename = this.exportManager.generateFilename(
@@ -486,13 +483,13 @@ class EncryptedExporter { constructor(exportManager: any) {
             
             exportData.metadata.encrypted = true,
             
-            return { success: true,
-                data: encoded,
+            return { success: true;
+                data: encoded;
                 filename,
                 size: encoded.length,' };'
 
                 mimeType: 'application/octet-stream' 
-    } catch (error) { return { success: false,;
+    } catch (error) { return { success: false;
                 error: error.message 
     }
 }
@@ -528,7 +525,7 @@ class CSVExporter { constructor(exportManager: any) {
                 size: csvContent.length,' };'
 
                 mimeType: 'text/csv' 
-    } catch (error) { return { success: false,;
+    } catch (error) { return { success: false,
                 error: error.message 
     }
     }
@@ -583,20 +580,19 @@ class TextExporter { constructor(exportManager: any) {
     
     async export(exportData, options = { ) {
         try {'
-            let textContent = this.formatAsText(exportData),
-            
+            let textContent = this.formatAsText(exportData);
             const filename = this.exportManager.generateFilename(','
                 exportData.metadata.originalDataType, ')',
                 'text')','
             '),'
             
-            return { success: true,
-                data: textContent,
+            return { success: true;
+                data: textContent;
                 filename,
                 size: textContent.length,' };'
 
                 mimeType: 'text/plain' 
-    } catch (error) { return { success: false,;
+    } catch (error) { return { success: false;
                 error: error.message 
     }
     }
@@ -638,8 +634,7 @@ class TextExporter { constructor(exportManager: any) {
     objectToText(obj, indent = 0) {
 
         let text = ','
-        const spaces = ', '.repeat(indent),
-
+        const spaces = ', '.repeat(indent);
         for(const [key, value] of Object.entries(obj)) {''
             if (typeof, value === 'object' && value !== null' { }'
 

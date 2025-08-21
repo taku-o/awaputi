@@ -14,12 +14,12 @@ interface GameEngine { sceneManager?: any,
     audioManager?: any;
     // 他のプロパティは必要に応じて追加 }
 
-interface SEOMonitor { startMonitoring(config: any): void,
+interface SEOMonitor { startMonitoring(config: any): void;
     stopMonitoring(): void;
 
 export class GameEngineInitializer {
     private gameEngine: GameEngine;
-    private, seoMonitor: SEOMonitor | null,
+    private, seoMonitor: SEOMonitor | null;
     constructor(gameEngine: GameEngine) {
     
         this.gameEngine = gameEngine
@@ -71,11 +71,11 @@ export class GameEngineInitializer {
                 { SettingsScene }]
                 { HelpScene }']'
             ] = await Promise.all([);
-                import('../../scenes/MainMenuScene.js'),
-                import('../../scenes/StageSelectScene.js'),
-                import('../../scenes/GameScene.js'),
-                import('../../scenes/ShopScene.js'),
-                import('../../scenes/UserInfoScene.js'),
+                import('../../scenes/MainMenuScene.js');
+                import('../../scenes/StageSelectScene.js');
+                import('../../scenes/GameScene.js');
+                import('../../scenes/ShopScene.js');
+                import('../../scenes/UserInfoScene.js');
                 import('../../scenes/SettingsScene.js'),]';'
                 import('../../scenes/HelpScene.js']';'
             ]');'
@@ -91,7 +91,7 @@ export class GameEngineInitializer {
 
             console.log('[GameEngineInitializer] All, scenes initialized');
         } catch (error) {
-            console.error('[GameEngineInitializer] Failed to initialize scenes:', error),
+            console.error('[GameEngineInitializer] Failed to initialize scenes:', error);
             throw error }
     }
     
@@ -112,8 +112,7 @@ export class GameEngineInitializer {
      */
     async initializeAudioSystem(): Promise<void> { if (this.gameEngine.audioManager?.initialize) {
             try {'
-                await this.gameEngine.audioManager.initialize(),
-
+                await this.gameEngine.audioManager.initialize();
                 console.log('[GameEngineInitializer] Audio, system initialized'),' }'
 
             } catch (error) { : undefined''

@@ -13,7 +13,7 @@ global.Chart.defaults = {
     font: { family: ', size: 12 },'
     responsive: true,
     maintainAspectRatio: false,
-    animation: { duration: 750 };
+    animation: { duration: 750 },
     color: '#333333'
 };
 // DOM のモック
@@ -61,16 +61,16 @@ describe('ChartRenderer', () => {
                 strokeStyle: ','
                 fillStyle: ','
                 lineWidth: 1
-    }))
+    })
         ');'
         mockChart = {
             data: { 
                 labels: [], 
                 datasets: [{ data: [] }] 
             },
-            config: { type: 'line' };
+            config: { type: 'line' },
             update: jest.fn(
-        destroy: jest.fn( };
+        destroy: jest.fn( },
         global.Chart.mockImplementation(() => mockChart);
         document.getElementById.mockReturnValue(mockCanvas);
         chartRenderer = new ChartRenderer({
@@ -85,23 +85,23 @@ describe('ChartRenderer', () => {
             textColor: '#333333',
             gridColor: 'rgba(0, 0, 0, 0.1')'
         };
-    });
+    };
     afterEach(() => {
         if (chartRenderer) {
             chartRenderer.destroy() }
     }');'
     describe('初期化', (') => {'
         test('正しく初期化される', () => {
-            expect(chartRenderer).toBeDefined(),
-            expect(chartRenderer.charts).toBeInstanceOf(Map),
-            expect(chartRenderer.chartConfigs).toBeInstanceOf(Map),
+            expect(chartRenderer).toBeDefined();
+            expect(chartRenderer.charts).toBeInstanceOf(Map);
+            expect(chartRenderer.chartConfigs).toBeInstanceOf(Map);
             expect(chartRenderer.updateTimers).toBeInstanceOf(Map) }');'
         test('オプションが正しく設定される', () => {
             const customRenderer = new ChartRenderer({
                 defaultWidth: 600,
                 defaultHeight: 400,
                 maxDataPoints: 100
-            });
+            };
             expect(customRenderer.options.defaultWidth).toBe(600);
             expect(customRenderer.options.defaultHeight).toBe(400);
             expect(customRenderer.options.maxDataPoints).toBe(100);
@@ -110,16 +110,16 @@ describe('ChartRenderer', () => {
     }
     describe('テーマ機能', (') => {'
         test('デフォルトテーマが適用される', (') => {'
-            chartRenderer.applyTheme('default'),
-            expect(chartRenderer.currentTheme).toBeDefined(),
-            expect(chartRenderer.currentTheme.backgroundColor).toBeDefined(),
+            chartRenderer.applyTheme('default');
+            expect(chartRenderer.currentTheme).toBeDefined();
+            expect(chartRenderer.currentTheme.backgroundColor).toBeDefined();
             expect(chartRenderer.currentTheme.borderColor).toBeDefined() }');'
         test('ダークテーマが適用される', (') => {'
-            chartRenderer.applyTheme('dark'),
+            chartRenderer.applyTheme('dark');
             expect(chartRenderer.currentTheme.textColor').toBe('#ffffff'),'
             expect(chartRenderer.currentTheme.gridColor').toBe('rgba(255, 255, 255, 0.2')') }');'
         test('不正なテーマはデフォルトテーマを使用する', (') => {'
-            chartRenderer.applyTheme('invalid-theme'),
+            chartRenderer.applyTheme('invalid-theme');
             expect(chartRenderer.currentTheme.textColor').toBe('#333333'), // デフォルト'
         }');'
     }
@@ -128,7 +128,7 @@ describe('ChartRenderer', () => {
             const chart = chartRenderer.createLineChart('test-canvas-line', {
                 label: 'テストデータ',
                 xAxisLabel: 'X軸',
-                yAxisLabel: 'Y軸' });
+                yAxisLabel: 'Y軸' },
             expect(chart).toBeDefined();
             expect(global.Chart).toHaveBeenCalledWith();
                 expect.anything('),'
@@ -141,7 +141,7 @@ describe('ChartRenderer', () => {
                 label: 'カスタムラベル',
                 xAxisLabel: 'カスタムX軸',
                 yAxisLabel: 'カスタムY軸',
-                showLegend: false,;
+                showLegend: false,
             chartRenderer.createLineChart('test-canvas-line', config);
             expect(global.Chart).toHaveBeenCalledWith();
                 expect.anything('),'
@@ -151,12 +151,12 @@ describe('ChartRenderer', () => {
                         datasets: expect.arrayContaining([
                             expect.objectContaining({
                                 label: 'カスタムラベル'),
-                        ]) }),
+                        ]) },
                     options: expect.objectContaining({
                         plugins: expect.objectContaining({
                             legend: expect.objectContaining({
                                 display: false) }
-    });
+    };
     }
             );
         }');'
@@ -165,7 +165,7 @@ describe('ChartRenderer', () => {
         test('棒グラフを作成できる', (') => {'
             const chart = chartRenderer.createBarChart('test-canvas-bar', {
                 label: 'テスト棒グラフ',
-                dataCount: 5 });
+                dataCount: 5 },
             expect(chart).toBeDefined();
             expect(global.Chart).toHaveBeenCalledWith();
                 expect.anything('),'
@@ -174,10 +174,10 @@ describe('ChartRenderer', () => {
             '),'
             expect(chartRenderer.charts.has('test-canvas-bar').toBe(true) }');'
         test('カラーパレットが生成される', () => {
-            const colors = chartRenderer.generateColorPalette(5, 0.8),
-            expect(colors).toHaveLength(5),
-            colors.forEach(color => {),
-                expect(color).toMatch(/^hsla\(\d+, \d+%, \d+%, 0\.8\)$/) });
+            const colors = chartRenderer.generateColorPalette(5, 0.8);
+            expect(colors).toHaveLength(5);
+            colors.forEach(color => {);
+                expect(color).toMatch(/^hsla\(\d+, \d+%, \d+%, 0\.8\)$/) };
         }
     }');'
     describe('円グラフ作成', (') => {'
@@ -185,7 +185,7 @@ describe('ChartRenderer', () => {
             const chart = chartRenderer.createPieChart('test-canvas-pie', {
                 label: 'テスト円グラフ',
                 dataCount: 6,
-                legendPosition: 'bottom' });
+                legendPosition: 'bottom' },
             expect(chart).toBeDefined();
             expect(global.Chart).toHaveBeenCalledWith();
                 expect.anything('),'
@@ -193,14 +193,14 @@ describe('ChartRenderer', () => {
                     type: 'pie')) }');'
         test('ドーナツグラフを作成できる', (') => {'
             const chart = chartRenderer.createDoughnutChart('test-canvas-doughnut', {
-                label: 'テストドーナツグラフ' });
+                label: 'テストドーナツグラフ' },
             expect(chart).toBeDefined(');'
             expect(chartRenderer.chartConfigs.get('test-canvas-doughnut').type').toBe('doughnut');'
         }');'
     }
     describe('データ更新', (') => {'
         test('チャートデータを更新できる', (') => {'
-            const chart = chartRenderer.createLineChart('test-canvas-update'),
+            const chart = chartRenderer.createLineChart('test-canvas-update');
             const newData = {
                 labels: ['A', 'B', 'C'],
                 data: [10, 20, 15]
@@ -210,7 +210,7 @@ describe('ChartRenderer', () => {
             expect(mockChart.update').toHaveBeenCalledWith('none');'
         }');'
         test('存在しないチャートの更新は失敗する', (') => {'
-            const result = chartRenderer.updateChartData('non-existent', { data: [1, 2, 3] });
+            const result = chartRenderer.updateChartData('non-existent', { data: [1, 2, 3] };
             expect(result).toBe(false);
         }');'
         test('データポイント数が制限される', () => {
@@ -222,7 +222,7 @@ describe('ChartRenderer', () => {
                     labels: ['A', 'B', 'C', 'D', 'E'],
                     datasets: [{ data: [1, 2, 3, 4, 5] }]
                 },
-        update: jest.fn( };
+        update: jest.fn( },
             limitedRenderer.limitDataPoints(mockChartWithData);
             expect(mockChartWithData.data.labels).toHaveLength(3);
             expect(mockChartWithData.data.datasets[0].data).toHaveLength(3);
@@ -231,23 +231,23 @@ describe('ChartRenderer', () => {
     }
     describe('リアルタイム更新', (') => {'
         test('リアルタイム更新を開始できる', (done') => {'
-            chartRenderer.createLineChart('test-canvas-realtime'),
+            chartRenderer.createLineChart('test-canvas-realtime');
             let callCount = 0,
             const dataCallback = (') => {'
                 callCount++,
                 return {
-                    labels: [`Point ${callCount}`];
+                    labels: [`Point ${callCount}`],
                     data: [callCount * 10]
                 };
             };
             chartRenderer.startRealtimeUpdate('test-canvas-realtime', dataCallback, 10);
             setTimeout(() => {
                 expect(callCount).toBeGreaterThan(0'),'
-                expect(chartRenderer.updateTimers.has('test-canvas-realtime').toBe(true),
+                expect(chartRenderer.updateTimers.has('test-canvas-realtime').toBe(true);
                 done() }, 50);
         }');'
         test('リアルタイム更新を停止できる', (') => {'
-            chartRenderer.createLineChart('test-canvas-realtime-stop'),
+            chartRenderer.createLineChart('test-canvas-realtime-stop');
             chartRenderer.startRealtimeUpdate('test-canvas-realtime-stop', () => ({ data: [1] })');'
             expect(chartRenderer.updateTimers.has('test-canvas-realtime-stop').toBe(true');'
             chartRenderer.stopRealtimeUpdate('test-canvas-realtime-stop');
@@ -256,12 +256,12 @@ describe('ChartRenderer', () => {
     }
     describe('Canvas フォールバック', (') => {'
         test('Chart.jsが利用できない場合のフォールバック', () => {
-            const fallbackRenderer = new ChartRenderer(),
-            fallbackRenderer.fallbackToCanvasRenderer(),
+            const fallbackRenderer = new ChartRenderer();
+            fallbackRenderer.fallbackToCanvasRenderer();
             expect(fallbackRenderer.useCanvasFallback).toBe(true) }');'
         test('Canvas APIで簡単な線グラフを描画できる', () => {
             chartRenderer.fallbackToCanvasRenderer('),'
-            const mockContext = mockCanvas.getContext('2d'),
+            const mockContext = mockCanvas.getContext('2d');
             const data = { data: [10, 20, 15, 25] };
             
             const result = chartRenderer.drawSimpleLineChart('test-canvas', data);
@@ -272,29 +272,29 @@ describe('ChartRenderer', () => {
         }');'
         test('データがない場合は描画しない', () => {
             chartRenderer.fallbackToCanvasRenderer('),'
-            const result = chartRenderer.drawSimpleLineChart('test-canvas', { data: [] });
+            const result = chartRenderer.drawSimpleLineChart('test-canvas', { data: [] },
             expect(result).toBe(false);
         }');'
     }
     describe('統計機能', (') => {'
         test('チャート統計を取得できる', (') => {'
-            chartRenderer.createLineChart('chart1'),
-            chartRenderer.createBarChart('chart2'),
-            chartRenderer.startRealtimeUpdate('chart1', () => ({ data: [1] }));
+            chartRenderer.createLineChart('chart1');
+            chartRenderer.createBarChart('chart2');
+            chartRenderer.startRealtimeUpdate('chart1', () => ({ data: [1] })),
             const stats = chartRenderer.getChartStatistics();
             expect(stats.totalCharts).toBe(2);
             expect(stats.activeRealtimeCharts).toBe(1);
             expect(stats.chartTypes).toEqual({ line: 1, bar: 1 ,
             expect(stats.memoryUsage).toBeDefined() }');'
         test('メモリ使用量を推定できる', (') => {'
-            chartRenderer.createLineChart('memory-test'),
-            const memoryUsage = chartRenderer.estimateMemoryUsage(),
-            expect(memoryUsage.estimatedDataPoints).toBeDefined(),
+            chartRenderer.createLineChart('memory-test');
+            const memoryUsage = chartRenderer.estimateMemoryUsage();
+            expect(memoryUsage.estimatedDataPoints).toBeDefined();
             expect(memoryUsage.estimatedMemoryKB).toBeDefined() }');'
     }
     describe('リソース管理', (') => {'
         test('チャートを個別に削除できる', (') => {'
-            chartRenderer.createLineChart('destroy-test'),
+            chartRenderer.createLineChart('destroy-test');
             chartRenderer.startRealtimeUpdate('destroy-test', () => ({ data: [1] })');'
             expect(chartRenderer.charts.has('destroy-test').toBe(true');'
             chartRenderer.destroyChart('destroy-test');
@@ -303,9 +303,9 @@ describe('ChartRenderer', () => {
             expect(mockChart.destroy).toHaveBeenCalled();
         }');'
         test('destroy(')で全リソースを解放する', (') => {
-            chartRenderer.createLineChart('test1'),
-            chartRenderer.createBarChart('test2'),
-            chartRenderer.startRealtimeUpdate('test1', () => ({ data: [1] }));
+            chartRenderer.createLineChart('test1');
+            chartRenderer.createBarChart('test2');
+            chartRenderer.startRealtimeUpdate('test1', () => ({ data: [1] })),
             expect(chartRenderer.charts.size).toBe(2);
             expect(chartRenderer.updateTimers.size).toBe(1);
             chartRenderer.destroy();
@@ -315,7 +315,7 @@ describe('ChartRenderer', () => {
     }
     describe('キャンバス管理', (') => {'
         test('既存のキャンバスを取得する', (') => {'
-            const canvas = chartRenderer.getCanvas('existing-canvas'),
+            const canvas = chartRenderer.getCanvas('existing-canvas');
             expect(document.getElementById').toHaveBeenCalledWith('existing-canvas'),'
             expect(canvas).toBe(mockCanvas) }');'
         test('存在しないキャンバスを作成する', () => {
@@ -334,20 +334,20 @@ describe('ChartRenderer', () => {
     }
     describe('全チャート更新', (') => {'
         test('全チャートを一括更新できる', (') => {'
-            chartRenderer.createLineChart('chart1'),
-            chartRenderer.createLineChart('chart2'),
+            chartRenderer.createLineChart('chart1');
+            chartRenderer.createLineChart('chart2');
             chartRenderer.dataSourceCallbacks.set('chart1', () => ({ data: [1, 2, 3] })');'
             chartRenderer.dataSourceCallbacks.set('chart2', () => ({ data: [4, 5, 6] });
             chartRenderer.updateAllCharts();
             expect(mockChart.update).toHaveBeenCalledTimes(2);
         }');'
         test('エラーが発生しても他のチャートの更新は続行する', (') => {'
-            chartRenderer.createLineChart('chart1'),
-            chartRenderer.createLineChart('chart2'),
+            chartRenderer.createLineChart('chart1');
+            chartRenderer.createLineChart('chart2');
             chartRenderer.dataSourceCallbacks.set('chart1', (') => { throw new Error('Test error') }');
             chartRenderer.dataSourceCallbacks.set('chart2', () => ({ data: [1, 2, 3] });
             expect(() => chartRenderer.updateAllCharts().not.toThrow();
             expect(mockChart.update).toHaveBeenCalledTimes(1); // chart2のみ更新
-        });
+        };
     }
 }');'

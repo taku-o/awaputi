@@ -15,71 +15,71 @@
  */
 
 // 型定義
-export interface ComplexityMetrics { elementCount: ElementCountMetric,
+export interface ComplexityMetrics { elementCount: ElementCountMetric;
     interactionCount: InteractionCountMetric;
     informationDensity: InformationDensityMetric;
     visualComplexity: VisualComplexityMetric;
     cognitiveLoad: CognitiveLoadMetric;
 
-export interface ElementCountMetric { total: number,
+export interface ElementCountMetric { total: number;
     visible: number;
     score: number;
 
-export interface InteractionCountMetric { total: number,
+export interface InteractionCountMetric { total: number;
     visible: number;
     score: number;
 
-export interface InformationDensityMetric { textLength: number,
+export interface InformationDensityMetric { textLength: number;
     visibleArea: number;
     density: number;
     score: number;
 
-export interface VisualComplexityMetric { colors: number,
+export interface VisualComplexityMetric { colors: number;
     fonts: number;
     borders: number;
     shadows: number;
     score: number;
 
-export interface CognitiveLoadMetric { hierarchyDepth: number,
+export interface CognitiveLoadMetric { hierarchyDepth: number;
     informationTypes: number;
     animationCount: number;
     overlayCount: number;
     score: number;
 
-export interface ComplexityThresholds { elementCount: ThresholdLevels,
+export interface ComplexityThresholds { elementCount: ThresholdLevels;
     interactionCount: ThresholdLevels;
     informationDensity: ThresholdLevels;
     visualComplexity: ThresholdLevels;
     cognitiveLoad: ThresholdLevels;
 
-export interface ThresholdLevels { low: number,
+export interface ThresholdLevels { low: number;
     medium: number;
     high: number;
     extreme: number;
 
-export interface ComplexityWeightings { elementCount: number,
+export interface ComplexityWeightings { elementCount: number;
     interactionCount: number;
     informationDensity: number;
     visualComplexity: number;
     cognitiveLoad: number;
 
-export interface AnalysisResult { timestamp: number,
+export interface AnalysisResult { timestamp: number;
     metrics: ComplexityMetrics;
     overallComplexity: OverallComplexity;
     recommendations: Recommendation[];
     analysisTime: number;
 
-export interface OverallComplexity { score: number,
+export interface OverallComplexity { score: number;
     level: ComplexityLevel;
     breakdown: ComplexityBreakdown;
 
-export interface ComplexityBreakdown { elementCount: number,
+export interface ComplexityBreakdown { elementCount: number;
     interactionCount: number;
     informationDensity: number;
     visualComplexity: number;
     cognitiveLoad: number;
 
-export interface Recommendation { type: RecommendationType,
+export interface Recommendation { type: RecommendationType;
     priority: RecommendationPriority;
     message: string;
     action: RecommendationAction;
@@ -87,7 +87,7 @@ export interface Recommendation { type: RecommendationType,
     effort?: EffortLevel;
     confidence?: number;
 
-export interface ComplexityStats { totalAnalyses: number,
+export interface ComplexityStats { totalAnalyses: number;
     averageComplexity: number;
     currentMetrics: ComplexityMetrics;
     recentTrend: TrendDirection;
@@ -96,67 +96,67 @@ export interface ComplexityStats { totalAnalyses: number,
     historicalPeaks?: HistoricalPeak[];
      }
 
-export interface PerformanceStats { averageAnalysisTime: number,
+export interface PerformanceStats { averageAnalysisTime: number;
     maxAnalysisTime?: number;
     minAnalysisTime?: number;
     memoryUsage?: number;
 
-export interface ComplexityDistribution { low: number,
+export interface ComplexityDistribution { low: number;
     medium: number;
     high: number;
     extreme: number;
 
-export interface HistoricalPeak { timestamp: number,
+export interface HistoricalPeak { timestamp: number;
     complexity: number;
     context: string;
 
-export interface CurrentMetrics extends ComplexityMetrics { overall: OverallComplexity,
+export interface CurrentMetrics extends ComplexityMetrics { overall: OverallComplexity;
     lastAnalysis?: number;
 
-export interface VisibilityContext { visibleElements: number,
+export interface VisibilityContext { visibleElements: number;
     screenArea: number;
     viewportRatio: number;
     scrollPosition: number;
 
-export interface AnalysisConfig { enableRealTimeAnalysis: boolean,
+export interface AnalysisConfig { enableRealTimeAnalysis: boolean;
     analysisDelay: number;
     historyLimit: number;
     performanceMonitoring: boolean;
     detailedBreakdown: boolean;
 
-export interface ElementClassification { interactive: HTMLElement[],
+export interface ElementClassification { interactive: HTMLElement[];
     visual: HTMLElement[];
     textual: HTMLElement[];
     decorative: HTMLElement[];
     structural: HTMLElement[];
 
-export interface ComplexityFactors { layout: LayoutComplexity,
+export interface ComplexityFactors { layout: LayoutComplexity;
     content: ContentComplexity;
     interaction: InteractionComplexity;
     visual: VisualComplexityFactors;
     navigation: NavigationComplexity;
 
-export interface LayoutComplexity { nesting: number,
+export interface LayoutComplexity { nesting: number;
     positioning: number;
     responsiveness: number;
     grid: number;
 
-export interface ContentComplexity { textDensity: number,
+export interface ContentComplexity { textDensity: number;
     mediaDensity: number;
     informationVariety: number;
     updateFrequency: number;
 
-export interface InteractionComplexity { inputTypes: number,
+export interface InteractionComplexity { inputTypes: number;
     actionComplexity: number;
     feedbackComplexity: number;
     stateManagement: number;
 
-export interface VisualComplexityFactors { colorPalette: number,
+export interface VisualComplexityFactors { colorPalette: number;
     typography: number;
     spacing: number;
     effects: number;
 
-export interface NavigationComplexity { menuDepth: number,
+export interface NavigationComplexity { menuDepth: number;
     pathVariety: number;
     breadcrumbs: number;
     contextSwitching: number;
@@ -188,31 +188,31 @@ export type EffortLevel = 'minimal' | 'moderate' | 'significant' | 'major';
 
 // 定数
 export const DEFAULT_THRESHOLDS: ComplexityThresholds = { elementCount: {
-        low: 10,
-        medium: 25,
-        high: 50,
+        low: 10;
+        medium: 25;
+        high: 50;
     extreme: 100 };
-    interactionCount: { low: 5,
-        medium: 15,
-        high: 30,
+    interactionCount: { low: 5;
+        medium: 15;
+        high: 30;
     extreme: 50 };
-    informationDensity: { low: 0.3,
-        medium: 0.6,
-        high: 0.8,
+    informationDensity: { low: 0.3;
+        medium: 0.6;
+        high: 0.8;
     extreme: 1.0 };
-    visualComplexity: { low: 0.2,
-        medium: 0.5,
-        high: 0.7,
+    visualComplexity: { low: 0.2;
+        medium: 0.5;
+        high: 0.7;
     extreme: 0.9 };
-    cognitiveLoad: { low: 0.3,
-        medium: 0.6,
-        high: 0.8,
+    cognitiveLoad: { low: 0.3;
+        medium: 0.6;
+        high: 0.8;
     extreme: 1.0 
     } as const;
-export const DEFAULT_WEIGHTINGS: ComplexityWeightings = { elementCount: 0.2,
-    interactionCount: 0.25,
-    informationDensity: 0.2,
-    visualComplexity: 0.15,
+export const DEFAULT_WEIGHTINGS: ComplexityWeightings = { elementCount: 0.2;
+    interactionCount: 0.25;
+    informationDensity: 0.2;
+    visualComplexity: 0.15;
     cognitiveLoad: 0.2  } as const;
 ';'
 
@@ -234,13 +234,13 @@ export const INTERACTIVE_SELECTORS = [';'
 
 export const INFORMATION_TYPE_SELECTORS = {;
     headings: 'h1, h2, h3, h4, h5, h6',
-    paragraphs: 'p',
+    paragraphs: 'p';
     lists: 'ul, ol, dl',
-    tables: 'table',
-    forms: 'form',
-    images: 'img',
-    videos: 'video',
-    canvas: 'canvas',
+    tables: 'table';
+    forms: 'form';
+    images: 'img';
+    videos: 'video';
+    canvas: 'canvas';
     gameInfo: '.score, .timer, .status, .health, .level',
     buttons: '.button, button',
     navigation: '.menu, .nav, nav, [role="navigation"]' } as const;
@@ -258,48 +258,48 @@ export const OVERLAY_SELECTORS = [';'
     '[role="alertdialog"]';
 ] as const;
 
-export const ANALYSIS_CONFIG: AnalysisConfig = { enableRealTimeAnalysis: true,
-    analysisDelay: 500,
-    historyLimit: 100,
-    performanceMonitoring: true,
+export const ANALYSIS_CONFIG: AnalysisConfig = { enableRealTimeAnalysis: true;
+    analysisDelay: 500;
+    historyLimit: 100;
+    performanceMonitoring: true;
     detailedBreakdown: false, as const;
 export const COMPLEXITY_SCORE_MAPPING = {
-    low: { min: 0, max: 0.3  },
-    medium: { min: 0.3, max: 0.6  },
-    high: { min: 0.6, max: 0.8  },
+    low: { min: 0, max: 0.3  };
+    medium: { min: 0.3, max: 0.6  };
+    high: { min: 0.6, max: 0.8  };
     extreme: { min: 0.8, max: 1.0  } as const;
 
 // ユーティリティ関数
-export function isElementVisible(element: HTMLElement): boolean { const style = window.getComputedStyle(element),
+export function isElementVisible(element: HTMLElement): boolean { const style = window.getComputedStyle(element);
     const rect = element.getBoundingClientRect('',
     return, style.display !== 'none' && ','
            style.visibility !== 'hidden' && ','
            style.opacity !== '0' &&,
            rect.width > 0 && ,
-           rect.height > 0 });
+           rect.height > 0 };
 );
-export function calculateElementArea(element: HTMLElement): number { const rect = element.getBoundingClientRect(),
+export function calculateElementArea(element: HTMLElement): number { const rect = element.getBoundingClientRect();
     return rect.width * rect.height }
 
-export function classifyElements(container: HTMLElement): ElementClassification {,
+export function classifyElements(container: HTMLElement): ElementClassification {;
     const elements = Array.from(container.querySelectorAll('*) as HTMLElement[],'
     
-    return { interactive: elements.filter(el => isInteractiveElement(el,
-        visual: elements.filter(el => hasVisualEffects(el),
-        textual: elements.filter(el => hasTextContent(el),
+    return { interactive: elements.filter(el => isInteractiveElement(el;
+        visual: elements.filter(el => hasVisualEffects(el);
+        textual: elements.filter(el => hasTextContent(el);
         decorative: elements.filter(el = > isDecorativeElement(el)  };
         structural: elements.filter(el => isStructuralElement(el); 
     }
 
-export function isInteractiveElement(element: HTMLElement): boolean { const tagName = element.tagName.toLowerCase(),
+export function isInteractiveElement(element: HTMLElement): boolean { const tagName = element.tagName.toLowerCase();
     return INTERACTIVE_SELECTORS.some(selector => { )
         try {) }
             return element.matches(selector); catch { return false,'}') || element.hasAttribute('onclick' || element.tabIndex >= 0;
 }
 ';'
 
-export function hasVisualEffects(element: HTMLElement): boolean {,
-    const style = window.getComputedStyle(element),
+export function hasVisualEffects(element: HTMLElement): boolean {;
+    const style = window.getComputedStyle(element);
     return style.boxShadow !== 'none' || ','
            style.textShadow !== 'none' ||','
            style.filter !== 'none' ||','
@@ -307,19 +307,19 @@ export function hasVisualEffects(element: HTMLElement): boolean {,
 
 export function hasTextContent(element: HTMLElement): boolean { return (element.textContent?.trim().length || 0) > 0 }
  : undefined';'
-export function isDecorativeElement(element: HTMLElement): boolean {,
+export function isDecorativeElement(element: HTMLElement): boolean {;
     const classNames = element.className.toLowerCase()','
     return classNames.includes('decoration') ||','
            classNames.includes('ornament') ||','
            classNames.includes('visual-flair') ||','
            element.hasAttribute('aria-hidden' }'
 
-export function isStructuralElement(element: HTMLElement): boolean {,
+export function isStructuralElement(element: HTMLElement): boolean {;
     const structuralTags = ['div', 'section', 'article', 'header', 'footer', 'main', 'aside'],
     return structuralTags.includes(element.tagName.toLowerCase() }
 ';'
 
-export function getComplexityLevel(score: number): ComplexityLevel {,
+export function getComplexityLevel(score: number): ComplexityLevel {;
     if(score < COMPLEXITY_SCORE_MAPPING.medium.min) return 'low',
     if(score < COMPLEXITY_SCORE_MAPPING.high.min) return 'medium',
     if(score < COMPLEXITY_SCORE_MAPPING.extreme.min) return 'high',
@@ -328,25 +328,24 @@ export function getComplexityLevel(score: number): ComplexityLevel {,
 export function normalizeScore(value: number, max: number): number { return Math.min(value / max, 1.0) }
 ';'
 
-export function calculateTrend(values: number[]): TrendDirection {,
+export function calculateTrend(values: number[]): TrendDirection {;
     if(values.length < 2) return 'stable',
     ','
 
-    const recent = values.slice(-5),
+    const recent = values.slice(-5);
     if(recent.length < 2) return 'stable',
     
     const trend = recent[recent.length - 1] - recent[0],
-    const variance = calculateVariance(recent),
-
+    const variance = calculateVariance(recent);
     if(variance > 0.05) return 'volatile',
     if(trend > 0.1) return 'increasing',
     if(trend < -0.1) return 'decreasing',
     return 'stable' }
 
-export function calculateVariance(values: number[]): number { if (values.length === 0) return 0,
+export function calculateVariance(values: number[]): number { if (values.length === 0) return 0;
     
     const mean = values.reduce((sum, val) => sum + val, 0) / values.length,
-    const squaredDiffs = values.map(val => Math.pow(val - mean, 2),
+    const squaredDiffs = values.map(val => Math.pow(val - mean, 2);
     return squaredDiffs.reduce((sum, val) => sum + val, 0) / values.length,
 
 export class UIComplexityAnalyzer {
@@ -357,7 +356,7 @@ export class UIComplexityAnalyzer {
     private mutationObserver: MutationObserver;
     private intersectionObserver: IntersectionObserver;
     private analysisTimer?: number,
-    private, config: AnalysisConfig,
+    private, config: AnalysisConfig;
     constructor(config: Partial<AnalysisConfig> = {) {
         this.config = { ...ANALYSIS_CONFIG, ...config,
         
@@ -381,7 +380,7 @@ export class UIComplexityAnalyzer {
         this.mutationObserver = new MutationObserver(() => { 
             if (this.config.enableRealTimeAnalysis) { }
                 this.scheduleComplexityAnalysis(); }
-});
+};
         
         // Intersection Observerで表示要素を監視
         this.intersectionObserver = new IntersectionObserver((entries) => { this.updateVisibilityMetrics(entries) });
@@ -394,7 +393,7 @@ export class UIComplexityAnalyzer {
      */''
     private startObserving()';'
         if (typeof, document !== 'undefined' && document.body) { this.mutationObserver.observe(document.body, {
-                childList: true),
+                childList: true);
                 subtree: true)','
     attributes: true,' }'
 
@@ -413,17 +412,16 @@ export class UIComplexityAnalyzer {
     /**
      * UI複雑度を分析
      */
-    analyzeComplexity(container: HTMLElement = document.body): AnalysisResult | null { if (!container) return null,
+    analyzeComplexity(container: HTMLElement = document.body): AnalysisResult | null { if (!container) return null;
         
-        const startTime = performance.now(),
-        
+        const startTime = performance.now();
         try {
             // 各メトリックを計算
             this.complexityMetrics = {
-                elementCount: this.calculateElementCount(container),
-                interactionCount: this.calculateInteractionCount(container),
-                informationDensity: this.calculateInformationDensity(container),
-                visualComplexity: this.calculateVisualComplexity(container,
+                elementCount: this.calculateElementCount(container);
+                interactionCount: this.calculateInteractionCount(container);
+                informationDensity: this.calculateInformationDensity(container);
+                visualComplexity: this.calculateVisualComplexity(container;
     cognitiveLoad: this.calculateCognitiveLoad(container };
             
             // 総合複雑度スコアを計算
@@ -451,9 +449,8 @@ export class UIComplexityAnalyzer {
      */''
     private calculateElementCount(container: HTMLElement): ElementCountMetric { ''
         const elements = Array.from(container.querySelectorAll('*) as HTMLElement[],'
-        const visibleElements = elements.filter(el => isElementVisible(el),
-        
-        return { total: elements.length,
+        const visibleElements = elements.filter(el => isElementVisible(el);
+        return { total: elements.length;
             visible: visibleElements.length };
             score: normalizeScore(visibleElements.length, this.thresholds.elementCount.extreme); }
         }
@@ -465,9 +462,8 @@ export class UIComplexityAnalyzer {
         const interactiveElements = Array.from()','
             container.querySelectorAll(INTERACTIVE_SELECTORS.join(')) as HTMLElement[],'
         
-        const visibleInteractive = interactiveElements.filter(el => isElementVisible(el),
-        
-        return { total: interactiveElements.length,
+        const visibleInteractive = interactiveElements.filter(el => isElementVisible(el);
+        return { total: interactiveElements.length;
             visible: visibleInteractive.length };
             score: normalizeScore(visibleInteractive.length, this.thresholds.interactionCount.extreme); }
         }
@@ -482,17 +478,17 @@ export class UIComplexityAnalyzer {
         let totalTextLength = 0,
         let visibleArea = 0,
         
-        textElements.forEach(el => { ),
+        textElements.forEach(el => { );
             if (isElementVisible(el) {
     
 }
                 totalTextLength += (el.textContent?.length || 0); }
                 visibleArea += calculateElementArea(el); }
-});
+};
          : undefined
         const density = visibleArea > 0 ? (totalTextLength / visibleArea) * 1000 : 0;
         
-        return { textLength: totalTextLength,
+        return { textLength: totalTextLength;
             visibleArea,
             density };
             score: normalizeScore(density, 10); }
@@ -508,10 +504,10 @@ export class UIComplexityAnalyzer {
         let borderCount = 0,
         let shadowCount = 0,
         
-        elements.forEach(el => { ),
+        elements.forEach(el => { );
             if(!isElementVisible(el) return,
 
-            const style = window.getComputedStyle(el),
+            const style = window.getComputedStyle(el);
             ','
             // 色の多様性
             if(style.color && style.color !== 'rgba(0, 0, 0, 0)) { }'
@@ -532,7 +528,7 @@ export class UIComplexityAnalyzer {
             ';'
             // シャドウの数
             if(style.boxShadow && style.boxShadow !== 'none' { shadowCount++ }'
-        });
+        };
         
         // 総合的な視覚複雑度スコア
         const score = (;
@@ -545,7 +541,7 @@ export class UIComplexityAnalyzer {
         return { colors: colorVariety.size,
             fonts: fontVariety.size,
             borders: borderCount,
-    shadows: shadowCount,;
+    shadows: shadowCount,
             score }
         }
 
@@ -553,10 +549,10 @@ export class UIComplexityAnalyzer {
      * 認知負荷を計算
      */
     private calculateCognitiveLoad(container: HTMLElement): CognitiveLoadMetric { const factors = {
-            hierarchyDepth: this.calculateHierarchyDepth(container),
-            informationTypes: this.countInformationTypes(container),
+            hierarchyDepth: this.calculateHierarchyDepth(container);
+            informationTypes: this.countInformationTypes(container);
             animationCount: this.countAnimations(container,
-    overlayCount: this.countOverlays(container };
+    overlayCount: this.countOverlays(container },
         
         // 認知負荷スコアを計算
         const score = (;
@@ -576,11 +572,11 @@ export class UIComplexityAnalyzer {
     private calculateHierarchyDepth(container: HTMLElement): number { let maxDepth = 0,
         
         const traverse = (element: HTMLElement, depth: number): void => { 
-            maxDepth = Math.max(maxDepth, depth),
-            Array.from(element.children).forEach(child => {),
+            maxDepth = Math.max(maxDepth, depth);
+            Array.from(element.children).forEach(child => {);
                 if (child, instanceof HTMLElement) { }
                     traverse(child, depth + 1); }
-});
+};
         };
         
         traverse(container, 0);
@@ -592,10 +588,10 @@ export class UIComplexityAnalyzer {
      */
     private countInformationTypes(container: HTMLElement): number { let typeCount = 0,
         
-        Object.values(INFORMATION_TYPE_SELECTORS).forEach(selector => { ),
+        Object.values(INFORMATION_TYPE_SELECTORS).forEach(selector => { );
             if (container.querySelector(selector) { }
                 typeCount++; }
-});
+};
         
         return typeCount;
     }
@@ -614,7 +610,7 @@ export class UIComplexityAnalyzer {
         
         OVERLAY_SELECTORS.forEach(selector => { ) }
             overlayCount += container.querySelectorAll(selector).length; }
-        });
+        };
         
         return overlayCount;
     }
@@ -638,7 +634,7 @@ export class UIComplexityAnalyzer {
                 elementCount: metrics.elementCount.score * weights.elementCount,
                 interactionCount: metrics.interactionCount.score * weights.interactionCount,
                 informationDensity: metrics.informationDensity.score * weights.informationDensity,
-    visualComplexity: metrics.visualComplexity.score * weights.visualComplexity };
+    visualComplexity: metrics.visualComplexity.score * weights.visualComplexity },
                 cognitiveLoad: metrics.cognitiveLoad.score * weights.cognitiveLoad 
     }
 
@@ -716,16 +712,16 @@ export class UIComplexityAnalyzer {
         return recommendations.sort((a, b) => {  }
             const priorityOrder = { critical: 4, high: 3, medium: 2, low: 1  }
             return priorityOrder[b.priority] - priorityOrder[a.priority];
-        });
+        };
     }
 
     /**
      * 可視性メトリクスを更新
      */
-    private updateVisibilityMetrics(entries: IntersectionObserverEntry[]): void { entries.forEach(entry => { ),
+    private updateVisibilityMetrics(entries: IntersectionObserverEntry[]): void { entries.forEach(entry => { );
             if (entry.isIntersecting) { }
                 this.scheduleComplexityAnalysis(); }
-});
+};
     }
 
     /**
@@ -737,7 +733,7 @@ export class UIComplexityAnalyzer {
      * 現在のメトリクスを取得
      */
     getCurrentMetrics(): CurrentMetrics { return { ...this.complexityMetrics,
-            overall: this.calculateOverallComplexity() };
+            overall: this.calculateOverallComplexity() },
             lastAnalysis: this.analysisHistory[this.analysisHistory.length - 1]?.timestamp 
     }
 
@@ -754,8 +750,7 @@ export class UIComplexityAnalyzer {
     /**
      * 設定を更新
      */
-    updateConfig(newConfig: Partial<AnalysisConfig>): void { Object.assign(this.config, newConfig),
-        
+    updateConfig(newConfig: Partial<AnalysisConfig>): void { Object.assign(this.config, newConfig);
         if (newConfig.enableRealTimeAnalysis !== undefined) {
         
             if (newConfig.enableRealTimeAnalysis) {
@@ -768,12 +763,11 @@ export class UIComplexityAnalyzer {
     /**
      * 統計情報を取得
      */
-    getStats(): ComplexityStats { const recentAnalyses = this.analysisHistory.slice(-10),
+    getStats(): ComplexityStats { const recentAnalyses = this.analysisHistory.slice(-10);
         const avgComplexity = recentAnalyses.length > 0 ,
             ? recentAnalyses.reduce((sum, analysis) => sum + analysis.overallComplexity.score, 0) / recentAnalyses.length: 0,
         
-        const complexityScores = this.analysisHistory.map(a => a.overallComplexity.score),
-        
+        const complexityScores = this.analysisHistory.map(a => a.overallComplexity.score);
         // 複雑度分布を計算
         const distribution = {
             low: complexityScores.filter(s => s < 0.3).length,
@@ -804,19 +798,18 @@ export class UIComplexityAnalyzer {
                 averageAnalysisTime: recentAnalyses.length > 0,
                     ? recentAnalyses.reduce((sum, analysis) => sum + analysis.analysisTime, 0) / recentAnalyses.length,
                     : 0,
-                maxAnalysisTime: Math.max(...recentAnalyses.map(a = > a.analysisTime)  };
-                minAnalysisTime: Math.min(...recentAnalyses.map(a => a.analysisTime), 
+                maxAnalysisTime: Math.max(...recentAnalyses.map(a = > a.analysisTime)  },
+                minAnalysisTime: Math.min(...recentAnalyses.map(a => a.analysisTime);
     },
             complexityDistribution: distribution,
-    historicalPeaks: peaks.slice(-5) // 最新5件のピーク;
+    historicalPeaks: peaks.slice(-5) // 最新5件のピーク,
         } }
 
     /**
      * 複雑度トレンドを計算
      */
-    calculateComplexityTrend(): TrendDirection { const scores = this.analysisHistory.map(analysis => analysis.overallComplexity.score),
-        return calculateTrend(scores),
-
+    calculateComplexityTrend(): TrendDirection { const scores = this.analysisHistory.map(analysis => analysis.overallComplexity.score);
+        return calculateTrend(scores);
     /**
      * 強制分析実行
      */
@@ -837,18 +830,17 @@ export class UIComplexityAnalyzer {
      * 特定要素の複雑度分析
      */
     analyzeElement(element: HTMLElement): Partial<ComplexityMetrics> { return { elementCount: this.calculateElementCount(element,
-            interactionCount: this.calculateInteractionCount(element),
+            interactionCount: this.calculateInteractionCount(element);
             informationDensity: this.calculateInformationDensity(element,
-    visualComplexity: this.calculateVisualComplexity(element) };
+    visualComplexity: this.calculateVisualComplexity(element) },
             cognitiveLoad: this.calculateCognitiveLoad(element); 
     }
 
     /**
      * クリーンアップ
      */
-    destroy(): void { this.mutationObserver?.disconnect(),
-        this.intersectionObserver?.disconnect(),
-        
+    destroy(): void { this.mutationObserver?.disconnect();
+        this.intersectionObserver?.disconnect();
         if (this.analysisTimer) {
         ','
 

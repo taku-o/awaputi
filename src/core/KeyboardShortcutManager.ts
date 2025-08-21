@@ -1,6 +1,6 @@
 import { getErrorHandler  } from '../utils/ErrorHandler.js';
 
-export interface ShortcutData { keys: string[],
+export interface ShortcutData { keys: string[];
     callback: Function;
     context?: string;
     description?: string,  }
@@ -24,8 +24,7 @@ export class CoreKeyboardShortcutManager {
         this.listeners = new Map();
         
         // デフォルトショートカットを設定
-        this.initializeDefaultShortcuts(),
-        
+        this.initializeDefaultShortcuts();
         // イベントリスナーを設定
 
      }
@@ -85,7 +84,7 @@ export class CoreKeyboardShortcutManager {
 
             if (!nameValidation.isValid) { }'
 
-                throw new Error(`Invalid shortcut name: ${nameValidation.errors.join(', '})`);
+                throw new Error(`Invalid shortcut name: ${nameValidation.errors.join(', '}`);
 
             }
 
@@ -109,13 +108,13 @@ export class CoreKeyboardShortcutManager {
     preventDefault: options.preventDefault !== false),
                 stopPropagation: options.stopPropagation !== false  }';'
 
-            console.log(`Added keyboard shortcut: ${name} (${keys.join(', '}))`);
+            console.log(`Added keyboard shortcut: ${name} (${keys.join(', '})`);
 
             return true;
 
         } catch (error) { getErrorHandler().handleError(error, 'KEYBOARD_ERROR', {''
                 operation: 'addShortcut',
-    name: name),
+    name: name);
                 keys: keys,);
             return false;
     
@@ -126,7 +125,7 @@ export class CoreKeyboardShortcutManager {
         if (this.shortcuts.has(name) {
     }
             this.shortcuts.delete(name); }
-            console.log(`Removed, keyboard shortcut: ${name}`});
+            console.log(`Removed, keyboard shortcut: ${name}`};
             return true;
         }
         return false;
@@ -156,11 +155,9 @@ export class CoreKeyboardShortcutManager {
         if (!this.isEnabled) return,
         
         // アクティブキーを追加
-        this.activeKeys.add(event.code),
-        
+        this.activeKeys.add(event.code);
         // 現在のキーコンビネーションを生成
-        const currentCombo = this.getCurrentKeyCombo(),
-        
+        const currentCombo = this.getCurrentKeyCombo();
         // ショートカットをチェック
         for (const [name, shortcut] of this.shortcuts) {
             if (!shortcut.enabled) continue,
@@ -187,7 +184,7 @@ export class CoreKeyboardShortcutManager {
                     break; // 最初にマッチしたショートカットのみ実行
                 } catch (error) { getErrorHandler().handleError(error, 'KEYBOARD_ERROR', {''
                         operation: 'executeShortcut',
-    shortcut: name),
+    shortcut: name);
                         keyCombo: currentCombo,);
                 }
 }
@@ -245,10 +242,10 @@ export class CoreKeyboardShortcutManager {
 
                 } catch (error) { getErrorHandler().handleError(error, 'KEYBOARD_ERROR', {''
                         operation: 'notifyShortcutTriggered',
-    shortcut: name),
+    shortcut: name);
                         keyCombo: keyCombo,);
                 }
-            });
+            };
         }
     }
     
@@ -288,7 +285,7 @@ export class CoreKeyboardShortcutManager {
      * メニュー処理
      */
     handleMenu() {
-        const currentScene = this.gameEngine.sceneManager.getCurrentScene(),
+        const currentScene = this.gameEngine.sceneManager.getCurrentScene();
         if (currentScene) {''
             if (currentScene.constructor.name === 'GameScene') {
                 // ゲーム中はメインメニューに戻る
@@ -326,7 +323,7 @@ export class CoreKeyboardShortcutManager {
                 accessMethod: 'keyboard_f1',
                 sourceScene: currentScene?.constructor.name || 'unknown', : undefined
     
-                contextual: true // コンテキスト依存ヘルプモード  })'
+                contextual: true // コンテキスト依存ヘルプモード  }'
             // 統一されたHelpSceneに遷移（コンテキスト依存モード）')'
             const success = this.gameEngine.sceneManager.switchScene('help', contextData);
 
@@ -349,7 +346,7 @@ export class CoreKeyboardShortcutManager {
                 accessMethod: 'keyboard_ctrl_h',
                 sourceScene: currentScene?.constructor.name || 'unknown', : undefined
     
-                documentation: true // ドキュメントヘルプモード  })'
+                documentation: true // ドキュメントヘルプモード  }'
             // 統一されたHelpSceneに遷移（ドキュメントモード）')'
             const success = this.gameEngine.sceneManager.switchScene('help', contextData);
 
@@ -369,11 +366,11 @@ export class CoreKeyboardShortcutManager {
     handleDebug() {
 
         if(this.gameEngine.isDebugMode()) {''
-            console.log('Debug info:', {),
+            console.log('Debug info:', {);
                 scene: this.gameEngine.sceneManager.getCurrentScene()?.constructor.name, : undefined
                 performance: this.gameEngine.performanceStats }
                 settings: this.gameEngine.settingsManager?.settings 
-    });
+    };
         }
     }
     
@@ -432,7 +429,7 @@ export class CoreKeyboardShortcutManager {
 
             if(!shortcut.enabled) continue,
 
-            const keyText = shortcut.keys.join(' または '),
+            const keyText = shortcut.keys.join(' または ');
             const description = shortcut.description || name,
 
             ' }'
@@ -447,7 +444,7 @@ export class CoreKeyboardShortcutManager {
 
             } else { }'
 
-                helpSections['その他].push(`${keyText}: ${description}`});'
+                helpSections['その他].push(`${keyText}: ${description}`};'
             }
         }
         
@@ -461,7 +458,7 @@ export class CoreKeyboardShortcutManager {
         return { totalShortcuts: this.shortcuts.size,
             enabledShortcuts: Array.from(this.shortcuts.values().filter(s => s.enabled).length,
             activeKeys: this.activeKeys.size }
-            isEnabled: this.isEnabled };
+            isEnabled: this.isEnabled },
             contexts: [...new Set(Array.from(this.shortcuts.values().map(s => s.context)] 
     }
     
@@ -476,7 +473,7 @@ export class CoreKeyboardShortcutManager {
     /**
      * クリーンアップ
      */'
-    cleanup(): void { this.activeKeys.clear(),
+    cleanup(): void { this.activeKeys.clear();
         this.listeners.clear()','
         document.removeEventListener('keydown', this.handleKeyDown','
         document.removeEventListener('keyup', this.handleKeyUp','

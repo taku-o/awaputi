@@ -4,77 +4,77 @@
  */
 
 // 型定義
-export interface HelpEffectivenessAnalyzer { gameEngine: GameEngine,
+export interface HelpEffectivenessAnalyzer { gameEngine: GameEngine;
     loggingSystem: LoggingSystem;
 
 export interface GameEngine { [key: string]: any;
 
 export interface LoggingSystem { error(component: string, message: string, error?: any): void;
 
-export interface AnalyzerConfig { effectivenessThreshold: number,
+export interface AnalyzerConfig { effectivenessThreshold: number;
     trendAnalysisPeriod: number;
     improvementThreshold: number;
 
-export interface AnalysisData { usage: UsageAnalysis,
+export interface AnalysisData { usage: UsageAnalysis;
     engagement: EngagementAnalysis;
     satisfaction: SatisfactionAnalysis;
 
 export interface UsageAnalysis { summary?: UsageSummary;
 
-export interface UsageSummary { totalSessions: number,
+export interface UsageSummary { totalSessions: number;
     averageSessionDuration: number;
     pageViewsPerSession: number;
     searchUsageRate: number;
 
 export interface EngagementAnalysis { summary?: EngagementSummary;
 
-export interface EngagementSummary { averageTimePerTopic: number,
+export interface EngagementSummary { averageTimePerTopic: number;
     interactionRate: number;
     searchSuccessRate: number;
 
 export interface SatisfactionAnalysis { summary?: SatisfactionSummary;
 
-export interface SatisfactionSummary { averageRating: number,
+export interface SatisfactionSummary { averageRating: number;
     helpfulnessRate: number;
     totalFeedbacks: number;
 
-export interface EffectivenessScore { overall: number,
+export interface EffectivenessScore { overall: number;
     breakdown: ScoreBreakdown;
     classification: EffectivenessClassification;
     benchmark: BenchmarkComparison;
 
-export interface ScoreBreakdown { usage: ScoreComponent,
+export interface ScoreBreakdown { usage: ScoreComponent;
     engagement: ScoreComponent;
     satisfaction: ScoreComponent;
 
-export interface ScoreComponent { score: number,
+export interface ScoreComponent { score: number;
     weight: number;
     contribution: number;
 
 export type EffectivenessClassification = 'excellent' | 'good' | 'fair' | 'poor' | 'critical' | 'insufficient_data';
 
-export interface BenchmarkComparison { industry_average: number,
+export interface BenchmarkComparison { industry_average: number;
     good_practice: number;
     excellent: number;
 
-export interface TrendAnalysis { usage: UsageTrends,
+export interface TrendAnalysis { usage: UsageTrends;
     satisfaction: SatisfactionTrends;
     content: ContentTrends;
     predictions: TrendPredictions;
 
-export interface UsageTrends { sessionGrowth: TrendData,
+export interface UsageTrends { sessionGrowth: TrendData;
     durationTrend: TrendData;
     searchTrend: TrendData;
 
-export interface SatisfactionTrends { ratingTrend: TrendData,
+export interface SatisfactionTrends { ratingTrend: TrendData;
     helpfulnessTrend: TrendData;
     feedbackVolumeTrend: TrendData;
 
-export interface ContentTrends { popularityTrend: TrendData,
+export interface ContentTrends { popularityTrend: TrendData;
     accessPatternTrend: TrendData;
     completionTrend: TrendData;
 
-export interface TrendPredictions { usagePrediction: PredictionData,
+export interface TrendPredictions { usagePrediction: PredictionData;
     satisfactionPrediction: PredictionData;
     riskAssessment: RiskAssessment;
 ';'
@@ -96,7 +96,7 @@ export interface RiskAssessment {;
     level: 'low' | 'medium' | 'high';
     factors: string[];
 
-export interface Recommendation { type: string,
+export interface Recommendation { type: string;
     category: string;
     priority: 'high' | 'medium' | 'low';
     title: string;
@@ -116,15 +116,15 @@ export interface InteractionData { helpful?: boolean,
     timestamp?: number;
     [key: string]: any;
 
-export interface RawData { sessions: SessionData[],
+export interface RawData { sessions: SessionData[];
     interactions: [string, InteractionData][] }
 
-export interface AnalysisResults { usage: UsageAnalysis,
+export interface AnalysisResults { usage: UsageAnalysis;
     engagement: EngagementAnalysis;
     satisfaction: SatisfactionAnalysis;
     effectivenessScore: EffectivenessScore;
 
-export interface AnalysisStats { cacheSize: number,
+export interface AnalysisStats { cacheSize: number;
     lastAnalysisTime: number;
     config: AnalyzerConfig;
 
@@ -143,7 +143,7 @@ export class HelpDataAnalyzer {
         
         // 分析設定
         this.config = {
-            effectivenessThreshold: 0.7;  // 効果性判定閾値（70%）;
+            effectivenessThreshold: 0.7,  // 効果性判定閾値（70%）;
             trendAnalysisPeriod: 30,      // トレンド分析期間（日）
     }
             improvementThreshold: 0.1     // 改善提案閾値（10%） 
@@ -165,7 +165,7 @@ export class HelpDataAnalyzer {
             const weights = {
                 usage: 0.25,
                 engagement: 0.35,
-    satisfaction: 0.40 };
+    satisfaction: 0.40 },
             // 各指標のスコア計算（0-1の範囲）
             const usageScore = this.calculateUsageScore(analysisData.usage);
             const engagementScore = this.calculateEngagementScore(analysisData.engagement);
@@ -182,12 +182,12 @@ export class HelpDataAnalyzer {
                 breakdown: {
                     usage: {
                         score: usageScore,
-    weight: weights.usage };
+    weight: weights.usage },
                         contribution: usageScore * weights.usage 
     };
                     engagement: { score: engagementScore,
                         weight: weights.engagement,
-    contribution: engagementScore * weights.engagement };
+    contribution: engagementScore * weights.engagement },
                     satisfaction: { score: satisfactionScore,
                         weight: weights.satisfaction contribution: satisfactionScore * weights.satisfaction 
     };
@@ -305,9 +305,9 @@ export class HelpDataAnalyzer {
     private getBenchmarkComparison(score: number): BenchmarkComparison { const benchmarks = {
             industry_average: 0.65,
             good_practice: 0.75,
-    excellent: 0.85 };
+    excellent: 0.85 },
         return { industry_average: score - benchmarks.industry_average,
-            good_practice: score - benchmarks.good_practice };
+            good_practice: score - benchmarks.good_practice },
             excellent: score - benchmarks.excellent 
     }
     
@@ -322,12 +322,12 @@ export class HelpDataAnalyzer {
                 usage: this.calculateUsageTrends(rawData.sessions),
                 satisfaction: this.calculateSatisfactionTrends(rawData.interactions),
                 content: this.calculateContentTrends(rawData.sessions,
-    predictions: this.generateTrendPredictions(rawData };
+    predictions: this.generateTrendPredictions(rawData },
             
             return, trends;
 
         } catch (error) {
-            this.loggingSystem.error('HelpDataAnalyzer', 'Failed to analyze trends', error),
+            this.loggingSystem.error('HelpDataAnalyzer', 'Failed to analyze trends', error);
             return null,
     
     /**
@@ -340,7 +340,7 @@ export class HelpDataAnalyzer {
         
         const trends: UsageTrends = { sessionGrowth: this.calculateSessionGrowthTrend(sessions,
             durationTrend: this.calculateDurationTrend(sessions,
-    searchTrend: this.calculateSearchTrend(sessions  };
+    searchTrend: this.calculateSearchTrend(sessions  },
         
         return trends
     }
@@ -355,7 +355,7 @@ export class HelpDataAnalyzer {
         
         const trends: SatisfactionTrends = { ratingTrend: this.calculateRatingTrend(interactions,
             helpfulnessTrend: this.calculateHelpfulnessTrend(interactions,
-    feedbackVolumeTrend: this.calculateFeedbackVolumeTrend(interactions  };
+    feedbackVolumeTrend: this.calculateFeedbackVolumeTrend(interactions  },
         
         return trends
     }
@@ -370,7 +370,7 @@ export class HelpDataAnalyzer {
         
         const trends: ContentTrends = { popularityTrend: this.calculateContentPopularityTrend(sessions,
             accessPatternTrend: this.calculateAccessPatternTrend(sessions,
-    completionTrend: this.calculateCompletionTrend(sessions  };
+    completionTrend: this.calculateCompletionTrend(sessions  },
         
         return trends
     }
@@ -384,7 +384,7 @@ export class HelpDataAnalyzer {
             const predictions: TrendPredictions = {
                 usagePrediction: this.predictUsageTrend(rawData.sessions),
                 satisfactionPrediction: this.predictSatisfactionTrend(rawData.interactions,
-    riskAssessment: this.assessTrendRisks(rawData };
+    riskAssessment: this.assessTrendRisks(rawData },
             
             return, predictions;
 
@@ -401,16 +401,13 @@ export class HelpDataAnalyzer {
         
         try {
             // 使用率関連の提案
-            recommendations.push(...this.generateUsageRecommendations(analysisResults.usage),
-            
+            recommendations.push(...this.generateUsageRecommendations(analysisResults.usage);
             // エンゲージメント関連の提案
-            recommendations.push(...this.generateEngagementRecommendations(analysisResults.engagement),
-            
+            recommendations.push(...this.generateEngagementRecommendations(analysisResults.engagement);
             // 満足度関連の提案
-            recommendations.push(...this.generateSatisfactionRecommendations(analysisResults.satisfaction),
-            
+            recommendations.push(...this.generateSatisfactionRecommendations(analysisResults.satisfaction);
             // 効果性スコアに基づく総合提案
-            recommendations.push(...this.generateOverallRecommendations(analysisResults.effectivenessScore),
+            recommendations.push(...this.generateOverallRecommendations(analysisResults.effectivenessScore);
             // 優先度順にソート
             recommendations.sort((a, b) => { }'
 
@@ -420,7 +417,7 @@ export class HelpDataAnalyzer {
             return recommendations.slice(0, 10); // 上位10個の提案を返す
 
         } catch (error) {
-            this.loggingSystem.error('HelpDataAnalyzer', 'Failed to generate recommendations', error),
+            this.loggingSystem.error('HelpDataAnalyzer', 'Failed to generate recommendations', error);
             return [],
     
     /**
@@ -540,13 +537,13 @@ export class HelpDataAnalyzer {
 
                 title: '包括的ヘルプシステム改善'),' }'
 
-                description: `総合効果性スコア（${(effectivenessScore.overall * 100}.toFixed(1'}'%）が目標値を下回っています`;
+                description: `総合効果性スコア（${(effectivenessScore.overall * 100}.toFixed(1'}'%）が目標値を下回っています`,
                 actions: [';'
                     'ユーザー体験の全面的見直し',
                     'データ分析に基づく改善計画の策定',]';'
                     '段階的改善の実施とモニタリング']';'
                 ],
-                expectedImpact: 'high';
+                expectedImpact: 'high',
             } }
         
         return recommendations;
@@ -606,7 +603,7 @@ export class HelpDataAnalyzer {
      * 分析統計の取得
      * @returns 分析統計
      */
-    getAnalysisStats(): AnalysisStats { return { cacheSize: this.analysisCache.size };
+    getAnalysisStats(): AnalysisStats { return { cacheSize: this.analysisCache.size },
             lastAnalysisTime: this.lastAnalysisTime }
             config: { ...this.config }
     

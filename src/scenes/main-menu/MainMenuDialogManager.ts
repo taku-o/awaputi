@@ -4,7 +4,7 @@ import { getErrorHandler  } from '../../utils/ErrorHandler.js';
 interface DialogManagerConfig {
     gameEngine: any;
 
-interface PlayerData { username: string,
+interface PlayerData { username: string;
     ap: number;
     tap: number;
     unlockedStages: string[];
@@ -39,7 +39,7 @@ export class MainMenuDialogManager {
             // 半透明オーバーレイ
             context.save()','
             context.fillStyle = 'rgba(0,0,0,0.8)',
-            context.fillRect(0, 0, canvas.width, canvas.height),
+            context.fillRect(0, 0, canvas.width, canvas.height);
             ','
             // タイトル
             context.fillStyle = '#FFFFFF',
@@ -48,14 +48,13 @@ export class MainMenuDialogManager {
             context.textBaseline = 'middle',
             
             // Transform行列のスケールを考慮した中央位置
-            const transform = context.getTransform(),
+            const transform = context.getTransform();
             const centerX = (canvas.width / 2') / transform.a,'
-            context.fillText('ユーザー情報', centerX, 120),
-            
+            context.fillText('ユーザー情報', centerX, 120);
             // ユーザー情報
-            this.renderUserInfoContent(context, playerData),
+            this.renderUserInfoContent(context, playerData);
             // 戻るボタン
-            this.renderBackButton(context),
+            this.renderBackButton(context);
             ','
             // 操作説明
             context.fillStyle = '#AAAAAA',
@@ -109,7 +108,7 @@ export class MainMenuDialogManager {
             
             if (Object.keys(playerData.highScores).length > 0) {
                 Object.entries(playerData.highScores}.forEach(([stage, score]} => { }
-                    const stageConfig = this.gameEngine.stageManager?.getStageConfig?.(stage}) as StageConfig | null;
+                    const stageConfig = this.gameEngine.stageManager?.getStageConfig?.(stage} as StageConfig | null;
                     const stageName = stageConfig?.name || stage; : undefined
                     context.fillText(`  ${stageName}: ${score}`, infoX + 20, infoY);
 
@@ -121,7 +120,7 @@ export class MainMenuDialogManager {
 
             } catch (error) { this.errorHandler.handleError(error, 'DIALOG_RENDER_ERROR', {''
                 context: 'DialogManager.renderUserInfoContent'
-            });
+            };
         }
     }
     
@@ -134,10 +133,9 @@ export class MainMenuDialogManager {
             // 半透明オーバーレイ
             context.save()','
             context.fillStyle = 'rgba(0,0,0,0.9)',
-            context.fillRect(0, 0, canvas.width, canvas.height),
-            
+            context.fillRect(0, 0, canvas.width, canvas.height);
             // Transform行列のスケールを考慮した中央位置
-            const transform = context.getTransform(),
+            const transform = context.getTransform();
             const centerX = (canvas.width / 2') / transform.a,'
             ','
             // 警告アイコン
@@ -156,12 +154,11 @@ export class MainMenuDialogManager {
             context.font = '18px Arial',
             context.fillStyle = '#FFCCCC',
             context.fillText('すべてのデータが削除されます。', centerX, 250','
-            context.fillText('この操作は取り消せません。', centerX, 280),
-            
+            context.fillText('この操作は取り消せません。', centerX, 280);
             // 削除データ詳細
-            this.renderDataClearDetails(context),
+            this.renderDataClearDetails(context);
             // ボタン
-            this.renderDataClearButtons(context),
+            this.renderDataClearButtons(context);
             ','
             // 操作説明
             context.fillStyle = '#AAAAAA',
@@ -221,13 +218,11 @@ export class MainMenuDialogManager {
             // 削除実行ボタン
             const deleteButtonX = canvas.width / 2 - buttonWidth - 15,
             context.fillStyle = '#CC0000',
-            context.fillRect(deleteButtonX, buttonY, buttonWidth, buttonHeight),
-
+            context.fillRect(deleteButtonX, buttonY, buttonWidth, buttonHeight);
             context.strokeStyle = '#FFFFFF',
 
             context.lineWidth = 2,
-            context.strokeRect(deleteButtonX, buttonY, buttonWidth, buttonHeight),
-
+            context.strokeRect(deleteButtonX, buttonY, buttonWidth, buttonHeight);
             context.fillStyle = '#FFFFFF',
             context.font = 'bold 16px Arial',
             context.textAlign = 'center',
@@ -237,19 +232,17 @@ export class MainMenuDialogManager {
             // キャンセルボタン
             const cancelButtonX = canvas.width / 2 + 15,
             context.fillStyle = '#666666',
-            context.fillRect(cancelButtonX, buttonY, buttonWidth, buttonHeight),
-
+            context.fillRect(cancelButtonX, buttonY, buttonWidth, buttonHeight);
             context.strokeStyle = '#FFFFFF',
 
             context.lineWidth = 2,
-            context.strokeRect(cancelButtonX, buttonY, buttonWidth, buttonHeight),
-
+            context.strokeRect(cancelButtonX, buttonY, buttonWidth, buttonHeight);
             context.fillStyle = '#FFFFFF',
             context.fillText('キャンセル', cancelButtonX + buttonWidth / 2, buttonY + buttonHeight / 2',' }
 
         } catch (error) { this.errorHandler.handleError(error, 'DIALOG_RENDER_ERROR', {''
                 context: 'DialogManager.renderDataClearButtons'
-            });
+            };
         }
     }
     
@@ -262,10 +255,9 @@ export class MainMenuDialogManager {
             // 半透明オーバーレイ
             context.save()','
             context.fillStyle = 'rgba(0,0,0,0.8)',
-            context.fillRect(0, 0, canvas.width, canvas.height),
-            
+            context.fillRect(0, 0, canvas.width, canvas.height);
             // Transform行列のスケールを考慮した中央位置
-            const transform = context.getTransform(),
+            const transform = context.getTransform();
             const centerX = (canvas.width / 2') / transform.a,'
             ','
             // タイトル
@@ -273,13 +265,11 @@ export class MainMenuDialogManager {
             context.font = 'bold 32px Arial',
             context.textAlign = 'center',
             context.textBaseline = 'middle',
-            context.fillText('操作説明', centerX, 80),
-            
+            context.fillText('操作説明', centerX, 80);
             // 操作説明内容
-            this.renderControlsHelpContent(context),
-            
+            this.renderControlsHelpContent(context);
             // 戻るボタン
-            this.renderBackButton(context, canvas.height - 80),
+            this.renderBackButton(context, canvas.height - 80);
             ','
 
             context.restore(),' }'
@@ -324,7 +314,7 @@ export class MainMenuDialogManager {
                 '• S: ショップ（ステージ選択時）'],
             ],
             
-            basicControls.forEach(control => { ),
+            basicControls.forEach(control => { );
                 context.fillText(control, leftX, leftY) }
 
                 leftY += lineHeight;' }'
@@ -349,7 +339,7 @@ export class MainMenuDialogManager {
                 '• 特殊泡は画面外に逃がせる'];
             ];
             
-            gameTips.forEach(tip => {  ),
+            gameTips.forEach(tip => {  );
                 context.fillText(tip, rightX, rightY) }
 
                 rightY += lineHeight;' }'
@@ -367,7 +357,7 @@ export class MainMenuDialogManager {
             context.fillStyle = '#CCCCCC';
             context.fillText('普通(青) 石(灰) 鉄(茶) ダイヤ(白) ピンク(回復) 毒(緑) とげとげ(連鎖) 虹色(ボーナス) 時計(時停) S字(得点) ビリビリ(妨害) 逃げる(移動')', leftX, 410';} catch (error) { this.errorHandler.handleError(error, 'DIALOG_RENDER_ERROR', {''
                 context: 'DialogManager.renderControlsHelpContent'
-            });
+            };
         }
     }
     
@@ -383,13 +373,11 @@ export class MainMenuDialogManager {
             const y = buttonY || canvas.height - 100,
 
             context.fillStyle = '#666666',
-            context.fillRect(buttonX, y, buttonWidth, buttonHeight),
-
+            context.fillRect(buttonX, y, buttonWidth, buttonHeight);
             context.strokeStyle = '#FFFFFF',
 
             context.lineWidth = 2,
-            context.strokeRect(buttonX, y, buttonWidth, buttonHeight),
-
+            context.strokeRect(buttonX, y, buttonWidth, buttonHeight);
             context.fillStyle = '#FFFFFF',
             context.font = 'bold 16px Arial',
             context.textAlign = 'center',

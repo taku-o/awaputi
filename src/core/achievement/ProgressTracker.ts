@@ -9,11 +9,11 @@ import { Achievement, AchievementProgressResult  } from '../../types/game.js';
 
 interface ProgressData { [key: string]: any;
 
-interface ProgressHistoryEntry { timestamp: number,
+interface ProgressHistoryEntry { timestamp: number;
     eventType: string;
     data: any;
 
-interface EventListener { event: string,
+interface EventListener { event: string;
     callback: (data: any) => void 
     }
 
@@ -22,7 +22,7 @@ export class ProgressTracker {
     private unlockedAchievements: Set<string>;
     private progressHistory: ProgressHistoryEntry[];
     private eventListeners: EventListener[];
-    private readonly historyLimit: number = 1000,
+    private readonly historyLimit: number = 1000;
 
     constructor() { }
         this.progressData = {};
@@ -37,28 +37,28 @@ export class ProgressTracker {
      */
     private initializeDefaultProgress(): void { this.progressData = {
             // スコア関連
-            totalScore: 0;
+            totalScore: 0,
             highScore: 0,
             scoresAchieved: [],
             // バブル関連
            , bubblesPopped: 0 }
-            bubblesPoppedByType: {};
-            comboCount: 0;
-            maxCombo: 0;
-            specialBubblesPopped: 0;
+            bubblesPoppedByType: {},
+            comboCount: 0,
+            maxCombo: 0,
+            specialBubblesPopped: 0,
             // ゲームプレイ関連
-            gamesPlayed: 0;
-            gamesWon: 0;
-            timePlayed: 0;
-            stagesCleared: 0;
-            perfectClears: 0;
+            gamesPlayed: 0,
+            gamesWon: 0,
+            timePlayed: 0,
+            stagesCleared: 0,
+            perfectClears: 0,
             // アイテム関連
             itemsUsed: 0,
-    itemsUsedByType: {};
+    itemsUsedByType: {},
             // その他の統計
-            achievementsUnlocked: 0;
+            achievementsUnlocked: 0,
             lastPlayedDate: null,
-    streakDays: 0;
+    streakDays: 0,
         } }
 
     /**
@@ -70,7 +70,7 @@ export class ProgressTracker {
      * イベントを発火
      */
     private fireEvent(event: string, data: any): void { this.eventListeners
-            .filter(listener => listener.event === event),
+            .filter(listener => listener.event === event);
             .forEach(listener => listener.callback(data) }
     }
 
@@ -78,36 +78,30 @@ export class ProgressTracker {
      * 進捗を更新
      */
     updateProgress(eventType: string, data: any): void { // 履歴に追加
-        this.addToHistory(eventType, data),
+        this.addToHistory(eventType, data);
         // イベントタイプに応じて進捗データを更新
         switch(eventType) {
 
             case 'bubblePopped':','
-                this.updateBubbleProgress(data),
-
+                this.updateBubbleProgress(data);
                 break,
             case 'scoreUpdated':','
-                this.updateScoreProgress(data),
-
+                this.updateScoreProgress(data);
                 break,
             case 'gameStarted':','
-                this.updateGameProgress(data),
-
+                this.updateGameProgress(data);
                 break,
             case 'gameEnded':','
-                this.updateGameEndProgress(data),
-
+                this.updateGameEndProgress(data);
                 break,
             case 'itemUsed':','
-                this.updateItemProgress(data),
-
+                this.updateItemProgress(data);
                 break,
             case 'stageCleared':','
-                this.updateStageProgress(data),
-
+                this.updateStageProgress(data);
                 break,
             case 'comboAchieved':,
-                this.updateComboProgress(data),
+                this.updateComboProgress(data);
                 break,
             default:','
                 // カスタムイベントとして処理
@@ -147,8 +141,7 @@ export class ProgressTracker {
             
             if (data.totalScore !== undefined) {
             
-                this.progressData.highScore = Math.max(this.progressData.highScore || 0, data.totalScore),
-                
+                this.progressData.highScore = Math.max(this.progressData.highScore || 0, data.totalScore);
                 // スコア達成履歴に追加
                 if (!this.progressData.scoresAchieved.includes(data.totalScore) {
     
@@ -221,11 +214,10 @@ export class ProgressTracker {
     evaluateAchievementCondition(achievement: Achievement): AchievementProgressResult | null { if (!achievement.condition) return null,
 
         try {
-            const result = this.evaluateCondition(achievement.condition),
-            const progress = this.calculateProgress(achievement.condition),
-            
+            const result = this.evaluateCondition(achievement.condition);
+            const progress = this.calculateProgress(achievement.condition);
             return { isComplete: result,
-                progress: progress,;
+                progress: progress,
                 achievementId: achievement.id 
     } catch (error) {
             console.error(`Error evaluating achievement ${achievement.id}:`, error);
@@ -238,22 +230,22 @@ export class ProgressTracker {
         switch(condition.type) {
 
             case 'score':','
-                return this.evaluateScoreCondition(condition),
+                return this.evaluateScoreCondition(condition);
             case 'bubbles':','
-                return this.evaluateBubblesCondition(condition),
+                return this.evaluateBubblesCondition(condition);
             case 'games':','
-                return this.evaluateGamesCondition(condition),
+                return this.evaluateGamesCondition(condition);
             case 'combo':','
-                return this.evaluateComboCondition(condition),
+                return this.evaluateComboCondition(condition);
             case 'time':','
-                return this.evaluateTimeCondition(condition),
+                return this.evaluateTimeCondition(condition);
             case 'items':','
-                return this.evaluateItemsCondition(condition),
+                return this.evaluateItemsCondition(condition);
             case 'stages':','
-                return this.evaluateStagesCondition(condition),
+                return this.evaluateStagesCondition(condition);
             case 'composite':,
                 return this.evaluateCompositeCondition(condition) }
-            default: return false;
+            default: return false,
 
     /**
      * スコア条件を評価
@@ -383,14 +375,14 @@ export class ProgressTracker {
      * 実績を解除
      */
     unlockAchievement(achievementId: string, achievement: Achievement): void { if (!this.unlockedAchievements.has(achievementId) {
-            this.unlockedAchievements.add(achievementId),
+            this.unlockedAchievements.add(achievementId);
             this.progressData.achievementsUnlocked = (this.progressData.achievementsUnlocked || 0') + 1,'
             ','
             // 実績解除イベントを発火
             this.fireEvent('achievementUnlocked', {
-                achievementId),
+                achievementId);
                 achievement,
-                timestamp: Date.now(  }));
+                timestamp: Date.now(  }),
         }
     }
 
@@ -416,8 +408,8 @@ export class ProgressTracker {
     /**
      * 進捗をリセット
      */
-    resetProgress(): void { this.initializeDefaultProgress(),
-        this.unlockedAchievements.clear(),
+    resetProgress(): void { this.initializeDefaultProgress();
+        this.unlockedAchievements.clear();
         this.progressHistory = [];
         this.progressData.achievementsUnlocked = 0 }
 
@@ -429,8 +421,8 @@ export class ProgressTracker {
     /**
      * 履歴に追加
      */
-    private addToHistory(eventType: string, data: any): void { this.progressHistory.push({),
-            timestamp: Date.now(),
+    private addToHistory(eventType: string, data: any): void { this.progressHistory.push({);
+            timestamp: Date.now();
             eventType,
             data,
 

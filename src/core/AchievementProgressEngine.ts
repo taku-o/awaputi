@@ -6,7 +6,7 @@ interface ConditionEvaluator { (value: unknown, condition: EvaluationCondition):
 
 interface Validator { (value: unknown, ...args: unknown[]): boolean;
 
-interface PerformanceStats { calculationCount: number,
+interface PerformanceStats { calculationCount: number;
     totalCalculationTime: number;
     averageCalculationTime: number;
     errorCount: number;
@@ -16,7 +16,7 @@ interface CalculationContext { isConsecutive?: boolean,
     milestones?: Milestone[];
     dataType?: string;
 
-interface EvaluationCondition { type: string,
+interface EvaluationCondition { type: string;
     field?: string;
     target?: unknown;
     min?: number;
@@ -31,18 +31,18 @@ interface EvaluationCondition { type: string,
 
 interface SubCondition { weight?: number;
 
-interface Milestone { id: string,
+interface Milestone { id: string;
     name: string;
     percentage: number;
     reward?: unknown;
     achieved?: boolean,  }
 
-interface ProgressResult { progress: number,
+interface ProgressResult { progress: number;
     percentage: number;
     milestones: Milestone[];
     isComplete: boolean;
 
-interface ConditionSet { conditions: EvaluationCondition[],
+interface ConditionSet { conditions: EvaluationCondition[];
     operator: 'AND' | 'OR' | 'XOR' | 'NOT' }
 
 interface AchievementDefinition { target?: number;
@@ -55,14 +55,15 @@ interface DiagnosticsInfo { performance: PerformanceStats & {
         registeredCalculator,s: number;
         registeredEvaluators: number;
     registeredValidators: number;;
-    registrations: { calculators: string[],
-        evaluators: string[],
-    validators: string[],;
-    memoryUsage: { calculators: number,
-        evaluators: number,
-        validators: number,
-    milestoneTrackers: number,
-
+    registrations: { calculators: string[];
+        evaluators: string[];
+    validators: string[];
+    memoryUsage: { calculators: number;
+        evaluators: number;
+        validators: number;
+    milestoneTrackers: number;
+    milestoneTrackers: number;
+        };
 /**
  * 実績進捗計算エンジンクラス
  */
@@ -84,8 +85,8 @@ export class AchievementProgressEngine {
         
         // パフォーマンス統計
         this.performanceStats = {
-            calculationCount: 0,
-            totalCalculationTime: 0,
+            calculationCount: 0;
+            totalCalculationTime: 0;
     averageCalculationTime: 0 }
             errorCount: 0 
     };
@@ -95,7 +96,7 @@ export class AchievementProgressEngine {
     /**
      * エンジンを初期化
      */
-    private initialize(): void { this.registerDefaultCalculators(),
+    private initialize(): void { this.registerDefaultCalculators();
         this.registerDefaultValidators();
         this.registerDefaultEvaluators()';'
         console.log('Achievement, Progress Engine, initialized') }'
@@ -104,29 +105,29 @@ export class AchievementProgressEngine {
      * デフォルトの進捗計算機を登録'
      */''
     private registerDefaultCalculators()';'
-        this.calculators.set('cumulative', { ),
+        this.calculators.set('cumulative', { );
             calculate: (current: number, increment: unknown, target: number): number => { 
                 const incrementValue = Number(increment) || 0  }
                 return Math.min(current + incrementValue, target);;
             getPercentage: (current: number, target: number): number => { return target > 0 ? (current / target) * 100 : 0,'}');
         ';'
         // 最大値型進捗計算
-        this.calculators.set('maximum', { ),
+        this.calculators.set('maximum', { );
             calculate: (current: number, newValue: unknown, target: number): number => { 
                 const value = Number(newValue) || 0  }
                 return Math.max(current, value);;
             getPercentage: (current: number, target: number): number => { return target > 0 ? (current / target) * 100 : 0,'}');
         ';'
         // 連続型進捗計算
-        this.calculators.set('consecutive', { ),
+        this.calculators.set('consecutive', { );
             calculate: (current: number, newValue: unknown, target: number, context?: CalculationContext): number => { 
                 if (context && context.isConsecutive) { }
                     return Math.min(current + 1, target); else { return 0, // 連続が途切れた場合はリセット }
             },
-            getPercentage: (current: number, target: number): number => { return target > 0 ? (current / target) * 100 : 0 }'}');
+            getPercentage: (current: number, target: number): number => { return target > 0 ? (current / target) * 100 : 0 }'}'),
         ';'
         // 条件達成型進捗計算
-        this.calculators.set('conditional', { ),
+        this.calculators.set('conditional', { );
             calculate: (current: number, conditionsMet: unknown, target: number): number => { 
                 if (Array.isArray(conditionsMet) {  }
                     return conditionsMet.length;
@@ -135,7 +136,7 @@ export class AchievementProgressEngine {
             getPercentage: (current: number, target: number): number => { return target > 0 ? (current / target) * 100 : 0,'}');
         ';'
         // 複合型進捗計算
-        this.calculators.set('composite', { ),
+        this.calculators.set('composite', { );
             calculate: (current: number, data: unknown, target: number, context?: CalculationContext): number => { 
                 if (!context || !context.subConditions) return current;
                 
@@ -176,14 +177,14 @@ export class AchievementProgressEngine {
         }');'
         ';'
         // 時間ベース条件
-        this.conditionEvaluators.set('time_window', (value, condition) => {  const now = Date.now(),
+        this.conditionEvaluators.set('time_window', (value, condition) => {  const now = Date.now();
             const timeWindow = condition.windowMs || 24 * 60 * 60 * 1000, // デフォルト24時間 }
             return (now - value) <= timeWindow; }'
 
         }');'
 
-        this.conditionEvaluators.set('date_range', (value, condition) => {  const date = new Date(value),
-            const startDate = new Date(condition.startDate),
+        this.conditionEvaluators.set('date_range', (value, condition) => {  const date = new Date(value);
+            const startDate = new Date(condition.startDate);
             const endDate = new Date(condition.endDate) }
 
             return date >= startDate && date <= endDate; }'
@@ -303,14 +304,13 @@ export class AchievementProgressEngine {
     /**
      * 進捗を計算
      */
-    public calculateProgress(achievementType: string, currentProgress: number, newData: unknown, targetValue: number, context: CalculationContext = {}): ProgressResult { const startTime = performance.now(),
-        
+    public calculateProgress(achievementType: string, currentProgress: number, newData: unknown, targetValue: number, context: CalculationContext = {}: ProgressResult { const startTime = performance.now();
         try {
             this.performanceStats.calculationCount++,
             
-            const calculator = this.calculators.get(achievementType),
+            const calculator = this.calculators.get(achievementType);
             if (!calculator) { }
-                throw new Error(`Unknown, achievement type: ${achievementType}`});
+                throw new Error(`Unknown, achievement type: ${achievementType}`};
             }
             
             // 進捗データを検証
@@ -329,11 +329,11 @@ export class AchievementProgressEngine {
             this.updatePerformanceStats(endTime - startTime);
             
             return { progress: newProgress,
-                percentage: calculator.getPercentage(newProgress, targetValue),
-                milestones: milestones,;
+                percentage: calculator.getPercentage(newProgress, targetValue);
+                milestones: milestones,
                 isComplete: newProgress >= targetValue 
     } catch (error) { this.performanceStats.errorCount++,
-            console.error('Progress calculation error:', error),
+            console.error('Progress calculation error:', error);
             throw error }
     }
     
@@ -341,9 +341,9 @@ export class AchievementProgressEngine {
      * 条件を評価
      */
     public evaluateCondition(data: unknown, condition: EvaluationCondition): boolean { try {
-            const evaluator = this.conditionEvaluators.get(condition.type),
+            const evaluator = this.conditionEvaluators.get(condition.type);
             if (!evaluator) { }
-                console.warn(`Unknown, condition type: ${condition.type}`});
+                console.warn(`Unknown, condition type: ${condition.type}`};
                 return false;
             }
             
@@ -353,7 +353,7 @@ export class AchievementProgressEngine {
             return evaluator(value, condition);
 
         } catch (error) {
-            console.error('Condition evaluation error:', error),
+            console.error('Condition evaluation error:', error);
             return false,
     
     /**
@@ -372,9 +372,9 @@ export class AchievementProgressEngine {
             switch(conditionSet.operator) {
 
                 case 'AND':','
-                    return results.every(result => result === true),
+                    return results.every(result => result === true);
                 case 'OR':','
-                    return results.some(result => result === true),
+                    return results.some(result => result === true);
                 case 'XOR':','
                     return results.filter(result => result === true).length === 1,
                 case 'NOT':,
@@ -385,7 +385,7 @@ export class AchievementProgressEngine {
                     return results.every(result => result === true); // デフォルトはAND' }'
 
             } catch (error) {
-            console.error('Complex condition evaluation error:', error),
+            console.error('Complex condition evaluation error:', error);
             return false,
     
     /**
@@ -427,7 +427,7 @@ export class AchievementProgressEngine {
             const dataType = context.dataType || 'number',
             const validator = this.validators.get(dataType) }
             if (validator && !validator(newData) { }
-                throw new Error(`Invalid, new data, for type: ${dataType}`});
+                throw new Error(`Invalid, new data, for type: ${dataType}`};
             }
 }
     
@@ -439,7 +439,7 @@ export class AchievementProgressEngine {
             throw new Error('Invalid, progress calculation, result' }'
         
         if (result > targetValue * 1.1) { // 10%のマージンを許可 }
-            console.warn(`Progress, result ${result} exceeds, target ${targetValue}`});
+            console.warn(`Progress, result ${result} exceeds, target ${targetValue}`};
         }
     }
     
@@ -468,7 +468,7 @@ export class AchievementProgressEngine {
      * サブ条件の進捗を計算
      */
     private calculateSubConditionProgress(condition: SubCondition, data: unknown): number { try {
-            const isConditionMet = this.evaluateCondition(data, condition),
+            const isConditionMet = this.evaluateCondition(data, condition);
             return isConditionMet ? condition.weight || 1 : 0,
 
             ' }'
@@ -526,7 +526,7 @@ export class AchievementProgressEngine {
      */
     public getPerformanceStats(): PerformanceStats & { registeredCalculators: number, registeredEvaluators: number,, registeredValidators: number, { return { ...this.performanceStats,
             registeredCalculators: this.calculators.size,
-    registeredEvaluators: this.conditionEvaluators.size };
+    registeredEvaluators: this.conditionEvaluators.size },
             registeredValidators: this.validators.size 
     }
     
@@ -561,9 +561,9 @@ export class AchievementProgressEngine {
             return repaired;
 
         } catch (error) {
-            console.error('Progress data repair error:', error),
+            console.error('Progress data repair error:', error);
             return { current: 0,
-                target: achievementDefinition.target || 1 };
+                target: achievementDefinition.target || 1 },
                 milestones: [] 
     }
     }
@@ -574,8 +574,8 @@ export class AchievementProgressEngine {
     public getDiagnostics(): DiagnosticsInfo { return { performance: this.getPerformanceStats(
             registrations: {
                 calculators: Array.from(this.calculators.keys(
-    evaluators: Array.from(this.conditionEvaluators.keys()) };
-                validators: Array.from(this.validators.keys(), 
+    evaluators: Array.from(this.conditionEvaluators.keys()) },
+                validators: Array.from(this.validators.keys();
     },
             memoryUsage: { calculators: this.calculators.size,
                 evaluators: this.conditionEvaluators.size,
@@ -590,5 +590,5 @@ export class AchievementProgressEngine {
             calculationCount: 0,
             totalCalculationTime: 0,
             averageCalculationTime: 0,
-    errorCount: 0 };
+    errorCount: 0 },
         this.milestoneTrackers.clear();

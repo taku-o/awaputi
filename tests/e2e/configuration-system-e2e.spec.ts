@@ -12,28 +12,26 @@ import { test, expect  } from '@playwright/test';
 test.describe('Configuration System E2E Tests', () => {
     test.beforeEach(async ({ page }') => {'
         // ゲームページに移動
-        await page.goto('/'),
-        
+        await page.goto('/');
         // ゲームが読み込まれるまで待機
-        await page.waitForSelector('#gameCanvas'),
-        
+        await page.waitForSelector('#gameCanvas');
         // ゲームエンジンが初期化されるまで待機
         await page.waitForFunction(() => {
             return window.gameEngine && 
                    window.gameEngine.configManager && 
                    window.gameEngine.calculationEngine &&
-                   window.gameEngine.isRunning !== undefined }, { timeout: 15000 });
+                   window.gameEngine.isRunning !== undefined }, { timeout: 15000 },
         
         // 追加の初期化時間を確保
         await page.waitForTimeout(500);
     }');'
 
     test.describe('実際のゲームプレイでの設定システム動作テスト', (') => {'
-        test('ゲーム設定の動的変更がゲームプレイに反映される', async ({ page }) => {
+        test('ゲーム設定の動的変更がゲームプレイに反映される', async ({ page } => {
             // デバッグモードを有効にして設定システムにアクセス
             const configManagerExists = await page.evaluate(() => {
                 window.DEBUG_MODE = true,
-                return window.gameEngine && window.gameEngine.configManager });
+                return window.gameEngine && window.gameEngine.configManager };
             
             expect(configManagerExists).toBeTruthy(');'
             
@@ -46,24 +44,24 @@ test.describe('Configuration System E2E Tests', () => {
             
             // 初期設定値を確認
             const initialBubbleMaxAge = await page.evaluate((') => {'
-                return window.gameEngine.configManager.get('game', 'bubbles.maxAge') });
+                return window.gameEngine.configManager.get('game', 'bubbles.maxAge') };
             
             expect(initialBubbleMaxAge).toBeGreaterThan(0);
             
             // 泡の生存時間を変更
             await page.evaluate((') => {'
-                window.gameEngine.configManager.set('game', 'bubbles.maxAge', 3000) });
+                window.gameEngine.configManager.set('game', 'bubbles.maxAge', 3000) };
             
             // 変更が反映されることを確認
             const updatedBubbleMaxAge = await page.evaluate((') => {'
-                return window.gameEngine.configManager.get('game', 'bubbles.maxAge') });
+                return window.gameEngine.configManager.get('game', 'bubbles.maxAge') };
             
             expect(updatedBubbleMaxAge).toBe(3000);
             
             // バブルマネージャーが存在することを確認
             const bubbleManagerExists = await page.evaluate(() => {
                 return window.gameEngine.bubbleManager && 
-                       Array.isArray(window.gameEngine.bubbleManager.bubbles) });
+                       Array.isArray(window.gameEngine.bubbleManager.bubbles) };
             
             expect(bubbleManagerExists).toBeTruthy();
         }');'
@@ -81,18 +79,18 @@ test.describe('Configuration System E2E Tests', () => {
             
             // 基本スコアを変更
             await page.evaluate((') => {'
-                window.gameEngine.configManager.set('game', 'scoring.baseScores.normal', 50) });
+                window.gameEngine.configManager.set('game', 'scoring.baseScores.normal', 50) };
             
             // 設定が正しく変更されたことを確認
             const updatedScore = await page.evaluate((') => {'
-                return window.gameEngine.configManager.get('game', 'scoring.baseScores.normal') });
+                return window.gameEngine.configManager.get('game', 'scoring.baseScores.normal') };
             
             expect(updatedScore).toBe(50);
             
             // プレイヤーデータが存在することを確認
             const playerDataExists = await page.evaluate((') => {'
                 return window.gameEngine.playerData && 
-                       typeof window.gameEngine.playerData.currentScore === 'number' });
+                       typeof window.gameEngine.playerData.currentScore === 'number' };
             
             expect(playerDataExists).toBeTruthy();
         }');'
@@ -110,18 +108,18 @@ test.describe('Configuration System E2E Tests', () => {
             
             // 音量設定を変更
             await page.evaluate((') => {'
-                window.gameEngine.configManager.set('audio', 'volumes.master', 0.5) });
+                window.gameEngine.configManager.set('audio', 'volumes.master', 0.5) };
             
             // 設定が正しく変更されたことを確認
             const updatedVolume = await page.evaluate((') => {'
-                return window.gameEngine.configManager.get('audio', 'volumes.master') });
+                return window.gameEngine.configManager.get('audio', 'volumes.master') };
             
             expect(updatedVolume).toBe(0.5);
             
             // 音響システムが存在することを確認
             const audioManagerExists = await page.evaluate((') => {'
                 return window.gameEngine.audioManager && 
-                       typeof window.gameEngine.audioManager.masterVolume === 'number' });
+                       typeof window.gameEngine.audioManager.masterVolume === 'number' };
             
             expect(audioManagerExists).toBeTruthy();
         }');'
@@ -139,25 +137,25 @@ test.describe('Configuration System E2E Tests', () => {
             
             // パーティクル数を変更
             await page.evaluate((') => {'
-                window.gameEngine.configManager.set('effects', 'particles.maxCount', 100) });
+                window.gameEngine.configManager.set('effects', 'particles.maxCount', 100) };
             
             // 設定が正しく変更されたことを確認
             const updatedMaxCount = await page.evaluate((') => {'
-                return window.gameEngine.configManager.get('effects', 'particles.maxCount') });
+                return window.gameEngine.configManager.get('effects', 'particles.maxCount') };
             
             expect(updatedMaxCount).toBe(100);
             
             // パーティクルマネージャーが存在することを確認
             const particleManagerExists = await page.evaluate((') => {'
                 return window.gameEngine.particleManager && 
-                       typeof window.gameEngine.particleManager.maxParticles === 'number' });
+                       typeof window.gameEngine.particleManager.maxParticles === 'number' };
             
             expect(particleManagerExists).toBeTruthy();
-        });
+        };
     }');'
 
     test.describe('設定変更がゲーム体験に与える影響のテスト', (') => {'
-        test('パフォーマンス設定の変更がゲーム動作に影響する', async ({ page }) => {
+        test('パフォーマンス設定の変更がゲーム動作に影響する', async ({ page } => {
             // デバッグモードを有効にして設定システムにアクセス
             await page.evaluate(() => {
                 window.DEBUG_MODE = true }');'
@@ -170,18 +168,18 @@ test.describe('Configuration System E2E Tests', () => {
             
             // 最大泡数を制限
             await page.evaluate((') => {'
-                window.gameEngine.configManager.set('performance', 'optimization.maxBubbles', 5) });
+                window.gameEngine.configManager.set('performance', 'optimization.maxBubbles', 5) };
             
             // 設定が正しく変更されたことを確認
             const updatedMaxBubbles = await page.evaluate((') => {'
-                return window.gameEngine.configManager.get('performance', 'optimization.maxBubbles') });
+                return window.gameEngine.configManager.get('performance', 'optimization.maxBubbles') };
             
             expect(updatedMaxBubbles).toBe(5);
             
             // バブルマネージャーが存在することを確認
             const bubbleManagerExists = await page.evaluate(() => {
                 return window.gameEngine.bubbleManager && 
-                       Array.isArray(window.gameEngine.bubbleManager.bubbles) });
+                       Array.isArray(window.gameEngine.bubbleManager.bubbles) };
             
             expect(bubbleManagerExists).toBeTruthy();
         }');'
@@ -190,22 +188,22 @@ test.describe('Configuration System E2E Tests', () => {
             // 設定システムが存在することを確認
             const settingsManagerExists = await page.evaluate(() => {
                 return window.gameEngine.settingsManager && 
-                       window.gameEngine.configManager });
+                       window.gameEngine.configManager };
             
             expect(settingsManagerExists).toBeTruthy();
             
             // 設定値を直接変更してテスト
             await page.evaluate((') => {'
-                window.gameEngine.configManager.set('audio', 'volumes.master', 0.3) });
+                window.gameEngine.configManager.set('audio', 'volumes.master', 0.3) };
             
             // 設定値が正しく保存されたことを確認
             const savedVolume = await page.evaluate((') => {'
-                return window.gameEngine.configManager.get('audio', 'volumes.master') });
+                return window.gameEngine.configManager.get('audio', 'volumes.master') };
             
             expect(savedVolume).toBe(0.3);
         }');'
 
-        test('設定変更がゲームプレイの難易度に影響する', async ({ page }) => {
+        test('設定変更がゲームプレイの難易度に影響する', async ({ page } => {
             // デバッグモードを有効にして設定システムにアクセス
             await page.evaluate(() => {
                 window.DEBUG_MODE = true }');'
@@ -218,18 +216,18 @@ test.describe('Configuration System E2E Tests', () => {
             
             // 泡の生存時間を短くして難易度を上げる
             await page.evaluate((') => {'
-                window.gameEngine.configManager.set('game', 'bubbles.maxAge', 2000) });
+                window.gameEngine.configManager.set('game', 'bubbles.maxAge', 2000) };
             
             // 設定が正しく変更されたことを確認
             const updatedMaxAge = await page.evaluate((') => {'
-                return window.gameEngine.configManager.get('game', 'bubbles.maxAge') });
+                return window.gameEngine.configManager.get('game', 'bubbles.maxAge') };
             
             expect(updatedMaxAge).toBe(2000);
             
             // バブルマネージャーが存在することを確認
             const bubbleManagerExists = await page.evaluate(() => {
                 return window.gameEngine.bubbleManager && 
-                       Array.isArray(window.gameEngine.bubbleManager.bubbles) });
+                       Array.isArray(window.gameEngine.bubbleManager.bubbles) };
             
             expect(bubbleManagerExists).toBeTruthy();
         }');'
@@ -257,9 +255,9 @@ test.describe('Configuration System E2E Tests', () => {
                 
                 // 設定が正しく適用されたかを確認
                 return {
-                    bubbleMaxAge: configManager.get('game', 'bubbles.maxAge'),
-                    baseScore: configManager.get('game', 'scoring.baseScores.normal'),
-                    maxBubbles: configManager.get('performance', 'optimization.maxBubbles'),
+                    bubbleMaxAge: configManager.get('game', 'bubbles.maxAge');
+                    baseScore: configManager.get('game', 'scoring.baseScores.normal');
+                    maxBubbles: configManager.get('performance', 'optimization.maxBubbles');
                     maxParticles: configManager.get('effects', 'particles.maxCount'}
                 };);
             
@@ -268,11 +266,11 @@ test.describe('Configuration System E2E Tests', () => {
             expect(settingsApplied.baseScore).toBe(20);
             expect(settingsApplied.maxBubbles).toBe(15);
             expect(settingsApplied.maxParticles).toBe(200);
-        });
+        };
     }');'
 
     test.describe('エラー状況でのゲーム継続性テスト', (') => {'
-        test('無効な設定値でもゲームが継続する', async ({ page }) => {
+        test('無効な設定値でもゲームが継続する', async ({ page } => {
             // デバッグモードを有効にして設定システムにアクセス
             await page.evaluate(() => {
                 window.DEBUG_MODE = true }');'
@@ -290,20 +288,20 @@ test.describe('Configuration System E2E Tests', () => {
                     
                     // 無効な値を設定（バリデーションシステムが処理する）
                     configManager.set('game', 'bubbles.maxAge', -1000'),'
-                    configManager.set('audio', 'volumes.master', 'invalid'),
+                    configManager.set('audio', 'volumes.master', 'invalid');
                     configManager.set('effects', 'particles.maxCount', null'),'
                     
                     // 設定後の値を確認（バリデーションによりデフォルト値または有効な値になっているはず）
                     return {
-                        bubbleMaxAge: configManager.get('game', 'bubbles.maxAge'),
-                        masterVolume: configManager.get('audio', 'volumes.master'),
-                        maxParticles: configManager.get('effects', 'particles.maxCount'),
+                        bubbleMaxAge: configManager.get('game', 'bubbles.maxAge');
+                        masterVolume: configManager.get('audio', 'volumes.master');
+                        maxParticles: configManager.get('effects', 'particles.maxCount');
                         gameRunning: window.gameEngine.isRunning
                     };
                 } catch (error) {
-                    return { error: error.message };
+                    return { error: error.message },
                 }
-            });
+            };
             
             // エラーが発生せず、有効な値が設定されていることを確認
             expect(testResults.error).toBeUndefined();
@@ -350,9 +348,9 @@ test.describe('Configuration System E2E Tests', () => {
                         configRestored: typeof window.gameEngine.configManager.get === 'function'
                     };
                 } catch (error) {
-                    return { testError: error.message };
+                    return { testError: error.message },
                 }
-            });
+            };
             
             // エラーが適切にキャッチされ、ゲームが継続していることを確認
             expect(testResult.testError).toBeUndefined();
@@ -393,9 +391,9 @@ test.describe('Configuration System E2E Tests', () => {
                         calculationRestored: typeof window.gameEngine.calculationEngine.calculate === 'function'
                     };
                 } catch (error) {
-                    return { testError: error.message };
+                    return { testError: error.message },
                 }
-            });
+            };
             
             // エラーが適切にキャッチされ、ゲームが継続していることを確認
             expect(testResult.testError).toBeUndefined();
@@ -423,9 +421,9 @@ test.describe('Configuration System E2E Tests', () => {
                     for (let i = 0, i < 100, i++') { // 数を減らして安定性を向上'
                         configManager.set('test', `data.${i)`, {
                             value: i,
-                            data: new, Array(10).fill(i, // サイズを減らして安定性を向上),
-                            timestamp: Date.now(});
-                        });
+                            data: new, Array(10).fill(i, // サイズを減らして安定性を向上);
+                            timestamp: Date.now(},
+                        };
                     }
                     
                     return {
@@ -434,9 +432,9 @@ test.describe('Configuration System E2E Tests', () => {
                         configManagerExists: !!window.gameEngine.configManager
                     };
                 } catch (error) {
-                    return { error: error.message };
+                    return { error: error.message },
                 }
-            });
+            };
             
             // ゲームが継続し、メモリ管理が機能していることを確認
             expect(memoryTestResult.error).toBeUndefined();
@@ -446,8 +444,7 @@ test.describe('Configuration System E2E Tests', () => {
 
         test('ネットワークエラー時の設定保存処理', async ({ page ) => {
             // ネットワークを無効にする
-            await page.context().setOffline(true),
-            
+            await page.context().setOffline(true);
             // 設定を直接変更してローカルストレージに保存されることをテスト
             const networkTestResult = await page.evaluate((') => {'
                 try {
@@ -455,17 +452,16 @@ test.describe('Configuration System E2E Tests', () => {
                     window.gameEngine.configManager.set('audio', 'volumes.master', 0.5'),'
                     
                     // ローカルストレージに保存されることを確認
-                    const settingsData = localStorage.getItem('bubblePop_settings'),
-                    
+                    const settingsData = localStorage.getItem('bubblePop_settings');
                     return {
                         settingChanged: window.gameEngine.configManager.get('audio', 'volumes.master') === 0.5,
                         localStorageExists: !!settingsData,
                         gameRunning: window.gameEngine.isRunning
                     };
                 } catch (error) {
-                    return { error: error.message };
+                    return { error: error.message },
                 }
-            });
+            };
             
             expect(networkTestResult.error).toBeUndefined();
             expect(networkTestResult.settingChanged).toBe(true);
@@ -476,14 +472,14 @@ test.describe('Configuration System E2E Tests', () => {
             
             // ゲームが正常に動作することを確認
             const isGameRunning = await page.evaluate(() => {
-                return window.gameEngine && window.gameEngine.isRunning });
+                return window.gameEngine && window.gameEngine.isRunning };
             
             expect(isGameRunning).toBeTruthy();
-        });
+        };
     }');'
 
     test.describe('長時間プレイでの設定システム安定性', (') => {'
-        test('長時間プレイでの設定システムパフォーマンス', async ({ page }) => {
+        test('長時間プレイでの設定システムパフォーマンス', async ({ page } => {
             // デバッグモードを有効にして設定システムにアクセス
             await page.evaluate(() => {
                 window.DEBUG_MODE = true }');'
@@ -504,14 +500,12 @@ test.describe('Configuration System E2E Tests', () => {
                         // 設定の頻繁な読み書きをシミュレート
                         const interval = setInterval((') => {'
                             // 設定値を読み取り
-                            configManager.get('game', 'bubbles.maxAge'),
-                            configManager.get('audio', 'volumes.master'),
-                            configManager.get('effects', 'particles.maxCount'),
-                            
+                            configManager.get('game', 'bubbles.maxAge');
+                            configManager.get('audio', 'volumes.master');
+                            configManager.get('effects', 'particles.maxCount');
                             // 設定値を変更
                             const randomAge = 3000 + Math.random(') * 2000,'
-                            configManager.set('game', 'bubbles.maxAge', randomAge),
-                            
+                            configManager.set('game', 'bubbles.maxAge', randomAge);
                             operationCount++ }, 50);
                         
                         // 2秒後に停止（テスト時間を短縮）
@@ -521,13 +515,13 @@ test.describe('Configuration System E2E Tests', () => {
                                 operationCount,
                                 gameRunning: window.gameEngine.isRunning,
                                 configManagerExists: !!window.gameEngine.configManager
-                            });
+                            };
                         }, 2000);
                     } catch (error) {
-                        resolve({ error: error.message });
+                        resolve({ error: error.message },
                     }
-                });
-            });
+                };
+            };
             
             // システムが安定していることを確認
             expect(performanceTestResult.error).toBeUndefined();
@@ -562,9 +556,9 @@ test.describe('Configuration System E2E Tests', () => {
                     let hasRecentChanges = false;
                     
                     if (hasHistoryMethod) {
-                        const history = configManager.getChangeHistory(),
+                        const history = configManager.getChangeHistory();
                         historyLength = history.length,
-                        hasRecentChanges = history.some(entry => ),
+                        hasRecentChanges = history.some(entry => );
                             Date.now() - entry.timestamp < 10000
                         ) }
                     
@@ -575,17 +569,17 @@ test.describe('Configuration System E2E Tests', () => {
                         gameRunning: window.gameEngine.isRunning
                     };
                 } catch (error) {
-                    return { error: error.message };
+                    return { error: error.message },
                 }
-            });
+            };
             
             expect(historyTestResult.error).toBeUndefined();
             expect(historyTestResult.gameRunning).toBeTruthy();
             
             // 履歴機能が実装されている場合のテスト
             if (historyTestResult.hasHistoryMethod) {
-                expect(historyTestResult.historyLength).toBeGreaterThan(0),
+                expect(historyTestResult.historyLength).toBeGreaterThan(0);
                 expect(historyTestResult.hasRecentChanges).toBe(true) }
-        });
-    });
+        };
+    };
 }');'

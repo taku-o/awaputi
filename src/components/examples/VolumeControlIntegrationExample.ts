@@ -13,7 +13,7 @@ interface GameEngine { // Define game engine interface properties as needed }
 export class VolumeControlIntegrationExample {
     private gameEngine: GameEngine;
     private volumeControl: VolumeControlComponent | null;
-    private, container: HTMLElement | null,
+    private, container: HTMLElement | null;
     constructor(gameEngine: GameEngine) {
 
         this.gameEngine = gameEngine;
@@ -25,7 +25,7 @@ export class VolumeControlIntegrationExample {
      * 設定画面の初期化例
      */
     initializeSettingsScene(): boolean { // 設定画面のDOM構造を作成
-        this.createSettingsUI(),
+        this.createSettingsUI();
         // VolumeControlComponentを初期化
         this.volumeControl = new VolumeControlComponent(this.gameEngine);
         ','
@@ -88,7 +88,7 @@ export class VolumeControlIntegrationExample {
      * 音量変更イベントハンドラーの例
      */
     handleVolumeChanged(newVolume: number): void {
-        console.log(`[VolumeControlIntegration] Volume, changed to: ${Math.round(newVolume * 100})%`);
+        console.log(`[VolumeControlIntegration] Volume, changed to: ${Math.round(newVolume * 100}%`),
         
         // 他のUIコンポーネントに通知
         this.notifyOtherComponents(newVolume);
@@ -116,7 +116,7 @@ export class VolumeControlIntegrationExample {
             return null }
         
         return { isEnabled: this.volumeControl.isEnabled(
-            currentVolume: this.volumeControl.getCurrentVolume() };
+            currentVolume: this.volumeControl.getCurrentVolume() },
             stats: this.volumeControl.getStats(); 
     }
     
@@ -190,18 +190,16 @@ export class VolumeControlIntegrationExample {
 // VolumeControlComponent の基本的な使用例
 ,
 // 1. コンポーネント初期化
-const volumeControl = new VolumeControlComponent(gameEngine),
+const volumeControl = new VolumeControlComponent(gameEngine);
 ','
 // 2. DOM要素への追加
 const audioSection = document.getElementById('audio-settings),'
-const success = volumeControl.initialize(audioSection),
-
+const success = volumeControl.initialize(audioSection);
 // 3. 音量の設定
 volumeControl.setVolume(0.8), // 80%
 
 // 4. 現在の音量取得
-const currentVolume = volumeControl.getCurrentVolume(),
-
+const currentVolume = volumeControl.getCurrentVolume();
 // 5. コンポーネントの破棄
-volumeControl.dispose(),
+volumeControl.dispose();
         `.trim(' }'

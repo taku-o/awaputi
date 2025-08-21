@@ -7,21 +7,21 @@ import { promises, as fs  } from 'fs';
 import path from 'path';
 
 // Type definitions
-interface ClassDefinition { name: string,
+interface ClassDefinition { name: string;
     file: string;
     line: number;
     type: 'export class' | 'class';
     relativeFile: string;
 
-interface DuplicateFile { fileName: string,
+interface DuplicateFile { fileName: string;
     count: number;
     paths: string[];
 
-interface DuplicateClass { className: string,
+interface DuplicateClass { className: string;
     count: number;
     locations: ClassDefinition[];
 
-interface ImpactAnalysis { scope: string,
+interface ImpactAnalysis { scope: string;
     potential_conflicts: string;
     maintenance_difficulty: 'low' | 'medium' | 'high';
     testing_complexity?: 'low' | 'medium' | 'high' }
@@ -37,19 +37,20 @@ interface Conflict { ''
     riskLevel: 'low' | 'medium' | 'high';
     impactAnalysis: ImpactAnalysis;
 
-interface ConflictReport { analysis_date: string,
+interface ConflictReport { analysis_date: string;
     project: string;
     total_files_analyzed: number;
     total_classes_found: number;
     duplications: {
-        class_name_duplication,s: number,
-        file_name_duplications: number,
-        high_priority_conflicts: number,
-    medium_priority_conflicts: number,;
-    conflicts: Conflict[],
-    summary: { most_critical: string[],
-    recommendations: string[],
-
+        class_name_duplication,s: number;
+        file_name_duplications: number;
+        high_priority_conflicts: number;
+    medium_priority_conflicts: number;
+    conflicts: Conflict[];
+    summary: { most_critical: string[];
+    recommendations: string[];
+    recommendations: string[];
+        };
 export class DuplicationAnalyzer {
     private sourceDir: string;
     private files: string[];
@@ -89,8 +90,7 @@ export class DuplicationAnalyzer {
         for (const entry of entries) {
 
             ,
-            const fullPath = path.join(dir, entry.name),
-            
+            const fullPath = path.join(dir, entry.name);
             if (entry.isDirectory() {
     
 }
@@ -112,14 +112,13 @@ export class DuplicationAnalyzer {
 
         while((match = classRegex.exec(content) !== null) {
             const className = match[1],
-            const lineNumber = this.getLineNumber(content, match.index),
-            
+            const lineNumber = this.getLineNumber(content, match.index);
             classes.push({)
                 name: className)','
     file: filePath,')',
                 line: lineNumber','
                 type: match[0].includes('export') ? 'export class' : 'class',
-    relativeFile: path.relative(process.cwd(), filePath });
+    relativeFile: path.relative(process.cwd(), filePath };
         }
 
         return classes;
@@ -138,7 +137,7 @@ export class DuplicationAnalyzer {
         
         for (const filePath of this.files) {
         
-            const fileName = path.basename(filePath),
+            const fileName = path.basename(filePath);
             if (!fileNames.has(fileName) {
     
 }
@@ -246,7 +245,7 @@ export class DuplicationAnalyzer {
      * 影響分析
      */
     private analyzeImpact(duplicate: DuplicateClass): ImpactAnalysis { const locations = duplicate.locations,
-        const directories = locations.map(loc => path.dirname(loc.file),
+        const directories = locations.map(loc => path.dirname(loc.file);
         const uniqueDirs = [...new Set(directories)],
 ','
 
@@ -275,7 +274,7 @@ export class DuplicationAnalyzer {
     /**
      * 競合レポートを生成
      */
-    generateConflictReport(): ConflictReport { const conflicts = this.identifyConflicts(),
+    generateConflictReport(): ConflictReport { const conflicts = this.identifyConflicts();
         ','
 
         return { ''
@@ -293,7 +292,7 @@ export class DuplicationAnalyzer {
             conflicts: conflicts,
             summary: { most_critical: conflicts''
                     .filter(c => c.priority === 'high'','
-                    .map(c => c.name),
+                    .map(c => c.name);
                 recommendations: [','
                     'DialogManager系クラスの即座の名前解決',
                     'PerformanceMonitor系クラスの特化名称への変更',

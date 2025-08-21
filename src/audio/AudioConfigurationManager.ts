@@ -50,14 +50,14 @@ export class AudioConfigurationManager {
         // 現在の設定値（キャッシュ）
         this.currentConfig = {
             volumes: {
-                master: 0.8,
-                sfx: 0.7,
+                master: 0.8;
+                sfx: 0.7;
     bgm: 0.5 }
-                muted: false,;
-            effects: { compression: true,
-    reverb: false,;
-            quality: { sampleRate: 44100,
-                bufferSize: 256,
+                muted: false;
+            effects: { compression: true;
+    reverb: false;
+            quality: { sampleRate: 44100;
+                bufferSize: 256;
     maxConcurrentSounds: 32 
     };
         // 設定変更リスナー
@@ -67,17 +67,18 @@ export class AudioConfigurationManager {
         this.lastLoggedMuteState = null;
         
         // 設定同期状態
-        this.syncState = { isInitialized: false,
-            lastSyncTime: 0,
-    syncInterval: null,
-
+        this.syncState = { isInitialized: false;
+            lastSyncTime: 0;
+    syncInterval: null;
+    syncInterval: null;
+        };
     /**
      * 依存関係設定
      * @param {Object} configManager - 設定管理オブジェクト
      * @param {Object} audioConfig - 音響設定オブジェクト
      * @param {Object} audioNodes - オーディオノード群
      */
-    setDependencies(configManager: any, audioConfig: any, audioNodes: any = {}) {
+    setDependencies(configManager: any, audioConfig: any, audioNodes: any = {} {
         this.configManager = configManager;
         this.audioConfig = audioConfig;
         
@@ -131,7 +132,7 @@ export class AudioConfigurationManager {
             if (bgmVolumeWatcher) this.configWatchers.add(bgmVolumeWatcher);
             ';'
             // ミュート状態の監視
-            const mutedWatcher = this.configManager.watch('audio', 'volumes.muted', (newValue: boolean) => { this.onMuteChange(newValue) });
+            const mutedWatcher = this.configManager.watch('audio', 'volumes.muted', (newValue: boolean) => { this.onMuteChange(newValue) }),
             if (mutedWatcher) this.configWatchers.add(mutedWatcher);
             ';'
             // コンプレッサー設定の監視
@@ -146,7 +147,7 @@ export class AudioConfigurationManager {
             const reverbWatcher = this.configManager.watch('audio', 'effects.reverb', (newValue: boolean) => { }
 
                 this.onEffectChange('reverb', newValue); }
-            });
+            };
             if (reverbWatcher) this.configWatchers.add(reverbWatcher);
 ';'
             // 定期的な設定同期
@@ -157,7 +158,7 @@ export class AudioConfigurationManager {
         } catch (error) { getErrorHandler().handleError(error, 'AUDIO_ERROR', {''
                 component: 'AudioConfigurationManager',')',
                 operation: 'setupConfigWatchers'
-            });
+            };
         }
     }
 
@@ -168,7 +169,7 @@ export class AudioConfigurationManager {
      */
     onVolumeChange(type: string, newValue: number) {
         try {
-            const validatedValue = Math.max(0, Math.min(1, newValue),
+            const validatedValue = Math.max(0, Math.min(1, newValue);
             this.currentConfig.volumes[type] = validatedValue,
             ','
             // ゲインノードへの反映
@@ -191,15 +192,15 @@ export class AudioConfigurationManager {
             ';'
             // リスナー通知
             this.notifyListeners('volume', { type, value: validatedValue,
-            console.log(`[AudioConfig] ${type} volume, changed to ${validatedValue}`});
+            console.log(`[AudioConfig] ${type} volume, changed to ${validatedValue}`};
             ';'
 
         } catch (error) {
             getErrorHandler().handleError(error, 'AUDIO_ERROR', {''
                 component: 'AudioConfigurationManager',','
-                operation: 'onVolumeChange'),
+                operation: 'onVolumeChange');
                 type),
-                newValue });
+                newValue };
         }
     }
 
@@ -209,8 +210,7 @@ export class AudioConfigurationManager {
      */
     onMuteChange(newValue: boolean) {
         try {
-            const newMuteState = Boolean(newValue),
-            
+            const newMuteState = Boolean(newValue);
             // 値が変更されていない場合は早期リターン
             if (this.currentConfig.volumes.muted === newMuteState) {
     }
@@ -229,13 +229,13 @@ export class AudioConfigurationManager {
             if (this.lastLoggedMuteState !== this.currentConfig.volumes.muted) {
     
 }
-                console.log(`[AudioConfig] Mute, state changed, to ${this.currentConfig.volumes.muted}`});
+                console.log(`[AudioConfig] Mute, state changed, to ${this.currentConfig.volumes.muted}`};
                 this.lastLoggedMuteState = this.currentConfig.volumes.muted;
             } catch (error) {
             getErrorHandler().handleError(error, 'AUDIO_ERROR', {''
                 component: 'AudioConfigurationManager',','
-                operation: 'onMuteChange'),
-                newValue });
+                operation: 'onMuteChange');
+                newValue };
         }
     }
 
@@ -246,8 +246,7 @@ export class AudioConfigurationManager {
      */
     onEffectChange(effectType: string, newValue: boolean) {
         try {
-            this.currentConfig.effects[effectType] = Boolean(newValue),
-
+            this.currentConfig.effects[effectType] = Boolean(newValue);
             switch(effectType) {''
                 case 'compression':,
                     if (this.compressor) {
@@ -267,13 +266,13 @@ export class AudioConfigurationManager {
                         } else {
                             this.bypassReverb()','
             this.notifyListeners('effect', { type: effectType, enabled: newValue,
-            console.log(`[AudioConfig] ${effectType} effect changed to ${newValue}`});
+            console.log(`[AudioConfig] ${effectType} effect changed to ${newValue}`};
             ';'
 
         } catch (error) {
             getErrorHandler().handleError(error, 'AUDIO_ERROR', {''
                 component: 'AudioConfigurationManager',','
-                operation: 'onEffectChange'),
+                operation: 'onEffectChange');
                 effectType,','
                 newValue',' }'
 
@@ -292,7 +291,7 @@ export class AudioConfigurationManager {
     }
 
             if (typeof, volume !== 'number' || isNaN(volume) { }
-                throw new Error(`Invalid, volume value: ${volume}`});
+                throw new Error(`Invalid, volume value: ${volume}`};
             }
             
             volume = Math.max(0, Math.min(1, volume);
@@ -327,7 +326,7 @@ export class AudioConfigurationManager {
         } catch (error) {
             getErrorHandler().handleError(error, 'AUDIO_ERROR', {''
                 component: 'AudioConfigurationManager',','
-                operation: 'setVolume'),
+                operation: 'setVolume');
                 type,','
                 volume',' }'
 
@@ -357,7 +356,7 @@ export class AudioConfigurationManager {
         } catch (error) {
             getErrorHandler().handleError(error, 'AUDIO_ERROR', {''
                 component: 'AudioConfigurationManager',','
-                operation: 'getVolume'),
+                operation: 'getVolume');
                 type }';'
             return 0;
 
@@ -370,7 +369,7 @@ export class AudioConfigurationManager {
     }
 
             if(typeof, muted !== 'boolean' { }'
-                throw new Error(`Invalid, muted value: ${muted}`});
+                throw new Error(`Invalid, muted value: ${muted}`};
             }
             
             if (this.audioConfig && this.audioConfig.setMuted) { this.audioConfig.setMuted(muted) }
@@ -382,8 +381,8 @@ export class AudioConfigurationManager {
         } catch (error) {
             getErrorHandler().handleError(error, 'AUDIO_ERROR', {''
                 component: 'AudioConfigurationManager',','
-                operation: 'setMuted'),
-                muted });
+                operation: 'setMuted');
+                muted };
         }
     }
 
@@ -406,7 +405,7 @@ export class AudioConfigurationManager {
         } catch (error) { getErrorHandler().handleError(error, 'AUDIO_ERROR', {''
                 component: 'AudioConfigurationManager',')',
                 operation: 'toggleMute'
-            });
+            };
             return this.currentConfig.volumes.muted;
 
     /**
@@ -416,7 +415,7 @@ export class AudioConfigurationManager {
      */
     setAudioEffect(effectType: string, enabled: boolean) {
         try {
-            this.onEffectChange(effectType, enabled),
+            this.onEffectChange(effectType, enabled);
             ','
 
             // 設定保存
@@ -424,14 +423,14 @@ export class AudioConfigurationManager {
 
             if (this.configManager) { }'
 
-                this.configManager.setValue('audio', `effects.${effectType}`, enabled});
+                this.configManager.setValue('audio', `effects.${effectType}`, enabled};
 
             } catch (error) {
             getErrorHandler().handleError(error, 'AUDIO_ERROR', {''
                 component: 'AudioConfigurationManager',','
-                operation: 'setAudioEffect'),
+                operation: 'setAudioEffect');
                 effectType),
-                enabled });
+                enabled };
         }
     }
 
@@ -467,8 +466,8 @@ export class AudioConfigurationManager {
         } catch (error) {
             getErrorHandler().handleError(error, 'AUDIO_ERROR', {''
                 component: 'AudioConfigurationManager',','
-                operation: 'updateQualitySettings'),
-                qualityConfig });
+                operation: 'updateQualitySettings');
+                qualityConfig };
         }
     }
 
@@ -486,21 +485,19 @@ export class AudioConfigurationManager {
             const muted = this.audioConfig.isMuted ? this.audioConfig.isMuted()','
             this.onVolumeChange('master', masterVolume','
             this.onVolumeChange('sfx', sfxVolume','
-            this.onVolumeChange('bgm', bgmVolume),
-            this.onMuteChange(muted),
-            
+            this.onVolumeChange('bgm', bgmVolume);
+            this.onMuteChange(muted);
             // エフェクト同期
             const compression = this.audioConfig.isCompressionEnabled ? this.audioConfig.isCompressionEnabled() : true,
             const reverb = this.audioConfig.isReverbEnabled ? this.audioConfig.isReverbEnabled()','
             this.onEffectChange('compression', compression','
-            this.onEffectChange('reverb', reverb),
-            
+            this.onEffectChange('reverb', reverb);
             this.syncState.lastSyncTime = Date.now() }
 
         } catch (error) { getErrorHandler().handleError(error, 'AUDIO_ERROR', {''
                 component: 'AudioConfigurationManager',')',
                 operation: 'syncWithConfig'
-            });
+            };
         }
     }
 
@@ -558,7 +555,7 @@ export class AudioConfigurationManager {
                     listener(data);' }'
 
                 } catch (error) { console.warn('Error in audio config listener:', error }
-            });
+            };
         }
     }
 
@@ -609,7 +606,7 @@ export class AudioConfigurationManager {
                     watcher.dispose();' }'
 
                 } catch (error) { console.warn('Error disposing config watcher:', error }
-        });
+        };
         this.configWatchers.clear();
         
         // 同期停止

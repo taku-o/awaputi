@@ -16,30 +16,30 @@ export interface LocalizationManager {,
     priority?: 'high' | 'normal' | 'low';
     [key: string]: any;
 
-export interface CachedContentItem { data: any,
+export interface CachedContentItem { data: any;
     timestamp: number;
     version?: string;
     expires: number;
 
-export interface ContentManifest { version: string,
+export interface ContentManifest { version: string;
     lastUpdated: number;
     contents: {
         [contentType: string]: {
             [language: string]: {
-                versio,n: string,
-                url: string,
-    size: number,
+                versio,n: string;
+                url: string;
+    size: number;
                 checksum?: string;;
     }
 
-export interface VersionInfo { version: string,
+export interface VersionInfo { version: string;
     lastUpdated: number;
     checksum?: string;
 
-export interface TutorialData { tutorials: any[],
+export interface TutorialData { tutorials: any[];
     [key: string]: any;
 
-export interface FAQData { faqs: any[],
+export interface FAQData { faqs: any[];
     [key: string]: any;
 );
 export interface GuidedTourData { tours: any[])
@@ -73,7 +73,7 @@ export class ContentLoader {
             supportedLanguages: ['ja', 'en', 'zh-CN', 'zh-TW', 'ko'];
             cacheTimeout: 30 * 60 * 1000, // 30分;
             retryAttempts: 3 }
-            retryDelay: 1000 }))
+            retryDelay: 1000 })
         // キャッシュ管理
         this.contentCache = new Map<string, CachedContentItem>();
         this.versionCache = new Map<string, VersionInfo>();
@@ -131,11 +131,10 @@ export class ContentLoader {
             this.loadingPromises.set(cacheKey, loadPromise);
             
             try { const content = await loadPromise,
-                const model = new HelpContentModel(content),
-                
+                const model = new HelpContentModel(content);
                 // バリデーション
                 if (!model.validate() { }
-                    throw new Error(`Invalid, help content, format: ${language}`});
+                    throw new Error(`Invalid, help content, format: ${language}`},
                 }
                 ;
                 // キャッシュに保存
@@ -188,7 +187,7 @@ export class ContentLoader {
             const tutorials: TutorialModel[] = [],
             if (rawData.tutorials && Array.isArray(rawData.tutorials) {
                 for (const tutorialData of rawData.tutorials) {
-                    const model = new TutorialModel(tutorialData),
+                    const model = new TutorialModel(tutorialData);
                     if (model.validate() {
             }
 
@@ -203,7 +202,7 @@ export class ContentLoader {
             // キャッシュに保存
             this.setCachedContent(cacheKey, tutorials);
 
-            this.loggingSystem.info('ContentLoader', `Tutorial data loaded: ${language} (${tutorials.length} tutorials}`});
+            this.loggingSystem.info('ContentLoader', `Tutorial data loaded: ${language} (${tutorials.length} tutorials}`};
             return tutorials;
 
         } catch (error) { }
@@ -242,7 +241,7 @@ export class ContentLoader {
             const faqs: FAQModel[] = [],
             if (rawData.faqs && Array.isArray(rawData.faqs) {
                 for (const faqData of rawData.faqs) {
-                    const model = new FAQModel(faqData),
+                    const model = new FAQModel(faqData);
                     if (model.validate() {
             }
 
@@ -257,7 +256,7 @@ export class ContentLoader {
             // キャッシュに保存
             this.setCachedContent(cacheKey, faqs);
 
-            this.loggingSystem.info('ContentLoader', `FAQ data loaded: ${language} (${faqs.length} FAQs}`});
+            this.loggingSystem.info('ContentLoader', `FAQ data loaded: ${language} (${faqs.length} FAQs}`};
             return faqs;
 
         } catch (error) { }
@@ -278,9 +277,8 @@ export class ContentLoader {
      * @returns チュートリアルモデル'
      */''
     async loadTutorial(tutorialId: string, language: string = 'ja': Promise<TutorialModel | null> { try {'
-            const tutorials = await this.loadTutorialData(language),
-            const tutorial = tutorials.find(t => t.id === tutorialId),
-
+            const tutorials = await this.loadTutorialData(language);
+            const tutorial = tutorials.find(t => t.id === tutorialId);
             if (!tutorial) { }'
 
                 this.loggingSystem.warn('ContentLoader', `Tutorial not found: ${tutorialId}`}';'
@@ -323,7 +321,7 @@ export class ContentLoader {
      */
     getCachedContent(key: string): any { try {
             // システムキャッシュから確認
-            const systemCached = this.cacheSystem.get(key),
+            const systemCached = this.cacheSystem.get(key);
             if (systemCached) {
     
 }
@@ -350,7 +348,7 @@ export class ContentLoader {
                 data,
                 timestamp: Date.now(),
                 version,
-                expires: Date.now() + this.config.cacheTimeout  };
+                expires: Date.now() + this.config.cacheTimeout  },
             // ローカルキャッシュに保存
             this.contentCache.set(key, cachedItem);
             
@@ -381,7 +379,7 @@ export class ContentLoader {
             ';'
 
             return true;} catch (error) {
-            this.loggingSystem.error('ContentLoader', 'Failed to validate cached content', error),
+            this.loggingSystem.error('ContentLoader', 'Failed to validate cached content', error);
             return false,
 
     /**
@@ -393,8 +391,7 @@ export class ContentLoader {
      */
     async performContentLoad(contentType: string, language: string, options: LoadOptions = { ): Promise<any> {
         try {
-            const url = this.buildContentUrl(contentType, language),
-            
+            const url = this.buildContentUrl(contentType, language);
             let attempts = 0,
             while(attempts < this.config.retryAttempts) {
                 try {
@@ -438,7 +435,7 @@ export class ContentLoader {
      * @param timeout - タイムアウト時間
      * @returns Response
      */'
-    private async fetchWithTimeout(url: string, timeout: number): Promise<Response> { const controller = new AbortController(),
+    private async fetchWithTimeout(url: string, timeout: number): Promise<Response> { const controller = new AbortController();
         const timeoutId = setTimeout(() => controller.abort(), timeout'),'
         
         try {
@@ -447,7 +444,7 @@ export class ContentLoader {
     headers: {', 'Accept': 'application/json','
                     'Cache-Control': 'no-cache' 
     
-            });
+            };
             );
             return response;
         } finally { clearTimeout(timeoutId) }
@@ -457,8 +454,7 @@ export class ContentLoader {
      * 遅延処理
      * @param ms - ミリ秒
      */
-    private delay(ms: number): Promise<void> { return new Promise(resolve => setTimeout(resolve, ms),
-
+    private delay(ms: number): Promise<void> { return new Promise(resolve => setTimeout(resolve, ms);
     /**
      * コンテンツマニフェストの読み込み
      */
@@ -469,8 +465,7 @@ export class ContentLoader {
             if (response.ok) {
             ','
 
-                const manifest: ContentManifest = await response.json(),
-
+                const manifest: ContentManifest = await response.json();
                 this.manifestCache.set('default', manifest' }'
 
                 this.loggingSystem.info('ContentLoader', 'Content manifest loaded successfully'; }
@@ -525,7 +520,7 @@ export class ContentLoader {
      */
     destroy(): void { try {
             // 進行中の読み込みをキャンセル
-            this.loadingPromises.clear(),
+            this.loadingPromises.clear();
             // キャッシュをクリア
             this.clearCache()','
             this.loggingSystem.info('ContentLoader', 'Content loader destroyed',' }'

@@ -10,7 +10,7 @@ test.describe('Help and Settings Navigation E2E Tests', () => {
     test.beforeEach(async ({ page }) => {
         // LocalStorageをクリア
         await page.evaluate(() => {
-            localStorage.clear(),
+            localStorage.clear();
             sessionStorage.clear() }');'
         
         // URLパラメータでユーザー名入力をスキップしてメインメニューに直接アクセス
@@ -31,18 +31,18 @@ test.describe('Help and Settings Navigation E2E Tests', () => {
     test('should navigate from main menu to settings and back with ESC key', async ({ page )') => {'
         // コンソールエラーの監視
         const consoleErrors: any[] = [],
-        page.on('console', msg => {),
+        page.on('console', msg => {);
             if (msg.type(') === 'error') {'
                 consoleErrors.push(msg.text() }
         }');'
 
         // JavaScript エラーの監視
         const jsErrors: any[] = [],
-        page.on('pageerror', error => {),
+        page.on('pageerror', error => {);
             jsErrors.push(error.message) }');'
 
         // Canvas要素が存在することを確認
-        const canvas = page.getByRole('img', { name: 'ゲーム画面' });
+        const canvas = page.getByRole('img', { name: 'ゲーム画面' },
         await expect(canvas).toBeVisible(');'
 
         // メインメニューのスクリーンショット撮影
@@ -59,8 +59,7 @@ test.describe('Help and Settings Navigation E2E Tests', () => {
         await canvas.screenshot({ path: 'e2e-screenshots/settings-screen.png' )','
 
         // ESCキーを押してメインメニューに戻る
-        await page.keyboard.press('Escape'),
-        
+        await page.keyboard.press('Escape');
         // メインメニューに戻るまで待機
         await page.waitForTimeout(1500'),'
         
@@ -70,8 +69,7 @@ test.describe('Help and Settings Navigation E2E Tests', () => {
         // エラーが発生していないことを確認
         expect(consoleErrors.filter(error => '),'
             error.includes('Scene mainMenu not found') || 
-            error.includes('Cannot read properties of undefined')).toHaveLength(0),
-        
+            error.includes('Cannot read properties of undefined')).toHaveLength(0);
         expect(jsErrors.filter(error => '),'
             error.includes('Scene mainMenu not found') || 
             error.includes('Cannot read properties of undefined')).toHaveLength(0) }');'
@@ -79,18 +77,18 @@ test.describe('Help and Settings Navigation E2E Tests', () => {
     test('should navigate from main menu to help and back with ESC key', async ({ page )') => {'
         // コンソールエラーの監視
         const consoleErrors: any[] = [],
-        page.on('console', msg => {),
+        page.on('console', msg => {);
             if (msg.type(') === 'error') {'
                 consoleErrors.push(msg.text() }
         }');'
 
         // JavaScript エラーの監視
         const jsErrors: any[] = [],
-        page.on('pageerror', error => {),
+        page.on('pageerror', error => {);
             jsErrors.push(error.message) }');'
 
         // Canvas要素が存在することを確認
-        const canvas = page.getByRole('img', { name: 'ゲーム画面' });
+        const canvas = page.getByRole('img', { name: 'ゲーム画面' },
         await expect(canvas).toBeVisible(');'
 
         // メインメニューのスクリーンショット撮影
@@ -108,8 +106,7 @@ test.describe('Help and Settings Navigation E2E Tests', () => {
         await canvas.screenshot({ path: 'e2e-screenshots/help-screen.png' )','
 
         // ESCキーを押してメインメニューに戻る
-        await page.keyboard.press('Escape'),
-        
+        await page.keyboard.press('Escape');
         // メインメニューに戻るまで待機
         await page.waitForTimeout(1500'),'
         
@@ -119,8 +116,7 @@ test.describe('Help and Settings Navigation E2E Tests', () => {
         // エラーが発生していないことを確認
         expect(consoleErrors.filter(error => '),'
             error.includes('Cannot read properties of undefined') ||
-            error.includes('mainMenu')).toHaveLength(0),
-        
+            error.includes('mainMenu')).toHaveLength(0);
         expect(jsErrors.filter(error => '),'
             error.includes('Cannot read properties of undefined') ||
             error.includes('mainMenu')).toHaveLength(0) }');'
@@ -128,17 +124,17 @@ test.describe('Help and Settings Navigation E2E Tests', () => {
     test('should handle multiple navigation cycles without issues', async ({ page )') => {'
         // コンソールエラーの監視
         const consoleErrors: any[] = [],
-        page.on('console', msg => {),
+        page.on('console', msg => {);
             if (msg.type(') === 'error') {'
                 consoleErrors.push(msg.text() }
         }');'
 
         // JavaScript エラーの監視
         const jsErrors: any[] = [],
-        page.on('pageerror', error => {),
+        page.on('pageerror', error => {);
             jsErrors.push(error.message) }');'
 
-        const canvas = page.getByRole('img', { name: 'ゲーム画面' });
+        const canvas = page.getByRole('img', { name: 'ゲーム画面' },
         await expect(canvas).toBeVisible();
 
         // 複数回のナビゲーションサイクルをテスト
@@ -156,10 +152,9 @@ test.describe('Help and Settings Navigation E2E Tests', () => {
             await page.keyboard.press('Enter'),      // ヘルプを選択
             await page.waitForTimeout(1000'),'
             await page.keyboard.press('Escape'),     // ESCで戻る
-            await page.waitForTimeout(1000),
-
+            await page.waitForTimeout(1000);
             // サイクル終了のスクリーンショット
-            await canvas.screenshot({ path: `e2e-screenshots/navigation-cycle-${cycle}-complete.png` );
+            await canvas.screenshot({ path: `e2e-screenshots/navigation-cycle-${cycle}-complete.png` ),
         }
 
         // 全体を通してエラーが発生していないことを確認
@@ -178,7 +173,7 @@ test.describe('Help and Settings Navigation E2E Tests', () => {
     }');'
 
     test('should maintain proper scene display after navigation', async ({ page )') => {'
-        const canvas = page.getByRole('img', { name: 'ゲーム画面' });
+        const canvas = page.getByRole('img', { name: 'ゲーム画面' },
         await expect(canvas).toBeVisible(');'
 
         // 設定画面に移動
@@ -188,16 +183,16 @@ test.describe('Help and Settings Navigation E2E Tests', () => {
 
         // Canvas内容が変化していることを確認（非黒ピクセルの存在）
         const settingsPixelData = await page.evaluate((') => {'
-            const canvas = document.getElementById('gameCanvas'),
-            const ctx = canvas.getContext('2d'),
-            const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height),
+            const canvas = document.getElementById('gameCanvas');
+            const ctx = canvas.getContext('2d');
+            const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
             let nonBlackPixels = 0,
             for (let i = 0, i < imageData.data.length, i += 4) {
                 if (imageData.data[i] > 0 || imageData.data[i+1] > 0 || imageData.data[i+2] > 0) {
                     nonBlackPixels++ }
             }
             return nonBlackPixels;
-        });
+        };
 
         expect(settingsPixelData).toBeGreaterThan(0');'
 
@@ -207,16 +202,16 @@ test.describe('Help and Settings Navigation E2E Tests', () => {
 
         // メインメニューの内容が表示されていることを確認
         const menuPixelData = await page.evaluate((') => {'
-            const canvas = document.getElementById('gameCanvas'),
-            const ctx = canvas.getContext('2d'),
-            const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height),
+            const canvas = document.getElementById('gameCanvas');
+            const ctx = canvas.getContext('2d');
+            const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
             let nonBlackPixels = 0,
             for (let i = 0, i < imageData.data.length, i += 4) {
                 if (imageData.data[i] > 0 || imageData.data[i+1] > 0 || imageData.data[i+2] > 0) {
                     nonBlackPixels++ }
             }
             return nonBlackPixels;
-        });
+        };
 
         expect(menuPixelData).toBeGreaterThan(0);
     }');'
@@ -225,13 +220,13 @@ test.describe('Help and Settings Navigation E2E Tests', () => {
         // コンソールログの監視（一般ログも含む）
         const consoleLogs: any[] = [],
         page.on('console', msg => {
-            consoleLogs.push({),
+            consoleLogs.push({);
                 type: msg.type(
-                text: msg.text(});
-            });
+                text: msg.text(},
+            };
         }');'
 
-        const canvas = page.getByRole('img', { name: 'ゲーム画面' });
+        const canvas = page.getByRole('img', { name: 'ゲーム画面' },
         await expect(canvas).toBeVisible(');'
 
         // 設定画面に移動してESCで戻る
@@ -248,5 +243,5 @@ test.describe('Help and Settings Navigation E2E Tests', () => {
         );
 
         expect(invalidSceneReferences).toHaveLength(0);
-    });
+    };
 }');'

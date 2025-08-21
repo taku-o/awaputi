@@ -14,7 +14,7 @@ interface ConfigurationManager { [key: string]: unknown;
 
 interface ErrorHandler { [key: string]: unknown;
 
-interface DynamicLayout { currentBreakpoint: string,
+interface DynamicLayout { currentBreakpoint: string;
     previousBreakpoint: string;
     transitionInProgress: boolean;
     transitionDuration: number;
@@ -22,14 +22,14 @@ interface DynamicLayout { currentBreakpoint: string,
     mode: string;
     forceOrientation: string | null;
     container: {  }
-        padding: { top: number, right: number, bottom: number,, left: number,;
-        margin: { top: number, right: number, bottom: number,, left: number,;
-        maxWidth: number | null,
-        maxHeight: number | null,
-    aspectRatio: number | null,
+        padding: { top: number, right: number, bottom: number,, left: number;
+        margin: { top: number, right: number, bottom: number,, left: number;
+        maxWidth: number | null;
+        maxHeight: number | null;
+    aspectRatio: number | null;
     }
 
-interface SafeAreaManager { enabled: boolean,
+interface SafeAreaManager { enabled: boolean;
     [key: string]: unknown;
 
 /**
@@ -40,11 +40,10 @@ export class AdvancedResponsiveLayoutManager extends ResponsiveCanvasManager { p
     private errorHandler: ErrorHandler;
     private, advancedBreakpoints: Record<string, Breakpoint>,
     private dynamicLayout: DynamicLayout;
-    private, safeAreaManager: SafeAreaManager,
+    private, safeAreaManager: SafeAreaManager;
     constructor(canvas: HTMLCanvasElement, gameEngine: GameEngine) {
 
-        super(canvas, gameEngine),
-
+        super(canvas, gameEngine);
         this.configManager = getConfigurationManager() }
 
         this.errorHandler = getErrorHandler('}'
@@ -98,7 +97,8 @@ export class AdvancedResponsiveLayoutManager extends ResponsiveCanvasManager { p
     locked: false,
             autoRotate: true,
             preferredOrientations: ['portrait', 'landscape'],
-            
+            preferredOrientations: ['portrait', 'landscape'],
+        };
             // 回転アニメーション
             animation: {)
                 enabled: true','
@@ -144,13 +144,11 @@ export class AdvancedResponsiveLayoutManager extends ResponsiveCanvasManager { p
         
         try {
             // セーフエリア検出
-            this.detectSafeArea(),
-            
+            this.detectSafeArea();
             // 初期レイアウト計算
-            this.calculateOptimalLayout(),
-            
+            this.calculateOptimalLayout();
             // オブザーバーの設定
-            this.setupObservers(),
+            this.setupObservers();
             // イベントリスナーの拡張設定
             this.setupAdvancedEventListeners()','
             console.log('[AdvancedResponsiveLayoutManager] 高度なレスポンシブレイアウトマネージャーを初期化しました') }
@@ -159,7 +157,7 @@ export class AdvancedResponsiveLayoutManager extends ResponsiveCanvasManager { p
 
         } catch (error) { this.errorHandler.logError(error, { : undefined)'
                 context: 'AdvancedResponsiveLayoutManager.initialize'
-            });
+            };
         }
     }
     
@@ -186,9 +184,8 @@ export class AdvancedResponsiveLayoutManager extends ResponsiveCanvasManager { p
                 visibility: hidden,
             `,
             
-            document.body.appendChild(testElement),
-            
-            const computed = window.getComputedStyle(testElement),
+            document.body.appendChild(testElement);
+            const computed = window.getComputedStyle(testElement);
             this.safeAreaManager.insets = {
                 top: parseInt(computed.paddingTop, 10) || 0,
                 right: parseInt(computed.paddingRight, 10) || 0,
@@ -234,9 +231,8 @@ export class AdvancedResponsiveLayoutManager extends ResponsiveCanvasManager { p
      * 最適なレイアウトを計算
      */
     calculateOptimalLayout() {
-        const viewport = this.getViewportInfo(),
-        const breakpoint = this.determineBreakpoint(viewport.width),
-        
+        const viewport = this.getViewportInfo();
+        const breakpoint = this.determineBreakpoint(viewport.width);
         // ブレークポイント変更チェック
         if (breakpoint !== this.dynamicLayout.currentBreakpoint) {
     }
@@ -249,11 +245,11 @@ export class AdvancedResponsiveLayoutManager extends ResponsiveCanvasManager { p
         // キャッシュに保存
         this.performance.cache.calculations.set('current-layout', {
                 layout,
-            timestamp: Date.now(),
+            timestamp: Date.now();
             viewport,
             breakpoint,
         
-        return layout })
+        return layout }
     
     /**
      * ビューポート情報を取得'
@@ -272,11 +268,11 @@ export class AdvancedResponsiveLayoutManager extends ResponsiveCanvasManager { p
             orientation: this.getOrientation(),
             // セーフエリアを考慮した実際の利用可能領域
             safeWidth: window.innerWidth - this.safeAreaManager.insets.left - this.safeAreaManager.insets.right,
-    safeHeight: window.innerHeight - this.safeAreaManager.insets.top - this.safeAreaManager.insets.bottom  };
+    safeHeight: window.innerHeight - this.safeAreaManager.insets.top - this.safeAreaManager.insets.bottom  },
         this.performance.cache.measurements.set(cacheKey, {
                 data: viewport,
     timestamp: Date.now( 
-            }));
+            });
         
         return viewport;
     }
@@ -334,9 +330,8 @@ export class AdvancedResponsiveLayoutManager extends ResponsiveCanvasManager { p
         // イベント発火
         this.dispatchLayoutEvent('breakpoint-change', { from: oldBreakpoint)
             to: newBreakpoint,
-    viewport: this.getViewportInfo( });
-        
-        console.log(`[AdvancedResponsiveLayoutManager] ブレークポイント変更: ${oldBreakpoint} → ${newBreakpoint}`});
+    viewport: this.getViewportInfo( };
+        console.log(`[AdvancedResponsiveLayoutManager] ブレークポイント変更: ${oldBreakpoint} → ${newBreakpoint}`};
     }
     
     /**
@@ -352,7 +347,7 @@ export class AdvancedResponsiveLayoutManager extends ResponsiveCanvasManager { p
 
             this.dispatchLayoutEvent('breakpoint-transition-complete', { }
                 from, to); }
-            });
+            };
         }, this.dynamicLayout.transitionDuration);
     }
     
@@ -360,7 +355,7 @@ export class AdvancedResponsiveLayoutManager extends ResponsiveCanvasManager { p
      * レイアウトを計算
      */
     computeLayout(viewport, breakpoint) {
-        const config = this.getBreakpointConfig(breakpoint),
+        const config = this.getBreakpointConfig(breakpoint);
         const orientation = viewport.orientation,
         
         let layout = {
@@ -376,8 +371,8 @@ export class AdvancedResponsiveLayoutManager extends ResponsiveCanvasManager { p
                 position: { x: 0, y: 0  },
             
             // UI設定
-            ui: { scale: this.calculateUIScale(viewport, config),
-                spacing: this.calculateSpacing(viewport, config),
+            ui: { scale: this.calculateUIScale(viewport, config);
+                spacing: this.calculateSpacing(viewport, config);
                 elements: this.calculateElementSizes(viewport, config },
             
             // セーフエリア設定
@@ -477,31 +472,29 @@ export class AdvancedResponsiveLayoutManager extends ResponsiveCanvasManager { p
      */
     calculateSpacing(viewport, config) {
         const baseSpacing = 16,
-        const scale = this.calculateUIScale(viewport, config),
-        
+        const scale = this.calculateUIScale(viewport, config);
         return { xs: Math.round(baseSpacing * 0.25 * scale,
             sm: Math.round(baseSpacing * 0.5 * scale,
     md: Math.round(baseSpacing * scale) }
-            lg: Math.round(baseSpacing * 1.5 * scale) };
-            xl: Math.round(baseSpacing * 2 * scale), 
+            lg: Math.round(baseSpacing * 1.5 * scale) },
+            xl: Math.round(baseSpacing * 2 * scale),
     }
     
     /**
      * 要素サイズ計算
      */
     calculateElementSizes(viewport, config) {
-        const uiScale = this.calculateUIScale(viewport, config),
-        
+        const uiScale = this.calculateUIScale(viewport, config);
         return { button: {
                 minWidth: Math.max(44, Math.round(44 * uiScale) }
                 minHeight: Math.max(44, Math.round(44 * uiScale) };
                 fontSize: Math.max(14, Math.round(16 * uiScale); }
             },
-            text: { small: Math.max(12, Math.round(12 * uiScale),
-                medium: Math.max(14, Math.round(16 * uiScale),
+            text: { small: Math.max(12, Math.round(12 * uiScale);
+                medium: Math.max(14, Math.round(16 * uiScale);
                 large: Math.max(18, Math.round(20 * uiScale },
-            icon: { small: Math.max(16, Math.round(16 * uiScale),
-                medium: Math.max(24, Math.round(24 * uiScale),
+            icon: { small: Math.max(16, Math.round(16 * uiScale);
+                medium: Math.max(24, Math.round(24 * uiScale);
                 large: Math.max(32, Math.round(32 * uiScale }
         }
     
@@ -512,7 +505,7 @@ export class AdvancedResponsiveLayoutManager extends ResponsiveCanvasManager { p
         const insets = this.safeAreaManager.insets,
         const minPadding = 8,
         
-        return { top: Math.max(minPadding, insets.top),
+        return { top: Math.max(minPadding, insets.top);
             right: Math.max(minPadding, insets.right) }
             bottom: Math.max(minPadding, insets.bottom) };
             left: Math.max(minPadding, insets.left); }
@@ -526,11 +519,11 @@ export class AdvancedResponsiveLayoutManager extends ResponsiveCanvasManager { p
 
         switch(mode) {''
             case 'portrait':','
-                return this.applyPortraitLayout(layout),
+                return this.applyPortraitLayout(layout);
             case 'landscape':','
-                return this.applyLandscapeLayout(layout),
+                return this.applyLandscapeLayout(layout);
             case 'fixed':,
-                return this.applyFixedLayout(layout),
+                return this.applyFixedLayout(layout);
             default:
 }
                 return this.applyAutoLayout(layout, config);
@@ -559,7 +552,7 @@ export class AdvancedResponsiveLayoutManager extends ResponsiveCanvasManager { p
     applyPortraitOptimizations(layout) {
         // 縦画面での最適化
         layout.canvas.height = Math.min(
-            layout.viewport.safeHeight),
+            layout.viewport.safeHeight);
             layout.viewport.safeWidth * 1.5)','
         '),'
 
@@ -575,7 +568,7 @@ export class AdvancedResponsiveLayoutManager extends ResponsiveCanvasManager { p
     applyLandscapeOptimizations(layout) {
         // 横画面での最適化
         layout.canvas.width = Math.min(
-            layout.viewport.safeWidth),
+            layout.viewport.safeWidth);
             layout.viewport.safeHeight * 1.5)','
         '),'
 
@@ -604,7 +597,7 @@ export class AdvancedResponsiveLayoutManager extends ResponsiveCanvasManager { p
     setupObservers() {
         // ResizeObserver
         if (window.ResizeObserver) {
-            this.performance.resizeObserver = new ResizeObserver( });
+            this.performance.resizeObserver = new ResizeObserver( };
                 this.debounce((entries) => {  }
                     this.handleResize(); }
                 }, this.performance.debounceTime)
@@ -620,7 +613,7 @@ export class AdvancedResponsiveLayoutManager extends ResponsiveCanvasManager { p
                     entries.forEach(entry => {) }
                         if (entry.target === this.canvas) { }
                             this.handleVisibilityChange(entry.isIntersecting); }
-});
+};
                 },
                 { threshold: [0, 0.5, 1] };
             
@@ -638,7 +631,7 @@ export class AdvancedResponsiveLayoutManager extends ResponsiveCanvasManager { p
 
             screen.orientation.addEventListener('change', () => {  }
                 this.handleOrientationChange(); }
-            });
+            };
         }
         ';'
         // Visual Viewport API
@@ -646,7 +639,7 @@ export class AdvancedResponsiveLayoutManager extends ResponsiveCanvasManager { p
 
             window.visualViewport.addEventListener('resize', () => {  }
                 this.handleViewportChange(); }
-            });
+            };
         }
         
         // Media Query listeners
@@ -665,24 +658,24 @@ export class AdvancedResponsiveLayoutManager extends ResponsiveCanvasManager { p
             let query = ' }'
              }
             if (breakpoint.min && breakpoint.max) { }
-                query = `(min-width: ${breakpoint.min}px) and (max-width: ${breakpoint.max}px)`;
+                query = `(min-width: ${breakpoint.min}px) and (max-width: ${breakpoint.max}px)`,
             } else if (breakpoint.min) {
-                query = `(min-width: ${breakpoint.min}px)`;
+                query = `(min-width: ${breakpoint.min}px)`,
             } else if (breakpoint.max) {
-                query = `(max-width: ${breakpoint.max}px)`;
+                query = `(max-width: ${breakpoint.max}px)`,
             }
             
             if (query) {
             
-                const mediaQuery = window.matchMedia(query),
+                const mediaQuery = window.matchMedia(query);
                 mediaQuery.addListener((e) => {
     
 }
                     if (e.matches) { }
                         this.handleBreakpointChange(key); }
-});
+};
             }
-        });
+        };
     }
     
     /**
@@ -692,15 +685,15 @@ export class AdvancedResponsiveLayoutManager extends ResponsiveCanvasManager { p
         const mediaQuery = window.matchMedia(`(resolution: ${window.devicePixelRatio)dppx}`} }
         mediaQuery.addListener(() => {  }
             // デバイスピクセル比変更時の処理 }
-            this.handlePixelRatioChange(});
-        });
+            this.handlePixelRatioChange(};
+        };
     }
     
     /**
      * 画面回転処理（オーバーライド）
      */
     handleOrientationChange() {
-        const newOrientation = this.getOrientation(),
+        const newOrientation = this.getOrientation();
         const oldOrientation = this.orientationManager.current,
         
         if (newOrientation !== oldOrientation) {
@@ -712,16 +705,16 @@ export class AdvancedResponsiveLayoutManager extends ResponsiveCanvasManager { p
             
             // レイアウト再計算
             setTimeout(() => { 
-                this.calculateOptimalLayout(),
-                this.updateCanvasSize(),
+                this.calculateOptimalLayout();
+                this.updateCanvasSize();
                 // アニメーション完了
                 setTimeout(() => {'
                     this.orientationManager.animation.inProgress = false,
                     this.dispatchLayoutEvent('orientation-change-complete', {
-            });
+            };
                         from: oldOrientation) }
                         to: newOrientation); 
-    });
+    };
                 }, this.orientationManager.animation.duration';'
 
             }, 100');'
@@ -737,18 +730,16 @@ export class AdvancedResponsiveLayoutManager extends ResponsiveCanvasManager { p
      */
     handleViewportChange() {
         // キャッシュクリア
-        this.performance.cache.measurements.clear(),
-        
+        this.performance.cache.measurements.clear();
         // セーフエリア再検出
-        this.detectSafeArea(),
-        
+        this.detectSafeArea();
         // レイアウト再計算
-        this.calculateOptimalLayout(),
+        this.calculateOptimalLayout();
         this.updateCanvasSize()','
         this.dispatchLayoutEvent('viewport-change', {), : undefined
     
             viewport: this.getViewportInfo() }
-        });
+        };
     }
     
     /**
@@ -756,8 +747,7 @@ export class AdvancedResponsiveLayoutManager extends ResponsiveCanvasManager { p
      */''
     handleVisibilityChange(isVisible) {
 
-        this.dispatchLayoutEvent('visibility-change', { isVisible ),
-        
+        this.dispatchLayoutEvent('visibility-change', { isVisible );
         if (this.gameEngine && this.gameEngine.handleVisibilityChange) {
     }
             this.gameEngine.handleVisibilityChange(isVisible); }
@@ -782,7 +772,7 @@ export class AdvancedResponsiveLayoutManager extends ResponsiveCanvasManager { p
                 ...detail }
                 manager: this,
                 timestamp: Date.now()),
-    });
+    };
         
         document.dispatchEvent(event);
         
@@ -821,8 +811,7 @@ export class AdvancedResponsiveLayoutManager extends ResponsiveCanvasManager { p
         ','
         // コンテキストのスケール調整')'
         const context = this.canvas.getContext('2d),'
-        context.scale(pixelRatio, pixelRatio),
-        
+        context.scale(pixelRatio, pixelRatio);
         // 現在のサイズ情報更新
         this.currentSize = {
             displayWidth: layout.canvas.width,
@@ -831,7 +820,7 @@ export class AdvancedResponsiveLayoutManager extends ResponsiveCanvasManager { p
             actualHeight: this.canvas.height,
             scale: layout.canvas.scale,
     pixelRatio: pixelRatio,
-            layout: layout,;
+            layout: layout,
         // Canvas配置
         this.positionCanvas(layout);
         

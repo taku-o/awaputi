@@ -8,7 +8,7 @@ import type { ErrorHandler } from '../../utils/ErrorHandler.js';
 /**
  * UI Component Factory interface
  */
-interface UIComponentFactory { createVolumeSlider(container: HTMLElement, options: VolumeSliderOptions): void,
+interface UIComponentFactory { createVolumeSlider(container: HTMLElement, options: VolumeSliderOptions): void;
     createToggleOption(container: HTMLElement, options: ToggleOptionOptions): void;
     createRadioGroup(container: HTMLElement, options: RadioGroupOptions): void;
     createDropdown(container: HTMLElement, options: DropdownOptions): void;
@@ -24,7 +24,7 @@ interface AudioTestPanel { ''
 /**
  * Volume Slider Options
  */
-interface VolumeSliderOptions { id: string,
+interface VolumeSliderOptions { id: string;
     label: string;
     icon: string;
     category: 'master' | 'bgm' | 'sfx';
@@ -34,7 +34,7 @@ interface VolumeSliderOptions { id: string,
 /**
  * Toggle Option Options
  */
-interface ToggleOptionOptions { id: string,
+interface ToggleOptionOptions { id: string;
     label: string;
     icon: string;
     defaultValue: boolean;
@@ -44,29 +44,29 @@ interface ToggleOptionOptions { id: string,
 /**
  * Radio Group Options
  */
-interface RadioGroupOptions { id: string,
+interface RadioGroupOptions { id: string;
     label: string;
     icon: string;
     options: Array<{ value: string,, label: string;>,
-    defaultValue: string,
+    defaultValue: string;
     onChange: (value: string) => void;
 }
 
 /**
  * Dropdown Options
  */
-interface DropdownOptions { id: string,
+interface DropdownOptions { id: string;
     label: string;
     icon: string;
     options: Array<{ value: number | string,, label: string;>,
-    defaultValue: number | string,
+    defaultValue: number | string;
     onChange: (value: string) => void;
 }
 
 /**
  * Vertical Slider Options
  */
-interface VerticalSliderOptions { id: string,
+interface VerticalSliderOptions { id: string;
     label: string;
     icon: string;
     min: number;
@@ -91,7 +91,7 @@ export class AudioSettingsTabRenderers {
     private uiComponentFactory: UIComponentFactory;
     private audioTestPanel: AudioTestPanel;
     private localizationManager: LocalizationManager;
-    private, errorHandler: ErrorHandler,
+    private, errorHandler: ErrorHandler;
     constructor(audioManager: AudioManager, configManager: ConfigurationManager, uiComponentFactory: UIComponentFactory, audioTestPanel: AudioTestPanel) {
 
         this.audioManager = audioManager;
@@ -107,7 +107,7 @@ export class AudioSettingsTabRenderers {
      * 音量タブを描画'
      */''
     renderVolumeTab(container: HTMLElement): void { // 音量設定セクション
-        const volumeSection = document.createElement('div'),
+        const volumeSection = document.createElement('div');
         volumeSection.className = 'settings-section',
         volumeSection.style.marginBottom = '30px',
         
@@ -140,7 +140,7 @@ export class AudioSettingsTabRenderers {
             category: 'sfx',
             defaultValue: this.audioManager.getVolume('sfx',
             previewSound: 'pop'
-            });
+            };
         container.appendChild(volumeSection);
         ';'
         // ミュート設定
@@ -157,7 +157,7 @@ export class AudioSettingsTabRenderers {
             onChange: (value) => { 
                 (this.audioManager, as any).setMuted?.(value) }
                 this.uiComponentFactory.updateVolumeSliders(!value); }
-});
+};
         
         container.appendChild(muteSection);
     }
@@ -166,7 +166,7 @@ export class AudioSettingsTabRenderers {
      * 品質タブを描画'
      */ : undefined''
     renderQualityTab(container: HTMLElement): void { ''
-        const qualitySection = document.createElement('div'),
+        const qualitySection = document.createElement('div');
         qualitySection.className = 'settings-section',
         
         // 音質プリセット
@@ -202,7 +202,7 @@ export class AudioSettingsTabRenderers {
         const advancedTitle = document.createElement('h3');
         advancedTitle.textContent = this.localizationManager.getText('audio.settings.quality.advanced';
         advancedTitle.style.cssText = `;
-            color: #00ffff;
+            color: #00ffff,
             font-size: 18px,
             margin-bottom: 15px,
         `;
@@ -224,7 +224,7 @@ export class AudioSettingsTabRenderers {
             ],
             defaultValue: 44100,
     onChange: (value) => {  }
-                (this.audioManager, as any).updateQualitySettings?.({ sampleRate: parseInt(value });
+                (this.audioManager, as any).updateQualitySettings?.({ sampleRate: parseInt(value };
             }'}');
         
         // バッファサイズ
@@ -246,9 +246,9 @@ export class AudioSettingsTabRenderers {
             ],
             defaultValue: 512,
     onChange: (value) => {  }
-                (this.audioManager, as any).updateQualitySettings?.({ bufferSize: parseInt(value });
+                (this.audioManager, as any).updateQualitySettings?.({ bufferSize: parseInt(value };
             }
-        });
+        };
         
         qualitySection.appendChild(advancedSection);
         container.appendChild(qualitySection);
@@ -258,7 +258,7 @@ export class AudioSettingsTabRenderers {
      * エフェクトタブを描画'
      */''
     renderEffectsTab(container: HTMLElement): void { ''
-        const effectsSection = document.createElement('div'),
+        const effectsSection = document.createElement('div');
         effectsSection.className = 'settings-section',
         
         // リバーブ効果
@@ -282,10 +282,10 @@ export class AudioSettingsTabRenderers {
             onChange: (value) => { }'
 
                 (this.audioManager, as any').setAudioEffect?.('compression', value); }'
-});
+};
         
         // イコライザー
-        if ((this.audioManager, as any).audioController?.equalizer) { const eqSection = this._createEqualizerSection(),
+        if ((this.audioManager, as any).audioController?.equalizer) { const eqSection = this._createEqualizerSection();
             effectsSection.appendChild(eqSection) }
         
         // 環境音
@@ -298,7 +298,7 @@ export class AudioSettingsTabRenderers {
                 if ((this.audioManager, as any).audioController) {  }
                     (this.audioManager, as any).audioController.enableEnvironmentalAudio?.(value) }
 }
-        });
+        };
         
         container.appendChild(effectsSection);
     }
@@ -307,7 +307,7 @@ export class AudioSettingsTabRenderers {
      * アクセシビリティタブを描画'
      */ : undefined''
     renderAccessibilityTab(container: HTMLElement): void { ''
-        const accessibilitySection = document.createElement('div'),
+        const accessibilitySection = document.createElement('div');
         accessibilitySection.className = 'settings-section',
         
         // 視覚的フィードバック
@@ -355,7 +355,7 @@ export class AudioSettingsTabRenderers {
             onChange: (value') => { }'
 
                 this.configManager.set('audio.accessibility.audioDescriptions', value); }
-});
+};
         
         container.appendChild(accessibilitySection);
     }
@@ -364,30 +364,29 @@ export class AudioSettingsTabRenderers {
      * テストタブを描画
      */'
     renderTestTab(container: HTMLElement): void { // テストパネルを表示
-        this.audioTestPanel.open(container),
+        this.audioTestPanel.open(container);
         ','
         // テスト説明
-        const description = document.createElement('div'),
+        const description = document.createElement('div');
         description.className = 'test-description',
 
         description.style.cssText = `','
-            background-color: rgba(255, 255, 255, 0.05),
+            background-color: rgba(255, 255, 255, 0.05);
             border-left: 4px solid #00ffff,
             padding: 15px,
             margin-bottom: 20px,
             border-radius: 8px,
         `,
 
-        const descTitle = document.createElement('h4'),
+        const descTitle = document.createElement('h4');
         descTitle.textContent = this.localizationManager.getText('audio.test.description.title',
         descTitle.style.cssText = `,
             color: #00ffff,
             font-size: 16px,
             margin-bottom: 10px,
         `,
-        description.appendChild(descTitle),
-
-        const descText = document.createElement('p'),
+        description.appendChild(descTitle);
+        const descText = document.createElement('p');
         descText.textContent = this.localizationManager.getText('audio.test.description.text),'
         descText.style.cssText = `,
             color: #cccccc,
@@ -395,8 +394,7 @@ export class AudioSettingsTabRenderers {
             line-height: 1.4,
             margin: 0,
         `,
-        description.appendChild(descText),
-        
+        description.appendChild(descText);
         // テストパネルの前に説明を挿入
         container.insertBefore(description, container.firstChild) }
     
@@ -412,7 +410,7 @@ export class AudioSettingsTabRenderers {
         const eqTitle = document.createElement('h3');
         eqTitle.textContent = this.localizationManager.getText('audio.settings.effects.equalizer';
         eqTitle.style.cssText = `;
-            color: #00ffff;
+            color: #00ffff,
             font-size: 18px,
             margin-bottom: 15px,
         `;
@@ -436,7 +434,7 @@ export class AudioSettingsTabRenderers {
                 id: band.id,
                 label: band.label,
                 icon: band.icon,
-                min: -12),
+                min: -12);
                 max: 12)','
     defaultValue: 0,')',
                 unit: 'dB',
@@ -444,8 +442,8 @@ export class AudioSettingsTabRenderers {
                     if ((this.audioManager, as any).audioController) {  }
                         (this.audioManager, as any).audioController.setEqualizerBand?.(band.frequency, value); }
 }
-            });
-        });
+            };
+        };
         
         return eqSection;
     }
@@ -459,7 +457,7 @@ export class AudioSettingsTabRenderers {
             low: { sampleRate: 22050, bufferSize: 1024  },
             medium: { sampleRate: 44100, bufferSize: 512  },
             high: { sampleRate: 44100, bufferSize: 256  },
-            ultra: { sampleRate: 48000, bufferSize: 256  };
+            ultra: { sampleRate: 48000, bufferSize: 256  },
         
         const settings = presets[preset];
         if (settings) {

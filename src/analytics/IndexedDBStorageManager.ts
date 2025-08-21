@@ -4,12 +4,12 @@
  */
 
 // IndexedDB Storage Manager interfaces and types
-export interface StoreDefinition { name: string,
+export interface StoreDefinition { name: string;
     keyPath: string;
     autoIncrement?: boolean;
     indexes: IndexDefinition[];
 
-export interface IndexDefinition { name: string,
+export interface IndexDefinition { name: string;
     keyPath: string;
     unique: boolean;
 
@@ -24,7 +24,7 @@ export interface QueryFilter { field: string,''
     operator: 'equals' | 'greaterThan' | 'lessThan' | 'between' | 'in';
     value: any;
 
-export interface StorageStats { totalRecords: number,
+export interface StorageStats { totalRecords: number;
     storageSize: number;
     stores: Record<string, number> }
 
@@ -42,8 +42,8 @@ export class IndexedDBStorageManager {
         // ストア定義
         this.stores = {
             sessions: {''
-                name: 'sessions',
-                keyPath: 'sessionId',
+                name: 'sessions';
+                keyPath: 'sessionId';
                 indexes: ['
             }'
 
@@ -54,9 +54,9 @@ export class IndexedDBStorageManager {
             },
 
             bubbleInteractions: { ''
-                name: 'bubbleInteractions',
-                keyPath: 'id',
-    autoIncrement: true,
+                name: 'bubbleInteractions';
+                keyPath: 'id';
+    autoIncrement: true;
                 indexes: ['
             }'
 
@@ -68,9 +68,9 @@ export class IndexedDBStorageManager {
             },
 
             performance: { ''
-                name: 'performance',
-                keyPath: 'id',
-    autoIncrement: true,
+                name: 'performance';
+                keyPath: 'id';
+    autoIncrement: true;
                 indexes: ['
             }'
 
@@ -81,9 +81,9 @@ export class IndexedDBStorageManager {
             },
 
             gameBalance: { ''
-                name: 'gameBalance',
-                keyPath: 'id',
-    autoIncrement: true,
+                name: 'gameBalance';
+                keyPath: 'id';
+    autoIncrement: true;
                 indexes: ['
             }'
 
@@ -94,7 +94,7 @@ export class IndexedDBStorageManager {
             },
 
             userBehavior: { ''
-                name: 'userBehavior',
+                name: 'userBehavior';
                 keyPath: 'id),'
                 autoIncrement: true','
     indexes: ['
@@ -114,8 +114,7 @@ export class IndexedDBStorageManager {
      * データベースの初期化
      */'
     private async initialize(): Promise<void> { try {'
-            await this.openDatabase(),
-
+            await this.openDatabase();
             console.log('IndexedDB, initialized successfully'),' }'
 
         } catch (error) { console.error('Failed to initialize IndexedDB:', error }
@@ -159,7 +158,7 @@ export class IndexedDBStorageManager {
             
             // ストアの作成
             const objectStore = db.createObjectStore(store.name, { keyPath: store.keyPath)
-               , autoIncrement: store.autoIncrement || false });
+               , autoIncrement: store.autoIncrement || false };
             
             // インデックスの作成
             store.indexes.forEach(index => { objectStore.createIndex(index.name, index.keyPath, { }
@@ -191,8 +190,8 @@ export class IndexedDBStorageManager {
             };
             
             // バッチ保存
-            data.forEach(item => {  ),
-                const request = store.add(item),
+            data.forEach(item => {  );
+                const request = store.add(item);
                 request.onerror = () => { }
                     console.error(`Failed to save item:`, request.error); }
                 };
@@ -201,7 +200,7 @@ export class IndexedDBStorageManager {
     /**
      * データの取得
      */
-    async getData(storeName: string, options: QueryOptions = {}): Promise<any[]> { if (!this.db) {
+    async getData(storeName: string, options: QueryOptions = {}: Promise<any[]> { if (!this.db) {
             await this.openDatabase() }
         ';'
 
@@ -220,8 +219,7 @@ export class IndexedDBStorageManager {
             // フィルターがある場合はインデックスを使用
             if (options.filters && options.filters.length > 0) {
                 const filter = options.filters[0], // 最初のフィルターのみ使用
-                const index = store.index(filter.field),
-
+                const index = store.index(filter.field);
                 switch(filter.operator) {''
                     case 'equals':','
                         request = index.openCursor(IDBKeyRange.only(filter.value)),
@@ -236,7 +234,7 @@ export class IndexedDBStorageManager {
 
                         break,
                     case 'between':,
-                        request = index.openCursor(IDBKeyRange.bound(filter.value[0], filter.value[1]),
+                        request = index.openCursor(IDBKeyRange.bound(filter.value[0], filter.value[1]);
                         break }
                     default: request = store.openCursor(); 
     } else { request = store.openCursor() }
@@ -360,8 +358,7 @@ export class IndexedDBStorageManager {
             let request: IDBRequest,
             if (filters && filters.length > 0) {
                 const filter = filters[0],
-                const index = store.index(filter.field),
-
+                const index = store.index(filter.field);
                 switch(filter.operator) {''
                     case 'equals':','
                         request = index.count(IDBKeyRange.only(filter.value)),
@@ -376,7 +373,7 @@ export class IndexedDBStorageManager {
 
                         break,
                     case 'between':,
-                        request = index.count(IDBKeyRange.bound(filter.value[0], filter.value[1]),
+                        request = index.count(IDBKeyRange.bound(filter.value[0], filter.value[1]);
                         break }
                     default: request = store.count(); 
     } else { request = store.count() }
@@ -399,7 +396,7 @@ export class IndexedDBStorageManager {
             
             for (const storeName of Object.keys(this.stores) {
             
-                const count = await this.getCount(storeName),
+                const count = await this.getCount(storeName);
                 stats.stores[storeName] = count }
 
                 stats.totalRecords += count;' }'
@@ -433,18 +430,17 @@ export class IndexedDBStorageManager {
             console.log('Database, optimization completed');
 
             return true;} catch (error) {
-            console.error('Database optimization failed:', error),
+            console.error('Database optimization failed:', error);
             return false,
     
     /**
      * データのエクスポート
      */
     async exportData(storeName?: string): Promise<any> { const exportData: any = {
-            exportDate: new Date().toISOString(),
+            exportDate: new Date().toISOString();
     version: this.version }
-            stores: {};
-        try { const storeNames = storeName ? [storeName] : Object.keys(this.stores),
-            
+            stores: {},
+        try { const storeNames = storeName ? [storeName] : Object.keys(this.stores);
             for (const name of storeNames) {
     
 }
@@ -470,7 +466,7 @@ export class IndexedDBStorageManager {
             console.log('Data, import completed');
 
             return true;} catch (error) {
-            console.error('Data import failed:', error),
+            console.error('Data import failed:', error);
             return false,
     
     /**

@@ -8,7 +8,7 @@ import { getErrorHandler  } from '../../../utils/ErrorHandler.js';
 import { LoggingSystem  } from '../../LoggingSystem.js';
 
 // 型定義
-export interface TutorialDefinition { id: string,
+export interface TutorialDefinition { id: string;
     title?: string;
     description?: string;
     steps?: TutorialStep[];
@@ -26,17 +26,17 @@ export interface TutorialStep { id?: string,
 export type StepValidator = (step: TutorialStep, stepIndex: number) => Promise<boolean> | boolean;
 export type StepCallback = (step: TutorialStep, stepIndex: number) => void;
 
-export interface ProgressData { startTime: number | null,
+export interface ProgressData { startTime: number | null;
     stepStartTime: number | null;
     stepDurations: number[];
     totalDuration: number;
     skippedSteps: Set<number>;
     failedValidations: FailedValidation[];
 
-export interface FailedValidation { stepIndex: number,
+export interface FailedValidation { stepIndex: number;
     timestamp: number;
 
-export interface StepManagerConfig { allowSkipping: boolean,
+export interface StepManagerConfig { allowSkipping: boolean;
     allowBackNavigation: boolean;
     autoAdvance: boolean;
     autoAdvanceDelay: number;
@@ -44,7 +44,7 @@ export interface StepManagerConfig { allowSkipping: boolean,
     saveProgress: boolean;
     maxRetries: number;
 
-export interface ProgressInfo { currentStep: number,
+export interface ProgressInfo { currentStep: number;
     totalSteps: number;
     completedSteps: number;
     skippedSteps: number;
@@ -56,13 +56,13 @@ export interface ProgressInfo { currentStep: number,
     canGoPrevious: boolean;
     canSkip: boolean;
 
-export interface StepStatistics { averageStepDuration: number,
+export interface StepStatistics { averageStepDuration: number;
     longestStep: number;
     shortestStep: number;
     failedValidations: number;
     completionRate: number;
 
-export interface SavedProgress { tutorialId: string,
+export interface SavedProgress { tutorialId: string;
     completedSteps: number[];
     skippedSteps: number[];
     totalDuration: number;
@@ -83,7 +83,7 @@ export class TutorialStepManager {
     private stepValidators: Map<number, StepValidator>;
     private stepCallbacks: Map<number, StepCallback>;
     private progressData: ProgressData;
-    private, config: StepManagerConfig,
+    private, config: StepManagerConfig;
     constructor() {
 
         this.errorHandler = getErrorHandler();
@@ -103,20 +103,20 @@ export class TutorialStepManager {
         
         // 進捗管理
         this.progressData = {
-            startTime: null,
-            stepStartTime: null,
-            stepDurations: [],
-            totalDuration: 0,
+            startTime: null;
+            stepStartTime: null;
+            stepDurations: [];
+            totalDuration: 0;
     skippedSteps: new Set<number>() }
             failedValidations: [] 
     };
         // 設定
-        this.config = { allowSkipping: true,
-            allowBackNavigation: true,
-            autoAdvance: false,
-            autoAdvanceDelay: 3000,
-            validateOnAdvance: true,
-            saveProgress: true,
+        this.config = { allowSkipping: true;
+            allowBackNavigation: true;
+            autoAdvance: false;
+            autoAdvanceDelay: 3000;
+            validateOnAdvance: true;
+            saveProgress: true;
     maxRetries: 3  }
     
     /**
@@ -127,14 +127,13 @@ export class TutorialStepManager {
             this.currentTutorial = tutorial;
             this.stepIndex = 0;
             this.totalSteps = tutorial.steps ? tutorial.steps.length: 0;
-            this.completedSteps.clear(),
-            
+            this.completedSteps.clear();
             this.progressData = {
-                startTime: Date.now(),
-                stepStartTime: Date.now(),
-                stepDurations: [],
-                totalDuration: 0,
-                skippedSteps: new Set<number>(),
+                startTime: Date.now();
+                stepStartTime: Date.now();
+                stepDurations: [];
+                totalDuration: 0;
+                skippedSteps: new Set<number>();
                 failedValidations: []  };
             // ステップ定義を登録
             if (tutorial.steps) { this.registerStepDefinitions(tutorial.steps) }
@@ -153,11 +152,10 @@ export class TutorialStepManager {
      * ステップ定義を登録
      * @param steps - ステップ配列
      */
-    private registerStepDefinitions(steps: TutorialStep[]): void { if(!Array.isArray(steps) return,
+    private registerStepDefinitions(steps: TutorialStep[]): void { if(!Array.isArray(steps) return;
         
         steps.forEach((step, index) => { 
-            this.stepDefinitions.set(index, step),
-            
+            this.stepDefinitions.set(index, step);
             // バリデーター登録
             if (step.validator) { }
                 this.stepValidators.set(index, step.validator); }
@@ -165,7 +163,7 @@ export class TutorialStepManager {
             
             // コールバック登録
             if (step.onComplete) { this.stepCallbacks.set(index, step.onComplete) }
-        });
+        };
     }
     
     /**
@@ -174,7 +172,7 @@ export class TutorialStepManager {
      */
     loadStep(index: number): TutorialStep | null { try {
             if (index < 0 || index >= this.totalSteps) { }
-                throw new Error(`Invalid, step index: ${index}`});
+                throw new Error(`Invalid, step index: ${index}`};
             }
             
             // 前のステップの記録
@@ -253,7 +251,7 @@ export class TutorialStepManager {
      */
     jumpToStep(index: number): boolean { try {
             if (index < 0 || index >= this.totalSteps) {  }
-                throw new Error(`Invalid, step index: ${index}`});
+                throw new Error(`Invalid, step index: ${index}`};
             }
             
             this.loadStep(index);
@@ -274,7 +272,7 @@ export class TutorialStepManager {
             this.progressData.skippedSteps.add(this.stepIndex);
             this.loggingSystem.debug('TutorialStepManager', `Step skipped: ${ this.stepIndex + 1}`} }
 
-            return this.nextStep(});} catch (error) {
+            return this.nextStep(};} catch (error) {
             this.errorHandler.handleError(error as Error, 'TutorialStepManager.skipCurrentStep),'
             return false,
     
@@ -282,10 +280,10 @@ export class TutorialStepManager {
      * 現在のステップを完了
      */
     private completeCurrentStep(): void { try {
-            this.completedSteps.add(this.stepIndex),
+            this.completedSteps.add(this.stepIndex);
             ','
             // コールバック実行
-            const callback = this.stepCallbacks.get(this.stepIndex),
+            const callback = this.stepCallbacks.get(this.stepIndex);
             if(callback && typeof, callback === 'function' {', ' }
 
                 callback(this.currentStep!, this.stepIndex); }
@@ -299,7 +297,7 @@ export class TutorialStepManager {
      * 現在のステップをバリデート
      */'
     private async validateCurrentStep(): Promise<boolean> { try {'
-            const validator = this.stepValidators.get(this.stepIndex),
+            const validator = this.stepValidators.get(this.stepIndex);
             if(!validator || typeof, validator !== 'function' { }
                 return true; // バリデーターがない場合は成功とみなす }
             }
@@ -311,7 +309,7 @@ export class TutorialStepManager {
                 this.progressData.failedValidations.push({)
                     stepIndex: this.stepIndex) }
                     timestamp: Date.now(); 
-    });
+    };
             }
             ';'
 
@@ -327,7 +325,7 @@ export class TutorialStepManager {
 
             this.loggingSystem.info('TutorialStepManager', 'Tutorial completed', {
                 tutorial: this.currentTutorial?.id, : undefined
-                totalSteps: this.totalSteps),
+                totalSteps: this.totalSteps);
                 completedSteps: this.completedSteps.size,
     skippedSteps: this.progressData.skippedSteps.size),
                 totalDuration: this.progressData.totalDuration),
@@ -348,7 +346,7 @@ export class TutorialStepManager {
                 tutorialId: this.currentTutorial?.id || ', : undefined);'
                 completedSteps: Array.from(this.completedSteps);
                 skippedSteps: Array.from(this.progressData.skippedSteps);
-                totalDuration: this.progressData.totalDuration;
+                totalDuration: this.progressData.totalDuration,
                 stepDurations: this.progressData.stepDurations,
     completedAt: Date.now();
             };
@@ -385,7 +383,7 @@ export class TutorialStepManager {
             stepTitle: this.currentStep?.title, : undefined
             stepDescription: this.currentStep?.description, : undefined
             canGoNext: this.stepIndex + 1 < this.totalSteps,
-            canGoPrevious: this.stepIndex > 0 && this.config.allowBackNavigation };
+            canGoPrevious: this.stepIndex > 0 && this.config.allowBackNavigation },
             canSkip: this.config.allowSkipping 
     }
     
@@ -394,9 +392,9 @@ export class TutorialStepManager {
      */
     getStepStatistics(): StepStatistics { return { averageStepDuration: this.progressData.stepDurations.length > 0 ? undefined : undefined
                 this.progressData.stepDurations.reduce((sum, duration) => sum + duration, 0) / this.progressData.stepDurations.length : 0,
-            longestStep: Math.max(...this.progressData.stepDurations, 0),
+            longestStep: Math.max(...this.progressData.stepDurations, 0);
             shortestStep: this.progressData.stepDurations.length > 0 ? Math.min(...this.progressData.stepDurations) : 0,
-            failedValidations: this.progressData.failedValidations.length };
+            failedValidations: this.progressData.failedValidations.length },
             completionRate: this.totalSteps > 0 ? this.completedSteps.size / this.totalSteps : 0 
         }
     
@@ -405,7 +403,7 @@ export class TutorialStepManager {
      * @param newConfig - 新しい設定
      */'
     updateConfig(newConfig: Partial<StepManagerConfig>): void { ''
-        Object.assign(this.config, newConfig),
+        Object.assign(this.config, newConfig);
         this.loggingSystem.debug('TutorialStepManager', 'Configuration updated', newConfig) }
     
     /**
@@ -415,18 +413,17 @@ export class TutorialStepManager {
         this.currentStep = null;
         this.stepIndex = 0;
         this.totalSteps = 0;
-        this.completedSteps.clear(),
-        this.stepDefinitions.clear(),
-        this.stepValidators.clear(),
-        this.stepCallbacks.clear(),
-        
+        this.completedSteps.clear();
+        this.stepDefinitions.clear();
+        this.stepValidators.clear();
+        this.stepCallbacks.clear();
         this.progressData = {
             startTime: null,
             stepStartTime: null,
     stepDurations: [],
             totalDuration: 0,
             skippedSteps: new Set<number>(),
-            failedValidations: []  };
+            failedValidations: []  },
         this.loggingSystem.debug('TutorialStepManager', 'Step manager reset');
 
     }'}'

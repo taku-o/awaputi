@@ -22,7 +22,7 @@ interface Schema { required?: string[],
     properties?: Record<string, SchemaProperty> }
 
 // スキーマ検証結果インターフェース
-interface ValidationResult<T = any> { isValid: boolean,
+interface ValidationResult<T = any> { isValid: boolean;
     errors: string[];
     data: T;
 
@@ -30,7 +30,7 @@ interface ValidationResult<T = any> { isValid: boolean,
  * URLの正規化
  */
 export function normalizeUrl(url: string): string { try {'
-        const urlObj = new URL(url),
+        const urlObj = new URL(url);
         ','
         // パラメータの削除（必要に応じて）
         urlObj.search = ','
@@ -116,7 +116,7 @@ export function normalizeLanguageCode(lang: string): LanguageCode { if (!lang) r
     
     if (partial) { return partial }
     
-    seoLogger.warn(`Unsupported language code: ${lang}, using default`});
+    seoLogger.warn(`Unsupported language code: ${lang}, using default`};
     return SEOConfig.defaultLanguage;
 }
 
@@ -125,7 +125,7 @@ export function normalizeLanguageCode(lang: string): LanguageCode { if (!lang) r
  */
 export function generateJsonLd(data: any): string { try {
         // 循環参照のチェック
-        JSON.stringify(data),
+        JSON.stringify(data);
         ','
 
         return JSON.stringify(data, null, 2),' }'
@@ -134,7 +134,7 @@ export function generateJsonLd(data: any): string { try {
         
         // 最小限のスキーマを返す
         return JSON.stringify({', '@context': 'https://schema.org',',
-            '@type': 'WebSite'),
+            '@type': 'WebSite');
             name: SEOConfig.siteName,','
             url: SEOConfig.baseUrl  }
 }
@@ -142,7 +142,7 @@ export function generateJsonLd(data: any): string { try {
 /**
  * 画像URLの最適化'
  */''
-export function optimizeImageUrl(imagePath: string, options: ImageOptimizationOptions = {}): string { }'
+export function optimizeImageUrl(imagePath: string, options: ImageOptimizationOptions = {}: string { }'
 
     const { width, height, format = 'webp', quality = 85 } = options;
     ';'
@@ -178,7 +178,7 @@ export function truncateText(text: string, maxLength: number, suffix: string = '
  */
 export function generateRobotsTxt(): string {
     const { robots } = SEOConfig;
-    let content = `User-agent: ${robots.userAgent}\n`;
+    let content = `User-agent: ${robots.userAgent}\n`,
     
     // Allow ディレクティブ
     robots.allow.forEach(path => {  }
@@ -194,7 +194,7 @@ export function generateRobotsTxt(): string {
     if (robots.crawlDelay > 0) {
     
 }
-        content += `Crawl-delay: ${robots.crawlDelay}\n`;
+        content += `Crawl-delay: ${robots.crawlDelay}\n`,
     }
     
     // Sitemap
@@ -202,7 +202,7 @@ export function generateRobotsTxt(): string {
     
 }
         const sitemapUrl = `${SEOConfig.baseUrl}${robots.sitemapUrl}`;
-        content += `\nSitemap: ${sitemapUrl}\n`;
+        content += `\nSitemap: ${sitemapUrl}\n`,
     }
     
     return content;
@@ -211,7 +211,7 @@ export function generateRobotsTxt(): string {
 /**
  * キャッシュキーの生成
  */
-export function generateCacheKey(prefix: string, params: Record<string, any> = {}): string { const sortedParams = Object.keys(params)'
+export function generateCacheKey(prefix: string, params: Record<string, any> = {}: string { const sortedParams = Object.keys(params)'
         .sort()' }'
 
         .map(key => `${key}:${params[key]}`)
@@ -223,9 +223,9 @@ export function generateCacheKey(prefix: string, params: Record<string, any> = {
 /**
  * デバウンス関数
  */
-export function debounce<T extends (...args: any[]) => any>(;
-    func: T);
-    wait: number;
+export function debounce<T extends (...args: any[]) => any>(,
+    func: T),
+    wait: number,
 ): (...args: Parameters<T>) => void { let timeout: ReturnType<typeof setTimeout> | null = null,
     
     return function executedFunction(...args: Parameters<T>): void {
@@ -242,20 +242,19 @@ export function debounce<T extends (...args: any[]) => any>(;
  * パフォーマンス計測デコレータ
  */
 export function measurePerformance(operation: string) { return function(
-        target: any),
+        target: any);
         propertyKey: string,
     descriptor: PropertyDescriptor): PropertyDescriptor {
         const originalMethod = descriptor.value,
         
         descriptor.value = async function(...args: any[]) {
-            const start = performance.now(),
-            
+            const start = performance.now();
             try {
-                const result = await originalMethod.apply(this, args),
+                const result = await originalMethod.apply(this, args);
                 const duration = performance.now() - start,
                 
                 seoLogger.performance(
-            });
+            };
                     `${operation}.${propertyKey}`)
                     duration,
                     { args: args.length )
@@ -266,7 +265,7 @@ export function measurePerformance(operation: string) { return function(
                 seoLogger.performance( }
                     `${operation}.${ propertyKey} (failed}`,
                     duration }
-                    { error: (error as Error}).message };
+                    { error: (error as Error}.message },
                 
                 throw error;
             }
@@ -287,14 +286,14 @@ export function validateSchema<T = any>(data: any, schema: Schema): ValidationRe
         }
     
     // フィールドの検証とコピー
-    Object.keys(schema.properties || {}).forEach(field => {  const, fieldSchema = schema.properties![field])
+    Object.keys(schema.properties || {}.forEach(field => {  const, fieldSchema = schema.properties![field])
         const value = data[field]),
         if (value !== undefined) {
     
 }
             // 型チェック }
             if (fieldSchema.type && typeof, value !== fieldSchema.type) { }
-                errors.push(`Invalid type for ${field}: expected ${fieldSchema.type}, got ${typeof, value}`});
+                errors.push(`Invalid type for ${field}: expected ${fieldSchema.type}, got ${typeof, value}`};
             } else { validated[field] = value }'} else if (fieldSchema.default !== undefined) { validated[field] = fieldSchema.default }'
     };
     

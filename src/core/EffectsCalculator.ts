@@ -7,38 +7,41 @@
 
 // 型定義
 interface EffectsConfig { particles: {
-        maxCoun,t: number,
-        poolSize: number,
-        quality: number,
-        baseIntensity: number,
-    lifetimeMultiplier: number,;
-    screen: { shakeIntensity: number,
-        flashDuration: number,
-        zoomSensitivity: number,
-    transitionDuration: number,;
-    animations: { duration: number,
-        easing: string,
-        scaleFactor: number,
-    fadeSpeed: number,;
-    bubbleEffects: { popIntensity: number,
-        chainRadius: number,
-        explosionScale: number,
-    trailLength: number,
-
-interface Position { x: number,
+        maxCoun,t: number;
+        poolSize: number;
+        quality: number;
+        baseIntensity: number;
+    lifetimeMultiplier: number;
+    screen: { shakeIntensity: number;
+        flashDuration: number;
+        zoomSensitivity: number;
+    transitionDuration: number;
+    animations: { duration: number;
+        easing: string;
+        scaleFactor: number;
+    fadeSpeed: number;
+    bubbleEffects: { popIntensity: number;
+        chainRadius: number;
+        explosionScale: number;
+    trailLength: number;
+    trailLength: number;
+        };
+interface Position { x: number;
     y: number;
-
-interface Color { r: number,
+    y: number;
+        };
+interface Color { r: number;
     g: number;
     b: number;
     a: number;
-
-interface ShakeSettings { amplitude: number,
+    a: number;
+        };
+interface ShakeSettings { amplitude: number;
     frequency: number;
     duration: number;
     easing?: string;
 
-interface EffectModifier { type: 'multiply' | 'add' | 'power' | 'clamp',
+interface EffectModifier { type: 'multiply' | 'add' | 'power' | 'clamp';
     value?: number;
     min?: number;
     max?: number;
@@ -53,12 +56,13 @@ interface PerformanceState { fps?: number,
     memoryUsage?: number;
     cpuUsage?: number;
 
-interface PerformanceOptimization { particleQuality: number,
+interface PerformanceOptimization { particleQuality: number;
     animationQuality: number;
     effectsEnabled: boolean;
     maxParticles: number;
     skipFrames: number;
-
+    skipFrames: number;
+        };
 interface EffectContext { isCombo?: boolean,
     comboCount?: number;
     isBossStage?: boolean;
@@ -80,23 +84,23 @@ export class EffectsCalculator {
         // デフォルトのエフェクト設定（EffectsConfigが利用できない場合のフォールバック）
         this.defaultEffectsConfig = {
             particles: {
-                maxCount: 500,
-                poolSize: 100,
-                quality: 1.0,
+                maxCount: 500;
+                poolSize: 100;
+                quality: 1.0;
     baseIntensity: 1.0 }
                 lifetimeMultiplier: 1.0 
     };
-            screen: { shakeIntensity: 1.0,
-                flashDuration: 200,
-                zoomSensitivity: 1.0,
+            screen: { shakeIntensity: 1.0;
+                flashDuration: 200;
+                zoomSensitivity: 1.0;
     transitionDuration: 300 };
             animations: { duration: 300,''
-                easing: 'easeOut',
-                scaleFactor: 1.0,
+                easing: 'easeOut';
+                scaleFactor: 1.0;
     fadeSpeed: 1.0  };
-            bubbleEffects: { popIntensity: 1.0,
-                chainRadius: 120,
-                explosionScale: 1.0,
+            bubbleEffects: { popIntensity: 1.0;
+                chainRadius: 120;
+                explosionScale: 1.0;
     trailLength: 1.0 
     };
         console.log('EffectsCalculator, initialized');
@@ -113,8 +117,7 @@ export class EffectsCalculator {
     /**
      * パーティクル数を計算
      */
-    calculateParticleCount(effectType: string, intensity: number = 1.0, modifiers: EffectModifiers = {}): number { const config = this.getEffectsConfig(),
-        
+    calculateParticleCount(effectType: string, intensity: number = 1.0, modifiers: EffectModifiers = {}: number { const config = this.getEffectsConfig();
         // エフェクトタイプ別の基本パーティクル数
         const baseParticleCounts = {
             bubble_pop: 8,
@@ -126,7 +129,7 @@ export class EffectsCalculator {
             special_bubble: 20,
             boss_damage: 30,
             power_up: 18,
-    background_ambient: 5 };
+    background_ambient: 5 },
         const baseCount = baseParticleCounts[effectType] || 10;
         
         // 強度による調整
@@ -149,8 +152,7 @@ export class EffectsCalculator {
      * アニメーション時間を計算
      */
     calculateAnimationDuration(effectType: string, complexity: number = 1.0, modifiers: EffectModifiers = { ): number {
-        const config = this.getEffectsConfig(),
-        
+        const config = this.getEffectsConfig();
         // エフェクトタイプ別の基本時間
         const baseDurations = {
             bubble_pop: 300,
@@ -164,7 +166,7 @@ export class EffectsCalculator {
             power_up: 1500,
             ui_transition: 250,
             fade_in: 400,
-    fade_out: 300  };
+    fade_out: 300  },
         const baseDuration = baseDurations[effectType] || config.animations.duration;
         
         // 複雑度による調整（複雑なほど長時間）
@@ -197,14 +199,13 @@ export class EffectsCalculator {
 
                     break,
                 case 'power':','
-                    intensity = Math.pow(intensity, modifier.value),
-
+                    intensity = Math.pow(intensity, modifier.value);
                     break,
                 case 'clamp':,
                     intensity = Math.min(Math.max(intensity, modifier.min || 0), modifier.max || 1),
                     break }
                 default: }
-                    console.warn(`Unknown, modifier type: ${modifier.type}`});
+                    console.warn(`Unknown, modifier type: ${modifier.type}`},
             }
         }
         
@@ -216,8 +217,7 @@ export class EffectsCalculator {
      * 画面シェイク強度を計算
      */
     calculateScreenShake(shakeType: string, intensity: number = 1.0, options: { easing?: string; = { ): ShakeSettings {
-        const config = this.getEffectsConfig(),
-        
+        const config = this.getEffectsConfig();
         // シェイクタイプ別の設定
         const shakeSettings = { }
             bubble_pop: { amplitude: 2, frequency: 8, duration: 150  },
@@ -225,7 +225,7 @@ export class EffectsCalculator {
             boss_hit: { amplitude: 8, frequency: 6, duration: 500  },
             explosion: { amplitude: 12, frequency: 10, duration: 400  },
             power_up: { amplitude: 3, frequency: 15, duration: 600  },
-            damage: { amplitude: 6, frequency: 8, duration: 200  };
+            damage: { amplitude: 6, frequency: 8, duration: 200  },
         
         const baseSetting = shakeSettings[shakeType] || shakeSettings.bubble_pop;
         
@@ -308,7 +308,7 @@ export class EffectsCalculator {
                 y += (Math.random() - 0.5) * randomness * 20; }
             }
 
-            trajectory.push({ x: Math.floor(x), y: Math.floor(y  });
+            trajectory.push({ x: Math.floor(x), y: Math.floor(y  },
         }
         
         return trajectory;
@@ -341,7 +341,7 @@ export class EffectsCalculator {
                 break,
 
             case 'ease_out':,
-                const easeOutT = 1 - Math.pow(1 - t, 2),
+                const easeOutT = 1 - Math.pow(1 - t, 2);
                 r = Math.floor(startColor.r + (endColor.r - startColor.r) * easeOutT),
                 g = Math.floor(startColor.g + (endColor.g - startColor.g) * easeOutT),
                 b = Math.floor(startColor.b + (endColor.b - startColor.b) * easeOutT),
@@ -376,7 +376,7 @@ export class EffectsCalculator {
             bubble_pop: 40,
             score_popup: 30,
             screen_shake: 20,
-    background_ambient: 10  };
+    background_ambient: 10  },
         let priority = basePriorities[effectType] || 50;
         
         // コンテキストによる調整
@@ -407,7 +407,7 @@ export class EffectsCalculator {
             animationQuality: 1.0,
             effectsEnabled: true,
             maxParticles: 500,
-    skipFrames: 0  };
+    skipFrames: 0  },
         // FPSが低い場合の最適化
         if (fps < 30) {
             optimization.particleQuality = 0.5,

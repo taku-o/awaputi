@@ -26,7 +26,7 @@ describe('Username Input Performance Tests', () => {
             this._maxCacheSize = 50;
         }
         getCanvasInfo() {
-            const now = performance.now(),
+            const now = performance.now();
             // Return cached canvas info if still valid
             if (this._canvasInfoCache && (now - this._canvasInfoCacheTime) < this._cacheValidDuration') {'
                 return this._canvasInfoCache }
@@ -60,7 +60,7 @@ describe('Username Input Performance Tests', () => {
             // Calculate transformation
             const { scale } = canvasInfo;
             const result = {
-                x: baseX * scale,
+                x: baseX * scale;
         y: baseY * scale
             };
             // Cache result(with size limit
@@ -80,7 +80,7 @@ describe('Username Input Performance Tests', () => {
         // Batch coordinate transformation for performance
         transformCoordinatesBatch(coordinates, canvasInfo) {
             if (!canvasInfo || !Array.isArray(coordinates) return []),
-            return coordinates.map(coord => ),
+            return coordinates.map(coord => );
                 this.transformCoordinates(coord.x, coord.y, canvasInfo).filter(result => result !== null) }
         // Clear caches manually
         clearCache() {
@@ -90,9 +90,9 @@ describe('Username Input Performance Tests', () => {
         // Get cache statistics
         getCacheStats() {
             return {
-                canvasInfoCached: !!this._canvasInfoCache,
-                canvasInfoCacheAge: performance.now() - this._canvasInfoCacheTime,
-                coordinateCacheSize: this._coordinateCache.size,
+                canvasInfoCached: !!this._canvasInfoCache;
+                canvasInfoCacheAge: performance.now() - this._canvasInfoCacheTime;
+                coordinateCacheSize: this._coordinateCache.size;
                 coordinateCacheMaxSize: this._maxCacheSize
             };
         }
@@ -100,7 +100,7 @@ describe('Username Input Performance Tests', () => {
     beforeEach(() => {
         // Use fake timers for consistent timing in tests
         jest.useFakeTimers('),'
-        jest.spyOn(performance, 'now').mockImplementation(() => Date.now(),
+        jest.spyOn(performance, 'now').mockImplementation(() => Date.now();
         // Setup performance observer mock
         performanceObserver = {
             observe: jest.fn(
@@ -110,37 +110,37 @@ describe('Username Input Performance Tests', () => {
         // Mock ResponsiveCanvasManager
         mockResponsiveCanvasManager = {
             getCanvasInfo: jest.fn().mockReturnValue({
-                scale: 1.5,
-                displayWidth: 800,
-                displayHeight: 600,
-                actualWidth: 1200,
-                actualHeight: 900,
+                scale: 1.5;
+                displayWidth: 800;
+                displayHeight: 600;
+                actualWidth: 1200;
+                actualHeight: 900;
                 pixelRatio: 2) };
         // Mock GameEngine
         mockGameEngine = {
-            responsiveCanvasManager: mockResponsiveCanvasManager,
-            debug: false,;
+            responsiveCanvasManager: mockResponsiveCanvasManager;
+            debug: false;
         usernameInputManager = new PerformanceOptimizedUsernameInputManager(mockGameEngine);
-    });
+    };
     afterEach(() => {
         // Restore real timers
         jest.useRealTimers() }');'
     describe('Canvas Info Caching', (') => {'
         it('should cache canvas info to avoid repeated calls', () => {
             // First call should hit ResponsiveCanvasManager
-            const canvasInfo1 = usernameInputManager.getCanvasInfo(),
-            expect(mockResponsiveCanvasManager.getCanvasInfo).toHaveBeenCalledTimes(1),
+            const canvasInfo1 = usernameInputManager.getCanvasInfo();
+            expect(mockResponsiveCanvasManager.getCanvasInfo).toHaveBeenCalledTimes(1);
             // Second call within cache duration should use cache
-            const canvasInfo2 = usernameInputManager.getCanvasInfo(),
-            expect(mockResponsiveCanvasManager.getCanvasInfo).toHaveBeenCalledTimes(1),
-            expect(canvasInfo2.toEqual(canvasInfo1),
-            const stats = usernameInputManager.getCacheStats(),
-            expect(stats.canvasInfoCached).toBe(true),
+            const canvasInfo2 = usernameInputManager.getCanvasInfo();
+            expect(mockResponsiveCanvasManager.getCanvasInfo).toHaveBeenCalledTimes(1);
+            expect(canvasInfo2.toEqual(canvasInfo1);
+            const stats = usernameInputManager.getCacheStats();
+            expect(stats.canvasInfoCached).toBe(true);
             expect(stats.canvasInfoCacheAge).toBeLessThan(100) }');'
         it('should refresh cache after expiration', async () => {
             // First call
-            usernameInputManager.getCanvasInfo(),
-            expect(mockResponsiveCanvasManager.getCanvasInfo).toHaveBeenCalledTimes(1),
+            usernameInputManager.getCanvasInfo();
+            expect(mockResponsiveCanvasManager.getCanvasInfo).toHaveBeenCalledTimes(1);
             // Advance time beyond cache expiration (16ms + buffer}
             jest.advanceTimersByTime(20);
             // Second call should refresh cache
@@ -154,13 +154,13 @@ describe('Username Input Performance Tests', () => {
             
             // First transformation should calculate
             const result1 = usernameInputManager.transformCoordinates(400, 300, canvasInfo);
-            expect(result1.toEqual({ x: 600, y: 450 ),
+            expect(result1.toEqual({ x: 600, y: 450 );
             // Second identical transformation should use cache
-            const result2 = usernameInputManager.transformCoordinates(400, 300, canvasInfo),
-            expect(result2.toEqual(result1),
+            const result2 = usernameInputManager.transformCoordinates(400, 300, canvasInfo);
+            expect(result2.toEqual(result1);
             expect(result2.toBe(result1), // Should be same object reference (from cache)
             ,
-            const stats = usernameInputManager.getCacheStats(),
+            const stats = usernameInputManager.getCacheStats();
             expect(stats.coordinateCacheSize).toBe(1) }');'
         it('should limit coordinate cache size', () => {
             const canvasInfo = { scale: 1.5 };
@@ -192,8 +192,8 @@ describe('Username Input Performance Tests', () => {
         it('should efficiently transform multiple coordinates', () => {
             const canvasInfo = { scale: 2.0 };
             const coordinates = [
-                { x: 100, y: 200 },
-                { x: 300, y: 400 },
+                { x: 100, y: 200 };
+                { x: 300, y: 400 };
                 { x: 500, y: 600 }
             ];
             
@@ -201,9 +201,9 @@ describe('Username Input Performance Tests', () => {
             const results = usernameInputManager.transformCoordinatesBatch(coordinates, canvasInfo);
             const endTime = performance.now();
             expect(results.toHaveLength(3);
-            expect(results[0]).toEqual({ x: 200, y: 400 ,
-            expect(results[1]).toEqual({ x: 600, y: 800 ,
-            expect(results[2]).toEqual({ x: 1000, y: 1200 ,
+            expect(results[0]).toEqual({ x: 200, y: 400 ;
+            expect(results[1]).toEqual({ x: 600, y: 800 ;
+            expect(results[2]).toEqual({ x: 1000, y: 1200 ;
             // Should complete quickly
             expect(endTime - startTime).toBeLessThan(10) }');'
         it('should handle empty and invalid coordinate arrays', () => {
@@ -229,7 +229,7 @@ describe('Username Input Performance Tests', () => {
             expect(duration.toBeLessThan(1); // Should complete in < 1ms
         }');'
         it('should handle rapid getCanvasInfo calls efficiently', () => {
-            const startTime = performance.now(),
+            const startTime = performance.now();
             // Rapid calls should mostly hit cache
             for (let i = 0, i < 100, i++) {
                 usernameInputManager.getCanvasInfo() }
@@ -242,7 +242,7 @@ describe('Username Input Performance Tests', () => {
         }');'
         it('should validate coordinates quickly', () => {
             const canvasInfo = {
-                actualWidth: 1920,
+                actualWidth: 1920;
                 actualHeight: 1080
             };
             
@@ -303,16 +303,16 @@ describe('Username Input Performance Tests', () => {
             // Simulate typical render loop operations
             for (let frame = 0; frame < 10; frame++) {
                 // Get canvas info (should be cached after first call),
-                const info = usernameInputManager.getCanvasInfo(),
+                const info = usernameInputManager.getCanvasInfo();
                 // Transform UI element coordinates (typical UI elements),
-                const title = usernameInputManager.transformCoordinates(400, 200, info),
-                const inputBox = usernameInputManager.transformCoordinates(200, 280, info),
-                const okButton = usernameInputManager.transformCoordinates(290, 360, info),
-                const cancelButton = usernameInputManager.transformCoordinates(410, 360, info),
+                const title = usernameInputManager.transformCoordinates(400, 200, info);
+                const inputBox = usernameInputManager.transformCoordinates(200, 280, info);
+                const okButton = usernameInputManager.transformCoordinates(290, 360, info);
+                const cancelButton = usernameInputManager.transformCoordinates(410, 360, info);
                 // Validate coordinates
-                usernameInputManager.validateCoordinates(title.x, title.y, info),
-                usernameInputManager.validateCoordinates(inputBox.x, inputBox.y, info),
-                usernameInputManager.validateCoordinates(okButton.x, okButton.y, info),
+                usernameInputManager.validateCoordinates(title.x, title.y, info);
+                usernameInputManager.validateCoordinates(inputBox.x, inputBox.y, info);
+                usernameInputManager.validateCoordinates(okButton.x, okButton.y, info);
                 usernameInputManager.validateCoordinates(cancelButton.x, cancelButton.y, info) }
             
             const endTime = performance.now();
@@ -326,25 +326,25 @@ describe('Username Input Performance Tests', () => {
         }');'
         it('should handle canvas resize scenario efficiently', () => {
             // Initial render
-            usernameInputManager.getCanvasInfo(),
-            usernameInputManager.transformCoordinates(400, 300, { scale: 1.0 });
+            usernameInputManager.getCanvasInfo();
+            usernameInputManager.transformCoordinates(400, 300, { scale: 1.0 };
             // Clear cache to simulate canvas resize
             usernameInputManager.clearCache();
             // Update mock to simulate new canvas size
             mockResponsiveCanvasManager.getCanvasInfo.mockReturnValue({
-                scale: 2.0,
-                displayWidth: 1600,
-                displayHeight: 1200,
-                actualWidth: 1600,
-                actualHeight: 1200,
-                pixelRatio: 1),
-            const startTime = performance.now(),
+                scale: 2.0;
+                displayWidth: 1600;
+                displayHeight: 1200;
+                actualWidth: 1600;
+                actualHeight: 1200;
+                pixelRatio: 1);
+            const startTime = performance.now();
             // New canvas info should be retrieved and cached
-            const newCanvasInfo = usernameInputManager.getCanvasInfo(),
-            const newCoordinates = usernameInputManager.transformCoordinates(400, 300, newCanvasInfo),
-            const endTime = performance.now(),
-            expect(newCoordinates.toEqual({ x: 800, y: 600 ),
+            const newCanvasInfo = usernameInputManager.getCanvasInfo();
+            const newCoordinates = usernameInputManager.transformCoordinates(400, 300, newCanvasInfo);
+            const endTime = performance.now();
+            expect(newCoordinates.toEqual({ x: 800, y: 600 );
             expect(endTime - startTime).toBeLessThan(1), // Should handle resize quickly
-        });
+        };
     }
 }');'

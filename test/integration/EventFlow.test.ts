@@ -8,7 +8,7 @@ import { EventStageManager  } from '../../src/core/EventStageManager.js';
 import { EventRankingManager  } from '../../src/core/EventRankingManager.js';
 import { StageSelectScene  } from '../../src/scenes/StageSelectScene.js';
 // Mock function type
-interface MockFunction<T = any> extends Function { mockReturnValue: (value: T) => MockFunction<T>,
+interface MockFunction<T = any> extends Function { mockReturnValue: (value: T) => MockFunction<T>;
     mockImplementation: (impl: Function) => MockFunction<T>;
     toHaveBeenCalledWith: (...args: any[]) => void }
 }
@@ -17,7 +17,7 @@ interface MockCanvas { width: number,'
     height: number,';'
     getContext: (typ,e: string') => MockCanvasContext }'
 }
-interface MockCanvasContext { fillStyle: string,
+interface MockCanvasContext { fillStyle: string;
     strokeStyle: string;
     font: string;
     textAlign: string;
@@ -33,20 +33,20 @@ interface MockCanvasContext { fillStyle: string,
     fill: MockFunction<void>;
     stroke: MockFunction<void>;
     measureText: MockFunction<{ width: number;>,
-    clearRect: MockFunction<void>,
+    clearRect: MockFunction<void>;
     createLinearGradient: MockFunction<MockGradient>;
 interface MockGradient { addColorStop: MockFunction<void>;
 }
 // Input interfaces
-interface MousePosition { x: number,
+interface MousePosition { x: number;
     y: number;
 }
-interface MockInputManager { getMousePosition: MockFunction<MousePosition>,
+interface MockInputManager { getMousePosition: MockFunction<MousePosition>;
     isPressed: MockFunction<boolean>;
     wasClicked: MockFunction<boolean>;
 }
 // Player and game data interfaces
-interface PlayerData { ap: number,
+interface PlayerData { ap: number;
     tap: number;
     level: number;
     clearedStages: string[];
@@ -56,23 +56,23 @@ interface PlayerData { ap: number,
     getPlayerName: MockFunction<string>;
     save: MockFunction<void>;
 }
-interface GameStatistics { totalEvents: number,
+interface GameStatistics { totalEvents: number;
     completionRate: number;
     averageScore: number;
 }
-interface StatisticsManager { recordEventParticipation: MockFunction<void>,
+interface StatisticsManager { recordEventParticipation: MockFunction<void>;
     getEventStatistics: MockFunction<GameStatistics>;
     updateEventStats: MockFunction<void>;
 }
-interface AchievementNotificationSystem { queueNotification: MockFunction<void>,
+interface AchievementNotificationSystem { queueNotification: MockFunction<void>;
     createEventNotification: MockFunction<void>;
     hasNotifications: MockFunction<boolean>;
 }
-interface SceneManager { switchScene: MockFunction<void>,
+interface SceneManager { switchScene: MockFunction<void>;
     getCurrentScene: MockFunction<string>;
 }
 // Game engine interface
-interface GameEngine { canvas: MockCanvas,
+interface GameEngine { canvas: MockCanvas;
     ctx: MockCanvasContext;
     inputManager: MockInputManager;
     playerData: PlayerData;
@@ -86,22 +86,22 @@ interface GameEngine { canvas: MockCanvas,
 interface EventSpecialRules { cherryBlossomEffect?: boolean,
     [key: string]: any;
 }
-interface Event { id: string,
+interface Event { id: string;
     isActive: boolean;
     specialRules: EventSpecialRules;
     endTime?: number;
 }
-interface EventStats { bubblesPopped: number,
+interface EventStats { bubblesPopped: number;
     specialBubblesPopped?: number;
     maxChain: number;
     timeRemaining?: number;
     goldenBubblesPopped?: number;
 }
-interface EventRanking { score: number,
+interface EventRanking { score: number;
     playerId?: string;
     rank?: number;
     tierInfo?: {
-        nam,e: string,
+        nam,e: string;
     };
 }
 interface Leaderboard { players: EventRanking[];
@@ -115,7 +115,7 @@ interface EventNotificationOptions { notifications?: {
     };
     priority?: string;
 }
-interface EventData { version: string,
+interface EventData { version: string;
     eventHistory?: Record<string, string[]>;
     eventParticipationHistory?: Record<string, any> }'
 }''
@@ -139,7 +139,7 @@ describe('Event Flow Integration Tests', () => {  let mockGameEngine: GameEngine
             addItem: jest.fn() as unknown as MockFunction<void>,';'
             addSpecialReward: jest.fn() as unknown as MockFunction<void>,';'
             getPlayerName: jest.fn(').mockReturnValue('TestPlayer') as unknown as MockFunction<string>,'
-            save: jest.fn() as unknown as MockFunction<void>;
+            save: jest.fn() as unknown as MockFunction<void>,
         },
         // Mock StatisticsManager
         mockStatisticsManager = { recordEventParticipation: jest.fn() as any,
@@ -147,8 +147,8 @@ describe('Event Flow Integration Tests', () => {  let mockGameEngine: GameEngine
                 totalEvents: 0),
                , completionRate: 0),
         averageScore: 0) }
-            }) as any,
-            updateEventStats: jest.fn() as any;
+            } as any,
+            updateEventStats: jest.fn() as any,
         },
         // Mock AchievementNotificationSystem
         mockAchievementNotificationSystem = { queueNotification: jest.fn() as unknown as MockFunction<void>,
@@ -180,7 +180,7 @@ describe('Event Flow Integration Tests', () => {  let mockGameEngine: GameEngine
             clearRect: jest.fn() as unknown as MockFunction<void>,
             createLinearGradient: jest.fn().mockReturnValue({ ,
                 addColorStop: jest.fn() as unknown as MockFunction<void> }
-            }) as unknown as MockFunction<MockGradient>
+            } as unknown as MockFunction<MockGradient>
         },
         const mockCanvas: MockCanvas = { width: 1024,
             height: 768,
@@ -207,10 +207,10 @@ describe('Event Flow Integration Tests', () => {  let mockGameEngine: GameEngine
         mockGameEngine.eventRankingManager = eventRankingManager;
         // Create scene
         stageSelectScene = new StageSelectScene(mockGameEngine);
-    });
+    };
     afterEach(() => {  localStorage.clear() }
         jest.clearAllMocks(); }'
-        jest.restoreAllMocks(});'}');
+        jest.restoreAllMocks(};'}');
     describe('Complete Event Lifecycle', (') => { }'
         test('should complete full seasonal event lifecycle', async () => { }'
             // 1. Set up seasonal event (Spring}');'
@@ -221,10 +221,10 @@ describe('Event Flow Integration Tests', () => {  let mockGameEngine: GameEngine
             if (eventStageManager.scheduleSeasonalEvents) {
     
 }
-                eventStageManager.scheduleSeasonalEvents(})
+                eventStageManager.scheduleSeasonalEvents(}
             ';'
             // 3. Verify event is available''
-            const availableEvents: Event[] = eventStageManager.getAvailableEvents(')';
+            const availableEvents: Event[] = eventStageManager.getAvailableEvents(')',
             const springEvent = availableEvents.find(event => event.id === 'spring-cherry-blossom');
             expect(springEvent).toBeDefined();
             expect(springEvent!.isActive).toBe(true);
@@ -293,7 +293,7 @@ describe('Event Flow Integration Tests', () => {  let mockGameEngine: GameEngine
             );
             // 4. StageSelectScene should display the event
             stageSelectScene.initialize();
-            const displayedEvent = stageSelectScene.eventList.find((event: Event) => event.id === eventId);
+            const displayedEvent = stageSelectScene.eventList.find((event: Event) => event.id === eventId),
             expect(displayedEvent).toBeDefined();
             // 5. Player participates in event'
             const startResult: boolean = eventStageManager.startEventStage(eventId),';'
@@ -306,7 +306,7 @@ describe('Event Flow Integration Tests', () => {  let mockGameEngine: GameEngine
                 maxChain: 25,
                 timeRemaining: 30000,
                 goldenBubblesPopped: 15 }
-    }),
+    },
             const completeResult: boolean = eventStageManager.completeEvent(eventId, playerId);
             expect(completeResult).toBe(true);
             // 7. Verify bonus rewards for special event
@@ -331,7 +331,7 @@ describe('Event Flow Integration Tests', () => {  let mockGameEngine: GameEngine
             players.forEach(player => {  ) }
                 eventRankingManager.updateEventRanking(eventId, player.id, player.score, {) }
                     bubblesPopped: player.score / 100 },
-                    maxChain: Math.floor(player.score / 1000 });
+                    maxChain: Math.floor(player.score / 1000 };
             }
             // 3. Verify leaderboard ordering'
             const leaderboard: Leaderboard = eventRankingManager.getEventLeaderboard(eventId, 10);
@@ -363,11 +363,11 @@ describe('Event Flow Integration Tests', () => {  let mockGameEngine: GameEngine
             events.forEach(event => {  '),' }'
                 if (event.type === 'seasonal') { }'
                     const springDate = new Date('2024-04-15'};')'
-                    jest.spyOn(Date, 'now').mockReturnValue(springDate.getTime(});
+                    jest.spyOn(Date, 'now').mockReturnValue(springDate.getTime(};
                     eventStageManager.scheduleSeasonalEvents();
                 } else {  }
                     eventStageManager.adminActivateEvent(event.id, 3600000};)
-                });
+                };
             // 2. Verify all events are available
             const availableEvents: Event[] = eventStageManager.getAvailableEvents(
             expect(availableEvents.length).toBeGreaterThanOrEqual(3);
@@ -377,7 +377,7 @@ describe('Event Flow Integration Tests', () => {  let mockGameEngine: GameEngine
             // 4. Player can participate in multiple events''
             const playerId = 'multi-event-player';
             let totalAPGained = 0;
-            events.forEach(event => {  ),
+            events.forEach(event => {  );
                 if (eventStageManager.isEventAvailable(event.id) {
     
 }
@@ -386,15 +386,15 @@ describe('Event Flow Integration Tests', () => {  let mockGameEngine: GameEngine
                     eventStageManager.startEventStage(event.id};)
                     eventStageManager.completeEvent(event.id, playerId, 15000, { bubblesPopped: 150)
                     maxChain: 10) }
-                    });
+                    };
                     const apGained = mockPlayerData.ap - initialAP;
                     totalAPGained += apGained;
                 }
-            });
+            };
             // 5. Verify cumulative rewards
             expect(totalAPGained).toBeGreaterThan(0);
             // 6. Verify each event has separate statistics
-            events.forEach(event => {  ),
+            events.forEach(event => {  );
                 if (eventStageManager.isEventAvailable(event.id) {
     
 }
@@ -408,7 +408,7 @@ describe('Event Flow Integration Tests', () => {  let mockGameEngine: GameEngine
             eventStageManager.adminActivateEvent(highPriorityEvent, 3600000, { priority: 'high' }');'
             eventStageManager.adminActivateEvent(lowPriorityEvent, 3600000, { priority: 'low' ,
             // 2. StageSelectScene should display high priority events first
-            stageSelectScene.initialize(),
+            stageSelectScene.initialize();
             const highPriorityIndex = (stageSelectScene.eventList.findIndex((event: Event) => event.id === highPriorityEvent)),
             const lowPriorityIndex = (stageSelectScene.eventList.findIndex((event: Event) => event.id === lowPriorityEvent)),'
             expect(highPriorityIndex).toBeLessThan(lowPriorityIndex),' }'
@@ -423,7 +423,7 @@ describe('Event Flow Integration Tests', () => {  let mockGameEngine: GameEngine
                     onStart: true),
                    , onEnd: true) }
                     reminderInterval: 1800000 // 30 minutes); }
-    });
+    };
             }'
             // 2. Verify start notification was sent''
             expect(mockAchievementNotificationSystem.queueNotification').toHaveBeenCalledWith(';
@@ -451,7 +451,7 @@ describe('Event Flow Integration Tests', () => {  let mockGameEngine: GameEngine
                     subType: 'EVENT_REMINDER'),'
             // 7. Mock near end time for warning''
             const nearEndTime = Date.now() + (eventStageManager.events[eventId].endTime') - 600000, // 10 minutes before end''
-            jest.spyOn(Date, 'now').mockReturnValue(nearEndTime),
+            jest.spyOn(Date, 'now').mockReturnValue(nearEndTime);
             eventStageManager.checkEventNotifications(),'
             // 8. Should send ending warning''
             expect(mockAchievementNotificationSystem.queueNotification').toHaveBeenCalledWith(',
@@ -472,18 +472,18 @@ describe('Event Flow Integration Tests', () => {  let mockGameEngine: GameEngine
             // 2. Save all data
             const eventSaveResult: boolean = (eventStageManager.saveEventData  ? eventStageManager.saveEventData() : true), // fallback,
             const rankingSaveResult = eventRankingManager.save(),'
-            expect(eventSaveResult).toBe(true),
+            expect(eventSaveResult).toBe(true);
             expect(rankingSaveResult).toBeUndefined(), // save(') doesn't return value
             // 3. Create new instances (simulate restart),
-            const newEventStageManager = new EventStageManager(mockGameEngine),
-            const newEventRankingManager = new EventRankingManager(mockGameEngine),
+            const newEventStageManager = new EventStageManager(mockGameEngine);
+            const newEventRankingManager = new EventRankingManager(mockGameEngine);
             // 4. Load data
             const, eventLoadResult: boolean = newEventStageManager.loadEventData(
-            expect(eventLoadResult).toBe(true),
+            expect(eventLoadResult).toBe(true);
             // 5. Verify data was restored
-            const restoredRanking: EventRanking = newEventRankingManager.getPlayerEventRanking(playerId, eventId),
-            expect(restoredRanking).toBeDefined(),
-            expect(restoredRanking.score).toBe(18000),
+            const restoredRanking: EventRanking = newEventRankingManager.getPlayerEventRanking(playerId, eventId);
+            expect(restoredRanking).toBeDefined();
+            expect(restoredRanking.score).toBe(18000);
             // 6. Verify participation history
             expect(newEventStageManager.eventParticipationHistory[playerId]).toBeDefined(),'
             expect(newEventStageManager.eventParticipationHistory[playerId][eventId]).toBeDefined(),' }'
@@ -509,17 +509,17 @@ describe('Event Flow Integration Tests', () => {  let mockGameEngine: GameEngine
         test('should recover from event manager failures', (') => {''
             const eventId = 'error-recovery-test',
             // 1. Start event successfully
-            eventStageManager.adminActivateEvent(eventId, 3600000),
+            eventStageManager.adminActivateEvent(eventId, 3600000);
             const startResult: boolean = eventStageManager.startEventStage(eventId,
-            expect(startResult).toBe(true),
+            expect(startResult).toBe(true);
             // 2. Mock error during completion'
             const originalCompleteMethod = eventStageManager.completeEvent,
             eventStageManager.completeEvent = jest.fn().mockImplementation((') => { }'
                 throw new Error('Completion error'); }
-            }) as any;'
+            } as any;'
             // 3. Attempt completion (should handle error gracefully);
             expect((') => { }'
-                eventStageManager.completeEvent(eventId, 'test-player'});'}).not.toThrow(')'
+                eventStageManager.completeEvent(eventId, 'test-player'};'}.not.toThrow(')'
             const recoveryResult: boolean = eventStageManager.completeEvent(eventId, 'test-player', 10000, { bubblesPopped: 100)
         maxChain: 8) }
             }'
@@ -530,7 +530,7 @@ describe('Event Flow Integration Tests', () => {  let mockGameEngine: GameEngine
             const originalSetItem = localStorage.setItem,
             localStorage.setItem = jest.fn().mockImplementation((') => { }'
                 throw new Error('Storage quota exceeded'); }
-            });
+            };
             // 2. Complete event (should handle storage error);
             eventStageManager.adminActivateEvent(eventId, 3600000);'
             eventStageManager.startEventStage(eventId);
@@ -538,12 +538,12 @@ describe('Event Flow Integration Tests', () => {  let mockGameEngine: GameEngine
                 eventStageManager.completeEvent(eventId, 'test-player', 15000, {)
                     bubblesPopped: 150) }
                     maxChain: 10); }
-                });
-            }).not.toThrow();
+                };
+            }.not.toThrow();
             // 3. Restore localStorage and verify recovery
             localStorage.setItem = originalSetItem;
             
-            const saveResult: boolean = eventStageManager.saveEventData ? eventStageManager.saveEventData() : true; // fallback'
+            const saveResult: boolean = eventStageManager.saveEventData ? eventStageManager.saveEventData() : true, // fallback'
             expect(saveResult).toBe(true);'}');'
     }''
     describe('Performance During Event Flow', (') => { }'
@@ -559,7 +559,7 @@ describe('Event Flow Integration Tests', () => {  let mockGameEngine: GameEngine
             stageSelectScene.initialize();
             // 3. Multiple rapid updates
             for (let i = 0; i < 20; i++) { stageSelectScene.updateEventList() }
-                stageSelectScene.updateEventNotifications(});
+                stageSelectScene.updateEventNotifications(};
             const endTime = performance.now();
             const duration = endTime - startTime;
             // Should complete within reasonable time (less than 100ms);'
@@ -584,5 +584,5 @@ describe('Event Flow Integration Tests', () => {  let mockGameEngine: GameEngine
             expect(duration).toBeLessThan(50);
             expect(statistics).toBeDefined();
             expect(exportData).toBeDefined();
-        });'
+        };'
     }'}');

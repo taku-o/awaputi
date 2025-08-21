@@ -13,11 +13,11 @@ import { MobileDeviceSimulator  } from './mobile-test-suite/MobileDeviceSimulato
 import { MobileTestReporter  } from './mobile-test-suite/MobileTestReporter.js';
 
 // Type definitions
-interface TestResult { passed: boolean,
+interface TestResult { passed: boolean;
     performance?: Record<string, any>;
     error?: Error;
 
-interface TestFunction { name: string,
+interface TestFunction { name: string;
     run: (context?: any) => Promise<TestResult>;
     setup?: (context: any) => Promise<void>;
     cleanup?: (context: any) => Promise<void>;
@@ -26,29 +26,29 @@ interface TestFunction { name: string,
 
 interface TestSuiteInterface { getTests(): TestFunction[];
 
-interface TestResults { passed: number,
+interface TestResults { passed: number;
     failed: number;
     skipped: number;
     errors: TestError[];
     performance: Map<string, PerformanceResult>;
     compatibility: Map<string, CompatibilityResult> }
 
-interface TestError { suite: string,
+interface TestError { suite: string;
     test: string;
     error: string;
     stack?: string;
     timestamp: number;
 
-interface PerformanceResult { duration: number,
+interface PerformanceResult { duration: number;
     metrics: Record<string, any>;
     timestamp: number;
 
-interface CompatibilityResult { device: string,
+interface CompatibilityResult { device: string;
     browser: string;
     results: Record<string, any>;
     timestamp: number;
 
-interface DeviceUtils { createTouchEvent: (type: string, touches: any[]) => Event,
+interface DeviceUtils { createTouchEvent: (type: string, touches: any[]) => Event;
     createTouch: (x: number, y: number, id?: number) => any;
     createDeviceInfo: (device: string) => any;
     measurePerformance: (testFunction: () => Promise<void>) => Promise<number>;
@@ -57,28 +57,30 @@ interface DeviceUtils { createTouchEvent: (type: string, touches: any[]) => Even
 }
 
 interface DebugInfo { mainController: {
-        testSuite,s: string[],
+        testSuite,s: string[];
     testResultsSummary: {
-            passe,d: number,
-            failed: number,
-            errors: number,
-            performance: number,
-    compatibility: number,;
-    testRunner: any,
-    deviceSimulator: any,
-    components: { testRunner: boolean,
-        deviceSimulator: boolean,
-    testReporter: boolean,
-
-interface HealthCheckResult { healthy: boolean,
+            passe,d: number;
+            failed: number;
+            errors: number;
+            performance: number;
+    compatibility: number;
+    testRunner: any;
+    deviceSimulator: any;
+    components: { testRunner: boolean;
+        deviceSimulator: boolean;
+    testReporter: boolean;
+    testReporter: boolean;
+        };
+interface HealthCheckResult { healthy: boolean;
     issues: string[];
     componentStatus: {
-        testRunne,r: boolean,
-        deviceSimulator: boolean,
-        testReporter: boolean,
-        testSuites: number,
-    testContainer: boolean,
-
+        testRunne,r: boolean;
+        deviceSimulator: boolean;
+        testReporter: boolean;
+        testSuites: number;
+    testContainer: boolean;
+    testContainer: boolean;
+        };
 // 既存のテストスイートクラス（変更なし）
 class TouchTestSuite implements TestSuiteInterface { private mobileTestSuite: MobileTestSuite
 
@@ -238,10 +240,10 @@ export class MobileTestSuite {
         
         // テスト結果（従来との互換性のため維持）
         this.testResults = {
-            passed: 0,
-            failed: 0,
-            skipped: 0,
-            errors: [],
+            passed: 0;
+            failed: 0;
+            skipped: 0;
+            errors: [];
     performance: new Map<string, PerformanceResult>() }
             compatibility: new Map<string, CompatibilityResult>(); }
         };
@@ -287,12 +289,12 @@ export class MobileTestSuite {
         this.testContainer = document.createElement('div');
         this.testContainer.id = 'mobile-test-container';
         this.testContainer.style.cssText = `;
-            position: absolute;
-            top: -9999px;
-            left: -9999px;
-            width: 375px;
-            height: 667px;
-    overflow: hidden;
+            position: absolute,
+            top: -9999px,
+            left: -9999px,
+            width: 375px,
+            height: 667px,
+    overflow: hidden,
         `;
         document.body.appendChild(this.testContainer);
     }
@@ -400,7 +402,7 @@ export class MobileTestSuite {
             test: testName || 'unknown',';'
             error: typeof error === 'string' ? error : error.message,')';
             stack: typeof error === 'object' && error.stack ? error.stack : undefined,
-    timestamp: Date.now(  });
+    timestamp: Date.now(  },
     }
     
     /**
@@ -415,7 +417,7 @@ export class MobileTestSuite {
         this.testResults.performance.set(testName, {
                 duration);
             metrics;
-            timestamp: Date.now(  }));
+            timestamp: Date.now(  }),
     }
     
     /**
@@ -427,7 +429,7 @@ export class MobileTestSuite {
                 device
             browser);
             results;
-            timestamp: Date.now(  });
+            timestamp: Date.now(  },
     }
     
     // ========================================
@@ -505,7 +507,7 @@ export class MobileTestSuite {
                     passed: this.testResults.passed,
                     failed: this.testResults.failed,
                     errors: this.testResults.errors.length,
-    performance: this.testResults.performance.size };
+    performance: this.testResults.performance.size },
                     compatibility: this.testResults.compatibility.size 
     };
             testRunner: this.testRunner.getDebugInfo(),
@@ -540,7 +542,7 @@ export class MobileTestSuite {
                 testRunner: !!this.testRunner,
                 deviceSimulator: !!this.deviceSimulator,
                 testReporter: !!this.testReporter,
-    testSuites: this.testSuites.size };
+    testSuites: this.testSuites.size },
                 testContainer: !!this.testContainer 
     }
     

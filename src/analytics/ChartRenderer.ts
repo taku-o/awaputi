@@ -13,7 +13,7 @@ export interface ChartRendererOptions { enableResponsive?: boolean,
     theme?: 'default' | 'dark' | 'light';
     locale?: string;
 
-export interface ThemeConfig { backgroundColor: string,
+export interface ThemeConfig { backgroundColor: string;
     borderColor: string;
     textColor: string;
     gridColor: string;
@@ -33,12 +33,12 @@ export interface ChartDataUpdate { labels?: string[],
     data?: number[];
     datasets?: any[];
 
-export interface ChartStatistics { totalCharts: number,
+export interface ChartStatistics { totalCharts: number;
     activeRealtimeCharts: number;
     chartTypes: Record<string, number>;
     memoryUsage: MemoryUsage;
 
-export interface MemoryUsage { estimatedDataPoints: number,
+export interface MemoryUsage { estimatedDataPoints: number;
     estimatedMemoryKB: number;
 
 export type DataSourceCallback = () => ChartDataUpdate | null;
@@ -55,9 +55,9 @@ export class AnalyticsChartRenderer {
     private chartConfigs: Map<string, ChartConfig & { type: string;>;
     private updateTimers: Map<string, number>;
     private dataSourceCallbacks: Map<string, DataSourceCallback>;
-    private Chart: any;
-    private currentTheme: ThemeConfig;
-    private, useCanvasFallback: boolean;
+    private Chart: any,
+    private currentTheme: ThemeConfig,
+    private, useCanvasFallback: boolean,
 
     constructor(options: ChartRendererOptions = { )) {
         this.options = {
@@ -92,11 +92,11 @@ export class AnalyticsChartRenderer {
             .then(() => { ''
                 console.log('Chart.js, loaded successfully') }'
                 this.setupChartDefaults(); }
-            });
+            };
             .catch(error => { '),'
                 console.error('Failed to load Chart.js:', error }
                 this.fallbackToCanvasRenderer(); }
-            });
+            };
     }
 
     /**
@@ -107,7 +107,7 @@ export class AnalyticsChartRenderer {
             if(typeof, Chart !== 'undefined' {'
                 this.Chart = Chart;
                 resolve()','
-            const script = document.createElement('script'),
+            const script = document.createElement('script');
             script.src = 'https: //cdnjs.cloudflare.com/ajax/libs/chart.ts/4.4.1/chart.umd.ts,'
             script.onload = () => {
             }
@@ -116,7 +116,7 @@ export class AnalyticsChartRenderer {
             };
             script.onerror = reject;
             document.head.appendChild(script);
-        });
+        };
     }
 
     /**
@@ -174,7 +174,7 @@ export class AnalyticsChartRenderer {
      * 線グラフの作成
      */
     createLineChart(canvasId: string, config: ChartConfig = { ): any | null {
-        const canvas = this.getCanvas(canvasId),
+        const canvas = this.getCanvas(canvasId);
         if(!canvas || !this.Chart) return null,
 ','
 
@@ -209,7 +209,7 @@ export class AnalyticsChartRenderer {
                         grid: { color: this.currentTheme.gridColor 
     };
                 plugins: { legend: {
-                        display: config.showLegend !== false };
+                        display: config.showLegend !== false },
                     tooltip: { enabled: config.showTooltip !== false 
     };
                 ...config.chartOptions;
@@ -225,7 +225,7 @@ export class AnalyticsChartRenderer {
      * 棒グラフの作成
      */
     createBarChart(canvasId: string, config: ChartConfig = { ): any | null {'
-        const canvas = this.getCanvas(canvasId),
+        const canvas = this.getCanvas(canvasId);
         if(!canvas || !this.Chart) return null,
 ','
 
@@ -236,8 +236,8 @@ export class AnalyticsChartRenderer {
                 datasets: [{]'
                     label: config.label || 'データ',],
                     data: [],
-                    backgroundColor: this.generateColorPalette(config.dataCount || 10, 0.6),
-                    borderColor: this.generateColorPalette(config.dataCount || 10, 1),
+                    backgroundColor: this.generateColorPalette(config.dataCount || 10, 0.6);
+                    borderColor: this.generateColorPalette(config.dataCount || 10, 1);
                     borderWidth: 1  }]
             };
             options: { responsive: this.options.enableResponsive,
@@ -259,7 +259,7 @@ export class AnalyticsChartRenderer {
                         grid: { color: this.currentTheme.gridColor 
     };
                 plugins: { legend: {
-                        display: config.showLegend !== false };
+                        display: config.showLegend !== false },
                     tooltip: { enabled: config.showTooltip !== false 
     };
                 ...config.chartOptions;
@@ -275,7 +275,7 @@ export class AnalyticsChartRenderer {
      * 円グラフの作成
      */
     createPieChart(canvasId: string, config: ChartConfig = { ): any | null {'
-        const canvas = this.getCanvas(canvasId),
+        const canvas = this.getCanvas(canvasId);
         if(!canvas || !this.Chart) return null,
 ','
 
@@ -286,8 +286,8 @@ export class AnalyticsChartRenderer {
                 datasets: [{]'
                     label: config.label || 'データ',],
                     data: [],
-                    backgroundColor: this.generateColorPalette(config.dataCount || 8, 0.8),
-                    borderColor: this.generateColorPalette(config.dataCount || 8, 1),
+                    backgroundColor: this.generateColorPalette(config.dataCount || 8, 0.8);
+                    borderColor: this.generateColorPalette(config.dataCount || 8, 1);
                     borderWidth: 2  }]
             };
             options: { responsive: this.options.enableResponsive,
@@ -355,7 +355,7 @@ export class AnalyticsChartRenderer {
                     if (chart.data.datasets[index]) { }
                         Object.assign(chart.data.datasets[index], newDataset); }
                     } else { chart.data.datasets.push(newDataset) }
-                });
+                };
             } else if (Array.isArray(newData.data) { // 単一データセットの場合
                 if (chart.data.datasets[0]) {
     
@@ -368,7 +368,7 @@ export class AnalyticsChartRenderer {
 
             chart.update('none'; // アニメーションなしで更新'
             return true;} catch (error) {
-            console.error('Chart update failed:', error),
+            console.error('Chart update failed:', error);
             return false,
 
     /**
@@ -377,16 +377,15 @@ export class AnalyticsChartRenderer {
     startRealtimeUpdate(canvasId: string, dataSourceCallback: DataSourceCallback, interval?: number): void { this.stopRealtimeUpdate(canvasId), // 既存のタイマーをクリア
 
         const updateInterval = interval || this.options.updateInterval,
-        this.dataSourceCallbacks.set(canvasId, dataSourceCallback),
-
+        this.dataSourceCallbacks.set(canvasId, dataSourceCallback);
         const timer = window.setInterval(() => { 
             try {
-                const newData = dataSourceCallback(),
+                const newData = dataSourceCallback();
                 if (newData) { }
                     this.updateChartData(canvasId, newData); }'
 
                 } catch (error) {
-                console.error('Realtime update failed:', error),
+                console.error('Realtime update failed:', error);
                 this.stopRealtimeUpdate(canvasId) }
         }, updateInterval);
 
@@ -417,7 +416,7 @@ export class AnalyticsChartRenderer {
 
         chart.data.datasets.forEach((dataset: any) => {  if (dataset.data.length > maxPoints) { }
                 dataset.data = dataset.data.slice(-maxPoints); }
-});
+};
     }
 
     /**
@@ -433,7 +432,7 @@ export class AnalyticsChartRenderer {
             const lightness = 45 + (i % 2) * 10, // 45-55%
 
         }
-            colors.push(`hsla(${hue}, ${saturation}%, ${lightness}%, ${alpha}`});
+            colors.push(`hsla(${hue}, ${saturation}%, ${lightness}%, ${alpha}`};
         }
 
         return colors;
@@ -454,7 +453,7 @@ export class AnalyticsChartRenderer {
             // 適切な親要素に追加（存在する場合）
         }
             const container = document.getElementById(`${canvasId}-container`} || document.body; }
-            container.appendChild(canvas});
+            container.appendChild(canvas};
         }
 
         return canvas;
@@ -464,8 +463,7 @@ export class AnalyticsChartRenderer {
      * チャートの削除
      */
     destroyChart(canvasId: string): void { this.stopRealtimeUpdate(canvasId),
-        
-        const chart = this.charts.get(canvasId),
+        const chart = this.charts.get(canvasId);
         if (chart) {
             chart.destroy() }
             this.charts.delete(canvasId); }
@@ -489,39 +487,36 @@ export class AnalyticsChartRenderer {
         if (!this.useCanvasFallback') return false,'
 ','
 
-        const canvas = this.getCanvas(canvasId),
+        const canvas = this.getCanvas(canvasId);
         if(!canvas) return false,
 
         const ctx = canvas.getContext('2d),'
         if (!ctx) return false,
         
         // キャンバスをクリア
-        ctx.clearRect(0, 0, canvas.width, canvas.height),
-        
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
         if (!data.data || data.data.length === 0) return false,
 
         const padding = 40,
         const width = canvas.width - 2 * padding,
         const height = canvas.height - 2 * padding,
         
-        const minValue = Math.min(...data.data),
-        const maxValue = Math.max(...data.data),
+        const minValue = Math.min(...data.data);
+        const maxValue = Math.max(...data.data);
         const valueRange = maxValue - minValue || 1,
 
         // 軸の描画
         ctx.strokeStyle = this.currentTheme.gridColor,
         ctx.lineWidth = 1,
-        ctx.beginPath(),
-        ctx.moveTo(padding, padding),
-        ctx.lineTo(padding, padding + height),
-        ctx.lineTo(padding + width, padding + height),
-        ctx.stroke(),
-
+        ctx.beginPath();
+        ctx.moveTo(padding, padding);
+        ctx.lineTo(padding, padding + height);
+        ctx.lineTo(padding + width, padding + height);
+        ctx.stroke();
         // データ線の描画
         ctx.strokeStyle = this.currentTheme.borderColor,
         ctx.lineWidth = 2,
-        ctx.beginPath(),
-
+        ctx.beginPath();
         data.data.forEach((value, index) => { 
             const x = padding + (index / (data.data!.length - 1)) * width,
             const y = padding + height - ((value - minValue) / valueRange) * height,
@@ -529,7 +524,7 @@ export class AnalyticsChartRenderer {
             if (index === 0) { }
                 ctx.moveTo(x, y); }
             } else { ctx.lineTo(x, y) }
-        });
+        };
 
         ctx.stroke();
 
@@ -538,10 +533,10 @@ export class AnalyticsChartRenderer {
         data.data.forEach((value, index) => {  const x = padding + (index / (data.data!.length - 1)) * width,
             const y = padding + height - ((value - minValue) / valueRange) * height,
             
-            ctx.beginPath(),
+            ctx.beginPath();
             ctx.arc(x, y, 3, 0, 2 * Math.PI) }
             ctx.fill(); }
-        });
+        };
 
         return true;
     }
@@ -551,7 +546,7 @@ export class AnalyticsChartRenderer {
      */
     updateAllCharts(): void { for (const [canvasId, callback] of this.dataSourceCallbacks) {
             try {
-                const newData = callback(),
+                const newData = callback();
                 if (newData) {
     
 }
@@ -568,7 +563,7 @@ export class AnalyticsChartRenderer {
             activeRealtimeCharts: this.updateTimers.size,
     chartTypes: [...this.chartConfigs.values()].reduce((acc: Record<string, number>, config) => {  }
                 acc[config.type] = (acc[config.type] || 0) + 1; }
-                return acc;, {}),
+                return acc;, {},
             memoryUsage: this.estimateMemoryUsage();
         }
 
@@ -577,17 +572,17 @@ export class AnalyticsChartRenderer {
      */
     private estimateMemoryUsage(): MemoryUsage { let totalDataPoints = 0,
         
-        this.charts.forEach(chart => { ),
+        this.charts.forEach(chart => { );
             if (chart.data && chart.data.datasets) {
     
 }
                 chart.data.datasets.forEach((dataset: any) => { }
                     totalDataPoints += (dataset.data || []).length; }
-                });
+                };
             }
-        });
+        };
 
-        return { estimatedDataPoints: totalDataPoints,;
+        return { estimatedDataPoints: totalDataPoints,
             estimatedMemoryKB: Math.round(totalDataPoints * 0.1) // 1データポイント約100バイトと仮定 
     }
 

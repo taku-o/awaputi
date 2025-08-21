@@ -19,21 +19,21 @@ export enum ConfigErrorType {;
     CACHE_ERROR = 'CACHE_ERROR',
     DEPENDENCY_ERROR = 'DEPENDENCY_ERROR' }
 
-interface RecoveryStrategy { maxAttempts: number,
+interface RecoveryStrategy { maxAttempts: number;
     strategy: (error: Error, context: any) => RecoveryResult  }
 }
 
-interface RecoveryResult { success: boolean,
+interface RecoveryResult { success: boolean;
     value?: any;
     message: string;
 
-interface ErrorStats { total: number,
+interface ErrorStats { total: number;
     byType: Map<string, number>;
     recovered: number;
     failed: number;
     lastReset: number;
 
-interface FallbackState { useDefaultValues: boolean,
+interface FallbackState { useDefaultValues: boolean;
     disableValidation: boolean;
     disableCache: boolean;
     safeMode: boolean;
@@ -45,34 +45,34 @@ export class ConfigurationErrorHandler {
     private, recoveryAttempts: Map<string, number>,
     private maxRecoveryAttempts: number = 3;
     private fallbackState: FallbackState;
-    private, logger: any,
+    private, logger: any;
     constructor() {
 
         this.recoveryStrategies = new Map();
         this.errorStats = {
-            total: 0,
-            byType: new Map(),
-            recovered: 0,
+            total: 0;
+            byType: new Map();
+            recovered: 0;
     failed: 0 }
             lastReset: Date.now(); 
     };
         this.recoveryAttempts = new Map();
-        this.fallbackState = { useDefaultValues: false,
-            disableValidation: false,
-            disableCache: false,
-    safeMode: false,;
+        this.fallbackState = { useDefaultValues: false;
+            disableValidation: false;
+            disableCache: false;
+    safeMode: false;
         this.logger = getLoggingSystem();
         this._initialize();
     }
 ';'
 
-    private _initialize(): void { this._setupRecoveryStrategies(),
+    private _initialize(): void { this._setupRecoveryStrategies();
         this._setupErrorMonitoring()','
         this.logger.info('ConfigurationErrorHandler initialized', null, 'ConfigurationErrorHandler) }'
 
     private _setupRecoveryStrategies(): void { // 設定アクセスエラーの復旧
         this.recoveryStrategies.set(ConfigErrorType.CONFIGURATION_ACCESS, {
-                maxAttempts: 3,
+                maxAttempts: 3;
     strategy: (error: Error, context: any) => {  })
                 const { category, key, defaultValue } = context;
                 
@@ -84,7 +84,7 @@ export class ConfigurationErrorHandler {
 
                     }, 'ConfigurationErrorHandler');
                     
-                    return { success: true,
+                    return { success: true;
 
                         value: defaultValue,' };'
 
@@ -97,13 +97,13 @@ export class ConfigurationErrorHandler {
                     fallbackValue'',
                 '), 'ConfigurationErrorHandler'),'
                 
-                return { success: true,
+                return { success: true;
 
                     value: fallbackValue,' };'
 
                     message: 'フォールバック値を生成' 
     }
-        });
+        };
     }
 
     private _setupErrorMonitoring(): void { // エラー監視の設定 }
@@ -120,12 +120,11 @@ export class ConfigurationErrorHandler {
         this.errorStats.total++,
         
         const typeCount = this.errorStats.byType.get(errorType) || 0,
-        this.errorStats.byType.set(errorType, typeCount + 1),
-
-        const strategy = this.recoveryStrategies.get(errorType),
+        this.errorStats.byType.set(errorType, typeCount + 1);
+        const strategy = this.recoveryStrategies.get(errorType);
         if (strategy) {
             try {
-                const result = strategy.strategy(error, context),
+                const result = strategy.strategy(error, context);
                 if (result.success) {
         }
                     this.errorStats.recovered++; }
@@ -151,7 +150,7 @@ export class ConfigurationErrorHandler {
 
     resetStats(): void { this.errorStats = {
             total: 0,
-            byType: new Map(),
+            byType: new Map();
             recovered: 0,
             failed: 0,
     lastReset: Date.now( 

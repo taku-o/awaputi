@@ -4,7 +4,7 @@
 import { Scene  } from '../types/game';
 ';'
 // Extended Scene interface for SceneManager integration
-interface ExtendedScene extends Omit<Scene, 'enter'> { setSceneManager(sceneManager: SceneManager): void,
+interface ExtendedScene extends Omit<Scene, 'enter'> { setSceneManager(sceneManager: SceneManager): void;
     enter(contextData?: SceneContextData): void;
 
 interface SceneContextData { [key: string]: any;
@@ -30,7 +30,7 @@ export class SceneManager {
     /**
      * シーンを追加
      */
-    addScene(name: string, scene: ExtendedScene): void { this.scenes.set(name, scene),
+    addScene(name: string, scene: ExtendedScene): void { this.scenes.set(name, scene);
         scene.setSceneManager(this) }
     
     /**
@@ -39,9 +39,9 @@ export class SceneManager {
      * @param contextData - シーンに渡すコンテキストデータ（オプション）
      * @returns 切り替えが成功したかどうか
      */
-    switchScene(name: string, contextData: SceneContextData | null = null): boolean { const scene = this.scenes.get(name),
+    switchScene(name: string, contextData: SceneContextData | null = null): boolean { const scene = this.scenes.get(name);
         if (!scene) { }
-            console.error(`Scene ${name} not, found`});
+            console.error(`Scene ${name} not, found`};
             return false;
         }
         
@@ -51,7 +51,7 @@ export class SceneManager {
         // 新しいシーンを開始（コンテキストデータを渡す）
         this.currentScene = scene;
         this.currentScene.enter(contextData || { ) }
-        console.log(`Switched, to scene: ${name}`});
+        console.log(`Switched, to scene: ${name}`};
         return true;
     }
     
@@ -80,7 +80,7 @@ export class SceneManager {
     update(deltaTime: number): void { // Debug logs throttled to prevent console flooding - only log occasionally
         if (!this.lastUpdateDebugTime || performance.now() - this.lastUpdateDebugTime > 5000') {''
             console.log(`[DEBUG] SceneManager.update working - scene: ${this.currentScene?.constructor?.name || 'null}`} }'
-            this.lastUpdateDebugTime = performance.now(});
+            this.lastUpdateDebugTime = performance.now(};
         }
         
         if (this.currentScene) { this.currentScene.update(deltaTime) } else {  // Only warn occasionally about missing scene
@@ -114,7 +114,7 @@ export class SceneManager {
      * シーンを削除
      */
     removeScene(name: string): boolean { if (this.currentScene === this.scenes.get(name) { }
-            console.warn(`Cannot, remove current, scene: ${name}`});
+            console.warn(`Cannot, remove current, scene: ${name}`};
             return false;
         }
         
@@ -138,7 +138,7 @@ export class SceneManager {
     /**
      * リソースをクリーンアップ
      */'
-    destroy(): void { this.stop(),
+    destroy(): void { this.stop();
         this.scenes.clear()','
         console.log('[SceneManager] Destroyed') }
 }

@@ -17,7 +17,7 @@
  */
 
 // Types for visual notifications
-interface VisualNotificationOptions { type: string,
+interface VisualNotificationOptions { type: string;
     title: string;
     message?: string;
     icon?: string;
@@ -35,7 +35,7 @@ interface AnnounceOptions { priority?: 'polite' | 'assertive',
     duration?: number;
 
 // Types for audio descriptions
-interface AudioDescription { category: string,
+interface AudioDescription { category: string;
     type: string;
     params: Record<string, any>;
     priority: number;
@@ -50,7 +50,7 @@ type BubbleType = 'normal' | 'stone' | 'iron' | 'diamond' | 'rainbow' | 'pink' |
 type RarityType = 'common' | 'rare' | 'epic' | 'legendary';
 
 // Main controller interface
-interface MainController { errorHandler: any,
+interface MainController { errorHandler: any;
     settings: {
         visualFeedbac,k?: boolean;
         captioning?: boolean;
@@ -74,10 +74,11 @@ export class AudioDescriptionManager {
         // デフォルト設定を初期化
         if (!this.mainController.settings) {
             this.mainController.settings = {
-                visualFeedback: true,
-    captioning: true,
-                audioDescriptions: true,
-        
+                visualFeedback: true;
+    captioning: true;
+                audioDescriptions: true;
+                audioDescriptions: true;
+        };
         // 視覚的通知システム
         this.visualNotifications = [];
         this.notificationContainer = null;
@@ -162,14 +163,14 @@ export class AudioDescriptionManager {
             background-color: rgba(0, 0, 0, 0.9);
             border: 2px solid ${color}
             border-radius: 8px,
-    padding: 10px 15px;
+    padding: 10px 15px,
             margin-bottom: 10px,
             color: ${color}
 
             font-size: 14px,
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            box-shadow: 0 0 10px ${color}33;
-            animation: slideInLeft 0.3s ease-out;
+            box-shadow: 0 0 10px ${color}33,
+            animation: slideInLeft 0.3s ease-out,
             max-width: 300px,
         `;
 
@@ -195,12 +196,11 @@ export class AudioDescriptionManager {
         
         // コンテナに追加
         if (this.notificationContainer) {
-            this.notificationContainer.appendChild(notification),
-            this.visualNotifications.push(notification),
-            
+            this.notificationContainer.appendChild(notification);
+            this.visualNotifications.push(notification);
             // 最大数を超えた場合は古い通知を削除
             while (this.visualNotifications.length > this.maxNotifications) {
-                const oldNotification = this.visualNotifications.shift(),
+                const oldNotification = this.visualNotifications.shift();
                 if (oldNotification && oldNotification.parentNode) {
         }
                     this.removeNotification(oldNotification); }
@@ -219,25 +219,25 @@ export class AudioDescriptionManager {
      */''
     private ensureAnimationStyles()';'
         if(!document.querySelector('#audio-accessibility-animations)' { ''
-            const style = document.createElement('style'),
+            const style = document.createElement('style');
             style.id = 'audio-accessibility-animations',
             style.textContent = `,
                 @keyframes slideInLeft {
                     from { }
                         transform: translateX(-100%}
-                        opacity: 0;
+                        opacity: 0,
                     }
                     to {
-                        transform: translateX(0};
-                        opacity: 1;
+                        transform: translateX(0},
+                        opacity: 1,
     }
                 @keyframes, slideOutLeft { from { }
-                        transform: translateX(0};
-                        opacity: 1;
+                        transform: translateX(0},
+                        opacity: 1,
                     }
                     to {
-                        transform: translateX(-100%})
-                        opacity: 0);
+                        transform: translateX(-100%}
+                        opacity: 0),
                     }
                 );
             `;
@@ -268,7 +268,7 @@ export class AudioDescriptionManager {
     public showCaption(text: string): void { if (!this.mainController.settings.captioning) return,
         ','
         // 字幕をキューに追加
-        this.captionQueue.push(text),
+        this.captionQueue.push(text);
         ','
         // 現在表示中でなければ表示開始
         if(this.captionContainer && this.captionContainer.style.display === 'none' { }
@@ -343,7 +343,7 @@ export class AudioDescriptionManager {
      */''
     public setEnabled(enabled: boolean): void { this.enabled = enabled,' }'
 
-        console.log(`AudioDescriptionManager: ${enabled ? 'enabled' : 'disabled}`}';
+        console.log(`AudioDescriptionManager: ${enabled ? 'enabled' : 'disabled}`}',
     }
 
     /**
@@ -361,12 +361,11 @@ export class AudioDescriptionManager {
         if (this.notificationContainer) {
 
             this.notificationContainer.setAttribute('aria-live', priority','
-            const announceElement = document.createElement('div'),
+            const announceElement = document.createElement('div');
             announceElement.className = 'sr-only',
             announceElement.style.cssText = 'position: absolute, left: -10000px, width: 1px, height: 1px,, overflow: hidden,',
             announceElement.textContent = text,
-            this.notificationContainer.appendChild(announceElement),
-            
+            this.notificationContainer.appendChild(announceElement);
             // 短時間後に削除（スクリーンリーダーが読み取った後）
             setTimeout(() => { 
          }
@@ -418,7 +417,7 @@ export class AudioDescriptionManager {
             this.showVisualNotification({''
                 type: 'info' }''
                 title: '泡破壊') }
-                message: `${params.bubbleType}泡が弾けました`);
+                message: `${params.bubbleType}泡が弾けました`),
         }
     }
 
@@ -427,8 +426,8 @@ export class AudioDescriptionManager {
      * @returns ステータス情報
      */
     public getStatus(): { enabled: boolean, activeDescriptions: number,, initialized: boolean, { return { enabled: this.enabled || false,
-            activeDescriptions: 0 };
-            initialized: true;
+            activeDescriptions: 0 },
+            initialized: true,
 
     /**
      * リソースの解放

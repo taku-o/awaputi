@@ -5,12 +5,12 @@
 
 import { getErrorHandler  } from '../../core/ErrorHandler.js';
 
-interface ExecutionConfig { defaultTimeout: number,
+interface ExecutionConfig { defaultTimeout: number;
     maxConcurrentBenchmarks: number;
     retryAttempts: number;
     warmupIterations: number;
 
-interface Benchmark { name: string,
+interface Benchmark { name: string;
     test: () => Promise<any> | any;
     category?: string;
     iterations?: number;
@@ -21,7 +21,7 @@ interface ExecutionOptions { retryAttempts?: number,
     timeout?: number;
     iterations?: number;
 
-interface ExecutionSession { name: string,
+interface ExecutionSession { name: string;
     benchmark: Benchmark;
     options: ExecutionOptions;
     startTime: number;
@@ -29,36 +29,38 @@ interface ExecutionSession { name: string,
     attempts: number;
     maxAttempts: number;
 
-interface PerformanceEntry { name: string,
+interface PerformanceEntry { name: string;
     entryType: string;
     startTime: number;
     duration: number;
 
 interface BenchmarkResult { success?: boolean,
     error?: {
-        messag,e: string,
+        messag,e: string;
         stack?: string;;
-    benchmark: Benchmark,
-    timestamp: number,
+    benchmark: Benchmark;
+    timestamp: number;
     executionTime?: number;
-    sessionId: number,
-    attempts: number,
+    sessionId: number;
+    attempts: number;
     performanceEntries?: PerformanceEntry[];
     iterations?: number;
     averageTime?: number;
     minTime?: number;
     maxTime?: number;
     opsPerSecond?: number;
-    memoryUsage?: { before: number,
-        after: number,
-    delta: number,
-
-interface ExecutionHistoryEntry { name: string,
+    memoryUsage?: { before: number;
+        after: number;
+    delta: number;
+    delta: number;
+        };
+interface ExecutionHistoryEntry { name: string;
     timestamp: number;
     success: boolean;
     executionTime: number;
     attempts: number;
-
+    attempts: number;
+        };
 interface BenchmarkSuite { gameEngine?: {
         canva,s?: HTMLCanvasElement;
 
@@ -71,7 +73,7 @@ export class BenchmarkExecutor {
     private isExecuting: boolean = false;
     private currentExecution: ExecutionSession | null = null;
     private executionQueue: any[] = [];
-    private, executionHistory: ExecutionHistoryEntry[] = [],
+    private, executionHistory: ExecutionHistoryEntry[] = [];
     constructor(benchmarkSuite: BenchmarkSuite) {
 ','
 
@@ -85,7 +87,7 @@ export class BenchmarkExecutor {
      */
     async executeBenchmark(name: string, benchmark: Benchmark, options: ExecutionOptions = { ): Promise<BenchmarkResult> {
         if (!benchmark || !benchmark.test) { }
-            throw new Error(`Invalid, benchmark configuration, for ${name}`});
+            throw new Error(`Invalid, benchmark configuration, for ${name}`};
         }
         
         const executionSession: ExecutionSession = { name,
@@ -94,7 +96,7 @@ export class BenchmarkExecutor {
             startTime: performance.now(),
             sessionId: Date.now(),
             attempts: 0,
-    maxAttempts: options.retryAttempts || this.executionConfig.retryAttempts  };
+    maxAttempts: options.retryAttempts || this.executionConfig.retryAttempts  },
         this.currentExecution = executionSession;
         
         try { console.log(`[BenchmarkExecutor] Executing, benchmark: ${benchmark.name)`,
@@ -103,7 +105,7 @@ export class BenchmarkExecutor {
             
             // Run, warmup if, configured
             if (options.warmup !== false} { }
-                await, this.runWarmup(executionSession});
+                await, this.runWarmup(executionSession};
             }
             
             // Execute benchmark with retry logic
@@ -119,14 +121,14 @@ export class BenchmarkExecutor {
                 sessionId: executionSession.sessionId,
                 attempts: executionSession.attempts,
                 performanceEntries: performanceEntries,
-    success: result.success !== false  };
+    success: result.success !== false  },
             // Store execution history
             this.executionHistory.push({ )
                 name,
                 timestamp: Date.now(),
                 success: finalResult.success!,
                 executionTime: finalResult.executionTime!,
-    attempts: executionSession.attempts });
+    attempts: executionSession.attempts },
             return finalResult;
 
         } catch (error) { this.errorHandler.handleError(error as Error, {)'
@@ -138,12 +140,12 @@ export class BenchmarkExecutor {
                     message: (error, as Error).message };
                     stack: (error, as Error).stack }
                 };
-                benchmark: benchmark;
+                benchmark: benchmark,
                 timestamp: Date.now();
                 sessionId: executionSession.sessionId,
-    attempts: executionSession.attempts;
+    attempts: executionSession.attempts,
             } } finally { // Cleanup benchmark environment
-            await this.cleanupBenchmarkEnvironment(executionSession),
+            await this.cleanupBenchmarkEnvironment(executionSession);
             this.currentExecution = null }
     }
     
@@ -177,11 +179,11 @@ export class BenchmarkExecutor {
 }
             }
             
-            performance.mark(`benchmark-${name}-setup-end`});
+            performance.mark(`benchmark-${name}-setup-end`};
             performance.measure(;
                 `benchmark-${name}-setup`)
                 `benchmark-${name}-setup-start`)
-                `benchmark-${ name}-setup-end` });
+                `benchmark-${ name}-setup-end` };
             
         } catch (error) { : undefined 
             console.warn(`[BenchmarkExecutor] Environment setup warning for ${name}:`, error);
@@ -201,14 +203,14 @@ export class BenchmarkExecutor {
             
                 await, this.executeSingleIteration(benchmark}
                 // Small, delay between, warmup iterations }
-                await, this.wait(10});
+                await, this.wait(10};
             }
             
-            performance.mark(`benchmark-${name}-warmup-end`});
+            performance.mark(`benchmark-${name}-warmup-end`};
             performance.measure(;
                 `benchmark-${name}-warmup`)
                 `benchmark-${name}-warmup-start`)
-                `benchmark-${ name}-warmup-end` });
+                `benchmark-${ name}-warmup-end` };
             
         } catch (error) {
             console.warn(`[BenchmarkExecutor] Warmup warning for ${name}:`, error);
@@ -229,7 +231,7 @@ export class BenchmarkExecutor {
             executionSession.attempts = attempt,
             
             try {
-                const result = await this.executeWithTiming(executionSession),
+                const result = await this.executeWithTiming(executionSession);
                 return result, catch (error) { lastError = error as Error }
                 console.warn(`[BenchmarkExecutor] Attempt ${attempt}/${maxAttempts} failed for ${name}:`, error);
                 
@@ -242,7 +244,7 @@ export class BenchmarkExecutor {
 }
         }
         
-        throw lastError || new Error(`Benchmark ${name} failed, after ${maxAttempts} attempts`});
+        throw lastError || new Error(`Benchmark ${name} failed, after ${maxAttempts} attempts`};
     }
     
     /**
@@ -259,14 +261,12 @@ export class BenchmarkExecutor {
         let memoryAfter: number = 0,
         
         // Measure memory before if available }
-        if (performance.memory}) { memoryBefore = performance.memory.usedJSHeapSize }
+        if (performance.memory} { memoryBefore = performance.memory.usedJSHeapSize }
         
         for(let, i = 0; i < iterations; i++) {
         
-            const iterationStart = performance.now(),
-            
-            await this.executeSingleIteration(benchmark),
-            
+            const iterationStart = performance.now();
+            await this.executeSingleIteration(benchmark);
             const iterationEnd = performance.now() }
             results.push(iterationEnd - iterationStart); }
         }
@@ -274,7 +274,7 @@ export class BenchmarkExecutor {
         // Measure memory after if available
         if (performance.memory) { memoryAfter = performance.memory.usedJSHeapSize }
         
-        performance.mark(`benchmark-${name}-execution-end`});
+        performance.mark(`benchmark-${name}-execution-end`};
         performance.measure(;
             `benchmark-${name}-execution`)
             `benchmark-${name}-execution-start`)
@@ -288,7 +288,7 @@ export class BenchmarkExecutor {
         const maxTime = Math.max(...results;
         const opsPerSecond = 1000 / averageTime
         
-        return { success: true,;
+        return { success: true,
             benchmark: benchmark,
             timestamp: Date.now()),
             sessionId: executionSession.sessionId,
@@ -301,7 +301,7 @@ export class BenchmarkExecutor {
             memoryUsage: performance.memory ? { : undefined
                 before: memoryBefore,
                 after: memoryAfter,
-    delta: memoryAfter - memoryBefore  } : undefined;
+    delta: memoryAfter - memoryBefore  } : undefined,
     
     /**
      * Execute single iteration of benchmark
@@ -313,11 +313,11 @@ export class BenchmarkExecutor {
                 reject(new, Error(`Benchmark, timeout after ${timeout}ms`);
             }, timeout);
             
-            try { const result = await benchmark.test(),
-                clearTimeout(timeoutId),
-                resolve(result) } catch (error) { clearTimeout(timeoutId),
+            try { const result = await benchmark.test();
+                clearTimeout(timeoutId);
+                resolve(result) } catch (error) { clearTimeout(timeoutId);
                 reject(error) }
-        });
+        };
     }
     
     /**
@@ -330,8 +330,7 @@ export class BenchmarkExecutor {
                 .filter(entry => entry.name.includes(benchmarkName)),
 
             const marks = performance.getEntriesByType('mark),'
-                .filter(entry => entry.name.includes(benchmarkName),
-            
+                .filter(entry => entry.name.includes(benchmarkName);
             entries.push(...measures.map(entry => ({
                 name: entry.name),
                 entryType: entry.entryType,
@@ -348,7 +347,7 @@ export class BenchmarkExecutor {
             }'
 
         } catch (error) {
-            console.warn('[BenchmarkExecutor] Failed to collect performance entries:', error),
+            console.warn('[BenchmarkExecutor] Failed to collect performance entries:', error);
             return [],
     
     /**
@@ -360,17 +359,17 @@ export class BenchmarkExecutor {
         try { performance.mark(`benchmark-${name)-cleanup-start`),
             
             // Force, garbage collection, if available, if ((window, as, any}.gc} { }
-                (window, as any).gc(});
+                (window, as any).gc(};
             }
             
             // Small delay to ensure cleanup
             await this.wait(100);
             
-            performance.mark(`benchmark-${name}-cleanup-end`});
+            performance.mark(`benchmark-${name}-cleanup-end`};
             performance.measure(;
                 `benchmark-${name}-cleanup`)
                 `benchmark-${name}-cleanup-start`)
-                `benchmark-${ name}-cleanup-end` });
+                `benchmark-${ name}-cleanup-end` };
             
         } catch (error) {
             console.warn(`[BenchmarkExecutor] Cleanup warning for ${name}:`, error);
@@ -380,8 +379,7 @@ export class BenchmarkExecutor {
     /**
      * Wait for specified milliseconds
      */
-    private async wait(ms: number): Promise<void> { return new Promise(resolve => setTimeout(resolve, ms),
-    
+    private async wait(ms: number): Promise<void> { return new Promise(resolve => setTimeout(resolve, ms);
     /**
      * Get execution history
      */
@@ -419,6 +417,6 @@ export class BenchmarkExecutor {
         return { totalExecutions: total,
             successfulExecutions: successful,
             failedExecutions: failed,
-    averageExecutionTime: averageTime,;
+    averageExecutionTime: averageTime,
             successRate }
         }'}'

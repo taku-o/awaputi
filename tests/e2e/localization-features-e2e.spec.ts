@@ -8,23 +8,22 @@ import { test, expect } from '@playwright/test';
 
 test.describe('Localization Features E2E Tests', () => {
   test.beforeEach(async ({ page }') => {'
-    await page.goto('/'),
-    await page.waitForSelector('#gameCanvas'),
+    await page.goto('/');
+    await page.waitForSelector('#gameCanvas');
     await page.waitForFunction(() => window.gameEngine !== undefined),
     await page.waitForFunction(() => {
-      return window.gameEngine.localizationManager !== undefined });
+      return window.gameEngine.localizationManager !== undefined };
   }');'
 
-  test('should handle RTL language detection and setup', async ({ page }) => {
+  test('should handle RTL language detection and setup', async ({ page } => {
     const rtlTest = await page.evaluate((') => {'
       const lm = window.gameEngine.localizationManager,
       
       // Test RTL language detection
-      const arabicCultural = lm.getCulturalAdaptation('ar'),
-      const hebrewCultural = lm.getCulturalAdaptation('he'),
-      const japaneseCultural = lm.getCulturalAdaptation('ja'),
-      const englishCultural = lm.getCulturalAdaptation('en'),
-      
+      const arabicCultural = lm.getCulturalAdaptation('ar');
+      const hebrewCultural = lm.getCulturalAdaptation('he');
+      const japaneseCultural = lm.getCulturalAdaptation('ja');
+      const englishCultural = lm.getCulturalAdaptation('en');
       return { arabic: { }
           isRTL: arabicCultural.isRTL,
           textDirection: arabicCultural.textDirection
@@ -42,7 +41,7 @@ test.describe('Localization Features E2E Tests', () => {
           textDirection: englishCultural.textDirection
         }
       };
-    });
+    };
     
     expect(rtlTest.arabic.isRTL).toBe(true);
     expect(rtlTest.arabic.textDirection').toBe('rtl');'
@@ -62,7 +61,7 @@ test.describe('Localization Features E2E Tests', () => {
         japanese: lm.getColorMeanings('ja',
         english: lm.getColorMeanings('en',
         chinese: lm.getColorMeanings('zh',
-        fallback: lm.getColorMeanings('unknown'})
+        fallback: lm.getColorMeanings('unknown'}
       };);
     
     // Test Japanese color meanings
@@ -93,7 +92,7 @@ test.describe('Localization Features E2E Tests', () => {
         japanese: lm.getGestureConventions('ja',
         english: lm.getGestureConventions('en',
         arabic: lm.getGestureConventions('ar',
-        fallback: lm.getGestureConventions('unknown'})
+        fallback: lm.getGestureConventions('unknown'}
       };);
     
     // Test Japanese gesture conventions
@@ -123,7 +122,7 @@ test.describe('Localization Features E2E Tests', () => {
         thai: lm.getNumeralSystem('th',
         hindi: lm.getNumeralSystem('hi',
         english: lm.getNumeralSystem('en',
-        japanese: lm.getNumeralSystem('ja'})
+        japanese: lm.getNumeralSystem('ja'}
       };);
     
     expect(numeralSystemTest.arabic').toBe('arab');'
@@ -144,7 +143,7 @@ test.describe('Localization Features E2E Tests', () => {
         englishGB: lm.getDateFormat('en-GB',
         german: lm.getDateFormat('de',
         french: lm.getDateFormat('fr',
-        unknown: lm.getDateFormat('unknown'})
+        unknown: lm.getDateFormat('unknown'}
       };);
     
     expect(dateFormatTest.japanese').toBe('YYYY年MM月DD日');'
@@ -165,7 +164,7 @@ test.describe('Localization Features E2E Tests', () => {
         hebrew: lm.getCalendarSystem('he',
         thai: lm.getCalendarSystem('th',
         english: lm.getCalendarSystem('en',
-        german: lm.getCalendarSystem('de'})
+        german: lm.getCalendarSystem('de'}
       };);
     
     expect(calendarSystemTest.japanese').toBe('japanese');'
@@ -186,7 +185,7 @@ test.describe('Localization Features E2E Tests', () => {
         englishGB: lm.getTimeZone('en-gb',
         german: lm.getTimeZone('de',
         french: lm.getTimeZone('fr',
-        unknown: lm.getTimeZone('unknown'})
+        unknown: lm.getTimeZone('unknown'}
       };);
     
     expect(timezoneTest.japanese').toBe('Asia/Tokyo');'
@@ -207,7 +206,7 @@ test.describe('Localization Features E2E Tests', () => {
         german: lm.getWeekStart('de',
         french: lm.getWeekStart('fr',
         japanese: lm.getWeekStart('ja',
-        unknown: lm.getWeekStart('unknown'})
+        unknown: lm.getWeekStart('unknown'}
       };);
     
     expect(weekStartTest.english).toBe(0); // Sunday
@@ -223,22 +222,22 @@ test.describe('Localization Features E2E Tests', () => {
       const lm = window.gameEngine.localizationManager,
       
       const testNumber = 1234.56,
-      const testDate = new Date('2025-01-15'),
+      const testDate = new Date('2025-01-15');
       const testCurrency = 999.99,
       
       return { japanese: { }
-          number: lm.formatCulturalText(testNumber, 'number', 'ja'),
-          date: lm.formatCulturalText(testDate, 'date', 'ja'),
-          currency: lm.formatCulturalText(testCurrency, 'currency', 'ja'})
+          number: lm.formatCulturalText(testNumber, 'number', 'ja');
+          date: lm.formatCulturalText(testDate, 'date', 'ja');
+          currency: lm.formatCulturalText(testCurrency, 'currency', 'ja'}
         '),'
         english: {
-          number: lm.formatCulturalText(testNumber, 'number', 'en'),
-          date: lm.formatCulturalText(testDate, 'date', 'en'),
+          number: lm.formatCulturalText(testNumber, 'number', 'en');
+          date: lm.formatCulturalText(testDate, 'date', 'en');
           currency: lm.formatCulturalText(testCurrency, 'currency', 'en') },
         unknown: {
           text: lm.formatCulturalText('unchanged', 'unknown', 'ja') }
       };
-    });
+    };
     
     // Verify formatting functions are called
     expect(typeof culturalFormattingTest.japanese.number').toBe('string');'
@@ -259,9 +258,9 @@ test.describe('Localization Features E2E Tests', () => {
       return {
         japanese: lm.getRegionalSettings('ja',
         english: lm.getRegionalSettings('en',
-        german: lm.getRegionalSettings('de'})
+        german: lm.getRegionalSettings('de'}
       };);
-    });
+    };
     
     // Test Japanese regional settings
     expect(completeRegionalTest.japanese.language').toBe('ja');'
@@ -294,7 +293,7 @@ test.describe('Localization Features E2E Tests', () => {
       
       // Test adding accessibility translations
       const addResult = lm.addAccessibilityTranslations('test-lang', {
-        'test.accessibility.key': 'Test accessibility value'),
+        'test.accessibility.key': 'Test accessibility value');
         'test.nested.key': 'Nested value') }');'
       
       // Test retrieving accessibility translations
@@ -313,7 +312,7 @@ test.describe('Localization Features E2E Tests', () => {
         hasAccessibilityStats: typeof stats.accessibilityTranslations === 'object',
         hasCulturalSupport: typeof stats.culturalSupport === 'object'
       };
-    });
+    };
     
     expect(accessibilityTest.addResult).toBe(true);
     expect(accessibilityTest.retrievedTranslation').toBe('Test accessibility value');'
@@ -332,7 +331,7 @@ test.describe('Localization Features E2E Tests', () => {
         managerTitle: lm.ta11y('accessibility.manager.title',
         keyboardTitle: lm.ta11y('accessibility.keyboard.title',
         screenReaderTitle: lm.ta11y('accessibility.screenReader.title',
-        visualTitle: lm.ta11y('accessibility.visual.title'});
+        visualTitle: lm.ta11y('accessibility.visual.title'},
       ');'
       
       // Switch to English and test
@@ -342,17 +341,16 @@ test.describe('Localization Features E2E Tests', () => {
         managerTitle: lm.ta11y('accessibility.manager.title',
         keyboardTitle: lm.ta11y('accessibility.keyboard.title',
         screenReaderTitle: lm.ta11y('accessibility.screenReader.title',
-        visualTitle: lm.ta11y('accessibility.visual.title' };
+        visualTitle: lm.ta11y('accessibility.visual.title' },
       
       // Test with parameters
       const withParams = lm.ta11y('accessibility.announcements.profileActivated', { profileName: 'Test Profile'),
-      
       return { }
         japaneseA11y,
         englishA11y,
         withParams
       };
-    });
+    };
     
     // Test Japanese accessibility translations
     expect(a11yTranslationTest.japaneseA11y.managerTitle').toBe('アクセシビリティ設定');'
@@ -378,7 +376,7 @@ test.describe('Localization Features E2E Tests', () => {
       lm.addAccessibilityTranslations('stats-test', {
         'test1': 'value1',
         'test2': 'value2')
-        'test3': 'value3') });
+        'test3': 'value3') };
       
       const regularStats = lm.getStats();
       const accessibilityStats = lm.getAccessibilityStats(');'
@@ -389,7 +387,7 @@ test.describe('Localization Features E2E Tests', () => {
         hasAccessibilityTranslations: typeof accessibilityStats.accessibilityTranslations === 'object',
         hasCulturalSupport: typeof accessibilityStats.culturalSupport === 'object'
       };
-    });
+    };
     
     // Test regular stats
     expect(typeof statsTest.regularStats.currentLanguage').toBe('string');'
@@ -417,12 +415,10 @@ test.describe('Localization Features E2E Tests', () => {
       
       try {
         // Test font loading for current language
-        const loadResult = await lm.loadFontsForLanguage('ja'),
-        
+        const loadResult = await lm.loadFontsForLanguage('ja');
         // Test font stack retrieval
-        const primaryFontStack = lm.getFontStack('primary'),
-        const secondaryFontStack = lm.getFontStack('secondary'),
-        
+        const primaryFontStack = lm.getFontStack('primary');
+        const secondaryFontStack = lm.getFontStack('secondary');
         // Test font loading status
         const fontStatus = lm.getFontLoadingStatus('),'
         
@@ -443,13 +439,13 @@ test.describe('Localization Features E2E Tests', () => {
           error: error.message
         };
       }
-    });
+    };
     
     if (fontTest.success) {
       expect(typeof fontTest.loadResult').toBe('boolean'),'
       expect(typeof fontTest.primaryFontStack').toBe('string'),'
       expect(typeof fontTest.secondaryFontStack').toBe('string'),'
-      expect(fontTest.fontStatus).toBe(true),
+      expect(fontTest.fontStatus).toBe(true);
       expect(fontTest.preloadResult).toBe(true) } else {
       // Font loading may fail in test environment, which is acceptable
       expect(typeof fontTest.error').toBe('string') }'
@@ -463,11 +459,11 @@ test.describe('Localization Features E2E Tests', () => {
       
       // Add test listeners
       const listener1 = (newLang, oldLang) => {
-        eventsFired.push({ listener: 1, newLang, oldLang });
+        eventsFired.push({ listener: 1, newLang, oldLang };
       };
       
       const listener2 = (newLang, oldLang) => {
-        eventsFired.push({ listener: 2, newLang, oldLang });
+        eventsFired.push({ listener: 2, newLang, oldLang };
       };
       
       const addResult1 = lm.addLanguageChangeListener(listener1);
@@ -493,7 +489,7 @@ test.describe('Localization Features E2E Tests', () => {
         eventsFired,
         totalEvents: eventsFired.length
       };
-    });
+    };
     
     expect(listenerTest.addResult1).toBe(true);
     expect(listenerTest.addResult2).toBe(true);
@@ -517,7 +513,7 @@ test.describe('Localization Features E2E Tests', () => {
       
       // Add some test data
       lm.addAccessibilityTranslations('cleanup-test', {
-                'test.key': 'test value') }));
+                'test.key': 'test value') });
       
       const listener = () => {};
       lm.addLanguageChangeListener(listener');'
@@ -525,7 +521,7 @@ test.describe('Localization Features E2E Tests', () => {
       // Verify data exists
       const beforeCleanup = {
         hasAccessibilityTranslations: lm.getAccessibilityTranslation('test.key', 'cleanup-test') !== null,
-        fontStats: lm.getFontLoadingStatus( };
+        fontStats: lm.getFontLoadingStatus( },
       
       // Perform cleanup
       lm.cleanup(');'
@@ -533,18 +529,18 @@ test.describe('Localization Features E2E Tests', () => {
       // Verify cleanup
       const afterCleanup = {
         hasAccessibilityTranslations: lm.getAccessibilityTranslation('test.key', 'cleanup-test') !== null,
-        fontStatsAfterCleanup: lm.getFontLoadingStatus( };
+        fontStatsAfterCleanup: lm.getFontLoadingStatus( },
       
       return {
         beforeCleanup,
         afterCleanup
       };
-    });
+    };
     
     expect(cleanupTest.beforeCleanup.hasAccessibilityTranslations).toBe(true);
     expect(cleanupTest.afterCleanup.hasAccessibilityTranslations).toBe(false);
     expect(typeof cleanupTest.beforeCleanup.fontStats').toBe('object');'
     expect(typeof cleanupTest.afterCleanup.fontStatsAfterCleanup').toBe('object');'
-  });
+  };
 }');'
 }}}}}}}}

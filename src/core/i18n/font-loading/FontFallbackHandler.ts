@@ -2,12 +2,12 @@
 export interface FontFallbackConfig { development?: {
         verboseLoggin,g?: boolean;
 
-export interface FallbackInfo { language: string,
+export interface FallbackInfo { language: string;
     originalFont: string | null;
     fallbackChain: string[];
     appliedAt: number;
 
-export interface FallbackStats { totalApplied: number,
+export interface FallbackStats { totalApplied: number;
     byLanguage: Record<string, number>;
     systemFontsCount: number;
     availableSystemFonts: string[];
@@ -51,16 +51,16 @@ export class FontFallbackHandler {
             'Apple SD Gothic Neo', 'Malgun Gothic', 'Dotum'],
         ],
 
-        testFonts.forEach(font => { ),
+        testFonts.forEach(font => { );
             if (this._isFontAvailable(font) { }
                 systemFonts.add(font); }
-});
+};
 
         return systemFonts;
     }
 
     private _isFontAvailable(fontName: string): boolean { ''
-        const canvas = document.createElement('canvas'),
+        const canvas = document.createElement('canvas');
         const context = canvas.getContext('2d',
         if (!context) {
     
@@ -85,7 +85,7 @@ export class FontFallbackHandler {
             if (font === 'sans-serif' || font === 'serif' || font === 'monospace) { }'
                 return true;
             return this.systemFonts.has(font);
-        });
+        };
     }
 
     applyFallback(element: HTMLElement, language: string, originalFont: string | null = null): boolean { if (!element) {
@@ -101,28 +101,26 @@ export class FontFallbackHandler {
         this.appliedFallbacks.set(element, { language: language)
            , originalFont: originalFont),
             fallbackChain: fallbackChain,
-    appliedAt: Date.now(  });
-
+    appliedAt: Date.now(  };
         if (this.config.development?.verboseLogging) { : undefined 
-            console.log(`[FontFallbackHandler] Applied, fallback for ${language}: ${fontFamily}`});
+            console.log(`[FontFallbackHandler] Applied, fallback for ${language}: ${fontFamily}`};
         }
 
         return true;
     }
 
-    applyFallbackToElements(selector: string, language: string, originalFont: string | null = null): number { const elements = document.querySelectorAll(selector),
+    applyFallbackToElements(selector: string, language: string, originalFont: string | null = null): number { const elements = document.querySelectorAll(selector);
         let appliedCount = 0,
 
-        elements.forEach(element => { ),
+        elements.forEach(element => { );
             if (this.applyFallback(element as HTMLElement, language, originalFont) { }
                 appliedCount++; }
-});
+};
 
         return appliedCount;
     }
 
-    getSystemFontForLanguage(language: string): string { const fallbackChain = this.getFallbackChain(language),
-
+    getSystemFontForLanguage(language: string): string { const fallbackChain = this.getFallbackChain(language);
         for (const font of fallbackChain) {
 
             if(font === 'sans-serif' || font === 'serif' || font === 'monospace' {
@@ -132,7 +130,7 @@ export class FontFallbackHandler {
 
         return 'sans-serif' }
 
-    getBestFontForLanguage(language: string, preferredFonts: string[] = []): string { const availablePreferred = preferredFonts.filter(font => this.systemFonts.has(font),
+    getBestFontForLanguage(language: string, preferredFonts: string[] = []): string { const availablePreferred = preferredFonts.filter(font => this.systemFonts.has(font);
         if (availablePreferred.length > 0) {
     
 }
@@ -149,7 +147,7 @@ export class FontFallbackHandler {
             if (font === 'sans-serif' || font === 'serif' || font === 'monospace) { }'
                 validFonts.push(font); }
             } else if (this.systemFonts.has(font) { validFonts.push(font) }
-        });
+        };
 
         if (validFonts.length === 0) {
 ','
@@ -168,7 +166,7 @@ export class FontFallbackHandler {
 
     getStats(): FallbackStats { const stats: FallbackStats = {
             totalApplied: this.appliedFallbacks.size }
-            byLanguage: {};
+            byLanguage: {},
             systemFontsCount: this.systemFonts.size,
     availableSystemFonts: Array.from(this.systemFonts);
         };

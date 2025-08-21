@@ -18,12 +18,12 @@ export class StatisticsCollector {
         
         // 統計収集カテゴリ
         this.eventCategories = {
-            BUBBLE: 'bubble',
-            COMBO: 'combo',
-            DAMAGE: 'damage',
-            HEAL: 'heal',
-            SPECIAL_EFFECT: 'special_effect',
-            GAME_STATE: 'game_state',
+            BUBBLE: 'bubble';
+            COMBO: 'combo';
+            DAMAGE: 'damage';
+            HEAL: 'heal';
+            SPECIAL_EFFECT: 'special_effect';
+            GAME_STATE: 'game_state';
             USER_ACTION: 'user_action' }
 
             PERFORMANCE: 'performance' 
@@ -59,7 +59,7 @@ export class StatisticsCollector {
      */
     collectBubbleEvent(eventType, bubbleData) { this.collectEvent(eventType, {
             bubbleType: bubbleData.type,
-            position: bubbleData.position),
+            position: bubbleData.position);
             reactionTime: bubbleData.reactionTime,
     comboMultiplier: bubbleData.comboMultiplier }
             scoreEarned: bubbleData.scoreEarned), this.eventCategories.BUBBLE); }
@@ -69,7 +69,7 @@ export class StatisticsCollector {
      * コンボ関連イベントの収集
      */
     collectComboEvent(eventType, comboData) { this.collectEvent(eventType, {
-            comboCount: comboData.count),
+            comboCount: comboData.count);
             comboMultiplier: comboData.multiplier,
     comboBroken: comboData.broken }
             totalScore: comboData.totalScore), this.eventCategories.COMBO); }
@@ -79,7 +79,7 @@ export class StatisticsCollector {
      * ダメージ関連イベントの収集
      */
     collectDamageEvent(eventType, damageData) { this.collectEvent(eventType, {
-            damageAmount: damageData.amount),
+            damageAmount: damageData.amount);
             damageSource: damageData.source,
     currentHP: damageData.currentHP }
             maxHP: damageData.maxHP), this.eventCategories.DAMAGE); }
@@ -89,7 +89,7 @@ export class StatisticsCollector {
      * 回復関連イベントの収集
      */
     collectHealEvent(eventType, healData) { this.collectEvent(eventType, {
-            healAmount: healData.amount),
+            healAmount: healData.amount);
             healSource: healData.source,
     currentHP: healData.currentHP }
             maxHP: healData.maxHP), this.eventCategories.HEAL); }
@@ -99,7 +99,7 @@ export class StatisticsCollector {
      * 特殊効果関連イベントの収集
      */
     collectSpecialEffectEvent(eventType, effectData) { this.collectEvent(eventType, {
-            effectType: effectData.type),
+            effectType: effectData.type);
             duration: effectData.duration,
     intensity: effectData.intensity }
             triggeredBy: effectData.triggeredBy), this.eventCategories.SPECIAL_EFFECT); }
@@ -109,7 +109,7 @@ export class StatisticsCollector {
      * ユーザー操作関連イベントの収集
      */
     collectUserActionEvent(eventType, actionData) { this.collectEvent(eventType, {
-            actionType: actionData.type),
+            actionType: actionData.type);
             position: actionData.position,
     timestamp: actionData.timestamp }
             inputDevice: actionData.inputDevice), this.eventCategories.USER_ACTION); }
@@ -119,7 +119,7 @@ export class StatisticsCollector {
      * パフォーマンス関連イベントの収集
      */
     collectPerformanceEvent(eventType, performanceData) { this.collectEvent(eventType, {
-            frameRate: performanceData.frameRate),
+            frameRate: performanceData.frameRate);
             memoryUsage: performanceData.memoryUsage,
     processingTime: performanceData.processingTime }
             renderTime: performanceData.renderTime), this.eventCategories.PERFORMANCE); }
@@ -189,11 +189,9 @@ export class StatisticsCollector {
     async processEventBatch() { if (this.isProcessing) return,
         
         this.isProcessing = true;
-        const startTime = performance.now(),
-        
+        const startTime = performance.now();
         try {
-            const eventsToProcess = this.eventQueue.splice(0, this.batchSize),
-            
+            const eventsToProcess = this.eventQueue.splice(0, this.batchSize);
             if (eventsToProcess.length === 0) {
             
                 this.isProcessing = false }
@@ -205,13 +203,13 @@ export class StatisticsCollector {
             
             // 非同期でカテゴリ別処理
             await Promise.all([);]
-                this.processBubbleEvents(categorizedEvents.bubble || []),
-                this.processComboEvents(categorizedEvents.combo || []),
-                this.processDamageEvents(categorizedEvents.damage || []),
-                this.processHealEvents(categorizedEvents.heal || []),
-                this.processSpecialEffectEvents(categorizedEvents.special_effect || []),
-                this.processGameStateEvents(categorizedEvents.game_state || []),
-                this.processUserActionEvents(categorizedEvents.user_action || []),
+                this.processBubbleEvents(categorizedEvents.bubble || []);
+                this.processComboEvents(categorizedEvents.combo || []);
+                this.processDamageEvents(categorizedEvents.damage || []);
+                this.processHealEvents(categorizedEvents.heal || []);
+                this.processSpecialEffectEvents(categorizedEvents.special_effect || []);
+                this.processGameStateEvents(categorizedEvents.game_state || []);
+                this.processUserActionEvents(categorizedEvents.user_action || []);
                 this.processPerformanceEvents(categorizedEvents.performance || []);
             ]);
             
@@ -220,7 +218,7 @@ export class StatisticsCollector {
             this.recordProcessingMetrics(processingTime, eventsToProcess.length);
 
         } catch (error) {
-            console.error('Error processing event batch:', error),
+            console.error('Error processing event batch:', error);
             this.handleProcessingError(error) } finally { this.isProcessing = false }
     }
     
@@ -238,7 +236,7 @@ export class StatisticsCollector {
                 categorized[category] = []; }
             }
             categorized[category].push(event);
-        });
+        };
         
         return categorized;
     }
@@ -329,8 +327,7 @@ export class StatisticsCollector {
             switch(event.type) {
 
                 case 'game_started':','
-                    this.statisticsManager.onGameStart(event.data.stageId),
-
+                    this.statisticsManager.onGameStart(event.data.stageId);
                     break,
                 case 'game_ended':,
                     this.statisticsManager.onGameEnd(event.data) }
@@ -385,15 +382,14 @@ export class StatisticsCollector {
      */''
     handleProcessingError(error) {
 
-        console.error('StatisticsCollector processing error:', error),
-        
+        console.error('StatisticsCollector processing error:', error);
         // エラー統計の更新
         if (!this.errorMetrics) {
             this.errorMetrics = {
                 totalErrors: 0,
                 errorTypes: new Map()','
         const errorType = error.name || 'UnknownError'),
-        this.errorMetrics.errorTypes.set(),
+        this.errorMetrics.errorTypes.set();
             errorType,
             (this.errorMetrics.errorTypes.get(errorType) || 0) + 1
 }
@@ -404,7 +400,7 @@ export class StatisticsCollector {
      * セッションIDの生成
      */
     generateSessionId() { if (!this.sessionId) { }
-            this.sessionId = `session_${Date.now())_${Math.random().toString(36).substr(2, 9})`;
+            this.sessionId = `session_${Date.now())_${Math.random().toString(36).substr(2, 9}`;
         }
         return this.sessionId;
     }
@@ -417,7 +413,7 @@ export class StatisticsCollector {
             bufferSize: Array.from(this.eventBuffer.values().reduce((sum, buffer) => sum + buffer.length, 0),
             processingMetrics: this.processingMetrics,
     errorMetrics: this.errorMetrics }
-            sessionId: this.sessionId };
+            sessionId: this.sessionId },
             isProcessing: this.isProcessing 
     }
     

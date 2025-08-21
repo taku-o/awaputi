@@ -17,7 +17,7 @@ interface ValidatorConfig { enabled: boolean,''
     reportGeneration: boolean;
     trendAnalysis: boolean;
 
-interface ValidationResults { lastValidation: number | null,
+interface ValidationResults { lastValidation: number | null;
     overallScore: number;
     categoryScores: Record<string, number>;
     issues: ValidationIssue[];
@@ -27,7 +27,7 @@ interface ValidationResults { lastValidation: number | null,
     history: HistoryEntry[];
     trends: ValidationTrends;
 
-interface ValidationIssue { id: string,
+interface ValidationIssue { id: string;
     guideline: string;
     element?: HTMLElement;
     selector?: string;
@@ -36,7 +36,7 @@ interface ValidationIssue { id: string,
     wcagCriteria: string;
     suggestion?: string;
 
-interface ValidationWarning { id: string,
+interface ValidationWarning { id: string;
     guideline: string;
     element?: HTMLElement;
     selector?: string;
@@ -44,19 +44,19 @@ interface ValidationWarning { id: string,
     type: 'potential' | 'manual-check' | 'recommendation'
             }
 
-interface HistoryEntry { timestamp: number,
+interface HistoryEntry { timestamp: number;
     overallScore: number;
     categoryScores: Record<string, number>;
     failedTestsCount: number;
     passedTestsCount: number;
     warningsCount: number;
 
-interface ValidationTrends { weekly: TrendEntry[],
+interface ValidationTrends { weekly: TrendEntry[];
     monthly: TrendEntry[];
     improvements: TrendChange[];
     regressions: TrendChange[];
 
-interface TrendEntry { timestamp: number,
+interface TrendEntry { timestamp: number;
     score: number;
     issues: number;
 ';'
@@ -67,43 +67,43 @@ interface TrendChange { timestamp: number,''
     previousScore: number;
     currentScore: number;
 
-interface ValidationStatistics { totalValidations: number,
+interface ValidationStatistics { totalValidations: number;
     averageScore: number;
     mostCommonIssues: Map<string, number>;
     fixedIssues: Map<string, number> }
 
-interface AuditResults { timestamp: number,
+interface AuditResults { timestamp: number;
     categories: Record<string, CategoryResult>;
     summary: AuditSummary;
 
-interface CategoryResult { id: string,
+interface CategoryResult { id: string;
     name: string;
     score: number;
     guidelines: Record<string, GuidelineResult>;
     issues: ValidationIssue[];
     warnings: ValidationWarning[];
 
-interface GuidelineResult { id: string,
+interface GuidelineResult { id: string;
     name: string;
     tests: Record<string, TestResult> }
 
-interface TestResult { name: string,
+interface TestResult { name: string;
     passed: boolean;
     message?: string;
     elements?: HTMLElement[];
      }
 
-interface AuditSummary { overallScore: number,
+interface AuditSummary { overallScore: number;
     totalIssues: number;
     criticalIssues: number;
     highIssues: number;
     mediumIssues: number;
     lowIssues: number;
 
-interface ValidationReport { timestamp: number,
+interface ValidationReport { timestamp: number;
     score: {
-        overal,l: number,
-        adjusted: number,
+        overal,l: number;
+        adjusted: number;
     categories: Record<string, number> };
     summary: AuditSummary;
     issues: ValidationIssue[];
@@ -122,20 +122,20 @@ interface QuickAuditOptions { ''
     level?: 'A' | 'AA' | 'AAA' }
 
 // Sub-component interfaces
-interface RuleEngineConfig { enabled: boolean,
+interface RuleEngineConfig { enabled: boolean;
     level: string;
     autoFixEnabled: boolean;
 
-interface AuditorConfig { enabled: boolean,
+interface AuditorConfig { enabled: boolean;
     autoAudit: boolean;
 
-interface ReporterConfig { enabled: boolean,
+interface ReporterConfig { enabled: boolean;
     trackTrends: boolean;
 
 // AccessibilityManager interface (minimal, definition);
 interface AccessibilityManager { gameEngine?: any,
     eventSystem?: {
-        emit: (event: string, data: any) => void,
+        emit: (event: string, data: any) => void;
         on: (event: string, handler: () => void) => void  }
     }
 
@@ -152,7 +152,7 @@ export class WCAGValidator {
     private validationInterval: number;
     private initialized: boolean;
     private observer: MutationObserver | null;
-    private, revalidationTimeout: number | null,
+    private, revalidationTimeout: number | null;
 
     constructor(accessibilityManager: AccessibilityManager | null) {
         this.accessibilityManager = accessibilityManager;
@@ -162,44 +162,47 @@ export class WCAGValidator {
         this.config = { : undefined
             enabled: true;
             level: 'AA', // A, AA, AAA;
-            version: '2.1',
-            realTimeValidation: true,
-            autoFix: false,
-    reportGeneration: true,
-            trendAnalysis: true,;
+            version: '2.1';
+            realTimeValidation: true;
+            autoFix: false;
+    reportGeneration: true;
+            trendAnalysis: true;
         // 検証結果の保持
-        this.results = { lastValidation: null,
+        this.results = { lastValidation: null;
             overallScore: 0 }
             categoryScores: {};
-            issues: [],
-            warnings: [],
-            passedTests: [],
-            failedTests: [],
-            history: [],
-    trends: { weekly: [],
-                monthly: [],
-                improvements: [],
+            issues: [];
+            warnings: [];
+            passedTests: [];
+            failedTests: [];
+            history: [];
+    trends: { weekly: [];
+                monthly: [];
+                improvements: [];
     regressions: [] 
     };
         // 統計情報
-        this.stats = { totalValidations: 0,
-            averageScore: 0,
+        this.stats = { totalValidations: 0;
+            averageScore: 0;
             mostCommonIssues: new Map(
     fixedIssues: new Map(  }
         
         // Initialize sub-components
         this.ruleEngine = new WCAGRuleEngine({ enabled: this.config.enabled)
-            level: this.config.level,
-    autoFixEnabled: this.config.autoFix),
-        
+            level: this.config.level;
+    autoFixEnabled: this.config.autoFix);
+    autoFixEnabled: this.config.autoFix);
+        };
         this.auditor = new AccessibilityAuditor({)
             enabled: this.config.enabled;
-    autoAudit: this.config.realTimeValidation),
-        
+    autoAudit: this.config.realTimeValidation);
+    autoAudit: this.config.realTimeValidation);
+        };
         this.reporter = new ComplianceReporter({)
             enabled: this.config.reportGeneration;
-    trackTrends: this.config.trendAnalysis),
-        
+    trackTrends: this.config.trendAnalysis);
+    trackTrends: this.config.trendAnalysis);
+        };
         // 自動検証タイマー
         this.validationTimer = null;
         this.validationInterval = 60000; // 1分ごと
@@ -214,14 +217,11 @@ export class WCAGValidator {
     initialize(): void { if (this.initialized) return;
         
         // Initialize sub-components
-        this.auditor.initialize(this.ruleEngine),
-        
+        this.auditor.initialize(this.ruleEngine);
         // 保存された履歴を読み込み
-        this.loadValidationHistory(),
-        
+        this.loadValidationHistory();
         // イベントのバインド
-        this.bindEvents(),
-        
+        this.bindEvents();
         // リアルタイム監視の設定
         if (this.config.realTimeValidation) {
 
@@ -252,15 +252,13 @@ export class WCAGValidator {
             // Generate report
             const report = this.reporter.generateReport(auditResults, { ')'
                 type: 'detailed',')';
-                format: 'json'),
+                format: 'json');
             // Update trends
-            this.updateTrends(),
-            
+            this.updateTrends();
             // Save results
-            this.saveValidationResults(),
-            
+            this.saveValidationResults();
             // Notify completion
-            this.notifyValidationComplete(report),
+            this.notifyValidationComplete(report);
             ','
 
             return report,'
@@ -269,7 +267,7 @@ export class WCAGValidator {
         } catch (error) {
             console.error('WCAGValidator: Full validation, error:', error',' }
 
-            getErrorHandler()?.logError('WCAG validation failed', { error });
+            getErrorHandler()?.logError('WCAG validation failed', { error };
             return null;
     
     /**
@@ -286,9 +284,8 @@ export class WCAGValidator {
             this.results.categoryScores[categoryId] = category.score,
             
             // Collect issues and warnings
-            this.results.issues.push(...category.issues),
-            this.results.warnings.push(...category.warnings),
-            
+            this.results.issues.push(...category.issues);
+            this.results.warnings.push(...category.warnings);
             // Track test results
             for (const guideline of Object.values(category.guidelines) {
                 for (const [testName, test] of Object.entries(guideline.tests) {
@@ -311,14 +308,14 @@ export class WCAGValidator {
      */
     private updateStatistics(auditResults: AuditResults): void { // Update average score
         const allScores = this.results.history,
-            .map(h => h.overallScore),
-            .concat(this.results.overallScore),
+            .map(h => h.overallScore);
+            .concat(this.results.overallScore);
         this.stats.averageScore = allScores.reduce((a, b) => a + b, 0) / allScores.length,
         // Track most common issues
         for (const issue of this.results.issues) {
 
             const guideline = issue.guideline || 'unknown',
-            this.stats.mostCommonIssues.set(),
+            this.stats.mostCommonIssues.set();
                 guideline,
                 (this.stats.mostCommonIssues.get(guideline) || 0) + 1 }
             ); }
@@ -353,7 +350,7 @@ export class WCAGValidator {
                         id,
                         name: id,
                         score }
-                        guidelines: {};
+                        guidelines: {},
                         issues: this.results.issues.filter(i => i.guideline === id),
                         warnings: this.results.warnings.filter(w => w.guideline === id)],
                     }]'
@@ -383,7 +380,7 @@ export class WCAGValidator {
             this.observer.observe(document.body, { childList: true)
                 subtree: true)','
     attributes: true,')';
-                attributeFilter: ['alt', 'aria-label', 'aria-labelledby', 'role]});'
+                attributeFilter: ['alt', 'aria-label', 'aria-labelledby', 'role]};'
         }
         
         // 定期的な検証
@@ -402,7 +399,7 @@ export class WCAGValidator {
     /**
      * トレンドの更新
      */
-    private updateTrends(): void { const now = Date.now(),
+    private updateTrends(): void { const now = Date.now();
         const score = this.results.overallScore,
         
         // 週次トレンド
@@ -412,8 +409,7 @@ export class WCAGValidator {
             issues: this.results.failedTests.length),
         // 過去30日のデータのみ保持
         const thirtyDaysAgo = now - (30 * 24 * 60 * 60 * 1000),
-        this.results.trends.weekly = this.results.trends.weekly.filter(entry => entry.timestamp > thirtyDaysAgo),
-        
+        this.results.trends.weekly = this.results.trends.weekly.filter(entry => entry.timestamp > thirtyDaysAgo);
         // 改善/悪化の検出
         if (this.results.trends.weekly.length >= 2) {
             const current = this.results.trends.weekly[this.results.trends.weekly.length - 1],
@@ -461,7 +457,7 @@ export class WCAGValidator {
                     averageScore: this.stats.averageScore),
                     mostCommonIssues: Array.from(this.stats.mostCommonIssues.entries(
     fixedIssues: Array.from(this.stats.fixedIssues.entries(  }
-            });
+            };
 
         } catch (error) { console.warn('Failed to save WCAG validation results:', error }
     }
@@ -507,7 +503,7 @@ export class WCAGValidator {
         if (this.accessibilityManager?.eventSystem) {
 
             this.accessibilityManager.eventSystem.emit('wcag-validation-complete', { : undefined
-                score: report.score.adjusted),
+                score: report.score.adjusted);
                 issues: this.results.issues.length','
     warnings: this.results.warnings.length,' }'
 
@@ -521,7 +517,7 @@ export class WCAGValidator {
         if (['A', 'AA', 'AAA].includes(level) {'
             this.config.level = level }
             this.ruleEngine.updateConfig({ level ) }
-            console.log(`WCAG, validation level, set to ${level}`});
+            console.log(`WCAG, validation level, set to ${level}`};
         }
     }
     
@@ -554,7 +550,7 @@ export class WCAGValidator {
             categoryScores: this.results.categoryScores,
             issues: this.results.issues,
             warnings: this.results.warnings,
-    passedTests: this.results.passedTests.length };
+    passedTests: this.results.passedTests.length },
             failedTests: this.results.failedTests.length 
     }
     

@@ -8,7 +8,7 @@ import type { LocalizationManager } from '../../core/LocalizationManager.js';
 /**
  * Tab definition interface
  */
-interface TabDefinition { label: string,
+interface TabDefinition { label: string;
     icon: string;
 
 /**
@@ -19,7 +19,7 @@ type TabKey = 'volume' | 'quality' | 'effects' | 'accessibility' | 'test';
 /**
  * Tab renderers interface
  */
-interface TabRenderers { renderVolumeTab(content: HTMLElement): void,
+interface TabRenderers { renderVolumeTab(content: HTMLElement): void;
     renderQualityTab(content: HTMLElement): void;
     renderEffectsTab(content: HTMLElement): void;
     renderAccessibilityTab(content: HTMLElement): void;
@@ -72,7 +72,7 @@ export class AudioSettingsTabManager {
         nav.className = 'audio-settings-tabs';
         nav.style.cssText = `;
             display: flex,
-    gap: 10px;
+    gap: 10px,
             border-bottom: 2px solid #333333,
             padding-bottom: 10px,
         `;
@@ -87,12 +87,12 @@ export class AudioSettingsTabManager {
             button.style.cssText = `';'
                 background: ${tabKey === this.activeTab ? 'rgba(0, 255, 255, 0.2'}'' : 'none'},''
                 border: 2px solid ${tabKey === this.activeTab ? '#00ffff' : '#333333'},''
-                color: ${tabKey === this.activeTab ? '#00ffff' : '#999999'};
-                padding: 10px 20px;
+                color: ${tabKey === this.activeTab ? '#00ffff' : '#999999'},
+                padding: 10px 20px,
                 border-radius: 8px,
-                cursor: pointer;
+                cursor: pointer,
                 font-size: 16px,
-                transition: all 0.3s ease;
+                transition: all 0.3s ease,
             `;
 
             button.addEventListener('click', () => this.showTab(tabKey));
@@ -124,7 +124,7 @@ export class AudioSettingsTabManager {
             // 現在のタブを非アクティブ化
             const tabs = this.container.querySelectorAll('.audio-settings-tab',
             tabs.forEach(tab => { '),'
-                tab.classList.remove('active'),
+                tab.classList.remove('active');
                 tab.style.background = 'none',
                 tab.style.borderColor = '#333333',' }'
 
@@ -136,7 +136,7 @@ export class AudioSettingsTabManager {
                 tab.textContent?.includes(this.tabs[tabKey].icon) as HTMLElement | undefined;
             if (activeTabButton) {
 
-                activeTabButton.classList.add('active'),
+                activeTabButton.classList.add('active');
                 activeTabButton.style.background = 'rgba(0, 255, 255, 0.2)',
                 activeTabButton.style.borderColor = '#00ffff' }
 
@@ -153,20 +153,16 @@ export class AudioSettingsTabManager {
 
                 switch(tabKey) { : undefined''
                     case 'volume':','
-                        this.tabRenderers.renderVolumeTab(content),
-
+                        this.tabRenderers.renderVolumeTab(content);
                         break,
                     case 'quality':','
-                        this.tabRenderers.renderQualityTab(content),
-
+                        this.tabRenderers.renderQualityTab(content);
                         break,
                     case 'effects':','
-                        this.tabRenderers.renderEffectsTab(content),
-
+                        this.tabRenderers.renderEffectsTab(content);
                         break,
                     case 'accessibility':','
-                        this.tabRenderers.renderAccessibilityTab(content),
-
+                        this.tabRenderers.renderAccessibilityTab(content);
                         break,
                     case 'test':,
                         this.tabRenderers.renderTestTab(content) }
@@ -178,7 +174,7 @@ export class AudioSettingsTabManager {
 
                 (this.audioManager, as any').playUISound?.('tab_switch', { volume: 0.3 };'} catch (error) { this.errorHandler.handleError(error, 'UI_ERROR', {''
                 component: 'AudioSettingsTabManager',','
-                operation: 'showTab'),
+                operation: 'showTab');
                 tabKey: tabKey,
     }
     

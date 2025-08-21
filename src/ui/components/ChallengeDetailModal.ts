@@ -7,14 +7,14 @@
 /**
  * Challenge reward interface
  */
-interface ChallengeReward { type: string,
+interface ChallengeReward { type: string;
     amount: number;
     description: string;
 
 /**
  * Challenge data interface
  */
-interface ChallengeData { id: string,
+interface ChallengeData { id: string;
     title: string;
     description: string;
     type: 'daily' | 'weekly' | 'special' | 'event';
@@ -39,7 +39,7 @@ interface LocalizationManager { translate(key: string): string | null }
 /**
  * Bound event handlers
  */
-interface BoundHandlers { close: () => void,
+interface BoundHandlers { close: () => void;
     backdropClick: (event: Event) => void;
     keyDown: (event: KeyboardEvent) => void  }
 }
@@ -60,7 +60,7 @@ export class ChallengeDetailModal {
     private closeButton: HTMLButtonElement | null = null;
     private contentArea: HTMLDivElement | null = null;
     // イベントハンドラー
-    private, boundHandlers: BoundHandlers,
+    private, boundHandlers: BoundHandlers;
     constructor(challengeSystem: ChallengeSystem, localizationManager: LocalizationManager) {
 
         this.challengeSystem = challengeSystem;
@@ -68,7 +68,7 @@ export class ChallengeDetailModal {
         
         // イベントハンドラー
         this.boundHandlers = {
-            close: this.close.bind(this,
+            close: this.close.bind(this;
     backdropClick: this.onBackdropClick.bind(this) }
 
             keyDown: this.onKeyDown.bind(this); 
@@ -85,13 +85,13 @@ export class ChallengeDetailModal {
             this.container = document.createElement('div');
             this.container.className = 'challenge-detail-modal-container';
             this.container.style.cssText = `;
-                position: fixed;
-                top: 0;
-                left: 0;
+                position: fixed,
+                top: 0,
+                left: 0,
                 width: 100%,
-    height: 100%;
+    height: 100%,
                 z-index: 10000,
-                display: none;
+                display: none,
                 align-items: center,
                 justify-content: center,
                 font-family: Arial, sans-serif;
@@ -101,8 +101,8 @@ export class ChallengeDetailModal {
             this.backdrop = document.createElement('div');
             this.backdrop.className = 'challenge-detail-modal-backdrop';
             this.backdrop.style.cssText = `;
-                position: absolute;
-                top: 0;
+                position: absolute,
+                top: 0,
                 left: 0,
     width: 100%,
                 height: 100%,
@@ -120,10 +120,10 @@ export class ChallengeDetailModal {
                 border-radius: 12px,
                 box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
                 max-width: 600px,
-                width: 90%;
+                width: 90%,
                 max-height: 80vh,
                 overflow: hidden,
-    display: flex;
+    display: flex,
                 flex-direction: column,
             `;
             ';'
@@ -131,18 +131,18 @@ export class ChallengeDetailModal {
             const header = document.createElement('div');
             header.className = 'challenge-detail-modal-header';
             header.style.cssText = `;
-                padding: 20px 24px 16px;
+                padding: 20px 24px 16px,
                 border-bottom: 1px solid #e0e0e0,
-                display: flex;
+                display: flex,
                 justify-content: space-between,
                 align-items: center,
-                background: #f8f9fa;
+                background: #f8f9fa,
             `;
 
             const title = document.createElement('h2');
             title.className = 'challenge-detail-modal-title';
             title.style.cssText = `;
-               , margin: 0;
+               , margin: 0,
                 font-size: 24px,
                 font-weight: bold,
                 color: #2c3e50,
@@ -154,14 +154,14 @@ export class ChallengeDetailModal {
             this.closeButton.className = 'challenge-detail-modal-close';
             this.closeButton.style.cssText = `;
                 background: none,
-    border: none;
+    border: none,
                 font-size: 28px,
-                color: #7f8c8d;
-                cursor: pointer;
-                padding: 0;
-                width: 32px;
+                color: #7f8c8d,
+                cursor: pointer,
+                padding: 0,
+                width: 32px,
                 height: 32px,
-    display: flex;
+    display: flex,
                 align-items: center,
                 justify-content: center,
                 border-radius: 50%,
@@ -190,9 +190,9 @@ export class ChallengeDetailModal {
             this.contentArea = document.createElement('div');
             this.contentArea.className = 'challenge-detail-modal-content';
             this.contentArea.style.cssText = `;
-                padding: 24px;
+                padding: 24px,
                 overflow-y: auto,
-                flex: 1;
+                flex: 1,
                 min-height: 200px,
             `;
             
@@ -211,7 +211,7 @@ export class ChallengeDetailModal {
             console.log('[ChallengeDetailModal] モーダル構造作成完了';
 
         } catch (error') {'
-            console.error('[ChallengeDetailModal] モーダル構造作成エラー:', error),
+            console.error('[ChallengeDetailModal] モーダル構造作成エラー:', error);
             this.error = (error, as Error).message }
     }
     
@@ -250,7 +250,7 @@ export class ChallengeDetailModal {
             console.log('[ChallengeDetailModal] モーダル表示:', challengeId);
 
         } catch (error) {
-            console.error('[ChallengeDetailModal] 表示エラー:', error),
+            console.error('[ChallengeDetailModal] 表示エラー:', error);
             this.error = (error, as Error).message,
             this.renderError() } finally { this.isLoading = false }
     }
@@ -286,8 +286,7 @@ export class ChallengeDetailModal {
      * チャレンジデータ読み込み
      */
     private async loadChallengeData(challengeId: string): Promise<void> { try {
-            this.renderLoading(),
-            
+            this.renderLoading();
             // チャレンジシステムからデータ取得
             if (this.challengeSystem && this.challengeSystem.getChallengeById) {
     
@@ -305,7 +304,7 @@ export class ChallengeDetailModal {
                 throw new Error('チャレンジデータが見つかりません'; }
 
             } catch (error) {
-            console.error('[ChallengeDetailModal] データ読み込みエラー:', error),
+            console.error('[ChallengeDetailModal] データ読み込みエラー:', error);
             this.error = (error, as Error).message,
             this.renderError() }
     }
@@ -313,13 +312,13 @@ export class ChallengeDetailModal {
     /**
      * モックチャレンジデータ作成'
      */''
-    private createMockChallengeData(challengeId: string): ChallengeData { return {  };
-            id: challengeId;
+    private createMockChallengeData(challengeId: string): ChallengeData { return {  },
+            id: challengeId,
 
             title: `チャレンジ ${challengeId}`,''
             description: 'このチャレンジの詳細説明です。目標を達成して報酬を獲得しましょう。',
             type: 'daily',
-            difficulty: 'medium';
+            difficulty: 'medium',
             progress: 50,
     target: 100,
             reward: { ''
@@ -328,7 +327,7 @@ export class ChallengeDetailModal {
                 description: '100 AP'
             };
             deadline: new Date(Date.now() + 24 * 60 * 60 * 1000), // 24時間後;
-            priority: 5;
+            priority: 5,
         } }
     
     /**
@@ -483,9 +482,8 @@ export class ChallengeDetailModal {
         return colors[difficulty] || '#f8f9fa';
     }
     
-    private formatDeadline(deadline: Date): string { const now = new Date(),
-        const diff = deadline.getTime() - now.getTime(),
-
+    private formatDeadline(deadline: Date): string { const now = new Date();
+        const diff = deadline.getTime() - now.getTime();
         if (diff <= 0) {', ' }
 
             return '期限切れ';

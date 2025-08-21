@@ -20,16 +20,15 @@ export class NodeEnvironmentSupport {
    * Sets up comprehensive Node.js environment compatibility
    */
   setupNodeEnvironment(') {'
-    console.log('Setting up Node.js environment support...'),
-    
-    this.setupGlobalObjects(),
-    this.setupWebAPIs(),
-    this.setupBrowserSpecificAPIs(),
-    this.setupTestUtilities(),
+    console.log('Setting up Node.js environment support...');
+    this.setupGlobalObjects();
+    this.setupWebAPIs();
+    this.setupBrowserSpecificAPIs();
+    this.setupTestUtilities();
     this.setupConsoleEnvironmentFeatures('),'
     
-    console.log('Node.js environment setup complete:', {),
-      polyfills: Array.from(this.polyfillsApplied });
+    console.log('Node.js environment setup complete:', {);
+      polyfills: Array.from(this.polyfillsApplied };
   }
 
   /**
@@ -40,38 +39,39 @@ export class NodeEnvironmentSupport {
     if (typeof (global as any').window = == 'undefined') {'
       (global as any').window = {'
         // Dimensions
-        innerWidth: 1024,
-        innerHeight: 768,
-        outerWidth: 1024,
-        outerHeight: 768,
-        
+        innerWidth: 1024;
+        innerHeight: 768;
+        outerWidth: 1024;
+        outerHeight: 768;
+        outerHeight: 768;
+        };
         // Device properties
-        devicePixelRatio: 1,
+        devicePixelRatio: 1;
         screen: {
-          width: 1920,
-          height: 1080,
-          availWidth: 1920,
-          availHeight: 1040,
-          colorDepth: 24,
+          width: 1920;
+          height: 1080;
+          availWidth: 1920;
+          availHeight: 1040;
+          colorDepth: 24;
           pixelDepth: 24
         },
         
         // Navigation
         location: {
-          href: 'http://localhost:3000/',
-          origin: 'http://localhost:3000',
-          protocol: 'http:',
-          host: 'localhost:3000',
-          hostname: 'localhost',
-          port: '3000',
-          pathname: '/',
+          href: 'http://localhost:3000/';
+          origin: 'http://localhost:3000';
+          protocol: 'http:';
+          host: 'localhost:3000';
+          hostname: 'localhost';
+          port: '3000';
+          pathname: '/';
           search: ','
           hash: '};'
         
         // History
         history: {
-          length: 1,
-          state: null,
+          length: 1;
+          state: null;
           pushState: jest.fn(
           replaceState: jest.fn(
           back: jest.fn(
@@ -81,23 +81,23 @@ export class NodeEnvironmentSupport {
         // Navigator
         navigator: {
           userAgent: 'Mozilla/5.0 (Node.js Test Environment) AppleWebKit/537.36 (KHTML, like Gecko') Chrome/91.0.4472.124 Safari/537.36';'
-          platform: process.platform,
-          language: 'en-US',
+          platform: process.platform;
+          language: 'en-US';
           languages: ['en-US', 'en'];
-          onLine: true,
-          cookieEnabled: true,
-          doNotTrack: null,
+          onLine: true;
+          cookieEnabled: true;
+          doNotTrack: null;
           hardwareConcurrency: require('os').cpus().length
         },
         
         // Console
-        console: global.console,
+        console: global.console;
         
         // Timers
-        setTimeout: global.setTimeout,
-        clearTimeout: global.clearTimeout,
-        setInterval: global.setInterval,
-        clearInterval: global.clearInterval,
+        setTimeout: global.setTimeout;
+        clearTimeout: global.clearTimeout;
+        setInterval: global.setInterval;
+        clearInterval: global.clearInterval;
         
         // Animation frame
         requestAnimationFrame: jest.fn((callback) => {
@@ -140,46 +140,45 @@ export class NodeEnvironmentSupport {
    * Creates a comprehensive mock document object
    */
   createMockDocument(') {'
-    const mockElement = this.createMockElement('div'),
-    
+    const mockElement = this.createMockElement('div');
     return {
       // Basic properties
       nodeType: 9, // DOCUMENT_NODE
-      nodeName: '#document',
-      documentElement: this.createMockElement('html',
-      body: this.createMockElement('body',
-      head: this.createMockElement('head',
+      nodeName: '#document';
+      documentElement: this.createMockElement('html';
+      body: this.createMockElement('body';
+      head: this.createMockElement('head';
       
       // State properties
-      readyState: 'complete',
-      visibilityState: 'visible',
-      hidden: false,
+      readyState: 'complete';
+      visibilityState: 'visible';
+      hidden: false;
       
       // URL properties
-      URL: 'http://localhost:3000/',
-      documentURI: 'http://localhost:3000/',
-      baseURI: 'http://localhost:3000/',
-      domain: 'localhost',
+      URL: 'http://localhost:3000/';
+      documentURI: 'http://localhost:3000/';
+      baseURI: 'http://localhost:3000/';
+      domain: 'localhost';
       
       // Element creation
-      createElement: jest.fn((tagName) => this.createMockElement(tagName.toLowerCase(),
+      createElement: jest.fn((tagName) => this.createMockElement(tagName.toLowerCase();
       createElementNS: jest.fn((ns, tagName) => this.createMockElement(tagName.toLowerCase());
       createTextNode: jest.fn((data') => ({'
         nodeType: 3, // TEXT_NODE
-        nodeName: '#text',
-        nodeValue: data,
+        nodeName: '#text';
+        nodeValue: data;
         textContent: data
       )),
       createDocumentFragment: jest.fn((') => ({'
         nodeType: 11, // DOCUMENT_FRAGMENT_NODE
-        nodeName: '#document-fragment',
+        nodeName: '#document-fragment';
         appendChild: jest.fn(
         children: []
       )),
       
       // Element selection
       getElementById: jest.fn((id') => {'
-        const element = this.createMockElement('div'),
+        const element = this.createMockElement('div');
         element.id = id,
         return element),
       getElementsByClassName: jest.fn(() => [];
@@ -194,11 +193,11 @@ export class NodeEnvironmentSupport {
       createEvent: jest.fn(() => ({
         initEvent: jest.fn(
         preventDefault: jest.fn(
-        stopPropagation: jest.fn()),
+        stopPropagation: jest.fn());
       
       // Styles
       createStyleSheet: jest.fn(
-      styleSheets: [],
+      styleSheets: [];
       
       // Custom properties for testing
       __MOCK_DOCUMENT__: true
@@ -213,7 +212,8 @@ export class NodeEnvironmentSupport {
       nodeType: 1, // ELEMENT_NODE
       nodeName: tagName.toUpperCase(
       tagName: tagName.toUpperCase(','
-      
+      tagName: tagName.toUpperCase(','
+        };
       // Attributes
       id: ','
       className: ','
@@ -221,7 +221,7 @@ export class NodeEnvironmentSupport {
         add: jest.fn(
         remove: jest.fn(
         toggle: jest.fn(
-        contains: jest.fn(() => false),
+        contains: jest.fn(() => false);
         replace: jest.fn()
       '),'
       
@@ -230,36 +230,38 @@ export class NodeEnvironmentSupport {
       outerHTML: ','
       textContent: ','
       innerText: ','
-      
+      innerText: ','
+        };
       // Dimensions and position
-      offsetWidth: 100,
-      offsetHeight: 100,
-      clientWidth: 100,
-      clientHeight: 100,
-      scrollWidth: 100,
-      scrollHeight: 100,
-      offsetLeft: 0,
-      offsetTop: 0,
-      scrollLeft: 0,
-      scrollTop: 0,
-      
+      offsetWidth: 100;
+      offsetHeight: 100;
+      clientWidth: 100;
+      clientHeight: 100;
+      scrollWidth: 100;
+      scrollHeight: 100;
+      offsetLeft: 0;
+      offsetTop: 0;
+      scrollLeft: 0;
+      scrollTop: 0;
+      scrollTop: 0;
+        };
       // Style
       style: new Proxy({), {
-        get: (') => ',
+        get: (') => ';
         set: () => true
       }),
       
       // Attributes methods
-      getAttribute: jest.fn(() => null,
+      getAttribute: jest.fn(() => null;
       setAttribute: jest.fn(
       removeAttribute: jest.fn(
-      hasAttribute: jest.fn(() => false,
-      getAttributeNames: jest.fn(() => [],
+      hasAttribute: jest.fn(() => false;
+      getAttributeNames: jest.fn(() => [];
       
       // DOM tree methods
       appendChild: jest.fn((child) => {
         element.children = element.children || [],
-        element.children.push(child),
+        element.children.push(child);
         return child),
       removeChild: jest.fn(
       insertBefore: jest.fn(
@@ -351,7 +353,7 @@ export class NodeEnvironmentSupport {
     if (typeof (global as any').File = == 'undefined') {'
       (global: any).File = class MockFile extends global.Blob {
         constructor(parts, name, options = {) {
-          super(parts, options),
+          super(parts, options);
           this.name = name;
           this.lastModified = options.lastModified || Date.now(') }'
       };
@@ -375,12 +377,11 @@ export class NodeEnvironmentSupport {
         
         readAsText(file {
           this.readyState = 1; // LOADING
-          if (this.onloadstart) this.onloadstart(),
-          
+          if (this.onloadstart) this.onloadstart();
           setTimeout((') => {'
             this.readyState = 2; // DONE
             this.result = 'mock file content';
-            if (this.onload) this.onload(),
+            if (this.onload) this.onload();
             if (this.onloadend) this.onloadend() }, 10);
         }
         
@@ -389,7 +390,7 @@ export class NodeEnvironmentSupport {
           this.result = 'data:text/plain,base64,bW9jayBmaWxlIGNvbnRlbnQ=' }
         
         readAsArrayBuffer(file {
-          this.readAsText(file),
+          this.readAsText(file);
           this.result = new ArrayBuffer(16) }
         
         abort(') {'
@@ -442,7 +443,7 @@ export class NodeEnvironmentSupport {
           this.data.delete(name) }
         
         get(name {
-          const values = this.data.get(name),
+          const values = this.data.get(name);
           return values ? values[0] : null;
         
         getAll(name {
@@ -470,13 +471,13 @@ export class NodeEnvironmentSupport {
           if (success) {
             success({
               coords: {
-                latitude: 37.7749,
-                longitude: -122.4194,
+                latitude: 37.7749;
+                longitude: -122.4194;
                 accuracy: 10
               }
             );
           }
-        }),
+        },
         watchPosition: jest.fn(() => 1;
         clearWatch: jest.fn()
       ');'
@@ -521,7 +522,7 @@ export class NodeEnvironmentSupport {
           // Simulate intersection
           setTimeout(() => {
             this.callback([{
-              target: element,
+              target: element;
               isIntersecting: true;
               intersectionRatio: 1 }]);
           }, 10);
@@ -549,11 +550,11 @@ export class NodeEnvironmentSupport {
           // Simulate resize
           setTimeout(() => {
             this.callback([{
-              target: element,
+              target: element;
               contentRect: {
-                width: element.offsetWidth || 100,
+                width: element.offsetWidth || 100;
                 height: element.offsetHeight || 100
-              });
+              };
             }]);
           }, 10);
         }
@@ -578,7 +579,7 @@ export class NodeEnvironmentSupport {
       (global: any).requestIdleCallback = jest.fn((callback) => {
         return setTimeout(() => {
           callback({
-            didTimeout: false,
+            didTimeout: false;
             timeRemaining: () => 50
           )), 1) });
       
@@ -625,14 +626,14 @@ export class NodeEnvironmentSupport {
       import crypto from 'crypto',
       (global: any).crypto = {
         getRandomValues: (array) => {
-          const bytes = crypto.randomBytes(array.length),
-          array.set(bytes),
+          const bytes = crypto.randomBytes(array.length);
+          array.set(bytes);
           return array },
         
         randomUUID: () => crypto.randomUUID ? crypto.randomUUID(') : '
-          'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c {),
+          'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c {);
             const r = Math.random(') * 16 | 0,'
-            const v = c === 'x' ? r: (r & 0x3 | 0x8,
+            const v = c === 'x' ? r: (r & 0x3 | 0x8;
             return v.toString(16) }');'
       };
       
@@ -645,11 +646,9 @@ export class NodeEnvironmentSupport {
    */
   setupConsoleEnvironmentFeatures() {
     // Enhanced console output for better test debugging
-    this.setupEnhancedConsole(),
-    
+    this.setupEnhancedConsole();
     // Memory usage monitoring
-    this.setupMemoryMonitoring(),
-    
+    this.setupMemoryMonitoring();
     // Process signal handling for tests
     this.setupProcessSignalHandling() }
 
@@ -668,8 +667,8 @@ export class NodeEnvironmentSupport {
     // Enhanced logging with timestamps and context
     const createEnhancedLogger = (level, color = ') => {'
       return (...args) => {
-        const timestamp = new Date().toISOString(),
-        const prefix = `[${timestamp}] [${level.toUpperCase('})}] [NODE-TEST]`;'
+        const timestamp = new Date().toISOString();
+        const prefix = `[${timestamp}] [${level.toUpperCase('}}] [NODE-TEST]`;'
         
         if (process.env.NODE_ENV === 'test' && !process.env.VERBOSE_TESTS) {
           // Suppress most console output during tests unless explicitly enabled
@@ -692,23 +691,24 @@ export class NodeEnvironmentSupport {
     // Monitor memory usage during tests
     const memoryMonitor = {
       start: process.memoryUsage(
-      current: () => process.memoryUsage(),
-      
+      current: () => process.memoryUsage();
+      current: () => process.memoryUsage();
+        };
       getUsageReport: () => {
-        const current = process.memoryUsage(),
+        const current = process.memoryUsage();
         const start = memoryMonitor.start,
         
         return {
           current: {
-            rss: Math.round(current.rss / 1024 / 1024 * 100) / 100,
-            heapTotal: Math.round(current.heapTotal / 1024 / 1024 * 100) / 100,
-            heapUsed: Math.round(current.heapUsed / 1024 / 1024 * 100) / 100,
+            rss: Math.round(current.rss / 1024 / 1024 * 100) / 100;
+            heapTotal: Math.round(current.heapTotal / 1024 / 1024 * 100) / 100;
+            heapUsed: Math.round(current.heapUsed / 1024 / 1024 * 100) / 100;
             external: Math.round(current.external / 1024 / 1024 * 100) / 100
           },
           growth: {
-            rss: Math.round((current.rss - start.rss) / 1024 / 1024 * 100) / 100,
-            heapTotal: Math.round((current.heapTotal - start.heapTotal) / 1024 / 1024 * 100) / 100,
-            heapUsed: Math.round((current.heapUsed - start.heapUsed) / 1024 / 1024 * 100) / 100,
+            rss: Math.round((current.rss - start.rss) / 1024 / 1024 * 100) / 100;
+            heapTotal: Math.round((current.heapTotal - start.heapTotal) / 1024 / 1024 * 100) / 100;
+            heapUsed: Math.round((current.heapUsed - start.heapUsed) / 1024 / 1024 * 100) / 100;
             external: Math.round((current.external - start.external) / 1024 / 1024 * 100) / 100
           }
         };
@@ -753,15 +753,15 @@ export class NodeEnvironmentSupport {
    */
   getEnvironmentInfo() {
     return {
-      nodeVersion: process.version,
-      platform: process.platform,
-      arch: process.arch,
+      nodeVersion: process.version;
+      platform: process.platform;
+      arch: process.arch;
       memoryUsage: process.memoryUsage(
       uptime: process.uptime(
-      polyfillsApplied: Array.from(this.polyfillsApplied,
+      polyfillsApplied: Array.from(this.polyfillsApplied;
       environmentVariables: {
-        NODE_ENV: process.env.NODE_ENV,
-        VERBOSE_TESTS: process.env.VERBOSE_TESTS,
+        NODE_ENV: process.env.NODE_ENV;
+        VERBOSE_TESTS: process.env.VERBOSE_TESTS;
         CI: process.env.CI
       }
     };
@@ -773,14 +773,14 @@ export class NodeEnvironmentSupport {
   validateEnvironment(') {'
     const validation = {
       globalObjects: {
-        window: typeof global.window !== 'undefined',
-        document: typeof global.document !== 'undefined',
+        window: typeof global.window !== 'undefined';
+        document: typeof global.document !== 'undefined';
         navigator: typeof global.navigator !== 'undefined'
       },
       webAPIs: {
-        fetch: typeof global.fetch !== 'undefined',
-        Blob: typeof global.Blob !== 'undefined',
-        URL: typeof global.URL !== 'undefined',
+        fetch: typeof global.fetch !== 'undefined';
+        Blob: typeof global.Blob !== 'undefined';
+        URL: typeof global.URL !== 'undefined';
         FormData: typeof global.FormData !== 'undefined'
       },
       polyfills: Array.from(this.polyfillsApplied','
@@ -792,8 +792,8 @@ export class NodeEnvironmentSupport {
     
     validation.isReady = allGlobalsReady && allWebAPIsReady;
     validation.readiness = {
-      globalObjects: allGlobalsReady,
-      webAPIs: allWebAPIsReady,
+      globalObjects: allGlobalsReady;
+      webAPIs: allWebAPIsReady;
       polyfills: this.polyfillsApplied.size > 0
     };
     

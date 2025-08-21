@@ -2,7 +2,7 @@
  * Responsive Debug Layout - デバッグインターフェースのレスポンシブレイアウト管理
  */
 
-interface DebugInterface { debugPanel: HTMLElement,
+interface DebugInterface { debugPanel: HTMLElement;
     switchPanel: (panelName: string) => void;
     activePanel: string;
     getAllPanels: () => DebugPanel[]  }
@@ -11,12 +11,12 @@ interface DebugInterface { debugPanel: HTMLElement,
 interface DebugPanel { element?: HTMLElement,
     updateSize?: () => void }
 
-interface Breakpoints { mobile: number,
+interface Breakpoints { mobile: number;
     tablet: number;
     desktop: number;
     large: number;
 
-interface MediaQueries { mobile: MediaQueryList,
+interface MediaQueries { mobile: MediaQueryList;
     tablet: MediaQueryList;
     desktop: MediaQueryList;
     large: MediaQueryList;
@@ -29,7 +29,7 @@ export class ResponsiveDebugLayout {
     private currentBreakpoint: BreakpointName | null;
     private breakpoints: Breakpoints;
     private orientationLock: boolean;
-    private, touchDevice: boolean,
+    private, touchDevice: boolean;
     private mediaQueries!: MediaQueries,
     private resizeHandler?: () => void,
     private orientationChangeHandler?: () => void,
@@ -38,8 +38,8 @@ export class ResponsiveDebugLayout {
         this.debugInterface = debugInterface;
         this.currentBreakpoint = null;
         this.breakpoints = {
-            mobile: 480,
-            tablet: 768,
+            mobile: 480;
+            tablet: 768;
     desktop: 1024 }
             large: 1440 
     };
@@ -52,11 +52,10 @@ export class ResponsiveDebugLayout {
     /**
      * 初期化
      */
-    private initialize(): void { this.setupMediaQueries(),
-        this.bindResizeEvents(),
-        this.detectInitialLayout(),
-        this.setupOrientationHandling(),
-        
+    private initialize(): void { this.setupMediaQueries();
+        this.bindResizeEvents();
+        this.detectInitialLayout();
+        this.setupOrientationHandling();
         if (this.touchDevice) {
     
 }
@@ -71,7 +70,7 @@ export class ResponsiveDebugLayout {
             tablet: window.matchMedia(`(min-width: ${this.breakpoints.mobile + 1)px) and (max-width: ${this.breakpoints.tablet)px)`,
             desktop: window.matchMedia(`(min-width: ${this.breakpoints.tablet + 1)px) and (max-width: ${this.breakpoints.desktop}px}`
             }
-            large: window.matchMedia(`(min-width: ${this.breakpoints.desktop + 1}px}`});
+            large: window.matchMedia(`(min-width: ${this.breakpoints.desktop + 1}px}`};
         };
 
         // メディアクエリの変更を監視
@@ -79,7 +78,7 @@ export class ResponsiveDebugLayout {
             const handler = (event: MediaQueryListEvent) => this.handleBreakpointChange(breakpoint as BreakpointName, event.matches),' }'
 
             mq.addEventListener('change', handler); }
-        });
+        };
     }
 
     /**
@@ -100,7 +99,7 @@ export class ResponsiveDebugLayout {
     /**
      * 初期レイアウトを検出
      */
-    private detectInitialLayout(): void { const currentBreakpoint = this.getCurrentBreakpoint(),
+    private detectInitialLayout(): void { const currentBreakpoint = this.getCurrentBreakpoint();
         this.applyBreakpointLayout(currentBreakpoint) }
 
     /**
@@ -130,8 +129,7 @@ export class ResponsiveDebugLayout {
             debugPanel.classList.add('touch-optimized),'
             
             // タッチターゲットサイズを調整
-            this.optimizeTouchTargets(),
-            
+            this.optimizeTouchTargets();
             // スワイプジェスチャーを追加
         }
             this.setupSwipeGestures(); }
@@ -164,7 +162,7 @@ export class ResponsiveDebugLayout {
     /**
      * リサイズを処理
      */
-    private handleResize(): void { const newBreakpoint = this.getCurrentBreakpoint(),
+    private handleResize(): void { const newBreakpoint = this.getCurrentBreakpoint();
         if (newBreakpoint !== this.currentBreakpoint) {
     
 }
@@ -177,9 +175,8 @@ export class ResponsiveDebugLayout {
     /**
      * 画面向き変更を処理
      */
-    private handleOrientationChange(): void { const orientation = this.getOrientation(),
-        this.applyOrientationLayout(orientation),
-        
+    private handleOrientationChange(): void { const orientation = this.getOrientation();
+        this.applyOrientationLayout(orientation);
         // 強制的にレイアウト更新
         setTimeout(() => {  }
             this.handleResize(); }
@@ -189,7 +186,7 @@ export class ResponsiveDebugLayout {
     /**
      * ブレークポイントレイアウトを適用
      */
-    private applyBreakpointLayout(breakpoint: BreakpointName): void { this.currentBreakpoint = breakpoint;
+    private applyBreakpointLayout(breakpoint: BreakpointName): void { this.currentBreakpoint = breakpoint,
         const debugPanel = this.debugInterface.debugPanel,
 
         if(!debugPanel) return,
@@ -209,11 +206,11 @@ export class ResponsiveDebugLayout {
             case 'desktop':','
                 this.applyDesktopLayout(' }''
             case 'large':) }
-                this.applyLargeLayout(});
+                this.applyLargeLayout(};
                 break;
         }
 
-        console.log(`Debug, interface layout, changed to: ${breakpoint}`});
+        console.log(`Debug, interface layout, changed to: ${breakpoint}`};
     }
 
     /**
@@ -245,7 +242,7 @@ export class ResponsiveDebugLayout {
             height: '80vh',
             maxHeight: '80vh',';'
             fontSize: '14px',')';
-            padding: '15px');
+            padding: '15px'),
         this.setupTabletLayout();
     }
 
@@ -287,7 +284,7 @@ export class ResponsiveDebugLayout {
 
         if (!tabNav) {
 
-            tabNav = document.createElement('div'),
+            tabNav = document.createElement('div');
             tabNav.className = 'mobile-tab-nav',
 
             tabNav.innerHTML = `','
@@ -316,8 +313,8 @@ export class ResponsiveDebugLayout {
                 // アクティブボタンを更新
                 tabNav.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active)';
                 button.classList.add('active);'
-            });
-        });
+            };
+        };
     }
 
     /**
@@ -342,8 +339,7 @@ export class ResponsiveDebugLayout {
     private optimizeTouchTargets()';'
         const buttons = debugPanel.querySelectorAll('button, input, select) as NodeListOf<HTMLElement>;'
         
-        buttons.forEach(element => {  ),
-
+        buttons.forEach(element => {  );
             const currentHeight = parseInt(window.getComputedStyle(element).height),
             if (currentHeight < 44) {
                 // iOS推奨最小タッチターゲットサイズ
@@ -376,7 +372,7 @@ export class ResponsiveDebugLayout {
                 if (deltaX > 0) { }
                     this.switchToPreviousPanel(); }
                 } else { this.switchToNextPanel() }
-});
+};
     }
 
     /**
@@ -403,11 +399,11 @@ export class ResponsiveDebugLayout {
      * パネルサイズを更新
      */
     private updatePanelSizes(): void { // 各パネルのサイズを現在のレイアウトに合わせて調整
-        const panels = this.debugInterface.getAllPanels(),
+        const panels = this.debugInterface.getAllPanels();
         panels.forEach(panel => { '),'
             if(panel.element && typeof, panel.updateSize === 'function' { }'
                 panel.updateSize(); }
-});
+};
     }
 
     /**
@@ -456,25 +452,25 @@ export class ResponsiveDebugLayout {
             
             .enhanced-debug-interface.layout-mobile .mobile-tab-nav { position: sticky,
                 top: 0,
-    background: rgba(0, 0, 0, 0.9),
+    background: rgba(0, 0, 0, 0.9);
                 z-index: 1000,
                 margin: -10px -10px 10px -10px,
     padding: 10px  }
             
             .enhanced-debug-interface.layout-mobile .tab-buttons { display: flex,
     gap: 5px,
-                overflow-x: auto;
+                overflow-x: auto,
             
             .enhanced-debug-interface.layout-mobile .tab-btn { flex: 1,
                 min-width: 60px,
                 padding: 8px 12px,
-    background: rgba(255, 255, 255, 0.1),
-                border: 1px solid rgba(255, 255, 255, 0.2),
+    background: rgba(255, 255, 255, 0.1);
+                border: 1px solid rgba(255, 255, 255, 0.2);
                 color: white,
                 border-radius: 4px,
                 font-size: 14px }
             
-            .enhanced-debug-interface.layout-mobile .tab-btn.active { background: rgba(0, 255, 0, 0.3),
+            .enhanced-debug-interface.layout-mobile .tab-btn.active { background: rgba(0, 255, 0, 0.3);
                 border-color: rgba(0, 255, 0, 0.5 }
             
             /* Touch Optimizations */

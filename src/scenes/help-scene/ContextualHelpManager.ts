@@ -16,10 +16,10 @@ import { SceneManager  } from '../../core/SceneManager';
 interface HelpTriggerCondition { ''
     (context: HelpContext'): boolean;'
 
-interface HelpAction { label: string,
+interface HelpAction { label: string;
     action: string;
 
-interface HelpContent { title: string,
+interface HelpContent { title: string;
     quick: string;
     detailed: string;
     category: string;
@@ -33,7 +33,7 @@ interface HelpTrigger { condition: HelpTriggerCondition,''
 
 // コンテキスト関連のインターフェース
 interface HelpContext { error?: {
-        typ,e: string,
+        typ,e: string;
         message?: string;
         stack?: string,  };
     fps?: number;
@@ -48,18 +48,18 @@ interface Tooltip { content: string,''
             }
 
 // インタラクティブガイドインターフェース
-interface GuideStep { target: string,
+interface GuideStep { target: string;
     content: string;
     position: 'top' | 'bottom' | 'left' | 'right';
     action?: () => void }'
 }
 
-interface InteractiveGuide { name: string,
+interface InteractiveGuide { name: string;
     trigger: string;
     steps: GuideStep[];
 
 // ヘルプ履歴インターフェース
-interface HelpHistoryEntry { timestamp: number,
+interface HelpHistoryEntry { timestamp: number;
     key: string;
     priority: 'high' | 'medium' | 'low';
     context: HelpContext;
@@ -70,7 +70,7 @@ interface HelpUsageData { key: string,''
     content: HelpContent;
 
 // エラー詳細インターフェース
-interface ErrorDetails { error: any,
+interface ErrorDetails { error: any;
     timestamp: number;
     userAgent: string;
     url: string;
@@ -83,7 +83,7 @@ interface QualitySuggestions { ''
     reason: string;
 
 // デバッグ情報インターフェース
-interface DebugInfo { triggers: string[],
+interface DebugInfo { triggers: string[];
     tooltips: string[];
     guides: string[];
     currentContext: HelpContext;
@@ -105,7 +105,7 @@ export class ContextualHelpManager {
     private guideStep: number;
     // 状態管理
     private isMonitoring: boolean;
-    private, currentContext: HelpContext,
+    private, currentContext: HelpContext;
     constructor(gameEngine: GameEngine) {
     
         this.gameEngine = gameEngine;
@@ -138,8 +138,8 @@ export class ContextualHelpManager {
      * 初期化処理
      */
     private initialize(): void { try {
-            this.setupHelpTriggers(),
-            this.setupTooltips(),
+            this.setupHelpTriggers();
+            this.setupTooltips();
             this.setupInteractiveGuides()','
             this.loggingSystem.info('ContextualHelpManager', 'Contextual help manager initialized',' }'
 
@@ -237,7 +237,7 @@ export class ContextualHelpManager {
                     { label: 'キーボードガイド', action: 'openKeyboardGuide'
             }]
                 ];
-            })';'
+            }';'
     }
     
     /**
@@ -248,17 +248,20 @@ export class ContextualHelpManager {
             content: '検索キーワードを入力してヘルプ内容を絞り込みます。',','
             position: 'bottom',')',
             trigger: 'hover')','
-
+            trigger: 'hover')','
+        };
         this.tooltips.set('help-category', {''
             content: 'カテゴリを選択してヘルプ内容を分類表示します。',','
             position: 'right',')',
             trigger: 'hover')','
-
+            trigger: 'hover')','
+        };
         this.tooltips.set('help-back-button', {''
             content: 'ESCキーまたはクリックで前の画面に戻ります。',','
             position: 'bottom',')',
             trigger: 'hover')','
-
+            trigger: 'hover')','
+        };
         this.tooltips.set('help-contextual-indicator', {''
             content: 'この内容は現在の状況に応じて表示されています。',','
             position: 'top',')',
@@ -283,7 +286,7 @@ export class ContextualHelpManager {
                     action: () => this.focusSearchInput('''
                     target: '.help-back-button',
                     content: 'ESCキーまたはこのボタンで前の画面に戻れます。',','
-                    position: 'bottom'),
+                    position: 'bottom');
                     action: () => this.highlightBackButton()  }]
                 }]'
             ]';'
@@ -300,11 +303,11 @@ export class ContextualHelpManager {
                     action: () => this.highlightContextualContent('''
                     target: '.help-actions',
                     content: 'これらのアクションで直接問題を解決できます。',','
-                    position: 'bottom'),
+                    position: 'bottom');
                     action: () => this.highlightActions()  }]
                 }]
             ];
-        });
+        };
     }
     
     /**
@@ -319,16 +322,16 @@ export class ContextualHelpManager {
                     relevantHelps.push({)
                         key,
                         priority: trigger.priority) }
-                        content: trigger.helpContent); 
-    });
+                        content: trigger.helpContent),
+    };
                 }
-            });
+            };
             
             // 優先順位でソート（high > medium > low）
             relevantHelps.sort((a, b) => {  }
                 const priorityOrder = { high: 3, medium: 2, low: 1  }
                 return priorityOrder[b.priority] - priorityOrder[a.priority];
-            });
+            };
             
             if (relevantHelps.length > 0) {
             
@@ -344,34 +347,29 @@ export class ContextualHelpManager {
     /**
      * ヘルプアクションの実行'
      */''
-    public executeHelpAction(action: string, context: HelpContext = { }): void { try {'
+    public executeHelpAction(action: string, context: HelpContext = { }: void { try {'
             this.loggingSystem.info('ContextualHelpManager', `Executing help action: ${action)`,
 
             switch(action) {
 
                 case 'showErrorDetails':','
-                    this.showErrorDetails(context),
-
+                    this.showErrorDetails(context);
                     break,
                 case 'showStackTrace':','
-                    this.showStackTrace(context),
-
+                    this.showStackTrace(context);
                     break,
                 case 'openTroubleshootingGuide':','
-                    this.navigateToCategory('troubleshooting'),
-
+                    this.navigateToCategory('troubleshooting');
                     break,
                 case 'openPerformanceGuide':','
-                    this.navigateToCategory('performance'),
-
+                    this.navigateToCategory('performance');
                     break,
                 case 'lowerEffectQuality':','
                     this.suggestQualitySettings('''
                 case 'openSettings': ','
                     this.navigateToSettings()','
                 case 'startTutorial':')',
-                    this.startInteractiveGuide('first-time-help'),
-
+                    this.startInteractiveGuide('first-time-help');
                     break,
                 case 'showControls':','
                     this.navigateToTopic('controls'};
@@ -490,8 +488,7 @@ if (object && object.property) {
     ";"
     // アクション実行メソッド群""
     private showErrorDetails(context: HelpContext): void { try {""
-            this.loggingSystem.info('ContextualHelpManager', 'Showing error details', context),
-            
+            this.loggingSystem.info('ContextualHelpManager', 'Showing error details', context);
             // エラー詳細を表示するダイアログやパネルの実装
             const errorDetails: ErrorDetails = {
                 error: context.error || this.currentContext.error,
@@ -539,7 +536,7 @@ if (object && object.property) {
             this.loggingSystem.warn('ContextualHelpManager', 'Could not access HelpContentManager for category navigation';
 
             return false;} catch (error) {
-            this.loggingSystem.error('ContextualHelpManager', 'Failed to navigate to category', error),
+            this.loggingSystem.error('ContextualHelpManager', 'Failed to navigate to category', error);
             return false,
 
     private navigateToTopic(topic: string): boolean { try {'
@@ -565,7 +562,7 @@ if (object && object.property) {
             this.loggingSystem.warn('ContextualHelpManager', 'Could not access HelpContentManager for topic navigation';
 
             return false;} catch (error) {
-            this.loggingSystem.error('ContextualHelpManager', 'Failed to navigate to topic', error),
+            this.loggingSystem.error('ContextualHelpManager', 'Failed to navigate to topic', error);
             return false,
 
     private navigateToSettings()','
@@ -584,7 +581,7 @@ if (object && object.property) {
             this.loggingSystem.warn('ContextualHelpManager', 'Could not access SceneManager for settings navigation';
 
             return false;} catch (error) {
-            this.loggingSystem.error('ContextualHelpManager', 'Failed to navigate to settings', error),
+            this.loggingSystem.error('ContextualHelpManager', 'Failed to navigate to settings', error);
             return false,
 
     private navigateToAccessibilitySettings()','
@@ -604,12 +601,11 @@ if (object && object.property) {
             this.loggingSystem.warn('ContextualHelpManager', 'Could not access SceneManager for accessibility settings navigation';
 
             return false;} catch (error) {
-            this.loggingSystem.error('ContextualHelpManager', 'Failed to navigate to accessibility settings', error),
+            this.loggingSystem.error('ContextualHelpManager', 'Failed to navigate to accessibility settings', error);
             return false,
 
     private suggestQualitySettings()','
-            this.loggingSystem.info('ContextualHelpManager', 'Suggesting quality settings'),
-            
+            this.loggingSystem.info('ContextualHelpManager', 'Suggesting quality settings');
             // パフォーマンス改善のための設定提案
             const suggestions: QualitySuggestions = { ''
                 effectQuality: 'low',
@@ -626,15 +622,15 @@ if (object && object.property) {
             ';'
 
             return suggestions;} catch (error) {
-            this.loggingSystem.error('ContextualHelpManager', 'Failed to suggest quality settings', error),
+            this.loggingSystem.error('ContextualHelpManager', 'Failed to suggest quality settings', error);
             return null,
 
     private showKeyboardShortcuts()','
-            this.loggingSystem.info('ContextualHelpManager', 'Showing keyboard shortcuts'),
+            this.loggingSystem.info('ContextualHelpManager', 'Showing keyboard shortcuts');
             ','
             // キーボードショートカット情報をHelpContentManagerで表示
             return this.navigateToTopic('shortcuts','} catch (error) {'
-            this.loggingSystem.error('ContextualHelpManager', 'Failed to show keyboard shortcuts', error),
+            this.loggingSystem.error('ContextualHelpManager', 'Failed to show keyboard shortcuts', error);
             return false,
 
     public startInteractiveGuide(guideId: string): boolean { try {'
@@ -643,7 +639,7 @@ if (object && object.property) {
             const, guide = this.interactiveGuides.get(guideId}''
             if(!guide} { }'
 
-                this.loggingSystem.warn('ContextualHelpManager', `Interactive guide not found: ${guideId}`});
+                this.loggingSystem.warn('ContextualHelpManager', `Interactive guide not found: ${guideId}`};
                 return false;
             }
             
@@ -701,8 +697,8 @@ if (object && object.property) {
     /**
      * ヘルプ使用状況のログ
      */
-    private logHelpUsage(helpData: HelpUsageData): void { this.helpHistory.push({),
-            timestamp: Date.now(),
+    private logHelpUsage(helpData: HelpUsageData): void { this.helpHistory.push({);
+            timestamp: Date.now();
             key: helpData.key,
     priority: helpData.priority }
             context: { ...this.currentContext),
@@ -714,20 +710,20 @@ if (object && object.property) {
      * デバッグ情報の取得
      */
     public getDebugInfo(): DebugInfo { return { triggers: Array.from(this.helpTriggers.keys(
-            tooltips: Array.from(this.tooltips.keys(),
+            tooltips: Array.from(this.tooltips.keys();
             guides: Array.from(this.interactiveGuides.keys(
-    currentContext: this.currentContext };
+    currentContext: this.currentContext },
             helpHistory: this.helpHistory.slice(-10) // 最新10件 
     }
     
     /**
      * クリーンアップ
      */
-    public cleanup(): void { this.helpTriggers.clear(),
-        this.activeHelp.clear(),
+    public cleanup(): void { this.helpTriggers.clear();
+        this.activeHelp.clear();
         this.helpHistory = [];
-        this.tooltips.clear(),
-        this.activeTooltips.clear(),
+        this.tooltips.clear();
+        this.activeTooltips.clear();
         this.interactiveGuides.clear()','
         this.loggingSystem.info('ContextualHelpManager', 'Contextual help manager cleaned up') }
 

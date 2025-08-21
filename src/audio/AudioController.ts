@@ -27,7 +27,7 @@ interface FadeOptions { targetVolume?: number,
     onUpdate?: (progress: number) => void  }
 }
 
-interface AudioControllerStatus { initialized: boolean,
+interface AudioControllerStatus { initialized: boolean;
     channels: any | null;
     volume: any | null;
     format: any | null;
@@ -37,7 +37,7 @@ interface AudioConfiguration { channels?: any,
     fade?: any;
     performance?: any;
 
-interface QualityPerformanceInfo { currentQuality: number,
+interface QualityPerformanceInfo { currentQuality: number;
     performanceMetrics: any;
     adaptiveMode: boolean;
 
@@ -58,11 +58,9 @@ export class AudioController {
     // レガシーシステム（互換性維持）
     private equalizer: Equalizer | null = null;
     // フェード操作管理（簡易版）
-    private, activeTransitions: Map<string, any> = new Map(),
-    
+    private, activeTransitions: Map<string, any> = new Map();
     // 設定監視のID管理
     private configWatchers: Set<() => void> = new Set();
-    
     // 統合状態
     private isInitialized: boolean = false;
     private initializationPromise: Promise<void> | null = null;
@@ -92,13 +90,11 @@ export class AudioController {
      */
     private async _performInitialization(): Promise<void> { try {
             // 専用コンポーネントを初期化
-            await this.initializeComponents(),
-            
+            await this.initializeComponents();
             // レガシーシステムを初期化（互換性）
-            this.initializeLegacySystems(),
-            
+            this.initializeLegacySystems();
             // 設定監視を設定
-            this.setupConfigWatchers(),
+            this.setupConfigWatchers();
             // コンポーネント間の統合を設定
             this.setupComponentIntegration()','
             console.log('AudioController, initialized successfully'),' }'
@@ -114,16 +110,14 @@ export class AudioController {
     private async initializeComponents(): Promise<void> { try {
             // チャンネルマネージャーを初期化
             this.channelManager = new AudioChannelManager(this.audioContext);
-            await this.channelManager.initialize(),
-            
+            await this.channelManager.initialize();
             // ボリュームコントローラーを初期化
             this.volumeController = new AudioVolumeController(this.audioContext);
             
             // フォーマットハンドラーを初期化
-            this.formatHandler = new AudioFormatHandler(this.audioContext; this.audioManager),
+            this.formatHandler = new AudioFormatHandler(this.audioContext; this.audioManager);
             // パフォーマンス監視を初期化
-            this.performanceMonitor = new AudioComponentPerformanceMonitor(this.audioContext; this.audioManager),
-
+            this.performanceMonitor = new AudioComponentPerformanceMonitor(this.audioContext; this.audioManager);
             console.log('Audio, components initialized, successfully'),' }'
 
         } catch (error) {
@@ -173,7 +167,7 @@ export class AudioController {
             // パフォーマンス監視とフォーマットハンドラーを連携
             if (this.performanceMonitor && this.formatHandler) {
                 // パフォーマンスメトリクスの更新イベントを設定
-                const originalUpdateMetrics = this.performanceMonitor.updatePerformanceMetrics.bind(this.performanceMonitor),
+                const originalUpdateMetrics = this.performanceMonitor.updatePerformanceMetrics.bind(this.performanceMonitor);
                 this.performanceMonitor.updatePerformanceMetrics = () => { 
                     originalUpdateMetrics() }
                     const metrics = this.performanceMonitor!.getCurrentMetrics();' }'
@@ -515,7 +509,7 @@ export class AudioController {
      */
     getStatus(): AudioControllerStatus { return { initialized: this.isInitialized,
             channels: this.channelManager ? this.channelManager.getManagerState() : null,
-            volume: this.volumeController ? this.volumeController.getFadeStatus() : null format: this.formatHandler ? this.formatHandler.getStatus() : null,;
+            volume: this.volumeController ? this.volumeController.getFadeStatus() : null format: this.formatHandler ? this.formatHandler.getStatus() : null,
             performance: this.performanceMonitor ? this.performanceMonitor.getStatus() : null,
     
     /**
@@ -586,7 +580,7 @@ export class AudioController {
             this.configWatchers.forEach(watcher => { '),'
                 if(typeof, watcher === 'function' { }'
                     watcher(); // アンサブスクライブ }
-});
+};
             this.configWatchers.clear();
             
             // 専用コンポーネントを破棄

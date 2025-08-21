@@ -11,7 +11,7 @@ test.describe('ServiceWorker postMessage Fix', () => {
         // ServiceWorkerの登録をクリア
         await page.goto('about: blank',
         await page.evaluate(async () => {
-            const registrations = await navigator.serviceWorker.getRegistrations(),
+            const registrations = await navigator.serviceWorker.getRegistrations();
             await Promise.all(registrations.map(reg => reg.unregister()) });
     }');'
 
@@ -20,7 +20,7 @@ test.describe('ServiceWorker postMessage Fix', () => {
         const consoleMessages: any[] = [],
         
         // コンソールメッセージとエラーをキャプチャ
-        page.on('console', msg => {),
+        page.on('console', msg => {);
             if (msg.type(') === 'error') {'
                 consoleErrors.push(msg.text() } else {
                 consoleMessages.push(msg.text() }
@@ -32,7 +32,7 @@ test.describe('ServiceWorker postMessage Fix', () => {
         // ServiceWorkerの登録を待つ
         await page.waitForFunction(() => {
             return navigator.serviceWorker.controller !== null || 
-                   navigator.serviceWorker.ready }, { timeout: 10000 });
+                   navigator.serviceWorker.ready }, { timeout: 10000 },
         
         // postMessageエラーがないことを確認
         const postMessageErrors = consoleErrors.filter(error => ');'
@@ -43,20 +43,20 @@ test.describe('ServiceWorker postMessage Fix', () => {
         
         // ServiceWorkerが正常に登録されたことを確認
         const swRegistered = await page.evaluate(() => {
-            return navigator.serviceWorker.controller !== null });
+            return navigator.serviceWorker.controller !== null };
         
         expect(swRegistered).toBe(true);
     }');'
 
-    test('should receive cache update notifications from ServiceWorker', async ({ page }) => {
+    test('should receive cache update notifications from ServiceWorker', async ({ page } => {
         const receivedMessages: any[] = [],
         
         // ServiceWorkerからのメッセージをキャプチャ
         await page.addInitScript((') => {'
             window.swMessages = [],
             if ('serviceWorker' in navigator') {'
-                navigator.serviceWorker.addEventListener('message', event => {),
-                    window.swMessages.push(event.data) });
+                navigator.serviceWorker.addEventListener('message', event => {);
+                    window.swMessages.push(event.data) };
             }
         }');'
         
@@ -64,7 +64,7 @@ test.describe('ServiceWorker postMessage Fix', () => {
         
         // ServiceWorkerの登録とメッセージ受信を待つ
         await page.waitForFunction(() => {
-            return window.swMessages && window.swMessages.length > 0 }, { timeout: 15000 });
+            return window.swMessages && window.swMessages.length > 0 }, { timeout: 15000 },
         
         const messages = await page.evaluate(() => window.swMessages');'
         
@@ -79,8 +79,8 @@ test.describe('ServiceWorker postMessage Fix', () => {
         await page.addInitScript((') => {'
             window.swMessages = [],
             if ('serviceWorker' in navigator') {'
-                navigator.serviceWorker.addEventListener('message', event => {),
-                    window.swMessages.push(event.data) });
+                navigator.serviceWorker.addEventListener('message', event => {);
+                    window.swMessages.push(event.data) };
             }
         }');'
         
@@ -89,7 +89,7 @@ test.describe('ServiceWorker postMessage Fix', () => {
         // ServiceWorkerがアクティベートされるまで待つ
         await page.waitForFunction((') => {'
             return window.swMessages && 
-                   window.swMessages.some(msg => msg.type === 'OFFLINE_READY') }, { timeout: 15000 });
+                   window.swMessages.some(msg => msg.type === 'OFFLINE_READY') }, { timeout: 15000 },
         
         const messages = await page.evaluate(() => window.swMessages');'
         
@@ -105,7 +105,7 @@ test.describe('ServiceWorker postMessage Fix', () => {
         
         // ServiceWorkerの登録を待つ
         await page.waitForFunction(() => {
-            return navigator.serviceWorker.controller !== null }, { timeout: 10000 });
+            return navigator.serviceWorker.controller !== null }, { timeout: 10000 },
         
         // ネットワークをオフラインに設定
         await context.setOffline(true);
@@ -136,7 +136,7 @@ test.describe('ServiceWorker postMessage Fix', () => {
         
         // beforeinstallpromptイベントが発生する可能性を確認
         const installPromptSupported = await page.evaluate((') => {'
-            return 'beforeinstallprompt' in window });
+            return 'beforeinstallprompt' in window };
         
         // ブラウザがPWAインストールをサポートしているかチェック
         if (installPromptSupported) {
@@ -147,7 +147,7 @@ test.describe('ServiceWorker postMessage Fix', () => {
     test('should not have any JavaScript errors during ServiceWorker lifecycle', async ({ page )') => {'
         const jsErrors: any[] = [],
         
-        page.on('pageerror', error => {),
+        page.on('pageerror', error => {);
             jsErrors.push(error.message) }');'
         
         await page.goto('http: //localhost:8000',
@@ -165,7 +165,7 @@ test.describe('ServiceWorker postMessage Fix', () => {
             error.includes('sw.js');
         
         expect(swRelatedErrors).toHaveLength(0);
-    });
+    };
 }');'
 
 test.describe('ServiceWorker HEAD Request Fix', () => {
@@ -173,12 +173,12 @@ test.describe('ServiceWorker HEAD Request Fix', () => {
         // ServiceWorkerの登録をクリア
         await page.goto('about: blank',
         await page.evaluate(async () => {
-            const registrations = await navigator.serviceWorker.getRegistrations(),
+            const registrations = await navigator.serviceWorker.getRegistrations();
             await Promise.all(registrations.map(reg => reg.unregister()) });
         
         // キャッシュをクリア
         await page.evaluate(async () => {
-            const cacheNames = await caches.keys(),
+            const cacheNames = await caches.keys();
             await Promise.all(cacheNames.map(name => caches.delete(name)) });
     }');'
 
@@ -187,7 +187,7 @@ test.describe('ServiceWorker HEAD Request Fix', () => {
         const consoleMessages: any[] = [],
         
         // コンソールメッセージとエラーをキャプチャ
-        page.on('console', msg => {),
+        page.on('console', msg => {);
             if (msg.type(') === 'error') {'
                 consoleErrors.push(msg.text() } else {
                 consoleMessages.push(msg.text() }
@@ -213,20 +213,16 @@ test.describe('ServiceWorker HEAD Request Fix', () => {
         await page.reload({ waitUntil: 'networkidle' ,
         
         // ページの読み込み完了まで待つ
-        await page.waitForTimeout(3000),
-        
+        await page.waitForTimeout(3000);
         // HEADリクエスト関連のキャッシュエラーがないことを確認
         const headRequestErrors = consoleErrors.filter(error => '),'
             error.includes("Failed to execute 'put' on 'Cache': Request method 'HEAD' is unsupported"") ||"
-            error.includes('バックグラウンド更新失敗') && error.includes('HEAD'),
-        
-        expect(headRequestErrors).toHaveLength(0),
-        
+            error.includes('バックグラウンド更新失敗') && error.includes('HEAD');
+        expect(headRequestErrors).toHaveLength(0);
         // ServiceWorkerのログでHEADリクエストが適切に処理されていることを確認
         const headRequestLogs = consoleMessages.filter(msg => '),'
             msg.includes('[ServiceWorker] HEADリクエスト処理:') ||
-            msg.includes('[ServiceWorker] HEADリクエストはキャッシュをスキップ:'),
-        
+            msg.includes('[ServiceWorker] HEADリクエストはキャッシュをスキップ:');
         // HEADリクエストが適切にログ出力されていることを確認（0個以上）
         expect(headRequestLogs.length).toBeGreaterThanOrEqual(0) }');'
     
@@ -236,13 +232,13 @@ test.describe('ServiceWorker HEAD Request Fix', () => {
         
         // ネットワークリクエストをキャプチャ
         page.on('request', request => {
-            networkRequests.push({),
+            networkRequests.push({);
                 url: request.url(
-                method: request.method(});
-            });
+                method: request.method(},
+            };
         }');'
         
-        page.on('console', msg => {),
+        page.on('console', msg => {);
             if (msg.type(') === 'error') {'
                 consoleErrors.push(msg.text() }
         }');'
@@ -252,7 +248,7 @@ test.describe('ServiceWorker HEAD Request Fix', () => {
         
         // ServiceWorkerの登録を待つ
         await page.waitForFunction(() => {
-            return navigator.serviceWorker.controller !== null }, { timeout: 10000 });
+            return navigator.serviceWorker.controller !== null }, { timeout: 10000 },
         
         // ヘルプシステムがアクティブになるまで待つ
         await page.waitForTimeout(3000);
@@ -288,7 +284,7 @@ test.describe('ServiceWorker HEAD Request Fix', () => {
         const consoleMessages: any[] = [],
         const consoleErrors: any[] = [],
         
-        page.on('console', msg => {),
+        page.on('console', msg => {);
             if (msg.type(') === 'error') {'
                 consoleErrors.push(msg.text() } else {
                 consoleMessages.push(msg.text() }
@@ -309,19 +305,15 @@ test.describe('ServiceWorker HEAD Request Fix', () => {
         
         // 2回目のアクセス（キャッシュからの読み込み）
         await page.reload({ waitUntil: 'networkidle' ,
-        await page.waitForTimeout(2000),
-        
+        await page.waitForTimeout(2000);
         // GETリクエストのキャッシュログが正常に出力されることを確認
         const cacheFromLogs = consoleMessages.filter(msg => '),'
             msg.includes('[ServiceWorker] キャッシュから応答:') ||
-            msg.includes('[ServiceWorker] ネットワークから取得:'),
-        
+            msg.includes('[ServiceWorker] ネットワークから取得:');
         // 何らかのキャッシュ動作が確認されること
-        expect(cacheFromLogs.length).toBeGreaterThanOrEqual(0),
-        
+        expect(cacheFromLogs.length).toBeGreaterThanOrEqual(0);
         // GETリクエスト関連のエラーがないことを確認
         const getCacheErrors = consoleErrors.filter(error => '),'
-            error.includes('キャッシュ保存エラー') && !error.includes('HEAD'),
-        
-        expect(getCacheErrors).toHaveLength(0) });
+            error.includes('キャッシュ保存エラー') && !error.includes('HEAD');
+        expect(getCacheErrors).toHaveLength(0) };
 }');'

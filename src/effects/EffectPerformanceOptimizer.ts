@@ -19,7 +19,7 @@ interface GameEngine { performanceOptimizer?: PerformanceOptimizer,
 
 interface PerformanceOptimizer { getCurrentFPS(): number;
 
-interface EnhancedParticleManager { setParticleMultiplier(multiplier: number): void,
+interface EnhancedParticleManager { setParticleMultiplier(multiplier: number): void;
     clearAllParticles(): void;
     forceCleanup(): void;
     getActiveParticleCount(): number;
@@ -33,7 +33,7 @@ interface EnhancedEffectManager { clearCache(): void,
 
 interface SeasonalEffectManager { setEnabled(enabled: boolean): void;
 
-interface EffectQualityController { setQualityLevel(level: string): void,
+interface EffectQualityController { setQualityLevel(level: string): void;
     getCurrentQualityLevel(): string;
     setAutoAdjustment(enabled: boolean): void;
 
@@ -43,15 +43,15 @@ interface RenderOptimizer { setFrameSkip(frames: number): void;
 
 interface AnimationManager { setEnabled(enabled: boolean): void;
 
-interface ParticleManager { setEnabled(enabled: boolean): void,
+interface ParticleManager { setEnabled(enabled: boolean): void;
     setMaxParticles(max: number): void;
 
-interface EffectManager { setEnabled(enabled: boolean): void,
+interface EffectManager { setEnabled(enabled: boolean): void;
     setSimpleMode(enabled: boolean): void;
 
 interface EffectDebugInterface { showWarning(message: string): void;
 
-interface OptimizationSettings { enableFrameSkipping: boolean,
+interface OptimizationSettings { enableFrameSkipping: boolean;
     enableAdaptiveQuality: boolean;
     enableMemoryOptimization: boolean;
     enableRenderingOptimization: boolean;
@@ -59,17 +59,17 @@ interface OptimizationSettings { enableFrameSkipping: boolean,
     targetFPS: number;
     minFPS: number;
 
-interface OptimizationStats { framesSkipped: number,
+interface OptimizationStats { framesSkipped: number;
     qualityAdjustments: number;
     memoryCleanups: number;
     renderOptimizations: number;
 
-interface ExtendedOptimizationStats extends OptimizationStats { currentFPS: number,
+interface ExtendedOptimizationStats extends OptimizationStats { currentFPS: number;
     memoryUsage: number;
     particleCount: number;
     isOptimizing: boolean;
 
-interface DebugInfo { enabled: boolean,
+interface DebugInfo { enabled: boolean;
     settings: OptimizationSettings;
     stats: ExtendedOptimizationStats;
     frameTimeHistory: number[];
@@ -83,7 +83,7 @@ export class EffectPerformanceOptimizer {
     private stats: OptimizationStats;
     private lastFrameTime: number;
     private frameTimeHistory: number[];
-    private, isOptimizing: boolean,
+    private, isOptimizing: boolean;
     constructor(gameEngine: GameEngine) {
 
         this.gameEngine = gameEngine;
@@ -91,18 +91,18 @@ export class EffectPerformanceOptimizer {
         
         // パフォーマンス改善設定
         this.optimizationSettings = {
-            enableFrameSkipping: true,
-            enableAdaptiveQuality: true,
-            enableMemoryOptimization: true,
-            enableRenderingOptimization: true,
-            maxParticlesPerFrame: 500,
+            enableFrameSkipping: true;
+            enableAdaptiveQuality: true;
+            enableMemoryOptimization: true;
+            enableRenderingOptimization: true;
+            maxParticlesPerFrame: 500;
     targetFPS: 60 }
             minFPS: 30 
     };
         // 最適化統計
-        this.stats = { framesSkipped: 0,
-            qualityAdjustments: 0,
-            memoryCleanups: 0,
+        this.stats = { framesSkipped: 0;
+            qualityAdjustments: 0;
+            memoryCleanups: 0;
     renderOptimizations: 0  };
         this.lastFrameTime = performance.now();
         this.frameTimeHistory = [];
@@ -112,11 +112,9 @@ export class EffectPerformanceOptimizer {
     }
 
     private initialize(): void { // パフォーマンス監視の開始
-        this.startPerformanceMonitoring(),
-        
+        this.startPerformanceMonitoring();
         // 適応的品質調整の設定
-        this.setupAdaptiveQuality(),
-        
+        this.setupAdaptiveQuality();
         // レンダリング最適化の設定
         this.setupRenderingOptimization() }
 
@@ -127,9 +125,9 @@ export class EffectPerformanceOptimizer {
 
     private analyzePerformance(): void { if (!this.enabled || this.isOptimizing) return,
         
-        const currentFPS = this.getCurrentFPS(),
-        const memoryUsage = this.getCurrentMemoryUsage(),
-        const particleCount = this.getActiveParticleCount(),
+        const currentFPS = this.getCurrentFPS();
+        const memoryUsage = this.getCurrentMemoryUsage();
+        const particleCount = this.getActiveParticleCount();
         // パフォーマンス劣化の検出
         if (currentFPS < this.optimizationSettings.minFPS) {
             this.isOptimizing = true;
@@ -161,7 +159,7 @@ export class EffectPerformanceOptimizer {
                 this.optimizeMemoryUsage(';'
         }''
             case 'particles':) }
-                this.limitParticleCount(});
+                this.limitParticleCount(};
                 break;
         }
         
@@ -212,8 +210,7 @@ export class EffectPerformanceOptimizer {
 
             const currentQuality = qualityController.getCurrentQualityLevel()','
             const qualityLevels = ['low', 'medium', 'high', 'ultra'])
-            const currentIndex = qualityLevels.indexOf(currentQuality),
-            
+            const currentIndex = qualityLevels.indexOf(currentQuality);
             if (currentIndex > 0) {
                 qualityController.setQualityLevel(qualityLevels[currentIndex - 1]) }
                 this.stats.qualityAdjustments++; }
@@ -267,7 +264,7 @@ export class EffectPerformanceOptimizer {
     private limitParticleCount(): void { const particleManager = this.gameEngine.enhancedParticleManager,
         if (!particleManager) return,
         
-        const currentCount = particleManager.getActiveParticleCount(),
+        const currentCount = particleManager.getActiveParticleCount();
         const targetCount = this.optimizationSettings.maxParticlesPerFrame,
         
         if (currentCount > targetCount) {
@@ -275,7 +272,7 @@ export class EffectPerformanceOptimizer {
             // 古いパーティクルから削除
             const toRemove = currentCount - targetCount }
             particleManager.removeOldestParticles(toRemove); }
-            console.log(`Removed ${toRemove} particles, to maintain, performance`});
+            console.log(`Removed ${toRemove} particles, to maintain, performance`};
         }
     }
 
@@ -303,8 +300,7 @@ export class EffectPerformanceOptimizer {
         const enhancedParticleManager = this.gameEngine.enhancedParticleManager,
         if (enhancedParticleManager) {
             // バッチレンダリングの有効化
-            enhancedParticleManager.enableBatchRendering(true),
-            
+            enhancedParticleManager.enableBatchRendering(true);
             // カリング最適化
         }
             enhancedParticleManager.setAggressiveCulling(true); }
@@ -332,7 +328,7 @@ export class EffectPerformanceOptimizer {
             currentFPS: this.getCurrentFPS(
             memoryUsage: this.getCurrentMemoryUsage(
     particleCount: this.getActiveParticleCount( }
-            isOptimizing: this.isOptimizing }))
+            isOptimizing: this.isOptimizing })
     }
 );
     public resetStats(): void { this.stats = {

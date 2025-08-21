@@ -11,14 +11,15 @@ export class MockFactory {
    */
   static createCanvasMock() {
     const mockCanvas = {
-      width: 800,
-      height: 600,
+      width: 800;
+      height: 600;
       getContext: jest.fn(() => ({
         // Basic drawing methods
         fillRect: jest.fn(
         clearRect: jest.fn(
         strokeRect: jest.fn(
-        
+        strokeRect: jest.fn(
+        };
         // Path methods
         beginPath: jest.fn(
         closePath: jest.fn(
@@ -26,11 +27,13 @@ export class MockFactory {
         lineTo: jest.fn(
         arc: jest.fn(
         arcTo: jest.fn(
-        
+        arcTo: jest.fn(
+        };
         // Fill and stroke
         fill: jest.fn(
         stroke: jest.fn(
-        
+        stroke: jest.fn(
+        };
         // Transformations
         scale: jest.fn(
         rotate: jest.fn(
@@ -38,7 +41,8 @@ export class MockFactory {
         transform: jest.fn(
         setTransform: jest.fn(
         resetTransform: jest.fn(','
-        
+        resetTransform: jest.fn(','
+        };
         // Styles
         fillStyle: '#000000',
         strokeStyle: '#000000',
@@ -49,38 +53,44 @@ export class MockFactory {
         font: '10px sans-serif',
         textAlign: 'start',
         textBaseline: 'alphabetic',
-        
+        textBaseline: 'alphabetic',
+        };
         // Text methods
         fillText: jest.fn(
         strokeText: jest.fn(
         measureText: jest.fn(() => ({ width: 100 )),
-        
+        measureText: jest.fn(() => ({ width: 100 )),
+        };
         // Image methods
         drawImage: jest.fn(
         createImageData: jest.fn(
         getImageData: jest.fn(
         putImageData: jest.fn(
-        
+        putImageData: jest.fn(
+        };
         // State methods
         save: jest.fn(
         restore: jest.fn(
-        
+        restore: jest.fn(
+        };
         // Gradient methods
         createLinearGradient: jest.fn(() => ({
           addColorStop: jest.fn()
         )),
         createRadialGradient: jest.fn(() => ({
           addColorStop: jest.fn()),
-        
+          addColorStop: jest.fn()),
+        };
         // Pattern methods
         createPattern: jest.fn(','
-        
+        createPattern: jest.fn(','
+        };
         // Compositing
         globalCompositeOperation: 'source-over'
       )),
       
       // Canvas element properties
-      style: {};
+      style: {},
       addEventListener: jest.fn(
       removeEventListener: jest.fn(
       getBoundingClientRect: jest.fn(() => ({
@@ -177,8 +187,7 @@ export class MockFactory {
         ['events', '/api/events'],
         ['metrics', '/api/metrics'],
         ['errors', '/api/errors']
-      ]),
-      
+      ]);
       rateLimiting: {
         enabled: true,
         maxRequests: 100,
@@ -198,11 +207,13 @@ export class MockFactory {
       // Privacy and consent
       setConsent: jest.fn(
       hasConsent: jest.fn(() => true,
-      
+      hasConsent: jest.fn(() => true,
+        };
       // Event queuing
       queue: [],
       flush: jest.fn(() => Promise.resolve()','
-      
+      flush: jest.fn(() => Promise.resolve()','
+        };
       // Properties
       apiKey: 'test-api-key',
       userId: 'test-user-id',
@@ -225,8 +236,9 @@ export class MockFactory {
       getEntriesByName: jest.fn(() => [],
       clearMarks: jest.fn(
       clearMeasures: jest.fn(
-      
-      // Memory information (if available),
+      clearMeasures: jest.fn(
+        };
+      // Memory information (if available);
       memory: {
         usedJSHeapSize: Math.floor(10 * 1024 * 1024 * performanceFactor), // 10MB baseline
         totalJSHeapSize: Math.floor(50 * 1024 * 1024 * performanceFactor), // 50MB baseline
@@ -244,7 +256,8 @@ export class MockFactory {
       PerformanceObserver: jest.fn(() => ({
         observe: jest.fn(
         disconnect: jest.fn()),
-      
+        disconnect: jest.fn()),
+        };
       // Custom performance methods for testing
       getFrameRate: jest.fn(() => isCI ? 45 : 60,
       getRenderTime: jest.fn(() => isCI ? 25 : 16,
@@ -257,8 +270,7 @@ export class MockFactory {
    * Creates localStorage mock for testing
    */
   static createLocalStorageMock() {
-    const store = new Map(),
-    
+    const store = new Map();
     return {
       getItem: jest.fn((key) => store.get(key || null),
       setItem: jest.fn((key, value) => store.set(key, String(value);
@@ -297,7 +309,8 @@ export class MockFactory {
       getElementById: jest.fn(
       querySelector: jest.fn(
       querySelectorAll: jest.fn(() => [],
-      
+      querySelectorAll: jest.fn(() => [],
+        };
       body: {
         appendChild: jest.fn(
         removeChild: jest.fn(
@@ -315,15 +328,12 @@ export class MockFactory {
     
     // Performance API mock
     (global: any).performance = MockFactory.createPerformanceMock(),
-    
     // Storage API mock
     (global: any).localStorage = MockFactory.createLocalStorageMock(),
     (global: any).sessionStorage = MockFactory.createLocalStorageMock(),
-    
     // Request Animation Frame mock
-    (global: any).requestAnimationFrame = jest.fn((cb) => setTimeout(cb, 16),
+    (global: any).requestAnimationFrame = jest.fn((cb) => setTimeout(cb, 16);
     (global: any).cancelAnimationFrame = jest.fn((id) => clearTimeout(id),
-    
     // Image mock
     (global: any).Image = jest.fn(() => ({
       addEventListener: jest.fn(
@@ -351,7 +361,8 @@ export class MockFactory {
     (global: any).URL = {
       createObjectURL: jest.fn((') => 'blob:mock-url'),'
       revokeObjectURL: jest.fn(),
-    
+      revokeObjectURL: jest.fn(),
+        };
     // Console methods (preserve existing, add missing),
     if (!global.console.warn) global.console.warn = jest.fn() as jest.Mock,
     if (!global.console.error) global.console.error = jest.fn() as jest.Mock,

@@ -2,7 +2,7 @@ import fs from 'fs/promises';
 import path from 'path';
 
 // Type definitions
-interface BuildIntegrityValidation { packageJsonValid: boolean,
+interface BuildIntegrityValidation { packageJsonValid: boolean;
     mainFilesExist: boolean;
     configFilesValid: boolean;
     srcStructureIntact: boolean;
@@ -11,38 +11,38 @@ interface BuildIntegrityValidation { packageJsonValid: boolean,
     warnings: string[];
     validatedAt?: string;
 
-interface SyntaxTestResult { passed: boolean,
+interface SyntaxTestResult { passed: boolean;
     filesChecked: number;
     errors: SyntaxError[];
     error?: string;
 
-interface SyntaxError { file: string,
+interface SyntaxError { file: string;
     issue: string;
 
-interface ImportTestResult { passed: boolean,
+interface ImportTestResult { passed: boolean;
     importsChecked: number;
     brokenImports: number;
     error?: string;
 
-interface ModuleValidationResult { path: string,
+interface ModuleValidationResult { path: string;
     accessible: boolean;
     hasContent: boolean;
     hasExports: boolean;
     error?: string;
 
-interface CoreModuleTestResult { passed: boolean,
+interface CoreModuleTestResult { passed: boolean;
     modulesChecked: ModuleValidationResult[];
 
-interface ConfigurationTestResult { passed: boolean,
+interface ConfigurationTestResult { passed: boolean;
     configurations: ModuleValidationResult[];
     error?: string;
 
-interface TestDetails { syntax: SyntaxTestResult,
+interface TestDetails { syntax: SyntaxTestResult;
     import: ImportTestResult;
     coreModule: CoreModuleTestResult;
     configuration: ConfigurationTestResult;
 
-interface BasicTestResults { syntaxTests: boolean,
+interface BasicTestResults { syntaxTests: boolean;
     importTests: boolean;
     coreModuleTests: boolean;
     configurationTests: boolean;
@@ -51,40 +51,40 @@ interface BasicTestResults { syntaxTests: boolean,
     error?: string;
     executedAt?: string;
 
-interface ImportInfo { line: number,
+interface ImportInfo { line: number;
     statement: string;
     path: string;
     type?: string;
 
-interface BrokenImport { file: string,
+interface BrokenImport { file: string;
     import: ImportInfo;
     resolvedPath?: string;
     reason: string;
 
-interface SuspiciousImport { file: string,
+interface SuspiciousImport { file: string;
     import: ImportInfo;
     reason: string;
 
-interface ImportResolutionResult { brokenImports: BrokenImport[],
+interface ImportResolutionResult { brokenImports: BrokenImport[];
     suspiciousImports: SuspiciousImport[];
     totalImportsChecked: number;
     passed: boolean;
     error?: string;
     checkedAt?: string;
 
-interface ConfigurationAccess { accessible: boolean,
+interface ConfigurationAccess { accessible: boolean;
     configs: ModuleValidationResult[];
 
-interface UtilsAccess { accessible: boolean,
+interface UtilsAccess { accessible: boolean;
     utils: ModuleValidationResult[];
     error?: string;
 
-interface CoreFeatureDetails { gameEngine: ModuleValidationResult,
+interface CoreFeatureDetails { gameEngine: ModuleValidationResult;
     sceneManager: ModuleValidationResult;
     configuration: ConfigurationAccess;
     utils: UtilsAccess;
 
-interface CoreFeatureValidation { gameEngineAccessible: boolean,
+interface CoreFeatureValidation { gameEngineAccessible: boolean;
     sceneManagerAccessible: boolean;
     configurationAccessible: boolean;
     utilsAccessible: boolean;
@@ -98,29 +98,29 @@ interface ValidationResults { buildIntegrity?: BuildIntegrityValidation,
     importResolution?: ImportResolutionResult;
     coreFeatures?: CoreFeatureValidation;
 
-interface IntegritySummary { buildIntegrity: boolean,
+interface IntegritySummary { buildIntegrity: boolean;
     basicTests: boolean;
     importResolution: boolean;
     coreFeatures: boolean;
     overallIntegrity: boolean;
 
-interface IntegrityIssue { category: string,
+interface IntegrityIssue { category: string;
     severity: string;
     message: string;
     details: any;
 
-interface IntegrityRecommendation { type: string,
+interface IntegrityRecommendation { type: string;
     message: string;
     priority: string;
     issues?: IntegrityIssue[];
 
-interface IntegrityReport { summary: IntegritySummary,
+interface IntegrityReport { summary: IntegritySummary;
     details: ValidationResults;
     issues: IntegrityIssue[];
     recommendations: IntegrityRecommendation[];
     generatedAt: string;
 
-interface ConfigFile { path: string,
+interface ConfigFile { path: string;
     required: boolean;
 
 /**
@@ -145,25 +145,21 @@ export class IntegrityValidator {
             srcStructureIntact: false,
             passed: false,
             errors: [],
-    warnings: [] };
+    warnings: [] },
         try { // package.json確認
-            validation.packageJsonValid = await this.validatePackageJson(),
-            
+            validation.packageJsonValid = await this.validatePackageJson();
             // メインファイル存在確認
-            validation.mainFilesExist = await this.validateMainFiles(),
-            
+            validation.mainFilesExist = await this.validateMainFiles();
             // 設定ファイル確認
-            validation.configFilesValid = await this.validateConfigFiles(),
-            
+            validation.configFilesValid = await this.validateConfigFiles();
             // ソースディレクトリ構造確認
-            validation.srcStructureIntact = await this.validateSourceStructure(),
-            
+            validation.srcStructureIntact = await this.validateSourceStructure();
             // 全体判定
             validation.passed = validation.packageJsonValid && ,
                                validation.mainFilesExist && ,
                                validation.configFilesValid && ,
                                validation.srcStructureIntact } catch (error) {
-            validation.errors.push(`Build, integrity validation, error: ${(error, as, Error}).message}`);
+            validation.errors.push(`Build, integrity validation, error: ${(error, as, Error}.message}`);
             validation.passed = false;
         }
 
@@ -183,19 +179,19 @@ export class IntegrityValidator {
             testDetails: {} as TestDetails
         };
         try { // 構文テスト
-            testResults.testDetails.syntax = await this.runSyntaxTests(),
+            testResults.testDetails.syntax = await this.runSyntaxTests();
             testResults.syntaxTests = testResults.testDetails.syntax.passed,
             
             // インポートテスト
-            testResults.testDetails.import = await this.runImportTests(),
+            testResults.testDetails.import = await this.runImportTests();
             testResults.importTests = testResults.testDetails.import.passed,
             
             // コアモジュールテスト
-            testResults.testDetails.coreModule = await this.runCoreModuleTests(),
+            testResults.testDetails.coreModule = await this.runCoreModuleTests();
             testResults.coreModuleTests = testResults.testDetails.coreModule.passed,
             
             // 設定テスト
-            testResults.testDetails.configuration = await this.runConfigurationTests(),
+            testResults.testDetails.configuration = await this.runConfigurationTests();
             testResults.configurationTests = testResults.testDetails.configuration.passed,
             
             // 全体判定
@@ -216,12 +212,11 @@ export class IntegrityValidator {
             brokenImports: [],
             suspiciousImports: [],
             totalImportsChecked: 0,
-    passed: false,;
-        try { const jsFiles = await this.findJavaScriptFiles(),
-            
+    passed: false,
+        try { const jsFiles = await this.findJavaScriptFiles();
             for (const file of jsFiles) {
             
-                const imports = await this.extractImports(file),
+                const imports = await this.extractImports(file);
                 resolution.totalImportsChecked += imports.length,
                 
                 for (const importInfo of imports) {
@@ -294,7 +289,7 @@ export class IntegrityValidator {
                 basicTests: validationResults.basicTests?.passed || false, : undefined
                 importResolution: validationResults.importResolution?.passed || false, : undefined
                 coreFeatures: validationResults.coreFeatures?.passed || false, : undefined
-                overallIntegrity: false,;
+                overallIntegrity: false,
             details: validationResults,
             issues: [],
             recommendations: [],
@@ -333,7 +328,7 @@ export class IntegrityValidator {
             './index.html',
             './src/main.js',
             './src/core/GameEngine.js',
-        ]),
+        ]);
         for (const file of mainFiles) {
 
             if (!await, this.fileExists(file) { }
@@ -370,7 +365,7 @@ export class IntegrityValidator {
         for (const dir of requiredDirs) {
 
             try {
-                const stats = await fs.stat(dir),
+                const stats = await fs.stat(dir);
                 if (!stats.isDirectory() {
     
 }
@@ -383,12 +378,12 @@ export class IntegrityValidator {
     private async runSyntaxTests(): Promise<SyntaxTestResult> { const result: SyntaxTestResult = {
             passed: true,
             filesChecked: 0,
-    errors: [] };
-        try { const jsFiles = await this.findJavaScriptFiles(),
+    errors: [] },
+        try { const jsFiles = await this.findJavaScriptFiles();
             result.filesChecked = jsFiles.length,
 
             for(const file of jsFiles.slice(0, 20)) { // 最大20ファイルをチェック
-                const content = await fs.readFile(file, 'utf8'),
+                const content = await fs.readFile(file, 'utf8');
                 ','
                 // 明らかな構文エラーチェック
                 if (content.includes('SyntaxError') || ','
@@ -410,8 +405,8 @@ export class IntegrityValidator {
     private async runImportTests(): Promise<ImportTestResult> { const result: ImportTestResult = {
             passed: true,
             importsChecked: 0,
-    brokenImports: 0 };
-        try { const importResolution = await this.checkImportResolution(),
+    brokenImports: 0 },
+        try { const importResolution = await this.checkImportResolution();
             result.importsChecked = importResolution.totalImportsChecked,
             result.brokenImports = importResolution.brokenImports.length,
             result.passed = importResolution.passed } catch (error) { result.error = (error, as Error).message,
@@ -431,8 +426,8 @@ export class IntegrityValidator {
 );
         for (const module of coreModules) {
 
-            const moduleResult = await this.validateCoreModule(module),
-            result.modulesChecked.push(moduleResult),
+            const moduleResult = await this.validateCoreModule(module);
+            result.modulesChecked.push(moduleResult);
             if (!moduleResult.accessible) {
     
 }
@@ -498,7 +493,7 @@ export class IntegrityValidator {
     private async extractImports(filePath: string): Promise<ImportInfo[]> { const imports: ImportInfo[] = [],
 
         try {'
-            const content = await fs.readFile(filePath, 'utf8'),
+            const content = await fs.readFile(filePath, 'utf8');
             const lines = content.split('\n),'
             
             for(let, i = 0, i < lines.length, i++) {
@@ -516,7 +511,7 @@ export class IntegrityValidator {
                 // require文の検出""
                 const requireMatch = line.match(/require\(['"]([^'"]+"['"]\)/";"'
                 if (requireMatch) { imports.push({
-                        line: i + 1),
+                        line: i + 1);
                         statement: line)","
     path: requireMatch[1]," }"
                         type: 'require'); 
@@ -536,15 +531,15 @@ export class IntegrityValidator {
     private async resolveImportPath(importPath: string, fromFile: string): Promise<string | null> { try {'
             if (importPath.startsWith('./') || importPath.startsWith('../) {'
                 // 相対パス
-                const fromDir = path.dirname(fromFile),
-                let resolved = path.resolve(fromDir, importPath),
+                const fromDir = path.dirname(fromFile);
+                let resolved = path.resolve(fromDir, importPath);
                 // .js拡張子の追加
                 if(!path.extname(resolved)) {''
                     resolved += '.js' }
                 ';'
 
                 return resolved;} else if(importPath.startsWith('/)' { // 絶対パス'
-                let resolved = path.resolve('.', importPath.substring(1),
+                let resolved = path.resolve('.', importPath.substring(1);
                 if(!path.extname(resolved)) {''
                     resolved += '.js' }
                 return resolved;
@@ -557,7 +552,7 @@ export class IntegrityValidator {
      * ファイルの存在確認
      */
     private async fileExists(filePath: string): Promise<boolean> { try {
-            await fs.access(filePath),
+            await fs.access(filePath);
             return true } catch { return false,
 
     /**
@@ -567,7 +562,7 @@ export class IntegrityValidator {
             path: modulePath,
             accessible: false,
             hasContent: false,
-    hasExports: false,;
+    hasExports: false,
 ';'
 
         try {'
@@ -610,9 +605,9 @@ export class IntegrityValidator {
             for(const entry of entries.slice(0, 5) {
                 // 最大5個チェック
                 if(entry.isFile() && entry.name.endsWith('.js' {'
-                    const utilPath = path.join(utilsDir, entry.name),
-                    const utilResult = await this.validateCoreModule(utilPath),
-                    result.utils.push(utilResult),
+                    const utilPath = path.join(utilsDir, entry.name);
+                    const utilResult = await this.validateCoreModule(utilPath);
+                    result.utils.push(utilResult);
                     if (utilResult.accessible) {
             }
                         accessibleUtils++; }
@@ -644,9 +639,9 @@ export class IntegrityValidator {
                 category: 'imports' }
 
                 severity: 'critical'
-            });
+            };
                 message: `${validationResults.importResolution.brokenImports.length} broken imports found`)
-                details: validationResults.importResolution.brokenImports);
+                details: validationResults.importResolution.brokenImports),
         }
 
         if (validationResults.basicTests && !validationResults.basicTests.passed) {

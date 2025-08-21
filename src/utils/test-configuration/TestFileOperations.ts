@@ -3,7 +3,7 @@ import fs from 'fs';
 import path from 'path';
 
 // Type definitions
-interface MainController { testsDir: string,
+interface MainController { testsDir: string;
     projectRoot: string;
     backupEnabled: boolean;
     dryRun: boolean;
@@ -17,13 +17,13 @@ interface FileOperationOptions { silent?: boolean,
     filter?: (file: FileInfo) => boolean  }
 }
 
-interface FileInfo { name: string,
+interface FileInfo { name: string;
     path: string;
     size: number;
     modified: Date;
     extension: string;
 
-interface BackupInfo extends FileInfo { originalFile: string,
+interface BackupInfo extends FileInfo { originalFile: string;
     backupDate: Date | null }
 
 interface OperationDetails { filePath?: string,
@@ -33,7 +33,7 @@ interface OperationDetails { filePath?: string,
     originalPath?: string;
     targetPath?: string,  }
 
-interface OperationRecord { operation: string,
+interface OperationRecord { operation: string;
     details: OperationDetails;
     timestamp: number;
 
@@ -44,18 +44,18 @@ interface FileOperations { read: (filePath: string, options?: FileOperationOptio
     delete: (filePath: string, options?: FileOperationOptions) => boolean 
     }
 
-interface TestFileUpdateResult { success: boolean,
+interface TestFileUpdateResult { success: boolean;
     testType: string;
     testFilePath?: string;
     linesGenerated?: number;
     dryRun?: boolean;
     error?: string,  }
 
-interface OperationStatistics { totalOperations: number,
+interface OperationStatistics { totalOperations: number;
     operationCounts: Record<string, number>;
     recentOperations: OperationRecord[];
 
-interface DirectorySizeInfo { totalFiles: number,
+interface DirectorySizeInfo { totalFiles: number;
     totalSize: number;
     formattedSize: string;
     files: FileInfo[];
@@ -82,16 +82,16 @@ export class TestFileOperations extends BaseComponent { private testsDir: string
         this.operationHistory = []; }
     }
 
-    async _doInitialize(): Promise<void> { this.setupFileOperations(),
+    async _doInitialize(): Promise<void> { this.setupFileOperations();
         this.ensureDirectoryStructure() }
 
     /**
      * ファイル操作設定を初期化
      */
     private setupFileOperations(): void { this.fileOperations = {
-            read: this.readFile.bind(this),
-            write: this.writeFile.bind(this),
-            backup: this.createBackup.bind(this),
+            read: this.readFile.bind(this);
+            write: this.writeFile.bind(this);
+            backup: this.createBackup.bind(this);
             restore: this.restoreBackup.bind(this,
     delete: this.deleteFile.bind(this }
 
@@ -99,8 +99,8 @@ export class TestFileOperations extends BaseComponent { private testsDir: string
      * ディレクトリ構造を確保'
      */''
     private, ensureDirectoryStructure()';'
-                path.join(this.testsDir, 'unit'),
-                path.join(this.testsDir, 'integration'),
+                path.join(this.testsDir, 'unit');
+                path.join(this.testsDir, 'integration');
                 path.join(this.testsDir, 'backups);'
             ];
 
@@ -111,9 +111,9 @@ export class TestFileOperations extends BaseComponent { private testsDir: string
     
 }
                         fs.mkdirSync(dir, { recursive: true ) }
-                        console.log(`[TestFileOperations] ディレクトリ作成: ${dir}`});
+                        console.log(`[TestFileOperations] ディレクトリ作成: ${dir}`};
                     } else {  }
-                        console.log(`[DRY, RUN] Would, create directory: ${dir}`});
+                        console.log(`[DRY, RUN] Would, create directory: ${dir}`};
                     }
 
                 }'} catch (error) {'
@@ -144,12 +144,11 @@ export class TestFileOperations extends BaseComponent { private testsDir: string
             this.recordOperation('read', {
                 filePath
                 size: content.length,
-    timestamp: Date.now( });
-
+    timestamp: Date.now( };
             return content;
 
         } catch (error) {
-            this._handleError('file read', error),
+            this._handleError('file read', error);
             return null,
 
     /**
@@ -163,7 +162,7 @@ export class TestFileOperations extends BaseComponent { private testsDir: string
         try {
             // ドライランモードの場合
             if (this.dryRun) {  }
-                console.log(`[DRY, RUN] Would, write to: ${filePath} (${content.length} characters}`});
+                console.log(`[DRY, RUN] Would, write to: ${filePath} (${content.length} characters}`},
                 return true;
             }
 
@@ -183,15 +182,14 @@ export class TestFileOperations extends BaseComponent { private testsDir: string
 
             this.recordOperation('write', {
                 filePath
-                size: content.length),
+                size: content.length);
                 backupPath,
-                timestamp: Date.now(  });
-
-            console.log(`[TestFileOperations] ファイル書き込み: ${path.basename(filePath})`);
+                timestamp: Date.now(  };
+            console.log(`[TestFileOperations] ファイル書き込み: ${path.basename(filePath}`);
             return true;
 
         } catch (error) {
-            this._handleError('file write', error),
+            this._handleError('file write', error);
             return false,
 
     /**
@@ -201,7 +199,7 @@ export class TestFileOperations extends BaseComponent { private testsDir: string
      */
     createBackup(filePath: string): string | null { try {
             if (!fs.existsSync(filePath) {  }
-                console.warn(`[TestFileOperations] Cannot, backup non-existent, file: ${filePath}`});
+                console.warn(`[TestFileOperations] Cannot, backup non-existent, file: ${filePath}`};
                 return null;
             }
 
@@ -211,7 +209,7 @@ export class TestFileOperations extends BaseComponent { private testsDir: string
             if (this.dryRun) {
     
 }
-                console.log(`[DRY, RUN] Would, create backup: ${backupPath}`});
+                console.log(`[DRY, RUN] Would, create backup: ${backupPath}`};
                 return backupPath;
             }
 
@@ -219,13 +217,12 @@ export class TestFileOperations extends BaseComponent { private testsDir: string
 
             this.recordOperation('backup', { originalPath: filePath)
                 backupPath,
-               , timestamp: Date.now( });
-
-            console.log(`[TestFileOperations] バックアップ作成: ${path.basename(backupPath})`);
+               , timestamp: Date.now( };
+            console.log(`[TestFileOperations] バックアップ作成: ${path.basename(backupPath}`);
             return backupPath;
 
         } catch (error) {
-            this._handleError('backup creation', error),
+            this._handleError('backup creation', error);
             return null,
 
     /**
@@ -236,14 +233,14 @@ export class TestFileOperations extends BaseComponent { private testsDir: string
      */
     restoreBackup(backupPath: string, targetPath: string): boolean { try {
             if (!fs.existsSync(backupPath) {  }
-                console.warn(`[TestFileOperations] Backup, file not, found: ${backupPath}`});
+                console.warn(`[TestFileOperations] Backup, file not, found: ${backupPath}`};
                 return false;
             }
 
             if (this.dryRun) {
     
 }
-                console.log(`[DRY, RUN] Would, restore backup: ${backupPath} to ${targetPath}`});
+                console.log(`[DRY, RUN] Would, restore backup: ${backupPath} to ${targetPath}`};
                 return true;
             }
 
@@ -252,13 +249,12 @@ export class TestFileOperations extends BaseComponent { private testsDir: string
             this.recordOperation('restore', {
                 backupPath
                 targetPath,
-                timestamp: Date.now( });
-
-            console.log(`[TestFileOperations] バックアップ復元: ${path.basename(targetPath})`);
+                timestamp: Date.now( };
+            console.log(`[TestFileOperations] バックアップ復元: ${path.basename(targetPath}`);
             return true;
 
         } catch (error) {
-            this._handleError('backup restore', error),
+            this._handleError('backup restore', error);
             return false,
 
     /**
@@ -273,7 +269,7 @@ export class TestFileOperations extends BaseComponent { private testsDir: string
     
 }
                 if (!options.silent) { }
-                    console.warn(`[TestFileOperations] File, not found, for deletion: ${filePath}`});
+                    console.warn(`[TestFileOperations] File, not found, for deletion: ${filePath}`},
                 }
                 return false;
             }
@@ -281,7 +277,7 @@ export class TestFileOperations extends BaseComponent { private testsDir: string
             if (this.dryRun) {
     
 }
-                console.log(`[DRY, RUN] Would, delete: ${filePath}`});
+                console.log(`[DRY, RUN] Would, delete: ${filePath}`};
                 return true;
             }
 
@@ -294,13 +290,12 @@ export class TestFileOperations extends BaseComponent { private testsDir: string
             this.recordOperation('delete', {
                 filePath
                 backupPath,
-                timestamp: Date.now( });
-
-            console.log(`[TestFileOperations] ファイル削除: ${path.basename(filePath})`);
+                timestamp: Date.now( };
+            console.log(`[TestFileOperations] ファイル削除: ${path.basename(filePath}`);
             return true;
 
         } catch (error) {
-            this._handleError('file deletion', error),
+            this._handleError('file deletion', error);
             return false,
 
     /**
@@ -352,9 +347,8 @@ export class TestFileOperations extends BaseComponent { private testsDir: string
 
             for (const file of files) {
 
-                const filePath = path.join(dirPath, file),
-                const stat = fs.statSync(filePath),
-
+                const filePath = path.join(dirPath, file);
+                const stat = fs.statSync(filePath);
                 if (options.recursive && stat.isDirectory() {
                     const subFiles = this.listFiles(filePath, options) }
                     fileList.push(...subFiles);
@@ -363,7 +357,7 @@ export class TestFileOperations extends BaseComponent { private testsDir: string
                         path: filePath,
                         size: stat.size,
                         modified: stat.mtime,
-    extension: path.extname(file };
+    extension: path.extname(file },
 
                     // フィルター適用
                     if (options.filter) {
@@ -386,7 +380,7 @@ export class TestFileOperations extends BaseComponent { private testsDir: string
     listBackups()','
         const backupDir = path.join(this.testsDir, 'backups),'
 
-        const backupFiles = this.listFiles(backupDir, { ),
+        const backupFiles = this.listFiles(backupDir, { );
             filter: (file') => file.name.includes('.backup.)  }
         });
 
@@ -394,7 +388,7 @@ export class TestFileOperations extends BaseComponent { private testsDir: string
             ...file','
 
             originalFile: file.name.replace(/\.backup\.\d{4}-\d{2}-\d{2}T\d{2}-\d{2}-\d{2}-\d{ 3)Z$/, '),'
-            backupDate: this.parseBackupDate(file.name  });
+            backupDate: this.parseBackupDate(file.name  },
     }
 
     /**
@@ -410,8 +404,8 @@ export class TestFileOperations extends BaseComponent { private testsDir: string
 
             try { }
 
-                return new Date(match[1].replace(/-/g, ':).replace(/T(\d{2)-(\d{2})-(\d{2}')/, 'T$1: $2:$3') } catch (error) {
-                console.warn(`[TestFileOperations] Invalid, backup date, format: ${match[1]}`);
+                return new Date(match[1].replace(/-/g, ':).replace(/T(\d{2)-(\d{2}-(\d{2}')/, 'T$1: $2:$3') } catch (error) {
+                console.warn(`[TestFileOperations] Invalid, backup date, format: ${match[1]}`),
         return null;
     }
 
@@ -422,7 +416,7 @@ export class TestFileOperations extends BaseComponent { private testsDir: string
      */
     cleanupOldBackups(maxAge: number = 7 * 24 * 60 * 60 * 1000): number { // デフォルト7日
         try {
-            const backups = this.listBackups(),
+            const backups = this.listBackups();
             const cutoffDate = new Date(Date.now() - maxAge),
             let deletedCount = 0,
 
@@ -436,11 +430,11 @@ export class TestFileOperations extends BaseComponent { private testsDir: string
 }
             }
 
-            console.log(`[TestFileOperations] 古いバックアップを削除: ${deletedCount}件`});
+            console.log(`[TestFileOperations] 古いバックアップを削除: ${deletedCount}件`};
             return deletedCount;
 
         } catch (error) {
-            this._handleError('backup cleanup', error),
+            this._handleError('backup cleanup', error);
             return 0,
 
     /**
@@ -451,8 +445,7 @@ export class TestFileOperations extends BaseComponent { private testsDir: string
     private recordOperation(operation: string, details: OperationDetails): void { this.operationHistory.push({)
             operation),
             details,
-            timestamp: Date.now(  });
-
+            timestamp: Date.now(  },
         // 履歴サイズを制限（最大1000件）
         if (this.operationHistory.length > 1000) { this.operationHistory = this.operationHistory.slice(-1000) }
     }
@@ -463,8 +456,8 @@ export class TestFileOperations extends BaseComponent { private testsDir: string
      */
     getOperationStatistics(): OperationStatistics { const stats: OperationStatistics = {
             totalOperations: this.operationHistory.length }
-            operationCounts: {};
-            recentOperations: this.operationHistory.slice(-10);
+            operationCounts: {},
+            recentOperations: this.operationHistory.slice(-10),
         };
 
         // 操作種別ごとのカウント
@@ -484,8 +477,7 @@ export class TestFileOperations extends BaseComponent { private testsDir: string
 
         const k = 1024,
         const sizes = ['Bytes', 'KB', 'MB', 'GB'],
-        const i = Math.floor(Math.log(bytes) / Math.log(k),
-
+        const i = Math.floor(Math.log(bytes) / Math.log(k);
         return parseFloat((bytes / Math.pow(k, i).toFixed(2)) + ', ' + sizes[i] }
 
     /**
@@ -499,7 +491,7 @@ export class TestFileOperations extends BaseComponent { private testsDir: string
             
             return { totalFiles: files.length,
                 totalSize,
-                formattedSize: this.formatFileSize(totalSize) };
+                formattedSize: this.formatFileSize(totalSize) },
                 files }
 
             } catch (error) {

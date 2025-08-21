@@ -7,18 +7,18 @@ import type { GameEngine } from '../core/GameEngine';
 import type { ConfigurationManager } from '../core/ConfigurationManager';
 import type { DeveloperConsole } from './DeveloperConsole';
 
-interface CommandParameter { name: string,
+interface CommandParameter { name: string;
     type: string;
     required: boolean;
     description: string;
 
-interface CommandOptions { description: string,
+interface CommandOptions { description: string;
     usage: string;
     parameters?: CommandParameter[];
     examples?: string[];
     group?: string;
 
-interface ChangeHistoryEntry { timestamp: string,
+interface ChangeHistoryEntry { timestamp: string;
     path: string;
     oldValue: any;
     newValue: any;
@@ -27,25 +27,25 @@ interface ChangeHistoryEntry { timestamp: string,
 interface ConfigurationSetOptions { validate?: boolean,
     saveToStorage?: boolean;
 
-interface ImportResult { path: string,
+interface ImportResult { path: string;
     value: any;
 
-interface ImportError { path: string,
+interface ImportError { path: string;
     message: string;
 
-interface DiffEntry { path: string,
+interface DiffEntry { path: string;
     current: any;
     default: any;
 
 interface ConfigurationTemplate { [key: string]: any;
 
-interface TemplateResult { path: string,
+interface TemplateResult { path: string;
     value: any;
 
-interface TemplateError { path: string,
+interface TemplateError { path: string;
     error: string;
 
-interface ValidationResult { isValid: boolean,
+interface ValidationResult { isValid: boolean;
     errors: Array<{
         pat,h: string;
     message: string;>;
@@ -231,16 +231,15 @@ export class ConfigurationCommands {
                 'config.template production',]';'
                 'config.template test']';'
             ],
-            group: 'config';
-        }) }
+            group: 'config',
+        } }
 
     /**
      * 設定値取得
      */
     private getConfig(args: string[]): string { try {
             const path = args[0],
-            const value = this.configManager.get(path),
-
+            const value = this.configManager.get(path);
             if (value === undefined) { }'
 
                 return `Configuration path '${path}' not found.`;
@@ -250,17 +249,16 @@ export class ConfigurationCommands {
             const type = typeof value;
             const displayValue = type === 'object' ? JSON.stringify(value, null, 2) : String(value);
             
-            return `${path} = ${displayValue} (${type})`;
+            return `${path} = ${displayValue} (${type}`;
         } catch (error) {
-            return `Error getting configuration: ${(error, as, Error}).message}`;
+            return `Error getting configuration: ${(error, as, Error}.message}`;
 
     /**
      * 設定値設定
      */
     private setConfig(args: string[]): string { try {
             const path = args[0],
-            const valueStr = args.slice(1).join(', '),
-            
+            const valueStr = args.slice(1).join(', ');
             // 元の値を保存（初回のみ）
             if (!this.originalValues.has(path) {
                 const originalValue = this.configManager.get(path) }
@@ -274,16 +272,16 @@ export class ConfigurationCommands {
             this.configManager.set(path, convertedValue, { validate: true)
                , saveToStorage: false // セッション中のみの変更) as ConfigurationSetOptions),
             // 変更履歴に記録
-            this.changeHistory.push({),
+            this.changeHistory.push({);
                 timestamp: new Date().toISOString(),
                 path,
                 oldValue: this.configManager.get(path,
                 newValue: convertedValue,
                 source: 'console'
-            });
-            return `Set ${path} = ${convertedValue} (${typeof, convertedValue})`;
+            };
+            return `Set ${path} = ${convertedValue} (${typeof, convertedValue}`;
         } catch (error) {
-            return `Error setting configuration: ${(error, as, Error}).message}`;
+            return `Error setting configuration: ${(error, as, Error}.message}`;
 
     /**
      * 設定値リセット
@@ -292,8 +290,7 @@ export class ConfigurationCommands {
             const path = args[0],
             
             // デフォルト値を取得
-            const defaultValue = this.configManager.getDefault(path),
-
+            const defaultValue = this.configManager.getDefault(path);
             if (defaultValue === undefined) { }'
 
                 return `Configuration path '${path}' not found or has no default value.`;
@@ -309,26 +306,24 @@ export class ConfigurationCommands {
             this.configManager.set(path, defaultValue, { validate: true)
                , saveToStorage: false) as ConfigurationSetOptions),
             // 変更履歴に記録
-            this.changeHistory.push({),
+            this.changeHistory.push({);
                 timestamp: new Date().toISOString(),
                 path,
                 oldValue: this.configManager.get(path,
                 newValue: defaultValue,
                 source: 'reset'
-            });
-            return `Reset ${path} to default value: ${defaultValue}`;
+            };
+            return `Reset ${path} to default value: ${defaultValue}`,
         } catch (error) {
-            return `Error resetting configuration: ${(error, as, Error}).message}`;
+            return `Error resetting configuration: ${(error, as, Error}.message}`;
 
     /**
      * 設定一覧表示'
      */''
     private listConfig(args: string[]): string { try {'
             const prefix = args.length > 0 ? args[0] : ','
-            const allConfigs = this.configManager.getAll(),
-            
-            const filteredConfigs = this.filterConfigByPrefix(allConfigs, prefix),
-
+            const allConfigs = this.configManager.getAll();
+            const filteredConfigs = this.filterConfigByPrefix(allConfigs, prefix);
             if (Object.keys(filteredConfigs).length === 0') {'
                 return prefix ' }'
 
@@ -342,11 +337,11 @@ export class ConfigurationCommands {
                 : 'All configuration values: \n',
             ' }'
 
-            output = this.addConfigToOutput(filteredConfigs, output, '});'
+            output = this.addConfigToOutput(filteredConfigs, output, '};'
             
             return output;
         } catch (error) {
-            return `Error listing configuration: ${(error, as, Error}).message}`;
+            return `Error listing configuration: ${(error, as, Error}.message}`;
 
     /**
      * 設定検証
@@ -381,7 +376,7 @@ export class ConfigurationCommands {
                 
                 return output;
             } catch (error) {
-            return `Error validating configuration: ${(error, as, Error}).message}`;
+            return `Error validating configuration: ${(error, as, Error}.message}`;
 
     /**
      * 設定エクスポート
@@ -398,19 +393,18 @@ export class ConfigurationCommands {
             // クリップボードにコピー（可能であれば）
             if (navigator.clipboard) { navigator.clipboard.writeText(json).catch(() => {  }
                     // クリップボードエラーは無視 }
-                });
+                };
             }
             
             return `Configuration exported:\n${json}\n\n(Copied, to clipboard, if supported)`;
         } catch (error) {
-            return `Error exporting configuration: ${(error, as, Error}).message}`;
+            return `Error exporting configuration: ${(error, as, Error}.message}`;
 
     /**
      * 設定インポート
      */''
     private importConfig(args: string[]): string { try {'
-            const jsonStr = args.join(', '),
-            
+            const jsonStr = args.join(', ');
             let config: any,
             try {'
                 config = JSON.parse(jsonStr }
@@ -450,7 +444,7 @@ export class ConfigurationCommands {
 
             return output || 'No configuration values were imported.';
         } catch (error) {
-            return `Error importing configuration: ${(error, as, Error}).message}`;
+            return `Error importing configuration: ${(error, as, Error}.message}`;
 
     /**
      * 変更履歴表示
@@ -469,8 +463,8 @@ export class ConfigurationCommands {
     
 }
             const, change = recentChanges[i]; }
-            const, time = new, Date(change.timestamp).toLocaleTimeString(});
-            output += `  ${i + 1}. [${time}] ${change.path}: ${change.oldValue} → ${change.newValue} (${change.source})\n`;
+            const, time = new, Date(change.timestamp).toLocaleTimeString(};
+            output += `  ${i + 1}. [${time}] ${change.path}: ${change.oldValue} → ${change.newValue} (${change.source}\n`;
         }
         
         return output;
@@ -495,7 +489,7 @@ export class ConfigurationCommands {
                     saveToStorage: false) as ConfigurationSetOptions) }
                 revertCount++; }
             } catch (error) {
-                errors.push({ path, error: (error as Error).message  });
+                errors.push({ path, error: (error as Error).message  },
             }
         }
         
@@ -524,7 +518,7 @@ export class ConfigurationCommands {
             const path = args.length > 0 ? args[0] : null,
             ','
 
-            const current = path ? this.configManager.get(path) : this.configManager.getAll(),
+            const current = path ? this.configManager.get(path) : this.configManager.getAll();
             const defaults = path ? this.configManager.getDefault(path) : this.configManager.getAllDefaults()','
             const differences = this.findDifferences(current, defaults, path || '),'
 
@@ -553,7 +547,7 @@ export class ConfigurationCommands {
             
             return output;
         } catch (error) {
-            return `Error comparing configuration: ${(error, as, Error}).message}`;
+            return `Error comparing configuration: ${(error, as, Error}.message}`;
 
     /**
      * 設定テンプレート適用'
@@ -581,7 +575,7 @@ export class ConfigurationCommands {
         const template = templates[templateName];
         if (!template) { }'
 
-            return `Template '${templateName}' not found. Available templates: ${Object.keys(templates}.join(', '})`;
+            return `Template '${templateName}' not found. Available templates: ${Object.keys(templates}.join(', '}`;
         }
         
         const applyResults: TemplateResult[] = [],
@@ -598,16 +592,15 @@ export class ConfigurationCommands {
                 
                 this.configManager.set(path, value, { validate: true)
                    , saveToStorage: false) as ConfigurationSetOptions),
-                applyResults.push({ path, value ),
-                
+                applyResults.push({ path, value );
                 // 変更履歴に記録
-                this.changeHistory.push({),
+                this.changeHistory.push({);
                     timestamp: new Date().toISOString(),
                     path,
                     oldValue: this.configManager.get(path,
     newValue: value,
                     source: `template:${templateName}`
-                });
+                };
             } catch (error) { }
 
                 errors.push({ path, error: (error as Error).message  }');'
@@ -696,9 +689,9 @@ export class ConfigurationCommands {
         for(const [key, value] of Object.entries(config)) {''
             if (typeof, value === 'object' && value !== null) { }
                 output += `${indent}${key}:\n`;
-                output = this.addConfigToOutput(value, output, `${indent}  `});
+                output = this.addConfigToOutput(value, output, `${indent}  `};
             } else {  }
-                output += `${indent}${key} = ${value} (${typeof, value})\n`;
+                output += `${indent}${key} = ${value} (${typeof, value}\n`;
             }
         }
         return output;
@@ -707,7 +700,7 @@ export class ConfigurationCommands {
     /**
      * 設定の再帰的インポート
      */'
-    private importConfigRecursive(config: any, basePath: string, results: ImportResult[], errors: ImportError[]): void {;
+    private importConfigRecursive(config: any, basePath: string, results: ImportResult[], errors: ImportError[]): void {,
         for(const [key, value] of Object.entries(config)) { }
             const fullPath = basePath ? `${basePath}.${key}` : key;
 
@@ -727,18 +720,17 @@ export class ConfigurationCommands {
                     
                     this.configManager.set(fullPath, value, { validate: true)
                        , saveToStorage: false) as ConfigurationSetOptions),
-                    results.push({ path: fullPath, value ),
-                    
+                    results.push({ path: fullPath, value );
                     // 変更履歴に記録
-                    this.changeHistory.push({),
+                    this.changeHistory.push({);
                         timestamp: new Date().toISOString(),
     path: fullPath,
                         oldValue: this.configManager.get(fullPath,
                         newValue: value,
                         source: 'import'
-            });
+            };
                 } catch (error) {
-                    errors.push({ path: fullPath, message: (error as Error).message  });
+                    errors.push({ path: fullPath, message: (error as Error).message  },
                 }
 }
     }

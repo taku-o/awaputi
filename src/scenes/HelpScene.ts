@@ -13,7 +13,7 @@ import { HelpEventManager  } from './help-scene/HelpEventManager.js';
 import { ContextualHelpManager  } from './help-scene/ContextualHelpManager.js';
 
 // Help Scene specific types
-export interface HelpTopic { id: string,
+export interface HelpTopic { id: string;
     title: string;
     content?: string;
     category?: string,  }
@@ -27,14 +27,14 @@ export interface HelpContextData { contextual?: boolean,
     preserveContext?: boolean;
     returnScene?: string;
 
-export interface HelpSceneState { initialized: boolean,
+export interface HelpSceneState { initialized: boolean;
     currentContext?: any;
     contextualHelpTitle?: string;
     contextualHelpContent?: string;
     contextualHelpActions?: string[];
     hasContextualHelp?: boolean;
 
-export interface HelpSceneComponents { helpAccessibilityManager: HelpAccessibilityManager,
+export interface HelpSceneComponents { helpAccessibilityManager: HelpAccessibilityManager;
     helpContentManager: HelpContentManager;
     helpAnimationManager: HelpAnimationManager;
     helpTransitionRenderer: HelpTransitionRenderer;
@@ -56,7 +56,7 @@ export interface ConfigureOptions { accessibility?: AccessibilityOptions,
     layout?: LayoutOptions;
     colors?: ColorOptions;
 
-export interface HelpSceneStatus { initialized: boolean,
+export interface HelpSceneStatus { initialized: boolean;
     contentState?: any;
     accessibilityState?: any;
     animationState?: any;
@@ -95,15 +95,14 @@ export class HelpScene extends Scene implements HelpSceneState { // Core compone
 
     constructor(gameEngine: any) {
 
-        super(gameEngine),
+        super(gameEngine);
         this.loggingSystem = getLoggingSystem();
         
         // NavigationContextManagerの初期化
         this.navigationContext = new NavigationContextManager(gameEngine);
         
         // Initialize sub-components
-        this._initializeSubComponents(),
-        
+        this._initializeSubComponents();
         // 基本設定
         this.initialized = false
 }
@@ -119,7 +118,7 @@ export class HelpScene extends Scene implements HelpSceneState { // Core compone
         try { // アクセシビリティ管理
             console.log('HelpScene: Creating, HelpAccessibilityManager',
             const accessibilityManager = this.gameEngine.accessibilityManager || new CoreAccessibilityManager(this.gameEngine'),'
-            this.helpAccessibilityManager = new HelpAccessibilityManager(this.gameEngine, accessibilityManager),
+            this.helpAccessibilityManager = new HelpAccessibilityManager(this.gameEngine, accessibilityManager);
             ','
             // コンテンツ管理
             console.log('HelpScene: Creating, HelpContentManager',
@@ -148,8 +147,7 @@ export class HelpScene extends Scene implements HelpSceneState { // Core compone
             console.log('HelpScene: Creating, ContextualHelpManager',
             this.contextualHelpManager = new ContextualHelpManager(this.gameEngine');'
 
-            console.log('HelpScene, sub-components, initialized'),
-
+            console.log('HelpScene, sub-components, initialized');
             ' }'
 
         } catch (error) {
@@ -162,7 +160,7 @@ export class HelpScene extends Scene implements HelpSceneState { // Core compone
      */
     async initialize(): Promise<void> { try {
             // サブコンポーネントの初期化待機
-            await this.waitForSubComponentInitialization(),
+            await this.waitForSubComponentInitialization();
             // イベントコールバックの設定
             this.setupEventCallbacks()','
             this.loggingSystem.info('HelpScene', 'Help scene initialized successfully',
@@ -238,7 +236,7 @@ export class HelpScene extends Scene implements HelpSceneState { // Core compone
     /**
      * シーン開始時の処理'
      */''
-    enter(contextData: HelpContextData = {}): void { ''
+    enter(contextData: HelpContextData = {}: void { ''
         console.log('HelpScene: enter() called',
         if (!this.initialized) {
 
@@ -307,7 +305,7 @@ export class HelpScene extends Scene implements HelpSceneState { // Core compone
             // コンテキスト情報の保存（戻りナビゲーション用）
             this.currentContext = {
                 ...contextData;
-                entryTime: Date.now(  };
+                entryTime: Date.now(  },
             
             // NavigationContextManagerにコンテキストを設定
             if (contextData.preserveContext && contextData.returnScene) { this.navigationContext.setReturnContext({)
@@ -369,7 +367,7 @@ export class HelpScene extends Scene implements HelpSceneState { // Core compone
      */''
     setQuickHelpMode()';'
             accessMethod: 'keyboard_ctrl_slash',
-    quick: true);
+    quick: true),
         if (quickHelp) {
         ','
 
@@ -386,7 +384,7 @@ export class HelpScene extends Scene implements HelpSceneState { // Core compone
      */''
     setStandardHelpMode()';'
             accessMethod: 'menu_click',
-    standard: true);
+    standard: true),
         if (standardHelp) {
         ','
 
@@ -467,10 +465,10 @@ export class HelpScene extends Scene implements HelpSceneState { // Core compone
      */
     exit() {
         // フィードバックシステムでビュー終了追跡
-        const feedbackSystem = this.helpContentManager.getHelpFeedbackSystem(),
-        const state = this.helpContentManager.getState(),
+        const feedbackSystem = this.helpContentManager.getHelpFeedbackSystem();
+        const state = this.helpContentManager.getState();
         if (feedbackSystem && state.currentContent) {
-            const currentTopic = this.helpContentManager.getCurrentTopic(),
+            const currentTopic = this.helpContentManager.getCurrentTopic();
             if (currentTopic) {
     }
                 feedbackSystem.endContentView(currentTopic.id); }
@@ -484,7 +482,7 @@ export class HelpScene extends Scene implements HelpSceneState { // Core compone
                 finalCategory: state.selectedCategory','
     finalTopic: state.selectedTopicIndex,
                 searchPerformed: state.searchQuery !== '
-            })
+            }
                 lastSearchQuery: state.searchQuery); 
     }
         
@@ -500,7 +498,7 @@ export class HelpScene extends Scene implements HelpSceneState { // Core compone
      */
     showFeedbackDialog(data: any) {
         try {
-            const feedbackSystem = this.helpContentManager.getHelpFeedbackSystem(),
+            const feedbackSystem = this.helpContentManager.getHelpFeedbackSystem();
             if (!feedbackSystem || !data.content) {''
                 console.warn('Feedback, system not, available or, no content, provided) }'
                 return; }
@@ -555,15 +553,14 @@ export class HelpScene extends Scene implements HelpSceneState { // Core compone
 
         try {
             // アニメーション更新
-            const currentTime = performance.now(),
-            this.helpAnimationManager.updateAnimations(currentTime),
-
+            const currentTime = performance.now();
+            this.helpAnimationManager.updateAnimations(currentTime);
             // メイン描画
-            const state = this.helpContentManager.getState(),
+            const state = this.helpContentManager.getState();
             this.helpRenderer.render(
                 ctx,
                 state,
-                this.helpAccessibilityManager),
+                this.helpAccessibilityManager);
                 this.helpAnimationManager),
                 this.helpTransitionRenderer),
             
@@ -585,8 +582,8 @@ export class HelpScene extends Scene implements HelpSceneState { // Core compone
 
         try {
             // アニメーション更新
-            const currentTime = performance.now(),
-            this.helpAnimationManager.updateAnimations(currentTime),
+            const currentTime = performance.now();
+            this.helpAnimationManager.updateAnimations(currentTime);
             ' }'
 
         } catch (error) { console.error('Update error in HelpScene:', error }
@@ -599,10 +596,10 @@ export class HelpScene extends Scene implements HelpSceneState { // Core compone
             return { initialized: false,
 
         return { initialized: this.initialized,
-            contentState: this.helpContentManager.getState(),
+            contentState: this.helpContentManager.getState();
             accessibilityState: this.helpAccessibilityManager.getAccessibilityState(
-    animationState: this.helpAnimationManager.getAllAnimationStates() };
-            eventState: this.helpEventManager.getEventState(), 
+    animationState: this.helpAnimationManager.getAllAnimationStates() },
+            eventState: this.helpEventManager.getEventState();
     }
 
     /**

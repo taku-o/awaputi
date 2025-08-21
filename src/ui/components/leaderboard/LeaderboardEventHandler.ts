@@ -15,7 +15,7 @@ interface GameEngine { // Add specific properties/methods as needed }
 /**
  * Event configuration interface
  */
-interface EventConfig { clickThreshold: number,
+interface EventConfig { clickThreshold: number;
     doubleClickThreshold: number;
     hoverDelay: number;
     touchThreshold: number;
@@ -26,7 +26,7 @@ interface EventConfig { clickThreshold: number,
 /**
  * Touch data interface
  */
-interface TouchData { startX: number,
+interface TouchData { startX: number;
     startY: number;
     currentX: number;
     currentY: number;
@@ -36,7 +36,7 @@ interface TouchData { startX: number,
 /**
  * Event state interface
  */
-interface EventState { lastClickTime: number,
+interface EventState { lastClickTime: number;
     lastClickTarget: EventTarget | null;
     clickCount: number;
     lastHoverTarget: EventTarget | null;
@@ -51,7 +51,7 @@ interface EventState { lastClickTime: number,
 /**
  * Gesture configuration interface
  */
-interface GestureConfig { distance: number,
+interface GestureConfig { distance: number;
     direction?: string;
     velocity?: number;
     threshold?: number;
@@ -60,7 +60,7 @@ interface GestureConfig { distance: number,
 /**
  * UI element bounds interface
  */
-interface Bounds { x: number,
+interface Bounds { x: number;
     y: number;
     width: number;
     height: number;
@@ -68,7 +68,7 @@ interface Bounds { x: number,
 /**
  * UI element interface
  */
-interface UIElement { bounds: Bounds,
+interface UIElement { bounds: Bounds;
     view?: string;
     sortBy?: string;
     data?: any;
@@ -84,7 +84,7 @@ interface EventTarget extends UIElement { ''
 /**
  * UI elements collection interface
  */
-interface UIElements { tabs: UIElement[],
+interface UIElements { tabs: UIElement[];
     sortOptions: UIElement[];
     entries: UIElement[];
     buttons: UIElement[];
@@ -93,7 +93,7 @@ interface UIElements { tabs: UIElement[],
 /**
  * Selection state interface
  */
-interface SelectionState { selectedView: string,
+interface SelectionState { selectedView: string;
     selectedSort: string;
     selectedEntry: any | null;
     selectedEntryIndex: number;
@@ -102,19 +102,19 @@ interface SelectionState { selectedView: string,
 /**
  * Touch interface
  */
-interface Touch { identifier: number,
+interface Touch { identifier: number;
     clientX: number;
     clientY: number;
 
 /**
  * Event callback data types
  */
-interface ClickEventData { x: number,
+interface ClickEventData { x: number;
     y: number;
     target: EventTarget | null;
     options: any;
 
-interface HoverEventData { target: EventTarget,
+interface HoverEventData { target: EventTarget;
     options?: any;
 
 interface ScrollEventData { deltaX?: number,
@@ -125,7 +125,7 @@ interface ScrollEventData { deltaX?: number,
     isScrollbarClick?: boolean;
     isGesture?: boolean;
 
-interface KeyDownEventData { keyCode: string,
+interface KeyDownEventData { keyCode: string;
     action?: string;
     options: any;
 
@@ -143,7 +143,7 @@ interface DetailsToggleEventData { entry?: any,
 
 interface RefreshEventData {}
 
-interface GestureData { deltaX: number,
+interface GestureData { deltaX: number;
     deltaY: number;
     velocity: number;
 
@@ -177,31 +177,31 @@ export class LeaderboardEventHandler {
         hoverDelay: 100, // ms;
         touchThreshold: 10, // px;
         keyboardRepeatDelay: 150, // ms;
-        wheelSensitivity: 1.0,
+        wheelSensitivity: 1.0;
     gestureMinDistance: 50 // px  };
     // イベント状態
     private eventState: EventState = { lastClickTime: 0
-        lastClickTarget: null,
-        clickCount: 0,
-        lastHoverTarget: null,
-        hoverTimer: null,
-        isDragging: false,
-        dragStartX: 0,
-        dragStartY: 0,
-        lastKeyTime: 0,
-        lastKeyCode: null,
+        lastClickTarget: null;
+        clickCount: 0;
+        lastHoverTarget: null;
+        hoverTimer: null;
+        isDragging: false;
+        dragStartX: 0;
+        dragStartY: 0;
+        lastKeyTime: 0;
+        lastKeyCode: null;
     touches: new Map( }
     
     // コールバック管理
-    private, callbacks = { onClick: new, Set<ClickCallback>(),
-        onDoubleClick: new Set<ClickCallback>(),
-        onHover: new Set<HoverCallback>(),
-        onHoverEnd: new Set<HoverCallback>(),
-        onScroll: new Set<ScrollCallback>(),
-        onKeyDown: new Set<KeyDownCallback>(),
-        onViewChange: new Set<ViewChangeCallback>(),
-        onSortChange: new Set<SortChangeCallback>(),
-        onEntrySelect: new Set<EntrySelectCallback>(),
+    private, callbacks = { onClick: new, Set<ClickCallback>();
+        onDoubleClick: new Set<ClickCallback>();
+        onHover: new Set<HoverCallback>();
+        onHoverEnd: new Set<HoverCallback>();
+        onScroll: new Set<ScrollCallback>();
+        onKeyDown: new Set<KeyDownCallback>();
+        onViewChange: new Set<ViewChangeCallback>();
+        onSortChange: new Set<SortChangeCallback>();
+        onEntrySelect: new Set<EntrySelectCallback>();
         onDetailsToggle: new Set<DetailsToggleCallback>(
         onRefresh: new Set<RefreshCallback>('
             }
@@ -230,17 +230,17 @@ export class LeaderboardEventHandler {
     
     // UI要素の座標情報
     private uiElements: UIElements = { tabs: []
-        sortOptions: [],
-        entries: [],
-        buttons: [],
-    scrollbar: null,;
+        sortOptions: [];
+        entries: [];
+        buttons: [];
+    scrollbar: null;
     // 現在の選択状態
     private selectionState: SelectionState = { ''
         selectedView: 'overall'','
-        selectedSort: 'score',
-        selectedEntry: null,
-        selectedEntryIndex: -1,
-    showingDetails: false,;
+        selectedSort: 'score';
+        selectedEntry: null;
+        selectedEntryIndex: -1;
+    showingDetails: false;
     constructor(gameEngine: GameEngine) {
 
         this.gameEngine = gameEngine;
@@ -265,9 +265,8 @@ export class LeaderboardEventHandler {
      */
     handleClick(x: number, y: number, options: any = { ): void {
         try {
-            const currentTime = Date.now(),
-            const target = this.getTargetAt(x, y),
-            
+            const currentTime = Date.now();
+            const target = this.getTargetAt(x, y);
             // ダブルクリック検出
             const isDoubleClick = ,
                 currentTime - this.eventState.lastClickTime < this.eventConfig.doubleClickThreshold &&,
@@ -307,19 +306,19 @@ export class LeaderboardEventHandler {
         switch(target.type) {
 
             case 'tab':','
-                this.handleTabClick(target),
+                this.handleTabClick(target);
                 break,
 
             case 'sortOption':','
-                this.handleSortClick(target),
+                this.handleSortClick(target);
                 break,
 
             case 'entry':','
-                this.handleEntryClick(target),
+                this.handleEntryClick(target);
                 break,
 
             case 'button':','
-                this.handleButtonClick(target),
+                this.handleButtonClick(target);
                 break,
 
             case 'scrollbar':','
@@ -356,8 +355,7 @@ export class LeaderboardEventHandler {
      */
     handleHover(x: number, y: number, options: any = { ): void {
         try {
-            const target = this.getTargetAt(x, y),
-            
+            const target = this.getTargetAt(x, y);
             // 前回と同じターゲットの場合はスキップ
             if (this.eventState.lastHoverTarget === target) {
     
@@ -391,7 +389,7 @@ export class LeaderboardEventHandler {
 
         this.eventState.hoverTimer = window.setTimeout(() => { // コールバック実行' }'
 
-            this.executeCallbacks('onHover', { target, options });
+            this.executeCallbacks('onHover', { target, options };
         }, this.eventConfig.hoverDelay';'
     }
     
@@ -400,7 +398,7 @@ export class LeaderboardEventHandler {
      * @param {Object} target - ターゲット
      */'
     handleHoverEnd(target: EventTarget): void { if (this.eventState.hoverTimer) {''
-            clearTimeout(this.eventState.hoverTimer),
+            clearTimeout(this.eventState.hoverTimer);
             this.eventState.hoverTimer = null }
         ';'
         // コールバック実行
@@ -423,7 +421,7 @@ export class LeaderboardEventHandler {
                 options ','
 
             ' 
-            })'
+            }'
 
         } catch (error) {
             this.errorHandler.handleError(error, 'LeaderboardEventHandler.handleScroll' }'
@@ -436,10 +434,9 @@ export class LeaderboardEventHandler {
      */
     handleKeyDown(keyCode: string, options: any = { ): void {
         try {
-            const currentTime = Date.now(),
-            
+            const currentTime = Date.now();
             // キーボードリピート制御
-            if(this.eventState.lastKeyCode === keyCode &&),
+            if(this.eventState.lastKeyCode === keyCode &&);
                 currentTime - this.eventState.lastKeyTime < this.eventConfig.keyboardRepeatDelay) {
     
 }
@@ -480,7 +477,7 @@ export class LeaderboardEventHandler {
                     currentY: touch.clientY,
     startTime: Date.now() }
                     moved: false;);
-            });
+            };
 
         } catch (error) {
             this.errorHandler.handleError(error, 'LeaderboardEventHandler.handleTouchStart' }'
@@ -493,8 +490,8 @@ export class LeaderboardEventHandler {
      */
     handleTouchMove(touches: Touch[], options: any = { ): void {
         try {
-            touches.forEach(touch => { ),
-                const touchData = this.eventState.touches.get(touch.identifier),
+            touches.forEach(touch => { );
+                const touchData = this.eventState.touches.get(touch.identifier);
                 if (!touchData) return,
                 
                 const deltaX = touch.clientX - touchData.currentX,
@@ -514,7 +511,7 @@ export class LeaderboardEventHandler {
                 
                 // スクロール処理（単一タッチ）
                 if (this.eventState.touches.size === 1) { this.handleScroll(deltaX, deltaY, { isTouchEvent: true,
-            });
+            };
 
         } catch (error) {
             this.errorHandler.handleError(error, 'LeaderboardEventHandler.handleTouchMove' }'
@@ -527,8 +524,8 @@ export class LeaderboardEventHandler {
      */
     handleTouchEnd(touches: Touch[], options: any = { ): void {
         try {
-            touches.forEach(touch => { ),
-                const touchData = this.eventState.touches.get(touch.identifier),
+            touches.forEach(touch => { );
+                const touchData = this.eventState.touches.get(touch.identifier);
                 if (!touchData) return,
                 
                 const duration = Date.now() - touchData.startTime,
@@ -543,7 +540,7 @@ export class LeaderboardEventHandler {
                 else if (touchData.moved) { this.detectGesture(totalDeltaX, totalDeltaY, duration) }
                 
                 this.eventState.touches.delete(touch.identifier);
-            });
+            };
 
         } catch (error) {
             this.errorHandler.handleError(error, 'LeaderboardEventHandler.handleTouchEnd' }'
@@ -662,7 +659,8 @@ export class LeaderboardEventHandler {
         this.executeCallbacks('onScroll', {
                 scrollRatio, ','
             isScrollbarClick: true,)
-    
+            isScrollbarClick: true,)
+        };
     /**
      * ショートカットを実行
      * @param {string} action - アクション
@@ -690,11 +688,11 @@ export class LeaderboardEventHandler {
                 break,
 
             case 'pageUp':','
-                this.handleScroll(0, -200),
+                this.handleScroll(0, -200);
                 break,
 
             case 'pageDown':','
-                this.handleScroll(0, 200),
+                this.handleScroll(0, 200);
                 break,
 
             case 'goToTop':','
@@ -709,7 +707,7 @@ export class LeaderboardEventHandler {
     /**
      * 前のエントリーを選択
      */'
-    selectPreviousEntry(): void { const newIndex = Math.max(0, this.selectionState.selectedEntryIndex - 1),
+    selectPreviousEntry(): void { const newIndex = Math.max(0, this.selectionState.selectedEntryIndex - 1);
         if (newIndex !== this.selectionState.selectedEntryIndex) {
             this.selectionState.selectedEntryIndex = newIndex,
 
@@ -723,8 +721,7 @@ export class LeaderboardEventHandler {
      */
     selectNextEntry(): void { // 最大インデックスは外部から提供される必要がある
         const maxIndex = this.uiElements.entries.length - 1,
-        const newIndex = Math.min(maxIndex, this.selectionState.selectedEntryIndex + 1),
-
+        const newIndex = Math.min(maxIndex, this.selectionState.selectedEntryIndex + 1);
         if (newIndex !== this.selectionState.selectedEntryIndex) {
             this.selectionState.selectedEntryIndex = newIndex }
 
@@ -890,7 +887,7 @@ export class LeaderboardEventHandler {
                     callback(data);' }'
 
                 } catch (error) { console.warn('[LeaderboardEventHandler] Callback error:', error }
-            });
+            };
         }
     }
     
@@ -930,8 +927,7 @@ export class LeaderboardEventHandler {
         this.eventState.clickCount = 0,
         this.eventState.lastHoverTarget = null,
         this.eventState.isDragging = false,
-        this.eventState.touches.clear(),
-        
+        this.eventState.touches.clear();
         if (this.eventState.hoverTimer') {'
         ','
 
@@ -945,15 +941,14 @@ export class LeaderboardEventHandler {
             selectedSort: 'score',
             selectedEntry: null,
             selectedEntryIndex: -1,
-    showingDetails: false,;
+    showingDetails: false,
         console.log('[LeaderboardEventHandler] Event, state reset);'
     }
     
     /**
      * イベントハンドラーを破棄
      */
-    dispose(): void { this.reset(),
-        
+    dispose(): void { this.reset();
         // 全コールバックをクリア
         Object.values(this.callbacks).forEach(callbackSet => { ) }
             callbackSet.clear();' }'

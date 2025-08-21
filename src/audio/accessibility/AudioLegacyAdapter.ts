@@ -12,23 +12,23 @@ type VibrationPattern = number | number[];
 type AudioLevel = 'low' | 'medium' | 'high' | 'critical';
 
 // Types for device capabilities
-interface DeviceCapabilities { vibrationSupported: boolean,
+interface DeviceCapabilities { vibrationSupported: boolean;
     speechSynthesisSupported: boolean;
     visualFeedbackSupported: boolean;
     highContrastSupported: boolean;
     reducedMotionSupported: boolean;
 
 // Types for legacy vibration manager
-interface LegacyVibrationManager { vibrate: (pattern: VibrationPattern) => void,
+interface LegacyVibrationManager { vibrate: (pattern: VibrationPattern) => void;
     isSupported: () => boolean }'
 }
 
 // Types for audio cue
-interface AudioCue { pattern: string,
+interface AudioCue { pattern: string;
     vibrationPattern: VibrationPattern;
 
 // Types for accessibility settings
-interface AccessibilitySettings { visualFeedback: boolean,
+interface AccessibilitySettings { visualFeedback: boolean;
     captioning: boolean;
     colorIndication: boolean;
     hapticFeedback: boolean;
@@ -43,16 +43,16 @@ interface SettingsChangeEvent { ''
 
 // Main controller interface
 interface MainController { feedbackManager: {
-        applyTactileFeedback(cue: AudioCue): void,;
-    updateColorIndicator(level: AudioLevel): void,
-    updateSetting(key: string, value: any): void,
-    updateSettings(settings: Partial<AccessibilitySettings>): Promise<void>,
-    eventManager: { recordEvent(eventType: string, eventData: any): void,;
-    triggerHapticFeedback(feedbackType: string): void,
+        applyTactileFeedback(cue: AudioCue): void;
+    updateColorIndicator(level: AudioLevel): void;
+    updateSetting(key: string, value: any): void;
+    updateSettings(settings: Partial<AccessibilitySettings>): Promise<void>;
+    eventManager: { recordEvent(eventType: string, eventData: any): void;
+    triggerHapticFeedback(feedbackType: string): void;
 
 export class AudioLegacyAdapter {
     private mainController: MainController;
-    private, vibrationManager: LegacyVibrationManager | null,
+    private, vibrationManager: LegacyVibrationManager | null;
     constructor(mainController: MainController) {
 
         this.mainController = mainController;
@@ -85,7 +85,7 @@ export class AudioLegacyAdapter {
      * 音響強度の設定（レガシー互換性）
      * @param intensity - 強度 (0-1)
      */
-    public setAudioIntensity(intensity: number): void { const level = this.mapIntensityToLevel(intensity),
+    public setAudioIntensity(intensity: number): void { const level = this.mapIntensityToLevel(intensity);
         this.mainController.updateColorIndicator(level) }
 
     /**
@@ -104,7 +104,7 @@ export class AudioLegacyAdapter {
     captioning: enabled,
             colorIndication: enabled,
             hapticFeedback: enabled && 'vibrate' in navigator,
-            descriptionEnabled: enabled && 'speechSynthesis' in window  };
+            descriptionEnabled: enabled && 'speechSynthesis' in window  },
         await this.mainController.updateSettings(settings);
     }
 
@@ -156,8 +156,8 @@ export class AudioLegacyAdapter {
      * ステータス取得
      * @returns コンポーネントステータス
      */
-    public getStatus(): { vibrationManagerAvailable: boolean,, capabilities: DeviceCapabilities; { return { vibrationManagerAvailable: this.vibrationManager !== null };
-            capabilities: this.getCapabilities(); 
+    public getStatus(): { vibrationManagerAvailable: boolean,, capabilities: DeviceCapabilities; { return { vibrationManagerAvailable: this.vibrationManager !== null },
+            capabilities: this.getCapabilities(),
     }
 
     /**

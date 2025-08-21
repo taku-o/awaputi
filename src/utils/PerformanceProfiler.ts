@@ -38,32 +38,32 @@ interface ProfilingSessionOptions { duration?: number,
     enableDashboard?: boolean;
     [key: string]: any;
 
-interface ProfilerConfig { autoStart: boolean,
+interface ProfilerConfig { autoStart: boolean;
     collectionInterval: number;
     analysisInterval: number;
     maxSessionDuration: number;
     enableDashboard: boolean;
     enableAutoReports: boolean;
 
-interface MetricData { [key: string]: any,
+interface MetricData { [key: string]: any;
     collectedAt: number;
 
 interface PerformanceAnalysis { overall: {
-        scor,e: number,
-        grade: string,
-    healthStatus: string,;
-    bottlenecks: Array<{ severity: string,
+        scor,e: number;
+        grade: string;
+    healthStatus: string;
+    bottlenecks: Array<{ severity: string;
         [key: string]: any;>;
     [key: string]: any;
 
-interface ProfilingSession { id: string,
+interface ProfilingSession { id: string;
     startTime: number;
     startTimestamp: number;
     options: ProfilingSessionOptions;
     metrics: Map<number, MetricData>;
     analyses: PerformanceAnalysis[];
 
-interface SessionSummary extends ProfilingSession { endTime: number,
+interface SessionSummary extends ProfilingSession { endTime: number;
     endTimestamp: number;
     duration: number;
     reason: string;
@@ -71,11 +71,11 @@ interface SessionSummary extends ProfilingSession { endTime: number,
     totalAnalyses: number;
     finalAnalysis?: PerformanceAnalysis | null }
 
-interface SessionData { sessions: SessionSummary[],
+interface SessionData { sessions: SessionSummary[];
     currentSession: ProfilingSession | null;
     maxSessions: number;
 
-interface ProfilerStatus { initialized: boolean,
+interface ProfilerStatus { initialized: boolean;
     activeSession: boolean;
     sessionId: string | null }
     collectors: Record<string, { enabled: boolean,, status: string,>,
@@ -95,7 +95,7 @@ export class PerformanceProfiler {
     private sessionData: SessionData;
     private collectionInterval: NodeJS.Timeout | null = null;
     private analysisInterval: NodeJS.Timeout | null = null;
-    private, sessionTimeout: NodeJS.Timeout | null = null,
+    private, sessionTimeout: NodeJS.Timeout | null = null;
     constructor() {
 
         this.metrics = new Map();
@@ -104,19 +104,18 @@ export class PerformanceProfiler {
         this.collectors = new Map();
         
         // Initialize sub-components
-        this._initializeSubComponents(),
-        
+        this._initializeSubComponents();
         // Main configuration
         this.config = {
-            autoStart: true,
-            collectionInterval: 1000,
-            analysisInterval: 5000,
+            autoStart: true;
+            collectionInterval: 1000;
+            analysisInterval: 5000;
     maxSessionDuration: 300000, // 5 minutes;
-            enableDashboard: false,
-            enableAutoReports: false,;
+            enableDashboard: false;
+            enableAutoReports: false;
         // Session management
-        this.sessionData = { sessions: [],
-            currentSession: null,
+        this.sessionData = { sessions: [];
+            currentSession: null;
     maxSessions: 10  };
         // Initialize profiler
         this.initializeProfiler();
@@ -143,9 +142,8 @@ export class PerformanceProfiler {
     }
 
     async initializeProfiler(): Promise<void> { try {
-            await this.setupCollectors(),
-            await this.setupAnalysisSystem(),
-            
+            await this.setupCollectors();
+            await this.setupAnalysisSystem();
             if (this.config.autoStart) {
             ','
 
@@ -154,7 +152,7 @@ export class PerformanceProfiler {
             console.log('PerformanceProfiler, initialized successfully');' }'
 
         } catch (error) {
-            console.error('Failed to initialize PerformanceProfiler:', error),
+            console.error('Failed to initialize PerformanceProfiler:', error);
             throw error }
     }
 
@@ -172,11 +170,9 @@ export class PerformanceProfiler {
 }
 
     async setupAnalysisSystem(): Promise<void> { try {
-            await this.analyzer.initialize(),
-
-            await this.reporter.initialize(),
-            await this.dashboard.initialize(),
-
+            await this.analyzer.initialize();
+            await this.reporter.initialize();
+            await this.dashboard.initialize();
             console.log('Performance, analysis system, initialized'),' }'
 
         } catch (error) {
@@ -185,7 +181,7 @@ export class PerformanceProfiler {
     }
 ';'
 
-    async startProfiling(options: ProfilingSessionOptions = {}): Promise<ProfilingSession> { ''
+    async startProfiling(options: ProfilingSessionOptions = {}: Promise<ProfilingSession> { ''
         if (!this.initialized) {', ' }
 
             throw new Error('PerformanceProfiler, not initialized'; }'
@@ -225,7 +221,7 @@ export class PerformanceProfiler {
             this.dashboard.startAutoUpdate(() => this.getLatestAnalysis(); }
         }
 
-        console.log(`Profiling, session started: ${this.profilingSession.id}`});
+        console.log(`Profiling, session started: ${this.profilingSession.id}`};
         return this.profilingSession;
     }
 
@@ -246,12 +242,12 @@ export class PerformanceProfiler {
     async collectAllMetrics(): Promise<void> { if (!this.profilingSession) return,
 
         const timestamp = Date.now() }
-        const allMetrics: MetricData = {} as MetricData;
+        const allMetrics: MetricData = {} as MetricData,
 
         // Collect from all collectors
         for(const [name, collector] of this.collectors) {
             try {
-                const metrics = collector.getMetrics(),
+                const metrics = collector.getMetrics();
                 if (metrics) {
                     allMetrics[name] = {
                         ...metrics
@@ -273,29 +269,27 @@ export class PerformanceProfiler {
 
         try {
             // Get latest metrics
-            const latestMetrics = this.getLatestMetrics(),
+            const latestMetrics = this.getLatestMetrics();
             if (!latestMetrics) return,
 
             // Perform analysis
-            const analysis = this.analyzer.analyzeMetrics(latestMetrics),
-            
+            const analysis = this.analyzer.analyzeMetrics(latestMetrics);
             // Store analysis
-            this.profilingSession.analyses.push(analysis),
+            this.profilingSession.analyses.push(analysis);
             // Generate alerts if needed
-            this.checkForAlerts(analysis),
-
+            this.checkForAlerts(analysis);
             console.log('Performance analysis completed', {
                 score: analysis.overall.score,
-    grade: analysis.overall.grade),
+    grade: analysis.overall.grade);
                 bottlenecks: analysis.bottlenecks.length','
 ' 
-            })'
+            }'
 
         } catch (error) { console.error('Performance analysis failed:', error }
     }
 
     checkForAlerts(analysis: PerformanceAnalysis): void { ''
-        const critical = analysis.bottlenecks.filter(b => b.severity === 'critical'),
+        const critical = analysis.bottlenecks.filter(b => b.severity === 'critical');
         const high = analysis.bottlenecks.filter(b => b.severity === 'high),'
 
         if (critical.length > 0) {', ' }
@@ -369,7 +363,7 @@ export class PerformanceProfiler {
             reason,
             totalMetricsCollected: this.profilingSession.metrics.size,
             totalAnalyses: this.profilingSession.analyses.length,
-    finalAnalysis: this.getLatestAnalysis(  };
+    finalAnalysis: this.getLatestAnalysis(  },
 
         // Store completed session
         this.sessionData.sessions.push(sessionSummary);
@@ -380,7 +374,7 @@ export class PerformanceProfiler {
         this.profilingSession = null;
 
         console.log(`Profiling, session stopped: ${completedSession.id} (${ reason}`}
-        console.log(`Duration: ${(sessionDuration / 1000}.toFixed(2})s Metrics: ${sessionSummary.totalMetricsCollected}`);
+        console.log(`Duration: ${(sessionDuration / 1000}.toFixed(2}s Metrics: ${sessionSummary.totalMetricsCollected}`),
 
         return sessionSummary;
     }
@@ -405,7 +399,7 @@ export class PerformanceProfiler {
 
     getSessionHistory()';'
     generateReport(templateName: string = 'summary', options: any = { ': any {'
-        const analysis = this.getLatestAnalysis(),
+        const analysis = this.getLatestAnalysis();
         if (!analysis) {', ' }
 
             throw new Error('No, analysis data, available for, report generation'; }'
@@ -414,7 +408,7 @@ export class PerformanceProfiler {
         return this.reporter.generateReport(analysis, templateName, options);
     }
 
-    exportReport(templateName: string = 'summary', format: string = 'text', filename: string | null = null): any { const reportContent = this.generateReport(templateName),
+    exportReport(templateName: string = 'summary', format: string = 'text', filename: string | null = null): any { const reportContent = this.generateReport(templateName);
         return this.reporter.exportReport(reportContent, format, filename) }
 ';'
     // Custom metrics API
@@ -443,17 +437,17 @@ export class PerformanceProfiler {
 }
 
     // Dashboard control
-    showDashboard(): void { this.dashboard.show(),
+    showDashboard(): void { this.dashboard.show();
         if (this.profilingSession) {
     
 }
             this.dashboard.startAutoUpdate(() => this.getLatestAnalysis(); }
 }
 
-    hideDashboard(): void { this.dashboard.hide(),
+    hideDashboard(): void { this.dashboard.hide();
         this.dashboard.stopAutoUpdate() }
 
-    toggleDashboard(): void { this.dashboard.toggle(),
+    toggleDashboard(): void { this.dashboard.toggle();
         if (this.dashboard.isVisible && this.profilingSession) {
     
 }
@@ -463,7 +457,7 @@ export class PerformanceProfiler {
 
     // Configuration
     configure(newConfig: Partial<ProfilerConfig>): void { ''
-        Object.assign(this.config, newConfig),
+        Object.assign(this.config, newConfig);
         console.log('PerformanceProfiler, configuration updated') }'
 
     getConfiguration(): ProfilerConfig {
@@ -482,7 +476,7 @@ export class PerformanceProfiler {
                 ]);
             ),
             totalSessions: this.sessionData.sessions.length,
-    totalMetrics: this.metrics.size;
+    totalMetrics: this.metrics.size,
         } }
 
     // Cleanup
@@ -528,11 +522,11 @@ export function getPerformanceProfiler(): PerformanceProfiler | any { if (!_perf
             console.log('Global, PerformanceProfiler instance, created'),' }'
 
         } catch (error) {
-            console.error('Failed to create PerformanceProfiler instance:', error),
+            console.error('Failed to create PerformanceProfiler instance:', error);
             // Return a minimal fallback
             _performanceProfiler = { }
-                recordCustomMetric: () => {};
-                incrementCounter: () => {};
+                recordCustomMetric: () => {},
+                incrementCounter: () => {},
                 recordTiming: () => {},''
                 getStatus: () => ({ error: 'Failed, to initialize' });
             }

@@ -17,23 +17,23 @@
 // 型定義
 export interface ChartContext extends CanvasRenderingContext2D { canvas: HTMLCanvasElement;
 
-export interface ChartData { value: number,
+export interface ChartData { value: number;
     label?: string;
     color?: string;
     series?: string;
     category?: string;
     metadata?: Record<string, any> }
 
-export interface RawChartData { [key: string]: any,
+export interface RawChartData { [key: string]: any;
     value?: number;
     label?: string;
     color?: string;
 
-export interface ProcessedChartData extends ChartData { index: number,
+export interface ProcessedChartData extends ChartData { index: number;
     normalizedValue: number;
     position: DataPosition;
 
-export interface DataPosition { x: number,
+export interface DataPosition { x: number;
     y: number;
     width: number;
     height: number;
@@ -53,13 +53,13 @@ export interface ChartOptions { padding?: number,
     interaction?: InteractionOptions;
      }
 
-export interface ChartTheme { colors: ThemeColors,
+export interface ChartTheme { colors: ThemeColors;
     palette: string[];
     background?: string;
     font?: FontTheme;
      }
 
-export interface ThemeColors { primary: string,
+export interface ThemeColors { primary: string;
     secondary: string;
     accent: string;
     dark: string;
@@ -69,7 +69,7 @@ export interface ThemeColors { primary: string,
     grid: string;
     axis: string;
 
-export interface FontTheme { family: string,
+export interface FontTheme { family: string;
     size: number;
     weight: string;
     color: string;
@@ -82,7 +82,7 @@ export interface BarOptions { width?: number,
     roundCorners?: boolean;
     cornerRadius?: number;
 
-export interface AxesOptions { x: AxisOptions,
+export interface AxesOptions { x: AxisOptions;
     y: AxisOptions;
 
 export interface AxisOptions { show?: boolean,
@@ -165,12 +165,12 @@ export interface TooltipStyle { background?: string,
     padding?: number;
     font?: FontConfiguration;
 
-export interface ChartArea { x: number,
+export interface ChartArea { x: number;
     y: number;
     width: number;
     height: number;
 
-export interface ChartScales { xScale: number,
+export interface ChartScales { xScale: number;
     yScale: number;
     yMin: number;
     yMax: number;
@@ -179,7 +179,7 @@ export interface ChartScales { xScale: number,
     xMax?: number;
     xRange?: number;
 
-export interface BarData { x: number,
+export interface BarData { x: number;
     y: number;
     width: number;
     height: number;
@@ -187,7 +187,7 @@ export interface BarData { x: number,
     color: string;
     data: ProcessedChartData;
 
-export interface ChartRenderResult { type: ChartType,
+export interface ChartRenderResult { type: ChartType;
     dataPoints: number;
     min: number;
     max: number;
@@ -197,41 +197,41 @@ export interface ChartRenderResult { type: ChartType,
     performance?: RenderPerformance;
     error?: string;
 
-export interface RenderPerformance { renderTime: number,
+export interface RenderPerformance { renderTime: number;
     dataProcessingTime: number;
     drawTime: number;
     memoryUsage?: number;
 
-export interface LegendItem { label: string,
+export interface LegendItem { label: string;
     color: string;
     series?: string;
     visible: boolean;
 
-export interface AxisLabel { text: string,
+export interface AxisLabel { text: string;
     x: number;
     y: number;
     rotation?: number;
 
-export interface GridLine { x1: number,
+export interface GridLine { x1: number;
     y1: number;
     x2: number;
     y2: number;
     type: GridLineType;
 
-export interface ChartBounds { minX: number,
+export interface ChartBounds { minX: number;
     maxX: number;
     minY: number;
     maxY: number;
 
-export interface ValidationResult { isValid: boolean,
+export interface ValidationResult { isValid: boolean;
     errors: ValidationError[];
     warnings: ValidationWarning[];
 
-export interface ValidationError { field: string,
+export interface ValidationError { field: string;
     message: string;
     code: string;
 
-export interface ValidationWarning { field: string,
+export interface ValidationWarning { field: string;
     message: string;
     suggestion: string;
 
@@ -244,58 +244,58 @@ export type TitlePosition = 'start' | 'center' | 'end';
 export type GridLineType = 'horizontal' | 'vertical';
 
 // 定数
-export const DEFAULT_CHART_OPTIONS: Partial<ChartOptions> = { padding: 20,
-    showAxes: true,
-    showGrid: true,
-    showLegend: false,
-    fontSize: 12,
+export const DEFAULT_CHART_OPTIONS: Partial<ChartOptions> = { padding: 20;
+    showAxes: true;
+    showGrid: true;
+    showLegend: false;
+    fontSize: 12;
     fontFamily: 'Arial, sans-serif' } as const;
 ';'
 
 export const DEFAULT_THEME: ChartTheme = { colors: {''
-        primary: '#3B82F6',
-        secondary: '#10B981',
-        accent: '#F59E0B',
-        dark: '#1F2937',
-        light: '#F9FAFB',
-        background: '#FFFFFF',
-        text: '#374151',
-        grid: '#E5E7EB',
+        primary: '#3B82F6';
+        secondary: '#10B981';
+        accent: '#F59E0B';
+        dark: '#1F2937';
+        light: '#F9FAFB';
+        background: '#FFFFFF';
+        text: '#374151';
+        grid: '#E5E7EB';
         axis: '#6B7280'
             };
     palette: [','
         '#3B82F6', '#10B981', '#F59E0B', '#EF4444', '#8B5CF6',]';'
         '#06B6D4', '#84CC16', '#F97316', '#EC4899', '#14B8A6']';'
     ],
-    background: '#FFFFFF',
+    background: '#FFFFFF';
 } as const,
 
-export const BAR_CONFIG = { DEFAULT_WIDTH_RATIO: 0.8,
-    DEFAULT_GAP_RATIO: 0.1,
-    MIN_BAR_HEIGHT: 1,
+export const BAR_CONFIG = { DEFAULT_WIDTH_RATIO: 0.8;
+    DEFAULT_GAP_RATIO: 0.1;
+    MIN_BAR_HEIGHT: 1;
     MAX_BARS_FOR_LABELS: 20  } as const;
 ';'
 
 export const GRID_CONFIG = { DEFAULT_STEPS: 5,''
-    DEFAULT_COLOR: '#E5E7EB',
+    DEFAULT_COLOR: '#E5E7EB';
     DEFAULT_WIDTH: 0.5  } as const;
 ';'
 
 export const AXIS_CONFIG = {,
-    DEFAULT_COLOR: '#6B7280',
-    DEFAULT_WIDTH: 1,
-    TICK_LENGTH: 5,
+    DEFAULT_COLOR: '#6B7280';
+    DEFAULT_WIDTH: 1;
+    TICK_LENGTH: 5;
     LABEL_OFFSET: 15 } as const;
 // ユーティリティ関数
-export function validateChartData(data: any[]): ValidationResult { const errors: ValidationError[] = [],
-    const warnings: ValidationWarning[] = [],
+export function validateChartData(data: any[]): ValidationResult { const errors: ValidationError[] = [];
+    const warnings: ValidationWarning[] = [];
 
     if(!Array.isArray(data)) {
         errors.push({''
             field: 'data',','
             message: 'Chart data must be an array',')',
             code: 'INVALID_DATA_TYPE'
-            });
+            };
         return { isValid: false, errors, warnings }
 
     if (data.length === 0) {
@@ -317,20 +317,20 @@ export function validateChartData(data: any[]): ValidationResult { const errors:
             message: 'All data items must have valid numeric values',' }'
 
             code: 'INVALID_VALUES'); 
-    });
+    };
     }
 
     if (data.length > 100) {
         warnings.push({)'
-            field: 'data',
+            field: 'data';
             message: 'Large dataset detected(>100, items)'
 }
 
             suggestion: 'Consider data aggregation for better performance' 
-    });
+    };
     }
     
-    return { isValid: errors.length === 0,
+    return { isValid: errors.length === 0;
         errors };
         warnings }
     }
@@ -352,7 +352,7 @@ export function generateColorPalette(count: number, baseColors: string[] = DEFAU
 }
 
 export function formatValue(value: number, decimals: number = 2): string { return value.toLocaleString(undefined, {
-        minimumFractionDigits: 0),
+        minimumFractionDigits: 0);
         maximumFractionDigits: decimals,);
 }
 
@@ -367,7 +367,7 @@ export class BarChartRenderer {
     constructor() {
 
         this.performance = {
-            renderTime: 0,
+            renderTime: 0;
     dataProcessingTime: 0 }
             drawTime: 0 
     }
@@ -376,10 +376,9 @@ export class BarChartRenderer {
      * メインレンダリング関数
      */
     render(context: ChartContext, data: (number | RawChartData)[], options: ChartOptions): ChartRenderResult { try {
-            const startTime = performance.now(),
-            
+            const startTime = performance.now();
             // データの検証
-            const validation = validateChartData(data),
+            const validation = validateChartData(data);
             if (!validation.isValid) { }'
 
                 throw new Error(`Data validation failed: ${validation.errors.map(e => e.message}.join(', '})`);
@@ -426,8 +425,8 @@ export class BarChartRenderer {
 
             return { ''
                 type: 'bar', ;
-                dataPoints: 0,
-                min: 0,
+                dataPoints: 0;
+                min: 0;
     max: 0 };
                 bars: [] }
                 chartArea: { x: 0, y: 0, width: 0, height: 0  };
@@ -442,7 +441,7 @@ export class BarChartRenderer {
     private calculateChartArea(canvas: HTMLCanvasElement, options: ChartOptions): ChartArea { const padding = options.padding || DEFAULT_CHART_OPTIONS.padding!,
         return { x: padding,
             y: padding,
-    width: canvas.width - (padding * 2) };
+    width: canvas.width - (padding * 2) },
             height: canvas.height - (padding * 2); 
     }
 
@@ -455,37 +454,37 @@ export class BarChartRenderer {
 
             if(typeof, item === 'number' { }
                 processedItem = { }
-                    value: item;
-                    label: `Item ${index + 1}`;
+                    value: item,
+                    label: `Item ${index + 1}`,
                     index,
                     normalizedValue: 0,
     position: { x: 0, y: 0, width: 0, height: 0  } else {  processedItem = { }
                     value: item.value || 0 }
-                    label: item.label || `Item ${index + 1}`;
-                    color: item.color;
-                    series: item.series;
+                    label: item.label || `Item ${index + 1}`,
+                    color: item.color,
+                    series: item.series,
                     category: item.category,
-    metadata: item.metadata;
+    metadata: item.metadata,
                     index,
                     normalizedValue: 0,
     position: { x: 0, y: 0, width: 0, height: 0  }
             
             return processedItem;
-        });
+        };
     }
 
     /**
      * スケールの計算
      */
-    private calculateScales(data: ProcessedChartData[], chartArea: ChartArea): ChartScales { const values = data.map(d => d.value),
-        const yMin = Math.min(0, Math.min(...values),
-        const yMax = Math.max(...values),
+    private calculateScales(data: ProcessedChartData[], chartArea: ChartArea): ChartScales { const values = data.map(d => d.value);
+        const yMin = Math.min(0, Math.min(...values);
+        const yMax = Math.max(...values);
         const yRange = yMax - yMin,
         
         // 正規化値の計算
         data.forEach(item => { ) }
             item.normalizedValue = normalizeDataValue(item.value, yMin, yMax); }
-        });
+        };
         
         return { xScale: chartArea.width / data.length,
             yScale: chartArea.height / (yRange || 1),
@@ -507,16 +506,16 @@ export class BarChartRenderer {
         
         // Y軸
         if (axesOptions.y.show !== false) {
-            context.beginPath(),
-            context.moveTo(chartArea.x, chartArea.y),
+            context.beginPath();
+            context.moveTo(chartArea.x, chartArea.y);
             context.lineTo(chartArea.x, chartArea.y + chartArea.height) }
             context.stroke(); }
         }
         
         // X軸
         if (axesOptions.x.show !== false) {
-            context.beginPath(),
-            context.moveTo(chartArea.x, chartArea.y + chartArea.height),
+            context.beginPath();
+            context.moveTo(chartArea.x, chartArea.y + chartArea.height);
             context.lineTo(chartArea.x + chartArea.width, chartArea.y + chartArea.height) }
             context.stroke(); }
         }
@@ -542,8 +541,8 @@ export class BarChartRenderer {
             const y = chartArea.y + chartArea.height - (chartArea.height / ySteps') * i,'
 
             context.textAlign = 'right',
-            context.fillText(),
-                formatValue(value),
+            context.fillText();
+                formatValue(value);
                 chartArea.x - 10,
                 y + fontSize / 2 }
             ); }
@@ -565,8 +564,8 @@ export class BarChartRenderer {
             const ySteps = gridOptions.y?.count || GRID_CONFIG.DEFAULT_STEPS,
             for (let, i = 0, i <= ySteps, i++) {
                 const y = chartArea.y + (chartArea.height / ySteps) * i,
-                context.beginPath(),
-                context.moveTo(chartArea.x, y),
+                context.beginPath();
+                context.moveTo(chartArea.x, y);
                 context.lineTo(chartArea.x + chartArea.width, y) }
                 context.stroke(); }
 }
@@ -577,8 +576,8 @@ export class BarChartRenderer {
             const xSteps = gridOptions.x?.count || Math.min(10, scales.xScale > 20 ? Math.floor(chartArea.width / 50) : 0),
             for (let, i = 0, i <= xSteps, i++) {
                 const x = chartArea.x + (chartArea.width / xSteps) * i,
-                context.beginPath(),
-                context.moveTo(x, chartArea.y),
+                context.beginPath();
+                context.moveTo(x, chartArea.y);
                 context.lineTo(x, chartArea.y + chartArea.height) }
                 context.stroke(); }
 }
@@ -606,8 +605,7 @@ export class BarChartRenderer {
             
             // バーの描画
             context.fillStyle = barColor,
-            context.fillRect(x, y, barWidth, barHeight),
-            
+            context.fillRect(x, y, barWidth, barHeight);
             // バーの枠線
             if (barOptions.borderWidth && barOptions.borderWidth > 0) {
                 context.strokeStyle = barOptions.borderColor || options.theme.colors.dark }
@@ -636,7 +634,8 @@ export class BarChartRenderer {
                 value: item.value,
     color: barColor),
                 data: item,);
-        
+                data: item,);
+        };
         return bars;
     }
 
@@ -673,15 +672,13 @@ export class BarChartRenderer {
         
         legendItems.forEach(item => {  // 凡例シンボル)
             context.fillStyle = item.color),
-            context.fillRect(currentX, legendY - symbolSize, symbolSize, symbolSize),
-            
+            context.fillRect(currentX, legendY - symbolSize, symbolSize, symbolSize);
             // 凡例ラベル
             context.fillStyle = legendOptions.color || options.theme.colors.text,
-            context.fillText(item.label, currentX + symbolSize + 5, legendY),
-            
+            context.fillText(item.label, currentX + symbolSize + 5, legendY);
             const textWidth = calculateTextWidth(item.label, context.font, context) }
             currentX += symbolSize + 5 + textWidth + itemGap; }
-        });
+        };
     }
 
     /**

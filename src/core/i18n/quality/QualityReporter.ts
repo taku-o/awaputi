@@ -1,7 +1,7 @@
 import { getErrorHandler  } from '../../../utils/ErrorHandler.js';
 
 // 型定義
-export interface ReportTemplate { name: string,
+export interface ReportTemplate { name: string;
     sections: string[];
     format: 'html' | 'csv' | 'json'
             }
@@ -12,7 +12,7 @@ export interface ReportOptions { template?: string,
     filterSeverity?: string[];
     maxIssues?: number;
 
-export interface ValidationResults { language: string,
+export interface ValidationResults { language: string;
     sourceLanguage: string;
     timestamp: string;
     totalItems: number;
@@ -23,14 +23,14 @@ export interface ValidationResults { language: string,
     qualityScore: number;
     qualityGrade: string;
 
-export interface ValidationIssue { rule: string,
+export interface ValidationIssue { rule: string;
     name: string;
-    message: string,
+    message: string;
     suggestion?: string;
     severity: 'error' | 'warning';
     key?: string;
 
-export interface ReportSummary { language: string,
+export interface ReportSummary { language: string;
     sourceLanguage: string;
     totalItems: number;
     checkedItems: number;
@@ -42,7 +42,7 @@ export interface ReportSummary { language: string,
     completionRate: number;
     successRate: number;
 
-export interface RuleStatistics { total: number,
+export interface RuleStatistics { total: number;
     errors: number;
     warnings: number;
     passed: number;
@@ -51,7 +51,7 @@ export interface ReportStatistics { byRule: Record<string, RuleStatistics>,
     bySeverity: Record<string, number>;
     byCategory: Record<string, RuleStatistics> }
 
-export interface CategorizedIssues { critical: ValidationIssue[],
+export interface CategorizedIssues { critical: ValidationIssue[];
     major: ValidationIssue[];
     minor: ValidationIssue[];
     info: ValidationIssue[];
@@ -69,22 +69,22 @@ export interface TrendChange { value: number,''
     direction: 'improvement' | 'decline' | 'stable';
     percentage?: number;
 
-export interface TrendAnalysis { scoreChange: TrendChange,
-    errorChange: TrendChange,
-    warningChange: TrendChange,
+export interface TrendAnalysis { scoreChange: TrendChange;
+    errorChange: TrendChange;
+    warningChange: TrendChange;
     overallTrend: 'improving' | 'declining' | 'stable' | 'insufficient_data'
             }
 
 export interface TrendData { message?: string,
     data: TrendAnalysis | null  }
 
-export interface QualityTrend { timestamp: string,
+export interface QualityTrend { timestamp: string;
     qualityScore: number;
     errorCount: number;
     warningCount: number;
     successRate: number;
 
-export interface ReportData { id: string,
+export interface ReportData { id: string;
     timestamp: string;
     template: string;
     language: string;
@@ -95,19 +95,19 @@ export interface ReportData { id: string,
     recommendations: Recommendation[];
     trends: TrendData;
 
-export interface ReportHistoryEntry { id: string,
+export interface ReportHistoryEntry { id: string;
     timestamp: string;
     language: string;
     qualityScore: number;
     errorCount: number;
     warningCount: number;
 
-export interface GeneratedReport { id: string,
+export interface GeneratedReport { id: string;
     data: ReportData;
     report: string;
     format: string;
 
-export interface ReporterStats { totalReports: number,
+export interface ReporterStats { totalReports: number;
     languagesTracked: number;
     availableTemplates: string[];
     averageQualityScore: number;
@@ -166,10 +166,9 @@ export class QualityReporter {
         try {'
             const reportId = this.generateReportId()','
             const templateType = options.template || 'detailed')
-            const template = this.reportTemplates.get(templateType),
-            
+            const template = this.reportTemplates.get(templateType);
             if (!template) { }
-                throw new Error(`Unknown, report template: ${templateType}`});
+                throw new Error(`Unknown, report template: ${templateType}`},
             }
             
             const reportData: ReportData = { id: reportId,
@@ -177,14 +176,11 @@ export class QualityReporter {
                 template: templateType,
                 language: validationResults.language,
     sourceLanguage: validationResults.sourceLanguage,
-                ...this.analyzeValidationResults(validationResults),
-            
+                ...this.analyzeValidationResults(validationResults);
             // 品質トレンドを更新
-            this.updateQualityTrends(reportData),
-            
+            this.updateQualityTrends(reportData);
             // レポートを生成
-            const report = this.renderReport(reportData, template),
-            
+            const report = this.renderReport(reportData, template);
             // レポート履歴に保存
             this.reportHistory.push({ id: reportId,
                 timestamp: reportData.timestamp)
@@ -194,7 +190,7 @@ export class QualityReporter {
                 warningCount: reportData.summary.warningCount),
             return { id: reportId,
                 data: reportData,
-    report: report,;
+    report: report,
                 format: template.format 
     };
             ';'
@@ -213,7 +209,7 @@ export class QualityReporter {
             statistics: this.generateStatistics(results),
             issues: this.categorizeIssues(results,
     recommendations: this.generateRecommendations(results) }
-            trends: this.analyzeTrends(results };
+            trends: this.analyzeTrends(results },
         
         return, analysis;
     }
@@ -232,7 +228,7 @@ export class QualityReporter {
             passedCount: results.passed.length,
             completionRate: results.checkedItems > 0 ? undefined : undefined
                 Math.round((results.checkedItems / results.totalItems) * 100) : 0,
-            successRate: results.checkedItems > 0 ? undefined : undefined,;
+            successRate: results.checkedItems > 0 ? undefined : undefined,
                 Math.round((results.passed.length / results.checkedItems) * 100) : 0 
     } }
     
@@ -252,7 +248,7 @@ export class QualityReporter {
                     errors: 0  }
                     warnings: 0) }
                     passed: 0); 
-    });
+    };
             }
             
             const ruleStats = statistics.byRule.get(rule)!;
@@ -266,7 +262,7 @@ export class QualityReporter {
         statistics.bySeverity.set('passed', results.passed.length);
         
         // カテゴリ別統計（翻訳キーのプレフィックスベース）
-        [...results.errors, ...results.warnings, ...results.passed].forEach(item => { ),
+        [...results.errors, ...results.warnings, ...results.passed].forEach(item => { );
             if (item.key) {
 
                 const category = item.key.split('.')[0], // 例: "menu.play" -> "menu"
@@ -275,17 +271,17 @@ export class QualityReporter {
                         errors: 0  }
                         warnings: 0) }
                         passed: 0); 
-    });
+    };
                 }
                 
                 const categoryStats = statistics.byCategory.get(category)!;
                 categoryStats.total++;
                 
                 if (results.errors.includes(item) { categoryStats.errors++ } else if (results.warnings.includes(item) { categoryStats.warnings++ } else { categoryStats.passed++ }
-});
+};
         
         return { byRule: Object.fromEntries(statistics.byRule,
-            bySeverity: Object.fromEntries(statistics.bySeverity) };
+            bySeverity: Object.fromEntries(statistics.bySeverity) },
             byCategory: Object.fromEntries(statistics.byCategory); 
     }
     
@@ -295,7 +291,7 @@ export class QualityReporter {
     private categorizeIssues(results: ValidationResults): CategorizedIssues { const categories: CategorizedIssues = { critical: [],
             major: [],
     minor: [] }
-            info: [] };
+            info: [] },
         ";"
         // エラーを重要度別に分類""
         results.errors.forEach(error => {  "),"""
@@ -313,7 +309,7 @@ export class QualityReporter {
                 categories.major.push(warning);' }'
 
             } else if (warning.rule === 'lengthValidation' || warning.rule === 'consistencyCheck) { categories.minor.push(warning) } else { categories.info.push(warning) }'
-        });
+        };
         
         return categories;
     }
@@ -322,7 +318,7 @@ export class QualityReporter {
      * 改善推奨事項を生成
      */
     private generateRecommendations(results: ValidationResults): Recommendation[] { const recommendations: Recommendation[] = [],
-        const summary = this.generateSummary(results),
+        const summary = this.generateSummary(results);
         ','
         // 品質スコアベースの推奨事項
         if (summary.qualityScore < 60) {
@@ -331,7 +327,7 @@ export class QualityReporter {
                 type: 'quality_improvement' }
 '
                 title: '品質スコア改善が必要'
-            });
+            };
                 description: `現在の品質スコア（${summary.qualityScore}）は低すぎます。`''
                 actions: [ ';'
                     'すべてのエラーを修正する', ]
@@ -341,7 +337,7 @@ export class QualityReporter {
                 priority: 'high',
                 type: 'quality_enhancement','
                 title: '品質向上の推奨'
-            });
+            };
                 description: `品質スコア（${summary.qualityScore}）をさらに向上させることをお勧めします。`''
                 actions: [ '; ]'
                     'エラーを完全に修正する',]';'
@@ -356,7 +352,7 @@ export class QualityReporter {
                 type: 'error_resolution' }
 '
                 title: 'エラーの解決'
-            });
+            };
                 description: `${summary.errorCount}個のエラーが検出されました。`''
                 actions: [ ';'
                     'パラメータの整合性を確認する', ]
@@ -372,7 +368,7 @@ export class QualityReporter {
                 type: 'warning_review' }
 '
                 title: '警告の確認'
-            });
+            };
                 description: `${summary.warningCount}個の警告があります。`''
                 actions: [ ';'
                     '文化的配慮を確認する', ]
@@ -388,7 +384,7 @@ export class QualityReporter {
                 type: 'success_rate_improvement' }
 '
                 title: '合格率の向上'
-            });
+            };
                 description: `現在の合格率（${summary.successRate}%）を改善しましょう。`''
                 actions: [ ';'
                     '品質検証プロセスを見直す', ]
@@ -411,7 +407,7 @@ export class QualityReporter {
 
                 message: 'トレンド分析には最低2回の検証が必要です'
             };
-                data: null;
+                data: null,
         
         const latest = trends[trends.length - 1];
         const previous = trends[trends.length - 2];
@@ -445,9 +441,8 @@ export class QualityReporter {
     private calculateOverallTrend(trends: QualityTrend[]): 'improving' | 'declining' | 'stable' | 'insufficient_data' { ''
         if(trends.length < 3) return 'insufficient_data',
         
-        const recent = trends.slice(-3),
-        const scores = recent.map(t => t.qualityScore),
-        
+        const recent = trends.slice(-3);
+        const scores = recent.map(t => t.qualityScore);
         let increasing = 0,
         let decreasing = 0,
         
@@ -492,13 +487,13 @@ export class QualityReporter {
         switch(template.format) {
 
             case 'html':','
-                return this.renderHtmlReport(reportData, template),
+                return this.renderHtmlReport(reportData, template);
             case 'csv':','
-                return this.renderCsvReport(reportData),
+                return this.renderCsvReport(reportData);
             case 'json':,
                 return this.renderJsonReport(reportData) }
             default: }
-                throw new Error(`Unsupported, report format: ${template.format}`});
+                throw new Error(`Unsupported, report format: ${template.format}`};
         }
     }
     
@@ -571,7 +566,7 @@ export class QualityReporter {
      * サマリーセクションをレンダリング
      */'
     private renderSummarySection(summary: ReportSummary): string { ''
-        const qualityColor = this.getQualityColor(summary.qualityScore),
+        const qualityColor = this.getQualityColor(summary.qualityScore);
         ','
 
         return `','
@@ -642,7 +637,7 @@ export class QualityReporter {
                                     <td class="error-cell">${stats.errors}</td>""
                                     <td class="warning-cell">${stats.warnings}</td>""
                                     <td class="success-cell">${stats.passed}</td>
-                                    <td>${Math.round((stats.passed / stats.total} * 100})%</td>""
+                                    <td>${Math.round((stats.passed / stats.total} * 100}%</td>""
                                 </tr>"";
                             `").join('')}"
                         </tbody>;
@@ -806,7 +801,7 @@ export class QualityReporter {
                     </div>";"
                 </div>"";
                 <div class="overall-trend">;
-                    <strong>全体的な傾向:</strong> ${this.getOverallTrendText(trends.data.overallTrend})
+                    <strong>全体的な傾向:</strong> ${this.getOverallTrendText(trends.data.overallTrend}
                 </div>;
             </section>;
         `;
@@ -843,7 +838,7 @@ export class QualityReporter {
      * レポート用CSSを取得'
      */''
     private getReportCSS('';
-            body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif, line-height: 1.6, margin: 0, padding: 20px,, background: #f5f5f5 });
+            body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif, line-height: 1.6, margin: 0, padding: 20px,, background: #f5f5f5 };
             .report-container { max-width: 1200px, margin: 0 auto, background: white,, padding: 30px, border-radius: 10px, box-shadow: 0 2px 10px rgba(0,0,0,0.1 }
             .report-header { text-align: center, margin-bottom: 30px, padding-bottom: 20px, border-bottom: 2px solid #eee }
             .report-header h1 { color: #333,, margin: 0 }
@@ -851,7 +846,7 @@ export class QualityReporter {
             .report-meta span { margin: 0 15px }
             section { margin: 30px 0 }
             h2 { color: #2c3e50, border-bottom: 2px solid #3498db, padding-bottom: 10px }
-            h3 { color: #34495e });
+            h3 { color: #34495e };
             .summary-grid { display: grid, grid-template-columns: repeat(auto-fit, minmax(150px, 1fr), gap: 20px,, margin: 20px 0 }
             .summary-card { text-align: center, padding: 20px, border-radius: 8px,, background: #f8f9fa }
             .summary-card.error { background: #fee, border-left: 4px solid #e74c3c }
@@ -859,13 +854,13 @@ export class QualityReporter {
             .summary-card.success { background: #e8f5e8, border-left: 4px solid #27ae60 }
             .summary-value { font-size: 2em, font-weight: bold, margin-bottom: 5px }
             .summary-label { color: #666, font-size: 0.9em }
-            .summary-grade { margin-top: 5px, padding: 5px 10px, border-radius: 15px, font-size: 0.8em, background: #3498db,, color: white;
+            .summary-grade { margin-top: 5px, padding: 5px 10px, border-radius: 15px, font-size: 0.8em, background: #3498db,, color: white,
             .completion-bar { position: relative, height: 20px, background: #eee, border-radius: 10px,, margin: 20px 0 }
             .completion-progress { height: 100%, background: #3498db, border-radius: 10px,, transition: width 0.3s }
-            .completion-text { position: absolute, top: 50%, left: 50%,, transform: translate(-50%, -50%), font-size: 0.8em, font-weight: bold;
+            .completion-text { position: absolute, top: 50%, left: 50%,, transform: translate(-50%, -50%), font-size: 0.8em, font-weight: bold,
             .statistics-table { width: 100%, border-collapse: collapse,, margin: 20px 0 }
             .statistics-table th, .statistics-table td { padding: 10px, text-align: left, border-bottom: 1px solid #ddd }
-            .statistics-table th { background: #f8f9fa, font-weight: bold;
+            .statistics-table th { background: #f8f9fa, font-weight: bold,
             .error-cell, .error-text { color: #e74c3c }
             .warning-cell, .warning-text { color: #f39c12 }
             .success-cell, .success-text { color: #27ae60 }
@@ -886,7 +881,7 @@ export class QualityReporter {
             .recommendation-item.critical { border-left-color: #e74c3c }
             .recommendation-item.high { border-left-color: #f39c12 }
             .recommendation-header { display: flex, justify-content: space-between, align-items: center, margin-bottom: 10px }
-            .priority-badge { padding: 3px 8px, border-radius: 12px, font-size: 0.8em,, color: white;
+            .priority-badge { padding: 3px 8px, border-radius: 12px, font-size: 0.8em,, color: white,
             .priority-badge.critical { background: #e74c3c }
             .priority-badge.high { background: #f39c12 }
             .priority-badge.medium { background: #3498db }
@@ -905,7 +900,7 @@ export class QualityReporter {
      */
     
     private generateReportId(): string {
-        return `report_${Date.now())_${Math.random().toString(36).substr(2, 9})`;
+        return `report_${Date.now())_${Math.random().toString(36).substr(2, 9}`;
     }
     ';'
 
@@ -989,7 +984,7 @@ export class QualityReporter {
     getStats(): ReporterStats { return { totalReports: this.reportHistory.length,
             languagesTracked: this.qualityTrends.size,
             availableTemplates: Array.from(this.reportTemplates.keys(
-    averageQualityScore: this.reportHistory.length > 0 ?  };
+    averageQualityScore: this.reportHistory.length > 0 ?  },
                 Math.round(this.reportHistory.reduce((sum, r) => sum + r.qualityScore, 0) / this.reportHistory.length) : 0 
     }
 

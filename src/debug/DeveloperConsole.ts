@@ -12,7 +12,7 @@ import { ExecutionContext  } from './ExecutionContext.js';
 
 import type { GameEngine } from '../core/GameEngine';
 
-interface CommandParameter { name: string,
+interface CommandParameter { name: string;
     type: string;
     required: boolean;
     description: string;
@@ -26,7 +26,7 @@ interface CommandOptions { description?: string,
     permissions?: string;
     hidden?: boolean;
 
-interface CommandData { name: string,
+interface CommandData { name: string;
     handler: CommandHandler;
     description: string;
     usage: string;
@@ -37,27 +37,27 @@ interface CommandData { name: string,
     permissions: string;
     hidden: boolean;
 
-interface ParsedCommand { name: string,
+interface ParsedCommand { name: string;
     args: string[];
     raw: string;
 
-interface OutputLine { message: string,
+interface OutputLine { message: string;
     type: string;
     timestamp: string;
     id: number;
 
-interface ExecutionMetadata { success: boolean,
+interface ExecutionMetadata { success: boolean;
     executionTime: number;
     errorMessage: string | null;
     resultType: string;
     commandName: string;
     args: string[];
 
-interface HistoryEntry { command: string,
+interface HistoryEntry { command: string;
     timestamp: number;
     metadata: any;
 
-interface AutocompleteSuggestion { suggestion: string,
+interface AutocompleteSuggestion { suggestion: string;
     type: string;
     description?: string;
 
@@ -65,16 +65,17 @@ interface HistorySearchOptions { type?: string,
     limit?: number;
     includeMetadata?: boolean;
 
-interface HistoryStatistics { totalCommands: number,
+interface HistoryStatistics { totalCommands: number;
     sessionCommands: number;
     averageCommandLength: number;
     historySize: number;
     topCommands: [string, number][];
     errorCommands: Set<string>;
     currentSession?: {
-        command,s: any[],
-    totalTime: number,
-
+        command,s: any[];
+    totalTime: number;
+    totalTime: number;
+        };
 interface ExportOptions { includeMetadata?: boolean;
 
 interface ImportOptions { merge?: boolean;
@@ -95,7 +96,7 @@ export class DeveloperConsole {
     private configurationCommands: ConfigurationCommands;
     private testDataGenerationCommands: TestDataGenerationCommands;
     // 後方互換性のためのプロパティ
-    public, history: string[],
+    public, history: string[];
     public historyIndex: number;
     public maxHistorySize: number;
     public isOpen: boolean;
@@ -120,8 +121,7 @@ export class DeveloperConsole {
         this.maxHistorySize = 100;
         
         // 拡張自動補完
-        this.enhancedAutocomplete = new EnhancedAutocompleteEngine(this, gameEngine),
-        
+        this.enhancedAutocomplete = new EnhancedAutocompleteEngine(this, gameEngine);
         // 後方互換性のため既存インターフェースも保持
         this.autocomplete = new AutocompleteEngine(this);
         // 実行コンテキスト
@@ -142,8 +142,8 @@ export class DeveloperConsole {
         this.initialize(); }
     }
 
-    private initialize(): void { this.registerBuiltinCommands(),
-        this.registerExtensionCommands(),
+    private initialize(): void { this.registerBuiltinCommands();
+        this.registerExtensionCommands();
         this.loadHistory() }
 
     /**
@@ -173,7 +173,7 @@ export class DeveloperConsole {
     parameters: options.parameters || [],
             examples: options.examples || [],
             permissions: options.permissions || 'user',
-    hidden: options.hidden || false  };
+    hidden: options.hidden || false  },
         // メインコマンドの登録
         this.commands.set(name, commandData);
         
@@ -193,10 +193,9 @@ export class DeveloperConsole {
         
         try {
             // 履歴に追加
-            this.addToHistory(commandLine),
-            
+            this.addToHistory(commandLine);
             // コマンドの解析
-            const parsed = this.parseCommand(commandLine),
+            const parsed = this.parseCommand(commandLine);
             // 出力にコマンドを表示
             this.output(`> ${commandLine)`, 'input'),
             
@@ -205,7 +204,7 @@ export class DeveloperConsole {
             // 結果の出力
             if(result !== undefined} { }'
 
-                this.output(result, 'result'});
+                this.output(result, 'result'};
 
             } catch (error) { }
 
@@ -217,8 +216,7 @@ export class DeveloperConsole {
     /**
      * コマンドの解析
      */
-    private parseCommand(commandLine: string): ParsedCommand { const parts = this.tokenize(commandLine),
-
+    private parseCommand(commandLine: string): ParsedCommand { const parts = this.tokenize(commandLine);
         if (parts.length === 0) {', ' }
 
             throw new Error('Empty, command'; }'
@@ -232,7 +230,7 @@ export class DeveloperConsole {
         
         return { name: resolvedName,
             args };
-            raw: commandLine;
+            raw: commandLine,
 
     /**
      * コマンドラインのトークン化
@@ -266,10 +264,9 @@ export class DeveloperConsole {
     /**
      * コマンドの実行
      */
-    private async executeCommand(parsed: ParsedCommand): Promise<any> { const command = this.commands.get(parsed.name),
-        
+    private async executeCommand(parsed: ParsedCommand): Promise<any> { const command = this.commands.get(parsed.name);
         if (!command) { }
-            throw new Error(`Unknown, command: ${parsed.name}`});
+            throw new Error(`Unknown, command: ${parsed.name}`};
         }
         
         // パラメータのバリデーション
@@ -282,15 +279,13 @@ export class DeveloperConsole {
         let result: any = undefined,
         
         try { // ハンドラーの実行
-            result = await command.handler(parsed.args, this.context, this),
-            
+            result = await command.handler(parsed.args, this.context, this);
             // 自動補完エンジンに学習させる
             this.enhancedAutocomplete.learnFromExecution(parsed.name, parsed.args, true) } catch (error) { success = false,
             errorMessage = (error, as Error).message,
             
             // 自動補完エンジンに学習させる
-            this.enhancedAutocomplete.learnFromExecution(parsed.name, parsed.args, false),
-            
+            this.enhancedAutocomplete.learnFromExecution(parsed.name, parsed.args, false);
             throw error } finally { // 実行時間の測定終了
             const executionTime = performance.now() - startTime,
             
@@ -300,7 +295,7 @@ export class DeveloperConsole {
                 executionTime,
                 errorMessage,
                 resultType: typeof result,
-    commandName: parsed.name),
+    commandName: parsed.name);
                 args: parsed.args  }
         
         return result;
@@ -309,8 +304,7 @@ export class DeveloperConsole {
     /**
      * パラメータのバリデーション
      */
-    private validateParameters(command: CommandData, args: string[]): void { const required = command.parameters.filter(p => p.required),
-
+    private validateParameters(command: CommandData, args: string[]): void { const required = command.parameters.filter(p => p.required);
         if (args.length < required.length) {
     
 }
@@ -318,7 +312,7 @@ export class DeveloperConsole {
             throw new Error(' }'
 
                 `Command '${command.name}' requires, at least ${required.length} arguments. ` +)
-                `Usage: ${ command.usage}` });
+                `Usage: ${ command.usage}` },
         }
         
         // 型チェック
@@ -346,7 +340,7 @@ export class DeveloperConsole {
                 return ['true', 'false', '1', '0', 'on', 'off].includes(value.toLowerCase()),'
             case 'string':,
                 return true }
-            default: return true;
+            default: return true,
 
     /**
      * 出力'
@@ -356,7 +350,7 @@ export class DeveloperConsole {
             message,
             type,
             timestamp,
-            id: Date.now() + Math.random(  };
+            id: Date.now() + Math.random(  },
         
         this.outputBuffer.push(outputLine);
         
@@ -389,12 +383,11 @@ export class DeveloperConsole {
      * 履歴のナビゲーション（拡張版使用）
      */
     navigateHistory(direction: string, filter: string | null = null): string { // 拡張履歴管理を使用
-        const entry = this.historyManager.navigate(direction, filter),
-        
+        const entry = this.historyManager.navigate(direction, filter);
         if (entry) {
         
             // 既存の履歴インデックスも更新（後方互換性）
-            const simpleHistory = this.historyManager.history.map(e => e.command),
+            const simpleHistory = this.historyManager.history.map(e => e.command);
             this.historyIndex = simpleHistory.indexOf(entry.command) }
             return entry.command;
         ;
@@ -626,15 +619,14 @@ export class DeveloperConsole {
             }]'
             ],
             examples: ['commands', 'commands game],'
-            group: 'system';
-        }) }
+            group: 'system',
+        } }
 
     /**
      * 拡張コマンドの登録
      */
     private registerExtensionCommands(): void { // 設定管理コマンドの登録
-        this.configurationCommands.registerCommands(this),
-        
+        this.configurationCommands.registerCommands(this);
         // テストデータ生成コマンドの登録
         this.testDataGenerationCommands.registerCommands(this) }
 
@@ -653,8 +645,7 @@ export class DeveloperConsole {
             
             return output;
         } else {  const commandName = args[0],
-            const command = this.commands.get(commandName),
-
+            const command = this.commands.get(commandName);
             ' }'
 
             if (!command) { }'
@@ -662,13 +653,13 @@ export class DeveloperConsole {
                 return `Command '${commandName}' not found.`;
             }
             
-            let output = `Command: ${command.name}\n`;
-            output += `Description: ${command.description}\n`;
-            output += `Usage: ${command.usage}\n`;
+            let output = `Command: ${command.name}\n`,
+            output += `Description: ${command.description}\n`,
+            output += `Usage: ${command.usage}\n`,
 
             if (command.aliases.length > 0) { }'
 
-                output += `Aliases: ${command.aliases.join(', '})\n`;
+                output += `Aliases: ${command.aliases.join(', '}\n`;
 
             }
 
@@ -680,7 +671,7 @@ export class DeveloperConsole {
 
                     const req = param.required ? '[required]' : '[optional]'; }
 
-                    output += `  ${param.name} (${param.type || 'any'}) ${req}: ${param.description}\n`;
+                    output += `  ${param.name} (${param.type || 'any'} ${req}: ${param.description}\n`;
                 }
             }
 
@@ -703,8 +694,7 @@ export class DeveloperConsole {
         
         // 拡張履歴管理からデータを取得
         const allHistory = this.historyManager.history,
-        const recentHistory = allHistory.slice(-count),
-
+        const recentHistory = allHistory.slice(-count);
         if (recentHistory.length === 0) {', ' }
 
             return 'No command history available.';
@@ -715,7 +705,7 @@ export class DeveloperConsole {
             const time = new Date(entry.timestamp}.toLocaleTimeString('}''
             const status = entry.metadata.success ? '✓' : '✗';) }
 
-            const execTime = entry.metadata.executionTime ? ` (${entry.metadata.executionTime.toFixed(1})ms')` : ';
+            const execTime = entry.metadata.executionTime ? ` (${entry.metadata.executionTime.toFixed(1}ms')` : ';
             
             output += `  ${num}: [${time}] ${status} ${entry.command}${execTime}\n`;
         }';'
@@ -764,8 +754,8 @@ export class DeveloperConsole {
         let, output = 'Command, History Statistics: \n' }
         output += `  Total, Commands: ${stats.totalCommands}\n`;)
         output += `  Session Commands: ${stats.sessionCommands}\n`;)
-        output += `  Average Command Length: ${stats.averageCommandLength.toFixed(1}) characters\n`;
-        output += `  History Size: ${stats.historySize}\n`;
+        output += `  Average Command Length: ${stats.averageCommandLength.toFixed(1} characters\n`,
+        output += `  History Size: ${stats.historySize}\n`,
 
         if (stats.topCommands.length > 0) {
 
@@ -773,17 +763,17 @@ export class DeveloperConsole {
             }
             stats.topCommands.forEach(([cmd, count], index) => { }
                 output += `    ${index + 1}. ${cmd}: ${count} times\n`;
-            });
+            };
         }
         ';'
 
         if (stats.errorCommands.size > 0) { }'
 
-            output += `\n  Commands with Errors: ${Array.from(stats.errorCommands}.join(', '})\n`;
+            output += `\n  Commands with Errors: ${Array.from(stats.errorCommands}.join(', '}\n`;
         }
         
         if (stats.currentSession) { const sessionTime = Math.round(stats.currentSession.totalTime / 1000) }
-            output += `\n  Current Session: ${stats.currentSession.commands.length} commands in ${sessionTime}s\n`;
+            output += `\n  Current Session: ${stats.currentSession.commands.length} commands in ${sessionTime}s\n`,
         }
         
         return output;
@@ -795,7 +785,7 @@ export class DeveloperConsole {
         
         try {
             const exported = this.exportHistory(format, {
-                includeMetadata: true),
+                includeMetadata: true);
             // クリップボードにコピー（可能であれば）
             if (navigator.clipboard) {
     
@@ -809,22 +799,19 @@ export class DeveloperConsole {
             const lines = exported.split('\n'.length;
             return `History exported in ${format} format(${lines} lines).\n${format === 'json' ? 'Copied, to clipboard, if supported.' : '}\n\n${exported.substring(0, 500'}'${exported.length > 500 ? '...\n\n[Output, truncated. Full, data copied, to clipboard.]' : '}`;
         } catch (error) {
-            return `Error exporting history: ${(error, as, Error}).message}`;
+            return `Error exporting history: ${(error, as, Error}.message}`;
 
     private echoCommand(args: string[]): string { ''
-        return args.join(', '),
-
+        return args.join(', ');
     private setCommand(args: string[]): string { const [name, ...valueParts] = args,
-        const value = valueParts.join(', '),
-        
+        const value = valueParts.join(', ');
         this.context.setVariable(name, value) }
         return `Set ${name} = ${value}`;
     }
 
     private getCommand(args: string[]): string { const name = args[0],
 
-        const value = this.context.getVariable(name),
-
+        const value = this.context.getVariable(name);
         if (value === undefined) { }'
 
             return `Variable '${name}' is not defined.`;
@@ -834,8 +821,7 @@ export class DeveloperConsole {
     }
 
     private jsCommand(args: string[]): string { ''
-        const code = args.join(', '),
-        
+        const code = args.join(', ');
         try {
             // コンテキストに gameEngine を追加
             const context = {
@@ -849,7 +835,7 @@ export class DeveloperConsole {
 
             return result !== undefined ? String(result) : 'undefined';
         } catch (error) {
-            return `JavaScript Error: ${(error, as, Error}).message}`;
+            return `JavaScript Error: ${(error, as, Error}.message}`;
 
     private commandsCommand(args: string[]): string { const groupFilter = args.length > 0 ? args[0] : null,
         

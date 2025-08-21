@@ -37,12 +37,12 @@ describe('Help System Integration', () => {
             font: '16px Arial',
             textAlign: 'left',
             textBaseline: 'top'
-    });
+    };
         mockCanvas = {
             getContext: jest.fn(() => mockContext),
             width: 800,
             height: 600
-    });
+    };
         // Mock DOM
         global.document = {
             getElementById: jest.fn((id') => {'
@@ -90,7 +90,7 @@ describe('Help System Integration', () => {
         mockGameEngine.helpFeedbackSystem = helpFeedbackSystem;
         // Create help scene
         helpScene = new HelpScene(mockGameEngine);
-    });
+    };
     afterEach(() => {
         if (helpAnalytics) {
             helpAnalytics.cleanup() }
@@ -100,67 +100,67 @@ describe('Help System Integration', () => {
     }');'
     describe('Help Scene Initialization', (') => {'
         test('should initialize help scene with all components', () => {
-            expect(helpScene.toBeDefined(),
-            expect(helpScene.helpContentManager).toBeDefined(),
-            expect(helpScene.helpEventManager).toBeDefined(),
-            expect(helpScene.helpRenderer).toBeDefined(),
+            expect(helpScene.toBeDefined();
+            expect(helpScene.helpContentManager).toBeDefined();
+            expect(helpScene.helpEventManager).toBeDefined();
+            expect(helpScene.helpRenderer).toBeDefined();
             expect(helpScene.helpAccessibilityManager).toBeDefined() }');'
         test('should connect analytics and feedback systems', () => {
-            expect(helpScene.gameEngine.helpAnalytics).toBe(helpAnalytics),
+            expect(helpScene.gameEngine.helpAnalytics).toBe(helpAnalytics);
             expect(helpScene.gameEngine.helpFeedbackSystem).toBe(helpFeedbackSystem) }');'
     }
     describe('Help Scene Entry and Exit', (') => {'
         test('should start help session on scene entry', (') => {'
-            const analyticsSpy = jest.spyOn(helpAnalytics, 'startHelpSession'),
-            helpScene.enter('menu'),
+            const analyticsSpy = jest.spyOn(helpAnalytics, 'startHelpSession');
+            helpScene.enter('menu');
             expect(analyticsSpy.toHaveBeenCalled() }');'
         test('should end help session on scene exit', (') => {'
-            const analyticsSpy = jest.spyOn(helpAnalytics, 'endHelpSession'),
-            helpScene.enter('menu'),
-            helpScene.exit(),
+            const analyticsSpy = jest.spyOn(helpAnalytics, 'endHelpSession');
+            helpScene.enter('menu');
+            helpScene.exit();
             expect(analyticsSpy.toHaveBeenCalled() }');'
         test('should track contextual help correctly', (') => {'
-            const analyticsSpy = jest.spyOn(helpAnalytics, 'startHelpSession'),
+            const analyticsSpy = jest.spyOn(helpAnalytics, 'startHelpSession');
             helpScene.enter('game', { contextual: true,');'
             expect(analyticsSpy.toHaveBeenCalledWith('contextual_help', expect.any(Object));
         }');'
     }
     describe('Navigation and Content Display', (') => {'
         test('should handle category selection', (') => {'
-            const analyticsSpy = jest.spyOn(helpAnalytics, 'recordCategorySelection'),
-            helpScene.enter('menu'),
+            const analyticsSpy = jest.spyOn(helpAnalytics, 'recordCategorySelection');
+            helpScene.enter('menu');
             // Simulate category selection
             if (helpScene.helpContentManager && helpScene.helpContentManager.selectCategory') {'
-                helpScene.helpContentManager.selectCategory('gameplay'),
+                helpScene.helpContentManager.selectCategory('gameplay');
                 expect(analyticsSpy.toHaveBeenCalledWith('gameplay', expect.any(Object)) }
         }');'
         test('should handle topic selection', (') => {'
-            const analyticsSpy = jest.spyOn(helpAnalytics, 'recordTopicView'),
-            const feedbackSpy = jest.spyOn(helpFeedbackSystem, 'recordTopicView'),
-            helpScene.enter('menu'),
+            const analyticsSpy = jest.spyOn(helpAnalytics, 'recordTopicView');
+            const feedbackSpy = jest.spyOn(helpFeedbackSystem, 'recordTopicView');
+            helpScene.enter('menu');
             // Simulate topic selection
             if (helpScene.helpContentManager && helpScene.helpContentManager.selectTopic') {'
-                helpScene.helpContentManager.selectTopic('basic-controls'),
+                helpScene.helpContentManager.selectTopic('basic-controls');
                 expect(analyticsSpy.toHaveBeenCalledWith('basic-controls', expect.any(Object)'),'
                 expect(feedbackSpy.toHaveBeenCalledWith('basic-controls', expect.any(Object)) }
         }');'
     }
     describe('Search Functionality', (') => {'
         test('should handle search input', (') => {'
-            const analyticsSpy = jest.spyOn(helpAnalytics, 'recordSearchQuery'),
-            helpScene.enter('menu'),
+            const analyticsSpy = jest.spyOn(helpAnalytics, 'recordSearchQuery');
+            helpScene.enter('menu');
             // Simulate search
             if (helpScene.helpContentManager && helpScene.helpContentManager.performSearch') {'
-                helpScene.helpContentManager.performSearch('controls'),
+                helpScene.helpContentManager.performSearch('controls');
                 expect(analyticsSpy.toHaveBeenCalledWith('controls', 0) }
         }');'
         test('should cache search results', () => {
             helpAnalytics.initializeContentCaching('),'
-            const cacheSpy = jest.spyOn(helpAnalytics, 'cacheSearchResults'),
-            helpScene.enter('menu'),
+            const cacheSpy = jest.spyOn(helpAnalytics, 'cacheSearchResults');
+            helpScene.enter('menu');
             // Simulate search with results
             if (helpScene.helpContentManager && helpScene.helpContentManager.performSearch') {'
-                const mockResults = [{ id: 'test', title: 'Test Result' }];
+                const mockResults = [{ id: 'test', title: 'Test Result' }],
                 helpScene.helpContentManager.performSearch('test');
                 // Manually trigger caching (as we're mocking the search');
                 helpAnalytics.cacheSearchResults('test', mockResults');'
@@ -168,8 +168,8 @@ describe('Help System Integration', () => {
             }
         }');'
         test('should sanitize search input', (') => {'
-            const analyticsSpy = jest.spyOn(helpAnalytics, 'recordSearchQuery'),
-            helpScene.enter('menu'),
+            const analyticsSpy = jest.spyOn(helpAnalytics, 'recordSearchQuery');
+            helpScene.enter('menu');
             // Simulate malicious search input
             if (helpScene.helpContentManager && helpScene.helpContentManager.performSearch') {'
                 helpScene.helpContentManager.performSearch('<script>alert("xss"")</script>'),"
@@ -179,34 +179,34 @@ describe('Help System Integration', () => {
     }
     describe('Keyboard Navigation', (') => {'
         test('should handle slash key for search focus', (') => {'
-            helpScene.enter('menu'),
+            helpScene.enter('menu');
             // Simulate slash key press
-            const event = new KeyboardEvent('keydown', { key: '/' });
+            const event = new KeyboardEvent('keydown', { key: '/' },
             if (helpScene.helpEventManager && helpScene.helpEventManager.handleKeyDown) {
-                const result = helpScene.helpEventManager.handleKeyDown(event),
+                const result = helpScene.helpEventManager.handleKeyDown(event);
                 expect(result.toBe(true), // Should handle the key
             }
         }');'
         test('should handle ESC key for navigation', (') => {'
-            const sceneManagerSpy = jest.spyOn(mockGameEngine.sceneManager, 'switchScene'),
-            helpScene.enter('menu'),
+            const sceneManagerSpy = jest.spyOn(mockGameEngine.sceneManager, 'switchScene');
+            helpScene.enter('menu');
             // Simulate ESC key press
-            const event = new KeyboardEvent('keydown', { key: 'Escape' });
+            const event = new KeyboardEvent('keydown', { key: 'Escape' },
             if (helpScene.helpEventManager && helpScene.helpEventManager.handleKeyDown) {
-                helpScene.helpEventManager.handleKeyDown(event),
+                helpScene.helpEventManager.handleKeyDown(event);
                 expect(sceneManagerSpy.toHaveBeenCalled() }
         }');'
     }
     describe('Feedback System Integration', (') => {'
         test('should start content view tracking', (') => {'
-            const feedbackSpy = jest.spyOn(helpFeedbackSystem, 'startContentView'),
-            helpScene.enter('menu'),
+            const feedbackSpy = jest.spyOn(helpFeedbackSystem, 'startContentView');
+            helpScene.enter('menu');
             // Simulate content viewing
             helpFeedbackSystem.startContentView('test-topic', { title: 'Test Topic' }');'
             expect(feedbackSpy.toHaveBeenCalledWith('test-topic', { title: 'Test Topic' )' }'
         test('should track feedback submission', (') => {'
-            const analyticsSpy = jest.spyOn(helpAnalytics, 'recordFeedback'),
-            const feedbackSpy = jest.spyOn(helpFeedbackSystem, 'recordFeedback'),
+            const analyticsSpy = jest.spyOn(helpAnalytics, 'recordFeedback');
+            const feedbackSpy = jest.spyOn(helpFeedbackSystem, 'recordFeedback');
             const mockFeedback = {
                 rating: 5,
                 comment: 'Very helpful!'
@@ -220,48 +220,48 @@ describe('Help System Integration', () => {
     describe('Error Handling and Recovery', (') => {'
         test('should handle analytics initialization failure', () => {
             // Create analytics with invalid game engine
-            const invalidAnalytics = new HelpAnalytics(null),
+            const invalidAnalytics = new HelpAnalytics(null);
             expect((') => {'
-                invalidAnalytics.recordCategorySelection('test-category') }).not.toThrow(');'
+                invalidAnalytics.recordCategorySelection('test-category') }.not.toThrow(');'
         }
         test('should handle feedback system failures gracefully', () => {
             expect((') => {'
                 helpFeedbackSystem.submitFeedback('test-topic', {
-                    rating: 'invalid' });
-            }).not.toThrow(');'
+                    rating: 'invalid' },
+            }.not.toThrow(');'
         }
         test('should continue operation after validation errors', () => {
             expect((') => {'
-                helpAnalytics.recordCategorySelection('<script>evil</script>'),
+                helpAnalytics.recordCategorySelection('<script>evil</script>');
                 helpAnalytics.recordTopicView(null, {}');'
-                helpAnalytics.recordFeedback('topic', {}, { rating: 'not-a-number' });
-            }).not.toThrow();
+                helpAnalytics.recordFeedback('topic', {}, { rating: 'not-a-number' },
+            }.not.toThrow();
         }
     }');'
     describe('Performance and Memory Management', (') => {'
         test('should initialize performance monitoring', () => {
-            helpAnalytics.initializePerformanceMonitoring(),
-            expect(helpAnalytics.performanceMetrics).toBeDefined(),
+            helpAnalytics.initializePerformanceMonitoring();
+            expect(helpAnalytics.performanceMetrics).toBeDefined();
             expect(helpAnalytics.performanceMetrics.operations instanceof Map).toBe(true) }');'
         test('should measure operation performance', () => {
-            helpAnalytics.initializePerformanceMonitoring(),
+            helpAnalytics.initializePerformanceMonitoring();
             const mockOperation = jest.fn((') => 'result'),'
             const result = helpAnalytics.measurePerformance('test-operation', mockOperation'),'
             expect(result.toBe('result')'),'
             expect(helpAnalytics.performanceMetrics.operations.has('test-operation').toBe(true))'),'
         test('should clean up resources on exit', (') => {'
-            helpScene.enter('menu'),
+            helpScene.enter('menu');
             expect(() => {
-                helpScene.exit(),
-                helpAnalytics.cleanup(),
+                helpScene.exit();
+                helpAnalytics.cleanup();
                 helpFeedbackSystem.cleanup()).not.toThrow()) }');'
     describe('Data Persistence', (') => {'
         test('should save and load analytics data', (') => {'
             // Record some data
-            helpAnalytics.recordCategorySelection('test-category'),
-            helpAnalytics.recordSearchQuery('test query', 5),
+            helpAnalytics.recordCategorySelection('test-category');
+            helpAnalytics.recordSearchQuery('test query', 5);
             // Save data
-            helpAnalytics.saveAnalyticsData(),
+            helpAnalytics.saveAnalyticsData();
             // Create new instance and load data
             const newAnalytics = new HelpAnalytics(mockGameEngine'),'
             expect(newAnalytics.analytics.helpUsage.topHelpCategories.get('test-category').toBe(1) }');'
@@ -269,7 +269,7 @@ describe('Help System Integration', () => {
             // Submit feedback
             helpFeedbackSystem.feedbacks.set('test-topic', {
                 rating: 5,
-                comment: 'Great!' });
+                comment: 'Great!' },
             // Save data
             helpFeedbackSystem.saveFeedbackData();
             // Create new instance and load data
@@ -279,16 +279,16 @@ describe('Help System Integration', () => {
     }
     describe('Accessibility Integration', (') => {'
         test('should announce help system entry', (') => {'
-            helpScene.enter('menu'),
+            helpScene.enter('menu');
             // Check if accessibility manager was initialized
             expect(helpScene.helpAccessibilityManager).toBeDefined() }');'
         test('should handle screen reader navigation', (') => {'
-            helpScene.enter('menu'),
+            helpScene.enter('menu');
             // Accessibility features should be available
             if (helpScene.helpAccessibilityManager && helpScene.helpAccessibilityManager.announceNavigation) {
                 expect((') => {'
-                    helpScene.helpAccessibilityManager.announceNavigation('category selection') }).not.toThrow();
+                    helpScene.helpAccessibilityManager.announceNavigation('category selection') }.not.toThrow();
             }
-        });
+        };
     }
 }');'

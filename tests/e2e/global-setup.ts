@@ -5,10 +5,9 @@
 import { chromium } from '@playwright/test';
 
 async function globalSetup(') {'
-  console.log('🚀 Setting up E2E test environment...'),
-  
+  console.log('🚀 Setting up E2E test environment...');
   // Launch browser for setup
-  const browser = await chromium.launch(),
+  const browser = await chromium.launch();
   const page = await browser.newPage('),'
   
   try {
@@ -20,10 +19,10 @@ async function globalSetup(') {'
     
     // Clear any existing data
     await page.evaluate(() => {
-      localStorage.clear(),
+      localStorage.clear();
       if (window.indexedDB') {'
         // Clear IndexedDB if used
-        const deleteReq = indexedDB.deleteDatabase('BubblePopDB'),
+        const deleteReq = indexedDB.deleteDatabase('BubblePopDB');
         deleteReq.onsuccess = (') => console.log('IndexedDB cleared') }'
     });
     
@@ -46,7 +45,7 @@ async function globalSetup(') {'
       };
       
       localStorage.setItem('bubblePop_playerData', JSON.stringify(testPlayerData);
-    });
+    };
     
     // Verify the game initializes correctly
     await page.waitForFunction((') => {'
@@ -55,7 +54,7 @@ async function globalSetup(') {'
     console.log('✅ E2E test environment setup complete');
     
   } catch (error') {'
-    console.error('❌ E2E setup failed:', error),
+    console.error('❌ E2E setup failed:', error);
     throw error } finally {
     await browser.close(') }'
 }

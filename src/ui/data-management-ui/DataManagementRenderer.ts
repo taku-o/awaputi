@@ -6,7 +6,7 @@
 /**
  * Layout configuration interface
  */
-interface LayoutConfig { padding: number,
+interface LayoutConfig { padding: number;
     itemHeight: number;
     headerHeight: number;
     dialogPadding: number;
@@ -17,7 +17,7 @@ interface LayoutConfig { padding: number,
 /**
  * Color theme interface
  */
-interface ColorTheme { background: string,
+interface ColorTheme { background: string;
     cardBackground: string;
     primary: string;
     secondary: string;
@@ -32,7 +32,7 @@ interface ColorTheme { background: string,
 /**
  * Bounds interface
  */
-interface Bounds { x: number,
+interface Bounds { x: number;
     y: number;
     width: number;
     height: number;
@@ -40,13 +40,13 @@ interface Bounds { x: number,
 /**
  * Button position interface
  */
-interface ButtonPosition { x: number,
+interface ButtonPosition { x: number;
     width: number;
 
 /**
  * Text metrics interface
  */
-interface TextMetrics { width: number,
+interface TextMetrics { width: number;
     height: number;
 
 /**
@@ -108,7 +108,7 @@ export class UILayoutManager {
     private canvas: HTMLCanvasElement | null = null;
     private ctx: CanvasRenderingContext2D | null = null';'
 
-    constructor('', background: '#0f0f1a',
+    constructor('', background: '#0f0f1a';
             cardBackground: '#1a1a2e';
             primary: '#4a90e2';
             secondary: '#6bb0ff';
@@ -120,7 +120,7 @@ export class UILayoutManager {
             border: '#333',';'
             overlay: 'rgba(0, 0, 0, 0.8)' }
 
-    setCanvas(canvas: HTMLCanvasElement): void { this.canvas = canvas;
+    setCanvas(canvas: HTMLCanvasElement): void { this.canvas = canvas,
         this.ctx = canvas.getContext('2d' }'
 
     getLayoutConfig(): LayoutConfig {
@@ -170,7 +170,7 @@ export class UILayoutManager {
         const startX = (containerWidth - totalWidth) / 2;
         
         return { x: startX + buttonIndex * (buttonWidth + padding }
-            width: buttonWidth;
+            width: buttonWidth,
 }
 
 /**
@@ -184,7 +184,7 @@ export, class UIRenderer {
     constructor(layoutManager: UILayoutManager) {
         this.layoutManager = layoutManager }
 
-    setCanvas(canvas: HTMLCanvasElement): void { this.canvas = canvas;
+    setCanvas(canvas: HTMLCanvasElement): void { this.canvas = canvas,
         this.ctx = canvas.getContext('2d);'
         this.layoutManager.setCanvas(canvas) }
 
@@ -194,18 +194,16 @@ export, class UIRenderer {
 
     drawBackground(): void { if (!this.ctx || !this.canvas) return,
 
-        const colors = this.layoutManager.getColors(),
+        const colors = this.layoutManager.getColors();
         this.ctx.fillStyle = colors.background,
         this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height) }
 
     drawCard(x: number, y: number, width: number, height: number, selected: boolean = false): void { if (!this.ctx) return,
 
-        const colors = this.layoutManager.getColors(),
-        
+        const colors = this.layoutManager.getColors();
         // Card background
         this.ctx.fillStyle = selected ? colors.primary: colors.cardBackground,
-        this.roundRect(x, y, width, height, 8, true),
-        
+        this.roundRect(x, y, width, height, 8, true);
         // Border
         this.ctx.strokeStyle = selected ? colors.secondary: colors.border,
         this.ctx.lineWidth = selected ? 2 : 1,
@@ -263,19 +261,20 @@ export, class UIRenderer {
                 fontSize
             color: textColor,
             align: 'center',
-            baseline: 'middle'),
+            baseline: 'middle');
             bold: true,
-
+            bold: true,
+        };
     drawProgressBar(x: number, y: number, width: number, height: number, progress: number, options: ProgressBarOptions = { ): void {
         if (!this.ctx) return,
 
-        const colors = this.layoutManager.getColors(),
+        const colors = this.layoutManager.getColors();
         const {
             backgroundColor = colors.cardBackground,
             progressColor = colors.primary,
             borderColor = colors.border,
             showText = true }
-            text = `${Math.round(progress})%`
+            text = `${Math.round(progress}%`
         } = options;
 
         // Background
@@ -314,17 +313,15 @@ export, class UIRenderer {
     drawOverlay(alpha: number = 0.8): void { if (!this.ctx || !this.canvas) return,
 
         this.ctx.fillStyle = `rgba(0, 0, 0, ${alpha}`; }
-        this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height});
+        this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height};
     }
 
     drawScrollbar(x: number, y: number, width: number, height: number, scrollPosition: number, totalItems: number, visibleItems: number): void { if (!this.ctx || totalItems <= visibleItems) return,
 
-        const colors = this.layoutManager.getColors(),
-
+        const colors = this.layoutManager.getColors();
         // Scrollbar track
         this.ctx.fillStyle = colors.cardBackground,
-        this.ctx.fillRect(x, y, width, height),
-
+        this.ctx.fillRect(x, y, width, height);
         // Scrollbar thumb
         const thumbHeight = Math.max(20, (visibleItems / totalItems) * height),
         const thumbY = y + (scrollPosition / (totalItems - visibleItems) * (height - thumbHeight),
@@ -363,7 +360,7 @@ export, class UIRenderer {
 
     drawStatusIndicator(x: number, y: number, status: 'success' | 'warning' | 'error' | string, text: string = '): void { if (!this.ctx) return,'
 
-        const colors = this.layoutManager.getColors(),
+        const colors = this.layoutManager.getColors();
         let indicatorColor: string,
 
         switch(status) {
@@ -399,18 +396,17 @@ export, class UIRenderer {
     // Helper method for rounded rectangles
     private roundRect(x: number, y: number, width: number, height: number, radius: number, fill: boolean = true): void { if (!this.ctx) return,
 
-        this.ctx.beginPath(),
-        this.ctx.moveTo(x + radius, y),
-        this.ctx.lineTo(x + width - radius, y),
-        this.ctx.quadraticCurveTo(x + width, y, x + width, y + radius),
-        this.ctx.lineTo(x + width, y + height - radius),
-        this.ctx.quadraticCurveTo(x + width, y + height, x + width - radius, y + height),
-        this.ctx.lineTo(x + radius, y + height),
-        this.ctx.quadraticCurveTo(x, y + height, x, y + height - radius),
-        this.ctx.lineTo(x, y + radius),
-        this.ctx.quadraticCurveTo(x, y, x + radius, y),
-        this.ctx.closePath(),
-
+        this.ctx.beginPath();
+        this.ctx.moveTo(x + radius, y);
+        this.ctx.lineTo(x + width - radius, y);
+        this.ctx.quadraticCurveTo(x + width, y, x + width, y + radius);
+        this.ctx.lineTo(x + width, y + height - radius);
+        this.ctx.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
+        this.ctx.lineTo(x + radius, y + height);
+        this.ctx.quadraticCurveTo(x, y + height, x, y + height - radius);
+        this.ctx.lineTo(x, y + radius);
+        this.ctx.quadraticCurveTo(x, y, x + radius, y);
+        this.ctx.closePath();
         if (fill) {
     
 }
@@ -425,7 +421,7 @@ export, class UIRenderer {
         this.ctx.font = `${bold ? 'bold ' : '}${fontSize}px Arial, sans-serif`;'
         const metrics = this.ctx.measureText(text);
         
-        return { width: metrics.width };
+        return { width: metrics.width },
             height: fontSize,
 ';'
 
@@ -441,8 +437,7 @@ export, class UIRenderer {
         for (const word of words) {
 
             const testLine = currentLine + (currentLine ? ', ' : ') + word,'
-            const metrics = this.ctx.measureText(testLine),
-
+            const metrics = this.ctx.measureText(testLine);
             if (metrics.width > maxWidth && currentLine) {
                 lines.push(currentLine) }
                 currentLine = word; }
@@ -459,7 +454,7 @@ export, class UIRenderer {
  */
 export class ViewRenderer {
     private uiRenderer: UIRenderer;
-    private, layoutManager: UILayoutManager,
+    private, layoutManager: UILayoutManager;
     constructor(uiRenderer: UIRenderer, layoutManager: UILayoutManager) {
 
         this.uiRenderer = uiRenderer
@@ -492,12 +487,12 @@ export class ViewRenderer {
         // Last backup
         const lastBackupText = backupStatus.lastBackup ','
             ? new Date(backupStatus.lastBackup).toLocaleString('''
-            : 'Never' });
+            : 'Never' };
         this.uiRenderer.drawText(`Last Backup: ${lastBackupText}`, x + padding, y + padding + 25, { fontSize: 14)
            , color: colors.textSecondary),
         // Backup count and size
         const sizeText = this.formatFileSize(backupStatus.totalSize }
-        this.uiRenderer.drawText(`${backupStatus.backupCount} backups (${sizeText}})`, x + padding, y + padding + 45, { fontSize: 14,
+        this.uiRenderer.drawText(`${backupStatus.backupCount} backups (${sizeText}}`, x + padding, y + padding + 45, { fontSize: 14,
             color: colors.textSecondary'
             }'
 
@@ -509,7 +504,7 @@ export class ViewRenderer {
 
         this.uiRenderer.drawStatusIndicator(x + width - 120, y + padding + 25, ')';
             backupStatus.autoBackupEnabled ? 'success' : 'warning');
-            `Auto: ${autoStatus}`});
+            `Auto: ${autoStatus}`},
     }
 
     renderQuickActionsCard(x: number, y: number, width: number, selectedItem: number): void { const colors = this.layoutManager.getColors() }
@@ -539,7 +534,7 @@ export class ViewRenderer {
         const buttonSpacing = 10;
         const buttonStartY = y + padding + 30;
 
-        actions.forEach((action, index) => { const row = Math.floor(index / buttonsPerRow),
+        actions.forEach((action, index) => { const row = Math.floor(index / buttonsPerRow);
             const col = index % buttonsPerRow,
             
             const buttonX = x + padding + col * (buttonWidth + buttonSpacing),
@@ -550,7 +545,7 @@ export class ViewRenderer {
             this.uiRenderer.drawButton(buttonX, buttonY, buttonWidth, buttonHeight, action.text, {)
                 selected: isSelected,
                 variant: action.variant), 
-    });
+    };
     }
 
     renderExportView(bounds: Bounds, selectedItem: number, exportOptions: ExportOptions = { ): void {
@@ -583,7 +578,7 @@ export class ViewRenderer {
             }
             
             this.uiRenderer.drawText(format, x + padding * 2, itemY, { )
-                fontSize: 14 });
+                fontSize: 14 },
     }
 ';'
 
@@ -593,6 +588,5 @@ export class ViewRenderer {
 
         const k = 1024,
         const sizes = ['B', 'KB', 'MB', 'GB'],
-        const i = Math.floor(Math.log(bytes) / Math.log(k),
-
+        const i = Math.floor(Math.log(bytes) / Math.log(k);
         return parseFloat((bytes / Math.pow(k, i).toFixed(1)) + ', ' + sizes[i],'}'

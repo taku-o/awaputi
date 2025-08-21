@@ -6,11 +6,11 @@ import { jest  } from '@jest/globals';
 // DOM environment setup''
 import { JSDOM  } from 'jsdom';
 const dom = new JSDOM('<!DOCTYPE html><html><body></body></html>');
-(global: any).document = dom.window.document;
-(global: any).window = dom.window;
-(global: any).localStorage = dom.window.localStorage;
-(global: any).performance = dom.window.performance;
-(global: any).requestAnimationFrame = dom.window.requestAnimationFrame;
+(global: any).document = dom.window.document,
+(global: any).window = dom.window,
+(global: any).localStorage = dom.window.localStorage,
+(global: any).performance = dom.window.performance,
+(global: any).requestAnimationFrame = dom.window.requestAnimationFrame,
 // Mock GameEngine
 const mockGameEngine = {
     canvas: { width: 800, height: 600 },
@@ -58,7 +58,7 @@ describe('EnhancedDebugInterface', () => {  let debugInterface: any,
         localStorage.clear();
         // Create instance
         debugInterface = new EnhancedDebugInterface(mockGameEngine: any),
-    });
+    };
     afterEach(() => {  if (debugInterface) { }
             debugInterface.destroy(); }
         }
@@ -72,11 +72,11 @@ describe('EnhancedDebugInterface', () => {  let debugInterface: any,
     }');'
     describe('Initialization', (') => {  ''
         test('should initialize with default values', () => {'
-            expect(debugInterface.panels).toBeInstanceOf(Map: any),
+            expect(debugInterface.panels).toBeInstanceOf(Map: any);
             expect(debugInterface.activePanel').toBe('overview'),'
-            expect(debugInterface.panelHistory).toEqual([]),
+            expect(debugInterface.panelHistory).toEqual([]);
             expect(debugInterface.layout').toBe('docked'),'
-            expect(debugInterface.shortcuts).toBeInstanceOf(Map: any),
+            expect(debugInterface.shortcuts).toBeInstanceOf(Map: any);
             expect(debugInterface.sessionId).toBeDefined() }'
             expect(debugInterface.sessionStartTime).toBeDefined();' }'
         }');'
@@ -90,14 +90,14 @@ describe('EnhancedDebugInterface', () => {  let debugInterface: any,
             expect(styles.toBeTruthy(),' }'
             expect(styles.tagName').toBe('STYLE'););' }'
         }');'
-        test('should generate unique session ID', () => {  const debugInterface2 = new EnhancedDebugInterface(mockGameEngine: any),
+        test('should generate unique session ID', () => {  const debugInterface2 = new EnhancedDebugInterface(mockGameEngine: any);
             expect(debugInterface.sessionId).not.toBe(debugInterface2.sessionId) }'
             debugInterface2.destroy();' }'
         }');'
         test('should setup default shortcuts', () => {  ''
             expect(debugInterface.shortcuts.size).toBeGreaterThan(0'),' }'
             expect(debugInterface.shortcuts.has('ctrl+shift+d').toBe(true);');' }'
-            expect(debugInterface.shortcuts.has('escape'}).toBe(true);'
+            expect(debugInterface.shortcuts.has('escape'}.toBe(true);'
         }'}');
     describe('Panel Management', () => {  // Mock panel class
         class MockPanel {
@@ -115,19 +115,19 @@ describe('EnhancedDebugInterface', () => {  let debugInterface: any,
             }', ';
             destroy(')';
         test('should register new panel successfully', (') => {  ''
-            const result = debugInterface.registerPanel('mock', MockPanel),
+            const result = debugInterface.registerPanel('mock', MockPanel);
             expect(result).toBe(true'),' }'
             expect(debugInterface.panels.has('mock').toBe(true);');' }'
-            expect(debugInterface.panels.get('mock'}).toBeInstanceOf(MockPanel as any');'
+            expect(debugInterface.panels.get('mock'}.toBeInstanceOf(MockPanel as any');'
         }''
         test('should not register duplicate panel', (') => {  ''
             debugInterface.registerPanel('mock', MockPanel'),'
-            const result = debugInterface.registerPanel('mock', MockPanel),
+            const result = debugInterface.registerPanel('mock', MockPanel);
             expect(result).toBe(false'),' }'
             expect(consoleWarnSpy.toHaveBeenCalledWith("Panel 'mock' is already registered");" }"
         }");""
         test('should handle panel registration error', () => {  class BadPanel {''
-                constructor('})'
+                constructor('}'
                     throw new Error('Test error'); }
                 }
             }', ';
@@ -136,7 +136,7 @@ describe('EnhancedDebugInterface', () => {  let debugInterface: any,
             expect(consoleErrorSpy.toHaveBeenCalled();'}');
         test('should switch panel correctly', (') => {  ''
             debugInterface.registerPanel('mock', MockPanel'),'
-            debugInterface.switchPanel('mock'),
+            debugInterface.switchPanel('mock');
             expect(debugInterface.activePanel').toBe('mock'),'
             expect(debugInterface.panelHistory').toContain('overview'),' }'
             expect(debugInterface.panels.get('mock').activated).toBe(true););' }'
@@ -144,10 +144,10 @@ describe('EnhancedDebugInterface', () => {  let debugInterface: any,
         test('should track panel history', (') => {  ''
             debugInterface.registerPanel('mock1', MockPanel'),'
             debugInterface.registerPanel('mock2', MockPanel'),'
-            debugInterface.switchPanel('mock1'),
+            debugInterface.switchPanel('mock1');
             debugInterface.switchPanel('mock2'),' }'
             debugInterface.switchPanel('overview');' }'
-            expect(debugInterface.panelHistory').toEqual(['overview', 'mock1', 'mock2']})');
+            expect(debugInterface.panelHistory').toEqual(['overview', 'mock1', 'mock2']}');
         test('should limit panel history size', (') => {  ''
             debugInterface.registerPanel('mock', MockPanel),'
             // Switch panels more than 10 times' }'
@@ -164,14 +164,14 @@ describe('EnhancedDebugInterface', () => {  let debugInterface: any,
     describe('Keyboard Shortcuts', (') => {  ''
         test('should register shortcut successfully', () => {''
             const callback = jest.fn(')',
-            const result = debugInterface.registerShortcut('ctrl+shift+x', callback, 'Test shortcut'),
+            const result = debugInterface.registerShortcut('ctrl+shift+x', callback, 'Test shortcut');
             expect(result).toBe(true),'),' }'
             expect(debugInterface.shortcuts.has('ctrl+shift+x').toBe(true'); }'
         }''
         test('should detect shortcut conflicts', () => {  const callback1 = jest.fn() as jest.Mock,
             const callback2 = jest.fn(')',
-            debugInterface.registerShortcut('ctrl+shift+x', callback1, 'First shortcut'),
-            const result = debugInterface.registerShortcut('ctrl+shift+x', callback2, 'Second shortcut'),
+            debugInterface.registerShortcut('ctrl+shift+x', callback1, 'First shortcut');
+            const result = debugInterface.registerShortcut('ctrl+shift+x', callback2, 'Second shortcut');
             expect(result).toBe(false),'),'
             expect(debugInterface.shortcutConflicts.has('ctrl+shift+x').toBe(true) }'
             expect(consoleWarnSpy.toHaveBeenCalled();' }'
@@ -220,20 +220,20 @@ describe('EnhancedDebugInterface', () => {  let debugInterface: any,
     }''
     describe('Session Management', (') => {  ''
         test('should track session data', () => {
-            const sessionData = debugInterface.getSessionData(),
-            expect(sessionData.sessionId).toBe(debugInterface.sessionId),
-            expect(sessionData.startTime).toBe(debugInterface.sessionStartTime),
-            expect(sessionData.currentTime).toBeDefined(),
-            expect(sessionData.duration).toBeGreaterThanOrEqual(0),
-            expect(sessionData.commands).toEqual([]),
-            expect(sessionData.errors).toEqual([]),
+            const sessionData = debugInterface.getSessionData();
+            expect(sessionData.sessionId).toBe(debugInterface.sessionId);
+            expect(sessionData.startTime).toBe(debugInterface.sessionStartTime);
+            expect(sessionData.currentTime).toBeDefined();
+            expect(sessionData.duration).toBeGreaterThanOrEqual(0);
+            expect(sessionData.commands).toEqual([]);
+            expect(sessionData.errors).toEqual([]);
             expect(sessionData.metrics).toEqual([]) }'
             expect(sessionData.panels).toEqual([]);' }'
         }');'
         test('should update session data on panel switch', (') => {  ''
-            debugInterface.switchPanel('performance'),
+            debugInterface.switchPanel('performance');
             const sessionData = debugInterface.getSessionData(),'
-            expect(sessionData.panels).toHaveLength(1),
+            expect(sessionData.panels).toHaveLength(1);
             expect(sessionData.panels[0].panel').toBe('performance') }'
             expect(sessionData.panels[0].timestamp).toBeDefined();' }'
         }');'
@@ -251,7 +251,7 @@ describe('EnhancedDebugInterface', () => {  let debugInterface: any,
                 position: { x: 150, y: 250 },'
                 size: { width: 600, height: 800 },''
                 theme: 'light',';'
-                activePanel: 'console';
+                activePanel: 'console',
             },', ';
             localStorage.setItem('enhanced-debug-settings', JSON.stringify(settings);
             const newDebugInterface = new EnhancedDebugInterface(mockGameEngine: any);
@@ -261,35 +261,35 @@ describe('EnhancedDebugInterface', () => {  let debugInterface: any,
             newDebugInterface.destroy(),' }'
         }');'
         test('should handle corrupted settings gracefully', (') => {  ''
-            localStorage.setItem('enhanced-debug-settings', 'invalid json'),
+            localStorage.setItem('enhanced-debug-settings', 'invalid json');
             const newDebugInterface = new EnhancedDebugInterface(mockGameEngine as any'),'
             expect(consoleWarnSpy.toHaveBeenCalledWith('Failed to load debug settings:', expect.any(Error) }'
             newDebugInterface.destroy();' }'
         }');'
         test('should not save settings when autoSave is disabled', () => { debugInterface.settings.autoSave = false }'
             debugInterface.saveSettings(}')', ');'
-            expect(localStorage.getItem('enhanced-debug-settings'}).toBeNull();'
+            expect(localStorage.getItem('enhanced-debug-settings'}.toBeNull();'
         }'}');
     describe('UI Interaction', (') => {  ''
         test('should toggle visibility correctly', () => {
-            expect(debugInterface.isVisible).toBe(false),
+            expect(debugInterface.isVisible).toBe(false);
             debugInterface.show(),'
-            expect(debugInterface.isVisible).toBe(true),
+            expect(debugInterface.isVisible).toBe(true);
             expect(debugInterface.debugPanel.style.display').toBe('block'),'
             debugInterface.hide(),'
             expect(debugInterface.isVisible).toBe(false),' }'
             expect(debugInterface.debugPanel.style.display').toBe('none'););' }'
         }');'
-        test('should minimize and restore correctly', () => {  debugInterface.show(),
+        test('should minimize and restore correctly', () => {  debugInterface.show();
             debugInterface.minimize(')',
-            expect(debugInterface.debugPanel.classList.contains('minimized').toBe(true),
+            expect(debugInterface.debugPanel.classList.contains('minimized').toBe(true);
             expect(debugInterface.debugPanel.style.height').toBe('40px'),'
             debugInterface.restore(') }'
             expect(debugInterface.debugPanel.classList.contains('minimized').toBe(false); }'
-            expect(debugInterface.debugPanel.style.height).toBe(`${debugInterface.size.height)px`});'}');
+            expect(debugInterface.debugPanel.style.height).toBe(`${debugInterface.size.height)px`};'}');
         test('should update status message', () => {  ''
             debugInterface.show(')',
-            debugInterface.updateStatus('Test message'),
+            debugInterface.updateStatus('Test message');
             const statusElement = document.getElementById('debug-status-text'),' }'
             expect(statusElement.textContent').toBe('Test message'););' }'
         }');'
@@ -301,10 +301,10 @@ describe('EnhancedDebugInterface', () => {  let debugInterface: any,
             expect(debugInterface.getActivePanel(}').toBe('performance');'
         }''
         test('should return panel history', (') => {  ''
-            debugInterface.switchPanel('performance'),
+            debugInterface.switchPanel('performance');
             debugInterface.switchPanel('console') }'
             const history = debugInterface.getPanelHistory(); }'
-            expect(history').toEqual(['overview', 'performance']});'}');'
+            expect(history').toEqual(['overview', 'performance']};'}');'
         test('should return registered panels', () => { class MockPanel { }'
                 getDisplayName(') { return 'Mock' }'
             }', ';
@@ -313,7 +313,7 @@ describe('EnhancedDebugInterface', () => {  let debugInterface: any,
             const panels = debugInterface.getRegisteredPanels(')';
             expect(panels.toContain('mock1');
             expect(panels.toContain('mock2');'}');
-        test('should return shortcuts', () => {  const shortcuts = debugInterface.getShortcuts(),
+        test('should return shortcuts', () => {  const shortcuts = debugInterface.getShortcuts();
             expect(shortcuts.toBeInstanceOf(Map: any) }'
             expect(shortcuts.size).toBeGreaterThan(0); }'
         }');'
@@ -340,9 +340,9 @@ describe('EnhancedDebugInterface', () => {  let debugInterface: any,
             expect(document.getElementById('enhanced-debug-styles').toBeNull();'}');
         test('should save session data on destroy', () => {  debugInterface.settings.autoSave = true,' }'
             debugInterface.destroy(') }'
-            const sessionData = JSON.parse(localStorage.getItem('enhanced-debug-session'});
+            const sessionData = JSON.parse(localStorage.getItem('enhanced-debug-session'};
             expect(sessionData.toBeTruthy();
             expect(sessionData.sessionId).toBe(debugInterface.sessionId);
             expect(sessionData.endTime).toBeDefined();
-        });'
+        };'
     }'}');

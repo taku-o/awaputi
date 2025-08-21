@@ -20,38 +20,38 @@ describe('NavigationContextManager', () => {
         };
         );
         navigationManager = new NavigationContextManager(mockGameEngine);
-    });
+    };
     afterEach(() => {
         navigationManager.cleanup() }');'
     describe('Initialization', (') => {'
         test('should initialize with empty stack', () => {
-            expect(navigationManager.getStackDepth().toBe(0),
+            expect(navigationManager.getStackDepth().toBe(0);
             expect(navigationManager.getCurrentContext().toBeNull() }');'
         test('should have default configuration', () => {
-            const debugInfo = navigationManager.getDebugInfo(),
-            expect(debugInfo.config.maxStackSize).toBe(10),
+            const debugInfo = navigationManager.getDebugInfo();
+            expect(debugInfo.config.maxStackSize).toBe(10);
             expect(debugInfo.config.defaultReturnScene').toBe('menu') }');
     }
     describe('Context Push Operations', (') => {'
         test('should push context successfully', (') => {'
-            const result = navigationManager.pushContext('menu', 'keyboard_h'),
-            expect(result).toBe(true),
-            expect(navigationManager.getStackDepth().toBe(1),
-            const currentContext = navigationManager.getCurrentContext(),
+            const result = navigationManager.pushContext('menu', 'keyboard_h');
+            expect(result).toBe(true);
+            expect(navigationManager.getStackDepth().toBe(1);
+            const currentContext = navigationManager.getCurrentContext();
             expect(currentContext.scene').toBe('menu'),'
             expect(currentContext.method').toBe('keyboard_h'),'
             expect(typeof currentContext.timestamp').toBe('number'),'
             expect(currentContext.id).toMatch(/nav_\d+_[a-z0-9]+/) }');'
         test('should push multiple contexts', (') => {'
-            navigationManager.pushContext('menu', 'keyboard_h'),
-            navigationManager.pushContext('game', 'keyboard_s'),
-            navigationManager.pushContext('stageSelect', 'esc_from_help'),
-            expect(navigationManager.getStackDepth().toBe(3),
-            const currentContext = navigationManager.getCurrentContext(),
+            navigationManager.pushContext('menu', 'keyboard_h');
+            navigationManager.pushContext('game', 'keyboard_s');
+            navigationManager.pushContext('stageSelect', 'esc_from_help');
+            expect(navigationManager.getStackDepth().toBe(3);
+            const currentContext = navigationManager.getCurrentContext();
             expect(currentContext.scene').toBe('stageSelect'),'
             expect(currentContext.method').toBe('esc_from_help') }');
         test('should handle additional data', (') => {'
-            const additionalData = { userId: 123, preferences: { theme: 'dark' } };
+            const additionalData = { userId: 123, preferences: { theme: 'dark' } },
             navigationManager.pushContext('menu', 'keyboard_h', additionalData);
             const currentContext = navigationManager.getCurrentContext();
             expect(currentContext.data).toEqual(additionalData);
@@ -61,7 +61,7 @@ describe('NavigationContextManager', () => {
             expect(navigationManager.pushContext('menu', null).toBe(false'),'
             expect(navigationManager.pushContext(', 'keyboard_h').toBe(false) }');
         test('should manage stack size limit', () => {
-            navigationManager.updateConfig({ maxStackSize: 3 });
+            navigationManager.updateConfig({ maxStackSize: 3 };
             // Push 5 contexts
             for (let i = 0; i < 5; i++') {'
                 navigationManager.pushContext(`scene${i}`, 'test_method');
@@ -76,44 +76,44 @@ describe('NavigationContextManager', () => {
     }
     describe('Context Pop Operations', (') => {'
         test('should pop context successfully', (') => {'
-            navigationManager.pushContext('menu', 'keyboard_h'),
-            navigationManager.pushContext('game', 'keyboard_s'),
-            const poppedContext = navigationManager.popContext(),
+            navigationManager.pushContext('menu', 'keyboard_h');
+            navigationManager.pushContext('game', 'keyboard_s');
+            const poppedContext = navigationManager.popContext();
             expect(poppedContext.scene').toBe('game'),'
             expect(poppedContext.method').toBe('keyboard_s'),'
-            expect(navigationManager.getStackDepth().toBe(1),
-            const currentContext = navigationManager.getCurrentContext(),
+            expect(navigationManager.getStackDepth().toBe(1);
+            const currentContext = navigationManager.getCurrentContext();
             expect(currentContext.scene').toBe('menu') }');
         test('should handle empty stack pop', () => {
-            const result = navigationManager.popContext(),
-            expect(result).toBeNull(),
+            const result = navigationManager.popContext();
+            expect(result).toBeNull();
             expect(navigationManager.getStackDepth().toBe(0) }');'
         test('should update current context after pop', (') => {'
-            navigationManager.pushContext('menu', 'keyboard_h'),
-            navigationManager.pushContext('game', 'keyboard_s'),
-            navigationManager.pushContext('stageSelect', 'esc_from_help'),
-            navigationManager.popContext(),
-            const currentContext = navigationManager.getCurrentContext(),
+            navigationManager.pushContext('menu', 'keyboard_h');
+            navigationManager.pushContext('game', 'keyboard_s');
+            navigationManager.pushContext('stageSelect', 'esc_from_help');
+            navigationManager.popContext();
+            const currentContext = navigationManager.getCurrentContext();
             expect(currentContext.scene').toBe('game'),'
-            navigationManager.popContext(),
-            const newCurrentContext = navigationManager.getCurrentContext(),
+            navigationManager.popContext();
+            const newCurrentContext = navigationManager.getCurrentContext();
             expect(newCurrentContext.scene').toBe('menu'),'
-            navigationManager.popContext(),
+            navigationManager.popContext();
             expect(navigationManager.getCurrentContext().toBeNull() }');'
     }
     describe('Return Destination Logic', (') => {'
         test('should return default scene when stack is empty', () => {
-            const destination = navigationManager.getReturnDestination(),
+            const destination = navigationManager.getReturnDestination();
             expect(destination').toBe('menu') }');
         test('should return last context scene', (') => {'
-            navigationManager.pushContext('game', 'keyboard_h'),
-            navigationManager.pushContext('stageSelect', 'keyboard_s'),
-            const destination = navigationManager.getReturnDestination(),
+            navigationManager.pushContext('game', 'keyboard_h');
+            navigationManager.pushContext('stageSelect', 'keyboard_s');
+            const destination = navigationManager.getReturnDestination();
             expect(destination').toBe('stageSelect') }');
         test('should fallback to default when scene not found', () => {
             mockGameEngine.sceneManager.hasScene.mockReturnValue(false'),'
-            navigationManager.pushContext('nonexistent', 'keyboard_h'),
-            const destination = navigationManager.getReturnDestination(),
+            navigationManager.pushContext('nonexistent', 'keyboard_h');
+            const destination = navigationManager.getReturnDestination();
             expect(destination').toBe('menu') }');
         test('should handle missing sceneManager gracefully', () => {
             const navigationManagerWithoutSM = new NavigationContextManager({}');'
@@ -124,8 +124,8 @@ describe('NavigationContextManager', () => {
     }
     describe('Context Query Operations', () => {
         beforeEach((') => {'
-            navigationManager.pushContext('menu', 'keyboard_h'),
-            navigationManager.pushContext('game', 'keyboard_s'),
+            navigationManager.pushContext('menu', 'keyboard_h');
+            navigationManager.pushContext('game', 'keyboard_s');
             navigationManager.pushContext('stageSelect', 'menu_click') }');'
         test('should check context by method', (') => {'
             expect(navigationManager.hasContextByMethod('keyboard_h').toBe(true'),'
@@ -136,23 +136,23 @@ describe('NavigationContextManager', () => {
             expect(navigationManager.hasContextFromScene('game').toBe(true'),'
             expect(navigationManager.hasContextFromScene('nonexistent').toBe(false) }');'
         test('should get history with limit', () => {
-            const fullHistory = navigationManager.getHistory(),
-            expect(fullHistory.length).toBe(3),
-            const limitedHistory = navigationManager.getHistory(2),
-            expect(limitedHistory.length).toBe(2),
+            const fullHistory = navigationManager.getHistory();
+            expect(fullHistory.length).toBe(3);
+            const limitedHistory = navigationManager.getHistory(2);
+            expect(limitedHistory.length).toBe(2);
             expect(limitedHistory[0].scene').toBe('game'),'
             expect(limitedHistory[1].scene').toBe('stageSelect') }');
     }
     describe('Circular Navigation Detection', (') => {'
         test('should detect immediate circular navigation', (') => {'
-            navigationManager.pushContext('menu', 'keyboard_h'),
+            navigationManager.pushContext('menu', 'keyboard_h');
             expect(navigationManager.isCircularNavigation('menu').toBe(true) }');'
         test('should detect frequent circular navigation', (') => {'
-            navigationManager.pushContext('menu', 'test1'),
-            navigationManager.pushContext('game', 'test2'),
-            navigationManager.pushContext('menu', 'test3'),
-            navigationManager.pushContext('settings', 'test4'),
-            navigationManager.pushContext('menu', 'test5'),
+            navigationManager.pushContext('menu', 'test1');
+            navigationManager.pushContext('game', 'test2');
+            navigationManager.pushContext('menu', 'test3');
+            navigationManager.pushContext('settings', 'test4');
+            navigationManager.pushContext('menu', 'test5');
             expect(navigationManager.isCircularNavigation('menu').toBe(true) }');'
         test('should allow circular navigation when enabled', () => {
             navigationManager.updateConfig({ allowCircularNavigation: true,');'
@@ -172,8 +172,9 @@ describe('NavigationContextManager', () => {
             const newConfig = {
                 maxStackSize: 5,
                 defaultReturnScene: 'game',
-                enableLogging: false,;
-            
+                enableLogging: false,
+                enableLogging: false,
+        };
             navigationManager.updateConfig(newConfig);
             const debugInfo = navigationManager.getDebugInfo();
             expect(debugInfo.config.maxStackSize).toBe(5);
@@ -181,7 +182,7 @@ describe('NavigationContextManager', () => {
             expect(debugInfo.config.enableLogging).toBe(false);
         }');'
         test('should preserve existing config when partially updating', () => {
-            navigationManager.updateConfig({ maxStackSize: 20 });
+            navigationManager.updateConfig({ maxStackSize: 20 };
             const debugInfo = navigationManager.getDebugInfo();
             expect(debugInfo.config.maxStackSize).toBe(20);
             expect(debugInfo.config.defaultReturnScene').toBe('menu'); // Should remain unchanged'
@@ -189,25 +190,25 @@ describe('NavigationContextManager', () => {
     }
     describe('Cleanup and Reset', (') => {'
         test('should clear all contexts', (') => {'
-            navigationManager.pushContext('menu', 'keyboard_h'),
-            navigationManager.pushContext('game', 'keyboard_s'),
-            navigationManager.clear(),
-            expect(navigationManager.getStackDepth().toBe(0),
+            navigationManager.pushContext('menu', 'keyboard_h');
+            navigationManager.pushContext('game', 'keyboard_s');
+            navigationManager.clear();
+            expect(navigationManager.getStackDepth().toBe(0);
             expect(navigationManager.getCurrentContext().toBeNull() }');'
         test('should cleanup properly', (') => {'
-            navigationManager.pushContext('menu', 'keyboard_h'),
-            navigationManager.cleanup(),
-            expect(navigationManager.getStackDepth().toBe(0),
+            navigationManager.pushContext('menu', 'keyboard_h');
+            navigationManager.cleanup();
+            expect(navigationManager.getStackDepth().toBe(0);
             expect(navigationManager.getCurrentContext().toBeNull() }');'
     }
     describe('Debug Information', (') => {'
         test('should provide comprehensive debug info', (') => {'
-            navigationManager.pushContext('menu', 'keyboard_h'),
-            const debugInfo = navigationManager.getDebugInfo(),
-            expect(debugInfo.stackSize).toBe(1),
-            expect(debugInfo.maxStackSize).toBe(10),
-            expect(debugInfo.currentContext).toBeTruthy(),
-            expect(debugInfo.stack).toHaveLength(1),
+            navigationManager.pushContext('menu', 'keyboard_h');
+            const debugInfo = navigationManager.getDebugInfo();
+            expect(debugInfo.stackSize).toBe(1);
+            expect(debugInfo.maxStackSize).toBe(10);
+            expect(debugInfo.currentContext).toBeTruthy();
+            expect(debugInfo.stack).toHaveLength(1);
             expect(debugInfo.config).toBeTruthy() }');'
     }
     describe('Error Handling', (') => {'

@@ -6,7 +6,7 @@
 import { AdvancedPerformanceMonitor  } from '../AdvancedPerformanceMonitor.js';
 import { PerformanceChart  } from '../charts/PerformanceChart.js';
 
-interface ChartConfig { label: string,
+interface ChartConfig { label: string;
     color: string;
     min: number;
     max: number;
@@ -17,7 +17,7 @@ interface ChartConfigs { [key: string]: ChartConfig;
 
 interface PanelOptions { [key: string]: any;
 
-interface Metrics { fps: number,
+interface Metrics { fps: number;
     frameTime: number;
     memory: number;
     drawCalls: number;
@@ -30,19 +30,19 @@ interface Alert { ''
     metric: string;
     message: string;
 
-interface ProfilingResults { component: string,
+interface ProfilingResults { component: string;
     duration: number;
     sampleCount: number;
     operations: {
         [operation: string]: {
-            coun,t: number,
-            avgTime: number,
-            minTime: number,
-            maxTime: number,
-    totalTime: number,;
+            coun,t: number;
+            avgTime: number;
+            minTime: number;
+            maxTime: number;
+    totalTime: number;
 }
 
-interface Threshold { warning: number,
+interface Threshold { warning: number;
     critical: number;
 
 interface PanelState { thresholds: {
@@ -66,7 +66,7 @@ export class PerformancePanel {
     private alertsContainer: HTMLElement | null = null;
     private profilingContainer: HTMLElement | null = null;
     private isActive: boolean = false;
-    private, updateInterval: NodeJS.Timeout | null = null,
+    private, updateInterval: NodeJS.Timeout | null = null;
     constructor(gameEngine: GameEngine, debugInterface: DebugInterface, options: PanelOptions = {) {
 
         this.gameEngine = gameEngine;
@@ -83,35 +83,35 @@ export class PerformancePanel {
                 max: 60;
     warning: 30 }
                 critical: 20
-            });
+            };
             frameTime: { ''
-                label: 'Frame Time(ms)',
+                label: 'Frame Time(ms)';
                 color: '#ffff00', ;
                 min: 0, ;
-                max: 50,
-                warning: 33,
+                max: 50;
+                warning: 33;
     critical: 50  };
             memory: { ''
-                label: 'Memory(%)',
+                label: 'Memory(%)';
                 color: '#ff9900', ;
                 min: 0, ;
-                max: 100,
-                warning: 80,
+                max: 100;
+                warning: 80;
     critical: 90  };
             drawCalls: { ''
-                label: 'Draw Calls',
+                label: 'Draw Calls';
                 color: '#00ffff', ;
                 min: 0, ;
-                max: 300,
-                warning: 100,
+                max: 300;
+                warning: 100;
     critical: 200  }
         };
         this.initialize();
     }
 
-    private initialize(): void { this.createUI(),
-        this.setupCharts(),
-        this.bindEvents(),
+    private initialize(): void { this.createUI();
+        this.setupCharts();
+        this.bindEvents();
         this.setupAlertCallbacks() }
 
     private createUI()';'
@@ -194,15 +194,15 @@ export class PerformancePanel {
                     <h4>Threshold Settings</h4>"";
                     <div class="threshold-controls">"";
                         <div class="threshold-item">";"
-                            <label>FPS Warning:</label>"";
+                            <label>FPS Warning: </label>"",
                             <input type="number" id="threshold-fps-warning" value="30" min="1" max="60">";"
-                            <label>Critical:</label>"";
+                            <label>Critical: </label>"",
                             <input type="number" id="threshold-fps-critical" value="20" min="1" max="60">";"
                         </div>"";
                         <div class="threshold-item">";"
-                            <label>Memory Warning:</label>"";
+                            <label>Memory Warning: </label>"",
                             <input type="number" id="threshold-memory-warning" value="80" min="1" max="100">";"
-                            <label>Critical:</label>"";
+                            <label>Critical: </label>"",
                             <input type="number" id="threshold-memory-critical" value="90" min="1" max="100">";"
                         </div>"";
                         <button id="threshold-apply">Apply Thresholds</button>;
@@ -238,14 +238,14 @@ export class PerformancePanel {
                 padding-bottom: 3px }
             
             .stats-grid { display: grid,
-                grid-template-columns: repeat(3, 1fr),
+                grid-template-columns: repeat(3, 1fr);
                 gap: 10px,
                 margin-bottom: 15px }
             
-            .stat-item { background: rgba(0, 0, 0, 0.3),
+            .stat-item { background: rgba(0, 0, 0, 0.3);
                 padding: 8px,
                 border-radius: 4px,
-                text-align: center;
+                text-align: center,
             
             .stat-label { font-size: 10px,
                 color: #888,
@@ -261,21 +261,21 @@ export class PerformancePanel {
             
             .performance-alerts { margin-bottom: 15px }
             
-            .alerts-list { background: rgba(0, 0, 0, 0.3),
+            .alerts-list { background: rgba(0, 0, 0, 0.3);
                 padding: 10px,
                 border-radius: 4px,
                 max-height: 150px,
-                overflow-y: auto;
+                overflow-y: auto,
             
             .alert-item { padding: 5px,
                 margin-bottom: 5px,
                 border-radius: 3px,
                 font-size: 11px }
             
-            .alert-item.warning { background: rgba(255, 170, 0, 0.2),
+            .alert-item.warning { background: rgba(255, 170, 0, 0.2);
                 border-left: 3px solid #ffaa00 }
             
-            .alert-item.critical { background: rgba(255, 51, 51, 0.2),
+            .alert-item.critical { background: rgba(255, 51, 51, 0.2);
                 border-left: 3px solid #ff3333 }
             
             .no-alerts, .no-results { color: #666,
@@ -283,7 +283,7 @@ export class PerformancePanel {
                 text-align: center,
                 padding: 20px  }
             
-            .charts-container { background: rgba(0, 0, 0, 0.3),
+            .charts-container { background: rgba(0, 0, 0, 0.3);
                 padding: 10px,
                 border-radius: 4px,
                 margin-bottom: 15px }
@@ -301,27 +301,27 @@ export class PerformancePanel {
                 border: 1px solid #555,
     color: white,
                 border-radius: 3px,
-                cursor: pointer;
+                cursor: pointer,
             
             .profiling-controls button:hover:not(:disabled) { background: #444 }
             
             .profiling-controls button: disabled { opacity: 0.5,
     cursor: not-allowed }
             
-            .profiling-results { background: rgba(0, 0, 0, 0.3),
+            .profiling-results { background: rgba(0, 0, 0, 0.3);
                 padding: 10px,
                 border-radius: 4px,
                 font-family: monospace,
                 font-size: 11px,
                 max-height: 200px,
-                overflow-y: auto;
+                overflow-y: auto,
             
             .profile-operation { margin-bottom: 5px,
                 padding: 5px,
-    background: rgba(255, 255, 255, 0.05),
+    background: rgba(255, 255, 255, 0.05);
                 border-radius: 3px }
             
-            .threshold-controls { background: rgba(0, 0, 0, 0.3),
+            .threshold-controls { background: rgba(0, 0, 0, 0.3);
                 padding: 10px,
                 border-radius: 4px }
             
@@ -346,7 +346,7 @@ export class PerformancePanel {
                 border: none,
     color: white,
                 border-radius: 3px,
-                cursor: pointer;
+                cursor: pointer,
             
             #threshold-apply:hover { background: #0088ff }
         `;
@@ -356,9 +356,9 @@ export class PerformancePanel {
     private setupCharts(): void { // 各メトリクスのチャートを作成
         for(const [metric, config] of Object.entries(this.chartConfig) { }'
 
-            const canvas = document.getElementById(`chart-${metric.replace(/([A-Z]}/g, '-$1'}.toLowerCase(})`) as HTMLCanvasElement;
+            const canvas = document.getElementById(`chart-${metric.replace(/([A-Z]}/g, '-$1'}.toLowerCase(}`) as HTMLCanvasElement;
             if (canvas) {
-                const chart = new PerformanceChart(canvas, config),
+                const chart = new PerformanceChart(canvas, config);
                 this.charts.set(metric, chart) }
                 this.monitor.registerChart(metric, chart); }
 }
@@ -376,10 +376,10 @@ export class PerformancePanel {
                 componentSelect.disabled = true; }
 };
 
-        stopBtn?.addEventListener('click', () => {  const results = this.monitor.stopProfiling(),
+        stopBtn?.addEventListener('click', () => {  const results = this.monitor.stopProfiling();
             if (results) {
 
-                this.displayProfilingResults(results),
+                this.displayProfilingResults(results);
                 startBtn.disabled = false }
                 stopBtn.disabled = true; }
                 componentSelect.disabled = false; }
@@ -411,7 +411,7 @@ export class PerformancePanel {
     }
 
     private stopUpdating(): void { if (this.updateInterval) {
-            clearInterval(this.updateInterval),
+            clearInterval(this.updateInterval);
             this.updateInterval = null }
     }
 ';'
@@ -468,8 +468,7 @@ export class PerformancePanel {
     private updateStatClass(element: HTMLElement, metric: string, value: number): void { const thresholds = (this.monitor, as any).thresholds[metric],
         if(!thresholds) return,
 
-        element.classList.remove('warning', 'critical'),
-
+        element.classList.remove('warning', 'critical');
         if (metric === 'fps''
             // FPSは低い値が問題
             if(value < thresholds.critical) {
@@ -489,8 +488,7 @@ export class PerformancePanel {
                 element.classList.add('warning' }'
 }
 
-    private updateAlerts(): void { const alerts = this.monitor.getCurrentAlerts(),
-        
+    private updateAlerts(): void { const alerts = this.monitor.getCurrentAlerts();
         if (!this.alertsContainer) return,
 
         if (alerts.length === 0) {', ' }
@@ -509,7 +507,7 @@ export class PerformancePanel {
     }
 
     private displayAlert(alert: Alert): void { // 新しいアラートの表示（オプション: 通知やアニメーション） }
-        console.log(`Performance, Alert [${alert.level}]: ${alert.message}`});
+        console.log(`Performance, Alert [${alert.level}]: ${alert.message}`};
     }
 ';'
 
@@ -526,10 +524,10 @@ export class PerformancePanel {
                 <div class="profile-operation"> }
                     <strong>${operation}:</strong><br>
                     Count: ${stats.count}<br>
-                    Avg: ${stats.avgTime.toFixed(2})ms<br>
-                    Min: ${stats.minTime.toFixed(2})ms<br>
-                    Max: ${stats.maxTime.toFixed(2})ms<br>
-                    Total: ${stats.totalTime.toFixed(2})ms
+                    Avg: ${stats.avgTime.toFixed(2}ms<br>
+                    Min: ${stats.minTime.toFixed(2}ms<br>
+                    Max: ${stats.maxTime.toFixed(2}ms<br>
+                    Total: ${stats.totalTime.toFixed(2}ms
                 </div>;
             `
             }
@@ -541,16 +539,16 @@ export class PerformancePanel {
         const fpsWarningElement = document.getElementById('threshold-fps-warning') as HTMLInputElement,
         const fpsCriticalElement = document.getElementById('threshold-fps-critical) as HTMLInputElement,'
 
-        const fpsWarning = parseFloat(fpsWarningElement.value),
-        const fpsCritical = parseFloat(fpsCriticalElement.value),
+        const fpsWarning = parseFloat(fpsWarningElement.value);
+        const fpsCritical = parseFloat(fpsCriticalElement.value);
         this.monitor.setThreshold('fps', fpsWarning, fpsCritical','
         ','
         // メモリ閾値
         const memoryWarningElement = document.getElementById('threshold-memory-warning') as HTMLInputElement,
         const memoryCriticalElement = document.getElementById('threshold-memory-critical) as HTMLInputElement,'
 
-        const memoryWarning = parseFloat(memoryWarningElement.value),
-        const memoryCritical = parseFloat(memoryCriticalElement.value),
+        const memoryWarning = parseFloat(memoryWarningElement.value);
+        const memoryCritical = parseFloat(memoryCriticalElement.value);
         this.monitor.setThreshold('memory', memoryWarning, memoryCritical','
         ','
         // チャート設定も更新
@@ -598,8 +596,7 @@ export class PerformancePanel {
 }
     }
 
-    destroy(): void { this.stopUpdating(),
-        
+    destroy(): void { this.stopUpdating();
         // チャートのクリーンアップ
         for (const chart of this.charts.values() {
             if ((chart, as any).destroy) {

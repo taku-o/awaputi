@@ -13,18 +13,18 @@ const projectRoot = path.join(__dirname, '..', '..');
 // ErrorHandlerのモック
 globalThis.getErrorHandler = () => ({
   handleError: (error, code, context') => {'
-    console.error('Mock Error Handler:', { error, code, context });
+    console.error('Mock Error Handler:', { error, code, context };
   }
 }');'
 describe('TranslationLoader Compatibility Tests', (') => {'
   let translationLoader: any,
-  const localesDir = path.join(projectRoot, 'src', 'locales'),
+  const localesDir = path.join(projectRoot, 'src', 'locales');
   const supportedLanguages = ['en', 'ja', 'ko', 'zh-CN', 'zh-TW'],
   const categories = ['achievements', 'common', 'errors', 'game', 'help', 'menu', 'settings'],
   beforeEach(() => {
     translationLoader = new TranslationLoader('),'
     // テスト用にベースURLを設定
-    translationLoader.setBaseURL('/src/locales/') });
+    translationLoader.setBaseURL('/src/locales/') };
   afterEach(() => {
     if (translationLoader) {
       translationLoader.cleanup() }
@@ -35,11 +35,11 @@ describe('TranslationLoader Compatibility Tests', (') => {'
         for (const category of categories) {
           const filePath = path.join(localesDir, lang, `${category}.json`);
           try {
-            const content = await fs.readFile(filePath, 'utf-8'),
+            const content = await fs.readFile(filePath, 'utf-8');
             const data = JSON.parse(content'),'
             // ファイル構造の基本検証
             expect(data.toHaveProperty('meta')'),'
-            expect(data.toHaveProperty('translations'),
+            expect(data.toHaveProperty('translations');
             // 必須メタデータの存在確認
             expect(data.meta').toHaveProperty('language', lang),'
             expect(data.meta').toHaveProperty('version'),'
@@ -55,7 +55,7 @@ describe('TranslationLoader Compatibility Tests', (') => {'
       }
     }');'
     test('should have consistent metadata structure across all files', async () => {
-      const metadataFields = new Set(),
+      const metadataFields = new Set();
       const languageMetadata: Record<string, any> = {};
       // 全ファイルのメタデータ構造を収集
       for (const lang of supportedLanguages) {
@@ -64,10 +64,10 @@ describe('TranslationLoader Compatibility Tests', (') => {'
         for (const category of categories) {
           const filePath = path.join(localesDir, lang, `${category}.json`);
           try {
-            const content = await fs.readFile(filePath, 'utf-8'),
-            const data = JSON.parse(content),
+            const content = await fs.readFile(filePath, 'utf-8');
+            const data = JSON.parse(content);
             if (data.meta) {
-              Object.keys(data.meta).forEach(field => metadataFields.add(field),
+              Object.keys(data.meta).forEach(field => metadataFields.add(field);
               languageMetadata[lang][category] = Object.keys(data.meta) } catch (error') {'
             // ファイルが存在しない場合はスキップ
           }
@@ -93,7 +93,7 @@ describe('TranslationLoader Compatibility Tests', (') => {'
       };
       // optimizedAtフィールドなしでメタデータ検証が正常に動作することを確認
       expect((') => {'
-        translationLoader._validateMetadata(mockMeta, 'ja', 'game') }).not.toThrow(');'
+        translationLoader._validateMetadata(mockMeta, 'ja', 'game') }.not.toThrow(');'
     }
     test('should handle metadata validation with missing optional fields', async (') => {'
       const minimalMeta = {
@@ -102,7 +102,7 @@ describe('TranslationLoader Compatibility Tests', (') => {'
       };
       // 最小限のメタデータでも検証が通ることを確認
       expect((') => {'
-        translationLoader._validateMetadata(minimalMeta, 'en', 'common') }).not.toThrow();
+        translationLoader._validateMetadata(minimalMeta, 'en', 'common') }.not.toThrow();
     }
   }');'
   describe('Translation loading functionality', () => {
@@ -133,10 +133,10 @@ describe('TranslationLoader Compatibility Tests', (') => {'
         ok: true),
        , json: () => Promise.resolve(mockTranslationData)'),'
       // 翻訳ファイルの読み込みテスト
-      const result = await translationLoader._loadTranslationFile('ja', 'game'),
-      expect(result.toBeDefined(),
-      expect(result.meta).toBeDefined(),
-      expect(result.meta.optimizedAt).toBeUndefined(),
+      const result = await translationLoader._loadTranslationFile('ja', 'game');
+      expect(result.toBeDefined();
+      expect(result.meta).toBeDefined();
+      expect(result.meta.optimizedAt).toBeUndefined();
       expect(result.meta.language').toBe('ja'),'
       expect(result.translations).toBeDefined() }');'
     test('should process flattened translations correctly', async (') => {'
@@ -165,20 +165,20 @@ describe('TranslationLoader Compatibility Tests', (') => {'
   describe('Backward compatibility verification', (') => {'
     test('should maintain compatibility with existing translation structure', async (') => {'
       // 実際のファイルから1つサンプルを読み込んでテスト
-      const sampleFilePath = path.join(localesDir, 'ja', 'game.json'),
+      const sampleFilePath = path.join(localesDir, 'ja', 'game.json');
       try {
-        const content = await fs.readFile(sampleFilePath, 'utf-8'),
+        const content = await fs.readFile(sampleFilePath, 'utf-8');
         const data = JSON.parse(content'),'
         // 基本構造の確認
         expect(data.toHaveProperty('meta')'),'
-        expect(data.toHaveProperty('translations'),
+        expect(data.toHaveProperty('translations');
         // TranslationLoaderで処理できる形式であることを確認
         const processedTranslations = data.translations || data,
         expect(typeof processedTranslations').toBe('object'),'
         // メタデータ検証が正常に動作することを確認
         if (data.meta) {
           expect((') => {'
-            translationLoader._validateMetadata(data.meta, data.meta.language, 'game') }).not.toThrow();
+            translationLoader._validateMetadata(data.meta, data.meta.language, 'game') }.not.toThrow();
         } catch (error') {'
         console.warn('Sample file test skipped:', error.message) }
     }');'
@@ -196,8 +196,8 @@ describe('TranslationLoader Compatibility Tests', (') => {'
       };
       // キャッシュ設定
       translationLoader.cache.set(cacheKey, {
-        data: mockData),
-       , timestamp: Date.now( });
+        data: mockData);
+       , timestamp: Date.now( };
       // キャッシュからデータを取得
       const cached = translationLoader.cache.get(cacheKey);
       expect(cached.toBeDefined();
@@ -211,7 +211,7 @@ describe('TranslationLoader Compatibility Tests', (') => {'
         ok: true),
        , json: (') => Promise.resolve({'
           // intentionally malformed - no meta field
-          translations: { test: 'value' });
+          translations: { test: 'value' },
     }');'
       }
       const result = await translationLoader._loadTranslationFile('en', 'test');
@@ -221,13 +221,13 @@ describe('TranslationLoader Compatibility Tests', (') => {'
     }');'
     test('should maintain functionality without metadata', async (') => {'
       const translationsWithoutMeta = {
-        game: { score: 'Score' };
+        game: { score: 'Score' },
         menu: { start: 'Start' }
       };
       const flattened = translationLoader._flattenTranslations(translationsWithoutMeta');'
       // メタデータなしでもフラット化処理が正常に動作することを確認
       expect(flattened['score']').toBe('Score');'
       expect(flattened['start']').toBe('Start');'
-    });
+    };
   }
 }');'

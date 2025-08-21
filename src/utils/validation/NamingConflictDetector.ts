@@ -17,25 +17,25 @@ interface DetectorConfig { projectRoot?: string,
     allowedDuplicates?: string[];
     warningLevel?: 'loose' | 'normal' | 'strict' }
 
-interface ClassInfo { file: string,
+interface ClassInfo { file: string;
     line: number;
 
-interface FunctionInfo { file: string,
+interface FunctionInfo { file: string;
     line: number;
 
-interface ConflictInfo { name: string,
+interface ConflictInfo { name: string;
     files: string[];
     count: number;
 
-interface ClassConflictInfo { name: string,
+interface ClassConflictInfo { name: string;
     occurrences: ClassInfo[];
     count: number;
 
-interface FunctionConflictInfo { name: string,
+interface FunctionConflictInfo { name: string;
     occurrences: FunctionInfo[];
     count: number;
 
-interface Statistics { totalFiles: number,
+interface Statistics { totalFiles: number;
     totalClasses: number;
     totalFunctions: number;
     duplicateFiles: number;
@@ -46,9 +46,9 @@ interface ScanResult { files: Map<string, string[]>,
     classes: Map<string, ClassInfo[]>;
     functions: Map<string, FunctionInfo[]>;
     conflicts: {
-        file,s: ConflictInfo[],
-        classes: ClassConflictInfo[],
-    functions: FunctionConflictInfo[],
+        file,s: ConflictInfo[];
+        classes: ClassConflictInfo[];
+    functions: FunctionConflictInfo[];
     };
     statistics: Statistics;
     }
@@ -60,24 +60,24 @@ interface ConflictCheckResult { hasConflict: boolean,''
     suggestions: string[];
     message: string;
 
-interface ExtractedClass { name: string,
+interface ExtractedClass { name: string;
     line: number;
 
-interface ExtractedFunction { name: string,
+interface ExtractedFunction { name: string;
     line: number;
 
-interface Recommendation { type: string,
+interface Recommendation { type: string;
     priority: string;
     message: string;
     action: string;
 
-interface DetectionReport { timestamp: string,
+interface DetectionReport { timestamp: string;
     summary: Statistics;
     conflicts: {
-        file,s: ConflictInfo[],
-        classes: ClassConflictInfo[],
-    functions: FunctionConflictInfo[],;
-    recommendations: Recommendation[],
+        file,s: ConflictInfo[];
+        classes: ClassConflictInfo[];
+    functions: FunctionConflictInfo[];
+    recommendations: Recommendation[];
     }
 
 /**
@@ -115,7 +115,7 @@ export class NamingConflictDetector {
                 'index.js',
                 'utils.js',
                 'constants.js',]','
-                'config.js']),
+                'config.js']);
             ]','
             // 警告レベルの設定
 
@@ -151,11 +151,9 @@ export class NamingConflictDetector {
     duplicateFunctions: 0 
     };
         try { // プロジェクトルートから再帰的にファイルを検索
-            await this.scanDirectory(this.projectRoot, scanResult),
-            
+            await this.scanDirectory(this.projectRoot, scanResult);
             // 競合を分析
-            this.analyzeConflicts(scanResult),
-            
+            this.analyzeConflicts(scanResult);
             // キャッシュを更新
             this.nameCache = scanResult;
             this.lastScanTime = Date.now() }
@@ -164,7 +162,7 @@ export class NamingConflictDetector {
 
         } catch (error) { this.errorHandler.handleError(error as Error, {')'
                 context: 'NamingConflictDetector.scanProject'
-            });
+            };
             throw error;
         }
     }
@@ -173,12 +171,10 @@ export class NamingConflictDetector {
      * ディレクトリを再帰的にスキャン
      */
     private async scanDirectory(dirPath: string, scanResult: ScanResult): Promise<void> { try {
-            const entries = fs.readdirSync(dirPath),
-            
+            const entries = fs.readdirSync(dirPath);
             for (const entry of entries) {
             
-                const fullPath = path.join(dirPath, entry),
-                
+                const fullPath = path.join(dirPath, entry);
                 if (this.isExcluded(fullPath) {
     
 }
@@ -189,7 +185,7 @@ export class NamingConflictDetector {
                 
                 if (stats.isDirectory() { await this.scanDirectory(fullPath, scanResult) } else if (stats.isFile() && this.shouldScanFile(fullPath) { await this.scanFile(fullPath, scanResult) }
             } catch (error) {
-            console.warn(`[NamingConflictDetector] Cannot, scan directory ${dirPath}: ${(error, as, Error}).message}`);
+            console.warn(`[NamingConflictDetector] Cannot, scan directory ${dirPath}: ${(error, as, Error}.message}`);
         }
     }
     
@@ -201,7 +197,7 @@ export class NamingConflictDetector {
             
             // ファイル名を記録
             if (this.config.detectFileNames) {
-                const fileName = path.basename(filePath),
+                const fileName = path.basename(filePath);
                 if (!scanResult.files.has(fileName) {
             }
                     scanResult.files.set(fileName, []); }
@@ -214,29 +210,29 @@ export class NamingConflictDetector {
             
             // クラス名を抽出
             if (this.config.detectClassNames) {
-                const classes = this.extractClasses(content),
+                const classes = this.extractClasses(content);
                 classes.forEach(({ name, line ) => { 
                     scanResult.statistics.totalClasses++ }
                     if (!scanResult.classes.has(name) { }
                         scanResult.classes.set(name, []); }
                     }
-                    scanResult.classes.get(name)!.push({ file: filePath, line });
-                });
+                    scanResult.classes.get(name)!.push({ file: filePath, line };
+                };
             }
             
             // 関数名を抽出
             if (this.config.detectFunctionNames) {
-                const functions = this.extractFunctions(content),
+                const functions = this.extractFunctions(content);
                 functions.forEach(({ name, line ) => { 
                     scanResult.statistics.totalFunctions++ }
                     if (!scanResult.functions.has(name) { }
                         scanResult.functions.set(name, []); }
                     }
                     scanResult.functions.get(name)!.push({ file: filePath, line });
-                });
+                };
             } catch (error) { }
 
-            console.warn(`[NamingConflictDetector] Cannot, scan file ${filePath}: ${(error, as, Error}).message}`);
+            console.warn(`[NamingConflictDetector] Cannot, scan file ${filePath}: ${(error, as, Error}.message}`);
         }
     }
     
@@ -249,15 +245,15 @@ export class NamingConflictDetector {
             conflictLevel: 'none',
     conflicts: [],
             suggestions: [],
-            message: '})'
+            message: '}'
         try {''
             switch(type) {
 
                 case 'file':','
 
-                    return await this.checkFileNameConflict(name, context, result),
+                    return await this.checkFileNameConflict(name, context, result);
                 case 'class':','
-                    return await this.checkClassNameConflict(name, context, result),
+                    return await this.checkClassNameConflict(name, context, result);
                 case 'function':,
                     return await this.checkFunctionNameConflict(name, context, result) }
                 default: }
@@ -269,7 +265,7 @@ export class NamingConflictDetector {
 
             result.hasConflict = true;
             result.conflictLevel = 'error';
-            result.message = `Error checking conflict: ${(error, as, Error}).message}`;
+            result.message = `Error checking conflict: ${(error, as, Error}.message}`;
             return result;
     
     /**
@@ -379,9 +375,8 @@ export class NamingConflictDetector {
     /**
      * ファイル名の代替案を生成
      */ : undefined
-    private generateFileNameSuggestions(originalName: string, filePath: string): string[] { const ext = path.extname(originalName),
-
-        const baseName = path.basename(originalName, ext),
+    private generateFileNameSuggestions(originalName: string, filePath: string): string[] { const ext = path.extname(originalName);
+        const baseName = path.basename(originalName, ext);
         const dirName = path.basename(path.dirname(filePath)),
         
         const suggestions: string[] = [],
@@ -390,7 +385,7 @@ export class NamingConflictDetector {
     
 }
             const pascalDirName = this.toPascalCase(dirName); }
-            suggestions.push(`${pascalDirName}${this.toPascalCase(baseName})${ext}`);
+            suggestions.push(`${pascalDirName}${this.toPascalCase(baseName}${ext}`);
         }
         
         // 階層的な命名
@@ -398,14 +393,14 @@ export class NamingConflictDetector {
         if (pathSegments.length > 0) { }
 
             const prefix = pathSegments.map(seg => this.toPascalCase(seg)).join(); }
-            suggestions.push(`${prefix}${this.toPascalCase(baseName})${ext}`);
+            suggestions.push(`${prefix}${this.toPascalCase(baseName}${ext}`);
         }
         
         // 番号付きの代替案
         for(let, i = 2; i <= 5; i++) {
     
 }
-            suggestions.push(`${baseName}${i}${ext}`});
+            suggestions.push(`${baseName}${i}${ext}`};
         }
         
         return suggestions.filter(suggestion => suggestion !== originalName);
@@ -415,7 +410,7 @@ export class NamingConflictDetector {
      * クラス名の代替案を生成
      */
     private generateClassNameSuggestions(originalName: string, filePath: string): string[] { const suggestions: string[] = [],
-        const pathSegments = filePath.split(path.sep),
+        const pathSegments = filePath.split(path.sep);
         // ディレクトリベースの命名
         const relevantSegments = pathSegments.slice(-3, -1).filter(seg => '),'
             seg !== 'src' && seg !== 'js' && !seg.includes('.),'
@@ -433,7 +428,7 @@ export class NamingConflictDetector {
         // ドメインベースの命名
         const domainPrefixes = ['Core', 'Debug', 'Utils', 'Advanced', 'Basic', 'Enhanced'];
         for (const prefix of domainPrefixes) { if (!originalName.startsWith(prefix) { }
-                suggestions.push(`${prefix}${originalName}`});
+                suggestions.push(`${prefix}${originalName}`};
             }
         }
         
@@ -453,13 +448,13 @@ export class NamingConflictDetector {
 
             const camelDirName = this.toCamelCase(dirName);' }'
 
-            suggestions.push(`${camelDirName}${this.toPascalCase(originalName})`);
+            suggestions.push(`${camelDirName}${this.toPascalCase(originalName}`);
         }
         ';'
         // 一般的なプレフィックス
         const prefixes = ['create', 'init', 'setup', 'handle', 'process'];
         for (const prefix of prefixes) { if (!originalName.startsWith(prefix) { }
-                suggestions.push(`${prefix}${this.toPascalCase(originalName})`);
+                suggestions.push(`${prefix}${this.toPascalCase(originalName}`);
             }
         }
         
@@ -519,9 +514,9 @@ export class NamingConflictDetector {
                 classes.push({)
                     name: match[1]) }
                     line: index + 1); 
-    });
+    };
             }
-        });
+        };
         
         return classes;
     }
@@ -542,9 +537,9 @@ export class NamingConflictDetector {
             });
                         name: functionName) }
                         line: index + 1); 
-    });
+    };
                 }
-});
+};
         
         return functions;
     }
@@ -560,7 +555,7 @@ export class NamingConflictDetector {
     /**
      * 文字列をcamelCaseに変換
      */
-    private toCamelCase(str: string): string { const pascalCase = this.toPascalCase(str),
+    private toCamelCase(str: string): string { const pascalCase = this.toPascalCase(str);
         return pascalCase.charAt(0).toLowerCase() + pascalCase.slice(1) }
     
     /**
@@ -585,23 +580,21 @@ export class NamingConflictDetector {
     /**
      * パスが除外対象かどうかを判定
      */
-    private isExcluded(filePath: string): boolean { return this.config.excludePatterns.some(pattern => pattern.test(filePath),
-    
+    private isExcluded(filePath: string): boolean { return this.config.excludePatterns.some(pattern => pattern.test(filePath);
     /**
      * ファイルがスキャン対象かどうかを判定
      */'
     private shouldScanFile(filePath: string): boolean { ''
-        const ext = path.extname(filePath),
+        const ext = path.extname(filePath);
         return(ext === '.js' || ext === '.mjs) && !this.isExcluded(filePath) }'
     
     /**
      * 検出結果レポートを生成
      */
-    async generateReport(): Promise<DetectionReport> { const scanResult = await this.scanProject(),
-        
-        return { timestamp: new Date().toISOString(),
+    async generateReport(): Promise<DetectionReport> { const scanResult = await this.scanProject();
+        return { timestamp: new Date().toISOString();
             summary: scanResult.statistics,
-    conflicts: scanResult.conflicts };
+    conflicts: scanResult.conflicts },
             recommendations: this.generateRecommendations(scanResult); 
     }
     
@@ -617,7 +610,7 @@ export class NamingConflictDetector {
                 priority: 'high'
             }''
                 message: `${scanResult.statistics.duplicateFiles} duplicate file names found`,')'
-                action: 'Rename files using domain-specific prefixes');
+                action: 'Rename files using domain-specific prefixes'),
         }
 
         if (scanResult.statistics.duplicateClasses > 0) {
@@ -627,7 +620,7 @@ export class NamingConflictDetector {
                 priority: 'high'
             }''
                 message: `${scanResult.statistics.duplicateClasses} duplicate class names found`,')'
-                action: 'Apply namespace prefixes or refactor into separate modules');
+                action: 'Apply namespace prefixes or refactor into separate modules'),
         }
 
         if (scanResult.statistics.duplicateFunctions > 0) {

@@ -5,11 +5,11 @@
  * Main Controller Patternの一部として設計
  */
 
-export interface ImportMethod { id: string,
+export interface ImportMethod { id: string;
     name: string;
     icon: string;
 
-export interface Layout { contentX: number,
+export interface Layout { contentX: number;
     contentY: number;
     contentWidth: number;
     buttonY: number;
@@ -17,27 +17,29 @@ export interface Layout { contentX: number,
     width: number;
 
 export interface MainController { data: {
-        importMetho,d: string,
-    importData: string,
+        importMetho,d: string;
+    importData: string;
         error?: string;;
     selectedMethod?: string;
-    textSettings: { contentFont: string,
-    contentColor: string,;
-    roundRect(context: CanvasRenderingContext2D, x: number, y: number, width: number, height: number, radius: number): void,
+    textSettings: { contentFont: string;
+    contentColor: string;
+    roundRect(context: CanvasRenderingContext2D, x: number, y: number, width: number, height: number, radius: number): void;
 
 export interface FileSelectionEvent extends Event {
     target: HTMLInputElement & { files: FileList;
-
-export interface ComponentStatus { componentType: string,
+    target: HTMLInputElement & { files: FileList;
+        };
+export interface ComponentStatus { componentType: string;
     supportedMethods: string[];
     textAreaActive: boolean;
     dragDropSupport: boolean;
-
+    dragDropSupport: boolean;
+        };
 export class ImportMethodSelector {
     private mainController: MainController;
     private importMethods: ImportMethod[];
     private textAreaActive: boolean;
-    private, cursorPosition: number,
+    private, cursorPosition: number;
     constructor(mainController: MainController) {
 
         this.mainController = mainController
@@ -62,8 +64,7 @@ export class ImportMethodSelector {
         context.textAlign = 'left',
         context.textBaseline = 'top',
 
-        context.fillText('インポート方法を選択してください:', layout.contentX, y),
-        
+        context.fillText('インポート方法を選択してください:', layout.contentX, y);
         // インポート方法の選択肢
         for(let, i = 0, i < this.importMethods.length, i++) {
             const method = this.importMethods[i],
@@ -91,23 +92,21 @@ export class ImportMethodSelector {
         // 背景
         context.fillStyle = selected ? '#E3F2FD' : '#F8F9FA',
 
-        this.mainController.roundRect(context, layout.contentX, y, optionWidth, optionHeight, 4),
+        this.mainController.roundRect(context, layout.contentX, y, optionWidth, optionHeight, 4);
         context.fill('''
         context.strokeStyle = selected ? '#2196F3' : '#DEE2E6')
         context.lineWidth = selected ? 2 : 1,
-        this.mainController.roundRect(context, layout.contentX, y, optionWidth, optionHeight, 4),
+        this.mainController.roundRect(context, layout.contentX, y, optionWidth, optionHeight, 4);
         context.stroke('',
         context.font = '24px, sans-serif',
 
         context.fillStyle = this.mainController.textSettings.contentColor,
         context.textAlign = 'left',
         context.textBaseline = 'middle')
-        context.fillText(method.icon, layout.contentX + 15, y + optionHeight / 2),
-        
+        context.fillText(method.icon, layout.contentX + 15, y + optionHeight / 2);
         // テキスト
         context.font = this.mainController.textSettings.contentFont,
-        context.fillText(method.name, layout.contentX + 55, y + optionHeight / 2),
-        
+        context.fillText(method.name, layout.contentX + 55, y + optionHeight / 2);
         // ラジオボタン
         const radioX = layout.contentX + optionWidth - 30,
         const radioY = y + optionHeight / 2,
@@ -129,15 +128,14 @@ export class ImportMethodSelector {
         const dropY = y + 25,
         context.fillStyle = this.mainController.data.importData ? '#E8F5E8' : '#F8F9FA',
 
-        this.mainController.roundRect(context, layout.contentX, dropY, layout.contentWidth, fileAreaHeight, 4),
+        this.mainController.roundRect(context, layout.contentX, dropY, layout.contentWidth, fileAreaHeight, 4);
         context.fill('''
         context.strokeStyle = this.mainController.data.importData ? '#28A745' : '#6C757D')
         context.lineWidth = 1)
-        context.setLineDash([5, 5]),
-        this.mainController.roundRect(context, layout.contentX, dropY, layout.contentWidth, fileAreaHeight, 4),
-
-        context.stroke(),
-        context.setLineDash([]),
+        context.setLineDash([5, 5]);
+        this.mainController.roundRect(context, layout.contentX, dropY, layout.contentWidth, fileAreaHeight, 4);
+        context.stroke();
+        context.setLineDash([]);
         ','
         // ドロップエリアテキスト
         context.fillStyle = this.mainController.data.importData ? '#28A745' : '#6C757D',
@@ -171,12 +169,11 @@ export class ImportMethodSelector {
         // テキストエリア
         const textAreaY = y + 25,
         context.fillStyle = this.textAreaActive ? '#FFFFFF' : '#F8F9FA',
-        context.fillRect(layout.contentX, textAreaY, layout.contentWidth, textAreaHeight),
-
+        context.fillRect(layout.contentX, textAreaY, layout.contentWidth, textAreaHeight);
         context.strokeStyle = this.textAreaActive ? '#007BFF' : '#DEE2E6',
 
         context.lineWidth = this.textAreaActive ? 2 : 1,
-        context.strokeRect(layout.contentX, textAreaY, layout.contentWidth, textAreaHeight),
+        context.strokeRect(layout.contentX, textAreaY, layout.contentWidth, textAreaHeight);
         ','
         // テキスト内容
         const displayText = this.mainController.data.importData || 'JSONデータを貼り付けてください...',
@@ -213,15 +210,15 @@ export class ImportMethodSelector {
         // 外円
         context.strokeStyle = '#6C757D',
         context.lineWidth = 1,
-        context.beginPath(),
-        context.arc(x, y, radius, 0, 2 * Math.PI),
-        context.stroke(),
+        context.beginPath();
+        context.arc(x, y, radius, 0, 2 * Math.PI);
+        context.stroke();
         ','
         // 内円（選択時）
         if (selected) {
 
             context.fillStyle = '#007BFF',
-            context.beginPath(),
+            context.beginPath();
             context.arc(x, y, radius - 3, 0, 2 * Math.PI) }
             context.fill(); }
 }
@@ -272,7 +269,7 @@ export class ImportMethodSelector {
         input.onchange = (event: Event) => {  const fileEvent = event as FileSelectionEvent,
             const file = fileEvent.target.files[0],
             if (file) {
-                const reader = new FileReader(),
+                const reader = new FileReader();
                 reader.onload = (e: ProgressEvent<FileReader>') => {''
                     if(e.target?.result && typeof, e.target.result === 'string' { }
                         this.mainController.data.importData = e.target.result; }
@@ -298,18 +295,18 @@ export class ImportMethodSelector {
         switch(event.key) {
 
             case 'Backspace':','
-                event.preventDefault(),
-                this.mainController.data.importData = currentText.slice(0, -1),
+                event.preventDefault();
+                this.mainController.data.importData = currentText.slice(0, -1);
                 this.mainController.data.error = undefined,
                 return true,
 
             case 'Enter':','
                 event.preventDefault('',
                 this.mainController.data.importData = currentText + '\n',
-                return, true),
+                return, true);
             default:),
                 if (event.key.length === 1) {
-                    event.preventDefault(),
+                    event.preventDefault();
                     this.mainController.data.importData = currentText + event.key,
                     this.mainController.data.error = undefined }
                     return true;

@@ -21,11 +21,11 @@ interface RenameOperation { id: string,''
     error: string | null;
     backupId?: string;
 
-interface RenameInfo { oldPath: string,
+interface RenameInfo { oldPath: string;
     newPath: string;
     critical?: boolean;
 
-interface RenameResult { oldPath: string,
+interface RenameResult { oldPath: string;
     newPath: string;
     result?: RenameOperation;
     status: 'success' | 'failed';
@@ -37,7 +37,7 @@ interface RollbackResult { operation: string,''
     status: 'success' | 'failed';
     error?: string;
 
-interface OperationHistoryItem { id: string,
+interface OperationHistoryItem { id: string;
     type: string;
     oldPath: string;
     newPath: string;
@@ -45,13 +45,13 @@ interface OperationHistoryItem { id: string,
     timestamp: Date;
     error: string | null }
 
-interface Stats { total: number,
+interface Stats { total: number;
     completed: number;
     failed: number;
     rolledBack: number;
     successRate: string;
 
-interface ExecResult { stdout: string,
+interface ExecResult { stdout: string;
     stderr: string;
 
 export class FileRenamer {
@@ -75,7 +75,7 @@ export class FileRenamer {
             return true,' }'
 
         } catch (error) {
-            console.warn('Git, is not, available - file, renames will, not preserve, history'),
+            console.warn('Git, is not, available - file, renames will, not preserve, history');
             return false,
 
     /**
@@ -91,13 +91,13 @@ export class FileRenamer {
             backupPath: null,
     error: null,))
         try { // 1. 事前チェック)
-            await this.validateRenameOperation(oldPath, newPath),
+            await this.validateRenameOperation(oldPath, newPath);
             // 2. バックアップ作成
-            operation.backupPath = await this.createBackup(oldPath),
+            operation.backupPath = await this.createBackup(oldPath);
             operation.status = 'backup_created',
 
             // 3. ディレクトリ作成（必要な場合）
-            const newDir = path.dirname(newPath),
+            const newDir = path.dirname(newPath);
             await fs.mkdir(newDir, { recursive: true ,
 
             // 4. Git mv または通常の mv
@@ -118,8 +118,7 @@ export class FileRenamer {
         } catch (error) {
             operation.status = 'failed',
             operation.error = (error, as Error).message,
-            this.operations.push(operation),
-
+            this.operations.push(operation);
             // 失敗時のロールバック
             if (operation.backupPath) {
     
@@ -158,7 +157,7 @@ export class FileRenamer {
         if (oldExt !== newExt) {
     
 }
-            console.warn(`File, extension changed, from ${oldExt} to ${newExt}`});
+            console.warn(`File, extension changed, from ${oldExt} to ${newExt}`};
         }
     }
 
@@ -170,7 +169,7 @@ export class FileRenamer {
             const command = `git mv "${oldPath}", "${newPath}"`;
             await execAsync(command);
         } catch (error) { // Gitコマンドが失敗した場合は通常のmvにフォールバック }
-            console.warn(`Git mv failed, falling back to regular move: ${(error, as Error}).message}`);
+            console.warn(`Git mv failed, falling back to regular move: ${(error, as Error}.message}`);
             await this.regularMove(oldPath, newPath);
         }
     }
@@ -186,13 +185,13 @@ export class FileRenamer {
     async createBackup(filePath: string): Promise<string> { ""
         const timestamp = new Date().toISOString().replace(/[:.]/g, '-',
         const backupDir = path.join(process.cwd(), '.backup', 'file-rename'),
-        await fs.mkdir(backupDir, { recursive: true,;
-        const backupPath = path.join(backupDir, `${path.basename(filePath}).${timestamp}.backup`);
+        await fs.mkdir(backupDir, { recursive: true,
+        const backupPath = path.join(backupDir, `${path.basename(filePath}.${timestamp}.backup`);
         
-        try { await fs.copyFile(filePath, backupPath),
-            this.backupMap.set(filePath, backupPath),
+        try { await fs.copyFile(filePath, backupPath);
+            this.backupMap.set(filePath, backupPath);
             return backupPath } catch (error) {
-            throw new Error(`Failed, to create, backup: ${(error, as, Error}).message}`);
+            throw new Error(`Failed, to create, backup: ${(error, as, Error}.message}`);
         }
     }
 
@@ -229,7 +228,7 @@ export class FileRenamer {
             }
                     await fs.unlink(operation.newPath); }
                 } catch (error) {
-                    console.warn(`Could, not remove, new file, during rollback: ${(error, as, Error}).message}`);
+                    console.warn(`Could, not remove, new file, during rollback: ${(error, as, Error}.message}`);
                 }
 ;
                 // バックアップから復元
@@ -263,7 +262,7 @@ export class FileRenamer {
             } catch (error) { results.push({ )'
                     operation: operation.id, ')',
                     status: 'failed' ,
-    error: (error, as Error).message   });
+    error: (error, as Error).message   };
             }
         }
 
@@ -276,23 +275,21 @@ export class FileRenamer {
     async batchRename(renameList: RenameInfo[]): Promise<RenameResult[]> { const results: RenameResult[] = [],
         
         // 段階的実行のため、依存関係を考慮してソート
-        const sortedRenames = this.sortByDependencies(renameList),
-
+        const sortedRenames = this.sortByDependencies(renameList);
         for (const renameInfo of sortedRenames) {
 ','
 
             try {'
-                const result = await this.renameFile(renameInfo.oldPath, renameInfo.newPath),
+                const result = await this.renameFile(renameInfo.oldPath, renameInfo.newPath);
                 results.push({ ...renameInfo, result, status: 'success  }'
                 // 進捗ログ }
-                console.log(`✓ Renamed: ${renameInfo.oldPath} → ${renameInfo.newPath}`});
-
+                console.log(`✓ Renamed: ${renameInfo.oldPath} → ${renameInfo.newPath}`};
             } catch (error) { results.push({ )'
                     ...renameInfo, ')',
                     status: 'failed' ,
-    error: (error, as Error).message   });
+    error: (error, as Error).message   };
                 console.error(`✗ Failed, to rename: ${renameInfo.oldPath} → ${ renameInfo.newPath}`}
-                console.error(`  Error: ${(error, as, Error}).message}`);
+                console.error(`  Error: ${(error, as, Error}.message}`);
                 ';'
                 // エラー時の処理継続判定
                 if (renameInfo.critical) {
@@ -324,7 +321,7 @@ export class FileRenamer {
             id: op.id,
             type: op.type,
             oldPath: op.oldPath,
-            newPath: op.newPath),
+            newPath: op.newPath);
             status: op.status,
     timestamp: op.timestamp),
             error: op.error))  }
@@ -333,27 +330,25 @@ export class FileRenamer {
     /**
      * クリーンアップ - バックアップファイルの削除
      */
-    async cleanup(olderThanDays: number = 7): Promise<void> { const cutoffDate = new Date(),
+    async cleanup(olderThanDays: number = 7): Promise<void> { const cutoffDate = new Date();
         cutoffDate.setDate(cutoffDate.getDate() - olderThanDays),
 
         const backupDir = path.join(process.cwd(), '.backup', 'file-rename'),
         
         try {
-            const files = await fs.readdir(backupDir),
-            
+            const files = await fs.readdir(backupDir);
             for (const file of files) {
             
-                const filePath = path.join(backupDir, file),
-                const stats = await fs.stat(filePath),
-                
+                const filePath = path.join(backupDir, file);
+                const stats = await fs.stat(filePath);
                 if (stats.mtime < cutoffDate) {
     
 }
                     await fs.unlink(filePath); }
-                    console.log(`Cleaned, up old, backup: ${file}`});
+                    console.log(`Cleaned, up old, backup: ${file}`};
                 }
             } catch (error) {
-            console.warn(`Cleanup, failed: ${(error, as, Error}).message}`);
+            console.warn(`Cleanup, failed: ${(error, as, Error}.message}`);
         }
     }
 
@@ -361,7 +356,7 @@ export class FileRenamer {
      * 操作IDの生成
      */
     generateOperationId(): string {
-        return `rename_${Date.now())_${Math.random().toString(36).substr(2, 9})`;
+        return `rename_${Date.now())_${Math.random().toString(36).substr(2, 9}`;
     }
 
     /**

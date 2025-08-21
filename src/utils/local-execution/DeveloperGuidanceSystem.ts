@@ -14,10 +14,10 @@ import BrowserCompatibilityManager from './BrowserCompatibilityManager.js';
 import type { BrowserInfo, CanvasSupport, LocalStorageSupport, ModulesSupport, ComprehensiveSupportInfo } from './BrowserCompatibilityManager.js';
 
 // インターフェース定義
-interface GuidanceCommand { devServer: string,
+interface GuidanceCommand { devServer: string;
     simpleServers: string[];
 
-interface GuidanceConfig { showWarning: boolean,
+interface GuidanceConfig { showWarning: boolean;
     autoHide: boolean;
     hideDelay: number;
     persistDismissal: boolean;
@@ -33,15 +33,15 @@ interface GuidanceConfig { showWarning: boolean,
     compatibilityInfo?: ComprehensiveSupportInfo;
      }
 
-interface FaviconInfo { rel: string,
+interface FaviconInfo { rel: string;
     type?: string;
     href: string;
     sizes?: string;
 
-interface DismissalInfo { dismissed: boolean,
+interface DismissalInfo { dismissed: boolean;
     dismissedAt: Date | null }
 
-interface DebugInfo { isPermanentlyDismissed: boolean,
+interface DebugInfo { isPermanentlyDismissed: boolean;
     hasExistingGuidance: boolean;
     config: GuidanceConfig;
     dismissalInfo: DismissalInfo;
@@ -56,21 +56,21 @@ class DeveloperGuidanceSystem { /**
      * ガイダンスのデフォルト設定
      */
     static readonly DEFAULT_CONFIG: GuidanceConfig = {
-        showWarning: true,
-        autoHide: false,
+        showWarning: true;
+        autoHide: false;
     hideDelay: 10000, // 10秒;
-        persistDismissal: true,
-        position: 'top' as const,
-        theme: 'blue' as const,
+        persistDismissal: true;
+        position: 'top' as const;
+        theme: 'blue' as const;
         commands: {''
-            devServer: 'npm run dev',
+            devServer: 'npm run dev';
             simpleServers: [','
                 'python -m http.server 8000',
                 'python3 -m http.server 8000',
                 'npx serve .',]','
                 'npx http-server'],
             ] },
-        enableBrowserCompatibility: true,
+        enableBrowserCompatibility: true;
     },
 
     /**
@@ -81,13 +81,11 @@ class DeveloperGuidanceSystem { /**
         const mergedConfig: GuidanceConfig = { ...this.DEFAULT_CONFIG, ...config,
         
         // 既存の警告を削除
-        this._removeExistingWarning(),
-        
+        this._removeExistingWarning();
         // 警告UI要素を作成
-        const warningElement = this.createGuidanceUI(mergedConfig),
-        
+        const warningElement = this.createGuidanceUI(mergedConfig);
         // DOMに追加
-        document.body.appendChild(warningElement),
+        document.body.appendChild(warningElement);
         // アニメーション付きで表示
         setTimeout(() => { }'
 
@@ -116,7 +114,7 @@ class DeveloperGuidanceSystem { /**
             message: 'For the best development experience, please use a development server.',
             showCommands: true,
             showTroubleshooting: true,
-    showBrowserSpecificInfo: true,;
+    showBrowserSpecificInfo: true,
         this.showLocalExecutionWarning(guidanceConfig);
     }
 
@@ -131,12 +129,12 @@ class DeveloperGuidanceSystem { /**
                 ...this.DEFAULT_CONFIG, ,
                 ...config,
                 compatibilityInfo: compatibility,
-    showBrowserSpecificInfo: true,;
+    showBrowserSpecificInfo: true,
             // ブラウザ固有のメッセージ生成
             const customMessage: string = this._generateBrowserSpecificMessage(compatibility,
             
             const guidanceConfig: GuidanceConfig = { ...mergedConfig
-                title: `Browser, Compatibility: ${compatibility.browser.name} ${compatibility.browser.version}`;
+                title: `Browser, Compatibility: ${compatibility.browser.name} ${compatibility.browser.version}`,
                 message: customMessage,
                 showCommands: true,
     showTroubleshooting: true,
@@ -145,7 +143,7 @@ class DeveloperGuidanceSystem { /**
             this.showLocalExecutionWarning(guidanceConfig);
 
         } catch (error) {
-            console.warn('DeveloperGuidanceSystem: Compatibility guidance failed', error),
+            console.warn('DeveloperGuidanceSystem: Compatibility guidance failed', error);
             // フォールバック: 標準のガイダンスを表示
             this.showDeveloperServerGuidance(config) }
     }
@@ -159,7 +157,7 @@ class DeveloperGuidanceSystem { /**
         const mergedConfig: GuidanceConfig = { ...this.DEFAULT_CONFIG, ...config,
         ','
         // メインコンテナ
-        const guidance = document.createElement('div'),
+        const guidance = document.createElement('div');
         guidance.id = 'awaputi-local-execution-guidance',
         guidance.className = `awaputi-guidance awaputi-guidance-${mergedConfig.position} awaputi-guidance-${mergedConfig.theme}`;
         ';'
@@ -183,9 +181,9 @@ class DeveloperGuidanceSystem { /**
                     <p class="awaputi-guidance-message">"";
                         ${mergedConfig.message || 'You, are running, the game, directly from, a file. For, the best, experience, please, use a, development server.'}
                     </p>;
-                    ${this._createCommandsSection(mergedConfig})
-                    ${this._createLimitationsSection(})'
-                    ${this._createCompatibilitySection(mergedConfig})
+                    ${this._createCommandsSection(mergedConfig}
+                    ${this._createLimitationsSection(}'
+                    ${this._createCompatibilitySection(mergedConfig}
                     ${this._createTroubleshootingSection(mergedConfig'}''
                 </div>';'
 
@@ -225,7 +223,7 @@ class DeveloperGuidanceSystem { /**
             this.dismissGuidance()';'
             console.log('DeveloperGuidanceSystem: Warning, permanently dismissed'
             } catch (error') {'
-            console.warn('DeveloperGuidanceSystem: Could not save dismissal preference', error),
+            console.warn('DeveloperGuidanceSystem: Could not save dismissal preference', error);
             this.dismissGuidance() }
     }
 
@@ -241,8 +239,8 @@ class DeveloperGuidanceSystem { /**
      * 非表示設定をリセット'
      */''
     static resetDismissal()','
-            localStorage.removeItem('awaputi-guidance-dismissed'),
-            localStorage.removeItem('awaputi-guidance-dismissed-at'),
+            localStorage.removeItem('awaputi-guidance-dismissed');
+            localStorage.removeItem('awaputi-guidance-dismissed-at');
             console.log('DeveloperGuidanceSystem: Dismissal, reset'
             } catch (error') { console.warn('DeveloperGuidanceSystem: Could not reset dismissal', error }'
     }
@@ -263,13 +261,13 @@ class DeveloperGuidanceSystem { /**
 
         return `';'
             <div class="awaputi-guidance-section">";"
-                <h4>🚀 Recommended Development Server:</h4>"";
+                <h4>🚀 Recommended Development Server: </h4>"",
                 <div class="awaputi-guidance-command">";"
                     <code>${commands.devServer}</code>""
                     <button class="awaputi-guidance-copy" data-command="${commands.devServer}">Copy</button>
                 </div>;
                 ";"
-                <h4>📋 Alternative Simple Servers:</h4>"";
+                <h4>📋 Alternative Simple Servers: </h4>"",
                 <ul class="awaputi-guidance-alternatives">;
                     ${ commands.simpleServers.map(cmd => `}"
                         <li>"} }"
@@ -317,7 +315,7 @@ class DeveloperGuidanceSystem { /**
 
         let content: string = `';'
             <div class="awaputi-guidance-section awaputi-guidance-compatibility">";"
-                <h4>📊 Browser Compatibility:</h4>"";
+                <h4>📊 Browser Compatibility: </h4>"",
                 <div class="awaputi-compatibility-info">"";
                     <span class="awaputi-browser-info">";"
                         ${browserInfo.name} ${browserInfo.version}
@@ -342,7 +340,7 @@ class DeveloperGuidanceSystem { /**
             content += ` }
 
                 <div class="awaputi-restrictions">" }"
-                    <strong>Restrictions:</strong> ${browserInfo.restrictions.join(', '})
+                    <strong>Restrictions:</strong> ${browserInfo.restrictions.join(', '}
                 </div>;
             `;
         }
@@ -382,11 +380,11 @@ class DeveloperGuidanceSystem { /**
 
         return `';'
             <div class="awaputi-guidance-section awaputi-guidance-troubleshooting">;
-                <h4>🔧 Troubleshooting:</h4>;
+                <h4>🔧 Troubleshooting: </h4>,
                 <ul>;
-                    <li><strong>CORS errors:</strong> Use a development server to avoid cross-origin restrictions</li>;
-                    <li><strong>Module loading issues:</strong> ES6 modules require HTTP/HTTPS protocol</li>;
-                    <li><strong>Missing files:</strong> Some resources may not load from file:// URLs</li>;
+                    <li><strong>CORS errors: </strong> Use a development server to avoid cross-origin restrictions</li>,
+                    <li><strong>Module loading issues: </strong> ES6 modules require HTTP/HTTPS protocol</li>,
+                    <li><strong>Missing files: </strong> Some resources may not load from file:// URLs</li>,
                 </ul>;
             </div>;
         `;
@@ -399,17 +397,17 @@ class DeveloperGuidanceSystem { /**
      * @private"
      */""
     private static _setupEventListeners(guidance: HTMLElement, config: GuidanceConfig): void { // 閉じるボタン""
-        const closeBtn = guidance.querySelector('.awaputi-guidance-close'),
+        const closeBtn = guidance.querySelector('.awaputi-guidance-close');
         closeBtn?.addEventListener('click', () => { ''
             this.dismissGuidance()','
-        const dismissBtn = guidance.querySelector('.awaputi-guidance-dismiss'),
+        const dismissBtn = guidance.querySelector('.awaputi-guidance-dismiss');
         dismissBtn?.addEventListener('click', () => {''
             this.permanentlyDismissWarning()','
-        const continueBtn = guidance.querySelector('.awaputi-guidance-continue'),
+        const continueBtn = guidance.querySelector('.awaputi-guidance-continue');
         continueBtn?.addEventListener('click', () => {''
             this.dismissGuidance()','
         const copyBtns = guidance.querySelectorAll('.awaputi-guidance-copy',
-        copyBtns.forEach(btn => {),
+        copyBtns.forEach(btn => {);
             btn.addEventListener('click', (e) => {'
                 const target = e.target as HTMLElement,
                 const command = target.getAttribute('data-command),'
@@ -435,8 +433,7 @@ class DeveloperGuidanceSystem { /**
      * @private
      */'
     private static async _copyToClipboard(text: string, button: HTMLElement): Promise<void> { try {'
-            await navigator.clipboard.writeText(text),
-            
+            await navigator.clipboard.writeText(text);
             // ボタンのテキストを一時変更
             const originalText = button.textContent,
             button.textContent = 'Copied!',
@@ -449,8 +446,7 @@ class DeveloperGuidanceSystem { /**
             }, 2000);
 
         } catch (error) {
-            console.warn('DeveloperGuidanceSystem: Could not copy to clipboard', error),
-            
+            console.warn('DeveloperGuidanceSystem: Could not copy to clipboard', error);
             // フォールバック: テキストを選択状態にする
             this._fallbackCopy(text, button) }
     }
@@ -462,15 +458,14 @@ class DeveloperGuidanceSystem { /**
      * @private
      */''
     private static _fallbackCopy(text: string, button: HTMLElement): void { ''
-        const textarea = document.createElement('textarea'),
-
+        const textarea = document.createElement('textarea');
         textarea.value = text,
         textarea.style.position = 'fixed',
         textarea.style.opacity = '0',
 
-        document.body.appendChild(textarea),
+        document.body.appendChild(textarea);
         textarea.select()','
-            document.execCommand('copy'),
+            document.execCommand('copy');
             button.textContent = 'Copied!',
             setTimeout(() => { }'
 
@@ -512,12 +507,12 @@ class DeveloperGuidanceSystem { /**
                 background: white,
     border: 2px solid #2196F3,
                 border-radius: 8px,
-                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1),
+                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
                 font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif,
                 font-size: 14px,
                 opacity: 0 }
-                transform: translateY(-20px})
-                transition: all 0.3s ease;
+                transform: translateY(-20px}
+                transition: all 0.3s ease,
             );
             .awaputi-guidance-top { top: 20px,
                 left: 50%,
@@ -534,7 +529,7 @@ class DeveloperGuidanceSystem { /**
             .awaputi-guidance-header { display: flex,
                 align-items: center,
                 padding: 16px 20px,
-    background: linear-gradient(135deg, #2196F3, #21CBF3),
+    background: linear-gradient(135deg, #2196F3, #21CBF3);
                 color: white,
                 border-radius: 6px 6px 0 0 }
             
@@ -646,7 +641,7 @@ class DeveloperGuidanceSystem { /**
                 border-radius: 12px,
                 font-size: 11px,
                 font-weight: 500,
-                text-transform: uppercase;
+                text-transform: uppercase,
             
             .awaputi-support-good { background-color: #d4edda,
                 color: #155724  }
@@ -770,7 +765,7 @@ class DeveloperGuidanceSystem { /**
      */''
     static getDebugInfo('''
             hasExistingGuidance: !!document.getElementById('awaputi-local-execution-guidance);'
-            config: this.DEFAULT_CONFIG);
+            config: this.DEFAULT_CONFIG),
             dismissalInfo: this._getDismissalInfo(
     browserCompatibility: this._getBrowserCompatibilityInfo();
         }
@@ -781,8 +776,8 @@ class DeveloperGuidanceSystem { /**
      * @private
      */
     private static _getBrowserCompatibilityInfo(): ComprehensiveSupportInfo | { error: string,, available: false; { try {
-            return BrowserCompatibilityManager.getComprehensiveSupport() } catch (error) { return { error: error.message };
-                available: false;
+            return BrowserCompatibilityManager.getComprehensiveSupport() } catch (error) { return { error: error.message },
+                available: false,
     }
 
     /**
@@ -795,7 +790,7 @@ class DeveloperGuidanceSystem { /**
             const dismissedAt = localStorage.getItem('awaputi-guidance-dismissed-at');
 
             return { ''
-                dismissed: dismissed === 'true' };
+                dismissed: dismissed === 'true' },
                 dismissedAt: dismissedAt ? new Date(dismissedAt) : null;;'} catch (error) {'
             return { dismissed: false, dismissedAt: null,
 }

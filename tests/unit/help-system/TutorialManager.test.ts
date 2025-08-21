@@ -6,25 +6,25 @@ import { TutorialManager  } from '../../../src/core/help/TutorialManager';
 // Type definitions
 interface MockGameEngine {
     localizationManager: {
-        getCurrentLanguag,e: jest.Mock<() => string>,
+        getCurrentLanguag,e: jest.Mock<() => string>;
         getString: jest.Mock<(ke,y: string) => string>
     },
     sceneManager: {
         getCurrentScene: jest.Mock<() => MockScene>
     },
-    canvas: { width: number,, height: number,;
+    canvas: { width: number,, height: number;
     playerData: {
         getTutorialProgress: jest.Mock<() => Record<string, any>>;
         saveTutorialProgress: jest.Mock<(progress: TutorialProgress) => void> };
 }
 interface MockScene {
-    constructor: { nam,e: string,;
+    constructor: { nam,e: string;
 }
 interface MockContentLoader {
     loadTutorialData: jest.Mock<(i,d?: string) => Promise<Tutorial[]>>;
     getCachedContent: jest.Mock }
 interface TutorialStep {
-    id: string,
+    id: string;
     title: string;
     instructions?: string;
     targetElement?: string;
@@ -36,16 +36,16 @@ interface Tutorial {
     title?: string;
     steps: TutorialStep[];
 interface TutorialProgress {
-    tutorialId: string,
+    tutorialId: string;
     currentStep: number;
     completedSteps: string[];
     isCompleted: boolean;
 interface ProgressInfo {
-    currentStep: number,
+    currentStep: number;
     totalSteps: number;
     percentage: number;
 interface MockDOMRect {
-    left: number,
+    left: number;
     top: number;
     width: number;
     height: number;
@@ -61,7 +61,7 @@ interface MockDocument {
 const mockGameEngine: MockGameEngine = {
     localizationManager: {
         getCurrentLanguage: jest.fn((') => 'ja'),'
-        getString: jest.fn((key: string) => `translated_${key)`);
+        getString: jest.fn((key: string) => `translated_${key)`),
     }),
     sceneManager: {
         getCurrentScene: jest.fn((') => ({ constructor: { name: 'GameScene' ) )) },'
@@ -77,28 +77,28 @@ const mockContentLoader: MockContentLoader = {
 jest.mock('../../../src/core/LocalizationManager', () => ({
     LocalizationManager: jest.fn(() => ({
         getCurrentLanguage: jest.fn((') => 'ja'),'
-        getString: jest.fn((key: string) => `translated_${key)`);
+        getString: jest.fn((key: string) => `translated_${key)`),
     }))
 ))');'
 describe('TutorialManager', () => {
     let tutorialManager: TutorialManager,
     
     beforeEach(() => {
-        jest.clearAllMocks(),
-        tutorialManager = new TutorialManager(mockGameEngine) });
+        jest.clearAllMocks();
+        tutorialManager = new TutorialManager(mockGameEngine) };
     afterEach(() => {
         if (tutorialManager) {
             tutorialManager.destroy() }
     }');'
     describe('初期化', (') => {'
         test('正常に初期化される', () => {
-            expect(tutorialManager).toBeInstanceOf(TutorialManager),
-            expect(tutorialManager.gameEngine).toBe(mockGameEngine),
+            expect(tutorialManager).toBeInstanceOf(TutorialManager);
+            expect(tutorialManager.gameEngine).toBe(mockGameEngine);
             expect(tutorialManager.isInitialized).toBe(true) }');'
         test('初期状態が正しく設定される', () => {
-            expect(tutorialManager.currentTutorial).toBeNull(),
-            expect(tutorialManager.currentStep).toBe(0),
-            expect(tutorialManager.isActive).toBe(false),
+            expect(tutorialManager.currentTutorial).toBeNull();
+            expect(tutorialManager.currentStep).toBe(0);
+            expect(tutorialManager.isActive).toBe(false);
             expect(tutorialManager.isPaused).toBe(false) }');'
     }
     describe('チュートリアル制御', (') => {'
@@ -126,34 +126,34 @@ describe('TutorialManager', () => {
         beforeEach((') => {'
             jest.spyOn(tutorialManager.contentLoader, 'loadTutorialData').mockResolvedValue([mockTutorial]) }');'
         test('チュートリアルを開始できる', async (') => {'
-            const result = await tutorialManager.startTutorial('basic-tutorial'),
-            expect(result).toBe(true),
-            expect(tutorialManager.currentTutorial).toEqual(mockTutorial),
-            expect(tutorialManager.currentStep).toBe(0),
-            expect(tutorialManager.isActive).toBe(true),
+            const result = await tutorialManager.startTutorial('basic-tutorial');
+            expect(result).toBe(true);
+            expect(tutorialManager.currentTutorial).toEqual(mockTutorial);
+            expect(tutorialManager.currentStep).toBe(0);
+            expect(tutorialManager.isActive).toBe(true);
             expect(tutorialManager.isPaused).toBe(false) }');'
         test('存在しないチュートリアルの開始は失敗する', async (') => {'
             jest.spyOn(tutorialManager.contentLoader, 'loadTutorialData').mockResolvedValue([]'),'
-            const result = await tutorialManager.startTutorial('non-existent'),
-            expect(result).toBe(false),
-            expect(tutorialManager.currentTutorial).toBeNull(),
+            const result = await tutorialManager.startTutorial('non-existent');
+            expect(result).toBe(false);
+            expect(tutorialManager.currentTutorial).toBeNull();
             expect(tutorialManager.isActive).toBe(false) }');'
         test('チュートリアルを一時停止できる', async (') => {'
-            await tutorialManager.startTutorial('basic-tutorial'),
-            tutorialManager.pauseTutorial(),
-            expect(tutorialManager.isPaused).toBe(true),
+            await tutorialManager.startTutorial('basic-tutorial');
+            tutorialManager.pauseTutorial();
+            expect(tutorialManager.isPaused).toBe(true);
             expect(tutorialManager.isActive).toBe(true) }');'
         test('チュートリアルを再開できる', async (') => {'
-            await tutorialManager.startTutorial('basic-tutorial'),
-            tutorialManager.pauseTutorial(),
-            tutorialManager.resumeTutorial(),
-            expect(tutorialManager.isPaused).toBe(false),
+            await tutorialManager.startTutorial('basic-tutorial');
+            tutorialManager.pauseTutorial();
+            tutorialManager.resumeTutorial();
+            expect(tutorialManager.isPaused).toBe(false);
             expect(tutorialManager.isActive).toBe(true) }');'
         test('チュートリアルをスキップできる', async (') => {'
-            await tutorialManager.startTutorial('basic-tutorial'),
-            const result = tutorialManager.skipTutorial(),
-            expect(result).toBe(true),
-            expect(tutorialManager.isActive).toBe(false),
+            await tutorialManager.startTutorial('basic-tutorial');
+            const result = tutorialManager.skipTutorial();
+            expect(result).toBe(true);
+            expect(tutorialManager.isActive).toBe(false);
             expect(tutorialManager.currentTutorial).toBeNull() }');'
     }
     describe('ステップ管理', (') => {'
@@ -169,38 +169,38 @@ describe('TutorialManager', () => {
             jest.spyOn(tutorialManager.contentLoader, 'loadTutorialData').mockResolvedValue([mockTutorial]'),'
             await tutorialManager.startTutorial('step-tutorial') }');'
         test('次のステップに進むことができる', () => {
-            const result = tutorialManager.nextStep(),
-            expect(result).toBe(true),
+            const result = tutorialManager.nextStep();
+            expect(result).toBe(true);
             expect(tutorialManager.currentStep).toBe(1) }');'
         test('前のステップに戻ることができる', () => {
             tutorialManager.currentStep = 1,
-            const result = tutorialManager.previousStep(),
-            expect(result).toBe(true),
+            const result = tutorialManager.previousStep();
+            expect(result).toBe(true);
             expect(tutorialManager.currentStep).toBe(0) }');'
         test('最初のステップから前に戻ることはできない', () => {
-            const result = tutorialManager.previousStep(),
-            expect(result).toBe(false),
+            const result = tutorialManager.previousStep();
+            expect(result).toBe(false);
             expect(tutorialManager.currentStep).toBe(0) }');'
         test('最後のステップを超えて進むことはできない', () => {
             tutorialManager.currentStep = 2,
-            const result = tutorialManager.nextStep(),
-            expect(result).toBe(false),
+            const result = tutorialManager.nextStep();
+            expect(result).toBe(false);
             expect(tutorialManager.currentStep).toBe(2) }');'
         test('現在のステップを取得できる', () => {
-            const step = tutorialManager.getCurrentStep(),
+            const step = tutorialManager.getCurrentStep();
             expect(step).toEqual(mockTutorial.steps[0]) }');'
         test('チュートリアル進捗を取得できる', () => {
             tutorialManager.currentStep = 1,
             const progress = tutorialManager.getTutorialProgress() as ProgressInfo,
-            expect(progress.currentStep).toBe(1),
-            expect(progress.totalSteps).toBe(3),
+            expect(progress.currentStep).toBe(1);
+            expect(progress.totalSteps).toBe(3);
             expect(progress.percentage).toBe(33.33) }');'
     }
     describe('インタラクション', () => {
         const mockElement: MockElement = {
             getBoundingClientRect: () => ({ left: 100, top: 100, width: 50,
         height: 50 }
-    });
+    };
         beforeEach(() => {
             // Mock DOM elements
             global.document = {
@@ -208,16 +208,16 @@ describe('TutorialManager', () => {
                 createElement: jest.fn(() => ({)) }') as MockDocument as any;'
         }
         test('要素をハイライトできる', (') => {'
-            const result = tutorialManager.highlightElement('.test-element', 'テストメッセージ'),
-            expect(result).toBe(true),
+            const result = tutorialManager.highlightElement('.test-element', 'テストメッセージ');
+            expect(result).toBe(true);
             expect(tutorialManager.highlightedElement).toBe(mockElement) }');'
         test('存在しない要素のハイライトは失敗する', () => {
             (global.document.querySelector as jest.Mock).mockReturnValue(null'),'
-            const result = tutorialManager.highlightElement('.non-existent', 'メッセージ'),
-            expect(result).toBe(false),
+            const result = tutorialManager.highlightElement('.non-existent', 'メッセージ');
+            expect(result).toBe(false);
             expect(tutorialManager.highlightedElement).toBeNull() }');'
         test('ユーザーアクションを待つことができる', async (') => {'
-            const actionPromise = tutorialManager.waitForUserAction('click'),
+            const actionPromise = tutorialManager.waitForUserAction('click');
             // Simulate user action
             setTimeout((') => {'
                 tutorialManager.handleUserAction('click') }, 100);
@@ -290,8 +290,8 @@ describe('TutorialManager', () => {
     describe('エラーハンドリング', (') => {'
         test('チュートリアル読み込みエラーが処理される', async (') => {'
             jest.spyOn(tutorialManager.contentLoader, 'loadTutorialData').mockRejectedValue(new Error('Load error')'),'
-            const result = await tutorialManager.startTutorial('error-tutorial'),
-            expect(result).toBe(false),
+            const result = await tutorialManager.startTutorial('error-tutorial');
+            expect(result).toBe(false);
             expect(tutorialManager.currentTutorial).toBeNull() }');'
         test('DOM操作エラーが処理される', () => {
             (global.document.querySelector as jest.Mock).mockImplementation((') => {'
@@ -303,7 +303,7 @@ describe('TutorialManager', () => {
     }
     describe('クリーンアップ', (') => {'
         test('cleanup時にリソースが適切に解放される', async (') => {'
-            const mockTutorial: Tutorial = { id: 'cleanup-test', steps: [] };
+            const mockTutorial: Tutorial = { id: 'cleanup-test', steps: [] },
             jest.spyOn(tutorialManager.contentLoader, 'loadTutorialData').mockResolvedValue([mockTutorial]');'
             await tutorialManager.startTutorial('cleanup-test');
             tutorialManager.highlightedElement = {} as any;
@@ -313,6 +313,6 @@ describe('TutorialManager', () => {
             expect(tutorialManager.highlightedElement).toBeNull();
             expect(tutorialManager.currentInstructions).toBeNull();
             expect(tutorialManager.isActive).toBe(false);
-        });
+        };
     }
 }');'

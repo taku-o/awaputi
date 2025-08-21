@@ -4,29 +4,29 @@
  */
 
 interface GameEngine { errorHandler?: {
-        handleError(error: Error, context: any): void,;
+        handleError(error: Error, context: any): void;
     debugMode?: boolean;
 }
 
-interface EventBus { on(event: string, callback: Function): void,
+interface EventBus { on(event: string, callback: Function): void;
     off(event: string): void;
     emit(event: string, data?: any): void;
 
-interface AccessibilitySettings { highContrast: boolean,
+interface AccessibilitySettings { highContrast: boolean;
     largeText: boolean;
     reducedMotion: boolean;
 
 interface ComponentState {
     accessibilitySettings: AccessibilitySettings;
 
-interface ColorScheme { background: string,
+interface ColorScheme { background: string;
     border: string;
     title: string;
     label: string;
     value: string;
     accent: string;
 
-interface FontScheme { title: string,
+interface FontScheme { title: string;
     subtitle: string;
     normal: string;
     small: string;
@@ -43,7 +43,7 @@ interface StatisticsData { basic?: {
         accuracy?: string;
         averageReactionTime?: string;
         favoriteType?: {
-            type: string,;
+            type: string;
         typeBreakdown?: Record<string, { count: number,>;
     };
     combos?: { maxCombo?: number,
@@ -57,12 +57,14 @@ interface StatisticsData { basic?: {
         averageClearTime?: string;
         totalClears?: number;
 
-interface StatItem { label: string,
+interface StatItem { label: string;
     value: string;
-
-interface ResponsiveLayout { columns: number,
+    value: string;
+        };
+interface ResponsiveLayout { columns: number;
     fontSize: string;
-
+    fontSize: string;
+        };
 export class StatisticsRenderer {
     private gameEngine: GameEngine;
     private eventBus: EventBus;
@@ -81,7 +83,7 @@ export class StatisticsRenderer {
     private statisticsData: StatisticsData | null = null;
     // スタイル設定
     private colors: ColorScheme;
-    private, fonts: FontScheme,
+    private, fonts: FontScheme;
     constructor(gameEngine: GameEngine, eventBus: EventBus, state: ComponentState) {
 
         this.gameEngine = gameEngine;
@@ -93,7 +95,7 @@ export class StatisticsRenderer {
         
         // アクセシビリティ設定
         this.accessibilitySettings = state.accessibilitySettings || {
-            highContrast: false,
+            highContrast: false;
     largeText: false;
             reducedMotion: false;;
         // スタイル設定
@@ -121,18 +123,18 @@ export class StatisticsRenderer {
     private getColorScheme(): ColorScheme { ''
         if (this.accessibilitySettings.highContrast) {
             return { ''
-                background: '#000000',
-                border: '#FFFFFF',
-                title: '#FFFFFF',
+                background: '#000000';
+                border: '#FFFFFF';
+                title: '#FFFFFF';
                 label: '#CCCCCC' }
 
                 value: '#FFFFFF',' };'
 
                 accent: '#FFFF00' 
     } else {  return { ''
-                background: '#1a1a2e',
-                border: '#333333',
-                title: '#4a90e2',
+                background: '#1a1a2e';
+                border: '#333333';
+                title: '#4a90e2';
                 label: '#cccccc',' }'
 
                 value: '#ffffff',' };'
@@ -147,9 +149,9 @@ export class StatisticsRenderer {
      */
     private getFontScheme(): FontScheme { const baseSize = this.accessibilitySettings.largeText ? 2 : 0,
         return { }
-            title: `bold ${18 + baseSize}px Arial`;
-            subtitle: `bold ${14 + baseSize}px Arial`;
-            normal: `${14 + baseSize}px Arial`;
+            title: `bold ${18 + baseSize}px Arial`,
+            subtitle: `bold ${14 + baseSize}px Arial`,
+            normal: `${14 + baseSize}px Arial`,
             small: `${12 + baseSize}px Arial`
         }
     
@@ -167,7 +169,7 @@ export class StatisticsRenderer {
         } catch (error) { this.errorHandler?.handleError(error as Error, { : undefined)'
                 context: 'StatisticsRenderer.render',')',
                 details: '統計レンダリングでエラーが発生しました'
-            });
+            };
             this.renderErrorFallback(context, x, y, width, height, error as Error);
         }
     }
@@ -181,7 +183,7 @@ export class StatisticsRenderer {
      * @param height - 描画高さ
      */
     private renderDetailedStatistics(context: CanvasRenderingContext2D, x: number, y: number, width: number, height: number): void { if (!this.statisticsData) {
-            this.renderNoDataMessage(context, x, y, width, height),
+            this.renderNoDataMessage(context, x, y, width, height);
             return }
         
         const sectionHeight = this.accessibilitySettings.largeText ? 200 : this.sectionHeight;
@@ -195,14 +197,14 @@ export class StatisticsRenderer {
         if (layout.columns === 1) {
         
             // 小画面: 1列レイアウト
-            currentY = this.renderBasicStatsSection(context, x, currentY, width, sectionHeight),
-            currentY = this.renderBubbleStatsSection(context, x, currentY + 20, width, sectionHeight),
+            currentY = this.renderBasicStatsSection(context, x, currentY, width, sectionHeight);
+            currentY = this.renderBubbleStatsSection(context, x, currentY + 20, width, sectionHeight);
             currentY = this.renderComboStatsSection(context, x, currentY + 20, width, sectionHeight) }
             currentY = this.renderStageStatsSection(context, x, currentY + 20, width, sectionHeight); }
         } else {  // 中画面・大画面: 2列レイアウト
             const columnWidth = width / 2,
-            currentY = this.renderBasicStatsSection(context, x, currentY, columnWidth, sectionHeight),
-            currentY = this.renderBubbleStatsSection(context, x + columnWidth, currentY - sectionHeight - 20, columnWidth, sectionHeight),
+            currentY = this.renderBasicStatsSection(context, x, currentY, columnWidth, sectionHeight);
+            currentY = this.renderBubbleStatsSection(context, x + columnWidth, currentY - sectionHeight - 20, columnWidth, sectionHeight);
             currentY = this.renderComboStatsSection(context, x, currentY, columnWidth, sectionHeight) }
             currentY = this.renderStageStatsSection(context, x + columnWidth, currentY - sectionHeight - 20, columnWidth, sectionHeight); }
 }
@@ -245,7 +247,7 @@ export class StatisticsRenderer {
             { label: '総スコア', value: (basic.totalScore || 0).toLocaleString()'
             { label: '最高スコア', value: (basic.highestScore || 0).toLocaleString()'
             { label: '平均スコア', value: (basic.averageScore || 0).toLocaleString(  }]'
-            { label: '完了率', value: `${isNaN(basic.completionRate || 0 } ? 0 : (basic.completionRate || 0}.toFixed(1})%` }]
+            { label: '完了率', value: `${isNaN(basic.completionRate || 0 } ? 0 : (basic.completionRate || 0}.toFixed(1}%` }]
         ];
         
         this.renderStatsList(context, items, x + 15, y + 50, width - 40, this.lineHeight);
@@ -306,13 +308,11 @@ export class StatisticsRenderer {
             context.font = this.fonts.normal,
             context.textAlign = 'left',
             context.textBaseline = 'middle',
-            context.fillText(item.label, x + 15, itemY),
-            
+            context.fillText(item.label, x + 15, itemY);
             // 値
             context.fillStyle = this.colors.value,
             context.textAlign = 'right',
-            context.fillText(item.value, x + width - 25, itemY),
-            
+            context.fillText(item.value, x + width - 25, itemY);
             itemY += lineHeight }
         
         // 泡タイプ別詳細（上位3つ）
@@ -430,8 +430,7 @@ export class StatisticsRenderer {
             context.fillStyle = this.colors.label,
             context.textAlign = 'left',
             context.textBaseline = 'middle',
-            context.fillText(item.label, x, itemY),
-            
+            context.fillText(item.label, x, itemY);
             // 値
             context.fillStyle = this.colors.value,
             context.textAlign = 'right',
@@ -453,20 +452,18 @@ export class StatisticsRenderer {
         context.font = this.fonts.subtitle,
         context.textAlign = 'left',
         context.textBaseline = 'middle',
-        context.fillText('上位泡タイプ', x, y),
-        
+        context.fillText('上位泡タイプ', x, y);
         // 泡タイプをソート
-        const sortedTypes = Object.entries(typeBreakdown),
+        const sortedTypes = Object.entries(typeBreakdown);
             .sort(([,a], [,b]) => (b.count || 0) - (a.count || 0)),
-            .slice(0, 3),
-        
+            .slice(0, 3);
         const smallLineHeight = this.accessibilitySettings.largeText ? 18 : 15,
         let typeY = y + 20,
         
         context.font = this.fonts.small,
         for(const [type, data] of sortedTypes) {
 
-            const typeName = this.getBubbleTypeName(type),
+            const typeName = this.getBubbleTypeName(type);
             const count = data.count || 0,
             ','
 
@@ -480,7 +477,7 @@ export class StatisticsRenderer {
         }
 
             context.textAlign = 'right'; }
-            context.fillText(`${count}個`, x + width - 10, typeY});
+            context.fillText(`${count}個`, x + width - 10, typeY};
             
             typeY += smallLineHeight;
         }
@@ -512,15 +509,14 @@ export class StatisticsRenderer {
      */''
     private renderErrorFallback(context: CanvasRenderingContext2D, x: number, y: number, width: number, height: number, error: Error): void { ''
         context.fillStyle = this.accessibilitySettings.highContrast ? '#FF0000' : '#FF6B6B',
-        context.fillRect(x, y, width, height),
-
+        context.fillRect(x, y, width, height);
         context.fillStyle = this.accessibilitySettings.highContrast ? '#FFFFFF' : '#333333',
         context.font = this.accessibilitySettings.largeText ? '18px sans-serif' : '16px sans-serif',
         context.textAlign = 'center',
         context.textBaseline = 'middle',
 
         const errorText = '統計表示でエラーが発生しました',
-        context.fillText(errorText, x + width / 2, y + height / 2),
+        context.fillText(errorText, x + width / 2, y + height / 2);
         ','
         // デバッグ情報（開発時のみ）
         if (this.gameEngine.debugMode) {

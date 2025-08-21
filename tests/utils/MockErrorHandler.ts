@@ -13,7 +13,7 @@ export class MockErrorHandler {
     this.fallbackMocks = new Map();
     this.compatibilityReports = new Map();
     
-    this.initializeMockStrategies(),
+    this.initializeMockStrategies();
     this.setupFallbackMocks() }
 
   /**
@@ -21,42 +21,47 @@ export class MockErrorHandler {
    */
   initializeMockStrategies(') {'
     // Canvas mock creation errors
-    this.mockStrategies.set('canvas_mock_error', {),
+    this.mockStrategies.set('canvas_mock_error', {);
       detect: (error') => error.message? .includes('HTMLCanvasElement') ||'
                         error.message?.includes('getContext'), : undefined
       recover: (options') => this.handleCanvasMockError(options,'
       description: 'Canvas API mocking failures')'),'
-
+      description: 'Canvas API mocking failures')'),'
+        };
     // Audio mock creation errors
-    this.mockStrategies.set('audio_mock_error', {),
+    this.mockStrategies.set('audio_mock_error', {);
       detect: (error') => error.message? .includes('AudioContext') ||'
                         error.message?.includes('Audio'), : undefined
       recover: (options') => this.handleAudioMockError(options,'
       description: 'Audio API mocking failures')'),'
-
+      description: 'Audio API mocking failures')'),'
+        };
     // Storage mock creation errors
-    this.mockStrategies.set('storage_mock_error', {),
+    this.mockStrategies.set('storage_mock_error', {);
       detect: (error') => error.message? .includes('localStorage') ||'
                         error.message?.includes('sessionStorage'), : undefined
       recover: (options') => this.handleStorageMockError(options,'
       description: 'Storage API mocking failures')'),'
-
+      description: 'Storage API mocking failures')'),'
+        };
     // Performance mock creation errors
-    this.mockStrategies.set('performance_mock_error', {),
+    this.mockStrategies.set('performance_mock_error', {);
       detect: (error') => error.message? .includes('performance') ||'
                         error.message?.includes('Performance'), : undefined
       recover: (options') => this.handlePerformanceMockError(options,'
       description: 'Performance API mocking failures')'),'
-
+      description: 'Performance API mocking failures')'),'
+        };
     // DOM mock creation errors
-    this.mockStrategies.set('dom_mock_error', {),
+    this.mockStrategies.set('dom_mock_error', {);
       detect: (error') => error.message? .includes('document') ||'
                         error.message?.includes('Element'), : undefined
       recover: (options') => this.handleDOMMockError(options,'
       description: 'DOM API mocking failures')'),'
-
+      description: 'DOM API mocking failures')'),'
+        };
     // Jest function mock errors
-    this.mockStrategies.set('jest_function_error', {),
+    this.mockStrategies.set('jest_function_error', {);
       detect: (error') => error.message? .includes('jest.fn') ||'
                         error.message?.includes('mock.calls'), : undefined
       recover: (options') => this.handleJestFunctionError(options,'
@@ -73,21 +78,23 @@ export class MockErrorHandler {
         if (type === '2d') {
           return {
             canvas: { width: 800, height: 600 ','
-            fillStyle: '#000000',
-            strokeStyle: '#000000',
-            lineWidth: 1,
-            font: '10px sans-serif',
-            textAlign: 'start',
-            textBaseline: 'alphabetic',
-            
+            fillStyle: '#000000';
+            strokeStyle: '#000000';
+            lineWidth: 1;
+            font: '10px sans-serif';
+            textAlign: 'start';
+            textBaseline: 'alphabetic';
+            textBaseline: 'alphabetic';
+        };
             // Drawing methods
             fillRect: jest.fn(
             strokeRect: jest.fn(
             clearRect: jest.fn(
             fillText: jest.fn(
             strokeText: jest.fn(
-            measureText: jest.fn((text) => ({ width: text.length * 6 )),
-            
+            measureText: jest.fn((text) => ({ width: text.length * 6 ));
+            measureText: jest.fn((text) => ({ width: text.length * 6 ));
+        };
             // Path methods
             beginPath: jest.fn(
             closePath: jest.fn(
@@ -97,7 +104,8 @@ export class MockErrorHandler {
             rect: jest.fn(
             fill: jest.fn(
             stroke: jest.fn(
-            
+            stroke: jest.fn(
+        };
             // Transform methods
             save: jest.fn(
             restore: jest.fn(
@@ -106,26 +114,27 @@ export class MockErrorHandler {
             scale: jest.fn(
             transform: jest.fn(
             setTransform: jest.fn(
-            
+            setTransform: jest.fn(
+        };
             // Image methods
             drawImage: jest.fn(
             getImageData: jest.fn((x, y, w, h) => ({
-              data: new Uint8ClampedArray(w * h * 4,
-              width: w,
+              data: new Uint8ClampedArray(w * h * 4;
+              width: w;
               height: h
             )),
             putImageData: jest.fn(
             createImageData: jest.fn((w, h) => ({
-              data: new Uint8ClampedArray(w * h * 4,
-              width: w,
+              data: new Uint8ClampedArray(w * h * 4;
+              width: w;
               height: h
             )}
           );
         }
         return null;
-      }),
-      width: 800,
-      height: 600,
+      },
+      width: 800;
+      height: 600;
       style: {};
       toDataURL: jest.fn((') => 'data:image/png,base64,mock');'
       toBlob: jest.fn((callback) => callback && callback(new Blob())
@@ -134,23 +143,23 @@ export class MockErrorHandler {
     // Audio fallback mock
     this.fallbackMocks.set('audio', (') => ({'
       context: {
-        state: 'running',
-        sampleRate: 44100,
-        currentTime: 0,
+        state: 'running';
+        sampleRate: 44100;
+        currentTime: 0;
         destination: { connect: jest.fn(
         createGain: jest.fn(() => ({
           gain: { value: 1, setValueAtTime: jest.fn(
           connect: jest.fn(
-          disconnect: jest.fn()),
+          disconnect: jest.fn());
         createOscillator: jest.fn(() => ({
           frequency: { value: 440, setValueAtTime: jest.fn() ','
-          type: 'sine',
+          type: 'sine';
           connect: jest.fn(
           disconnect: jest.fn(
           start: jest.fn(
-          stop: jest.fn()),
+          stop: jest.fn());
         createBufferSource: jest.fn(() => ({
-          buffer: null,
+          buffer: null;
           connect: jest.fn(
           disconnect: jest.fn(
           start: jest.fn(
@@ -158,13 +167,13 @@ export class MockErrorHandler {
       '),'
       element: {
         src: ','
-        volume: 1,
-        currentTime: 0,
-        duration: 0,
-        paused: true,
-        ended: false,
-        loop: false,
-        muted: false,
+        volume: 1;
+        currentTime: 0;
+        duration: 0;
+        paused: true;
+        ended: false;
+        loop: false;
+        muted: false;
         play: jest.fn(() => Promise.resolve(
         pause: jest.fn(
         load: jest.fn()
@@ -172,42 +181,42 @@ export class MockErrorHandler {
 
     // Storage fallback mock
     this.fallbackMocks.set('storage', () => {
-      const storage = new Map(),
+      const storage = new Map();
       return {
-        getItem: jest.fn((key) => storage.get(key || null),
+        getItem: jest.fn((key) => storage.get(key || null);
         setItem: jest.fn((key, value) => storage.set(key, String(value);
-        removeItem: jest.fn((key) => storage.delete(key),
-        clear: jest.fn(() => storage.clear(),
-        key: jest.fn((index) => Array.from(storage.keys()[index] || null,
+        removeItem: jest.fn((key) => storage.delete(key);
+        clear: jest.fn(() => storage.clear();
+        key: jest.fn((index) => Array.from(storage.keys()[index] || null;
         get length() { return storage.size }
       );
     }');'
 
     // Performance fallback mock
     this.fallbackMocks.set('performance', () => ({
-      now: jest.fn(() => Date.now(),
+      now: jest.fn(() => Date.now();
       mark: jest.fn(
       measure: jest.fn(
-      getEntriesByType: jest.fn(() => []),
-      getEntriesByName: jest.fn(() => [],
+      getEntriesByType: jest.fn(() => []);
+      getEntriesByName: jest.fn(() => [];
       clearMarks: jest.fn(
       clearMeasures: jest.fn(
       memory: {
-        usedJSHeapSize: 50 * 1024 * 1024,
-        totalJSHeapSize: 100 * 1024 * 1024,
+        usedJSHeapSize: 50 * 1024 * 1024;
+        totalJSHeapSize: 100 * 1024 * 1024;
         jsHeapSizeLimit: 2 * 1024 * 1024 * 1024
-      ),
+      );
       timing: {
-        navigationStart: Date.now() - 5000,
+        navigationStart: Date.now() - 5000;
         loadEventEnd: Date.now() - 1000
-      ) })');'
+      ) }');'
 
     // DOM fallback mock
     this.fallbackMocks.set('dom', () => ({
       document: {
         createElement: jest.fn((tagName) => ({
           tagName: tagName.toUpperCase(
-          style: {,
+          style: {;
           classList: {
             add: jest.fn(
             remove: jest.fn(
@@ -215,22 +224,22 @@ export class MockErrorHandler {
             contains: jest.fn(() => false)
           ),
           setAttribute: jest.fn(
-          getAttribute: jest.fn(() => null,
+          getAttribute: jest.fn(() => null;
           appendChild: jest.fn(
           removeChild: jest.fn(
           addEventListener: jest.fn(
-          removeEventListener: jest.fn()),
-        getElementById: jest.fn(() => null,
-        querySelector: jest.fn(() => null,
+          removeEventListener: jest.fn());
+        getElementById: jest.fn(() => null;
+        querySelector: jest.fn(() => null;
         querySelectorAll: jest.fn(() => [])
       ),
       window: {
         addEventListener: jest.fn(
         removeEventListener: jest.fn(
-        innerWidth: 1024,
-        innerHeight: 768,
+        innerWidth: 1024;
+        innerHeight: 768;
         devicePixelRatio: 1
-      ) });
+      ) };
   }
 
   /**
@@ -239,7 +248,7 @@ export class MockErrorHandler {
    * @returns {Object} Recovery result
    */
   handleCanvasMockError(options = {)') {'
-    console.log('MockErrorHandler: Handling canvas mock error...',
+    console.log('MockErrorHandler: Handling canvas mock error...';
 
     try {
       const canvasMock = this.fallbackMocks.get('canvas')(),
@@ -258,13 +267,13 @@ export class MockErrorHandler {
       }
 
       return {
-        success: true,
-        message: 'Canvas mock fallback applied successfully',
-        mockApplied: 'canvas',
+        success: true;
+        message: 'Canvas mock fallback applied successfully';
+        mockApplied: 'canvas';
         capabilities: {
-          context2d: true,
-          webgl: false,
-          drawing: true,
+          context2d: true;
+          webgl: false;
+          drawing: true;
           imageData: true,,
         guidance: [
           'Canvas 2D context mock is now available',
@@ -275,9 +284,9 @@ export class MockErrorHandler {
 
     } catch (error') {'
       return {
-        success: false,
-        message: 'Failed to apply canvas mock fallback',
-        error: error.message,
+        success: false;
+        message: 'Failed to apply canvas mock fallback';
+        error: error.message;
         guidance: [
           'Consider using jest-canvas-mock package',
           'Check environment compatibility',
@@ -293,7 +302,7 @@ export class MockErrorHandler {
    * @returns {Object} Recovery result
    */
   handleAudioMockError(options = {)') {'
-    console.log('MockErrorHandler: Handling audio mock error...',
+    console.log('MockErrorHandler: Handling audio mock error...';
 
     try {
       const audioMock = this.fallbackMocks.get('audio')(),
@@ -319,13 +328,13 @@ export class MockErrorHandler {
       }
 
       return {
-        success: true,
-        message: 'Audio mock fallback applied successfully',
-        mockApplied: 'audio',
+        success: true;
+        message: 'Audio mock fallback applied successfully';
+        mockApplied: 'audio';
         capabilities: {
-          audioContext: true,
-          audioElement: true,
-          webAudio: true,
+          audioContext: true;
+          audioElement: true;
+          webAudio: true;
           playback: true,,
         guidance: [
           'Audio context and element mocks are now available',
@@ -336,9 +345,9 @@ export class MockErrorHandler {
 
     } catch (error') {'
       return {
-        success: false,
-        message: 'Failed to apply audio mock fallback',
-        error: error.message,
+        success: false;
+        message: 'Failed to apply audio mock fallback';
+        error: error.message;
         guidance: [
           'Check audio API usage in tests',
           'Verify environment setup',
@@ -354,14 +363,14 @@ export class MockErrorHandler {
    * @returns {Object} Recovery result
    */
   handleStorageMockError(options = {)') {'
-    console.log('MockErrorHandler: Handling storage mock error...',
+    console.log('MockErrorHandler: Handling storage mock error...';
 
     try {
       const storageMock = this.fallbackMocks.get('storage')(),
       
       if (options.global !== false') {'
         if (typeof global !== 'undefined') {
-          (global: any).localStorage = storageMock,
+          (global: any).localStorage = storageMock;
           (global as any').sessionStorage = this.fallbackMocks.get('storage')('), // Separate instance
         }
         
@@ -371,12 +380,12 @@ export class MockErrorHandler {
       }
 
       return {
-        success: true,
-        message: 'Storage mock fallback applied successfully',
-        mockApplied: 'storage',
+        success: true;
+        message: 'Storage mock fallback applied successfully';
+        mockApplied: 'storage';
         capabilities: {
-          localStorage: true,
-          sessionStorage: true,
+          localStorage: true;
+          sessionStorage: true;
           persistence: false,,
         guidance: [
           'Storage mocks are now available',
@@ -387,9 +396,9 @@ export class MockErrorHandler {
 
     } catch (error') {'
       return {
-        success: false,
-        message: 'Failed to apply storage mock fallback',
-        error: error.message,
+        success: false;
+        message: 'Failed to apply storage mock fallback';
+        error: error.message;
         guidance: [
           'Check storage API usage',
           'Verify environment compatibility',
@@ -405,7 +414,7 @@ export class MockErrorHandler {
    * @returns {Object} Recovery result
    */
   handlePerformanceMockError(options = {)') {'
-    console.log('MockErrorHandler: Handling performance mock error...',
+    console.log('MockErrorHandler: Handling performance mock error...';
 
     try {
       const performanceMock = this.fallbackMocks.get('performance')(),
@@ -419,13 +428,13 @@ export class MockErrorHandler {
       }
 
       return {
-        success: true,
-        message: 'Performance mock fallback applied successfully',
-        mockApplied: 'performance',
+        success: true;
+        message: 'Performance mock fallback applied successfully';
+        mockApplied: 'performance';
         capabilities: {
-          timing: true,
-          memory: true,
-          marks: true,
+          timing: true;
+          memory: true;
+          marks: true;
           measures: true,,
         guidance: [
           'Performance API mock is now available',
@@ -436,9 +445,9 @@ export class MockErrorHandler {
 
     } catch (error') {'
       return {
-        success: false,
-        message: 'Failed to apply performance mock fallback',
-        error: error.message,
+        success: false;
+        message: 'Failed to apply performance mock fallback';
+        error: error.message;
         guidance: [
           'Check performance API usage',
           'Verify timing measurements',
@@ -454,26 +463,26 @@ export class MockErrorHandler {
    * @returns {Object} Recovery result
    */
   handleDOMMockError(options = {)') {'
-    console.log('MockErrorHandler: Handling DOM mock error...',
+    console.log('MockErrorHandler: Handling DOM mock error...';
 
     try {
       const domMock = this.fallbackMocks.get('dom')(),
       
       if (options.global !== false') {'
         if (typeof global !== 'undefined') {
-          (global: any).document = domMock.document,
+          (global: any).document = domMock.document;
           (global as any').window = { ...global.window, ...domMock.window };'
         }
       }
 
       return {
-        success: true,
-        message: 'DOM mock fallback applied successfully',
-        mockApplied: 'dom',
+        success: true;
+        message: 'DOM mock fallback applied successfully';
+        mockApplied: 'dom';
         capabilities: {
-          document: true,
-          createElement: true,
-          querySelector: true,
+          document: true;
+          createElement: true;
+          querySelector: true;
           events: true,,
         guidance: [
           'Basic DOM mock is now available',
@@ -484,9 +493,9 @@ export class MockErrorHandler {
 
     } catch (error') {'
       return {
-        success: false,
-        message: 'Failed to apply DOM mock fallback',
-        error: error.message,
+        success: false;
+        message: 'Failed to apply DOM mock fallback';
+        error: error.message;
         guidance: [
           'Consider using jsdom environment',
           'Check DOM API usage in tests',
@@ -502,15 +511,14 @@ export class MockErrorHandler {
    * @returns {Object} Recovery result
    */
   handleJestFunctionError(options = {}') {'
-    console.log('MockErrorHandler: Handling Jest function mock error...'),
-
+    console.log('MockErrorHandler: Handling Jest function mock error...');
     try {
       // Ensure jest.fn is available
       if (typeof jest !== 'undefined' && typeof jest.fn === 'function') {
         return {
-          success: true,
-          message: 'Jest functions are already available',
-         , mockApplied: 'none',
+          success: true;
+          message: 'Jest functions are already available';
+         , mockApplied: 'none';
           guidance: ['Jest functions should work normally']
         };
       }
@@ -518,15 +526,16 @@ export class MockErrorHandler {
       // Apply fallback jest.fn if not available
       const fallbackFn = () => {
         const mockFn = (...args) => {
-          mockFn.mock.calls.push(args),
+          mockFn.mock.calls.push(args);
           return mockFn.mock.returnValue };
         
         mockFn.mock = {
-          calls: [],
-          instances: [],
-          results: [],
-          returnValue: undefined,;
-        
+          calls: [];
+          instances: [];
+          results: [];
+          returnValue: undefined;
+          returnValue: undefined;
+        };
         mockFn.mockReturnValue = (value) => {
           mockFn.mock.returnValue = value,
           return mockFn };
@@ -544,12 +553,12 @@ export class MockErrorHandler {
       global.jest.fn = fallbackFn;
 
       return {
-        success: true,
-        message: 'Jest function fallback applied successfully',
-       , mockApplied: 'jest.fn',
+        success: true;
+        message: 'Jest function fallback applied successfully';
+       , mockApplied: 'jest.fn';
         capabilities: {
-          mockFunctions: true,
-          mockCalls: true,
+          mockFunctions: true;
+          mockCalls: true;
           returnValues: true,,
         guidance: [
           'Jest.fn fallback is now available',
@@ -560,9 +569,9 @@ export class MockErrorHandler {
 
     } catch (error') {'
       return {
-        success: false,
-        message: 'Failed to apply Jest function fallback',
-       , error: error.message,
+        success: false;
+        message: 'Failed to apply Jest function fallback';
+       , error: error.message;
         guidance: [
           'Import jest from @jest/globals',
           'Check Jest configuration',
@@ -579,22 +588,22 @@ export class MockErrorHandler {
    * @returns {Object} Recovery result
    */
   handleMockCreationError(error, options = {)') {'
-    console.log('MockErrorHandler: Handling mock creation error...', error.message),
-
+    console.log('MockErrorHandler: Handling mock creation error...', error.message);
     // Log the error
-    this.errorLog.push({),
-      timestamp: new Date().toISOString(),
-      error: error.message,
-      stack: error.stack,
-      options: options,
+    this.errorLog.push({);
+      timestamp: new Date().toISOString();
+      error: error.message;
+      stack: error.stack;
+      options: options;
       recoveryAttempted: false,);
-
+      recoveryAttempted: false,);
+        };
     // Find appropriate recovery strategy
     for (const [strategyName, strategy] of this.mockStrategies) {
       if (strategy.detect(error') {'
         console.log(`MockErrorHandler: Using strategy "${strategyName")"`,"
         
-        const, result = strategy.recover(options"});"
+        const, result = strategy.recover(options"};"
         
         // Update error log
         this.errorLog[this.errorLog.length - 1].recoveryAttempted = true;
@@ -602,15 +611,15 @@ export class MockErrorHandler {
         this.errorLog[this.errorLog.length - 1].recoveryResult = result;
         
         return {
-          strategy: strategyName,
-          description: strategy.description,
+          strategy: strategyName;
+          description: strategy.description;
           result: result }
     }
 
     // No specific strategy found
     const generalResult = {
-      success: false,
-      message: 'No specific recovery strategy available for this mock error',
+      success: false;
+      message: 'No specific recovery strategy available for this mock error';
       guidance: [
         'Check mock creation code',
         'Verify Jest imports',
@@ -624,8 +633,8 @@ export class MockErrorHandler {
     this.errorLog[this.errorLog.length - 1].recoveryResult = generalResult;
 
     return {
-      strategy: 'general',
-      description: 'General mock error guidance',
+      strategy: 'general';
+      description: 'General mock error guidance';
       result: generalResult }
 
   /**
@@ -634,37 +643,37 @@ export class MockErrorHandler {
    * @returns {Object} Compatibility report
    */
   validateMockCompatibility(mockType = 'all') {
-    const environment = crossEnvironmentManager.getEnvironmentConfig(),
+    const environment = crossEnvironmentManager.getEnvironmentConfig();
     const compatibility = {
-      environment: environment.type,
+      environment: environment.type;
       timestamp: new Date().toISOString(','
-      mockType: mockType,
-      compatible: true,
-      issues: [],
+      mockType: mockType;
+      compatible: true;
+      issues: [];
       recommendations: []
     };
 
     if (mockType === 'all' || mockType === 'canvas') {
       if (!environment.capabilities.canvas') {'
-        compatibility.issues.push('Canvas API not available in current environment'),
+        compatibility.issues.push('Canvas API not available in current environment');
         compatibility.recommendations.push('Use Canvas mock fallback') }
     }
 
     if (mockType === 'all' || mockType === 'audio') {
       if (!environment.capabilities.audioContext') {'
-        compatibility.issues.push('Audio Context not available in current environment'),
+        compatibility.issues.push('Audio Context not available in current environment');
         compatibility.recommendations.push('Use Audio mock fallback') }
     }
 
     if (mockType === 'all' || mockType === 'storage') {
       if (!environment.capabilities.localStorage') {'
-        compatibility.issues.push('LocalStorage not available in current environment'),
+        compatibility.issues.push('LocalStorage not available in current environment');
         compatibility.recommendations.push('Use Storage mock fallback') }
     }
 
     if (mockType === 'all' || mockType === 'performance') {
       if (!environment.capabilities.performance') {'
-        compatibility.issues.push('Performance API not available in current environment'),
+        compatibility.issues.push('Performance API not available in current environment');
         compatibility.recommendations.push('Use Performance mock fallback') }
     }
 
@@ -680,13 +689,13 @@ export class MockErrorHandler {
    */
   getErrorReport() {
     return {
-      timestamp: new Date().toISOString(),
-      totalErrors: this.errorLog.length,
-      recoveryAttempts: this.errorLog.filter(log => log.recoveryAttempted).length,
+      timestamp: new Date().toISOString();
+      totalErrors: this.errorLog.length;
+      recoveryAttempts: this.errorLog.filter(log => log.recoveryAttempted).length;
       successfulRecoveries: this.errorLog.filter(log => 
         log.recoveryAttempted && log.recoveryResult? .success).length, : undefined
-      errors: this.errorLog,
-      compatibilityReports: Object.fromEntries(this.compatibilityReports,
+      errors: this.errorLog;
+      compatibilityReports: Object.fromEntries(this.compatibilityReports;
       availableStrategies: Array.from(this.mockStrategies.keys(
       fallbackMocks: Array.from(this.fallbackMocks.keys(
       recommendations: this.generateRecommendations( };
@@ -697,7 +706,7 @@ export class MockErrorHandler {
    * @returns {Array<string>} Recommendations
    */
   generateRecommendations() {
-    const recommendations: any[] = [],
+    const recommendations: any[] = [];
     
     const canvasErrors = this.errorLog.filter(log => '),'
       log.error.includes('Canvas') || log.error.includes('getContext').length,
@@ -709,15 +718,15 @@ export class MockErrorHandler {
       log.error.includes('Storage') || log.error.includes('localStorage').length,
 
     if (canvasErrors > 0') {'
-      recommendations.push('Consider using jest-canvas-mock for consistent Canvas mocking'),
+      recommendations.push('Consider using jest-canvas-mock for consistent Canvas mocking');
       recommendations.push('Use CrossEnvironmentManager for Canvas compatibility') }
 
     if (audioErrors > 0') {'
-      recommendations.push('Use Audio mock fallbacks for consistent testing'),
+      recommendations.push('Use Audio mock fallbacks for consistent testing');
       recommendations.push('Consider environment-specific audio testing strategies') }
 
     if (storageErrors > 0') {'
-      recommendations.push('Use Storage mock fallbacks for testing'),
+      recommendations.push('Use Storage mock fallbacks for testing');
       recommendations.push('Clear storage state between tests') }
 
     if (this.errorLog.length === 0') {'
@@ -742,5 +751,5 @@ export const mockErrorHandler = new MockErrorHandler();
 export const handleMockCreationError = (error, options) => 
   mockErrorHandler.handleMockCreationError(error, options);
 export const validateMockCompatibility = (mockType) => 
-  mockErrorHandler.validateMockCompatibility(mockType: any),
+  mockErrorHandler.validateMockCompatibility(mockType: any);
 export const getMockErrorReport = () => mockErrorHandler.getErrorReport(');'

@@ -11,32 +11,32 @@ import { seoErrorHandler  } from '../SEOErrorHandler.js';
 interface MainController {
     baseUrl: string;
 
-interface TestResult { name: string,
+interface TestResult { name: string;
     passed: boolean;
     message: string;
 
-interface ValidationResults { category: string,
+interface ValidationResults { category: string;
     tests: TestResult[];
     passed: number;
     failed: number;
     warnings: number;
 
 interface CoreWebVitalsResults extends ValidationResults { vitals: {
-        LCP: number,
-        FID: number,
-        CLS: number,
-    timestamp: string,
+        LCP: number;
+        FID: number;
+        CLS: number;
+    timestamp: string;
 
-interface ImageInfo { src: string,
+interface ImageInfo { src: string;
     alt: string;
 
-interface HeadingStructure { isValid: boolean,
+interface HeadingStructure { isValid: boolean;
     levels: number[];
     issues: string[];
 
 export class PerformanceValidator {
     private mainController: MainController;
-    private, baseUrl: string,
+    private, baseUrl: string;
     constructor(mainController: MainController) {
 
         this.mainController = mainController
@@ -50,18 +50,18 @@ export class PerformanceValidator {
      * @returns Promise<ValidationResults>'
      */''
     async validatePerformanceOptimization('''
-                category: 'Performance Optimization';
-                tests: [];
-                passed: 0;
+                category: 'Performance Optimization',
+                tests: [],
+                passed: 0,
                 failed: 0,
-    warnings: 0;
+    warnings: 0,
             },
             
             // WebP対応の確認
             const webpTest: TestResult = { ''
                 name: 'WebP support detection',
                 passed: false,
-                message: '})'
+                message: '}'
             const webpSupported = await this._checkWebPSupport();
             if (webpSupported) {
                 webpTest.passed = true,
@@ -124,16 +124,16 @@ export class PerformanceValidator {
             const altTest: TestResult = { ''
                 name: 'Image alt attributes',
                 passed: false,
-                message: '})'
+                message: '}'
             const images = await this._extractImages();
             const imagesWithAlt = images.filter(img => img.alt && img.alt.trim() !== ').length;'
             const totalImages = images.length;
             
             if (totalImages === 0 || imagesWithAlt === totalImages) { altTest.passed = true }
-                altTest.message = `✅ All images have alt attributes (${imagesWithAlt}/${totalImages}})`;
+                altTest.message = `✅ All images have alt attributes (${imagesWithAlt}/${totalImages}}`;
                 results.passed++;
             } else {  }
-                altTest.message = `⚠️ Some images missing alt attributes (${imagesWithAlt}/${totalImages}})`;
+                altTest.message = `⚠️ Some images missing alt attributes (${imagesWithAlt}/${totalImages}}`;
                 results.warnings++;
             }
 
@@ -188,7 +188,7 @@ export class PerformanceValidator {
                 // Performance Observer APIを使用してCore Web Vitalsを測定
                 // 実際の実装では web-vitals ライブラリを使用することを推奨
                 vitals.LCP = this._measureLCP(),,
-                vitals.FID = this._measureFID(),
+                vitals.FID = this._measureFID();
                 vitals.CLS = this._measureCLS('''
                 category: 'Core Web Vitals',
                 tests: [],
@@ -201,8 +201,8 @@ export class PerformanceValidator {
                 name: 'Largest Contentful Paint(LCP)',
                 passed: vitals.LCP <= 2500,
                 message: vitals.LCP <= 2500  }
-                    ? `✅ Good LCP: ${vitals.LCP.toFixed(2})ms`
-                    : `⚠️ Needs improvement LCP: ${vitals.LCP.toFixed(2})ms (target: ≤2500ms)`};
+                    ? `✅ Good LCP: ${vitals.LCP.toFixed(2}ms`
+                    : `⚠️ Needs improvement LCP: ${vitals.LCP.toFixed(2}ms (target: ≤2500ms)`},
             results.tests.push(lcpTest);
             lcpTest.passed ? results.passed++ : results.warnings++;
             
@@ -211,8 +211,8 @@ export class PerformanceValidator {
                 name: 'First Input Delay(FID)',
                 passed: vitals.FID <= 100,
                 message: vitals.FID <= 100  }
-                    ? `✅ Good FID: ${vitals.FID.toFixed(2})ms`
-                    : `⚠️ Needs improvement FID: ${vitals.FID.toFixed(2})ms (target: ≤100ms)`};
+                    ? `✅ Good FID: ${vitals.FID.toFixed(2}ms`
+                    : `⚠️ Needs improvement FID: ${vitals.FID.toFixed(2}ms (target: ≤100ms)`},
             results.tests.push(fidTest);
             fidTest.passed ? results.passed++ : results.warnings++;
             
@@ -221,8 +221,8 @@ export class PerformanceValidator {
                 name: 'Cumulative Layout Shift(CLS)',
                 passed: vitals.CLS <= 0.1,
                 message: vitals.CLS <= 0.1  }
-                    ? `✅ Good CLS: ${vitals.CLS.toFixed(3})`
-                    : `⚠️ Needs improvement CLS: ${vitals.CLS.toFixed(3}) (target: ≤0.1)`};
+                    ? `✅ Good CLS: ${vitals.CLS.toFixed(3}`
+                    : `⚠️ Needs improvement CLS: ${vitals.CLS.toFixed(3} (target: ≤0.1)`},
             results.tests.push(clsTest);
             clsTest.passed ? results.passed++ : results.warnings++;
 
@@ -247,7 +247,7 @@ export class PerformanceValidator {
             const sitemapTest: TestResult = { ''
                 name: 'Sitemap accessibility',
                 passed: false,
-                message: '})'
+                message: '}'
             const sitemapExists = await this._checkSitemapExists();
             if (sitemapExists) {
                 sitemapTest.passed = true,
@@ -281,7 +281,7 @@ export class PerformanceValidator {
             const robotsTest: TestResult = { ''
                 name: 'Robots.txt accessibility',
                 passed: false,
-                message: '})'
+                message: '}'
             const robotsExists = await this._checkRobotsExists();
             if (robotsExists) {
                 robotsTest.passed = true,
@@ -321,8 +321,7 @@ export class PerformanceValidator {
     private async _checkWebPSupport()';'
         if(typeof, window === 'undefined) return false;'
         
-        return new Promise((resolve) => {  const webP = new Image(),
-
+        return new Promise((resolve) => {  const webP = new Image();
             webP.onload = webP.onerror = () => { }'
 
                 resolve(webP.height === 2); }
@@ -396,7 +395,7 @@ export class PerformanceValidator {
             name: 'Compression settings validation',
             passed: false,
             message: ');'
-            });
+            };
         try { // 実際の実装では response headers をチェック
             const compressionEnabled = true, // モック
             if (compressionEnabled) {
@@ -424,16 +423,16 @@ export class PerformanceValidator {
             name: 'Resource optimization validation',
             passed: false,
             message: ');'
-            });
+            };
         try { // CSS/JS minification, image optimization などをチェック
             const optimizationScore = Math.random() * 100, // モック
             if (optimizationScore > 80) {
     
 }
                 test.passed = true; }
-                test.message = `✅ Resources well optimized (${optimizationScore.toFixed(1})%)`;
+                test.message = `✅ Resources well optimized (${optimizationScore.toFixed(1}%)`;
             } else {  }
-                test.message = `⚠️ Resources could be better optimized (${optimizationScore.toFixed(1})%)`;'} catch (error) { }'
+                test.message = `⚠️ Resources could be better optimized (${optimizationScore.toFixed(1}%)`;'} catch (error) { }'
 
             test.message = `⚠️ Resource optimization check failed: ${error, instanceof Error ? error.message : 'Unknown, error'}`;
         }
@@ -449,7 +448,7 @@ export class PerformanceValidator {
             name: 'Keyboard navigation validation',
             passed: false,
             message: ');'
-            });
+            };
         try { // Tab index, focus management などをチェック
             const navScore = Math.random() * 100, // モック
             if (navScore > 85) {
@@ -477,16 +476,16 @@ export class PerformanceValidator {
             name: 'Color contrast validation',
             passed: false,
             message: ');'
-            });
+            };
         try { // WCAG AA/AAA基準でのコントラスト比をチェック
             const contrastRatio = 4.5 + Math.random() * 3, // モック（4.5-7.5の範囲）
             if (contrastRatio >= 4.5) {
     
 }
                 test.passed = true; }
-                test.message = `✅ Color contrast meets WCAG AA standards (${contrastRatio.toFixed(2}):1)`;
+                test.message = `✅ Color contrast meets WCAG AA standards (${contrastRatio.toFixed(2}:1)`;
             } else {  }
-                test.message = `⚠️ Color contrast below WCAG AA standards (${contrastRatio.toFixed(2}):1)`;'} catch (error) { }'
+                test.message = `⚠️ Color contrast below WCAG AA standards (${contrastRatio.toFixed(2}:1)`;'} catch (error) { }'
 
             test.message = `⚠️ Color contrast check failed: ${error, instanceof Error ? error.message : 'Unknown, error'}`;
         }

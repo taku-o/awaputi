@@ -15,7 +15,7 @@
  */
 
 // 型定義
-export interface EventHandlers { keydown: (event: KeyboardEvent) => void,
+export interface EventHandlers { keydown: (event: KeyboardEvent) => void;
     challengeClick: (event: MouseEvent | KeyboardEvent) => void;
     filterChange: (event: Event) => Promise<void>;
     sortChange: (event: Event) => Promise<void>;
@@ -25,30 +25,30 @@ export interface EventHandlers { keydown: (event: KeyboardEvent) => void,
 
 export interface FocusableElement extends HTMLElement { tabIndex: number;
 
-export interface NavigationState { focusedIndex: number,
+export interface NavigationState { focusedIndex: number;
     lastFocusedElement?: HTMLElement;
     navigationMode: NavigationMode;
     focusHistoryEnabled: boolean;
 
-export interface TouchGestureConfig { minSwipeDistance: number,
+export interface TouchGestureConfig { minSwipeDistance: number;
     maxSwipeTime: number;
     touchSensitivity: number;
     gesturesEnabled: boolean;
 
-export interface TouchEvent { startX: number,
+export interface TouchEvent { startX: number;
     startY: number;
     endX: number;
     endY: number;
     startTime: number;
     endTime: number;
 
-export interface KeyboardNavigationConfig { enabled: boolean,
+export interface KeyboardNavigationConfig { enabled: boolean;
     arrowKeys: boolean;
     homeEndKeys: boolean;
     enterSpaceActivation: boolean;
     shortcuts: Record<string, KeyboardShortcut> }
 
-export interface KeyboardShortcut { key: string,
+export interface KeyboardShortcut { key: string;
     ctrlKey?: boolean;
     shiftKey?: boolean;
     altKey?: boolean;
@@ -56,14 +56,14 @@ export interface KeyboardShortcut { key: string,
     action: ShortcutAction;
     description: string;
 
-export interface AccessibilityConfig { keyboardNavigation: boolean,
+export interface AccessibilityConfig { keyboardNavigation: boolean;
     progressAnnouncements: boolean;
     rewardAnnouncements: boolean;
     focusManagement: boolean;
     ariaUpdates: boolean;
     screenReaderSupport: boolean;
 
-export interface InteractionStats { keyboardInteractions: number,
+export interface InteractionStats { keyboardInteractions: number;
     challengeViews: number;
     filterChanges: number;
     sortChanges: number;
@@ -72,7 +72,7 @@ export interface InteractionStats { keyboardInteractions: number,
     clickInteractions: number;
     lastInteractionTime?: Date;
 
-export interface ChallengeUIElements { container: HTMLElement,
+export interface ChallengeUIElements { container: HTMLElement;
     header: HTMLElement;
     filterControls: HTMLElement;
     sortControls: HTMLElement;
@@ -81,7 +81,7 @@ export interface ChallengeUIElements { container: HTMLElement,
     progressSection: HTMLElement;
     footer: HTMLElement;
 
-export interface ChallengeUIState { challenges: Challenge[],
+export interface ChallengeUIState { challenges: Challenge[];
     selectedChallenge?: Challenge;
     focusedIndex: number;
     loading: boolean;
@@ -89,7 +89,7 @@ export interface ChallengeUIState { challenges: Challenge[],
     sortBy: string;
     visible: boolean;
 
-export interface ChallengeUIReference { config: ChallengeInteractionConfig,
+export interface ChallengeUIReference { config: ChallengeInteractionConfig;
     state: ChallengeUIState;
     elements: ChallengeUIElements;
     stats: InteractionStats;
@@ -100,13 +100,13 @@ export interface ChallengeUIReference { config: ChallengeInteractionConfig,
     loadChallenges: () => Promise<void>  }
 }
 
-export interface ChallengeInteractionConfig { accessibility: AccessibilityConfig,
+export interface ChallengeInteractionConfig { accessibility: AccessibilityConfig;
     keyboard: KeyboardNavigationConfig;
     touch: TouchGestureConfig;
     doubleClickDelay: number;
     focusHistoryLimit: number;
 
-export interface Challenge { id: string,
+export interface Challenge { id: string;
     title: string;
     description: string;
     type: ChallengeType;
@@ -124,7 +124,7 @@ export interface ChallengeSystem { onProgressUpdate?: (callback: (challengeId: s
 
 export interface ClickPreventionHandler { (event: Event): void;
 
-export interface GestureRecognitionResult { type: GestureType,
+export interface GestureRecognitionResult { type: GestureType;
     direction?: GestureDirection;
     distance: number;
     duration: number;
@@ -137,11 +137,11 @@ export interface AriaAttributes { busy?: boolean,
     expanded?: boolean;
     level?: number;
 
-export interface FocusHistoryEntry { element: HTMLElement,
+export interface FocusHistoryEntry { element: HTMLElement;
     timestamp: Date;
     context: string;
 
-export interface NavigationCommand { type: NavigationType,
+export interface NavigationCommand { type: NavigationType;
     target?: NavigationTarget;
     options?: NavigationOptions;
 
@@ -161,75 +161,75 @@ export type ChallengeDifficulty = 'easy' | 'medium' | 'hard';
 export type AnnouncementPriority = 'polite' | 'assertive' | 'off';
 
 // 定数
-export const DEFAULT_TOUCH_CONFIG: TouchGestureConfig = { minSwipeDistance: 50,
-    maxSwipeTime: 500,
-    touchSensitivity: 0.8,
+export const DEFAULT_TOUCH_CONFIG: TouchGestureConfig = { minSwipeDistance: 50;
+    maxSwipeTime: 500;
+    touchSensitivity: 0.8;
     gesturesEnabled: true, as const;
-export const DEFAULT_KEYBOARD_CONFIG: KeyboardNavigationConfig = { enabled: true,
-    arrowKeys: true,
-    homeEndKeys: true,
-    enterSpaceActivation: true,
+export const DEFAULT_KEYBOARD_CONFIG: KeyboardNavigationConfig = { enabled: true;
+    arrowKeys: true;
+    homeEndKeys: true;
+    enterSpaceActivation: true;
     shortcuts: {
         refresh: {''
-            key: 'r',
-            ctrlKey: true,
-            action: 'refresh',
+            key: 'r';
+            ctrlKey: true;
+            action: 'refresh';
             description: 'チャレンジを更新'
             };
         filter: { ''
-            key: 'f',
-            ctrlKey: true,
-            action: 'filter',
+            key: 'f';
+            ctrlKey: true;
+            action: 'filter';
             description: 'フィルターにフォーカス'
             }
 } as const;
-export const DEFAULT_ACCESSIBILITY_CONFIG: AccessibilityConfig = { keyboardNavigation: true,
-    progressAnnouncements: true,
-    rewardAnnouncements: true,
-    focusManagement: true,
-    ariaUpdates: true,
+export const DEFAULT_ACCESSIBILITY_CONFIG: AccessibilityConfig = { keyboardNavigation: true;
+    progressAnnouncements: true;
+    rewardAnnouncements: true;
+    focusManagement: true;
+    ariaUpdates: true;
     screenReaderSupport: true, as const;
 export const FOCUSABLE_SELECTOR = `;
-    button: not([disabled],
-    select: not([disabled],
-    input: not([disabled],
+    button: not([disabled];
+    select: not([disabled];
+    input: not([disabled];
     .challenge-item[tabindex="0"],
     [tabindex]:not([tabindex="-1"]):not([disabled]);
 ` as const;
 ";"
 export const DIFFICULTY_LABELS: Record<ChallengeDifficulty, string> = {;
-    easy: '簡単',
-    medium: '普通',
+    easy: '簡単';
+    medium: '普通';
     hard: '難しい'
             } as const;
 ';'
 
 export const KEYBOARD_NAVIGATION_KEYS = {;
-    ARROW_UP: 'ArrowUp',
-    ARROW_DOWN: 'ArrowDown',
-    ARROW_LEFT: 'ArrowLeft',
-    ARROW_RIGHT: 'ArrowRight',
-    HOME: 'Home',
-    END: 'End',
-    ENTER: 'Enter',
+    ARROW_UP: 'ArrowUp';
+    ARROW_DOWN: 'ArrowDown';
+    ARROW_LEFT: 'ArrowLeft';
+    ARROW_RIGHT: 'ArrowRight';
+    HOME: 'Home';
+    END: 'End';
+    ENTER: 'Enter';
     SPACE: ', ',
-    ESCAPE: 'Escape',
+    ESCAPE: 'Escape';
     TAB: 'Tab'
             } as const;
-export const GESTURE_THRESHOLDS = { minSwipeDistance: 30,
-    minTapDuration: 50,
-    maxTapDuration: 200,
-    minLongPressDuration: 500,
+export const GESTURE_THRESHOLDS = { minSwipeDistance: 30;
+    minTapDuration: 50;
+    maxTapDuration: 200;
+    minLongPressDuration: 500;
     maxClickDelay: 300  } as const;
 ';'
 // ユーティリティ関数
-export function isFocusableElement(element: HTMLElement): element is FocusableElement { return element.tabIndex >= 0 &&,
+export function isFocusableElement(element: HTMLElement): element is FocusableElement { return element.tabIndex >= 0 &&;
            !element.hasAttribute('disabled) &&,'
            element.offsetParent !== null }
 
 export function calculateGestureDistance(startX: number, startY: number, endX: number, endY: number): number { return Math.sqrt(Math.pow(endX - startX, 2) + Math.pow(endY - startY, 2) }
 
-export function determineGestureDirection(startX: number, startY: number, endX: number, endY: number): GestureDirection { const deltaX = endX - startX,
+export function determineGestureDirection(startX: number, startY: number, endX: number, endY: number): GestureDirection { const deltaX = endX - startX;
     const deltaY = endY - startY,
 
     if (Math.abs(deltaX) > Math.abs(deltaY)) {''
@@ -237,9 +237,8 @@ export function determineGestureDirection(startX: number, startY: number, endX: 
 
         return deltaY > 0 ? 'down' : 'up';
 
-export function formatRelativeTime(deadline: Date): string { const now = new Date(),
-    const diff = deadline.getTime() - now.getTime(),
-
+export function formatRelativeTime(deadline: Date): string { const now = new Date();
+    const diff = deadline.getTime() - now.getTime();
     if (diff < 0) {', ' }
 
         return '期限切れ'; else if (diff < 60 * 60 * 1000) { const minutes = Math.floor(diff / (60 * 1000) }
@@ -252,13 +251,13 @@ export function formatRelativeTime(deadline: Date): string { const now = new Dat
 export function createDebounceHandler<T extends any[]>(;
     handler: (...args: T) => void;
     delay: number;
-): (...args: T) => void { let timeoutId: number | null = null,
+): (...args: T) => void { let timeoutId: number | null = null;
     
     return (...args: T): void => { 
         if (timeoutId !== null) {  }
             window.clearTimeout(timeoutId);
         
-        timeoutId = window.setTimeout(() => {  handler(...args),
+        timeoutId = window.setTimeout(() => {  handler(...args);
             timeoutId = null }
         }, delay);
     }
@@ -286,10 +285,10 @@ export class ChallengeInteractionHandler {
         
         // イベントハンドラーの初期化
         this.handlers = {
-            keydown: this.handleKeydown.bind(this),
-            challengeClick: this.handleChallengeClick.bind(this),
-            filterChange: this.handleFilterChange.bind(this),
-            sortChange: this.handleSortChange.bind(this,
+            keydown: this.handleKeydown.bind(this);
+            challengeClick: this.handleChallengeClick.bind(this);
+            filterChange: this.handleFilterChange.bind(this);
+            sortChange: this.handleSortChange.bind(this;
     refresh: this.handleRefresh.bind(this) }
             resize: this.handleResize.bind(this); 
     };
@@ -346,7 +345,7 @@ export class ChallengeInteractionHandler {
      * フォーカス可能要素の更新
      */
     updateFocusableElements(): void { try {
-            const elements = Array.from(),
+            const elements = Array.from();
                 this.elements.container.querySelectorAll(FOCUSABLE_SELECTOR) as HTMLElement[],
             
             this.focusableElements = elements.filter(isFocusableElement);
@@ -376,25 +375,24 @@ export class ChallengeInteractionHandler {
     private handleKeydown(event: KeyboardEvent): void { if (!this.config.accessibility.keyboardNavigation) return,
         
         this.stats.keyboardInteractions++,
-        this.stats.lastInteractionTime = new Date(),
-        
+        this.stats.lastInteractionTime = new Date();
         switch(event.key) {
         
             case KEYBOARD_NAVIGATION_KEYS.ARROW_UP: event.preventDefault(
-                this.navigateUp(),
+                this.navigateUp();
                 break,
             case KEYBOARD_NAVIGATION_KEYS.ARROW_DOWN: event.preventDefault(
-                this.navigateDown(),
+                this.navigateDown();
                 break,
             case KEYBOARD_NAVIGATION_KEYS.HOME: event.preventDefault(
-                this.navigateToFirst(),
+                this.navigateToFirst();
                 break,
             case KEYBOARD_NAVIGATION_KEYS.END: event.preventDefault(
-                this.navigateToLast(),
+                this.navigateToLast();
                 break,
             case KEYBOARD_NAVIGATION_KEYS.ENTER:,
             case KEYBOARD_NAVIGATION_KEYS.SPACE: event.preventDefault(
-                this.activateCurrentItem(),
+                this.activateCurrentItem();
                 break,
             default: this.handleKeyboardShortcuts(event) }
                 break; }
@@ -408,7 +406,7 @@ export class ChallengeInteractionHandler {
         for (const shortcut of Object.values(shortcuts) {
         
             if (this.matchesShortcut(event, shortcut) {
-                event.preventDefault(),
+                event.preventDefault();
                 this.executeShortcutAction(shortcut.action) }
                 break; }
 }
@@ -498,17 +496,16 @@ export class ChallengeInteractionHandler {
      */''
     private handleChallengeClick(event: MouseEvent | KeyboardEvent): void { const item = event.currentTarget as HTMLElement,
         const challengeId = item.getAttribute('data-challenge-id),'
-        const challenge = this.state.challenges.find(c => c.id === challengeId),
-        
+        const challenge = this.state.challenges.find(c => c.id === challengeId);
         if (challenge) {
         
             this.state.selectedChallenge = challenge,
             this.stats.challengeViews++,
             this.stats.clickInteractions++,
-            this.stats.lastInteractionTime = new Date(),
+            this.stats.lastInteractionTime = new Date();
             ','
             // 詳細情報のアナウンス
-            this.announceChallenge(challenge),
+            this.announceChallenge(challenge);
             ','
 
             // ログ出力
@@ -529,11 +526,10 @@ export class ChallengeInteractionHandler {
             this.state.filterBy = newFilter,
             this.stats.filterChanges++,
             
-            await this.challengeUI.loadChallenges(),
-            
+            await this.challengeUI.loadChallenges();
             const selectedOption = target.selectedOptions[0] }
             const filterText = selectedOption ? selectedOption.text: newFilter 
-            this.challengeUI.announce(`フィルターを「${filterText}」に変更しました`});
+            this.challengeUI.announce(`フィルターを「${filterText}」に変更しました`};
         }
     }
     
@@ -548,11 +544,10 @@ export class ChallengeInteractionHandler {
             this.state.sortBy = newSort,
             this.stats.sortChanges++,
             
-            await this.challengeUI.loadChallenges(),
-            
+            await this.challengeUI.loadChallenges();
             const selectedOption = target.selectedOptions[0] }
             const sortText = selectedOption ? selectedOption.text: newSort 
-            this.challengeUI.announce(`並び順を「${sortText}」に変更しました`});
+            this.challengeUI.announce(`並び順を「${sortText}」に変更しました`};
         }
     }
     
@@ -560,14 +555,13 @@ export class ChallengeInteractionHandler {
      * 更新ハンドラー
      */'
     private async handleRefresh(): Promise<void> { ''
-        await this.challengeUI.loadChallenges(),
-
+        await this.challengeUI.loadChallenges();
         this.challengeUI.announce('チャレンジを更新しました' }'
     
     /**
      * リサイズハンドラー
      */
-    private handleResize(): void { this.challengeUI.renderer.applyResponsiveStyles(),
+    private handleResize(): void { this.challengeUI.renderer.applyResponsiveStyles();
         this.updateFocusableElements() }
     
     /**
@@ -587,7 +581,7 @@ export class ChallengeInteractionHandler {
      */
     announceProgressUpdate(challengeId: string, progress: number): void { if (!this.config.accessibility.progressAnnouncements) return,
         
-        const challenge = this.state.challenges.find(c => c.id === challengeId),
+        const challenge = this.state.challenges.find(c => c.id === challengeId);
         if (challenge) {', ' }
 
             const progressPercent = Math.round((progress / challenge.target) * 100'); }'
@@ -636,12 +630,11 @@ export class ChallengeInteractionHandler {
      */ : undefined
     setupChallengeItemEvents(): void { this.elements.challengeItems.forEach(item => { 
             // ダブルクリック防止ハンドラーを作成
-            const, preventedHandler = this.createDoubleClickPrevention(),
+            const, preventedHandler = this.createDoubleClickPrevention();
                 this.handlers.challengeClick),
                 this.config.doubleClickDelay || GESTURE_THRESHOLDS.maxClickDelay),
 
-            this.preventDoubleClickHandlers.set(item, preventedHandler),
-
+            this.preventDoubleClickHandlers.set(item, preventedHandler);
             item.addEventListener('click', preventedHandler','
             item.addEventListener('keydown', (event: KeyboardEvent) => {
                 if (event.key === KEYBOARD_NAVIGATION_KEYS.ENTER || event.key === KEYBOARD_NAVIGATION_KEYS.SPACE) {
@@ -649,8 +642,8 @@ export class ChallengeInteractionHandler {
 }
                     event.preventDefault(); }
                     preventedHandler(event); }
-});
-        });
+};
+        };
     }
     
     /**
@@ -664,7 +657,7 @@ export class ChallengeInteractionHandler {
             touchStartData = {
                 x: touch.screenX,
     y: touch.screenY }
-                time: Date.now(); 
+                time: Date.now(),
     };'}');
 
         this.elements.container.addEventListener('touchend', (event: TouchEvent) => {  if (!touchStartData) return,
@@ -683,7 +676,7 @@ export class ChallengeInteractionHandler {
             }
             
             touchStartData = null;
-        });
+        };
     }
     
     /**
@@ -692,7 +685,7 @@ export class ChallengeInteractionHandler {
     private recognizeGesture(;
         start: { x: number, y: number,  time: number,);
         end: { x: number, y: number,, time: number ): GestureRecognitionResult | null {
-        const distance = calculateGestureDistance(start.x, start.y, end.x, end.y),
+        const distance = calculateGestureDistance(start.x, start.y, end.x, end.y);
         const duration = end.time - start.time,
         
         if (distance < this.config.touch.minSwipeDistance) {
@@ -728,8 +721,7 @@ export class ChallengeInteractionHandler {
         switch(gesture.type) {
 
             case 'swipe':','
-                this.handleSwipeGesture(gesture.direction),
-
+                this.handleSwipeGesture(gesture.direction);
                 break,
             case 'tap':,
                 // タップは通常のクリックイベントで処理される
@@ -754,12 +746,12 @@ export class ChallengeInteractionHandler {
      * ダブルクリック防止ハンドラーの作成
      */
     private createDoubleClickPrevention(;
-        handler: (event: Event) => void;
-        delay: number = GESTURE_THRESHOLDS.maxClickDelay;
+        handler: (event: Event) => void,
+        delay: number = GESTURE_THRESHOLDS.maxClickDelay,
     ): ClickPreventionHandler { let lastClickTime = 0,
         
         return (event: Event): void => { 
-            const now = Date.now(),
+            const now = Date.now();
             if (now - lastClickTime < delay) {
     
 }
@@ -776,8 +768,7 @@ export class ChallengeInteractionHandler {
     setupAccessibility(): void { if (!this.config.accessibility.screenReaderSupport) return,
         
         // フォーカス可能要素の更新
-        this.updateFocusableElements(),
-        
+        this.updateFocusableElements();
         // キーボードナビゲーションの設定
         if (this.config.accessibility.keyboardNavigation) {
     
@@ -810,7 +801,7 @@ export class ChallengeInteractionHandler {
         
             this.challengeUI.challengeSystem.onProgressUpdate((challengeId: string, progress: number) => {   }
                 this.announceProgressUpdate(challengeId, progress); }
-            });
+            };
         }
     }
     
@@ -826,8 +817,7 @@ export class ChallengeInteractionHandler {
         // チャレンジアイテムのARIA属性更新
         this.elements.challengeItems.forEach((item, index) => { ''
             item.setAttribute('aria-setsize', this.elements.challengeItems.length.toString()),
-            item.setAttribute('aria-posinset', (index + 1).toString(),
-
+            item.setAttribute('aria-posinset', (index + 1).toString();
             if (this.state.selectedChallenge) {
 
                 const challengeId = item.getAttribute('data-challenge-id') }
@@ -884,8 +874,8 @@ export class ChallengeInteractionHandler {
         window.removeEventListener('resize', this.handlers.resize);
         
         // チャレンジアイテムのイベントリスナー削除
-        this.elements.challengeItems.forEach(item => {  ),
-            const handler = this.preventDoubleClickHandlers.get(item),
+        this.elements.challengeItems.forEach(item => {  );
+            const handler = this.preventDoubleClickHandlers.get(item);
             if (handler) {', ' }
 
                 item.removeEventListener('click', handler); }
@@ -900,8 +890,7 @@ export class ChallengeInteractionHandler {
     /**
      * コンポーネントクリーンアップ
      */
-    destroy(): void { this.removeEventListeners(),
-        
+    destroy(): void { this.removeEventListeners();
         this.focusableElements = [];
         this.focusHistory = [];
 

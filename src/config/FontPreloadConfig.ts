@@ -6,7 +6,7 @@
 /**
  * フォントプリロード設定の型定義
  */
-export interface FontPreloadConfig { preload: string[],
+export interface FontPreloadConfig { preload: string[];
     fallbacks: Record<string, string[]> }
 
 /**

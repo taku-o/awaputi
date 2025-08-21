@@ -14,22 +14,22 @@ export class MobileWebShareHandler {
         this.platformConfigs = {
             ios: {
                 supportedFromVersion: {
-                    safari: 14.0,
+                    safari: 14.0;
     chrome: 89.0 }
                     firefox: 93.0 
     };
-                shareOptions: { title: true,
-                    text: true,
-                    url: true,
+                shareOptions: { title: true;
+                    text: true;
+                    url: true;
     files: true // iOS 15+ 
     };
             android: { supportedFromVersion: {
-                    chrome: 75.0,
-                    samsung: 12.0,
+                    chrome: 75.0;
+                    samsung: 12.0;
     firefox: 79.0 };
-                shareOptions: { title: true,
-                    text: true,
-                    url: true,
+                shareOptions: { title: true;
+                    text: true;
+                    url: true;
     files: true // Android 10+ 
     }
 
@@ -47,14 +47,13 @@ export class MobileWebShareHandler {
             this.shareCapabilities = await this.analyzeShareCapabilities();
             
             // フォールバック機能を設定
-            this.setupFallbackHandlers(),
-            
+            this.setupFallbackHandlers();
             console.log('MobileWebShareHandler initialized:', {
-                supported: this.isSupported,
-    browser: this.browserInfo),
+                supported: this.isSupported;
+    browser: this.browserInfo);
                 capabilities: this.shareCapabilities','
             ' 
-            })'
+            }'
 
         } catch (error) { console.error('Failed to initialize MobileWebShareHandler:', error }
     }
@@ -63,12 +62,12 @@ export class MobileWebShareHandler {
      * ブラウザ情報の検出'
      */''
     detectBrowserInfo('''
-            platform: 'unknown',
-            browser: 'unknown',
-            version: '0.0',
-            engine: 'unknown',
-            mobile: false,
-    standalone: false),
+            platform: 'unknown';
+            browser: 'unknown';
+            version: '0.0';
+            engine: 'unknown';
+            mobile: false;
+    standalone: false);
         }''
         // プラットフォーム検出
         if(/iPhone|iPad|iPod/i.test(userAgent)) { ''
@@ -127,9 +126,8 @@ export class MobileWebShareHandler {
         
         if (requiredVersion) {
         
-            const currentVersion = parseFloat(this.browserInfo.version),
-            const minVersion = parseFloat(requiredVersion),
-
+            const currentVersion = parseFloat(this.browserInfo.version);
+            const minVersion = parseFloat(requiredVersion);
             if (currentVersion < minVersion) {
     
 }
@@ -151,7 +149,7 @@ export class MobileWebShareHandler {
             fileShare: false,
             maxFileSize: 0,
             supportedMimeTypes: [],
-    supportedFields: [] };
+    supportedFields: [] },
         if (!this.isSupported) { return capabilities }
 
         // 基本共有機能のテスト
@@ -182,8 +180,7 @@ export class MobileWebShareHandler {
                     capabilities.supportedFields.push('files),'
                     
                     // サポートされているMIMEタイプの推定
-                    await this.testSupportedMimeTypes(capabilities),
-                    
+                    await this.testSupportedMimeTypes(capabilities);
                     // 最大ファイルサイズの推定
                 }
                     capabilities.maxFileSize = await this.estimateMaxFileSize(); }
@@ -213,7 +210,7 @@ export class MobileWebShareHandler {
 
                 const testBlob = new Blob(['test'], { type: mimeType )',' }
 
-                const testFile = new File([testBlob], `test.${mimeType.split('/'})[1]}`, { type: mimeType,);
+                const testFile = new File([testBlob], `test.${mimeType.split('/'}[1]}`, { type: mimeType,);
                 
                 if(navigator.canShare({ files: [testFile] )) {
                     capabilities.supportedMimeTypes.push(mimeType } catch (error) { // MIMEタイプがサポートされていない }
@@ -234,7 +231,7 @@ export class MobileWebShareHandler {
             ios: {
                 safari: 32 * 1024 * 1024, // 32MB,
                 chrome: 50 * 1024 * 1024,  // 50MB,
-                firefox: 25 * 1024 * 1024  // 25MB  };
+                firefox: 25 * 1024 * 1024  // 25MB  },
             android: { chrome: 100 * 1024 * 1024, // 100MB
                 samsung: 50 * 1024 * 1024,  // 50MB,
                 firefox: 25 * 1024 * 1024   // 25MB  }
@@ -276,7 +273,7 @@ export class MobileWebShareHandler {
             name: 'Chrome Share Menu',
             condition: () => this.browserInfo.browser === 'chrome',
             handler: this.createIOSChromeShareHandler()  }
-        });
+        };
     }
 
     /**
@@ -287,7 +284,7 @@ export class MobileWebShareHandler {
             name: 'Android Share Intent'),
             condition: () => true,
             handler: this.createAndroidIntentHandler() 
-    });
+    };
     }
 
     /**
@@ -306,7 +303,7 @@ export class MobileWebShareHandler {
             name: 'Open Share URL'),
             condition: () => true,
             handler: this.createURLOpenHandler() 
-    });
+    };
     }
 
     /**
@@ -323,11 +320,9 @@ export class MobileWebShareHandler {
             return await this.shareViaFallback(shareData);
 
         } catch (error) {
-            console.error('Share failed:', error),
-            
+            console.error('Share failed:', error);
             // エラー時も フォールバックを試行
-            return await this.shareViaFallback(shareData, true),
-
+            return await this.shareViaFallback(shareData, true);
     /**
      * データ共有可否の確認
      */
@@ -339,13 +334,12 @@ export class MobileWebShareHandler {
     /**
      * Web Share APIでの共有
      */
-    async shareViaWebShareAPI(shareData) { const webShareData = this.convertToWebShareData(shareData),
-        
+    async shareViaWebShareAPI(shareData) { const webShareData = this.convertToWebShareData(shareData);
         // ファイル共有の場合はサイズチェック
         if (webShareData.files && webShareData.files.length > 0) {
             const totalSize = webShareData.files.reduce((size, file) => size + file.size, 0) }
             if (totalSize > this.shareCapabilities.maxFileSize) { }
-                throw new Error(`File, size too, large: ${totalSize} bytes`});
+                throw new Error(`File, size too, large: ${totalSize} bytes`};
             }
         }
 
@@ -354,7 +348,7 @@ export class MobileWebShareHandler {
 
         return { success: true,''
             method: 'web-share-api',
-    platform: this.browserInfo.platform };
+    platform: this.browserInfo.platform },
             browser: this.browserInfo.browser 
     }
 
@@ -362,10 +356,9 @@ export class MobileWebShareHandler {
      * フォールバック共有
      */
     async shareViaFallback(shareData, isError = false) { // 利用可能なフォールバックを選択
-        const availableFallbacks = Array.from(this.fallbackHandlers.entries(),
-            .filter(([key, handler]) => handler.condition(),
-            .sort((a, b) => this.getFallbackPriority(a[0]) - this.getFallbackPriority(b[0]),
-
+        const availableFallbacks = Array.from(this.fallbackHandlers.entries();
+            .filter(([key, handler]) => handler.condition();
+            .sort((a, b) => this.getFallbackPriority(a[0]) - this.getFallbackPriority(b[0]);
         if (availableFallbacks.length === 0) { }
 
             throw new Error('No, fallback handlers, available'; }'
@@ -376,24 +369,22 @@ export class MobileWebShareHandler {
         ';'
 
         try {'
-            const result = await handler.handler(shareData),
-
+            const result = await handler.handler(shareData);
             return { success: true,''
                 method: 'fallback',
                 fallbackType: key,
-    fallbackName: handler.name };
+    fallbackName: handler.name },
                 ...result
             } catch (fallbackError) { // 複数のフォールバックを順次試行
             for(let, i = 1, i < availableFallbacks.length, i++) {
                 const [fallbackKey, fallbackHandler] = availableFallbacks[i],
                 try {'
-                    const result = await fallbackHandler.handler(shareData),
-
+                    const result = await fallbackHandler.handler(shareData);
                     return { success: true,''
                         method: 'fallback',
                         fallbackType: fallbackKey,
     fallbackName: fallbackHandler.name }
-                        previousErrors: [fallbackError.message] };
+                        previousErrors: [fallbackError.message] },
                         ...result
 
                     };'} catch (error) { // 次のフォールバックを試行 }'
@@ -435,7 +426,7 @@ export class MobileWebShareHandler {
 
         // ファイル共有（スクリーンショット等）
         if (shareData.files && this.shareCapabilities.fileShare) { webShareData.files = shareData.files } else if (shareData.screenshot && this.shareCapabilities.fileShare) { // スクリーンショットをファイルに変換
-            const file = this.convertScreenshotToFile(shareData.screenshot),
+            const file = this.convertScreenshotToFile(shareData.screenshot);
             if (file) {
     
 }
@@ -454,8 +445,8 @@ export class MobileWebShareHandler {
             const byteString = atob(screenshot.split(','[1]'),'
             const mimeString = screenshot.split(',')[0].split(':')[1].split(')[0],'
             
-            const ab = new ArrayBuffer(byteString.length),
-            const ia = new Uint8Array(ab),
+            const ab = new ArrayBuffer(byteString.length);
+            const ia = new Uint8Array(ab);
             for (let, i = 0, i < byteString.length, i++) {
     }
                 ia[i] = byteString.charCodeAt(i); }
@@ -467,7 +458,7 @@ export class MobileWebShareHandler {
             return file,' }'
 
         } catch (error) {
-            console.error('Failed to convert screenshot to file:', error),
+            console.error('Failed to convert screenshot to file:', error);
             return null,
 
     /**
@@ -546,8 +537,8 @@ export class MobileWebShareHandler {
      */''
     buildShareURL(shareData, platform = 'generic') {
 
-        const encodedTitle = encodeURIComponent(shareData.title || ''),
-        const encodedText = encodeURIComponent(shareData.text || shareData.message || ''),
+        const encodedTitle = encodeURIComponent(shareData.title || '');
+        const encodedText = encodeURIComponent(shareData.text || shareData.message || '');
         const encodedURL = encodeURIComponent(shareData.url || '),'
 ','
         // プラットフォーム固有のURL構築
@@ -555,7 +546,7 @@ export class MobileWebShareHandler {
     }
 
             case 'chrome-ios': }
-                return `googlechrome://share? url=${encodedURL}&title=${encodedTitle}&text=${encodedText}`;
+                return `googlechrome: //share? url=${encodedURL}&title=${encodedTitle}&text=${encodedText}`,
              : undefined';'
             case 'android':
                 return `intent://share? url=${encodedURL}&title=${encodedTitle}&text=${encodedText}#Intent;scheme=share;end`;
@@ -587,13 +578,13 @@ export class MobileWebShareHandler {
         const notification = document.createElement('div');
         notification.textContent = 'クリップボードにコピーしました';
         notification.style.cssText = `;
-            position: fixed;
-            top: 20px;
-            left: 50%;
+            position: fixed,
+            top: 20px,
+            left: 50%,
             transform: translateX(-50%);
-            background: #333;
+            background: #333,
             color: white,
-    padding: 12px 24px;
+    padding: 12px 24px,
             border-radius: 8px,
             z-index: 10000,
             font-size: 14px,

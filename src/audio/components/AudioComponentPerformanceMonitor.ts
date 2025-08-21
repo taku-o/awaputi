@@ -11,7 +11,7 @@ import { LoggingSystem  } from '../../core/LoggingSystem';
 /**
  * パフォーマンスメトリクスインターフェース
  */
-interface PerformanceMetrics { cpuUsage: number,
+interface PerformanceMetrics { cpuUsage: number;
     memoryUsage: number;
     audioProcessingLoad: number;
     activeAudioNodes: number;
@@ -28,7 +28,7 @@ interface MetricsHistoryEntry extends PerformanceMetrics { timestamp: number;
 /**
  * 分析データインターフェース
  */
-interface AnalysisData { averageLoad: number,
+interface AnalysisData { averageLoad: number;
     peakLoad: number;
     stabilityScore: number;
     performanceGrade: 'A' | 'B' | 'C' | 'D' | 'F';
@@ -56,7 +56,7 @@ interface Bottleneck { ''
 /**
  * アラートインターフェース
  */
-interface Alert { id: string,
+interface Alert { id: string;
     type: string;
     severity: 'warning' | 'critical';
     value: number;
@@ -67,34 +67,34 @@ interface Alert { id: string,
 /**
  * パフォーマンスモニター設定インターフェース
  */
-interface PerformanceMonitorConfig { updateInterval: number,
+interface PerformanceMonitorConfig { updateInterval: number;
     intervalId: NodeJS.Timeout | null;
     lastUpdateTime: number;
     metrics: Map<number, MetricsHistoryEntry>;
     thresholds: {
-        cpuHig,h: number,
-        memoryHigh: number,
-        latencyHigh: number,
-    droppedFramesHigh: number,;
-    maxHistorySize: number,
-    analysisWindow: number,
-    stabilityWindow: number,
+        cpuHig,h: number;
+        memoryHigh: number;
+        latencyHigh: number;
+    droppedFramesHigh: number;
+    maxHistorySize: number;
+    analysisWindow: number;
+    stabilityWindow: number;
 }
 
 /**
  * パフォーマンス設定インターフェース
  */
 interface PerformanceConfig { enabledMetrics: {
-        cp,u: boolean,
-        memory: boolean,
-        audio: boolean,
-        latency: boolean,
-    frames: boolean,;
-    alertThresholds: { warning: number,
-    critical: number,;
-    adaptiveOptimization: boolean,
-    reportingInterval: number,
-    cleanupInterval: number,
+        cp,u: boolean;
+        memory: boolean;
+        audio: boolean;
+        latency: boolean;
+    frames: boolean;
+    alertThresholds: { warning: number;
+    critical: number;
+    adaptiveOptimization: boolean;
+    reportingInterval: number;
+    cleanupInterval: number;
 }
 
 /**
@@ -108,26 +108,26 @@ interface AlertSystem { alerts: Map<string, Alert>,
 /**
  * パフォーマンスレポートインターフェース
  */
-interface PerformanceReport { timestamp: number,
+interface PerformanceReport { timestamp: number;
     current: PerformanceMetrics;
     analysis: AnalysisData;
     monitoring: {
-        enable,d: boolean,
-        interval: number,
-        lastUpdate: number,
-    historySize: number,;
-    alerts: { active: Alert[],
-        totalCount: number,
-    lastAlert: number,;
+        enable,d: boolean;
+        interval: number;
+        lastUpdate: number;
+    historySize: number;
+    alerts: { active: Alert[];
+        totalCount: number;
+    lastAlert: number;
     configuration: { ''
-        thresholds: PerformanceMonitorConfig['thresholds'],
-        adaptiveOptimization: boolean,
+        thresholds: PerformanceMonitorConfig['thresholds'];
+        adaptiveOptimization: boolean;
         enabledMetrics: PerformanceConfig['enabledMetrics]  }'
 
 /**
  * ConfigurationManager インターフェース（型定義用）
  */
-interface ConfigurationManager { get(category: string): any,
+interface ConfigurationManager { get(category: string): any;
     watch(category: string, path: string, callback: (value: any) => void): void;
 }
 
@@ -164,7 +164,7 @@ export class AudioComponentPerformanceMonitor {
     // パフォーマンス設定
     private performanceConfig: PerformanceConfig;
     // リアルタイム警告
-    private, alertSystem: AlertSystem,
+    private, alertSystem: AlertSystem;
     constructor(audioContext: AudioContext, audioManager: AudioManager) {
 
         this.audioContext = audioContext;
@@ -175,30 +175,30 @@ export class AudioComponentPerformanceMonitor {
         
         // パフォーマンス監視設定
         this.performanceMonitor = {
-            updateInterval: 1000; // ms;
-            intervalId: null,
-    lastUpdateTime: 0,
+            updateInterval: 1000, // ms;
+            intervalId: null;
+    lastUpdateTime: 0;
             metrics: new Map('''
-            performanceGrade: 'A',
+            performanceGrade: 'A';
     recommendations: [] }
             bottlenecks: [] 
     };
         // パフォーマンス設定
         this.performanceConfig = { enabledMetrics: {
-                cpu: true,
-                memory: true,
-                audio: true,
-                latency: true,
-    frames: true,;
-            alertThresholds: { warning: 0.7,
+                cpu: true;
+                memory: true;
+                audio: true;
+                latency: true;
+    frames: true;
+            alertThresholds: { warning: 0.7;
     critical: 0.9 };
-            adaptiveOptimization: true,
+            adaptiveOptimization: true;
     reportingInterval: 10000, // 10秒;
-            cleanupInterval: 60000 // 1分),
-            });
+            cleanupInterval: 60000 // 1分);
+            };
         // リアルタイム警告
         this.alertSystem = { alerts: new Map(
-            lastAlert: 0,
+            lastAlert: 0;
     alertCooldown: 5000, // 5秒;
             maxActiveAlerts: 10  };
         this.initialize();
@@ -209,10 +209,9 @@ export class AudioComponentPerformanceMonitor {
      */
     async initialize(): Promise<void> { try {
             // 設定を読み込み
-            this.loadConfiguration(),
-            
+            this.loadConfiguration();
             // 設定監視を開始
-            this.setupConfigWatchers(),
+            this.setupConfigWatchers();
             // 監視を開始
             this.startMonitoring()','
             this.loggingSystem.info('AudioPerformanceMonitor', 'Audio performance monitor initialized',' }'
@@ -278,14 +277,14 @@ export class AudioComponentPerformanceMonitor {
                 this.stopMonitoring(); }
             }
             
-            this.performanceMonitor.intervalId = setInterval(() => {  this.updatePerformanceMetrics(),
+            this.performanceMonitor.intervalId = setInterval(() => {  this.updatePerformanceMetrics();
                 this.analyzePerformance() }
 
                 this.checkAlerts();' }'
 
             }, this.performanceMonitor.updateInterval';'
 
-            this.loggingSystem.info('AudioPerformanceMonitor', `Performance monitoring started (interval: ${this.performanceMonitor.updateInterval}ms}`});'} catch (error) {'
+            this.loggingSystem.info('AudioPerformanceMonitor', `Performance monitoring started (interval: ${this.performanceMonitor.updateInterval}ms}`};'} catch (error) {'
             this.errorHandler.handleError(error, 'AudioPerformanceMonitor.startMonitoring' }'
     }
     
@@ -307,8 +306,7 @@ export class AudioComponentPerformanceMonitor {
      * 監視を再開
      */
     private restartMonitoring(): void { try {
-            this.stopMonitoring(),
-
+            this.stopMonitoring();
             this.startMonitoring(),' }'
 
         } catch (error) {
@@ -319,25 +317,21 @@ export class AudioComponentPerformanceMonitor {
      * パフォーマンスメトリクスを更新
      */
     private updatePerformanceMetrics(): void { try {
-            const currentTime = performance.now(),
-            
+            const currentTime = performance.now();
             // システムメトリクスを収集
-            this.collectSystemMetrics(),
-            
+            this.collectSystemMetrics();
             // オーディオ固有メトリクスを収集
-            this.collectAudioMetrics(),
-            
+            this.collectAudioMetrics();
             // 履歴に保存
             this.performanceMonitor.metrics.set(currentTime, {
-                ...this.currentMetrics),
+                ...this.currentMetrics);
                 timestamp: currentTime),
             // 古い履歴を削除
-            this.cleanupHistory(currentTime),
-            
+            this.cleanupHistory(currentTime);
             this.performanceMonitor.lastUpdateTime = currentTime,
             '
             
-            })'
+            }'
 
         } catch (error) {
             this.errorHandler.handleError(error, 'AudioPerformanceMonitor.updatePerformanceMetrics' }'
@@ -348,7 +342,7 @@ export class AudioComponentPerformanceMonitor {
      */''
     private collectSystemMetrics()';'
             if (typeof, performance !== 'undefined' && performance.now) {
-                const start = performance.now(),
+                const start = performance.now();
                 // 簡単な計算を実行
                 for (let, i = 0, i < 1000, i++) {
             }
@@ -378,11 +372,9 @@ export class AudioComponentPerformanceMonitor {
      */
     private collectAudioMetrics(): void { try {
             // アクティブなオーディオノード数
-            this.currentMetrics.activeAudioNodes = this.countActiveAudioNodes(),
-            
+            this.currentMetrics.activeAudioNodes = this.countActiveAudioNodes();
             // オーディオ処理負荷
-            this.currentMetrics.audioProcessingLoad = this.calculateAudioProcessingLoad(),
-            
+            this.currentMetrics.audioProcessingLoad = this.calculateAudioProcessingLoad();
             // レイテンシー
             if (this.audioContext) {
     
@@ -439,7 +431,7 @@ export class AudioComponentPerformanceMonitor {
             // 実際の実装では requestAnimationFrame を使用
             const targetFPS = 60,
             const cpuImpact = this.currentMetrics.cpuUsage * 20, // CPU使用率による影響
-            const estimatedFPS = Math.max(30, targetFPS - cpuImpact),
+            const estimatedFPS = Math.max(30, targetFPS - cpuImpact);
             ','
 
             return Math.round(estimatedFPS),' }'
@@ -671,7 +663,7 @@ export class AudioComponentPerformanceMonitor {
      * アラートをチェック
      */
     private checkAlerts(): void { try {
-            const currentTime = Date.now(),
+            const currentTime = Date.now();
             ','
             // アラートクールダウンチェック
             if (currentTime - this.alertSystem.lastAlert < this.alertSystem.alertCooldown) {
@@ -831,14 +823,14 @@ export class AudioComponentPerformanceMonitor {
         
         // 最大アラート数制限
         if (this.alertSystem.alerts.size > this.alertSystem.maxActiveAlerts) {
-            const sortedAlerts = Array.from(this.alertSystem.alerts.entries(),
+            const sortedAlerts = Array.from(this.alertSystem.alerts.entries();
                 .sort((a, b) => a[1].timestamp - b[1].timestamp),
             
             // 古いアラートを削除
             const toDelete = sortedAlerts.slice(0, sortedAlerts.length - this.alertSystem.maxActiveAlerts) }
             toDelete.forEach(([alertId]) => {  }
                 this.alertSystem.alerts.delete(alertId); }
-            });
+            };
         }
     }
     
@@ -861,11 +853,11 @@ export class AudioComponentPerformanceMonitor {
      * @param timeWindow - 時間範囲（ミリ秒）
      * @returns パフォーマンス履歴
      */
-    getPerformanceHistory(timeWindow: number = 30000): MetricsHistoryEntry[] { const currentTime = performance.now(),
+    getPerformanceHistory(timeWindow: number = 30000): MetricsHistoryEntry[] { const currentTime = performance.now();
         const cutoffTime = currentTime - timeWindow,
         
-        return Array.from(this.performanceMonitor.metrics.values(),
-            .filter(metric => metric.timestamp >= cutoffTime),
+        return Array.from(this.performanceMonitor.metrics.values();
+            .filter(metric => metric.timestamp >= cutoffTime);
             .sort((a, b) => a.timestamp - b.timestamp) }
     }
     
@@ -881,17 +873,17 @@ export class AudioComponentPerformanceMonitor {
      * @returns パフォーマンスレポート
      */
     generatePerformanceReport(): PerformanceReport { return { timestamp: Date.now(
-            current: this.getCurrentMetrics(),
+            current: this.getCurrentMetrics();
             analysis: this.getAnalysisData(
     monitoring: {
                 enabled: this.performanceMonitor.intervalId !== null,
                 interval: this.performanceMonitor.updateInterval,
-    lastUpdate: this.performanceMonitor.lastUpdateTime };
+    lastUpdate: this.performanceMonitor.lastUpdateTime },
                 historySize: this.performanceMonitor.metrics.size 
     };
             alerts: { active: this.getActiveAlerts(),
                 totalCount: this.alertSystem.alerts.size,
-    lastAlert: this.alertSystem.lastAlert };
+    lastAlert: this.alertSystem.lastAlert },
             configuration: { thresholds: this.performanceMonitor.thresholds,
                 adaptiveOptimization: this.performanceConfig.adaptiveOptimization,
     enabledMetrics: this.performanceConfig.enabledMetrics 
@@ -904,8 +896,7 @@ export class AudioComponentPerformanceMonitor {
     getStatus()';'
     updateConfiguration(newConfig: Partial<PerformanceConfig & { updateInterval?: number, thresholds?: Partial<PerformanceMonitorConfig['thresholds]> )>': void {'
         try {
-            Object.assign(this.performanceConfig, newConfig),
-            
+            Object.assign(this.performanceConfig, newConfig);
             if (newConfig.updateInterval) {
             
                 this.performanceMonitor.updateInterval = newConfig.updateInterval }
@@ -928,8 +919,8 @@ export class AudioComponentPerformanceMonitor {
      * パフォーマンス監視をリセット
      */
     reset(): void { try {
-            this.performanceMonitor.metrics.clear(),
-            this.alertSystem.alerts.clear(),
+            this.performanceMonitor.metrics.clear();
+            this.alertSystem.alerts.clear();
             this.alertSystem.lastAlert = 0,
             
             // メトリクスをリセット
@@ -944,7 +935,7 @@ export class AudioComponentPerformanceMonitor {
     stabilityScore: 1.0,
                 performanceGrade: 'A',
                 recommendations: [],
-    bottlenecks: []  };
+    bottlenecks: []  },
             this.loggingSystem.info('AudioPerformanceMonitor', 'Performance monitor reset';} catch (error) {
             this.errorHandler.handleError(error, 'AudioPerformanceMonitor.reset' }'
     }
@@ -953,9 +944,8 @@ export class AudioComponentPerformanceMonitor {
      * パフォーマンス監視を破棄
      */
     dispose(): void { try {
-            this.stopMonitoring(),
-
-            this.performanceMonitor.metrics.clear(),
+            this.stopMonitoring();
+            this.performanceMonitor.metrics.clear();
             this.alertSystem.alerts.clear()','
             this.loggingSystem.info('AudioPerformanceMonitor', 'Audio performance monitor disposed',' }'
 

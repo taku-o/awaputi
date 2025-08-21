@@ -9,28 +9,28 @@ interface BubbleObject {
     x?: number;
     y?: number;
 interface PopResult {
-    score: number,
+    score: number;
     combo: number;
 interface GameOverResult {
-    reason: string,
+    reason: string;
     score: number;
 interface Achievement {
-    id: string,
+    id: string;
     unlocked: boolean;
     progress: {
-        curren,t: number,
-        target: number,;
+        curren,t: number;
+        target: number;
 }
 interface SessionData {
     startTime: number;
 interface PlayerDataStats {
     bubbleTypes: {
         normal: {
-            poppe,d: number,;
+            poppe,d: number;
     };
-    sessionData: SessionData,
+    sessionData: SessionData;
 interface UpdateProgressCall {
-    achievementId: string,
+    achievementId: string;
     value: number;
 interface SessionUpdate {
     bubblesPopped?: number;
@@ -43,7 +43,7 @@ class MockAchievementManager {
     updateProgress(achievementId: string, value: number): void {
         this.updateProgressCalls.push({ achievementId, value ) }
     checkAndUnlockAchievement(achievementId: string): boolean {
-        this.checkAndUnlockCalls.push(achievementId),
+        this.checkAndUnlockCalls.push(achievementId);
         return true }
     getAchievement(id: string): Achievement {
         return { id, unlocked: false, progress: { current: 0, target: 100 } };
@@ -78,13 +78,13 @@ class MockGameScene {
 }
 class MockPlayerData {
     public data: {
-        totalBubblesPopped: number,
-        totalScore: number,
-        sessionData: SessionData,;
+        totalBubblesPopped: number;
+        totalScore: number;
+        sessionData: SessionData;
     constructor() {
         this.data = {
-            totalBubblesPopped: 0,
-            totalScore: 0,
+            totalBubblesPopped: 0;
+            totalScore: 0;
             sessionData: { startTime: Date.now() }
         };
     }
@@ -98,29 +98,29 @@ class MockPlayerData {
     }
 }
 describe('AchievementEventIntegrator', () => {
-    let integrator: AchievementEventIntegrator,
-    let mockAchievementManager: MockAchievementManager,
-    let mockBubbleManager: MockBubbleManager,
-    let mockScoreManager: MockScoreManager,
-    let mockGameScene: MockGameScene,
-    let mockPlayerData: MockPlayerData,
+    let integrator: AchievementEventIntegrator;
+    let mockAchievementManager: MockAchievementManager;
+    let mockBubbleManager: MockBubbleManager;
+    let mockScoreManager: MockScoreManager;
+    let mockGameScene: MockGameScene;
+    let mockPlayerData: MockPlayerData;
     beforeEach(() => {
-        mockAchievementManager = new MockAchievementManager(),
-        mockBubbleManager = new MockBubbleManager(),
-        mockScoreManager = new MockScoreManager(),
-        mockGameScene = new MockGameScene(),
-        mockPlayerData = new MockPlayerData(),
+        mockAchievementManager = new MockAchievementManager();
+        mockBubbleManager = new MockBubbleManager();
+        mockScoreManager = new MockScoreManager();
+        mockGameScene = new MockGameScene();
+        mockPlayerData = new MockPlayerData();
         integrator = new AchievementEventIntegrator(
             mockAchievementManager,
             mockPlayerData }');'
     describe('初期化', (') => {'
         test('正常に初期化される', () => {
-            expect(integrator).toBeDefined(),
-            expect(integrator.achievementManager).toBe(mockAchievementManager),
+            expect(integrator).toBeDefined();
+            expect(integrator.achievementManager).toBe(mockAchievementManager);
             expect(integrator.playerData).toBe(mockPlayerData) }');'
         test('セッション追跡が初期化される', () => {
-            expect(integrator.sessionTracking).toBeDefined(),
-            expect(integrator.sessionTracking.bubblesPopped).toBe(0),
+            expect(integrator.sessionTracking).toBeDefined();
+            expect(integrator.sessionTracking.bubblesPopped).toBe(0);
             expect(integrator.sessionTracking.startTime).toBeDefined() }');'
     }
     describe('BubbleManager統合', () => {
@@ -154,11 +154,11 @@ describe('AchievementEventIntegrator', () => {
         }');'
         test('速度チャレンジが追跡される', () => {
             // 短時間で複数のバブルをポップ
-            const startTime = Date.now(),
+            const startTime = Date.now();
             integrator.sessionTracking.startTime = startTime,
             
             for (let i = 0, i < 10, i++') {'
-                mockBubbleManager.popBubble({ type: 'normal' });
+                mockBubbleManager.popBubble({ type: 'normal' };
             }
             
             // 速度実績の更新があることを確認
@@ -172,21 +172,21 @@ describe('AchievementEventIntegrator', () => {
         beforeEach(() => {
             integrator.integrateScoreManager(mockScoreManager) }');'
         test('addScoreメソッドが正しく拡張される', () => {
-            const result = mockScoreManager.addScore(100, 2),
-            expect(result).toBe(200),
+            const result = mockScoreManager.addScore(100, 2);
+            expect(result).toBe(200);
             expect(mockAchievementManager.updateProgressCalls.length).toBeGreaterThan(0) }');'
         test('スコア実績が更新される', () => {
             mockScoreManager.addScore(1000'),'
             const updateCalls = mockAchievementManager.updateProgressCalls,
             expect(updateCalls.some(call => 
-                call.achievementId.includes('score'})).toBe(true);
+                call.achievementId.includes('score'}).toBe(true);
         }');'
         test('コンボ追跡が動作する', () => {
             // コンボを構築
             integrator.sessionTracking.currentCombo = 5,
-            mockScoreManager.addScore(100),
+            mockScoreManager.addScore(100);
             // コンボを破る
-            mockScoreManager.breakCombo(),
+            mockScoreManager.breakCombo();
             const updateCalls = mockAchievementManager.updateProgressCalls,
             expect(updateCalls.some(call => '),'
                 call.achievementId.includes('combo')).toBe(true) }');'
@@ -202,11 +202,11 @@ describe('AchievementEventIntegrator', () => {
         beforeEach(() => {
             integrator.integrateGameScene(mockGameScene) }');'
         test('gameOverメソッドが正しく拡張される', (') => {'
-            const result = mockGameScene.gameOver('cleared'),
-            expect(result).toBeDefined(),
+            const result = mockGameScene.gameOver('cleared');
+            expect(result).toBeDefined();
             expect(mockAchievementManager.updateProgressCalls.length).toBeGreaterThan(0) }');'
         test('ゲームクリア実績が更新される', (') => {'
-            mockGameScene.gameOver('cleared'),
+            mockGameScene.gameOver('cleared');
             const updateCalls = mockAchievementManager.updateProgressCalls,
             expect(updateCalls.some(call => '),'
                 call.achievementId.includes('clear') || 
@@ -215,7 +215,7 @@ describe('AchievementEventIntegrator', () => {
             // セッション時間をシミュレート
             integrator.sessionTracking.startTime = Date.now(') - 60000, // 1分前'
             
-            mockGameScene.gameOver('cleared'),
+            mockGameScene.gameOver('cleared');
             const updateCalls = mockAchievementManager.updateProgressCalls,
             expect(updateCalls.some(call => '),'
                 call.achievementId.includes('time') || 
@@ -224,7 +224,7 @@ describe('AchievementEventIntegrator', () => {
             // 低HP状態をシミュレート
             integrator.sessionTracking.lowHPSurvival = true,
             
-            mockGameScene.gameOver('cleared'),
+            mockGameScene.gameOver('cleared');
             const updateCalls = mockAchievementManager.updateProgressCalls,
             expect(updateCalls.some(call => '),'
                 call.achievementId.includes('survival') || 
@@ -234,7 +234,7 @@ describe('AchievementEventIntegrator', () => {
             integrator.sessionTracking.damageReceived = 0,
             integrator.sessionTracking.accuracy = 100,
             
-            mockGameScene.gameOver('cleared'),
+            mockGameScene.gameOver('cleared');
             const updateCalls = mockAchievementManager.updateProgressCalls,
             expect(updateCalls.some(call => '),'
                 call.achievementId.includes('perfect') || 
@@ -242,19 +242,19 @@ describe('AchievementEventIntegrator', () => {
     }
     describe('イベント処理', (') => {'
         test('バブルポップイベントが正しく処理される', (') => {'
-            integrator.handleBubblePopped('normal', { x: 100, y: 100 });
+            integrator.handleBubblePopped('normal', { x: 100, y: 100 };
             expect(integrator.sessionTracking.bubblesPopped).toBe(1);
             expect(mockAchievementManager.updateProgressCalls.length).toBeGreaterThan(0);
         }');'
         test('スコア追加イベントが正しく処理される', () => {
-            integrator.handleScoreAdded(100, 2),
-            expect(integrator.sessionTracking.totalScore).toBe(200),
+            integrator.handleScoreAdded(100, 2);
+            expect(integrator.sessionTracking.totalScore).toBe(200);
             expect(mockAchievementManager.updateProgressCalls.length).toBeGreaterThan(0) }');'
         test('ゲーム終了イベントが正しく処理される', (') => {'
-            integrator.handleGameOver('cleared'),
+            integrator.handleGameOver('cleared');
             expect(mockAchievementManager.updateProgressCalls.length).toBeGreaterThan(0) }');'
         test('複数イベントの連続処理が正しく動作する', (') => {'
-            integrator.handleBubblePopped('normal', { x: 100, y: 100 });
+            integrator.handleBubblePopped('normal', { x: 100, y: 100 };
             integrator.handleScoreAdded(100');'
             integrator.handleBubblePopped('stone', { x: 200, y: 200 }');'
             integrator.handleGameOver('cleared');
@@ -265,9 +265,9 @@ describe('AchievementEventIntegrator', () => {
     describe('セッション追跡', (') => {'
         test('セッション統計が正しく更新される', () => {
             integrator.updateSessionTracking({
-                bubblesPopped: 5,
-                score: 500,
-                combo: 3 });
+                bubblesPopped: 5;
+                score: 500;
+                combo: 3 };
             expect(integrator.sessionTracking.bubblesPopped).toBe(5);
             expect(integrator.sessionTracking.totalScore).toBe(500);
             expect(integrator.sessionTracking.currentCombo).toBe(3);
@@ -277,33 +277,33 @@ describe('AchievementEventIntegrator', () => {
             integrator.sessionTracking.bubblesPopped = 10,
             integrator.sessionTracking.totalScore = 1000,
             
-            integrator.resetSessionTracking(),
-            expect(integrator.sessionTracking.bubblesPopped).toBe(0),
-            expect(integrator.sessionTracking.totalScore).toBe(0),
+            integrator.resetSessionTracking();
+            expect(integrator.sessionTracking.bubblesPopped).toBe(0);
+            expect(integrator.sessionTracking.totalScore).toBe(0);
             expect(integrator.sessionTracking.startTime).toBeDefined() }');'
         test('セッション時間計算が正しく動作する', () => {
             const startTime = Date.now() - 60000, // 1分前
             integrator.sessionTracking.startTime = startTime,
             
-            const sessionTime = integrator.getSessionTime(),
-            expect(sessionTime).toBeGreaterThanOrEqual(60000),
+            const sessionTime = integrator.getSessionTime();
+            expect(sessionTime).toBeGreaterThanOrEqual(60000);
             expect(sessionTime).toBeLessThan(70000), // 多少の誤差を許容
         }');'
     }
     describe('統合テスト', (') => {'
         test('完全なゲームフローでの実績更新', () => {
             // 統合を設定
-            integrator.integrateBubbleManager(mockBubbleManager),
-            integrator.integrateScoreManager(mockScoreManager),
+            integrator.integrateBubbleManager(mockBubbleManager);
+            integrator.integrateScoreManager(mockScoreManager);
             integrator.integrateGameScene(mockGameScene'),'
             // ゲームプレイをシミュレート
-            mockBubbleManager.popBubble({ type: 'normal' });
+            mockBubbleManager.popBubble({ type: 'normal' };
             mockScoreManager.addScore(100');'
-            mockBubbleManager.popBubble({ type: 'stone' ,
+            mockBubbleManager.popBubble({ type: 'stone' ;
             mockScoreManager.addScore(200, 2'),'
-            mockGameScene.gameOver('cleared'),
+            mockGameScene.gameOver('cleared');
             // 実績更新が行われたことを確認
-            expect(mockAchievementManager.updateProgressCalls.length).toBeGreaterThan(5),
+            expect(mockAchievementManager.updateProgressCalls.length).toBeGreaterThan(5);
             // 各種実績タイプの更新を確認
             const updateCalls = mockAchievementManager.updateProgressCalls,
             const achievementTypes = updateCalls.map(call => call.achievementId'),'

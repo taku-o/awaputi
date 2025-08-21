@@ -6,40 +6,40 @@
 import path from 'path';
 
 // Type definitions
-interface DuplicateFile { fileName: string,
+interface DuplicateFile { fileName: string;
     paths: string[];
 
-interface DuplicateClass { className: string,
+interface DuplicateClass { className: string;
     locations: ClassLocation[];
 
-interface ClassLocation { file: string,
+interface ClassLocation { file: string;
     line: number;
     column?: number;
 
-interface FileNameResolution { originalPath: string,
+interface FileNameResolution { originalPath: string;
     newPath: string;
     newFileName: string;
     reason: string;
 
-interface ClassNameResolution { location: ClassLocation,
+interface ClassNameResolution { location: ClassLocation;
     newClassName: string;
     reason: string;
 
-interface FileNameStrategy { originalName: string,
+interface FileNameStrategy { originalName: string;
     conflicts: string[];
     resolutions: FileNameResolution[];
 
-interface ClassNameStrategy { originalClassName: string,
+interface ClassNameStrategy { originalClassName: string;
     conflicts: ClassLocation[];
     resolutions: ClassNameResolution[];
 
 interface SpecialCaseMapping { [directoryKey: string]: string;
 
-interface NamingConventions { class: string,
+interface NamingConventions { class: string;
     file: string;
     prefix: string;
 
-interface NameValidation { originalName: string,
+interface NameValidation { originalName: string;
     newName: string;
     type: 'class' | 'file';
     isValid: boolean;
@@ -53,13 +53,13 @@ interface Conflict { ''
     className?: string;
     locations?: ClassLocation[];
 
-interface NameInfo { original: string,
+interface NameInfo { original: string;
 
     new: string;
     type: 'class' | 'file'
             }
 
-interface StrategyEvaluation { strategy: FileNameStrategy | ClassNameStrategy,
+interface StrategyEvaluation { strategy: FileNameStrategy | ClassNameStrategy;
     score: number;
     strengths: string[];
     weaknesses: string[];
@@ -68,7 +68,7 @@ interface StrategyEvaluation { strategy: FileNameStrategy | ClassNameStrategy,
 export class NamingStrategyEngine {
     private readonly domainPrefixes: Map<string, string>,
     private readonly specialCases: Map<string, SpecialCaseMapping>,
-    private readonly namingConventions: NamingConventions,
+    private readonly namingConventions: NamingConventions;
 
     constructor('',
             ['src/core', 'Core'],
@@ -121,17 +121,17 @@ export class NamingStrategyEngine {
             for (const filePath of duplicate.paths) {
 ','
 
-                const dirName = path.dirname(filePath),
+                const dirName = path.dirname(filePath);
                 const baseName = path.basename(duplicate.fileName, '.js),'
                 const prefix = this.generateDirectoryPrefix(dirName) }
-                const newFileName = `${prefix}${this.toPascalCase(baseName}).js`;
+                const newFileName = `${prefix}${this.toPascalCase(baseName}.js`;
                 
                 strategy.resolutions.push({ )
                     originalPath: filePath,
-    newPath: path.join(dirName, newFileName),
+    newPath: path.join(dirName, newFileName);
                     newFileName: newFileName,
                     reason: `Directory-based, prefix: ${prefix}`
-                });
+                };
             }
 
             strategies.push(strategy);
@@ -156,18 +156,16 @@ export class NamingStrategyEngine {
             if (this.specialCases.has(duplicate.className) { const specialMapping = this.specialCases.get(duplicate.className)!,
                 
                 for (const location of duplicate.locations) {
-                    const dirKey = this.findMatchingDirectory(location.file, Object.keys(specialMapping),
-                    const newName = specialMapping[dirKey] || this.generateDefaultName(duplicate.className, location.file),
-                    
+                    const dirKey = this.findMatchingDirectory(location.file, Object.keys(specialMapping);
+                    const newName = specialMapping[dirKey] || this.generateDefaultName(duplicate.className, location.file);
                     strategy.resolutions.push({)
                         location: location,
                         newClassName: newName) }
-                        reason: `Special case mapping for ${duplicate.className}`);
+                        reason: `Special case mapping for ${duplicate.className}`),
                 }
             } else { // 一般的な戦略の適用
                 for (const location of duplicate.locations) {
-                    const newName = this.generateDefaultName(duplicate.className, location.file),
-                    
+                    const newName = this.generateDefaultName(duplicate.className, location.file);
                     strategy.resolutions.push({)
                         location: location,
                         newClassName: newName) }
@@ -195,7 +193,7 @@ export class NamingStrategyEngine {
                 const domainResults = this.generateClassNameStrategy([duplicateClass]);
                 results.push(...domainResults);'' else if (conflict.type === 'file' && conflict.fileName && conflict.paths) { const duplicateFile: DuplicateFile = {
                     fileName: conflict.fileName,
-    paths: conflict.paths };
+    paths: conflict.paths },
                 const fileResults = this.generateFileNameStrategy([duplicateFile]);
                 results.push(...fileResults);
         }
@@ -329,8 +327,7 @@ export class NamingStrategyEngine {
             'true', 'try', 'typeof', 'var', 'void', 'volatile', 'while', 'with', 'yield'],
         ],
         
-        return reservedWords.includes(word.toLowerCase(),
-
+        return reservedWords.includes(word.toLowerCase();
     /**
      * 戦略の妥当性を評価'
      */''
@@ -339,7 +336,7 @@ export class NamingStrategyEngine {
             score: 0,
             strengths: [],
             weaknesses: [],
-    recommendations: []  };
+    recommendations: []  },
         // 命名の一貫性をチェック
         const prefixes = strategy.resolutions.map(r => {  ')'
             const name = 'newClassName' in r ? r.newClassName: r.newFileName,

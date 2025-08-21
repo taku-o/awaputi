@@ -10,13 +10,13 @@ import LocalExecutionErrorHandler from '../LocalExecutionErrorHandler.js';
 import DeveloperGuidanceSystem from '../DeveloperGuidanceSystem.js';
 
 // Type definitions
-interface ErrorStats { totalErrors: number,
+interface ErrorStats { totalErrors: number;
     errorsByType: Map<string, number>;
     errorsByComponent: Map<string, number>;
     recoveredErrors: number;
     unrecoverableErrors: number;
 
-interface ErrorMetadata { [key: string]: any,
+interface ErrorMetadata { [key: string]: any;
     feature?: string;
     policy?: string;
     component?: string;
@@ -25,29 +25,32 @@ interface ErrorMetadata { [key: string]: any,
     localModeContext?: boolean;
     timestamp?: string;
 
-interface ErrorStatsOutput { mainErrorHandler: any,
+interface ErrorStatsOutput { mainErrorHandler: any;
     localErrorHandler: any;
     localMode: {
-        totalError,s: number,
+        totalError,s: number;
     errorsByType: Record<string, number>;
         errorsByComponent: Record<string, number>;
-        recoveredErrors: number,
-        unrecoverableErrors: number,
-    recoveryRate: number,
-
+        recoveredErrors: number;
+        unrecoverableErrors: number;
+    recoveryRate: number;
+    recoveryRate: number;
+        };
 interface InitializationErrorConfig { enableDeveloperGuidance?: boolean,
     [key: string]: any;
 
-interface InitializationGuidanceOptions { component: string,
+interface InitializationGuidanceOptions { component: string;
     error: string;
     suggestions: string[];
-
-interface ErrorInfo { error: string,
+    suggestions: string[];
+        };
+interface ErrorInfo { error: string;
     stack?: string;
     context: string;
     metadata: ErrorMetadata;
     timestamp: string;
-
+    timestamp: string;
+        };
 export default class LocalModeErrorHandler { /**
      * エラー統計
      */
@@ -57,9 +60,8 @@ export default class LocalModeErrorHandler { /**
         errorsByComponent: new Map()','
     static handleError(error: Error, context: string = 'GENERAL', metadata: ErrorMetadata = {)': void {'
         this._errorStats.totalErrors++,
-        this._updateErrorStats('type', error.name || 'UnknownError'),
-        this._updateErrorStats('component', context),
-        
+        this._updateErrorStats('type', error.name || 'UnknownError');
+        this._updateErrorStats('component', context);
         try {
             // LocalExecutionErrorHandlerに委譲
             if ((LocalExecutionErrorHandler, as any).isInitialized) {
@@ -80,8 +82,7 @@ export default class LocalModeErrorHandler { /**
      * @returns 処理成功フラグ'
      */''
     static handleCompatibilityError(error: Error, feature: string): boolean { ''
-        this.handleError(error, 'COMPATIBILITY', { feature ),
-        
+        this.handleError(error, 'COMPATIBILITY', { feature );
         try {
             if ((LocalExecutionErrorHandler, as any).isInitialized) {
                 (LocalExecutionErrorHandler, as any).handleCompatibilityError(error, feature) }
@@ -100,8 +101,7 @@ export default class LocalModeErrorHandler { /**
      * @param policy - セキュリティポリシー
      */''
     static handleSecurityError(error: Error, policy: string): void { ''
-        this.handleError(error, 'SECURITY', { policy ),
-        
+        this.handleError(error, 'SECURITY', { policy );
         try {
             if ((LocalExecutionErrorHandler, as any).isInitialized) {
                 (LocalExecutionErrorHandler, as any).handleSecurityError(error, policy) }
@@ -121,12 +121,10 @@ export default class LocalModeErrorHandler { /**
      * @param config - 設定
      */''
     static handleInitializationError(error: Error, component: string, config: InitializationErrorConfig): void { ''
-        this.handleError(error, 'INITIALIZATION', { component, config ),
-        
+        this.handleError(error, 'INITIALIZATION', { component, config );
         try {
             // 初期化失敗の場合の代替処理
-            this._applyInitializationFallback(component, error),
-            
+            this._applyInitializationFallback(component, error);
             // 開発者ガイダンス表示
             if (config.enableDeveloperGuidance) {
                 const guidanceOptions: InitializationGuidanceOptions = {
@@ -152,8 +150,8 @@ export default class LocalModeErrorHandler { /**
                 errorsByType: Object.fromEntries(this._errorStats.errorsByType),
                 errorsByComponent: Object.fromEntries(this._errorStats.errorsByComponent),
                 recoveredErrors: this._errorStats.recoveredErrors,
-    unrecoverableErrors: this._errorStats.unrecoverableErrors };
-                recoveryRate: this._calculateRecoveryRate(), 
+    unrecoverableErrors: this._errorStats.unrecoverableErrors },
+                recoveryRate: this._calculateRecoveryRate(),
     }
     
     /**
@@ -196,7 +194,7 @@ export default class LocalModeErrorHandler { /**
     stack: error.stack,
             context,
             metadata,
-            timestamp: new Date().toISOString(  };
+            timestamp: new Date().toISOString(  },
 
         console.group(`🚨 LocalMode Error (${ context)`),
         console.error('Error:', error.message','
@@ -230,8 +228,8 @@ export default class LocalModeErrorHandler { /**
      * @private
      */'
     private static _applyCompatibilityFallback(feature: string): void { const fallbacks: Record<string, () => void> = {''
-            canvas: () => console.warn('Canvas API not available, using SVG fallback'),
-            localStorage: () => console.warn('localStorage not available, using memory storage'),
+            canvas: () => console.warn('Canvas API not available, using SVG fallback');
+            localStorage: () => console.warn('localStorage not available, using memory storage');
             modules: () => console.warn('ES6 modules not supported, using legacy loading' }
         };
         

@@ -10,28 +10,28 @@ export interface SettingsManager { [key: string]: any;
 
 export interface ErrorHandler { handleError(error: Error, errorType: string, context?: any): void;
 
-export interface StorageKeys { settings: string,
+export interface StorageKeys { settings: string;
     configManager: string;
     backup: string;
     timestamp: string;
     version: string;
 
-export interface BackupConfig { maxBackups: number,
+export interface BackupConfig { maxBackups: number;
     autoBackupInterval: number;
     compressionEnabled: boolean;
 
-export interface SyncStats { saveCount: number,
+export interface SyncStats { saveCount: number;
     loadCount: number;
     backupCount: number;
     errorCount: number;
     lastSaveTime: number;
     lastLoadTime: number;
 
-export interface SettingsMetadata { version: string,
+export interface SettingsMetadata { version: string;
     timestamp: number;
     source: string;
 
-export interface SettingsWithMetadata { [key: string]: any,
+export interface SettingsWithMetadata { [key: string]: any;
     _metadata?: SettingsMetadata;
 
 export interface BackupData { settings?: any,
@@ -39,7 +39,7 @@ export interface BackupData { settings?: any,
     timestamp: number;
     version: string;
 
-export interface SyncStatus { hasSettings: boolean,
+export interface SyncStatus { hasSettings: boolean;
     hasConfigData: boolean;
     lastSaved: Date | null;
     synchronized: boolean;
@@ -53,21 +53,21 @@ export interface ExportData { settings?: any,
     version: string;
     source: string;
 
-export interface StorageHealthReport { healthy: boolean,
+export interface StorageHealthReport { healthy: boolean;
     issues: string[];
     recommendations: string[];
     storageSize: number;
     backupCount: number;
     lastModified: Date | null }
 
-export interface BackupHistoryItem { index: number,
+export interface BackupHistoryItem { index: number;
     timestamp: number;
     date: Date;
     hasSettings: boolean;
     hasConfigData: boolean;
     version: string;
 
-export interface FullSyncStats extends SyncStats { storageHealth: StorageHealthReport,
+export interface FullSyncStats extends SyncStats { storageHealth: StorageHealthReport;
     storageSize: number;
     backupCount: number;
     autoBackupEnabled: boolean;
@@ -77,7 +77,7 @@ export class SettingsStorageManager {
     private errorHandler: ErrorHandler;
     private storageKeys: StorageKeys;
     private backupConfig: BackupConfig;
-    private, syncStats: SyncStats,
+    private, syncStats: SyncStats;
     private autoBackupInterval?: number,
 
     constructor(settingsManager: SettingsManager) {
@@ -95,14 +95,14 @@ export class SettingsStorageManager {
         // バックアップ設定
         this.backupConfig = { maxBackups: 5,
             autoBackupInterval: 300000, // 5分,
-            compressionEnabled: true,;
+            compressionEnabled: true,
         // 同期統計
         this.syncStats = { saveCount: 0,
             loadCount: 0,
             backupCount: 0,
             errorCount: 0,
             lastSaveTime: 0,
-    lastLoadTime: 0  }))
+    lastLoadTime: 0  })
         // 自動バックアップの開始
         this.startAutoBackup();
     }
@@ -122,8 +122,8 @@ export class SettingsStorageManager {
             const timestamp = Date.now('''
                     version: '1.0',
                     timestamp,
-                    source: 'SettingsStorageManager';
-                }))
+                    source: 'SettingsStorageManager',
+                })
             // メインの設定を保存)
             const settingsJson = JSON.stringify(settingsData);
             localStorage.setItem(this.storageKeys.settings, settingsJson);
@@ -141,7 +141,7 @@ export class SettingsStorageManager {
             this.errorHandler.handleError(error as Error, 'STORAGE_ERROR', {''
                 operation: 'saveSettings',')',
                 component: 'SettingsStorageManager'
-            });
+            };
             return false;
 
     /**
@@ -149,8 +149,7 @@ export class SettingsStorageManager {
      * @returns 読み込まれた設定
      */
     loadSettings(): any | null { try {
-            const settingsData = localStorage.getItem(this.storageKeys.settings),
-
+            const settingsData = localStorage.getItem(this.storageKeys.settings);
             if (!settingsData) {
 
                 console.log('[SettingsStorageManager] No saved settings found') }
@@ -194,8 +193,8 @@ export class SettingsStorageManager {
                     version: '1.0',
                     timestamp: Date.now('',
     source: 'SettingsStorageManager'
-            }))
-            });
+            })
+            };
             localStorage.setItem(this.storageKeys.configManager, configJson);
             console.log('[SettingsStorageManager] Configuration data saved successfully');
             return true;
@@ -204,7 +203,7 @@ export class SettingsStorageManager {
             this.errorHandler.handleError(error as Error, 'STORAGE_ERROR', {''
                 operation: 'saveConfigurationManagerData',')',
                 component: 'SettingsStorageManager'
-            });
+            };
             return false;
 
     /**
@@ -212,8 +211,7 @@ export class SettingsStorageManager {
      * @returns 読み込まれた設定
      */
     loadConfigurationManagerData(): any | null { try {
-            const configData = localStorage.getItem(this.storageKeys.configManager),
-
+            const configData = localStorage.getItem(this.storageKeys.configManager);
             if (!configData) {
 
                 console.log('[SettingsStorageManager] No configuration data found') }
@@ -230,7 +228,7 @@ export class SettingsStorageManager {
             this.errorHandler.handleError(error as Error, 'STORAGE_ERROR', {''
                 operation: 'loadConfigurationManagerData',')',
                 component: 'SettingsStorageManager'
-            });
+            };
             return null;
 
     /**
@@ -238,9 +236,8 @@ export class SettingsStorageManager {
      * @returns バックアップ成功可否
      */
     createBackup(): boolean { try {
-            const currentSettings = this.loadSettings(),
-            const currentConfig = this.loadConfigurationManagerData(),
-
+            const currentSettings = this.loadSettings();
+            const currentConfig = this.loadConfigurationManagerData();
             if (!currentSettings && !currentConfig) {
 
                 console.log('[SettingsStorageManager] No, data to, backup') }
@@ -251,7 +248,7 @@ export class SettingsStorageManager {
                 configManager: currentConfig,
                 timestamp: Date.now('',
     version: '1.0'
-            }))
+            })
             // 既存のバックアップを取得)
             const existingBackups = this.getExistingBackups();
             
@@ -268,14 +265,14 @@ export class SettingsStorageManager {
             // 統計を更新
             this.syncStats.backupCount++;
             
-            console.log(`[SettingsStorageManager] Backup, created (${existingBackups.length} total}`});
+            console.log(`[SettingsStorageManager] Backup, created (${existingBackups.length} total}`};
             return true;
 
         } catch (error) { this.syncStats.errorCount++,
             this.errorHandler.handleError(error as Error, 'STORAGE_ERROR', {''
                 operation: 'createBackup',')',
                 component: 'SettingsStorageManager'
-            });
+            };
             return false;
 
     /**
@@ -284,8 +281,7 @@ export class SettingsStorageManager {
      * @returns 復旧された設定
      */
     restoreFromBackup(backupIndex: number = -1): any | null { try {
-            const backups = this.getExistingBackups(),
-
+            const backups = this.getExistingBackups();
             if (backups.length === 0) {
 
                 console.log('[SettingsStorageManager] No, backups available) }'
@@ -299,7 +295,7 @@ export class SettingsStorageManager {
                 
             
             
-                throw new Error(`Invalid, backup index: ${backupIndex}`});
+                throw new Error(`Invalid, backup index: ${backupIndex}`};
             }
 
             const backup = backups[index];
@@ -316,8 +312,8 @@ export class SettingsStorageManager {
         } catch (error') { this.syncStats.errorCount++,'
             this.errorHandler.handleError(error as Error, 'STORAGE_ERROR', {''
                 operation: 'restoreFromBackup',','
-                component: 'SettingsStorageManager'),
-                backupIndex });
+                component: 'SettingsStorageManager');
+                backupIndex };
             return null;
 
     /**
@@ -326,12 +322,11 @@ export class SettingsStorageManager {
      * @returns バックアップ配列
      */
     private getExistingBackups(): BackupData[] { try {
-            const backupData = localStorage.getItem(this.storageKeys.backup),
-
+            const backupData = localStorage.getItem(this.storageKeys.backup);
             return backupData ? JSON.parse(backupData) : [],' }'
 
         } catch (error) {
-            console.warn('[SettingsStorageManager] Failed to parse backup data:', error),
+            console.warn('[SettingsStorageManager] Failed to parse backup data:', error);
             return [],
 
     /**
@@ -339,27 +334,26 @@ export class SettingsStorageManager {
      * @returns 同期状態
      */
     checkSyncStatus(): SyncStatus { try {
-            const settings = this.loadSettings(),
-            const configData = this.loadConfigurationManagerData(),
-            const timestamp = localStorage.getItem(this.storageKeys.timestamp),
-            
+            const settings = this.loadSettings();
+            const configData = this.loadConfigurationManagerData();
+            const timestamp = localStorage.getItem(this.storageKeys.timestamp);
             return { hasSettings: !!settings,
                 hasConfigData: !!configData,
                 lastSaved: timestamp ? new Date(parseInt(timestamp) : null,
                 synchronized: !!(settings && configData,
-    storageSize: this.getStorageSize() };
+    storageSize: this.getStorageSize() },
                 backupCount: this.getExistingBackups().length 
     } catch (error) { this.errorHandler.handleError(error as Error, 'STORAGE_ERROR', {''
                 operation: 'checkSyncStatus',')',
                 component: 'SettingsStorageManager'
-            });
+            };
             
             return { hasSettings: false,
                 hasConfigData: false,
                 lastSaved: null,
                 synchronized: false,
                 storageSize: 0,
-    backupCount: 0 };
+    backupCount: 0 },
                 error: (error, as Error).message }
             }
     }
@@ -374,8 +368,7 @@ export class SettingsStorageManager {
             let success = true,
             
             // バックアップを作成
-            this.createBackup(),
-            
+            this.createBackup();
             // 設定を保存
             if (settings) {
     
@@ -389,13 +382,13 @@ export class SettingsStorageManager {
                 success = this.saveConfigurationManagerData(configData) && success; }
             }
 
-            console.log(`[SettingsStorageManager] Force, synchronization ${success ? 'completed' : 'failed}`});'
+            console.log(`[SettingsStorageManager] Force, synchronization ${success ? 'completed' : 'failed}`};'
             return success;
 
         } catch (error) { this.errorHandler.handleError(error as Error, 'STORAGE_ERROR', {''
                 operation: 'forceSynchronization',')',
                 component: 'SettingsStorageManager'
-            });
+            };
             return false;
 
     /**
@@ -403,23 +396,22 @@ export class SettingsStorageManager {
      * @returns エクスポートされたJSON文字列
      */
     exportSettings(): string | null { try {
-            const settings = this.loadSettings(),
-            const configData = this.loadConfigurationManagerData(),
-            
+            const settings = this.loadSettings();
+            const configData = this.loadConfigurationManagerData();
             const exportData: ExportData = {
                 settings,
                 configManager: configData,
                 exportDate: new Date().toISOString('',
     version: '1.0',
                 source: 'BubblePop Game'
-            }))
+            })
             );
             return JSON.stringify(exportData, null, 2);
 
         } catch (error) { this.errorHandler.handleError(error as Error, 'STORAGE_ERROR', {''
                 operation: 'exportSettings',')',
                 component: 'SettingsStorageManager'
-            });
+            };
             return null;
 
     /**
@@ -431,8 +423,7 @@ export class SettingsStorageManager {
             const importData: ExportData = JSON.parse(settingsJson,
             
             // バックアップを作成
-            this.createBackup(),
-            
+            this.createBackup();
             let success = true,
             
             // 設定をインポート
@@ -448,13 +439,13 @@ export class SettingsStorageManager {
                 success = this.saveConfigurationManagerData(importData.configManager) && success; }
             }
 
-            console.log(`[SettingsStorageManager] Settings, import ${success ? 'completed' : 'failed}`});'
+            console.log(`[SettingsStorageManager] Settings, import ${success ? 'completed' : 'failed}`};'
             return success;
 
         } catch (error) { this.errorHandler.handleError(error as Error, 'STORAGE_ERROR', {''
                 operation: 'importSettings',')',
                 component: 'SettingsStorageManager',
-    data: settingsJson?.substring(0, 100 });
+    data: settingsJson?.substring(0, 100 };
             return false;
 
     /**
@@ -463,11 +454,10 @@ export class SettingsStorageManager {
      * @returns クリア成功可否
      */ : undefined
     clearStorage(includeBackups: boolean = false): boolean { try {
-            localStorage.removeItem(this.storageKeys.settings),
-            localStorage.removeItem(this.storageKeys.configManager),
-            localStorage.removeItem(this.storageKeys.timestamp),
-            localStorage.removeItem(this.storageKeys.version),
-            
+            localStorage.removeItem(this.storageKeys.settings);
+            localStorage.removeItem(this.storageKeys.configManager);
+            localStorage.removeItem(this.storageKeys.timestamp);
+            localStorage.removeItem(this.storageKeys.version);
             if (includeBackups) {
             ','
 
@@ -482,7 +472,7 @@ export class SettingsStorageManager {
         } catch (error') { this.errorHandler.handleError(error as Error, 'STORAGE_ERROR', {''
                 operation: 'clearStorage',')',
                 component: 'SettingsStorageManager'
-            });
+            };
             return false;
 
     /**
@@ -494,7 +484,7 @@ export class SettingsStorageManager {
             
             for (const key of Object.values(this.storageKeys) {
             
-                const data = localStorage.getItem(key),
+                const data = localStorage.getItem(key);
                 if (data) {
     
 }
@@ -504,7 +494,7 @@ export class SettingsStorageManager {
             return totalSize;
 
         } catch (error) {
-            console.warn('[SettingsStorageManager] Failed to calculate storage size:', error),
+            console.warn('[SettingsStorageManager] Failed to calculate storage size:', error);
             return 0,
 
     /**
@@ -518,7 +508,7 @@ export class SettingsStorageManager {
                 recommendations: [],
                 storageSize: this.getStorageSize(),
                 backupCount: this.getExistingBackups().length,
-    lastModified: null,;
+    lastModified: null,
             // 設定の存在チェック
             const settings = this.loadSettings();
             if (!settings) {
@@ -531,7 +521,7 @@ export class SettingsStorageManager {
             // タイムスタンプチェック
             const timestamp = localStorage.getItem(this.storageKeys.timestamp);
             if (timestamp) {
-                report.lastModified = new Date(parseInt(timestamp),
+                report.lastModified = new Date(parseInt(timestamp);
                 const ageInDays = (Date.now() - parseInt(timestamp) / (1000 * 60 * 60 * 24),
 
                 if (ageInDays > 30) {
@@ -564,9 +554,9 @@ export class SettingsStorageManager {
 
                 issues: [`Health check, failed: ${(error, as, Error'}'.message}`],''
                 recommendations: ['Investigate storage errors];'
-                storageSize: 0;
+                storageSize: 0,
                 backupCount: 0,
-    lastModified: null;
+    lastModified: null,
             } }
     }
 
@@ -590,9 +580,9 @@ export class SettingsStorageManager {
      * @returns 統計情報
      */
     getSyncStats(): FullSyncStats { return { ...this.syncStats,
-            storageHealth: this.checkStorageHealth(),
+            storageHealth: this.checkStorageHealth();
             storageSize: this.getStorageSize(
-    backupCount: this.getExistingBackups().length };
+    backupCount: this.getExistingBackups().length },
             autoBackupEnabled: !!this.autoBackupInterval 
     }
 
@@ -600,7 +590,7 @@ export class SettingsStorageManager {
      * バックアップ履歴を取得
      * @returns バックアップ履歴
      */
-    getBackupHistory(): BackupHistoryItem[] { const backups = this.getExistingBackups(),
+    getBackupHistory(): BackupHistoryItem[] { const backups = this.getExistingBackups();
         return backups.map((backup, index) => ({
             index)','
             timestamp: backup.timestamp,
@@ -616,7 +606,7 @@ export class SettingsStorageManager {
      * クリーンアップ
      */'
     cleanup(): void { if (this.autoBackupInterval) {''
-            clearInterval(this.autoBackupInterval),
+            clearInterval(this.autoBackupInterval);
             this.autoBackupInterval = undefined }
 
         console.log('[SettingsStorageManager] Cleanup, completed');

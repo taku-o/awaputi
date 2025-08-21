@@ -28,13 +28,12 @@ function _showDeprecationWarning(message, caller) { if (!SHOW_DEPRECATION_WARNIN
     const key = `${caller}:${message}`;
     
     if (!lastWarningTime.has(key) || (now - lastWarningTime.get(key) > WARNING_INTERVAL)) { console.warn(`[非推奨] ${message)`),
-        console.warn(`代わりに新しい設定システムを使用してください。詳細は開発者ドキュメントを参照してください。`),
+        console.warn(`代わりに新しい設定システムを使用してください。詳細は開発者ドキュメントを参照してください。`);
         console.warn(`呼び出し元: ${caller}`};
         
         // ログに記録 }
-        const, loggingSystem = getLoggingSystem(});
-        loggingSystem.warn(`非推奨APIの使用: ${message}`, { caller ),
-        
+        const, loggingSystem = getLoggingSystem(};
+        loggingSystem.warn(`非推奨APIの使用: ${message}`, { caller );
         // 最終警告時間を更新
         lastWarningTime.set(key, now) }
 }
@@ -50,7 +49,7 @@ function _getCallerInfo() { try {'
         
         // スタックトレースから呼び出し元を特定（3つ上のスタックフレーム）
         if (stack.length >= 4) {
-            const callerLine = stack[3].trim(),
+            const callerLine = stack[3].trim();
             const match = callerLine.match(/at\s+(.*)\s+\((.*):(\d+):(\d+)\)/),
 
             if (match) {
@@ -58,7 +57,7 @@ function _getCallerInfo() { try {'
 
                 const [, fnName, file, line] = match;' }'
 
-                return `${file.split('/}.pop(}):${line} (${fnName}')`;
+                return `${file.split('/}.pop(}:${line} (${fnName}')`;
             }
             
             return callerLine;
@@ -75,10 +74,9 @@ function _getCallerInfo() { try {'
  * 非推奨警告を表示します。
  */
 const BALANCE_CONFIG_PROXY = new Proxy({}, { get(target, prop) {
-        const gameConfig = getGameConfig(),
-        const configManager = getConfigurationManager(),
-        const caller = _getCallerInfo(),
-        
+        const gameConfig = getGameConfig();
+        const configManager = getConfigurationManager();
+        const caller = _getCallerInfo();
         _showDeprecationWarning(`BALANCE_CONFIG.${prop)へのアクセスは非推奨です`, caller),
         ','
         // カテゴリに基づいて適切な設定を返す
@@ -92,24 +90,23 @@ const BALANCE_CONFIG_PROXY = new Proxy({}, { get(target, prop) {
                 return, gameConfig.getItemConfig('',
             case 'bubbles':','
                 return, gameConfig.getBubbleConfig('',
-            case 'changelog':),
+            case 'changelog':);
                 // 変更履歴は新システムでは別の方法で管理}
                 return configManager.getChangeHistory(}
             default: }
-                console.warn(`[互換性レイヤー] 未知のプロパティ: ${prop}`});
+                console.warn(`[互換性レイヤー] 未知のプロパティ: ${prop}`};
                 return undefined;,
     
     set(target, prop, value) {
     
-        const configManager = getConfigurationManager(),
-        const caller = _getCallerInfo(),
-        
+        const configManager = getConfigurationManager();
+        const caller = _getCallerInfo();
         _showDeprecationWarning(`BALANCE_CONFIG.${prop}への直接設定は非推奨です`, caller}
         // 設定の変更を許可しない（読み取り専用） }
-        console.error(`[互換性レイヤー] BALANCE_CONFIGへの直接設定は許可されていません。代わりにConfigurationManagerを使用してください。`});
+        console.error(`[互換性レイヤー] BALANCE_CONFIGへの直接設定は許可されていません。代わりにConfigurationManagerを使用してください。`};
         return true; // プロキシのsetトラップはtrueを返す必要がある
     }
-});
+};
 
 /**
  * BalanceHelperの互換性クラス
@@ -123,10 +120,9 @@ class BalanceHelperCompatibility { /**
      * @param {number} ageRatio - 年齢比率
      * @returns {number} 計算されたスコア
      */
-    static calculateScore(bubbleType, ageRatio = 0) { const gameConfig = getGameConfig(),
+    static calculateScore(bubbleType, ageRatio = 0) { const gameConfig = getGameConfig();
         const caller = _getCallerInfo()','
-        _showDeprecationWarning('BalanceHelper.calculateScoreは非推奨です', caller),
-        
+        _showDeprecationWarning('BalanceHelper.calculateScoreは非推奨です', caller);
         return gameConfig.calculateScore(bubbleType, ageRatio) }
     
     /**
@@ -134,10 +130,9 @@ class BalanceHelperCompatibility { /**
      * @param {number} comboCount - コンボ数
      * @returns {number} コンボ倍率
      */'
-    static calculateComboMultiplier(comboCount) { const gameConfig = getGameConfig(),
+    static calculateComboMultiplier(comboCount) { const gameConfig = getGameConfig();
         const caller = _getCallerInfo()','
-        _showDeprecationWarning('BalanceHelper.calculateComboMultiplierは非推奨です', caller),
-        
+        _showDeprecationWarning('BalanceHelper.calculateComboMultiplierは非推奨です', caller);
         return gameConfig.calculateComboMultiplier(comboCount) }
     
     /**
@@ -146,10 +141,9 @@ class BalanceHelperCompatibility { /**
      * @param {number} currentLevel - 現在のレベル
      * @returns {number} 計算されたコスト
      */'
-    static calculateItemCost(itemId, currentLevel) { const gameConfig = getGameConfig(),
+    static calculateItemCost(itemId, currentLevel) { const gameConfig = getGameConfig();
         const caller = _getCallerInfo()','
-        _showDeprecationWarning('BalanceHelper.calculateItemCostは非推奨です', caller),
-        
+        _showDeprecationWarning('BalanceHelper.calculateItemCostは非推奨です', caller);
         return gameConfig.calculateItemCost(itemId, currentLevel) }
     
     /**
@@ -158,12 +152,10 @@ class BalanceHelperCompatibility { /**
      * @param {number} playerTAP - プレイヤーのTAP値
      * @returns {boolean} 開放状態
      */'
-    static isStageUnlocked(stageId, playerTAP) { const gameConfig = getGameConfig(),
+    static isStageUnlocked(stageId, playerTAP) { const gameConfig = getGameConfig();
         const caller = _getCallerInfo()','
-        _showDeprecationWarning('BalanceHelper.isStageUnlockedは非推奨です', caller),
-
-        return gameConfig.isStageUnlocked(stageId, playerTAP),
-
+        _showDeprecationWarning('BalanceHelper.isStageUnlockedは非推奨です', caller);
+        return gameConfig.isStageUnlocked(stageId, playerTAP);
 // 既存のBALANCE_CONFIGとBalanceHelperをエクスポート
 export const BALANCE_CONFIG = BALANCE_CONFIG_PROXY,
 export const BalanceHelper = BalanceHelperCompatibility,

@@ -23,7 +23,7 @@ interface FaviconConfig { sizes?: number[],
     cacheEnabled?: boolean;
     enablePerformanceOptimizations?: boolean;
 
-interface FaviconDefaultConfig { sizes: number[],
+interface FaviconDefaultConfig { sizes: number[];
     backgroundColor: string;
     textColor: string;
     fontFamily: string;
@@ -31,7 +31,7 @@ interface FaviconDefaultConfig { sizes: number[],
     cacheEnabled: boolean;
     enablePerformanceOptimizations: boolean;
 
-interface GenerationResult { success: boolean,
+interface GenerationResult { success: boolean;
     generated: number;
     cached: number;
     failed: number;
@@ -45,11 +45,11 @@ interface FaviconDetail { ''
     cached?: boolean;
     error?: string;
 
-interface GenerationRequest { size: number,
+interface GenerationRequest { size: number;
     config: FaviconDefaultConfig;
     configHash: string;
 
-interface CanvasInfo { canvas: HTMLCanvasElement,
+interface CanvasInfo { canvas: HTMLCanvasElement;
     ctx: CanvasRenderingContext2D;
     fromPool?: boolean;
     poolIndex?: number;
@@ -67,23 +67,24 @@ interface FaviconData { ''
     type: 'ico' | 'png'
             }
 
-interface Stats { cache: any,
+interface Stats { cache: any;
     performance: any;
     memoryCache: {
-        siz,e: number,
-    keys: string[],
-
+        siz,e: number;
+    keys: string[];
+    keys: string[];
+        };
 class FaviconGenerator { /**
      * デフォルト設定
      */
     static DEFAULT_CONFIG: FaviconDefaultConfig = {'
         sizes: [16, 32, 48, 192, 512];
-        backgroundColor: '#2196F3',
-        textColor: '#FFFFFF',
+        backgroundColor: '#2196F3';
+        textColor: '#FFFFFF';
         fontFamily: 'Arial, sans-serif';
-        text: 'B',
-        cacheEnabled: true,
-    enablePerformanceOptimizations: true,;
+        text: 'B';
+        cacheEnabled: true;
+    enablePerformanceOptimizations: true;
     /**
      * 生成キャッシュ（メモリキャッシュ）
      */
@@ -98,10 +99,10 @@ class FaviconGenerator { /**
         const finalConfig: FaviconDefaultConfig = { ...this.DEFAULT_CONFIG, ...config,
         
         try { const result: GenerationResult = {
-                success: false,
-                generated: 0,
-                cached: 0,
-                failed: 0,
+                success: false;
+                generated: 0;
+                cached: 0;
+                failed: 0;
     details: []  };
             // 既存favicon検証
             const validation = FaviconDOMManager.validateExistingFavicons();
@@ -112,7 +113,7 @@ class FaviconGenerator { /**
             // 生成リクエスト準備
             const requests: GenerationRequest[] = finalConfig.sizes.map(size => ({
                 size
-                config: finalConfig),
+                config: finalConfig);
                 configHash));
             
             if (finalConfig.enablePerformanceOptimizations) {
@@ -129,7 +130,7 @@ class FaviconGenerator { /**
                         result.generated++; }
                         result.details.push(faviconResult); }
                     } catch (error) { result.failed++ }
-                        result.details.push({ size: request.size, error: (error as Error).message  });
+                        result.details.push({ size: request.size, error: (error as Error).message  };
                     }
 }
             
@@ -140,7 +141,7 @@ class FaviconGenerator { /**
                     .map(detail => ({)
                         size: detail.size!)','
     dataURL: detail.dataURL!,')';
-                        type: detail.size === 'ico' ? 'ico' : 'png')),
+                        type: detail.size === 'ico' ? 'ico' : 'png'));
                 FaviconDOMManager.removeExistingFavicons()
              }
                 FaviconDOMManager.addFaviconsToDOM(faviconData); }
@@ -154,12 +155,12 @@ class FaviconGenerator { /**
             return result;
 
         } catch (error) {
-            console.error('FaviconGenerator: Generation, failed:', error),
+            console.error('FaviconGenerator: Generation, failed:', error);
             return { success: false,
                 generated: 0,
                 cached: 0,
                 failed: 1,
-    details: [] };
+    details: [] },
                 error: (error, as Error).message }
             }
     }
@@ -168,8 +169,7 @@ class FaviconGenerator { /**
      * キャッシュクリア
      * @param size - 特定サイズのみクリアする場合
      */
-    static clearCache(size: number | null = null): void { FaviconCacheManager.clear(size),
-        
+    static clearCache(size: number | null = null): void { FaviconCacheManager.clear(size);
         // メモリキャッシュもクリア
         if (size === null) {
     
@@ -185,21 +185,20 @@ class FaviconGenerator { /**
      * 統計情報取得
      * @returns 統計情報
      */
-    static getStats(): Stats { const cacheStats = FaviconCacheManager.getStats(),
-        const performanceStats = FaviconPerformanceManager.getPerformanceStats(),
-        
+    static getStats(): Stats { const cacheStats = FaviconCacheManager.getStats();
+        const performanceStats = FaviconPerformanceManager.getPerformanceStats();
         return { cache: cacheStats,
             performance: performanceStats,
     memoryCache: {
-                size: this.generationCache.size };
-                keys: Array.from(this.generationCache.keys(), 
+                size: this.generationCache.size },
+                keys: Array.from(this.generationCache.keys();
     }
     
     /**
      * 設定更新
      * @param newConfig - 新しい設定
      */
-    static updateConfig(newConfig: Partial<FaviconDefaultConfig>): void { Object.assign(this.DEFAULT_CONFIG, newConfig),
+    static updateConfig(newConfig: Partial<FaviconDefaultConfig>): void { Object.assign(this.DEFAULT_CONFIG, newConfig);
         FaviconPerformanceManager.updateConfig(newConfig) }
     
     /**
@@ -225,7 +224,7 @@ class FaviconGenerator { /**
         if (canvasInfo) {
             canvas = canvasInfo.canvas }
             ctx = canvasInfo.ctx; }
-        } else {  const canvasData = FaviconCanvasRenderer.createCanvas(size),
+        } else {  const canvasData = FaviconCanvasRenderer.createCanvas(size);
             canvas = canvasData.canvas }
             ctx = canvasData.ctx; }
         }
@@ -234,7 +233,7 @@ class FaviconGenerator { /**
         FaviconCanvasRenderer.renderFavicon(ctx, size, config);
         ';'
         // Data URL生成
-        const format: 'png' | 'ico' = size === 32 ? 'ico' : 'png'; // 仮の条件、実際は要件に応じて調整
+        const format: 'png' | 'ico' = size === 32 ? 'ico' : 'png', // 仮の条件、実際は要件に応じて調整
         const dataURL = FaviconCanvasRenderer.canvasToDataURL(canvas, format);
         
         // キャッシュ保存

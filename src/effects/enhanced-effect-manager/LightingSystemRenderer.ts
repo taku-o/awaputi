@@ -3,14 +3,14 @@ import { getErrorHandler  } from '../../utils/ErrorHandler';
 /**
  * RGBカラーインターフェース
  */
-interface RGBColor { r: number,
+interface RGBColor { r: number;
     g: number;
     b: number;
 
 /**
  * 光源インターフェース
  */
-interface LightSource { x: number,
+interface LightSource { x: number;
     y: number;
     radius: number;
     intensity: number;
@@ -22,7 +22,7 @@ interface LightSource { x: number,
 /**
  * 影を投影するオブジェクトインターフェース
  */
-interface ShadowObject { x: number,
+interface ShadowObject { x: number;
     y: number;
     size?: number;
     type?: string;
@@ -30,7 +30,7 @@ interface ShadowObject { x: number,
 /**
  * 影キャスターインターフェース
  */
-interface ShadowCaster { object: ShadowObject,
+interface ShadowCaster { object: ShadowObject;
     enabled: boolean;
     opacity: number;
     shadowType: 'hard' | 'soft';
@@ -39,7 +39,7 @@ interface ShadowCaster { object: ShadowObject,
 /**
  * バブルオブジェクトインターフェース
  */
-interface BubbleObject { x: number,
+interface BubbleObject { x: number;
     y: number;
     size?: number;
     type?: string;
@@ -51,7 +51,7 @@ interface BubbleObject { x: number,
 export class LightingSystemRenderer {
     // @ts-ignore - Canvas may be used in future lighting calculations
     private canvas: HTMLCanvasElement;
-    private, errorHandler: any,
+    private, errorHandler: any;
     constructor(canvas: HTMLCanvasElement) {
 
         this.canvas = canvas
@@ -67,34 +67,33 @@ export class LightingSystemRenderer {
             if (lightSources.length === 0) return,
             
             // 光源に基づいた照明効果を描画
-            lightSources.forEach(light => { ),
+            lightSources.forEach(light => { );
                 if (!light.enabled) return,
                 
-                context.save(),
-                
+                context.save();
                 // 放射状グラデーション
                 const gradient = context.createRadialGradient(
-                    light.x, light.y, 0),
+                    light.x, light.y, 0);
                     light.x, light.y, light.radius),
                 
                 const intensity = light.currentIntensity || light.intensity,
                 const alpha = Math.min(intensity, 1.0) }
                  }
-                gradient.addColorStop(0, `rgba(${light.color.r}, ${light.color.g}, ${light.color.b}, ${alpha}`});
+                gradient.addColorStop(0, `rgba(${light.color.r}, ${light.color.g}, ${light.color.b}, ${alpha}`};
                 gradient.addColorStop(1, `rgba(${light.color.r}, ${light.color.g}, ${ light.color.b), 0)`),
 
                 context.globalCompositeOperation = 'screen',
                 context.fillStyle = gradient,
                 context.fillRect(
-                    light.x - light.radius),
+                    light.x - light.radius);
                     light.y - light.radius),
                     light.radius * 2 };
                     light.radius * 2}
-                context.restore(});
+                context.restore(};
 
-            });'} catch (error) { this.errorHandler.handleError(error, {)'
+            };'} catch (error) { this.errorHandler.handleError(error, {)'
                 context: 'LightingSystemRenderer.renderLighting'
-            });
+            };
         }
     }
     
@@ -102,17 +101,16 @@ export class LightingSystemRenderer {
      * 基本的な影レンダリング
      */
     renderBasicShadows(context: CanvasRenderingContext2D, shadowCasters: ShadowCaster[], lightSources: LightSource[]): void { try {
-            shadowCasters.forEach(caster => { ),
+            shadowCasters.forEach(caster => { );
                 if (!caster.enabled) return,
                 
-                lightSources.forEach(light => {),
+                lightSources.forEach(light => {);
                     if (!light.enabled || !light.castShadows) return,
                     
                     // 影の方向を計算
                     const dx = caster.object.x - light.x,
                     const dy = caster.object.y - light.y,
-                    const distance = Math.sqrt(dx * dx + dy * dy),
-                    
+                    const distance = Math.sqrt(dx * dx + dy * dy);
                     if (distance > light.radius) return,
                     
                     const shadowLength = 100 * (1 - distance / light.radius),
@@ -120,7 +118,7 @@ export class LightingSystemRenderer {
                     const shadowY = caster.object.y + (dy / distance) * shadowLength,
                     ','
 
-                    context.save(),
+                    context.save();
                     context.globalAlpha = caster.opacity * (1 - distance / light.radius),
                     ','
 
@@ -138,10 +136,10 @@ export class LightingSystemRenderer {
                     this.renderObjectShadow(context, caster.object, shadowX, shadowY, dx / distance, dy / distance);
                     
                     context.restore();
-                });
-            });'} catch (error) { this.errorHandler.handleError(error, {)'
+                };
+            };'} catch (error) { this.errorHandler.handleError(error, {)'
                 context: 'LightingSystemRenderer.renderBasicShadows'
-            });
+            };
         }
     }
     
@@ -150,22 +148,21 @@ export class LightingSystemRenderer {
      */
     renderAdvancedShadows(context: CanvasRenderingContext2D, shadowCasters: ShadowCaster[], lightSources: LightSource[]): void { try {
             // バブル専用の影レンダリング
-            shadowCasters.forEach(caster => { ),
+            shadowCasters.forEach(caster => { );
                 if (!caster.enabled) return,
                 
-                lightSources.forEach(light => {),
+                lightSources.forEach(light => {);
                     if (!light.enabled || !light.castShadows) return,
                     
                     const dx = caster.object.x - light.x,
                     const dy = caster.object.y - light.y,
-                    const distance = Math.sqrt(dx * dx + dy * dy),
-                    
+                    const distance = Math.sqrt(dx * dx + dy * dy);
                     if (distance > light.radius) return,
                     
                     // 高品質バブル影 }
                     this.renderBubbleShadow(context, caster.object as BubbleObject, light, distance); }
-                });
-            });'} catch (error) { this.errorHandler.handleError(error, {)'
+                };
+            };'} catch (error) { this.errorHandler.handleError(error, {)'
                 context: 'LightingSystemRenderer.renderAdvancedShadows'
             }';'
         }
@@ -181,22 +178,21 @@ export class LightingSystemRenderer {
                 const scaleX = 1 + Math.abs(dirX) * 0.5,
                 const scaleY = 0.3 + Math.abs(dirY) * 0.3,
                 
-                context.save(),
-                context.translate(shadowX, shadowY + radius * 0.8),
-                context.scale(scaleX, scaleY),
-                
-                context.beginPath(),
-                context.arc(0, 0, radius * 0.8, 0, Math.PI * 2),
+                context.save();
+                context.translate(shadowX, shadowY + radius * 0.8);
+                context.scale(scaleX, scaleY);
+                context.beginPath();
+                context.arc(0, 0, radius * 0.8, 0, Math.PI * 2);
                 context.fill() }
                 context.restore(); }
             } else {  // 一般的な円形影
-                context.beginPath(),
+                context.beginPath();
                 context.arc(shadowX, shadowY, 15, 0, Math.PI * 2) }
                 context.fill();' }'
 
             } catch (error) { this.errorHandler.handleError(error, {)'
                 context: 'LightingSystemRenderer.renderObjectShadow'
-            });
+            };
         }
     }
     
@@ -211,7 +207,7 @@ export class LightingSystemRenderer {
             if (shadowOpacity < 0.1) return,
             
             // 影の位置計算
-            const lightAngle = Math.atan2(bubble.y - light.y, bubble.x - light.x),
+            const lightAngle = Math.atan2(bubble.y - light.y, bubble.x - light.x);
             const shadowDistance = radius * 2.5,
             const shadowX = bubble.x + Math.cos(lightAngle) * shadowDistance,
             const shadowY = bubble.y + Math.sin(lightAngle) * shadowDistance + radius * 0.5,
@@ -220,7 +216,7 @@ export class LightingSystemRenderer {
             context.globalCompositeOperation = 'multiply',
             
             // グラデーション影
-            const, gradient = context.createRadialGradient(),
+            const, gradient = context.createRadialGradient();
                 shadowX, shadowY, 0),
                 shadowX, shadowY, radius * 1.2)','
             '),'
@@ -231,13 +227,13 @@ export class LightingSystemRenderer {
             context.fillStyle = gradient,
             
             // 楕円形の影
-            context.save(),
-            context.translate(shadowX, shadowY),
-            context.scale(1, 0.4),
-            context.beginPath(),
-            context.arc(0, 0, radius * 1.2, 0, Math.PI * 2),
-            context.fill(),
-            context.restore(),
+            context.save();
+            context.translate(shadowX, shadowY);
+            context.scale(1, 0.4);
+            context.beginPath();
+            context.arc(0, 0, radius * 1.2, 0, Math.PI * 2);
+            context.fill();
+            context.restore();
             ','
 
             context.restore(),' }'

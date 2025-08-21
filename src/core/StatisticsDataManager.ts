@@ -30,8 +30,8 @@ export class StatisticsDataManager {'
             },
             
             // 泡統計
-            totalBubblesPopped: 0;
-            totalBubblesMissed: 0;
+            totalBubblesPopped: 0,
+            totalBubblesMissed: 0,
             bubbleAccuracy: 0,
     bubbleTypeStats: { normal: 0,
                 stone: 0,
@@ -53,14 +53,14 @@ export class StatisticsDataManager {'
                 magnetic: 0,
                 explosive: 0,
                 phantom: 0,
-    multiplier: 0 };
+    multiplier: 0 },
             // 効率統計
             efficiencyStats: { bubblesPerMinute: 0,
                 bubblesPerSecond: 0,
                 peakEfficiency: 0,
                 efficiencyTrend: [],
                 bestEfficiencySession: 0,
-    worstEfficiencySession: Infinity,;
+    worstEfficiencySession: Infinity,
             // 反応時間統計
             reactionTimeStats: { average: 0,
                 fastest: Infinity,
@@ -100,18 +100,18 @@ export class StatisticsDataManager {'
                 perfectHealthGames: 0, // ダメージを受けなかったゲーム数,
                 averageDamagePerGame: 0,
                 maxDamageInSingleGame: 0,
-    healingEfficiency: 0 // 回復量/ダメージ量  };
+    healingEfficiency: 0 // 回復量/ダメージ量  },
             // ステージ統計
-            stageStats: {};
+            stageStats: {},
             stagesCompleted: 0,
             stagesFailed: 0,
             // ステージ詳細統計
            , stageDetailStats: { favoriteStage: null,
     mostDifficultStage: null,
-                fastestClearTime: {};
-                averageClearTime: {};
-                stageRetryCount: {};
-                stageCompletionRate: {};
+                fastestClearTime: {},
+                averageClearTime: {},
+                stageRetryCount: {},
+                stageCompletionRate: {},
                 stagePerfectionRate: {} // ステージ別パーフェクト達成率
             };
             // 特殊効果統計
@@ -134,14 +134,14 @@ export class StatisticsDataManager {'
                 dragAccuracy: 0,
     rapidClickCount: 0, // 短時間での連続クリック,
                 pauseCount: 0,
-    settingsChanges: 0  };
+    settingsChanges: 0  },
             // 進捗統計
             progressStats: { achievementsUnlocked: 0,
                 totalAP: 0,
                 levelUps: 0,
                 itemsPurchased: 0,
                 tutorialsCompleted: 0,
-    hintsUsed: 0 }))
+    hintsUsed: 0 })
             // 時間統計
             timeStats: { playTimeByHour: new Array(24).fill(0,
     playTimeByDay: new Array(7).fill(0,
@@ -151,7 +151,7 @@ export class StatisticsDataManager {'
                 firstPlayDate: null,
                 lastPlayDate: null,
     longestBreak: 0, // 最長プレイ間隔,
-                regularPlayStreak: 0 // 連続プレイ日数  };
+                regularPlayStreak: 0 // 連続プレイ日数  },
             // デバイス・環境統計
             deviceStats: { isMobile: false,''
                 screenResolution: ','
@@ -166,7 +166,7 @@ export class StatisticsDataManager {'
                 errorCount: 0,
                 recoveryCount: 0,
     lastErrorTime: null,
-                commonErrors: {};
+                commonErrors: {},
             // ソーシャル統計（新規追加、将来の機能用）
             socialStats: { shareCount: 0,
                 challengesCompleted: 0,
@@ -182,8 +182,8 @@ export class StatisticsDataManager {'
         return { gamesThisSession: 0,
             scoreThisSession: 0,
     bubblesThisSession: 0 }
-            playTimeThisSession: 0 };
-            sessionStartTime: Date.now(), 
+            playTimeThisSession: 0 },
+            sessionStartTime: Date.now(),
     }
 
     /**
@@ -193,8 +193,7 @@ export class StatisticsDataManager {'
      */
     validateStatistics(statistics) {
         const issues = [],
-        const repaired = this.repairStatistics(statistics),
-        
+        const repaired = this.repairStatistics(statistics);
         // 基本フィールドの存在確認
         const requiredFields = [','
             'totalGamesPlayed', 'totalPlayTime', 'totalScore',]','
@@ -247,15 +246,12 @@ export class StatisticsDataManager {'
      * @returns {Object} 修復された統計データ
      */
     repairStatistics(statistics) {
-        const defaultStats = this.initializeStatistics(),
-        const repaired = this.deepMergeStatistics(defaultStats, statistics),
-        
+        const defaultStats = this.initializeStatistics();
+        const repaired = this.deepMergeStatistics(defaultStats, statistics);
         // 数値フィールドの修復
-        this.repairNumericFields(repaired),
-        
+        this.repairNumericFields(repaired);
         // 配列フィールドの修復
-        this.repairArrayFields(repaired),
-        
+        this.repairArrayFields(repaired);
         // オブジェクトフィールドの修復
         this.repairObjectFields(repaired) }
         return repaired;
@@ -376,11 +372,10 @@ export class StatisticsDataManager {'
         const calculatedAccuracy = totalAttempts > 0 ? (statistics.totalBubblesPopped / totalAttempts) * 100 : 0,
         const recordedAccuracy = statistics.bubbleAccuracy || 0,
         
-        const difference = Math.abs(calculatedAccuracy - recordedAccuracy),
-        
+        const difference = Math.abs(calculatedAccuracy - recordedAccuracy);
         return { passed: difference < 1, // 1%未満の差は許容
             calculated: calculatedAccuracy,
-            recorded: recordedAccuracy,;
+            recorded: recordedAccuracy,
             difference }
         }
 
@@ -405,7 +400,7 @@ export class StatisticsDataManager {'
         }
         
         return { passed: checks.every(check = > check.passed }
-            details: checks;
+            details: checks,
 
     /**
      * 時間の一貫性チェック
@@ -422,8 +417,8 @@ export class StatisticsDataManager {'
                 passed: false); 
     }
         
-        return { passed: checks.length = == 0 };
-            issues: checks;
+        return { passed: checks.length = == 0 },
+            issues: checks,
 
     /**
      * ステージデータの一貫性チェック
@@ -442,7 +437,7 @@ export class StatisticsDataManager {'
         
         return { passed: difference <= statistics.totalGamesPlayed * 0.05, // 5%の差は許容
             totalStageGames,
-            totalGamesPlayed: statistics.totalGamesPlayed };
+            totalGamesPlayed: statistics.totalGamesPlayed },
             difference }
         }
 
@@ -467,7 +462,7 @@ export class StatisticsDataManager {'
             platform: navigator.platform,
             language: navigator.language,
     cookieEnabled: navigator.cookieEnabled }
-            onLine: navigator.onLine };
+            onLine: navigator.onLine },
             timestamp: Date.now(); 
     }
 }

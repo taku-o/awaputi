@@ -1,22 +1,22 @@
 // Type definitions
-interface Viewport { x: number,
+interface Viewport { x: number;
     y: number;
     width: number;
     height: number;
 
-interface Frustum { left: number,
+interface Frustum { left: number;
     right: number;
     top: number;
     bottom: number;
     near: number;
     far: number;
 
-interface ViewportCullingStats { totalObjects: number,
+interface ViewportCullingStats { totalObjects: number;
     culledObjects: number;
     cullingEfficiency: number;
     processingTime: number;
 
-interface CullingConfig { enabled: boolean,
+interface CullingConfig { enabled: boolean;
     viewport: Viewport;
     cullingMargin: number;
     spatialGrid: Map<string, Set<RenderableObject>>;
@@ -27,7 +27,7 @@ interface CullingConfig { enabled: boolean,
     frustum: Frustum;
     stats: ViewportCullingStats;
 
-interface ObjectBounds { x: number,
+interface ObjectBounds { x: number;
     y: number;
     width: number;
     height: number;
@@ -57,7 +57,7 @@ interface ViewportCullerConfigOptions { enabled?: boolean,
  */
 export class BasicViewportCuller {
     private canvas: HTMLCanvasElement;
-    private, config: CullingConfig,
+    private, config: CullingConfig;
     constructor(canvas: HTMLCanvasElement) {
 
         this.canvas = canvas;
@@ -76,13 +76,13 @@ export class BasicViewportCuller {
             visibilityCache: new Map<string | number, boolean>();
             
             // Frustum culling
-            frustum: { left: 0, right: 0, top: 0, bottom: 0,
+            frustum: { left: 0, right: 0, top: 0, bottom: 0;
                 near: 0, far: 1000  };
             
             // Statistics
-            stats: { totalObjects: 0,
-                culledObjects: 0,
-                cullingEfficiency: 0,
+            stats: { totalObjects: 0;
+                culledObjects: 0;
+                cullingEfficiency: 0;
     processingTime: 0 
     };
         this.updateViewport();
@@ -108,8 +108,7 @@ export class BasicViewportCuller {
     /**
      * Rebuild spatial grid for viewport culling
      */
-    rebuildSpatialGrid(): void { this.config.spatialGrid.clear(),
-        
+    rebuildSpatialGrid(): void { this.config.spatialGrid.clear();
         const gridSize = this.config.gridSize,
         const viewport = this.config.viewport,
         
@@ -132,8 +131,7 @@ export class BasicViewportCuller {
     /**
      * Perform viewport culling on objects
      */
-    performViewportCulling(objects: RenderableObject[]): RenderableObject[] { const startTime = performance.now(),
-        
+    performViewportCulling(objects: RenderableObject[]): RenderableObject[] { const startTime = performance.now();
         if (!this.config.enabled) {
     
 }
@@ -144,10 +142,8 @@ export class BasicViewportCuller {
         
         for (const obj of objects) {
         
-            const bounds = this.calculateObjectBounds(obj),
-            
-            const isVisible = this.isObjectInFrustum(bounds, this.config.frustum),
-            
+            const bounds = this.calculateObjectBounds(obj);
+            const isVisible = this.isObjectInFrustum(bounds, this.config.frustum);
             if (isVisible) {
                 this.config.renderableObjects.add(obj) }
                 this.addObjectToSpatialGrid(obj); }
@@ -179,7 +175,7 @@ export class BasicViewportCuller {
     /**
      * Add object to spatial grid
      */
-    addObjectToSpatialGrid(obj: RenderableObject): void { const bounds = this.calculateObjectBounds(obj),
+    addObjectToSpatialGrid(obj: RenderableObject): void { const bounds = this.calculateObjectBounds(obj);
         const gridSize = this.config.gridSize,
         
         const startX = Math.floor(bounds.x / gridSize) * gridSize,
@@ -204,7 +200,7 @@ export class BasicViewportCuller {
             x: obj.x || 0,
             y: obj.y || 0,
             width: obj.width || 0,
-    height: obj.height || 0 };
+    height: obj.height || 0 },
         // Account for rotation and scaling
         if (obj.rotation || obj.scale !== 1) {
             const centerX = bounds.x + bounds.width / 2,
@@ -282,10 +278,10 @@ export class BasicViewportCuller {
     /**
      * Reset viewport culler
      */
-    reset(): void { this.config.renderableObjects.clear(),
-        this.config.culledObjects.clear(),
-        this.config.visibilityCache.clear(),
-        this.rebuildSpatialGrid(),
+    reset(): void { this.config.renderableObjects.clear();
+        this.config.culledObjects.clear();
+        this.config.visibilityCache.clear();
+        this.rebuildSpatialGrid();
         this.config.stats = {
             totalObjects: 0,
             culledObjects: 0,
@@ -295,6 +291,6 @@ export class BasicViewportCuller {
     /**
      * Handle canvas resize
      */
-    handleCanvasResize(): void { this.updateViewport(),
+    handleCanvasResize(): void { this.updateViewport();
         this.rebuildSpatialGrid() }
 }

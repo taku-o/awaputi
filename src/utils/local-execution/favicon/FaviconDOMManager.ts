@@ -7,15 +7,15 @@
  */
 
 // Type definitions
-interface FaviconData { size: number | 'ico',
+interface FaviconData { size: number | 'ico';
     dataURL: string;
     type: string;
 
 interface BrowserCompatibility { browser: {
-        nam,e: string,
+        nam,e: string;
         version?: string;
 
-interface ValidationResult { hasIcoFavicon: boolean,
+interface ValidationResult { hasIcoFavicon: boolean;
     hasPngFavicons: boolean;
     hasAppleTouchIcon: boolean;
     totalLinks: number;
@@ -41,8 +41,7 @@ export default class FaviconDOMManager { /**
     static addFaviconsToDOM(faviconData: FaviconData[]): void { const head = document.head,
 
         faviconData.forEach(({ size, dataURL, type )) => { ''
-            const link = document.createElement('link'),
-
+            const link = document.createElement('link');
             if (size === 'ico') {
                 // favicon.ico
                 link.rel = 'icon' }
@@ -68,7 +67,7 @@ export default class FaviconDOMManager { /**
 
         if (largestFavicon) {
 
-            const appleLink = document.createElement('link'),
+            const appleLink = document.createElement('link');
             appleLink.rel = 'apple-touch-icon',
             appleLink.href = largestFavicon.dataURL }
             head.appendChild(appleLink); }
@@ -83,7 +82,7 @@ export default class FaviconDOMManager { /**
         ','
         // 標準的なfavicon.ico
         if(faviconMap.has(32)) {''
-            const icoLink = document.createElement('link'),
+            const icoLink = document.createElement('link');
             icoLink.rel = 'shortcut icon',
             icoLink.type = 'image/x-icon',
 
@@ -115,7 +114,7 @@ export default class FaviconDOMManager { /**
             hasAppleTouchIcon: false,
             totalLinks: existingLinks.length,
             sizes: [],
-    issues: []  };
+    issues: []  },
         existingLinks.forEach(link => {  const, linkElement = link, as HTMLLinkElement,
             const, rel = linkElement.rel,
             const, href = linkElement.href,
@@ -156,7 +155,7 @@ export default class FaviconDOMManager { /**
         let manifestLink = document.querySelector('link[rel="manifest"]" as HTMLLinkElement,'
         if (!manifestLink && metadata.manifestURL) {
 
-            manifestLink = document.createElement('link'),
+            manifestLink = document.createElement('link');
             manifestLink.rel = 'manifest',
             manifestLink.href = metadata.manifestURL }
             document.head.appendChild(manifestLink); }
@@ -167,7 +166,7 @@ export default class FaviconDOMManager { /**
 
             let themeColorMeta = document.querySelector('meta[name="theme-color"]" as HTMLMetaElement,'
             if (!themeColorMeta) {''
-                themeColorMeta = document.createElement('meta'),
+                themeColorMeta = document.createElement('meta');
                 themeColorMeta.name = 'theme-color' }
                 document.head.appendChild(themeColorMeta); }
             }
@@ -179,7 +178,7 @@ export default class FaviconDOMManager { /**
 
             let msTileMeta = document.querySelector('meta[name="msapplication-TileColor"]" as HTMLMetaElement,'
             if (!msTileMeta) {''
-                msTileMeta = document.createElement('meta'),
+                msTileMeta = document.createElement('meta');
                 msTileMeta.name = 'msapplication-TileColor',
                 msTileMeta.content = metadata.msTileColor }
                 document.head.appendChild(msTileMeta); }
@@ -196,7 +195,7 @@ export default class FaviconDOMManager { /**
         const safariSizes: number[] = [57, 60, 72, 76, 114, 120, 144, 152, 180],
         ','
 
-        safariSizes.forEach(size => { ),
+        safariSizes.forEach(size => { );
             if(faviconMap.has(size)) {''
                 const link = document.createElement('link'),' }'
 
@@ -205,7 +204,7 @@ export default class FaviconDOMManager { /**
                 link.href = faviconMap.get(size)!;
                 head.appendChild(link);
             }
-        });
+        };
     }
     
     /**
@@ -218,9 +217,9 @@ export default class FaviconDOMManager { /**
         const chromeSizes: number[] = [16, 32, 48, 96, 192],
         ','
 
-        chromeSizes.forEach(size => { ),
+        chromeSizes.forEach(size => { );
             if(faviconMap.has(size)) {''
-                const link = document.createElement('link'),
+                const link = document.createElement('link');
                 link.rel = 'icon',' }'
 
                 link.type = 'image/png'; }
@@ -228,7 +227,7 @@ export default class FaviconDOMManager { /**
                 link.href = faviconMap.get(size)!;
                 head.appendChild(link);
             }
-        });
+        };
     }
     
     /**
@@ -241,9 +240,9 @@ export default class FaviconDOMManager { /**
         const firefoxSizes: number[] = [16, 32, 48],
         ','
 
-        firefoxSizes.forEach(size => { ),
+        firefoxSizes.forEach(size => { );
             if(faviconMap.has(size)) {''
-                const link = document.createElement('link'),
+                const link = document.createElement('link');
                 link.rel = 'icon',' }'
 
                 link.type = 'image/png'; }
@@ -251,7 +250,7 @@ export default class FaviconDOMManager { /**
                 link.href = faviconMap.get(size)!;
                 head.appendChild(link);
             }
-        });
+        };
     }
     
     /**
@@ -264,9 +263,9 @@ export default class FaviconDOMManager { /**
         const pwaLargeSizes: number[] = [192, 512],
         ','
 
-        pwaLargeSizes.forEach(size => { ),
+        pwaLargeSizes.forEach(size => { );
             if(faviconMap.has(size)) {''
-                const link = document.createElement('link'),
+                const link = document.createElement('link');
                 link.rel = 'icon',' }'
 
                 link.type = 'image/png'; }
@@ -274,11 +273,11 @@ export default class FaviconDOMManager { /**
                 link.href = faviconMap.get(size)!;
                 head.appendChild(link);
             }
-        });
+        };
         ';'
         // Android Chrome用
         if(faviconMap.has(192)) { ''
-            const link = document.createElement('link'),
+            const link = document.createElement('link');
             link.rel = 'icon',
             link.type = 'image/png',
             link.sizes = '192x192',

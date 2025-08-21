@@ -5,37 +5,39 @@
  */
 
 // カスタムテーマの型定義
-export interface CustomTheme { id: string,
+export interface CustomTheme { id: string;
     name: string;
     author: string;
     created: string;
     version: string;
     colors: {
-        primar,y: string[],
+        primar,y: string[];
         secondary?: string[];
         accent?: string[],  };
-    particles: { types: string[],
+    particles: { types: string[];
         density?: number;
         movement?: string;
         spawnRate?: number;;
-    effects: { bubbleDestruction: string,
+    effects: { bubbleDestruction: string;
         comboEffect?: string;
         backgroundPattern?: string;;
     audio?: { ambientSounds?: string[],
         destructionSounds?: string[];
 
-export interface ThemeHistoryEntry { action: 'save' | 'delete' | 'import' | 'export',
+export interface ThemeHistoryEntry { action: 'save' | 'delete' | 'import' | 'export';
     themeName: string;
     timestamp: string;
     themeId: string;
-
-export interface ThemeListItem { name: string,
+    themeId: string;
+        };
+export interface ThemeListItem { name: string;
     displayName: string;
     author: string;
     created: string;
     id: string;
-
-export interface ThemeStatistics { totalThemes: number,
+    id: string;
+        };
+export interface ThemeStatistics { totalThemes: number;
     authorCounts: Record<string, number>;
     oldestTheme?: CustomTheme;
     newestTheme?: CustomTheme;
@@ -44,16 +46,18 @@ export interface ThemeBackup { themes: [string, CustomTheme][],
     history: ThemeHistoryEntry[];
     timestamp: string;
     version: string;
-
+    version: string;
+        };
 export interface StorageData { themes: [string, CustomTheme][],
     history: ThemeHistoryEntry[];
-
+    history: ThemeHistoryEntry[];
+        };
 export class CustomThemeManager {
     private customThemes: Map<string, CustomTheme>;
     private userThemes: Map<string, CustomTheme>;
     private themeHistory: ThemeHistoryEntry[];
-    private readonly, maxHistorySize: number,
-    private readonly storageKey: string,
+    private readonly, maxHistorySize: number;
+    private readonly storageKey: string;
     
     constructor() {
     ','
@@ -84,14 +88,14 @@ export class CustomThemeManager {
                 author,
                 created: new Date().toISOString('',
     version: '1.0.0'
-            })', ')';'
+            }', ')';'
             this.customThemes.set(name, themeData);
             this._addToHistory('save', name, themeData);
             this._persistToStorage();
             ';'
 
             return true;} catch (error) {
-            console.error('Failed to save custom theme:', error),
+            console.error('Failed to save custom theme:', error);
             return false,
     
     /**
@@ -108,9 +112,9 @@ export class CustomThemeManager {
      */
     deleteCustomTheme(name: string): boolean { if (this.customThemes.has(name) {
             const theme = this.customThemes.get(name)!,
-            this.customThemes.delete(name),
-            this._addToHistory('delete', name, theme),
-            this._persistToStorage(),
+            this.customThemes.delete(name);
+            this._addToHistory('delete', name, theme);
+            this._persistToStorage();
             return true }
         return false;
     }
@@ -125,7 +129,7 @@ export class CustomThemeManager {
             author: theme.author,
             created: theme.created,
     id: theme.id  }
-        });
+        };
     }
     
     /**
@@ -133,14 +137,14 @@ export class CustomThemeManager {
      * @param name - テーマ名
      * @returns JSON文字列
      */
-    exportTheme(name: string): string | null { const theme = this.customThemes.get(name),
+    exportTheme(name: string): string | null { const theme = this.customThemes.get(name);
         if (!theme) return null,
         
         try {
             return JSON.stringify(theme, null, 2),' }'
 
         } catch (error) {
-            console.error('Failed to export theme:', error),
+            console.error('Failed to export theme:', error);
             return null,
     
     /**
@@ -168,14 +172,14 @@ export class CustomThemeManager {
      * @param newName - 新しいテーマ名
      * @returns 複製成功かどうか
      */'
-    duplicateTheme(sourceName: string, newName: string): boolean { const sourceTheme = this.customThemes.get(sourceName),
+    duplicateTheme(sourceName: string, newName: string): boolean { const sourceTheme = this.customThemes.get(sourceName);
         if(!sourceTheme) return false,
         
         const duplicatedTheme: Partial<CustomTheme> = {
             ...sourceTheme,
             name: newName,
             author: sourceTheme.author + ' (copy')','
-    created: new Date().toISOString(  };
+    created: new Date().toISOString(  },
         
         return this.saveCustomTheme(newName, duplicatedTheme);
     }
@@ -184,7 +188,7 @@ export class CustomThemeManager {
      * ローカルストレージからテーマを読み込み
      */
     loadFromStorage(): void { try {
-            const stored = localStorage.getItem(this.storageKey),
+            const stored = localStorage.getItem(this.storageKey);
             if (stored) {
                 const data = JSON.parse(stored) as Partial<StorageData>,
                 if (data.themes) {
@@ -212,7 +216,7 @@ export class CustomThemeManager {
         
         themes.forEach(theme => {  ) }
             authorCounts[theme.author] = (authorCounts[theme.author] || 0) + 1; }
-        });
+        };
         
         const stats: ThemeStatistics = { totalThemes: themes.length,
             authorCounts };
@@ -222,7 +226,7 @@ export class CustomThemeManager {
             stats.oldestTheme = themes.reduce((oldest, current) => ,
                 new Date(current.created) < new Date(oldest.created) ? current : oldest),
             stats.newestTheme = themes.reduce((newest, current) => ,
-                new Date(current.created) > new Date(newest.created) ? current : newest;
+                new Date(current.created) > new Date(newest.created) ? current: newest,
             ); }
         }
         
@@ -239,8 +243,7 @@ export class CustomThemeManager {
         if (!theme || typeof, theme !== 'object') return false,
 
         const requiredFields = ['colors', 'particles', 'effects'],
-        const hasRequiredFields = requiredFields.every(field => theme.hasOwnProperty(field),
-        
+        const hasRequiredFields = requiredFields.every(field => theme.hasOwnProperty(field);
         if (!hasRequiredFields) return false,
         
         // 色設定の検証
@@ -260,7 +263,7 @@ export class CustomThemeManager {
      * @private
      */ : undefined
     private _generateThemeId(): string {
-        return `theme_${Date.now())_${Math.random().toString(36).substr(2, 9})`;
+        return `theme_${Date.now())_${Math.random().toString(36).substr(2, 9}`;
     }
     
     /**
@@ -292,8 +295,8 @@ export class CustomThemeManager {
     private _addToHistory(action: ThemeHistoryEntry['action'], themeName: string, themeData: CustomTheme): void { const historyEntry: ThemeHistoryEntry = {
             action,
             themeName,
-            timestamp: new Date().toISOString(),
-    themeId: themeData.id  };
+            timestamp: new Date().toISOString();
+    themeId: themeData.id  },
         this.themeHistory.push(historyEntry);
         
         // 履歴サイズ制限
@@ -307,7 +310,7 @@ export class CustomThemeManager {
     private _persistToStorage(): void { try {
             const data: StorageData = {
                 themes: Array.from(this.customThemes.entries(
-    history: this.themeHistory };
+    history: this.themeHistory },
             localStorage.setItem(this.storageKey, JSON.stringify(data);'} catch (error) { console.error('Failed to persist themes to storage:', error }'
     }
     
@@ -320,7 +323,7 @@ export class CustomThemeManager {
             history: this.themeHistory,
             timestamp: new Date().toISOString('',
     version: '1.0.0'
-            }))
+            })
         );
         return JSON.stringify(backup, null, 2);
     }

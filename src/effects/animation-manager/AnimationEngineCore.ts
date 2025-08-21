@@ -28,7 +28,7 @@ export type EasingType = ';'
 /**
  * Animation engine settings interface
  */
-export interface AnimationEngineSettings { enabled: boolean,
+export interface AnimationEngineSettings { enabled: boolean;
     globalSpeed: number;
     quality: AnimationQuality;
     enableEasing: boolean;
@@ -37,14 +37,14 @@ export interface AnimationEngineSettings { enabled: boolean,
 /**
  * Performance metrics interface
  */
-export interface PerformanceMetrics { activeAnimations: number,
+export interface PerformanceMetrics { activeAnimations: number;
     frameTime: number;
     droppedFrames: number;
 
 /**
  * Animation progress result interface
  */
-export interface AnimationProgress { progress: number,
+export interface AnimationProgress { progress: number;
     easedProgress: number;
 
 /**
@@ -55,7 +55,7 @@ export interface AnimationTarget { [key: string]: any;
 /**
  * Animation options interface
  */
-export interface AnimationOptions { onComplete?: (animation: Animation) => void,
+export interface AnimationOptions { onComplete?: (animation: Animation) => void;
     [key: string]: any;
 }
 
@@ -74,14 +74,14 @@ export interface Animation { type?: string,
 /**
  * Quality level settings interface
  */
-export interface QualityLevelSettings { particleCount: number,
+export interface QualityLevelSettings { particleCount: number;
     effectIntensity: number;
     complexAnimations: boolean;
 
 /**
  * Quality levels configuration interface
  */
-export interface QualityLevels { low: QualityLevelSettings,
+export interface QualityLevels { low: QualityLevelSettings;
     medium: QualityLevelSettings;
     high: QualityLevelSettings;
     ultra: QualityLevelSettings;
@@ -104,9 +104,9 @@ export class AnimationEngineCore {
             enableEasing: true;
     enableParallax: true;;
         // パフォーマンス監視
-        this.performanceMetrics = { activeAnimations: 0,
-            frameTime: 0,
-    droppedFrames: 0  }))
+        this.performanceMetrics = { activeAnimations: 0;
+            frameTime: 0;
+    droppedFrames: 0  })
     }
     
     /**
@@ -126,13 +126,13 @@ export class AnimationEngineCore {
             case 'easeInCubic':','
                 return t * t * t,
             case 'easeOutCubic':','
-                return 1 - Math.pow(1 - t, 3),
+                return 1 - Math.pow(1 - t, 3);
             case 'easeInOutCubic':','
                 return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2,
             case 'easeInQuart':','
                 return t * t * t * t,
             case 'easeOutQuart':','
-                return 1 - Math.pow(1 - t, 4),
+                return 1 - Math.pow(1 - t, 4);
             case 'easeInOutQuart':','
                 return t < 0.5 ? 8 * t * t * t * t : 1 - Math.pow(-2 * t + 2, 4) / 2,
             case 'easeInBack':,
@@ -144,7 +144,7 @@ export class AnimationEngineCore {
                 const c1_2 = 1.70158,
 
                 const c3_2 = c1_2 + 1,
-                return 1 + c3_2 * Math.pow(t - 1, 3) + c1_2 * Math.pow(t - 1, 2),
+                return 1 + c3_2 * Math.pow(t - 1, 3) + c1_2 * Math.pow(t - 1, 2);
             case 'easeOutBounce':,
                 const n1 = 7.5625,
                 const d1 = 2.75,
@@ -159,7 +159,7 @@ export class AnimationEngineCore {
             case 'easeOutElastic':
                 const c4_2 = (2 * Math.PI) / 3;
                 return t === 0 ? 0 : t === 1 ? 1 : Math.pow(2, -10 * t) * Math.sin((t * 10 - 0.75) * c4_2) + 1;
-            default: return t;
+            default: return t,
     
     /**
      * アニメーション更新ループ
@@ -181,7 +181,7 @@ export class AnimationEngineCore {
             }
             
             return true;
-        });
+        };
         
         // パフォーマンス監視
         this.performanceMetrics.activeAnimations = activeAnimations.length;
@@ -262,7 +262,7 @@ export class AnimationEngineCore {
         if (typeof, window !== 'undefined' && window.dispatchEvent) { }
             const event = new CustomEvent(`animation${eventType}`, {
                 detail: { animation
-            });
+            };
             );
             window.dispatchEvent(event);
         }
@@ -272,8 +272,7 @@ export class AnimationEngineCore {
      * アニメーション進行値計算
      */'
     calculateAnimationProgress(animation: Animation): AnimationProgress { ''
-        const progress = Math.min(animation.elapsed / animation.duration, 1),
-
+        const progress = Math.min(animation.elapsed / animation.duration, 1);
         const easedProgress = this.settings.enableEasing ? undefined : undefined','
             this.ease(progress, animation.easing || 'linear' : progress;'
         return { progress, easedProgress }
@@ -293,9 +292,9 @@ export class AnimationEngineCore {
      * クリーンアップ'
      */''
     dispose('''
-            quality: 'high';
+            quality: 'high',
             enableEasing: true,
-    enableParallax: true;
+    enableParallax: true,
         },
         
         // メトリクスリセット
@@ -322,8 +321,7 @@ export class AnimationQualityController {
     /**
      * フレーム時間を記録して品質を動的調整
      */)
-    recordFrameTime(frameTime: number): void { this.frameTimeHistory.push(frameTime),
-        
+    recordFrameTime(frameTime: number): void { this.frameTimeHistory.push(frameTime);
         if (this.frameTimeHistory.length > this.maxHistorySize) {
     
 }
@@ -358,7 +356,7 @@ export class AnimationQualityController {
         const currentIndex = qualityOrder.indexOf(this.currentQuality);
         
         if (currentIndex < qualityOrder.length - 1) { this.currentQuality = qualityOrder[currentIndex + 1] }
-            console.log(`[AnimationQualityController] 品質を下げました: ${this.currentQuality}`});
+            console.log(`[AnimationQualityController] 品質を下げました: ${this.currentQuality}`};
         }
     }
     
@@ -370,14 +368,14 @@ export class AnimationQualityController {
         const currentIndex = qualityOrder.indexOf(this.currentQuality);
         
         if (currentIndex < qualityOrder.length - 1) { this.currentQuality = qualityOrder[currentIndex + 1] }
-            console.log(`[AnimationQualityController] 品質を上げました: ${this.currentQuality}`});
+            console.log(`[AnimationQualityController] 品質を上げました: ${this.currentQuality}`};
         }
     }
     
     /**
      * 現在の品質設定を取得
      */
-    getCurrentQualitySettings(): QualitySettings { return { level: this.currentQuality };
+    getCurrentQualitySettings(): QualitySettings { return { level: this.currentQuality },
             ...this.qualityLevels[this.currentQuality]
         }
     

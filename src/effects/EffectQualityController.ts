@@ -15,7 +15,7 @@ type QualityLevelType = 'low' | 'medium' | 'high' | 'ultra';
 type EffectTypeType = 'particle' | 'effect' | 'screenEffect' | 'backgroundParticle';
 type EffectPriorityType = 'critical' | 'important' | 'normal' | 'decorative';
 
-interface QualitySettings { particleCountMultiplier: number,
+interface QualitySettings { particleCountMultiplier: number;
     particleSizeMultiplier: number;
     particleComplexity: number;
     effectDistance: number;
@@ -31,24 +31,24 @@ interface EffectPriorities { critical: number,    // ゲームプレイに必須
     normal: number,      // 標準エフェクト
    , decorative: number,  // 装飾的エフェクト }
 
-interface EffectLimits { maxActiveParticles: number,
+interface EffectLimits { maxActiveParticles: number;
     maxActiveEffects: number;
     maxScreenEffects: number;
     maxBackgroundParticles: number;
 
-interface ActiveEffectCounts { particles: number,
+interface ActiveEffectCounts { particles: number;
     effects: number;
     screenEffects: number;
     backgroundParticles: number;
 
-interface PerformanceStats { averageFrameRate: number,
+interface PerformanceStats { averageFrameRate: number;
     averageMemoryUsage: number;
     currentQuality: QualityLevelType;
     autoAdjustEnabled: boolean;
     effectCounts: ActiveEffectCounts;
     effectLimits: EffectLimits;
 
-interface DebugInfo { currentQuality: QualityLevelType,
+interface DebugInfo { currentQuality: QualityLevelType;
     qualitySettings: QualitySettings;
     frameRateHistory: number[];
     memoryUsageHistory: number[];
@@ -69,59 +69,59 @@ export class EffectQualityController {
     // 品質レベル定義
     private readonly, qualityLevels: Record<QualityLevelType, QualitySettings> = {
         low: {
-            particleCountMultiplier: 0.25,
-            particleSizeMultiplier: 0.8,
-            particleComplexity: 1,
-            effectDistance: 0.5,
-            animationDetail: 1,
-            shadowEnabled: false,
-            reflectionEnabled: false,
-            blurEnabled: false,
-            backgroundParticles: false,
+            particleCountMultiplier: 0.25;
+            particleSizeMultiplier: 0.8;
+            particleComplexity: 1;
+            effectDistance: 0.5;
+            animationDetail: 1;
+            shadowEnabled: false;
+            reflectionEnabled: false;
+            blurEnabled: false;
+            backgroundParticles: false;
     frameRateTarget: 30  };
-        medium: { particleCountMultiplier: 0.5,
-            particleSizeMultiplier: 0.9,
-            particleComplexity: 2,
-            effectDistance: 0.75,
-            animationDetail: 2,
-            shadowEnabled: false,
-            reflectionEnabled: false,
-            blurEnabled: true,
-            backgroundParticles: true,
+        medium: { particleCountMultiplier: 0.5;
+            particleSizeMultiplier: 0.9;
+            particleComplexity: 2;
+            effectDistance: 0.75;
+            animationDetail: 2;
+            shadowEnabled: false;
+            reflectionEnabled: false;
+            blurEnabled: true;
+            backgroundParticles: true;
     frameRateTarget: 45 };
-        high: { particleCountMultiplier: 1.0,
-            particleSizeMultiplier: 1.0,
-            particleComplexity: 3,
-            effectDistance: 1.0,
-            animationDetail: 3,
-            shadowEnabled: true,
-            reflectionEnabled: true,
-            blurEnabled: true,
-            backgroundParticles: true,
+        high: { particleCountMultiplier: 1.0;
+            particleSizeMultiplier: 1.0;
+            particleComplexity: 3;
+            effectDistance: 1.0;
+            animationDetail: 3;
+            shadowEnabled: true;
+            reflectionEnabled: true;
+            blurEnabled: true;
+            backgroundParticles: true;
     frameRateTarget: 60 };
-        ultra: { particleCountMultiplier: 1.5,
-            particleSizeMultiplier: 1.2,
-            particleComplexity: 4,
-            effectDistance: 1.25,
-            animationDetail: 4,
-            shadowEnabled: true,
-            reflectionEnabled: true,
-            blurEnabled: true,
-            backgroundParticles: true,
+        ultra: { particleCountMultiplier: 1.5;
+            particleSizeMultiplier: 1.2;
+            particleComplexity: 4;
+            effectDistance: 1.25;
+            animationDetail: 4;
+            shadowEnabled: true;
+            reflectionEnabled: true;
+            blurEnabled: true;
+            backgroundParticles: true;
     frameRateTarget: 60 
     };
     ;
     // 現在の品質設定
-    private currentQuality: QualityLevelType = 'high',
-    private autoAdjustEnabled: boolean = true,
-    private lastAdjustTime: number = 0,
+    private currentQuality: QualityLevelType = 'high';
+    private autoAdjustEnabled: boolean = true;
+    private lastAdjustTime: number = 0;
     private readonly adjustmentCooldown: number = 2000, // 2秒のクールダウン
     
     // パフォーマンス監視
-    private frameRateHistory: number[] = [],
-    private memoryUsageHistory: number[] = [],
+    private frameRateHistory: number[] = [];
+    private memoryUsageHistory: number[] = [];
     private readonly performanceCheckInterval: number = 1000, // 1秒間隔
-    private lastPerformanceCheck: number = 0,
+    private lastPerformanceCheck: number = 0;
     // エフェクト優先度システム
     private readonly, effectPriorities: EffectPriorities = { critical: 3,    // ゲームプレイに必須
         important: 2,   // ユーザー体験に重要;
@@ -129,13 +129,13 @@ export class EffectQualityController {
         decorative: 0   // 装飾的エフェクト  };
     // エフェクト制限
     private effectLimits: EffectLimits = { maxActiveParticles: 500
-        maxActiveEffects: 20,
-        maxScreenEffects: 5,
+        maxActiveEffects: 20;
+        maxScreenEffects: 5;
     maxBackgroundParticles: 50 };
     // 現在のエフェクトカウント
     private activeEffectCounts: ActiveEffectCounts = { particles: 0
-        effects: 0,
-        screenEffects: 0,
+        effects: 0;
+        screenEffects: 0;
     backgroundParticles: 0 };
     constructor() {
 
@@ -182,7 +182,7 @@ export class EffectQualityController {
         if (!this.qualityLevels[level]) {
         ','
 
-            this.errorHandler.handleError(),
+            this.errorHandler.handleError();
                 new Error(`Invalid quality level: ${level}`} }
 
                 'EffectQualityController.setQualityLevel' }
@@ -199,14 +199,14 @@ export class EffectQualityController {
         // 設定の保存
         this.configManager.set('effects.quality.level', level);
         
-        console.log(`Quality, level changed, from ${previousQuality} to ${level}`});
+        console.log(`Quality, level changed, from ${previousQuality} to ${level}`};
     }
     
     /**
      * 自動品質調整の有効/無効設定
      * @param enabled - 自動調整を有効にするか'
      */''
-    public setAutoAdjustment(enabled: boolean): void { this.autoAdjustEnabled = enabled;
+    public setAutoAdjustment(enabled: boolean): void { this.autoAdjustEnabled = enabled,
         this.configManager.set('effects.quality.autoAdjust', enabled) }
     
     /**
@@ -216,10 +216,9 @@ export class EffectQualityController {
      */
     private _adjustEffectLimits(qualityLevel: QualityLevelType): void { const quality = this.qualityLevels[qualityLevel],
         
-        this.effectLimits.maxActiveParticles = Math.floor(500 * quality.particleCountMultiplier),
-        this.effectLimits.maxActiveEffects = Math.floor(20 * quality.animationDetail / 4),
-        this.effectLimits.maxScreenEffects = Math.floor(5 * quality.animationDetail / 4),
-
+        this.effectLimits.maxActiveParticles = Math.floor(500 * quality.particleCountMultiplier);
+        this.effectLimits.maxActiveEffects = Math.floor(20 * quality.animationDetail / 4);
+        this.effectLimits.maxScreenEffects = Math.floor(5 * quality.animationDetail / 4);
         this.effectLimits.maxBackgroundParticles = quality.backgroundParticles ? undefined : undefined','
             Math.floor(50 * quality.particleCountMultiplier) : 0 }
     
@@ -248,7 +247,7 @@ export class EffectQualityController {
                 return this.activeEffectCounts.screenEffects < this.effectLimits.maxScreenEffects,
             case 'backgroundParticle':,
                 return this.activeEffectCounts.backgroundParticles < this.effectLimits.maxBackgroundParticles }
-            default: return true;
+            default: return true,
     
     /**
      * エフェクトカウントの更新
@@ -257,7 +256,7 @@ export class EffectQualityController {
      */
     public updateEffectCount(effectType: string, delta: number): void { if (this.activeEffectCounts.hasOwnProperty(effectType) {
             const typedEffectType = effectType as keyof ActiveEffectCounts,
-            this.activeEffectCounts[typedEffectType] = Math.max(0),
+            this.activeEffectCounts[typedEffectType] = Math.max(0);
                 this.activeEffectCounts[typedEffectType] + delta) }
     }
     
@@ -278,7 +277,7 @@ export class EffectQualityController {
         
         // メモリ使用量履歴の更新
         if (memoryUsage !== undefined) {
-            this.memoryUsageHistory.push(memoryUsage),
+            this.memoryUsageHistory.push(memoryUsage);
             if (this.memoryUsageHistory.length > 10) {
         }
                 this.memoryUsageHistory.shift(); }
@@ -326,7 +325,7 @@ export class EffectQualityController {
                 shouldAdjust = true }
         }
         // フレームレートが安定している場合、品質を上げる
-        else if (avgFrameRate > targetFrameRate * 1.1 && this.frameRateHistory.length >= 5) { const stableFrameRate = this.frameRateHistory.every(rate => ),
+        else if (avgFrameRate > targetFrameRate * 1.1 && this.frameRateHistory.length >= 5) { const stableFrameRate = this.frameRateHistory.every(rate => );
                 rate > targetFrameRate * 1.05),
 
             if (stableFrameRate) {
@@ -349,7 +348,7 @@ export class EffectQualityController {
         if (shouldAdjust) {
     
 }
-            console.log(`Auto-adjusting, quality from ${this.currentQuality} to ${newQuality} (FPS: ${avgFrameRate.toFixed(1}))`);
+            console.log(`Auto-adjusting, quality from ${this.currentQuality} to ${newQuality} (FPS: ${avgFrameRate.toFixed(1})`),
             this.setQualityLevel(newQuality);
             this.lastAdjustTime = currentTime;
         }
@@ -394,7 +393,7 @@ export class EffectQualityController {
         
         return { averageFrameRate: avgFrameRate,
             averageMemoryUsage: avgMemoryUsage,
-    currentQuality: this.currentQuality };
+    currentQuality: this.currentQuality },
             autoAdjustEnabled: this.autoAdjustEnabled }
             effectCounts: { ...this.activeEffectCounts,
             effectLimits: { ...this.effectLimits }
@@ -405,7 +404,7 @@ export class EffectQualityController {
      */
     public getDebugInfo(): DebugInfo { return { currentQuality: this.currentQuality,
             qualitySettings: this.getCurrentQualitySettings(
-    frameRateHistory: [...this.frameRateHistory] };
+    frameRateHistory: [...this.frameRateHistory] },
             memoryUsageHistory: [...this.memoryUsageHistory] }
             activeEffectCounts: { ...this.activeEffectCounts,
             effectLimits: { ...this.effectLimits,

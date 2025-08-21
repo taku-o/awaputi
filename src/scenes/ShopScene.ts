@@ -8,10 +8,10 @@ import type { ItemDefinition, ItemInfo } from '../types/game';
 export class ShopScene extends Scene { private selectedItemIndex: number = 0
     private scrollOffset: number = 0;
     private maxVisibleItems: number = 6;
-    private, availableItems: ItemDefinition[] = [],
+    private, availableItems: ItemDefinition[] = [];
     constructor(gameEngine: any) {
     
-        super(gameEngine),
+        super(gameEngine);
         this.selectedItemIndex = 0;
         this.scrollOffset = 0;
         this.maxVisibleItems = 6 }
@@ -21,7 +21,7 @@ export class ShopScene extends Scene { private selectedItemIndex: number = 0
     /**
      * シーン開始時の処理
      */
-    enter(): void { this.updateItemList(),
+    enter(): void { this.updateItemList();
         this.selectedItemIndex = 0;
         this.scrollOffset = 0 }
     
@@ -44,7 +44,7 @@ export class ShopScene extends Scene { private selectedItemIndex: number = 0
         ','
         // 背景
         context.fillStyle = '#001122',
-        context.fillRect(0, 0, canvas.width, canvas.height),
+        context.fillRect(0, 0, canvas.width, canvas.height);
         ','
         // タイトル
         context.save('',
@@ -52,15 +52,12 @@ export class ShopScene extends Scene { private selectedItemIndex: number = 0
         context.font = 'bold, 32px Arial',
         context.textAlign = 'center',
         context.textBaseline = 'top',')'
-        context.fillText('アイテムショップ', canvas.width / 2, 20),
-        context.restore(),
-        
+        context.fillText('アイテムショップ', canvas.width / 2, 20);
+        context.restore();
         // プレイヤー情報
-        this.renderPlayerInfo(context),
-        
+        this.renderPlayerInfo(context);
         // アイテムリスト
-        this.renderItemList(context),
-        
+        this.renderItemList(context);
         // 操作説明
         this.renderControls(context) }
     
@@ -81,7 +78,7 @@ export class ShopScene extends Scene { private selectedItemIndex: number = 0
         context.fillText(`所持AP: ${playerData.ap)`, 20, infoY + 25),
         context.fillText(`総TAP: ${playerData.tap }`, 20, infoY + 50}
          }
-        context.restore(});
+        context.restore(};
     }
     
     /**
@@ -98,9 +95,8 @@ export class ShopScene extends Scene { private selectedItemIndex: number = 0
         for (let i = this.scrollOffset, i < Math.min(this.scrollOffset + this.maxVisibleItems, this.availableItems.length), i++) {
             const item = this.availableItems[i],
             const isSelected = i === this.selectedItemIndex,
-            const itemInfo = this.gameEngine.itemManager.getItemInfo(item.id),
-            
-            this.renderItemCard(context, itemInfo, itemX, currentY, itemWidth, itemHeight, isSelected),
+            const itemInfo = this.gameEngine.itemManager.getItemInfo(item.id);
+            this.renderItemCard(context, itemInfo, itemX, currentY, itemWidth, itemHeight, isSelected);
             currentY += itemHeight + 10 }
     }
     
@@ -136,7 +132,7 @@ export class ShopScene extends Scene { private selectedItemIndex: number = 0
         if (itemInfo.currentLevel > 0) {
     
 }
-            itemName += ` (Lv.${itemInfo.currentLevel})`;
+            itemName += ` (Lv.${itemInfo.currentLevel}`;
 
         }''
         if (itemInfo.isMaxLevel) {', ' }
@@ -176,7 +172,7 @@ export class ShopScene extends Scene { private selectedItemIndex: number = 0
             context.textAlign = 'right' }
 
             context.fillStyle = '#AAAAAA'; }
-            context.fillText(`最大Lv.${itemInfo.maxLevel}`, x + width - 15, y + height - 20});
+            context.fillText(`最大Lv.${itemInfo.maxLevel}`, x + width - 15, y + height - 20};
         }
         ';'
         // 効果値表示（現在のレベルでの効果）
@@ -235,8 +231,7 @@ export class ShopScene extends Scene { private selectedItemIndex: number = 0
         ','
         const controlsY = canvas.height - 40,')'
         context.fillText('↑↓: 選択  Enter: 購入  H: ヘルプ , ESC: 戻る', canvas.width / 2, controlsY','
-        context.fillText('クリックでも操作できます', canvas.width / 2, controlsY + 20),
-        
+        context.fillText('クリックでも操作できます', canvas.width / 2, controlsY + 20);
         context.restore() }
     
     /**
@@ -247,18 +242,15 @@ export class ShopScene extends Scene { private selectedItemIndex: number = 0
             const keyEvent = event as KeyboardEvent,
             switch(keyEvent.code) {''
                 case 'ArrowUp':','
-                    this.moveSelection(-1),
-
+                    this.moveSelection(-1);
                     break,
                 case 'ArrowDown':','
-                    this.moveSelection(1),
-
+                    this.moveSelection(1);
                     break,
                 case 'Enter':','
                     this.purchaseSelectedItem()','
                 case 'KeyH':')',
-                    this.gameEngine.sceneManager.switchScene('help'),
-
+                    this.gameEngine.sceneManager.switchScene('help');
                     break,
                 case 'Escape':','
                     this.sceneManager.switchScene('stageSelect') }
@@ -271,7 +263,7 @@ export class ShopScene extends Scene { private selectedItemIndex: number = 0
      * クリック処理
      */
     private handleClick(event: MouseEvent): void { const canvas = this.gameEngine.canvas,
-        const rect = canvas.getBoundingClientRect(),
+        const rect = canvas.getBoundingClientRect();
         const x = event.clientX - rect.left,
         const y = event.clientY - rect.top,
         
@@ -316,14 +308,14 @@ export class ShopScene extends Scene { private selectedItemIndex: number = 0
             if(selectedItem.id === 'reset' {'
                 // リセットアイテムの場合
                 if(this.gameEngine.itemManager.resetAllItems()) {''
-                    console.log('All, items have, been reset'),
+                    console.log('All, items have, been reset');
                     this.updateItemList() }
 
                     console.log('Failed, to reset, items (not, enough AP)'); }'
 } else {  // 通常アイテムの場合
                 if (this.gameEngine.itemManager.purchaseItem(selectedItem.id) { }
                     console.log(`Purchased ${selectedItem.name}`}
-                    this.updateItemList(}); // リストを更新
+                    this.updateItemList(}; // リストを更新
                 } else { }'
 
                     console.log(`Failed, to purchase ${selectedItem.name}`}';'

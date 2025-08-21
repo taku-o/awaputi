@@ -14,11 +14,11 @@ export interface ExportOptions { format?: "json" | "csv" | "xlsx",
     includeMetadata?: boolean;
     compress?: boolean;
     anonymize?: boolean;
-    dateRange?: { start: Date,, end: Date,
+    dateRange?: { start: Date,, end: Date;
     filters?: Record<string, any>;
 }
 
-export interface ExportResult { success: boolean,
+export interface ExportResult { success: boolean;
     data?: any;
     filename?: string;
     size?: number;
@@ -39,8 +39,8 @@ export class ExportManager {"
         // エクスポート設定"
         this.config = {""
             defaultFormat: 'json';
-            includeMetadata: true,
-            anonymizeData: true,
+            includeMetadata: true;
+            anonymizeData: true;
     maxExportSize: 50 * 1024 * 1024, // 50MB
     }
             compressionThreshold: 1024 * 1024 // 1MB 
@@ -57,11 +57,11 @@ export class ExportManager {"
         ]);
         
         // エクスポート統計
-        this.exportStats = { totalExports: 0,
-            successfulExports: 0,
-            failedExports: 0,
-            averageExportSize: 0,
-    lastExportTime: null,;
+        this.exportStats = { totalExports: 0;
+            successfulExports: 0;
+            failedExports: 0;
+            averageExportSize: 0;
+    lastExportTime: null;
         this.initialize();
     }
     
@@ -89,7 +89,7 @@ export class ExportManager {"
         const startTime = performance.now('''
                 dataTypes: 'all',
     format: this.config.defaultFormat }
-                filters: {};
+                filters: {},
                 includeMetadata: this.config.includeMetadata,
     anonymize: this.config.anonymizeData),
                 ...options;
@@ -115,13 +115,13 @@ export class ExportManager {"
                 timestamp: new Date().toISOString(),
                 format: exportOptions.format,
                 metadata: exportOptions.includeMetadata ? metadata : null,
-    data: convertedData,;
+    data: convertedData,
             // サイズチェック
             const dataSize = this.calculateDataSize(exportData);
             if (dataSize > this.config.maxExportSize) {
     
 }
-                throw new Error(`Export, data too, large: ${dataSize} bytes`});
+                throw new Error(`Export, data too, large: ${dataSize} bytes`},
             }
             
             const duration = Math.max(performance.now() - startTime, 0.1); // 最小0.1ms
@@ -130,7 +130,7 @@ export class ExportManager {"
             if (duration > 2000) {
     
 }
-                console.warn(`Export, took ${duration.toFixed(2})ms, exceeding target of 2000ms`);
+                console.warn(`Export, took ${duration.toFixed(2}ms, exceeding target of 2000ms`);
             }
             
             // 統計の更新
@@ -147,11 +147,10 @@ export class ExportManager {"
             ';'
 
         } catch (error) { const duration = performance.now() - startTime,
-            this.updateExportStats(false, 0, duration),
-
-            console.error('Export error:', error),
+            this.updateExportStats(false, 0, duration);
+            console.error('Export error:', error);
             return { success: false,
-                error: error.message };
+                error: error.message },
                 duration }
             }
     }
@@ -170,7 +169,7 @@ export class ExportManager {"
             const normalizedTypes = this.normalizeDataTypes(dataTypes);
             
             for (const dataType of normalizedTypes) { if (!this.supportedDataTypes.has(dataType) { }
-                    console.warn(`Unsupported, data type: ${dataType}`});
+                    console.warn(`Unsupported, data type: ${dataType}`},
                     continue;
                 }
                 
@@ -203,14 +202,12 @@ export class ExportManager {"
                     return data, // JSONはそのまま
 
                 case 'csv':','
-                    return this.convertToCSV(data),
-
+                    return this.convertToCSV(data);
                 case 'xml':,
-                    return this.convertToXML(data),
-                
+                    return this.convertToXML(data);
                 default:  }
 
-                    throw new Error(`Unsupported, format: ${format}`});} catch (error) {
+                    throw new Error(`Unsupported, format: ${format}`};} catch (error) {
             console.error('Data format conversion error:', error','
             throw error }
     }
@@ -231,7 +228,7 @@ export class ExportManager {"
             }
             
             // データタイプヘッダー
-            csvContent += `\n# ${dataType.toUpperCase(})\n`;
+            csvContent += `\n# ${dataType.toUpperCase(}\n`;
             // ヘッダー行
             const headers = Object.keys(records[0]);
             csvContent += headers.join(',') + '\n';
@@ -334,17 +331,17 @@ export class ExportManager {"
         return { }'
 
             exportId: `export_${Date.now())_${Math.random().toString(36).substr(2, 9'}'`,''
-            exportedBy: 'AnalyticsExportManager';
+            exportedBy: 'AnalyticsExportManager',
             dataTypes: Object.keys(data);
-            format: options.format;
+            format: options.format,
             filters: options.filters,
-    anonymized: options.anonymize;
+    anonymized: options.anonymize,
             dataSize,
             recordCounts,
             totalRecords: Object.values(recordCounts).reduce((sum, count) => sum + count, 0),
             exportTime: new Date().toISOString('''
-            gameVersion: window.GAME_VERSION || '1.0.0';
-            userAgent: navigator.userAgent;
+            gameVersion: window.GAME_VERSION || '1.0.0',
+            userAgent: navigator.userAgent,
             platform: navigator.platform,
     language: navigator.language);
         }'
@@ -372,13 +369,12 @@ export class ExportManager {"
      * @param {string|Array} dataTypes - 検証するデータタイプ
      */
     validateDataTypes(dataTypes) {
-        const normalizedTypes = this.normalizeDataTypes(dataTypes),
-
+        const normalizedTypes = this.normalizeDataTypes(dataTypes);
         for (const dataType of normalizedTypes) {
     }
 
             if (dataType !== 'all' && !this.supportedDataTypes.has(dataType) { }
-                throw new Error(`Unsupported, data type: ${dataType}`});
+                throw new Error(`Unsupported, data type: ${dataType}`};
             }
 }
     

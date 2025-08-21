@@ -18,13 +18,13 @@ export class MotionManager {'
         // モーション設定
         this.config = { : undefined
             enabled: true;
-            globalReducedMotion: false,
-            respectSystemPreference: true,
-            vestibularSafety: true,
+            globalReducedMotion: false;
+            respectSystemPreference: true;
+            vestibularSafety: true;
     motionLevels: {''
-                none: 'すべてのアニメーションを無効',
-                essential: '重要なアニメーションのみ',
-                reduced: '軽減されたアニメーション',
+                none: 'すべてのアニメーションを無効';
+                essential: '重要なアニメーションのみ';
+                reduced: '軽減されたアニメーション';
                 normal: '通常のアニメーション' }
 
                 enhanced: '強化されたアニメーション' 
@@ -39,7 +39,7 @@ export class MotionManager {'
                 game: { enabled: true, intensity: 0.9, duration: 1.0  };
                 background: { enabled: true, intensity: 0.6, duration: 1.0  };
             vestibularGuidelines: { maxRotationSpeed: 360, // 度/秒
-                maxScaleChange: 2.0,
+                maxScaleChange: 2.0;
     maxParallaxDistance: 100, // ピクセル;
                 flashingThreshold: 3, // 回/秒;
                 autoplayPause: 5000 // 5秒で自動停止  }
@@ -52,43 +52,44 @@ export class MotionManager {'
         this.animationObservers = new Map();
         
         // パフォーマンス監視
-        this.performanceMonitor = { frameRate: 60,
-            droppedFrames: 0,
-            animationCount: 0,
+        this.performanceMonitor = { frameRate: 60;
+            droppedFrames: 0;
+            animationCount: 0;
     lastFrameTime: 0  };
         // 統計情報
-        this.stats = { animationsControlled: 0,
-            animationsPaused: 0,
-            animationsReduced: 0,
-            vestibularWarnings: 0,
-    performanceAdjustments: 0,
+        this.stats = { animationsControlled: 0;
+            animationsPaused: 0;
+            animationsReduced: 0;
+            vestibularWarnings: 0;
+    performanceAdjustments: 0;
             sessionStart: Date.now('''
-            motionLevel: 'normal',
-    vestibularSafety: true,
-            autoReduceOnPerformance: true,
-            customIntensities: new Map('',
-    flashingSensitivity: 'medium',
-            parallaxSensitivity: 'medium',
+            motionLevel: 'normal';
+    vestibularSafety: true;
+            autoReduceOnPerformance: true;
+            customIntensities: new Map('';
+    flashingSensitivity: 'medium';
+            parallaxSensitivity: 'medium';
     granularControls: {
-                animationIntensity: 1.0,
-                transitionSpeed: 1.0,
-                effectsLevel: 1.0,
-                particleDensity: 1.0,
-                cameraMovement: 0.5,
+                animationIntensity: 1.0;
+                transitionSpeed: 1.0;
+                effectsLevel: 1.0;
+                particleDensity: 1.0;
+                cameraMovement: 0.5;
     backgroundMotion: 0.8  };
-            selectiveReduction: { disableRotation: false,
-                disableScaling: false,
-                disableParallax: false,
-                disableParticles: false,
-                disableCameraShake: false,
-    disableBackgroundAnimation: false,;
+            selectiveReduction: { disableRotation: false;
+                disableScaling: false;
+                disableParallax: false;
+                disableParticles: false;
+                disableCameraShake: false;
+    disableBackgroundAnimation: false;
         // 危険なモーションパターンの検出
         this.hazardPatterns = {
-            rapidFlashing: { threshold: 3, detected: false,;
+            rapidFlashing: { threshold: 3, detected: false;
             rapidRotation: { threshold: 720, detected: false,)
             extremeZoom: { threshold: 3.0, detected: false,)
-            violentShaking: { threshold: 20, detected: false,;
-        
+            violentShaking: { threshold: 20, detected: false;
+            violentShaking: { threshold: 20, detected: false;
+        };
         // サブコンポーネントの初期化（依存注入）)
         this.configManager = new MotionConfigManager(this);
         this.animationController = new AnimationController(this);
@@ -104,22 +105,17 @@ export class MotionManager {'
     initialize() {
         try {
             // システム設定の検出（設定管理に委譲）
-            this.configManager.detectSystemPreferences(),
-            
+            this.configManager.detectSystemPreferences();
             // ユーザー設定の読み込み（設定管理に委譲）
-            this.configManager.loadUserPreferences(),
-            
+            this.configManager.loadUserPreferences();
             // 動的スタイルシートの作成（アニメーション制御に委譲）
-            this.animationController.createDynamicStyleSheet(),
-            
+            this.animationController.createDynamicStyleSheet();
             // パフォーマンス監視の開始（アニメーション制御に委譲）
-            this.animationController.startPerformanceMonitoring(),
-            
+            this.animationController.startPerformanceMonitoring();
             // イベントリスナーの設定（前庭安全に委譲）
-            this.vestibularSafetyManager.setupEventListeners(),
-            
+            this.vestibularSafetyManager.setupEventListeners();
             // 初期アニメーション分析
-            this.analyzeExistingAnimations(),
+            this.analyzeExistingAnimations();
             // 安全性監視開始（前庭安全に委譲）
             this.vestibularSafetyManager.startSafetyMonitoring() }
 
@@ -137,10 +133,10 @@ export class MotionManager {'
     analyzeExistingAnimations()';'
                 '[style*="animation"], [style*="transition"], .animated, .animate);'
             
-            animatedElements.forEach(element => {  ),
+            animatedElements.forEach(element => {  );
                 const category = this.detectAnimationCategory(element) }
                 this.animationController.registerAnimation(element, category); }
-            });
+            };
             ';'
 
             console.log(`Analyzed ${animatedElements.length} existing, animations`);
@@ -247,7 +243,7 @@ export class MotionManager {'
     }
         this.activeAnimations.forEach((animation, id) => {  }
             this.animationController.applyCategorySettings(animation.element, animation.category); }
-        });
+        };
     }
     
     /**
@@ -255,8 +251,7 @@ export class MotionManager {'
      */''
     togglePerformanceMode(enabled) {
 
-        document.body.classList.toggle('performance-mode', enabled),
-
+        document.body.classList.toggle('performance-mode', enabled);
         if (enabled) {
     }
 
@@ -350,7 +345,7 @@ export class MotionManager {'
      * 警告の却下（後方互換性）
      */
     dismissWarning(controlId) {
-        const control = document.getElementById(controlId),
+        const control = document.getElementById(controlId);
         if (control) {
     }
             document.body.removeChild(control); }

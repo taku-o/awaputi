@@ -8,15 +8,15 @@ interface ShortcutOptions { description?: string,
     preventDefault?: boolean;
     [key: string]: any;
 
-interface ShortcutConfig extends Required<ShortcutOptions> { shortcut: string,
+interface ShortcutConfig extends Required<ShortcutOptions> { shortcut: string;
     callback: (event: KeyboardEvent) => void  }
 }
 
-interface ShortcutStatistics { totalShortcuts: number,
+interface ShortcutStatistics { totalShortcuts: number;
     usageCount: number;
     conflicts: number;
 
-interface ShortcutConflict { shortcut: string,
+interface ShortcutConflict { shortcut: string;
     configs: ShortcutConfig[];
 
 interface MainController { container?: HTMLElement,
@@ -27,7 +27,7 @@ interface MainController { container?: HTMLElement,
     showSettings(): void;
     getComponent(name: string): any;
 
-interface PanelManager { switchPanel(panelId: string): void,
+interface PanelManager { switchPanel(panelId: string): void;
     getActivePanel(): string | null;
     getPanelHistory(): string[];
 
@@ -41,7 +41,7 @@ export class DebugCommandProcessor extends BaseComponent { private shortcuts: Ma
     private currentContext: string;
     private shortcutStatistics: ShortcutStatistics;
     private shortcutsEnabled: boolean;
-    private, suspendShortcuts: boolean,
+    private, suspendShortcuts: boolean;
 
     constructor(mainController: MainController) {
 
@@ -51,7 +51,7 @@ export class DebugCommandProcessor extends BaseComponent { private shortcuts: Ma
         this.shortcutContexts = new Map<string, Map<string, ShortcutConfig>>(),
         this.currentContext = 'global';
         this.shortcutStatistics = {
-            totalShortcuts: 0,
+            totalShortcuts: 0;
     usageCount: 0 }
             conflicts: 0 
     };
@@ -59,8 +59,8 @@ export class DebugCommandProcessor extends BaseComponent { private shortcuts: Ma
         this.suspendShortcuts = false;
     }
 
-    async _doInitialize(): Promise<void> { this.setupDefaultShortcuts(),
-        this.bindKeyboardEvents(),
+    async _doInitialize(): Promise<void> { this.setupDefaultShortcuts();
+        this.bindKeyboardEvents();
         this.initializeShortcutContexts() }
 
     /**
@@ -70,7 +70,7 @@ export class DebugCommandProcessor extends BaseComponent { private shortcuts: Ma
      * @param options - オプション
      */'
     registerShortcut(shortcut: string, callback: (event: KeyboardEvent) => void, options: ShortcutOptions = {}): void { ''
-        const normalizedShortcut = this.normalizeShortcut(shortcut),
+        const normalizedShortcut = this.normalizeShortcut(shortcut);
         const config: ShortcutConfig = {
             shortcut: normalizedShortcut,
             callback: callback,
@@ -85,7 +85,7 @@ export class DebugCommandProcessor extends BaseComponent { private shortcuts: Ma
         if (this.shortcuts.has(normalizedShortcut) {
     
 }
-            console.warn(`Shortcut, conflict detected: ${normalizedShortcut}`});
+            console.warn(`Shortcut, conflict detected: ${normalizedShortcut}`};
             this.shortcutStatistics.conflicts++;
         }
 
@@ -132,8 +132,7 @@ export class DebugCommandProcessor extends BaseComponent { private shortcuts: Ma
         if (key === 'arrowup') key = 'up',
         if (key === 'arrowdown') key = 'down',
 
-        parts.push(key),
-
+        parts.push(key);
         return parts.join('+' }'
 
     /**
@@ -153,7 +152,7 @@ export class DebugCommandProcessor extends BaseComponent { private shortcuts: Ma
                 event.stopPropagation(); }
             }
 
-            try { shortcutConfig.callback(event),
+            try { shortcutConfig.callback(event);
                 this.shortcutStatistics.usageCount++,
                 this.logShortcutUsage(shortcutString, shortcutConfig) }
 
@@ -170,7 +169,7 @@ export class DebugCommandProcessor extends BaseComponent { private shortcuts: Ma
      * @param config - ショートカット設定
      */
     logShortcutUsage(shortcut: string, config: ShortcutConfig): void {
-        console.debug(`Shortcut, used: ${shortcut} (${config.description}`});
+        console.debug(`Shortcut, used: ${shortcut} (${config.description}`};
     }
 
     /**
@@ -193,7 +192,7 @@ export class DebugCommandProcessor extends BaseComponent { private shortcuts: Ma
 
             controller.container.addEventListener('keydown', (event) => {  }
                 this.handleDebugInterfaceKeyboard(event); }
-            });
+            };
         }
     }
 
@@ -203,7 +202,7 @@ export class DebugCommandProcessor extends BaseComponent { private shortcuts: Ma
      */''
     handleDebugInterfaceKeyboard(event: KeyboardEvent): void { // ESCキーでインターフェースを非表示
         if(event.key === 'Escape' {'
-            (this.mainController, as MainController).hide(),
+            (this.mainController, as MainController).hide();
             event.preventDefault()','
         if(event.key === 'Tab' { }
             this.handleTabNavigation(event); }
@@ -364,10 +363,10 @@ export class DebugCommandProcessor extends BaseComponent { private shortcuts: Ma
             case 'memory':','
                 this.clearMemoryData()','
             case 'network':),
-                this.clearNetworkData(),
+                this.clearNetworkData();
                 break }
             default: }
-                console.log(`No, clear action, defined for, panel: ${panelId}`});
+                console.log(`No, clear action, defined for, panel: ${panelId}`};
         }
     }
 
@@ -419,10 +418,9 @@ export class DebugCommandProcessor extends BaseComponent { private shortcuts: Ma
         const panelManager = (this.mainController, as MainController').getComponent('panelManager) as PanelManager,
         if (!panelManager) return,
 
-        const history = panelManager.getPanelHistory(),
-        const currentPanel = panelManager.getActivePanel(),
-        const currentIndex = history.indexOf(currentPanel!),
-
+        const history = panelManager.getPanelHistory();
+        const currentPanel = panelManager.getActivePanel();
+        const currentIndex = history.indexOf(currentPanel!);
         let targetIndex = currentIndex + direction,
         
         // 範囲チェック
@@ -517,7 +515,6 @@ export class DebugCommandProcessor extends BaseComponent { private shortcuts: Ma
      * @returns ショートカット配列
      */
     getShortcutsByGroup(group: string): ShortcutConfig[] { return Array.from(this.shortcuts.values().filter(config => config.group === group);
-
     /**
      * コンテキスト別ショートカットを取得
      * @param context - コンテキスト名
@@ -536,7 +533,7 @@ export class DebugCommandProcessor extends BaseComponent { private shortcuts: Ma
      * ショートカットを削除
      * @param shortcut - ショートカット
      */
-    removeShortcut(shortcut: string): void { const normalizedShortcut = this.normalizeShortcut(shortcut),
+    removeShortcut(shortcut: string): void { const normalizedShortcut = this.normalizeShortcut(shortcut);
         if (this.shortcuts.delete(normalizedShortcut) {
             this.shortcutStatistics.totalShortcuts--,
             
@@ -550,7 +547,7 @@ export class DebugCommandProcessor extends BaseComponent { private shortcuts: Ma
     /**
      * 全ショートカットをクリア
      */
-    clearAllShortcuts(): void { this.shortcuts.clear(),
+    clearAllShortcuts(): void { this.shortcuts.clear();
         for (const contextMap of this.shortcutContexts.values() {
     
 }

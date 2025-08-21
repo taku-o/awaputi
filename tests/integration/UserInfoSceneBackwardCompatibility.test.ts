@@ -11,7 +11,7 @@ global.jest = {
             mockFn.mock.results.push({ type: 'return', value: impl ? impl(...args) : undefined,);
             return impl ? impl(...args) : undefined;
         };
-        mockFn.mock = { calls: [], results: [] };
+        mockFn.mock = { calls: [], results: [] },
         return mockFn;
     }
 };
@@ -26,7 +26,7 @@ function createMockCanvas() {
             top: 0,
             width: 800,
             height: 600
-    }))
+    })
     );
 )
 // モックContext
@@ -42,7 +42,7 @@ function createMockContext(') {'
         strokeRect: global.jest.fn(
         fillText: global.jest.fn(
         clearRect: global.jest.fn(
-        drawImage: global.jest.fn( };
+        drawImage: global.jest.fn( },
 }
 // モックGameEngine
 class MockGameEngine {
@@ -51,24 +51,24 @@ class MockGameEngine {
         this.sceneManager = {
             switchScene: global.jest.fn()' };'
         this.playerData = {
-            username: 'TestUser',
-            totalAP: 1000,
-            currentAP: 500,
+            username: 'TestUser';
+            totalAP: 1000;
+            currentAP: 500;
             getData: global.jest.fn((') => ({'
-                username: 'TestUser',
-                totalAP: 1000,
+                username: 'TestUser';
+                totalAP: 1000;
                 currentAP: 500
-    })),
+    }),
             saveData: global.jest.fn(
-        setUsername: global.jest.fn(),
+        setUsername: global.jest.fn();
         this.statisticsManager = {
             getDetailedStatistics: global.jest.fn((') => Promise.resolve({'
                 basic: {
-                    totalGamesPlayed: 10,
-                    totalPlayTime: '2時間30分',
-                    totalScore: 50000,
-                    highestScore: 10000,
-                    averageScore: 5000,
+                    totalGamesPlayed: 10;
+                    totalPlayTime: '2時間30分';
+                    totalScore: 50000;
+                    highestScore: 10000;
+                    averageScore: 5000;
         completionRate: 75)
             ))
         ),
@@ -81,14 +81,14 @@ class MockGameEngine {
     }
 }
 describe('UserInfoScene Backward Compatibility Tests', () => {
-    let gameEngine: any,
-    let userInfoScene: any,
+    let gameEngine: any;
+    let userInfoScene: any;
     
     beforeEach(async (') => {'
         const { UserInfoScene } = await import('../../src/scenes/UserInfoScene.js');
         gameEngine = new MockGameEngine();
         userInfoScene = new UserInfoScene(gameEngine);
-    });
+    };
     afterEach(() => {
         if (userInfoScene && userInfoScene.exit) {
             userInfoScene.exit() }
@@ -109,10 +109,10 @@ describe('UserInfoScene Backward Compatibility Tests', () => {
             expect(typeof userInfoScene.setErrorMessage').toBe('function') }');
         test('should maintain expected properties', () => {
             // 期待されるプロパティ
-            expect(userInfoScene.currentTab).toBeDefined(),
-            expect(userInfoScene.tabs).toBeDefined(),
-            expect(Array.isArray(userInfoScene.tabs).toBe(true),
-            expect(userInfoScene.gameEngine).toBe(gameEngine),
+            expect(userInfoScene.currentTab).toBeDefined();
+            expect(userInfoScene.tabs).toBeDefined();
+            expect(Array.isArray(userInfoScene.tabs).toBe(true);
+            expect(userInfoScene.gameEngine).toBe(gameEngine);
             expect(userInfoScene.sceneManager).toBe(gameEngine.sceneManager) }');'
     }
     describe('Tab System Compatibility', (') => {'
@@ -124,51 +124,51 @@ describe('UserInfoScene Backward Compatibility Tests', () => {
         test('should switch tabs using switchTab method', () => {
             userInfoScene.enter('),'
             // 各タブへの切り替えテスト
-            userInfoScene.switchTab('achievements'),
+            userInfoScene.switchTab('achievements');
             expect(userInfoScene.currentTab').toBe('achievements'),'
-            userInfoScene.switchTab('management'),
+            userInfoScene.switchTab('management');
             expect(userInfoScene.currentTab').toBe('management'),'
-            userInfoScene.switchTab('help'),
+            userInfoScene.switchTab('help');
             expect(userInfoScene.currentTab').toBe('help'),'
-            userInfoScene.switchTab('statistics'),
+            userInfoScene.switchTab('statistics');
             expect(userInfoScene.currentTab').toBe('statistics') }');
         test('should reset scroll position on tab switch', () => {
             userInfoScene.enter('),'
             userInfoScene.scrollPosition = 100,
             
-            userInfoScene.switchTab('achievements'),
+            userInfoScene.switchTab('achievements');
             expect(userInfoScene.scrollPosition).toBe(0) }');'
     }
     describe('Data Loading Compatibility', (') => {'
         test('should load user data on enter', async () => {
-            userInfoScene.enter(),
-            expect(gameEngine.playerData.getData).toHaveBeenCalled(),
-            await new Promise(resolve => setTimeout(resolve, 100),
-            expect(userInfoScene.userData).toBeDefined(),
+            userInfoScene.enter();
+            expect(gameEngine.playerData.getData).toHaveBeenCalled();
+            await new Promise(resolve => setTimeout(resolve, 100);
+            expect(userInfoScene.userData).toBeDefined();
             expect(userInfoScene.userData.username').toBe('TestUser') }');
         test('should load statistics data', async () => {
-            userInfoScene.enter(),
-            await new Promise(resolve => setTimeout(resolve, 100),
-            expect(gameEngine.statisticsManager.getDetailedStatistics).toHaveBeenCalled(),
+            userInfoScene.enter();
+            await new Promise(resolve => setTimeout(resolve, 100);
+            expect(gameEngine.statisticsManager.getDetailedStatistics).toHaveBeenCalled();
             expect(userInfoScene.statisticsData).toBeDefined() }');'
         test('should load achievements data', async () => {
-            userInfoScene.enter(),
-            await new Promise(resolve => setTimeout(resolve, 100),
-            expect(gameEngine.achievementManager.getAchievements).toHaveBeenCalled(),
+            userInfoScene.enter();
+            await new Promise(resolve => setTimeout(resolve, 100);
+            expect(gameEngine.achievementManager.getAchievements).toHaveBeenCalled();
             expect(userInfoScene.achievementsData).toBeDefined() }');'
         test('should handle loadUserData method calls', async () => {
-            userInfoScene.loadUserData(),
-            await new Promise(resolve => setTimeout(resolve, 100),
-            expect(gameEngine.playerData.getData).toHaveBeenCalled(),
-            expect(gameEngine.statisticsManager.getDetailedStatistics).toHaveBeenCalled(),
+            userInfoScene.loadUserData();
+            await new Promise(resolve => setTimeout(resolve, 100);
+            expect(gameEngine.playerData.getData).toHaveBeenCalled();
+            expect(gameEngine.statisticsManager.getDetailedStatistics).toHaveBeenCalled();
             expect(gameEngine.achievementManager.getAchievements).toHaveBeenCalled() }');'
     }
     describe('Click Handling Compatibility', (') => {'
         test('should handle clicks on tabs', () => {
-            userInfoScene.enter(),
+            userInfoScene.enter();
             // タブエリアのクリック
             const event = {
-                clientX: 200,
+                clientX: 200;
                 clientY: userInfoScene.headerHeight - userInfoScene.tabHeight / 2
             };
             
@@ -177,9 +177,9 @@ describe('UserInfoScene Backward Compatibility Tests', () => {
             expect(['statistics', 'achievements', 'management', 'help']).toContain(userInfoScene.currentTab);
         }');'
         test('should handle back button click', () => {
-            userInfoScene.enter(),
+            userInfoScene.enter();
             const event = {
-                clientX: 110,
+                clientX: 110;
                 clientY: gameEngine.canvas.height - 45
             };
             
@@ -187,23 +187,23 @@ describe('UserInfoScene Backward Compatibility Tests', () => {
             expect(gameEngine.sceneManager.switchScene').toHaveBeenCalledWith('menu');'
         }');'
         test('should delegate content area clicks', () => {
-            userInfoScene.enter(),
+            userInfoScene.enter();
             const event = {
-                clientX: 400,
+                clientX: 400;
                 clientY: 300
             };
             
             // エラーが発生しないことを確認
             expect(() => {
-                userInfoScene.handleClick(event) }).not.toThrow();
+                userInfoScene.handleClick(event) }.not.toThrow();
         }
     }');'
     describe('Keyboard Navigation Compatibility', (') => {'
         test('should handle Tab key navigation', () => {
             userInfoScene.enter('),'
             const event = {
-                key: 'Tab',
-                shiftKey: false,
+                key: 'Tab';
+                shiftKey: false;
         preventDefault: global.jest.fn( };
             
             userInfoScene.handleKeyPress(event);
@@ -215,7 +215,7 @@ describe('UserInfoScene Backward Compatibility Tests', () => {
             userInfoScene.focusedElement = 1, // 実績タブ
             
             const event = {
-                key: 'Enter',
+                key: 'Enter';
         preventDefault: global.jest.fn( };
             
             userInfoScene.handleKeyPress(event);
@@ -224,7 +224,7 @@ describe('UserInfoScene Backward Compatibility Tests', () => {
         test('should handle Escape key', () => {
             userInfoScene.enter('),'
             const event = {
-                key: 'Escape',
+                key: 'Escape';
         preventDefault: global.jest.fn( };
             
             userInfoScene.handleKeyPress(event);
@@ -233,31 +233,31 @@ describe('UserInfoScene Backward Compatibility Tests', () => {
     }
     describe('Rendering Compatibility', (') => {'
         test('should render without errors', () => {
-            userInfoScene.enter(),
-            const context = createMockContext(),
+            userInfoScene.enter();
+            const context = createMockContext();
             expect(() => {
-                userInfoScene.render(context) }).not.toThrow();
+                userInfoScene.render(context) }.not.toThrow();
             // 基本的な描画が行われることを確認
             expect(context.fillRect).toHaveBeenCalled();
             expect(context.fillText).toHaveBeenCalled();
         }');'
         test('should render all tabs without errors', () => {
-            userInfoScene.enter(),
+            userInfoScene.enter();
             const context = createMockContext('),'
-            ['statistics', 'achievements', 'management', 'help'].forEach(tab => {),
-                userInfoScene.switchTab(tab),
+            ['statistics', 'achievements', 'management', 'help'].forEach(tab => {);
+                userInfoScene.switchTab(tab);
                 expect(() => {
-                    userInfoScene.render(context) }).not.toThrow();
+                    userInfoScene.render(context) }.not.toThrow();
             }
         }');'
         test('should render error messages', () => {
             userInfoScene.enter('),'
-            userInfoScene.setErrorMessage('Test error'),
-            const context = createMockContext(),
-            userInfoScene.render(context),
+            userInfoScene.setErrorMessage('Test error');
+            const context = createMockContext();
+            userInfoScene.render(context);
             // エラーメッセージが描画される
             expect(context.fillText).toHaveBeenCalledWith('),'
-                expect.stringContaining('Test error'),
+                expect.stringContaining('Test error');
                 expect.any(Number,
                 expect.any(Number) }');'
     }
@@ -265,7 +265,7 @@ describe('UserInfoScene Backward Compatibility Tests', () => {
         test('should show username change dialog', () => {
             userInfoScene.enter('),'
             // ユーザー管理タブでユーザー名変更ボタンをクリック
-            userInfoScene.switchTab('management'),
+            userInfoScene.switchTab('management');
             // ダイアログ表示メソッドが存在することを確認
             expect(userInfoScene.showingDialog).toBeDefined() }');'
         test('should handle dialog state', () => {
@@ -278,29 +278,29 @@ describe('UserInfoScene Backward Compatibility Tests', () => {
     describe('Error Handling Compatibility', (') => {'
         test('should set and clear error messages', () => {
             userInfoScene.enter('),'
-            userInfoScene.setErrorMessage('Test error message'),
+            userInfoScene.setErrorMessage('Test error message');
             expect(userInfoScene.errorMessage').toBe('Test error message'),'
-            expect(userInfoScene.errorTimeout).toBeDefined(),
+            expect(userInfoScene.errorTimeout).toBeDefined();
             // エラーメッセージのクリア
             userInfoScene.errorMessage = null,
             expect(userInfoScene.errorMessage).toBeNull() }');'
         test('should handle data loading errors', async () => {
             gameEngine.statisticsManager.getDetailedStatistics = global.jest.fn((') => Promise.reject(new Error('Load error')'
             ),
-            userInfoScene.enter(),
-            await new Promise(resolve => setTimeout(resolve, 100),
+            userInfoScene.enter();
+            await new Promise(resolve => setTimeout(resolve, 100);
             expect(gameEngine.errorHandler.handleError).toHaveBeenCalled())'),'
     describe('Update Cycle Compatibility', (') => {'
         test('should periodically update data', () => {
-            userInfoScene.enter(),
+            userInfoScene.enter();
             const initialCallCount = gameEngine.playerData.getData.mock.calls.length,
             
             // 5秒以上経過させる
             userInfoScene.lastDataUpdate = Date.now() - 6000,
-            userInfoScene.update(16),
+            userInfoScene.update(16);
             expect(gameEngine.playerData.getData.mock.calls.length).toBeGreaterThan(initialCallCount) }');'
         test('should update active components', () => {
-            userInfoScene.enter(),
+            userInfoScene.enter();
             // エラーが発生しないことを確認
             expect(() => {
                 userInfoScene.update(16) }).not.toThrow();
@@ -309,38 +309,38 @@ describe('UserInfoScene Backward Compatibility Tests', () => {
     describe('Feature Specific Compatibility', (') => {'
         test('should support statistics period filter changes', () => {
             userInfoScene.enter('),'
-            userInfoScene.switchTab('statistics'),
+            userInfoScene.switchTab('statistics');
             // 期間フィルターの変更
             if (userInfoScene.changePeriodFilter') {'
-                userInfoScene.changePeriodFilter('today'),
+                userInfoScene.changePeriodFilter('today');
                 expect(userInfoScene.currentPeriodFilter').toBe('today') }'
         }');'
         test('should support statistics view mode changes', () => {
             userInfoScene.enter('),'
-            userInfoScene.switchTab('statistics'),
+            userInfoScene.switchTab('statistics');
             // 表示モードの変更
             if (userInfoScene.changeViewMode') {'
-                userInfoScene.changeViewMode('charts'),
+                userInfoScene.changeViewMode('charts');
                 expect(userInfoScene.statisticsViewMode').toBe('charts') }'
         }');'
         test('should support achievement category filtering', () => {
             userInfoScene.enter('),'
-            userInfoScene.switchTab('achievements'),
+            userInfoScene.switchTab('achievements');
             // カテゴリーフィルターが存在することを確認
             expect(userInfoScene.achievementCategoryFilter).toBeDefined() }');'
     }
     describe('Legacy Property Compatibility', (') => {'
         test('should maintain legacy properties', () => {
-            userInfoScene.enter(),
+            userInfoScene.enter();
             // レガシープロパティの確認
-            expect(userInfoScene.tabHeight).toBeDefined(),
-            expect(userInfoScene.headerHeight).toBeDefined(),
-            expect(userInfoScene.contentPadding).toBeDefined(),
-            expect(userInfoScene.focusedElement).toBeDefined(),
+            expect(userInfoScene.tabHeight).toBeDefined();
+            expect(userInfoScene.headerHeight).toBeDefined();
+            expect(userInfoScene.contentPadding).toBeDefined();
+            expect(userInfoScene.focusedElement).toBeDefined();
             expect(userInfoScene.scrollPosition).toBeDefined() }');'
         test('should support legacy mode flag', () => {
             // レガシーモードフラグが存在することを確認
-            expect(userInfoScene.legacyMode).toBeDefined(),
-            expect(typeof userInfoScene.legacyMode').toBe('boolean') });'
+            expect(userInfoScene.legacyMode).toBeDefined();
+            expect(typeof userInfoScene.legacyMode').toBe('boolean') };'
     }
 }');'

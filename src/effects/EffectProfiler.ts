@@ -4,30 +4,30 @@
  */
 
 // Type definitions for profiling data structures
-interface FrameMetric { timestamp: number,
+interface FrameMetric { timestamp: number;
     fps: number;
     particleCount: number;
     effectCount: number;
     memoryUsage: number;
     renderTime: number;
 
-interface MemorySnapshot { timestamp: number,
+interface MemorySnapshot { timestamp: number;
     used: number;
     total: number;
     limit: number;
 
-interface RenderingMetric { name: string,
+interface RenderingMetric { name: string;
     duration: number;
     startTime: number;
     timestamp: number;
 
-interface ParticlePerformanceMetric { effectType: string,
+interface ParticlePerformanceMetric { effectType: string;
     particleCount: number;
     duration: number;
     memoryDelta: number;
     timestamp: number;
 
-interface EffectPerformanceMetric { effectType: string,
+interface EffectPerformanceMetric { effectType: string;
     duration: number;
     memoryDelta: number;
     timestamp: number;
@@ -39,22 +39,23 @@ interface ProfilingData { particlePerformance: Map<string, ParticlePerformanceMe
     renderingMetrics: RenderingMetric[];
 
 interface PerformanceThresholds { fps: {
-        excellen,t: number,
-        good: number,
-        acceptable: number,
-    poor: number,;
-    memory: { low: number,
-        medium: number,
-        high: number,
-    critical: number,;
-    renderTime: { excellent: number,
-        good: number,
-        acceptable: number,
-    poor: number,
-
+        excellen,t: number;
+        good: number;
+        acceptable: number;
+    poor: number;
+    memory: { low: number;
+        medium: number;
+        high: number;
+    critical: number;
+    renderTime: { excellent: number;
+        good: number;
+        acceptable: number;
+    poor: number;
+    poor: number;
+        };
 type PerformanceRating = 'excellent' | 'good' | 'acceptable' | 'poor';
 
-interface FrameAnalysis { averageFPS: number,
+interface FrameAnalysis { averageFPS: number;
     minFPS: number;
     maxFPS: number;
     fpsStdDev: number;
@@ -63,28 +64,32 @@ interface FrameAnalysis { averageFPS: number,
     frameDrops: number;
     fpsRating: PerformanceRating;
     renderTimeRating: PerformanceRating;
-
-interface MemoryAnalysis { averageMemory: number,
+    renderTimeRating: PerformanceRating;
+        };
+interface MemoryAnalysis { averageMemory: number;
     minMemory: number;
     maxMemory: number;
     memoryDelta: number;
     memoryGrowthRate: number;
     memoryRating: PerformanceRating;
     hasMemoryLeak: boolean;
-
-interface ParticleEffectAnalysis { sampleCount: number,
+    hasMemoryLeak: boolean;
+        };
+interface ParticleEffectAnalysis { sampleCount: number;
     averageDuration: number;
     maxDuration: number;
     averageMemoryImpact: number;
     rating: PerformanceRating;
-
-interface EffectAnalysis { sampleCount: number,
+    rating: PerformanceRating;
+        };
+interface EffectAnalysis { sampleCount: number;
     averageDuration: number;
     maxDuration: number;
     averageMemoryImpact: number;
     rating: PerformanceRating;
-
-interface ProfileAnalysis { overall: number,
+    rating: PerformanceRating;
+        };
+interface ProfileAnalysis { overall: number;
     frame: FrameAnalysis | null;
     memory: MemoryAnalysis | null;
     particles: Record<string, ParticleEffectAnalysis>;
@@ -94,18 +99,18 @@ type OptimizationType = 'performance' | 'memory' | 'memory_leak' | 'particle_opt
 type OptimizationPriority = 'critical' | 'high' | 'medium' | 'low';
 type OptimizationAction = 'reduce_quality' | 'optimize_memory' | 'fix_memory_leak' | 'optimize_particles' | 'optimize_rendering';
 
-interface OptimizationSuggestion { type: OptimizationType,
+interface OptimizationSuggestion { type: OptimizationType;
     priority: OptimizationPriority;
     message: string;
     action: OptimizationAction;
     effectType?: string;
 
-interface ProfilerExportData { timestamp: string,
+interface ProfilerExportData { timestamp: string;
     analysis: ProfileAnalysis;
     suggestions: OptimizationSuggestion[];
     rawData: ProfilingData;
 
-interface ProfilerResult { analysis: ProfileAnalysis,
+interface ProfilerResult { analysis: ProfileAnalysis;
     suggestions: OptimizationSuggestion[];
     rawData: ProfilingData;
 
@@ -117,14 +122,15 @@ interface GameEngineInterface { performanceOptimizer?: {
     enhancedEffectManager?: { getActiveEffectCount(): number;
 
 // Browser performance memory interface
-interface PerformanceMemory { usedJSHeapSize: number,
+interface PerformanceMemory { usedJSHeapSize: number;
     totalJSHeapSize: number;
     jsHeapSizeLimit: number;
-
+    jsHeapSizeLimit: number;
+        };
 // Extended Performance interface
 interface ExtendedPerformance extends Performance { memory?: PerformanceMemory;
 
-declare const performance: ExtendedPerformance,
+declare const performance: ExtendedPerformance;
 export class EffectProfiler {
     private gameEngine: GameEngineInterface;
     private isActive: boolean = false;
@@ -133,13 +139,13 @@ export class EffectProfiler {
     // パフォーマンス閾値
     private readonly, thresholds: PerformanceThresholds = {
         fps: {
-            excellent: 60,
-            good: 45,
-            acceptable: 30,
+            excellent: 60;
+            good: 45;
+            acceptable: 30;
     poor: 15 };
         memory: { low: 50,    // MB
-            medium: 100,
-            high: 200,
+            medium: 100;
+            high: 200;
     critical: 500  };
         renderTime: { excellent: 16.67, // ~60fps
             good: 22.22,      // ~45fps;
@@ -158,28 +164,28 @@ export class EffectProfiler {
         
         // プロファイリングデータ
         this.profilingData = {
-            particlePerformance: new Map(),
-            effectPerformance: new Map(),
-            memorySnapshots: [],
+            particlePerformance: new Map();
+            effectPerformance: new Map();
+            memorySnapshots: [];
     frameMetrics: [] }
             renderingMetrics: [] 
     };
         this.initialize();
     }
 
-    private initialize(): void { this.setupPerformanceObserver(),
+    private initialize(): void { this.setupPerformanceObserver();
         this.setupMemoryMonitoring() }
 
     private setupPerformanceObserver()';'
         if ('PerformanceObserver' in, window) {
             try {
                 this.performanceObserver = new PerformanceObserver((list) => {;
-                    const entries = list.getEntries(),
+                    const entries = list.getEntries();
                     entries.forEach(entry => {) }
 
                         if(entry.entryType === 'measure' { }'
                             this.recordRenderingMetric(entry, as PerformanceMeasure); }
-});'}');
+};'}');
 
                 this.performanceObserver.observe({ entryTypes: ['measure] ',' }'
 
@@ -199,15 +205,14 @@ export class EffectProfiler {
     }
 
     stopProfiling(): ProfilerResult { this.isActive = false;
-        this.stopFrameMetrics(),
+        this.stopFrameMetrics();
         ','
 
-        const analysis = this.analyzeProfilingData(),
-        this.generateOptimizationSuggestions(analysis),
-
+        const analysis = this.analyzeProfilingData();
+        this.generateOptimizationSuggestions(analysis);
         console.log('Effect, profiling stopped),'
         return { analysis,
-            suggestions: this.optimizationSuggestions };
+            suggestions: this.optimizationSuggestions },
             rawData: this.profilingData 
     }
 
@@ -218,31 +223,28 @@ export class EffectProfiler {
     }
 
     private stopFrameMetrics(): void { if (this.frameMetricsInterval) {
-            clearInterval(this.frameMetricsInterval),
+            clearInterval(this.frameMetricsInterval);
             this.frameMetricsInterval = null }
     }
 
     private captureFrameMetric(): void { const timestamp = performance.now();
         const fps = this.gameEngine?.performanceOptimizer?.getCurrentFPS() || 0,
-        const particleCount = this.getParticleCount(),
-        const effectCount = this.getEffectCount(),
-        const memoryUsage = this.getCurrentMemoryUsage(),
-
+        const particleCount = this.getParticleCount();
+        const effectCount = this.getEffectCount();
+        const memoryUsage = this.getCurrentMemoryUsage();
         this.profilingData.frameMetrics.push({
             timestamp,
             fps,
             particleCount,
-            effectCount),
+            effectCount);
             memoryUsage, : undefined
-            renderTime: this.getLastRenderTime(  });
-
+            renderTime: this.getLastRenderTime(  };
         // データサイズ制限（最新1000フレーム）
         if (this.profilingData.frameMetrics.length > 1000) { this.profilingData.frameMetrics.shift() }
     }
 
-    private captureMemorySnapshot(): void { const memoryInfo = this.getDetailedMemoryInfo(),
-        const timestamp = performance.now(),
-
+    private captureMemorySnapshot(): void { const memoryInfo = this.getDetailedMemoryInfo();
+        const timestamp = performance.now();
         this.profilingData.memorySnapshots.push({)
             ...memoryInfo),
             timestamp,
@@ -258,8 +260,7 @@ export class EffectProfiler {
             name: entry.name,
     duration: entry.duration),
             startTime: entry.startTime,
-    timestamp: performance.now(  });
-
+    timestamp: performance.now(  };
         // データサイズ制限
         if (this.profilingData.renderingMetrics.length > 500) { this.profilingData.renderingMetrics.shift() }
     }
@@ -270,9 +271,8 @@ export class EffectProfiler {
         
         // エフェクト実行の測定
         return new Promise((resolve) => {  setTimeout(() => {
-                const endTime = performance.now(),
-                const endMemory = this.getCurrentMemoryUsage(),
-                
+                const endTime = performance.now();
+                const endMemory = this.getCurrentMemoryUsage();
                 const metric: ParticlePerformanceMetric = {
                     effectType,
                     particleCount,
@@ -284,7 +284,7 @@ export class EffectProfiler {
 
                 resolve(metric);
             }, duration);
-        });
+        };
     }
 
     profileScreenEffect(effectType: string, duration: number): Promise<EffectPerformanceMetric>,
@@ -292,9 +292,8 @@ export class EffectProfiler {
         const startMemory = this.getCurrentMemoryUsage();
         
         return new Promise((resolve) => {  setTimeout(() => {
-                const endTime = performance.now(),
-                const endMemory = this.getCurrentMemoryUsage(),
-                
+                const endTime = performance.now();
+                const endMemory = this.getCurrentMemoryUsage();
                 const metric: EffectPerformanceMetric = {
                     effectType,
                     duration: endTime - startTime,
@@ -305,7 +304,7 @@ export class EffectProfiler {
 
                 resolve(metric);
             }, duration);
-        });
+        };
     }
 
     private getParticleCount(): number { return this.gameEngine?.enhancedParticleManager?.getActiveParticleCount() || 0 }
@@ -320,53 +319,51 @@ export class EffectProfiler {
     private getDetailedMemoryInfo(): MemorySnapshot { if (performance.memory) {
             return { timestamp: 0, // Will be set by caller
                 used: performance.memory.usedJSHeapSize / 1024 / 1024,
-    total: performance.memory.totalJSHeapSize / 1024 / 1024 };
+    total: performance.memory.totalJSHeapSize / 1024 / 1024 },
                 limit: performance.memory.jsHeapSizeLimit / 1024 / 1024 
     }
         return { timestamp: 0, used: 0, total: 0, limit: 0  }
 
     private getLastRenderTime(): number { return this.gameEngine?.performanceOptimizer?.getAverageRenderTime() || 0 }
  : undefined
-    private analyzeProfilingData(): ProfileAnalysis { const frameAnalysis = this.analyzeFrameMetrics(),
-        const memoryAnalysis = this.analyzeMemoryUsage(),
-        const particleAnalysis = this.analyzeParticlePerformance(),
-        const effectAnalysis = this.analyzeEffectPerformance(),
-
-        return { overall: this.calculateOverallScore(frameAnalysis, memoryAnalysis),
+    private analyzeProfilingData(): ProfileAnalysis { const frameAnalysis = this.analyzeFrameMetrics();
+        const memoryAnalysis = this.analyzeMemoryUsage();
+        const particleAnalysis = this.analyzeParticlePerformance();
+        const effectAnalysis = this.analyzeEffectPerformance();
+        return { overall: this.calculateOverallScore(frameAnalysis, memoryAnalysis);
             frame: frameAnalysis,
             memory: memoryAnalysis,
-    particles: particleAnalysis,;
+    particles: particleAnalysis,
             effects: effectAnalysis,
 
     private analyzeFrameMetrics(): FrameAnalysis | null { const metrics = this.profilingData.frameMetrics,
         if (metrics.length === 0) return null,
 
-        const fpsSamples = metrics.map(m => m.fps).filter(fps => fps > 0),
-        const renderTimeSamples = metrics.map(m => m.renderTime).filter(rt => rt > 0),
-
+        const fpsSamples = metrics.map(m => m.fps).filter(fps => fps > 0);
+        const renderTimeSamples = metrics.map(m => m.renderTime).filter(rt => rt > 0);
         return { averageFPS: this.calculateAverage(fpsSamples,
-            minFPS: Math.min(...fpsSamples),
-            maxFPS: Math.max(...fpsSamples),
-            fpsStdDev: this.calculateStandardDeviation(fpsSamples),
-            averageRenderTime: this.calculateAverage(renderTimeSamples),
-            maxRenderTime: Math.max(...renderTimeSamples),
+            minFPS: Math.min(...fpsSamples);
+            maxFPS: Math.max(...fpsSamples);
+            fpsStdDev: this.calculateStandardDeviation(fpsSamples);
+            averageRenderTime: this.calculateAverage(renderTimeSamples);
+            maxRenderTime: Math.max(...renderTimeSamples);
             frameDrops: fpsSamples.filter(fps => fps < 30).length,
-            fpsRating: this.rateFPS(this.calculateAverage(fpsSamples) };
+            fpsRating: this.rateFPS(this.calculateAverage(fpsSamples) },
             renderTimeRating: this.rateRenderTime(this.calculateAverage(renderTimeSamples); 
     }
 
     private analyzeMemoryUsage(): MemoryAnalysis | null { const snapshots = this.profilingData.memorySnapshots,
         if (snapshots.length === 0) return null,
 
-        const usedMemorySamples = snapshots.map(s => s.used),
+        const usedMemorySamples = snapshots.map(s => s.used);
         const memoryDelta = usedMemorySamples[usedMemorySamples.length - 1] - usedMemorySamples[0],
 
         return { averageMemory: this.calculateAverage(usedMemorySamples,
-            minMemory: Math.min(...usedMemorySamples),
-            maxMemory: Math.max(...usedMemorySamples),
+            minMemory: Math.min(...usedMemorySamples);
+            maxMemory: Math.max(...usedMemorySamples);
             memoryDelta: memoryDelta,
     memoryGrowthRate: memoryDelta / (snapshots.length * 1000), // MB/s,
-            memoryRating: this.rateMemoryUsage(this.calculateAverage(usedMemorySamples) };
+            memoryRating: this.rateMemoryUsage(this.calculateAverage(usedMemorySamples) },
             hasMemoryLeak: this.detectMemoryLeak(usedMemorySamples); 
     }
 
@@ -375,9 +372,8 @@ export class EffectProfiler {
         
         for(const [effectType, metrics] of this.profilingData.particlePerformance) {
         
-            const durations = metrics.map(m => m.duration),
-            const memoryDeltas = metrics.map(m => m.memoryDelta),
-            
+            const durations = metrics.map(m => m.duration);
+            const memoryDeltas = metrics.map(m => m.memoryDelta);
             analysis[effectType] = {
                 sampleCount: metrics.length,
                 averageDuration: this.calculateAverage(durations),
@@ -394,9 +390,8 @@ export class EffectProfiler {
         
         for(const [effectType metrics] of this.profilingData.effectPerformance) {
         
-            const durations = metrics.map(m => m.duration),
-            const memoryDeltas = metrics.map(m => m.memoryDelta),
-            
+            const durations = metrics.map(m => m.duration);
+            const memoryDeltas = metrics.map(m => m.memoryDelta);
             analysis[effectType] = {
                 sampleCount: metrics.length,
                 averageDuration: this.calculateAverage(durations),
@@ -407,7 +402,7 @@ export class EffectProfiler {
         return analysis;
     }
 
-    private generateOptimizationSuggestions(analysis: ProfileAnalysis): void { this.optimizationSuggestions = [];
+    private generateOptimizationSuggestions(analysis: ProfileAnalysis): void { this.optimizationSuggestions = [],
         // FPSベースの提案
         if (analysis.frame && analysis.frame.averageFPS < this.thresholds.fps.acceptable') {'
             this.optimizationSuggestions.push({)'
@@ -415,8 +410,8 @@ export class EffectProfiler {
 
                 priority: 'high'),' }'
 
-                message: `Average FPS(${analysis.frame.averageFPS.toFixed(1})) is below acceptable threshold. Consider reducing particle counts or effect quality.`,''
-                action: 'reduce_quality';
+                message: `Average FPS(${analysis.frame.averageFPS.toFixed(1}) is below acceptable threshold. Consider reducing particle counts or effect quality.`,''
+                action: 'reduce_quality',
             }'
             }
 ';'
@@ -427,8 +422,8 @@ export class EffectProfiler {
 
                 priority: 'high'),' }'
 
-                message: `High memory usage (${analysis.memory.averageMemory.toFixed(1})MB'). Implement object pooling and cleanup unused effects.`,''
-                action: 'optimize_memory';
+                message: `High memory usage (${analysis.memory.averageMemory.toFixed(1}MB'). Implement object pooling and cleanup unused effects.`,''
+                action: 'optimize_memory',
             }'
             }
 ';'
@@ -466,17 +461,17 @@ export class EffectProfiler {
 
                 priority: 'medium'),' }'
 
-                message: `High render times detected (max: ${analysis.frame.maxRenderTime.toFixed(2})ms'). Consider optimizing draw calls or using requestAnimationFrame throttling.`,''
-                action: 'optimize_rendering';
-            }) }
+                message: `High render times detected (max: ${analysis.frame.maxRenderTime.toFixed(2}ms'). Consider optimizing draw calls or using requestAnimationFrame throttling.`,''
+                action: 'optimize_rendering',
+            } }
     }
 
     // ユーティリティメソッド
     private calculateAverage(values: number[]): number { return values.length > 0 ? values.reduce((a, b) => a + b, 0) / values.length: 0 }
 
-    private calculateStandardDeviation(values: number[]): number { const avg = this.calculateAverage(values),
-        const squareDiffs = values.map(value => Math.pow(value - avg, 2),
-        return Math.sqrt(this.calculateAverage(squareDiffs),
+    private calculateStandardDeviation(values: number[]): number { const avg = this.calculateAverage(values);
+        const squareDiffs = values.map(value => Math.pow(value - avg, 2);
+        return Math.sqrt(this.calculateAverage(squareDiffs);
 ','
 
     private rateFPS(fps: number): PerformanceRating { ''
@@ -556,9 +551,9 @@ export class EffectProfiler {
         return Math.max(0, score);
     }
 
-    exportProfilingData(): ProfilerExportData { return { timestamp: new Date().toISOString(),
+    exportProfilingData(): ProfilerExportData { return { timestamp: new Date().toISOString();
             analysis: this.analyzeProfilingData(
-    suggestions: this.optimizationSuggestions };
+    suggestions: this.optimizationSuggestions },
             rawData: this.profilingData 
     }
 

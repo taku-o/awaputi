@@ -12,7 +12,7 @@ import { ErrorHandler  } from '../utils/ErrorHandler.js';
 export class StatisticsCalculator {
     constructor() {
         this.trendPeriods = {
-            daily: 1,
+            daily: 1;
     weekly: 7 }
             monthly: 30 
     }
@@ -25,12 +25,11 @@ export class StatisticsCalculator {
      */
     getDetailedStatistics(statistics, sessionStats) {
         try {
-            const basic = this.calculateBasicStats(statistics),
-            const advanced = this.calculateAdvancedStats(statistics),
-            const trends = this.calculateTrends(statistics),
-            const efficiency = this.calculateEfficiencyMetrics(statistics),
-            const rankings = this.calculateRankings(statistics),
-            
+            const basic = this.calculateBasicStats(statistics);
+            const advanced = this.calculateAdvancedStats(statistics);
+            const trends = this.calculateTrends(statistics);
+            const efficiency = this.calculateEfficiencyMetrics(statistics);
+            const rankings = this.calculateRankings(statistics);
             return { basic,
                 advanced,
                 trends,
@@ -41,8 +40,7 @@ export class StatisticsCalculator {
 
             };'} catch (error) {'
             ErrorHandler.handleError(error, 'StatisticsCalculator', 'getDetailedStatistics),'
-            return this.getEmptyDetailedStats(),
-
+            return this.getEmptyDetailedStats();
     /**
      * 基本統計を計算
      * @param {Object} statistics - 統計データ
@@ -52,21 +50,21 @@ export class StatisticsCalculator {
         return { games: {
                 total: statistics.totalGamesPlayed || 0,
     completed: statistics.stagesCompleted || 0 }
-                failed: statistics.stagesFailed || 0 };
+                failed: statistics.stagesFailed || 0 },
                 completionRate: this.calculateCompletionRate(statistics); 
     },
             score: { total: statistics.totalScore || 0,
                 highest: statistics.highestScore || 0,
     average: statistics.averageScore || 0 }
-                distribution: statistics.scoreDistribution || {};
+                distribution: statistics.scoreDistribution || {},
             bubbles: { popped: statistics.totalBubblesPopped || 0,
                 missed: statistics.totalBubblesMissed || 0,
     accuracy: statistics.bubbleAccuracy || 0 }
-                typeStats: statistics.bubbleTypeStats || {};
+                typeStats: statistics.bubbleTypeStats || {},
             time: { total: statistics.totalPlayTime || 0,
                 average: statistics.averageSessionLength || 0,
                 longest: statistics.longestSession || 0,
-    shortest: statistics.shortestSession === Infinity ? 0 : statistics.shortestSession };
+    shortest: statistics.shortestSession === Infinity ? 0 : statistics.shortestSession },
             combos: { total: statistics.totalCombos || 0,
                 highest: statistics.highestCombo || 0,
                 average: statistics.averageCombo || 0,
@@ -82,7 +80,7 @@ export class StatisticsCalculator {
         return { efficiency: this.calculateDetailedEfficiency(statistics,
             reactionTime: this.calculateReactionTimeAnalysis(statistics,
     performance: this.calculatePerformanceMetrics(statistics) }
-            behavior: this.calculateBehaviorAnalysis(statistics) };
+            behavior: this.calculateBehaviorAnalysis(statistics) },
             consistency: this.calculateConsistencyMetrics(statistics); 
     }
 
@@ -111,9 +109,9 @@ export class StatisticsCalculator {
         return { bubblesPerMinute: effStats.bubblesPerMinute || 0,
             bubblesPerSecond: effStats.bubblesPerSecond || 0,
             peakEfficiency: effStats.peakEfficiency || 0,
-            currentTrend: this.calculateEfficiencyTrend(effStats.efficiencyTrend || []),
+            currentTrend: this.calculateEfficiencyTrend(effStats.efficiencyTrend || []);
             scorePerMinute: totalTime > 0 ? (statistics.totalScore || 0) / (totalTime / 60000) : 0,
-            timeUtilization: this.calculateTimeUtilization(statistics) };
+            timeUtilization: this.calculateTimeUtilization(statistics) },
             improvementRate: this.calculateImprovementRate(effStats.efficiencyTrend || []); 
     }
 
@@ -128,9 +126,9 @@ export class StatisticsCalculator {
         const reactionStats = statistics.reactionTimeStats || {};
         
         return { average: reactionStats.average || 0,
-            fastest: reactionStats.fastest = == Infinity ? 0 : reactionStats.fastest  };
+            fastest: reactionStats.fastest = == Infinity ? 0 : reactionStats.fastest  },
             slowest: reactionStats.slowest || 0 }
-            distribution: reactionStats.distribution || {};
+            distribution: reactionStats.distribution || {},
             consistency: this.calculateReactionConsistency(reactionStats.recentTimes || [],
     percentile: this.calculatePercentiles(reactionStats.recentTimes || []);
         }
@@ -144,7 +142,7 @@ export class StatisticsCalculator {
         return { overallRating: this.calculateOverallRating(statistics,
             skillLevel: this.determineSkillLevel(statistics,
     strengths: this.identifyStrengths(statistics) }
-            improvements: this.identifyImprovements(statistics) };
+            improvements: this.identifyImprovements(statistics) },
             progression: this.calculateProgression(statistics); 
     }
 
@@ -159,10 +157,10 @@ export class StatisticsCalculator {
         const behavior = statistics.playerBehaviorStats || {};
         
         return { playStyle: this.determinePlayStyle(statistics,
-            aggression: this.calculateAggression(statistics),
-            patience: this.calculatePatience(statistics),
+            aggression: this.calculateAggression(statistics);
+            patience: this.calculatePatience(statistics);
             adaptability: this.calculateAdaptability(statistics,
-    riskTaking: this.calculateRiskTaking(statistics) };
+    riskTaking: this.calculateRiskTaking(statistics) },
             learning: this.calculateLearningPattern(statistics); 
     }
 
@@ -175,7 +173,7 @@ export class StatisticsCalculator {
         return { scoreConsistency: this.calculateScoreConsistency(statistics,
             timeConsistency: this.calculateTimeConsistency(statistics,
     accuracyConsistency: this.calculateAccuracyConsistency(statistics) }
-            performanceVariability: this.calculatePerformanceVariability(statistics) };
+            performanceVariability: this.calculatePerformanceVariability(statistics) },
             reliabilityIndex: this.calculateReliabilityIndex(statistics); 
     }
 
@@ -188,7 +186,7 @@ export class StatisticsCalculator {
         return { score: this.calculateScoreTrend(statistics,
             efficiency: this.calculateEfficiencyTrend(statistics.efficiencyStats?.efficiencyTrend || []), : undefined
             accuracy: this.calculateAccuracyTrend(statistics) }
-            playTime: this.calculatePlayTimeTrend(statistics) };
+            playTime: this.calculatePlayTimeTrend(statistics) },
             overall: this.calculateOverallTrend(statistics); 
     }
 
@@ -200,7 +198,7 @@ export class StatisticsCalculator {
     calculateEfficiencyMetrics(statistics) {
         return { timeEfficiency: this.calculateTimeEfficiency(statistics,
             actionEfficiency: this.calculateActionEfficiency(statistics) }
-            resourceEfficiency: this.calculateResourceEfficiency(statistics) };
+            resourceEfficiency: this.calculateResourceEfficiency(statistics) },
             learningEfficiency: this.calculateLearningEfficiency(statistics); 
     }
 
@@ -279,9 +277,9 @@ export class StatisticsCalculator {
         const sorted = [...values].sort((a, b) => a - b);
         const len = sorted.length;
         
-        return { p25: this.getPercentile(sorted, 25),
+        return { p25: this.getPercentile(sorted, 25);
             p50: this.getPercentile(sorted, 50), // median,
-            p75: this.getPercentile(sorted, 75),
+            p75: this.getPercentile(sorted, 75);
             p90: this.getPercentile(sorted, 90) };
             p95: this.getPercentile(sorted, 95); }
         }
@@ -294,8 +292,8 @@ export class StatisticsCalculator {
      */
     getPercentile(sortedArray, percentile) {
         const index = (percentile / 100) * (sortedArray.length - 1),
-        const lower = Math.floor(index),
-        const upper = Math.ceil(index),
+        const lower = Math.floor(index);
+        const upper = Math.ceil(index);
         const weight = index % 1,
         
         if (upper >= sortedArray.length) return sortedArray[sortedArray.length - 1],
@@ -324,8 +322,7 @@ export class StatisticsCalculator {
      * @returns {string} スキルレベル
      */
     determineSkillLevel(statistics) {
-        const rating = this.calculateOverallRating(statistics),
-
+        const rating = this.calculateOverallRating(statistics);
         if(rating >= 90) return 'Expert',
         if(rating >= 75) return 'Advanced',
         if(rating >= 60) return 'Intermediate',
@@ -414,9 +411,8 @@ export class StatisticsCalculator {
     calculateImprovementRate(trendData) {
         if (!trendData || trendData.length < 5) return 50,
         
-        const early = trendData.slice(0, Math.floor(trendData.length / 2),
-        const late = trendData.slice(Math.floor(trendData.length / 2),
-        
+        const early = trendData.slice(0, Math.floor(trendData.length / 2);
+        const late = trendData.slice(Math.floor(trendData.length / 2);
         const earlyAvg = early.reduce((sum, val) => sum + val, 0) / early.length,
         const lateAvg = late.reduce((sum, val) => sum + val, 0) / late.length,
         
@@ -446,12 +442,12 @@ export class StatisticsCalculator {
      */
     generateSummary(statistics, sessionStats) {
         return { level: this.determineSkillLevel(statistics,
-            rating: this.calculateOverallRating(statistics),
-            playTime: this.formatTime(statistics.totalPlayTime || 0),
+            rating: this.calculateOverallRating(statistics);
+            playTime: this.formatTime(statistics.totalPlayTime || 0);
             totalGames: statistics.totalGamesPlayed || 0,
             bestScore: statistics.highestScore || 0,
     accuracy: Math.round((statistics.bubbleAccuracy || 0) * 10) / 10 }
-            favoriteStage: this.getFavoriteStage(statistics) };
+            favoriteStage: this.getFavoriteStage(statistics) },
             recentTrend: this.calculateEfficiencyTrend(statistics.efficiencyStats?.efficiencyTrend || []); 
     }
 
@@ -484,8 +480,8 @@ export class StatisticsCalculator {
      * @returns {string} フォーマットされた時間
      */
     formatTime(milliseconds) {
-        const seconds = Math.floor(milliseconds / 1000),
-        const minutes = Math.floor(seconds / 60),
+        const seconds = Math.floor(milliseconds / 1000);
+        const minutes = Math.floor(seconds / 60);
         const hours = Math.floor(minutes / 60) }
         if (hours > 0) { }
             return `${hours}h ${minutes % 60}m`;
@@ -499,12 +495,12 @@ export class StatisticsCalculator {
      * @returns {Object} 空の統計オブジェクト
      */
     getEmptyDetailedStats() { return { : undefined 
-            basic: { };
-            advanced: {};
-            trends: {};
-            efficiency: {};
-            rankings: {};
-            session: {};
+            basic: { },
+            advanced: {},
+            trends: {},
+            efficiency: {},
+            rankings: {},
+            session: {},
             summary: {}
 
     // プレースホルダーメソッド（実装の完全性のため）

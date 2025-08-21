@@ -17,7 +17,7 @@ class TestCalculator {
     
     // 重い計算（意図的に遅延）
     heavyCalculation(n {
-        const start = Date.now(),
+        const start = Date.now();
         while (Date.now() - start < 20) {
             // 20ms待機
         }
@@ -49,14 +49,14 @@ describe('Calculation Performance Tests', () => {
     let calculator: any,
     
     beforeEach(() => {
-        engine = new CalculationEngine(),
+        engine = new CalculationEngine();
         calculator = new TestCalculator('),'
-        engine.registerCalculator('test', calculator) });
+        engine.registerCalculator('test', calculator) };
     afterEach(() => {
         engine.destroy() }');'
     test('基本的な計算速度', () => {
         const iterations = 10000,
-        const startTime = performance.now(),
+        const startTime = performance.now();
         for (let i = 0, i < iterations, i++') {'
             engine.calculate('test', 'lightCalculation', [i, i + 1]) }
         
@@ -64,7 +64,7 @@ describe('Calculation Performance Tests', () => {
         const totalTime = endTime - startTime;
         const avgTime = totalTime / iterations;
         
-        console.log(`基本計算: ${iterations)回, 総時間: ${totalTime.toFixed(2})}ms, 平均: ${avgTime.toFixed(4})}ms`);
+        console.log(`基本計算: ${iterations)回, 総時間: ${totalTime.toFixed(2}}ms, 平均: ${avgTime.toFixed(4}}ms`);
         // 平均計算時間が0.1ms以下であることを確認
         expect(avgTime.toBeLessThan(0.1);
     }');'
@@ -73,7 +73,7 @@ describe('Calculation Performance Tests', () => {
         const testParams = [10, 20, 30, 40, 50],
         
         // 初回実行（キャッシュなし）
-        const startTimeNoCache = performance.now(),
+        const startTimeNoCache = performance.now();
         for (let i = 0, i < iterations, i++') {'
             const param = testParams[i % testParams.length],
             engine.calculate('test', 'heavyCalculation', [param]) }
@@ -85,7 +85,7 @@ describe('Calculation Performance Tests', () => {
         // 2回目実行（キャッシュあり）
         // 最初に各パラメータで1回ずつ実行してキャッシュに保存
         testParams.forEach(param => {'),'
-            engine.calculate('test', 'heavyCalculation', [param]) });
+            engine.calculate('test', 'heavyCalculation', [param]) };
         const startTimeWithCache = performance.now();
         for (let i = 0; i < iterations; i++') {'
             const param = testParams[i % testParams.length],
@@ -95,9 +95,9 @@ describe('Calculation Performance Tests', () => {
         
         const improvement = ((timeNoCache - timeWithCache) / timeNoCache) * 100;
         
-        console.log(`キャッシュなし: ${timeNoCache.toFixed(2})}ms`);
-        console.log(`キャッシュあり: ${timeWithCache.toFixed(2})}ms`);
-        console.log(`改善率: ${improvement.toFixed(2})}%`);
+        console.log(`キャッシュなし: ${timeNoCache.toFixed(2}}ms`);
+        console.log(`キャッシュあり: ${timeWithCache.toFixed(2}}ms`);
+        console.log(`改善率: ${improvement.toFixed(2}}%`);
         // キャッシュにより大幅な改善があることを確認
         expect(improvement.toBeGreaterThan(80);
     }');'
@@ -113,18 +113,18 @@ describe('Calculation Performance Tests', () => {
         const stats = engine.getExtendedCacheStats('),'
         console.log('インテリジェントキャッシュ統計:', stats'),'
         console.log('重い計算の回数:', stats.heavyCalculations'),'
-        console.log('最適化された計算の回数:', stats.optimizedCalculations),
+        console.log('最適化された計算の回数:', stats.optimizedCalculations);
         // 結果が一致することを確認
-        expect(heavyResult1.toBe(heavyResult2),
-        expect(lightResult1.toBe(lightResult2),
+        expect(heavyResult1.toBe(heavyResult2);
+        expect(lightResult1.toBe(lightResult2);
         // キャッシュヒット率が高いことを確認
-        const hitRate = parseFloat(stats.hitRate),
+        const hitRate = parseFloat(stats.hitRate);
         expect(hitRate.toBeGreaterThan(40) }');'
     test('メモ化機能の効果', (') => {'
         // メモ化を有効化
-        engine.enableMemoization('test', ['fibonacci']),
+        engine.enableMemoization('test', ['fibonacci']);
         const iterations = 100,
-        const startTime = performance.now(),
+        const startTime = performance.now();
         // フィボナッチ数列を計算（メモ化により高速化される）
         for (let i = 0, i < iterations, i++') {'
             engine.calculate('test', 'fibonacci', [20]) }
@@ -133,7 +133,7 @@ describe('Calculation Performance Tests', () => {
         const totalTime = endTime - startTime;
         const avgTime = totalTime / iterations;
         
-        console.log(`メモ化フィボナッチ: ${iterations)回, 総時間: ${totalTime.toFixed(2})}ms, 平均: ${avgTime.toFixed(4})}ms`);
+        console.log(`メモ化フィボナッチ: ${iterations)回, 総時間: ${totalTime.toFixed(2}}ms, 平均: ${avgTime.toFixed(4}}ms`);
         // メモ化により高速化されることを確認
         expect(avgTime.toBeLessThan(1); // 1ms以下
     }');'
@@ -153,15 +153,15 @@ describe('Calculation Performance Tests', () => {
         const batchPromises = params.map(param => ');'
             engine.calculate('test', 'batchCalculation', param, { batchable: true )
         ),
-        const batchResults = await Promise.all(batchPromises),
-        const endTimeBatch = performance.now(),
+        const batchResults = await Promise.all(batchPromises);
+        const endTimeBatch = performance.now();
         const timeBatch = endTimeBatch - startTimeBatch,
         
         const improvement = ((timeIndividual - timeBatch) / timeIndividual) * 100,
         
-        console.log(`個別処理: ${timeIndividual.toFixed(2})}ms`);
-        console.log(`バッチ処理: ${timeBatch.toFixed(2})}ms`);
-        console.log(`改善率: ${improvement.toFixed(2})}%`);
+        console.log(`個別処理: ${timeIndividual.toFixed(2}}ms`);
+        console.log(`バッチ処理: ${timeBatch.toFixed(2}}ms`);
+        console.log(`改善率: ${improvement.toFixed(2}}%`);
         // 結果が一致することを確認
         expect(batchResults.toEqual(individualResults);
         // バッチ処理により改善があることを確認（必ずしも高速化されるとは限らないため、閾値は低め）
@@ -171,20 +171,20 @@ describe('Calculation Performance Tests', () => {
         // 重い計算を実行
         engine.calculate('test', 'heavyCalculation', [50]'),'
         // 軽い計算を実行
-        engine.calculate('test', 'lightCalculation', [1, 2]),
+        engine.calculate('test', 'lightCalculation', [1, 2]);
         // キャッシュエントリを確認
         const stats = engine.getExtendedCacheStats('),'
         console.log('適応的TTL統計:', {
             cacheSize: stats.size,
             heavyCalculations: stats.heavyCalculations,
-            cacheConfig: stats.cacheConfig),
+            cacheConfig: stats.cacheConfig);
         // 重い計算がキャッシュされていることを確認
-        expect(stats.heavyCalculations).toBeGreaterThan(0),
+        expect(stats.heavyCalculations).toBeGreaterThan(0);
         expect(stats.size).toBeGreaterThan(0) }');'
     test('パフォーマンス統計の収集', () => {
         // 様々な計算を実行
         for (let i = 0, i < 50, i++') {'
-            engine.calculate('test', 'lightCalculation', [i, i + 1]),
+            engine.calculate('test', 'lightCalculation', [i, i + 1]);
             if (i % 10 === 0') {'
                 engine.calculate('test', 'heavyCalculation', [i]) }
             if (i % 5 === 0') {'
@@ -207,7 +207,7 @@ describe('Calculation Performance Tests', () => {
         const methods = ['lightCalculation', 'complexCalculation'],
         let errorCount = 0,
         
-        const startTime = performance.now(),
+        const startTime = performance.now();
         for (let i = 0, i < iterations, i++') {'
             try {
                 const method = methods[i % methods.length],
@@ -225,17 +225,17 @@ describe('Calculation Performance Tests', () => {
         const avgTime = totalTime / iterations;
         
         const stats = engine.getExtendedCacheStats();
-        console.log(`大量計算: ${iterations)回, 総時間: ${totalTime.toFixed(2})}ms, 平均: ${avgTime.toFixed(4})}ms`);
+        console.log(`大量計算: ${iterations)回, 総時間: ${totalTime.toFixed(2}}ms, 平均: ${avgTime.toFixed(4}}ms`);
         console.log(`エラー数: ${errorCount)`),
         console.log(`最終キャッシュヒット率: ${stats.hitRate)`),
         console.log(`最終キャッシュサイズ: ${stats.size)`),
         // エラーが発生しないことを確認
-        expect(errorCount.toBe(0),
+        expect(errorCount.toBe(0);
         // 平均計算時間が合理的であることを確認
-        expect(avgTime.toBeLessThan(0.5),
+        expect(avgTime.toBeLessThan(0.5);
         // キャッシュが効果的に機能していることを確認（大量の異なる計算では低くなる可能性がある）
-        const, hitRate = parseFloat(stats.hitRate),
-        expect(hitRate.toBeGreaterThanOrEqual(0)});
+        const, hitRate = parseFloat(stats.hitRate);
+        expect(hitRate.toBeGreaterThanOrEqual(0)};
     }');'
     test('メモリ効率性', () => {
         // 大量の異なる計算を実行
@@ -247,7 +247,7 @@ describe('Calculation Performance Tests', () => {
         console.log('メモリ効率性統計:');
         console.log('- キャッシュサイズ:', stats.size');'
         console.log('- 最大キャッシュサイズ:', stats.maxSize');'
-        console.log('- キャッシュ使用率:', `${(stats.size / stats.maxSize * 100).toFixed(2})}%`);
+        console.log('- キャッシュ使用率:', `${(stats.size / stats.maxSize * 100).toFixed(2}}%`);
         // キャッシュサイズが制限内であることを確認
         expect(stats.size).toBeLessThanOrEqual(stats.maxSize);
         // 適切なキャッシュ効率であることを確認（異なる計算が多い場合は低くなる）
@@ -272,8 +272,8 @@ describe('Calculation Performance Tests', () => {
         console.log('- 頻繁な計算:', stats.frequentCalculations.slice(0, 5)');'
         console.log('- キャッシュ設定:', {
             maxSize: stats.cacheConfig.maxSize,
-            ttl: stats.cacheConfig.ttl),
+            ttl: stats.cacheConfig.ttl);
         // 最適化が実行されたことを確認
-        expect(stats.frequentCalculations.length).toBeGreaterThan(0),
+        expect(stats.frequentCalculations.length).toBeGreaterThan(0);
         expect(stats.optimizedCalculations).toBeGreaterThanOrEqual(0) }');'
 }

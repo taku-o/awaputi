@@ -6,30 +6,30 @@ import { ScoreCalculator  } from '../../src/core/ScoreCalculator.js';
 // Type definitions
 interface ScoreConfig {
     baseScores: {
-        norma,l: number,
-        stone: number,
-        iron: number,
-        diamond: number,
-        rainbow: number,
-        pink: number,
-        clock: number,
-        electric: number,
-        poison: number,
-        spiky: number,
-        cracked: number,
-        escaping: number,
-        boss: number,
+        norma,l: number;
+        stone: number;
+        iron: number;
+        diamond: number;
+        rainbow: number;
+        pink: number;
+        clock: number;
+        electric: number;
+        poison: number;
+        spiky: number;
+        cracked: number;
+        escaping: number;
+        boss: number;
         score: number,,
     combo: {
-        multiplierIncrement: number,
-        maxMultiplier: number,
-        bonusInterval: number,
-        bonusMultiplier: number,
+        multiplierIncrement: number;
+        maxMultiplier: number;
+        bonusInterval: number;
+        bonusMultiplier: number;
         baseTimeout: number,,
     ageBonus: {
-        earlyBonus: number,
-        lateBonus: number,
-        midBonus: number,;
+        earlyBonus: number;
+        lateBonus: number;
+        midBonus: number;
 }
 interface MockGameConfig {
     getScoreConfig(): ScoreConfig;
@@ -40,19 +40,19 @@ interface ScoreCalculationParams {
     specialMultiplier?: number;
     itemMultiplier?: number;
 interface ScoreResult {
-    baseScore: number,
+    baseScore: number;
     multipliers: {
-        comb,o: number,
+        comb,o: number;
         total: number,,
-    finalScore: number,
-    comboBonus: number,
+    finalScore: number;
+    comboBonus: number;
 interface ScoreHistoryItem {
-    finalScore: number,
+    finalScore: number;
     multipliers: {
         comb,o: number,,
-    comboBonus: number,
+    comboBonus: number;
 interface ScoreStatistics {
-    total: number,
+    total: number;
     average: number;
     highest: number;
     lowest: number;
@@ -60,7 +60,7 @@ interface ScoreStatistics {
     bonusCount: number;
     totalEntries: number;
 interface BubbleInfo {
-    type: string,
+    type: string;
     ageRatio: number;
 interface GameState {
     currentCombo?: number;
@@ -68,11 +68,11 @@ interface GameState {
     timeRemaining?: number;
     currentScore?: number;
 interface RecommendedStrategy {
-    priority: string,
+    priority: string;
     reasoning: string;
     targetBubbles: BubbleInfo[];
 interface DebugInfo {
-    hasGameConfig: boolean,
+    hasGameConfig: boolean;
     scoreConfig: ScoreConfig;
     version: string;
 // モックGameConfig
@@ -80,31 +80,31 @@ class MockGameConfig implements MockGameConfig {
     getScoreConfig('): ScoreConfig {'
         return {
             baseScores: {
-                normal: 15,
-                stone: 35,
-                iron: 65,
-                diamond: 120,
-                rainbow: 400,
-                pink: 25,
-                clock: 180,
-                electric: 20,
-                poison: 8,
-                spiky: 85,
-                cracked: 30,
-                escaping: 50,
-                boss: 800,
+                normal: 15;
+                stone: 35;
+                iron: 65;
+                diamond: 120;
+                rainbow: 400;
+                pink: 25;
+                clock: 180;
+                electric: 20;
+                poison: 8;
+                spiky: 85;
+                cracked: 30;
+                escaping: 50;
+                boss: 800;
                 score: 250
             },
             combo: {
-                multiplierIncrement: 0.08,
-                maxMultiplier: 2.5,
-                bonusInterval: 5,
-                bonusMultiplier: 8,
+                multiplierIncrement: 0.08;
+                maxMultiplier: 2.5;
+                bonusInterval: 5;
+                bonusMultiplier: 8;
                 baseTimeout: 2000
             },
             ageBonus: {
-                earlyBonus: 2.0,
-                lateBonus: 3.0,
+                earlyBonus: 2.0;
+                lateBonus: 3.0;
                 midBonus: 1.5
             }
         };
@@ -115,17 +115,17 @@ describe('ScoreCalculator', () => {
     let mockGameConfig: MockGameConfig,
     
     beforeEach(() => {
-        mockGameConfig = new MockGameConfig(),
+        mockGameConfig = new MockGameConfig();
         calculator = new ScoreCalculator(mockGameConfig) }');'
     describe('基本機能', (') => {'
         test('should initialize correctly', () => {
-            expect(calculator).toBeInstanceOf(ScoreCalculator),
+            expect(calculator).toBeInstanceOf(ScoreCalculator);
             expect(calculator.getDebugInfo().hasGameConfig).toBe(true) }');'
         test('should work without GameConfig', () => {
-            const calculatorWithoutConfig = new ScoreCalculator(),
+            const calculatorWithoutConfig = new ScoreCalculator();
             expect(calculatorWithoutConfig.getDebugInfo().hasGameConfig).toBe(false'),'
             // デフォルト設定で動作することを確認
-            const score = calculatorWithoutConfig.calculateBaseScore('normal'),
+            const score = calculatorWithoutConfig.calculateBaseScore('normal');
             expect(score).toBe(15) }');'
     }
     describe('基本スコア計算', (') => {'
@@ -160,9 +160,9 @@ describe('ScoreCalculator', () => {
     }
     describe('コンボ計算', (') => {'
         test('should calculate combo multiplier correctly', () => {
-            expect(calculator.calculateComboMultiplier(1).toBe(1.0),
-            expect(calculator.calculateComboMultiplier(2).toBeCloseTo(1.08),
-            expect(calculator.calculateComboMultiplier(10).toBeCloseTo(1.72),
+            expect(calculator.calculateComboMultiplier(1).toBe(1.0);
+            expect(calculator.calculateComboMultiplier(2).toBeCloseTo(1.08);
+            expect(calculator.calculateComboMultiplier(10).toBeCloseTo(1.72);
             // 最大倍率チェック
             expect(calculator.calculateComboMultiplier(100).toBe(2.5) }');'
         test('should calculate combo bonus correctly', () => {
@@ -179,7 +179,7 @@ describe('ScoreCalculator', () => {
                 ageRatio: 0.5,
                 comboCount: 2,
                 specialMultiplier: 1.5,
-                itemMultiplier: 1.2 });
+                itemMultiplier: 1.2 };
             expect(result.baseScore).toBe(22); // 15 * 1.5 (中盤ボーナス);
             expect(result.multipliers.combo).toBeCloseTo(1.08);
             expect(result.multipliers.total).toBeCloseTo(1.944); // 1.08 * 1.5 * 1.2
@@ -188,7 +188,7 @@ describe('ScoreCalculator', () => {
         }');'
         test('should handle missing parameters with defaults', (') => {'
             const result: ScoreResult = calculator.calculateTotalScore({
-                bubbleType: 'stone' });
+                bubbleType: 'stone' };
             expect(result.baseScore).toBe(35);
             expect(result.multipliers.combo).toBe(1.0);
             expect(result.multipliers.total).toBe(1.0);
@@ -198,7 +198,7 @@ describe('ScoreCalculator', () => {
         test('should include combo bonus in calculation', (') => {'
             const result: ScoreResult = calculator.calculateTotalScore({
                 bubbleType: 'normal',
-                comboCount: 5 });
+                comboCount: 5 };
             expect(result.comboBonus).toBe(40); // 5 * 8
         }');'
     }
@@ -208,19 +208,19 @@ describe('ScoreCalculator', () => {
             expect(calculator.calculateSpecialBubbleBonus('rainbow', { bonusTimeActive: false,).toBe(0');'
         }
         test('should calculate spiky bubble bonus', (') => {'
-            expect(calculator.calculateSpecialBubbleBonus('spiky', { chainCount: 3 }).toBe(60');'
-            expect(calculator.calculateSpecialBubbleBonus('spiky', {}).toBe(0');'
+            expect(calculator.calculateSpecialBubbleBonus('spiky', { chainCount: 3 }.toBe(60');'
+            expect(calculator.calculateSpecialBubbleBonus('spiky', {}.toBe(0');'
         }
         test('should calculate score bubble bonus', (') => {'
-            expect(calculator.calculateSpecialBubbleBonus('score', { bonusScore: 100 }).toBe(100');'
-            expect(calculator.calculateSpecialBubbleBonus('score', {}).toBe(80'); // デフォルト'
+            expect(calculator.calculateSpecialBubbleBonus('score', { bonusScore: 100 }.toBe(100');'
+            expect(calculator.calculateSpecialBubbleBonus('score', {}.toBe(80'); // デフォルト'
         }
         test('should calculate boss bubble bonus', (') => {'
-            expect(calculator.calculateSpecialBubbleBonus('boss', { healthRatio: 0.5 }).toBe(80');'
-            expect(calculator.calculateSpecialBubbleBonus('boss', {}).toBe(0'); // 満タン時'
+            expect(calculator.calculateSpecialBubbleBonus('boss', { healthRatio: 0.5 }.toBe(80');'
+            expect(calculator.calculateSpecialBubbleBonus('boss', {}.toBe(0'); // 満タン時'
         }
         test('should return 0 for unknown bubble types', (') => {'
-            expect(calculator.calculateSpecialBubbleBonus('unknown', {}).toBe(0);
+            expect(calculator.calculateSpecialBubbleBonus('unknown', {}.toBe(0);
         }
     }');'
     describe('統計計算', (') => {'
@@ -243,11 +243,11 @@ describe('ScoreCalculator', () => {
         }');'
         test('should handle empty score history', () => {
             const stats: ScoreStatistics = calculator.calculateScoreStatistics([],
-            expect(stats.total).toBe(0),
-            expect(stats.average).toBe(0),
-            expect(stats.highest).toBe(0),
-            expect(stats.lowest).toBe(0),
-            expect(stats.comboCount).toBe(0),
+            expect(stats.total).toBe(0);
+            expect(stats.average).toBe(0);
+            expect(stats.highest).toBe(0);
+            expect(stats.lowest).toBe(0);
+            expect(stats.comboCount).toBe(0);
             expect(stats.bonusCount).toBe(0) }');'
         test('should handle invalid input', () => {
             const stats: ScoreStatistics = calculator.calculateScoreStatistics(null,
@@ -259,7 +259,7 @@ describe('ScoreCalculator', () => {
             expect(calculator.calculateScoreEfficiency(500, 5000).toBe(100),   // 100点/秒
         }');'
         test('should handle zero or negative time', () => {
-            expect(calculator.calculateScoreEfficiency(1000, 0).toBe(0),
+            expect(calculator.calculateScoreEfficiency(1000, 0).toBe(0);
             expect(calculator.calculateScoreEfficiency(1000, -1000).toBe(0) }');'
     }
     describe('推奨戦略計算', (') => {'
@@ -314,7 +314,7 @@ describe('ScoreCalculator', () => {
             expect(debugInfo').toHaveProperty('hasGameConfig'),'
             expect(debugInfo').toHaveProperty('scoreConfig'),'
             expect(debugInfo').toHaveProperty('version'),'
-            expect(debugInfo.hasGameConfig).toBe(true),
-            expect(debugInfo.version').toBe('1.0.0') });'
+            expect(debugInfo.hasGameConfig).toBe(true);
+            expect(debugInfo.version').toBe('1.0.0') };'
     }
 }');'

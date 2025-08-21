@@ -11,7 +11,7 @@ import { PerformanceMetricsCollector  } from './performance-testing/PerformanceM
 import { PerformanceTestReporter  } from './performance-testing/PerformanceTestReporter.js';
 
 // Type definitions
-interface BaselineConfig { target: number,
+interface BaselineConfig { target: number;
     minimum?: number;
     maximum?: number;
     variance?: number;
@@ -26,20 +26,20 @@ interface BaselineConfig { target: number,
     maxPowerConsumption?: number;
     targetEfficiency?: number;
 
-interface Baselines { frameRate: BaselineConfig,
+interface Baselines { frameRate: BaselineConfig;
     memoryUsage: BaselineConfig;
     renderingEfficiency: BaselineConfig;
     networkPerformance: BaselineConfig;
     batteryOptimization: BaselineConfig;
 
-interface TestSession { id: number,
+interface TestSession { id: number;
     startTime: number;
     endTime?: number;
     results: Map<string, TestResult>;
     status: 'running' | 'completed' | 'failed';
     error?: string;
 
-interface TestResult { category: string,
+interface TestResult { category: string;
     tests: TestDetails;
     passed: boolean;
     summary: string;
@@ -49,14 +49,14 @@ interface TestDetails { [key: string]: any;
 
 interface PerformanceMetrics { [key: string]: any;
 
-interface TestAnalysis { overallPassed: boolean,
+interface TestAnalysis { overallPassed: boolean;
     regressions: Regression[];
     improvements: Improvement[];
     recommendations: Recommendation[];
     session: TestSession;
     comparison?: BaselineComparison;
 
-interface Regression { category: string,
+interface Regression { category: string;
     metric: string;
     current: number;
     baseline: number;
@@ -64,7 +64,7 @@ interface Regression { category: string,
     severity: 'low' | 'medium' | 'high' | 'critical'
             }
 
-interface Improvement { category: string,
+interface Improvement { category: string;
     metric: string;
     current: number;
     baseline: number;
@@ -77,23 +77,23 @@ interface Recommendation { type: string,''
     actions: string[];
     category?: string;
 
-interface BaselineComparison { frameRate: ComparisonResult,
+interface BaselineComparison { frameRate: ComparisonResult;
     memory: ComparisonResult;
     rendering: ComparisonResult;
     network: ComparisonResult;
     battery: ComparisonResult;
 
-interface ComparisonResult { current: number,
+interface ComparisonResult { current: number;
     baseline: number;
     difference: number;
     status: 'improved' | 'degraded' | 'stable';
     withinThreshold: boolean;
 
-interface TestHistory { id: string,
+interface TestHistory { id: string;
     timestamp: number;
     passed: boolean;
 
-interface ErrorLog { timestamp: number,
+interface ErrorLog { timestamp: number;
     context: string;
     error: string;
     stack?: string;
@@ -111,9 +111,10 @@ interface ExportOptions { includeRawData?: boolean,
     includeCharts?: boolean;
     includeRecommendations?: boolean;
     dateRange?: {
-        start: number,
-    end: number,
-
+        start: number;
+    end: number;
+    end: number;
+        };
 // Sub-component interfaces
 interface PerformanceTestExecutor { setupTestEnvironment(): Promise<void>,
     runFrameRateTests(): Promise<TestResult>;
@@ -136,7 +137,7 @@ interface PerformanceTestReporter { summarizeResults(results: Map<string, TestRe
 interface PerformanceTestRunner { runTests?(): Promise<any>;
 
 interface BenchmarkComparator { compare?(baseline: any, current: any): any 
-interface RegressionDetector { detectRegressions?(data: any): Regression[],
+interface RegressionDetector { detectRegressions?(data: any): Regression[];
     
 interface ContinuousPerformanceMonitor { startMonitoring?(): void,
     stopMonitoring?(): void;
@@ -151,44 +152,49 @@ interface SpikeSimulator { createPerformanceSpike(): Promise<void>,
 interface MemoryLeakDetector { startMonitoring(): Promise<void>,
     generateReport(): Promise<MemoryLeakReport>;
 
-interface MemoryLeakReport { suspectedLeaks: any[],
+interface MemoryLeakReport { suspectedLeaks: any[];
     totalGrowth: number;
-
+    totalGrowth: number;
+        };
 interface GCMonitor { startMonitoring(): Promise<void>,
     getStatistics(): Promise<GCStatistics>;
 
-interface GCStatistics { averagePauseTime: number,
+interface GCStatistics { averagePauseTime: number;
     collectionCount: number;
     totalPauseTime: number;
     memoryReclaimed: number;
-
+    memoryReclaimed: number;
+        };
 interface MemoryPressureSimulator { applyPressure(): Promise<void>,
     releasePressure(): Promise<void>;
     getPressureLevel(): string;
 
 interface RenderOptimizer { measureDirtyRegionEfficiency(scenario: DirtyRegionTestScenario): Promise<DirtyRegionEfficiency>;
 
-interface DirtyRegionEfficiency { ratio: number,
+interface DirtyRegionEfficiency { ratio: number;
     totalRegions: number;
     dirtyRegions: number;
     pixelsRendered: number;
-
+    pixelsRendered: number;
+        };
 interface DirtyRegionTestScenario { setup(): Promise<void>;
 
 interface ViewportCullingTester { measureCullingEfficiency(): Promise<CullingEfficiency>;
 
-interface CullingEfficiency { cullRate: number,
+interface CullingEfficiency { cullRate: number;
     totalObjects: number;
     culledObjects: number;
     renderTime: number;
-
+    renderTime: number;
+        };
 interface LayerCompositionTester { measureCompositionPerformance(): Promise<CompositionPerformance>;
 
-interface CompositionPerformance { compositionTime: number,
+interface CompositionPerformance { compositionTime: number;
     layerCount: number;
     complexity: string;
     optimizations: string[];
-
+    optimizations: string[];
+        };
 interface RenderTimer { measureSingleRenderTime(): Promise<number>;
 
 interface NetworkThroughputTester { measureThroughput(): Promise<number>,
@@ -218,7 +224,7 @@ export class PerformanceTestSuite {
     private testRunner: PerformanceTestRunner;
     private benchmarkComparator: BenchmarkComparator;
     private regressionDetector: RegressionDetector;
-    private, continuousMonitor: ContinuousPerformanceMonitor,
+    private, continuousMonitor: ContinuousPerformanceMonitor;
     constructor() {
 
         this.testResults = new Map();
@@ -244,8 +250,8 @@ export class PerformanceTestSuite {
      * テストスイートの初期化
      */
     async initializeTestSuite(): Promise<void> { try {
-            await this.loadBaselines(),
-            await this.testExecutor.setupTestEnvironment(),
+            await this.loadBaselines();
+            await this.testExecutor.setupTestEnvironment();
             console.log('PerformanceTestSuite, initialized successfully'),' }'
 
         } catch (error) {
@@ -265,7 +271,7 @@ export class PerformanceTestSuite {
                 this.baselines = new Map(Object.entries({ ...defaultBaselines, ...parsed )),' }'
 
             } catch (error) {
-                console.warn('Failed to parse stored baselines, using defaults:', error),
+                console.warn('Failed to parse stored baselines, using defaults:', error);
                 this.baselines = new Map(Object.entries(defaultBaselines) }
         } else { this.baselines = new Map(Object.entries(defaultBaselines) }
     }
@@ -284,17 +290,16 @@ export class PerformanceTestSuite {
             startTime: performance.now(
             results: new Map('',
     status: 'running'
-            }))
+            })
         try { // サブコンポーネントを使用してテストを実行
-            const testSuites = [this.testExecutor.runFrameRateTests(),
-                this.testExecutor.runMemoryTests(),
-                this.testExecutor.runRenderingTests(),
+            const testSuites = [this.testExecutor.runFrameRateTests();
+                this.testExecutor.runMemoryTests();
+                this.testExecutor.runRenderingTests();
                 this.testExecutor.runNetworkTests()],
                 this.testExecutor.runBatteryTests()],
             ],
 
-            const results = await Promise.all(testSuites),
-
+            const results = await Promise.all(testSuites);
             this.currentSession.results = new Map([']',
                 ['frameRate', results[0]],
                 ['memory', results[1]],
@@ -304,8 +309,7 @@ export class PerformanceTestSuite {
             ]'),'
 
             this.currentSession.status = 'completed',
-            this.currentSession.endTime = performance.now(),
-            
+            this.currentSession.endTime = performance.now();
             // メトリクス収集と分析をサブコンポーネントに委譲
             return this.analyzeTestResults(),' }'
 
@@ -453,7 +457,7 @@ export class PerformanceTestSuite {
     getTestHistory(): TestHistory[] { const history: TestHistory[] = [],
         for(let, i = 0, i < localStorage.length, i++) {
 
-            const key = localStorage.key(i),
+            const key = localStorage.key(i);
             if(key?.startsWith('performance_test_' { }
 
                 try { }
@@ -553,13 +557,13 @@ export class PerformanceTestSuite {
 
                     category: 'unknown'
             }
-                    tests: {};
+                    tests: {},
                     passed: false,
-                    summary: 'Test execution failed';
+                    summary: 'Test execution failed',
                 };
             case 'metrics_collection': return { overallPassed: false,
                     regressions: [],
-    improvements: [] };
+    improvements: [] },
                     recommendations: [] 
     };
             default:;

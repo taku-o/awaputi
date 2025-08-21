@@ -1,4 +1,4 @@
-interface Achievement { id: string,
+interface Achievement { id: string;
     name: string;
     icon?: string;
     unlocked: boolean;
@@ -13,51 +13,53 @@ interface AchievementManager { getAchievements(): Achievement[],
     getAchievementsByCategory(): Record<string, AchievementCategory> }
     calculateTotalRewards(): { ap: number,
 
-interface AchievementCategory { name: string,
+interface AchievementCategory { name: string;
     achievements?: Achievement[];
 
-interface OverallStats { total: number,
+interface OverallStats { total: number;
     unlocked: number;
     locked: number;
     completionRate: number;
     totalRewards: number;
-
-interface CategoryStats { name: string,
+    totalRewards: number;
+        };
+interface CategoryStats { name: string;
     total: number;
     unlocked: number;
     locked: number;
     completionRate: number;
     rewards: number;
-
-interface RecentUnlock { id: string,
+    rewards: number;
+        };
+interface RecentUnlock { id: string;
     name: string;
     icon?: string;
     reward?: {
         a,p?: number;;
-    unlockedDate: string,
-    category: string,
+    unlockedDate: string;
+    category: string;
 }
 
 interface ProgressStats { progressRanges: {
-        hig,h: number,
-        medium: number,
-    low: number,;
-    averageProgress: number,
-    nearCompletion: number,
+        hig,h: number;
+        medium: number;
+    low: number;
+    averageProgress: number;
+    nearCompletion: number;
 }
 
-interface RewardStats { earnedAP: number,
+interface RewardStats { earnedAP: number;
     potentialAP: number;
     totalAP: number;
     earnedPercentage: number;
 
-interface StatisticsData { overall: OverallStats,
+interface StatisticsData { overall: OverallStats;
     categories: Record<string, CategoryStats>;
     recent: RecentUnlock[];
     progress: ProgressStats;
     rewards: RewardStats;
 
-interface ColorScheme { background: string,
+interface ColorScheme { background: string;
     text: string;
     subtext: string;
     accent: string;
@@ -65,11 +67,12 @@ interface ColorScheme { background: string,
     error: string;
     border: string;
     gradient: {
-        primar,y: string[],
-        secondary: string[],
-    tertiary: string[],
-
-interface StatItem { label: string,
+        primar,y: string[];
+        secondary: string[];
+    tertiary: string[];
+    tertiary: string[];
+        };
+interface StatItem { label: string;
     value: string | number;
     suffix?: string;
     color?: string,  }
@@ -85,7 +88,7 @@ export class AchievementStatsUI {
     private padding: number;
     private sectionSpacing: number;
     private itemHeight: number;
-    private, colors: ColorScheme,
+    private, colors: ColorScheme;
     constructor(achievementManager: AchievementManager) {
 
         this.achievementManager = achievementManager;
@@ -102,13 +105,13 @@ export class AchievementStatsUI {
         
         // 色設定
         this.colors = {
-            background: '#1a1a2e',
-            text: '#ffffff',
-            subtext: '#cccccc',
-            accent: '#4CAF50',
-            warning: '#FF9800',
-            error: '#f44336',
-            border: '#333',
+            background: '#1a1a2e';
+            text: '#ffffff';
+            subtext: '#cccccc';
+            accent: '#4CAF50';
+            warning: '#FF9800';
+            error: '#f44336';
+            border: '#333';
             gradient: {''
                 primary: ['#4CAF50', '#2E7D32];'
                 secondary: ['#2196F3', '#1976D2] }'
@@ -129,10 +132,9 @@ export class AchievementStatsUI {
     /**
      * 統計データを取得（キャッシュ付き）
      */
-    public getStatistics(): StatisticsData { const now = Date.now(),
-        
+    public getStatistics(): StatisticsData { const now = Date.now();
         if (!this.statsCache || (now - this.lastCacheUpdate) > this.cacheTimeout) {
-            this.updateStatisticsCache(),
+            this.updateStatisticsCache();
             this.lastCacheUpdate = now }
         
         return this.statsCache;
@@ -142,9 +144,8 @@ export class AchievementStatsUI {
      * 統計データキャッシュを更新
      */
     private updateStatisticsCache(): void { try {
-            const achievements = this.achievementManager.getAchievements(),
-            const categorizedAchievements = this.achievementManager.getAchievementsByCategory(),
-            
+            const achievements = this.achievementManager.getAchievements();
+            const categorizedAchievements = this.achievementManager.getAchievementsByCategory();
             this.statsCache = {
                 overall: this.calculateOverallStats(achievements),
                 categories: this.calculateCategoryStats(categorizedAchievements),
@@ -152,21 +153,21 @@ export class AchievementStatsUI {
                 progress: this.calculateProgressStats(achievements','
     rewards: this.calculateRewardStats(achievements 
     };'} catch (error) {'
-            console.error('Failed to update statistics cache:', error),
+            console.error('Failed to update statistics cache:', error);
             this.statsCache = this.getEmptyStats() }
     }
     
     /**
      * 全体統計を計算
      */
-    private calculateOverallStats(achievements: Achievement[]): OverallStats { const total = achievements.length;
+    private calculateOverallStats(achievements: Achievement[]): OverallStats { const total = achievements.length,
         const unlocked = achievements.filter(a => a.unlocked).length,
         const completion = total > 0 ? (unlocked / total * 100) : 0,
         
         return { total: total,
             unlocked: unlocked,
             locked: total - unlocked,
-    completionRate: completion,;
+    completionRate: completion,
             totalRewards: this.achievementManager.calculateTotalRewards().ap 
     }
     
@@ -201,8 +202,8 @@ export class AchievementStatsUI {
      * 最近の解除実績を計算
      */ : undefined
     private calculateRecentUnlocks(achievements: Achievement[]): RecentUnlock[] { const unlockedAchievements = achievements
-            .filter(a => a.unlocked && a.unlockedDate),
-            .sort((a, b) => new Date(b.unlockedDate) - new Date(a.unlockedDate),
+            .filter(a => a.unlocked && a.unlockedDate);
+            .sort((a, b) => new Date(b.unlockedDate) - new Date(a.unlockedDate);
             .slice(0, 5), // 最新5件
         
         return unlockedAchievements.map(achievement => ({
@@ -217,8 +218,7 @@ export class AchievementStatsUI {
     /**
      * 進捗統計を計算
      */
-    private calculateProgressStats(achievements: Achievement[]): ProgressStats { const lockedAchievements = achievements.filter(a => !a.unlocked),
-        
+    private calculateProgressStats(achievements: Achievement[]): ProgressStats { const lockedAchievements = achievements.filter(a => !a.unlocked);
         // 進捗度別の分類
         const progressRanges = {
             high: lockedAchievements.filter(a => this.getProgressPercentage(a) >= 75).length,
@@ -233,16 +233,15 @@ export class AchievementStatsUI {
         const averageProgress = lockedAchievements.length > 0 ? totalProgress / lockedAchievements.length: 0,
         
         return { progressRanges: progressRanges,
-            averageProgress: averageProgress,;
+            averageProgress: averageProgress,
             nearCompletion: progressRanges.high 
     }
     
     /**
      * 報酬統計を計算
      */
-    private calculateRewardStats(achievements: Achievement[]): RewardStats { const unlockedAchievements = achievements.filter(a => a.unlocked),
-        const lockedAchievements = achievements.filter(a => !a.unlocked),
-        
+    private calculateRewardStats(achievements: Achievement[]): RewardStats { const unlockedAchievements = achievements.filter(a => a.unlocked);
+        const lockedAchievements = achievements.filter(a => !a.unlocked);
         const earnedAP = unlockedAchievements.reduce((sum, a) => sum + (a.reward?.ap || 0), 0),
         const potentialAP = lockedAchievements.reduce((sum, a) => sum + (a.reward?.ap || 0), 0),
         const totalAP = earnedAP + potentialAP,
@@ -250,7 +249,7 @@ export class AchievementStatsUI {
         return { : undefined
             earnedAP: earnedAP,
             potentialAP: potentialAP,
-    totalAP: totalAP,;
+    totalAP: totalAP,
             earnedPercentage: totalAP > 0 ? (earnedAP / totalAP * 100) : 0 
         }
     
@@ -269,7 +268,7 @@ export class AchievementStatsUI {
      */
     private getEmptyStats(): StatisticsData { return { }
             overall: { total: 0, unlocked: 0, locked: 0, completionRate: 0, totalRewards: 0  },
-            categories: {};
+            categories: {},
             recent: [],
     progress: { progressRanges: { high: 0, medium: 0, low: 0  }, averageProgress: 0, nearCompletion: 0 },
             rewards: { earnedAP: 0, potentialAP: 0, totalAP: 0, earnedPercentage: 0  }
@@ -297,10 +296,10 @@ export class AchievementStatsUI {
             { label: '獲得AP', value: stats.totalRewards, suffix: 'AP', color: this.colors.accent  }]
         ];
         
-        items.forEach(item => {  ),
+        items.forEach(item => {  );
             this.renderStatItem(context, x, currentY, width, item) }
             currentY += this.itemHeight; }
-        });
+        };
         
         // 円グラフで完了率を表示
         this.renderCompletionChart(context, x + width - 80, y + 50, 60, stats.completionRate);
@@ -317,14 +316,13 @@ export class AchievementStatsUI {
         context.save('',
         context.font = 'bold, 18px Arial',
         context.textAlign = 'left',')'
-        context.fillText('カテゴリ別統計', x, y + 20),
-        
+        context.fillText('カテゴリ別統計', x, y + 20);
         let currentY = y + 40,
         
         // カテゴリごとの統計を描画
         Object.entries(categoryStats).forEach(([key, stats]) => {  }
             currentY = this.renderCategoryItem(context, x, currentY, width, stats); }
-        });
+        };
         
         context.restore();
         return currentY + this.sectionSpacing;
@@ -338,8 +336,7 @@ export class AchievementStatsUI {
         context.save('',
         context.font = 'bold, 18px Arial',
         context.textAlign = 'left',')'
-        context.fillText('最近の解除実績', x, y + 20),
-        
+        context.fillText('最近の解除実績', x, y + 20);
         let currentY = y + 40,
 
         if (recentUnlocks.length === 0) {
@@ -349,7 +346,7 @@ export class AchievementStatsUI {
             currentY += 40; }
         } else { recentUnlocks.forEach(achievement => { ) }
                 currentY = this.renderRecentUnlockItem(context, x, currentY, width, achievement); }
-            });
+            };
         }
         
         context.restore();
@@ -364,15 +361,14 @@ export class AchievementStatsUI {
         context.save('',
         context.font = 'bold, 18px Arial',
         context.textAlign = 'left',')'
-        context.fillText('進捗分析', x, y + 20),
-        
+        context.fillText('進捗分析', x, y + 20);
         let currentY = y + 40,
         
         // 進捗範囲の棒グラフ
         const chartHeight = 100,
         const barWidth = (width - 60) / 3,
         const maxValue = Math.max(
-            progressStats.progressRanges.high),
+            progressStats.progressRanges.high);
             progressStats.progressRanges.medium),
             progressStats.progressRanges.low),
             1)','
@@ -396,8 +392,7 @@ export class AchievementStatsUI {
             
             // 棒グラフ
             context.fillStyle = range.color,
-            context.fillRect(barX, barY, barWidth, barHeight),
-            
+            context.fillRect(barX, barY, barWidth, barHeight);
             // 値表示
             context.fillStyle = this.colors.text,
             context.font = 'bold 14px Arial',
@@ -411,7 +406,7 @@ export class AchievementStatsUI {
             lines.forEach((line, lineIndex) => { }
                 context.fillText(line, barX + barWidth / 2, currentY + chartHeight + 15 + lineIndex * 15); }
 
-            });'}');
+            };'}');
         
         currentY += chartHeight + 50;
         
@@ -419,7 +414,7 @@ export class AchievementStatsUI {
         context.fillStyle = this.colors.text;
         context.font = '14px Arial';
         context.textAlign = 'left';
-        context.fillText(`平均進捗率: ${progressStats.averageProgress.toFixed(1})%`, x, currentY);
+        context.fillText(`平均進捗率: ${progressStats.averageProgress.toFixed(1}%`, x, currentY);
         
         context.restore();
         return currentY + this.sectionSpacing;
@@ -446,24 +441,21 @@ export class AchievementStatsUI {
         
         // 背景
         context.fillStyle = this.colors.background,
-        context.fillRect(x, y, width, itemHeight),
-        
+        context.fillRect(x, y, width, itemHeight);
         // 枠線
         context.strokeStyle = this.colors.border,
         context.lineWidth = 1,
-        context.strokeRect(x, y, width, itemHeight),
-        
+        context.strokeRect(x, y, width, itemHeight);
         // カテゴリ名
         context.fillStyle = this.colors.text,
         context.font = 'bold 14px Arial',
         context.textAlign = 'left',
-        context.fillText(stats.name, x + 10, y + 20),
-        
+        context.fillText(stats.name, x + 10, y + 20);
         // 統計値
         context.fillStyle = this.colors.subtext,
         context.font = '12px Arial',' }'
 
-        context.fillText(`${stats.unlocked}/${stats.total} (${stats.completionRate.toFixed(1})%)`, x + 10, y + 35');'
+        context.fillText(`${stats.unlocked}/${stats.total} (${stats.completionRate.toFixed(1}%)`, x + 10, y + 35');'
         
         // 進捗バー
         const barWidth = 150;
@@ -496,20 +488,19 @@ export class AchievementStatsUI {
         // 実績名
         context.fillStyle = this.colors.text,
         context.font = '14px Arial',
-        context.fillText(achievement.name, x + 30, y + 20),
-        
+        context.fillText(achievement.name, x + 30, y + 20);
         // 解除日時
         context.fillStyle = this.colors.subtext,
         context.font = '12px Arial',
         context.textAlign = 'right',
-        const date = new Date(achievement.unlockedDate),
+        const date = new Date(achievement.unlockedDate);
         context.fillText(date.toLocaleDateString('ja-JP), x + width, y + 20',
         ','
         // AP報酬
         if (achievement.reward?.ap) {', ' }
 
             context.fillStyle = '#FFD700'; }
-            context.fillText(`+${achievement.reward.ap}AP`, x + width, y + 8});
+            context.fillText(`+${achievement.reward.ap}AP`, x + width, y + 8};
         }
         
         return y + itemHeight;
@@ -522,22 +513,21 @@ export class AchievementStatsUI {
         const endAngle = startAngle + (percentage / 100) * 2 * Math.PI,
         
         // 背景円
-        context.beginPath(),
-        context.arc(centerX, centerY, radius, 0, 2 * Math.PI),
+        context.beginPath();
+        context.arc(centerX, centerY, radius, 0, 2 * Math.PI);
         context.fillStyle = '#333',
-        context.fill(),
-        
+        context.fill();
         // 進捗弧
         if (percentage > 0) {
-            context.beginPath(),
-            context.arc(centerX, centerY, radius, startAngle, endAngle),
-            context.lineTo(centerX, centerY),
+            context.beginPath();
+            context.arc(centerX, centerY, radius, startAngle, endAngle);
+            context.lineTo(centerX, centerY);
             context.fillStyle = percentage >= 100 ? this.colors.accent: '#64B5F6',
             context.fill('',
         context.font = 'bold, 14px Arial',
         context.textAlign = 'center' }''
         context.textBaseline = 'middle';) }
-        context.fillText(`${percentage.toFixed(1})%`, centerX, centerY);
+        context.fillText(`${percentage.toFixed(1}%`, centerX, centerY);
     }
     
     /**
@@ -549,8 +539,7 @@ export class AchievementStatsUI {
     /**
      * 統計データをエクスポート
      */
-    public exportStatistics(): { exportDate: string,, statistics: StatisticsData; { const stats = this.getStatistics(),
-
+    public exportStatistics(): { exportDate: string,, statistics: StatisticsData; { const stats = this.getStatistics();
         return { };
 
             exportDate: new Date().toISOString() }'

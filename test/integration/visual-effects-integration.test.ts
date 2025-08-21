@@ -19,15 +19,15 @@ describe('Visual Effects Integration Tests', () => {  let dom: any,
         `, {"
             pretendToBeVisual: true," }"
             resources: "usable"
-            });
-        }),
-        (global: any).window = dom.window;
-        (global: any).document = dom.window.document;
-        (global: any).HTMLElement = dom.window.HTMLElement;
-        (global: any).HTMLCanvasElement = dom.window.HTMLCanvasElement;
-        (global: any).CanvasRenderingContext2D = dom.window.CanvasRenderingContext2D;
-        (global: any).performance = dom.window.performance;
-        (global: any).requestAnimationFrame = dom.window.requestAnimationFrame;
+            };
+        },
+        (global: any).window = dom.window,
+        (global: any).document = dom.window.document,
+        (global: any).HTMLElement = dom.window.HTMLElement,
+        (global: any).HTMLCanvasElement = dom.window.HTMLCanvasElement,
+        (global: any).CanvasRenderingContext2D = dom.window.CanvasRenderingContext2D,
+        (global: any).performance = dom.window.performance,
+        (global: any).requestAnimationFrame = dom.window.requestAnimationFrame,
         
         // Canvas 2D context のモック
         const mockContext = { save: jest.fn(
@@ -60,7 +60,7 @@ describe('Visual Effects Integration Tests', () => {  let dom: any,
             textAlign: 'start',','
             textBaseline: 'alphabetic',
             canvas: null,'
-    });
+    };
         HTMLCanvasElement.prototype.getContext = jest.fn(() => mockContext');'
         canvas = document.getElementById('gameCanvas');
         mockContext.canvas = canvas;
@@ -70,27 +70,27 @@ describe('Visual Effects Integration Tests', () => {  let dom: any,
         gameEngine = new GameEngine(canvas: any),
         // モックの初期化 }
         jest.clearAllMocks(); }
-    });
+    };
     afterEach(() => { if (gameEngine) { }
             gameEngine.stop(};)'
-        });'}');
+        };'}');
     describe('Complete Game Scenario Tests', (') => {  ''
         test('should handle full game session with all effects', async () => {
             // ゲームセッション開始
             gameEngine.start(),'
             // プロファイリング開始''
             gameEngine.effectProfiler.startProfiling(')',
-            gameEngine.sceneManager.switchToScene('mainMenu'),
+            gameEngine.sceneManager.switchToScene('mainMenu');
             await simulateFrames(30'), // 0.5秒分のフレーム'
             ','
             // ゲームシーンに遷移''
-            gameEngine.sceneManager.switchToScene('game'),
+            gameEngine.sceneManager.switchToScene('game');
             await simulateFrames(60), // 1秒分のフレーム
             ','
             // バブルポップエフェクトのテスト''
             for (let i = 0, i < 10, i++') { }'
                 simulateBubblePop('normal', 100 + i * 50, 100); }
-                await simulateFrames(5})
+                await simulateFrames(5}
             );
             // コンボエフェクトのテスト;
             for (let combo = 2; combo <= 15; combo++) { simulateComboEffect(combo) }'
@@ -99,7 +99,7 @@ describe('Visual Effects Integration Tests', () => {  let dom: any,
             // 特殊バブルエフェクトテスト';'
             const specialBubbles = ['rainbow', 'electric', 'spiky', 'diamond', 'boss'];
             for (const bubbleType of specialBubbles) { simulateBubblePop(bubbleType, 200, 200) }
-                await simulateFrames(15})
+                await simulateFrames(15}
             );
             // プロファイリング終了と分析;
             const profilingResults = gameEngine.effectProfiler.stopProfiling();
@@ -110,7 +110,7 @@ describe('Visual Effects Integration Tests', () => {  let dom: any,
             // パフォーマンス要件の確認
             expect(profilingResults.analysis.frame.averageFPS).toBeGreaterThan(25);'
             expect(profilingResults.analysis.memory.averageMemory).toBeLessThan(500);'}');
-        test('should maintain performance under stress conditions', async () => {  gameEngine.start(),
+        test('should maintain performance under stress conditions', async () => {  gameEngine.start();
             gameEngine.effectProfiler.startProfiling(),'
             // ストレステスト: 大量のパーティクルエフェクト''
             for (let i = 0, i < 50, i++') { }'
@@ -132,9 +132,9 @@ describe('Visual Effects Integration Tests', () => {  let dom: any,
             
             for(const quality of qualityLevels) {
             ','
-                gameEngine.effectQualityController.setQualityLevel(quality),
+                gameEngine.effectQualityController.setQualityLevel(quality);
                 gameEngine.effectProfiler.startProfiling(')',
-                simulateBubblePop('normal', 400, 300),
+                simulateBubblePop('normal', 400, 300);
                 simulateComboEffect(5'),'
                 simulateBubblePop('rainbow', 450, 350) }
                 await simulateFrames(60); }
@@ -149,12 +149,12 @@ describe('Visual Effects Integration Tests', () => {  let dom: any,
             }'}');
         test('should auto-adjust quality based on performance', async () => {  ''
             gameEngine.start(')',
-            gameEngine.effectQualityController.setQualityLevel('ultra'),
+            gameEngine.effectQualityController.setQualityLevel('ultra');
             const initialQuality = gameEngine.effectQualityController.getCurrentQualityLevel(),'
             // パフォーマンス負荷の高いシナリオ実行''
             for (let i = 0, i < 100, i++') { }'
                 simulateBubblePop('diamond', Math.random() * 800, Math.random() * 600); }
-                simulateComboEffect(15})
+                simulateComboEffect(15}
             );
             ;
             await simulateFrames(180); // 3秒分
@@ -169,7 +169,7 @@ describe('Visual Effects Integration Tests', () => {  let dom: any,
     describe('Accessibility Features Integration', (') => {  ''
         test('should support high contrast mode', async (') => {'
             // アクセシビリティ設定を有効化''
-            gameEngine.settingsManager.setSetting('accessibility.highContrast', true),
+            gameEngine.settingsManager.setSetting('accessibility.highContrast', true);
             gameEngine.start(')',
             simulateBubblePop('normal', 400, 300) }
             simulateComboEffect(3); }
@@ -181,12 +181,12 @@ describe('Visual Effects Integration Tests', () => {  let dom: any,
         }''
         test('should support reduced motion settings', async (') => {  // 動きを減らす設定を有効化''
             gameEngine.settingsManager.setSetting('accessibility.reduceMotion', true),'
-            gameEngine.start(),
+            gameEngine.start();
             gameEngine.effectProfiler.startProfiling(')',
-            simulateBubblePop('electric', 400, 300),
-            simulateComboEffect(10),
-            await simulateFrames(60),
-            const results = gameEngine.effectProfiler.stopProfiling(),
+            simulateBubblePop('electric', 400, 300);
+            simulateComboEffect(10);
+            await simulateFrames(60);
+            const results = gameEngine.effectProfiler.stopProfiling();
             // 動きが減った状態でのパフォーマンス向上を確認 }'
             expect(results.analysis.frame.averageFPS).toBeGreaterThan(50);' }'
         }');'
@@ -196,8 +196,8 @@ describe('Visual Effects Integration Tests', () => {  let dom: any,
             )';'
             // バイブレーション対応デバイスのモック)
             (global: any).navigator = { vibrate: jest.fn(')'
-            simulateBubblePop('boss', 400, 300),
-            await simulateFrames(30),
+            simulateBubblePop('boss', 400, 300);
+            await simulateFrames(30);
             // 代替フィードバックが提供されることを確認'
             expect(navigator.vibrate).toHaveBeenCalled(),' }'
         }');'
@@ -206,21 +206,21 @@ describe('Visual Effects Integration Tests', () => {  let dom: any,
         test('should optimize for mobile devices', async () => {
             // モバイルデバイスのモック
             mockMobileDevice(),'
-            gameEngine.start(),
+            gameEngine.start();
             gameEngine.effectProfiler.startProfiling(')',
-            simulateBubblePop('normal', 400, 300),
-            simulateComboEffect(5),
-            await simulateFrames(120),
-            const results = gameEngine.effectProfiler.stopProfiling(),
+            simulateBubblePop('normal', 400, 300);
+            simulateComboEffect(5);
+            await simulateFrames(120);
+            const results = gameEngine.effectProfiler.stopProfiling();
             // モバイル環境でのパフォーマンス要件
             expect(results.analysis.frame.averageFPS).toBeGreaterThan(25) }'
             expect(results.analysis.memory.averageMemory).toBeLessThan(200);' }'
         }');'
-        test('should handle touch-optimized effects', async () => {  mockMobileDevice(),
-            gameEngine.start(),
+        test('should handle touch-optimized effects', async () => {  mockMobileDevice();
+            gameEngine.start();
             // タッチエフェクトのシミュレーション
-            simulateTouchEffect(200, 300),
-            await simulateFrames(30),
+            simulateTouchEffect(200, 300);
+            await simulateFrames(30);
             // タッチエフェクトが正常に動作することを確認
             const particleCount = gameEngine.enhancedParticleManager.getActiveParticleCount() }'
             expect(particleCount).toBeGreaterThan(0);' }'
@@ -231,15 +231,15 @@ describe('Visual Effects Integration Tests', () => {  let dom: any,
             gameEngine.start(')',
             jest.spyOn(gameEngine.enhancedParticleManager, 'update').mockImplementation((') => { }'
                 throw new Error('Simulated particle system error'); }
-            });'
+            };'
             // エラーが発生してもゲームが継続することを確認''
             expect((') => { }'
                 simulateBubblePop('normal', 400, 300); }
                 simulateFrames(30};)
-            }).not.toThrow();
+            }.not.toThrow();
             // エラーハンドリングが動作していることを確認'
             expect(gameEngine.isRunning).toBe(true: any);'}');
-        test('should recover from memory pressure', async () => {  gameEngine.start(),
+        test('should recover from memory pressure', async () => {  gameEngine.start();
             gameEngine.effectProfiler.startProfiling(),'
             // メモリ圧迫状況のシミュレーション' }'
             for (let i = 0; i < 200; i++') { }'
@@ -250,7 +250,7 @@ describe('Visual Effects Integration Tests', () => {  let dom: any,
             // 自動メモリクリーンアップが動作することを確認
             const memoryAfterCleanup = gameEngine.effectProfiler.getCurrentMemoryUsage();
             expect(memoryAfterCleanup).toBeLessThan(1000); // 1GB未満
-        });
+        };
     }
     // ヘルパー関数
     function simulateFrames(count: any) { return new Promise(resolve => { 
@@ -267,7 +267,7 @@ describe('Visual Effects Integration Tests', () => {  let dom: any,
                 }
             };)
             animate();
-        });
+        };
     }
     function simulateBubblePop(bubbleType, x, y) { if (gameEngine.enhancedParticleManager) { }
             gameEngine.enhancedParticleManager.createBubbleDestructionEffect(x, y, bubbleType};)
@@ -276,7 +276,7 @@ describe('Visual Effects Integration Tests', () => {  let dom: any,
         if (gameEngine.audioManager) {
     
 }
-            gameEngine.audioManager.playSound(`bubble_${bubbleType)`});
+            gameEngine.audioManager.playSound(`bubble_${bubbleType)`};
         }
     }
     function simulateComboEffect(comboCount: any) { if (gameEngine.enhancedParticleManager) { }
@@ -291,12 +291,12 @@ describe('Visual Effects Integration Tests', () => {  let dom: any,
     
 }
                 gameEngine.enhancedEffectManager.screenShake(300, 5};)
-            });
-        });
+            };
+        };
     function simulateTouchEffect(x, y) { if (gameEngine.enhancedParticleManager) { }
             gameEngine.enhancedParticleManager.createTouchFeedbackEffect(x, y};)
-        })'
-    });
+        }'
+    };
     function mockMobileDevice(')';
         Object.defineProperty(global.navigator, 'userAgent', { '),'
             value: 'Mozilla/5.0 (iPhone, CPU iPhone OS 14_0 like Mac OS X') AppleWebKit/605.1.15','

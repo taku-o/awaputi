@@ -7,7 +7,7 @@ class MockStorageManager {
         this.data = new Map() }
     
     async getData(dataType, query = {) {
-        const data = this.data.get(dataType || []),
+        const data = this.data.get(dataType || []);
         let filteredData = [...data],
         
         // フィルタリング処理
@@ -31,7 +31,7 @@ class MockStorageManager {
                 const bVal = b[query.sortBy],
                 if (aVal < bVal) return -1 * sortOrder,
                 if (aVal > bVal) return 1 * sortOrder,
-                return 0 });
+                return 0 };
         }
         
         // 制限処理
@@ -48,9 +48,9 @@ class MockStorageManager {
 class MockPrivacyManager {
     async anonymizeData(data {
         // 簡単な匿名化処理
-        const anonymized = JSON.parse(JSON.stringify(data),
+        const anonymized = JSON.parse(JSON.stringify(data);
         if (anonymized.data && Array.isArray(anonymized.data) {
-            anonymized.data.forEach(record => {),
+            anonymized.data.forEach(record => {);
                 if (record.playerId') {'
                     record.playerId = 'anonymous_' + Math.random().toString(36).substr(2, 9) }
                 if (record.userAgent') {'
@@ -67,8 +67,8 @@ describe('AnalyticsAPI', () => {
     let mockPrivacyManager: any,
     
     beforeEach(() => {
-        mockStorageManager = new MockStorageManager(),
-        mockPrivacyManager = new MockPrivacyManager(),
+        mockStorageManager = new MockStorageManager();
+        mockPrivacyManager = new MockPrivacyManager();
         analyticsAPI = new AnalyticsAPI(mockStorageManager, mockPrivacyManager'),'
         // サンプルデータの設定
         mockStorageManager.setData('sessionData', [
@@ -116,24 +116,24 @@ describe('AnalyticsAPI', () => {
                 timestamp: 1641081700000,
                 fps: 45.2,
                 memoryUsage: { used: 75000000, total: 100000000
-            });
+            };
         ]);
     }');'
     describe('コンストラクタ', (') => {'
         test('正しく初期化される', () => {
-            expect(analyticsAPI).toBeDefined(),
-            expect(analyticsAPI.storageManager).toBe(mockStorageManager),
-            expect(analyticsAPI.privacyManager).toBe(mockPrivacyManager),
+            expect(analyticsAPI).toBeDefined();
+            expect(analyticsAPI.storageManager).toBe(mockStorageManager);
+            expect(analyticsAPI.privacyManager).toBe(mockPrivacyManager);
             // Main Controller Patternにより、endpointsプロパティが存在することを確認
             expect(analyticsAPI.endpoints).toBeDefined() }');'
         test('標準エンドポイントが登録される', () => {
             // endpointManagerが適切に初期化され、標準エンドポイントが利用可能であることを確認
-            expect(analyticsAPI.endpointManager).toBeDefined(),
+            expect(analyticsAPI.endpointManager).toBeDefined();
             // エンドポイント利用可能性をgetDataで確認（実際のAPI使用パターン）
             expect(analyticsAPI.getData).toBeDefined() }');'
         test('レート制限設定が初期化される', () => {
-            expect(analyticsAPI.rateLimiting).toBeDefined(),
-            expect(analyticsAPI.rateLimiting.enabled).toBe(true),
+            expect(analyticsAPI.rateLimiting).toBeDefined();
+            expect(analyticsAPI.rateLimiting.enabled).toBe(true);
             // レート制限の詳細設定は実装に依存するため、存在確認のみ
             expect(typeof analyticsAPI.rateLimiting.maxRequests').toBe('number') }');
     }
@@ -152,7 +152,7 @@ describe('AnalyticsAPI', () => {
         test('エンドポイント一覧が取得できる', (') => {'
             // エンドポイント一覧取得機能を確認
             if (typeof analyticsAPI.getEndpoints === 'function') {
-                const endpoints = analyticsAPI.getEndpoints(),
+                const endpoints = analyticsAPI.getEndpoints();
                 expect(Array.isArray(endpoints).toBe(true) } else {
                 // endpointManagerでエンドポイント管理が行われる場合
                 expect(analyticsAPI.endpointManager).toBeDefined() }
@@ -160,27 +160,27 @@ describe('AnalyticsAPI', () => {
     }
     describe('データ取得機能', (') => {'
         test('セッションデータが取得できる', async (') => {'
-            const result = await analyticsAPI.getData('/sessions'),
-            expect(result.success).toBe(true),
-            expect(Array.isArray(result.data).toBe(true),
-            expect(result.data).toHaveLength(2),
-            expect(result.metadata.dataCount).toBe(2),
+            const result = await analyticsAPI.getData('/sessions');
+            expect(result.success).toBe(true);
+            expect(Array.isArray(result.data).toBe(true);
+            expect(result.data).toHaveLength(2);
+            expect(result.metadata.dataCount).toBe(2);
             expect(result.metadata.endpoint').toBe('/sessions') }');
         test('バブルインタラクションデータが取得できる', async (') => {'
-            const result = await analyticsAPI.getData('/bubbles'),
-            expect(result.success).toBe(true),
-            expect(Array.isArray(result.data).toBe(true),
-            expect(result.data).toHaveLength(2),
+            const result = await analyticsAPI.getData('/bubbles');
+            expect(result.success).toBe(true);
+            expect(Array.isArray(result.data).toBe(true);
+            expect(result.data).toHaveLength(2);
             expect(result.data[0].bubbleType).toBeDefined() }');'
         test('パフォーマンスデータが取得できる', async (') => {'
-            const result = await analyticsAPI.getData('/performance'),
-            expect(result.success).toBe(true),
-            expect(Array.isArray(result.data).toBe(true),
-            expect(result.data).toHaveLength(2),
+            const result = await analyticsAPI.getData('/performance');
+            expect(result.success).toBe(true);
+            expect(Array.isArray(result.data).toBe(true);
+            expect(result.data).toHaveLength(2);
             expect(result.data[0].fps).toBeDefined() }');'
         test('存在しないエンドポイントでエラーになる', async (') => {'
-            const result = await analyticsAPI.getData('/nonexistent'),
-            expect(result.success).toBe(false),
+            const result = await analyticsAPI.getData('/nonexistent');
+            expect(result.success).toBe(false);
             expect(result.error.code').toBe('ENDPOINT_NOT_FOUND'),'
             expect(result.error.status).toBe(404) }');'
     }
@@ -188,42 +188,42 @@ describe('AnalyticsAPI', () => {
         test('日付範囲フィルターが動作する', async (') => {'
             const result = await analyticsAPI.getData('/sessions', {
                 startDate: '2022-01-01T00:00:00Z',
-                endDate: '2022-01-01T23:59:59Z' });
+                endDate: '2022-01-01T23:59:59Z' };
             expect(result.success).toBe(true);
             expect(result.data).toHaveLength(1);
             expect(result.data[0].sessionId').toBe('session_1');'
         }');'
         test('セッションIDフィルターが動作する', async (') => {'
             const result = await analyticsAPI.getData('/sessions', {
-                sessionId: 'session_2' });
+                sessionId: 'session_2' };
             expect(result.success).toBe(true);
             expect(result.data).toHaveLength(1);
             expect(result.data[0].sessionId').toBe('session_2');'
         }');'
         test('制限数が適用される', async (') => {'
             const result = await analyticsAPI.getData('/sessions', {
-                limit: 1 });
+                limit: 1 };
             expect(result.success).toBe(true);
             expect(result.data).toHaveLength(1);
         }');'
         test('ソート機能が動作する', async (') => {'
             const result = await analyticsAPI.getData('/sessions', {
                 sortBy: 'timestamp',
-                sortOrder: 'desc' });
+                sortOrder: 'desc' };
             expect(result.success).toBe(true);
             expect(result.data[0].sessionId').toBe('session_2'); // 新しい順'
         }');'
         test('無効なソートフィールドは無視される', async (') => {'
             const result = await analyticsAPI.getData('/sessions', {
-                sortBy: 'invalidField' });
+                sortBy: 'invalidField' };
             expect(result.success).toBe(true);
             // ソートは適用されないが、エラーにはならない
         }');'
     }
     describe('データ匿名化機能', (') => {'
         test('データが匿名化される', async (') => {'
-            const result = await analyticsAPI.getData('/sessions'),
-            expect(result.success).toBe(true),
+            const result = await analyticsAPI.getData('/sessions');
+            expect(result.success).toBe(true);
             expect(result.metadata.anonymized).toBe(true'),'
             // playerId が匿名化されている（mockでは 'anonymous_' プレフィックス付き）
             if (result.data.length > 0 && result.data[0].playerId) {
@@ -237,8 +237,8 @@ describe('AnalyticsAPI', () => {
         }');'
         test('PrivacyManagerなしでも動作する', async () => {
             const apiWithoutPrivacy = new AnalyticsAPI(mockStorageManager, null'),'
-            const result = await apiWithoutPrivacy.getData('/sessions'),
-            expect(result.success).toBe(true),
+            const result = await apiWithoutPrivacy.getData('/sessions');
+            expect(result.success).toBe(true);
             expect(result.metadata.anonymized).toBe(false) }');'
     }
     describe('集計機能', (') => {'
@@ -298,47 +298,47 @@ describe('AnalyticsAPI', () => {
     }
     describe('統計サマリー機能', (') => {'
         test('統計サマリーが取得できる', async (') => {'
-            const result = await analyticsAPI.getData('/stats/summary'),
-            expect(result.success).toBe(true),
-            expect(result.data.overview).toBeDefined(),
-            expect(result.data.sessionStats).toBeDefined(),
-            expect(result.data.interactionStats).toBeDefined(),
+            const result = await analyticsAPI.getData('/stats/summary');
+            expect(result.success).toBe(true);
+            expect(result.data.overview).toBeDefined();
+            expect(result.data.sessionStats).toBeDefined();
+            expect(result.data.interactionStats).toBeDefined();
             expect(result.data.performanceStats).toBeDefined() }');'
         test('セッション統計が正しく計算される', async (') => {'
-            const result = await analyticsAPI.getData('/stats/summary'),
+            const result = await analyticsAPI.getData('/stats/summary');
             const sessionStats = result.data.sessionStats,
             
-            expect(sessionStats.totalSessions).toBe(2),
-            expect(sessionStats.completedSessions).toBe(1),
-            expect(sessionStats.completionRate).toBe(0.5),
+            expect(sessionStats.totalSessions).toBe(2);
+            expect(sessionStats.completedSessions).toBe(1);
+            expect(sessionStats.completionRate).toBe(0.5);
             expect(sessionStats.averageScore).toBeGreaterThan(0) }');'
         test('インタラクション統計が正しく計算される', async (') => {'
-            const result = await analyticsAPI.getData('/stats/summary'),
+            const result = await analyticsAPI.getData('/stats/summary');
             const interactionStats = result.data.interactionStats,
             
-            expect(interactionStats.totalInteractions).toBe(2),
-            expect(interactionStats.totalScore).toBeGreaterThan(0),
-            expect(interactionStats.bubbleTypeStats).toBeDefined(),
-            expect(interactionStats.bubbleTypeStats.normal).toBeDefined(),
+            expect(interactionStats.totalInteractions).toBe(2);
+            expect(interactionStats.totalScore).toBeGreaterThan(0);
+            expect(interactionStats.bubbleTypeStats).toBeDefined();
+            expect(interactionStats.bubbleTypeStats.normal).toBeDefined();
             expect(interactionStats.bubbleTypeStats.rainbow).toBeDefined() }');'
         test('パフォーマンス統計が正しく計算される', async (') => {'
-            const result = await analyticsAPI.getData('/stats/summary'),
+            const result = await analyticsAPI.getData('/stats/summary');
             const performanceStats = result.data.performanceStats,
             
-            expect(performanceStats.totalRecords).toBe(2),
-            expect(performanceStats.averageFPS).toBeGreaterThan(0),
+            expect(performanceStats.totalRecords).toBe(2);
+            expect(performanceStats.averageFPS).toBeGreaterThan(0);
             expect(performanceStats.minFPS).toBeLessThanOrEqual(performanceStats.maxFPS) }');'
         test('データがない場合のノーデータフラグ', async () => {
             const emptyAPI = new AnalyticsAPI(new MockStorageManager()'),'
-            const result = await emptyAPI.getData('/stats/summary'),
-            expect(result.success).toBe(true),
-            expect(result.data.sessionStats.noData).toBe(true),
-            expect(result.data.interactionStats.noData).toBe(true),
+            const result = await emptyAPI.getData('/stats/summary');
+            expect(result.success).toBe(true);
+            expect(result.data.sessionStats.noData).toBe(true);
+            expect(result.data.interactionStats.noData).toBe(true);
             expect(result.data.performanceStats.noData).toBe(true) }');'
     }
     describe('レート制限機能', (') => {'
         test('正常なリクエストが通る', async (') => {'
-            const result = await analyticsAPI.getData('/sessions'),
+            const result = await analyticsAPI.getData('/sessions');
             expect(result.success).toBe(true) }');'
         test('レート制限を超えた場合のエラー処理', async () => {
             // レート制限を厳しく設定
@@ -361,62 +361,62 @@ describe('AnalyticsAPI', () => {
             await analyticsAPI.getData('/sessions');
             // レート制限スキップでリクエスト
             const result = await analyticsAPI.getData('/sessions', {}, {
-                skipRateLimit: true),
+                skipRateLimit: true);
             expect(result.success).toBe(true) }');'
         test('レート制限が無効化できる', async () => {
             analyticsAPI.updateRateLimitSettings({ enabled: false,);
             // 複数回リクエストしても制限されない
             for (let i = 0; i < 5; i++') {'
-                const result = await analyticsAPI.getData('/sessions'),
+                const result = await analyticsAPI.getData('/sessions');
                 expect(result.success).toBe(true) }
         }');'
     }
     describe('メタデータ機能', (') => {'
         test('APIメタデータが取得できる', async (') => {'
-            const result = await analyticsAPI.getData('/meta'),
-            expect(result.success).toBe(true),
-            expect(result.data.version).toBeDefined(),
-            expect(result.data.endpoints).toBeDefined(),
-            expect(result.data.rateLimiting).toBeDefined(),
-            expect(result.data.stats).toBeDefined(),
+            const result = await analyticsAPI.getData('/meta');
+            expect(result.success).toBe(true);
+            expect(result.data.version).toBeDefined();
+            expect(result.data.endpoints).toBeDefined();
+            expect(result.data.rateLimiting).toBeDefined();
+            expect(result.data.stats).toBeDefined();
             expect(result.data.features).toBeDefined() }');'
         test('エンドポイント統計が取得できる', (') => {'
-            const stats = analyticsAPI.getEndpointStats('/sessions'),
-            expect(stats).toBeDefined(),
-            expect(stats.callCount).toBeDefined(),
-            expect(stats.successCount).toBeDefined(),
+            const stats = analyticsAPI.getEndpointStats('/sessions');
+            expect(stats).toBeDefined();
+            expect(stats.callCount).toBeDefined();
+            expect(stats.successCount).toBeDefined();
             expect(stats.errorCount).toBeDefined() }');'
         test('存在しないエンドポイントの統計はnull', (') => {'
-            const stats = analyticsAPI.getEndpointStats('/nonexistent'),
+            const stats = analyticsAPI.getEndpointStats('/nonexistent');
             expect(stats).toBeNull() }');'
     }
     describe('統計管理機能', (') => {'
         test('API統計が更新される', async () => {
             const initialStats = analyticsAPI.getAPIStats('),'
-            await analyticsAPI.getData('/sessions'),
-            const updatedStats = analyticsAPI.getAPIStats(),
-            expect(updatedStats.totalRequests).toBe(initialStats.totalRequests + 1),
+            await analyticsAPI.getData('/sessions');
+            const updatedStats = analyticsAPI.getAPIStats();
+            expect(updatedStats.totalRequests).toBe(initialStats.totalRequests + 1);
             expect(updatedStats.successfulRequests).toBe(initialStats.successfulRequests + 1) }');'
         test('エラー時の統計が更新される', async () => {
             const initialStats = analyticsAPI.getAPIStats('),'
-            await analyticsAPI.getData('/nonexistent'),
-            const updatedStats = analyticsAPI.getAPIStats(),
-            expect(updatedStats.totalRequests).toBe(initialStats.totalRequests + 1),
+            await analyticsAPI.getData('/nonexistent');
+            const updatedStats = analyticsAPI.getAPIStats();
+            expect(updatedStats.totalRequests).toBe(initialStats.totalRequests + 1);
             expect(updatedStats.failedRequests).toBe(initialStats.failedRequests + 1) }');'
         test('成功率が正しく計算される', async (') => {'
             // 成功リクエスト
-            await analyticsAPI.getData('/sessions'),
-            await analyticsAPI.getData('/sessions'),
+            await analyticsAPI.getData('/sessions');
+            await analyticsAPI.getData('/sessions');
             // 失敗リクエスト
-            await analyticsAPI.getData('/nonexistent'),
-            const stats = analyticsAPI.getAPIStats(),
+            await analyticsAPI.getData('/nonexistent');
+            const stats = analyticsAPI.getAPIStats();
             expect(stats.successRate).toBe(67), // 2/3 = 66.7% -> 67%
         }');'
     }
     describe('エラーハンドリング', (') => {'
         test('ストレージエラーが適切に処理される', async () => {
             const errorStorageManager = {
-                getData: jest.fn(').mockRejectedValue(new Error('Storage error')});'
+                getData: jest.fn(').mockRejectedValue(new Error('Storage error')};'
             
             const errorAPI = new AnalyticsAPI(errorStorageManager');'
             const result = await errorAPI.getData('/sessions');
@@ -426,31 +426,31 @@ describe('AnalyticsAPI', () => {
         }');'
         test('集計エラーが適切に処理される', async () => {
             const errorStorageManager = {
-                getData: jest.fn(').mockRejectedValue(new Error('Aggregation error')});'
+                getData: jest.fn(').mockRejectedValue(new Error('Aggregation error')};'
             
             const errorAPI = new AnalyticsAPI(errorStorageManager');'
             const result = await errorAPI.getAggregatedData({
                 dataType: 'sessionData'),
-            expect(result.success).toBe(false),
+            expect(result.success).toBe(false);
             expect(result.error.code').toBe('AGGREGATION_ERROR') }');
     }
     describe('パフォーマンス要件', (') => {'
         test('レスポンス時間が記録される', async (') => {'
-            const result = await analyticsAPI.getData('/sessions'),
-            expect(result.success).toBe(true),
-            expect(result.metadata.responseTime).toBeDefined(),
+            const result = await analyticsAPI.getData('/sessions');
+            expect(result.success).toBe(true);
+            expect(result.metadata.responseTime).toBeDefined();
             expect(typeof result.metadata.responseTime').toBe('number'),'
             expect(result.metadata.responseTime).toBeGreaterThan(0) }');'
         test('大量データでも適切に処理される', async () => {
             // 大量のデータを設定
             const largeDataset = Array.from({ length: 1000 }, (_, i) => ({
-                sessionId: `session_${i}`;
+                sessionId: `session_${i}`,
                 timestamp: Date.now() + i * 1000,
-                playerId: `player_${i}`;
+                playerId: `player_${i}`,
                 duration: 300000 + i * 1000,
                 finalScore: 1000 + i * 10,
                 completed: i % 2 === 0
-            })');'
+            }');'
             mockStorageManager.setData('sessionData', largeDataset');'
             const result = await analyticsAPI.getData('/sessions');
             expect(result.success).toBe(true);
@@ -459,7 +459,7 @@ describe('AnalyticsAPI', () => {
         }');'
         test('制限値が適用される', async (') => {'
             const result = await analyticsAPI.getData('/sessions', {
-                limit: 20000 // 制限値10,000を超える) });
+                limit: 20000 // 制限値10,000を超える) };
             expect(result.success).toBe(true);
             // クエリが前処理で制限される
         }');'
@@ -540,7 +540,7 @@ describe('AnalyticsAPI', () => {
                 },
                 startDate: '2022-01-01T00:00:00Z',
                 endDate: '2022-01-03T00:00:00Z',
-                fillGaps: true,;
+                fillGaps: true,
             
             const result = await analyticsAPI.getTimeSeriesAggregation(timeSeriesRules);
             expect(result.success).toBe(true);
@@ -568,8 +568,9 @@ describe('AnalyticsAPI', () => {
                 interval: 'day',
                 startDate: '2022-01-01T00:00:00Z',
                 endDate: '2022-01-03T00:00:00Z',
-                fillGaps: true,;
-            
+                fillGaps: true,
+                fillGaps: true,
+        };
             const result = await analyticsAPI.getTimeSeriesAggregation(timeSeriesRules);
             expect(result.success).toBe(true);
             // ギャップが埋められているかは実データに依存するためここでは基本動作のみテスト
@@ -591,10 +592,10 @@ describe('AnalyticsAPI', () => {
     }
     describe('条件付き集計機能', (') => {'
         test('条件評価が正しく動作する', (') => {'
-            const condition1 = { field: 'type', operator: '==', value: 'normal' };
-            const condition2 = { field: 'type', operator: '==', value: 'special' };
-            const condition3 = { field: 'score', operator: '>', value: 50 };
-            const condition4 = { field: 'score', operator: '<', value: 50 };
+            const condition1 = { field: 'type', operator: '==', value: 'normal' },
+            const condition2 = { field: 'type', operator: '==', value: 'special' },
+            const condition3 = { field: 'score', operator: '>', value: 50 },
+            const condition4 = { field: 'score', operator: '<', value: 50 },
             const condition5 = { field: 'type', operator: 'in', value: ['normal', 'special'] };
             const condition6 = { field: 'type', operator: 'in', value: ['special', 'rare'] };
             
@@ -616,7 +617,7 @@ describe('AnalyticsAPI', () => {
                 expect(analyticsAPI.performAggregationFunction(values, 'max').toBe(50'),'
                 expect(analyticsAPI.performAggregationFunction(values, 'count').toBe(5) } else {
                 // aggregationProcessorが集計機能を提供する場合
-                expect(analyticsAPI.aggregationProcessor).toBeDefined(),
+                expect(analyticsAPI.aggregationProcessor).toBeDefined();
                 expect(typeof analyticsAPI.aggregationProcessor.performAggregationFunction').toBe('function') }'
         }');'
         test('空の値配列での集計関数', (') => {'
@@ -672,7 +673,7 @@ describe('AnalyticsAPI', () => {
             
             // 集計結果制限メソッドの存在と動作を確認
             if (typeof analyticsAPI.limitAggregationResults === 'function') {
-                const limited = analyticsAPI.limitAggregationResults(details, 2),
+                const limited = analyticsAPI.limitAggregationResults(details, 2);
                 expect(Object.keys(limited.sessionData.groups).toHaveLength(2) } else {
                 // aggregationProcessorで結果制限が行われる場合
                 expect(analyticsAPI.aggregationProcessor).toBeDefined() }
@@ -682,7 +683,7 @@ describe('AnalyticsAPI', () => {
         test('JSON形式でのエクスポートが動作する', async (') => {'
             const result = await analyticsAPI.getData('/export', {
                 dataTypes: ['sessionData'],
-                format: 'json' });
+                format: 'json' };
             expect(result.success).toBe(true);
             expect(result.data).toBeDefined();
             // エクスポート結果は data.data の中にあるレスポンス構造
@@ -694,7 +695,7 @@ describe('AnalyticsAPI', () => {
         test('CSV形式でのエクスポートが動作する', async (') => {'
             const result = await analyticsAPI.getData('/export', {
                 dataTypes: ['sessionData'],
-                format: 'csv' });
+                format: 'csv' };
             expect(result.success).toBe(true);
             expect(result.data).toBeDefined();
             if (result.data.format) {
@@ -705,7 +706,7 @@ describe('AnalyticsAPI', () => {
         test('XML形式でのエクスポートが動作する', async (') => {'
             const result = await analyticsAPI.getData('/export', {
                 dataTypes: ['sessionData'],
-                format: 'xml' });
+                format: 'xml' };
             expect(result.success).toBe(true);
             expect(result.data).toBeDefined();
             if (result.data.format) {
@@ -716,8 +717,8 @@ describe('AnalyticsAPI', () => {
         test('エクスポート形式サポート情報が取得できる', (') => {'
             // エクスポート形式情報をexportHandlerまたはAnalyticsAPIから取得
             if (typeof analyticsAPI.getSupportedExportFormats === 'function') {
-                const formats = analyticsAPI.getSupportedExportFormats(),
-                expect(Array.isArray(formats).toBe(true),
+                const formats = analyticsAPI.getSupportedExportFormats();
+                expect(Array.isArray(formats).toBe(true);
                 expect(formats.length).toBeGreaterThan(0) } else {
                 // exportHandlerを通じてエクスポート形式が管理される場合
                 expect(analyticsAPI.exportHandler).toBeDefined() }
@@ -725,8 +726,8 @@ describe('AnalyticsAPI', () => {
         test('エクスポート可能データタイプが取得できる', (') => {'
             // エクスポート可能データタイプ情報を取得
             if (typeof analyticsAPI.getSupportedExportDataTypes === 'function') {
-                const dataTypes = analyticsAPI.getSupportedExportDataTypes(),
-                expect(Array.isArray(dataTypes).toBe(true),
+                const dataTypes = analyticsAPI.getSupportedExportDataTypes();
+                expect(Array.isArray(dataTypes).toBe(true);
                 expect(dataTypes.length).toBeGreaterThan(0) } else {
                 // exportHandlerがデータタイプを管理する場合
                 expect(analyticsAPI.exportHandler).toBeDefined() }
@@ -734,8 +735,8 @@ describe('AnalyticsAPI', () => {
         test('エクスポート統計が取得できる', (') => {'
             // エクスポート統計情報を取得
             if (typeof analyticsAPI.getExportStats === 'function') {
-                const stats = analyticsAPI.getExportStats(),
-                expect(stats).toBeDefined(),
+                const stats = analyticsAPI.getExportStats();
+                expect(stats).toBeDefined();
                 expect(typeof stats.totalExports').toBe('number'),'
                 expect(typeof stats.successfulExports').toBe('number'),'
                 expect(typeof stats.successRate').toBe('number') } else {'
@@ -745,7 +746,7 @@ describe('AnalyticsAPI', () => {
         test('無効な形式でのエクスポートがエラーになる', async (') => {'
             const result = await analyticsAPI.getData('/export', {
                 dataTypes: ['sessionData'],
-                format: 'invalid' });
+                format: 'invalid' };
             // エラーが適切に処理されているかチェック
             expect(result.success).toBe(true); // getDataは成功だが、内部のエクスポートが失敗
             if (result.data && result.data.success === false) {
@@ -757,8 +758,8 @@ describe('AnalyticsAPI', () => {
                 format: 'json',
                 filters: {
                     sessionId: 'session_1'
-                });
-            });
+                };
+            };
             expect(result.success).toBe(true);
             expect(result.data).toBeDefined();
         }');'
@@ -775,16 +776,16 @@ describe('AnalyticsAPI', () => {
             // endpointManagerでレート制限が管理されるため、存在確認のみ
             expect(analyticsAPI.endpointManager).toBeDefined('),'
             // エクスポートエンドポイントが利用可能かを確認
-            const exportResult = await analyticsAPI.getData('/export', { dataTypes: ['sessionData'], format: 'json' });
+            const exportResult = await analyticsAPI.getData('/export', { dataTypes: ['sessionData'], format: 'json' };
             expect(typeof exportResult.success').toBe('boolean');'
         }');'
     }
     describe('リソース管理', (') => {'
         test('destroyメソッドが正しく動作する', (') => {'
-            const consoleSpy = jest.spyOn(console, 'log').mockImplementation(),
-            analyticsAPI.destroy(),
+            const consoleSpy = jest.spyOn(console, 'log').mockImplementation();
+            analyticsAPI.destroy();
             expect(consoleSpy').toHaveBeenCalledWith('Analytics API destroyed'),'
-            expect(analyticsAPI.endpoints.size).toBe(0),
+            expect(analyticsAPI.endpoints.size).toBe(0);
             // リソースのクリーンアップ状況を確認（実装に依存）
             if (analyticsAPI.rateLimiting && analyticsAPI.rateLimiting.requestHistory) {
                 expect(analyticsAPI.rateLimiting.requestHistory.size).toBe(0) }
@@ -792,6 +793,6 @@ describe('AnalyticsAPI', () => {
                 expect(analyticsAPI.aggregationCache.size).toBe(0) }
             
             consoleSpy.mockRestore();
-        });
+        };
     }
 }');'

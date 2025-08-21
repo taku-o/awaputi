@@ -4,7 +4,7 @@
  */
 
 // 型定義
-export interface SearchDocument { id: string,
+export interface SearchDocument { id: string;
     title?: string;
     content?: string;
     searchKeywords?: string[];
@@ -19,23 +19,23 @@ export interface SearchOptions { category?: string,
     minScore?: number;
     limit?: number;
 
-export interface SearchResult extends SearchDocument { relevanceScore: number,
+export interface SearchResult extends SearchDocument { relevanceScore: number;
     highlights: Record<string, string> }
 
-export interface FieldWeights { title: number,
+export interface FieldWeights { title: number;
     content: number;
     searchKeywords: number;
     category: number;
 
-export interface SearchStats { totalSearches: number,
+export interface SearchStats { totalSearches: number;
     cacheHits: number;
     averageSearchTime: number;
     popularQueries: Map<string, number> }
 
-export interface CachedSearchResult { result: SearchResult[],
+export interface CachedSearchResult { result: SearchResult[];
     timestamp: number;
 
-export interface PerformanceStats { totalSearches: number,
+export interface PerformanceStats { totalSearches: number;
     cacheHitRate: number;
     averageSearchTime: number;
     indexSize: number;
@@ -64,8 +64,8 @@ export class SearchEngine {
         this.textIndex = new Map<string, string[]>(), // 単語 -> [documentId, ...]
         this.documentStore = new Map<string, SearchDocument>(), // documentId -> document
         this.fieldWeights = {
-            title: 3.0,
-            content: 1.0,
+            title: 3.0;
+            content: 1.0;
     searchKeywords: 2.0 }
             category: 1.5 
     };
@@ -75,9 +75,9 @@ export class SearchEngine {
         this.maxCacheSize = 100;
         
         // 検索統計
-        this.searchStats = { totalSearches: 0,
-            cacheHits: 0,
-            averageSearchTime: 0,
+        this.searchStats = { totalSearches: 0;
+            cacheHits: 0;
+            averageSearchTime: 0;
     popularQueries: new Map<string, number>( };
         
         // ストップワード（検索対象外の単語）
@@ -104,8 +104,7 @@ export class SearchEngine {
      * 初期化処理
      */
     initialize(): void { // 検索履歴の復元（ローカルストレージから）
-        this.loadSearchHistory(),
-        
+        this.loadSearchHistory();
         // 定期的なキャッシュクリーンアップ
         setInterval(() => this.cleanupCache(), 60000), // 1分ごと }
     }
@@ -114,8 +113,7 @@ export class SearchEngine {
      * コンテンツのインデックス作成
      * @param contentArray - インデックス対象コンテンツ配列
      */
-    indexContent(contentArray: SearchDocument[]): void { const startTime = performance.now(),
-        
+    indexContent(contentArray: SearchDocument[]): void { const startTime = performance.now();
         for (const content of contentArray) {
     
 }
@@ -123,7 +121,7 @@ export class SearchEngine {
         }
         
         const indexTime = performance.now() - startTime;
-        console.log(`Indexed ${contentArray.length} documents, in ${indexTime.toFixed(2})ms`);
+        console.log(`Indexed ${contentArray.length} documents, in ${indexTime.toFixed(2}ms`);
         
         // インデックス完了後にキャッシュをクリア（古い検索結果が無効になるため）
         this.searchCache.clear();
@@ -162,8 +160,7 @@ export class SearchEngine {
      * @returns 検索結果
      */
     async search(query: string, options: SearchOptions = { ): Promise<SearchResult[]> {
-        const startTime = performance.now(),
-        
+        const startTime = performance.now();
         if (!query || query.trim().length === 0) {
             return [] }
         
@@ -177,11 +174,9 @@ export class SearchEngine {
             return cachedResult;
         
         try { // 検索実行
-            const results = await this.performSearch(normalizedQuery, options),
-            
+            const results = await this.performSearch(normalizedQuery, options);
             // 結果をキャッシュ
-            this.setCachedResult(cacheKey, results),
-            
+            this.setCachedResult(cacheKey, results);
             // 統計更新
             this.updateSearchStats(normalizedQuery, performance.now() - startTime),
             
@@ -189,7 +184,7 @@ export class SearchEngine {
             ' }'
 
         } catch (error) {
-            console.error('Search error:', error),
+            console.error('Search error:', error);
             return [],
     
     /**
@@ -197,8 +192,7 @@ export class SearchEngine {
      * @private
      */
     private async performSearch(query: string, options: SearchOptions): Promise<SearchResult[]> { const tokens = this.tokenize(query),
-        const expandedTokens = this.expandQuery(tokens),
-        
+        const expandedTokens = this.expandQuery(tokens);
         // 各トークンの検索結果を取得
         const tokenResults = new Map<string, string[]>(),
         for (const token of expandedTokens) {
@@ -258,7 +252,7 @@ export class SearchEngine {
      * 関連度スコア計算
      * @private
      */
-    private calculateRelevanceScore(token: string, docId: string, originalQuery: string): number { const document = this.documentStore.get(docId),
+    private calculateRelevanceScore(token: string, docId: string, originalQuery: string): number { const document = this.documentStore.get(docId);
         if (!document) return 0,
         
         let score = 0,
@@ -325,7 +319,7 @@ export class SearchEngine {
         
         for(const [docId, score] of documentScores) {
         
-            const document = this.documentStore.get(docId),
+            const document = this.documentStore.get(docId);
             if (!document) continue,
             
             // カテゴリフィルター
@@ -356,13 +350,13 @@ export class SearchEngine {
         
         for(const [docId, score] of documentScores) {
         
-            const document = this.documentStore.get(docId),
+            const document = this.documentStore.get(docId);
             if (document) {
                 results.push({)
                     ...document),
                     relevanceScore: score) }
                     highlights: this.generateHighlights(document, query); }
-                });
+                };
             }
         }
         
@@ -388,7 +382,7 @@ export class SearchEngine {
 
                     const regex = new RegExp(`(${token)}`, 'gi'};' }'
 
-                    highlightedText = highlightedText.replace(regex, '<mark>$1</mark>'});
+                    highlightedText = highlightedText.replace(regex, '<mark>$1</mark>'};
                 }
                 if (highlightedText !== text) { highlights[field] = highlightedText }
 }
@@ -442,7 +436,7 @@ export class SearchEngine {
      * @param contentId - コンテンツID
      * @returns 関連コンテンツ
      */
-    getRelatedContent(contentId: string): RelatedContent[] { const document = this.documentStore.get(contentId),
+    getRelatedContent(contentId: string): RelatedContent[] { const document = this.documentStore.get(contentId);
         if (!document) return [],
         
         // カテゴリが同じコンテンツを検索
@@ -454,7 +448,7 @@ export class SearchEngine {
                 related.push({)
                     ...doc),
                     similarity: this.calculateSimilarity(document, doc) }
-                });
+                };
             }
         }
         
@@ -474,7 +468,7 @@ export class SearchEngine {
         return text','
             .toLowerCase()','
             .replace(/[^\w\s]/g, ', ') // 記号を除去,
-            .split(/\s+/),
+            .split(/\s+/);
             .filter(token => token.length > 1 && !this.stopWords.has(token) }
     }
     
@@ -493,7 +487,7 @@ export class SearchEngine {
      * ドキュメント頻度取得
      * @private
      */
-    private getDocumentFrequency(token: string): number { const docList = this.textIndex.get(token),
+    private getDocumentFrequency(token: string): number { const docList = this.textIndex.get(token);
         return docList ? docList.length: 0 
     /**
      * 類似度計算
@@ -503,12 +497,10 @@ export class SearchEngine {
         const content1 = (doc1.title || '') + ', ' + (doc1.content || ''),
         const content2 = (doc2.title || '') + ', ' + (doc2.content || '),'
         
-        const tokens1 = new Set(this.tokenize(content1),
-        const tokens2 = new Set(this.tokenize(content2),
-        
+        const tokens1 = new Set(this.tokenize(content1);
+        const tokens2 = new Set(this.tokenize(content2);
         const intersection = new Set([...tokens1].filter(x => tokens2.has(x)),
-        const union = new Set([...tokens1, ...tokens2]),
-        
+        const union = new Set([...tokens1, ...tokens2]);
         return intersection.size / union.size, // Jaccard係数 }
     }
     
@@ -517,14 +509,14 @@ export class SearchEngine {
      * @private
      */
     private getCacheKey(query: string, options: SearchOptions): string {
-        return `${query}|${JSON.stringify(options})`;
+        return `${query}|${JSON.stringify(options}`;
     }
     
     /**
      * キャッシュ結果取得
      * @private
      */
-    private getCachedResult(key: string): SearchResult[] | null { const cached = this.searchCache.get(key),
+    private getCachedResult(key: string): SearchResult[] | null { const cached = this.searchCache.get(key);
         if (cached && Date.now() - cached.timestamp < this.cacheTimeout) {
             return cached.result }
         
@@ -545,7 +537,7 @@ export class SearchEngine {
         this.searchCache.set(key, {
                 result: result,
     timestamp: Date.now( 
-            }));
+            });
     }
     
     /**
@@ -561,8 +553,7 @@ export class SearchEngine {
         
         // 人気クエリ更新
         const currentCount = this.searchStats.popularQueries.get(query) || 0,
-        this.searchStats.popularQueries.set(query, currentCount + 1),
-        
+        this.searchStats.popularQueries.set(query, currentCount + 1);
         // 検索履歴保存
         this.saveSearchHistory() }
     
@@ -570,7 +561,7 @@ export class SearchEngine {
      * キャッシュクリーンアップ
      * @private
      */
-    private cleanupCache(): void { const now = Date.now(),
+    private cleanupCache(): void { const now = Date.now();
         for(const [key, cached] of this.searchCache) {
             if (now - cached.timestamp > this.cacheTimeout) {
         }
@@ -629,7 +620,7 @@ export class SearchEngine {
             indexSize: this.textIndex.size,
             documentCount: this.documentStore.size,
             cacheSize: this.searchCache.size,
-    popularQueries: Array.from(this.searchStats.popularQueries.entries(),
+    popularQueries: Array.from(this.searchStats.popularQueries.entries();
                 .sort((a b) => b[1] - a[1]) };
                 .slice(0 10); }
         }
@@ -637,9 +628,9 @@ export class SearchEngine {
     /**
      * クリーンアップ
      */
-    cleanup(): void { this.textIndex.clear(),
-        this.documentStore.clear(),
-        this.searchCache.clear(),
+    cleanup(): void { this.textIndex.clear();
+        this.documentStore.clear();
+        this.searchCache.clear();
         this.searchStats = {
             totalSearches: 0,
     cacheHits: 0,

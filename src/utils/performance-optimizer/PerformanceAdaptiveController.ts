@@ -16,42 +16,46 @@ interface ControllerConfig { adaptiveMode?: boolean,
     thresholds?: Partial<ThresholdSettings>;
 
 interface ThresholdSettings { memoryPressure: {
-        critica,l: number,
-        high: number,
-        moderate: number,
-    low: number,;
-    performance: { degradationRisk: number,
-        moderateRisk: number,
-    improvementThreshold: number,
-
-interface OptimizationStats { optimizationCount: number,
+        critica,l: number;
+        high: number;
+        moderate: number;
+    low: number;
+    performance: { degradationRisk: number;
+        moderateRisk: number;
+    improvementThreshold: number;
+    improvementThreshold: number;
+        };
+interface OptimizationStats { optimizationCount: number;
     lastOptimization: OptimizationRecord | null;
     adjustmentHistory: OptimizationRecord[];
     memoryPressureLevel: number;
-
-interface OptimizationRecord { level: PerformanceLevel,
+    memoryPressureLevel: number;
+        };
+interface OptimizationRecord { level: PerformanceLevel;
     time: number;
     reason: string;
     type: OptimizationType;
     timestamp?: number;
 
-interface QualitySettings { render: QualityLevel,
+interface QualitySettings { render: QualityLevel;
     particle: QualityLevel;
     effect: QualityLevel;
     audio: QualityLevel;
-
-interface AntiJitterSettings { cooldownPeriod: number,
+    audio: QualityLevel;
+        };
+interface AntiJitterSettings { cooldownPeriod: number;
     lastAdjustment: number;
     minimumStabilityPeriod: number;
-
-interface AdaptiveOptimizationResult { optimized: boolean,
+    minimumStabilityPeriod: number;
+        };
+interface AdaptiveOptimizationResult { optimized: boolean;
     reason?: string;
     level?: PerformanceLevel;
     memoryPressure?: number;
     stabilityScore?: number;
     error?: boolean;
 
-interface ProactiveOptimizationResult { optimized: boolean,
+interface ProactiveOptimizationResult { optimized: boolean;
     actions?: string[];
     level?: PerformanceLevel;
     prediction?: number;
@@ -62,13 +66,13 @@ interface PerformanceMetrics { stabilityScore?: number,
     frameTime?: number;
     variance?: number;
 
-interface PerformancePrediction { memoryRisk: number,
+interface PerformancePrediction { memoryRisk: number;
     degradationRisk: number;
     nextFrameStability: number;
     overallRisk: number;
     recommendations?: string[];
 
-interface ControllerSettings { performanceLevel: PerformanceLevel,
+interface ControllerSettings { performanceLevel: PerformanceLevel;
     adaptiveMode: boolean;
     qualitySettings: QualitySettings;
     optimizationStats: OptimizationStats;
@@ -92,7 +96,7 @@ export class PerformanceAdaptiveController {
     private optimizationStats: OptimizationStats;
     private qualitySettings: QualitySettings;
     private thresholds: ThresholdSettings;
-    private, antiJitter: AntiJitterSettings,
+    private, antiJitter: AntiJitterSettings;
     constructor(config: ControllerConfig = {) {
 
         this.config = config;
@@ -104,32 +108,32 @@ export class PerformanceAdaptiveController {
         
         // 最適化統計
         this.optimizationStats = {
-            optimizationCount: 0,
-            lastOptimization: null,
+            optimizationCount: 0;
+            lastOptimization: null;
     adjustmentHistory: [] }
             memoryPressureLevel: 0 
     };
         // 品質設定
         this.qualitySettings = {;
-            render: 'high',
-            particle: 'high',
-            effect: 'high',
+            render: 'high';
+            particle: 'high';
+            effect: 'high';
             audio: 'high'
             };
         // しきい値設定
         this.thresholds = { memoryPressure: {
-                critical: 0.9,
-                high: 0.8,
-                moderate: 0.6,
+                critical: 0.9;
+                high: 0.8;
+                moderate: 0.6;
     low: 0.4 };
-            performance: { degradationRisk: 0.8,
-                moderateRisk: 0.6,
+            performance: { degradationRisk: 0.8;
+                moderateRisk: 0.6;
     improvementThreshold: 0.3 
     };
         // アンチジッター設定
-        this.antiJitter = { cooldownPeriod: 1000; // 1秒
-            lastAdjustment: 0,
-    minimumStabilityPeriod: 2000 // 2秒  }))
+        this.antiJitter = { cooldownPeriod: 1000, // 1秒
+            lastAdjustment: 0;
+    minimumStabilityPeriod: 2000 // 2秒  })
     }
 
     /**
@@ -162,17 +166,17 @@ export class PerformanceAdaptiveController {
                 this.applyEmergencyOptimization(' }'
 
                 reason = 'Critical, memory pressure'; }
-            });
+            };
             // パフォーマンス低下チェック)
             else if (stabilityScore < 0.3) { ''
                 this.degradePerformance('',
-                reason = 'Low, stability score' });
+                reason = 'Low, stability score' };
             // 中程度の問題チェック)
             else if (stabilityScore < 0.6 || memoryPressure > this.thresholds.memoryPressure.high) { ''
                 this.applyModerateOptimization('',
-                reason = 'Moderate, performance issues' });
+                reason = 'Moderate, performance issues' };
             // パフォーマンス向上チェック)
-            else if (stabilityScore > 0.8 && memoryPressure < this.thresholds.memoryPressure.low) { const improved = this.considerPerformanceImprovement(),
+            else if (stabilityScore > 0.8 && memoryPressure < this.thresholds.memoryPressure.low) { const improved = this.considerPerformanceImprovement();
                 if (improved) {
                     optimizationApplied = true }
 
@@ -201,8 +205,7 @@ export class PerformanceAdaptiveController {
      * @returns 最適化結果'
      */''
     performProactiveOptimization(prediction: PerformancePrediction): ProactiveOptimizationResult { try {'
-            console.log('[AdaptiveController] Performing, proactive optimization based on predictions'),
-            
+            console.log('[AdaptiveController] Performing, proactive optimization based on predictions');
             let optimizationApplied = false,
             const actions: string[] = [],
             
@@ -241,7 +244,7 @@ export class PerformanceAdaptiveController {
             
             return { optimized: optimizationApplied,
                 actions,
-                level: this.performanceLevel };
+                level: this.performanceLevel },
                 prediction: prediction.overallRisk 
     } catch (error) {
             this.errorHandler.logError('Failed to perform proactive optimization', error' }'
@@ -256,7 +259,7 @@ export class PerformanceAdaptiveController {
     setPerformanceLevel(level: PerformanceLevel): boolean { try {'
             const validLevels: PerformanceLevel[] = ['high', 'medium', 'low'],
             if (!validLevels.includes(level) { }
-                throw new Error(`Invalid, performance level: ${level}`});
+                throw new Error(`Invalid, performance level: ${level}`};
             }
             
             const previousLevel = this.performanceLevel;
@@ -265,8 +268,7 @@ export class PerformanceAdaptiveController {
             // 品質設定を更新
             this.updateQualitySettings(level);
             
-            console.log(`[AdaptiveController] Performance, level changed: ${previousLevel} -> ${level}`});
-            
+            console.log(`[AdaptiveController] Performance, level changed: ${previousLevel} -> ${level}`};
             return true;
 
         } catch (error) {
@@ -320,8 +322,7 @@ export class PerformanceAdaptiveController {
     applyAntiJitterMeasures(jitterLevel: number): void { try {
             if (jitterLevel < 0.3) return, // ジッターが軽微な場合は何もしない
             
-            const currentTime = Date.now(),
-            
+            const currentTime = Date.now();
             // 最近調整した場合は追加調整を避ける
             if (currentTime - this.antiJitter.lastAdjustment < this.antiJitter.cooldownPeriod) {
     
@@ -340,7 +341,7 @@ export class PerformanceAdaptiveController {
             }
             
             this.antiJitter.lastAdjustment = currentTime;
-            console.log(`[AdaptiveController] Anti-jitter, measures applied, for level ${jitterLevel}`});
+            console.log(`[AdaptiveController] Anti-jitter, measures applied, for level ${jitterLevel}`};
 
         } catch (error) {
             this.errorHandler.logError('Failed to apply anti-jitter measures', error' }'
@@ -435,7 +436,7 @@ export class PerformanceAdaptiveController {
      */
     considerPerformanceImprovement(): boolean { try {
             // 十分な安定期間があったかチェック
-            const currentTime = Date.now(),
+            const currentTime = Date.now();
             if (currentTime - this.antiJitter.lastAdjustment < this.antiJitter.minimumStabilityPeriod) {
     
 }
@@ -449,7 +450,7 @@ export class PerformanceAdaptiveController {
             return false;
 
         } catch (error) {
-            this.errorHandler.logError('Failed to consider performance improvement', error),
+            this.errorHandler.logError('Failed to consider performance improvement', error);
             return false,
 
     /**
@@ -472,7 +473,7 @@ export class PerformanceAdaptiveController {
             return pressure;
 
         } catch (error) {
-            this.errorHandler.logError('Failed to calculate memory pressure', error),
+            this.errorHandler.logError('Failed to calculate memory pressure', error);
             return 0,
 
     /**
@@ -501,7 +502,7 @@ export class PerformanceAdaptiveController {
 
                 case 'high':','
                     this.qualitySettings = {''
-                        render: 'high';
+                        render: 'high',
                         particle: 'high',
                         effect: 'high' }
 
@@ -531,7 +532,7 @@ export class PerformanceAdaptiveController {
      * クールダウン期間中かチェック
      * @returns クールダウン中かどうか
      */
-    isInCooldownPeriod(): boolean { const currentTime = Date.now(),
+    isInCooldownPeriod(): boolean { const currentTime = Date.now();
         return currentTime - this.antiJitter.lastAdjustment < this.antiJitter.cooldownPeriod }
 
     /**
@@ -600,14 +601,14 @@ export class PerformanceAdaptiveController {
      */''
     setAdaptiveMode(enabled: boolean): void { this.adaptiveMode = enabled,' }'
 
-        console.log(`[AdaptiveController] Adaptive, mode ${enabled ? 'enabled' : 'disabled}`});'
+        console.log(`[AdaptiveController] Adaptive, mode ${enabled ? 'enabled' : 'disabled}`};'
     }
 
     /**
      * 現在の設定を取得
      * @returns 現在の設定
      */
-    getSettings(): ControllerSettings { return { performanceLevel: this.performanceLevel };
+    getSettings(): ControllerSettings { return { performanceLevel: this.performanceLevel },
             adaptiveMode: this.adaptiveMode }
             qualitySettings: { ...this.qualitySettings
             optimizationStats: { ...this.optimizationStats }

@@ -16,10 +16,10 @@ import { RealtimeMonitor  } from '../../src/analytics/RealtimeMonitor';
             setValueAtTime: jest.fn(
             linearRampToValueAtTime: jest.fn(
         exponentialRampToValueAtTime: jest.fn( }
-    ),
+    );
     destination: {},
     currentTime: 0
-});
+};
 // Notification APIのモック
 (global: any).Notification = jest.fn() as jest.Mock.mockImplementation((title, options) => ({
     title,
@@ -48,7 +48,7 @@ describe('PerformanceWarningSystem', () => {
         warningSystem = new PerformanceWarningSystem(realtimeMonitor);
         // グローバル参照を設定
         window.performanceWarningSystem = warningSystem;
-    });
+    };
     afterEach(() => {
         if (warningSystem) {
             warningSystem.destroy() }
@@ -57,7 +57,7 @@ describe('PerformanceWarningSystem', () => {
     }');'
     describe('Task 9.2: パフォーマンス警告システムの実装', (') => {'
         test('警告システムが正しく初期化される', () => {
-            expect(warningSystem.warningCategories.size).toBeGreaterThan(0),
+            expect(warningSystem.warningCategories.size).toBeGreaterThan(0);
             expect(warningSystem.warningContainer).toBeTruthy('),'
             expect(document.getElementById('performance-warning-container').toBeTruthy() }');'
         test('警告カテゴリが正しく設定される', (') => {'
@@ -66,9 +66,9 @@ describe('PerformanceWarningSystem', () => {
             expect(warningSystem.warningCategories.has('fps').toBe(true'),'
             expect(warningSystem.warningCategories.has('error').toBe(true'),'
             expect(warningSystem.warningCategories.has('network').toBe(true'),'
-            const performanceCategory = warningSystem.warningCategories.get('performance'),
+            const performanceCategory = warningSystem.warningCategories.get('performance');
             expect(performanceCategory.name').toBe('パフォーマンス'),'
-            expect(performanceCategory.priority).toBe(2),
+            expect(performanceCategory.priority).toBe(2);
             expect(performanceCategory.actions').toContain('詳細表示') }');
         test('アラートが正しく処理される', (') => {'
             const alertData = {
@@ -76,7 +76,7 @@ describe('PerformanceWarningSystem', () => {
                 type: 'performance',
                 message: 'Low FPS, detected: 25fps',
                 details: { currentFPS: 25, threshold: 30 },
-        timestamp: Date.now( };
+        timestamp: Date.now( },
             warningSystem.processAlert(alertData');'
             expect(warningSystem.activeWarnings.has('test-alert-1').toBe(true);
             expect(warningSystem.warningHistory.length).toBe(1);
@@ -95,20 +95,20 @@ describe('PerformanceWarningSystem', () => {
         }');'
         test('重要度が正しく決定される', (') => {'
             // エラータイプは error
-            expect(warningSystem.determineSeverity({ type: 'error' })').toBe('error');'
+            expect(warningSystem.determineSeverity({ type: 'error' }').toBe('error');'
             // 低FPSは critical
             expect(warningSystem.determineSeverity({ 
-                details: { currentFPS: 10 } );
-            })').toBe('critical');'
+                details: { currentFPS: 10 } ),
+            }').toBe('critical');'
             // 高メモリ使用率は critical
             expect(warningSystem.determineSeverity({ 
                 details: { usagePercent: 95 } ))').toBe('critical');'
             // デフォルトは warning
             expect(warningSystem.determineSeverity({)').toBe('warning') }'
         test('カテゴリが正しく決定される', (') => {'
-            expect(warningSystem.determineCategory({ type: 'fps' })').toBe('fps');'
+            expect(warningSystem.determineCategory({ type: 'fps' }').toBe('fps');'
             expect(warningSystem.determineCategory({ 
-                message: 'FPS is too low'  })').toBe('fps');'
+                message: 'FPS is too low'  }').toBe('fps');'
             expect(warningSystem.determineCategory({ 
                 message: 'メモリ不足です' ))').toBe('memory'),'
             expect(warningSystem.determineCategory({ 
@@ -122,7 +122,7 @@ describe('PerformanceWarningSystem', () => {
                 title: 'テスト警告',
                 message: 'これはテスト警告です',
                 category: 'performance',
-        timestamp: Date.now( };
+        timestamp: Date.now( },
             warningSystem.displayVisualWarning(warningData');'
             const warningElement = document.querySelector('[data-warning-id="visual-test"]');
             expect(warningElement).toBeTruthy();
@@ -136,7 +136,7 @@ describe('PerformanceWarningSystem', () => {
                 title: 'テスト警告',
                 message: 'これは削除テストです',
                 category: 'performance',
-        timestamp: Date.now( };
+        timestamp: Date.now( },
             warningSystem.showWarning(warningData');'
             expect(warningSystem.activeWarnings.has('dismiss-test').toBe(true');'
             warningSystem.dismissWarning('dismiss-test');
@@ -150,7 +150,7 @@ describe('PerformanceWarningSystem', () => {
                 title: 'テスト警告',
                 message: 'これは確認テストです',
                 category: 'performance',
-        timestamp: Date.now( };
+        timestamp: Date.now( },
             warningSystem.showWarning(warningData');'
             warningSystem.acknowledgeWarning('ack-test');
             expect(warningSystem.acknowledgements.has('ack-test').toBe(true');'
@@ -178,12 +178,12 @@ describe('PerformanceWarningSystem', () => {
             expect(warningSystem.formatWarningDetails('テスト詳細')').toBe('テスト詳細'),'
             // オブジェクトの場合
             const details = { fps: 25, memory: 80 ,
-            const formatted = warningSystem.formatWarningDetails(details),
+            const formatted = warningSystem.formatWarningDetails(details);
             expect(formatted').toContain('fps: 25','
-            expect(formatted').toContain('memory: 80' }');
+            expect(formatted').toContain('memory: 80' }'),
         test('音声警告が再生される', (') => {'
             // AudioContextのモックが呼ばれることを確認
-            warningSystem.playWarningSound('warning'),
+            warningSystem.playWarningSound('warning');
             expect(global.AudioContext).toHaveBeenCalled() }');'
         test('ブラウザ通知が表示される', async (') => {'
             const warningData = {
@@ -232,10 +232,10 @@ describe('PerformanceWarningSystem', () => {
             // showWarningメソッドを使って3つの警告を追加
             for (let i = 0, i < 3, i++') {'
                 const warningData = {
-                    id: `limit-test-${i}`;
+                    id: `limit-test-${i}`,
                     type: 'performance',
                     severity: 'warning',
-                    title: `警告${i}`;
+                    title: `警告${i}`,
                     message: `テスト警告${i}`,
                     category: 'performance',
                     timestamp: Date.now() + i
@@ -259,7 +259,7 @@ describe('PerformanceWarningSystem', () => {
                     id: `stats-test-${i}`;);
                     timestamp: Date.now(
                     ...warning
-                });
+                };
             }
             const stats = warningSystem.getWarningStatistics();
             expect(stats.totalWarnings).toBe(3);
@@ -273,10 +273,10 @@ describe('PerformanceWarningSystem', () => {
             // 複数の警告を追加
             for (let i = 0, i < 3, i++') {'
                 warningSystem.processAlert({
-                    id: `clear-test-${i}`;
+                    id: `clear-test-${i}`,
                     type: 'performance',
-                    message: `テスト${i}`);
-                });
+                    message: `テスト${i}`),
+                };
             }
             expect(warningSystem.activeWarnings.size).toBe(3);
             warningSystem.clearAllWarnings();
@@ -292,9 +292,9 @@ describe('PerformanceWarningSystem', () => {
             expect(warningSystem.options.maxVisibleWarnings).toBe(10);
         }');'
         test('リソースが正しく解放される', (') => {'
-            expect(document.getElementById('performance-warning-container').toBeTruthy(),
+            expect(document.getElementById('performance-warning-container').toBeTruthy();
             warningSystem.destroy('),'
-            expect(document.getElementById('performance-warning-container').toBeFalsy(),
+            expect(document.getElementById('performance-warning-container').toBeFalsy();
             expect(warningSystem.warningContainer).toBe(null) }');'
         test('イベントリスナーが正しく設定される', (') => {'
             const alertData = {
@@ -308,9 +308,9 @@ describe('PerformanceWarningSystem', () => {
             window.dispatchEvent(new CustomEvent('realtime-alert', { detail: alertData )','
             expect(warningSystem.activeWarnings.has('event-test').toBe(true) }');'
         test('自動確認が正しく判定される', (') => {'
-            expect(warningSystem.shouldAutoAcknowledge({ severity: 'info' }).toBe(true');'
-            expect(warningSystem.shouldAutoAcknowledge({ type: 'network' }).toBe(true');'
-            expect(warningSystem.shouldAutoAcknowledge({ severity: 'critical' }).toBe(false');'
+            expect(warningSystem.shouldAutoAcknowledge({ severity: 'info' }.toBe(true');'
+            expect(warningSystem.shouldAutoAcknowledge({ type: 'network' }.toBe(true');'
+            expect(warningSystem.shouldAutoAcknowledge({ severity: 'critical' }.toBe(false');'
         }
         test('カスタムイベントが発火される', () => {
             let eventFired = false,
@@ -327,6 +327,6 @@ describe('PerformanceWarningSystem', () => {
             warningSystem.showWarning(warningData);
             expect(eventFired).toBe(true');'
             window.removeEventListener('performance-warning-displayed', eventListener);
-        });
+        };
     }
 }');'

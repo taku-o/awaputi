@@ -14,12 +14,12 @@ import { DataStorageManager  } from './data/DataStorageManager.js';
  */
 
 // 型定義
-interface DataManagerStatus { lastBackup: number | null,
+interface DataManagerStatus { lastBackup: number | null;
     lastValidation: number | null;
     operationInProgress: boolean;
     errors: Error[];
 
-interface CloudConfig { enabled: boolean,
+interface CloudConfig { enabled: boolean;
     provider: string;
     apiEndpoint: string | null;
     autoSync: boolean;
@@ -41,17 +41,17 @@ interface LoadOptions { useCache?: boolean,
     chunkSize?: number;
     parallel?: boolean;
 
-interface BatchOperation { dataType: string,
+interface BatchOperation { dataType: string;
     data?: any;
     operationOptions?: SaveOptions | LoadOptions }
 
-interface SaveResult { result: any,
+interface SaveResult { result: any;
     duration: number;
 
-interface LoadResult { result: any,
+interface LoadResult { result: any;
     duration: number;
 
-interface PlayerDataInterface { username: string,
+interface PlayerDataInterface { username: string;
     currentHP: number;
     maxHP: number;
     currentScore: number;
@@ -64,36 +64,36 @@ interface PlayerDataInterface { username: string,
     save: () => Promise<any> 
     }
 
-interface SettingsManagerInterface { save: () => Promise<any>,
+interface SettingsManagerInterface { save: () => Promise<any>;
     get: (key: string) => any;
     getAllSettings: () => any 
     }
 
-interface StatisticsManagerInterface { statistics: any,
+interface StatisticsManagerInterface { statistics: any;
     sessionStats: any;
     save: () => Promise<any> 
     }
 
-interface StorageInterface { save: (key: string, data: any) => Promise<any>,
+interface StorageInterface { save: (key: string, data: any) => Promise<any>;
     load: (key: string) => Promise<any>;
     remove: (key: string) => Promise<void>;
     destroy?: () => void  }
 }
 
-interface CloudStorageInterface { authenticate: (credentials: any) => Promise<boolean>,
+interface CloudStorageInterface { authenticate: (credentials: any) => Promise<boolean>;
     logout: () => Promise<void>;
     isAuthenticated: () => boolean;
     destroy?: () => void 
     }
 
-interface SyncManagerInterface { sync: (options?: any) => Promise<any>,
+interface SyncManagerInterface { sync: (options?: any) => Promise<any>;
     getSyncStatus: () => any;
     startAutoSync: () => void;
     stopAutoSync: () => void;
     destroy?: () => void 
     }
 
-interface OfflineManagerInterface { getOfflineStatus: () => any,
+interface OfflineManagerInterface { getOfflineStatus: () => any;
     destroy?: () => void 
     }
 
@@ -169,9 +169,9 @@ export class DataManager {
         
         // ステータス管理
         this.status = {
-            lastBackup: null,
-            lastValidation: null,
-    operationInProgress: false,
+            lastBackup: null;
+            lastValidation: null;
+    operationInProgress: false;
             errors: [] 
     };
         this.initialize();
@@ -192,12 +192,12 @@ export class DataManager {
             // 基本コンポーネントの初期化
             await this.initializeComponents();
 
-            this.emit('initialized', { timestamp: Date.now( });
+            this.emit('initialized', { timestamp: Date.now( };
             ';'
 
         } catch (error) { getErrorHandler().handleError(error, 'DATA_MANAGER_INITIALIZATION_ERROR', {''
                 operation: 'initialize'
-            });
+            };
         }
     }
     
@@ -229,7 +229,7 @@ export class DataManager {
 
             } catch (error) { getErrorHandler().handleError(error, 'SYSTEM_INTEGRATION_ERROR', {''
                 operation: 'integrateExistingSystems'
-            });
+            };
         }
     }
     
@@ -238,8 +238,7 @@ export class DataManager {
      */
     private async initializeComponents(): Promise<void> { try {
             // DataStorageの初期化
-            await this.initializeStorage(),
-            
+            await this.initializeStorage();
             // クラウド対応コンポーネントの初期化
             await this.initializeCloudComponents() } catch (error) { getErrorHandler().handleError(error, 'COMPONENT_INITIALIZATION_ERROR', {''
                 operation: 'initializeComponents'
@@ -255,7 +254,7 @@ export class DataManager {
             this.storage = new DataStorage()';'
             console.log('DataManager: DataStorage, initialized'
             } catch (error') {'
-            console.warn('DataStorage not available, using fallback mode:', error),
+            console.warn('DataStorage not available, using fallback mode:', error);
             // フォールバック: 基本的なLocalStorage使用
             this.storage = {
                 save: async (key, data) => {  }
@@ -272,8 +271,7 @@ export class DataManager {
      */
     private async initializeCloudComponents(): Promise<void> { try {
             // CloudStorageAdapterの初期化
-            await this.initializeCloudStorage(),
-            
+            await this.initializeCloudStorage();
             // SyncManagerの初期化
             if (this.storage && this.cloudStorage) {
     
@@ -355,20 +353,20 @@ export class DataManager {
     /**
      * データ保存の統一インターフェース（ストレージマネージャーに委譲）
      */
-    async save(dataType: string, data: any, options: SaveOptions = {}): Promise<any> { return await this.storageManager.save(dataType, data, options) }
+    async save(dataType: string, data: any, options: SaveOptions = {}: Promise<any> { return await this.storageManager.save(dataType, data, options) }
     
     /**
      * データ読み込みの統一インターフェース（キャッシュ対応）
      */
     async load(dataType: string, options: LoadOptions = { ): Promise<any> {
         // キャッシュキーの生成
-        const cacheKey = this.storageManager.generateCacheKey(dataType, options),
+        const cacheKey = this.storageManager.generateCacheKey(dataType, options);
         const useCache = options.useCache !== false,
         
         if (useCache) {
         
             // キャッシュからの取得を試行
-            return await this.cache.getOrSet(),
+            return await this.cache.getOrSet();
                 cacheKey }
                 async () => { }'
 
@@ -452,7 +450,7 @@ export class DataManager {
         if (this.statisticsManager) {
             // 既存のStatisticsManagerから読み込み
         }
-            return { statistics: this.statisticsManager.statistics };
+            return { statistics: this.statisticsManager.statistics },
                 sessionStats: this.statisticsManager.sessionStats 
     }
         ;
@@ -489,8 +487,8 @@ export class DataManager {
             priority: options.priority || 'normal')','
     parallel: options.parallel !== false,' };'
 
-            metadata: { operation: 'batchSave', count: operations.length  });
-        });
+            metadata: { operation: 'batchSave', count: operations.length  },
+        };
     }
     
     /**
@@ -505,8 +503,8 @@ export class DataManager {
             priority: options.priority || 'low')','
     parallel: options.parallel !== false,' };'
 
-            metadata: { operation: 'batchLoad', count: dataTypes.length  });
-        });
+            metadata: { operation: 'batchLoad', count: dataTypes.length  },
+        };
     }
     
     /**
@@ -527,15 +525,13 @@ export class DataManager {
             switch(dataType) {
 
                 case 'playerData':','
-                    result = await this.savePlayerData(data, options),
-
+                    result = await this.savePlayerData(data, options);
                     break,
                 case 'settings':','
-                    result = await this.saveSettings(data, options),
-
+                    result = await this.saveSettings(data, options);
                     break,
                 case 'statistics':,
-                    result = await this.saveStatistics(data, options),
+                    result = await this.saveStatistics(data, options);
                     break,
                 default:
 }
@@ -549,7 +545,7 @@ export class DataManager {
     /**
      * 直接データ読み込み（キューを経由しない）
      */
-    async loadDataDirect(dataType, options = {}) { try {
+    async loadDataDirect(dataType, options = {} { try {
             if (!this.isInitialized) {
     
 }
@@ -563,15 +559,13 @@ export class DataManager {
             switch(dataType) {
 
                 case 'playerData':','
-                    result = await this.loadPlayerData(options),
-
+                    result = await this.loadPlayerData(options);
                     break,
                 case 'settings':','
-                    result = await this.loadSettings(options),
-
+                    result = await this.loadSettings(options);
                     break,
                 case 'statistics':,
-                    result = await this.loadStatistics(options),
+                    result = await this.loadStatistics(options);
                     break,
                 default:
 }
@@ -585,7 +579,7 @@ export class DataManager {
     /**
      * 大量データの保存（チャンク処理）
      */'
-    async saveLargeData(dataType, data, options = {}) { ''
+    async saveLargeData(dataType, data, options = {} { ''
         if(!Array.isArray(data) && typeof data !== 'object') {''
             throw new Error('Large, data must, be an, array or, object') }
         ';'
@@ -594,7 +588,7 @@ export class DataManager {
         const saveOptions = { ...options, priority: 'high'
             }
         if (Array.isArray(data) {
-            return await this.chunkProcessor.processArray(),
+            return await this.chunkProcessor.processArray();
                 data }
                 async (chunk, chunkIndex, processInfo) => { }
 
@@ -607,13 +601,13 @@ export class DataManager {
                         dataType,
                         progress: (processInfo.processedItems / processInfo.totalItems) * 100,
                         processedItems: processInfo.processedItems,
-    totalItems: processInfo.totalItems  });
+    totalItems: processInfo.totalItems  },
                     return { chunkIndex, itemCount: chunk.length  },
                 { chunkSize,
                     collectResults: true,
                     ...options
             )
-} else {  return await this.chunkProcessor.processObject(),
+} else {  return await this.chunkProcessor.processObject();
                 data }
                 async (chunkObj, chunkIndex, processInfo) => { }
 
@@ -625,7 +619,7 @@ export class DataManager {
                         dataType,
                         progress: (processInfo.processedItems / processInfo.totalItems) * 100,
                         processedItems: processInfo.processedItems,
-    totalItems: processInfo.totalItems  });
+    totalItems: processInfo.totalItems  },
                     return { chunkIndex, keyCount: Object.keys(chunkObj).length  },
                 { chunkSize,
                     collectResults: true,
@@ -650,13 +644,13 @@ export class DataManager {
             if (!metadata || !metadata.result) {
     
 }
-                throw new Error(`Large, data metadata, not found, for ${dataType}`});
+                throw new Error(`Large, data metadata, not found, for ${dataType}`};
             }
             
             const { totalChunks, dataStructure } = metadata.result;
             const chunkIndices = Array.from({ length: totalChunks ), (_, i) => i),
             
-            const chunks = await this.chunkProcessor.processArray(),
+            const chunks = await this.chunkProcessor.processArray();
                 chunkIndices,
                 async (chunkIndexes, batchIndex, processInfo) => { 
                     const batchResults = [] }
@@ -677,7 +671,7 @@ export class DataManager {
                         dataType,
                         progress: (processInfo.processedItems / processInfo.totalItems) * 100,
                         processedItems: processInfo.processedItems,
-    totalItems: processInfo.totalItems  });
+    totalItems: processInfo.totalItems  },
                     return batchResults;
                 },
                 { chunkSize: Math.min(chunkSize, 10), // 読み込みは小さなバッチで
@@ -690,7 +684,7 @@ export class DataManager {
             ' } catch (error) {'
             getErrorHandler().handleError(error, 'LARGE_DATA_LOAD_ERROR', {)
                 dataType),
-                options });
+                options };
             throw error;
         }
     }
@@ -705,7 +699,7 @@ export class DataManager {
             const metadata = await this.loadDataDirect(metadataKey, options);
             
             if (!metadata || !metadata.result) { console.warn(`Large data metadata not found for ${dataType}, attempting direct deletion`}
-                return await this.deleteGenericData(dataType, options});
+                return await this.deleteGenericData(dataType, options};
             }
             
             const { totalChunks } = metadata.result;
@@ -726,8 +720,7 @@ export class DataManager {
                 operationOptions: options),
             ,
             // バッチ削除実行
-            await this.deleteBatch(deleteOperations, options),
-
+            await this.deleteBatch(deleteOperations, options);
             this.emit('largeDataDeleted', { dataType, chunks: totalChunks ,
             
             return true
@@ -736,7 +729,7 @@ export class DataManager {
         } catch (error) {
             getErrorHandler().handleError(error, 'LARGE_DATA_DELETE_ERROR', {)
                 dataType),
-                options });
+                options };
             throw error;
         }
     }
@@ -755,7 +748,7 @@ export class DataManager {
                     return result.concat(chunk.data); }'
 
                 }, []');'} else if (dataStructure === 'object) { return chunks.reduce((result, chunk) => { }'
-                    return { ...result, ...chunk.data }, {});
+                    return { ...result, ...chunk.data }, {};
             }
             
             // デフォルト: 配列として返す
@@ -821,7 +814,7 @@ export class DataManager {
     /**
      * データマネージャーの状態を取得
      */
-    getStatus() { return { isInitialized: this.isInitialized };
+    getStatus() { return { isInitialized: this.isInitialized },
             version: this.version }
             status: { ...this.status,
             asyncQueue: this.getAsyncQueueStatus(),
@@ -856,8 +849,8 @@ export class DataManager {
      */
     off(event, callback) {
         if (this.listeners.has(event) {
-            const callbacks = this.listeners.get(event),
-            const index = callbacks.indexOf(callback),
+            const callbacks = this.listeners.get(event);
+            const index = callbacks.indexOf(callback);
             if (index > -1) {
     }
                 callbacks.splice(index, 1); }
@@ -876,9 +869,9 @@ export class DataManager {
                 } catch (error) {
                     getErrorHandler().handleError(error, 'EVENT_CALLBACK_ERROR', {)
                         event),
-                        data });
+                        data };
                 }
-            });
+            };
         }
     }
     
@@ -917,7 +910,7 @@ export class DataManager {
             return this.offlineManager.getOfflineStatus('''
             connectionQuality: 'unknown',
     offlineOperations: 0 }
-            cloudAvailable: !!this.cloudStorage }))
+            cloudAvailable: !!this.cloudStorage })
     }
     
     /**
@@ -931,7 +924,7 @@ export class DataManager {
         return { isInProgress: false,
             lastSyncTime: null,
             pendingConflicts: 0,
-    cloudAuthenticated: this.cloudStorage ? this.cloudStorage.isAuthenticated() : false,;
+    cloudAuthenticated: this.cloudStorage ? this.cloudStorage.isAuthenticated() : false,
             isOnline: navigator.onLine 
     }
     
@@ -955,7 +948,7 @@ export class DataManager {
 
                     this.syncManager.startAutoSync() }
 
-                this.emit('cloudAuthenticated', { timestamp: Date.now( });
+                this.emit('cloudAuthenticated', { timestamp: Date.now( };
             }
             
             return result;
@@ -988,12 +981,12 @@ export class DataManager {
 
                 this.syncManager.stopAutoSync() }
 
-            this.emit('cloudLoggedOut', { timestamp: Date.now( });
+            this.emit('cloudLoggedOut', { timestamp: Date.now( };
             ';'
 
         } catch (error) { getErrorHandler().handleError(error, 'CLOUD_LOGOUT_ERROR', {''
                 operation: 'logoutCloud'
-            });
+            };
         }
     }
     
@@ -1014,7 +1007,7 @@ export class DataManager {
             console.log('DataManager, destroyed' }
 } catch (error') { getErrorHandler().handleError(error, 'DATA_MANAGER_DESTROY_ERROR', {''
                 operation: 'destroy'
-            });
+            };
         }
 }
 

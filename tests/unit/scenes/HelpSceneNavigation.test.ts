@@ -17,14 +17,14 @@ interface EffectivenessReport {
     effectiveness: number;
     [key: string]: any;
 interface KeyEvent {
-    key: string,
+    key: string;
     preventDefault: jest.Mock<void, []> }
 // Mock SceneManager
 const mockSceneManager: MockSceneManager = {
-    switchScene: jest.fn( };
+    switchScene: jest.fn( },
 // Mock GameEngine
 const mockGameEngine: MockGameEngine = {
-    sceneManager: mockSceneManager,;
+    sceneManager: mockSceneManager,
 // Mock HelpEventManager
 class MockHelpEventManager {
     private callbacks: Map<string, EventCallback>;
@@ -35,14 +35,14 @@ class MockHelpEventManager {
     getCallback(eventName: string): EventCallback | undefined {
         return this.callbacks.get(eventName) }
     trigger(eventName: string, data?: any): void {
-        const callback = this.callbacks.get(eventName),
+        const callback = this.callbacks.get(eventName);
         if (callback) {
             callback(data) }
     }
 }
 // Mock HelpScene (essential parts);
 class MockHelpScene {
-    gameEngine: MockGameEngine | undefined,
+    gameEngine: MockGameEngine | undefined;
     helpEventManager: MockHelpEventManager;
     constructor() {
         this.gameEngine = mockGameEngine;
@@ -53,11 +53,11 @@ class MockHelpScene {
         this.helpEventManager.setCallback('onGoBack', () => {
             try {
                 if (!this.gameEngine? .sceneManager') {'
-                    console.error('SceneManager not available'),
+                    console.error('SceneManager not available');
                     return }
                 const success = this.gameEngine.sceneManager.switchScene('menu');
                 if (!success') {'
-                    console.error('Failed to navigate to main menu from help screen'),
+                    console.error('Failed to navigate to main menu from help screen');
                     // フォールバックロジックや用户通知をここに追加可能
                 } catch (error') { : undefined'
                 console.error('Error navigating to main menu from help screen:', error) }
@@ -68,7 +68,7 @@ class MockHelpScene {
             this.showEffectivenessReport(report) }');'
         this.helpEventManager.setCallback('onSearchFocus', (') => {'
             // 検索フォーカス時の処理
-            console.log('Search bar focused') });
+            console.log('Search bar focused') };
     }
     showFeedbackDialog(data: FeedbackData'): void {'
         // Mock implementation
@@ -78,13 +78,13 @@ class MockHelpScene {
         console.log('Showing effectiveness report:', report') }'
 }
 describe('HelpScene Navigation Tests', () => {
-    let helpScene: MockHelpScene,
-    let consoleErrorSpy: jest.SpyInstance,
-    let consoleLogSpy: jest.SpyInstance,
+    let helpScene: MockHelpScene;
+    let consoleErrorSpy: jest.SpyInstance;
+    let consoleLogSpy: jest.SpyInstance;
     beforeEach(() => {
         // Reset scene manager mock
-        mockSceneManager.switchScene.mockClear(),
-        mockSceneManager.switchScene.mockReturnValue(true),
+        mockSceneManager.switchScene.mockClear();
+        mockSceneManager.switchScene.mockReturnValue(true);
         // Reset mockGameEngine reference
         mockGameEngine.sceneManager = mockSceneManager,
         
@@ -93,12 +93,12 @@ describe('HelpScene Navigation Tests', () => {
         consoleLogSpy = jest.spyOn(console, 'log').mockImplementation(() => {});
     }
     afterEach(() => {
-        consoleErrorSpy.mockRestore(),
+        consoleErrorSpy.mockRestore();
         consoleLogSpy.mockRestore() }');'
     describe('setupEventCallbacks(') method', (') => {
         test('should set up onGoBack callback properly', (') => {'
-            const callback = helpScene.helpEventManager.getCallback('onGoBack'),
-            expect(callback).toBeDefined(),
+            const callback = helpScene.helpEventManager.getCallback('onGoBack');
+            expect(callback).toBeDefined();
             expect(typeof callback').toBe('function') }');
         test('should set up other callbacks properly', (') => {'
             expect(helpScene.helpEventManager.getCallback('onFeedbackRequest').toBeDefined('),'
@@ -108,7 +108,7 @@ describe('HelpScene Navigation Tests', () => {
     describe('onGoBack callback navigation', (') => {'
         test('should call SceneManager.switchScene with correct scene name "menu", () => {'
             mockSceneManager.switchScene.mockReturnValue(true'),'
-            helpScene.helpEventManager.trigger('onGoBack'),
+            helpScene.helpEventManager.trigger('onGoBack');
             expect(mockSceneManager.switchScene').toHaveBeenCalledWith('menu'),'
             expect(mockSceneManager.switchScene).toHaveBeenCalledTimes(1) }');'
         test('should handle SceneManager unavailable error', () => {
@@ -119,11 +119,11 @@ describe('HelpScene Navigation Tests', () => {
         }');'
         test('should handle navigation failure', () => {
             mockSceneManager.switchScene.mockReturnValue(false'),'
-            helpScene.helpEventManager.trigger('onGoBack'),
+            helpScene.helpEventManager.trigger('onGoBack');
             expect(mockSceneManager.switchScene').toHaveBeenCalledWith('menu'),'
             expect(consoleErrorSpy').toHaveBeenCalledWith('Failed to navigate to main menu from help screen') }');
         test('should handle SceneManager.switchScene throwing error', (') => {'
-            const error = new Error('SceneManager error'),
+            const error = new Error('SceneManager error');
             mockSceneManager.switchScene.mockImplementation(() => {
                 throw error }');'
             helpScene.helpEventManager.trigger('onGoBack');
@@ -136,7 +136,7 @@ describe('HelpScene Navigation Tests', () => {
     }
     describe('ESC key handling through event manager', (') => {'
         test('should trigger onGoBack when ESC event is fired', () => {
-            mockSceneManager.switchScene.mockReturnValue(true),
+            mockSceneManager.switchScene.mockReturnValue(true);
             const onGoBackCallback = jest.fn('),'
             helpScene.helpEventManager.setCallback('onGoBack', onGoBackCallback'),'
             // ESCキー処理のシミュレーション
@@ -150,17 +150,17 @@ describe('HelpScene Navigation Tests', () => {
     }
     describe('Error handling in navigation callback', (') => {'
         test('should maintain proper error logging format', (') => {'
-            const testError = new Error('Test navigation error'),
+            const testError = new Error('Test navigation error');
             mockSceneManager.switchScene.mockImplementation(() => {
                 throw testError }');'
             helpScene.helpEventManager.trigger('onGoBack');
             expect(consoleErrorSpy').toHaveBeenCalledWith('
-                'Error navigating to main menu from help screen:',
+                'Error navigating to main menu from help screen: ';
                 testError }');'
         test('should handle graceful navigation failure without throwing', () => {
-            mockSceneManager.switchScene.mockReturnValue(false),
+            mockSceneManager.switchScene.mockReturnValue(false);
             expect((') => {'
-                helpScene.helpEventManager.trigger('onGoBack') }).not.toThrow();
+                helpScene.helpEventManager.trigger('onGoBack') }.not.toThrow();
             expect(consoleErrorSpy).toHaveBeenCalledWith(');'
                 expect.stringContaining('Failed to navigate to main menu from help screen');
         }');'
@@ -179,7 +179,7 @@ describe('HelpScene Navigation Tests', () => {
             expect(showReportSpy).toHaveBeenCalledWith(testReport);
         }');'
         test('should handle onSearchFocus callback', (') => {'
-            helpScene.helpEventManager.trigger('onSearchFocus'),
-            expect(consoleLogSpy').toHaveBeenCalledWith('Search bar focused') });'
+            helpScene.helpEventManager.trigger('onSearchFocus');
+            expect(consoleLogSpy').toHaveBeenCalledWith('Search bar focused') };'
     }
 }');'

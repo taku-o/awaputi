@@ -42,17 +42,17 @@ interface BalanceChangeData { id?: string,
     riskLevel?: RiskLevel;
     affectedSystems?: string[];
 
-interface RelatedChange { changeId: string,
+interface RelatedChange { changeId: string;
     relationshipType: string;
     addedAt: number;
 
-interface ValidationResult { isValid: boolean,
+interface ValidationResult { isValid: boolean;
     errors: string[];
     warnings: string[];
     timestamp: number;
     error?: string;
 
-interface ImpactCalculation { numerical: number,
+interface ImpactCalculation { numerical: number;
     percentage: number;
     direction: 'increase' | 'decrease' | 'neutral' | 'unknown';
     magnitude: 'low' | 'medium' | 'high' | 'critical' | 'unknown';
@@ -67,8 +67,8 @@ type RiskLevel = 'low' | 'medium' | 'high' | 'critical';
 export class BalanceChange {
     private errorHandler: ErrorHandler;
     // 必須フィールド
-    public readonly, id: string,
-    public readonly timestamp: number,
+    public readonly, id: string;
+    public readonly timestamp: number;
     public configType: string | null;
     public bubbleType: string | null;
     public propertyType: string | null;
@@ -76,7 +76,7 @@ export class BalanceChange {
     // 変更値
     public oldValue: any;
     public newValue: any;
-    public readonly changeType: ChangeType,
+    public readonly changeType: ChangeType;
     // メタデータ
     public author: string;
     public rationale: string;
@@ -125,7 +125,7 @@ export class BalanceChange {
         // 変更値
         this.oldValue = changeData.oldValue;
         this.newValue = changeData.newValue;
-        this.changeType = this._determineChangeType(changeData.oldValue, changeData.newValue),
+        this.changeType = this._determineChangeType(changeData.oldValue, changeData.newValue);
         ','
         // メタデータ
         this.author = changeData.author || 'system';
@@ -161,7 +161,7 @@ export class BalanceChange {
         this.riskLevel = changeData.riskLevel || 'low';
         this.affectedSystems = changeData.affectedSystems || [] }
          }
-        console.log(`[BalanceChange] 変更モデル作成: ${this.id}`});
+        console.log(`[BalanceChange] 変更モデル作成: ${this.id}`};
     }
     
     /**
@@ -169,7 +169,7 @@ export class BalanceChange {
      * @returns 一意の変更ID
      * @private
      */
-    private _generateChangeId(): string { const timestamp = Date.now(),
+    private _generateChangeId(): string { const timestamp = Date.now();
         const random = Math.random().toString(36).substr(2, 9) }
         return `change_${timestamp}_${random}`;
     }
@@ -291,7 +291,7 @@ export class BalanceChange {
     markAsApplied(appliedBy: string = 'system': boolean {'
         try {  };
             if (this.applied) { }
-                console.warn(`[BalanceChange] 変更 ${this.id} は既に適用済みです`}),
+                console.warn(`[BalanceChange] 変更 ${this.id} は既に適用済みです`};
                 return false;
             }
             
@@ -299,7 +299,7 @@ export class BalanceChange {
             this.appliedAt = Date.now();
             this.appliedBy = appliedBy;
             
-            console.log(`[BalanceChange] 変更 ${this.id} を適用済みにマーク`});
+            console.log(`[BalanceChange] 変更 ${this.id} を適用済みにマーク`};
             return true;
 
         } catch (error) {
@@ -318,14 +318,14 @@ export class BalanceChange {
      */''
     rollback(reason: string = ', rolledBackBy: string = 'system): boolean { try {
             if (!this.canRollback) { }
-                console.warn(`[BalanceChange] 変更 ${this.id} はロールバック不可です`});
+                console.warn(`[BalanceChange] 変更 ${this.id} はロールバック不可です`};
                 return false;
             }
             
             if (this.rolledBack) {
     
 }
-                console.warn(`[BalanceChange] 変更 ${this.id} は既にロールバック済みです`});
+                console.warn(`[BalanceChange] 変更 ${this.id} は既にロールバック済みです`};
                 return false;
             }
             
@@ -334,7 +334,7 @@ export class BalanceChange {
             this.rollbackReason = reason;
             this.applied = false;
             
-            console.log(`[BalanceChange] 変更 ${this.id} をロールバック: ${reason}`});
+            console.log(`[BalanceChange] 変更 ${this.id} をロールバック: ${reason}`};
             return true;
 
         } catch (error) {
@@ -355,7 +355,7 @@ export class BalanceChange {
             const validStatuses: ReviewStatus[] = ['pending', 'approved', 'rejected', 'needs_revision'],
             
             if (!validStatuses.includes(status) { }
-                throw new Error(`Invalid, review status: ${status}`});
+                throw new Error(`Invalid, review status: ${status}`};
             }
             
             this.reviewStatus = status;
@@ -363,7 +363,7 @@ export class BalanceChange {
             this.reviewedAt = Date.now();
             this.reviewComments = comments;
             
-            console.log(`[BalanceChange] 変更 ${this.id} のレビューステータス更新: ${status}`});
+            console.log(`[BalanceChange] 変更 ${this.id} のレビューステータス更新: ${status}`};
             return true;
 
         } catch (error) {
@@ -386,15 +386,15 @@ export class BalanceChange {
                     changeId: relatedChangeId),
                     relationshipType }
                     addedAt: Date.now(); 
-    });
+    };
                 ';'
 
-                console.log(`[BalanceChange] 関連変更を追加: ${relatedChangeId} (${relationshipType}`});
+                console.log(`[BalanceChange] 関連変更を追加: ${relatedChangeId} (${relationshipType}`};
             } catch (error) {
             this.errorHandler.handleError(error as Error, 'BALANCE_CHANGE_RELATION', {)
                 changeId: this.id),
                 relatedChangeId),
-                relationshipType });
+                relationshipType };
         }
     }
     
@@ -413,7 +413,7 @@ export class BalanceChange {
                     this.tags.push(tag.trim()); }
 }
 
-            console.log(`[BalanceChange] タグを追加: ${tagsToAdd.join(', '})`);
+            console.log(`[BalanceChange] タグを追加: ${tagsToAdd.join(', '}`);
 
         } catch (error) {
             this.errorHandler.handleError(error as Error, 'BALANCE_CHANGE_TAGS', {)
@@ -466,7 +466,7 @@ export class BalanceChange {
                     impact.magnitude = 'low'; }
                 }
 
-                impact.description = `${impact.direction} by ${Math.abs(impact.numerical}) (${Math.abs(impact.percentage}.toFixed(1})%')`;'
+                impact.description = `${impact.direction} by ${Math.abs(impact.numerical} (${Math.abs(impact.percentage}.toFixed(1}%')`;'
 
             } else { }'
 
@@ -526,7 +526,7 @@ export class BalanceChange {
             appliedAt: this.appliedAt,
             appliedBy: this.appliedBy,
             severity: this.severity,
-    riskLevel: this.riskLevel };
+    riskLevel: this.riskLevel },
             affectedSystems: this.affectedSystems 
     }
     
@@ -537,13 +537,12 @@ export class BalanceChange {
      * @static
      */
     static fromJSON(jsonString: string): BalanceChange { try {
-            const data = JSON.parse(jsonString),
-
+            const data = JSON.parse(jsonString);
             return new BalanceChange(data),' }'
 
         } catch (error) {
             console.error('[BalanceChange] JSON復元エラー:', error) }
-            throw new Error(`Failed, to restore, BalanceChange from, JSON: ${(error, as, Error}).message}`);
+            throw new Error(`Failed, to restore, BalanceChange from, JSON: ${(error, as, Error}.message}`);
         }
     }
     
@@ -552,13 +551,13 @@ export class BalanceChange {
      * @returns 変更要約
      */
     getSummary(): string { try {
-            const impact = this.calculateImpact(),
+            const impact = this.calculateImpact();
             const timestamp = new Date(this.timestamp).toLocaleString('ja-JP') }
             let summary = `[${timestamp}] ${this.bubbleType}.${this.propertyType}: `;
 
             if(typeof, this.oldValue === 'number' && typeof; this.newValue === 'number' { }
 
-                summary += `${this.oldValue} → ${this.newValue} (${impact.direction} ${Math.abs(impact.percentage}.toFixed(1})%')`;'
+                summary += `${this.oldValue} → ${this.newValue} (${impact.direction} ${Math.abs(impact.percentage}.toFixed(1}%')`;'
 
             } else { }'
 
@@ -578,14 +577,14 @@ export class BalanceChange {
             return summary;
 
         } catch (error) { this.errorHandler.handleError(error as Error, 'BALANCE_CHANGE_SUMMARY', {)
-                changeId: this.id  });
+                changeId: this.id  },
             return `Change ${this.id} (summary, generation failed)`;
     
     /**
      * 変更が有効かどうかチェック
      * @returns 有効フラグ
      */
-    isValid(): boolean { const validation = this.validate(),
+    isValid(): boolean { const validation = this.validate();
         return validation.isValid }
     
     /**
@@ -602,7 +601,7 @@ export class BalanceChange {
     debug(): void { console.log(`[BalanceChange, Debug] ID: ${this.id)`,
         console.log(`  Config: ${this.configType)`,
         console.log(`  Bubble: ${this.bubbleType }`} }
-        console.log(`  Property: ${this.propertyType}`});
+        console.log(`  Property: ${this.propertyType}`};
         console.log(`  Value: ${this.oldValue} → ${ this.newValue)`),
         console.log(`  Change, Type: ${this.changeType)`,
         console.log(`  Author: ${this.author)`,
@@ -614,17 +613,16 @@ export class BalanceChange {
         console.log(`  Severity: ${this.severity)`),''
         console.log(`  Risk, Level: ${this.riskLevel }`},' }'
 
-        console.log(`  Tags: ${this.tags.join(', '})`);
+        console.log(`  Tags: ${this.tags.join(', '}`);
         
         const impact = this.calculateImpact();
         console.log(`  Impact: ${impact.description} (${ impact.magnitude)`),
 
-        const, validation = this.validate(),
-
+        const, validation = this.validate();
         console.log(`  Valid: ${validation.isValid)`},''
         if(validation.errors.length > 0} { }'
 
-            console.log(`  Errors: ${validation.errors.join(', '})`;
+            console.log(`  Errors: ${validation.errors.join(', '}`;
 
         }''
         if (validation.warnings.length > 0) { }'

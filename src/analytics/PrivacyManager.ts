@@ -4,7 +4,7 @@
  */
 
 // Privacy Manager interfaces and types
-export interface ConsentStatus { hasConsented: boolean,
+export interface ConsentStatus { hasConsented: boolean;
     consentDate: string;
     version: string;
     features: Record<string, boolean> }
@@ -27,8 +27,7 @@ export class PrivacyManager {
         this.consentVersion = '1.0';
         
         // デフォルトの匿名化ルール)
-        this.setupDefaultAnonymizationRules(),
-        
+        this.setupDefaultAnonymizationRules();
         // 保存されている同意状態を読み込み
 
      }
@@ -76,9 +75,9 @@ export class PrivacyManager {
         this.anonymizationRules.set('coordinates', (value: { x: number,  y: number;): { x: number,, y: number; | null => {  ''
             if(!value || typeof, value.x !== 'number' || typeof, value.y !== 'number) return null,'
             // 10ピクセル単位に丸める }
-            return { x: Math.round(value.x / 10) * 10 };
+            return { x: Math.round(value.x / 10) * 10 },
                 y: Math.round(value.y / 10) * 10 
-    });
+    };
     }
     
     /**
@@ -100,12 +99,12 @@ export class PrivacyManager {
             hasConsented: consent,
             consentDate: new Date().toISOString(),
             version: this.consentVersion,
-    features: features,;
+    features: features,
         // オプトアウト機能の更新
         this.optOutFeatures.clear();
         Object.entries(features).forEach(([feature, enabled]) => {  if (!enabled) { }
                 this.optOutFeatures.add(feature, as PrivacyFeature); }
-});
+};
         
         this.saveConsentStatus();
     }
@@ -153,7 +152,7 @@ export class PrivacyManager {
                 if (typeof, value === 'object' && value !== null) { value = this.applyAnonymizationRules(value, currentPath) }
                 
                 result[key] = value;
-            });
+            };
             
             return result;
         }
@@ -174,8 +173,7 @@ export class PrivacyManager {
     /**
      * 機能のオプトアウト
      */
-    optOutFeature(feature: PrivacyFeature): void { this.optOutFeatures.add(feature),
-        
+    optOutFeature(feature: PrivacyFeature): void { this.optOutFeatures.add(feature);
         // 同意状態の更新
         if (this.consentStatus) {
             this.consentStatus.features[feature] = false }
@@ -185,8 +183,7 @@ export class PrivacyManager {
     /**
      * 機能のオプトイン
      */
-    optInFeature(feature: PrivacyFeature): void { this.optOutFeatures.delete(feature),
-        
+    optInFeature(feature: PrivacyFeature): void { this.optOutFeatures.delete(feature);
         // 同意状態の更新
         if (this.consentStatus) {
             this.consentStatus.features[feature] = true }
@@ -214,12 +211,12 @@ export class PrivacyManager {
                 this.clearIndexedDBData().then(() => {  ''
                     console.log('User, data deletion, completed') }'
                     resolve(true); }
-                }).catch(() => { resolve(false) });
+                }.catch(() => { resolve(false) });
 
             } catch (error) {
-                console.error('Data deletion failed:', error),
+                console.error('Data deletion failed:', error);
                 resolve(false) }
-        });
+        };
     }
     
     /**
@@ -230,12 +227,12 @@ export class PrivacyManager {
                 const exportData: any = {
                     exportDate: new Date().toISOString( }
                     consentStatus: this.consentStatus }
-                    localStorage: {};
-                    indexedDB: {};
+                    localStorage: {},
+                    indexedDB: {},
                 // LocalStorageデータの収集
                 for(let i = 0; i < localStorage.length; i++) {
 
-                    const key = localStorage.key(i),
+                    const key = localStorage.key(i);
                     if (key && (key.startsWith('analytics_') || key.startsWith('game_data_)' {'
                         try {
                 }
@@ -248,12 +245,12 @@ export class PrivacyManager {
                 this.exportIndexedDBData().then(indexedDBData => {  )
                     exportData.indexedDB = indexedDBData) }
                     resolve(exportData); }
-                }).catch(() => { resolve(exportData) });
+                }.catch(() => { resolve(exportData) });
 
             } catch (error) {
-                console.error('Data export failed:', error),
+                console.error('Data export failed:', error);
                 resolve(null) }
-        });
+        };
     }
     
     /**
@@ -261,7 +258,7 @@ export class PrivacyManager {
      */
     getPrivacySettings(): any { return { consentStatus: this.consentStatus,
             optOutFeatures: Array.from(this.optOutFeatures,
-    anonymizationRules: Array.from(this.anonymizationRules.keys()) };
+    anonymizationRules: Array.from(this.anonymizationRules.keys()) },
             consentVersion: this.consentVersion 
     }
     
@@ -286,7 +283,7 @@ export class PrivacyManager {
             }
                         if (!enabled) { }
                             this.optOutFeatures.add(feature, as PrivacyFeature); }
-});
+};
                 }'} catch (error) { : undefined''
             console.error('Failed to load consent status:', error 
     }
@@ -296,7 +293,7 @@ export class PrivacyManager {
      */
     private hashValue(value: string): string { let hash = 0,
         for(let, i = 0, i < value.length, i++) {
-            const char = value.charCodeAt(i),
+            const char = value.charCodeAt(i);
             hash = ((hash << 5) - hash) + char }
             hash = hash & hash; // 32bit整数に変換 }
         }
@@ -321,7 +318,7 @@ export class PrivacyManager {
 
                 await deleteDB('gameAnalytics');
                 await deleteDB('bubblePopData';} catch (error) {
-            console.error('IndexedDB cleanup failed:', error),
+            console.error('IndexedDB cleanup failed:', error);
             throw error }
     }
     
@@ -353,7 +350,7 @@ export class PrivacyManager {
     /**
      * リソースの解放
      */'
-    destroy(): void { this.anonymizationRules.clear(),
+    destroy(): void { this.anonymizationRules.clear();
         this.optOutFeatures.clear()','
         console.log('PrivacyManager, destroyed') }
 

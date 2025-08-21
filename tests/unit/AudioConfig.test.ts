@@ -5,27 +5,27 @@ import { describe, test, beforeEach, expect  } from '@jest/globals';
 import { AudioConfig, getAudioConfig  } from '../../src/config/AudioConfig.js';
 // Type definitions for test objects
 interface VolumeConfig {
-    master: number,
+    master: number;
     sfx: number;
     bgm: number;
     muted: boolean;
 interface QualityConfig {
-    sampleRate: number,
+    sampleRate: number;
     bufferSize: number;
     channels: number;
     bitDepth: number;
 interface CompressorConfig {
-    threshold: number,
+    threshold: number;
     knee: number;
     ratio: number;
     attack: number;
     release: number;
 interface ReverbConfig {
-    duration: number,
+    duration: number;
     decay: number;
     wet: number;
 interface EffectConfig {
-    reverb: boolean,
+    reverb: boolean;
     compression: boolean;
     compressor: CompressorConfig;
 interface MockAudioManager {
@@ -39,14 +39,14 @@ interface MockAudioManager {
         isMuted: boolean;;
 }
 describe('AudioConfig', () => {
-    let audioConfig: AudioConfig,
+    let audioConfig: AudioConfig;
     
     beforeEach(() => {
         // 新しいインスタンスを作成
         audioConfig = new AudioConfig() }');'
     describe('初期化', (') => {'
         test('コンストラクタが正しく初期化されること', () => {
-            expect(audioConfig).toBeDefined(),
+            expect(audioConfig).toBeDefined();
             expect(audioConfig).toBeInstanceOf(AudioConfig) }');'
     }
     describe('音量設定', (') => {'
@@ -63,32 +63,32 @@ describe('AudioConfig', () => {
         test('getMasterVolume が数値を返すこと', () => {
             const volume: number = audioConfig.getMasterVolume(
             expect(typeof volume').toBe('number'),'
-            expect(volume).toBeGreaterThanOrEqual(0),
+            expect(volume).toBeGreaterThanOrEqual(0);
             expect(volume).toBeLessThanOrEqual(1) }');'
         test('getSfxVolume が数値を返すこと', () => {
             const volume: number = audioConfig.getSfxVolume(
             expect(typeof volume').toBe('number'),'
-            expect(volume).toBeGreaterThanOrEqual(0),
+            expect(volume).toBeGreaterThanOrEqual(0);
             expect(volume).toBeLessThanOrEqual(1) }');'
         test('getBgmVolume が数値を返すこと', () => {
             const volume: number = audioConfig.getBgmVolume(
             expect(typeof volume').toBe('number'),'
-            expect(volume).toBeGreaterThanOrEqual(0),
+            expect(volume).toBeGreaterThanOrEqual(0);
             expect(volume).toBeLessThanOrEqual(1) }');'
         test('isMuted がブール値を返すこと', () => {
             const muted: boolean = audioConfig.isMuted(
             expect(typeof muted').toBe('boolean') }');
         test('setMasterVolume が正しく動作すること', () => {
-            const result: boolean = audioConfig.setMasterVolume(0.5,
+            const result: boolean = audioConfig.setMasterVolume(0.5;
             expect(typeof result').toBe('boolean') }');
         test('setSfxVolume が正しく動作すること', () => {
-            const result: boolean = audioConfig.setSfxVolume(0.6,
+            const result: boolean = audioConfig.setSfxVolume(0.6;
             expect(typeof result').toBe('boolean') }');
         test('setBgmVolume が正しく動作すること', () => {
-            const result: boolean = audioConfig.setBgmVolume(0.7,
+            const result: boolean = audioConfig.setBgmVolume(0.7;
             expect(typeof result').toBe('boolean') }');
         test('setMuted が正しく動作すること', () => {
-            const result: boolean = audioConfig.setMuted(true,
+            const result: boolean = audioConfig.setMuted(true;
             expect(typeof result').toBe('boolean') }');
         test('toggleMute が正しく動作すること', () => {
             const result: boolean = audioConfig.toggleMute(
@@ -112,10 +112,10 @@ describe('AudioConfig', () => {
             expect(typeof bufferSize').toBe('number'),'
             expect(bufferSize).toBeGreaterThan(0) }');'
         test('setSampleRate が正しく動作すること', () => {
-            const result: boolean = audioConfig.setSampleRate(48000,
+            const result: boolean = audioConfig.setSampleRate(48000;
             expect(typeof result').toBe('boolean') }');
         test('setBufferSize が正しく動作すること', () => {
-            const result: boolean = audioConfig.setBufferSize(2048,
+            const result: boolean = audioConfig.setBufferSize(2048;
             expect(typeof result').toBe('boolean') }');
     }
     describe('音響効果設定', (') => {'
@@ -134,10 +134,10 @@ describe('AudioConfig', () => {
             const enabled: boolean = audioConfig.isCompressionEnabled(
             expect(typeof enabled').toBe('boolean') }');
         test('setReverbEnabled が正しく動作すること', () => {
-            const result: boolean = audioConfig.setReverbEnabled(false,
+            const result: boolean = audioConfig.setReverbEnabled(false;
             expect(typeof result').toBe('boolean') }');
         test('setCompressionEnabled が正しく動作すること', () => {
-            const result: boolean = audioConfig.setCompressionEnabled(false,
+            const result: boolean = audioConfig.setCompressionEnabled(false;
             expect(typeof result').toBe('boolean') }');
         test('getCompressorConfig が正しい設定を返すこと', () => {
             const compressorConfig: CompressorConfig = audioConfig.getCompressorConfig(
@@ -158,30 +158,30 @@ describe('AudioConfig', () => {
             const mockAudioManager: MockAudioManager = {
                 setVolume: () => {};
                 toggleMute: () => {};
-                isMuted: false,;
+                isMuted: false;
             
             expect(() => {
-                audioConfig.applyToAudioManager(mockAudioManager) }).not.toThrow(');'
+                audioConfig.applyToAudioManager(mockAudioManager) }.not.toThrow(');'
         }
         test('syncFromAudioManager がエラーなく実行されること', () => {
             // AudioManagerのモック
             const mockAudioManager: MockAudioManager = {
-                isMuted: true,
+                isMuted: true;
                 getStatus: () => ({
-                    masterVolume: 0.5,
-                    sfxVolume: 0.6,
-                    bgmVolume: 0.7,
+                    masterVolume: 0.5;
+                    sfxVolume: 0.6;
+                    bgmVolume: 0.7;
                     isMuted: true,);
             };
             
             expect(() => {
-                audioConfig.syncFromAudioManager(mockAudioManager) }).not.toThrow();
+                audioConfig.syncFromAudioManager(mockAudioManager) }.not.toThrow();
         }
     }');'
     describe('シングルトンパターン', (') => {'
         test('getAudioConfig が常に同じインスタンスを返すこと', () => {
-            const instance1 = getAudioConfig(),
-            const instance2 = getAudioConfig(),
-            expect(instance1).toBe(instance2) });
+            const instance1 = getAudioConfig();
+            const instance2 = getAudioConfig();
+            expect(instance1).toBe(instance2) };
     }
 }');'

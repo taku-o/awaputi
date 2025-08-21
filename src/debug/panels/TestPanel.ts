@@ -2,35 +2,35 @@
  * Test Panel - テスト支援機能パネル  
  */
 
-interface TestResult { type: string,
+interface TestResult { type: string;
     totalTests: number;
     passedTests: number;
     failedTests: number;
     duration: number;
     details?: TestDetail[];
 
-interface TestDetail { name: string,
+interface TestDetail { name: string;
     status: 'passed' | 'failed';
     duration: number;
     error?: string;
 
-interface BenchmarkResult { type: string,
+interface BenchmarkResult { type: string;
     duration: number;
     fps: number;
     memoryUsage: number;
     renderTime: number;
     score: number;
 
-interface TestSummary { total: number,
+interface TestSummary { total: number;
     passed: number;
     failed: number;
     successRate: number;
     duration: number;
 
 interface CategoryStats { [category: string]: {
-        tota,l: number,
-        passed: number,
-    failed: number,
+        tota,l: number;
+        passed: number;
+    failed: number;
 ';'
 
 interface IntegrationTestResult { name: string,''
@@ -42,7 +42,7 @@ interface IntegrationTestResults { summary?: TestSummary,
     categoryStats?: CategoryStats;
     results?: IntegrationTestResult[];
 
-interface ValidationResult { id: string,
+interface ValidationResult { id: string;
 
     name: string;
     status: 'passed' | 'failed';
@@ -53,7 +53,7 @@ interface ValidationResults { summary?: TestSummary,
     categoryStats?: CategoryStats;
     results?: ValidationResult[];
 
-interface FinalValidationResult { category: string,
+interface FinalValidationResult { category: string;
 
     name: string;
     status: 'passed' | 'failed';
@@ -62,15 +62,15 @@ interface FinalValidationResult { category: string,
 
 interface FinalValidationResults { summary?: TestSummary,
     targets?: {
-        debugOverhea,d: number,
-        memoryIncrease: number,
-        initializationTime: number,
-    panelSwitchTime: number,;
+        debugOverhea,d: number;
+        memoryIncrease: number;
+        initializationTime: number;
+    panelSwitchTime: number;
     categoryStats?: CategoryStats;
     results?: FinalValidationResult[];
     }
 
-interface TestSupportTools { runTests(type: string): Promise<TestResult>,
+interface TestSupportTools { runTests(type: string): Promise<TestResult>;
     generateTestData(dataType: string, count: number): void;
 
 interface GameEngine { testSupportTools?: TestSupportTools,
@@ -90,7 +90,7 @@ export class TestPanel {
     private debugInterface: DebugInterface;
     private element: HTMLElement | null = null;
     private testSupportTools?: TestSupportTools,
-    private, testResults: any[] = [],
+    private, testResults: any[] = [];
     constructor(gameEngine: GameEngine, debugInterface: DebugInterface) {
 
         this.gameEngine = gameEngine;
@@ -324,7 +324,7 @@ export class TestPanel {
         this.addTestResult(`${type}テストを開始中...`, 'info);'
         
         try { if (this.testSupportTools) {
-                const results = await this.testSupportTools.runTests(type),
+                const results = await this.testSupportTools.runTests(type);
                 this.displayTestResults(results) } else {  // フォールバック：基本的なテスト実行
                 const results = await this.runBasicTests(type) }
                 this.displayTestResults(results); }
@@ -364,8 +364,7 @@ export class TestPanel {
     /**
      * テスト結果を表示
      */
-    private displayTestResults(results: TestResult): void { const successRate = ((results.passedTests / results.totalTests) * 100).toFixed(1),
-
+    private displayTestResults(results: TestResult): void { const successRate = ((results.passedTests / results.totalTests) * 100).toFixed(1);
         ' }'
 
         this.addTestResult(`${results.type}テスト完了: ${results.passedTests}/${results.totalTests} 成功 (${ successRate)%')`, ''
@@ -380,7 +379,7 @@ export class TestPanel {
 
                 if (detail.error} { }'
 
-                    this.addTestResult(`  → ${detail.error}`, 'error'});
+                    this.addTestResult(`  → ${detail.error}`, 'error'};
                 }
             }';'
         }
@@ -396,11 +395,11 @@ export class TestPanel {
             } else {  // フォールバック：基本的なバブル生成シミュレーション
                 for (let, i = 0, i < count, i++) { }
                     // モックバブル生成の簡単なシミュレーション }
-                    console.log(`Mock, bubble ${i + 1} generated`});
+                    console.log(`Mock, bubble ${i + 1} generated`};
                 }
             }
 
-            this.addTestResult(`${count}個のテスト用バブルを生成しました`, 'success'});
+            this.addTestResult(`${count}個のテスト用バブルを生成しました`, 'success'};
 
         } catch (error) { }
 
@@ -415,7 +414,7 @@ export class TestPanel {
             const mockData: Record<string, any> = { }
                 beginner: { score: 1000, level: 1, playtime: 300  },
                 intermediate: { score: 50000, level: 15, playtime: 18000  },
-                expert: { score: 500000, level: 50, playtime: 180000  };
+                expert: { score: 500000, level: 50, playtime: 180000  },
 
             const data = mockData[type];
             if (data && this.gameEngine.playerData) {
@@ -454,7 +453,7 @@ export class TestPanel {
                     break;
             }
 
-            this.addTestResult(`ゲーム状態を${type}に設定しました`, 'success'});
+            this.addTestResult(`ゲーム状態を${type}に設定しました`, 'success'};
 
         } catch (error) { }
 
@@ -470,7 +469,7 @@ export class TestPanel {
         
         try {
             const results = await this.runBenchmarkTest(type}
-            this.displayBenchmarkResults(results});
+            this.displayBenchmarkResults(results};
 
         } catch (error) { }
 
@@ -481,12 +480,10 @@ export class TestPanel {
     /**
      * ベンチマークテストを実行
      */
-    private async runBenchmarkTest(type: string): Promise<BenchmarkResult> { const startTime = performance.now(),
-        
+    private async runBenchmarkTest(type: string): Promise<BenchmarkResult> { const startTime = performance.now();
         // シミュレーション
-        await new Promise(resolve => setTimeout(resolve, 2000),
-        
-        const endTime = performance.now(),
+        await new Promise(resolve => setTimeout(resolve, 2000);
+        const endTime = performance.now();
         const duration = endTime - startTime,
 
         // モック結果
@@ -510,15 +507,15 @@ export class TestPanel {
         const resultsDiv = this.element.querySelector('#benchmark-results' as HTMLElement,
         if (resultsDiv) {
 
-            const div = document.createElement('div'),
+            const div = document.createElement('div');
             div.className = 'benchmark-result' }
             div.innerHTML = ` }
                 <h5>${results.type}ベンチマーク結果</h5>
                 <div>スコア: ${results.score}/100</div>
-                <div>FPS: ${results.fps.toFixed(1})</div>
-                <div>メモリ使用量: ${results.memoryUsage.toFixed(1}) MB</div>
-                <div>描画時間: ${results.renderTime.toFixed(2}) ms</div>
-                <div>実行時間: ${results.duration.toFixed(0}) ms</div>'
+                <div>FPS: ${results.fps.toFixed(1}</div>
+                <div>メモリ使用量: ${results.memoryUsage.toFixed(1} MB</div>
+                <div>描画時間: ${results.renderTime.toFixed(2} ms</div>
+                <div>実行時間: ${results.duration.toFixed(0} ms</div>'
             `;
             resultsDiv.appendChild(div);
         }
@@ -595,7 +592,7 @@ export class TestPanel {
         this.addTestResult('統合テストを開始中...', 'info);'
         
         try { if (this.debugInterface && this.debugInterface.runIntegrationTests) {
-                const results = await this.debugInterface.runIntegrationTests(),
+                const results = await this.debugInterface.runIntegrationTests();
                 this.displayIntegrationTestResults(results) }
 
             } else { }'
@@ -653,9 +650,8 @@ export class TestPanel {
         // 結果サマリー表示
         if (results.summary) {
             const summary = results.summary,
-            const successRate = summary.successRate.toFixed(1),
-
-            const summaryDiv = document.createElement('div'),
+            const successRate = summary.successRate.toFixed(1);
+            const summaryDiv = document.createElement('div');
             summaryDiv.className = 'integration-summary',
             summaryDiv.innerHTML = `,
                 <h5>統合テスト結果サマリー</h5>' }'
@@ -665,7 +661,7 @@ export class TestPanel {
                     <span class="stat success">成功: ${summary.passed}</span>""
                     <span class="stat ${summary.failed > 0 ? 'error' : 'success'}">失敗: ${summary.failed}</span>""
                     <span class="stat">成功率: ${successRate}%</span>""
-                    <span class="stat">実行時間: ${summary.duration.toFixed(0})ms</span>
+                    <span class="stat">実行時間: ${summary.duration.toFixed(0}ms</span>
                 </div>;
             `;
             integrationResults.appendChild(summaryDiv);
@@ -687,13 +683,13 @@ export class TestPanel {
                     </div>;
                 `;
                 integrationResults.appendChild(categoryDiv);
-            });
+            };
         }
 ';'
         // 詳細結果表示
         if (results.results && results.results.length > 0) {
 
-            const detailsDiv = document.createElement('div'),
+            const detailsDiv = document.createElement('div');
             detailsDiv.className = 'integration-details',
             detailsDiv.innerHTML = '<h6>詳細結果</h6>',
 
@@ -707,10 +703,10 @@ export class TestPanel {
                 resultDiv.innerHTML = `';'
                     <span class="test-name">${result.name}</span>""
                     <span class="test-message">${result.message}</span>""
-                    <span class="test-duration">${result.duration.toFixed(2})ms</span>
+                    <span class="test-duration">${result.duration.toFixed(2}ms</span>
                 `;
                 detailsDiv.appendChild(resultDiv);
-            });
+            };
             
             integrationResults.appendChild(detailsDiv);
         }
@@ -746,7 +742,7 @@ export class TestPanel {
         this.addTestResult('要件検証テストを開始中...', 'info);'
         
         try { if (this.debugInterface && this.debugInterface.runRequirementsValidation) {
-                const results = await this.debugInterface.runRequirementsValidation(),
+                const results = await this.debugInterface.runRequirementsValidation();
                 this.displayValidationResults(results) }
 
             } else { }'
@@ -771,9 +767,8 @@ export class TestPanel {
         // 結果サマリー表示
         if (results.summary) {
             const summary = results.summary,
-            const successRate = summary.successRate.toFixed(1),
-
-            const summaryDiv = document.createElement('div'),
+            const successRate = summary.successRate.toFixed(1);
+            const summaryDiv = document.createElement('div');
             summaryDiv.className = 'validation-summary',
             summaryDiv.innerHTML = `,
                 <h5>要件検証結果サマリー</h5>' }'
@@ -783,7 +778,7 @@ export class TestPanel {
                     <span class="stat success">検証済み: ${summary.passed}</span>""
                     <span class="stat ${summary.failed > 0 ? 'error' : 'success'}">未充足: ${summary.failed}</span>""
                     <span class="stat">充足率: ${successRate}%</span>""
-                    <span class="stat">検証時間: ${summary.duration.toFixed(0})ms</span>
+                    <span class="stat">検証時間: ${summary.duration.toFixed(0}ms</span>
                 </div>;
             `;
             validationResults.appendChild(summaryDiv);
@@ -805,13 +800,13 @@ export class TestPanel {
                     </div>;
                 `;
                 validationResults.appendChild(categoryDiv);
-            });
+            };
         }
 ';'
         // 詳細結果表示
         if (results.results && results.results.length > 0) {
 
-            const detailsDiv = document.createElement('div'),
+            const detailsDiv = document.createElement('div');
             detailsDiv.className = 'validation-details',
             detailsDiv.innerHTML = '<h6>詳細結果</h6>',
 
@@ -826,10 +821,10 @@ export class TestPanel {
                     <span class="requirement-id">${result.id}</span>""
                     <span class="requirement-name">${result.name}</span>""
                     <span class="requirement-message">${result.message}</span>""
-                    <span class="requirement-duration">${result.duration.toFixed(2})ms</span>
+                    <span class="requirement-duration">${result.duration.toFixed(2}ms</span>
                 `;
                 detailsDiv.appendChild(resultDiv);
-            });
+            };
             
             validationResults.appendChild(detailsDiv);
         }
@@ -865,7 +860,7 @@ export class TestPanel {
         this.addTestResult('最終検証テストを開始中...', 'info);'
         
         try { if (this.debugInterface && this.debugInterface.runFinalValidation) {
-                const results = await this.debugInterface.runFinalValidation(),
+                const results = await this.debugInterface.runFinalValidation();
                 this.displayFinalValidationResults(results) }
 
             } else { }'
@@ -890,9 +885,8 @@ export class TestPanel {
         // 結果サマリー表示
         if (results.summary) {
             const summary = results.summary,
-            const successRate = summary.successRate.toFixed(1),
-
-            const summaryDiv = document.createElement('div'),
+            const successRate = summary.successRate.toFixed(1);
+            const summaryDiv = document.createElement('div');
             summaryDiv.className = 'final-validation-summary',
             summaryDiv.innerHTML = `,
                 <h5>最終検証結果サマリー</h5>' }'
@@ -902,7 +896,7 @@ export class TestPanel {
                     <span class="stat success">合格: ${summary.passed}</span>""
                     <span class="stat ${summary.failed > 0 ? 'error' : 'success'}">不合格: ${summary.failed}</span>""
                     <span class="stat">合格率: ${successRate}%</span>""
-                    <span class="stat">検証時間: ${summary.duration.toFixed(0})ms</span>
+                    <span class="stat">検証時間: ${summary.duration.toFixed(0}ms</span>
                 </div>;
             `;
             finalValidationResults.appendChild(summaryDiv);
@@ -911,7 +905,7 @@ export class TestPanel {
         // パフォーマンス目標との比較""
         if (results.targets) {"
 
-            const targetsDiv = document.createElement('div'),
+            const targetsDiv = document.createElement('div');
             targetsDiv.className = 'performance-targets',
             targetsDiv.innerHTML = `,
                 <h6>パフォーマンス目標</h6>' }'
@@ -942,13 +936,13 @@ export class TestPanel {
                     </div>;
                 `;
                 finalValidationResults.appendChild(categoryDiv);
-            });
+            };
         }
 ';'
         // 詳細結果表示
         if (results.results && results.results.length > 0) {
 
-            const detailsDiv = document.createElement('div'),
+            const detailsDiv = document.createElement('div');
             detailsDiv.className = 'final-validation-details',
             detailsDiv.innerHTML = '<h6>詳細結果</h6>',
 
@@ -963,10 +957,10 @@ export class TestPanel {
                     <span class="validation-category">[${result.category}]</span>""
                     <span class="validation-name">${result.name}</span>""
                     <span class="validation-message">${result.message}</span>""
-                    <span class="validation-duration">${result.duration.toFixed(2})ms</span>
+                    <span class="validation-duration">${result.duration.toFixed(2}ms</span>
                 `;
                 detailsDiv.appendChild(resultDiv);
-            });
+            };
             
             finalValidationResults.appendChild(detailsDiv);
         }

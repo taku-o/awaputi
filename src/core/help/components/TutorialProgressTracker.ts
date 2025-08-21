@@ -8,7 +8,7 @@ import { getErrorHandler  } from '../../../utils/ErrorHandler.js';
 import { LoggingSystem  } from '../../LoggingSystem.js';
 
 // 型定義
-export interface ProgressData { sessionId: string,
+export interface ProgressData { sessionId: string;
     userId: string | null;
     tutorialId: string | null;
     startTime: number | null;
@@ -26,41 +26,42 @@ export interface ProgressData { sessionId: string,
     completionStatus: 'not_started' | 'in_progress' | 'completed' | 'abandoned'
             }
 
-export interface StepTiming { stepIndex: number,
+export interface StepTiming { stepIndex: number;
     startTime: number;
     endTime?: number;
     duration?: number;
     interactions: number;
 
-export interface UserAction { type: string,
+export interface UserAction { type: string;
     timestamp: number;
     stepIndex: number;
     data: any;
 
-export interface ErrorRecord { message: string,
+export interface ErrorRecord { message: string;
     timestamp: number;
     stepIndex: number;
     stack?: string;
     context: string;
 
-export interface HelpRequest { type: string,
+export interface HelpRequest { type: string;
     timestamp: number;
     stepIndex: number;
     query?: string;
 
-export interface SessionStats { totalInteractions: number,
+export interface SessionStats { totalInteractions: number;
     averageStepTime: number;
     completionRate: number;
     helpRequestRate: number;
     skipRate: number;
     errorRate: number;
     userEngagement: {
-        scroll,s: number,
-        clicks: number,
-        keystrokes: number,
-    gestures: number,
-
-export interface AnalyticsConfig { trackDetailedActions: boolean,
+        scroll,s: number;
+        clicks: number;
+        keystrokes: number;
+    gestures: number;
+    gestures: number;
+        };
+export interface AnalyticsConfig { trackDetailedActions: boolean;
     trackTimings: boolean;
     trackErrors: boolean;
     trackEngagement: boolean;
@@ -68,12 +69,14 @@ export interface AnalyticsConfig { trackDetailedActions: boolean,
     serverEndpoint: string | null;
     batchSize: number;
     batchInterval: number;
-
-export interface StorageKeys { progress: string,
+    batchInterval: number;
+        };
+export interface StorageKeys { progress: string;
     analytics: string;
     userPreferences: string;
-
-export interface TutorialData { id: string,
+    userPreferences: string;
+        };
+export interface TutorialData { id: string;
     steps?: any[];
 
 export class TutorialProgressTracker {
@@ -85,7 +88,7 @@ export class TutorialProgressTracker {
     private analyticsConfig: AnalyticsConfig;
     private storageKeys: StorageKeys;
     private batchQueue: any[];
-    private, batchTimer: number | null,
+    private, batchTimer: number | null;
     constructor() {
 
         this.errorHandler = getErrorHandler();
@@ -93,20 +96,20 @@ export class TutorialProgressTracker {
         
         // 進捗データ
         this.progressData = {
-            sessionId: this.generateSessionId(),
-            userId: null,
-            tutorialId: null,
-            startTime: null,
-            endTime: null,
-            totalDuration: 0,
-            currentStep: 0,
-            totalSteps: 0,
-            completedSteps: new Set<number>(),
-            skippedSteps: new Set<number>(),
+            sessionId: this.generateSessionId();
+            userId: null;
+            tutorialId: null;
+            startTime: null;
+            endTime: null;
+            totalDuration: 0;
+            currentStep: 0;
+            totalSteps: 0;
+            completedSteps: new Set<number>();
+            skippedSteps: new Set<number>();
             revisitedSteps: new Set<number>(
             stepTimings: new Map<number, StepTiming>();
-            userActions: [],
-    errors: [],
+            userActions: [];
+    errors: [];
             helpRequests: [] }
 
             completionStatus: 'not_started' 
@@ -117,7 +120,7 @@ export class TutorialProgressTracker {
             progress: 'tutorial_progress';
             analytics: 'tutorial_analytics';
             userPreferences: 'tutorial_user_prefs);'
-            });
+            };
         // バッチ送信用データ
         this.batchQueue = [];
         this.batchTimer = null;
@@ -129,7 +132,7 @@ export class TutorialProgressTracker {
      * 進捗追跡システムを初期化
      */
     initialize(): void { try {
-            this.loadStoredProgress(),
+            this.loadStoredProgress();
             this.setupBatchProcessing()','
             this.loggingSystem.debug('TutorialProgressTracker', 'Progress tracker initialized',' }'
 
@@ -175,8 +178,7 @@ export class TutorialProgressTracker {
                 userId: userId','
             ' }'
 
-            this.loggingSystem.info('TutorialProgressTracker', `Tracking started for tutorial: ${tutorial.id}`});
-
+            this.loggingSystem.info('TutorialProgressTracker', `Tracking started for tutorial: ${tutorial.id}`};
         } catch (error) {
             this.errorHandler.handleError(error, 'TutorialProgressTracker.startTracking' }'
     }
@@ -206,8 +208,7 @@ export class TutorialProgressTracker {
 
             this.recordEvent('step_started', { stepIndex: stepIndex)
                 stepTitle: stepData.title,
-    isRevisit: this.progressData.revisitedSteps.has(stepIndex });
-
+    isRevisit: this.progressData.revisitedSteps.has(stepIndex };
         } catch (error) {
             this.errorHandler.handleError(error, 'TutorialProgressTracker.recordStepStart' }'
     }
@@ -219,23 +220,22 @@ export class TutorialProgressTracker {
      */
     recordStepComplete(stepIndex, completionData = { ) {
         try {
-            this.progressData.completedSteps.add(stepIndex),
-            
+            this.progressData.completedSteps.add(stepIndex);
             const stepDuration = Date.now() - this.currentStepStartTime,
-            this.progressData.stepTimings.set(stepIndex, stepDuration),
-            
+            this.progressData.stepTimings.set(stepIndex, stepDuration);
             this.updateStepMetrics(stepIndex, {
                 duration: stepDuration)','
     completed: true,')',
                 completionData: completionData','
-
+                completionData: completionData','
+        };
             this.recordEvent('step_completed', {)
                 stepIndex: stepIndex,
     duration: stepDuration),
                 ...completionData),
             
-            this.updateSessionStats(),
-            this.saveProgress() })
+            this.updateSessionStats();
+            this.saveProgress() }
 
             ' }'
 
@@ -249,16 +249,16 @@ export class TutorialProgressTracker {
      * @param {string} reason - スキップ理由'
      */''
     recordStepSkip(stepIndex, reason = 'user_choice' { try {'
-            this.progressData.skippedSteps.add(stepIndex),
-            
+            this.progressData.skippedSteps.add(stepIndex);
             this.updateStepMetrics(stepIndex, {)'
                 skipped: true,')',
                 skipReason: reason','
-
+                skipReason: reason','
+        };
             this.recordEvent('step_skipped', {
-                stepIndex: stepIndex),
+                stepIndex: stepIndex);
                 reason: reason','
-            this.updateSessionStats(  })
+            this.updateSessionStats(  }
 
             ' }'
 
@@ -343,7 +343,7 @@ export class TutorialProgressTracker {
      */''
     recordTutorialEnd(completionType = 'completed' {'
         try {
-            this.progressData.endTime = Date.now(),
+            this.progressData.endTime = Date.now();
             this.progressData.totalDuration = this.progressData.endTime - this.progressData.startTime,
             this.progressData.completionStatus = completionType,
             
@@ -359,8 +359,8 @@ export class TutorialProgressTracker {
                 completedSteps: this.progressData.completedSteps.size,
     skippedSteps: this.progressData.skippedSteps.size),
                 totalSteps: this.progressData.totalSteps),
-            this.generateFinalReport(),
-            this.saveProgress(),
+            this.generateFinalReport();
+            this.saveProgress();
             this.sendBatch(true), // 強制送信
             '
             }'
@@ -381,7 +381,7 @@ export class TutorialProgressTracker {
                 timestamp: Date.now()','
             this.loggingSystem.debug('TutorialProgressTracker', `Event recorded: ${eventType }`, event}
     }
-            this.addToBatch(event});
+            this.addToBatch(event};
 
         } catch (error) {
             this.errorHandler.handleError(error, 'TutorialProgressTracker.recordEvent' }'
@@ -393,8 +393,8 @@ export class TutorialProgressTracker {
      * @param {Object} stepData - ステップデータ
      */
     initializeStepMetrics(stepIndex, stepData) {
-        this.stepMetrics.set(stepIndex, {),
-            startTime: Date.now(),
+        this.stepMetrics.set(stepIndex, {);
+            startTime: Date.now();
             duration: 0,
             completed: false,
             skipped: false,
@@ -436,7 +436,7 @@ export class TutorialProgressTracker {
             
             // 平均ステップ時間を計算
             if (this.progressData.stepTimings.size > 0) {
-                const totalTime = Array.from(this.progressData.stepTimings.values(),
+                const totalTime = Array.from(this.progressData.stepTimings.values();
                     .reduce((sum, time) => sum + time, 0) }
                 this.sessionStats.averageStepTime = totalTime / this.progressData.stepTimings.size;' }'
 
@@ -486,8 +486,7 @@ export class TutorialProgressTracker {
      * @param {Object} data - 追加するデータ
      */
     addToBatch(data) {
-        this.batchQueue.push(data),
-        
+        this.batchQueue.push(data);
         if (this.batchQueue.length >= this.analyticsConfig.batchSize) {
     }
             this.sendBatch(); }
@@ -511,8 +510,8 @@ export class TutorialProgressTracker {
                 body: JSON.stringify({)
                     sessionId: this.progressData.sessionId),
                     events: dataToSend,
-    timestamp: Date.now() });
-            });
+    timestamp: Date.now() },
+            };
             ';'
 
             if (!response.ok) { }'
@@ -520,8 +519,7 @@ export class TutorialProgressTracker {
                 throw new Error(`Server, responded with, status: ${response.status}`}';'
             }
 
-            this.loggingSystem.debug('TutorialProgressTracker', `Batch sent: ${dataToSend.length} events`});
-
+            this.loggingSystem.debug('TutorialProgressTracker', `Batch sent: ${dataToSend.length} events`};
         } catch (error) {
             this.errorHandler.handleError(error, 'TutorialProgressTracker.sendBatch),'
             // 送信失敗時はデータを戻す
@@ -545,11 +543,11 @@ export class TutorialProgressTracker {
                     totalSteps: this.progressData.totalSteps,
                     completedSteps: this.progressData.completedSteps.size,
                     skippedSteps: this.progressData.skippedSteps.size,
-    revisitedSteps: this.progressData.revisitedSteps.size };
+    revisitedSteps: this.progressData.revisitedSteps.size },
                 performance: { averageStepTime: this.sessionStats.averageStepTime,
                     totalInteractions: this.sessionStats.totalInteractions,
                     helpRequests: this.progressData.helpRequests.length,
-    errors: this.progressData.errors.length };
+    errors: this.progressData.errors.length },
                 engagement: this.sessionStats.userEngagement,
                 stepDetails: Object.fromEntries(this.stepMetrics);
             };
@@ -559,7 +557,7 @@ export class TutorialProgressTracker {
             // ローカルストレージに保存
             localStorage.setItem(`${this.storageKeys.analytics}_${ this.progressData.sessionId}`
             }
-                JSON.stringify(report)});
+                JSON.stringify(report)};
             
             return report;
 
@@ -591,17 +589,15 @@ export class TutorialProgressTracker {
      */
     loadStoredProgress() {
         try {
-            const stored = localStorage.getItem(this.storageKeys.progress),
+            const stored = localStorage.getItem(this.storageKeys.progress);
             if (!stored) return,
             
-            const parsedData = JSON.parse(stored),
-            
+            const parsedData = JSON.parse(stored);
             // セットとマップを復元
-            parsedData.completedSteps = new Set(parsedData.completedSteps),
-            parsedData.skippedSteps = new Set(parsedData.skippedSteps),
-            parsedData.revisitedSteps = new Set(parsedData.revisitedSteps),
-            parsedData.stepTimings = new Map(Object.entries(parsedData.stepTimings),
-            
+            parsedData.completedSteps = new Set(parsedData.completedSteps);
+            parsedData.skippedSteps = new Set(parsedData.skippedSteps);
+            parsedData.revisitedSteps = new Set(parsedData.revisitedSteps);
+            parsedData.stepTimings = new Map(Object.entries(parsedData.stepTimings);
             Object.assign(this.progressData, parsedData) }
             ' }'
 
@@ -616,7 +612,7 @@ export class TutorialProgressTracker {
     generateSessionId() {
     
 }
-        return `tutorial_${Date.now())_${Math.random().toString(36}.substring(2, 15})`;
+        return `tutorial_${Date.now())_${Math.random().toString(36}.substring(2, 15}`;
     }
     
     /**
@@ -632,7 +628,7 @@ export class TutorialProgressTracker {
             skippedSteps: this.progressData.skippedSteps.size,
             completionRate: this.sessionStats.completionRate,
     averageStepTime: this.sessionStats.averageStepTime }
-            totalDuration: Date.now() - this.progressData.startTime };
+            totalDuration: Date.now() - this.progressData.startTime },
             status: this.progressData.completionStatus 
     }
     
@@ -642,7 +638,7 @@ export class TutorialProgressTracker {
      */
     getDetailedStats() {
         return { sessionStats: this.sessionStats }
-            progressData: this.progressData };
+            progressData: this.progressData },
             stepMetrics: Object.fromEntries(this.stepMetrics); 
     }
     
@@ -651,8 +647,7 @@ export class TutorialProgressTracker {
      * @param {Object} newConfig - 新しい設定
      */
     updateConfig(newConfig) {
-        Object.assign(this.analyticsConfig, newConfig),
-        
+        Object.assign(this.analyticsConfig, newConfig);
         // バッチ処理の再設定
         if (this.batchTimer) {
             clearInterval(this.batchTimer) }

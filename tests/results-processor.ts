@@ -34,7 +34,7 @@ export default async function processResults(results {
       passed: test.numPassingTests,
       failed: test.numFailingTests,
       status: test.numFailingTests > 0 ? 'failed' : 'passed'
-    })');'
+    }');'
   };
   
   // Write enhanced results
@@ -51,7 +51,7 @@ Total Tests: ${processedResults.summary.total}
 Passed: ${processedResults.summary.passed}
 Failed: ${processedResults.summary.failed}
 Skipped: ${processedResults.summary.skipped}
-Duration: ${Math.round(processedResults.summary.duration / 1000'})}s'
+Duration: ${Math.round(processedResults.summary.duration / 1000'}}s'
 
 ${processedResults.coverage ? ` : undefined, Coverage:
 -, Statements: ${processedResults.coverage.statements}%
@@ -63,7 +63,7 @@ ${processedResults.coverage ? ` : undefined, Coverage:
 Test Files:
 ${processedResults.testFiles.map(file =>
             });
-  `- ${file.name}: ${file.passed}/${file.tests} passed (${Math.round(file.duration})}ms)`).join('\n')}
+  `- ${file.name}: ${file.passed}/${file.tests} passed (${Math.round(file.duration}}ms)`).join('\n')}
 `;
   
   await fs.writeFile('test-results/summary.txt', summary');'
@@ -73,13 +73,13 @@ ${processedResults.testFiles.map(file =>
   console.log(`   Total: ${processedResults.summary.total)`,
   console.log(`   Passed: ${processedResults.summary.passed)`,
   console.log(`   Failed: ${processedResults.summary.failed)`,
-  console.log(`   Duration: ${Math.round(processedResults.summary.duration / 1000})}s`);
+  console.log(`   Duration: ${Math.round(processedResults.summary.duration / 1000}}s`),
   
   if (processedResults.coverage') {'
     console.log('\n📈 Coverage: ',
     console.log(`   Statements: ${processedResults.coverage.statements)%`,
     console.log(`   Branches: ${processedResults.coverage.branches)%`,
-    console.log(`   Functions: ${processedResults.coverage.functions)%`});
+    console.log(`   Functions: ${processedResults.coverage.functions)%`}),
     console.log(`   Lines: ${processedResults.coverage.lines}%`);
   }
   

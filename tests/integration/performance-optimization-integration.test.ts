@@ -17,7 +17,7 @@ describe('Performance Optimization Integration Tests', () => {
         localizationManager = new LocalizationManager('),'
         // DOM環境のモック
         global.document = {
-            documentElement: { lang: 'ja' };
+            documentElement: { lang: 'ja' },
             createElement: jest.fn(').mockReturnValue({'
                 id: ','
                 textContent: ','
@@ -41,7 +41,7 @@ describe('Performance Optimization Integration Tests', () => {
        , addListener: jest.fn(),
             addEventListener: jest.fn(
             removeEventListener: jest.fn(
-            requestAnimationFrame: jest.fn((cb) => setTimeout(cb, 16),
+            requestAnimationFrame: jest.fn((cb) => setTimeout(cb, 16);
             cancelAnimationFrame: jest.fn(
             performance: {
                 now: jest.fn(() => Date.now(),
@@ -49,7 +49,7 @@ describe('Performance Optimization Integration Tests', () => {
                     usedJSHeapSize: 1000000,
                     totalJSHeapSize: 10000000,
         jsHeapSizeLimit: 100000000
-            });
+            };
             ),
             FontFace: jest.fn().mockImplementation(() => ({
                 load: jest.fn().mockResolvedValue()),
@@ -59,7 +59,7 @@ describe('Performance Optimization Integration Tests', () => {
                     'test.key': 'Test Value',
                 headers: {
                     get: jest.fn(').mockReturnValue('application/json' }'
-            }),
+            };
         gc: jest.fn()' };'
         global.navigator = {
             connection: {
@@ -73,23 +73,23 @@ describe('Performance Optimization Integration Tests', () => {
             log: jest.fn(
             warn: jest.fn(
             error: jest.fn(
-        debug: jest.fn( };
+        debug: jest.fn( },
         mockDOM = {
             elements: []
         };
-    });
+    };
     afterEach(() => {
-        localizationManager? .cleanup(),
+        localizationManager? .cleanup();
         jest.clearAllMocks() }');'
     describe('System Integration', (') => {'
         test('OptimizedTranslationLoaderが正しく統合されている', () => {
-            expect(localizationManager.optimizedLoader).toBeInstanceOf(OptimizedTranslationLoader),
+            expect(localizationManager.optimizedLoader).toBeInstanceOf(OptimizedTranslationLoader);
             expect(localizationManager.optimizedLoader).toBeDefined() }');'
         test('I18nPerformanceMonitorが正しく統合されている', () => {
-            expect(localizationManager.performanceMonitor).toBeInstanceOf(I18nPerformanceMonitor),
+            expect(localizationManager.performanceMonitor).toBeInstanceOf(I18nPerformanceMonitor);
             expect(localizationManager.performanceMonitor).toBeDefined() }');'
         test('I18nRenderOptimizerが正しく統合されている', () => {
-            expect(localizationManager.renderOptimizer).toBeInstanceOf(I18nRenderOptimizer),
+            expect(localizationManager.renderOptimizer).toBeInstanceOf(I18nRenderOptimizer);
             expect(localizationManager.renderOptimizer).toBeDefined() }');'
     }
     describe('Performance-Optimized Language Loading', (') => {'
@@ -134,7 +134,7 @@ describe('Performance Optimization Integration Tests', () => {
             localizationManager.loadedLanguages.add('ja');
         }');'
         test('翻訳取得でパフォーマンス監視が動作する', (') => {'
-            const mockMeasurement = { id: 'test-measurement', startTime: 1000 };
+            const mockMeasurement = { id: 'test-measurement', startTime: 1000 },
             
             localizationManager.performanceMonitor.startTranslationMeasurement = jest.fn() as jest.Mock
                 .mockReturnValue(mockMeasurement);
@@ -147,7 +147,7 @@ describe('Performance Optimization Integration Tests', () => {
                 .toHaveBeenCalledWith(mockMeasurement, true);
         }');'
         test('翻訳が見つからない場合もパフォーマンス監視が動作する', (') => {'
-            const mockMeasurement = { id: 'test-measurement', startTime: 1000 };
+            const mockMeasurement = { id: 'test-measurement', startTime: 1000 },
             
             localizationManager.performanceMonitor.startTranslationMeasurement = jest.fn() as jest.Mock
                 .mockReturnValue(mockMeasurement);
@@ -167,13 +167,13 @@ describe('Performance Optimization Integration Tests', () => {
             localizationManager.loadedLanguages.add('en');
         }');'
         test('レンダリング最適化付き言語切り替えが動作する', async () => {
-            const mockSwitchResult = { duration: 250 };
-            const mockRenderResult = { success: true, renderTime: 100 };
+            const mockSwitchResult = { duration: 250 },
+            const mockRenderResult = { success: true, renderTime: 100 },
             localizationManager.performanceMonitor.measureLanguageSwitch = jest.fn() as jest.Mock
                 .mockImplementation(async (from, to, callback) => {
-                    const result = await callback(),
+                    const result = await callback();
                     return { ...mockSwitchResult, result };
-                });
+                };
             localizationManager.renderOptimizer.optimizeLanguageSwitch = jest.fn() as jest.Mock
                 .mockResolvedValue(mockRenderResult);
             localizationManager.loadFontsForLanguage = jest.fn().mockResolvedValue(true as jest.Mock');'
@@ -193,13 +193,13 @@ describe('Performance Optimization Integration Tests', () => {
             const updateCallback = jest.fn(').mockResolvedValue('Updated Text') as jest.Mock;'
             localizationManager.performanceMonitor.measureLanguageSwitch = jest.fn() as jest.Mock
                 .mockImplementation(async (from, to, callback) => {
-                    return { duration: 200, result: await callback() };
-                });
+                    return { duration: 200, result: await callback() },
+                };
             localizationManager.renderOptimizer.optimizeLanguageSwitch = jest.fn() as jest.Mock
                 .mockImplementation(async (from, to, callback) => {
-                    const result = await callback(mockElement),
+                    const result = await callback(mockElement);
                     return { success: true, renderTime: 50, result };
-                });
+                };
             localizationManager.loadFontsForLanguage = jest.fn().mockResolvedValue(true as jest.Mock');'
             await localizationManager.setLanguage('en');
             expect(localizationManager.renderOptimizer.optimizeLanguageSwitch)
@@ -208,9 +208,9 @@ describe('Performance Optimization Integration Tests', () => {
     }
     describe('Performance Statistics', (') => {'
         test('パフォーマンス統計を取得できる', (') => {'
-            const mockTranslationStats = { totalTranslations: 100, averageTime: 5 };
-            const mockLoadingStats = { cacheHitRate: '85%', totalRequests: 50 };
-            const mockRenderingStats = { frameMetrics: { averageFrameTime: 16 } };
+            const mockTranslationStats = { totalTranslations: 100, averageTime: 5 },
+            const mockLoadingStats = { cacheHitRate: '85%', totalRequests: 50 },
+            const mockRenderingStats = { frameMetrics: { averageFrameTime: 16 } },
             localizationManager.performanceMonitor.generatePerformanceReport = jest.fn() as jest.Mock
                 .mockReturnValue(mockTranslationStats);
             localizationManager.optimizedLoader.getPerformanceStats = jest.fn() as jest.Mock
@@ -234,11 +234,11 @@ describe('Performance Optimization Integration Tests', () => {
             // 既存の翻訳データをセットアップ
             localizationManager.translations.set('en', {
                 'existing.key': 'Existing Value')'),'
-            const result = await localizationManager.loadNamespace('en', 'namespace'),
-            expect(result.toBe(true),
+            const result = await localizationManager.loadNamespace('en', 'namespace');
+            expect(result.toBe(true);
             expect(localizationManager.optimizedLoader.lazyLoadNamespace')'
-                .toHaveBeenCalledWith('en', 'namespace'),
-            const translations = localizationManager.translations.get('en'),
+                .toHaveBeenCalledWith('en', 'namespace');
+            const translations = localizationManager.translations.get('en');
             expect(translations.toEqual({
                 'existing.key': 'Existing Value',
                 'namespace.key1': 'Value 1',
@@ -248,17 +248,17 @@ describe('Performance Optimization Integration Tests', () => {
         test('翻訳キャッシュをクリアできる', () => {
             localizationManager.optimizedLoader.clearCache = jest.fn() as jest.Mock,
             localizationManager.renderOptimizer.clearCaches = jest.fn() as jest.Mock,
-            localizationManager.clearTranslationCache(),
-            expect(localizationManager.optimizedLoader.clearCache).toHaveBeenCalled(),
+            localizationManager.clearTranslationCache();
+            expect(localizationManager.optimizedLoader.clearCache).toHaveBeenCalled();
             expect(localizationManager.renderOptimizer.clearCaches).toHaveBeenCalled() }');'
     }
     describe('Performance Monitoring Control', (') => {'
         test('パフォーマンス監視を停止・再開できる', () => {
             localizationManager.performanceMonitor.stopMonitoring = jest.fn() as jest.Mock,
             localizationManager.performanceMonitor.startMonitoring = jest.fn() as jest.Mock,
-            localizationManager.stopPerformanceMonitoring(),
-            expect(localizationManager.performanceMonitor.stopMonitoring).toHaveBeenCalled(),
-            localizationManager.startPerformanceMonitoring(),
+            localizationManager.stopPerformanceMonitoring();
+            expect(localizationManager.performanceMonitor.stopMonitoring).toHaveBeenCalled();
+            localizationManager.startPerformanceMonitoring();
             expect(localizationManager.performanceMonitor.startMonitoring).toHaveBeenCalled() }');'
     }
     describe('Cleanup', (') => {'
@@ -266,21 +266,21 @@ describe('Performance Optimization Integration Tests', () => {
             localizationManager.performanceMonitor.cleanup = jest.fn() as jest.Mock,
             localizationManager.renderOptimizer.cleanup = jest.fn() as jest.Mock,
             localizationManager.optimizedLoader.cleanup = jest.fn() as jest.Mock,
-            localizationManager.cleanup(),
-            expect(localizationManager.performanceMonitor.cleanup).toHaveBeenCalled(),
-            expect(localizationManager.renderOptimizer.cleanup).toHaveBeenCalled(),
+            localizationManager.cleanup();
+            expect(localizationManager.performanceMonitor.cleanup).toHaveBeenCalled();
+            expect(localizationManager.renderOptimizer.cleanup).toHaveBeenCalled();
             expect(localizationManager.optimizedLoader.cleanup).toHaveBeenCalled() }');'
     }
     describe('Error Handling', (') => {'
         test('最適化ローダーエラー時にフォールバック処理が動作する', async () => {
             localizationManager.optimizedLoader.loadLanguage = jest.fn(') as jest.Mock'
-                .mockRejectedValue(new Error('Network error'),
+                .mockRejectedValue(new Error('Network error');
             localizationManager.translationLoader.loadLanguage = jest.fn(') as jest.Mock'
                 .mockResolvedValue({ 'test.key': 'Fallback value' )'),'
-            const result = await localizationManager.loadLanguageData('fr'),
-            expect(result.toBe(true),
+            const result = await localizationManager.loadLanguageData('fr');
+            expect(result.toBe(true);
             expect(console.warn).toHaveBeenCalledWith('),'
-                expect.stringContaining('Optimized loader failed for fr'),
+                expect.stringContaining('Optimized loader failed for fr');
                 expect.any(String) }');'
         test('レンダリング最適化エラー時も言語切り替えが完了する', async (') => {'
             localizationManager.translations.set('en', { 'test.key': 'Test Value' }');'
@@ -288,16 +288,16 @@ describe('Performance Optimization Integration Tests', () => {
             localizationManager.performanceMonitor.measureLanguageSwitch = jest.fn() as jest.Mock
                 .mockImplementation(async (from, to, callback) => {
                     try {
-                        const result = await callback(),
+                        const result = await callback();
                         return { duration: 300, result };
                     } catch (error) {
                         throw error }
-                });
+                };
             localizationManager.renderOptimizer.optimizeLanguageSwitch = jest.fn(') as jest.Mock'
                 .mockRejectedValue(new Error('Rendering optimization failed');
             localizationManager.loadFontsForLanguage = jest.fn().mockResolvedValue(true as jest.Mock');'
             const result = await localizationManager.setLanguage('en');
             expect(result.toBe(false); // エラーによりfalseが返される
-        });
+        };
     }
 }');'

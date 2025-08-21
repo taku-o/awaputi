@@ -4,15 +4,15 @@
  */
 
 // 型定義
-interface Viewport { x: number,
+interface Viewport { x: number;
     y: number;
     width: number;
     height: number;
-interface Region { x: number,
+interface Region { x: number;
     y: number;
     width: number;
     height: number;
-interface RenderStats { totalObjects: number,
+interface RenderStats { totalObjects: number;
     renderedObjects: number;
     culledObjects: number;
     dirtyRegions: number;
@@ -29,20 +29,21 @@ interface RenderObject { id?: string,
     opacity?: number;
     type?: string;
     render?: (ctx: CanvasRenderingContext2D) => void  }
-interface Layer { canvas: HTMLCanvasElement,
+interface Layer { canvas: HTMLCanvasElement;
     context: CanvasRenderingContext2D;
     zIndex: number;
     isDirty: boolean;
     objects: RenderObject[];
-interface PerformanceStats { fps: number,
+interface PerformanceStats { fps: number;
     deltaTime: number;
     frameCount: number;
     avgFrameTime: number;
     memoryUsage: {
-        usedJSHeapSiz,e: number,
-        totalJSHeapSize: number,
-    jsHeapSizeLimit: number,
-
+        usedJSHeapSiz,e: number;
+        totalJSHeapSize: number;
+    jsHeapSizeLimit: number;
+    jsHeapSizeLimit: number;
+        };
 export class RenderOptimizer {
     private canvas: HTMLCanvasElement;
     private context: CanvasRenderingContext2D;
@@ -100,20 +101,20 @@ export class RenderOptimizer {
      */'
     addLayer(layerName: string, zIndex: number = 0): void { ''
         if(!this.layers.has(layerName)) {''
-            const canvas = document.createElement('canvas'),
+            const canvas = document.createElement('canvas');
             canvas.width = this.width,
             canvas.height = this.height,
 
             const context = canvas.getContext('2d),'
             if (!context) { }
-                throw new Error(`Failed, to get, 2D context, for layer ${layerName}`});
+                throw new Error(`Failed, to get, 2D context, for layer ${layerName}`};
             }
             
-            this.layers.set(layerName, { canvas: canvas,
-                context: context),
-                zIndex: zIndex,
-    isDirty: false),
-                objects: []),
+            this.layers.set(layerName, { canvas: canvas;
+                context: context);
+                zIndex: zIndex;
+    isDirty: false);
+                objects: []);
             // zIndexでソート
             this.layerOrder = Array.from(this.layers.keys().sort((a, b) => { 
                 const layerA = this.layers.get(a)!,
@@ -159,7 +160,7 @@ export class RenderOptimizer {
     getObjectBounds(obj: RenderObject): Region { const size = obj.size || 50,
         return { x: obj.x - size / 2,
             y: obj.y - size / 2,
-    width: size,;
+    width: size,
             height: size ,
     } }
     
@@ -179,8 +180,8 @@ export class RenderOptimizer {
             
             if (this.regionsOverlap(region, newRegion) {
                 // 重複する領域をマージ
-                const merged = this.mergeRegions(region, newRegion),
-                this.dirtyRegions.splice(i, 1),
+                const merged = this.mergeRegions(region, newRegion);
+                this.dirtyRegions.splice(i, 1);
                 this.dirtyRegions.push(merged) }
                 return; }
         }
@@ -205,22 +206,21 @@ export class RenderOptimizer {
      * @param {Region} b - 領域B
      * @returns {Region} マージされた領域
      */
-    private mergeRegions(a: Region, b: Region): Region { const left = Math.min(a.x, b.x),
-        const top = Math.min(a.y, b.y),
-        const right = Math.max(a.x + a.width, b.x + b.width),
-        const bottom = Math.max(a.y + a.height, b.y + b.height),
-        
+    private mergeRegions(a: Region, b: Region): Region { const left = Math.min(a.x, b.x);
+        const top = Math.min(a.y, b.y);
+        const right = Math.max(a.x + a.width, b.x + b.width);
+        const bottom = Math.max(a.y + a.height, b.y + b.height);
         return { x: left,
             y: top,
-    width: right - left };
-            height: bottom - top ;
+    width: right - left },
+            height: bottom - top ,
     } }
     
     /**
      * レイヤーをレンダリング
      * @param {string} layerName - レイヤー名
      */
-    private renderLayer(layerName: string): void { const layer = this.layers.get(layerName),
+    private renderLayer(layerName: string): void { const layer = this.layers.get(layerName);
         if (!layer || layer.objects.length === 0) return,
         
         const ctx = layer.context,
@@ -231,17 +231,17 @@ export class RenderOptimizer {
 }
             this.dirtyRegions.forEach(region => { ) }
                 ctx.clearRect(region.x, region.y, region.width, region.height); }
-            });
+            };
         } else { ctx.clearRect(0, 0, this.width, this.height) }
         // オブジェクトをレンダリング
-        layer.objects.forEach(obj => {  ),
+        layer.objects.forEach(obj => {  );
             if (this.isInViewport(obj) {
     
 }
                 this.renderObject(ctx, obj); }
                 this.stats.renderedObjects++; }
             } else { this.stats.culledObjects++ }
-        });
+        };
         
         layer.objects = []; // 次フレーム用にクリア
     }
@@ -251,8 +251,7 @@ export class RenderOptimizer {
      * @param {CanvasRenderingContext2D} ctx - コンテキスト
      * @param {RenderObject} obj - オブジェクト
      */
-    private renderObject(ctx: CanvasRenderingContext2D, obj: RenderObject): void { ctx.save(),
-        
+    private renderObject(ctx: CanvasRenderingContext2D, obj: RenderObject): void { ctx.save();
         // 共通の変換を適用
         if (obj.x !== undefined && obj.y !== undefined) {
     
@@ -277,14 +276,13 @@ export class RenderOptimizer {
         const color = obj.color || '#FF6B6B',
         
         ctx.fillStyle = color,
-        ctx.beginPath(),
-        ctx.arc(0, 0, size / 2, 0, Math.PI * 2),
+        ctx.beginPath();
+        ctx.arc(0, 0, size / 2, 0, Math.PI * 2);
         ctx.fill() }
     /**
      * フレームをレンダリング
      */
-    render(): void { const startTime = performance.now(),
-        
+    render(): void { const startTime = performance.now();
         // 統計情報をリセット
         this.stats = {
             totalObjects: 0,
@@ -299,23 +297,22 @@ export class RenderOptimizer {
         // メインキャンバスをクリア（必要な部分のみ）
         if (this.dirtyRegions.length > 0) { this.dirtyRegions.forEach(region => { ) }
                 this.context.clearRect(region.x, region.y, region.width, region.height); }
-            });
+            };
         } else { this.context.clearRect(0, 0, this.width, this.height) }
         // レイヤーを順番にレンダリング
-        this.layerOrder.forEach(layerName => {  ),
-            this.renderLayer(layerName),
-            
+        this.layerOrder.forEach(layerName => {  );
+            this.renderLayer(layerName);
             // レイヤーをメインキャンバスに合成
             const layer = this.layers.get(layerName)!,
             if (this.dirtyRegions.length > 0) {
                 this.dirtyRegions.forEach(region => {
-                    this.context.drawImage(),
+                    this.context.drawImage();
                         layer.canvas) }
                         region.x, region.y, region.width, region.height) }
                         region.x, region.y, region.width, region.height); }
-                });
+                };
             } else { this.context.drawImage(layer.canvas, 0, 0) }
-        });
+        };
         
         // フレーム終了処理
         this.lastFrameObjects = new Map(this.currentFrameObjects);
@@ -330,26 +327,24 @@ export class RenderOptimizer {
      */
     private detectChanges(): void { // 新しいオブジェクトや変更されたオブジェクトの領域をダーティに
         this.currentFrameObjects.forEach((obj, id) => { 
-            const lastObj = this.lastFrameObjects.get(id),
-            
+            const lastObj = this.lastFrameObjects.get(id);
             if (!lastObj || this.objectChanged(lastObj, obj) {
             
-                const bounds = this.getObjectBounds(obj),
-                this.addDirtyRegion(bounds.x, bounds.y, bounds.width, bounds.height),
-                
+                const bounds = this.getObjectBounds(obj);
+                this.addDirtyRegion(bounds.x, bounds.y, bounds.width, bounds.height);
                 // 前の位置もダーティに（移動した場合）
                 if (lastObj && (lastObj.x !== obj.x || lastObj.y !== obj.y) {
     
 }
                     const lastBounds = this.getObjectBounds(lastObj); }
                     this.addDirtyRegion(lastBounds.x, lastBounds.y, lastBounds.width, lastBounds.height); }
-});
+};
         
         // 削除されたオブジェクトの領域をダーティに
         this.lastFrameObjects.forEach((obj, id) => {  if (!this.currentFrameObjects.has(id) {
                 const bounds = this.getObjectBounds(obj) }
                 this.addDirtyRegion(bounds.x, bounds.y, bounds.width, bounds.height); }
-        });
+        };
     }
     
     /**
@@ -360,7 +355,7 @@ export class RenderOptimizer {
      */
     private objectChanged(lastObj: RenderObject & { layer: string;, currentObj: RenderObject & { layer: string ): boolean {''
         const keys: (keyof, RenderObject')[] = ['x', 'y', 'size', 'color', 'rotation', 'scale', 'opacity'],'
-        return keys.some(key => lastObj[key] !== currentObj[key]),
+        return keys.some(key => lastObj[key] !== currentObj[key]);
     /**
      * ビューポートを設定
      * @param {number} x - X座標
@@ -401,7 +396,7 @@ export class RenderOptimizer {
      */
     cleanup(): void { this.layers.forEach(layer => { )
             layer.objects = []),
-        this.currentFrameObjects.clear(),
+        this.currentFrameObjects.clear();
         this.lastFrameObjects.clear() }
         this.dirtyRegions = []; }
 }
@@ -417,9 +412,9 @@ export class PerformanceMonitor {
     private frameTimeHistory: number[];
     private maxHistorySize: number;
     private, memoryUsage: {
-        usedJSHeapSize: number,
-        totalJSHeapSize: number,
-    jsHeapSizeLimit: number,;
+        usedJSHeapSize: number;
+        totalJSHeapSize: number;
+    jsHeapSizeLimit: number;
 
     constructor() {
 
@@ -431,7 +426,7 @@ export class PerformanceMonitor {
         this.maxHistorySize = 60;
         
         this.memoryUsage = {
-            usedJSHeapSize: 0,
+            usedJSHeapSize: 0;
     totalJSHeapSize: 0
 }
             jsHeapSizeLimit: 0 ;
@@ -444,7 +439,7 @@ export class PerformanceMonitor {
     startFrame(currentTime: number): void { this.deltaTime = currentTime - this.lastTime;
         this.lastTime = currentTime;
         
-        this.frameTimeHistory.push(this.deltaTime),
+        this.frameTimeHistory.push(this.deltaTime);
         if (this.frameTimeHistory.length > this.maxHistorySize) {
     
 }
@@ -467,10 +462,10 @@ export class PerformanceMonitor {
      * @returns {PerformanceStats} 統計情報
      */
     getStats(): PerformanceStats { return { fps: Math.round(this.fps,
-            deltaTime: Math.round(this.deltaTime),
+            deltaTime: Math.round(this.deltaTime);
             frameCount: this.frameCount,
     avgFrameTime: Math.round(this.frameTimeHistory.reduce((a, b) => a + b, 0) / this.frameTimeHistory.length) };
-            memoryUsage: this.memoryUsage ;
+            memoryUsage: this.memoryUsage ,
     } }
     
     /**

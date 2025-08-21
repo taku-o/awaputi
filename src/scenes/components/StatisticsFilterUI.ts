@@ -4,23 +4,23 @@
  */
 
 interface GameEngine { errorHandler?: {
-        handleError(error: Error, context: any): void,
+        handleError(error: Error, context: any): void;
 
-interface EventBus { on(event: string, callback: Function): void,
+interface EventBus { on(event: string, callback: Function): void;
     off(event: string): void;
     emit(event: string, data?: any): void;
 
-interface AccessibilitySettings { highContrast: boolean,
+interface AccessibilitySettings { highContrast: boolean;
     largeText: boolean;
     reducedMotion: boolean;
 
 interface ComponentState {
     accessibilitySettings: AccessibilitySettings;
 
-interface FilterOption { key: string,
+interface FilterOption { key: string;
     label: string;
 
-interface ButtonInfo { key: string,
+interface ButtonInfo { key: string;
     x: number;
     y: number;
     width: number;
@@ -81,7 +81,7 @@ export class StatisticsFilterUI {
         // アクセシビリティ設定
         this.accessibilitySettings = state.accessibilitySettings || {
             highContrast: false,
-    largeText: false;
+    largeText: false,
             reducedMotion: false;;
         this.setupEventListeners();
     }
@@ -93,7 +93,7 @@ export class StatisticsFilterUI {
         this.eventBus.on('set-period-filter', (period: string) => { this.setPeriodFilter(period),' 
     }');'
 
-        this.eventBus.on('set-view-mode', (mode: string) => { this.setViewMode(mode) });
+        this.eventBus.on('set-view-mode', (mode: string) => { this.setViewMode(mode) }),
     }
     
     /**
@@ -108,11 +108,9 @@ export class StatisticsFilterUI {
             let currentY = y,
             
             // 期間フィルターUIの描画
-            currentY = this.renderPeriodFilter(context, x, currentY, width),
-            
+            currentY = this.renderPeriodFilter(context, x, currentY, width);
             // 表示モード切り替えUIの描画
-            currentY = this.renderViewModeSelector(context, x, currentY + 10, width),
-            
+            currentY = this.renderViewModeSelector(context, x, currentY + 10, width);
             return currentY - y,
             ' }'
 
@@ -140,21 +138,20 @@ export class StatisticsFilterUI {
         this.periodButtons = [];
         // フィルター背景
         context.fillStyle = this.accessibilitySettings.highContrast ? '#000000' : '#F8FAFC',
-        context.fillRect(x, y, width, filterHeight),
+        context.fillRect(x, y, width, filterHeight);
         ','
         // フィルター枠線
         context.strokeStyle = this.accessibilitySettings.highContrast ? '#FFFFFF' : '#E5E7EB',
 
         context.lineWidth = 1,
-        context.strokeRect(x, y, width, filterHeight),
+        context.strokeRect(x, y, width, filterHeight);
         ','
         // フィルタータイトル
         context.fillStyle = this.accessibilitySettings.highContrast ? '#FFFFFF' : '#374151',
         context.font = this.accessibilitySettings.largeText ? '16px system-ui, -apple-system, sans-serif' : '14px system-ui, -apple-system, sans-serif',
         context.textAlign = 'left',
         context.textBaseline = 'middle',
-        context.fillText('期間フィルター:', x + 10, y + filterHeight / 2),
-        
+        context.fillText('期間フィルター:', x + 10, y + filterHeight / 2);
         // 期間フィルターボタン
         let buttonX = x + (this.accessibilitySettings.largeText ? 140 : 120),
         this.periods.forEach((period) => { 
@@ -204,7 +201,7 @@ export class StatisticsFilterUI {
             context.fillText(period.label, buttonX + buttonWidth / 2, y + filterHeight / 2);
             
             buttonX += buttonWidth + this.buttonSpacing;
-        });
+        };
         
         return y + filterHeight;
     }
@@ -225,15 +222,14 @@ export class StatisticsFilterUI {
         this.modeButtons = [];
         // モード切り替え背景
         context.fillStyle = this.accessibilitySettings.highContrast ? '#000000' : '#F8FAFC',
-        context.fillRect(x, y, width, modeHeight),
+        context.fillRect(x, y, width, modeHeight);
         ','
         // モード切り替えタイトル
         context.fillStyle = this.accessibilitySettings.highContrast ? '#FFFFFF' : '#374151',
         context.font = this.accessibilitySettings.largeText ? '14px system-ui, -apple-system, sans-serif' : '12px system-ui, -apple-system, sans-serif',
         context.textAlign = 'left',
         context.textBaseline = 'middle',
-        context.fillText('表示モード:', x + 10, y + modeHeight / 2),
-        
+        context.fillText('表示モード:', x + 10, y + modeHeight / 2);
         // 表示モードボタン
         let buttonX = x + (this.accessibilitySettings.largeText ? 100 : 80),
         this.modes.forEach((mode) => { 
@@ -283,7 +279,7 @@ export class StatisticsFilterUI {
             context.fillText(mode.label, buttonX + buttonWidth / 2, y + modeHeight / 2);
             
             buttonX += buttonWidth + (this.buttonSpacing / 2);
-        });
+        };
         
         return y + modeHeight;
     }
@@ -313,8 +309,8 @@ export class StatisticsFilterUI {
 
         } catch (error) { this.errorHandler?.handleError(error as Error, { : undefined)'
                 context: 'StatisticsFilterUI.handleClick', '
-                details: `クリック処理でエラーが発生しました: (${x }, ${y})`
-            });
+                details: `クリック処理でエラーが発生しました: (${x }, ${y}`
+            };
             return false;
     
     /**

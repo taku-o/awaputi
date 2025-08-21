@@ -5,19 +5,19 @@ import { ParticleLifecycleManager  } from './particles/ParticleLifecycleManager.
 import type { Particle } from './particles/ParticleRenderer.js';
 
 // Particle Manager types
-export interface ParticleManagerConfig { maxCount: number,
+export interface ParticleManagerConfig { maxCount: number;
     poolSize: number;
     quality: number;
     enabled: boolean;
 
-export interface ParticleManagerConfiguration { maxParticles: number,
+export interface ParticleManagerConfiguration { maxParticles: number;
     poolSize: number;
     quality: number;
     enabled: boolean;
     currentParticleCount: number;
     poolUsage: number;
 
-export interface PerformanceStats { activeParticles: number,
+export interface PerformanceStats { activeParticles: number;
     maxParticles: number;
     poolSize: number;
     availableInPool: number;
@@ -37,7 +37,7 @@ export class ParticleManager {
     private errorHandler: any;
     private effectsConfig: any;
     private renderer: ParticleRenderer;
-    private, lifecycleManager: ParticleLifecycleManager,
+    private, lifecycleManager: ParticleLifecycleManager;
     // Configuration properties
     private maxParticles!: number,
     private poolSize!: number,
@@ -51,14 +51,13 @@ export class ParticleManager {
         
         // 設定システムの初期化
         this.effectsConfig = getEffectsConfig();
-        this._initializeFromConfig(),
-        
+        this._initializeFromConfig();
         // サブコンポーネントの初期化
         this.renderer = new ParticleRenderer(this);
         this.lifecycleManager = new ParticleLifecycleManager(this);
         
         // パーティクルプールの初期化
-        this.lifecycleManager.initializePool(this.poolSize),
+        this.lifecycleManager.initializePool(this.poolSize);
         // 設定変更の監視
         this._setupConfigWatchers() }
 
@@ -74,7 +73,7 @@ export class ParticleManager {
     private _initializeFromConfig(): void { try {'
             const particleConfig: ParticleManagerConfig = this.effectsConfig.getParticleConfig('''
             console.log('[ParticleManager] 設定から初期化完了: ', {
-                maxParticles: this.maxParticles),
+                maxParticles: this.maxParticles);
                 poolSize: this.poolSize,
     quality: this.quality,','
                 enabled: this.enabled','
@@ -115,7 +114,7 @@ export class ParticleManager {
             console.log('[ParticleManager] 設定変更監視を設定しました');
         } catch (error) { this.errorHandler.handleError(error, {)'
                 context: 'ParticleManager._setupConfigWatchers'
-            });
+            };
         }
     }
     
@@ -132,7 +131,7 @@ export class ParticleManager {
             if (this.particles.length > newValue) {
                 const excessCount = this.particles.length - newValue,
                 for (let, i = 0, i < excessCount, i++) {
-                    const particle = this.particles.shift(),
+                    const particle = this.particles.shift();
                     if (particle) {
             }
                         this.lifecycleManager.returnParticleToPool(particle); }
@@ -140,10 +139,10 @@ export class ParticleManager {
             }
             ';'
 
-            console.log(`[ParticleManager] 最大パーティクル数を変更: ${oldValue} → ${newValue}`});
+            console.log(`[ParticleManager] 最大パーティクル数を変更: ${oldValue} → ${newValue}`};
         } catch (error) { this.errorHandler.handleError(error, {)'
                 context: 'ParticleManager._onMaxParticleCountChanged'
-            });
+            };
         }
     }
     
@@ -158,10 +157,10 @@ export class ParticleManager {
             
             // ライフサイクルマネージャーにプールサイズ変更を委譲
             this.lifecycleManager.resizePool(newValue) }
-            console.log(`[ParticleManager] プールサイズを変更: ${oldValue} → ${newValue}`});
+            console.log(`[ParticleManager] プールサイズを変更: ${oldValue} → ${newValue}`};
         } catch (error) { this.errorHandler.handleError(error, {)'
                 context: 'ParticleManager._onPoolSizeChanged'
-            });
+            };
         }
     }
     
@@ -174,10 +173,10 @@ export class ParticleManager {
             const oldValue = this.quality,
             this.quality = newValue }
 
-            console.log(`[ParticleManager] 品質を変更: ${oldValue} → ${newValue}`});
+            console.log(`[ParticleManager] 品質を変更: ${oldValue} → ${newValue}`};
         } catch (error) { this.errorHandler.handleError(error, {)'
                 context: 'ParticleManager._onQualityChanged'
-            });
+            };
         }
     }
     
@@ -198,10 +197,10 @@ export class ParticleManager {
             }
             ';'
 
-            console.log(`[ParticleManager] 有効状態を変更: ${oldValue} → ${newValue}`});
+            console.log(`[ParticleManager] 有効状態を変更: ${oldValue} → ${newValue}`};
         } catch (error) { this.errorHandler.handleError(error, {)'
                 context: 'ParticleManager._onEnabledChanged'
-            });
+            };
         }
     }
     
@@ -225,20 +224,18 @@ export class ParticleManager {
             return; }
         }
         
-        try { const particleConfig = this.effectsConfig.getParticleConfig(),
-            
+        try { const particleConfig = this.effectsConfig.getParticleConfig();
             // ライフサイクルマネージャーに基本パーティクル生成を委譲
-            const bubbleParticles = this.lifecycleManager.createBubblePopParticles(),
+            const bubbleParticles = this.lifecycleManager.createBubblePopParticles();
                 x, y, bubbleType, bubbleSize, particleConfig, this.quality),
             
-            this.particles.push(...bubbleParticles),
-            
+            this.particles.push(...bubbleParticles);
             // 特殊効果（バブルタイプ別）
             this.createSpecialBubbleEffect(x, y, bubbleType, bubbleSize),' }'
 
         } catch (error) { this.errorHandler.handleError(error, {)'
                 context: 'ParticleManager.createBubblePopEffect'
-            });
+            };
         }
     }
     
@@ -255,23 +252,19 @@ export class ParticleManager {
         switch(bubbleType) {
 
             case 'rainbow':','
-                specialParticles = this.lifecycleManager.createRainbowSparkles(x, y, bubbleSize),
-
+                specialParticles = this.lifecycleManager.createRainbowSparkles(x, y, bubbleSize);
                 break,
             case 'electric':','
-                specialParticles = this.lifecycleManager.createElectricSparks(x, y, bubbleSize),
-
+                specialParticles = this.lifecycleManager.createElectricSparks(x, y, bubbleSize);
                 break,
             case 'spiky':','
-                specialParticles = this.lifecycleManager.createSpikeExplosion(x, y, bubbleSize),
-
+                specialParticles = this.lifecycleManager.createSpikeExplosion(x, y, bubbleSize);
                 break,
             case 'boss':','
-                specialParticles = this.lifecycleManager.createBossExplosion(x, y, bubbleSize),
-
+                specialParticles = this.lifecycleManager.createBossExplosion(x, y, bubbleSize);
                 break,
             case 'diamond':,
-                specialParticles = this.lifecycleManager.createDiamondShards(x, y, bubbleSize),
+                specialParticles = this.lifecycleManager.createDiamondShards(x, y, bubbleSize);
                 break,
             default:,
                 // 標準バブルでも軽微な効果を追加
@@ -291,19 +284,18 @@ export class ParticleManager {
         
         try {
             // パーティクル更新とライフサイクル管理をライフサイクルマネージャーに委譲
-            this.particles = this.lifecycleManager.updateParticles(this.particles, deltaTime),
-            
+            this.particles = this.lifecycleManager.updateParticles(this.particles, deltaTime);
             // 最大パーティクル数制限チェック
             if (this.particles.length > this.maxParticles) {
                 const excessCount = this.particles.length - this.maxParticles,
                 for (let, i = 0, i < excessCount, i++) {
-                    const particle = this.particles.shift(),
+                    const particle = this.particles.shift();
                     if (particle) {
             }
                         this.returnParticleToPool(particle); }
 }'} catch (error) { this.errorHandler.handleError(error, {)'
                 context: 'ParticleManager.update'
-            });
+            };
         }
     }
     
@@ -317,7 +309,7 @@ export class ParticleManager {
 
         } catch (error) { this.errorHandler.handleError(error, {)'
                 context: 'ParticleManager.render'
-            });
+            };
         }
     }
     
@@ -335,7 +327,7 @@ export class ParticleManager {
             console.log('[ParticleManager] All, particles cleared');
         } catch (error) { this.errorHandler.handleError(error, {)'
                 context: 'ParticleManager.clear'
-            });
+            };
         }
     }
     
@@ -343,13 +335,12 @@ export class ParticleManager {
      * 現在の設定を取得
      * @returns {ParticleManagerConfiguration} 現在の設定
      */
-    public getCurrentConfiguration(): ParticleManagerConfiguration { const lifecycleStats = this.lifecycleManager.getLifecycleStats(),
-        
+    public getCurrentConfiguration(): ParticleManagerConfiguration { const lifecycleStats = this.lifecycleManager.getLifecycleStats();
         return { maxParticles: this.maxParticles,
             poolSize: this.poolSize,
             quality: this.quality,
             enabled: this.enabled,
-    currentParticleCount: this.particles.length };
+    currentParticleCount: this.particles.length },
             poolUsage: this.poolSize - (lifecycleStats, as any).currentPoolSize }
         }
     
@@ -357,25 +348,24 @@ export class ParticleManager {
      * パフォーマンス統計を取得
      * @returns {PerformanceStats} パフォーマンス統計
      */
-    public getPerformanceStats(): PerformanceStats { const lifecycleStats = this.lifecycleManager.getLifecycleStats(),
-        const renderingStats = this.renderer.getRenderingStats(),
-        
+    public getPerformanceStats(): PerformanceStats { const lifecycleStats = this.lifecycleManager.getLifecycleStats();
+        const renderingStats = this.renderer.getRenderingStats();
         return { activeParticles: this.particles.length,
             maxParticles: this.maxParticles,
             poolSize: this.poolSize,
     availableInPool: (lifecycleStats, as any).currentPoolSize,
             poolUsagePercent: (lifecycleStats, as any).memoryUtilization?.poolUsagePercent || 0, : undefined
-            particleUtilizationPercent: (this.particles.length / this.maxParticles * 100).toFixed(1),
+            particleUtilizationPercent: (this.particles.length / this.maxParticles * 100).toFixed(1);
             quality: this.quality,
             enabled: this.enabled,
-    lifecycle: lifecycleStats,;
+    lifecycle: lifecycleStats,
             rendering: renderingStats,
     
     /**
      * 設定をEffectsConfigと同期
      */'
     public syncWithEffectsConfig(): void { try {'
-            this.effectsConfig.syncFromParticleManager(this),
+            this.effectsConfig.syncFromParticleManager(this);
             console.log('[ParticleManager] EffectsConfigと同期しました'),' }'
 
         } catch (error) { this.errorHandler.handleError(error, {)'
@@ -388,10 +378,10 @@ export class ParticleManager {
      * デバッグ情報を取得
      * @returns {Object} デバッグ情報
      */'
-    public getDebugInfo(): any { const performanceStats = this.getPerformanceStats(),
+    public getDebugInfo(): any { const performanceStats = this.getPerformanceStats();
         const configuration = this.getCurrentConfiguration()','
             version: '1.0.0'),
-            timestamp: new Date().toISOString(),
+            timestamp: new Date().toISOString();
             configuration,
             performance: performanceStats,
             particleBreakdown: this.getParticleBreakdown(
@@ -408,7 +398,7 @@ export class ParticleManager {
     private getParticleBreakdown()';'
             const type = particle.type || 'unknown');
             breakdown[type] = (breakdown[type] || 0) + 1;
-        });
+        };
         
         return breakdown;
     }
@@ -418,8 +408,7 @@ export class ParticleManager {
      */
     public dispose(): void { try {
             // 全パーティクルをクリア
-            this.clear(),
-            
+            this.clear();
             // サブコンポーネントのクリーンアップ
             if (this.renderer) {
     
@@ -437,7 +426,7 @@ export class ParticleManager {
 
         } catch (error) { this.errorHandler.handleError(error, {)'
                 context: 'ParticleManager.dispose'
-            });
+            };
         }
     }
     

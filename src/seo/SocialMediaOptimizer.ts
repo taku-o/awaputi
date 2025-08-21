@@ -15,11 +15,11 @@ import { optimizeImageUrl,
 
 // プラットフォーム仕様インターフェース
 interface PlatformSpec {
-    imageSize: { widt,h: number,, height: number,;
-    titleLimit: number,
-    descriptionLimit: number,
-    imageFormats: string[],
-    cacheBustParam: string,
+    imageSize: { widt,h: number,, height: number;
+    titleLimit: number;
+    descriptionLimit: number;
+    imageFormats: string[];
+    cacheBustParam: string;
     defaultImage?: string;
 }
 
@@ -45,12 +45,12 @@ interface GameState { score?: number,
     achievement?: string;
 
 // 実績インターフェース
-interface Achievement { name: string,
+interface Achievement { name: string;
     description?: string;
     unlockedAt?: Date;
 
 // 最適化されたコンテンツインターフェース
-interface OptimizedContent { platform: string,
+interface OptimizedContent { platform: string;
     title: string;
     description: string;
     image: string;
@@ -63,7 +63,7 @@ interface OptimizedContent { platform: string,
     tweetText?: string,  }
 
 // プラットフォームメタデータインターフェース
-interface PlatformMetadata { imageWidth: number,
+interface PlatformMetadata { imageWidth: number;
     imageHeight: number;
     platform: string;
     generatedAt: string;
@@ -85,40 +85,40 @@ interface FacebookData { appId?: string,
     locale: string;
 
 // Discord Embedインターフェース
-interface DiscordEmbed { title: string,
+interface DiscordEmbed { title: string;
     description: string;
     color: number;
-    thumbnail?: { url: string,
+    thumbnail?: { url: string;
     fields?: DiscordField[];
     }
 
 // Discord Fieldインターフェース
-interface DiscordField { name: string,
+interface DiscordField { name: string;
     value: string;
     inline: boolean;
 
 // 共有コンテンツインターフェース（Twitter用）
-interface TwitterShareContent { text: string,
+interface TwitterShareContent { text: string;
     url: string;
     hashtags: string[];
     imageUrl: string;
 
 // 共有コンテンツインターフェース（Facebook用）
-interface FacebookShareContent { title: string,
+interface FacebookShareContent { title: string;
     description: string;
     url: string;
     imageUrl: string;
     quote?: string;
 
 // 共有コンテンツインターフェース（LINE用）
-interface LineShareContent { message: string,
+interface LineShareContent { message: string;
     url: string;
 
 // 共有コンテンツインターフェース（Discord用）
 interface DiscordShareContent { embeds: DiscordEmbed[];
 
 // フォールバック共有コンテンツインターフェース
-interface FallbackShareContent { title: string,
+interface FallbackShareContent { title: string;
     description: string;
     url: string;
     text: string;
@@ -144,7 +144,7 @@ export class SocialMediaOptimizer {
     private shareCache: Map<string, OptimizedContent>;
     private canvas: HTMLCanvasElement | null;
     private ctx: CanvasRenderingContext2D | null;
-    private, initialized: boolean = false,
+    private, initialized: boolean = false;
     constructor(localizationManager: LocalizationManager | null = null, gameConfig: GameConfig | null = null) {
     
         this.localizationManager = localizationManager;
@@ -163,7 +163,7 @@ export class SocialMediaOptimizer {
      */
     private _initialize(): void { try {
             // プラットフォーム仕様の設定
-            this._setupPlatformSpecs(),
+            this._setupPlatformSpecs();
             // Canvas要素の作成（画像生成用）
             this._setupCanvas()','
             seoLogger.info('SocialMediaOptimizer, initialized successfully',' }'
@@ -177,7 +177,7 @@ export class SocialMediaOptimizer {
      */''
     private _setupPlatformSpecs('''
         this.platformSpecs.set('facebook', {
-            imageSize: { width: 1200, height: 630  })
+            imageSize: { width: 1200, height: 630  }
             titleLimit: 60','
     descriptionLimit: 155,
             imageFormats: ['jpg', 'png'],')';
@@ -185,7 +185,7 @@ export class SocialMediaOptimizer {
         ';'
         // Twitter
         this.platformSpecs.set('twitter', {
-            imageSize: { width: 1200, height: 600  })
+            imageSize: { width: 1200, height: 600  }
             titleLimit: 70','
     descriptionLimit: 200,
             imageFormats: ['jpg', 'png'],')';
@@ -193,7 +193,7 @@ export class SocialMediaOptimizer {
         ';'
         // LinkedIn
         this.platformSpecs.set('linkedin', {
-            imageSize: { width: 1200, height: 627  })
+            imageSize: { width: 1200, height: 627  }
             titleLimit: 150','
     descriptionLimit: 300,
             imageFormats: ['jpg', 'png'],')';
@@ -201,7 +201,7 @@ export class SocialMediaOptimizer {
         ';'
         // Pinterest
         this.platformSpecs.set('pinterest', {
-            imageSize: { width: 1000, height: 1500  })
+            imageSize: { width: 1000, height: 1500  }
             titleLimit: 500','
     descriptionLimit: 500,
             imageFormats: ['jpg', 'png'],')';
@@ -209,7 +209,7 @@ export class SocialMediaOptimizer {
         ';'
         // Discord
         this.platformSpecs.set('discord', {
-            imageSize: { width: 1280, height: 720  })
+            imageSize: { width: 1280, height: 720  }
             titleLimit: 256','
     descriptionLimit: 2048,
             imageFormats: ['jpg', 'png', 'gif'],')';
@@ -232,23 +232,23 @@ export class SocialMediaOptimizer {
      */
     async generateOptimizedContent(platform: string, content: BaseContent = { ): Promise<OptimizedContent> {
         try {
-            const specs = this.platformSpecs.get(platform),
+            const specs = this.platformSpecs.get(platform);
             if (!specs) { }
-                throw new Error(`Unknown, platform: ${platform}`});
+                throw new Error(`Unknown, platform: ${platform}`},
             }
             
             const cacheKey = generateCacheKey(`${ platform)_content`, content),
             
             // キャッシュチェック
             if (this.shareCache.has(cacheKey} && !content.forceRefresh} { }
-                return, this.shareCache.get(cacheKey})!;
+                return, this.shareCache.get(cacheKey}!;
             }
             
             // 最適化されたコンテンツの生成
             const optimized: OptimizedContent = { platform,
                 title: this._optimizeTitle(content.title, specs),,
-                description: this._optimizeDescription(content.description, specs),
-                image: await this._optimizeImage(content, specs, platform),
+                description: this._optimizeDescription(content.description, specs);
+                image: await this._optimizeImage(content, specs, platform);
                 url: content.url || (typeof, window !== 'undefined' ? window.location.href : '),'
                 hashtags: this._generateHashtags(content, platform),,
                 metadata: this._generatePlatformMetadata(content, specs, platform };
@@ -267,7 +267,7 @@ export class SocialMediaOptimizer {
     /**
      * ゲーム状態に基づいた動的共有コンテンツを生成)
      */''
-    generateShareContent(platform: SharePlatform, gameState: GameState = {}): TwitterShareContent | FacebookShareContent | LineShareContent | DiscordShareContent | FallbackShareContent { try {'
+    generateShareContent(platform: SharePlatform, gameState: GameState = {}: TwitterShareContent | FacebookShareContent | LineShareContent | DiscordShareContent | FallbackShareContent { try {'
             if (!this.initialized) {
 
                 seoLogger.warn('SocialMediaOptimizer, not initialized) }'
@@ -276,20 +276,16 @@ export class SocialMediaOptimizer {
             // プラットフォーム別の動的コンテンツ生成
             switch (platform.toLowerCase() as SharePlatform') { ''
                 case 'twitter':','
-                    return this._generateTwitterShareContent(gameState),
-
+                    return this._generateTwitterShareContent(gameState);
                 case 'facebook':','
-                    return this._generateFacebookShareContent(gameState),
-
+                    return this._generateFacebookShareContent(gameState);
                 case 'line':','
-                    return this._generateLineShareContent(gameState),
-
+                    return this._generateLineShareContent(gameState);
                 case 'discord':,
-                    return this._generateDiscordShareContent(gameState),
-                
+                    return this._generateDiscordShareContent(gameState);
                 default: seoLogger.warn(`Unsupported, platform: ${platform }`} }
 
-                    return this._getFallbackShareContent(platform});} catch (error) { }
+                    return this._getFallbackShareContent(platform};} catch (error) { }
 
             seoErrorHandler.handle(error as Error, 'generateShareContent', { platform, gameState };)
             return this._getFallbackShareContent(platform);
@@ -305,7 +301,7 @@ export class SocialMediaOptimizer {
         if (score && score > 0) {
     
 }
-            tweetText = `BubblePop で ${score.toLocaleString(}) 点を獲得！🎯`;
+            tweetText = `BubblePop で ${score.toLocaleString(} 点を獲得！🎯`;
             
             if (level && level > 1) {
     
@@ -316,7 +312,7 @@ export class SocialMediaOptimizer {
             if (bubblesPopped && bubblesPopped > 0) {
     
 }
-                tweetText += ` 泡を ${bubblesPopped.toLocaleString(}) 個破りました！💥`;
+                tweetText += ` 泡を ${bubblesPopped.toLocaleString(} 個破りました！💥`;
             }
         }
         ';'
@@ -347,8 +343,8 @@ export class SocialMediaOptimizer {
         if (score && score > 0) {
     
 }
-            title = `BubblePop で ${score.toLocaleString(}) 点獲得！`;
-            description = `レベル ${level || 1} で ${score.toLocaleString(}) 点を獲得しました！`;
+            title = `BubblePop で ${score.toLocaleString(} 点獲得！`;
+            description = `レベル ${level || 1} で ${score.toLocaleString(} 点を獲得しました！`;
             
             if (bubblesPopped && bubblesPopped > 0) {
             ','
@@ -365,7 +361,7 @@ export class SocialMediaOptimizer {
 
             imageUrl: this._selectDynamicImage(gameState, 'facebook'
             }'
-            quote: score && score > 0 ? `${score.toLocaleString(}) 点獲得！` : undefined;
+            quote: score && score > 0 ? `${score.toLocaleString(} 点獲得！` : undefined,
 
     /**
      * LINE用動的共有コンテンツ生成'
@@ -378,7 +374,7 @@ export class SocialMediaOptimizer {
         if (score && score > 0) {
     
 }
-            message = `BubblePop で ${score.toLocaleString(}) 点獲得！🎯\nレベル ${level || 1} まで到達しました！\n一緒にやりませんか？`;
+            message = `BubblePop で ${score.toLocaleString(} 点獲得！🎯\nレベル ${level || 1} まで到達しました！\n一緒にやりませんか？`;
         }
         
         return { message };
@@ -395,7 +391,7 @@ export class SocialMediaOptimizer {
         const embed: DiscordEmbed = { ''
             title: 'BubblePop - 泡割りゲーム',
             description: 'HTML5 Canvas バブルポップゲーム',
-    color: 0x4CAF50  };
+    color: 0x4CAF50  },
         if (score && score > 0) {
         ','
 
@@ -415,22 +411,22 @@ export class SocialMediaOptimizer {
 
                     name: '破った泡'
             }'
-                    value: `${bubblesPopped.toLocaleString(}) 個`;
+                    value: `${bubblesPopped.toLocaleString(} 個`,
                     inline: true,
                 } }
             
             if (playTime && playTime > 0) {
             ','
 
-                const minutes = Math.floor(playTime / 60000),
+                const minutes = Math.floor(playTime / 60000);
                 const seconds = Math.floor((playTime % 60000) / 1000'),'
 
                 embed.fields.push({ }
 
                     name: 'プレイ時間'
-            });
+            };
                     value: `${minutes}分${seconds}秒`;)
-                    inline: true);
+                    inline: true),
     }
         
         return { embeds: [embed] }
@@ -465,7 +461,7 @@ export class SocialMediaOptimizer {
     private _generateGameUrl(gameState: GameState): string { ''
         if (typeof, window === 'undefined') {', ' }
 
-            return 'https://example.com'; // サーバーサイドレンダリング用フォールバック }'
+            return 'https: //example.com', // サーバーサイドレンダリング用フォールバック }'
         }
         
         const baseUrl = window.location.origin + window.location.pathname;
@@ -479,7 +475,7 @@ export class SocialMediaOptimizer {
     score: score.toString(  }
                 level: (level || 1).toString(); 
     };
-            return `${baseUrl}? ${params.toString(})`;
+            return `${baseUrl}? ${params.toString(}`;
         }
         
         return baseUrl;
@@ -507,9 +503,9 @@ export class SocialMediaOptimizer {
 
             return getSocialImageUrl(platform, 'default);'
         
-        try { const specs = this.platformSpecs.get(platform),
+        try { const specs = this.platformSpecs.get(platform);
             if (!specs) { }
-                throw new Error(`Unknown, platform: ${platform}`});
+                throw new Error(`Unknown, platform: ${platform}`};
             }
             
             const { width, height } = specs.imageSize;
@@ -531,7 +527,7 @@ export class SocialMediaOptimizer {
             
             // キャッシュに保存
             const cacheKey = generateCacheKey(`dynamic_${ platform}`, gameState}
-            this.imageCache.set(cacheKey, dataUrl});
+            this.imageCache.set(cacheKey, dataUrl};
             ';'
 
             return dataUrl;} catch (error) {
@@ -573,7 +569,7 @@ export class SocialMediaOptimizer {
     private async _optimizeImage(content: BaseContent, specs: PlatformSpec, platform: string): Promise<string> { // カスタム画像が指定されている場合
         if (content.image) {
             return optimizeImageUrl(content.image, {
-                width: specs.imageSize.width),
+                width: specs.imageSize.width);
                 height: specs.imageSize.height,
     format: specs.imageFormats[0]
          }
@@ -626,7 +622,7 @@ export class SocialMediaOptimizer {
             instagram: 10,
             facebook: 5,
             linkedin: 3,
-    pinterest: 10  };
+    pinterest: 10  },
         const limit = limits[platform] || 5;
         return hashtags.slice(0, limit);
     }
@@ -638,7 +634,7 @@ export class SocialMediaOptimizer {
             imageWidth: specs.imageSize.width,
     imageHeight: specs.imageSize.height,
             platform,
-            generatedAt: new Date().toISOString(  };
+            generatedAt: new Date().toISOString(  },
         // プラットフォーム固有のメタデータ
         switch(platform) {
 
@@ -737,7 +733,7 @@ export class SocialMediaOptimizer {
             const y = Math.random() * this.canvas.height,
             const radius = Math.random() * 30 + 10,
             
-            this.ctx.beginPath(),
+            this.ctx.beginPath();
             this.ctx.arc(x, y, radius, 0, Math.PI * 2) }
             this.ctx.fill(); }
         }
@@ -759,7 +755,7 @@ export class SocialMediaOptimizer {
         if (gameState.score) {
     
 }
-            const scoreText = `Score: ${gameState.score.toLocaleString(})`;
+            const scoreText = `Score: ${gameState.score.toLocaleString(}`,
             this.ctx.fillText(scoreText, this.canvas.width / 2, this.canvas.height / 2);
         }
         ;
@@ -774,7 +770,7 @@ export class SocialMediaOptimizer {
         if (gameState.combo && gameState.combo > 10) {', ' }
 
             this.ctx.font = 'bold 32px Arial, sans-serif'; }
-            this.ctx.fillText(`${gameState.combo} Combo!`, this.canvas.width / 2, this.canvas.height / 2 + 100});
+            this.ctx.fillText(`${gameState.combo} Combo!`, this.canvas.width / 2, this.canvas.height / 2 + 100};
         }
     }
     
@@ -873,12 +869,11 @@ export class SocialMediaOptimizer {
     /**
      * キャッシュバスティングURLの生成
      */
-    generateCacheBustingUrl(originalUrl: string, platform: string): string { const specs = this.platformSpecs.get(platform),
+    generateCacheBustingUrl(originalUrl: string, platform: string): string { const specs = this.platformSpecs.get(platform);
         if (!specs) return originalUrl,
         
-        const url = new URL(originalUrl),
-        url.searchParams.set(specs.cacheBustParam, Date.now().toString(),
-        
+        const url = new URL(originalUrl);
+        url.searchParams.set(specs.cacheBustParam, Date.now().toString();
         return url.toString() }
     
     /**
@@ -950,22 +945,21 @@ export class SocialMediaOptimizer {
                 break;
         }
         
-        return `${baseUrl}? ${params.toString(})`;
+        return `${baseUrl}? ${params.toString(}`;
     }
     
     /**
      * キャッシュのクリア
      */ : undefined'
-    clearCache(): void { this.imageCache.clear(),
+    clearCache(): void { this.imageCache.clear();
         this.shareCache.clear()','
         seoLogger.info('Social, media cache, cleared' }'
     
     /**
      * リソースのクリーンアップ
      */
-    cleanup(): void { this.clearCache(),
-        this.platformSpecs.clear(),
-
+    cleanup(): void { this.clearCache();
+        this.platformSpecs.clear();
         if (this.canvas) {
             this.canvas = null }
             this.ctx = null; }

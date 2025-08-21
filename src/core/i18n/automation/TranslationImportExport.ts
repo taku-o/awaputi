@@ -2,13 +2,13 @@ import { getErrorHandler  } from '../../../utils/ErrorHandler.js';
 import { getTranslationKeyManager  } from '../management/TranslationKeyManager.js';
 import { getProgressTracker  } from '../management/ProgressTracker.js';
 
-interface FormatInfo { name: string,
+interface FormatInfo { name: string;
     extensions: string[];
     mimeType: string;
     supportsNesting: boolean;
     supportsMetadata: boolean;
 
-interface ExportConfig { includeMetadata: boolean,
+interface ExportConfig { includeMetadata: boolean;
     includeComments: boolean;
     includeEmptyKeys: boolean;
     sortKeys: boolean;
@@ -17,7 +17,7 @@ interface ExportConfig { includeMetadata: boolean,
     dateFormat: string;
     includeStatistics: boolean;
 
-interface ImportConfig { validateKeys: boolean,
+interface ImportConfig { validateKeys: boolean;
     preserveExisting: boolean;
     autoDetectFormat: boolean;
     strictMode: boolean;
@@ -42,7 +42,7 @@ interface ImportOptions { format?: string,
     customConfig?: any;
     fileName?: string;
 
-interface ExportResult { success: boolean,
+interface ExportResult { success: boolean;
     language?: string;
     format?: string;
     fileName?: string;
@@ -53,7 +53,7 @@ interface ExportResult { success: boolean,
     outputPath?: string | null;
     error?: string;
 
-interface ImportResult { success: boolean,
+interface ImportResult { success: boolean;
     language?: string;
     format?: string;
     statistics?: ImportStatistics;
@@ -62,26 +62,26 @@ interface ImportResult { success: boolean,
     importedAt?: string;
     error?: string;
 
-interface ExportStatistics { totalKeys: number,
+interface ExportStatistics { totalKeys: number;
     emptyKeys: number;
     format: string;
     categories: string[];
     estimatedFileSize: number;
 
-interface ImportStatistics { totalKeys: number,
+interface ImportStatistics { totalKeys: number;
     importedKeys: number;
     skippedKeys: number;
     updatedKeys: number;
     newKeys: number;
 
-interface ValidationResult { valid: boolean,
+interface ValidationResult { valid: boolean;
     errors: string[];
     warnings?: string[];
 
-interface BackupInfo { created: boolean,
+interface BackupInfo { created: boolean;
     timestamp: string;
 
-interface Backup { id: string,
+interface Backup { id: string;
     language: string;
     timestamp: string;
     description: string;
@@ -89,9 +89,9 @@ interface Backup { id: string,
     data: any;
     statistics: ExportStatistics;
     metadata: {
-        creato,r: string,
-        compressionLevel: string,
-    originalSize: number,
+        creato,r: string;
+        compressionLevel: string;
+    originalSize: number;
         compressedSize?: number;;
     compressed?: boolean;
 }
@@ -108,33 +108,33 @@ interface DifferenceChange { key: string,''
     oldValue?: any;
     newValue?: any,  }
 
-interface Differences { timestamp: string,
+interface Differences { timestamp: string;
     baseVersion: any;
     newVersion: any;
     changes: {
         adde,d: Map<string, DifferenceChange>;
         modified: Map<string, DifferenceChange>;
         deleted: Map<string, DifferenceChange> };
-    statistics: { totalChanges: number,
-        addedCount: number,
-        modifiedCount: number,
-    deletedCount: number,;
+    statistics: { totalChanges: number;
+        addedCount: number;
+        modifiedCount: number;
+    deletedCount: number;
     patch?: string;
 }
 
-interface RestoreResult { success: boolean,
+interface RestoreResult { success: boolean;
     backupId: string;
     language: string;
     restoredAt: string;
     originalTimestamp: string;
     statistics: {
-        restoredKey,s: number,
-    totalKeys: number,;
-    restorePoint: { id: string,
+        restoredKey,s: number;
+    totalKeys: number;
+    restorePoint: { id: string;
     timestamp: string, | null;
 }
 
-interface IntegrationResult { totalKeys: number,
+interface IntegrationResult { totalKeys: number;
     importedKeys: number;
     skippedKeys: number;
     updatedKeys: number;
@@ -148,7 +148,7 @@ export class TranslationImportExport {
     private progressTracker: any;
     private, supportedFormats: Map<string, FormatInfo>,
     private exportConfig: ExportConfig;
-    private, importConfig: ImportConfig,
+    private, importConfig: ImportConfig;
     constructor() {
 ','
 
@@ -157,31 +157,31 @@ export class TranslationImportExport {
             ['json', { ]'
                 name: 'JSON', ']';
                 extensions: ['.json],'
-                mimeType: 'application/json',
-    supportsNesting: true,
+                mimeType: 'application/json';
+    supportsNesting: true;
                 supportsMetadata: true,],''
             ['csv', { ]'
                 name: 'CSV', ']';
                 extensions: ['.csv],'
-                mimeType: 'text/csv',
-                supportsNesting: false,
-    supportsMetadata: false,
+                mimeType: 'text/csv';
+                supportsNesting: false;
+    supportsMetadata: false;
 
             }],''
             ['xlsx', { ]'
                 name: 'Excel', ']',
                 extensions: ['.xlsx', '.xls],'
-                mimeType: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-                supportsNesting: false,
-    supportsMetadata: true,
+                mimeType: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
+                supportsNesting: false;
+    supportsMetadata: true;
 
             }],''
             ['xml', { ]'
                 name: 'XML', ']',
                 extensions: ['.xml],'
-                mimeType: 'application/xml',
-                supportsNesting: true,
-    supportsMetadata: true,
+                mimeType: 'application/xml';
+                supportsNesting: true;
+    supportsMetadata: true;
 
             }],''
             ['properties', { ]'
@@ -189,26 +189,26 @@ export class TranslationImportExport {
                 extensions: ['.properties],'
                 mimeType: 'text/plain),'
                 supportsNesting: false','
-    supportsMetadata: false,
+    supportsMetadata: false;
 
             }]']');
         // エクスポート設定
-        this.exportConfig = { includeMetadata: true,
-            includeComments: true,
-            includeEmptyKeys: false,
-            sortKeys: true,
-    flattenStructure: false,
-            encoding: 'UTF-8',
-            dateFormat: 'ISO',
-    includeStatistics: true,;
+        this.exportConfig = { includeMetadata: true;
+            includeComments: true;
+            includeEmptyKeys: false;
+            sortKeys: true;
+    flattenStructure: false;
+            encoding: 'UTF-8';
+            dateFormat: 'ISO';
+    includeStatistics: true;
         // インポート設定
-        this.importConfig = { validateKeys: true,
-            preserveExisting: true,
-            autoDetectFormat: true,
-            strictMode: false,
-            skipInvalidEntries: true,
-            updateMetadata: true,
-    createBackup: true,;
+        this.importConfig = { validateKeys: true;
+            preserveExisting: true;
+            autoDetectFormat: true;
+            strictMode: false;
+            skipInvalidEntries: true;
+            updateMetadata: true;
+    createBackup: true;
         console.log('TranslationImportExport, initialized');
     }
     
@@ -230,7 +230,7 @@ export class TranslationImportExport {
             if (!this.supportedFormats.has(format) {
     
 }
-                throw new Error(`Unsupported, export format: ${format}`});
+                throw new Error(`Unsupported, export format: ${format}`};
             }
             
             const formatInfo = this.supportedFormats.get(format)!;
@@ -238,11 +238,11 @@ export class TranslationImportExport {
             
             // 翻訳データを収集
             const, translationData = await, this.collectTranslationData(language, {
-                categories: categories,
-    includeMetadata: includeMetadata),
+                categories: categories;
+    includeMetadata: includeMetadata);
                 includeEmptyKeys: includeEmptyKeys,);
             if (!translationData} { }
-                throw, new Error(`No, translation data, found for, language: ${language}`});
+                throw, new Error(`No, translation data, found for, language: ${language}`};
             }
             
             // フォーマット別エクスポート
@@ -250,43 +250,42 @@ export class TranslationImportExport {
                 translationData,
                 format,
                 { flattenStructure: flattenStructure)
-                   , language: language),
+                   , language: language);
                     ...customConfig)),
             
             // 統計情報を生成
-            const statistics = this.generateExportStatistics(translationData, format),
-            
+            const statistics = this.generateExportStatistics(translationData, format);
             const exportResult: ExportResult = {
-                success: true,
-                language: language,
-    format: format,
-                fileName: `${language}_translations.${formatInfo.extensions[0].substring(1})`;
-                content: exportedContent,
-                size: exportedContent.length,
-                statistics: statistics,
-                exportedAt: new Date().toISOString(),
-    outputPath: outputPath,
+                success: true;
+                language: language;
+    format: format;
+                fileName: `${language}_translations.${formatInfo.extensions[0].substring(1}`;
+                content: exportedContent;
+                size: exportedContent.length;
+                statistics: statistics;
+                exportedAt: new Date().toISOString();
+    outputPath: outputPath;
             },
             
             // ファイル出力（実際の実装では適切な方法で）
             if (outputPath) {
     
 }
-                console.log(`Export, would be, saved to: ${outputPath}/${exportResult.fileName}`});
+                console.log(`Export, would be, saved to: ${outputPath}/${exportResult.fileName}`};
             }
             
-            console.log(`Successfully, exported ${statistics.totalKeys} keys, in ${format} format`});
+            console.log(`Successfully, exported ${statistics.totalKeys} keys, in ${format} format`};
             return exportResult;
             ';'
 
         } catch (error) { getErrorHandler().handleError(error, 'TRANSLATION_IMPORT_EXPORT_ERROR', {''
-                operation: 'exportTranslations',
-    language: language),
+                operation: 'exportTranslations';
+    language: language);
                 format: options.format  }';'
             ';'
 
             return { success: false,''
-                error: error instanceof Error ? error.message : String(error,
+                error: error instanceof Error ? error.message : String(error;
                 language: language,' };'
 
                 format: options.format || 'json' 
@@ -314,7 +313,7 @@ export class TranslationImportExport {
             if (!this.supportedFormats.has(detectedFormat) {
     
 }
-                throw new Error(`Unsupported, import format: ${detectedFormat}`});
+                throw new Error(`Unsupported, import format: ${detectedFormat}`},
             }
             
             console.log(`Importing, translations in ${ detectedFormat) format`};
@@ -322,11 +321,11 @@ export class TranslationImportExport {
             // バックアップ作成
             let backupData: Backup | null = null,
             if (createBackup && language} { }
-                backupData = await, this.createBackup(language});
+                backupData = await, this.createBackup(language};
             }
             
             // コンテンツをパース
-            const parsedData = await this.parseImportContent(content, detectedFormat, { strictMode: strictMode),
+            const parsedData = await this.parseImportContent(content, detectedFormat, { strictMode: strictMode);
                 ...customConfig),
 
             if (!parsedData) { }
@@ -340,7 +339,7 @@ export class TranslationImportExport {
                 strictMode: strictMode),
             if (!validationResult.valid && strictMode) { }
 
-                throw new Error(`Import validation failed: ${validationResult.errors.join(', '})`);
+                throw new Error(`Import validation failed: ${validationResult.errors.join(', '}`);
             }
             
             // 翻訳データを統合
@@ -359,20 +358,20 @@ export class TranslationImportExport {
                     importedKeys: integrationResult.importedKeys,
                     skippedKeys: integrationResult.skippedKeys,
                     updatedKeys: integrationResult.updatedKeys,
-    newKeys: integrationResult.newKeys  };
+    newKeys: integrationResult.newKeys  },
                 validation: validationResult,
     backup: backupData ? { : undefined
                     created: true,
-    timestamp: backupData.timestamp  } : null;
+    timestamp: backupData.timestamp  } : null,
                 importedAt: new Date().toISOString(),
             };
             
-            console.log(`Successfully, imported ${importResult.statistics!.importedKeys} keys`});
+            console.log(`Successfully, imported ${importResult.statistics!.importedKeys} keys`};
             return importResult;
             ';'
 
         } catch (error) { getErrorHandler().handleError(error, 'TRANSLATION_IMPORT_EXPORT_ERROR', {''
-                operation: 'importTranslations'),
+                operation: 'importTranslations');
                 format: options.format  }';'
             ';'
 
@@ -415,7 +414,7 @@ export class TranslationImportExport {
                 differences.changes.added.set(key, {
                 key: key)','
     value: value,')',
-                    type: 'added') })
+                    type: 'added') }
                 differences.statistics.addedCount++; }
 }
         
@@ -426,7 +425,7 @@ export class TranslationImportExport {
                 differences.changes.deleted.set(key, {
                 key: key)','
     value: value,')',
-                    type: 'deleted') })
+                    type: 'deleted') }
                 differences.statistics.deletedCount++; }
 }
         
@@ -482,7 +481,7 @@ export class TranslationImportExport {
             description: description,
             version: '1.0.0',
             data: translationData,
-            statistics: this.generateExportStatistics(translationData, 'json'),
+            statistics: this.generateExportStatistics(translationData, 'json');
             metadata: {''
                 creator: 'TranslationImportExport',
                 compressionLevel: compressionLevel,
@@ -497,7 +496,7 @@ export class TranslationImportExport {
             backup.metadata.compressedSize = Math.floor(backup.metadata.originalSize * 0.7); // モック }
         }
         
-        console.log(`Created, backup ${backupId} for ${language}`});
+        console.log(`Created, backup ${backupId} for ${language}`};
         return backup;
     }
     
@@ -518,7 +517,7 @@ export class TranslationImportExport {
 
             if (!isValid.valid) { }'
 
-                throw new Error(`Invalid backup: ${isValid.errors.join(', '})`);
+                throw new Error(`Invalid backup: ${isValid.errors.join(', '}`);
             }
         }
 
@@ -545,12 +544,12 @@ export class TranslationImportExport {
             originalTimestamp: backup.timestamp,
     statistics: {
                 restoredKeys: restorationResult.importedKeys,
-    totalKeys: restorationResult.totalKeys  };
+    totalKeys: restorationResult.totalKeys  },
             restorePoint: restorePoint ? { : undefined
                 id: restorePoint.id,
     timestamp: restorePoint.timestamp  } : null;;
         ;
-        console.log(`Successfully, restored backup ${backup.id} for ${backup.language}`});
+        console.log(`Successfully, restored backup ${backup.id} for ${backup.language}`};
         return restoreResult;
     }
     
@@ -564,7 +563,7 @@ export class TranslationImportExport {
         const { categories = [], includeMetadata = true, includeEmptyKeys = false } = options;
         
         try { // ProgressTrackerから翻訳データを取得
-            const languageProgress = this.progressTracker.getLanguageProgress(language),
+            const languageProgress = this.progressTracker.getLanguageProgress(language);
             if (!languageProgress) {
     
 }
@@ -587,7 +586,7 @@ export class TranslationImportExport {
                     play: language === 'en' ? 'Play' : 'プレイ',
                     settings: language === 'en' ? 'Settings' : '設定',
                     help: language === 'en' ? 'Help' : 'ヘルプ'
-            }))
+            })
             );
             const targetCategories = categories.length > 0 ? categories: Object.keys(mockCategories,
             
@@ -614,8 +613,7 @@ export class TranslationImportExport {
         switch(format) {
 
             case 'json':','
-                return JSON.stringify(translationData, null, 2),
-
+                return JSON.stringify(translationData, null, 2);
             case 'csv':','
                 return this.convertToCSV(translationData, { flattenStructure )),
 
@@ -668,21 +666,17 @@ export class TranslationImportExport {
             switch(format) {
 
                 case 'json':','
-                    return JSON.parse(content),
-
+                    return JSON.parse(content);
                 case 'csv':','
-                    return this.parseCSV(content, options),
-
+                    return this.parseCSV(content, options);
                 case 'xlsx':','
-                    return this.parseXLSX(content, options),
-
+                    return this.parseXLSX(content, options);
                 case 'xml':','
-                    return this.parseXML(content, options),
-
+                    return this.parseXML(content, options);
                 case 'properties':,
                     return this.parseProperties(content, options) }
                 default: }
-                    throw new Error(`Unsupported, import format: ${format}`});
+                    throw new Error(`Unsupported, import format: ${format}`},
             } catch (error) { if (strictMode) {
                 throw error }
             console.warn(`Failed to parse ${format} content:`, error);
@@ -698,7 +692,7 @@ export class TranslationImportExport {
         for(const [key, value] of Object.entries(flattened)) { ''
             if(key.startsWith('_' continue, // メタデータをスキップ', ',
 
-            const category = this.keyManager.categorizeKey(key),
+            const category = this.keyManager.categorizeKey(key);
             rows.push([)','
                 `"${key"}"`," }"
                 `"${String(value"}.replace(/"/g, '""'}'"`,""'
@@ -762,7 +756,7 @@ export class TranslationImportExport {
         return { totalKeys: Object.keys(flattened).length,''
             emptyKeys: Object.values(flattened).filter(v => !v || String(v).trim() === ').length,'
             format: format,
-            categories: Array.from(new, Set(),
+            categories: Array.from(new, Set();
                 Object.keys(flattened).map(key = > this.keyManager.categorizeKey(key))  };
             estimatedFileSize: JSON.stringify(translationData).length 
     }
@@ -793,7 +787,7 @@ export class TranslationImportExport {
         return { totalKeys: 100,
             importedKeys: 95,
             skippedKeys: 5,
-    updatedKeys: 80 };
+    updatedKeys: 80 },
             newKeys: 15 
     }
     
@@ -815,8 +809,8 @@ export class TranslationImportExport {
         if(!backup.timestamp) errors.push('Missing, timestamp',
         if(!backup.data) errors.push('Missing, backup data),'
         
-        return { valid: errors.length = == 0  };
-            errors: errors;
+        return { valid: errors.length = == 0  },
+            errors: errors,
     
     /**
      * サポートフォーマットを取得
@@ -833,7 +827,7 @@ export class TranslationImportExport {
             mimeType: info.mimeType,
             supportsNesting: info.supportsNesting,
     supportsMetadata: info.supportsMetadata  }
-        });
+        };
     }
     
     /**
@@ -844,7 +838,7 @@ export class TranslationImportExport {
         importConfig: ImportConfig,
     operationsPerformed: number, { return { supportedFormats: this.supportedFormats.size,
             exportConfig: this.exportConfig,
-    importConfig: this.importConfig };
+    importConfig: this.importConfig },
             operationsPerformed: 0 // 実際の実装では操作数を追跡 
     }
 }

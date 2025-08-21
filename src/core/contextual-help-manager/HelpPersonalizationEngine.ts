@@ -15,13 +15,13 @@
  */
 
 // 型定義
-export interface PersonalizationConfig { enabled: boolean,
+export interface PersonalizationConfig { enabled: boolean;
     trackInteractions: boolean;
     personalizeContent: boolean;
     rememberPreferences: boolean;
     adaptToProgress: boolean;
 
-export interface UserProfile { skill_level: SkillLevel,
+export interface UserProfile { skill_level: SkillLevel;
     preferred_help_type: HelpType;
     learning_style: LearningStyle;
     accessibility_needs: AccessibilityNeed[];
@@ -30,7 +30,7 @@ export interface UserProfile { skill_level: SkillLevel,
     created_at: number;
     last_updated: number;
 
-export interface UserPreferences { auto_show: boolean,
+export interface UserPreferences { auto_show: boolean;
     animation_speed: AnimationSpeed;
     content_detail_level: DetailLevel;
     voice_output: boolean;
@@ -40,7 +40,7 @@ export interface UserPreferences { auto_show: boolean,
     keyboard_navigation: boolean;
     screen_reader_support: boolean;
 
-export interface ProgressData { topics_viewed: Set<string>,
+export interface ProgressData { topics_viewed: Set<string>;
     concepts_mastered: Set<string>;
     help_requests: number;
     successful_interactions: number;
@@ -48,17 +48,17 @@ export interface ProgressData { topics_viewed: Set<string>,
     preferred_topics: Map<string, number>;
     difficulty_progression: DifficultyProgression[];
 
-export interface DifficultyProgression { timestamp: number,
+export interface DifficultyProgression { timestamp: number;
     level: SkillLevel;
     confidence: number;
     evidence: ProgressionEvidence[];
 
-export interface ProgressionEvidence { type: EvidenceType,
+export interface ProgressionEvidence { type: EvidenceType;
     value: number;
     weight: number;
     description: string;
 
-export interface InteractionRecord { timestamp: number,
+export interface InteractionRecord { timestamp: number;
     type: InteractionType;
     topic?: string;
     successful: boolean;
@@ -135,16 +135,16 @@ export interface PersonalizedContent { // 基本調整
     quiet_mode?: boolean;
     reduced_distractions?: boolean;
 
-export interface ContentRecommendation { topic: string,
+export interface ContentRecommendation { topic: string;
     score: number;
     reason: RecommendationReason[];
     priority: RecommendationPriority;
 
-export interface RecommendationReason { type: ReasonType,
+export interface RecommendationReason { type: ReasonType;
     weight: number;
     description: string;
 
-export interface PersonalizationStats { userProfile: UserProfile,
+export interface PersonalizationStats { userProfile: UserProfile;
     interactionCount: number;
     successRate: number;
     topicsViewed: number;
@@ -153,19 +153,19 @@ export interface PersonalizationStats { userProfile: UserProfile,
     learningEfficiency: number;
     adaptationScore: number;
 
-export interface SkillAnalysis { currentLevel: SkillLevel,
+export interface SkillAnalysis { currentLevel: SkillLevel;
     confidenceScore: number;
     strengthAreas: string[];
     improvementAreas: string[];
     nextStepRecommendations: string[];
 
-export interface LearningPatternAnalysis { primaryStyle: LearningStyle,
+export interface LearningPatternAnalysis { primaryStyle: LearningStyle;
     secondaryStyle?: LearningStyle;
     confidence: number;
     evidenceCount: number;
     adaptationSuggestions: string[];
 
-export interface BehavioralInsights { engagementLevel: EngagementLevel,
+export interface BehavioralInsights { engagementLevel: EngagementLevel;
     preferredContentTypes: ContentType[];
     optimaltimeOfDay: number[];
     sessionDurationPreference: number;
@@ -192,33 +192,33 @@ export type ContentType = 'tutorial' | 'reference' | 'troubleshooting' | 'tips' 
 export type RecoveryPattern = 'self_sufficient' | 'help_seeking' | 'trial_and_error' | 'guidance_dependent';
 
 // 定数
-export const DEFAULT_PERSONALIZATION_CONFIG: PersonalizationConfig = { enabled: true,
-    trackInteractions: true,
-    personalizeContent: true,
-    rememberPreferences: true,
+export const DEFAULT_PERSONALIZATION_CONFIG: PersonalizationConfig = { enabled: true;
+    trackInteractions: true;
+    personalizeContent: true;
+    rememberPreferences: true;
     adaptToProgress: true, as const;
 ';'
 
-export const DEFAULT_USER_PROFILE: UserProfile = {,
-    skill_level: 'beginner',
-    preferred_help_type: 'detailed',
-    learning_style: 'visual',
-    accessibility_needs: [],
-    play_frequency: 'occasional',
-    help_usage_pattern: 'reactive',
+export const DEFAULT_USER_PROFILE: UserProfile = {;
+    skill_level: 'beginner';
+    preferred_help_type: 'detailed';
+    learning_style: 'visual';
+    accessibility_needs: [];
+    play_frequency: 'occasional';
+    help_usage_pattern: 'reactive';
     created_at: Date.now(
-    last_updated: Date.now('',
-    animation_speed: 'normal',
-    content_detail_level: 'medium',
-    voice_output: false,
-    high_contrast: false,
-    large_text: false,
-    reduced_motion: false,
-    keyboard_navigation: false,
+    last_updated: Date.now('';
+    animation_speed: 'normal';
+    content_detail_level: 'medium';
+    voice_output: false;
+    high_contrast: false;
+    large_text: false;
+    reduced_motion: false;
+    keyboard_navigation: false;
     screen_reader_support: false, as const;
 export const SKILL_THRESHOLDS = {
-    beginner_to_intermediate: { successRate: 0.6, masteredConcepts: 5  },
-    intermediate_to_advanced: { successRate: 0.8, masteredConcepts: 10  },
+    beginner_to_intermediate: { successRate: 0.6, masteredConcepts: 5  };
+    intermediate_to_advanced: { successRate: 0.8, masteredConcepts: 10  };
     advanced_to_expert: { successRate: 0.9, masteredConcepts: 20  } as const;
 
 export const PLAY_FREQUENCY_THRESHOLDS = {
@@ -234,24 +234,24 @@ export const LEARNING_STYLE_INDICATORS = {;
     kinesthetic: ['interactive_elements', 'hands_on_practice', 'gesture_input'],
     reading: ['detailed_text', 'structured_content', 'reference_materials] } as const;'
 
-export const RECOMMENDATION_WEIGHTS = { skill_match: 0.3,
-    learning_style: 0.2,
-    error_pattern: 0.25,
-    progress_gap: 0.15,
+export const RECOMMENDATION_WEIGHTS = { skill_match: 0.3;
+    learning_style: 0.2;
+    error_pattern: 0.25;
+    progress_gap: 0.15;
     preference_alignment: 0.1  } as const;
 ';'
 
 export const STORAGE_KEYS = {;
-    userProfile: 'bubblePop_userProfile',
-    preferences: 'bubblePop_helpPreferences',
-    progress: 'bubblePop_helpProgress',
+    userProfile: 'bubblePop_userProfile';
+    preferences: 'bubblePop_helpPreferences';
+    progress: 'bubblePop_helpProgress';
     history: 'bubblePop_helpHistory'
             } as const;
 // ユーティリティ関数
 export function calculateSkillProgression(;
-    successRate: number),
-    masteredConcepts: number,
-    currentLevel: SkillLevel')',
+    successRate: number);
+    masteredConcepts: number;
+    currentLevel: SkillLevel')';
 '): SkillLevel { ''
     if (currentLevel === 'beginner''
         const threshold = SKILL_THRESHOLDS.beginner_to_intermediate,
@@ -272,19 +272,19 @@ export function calculateSkillProgression(;
 }
 
 export function inferLearningStyleFromInteractions(interactions: InteractionRecord[]): LearningStyle { const styleCounts = {
-        visual: 0,
-        auditory: 0,
-        kinesthetic: 0,
+        visual: 0;
+        auditory: 0;
+        kinesthetic: 0;
     reading: 0 };
-    interactions.forEach(interaction => {  ),
+    interactions.forEach(interaction => {  );
         if (interaction.used_visuals) styleCounts.visual++,
         if (interaction.used_audio) styleCounts.auditory++,
         if (interaction.used_interaction) styleCounts.kinesthetic++ }
         if (interaction.duration && interaction.duration > 5000) styleCounts.reading++; }
-    });
+    };
     
     const maxStyle = Object.keys(styleCounts).reduce((a, b) => ;
-        styleCounts[a as keyof typeof styleCounts] > styleCounts[b as keyof typeof styleCounts] ? a: b,
+        styleCounts[a as keyof typeof styleCounts] > styleCounts[b as keyof typeof styleCounts] ? a: b;
     ) as LearningStyle;
     
     return maxStyle;
@@ -308,22 +308,22 @@ export function calculatePersonalizationScore(;
         if(need === 'screen_reader' && content.alt_text' score += 10,' }
 
         if (need === 'visual_impairment' && content.high_contrast) score += 10; }
-    });
+    };
     
     return Math.min(score, 100);
 }
 
 export function serializeProgressData(data: ProgressData): string { return JSON.stringify({)
         ...data),
-        topics_viewed: Array.from(data.topics_viewed),
+        topics_viewed: Array.from(data.topics_viewed);
         concepts_mastered: Array.from(data.concepts_mastered,
-    preferred_topics: Array.from(data.preferred_topics.entries( });
+    preferred_topics: Array.from(data.preferred_topics.entries( };
 }
 
-export function deserializeProgressData(serialized: string): ProgressData { const parsed = JSON.parse(serialized),
+export function deserializeProgressData(serialized: string): ProgressData { const parsed = JSON.parse(serialized);
     return { ...parsed,
         topics_viewed: new Set(parsed.topics_viewed || [],
-    concepts_mastered: new Set(parsed.concepts_mastered || []) };
+    concepts_mastered: new Set(parsed.concepts_mastered || []) },
         preferred_topics: new Map(parsed.preferred_topics || []); 
     }
 
@@ -333,7 +333,7 @@ export class HelpPersonalizationEngine {
     private interactionHistory: InteractionRecord[];
     private preferences: UserPreferences;
     private progressData: ProgressData;
-    private, analyticsTimer: number | null = null,
+    private, analyticsTimer: number | null = null;
     constructor() { }
         this.learningConfig = { ...DEFAULT_PERSONALIZATION_CONFIG;
         this.userProfile = this.loadUserProfile();
@@ -347,14 +347,14 @@ export class HelpPersonalizationEngine {
     /**
      * パーソナライゼーションを初期化
      */
-    private initializePersonalization(): void { this.updateUserProfile(),
+    private initializePersonalization(): void { this.updateUserProfile();
         this.startLearning() }
 
     /**
      * ユーザープロファイルを読み込み
      */
     private loadUserProfile(): UserProfile { try {
-            const stored = localStorage.getItem(STORAGE_KEYS.userProfile),
+            const stored = localStorage.getItem(STORAGE_KEYS.userProfile);
             if (stored) {
     
 }
@@ -368,7 +368,7 @@ export class HelpPersonalizationEngine {
      * ユーザー設定を読み込み
      */
     private loadPreferences(): UserPreferences { try {
-            const stored = localStorage.getItem(STORAGE_KEYS.preferences),
+            const stored = localStorage.getItem(STORAGE_KEYS.preferences);
             if (stored) {
     
 }
@@ -382,7 +382,7 @@ export class HelpPersonalizationEngine {
      * 進捗データを読み込み
      */
     private loadProgressData(): ProgressData { try {
-            const stored = localStorage.getItem(STORAGE_KEYS.progress),
+            const stored = localStorage.getItem(STORAGE_KEYS.progress);
             if (stored) {
     
 }
@@ -392,10 +392,10 @@ export class HelpPersonalizationEngine {
             } catch (error) { console.warn('[HelpPersonalizationEngine] Failed to load progress data:', error }
         
         return { topics_viewed: new Set<string>(
-            concepts_mastered: new Set<string>(),
-            help_requests: 0,
-            successful_interactions: 0,
-            error_recovery_success: 0,
+            concepts_mastered: new Set<string>();
+            help_requests: 0;
+            successful_interactions: 0;
+            error_recovery_success: 0;
             preferred_topics: new Map<string, number>() };
             difficulty_progression: [] 
     }
@@ -404,7 +404,7 @@ export class HelpPersonalizationEngine {
      * インタラクション履歴を読み込み
      */
     private loadInteractionHistory(): InteractionRecord[] { try {
-            const stored = localStorage.getItem(STORAGE_KEYS.history),
+            const stored = localStorage.getItem(STORAGE_KEYS.history);
             if (stored) {
     
 }
@@ -419,40 +419,36 @@ export class HelpPersonalizationEngine {
     /**
      * ユーザープロファイルを更新
      */
-    private updateUserProfile(): void { const now = Date.now(),
+    private updateUserProfile(): void { const now = Date.now();
         const daysSinceCreation = (now - this.userProfile.created_at) / (1000 * 60 * 60 * 24),
         
         // スキルレベルの自動調整
-        this.updateSkillLevel(),
-        
+        this.updateSkillLevel();
         // プレイ頻度の計算
-        this.updatePlayFrequency(daysSinceCreation),
-        
+        this.updatePlayFrequency(daysSinceCreation);
         // ヘルプ使用パターンの分析
-        this.updateHelpUsagePattern(),
-        
+        this.updateHelpUsagePattern();
         this.userProfile.last_updated = now,
         this.saveUserProfile() }
 
     /**
      * スキルレベルを更新
      */
-    private updateSkillLevel(): void { const successRate = this.calculateSuccessRate(),
+    private updateSkillLevel(): void { const successRate = this.calculateSuccessRate();
         const masteredConcepts = this.progressData.concepts_mastered.size,
         
         const newLevel = calculateSkillProgression(
             successRate,
             masteredConcepts,
-            this.userProfile.skill_level),
-        
+            this.userProfile.skill_level);
         if (newLevel !== this.userProfile.skill_level) {
         
-            this.progressData.difficulty_progression.push({),
-                timestamp: Date.now(),
-                level: newLevel,
+            this.progressData.difficulty_progression.push({);
+                timestamp: Date.now();
+                level: newLevel;
     confidence: this.calculateConfidenceScore(successRate, masteredConcepts) }
                 evidence: this.generateProgressionEvidence(successRate, masteredConcepts); }
-            });
+            };
             
             this.userProfile.skill_level = newLevel;
         }
@@ -462,7 +458,7 @@ export class HelpPersonalizationEngine {
      * 信頼度スコアを計算
      */
     private calculateConfidenceScore(successRate: number, masteredConcepts: number): number { const rateScore = successRate * 60,
-        const conceptScore = Math.min(masteredConcepts * 4, 40),
+        const conceptScore = Math.min(masteredConcepts * 4, 40);
         return Math.min(rateScore + conceptScore, 100) / 100 }
 
     /**
@@ -476,7 +472,7 @@ export class HelpPersonalizationEngine {
     value: successRate,
                 weight: 0.4,' }'
 
-                description: `成功率: ${(successRate * 100}.toFixed(1'}'%`};
+                description: `成功率: ${(successRate * 100}.toFixed(1'}'%`},
             { ''
                 type: 'feature_adoption',
                 value: masteredConcepts,
@@ -493,7 +489,7 @@ export class HelpPersonalizationEngine {
                 type: 'error_frequency',
                 value: this.calculateErrorRecoveryRate(
     weight: 0.1 }
-                description: `エラー回復率: ${(this.calculateErrorRecoveryRate(} * 100}.toFixed(1})%`]
+                description: `エラー回復率: ${(this.calculateErrorRecoveryRate(} * 100}.toFixed(1}%`]
             }]
         ];
     }
@@ -508,8 +504,7 @@ export class HelpPersonalizationEngine {
      * プレイ頻度を更新
      */
     private updatePlayFrequency(daysSinceCreation: number): void { const helpRequests = this.progressData.help_requests,
-        const requestsPerDay = helpRequests / Math.max(daysSinceCreation, 1),
-
+        const requestsPerDay = helpRequests / Math.max(daysSinceCreation, 1);
         if (requestsPerDay >= PLAY_FREQUENCY_THRESHOLDS.daily.requestsPerDay) {', ' }
 
             this.userProfile.play_frequency = 'daily'; }
@@ -529,7 +524,7 @@ export class HelpPersonalizationEngine {
      * ヘルプ使用パターンを更新
      */'
     private updateHelpUsagePattern(): void { ''
-        const recentInteractions = this.interactionHistory.slice(-20),
+        const recentInteractions = this.interactionHistory.slice(-20);
         const proactiveRequests = recentInteractions.filter(i => i.type === 'proactive).length,'
         const total = recentInteractions.length,
         
@@ -561,17 +556,13 @@ export class HelpPersonalizationEngine {
     getPersonalizedContent(baseContent: any, context: InteractionContext = { ): PersonalizedContent {  }
         let personalizedContent: PersonalizedContent = {}
         // スキルレベルに応じた調整
-        personalizedContent = { ...personalizedContent, ...this.adjustForSkillLevel(baseContent),
-        
+        personalizedContent = { ...personalizedContent, ...this.adjustForSkillLevel(baseContent);
         // 学習スタイルに応じた調整
-        personalizedContent = { ...personalizedContent, ...this.adjustForLearningStyle(baseContent),
-        
+        personalizedContent = { ...personalizedContent, ...this.adjustForLearningStyle(baseContent);
         // アクセシビリティニーズに応じた調整
-        personalizedContent = { ...personalizedContent, ...this.adjustForAccessibility(baseContent),
-        
+        personalizedContent = { ...personalizedContent, ...this.adjustForAccessibility(baseContent);
         // 設定に応じた調整
-        personalizedContent = { ...personalizedContent, ...this.adjustForPreferences(baseContent),
-        
+        personalizedContent = { ...personalizedContent, ...this.adjustForPreferences(baseContent);
         // コンテキストに応じた調整
         personalizedContent = { ...personalizedContent, ...this.adjustForContext(baseContent, context };
         
@@ -768,13 +759,13 @@ export class HelpPersonalizationEngine {
             topic: interaction.topic,
             successful: interaction.successful || false,
     duration: interaction.duration }
-            context: interaction.context || {};
+            context: interaction.context || {},
             user_profile: { ...this.userProfile,
             concept_mastered: interaction.concept_mastered,
             error_resolved: interaction.error_resolved,
             used_visuals: interaction.used_visuals,
             used_audio: interaction.used_audio,
-    used_interaction: interaction.used_interaction) });
+    used_interaction: interaction.used_interaction) },
         );
         this.interactionHistory.push(record);
         
@@ -798,8 +789,7 @@ export class HelpPersonalizationEngine {
         
         if (interaction.topic) {
         
-            this.progressData.topics_viewed.add(interaction.topic),
-            
+            this.progressData.topics_viewed.add(interaction.topic);
             // トピック優先度を更新
             const currentPreference = this.progressData.preferred_topics.get(interaction.topic) || 0 }
             this.progressData.preferred_topics.set(interaction.topic, currentPreference + 1); }
@@ -818,25 +808,21 @@ export class HelpPersonalizationEngine {
     getRecommendedContent(): ContentRecommendation[] { const recommendations: ContentRecommendation[] = [],
         
         // スキルレベルに基づく推奨
-        const skillBasedContent = this.getSkillBasedRecommendations(),
-        recommendations.push(...skillBasedContent),
-        
+        const skillBasedContent = this.getSkillBasedRecommendations();
+        recommendations.push(...skillBasedContent);
         // 学習パターンに基づく推奨
-        const patternBasedContent = this.getPatternBasedRecommendations(),
-        recommendations.push(...patternBasedContent),
-        
+        const patternBasedContent = this.getPatternBasedRecommendations();
+        recommendations.push(...patternBasedContent);
         // 進捗に基づく推奨
-        const progressBasedContent = this.getProgressBasedRecommendations(),
-        recommendations.push(...progressBasedContent),
-        
+        const progressBasedContent = this.getProgressBasedRecommendations();
+        recommendations.push(...progressBasedContent);
         return this.prioritizeRecommendations(recommendations) }
 
     /**
      * スキルベースの推奨を取得
      */
     private getSkillBasedRecommendations(): ContentRecommendation[] { const recommendations: ContentRecommendation[] = [],
-        const skillTopics = this.getTopicsForSkillLevel(this.userProfile.skill_level),
-        
+        const skillTopics = this.getTopicsForSkillLevel(this.userProfile.skill_level);
         skillTopics.forEach(topic => { )
             recommendations.push({)
                 topic,''
@@ -847,8 +833,8 @@ export class HelpPersonalizationEngine {
                     weight: RECOMMENDATION_WEIGHTS.skill_match }]
                     description: `${this.userProfile.skill_level}レベルに適した内容`]'
                 }],''
-                priority: 'medium';
-            }) }';'
+                priority: 'medium',
+            } }';'
         
         return recommendations;
     }
@@ -882,7 +868,7 @@ export class HelpPersonalizationEngine {
                     weight: RECOMMENDATION_WEIGHTS.error_pattern }]
                     description: `最近のエラー頻度: ${recentErrors}回`]'
                 }],')'
-                priority: 'high');
+                priority: 'high'),
         }
         ';'
 
@@ -896,7 +882,7 @@ export class HelpPersonalizationEngine {
     weight: RECOMMENDATION_WEIGHTS.progress_gap }]'
                     description: '基本的なトピックの学習が不足' }]'
                 }],')'
-                priority: 'medium');
+                priority: 'medium'),
         }
         
         return recommendations;
@@ -926,7 +912,7 @@ export class HelpPersonalizationEngine {
     weight: RECOMMENDATION_WEIGHTS.progress_gap,' }]'
                     description: '基礎概念の強化が必要' }]'
                 }],')'
-                priority: 'medium');
+                priority: 'medium'),
         }
         
         return recommendations;
@@ -970,7 +956,7 @@ export class HelpPersonalizationEngine {
     /**
      * スキル関連性スコアを取得
      */
-    private getSkillRelevanceScore(topic: string): number { const skillTopics = this.getTopicsForSkillLevel(this.userProfile.skill_level),
+    private getSkillRelevanceScore(topic: string): number { const skillTopics = this.getTopicsForSkillLevel(this.userProfile.skill_level);
         return skillTopics.includes(topic) ? 1.0 : 0.5 }
 
     /**
@@ -1013,21 +999,18 @@ export class HelpPersonalizationEngine {
     /**
      * ユーザー行動を分析
      */
-    private analyzeUserBehavior(): void { const recentInteractions = this.interactionHistory.slice(-50),
-        
+    private analyzeUserBehavior(): void { const recentInteractions = this.interactionHistory.slice(-50);
         if (recentInteractions.length === 0) return,
         
         // 学習スタイルの推測
-        this.inferLearningStyle(recentInteractions),
-        
+        this.inferLearningStyle(recentInteractions);
         // 設定の自動調整
         this.autoAdjustPreferences(recentInteractions) }
 
     /**
      * 学習スタイルを推測
      */
-    private inferLearningStyle(interactions: InteractionRecord[]): void { const newStyle = inferLearningStyleFromInteractions(interactions),
-        
+    private inferLearningStyle(interactions: InteractionRecord[]): void { const newStyle = inferLearningStyleFromInteractions(interactions);
         if (newStyle !== this.userProfile.learning_style) {
         
             this.userProfile.learning_style = newStyle }
@@ -1071,8 +1054,7 @@ export class HelpPersonalizationEngine {
     }
 
     private saveInteractionHistory(): void { try {
-            const recentHistory = this.interactionHistory.slice(-100),
-
+            const recentHistory = this.interactionHistory.slice(-100);
             localStorage.setItem(STORAGE_KEYS.history, JSON.stringify(recentHistory),' }'
 
         } catch (error) { console.error('[HelpPersonalizationEngine] Failed to save interaction history:', error }
@@ -1081,8 +1063,7 @@ export class HelpPersonalizationEngine {
     /**
      * 設定を更新
      */
-    updatePersonalizationConfig(newConfig: Partial<PersonalizationConfig>): void { Object.assign(this.learningConfig, newConfig),
-        
+    updatePersonalizationConfig(newConfig: Partial<PersonalizationConfig>): void { Object.assign(this.learningConfig, newConfig);
         if (!this.learningConfig.enabled && this.analyticsTimer) {
         
             clearInterval(this.analyticsTimer) }
@@ -1093,7 +1074,7 @@ export class HelpPersonalizationEngine {
     /**
      * ユーザー設定を更新
      */
-    updatePreferences(newPreferences: Partial<UserPreferences>): void { Object.assign(this.preferences, newPreferences),
+    updatePreferences(newPreferences: Partial<UserPreferences>): void { Object.assign(this.preferences, newPreferences);
         this.savePreferences() }
 
     /**
@@ -1129,11 +1110,11 @@ export class HelpPersonalizationEngine {
      */
     getSkillAnalysis(): SkillAnalysis { return { currentLevel: this.userProfile.skill_level,
             confidenceScore: this.calculateConfidenceScore(),
-                this.calculateSuccessRate(),
+                this.calculateSuccessRate();
                 this.progressData.concepts_mastered.size),
             strengthAreas: this.identifyStrengthAreas(
-    improvementAreas: this.identifyImprovementAreas() };
-            nextStepRecommendations: this.generateNextStepRecommendations(); 
+    improvementAreas: this.identifyImprovementAreas() },
+            nextStepRecommendations: this.generateNextStepRecommendations(),
     }
 
     /**
@@ -1189,7 +1170,7 @@ export class HelpPersonalizationEngine {
             recommendations.push('ヘルプ機能の積極的活用');' }'
 
         } else if (this.userProfile.skill_level === 'intermediate') { ''
-            recommendations.push('応用テクニックの学習'),
+            recommendations.push('応用テクニックの学習');
             recommendations.push('効率性の向上に focus') }
 
         } else {
@@ -1205,11 +1186,10 @@ export class HelpPersonalizationEngine {
      * データをリセット
      */
     resetPersonalizationData(): void { try {
-            localStorage.removeItem(STORAGE_KEYS.userProfile),
-            localStorage.removeItem(STORAGE_KEYS.preferences),
-            localStorage.removeItem(STORAGE_KEYS.progress),
-            localStorage.removeItem(STORAGE_KEYS.history),
-            
+            localStorage.removeItem(STORAGE_KEYS.userProfile);
+            localStorage.removeItem(STORAGE_KEYS.preferences);
+            localStorage.removeItem(STORAGE_KEYS.progress);
+            localStorage.removeItem(STORAGE_KEYS.history);
             this.userProfile = this.loadUserProfile();
 
             this.preferences = this.loadPreferences();
@@ -1223,7 +1203,7 @@ export class HelpPersonalizationEngine {
      * コンポーネントクリーンアップ
      */
     destroy(): void { if (this.analyticsTimer) {
-            clearInterval(this.analyticsTimer),
+            clearInterval(this.analyticsTimer);
             this.analyticsTimer = null }
         
         // 最終状態を保存

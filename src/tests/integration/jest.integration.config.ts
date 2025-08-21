@@ -29,7 +29,7 @@ const config: Config = { // テスト環境
         }]
     };
     // セットアップファイル
-    setupFilesAfterEnv: [']';
+    setupFilesAfterEnv: [']',
         '<rootDir>/src/tests/integration/setup.ts'];
     ],
     
@@ -54,7 +54,7 @@ const config: Config = { // テスト環境
         'json-summary'];
     ],
 
-    coverageDirectory: '<rootDir>/coverage/integration';
+    coverageDirectory: '<rootDir>/coverage/integration',
     // カバレッジ閾値
     coverageThreshold: { global: {
             branches: 80,

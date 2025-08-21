@@ -16,7 +16,7 @@ interface GameEngine {
 /**
  * Leaderboard manager interface
  */
-interface LeaderboardManager { getPeriodRanking(period: string, options: any): PeriodRankingData | null,
+interface LeaderboardManager { getPeriodRanking(period: string, options: any): PeriodRankingData | null;
     getStageRanking(stageId: string, options: any): StageRankingData | null;
     getPlayerHistory(playerId: string, options: any): PlayerHistoryData | null;
     getChallengeRanking(options: any): ChallengeRankingData | null;
@@ -55,27 +55,27 @@ interface DataMetadata { type?: string,
 /**
  * Ranking data interface
  */
-interface RankingData { rankings: RankingEntry[],
+interface RankingData { rankings: RankingEntry[];
     metadata: DataMetadata;
     error?: string;
 
 /**
  * Period ranking data interface
  */
-interface PeriodRankingData { rankings: RankingEntry[],
+interface PeriodRankingData { rankings: RankingEntry[];
     total?: number;
 
 /**
  * Stage ranking data interface
  */
-interface StageRankingData { rankings: RankingEntry[],
+interface StageRankingData { rankings: RankingEntry[];
     stageName?: string;
     total?: number;
 
 /**
  * Player history data interface
  */
-interface PlayerHistoryData { history: RankingEntry[],
+interface PlayerHistoryData { history: RankingEntry[];
     playerName?: string;
     currentRank?: number | null;
     bestScore?: number;
@@ -84,7 +84,7 @@ interface PlayerHistoryData { history: RankingEntry[],
 /**
  * Challenge ranking data interface
  */
-interface ChallengeRankingData { challenges: RankingEntry[],
+interface ChallengeRankingData { challenges: RankingEntry[];
     activeChallenges?: number;
     completedChallenges?: number;
     total?: number;
@@ -92,13 +92,13 @@ interface ChallengeRankingData { challenges: RankingEntry[],
 /**
  * Leaderboard data interface
  */
-interface LeaderboardData { rankings: RankingEntry[],
+interface LeaderboardData { rankings: RankingEntry[];
     total?: number;
 
 /**
  * Data config interface
  */
-interface DataConfig { itemsPerPage: number,
+interface DataConfig { itemsPerPage: number;
     maxItemsPerRequest: number;
     sortOptions: string[];
     viewTypes: string[];
@@ -109,7 +109,7 @@ interface DataConfig { itemsPerPage: number,
 /**
  * Filter config interface
  */
-interface FilterConfig { minScore: number,
+interface FilterConfig { minScore: number;
     maxResults: number;
     includeExpired: boolean;
     includePlayerData: boolean;
@@ -118,7 +118,7 @@ interface FilterConfig { minScore: number,
 /**
  * Statistics interface
  */
-interface Statistics { totalRequests: number,
+interface Statistics { totalRequests: number;
     cacheHits: number;
     cacheMisses: number;
     errors: number;
@@ -164,25 +164,25 @@ export class LeaderboardDataManager {
     private leaderboardManager: LeaderboardManager;
     private errorHandler: ErrorHandler;
     // データキャッシュ
-    private, dataCache: Map<string, RankingData> = new Map(),
+    private, dataCache: Map<string, RankingData> = new Map();
     private lastUpdateTime: Map<string, number> = new Map('''
         sortOptions: ['score', 'timestamp', 'combo', 'accuracy'];
         viewTypes: ['overall', 'daily', 'weekly', 'monthly', 'stage'];
         cacheTimeout: 300000, // 5分;
         retryAttempts: 3;
-    retryDelay: 1000  };
+    retryDelay: 1000  },
     // フィルター設定
     private filterConfig: FilterConfig = { minScore: 0
         maxResults: 1000,
         includeExpired: false,
         includePlayerData: true,
-    includeChallenges: true,;
+    includeChallenges: true,
     // 統計データ
     private statistics: Statistics = { totalRequests: 0
         cacheHits: 0,
         cacheMisses: 0,
         errors: 0,
-    averageResponseTime: 0 }))
+    averageResponseTime: 0 })
     // データ監視
     private dataWatchers: Set<DataWatcherCallback> = new Set(),
     private autoRefreshEnabled: boolean = true,
@@ -215,13 +215,12 @@ export class LeaderboardDataManager {
      */
     async getData(viewType: string, options: FetchOptions = { ): Promise<RankingData> {
         try {
-            const startTime = Date.now(),
+            const startTime = Date.now();
             this.statistics.totalRequests++,
             
-            const cacheKey = this.generateCacheKey(viewType, options),
-            
+            const cacheKey = this.generateCacheKey(viewType, options);
             // キャッシュチェック
-            const cachedData = this.getCachedData(cacheKey),
+            const cachedData = this.getCachedData(cacheKey);
             if (cachedData) {
                 this.statistics.cacheHits++,
                 this.updateStatistics(startTime) }
@@ -252,14 +251,12 @@ export class LeaderboardDataManager {
      */
     async refreshData(viewType: string, options: FetchOptions = { ): Promise<RankingData> {
         try {
-            const cacheKey = this.generateCacheKey(viewType, options),
-            
+            const cacheKey = this.generateCacheKey(viewType, options);
             // キャッシュを削除
-            this.dataCache.delete(cacheKey),
-            this.lastUpdateTime.delete(cacheKey),
-            
+            this.dataCache.delete(cacheKey);
+            this.lastUpdateTime.delete(cacheKey);
             // データを再取得
-            return await this.getData(viewType, options),
+            return await this.getData(viewType, options);
             ' }'
 
         } catch (error) {
@@ -291,7 +288,7 @@ export class LeaderboardDataManager {
                 case 'daily':','
                 case 'weekly':','
                 case 'monthly':','
-                    data = await this.fetchPeriodRanking(viewType, mergedOptions),
+                    data = await this.fetchPeriodRanking(viewType, mergedOptions);
                     break,
 
                 case 'stage':','
@@ -311,10 +308,10 @@ export class LeaderboardDataManager {
                     } else {
                         data = { error: 'プレイヤーIDが指定されていません', rankings: [], metadata: { total: 0, lastUpdate: Date.now()'
                 case 'challenge':),
-                    data = await this.fetchChallengeRanking(mergedOptions),
+                    data = await this.fetchChallengeRanking(mergedOptions);
                     break
 }
-                default: data = await this.fetchDefaultRanking(mergedOptions), 
+                default: data = await this.fetchDefaultRanking(mergedOptions),
     }
             
             // データ後処理;
@@ -335,7 +332,7 @@ export class LeaderboardDataManager {
      * @returns {Promise<Object>} データ
      */
     async fetchPeriodRanking(period: string, options: FetchOptions): Promise<RankingData> { try {
-            const data = this.leaderboardManager.getPeriodRanking(period, options),
+            const data = this.leaderboardManager.getPeriodRanking(period, options);
             ','
             // データ検証
             if(!data || !Array.isArray(data.rankings)) { }'
@@ -349,7 +346,7 @@ export class LeaderboardDataManager {
                     total: data.total || data.rankings.length,
                     page: Math.floor((options.offset || 0) / (options.limit || 1,
     hasMore: data.rankings.length >= (options.limit || 0 }
-                    lastUpdate: Date.now(), 
+                    lastUpdate: Date.now(),
     } catch (error) {
             this.errorHandler.handleError(error, 'LeaderboardDataManager.fetchPeriodRanking),'
             throw error }
@@ -362,17 +359,16 @@ export class LeaderboardDataManager {
      * @returns {Promise<Object>} データ
      */
     async fetchStageRanking(stageId: string, options: FetchOptions): Promise<RankingData> { try {
-            const data = this.leaderboardManager.getStageRanking(stageId, options),
-
+            const data = this.leaderboardManager.getStageRanking(stageId, options);
             if(!data || !Array.isArray(data.rankings)) { }'
 
                 return { error: 'ステージデータが見つかりません', rankings: [], metadata: { total: 0, lastUpdate: Date.now(  }
             }
             
             return { rankings: data.rankings,
-                metadata: {  };
+                metadata: {  },
                     stageId: stageId,
-                    stageName: data.stageName || `ステージ ${stageId}`;
+                    stageName: data.stageName || `ステージ ${stageId}`,
                     total: data.total || data.rankings.length,
                     page: Math.floor((options.offset || 0) / (options.limit || 1),
                     hasMore: data.rankings.length >= (options.limit || 0),
@@ -389,14 +385,13 @@ export class LeaderboardDataManager {
      * @returns {Promise<Object>} データ
      */
     async fetchPlayerRanking(playerId: string, options: FetchOptions): Promise<RankingData> { try {
-            const data = this.leaderboardManager.getPlayerHistory(playerId, options),
-
+            const data = this.leaderboardManager.getPlayerHistory(playerId, options);
             if(!data || !Array.isArray(data.history)) {''
                 return { error: 'プレイヤーデータが見つかりません', rankings: [], metadata: { total: 0, lastUpdate: Date.now('', playerName: data.playerName || 'Unknown, Player',
                     currentRank: data.currentRank || null),
                     bestScore: data.bestScore || 0,
-    total: data.total || data.history.length };
-                    lastUpdate: Date.now(), 
+    total: data.total || data.history.length },
+                    lastUpdate: Date.now(),
     } catch (error) {
             this.errorHandler.handleError(error, 'LeaderboardDataManager.fetchPlayerRanking),'
             throw error }
@@ -408,15 +403,14 @@ export class LeaderboardDataManager {
      * @returns {Promise<Object>} データ
      */
     async fetchChallengeRanking(options: FetchOptions): Promise<RankingData> { try {
-            const data = this.leaderboardManager.getChallengeRanking(options),
-
+            const data = this.leaderboardManager.getChallengeRanking(options);
             if(!data || !Array.isArray(data.challenges)) {''
                 return { error: 'チャレンジデータが見つかりません', rankings: [], metadata: { total: 0, lastUpdate: Date.now('''
                     type: 'challenge',
                     activeChallenges: data.activeChallenges || 0),
                     completedChallenges: data.completedChallenges || 0,
-    total: data.total || data.challenges.length };
-                    lastUpdate: Date.now(), 
+    total: data.total || data.challenges.length },
+                    lastUpdate: Date.now(),
     } catch (error) {
             this.errorHandler.handleError(error, 'LeaderboardDataManager.fetchChallengeRanking',
             throw error }
@@ -428,15 +422,14 @@ export class LeaderboardDataManager {
      * @returns {Promise<Object>} データ'
      */''
     async fetchDefaultRanking(options: FetchOptions): Promise<RankingData> { try {'
-            const data = this.leaderboardManager.getLeaderboard('overall', options),
-
+            const data = this.leaderboardManager.getLeaderboard('overall', options);
             if(!data || !Array.isArray(data.rankings)) {''
                 return { error: 'デフォルトデータの取得に失敗しました', rankings: [], metadata: { total: 0, lastUpdate: Date.now()'
                     type: 'default',
     total: data.total || data.rankings.length),
                     page: Math.floor((options.offset || 0) / (options.limit || 1,
     hasMore: data.rankings.length >= (options.limit || 0 }
-                    lastUpdate: Date.now(), 
+                    lastUpdate: Date.now(),
     } catch (error) {
             this.errorHandler.handleError(error, 'LeaderboardDataManager.fetchDefaultRanking),'
             throw error }
@@ -472,7 +465,7 @@ export class LeaderboardDataManager {
             return data;
 
         } catch (error) {
-            this.errorHandler.handleError(error, 'LeaderboardDataManager.processData'),
+            this.errorHandler.handleError(error, 'LeaderboardDataManager.processData');
             return data,
     
     /**
@@ -490,7 +483,7 @@ export class LeaderboardDataManager {
             // 数値の場合
             if (typeof, aValue === 'number' && typeof, bValue === 'number') { }
 
-                return sortOrder === 'desc' ? bValue - aValue: aValue - bValue;
+                return sortOrder === 'desc' ? bValue - aValue: aValue - bValue,
             ';'
             // 文字列の場合
             if (typeof, aValue === 'string' && typeof, bValue === 'string') {
@@ -503,13 +496,13 @@ export class LeaderboardDataManager {
             ';'
             // 日付の場合
             if(sortBy === 'timestamp' {'
-                const aTime = new Date(aValue).getTime(),
+                const aTime = new Date(aValue).getTime();
                 const bTime = new Date(bValue).getTime('}'
 
-                return, sortOrder === 'desc' ? bTime - aTime: aTime - bTime;
+                return, sortOrder === 'desc' ? bTime - aTime: aTime - bTime,
             );
             return 0;)
-        });
+        };
     }
     
     /**
@@ -532,7 +525,7 @@ export class LeaderboardDataManager {
             if (filter.dateTo && new, Date(entry.timestamp) > new Date(filter.dateTo) { return false }
             
             return true;
-        });
+        };
     }
     
     /**
@@ -543,7 +536,7 @@ export class LeaderboardDataManager {
     addRankings(rankings: RankingEntry[]): RankingEntry[] { return rankings.map((entry, index) => ({
             ...entry),
             rank: index + 1  }
-        });
+        };
     }
     
     /**
@@ -568,8 +561,7 @@ export class LeaderboardDataManager {
      * @returns {Object|null} キャッシュされたデータ
      */
     getCachedData(cacheKey: string): RankingData | null { const now = Date.now(),
-        const lastUpdate = this.lastUpdateTime.get(cacheKey),
-        
+        const lastUpdate = this.lastUpdateTime.get(cacheKey);
         if (!lastUpdate || (now - lastUpdate) > this.refreshInterval) {
             return null }
         
@@ -605,7 +597,7 @@ export class LeaderboardDataManager {
                     this.lastUpdateTime.delete(key); }
 }
         } else { // 全クリア
-            this.dataCache.clear(),
+            this.dataCache.clear();
             this.lastUpdateTime.clear( }
 
         console.log('[LeaderboardDataManager] Cache cleared:', pattern || 'all); }'
@@ -623,11 +615,11 @@ export class LeaderboardDataManager {
      * 統計情報を取得
      * @returns {Object} 統計情報
      */
-    getStatistics(): Statistics & { cacheHitRate: number, cacheSize: number,, lastUpdate: number; { const lastUpdateTimes = Array.from(this.lastUpdateTime.values(),
+    getStatistics(): Statistics & { cacheHitRate: number, cacheSize: number,, lastUpdate: number; { const lastUpdateTimes = Array.from(this.lastUpdateTime.values();
         return { ...this.statistics,
             cacheHitRate: this.statistics.totalRequests > 0 ? undefined : undefined
                 (this.statistics.cacheHits / this.statistics.totalRequests) * 100 : 0,
-            cacheSize: this.dataCache.size };
+            cacheSize: this.dataCache.size },
             lastUpdate: lastUpdateTimes.length > 0 ? Math.max(...lastUpdateTimes) : 0 
         }
     
@@ -647,7 +639,7 @@ export class LeaderboardDataManager {
      * 自動更新を停止
      */
     stopAutoRefresh(): void { if (this.autoRefreshInterval) {
-            clearInterval(this.autoRefreshInterval),
+            clearInterval(this.autoRefreshInterval);
             this.autoRefreshInterval = null }
     }
     
@@ -673,7 +665,7 @@ export class LeaderboardDataManager {
             for (const key of limitedKeys) {
 
                 const [viewType, ...optionParts] = key.split('|),'
-                const options = this.parseOptionsFromKey(optionParts),
+                const options = this.parseOptionsFromKey(optionParts);
                 ','
 
                 // バックグラウンドで更新
@@ -696,7 +688,7 @@ export class LeaderboardDataManager {
 
             playerId: optionParts[1] || undefined,
             sortBy: optionParts[2] || 'score',
-    limit: parseInt(optionParts[3]) || this.dataConfig.itemsPerPage };
+    limit: parseInt(optionParts[3]) || this.dataConfig.itemsPerPage },
             offset: parseInt(optionParts[4]) || 0 
     }
     
@@ -723,7 +715,7 @@ export class LeaderboardDataManager {
                 callback(viewType, data);' }'
 
             } catch (error) { console.warn('[LeaderboardDataManager] Data watcher error:', error }
-        });
+        };
     }
     
     /**
@@ -743,9 +735,8 @@ export class LeaderboardDataManager {
     /**
      * データマネージャーを破棄
      */
-    dispose(): void { this.stopAutoRefresh(),
-
-        this.clearCache(),
+    dispose(): void { this.stopAutoRefresh();
+        this.clearCache();
         this.dataWatchers.clear()','
         console.log('[LeaderboardDataManager] Data, manager disposed') }
 

@@ -30,7 +30,7 @@ const mockDocument = {
 const mockLocalStorage = {
     getItem: jest.fn(
     setItem: jest.fn(
-        removeItem: jest.fn( };
+        removeItem: jest.fn( },
 // グローバル変数のモック
 (global: any).document = mockDocument,
 (global: any).localStorage = mockLocalStorage,
@@ -65,7 +65,7 @@ describe('SettingsScene Accessibility Integration', () => {
                         'accessibility.voiceGuidance': false,
                         'accessibility.subtitles': false;;
                     return defaultValues[key] || null;
-                }),
+                },
                 set: jest.fn(
         save: jest.fn( },
             localizationManager: {
@@ -74,7 +74,7 @@ describe('SettingsScene Accessibility Integration', () => {
         };
         
         settingsScene = new SettingsScene(mockGameEngine);
-    });
+    };
     afterEach(() => {
         if (settingsScene && settingsScene.destroy) {
             settingsScene.destroy() }
@@ -82,24 +82,24 @@ describe('SettingsScene Accessibility Integration', () => {
     }');'
     describe('AccessibilitySettingsManager Integration', (') => {'
         test('should initialize AccessibilitySettingsManager', () => {
-            expect(settingsScene.accessibilitySettingsManager).toBeDefined(),
+            expect(settingsScene.accessibilitySettingsManager).toBeDefined();
             expect(settingsScene.accessibilitySettingsManager).toBeInstanceOf(AccessibilitySettingsManager) }');'
         test('should use extended accessibility settings', () => {
             const accessibilitySettings = settingsScene.settingItems.accessibility,
             
-            expect(Array.isArray(accessibilitySettings).toBe(true),
+            expect(Array.isArray(accessibilitySettings).toBe(true);
             expect(accessibilitySettings.length).toBeGreaterThan(5), // 基本の5項目より多い
             
             // 拡張設定項目の存在確認
-            const settingKeys = accessibilitySettings.map(item => item.key),
+            const settingKeys = accessibilitySettings.map(item => item.key);
             expect(settingKeys').toContain('accessibility.fontSize'),'
             expect(settingKeys').toContain('accessibility.contrastLevel'),'
             expect(settingKeys').toContain('accessibility.keyboardNavigation'),'
             expect(settingKeys').toContain('accessibility.voiceGuidance'),'
             expect(settingKeys').toContain('accessibility.subtitles') }');
         test('should cleanup AccessibilitySettingsManager on destroy', (') => {'
-            const cleanupSpy = jest.spyOn(settingsScene.accessibilitySettingsManager, 'cleanup'),
-            settingsScene.destroy(),
+            const cleanupSpy = jest.spyOn(settingsScene.accessibilitySettingsManager, 'cleanup');
+            settingsScene.destroy();
             expect(cleanupSpy).toHaveBeenCalled() }');'
     }
     describe('Enhanced Setting Activation', (') => {'
@@ -109,9 +109,9 @@ describe('SettingsScene Accessibility Integration', () => {
             settingsScene.selectedCategoryIndex = 4,
             settingsScene.selectedSettingIndex = 0,
             
-            const setSpy = jest.spyOn(settingsScene.accessibilitySettingsManager, 'setSetting'),
+            const setSpy = jest.spyOn(settingsScene.accessibilitySettingsManager, 'setSetting');
             // トグル設定を有効化
-            settingsScene.activateCurrentSetting(),
+            settingsScene.activateCurrentSetting();
             expect(setSpy').toHaveBeenCalledWith('accessibility.highContrast', true) }');
         test('should use standard settings manager for non-accessibility settings', (') => {'
             // 一般カテゴリに切り替え
@@ -119,20 +119,20 @@ describe('SettingsScene Accessibility Integration', () => {
             settingsScene.selectedCategoryIndex = 0,
             settingsScene.selectedSettingIndex = 0,
             
-            const setSpy = jest.spyOn(mockGameEngine.settingsManager, 'set'),
+            const setSpy = jest.spyOn(mockGameEngine.settingsManager, 'set');
             // 設定を有効化
-            settingsScene.activateCurrentSetting(),
+            settingsScene.activateCurrentSetting();
             expect(setSpy).toHaveBeenCalled() }');'
         test('should handle accessibility slider settings with validation', (') => {'
             // フォントサイズ設定を選択
             settingsScene.currentCategory = 'accessibility',
             const fontSizeSetting = settingsScene.settingItems.accessibility.find(
-                item => item.key === 'accessibility.fontSize'),
+                item => item.key === 'accessibility.fontSize');
             if (fontSizeSetting) {
                 settingsScene.selectedSettingIndex = settingsScene.settingItems.accessibility.indexOf(fontSizeSetting'),'
-                const setSpy = jest.spyOn(settingsScene.accessibilitySettingsManager, 'setSetting'),
-                settingsScene.activateCurrentSetting(),
-                expect(setSpy).toHaveBeenCalled(),
+                const setSpy = jest.spyOn(settingsScene.accessibilitySettingsManager, 'setSetting');
+                settingsScene.activateCurrentSetting();
+                expect(setSpy).toHaveBeenCalled();
                 const callArgs = setSpy.mock.calls[0],
                 expect(callArgs[0]').toBe('accessibility.fontSize'),'
                 expect(typeof callArgs[1]').toBe('number') }'
@@ -141,12 +141,12 @@ describe('SettingsScene Accessibility Integration', () => {
             // コントラストレベル設定を選択
             settingsScene.currentCategory = 'accessibility',
             const contrastSetting = settingsScene.settingItems.accessibility.find(
-                item => item.key === 'accessibility.contrastLevel'),
+                item => item.key === 'accessibility.contrastLevel');
             if (contrastSetting) {
                 settingsScene.selectedSettingIndex = settingsScene.settingItems.accessibility.indexOf(contrastSetting'),'
-                const setSpy = jest.spyOn(settingsScene.accessibilitySettingsManager, 'setSetting'),
-                settingsScene.activateCurrentSetting(),
-                expect(setSpy).toHaveBeenCalled(),
+                const setSpy = jest.spyOn(settingsScene.accessibilitySettingsManager, 'setSetting');
+                settingsScene.activateCurrentSetting();
+                expect(setSpy).toHaveBeenCalled();
                 const callArgs = setSpy.mock.calls[0],
                 expect(callArgs[0]').toBe('accessibility.contrastLevel'),'
                 expect(contrastSetting.options.map(opt => opt.value).toContain(callArgs[1]) }
@@ -175,48 +175,52 @@ describe('SettingsScene Accessibility Integration', () => {
     describe('Keyboard Shortcuts for Accessibility Features', (') => {'
         test('should show profiles dialog on Ctrl+P in accessibility category', (') => {'
             settingsScene.currentCategory = 'accessibility',
-            const showProfilesSpy = jest.spyOn(settingsScene, 'showAccessibilityProfiles'),
+            const showProfilesSpy = jest.spyOn(settingsScene, 'showAccessibilityProfiles');
             const mockEvent = {
                 key: 'p',
-                ctrlKey: true,;
-            
+                ctrlKey: true,
+                ctrlKey: true,
+        };
             settingsScene.handleKeyInput(mockEvent);
             expect(showProfilesSpy).toHaveBeenCalled();
         }');'
         test('should export settings on Ctrl+E in accessibility category', (') => {'
             settingsScene.currentCategory = 'accessibility',
-            const exportSpy = jest.spyOn(settingsScene, 'exportAccessibilitySettings'),
+            const exportSpy = jest.spyOn(settingsScene, 'exportAccessibilitySettings');
             const mockEvent = {
                 key: 'e',
-                ctrlKey: true,;
-            
+                ctrlKey: true,
+                ctrlKey: true,
+        };
             settingsScene.handleKeyInput(mockEvent);
             expect(exportSpy).toHaveBeenCalled();
         }');'
         test('should import settings on Ctrl+I in accessibility category', (') => {'
             settingsScene.currentCategory = 'accessibility',
-            const importSpy = jest.spyOn(settingsScene, 'importAccessibilitySettings'),
+            const importSpy = jest.spyOn(settingsScene, 'importAccessibilitySettings');
             const mockEvent = {
                 key: 'i',
-                ctrlKey: true,;
-            
+                ctrlKey: true,
+                ctrlKey: true,
+        };
             settingsScene.handleKeyInput(mockEvent);
             expect(importSpy).toHaveBeenCalled();
         }');'
         test('should not trigger accessibility shortcuts outside accessibility category', (') => {'
             settingsScene.currentCategory = 'general',
-            const showProfilesSpy = jest.spyOn(settingsScene, 'showAccessibilityProfiles'),
+            const showProfilesSpy = jest.spyOn(settingsScene, 'showAccessibilityProfiles');
             const mockEvent = {
                 key: 'p',
-                ctrlKey: true,;
-            
+                ctrlKey: true,
+                ctrlKey: true,
+        };
             settingsScene.handleKeyInput(mockEvent);
             expect(showProfilesSpy).not.toHaveBeenCalled();
         }');'
     }
     describe('Profile Management', (') => {'
         test('should show accessibility profiles dialog', (') => {'
-            const getProfilesSpy = jest.spyOn(settingsScene.accessibilitySettingsManager, 'getAvailableProfiles'),
+            const getProfilesSpy = jest.spyOn(settingsScene.accessibilitySettingsManager, 'getAvailableProfiles');
             getProfilesSpy.mockReturnValue([
                 { name: 'default', displayName: 'デフォルト', description: ', isCustom: false,,'
                 { name: 'highContrast', displayName: '高コントラスト', description: ', isCustom: false,);'
@@ -230,12 +234,12 @@ describe('SettingsScene Accessibility Integration', () => {
     }
     describe('Export/Import Functionality', (') => {'
         test('should export accessibility settings', (') => {'
-            const exportSpy = jest.spyOn(settingsScene.accessibilitySettingsManager, 'exportSettings'),
-            exportSpy.mockReturnValue(true),
-            settingsScene.exportAccessibilitySettings(),
+            const exportSpy = jest.spyOn(settingsScene.accessibilitySettingsManager, 'exportSettings');
+            exportSpy.mockReturnValue(true);
+            settingsScene.exportAccessibilitySettings();
             expect(exportSpy').toHaveBeenCalledWith('json', true) }');
         test('should handle export errors gracefully', (') => {'
-            const exportSpy = jest.spyOn(settingsScene.accessibilitySettingsManager, 'exportSettings'),
+            const exportSpy = jest.spyOn(settingsScene.accessibilitySettingsManager, 'exportSettings');
             exportSpy.mockImplementation((') => {'
                 throw new Error('Export failed') }');'
             const consoleSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
@@ -249,7 +253,7 @@ describe('SettingsScene Accessibility Integration', () => {
                 accept: ','
                 style: { display: '};'
                 addEventListener: jest.fn(
-        click: jest.fn( };
+        click: jest.fn( },
             
             mockDocument.createElement.mockReturnValue(mockInput);
             settingsScene.importAccessibilitySettings();
@@ -263,24 +267,25 @@ describe('SettingsScene Accessibility Integration', () => {
     }
     describe('Integration Status', (') => {'
         test('should report correct integration status', () => {
-            const status = settingsScene.getAccessibilityIntegrationStatus(),
-            expect(status.integrated).toBe(true),
-            expect(status.stats).toBeDefined(),
-            expect(status.profileCount).toBeGreaterThan(0),
+            const status = settingsScene.getAccessibilityIntegrationStatus();
+            expect(status.integrated).toBe(true);
+            expect(status.stats).toBeDefined();
+            expect(status.profileCount).toBeGreaterThan(0);
             expect(status.extendedSettings).toBeGreaterThan(5) }');'
         test('should handle missing AccessibilitySettingsManager', () => {
             settingsScene.accessibilitySettingsManager = null,
             
-            const status = settingsScene.getAccessibilityIntegrationStatus(),
-            expect(status.integrated).toBe(false),
+            const status = settingsScene.getAccessibilityIntegrationStatus();
+            expect(status.integrated).toBe(false);
             expect(status.reason').toBe('AccessibilitySettingsManager not initialized') }');
     }
     describe('Context-aware Entry', (') => {'
         test('should set accessibility focus mode when accessed from help', (') => {'
             const contextData = {
                 accessMethod: 'help_link',
-                fromHelp: true,;
-            
+                fromHelp: true,
+                fromHelp: true,
+        };
             settingsScene.enter(contextData);
             expect(settingsScene.currentCategory').toBe('accessibility');'
             expect(settingsScene.selectedCategoryIndex).toBe(4); // accessibility category index
@@ -302,12 +307,12 @@ describe('SettingsScene Accessibility Integration', () => {
     describe('Error Handling', (') => {'
         test('should handle AccessibilitySettingsManager initialization failure', () => {
             // AccessibilitySettingsManagerが正常に初期化されていることを確認
-            expect(settingsScene.accessibilitySettingsManager).toBeDefined(),
+            expect(settingsScene.accessibilitySettingsManager).toBeDefined();
             // 初期化が失敗した場合でも基本的な機能は動作することを確認
             settingsScene.accessibilitySettingsManager = null,
             
-            expect(() => settingsScene.activateCurrentSetting().not.toThrow(),
-            expect(() => settingsScene.exportAccessibilitySettings().not.toThrow(),
-            expect(() => settingsScene.importAccessibilitySettings().not.toThrow() });
+            expect(() => settingsScene.activateCurrentSetting().not.toThrow();
+            expect(() => settingsScene.exportAccessibilitySettings().not.toThrow();
+            expect(() => settingsScene.importAccessibilitySettings().not.toThrow() };
     }
 }');'

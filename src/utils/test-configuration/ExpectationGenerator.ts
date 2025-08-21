@@ -25,16 +25,16 @@ interface TemplateFunction { (expectations: TestExpectations): string;
 
 interface TestTemplates { [testType: string]: TemplateFunction;
 
-interface CacheEntry { testType: string,
+interface CacheEntry { testType: string;
     expectations: TestExpectations;
     testCode: string;
     generatedAt: number;
 
-interface ValidationResult { valid: boolean,
+interface ValidationResult { valid: boolean;
     issues: string[];
     warnings: string[];
 
-interface GenerationStatistics { totalGenerated: number,
+interface GenerationStatistics { totalGenerated: number;
     templates: string[];
     cacheSize: number;
     lastOptimized: number | null }
@@ -60,7 +60,7 @@ export class ExpectationGenerator extends BaseComponent { private expectationCac
      * テストテンプレートを設定
      */
     private setupTestTemplates(): void { this.testTemplates = {
-            bubble: this.getBubbleTestTemplate(),
+            bubble: this.getBubbleTestTemplate();
             gameBalance: this.getGameBalanceTestTemplate(
     bubbleManager: this.getBubbleManagerTestTemplate( }
 
@@ -111,7 +111,7 @@ const createMockGameEngine = () => ({
         scale: jest.fn('',
     fillStyle: ','
         strokeStyle: ','
-    lineWidth: 1  }))
+    lineWidth: 1  })
     particleManager: { '
         createParticle: jest.fn( }
     soundManager: { ''
@@ -120,16 +120,16 @@ describe('Bubble Class Configuration Tests', () => {
     let mockGameEngine,
     
     beforeEach(() => {'
-        mockGameEngine = createMockGameEngine(),
+        mockGameEngine = createMockGameEngine();
         jest.clearAllMocks() }
 
     describe('Bubble Type Configuration', () => { }
 
-${Object.entries(expectations.bubbleTypes || {}).map(([bubbleType, config]) => `        test('should create ${bubbleType} bubble with expected configuration', () => { }
+${Object.entries(expectations.bubbleTypes || {}.map(([bubbleType, config]) => `        test('should create ${bubbleType} bubble with expected configuration', () => { }
 
-            const bubble = new Bubble(mockGameEngine, 100, 100, '${bubbleType});'
+            const bubble = new Bubble(mockGameEngine, 100, 100, '${bubbleType};'
 
-            expect(bubble.type).toBe('${bubbleType});'
+            expect(bubble.type).toBe('${bubbleType};'
             expect(bubble.x).toBe(100);
             expect(bubble.y).toBe(100);
             
@@ -146,20 +146,18 @@ ${Object.entries(expectations.bubbleTypes || {}).map(([bubbleType, config]) => `
 
         const expectedConfigurations = ${JSON.stringify(expectations.bubbleTypes || {}, null, 8)};
 
-        test('should have all expected bubble types', () => {  const bubbleTypes = Object.keys(expectedConfigurations),
-            expect(bubbleTypes.length).toBeGreaterThan(0),
-            
+        test('should have all expected bubble types', () => {  const bubbleTypes = Object.keys(expectedConfigurations);
+            expect(bubbleTypes.length).toBeGreaterThan(0);
             for (const bubbleType of bubbleTypes) {
     
 }
                 const bubble = new Bubble(mockGameEngine, 0, 0, bubbleType); }
                 expect(bubble.type).toBe(bubbleType); }
-});
+};
         
         Object.entries(expectedConfigurations).forEach(([bubbleType, expectedConfig]) => {  }
-            test(\`should have correct configuration for \${bubbleType} bubble\`, () => {  const bubble = new Bubble(mockGameEngine, 0, 0, bubbleType),
-                const actualConfig = bubble.getTypeConfig(),
-                
+            test(\`should have correct configuration for \${bubbleType} bubble\`, () => {  const bubble = new Bubble(mockGameEngine, 0, 0, bubbleType);
+                const actualConfig = bubble.getTypeConfig();
                 if (expectedConfig.health !== undefined) { }
                     expect(actualConfig.health).toBe(expectedConfig.health); }
                 }
@@ -231,8 +229,7 @@ describe('GameBalance Configuration Tests', () => {  ''
             for(const [bubbleType, expectedConfig] of Object.entries(expectedBubbles) {
             
                 const actualConfig = GameBalance.bubbles[bubbleType],
-                expect(actualConfig).toBeDefined(),
-                
+                expect(actualConfig).toBeDefined();
                 if (expectedConfig.health !== undefined) {
     
 }
@@ -256,8 +253,7 @@ describe('GameBalance Configuration Tests', () => {  ''
         }');'
 
         test('should not have null or undefined critical values', () => {  for(const [bubbleType, config] of Object.entries(GameBalance.bubbles) {
-                expect(config.health).toBeDefined(),
-
+                expect(config.health).toBeDefined();
                 expect(config.health).not.toBeNull(),' }'
 
                 expect(typeof, config.health).toBe('number'); }
@@ -321,8 +317,8 @@ describe('BubbleManager Configuration Tests', () => {  let bubbleManager,
                 fillText: jest.fn(),
                 save: jest.fn(
     restore: jest.fn( }
-            particleManager: { createParticle: jest.fn( };
-            soundManager: { playSound: jest.fn( };
+            particleManager: { createParticle: jest.fn( },
+            soundManager: { playSound: jest.fn( },
             inputManager: {
                 getMousePosition: jest.fn(() => ({ x: 0, y: 0 ),
             }
@@ -333,13 +329,13 @@ describe('BubbleManager Configuration Tests', () => {  let bubbleManager,
         jest.clearAllMocks()';'
     describe('Bubble Creation with Configurations', () => { }
 
-${Object.keys(expectations.bubbleTypes || {}).map(bubbleType => `        test('should create ${bubbleType} bubble with correct configuration', () => { }
+${Object.keys(expectations.bubbleTypes || {}.map(bubbleType => `        test('should create ${bubbleType} bubble with correct configuration', () => { }
 
             const bubble = bubbleManager.createBubble(100, 100, '${bubbleType}';
             ';'
 
             expect(bubble).toBeDefined();
-            expect(bubble.type).toBe('${bubbleType});'
+            expect(bubble.type).toBe('${bubbleType};'
             
             const config = bubble.getTypeConfig();
 
@@ -352,30 +348,28 @@ ${Object.keys(expectations.bubbleTypes || {}).map(bubbleType => `        test('s
 
     describe('Configuration-Based Bubble Behavior', () => {  ''
         test('should respect bubble health configuration in damage handling', () => {''
-            const normalBubble = bubbleManager.createBubble(100, 100, 'normal'),
+            const normalBubble = bubbleManager.createBubble(100, 100, 'normal');
             const bossBubble = bubbleManager.createBubble(200, 200, 'boss),'
             
             const normalHealth = normalBubble.getTypeConfig().health,
             const bossHealth = bossBubble.getTypeConfig().health,
             
             // Test that boss bubbles have more health
-            expect(bossHealth).toBeGreaterThanOrEqual(normalHealth),
-            
+            expect(bossHealth).toBeGreaterThanOrEqual(normalHealth);
             // Test damage handling
-            normalBubble.takeDamage(1),
-            bossBubble.takeDamage(1),
-            
+            normalBubble.takeDamage(1);
+            bossBubble.takeDamage(1);
             expect(normalBubble.currentHealth).toBe(normalHealth - 1) }
             expect(bossBubble.currentHealth).toBe(bossHealth - 1);' }'
 
         }');'
 
         test('should use configuration-based scoring', () => {  }
-            const bubbleTypes = ${JSON.stringify(Object.keys(expectations.bubbleTypes || {});
+            const bubbleTypes = ${JSON.stringify(Object.keys(expectations.bubbleTypes || {};
             
             for (const bubbleType of bubbleTypes) {
             
-                const bubble = bubbleManager.createBubble(100, 100, bubbleType),
+                const bubble = bubbleManager.createBubble(100, 100, bubbleType);
                 const expectedScore = bubble.getTypeConfig().score,
 
                 expect(typeof, expectedScore).toBe('number) }'
@@ -388,8 +382,7 @@ ${Object.keys(expectations.bubbleTypes || {}).map(bubbleType => `        test('s
             const maxAge = bubble.getTypeConfig().maxAge,
 
             expect(typeof, maxAge).toBe('number),'
-            expect(maxAge).toBeGreaterThan(0),
-            
+            expect(maxAge).toBeGreaterThan(0);
             // Test aging
             bubble.age = maxAge + 1000, // Exceed max age
             bubble.update(16.67), // One frame
@@ -423,7 +416,7 @@ ${Object.keys(expectations.bubbleTypes || {}).map(bubbleType => `        test('s
     generateTestCode(expectations: TestExpectations, testType: string): string | null { try {
             const template = this.testTemplates[testType],
             if (!template) { }
-                throw new Error(`Unknown, test type: ${testType}`});
+                throw new Error(`Unknown, test type: ${testType}`};
             }
 
             const testCode = template(expectations);
@@ -432,14 +425,14 @@ ${Object.keys(expectations.bubbleTypes || {}).map(bubbleType => `        test('s
             const cacheKey = `${testType}_${Date.now())`,
             this.expectationCache.set(cacheKey, {
                 testType
-                expectations),
+                expectations);
                 testCode,
-                generatedAt: Date.now(  };
+                generatedAt: Date.now(  },
 
             return testCode;
 
         } catch (error) {
-            this._handleError('test code generation', error),
+            this._handleError('test code generation', error);
             return null,
 
     /**
@@ -448,7 +441,7 @@ ${Object.keys(expectations.bubbleTypes || {}).map(bubbleType => `        test('s
      * @param template - テンプレート関数
      */
     registerTemplate(testType: string, template: TemplateFunction): void { this.testTemplates[testType] = template }
-        console.log(`[ExpectationGenerator] カスタムテンプレート登録: ${testType}`});
+        console.log(`[ExpectationGenerator] カスタムテンプレート登録: ${testType}`};
     }
 
     /**
@@ -466,7 +459,7 @@ ${Object.keys(expectations.bubbleTypes || {}).map(bubbleType => `        test('s
 }
         
         this.lastOptimized = Date.now();
-        console.log(`[ExpectationGenerator] テンプレートキャッシュ最適化完了: ${this.expectationCache.size}件保持`});
+        console.log(`[ExpectationGenerator] テンプレートキャッシュ最適化完了: ${this.expectationCache.size}件保持`};
     }
 
     /**
@@ -477,7 +470,7 @@ ${Object.keys(expectations.bubbleTypes || {}).map(bubbleType => `        test('s
     validateExpectations(expectations: TestExpectations): ValidationResult { const validation: ValidationResult = {
             valid: true,
             issues: [],
-    warnings: [] };
+    warnings: [] },
         if (!expectations || typeof, expectations !== 'object') {
             validation.valid = false,
             validation.issues.push('Expectations, must be, an object' }
@@ -517,7 +510,7 @@ ${Object.keys(expectations.bubbleTypes || {}).map(bubbleType => `        test('s
                 for (const prop of requiredProps) { if (config[prop] === undefined || config[prop] === null) { }'
 
                         validation.warnings.push(`Missing ${prop} for, bubble type: ${bubbleType}`}';} else if(typeof, config[prop] !== 'number' {'
-                        validation.issues.push(`Invalid ${prop} type, for bubble, type: ${bubbleType}`});
+                        validation.issues.push(`Invalid ${prop} type, for bubble, type: ${bubbleType}`};
                         validation.valid = false;
                     }
 }
@@ -532,19 +525,19 @@ ${Object.keys(expectations.bubbleTypes || {}).map(bubbleType => `        test('s
      */
     getGenerationStatistics(): GenerationStatistics { return { totalGenerated: this.expectationCache.size,
             templates: Object.keys(this.testTemplates,
-    cacheSize: this.expectationCache.size };
+    cacheSize: this.expectationCache.size },
             lastOptimized: this.lastOptimized || null 
     }
 
     /**
      * キャッシュをクリア
      */'
-    clearCache(): void { this.expectationCache.clear(),
+    clearCache(): void { this.expectationCache.clear();
         this.templateCache.clear()','
         console.log('[ExpectationGenerator] キャッシュをクリアしました') }'
 
     /**
      * クリーンアップ
      */'
-    cleanup(): void { this.clearCache(),
+    cleanup(): void { this.clearCache();
         super.cleanup(' }'

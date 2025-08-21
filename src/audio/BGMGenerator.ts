@@ -1,19 +1,19 @@
 import { getErrorHandler  } from '../utils/ErrorHandler.js';
 
 // 音楽スケール型定義
-interface Scales { major: number[],
+interface Scales { major: number[];
     minor: number[];
     pentatonic: number[];
     blues: number[];
 
 // 和音進行型定義
-interface ChordProgressions { pop: string[],
+interface ChordProgressions { pop: string[];
     jazz: string[];
     classical: string[];
     ambient: string[];
 
 // リズムパターン型定義
-interface RhythmPatterns { simple: number[],
+interface RhythmPatterns { simple: number[];
     complex: number[];
     syncopated: number[];
     ambient: number[];
@@ -26,13 +26,13 @@ interface TrackConfig { style?: string,
     timeSignature?: string;
 
 // メロディ音符型定義
-interface MelodyNote { frequency: number,
+interface MelodyNote { frequency: number;
     scaleIndex: number;
     duration: number;
     velocity: number;
 
 // ハーモニー音符型定義
-interface HarmonyNote { frequency: number,
+interface HarmonyNote { frequency: number;
     scaleIndex: number;
     duration: number;
     velocity: number;
@@ -106,24 +106,24 @@ export class BGMGenerator {
             console.log(`Generating ${style} track: ${duration}s, ${tempo}BPM, key=${ key)`),
             
             const, sampleRate = this.audioContext.sampleRate,
-            const, buffer = this.audioContext.createBuffer(2, duration * sampleRate, sampleRate),
+            const, buffer = this.audioContext.createBuffer(2, duration * sampleRate, sampleRate);
             ','
             // スタイルに応じた生成
             switch(style, as, MusicStyle) {
 
                 case 'ambient':','
-                    return, this.generateAmbientTrack(buffer, trackConfig),
+                    return, this.generateAmbientTrack(buffer, trackConfig);
                 case 'energetic':','
-                    return, this.generateEnergeticTrack(buffer, trackConfig),
+                    return, this.generateEnergeticTrack(buffer, trackConfig);
                 case 'exciting':','
                     return, this.generateExcitingTrack(buffer, trackConfig}''
                 case 'dramatic':
                     return this.generateDramaticTrack(buffer, trackConfig}
                 default: }
-                    return this.generateAmbientTrack(buffer, trackConfig});
+                    return this.generateAmbientTrack(buffer, trackConfig};
 
             } catch (error) { getErrorHandler().handleError(error as Error, 'BGM_GENERATOR_ERROR', {''
-                operation: 'generateTrack'),
+                operation: 'generateTrack');
                 trackConfig: trackConfig,';'
             return null;
     
@@ -133,8 +133,8 @@ export class BGMGenerator {
      * @param config - 設定
      * @returns 生成されたバッファ
      */'
-    generateAmbientTrack(buffer: AudioBuffer, config: TrackConfig): AudioBuffer { const leftChannel = buffer.getChannelData(0),
-        const rightChannel = buffer.getChannelData(1),
+    generateAmbientTrack(buffer: AudioBuffer, config: TrackConfig): AudioBuffer { const leftChannel = buffer.getChannelData(0);
+        const rightChannel = buffer.getChannelData(1);
         const sampleRate = buffer.sampleRate,
         
         // アンビエント用の和声進行
@@ -149,8 +149,7 @@ export class BGMGenerator {
             
             // 現在の和音を計算
             const chordIndex = Math.floor(progress * progression.length * 4) % progression.length,
-            const chord = this.getChordFrequencies(progression[chordIndex], rootFreq, scale),
-            
+            const chord = this.getChordFrequencies(progression[chordIndex], rootFreq, scale);
             // パッド音合成
             let sample = 0,
             chord.forEach((freq, index) => { 
@@ -159,7 +158,7 @@ export class BGMGenerator {
         }
                 const modulation = 1 + Math.sin(t * 0.1 + index) * 0.1; // ゆっくりとした変調 }
                 sample += Math.sin(2 * Math.PI * freq * t * modulation) * amplitude; }
-            });
+            };
             
             // 空間的な広がりを表現するリバーブ風効果
             const delay = i > sampleRate * 0.2 ? leftChannel[i - Math.floor(sampleRate * 0.2)] * 0.15 : 0;
@@ -183,8 +182,8 @@ export class BGMGenerator {
      * @param config - 設定
      * @returns 生成されたバッファ
      */
-    generateEnergeticTrack(buffer: AudioBuffer, config: TrackConfig): AudioBuffer { const leftChannel = buffer.getChannelData(0),
-        const rightChannel = buffer.getChannelData(1),
+    generateEnergeticTrack(buffer: AudioBuffer, config: TrackConfig): AudioBuffer { const leftChannel = buffer.getChannelData(0);
+        const rightChannel = buffer.getChannelData(1);
         const sampleRate = buffer.sampleRate,
         const tempo = config.tempo || 120,
         const beatDuration = 60 / tempo, // 1拍の長さ（秒）
@@ -193,8 +192,7 @@ export class BGMGenerator {
         const progression = this.chordProgressions.pop,
         const scale = this.scales.major,
         const rootFreq = this.getFrequencyFromNote(config.key || 'G', 3','
-        const bassRootFreq = this.getFrequencyFromNote(config.key || 'G', 2),
-        
+        const bassRootFreq = this.getFrequencyFromNote(config.key || 'G', 2);
         for(let, i = 0, i < buffer.length, i++) {
         
             const t = i / sampleRate,
@@ -203,14 +201,14 @@ export class BGMGenerator {
             
             // 現在の和音
             const chordIndex = Math.floor(t / (beatDuration * 4) % progression.length,
-            const chord = this.getChordFrequencies(progression[chordIndex], rootFreq, scale),
+            const chord = this.getChordFrequencies(progression[chordIndex], rootFreq, scale);
             const bassFreq = this.getChordFrequencies(progression[chordIndex], bassRootFreq, scale)[0],
             
             let sample = 0,
             
             // ベースライン（4拍子のリズム）
             const bassAmp = (currentBeat === 0 || currentBeat === 2) ? 0.4 : 0.2,
-            const bassEnvelope = Math.exp(-beatPosition * 8),
+            const bassEnvelope = Math.exp(-beatPosition * 8);
             sample += Math.sin(2 * Math.PI * bassFreq * t) * bassAmp * bassEnvelope,
             
             // アルペジオメロディ
@@ -226,7 +224,7 @@ export class BGMGenerator {
 }
                 const padAmp = 0.1 / (index + 1); }
                 sample += Math.sin(2 * Math.PI * freq * t) * padAmp; }
-            });
+            };
             
             // ハイハット風効果
             if (beatPosition < 0.05) {
@@ -247,8 +245,8 @@ export class BGMGenerator {
      * @param config - 設定
      * @returns 生成されたバッファ
      */
-    generateExcitingTrack(buffer: AudioBuffer, config: TrackConfig): AudioBuffer { const leftChannel = buffer.getChannelData(0),
-        const rightChannel = buffer.getChannelData(1),
+    generateExcitingTrack(buffer: AudioBuffer, config: TrackConfig): AudioBuffer { const leftChannel = buffer.getChannelData(0);
+        const rightChannel = buffer.getChannelData(1);
         const sampleRate = buffer.sampleRate,
         const tempo = config.tempo || 140,
         const beatDuration = 60 / tempo,
@@ -257,8 +255,7 @@ export class BGMGenerator {
         const progression = ['i', 'VI', 'III', 'VII'], // マイナーキーでのドラマチックな進行
         const scale = this.scales.minor,
         const rootFreq = this.getFrequencyFromNote(config.key || 'D', 3','
-        const bassRootFreq = this.getFrequencyFromNote(config.key || 'D', 2),
-        
+        const bassRootFreq = this.getFrequencyFromNote(config.key || 'D', 2);
         for(let, i = 0, i < buffer.length, i++) {
         
             const t = i / sampleRate,
@@ -267,7 +264,7 @@ export class BGMGenerator {
             
             // 現在の和音
             const chordIndex = Math.floor(t / (beatDuration * 2) % progression.length,
-            const chord = this.getChordFrequencies(progression[chordIndex], rootFreq, scale),
+            const chord = this.getChordFrequencies(progression[chordIndex], rootFreq, scale);
             const bassFreq = this.getChordFrequencies(progression[chordIndex], bassRootFreq, scale)[0],
             
             let sample = 0,
@@ -276,7 +273,7 @@ export class BGMGenerator {
             const syncopatedPattern = [1, 0, 1, 1, 0, 1, 0, 1],
             const patternIndex = Math.floor(beatPosition * 8) % syncopatedPattern.length,
             if (syncopatedPattern[patternIndex]) {
-                const bassEnv = Math.exp(-beatPosition * 12),
+                const bassEnv = Math.exp(-beatPosition * 12);
                 sample += Math.sin(2 * Math.PI * bassFreq * t) * 0.5 * bassEnv,
                 // サブベース
         
@@ -313,16 +310,15 @@ export class BGMGenerator {
      * @param config - 設定
      * @returns 生成されたバッファ
      */
-    generateDramaticTrack(buffer: AudioBuffer, config: TrackConfig): AudioBuffer { const leftChannel = buffer.getChannelData(0),
-        const rightChannel = buffer.getChannelData(1),
+    generateDramaticTrack(buffer: AudioBuffer, config: TrackConfig): AudioBuffer { const leftChannel = buffer.getChannelData(0);
+        const rightChannel = buffer.getChannelData(1);
         const sampleRate = buffer.sampleRate,
         const duration = config.duration || 30,
         ','
         // ドラマチックな進行（オーケストラ風）
         const progression = ['i', 'iv', 'V', 'i'], // 典型的なマイナーキーの進行
         const scale = this.scales.minor,
-        const rootFreq = this.getFrequencyFromNote(config.key || 'Am', 3),
-        
+        const rootFreq = this.getFrequencyFromNote(config.key || 'Am', 3);
         for(let, i = 0, i < buffer.length, i++) {
         
             const t = i / sampleRate,
@@ -333,8 +329,7 @@ export class BGMGenerator {
             
             // 現在の和音
             const chordIndex = Math.floor(progress * progression.length * 2) % progression.length,
-            const chord = this.getChordFrequencies(progression[chordIndex], rootFreq, scale),
-            
+            const chord = this.getChordFrequencies(progression[chordIndex], rootFreq, scale);
             let sample = 0,
             
             // 弦楽器風の和音（複数オクターブ）
@@ -353,8 +348,8 @@ export class BGMGenerator {
         }
                      }
                     sample += Math.sin(2 * Math.PI * harmonicFreq * t) * amplitude * envelope; }
-                });
-            });
+                };
+            };
             
             // ブラス風のメロディ（最高潮部分）
             if (intensity > 0.7) {
@@ -401,7 +396,7 @@ export class BGMGenerator {
         if (semitones === undefined) {
     
 }
-            console.warn(`Unknown note: ${note}, using C`});
+            console.warn(`Unknown note: ${note}, using C`};
             return 261.63; // C4
         }
         
@@ -426,7 +421,7 @@ export class BGMGenerator {
         if (degree === undefined) {
     
 }
-            console.warn(`Unknown, chord symbol: ${chordSymbol}`});
+            console.warn(`Unknown, chord symbol: ${chordSymbol}`};
             return [rootFreq];
         }
         
@@ -456,15 +451,14 @@ export class BGMGenerator {
             if (rhythm[i]) {
                 // 確率的にスケール音を選択（隣接音を優遇）
                 const previousNote = i > 0 ? (melody[i - 1] as, MelodyNote)?.scaleIndex || 0 : 0,
-                const scaleIndex = this.selectNextNote(previousNote, scale.length),
-                const frequency = rootFreq * Math.pow(2, scale[scaleIndex] / 12),
-                
+                const scaleIndex = this.selectNextNote(previousNote, scale.length);
+                const frequency = rootFreq * Math.pow(2, scale[scaleIndex] / 12);
                 melody.push({)
                     frequency: frequency,
     scaleIndex: scaleIndex),
                     duration: 1, // 相対的な長さ }
                     velocity: 0.7 + Math.random() * 0.3 // ランダムなベロシティ 
-    });
+    };
             } else { melody.push(null), // 休符 }
         }
         
@@ -480,7 +474,7 @@ export class BGMGenerator {
     selectNextNote(currentNote: number, scaleLength: number): number { // 隣接音を優遇する確率分布
         const weights: number[] = [],
         for(let, i = 0, i < scaleLength, i++) {
-            const distance = Math.abs(i - currentNote),
+            const distance = Math.abs(i - currentNote);
             weights[i] = distance === 0 ? 0.3 :      // 同じ音,
                         distance === 1 ? 0.4 :       // 隣接音,
                         distance === 2 ? 0.2 :       // 2度音程 }
@@ -513,20 +507,19 @@ export class BGMGenerator {
         
         melody.forEach((note, index) => { 
             if (note) {
-                const chordIndex = Math.floor(index / (melody.length / chordProgression.length),
+                const chordIndex = Math.floor(index / (melody.length / chordProgression.length);
                 const currentChord = chordProgression[chordIndex % chordProgression.length],
                 
                 // メロディに対するハーモニー音を選択
-                const harmonyNote = this.findHarmonyNote(note.scaleIndex, currentChord, scale),
-                
-                harmony.push({),
+                const harmonyNote = this.findHarmonyNote(note.scaleIndex, currentChord, scale);
+                harmony.push({);
                     frequency: note.frequency * Math.pow(2, (harmonyNote - note.scaleIndex) / 12),
                     scaleIndex: harmonyNote,
                     duration: note.duration }
                     velocity: note.velocity * 0.7 // ハーモニーは少し小さく 
-    });
+    };
             } else { harmony.push(null) }
-        });
+        };
         
         return harmony;
     }
@@ -545,10 +538,9 @@ export class BGMGenerator {
         ],
         
         // 現在の和音に含まれる音を優先
-        const chordTones = this.getChordTones(chord, scale),
-        const validOptions = harmonyOptions.filter(option => ),
-            chordTones.includes(scale[option] % 12),
-        
+        const chordTones = this.getChordTones(chord, scale);
+        const validOptions = harmonyOptions.filter(option => );
+            chordTones.includes(scale[option] % 12);
         if (validOptions.length > 0) {
     
 }

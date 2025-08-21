@@ -12,9 +12,9 @@ export class PerformanceErrorRecovery {
     this.performanceStrategies = new Map();
     this.failurePatterns = new Map();
     this.retryConfig = {
-      maxRetries: 3,
-      baseDelay: 1000,
-      maxDelay: 10000,
+      maxRetries: 3;
+      baseDelay: 1000;
+      maxDelay: 10000;
       backoffFactor: 2
     };
     this.analysisResults = new Map();
@@ -28,7 +28,7 @@ export class PerformanceErrorRecovery {
    */
   initializePerformanceStrategies(') {'
     // Frame rate test failures
-    this.performanceStrategies.set('frame_rate_failure', {),
+    this.performanceStrategies.set('frame_rate_failure', {);
       detect: (error') => error.message? .includes('frame rate') ||'
                         error.message?.includes('fps') ||
                         error.message?.includes('FPS'), : undefined
@@ -38,7 +38,7 @@ export class PerformanceErrorRecovery {
     }');'
 
     // Memory usage test failures
-    this.performanceStrategies.set('memory_usage_failure', {),
+    this.performanceStrategies.set('memory_usage_failure', {);
       detect: (error') => error.message? .includes('memory') ||'
                         error.message?.includes('heap') ||
                         error.message?.includes('Memory'), : undefined
@@ -48,7 +48,7 @@ export class PerformanceErrorRecovery {
     }');'
 
     // Render time test failures
-    this.performanceStrategies.set('render_time_failure', {),
+    this.performanceStrategies.set('render_time_failure', {);
       detect: (error') => error.message? .includes('render time') ||'
                         error.message?.includes('rendering') ||
                         error.message?.includes('draw'), : undefined
@@ -58,7 +58,7 @@ export class PerformanceErrorRecovery {
     }');'
 
     // Performance threshold failures
-    this.performanceStrategies.set('threshold_failure', {),
+    this.performanceStrategies.set('threshold_failure', {);
       detect: (error') => error.message? .includes('threshold') ||'
                         error.message?.includes('expected') ||
                         error.message?.includes('exceed'), : undefined
@@ -68,7 +68,7 @@ export class PerformanceErrorRecovery {
     }');'
 
     // Timeout and async test failures
-    this.performanceStrategies.set('timeout_failure', {),
+    this.performanceStrategies.set('timeout_failure', {);
       detect: (error') => error.message? .includes('timeout') ||'
                         error.message?.includes('Timeout') ||
                         error.message?.includes('async'), : undefined
@@ -78,56 +78,56 @@ export class PerformanceErrorRecovery {
     }');'
 
     // Environment-specific performance failures
-    this.performanceStrategies.set('environment_failure', {),
+    this.performanceStrategies.set('environment_failure', {);
       detect: (error') => error.message? .includes('environment') ||'
                         error.message?.includes('CI') ||
                         error.message?.includes('node'), : undefined
       analyze: (error, context) => this.analyzeEnvironmentFailure(error, context);
       recover: (analysis) => this.recoverFromEnvironmentFailure(analysis','
       description: 'Environment-specific performance failures'
-    });
+    };
   }
 
   /**
    * Initialize failure pattern detection
    */
   initializeFailurePatterns(') {'
-    this.failurePatterns.set('consistent_failure', {),
+    this.failurePatterns.set('consistent_failure', {);
       detect: (history) => history.length >= 3 && 
                           history.slice(-3).every(result => !result.success'),'
-      description: 'Consistent failure across multiple attempts',
+      description: 'Consistent failure across multiple attempts';
       severity: 'high'
     }');'
 
-    this.failurePatterns.set('intermittent_failure', {),
+    this.failurePatterns.set('intermittent_failure', {);
       detect: (history) => history.length >= 5 && 
                           history.filter(result => !result.success).length >= 2 &&
                           history.filter(result => result.success').length >= 1,'
-      description: 'Intermittent failures with some successes',
+      description: 'Intermittent failures with some successes';
       severity: 'medium'
     }');'
 
-    this.failurePatterns.set('environment_degradation', {),
+    this.failurePatterns.set('environment_degradation', {);
       detect: (history) => {
         if (history.length < 5) return false,
-        const recent = history.slice(-5),
-        const older = history.slice(-10, -5),
+        const recent = history.slice(-5);
+        const older = history.slice(-10, -5);
         const recentSuccessRate = recent.filter(r => r.success).length / recent.length,
         const olderSuccessRate = older.filter(r => r.success').length / older.length,'
         return recentSuccessRate < olderSuccessRate - 0.3 },
-      description: 'Performance degradation over time',
+      description: 'Performance degradation over time';
       severity: 'high'
     }');'
 
-    this.failurePatterns.set('threshold_sensitivity', {),
+    this.failurePatterns.set('threshold_sensitivity', {);
       detect: (history) => history.length >= 3 && 
                           history.filter(result => '),'
                             result.error? .includes('threshold') || 
                             result.error?.includes('expected')
                           ').length >= 2, : undefined'
-      description: 'Repeated threshold sensitivity issues',
+      description: 'Repeated threshold sensitivity issues';
       severity: 'medium'
-    });
+    };
   }
 
   /**
@@ -138,10 +138,10 @@ export class PerformanceErrorRecovery {
    */
   analyzeFrameRateFailure(error, context = {)') {'
     const analysis = {
-      type: 'frame_rate_failure',
-      severity: 'medium',
-      causes: [],
-      recommendations: [],
+      type: 'frame_rate_failure';
+      severity: 'medium';
+      causes: [];
+      recommendations: [];
       environmentFactors: []
     };
 
@@ -157,7 +157,7 @@ export class PerformanceErrorRecovery {
       if (performance < 0.5') {'
         analysis.severity = 'high',
         analysis.causes.push('Severe performance degradation (< 50% of expected')'),'
-        analysis.recommendations.push('Check for resource-intensive operations'),
+        analysis.recommendations.push('Check for resource-intensive operations');
         analysis.recommendations.push('Consider reducing test complexity') } else if (performance < 0.8') {'
         analysis.severity = 'medium',
         analysis.causes.push('Moderate performance degradation (< 80% of expected')'),'
@@ -167,16 +167,16 @@ export class PerformanceErrorRecovery {
     // Environment analysis
     const environment = crossEnvironmentManager.getEnvironmentConfig(');'
     if (environment.type === 'node') {
-      analysis.environmentFactors.push('Node.js environment may have different performance characteristics'),
+      analysis.environmentFactors.push('Node.js environment may have different performance characteristics');
       analysis.recommendations.push('Consider using browser-specific thresholds') }
 
     if (process.env.CI') {'
-      analysis.environmentFactors.push('CI environment may have limited resources'),
+      analysis.environmentFactors.push('CI environment may have limited resources');
       analysis.recommendations.push('Use CI-specific performance thresholds') }
 
     // Check system load indicators
     if (context.systemLoad && context.systemLoad > 0.8') {'
-      analysis.causes.push('High system load detected'),
+      analysis.causes.push('High system load detected');
       analysis.recommendations.push('Retry test when system load is lower') }
 
     return analysis;
@@ -190,10 +190,10 @@ export class PerformanceErrorRecovery {
    */
   analyzeMemoryUsageFailure(error, context = {)') {'
     const analysis = {
-      type: 'memory_usage_failure',
-      severity: 'medium',
-      causes: [],
-      recommendations: [],
+      type: 'memory_usage_failure';
+      severity: 'medium';
+      causes: [];
+      recommendations: [];
       environmentFactors: []
     };
 
@@ -210,19 +210,19 @@ export class PerformanceErrorRecovery {
 
       if (memoryMB > 100') {'
         analysis.severity = 'high',
-        analysis.causes.push('Excessive memory usage detected'),
-        analysis.recommendations.push('Check for memory leaks'),
+        analysis.causes.push('Excessive memory usage detected');
+        analysis.recommendations.push('Check for memory leaks');
         analysis.recommendations.push('Review object pooling strategies') } else if (memoryMB > 50') {'
         analysis.severity = 'medium',
-        analysis.causes.push('High memory usage detected'),
+        analysis.causes.push('High memory usage detected');
         analysis.recommendations.push('Consider memory optimization') }
     }
 
     // Check for memory leak patterns
     if (error.message.includes('leak') || error.message.includes('growth')') {'
       analysis.severity = 'high',
-      analysis.causes.push('Memory leak pattern detected'),
-      analysis.recommendations.push('Implement proper cleanup in tests'),
+      analysis.causes.push('Memory leak pattern detected');
+      analysis.recommendations.push('Implement proper cleanup in tests');
       analysis.recommendations.push('Use memory profiling tools') }
 
     // Environment-specific analysis
@@ -240,10 +240,10 @@ export class PerformanceErrorRecovery {
    */
   analyzeRenderTimeFailure(error, context = {)') {'
     const analysis = {
-      type: 'render_time_failure',
-      severity: 'medium',
-      causes: [],
-      recommendations: [],
+      type: 'render_time_failure';
+      severity: 'medium';
+      causes: [];
+      recommendations: [];
       environmentFactors: []
     };
 
@@ -255,7 +255,7 @@ export class PerformanceErrorRecovery {
       if (actualTime > 100') {'
         analysis.severity = 'high',
         analysis.causes.push('Very slow rendering detected (> 100ms')'),'
-        analysis.recommendations.push('Profile rendering bottlenecks'),
+        analysis.recommendations.push('Profile rendering bottlenecks');
         analysis.recommendations.push('Consider render optimization') } else if (actualTime > 50') {'
         analysis.severity = 'medium',
         analysis.causes.push('Slow rendering detected (> 50ms')'),'
@@ -264,8 +264,8 @@ export class PerformanceErrorRecovery {
 
     // Check for specific rendering issues
     if (error.message.includes('canvas') || error.message.includes('draw')') {'
-      analysis.causes.push('Canvas rendering performance issue'),
-      analysis.recommendations.push('Optimize canvas drawing operations'),
+      analysis.causes.push('Canvas rendering performance issue');
+      analysis.recommendations.push('Optimize canvas drawing operations');
       analysis.recommendations.push('Use requestAnimationFrame properly') }
 
     return analysis;
@@ -279,27 +279,27 @@ export class PerformanceErrorRecovery {
    */
   analyzeThresholdFailure(error, context = {)') {'
     const analysis = {
-      type: 'threshold_failure',
-      severity: 'low',
-      causes: [],
-      recommendations: [],
+      type: 'threshold_failure';
+      severity: 'low';
+      causes: [];
+      recommendations: [];
       environmentFactors: []
     };
 
     // Check if threshold is too strict
     if (error.message.includes('expected') && error.message.includes('received')') {'
-      analysis.causes.push('Performance threshold may be too strict for current environment'),
-      analysis.recommendations.push('Consider environment-specific thresholds'),
+      analysis.causes.push('Performance threshold may be too strict for current environment');
+      analysis.recommendations.push('Consider environment-specific thresholds');
       analysis.recommendations.push('Use statistical validation instead of hard thresholds') }
 
     // Environment-specific threshold adjustments
     const environment = crossEnvironmentManager.getEnvironmentConfig(');'
     if (environment.type === 'node') {
-      analysis.environmentFactors.push('Node.js environment may need different thresholds'),
+      analysis.environmentFactors.push('Node.js environment may need different thresholds');
       analysis.recommendations.push('Apply Node.js-specific threshold adjustments') }
 
     if (process.env.CI') {'
-      analysis.environmentFactors.push('CI environment may need relaxed thresholds'),
+      analysis.environmentFactors.push('CI environment may need relaxed thresholds');
       analysis.recommendations.push('Use CI-specific threshold configuration') }
 
     return analysis;
@@ -313,10 +313,10 @@ export class PerformanceErrorRecovery {
    */
   analyzeTimeoutFailure(error, context = {)') {'
     const analysis = {
-      type: 'timeout_failure',
-      severity: 'medium',
-      causes: [],
-      recommendations: [],
+      type: 'timeout_failure';
+      severity: 'medium';
+      causes: [];
+      recommendations: [];
       environmentFactors: []
     };
 
@@ -331,14 +331,14 @@ export class PerformanceErrorRecovery {
         timeoutMs = timeoutValue * 1000 }
 
       if (timeoutMs < 5000') {'
-        analysis.causes.push('Timeout may be too short for performance tests'),
+        analysis.causes.push('Timeout may be too short for performance tests');
         analysis.recommendations.push('Increase timeout for performance tests') }
     }
 
     // Check for async operation issues
     if (error.message.includes('async') || error.message.includes('Promise')') {'
-      analysis.causes.push('Async operation timeout in performance test'),
-      analysis.recommendations.push('Review async operation timing'),
+      analysis.causes.push('Async operation timeout in performance test');
+      analysis.recommendations.push('Review async operation timing');
       analysis.recommendations.push('Add proper await/Promise handling') }
 
     return analysis;
@@ -352,10 +352,10 @@ export class PerformanceErrorRecovery {
    */
   analyzeEnvironmentFailure(error, context = {)') {'
     const analysis = {
-      type: 'environment_failure',
-      severity: 'medium',
-      causes: [],
-      recommendations: [],
+      type: 'environment_failure';
+      severity: 'medium';
+      causes: [];
+      recommendations: [];
       environmentFactors: []
     };
 
@@ -363,13 +363,13 @@ export class PerformanceErrorRecovery {
     
     // Environment-specific analysis
     if (environment.type === 'node') {
-      analysis.environmentFactors.push('Node.js environment limitations'),
-      analysis.recommendations.push('Use Node.js-appropriate performance testing'),
+      analysis.environmentFactors.push('Node.js environment limitations');
+      analysis.recommendations.push('Use Node.js-appropriate performance testing');
       analysis.recommendations.push('Consider browser environment for UI performance tests') }
 
     if (process.env.CI') {'
-      analysis.environmentFactors.push('CI environment resource constraints'),
-      analysis.recommendations.push('Use CI-optimized performance thresholds'),
+      analysis.environmentFactors.push('CI environment resource constraints');
+      analysis.recommendations.push('Use CI-optimized performance thresholds');
       analysis.recommendations.push('Consider retry strategies for CI') }
 
     // Platform-specific considerations
@@ -385,11 +385,11 @@ export class PerformanceErrorRecovery {
    */
   recoverFromFrameRateFailure(analysis: any') {'
     return {
-      success: true,
-      message: 'Frame rate failure recovery applied',
+      success: true;
+      message: 'Frame rate failure recovery applied';
       adjustments: {
-        thresholdReduction: analysis.severity === 'high' ? 0.3 : 0.1,
-        retryWithBackoff: true,
+        thresholdReduction: analysis.severity === 'high' ? 0.3 : 0.1;
+        retryWithBackoff: true;
         environmentSpecificThresholds: true,,
       guidance: analysis.recommendations
     };
@@ -397,11 +397,11 @@ export class PerformanceErrorRecovery {
 
   recoverFromMemoryUsageFailure(analysis: any') {'
     return {
-      success: true,
-      message: 'Memory usage failure recovery applied',
+      success: true;
+      message: 'Memory usage failure recovery applied';
       adjustments: {
-        memoryThresholdIncrease: analysis.severity === 'high' ? 0.5 : 0.2,
-        enableGarbageCollection: true,
+        memoryThresholdIncrease: analysis.severity === 'high' ? 0.5 : 0.2;
+        enableGarbageCollection: true;
         memoryMonitoring: true,,
       guidance: analysis.recommendations
     };
@@ -409,11 +409,11 @@ export class PerformanceErrorRecovery {
 
   recoverFromRenderTimeFailure(analysis: any') {'
     return {
-      success: true,
-      message: 'Render time failure recovery applied',
+      success: true;
+      message: 'Render time failure recovery applied';
       adjustments: {
-        timeoutIncrease: analysis.severity === 'high' ? 2.0 : 1.5,
-        renderOptimization: true,
+        timeoutIncrease: analysis.severity === 'high' ? 2.0 : 1.5;
+        renderOptimization: true;
         frameSkipping: analysis.severity === 'high'
       },
       guidance: analysis.recommendations
@@ -422,11 +422,11 @@ export class PerformanceErrorRecovery {
 
   recoverFromThresholdFailure(analysis: any') {'
     return {
-      success: true,
-      message: 'Threshold failure recovery applied',
+      success: true;
+      message: 'Threshold failure recovery applied';
       adjustments: {
-        dynamicThresholds: true,
-        statisticalValidation: true,
+        dynamicThresholds: true;
+        statisticalValidation: true;
         environmentAdjustment: true,,
       guidance: analysis.recommendations
     };
@@ -434,11 +434,11 @@ export class PerformanceErrorRecovery {
 
   recoverFromTimeoutFailure(analysis: any') {'
     return {
-      success: true,
-      message: 'Timeout failure recovery applied',
+      success: true;
+      message: 'Timeout failure recovery applied';
       adjustments: {
-        timeoutExtension: 2.0,
-        asyncOptimization: true,
+        timeoutExtension: 2.0;
+        asyncOptimization: true;
         sequentialExecution: true,,
       guidance: analysis.recommendations
     };
@@ -446,11 +446,11 @@ export class PerformanceErrorRecovery {
 
   recoverFromEnvironmentFailure(analysis: any') {'
     return {
-      success: true,
-      message: 'Environment failure recovery applied',
+      success: true;
+      message: 'Environment failure recovery applied';
       adjustments: {
-        environmentSpecificConfig: true,
-        adaptiveThresholds: true,
+        environmentSpecificConfig: true;
+        adaptiveThresholds: true;
         resourceMonitoring: true,,
       guidance: analysis.recommendations
     };
@@ -463,15 +463,14 @@ export class PerformanceErrorRecovery {
    * @returns {Object} Recovery result
    */
   handlePerformanceTestFailure(error, context = {)') {'
-    console.log('PerformanceErrorRecovery: Handling performance test failure...', error.message),
-
+    console.log('PerformanceErrorRecovery: Handling performance test failure...', error.message);
     // Log the error
     const errorEntry = {
-      timestamp: new Date().toISOString(),
-      error: error.message,
-      stack: error.stack,
-      context: context,
-      recoveryAttempted: false,;
+      timestamp: new Date().toISOString();
+      error: error.message;
+      stack: error.stack;
+      context: context;
+      recoveryAttempted: false;
     this.errorLog.push(errorEntry);
 
     // Find appropriate strategy
@@ -479,28 +478,27 @@ export class PerformanceErrorRecovery {
       if (strategy.detect(error)') {'
         console.log(`PerformanceErrorRecovery: Using strategy "${strategyName")"`,"
         
-        const, analysis = strategy.analyze(error, context),
-        const, recovery = strategy.recover(analysis),
-        
+        const, analysis = strategy.analyze(error, context);
+        const, recovery = strategy.recover(analysis);
         // Update, error log, errorEntry.recoveryAttempted = true,
         errorEntry.recoveryStrategy = strategyName,
         errorEntry.analysis = analysis,
         errorEntry.recoveryResult = recovery,
         
         // Store, analysis
-        this.analysisResults.set(strategyName, analysis"});"
+        this.analysisResults.set(strategyName, analysis"};"
         
         return {
-          strategy: strategyName,
-          description: strategy.description,
-          analysis: analysis,
+          strategy: strategyName;
+          description: strategy.description;
+          analysis: analysis;
           recovery: recovery }
     }
 
     // No specific strategy found
     const generalRecovery = {
-      success: false,
-      message: 'No specific recovery strategy available',
+      success: false;
+      message: 'No specific recovery strategy available';
       guidance: [
         'Review performance test configuration',
         'Check environment-specific settings',
@@ -514,10 +512,10 @@ export class PerformanceErrorRecovery {
     errorEntry.recoveryResult = generalRecovery;
 
     return {
-      strategy: 'general',
-      description: 'General performance failure guidance',
+      strategy: 'general';
+      description: 'General performance failure guidance';
       analysis: { type: 'unknown', severity: 'medium', causes: [], recommendations: [] };
-      recovery: generalRecovery,;
+      recovery: generalRecovery;
   }
 
   /**
@@ -526,42 +524,40 @@ export class PerformanceErrorRecovery {
    * @param {Object} options - Retry options
    * @returns {Promise<Object>} Retry result
    */
-  async retryPerformanceTest(testFunction, options = {}) {
+  async retryPerformanceTest(testFunction, options = {} {
     const config = { ...this.retryConfig, ...options };
-    const results: any[] = [],
+    const results: any[] = [];
     
     for (let attempt = 0; attempt <= config.maxRetries; attempt++) {
       try {
-        console.log(`PerformanceErrorRecovery: Attempt ${attempt + 1}/${config.maxRetries + 1)`),
+        console.log(`PerformanceErrorRecovery: Attempt ${attempt + 1}/${config.maxRetries + 1)`);
         
-        const, startTime = Date.now(),
-        const, result = await, testFunction(),
-        const, endTime = Date.now(),
-        
+        const, startTime = Date.now();
+        const, result = await, testFunction();
+        const, endTime = Date.now();
         const, success = {
-          success: true,
-          attempt: attempt + 1,
-          result: result,
-          duration: endTime - startTime,
-          timestamp: new, Date().toISOString(});
+          success: true;
+          attempt: attempt + 1;
+          result: result;
+          duration: endTime - startTime;
+          timestamp: new, Date().toISOString(};
         };
         
         results.push(success: any);
-        console.log(`PerformanceErrorRecovery: Test succeeded on attempt ${attempt + 1)`});
+        console.log(`PerformanceErrorRecovery: Test succeeded on attempt ${attempt + 1)`};
         return success;
         
       } catch (error) {
         const failure = {
-          success: false,
-          attempt: attempt + 1,
-          error: error.message,
+          success: false;
+          attempt: attempt + 1;
+          error: error.message;
           timestamp: new Date().toISOString() };
         
         results.push(failure: any);
-        
         if (attempt < config.maxRetries) {
-          const delay = Math.min(),
-            config.baseDelay * Math.pow(config.backoffFactor, attempt),
+          const delay = Math.min();
+            config.baseDelay * Math.pow(config.backoffFactor, attempt);
             config.maxDelay
           ),
           
@@ -573,9 +569,9 @@ export class PerformanceErrorRecovery {
     }
 
     return {
-      success: false,
-      attempts: results.length,
-      results: results,
+      success: false;
+      attempts: results.length;
+      results: results;
       message: 'All retry attempts failed'
     };
   }
@@ -586,14 +582,14 @@ export class PerformanceErrorRecovery {
    * @returns {Array} Detected patterns
    */
   detectFailurePatterns(errorHistory = this.errorLog) {
-    const detectedPatterns: any[] = [],
+    const detectedPatterns: any[] = [];
     
     for (const [patternName, pattern] of this.failurePatterns) {
       if (pattern.detect(errorHistory) {
         detectedPatterns.push({
-          name: patternName,
-          description: pattern.description,
-          severity: pattern.severity,
+          name: patternName;
+          description: pattern.description;
+          severity: pattern.severity;
           occurrences: errorHistory.length) }
     }
     
@@ -605,17 +601,16 @@ export class PerformanceErrorRecovery {
    * @returns {Object} Error report
    */
   getErrorReport() {
-    const patterns = this.detectFailurePatterns(),
-    
+    const patterns = this.detectFailurePatterns();
     return {
-      timestamp: new Date().toISOString(),
-      totalErrors: this.errorLog.length,
-      recoveryAttempts: this.errorLog.filter(log => log.recoveryAttempted).length,
+      timestamp: new Date().toISOString();
+      totalErrors: this.errorLog.length;
+      recoveryAttempts: this.errorLog.filter(log => log.recoveryAttempted).length;
       successfulRecoveries: this.errorLog.filter(log => 
         log.recoveryAttempted && log.recoveryResult? .success).length, : undefined
-      errors: this.errorLog,
-      detectedPatterns: patterns,
-      analysisResults: Object.fromEntries(this.analysisResults,
+      errors: this.errorLog;
+      detectedPatterns: patterns;
+      analysisResults: Object.fromEntries(this.analysisResults;
       availableStrategies: Array.from(this.performanceStrategies.keys(
       recommendations: this.generateRecommendations(patterns) }
 
@@ -625,26 +620,26 @@ export class PerformanceErrorRecovery {
    * @returns {Array<string>} Recommendations
    */
   generateRecommendations(patterns = []) {
-    const recommendations: any[] = [],
+    const recommendations: any[] = [];
     
     // Pattern-based recommendations
     for (const pattern of patterns) {
       switch (pattern.name') {'
         case 'consistent_failure':
-          recommendations.push('Consider adjusting performance thresholds permanently'),
-          recommendations.push('Review test environment configuration'),
+          recommendations.push('Consider adjusting performance thresholds permanently');
+          recommendations.push('Review test environment configuration');
           break,
         case 'intermittent_failure':
-          recommendations.push('Implement retry strategies for flaky performance tests'),
-          recommendations.push('Use statistical validation instead of hard thresholds'),
+          recommendations.push('Implement retry strategies for flaky performance tests');
+          recommendations.push('Use statistical validation instead of hard thresholds');
           break,
         case 'environment_degradation':
-          recommendations.push('Monitor system resources during test execution'),
-          recommendations.push('Consider test isolation improvements'),
+          recommendations.push('Monitor system resources during test execution');
+          recommendations.push('Consider test isolation improvements');
           break,
         case 'threshold_sensitivity':
-          recommendations.push('Use environment-adaptive thresholds'),
-          recommendations.push('Implement coefficient of variation validation'),
+          recommendations.push('Use environment-adaptive thresholds');
+          recommendations.push('Implement coefficient of variation validation');
           break }
     }
 
@@ -654,15 +649,15 @@ export class PerformanceErrorRecovery {
     const renderErrors = this.errorLog.filter(log => log.analysis?.type === 'render_time_failure').length;
 
     if (frameRateErrors > 0') {'
-      recommendations.push('Consider frame rate optimization strategies'),
+      recommendations.push('Consider frame rate optimization strategies');
       recommendations.push('Use environment-specific FPS thresholds') }
 
     if (memoryErrors > 0') {'
-      recommendations.push('Implement memory usage monitoring'),
+      recommendations.push('Implement memory usage monitoring');
       recommendations.push('Review object pooling and garbage collection') }
 
     if (renderErrors > 0') {'
-      recommendations.push('Profile rendering pipeline performance'),
+      recommendations.push('Profile rendering pipeline performance');
       recommendations.push('Consider render optimization techniques') }
 
     if (this.errorLog.length === 0') {'

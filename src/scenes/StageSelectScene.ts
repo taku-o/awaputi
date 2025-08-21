@@ -11,8 +11,7 @@ export class StageSelectScene extends Scene { private eventStageDataManager!: Ev
     
     constructor(gameEngine: any) {
     
-        super(gameEngine),
-        
+        super(gameEngine);
         // サブコンポーネントの初期化
         this.eventStageDataManager = new EventStageDataManager(this);
         this.stageSelectDataManager = new StageSelectDataManager(this);
@@ -29,7 +28,7 @@ export class StageSelectScene extends Scene { private eventStageDataManager!: Ev
      * シーン開始時の処理
      */
     enter(): void { // サブコンポーネントの初期化
-        this.stageSelectDataManager.initialize(),
+        this.stageSelectDataManager.initialize();
         this.eventStageDataManager.initialize() }
 
     /**
@@ -49,7 +48,7 @@ export class StageSelectScene extends Scene { private eventStageDataManager!: Ev
         ','
         // 背景
         context.fillStyle = '#001122',
-        context.fillRect(0, 0, canvas.width, canvas.height),
+        context.fillRect(0, 0, canvas.width, canvas.height);
         ','
         // タイトル
         context.save('',
@@ -57,22 +56,16 @@ export class StageSelectScene extends Scene { private eventStageDataManager!: Ev
         context.font = 'bold, 32px Arial',
         context.textAlign = 'center',
         context.textBaseline = 'top',')'
-        context.fillText('ステージ選択', canvas.width / 2, 20),
-        context.restore(),
-        
+        context.fillText('ステージ選択', canvas.width / 2, 20);
+        context.restore();
         // プレイヤー情報（ステージ選択データマネージャーに委譲）
-        this.stageSelectDataManager.renderPlayerInfo(context),
-        
+        this.stageSelectDataManager.renderPlayerInfo(context);
         // イベントセクション（イベントステージデータマネージャーに委譲）
-        this.eventStageDataManager.renderEventSection(context),
-        
+        this.eventStageDataManager.renderEventSection(context);
         // イベント通知バッジ（イベントステージデータマネージャーに委譲）
-        this.eventStageDataManager.renderEventNotificationBadge(context),
-        
+        this.eventStageDataManager.renderEventNotificationBadge(context);
         // 通常ステージリスト（ステージ選択データマネージャーに委譲）
-        this.stageSelectDataManager.renderStageList(context),
-        
-        
+        this.stageSelectDataManager.renderStageList(context);
         // 操作説明（ステージ選択データマネージャーに委譲）
         this.stageSelectDataManager.renderControls(context) }
     
@@ -92,8 +85,7 @@ export class StageSelectScene extends Scene { private eventStageDataManager!: Ev
             switch(keyEvent.code) {
 
                 case 'KeyH':','
-                    this.gameEngine.sceneManager.switchScene('help'),
-
+                    this.gameEngine.sceneManager.switchScene('help');
                     break,
                 case 'Escape':','
                     this.sceneManager.switchScene('menu') }
@@ -106,7 +98,7 @@ export class StageSelectScene extends Scene { private eventStageDataManager!: Ev
      * クリック処理
      */
     handleClick(event: MouseEvent): void { const canvas = this.gameEngine.canvas,
-        const rect = canvas.getBoundingClientRect(),
+        const rect = canvas.getBoundingClientRect();
         const x = event.clientX - rect.left,
         const y = event.clientY - rect.top,
         
@@ -156,14 +148,14 @@ export class StageSelectScene extends Scene { private eventStageDataManager!: Ev
     /**
      * デバッグ情報の取得
      */
-    getDebugInfo(): any { return { stage: this.stageSelectDataManager.getDebugInfo() };
+    getDebugInfo(): any { return { stage: this.stageSelectDataManager.getDebugInfo() },
             event: this.eventStageDataManager.getEventData(); 
     }
 
     /**
      * 状態のリセット
      */
-    resetState(): void { this.stageSelectDataManager.resetStageSelection(),
+    resetState(): void { this.stageSelectDataManager.resetStageSelection();
         this.eventStageDataManager.setEventState({)
             selectedEventIndex: -1,
     showingEvents: false,')',

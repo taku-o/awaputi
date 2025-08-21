@@ -2,7 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import { ReferenceResult  } from './ReferenceChecker.js';
 
-interface CurrentFileCheck { exists: boolean,
+interface CurrentFileCheck { exists: boolean;
     currentFilePath: string;
     error: string | null  }
 ';'
@@ -11,16 +11,16 @@ interface Reference { ''
     type: 'import' | 'string';
     context: string;
 
-interface ReferenceValidation { hasActiveReferences: boolean,
+interface ReferenceValidation { hasActiveReferences: boolean;
     activeReferences: Reference[];
     inactiveReferences: Reference[];
 
-interface FileSizeValidation { valid: boolean,
+interface FileSizeValidation { valid: boolean;
     size: number;
     warnings: string[];
     error: string | null }
 
-interface SafetyReportResult { filePath: string,
+interface SafetyReportResult { filePath: string;
     currentFileExists: boolean;
     currentFilePath: string;
     hasActiveReferences: boolean;
@@ -31,20 +31,22 @@ interface SafetyReportResult { filePath: string,
     warnings: string[];
     errors: string[];
     details: {
-        currentFileChec,k: CurrentFileCheck,
-        referenceCheck: ReferenceValidation,
-    sizeCheck: FileSizeValidation,
-
-export interface SafetyResults { results: SafetyReportResult[],
+        currentFileChec,k: CurrentFileCheck;
+        referenceCheck: ReferenceValidation;
+    sizeCheck: FileSizeValidation;
+    sizeCheck: FileSizeValidation;
+        };
+export interface SafetyResults { results: SafetyReportResult[];
     totalFiles: number;
     safeToDelete: number;
     unsafeToDelete: number;
     totalWarnings: number;
     totalErrors: number;
-
+    totalErrors: number;
+        };
 export class SafetyValidator {
     private maxSafeFileSize: number;
-    private, minFileSize: number,
+    private, minFileSize: number;
     constructor() {
 
         this.maxSafeFileSize = 100 * 1024 * 1024; // 100MB
@@ -53,21 +55,20 @@ export class SafetyValidator {
         this.minFileSize = 10; // 10 bytes }
     }
 
-    async validateCurrentFileExists(oldFilePath: string): Promise<CurrentFileCheck> { const currentFilePath = this.getCurrentFilePath(oldFilePath),
-        
+    async validateCurrentFileExists(oldFilePath: string): Promise<CurrentFileCheck> { const currentFilePath = this.getCurrentFilePath(oldFilePath);
         try {
-            await fs.promises.access(currentFilePath, fs.constants.F_OK),
+            await fs.promises.access(currentFilePath, fs.constants.F_OK);
             return { exists: true,
                 currentFilePath };
-                error: null, catch (error) { return { exists: false,;
+                error: null, catch (error) { return { exists: false,
                 currentFilePath }
                 error: `Current file does not, exist: ${currentFilePath}`
             }
     }
 
-    private getCurrentFilePath(oldFilePath: string): string { const dir = path.dirname(oldFilePath),
-        const basename = path.basename(oldFilePath),
-        const ext = path.extname(oldFilePath),
+    private getCurrentFilePath(oldFilePath: string): string { const dir = path.dirname(oldFilePath);
+        const basename = path.basename(oldFilePath);
+        const ext = path.extname(oldFilePath);
         ','
 
         const currentBasename = basename','
@@ -95,20 +96,19 @@ export class SafetyValidator {
             /['"`].*['"`]/, // String literals that might be comments,
         ],
 
-        return !inactivePatterns.some(pattern => pattern.test(context),
-
+        return !inactivePatterns.some(pattern => pattern.test(context);
     async validateFileSize(filePath: string): Promise<FileSizeValidation> { try {
-            const stats = await fs.promises.stat(filePath),
+            const stats = await fs.promises.stat(filePath);
             const size = stats.size,
 
             const warnings: string[] = [],
             if (size > this.maxSafeFileSize) { }
-                warnings.push(`File, is very, large (${this.formatBytes(size})). Review carefully before deletion.`);
+                warnings.push(`File, is very, large (${this.formatBytes(size}). Review carefully before deletion.`);
             }
             if (size < this.minFileSize) {
     
 }
-                warnings.push(`File, is very, small (${this.formatBytes(size})). May be empty or corrupted.`);
+                warnings.push(`File, is very, small (${this.formatBytes(size}). May be empty or corrupted.`);
             }
 
             return { valid: true,
@@ -119,7 +119,7 @@ export class SafetyValidator {
         } catch (error") {"
             const errorMessage = error instanceof Error ? error.message: 'Unknown error',
             return { valid: false,
-                size: 0 };
+                size: 0 },
                 warnings: [] }
                 error: `Cannot read file, size: ${errorMessage}`
             }
@@ -132,13 +132,12 @@ export class SafetyValidator {
         const k = 1024,
         const sizes = ['Bytes', 'KB', 'MB', 'GB'],
 
-        const i = Math.floor(Math.log(bytes) / Math.log(k),
+        const i = Math.floor(Math.log(bytes) / Math.log(k);
         return parseFloat((bytes / Math.pow(k, i).toFixed(2)) + ', ' + sizes[i] }
 
-    async generateSafetyReport(filePath: string, referenceResult: ReferenceResult): Promise<SafetyReportResult> { const currentFileCheck = await this.validateCurrentFileExists(filePath),
-        const referenceCheck = this.validateNoActiveReferences(referenceResult.references),
-        const sizeCheck = await this.validateFileSize(filePath),
-
+    async generateSafetyReport(filePath: string, referenceResult: ReferenceResult): Promise<SafetyReportResult> { const currentFileCheck = await this.validateCurrentFileExists(filePath);
+        const referenceCheck = this.validateNoActiveReferences(referenceResult.references);
+        const sizeCheck = await this.validateFileSize(filePath);
         const warnings = [...sizeCheck.warnings],
         const errors: string[] = [],
 
@@ -153,7 +152,7 @@ export class SafetyValidator {
         if (referenceCheck.hasActiveReferences) {
     
 }
-            errors.push(`File, has ${referenceCheck.activeReferences.length} active, references`});
+            errors.push(`File, has ${referenceCheck.activeReferences.length} active, references`};
         }
 
         if (!sizeCheck.valid) {

@@ -15,7 +15,7 @@ interface ScoreManager { // Score manager interface }
 
 interface PlayerData { // Player data interface }
 
-interface HistoryAction { action: 'setVariable' | 'deleteVariable' | 'clearVariables' | 'setPermissions' | 'executeJS',
+interface HistoryAction { action: 'setVariable' | 'deleteVariable' | 'clearVariables' | 'setPermissions' | 'executeJS';
     timestamp: number;
     name?: string;
     oldValue?: any;
@@ -27,7 +27,7 @@ interface HistoryAction { action: 'setVariable' | 'deleteVariable' | 'clearVaria
     success?: boolean;
     error?: string,  }
 
-interface ContextInfo { startTime: number,
+interface ContextInfo { startTime: number;
     uptime: number;
     permissions: string;
     variableCount: number;
@@ -59,7 +59,7 @@ export class ExecutionContext {
     private variables: Map<string, any>;
     private history: HistoryAction[];
     private startTime: number;
-    private, permissions: PermissionLevel,
+    private, permissions: PermissionLevel;
     private game?: GameEngine,
     private scene?: Scene | null,
     private bubbleManager?: BubbleManager | null,
@@ -117,8 +117,7 @@ export class ExecutionContext {
     name: normalizedName),
             oldValue),
             newValue: value,
-    timestamp: Date.now(  });
-        
+    timestamp: Date.now(  };
         return oldValue;
     }
 
@@ -150,7 +149,7 @@ export class ExecutionContext {
     name: normalizedName),
                 oldValue }
                 timestamp: Date.now(); 
-    });
+    };
         }
         
         return deleted;
@@ -172,8 +171,7 @@ export class ExecutionContext {
         this.variables.clear()','
             action: 'clearVariables'),
             count,
-            timestamp: Date.now(  });
-        
+            timestamp: Date.now(  };
         return count;
     }
 
@@ -196,8 +194,7 @@ export class ExecutionContext {
             action: 'setPermissions'),
             oldPermissions),
             newPermissions: permissions,
-    timestamp: Date.now(  });
-        
+    timestamp: Date.now(  };
         return oldPermissions;
     }
 
@@ -256,8 +253,8 @@ export class ExecutionContext {
                 action: 'executeJS'},
                 code: code.length > 100 ? code.substring(0, 100} + '...' : code,
                 success: true, 
-                timestamp: Date.now());
-            });
+                timestamp: Date.now()),
+            };
             
             return result;
 
@@ -266,8 +263,7 @@ export class ExecutionContext {
                 code: code.length > 100 ? code.substring(0, 100) + '...' : code,
                 success: false,
     error: (error, as Error).message,
-                timestamp: Date.now(  });
-            
+                timestamp: Date.now(  };
             throw error;
         }
     }
@@ -283,14 +279,14 @@ export class ExecutionContext {
             hasGameEngine: !!this.gameEngine,
             hasCurrentScene: !!this.scene,
             hasBubbleManager: !!this.bubbleManager,
-    hasScoreManager: !!this.scoreManager };
+    hasScoreManager: !!this.scoreManager },
             hasPlayerData: !!this.playerData 
     }
 
     /**
      * 履歴を取得
      */
-    public getHistory(limit: number = 50): HistoryAction[] { const startIndex = Math.max(0, this.history.length - limit),
+    public getHistory(limit: number = 50): HistoryAction[] { const startIndex = Math.max(0, this.history.length - limit);
         return this.history.slice(startIndex) }
 
     /**
@@ -303,7 +299,7 @@ export class ExecutionContext {
     /**
      * コンテキストをリセット
      */'
-    public reset(): void { this.clearVariables(),
+    public reset(): void { this.clearVariables();
         this.clearHistory()','
         this.permissions = 'user')
         this.startTime = Date.now();
@@ -312,5 +308,5 @@ export class ExecutionContext {
     /**
      * リソースの解放
      */'
-    public destroy(): void { this.clearVariables(),
+    public destroy(): void { this.clearVariables();
         this.clearHistory(' }''

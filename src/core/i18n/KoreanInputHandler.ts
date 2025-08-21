@@ -5,46 +5,46 @@ import { getErrorHandler  } from '../../utils/ErrorHandler.js';
  */
 
 // 型定義
-export interface OptimizationSettings { debounceDelay: number,
+export interface OptimizationSettings { debounceDelay: number;
     autoComplete: boolean;
     smartSpacing: boolean;
     predictiveText: boolean;
 
-export interface HangulComponent { char: string,
+export interface HangulComponent { char: string;
     chosung: string;
     jungsung: string;
     jongsung: string;
 
-export interface JamoComponent { char: string,
+export interface JamoComponent { char: string;
     type: JamoType;
 
-export interface HangulAnalysis { char: string,
+export interface HangulAnalysis { char: string;
     chosung?: string;
     jungsung?: string;
     jongsung?: string;
     type?: JamoType;
 
-export interface KoreanTextAnalysis { length: number,
+export interface KoreanTextAnalysis { length: number;
     syllables: number;
     jamo: number;
     words: string[];
     particles: string[];
 
-export interface InputEventHandlers { compositionstart: (event: CompositionEvent) => void,
+export interface InputEventHandlers { compositionstart: (event: CompositionEvent) => void;
     compositionupdate: (event: CompositionEvent) => void;
     compositionend: (event: CompositionEvent) => void;
     input: (event: InputEvent) => void;
     keydown: (event: KeyboardEvent') => void  }'
 }
 
-export interface SpacingPattern { pattern: RegExp,
+export interface SpacingPattern { pattern: RegExp;
     replace: string;
 
-export interface HangulDecomposition { chosung: string,
+export interface HangulDecomposition { chosung: string;
     jungsung: string;
     jongsung: string;
 
-export interface KoreanInputStats { isComposing: boolean,
+export interface KoreanInputStats { isComposing: boolean;
     compositionText: string;
     attachedInputs: number;
     settings: OptimizationSettings;
@@ -58,13 +58,13 @@ export type InputElementType = HTMLInputElement | HTMLTextAreaElement;
 
 export class KoreanInputHandler {
     // ハングル文字の構成要素
-    private readonly chosung: string[],
-    private readonly jungsung: string[],
-    private readonly jongsung: string[],
+    private readonly chosung: string[];
+    private readonly jungsung: string[];
+    private readonly jongsung: string[];
     
     // ハングル文字コード範囲
-    private readonly HANGUL_START: number,
-    private readonly HANGUL_END: number,
+    private readonly HANGUL_START: number;
+    private readonly HANGUL_END: number;
     
     // IME状態管理
     private isComposing: boolean;
@@ -89,9 +89,9 @@ export class KoreanInputHandler {
         
         // 입력 최적화 설정
         this.optimizationSettings = {
-            debounceDelay: 100,
-            autoComplete: true,
-            smartSpacing: true,
+            debounceDelay: 100;
+            autoComplete: true;
+            smartSpacing: true;
     predictiveText: false,))
         // 이벤트 리스너
         this.inputListeners = new Map<HTMLElement, InputEventHandlers>();
@@ -133,7 +133,7 @@ export class KoreanInputHandler {
                 compositionupdate: this.handleCompositionUpdate.bind(this),
                 compositionend: this.handleCompositionEnd.bind(this),
                 input: this.handleInput.bind(this,
-    keydown: this.handleKeyDown.bind(this  };
+    keydown: this.handleKeyDown.bind(this  },
             
             // 이벤트 리스너 등록
             Object.entries(handlers).forEach(([event, handler]) => { inputElement.addEventListener(event handler as EventListener) };
@@ -155,7 +155,7 @@ export class KoreanInputHandler {
      * 입력 필드에서 한국어 최적화 제거
      */
     detachFromInput(inputElement: HTMLElement): boolean { try {
-            const handlers = this.inputListeners.get(inputElement),
+            const handlers = this.inputListeners.get(inputElement);
             if (!handlers) {
     
 }
@@ -181,7 +181,7 @@ export class KoreanInputHandler {
         (inputElement, as any').style.imeMode = 'active','
         ','
         // 한국어 입력 관련 속성
-        inputElement.setAttribute('lang', 'ko'),
+        inputElement.setAttribute('lang', 'ko');
         inputElement.setAttribute('inputmode', 'text',
         ','
         // 자동 완성 설정
@@ -197,7 +197,7 @@ export class KoreanInputHandler {
     /**
      * Composition 시작 처리'
      */''
-    private handleCompositionStart(event: CompositionEvent): void { this.isComposing = true;
+    private handleCompositionStart(event: CompositionEvent): void { this.isComposing = true,
         this.compositionText = ';'
         console.log('Korean, composition started') }'
     
@@ -218,7 +218,7 @@ export class KoreanInputHandler {
     /**
      * Composition 종료 처리
      */
-    private handleCompositionEnd(event: CompositionEvent): void { this.isComposing = false;
+    private handleCompositionEnd(event: CompositionEvent): void { this.isComposing = false,
         
         // 최종 입력된 한글 처리
         if (event.data && this.isHangul(event.data) { }
@@ -259,12 +259,11 @@ export class KoreanInputHandler {
      */
     private processKoreanInput(text: string, inputElement: HTMLElement): void { try {
             // 입력된 텍스트 분석
-            const analysis = this.analyzeKoreanText(text),
-            
+            const analysis = this.analyzeKoreanText(text);
             // 최적화 적용
             if (this.optimizationSettings.autoComplete) {
                 // 자동 완성 제안
-                const suggestions = this.getAutoCompleteSuggestions(text),
+                const suggestions = this.getAutoCompleteSuggestions(text);
                 if (suggestions.length > 0) {
             }
 
@@ -283,7 +282,7 @@ export class KoreanInputHandler {
     private optimizeKoreanText(inputElement: InputElementType): void { const text = inputElement.value,
         
         // 자모 분리 현상 수정
-        const fixed = this.fixSeparatedJamo(text),
+        const fixed = this.fixSeparatedJamo(text);
         if (fixed !== text) {
             inputElement.value = fixed }
 
@@ -292,7 +291,7 @@ export class KoreanInputHandler {
         
         // 띄어쓰기 최적화
         if (this.optimizationSettings.smartSpacing) {
-            const spaced = this.optimizeSpacing(inputElement.value),
+            const spaced = this.optimizeSpacing(inputElement.value);
             if (spaced !== inputElement.value) {
         }
                 inputElement.value = spaced; }
@@ -314,12 +313,11 @@ export class KoreanInputHandler {
         
         for (const char of text) {
         
-            const code = char.charCodeAt(0),
-            
+            const code = char.charCodeAt(0);
             if (code >= this.HANGUL_START && code <= this.HANGUL_END) {
                 // 완성형 한글 분해
                 const offset = code - this.HANGUL_START,
-                const chosungIndex = Math.floor(offset / (21 * 28),
+                const chosungIndex = Math.floor(offset / (21 * 28);
                 const jungsungIndex = Math.floor((offset % (21 * 28) / 28'),'
                 const jongsungIndex = offset % 28,
                 
@@ -385,10 +383,10 @@ export class KoreanInputHandler {
         const particles = ['은', '는', '이', '가', '을', '를', '에', '에서', '으로', '로', '와', '과', '의', '도', '만', '까지],'
         ','
 
-        particles.forEach(particle => { ),
+        particles.forEach(particle => { );
             const pattern = new RegExp(` ${particle}`, 'g'}
             if (pattern.test(text) { }
-                input.value = text.replace(pattern, particle});
+                input.value = text.replace(pattern, particle};
             }
         }
     
@@ -421,10 +419,10 @@ export class KoreanInputHandler {
             syllables: 0,
             jamo: 0,
             words: [],
-    particles: [] };
+    particles: [] },
         // 음절 수 계산
         for (const char of text) {
-            const code = char.charCodeAt(0),
+            const code = char.charCodeAt(0);
             if (code >= this.HANGUL_START && code <= this.HANGUL_END) {
         }
                 analysis.syllables++; }
@@ -468,7 +466,7 @@ export class KoreanInputHandler {
      * 한글 조합 (자모 -> 음절)'
      */''
     composeHangul(chosung: string, jungsung: string, jongsung: string = '): string | null { const chosungIndex = this.chosung.indexOf(chosung),'
-        const jungsungIndex = this.jungsung.indexOf(jungsung),
+        const jungsungIndex = this.jungsung.indexOf(jungsung);
         const jongsungIndex = jongsung ? this.jongsung.indexOf(jongsung) : 0,
         
         if (chosungIndex === -1 || jungsungIndex === -1 || jongsungIndex === -1) {
@@ -487,8 +485,7 @@ export class KoreanInputHandler {
     /**
      * 한글 분해 (음절 -> 자모)
      */
-    decomposeHangul(syllable: string): HangulDecomposition | null { const code = syllable.charCodeAt(0),
-        
+    decomposeHangul(syllable: string): HangulDecomposition | null { const code = syllable.charCodeAt(0);
         if (code < this.HANGUL_START || code > this.HANGUL_END) {
     
 }
@@ -510,7 +507,7 @@ export class KoreanInputHandler {
      * 설정 업데이트
      */'
     updateSettings(settings: Partial<OptimizationSettings>): void { ''
-        Object.assign(this.optimizationSettings, settings),
+        Object.assign(this.optimizationSettings, settings);
         console.log('Korean input settings updated:', this.optimizationSettings }
     
     /**
@@ -519,7 +516,7 @@ export class KoreanInputHandler {
     getStats(): KoreanInputStats { return { isComposing: this.isComposing,
             compositionText: this.compositionText,
             attachedInputs: this.inputListeners.size,
-    settings: this.optimizationSettings };
+    settings: this.optimizationSettings },
             hasKoreanIME: this.detectKoreanIME(); 
     }
     

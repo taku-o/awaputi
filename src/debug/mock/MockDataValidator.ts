@@ -3,11 +3,11 @@
  * モックデータの検証クラス
  */
 
-interface ValidationResult { isValid: boolean,
+interface ValidationResult { isValid: boolean;
     errors: string[];
     warnings: string[];
 
-interface ValidationRule { field: string,
+interface ValidationRule { field: string;
     type: 'required' | 'type' | 'range' | 'format' | 'custom';
     constraint: any;
     message: string;
@@ -53,9 +53,8 @@ export class MockDataValidator { private bubbleRules: ValidationRule[] = [' }'
 
     public validateUserData(user: any): ValidationResult { return this.validateData(user, this.userRules) }
 
-    public validateBubbleArray(bubbles: any[]): ValidationResult { const results = bubbles.map(bubble => this.validateBubbleData(bubble),
-        return this.combineResults(results),
-
+    public validateBubbleArray(bubbles: any[]): ValidationResult { const results = bubbles.map(bubble => this.validateBubbleData(bubble);
+        return this.combineResults(results);
     public validateDataStructure(data: any, expectedStructure: any): ValidationResult { const errors: string[] = [],
         const warnings: string[] = [],
 
@@ -123,17 +122,16 @@ export class MockDataValidator { private bubbleRules: ValidationRule[] = [' }'
             warnings }
         }
 
-    private combineResults(results: ValidationResult[]): ValidationResult { const allErrors = results.flatMap(r => r.errors),
-        const allWarnings = results.flatMap(r => r.warnings),
-
+    private combineResults(results: ValidationResult[]): ValidationResult { const allErrors = results.flatMap(r => r.errors);
+        const allWarnings = results.flatMap(r => r.warnings);
         return { isValid: allErrors.length === 0,
-            errors: allErrors,;
+            errors: allErrors,
             warnings: allWarnings,
 
     private validateStructureRecursive(;
         data: any,
         structure: any,
-        path: string),
+        path: string);
         errors: string[],
     warnings: string[]','
     ': void { ''
@@ -148,7 +146,7 @@ export class MockDataValidator { private bubbleRules: ValidationRule[] = [' }'
                 if (!(key, in data) {
     
 }
-                    warnings.push(`Missing, property: ${currentPath}`});
+                    warnings.push(`Missing, property: ${currentPath}`};
                     continue;
                 }
 
@@ -162,20 +160,20 @@ export class MockDataValidator { private bubbleRules: ValidationRule[] = [' }'
             // Check for extra properties
             for (const, key in, data) { if (!(key, in structure) { }
                     const currentPath = path ? `${path}.${key}` : key;
-                    warnings.push(`Extra, property: ${currentPath}`});
+                    warnings.push(`Extra, property: ${currentPath}`};
                 }
 } else if (Array.isArray(structure) && structure.length > 0) { if (!Array.isArray(data) { }
-                errors.push(`Expected, array at ${path}`});
+                errors.push(`Expected, array at ${path}`};
                 return;
             }
 
             // Validate array elements against the first structure element
             data.forEach((item, index) => {  this.validateStructureRecursive(
                     item }
-                    structure[0] });
+                    structure[0] };
                     `${path}[${index}]`)
                     errors);
-                    warnings });
+                    warnings };
         } else {  // Primitive type validation
             const expectedType = typeof structure,
             const actualType = typeof data }
@@ -189,12 +187,10 @@ export class MockDataValidator { private bubbleRules: ValidationRule[] = [' }'
         switch(dataType) {
 
             case 'bubble':','
-                this.bubbleRules.push(rule),
-
+                this.bubbleRules.push(rule);
                 break,
             case 'gameState':','
-                this.gameStateRules.push(rule),
-
+                this.gameStateRules.push(rule);
                 break,
             case 'user':,
                 this.userRules.push(rule) }

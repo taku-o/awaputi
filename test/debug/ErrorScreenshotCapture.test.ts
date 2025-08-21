@@ -10,11 +10,11 @@ const createMockCanvas = () => ({ width: 800,
         drawImage: jest.fn() }'
     )),''
     toDataURL: jest.fn((') => 'data:image/jpeg,base64,/9j/4AAQSkZJRgABAQEA...');'
-    });
+    };
 // モックゲームエンジン
 const createMockGameEngine = () => ({ canvas: createMockCanvas(
     isRunning: true,
-    }),
+    };
 // LocalStorageモック
 const createLocalStorageMock = () => ({ getItem: jest.fn(
     setItem: jest.fn(
@@ -28,7 +28,7 @@ describe('ErrorScreenshotCapture', () => {  let screenshotCapture: any,
     beforeEach(() => { }
         mockGameEngine = createMockGameEngine(); }
         mockLocalStorage = createLocalStorageMock(};)
-        (global: any).localStorage = mockLocalStorage;
+        (global: any).localStorage = mockLocalStorage,
         
         // Document.createElement のモック
         (global: any).document = { createElement: jest.fn(() => createMockCanvas()) }
@@ -42,19 +42,19 @@ describe('ErrorScreenshotCapture', () => {  let screenshotCapture: any,
         // コンソールのモック''
         jest.spyOn(console, 'log').mockImplementation(')';
         jest.spyOn(console, 'warn').mockImplementation();
-    });
+    };
     afterEach(() => { screenshotCapture.destroy() }'
-        jest.restoreAllMocks(});'}');
+        jest.restoreAllMocks(};'}');
     describe('初期化', (') => {  ''
         test('ErrorScreenshotCaptureが正しく初期化される', () => {
-            expect(screenshotCapture).toBeDefined(),
-            expect(screenshotCapture.isEnabled).toBe(true),
+            expect(screenshotCapture).toBeDefined();
+            expect(screenshotCapture.isEnabled).toBe(true);
             expect(screenshotCapture.compressionQuality).toBe(0.8) }'
             expect(screenshotCapture.storedScreenshots).toEqual([]);' }'
         }');'
         test('設定が正しく初期化される', () => {  ''
             expect(screenshotCapture.captureSettings.format').toBe('image/jpeg'),'
-            expect(screenshotCapture.captureSettings.quality).toBe(0.8),
+            expect(screenshotCapture.captureSettings.quality).toBe(0.8);
             expect(screenshotCapture.captureSettings.includeCanvas).toBe(true) }'
             expect(screenshotCapture.captureSettings.includeDOM).toBe(false););' }'
         }');'
@@ -78,12 +78,12 @@ describe('ErrorScreenshotCapture', () => {  let screenshotCapture: any,
             screenshotCapture.gameEngine.canvas = null,', ',
             const testError = new Error('Test error') }'
             const screenshot = await screenshotCapture.captureOnCriticalError(testError: any);' }'
-            expect(screenshot.toBeNull(})');'
+            expect(screenshot.toBeNull(}');'
         test('機能が無効の場合はnullが返される', async () => {  ''
             screenshotCapture.setEnabled(false'),'
             const testError = new Error('Test error') }'
             const screenshot = await screenshotCapture.captureOnCriticalError(testError: any);' }'
-            expect(screenshot.toBeNull(})');'
+            expect(screenshot.toBeNull(}');'
         test('エラー発生時はnullが返される', async () => {  // toDataURLでエラーを発生させる''
             mockGameEngine.canvas.toDataURL.mockImplementation((') => { }'
                 throw new Error('Canvas error');' }'
@@ -99,7 +99,7 @@ describe('ErrorScreenshotCapture', () => {  let screenshotCapture: any,
     describe('Canvas スクリーンショット', (') => {  ''
         test('基本的なCanvasスクリーンショットが取得される', async () => {
             const screenshot = await screenshotCapture.captureCanvasScreenshot(),'
-            expect(screenshot).toBeDefined(),
+            expect(screenshot).toBeDefined();
             expect(typeof screenshot').toBe('string'),'
             expect(screenshot.toMatch(/^data: image/),','
             expect(mockGameEngine.canvas.toDataURL').toHaveBeenCalledWith(')','
@@ -111,9 +111,9 @@ describe('ErrorScreenshotCapture', () => {  let screenshotCapture: any,
             mockGameEngine.canvas.width = 3000,
             mockGameEngine.canvas.height = 2000,
             
-            const mockTempCanvas = createMockCanvas(),
+            const mockTempCanvas = createMockCanvas();
             document.createElement.mockReturnValue(mockTempCanvas),'
-            const screenshot = await screenshotCapture.captureCanvasScreenshot(),
+            const screenshot = await screenshotCapture.captureCanvasScreenshot();
             expect(document.createElement').toHaveBeenCalledWith('canvas'),'
             expect(mockTempCanvas.getContext).toHaveBeenCalled() }'
             expect(screenshot).toBeDefined();' }'
@@ -124,10 +124,10 @@ describe('ErrorScreenshotCapture', () => {  let screenshotCapture: any,
     }''
     describe('ストレージ管理', (') => {  ''
         test('スクリーンショットがストレージに保存される', async (') => {''
-            const testError = new Error('Storage test'),
-            const screenshot = await screenshotCapture.captureOnCriticalError(testError: any),
+            const testError = new Error('Storage test');
+            const screenshot = await screenshotCapture.captureOnCriticalError(testError: any);
             expect(screenshot).toBeDefined(),'
-            expect(screenshotCapture.storedScreenshots).toContain(screenshot),
+            expect(screenshotCapture.storedScreenshots).toContain(screenshot);
             expect(mockLocalStorage.setItem').toHaveBeenCalledWith(')','
                 'errorReporter_screenshots') }'
                 expect.any(String);' }'
@@ -149,8 +149,8 @@ describe('ErrorScreenshotCapture', () => {  let screenshotCapture: any,
                 id: 'large_screenshot',','
                 timestamp: Date.now(' }'
                 data: 'large_data'
-            });
-            });
+            };
+            };
             )';'
             screenshotCapture.storeScreenshot(largeScreenshot);
             expect(console.warn).toHaveBeenCalledWith(')';
@@ -171,8 +171,8 @@ describe('ErrorScreenshotCapture', () => {  let screenshotCapture: any,
             for (let i = 0; i < 3; i++) { }
                 const error = new Error(`Test error ${i}`);
                 await screenshotCapture.captureOnCriticalError(error, { ) }
-                    errorId: `error_${i}`);
-                });'
+                    errorId: `error_${i}`),
+                };'
             }'}');
         test('スクリーンショット一覧が取得される', () => {  const screenshots = screenshotCapture.getScreenshots() }'
             expect(screenshots.toHaveLength(3);' }'
@@ -180,45 +180,45 @@ describe('ErrorScreenshotCapture', () => {  let screenshotCapture: any,
         test('フィルタリングが正しく動作する', () => {  const oneMinuteAgo = Date.now() - 60000,
             const screenshots = screenshotCapture.getScreenshots({) }
                 since: oneMinuteAgo); }
-            });
+            };
             expect(screenshots.length).toBeGreaterThan(0);
             screenshots.forEach(screenshot => {  ) }'
                 expect(screenshot.timestamp).toBeGreaterThan(oneMinuteAgo);' }'
             }');'
         }''
-        test('特定のスクリーンショットが取得される', () => {  const allScreenshots = screenshotCapture.getScreenshots(),
+        test('特定のスクリーンショットが取得される', () => {  const allScreenshots = screenshotCapture.getScreenshots();
             const targetId = allScreenshots[0].id,
             
-            const screenshot = screenshotCapture.getScreenshot(targetId),
+            const screenshot = screenshotCapture.getScreenshot(targetId);
             expect(screenshot).toBeDefined() }'
             expect(screenshot.id).toBe(targetId););' }'
         }');'
-        test('スクリーンショットが削除される', () => {  const allScreenshots = screenshotCapture.getScreenshots(),
+        test('スクリーンショットが削除される', () => {  const allScreenshots = screenshotCapture.getScreenshots();
             const targetId = allScreenshots[0].id,
             const initialCount = allScreenshots.length,
             
-            const deleted = screenshotCapture.deleteScreenshot(targetId),
+            const deleted = screenshotCapture.deleteScreenshot(targetId);
             expect(deleted).toBeDefined(),'
             expect(deleted.id).toBe(targetId)),' }'
             expect(screenshotCapture.getScreenshots().toHaveLength(initialCount - 1'); }'
         }''
         test('全スクリーンショットがクリアされる', () => {  }
-            screenshotCapture.clearAllScreenshots(})
+            screenshotCapture.clearAllScreenshots(}
             );'
-            expect(screenshotCapture.getScreenshots(}).toHaveLength(0);
+            expect(screenshotCapture.getScreenshots(}.toHaveLength(0);
             expect(console.log').toHaveBeenCalledWith('All screenshots cleared');'}');'
     }''
     describe('設定管理', (') => {  ''
         test('機能の有効/無効が切り替えられる', () => {
-            screenshotCapture.setEnabled(false),
-            expect(screenshotCapture.isEnabled).toBe(false),
+            screenshotCapture.setEnabled(false);
+            expect(screenshotCapture.isEnabled).toBe(false);
             screenshotCapture.setEnabled(true) }'
             expect(screenshotCapture.isEnabled).toBe(true););' }'
         }');'
         test('キャプチャ設定が更新される', () => {  const newSettings = {
                 quality: 0.5,
                 maxWidth: 1024 }
-                includeCanvas: false;
+                includeCanvas: false,
             },
             
             screenshotCapture.updateSettings(newSettings);
@@ -232,18 +232,18 @@ describe('ErrorScreenshotCapture', () => {  let screenshotCapture: any,
                 const error = new Error(`Info test ${i}`);
                 await screenshotCapture.captureOnCriticalError(error: any);'
             }'}');
-        test('ストレージ情報が正しく取得される', () => {  const info = screenshotCapture.getStorageInfo(),
-            expect(info.count).toBe(2),
-            expect(info.totalSize).toBeGreaterThan(0),
-            expect(info.maxSize).toBe(screenshotCapture.maxStorageSize),
-            expect(info.utilizationPercent).toBeDefined(),
+        test('ストレージ情報が正しく取得される', () => {  const info = screenshotCapture.getStorageInfo();
+            expect(info.count).toBe(2);
+            expect(info.totalSize).toBeGreaterThan(0);
+            expect(info.maxSize).toBe(screenshotCapture.maxStorageSize);
+            expect(info.utilizationPercent).toBeDefined();
             expect(info.oldestTimestamp).toBeDefined() }'
             expect(info.newestTimestamp).toBeDefined();' }'
         }');'
-        test('空の場合のストレージ情報', () => {  screenshotCapture.clearAllScreenshots(),
-            const info = screenshotCapture.getStorageInfo(),
-            expect(info.count).toBe(0),
-            expect(info.totalSize).toBe(0),
+        test('空の場合のストレージ情報', () => {  screenshotCapture.clearAllScreenshots();
+            const info = screenshotCapture.getStorageInfo();
+            expect(info.count).toBe(0);
+            expect(info.totalSize).toBe(0);
             expect(info.oldestTimestamp).toBeNull() }'
             expect(info.newestTimestamp).toBeNull();' }'
         }');'
@@ -255,9 +255,9 @@ describe('ErrorScreenshotCapture', () => {  let screenshotCapture: any,
             expect(size.toBeGreaterThan(0)," }"
             expect(typeof size").toBe('number'););' }'"
         }');'
-        test('スクリーンショットIDが生成される', () => {  const id1 = screenshotCapture.generateScreenshotId(),
-            const id2 = screenshotCapture.generateScreenshotId(),
-            expect(id1.toMatch(/^screenshot_/),
+        test('スクリーンショットIDが生成される', () => {  const id1 = screenshotCapture.generateScreenshotId();
+            const id2 = screenshotCapture.generateScreenshotId();
+            expect(id1.toMatch(/^screenshot_/);
             expect(id2.toMatch(/^screenshot_/) }'
             expect(id1).not.toBe(id2););' }'
         }');'
@@ -265,7 +265,7 @@ describe('ErrorScreenshotCapture', () => {  let screenshotCapture: any,
     describe('エラーハンドリング', (') => {  ''
         test('LocalStorage エラーが適切に処理される', async () => {''
             mockLocalStorage.setItem.mockImplementation((') => {''
-                const error = new Error('Storage error'),
+                const error = new Error('Storage error');
                 error.name = 'QuotaExceededError' }'
                 throw error;' }'
             }');'
@@ -279,7 +279,7 @@ describe('ErrorScreenshotCapture', () => {  let screenshotCapture: any,
         test('Canvas エラーが適切に処理される', async () => {  ''
             mockGameEngine.canvas.toDataURL.mockImplementation((') => { }'
                 throw new Error('Canvas toDataURL failed'); }'
-            });
+            };
             await expect(screenshotCapture.captureCanvasScreenshot()')';
                 .rejects.toThrow('Canvas screenshot failed');'}');'
     }''
@@ -288,5 +288,5 @@ describe('ErrorScreenshotCapture', () => {  let screenshotCapture: any,
             screenshotCapture.destroy(),'
             expect(screenshotCapture.storedScreenshots).toHaveLength(0),' }'
             expect(console.log').toHaveBeenCalledWith('ErrorScreenshotCapture destroyed'); }'
-        });'
+        };'
     }'}');

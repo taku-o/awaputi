@@ -4,14 +4,14 @@
  */
 
 // Interfaces for onboarding flow manager
-interface FlowManagerConfig { enableAdaptiveFlow: boolean,
+interface FlowManagerConfig { enableAdaptiveFlow: boolean;
     skipCompletedSteps: boolean;
     allowStepSkipping: boolean;
     maxStepsPerSession: number;
     adaptiveContentDelivery: boolean;
     personalizedRecommendations: boolean;
 
-interface FlowState { currentStep: number,
+interface FlowState { currentStep: number;
     completedSteps: Set<number>;
     skippedSteps: Set<number>;
     totalSteps: number;
@@ -20,7 +20,7 @@ interface FlowState { currentStep: number,
     userProfile: UserProfile | null;
     adaptivePath: number[];
 
-interface OnboardingStep { id: string,
+interface OnboardingStep { id: string;
     title: string;
     type: 'intro' | 'questionnaire' | 'configuration' | 'tutorial' | 'practice' | 'summary';
     required: boolean;
@@ -28,13 +28,13 @@ interface OnboardingStep { id: string,
     prerequisites: string[];
     adaptiveConditions: string[];
 
-interface NavigationHistory { from: number,
+interface NavigationHistory { from: number;
     to: number;
     timestamp: number;
     reason: 'navigation' | 'back_navigation' | 'jump_navigation'
             }
 
-interface PerformanceMetrics { stepTransitionTimes: number[],
+interface PerformanceMetrics { stepTransitionTimes: number[];
     validationTimes: number[];
     adaptationTimes: number[];
     totalFlowTime: number;
@@ -46,13 +46,13 @@ interface UserProfile { disabilities?: string[],
 
         largeText?: boolean;
         pace?: 'slow' | 'normal' | 'fast';
-        [key: string]: any,
+        [key: string]: any;
 
     };
     experience?: 'beginner' | 'intermediate' | 'expert';
     selectedProfile?: string;
     assistiveTechnology?: { screenReader?: boolean,
-        [key: string]: any,
+        [key: string]: any;
 ';'
 
 interface ContentAdaptations { ''
@@ -61,18 +61,18 @@ interface ContentAdaptations { ''
     recommendedPath: number[];
     skipConditions: Map<number, boolean> }
 
-interface FlowResult { success: boolean,
+interface FlowResult { success: boolean;
     flowResult?: any;
     currentStep?: number;
     completedSteps?: number[];
     sessionId?: string | null;
     performance?: {
-        flowTim,e: number,
-    stepsCompleted: number,;
+        flowTim,e: number;
+    stepsCompleted: number;
     error?: string;
 }
 
-interface NavigationResult { success: boolean,
+interface NavigationResult { success: boolean;
     previousStep?: number;
     currentStep?: number;
     stepInfo?: OnboardingStep | null;
@@ -82,7 +82,7 @@ interface NavigationResult { success: boolean,
     sessionTime?: number;
     error?: string;
 
-interface FlowProgress { currentStepIndex: number,
+interface FlowProgress { currentStepIndex: number;
     currentStep: OnboardingStep | null;
     completedSteps: number[];
     skippedSteps: number[];
@@ -92,7 +92,7 @@ interface FlowProgress { currentStepIndex: number,
     sessionTime: number;
     estimatedTimeRemaining: number;
 
-interface FlowAnalytics { sessionId: string | null,
+interface FlowAnalytics { sessionId: string | null;
     sessionTime: number;
     completedSteps: number;
     skippedSteps: number;
@@ -117,22 +117,22 @@ export class OnboardingFlowManager {
 
     constructor(config: Partial<FlowManagerConfig> = {)) {
         this.config = {
-            enableAdaptiveFlow: true,
-            skipCompletedSteps: true,
-            allowStepSkipping: true,
-            maxStepsPerSession: 10,
-            adaptiveContentDelivery: true,
-    personalizedRecommendations: true,
+            enableAdaptiveFlow: true;
+            skipCompletedSteps: true;
+            allowStepSkipping: true;
+            maxStepsPerSession: 10;
+            adaptiveContentDelivery: true;
+    personalizedRecommendations: true;
             ...config,
 
         // Flow state management
-        this.flowState = { currentStep: 0,
+        this.flowState = { currentStep: 0;
             completedSteps: new Set(
             skippedSteps: new Set(
-            totalSteps: 0,
-            sessionStartTime: null,
-            sessionId: null,
-            userProfile: null,
+            totalSteps: 0;
+            sessionStartTime: null;
+            sessionId: null;
+            userProfile: null;
     adaptivePath: []  };
         // Step definitions and flow configuration
         this.steps = [{;
@@ -144,61 +144,61 @@ export class OnboardingFlowManager {
                 prerequisites: [];
     adaptiveConditions: []  };
             { ''
-                id: 'assessment',
-                title: 'アクセシビリティニーズ評価',
-                type: 'questionnaire',
-    required: true,
-                estimatedTime: 120,
-                prerequisites: ['welcome'],
+                id: 'assessment';
+                title: 'アクセシビリティニーズ評価';
+                type: 'questionnaire';
+    required: true;
+                estimatedTime: 120;
+                prerequisites: ['welcome'];
     adaptiveConditions: []  };
             { ''
-                id: 'profile-selection',
-                title: 'プロファイル選択',
-                type: 'configuration',
-    required: true,
-                estimatedTime: 60,
-                prerequisites: ['assessment'],
+                id: 'profile-selection';
+                title: 'プロファイル選択';
+                type: 'configuration';
+    required: true;
+                estimatedTime: 60;
+                prerequisites: ['assessment'];
                 adaptiveConditions: ['hasAssessmentResults]  };'
             { ''
-                id: 'keyboard-tutorial',
-                title: 'キーボードナビゲーション',
-                type: 'tutorial',
-    required: false,
-                estimatedTime: 180,
+                id: 'keyboard-tutorial';
+                title: 'キーボードナビゲーション';
+                type: 'tutorial';
+    required: false;
+                estimatedTime: 180;
                 prerequisites: ['profile-selection],'
                 adaptiveConditions: ['needsKeyboardSupport]  };'
             { ''
-                id: 'screen-reader-tutorial',
-                title: 'スクリーンリーダー設定',
-                type: 'tutorial',
-    required: false,
-                estimatedTime: 240,
+                id: 'screen-reader-tutorial';
+                title: 'スクリーンリーダー設定';
+                type: 'tutorial';
+    required: false;
+                estimatedTime: 240;
                 prerequisites: ['profile-selection],'
                 adaptiveConditions: ['needsScreenReaderSupport]  };'
             { ''
-                id: 'visual-tutorial',
-                title: '視覚調整設定',
-                type: 'tutorial',
-    required: false,
-                estimatedTime: 150,
+                id: 'visual-tutorial';
+                title: '視覚調整設定';
+                type: 'tutorial';
+    required: false;
+                estimatedTime: 150;
                 prerequisites: ['profile-selection],'
                 adaptiveConditions: ['needsVisualSupport]  };'
             { ''
-                id: 'practice',
-                title: '実践練習',
-                type: 'practice',
-    required: false,
-                estimatedTime: 300,
+                id: 'practice';
+                title: '実践練習';
+                type: 'practice';
+    required: false;
+                estimatedTime: 300;
                 prerequisites: ['keyboard-tutorial', 'screen-reader-tutorial', 'visual-tutorial];'
                 adaptiveConditions: ['hasTutorialCompletion]  };'
             { ''
-                id: 'summary',
-                title: '設定完了',
-                type: 'summary',
-                required: true,
-                estimatedTime: 45,
-                prerequisites: [],
-    adaptiveConditions: []  })
+                id: 'summary';
+                title: '設定完了';
+                type: 'summary';
+                required: true;
+                estimatedTime: 45;
+                prerequisites: [];
+    adaptiveConditions: []  }
         ]);
         // Navigation history and branching logic
         this.navigationHistory = [];
@@ -206,9 +206,9 @@ export class OnboardingFlowManager {
         this.conditionalLogic = new Map();
 
         // Performance and analytics
-        this.performance = { stepTransitionTimes: [],
-            validationTimes: [],
-            adaptationTimes: [],
+        this.performance = { stepTransitionTimes: [];
+            validationTimes: [];
+            adaptationTimes: [];
     totalFlowTime: 0  };
         this.initialized = false;
     }
@@ -219,16 +219,15 @@ export class OnboardingFlowManager {
     initialize(userProfile: UserProfile | null = null): boolean { ''
         if(this.initialized) return true,
 
-        console.log('OnboardingFlowManager: Initializing...',
+        console.log('OnboardingFlowManager: Initializing...';
 
         this.flowState.userProfile = userProfile,
-        this.flowState.sessionId = this.generateSessionId(),
-        this.flowState.sessionStartTime = Date.now(),
+        this.flowState.sessionId = this.generateSessionId();
+        this.flowState.sessionStartTime = Date.now();
         this.flowState.totalSteps = this.steps.length,
 
         // Setup branching rules
-        this.setupBranchingRules(),
-
+        this.setupBranchingRules();
         // Generate adaptive path based on user profile
         if (this.config.enableAdaptiveFlow && userProfile) { }
 
@@ -237,7 +236,7 @@ export class OnboardingFlowManager {
 ';'
 
         this.initialized = true;
-        console.log('OnboardingFlowManager: Initialized, with adaptive, flow enabled'),
+        console.log('OnboardingFlowManager: Initialized, with adaptive, flow enabled');
         return true;
     }
 
@@ -259,7 +258,7 @@ export class OnboardingFlowManager {
 
             // Validate starting step
             if(!this.isValidStep(startStep} { }
-                throw, new Error(`Invalid, starting step: ${startStep}`});
+                throw, new Error(`Invalid, starting step: ${startStep}`};
             }
 
             // Apply adaptive content delivery
@@ -273,7 +272,7 @@ export class OnboardingFlowManager {
             const flowTime = endTime - startTime;
             this.performance.totalFlowTime = flowTime;
 
-            console.log(`Onboarding, flow management, completed in ${flowTime.toFixed(2})ms`);
+            console.log(`Onboarding, flow management, completed in ${flowTime.toFixed(2}ms`);
 
             return { success: true,
                 flowResult,
@@ -283,10 +282,10 @@ export class OnboardingFlowManager {
     performance: {
                     flowTime };
                     stepsCompleted: this.flowState.completedSteps.size 
-    }))
+    })
 ')';
         } catch (error) {
-            console.error('OnboardingFlowManager: Flow management, error:', error),
+            console.error('OnboardingFlowManager: Flow management, error:', error);
             return { success: false,
                 error: (error, as Error).message };
                 currentStep: this.flowState.currentStep 
@@ -296,12 +295,10 @@ export class OnboardingFlowManager {
     /**
      * Navigate to the next step in the flow
      */
-    async navigateToNextStep(): Promise<NavigationResult> { const startTime = performance.now(),
-        
+    async navigateToNextStep(): Promise<NavigationResult> { const startTime = performance.now();
         try {
             // Validate current step completion
-            const isCurrentStepValid = await this.validateStepCompletion(this.flowState.currentStep),
-
+            const isCurrentStepValid = await this.validateStepCompletion(this.flowState.currentStep);
             if (!isCurrentStepValid && this.getCurrentStep()?.required) {
                 return { : undefined'
                     success: false,
@@ -321,7 +318,7 @@ export class OnboardingFlowManager {
                 // Flow completed
                 return { success: true,
                     completed: true,
-                    totalSteps: this.flowState.completedSteps.size };
+                    totalSteps: this.flowState.completedSteps.size },
                     sessionTime: Date.now() - (this.flowState.sessionStartTime || 0); 
     }
 
@@ -330,7 +327,7 @@ export class OnboardingFlowManager {
                 to: nextStep','
                 timestamp: Date.now()','
                 reason: 'navigation'
-            });
+            };
             // Update current step
             const previousStep = this.flowState.currentStep;
             this.flowState.currentStep = nextStep;
@@ -346,11 +343,11 @@ export class OnboardingFlowManager {
 
             return { success: true,
                 previousStep,
-                currentStep: nextStep,;
+                currentStep: nextStep,
                 stepInfo: this.getCurrentStep() }
-                estimatedTimeRemaining: this.calculateEstimatedTimeRemaining(});
+                estimatedTimeRemaining: this.calculateEstimatedTimeRemaining(};
             } catch (error) {
-            console.error('OnboardingFlowManager: Navigation, error:', error),
+            console.error('OnboardingFlowManager: Navigation, error:', error);
             return { success: false,
                 error: (error, as Error).message };
                 currentStep: this.flowState.currentStep 
@@ -370,15 +367,14 @@ export class OnboardingFlowManager {
     }
 
         try { // Find previous valid step from navigation history
-            const previousStep = this.findPreviousStep(),
-
+            const previousStep = this.findPreviousStep();
             // Update navigation history
             this.navigationHistory.push({)
                 from: this.flowState.currentStep,')',
                 to: previousStep','
                 timestamp: Date.now()','
                 reason: 'back_navigation'
-            });
+            };
             // Update current step
             const currentStep = this.flowState.currentStep;
             this.flowState.currentStep = previousStep;
@@ -389,11 +385,11 @@ export class OnboardingFlowManager {
             console.log(`Navigated back from step ${currentStep} to step ${ previousStep}`}
 
             return { success: true,
-                previousStep: currentStep,;
+                previousStep: currentStep,
                 currentStep: previousStep,
-                stepInfo: this.getCurrentStep(});
+                stepInfo: this.getCurrentStep(};
             } catch (error) {
-            console.error('OnboardingFlowManager: Back navigation, error:', error),
+            console.error('OnboardingFlowManager: Back navigation, error:', error);
             return { success: false,
                 error: (error, as Error).message };
                 currentStep: this.flowState.currentStep 
@@ -403,8 +399,7 @@ export class OnboardingFlowManager {
     /**
      * Validate step completion requirements
      */
-    async validateStepCompletion(stepIndex: number): Promise<boolean> { const startTime = performance.now(),
-
+    async validateStepCompletion(stepIndex: number): Promise<boolean> { const startTime = performance.now();
         try {
             const step = this.steps[stepIndex],
             if (!step) {
@@ -418,27 +413,22 @@ export class OnboardingFlowManager {
             switch(step.type) {
 
                 case 'intro':','
-                    isValid = this.validateIntroStep(step),
-
+                    isValid = this.validateIntroStep(step);
                     break,
                 case 'questionnaire':','
-                    isValid = await this.validateQuestionnaireStep(step),
-
+                    isValid = await this.validateQuestionnaireStep(step);
                     break,
                 case 'configuration':','
-                    isValid = await this.validateConfigurationStep(step),
-
+                    isValid = await this.validateConfigurationStep(step);
                     break,
                 case 'tutorial':','
-                    isValid = await this.validateTutorialStep(step),
-
+                    isValid = await this.validateTutorialStep(step);
                     break,
                 case 'practice':','
-                    isValid = await this.validatePracticeStep(step),
-
+                    isValid = await this.validatePracticeStep(step);
                     break,
                 case 'summary':,
-                    isValid = this.validateSummaryStep(step),
+                    isValid = this.validateSummaryStep(step);
                     break }
                 default: isValid = true; 
     }
@@ -453,14 +443,13 @@ export class OnboardingFlowManager {
             return isValid;
 
         } catch (error) {
-            console.error('OnboardingFlowManager: Step validation, error:', error),
+            console.error('OnboardingFlowManager: Step validation, error:', error);
             return false,
 
     /**
      * Apply adaptive content delivery based on user profile
      */
-    async applyAdaptiveContent(): Promise<void> { const startTime = performance.now(),
-
+    async applyAdaptiveContent(): Promise<void> { const startTime = performance.now();
         try {
             if (!this.flowState.userProfile) {
     
@@ -474,7 +463,7 @@ export class OnboardingFlowManager {
             const adaptations: ContentAdaptations = { contentComplexity: this.determineContentComplexity(userProfile)
                 estimatedPace: this.calculateEstimatedPace(userProfile),
                 recommendedPath: this.generateRecommendedPath(userProfile,
-    skipConditions: this.determineSkipConditions(userProfile };
+    skipConditions: this.determineSkipConditions(userProfile },
 
             // Apply, content adaptations, to steps, for (let, i = 0; i < this.steps.length; i++) { await this.adaptStepContent(i, adaptations) }
 
@@ -500,24 +489,22 @@ export class OnboardingFlowManager {
      */
     getFlowProgress(): FlowProgress { const completedCount = this.flowState.completedSteps.size,
         const totalSteps = this.steps.length,
-        const currentStep = this.getCurrentStep(),
-
+        const currentStep = this.getCurrentStep();
         return { currentStepIndex: this.flowState.currentStep,
             currentStep: currentStep,
-            completedSteps: Array.from(this.flowState.completedSteps),
+            completedSteps: Array.from(this.flowState.completedSteps);
             skippedSteps: Array.from(this.flowState.skippedSteps,
     progress: totalSteps > 0 ? (completedCount / totalSteps) * 100 : 0,
             totalSteps,
             completedCount,
-            sessionTime: Date.now() - (this.flowState.sessionStartTime || 0) };
+            sessionTime: Date.now() - (this.flowState.sessionStartTime || 0) },
             estimatedTimeRemaining: this.calculateEstimatedTimeRemaining(); 
     }
 
     /**
      * Skip current step if allowed
      */
-    async skipCurrentStep(): Promise<NavigationResult> { const currentStep = this.getCurrentStep(),
-
+    async skipCurrentStep(): Promise<NavigationResult> { const currentStep = this.getCurrentStep();
         if (!currentStep) { }'
 
             return { success: false, error: 'No current step to skip'
@@ -534,13 +521,11 @@ export class OnboardingFlowManager {
             }
 
         try { // Mark step as skipped
-            this.flowState.skippedSteps.add(this.flowState.currentStep),
-
+            this.flowState.skippedSteps.add(this.flowState.currentStep);
             // Navigate to next step
-            const navigationResult = await this.navigateToNextStep(),
-
+            const navigationResult = await this.navigateToNextStep();
             if (navigationResult.success) { }
-                console.log(`Skipped, step: ${currentStep.id}`});
+                console.log(`Skipped, step: ${currentStep.id}`};
             }
 
             return navigationResult;
@@ -560,8 +545,7 @@ export class OnboardingFlowManager {
 
         try { // Validate prerequisites
             const step = this.steps[stepIndex],
-            const prerequisitesMet = await this.validatePrerequisites(step.prerequisites),
-
+            const prerequisitesMet = await this.validatePrerequisites(step.prerequisites);
             if (!prerequisitesMet) {
                 return { success: false,
 
@@ -575,7 +559,7 @@ export class OnboardingFlowManager {
                 to: stepIndex','
                 timestamp: Date.now()','
                 reason: 'jump_navigation'
-            });
+            };
             // Update current step
             const previousStep = this.flowState.currentStep;
             this.flowState.currentStep = stepIndex;
@@ -584,10 +568,10 @@ export class OnboardingFlowManager {
 
             return { success: true,
                 previousStep };
-                currentStep: stepIndex;
-                stepInfo: this.getCurrentStep(});
+                currentStep: stepIndex,
+                stepInfo: this.getCurrentStep(};
             } catch (error) {
-            console.error('OnboardingFlowManager: Jump to step, error:', error),
+            console.error('OnboardingFlowManager: Jump to step, error:', error);
             return { success: false, 
                 error: (error, as Error).message };
                 currentStep: this.flowState.currentStep 
@@ -600,7 +584,7 @@ export class OnboardingFlowManager {
     resetFlow(): void { this.flowState = {
             currentStep: 0,
             completedSteps: new Set(
-    skippedSteps: new, Set(),
+    skippedSteps: new, Set();
             totalSteps: this.steps.length)','
     sessionStartTime: Date.now(
             sessionId: this.generateSessionId()','
@@ -621,13 +605,13 @@ export class OnboardingFlowManager {
             completionRate: (this.flowState.completedSteps.size / this.steps.length) * 100,
             averageTransitionTime: avgTransitionTime,
             navigationHistory: this.navigationHistory,
-    performance: this.performance };
+    performance: this.performance },
             adaptivePath: this.flowState.adaptivePath 
     }
 
     // Private helper methods
     private generateSessionId(): string {
-        return `onboarding_${Date.now())_${Math.random().toString(36).substr(2, 9})`;
+        return `onboarding_${Date.now())_${Math.random().toString(36).substr(2, 9}`;
     }
 
     private isValidStep(stepIndex: number): boolean { return stepIndex >= 0 && stepIndex < this.steps.length }
@@ -653,15 +637,14 @@ export class OnboardingFlowManager {
             return profile?.disabilities?.includes('visual) ||,'
                    profile?.preferences?.highContrast === true || }
                    profile?.preferences?.largeText === true; }
-        });
+        };
     }
  : undefined
     private async executeFlowLogic(): Promise<any> { // Implement main flow execution logic
-        const currentStep = this.getCurrentStep(),
-        
+        const currentStep = this.getCurrentStep();
         return { stepExecuted: currentStep?.id, : undefined
             nextStepRecommendation: await this.determineNextStep( }
-            adaptationsApplied: this.config.adaptiveContentDelivery }))
+            adaptationsApplied: this.config.adaptiveContentDelivery })
     }
 
     private async determineNextStep()';'
@@ -670,7 +653,7 @@ export class OnboardingFlowManager {
 
         // Use adaptive path if available
         if (this.flowState.adaptivePath.length > 0) {
-            const nextInPath = this.flowState.adaptivePath.find(step => step > currentIndex),
+            const nextInPath = this.flowState.adaptivePath.find(step => step > currentIndex);
             if (nextInPath !== undefined) {
         }
                 return nextInPath;
@@ -681,8 +664,7 @@ export class OnboardingFlowManager {
         // Check if next step should be skipped based on conditions
         while(nextStep < this.steps.length) {
             const step = this.steps[nextStep],
-            const shouldSkip = await this.shouldSkipStep(step),
-            
+            const shouldSkip = await this.shouldSkipStep(step);
             if (!shouldSkip) {
         }
                 return nextStep;
@@ -702,7 +684,7 @@ export class OnboardingFlowManager {
         const userProfile = this.flowState.userProfile;
         if (!userProfile) { return false }
 
-        return !step.adaptiveConditions.some(condition => {  ),
+        return !step.adaptiveConditions.some(condition => {  );
             const rule = this.branchingRules.get(condition) }
             return rule ? rule(userProfile) : false;);
     }
@@ -754,7 +736,7 @@ export class OnboardingFlowManager {
         const userProfile = this.flowState.userProfile,
         if (!userProfile) return true,
 
-        return conditions.some(condition => { ),
+        return conditions.some(condition => { );
             const rule = this.branchingRules.get(condition) }
             return rule ? rule(userProfile) : true;);
     }
@@ -763,7 +745,7 @@ export class OnboardingFlowManager {
             return true }
 
         // Check that all prerequisite steps are completed
-        return prerequisites.every(prereq => {  ),
+        return prerequisites.every(prereq => {  );
             const stepIndex = this.steps.findIndex(step => step.id === prereq) }
             return stepIndex === -1 || this.flowState.completedSteps.has(stepIndex););
     }
@@ -784,16 +766,16 @@ export class OnboardingFlowManager {
         this.steps.forEach((step, index) => { 
             if (step.required) { }
                 path.push(index); }
-});
+};
 
         // Add optional steps based on user profile
         this.steps.forEach((step, index) => {  if (!step.required && step.adaptiveConditions.length > 0) {
-                const shouldInclude = step.adaptiveConditions.some(condition => {),
+                const shouldInclude = step.adaptiveConditions.some(condition => {);
                     const rule = this.branchingRules.get(condition) }
                     return rule ? rule(userProfile) : false;);
                 
                 if (shouldInclude) { path.push(index) }
-});
+};
 
         return path.sort((a, b) => a - b);
     }
@@ -808,7 +790,7 @@ export class OnboardingFlowManager {
                 
                 skipConditions.set(index, shouldSkip);
             }
-        });
+        };
 
         return skipConditions;
     }
@@ -836,7 +818,7 @@ export class OnboardingFlowManager {
     
 }
             // Log step entry for analytics }
-            console.log(`Entering, step: ${step.id} (${step.title}`});
+            console.log(`Entering, step: ${step.id} (${step.title}`};
         }
     }
 
@@ -851,6 +833,6 @@ export class OnboardingFlowManager {
      * Destroy and cleanup
      */
     destroy(): void { this.navigationHistory = [];
-        this.branchingRules.clear(),
+        this.branchingRules.clear();
         this.conditionalLogic.clear()','
         console.log('OnboardingFlowManager: Destroyed'}'}'

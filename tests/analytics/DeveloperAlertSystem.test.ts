@@ -10,7 +10,7 @@ describe('DeveloperAlertSystem', () => {
     beforeEach(() => {
         // モックデータコレクターとトレンドアナライザー
         dataCollector = {
-            getData: jest.fn( };
+            getData: jest.fn( },
         
         trendAnalyzer = {
             analyzeTrend: jest.fn()' };'
@@ -39,9 +39,9 @@ describe('DeveloperAlertSystem', () => {
     }');'
     describe('Task 9.4: 開発者向けアラートシステムの実装', (') => {'
         test('アラートシステムが正しく初期化される', () => {
-            expect(alertSystem.alertCategories.size).toBeGreaterThan(0),
-            expect(alertSystem.alertFilters.size).toBeGreaterThan(0),
-            expect(alertSystem.alertHistory).toEqual([]),
+            expect(alertSystem.alertCategories.size).toBeGreaterThan(0);
+            expect(alertSystem.alertFilters.size).toBeGreaterThan(0);
+            expect(alertSystem.alertHistory).toEqual([]);
             expect(alertSystem.severityLevels').toEqual(['info', 'warning', 'error', 'critical']) }');
         test('アラートカテゴリが正しく設定される', (') => {'
             expect(alertSystem.alertCategories.has('gameplay').toBe(true'),'
@@ -49,7 +49,7 @@ describe('DeveloperAlertSystem', () => {
             expect(alertSystem.alertCategories.has('security').toBe(true'),'
             expect(alertSystem.alertCategories.has('data').toBe(true'),'
             expect(alertSystem.alertCategories.has('business').toBe(true'),'
-            const gameplayCategory = alertSystem.alertCategories.get('gameplay'),
+            const gameplayCategory = alertSystem.alertCategories.get('gameplay');
             expect(gameplayCategory.name').toBe('異常なゲームプレイ'),'
             expect(gameplayCategory.defaultSeverity').toBe('warning'),'
             expect(gameplayCategory.checks').toContain('unusualScoreProgression') }');
@@ -162,13 +162,13 @@ describe('DeveloperAlertSystem', () => {
             expect(result.message').toContain('高いエラー発生率');'
         }');'
         test('疑わしい活動が検出される', () => {
-            const now = Date.now(),
+            const now = Date.now();
             const testData = {
                 security: {
                     activityLog: Array(200).fill().map((_, i') => ({'
                         action: 'click',
                         timestamp: now - (i * 50) // 50ms間隔で200アクション (10秒で200アクション}
-                    }));
+                    });
                 }
             };
             const result = alertSystem.checkSuspiciousActivity(testData);
@@ -196,9 +196,9 @@ describe('DeveloperAlertSystem', () => {
             const testData = {
                 validation: {
                     inconsistencies: Array(8).fill().map((_, i') => ({'
-                        field: `field_${i}`;
+                        field: `field_${i}`,
                         issue: 'validation_failed'
-                    });
+                    };
                 }
             };
             const result = alertSystem.checkDataInconsistency(testData);
@@ -311,7 +311,7 @@ describe('DeveloperAlertSystem', () => {
                 message: 'テストアラート',
                 data: { test: 'data' },
                 recommendations: ['推奨アクション1', '推奨アクション2'],
-        timestamp: Date.now( };
+        timestamp: Date.now( },
             alertSystem.logToConsole(alert);
             expect(consoleGroupSpy').toHaveBeenCalledWith(expect.stringContaining('テストアラート');'
             expect(consoleLogSpy').toHaveBeenCalledWith(expect.stringContaining('カテゴリ'), expect.any(String);'
@@ -331,7 +331,7 @@ describe('DeveloperAlertSystem', () => {
                 'https://webhook.example.com',
                 expect.objectContaining({
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' };
+                    headers: { 'Content-Type': 'application/json' },
         body: expect.stringContaining('テストアラート'),
     }
             );
@@ -355,7 +355,7 @@ describe('DeveloperAlertSystem', () => {
                 'https://email.example.com',
                 expect.objectContaining({
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' };
+                    headers: { 'Content-Type': 'application/json' },
         body: expect.stringContaining('テストアラート'),
     }
             );
@@ -409,7 +409,7 @@ describe('DeveloperAlertSystem', () => {
                 category: 'test',
                 severity: 'warning',
                 checkType: 'test_check',
-        timestamp: Date.now( };
+        timestamp: Date.now( },
             alertSystem.passesFilters(alert);
             expect(customFilter).toHaveBeenCalledWith(alert');'
             alertSystem.removeFilter('custom-filter');
@@ -435,7 +435,7 @@ describe('DeveloperAlertSystem', () => {
             expect(alertSystem.alertHistory[0].id').toBe('recent-alert');'
         }');'
         test('アラート統計が正しく計算される', () => {
-            const now = Date.now(),
+            const now = Date.now();
             const oneDayAgo = now - (24 * 60 * 60 * 1000'),'
             alertSystem.alertHistory = [
                 { timestamp: now, category: 'performance', severity: 'error', acknowledged: false,,
@@ -475,11 +475,11 @@ describe('DeveloperAlertSystem', () => {
         test('ヘルパーメソッドが正しく動作する', () => {
             // calculateAverageIncrease
             const values = [100, 150, 200, 300],
-            const avgIncrease = alertSystem.calculateAverageIncrease(values),
-            expect(avgIncrease).toBeCloseTo(66.67, 1),
+            const avgIncrease = alertSystem.calculateAverageIncrease(values);
+            expect(avgIncrease).toBeCloseTo(66.67, 1);
             // analyzeActionPatterns - より繰り返しが多いパターンを作成
             const actions = Array(20').fill(['A', 'B', 'C']).flat(), // 同じパターンを20回繰り返し'
-            const patterns = alertSystem.analyzeActionPatterns(actions),
+            const patterns = alertSystem.analyzeActionPatterns(actions);
             expect(patterns.repetitiveScore).toBeGreaterThan(0'),'
             // getSeverityColor
             expect(alertSystem.getSeverityColor('error')').toBe('#f44336'),'
@@ -494,11 +494,11 @@ describe('DeveloperAlertSystem', () => {
             expect(alertSystem.options.maxAlertsPerHour).toBe(5);
         }');'
         test('リソースが正しく解放される', () => {
-            expect(alertSystem.alertHistory.length).toBeGreaterThanOrEqual(0),
-            expect(alertSystem.alertCallbacks.size).toBeGreaterThanOrEqual(0),
-            alertSystem.destroy(),
-            expect(alertSystem.alertHistory).toEqual([]),
-            expect(alertSystem.alertCallbacks.size).toBe(0),
+            expect(alertSystem.alertHistory.length).toBeGreaterThanOrEqual(0);
+            expect(alertSystem.alertCallbacks.size).toBeGreaterThanOrEqual(0);
+            alertSystem.destroy();
+            expect(alertSystem.alertHistory).toEqual([]);
+            expect(alertSystem.alertCallbacks.size).toBe(0);
             expect(alertSystem.rateLimitCounter.size).toBe(0) }');'
         test('イベントリスナーが正しく動作する', (') => {'
             const analyzeDataSpy = jest.spyOn(alertSystem, 'analyzeData').mockImplementation(() => {}');'
@@ -507,12 +507,12 @@ describe('DeveloperAlertSystem', () => {
             // イベントを発火
             window.dispatchEvent(new CustomEvent('analytics-data-updated', { 
                 detail: { test: 'data' } );
-            })');'
+            }');'
             window.dispatchEvent(new CustomEvent('performance-warning', { 
                 detail: { severity: 'warning', message: 'test warning' } );
-            })');'
+            }');'
             window.dispatchEvent(new CustomEvent('error-notification-displayed', { 
-                detail: { severity: 'error', message: 'test error' } ));
+                detail: { severity: 'error', message: 'test error' } )),
             expect(analyzeDataSpy').toHaveBeenCalledWith({ test: 'data' ,'
             expect(handlePerformanceWarningSpy').toHaveBeenCalledWith({ severity: 'warning', message: 'test warning' ,'
             expect(handleErrorEventSpy').toHaveBeenCalledWith({ severity: 'error', message: 'test error' )' }
@@ -534,11 +534,11 @@ describe('DeveloperAlertSystem', () => {
             expect(emailBody').toContain('アクション2');'
         }');'
         test('アラートIDが正しく生成される', () => {
-            const id1 = alertSystem.generateAlertId(),
-            const id2 = alertSystem.generateAlertId(),
+            const id1 = alertSystem.generateAlertId();
+            const id2 = alertSystem.generateAlertId();
             expect(typeof id1').toBe('string'),'
             expect(typeof id2').toBe('string'),'
-            expect(id1).not.toBe(id2),
-            expect(id1).toMatch(/^alert_\d+_[a-z0-9]+$/) });
+            expect(id1).not.toBe(id2);
+            expect(id1).toMatch(/^alert_\d+_[a-z0-9]+$/) };
     }
 }');'

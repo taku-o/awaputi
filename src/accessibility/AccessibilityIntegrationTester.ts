@@ -6,7 +6,7 @@
 import { getErrorHandler  } from '../utils/ErrorHandler.js';
 
 // Interfaces for test structures
-interface TestConfig { enabled: boolean,
+interface TestConfig { enabled: boolean;
     autoRun: boolean;
     runOnStartup: boolean;
     crossBrowserTest: boolean;
@@ -16,17 +16,17 @@ interface TestConfig { enabled: boolean,
     timeout: number;
     maxRetries: number;
 
-interface TestSuite { name: string,
+interface TestSuite { name: string;
     tests: string[];
 
-interface TestSuites { core: TestSuite,
+interface TestSuites { core: TestSuite;
     visual: TestSuite;
     audio: TestSuite;
     motor: TestSuite;
     cognitive: TestSuite;
     integration: TestSuite;
 
-interface TestResult { suite: string,
+interface TestResult { suite: string;
     name: string;
     status: 'passed' | 'failed' | 'skipped';
     duration: number;
@@ -34,7 +34,7 @@ interface TestResult { suite: string,
     details: Record<string, any>;
     timestamp: number;
 
-interface SuiteResult { name: string,
+interface SuiteResult { name: string;
     passed: number;
     failed: number;
     skipped: number;
@@ -45,27 +45,27 @@ interface PerformanceMetrics { renderingPerformance?: RenderingPerformanceResult
     memoryUsage?: MemoryUsageResult;
     accessibilityOverhead?: AccessibilityOverheadResult;
 
-interface RenderingPerformanceResult { averageTimePerElement: number,
+interface RenderingPerformanceResult { averageTimePerElement: number;
     totalTime: number;
     acceptable: boolean;
 
-interface MemoryUsageResult { available: boolean,
+interface MemoryUsageResult { available: boolean;
     beforeMemory?: MemoryInfo;
     afterMemory?: MemoryInfo;
     memoryIncrease?: number;
     acceptable?: boolean;
 
-interface MemoryInfo { used: number,
+interface MemoryInfo { used: number;
     total: number;
     limit: number;
 
-interface AccessibilityOverheadResult { withoutAccessibility: number,
+interface AccessibilityOverheadResult { withoutAccessibility: number;
     withAccessibility: number;
     overhead: number;
     overheadPercentage: number;
     acceptable: boolean;
 
-interface TestResults { startTime: number | null,
+interface TestResults { startTime: number | null;
     endTime: number | null;
     duration: number;
     totalTests: number;
@@ -79,11 +79,11 @@ interface TestResults { startTime: number | null,
     issues: TestIssue[];
     regression?: RegressionComparison;
 
-interface TestIssue { type: string,
+interface TestIssue { type: string;
     message: string;
     stack?: string;
 
-interface BrowserFeatures { speechSynthesis: boolean,
+interface BrowserFeatures { speechSynthesis: boolean;
     speechRecognition: boolean;
     vibration: boolean;
     gamepad: boolean;
@@ -95,30 +95,30 @@ interface BrowserFeatures { speechSynthesis: boolean,
     sessionStorage: boolean;
     webAudio: boolean;
 
-interface EnvironmentInfo { userAgent: string,
+interface EnvironmentInfo { userAgent: string;
     platform: string;
     language: string;
     languages: readonly string[];
     cookieEnabled: boolean;
     onLine: boolean;
     screen: {
-        widt,h: number,
-        height: number,
-    colorDepth: number,;
-    viewport: { width: number,
-    height: number,;
-    features: BrowserFeatures,
+        widt,h: number;
+        height: number;
+    colorDepth: number;
+    viewport: { width: number;
+    height: number;
+    features: BrowserFeatures;
     }
 
-interface PerformanceMonitor { startTime: number | null,
+interface PerformanceMonitor { startTime: number | null;
     marks: Map<string, number>;
     measures: Map<string, number> }
 
-interface TestMethodResult { success: boolean,
+interface TestMethodResult { success: boolean;
     error?: string;
     details?: Record<string, any> }
 
-interface ColorContrastDetails { elementsChecked: number,
+interface ColorContrastDetails { elementsChecked: number;
     compliantElements: number;
     nonCompliantElements: Array<{
         elemen,t: string;
@@ -126,33 +126,33 @@ interface ColorContrastDetails { elementsChecked: number,
     averageContrast: number;
 }
 
-interface RGB { r: number,
+interface RGB { r: number;
     g: number;
     b: number;
 
-interface PreviousTestResults { timestamp: number,
+interface PreviousTestResults { timestamp: number;
     successRate: number;
     totalTests: number;
     passedTests: number;
     performanceMetrics: PerformanceMetrics;
 
-interface RegressionComparison { successRateChange: number,
+interface RegressionComparison { successRateChange: number;
     testCountChange: number;
     regressionDetected: boolean;
 
 interface TestReport { summary: {
-        timestam,p: string,
-        environment: EnvironmentInfo,
-        totalTests: number,
-        passedTests: number,
-        failedTests: number,
-        successRate: number,
-    duration: number,;
+        timestam,p: string;
+        environment: EnvironmentInfo;
+        totalTests: number;
+        passedTests: number;
+        failedTests: number;
+        successRate: number;
+    duration: number;
     suiteResults: Record<string, SuiteResult>;
-    detailResults: TestResult[],
-    performanceMetrics: PerformanceMetrics,
-    issues: TestIssue[],
-    recommendations: Recommendation[],
+    detailResults: TestResult[];
+    performanceMetrics: PerformanceMetrics;
+    issues: TestIssue[];
+    recommendations: Recommendation[];
     }
 ';'
 
@@ -172,9 +172,9 @@ interface AccessibilityManager { config?: any,
 // Extend Window interface for performance.memory
 declare global { interface Performance {
         memory?: {
-            usedJSHeapSiz,e: number,
-            totalJSHeapSize: number,
-    jsHeapSizeLimit: number,
+            usedJSHeapSiz,e: number;
+            totalJSHeapSize: number;
+    jsHeapSizeLimit: number;
 }
 
 export class AccessibilityIntegrationTester {
@@ -184,7 +184,7 @@ export class AccessibilityIntegrationTester {
     private testSuites: TestSuites;
     private testResults: TestResults;
     private environmentInfo: EnvironmentInfo;
-    private, performanceMonitor: PerformanceMonitor,
+    private, performanceMonitor: PerformanceMonitor;
 
     constructor(accessibilityManager: AccessibilityManager | null) {
         this.accessibilityManager = accessibilityManager;
@@ -193,12 +193,12 @@ export class AccessibilityIntegrationTester {
         // テスト設定
         this.config = { : undefined
             enabled: true;
-            autoRun: false,
-            runOnStartup: true,
-            crossBrowserTest: true,
-            performanceTest: true,
-            regressionTest: true,
-            userScenarioTest: true,
+            autoRun: false;
+            runOnStartup: true;
+            crossBrowserTest: true;
+            performanceTest: true;
+            regressionTest: true;
+            userScenarioTest: true;
     timeout: 30000 }
             maxRetries: 3 
     };
@@ -216,7 +216,7 @@ export class AccessibilityIntegrationTester {
             
             // 視覚的アクセシビリティテスト
             visual: { ''
-                name: 'Visual Accessibility',
+                name: 'Visual Accessibility';
                 tests: [','
                     'colorContrastCompliance',
                     'textScalingFunctionality',
@@ -227,7 +227,7 @@ export class AccessibilityIntegrationTester {
             
             // 音声アクセシビリティテスト
             audio: { ''
-                name: 'Audio Accessibility',
+                name: 'Audio Accessibility';
                 tests: [','
                     'captionSystemFunctionality',
                     'soundVisualizationFeatures',
@@ -237,7 +237,7 @@ export class AccessibilityIntegrationTester {
             
             // 運動機能アクセシビリティテスト
             motor: { ''
-                name: 'Motor Accessibility',
+                name: 'Motor Accessibility';
                 tests: [','
                     'alternativeInputMethods',
                     'gestureCustomization',
@@ -247,7 +247,7 @@ export class AccessibilityIntegrationTester {
             
             // 認知支援テスト
             cognitive: { ''
-                name: 'Cognitive Support',
+                name: 'Cognitive Support';
                 tests: [','
                     'uiSimplificationFeatures',
                     'contextualHelpSystem',
@@ -257,7 +257,7 @@ export class AccessibilityIntegrationTester {
             
             // 統合シナリオテスト
             integration: { ''
-                name: 'Integration Scenarios',
+                name: 'Integration Scenarios';
                 tests: [','
                     'fullGameplayWithAccessibility',
                     'profileSwitchingScenarios',
@@ -267,13 +267,13 @@ export class AccessibilityIntegrationTester {
         };
         
         // テスト結果
-        this.testResults = { startTime: null,
-            endTime: null,
-            duration: 0,
-            totalTests: 0,
-            passedTests: 0,
-            failedTests: 0,
-            skippedTests: 0,
+        this.testResults = { startTime: null;
+            endTime: null;
+            duration: 0;
+            totalTests: 0;
+            passedTests: 0;
+            failedTests: 0;
+            skippedTests: 0;
             suiteResults: new Map(
     detailResults: [] }
             performanceMetrics: {};
@@ -290,9 +290,9 @@ export class AccessibilityIntegrationTester {
     screen: {
                 width: screen.width,
                 height: screen.height,
-    colorDepth: screen.colorDepth  };
+    colorDepth: screen.colorDepth  },
             viewport: { width: window.innerWidth,
-    height: window.innerHeight };
+    height: window.innerHeight },
             features: this.detectBrowserFeatures(),
         };
         
@@ -342,12 +342,11 @@ export class AccessibilityIntegrationTester {
             if (this.config.regressionTest) { await this.runRegressionTests(),' }'
 
             } catch (error) {
-            console.error('Test execution failed:', error),
-
+            console.error('Test execution failed:', error);
             this.testResults.issues.push({)'
                 type: 'execution_error',
     message: (error, as Error).message,
-                stack: (error, as Error).stack  });
+                stack: (error, as Error).stack  };
         } finally { this.finalizeTestResults() }
         
         return this.testResults;
@@ -357,21 +356,20 @@ export class AccessibilityIntegrationTester {
      * テストスイートの実行
      */
     private async runTestSuite(suiteKey: string, suite: TestSuite): Promise<void> { console.log(`Running test suite: ${suite.name}`} }
-        const suiteStartTime = performance.now(});
+        const suiteStartTime = performance.now(};
         const suiteResults: SuiteResult = { name: suite.name,
             passed: 0,
             failed: 0,
             skipped: 0,
             tests: [],
-    duration: 0  };
+    duration: 0  },
         for (const testName of suite.tests) {
         
-            const testResult = await this.runIndividualTest(suiteKey, testName),
+            const testResult = await this.runIndividualTest(suiteKey, testName);
             ','
 
-            suiteResults.tests.push(testResult),
-            this.testResults.detailResults.push(testResult),
-
+            suiteResults.tests.push(testResult);
+            this.testResults.detailResults.push(testResult);
             if (testResult.status === 'passed') {
                 suiteResults.passed++ }
 
@@ -388,7 +386,7 @@ export class AccessibilityIntegrationTester {
         suiteResults.duration = performance.now() - suiteStartTime;
         this.testResults.suiteResults.set(suiteKey, suiteResults);
         
-        console.log(`Test, suite ${suite.name} completed: ${suiteResults.passed}/${suite.tests.length} passed`});
+        console.log(`Test, suite ${suite.name} completed: ${suiteResults.passed}/${suite.tests.length} passed`};
     }
     
     /**
@@ -398,8 +396,8 @@ export class AccessibilityIntegrationTester {
         const testStartTime = performance.now('''
             status: 'skipped),'
             duration: 0,
-    error: null;
-            details: {})
+    error: null,
+            details: {}
             timestamp: Date.now();
         };
         
@@ -437,7 +435,7 @@ export class AccessibilityIntegrationTester {
     private async accessibilityManagerInitialization(): Promise<TestMethodResult> { const details = {
             managerExists: !!this.accessibilityManager,
     configLoaded: !!this.accessibilityManager?.config, : undefined
-            componentsInitialized: 0  };
+            componentsInitialized: 0  },
         if (!this.accessibilityManager) {
             return { success: false,
 
@@ -461,7 +459,7 @@ export class AccessibilityIntegrationTester {
                 details.componentsInitialized++; }
 }
         
-        return { success: details.componentsInitialized >= 2 };
+        return { success: details.componentsInitialized >= 2 },
             details }
         }
     
@@ -471,7 +469,7 @@ export class AccessibilityIntegrationTester {
     private async keyboardNavigationBasics(): Promise<TestMethodResult> { const details = {
             focusableElements: 0,
             tabOrderCorrect: false,
-    keyboardTrapsDetected: 0 };
+    keyboardTrapsDetected: 0 },
         ';'
         // フォーカス可能要素の検出
         const focusableElements = document.querySelectorAll()';'
@@ -485,7 +483,7 @@ export class AccessibilityIntegrationTester {
         // キーボードトラップの検出
         details.keyboardTrapsDetected = this.detectKeyboardTraps();
         
-        return { success: details.focusableElements > 0 && details.tabOrderCorrect && details.keyboardTrapsDetected === 0 };
+        return { success: details.focusableElements > 0 && details.tabOrderCorrect && details.keyboardTrapsDetected === 0 },
             details }
         }
     
@@ -500,7 +498,7 @@ export class AccessibilityIntegrationTester {
         // 見出し構造の確認
         details.headingStructure = this.validateHeadingStructure();
         
-        return { success: details.ariaLabels > 0 && details.ariaRoles > 0 };
+        return { success: details.ariaLabels > 0 && details.ariaRoles > 0 },
             details }
         }
     
@@ -514,11 +512,10 @@ export class AccessibilityIntegrationTester {
         for (const element of textElements) {
         
             if (element.textContent?.trim() {
-                const contrast = this.calculateContrastRatio(element),
+                const contrast = this.calculateContrastRatio(element);
                 if (contrast !== null) {
                     details.elementsChecked++,
-                    contrastRatios.push(contrast),
-                    
+                    contrastRatios.push(contrast);
                     if (contrast >= 4.5) { // WCAG AA標準
         
         }
@@ -526,7 +523,7 @@ export class AccessibilityIntegrationTester {
                     } else {  details.nonCompliantElements.push({ : undefined)
                             element: element.tagName), 
                             contrast: contrast.toFixed(2) }
-                        });
+                        };
                     }
 }
         }
@@ -559,7 +556,7 @@ export class AccessibilityIntegrationTester {
         const supportedMethods = Object.values(details).filter(Boolean).length;
         
         return { : undefined
-            success: supportedMethods >= 2  };
+            success: supportedMethods >= 2  },
             details }
         }
     ;
@@ -677,7 +674,7 @@ export class AccessibilityIntegrationTester {
         
         const performanceResults: PerformanceMetrics = { renderingPerformance: await this.testRenderingPerformance(
             memoryUsage: await this.testMemoryUsage(
-    accessibilityOverhead: await this.testAccessibilityOverhead() };
+    accessibilityOverhead: await this.testAccessibilityOverhead() },
         
         this.testResults.performanceMetrics = performanceResults;
     }
@@ -685,7 +682,7 @@ export class AccessibilityIntegrationTester {
     /**
      * レンダリングパフォーマンステスト
      */
-    private async testRenderingPerformance(): Promise<RenderingPerformanceResult> { const startTime = performance.now(),
+    private async testRenderingPerformance(): Promise<RenderingPerformanceResult> { const startTime = performance.now();
         ','
         // レンダリング操作をシミュレート
         for(let, i = 0, i < 100, i++) {', ' }
@@ -698,13 +695,13 @@ export class AccessibilityIntegrationTester {
             document.body.appendChild(div};
             
             // 即座に削除 }
-            document.body.removeChild(div});
+            document.body.removeChild(div};
         }
         
         const duration = performance.now() - startTime;
         
         return { averageTimePerElement: duration / 100,
-            totalTime: duration,;
+            totalTime: duration,
             acceptable: duration < 1000 // 1秒以内 
     }
     
@@ -716,38 +713,37 @@ export class AccessibilityIntegrationTester {
         
         const beforeMemory: MemoryInfo = { used: performance.memory.usedJSHeapSize,
             total: performance.memory.totalJSHeapSize,
-    limit: performance.memory.jsHeapSizeLimit  };
+    limit: performance.memory.jsHeapSizeLimit  },
         // メモリ集約的な操作をシミュレート
         const testData: any[] = [],
         for(let, i = 0; i < 10000; i++) {
             testData.push({
         }
-                id: i;
+                id: i,
 
                 ariaLabel: `Test element ${i}`)'
-                role: 'button');
-                tabIndex: i);
+                role: 'button'),
+                tabIndex: i),
         }
         
         const afterMemory: MemoryInfo = { used: performance.memory.usedJSHeapSize,
             total: performance.memory.totalJSHeapSize,
-    limit: performance.memory.jsHeapSizeLimit  };
+    limit: performance.memory.jsHeapSizeLimit  },
         // クリーンアップ
         testData.length = 0;
         
         return { available: true,
             beforeMemory,
             afterMemory,
-            memoryIncrease: afterMemory.used - beforeMemory.used };
+            memoryIncrease: afterMemory.used - beforeMemory.used },
             acceptable: (afterMemory.used - beforeMemory.used) < 10 * 1024 * 1024 // 10MB未満 
     }
     
     /**
      * アクセシビリティオーバーヘッドテスト
      */
-    private async testAccessibilityOverhead(): Promise<AccessibilityOverheadResult> { const withoutA11y = await this.measureWithoutAccessibility(),
-        const withA11y = await this.measureWithAccessibility(),
-        
+    private async testAccessibilityOverhead(): Promise<AccessibilityOverheadResult> { const withoutA11y = await this.measureWithoutAccessibility();
+        const withA11y = await this.measureWithAccessibility();
         const overhead = withA11y - withoutA11y,
         const overheadPercentage = (overhead / withoutA11y) * 100,
         
@@ -807,8 +803,7 @@ export class AccessibilityIntegrationTester {
         
         let previousLevel = 0;
         for (const heading of headings) {
-            const currentLevel = parseInt(heading.tagName.charAt(1),
-            
+            const currentLevel = parseInt(heading.tagName.charAt(1);
             if (previousLevel === 0) {
                 // 最初の見出し
         }
@@ -824,23 +819,20 @@ export class AccessibilityIntegrationTester {
      * コントラスト比の計算
      */
     private calculateContrastRatio(element: Element): number | null { try {
-            const style = window.getComputedStyle(element),
+            const style = window.getComputedStyle(element);
             const color = style.color,
             const backgroundColor = style.backgroundColor,
             
             if (!color || !backgroundColor) return null,
             
-            const textRgb = this.parseColor(color),
-            const bgRgb = this.parseColor(backgroundColor),
-            
+            const textRgb = this.parseColor(color);
+            const bgRgb = this.parseColor(backgroundColor);
             if (!textRgb || !bgRgb) return null,
             
-            const textLum = this.getLuminance(textRgb),
-            const bgLum = this.getLuminance(bgRgb),
-            
-            const lighter = Math.max(textLum, bgLum),
-            const darker = Math.min(textLum, bgLum),
-            
+            const textLum = this.getLuminance(textRgb);
+            const bgLum = this.getLuminance(bgRgb);
+            const lighter = Math.max(textLum, bgLum);
+            const darker = Math.min(textLum, bgLum);
             return (lighter + 0.05) / (darker + 0.05) } catch (error) { return null,
     
     /**
@@ -849,15 +841,13 @@ export class AccessibilityIntegrationTester {
     private parseColor(color: string): RGB | null { ''
         const div = document.createElement('div),'
         div.style.color = color,
-        document.body.appendChild(div),
-        
+        document.body.appendChild(div);
         const computedColor = window.getComputedStyle(div).color,
-        document.body.removeChild(div),
-        
+        document.body.removeChild(div);
         const match = computedColor.match(/rgb\((\d+), (\d+), (\d+)\)/),
         if (match) {
             return { r: parseInt(match[1] }
-                g: parseInt(match[2]) };
+                g: parseInt(match[2]) },
                 b: parseInt(match[3]); 
     }
         
@@ -878,7 +868,7 @@ export class AccessibilityIntegrationTester {
     /**
      * アクセシビリティなしでの測定
      */
-    private async measureWithoutAccessibility(): Promise<number> { const startTime = performance.now(),
+    private async measureWithoutAccessibility(): Promise<number> { const startTime = performance.now();
         ','
         // 基本的なDOM操作
         for(let, i = 0, i < 1000, i++) {', ' }
@@ -895,7 +885,7 @@ export class AccessibilityIntegrationTester {
     /**
      * アクセシビリティありでの測定
      */
-    private async measureWithAccessibility(): Promise<number> { const startTime = performance.now(),
+    private async measureWithAccessibility(): Promise<number> { const startTime = performance.now();
         ','
         // アクセシビリティ属性付きのDOM操作
         for(let, i = 0, i < 1000, i++) {', ' }
@@ -907,7 +897,7 @@ export class AccessibilityIntegrationTester {
             div.setAttribute('aria-label', `Button ${ i'`),'
             div.setAttribute('tabindex', '0};'
             document.body.appendChild(div}
-            document.body.removeChild(div});
+            document.body.removeChild(div};
         }
         
         return performance.now() - startTime;
@@ -916,7 +906,7 @@ export class AccessibilityIntegrationTester {
     /**
      * テスト結果の確定
      */
-    private finalizeTestResults(): void { this.testResults.endTime = Date.now(),
+    private finalizeTestResults(): void { this.testResults.endTime = Date.now();
         this.testResults.duration = this.testResults.endTime - (this.testResults.startTime || 0),
         
         // 成功率の計算
@@ -928,8 +918,8 @@ export class AccessibilityIntegrationTester {
         console.log(`Passed: ${this.testResults.passedTests)`,
         console.log(`Failed: ${this.testResults.failedTests)`,
         console.log(`Skipped: ${this.testResults.skippedTests }`} }
-        console.log(`Success Rate: ${this.testResults.successRate.toFixed(1})%`);
-        console.log(`Duration: ${this.testResults.duration}ms`});
+        console.log(`Success Rate: ${this.testResults.successRate.toFixed(1}%`),
+        console.log(`Duration: ${this.testResults.duration}ms`};
     }
     
     /**
@@ -962,7 +952,7 @@ export class AccessibilityIntegrationTester {
     private compareWithPreviousResults(previousResults: PreviousTestResults): void { const comparison: RegressionComparison = {
             successRateChange: (this.testResults.successRate || 0) - previousResults.successRate,
             testCountChange: this.testResults.totalTests - previousResults.totalTests,
-    regressionDetected: (this.testResults.successRate || 0) < previousResults.successRate - 5 // 5%以上の低下 };
+    regressionDetected: (this.testResults.successRate || 0) < previousResults.successRate - 5 // 5%以上の低下 },
         this.testResults.regression = comparison;
 
         if (comparison.regressionDetected) {', ' }
@@ -981,12 +971,12 @@ export class AccessibilityIntegrationTester {
                 passedTests: this.testResults.passedTests,
                 failedTests: this.testResults.failedTests,
                 successRate: this.testResults.successRate || 0,
-    duration: this.testResults.duration };
-            suiteResults: Object.fromEntries(this.testResults.suiteResults),
+    duration: this.testResults.duration },
+            suiteResults: Object.fromEntries(this.testResults.suiteResults);
             detailResults: this.testResults.detailResults,
             performanceMetrics: this.testResults.performanceMetrics,
             issues: this.testResults.issues,
-    recommendations: this.generateRecommendations(),
+    recommendations: this.generateRecommendations();
         };
         
         return report;

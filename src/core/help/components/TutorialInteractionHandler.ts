@@ -8,30 +8,32 @@ import { getErrorHandler  } from '../../../utils/ErrorHandler.js';
 import { LoggingSystem  } from '../../LoggingSystem.js';
 
 // 型定義
-export interface Position { x: number,
+export interface Position { x: number;
     y: number;
 
-export interface InteractionState { isListening: boolean,
+export interface InteractionState { isListening: boolean;
     isDragging: boolean;
     isScrolling: boolean;
     lastTouchPosition: Position;
     touchStartTime: number;
     gestureRecognition: {
-        enable,d: boolean,
-        threshold: number,
-    timeWindow: number,
-
-export interface KeyboardNavigation { enabled: boolean,
+        enable,d: boolean;
+        threshold: number;
+    timeWindow: number;
+    timeWindow: number;
+        };
+export interface KeyboardNavigation { enabled: boolean;
     currentFocusIndex: number;
     focusableElements: HTMLElement[];
     shortcuts: {
-        nex,t: string[],
-        previous: string[],
-        skip: string[],
-        complete: string[],
-    help: string[],
-
-export interface AccessibilityConfig { enabled: boolean,
+        nex,t: string[];
+        previous: string[];
+        skip: string[];
+        complete: string[];
+    help: string[];
+    help: string[];
+        };
+export interface AccessibilityConfig { enabled: boolean;
     highContrast: boolean;
     largeText: boolean;
     screenReaderMode: boolean;
@@ -40,27 +42,30 @@ export interface AccessibilityConfig { enabled: boolean,
     focusIndicators: boolean;
     announcements: boolean;
     textSizeMultiplier: number;
-
-export interface GestureConfig { callback: (() => void) | null,
+    textSizeMultiplier: number;
+        };
+export interface GestureConfig { callback: (() => void) | null;
     enabled: boolean;
     duration?: number;
 
-export interface Gestures { swipeLeft: GestureConfig,
+export interface Gestures { swipeLeft: GestureConfig;
     swipeRight: GestureConfig;
     swipeUp: GestureConfig;
     swipeDown: GestureConfig;
     tap: GestureConfig;
     doubleTap: GestureConfig;
     longPress: GestureConfig;
-
-export interface PointerState { isDown: boolean,
+    longPress: GestureConfig;
+        };
+export interface PointerState { isDown: boolean;
     startPosition: Position;
     currentPosition: Position;
     startTime: number;
     lastTapTime: number;
     tapCount: number;
-
-export interface InteractionCallbacks { onNext: (() => void) | null,
+    tapCount: number;
+        };
+export interface InteractionCallbacks { onNext: (() => void) | null;
     onPrevious: (() => void) | null;
     onSkip: (() => void) | null;
     onComplete: (() => void) | null;
@@ -82,7 +87,7 @@ export class TutorialInteractionHandler {
     private accessibility: AccessibilityConfig;
     private gestures: Gestures;
     private pointerState: PointerState;
-    private, callbacks: InteractionCallbacks,
+    private, callbacks: InteractionCallbacks;
     constructor() {
 
         this.errorHandler = getErrorHandler();
@@ -90,77 +95,77 @@ export class TutorialInteractionHandler {
         
         // イベントハンドラー
         this.boundHandlers = {
-            keydown: this.handleKeydown.bind(this),
-            resize: this.handleResize.bind(this),
-            click: this.handleOverlayClick.bind(this),
-            touchstart: this.handleTouchStart.bind(this),
-            touchmove: this.handleTouchMove.bind(this),
-            touchend: this.handleTouchEnd.bind(this,
+            keydown: this.handleKeydown.bind(this);
+            resize: this.handleResize.bind(this);
+            click: this.handleOverlayClick.bind(this);
+            touchstart: this.handleTouchStart.bind(this);
+            touchmove: this.handleTouchMove.bind(this);
+            touchend: this.handleTouchEnd.bind(this;
     wheel: this.handleWheel.bind(this) }
 
             contextmenu: this.handleContextMenu.bind(this); 
     };
         
         // インタラクション状態
-        this.interactionState = { isListening: false,
-            isDragging: false,
-    isScrolling: false,
+        this.interactionState = { isListening: false;
+            isDragging: false;
+    isScrolling: false;
             lastTouchPosition: { x: 0, y: 0  };
-            touchStartTime: 0,
-    gestureRecognition: { enabled: false,
-                threshold: 50,
+            touchStartTime: 0;
+    gestureRecognition: { enabled: false;
+                threshold: 50;
     timeWindow: 500 
     };
         // キーボードナビゲーション
-        this.keyboardNavigation = { enabled: true,
-            currentFocusIndex: 0,
-            focusableElements: [],
+        this.keyboardNavigation = { enabled: true;
+            currentFocusIndex: 0;
+            focusableElements: [];
     shortcuts: {''
                 next: ['ArrowRight', 'Space', 'Tab'];
                 previous: ['ArrowLeft', 'Shift+Tab];'
                 skip: ['Escape', 's'];
-                complete: ['Enter'],
+                complete: ['Enter'];
                 help: ['F1', 'h] }'
         };
         
         // アクセシビリティ設定
-        this.accessibility = { enabled: false,
-            highContrast: false,
-            largeText: false,
-            screenReaderMode: false,
-            reducedMotion: false,
-            keyboardNavigation: true,
-            focusIndicators: true,
-            announcements: true,
+        this.accessibility = { enabled: false;
+            highContrast: false;
+            largeText: false;
+            screenReaderMode: false;
+            reducedMotion: false;
+            keyboardNavigation: true;
+            focusIndicators: true;
+            announcements: true;
     textSizeMultiplier: 1.0  };
         // タッチジェスチャー
         this.gestures = {
-            swipeLeft: { callback: null, enabled: true,;
-            swipeRight: { callback: null, enabled: true,;
-            swipeUp: { callback: null, enabled: true,;
-            swipeDown: { callback: null, enabled: true,;
-            tap: { callback: null, enabled: true,;
-            doubleTap: { callback: null, enabled: true,;
+            swipeLeft: { callback: null, enabled: true;
+            swipeRight: { callback: null, enabled: true;
+            swipeUp: { callback: null, enabled: true;
+            swipeDown: { callback: null, enabled: true;
+            tap: { callback: null, enabled: true;
+            doubleTap: { callback: null, enabled: true;
             longPress: { callback: null, enabled: true, duration: 500  };
         
         // マウス・タッチ状態
-        this.pointerState = { isDown: false,
+        this.pointerState = { isDown: false;
             startPosition: { x: 0, y: 0  };
             currentPosition: { x: 0, y: 0  };
-            startTime: 0,
-            lastTapTime: 0,
-    tapCount: 0,
+            startTime: 0;
+            lastTapTime: 0;
+    tapCount: 0;
         },
         
         // コールバック
-        this.callbacks = { onNext: null,
-            onPrevious: null,
-            onSkip: null,
-            onComplete: null,
-            onClose: null,
-            onHelp: null,
-            onResize: null,
-    onInteraction: null,;
+        this.callbacks = { onNext: null;
+            onPrevious: null;
+            onSkip: null;
+            onComplete: null;
+            onClose: null;
+            onHelp: null;
+            onResize: null;
+    onInteraction: null;
         this.initialize();
     }
     
@@ -230,16 +235,15 @@ export class TutorialInteractionHandler {
             if (!this.keyboardNavigation.enabled) return,
             
             const key = event.key,
-            const keyCombo = this.getKeyCombo(event),
-            
+            const keyCombo = this.getKeyCombo(event);
             // ショートカット処理
             if (this.isShortcutMatch(keyCombo, this.keyboardNavigation.shortcuts.next) {
                 event.preventDefault() }
                 this.triggerNext(); }
-            } else if (this.isShortcutMatch(keyCombo, this.keyboardNavigation.shortcuts.previous) { event.preventDefault(),
-                this.triggerPrevious() } else if (this.isShortcutMatch(keyCombo, this.keyboardNavigation.shortcuts.skip) { event.preventDefault(),
-                this.triggerSkip() } else if (this.isShortcutMatch(keyCombo, this.keyboardNavigation.shortcuts.complete) { event.preventDefault(),
-                this.triggerComplete() } else if (this.isShortcutMatch(keyCombo, this.keyboardNavigation.shortcuts.help) { event.preventDefault(),
+            } else if (this.isShortcutMatch(keyCombo, this.keyboardNavigation.shortcuts.previous) { event.preventDefault();
+                this.triggerPrevious() } else if (this.isShortcutMatch(keyCombo, this.keyboardNavigation.shortcuts.skip) { event.preventDefault();
+                this.triggerSkip() } else if (this.isShortcutMatch(keyCombo, this.keyboardNavigation.shortcuts.complete) { event.preventDefault();
+                this.triggerComplete() } else if (this.isShortcutMatch(keyCombo, this.keyboardNavigation.shortcuts.help) { event.preventDefault();
                 this.triggerHelp()','
             if(key === 'Tab' && !event.shiftKey' {', ' }'
 
@@ -265,10 +269,10 @@ export class TutorialInteractionHandler {
             this.pointerState = {
     }
                 isDown: true;
-                startPosition: { x: touch.clientX, y: touch.clientY  },
-                currentPosition: { x: touch.clientX, y: touch.clientY  },
+                startPosition: { x: touch.clientX, y: touch.clientY  };
+                currentPosition: { x: touch.clientX, y: touch.clientY  };
                 startTime: Date.now();
-                lastTapTime: this.pointerState.lastTapTime,
+                lastTapTime: this.pointerState.lastTapTime;
     tapCount: this.pointerState.tapCount;
             },
             
@@ -315,10 +319,8 @@ export class TutorialInteractionHandler {
             const duration = Date.now() - this.pointerState.startTime,
             const deltaX = this.pointerState.currentPosition.x - this.pointerState.startPosition.x,
             const deltaY = this.pointerState.currentPosition.y - this.pointerState.startPosition.y,
-            const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY),
-            
-            this.cancelLongPressDetection(),
-            
+            const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+            this.cancelLongPressDetection();
             // ジェスチャー判定
             if (!this.interactionState.isDragging && distance < 10) {
     }
@@ -338,7 +340,7 @@ export class TutorialInteractionHandler {
      * @param {number} duration - タップ継続時間
      */
     handleTapGesture(duration) {
-        const currentTime = Date.now(),
+        const currentTime = Date.now();
         const timeSinceLastTap = currentTime - this.pointerState.lastTapTime,
         
         if (timeSinceLastTap < 300) {
@@ -374,9 +376,8 @@ export class TutorialInteractionHandler {
         
         if (duration > timeWindow) return,
         
-        const absX = Math.abs(deltaX),
-        const absY = Math.abs(deltaY),
-        
+        const absX = Math.abs(deltaX);
+        const absY = Math.abs(deltaY);
         if (absX > threshold && absX > absY) {
             // 水平スワイプ
             if (deltaX > 0 && this.gestures.swipeRight.enabled) {
@@ -433,7 +434,7 @@ export class TutorialInteractionHandler {
     handleWheel(event) {
         try {
             // チュートリアル中のスクロールを防止
-            event.preventDefault(),
+            event.preventDefault();
             this.interactionState.isScrolling = true }
             setTimeout(() => {  }
                 this.interactionState.isScrolling = false; }
@@ -565,7 +566,7 @@ export class TutorialInteractionHandler {
         if(event.altKey) parts.push('Alt',
         if(event.shiftKey) parts.push('Shift',
         if(event.metaKey) parts.push('Meta',
-        parts.push(event.key),
+        parts.push(event.key);
         return parts.join('+' }'
     
     /**
@@ -584,9 +585,8 @@ export class TutorialInteractionHandler {
      */
     handleTabNavigation(event, direction) {
         try {
-            event.preventDefault(),
-            
-            const focusableElements = this.getFocusableElements(),
+            event.preventDefault();
+            const focusableElements = this.getFocusableElements();
             if (focusableElements.length === 0) return,
             
             let newIndex = this.keyboardNavigation.currentFocusIndex + direction,
@@ -668,7 +668,7 @@ export class TutorialInteractionHandler {
             
             if (message && window.speechSynthesis) {
             
-                const utterance = new SpeechSynthesisUtterance(message),
+                const utterance = new SpeechSynthesisUtterance(message);
                 utterance.rate = 0.8,
                 utterance.volume = 0.7 }
 
@@ -705,9 +705,8 @@ export class TutorialInteractionHandler {
      */
     dispose() {
         try {
-            this.stopListening(),
-            this.cancelLongPressDetection(),
-            
+            this.stopListening();
+            this.cancelLongPressDetection();
             // コールバックをクリア
             Object.keys(this.callbacks).forEach(key => { )
                 this.callbacks[key] = null),

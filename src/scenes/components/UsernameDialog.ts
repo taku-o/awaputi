@@ -4,18 +4,18 @@
 import { ScenesBaseDialog, DialogButton, GameEngine, EventBus, GameState  } from './ScenesBaseDialog.js';
 
 // Type definitions for username dialog
-export interface UsernameValidation { allowedChars: RegExp,
+export interface UsernameValidation { allowedChars: RegExp;
     prohibitedWords: string[];
     minLength: number;
 
-export interface TextSettings { contentFont: string,
+export interface TextSettings { contentFont: string;
     contentColor: string;
 
-export interface UsernameDialogData { currentUsername: string,
+export interface UsernameDialogData { currentUsername: string;
     newUsername: string;
     error: string | null }
 
-export interface PlayerDataManager { getUsername: () => string,
+export interface PlayerDataManager { getUsername: () => string;
     setUsername: (username: string) => void 
     }
 
@@ -32,11 +32,10 @@ export class UsernameDialog extends ScenesBaseDialog { private title: string
     // テキスト設定
     private textSettings: TextSettings;
     // ダイアログデータ（型安全性のため再定義）
-    protected, dialogData: UsernameDialogData,
+    protected, dialogData: UsernameDialogData;
     constructor(gameEngine: GameEngine, eventBus: EventBus, state: GameState) {
 
-        super(gameEngine, eventBus, state),
-
+        super(gameEngine, eventBus, state);
         this.title = 'ユーザー名の変更';
         this.maxUsernameLength = 10;
         this.inputActive = false;
@@ -46,7 +45,7 @@ export class UsernameDialog extends ScenesBaseDialog { private title: string
         
         // 入力検証設定
         this.validation = {
-            allowedChars: /^[a-zA-Z0-9ぁ-んァ-ヶー一-龯\s]*$/,
+            allowedChars: /^[a-zA-Z0-9ぁ-んァ-ヶー一-龯\s]*$/;
             prohibitedWords: ['admin', 'test', 'guest', 'null', 'undefined'] }
             minLength: 1 
     };
@@ -59,15 +58,15 @@ export class UsernameDialog extends ScenesBaseDialog { private title: string
         this.dialogData = {;
             currentUsername: ','
             newUsername: ','
-    error: null,
-    
+    error: null;
+    error: null;
+        };
     /**
      * ダイアログの初期化
      * @param options - 初期化オプション
      */
     async initialize(options: Record<string, unknown> = { ): Promise<void> {
-        await super.initialize(options),
-        
+        await super.initialize(options);
         // 現在のユーザー名を取得
         const gameEngine = this.gameEngine as GameEngineWithPlayerData,
         const playerData = gameEngine.playerData,
@@ -83,7 +82,7 @@ export class UsernameDialog extends ScenesBaseDialog { private title: string
      */''
     setupButtons('''
                 text: '変更',';'
-                color: '#28A745',
+                color: '#28A745';
     callback: () => this.handleUsernameChange(
                 get disabled() { ''
                     return !this.isValidUsername('''
@@ -128,7 +127,7 @@ export class UsernameDialog extends ScenesBaseDialog { private title: string
      */
     private renderUsernameInput(;
         context: CanvasRenderingContext2D,
-    layout: { contentX: number,, contentWidth: number ), 
+    layout: { contentX: number,, contentWidth: number ),
         y: number','
     '): void {'
         const inputWidth = layout.contentWidth - 120,
@@ -145,13 +144,13 @@ export class UsernameDialog extends ScenesBaseDialog { private title: string
         ','
         // 入力ボックスの背景
         context.fillStyle = this.inputActive ? '#FFFFFF' : '#F8F9FA',
-        context.fillRect(inputX, y, inputWidth, inputHeight),
+        context.fillRect(inputX, y, inputWidth, inputHeight);
         ','
         // 入力ボックスの枠線
         context.strokeStyle = this.inputActive ? '#007BFF' : '#DEE2E6',
 
         context.lineWidth = this.inputActive ? 2 : 1,
-        context.strokeRect(inputX, y, inputWidth, inputHeight),
+        context.strokeRect(inputX, y, inputWidth, inputHeight);
         ','
         // 入力テキストを描画
         const displayText = this.dialogData.newUsername || ','
@@ -189,14 +188,14 @@ export class UsernameDialog extends ScenesBaseDialog { private title: string
      * @param textY - テキストY座標
      * @param text - 表示テキスト
      */
-    private renderCursor(context: CanvasRenderingContext2D, textX: number, textY: number, text: string): void { const beforeCursor = text.substring(0, this.cursorPosition),
+    private renderCursor(context: CanvasRenderingContext2D, textX: number, textY: number, text: string): void { const beforeCursor = text.substring(0, this.cursorPosition);
         const cursorX = textX + context.measureText(beforeCursor).width,
 
         context.strokeStyle = '#333333',
         context.lineWidth = 1,
-        context.beginPath(),
-        context.moveTo(cursorX, textY - 10),
-        context.lineTo(cursorX, textY + 10),
+        context.beginPath();
+        context.moveTo(cursorX, textY - 10);
+        context.lineTo(cursorX, textY + 10);
         context.stroke() }
     
     /**
@@ -250,7 +249,7 @@ export class UsernameDialog extends ScenesBaseDialog { private title: string
         const inputHeight = 40,
         
         // 入力欄のクリック判定
-        if(x >= inputX && x <= inputX + inputWidth && ),
+        if(x >= inputX && x <= inputX + inputWidth && );
             y >= inputY && y <= inputY + inputHeight) {
             this.inputActive = true;
             
@@ -273,33 +272,32 @@ export class UsernameDialog extends ScenesBaseDialog { private title: string
         switch(event.key) {
 
             case 'Backspace':','
-                event.preventDefault(),
+                event.preventDefault();
                 this.handleBackspace()','
             case 'Delete':','
-                event.preventDefault(),
+                event.preventDefault();
                 this.handleDelete()','
             case 'ArrowLeft':','
-                event.preventDefault(),
-                this.cursorPosition = Math.max(0; this.cursorPosition - 1),
+                event.preventDefault();
+                this.cursorPosition = Math.max(0; this.cursorPosition - 1);
                 return true,
 
             case 'ArrowRight':,
-                event.preventDefault(),
-
+                event.preventDefault();
                 const maxPos = this.dialogData.newUsername ? this.dialogData.newUsername.length: 0,
-                this.cursorPosition = Math.min(maxPos; this.cursorPosition + 1),
+                this.cursorPosition = Math.min(maxPos; this.cursorPosition + 1);
                 return true,
 
             case 'Home':','
                 event.preventDefault()','
             case 'End':),
-                event.preventDefault(),
-                this.cursorPosition = this.dialogData.newUsername ? this.dialogData.newUsername.length: 0;
+                event.preventDefault();
+                this.cursorPosition = this.dialogData.newUsername ? this.dialogData.newUsername.length: 0,
                 return true,
                 
             default:,
                 if (event.key.length === 1) {
-                    event.preventDefault(),
+                    event.preventDefault();
                     this.handleCharacterInput(event.key) }
                     return true;
                 break;
@@ -329,8 +327,7 @@ export class UsernameDialog extends ScenesBaseDialog { private title: string
         for(let, i = 0; i <= this.dialogData.newUsername.length; i++) {
         
             const textWidth = context.measureText(this.dialogData.newUsername.substring(0, i).width,
-            const distance = Math.abs(clickX - textWidth),
-            
+            const distance = Math.abs(clickX - textWidth);
             if (distance < minDistance) {
                 minDistance = distance }
                 bestPosition = i; }
@@ -343,8 +340,8 @@ export class UsernameDialog extends ScenesBaseDialog { private title: string
      * Backspace処理
      */
     private handleBackspace(): void { if (this.cursorPosition > 0 && this.dialogData.newUsername) {
-            const beforeCursor = this.dialogData.newUsername.substring(0, this.cursorPosition - 1),
-            const afterCursor = this.dialogData.newUsername.substring(this.cursorPosition),
+            const beforeCursor = this.dialogData.newUsername.substring(0, this.cursorPosition - 1);
+            const afterCursor = this.dialogData.newUsername.substring(this.cursorPosition);
             this.dialogData.newUsername = beforeCursor + afterCursor,
             this.cursorPosition--,
             this.clearError() }
@@ -354,8 +351,8 @@ export class UsernameDialog extends ScenesBaseDialog { private title: string
      * Delete処理
      */
     private handleDelete(): void { if (this.dialogData.newUsername && this.cursorPosition < this.dialogData.newUsername.length) {
-            const beforeCursor = this.dialogData.newUsername.substring(0, this.cursorPosition),
-            const afterCursor = this.dialogData.newUsername.substring(this.cursorPosition + 1),
+            const beforeCursor = this.dialogData.newUsername.substring(0, this.cursorPosition);
+            const afterCursor = this.dialogData.newUsername.substring(this.cursorPosition + 1);
             this.dialogData.newUsername = beforeCursor + afterCursor,
             this.clearError() }
     }
@@ -392,8 +389,7 @@ export class UsernameDialog extends ScenesBaseDialog { private title: string
      * ユーザー名変更処理
      * @returns 処理成功の場合true
      */
-    private handleUsernameChange(): boolean { const newUsername = this.dialogData.newUsername?.trim(),
-        
+    private handleUsernameChange(): boolean { const newUsername = this.dialogData.newUsername?.trim();
         if (!this.validateUsername(newUsername) {
     
 }
@@ -402,7 +398,7 @@ export class UsernameDialog extends ScenesBaseDialog { private title: string
         try { // プレイヤーデータを更新
             const gameEngine = this.gameEngine as GameEngineWithPlayerData,
             const playerData = gameEngine.playerData,
-            playerData.setUsername(newUsername),
+            playerData.setUsername(newUsername);
             // 成功結果を返す
             if (this.onResult) {
                 this.onResult({ : undefined''
@@ -415,7 +411,7 @@ export class UsernameDialog extends ScenesBaseDialog { private title: string
             ';'
 
             return true;} catch (error) {
-            this.setError('ユーザー名の変更に失敗しました'),
+            this.setError('ユーザー名の変更に失敗しました');
             console.error('Username change error:', error','
             return false,
     
@@ -433,7 +429,7 @@ export class UsernameDialog extends ScenesBaseDialog { private title: string
         if (username.length < this.validation.minLength) {
     
 }
-            this.setError(`ユーザー名は${this.validation.minLength}文字以上で入力してください`});
+            this.setError(`ユーザー名は${this.validation.minLength}文字以上で入力してください`};
             return false;
         }
 
@@ -461,7 +457,7 @@ export class UsernameDialog extends ScenesBaseDialog { private title: string
      * ユーザー名が有効かチェック
      * @returns 有効な場合true
      */
-    private isValidUsername(): boolean { const username = this.dialogData.newUsername?.trim(),
+    private isValidUsername(): boolean { const username = this.dialogData.newUsername?.trim();
         return this.validateUsername(username) }
     
     /**

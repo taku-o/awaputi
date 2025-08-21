@@ -22,39 +22,39 @@ class MockDataCollector {
         this.collectedData = [] }
 }
 describe('GameBalanceCollector', () => {
-    let collector: any,
-    let mockDataCollector: any,
+    let collector: any;
+    let mockDataCollector: any;
     
     beforeEach(() => {
-        mockDataCollector = new MockDataCollector(),
+        mockDataCollector = new MockDataCollector();
         collector = new GameBalanceCollector(mockDataCollector) }');'
     describe('初期化', (') => {'
         test('初期状態が正しく設定される', () => {
-            expect(collector.bubbleSpawnData.totalSpawned).toBe(0),
-            expect(collector.bubbleSpawnData.typeDistribution).toEqual({});
-            expect(collector.scoreDistribution.bubbleScores).toEqual({});
-            expect(collector.itemEffectiveness.usageFrequency).toEqual({});
+            expect(collector.bubbleSpawnData.totalSpawned).toBe(0);
+            expect(collector.bubbleSpawnData.typeDistribution).toEqual({};
+            expect(collector.scoreDistribution.bubbleScores).toEqual({};
+            expect(collector.itemEffectiveness.usageFrequency).toEqual({};
             expect(collector.difficultyAnalysis.stageCompletionRates).toEqual({}');'
         }
         test('警告閾値が設定される', () => {
-            expect(collector.warningThresholds.scoreDistributionVariance).toBe(0.3),
-            expect(collector.warningThresholds.completionRateDropoff).toBe(0.5),
-            expect(collector.warningThresholds.itemUsageImbalance).toBe(0.8),
+            expect(collector.warningThresholds.scoreDistributionVariance).toBe(0.3);
+            expect(collector.warningThresholds.completionRateDropoff).toBe(0.5);
+            expect(collector.warningThresholds.itemUsageImbalance).toBe(0.8);
             expect(collector.warningThresholds.difficultySpike).toBe(2.0) }');'
     }
     describe('バブル生成データ収集', (') => {'
         test('バブル出現データが正常に収集される', (') => {'
             const bubbleInfo = {
-                type: 'normal',
-                position: { x: 100, y: 200 },
-                difficulty: 'medium',
-                stageProgress: 0.3,
+                type: 'normal';
+                position: { x: 100, y: 200 };
+                difficulty: 'medium';
+                stageProgress: 0.3;
                 surroundingBubbles: ['stone', 'normal'],
-                expectedLifetime: 5000,
-                scoreValue: 10,
-                currentScore: 150,
-                remainingTime: 240000,
-                playerHP: 80,
+                expectedLifetime: 5000;
+                scoreValue: 10;
+                currentScore: 150;
+                remainingTime: 240000;
+                playerHP: 80;
                 activeItems: ['timeExtender']
             };
             
@@ -75,9 +75,9 @@ describe('GameBalanceCollector', () => {
             
             bubbleTypes.forEach((type, index) => {
                 collector.collectBubbleSpawn({
-                    type: type,
-                    position: { x: index * 50, y: index * 50 },
-                    stageProgress: index * 0.2 });
+                    type: type;
+                    position: { x: index * 50, y: index * 50 };
+                    stageProgress: index * 0.2 };
             }
             expect(collector.bubbleSpawnData.totalSpawned).toBe(5);
             expect(collector.bubbleSpawnData.typeDistribution.normal).toBe(3);
@@ -89,17 +89,17 @@ describe('GameBalanceCollector', () => {
     describe('スコアデータ収集', (') => {'
         test('スコア獲得データが正常に収集される', (') => {'
             const scoreInfo = {
-                type: 'bubble',
-                amount: 25,
-                multiplier: 1.5,
-                baseScore: 15,
-                source: 'stone',
-                reactionTime: 400,
-                comboCount: 3,
-                timeInStage: 45000,
-                difficulty: 'hard',
-                stageProgress: 0.6,
-                totalScore: 500,
+                type: 'bubble';
+                amount: 25;
+                multiplier: 1.5;
+                baseScore: 15;
+                source: 'stone';
+                reactionTime: 400;
+                comboCount: 3;
+                timeInStage: 45000;
+                difficulty: 'hard';
+                stageProgress: 0.6;
+                totalScore: 500;
                 playerSkillLevel: 'intermediate'
             };
             
@@ -116,12 +116,12 @@ describe('GameBalanceCollector', () => {
         }');'
         test('コンボスコアが正常に記録される', (') => {'
             const comboScoreInfo = {
-                type: 'combo',
-                amount: 50,
-                multiplier: 2.0,
-                source: 'combo_bonus',
-                comboCount: 5,
-                timeInStage: 30000,
+                type: 'combo';
+                amount: 50;
+                multiplier: 2.0;
+                source: 'combo_bonus';
+                comboCount: 5;
+                timeInStage: 30000;
                 totalScore: 300
             };
             
@@ -133,10 +133,10 @@ describe('GameBalanceCollector', () => {
         }');'
         test('ボーナススコアが正常に記録される', (') => {'
             const bonusScoreInfo = {
-                type: 'bonus',
-                amount: 100,
-                source: 'time_bonus',
-                timeInStage: 60000,
+                type: 'bonus';
+                amount: 100;
+                source: 'time_bonus';
+                timeInStage: 60000;
                 totalScore: 800
             };
             
@@ -149,9 +149,9 @@ describe('GameBalanceCollector', () => {
             const consoleSpy = jest.spyOn(console, 'warn').mockImplementation('),'
             // 異常に高いスコア
             const abnormalScoreInfo = {
-                type: 'bubble',
+                type: 'bubble';
                 amount: 1000, // 通常のnormalバブルは10点
-                source: 'normal',
+                source: 'normal';
                 totalScore: 1000
             };
             
@@ -168,22 +168,23 @@ describe('GameBalanceCollector', () => {
     describe('アイテム効果データ収集', (') => {'
         test('アイテム効果データが正常に収集される', (') => {'
             const itemInfo = {
-                itemType: 'timeExtender',
-                action: 'activate',
-                duration: 30000,
-                cost: 50,
-                scoreBoost: 1.5,
-                timeExtension: 15000,
-                accuracyImprovement: 0.1,
+                itemType: 'timeExtender';
+                action: 'activate';
+                duration: 30000;
+                cost: 50;
+                scoreBoost: 1.5;
+                timeExtension: 15000;
+                accuracyImprovement: 0.1;
                 customEffects: { slowMotion: true,,
-                activationTiming: 120000,
-                stageProgress: 0.4,
-                playerSituation: 'desperate',
-                scoreIncrease: 75,
-                survivalTime: 45000,
-                bubblesPopped: 12,
-                stageCompleted: true,;
-            
+                activationTiming: 120000;
+                stageProgress: 0.4;
+                playerSituation: 'desperate';
+                scoreIncrease: 75;
+                survivalTime: 45000;
+                bubblesPopped: 12;
+                stageCompleted: true;
+                stageCompleted: true;
+        };
             collector.collectItemEffectData(itemInfo);
             // 内部統計の確認
             expect(collector.itemEffectiveness.usageFrequency.timeExtender).toBe(1);
@@ -197,9 +198,9 @@ describe('GameBalanceCollector', () => {
         }');'
         test('アイテム効果時間が記録される', (') => {'
             const expireInfo = {
-                itemType: 'scoreBooster',
-                action: 'expire',
-                duration: 25000,
+                itemType: 'scoreBooster';
+                action: 'expire';
+                duration: 25000;
                 cost: 75
             };
             
@@ -208,8 +209,8 @@ describe('GameBalanceCollector', () => {
         }');'
         test('アイテムスコア影響が記録される', (') => {'
             const effectInfo = {
-                itemType: 'multiplier',
-                action: 'activate',
+                itemType: 'multiplier';
+                action: 'activate';
                 scoreIncrease: 200
             };
             
@@ -220,22 +221,22 @@ describe('GameBalanceCollector', () => {
     describe('ステージ難易度データ収集', (') => {'
         test('ステージ完了データが正常に収集される', (') => {'
             const stageInfo = {
-                stageId: 'normal',
-                difficulty: 'medium',
-                playTime: 240000,
-                completed: true,
-                finalScore: 1200,
-                totalSpawned: 80,
-                popped: 70,
-                missed: 8,
-                expired: 2,
-                accuracy: 0.875,
-                averageReactionTime: 450,
-                maxCombo: 12,
-                itemsUsed: 2,
-                exitReason: 'completed',
-                timeRemaining: 15000,
-                hpRemaining: 60,
+                stageId: 'normal';
+                difficulty: 'medium';
+                playTime: 240000;
+                completed: true;
+                finalScore: 1200;
+                totalSpawned: 80;
+                popped: 70;
+                missed: 8;
+                expired: 2;
+                accuracy: 0.875;
+                averageReactionTime: 450;
+                maxCombo: 12;
+                itemsUsed: 2;
+                exitReason: 'completed';
+                timeRemaining: 15000;
+                hpRemaining: 60;
                 progressPercent: 100
             };
             
@@ -254,17 +255,17 @@ describe('GameBalanceCollector', () => {
         }');'
         test('ステージ失敗データが正常に記録される', (') => {'
             const failedStageInfo = {
-                stageId: 'hard',
-                difficulty: 'hard',
-                playTime: 180000,
-                completed: false,
-                finalScore: 800,
-                exitReason: 'game_over',
-                timeRemaining: 0,
-                hpRemaining: 0,
-                progressPercent: 75,
-                accuracy: 0.65,
-                averageReactionTime: 600,
+                stageId: 'hard';
+                difficulty: 'hard';
+                playTime: 180000;
+                completed: false;
+                finalScore: 800;
+                exitReason: 'game_over';
+                timeRemaining: 0;
+                hpRemaining: 0;
+                progressPercent: 75;
+                accuracy: 0.65;
+                averageReactionTime: 600;
                 maxCombo: 5
             };
             
@@ -276,13 +277,13 @@ describe('GameBalanceCollector', () => {
             expect(failurePoints[0].reason').toBe('game_over');'
         }');'
         test('難易度バランス警告が生成される', (') => {'
-            const consoleSpy = jest.spyOn(console, 'warn').mockImplementation(),
+            const consoleSpy = jest.spyOn(console, 'warn').mockImplementation();
             // 低い完了率のステージデータを複数送信
             for (let i = 0, i < 10, i++') {'
                 collector.collectStageDifficultyData({
-                    stageId: 'expert',
+                    stageId: 'expert';
                     completed: i < 3, // 30%の完了率
-                    playTime: 300000 });
+                    playTime: 300000 };
             }
             
             // 警告が生成されることを確認
@@ -303,7 +304,7 @@ describe('GameBalanceCollector', () => {
         test('ステージ完了率が正常に計算される', (') => {'
             // テストデータを設定
             collector.difficultyAnalysis.stageCompletionRates.test = {
-                total: 10,
+                total: 10;
                 completed: 7
             };
             
@@ -325,8 +326,8 @@ describe('GameBalanceCollector', () => {
             // テストデータを設定
             collector.bubbleSpawnData.totalSpawned = 100,
             collector.bubbleSpawnData.typeDistribution = {
-                normal: 60,
-                stone: 25,
+                normal: 60;
+                stone: 25;
                 rainbow: 15
             };
             
@@ -336,14 +337,14 @@ describe('GameBalanceCollector', () => {
             };
             
             collector.itemEffectiveness.usageFrequency = {
-                timeExtender: 5,
-                scoreBooster: 3,
+                timeExtender: 5;
+                scoreBooster: 3;
                 multiplier: 2
             };
             
             collector.difficultyAnalysis.stageCompletionRates = {
-                easy: { total: 10, completed: 9 },
-                normal: { total: 10, completed: 7 },
+                easy: { total: 10, completed: 9 };
+                normal: { total: 10, completed: 7 };
                 hard: { total: 10, completed: 4 }
             };
         }');'
@@ -355,45 +356,45 @@ describe('GameBalanceCollector', () => {
             expect(percentages.c').toBe('15.00');'
         }');'
         test('タイプ別平均スコアが正常に計算される', () => {
-            const averages = collector.calculateAverageScoresByType(),
-            expect(parseFloat(averages.normal).toBe(10.2),
+            const averages = collector.calculateAverageScoresByType();
+            expect(parseFloat(averages.normal).toBe(10.2);
             expect(parseFloat(averages.stone).toBe(20) }');'
         test('スコア分散が正常に計算される', () => {
-            const variances = collector.calculateScoreVariance(),
-            expect(parseFloat(variances.normal).toBeCloseTo(2.16, 1),
+            const variances = collector.calculateScoreVariance();
+            expect(parseFloat(variances.normal).toBeCloseTo(2.16, 1);
             expect(parseFloat(variances.stone).toBeCloseTo(2, 1) }');'
         test('完了率が正常に計算される', () => {
-            const completionRates = collector.calculateCompletionRates(),
+            const completionRates = collector.calculateCompletionRates();
             expect(completionRates.easy').toBe('90.0'),'
             expect(completionRates.normal').toBe('70.0'),'
             expect(completionRates.hard').toBe('40.0') }');
         test('バランススコアが正常に計算される', () => {
-            const bubbleScore = parseFloat(collector.calculateBubbleBalanceScore(),
-            const difficultyScore = parseFloat(collector.calculateDifficultyBalanceScore(),
-            const overallScore = parseFloat(collector.calculateOverallBalanceScore(),
-            expect(bubbleScore).toBeGreaterThan(0),
-            expect(bubbleScore).toBeLessThanOrEqual(100),
-            expect(difficultyScore).toBeGreaterThan(0),
-            expect(difficultyScore).toBeLessThanOrEqual(100),
-            expect(overallScore).toBeGreaterThan(0),
+            const bubbleScore = parseFloat(collector.calculateBubbleBalanceScore();
+            const difficultyScore = parseFloat(collector.calculateDifficultyBalanceScore();
+            const overallScore = parseFloat(collector.calculateOverallBalanceScore();
+            expect(bubbleScore).toBeGreaterThan(0);
+            expect(bubbleScore).toBeLessThanOrEqual(100);
+            expect(difficultyScore).toBeGreaterThan(0);
+            expect(difficultyScore).toBeLessThanOrEqual(100);
+            expect(overallScore).toBeGreaterThan(0);
             expect(overallScore).toBeLessThanOrEqual(100) }');'
         test('バランスレポートが正常に生成される', () => {
-            const report = collector.generateBalanceReport(),
-            expect(report.timestamp).toBeDefined(),
-            expect(report.bubbleBalance).toBeDefined(),
-            expect(report.scoreBalance).toBeDefined(),
-            expect(report.itemBalance).toBeDefined(),
-            expect(report.difficultyBalance).toBeDefined(),
-            expect(report.overallBalance).toBeDefined(),
-            expect(report.bubbleBalance.totalSpawned).toBe(100),
+            const report = collector.generateBalanceReport();
+            expect(report.timestamp).toBeDefined();
+            expect(report.bubbleBalance).toBeDefined();
+            expect(report.scoreBalance).toBeDefined();
+            expect(report.itemBalance).toBeDefined();
+            expect(report.difficultyBalance).toBeDefined();
+            expect(report.overallBalance).toBeDefined();
+            expect(report.bubbleBalance.totalSpawned).toBe(100);
             expect(report.bubbleBalance.typeDistribution.normal').toBe('60.00'),'
-            expect(report.overallBalance.score).toBeDefined(),
-            expect(report.overallBalance.recommendations).toBeDefined(),
+            expect(report.overallBalance.score).toBeDefined();
+            expect(report.overallBalance.recommendations).toBeDefined();
             expect(Array.isArray(report.overallBalance.recommendations).toBe(true) }');'
         test('改善推奨事項が適切に生成される', () => {
             // 低いスコアの状況を作成
             collector.difficultyAnalysis.stageCompletionRates.veryHard = {
-                total: 10,
+                total: 10;
                 completed: 2 // 20%完了率
             };
             
@@ -418,23 +419,23 @@ describe('GameBalanceCollector', () => {
             collector.resetStats();
             // リセット確認
             expect(collector.bubbleSpawnData.totalSpawned).toBe(0);
-            expect(collector.bubbleSpawnData.typeDistribution).toEqual({});
-            expect(collector.scoreDistribution.bubbleScores).toEqual({});
-            expect(collector.itemEffectiveness.usageFrequency).toEqual({});
-            expect(collector.difficultyAnalysis.stageCompletionRates).toEqual({});
+            expect(collector.bubbleSpawnData.typeDistribution).toEqual({};
+            expect(collector.scoreDistribution.bubbleScores).toEqual({};
+            expect(collector.itemEffectiveness.usageFrequency).toEqual({};
+            expect(collector.difficultyAnalysis.stageCompletionRates).toEqual({};
         }
     }');'
     describe('エッジケース', (') => {'
         test('空データでのバランス計算が正常に動作する', () => {
-            const bubbleScore = collector.calculateBubbleBalanceScore(),
-            const overallScore = collector.calculateOverallBalanceScore(),
+            const bubbleScore = collector.calculateBubbleBalanceScore();
+            const overallScore = collector.calculateOverallBalanceScore();
             expect(parseFloat(bubbleScore).toBe(100), // 空の場合は最高スコア
             expect(parseFloat(overallScore).toBeGreaterThan(0) }');'
         test('単一データでの統計計算が正常に動作する', () => {
             collector.scoreDistribution.bubbleScores.normal = [10],
             
-            const averages = collector.calculateAverageScoresByType(),
-            const variances = collector.calculateScoreVariance(),
+            const averages = collector.calculateAverageScoresByType();
+            const variances = collector.calculateScoreVariance();
             expect(averages.normal').toBe('10.00'),'
             expect(variances.normal).toBeUndefined(), // 分散は計算されない（データ不足）
         }');'
@@ -443,6 +444,6 @@ describe('GameBalanceCollector', () => {
             
             const completionRate = collector.getStageCompletionRate('test');
             expect(completionRate).toBe(1.0); // デフォルト値
-        });
+        };
     }
 }');'

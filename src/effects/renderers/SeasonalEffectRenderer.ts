@@ -3,42 +3,42 @@ import { getErrorHandler  } from '../../utils/ErrorHandler.js';
 /**
  * Particle configuration interface
  */
-interface ParticleConfig { count: number,
+interface ParticleConfig { count: number;
     type: string;
 
 /**
  * Theme colors interface
  */
-interface ThemeColors { primary: string[],
+interface ThemeColors { primary: string[];
     secondary: string[];
     accent: string[];
 
 /**
  * Seasonal theme interface
  */
-interface SeasonalTheme { name: string,
+interface SeasonalTheme { name: string;
     colors: ThemeColors;
     particles: {
-        [ke,y: string]: ParticleConfig,;
-    weather: string,
-    priority: number,
+        [ke,y: string]: ParticleConfig;
+    weather: string;
+    priority: number;
 }
 
 /**
  * Event duration interface
  */
-interface EventDuration { start: string,
+interface EventDuration { start: string;
     end: string;
 
 /**
  * Event theme interface
  */
-interface EventTheme { name: string,
+interface EventTheme { name: string;
     duration: EventDuration;
     colors: ThemeColors;
     particles: {
-        [ke,y: string]: ParticleConfig,;
-    priority: number,
+        [ke,y: string]: ParticleConfig;
+    priority: number;
 }
 
 /**
@@ -49,7 +49,7 @@ interface ActiveEvent extends EventTheme { key: string;
 /**
  * Particle interface
  */
-interface Particle { x: number,
+interface Particle { x: number;
     y: number;
     vx: number;
     vy: number;
@@ -76,7 +76,7 @@ interface Particle { x: number,
 /**
  * Particle manager interface
  */
-interface ParticleManager { particles: Particle[],
+interface ParticleManager { particles: Particle[];
     getParticleFromPool(): Particle;
     shouldRenderEffect(effectType: string, priority: number): boolean;
     adjustParticleCount(count: number): number;
@@ -99,7 +99,7 @@ export class SeasonalEffectRenderer {
         // 季節テーマの定義
         this.seasonalThemes = {
             spring: {''
-                name: '春',
+                name: '春';
                 colors: {''
                     primary: ['#FFB6C1', '#FFC0CB', '#FFE4E1', '#F0FFF0];'
                     secondary: ['#98FB98', '#90EE90', '#7CFC00', '#ADFF2F] }'
@@ -139,7 +139,7 @@ export class SeasonalEffectRenderer {
 
                 },''
                 weather: 'heat_shimmer',
-    priority: 6;
+    priority: 6,
             },
 
             autumn: { ''
@@ -248,7 +248,7 @@ export class SeasonalEffectRenderer {
             },''
                     celebration_burst: { count: 12, type: 'energy_orb'
             },
-                priority: 11;
+                priority: 11,
             },
 
             valentine: { ''
@@ -270,7 +270,7 @@ export class SeasonalEffectRenderer {
             },''
                     cupid_trail: { count: 6, type: 'trail_particle'
             },
-                priority: 8;
+                priority: 8,
     },
         
         // 現在のテーマ状態
@@ -292,8 +292,7 @@ export class SeasonalEffectRenderer {
     createSeasonalEffect(x: number, y: number, seasonType: string | null = null, eventType: string | null = null): void { try {
             // 指定された季節/イベント、または現在のものを使用
             const season = seasonType || this.currentSeason,
-            const event = eventType ? this.eventThemes[eventType] : this.getHighestPriorityEvent(),
-            
+            const event = eventType ? this.eventThemes[eventType] : this.getHighestPriorityEvent();
             // イベントが優先、次に季節
             if (event) {
     
@@ -326,19 +325,16 @@ export class SeasonalEffectRenderer {
         switch(seasonKey) {
 
             case 'spring':','
-                this.createSpringEffect(x, y, theme),
-
+                this.createSpringEffect(x, y, theme);
                 break,
             case 'summer':','
-                this.createSummerEffect(x, y, theme),
-
+                this.createSummerEffect(x, y, theme);
                 break,
             case 'autumn':','
-                this.createAutumnEffect(x, y, theme),
-
+                this.createAutumnEffect(x, y, theme);
                 break,
             case 'winter':,
-                this.createWinterEffect(x, y, theme),
+                this.createWinterEffect(x, y, theme);
                 break,
             default:,
                 this.createGenericSeasonalEffect(x, y, theme) }
@@ -352,12 +348,10 @@ export class SeasonalEffectRenderer {
      * @param {Object} theme - テーマ
      */
     createSpringEffect(x: number, y: number, theme: SeasonalTheme): void { // 桜の花びら
-        const petalCount = this.particleManager.adjustParticleCount(theme.particles.cherry_blossom.count),
-        
+        const petalCount = this.particleManager.adjustParticleCount(theme.particles.cherry_blossom.count);
         for(let, i = 0, i < petalCount, i++) {
         
-            const particle = this.particleManager.getParticleFromPool(),
-            
+            const particle = this.particleManager.getParticleFromPool();
             const angle = Math.random() * Math.PI * 2,
             const distance = Math.random() * 60,
             
@@ -372,7 +366,7 @@ export class SeasonalEffectRenderer {
             particle.alpha = 0.7 + Math.random()','
             particle.type = 'sakura_petal' }
             particle.rotationSpeed = (Math.random() - 0.5) * 5; }
-            particle.sway = { amplitude: 20, frequency: 0.01  }; // 風による揺れ
+            particle.sway = { amplitude: 20, frequency: 0.01  }, // 風による揺れ
             
             this.particleManager.particles.push(particle);
         }
@@ -388,12 +382,10 @@ export class SeasonalEffectRenderer {
      * @param {Object} theme - テーマ
      */
     createSummerEffect(x: number, y: number, theme: SeasonalTheme): void { // 太陽の光線
-        const rayCount = this.particleManager.adjustParticleCount(theme.particles.sun_ray.count),
-        
+        const rayCount = this.particleManager.adjustParticleCount(theme.particles.sun_ray.count);
         for(let, i = 0, i < rayCount, i++) {
         
-            const particle = this.particleManager.getParticleFromPool(),
-            
+            const particle = this.particleManager.getParticleFromPool();
             const angle = (Math.PI * 2 * i) / rayCount,
             const speed = 80 + Math.random() * 40,
             
@@ -423,12 +415,10 @@ export class SeasonalEffectRenderer {
      * @param {Object} theme - テーマ
      */
     createAutumnEffect(x: number, y: number, theme: SeasonalTheme): void { // 落ち葉
-        const leafCount = this.particleManager.adjustParticleCount(theme.particles.falling_leaf.count),
-        
+        const leafCount = this.particleManager.adjustParticleCount(theme.particles.falling_leaf.count);
         for(let, i = 0, i < leafCount, i++) {
         
-            const particle = this.particleManager.getParticleFromPool(),
-            
+            const particle = this.particleManager.getParticleFromPool();
             const angle = Math.random() * Math.PI * 2,
             const distance = Math.random() * 80,
             
@@ -441,7 +431,7 @@ export class SeasonalEffectRenderer {
             particle.life = 4000 + Math.random()','
             particle.type = 'leaf' }
             particle.rotationSpeed = (Math.random() - 0.5) * 8; }
-            particle.flutter = { amplitude: 15, frequency: 0.02  }; // ひらひら舞う
+            particle.flutter = { amplitude: 15, frequency: 0.02  }, // ひらひら舞う
             
             this.particleManager.particles.push(particle);
         }
@@ -457,12 +447,10 @@ export class SeasonalEffectRenderer {
      * @param {Object} theme - テーマ
      */
     createWinterEffect(x: number, y: number, theme: SeasonalTheme): void { // 雪の結晶
-        const snowCount = this.particleManager.adjustParticleCount(theme.particles.snowflake.count),
-        
+        const snowCount = this.particleManager.adjustParticleCount(theme.particles.snowflake.count);
         for(let, i = 0, i < snowCount, i++) {
         
-            const particle = this.particleManager.getParticleFromPool(),
-            
+            const particle = this.particleManager.getParticleFromPool();
             const angle = Math.random() * Math.PI * 2,
             const distance = Math.random() * 70,
             
@@ -477,7 +465,7 @@ export class SeasonalEffectRenderer {
             particle.alpha = 0.6 + Math.random()','
             particle.type = 'snowflake' }
             particle.rotationSpeed = (Math.random() - 0.5) * 3; }
-            particle.drift = { amplitude: 25, frequency: 0.008  }; // 風に流される
+            particle.drift = { amplitude: 25, frequency: 0.008  }, // 風に流される
             
             this.particleManager.particles.push(particle);
         }
@@ -499,7 +487,7 @@ export class SeasonalEffectRenderer {
         }
         
         // 各イベントの特殊効果
-        Object.entries(event.particles).forEach(([effectName, config]) => { this.createEventParticleEffect(x, y, effectName, config, event) });
+        Object.entries(event.particles).forEach(([effectName, config]) => { this.createEventParticleEffect(x, y, effectName, config, event) };
     }
     
     /**
@@ -510,15 +498,12 @@ export class SeasonalEffectRenderer {
      * @param {Object} config - 設定
      * @param {Object} event - イベントテーマ
      */
-    createEventParticleEffect(x: number, y: number, effectName: string, config: ParticleConfig, event: EventTheme | ActiveEvent): void { const adjustedCount = this.particleManager.adjustParticleCount(config.count),
-        
+    createEventParticleEffect(x: number, y: number, effectName: string, config: ParticleConfig, event: EventTheme | ActiveEvent): void { const adjustedCount = this.particleManager.adjustParticleCount(config.count);
         for(let, i = 0, i < adjustedCount, i++) {
         
-            const particle = this.particleManager.getParticleFromPool(),
-            
+            const particle = this.particleManager.getParticleFromPool();
             // 効果名に応じた特殊設定
-            this.configureEventParticle(particle, effectName, event),
-            
+            this.configureEventParticle(particle, effectName, event);
             // 基本配置
             const angle = (Math.PI * 2 * i) / adjustedCount + Math.random() * 0.5,
             const distance = Math.random() * 50,
@@ -587,7 +572,7 @@ export class SeasonalEffectRenderer {
      */'
     detectActiveEvents(): ActiveEvent[] { const now = new Date(),' }'
 
-        const currentDate = `${String(now.getMonth(} + 1'}.padStart(2, '0'}'-${ String(now.getDate( }.padStart(2, '0'})`;
+        const currentDate = `${String(now.getMonth(} + 1'}.padStart(2, '0'}'-${ String(now.getDate( }.padStart(2, '0'}`;
         
         return Object.entries(this.eventThemes);
             .filter(([key, event]) => {  if (!event.duration) return false }
@@ -614,12 +599,10 @@ export class SeasonalEffectRenderer {
      * @param {number} x - X座標
      * @param {number} y - Y座標
      */
-    createDefaultSeasonalEffect(x: number, y: number): void { const defaultCount = this.particleManager.adjustParticleCount(8),
-        
+    createDefaultSeasonalEffect(x: number, y: number): void { const defaultCount = this.particleManager.adjustParticleCount(8);
         for(let, i = 0, i < defaultCount, i++) {
         
-            const particle = this.particleManager.getParticleFromPool(),
-            
+            const particle = this.particleManager.getParticleFromPool();
             const angle = (Math.PI * 2 * i) / defaultCount,
             particle.x = x + Math.cos(angle) * 30,
             particle.y = y + Math.sin(angle) * 30,
@@ -645,12 +628,10 @@ export class SeasonalEffectRenderer {
      * @param {number} y - Y座標
      * @param {Object} theme - テーマ
      */
-    createSimplifiedSeasonalEffect(x: number, y: number, theme: SeasonalTheme): void { const simpleCount = Math.max(3, Math.floor(6 * 0.5),
-        
+    createSimplifiedSeasonalEffect(x: number, y: number, theme: SeasonalTheme): void { const simpleCount = Math.max(3, Math.floor(6 * 0.5);
         for(let, i = 0, i < simpleCount, i++) {
         
-            const particle = this.particleManager.getParticleFromPool(),
-            
+            const particle = this.particleManager.getParticleFromPool();
             const angle = (Math.PI * 2 * i) / simpleCount,
             particle.x = x + Math.cos(angle) * 25,
             particle.y = y + Math.sin(angle) * 25,
@@ -678,7 +659,7 @@ export class SeasonalEffectRenderer {
 
             particles: {},''
             weather: ','
-    priority: event.priority;
+    priority: event.priority,
         },
         this.createSimplifiedSeasonalEffect(x, y, theme);
     }
@@ -707,20 +688,19 @@ export class SeasonalEffectRenderer {
      * カスタムテーマを設定
      * @param {Object} customTheme - カスタムテーマ
      */''
-    setCustomTheme(customTheme: any): void { this.customTheme = customTheme;
+    setCustomTheme(customTheme: any): void { this.customTheme = customTheme,
         console.log('[SeasonalEffectRenderer] カスタムテーマ設定:', customTheme.name) }
     
     /**
      * 現在のテーマ情報を取得
      * @returns {Object} テーマ情報
      */
-    getCurrentThemeInfo(): object { const activeEvent = this.getHighestPriorityEvent(),
-        
+    getCurrentThemeInfo(): object { const activeEvent = this.getHighestPriorityEvent();
         return { season: this.currentSeason,
             seasonTheme: this.seasonalThemes[this.currentSeason],
             activeEvents: this.activeEvents,
             primaryEvent: activeEvent,
-    customTheme: this.customTheme };
+    customTheme: this.customTheme },
             effectsAvailable: this.getAvailableEffects().length 
     }
     
@@ -732,8 +712,8 @@ export class SeasonalEffectRenderer {
         
         // 季節効果
         Object.keys(this.seasonalThemes).forEach(season => {) }
-            effects.push(`season_${season}`});
-        });
+            effects.push(`season_${season}`};
+        };
         
         // イベント効果
         Object.keys(this.eventThemes).forEach(event => { ) }

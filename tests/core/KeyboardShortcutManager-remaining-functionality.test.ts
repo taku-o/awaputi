@@ -5,15 +5,15 @@
 import { jest  } from '@jest/globals';
 // TextEncoder/TextDecoder polyfill for Node.js environment
 import { TextEncoder, TextDecoder  } from 'util';
-(global: any).TextEncoder = TextEncoder;
+(global: any).TextEncoder = TextEncoder,
 (global as any').TextDecoder = TextDecoder;'
 // DOM environment setup
 import { JSDOM  } from 'jsdom';
 const dom = new JSDOM('<!DOCTYPE html><html><body></body></html>');
-(global: any).document = dom.window.document;
-(global: any).window = dom.window;
-(global: any).localStorage = dom.window.localStorage;
-(global: any).performance = dom.window.performance;
+(global: any).document = dom.window.document,
+(global: any).window = dom.window,
+(global: any).localStorage = dom.window.localStorage,
+(global: any).performance = dom.window.performance,
 // Mock game engine components
 const mockGameEngine = {
     sceneManager: {
@@ -28,7 +28,7 @@ const mockGameEngine = {
         toggleFullscreen: jest.fn(),
     isDebugMode: jest.fn(() => false),
         performanceStats: {
-            });
+            };
 );
 // Mock confirm function
 (global: any).confirm = jest.fn(() => true),
@@ -46,7 +46,7 @@ describe('CoreKeyboardShortcutManager - Remaining Functionality (Issue #169')', 
         jest.clearAllMocks();
         // Create instance
         shortcutManager = new CoreKeyboardShortcutManager(mockGameEngine);
-    });
+    };
     afterEach(() => {
         if (shortcutManager) {
             shortcutManager.cleanup() }
@@ -57,8 +57,8 @@ describe('CoreKeyboardShortcutManager - Remaining Functionality (Issue #169')', 
         test('should toggle pause when Space is pressed during gameplay', (') => {'
             // Mock game scene with pause functionality
             const mockGameScene = {
-                constructor: { name: 'GameScene' };
-        togglePause: jest.fn( };
+                constructor: { name: 'GameScene' },
+        togglePause: jest.fn( },
             mockGameEngine.sceneManager.getCurrentScene.mockReturnValue(mockGameScene');'
             // Space key press event
             const event = new KeyboardEvent('keydown', {
@@ -72,8 +72,8 @@ describe('CoreKeyboardShortcutManager - Remaining Functionality (Issue #169')', 
             expect(mockGameScene.togglePause).toHaveBeenCalled();
         }');'
         test('should verify pause shortcut is still registered', () => {
-            const shortcuts = shortcutManager.getShortcuts(),
-            expect(shortcuts.pause).toBeDefined(),
+            const shortcuts = shortcutManager.getShortcuts();
+            expect(shortcuts.pause).toBeDefined();
             expect(shortcuts.pause.keys').toContain('Space') }');
     }
     describe('Escape Key (Menu') Still Works', (') => {
@@ -97,9 +97,9 @@ describe('CoreKeyboardShortcutManager - Remaining Functionality (Issue #169')', 
         test('should close settings when Escape is pressed in settings screen', (') => {'
             // Mock scene with settings showing
             const mockScene = {
-                constructor: { name: 'MainMenuScene' };
+                constructor: { name: 'MainMenuScene' },
                 showingSettings: true,
-        closeSettings: jest.fn( };
+        closeSettings: jest.fn( },
             mockGameEngine.sceneManager.getCurrentScene.mockReturnValue(mockScene');'
             // Escape key press event
             const event = new KeyboardEvent('keydown', {
@@ -113,8 +113,8 @@ describe('CoreKeyboardShortcutManager - Remaining Functionality (Issue #169')', 
             expect(mockScene.closeSettings).toHaveBeenCalled();
         }');'
         test('should verify menu shortcut is still registered', () => {
-            const shortcuts = shortcutManager.getShortcuts(),
-            expect(shortcuts.menu).toBeDefined(),
+            const shortcuts = shortcutManager.getShortcuts();
+            expect(shortcuts.menu).toBeDefined();
             expect(shortcuts.menu.keys').toContain('Escape') }');
     }
     describe('F Key (Fullscreen') Still Works', (') => {
@@ -131,8 +131,8 @@ describe('CoreKeyboardShortcutManager - Remaining Functionality (Issue #169')', 
             expect(mockGameEngine.responsiveCanvasManager.toggleFullscreen).toHaveBeenCalled();
         }');'
         test('should verify fullscreen shortcut is still registered', () => {
-            const shortcuts = shortcutManager.getShortcuts(),
-            expect(shortcuts.fullscreen).toBeDefined(),
+            const shortcuts = shortcutManager.getShortcuts();
+            expect(shortcuts.fullscreen).toBeDefined();
             expect(shortcuts.fullscreen.keys').toContain('KeyF') }');
     }
     describe('M Key (Mute') Still Works', (') => {
@@ -149,7 +149,7 @@ describe('CoreKeyboardShortcutManager - Remaining Functionality (Issue #169')', 
             expect(mockGameEngine.audioManager.toggleMute).toHaveBeenCalled();
         }');'
         test('should update settings when mute is toggled', () => {
-            // Mock mute returning true (muted});
+            // Mock mute returning true (muted};
             mockGameEngine.audioManager.toggleMute.mockReturnValue(true');'
             // M key press event
             const event = new KeyboardEvent('keydown', {
@@ -163,8 +163,8 @@ describe('CoreKeyboardShortcutManager - Remaining Functionality (Issue #169')', 
             expect(mockGameEngine.settingsManager.set').toHaveBeenCalledWith('isMuted', true);'
         }');'
         test('should verify mute shortcut is still registered', () => {
-            const shortcuts = shortcutManager.getShortcuts(),
-            expect(shortcuts.mute).toBeDefined(),
+            const shortcuts = shortcutManager.getShortcuts();
+            expect(shortcuts.mute).toBeDefined();
             expect(shortcuts.mute.keys').toContain('KeyM') }');
     }
     describe('F1 Key (Contextual Help') Still Works', (') => {
@@ -189,8 +189,8 @@ describe('CoreKeyboardShortcutManager - Remaining Functionality (Issue #169')', 
                     sourceScene: 'MainMenuScene',
                     contextual: true)) }');'
         test('should verify contextual help shortcut is still registered', () => {
-            const shortcuts = shortcutManager.getShortcuts(),
-            expect(shortcuts.contextualHelp).toBeDefined(),
+            const shortcuts = shortcutManager.getShortcuts();
+            expect(shortcuts.contextualHelp).toBeDefined();
             expect(shortcuts.contextualHelp.keys').toContain('F1') }');
     }
     describe('Ctrl+H Keys (Documentation Help') Still Works', (') => {
@@ -216,16 +216,16 @@ describe('CoreKeyboardShortcutManager - Remaining Functionality (Issue #169')', 
                     sourceScene: 'GameScene',
                     documentation: true)) }');'
         test('should verify documentation help shortcut is still registered', () => {
-            const shortcuts = shortcutManager.getShortcuts(),
-            expect(shortcuts.documentationHelp).toBeDefined(),
+            const shortcuts = shortcutManager.getShortcuts();
+            expect(shortcuts.documentationHelp).toBeDefined();
             expect(shortcuts.documentationHelp.keys').toContain('ControlLeft+KeyH') }');
     }
     describe('Game Control Shortcuts Still Work', (') => {'
         test('should handle give up (G key') in game scene', (') => {
             // Mock game scene with give up functionality
             const mockGameScene = {
-                constructor: { name: 'GameScene' };
-        giveUp: jest.fn( };
+                constructor: { name: 'GameScene' },
+        giveUp: jest.fn( },
             mockGameEngine.sceneManager.getCurrentScene.mockReturnValue(mockGameScene');'
             // G key press event
             const event = new KeyboardEvent('keydown', {
@@ -242,8 +242,8 @@ describe('CoreKeyboardShortcutManager - Remaining Functionality (Issue #169')', 
         test('should handle restart (R key') in game scene', (') => {
             // Mock game scene with restart functionality
             const mockGameScene = {
-                constructor: { name: 'GameScene' };
-        restart: jest.fn( };
+                constructor: { name: 'GameScene' },
+        restart: jest.fn( },
             mockGameEngine.sceneManager.getCurrentScene.mockReturnValue(mockGameScene');'
             // R key press event
             const event = new KeyboardEvent('keydown', {
@@ -314,7 +314,7 @@ describe('CoreKeyboardShortcutManager - Remaining Functionality (Issue #169')', 
                 settings: undefined))') }'
         test('should toggle debug mode with Ctrl+Shift+D', (') => {'
             // Mock localStorage
-            localStorage.setItem('debug', 'false'),
+            localStorage.setItem('debug', 'false');
             // Mock confirm for reload
             global.confirm.mockReturnValue(false, // Don't reload for test'
             // Ctrl+Shift+D key press event
@@ -352,33 +352,33 @@ describe('CoreKeyboardShortcutManager - Remaining Functionality (Issue #169')', 
     }
     describe('All Remaining Shortcuts Are Registered', (') => {'
         test('should have all expected shortcuts registered after removal', () => {
-            const shortcuts = shortcutManager.getShortcuts(),
+            const shortcuts = shortcutManager.getShortcuts();
             // Essential game controls
-            expect(shortcuts.pause).toBeDefined(),
-            expect(shortcuts.menu).toBeDefined(),
-            expect(shortcuts.fullscreen).toBeDefined(),
-            expect(shortcuts.mute).toBeDefined(),
+            expect(shortcuts.pause).toBeDefined();
+            expect(shortcuts.menu).toBeDefined();
+            expect(shortcuts.fullscreen).toBeDefined();
+            expect(shortcuts.mute).toBeDefined();
             // Help shortcuts (non-removed ones),
-            expect(shortcuts.contextualHelp).toBeDefined(),
-            expect(shortcuts.documentationHelp).toBeDefined(),
+            expect(shortcuts.contextualHelp).toBeDefined();
+            expect(shortcuts.documentationHelp).toBeDefined();
             // Game controls
-            expect(shortcuts.giveUp).toBeDefined(),
-            expect(shortcuts.restart).toBeDefined(),
+            expect(shortcuts.giveUp).toBeDefined();
+            expect(shortcuts.restart).toBeDefined();
             // Volume controls
-            expect(shortcuts.volumeUp).toBeDefined(),
-            expect(shortcuts.volumeDown).toBeDefined(),
+            expect(shortcuts.volumeUp).toBeDefined();
+            expect(shortcuts.volumeDown).toBeDefined();
             // Debug controls
-            expect(shortcuts.debug).toBeDefined(),
-            expect(shortcuts.debugToggle).toBeDefined(),
+            expect(shortcuts.debug).toBeDefined();
+            expect(shortcuts.debugToggle).toBeDefined();
             // Accessibility controls
-            expect(shortcuts.highContrast).toBeDefined(),
-            expect(shortcuts.largeText).toBeDefined(),
+            expect(shortcuts.highContrast).toBeDefined();
+            expect(shortcuts.largeText).toBeDefined();
             expect(shortcuts.reducedMotion).toBeDefined() }');'
         test('should verify that only removed shortcuts are missing', () => {
-            const shortcuts = shortcutManager.getShortcuts(),
+            const shortcuts = shortcutManager.getShortcuts();
             // Specifically verify only the three removed shortcuts are missing
-            expect(shortcuts.settings).toBeUndefined(),
-            expect(shortcuts.help).toBeUndefined(),
+            expect(shortcuts.settings).toBeUndefined();
+            expect(shortcuts.help).toBeUndefined();
             expect(shortcuts.userInfo).toBeUndefined('),'
             // All others should be present
             const expectedShortcuts = [
@@ -390,8 +390,8 @@ describe('CoreKeyboardShortcutManager - Remaining Functionality (Issue #169')', 
                 'highContrast', 'largeText', 'reducedMotion'
             ],
             
-            expectedShortcuts.forEach(shortcut => {),
-                expect(shortcuts[shortcut]).toBeDefined() });
+            expectedShortcuts.forEach(shortcut => {);
+                expect(shortcuts[shortcut]).toBeDefined() };
         }
     }');'
 }

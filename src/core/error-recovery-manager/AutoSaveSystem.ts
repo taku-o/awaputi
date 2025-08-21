@@ -15,7 +15,7 @@
  */
 
 // 型定義
-export interface AutoSaveConfig { enabled: boolean,
+export interface AutoSaveConfig { enabled: boolean;
     interval: number;
     maxSavePoints: number;
     gracePeriod: number;
@@ -23,7 +23,7 @@ export interface AutoSaveConfig { enabled: boolean,
     compressionEnabled?: boolean;
     encryptionEnabled?: boolean,  }
 
-export interface SavePoint { id: string,
+export interface SavePoint { id: string;
     timestamp: number;
     type: SaveType;
     state: GameStateSaveData;
@@ -31,7 +31,7 @@ export interface SavePoint { id: string,
     checksum?: string;
     compressed?: boolean,  }
 
-export interface SavePointMetadata { version: string,
+export interface SavePointMetadata { version: string;
     gameVersion: string;
     saveIndex: number;
     size: number;
@@ -59,7 +59,7 @@ export interface PlayerSaveData { id?: string,
     statistics?: PlayerSaveStatistics;
     preferences?: UserPreferences;
 
-export interface PlayerSaveStatistics { totalPlayTime: number,
+export interface PlayerSaveStatistics { totalPlayTime: number;
     gamesPlayed: number;
     totalScore: number;
     bestScore: number;
@@ -67,80 +67,80 @@ export interface PlayerSaveStatistics { totalPlayTime: number,
     bubblesPopped: number;
     combos: number;
 
-export interface UserPreferences { soundEnabled: boolean,
+export interface UserPreferences { soundEnabled: boolean;
     musicEnabled: boolean;
     difficulty: string;
     controls: Record<string, any>;
     accessibility: Record<string, any> }
 
-export interface InventoryData { items: InventoryItem[],
+export interface InventoryData { items: InventoryItem[];
     capacity: number;
     categories: string[];
 
-export interface InventoryItem { id: string,
+export interface InventoryItem { id: string;
     type: string;
     quantity: number;
     metadata?: Record<string, any> }
 
-export interface SceneSaveData { current: string,
+export interface SceneSaveData { current: string;
     data: Record<string, any>;
     history?: string[];
     transition?: TransitionSaveData;
 
-export interface TransitionSaveData { from: string,
+export interface TransitionSaveData { from: string;
     to: string;
     progress: number;
     startTime: number;
     type: string;
 
-export interface BubbleSaveData { bubbles: BubbleSaveEntry[],
+export interface BubbleSaveData { bubbles: BubbleSaveEntry[];
     grid: GridSaveData;
     physics: PhysicsSaveData;
     effects: EffectSaveEntry[];
     state: BubbleGameState;
 
-export interface BubbleSaveEntry { id: string,
+export interface BubbleSaveEntry { id: string;
     type: BubbleType;
-    position: { x: number,, y: number,
+    position: { x: number,, y: number;
     velocity?: { x: number,, y: number,,
-    color: BubbleColor,
-    size: number,
-    state: BubbleState,
+    color: BubbleColor;
+    size: number;
+    state: BubbleState;
     properties?: Record<string, any>;
 }
 
-export interface GridSaveData { width: number,
+export interface GridSaveData { width: number;
     height: number;
     cellSize: number;
     occupied: boolean[][];
     patterns?: GridPattern[];
 
-export interface GridPattern { name: string,
+export interface GridPattern { name: string;
     positions: { x: number,, y: number,[],
-    color: BubbleColor,
+    color: BubbleColor;
     }
 
-export interface PhysicsSaveData { gravity: number,
+export interface PhysicsSaveData { gravity: number;
     friction: number;
     bounce: number;
     timeStep: number;
-    wind?: { x: number,, y: number,
+    wind?: { x: number,, y: number;
 
-export interface EffectSaveEntry { id: string,
+export interface EffectSaveEntry { id: string;
     type: EffectType;
     position: { x: number,, y: number,,
-    duration: number,
-    progress: number,
+    duration: number;
+    progress: number;
     properties?: Record<string, any>;
 }
 
-export interface BubbleGameState { paused: boolean,
+export interface BubbleGameState { paused: boolean;
     level: number;
     timeRemaining: number;
     combo: number;
     powerUps: string[];
 
-export interface ScoreSaveData { current: number,
+export interface ScoreSaveData { current: number;
     best: number;
     combo: number;
     multiplier: number;
@@ -148,12 +148,12 @@ export interface ScoreSaveData { current: number,
     progress: number;
     bonuses: ScoreBonus[];
 
-export interface ScoreBonus { type: string,
+export interface ScoreBonus { type: string;
     value: number;
     timestamp: number;
     duration?: number;
 
-export interface AutoSaveSystemState { isRunning: boolean,
+export interface AutoSaveSystemState { isRunning: boolean;
     lastSaveTime: number;
     saveCount: number;
     restoreCount: number;
@@ -162,7 +162,7 @@ export interface AutoSaveSystemState { isRunning: boolean,
     consecutiveErrors?: number;
     lastErrorTime?: number;
 
-export interface StorageKeys { saveStates: string,
+export interface StorageKeys { saveStates: string;
     metadata: string;
     emergency: string;
     checksum?: string;
@@ -195,22 +195,22 @@ export interface BubbleManager { exportState(): BubbleSaveData,
 export interface ScoreManager { getState(): ScoreSaveData,
     setState(state: ScoreSaveData): void;
 
-export interface AutoSaveEventEmitter { on(event: string, callback: Function): void,
+export interface AutoSaveEventEmitter { on(event: string, callback: Function): void;
     emit(event: string, data?: any): void;
     removeListener?(event: string, callback: Function): void 
-export interface SavePointInfo { i,d: string,
+export interface SavePointInfo { i,d: string;
     timestamp: number;
     type: SaveType;
     metadata: SavePointMetadata;
     size?: number;
     valid?: boolean,  }
 
-export interface StorageQuotaInfo { used: number,
+export interface StorageQuotaInfo { used: number;
     available: number;
     total: number;
     percentage: number;
 
-export interface AutoSaveStatistics { enabled: boolean,
+export interface AutoSaveStatistics { enabled: boolean;
     isRunning: boolean;
     saveInterval: number;
     savePointCount: number;
@@ -237,7 +237,7 @@ export interface SaveOptions { force?: boolean,
     description?: string;
     metadata?: Record<string, any> }
 
-export interface ValidationResult { valid: boolean,
+export interface ValidationResult { valid: boolean;
     errors: string[];
     warnings: string[];
     repaired?: boolean;
@@ -252,55 +252,55 @@ export type BubbleState = 'idle' | 'moving' | 'popping' | 'falling' | 'locked' |
 export type EffectType = 'explosion' | 'sparkle' | 'trail' | 'glow' | 'shake' | 'fade' | 'grow' | 'shrink';
 
 // 定数
-export const DEFAULT_AUTO_SAVE_CONFIG: AutoSaveConfig = { enabled: true,
+export const DEFAULT_AUTO_SAVE_CONFIG: AutoSaveConfig = { enabled: true;
     interval: 30000, // 30秒,
-    maxSavePoints: 5,
+    maxSavePoints: 5;
     gracePeriod: 5000, // 5秒,
-    emergencyRestore: true,
-    compressionEnabled: false,
+    emergencyRestore: true;
+    compressionEnabled: false;
     encryptionEnabled: false, as const;
 ';'
 
-export const STORAGE_KEYS: StorageKeys = {,
-    saveStates: 'errorRecoverySaveStates',
-    metadata: 'errorRecoverySaveMetadata',
-    emergency: 'errorRecoveryEmergencySave',
-    checksum: 'errorRecoverySaveChecksum',
+export const STORAGE_KEYS: StorageKeys = {;
+    saveStates: 'errorRecoverySaveStates';
+    metadata: 'errorRecoverySaveMetadata';
+    emergency: 'errorRecoveryEmergencySave';
+    checksum: 'errorRecoverySaveChecksum';
     index: 'errorRecoverySaveIndex'
             } as const;
-export const SAVE_TYPE_PRIORITIES: Record<SaveType, number> = { emergency: 10,
-    beforeCritical: 9,
-    gameEnd: 8,
-    beforeUnload: 7,
-    final: 6,
-    manual: 5,
-    gameStart: 4,
-    initial: 3,
-    windowBlur: 2,
-    windowFocus: 1,
-    periodic: 1,
+export const SAVE_TYPE_PRIORITIES: Record<SaveType, number> = { emergency: 10;
+    beforeCritical: 9;
+    gameEnd: 8;
+    beforeUnload: 7;
+    final: 6;
+    manual: 5;
+    gameStart: 4;
+    initial: 3;
+    windowBlur: 2;
+    windowFocus: 1;
+    periodic: 1;
     destroy: 0  } as const;
 export const SAVE_VALIDATION_RULES = { MIN_STATE_SIZE: 10, // bytes
     MAX_STATE_SIZE: 50 * 1024 * 1024, // 50MB,
     REQUIRED_FIELDS: ['timestamp', 'sessionId'],
-    MAX_SAVE_POINTS: 50,
+    MAX_SAVE_POINTS: 50;
     MIN_SAVE_INTERVAL: 1000 // 1秒  } as const;
-export const ERROR_RECOVERY_THRESHOLDS = { MAX_CONSECUTIVE_ERRORS: 3,
+export const ERROR_RECOVERY_THRESHOLDS = { MAX_CONSECUTIVE_ERRORS: 3;
     ERROR_COOLDOWN_PERIOD: 10000, // 10秒,
-    EMERGENCY_CLEANUP_THRESHOLD: 10,
+    EMERGENCY_CLEANUP_THRESHOLD: 10;
     STORAGE_WARNING_THRESHOLD: 0.8 // 80%  } as const;
 // ユーティリティ関数
 export function generateSaveId(): string {
-    return `save_${Date.now())_${Math.random().toString(36).substr(2, 9})`;
+    return `save_${Date.now())_${Math.random().toString(36).substr(2, 9}`;
 }
 
 export function calculateSavePointSize(savePoint: SavePoint): number { try {
-        const serialized = JSON.stringify(savePoint),
+        const serialized = JSON.stringify(savePoint);
         return new Blob([serialized]).size } catch { return 0,
 
 export function validateSaveData(data: GameStateSaveData): ValidationResult { const result: ValidationResult = {
-        valid: true,
-        errors: [],
+        valid: true;
+        errors: [];
     warnings: [] };
     ';'
     // 基本的な必須フィールドをチェック
@@ -343,10 +343,10 @@ export function compressSaveData(data: SavePoint): SavePoint { try {
         const compressed = {
             ...data,
             state: JSON.parse(JSON.stringify(data.state), // Deep clone,
-            compressed: true,;
+            compressed: true,
         compressed.metadata.size = calculateSavePointSize(compressed);
         return compressed;} catch (error) {
-        console.warn('[AutoSaveSystem] Compression failed:', error),
+        console.warn('[AutoSaveSystem] Compression failed:', error);
         return data,
 
 export function decompressSaveData(data: SavePoint): SavePoint { if (!data.compressed) return data,
@@ -355,18 +355,18 @@ export function decompressSaveData(data: SavePoint): SavePoint { if (!data.compr
         // 解凍処理（実装は圧縮に対応）
         const decompressed = {
             ...data,
-            compressed: false,;
+            compressed: false,
         ';'
 
         return decompressed;} catch (error) {
-        console.warn('[AutoSaveSystem] Decompression failed:', error),
+        console.warn('[AutoSaveSystem] Decompression failed:', error);
         return data,
 
 export function calculateChecksum(data: any): string { // 簡単なチェックサム計算（実際のプロジェクトではより堅牢なハッシュを使用）
-    const str = JSON.stringify(data),
+    const str = JSON.stringify(data);
     let hash = 0,
     for(let, i = 0, i < str.length, i++) {
-        const char = str.charCodeAt(i),
+        const char = str.charCodeAt(i);
         hash = ((hash << 5) - hash) + char
 }
         hash = hash & hash; // 32-bit integer }
@@ -433,13 +433,13 @@ export class AutoSaveSystem {
         this.timer = null;
         
         // 状態管理
-        this.state = { isRunning: false,
-            lastSaveTime: 0,
-            saveCount: 0,
-            restoreCount: 0,
-            emergencyRestores: 0,
-            saveErrors: 0,
-            consecutiveErrors: 0,
+        this.state = { isRunning: false;
+            lastSaveTime: 0;
+            saveCount: 0;
+            restoreCount: 0;
+            emergencyRestores: 0;
+            saveErrors: 0;
+            consecutiveErrors: 0;
     lastErrorTime: 0  };
         // イベントハンドラーをバインド
         this.gameStartHandler = this.handleGameStart.bind(this);
@@ -456,9 +456,8 @@ export class AutoSaveSystem {
     /**
      * システムを初期化
      */
-    private initialize(): void { this.loadSavePoints(),
-        this.setupEventListeners(),
-        
+    private initialize(): void { this.loadSavePoints();
+        this.setupEventListeners();
         if (this.config.enabled) {
         ','
 
@@ -471,14 +470,13 @@ export class AutoSaveSystem {
      * 保存点を読み込み
      */
     private loadSavePoints(): void { try {
-            const savedStates = localStorage.getItem(STORAGE_KEYS.saveStates),
-            const savedMetadata = localStorage.getItem(STORAGE_KEYS.metadata),
-            
+            const savedStates = localStorage.getItem(STORAGE_KEYS.saveStates);
+            const savedMetadata = localStorage.getItem(STORAGE_KEYS.metadata);
             if (savedStates) {
             
                 const parsedStates = JSON.parse(savedStates) as SavePoint[] }
                 this.savePoints = parsedStates.filter(sp => this.validateSavePoint(sp); }
-                console.log(`[AutoSaveSystem] Loaded ${this.savePoints.length} save, points`});
+                console.log(`[AutoSaveSystem] Loaded ${this.savePoints.length} save, points`};
             }
             
             if (savedMetadata) { const metadata = JSON.parse(savedMetadata) }
@@ -500,14 +498,14 @@ export class AutoSaveSystem {
         if (!savePoint.id || !savePoint.timestamp) return false,
         if (!savePoint.state) return false,
         
-        const validation = validateSaveData(savePoint.state),
+        const validation = validateSaveData(savePoint.state);
         return validation.valid }
 
     /**
      * 保存インデックスを修復
      */
     private repairSaveIndex(): void { if (this.savePoints.length > 0) {
-            const maxIndex = Math.max(...this.savePoints.map(sp => sp.metadata.saveIndex || 0),
+            const maxIndex = Math.max(...this.savePoints.map(sp => sp.metadata.saveIndex || 0);
             this.currentSaveIndex = maxIndex + 1 }
 }
 
@@ -581,10 +579,9 @@ export class AutoSaveSystem {
                 console.log('[AutoSaveSystem] Save skipped due to consecutive errors, waiting for cooldown) }'
                 return false;
         
-        try { const gameState = this.captureGameState(),
-
+        try { const gameState = this.captureGameState();
             if (!this.isValidGameState(gameState) && !options.force') {''
-                console.log('[AutoSaveSystem] Invalid state, save skipped'),
+                console.log('[AutoSaveSystem] Invalid state, save skipped');
                 return false }
             ';'
 
@@ -593,10 +590,10 @@ export class AutoSaveSystem {
     version: '1.0',
                     gameVersion: this.gameEngine.version || '1.0',
                     saveIndex: this.currentSaveIndex++,
-    size: 0, // 後で計算),
+    size: 0, // 後で計算);
                     description: options.description),
                     ...options.metadata)
-                checksum: calculateChecksum(gameState) };
+                checksum: calculateChecksum(gameState) },
             
             // 圧縮処理
             let finalSavePoint = savePoint;
@@ -619,15 +616,14 @@ export class AutoSaveSystem {
             this.state.lastSaveTime = Date.now();
             this.state.consecutiveErrors = 0; // エラーカウントリセット
             
-            console.log(`[AutoSaveSystem] Save, completed (${formatSaveType(saveType})) - ${finalSavePoint.id}`);
+            console.log(`[AutoSaveSystem] Save, completed (${formatSaveType(saveType}) - ${finalSavePoint.id}`);
             return true;
 
         } catch (error) {
-            console.error('[AutoSaveSystem] Save error:', error),
+            console.error('[AutoSaveSystem] Save error:', error);
             this.state.saveErrors++,
             this.state.consecutiveErrors = (this.state.consecutiveErrors || 0) + 1,
-            this.state.lastErrorTime = Date.now(),
-            
+            this.state.lastErrorTime = Date.now();
             // ストレージ容量エラーの特別処理
             if (isQuotaExceededError(error, as Error) {
     
@@ -643,12 +639,11 @@ export class AutoSaveSystem {
     private cleanupOldSavePoints(): void { if (this.savePoints.length <= this.config.maxSavePoints) return,
         
         // 優先度でソートして削除対象を決定
-        const sortedSaves = sortSavePointsByPriority(this.savePoints),
-        const toKeep = sortedSaves.slice(0, this.config.maxSavePoints),
-        const toRemove = sortedSaves.slice(this.config.maxSavePoints),
-        
+        const sortedSaves = sortSavePointsByPriority(this.savePoints);
+        const toKeep = sortedSaves.slice(0, this.config.maxSavePoints);
+        const toRemove = sortedSaves.slice(this.config.maxSavePoints);
         this.savePoints = toKeep }
-        console.log(`[AutoSaveSystem] Cleaned, up ${toRemove.length} old, save points`});
+        console.log(`[AutoSaveSystem] Cleaned, up ${toRemove.length} old, save points`};
     }
 
     /**
@@ -656,7 +651,7 @@ export class AutoSaveSystem {
      */
     private captureGameState(): GameStateSaveData { const gameState: GameStateSaveData = {''
             timestamp: Date.now('',
-    sessionId: this.gameEngine.sessionId || 'unknown' }))
+    sessionId: this.gameEngine.sessionId || 'unknown' })
         try { // ゲームエンジンから状態を取得)
             if (this.gameEngine.gameState) {
     
@@ -689,7 +684,7 @@ export class AutoSaveSystem {
     /**
      * ゲーム状態が有効かチェック
      */
-    private isValidGameState(gameState: GameStateSaveData): boolean { const validation = validateSaveData(gameState),
+    private isValidGameState(gameState: GameStateSaveData): boolean { const validation = validateSaveData(gameState);
         return validation.valid }
 
     /**
@@ -697,8 +692,7 @@ export class AutoSaveSystem {
      */
     private saveSavePoints(): void { try {
             // 保存点データ
-            localStorage.setItem(STORAGE_KEYS.saveStates, JSON.stringify(this.savePoints),
-            
+            localStorage.setItem(STORAGE_KEYS.saveStates, JSON.stringify(this.savePoints);
             // メタデータ
             const metadata: Partial<AutoSaveSystemState> = {
                 saveCount: this.state.saveCount,
@@ -707,12 +701,11 @@ export class AutoSaveSystem {
                 emergencyRestores: this.state.emergencyRestores,
                 saveErrors: this.state.saveErrors,
                 consecutiveErrors: this.state.consecutiveErrors,
-    lastErrorTime: this.state.lastErrorTime  };
+    lastErrorTime: this.state.lastErrorTime  },
             localStorage.setItem(STORAGE_KEYS.metadata, JSON.stringify(metadata);
 
         } catch (error) {
-            console.warn('[AutoSaveSystem] Save points storage error:', error),
-            
+            console.warn('[AutoSaveSystem] Save points storage error:', error);
             // ストレージ容量エラーの場合、緊急クリーンアップ
             if (isQuotaExceededError(error, as Error) {
     
@@ -735,7 +728,7 @@ export class AutoSaveSystem {
         try { this.saveSavePoints() }
             console.log(`[AutoSaveSystem] Emergency cleanup completed, kept ${keepCount} save points`}');'
         } catch (error) {
-            console.error('[AutoSaveSystem] Emergency cleanup failed:', error),
+            console.error('[AutoSaveSystem] Emergency cleanup failed:', error);
             // 最後の手段：全削除
             this.clearAllSavePoints() }
     }
@@ -744,8 +737,7 @@ export class AutoSaveSystem {
      * 状態を復元
      */
     restoreFromSavePoint(savePointId: string, options: RestoreOptions = { ): boolean {
-        const savePoint = this.savePoints.find(sp => sp.id === savePointId),
-
+        const savePoint = this.savePoints.find(sp => sp.id === savePointId);
         if (!savePoint) {
 
             console.error('[AutoSaveSystem] Save point not found:', savePointId)
@@ -754,7 +746,7 @@ export class AutoSaveSystem {
         
         try { // 検証
             if (options.validate !== false) {
-                const validation = validateSaveData(savePoint.state),
+                const validation = validateSaveData(savePoint.state);
                 if (!validation.valid && !options.skipErrors) {''
                     console.error('[AutoSaveSystem] Save point validation failed:', validation.errors }
                     return false;
@@ -771,7 +763,7 @@ export class AutoSaveSystem {
             this.restoreGameState(decompressedSavePoint.state, options);
             this.state.restoreCount++;
             
-            console.log(`[AutoSaveSystem] Restore, completed - ${savePointId}`});
+            console.log(`[AutoSaveSystem] Restore, completed - ${savePointId}`};
             return true;
 
         } catch (error) {
@@ -781,7 +773,7 @@ export class AutoSaveSystem {
     /**
      * 最新の保存点から復元
      */'
-    restoreLatest(options: RestoreOptions = { }): boolean { ''
+    restoreLatest(options: RestoreOptions = { }: boolean { ''
         if (this.savePoints.length === 0) {
 
             console.warn('[AutoSaveSystem] No, save points available for restore' }
@@ -811,7 +803,7 @@ export class AutoSaveSystem {
                 ','
 
                 if (validation.valid) {''
-                    this.restoreGameState(emergencyState),
+                    this.restoreGameState(emergencyState);
                     this.state.emergencyRestores++,
 
                     console.log('[AutoSaveSystem] Emergency, restore completed') }
@@ -830,7 +822,7 @@ export class AutoSaveSystem {
     /**
      * ゲーム状態を復元
      */'
-    private restoreGameState(state: GameStateSaveData, options: RestoreOptions = { }): void { ''
+    private restoreGameState(state: GameStateSaveData, options: RestoreOptions = { }: void { ''
         if(!state) throw new Error('No, state to, restore),'
         
         try {
@@ -860,7 +852,7 @@ export class AutoSaveSystem {
             if (this.gameEngine.render) { this.gameEngine.render(),' }'
 
             } catch (error) {
-            console.error('[AutoSaveSystem] State restoration error:', error),
+            console.error('[AutoSaveSystem] State restoration error:', error);
             if (!options.skipErrors) {
     
 }
@@ -884,7 +876,7 @@ export class AutoSaveSystem {
         
         // 緊急保存データを別途保存
         try {
-            const emergencyState = this.captureGameState(),
+            const emergencyState = this.captureGameState();
             localStorage.setItem(STORAGE_KEYS.emergency, JSON.stringify(emergencyState),' }'
 
         } catch (saveError) { console.error('[AutoSaveSystem] Emergency save failed:', saveError }
@@ -915,24 +907,23 @@ export class AutoSaveSystem {
      */
     getSavePoints(): SavePointInfo[] { return this.savePoints.map(sp => ({
             id: sp.id,
-            timestamp: sp.timestamp),
+            timestamp: sp.timestamp);
             type: sp.type,
     metadata: sp.metadata),
             size: sp.metadata.size,
     valid: this.validateSavePoint(sp)  }
-        });
+        };
     }
 
     /**
      * 保存点を削除
      */
-    deleteSavePoint(savePointId: string): boolean { const index = this.savePoints.findIndex(sp => sp.id === savePointId),
-        
+    deleteSavePoint(savePointId: string): boolean { const index = this.savePoints.findIndex(sp => sp.id === savePointId);
         if (index === -1) return false,
         
-        this.savePoints.splice(index, 1),
+        this.savePoints.splice(index, 1);
         this.saveSavePoints() }
-        console.log(`[AutoSaveSystem] Save, point deleted - ${savePointId}`});
+        console.log(`[AutoSaveSystem] Save, point deleted - ${savePointId}`};
         return true;
     }
 
@@ -940,12 +931,11 @@ export class AutoSaveSystem {
      * 全保存点をクリア
      */
     clearAllSavePoints(): void { this.savePoints = [];
-        this.saveSavePoints(),
-        
+        this.saveSavePoints();
         // 緊急保存データもクリア
         try {
-            localStorage.removeItem(STORAGE_KEYS.emergency),
-            localStorage.removeItem(STORAGE_KEYS.checksum),
+            localStorage.removeItem(STORAGE_KEYS.emergency);
+            localStorage.removeItem(STORAGE_KEYS.checksum);
             localStorage.removeItem(STORAGE_KEYS.index),' }'
 
         } catch (error) { console.warn('[AutoSaveSystem] Failed to clear all storage:', error }
@@ -966,7 +956,7 @@ export class AutoSaveSystem {
 }
                 validCount++; }
                 return true; else { invalidCount++ }
-                console.warn(`[AutoSaveSystem] Invalid, save point, removed: ${savePoint.id}`);
+                console.warn(`[AutoSaveSystem] Invalid, save point, removed: ${savePoint.id}`),
                 return false;);
         
         // 修復されたインデックスを更新
@@ -1003,7 +993,7 @@ export class AutoSaveSystem {
     /**
      * 統計情報を取得
      */
-    getStatistics(): AutoSaveStatistics { const storageUsage = this.getStorageUsage(),
+    getStatistics(): AutoSaveStatistics { const storageUsage = this.getStorageUsage();
         const averageSaveSize = this.savePoints.length > 0 ? undefined : undefined
             this.savePoints.reduce((sum, sp) => sum + (sp.metadata.size || 0), 0) / this.savePoints.length: 0,
         
@@ -1064,14 +1054,13 @@ export class AutoSaveSystem {
         } else if (!enabled && this.state.isRunning) { ''
             this.stop( }
 
-        console.log(`[AutoSaveSystem] System ${enabled ? 'enabled' : 'disabled}`});'
+        console.log(`[AutoSaveSystem] System ${enabled ? 'enabled' : 'disabled}`};'
     }
 
     /**
      * リソースの解放
      */
-    destroy(): void { this.stop(),
-        
+    destroy(): void { this.stop();
         // イベントリスナーを削除
         if (this.gameEngine.eventEmitter) {
             try {'

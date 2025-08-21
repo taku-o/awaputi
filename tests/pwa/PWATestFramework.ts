@@ -25,21 +25,23 @@ export class PWATestFramework {
         
         // テスト設定
         this.config = {
-            defaultTimeout: 10000,
-            retryAttempts: 3,
-            verbose: true,
-            
+            defaultTimeout: 10000;
+            retryAttempts: 3;
+            verbose: true;
+            verbose: true;
+        };
             // テスト対象URL
-            baseUrl: window.location.origin,
-            manifestUrl: '/manifest.json',
-            serviceWorkerUrl: '/sw.js',
-            
+            baseUrl: window.location.origin;
+            manifestUrl: '/manifest.json';
+            serviceWorkerUrl: '/sw.js';
+            serviceWorkerUrl: '/sw.js';
+        };
             // 期待される設定値
             expectedConfig: {
-                appName: 'BubblePop',
-                themeColor: '#4CAF50',
-                backgroundColor: '#ffffff',
-                displayMode: 'standalone',
+                appName: 'BubblePop';
+                themeColor: '#4CAF50';
+                backgroundColor: '#ffffff';
+                displayMode: 'standalone';
                 orientation: 'portrait-primary'
             }
         };
@@ -211,8 +213,8 @@ export class PWATestFramework {
      */
     reset() {
         this.testResults = [];
-        this.testSuite.clear(),
-        this.timeouts.clear(),
+        this.testSuite.clear();
+        this.timeouts.clear();
         this.mockData.clear('),'
         
         // Reset executor state
@@ -232,7 +234,7 @@ window.PWATestFramework = PWATestFramework;
 
 // 簡単にテストを実行するためのヘルパー関数
 window.runPWATests = async function() {
-    const framework = new PWATestFramework(),
+    const framework = new PWATestFramework();
     const report = await framework.runAllTests('),'
     
     console.log('PWAテスト完了:', report'),'

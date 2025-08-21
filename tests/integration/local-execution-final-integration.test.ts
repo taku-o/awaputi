@@ -26,10 +26,10 @@ const mockCanvas = {
         font: ','
         fillText: jest.fn(
         getImageData: jest.fn(() => ({
-            data: new Uint8ClampedArray([255, 0, 0, 255]) }))
+            data: new Uint8ClampedArray([255, 0, 0, 255]) })
     )),
     toDataURL: jest.fn((') => 'data:image/png,base64,test'),'
-    toBlob: jest.fn((callback') => callback(new Blob(['test'], { type: 'image/png' ) });'
+    toBlob: jest.fn((callback') => callback(new Blob(['test'], { type: 'image/png' ) };'
 const mockLocalStorage = {
     getItem: jest.fn(
     setItem: jest.fn(
@@ -39,20 +39,20 @@ const mockLocalStorage = {
 const mockSessionStorage = {
     getItem: jest.fn(
     setItem: jest.fn(
-        removeItem: jest.fn( };
+        removeItem: jest.fn( },
 const mockDocument = {
     createElement: jest.fn((tag') => {'
         if (tag === 'canvas') return mockCanvas,
         if (tag === 'link') return {
             rel: ','
             href: ','
-            type: '}');
+            type: '}'),
         return {
             type: ','
             remove: jest.fn(
             style: {','
             innerHTML: ','
-            onclick: null }),
+            onclick: null },
     head: {
         appendChild: jest.fn( },
     body: {
@@ -80,7 +80,7 @@ global.performance = mockWindow.performance;
 describe('Local Execution Final Integration Test', () => {
     let localModeManager: any,
     beforeEach(() => {
-        jest.clearAllMocks(),
+        jest.clearAllMocks();
         // LocalModeManagerの新しいインスタンスを作成
         localModeManager = new LocalModeManager({
             debugMode: true,
@@ -93,7 +93,7 @@ describe('Local Execution Final Integration Test', () => {
         LocalExecutionErrorHandler.isInitialized = false;
         FaviconGenerator.generationCache.clear();
         DeveloperGuidanceSystem.isInitialized = false;
-    });
+    };
     afterEach(() => {
         if (localModeManager && localModeManager.isInitialized) {
             // クリーンアップ処理
@@ -101,8 +101,8 @@ describe('Local Execution Final Integration Test', () => {
     }');'
     describe('Complete Local Execution Flow', (') => {'
         test('should detect local execution environment correctly', () => {
-            const isLocal = LocalExecutionDetector.isLocalExecution(),
-            expect(isLocal.toBe(true),
+            const isLocal = LocalExecutionDetector.isLocalExecution();
+            expect(isLocal.toBe(true);
             const context = LocalExecutionDetector.getExecutionContext('),'
             expect(context.toMatchObject({
                 isLocal: true,
@@ -112,17 +112,17 @@ describe('Local Execution Final Integration Test', () => {
                 canUseModules: expect.any(Boolean }');'
         }
         test('should initialize complete local mode system', async () => {
-            const result = await localModeManager.initialize(),
-            expect(result.toBe(true),
-            expect(localModeManager.isInitialized).toBe(true),
+            const result = await localModeManager.initialize();
+            expect(result.toBe(true);
+            expect(localModeManager.isInitialized).toBe(true);
             expect(localModeManager.executionContext.isLocal).toBe(true) }');'
         test('should handle browser compatibility detection', () => {
-            const compatibility = BrowserCompatibilityManager.getComprehensiveSupport(),
+            const compatibility = BrowserCompatibilityManager.getComprehensiveSupport();
             expect(compatibility.toMatchObject({
                 browser: expect.objectContaining({
                     name: expect.any(String,
                     version: expect.any(String,
-                    isSupported: expect.any(Boolean }),
+                    isSupported: expect.any(Boolean },
                 canvas: expect.objectContaining({
                     available: expect.any(Boolean),
                 localStorage: expect.objectContaining({
@@ -132,7 +132,7 @@ describe('Local Execution Final Integration Test', () => {
             const config = {
                 sizes: [16, 32],
                 enableCaching: false,
-                debugMode: true,;
+                debugMode: true,
             const result = await FaviconGenerator.generateMissingFavicons(config);
             expect(result.toMatchObject({
                 success: expect.any(Boolean,
@@ -143,94 +143,94 @@ describe('Local Execution Final Integration Test', () => {
                 expect(mockDocument.head.appendChild).toHaveBeenCalled() }
         }');'
         test('should integrate error handling system', async () => {
-            await localModeManager.initialize(),
+            await localModeManager.initialize();
             // エラーハンドリングシステムが初期化されているか確認
-            expect(LocalExecutionErrorHandler.isInitialized).toBe(true),
+            expect(LocalExecutionErrorHandler.isInitialized).toBe(true);
             // エラーハンドリングメソッドが利用可能か確認
             expect(typeof localModeManager.handleError').toBe('function'),'
             expect(typeof localModeManager.handleCompatibilityError').toBe('function'),'
             expect(typeof localModeManager.handleSecurityError').toBe('function'),'
             // テストエラーを発生させて処理を確認
-            const testError = new Error('Test error for integration'),
+            const testError = new Error('Test error for integration');
             expect((') => {'
-                localModeManager.handleError(testError, 'INTEGRATION_TEST') }).not.toThrow();
+                localModeManager.handleError(testError, 'INTEGRATION_TEST') }.not.toThrow();
         }
     }');'
     describe('End-to-End Error Handling', () => {
         beforeEach(async () => {
             await localModeManager.initialize() }');'
         test('should handle CORS errors end-to-end', (') => {'
-            const corsError = new Error('CORS policy blocked this request'),
+            const corsError = new Error('CORS policy blocked this request');
             expect((') => {'
                 localModeManager.handleError(corsError, 'RESOURCE_LOADING', {
-                    resource: 'test-script.js' });
-            }).not.toThrow();
+                    resource: 'test-script.js' },
+            }.not.toThrow();
             // ガイダンスシステムの呼び出しを確認
             // (実際の実装ではDeveloperGuidanceSystemが呼ばれることを期待);
         }');'
         test('should handle compatibility errors with fallbacks', (') => {'
-            const compatibilityError = new Error('Canvas API not supported'),
+            const compatibilityError = new Error('Canvas API not supported');
             const feature = 'canvas',
-            const result = localModeManager.handleCompatibilityError(compatibilityError, feature),
+            const result = localModeManager.handleCompatibilityError(compatibilityError, feature);
             // エラーハンドリングが完了することを確認
             expect(() => result).not.toThrow() }');'
         test('should handle security policy errors', (') => {'
             const securityError = new Error('X-Frame-Options: DENY',
             const policy = 'X-Frame-Options',
             expect(() => {
-                localModeManager.handleSecurityError(securityError, policy) }).not.toThrow(');'
+                localModeManager.handleSecurityError(securityError, policy) }.not.toThrow(');'
         }
         test('should collect and provide error statistics', (') => {'
             // いくつかのエラーを発生させる
             localModeManager.handleError(new Error('Error 1'), 'TEST_1'),
             localModeManager.handleError(new Error('Error 2'), 'TEST_2'),
-            const stats = localModeManager.getErrorStats(),
+            const stats = localModeManager.getErrorStats();
             expect(stats.toMatchObject({
                 mainErrorHandler: expect.any(Object,
                 localErrorHandler: expect.any(Object)) }
     }');'
     describe('Performance and Resource Management', (') => {'
         test('should manage resources efficiently', async () => {
-            const startTime = performance.now(),
-            await localModeManager.initialize(),
-            const endTime = performance.now(),
+            const startTime = performance.now();
+            await localModeManager.initialize();
+            const endTime = performance.now();
             const initTime = endTime - startTime,
             
             // 初期化時間が合理的な範囲内であることを確認
             expect(initTime.toBeLessThan(5000), // 5秒以内
         }');'
         test('should cleanup resources properly', async () => {
-            await localModeManager.initialize(),
+            await localModeManager.initialize();
             // 状態確認
-            const status = localModeManager.getStatus(),
-            expect(status.isInitialized).toBe(true),
+            const status = localModeManager.getStatus();
+            expect(status.isInitialized).toBe(true);
             // メモリリークのないことを確認（基本的なチェック）
-            const debugInfo = localModeManager.getDebugInfo(),
-            expect(debugInfo.toBeDefined(),
+            const debugInfo = localModeManager.getDebugInfo();
+            expect(debugInfo.toBeDefined();
             expect(typeof debugInfo').toBe('object') }');
         test('should handle concurrent operations safely', async () => {
             // 同時に複数の操作を実行
             const operations = [
-                localModeManager.initialize(),
+                localModeManager.initialize();
                 FaviconGenerator.generateMissingFavicons({ sizes: [16] },
                 FaviconGenerator.generateMissingFavicons({ sizes: [32]
-            });
+            };
             ];
             const results = await Promise.all(operations);
             // すべての操作が成功するか、適切にエラーハンドリングされることを確認
-            results.forEach(result => {),
-                expect(typeof result).toBeDefined() });
+            results.forEach(result => {);
+                expect(typeof result).toBeDefined() };
         }
     }');'
     describe('Developer Experience Features', (') => {'
         test('should provide comprehensive debug information', async () => {
-            await localModeManager.initialize(),
-            const debugInfo = localModeManager.getDebugInfo(),
+            await localModeManager.initialize();
+            const debugInfo = localModeManager.getDebugInfo();
             expect(debugInfo.toMatchObject({
                 status: expect.objectContaining({
                     isInitialized: true,
                     isLocalMode: true,
-                    executionContext: expect.any(Object }),
+                    executionContext: expect.any(Object },
                 components: expect.objectContaining({
                     localExecutionDetector: expect.any(Object,
                     faviconGenerator: expect.any(Object,
@@ -239,7 +239,7 @@ describe('Local Execution Final Integration Test', () => {
                     browserCompatibilityManager: expect.any(Object)) }
         }');'
         test('should provide helpful status information', () => {
-            const status = localModeManager.getStatus(),
+            const status = localModeManager.getStatus();
             expect(status.toMatchObject({
                 isInitialized: expect.any(Boolean,
                 isLocalMode: expect.any(Boolean,
@@ -253,7 +253,7 @@ describe('Local Execution Final Integration Test', () => {
                     title: 'Test Guidance',
                     message: 'This is a test message',
                     showCommands: true,);
-            }).not.toThrow();
+            }.not.toThrow();
         }
     }');'
     describe('Configuration and Customization', (') => {'
@@ -262,16 +262,16 @@ describe('Local Execution Final Integration Test', () => {
                 enableMetaTagOptimization: false,
                 enableFaviconGeneration: false,
                 enableDeveloperGuidance: false,
-                debugMode: false,;
+                debugMode: false,
             const customManager = new LocalModeManager(customConfig);
             await customManager.initialize();
             expect(customManager.config).toMatchObject(customConfig);
         }');'
         test('should provide backward compatibility', async () => {
             // デフォルト設定での初期化
-            const defaultManager = new LocalModeManager(),
-            const result = await defaultManager.initialize(),
-            expect(result.toBe(true),
+            const defaultManager = new LocalModeManager();
+            const result = await defaultManager.initialize();
+            expect(result.toBe(true);
             expect(defaultManager.isInitialized).toBe(true) }');'
     }
     describe('Edge Cases and Error Recovery', (') => {'
@@ -283,7 +283,7 @@ describe('Local Execution Final Integration Test', () => {
             const originalCreateElement = document.createElement;
             document.createElement = jest.fn((') => {'
                 throw new Error('createElement failed')),
-            const result = await faultyManager.initialize(),
+            const result = await faultyManager.initialize();
             // 元に戻す
             document.createElement = originalCreateElement,
             // 初期化が失敗してもアプリケーションが停止しないことを確認
@@ -293,13 +293,13 @@ describe('Local Execution Final Integration Test', () => {
             const originalLocalStorage = global.localStorage,
             global.localStorage = undefined,
             expect(() => {
-                LocalExecutionDetector.canUseLocalStorage()).not.toThrow(),
+                LocalExecutionDetector.canUseLocalStorage()).not.toThrow();
             global.localStorage = originalLocalStorage }');'
         test('should provide fallback content when needed', async () => {
-            await localModeManager.initialize(),
+            await localModeManager.initialize();
             // フォールバックコンテンツの表示テスト
             expect((') => {'
-                LocalExecutionErrorHandler.showFallbackContent('module_loading') }).not.toThrow();
+                LocalExecutionErrorHandler.showFallbackContent('module_loading') }.not.toThrow();
         }
     }');'
     describe('Cross-Browser Compatibility', (') => {'
@@ -310,33 +310,33 @@ describe('Local Execution Final Integration Test', () => {
                 'Mozilla/5.0 (Windows NT 10.0, Win64, x64, rv:89.0') Gecko/20100101 Firefox/89.0'
             ],
             userAgents.forEach(ua => {
-                global.navigator.userAgent = ua),
-                const compatibility = BrowserCompatibilityManager.getBrowserInfo(),
+                global.navigator.userAgent = ua);
+                const compatibility = BrowserCompatibilityManager.getBrowserInfo();
                 expect(compatibility.toMatchObject({
                     name: expect.any(String,
                     version: expect.any(String,
-                    isSupported: expect.any(Boolean });
+                    isSupported: expect.any(Boolean },
             }
         }');'
     }
     describe('Final Validation', (') => {'
         test('should pass complete integration validation', async () => {
             // 完全な統合フローテスト
-            const result = await localModeManager.initialize(),
-            expect(result.toBe(true),
+            const result = await localModeManager.initialize();
+            expect(result.toBe(true);
             // 各コンポーネントの動作確認
-            expect(LocalExecutionDetector.isLocalExecution().toBe(true),
-            expect(LocalExecutionErrorHandler.isInitialized).toBe(true),
-            expect(localModeManager.isInitialized).toBe(true),
+            expect(LocalExecutionDetector.isLocalExecution().toBe(true);
+            expect(LocalExecutionErrorHandler.isInitialized).toBe(true);
+            expect(localModeManager.isInitialized).toBe(true);
             // デバッグ情報の取得確認
-            const debugInfo = localModeManager.getDebugInfo(),
-            expect(debugInfo.toBeDefined(),
+            const debugInfo = localModeManager.getDebugInfo();
+            expect(debugInfo.toBeDefined();
             expect(debugInfo.status.isInitialized).toBe(true'),'
             // エラーハンドリングの動作確認
-            const testError = new Error('Final validation test error'),
+            const testError = new Error('Final validation test error');
             expect((') => {'
-                localModeManager.handleError(testError, 'FINAL_VALIDATION') }).not.toThrow(');'
+                localModeManager.handleError(testError, 'FINAL_VALIDATION') }.not.toThrow(');'
             console.log('✅ Complete local execution flow validation passed');
-        });
+        };
     }
 }');'

@@ -16,7 +16,7 @@ export interface GameEngine { bubbleManager?: BubbleManager,
 
 export interface BubbleManager { getBubbleById(id: string): Bubble | null }
 
-export interface Bubble { id: string,
+export interface Bubble { id: string;
     type: string;
     isPopped: boolean;
 
@@ -26,16 +26,18 @@ export interface ScoreManager { getCurrentCombo(): number,
 export interface SceneManager { currentScene?: Scene;
 
 export interface Scene {
-    constructor: { nam,e: string,
-
+    constructor: { nam,e: string;
+    constructor: { nam,e: string;
+        };
 export interface SettingsManager { getSetting(key: string): any;
 
 export interface EventBus { emit(event: string, data: any): void;
 
 export interface StepAction {
     type: string;
-
-export interface TutorialStep { id: string,
+    type: string;
+        };
+export interface TutorialStep { id: string;
     index?: number;
     validationFunction?: string;
     action?: StepAction;
@@ -52,14 +54,15 @@ export interface ActionResult { bubbleId?: string,
     dragDistance?: number;
     [key: string]: any;
 
-export interface ValidationResult { success: boolean,
+export interface ValidationResult { success: boolean;
     error?: string | null;
     details?: any;
 
-export interface TutorialData { id: string,
+export interface TutorialData { id: string;
     steps: TutorialStep[];
-
-export interface TutorialOverlay { showError(error: string): Promise<void>,
+    steps: TutorialStep[];
+        };
+export interface TutorialOverlay { showError(error: string): Promise<void>;
     showTimeout(message: string): Promise<void>;
 
 export type ValidationFunction = (actionResult: ActionResult, step: TutorialStep, gameEngine: GameEngine) => Promise<ValidationResult>;
@@ -135,7 +138,7 @@ export class TutorialValidationEngine {
             
             const minDistance = step.minDragDistance || 50;
             if (actionResult.dragDistance < minDistance) { return {  };
-                    success: false;
+                    success: false,
                     error: `もう少し長くドラッグしてください（最小: ${minDistance}px）` 
                 }
             ';'
@@ -157,7 +160,7 @@ export class TutorialValidationEngine {
                     details: { expectedTypes: specialTypes, actualType: bubbleType,
             ';'
 
-            return { success: true, details: { bubbleType  }'}');
+            return { success: true, details: { bubbleType  }'}'),
         ';'
         // コンボ達成バリデーション
         this.validationFunctions.set('validateCombo', async (actionResult, step, gameEngine) => {  const scoreManager = gameEngine?.scoreManager,' }'
@@ -242,7 +245,7 @@ export class TutorialValidationEngine {
             
             return { success: false,
                 error: `${targetSetting}設定を${targetValue}に変更してください` 
-            });
+            };
     }
     
     /**
@@ -264,7 +267,7 @@ export class TutorialValidationEngine {
 
                 return { success: result, error: result ? null : 'Validation failed' 
             return { success: result.success || false,
-                error: result.error || null };
+                error: result.error || null },
                 details: result.details || null 
     };
             ';'
@@ -361,7 +364,6 @@ export class TutorialValidationEngine {
      * @param callback - タイムアウト時のコールバック
      */
     setStepTimer(timeout: number, callback: () => void): void { this.clearStepTimer(),
-        
         if (timeout && timeout > 0) {
     
 }
@@ -375,7 +377,7 @@ export class TutorialValidationEngine {
      * ステップタイマーをクリア
      */
     clearStepTimer(): void { if (this.stepTimer) {
-            clearTimeout(this.stepTimer),
+            clearTimeout(this.stepTimer);
             this.stepTimer = null }
     }
     
@@ -394,7 +396,7 @@ export class TutorialValidationEngine {
             if (this.gameEngine && this.gameEngine.eventBus) {
 
                 this.gameEngine.eventBus.emit('tutorial_validation_error', {
-                    tutorialId: currentTutorial?.id, : undefined),
+                    tutorialId: currentTutorial?.id, : undefined);
                     stepId: currentTutorial?.steps[currentStep || 0]?.id, : undefined 
                     error: error) }
 
@@ -424,7 +426,7 @@ export class TutorialValidationEngine {
             if (this.gameEngine && this.gameEngine.eventBus) {
 
                 this.gameEngine.eventBus.emit('tutorial_step_timeout', {
-                    tutorialId: currentTutorial?.id, : undefined),
+                    tutorialId: currentTutorial?.id, : undefined);
                     stepId: step.id }
                     stepIndex: step.index); 
     } catch (error) { }
@@ -441,7 +443,7 @@ export class TutorialValidationEngine {
     registerValidationFunction(name: string, func: ValidationFunction): void { try {
             this.validationFunctions.set(name, func),' }'
 
-            this.loggingSystem.log(`カスタムバリデーション関数が登録されました: ${name}`, 'info', 'TutorialValidationEngine'});
+            this.loggingSystem.log(`カスタムバリデーション関数が登録されました: ${name}`, 'info', 'TutorialValidationEngine'};
 
         } catch (error) { }
 
@@ -456,7 +458,7 @@ export class TutorialValidationEngine {
     unregisterValidationFunction(name: string): void { try {
             this.validationFunctions.delete(name),' }'
 
-            this.loggingSystem.log(`バリデーション関数が削除されました: ${name}`, 'info', 'TutorialValidationEngine'});
+            this.loggingSystem.log(`バリデーション関数が削除されました: ${name}`, 'info', 'TutorialValidationEngine'};
 
         } catch (error) { }
 
@@ -474,9 +476,8 @@ export class TutorialValidationEngine {
      * リソースをクリーンアップ
      */
     destroy(): void { try {
-            this.clearStepTimer(),
-
-            this.clearInteractionHandlers(),
+            this.clearStepTimer();
+            this.clearInteractionHandlers();
             this.validationFunctions.clear()','
             this.loggingSystem.log('TutorialValidationEngineがクリーンアップされました', 'info', 'TutorialValidationEngine) }'
 

@@ -5,20 +5,20 @@
  * Main Controller Patternの一部として設計
  */
 
-export interface ValidationRule { required: boolean,
+export interface ValidationRule { required: boolean;
     type: string;
     min?: number;
     max?: number,  }
 
 export interface ValidationRules { [key: string]: ValidationRule;
 
-export interface ValidationResult { valid: boolean,
+export interface ValidationResult { valid: boolean;
     error?: string;
 
-export interface DataIntegrityResult { valid: boolean,
+export interface DataIntegrityResult { valid: boolean;
     issues: string[];
 
-export interface VersionCompatibilityResult { compatible: boolean,
+export interface VersionCompatibilityResult { compatible: boolean;
     error?: string;
 
 export interface PlayerData { username?: string | null,
@@ -33,22 +33,22 @@ export interface StatisticsData { totalPlayTime?: number,
     gamesPlayed?: number;
     [key: string]: number | undefined }
 
-export interface AchievementData { id: string,
+export interface AchievementData { id: string;
     unlocked: boolean;
     unlockedAt?: string;
 
-export interface ImportData { version: string,
+export interface ImportData { version: string;
     playerData: PlayerData;
     statistics?: StatisticsData;
     achievements?: AchievementData[];
     timestamp?: string;
     settings?: Record<string, any> }
 
-export interface DataSizeValidationResult { valid: boolean,
+export interface DataSizeValidationResult { valid: boolean;
     error?: string;
     size?: number;
 
-export interface Layout { contentX: number,
+export interface Layout { contentX: number;
     contentY: number;
     contentWidth: number;
     buttonY: number;
@@ -58,22 +58,22 @@ export interface Layout { contentX: number,
 export interface MainController { data: {
         parsedDat,a?: ImportData;
         error?: string;
-        importData: string,
-        importMethod: string,
-    step: string,
+        importData: string;
+        importMethod: string;
+    step: string;
         importProgress?: number;
         processingText?: string;
         success?: boolean;;
-    textSettings: { contentFont: string,
-        contentColor: string,
-    errorColor: string,;
-    gameEngine: { playerData: any,
+    textSettings: { contentFont: string;
+        contentColor: string;
+    errorColor: string;
+    gameEngine: { playerData: any;
         statisticsManager?: any;
         achievementManager?: any;;
     setupButtons(): void;
-    roundRect(context: CanvasRenderingContext2D, x: number, y: number, width: number, height: number, radius: number): void,
+    roundRect(context: CanvasRenderingContext2D, x: number, y: number, width: number, height: number, radius: number): void;
 
-export interface PlayerDataInterface { setUsername(username: string): void,
+export interface PlayerDataInterface { setUsername(username: string): void;
     getAP(): number;
     addAP(amount: number): void;
     getTotalAP(): number;
@@ -84,7 +84,7 @@ export interface PlayerDataInterface { setUsername(username: string): void,
 
 export class ImportDataProcessor {
     private mainController: MainController;
-    private, validationRules: ValidationRules,
+    private, validationRules: ValidationRules;
     constructor(mainController: MainController) {
 
         this.mainController = mainController
@@ -102,7 +102,7 @@ export class ImportDataProcessor {
     /**
      * 確認ステップを描画'
      */''
-    renderConfirmStep(context: CanvasRenderingContext2D, layout: Layout, y: number): void { context.font = this.mainController.textSettings.contentFont,
+    renderConfirmStep(context: CanvasRenderingContext2D, layout: Layout, y: number): void { context.font = this.mainController.textSettings.contentFont;
 
         context.fillStyle = this.mainController.textSettings.contentColor,
         context.textAlign = 'left',
@@ -115,12 +115,11 @@ export class ImportDataProcessor {
             this.renderDataPreview(context, layout, y + 30); }
 
         } else {  context.fillStyle = this.mainController.textSettings.errorColor,
-            context.fillText('データの解析に失敗しました。', layout.contentX, y),
-
+            context.fillText('データの解析に失敗しました。', layout.contentX, y);
             if (this.mainController.data.error) { }'
 
                 context.font = '12px sans-serif'; }
-                context.fillText(`エラー: ${this.mainController.data.error}`, layout.contentX, y + 30});
+                context.fillText(`エラー: ${this.mainController.data.error}`, layout.contentX, y + 30};
             }
 }
 
@@ -130,8 +129,7 @@ export class ImportDataProcessor {
     renderDataPreview(context: CanvasRenderingContext2D, layout: Layout, y: number): void { if (!this.mainController.data.parsedData) return,
         
         const preview = this.mainController.data.parsedData,
-        const previewHeight = Math.min(120, layout.buttonY - y - 20),
-
+        const previewHeight = Math.min(120, layout.buttonY - y - 20);
         if(previewHeight <= 0) return,
 
         context.font = '12px sans-serif',
@@ -155,7 +153,7 @@ export class ImportDataProcessor {
             currentY += 15;
             context.fillText(`• AP: ${ preview.playerData.ap || 0}`, layout.contentX + 10, currentY};
             currentY += 15; }
-            context.fillText(`• ハイスコア: ${preview.playerData.highScore || 0}`, layout.contentX + 10, currentY});
+            context.fillText(`• ハイスコア: ${preview.playerData.highScore || 0}`, layout.contentX + 10, currentY};
             currentY += 20;
         }
 
@@ -164,14 +162,14 @@ export class ImportDataProcessor {
             context.font = '12px sans-serif',
 
             context.fillStyle = this.mainController.textSettings.contentColor,
-            context.fillText('統計データ:', layout.contentX, currentY),
+            context.fillText('統計データ:', layout.contentX, currentY);
             currentY += 20,
 
             const statsCount = Object.keys(preview.statistics).length,
             context.font = '11px sans-serif' }
 
             context.fillStyle = '#6C757D'; }
-            context.fillText(`• ${statsCount}項目の統計データ`, layout.contentX + 10, currentY});
+            context.fillText(`• ${statsCount}項目の統計データ`, layout.contentX + 10, currentY};
         }
     }
 
@@ -190,8 +188,7 @@ export class ImportDataProcessor {
             this.mainController.data.parsedData = parsedData,
             this.mainController.data.step = 'confirm',
             this.mainController.data.error = undefined,
-            this.mainController.setupButtons(),
-
+            this.mainController.setupButtons();
             return true,' }'
 
         } catch (error) {
@@ -215,7 +212,7 @@ export class ImportDataProcessor {
         
         // プレイヤーデータのチェック
         if (data.playerData) {
-            const validation = this.validatePlayerData(data.playerData),
+            const validation = this.validatePlayerData(data.playerData);
             if (!validation.valid) {
         }
                 return validation; else { }'
@@ -225,14 +222,14 @@ export class ImportDataProcessor {
         
         // 統計データのチェック（オプション）
         if (data.statistics) {
-            const validation = this.validateStatisticsData(data.statistics),
+            const validation = this.validateStatisticsData(data.statistics);
             if (!validation.valid) {
         }
                 return validation;
         
         // 実績データのチェック（オプション）
         if (data.achievements) {
-            const validation = this.validateAchievementsData(data.achievements),
+            const validation = this.validateAchievementsData(data.achievements);
             if (!validation.valid) {
         }
                 return validation;
@@ -381,7 +378,7 @@ export class ImportDataProcessor {
             playerData.setUsername(importedData.username) }
 
         if(typeof, importedData.ap === 'number' {'
-            const currentAP = playerData.getAP(),
+            const currentAP = playerData.getAP();
             const difference = importedData.ap - currentAP,
 
             if (difference !== 0) {
@@ -391,7 +388,7 @@ export class ImportDataProcessor {
 }
 
         if(typeof, importedData.tap === 'number' {'
-            const currentTAP = playerData.getTotalAP(),
+            const currentTAP = playerData.getTotalAP();
             const difference = importedData.tap - currentTAP,
 
             if (difference !== 0) {
@@ -423,14 +420,14 @@ export class ImportDataProcessor {
      * JSON形式の検証
      */
     isValidJSON(str: string): boolean { try {
-            JSON.parse(str),
+            JSON.parse(str);
             return true } catch (e) { return false,
 
     /**
      * データサイズの検証
      */
     validateDataSize(data: any): DataSizeValidationResult { const maxSize = 1024 * 1024, // 1MB
-        const dataString = JSON.stringify(data),
+        const dataString = JSON.stringify(data);
         const sizeInBytes = new Blob([dataString]).size,
         
         if (sizeInBytes > maxSize) {
@@ -451,15 +448,14 @@ export class ImportDataProcessor {
 
             return version.split('.).map(num => parseInt(num, 10);'
         
-        try { const data = parseVersion(dataVersion),
-            const current = parseVersion(currentVersion),
-            
+        try { const data = parseVersion(dataVersion);
+            const current = parseVersion(currentVersion);
             // メジャーバージョンが異なる場合は互換性なし
             if (data[0] !== current[0]) {
     
 }
                 return {  };
-                    compatible: false;
+                    compatible: false,
                     error: `互換性のないバージョンです（データ: v${dataVersion}, 現在: v${currentVersion}）`
                 }
             ';'
@@ -502,8 +498,8 @@ export class ImportDataProcessor {
                 issues.push('ハイスコアが負の値です'; }'
 }
         
-        return { valid: issues.length = == 0 };
-            issues: issues;
+        return { valid: issues.length = == 0 },
+            issues: issues,
 
     /**
      * ステータス取得'
@@ -512,5 +508,5 @@ export class ImportDataProcessor {
             componentType: 'ImportDataProcessor',';'
             validationRules: Object.keys(this.validationRules,
             supportedFormats: ['json'],
-    maxDataSize: 1024 * 1024 // 1MB;
+    maxDataSize: 1024 * 1024 // 1MB,
         } }'}'

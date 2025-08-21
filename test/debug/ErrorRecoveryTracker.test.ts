@@ -47,8 +47,8 @@ describe('ErrorRecoveryTracker', () => {  let recoveryTracker: any,
     let mockErrorReporter: any,
     
     beforeEach(() => {
-        mockErrorReporter = createMockErrorReporter(),
-        recoveryTracker = new ErrorRecoveryTracker(mockErrorReporter: any),
+        mockErrorReporter = createMockErrorReporter();
+        recoveryTracker = new ErrorRecoveryTracker(mockErrorReporter: any);
         // LocalStorageのモック
         (global: any).localStorage = {
             getItem: jest.fn(
@@ -73,15 +73,15 @@ describe('ErrorRecoveryTracker', () => {  let recoveryTracker: any,
         jest.spyOn(console, 'error').mockImplementation();
         // タイマーのモック
         jest.useFakeTimers();
-    });
-    afterEach(() => {  recoveryTracker.destroy(),
+    };
+    afterEach(() => {  recoveryTracker.destroy();
         jest.restoreAllMocks() }
         jest.runOnlyPendingTimers(); }'
-        jest.useRealTimers(});'}');
+        jest.useRealTimers(};'}');
     describe('初期化', (') => {  ''
         test('ErrorRecoveryTrackerが正しく初期化される', () => {
-            expect(recoveryTracker).toBeDefined(),
-            expect(recoveryTracker.recoveryStrategies.size).toBeGreaterThan(0),
+            expect(recoveryTracker).toBeDefined();
+            expect(recoveryTracker.recoveryStrategies.size).toBeGreaterThan(0);
             expect(recoveryTracker.recoveryAttempts).toEqual([]) }'
             expect(recoveryTracker.recoveryConfig.enabled).toBe(true););' }'
         }');'
@@ -93,8 +93,8 @@ describe('ErrorRecoveryTracker', () => {  let recoveryTracker: any,
         }''
         test('復旧設定が正しく初期化される', () => {  const config = recoveryTracker.recoveryConfig,
             
-            expect(config.enabled).toBe(true),
-            expect(config.maxAttemptsPerError).toBe(3),
+            expect(config.enabled).toBe(true);
+            expect(config.maxAttemptsPerError).toBe(3);
             expect(config.maxAttemptsPerStrategy).toBe(2) }'
             expect(config.cooldownPeriod).toBe(300000); // 5分);' }'
         }');'
@@ -109,7 +109,7 @@ describe('ErrorRecoveryTracker', () => {  let recoveryTracker: any,
                 fingerprint: 'memory_fingerprint' }
             },
             ';'
-            const strategies = recoveryTracker.selectRecoveryStrategies(memoryError, { ),
+            const strategies = recoveryTracker.selectRecoveryStrategies(memoryError, { );
             expect(strategies.length).toBeGreaterThan(0'),'
             expect(strategies.some(s => s.id === 'memory_cleanup').toBe(true),' }'
         }');'
@@ -131,7 +131,7 @@ describe('ErrorRecoveryTracker', () => {  let recoveryTracker: any,
                 fingerprint: 'multi_fingerprint' }
             },
             
-            const strategies = recoveryTracker.selectRecoveryStrategies(testError, { ),
+            const strategies = recoveryTracker.selectRecoveryStrategies(testError, { );
             // 優先度順になっているかチェック
             for(let i = 1, i < strategies.length, i++) {
     
@@ -148,7 +148,7 @@ describe('ErrorRecoveryTracker', () => {  let recoveryTracker: any,
                 category: 'memory') }
             }
             ),
-            const result = await strategy.action(testError, {});
+            const result = await strategy.action(testError, {};
             expect(result.success).toBe(true);
             expect(window.gc).toHaveBeenCalled();'
             expect(mockErrorReporter.gameEngine.cacheSystem.clearCache).toHaveBeenCalled();'}');
@@ -160,7 +160,7 @@ describe('ErrorRecoveryTracker', () => {  let recoveryTracker: any,
                 category: 'rendering') }
             }
             ),
-            const result = await strategy.action(testError, {});
+            const result = await strategy.action(testError, {};
             expect(result.success).toBe(true);'
             expect(mockErrorReporter.gameEngine.canvas.getContext).toHaveBeenCalled();'}');
         test('オーディオ再起動戦略が正常に実行される', async (') => { }'
@@ -171,7 +171,7 @@ describe('ErrorRecoveryTracker', () => {  let recoveryTracker: any,
                 category: 'audio') }
             }
             ),
-            const result = await strategy.action(testError, {});
+            const result = await strategy.action(testError, {};
             expect(result.success).toBe(true);
             expect(mockErrorReporter.gameEngine.audioManager.stop).toHaveBeenCalled();'
             expect(mockErrorReporter.gameEngine.audioManager.initialize).toHaveBeenCalled();'}');
@@ -183,7 +183,7 @@ describe('ErrorRecoveryTracker', () => {  let recoveryTracker: any,
                 category: 'system') }
             }
             ),
-            const result = await strategy.action(testError, {});
+            const result = await strategy.action(testError, {};
             expect(result.success).toBe(true);
             expect(mockErrorReporter.gameEngine.enableSafeMode).toHaveBeenCalled();'
             expect(mockErrorReporter.gameEngine.effectManager.disable).toHaveBeenCalled();'}');
@@ -199,11 +199,11 @@ describe('ErrorRecoveryTracker', () => {  let recoveryTracker: any,
                 id: 'timeout_test',','
                 message: 'Timeout test error',','
                 category: 'test' }
-    }),
-            const session = recoveryTracker.startRecoverySession(testError, { ),
+    },
+            const session = recoveryTracker.startRecoverySession(testError, { );
             // タイムアウトが発生することを確認
             const result = await recoveryTracker.executeRecoveryStrategy(
-                longRunningStrategy),
+                longRunningStrategy);
                 testError,
                 {), 
                 session),'
@@ -221,7 +221,7 @@ describe('ErrorRecoveryTracker', () => {  let recoveryTracker: any,
             },
             
             const session = recoveryTracker.startRecoverySession(testError, { ),'
-            expect(session.id).toMatch(/^recovery_/),
+            expect(session.id).toMatch(/^recovery_/);
             expect(session.error.id').toBe('session_test'),'
             expect(session.strategiesAttempted).toEqual([]),'
             expect(recoveryTracker.activeRecoveries.get(session.id).toBe(session),' }'
@@ -235,7 +235,7 @@ describe('ErrorRecoveryTracker', () => {  let recoveryTracker: any,
             },', ';
             const session = recoveryTracker.startRecoverySession(testError, { )'),'
             const result = recoveryTracker.completeRecoverySession(session, true, 'Test success'),'
-            expect(result.success).toBe(true),
+            expect(result.success).toBe(true);
             expect(result.result').toBe('Test success'),'
             expect(recoveryTracker.recoveryAttempts).toContain(session),'
             expect(recoveryTracker.activeRecoveries.has(session.id).toBe(false),' }'
@@ -250,7 +250,7 @@ describe('ErrorRecoveryTracker', () => {  let recoveryTracker: any,
             const session = recoveryTracker.startRecoverySession(testError, { )'),'
             const initialSuccesses = recoveryTracker.recoveryStats.successfulRecoveries,
             const initialFailures = recoveryTracker.recoveryStats.failedRecoveries,', ',
-            recoveryTracker.completeRecoverySession(session, true, 'Test success'),
+            recoveryTracker.completeRecoverySession(session, true, 'Test success');
             expect(recoveryTracker.recoveryStats.successfulRecoveries).toBe(initialSuccesses + 1),'
             expect(recoveryTracker.recoveryStats.totalAttempts).toBeGreaterThan(0),' }'
         }');'
@@ -265,8 +265,8 @@ describe('ErrorRecoveryTracker', () => {  let recoveryTracker: any,
                 fingerprint: 'attempt_fingerprint' }
             },
             
-            const result = await recoveryTracker.attemptRecovery(testError, { ),
-            expect(result.success).toBe(true),
+            const result = await recoveryTracker.attemptRecovery(testError, { );
+            expect(result.success).toBe(true);
             expect(result.sessionId).toBeDefined(),'
             expect(result.duration).toBeGreaterThan(0),' }'
         }');'
@@ -281,7 +281,7 @@ describe('ErrorRecoveryTracker', () => {  let recoveryTracker: any,
             },
             
             const result = await recoveryTracker.attemptRecovery(testError, { ),'
-            expect(result.success).toBe(false),
+            expect(result.success).toBe(false);
             expect(result.reason').toBe('Recovery disabled'),' }'
         }');'
         test('適用可能な戦略がない場合は失敗する', async (') => {  const testError = {''
@@ -293,7 +293,7 @@ describe('ErrorRecoveryTracker', () => {  let recoveryTracker: any,
             },
             
             const result = await recoveryTracker.attemptRecovery(testError, { ),'
-            expect(result.success).toBe(false),
+            expect(result.success).toBe(false);
             expect(result.reason').toBe('No applicable strategies'),' }'
         }');'
     }''
@@ -310,7 +310,7 @@ describe('ErrorRecoveryTracker', () => {  let recoveryTracker: any,
             // 最初の復旧試行''
             await recoveryTracker.attemptRecovery(testError, { )'),'
             // 同じ戦略が冷却期間中かチェック''
-            const isCooledDown = recoveryTracker.isStrategyCooledDown('memory_cleanup', 'cooldown_fingerprint'),
+            const isCooledDown = recoveryTracker.isStrategyCooledDown('memory_cleanup', 'cooldown_fingerprint');
             expect(isCooledDown).toBe(false),'
             // 時間を進める''
             jest.advanceTimersByTime(300000'), // 5分進める'
@@ -330,8 +330,8 @@ describe('ErrorRecoveryTracker', () => {  let recoveryTracker: any,
             },
             
             // 最初の試行
-            const firstResult = await recoveryTracker.attemptRecovery(testError, { ),
-            expect(firstResult.success).toBe(true),
+            const firstResult = await recoveryTracker.attemptRecovery(testError, { );
+            expect(firstResult.success).toBe(true);
             // 2回目の試行（制限に達している）
             const secondResult = await recoveryTracker.attemptRecovery(testError, {),'
             expect(secondResult.success).toBe(false),' }'
@@ -339,16 +339,16 @@ describe('ErrorRecoveryTracker', () => {  let recoveryTracker: any,
     }''
     describe('戦略効果性学習', (') => {  ''
         test('戦略成功が正しく記録される', (') => {''
-            const initialStats = recoveryTracker.recoveryStats.byStrategy.get('memory_cleanup'),
+            const initialStats = recoveryTracker.recoveryStats.byStrategy.get('memory_cleanup');
             recoveryTracker.recordStrategySuccess('memory_cleanup', 'memory', 1000'),'
-            const updatedStats = recoveryTracker.recoveryStats.byStrategy.get('memory_cleanup'),
+            const updatedStats = recoveryTracker.recoveryStats.byStrategy.get('memory_cleanup');
             expect(updatedStats.successes).toBe((initialStats? .successes || 0) + 1) }'
             expect(updatedStats.attempts).toBe((initialStats?.attempts || 0) + 1);' }'
         }');'
         test('戦略失敗が正しく記録される', (') => {  ''
-            const initialStats = recoveryTracker.recoveryStats.byStrategy.get('memory_cleanup'),
-            recoveryTracker.recordStrategyFailure('memory_cleanup', 'memory', 'Test failure'),
-            const updatedStats = recoveryTracker.recoveryStats.byStrategy.get('memory_cleanup'),
+            const initialStats = recoveryTracker.recoveryStats.byStrategy.get('memory_cleanup');
+            recoveryTracker.recordStrategyFailure('memory_cleanup', 'memory', 'Test failure');
+            const updatedStats = recoveryTracker.recoveryStats.byStrategy.get('memory_cleanup');
             expect(updatedStats.failures).toBe((initialStats?.failures || 0) + 1) }'
             expect(updatedStats.attempts).toBe((initialStats?.attempts || 0) + 1);' }'
         }');'
@@ -378,21 +378,21 @@ describe('ErrorRecoveryTracker', () => {  let recoveryTracker: any,
                         duration: 800 }]
                     }]
                 ]);
-            });
+            };
             )';'
             recoveryTracker.recoveryAttempts.push(testRecovery);'}');
         test('復旧レポートが正しく生成される', (') => {  ''
-            const report = recoveryTracker.generateRecoveryReport('session'),
+            const report = recoveryTracker.generateRecoveryReport('session');
             expect(report.timeframe').toBe('session'),'
-            expect(report.summary.totalAttempts).toBeGreaterThan(0),
-            expect(report.strategyAnalysis).toBeDefined(),
+            expect(report.summary.totalAttempts).toBeGreaterThan(0);
+            expect(report.strategyAnalysis).toBeDefined();
             expect(report.categoryAnalysis).toBeDefined() }'
             expect(report.recommendations).toBeDefined();' }'
         }');'
         test('戦略分析が正しく実行される', () => { const recoveries = recoveryTracker.recoveryAttempts }
-            const analysis = recoveryTracker.analyzeStrategyPerformance(recoveries})
+            const analysis = recoveryTracker.analyzeStrategyPerformance(recoveries}
             );
-            expect(Array.isArray(analysis}).toBe(true);
+            expect(Array.isArray(analysis}.toBe(true);
             if (analysis.length > 0) {', ',
                 expect(analysis[0]').toHaveProperty('strategyId'),'
                 expect(analysis[0]').toHaveProperty('attempts'),'
@@ -401,9 +401,9 @@ describe('ErrorRecoveryTracker', () => {  let recoveryTracker: any,
                 expect(analysis[0]').toHaveProperty('successRate'); }'
             }'}');
         test('カテゴリ別分析が正しく実行される', () => { const recoveries = recoveryTracker.recoveryAttempts }
-            const analysis = recoveryTracker.analyzeCategoryPerformance(recoveries})
+            const analysis = recoveryTracker.analyzeCategoryPerformance(recoveries}
             );
-            expect(Array.isArray(analysis}).toBe(true);
+            expect(Array.isArray(analysis}.toBe(true);
             if (analysis.length > 0) {', ',
                 expect(analysis[0]').toHaveProperty('category'),'
                 expect(analysis[0]').toHaveProperty('attempts'),'
@@ -422,11 +422,11 @@ describe('ErrorRecoveryTracker', () => {  let recoveryTracker: any,
             expect(recoveryTracker.recoveryConfig.maxAttemptsPerError).toBe(5);'
             expect(recoveryTracker.recoveryConfig.cooldownPeriod).toBe(600000);'}');
         test('復旧データが正しく保存される', () => {  }
-            recoveryTracker.saveRecoveryData(})'
+            recoveryTracker.saveRecoveryData(}'
             );
             expect(localStorage.setItem).toHaveBeenCalledWith(')';
                 'error_recovery_data')';'
-                expect.any(String});'}');
+                expect.any(String};'}');
         test('復旧データが正しく読み込まれる', () => {  const testData = {
                 recoveryStats: {
                     totalAttempts: 10 }
@@ -457,13 +457,13 @@ describe('ErrorRecoveryTracker', () => {  let recoveryTracker: any,
                 fingerprint: 'error_fingerprint' }
             },
             
-            const session = recoveryTracker.startRecoverySession(testError, { ),
+            const session = recoveryTracker.startRecoverySession(testError, { );
             const result = await recoveryTracker.executeRecoveryStrategy(
-                errorStrategy),
+                errorStrategy);
                 testError,
                 {),
                 session),'
-            expect(result).toBe(false),
+            expect(result).toBe(false);
             expect(session.strategiesAttempted[0].error').toBe('Strategy error'),' }'
         }');'
         test('復旧試行全体でのエラーが適切に処理される', async (') => { // 復旧戦略を全て削除してエラー状況を作る }'
@@ -477,7 +477,7 @@ describe('ErrorRecoveryTracker', () => {  let recoveryTracker: any,
                 fingerprint: 'recovery_error_fingerprint') }
             }
             ),
-            const result = await recoveryTracker.attemptRecovery(testError, {});'
+            const result = await recoveryTracker.attemptRecovery(testError, {};'
             expect(result.success).toBe(false);
             expect(result.reason').toBe('No applicable strategies');'}');'
     }''
@@ -493,11 +493,11 @@ describe('ErrorRecoveryTracker', () => {  let recoveryTracker: any,
             },
             
             const session = recoveryTracker.startRecoverySession(testError, { ),'
-            recoveryTracker.destroy(),
+            recoveryTracker.destroy();
             expect(localStorage.setItem).toHaveBeenCalledWith(')',
                 'error_recovery_data'),
                 expect.any(String)),
-            expect(recoveryTracker.activeRecoveries.size).toBe(0),
+            expect(recoveryTracker.activeRecoveries.size).toBe(0);
             expect(recoveryTracker.cooldownTimers.size).toBe(0) }
-        });'
+        };'
     }'}');

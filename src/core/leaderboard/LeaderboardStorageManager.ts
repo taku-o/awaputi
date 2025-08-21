@@ -4,7 +4,7 @@
  */
 
 // 型定義
-export interface LeaderboardManager { data: LeaderboardData,
+export interface LeaderboardManager { data: LeaderboardData;
     config: LeaderboardConfig;
     storageKey: string;
     version?: string;
@@ -20,11 +20,11 @@ export interface LeaderboardData { leaderboards: Record<string, Leaderboard>,
     version: string;
     metadata?: DataMetadata;
 
-export interface Leaderboard { entries: ScoreEntry[],
+export interface Leaderboard { entries: ScoreEntry[];
     lastUpdated: number;
     metadata?: LeaderboardMetadata;
 
-export interface ScoreEntry { score: number,
+export interface ScoreEntry { score: number;
     playerName: string;
     timestamp: number;
     stageId?: string;
@@ -36,18 +36,18 @@ export interface PeriodLeaderboards { daily?: Record<string, PeriodBoard>,
     monthly?: Record<string, PeriodBoard>;
     yearly?: Record<string, PeriodBoard> }
 
-export interface PeriodBoard { entries: ScoreEntry[],
+export interface PeriodBoard { entries: ScoreEntry[];
     endDate?: number;
     startDate?: number;
     metadata?: PeriodBoardMetadata;
 
-export interface PlayerHistory { scores: PlayerScore[],
+export interface PlayerHistory { scores: PlayerScore[];
     bestScore: number;
     totalGames: number;
     averageScore: number;
     metadata?: PlayerMetadata;
 
-export interface PlayerScore { score: number,
+export interface PlayerScore { score: number;
     timestamp: number;
     stageId?: string;
     metadata?: ScoreMetadata;
@@ -58,21 +58,21 @@ export interface ScoreMetadata { difficulty?: string,
     combo?: number;
     accuracy?: number;
 
-export interface PlayerMetadata { firstPlayDate: number,
+export interface PlayerMetadata { firstPlayDate: number;
     lastPlayDate: number;
     favoriteStage?: string;
 
-export interface LeaderboardMetadata { createdAt: number,
+export interface LeaderboardMetadata { createdAt: number;
     updatedAt: number;
     totalEntries: number;
     uniquePlayers: number;
 
-export interface PeriodBoardMetadata { period: PeriodType,
+export interface PeriodBoardMetadata { period: PeriodType;
     periodKey: string;
     totalPlayers: number;
     averageScore: number;
 
-export interface DataMetadata { createdAt: number,
+export interface DataMetadata { createdAt: number;
     updatedAt: number;
     totalBoards: number;
     backupCount: number;
@@ -87,55 +87,55 @@ export interface LeaderboardConfig { cacheMaxAge?: number,
 export interface DataProcessor { performIntegrityCheck: (data: LeaderboardData) => IntegrityCheckResult 
     }
 
-export interface IntegrityCheckResult { isValid: boolean,
+export interface IntegrityCheckResult { isValid: boolean;
     errors: string[];
     warnings: string[];
     statistics: ValidationStatistics;
 
-export interface ValidationStatistics { totalEntries: number,
+export interface ValidationStatistics { totalEntries: number;
     validEntries: number;
     invalidEntries: number;
     duplicateEntries: number;
 
-export interface CacheEntry<T = any> { data: T,
+export interface CacheEntry<T = any> { data: T;
     timestamp: number;
     accessCount?: number;
     lastAccess?: number;
     ttl?: number;
 
-export interface BackupData { data: LeaderboardData,
+export interface BackupData { data: LeaderboardData;
     timestamp: number;
     version: string;
     metadata?: BackupMetadata;
 
-export interface BackupMetadata { createdBy: string,
+export interface BackupMetadata { createdBy: string;
     reason: BackupReason;
     dataSize: number;
     compressionRatio?: number;
 
-export interface StorageOperationResult { success: boolean,
+export interface StorageOperationResult { success: boolean;
     error?: string;
     data?: any;
     metadata?: OperationMetadata;
 
-export interface OperationMetadata { operationType: StorageOperation,
+export interface OperationMetadata { operationType: StorageOperation;
     timestamp: number;
     dataSize: number;
     duration: number;
 
-export interface MemoryUsageInfo { totalSize: number,
+export interface MemoryUsageInfo { totalSize: number;
     dataSize: number;
     cacheSize: number;
     cacheEntries: number;
     lastCacheCleanup: number;
     memoryPressure: MemoryPressureLevel;
 
-export interface RetentionPeriods { daily: number,
+export interface RetentionPeriods { daily: number;
     weekly: number;
     monthly: number;
     yearly: number;
 
-export interface CacheStatistics { size: number,
+export interface CacheStatistics { size: number;
     hitRate: number;
     missRate: number;
     totalRequests: number;
@@ -143,7 +143,7 @@ export interface CacheStatistics { size: number,
     totalMisses: number;
     averageAccessTime: number;
 
-export interface CompressionResult { originalSize: number,
+export interface CompressionResult { originalSize: number;
     compressedSize: number;
     compressionRatio: number;
     algorithm: CompressionAlgorithm;
@@ -171,12 +171,12 @@ export const MEMORY_PRESSURE_THRESHOLDS = { low: 1024 * 1024,      // 1MB
     medium: 5 * 1024 * 1024, // 5MB,
     high: 10 * 1024 * 1024,  // 10MB,
     critical: 20 * 1024 * 1024 // 20MB  };
-export const DEFAULT_CONFIG: Partial<LeaderboardConfig> = { cacheMaxAge: DEFAULT_CACHE_MAX_AGE,
-    maxCacheSize: DEFAULT_MAX_CACHE_SIZE,
-    enableBackups: true,
-    backupRetentionDays: 30,
-    compressionEnabled: true,
-    encryptionEnabled: false,;
+export const DEFAULT_CONFIG: Partial<LeaderboardConfig> = { cacheMaxAge: DEFAULT_CACHE_MAX_AGE;
+    maxCacheSize: DEFAULT_MAX_CACHE_SIZE;
+    enableBackups: true;
+    backupRetentionDays: 30;
+    compressionEnabled: true;
+    encryptionEnabled: false;
 ;
 // ユーティリティ関数
 export function isValidLeaderboardData(data: any): data is LeaderboardData { return data &&''
@@ -192,20 +192,20 @@ export function isValidBackupData(data: any): data is BackupData { return data &
            typeof data.version === 'string' }
 ';'
 
-export function calculateMemoryPressure(totalSize: number): MemoryPressureLevel {,
+export function calculateMemoryPressure(totalSize: number): MemoryPressureLevel {;
     if(totalSize >= MEMORY_PRESSURE_THRESHOLDS.critical) return 'critical',
     if(totalSize >= MEMORY_PRESSURE_THRESHOLDS.high) return 'high',
     if(totalSize >= MEMORY_PRESSURE_THRESHOLDS.medium) return 'medium',
     return 'low' }
 ';'
 
-export function formatBytes(bytes: number): string {,
+export function formatBytes(bytes: number): string {;
     if(bytes === 0) return '0 B',
 
     const k = 1024,
     const sizes = ['B', 'KB', 'MB', 'GB'],
     const i = Math.floor(Math.log(bytes) / Math.log(k) }
-    return `${parseFloat((bytes / Math.pow(k, i}.toFixed(2}}) ${sizes[i]}`;
+    return `${parseFloat((bytes / Math.pow(k, i}.toFixed(2}} ${sizes[i]}`;
 }
 
 export function generateStorageKey(base: string, suffix?: string): string {'
@@ -229,7 +229,7 @@ export function compressData(data: string, algorithm: CompressionAlgorithm = 'gz
             }'
 
     } catch (error) {
-        console.warn('Compression failed, returning original data'),
+        console.warn('Compression failed, returning original data');
         return data,
 
 export function decompressData(compressedData: string, algorithm: CompressionAlgorithm = 'gzip'): string {,
@@ -245,14 +245,14 @@ export function decompressData(compressedData: string, algorithm: CompressionAlg
 
 export class LeaderboardStorageManager {
     private leaderboardManager: LeaderboardManager;
-    private, cache: Map<string, CacheEntry> = new Map(),
+    private, cache: Map<string, CacheEntry> = new Map();
     private lastCacheCleanup: number = Date.now();
     private, cacheStatistics: CacheStatistics = {
-        size: 0,
-        hitRate: 0,
-        missRate: 0,
-        totalRequests: 0,
-        totalHits: 0,
+        size: 0;
+        hitRate: 0;
+        missRate: 0;
+        totalRequests: 0;
+        totalHits: 0;
         totalMisses: 0 averageAccessTime: 0  };
     private cleanupIntervalId: NodeJS.Timeout | null = null;
     constructor(leaderboardManager: LeaderboardManager) {
@@ -264,7 +264,7 @@ export class LeaderboardStorageManager {
     /**
      * データのロード
      */
-    async load(): Promise<StorageOperationResult> { const startTime = performance.now(),
+    async load(): Promise<StorageOperationResult> { const startTime = performance.now();
         ','
 
         try {'
@@ -275,19 +275,15 @@ export class LeaderboardStorageManager {
             
             if (savedData) {
             
-                const data = JSON.parse(savedData),
-                
+                const data = JSON.parse(savedData);
                 // データマイグレーション
-                const migratedData = this.migrateData(data),
-                
+                const migratedData = this.migrateData(data);
                 // 整合性チェック
-                const integrityResult = this.leaderboardManager.dataProcessor.performIntegrityCheck(migratedData),
-
+                const integrityResult = this.leaderboardManager.dataProcessor.performIntegrityCheck(migratedData);
                 if (!integrityResult.isValid) {''
-                    console.warn('Leaderboard data integrity issues found:', integrityResult.errors),
-                    
+                    console.warn('Leaderboard data integrity issues found:', integrityResult.errors);
                     // バックアップからの復旧を試行
-                    const restoreResult = await this.attemptBackupRestore(),
+                    const restoreResult = await this.attemptBackupRestore();
                     if (restoreResult.success) {
     
 }
@@ -312,10 +308,9 @@ export class LeaderboardStorageManager {
 
             } catch (error) {
             const errorMessage = error instanceof Error ? error.message: 'Unknown error',
-            console.error('Error loading leaderboard data:', errorMessage),
-            
+            console.error('Error loading leaderboard data:', errorMessage);
             // エラー時はバックアップからの復旧を試行
-            const restoreResult = await this.attemptBackupRestore(),
+            const restoreResult = await this.attemptBackupRestore();
             if (!restoreResult.success) {
 
                 this.initializeEmptyData() }
@@ -325,7 +320,7 @@ export class LeaderboardStorageManager {
     /**
      * データの保存
      */
-    async save(): Promise<StorageOperationResult> { const startTime = performance.now(),
+    async save(): Promise<StorageOperationResult> { const startTime = performance.now();
         ','
 
         try {'
@@ -349,8 +344,7 @@ export class LeaderboardStorageManager {
             return this.createOperationResult('save', true, undefined, startTime, finalData.length';} catch (error) {'
             const errorMessage = error instanceof Error ? error.message: 'Unknown error',
             console.error('Error saving leaderboard data:', errorMessage','
-            return this.createOperationResult('save', false, errorMessage, startTime),
-
+            return this.createOperationResult('save', false, errorMessage, startTime);
     /**
      * 非同期保存
      */
@@ -390,7 +384,7 @@ export class LeaderboardStorageManager {
             // 圧縮が有効な場合
             let finalBackup = serializedBackup;
             if (this.leaderboardManager.config.compressionEnabled) {
-                finalBackup = compressData(serializedBackup),
+                finalBackup = compressData(serializedBackup);
                 if (backupData.metadata) {
             }
                     backupData.metadata.compressionRatio = finalBackup.length / serializedBackup.length; }
@@ -401,12 +395,11 @@ export class LeaderboardStorageManager {
             return this.createOperationResult('backup', true, backupData, startTime, finalBackup.length';} catch (error) {'
             const errorMessage = error instanceof Error ? error.message: 'Unknown error',
             console.error('Error creating backup:', errorMessage','
-            return this.createOperationResult('backup', false, errorMessage, startTime),
-
+            return this.createOperationResult('backup', false, errorMessage, startTime);
     /**
      * バックアップからの復旧
      */
-    async attemptBackupRestore(): Promise<StorageOperationResult> { const startTime = performance.now(),
+    async attemptBackupRestore(): Promise<StorageOperationResult> { const startTime = performance.now();
         ','
 
         try {'
@@ -430,7 +423,7 @@ export class LeaderboardStorageManager {
             ;
             // バックアップデータの検証
             if(!isValidBackupData(backup)) { ''
-                console.warn('Invalid, backup data, structure'),
+                console.warn('Invalid, backup data, structure');
                 return this.createOperationResult('restore', false, 'Invalid backup data structure', startTime) }
             
             // 整合性チェック
@@ -448,14 +441,13 @@ export class LeaderboardStorageManager {
             return this.createOperationResult('restore', true, backup.data, startTime';} catch (error) {'
             const errorMessage = error instanceof Error ? error.message: 'Unknown error',
             console.error('Error restoring from backup:', errorMessage','
-            return this.createOperationResult('restore', false, errorMessage, startTime),
-
+            return this.createOperationResult('restore', false, errorMessage, startTime);
     /**
      * 空データの初期化
      */
     initializeEmptyData(): void { this.leaderboardManager.data = { }
-            leaderboards: {};
-            periodLeaderboards: {};
+            leaderboards: {},
+            periodLeaderboards: {},
             playerHistory: {},''
             lastUpdated: Date.now()';'
             version: this.leaderboardManager.version || '1.0.0,'
@@ -531,7 +523,7 @@ export class LeaderboardStorageManager {
                 if (board && board.endDate && (now - board.endDate) > retentionTime) {
                     delete boards[key] }
                     cleanedCount++; }
-                    console.log(`Cleaned, up expired ${period} leaderboard: ${key}`});
+                    console.log(`Cleaned, up expired ${period} leaderboard: ${key}`};
                 }
 }
 
@@ -543,10 +535,10 @@ export class LeaderboardStorageManager {
      */
     cacheLeaderboard<T = any>(key: string, data: T, ttl?: number): void { const cacheEntry: CacheEntry<T> = {
             data: JSON.parse(JSON.stringify(data), // ディープコピー,
-            timestamp: Date.now(),
+            timestamp: Date.now();
             accessCount: 1,
             lastAccess: Date.now(
-    ttl: ttl,;
+    ttl: ttl,
         this.cache.set(key, cacheEntry);
         this.updateCacheStatistics();
     }
@@ -554,11 +546,10 @@ export class LeaderboardStorageManager {
     /**
      * キャッシュからリーダーボードを取得
      */
-    getCachedLeaderboard<T = any>(key: string): T | null { const startTime = performance.now(),
+    getCachedLeaderboard<T = any>(key: string): T | null { const startTime = performance.now();
         this.cacheStatistics.totalRequests++,
         
-        const cached = this.cache.get(key),
-        
+        const cached = this.cache.get(key);
         if (!cached) {
         
             this.cacheStatistics.totalMisses++,
@@ -567,9 +558,9 @@ export class LeaderboardStorageManager {
 
         const maxAge = cached.ttl || this.leaderboardManager.config.cacheMaxAge || DEFAULT_CACHE_MAX_AGE;
         
-        if (Date.now() - cached.timestamp > maxAge) { this.cache.delete(key),
+        if (Date.now() - cached.timestamp > maxAge) { this.cache.delete(key);
             this.cacheStatistics.totalMisses++,
-            this.updateCacheStatistics(),
+            this.updateCacheStatistics();
             return null }
 
         // アクセス統計の更新
@@ -606,7 +597,7 @@ export class LeaderboardStorageManager {
     /**
      * 期限切れキャッシュのクリア
      */
-    clearExpiredCache(): number { const now = Date.now(),
+    clearExpiredCache(): number { const now = Date.now();
         const defaultMaxAge = this.leaderboardManager.config.cacheMaxAge || DEFAULT_CACHE_MAX_AGE,
         const keysToDelete: string[] = [],
 
@@ -624,7 +615,7 @@ export class LeaderboardStorageManager {
         if (keysToDelete.length > 0) {
     
 }
-            console.log(`Cleared ${keysToDelete.length} expired, cache entries`});
+            console.log(`Cleared ${keysToDelete.length} expired, cache entries`};
         }
         
         this.lastCacheCleanup = now;
@@ -653,7 +644,7 @@ export class LeaderboardStorageManager {
         toDelete.forEach(([key]) => this.cache.delete(key);
         
         console.log(`Limited cache size: removed ${ toDelete.length} oldest entries`} }
-        this.updateCacheStatistics(});
+        this.updateCacheStatistics(};
         
         return toDelete.length;
     }
@@ -669,7 +660,7 @@ export class LeaderboardStorageManager {
             dataSize,
             cacheSize,
             cacheEntries: this.cache.size,
-    lastCacheCleanup: this.lastCacheCleanup };
+    lastCacheCleanup: this.lastCacheCleanup },
             memoryPressure: calculateMemoryPressure(totalSize); 
     }
 
@@ -715,13 +706,11 @@ export class LeaderboardStorageManager {
     optimizeCache(): number { let optimizedCount = 0,
         
         // 期限切れエントリのクリア
-        optimizedCount += this.clearExpiredCache(),
-        
+        optimizedCount += this.clearExpiredCache();
         // サイズ制限の適用
-        optimizedCount += this.limitCacheSize(),
-        
+        optimizedCount += this.limitCacheSize();
         // 使用頻度の低いエントリの削除
-        const now = Date.now(),
+        const now = Date.now();
         const keysToDelete: string[] = [],
         
         for(const [key, cached] of this.cache.entries() {
@@ -737,7 +726,7 @@ export class LeaderboardStorageManager {
         optimizedCount += keysToDelete.length;
         
         console.log(`Cache, optimized: removed ${ optimizedCount} total, entries`} }
-        this.updateCacheStatistics(});
+        this.updateCacheStatistics(};
         
         return optimizedCount;
     }
@@ -758,7 +747,7 @@ export class LeaderboardStorageManager {
      */
     private createOperationResult(;
         operation: StorageOperation,
-    success: boolean;
+    success: boolean,
         data?: any);
         startTime?: number);
         dataSize?: number';'
@@ -802,7 +791,7 @@ export class LeaderboardStorageManager {
      * クリーンアップ
      */
     destroy(): void { if (this.cleanupIntervalId) {
-            clearInterval(this.cleanupIntervalId),
+            clearInterval(this.cleanupIntervalId);
             this.cleanupIntervalId = null }
 
         this.clearAllCache()';'

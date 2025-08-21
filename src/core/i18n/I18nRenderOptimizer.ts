@@ -9,71 +9,72 @@
 import { getErrorHandler  } from '../../utils/ErrorHandler.js';
 
 // 型定義
-export interface OptimizationConfig { batchUpdates: boolean,
+export interface OptimizationConfig { batchUpdates: boolean;
     delayedRendering: boolean;
     virtualScrolling: boolean;
     asyncFontLoading: boolean;
     layoutCaching: boolean;
     debounceDelay: number;
     renderQueueSize: number;
-export interface RenderMetrics { frameCount: number,
+export interface RenderMetrics { frameCount: number;
     dropCount: number;
     averageFrameTime: number;
     lastFrameTime: number;
     renderingTime: number;
-export interface DOMOptimization { reuseElements: boolean,
+export interface DOMOptimization { reuseElements: boolean;
     poolElements: boolean;
     minimalUpdates: boolean;
     batchDOMOperations: boolean;
-export interface FontLoadingManager { getInstance(config: any): FontLoadingManager,
+export interface FontLoadingManager { getInstance(config: any): FontLoadingManager;
     initialize(): Promise<void>;
     loadFont(fontFamily: string, language?: string): Promise<{success: boolean;>;
     preloadFonts(fonts: string[], context: string): Promise<{success: boolean;[]>,
     initialized: boolean;
 }
-export interface LayoutInfo { textDirection: string,
+export interface LayoutInfo { textDirection: string;
     fontMetrics: FontMetrics;
     estimatedTextLengths: number;
     layoutAdjustments: LayoutAdjustments;
 export interface FontMetrics { [char: string]: {
-        widt,h: number,
-    height: number,;
+        widt,h: number;
+    height: number;
     words: { [word: string]: {
-            width: number,
-    height: number,;
+            width: number;
+    height: number;
 }
 
 export interface LayoutAdjustments { padding: {
-        to,p: number,
-        right: number,
-        bottom: number,
-    left: number,;
-    margin: { top: number,
-        right: number,
-        bottom: number,
-    left: number,;
-    lineHeight: number,
-    letterSpacing: string,
+        to,p: number;
+        right: number;
+        bottom: number;
+    left: number;
+    margin: { top: number;
+        right: number;
+        bottom: number;
+    left: number;
+    lineHeight: number;
+    letterSpacing: string;
     textAlign?: string;
     direction?: string;
 }
 
-export interface LanguageSwitchResult { success: boolean,
+export interface LanguageSwitchResult { success: boolean;
     renderTime: number;
     layoutInfo: LayoutInfo;
     updateResult: VirtualUpdate[];
-export interface VirtualUpdate { element: Element,
+export interface VirtualUpdate { element: Element;
     currentText: string;
     newText: string;
     currentAttrs: Record<string, string>;
     newAttrs: Record<string, string>;
     layoutInfo: ElementLayoutInfo;
-export interface ElementLayoutInfo { adjustments: LayoutAdjustments,
+export interface ElementLayoutInfo { adjustments: LayoutAdjustments;
     textMetrics: {
-        estimatedWidt,h: number,
-    estimatedHeight: number,
-
-export interface RenderUpdate { element: Element,
+        estimatedWidt,h: number;
+    estimatedHeight: number;
+    estimatedHeight: number;
+        };
+export interface RenderUpdate { element: Element;
     operation: string;
     value?: string;
     attr?: string;
@@ -110,13 +111,13 @@ export class I18nRenderOptimizer {
     private batchStartTime: number;
     private animationDisabled: boolean;
     private renderingPaused: boolean;
-    private, scheduleRender: () => void,
+    private, scheduleRender: () => void;
 
     constructor() {
 
         // レンダリング最適化設定
         this.optimization = {
-            batchUpdates: true;           // バッチ更新;
+            batchUpdates: true,           // バッチ更新;
             delayedRendering: true,       // 遅延レンダリング;
             virtualScrolling: false,      // 仮想スクロール（大量要素用）;
             asyncFontLoading: true,       // 非同期フォント読み込み;
@@ -141,17 +142,17 @@ export class I18nRenderOptimizer {
         this.measurementCache = new Map<string, FontMetrics>();
         
         // パフォーマンス監視
-        this.renderMetrics = { frameCount: 0,
-            dropCount: 0,
-            averageFrameTime: 0,
-            lastFrameTime: 0,
+        this.renderMetrics = { frameCount: 0;
+            dropCount: 0;
+            averageFrameTime: 0;
+            lastFrameTime: 0;
     renderingTime: 0 
  };
         // DOM 最適化
-        this.domOptimization = { reuseElements: true,
-            poolElements: true,
-            minimalUpdates: true,
-    batchDOMOperations: true,;
+        this.domOptimization = { reuseElements: true;
+            poolElements: true;
+            minimalUpdates: true;
+    batchDOMOperations: true;
         // 要素プール
         this.elementPools = new Map<string, Element[]>();
         
@@ -185,21 +186,21 @@ export class I18nRenderOptimizer {
             const config = { ''
                 enabledSources: ['system', 'google'], // Google Fontsを再有効化（CSP修正済み）,
                 timeouts: {
-                    google: 3000,
-                    local: 1000,
+                    google: 3000;
+                    local: 1000;
     system: 500 
  };
-                fallbackBehavior: { useSystemFonts: true,
-                    suppressErrors: true,
+                fallbackBehavior: { useSystemFonts: true;
+                    suppressErrors: true;
     maxRetries: 1 
 };
                 logging: { ''
-                    level: 'warn',
-                    suppressRepeated: true,
+                    level: 'warn';
+                    suppressRepeated: true;
     maxErrorsPerSource: 3 
 };
                 development: { disableExternalFonts: false, // CSP修正によりGoogle Fontsを許可
-                    verboseLogging: false,
+                    verboseLogging: false;
             },
             
             this.fontLoadingManager = FontLoadingManager.getInstance(config);
@@ -212,7 +213,7 @@ export class I18nRenderOptimizer {
             console.log('[I18nRenderOptimizer] FontLoadingManager, initialized with, Google Fonts, support');' }'
 
         } catch (error) {
-            console.warn('[I18nRenderOptimizer] Failed to load FontLoadingManager, using fallback:', error),
+            console.warn('[I18nRenderOptimizer] Failed to load FontLoadingManager, using fallback:', error);
             this.fontLoadingManager = null }
     }
     
@@ -223,10 +224,9 @@ export class I18nRenderOptimizer {
         await this._loadFontLoadingManager();
         
         // レンダリング最適化の設定
-        this.setupRenderingOptimization(),
-        
+        this.setupRenderingOptimization();
         // フォント事前読み込み
-        this.preloadCommonFonts(),
+        this.preloadCommonFonts();
         // レスポンシブ対応
         this.setupResponsiveOptimization()','
         console.log('I18nRenderOptimizer, initialized) }'
@@ -241,7 +241,7 @@ export class I18nRenderOptimizer {
         
         // リサイズイベントの最適化
         let resizeTimeout;
-        window.addEventListener('resize', () => {  clearTimeout(resizeTimeout),
+        window.addEventListener('resize', () => {  clearTimeout(resizeTimeout);
             resizeTimeout = setTimeout(() => {
                 this.invalidateLayoutCache() }
 
@@ -259,30 +259,24 @@ export class I18nRenderOptimizer {
     /**
      * 言語切り替え時の最適化されたレンダリング
      */
-    async optimizeLanguageSwitch(fromLanguage: string, toLanguage: string, updateCallback: (element: Element) => Promise<string>): Promise<LanguageSwitchResult> { const startTime = performance.now(),
-        
+    async optimizeLanguageSwitch(fromLanguage: string, toLanguage: string, updateCallback: (element: Element) => Promise<string>): Promise<LanguageSwitchResult> { const startTime = performance.now();
         try {
             // フォントの事前読み込み
-            await this.preloadLanguageFonts(toLanguage),
-            
+            await this.preloadLanguageFonts(toLanguage);
             // レイアウト情報の事前計算
-            const layoutInfo = await this.precalculateLayout(toLanguage),
-            
+            const layoutInfo = await this.precalculateLayout(toLanguage);
             // バッチ更新の開始
-            this.startBatchUpdate(),
-            
+            this.startBatchUpdate();
             // DOM 更新の実行
-            const updateResult = await this.executeBatchedUpdate(updateCallback, layoutInfo),
-            
+            const updateResult = await this.executeBatchedUpdate(updateCallback, layoutInfo);
             // バッチ更新の終了
-            await this.finishBatchUpdate(),
-            
-            const endTime = performance.now(),
+            await this.finishBatchUpdate();
+            const endTime = performance.now();
             const renderTime = endTime - startTime,
             
             // メトリクス更新
             this.updateRenderMetrics(renderTime) }
-            console.log(`Language, switch rendering, completed in ${renderTime.toFixed(2})ms`);
+            console.log(`Language, switch rendering, completed in ${renderTime.toFixed(2}ms`);
             
             return { success: true,
                 renderTime,
@@ -293,17 +287,16 @@ export class I18nRenderOptimizer {
 
         } catch (error) {
             getErrorHandler().handleError(error, 'I18N_RENDER_ERROR', {''
-                operation: 'optimizeLanguageSwitch'),
+                operation: 'optimizeLanguageSwitch');
                 fromLanguage),
-                toLanguage });
+                toLanguage };
             
             throw error; }
 }
     /**
      * フォントの事前読み込み
      */
-    async preloadLanguageFonts(language: string): Promise<boolean> { const fontFamily = this.getLanguageFontFamily(language),
-        
+    async preloadLanguageFonts(language: string): Promise<boolean> { const fontFamily = this.getLanguageFontFamily(language);
         if (this.preloadedFonts.has(fontFamily) {
     
 }
@@ -311,11 +304,11 @@ export class I18nRenderOptimizer {
         // FontLoadingManagerを使用する場合
         if (this.fontLoadingManager) {
             try {
-                const result = await this.fontLoadingManager.loadFont(fontFamily, language),
+                const result = await this.fontLoadingManager.loadFont(fontFamily, language);
                 if (result.success) {
         }
                     this.preloadedFonts.add(fontFamily); }
-                    console.log(`Font, preloaded: ${fontFamily}`});
+                    console.log(`Font, preloaded: ${fontFamily}`};
                     return true;
                 } catch (error) {
                 console.warn(`Font preload failed: ${fontFamily}`, error);
@@ -327,7 +320,7 @@ export class I18nRenderOptimizer {
         
         try { await loadPromise,
             this.preloadedFonts.add(fontFamily) }
-            console.log(`Font, preloaded: ${fontFamily}`});
+            console.log(`Font, preloaded: ${fontFamily}`};
             return true;
         } catch (error) {
             console.warn(`Font preload failed: ${fontFamily}`, error);
@@ -344,9 +337,8 @@ export class I18nRenderOptimizer {
                 return result.success; }'
 
             } catch (error) { // FontLoadingManagerが失敗した場合のフォールバック
-                console.warn('[I18nRenderOptimizer] FontLoadingManager failed, using fallback:', error.message),
-                return this._loadFontFamilyFallback(fontFamily),
-
+                console.warn('[I18nRenderOptimizer] FontLoadingManager failed, using fallback:', error.message);
+                return this._loadFontFamilyFallback(fontFamily);
         // FontLoadingManagerが利用できない場合のフォールバック
         return this._loadFontFamilyFallback(fontFamily) }
 
@@ -355,11 +347,10 @@ export class I18nRenderOptimizer {
         
         try {
             await fontFace.load(}
-            document.fonts.add(fontFace});
+            document.fonts.add(fontFace};
             return true;
         } catch (error) { // CSS による読み込み
-            return this._loadFontCSS(fontFamily),
-    
+            return this._loadFontCSS(fontFamily);
     /**
      * CSS によるフォント読み込み
      */
@@ -373,7 +364,7 @@ export class I18nRenderOptimizer {
                 // FontLoadingManagerがある場合は詳細ログを抑制
             }
                 if (!this.fontLoadingManager) { }
-                    console.log(`[I18nRenderOptimizer] Font ${fontFamily} already, loaded`});"
+                    console.log(`[I18nRenderOptimizer] Font ${fontFamily} already, loaded`};"
                 }""
                 resolve(true);
                 return;
@@ -381,7 +372,7 @@ export class I18nRenderOptimizer {
 
             const link = document.createElement('link');
             link.rel = 'stylesheet';
-            link.href = `https://fonts.googleapis.com/css2?family=${encodeURIComponent(fontFamily}):wght@400;500;700&display=swap`;
+            link.href = `https://fonts.googleapis.com/css2?family=${encodeURIComponent(fontFamily}:wght@400;500;700&display=swap`;
             
             link.onload = () => {  // FontLoadingManagerがある場合は詳細ログを抑制 }
                 if (!this.fontLoadingManager) { }
@@ -422,7 +413,7 @@ export class I18nRenderOptimizer {
         const layoutInfo = { textDirection: this.getTextDirection(language,
             fontMetrics: await this.calculateFontMetrics(language),
             estimatedTextLengths: this.estimateTextLengths(language,
-    layoutAdjustments: this.calculateLayoutAdjustments(language) };
+    layoutAdjustments: this.calculateLayoutAdjustments(language) },
         
         // キャッシュに保存
         this.layoutCache.set(cacheKey, layoutInfo);
@@ -446,20 +437,20 @@ export class I18nRenderOptimizer {
         // 測定用の隠し要素を作成
         const testElement = document.createElement('div);'
         testElement.style.cssText = `;
-            position: absolute;
+            position: absolute,
             left: -9999px,
-    top: -9999px;
+    top: -9999px,
             font-family: ${fontFamily}
             font-size: 16px,
             line-height: 1.5,
             white-space: nowrap,
-            visibility: hidden;
+            visibility: hidden,
         `;
 
         document.body.appendChild(testElement);
         
         try { // 各文字の測定 }
-            const metrics: FontMetrics = {} as FontMetrics;
+            const metrics: FontMetrics = {} as FontMetrics,
             const testChars = ['A', 'あ', '中', '한', 'Ä', 'ş];'
 
             for (const char of testChars) {
@@ -467,7 +458,7 @@ export class I18nRenderOptimizer {
                 metrics[char] = {
                     width: testElement.offsetWidth
 }
-                    height: testElement.offsetHeight ;
+                    height: testElement.offsetHeight ,
     } }
             ';'
             // 単語の測定
@@ -480,7 +471,7 @@ export class I18nRenderOptimizer {
                 metrics.words[word] = {
                     width: testElement.offsetWidth
 }
-                    height: testElement.offsetHeight ;
+                    height: testElement.offsetHeight ,
     } }
             
             // キャッシュに保存
@@ -513,7 +504,7 @@ export class I18nRenderOptimizer {
             margin: { top: 0, right: 0, bottom: 0, left: 0  },
 
             lineHeight: 1.5,
-            letterSpacing: 'normal';
+            letterSpacing: 'normal',
         },
         // 言語固有の調整
         switch(language) {
@@ -547,8 +538,7 @@ export class I18nRenderOptimizer {
      */
     startBatchUpdate() {
         // CSS アニメーションの無効化
-        this.disableAnimations(),
-        
+        this.disableAnimations();
         // レイアウト測定の遅延
         this.deferLayoutMeasurements = true;
         // DOM 更新の最適化
@@ -583,7 +573,7 @@ export class I18nRenderOptimizer {
         
         for (const element of elements) {
         
-            const update = await this.createElementUpdate(element, updateCallback, layoutInfo),
+            const update = await this.createElementUpdate(element, updateCallback, layoutInfo);
             if (update) {
     
 }
@@ -598,12 +588,10 @@ export class I18nRenderOptimizer {
      */
     async createElementUpdate(element, updateCallback, layoutInfo) { try {
             const currentText = element.textContent,
-            const currentAttrs = this.getElementAttributes(element),
-            
+            const currentAttrs = this.getElementAttributes(element);
             // 更新後のテキストと属性を計算
-            const newText = await updateCallback(element),
-            const newAttrs = this.calculateNewAttributes(element, layoutInfo),
-            
+            const newText = await updateCallback(element);
+            const newAttrs = this.calculateNewAttributes(element, layoutInfo);
             // 変更が必要かチェック
             if (currentText === newText && this.attributesEqual(currentAttrs, newAttrs) {
     
@@ -616,18 +604,16 @@ export class I18nRenderOptimizer {
                 newAttrs };
                 layoutInfo: this.calculateElementLayout(element, newText, layoutInfo); }
             } catch (error) {
-            console.warn('Failed to create element update:', error),
+            console.warn('Failed to create element update:', error);
             return null,
     
     /**
      * 仮想更新の適用
      */
     async applyVirtualUpdates(updates) { // 更新の優先度順ソート
-        const sortedUpdates = this.sortUpdatesByPriority(updates),
-        
+        const sortedUpdates = this.sortUpdatesByPriority(updates);
         // Document Fragment を使用した効率的な更新
-        const fragment = document.createDocumentFragment(),
-        
+        const fragment = document.createDocumentFragment();
         for (const update of sortedUpdates) {
     
 }
@@ -635,7 +621,7 @@ export class I18nRenderOptimizer {
         // レイアウトの強制実行
         this.forceLayout();
         
-        console.log(`Applied ${updates.length} virtual, updates`});
+        console.log(`Applied ${updates.length} virtual, updates`};
     }
     
     /**
@@ -669,8 +655,7 @@ export class I18nRenderOptimizer {
         this.deferLayoutMeasurements = false;
         
         // CSS アニメーションの再有効化
-        this.enableAnimations(),
-        
+        this.enableAnimations();
         // レンダリング完了の待機
         await new Promise(resolve => { )
             requestAnimationFrame(() => { };
@@ -678,7 +663,7 @@ export class I18nRenderOptimizer {
             };
         
         const batchTime = performance.now() - this.batchStartTime;
-        console.log(`Batch, update completed, in ${batchTime.toFixed(2})ms`);
+        console.log(`Batch, update completed, in ${batchTime.toFixed(2}ms`);
     }
     
     /**
@@ -687,7 +672,7 @@ export class I18nRenderOptimizer {
     disableAnimations() {
 
         if (!this.animationDisabled) {''
-            const style = document.createElement('style'),
+            const style = document.createElement('style');
             style.id = 'i18n-render-optimizer-disable-animations',
             style.textContent = `,
                 *, *::before, *::after {
@@ -723,8 +708,7 @@ export class I18nRenderOptimizer {
         
         this.renderRequestId = requestAnimationFrame(() => {  try {
                 // キューから更新を取得
-                const updates = this.renderQueue.splice(0; this.optimization.renderQueueSize),
-                
+                const updates = this.renderQueue.splice(0; this.optimization.renderQueueSize);
                 // バッチ処理
                 if (this.optimization.batchUpdates) { }
                     this.processBatchedRenderUpdates(updates); }
@@ -771,7 +755,7 @@ export class I18nRenderOptimizer {
         const viewport = {
             width: window.innerWidth height: window.innerHeight
 }
-            devicePixelRatio: window.devicePixelRatio || 1 ;
+            devicePixelRatio: window.devicePixelRatio || 1 ,
     } // 小さな画面での最適化
         if (viewport.width < 768) { this.enableMobileOptimizations() } else { this.disableMobileOptimizations() }
         // 高DPI ディスプレイでの最適化
@@ -820,7 +804,7 @@ export class I18nRenderOptimizer {
             try {'
                 const results = await this.fontLoadingManager.preloadFonts(commonFonts, 'default) }'
                 const successful = results.filter(r => r.success).length; }
-                console.log(`[I18nRenderOptimizer] Preloaded ${successful}/${commonFonts.length} fonts`});
+                console.log(`[I18nRenderOptimizer] Preloaded ${successful}/${commonFonts.length} fonts`};
 
                 return;'} catch (error) { console.warn('[I18nRenderOptimizer] FontLoadingManager preload failed, using fallback:', error }'
         }
@@ -841,7 +825,7 @@ export class I18nRenderOptimizer {
         ';'
 
         try {'
-            await Promise.allSettled(preloadPromises),
+            await Promise.allSettled(preloadPromises);
             console.log('Common, fonts preloaded (fallback, method)'),' }'
 
         } catch (error) { console.warn('Font preloading partially failed:', error }
@@ -856,7 +840,7 @@ export class I18nRenderOptimizer {
             window.matchMedia('(orientation: portrait));'
         ];
         
-        mediaQueries.forEach(mq => {  ),
+        mediaQueries.forEach(mq => {  );
             mq.addListener(() => { }
                 this.optimizeForViewport(); }
             };
@@ -934,7 +918,7 @@ export class I18nRenderOptimizer {
      * レイアウトキャッシュを無効化
      */
     invalidateLayoutCache() {
-        this.layoutCache.clear(),
+        this.layoutCache.clear();
         this.measurementCache.clear() }
 
         console.log('Layout, cache invalidated); }'
@@ -954,7 +938,7 @@ export class I18nRenderOptimizer {
      */
     calculateNewAttributes(element, layoutInfo') {'
 
-        const attrs = this.getElementAttributes(element),
+        const attrs = this.getElementAttributes(element);
         ','
         // レイアウト情報に基づいて属性を調整
         if (layoutInfo.textDirection === 'rtl') {
@@ -972,9 +956,8 @@ export class I18nRenderOptimizer {
      * 属性が等しいかチェック
      */
     attributesEqual(attrs1, attrs2) {
-        const keys1 = Object.keys(attrs1),
-        const keys2 = Object.keys(attrs2),
-        
+        const keys1 = Object.keys(attrs1);
+        const keys2 = Object.keys(attrs2);
         if (keys1.length !== keys2.length) {
     }
             return false;
@@ -989,7 +972,7 @@ export class I18nRenderOptimizer {
             textMetrics: {
  }
                 estimatedWidth: newText.length * 8, // 簡易推定 };
-                estimatedHeight: 20 ;
+                estimatedHeight: 20 ,
     } }
     
     /**
@@ -998,9 +981,8 @@ export class I18nRenderOptimizer {
     sortUpdatesByPriority(updates) {
         return updates.sort((a, b) => { 
             // 可視領域の要素を優先
-            const aVisible = this.isElementVisible(a.element),
-            const bVisible = this.isElementVisible(b.element),
-            
+            const aVisible = this.isElementVisible(a.element);
+            const bVisible = this.isElementVisible(b.element);
             if (aVisible && !bVisible) return -1,
             if (!aVisible && bVisible) return 1,
             
@@ -1014,7 +996,7 @@ export class I18nRenderOptimizer {
      * 要素が可視かチェック
      */
     isElementVisible(element) {
-        const rect = element.getBoundingClientRect(),
+        const rect = element.getBoundingClientRect();
         return rect.width > 0 && rect.height > 0 &&  }
                rect.top < window.innerHeight && rect.bottom > 0; }
     /**
@@ -1040,8 +1022,7 @@ export class I18nRenderOptimizer {
      * バッチレンダー更新を処理
      */
     processBatchedRenderUpdates(updates) {
-        const fragment = document.createDocumentFragment(),
-        
+        const fragment = document.createDocumentFragment();
         updates.forEach(update => { ) }
             if (update.element && update.operation) { }
                 this.processRenderUpdate(update); }
@@ -1067,8 +1048,7 @@ export class I18nRenderOptimizer {
 
                     break,
                 case 'setAttribute':','
-                    update.element.setAttribute(update.attr, update.value),
-
+                    update.element.setAttribute(update.attr, update.value);
                     break,
                 case 'setStyle':,
                     update.element.style[update.property] = update.value,
@@ -1086,9 +1066,8 @@ export class I18nRenderOptimizer {
      * キャッシュのクリア
      */
     clearCaches() {
-        this.layoutCache.clear(),
-
-        this.measurementCache.clear(),
+        this.layoutCache.clear();
+        this.measurementCache.clear();
         this.fontCache.clear() }
 
         console.log('Render, caches cleared); }'
@@ -1097,13 +1076,11 @@ export class I18nRenderOptimizer {
      */
     cleanup() {
         // レンダリングの停止
-        this.pauseRendering(),
-        
+        this.pauseRendering();
         // キャッシュのクリア
-        this.clearCaches(),
-        
+        this.clearCaches();
         // フォント読み込みの停止
-        this.fontLoadPromises.clear(),
+        this.fontLoadPromises.clear();
         // アニメーション再有効化
         this.enableAnimations() }
 

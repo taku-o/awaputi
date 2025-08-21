@@ -18,7 +18,7 @@ import type { BubbleManager as IBubbleManager,
 
 } from '../types/game';
 
-export class BubbleManager implements IBubbleManager { public gameEngine: any,
+export class BubbleManager implements IBubbleManager { public gameEngine: any;
     public bubbles: Bubble[] = [];
     public spawner: BubbleSpawner;
     public physicsEngine: BubblePhysicsEngine;
@@ -53,11 +53,10 @@ export class BubbleManager implements IBubbleManager { public gameEngine: any,
      * 泡を生成
      */''
     spawnBubble(type: string | null = null, position: Position | null = null): Bubble | null { ''
-        console.log('[DEBUG] BubbleManager.spawnBubble 呼び出し開始'),
+        console.log('[DEBUG] BubbleManager.spawnBubble 呼び出し開始');
         console.log('[DEBUG] this.spawner:', !!this.spawner','
         console.log('[DEBUG] typeof this.spawner.spawnBubble:', typeof (this.spawner && this.spawner.spawnBubble)),
-        console.log('[DEBUG] type:', type, 'position:', position),
-
+        console.log('[DEBUG] type:', type, 'position:', position);
         if (!this.spawner) {
 
             console.error('[DEBUG] spawnerがnullです') }
@@ -100,27 +99,25 @@ export class BubbleManager implements IBubbleManager { public gameEngine: any,
      */
     update(deltaTime: number): void { // デバッグ情報（10秒間隔）
         if (!this.lastUpdateDebugTime || performance.now() - this.lastUpdateDebugTime > 10000) { }
-            console.log(`[DEBUG] BubbleManager.update: バブル数=${this.bubbles.length}, deltaTime=${deltaTime.toFixed(2})ms`);
+            console.log(`[DEBUG] BubbleManager.update: バブル数=${this.bubbles.length}, deltaTime=${deltaTime.toFixed(2}ms`);
             console.log(`[DEBUG] spawner=${!!this.spawner}, physicsEngine=${ !!this.physicsEngine}`}
-            this.lastUpdateDebugTime = performance.now(});
+            this.lastUpdateDebugTime = performance.now(};
         }
         
         // 自動生成チェック
         const shouldSpawn = this.spawner.updateSpawnTimer(deltaTime, this.bubbles.length);
         if (shouldSpawn) { console.log(`[DEBUG] Spawning bubble - current count: ${this.bubbles.length}`} }
-            this.spawnBubble(});
+            this.spawnBubble(};
         }
         
         // 泡の更新（統合された物理システム）
-        this.bubbles.forEach((bubble) => {  this.physicsEngine.updateBubble(bubble, deltaTime),
-            this.physicsEngine.handleOffscreenBubble(bubble, deltaTime, this.offscreenBubbles, this.offscreenTimer),
-            
+        this.bubbles.forEach((bubble) => {  this.physicsEngine.updateBubble(bubble, deltaTime);
+            this.physicsEngine.handleOffscreenBubble(bubble, deltaTime, this.offscreenBubbles, this.offscreenTimer);
             // 自動破裂チェック
-            this.effectProcessor.checkAutoBurst(bubble),
-            
+            this.effectProcessor.checkAutoBurst(bubble);
             // 基本更新 }
             bubble.update(deltaTime, this.physicsEngine.mousePosition); }
-        });
+        };
         
         // 削除予定の泡を除去とプール返却
         for(let, i = this.bubbles.length - 1; i >= 0; i--) {
@@ -130,7 +127,7 @@ export class BubbleManager implements IBubbleManager { public gameEngine: any,
                 
                 // 破裂した泡はダメージを与える
                 if (bubble.age >= bubble.maxAge} { }
-                    this.gameEngine.playerData.takeDamage(5});
+                    this.gameEngine.playerData.takeDamage(5};
                 }
                 
                 // プールに戻す
@@ -140,7 +137,7 @@ export class BubbleManager implements IBubbleManager { public gameEngine: any,
         }
         
         // 定期的なカリング処理（パフォーマンス最適化）
-        if (Date.now() - this.lastCullTime > this.cullInterval) { this.performCulling(),
+        if (Date.now() - this.lastCullTime > this.cullInterval) { this.performCulling();
             this.lastCullTime = Date.now() }
         
         // 画面外タイマーのクリーンアップ
@@ -150,7 +147,7 @@ export class BubbleManager implements IBubbleManager { public gameEngine: any,
     /**
      * パフォーマンス向上のためのカリング処理
      */
-    performCulling(): void { const performanceOptimizer = getPerformanceOptimizer(),
+    performCulling(): void { const performanceOptimizer = getPerformanceOptimizer();
         if (this.bubbles.length <= ((performanceOptimizer, as any).getMaxBubbles?.() || 100)) {
             return, // 制限内なのでカリング不要 }
         
@@ -158,8 +155,7 @@ export class BubbleManager implements IBubbleManager { public gameEngine: any,
         const bubblesWithPriority = this.bubbles.map((bubble, index) => ({
                 bubble
             index, : undefined
-            priority: this.calculateBubblePriority(bubble  });
-        
+            priority: this.calculateBubblePriority(bubble  };
         // 優先度順にソート（低い順）
         bubblesWithPriority.sort((a, b) => a.priority - b.priority);
         
@@ -174,7 +170,7 @@ export class BubbleManager implements IBubbleManager { public gameEngine: any,
             this.bubbles.splice(item.index, 1); }
         }
         
-        console.log(`Culled ${toRemove} bubbles, for performance`});
+        console.log(`Culled ${toRemove} bubbles, for performance`};
     }
     
     /**
@@ -215,7 +211,7 @@ export class BubbleManager implements IBubbleManager { public gameEngine: any,
     /**
      * 泡を描画
      */
-    render(context: CanvasRenderingContext2D): void { const performanceOptimizer = getPerformanceOptimizer(),
+    render(context: CanvasRenderingContext2D): void { const performanceOptimizer = getPerformanceOptimizer();
         const renderQuality = (performanceOptimizer, as any).getRenderQuality?.() || 'medium',
         
         // デバッグ情報を出力（5秒間隔）
@@ -225,7 +221,7 @@ export class BubbleManager implements IBubbleManager { public gameEngine: any,
     
 }
                 const bubble = this.bubbles[0] }
-                console.log(`[DEBUG] 最初の泡: type=${bubble.type}, position=(${(bubble, as any}).x}, ${(bubble, as, any}).y}), visible=${this.physicsEngine.isBubbleVisible(bubble})`);
+                console.log(`[DEBUG] 最初の泡: type=${bubble.type}, position=(${(bubble, as any}.x}, ${(bubble, as, any}.y}, visible=${this.physicsEngine.isBubbleVisible(bubble}`);
             }
             this.lastDebugTime = performance.now();
         }
@@ -234,24 +230,24 @@ export class BubbleManager implements IBubbleManager { public gameEngine: any,
         
         // 低品質モードでは一部の泡のみレンダリング
         if (renderQuality < 0.8) {
-            const step = Math.ceil(1 / renderQuality),
+            const step = Math.ceil(1 / renderQuality);
             this.bubbles.forEach((bubble, index) => { 
                 if (index % step === 0 && this.physicsEngine.isBubbleVisible(bubble) {
         }
                     bubble.render(context); }
                     renderedCount++; }
-});
+};
         } else {  // 高品質モードでは全ての可視泡をレンダリング
-            this.bubbles.forEach(bubble => { ),
+            this.bubbles.forEach(bubble => { );
                 if (this.physicsEngine.isBubbleVisible(bubble) { }
                     bubble.render(context); }
                     renderedCount++; }
-});
+};
         }
         
         // レンダリング統計
         if (!this.lastDebugTime || performance.now() - this.lastDebugTime > 5000) {
-            console.log(`[DEBUG] レンダリングした泡の数: ${renderedCount}/${this.bubbles.length}`});
+            console.log(`[DEBUG] レンダリングした泡の数: ${renderedCount}/${this.bubbles.length}`};
         }
         
         // ドラッグ軌跡の描画（デバッグ用、高品質モードのみ）
@@ -286,7 +282,7 @@ export class BubbleManager implements IBubbleManager { public gameEngine: any,
 
             if (Math.random() < (config.phaseChance || 0)') { }'
 
-                console.log('Phantom, bubble phased, through click!'});
+                console.log('Phantom, bubble phased, through click!'};
                 return false; // すり抜けた
             }
         }
@@ -341,7 +337,7 @@ export class BubbleManager implements IBubbleManager { public gameEngine: any,
     clearAllBubbles(): void { // すべての泡をプールに戻す
         this.bubbles.forEach(bubble => { ) }
             this.gameEngine.returnBubbleToPool(bubble); }
-        });
+        };
         this.bubbles = [];
         this.dragSystem.resetDrag();
         this.offscreenBubbles.clear();
@@ -357,8 +353,7 @@ export class BubbleManager implements IBubbleManager { public gameEngine: any,
     /**
      * アクティブな泡を取得
      */
-    getActiveBubbles(): Bubble[] { return this.bubbles.filter(bubble => bubble.isAlive),
-    
+    getActiveBubbles(): Bubble[] { return this.bubbles.filter(bubble => bubble.isAlive);
     /**
      * 特殊な泡の生成率を設定
      */
@@ -367,7 +362,7 @@ export class BubbleManager implements IBubbleManager { public gameEngine: any,
     /**
      * テスト用バブルの追加（デバッグツール用）
      */
-    addTestBubble(bubbleData: any): boolean { const bubble = this.spawner.addTestBubble(bubbleData),
+    addTestBubble(bubbleData: any): boolean { const bubble = this.spawner.addTestBubble(bubbleData);
         if (bubble) {
             this.bubbles.push(bubble) }
             return true;
@@ -413,13 +408,13 @@ export class BubbleManager implements IBubbleManager { public gameEngine: any,
     getTestBubbleInfo(): TestBubbleInfo { return { total: this.bubbles.length,
             byType: this.bubbles.reduce((acc: Record<string, number>, bubble) => {  }
                 acc[bubble.type] = (acc[bubble.type] || 0) + 1; }
-                return acc;, {}),
+                return acc;, {},
             positions: this.bubbles.map(bubble => ({ ),
                 id: (bubble, as any).id,
                 type: bubble.type,
                 x: bubble.position.x,
                 y: bubble.position.y,
-    health: bubble.health });
+    health: bubble.health },
         }
 
     // =======================

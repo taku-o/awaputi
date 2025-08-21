@@ -4,7 +4,7 @@
  */
 
 // Interfaces for compliance reporter
-interface ReporterConfig { enabled: boolean,
+interface ReporterConfig { enabled: boolean;
     generateDetailedReports: boolean;
     trackTrends: boolean;
     historyLimit: number;
@@ -12,27 +12,27 @@ interface ReporterConfig { enabled: boolean,
     exportFormats: string[];
     scoringWeights: ScoringWeights;
 
-interface ScoringWeights { perceivable: number,
+interface ScoringWeights { perceivable: number;
     operable: number;
     understandable: number;
     robust: number;
 
-interface ReportingState { lastReport: Report | null,
+interface ReportingState { lastReport: Report | null;
     history: Report[];
     trends: Trends;
     statistics: Statistics;
 
-interface Trends { weekly: any[],
+interface Trends { weekly: any[];
     monthly: any[];
     improvements: Improvement[];
     regressions: Regression[];
 
-interface Statistics { totalValidations: number,
+interface Statistics { totalValidations: number;
     averageScore: number;
     mostCommonIssues: Map<string, number>;
     fixedIssues: Map<string, number> }
 
-interface Report { id: string,
+interface Report { id: string;
     timestamp: number;
     type: string;
     score: ComplianceScore;
@@ -42,12 +42,12 @@ interface Report { id: string,
     recommendations: Recommendation[];
     metadata: ReportMetadata;
 
-interface ComplianceScore { raw: number,
+interface ComplianceScore { raw: number;
     adjusted: number;
     grade: string;
     penalty: number;
 
-interface ReportSummary { overallScore: number,
+interface ReportSummary { overallScore: number;
     grade: string;
     totalIssues: number;
     issuesByPriority: IssuesByPriority;
@@ -55,23 +55,23 @@ interface ReportSummary { overallScore: number,
     topIssues: TopIssue[];
     complianceLevel: string;
 
-interface IssuesByPriority { critical: number,
+interface IssuesByPriority { critical: number;
     high: number;
     medium: number;
     low: number;
 
-interface CategoryScore { score: number,
+interface CategoryScore { score: number;
     passed: number;
     failed: number;
     grade: string;
 
-interface TopIssue { guideline: string,
+interface TopIssue { guideline: string;
     count: number;
     severity: 'critical' | 'high' | 'medium' | 'low';
     examples: IssueExample[];
     suggestion?: string;
 
-interface IssueExample { issue: string,
+interface IssueExample { issue: string;
     element: string;
 
 interface ReportDetails { testResults: Record<string, TestResults>,
@@ -79,22 +79,22 @@ interface ReportDetails { testResults: Record<string, TestResults>,
     guidelineAnalysis: Record<string, GuidelineAnalysis>;
     elementAnalysis: ElementAnalysis[];
 
-interface TestResults { total: number,
+interface TestResults { total: number;
     passed: number;
     failed: number;
     tests: TestDetail[];
 
-interface TestDetail { guideline: string,
+interface TestDetail { guideline: string;
     test: string;
     passed: boolean;
     issues: number;
     warnings: number;
 
-interface IssueBreakdown { bySeverity: IssuesByPriority,
+interface IssueBreakdown { bySeverity: IssuesByPriority;
     byGuideline: Record<string, number>;
     byType: Record<string, number> }
 
-interface GuidelineAnalysis { name: string,
+interface GuidelineAnalysis { name: string;
     compliance: number;
     testCount: number;
     issueCount: number;
@@ -105,34 +105,34 @@ interface GuidelineRecommendation { ''
     priority: 'high' | 'medium' | 'low';
     action: string;
 
-interface ElementAnalysis { tag: string,
+interface ElementAnalysis { tag: string;
     count: number;
     issues: string[];
     severity: 'critical' | 'high' | 'medium' | 'low'
             }
 
-interface TrendAnalysis { scoreChange: ScoreChange | null,
+interface TrendAnalysis { scoreChange: ScoreChange | null;
     issueChange: IssueChange | null;
     improvements: Improvement[];
     regressions: Regression[];
     projection: TrendProjection | null }
 
-interface ScoreChange { absolute: number,
+interface ScoreChange { absolute: number;
     percentage: number;
     trend: 'improving' | 'declining' | 'stable'
             }
 
-interface IssueChange { absolute: number,
+interface IssueChange { absolute: number;
     percentage: number;
     trend: 'improving' | 'declining' | 'stable'
             }
 
-interface Improvement { category: string,
+interface Improvement { category: string;
     improvement: number;
     from: number;
     to: number;
 
-interface Regression { category: string,
+interface Regression { category: string;
     regression: number;
     from: number;
     to: number;
@@ -154,20 +154,20 @@ interface Recommendation { ''
     guidelines?: string[];
     actions?: CategoryAction[];
 
-interface CategoryAction { guideline: string,
+interface CategoryAction { guideline: string;
     action: string;
     count: number;
 
-interface ReportMetadata { wcagLevel: string,
+interface ReportMetadata { wcagLevel: string;
     validationDuration: number;
     totalTests: number;
     environment: EnvironmentInfo;
 
-interface EnvironmentInfo { userAgent: string,
+interface EnvironmentInfo { userAgent: string;
     viewport: {
-        widt,h: number,
-    height: number,;
-    timestamp: string,
+        widt,h: number;
+    height: number;
+    timestamp: string;
 }
 
 interface AuditResults { categories?: Record<string, CategoryResult>,
@@ -200,29 +200,29 @@ export class ComplianceReporter {
 
     constructor(config: Partial<ReporterConfig> = {)) {
         this.config = {
-            enabled: true,
-            generateDetailedReports: true,
-            trackTrends: true,
-    historyLimit: 50,
+            enabled: true;
+            generateDetailedReports: true;
+            trackTrends: true;
+    historyLimit: 50;
             trendThreshold: 5, // 5% change to trigger trend;
             exportFormats: ['json', 'html', 'csv'];
             scoringWeights: {
-                perceivable: 0.25,
-                operable: 0.25,
-                understandable: 0.25,
+                perceivable: 0.25;
+                operable: 0.25;
+                understandable: 0.25;
     robust: 0.25  };
             ...config;
 
         // Reporting state
-        this.reportingState = { lastReport: null,
-            history: [],
+        this.reportingState = { lastReport: null;
+            history: [];
     trends: {
-                weekly: [],
-                monthly: [],
-                improvements: [],
+                weekly: [];
+                monthly: [];
+                improvements: [];
     regressions: []  };
-            statistics: { totalValidations: 0,
-                averageScore: 0,
+            statistics: { totalValidations: 0;
+                averageScore: 0;
                 mostCommonIssues: new Map(
     fixedIssues: new Map( 
     }
@@ -235,18 +235,18 @@ export class ComplianceReporter {
         const format = options.format || 'json',
 
         const report: Report = {
-            id: this.generateReportId(),
+            id: this.generateReportId();
             timestamp: Date.now(
-    type: reportType,
-            score: this.calculateComplianceScore(auditResults,
-            summary: this.generateSummary(auditResults,
-            details: reportType === 'detailed' ? this.generateDetails(auditResults) : null,
-            trends: this.config.trackTrends ? this.analyzeTrends() : null,
-            recommendations: this.generateRecommendations(auditResults,
+    type: reportType;
+            score: this.calculateComplianceScore(auditResults;
+            summary: this.generateSummary(auditResults;
+            details: reportType === 'detailed' ? this.generateDetails(auditResults) : null;
+            trends: this.config.trackTrends ? this.analyzeTrends() : null;
+            recommendations: this.generateRecommendations(auditResults;
             metadata: {''
-                wcagLevel: auditResults.level || 'AA',
-                validationDuration: auditResults.duration || 0,
-                totalTests: this.countTotalTests(auditResults,
+                wcagLevel: auditResults.level || 'AA';
+                validationDuration: auditResults.duration || 0;
+                totalTests: this.countTotalTests(auditResults;
     environment: this.getEnvironmentInfo(  }
         };
 
@@ -265,7 +265,7 @@ export class ComplianceReporter {
     /**
      * Calculate overall compliance score
      */
-    private calculateComplianceScore(auditResults: AuditResults): ComplianceScore { const weights = this.config.scoringWeights,
+    private calculateComplianceScore(auditResults: AuditResults): ComplianceScore { const weights = this.config.scoringWeights;
         let weightedScore = 0,
         let totalWeight = 0,
 
@@ -280,16 +280,16 @@ export class ComplianceReporter {
         }
 
         // Normalize score
-        const overallScore = totalWeight > 0 ? weightedScore / totalWeight: 0,
+        const overallScore = totalWeight > 0 ? weightedScore / totalWeight: 0;
 
         // Apply penalties for critical issues
         const criticalPenalty = this.calculateCriticalPenalty(auditResults);
         const finalScore = Math.max(0, overallScore - criticalPenalty);
 
-        return { raw: overallScore,
-            adjusted: finalScore,
+        return { raw: overallScore;
+            adjusted: finalScore;
     grade: this.getScoreGrade(finalScore) };
-            penalty: criticalPenalty,
+            penalty: criticalPenalty;
 
     /**
      * Calculate penalty for critical issues
@@ -328,18 +328,18 @@ export class ComplianceReporter {
     private generateSummary(auditResults: AuditResults): ReportSummary { const score = this.calculateComplianceScore(auditResults) }
         const issues = auditResults.summary || {};
 
-        return { overallScore: score.adjusted,
-            grade: score.grade,
-            totalIssues: issues.totalIssues || 0,
+        return { overallScore: score.adjusted;
+            grade: score.grade;
+            totalIssues: issues.totalIssues || 0;
     issuesByPriority: {
-                critical: issues.criticalIssues || 0,
-                high: issues.highIssues || 0,
+                critical: issues.criticalIssues || 0;
+                high: issues.highIssues || 0;
     medium: issues.mediumIssues || 0 };
                 low: issues.lowIssues || 0 
     };
-            categoryScores: this.getCategoryScores(auditResults,
+            categoryScores: this.getCategoryScores(auditResults;
     topIssues: this.getTopIssues(auditResults, 5);
-            complianceLevel: this.determineComplianceLevel(score.adjusted),
+            complianceLevel: this.determineComplianceLevel(score.adjusted);
         }
 
     /**
@@ -352,8 +352,8 @@ export class ComplianceReporter {
         
             )) {
             scores[category] = {
-                score: results.score || 0,
-                passed: results.passed || 0,
+                score: results.score || 0;
+                passed: results.passed || 0;
     failed: results.failed || 0 }
                 grade: this.getScoreGrade(results.score || 0); 
     }
@@ -371,7 +371,7 @@ export class ComplianceReporter {
             for(const, issue of (category.issues || [])) {''
                 const key = issue.guideline || 'unknown',
                 const existing = issueMap.get(key) || {
-                    guideline: key,
+                    guideline: key;
                     count: 0;
                     severity: issue.severity || 'medium';
     examples: []  };
@@ -397,7 +397,7 @@ export class ComplianceReporter {
                 
                 // Then by count
                 return b.count - a.count;
-            });
+            };
         
         return sorted.slice(0, limit);
     }
@@ -425,7 +425,7 @@ export class ComplianceReporter {
         // Process each category
         for(const [categoryId, category] of Object.entries(auditResults.categories ||) {
             )) {
-            details.testResults[categoryId] = this.processTestResults(category),
+            details.testResults[categoryId] = this.processTestResults(category);
             details.issueBreakdown[categoryId] = this.processIssueBreakdown(category) }
             details.guidelineAnalysis[categoryId] = this.processGuidelineAnalysis(category); }
         }
@@ -440,9 +440,9 @@ export class ComplianceReporter {
      * Process test results for detailed report
      */
     private processTestResults(category: CategoryResult): TestResults { const results: TestResults = {
-            total: 0,
-            passed: 0,
-            failed: 0,
+            total: 0;
+            passed: 0;
+            failed: 0;
     tests: [] };
         for(const [guidelineId, guideline] of Object.entries(category.guidelines ||) {
 
@@ -455,9 +455,9 @@ export class ComplianceReporter {
                     results.passed++; }
                 } else { results.failed++ }
                 
-                results.tests.push({ guideline: guidelineId,
-                    test: testName),
-                    passed: test.passed,
+                results.tests.push({ guideline: guidelineId;
+                    test: testName);
+                    passed: test.passed;
     issues: test.issues?.length || 0, : undefined);
                     warnings: test.warnings?.length || 0  }
         }
@@ -480,7 +480,7 @@ export class ComplianceReporter {
             breakdown.byGuideline[guideline] = (breakdown.byGuideline[guideline] || 0) + 1,
             
             // By type
-            const type = this.getIssueType(issue),
+            const type = this.getIssueType(issue);
             breakdown.byType[type] = (breakdown.byType[type] || 0) + 1 }
 
         return breakdown;
@@ -496,11 +496,12 @@ export class ComplianceReporter {
 
             )) {
             analysis[guidelineId] = {
-                name: guideline.name,
-                compliance: this.calculateGuidelineCompliance(guideline,
+                name: guideline.name;
+                compliance: this.calculateGuidelineCompliance(guideline;
     testCount: Object.keys(guideline.tests || {).length;
                 issueCount: guideline.issues?.length || 0, : undefined
-        
+                issueCount: guideline.issues?.length || 0, : undefined
+        };
                 recommendations: this.getGuidelineRecommendations(guideline) }
             }
 
@@ -510,13 +511,13 @@ export class ComplianceReporter {
     /**
      * Calculate guideline compliance percentage
      */
-    private calculateGuidelineCompliance(guideline: any): number { const total = guideline.passed + guideline.failed,
+    private calculateGuidelineCompliance(guideline: any): number { const total = guideline.passed + guideline.failed;
         return total > 0 ? (guideline.passed / total) * 100 : 100 }
 
     /**
      * Get guideline-specific recommendations
      */
-    private getGuidelineRecommendations(guideline: any): GuidelineRecommendation[] { const recommendations: GuidelineRecommendation[] = [],
+    private getGuidelineRecommendations(guideline: any): GuidelineRecommendation[] { const recommendations: GuidelineRecommendation[] = [];
 
         if (guideline.failed > 0) {
             recommendations.push({ }''
@@ -572,9 +573,9 @@ export class ComplianceReporter {
      * Analyze trends
      */
     private analyzeTrends(): TrendAnalysis { const trends: TrendAnalysis = {
-            scoreChange: this.calculateScoreChange(),
-            issueChange: this.calculateIssueChange(),
-            improvements: this.identifyImprovements(),
+            scoreChange: this.calculateScoreChange();
+            issueChange: this.calculateIssueChange();
+            improvements: this.identifyImprovements();
             regressions: this.identifyRegressions(
     projection: this.projectFutureTrend( };
 
@@ -625,7 +626,7 @@ export class ComplianceReporter {
     /**
      * Identify improvements
      */
-    private identifyImprovements(): Improvement[] { const improvements: Improvement[] = [],
+    private identifyImprovements(): Improvement[] { const improvements: Improvement[] = [];
         const current = this.reportingState.lastReport,
         const previous = this.reportingState.history[this.reportingState.history.length - 2],
 
@@ -637,7 +638,7 @@ export class ComplianceReporter {
             if (previousScore && currentScore.score > previousScore.score + this.config.trendThreshold) {
                 improvements.push({
                     category,
-                    improvement: currentScore.score - previousScore.score,
+                    improvement: currentScore.score - previousScore.score;
     from: previousScore.score }
                     to: currentScore.score); 
     }
@@ -648,7 +649,7 @@ export class ComplianceReporter {
     /**
      * Identify regressions
      */
-    private identifyRegressions(): Regression[] { const regressions: Regression[] = [],
+    private identifyRegressions(): Regression[] { const regressions: Regression[] = [];
         const current = this.reportingState.lastReport,
         const previous = this.reportingState.history[this.reportingState.history.length - 2],
 
@@ -660,7 +661,7 @@ export class ComplianceReporter {
             if (previousScore && currentScore.score < previousScore.score - this.config.trendThreshold) {
                 regressions.push({
                     category,
-                    regression: previousScore.score - currentScore.score,
+                    regression: previousScore.score - currentScore.score;
     from: previousScore.score }
                     to: currentScore.score); 
     }
@@ -675,8 +676,8 @@ export class ComplianceReporter {
         if (history.length < 5) return null,
 
         // Calculate average rate of change
-        const recentScores = history.slice(-5).map(r => r.score.adjusted),
-        const changeRate = this.calculateAverageChangeRate(recentScores),
+        const recentScores = history.slice(-5).map(r => r.score.adjusted);
+        const changeRate = this.calculateAverageChangeRate(recentScores);
 ','
 
         return { nextScore: recentScores[recentScores.length - 1] + changeRate,''
@@ -688,7 +689,7 @@ export class ComplianceReporter {
     /**
      * Calculate average change rate
      */
-    private calculateAverageChangeRate(scores: number[]): number { if (scores.length < 2) return 0,
+    private calculateAverageChangeRate(scores: number[]): number { if (scores.length < 2) return 0;
         
         let totalChange = 0,
         for(let, i = 1, i < scores.length, i++) {
@@ -722,16 +723,16 @@ export class ComplianceReporter {
             recommendations.push({''
                 priority: 'critical',';'
                 category: 'immediate-action',')';
-                title: 'Address Critical Accessibility Barriers',
+                title: 'Address Critical Accessibility Barriers';
                 description: `Fix ${summary.criticalIssues'
             } critical issues blocking functionality`,''
-                impact: 'high',
+                impact: 'high';
         }
 
                 effort: 'varies',' }'
 
-                guidelines: this.getAffectedGuidelines(auditResults, 'critical'});
-            });
+                guidelines: this.getAffectedGuidelines(auditResults, 'critical'};
+            };
         }
 
         // Category-specific recommendations
@@ -739,7 +740,7 @@ export class ComplianceReporter {
             )) {''
             if (results.score && results.score < 80) {
                 recommendations.push({)'
-                    priority: results.score < 60 ? 'high' : 'medium'),
+                    priority: results.score < 60 ? 'high' : 'medium');
                     category: category' }'
 
                     title: `Improve ${category} accessibility`,' }'
@@ -748,7 +749,7 @@ export class ComplianceReporter {
                     impact: 'medium';
                     effort: 'medium';
     actions: this.getCategoryActions(results);
-                });
+                };
             }
         }
 
@@ -758,13 +759,13 @@ export class ComplianceReporter {
         return recommendations.sort((a, b) => {  }
             const priorityOrder: Record<string, number> = { critical: 0, high: 1, medium: 2, low: 3  }
             return priorityOrder[a.priority] - priorityOrder[b.priority];
-        });
+        };
     }
 
     /**
      * Get affected guidelines by severity
      */
-    private getAffectedGuidelines(auditResults: AuditResults, severity: string): string[] { const guidelines = new Set<string>(),
+    private getAffectedGuidelines(auditResults: AuditResults, severity: string): string[] { const guidelines = new Set<string>();
         
         for (const category of Object.values(auditResults.categories || {)) {
             for(const, issue of (category.issues || []) {
@@ -780,9 +781,8 @@ export class ComplianceReporter {
     /**
      * Get category-specific actions
      */
-    private getCategoryActions(categoryResults: CategoryResult): CategoryAction[] { const actions: CategoryAction[] = [],
-        const topIssues = this.getTopIssuesForCategory(categoryResults),
-
+    private getCategoryActions(categoryResults: CategoryResult): CategoryAction[] { const actions: CategoryAction[] = [];
+        const topIssues = this.getTopIssuesForCategory(categoryResults);
         for (const issue of topIssues) {
             actions.push({'
                 guideline: issue.guideline,';'
@@ -805,7 +805,7 @@ export class ComplianceReporter {
 
             const key = issue.guideline,
             const existing = issueMap.get(key) || {
-                guideline: key,
+                guideline: key;
                 count: 0;
                 severity: issue.severity || 'medium';
     suggestion: issue.suggestion }
@@ -823,13 +823,13 @@ export class ComplianceReporter {
     /**
      * Get process recommendations
      */
-    private getProcessRecommendations(auditResults: AuditResults): Recommendation[] { const recommendations: Recommendation[] = [],
+    private getProcessRecommendations(auditResults: AuditResults): Recommendation[] { const recommendations: Recommendation[] = [];
         // Testing recommendation
         if(!this.hasRegularTesting()) {
             recommendations.push({''
-                priority: 'medium',
-                category: 'process',
-                title: 'Implement Regular Accessibility Testing',
+                priority: 'medium';
+                category: 'process';
+                title: 'Implement Regular Accessibility Testing';
                 description: 'Set up automated and manual accessibility testing processes',';'
                 impact: 'high',')';
                 effort: 'medium'
@@ -837,9 +837,9 @@ export class ComplianceReporter {
         ';'
         // Training recommendation
         if(this.needsTraining(auditResults)) { recommendations.push({''
-                priority: 'medium',
-                category: 'training',
-                title: 'Accessibility Training',
+                priority: 'medium';
+                category: 'training';
+                title: 'Accessibility Training';
                 description: 'Provide accessibility training for development team',';'
                 impact: 'medium',')';
                 effort: 'low'
@@ -856,7 +856,7 @@ export class ComplianceReporter {
         
         // Check if tests are run at least weekly
         const oneWeek = 7 * 24 * 60 * 60 * 1000,
-        const gaps: number[] = [],
+        const gaps: number[] = [];
         
         for(let, i = 1, i < history.length, i++) {
     
@@ -871,7 +871,7 @@ export class ComplianceReporter {
      * Check if training is needed
      */
     private needsTraining(auditResults: AuditResults): boolean { // If same issues keep appearing, training might help
-        const recurringIssues = this.findRecurringIssues(),
+        const recurringIssues = this.findRecurringIssues();
         return recurringIssues.length > 5 }
 
     /**
@@ -894,13 +894,13 @@ export class ComplianceReporter {
     /**
      * Update statistics
      */ : undefined
-    private updateStatistics(auditResults: AuditResults): void { const stats = this.reportingState.statistics,
+    private updateStatistics(auditResults: AuditResults): void { const stats = this.reportingState.statistics;
         
         // Update total validations
         stats.totalValidations++,
         
         // Update average score
-        const allScores = this.reportingState.history.map(r => r.score.adjusted),
+        const allScores = this.reportingState.history.map(r => r.score.adjusted);
         stats.averageScore = allScores.reduce((a, b) => a + b, 0) / allScores.length,
         
         // Update most common issues
@@ -916,13 +916,13 @@ export class ComplianceReporter {
     /**
      * Format report for export
      */
-    private formatReport(report: Report, format: string): Report | string {,
+    private formatReport(report: Report, format: string): Report | string {;
         switch(format) {
 
             case 'html':','
-                return this.formatAsHTML(report),
+                return this.formatAsHTML(report);
             case 'csv':','
-                return this.formatAsCSV(report),
+                return this.formatAsCSV(report);
             case 'json': }
             default: return report;
 
@@ -978,7 +978,7 @@ export class ComplianceReporter {
      * Generate report ID
      */
     private generateReportId(): string {
-        return `wcag-report-${Date.now())-${Math.random().toString(36).substr(2, 9})`;
+        return `wcag-report-${Date.now())-${Math.random().toString(36).substr(2, 9}`;
     }
 
     /**
@@ -986,7 +986,7 @@ export class ComplianceReporter {
      */
     private getEnvironmentInfo(): EnvironmentInfo { return { userAgent: navigator.userAgent,
             viewport: {
-                width: window.innerWidth };
+                width: window.innerWidth },
                 height: window.innerHeight 
     };
             timestamp: new Date().toISOString();
@@ -1035,12 +1035,12 @@ export class ComplianceReporter {
      * Export report'
      */''
     exportReport(report: Report, format: string = 'json): void {,'
-        const formatted = this.formatReport(report, format),
+        const formatted = this.formatReport(report, format);
         const content = typeof formatted === 'string' ? formatted: JSON.stringify(formatted,
         const blob = new Blob([content], { ''
             type: format === 'json' ? 'application/json' : 'text/plain )),'
 
-        const url = URL.createObjectURL(blob),
+        const url = URL.createObjectURL(blob);
         const a = document.createElement('a),'
         a.href = url }
         a.download = `wcag-report-${report.id}.${format}`;
@@ -1052,7 +1052,6 @@ export class ComplianceReporter {
     /**
      * Destroy and cleanup
      */
-    destroy(): void { this.clearHistory(),
-
-        this.reportingState.statistics.mostCommonIssues.clear(),
+    destroy(): void { this.clearHistory();
+        this.reportingState.statistics.mostCommonIssues.clear();
         this.reportingState.statistics.fixedIssues.clear(' }'

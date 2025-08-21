@@ -1,16 +1,16 @@
 import { BaseComponent  } from '../BaseComponent.js';
 
 // Type definitions
-interface FailurePattern { name: string,
+interface FailurePattern { name: string;
     keywords: string[];
     category: string;
     severity: 'low' | 'medium' | 'high' | 'critical';
     description: string;
 
-interface IdentifiedPattern extends FailurePattern { id: string,
+interface IdentifiedPattern extends FailurePattern { id: string;
     confidence: number;
 
-interface PatternStatistics { totalPatterns: number,
+interface PatternStatistics { totalPatterns: number;
     patternsByCategory: Record<string, number>;
     patternsBySeverity: Record<string, number> }
 
@@ -39,14 +39,16 @@ export class FailurePatternAnalyzer extends BaseComponent { private failurePatte
             category: 'runtime_error',','
             severity: 'high',')',
             description: 'オブジェクトまたはプロパティがnullまたはundefinedです')','
-
+            description: 'オブジェクトまたはプロパティがnullまたはundefinedです')','
+        };
         this.failurePatterns.set('type_error', {''
             name: 'Type Error',
             keywords: ['is not a function', 'is not a constructor', 'type error],'
             category: 'type_error',','
             severity: 'high',')',
             description: '型の不一致またはメソッドの呼び出しエラーです')','
-
+            description: '型の不一致またはメソッドの呼び出しエラーです')','
+        };
         this.failurePatterns.set('assertion_failure', {''
             name: 'Assertion Failure',
             keywords: ['expected', 'to equal', 'to be', 'assertion failed],'
@@ -62,28 +64,32 @@ export class FailurePatternAnalyzer extends BaseComponent { private failurePatte
             category: 'performance',','
             severity: 'medium',')',
             description: 'テストの実行時間が制限を超えました')','
-
+            description: 'テストの実行時間が制限を超えました')','
+        };
         this.failurePatterns.set('async_error', {''
             name: 'Async Operation Error',
             keywords: ['promise', 'async', 'await', 'callback'],
             category: 'async',','
             severity: 'medium',')',
             description: '非同期処理に関連するエラーです')','
-
+            description: '非同期処理に関連するエラーです')','
+        };
         this.failurePatterns.set('memory_error', {''
             name: 'Memory Error',
             keywords: ['out of memory', 'heap', 'stack overflow],'
             category: 'memory',','
             severity: 'high',')',
             description: 'メモリ関連のエラーです')','
-
+            description: 'メモリ関連のエラーです')','
+        };
         this.failurePatterns.set('network_error', {''
             name: 'Network Error',
             keywords: ['network', 'fetch', 'xhr', 'cors', 'connection'],
             category: 'network',','
             severity: 'medium',')',
             description: 'ネットワーク通信に関連するエラーです')','
-
+            description: 'ネットワーク通信に関連するエラーです')','
+        };
         this.failurePatterns.set('configuration_error', {''
             name: 'Configuration Error',
             keywords: ['config', 'configuration', 'settings', 'invalid parameter],'
@@ -107,7 +113,7 @@ export class FailurePatternAnalyzer extends BaseComponent { private failurePatte
 
         for(const [patternId, pattern] of this.failurePatterns) {
 
-            const confidence = this.calculatePatternConfidence(errorText, pattern.keywords),
+            const confidence = this.calculatePatternConfidence(errorText, pattern.keywords);
             if (confidence > highestConfidence) {
     
 }
@@ -152,8 +158,8 @@ export class FailurePatternAnalyzer extends BaseComponent { private failurePatte
      */
     getPatternStatistics(): PatternStatistics { const stats: PatternStatistics = {
             totalPatterns: this.failurePatterns.size }
-            patternsByCategory: {};
-            patternsBySeverity: {};
+            patternsByCategory: {},
+            patternsBySeverity: {},
         for (const pattern of this.failurePatterns.values() {
 
             // カテゴリ別統計
@@ -175,5 +181,5 @@ export class FailurePatternAnalyzer extends BaseComponent { private failurePatte
     /**
      * クリーンアップ
      */
-    cleanup(): void { this.failurePatterns.clear(),
+    cleanup(): void { this.failurePatterns.clear();
         super.cleanup(' }'

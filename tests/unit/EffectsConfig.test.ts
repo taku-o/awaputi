@@ -9,72 +9,72 @@ interface MockConfigManager {
     setValidationRule: jest.Mock<(categor,y: string, key: string, rule => void>);
     getCategory: jest.Mock<() => Record<string, any>> }
 interface MockGetCall {
-    category: string,
+    category: string;
     key: string;
     defaultValue: any;
 interface ParticleConfig {
-    maxCount: number,
+    maxCount: number;
     poolSize: number;
     quality: number;
     enabled: boolean;
     bubble: {
-        coun,t: number,
-        size: number,
-        speed: number,
+        coun,t: number;
+        size: number;
+        speed: number;
         life: number,,
     star: {
-        count: number,
-        size: number,
-        speed: number,
+        count: number;
+        size: number;
+        speed: number;
         life: number,,
     explosion: {
-        count: number,
-        size: number,
-        speed: number,
-        life: number,;
+        count: number;
+        size: number;
+        speed: number;
+        life: number;
 }
 interface ScreenEffectConfig {
-    shakeIntensity: number,
+    shakeIntensity: number;
     flashDuration: number;
     zoomSensitivity: number;
     enabled: boolean;
     shake: {
-        intensit,y: number,
-        duration: number,
+        intensit,y: number;
+        duration: number;
         damping: number,,
     flash: {
-        intensity: number,
+        intensity: number;
         duration: number,,
     zoom: {
-        min: number,
-        max: number,
+        min: number;
+        max: number;
         speed: number,,
     tint: {
-        intensity: number,
-        duration: number,;
+        intensity: number;
+        duration: number;
 }
 interface AnimationConfig {
-    duration: number,
+    duration: number;
     easing: string;
     enabled: boolean;
     pop: {
-        duratio,n: number,
-        scale: number,
+        duratio,n: number;
+        scale: number;
         easing: string,,
     fade: {
-        duration: number,
+        duration: number;
         easing: string,,
     slide: {
-        duration: number,
-        distance: number,
+        duration: number;
+        distance: number;
         easing: string,,
     bounce: {
-        duration: number,
-        height: number,
-        easing: string,;
+        duration: number;
+        height: number;
+        easing: string;
 }
 interface MockParticleManager {
-    maxParticles: number,
+    maxParticles: number;
     poolSize: number;
     particlePool: any[];
     initializePool: () => void;
@@ -84,11 +84,11 @@ interface MockEffectManager {
 }
 // モックの設定
 let mockGetCalls: MockGetCall[] = [],
-const mockGet = jest.fn((category: string, key: string, defaultValue => {),
-    mockGetCalls.push({ category, key, defaultValue ),
+const mockGet = jest.fn((category: string, key: string, defaultValue => {);
+    mockGetCalls.push({ category, key, defaultValue );
     // 戻り値は各テストで設定
-    return defaultValue });
-const mockSet = jest.fn((category: string, key: string, value: boolean => {),
+    return defaultValue };
+const mockSet = jest.fn((category: string, key: string, value: boolean => {);
     return true) });
 const mockSetValidationRule = jest.fn();
 const mockGetCategory = jest.fn(() => ({)),
@@ -108,12 +108,12 @@ class TestEffectsConfig {
     // 実装は元のEffectsConfigと同じメソッドをコピーしてテスト用に作成
     private _initialize(): void {
         try {
-            this._initializeParticleConfig(),
-            this._initializeScreenEffectConfig(),
-            this._initializeAnimationConfig(),
+            this._initializeParticleConfig();
+            this._initializeScreenEffectConfig();
+            this._initializeAnimationConfig();
             this._setupValidationRules()) catch (error) {
             // エラーハンドリングもモック化
-            });
+            };
     }
     private _initializeParticleConfig('): void {'
         this.configManager.set('effects', 'particles.maxCount', 500'),'
@@ -149,16 +149,16 @@ class TestEffectsConfig {
         this.configManager.set('effects', 'screen.tint.duration', 500) }
     private _initializeAnimationConfig('): void {'
         this.configManager.set('effects', 'animations.duration', 300'),'
-        this.configManager.set('effects', 'animations.easing', 'easeOut'),
+        this.configManager.set('effects', 'animations.easing', 'easeOut');
         this.configManager.set('effects', 'animations.enabled', true'),'
         this.configManager.set('effects', 'animations.pop.duration', 300'),'
         this.configManager.set('effects', 'animations.pop.scale', 1.2'),'
-        this.configManager.set('effects', 'animations.pop.easing', 'easeOutBack'),
+        this.configManager.set('effects', 'animations.pop.easing', 'easeOutBack');
         this.configManager.set('effects', 'animations.fade.duration', 500'),'
-        this.configManager.set('effects', 'animations.fade.easing', 'easeInOut'),
+        this.configManager.set('effects', 'animations.fade.easing', 'easeInOut');
         this.configManager.set('effects', 'animations.slide.duration', 400'),'
         this.configManager.set('effects', 'animations.slide.distance', 50'),'
-        this.configManager.set('effects', 'animations.slide.easing', 'easeOutQuad'),
+        this.configManager.set('effects', 'animations.slide.easing', 'easeOutQuad');
         this.configManager.set('effects', 'animations.bounce.duration', 600'),'
         this.configManager.set('effects', 'animations.bounce.height', 30'),'
         this.configManager.set('effects', 'animations.bounce.easing', 'easeOutBounce') }
@@ -257,7 +257,7 @@ class TestEffectsConfig {
     setAnimationEnabled(enabled: boolean'): boolean { return this.configManager.set('effects', 'animations.enabled', enabled) }'
     applyToParticleManager(particleManager: MockParticleManager): void {
         if (!particleManager') throw new Error('ParticleManagerが指定されていません'),'
-        const particleConfig = this.getParticleConfig(),
+        const particleConfig = this.getParticleConfig();
         particleManager.maxParticles = particleConfig.maxCount,
         particleManager.poolSize = particleConfig.poolSize,
         if (particleManager.particlePool.length !== particleConfig.poolSize) {
@@ -268,31 +268,31 @@ class TestEffectsConfig {
         if (!effectManager') throw new Error('EffectManagerが指定されていません') }'
     syncFromParticleManager(particleManager: MockParticleManager): void {
         if (!particleManager') throw new Error('ParticleManagerが指定されていません'),'
-        this.setMaxParticleCount(particleManager.maxParticles),
+        this.setMaxParticleCount(particleManager.maxParticles);
         this.setParticlePoolSize(particleManager.poolSize) }
     syncFromEffectManager(effectManager: MockEffectManager): void {
         if (!effectManager') throw new Error('EffectManagerが指定されていません') }'
 }
 describe('EffectsConfig', () => {
-    let effectsConfig: TestEffectsConfig,
+    let effectsConfig: TestEffectsConfig;
     
     beforeEach(() => {
         // テスト前にモックをリセット
         mockGetCalls = [],
-        jest.clearAllMocks(),
+        jest.clearAllMocks();
         // モック関数をリセット
-        mockGetConfigurationManager.mockReturnValue(mockConfigManager),
-        mockGet.mockImplementation((category: string, key: string, defaultValue => {),
-            mockGetCalls.push({ category, key, defaultValue });
+        mockGetConfigurationManager.mockReturnValue(mockConfigManager);
+        mockGet.mockImplementation((category: string, key: string, defaultValue => {);
+            mockGetCalls.push({ category, key, defaultValue };
             return defaultValue;
-        });
+        };
         mockSet.mockReturnValue(true);
         // テスト用クラスのインスタンスを作成
         effectsConfig = new TestEffectsConfig(mockConfigManager);
     }');'
     describe('初期化', (') => {'
         test('コンストラクタが正しく初期化されること', () => {
-            expect(effectsConfig).toBeDefined(),
+            expect(effectsConfig).toBeDefined();
             // TestEffectsConfigは直接configManagerを受け取るため、getConfigurationManagerは呼ばれない
             expect(effectsConfig.configManager).toBe(mockConfigManager) }');'
         test('初期化時にパーティクル設定が登録されること', () => {
@@ -347,58 +347,58 @@ describe('EffectsConfig', () => {
                 .mockReturnValueOnce(150) // explosion.speed（実装値）
                 .mockReturnValueOnce(1500), // explosion.life（実装値）
                 
-            const particleConfig = effectsConfig.getParticleConfig(),
+            const particleConfig = effectsConfig.getParticleConfig();
             expect(particleConfig).toEqual({
-                maxCount: 400,
-                poolSize: 80,
-                quality: 0.8,
-                enabled: true,
+                maxCount: 400;
+                poolSize: 80;
+                quality: 0.8;
+                enabled: true;
                 bubble: {
-                    count: 15,
-                    size: 3,
-                    speed: 100,
+                    count: 15;
+                    size: 3;
+                    speed: 100;
                     life: 800
                 },
                 star: {
-                    count: 10,
-                    size: 4,
-                    speed: 80,
+                    count: 10;
+                    size: 4;
+                    speed: 80;
                     life: 1200
                 },
                 explosion: {
-                    count: 30,
-                    size: 5,
-                    speed: 150,
+                    count: 30;
+                    size: 5;
+                    speed: 150;
                     life: 1500)
-                })');'
+                }');'
         }
         test('getMaxParticleCount が正しい値を返すこと', () => {
-            mockConfigManager.get.mockReturnValueOnce(400),
-            expect(effectsConfig.getMaxParticleCount().toBe(400),
+            mockConfigManager.get.mockReturnValueOnce(400);
+            expect(effectsConfig.getMaxParticleCount().toBe(400);
             expect(mockConfigManager.get').toHaveBeenCalledWith('effects', 'particles.maxCount', 500) }');
         test('getParticlePoolSize が正しい値を返すこと', () => {
-            mockConfigManager.get.mockReturnValueOnce(80),
-            expect(effectsConfig.getParticlePoolSize().toBe(80),
+            mockConfigManager.get.mockReturnValueOnce(80);
+            expect(effectsConfig.getParticlePoolSize().toBe(80);
             expect(mockConfigManager.get').toHaveBeenCalledWith('effects', 'particles.poolSize', 100) }');
         test('getParticleQuality が正しい値を返すこと', () => {
-            mockConfigManager.get.mockReturnValueOnce(0.8),
-            expect(effectsConfig.getParticleQuality().toBe(0.8),
+            mockConfigManager.get.mockReturnValueOnce(0.8);
+            expect(effectsConfig.getParticleQuality().toBe(0.8);
             expect(mockConfigManager.get').toHaveBeenCalledWith('effects', 'particles.quality', 1.0) }');
         test('isParticleEnabled が正しい値を返すこと', () => {
-            mockConfigManager.get.mockReturnValueOnce(false),
-            expect(effectsConfig.isParticleEnabled().toBe(false),
+            mockConfigManager.get.mockReturnValueOnce(false);
+            expect(effectsConfig.isParticleEnabled().toBe(false);
             expect(mockConfigManager.get').toHaveBeenCalledWith('effects', 'particles.enabled', true) }');
         test('setMaxParticleCount が正しく設定されること', () => {
-            effectsConfig.setMaxParticleCount(400),
+            effectsConfig.setMaxParticleCount(400);
             expect(mockConfigManager.set').toHaveBeenCalledWith('effects', 'particles.maxCount', 400) }');
         test('setParticlePoolSize が正しく設定されること', () => {
-            effectsConfig.setParticlePoolSize(80),
+            effectsConfig.setParticlePoolSize(80);
             expect(mockConfigManager.set').toHaveBeenCalledWith('effects', 'particles.poolSize', 80) }');
         test('setParticleQuality が正しく設定されること', () => {
-            effectsConfig.setParticleQuality(0.8),
+            effectsConfig.setParticleQuality(0.8);
             expect(mockConfigManager.set').toHaveBeenCalledWith('effects', 'particles.quality', 0.8) }');
         test('setParticleEnabled が正しく設定されること', () => {
-            effectsConfig.setParticleEnabled(false),
+            effectsConfig.setParticleEnabled(false);
             expect(mockConfigManager.set').toHaveBeenCalledWith('effects', 'particles.enabled', false) }');
     }
     describe('画面効果設定', (') => {'
@@ -419,58 +419,58 @@ describe('EffectsConfig', () => {
                 .mockReturnValueOnce(0.3) // tint.intensity（実装値）
                 .mockReturnValueOnce(500), // tint.duration（実装値）
                 
-            const screenEffectConfig = effectsConfig.getScreenEffectConfig(),
+            const screenEffectConfig = effectsConfig.getScreenEffectConfig();
             expect(screenEffectConfig).toEqual({
-                shakeIntensity: 0.8,
-                flashDuration: 150,
-                zoomSensitivity: 1.2,
-                enabled: true,
+                shakeIntensity: 0.8;
+                flashDuration: 150;
+                zoomSensitivity: 1.2;
+                enabled: true;
                 shake: {
-                    intensity: 10,
-                    duration: 500,
+                    intensity: 10;
+                    duration: 500;
                     damping: 0.9
                 },
                 flash: {
-                    intensity: 0.5,
+                    intensity: 0.5;
                     duration: 200
                 },
                 zoom: {
-                    min: 0.8,
-                    max: 1.2,
+                    min: 0.8;
+                    max: 1.2;
                     speed: 0.3
                 },
                 tint: {
-                    intensity: 0.3,
+                    intensity: 0.3;
                     duration: 500)
-                })');'
+                }');'
         }
         test('getShakeIntensity が正しい値を返すこと', () => {
-            mockConfigManager.get.mockReturnValueOnce(0.8),
-            expect(effectsConfig.getShakeIntensity().toBe(0.8),
+            mockConfigManager.get.mockReturnValueOnce(0.8);
+            expect(effectsConfig.getShakeIntensity().toBe(0.8);
             expect(mockConfigManager.get').toHaveBeenCalledWith('effects', 'screen.shakeIntensity', 1.0) }');
         test('getFlashDuration が正しい値を返すこと', () => {
-            mockConfigManager.get.mockReturnValueOnce(150),
-            expect(effectsConfig.getFlashDuration().toBe(150),
+            mockConfigManager.get.mockReturnValueOnce(150);
+            expect(effectsConfig.getFlashDuration().toBe(150);
             expect(mockConfigManager.get').toHaveBeenCalledWith('effects', 'screen.flashDuration', 200) }');
         test('getZoomSensitivity が正しい値を返すこと', () => {
-            mockConfigManager.get.mockReturnValueOnce(1.2),
-            expect(effectsConfig.getZoomSensitivity().toBe(1.2),
+            mockConfigManager.get.mockReturnValueOnce(1.2);
+            expect(effectsConfig.getZoomSensitivity().toBe(1.2);
             expect(mockConfigManager.get').toHaveBeenCalledWith('effects', 'screen.zoomSensitivity', 1.0) }');
         test('isScreenEffectEnabled が正しい値を返すこと', () => {
-            mockConfigManager.get.mockReturnValueOnce(false),
-            expect(effectsConfig.isScreenEffectEnabled().toBe(false),
+            mockConfigManager.get.mockReturnValueOnce(false);
+            expect(effectsConfig.isScreenEffectEnabled().toBe(false);
             expect(mockConfigManager.get').toHaveBeenCalledWith('effects', 'screen.enabled', true) }');
         test('setShakeIntensity が正しく設定されること', () => {
-            effectsConfig.setShakeIntensity(0.8),
+            effectsConfig.setShakeIntensity(0.8);
             expect(mockConfigManager.set').toHaveBeenCalledWith('effects', 'screen.shakeIntensity', 0.8) }');
         test('setFlashDuration が正しく設定されること', () => {
-            effectsConfig.setFlashDuration(150),
+            effectsConfig.setFlashDuration(150);
             expect(mockConfigManager.set').toHaveBeenCalledWith('effects', 'screen.flashDuration', 150) }');
         test('setZoomSensitivity が正しく設定されること', () => {
-            effectsConfig.setZoomSensitivity(1.2),
+            effectsConfig.setZoomSensitivity(1.2);
             expect(mockConfigManager.set').toHaveBeenCalledWith('effects', 'screen.zoomSensitivity', 1.2) }');
         test('setScreenEffectEnabled が正しく設定されること', () => {
-            effectsConfig.setScreenEffectEnabled(false),
+            effectsConfig.setScreenEffectEnabled(false);
             expect(mockConfigManager.set').toHaveBeenCalledWith('effects', 'screen.enabled', false) }');
     }
     describe('アニメーション設定', (') => {'
@@ -491,60 +491,60 @@ describe('EffectsConfig', () => {
                 .mockReturnValueOnce(30')  // bounce.height（実装値）'
                 .mockReturnValueOnce('easeOutBounce'), // bounce.easing（実装値）
                 
-            const animationConfig = effectsConfig.getAnimationConfig(),
+            const animationConfig = effectsConfig.getAnimationConfig();
             expect(animationConfig').toEqual({'
-                duration: 250,
-                easing: 'easeInOut',
-                enabled: true,
+                duration: 250;
+                easing: 'easeInOut';
+                enabled: true;
                 pop: {
-                    duration: 300,
-                    scale: 1.2,
+                    duration: 300;
+                    scale: 1.2;
                     easing: 'easeOutBack'
                 },
                 fade: {
-                    duration: 500,
+                    duration: 500;
                     easing: 'easeInOut'
                 },
                 slide: {
-                    duration: 400,
-                    distance: 50,
+                    duration: 400;
+                    distance: 50;
                     easing: 'easeOutQuad'
                 },
                 bounce: {
-                    duration: 600,
+                    duration: 600;
                     height: 30)
                     easing: 'easeOutBounce)'
-                })');'
+                }');'
         }
         test('getAnimationDuration が正しい値を返すこと', () => {
-            mockConfigManager.get.mockReturnValueOnce(250),
-            expect(effectsConfig.getAnimationDuration().toBe(250),
+            mockConfigManager.get.mockReturnValueOnce(250);
+            expect(effectsConfig.getAnimationDuration().toBe(250);
             expect(mockConfigManager.get').toHaveBeenCalledWith('effects', 'animations.duration', 300) }');
         test('getAnimationEasing が正しい値を返すこと', (') => {'
-            mockConfigManager.get.mockReturnValueOnce('easeInOut'),
+            mockConfigManager.get.mockReturnValueOnce('easeInOut');
             expect(effectsConfig.getAnimationEasing()').toBe('easeInOut'),'
             expect(mockConfigManager.get').toHaveBeenCalledWith('effects', 'animations.easing', 'easeOut') }');
         test('isAnimationEnabled が正しい値を返すこと', () => {
-            mockConfigManager.get.mockReturnValueOnce(false),
-            expect(effectsConfig.isAnimationEnabled().toBe(false),
+            mockConfigManager.get.mockReturnValueOnce(false);
+            expect(effectsConfig.isAnimationEnabled().toBe(false);
             expect(mockConfigManager.get').toHaveBeenCalledWith('effects', 'animations.enabled', true) }');
         test('setAnimationDuration が正しく設定されること', () => {
-            effectsConfig.setAnimationDuration(250),
+            effectsConfig.setAnimationDuration(250);
             expect(mockConfigManager.set').toHaveBeenCalledWith('effects', 'animations.duration', 250) }');
         test('setAnimationEasing が正しく設定されること', (') => {'
-            effectsConfig.setAnimationEasing('easeInOut'),
+            effectsConfig.setAnimationEasing('easeInOut');
             expect(mockConfigManager.set').toHaveBeenCalledWith('effects', 'animations.easing', 'easeInOut') }');
         test('setAnimationEnabled が正しく設定されること', () => {
-            effectsConfig.setAnimationEnabled(false),
+            effectsConfig.setAnimationEnabled(false);
             expect(mockConfigManager.set').toHaveBeenCalledWith('effects', 'animations.enabled', false) }');
     }
     describe('ParticleManager連携', (') => {'
         test('applyToParticleManager がParticleManagerに設定を適用すること', () => {
             // ParticleManagerのモック
             const mockParticleManager: MockParticleManager = {
-                maxParticles: 300,
-                poolSize: 50,
-                particlePool: Array(50,
+                maxParticles: 300;
+                poolSize: 50;
+                particlePool: Array(50;
                 initializePool: function() { this.initializePoolCalled = true }
             };
             
@@ -552,7 +552,7 @@ describe('EffectsConfig', () => {
             mockConfigManager.get = jest.fn((category: string, key: string, defaultValue => {'),'
                 if (key === 'particles.maxCount') return 400,
                 if (key === 'particles.poolSize') return 80,
-                return defaultValue }) as any;
+                return defaultValue } as any;
             
             effectsConfig.applyToParticleManager(mockParticleManager);
             expect(mockParticleManager.maxParticles).toBe(400);
@@ -562,9 +562,9 @@ describe('EffectsConfig', () => {
         test('syncFromParticleManager がParticleManagerから設定を同期すること', () => {
             // ParticleManagerのモック
             const mockParticleManager: MockParticleManager = {
-                maxParticles: 400,
-                poolSize: 80,
-                particlePool: [],
+                maxParticles: 400;
+                poolSize: 80;
+                particlePool: [];
         initializePool: jest.fn( };
             
             effectsConfig.syncFromParticleManager(mockParticleManager);
@@ -593,7 +593,7 @@ describe('EffectsConfig', () => {
     describe('シングルトンパターン', (') => {'
         test('getEffectsConfig が常に同じインスタンスを返すこと', () => {
             // テスト用のシングルトンパターンを模擬
-            let testInstance: TestEffectsConfig | null = null,
+            let testInstance: TestEffectsConfig | null = null;
             const getTestEffectsConfig = () => {
                 if (!testInstance) {
                     testInstance = new TestEffectsConfig(mockConfigManager) }
@@ -603,7 +603,7 @@ describe('EffectsConfig', () => {
             const instance1 = getTestEffectsConfig();
             const instance2 = getTestEffectsConfig();
             expect(instance1).toBe(instance2);
-        });
+        };
     }
 }');'
-}}}}}}})))))))
+}}}}}}}))))))

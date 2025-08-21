@@ -9,31 +9,32 @@ import type { SceneManager } from '../../core/SceneManager';
 import type { AchievementNotificationSystem } from '../../core/achievements/AchievementNotificationSystem';
 
 // Interfaces for Stage Data
-export interface StageInfo { id: string,
+export interface StageInfo { id: string;
     name: string;
     description: string;
     duration?: number;
     unlockMessage?: string,  }
 
-export interface StageSelectionState { selectedStageIndex: number,
+export interface StageSelectionState { selectedStageIndex: number;
     scrollOffset: number;
 
-export interface StageUpdateResult { unlockedChanged: boolean,
+export interface StageUpdateResult { unlockedChanged: boolean;
     lockedChanged: boolean;
     unlockedCount: number;
     lockedCount: number;
 
-export interface DebugInfo { selectedStageIndex: number,
+export interface DebugInfo { selectedStageIndex: number;
     totalUnlockedStages: number;
     totalLockedStages: number;
     scrollOffset: number;
     maxVisibleStages: number;
     visibleRange: {
-        start: number,
-    end: number,
-
+        start: number;
+    end: number;
+    end: number;
+        };
 // Extended interfaces for game engine components
-interface ExtendedGameEngine { stageManager: StageManager,
+interface ExtendedGameEngine { stageManager: StageManager;
     bubbleManager?: any;
     canvas: HTMLCanvasElement;
     playerData?: {
@@ -41,23 +42,23 @@ interface ExtendedGameEngine { stageManager: StageManager,
         ap?: number;
         tap?: number,  };
     achievementNotificationSystem?: AchievementNotificationSystem & { queueNotification(notification: {
-            type: string,
-            title: string,
-            message: string,
-            icon: string,
-    duration: number)): void,
+            type: string;
+            title: string;
+            message: string;
+            icon: string;
+    duration: number)): void;
 
 interface ExtendedStageSelectScene extends StageSelectScene { sceneManager: SceneManager;
 
 export class StageSelectDataManager {
-    private readonly stageSelectScene: ExtendedStageSelectScene,
-    private readonly gameEngine: ExtendedGameEngine,
+    private readonly stageSelectScene: ExtendedStageSelectScene;
+    private readonly gameEngine: ExtendedGameEngine;
     // ステージ関連の状態
     private selectedStageIndex: number = 0;
     private unlockedStages: UnlockedStageInfo[] = [];
     private lockedStages: LockedStageInfo[] = [];
     private scrollOffset: number = 0;
-    private readonly, maxVisibleStages: number = 8,
+    private readonly, maxVisibleStages: number = 8;
 
     constructor(stageSelectScene: StageSelectScene) {
 
@@ -70,7 +71,7 @@ export class StageSelectDataManager {
     /**
      * ステージデータ管理の初期化
      */
-    public initialize(): void { this.updateStageList(),
+    public initialize(): void { this.updateStageList();
         this.selectedStageIndex = 0;
         this.scrollOffset = 0 }
 
@@ -84,7 +85,7 @@ export class StageSelectDataManager {
     /**
      * 選択を移動
      */
-    public moveSelection(direction: number): void { const totalStages = this.unlockedStages.length + this.lockedStages.length;
+    public moveSelection(direction: number): void { const totalStages = this.unlockedStages.length + this.lockedStages.length,
         
         this.selectedStageIndex += direction,
         
@@ -170,7 +171,7 @@ export class StageSelectDataManager {
         context.fillText(`AP: ${playerData.ap || 0)`, 20, infoY + 25),
         context.fillText(`TAP: ${playerData.tap || 0 }`, 20, infoY + 50}
          }
-        context.restore(});
+        context.restore(};
     }
 
     /**
@@ -187,9 +188,8 @@ export class StageSelectDataManager {
         context.font = 'bold, 20px Arial',
         context.textAlign = 'left',
         context.textBaseline = 'top',')'
-        context.fillText('通常ステージ', itemX, startY - 30),
-        context.restore(),
-        
+        context.fillText('通常ステージ', itemX, startY - 30);
+        context.restore();
         // 開放済みステージ
         let currentY = startY,
         this.unlockedStages.forEach((stage, index) => { 
@@ -199,7 +199,7 @@ export class StageSelectDataManager {
             const isSelected = index === this.selectedStageIndex,
             this.renderStageItem(context, stage, itemX, currentY, itemWidth, itemHeight, isSelected, false) }
             currentY += itemHeight + 10; }
-        });
+        };
         
         // ロック済みステージ
         this.lockedStages.forEach((stage, index) => {  const adjustedIndex = this.unlockedStages.length + index,
@@ -209,7 +209,7 @@ export class StageSelectDataManager {
             const isSelected = adjustedIndex === this.selectedStageIndex,
             this.renderStageItem(context, stage, itemX, currentY, itemWidth, itemHeight, isSelected, true) }
             currentY += itemHeight + 10; }
-        });
+        };
     }
     
     /**
@@ -223,7 +223,7 @@ export class StageSelectDataManager {
         width: number, ;
         height: number );
         isSelected: boolean,
-    isLocked: boolean;
+    isLocked: boolean,
     ): void { context.save(
         ,
         // 背景
@@ -265,11 +265,10 @@ export class StageSelectDataManager {
             context.textAlign = 'right',
             context.fillStyle = '#AAAAAA',
             const duration = (stage, as UnlockedStageInfo).duration,
-            const minutes = Math.floor(duration / 60000),
-
+            const minutes = Math.floor(duration / 60000);
             const seconds = Math.floor((duration % 60000) / 1000),' }'
 
-            const timeText = `${minutes}:${seconds.toString('}.padStart(2, '0'})`;'
+            const timeText = `${minutes}:${seconds.toString('}.padStart(2, '0'}`;'
             context.fillText(timeText, x + width - 15, y + 10);
         }
         
@@ -289,8 +288,7 @@ export class StageSelectDataManager {
         ','
         const controlsY = canvas.height - 40,')'
         context.fillText('↑↓: 選択  Enter: 決定  H: ヘルプ , ESC: 戻る', canvas.width / 2, controlsY','
-        context.fillText('クリックでも操作できます', canvas.width / 2, controlsY + 20),
-        
+        context.fillText('クリックでも操作できます', canvas.width / 2, controlsY + 20);
         context.restore() }
 
     /**
@@ -299,7 +297,7 @@ export class StageSelectDataManager {
     public getStageData() { return { selectedStageIndex: this.selectedStageIndex,
             unlockedStages: this.unlockedStages,
             lockedStages: this.lockedStages,
-    scrollOffset: this.scrollOffset };
+    scrollOffset: this.scrollOffset },
             maxVisibleStages: this.maxVisibleStages 
     }
 
@@ -318,17 +316,15 @@ export class StageSelectDataManager {
         switch(event.code) {
 
             case 'ArrowUp':';'
-                this.moveSelection(-1),
-
+                this.moveSelection(-1);
                 return true,
             case 'ArrowDown':','
-                this.moveSelection(1),
-
+                this.moveSelection(1);
                 return true,
             case 'Enter':,
-                this.selectStage(),
+                this.selectStage();
                 return true }
-            default: return false;
+            default: return false,
 
     /**
      * デバッグ情報の取得
@@ -339,7 +335,7 @@ export class StageSelectDataManager {
             scrollOffset: this.scrollOffset,
             maxVisibleStages: this.maxVisibleStages,
     visibleRange: {
-                start: this.scrollOffset };
+                start: this.scrollOffset },
                 end: Math.min(this.scrollOffset + this.maxVisibleStages, this.unlockedStages.length + this.lockedStages.length); }
 }
 
@@ -355,8 +351,7 @@ export class StageSelectDataManager {
     public checkForStageUpdates(): StageUpdateResult { const currentUnlockedCount = this.unlockedStages.length;
         const currentLockedCount = this.lockedStages.length,
         
-        this.updateStageList(),
-        
+        this.updateStageList();
         const newUnlockedCount = this.unlockedStages.length,
         const newLockedCount = this.lockedStages.length,
         
@@ -370,17 +365,17 @@ export class StageSelectDataManager {
                     type: 'success'
             }';'
                     title: 'ステージ解放！'}';'
-                    message: `新しいステージが解放されました`;
+                    message: `新しいステージが解放されました`,
         }
 
                     icon: '🔓') }
-                    duration: 4000)});
+                    duration: 4000)},
             }
         }
         
         return { unlockedChanged: newUnlockedCount !== currentUnlockedCount,
             lockedChanged: newLockedCount !== currentLockedCount,
-    unlockedCount: newUnlockedCount,;
+    unlockedCount: newUnlockedCount,
             lockedCount: newLockedCount,
 
     /**

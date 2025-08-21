@@ -11,31 +11,31 @@
  */
 
 // Type definitions
-interface SupportedFeatures { canvas: boolean,
+interface SupportedFeatures { canvas: boolean;
     indexedDB: boolean;
     localStorage: boolean;
     serviceWorker: boolean;
 
-interface BrowserInfo { name: string,
+interface BrowserInfo { name: string;
     version: string;
     engine: string;
 
-interface ExecutionContext { protocol: 'file:' | 'http:' | 'http,s:' | string,
+interface ExecutionContext { protocol: 'file:' | 'http:' | 'http,s: ' | string;
     isLocal: boolean;
     canUseModules: boolean;
     supportedFeatures: SupportedFeatures;
     browserInfo: BrowserInfo;
 
-interface DebugInfo { executionContext: ExecutionContext,
+interface DebugInfo { executionContext: ExecutionContext;
     isLocalExecution: boolean;
     shouldShowWarning: boolean;
     userAgent: string;
     location: {
-        hre,f: string,
-        protocol: string,
-        host: string,
-    pathname: string,;
-    timestamp: string,
+        hre,f: string;
+        protocol: string;
+        host: string;
+    pathname: string;
+    timestamp: string;
 }
 
 class LocalExecutionDetector { /**
@@ -69,7 +69,7 @@ class LocalExecutionDetector { /**
 
         // localStorage で警告非表示設定をチェック
         try {'
-            const dismissed = localStorage.getItem('local-execution-warning-dismissed'),
+            const dismissed = localStorage.getItem('local-execution-warning-dismissed');
             return dismissed !== 'true' } catch (error) { // localStorage が使用できない場合は常に警告を表示
             return true,
 
@@ -77,7 +77,7 @@ class LocalExecutionDetector { /**
      * 警告を非表示にする設定を保存
      */''
     static dismissWarning()','
-            localStorage.setItem('local-execution-warning-dismissed', 'true'),
+            localStorage.setItem('local-execution-warning-dismissed', 'true');
             localStorage.setItem('local-execution-warning-dismissed-at', new Date().toISOString(),'} catch (error) { console.warn('LocalExecutionDetector: Could not save warning dismissal', error }'
     }
 
@@ -142,8 +142,8 @@ class LocalExecutionDetector { /**
      */''
     private static _supportsLocalStorage('',
             const, test = '__localStorage_test__')
-            localStorage.setItem(test, test),
-            localStorage.removeItem(test),
+            localStorage.setItem(test, test);
+            localStorage.removeItem(test);
             return true } catch (error) { return false,
 
     /**
@@ -157,8 +157,7 @@ class LocalExecutionDetector { /**
      */
     private static _getBrowserInfo(): BrowserInfo { try {
             const userAgent = navigator.userAgent,
-            const browserInfo = this._parseBrowserInfo(userAgent),
-
+            const browserInfo = this._parseBrowserInfo(userAgent);
             return browserInfo,' }'
 
         } catch (error) { return { ''
@@ -210,7 +209,7 @@ class LocalExecutionDetector { /**
     /**
      * デバッグ情報を取得
      */
-    static getDebugInfo(): DebugInfo { const context = this.getExecutionContext(),
+    static getDebugInfo(): DebugInfo { const context = this.getExecutionContext();
         return { executionContext: context,
             isLocalExecution: this.isLocalExecution(
             shouldShowWarning: this.shouldShowWarning(
@@ -218,7 +217,7 @@ class LocalExecutionDetector { /**
     location: {
                 href: window.location.href),
                 protocol: window.location.protocol,
-    host: window.location.host };
+    host: window.location.host },
                 pathname: window.location.pathname 
     },')'
             timestamp: new Date().toISOString();

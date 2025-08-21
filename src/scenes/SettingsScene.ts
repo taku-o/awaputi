@@ -7,11 +7,11 @@ import { VolumeControlComponent  } from '../components/VolumeControlComponent.js
 // import { SettingsImportExportComponent  } from '../components/SettingsImportExportComponent.js';
 
 // Settings Scene specific types
-export interface SettingOption { value: string,
+export interface SettingOption { value: string;
     label: string;
 
-export interface SettingItem { key: string,
-    label: string,
+export interface SettingItem { key: string;
+    label: string;
     type: 'toggle' | 'select' | 'slider' | 'text' | 'custom';
     description?: string | undefined;
     options?: SettingOption[] | undefined;
@@ -22,20 +22,20 @@ export interface SettingItem { key: string,
     default?: any;
     validator?: string | undefined;  }
 
-export interface SettingsLayout { categoryWidth: number,
+export interface SettingsLayout { categoryWidth: number;
     settingsPadding: number;
     itemHeight: number;
     titleHeight: number;
 
-export interface ConfirmDialogData { message: string,
+export interface ConfirmDialogData { message: string;
     onConfirm?: () => void }
     onCancel?: () => void; 
     }
 
-export interface ProfileDialogData { profiles: any[],
+export interface ProfileDialogData { profiles: any[];
     selectedIndex: number;
 
-export interface SettingsSceneState { currentCategory: string,
+export interface SettingsSceneState { currentCategory: string;
     selectedCategoryIndex: number;
     selectedSettingIndex: number;
     isEditingValue: boolean;
@@ -87,8 +87,7 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
     public currentContext?: any,
     public layout: SettingsLayout;
     constructor(gameEngine: any) {
-        super(gameEngine),
-        
+        super(gameEngine);
         // LoggingSystemとNavigationContextManagerの初期化
         this.loggingSystem = getLoggingSystem();
         this.navigationContext = new NavigationContextManager(gameEngine);
@@ -117,8 +116,8 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
         this.confirmDialogData = null;
         
         // レイアウト設定
-        this.layout = { categoryWidth: 200,
-            settingsPadding: 20,
+        this.layout = { categoryWidth: 200;
+            settingsPadding: 20;
     itemHeight: 60 }
      }
             titleHeight: 40 
@@ -269,7 +268,7 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
         ];)
         );
         for (const requiredSetting of requiredBasicSettings) {
-            const exists = accessibilityItems.some(item => item.key === requiredSetting.key),
+            const exists = accessibilityItems.some(item => item.key === requiredSetting.key);
             if (!exists) {
                 // @ts-ignore exactOptionalPropertyTypes問題を回避
         }
@@ -296,7 +295,7 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
             description: 'アクセシビリティ設定をファイルとして保存・読み込みします',')',
             validator: 'importExport'),
         // 項目の有効性を検証
-        const validItems = accessibilityItems.filter(item => { ),
+        const validItems = accessibilityItems.filter(item => { );
             if (!item || !item.key || !item.label) {', '
 }
 
@@ -319,8 +318,7 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
         this.showingConfirmDialog = false;
         ','
         // コンテキストデータの処理
-        this.processEntryContext(contextData),
-
+        this.processEntryContext(contextData);
         console.log('[SettingsScene] 設定画面に入りました', {'''
             contextData,')',
             accessMethod: contextData.accessMethod','
@@ -389,7 +387,7 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
             this.navigateToSetting(targetSetting); }
 
         }''
-        this.loggingSystem.info('SettingsScene', `Quick access mode for: ${targetSetting}`});
+        this.loggingSystem.info('SettingsScene', `Quick access mode for: ${targetSetting}`};
     }
     
     /**
@@ -421,7 +419,7 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
     navigateToSetting(settingKey: any) {
         // 設定キーからカテゴリを特定
         for(const [categoryName, items] of Object.entries(this.settingItems) {
-            const itemIndex = items.findIndex(item => item.key === settingKey),
+            const itemIndex = items.findIndex(item => item.key === settingKey);
             if (itemIndex !== -1) {
                 this.currentCategory = categoryName;
                 this.selectedCategoryIndex = this.categories.indexOf(categoryName);
@@ -455,17 +453,13 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
         ','
         // 背景
         context.fillStyle = '#f8f9fa',
-        context.fillRect(0, 0, width, height),
-        
+        context.fillRect(0, 0, width, height);
         // タイトル
-        this.renderTitle(context, width),
-        
+        this.renderTitle(context, width);
         // カテゴリ一覧（左側）
-        this.renderCategories(context, height),
-        
+        this.renderCategories(context, height);
         // 設定項目（右側）
-        this.renderSettings(context, width, height),
-        
+        this.renderSettings(context, width, height);
         // 確認ダイアログ
         if (this.showingConfirmDialog) {
     
@@ -482,7 +476,7 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
      */
     renderTitle(context: any, width: number) {
         // Transform行列のスケールを考慮した中央位置
-        const transform = context.getTransform(),
+        const transform = context.getTransform();
         const centerX = (width / 2') / transform.a,'
 
         context.fillStyle = '#2c3e50',
@@ -493,8 +487,8 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
         // 区切り線
         context.strokeStyle = '#bdc3c7',
         context.lineWidth = 1,
-        context.beginPath(),
-        context.moveTo(50, 60),
+        context.beginPath();
+        context.moveTo(50, 60);
         context.lineTo(width - 50, 60) }
         context.stroke(); }
     }
@@ -546,8 +540,7 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
         context.fillStyle = '#2c3e50',
         context.font = 'bold 20px Arial, sans-serif',
         context.textAlign = 'left',
-        context.fillText(this.categoryLabels[this.selectedCategoryIndex], startX, startY + 25),
-        
+        context.fillText(this.categoryLabels[this.selectedCategoryIndex], startX, startY + 25);
         // 設定項目
         const itemStartY = startY + 50,
         for(let, i = 0, i < currentItems.length, i++) {
@@ -604,7 +597,7 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
                 currentValue = this.gameEngine.settingsManager.get(item.key);' }'
 
             } catch (error) {
-                console.warn('[SettingsScene] Failed to get setting value for key:', item.key, error),
+                console.warn('[SettingsScene] Failed to get setting value for key:', item.key, error);
                 currentValue = item.default || false }
         }
         
@@ -622,19 +615,19 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
         switch(item.type) {
 
             case 'toggle':','
-                this.renderToggle(context, value, x + width - 60, centerY, isSelected),
+                this.renderToggle(context, value, x + width - 60, centerY, isSelected);
                 break,
 
             case 'select':','
-                this.renderSelect(context, item, value, x, centerY, width, isSelected),
+                this.renderSelect(context, item, value, x, centerY, width, isSelected);
                 break,
 
             case 'slider':','
-                this.renderSlider(context, item, value, x, centerY, width, isSelected),
+                this.renderSlider(context, item, value, x, centerY, width, isSelected);
                 break,
 
             case 'text':','
-                this.renderTextInput(context, value, x, centerY, width, isSelected),
+                this.renderTextInput(context, value, x, centerY, width, isSelected);
                 break,
 
             case 'custom':,
@@ -652,12 +645,11 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
         ','
         // 背景
         context.fillStyle = value ? '#2ecc71' : '#bdc3c7',
-        context.fillRect(toggleX, toggleY, width, height),
-        
+        context.fillRect(toggleX, toggleY, width, height);
         // つまみ
         const knobX = value ? toggleX + width - 22 : toggleX + 2,
         context.fillStyle = '#ffffff',
-        context.fillRect(knobX, toggleY + 2, 20, height - 4),
+        context.fillRect(knobX, toggleY + 2, 20, height - 4);
         ','
         // 選択時の枠線
         if (isSelected) {
@@ -675,12 +667,12 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
         ','
         // 背景
         context.fillStyle = '#ffffff',
-        context.fillRect(x, selectY, width, height),
+        context.fillRect(x, selectY, width, height);
         ','
         // 枠線
         context.strokeStyle = isSelected ? '#3498db' : '#bdc3c7',
         context.lineWidth = isSelected ? 2 : 1,
-        context.strokeRect(x, selectY, width, height),
+        context.strokeRect(x, selectY, width, height);
         ','
         // 現在の値のラベル
         const selectedOption = item.options?.find((opt: SettingOption) => opt.value === value'),'
@@ -689,7 +681,7 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
         context.fillStyle = '#2c3e50',
         context.font = '14px Arial, sans-serif',
         context.textAlign = 'left',
-        context.fillText(displayText, x + 10, y + 5),
+        context.fillText(displayText, x + 10, y + 5);
         ','
         // ドロップダウン矢印
         context.fillStyle = '#7f8c8d',
@@ -705,18 +697,17 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
         ','
         // スライダーの背景
         context.fillStyle = '#bdc3c7',
-        context.fillRect(x, sliderY, sliderWidth, sliderHeight),
+        context.fillRect(x, sliderY, sliderWidth, sliderHeight);
         ','
         // スライダーの進行部分
         const progress = (value - (item.min || 0)) / ((item.max || 1) - (item.min || 0)'),'
         context.fillStyle = '#3498db',
-        context.fillRect(x, sliderY, sliderWidth * progress, sliderHeight),
-        
+        context.fillRect(x, sliderY, sliderWidth * progress, sliderHeight);
         // つまみ
         const knobX = x + sliderWidth * progress - 8,
         const knobY = y - 8,
         context.fillStyle = isSelected ? '#2980b9' : '#3498db',
-        context.fillRect(knobX, knobY, 16, 16),
+        context.fillRect(knobX, knobY, 16, 16);
         ','
         // 値の表示
         context.fillStyle = '#2c3e50',
@@ -731,15 +722,15 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
         switch(item.component) {
 
             case 'VolumeControlComponent':','
-                this.renderVolumeControl(context, value, x, y, width, isSelected),
+                this.renderVolumeControl(context, value, x, y, width, isSelected);
                 break,
 
             case 'AccessibilityProfileComponent':','
-                this.renderAccessibilityProfileControl(context, value, x, y, width, isSelected),
+                this.renderAccessibilityProfileControl(context, value, x, y, width, isSelected);
                 break,
 
             case 'SettingsImportExportComponent':','
-                this.renderSettingsImportExportControl(context, value, x, y, width, isSelected),
+                this.renderSettingsImportExportControl(context, value, x, y, width, isSelected);
                 break,
                 
             default:','
@@ -760,13 +751,12 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
         ','
         // 背景
         context.fillStyle = isSelected ? '#e8f4fd' : '#f8f9fa',
-        context.fillRect(x, controlY, controlWidth, controlHeight),
+        context.fillRect(x, controlY, controlWidth, controlHeight);
         ','
         // 枠線
         context.strokeStyle = isSelected ? '#3498db' : '#bdc3c7',
         context.lineWidth = isSelected ? 2 : 1,
-        context.strokeRect(x, controlY, controlWidth, controlHeight),
-        
+        context.strokeRect(x, controlY, controlWidth, controlHeight);
         // ボタン部分のレイアウト
         const buttonWidth = 30,
         const buttonHeight = 24,
@@ -777,7 +767,7 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
         const progressBarHeight = 8,
         // 音量ダウンボタン
         context.fillStyle = (value > 0') ? '#3498db' : '#95a5a6','
-        context.fillRect(x + 5, buttonY, buttonWidth, buttonHeight),
+        context.fillRect(x + 5, buttonY, buttonWidth, buttonHeight);
         context.fillStyle = '#ffffff',
         context.font = '14px Arial, sans-serif',
         context.textAlign = 'center',
@@ -785,16 +775,15 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
         ','
         // プログレスバー背景
         context.fillStyle = '#bdc3c7',
-        context.fillRect(progressBarX, progressBarY, progressBarWidth, progressBarHeight),
-        
+        context.fillRect(progressBarX, progressBarY, progressBarWidth, progressBarHeight);
         // プログレスバー進行部分
         const progress = value || 0,
         context.fillStyle = '#3498db',
-        context.fillRect(progressBarX, progressBarY, progressBarWidth * progress, progressBarHeight),
+        context.fillRect(progressBarX, progressBarY, progressBarWidth * progress, progressBarHeight);
         ','
         // 音量アップボタン
         context.fillStyle = (value < 1') ? '#3498db' : '#95a5a6','
-        context.fillRect(x + controlWidth - buttonWidth - 5, buttonY, buttonWidth, buttonHeight),
+        context.fillRect(x + controlWidth - buttonWidth - 5, buttonY, buttonWidth, buttonHeight);
         context.fillStyle = '#ffffff',
         context.fillText('🔊', x + controlWidth - buttonWidth / 2 - 5, buttonY + 16','
         ','
@@ -802,7 +791,7 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
         context.fillStyle = '#2c3e50',
         context.font = '12px Arial, sans-serif',
         context.textAlign = 'right' }
-        context.fillText(`${Math.round((value || 0} * 100})%`, x + controlWidth - 5, y + 15);
+        context.fillText(`${Math.round((value || 0} * 100}%`, x + controlWidth - 5, y + 15);
         ';'
         // 選択時の追加表示
         if (isSelected) {
@@ -823,13 +812,12 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
         ','
         // 背景
         context.fillStyle = isSelected ? '#e8f4fd' : '#f8f9fa',
-        context.fillRect(x, controlY, controlWidth, controlHeight),
+        context.fillRect(x, controlY, controlWidth, controlHeight);
         ','
         // 枠線
         context.strokeStyle = isSelected ? '#3498db' : '#bdc3c7',
         context.lineWidth = isSelected ? 2 : 1,
-        context.strokeRect(x, controlY, controlWidth, controlHeight),
-        
+        context.strokeRect(x, controlY, controlWidth, controlHeight);
         // プロファイル情報
         const currentProfile = this.accessibilitySettingsManager ? undefined : undefined,
             this.accessibilitySettingsManager.getCurrentProfile() : null,
@@ -847,7 +835,7 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
         const, buttonX = x + controlWidth - buttonWidth - 5,
 
         context.fillStyle = isSelected ? '#3498db' : '#95a5a6',
-        context.fillRect(buttonX, buttonY, buttonWidth, buttonHeight),
+        context.fillRect(buttonX, buttonY, buttonWidth, buttonHeight);
         context.fillStyle = '#ffffff',
         context.font = '12px, Arial, sans-serif',
         context.textAlign = 'center',
@@ -874,14 +862,13 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
         ','
         // 背景
         context.fillStyle = isSelected ? '#e8f4fd' : '#f8f9fa',
-        context.fillRect(x, controlY, controlWidth, controlHeight),
+        context.fillRect(x, controlY, controlWidth, controlHeight);
         ','
         // 枠線
         context.strokeStyle = isSelected ? '#3498db' : '#bdc3c7',
 
         context.lineWidth = isSelected ? 2 : 1,
-        context.strokeRect(x, controlY, controlWidth, controlHeight),
-        
+        context.strokeRect(x, controlY, controlWidth, controlHeight);
         // ボタンレイアウト
         const buttonWidth = 50,
         const buttonHeight = 24,
@@ -891,7 +878,7 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
         // エクスポートボタン
         const exportButtonX = x + 10,
         context.fillStyle = '#2ecc71',
-        context.fillRect(exportButtonX, buttonY, buttonWidth, buttonHeight),
+        context.fillRect(exportButtonX, buttonY, buttonWidth, buttonHeight);
         context.fillStyle = '#ffffff',
         context.font = '12px Arial, sans-serif',
         context.textAlign = 'center',
@@ -900,7 +887,7 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
         // インポートボタン
         const importButtonX = exportButtonX + buttonWidth + spacing,
         context.fillStyle = '#e74c3c',
-        context.fillRect(importButtonX, buttonY, buttonWidth, buttonHeight),
+        context.fillRect(importButtonX, buttonY, buttonWidth, buttonHeight);
         context.fillStyle = '#ffffff',
         context.fillText('読込', importButtonX + buttonWidth / 2, buttonY + 16','
         ','
@@ -923,13 +910,13 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
         ','
         // 背景
         context.fillStyle = '#ffffff',
-        context.fillRect(x, inputY, width, height),
+        context.fillRect(x, inputY, width, height);
         ','
         // 枠線
         context.strokeStyle = isSelected ? '#3498db' : '#bdc3c7',
 
         context.lineWidth = isSelected ? 2 : 1,
-        context.strokeRect(x, inputY, width, height),
+        context.strokeRect(x, inputY, width, height);
         ','
         // テキスト
         context.fillStyle = '#2c3e50',
@@ -955,8 +942,8 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
             const textWidth = context.measureText(this.tempValue || '').width,
             context.strokeStyle = '#2c3e50',
             context.lineWidth = 1,
-            context.beginPath(),
-            context.moveTo(x + 10 + textWidth, y - 10),
+            context.beginPath();
+            context.moveTo(x + 10 + textWidth, y - 10);
             context.lineTo(x + 10 + textWidth, y + 10) }
             context.stroke(); }
 }
@@ -967,8 +954,7 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
     renderConfirmDialog(context: CanvasRenderingContext2D, width: number, height: number) {
         // オーバーレイ
         context.fillStyle = 'rgba(0, 0, 0, 0.5)',
-        context.fillRect(0, 0, width, height),
-        
+        context.fillRect(0, 0, width, height);
         // ダイアログ
         const dialogWidth = 400,
         const dialogHeight = 200,
@@ -976,12 +962,11 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
         const dialogY = (height - dialogHeight') / 2,'
 
         context.fillStyle = '#ffffff',
-        context.fillRect(dialogX, dialogY, dialogWidth, dialogHeight),
-
+        context.fillRect(dialogX, dialogY, dialogWidth, dialogHeight);
         context.strokeStyle = '#bdc3c7',
 
         context.lineWidth = 1,
-        context.strokeRect(dialogX, dialogY, dialogWidth, dialogHeight),
+        context.strokeRect(dialogX, dialogY, dialogWidth, dialogHeight);
         ','
         // メッセージ
         context.fillStyle = '#2c3e50',
@@ -1001,13 +986,13 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
         ','
         // キャンセルボタン
         context.fillStyle = '#95a5a6',
-        context.fillRect(dialogX + 80, buttonY, buttonWidth, buttonHeight),
+        context.fillRect(dialogX + 80, buttonY, buttonWidth, buttonHeight);
         context.fillStyle = '#ffffff',
         context.fillText('キャンセル', dialogX + 80 + buttonWidth / 2, buttonY + 22','
         ','
         // OKボタン
         context.fillStyle = '#3498db',
-        context.fillRect(dialogX + dialogWidth - 160, buttonY, buttonWidth, buttonHeight),
+        context.fillRect(dialogX + dialogWidth - 160, buttonY, buttonWidth, buttonHeight);
         context.fillStyle = '#ffffff' }
 
         context.fillText('OK', dialogX + dialogWidth - 160 + buttonWidth / 2, buttonY + 22'; }'
@@ -1044,7 +1029,7 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
      * キーボード入力処理
      */
     handleKeyInput(event: KeyboardEvent): void { if (this.showingConfirmDialog) {
-            this.handleConfirmDialogInput(event),
+            this.handleConfirmDialogInput(event);
             return }
         
         if (this.isEditingValue) {
@@ -1056,19 +1041,19 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
         switch(event.key) {
 
             case 'ArrowUp':','
-                this.selectedSettingIndex = Math.max(0; this.selectedSettingIndex - 1),
+                this.selectedSettingIndex = Math.max(0; this.selectedSettingIndex - 1);
                 break,
 
             case 'ArrowDown':','
                 const maxIndex = (this.settingItems[this.currentCategory] || []).length - 1,
-                this.selectedSettingIndex = Math.min(maxIndex; this.selectedSettingIndex + 1),
+                this.selectedSettingIndex = Math.min(maxIndex; this.selectedSettingIndex + 1);
                 break,
 
             case 'ArrowLeft':','
-                this.selectedCategoryIndex = Math.max(0; this.selectedCategoryIndex - 1),
+                this.selectedCategoryIndex = Math.max(0; this.selectedCategoryIndex - 1);
                 this.switchCategory()','
             case 'ArrowRight':','
-                this.selectedCategoryIndex = Math.min(this.categories.length - 1; this.selectedCategoryIndex + 1),
+                this.selectedCategoryIndex = Math.min(this.categories.length - 1; this.selectedCategoryIndex + 1);
                 this.switchCategory('''
             case 'Enter': ','
                 this.activateCurrentSetting('',
@@ -1094,7 +1079,7 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
     /**
      * マウス入力処理
      */
-    handleMouseInput(event: any): void { const rect = event.target.getBoundingClientRect(),
+    handleMouseInput(event: any): void { const rect = event.target.getBoundingClientRect();
         const x = event.clientX - rect.left,
         const y = event.clientY - rect.top,
         
@@ -1135,23 +1120,23 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
         
         if (!item) return,
 
-        const currentValue = this.gameEngine.settingsManager.get(item.key),
+        const currentValue = this.gameEngine.settingsManager.get(item.key);
         ','
         // アクセシビリティ設定の場合は専用マネージャーを使用
         if(item.key.startsWith('accessibility.) && this.accessibilitySettingsManager' {''
             switch(item.type) {''
                 case 'toggle':','
-                    this.accessibilitySettingsManager.setSetting(item.key, !currentValue),
+                    this.accessibilitySettingsManager.setSetting(item.key, !currentValue);
                     break,
 
                 case 'select':','
-                    const nextSelectValue = this.getNextSelectValue(item, currentValue),
-                    this.accessibilitySettingsManager.setSetting(item.key, nextSelectValue),
+                    const nextSelectValue = this.getNextSelectValue(item, currentValue);
+                    this.accessibilitySettingsManager.setSetting(item.key, nextSelectValue);
                     break,
 
                 case 'slider':','
-                    const nextSliderValue = this.getNextSliderValue(item, currentValue),
-                    this.accessibilitySettingsManager.setSetting(item.key, nextSliderValue),
+                    const nextSliderValue = this.getNextSliderValue(item, currentValue);
+                    this.accessibilitySettingsManager.setSetting(item.key, nextSliderValue);
                     break,
 
                 case 'text':,
@@ -1202,7 +1187,7 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
     /**
      * セレクト値のサイクル
      */
-    cycleSelectValue(item: any, currentValue: any): void { const newValue = this.getNextSelectValue(item, currentValue),
+    cycleSelectValue(item: any, currentValue: any): void { const newValue = this.getNextSelectValue(item, currentValue);
         this.gameEngine.settingsManager.set(item.key, newValue) }
     
     /**
@@ -1226,13 +1211,13 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
     /**
      * スライダー値の調整
      */
-    adjustSliderValue(item: any, currentValue: any): void { const newValue = this.getNextSliderValue(item, currentValue),
+    adjustSliderValue(item: any, currentValue: any): void { const newValue = this.getNextSliderValue(item, currentValue);
         this.gameEngine.settingsManager.set(item.key, newValue) }
     
     /**
      * テキスト編集開始
      */''
-    startTextEditing(currentValue: any): void { this.isEditingValue = true;
+    startTextEditing(currentValue: any): void { this.isEditingValue = true,
         this.tempValue = currentValue || ' }'
     
     /**
@@ -1353,7 +1338,7 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
 
                 console.warn('[SettingsScene] Unknown custom component:', item.component'; }'
 
-                this.loggingSystem.warn('SettingsScene', `Unknown custom component: ${item.component}`});
+                this.loggingSystem.warn('SettingsScene', `Unknown custom component: ${item.component}`};
                 break;
         }
     }
@@ -1401,14 +1386,13 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
      * アクセシビリティプロファイル選択ダイアログ表示
      */
     showAccessibilityProfileDialog() {
-        const profiles = this.accessibilitySettingsManager.getAvailableProfiles(),
+        const profiles = this.accessibilitySettingsManager.getAvailableProfiles();
         const currentProfile = this.accessibilitySettingsManager.getCurrentProfile()','
         console.log('[SettingsScene] Available Accessibility Profiles:', profiles','
-        console.log('[SettingsScene] Current Profile:', currentProfile),
-        
+        console.log('[SettingsScene] Current Profile:', currentProfile);
         // 簡易プロファイル選択（実際の実装では専用UIを作成）
         // @ts-ignore 将来のプロファイル表示で使用予定
-        const _profileNames = profiles.map(p => p.name),
+        const _profileNames = profiles.map(p => p.name);
         const currentIndex = profiles.findIndex(p => (p, as any).id === (currentProfile ? (currentProfile, as any).id: null),
         const nextIndex = (currentIndex + 1) % profiles.length,
         const nextProfile = profiles[nextIndex],
@@ -1419,8 +1403,8 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
         console.log(`[SettingsScene] Switched, to profile: ${nextProfile.name)`),'''
         this.loggingSystem.info('SettingsScene', `Profile, switched to: ${nextProfile.name }`} }
         // 設定項目を更新
-            });
-        this.settingItems.accessibility = this.getAccessibilitySettingsItems(});
+            };
+        this.settingItems.accessibility = this.getAccessibilitySettingsItems(};
     }
     
     /**
@@ -1535,7 +1519,7 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
         
         try {
             // ファイル選択ダイアログを作成
-            const input = document.createElement('input'),
+            const input = document.createElement('input');
             input.type = 'file',
             input.accept = '.json',
             input.style.display = 'none',
@@ -1545,7 +1529,7 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
                 const file = target.files?.[0],
                 if (file) {
                     try {
-                        await this.accessibilitySettingsManager.importSettings(file),
+                        await this.accessibilitySettingsManager.importSettings(file);
                         ','
 
                         // 設定項目リストを更新
@@ -1562,7 +1546,7 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
                 
                 // 一時的な input 要素を削除
                 document.body.removeChild(input);
-            });
+            };
             
             document.body.appendChild(input);
             input.click();
@@ -1584,7 +1568,7 @@ export class SettingsScene extends Scene implements SettingsSceneState { // Comp
         
         return { integrated: true,
             stats: this.accessibilitySettingsManager.getStats(
-    profileCount: this.accessibilitySettingsManager.getAvailableProfiles().length };
+    profileCount: this.accessibilitySettingsManager.getAvailableProfiles().length },
             extendedSettings: this.accessibilitySettingsManager.getExtendedAccessibilitySettings().length 
     }
     

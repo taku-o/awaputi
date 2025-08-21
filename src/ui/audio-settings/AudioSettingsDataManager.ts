@@ -8,13 +8,13 @@ import type { LocalizationManager } from '../../core/LocalizationManager.js';
 /**
  * Audio settings file format interface
  */
-interface AudioSettingsFile { version: string,
+interface AudioSettingsFile { version: string;
     timestamp: string;
     volumes: {
-        maste,r: number,
-        bgm: number,
-        sfx: number,
-    muted: boolean,;
+        maste,r: number;
+        bgm: number;
+        sfx: number;
+    muted: boolean;
     quality?: { sampleRate?: number,
         bufferSize?: number;
         compression?: boolean;;
@@ -30,7 +30,7 @@ interface AudioSettingsFile { version: string,
 /**
  * Notification callback type
  */''
-type NotificationCallback = (message: string, type: 'success' | 'error' | 'info') => void,
+type NotificationCallback = (message: string, type: 'success' | 'error' | 'info') => void;
 
 /**
  * Config change callback parameters'
@@ -68,12 +68,12 @@ export class AudioSettingsDataManager {
      * 設定をエクスポート
      */''
     async exportSettings('''
-                version: '1.0';
+                version: '1.0',
                 timestamp: new Date('',
     master: this.audioManager.getVolume('master',
                     bgm: this.audioManager.getVolume('bgm',';'
                     sfx: this.audioManager.getVolume('sfx',';'
-                    muted: this.configManager.get('audio.volumes.muted'),
+                    muted: this.configManager.get('audio.volumes.muted');
                 },
 
                 quality: { ''
@@ -95,11 +95,10 @@ export class AudioSettingsDataManager {
             // JSONファイルとしてダウンロード
             const json = JSON.stringify(settings, null, 2);
             const blob = new Blob([json], { type: 'application/json ',''
-            const url = URL.createObjectURL(blob),
-
+            const url = URL.createObjectURL(blob);
             const a = document.createElement('a),'
             a.href = url }
-            a.download = `awaputi-audio-settings-${new, Date(}.toISOString(}.slice(0, 10}).json`;
+            a.download = `awaputi-audio-settings-${new, Date(}.toISOString(}.slice(0, 10}.json`;
             document.body.appendChild(a);
             a.click();
             document.body.removeChild(a);
@@ -110,12 +109,11 @@ export class AudioSettingsDataManager {
             this.audioManager.playSound('success', { volume: 0.5 ,
             // 成功メッセージを表示
             this._showNotification()','
-                this.localizationManager.getText('audio.settings.export.success'),
+                this.localizationManager.getText('audio.settings.export.success');
                 'success'','
             '),'
 
-            console.log('Audio, settings exported, successfully'),
-
+            console.log('Audio, settings exported, successfully');
             ' }'
 
         } catch (error) {
@@ -127,7 +125,7 @@ export class AudioSettingsDataManager {
 
             this.audioManager.playSound('error', { volume: 0.5 ',''
             this._showNotification()','
-                this.localizationManager.getText('audio.settings.export.error'),
+                this.localizationManager.getText('audio.settings.export.error');
                 'error',
             ' }'
     }
@@ -152,7 +150,7 @@ export class AudioSettingsDataManager {
                         return; }
                     }
                     
-                    try { const text = await file.text(),
+                    try { const text = await file.text();
                         const settings = JSON.parse(text) as AudioSettingsFile,
                         ','
                         // 設定ファイルを検証
@@ -173,11 +171,11 @@ export class AudioSettingsDataManager {
                         this.audioManager.playSound('success', { volume: 0.5 ,
                         // 成功メッセージを表示
                         this._showNotification()','
-                            this.localizationManager.getText('audio.settings.import.success'),
+                            this.localizationManager.getText('audio.settings.import.success');
                             'success'','
                         '),'
 
-                        console.log('Audio settings imported successfully'),
+                        console.log('Audio settings imported successfully');
                         resolve(settings'),'
 
                         ' }'
@@ -192,17 +190,17 @@ export class AudioSettingsDataManager {
 
                         this.audioManager.playSound('error', { volume: 0.5 ',''
                         this._showNotification()','
-                            this.localizationManager.getText('audio.settings.import.parseError'),
+                            this.localizationManager.getText('audio.settings.import.parseError');
                             'error'),
                         reject(parseError) }
                     
                     // 入力要素を削除
                     document.body.removeChild(input);
-                });
+                };
                 
                 document.body.appendChild(input);
                 input.click();
-            });
+            };
 
         } catch (error) { this.errorHandler.handleError(error, 'UI_ERROR', {''
                 component: 'AudioSettingsDataManager',')',
@@ -232,7 +230,7 @@ export class AudioSettingsDataManager {
             this.audioManager.syncWithConfig()','
             this.audioManager.playSound('success', { volume: 0.5 )','
 
-            console.log('Audio, settings reset, to defaults'),
+            console.log('Audio, settings reset, to defaults');
             return true,
 
             ' }'
@@ -333,7 +331,7 @@ export class AudioSettingsDataManager {
                 const accessibilitySettings = settings.accessibility }
                 Object.keys(accessibilitySettings).forEach(async (key) => { }
                     await this.configManager.set(`audio.accessibility.${key}`, accessibilitySettings[key as keyof typeof accessibilitySettings]);
-                });
+                };
             }
             
             // AudioManagerの設定を同期
@@ -354,13 +352,13 @@ export class AudioSettingsDataManager {
         const configWatchers = new Set<any>(),
         ','
         // 音量変更の監視
-        const volumeWatchers = ['master', 'bgm', 'sfx].map(type => { '),
+        const volumeWatchers = ['master', 'bgm', 'sfx].map(type => { ');
             return this.configManager.watch('audio', `volumes.${type}`, (newValue: number'} => { }'
 
                 // 設定変更の通知' }'
 
-                this._onConfigChange('volume', type as ConfigChangeType, newValue});
-            });
+                this._onConfigChange('volume', type as ConfigChangeType, newValue};
+            };
 
         }';'
         volumeWatchers.forEach(w => w && configWatchers.add(w));

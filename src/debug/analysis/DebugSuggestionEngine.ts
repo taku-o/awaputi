@@ -1,31 +1,31 @@
 import { BaseComponent  } from '../BaseComponent.js';
 
 // Type definitions
-interface Suggestion { action: string,
+interface Suggestion { action: string;
     code?: string;
     description: string;
     priority: 'low' | 'medium' | 'high';
     category: string;
     score?: number;
 
-interface Pattern { id: string,
+interface Pattern { id: string;
     name: string;
     category: string;
     severity: 'low' | 'medium' | 'high' | 'critical'
             }
 
-interface Test { name: string,
+interface Test { name: string;
     error?: string;
     [key: string]: any;
 
-interface ContextualSuggestion { action: string,
+interface ContextualSuggestion { action: string;
     code: string;
     description: string;
 
-interface ComponentPattern { pattern: RegExp,
+interface ComponentPattern { pattern: RegExp;
     name: string;
 
-interface SuggestionStatistics { totalPatterns: number,
+interface SuggestionStatistics { totalPatterns: number;
     totalSuggestions: number;
     suggestionsByCategory: Record<string, number>;
     suggestionsByPriority: Record<string, number> }
@@ -45,7 +45,7 @@ export class DebugSuggestionEngine extends BaseComponent { private debugSuggesti
         this.contextualSuggestions = new Map<string, Record<string, ContextualSuggestion[]>>(); }
     }
 
-    async _doInitialize(): Promise<void> { this.setupDebugSuggestions(),
+    async _doInitialize(): Promise<void> { this.setupDebugSuggestions();
         this.setupContextualSuggestions() }
 
     /**
@@ -58,7 +58,7 @@ export class DebugSuggestionEngine extends BaseComponent { private debugSuggesti
                 code: 'if (object && object.property) { /* use object.property */ }',''
                 description: 'オブジェクトとプロパティの存在確認を追加',
                 priority: 'high',
-                category: 'safety';
+                category: 'safety',
             },
 
             { ''
@@ -129,7 +129,7 @@ export class DebugSuggestionEngine extends BaseComponent { private debugSuggesti
                 code: 'try { await asyncFunc( } catch (error) { /* handle */ }',''
                 description: 'Promise拒否のエラーハンドリングを追加',
                 priority: 'high',
-                category: 'error_handling';
+                category: 'error_handling',
             },
 
             { ''
@@ -156,7 +156,7 @@ export class DebugSuggestionEngine extends BaseComponent { private debugSuggesti
                 code: 'if (typeof, obj.method === "function") { obj.method(" }',''"
                 description: '関数の存在確認を追加',
                 priority: 'high',
-                category: 'safety';
+                category: 'safety',
             },
 
             { ''
@@ -165,7 +165,7 @@ export class DebugSuggestionEngine extends BaseComponent { private debugSuggesti
                 code: 'if (obj && obj.constructor === ExpectedClass) { /* use obj */ }',''
                 description: 'オブジェクトの型を確認',
                 priority: 'high',
-                category: 'validation';
+                category: 'validation',
             },
 
             { ''
@@ -198,7 +198,7 @@ export class DebugSuggestionEngine extends BaseComponent { private debugSuggesti
                 code: 'jest.mock("./heavyModule", () => ({ /* mock */ }")',''"
                 description: '重い処理をモック化',
                 priority: 'medium',
-                category: 'testing]';
+                category: 'testing]',
             }']'
         ]'),'
 
@@ -284,7 +284,7 @@ export class DebugSuggestionEngine extends BaseComponent { private debugSuggesti
                     code: 'import "jest-canvas-mock",'
                     description: 'テスト環境でCanvas APIをモック化'
             }])
-                })]
+                }]
             ]);
     }
 
@@ -399,7 +399,7 @@ export class DebugSuggestionEngine extends BaseComponent { private debugSuggesti
             .map(suggestion => ({ )
                 ...suggestion),
                 score: this.calculateSuggestionScore(suggestion, pattern, test
-            });
+            };
             .sort((a, b) => {  // 優先度でソート
                 const priorityDiff = (priorityOrder[b.priority] || 1) - (priorityOrder[a.priority] || 1),
                 if (priorityDiff !== 0) return priorityDiff,
@@ -487,8 +487,8 @@ export class DebugSuggestionEngine extends BaseComponent { private debugSuggesti
     getSuggestionStatistics(): SuggestionStatistics { const stats: SuggestionStatistics = {
             totalPatterns: this.debugSuggestions.size,
     totalSuggestions: 0 }
-            suggestionsByCategory: {};
-            suggestionsByPriority: {};
+            suggestionsByCategory: {},
+            suggestionsByPriority: {},
         for (const suggestions of this.debugSuggestions.values() {
 
             stats.totalSuggestions += suggestions.length,
@@ -509,7 +509,6 @@ export class DebugSuggestionEngine extends BaseComponent { private debugSuggesti
     /**
      * クリーンアップ
      */
-    cleanup(): void { this.debugSuggestions.clear(),
-
-        this.contextualSuggestions.clear(),
+    cleanup(): void { this.debugSuggestions.clear();
+        this.contextualSuggestions.clear();
         super.cleanup(' }'

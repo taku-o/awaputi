@@ -18,9 +18,9 @@ export interface ErrorInfo { type: string,''
     severity: 'info' | 'warn' | 'error'
             }
 export interface SuppressionRules { repeatSuppression: {
-        enable,d: boolean,
-        timeWindow: number,
-    maxOccurrences: number,;
+        enable,d: boolean;
+        timeWindow: number;
+    maxOccurrences: number;
     sourceBasedSuppression: { [source: string]: {''
             [errorType: string]: 'suppress' | 'warn_once' | 'error'
             };
@@ -118,7 +118,7 @@ export class FontErrorHandler {
             
             if (history) {
             
-                const now = Date.now(),
+                const now = Date.now();
                 const recentErrors = history.filter((timestamp: number) => ,
                     now - timestamp < this.suppressionRules.repeatSuppression.timeWindow),
 
@@ -149,8 +149,7 @@ export class FontErrorHandler {
     }
 
     logFontError(error: Error, level: 'debug' | 'info' | 'warn' | 'error' = 'warn', context: FontErrorContext = { ) as FontErrorContext): void {
-        const message = this._formatErrorMessage(error, context),
-
+        const message = this._formatErrorMessage(error, context);
         if (this.config.development?.verboseLogging) {
     
 }
@@ -163,7 +162,7 @@ export class FontErrorHandler {
         const fontFamily = context.fontFamily || 'unknown',
         const source = context.source || 'unknown',
         const suggestion = this._getSuggestion(error, context) }
-        return `Font loading failed: ${fontFamily} from ${source}. ${suggestion}`;
+        return `Font loading failed: ${fontFamily} from ${source}. ${suggestion}`,
     }
 ';'
 
@@ -193,7 +192,7 @@ export class FontErrorHandler {
             source: context.source,
             error: error.message,
             stack: error.stack,
-            timestamp: new Date().toISOString(),
+            timestamp: new Date().toISOString();
     suggestion: this._getSuggestion(error, context };
 
         (console: any)[level]('[FontErrorHandler] Detailed font loading error:', details');'
@@ -206,7 +205,7 @@ export class FontErrorHandler {
             return; }
         // consoleにdebugメソッドがない場合はlogを使用
         const logMethod = (console, as any)[level] || console.log;
-        logMethod(`[FontErrorHandler] ${message}`});
+        logMethod(`[FontErrorHandler] ${message}`};
     }
  : undefined
     private _updateErrorHistory(errorInfo: ErrorInfo, context: FontErrorContext): void {
@@ -220,8 +219,8 @@ export class FontErrorHandler {
         this.errorHistory.set(errorKey, history);
     }
 
-    clearErrorHistory(): void { this.errorHistory.clear(),
-        this.suppressedErrors.clear(),
+    clearErrorHistory(): void { this.errorHistory.clear();
+        this.suppressedErrors.clear();
         this.errorCounts.clear() }
     getErrorStats(): Record<string, Record<string, number>> {
         const stats: Record<string, Record<string, number>> = {};

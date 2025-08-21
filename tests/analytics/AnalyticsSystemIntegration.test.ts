@@ -34,7 +34,7 @@ import { AnalyticsAPI  } from '../../src/analytics/AnalyticsAPI';
 };
 (global: any).Chart = class {
     constructor() {
-        this.data = { datasets: [{ data: [] }] };
+        this.data = { datasets: [{ data: [] }] },
         this.options = {};
     }
     update() {}
@@ -52,21 +52,21 @@ describe('Analytics System Integration Tests', () => {
     
     beforeEach(async () => {
         // 各コンポーネントの初期化
-        storageManager = new IndexedDBStorageManager(),
-        privacyManager = new PrivacyManager(),
-        dataCollector = new DataCollector(storageManager, privacyManager),
-        exportManager = new ExportManager(storageManager, privacyManager),
-        analyticsAPI = new AnalyticsAPI(storageManager, privacyManager),
+        storageManager = new IndexedDBStorageManager();
+        privacyManager = new PrivacyManager();
+        dataCollector = new DataCollector(storageManager, privacyManager);
+        exportManager = new ExportManager(storageManager, privacyManager);
+        analyticsAPI = new AnalyticsAPI(storageManager, privacyManager);
         // ストレージマネージャーの初期化完了を待つ
         await new Promise(resolve => setTimeout(resolve, 50) }, 15000); // 15秒のタイムアウト
     
     afterEach(async () => {
         // リソースクリーンアップ
         try {
-            if (dataCollector) dataCollector.destroy(),
-            if (exportManager) exportManager.destroy(),
-            if (analyticsAPI) analyticsAPI.destroy(),
-            if (storageManager) storageManager.destroy(),
+            if (dataCollector) dataCollector.destroy();
+            if (exportManager) exportManager.destroy();
+            if (analyticsAPI) analyticsAPI.destroy();
+            if (storageManager) storageManager.destroy();
             if (privacyManager) privacyManager.destroy() } catch (error') {'
             // クリーンアップエラーは無視
             console.warn('Cleanup error:', error.message) }
@@ -80,8 +80,9 @@ describe('Analytics System Integration Tests', () => {
                 timestamp: Date.now(','
                 action: 'bubble_click',
                 bubbleType: 'normal',
-                success: true,;
-            
+                success: true,
+                success: true,
+        };
             // 2. データコレクターでの収集
             await dataCollector.collectPlayerBehavior(testData');'
             // 3. ストレージからのデータ取得確認
@@ -102,7 +103,7 @@ describe('Analytics System Integration Tests', () => {
                     bubbleType: i % 2 === 0 ? 'normal' : 'stone',
                     success: i % 3 !== 0,
                     score: 100 + i * 50
-                });
+                };
             }
             
             // 2. バッチ処理での収集
@@ -131,8 +132,8 @@ describe('Analytics System Integration Tests', () => {
                 dataTypes: ['sessionData'],
                 format: 'json',
                 anonymize: true),
-            expect(exportResult.success).toBe(true),
-            expect(exportResult.data).toBeDefined(),
+            expect(exportResult.success).toBe(true);
+            expect(exportResult.data).toBeDefined();
             expect(exportResult.format').toBe('json') }');
         test('API経由でのデータアクセス統合', async (') => {'
             // 1. テストデータの準備と保存
@@ -152,7 +153,7 @@ describe('Analytics System Integration Tests', () => {
             const exportResponse = await analyticsAPI.getData('/export', {
                 format: 'json',
                 dataTypes: 'sessionData'),
-            expect(exportResponse.success).toBe(true),
+            expect(exportResponse.success).toBe(true);
             expect(exportResponse.data).toBeDefined() }');'
     }
     describe('エラーハンドリング統合テスト', (') => {'
@@ -173,6 +174,6 @@ describe('Analytics System Integration Tests', () => {
                 r.value.error && 
                 r.value.error.code === 'RATE_LIMIT_EXCEEDED');
             expect(rateLimitedRequests.length).toBeGreaterThan(0);
-        });
+        };
     }
 }');'

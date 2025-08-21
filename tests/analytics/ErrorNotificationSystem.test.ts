@@ -29,13 +29,13 @@ describe('ErrorNotificationSystem', () => {
         eventListeners = [],
         originalAddEventListener = window.addEventListener,
         window.addEventListener = jest.fn((event, handler, options) => {
-            eventListeners.push({ event, handler, options )});
+            eventListeners.push({ event, handler, options )};
         );
         // ErrorNotificationSystemを作成
         errorSystem = new ErrorNotificationSystem();
         // グローバル参照を設定
         window.errorNotificationSystem = errorSystem;
-    });
+    };
     afterEach(() => {
         if (errorSystem) {
             errorSystem.destroy() }
@@ -48,8 +48,8 @@ describe('ErrorNotificationSystem', () => {
     }');'
     describe('Task 9.3: エラー通知システムの実装', (') => {'
         test('エラーシステムが正しく初期化される', () => {
-            expect(errorSystem.isInitialized).toBe(true),
-            expect(errorSystem.errorTypes.size).toBeGreaterThan(0),
+            expect(errorSystem.isInitialized).toBe(true);
+            expect(errorSystem.errorTypes.size).toBeGreaterThan(0);
             expect(errorSystem.notificationContainer).toBeTruthy('),'
             expect(document.getElementById('error-notification-container').toBeTruthy() }');'
         test('エラータイプが正しく設定される', (') => {'
@@ -60,16 +60,16 @@ describe('ErrorNotificationSystem', () => {
             expect(errorSystem.errorTypes.has('storage').toBe(true'),'
             expect(errorSystem.errorTypes.has('performance').toBe(true'),'
             expect(errorSystem.errorTypes.has('security').toBe(true'),'
-            const jsErrorType = errorSystem.errorTypes.get('javascript'),
+            const jsErrorType = errorSystem.errorTypes.get('javascript');
             expect(jsErrorType.name').toBe('JavaScript エラー'),'
             expect(jsErrorType.severity').toBe('error'),'
-            expect(jsErrorType.recoverable).toBe(false),
+            expect(jsErrorType.recoverable).toBe(false);
             expect(jsErrorType.actions').toContain('詳細表示') }');
         test('グローバルエラーハンドラーが設定される', () => {
             // error, unhandledrejection, error (capture') イベントリスナーが設定される'
-            const errorEvents = eventListeners.filter(l => l.event === 'error'),
-            const rejectionEvents = eventListeners.filter(l => l.event === 'unhandledrejection'),
-            expect(errorEvents.length).toBeGreaterThanOrEqual(1),
+            const errorEvents = eventListeners.filter(l => l.event === 'error');
+            const rejectionEvents = eventListeners.filter(l => l.event === 'unhandledrejection');
+            expect(errorEvents.length).toBeGreaterThanOrEqual(1);
             expect(rejectionEvents.length).toBe(1) }');'
         test('JavaScriptエラーが正しく処理される', (') => {'
             const errorData = {
@@ -79,18 +79,18 @@ describe('ErrorNotificationSystem', () => {
                 lineno: 10,
                 colno: 5,
                 error: new Error('Test error',
-        timestamp: Date.now( };
+        timestamp: Date.now( },
             errorSystem.handleError(errorData);
             expect(errorSystem.errorHistory.length).toBe(1);
             const recordedError = errorSystem.errorHistory[0];
             expect(recordedError.type').toBe('javascript');'
             expect(recordedError.severity').toBe('error');'
-            expect(recordedError.message').toBe('Uncaught ReferenceError: x is not defined' }');
+            expect(recordedError.message').toBe('Uncaught ReferenceError: x is not defined' }'),
         test('ネットワークエラーが正しく処理される', (') => {'
             const errorData = {
                 type: 'network',
                 message: 'Failed to fetch data from server',
-        timestamp: Date.now( };
+        timestamp: Date.now( },
             errorSystem.handleError(errorData);
             expect(errorSystem.errorHistory.length).toBe(1);
             const recordedError = errorSystem.errorHistory[0];
@@ -116,7 +116,7 @@ describe('ErrorNotificationSystem', () => {
             expect(details.errorName').toBe('TypeError');'
         }');'
         test('コンテキスト情報が収集される', () => {
-            const context = errorSystem.collectContext(),
+            const context = errorSystem.collectContext();
             expect(context').toHaveProperty('url'),'
             expect(context').toHaveProperty('userAgent'),'
             expect(context').toHaveProperty('timestamp'),'
@@ -163,8 +163,8 @@ describe('ErrorNotificationSystem', () => {
             expect(document.querySelector('[data-error-id="dismiss-test"]').toBeFalsy();
         }');'
         test('自動復旧が判定される', (') => {'
-            const recoverableError = { recoverable: true, type: 'network' };
-            const nonRecoverableError = { recoverable: false, type: 'javascript' };
+            const recoverableError = { recoverable: true, type: 'network' },
+            const nonRecoverableError = { recoverable: false, type: 'javascript' },
             
             expect(errorSystem.canAttemptRecovery(recoverableError).toBe(true);
             expect(errorSystem.canAttemptRecovery(nonRecoverableError).toBe(false)');'
@@ -174,7 +174,7 @@ describe('ErrorNotificationSystem', () => {
         }');'
         test('ネットワークエラーからの復旧が試行される', async () => {
             fetch.mockResolvedValueOnce({ ok: true,');'
-            const errorData = { type: 'network' };
+            const errorData = { type: 'network' },
             const result = await errorSystem.recoverFromNetworkError(errorData);
             expect(result).toBe(true);
             expect(fetch').toHaveBeenCalledWith('/', { method: 'HEAD' )' }
@@ -188,11 +188,11 @@ describe('ErrorNotificationSystem', () => {
             expect(result).toBe(true);
             expect(fetch').toHaveBeenCalledWith('test.jpg', { method: 'HEAD' )' }
         test('ストレージエラーからの復旧が試行される', async () => {
-            const result = await errorSystem.recoverFromStorageError({});
+            const result = await errorSystem.recoverFromStorageError({};
             expect(result).toBe(true);
         }');'
         test('パフォーマンスエラーからの復旧が試行される', async () => {
-            const result = await errorSystem.recoverFromPerformanceError({});
+            const result = await errorSystem.recoverFromPerformanceError({};
             expect(result).toBe(true);
         }');'
         test('エラーレポートが送信される', async (') => {'
@@ -208,7 +208,7 @@ describe('ErrorNotificationSystem', () => {
                 'https://api.example.com/errors',
                 expect.objectContaining({
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' };
+                    headers: { 'Content-Type': 'application/json' },
         body: expect.stringContaining('Test error'),
     }
             );
@@ -235,17 +235,17 @@ describe('ErrorNotificationSystem', () => {
             const formatted = errorSystem.formatErrorDetails(details);
             expect(formatted').toContain('filename: test.js','
             expect(formatted').toContain('line: 10','
-            expect(formatted').toContain('column: 5' }');
+            expect(formatted').toContain('column: 5' }'),
         test('復旧状況が表示される', (') => {'
             // 復旧状況表示用のDOM要素を作成
-            const statusElement = document.createElement('div'),
+            const statusElement = document.createElement('div');
             statusElement.id = 'recovery-status-test-id',
             document.body.appendChild(statusElement'),'
-            errorSystem.showRecoveryStatus('test-id', 'attempting'),
+            errorSystem.showRecoveryStatus('test-id', 'attempting');
             expect(statusElement.innerHTML').toContain('復旧を試行中'),'
-            errorSystem.showRecoveryStatus('test-id', 'success'),
+            errorSystem.showRecoveryStatus('test-id', 'success');
             expect(statusElement.innerHTML').toContain('自動復旧に成功'),'
-            errorSystem.showRecoveryStatus('test-id', 'failed'),
+            errorSystem.showRecoveryStatus('test-id', 'failed');
             expect(statusElement.innerHTML').toContain('自動復旧に失敗') }');
         test('エラー統計が正しく計算される', (') => {'
             // 複数のエラーを追加
@@ -254,8 +254,8 @@ describe('ErrorNotificationSystem', () => {
                 { type: 'network', severity: 'warning', timestamp: Date.now(') },'
                 { type: 'resource', severity: 'warning', timestamp: Date.now() }
             ];
-            errors.forEach(error => {),
-                errorSystem.recordError(error) });
+            errors.forEach(error => {);
+                errorSystem.recordError(error) };
             const stats = errorSystem.getErrorStatistics();
             expect(stats.totalErrors).toBe(3);
             expect(stats.recentErrors).toBe(3);
@@ -269,11 +269,11 @@ describe('ErrorNotificationSystem', () => {
             // 3つのエラーを記録
             for (let i = 0, i < 3, i++') {'
                 errorSystem.recordError({
-                    id: `test-${i}`;
+                    id: `test-${i}`,
                     type: 'javascript',
                     message: `Error ${i}`;);
                     timestamp: Date.now() + i
-                });
+                };
             }
             expect(errorSystem.errorHistory.length).toBe(2);
         }');'
@@ -288,7 +288,7 @@ describe('ErrorNotificationSystem', () => {
         }');'
         test('カスタムイベントが発火される', (') => {'
             // windowのdispatchEventをスパイ
-            const dispatchEventSpy = jest.spyOn(window, 'dispatchEvent'),
+            const dispatchEventSpy = jest.spyOn(window, 'dispatchEvent');
             const errorData = {
                 id: 'custom-event-test',
                 type: 'javascript',
@@ -302,15 +302,15 @@ describe('ErrorNotificationSystem', () => {
                     detail: errorData)),
             dispatchEventSpy.mockRestore() }');'
         test('エラーIDが生成される', () => {
-            const id1 = errorSystem.generateErrorId(),
-            const id2 = errorSystem.generateErrorId(),
+            const id1 = errorSystem.generateErrorId();
+            const id2 = errorSystem.generateErrorId();
             expect(typeof id1').toBe('string'),'
             expect(typeof id2').toBe('string'),'
-            expect(id1).not.toBe(id2),
+            expect(id1).not.toBe(id2);
             expect(id1).toMatch(/^error_\d+_[a-z0-9]+$/) }');'
         test('ストレージ情報が取得される', () => {
-            const storageInfo = errorSystem.getStorageInfo(),
-            expect(storageInfo.available).toBe(true),
+            const storageInfo = errorSystem.getStorageInfo();
+            expect(storageInfo.available).toBe(true);
             expect(typeof storageInfo.quota').toBe('object'), // 非同期で設定されるためnull'
             expect(typeof storageInfo.usage').toBe('object') }');
         test('エラー処理が無効化できる', (') => {'
@@ -324,10 +324,10 @@ describe('ErrorNotificationSystem', () => {
             expect(errorSystem.errorHistory.length).toBe(0);
         }');'
         test('リソースが正しく解放される', (') => {'
-            expect(document.getElementById('error-notification-container').toBeTruthy(),
+            expect(document.getElementById('error-notification-container').toBeTruthy();
             errorSystem.destroy('),'
-            expect(document.getElementById('error-notification-container').toBeFalsy(),
-            expect(errorSystem.notificationContainer).toBe(null),
+            expect(document.getElementById('error-notification-container').toBeFalsy();
+            expect(errorSystem.notificationContainer).toBe(null);
             expect(errorSystem.errorHistory.length).toBe(0) }');'
         test('重要度別のタイムアウトが設定される', () => {
             jest.useFakeTimers('),'
@@ -346,7 +346,7 @@ describe('ErrorNotificationSystem', () => {
                 message: 'Warning error',
                 details: {},
                 actions: [],
-        timestamp: Date.now( };
+        timestamp: Date.now( },
             errorSystem.showErrorNotification(criticalError);
             errorSystem.showErrorNotification(warningError');'
             // 両方の通知が表示されることを確認
@@ -363,6 +363,6 @@ describe('ErrorNotificationSystem', () => {
             expect(criticalElement).toBeTruthy(');'
             expect(criticalElement.classList.contains('dismissing').toBe(false);
             jest.useRealTimers();
-        });
+        };
     }
 }');'

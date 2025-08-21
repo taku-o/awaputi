@@ -9,17 +9,17 @@ interface MockSceneManager {
 interface MockGameEngine {
     sceneManager: MockSceneManager | null }
 interface KeyEvent {
-    key: string,
+    key: string;
     preventDefault: jest.Mock<void, []> }
 // Mock SceneManager
 const mockSceneManager: MockSceneManager = {
-    switchScene: jest.fn( };
+    switchScene: jest.fn( },
 // Mock GameEngine
 const mockGameEngine: MockGameEngine = {
-    sceneManager: mockSceneManager,;
+    sceneManager: mockSceneManager,
 // Mock SettingsScene (essential parts);
 class MockSettingsScene {
-    gameEngine: MockGameEngine | undefined,
+    gameEngine: MockGameEngine | undefined;
     isEditingValue: boolean;
     showingConfirmDialog: boolean;
     constructor() {
@@ -41,7 +41,7 @@ class MockSettingsScene {
                     return }
                 const success = this.gameEngine.sceneManager.switchScene('menu');
                 if (!success') {'
-                    console.error('Failed to navigate to main menu, attempting fallback'),
+                    console.error('Failed to navigate to main menu, attempting fallback');
                     // フォールバックロジックや用户通知をここに追加可能
                 } catch (error') { : undefined'
                 console.error('Error navigating to main menu:', error') }'
@@ -49,12 +49,12 @@ class MockSettingsScene {
     }
 }
 describe('SettingsScene Navigation Tests', () => {
-    let settingsScene: MockSettingsScene,
-    let consoleErrorSpy: jest.SpyInstance,
+    let settingsScene: MockSettingsScene;
+    let consoleErrorSpy: jest.SpyInstance;
     beforeEach(() => {
         // Reset scene manager mock
-        mockSceneManager.switchScene.mockClear(),
-        mockSceneManager.switchScene.mockReturnValue(true),
+        mockSceneManager.switchScene.mockClear();
+        mockSceneManager.switchScene.mockReturnValue(true);
         // Reset mockGameEngine reference
         mockGameEngine.sceneManager = mockSceneManager,
         
@@ -65,19 +65,19 @@ describe('SettingsScene Navigation Tests', () => {
         consoleErrorSpy.mockRestore() }');'
     describe('goBack(') method', (') => {
         test('should call SceneManager.switchScene with correct scene name "menu", () => {'
-            mockSceneManager.switchScene.mockReturnValue(true),
-            settingsScene.goBack(),
+            mockSceneManager.switchScene.mockReturnValue(true);
+            settingsScene.goBack();
             expect(mockSceneManager.switchScene').toHaveBeenCalledWith('menu'),'
             expect(mockSceneManager.switchScene).toHaveBeenCalledTimes(1) }');'
         test('should not call SceneManager when editing value', () => {
             settingsScene.isEditingValue = true,
-            settingsScene.goBack(),
-            expect(mockSceneManager.switchScene).not.toHaveBeenCalled(),
+            settingsScene.goBack();
+            expect(mockSceneManager.switchScene).not.toHaveBeenCalled();
             expect(settingsScene.isEditingValue).toBe(false) }');'
         test('should not call SceneManager when showing confirm dialog', () => {
             settingsScene.showingConfirmDialog = true,
-            settingsScene.goBack(),
-            expect(mockSceneManager.switchScene).not.toHaveBeenCalled(),
+            settingsScene.goBack();
+            expect(mockSceneManager.switchScene).not.toHaveBeenCalled();
             expect(settingsScene.showingConfirmDialog).toBe(false) }');'
         test('should handle SceneManager unavailable error', () => {
             if (settingsScene.gameEngine) {
@@ -86,12 +86,12 @@ describe('SettingsScene Navigation Tests', () => {
             expect(consoleErrorSpy').toHaveBeenCalledWith('SceneManager not available');'
         }');'
         test('should handle navigation failure', () => {
-            mockSceneManager.switchScene.mockReturnValue(false),
-            settingsScene.goBack(),
+            mockSceneManager.switchScene.mockReturnValue(false);
+            settingsScene.goBack();
             expect(mockSceneManager.switchScene').toHaveBeenCalledWith('menu'),'
             expect(consoleErrorSpy').toHaveBeenCalledWith('Failed to navigate to main menu, attempting fallback') }');
         test('should handle SceneManager.switchScene throwing error', (') => {'
-            const error = new Error('SceneManager error'),
+            const error = new Error('SceneManager error');
             mockSceneManager.switchScene.mockImplementation(() => {
                 throw error });
             settingsScene.goBack();
@@ -99,12 +99,12 @@ describe('SettingsScene Navigation Tests', () => {
         }');'
         test('should handle undefined gameEngine', () => {
             settingsScene.gameEngine = undefined,
-            expect(() => settingsScene.goBack().not.toThrow(),
+            expect(() => settingsScene.goBack().not.toThrow();
             expect(consoleErrorSpy).toHaveBeenCalled() }');'
     }
     describe('ESC key handling simulation', (') => {'
         test('should trigger goBack when ESC is pressed (simulation')', (') => {
-            const goBackSpy = jest.spyOn(settingsScene, 'goBack'),
+            const goBackSpy = jest.spyOn(settingsScene, 'goBack');
             mockSceneManager.switchScene.mockReturnValue(true'),'
             // ESCキーハンドリングのシミュレーション
             const escKeyEvent: KeyEvent = { key: 'Escape', preventDefault: jest.fn(') };'
@@ -118,18 +118,18 @@ describe('SettingsScene Navigation Tests', () => {
     }
     describe('Error handling robustness', (') => {'
         test('should maintain scene state when navigation fails', () => {
-            mockSceneManager.switchScene.mockReturnValue(false),
+            mockSceneManager.switchScene.mockReturnValue(false);
             const initialEditingState = settingsScene.isEditingValue,
             const initialDialogState = settingsScene.showingConfirmDialog,
-            settingsScene.goBack(),
+            settingsScene.goBack();
             // シーン状態が保持されることを確認
-            expect(settingsScene.isEditingValue).toBe(initialEditingState),
+            expect(settingsScene.isEditingValue).toBe(initialEditingState);
             expect(settingsScene.showingConfirmDialog).toBe(initialDialogState) }');'
         test('should log appropriate error messages for debugging', () => {
-            mockSceneManager.switchScene.mockReturnValue(false),
-            settingsScene.goBack(),
+            mockSceneManager.switchScene.mockReturnValue(false);
+            settingsScene.goBack();
             expect(consoleErrorSpy').toHaveBeenCalledWith('
-                expect.stringContaining('Failed to navigate to main menu'});
-        });
+                expect.stringContaining('Failed to navigate to main menu'};
+        };
     }
 }');'

@@ -27,7 +27,7 @@ export class GameEngineEventManager {
      * @param eventName - イベント名
      * @param data - イベントデータ
      */
-    emit(eventName: string, data?: any): void { const listeners = this.gameEngine.eventListeners.get(eventName),
+    emit(eventName: string, data?: any): void { const listeners = this.gameEngine.eventListeners.get(eventName);
         if (listeners) {
             listeners.forEach(listener => { )
         }
@@ -36,7 +36,7 @@ export class GameEngineEventManager {
                 } catch (error) {
                     console.error(`[GameEngine] Error in event listener for ${eventName}:`, error);
                 }
-            });
+            };
         }
     }
     
@@ -45,9 +45,9 @@ export class GameEngineEventManager {
      * @param eventName - イベント名
      * @param listener - リスナー関数
      */
-    off(eventName: string, listener: Function): void { const listeners = this.gameEngine.eventListeners.get(eventName),
+    off(eventName: string, listener: Function): void { const listeners = this.gameEngine.eventListeners.get(eventName);
         if (listeners) {
-            const index = listeners.indexOf(listener),
+            const index = listeners.indexOf(listener);
             if (index !== -1) {
         }
                 listeners.splice(index, 1); }

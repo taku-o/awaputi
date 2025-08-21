@@ -13,28 +13,28 @@ export class StatisticsDashboard {
         // ダッシュボード設定
         this.config = {
             layout: {
-                rows: 3,
-                columns: 4,
+                rows: 3;
+                columns: 4;
     gridGap: 10 }
                 padding: 20 
     };
             widgets: { keyMetrics: {
-                    enabled: true,
+                    enabled: true;
                     span: { rows: 1, cols: 2  };
                     position: { row: 0, col: 0  };
-                recentAchievements: { enabled: true,
+                recentAchievements: { enabled: true;
                     span: { rows: 1, cols: 2  };
                     position: { row: 0, col: 2  };
-                growthTrends: { enabled: true,
+                growthTrends: { enabled: true;
                     span: { rows: 1, cols: 3  };
                     position: { row: 1, col: 0  };
-                playStyle: { enabled: true,
+                playStyle: { enabled: true;
                     span: { rows: 1, cols: 1  };
                     position: { row: 1, col: 3  };
-                performanceChart: { enabled: true,
+                performanceChart: { enabled: true;
                     span: { rows: 1, cols: 2  };
                     position: { row: 2, col: 0  };
-                statisticsBreakdown: { enabled: true,
+                statisticsBreakdown: { enabled: true;
                     span: { rows: 1, cols: 2  };
                     position: { row: 2, col: 2  }
             },
@@ -55,8 +55,8 @@ export class StatisticsDashboard {
                         recentAchievements: { span: { rows: 1, cols: 2  }, position: { row: 1, col: 0  };
                         growthTrends: { span: { rows: 1, cols: 1  }, position: { row: 2, col: 0  };
                         playStyle: { span: { rows: 1, cols: 1  }, position: { row: 2, col: 1  };
-                        performanceChart: { enabled: false,;
-                        statisticsBreakdown: { enabled: false,
+                        performanceChart: { enabled: false;
+                        statisticsBreakdown: { enabled: false;
         };
         // ウィジェット管理
         this.widgets = new Map();
@@ -64,12 +64,12 @@ export class StatisticsDashboard {
         // イベントハンドラ
         this.eventHandlers = new Map('''
             easing: 'ease-in-out';
-    stagger: 50,
+    stagger: 50;
         },
         
         // 更新状態管理
-        this.updateState = { isUpdating: false,
-            lastUpdateTime: 0,
+        this.updateState = { isUpdating: false;
+            lastUpdateTime: 0;
     updateInterval: 5000, // 5秒間隔;
             autoUpdate: false,))
         this.initialize();
@@ -89,10 +89,10 @@ export class StatisticsDashboard {
     createWidgets('';
         const widgetTypes = ['keyMetrics', 'recentAchievements', 'growthTrends', 'playStyle', 'performanceChart', 'statisticsBreakdown'];
         );
-        widgetTypes.forEach(type => {  ),
+        widgetTypes.forEach(type => {  );
             const widget = this.widgetRenderer.createWidget(type, this.statisticsManager, this.chartRenderer) }
             this.widgets.set(type, widget); }
-        });
+        };
     }
     
     /**
@@ -101,32 +101,26 @@ export class StatisticsDashboard {
     render(context, options = { ) {
         try {
             const canvas = context.canvas,
-            const currentConfig = this.getResponsiveConfig(canvas.width),
-            
+            const currentConfig = this.getResponsiveConfig(canvas.width);
             // レイアウトの計算
-            const layout = this.calculateLayout(canvas, currentConfig),
-            
+            const layout = this.calculateLayout(canvas, currentConfig);
             // 背景の描画
-            this.renderBackground(context, layout, options),
-            
+            this.renderBackground(context, layout, options);
             // ウィジェットの描画
-            const renderPromises = this.renderWidgets(context, layout, currentConfig, options),
-            
+            const renderPromises = this.renderWidgets(context, layout, currentConfig, options);
             // アニメーション対応
             if (this.animationConfig.enabled && options.animated) {
     }
                 return this.animateWidgets(renderPromises);
 
             return Promise.all(renderPromises).then(results => ({ ')'
-                type: 'dashboard',
-    widgets: results),
-                layout: layout,
-    timestamp: Date.now(  });
-
+                type: 'dashboard';
+    widgets: results);
+                layout: layout;
+    timestamp: Date.now(  };
         } catch (error) {
-            console.error('Dashboard rendering failed:', error),
-            return this.renderErrorDashboard(context, error),
-    
+            console.error('Dashboard rendering failed:', error);
+            return this.renderErrorDashboard(context, error);
     /**
      * レスポンシブ設定の取得
      */
@@ -163,12 +157,12 @@ export class StatisticsDashboard {
             const width = (cellWidth * span.cols) + (gridGap * (span.cols - 1);
             const height = (cellHeight * span.rows) + (gridGap * (span.rows - 1));
             
-            widgetAreas[name] = { x, y, width, height });
+            widgetAreas[name] = { x, y, width, height };
         
         const layoutResult = {
             canvas: { width: canvas.width, height: canvas.height  };
             grid: { rows, columns, cellWidth, cellHeight, gridGap, padding };
-            widgets: widgetAreas,
+            widgets: widgetAreas;
         },
         
         this.layoutCache.set(cacheKey, layoutResult);
@@ -183,8 +177,7 @@ export class StatisticsDashboard {
         ','
         // 背景色
         context.fillStyle = options.backgroundColor || '#F8FAFC',
-        context.fillRect(0, 0, canvas.width, canvas.height),
-        
+        context.fillRect(0, 0, canvas.width, canvas.height);
         // グリッドの描画（デバッグ時）
         if (options.showGrid) {
     }
@@ -206,8 +199,8 @@ export class StatisticsDashboard {
         // 垂直線
         for(let, col = 0; col <= grid.columns; col++) {
             const x = grid.padding + (col * (grid.cellWidth + grid.gridGap)) - (grid.gridGap / 2),
-            context.beginPath(),
-            context.moveTo(x, grid.padding),
+            context.beginPath();
+            context.moveTo(x, grid.padding);
             context.lineTo(x, layout.canvas.height - grid.padding) }
             context.stroke(); }
         }
@@ -215,8 +208,8 @@ export class StatisticsDashboard {
         // 水平線
         for(let, row = 0; row <= grid.rows; row++) {
             const y = grid.padding + (row * (grid.cellHeight + grid.gridGap)) - (grid.gridGap / 2),
-            context.beginPath(),
-            context.moveTo(grid.padding, y),
+            context.beginPath();
+            context.moveTo(grid.padding, y);
             context.lineTo(layout.canvas.width - grid.padding, y) }
             context.stroke(); }
         }
@@ -233,12 +226,12 @@ export class StatisticsDashboard {
         Object.entries(config.widgets).forEach(([name, widgetConfig]) => { 
             if (!widgetConfig.enabled) return,
             
-            const widget = this.widgets.get(name),
+            const widget = this.widgets.get(name);
             const area = layout.widgets[name],
 
             if (widget && area) {
                 // サブコンテキストの作成
-                const subCanvas = document.createElement('canvas'),
+                const subCanvas = document.createElement('canvas');
                 subCanvas.width = area.width,
 
                 subCanvas.height = area.height,
@@ -246,20 +239,20 @@ export class StatisticsDashboard {
                 
                 // ウィジェットのレンダリング
                 const renderPromise = widget.render(subContext, {
-                ...options),
-                    area: area),
+                ...options);
+                    area: area);
                     name: name).then(result => {)
     )
                     // メインキャンバスに描画) }
                     context.drawImage(subCanvas, area.x, area.y); }
-                    return { name, result, area }).catch(error => { ) }
+                    return { name, result, area }.catch(error => { ) }
                     console.error(`Widget ${name} rendering failed:`, error);
                     this.renderWidgetError(context, area, name, error);
-                    return { name, error: error.message, area });
+                    return { name, error: error.message, area };
                 
                 renderPromises.push(renderPromise);
             }
-        });
+        };
         
         return renderPromises;
     }
@@ -270,13 +263,13 @@ export class StatisticsDashboard {
     renderWidgetError(context, area, name, error) {
         // エラー背景
         context.fillStyle = '#FEE2E2',
-        context.fillRect(area.x, area.y, area.width, area.height),
+        context.fillRect(area.x, area.y, area.width, area.height);
         ','
         // エラー枠線
         context.strokeStyle = '#DC2626',
 
         context.lineWidth = 2,
-        context.strokeRect(area.x, area.y, area.width, area.height),
+        context.strokeRect(area.x, area.y, area.width, area.height);
         ','
         // エラーメッセージ
         context.fillStyle = '#DC2626',
@@ -289,7 +282,7 @@ export class StatisticsDashboard {
 
         context.fillText(`${name} エラー`, centerX, centerY - 10};' }'
 
-        context.fillText(error.slice(0, 30) + '...', centerX, centerY + 10});
+        context.fillText(error.slice(0, 30) + '...', centerX, centerY + 10};
     }
     
     /**
@@ -308,16 +301,16 @@ export class StatisticsDashboard {
                         ','
                         if (completedCount === renderPromises.length) {
                             resolve({''
-                                type: 'dashboard',
+                                type: 'dashboard';
     widgets: results,)
                                 animated: true) }
                                 timestamp: Date.now(); 
-    });
+    };
                         }
-                    });
+                    };
                 }, index * this.animationConfig.stagger);
-            });
-        });
+            };
+        };
     }
     
     /**
@@ -330,7 +323,7 @@ export class StatisticsDashboard {
         ','
         // 背景
         context.fillStyle = '#F8FAFC',
-        context.fillRect(0, 0, canvas.width, canvas.height),
+        context.fillRect(0, 0, canvas.width, canvas.height);
         ','
         // エラーアイコン
         context.fillStyle = '#EF4444',
@@ -342,14 +335,14 @@ export class StatisticsDashboard {
         context.fillStyle = '#374151',
         context.font = '16px system-ui, -apple-system, sans-serif',
         context.fillText('ダッシュボードの読み込みに失敗しました', centerX, centerY + 20','
-        context.fillText(error.message, centerX, centerY + 40),
+        context.fillText(error.message, centerX, centerY + 40);
         ','
 
         return Promise.resolve({)'
-            type: 'dashboard'),
+            type: 'dashboard');
             error: error.message) }
             timestamp: Date.now(); 
-    });
+    };
     }
     
     /**
@@ -401,7 +394,7 @@ export class StatisticsDashboard {
                 if(typeof, widget.refreshData === 'function' { }'
                     return widget.refreshData();
                 return Promise.resolve();
-            });
+            };
             ';'
 
             await Promise.all(updatePromises);
@@ -423,7 +416,7 @@ export class StatisticsDashboard {
 
             window.addEventListener('resize', () => {  }
                 this.layoutCache.clear(); }
-            });
+            };
         }
     }
     
@@ -439,7 +432,7 @@ export class StatisticsDashboard {
             } catch (error) {
                 console.error(`Event handler error for ${eventName}:`, error);
             }
-        });
+        };
     }
     
     /**
@@ -457,9 +450,9 @@ export class StatisticsDashboard {
      * イベントリスナーの削除
      */
     off(eventName, handler) {
-        const handlers = this.eventHandlers.get(eventName),
+        const handlers = this.eventHandlers.get(eventName);
         if (handlers) {
-            const index = handlers.indexOf(handler),
+            const index = handlers.indexOf(handler);
             if (index > -1) {
     }
                 handlers.splice(index, 1); }
@@ -470,9 +463,8 @@ export class StatisticsDashboard {
      * ダッシュボードの破棄
      */
     destroy() {
-        this.stopAutoUpdate(),
-        this.widgets.clear(),
-
+        this.stopAutoUpdate();
+        this.widgets.clear();
         this.layoutCache.clear() }
 
         this.eventHandlers.clear() }'

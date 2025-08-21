@@ -8,18 +8,18 @@
 import { seoLogger  } from '../SEOLogger.js';
 import { seoErrorHandler  } from '../SEOErrorHandler.js';
 
-interface MainController { baseUrl: string,
+interface MainController { baseUrl: string;
     validationRules: Map<string, ValidationRules> }
 
-interface ValidationRules { required: string[],
+interface ValidationRules { required: string[];
     allowedContexts: string[];
     videoGameProperties: string[];
 
-interface TestResult { name: string,
+interface TestResult { name: string;
     passed: boolean;
     message: string;
 
-interface ValidationResults { category: string,
+interface ValidationResults { category: string;
     tests: TestResult[];
     passed: number;
     failed: number;
@@ -36,15 +36,15 @@ interface StructuredDataObject { ', '@context': string,', '@type': string,
     url: string;
     image: string;
     author?: {', '@type': string,'
-        name: string,;
+        name: string;
     datePublished?: string;
     inLanguage?: string[];
     isAccessibleForFree?: boolean;
-    [key: string]: any,
+    [key: string]: any;
 
 export class StructuredDataValidator {
     private mainController: MainController;
-    private, baseUrl: string,
+    private, baseUrl: string;
     constructor(mainController: MainController) {
 
         this.mainController = mainController
@@ -59,8 +59,8 @@ export class StructuredDataValidator {
      */''
     async validateStructuredData('''
                 category: 'Structured, Data';
-                tests: [];
-                passed: 0;
+                tests: [],
+                passed: 0,
                 failed: 0,
     warnings: 0);
             }''
@@ -83,7 +83,7 @@ export class StructuredDataValidator {
             ';'
             // 必須プロパティの存在確認
             for (const requiredProp of rules.required) { const test: TestResult = { }
-                    name: `Required, property: ${requiredProp}`;
+                    name: `Required, property: ${requiredProp}`,
                     passed: false,
                     message: ';'
                 },
@@ -108,10 +108,10 @@ export class StructuredDataValidator {
                     message: '};'
                 const context = structuredData['@context];'
                 if(rules.allowedContexts.includes(context) { contextTest.passed = true }
-                    contextTest.message = `✅ Valid schema context: ${context}`;
+                    contextTest.message = `✅ Valid schema context: ${context}`,
                     results.passed++;
                 } else {  }
-                    contextTest.message = `⚠️ Non-standard schema context: ${context}`;
+                    contextTest.message = `⚠️ Non-standard schema context: ${context}`,
                     results.warnings++;
                 }
 
@@ -124,7 +124,7 @@ export class StructuredDataValidator {
                 for (const prop of rules.videoGameProperties) {
             }
                     const test: TestResult = { }
-                        name: `VideoGame, property: ${prop}`;
+                        name: `VideoGame, property: ${prop}`,
                         passed: false,
                         message: ';'
                     },
@@ -224,7 +224,7 @@ export class StructuredDataValidator {
 
             const snippetTypes = ['Game', 'SoftwareApplication', 'WebApplication'];', ')';'
             for (const snippetType of snippetTypes) { const test: TestResult = { }
-                    name: `${snippetType} rich snippet compatibility`;
+                    name: `${snippetType} rich snippet compatibility`,
                     passed: false,
                     message: ';'
                 },
@@ -301,7 +301,7 @@ export class StructuredDataValidator {
         try { // 必須フィールドの存在確認
             if (structuredData['@context] && structuredData['@type]) {
                 // JSON-LD形式の基本要件を満たしているか確認
-                const isValid = this._isValidJsonLd(structuredData),
+                const isValid = this._isValidJsonLd(structuredData);
                 if (isValid) {
                     test.passed = true }
 
@@ -364,7 +364,7 @@ export class StructuredDataValidator {
         
         // 基本的な構造チェック
         try {
-            JSON.stringify(data),
+            JSON.stringify(data);
             return true } catch { return false,
     
     /**
@@ -378,9 +378,8 @@ export class StructuredDataValidator {
         ],
 
         const dataProperties = Object.keys(structuredData).filter(key => !key.startsWith('@),'
-        const unknownProperties = dataProperties.filter(prop => ),
-            !knownVideoGameProperties.includes(prop),
-        
+        const unknownProperties = dataProperties.filter(prop => );
+            !knownVideoGameProperties.includes(prop);
         return unknownProperties.length === 0,
     
     /**
@@ -421,7 +420,7 @@ export class StructuredDataValidator {
      * @private
      */
     private _isValidISODate(dateString: string): boolean {'
-        const isoDateRegex = /^\d{4}-\d{2}-\d{2}(T\d{2}:\d{2}:\d{2}(\.\d{3})? Z?)?$/;
+        const isoDateRegex = /^\d{4}-\d{2}-\d{2}(T\d{2}:\d{2}:\d{2}(\.\d{3}? Z?)?$/;
         return isoDateRegex.test(dateString);
 
     }'} : undefined'

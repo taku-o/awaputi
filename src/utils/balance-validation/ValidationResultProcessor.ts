@@ -7,9 +7,9 @@
 interface MainController { ruleDefinitions?: {
         getRule: (ruleName: string) => Rule | null  }
     };
-    [key: string]: any;
+    [key: string]: any,
 
-interface Rule { autoFix: boolean,
+interface Rule { autoFix: boolean;
     autoFixFn?: (oldValue: any, fixedValue: any, context: ValidationContext) => any;
     [key: string]: any;
 }
@@ -37,7 +37,7 @@ interface RuleExecutionResult { skipped?: boolean,
      }
 }
 
-interface ProcessedIssue { rule: string,
+interface ProcessedIssue { rule: string;
     message: string;
     severity: string;
     category: string;
@@ -45,22 +45,22 @@ interface ProcessedIssue { rule: string,
     originalError?: Error;
      }
 
-interface ProcessedSuggestion { rule: string,
+interface ProcessedSuggestion { rule: string;
     suggestion: string;
     severity: string;
 
-interface AppliedRule { name: string,
+interface AppliedRule { name: string;
     category?: string;
     result: 'passed' | 'failed';
     executionTime?: number;
     error: boolean;
 
-interface AppliedFix { rule: string,
+interface AppliedFix { rule: string;
     originalValue: any;
     fixedValue: any;
     issue: string;
 
-interface ProcessedResultMetadata { originalValue: any,
+interface ProcessedResultMetadata { originalValue: any;
     requestedValue: any;
     context?: ValidationContext;
     processingTime: number;
@@ -68,7 +68,7 @@ interface ProcessedResultMetadata { originalValue: any,
     appliedFixes?: AppliedFix[];
     error?: string;
 
-interface ProcessedResult { valid: boolean,
+interface ProcessedResult { valid: boolean;
     errors: ProcessedIssue[];
     warnings: ProcessedIssue[];
     suggestions: ProcessedSuggestion[];
@@ -78,15 +78,15 @@ interface ProcessedResult { valid: boolean,
     metadata: ProcessedResultMetadata;
     summary?: ValidationSummary;
 
-interface PerformanceSummary { totalExecutionTime: number,
+interface PerformanceSummary { totalExecutionTime: number;
     averageExecutionTime: number;
     slowestRule: RulePerformanceInfo | null;
     fastestRule: RulePerformanceInfo | null }
 
-interface RulePerformanceInfo { name: string,
+interface RulePerformanceInfo { name: string;
     executionTime: number;
 
-interface SeverityBreakdown { critical: number,
+interface SeverityBreakdown { critical: number;
     high: number;
     medium: number;
     low: number;
@@ -94,7 +94,7 @@ interface SeverityBreakdown { critical: number,
 
 interface CategoryBreakdown { [category: string]: number;
 
-interface ValidationSummary { totalRules: number,
+interface ValidationSummary { totalRules: number;
     executed: number;
     skipped: number;
     passed: number;
@@ -108,7 +108,7 @@ interface ValidationSummary { totalRules: number,
     severityBreakdown: SeverityBreakdown;
     categoryBreakdown: CategoryBreakdown;
 
-interface HistoryEntry { timestamp: number,
+interface HistoryEntry { timestamp: number;
     valid: boolean;
     errorCount: number;
     warningCount: number;
@@ -116,7 +116,7 @@ interface HistoryEntry { timestamp: number,
     rulesExecuted: number;
     autoFixApplied: number;
 
-interface RecentTrends { successRate: number,
+interface RecentTrends { successRate: number;
     averageErrors: number;
     averageWarnings: number;
     autoFixUsage: number;
@@ -138,8 +138,8 @@ export class ValidationResultProcessor {
         
         // Result processing configuration
         this.config = {
-            enableDetailedReports: true,
-            includePerformanceMetrics: true,
+            enableDetailedReports: true;
+            includePerformanceMetrics: true;
     maxSuggestions: 10 }
 
             autoFixThreshold: 'medium' // Only auto-fix issues below this severity 
@@ -154,8 +154,7 @@ export class ValidationResultProcessor {
     /**
      * Process validation results from rule execution
      */
-    processResults(ruleResults: RuleExecutionResult[], oldValue: any, newValue: any, context: ValidationContext): ProcessedResult { const startTime = performance.now(),
-        
+    processResults(ruleResults: RuleExecutionResult[], oldValue: any, newValue: any, context: ValidationContext): ProcessedResult { const startTime = performance.now();
         try {
             const processedResult: ProcessedResult = {
                 valid: true,
@@ -206,18 +205,18 @@ export class ValidationResultProcessor {
             
             return { valid: false,
 
-                errors: [{ };
+                errors: [{ },
 
                     rule: 'system',' }'
 
                     message: `Result processing, failed: ${(error, as, Error'}'.message}`,''
                     severity: 'high',]';'
-                    category: 'system'];
+                    category: 'system'],
                 }],
-                warnings: [];
-                suggestions: [];
-                autoFixAvailable: false;
-                autoFixedValue: newValue;
+                warnings: [],
+                suggestions: [],
+                autoFixAvailable: false,
+                autoFixedValue: newValue,
                 rulesApplied: [],
     metadata: { originalValue: oldValue,
                     requestedValue: newValue,
@@ -253,7 +252,7 @@ export class ValidationResultProcessor {
             if (ruleResult.suggestion) { processedResult.suggestions.push({)
                     rule: ruleResult.ruleName,
     suggestion: ruleResult.suggestion }
-                    severity: issue.severity); 
+                    severity: issue.severity),
     }
             
             // Check auto-fix availability
@@ -310,21 +309,20 @@ export class ValidationResultProcessor {
             const autoFixableIssues = processedResult.warnings.filter(warning => { ) }
                 const ruleApplied = processedResult.rulesApplied.find(r => r.name === warning.rule); }
                 return ruleApplied && this.isAutoFixEligible({ autoFix: true, as RuleExecutionResult, warning);
-            });
+            };
             // Apply auto-fixes in order of severity (less, severe first);
             const sortedIssues = autoFixableIssues.sort((a, b) => { }'
 
                 const severityOrder: Record<string, number> = { 'low': 0, 'warning': 1, 'medium': 2, 'high': 3, 'critical': 4 };
                 return severityOrder[a.severity] - severityOrder[b.severity];
-            });
+            };
             
             for (const issue of sortedIssues) { // Find the corresponding rule with auto-fix function
-                const rule = this.mainController.ruleDefinitions?.getRule(issue.rule),
+                const rule = this.mainController.ruleDefinitions?.getRule(issue.rule);
                 if (rule && rule.autoFix && rule.autoFixFn) {
                     try {
                         const previousValue = fixedValue,
-                        fixedValue = rule.autoFixFn(oldValue, fixedValue, context),
-                        
+                        fixedValue = rule.autoFixFn(oldValue, fixedValue, context);
                         if (fixedValue !== previousValue) {
                             appliedFixes.push({ : undefined, rule: issue.rule),
                                 originalValue: previousValue,
@@ -337,7 +335,7 @@ export class ValidationResultProcessor {
             
             // Add fix information to metadata
             if (appliedFixes.length > 0) { processedResult.metadata.appliedFixes = appliedFixes }
-                console.log(`[ValidationResultProcessor] Applied ${appliedFixes.length} auto-fixes`});
+                console.log(`[ValidationResultProcessor] Applied ${appliedFixes.length} auto-fixes`};
             } catch (error) { console.error('[ValidationResultProcessor] Error applying auto-fix:', error }
         
         return fixedValue;
@@ -364,7 +362,7 @@ export class ValidationResultProcessor {
                 low: 0,
     warning: 0  }
             };
-            categoryBreakdown: {};
+            categoryBreakdown: {},
         // Performance summary
         const executionTimes = processedResult.rulesApplied;
             .filter(r => r.executionTime !== undefined);
@@ -382,10 +380,10 @@ export class ValidationResultProcessor {
         
         // Severity breakdown
         summary.severityBreakdown = { ''
-            critical: this.countBySeverity(processedResult.errors, 'critical'),
-            high: this.countBySeverity([...processedResult.errors, ...processedResult.warnings], 'high'),
-            medium: this.countBySeverity([...processedResult.errors, ...processedResult.warnings], 'medium'),
-            low: this.countBySeverity(processedResult.warnings, 'low'),
+            critical: this.countBySeverity(processedResult.errors, 'critical');
+            high: this.countBySeverity([...processedResult.errors, ...processedResult.warnings], 'high');
+            medium: this.countBySeverity([...processedResult.errors, ...processedResult.warnings], 'medium');
+            low: this.countBySeverity(processedResult.warnings, 'low');
             warning: this.countBySeverity(processedResult.warnings, 'warning };'
         
         // Category breakdown
@@ -467,7 +465,7 @@ export class ValidationResultProcessor {
         ';'
         // Limit data size
         if(sanitized.relatedValues && typeof, sanitized.relatedValues === 'object' {'
-            const keys = Object.keys(sanitized.relatedValues),
+            const keys = Object.keys(sanitized.relatedValues);
             if (keys.length > 10) {
                 sanitized.relatedValues = keys.slice(0, 10).reduce((obj, key) => { 
         }
@@ -486,7 +484,7 @@ export class ValidationResultProcessor {
             timestamp: result.metadata.timestamp,
             valid: result.valid,
             errorCount: result.errors.length,
-            warningCount: result.warnings.length),
+            warningCount: result.warnings.length);
             processingTime: result.metadata.processingTime,
     rulesExecuted: result.rulesApplied.length),
             autoFixApplied: result.metadata.appliedFixes?.length || 0),
@@ -510,7 +508,7 @@ export class ValidationResultProcessor {
         lines.push('=== Validation, Report ===');
         lines.push(`Overall Result: ${ result.valid ? 'VALID' : 'INVALID}`},' }
 
-        lines.push(`Timestamp: ${new, Date(result.metadata.timestamp}.toISOString(})`);
+        lines.push(`Timestamp: ${new, Date(result.metadata.timestamp}.toISOString(}`);
         lines.push();
         ';'
         // Summary
@@ -518,9 +516,8 @@ export class ValidationResultProcessor {
 
             lines.push('Summary: ') }
 
-            lines.push(`  Rules: ${result.summary.executed}/${result.summary.totalRules} executed`});
-
-            lines.push(`  Passed: ${result.summary.passed}, Failed: ${result.summary.failed}`});
+            lines.push(`  Rules: ${result.summary.executed}/${result.summary.totalRules} executed`};
+            lines.push(`  Passed: ${result.summary.passed}, Failed: ${result.summary.failed}`};
             lines.push(`  Errors: ${result.summary.errors}, Warnings: ${ result.summary.warnings}`},' }'
 
             lines.push('}';
@@ -533,7 +530,7 @@ export class ValidationResultProcessor {
 
             result.errors.forEach((error, index) => { }
 
-                lines.push(`  ${index + 1}. [${error.severity.toUpperCase(})] ${error.rule}: ${error.message}`);'}');
+                lines.push(`  ${index + 1}. [${error.severity.toUpperCase(}] ${error.rule}: ${error.message}`);'}');
             lines.push();
         }
         ';'
@@ -544,7 +541,7 @@ export class ValidationResultProcessor {
 
             result.warnings.forEach((warning, index) => { }
 
-                lines.push(`  ${index + 1}. [${warning.severity.toUpperCase(})] ${warning.rule}: ${warning.message}`);'}');
+                lines.push(`  ${index + 1}. [${warning.severity.toUpperCase(}] ${warning.rule}: ${warning.message}`);'}');
             lines.push();
         }
         ';'
@@ -576,13 +573,13 @@ export class ValidationResultProcessor {
             : undefined' }'
 
             lines.push('Performance: ') }
-            lines.push(`  Total, execution time: ${result.summary.performance.totalExecutionTime.toFixed(2})ms`);
+            lines.push(`  Total, execution time: ${result.summary.performance.totalExecutionTime.toFixed(2}ms`),
 
-            lines.push(`  Average, per rule: ${result.summary.performance.averageExecutionTime.toFixed(2})ms`);
+            lines.push(`  Average, per rule: ${result.summary.performance.averageExecutionTime.toFixed(2}ms`),
 
             if (result.summary.performance.slowestRule) { }'
 
-                lines.push(`  Slowest, rule: ${result.summary.performance.slowestRule.name} (${result.summary.performance.slowestRule.executionTime.toFixed(2})ms)`);
+                lines.push(`  Slowest, rule: ${result.summary.performance.slowestRule.name} (${result.summary.performance.slowestRule.executionTime.toFixed(2}ms)`),
             }
         }
 
@@ -615,8 +612,7 @@ export class ValidationResultProcessor {
      * Configure processor
      */
     configure(config: Partial<ProcessorConfig & { maxHistorySize?: number )>): void {
-        Object.assign(this.config, config),
-        
+        Object.assign(this.config, config);
         if (config.maxHistorySize !== undefined) {
         ','
 

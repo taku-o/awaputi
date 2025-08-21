@@ -1,24 +1,24 @@
 // Type definitions
-interface PerformanceDataAnalyzer { errorHandler: any,
+interface PerformanceDataAnalyzer { errorHandler: any;
     baselineCalibrated: boolean;
     calibrationTarget: number;
     performanceBaseline: Map<string, number>;
     analysisConfig: {
-        adaptiveThreshold,s: boolean,
+        adaptiveThreshold,s: boolean;
 
-interface DataPoint { timestamp: number,
+interface DataPoint { timestamp: number;
     metrics: Map<string, any>;
     collectedAt?: number;
     collector?: string;
 
-interface CollectionStats { historySize: number,
+interface CollectionStats { historySize: number;
     calibrationSamples: number;
     calibrationComplete: boolean;
     calibrationProgress: number;
     oldestDataPoint: number | null;
     newestDataPoint: number | null  }
 
-interface ExportData { exportedAt: number,
+interface ExportData { exportedAt: number;
     timeWindow: number | null;
     dataPoints: number;
     data: Array<{
@@ -81,7 +81,7 @@ export class PerformanceMetricsCollector {
      */
     addToAnalysisHistory(timestamp: number, metrics: Map<string, any>): void { const dataPoint: DataPoint = {
             timestamp,
-            metrics: new Map(metrics  };
+            metrics: new Map(metrics  },
         
         this.analysisHistory.push(dataPoint);
         
@@ -93,8 +93,8 @@ export class PerformanceMetricsCollector {
     /**
      * Get recent analysis data
      */
-    getRecentAnalysisData(timeWindow: number): DataPoint[] { const now = Date.now(),
-        return this.analysisHistory.filter(point => ),
+    getRecentAnalysisData(timeWindow: number): DataPoint[] { const now = Date.now();
+        return this.analysisHistory.filter(point => );
             now - point.timestamp < timeWindow) }
     }
     
@@ -103,8 +103,7 @@ export class PerformanceMetricsCollector {
      */
     updatePerformanceBaseline(metrics: Map<string, any>): void { if (!this.mainController.baselineCalibrated) {
             // Collect calibration samples
-            this.calibrationSamples.push(new, Map(metrics),
-            
+            this.calibrationSamples.push(new, Map(metrics);
             if (this.calibrationSamples.length >= this.mainController.calibrationTarget) {
     
 }
@@ -131,7 +130,7 @@ export class PerformanceMetricsCollector {
         
         // Set baseline values
         for(const [metricId, sum] of metricSums) {
-            const count = metricCounts.get(metricId),
+            const count = metricCounts.get(metricId);
             if (count) {
         }
 
@@ -163,7 +162,7 @@ export class PerformanceMetricsCollector {
      */'
     validateMetrics(metrics: Map<string, any>): boolean { ''
         if(!(metrics, instanceof Map)) {''
-            console.warn('[PerformanceMetricsCollector] Invalid, metrics format - expected, Map'),
+            console.warn('[PerformanceMetricsCollector] Invalid, metrics format - expected, Map');
             return false }
         ';'
 
@@ -202,17 +201,15 @@ export class PerformanceMetricsCollector {
                         break,
                     case 'memory_used':','
                         // Ensure memory is positive
-                        normalizedValue = Math.max(0, value),
-
+                        normalizedValue = Math.max(0, value);
                         break,
                     case 'frame_time':','
                         // Ensure frame time is positive
-                        normalizedValue = Math.max(0, value),
-
+                        normalizedValue = Math.max(0, value);
                         break,
                     case 'network_latency':','
                         // Ensure latency is positive
-                        normalizedValue = Math.max(0, value),
+                        normalizedValue = Math.max(0, value);
                         break,
 
                     default:','
@@ -236,7 +233,7 @@ export class PerformanceMetricsCollector {
             metrics: new Map(metrics,
             collectedAt: Date.now('}'
 
-            collector: 'PerformanceMetricsCollector' }))
+            collector: 'PerformanceMetricsCollector' })
     }
     
     /**
@@ -274,7 +271,7 @@ export class PerformanceMetricsCollector {
         return { exportedAt: Date.now(
             timeWindow,
             dataPoints: dataToExport.length data: dataToExport.map(point = > ({)
-                timestamp: point.timestamp  };
+                timestamp: point.timestamp  },
                 metrics: Object.fromEntries(point.metrics'), '
     }');'
         }
@@ -289,8 +286,7 @@ export class PerformanceMetricsCollector {
             
             const importedPoints: DataPoint[] = importData.data.map(point => ({ )
                 timestamp: point.timestamp,
-    metrics: new Map(Object.entries(point.metrics });
-            
+    metrics: new Map(Object.entries(point.metrics };
             this.analysisHistory.push(...importedPoints);
             
             // Sort by timestamp

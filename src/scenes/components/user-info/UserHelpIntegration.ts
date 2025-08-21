@@ -7,30 +7,30 @@
 import { AchievementHelpSystem  } from '../../../ui/AchievementHelpSystem.js';
 
 // ヘルプセクションのインターフェース
-interface HelpSection { id: string,
+interface HelpSection { id: string;
     name: string;
     icon: string;
 
 // ヘルプコンテンツのインターフェース
-interface HelpContent { title: string,
+interface HelpContent { title: string;
     content: string[] | string }
 
 // ヘルプコンテンツマップのインターフェース
 interface HelpContentMap { [sectionId: string]: HelpContent;
 
 // ヘルプシステム状態のインターフェース
-interface HelpSystemStatus { isActive: boolean,
+interface HelpSystemStatus { isActive: boolean;
     currentSection: string;
     hasContent: boolean;
     availableSections: number;
     systemType: string;
 
 // ゲームエンジンのインターフェース
-interface GameEngine { canvas: HTMLCanvasElement,
+interface GameEngine { canvas: HTMLCanvasElement;
     achievementManager?: any;
 
 // イベントバスのインターフェース
-interface EventBus { on(event: string, callback: (data?: any) => void): void,
+interface EventBus { on(event: string, callback: (data?: any) => void): void;
     off(event: string, callback?: (data?: any) => void): void;
     emit(event: string, data?: any): void;
 
@@ -67,7 +67,7 @@ export class UserHelpIntegration {
     ];
     
     // レイアウト設定
-    private contentPadding: number = 20;
+    private contentPadding: number = 20,
     constructor(gameEngine: GameEngine, eventBus: EventBus, sceneState: SceneState) {
 
         this.gameEngine = gameEngine;
@@ -81,7 +81,7 @@ export class UserHelpIntegration {
     /**
      * コンポーネントの初期化
      */
-    private initialize(): void { this.initializeHelpSystem(),
+    private initialize(): void { this.initializeHelpSystem();
         this.loadHelpContent() }
     
     /**
@@ -124,7 +124,7 @@ export class UserHelpIntegration {
                 this.isHelpSystemActive = false;' }'
 
             } catch (error) {
-            console.warn('Failed to initialize help system:', error),
+            console.warn('Failed to initialize help system:', error);
             this.helpSystem = null;
             this.isHelpSystemActive = false }
     }
@@ -144,7 +144,7 @@ export class UserHelpIntegration {
                 this.eventBus.emit('helpContentLoaded', this.helpContent'; }'
 
             } catch (error) {
-            console.error('Failed to load help content:', error),
+            console.error('Failed to load help content:', error);
             this.helpContent = this.generateErrorHelpContent() }
     }
     
@@ -152,7 +152,7 @@ export class UserHelpIntegration {
      * ヘルプコンポーネントでの描画
      */
     public renderHelpWithComponent(;
-        context: CanvasRenderingContext2D;
+        context: CanvasRenderingContext2D,
         y: number ,
     height: number);
         helpTabComponent?: any;
@@ -199,11 +199,11 @@ export class UserHelpIntegration {
      * ヘルプセクション選択UIを描画
      */
     private renderHelpSectionSelector(;
-        context: CanvasRenderingContext2D;
+        context: CanvasRenderingContext2D,
         x: number );
         y: number,
-    width: number;
-    ): number { const buttonWidth = Math.min(100, width / this.helpSections.length - 10),
+    width: number,
+    ): number { const buttonWidth = Math.min(100, width / this.helpSections.length - 10);
         const buttonHeight = 35,
         
         let currentX = x,
@@ -214,21 +214,20 @@ export class UserHelpIntegration {
             ','
             // ボタン背景
             context.fillStyle = isActive ? '#4CAF50' : '#2196F3',
-            context.fillRect(currentX, y, buttonWidth, buttonHeight),
+            context.fillRect(currentX, y, buttonWidth, buttonHeight);
             ','
             // ボタン枠線
             context.strokeStyle = '#333',
 
             context.lineWidth = 1,
-            context.strokeRect(currentX, y, buttonWidth, buttonHeight),
+            context.strokeRect(currentX, y, buttonWidth, buttonHeight);
             ','
             // ボタンテキスト
             context.fillStyle = '#ffffff',
             context.font = '12px Arial',
             context.textAlign = 'center',
-            context.fillText(section.icon, currentX + buttonWidth / 2, y + 12),
-            context.fillText(section.name, currentX + buttonWidth / 2, y + 28),
-            
+            context.fillText(section.icon, currentX + buttonWidth / 2, y + 12);
+            context.fillText(section.name, currentX + buttonWidth / 2, y + 28);
             currentX += buttonWidth + 10,
             
             // 改行処理（必要に応じて）
@@ -248,7 +247,7 @@ export class UserHelpIntegration {
     x: number, ;
         y: number );
         width: number,
-    height: number;
+    height: number,
     ): void { if (!this.helpContent) return,
         
         const content = this.helpContent[this.currentHelpSection],
@@ -257,13 +256,13 @@ export class UserHelpIntegration {
         ','
         // セクション背景
         context.fillStyle = '#16213e',
-        context.fillRect(x, y, width, height),
+        context.fillRect(x, y, width, height);
         ','
         // セクション枠線
         context.strokeStyle = '#333',
 
         context.lineWidth = 1,
-        context.strokeRect(x, y, width, height),
+        context.strokeRect(x, y, width, height);
         ','
         // セクションタイトル
         context.fillStyle = '#ffffff',
@@ -325,14 +324,14 @@ export class UserHelpIntegration {
         maxWidth: number)','
     lineHeight: number';'
     '): void { ''
-        const words = text.split(', '),
+        const words = text.split(', ');
         let line = ','
         let currentY = y,
 
         for(let, n = 0, n < words.length, n++) {
 
             const testLine = line + words[n] + ', ',
-            const metrics = context.measureText(testLine),
+            const metrics = context.measureText(testLine);
             const testWidth = metrics.width,
 
             ','
@@ -373,7 +372,7 @@ export class UserHelpIntegration {
      */
     public handleHelpSectionClick(x: number, y: number): boolean { const canvas = this.gameEngine.canvas,
         const contentWidth = canvas.width - this.contentPadding * 2,
-        const buttonWidth = Math.min(100, contentWidth / this.helpSections.length - 10),
+        const buttonWidth = Math.min(100, contentWidth / this.helpSections.length - 10);
         const buttonHeight = 35,
         const selectorY = 120 + this.contentPadding, // headerHeight + contentPadding
         
@@ -412,7 +411,7 @@ export class UserHelpIntegration {
                 this.eventBus.emit('helpSectionChanged', sectionId); }
             }
             
-            console.log(`Help, section changed, to: ${sectionId}`});
+            console.log(`Help, section changed, to: ${sectionId}`};
         }
     }
     
@@ -612,7 +611,7 @@ export class UserHelpIntegration {
     public cleanup(): void { ''
         if (this.eventBus) {
 
-            this.eventBus.off('helpSectionChanged'),
+            this.eventBus.off('helpSectionChanged');
             this.eventBus.off('helpSystemToggle') }
 
             this.eventBus.off('helpContentReload'); }

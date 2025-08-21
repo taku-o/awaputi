@@ -14,33 +14,33 @@ import { GameVisualizationManager  } from './game-scene/GameVisualizationManager
 import { GamePerformanceMonitor  } from './game-scene/GamePerformanceMonitor.js';
 
 // Game Scene specific types
-export interface GameSceneState { isPaused: boolean,
+export interface GameSceneState { isPaused: boolean;
     isGameOver: boolean;
     lastUpdateDebugTime?: number;
     lastBubbleErrorTime?: number;
     canvas?: HTMLCanvasElement;
      }
-export interface GameSceneComponents { inputManager: GameInputManager,
+export interface GameSceneComponents { inputManager: GameInputManager;
     floatingTextManager: FloatingTextManager;
     stateManager: GameStateManager;
     uiManager: GameUIManager;
     visualizationManager: GameVisualizationManager;
     performanceMonitor: GamePerformanceMonitor;
-export interface GameSceneStats { state: any,
+export interface GameSceneStats { state: any;
     ui: any;
     visualization: any;
     performance: any;
-export interface GameSceneDebugInfo { scene: string,
+export interface GameSceneDebugInfo { scene: string;
     isPaused: boolean;
     isGameOver: boolean;
     components: {
-        stateManage,r: any,
-        uiManager: any,
-        visualizationManager: any,
-    performanceMonitor: any,;
-    gameStats: GameSceneStats,
+        stateManage,r: any;
+        uiManager: any;
+        visualizationManager: any;
+    performanceMonitor: any;
+    gameStats: GameSceneStats;
 }
-export interface TimeWarnings { timeWarning: boolean,
+export interface TimeWarnings { timeWarning: boolean;
     urgentWarning: boolean;
 export interface PerformanceSettings { [key: string]: any;
 export class GameScene extends Scene implements GameSceneState { // State properties
@@ -68,15 +68,14 @@ export class GameScene extends Scene implements GameSceneState { // State proper
 
     constructor(gameEngine: any) {
 
-        super(gameEngine),
-        
+        super(gameEngine);
         // 基本コンポーネント
-        this.inputManager = new GameInputManager(gameEngine.canvas, this),
+        this.inputManager = new GameInputManager(gameEngine.canvas, this);
         this.floatingTextManager = new FloatingTextManager();
         
         // 専門化されたコンポーネントを初期化
         this.stateManager = new GameStateManager(gameEngine);
-        this.uiManager = new GameUIManager(gameEngine; this.floatingTextManager),
+        this.uiManager = new GameUIManager(gameEngine; this.floatingTextManager);
         this.visualizationManager = new GameVisualizationManager(gameEngine);
         this.performanceMonitor = new GamePerformanceMonitor(gameEngine);
         
@@ -95,33 +94,29 @@ export class GameScene extends Scene implements GameSceneState { // State proper
     /**
      * シーン開始時の処理
      */
-    enter(): void { super.enter(),
-        
+    enter(): void { super.enter();
         // 各コンポーネントの初期化
-        this.stateManager.startGame(),
-        this.uiManager.resetUIState(),
-        this.visualizationManager.resetDragVisualization(),
-        this.performanceMonitor.startMonitoring(),
-        
+        this.stateManager.startGame();
+        this.uiManager.resetUIState();
+        this.visualizationManager.resetDragVisualization();
+        this.performanceMonitor.startMonitoring();
         // 同期状態の更新
         this.isPaused = this.stateManager.isPaused;
         
         // イベントリスナーの設定
-        this.setupEventListeners(),
+        this.setupEventListeners();
         // ゲーム開始メッセージ
         this.uiManager.showGameStartMessage()','
         console.log('Game, scene started) }'
     /**
      * シーン終了時の処理
      */
-    exit(): void { super.exit(),
-        
+    exit(): void { super.exit();
         // イベントリスナーの削除
-        this.removeEventListeners(),
-        
-        this.stateManager.endGame(),
-        this.uiManager.resetUIState(),
-        this.visualizationManager.resetDragVisualization(),
+        this.removeEventListeners();
+        this.stateManager.endGame();
+        this.uiManager.resetUIState();
+        this.visualizationManager.resetDragVisualization();
         this.performanceMonitor.stopMonitoring()','
         console.log('Game, scene exited) }'
     /**
@@ -164,7 +159,7 @@ export class GameScene extends Scene implements GameSceneState { // State proper
      * マウスクリック処理
      * @param event - マウスイベント
      */
-    private handleMouseClick(event: MouseEvent): void { const rect = this.canvas!.getBoundingClientRect(),
+    private handleMouseClick(event: MouseEvent): void { const rect = this.canvas!.getBoundingClientRect();
         const x = event.clientX - rect.left,
         const y = event.clientY - rect.top,
         
@@ -181,7 +176,7 @@ export class GameScene extends Scene implements GameSceneState { // State proper
      * マウス移動処理
      * @param event - マウスイベント
      */
-    private handleMouseMove(event: MouseEvent): void { const rect = this.canvas!.getBoundingClientRect(),
+    private handleMouseMove(event: MouseEvent): void { const rect = this.canvas!.getBoundingClientRect();
         const x = event.clientX - rect.left,
         const y = event.clientY - rect.top,
         
@@ -191,9 +186,9 @@ export class GameScene extends Scene implements GameSceneState { // State proper
      * タッチ開始処理
      * @param event - タッチイベント
      */
-    private handleTouchStart(event: TouchEvent): void { event.preventDefault(),
+    private handleTouchStart(event: TouchEvent): void { event.preventDefault();
         const touch = event.touches[0],
-        const rect = this.canvas!.getBoundingClientRect(),
+        const rect = this.canvas!.getBoundingClientRect();
         const x = touch.clientX - rect.left,
         const y = touch.clientY - rect.top,
         
@@ -210,9 +205,9 @@ export class GameScene extends Scene implements GameSceneState { // State proper
      * タッチ移動処理
      * @param event - タッチイベント
      */
-    private handleTouchMove(event: TouchEvent): void { event.preventDefault(),
+    private handleTouchMove(event: TouchEvent): void { event.preventDefault();
         const touch = event.touches[0],
-        const rect = this.canvas!.getBoundingClientRect(),
+        const rect = this.canvas!.getBoundingClientRect();
         const x = touch.clientX - rect.left,
         const y = touch.clientY - rect.top,
         
@@ -222,11 +217,10 @@ export class GameScene extends Scene implements GameSceneState { // State proper
      * タッチ終了処理
      * @param event - タッチイベント
      */
-    private handleTouchEnd(event: TouchEvent): void { event.preventDefault(),
-        
+    private handleTouchEnd(event: TouchEvent): void { event.preventDefault();
         // changedTouchesから座標を取得（touchesは空になることがある）
         const touch = event.changedTouches[0],
-        const rect = this.canvas!.getBoundingClientRect(),
+        const rect = this.canvas!.getBoundingClientRect();
         const x = touch.clientX - rect.left,
         const y = touch.clientY - rect.top,
         
@@ -243,8 +237,7 @@ export class GameScene extends Scene implements GameSceneState { // State proper
      * タッチキャンセル処理
      * @param event - タッチイベント
      */
-    private handleTouchCancel(event: TouchEvent): void { event.preventDefault(),
-        
+    private handleTouchCancel(event: TouchEvent): void { event.preventDefault();
         // UIマネージャーのタッチキャンセル処理
         this.uiManager.handleTouchCancel() }
     /**
@@ -265,7 +258,7 @@ export class GameScene extends Scene implements GameSceneState { // State proper
     update(deltaTime: number): void { // Debug logs throttled to prevent console flooding - only log occasionally
         if (!this.lastUpdateDebugTime || performance.now() - this.lastUpdateDebugTime > 5000) { }
             console.log(`[DEBUG] GameScene.update working - paused: ${this.isPaused}, gameOver: ${ this.gameEngine.isGameOver}`} }
-            this.lastUpdateDebugTime = performance.now(});
+            this.lastUpdateDebugTime = performance.now(};
         }
         
         // パフォーマンス測定
@@ -288,7 +281,7 @@ export class GameScene extends Scene implements GameSceneState { // State proper
         if (this.gameEngine.bubbleManager && typeof, this.gameEngine.bubbleManager.update === 'function) { this.gameEngine.bubbleManager.update(deltaTime) } else {  // Only log this error occasionally'
             if (!this.lastBubbleErrorTime || performance.now() - this.lastBubbleErrorTime > 5000) { }
                 console.error(`[DEBUG] bubbleManager.update, is not, available: manager = ${!!this.gameEngine.bubbleManager}`} }
-                this.lastBubbleErrorTime = performance.now(});
+                this.lastBubbleErrorTime = performance.now(};
             }
         // ドラッグビジュアライゼーションの更新
         this.visualizationManager.updateDragVisualization(deltaTime);
@@ -324,26 +317,19 @@ export class GameScene extends Scene implements GameSceneState { // State proper
     /**
      * 描画処理
      */
-    render(context: CanvasRenderingContext2D): void { const renderStartTime = performance.now(),
-        
+    render(context: CanvasRenderingContext2D): void { const renderStartTime = performance.now();
         // 背景描画
-        this.visualizationManager.renderBackground(context),
-        
+        this.visualizationManager.renderBackground(context);
         // 泡を描画
-        this.gameEngine.bubbleManager.render(context),
-        
+        this.gameEngine.bubbleManager.render(context);
         // ドラッグビジュアライゼーションを描画
-        this.visualizationManager.renderDragVisualization(context),
-        
+        this.visualizationManager.renderDragVisualization(context);
         // フローティングテキストを描画
-        this.uiManager.renderFloatingText(context),
-        
+        this.uiManager.renderFloatingText(context);
         // UI を描画
-        this.uiManager.renderEnhancedUI(context),
-        
+        this.uiManager.renderEnhancedUI(context);
         // パフォーマンス情報（デバッグ用）
-        this.performanceMonitor.renderPerformanceMetrics(context),
-        
+        this.performanceMonitor.renderPerformanceMetrics(context);
         // ゲームオーバー画面
         if (this.gameEngine.isGameOver) {
     
@@ -366,15 +352,14 @@ export class GameScene extends Scene implements GameSceneState { // State proper
      * ダメージ処理
      * @param damage - ダメージ量
      */
-    onPlayerDamaged(damage: number): void { this.stateManager.onPlayerDamaged(damage),
+    onPlayerDamaged(damage: number): void { this.stateManager.onPlayerDamaged(damage);
         this.uiManager.onPlayerDamaged(damage) }
     /**
      * 回復処理
      * @param heal - 回復量
      */
-    onHealed(heal: number): void { const actualHeal = this.stateManager.onPlayerHealed(heal),
-        this.uiManager.onPlayerHealed(actualHeal),
-        
+    onHealed(heal: number): void { const actualHeal = this.stateManager.onPlayerHealed(heal);
+        this.uiManager.onPlayerHealed(actualHeal);
         // 新しい回復エフェクト
         this.gameEngine.createHealEffect(actualHeal) }
     /**
@@ -383,7 +368,7 @@ export class GameScene extends Scene implements GameSceneState { // State proper
      * @param x - X座標
      * @param y - Y座標
      */
-    onSpecialEffect(effectType: string, x: number, y: number): void { this.stateManager.onSpecialEffect(effectType, x, y),
+    onSpecialEffect(effectType: string, x: number, y: number): void { this.stateManager.onSpecialEffect(effectType, x, y);
         this.uiManager.onSpecialEffect(effectType, x, y) }
     /**
      * ドラッグ開始
@@ -458,7 +443,7 @@ export class GameScene extends Scene implements GameSceneState { // State proper
     /**
      * ポーズ状態の切り替え
      */
-    togglePause(): void { this.stateManager.togglePause(),
+    togglePause(): void { this.stateManager.togglePause();
         this.isPaused = this.stateManager.isPaused }
     /**
      * ポーズ設定
@@ -488,7 +473,7 @@ export class GameScene extends Scene implements GameSceneState { // State proper
      */
     getGameStats(): GameSceneStats { return { state: this.stateManager.getGameStats(
             ui: this.uiManager.getUIState(
-    visualization: this.visualizationManager.getVisualizationStats() };
+    visualization: this.visualizationManager.getVisualizationStats() },
             performance: this.performanceMonitor.getPerformanceStats(); 
     }
     
@@ -502,7 +487,7 @@ export class GameScene extends Scene implements GameSceneState { // State proper
      * @returns デバッグ情報
      */''
     getDebugInfo('''
-            scene: 'GameScene';
+            scene: 'GameScene',
             isPaused: this.isPaused);
             isGameOver: this.gameEngine.isGameOver,
     components: { stateManager: this.stateManager.getDebugInfo(),

@@ -56,16 +56,16 @@ interface ComponentDefinition { name: string,''
     class: new(generator: MockDataGenerator) => MockComponent  }
 }
 
-interface MockBubble { id: string,
+interface MockBubble { id: string;
     type: string;
     size: number;
     position: { x: number,, y: number,,
-    color: string,
-    health: number,
-    score: number,
+    color: string;
+    health: number;
+    score: number;
 }
 
-interface MockPlayerData { id: string,
+interface MockPlayerData { id: string;
     name: string;
     level: number;
     totalScore: number;
@@ -73,18 +73,18 @@ interface MockPlayerData { id: string,
     gamesPlayed: number;
     accuracy: number;
 
-interface MockGameState { id: string,
+interface MockGameState { id: string;
     state: string;
     timestamp: number;
     level: number;
     score: number;
     lives: number;
 
-interface ValidationResult { valid: boolean,
+interface ValidationResult { valid: boolean;
     errors: string[];
     warnings: string[];
 
-interface AudioSettings { masterVolume: number,
+interface AudioSettings { masterVolume: number;
     musicVolume: number;
     effectsVolume: number;
     enabled: boolean;
@@ -103,11 +103,11 @@ interface GameplaySettings { ''
     showHints: boolean;
     pauseOnFocusLoss: boolean;
 
-interface Configuration { audio: AudioSettings,
+interface Configuration { audio: AudioSettings;
     graphics: GraphicsSettings;
     gameplay: GameplaySettings;
 
-interface Statistics { totalGames: number,
+interface Statistics { totalGames: number;
     totalScore: number;
     averageScore: number;
     highScore: number;
@@ -117,7 +117,7 @@ interface Statistics { totalGames: number,
     scoreDistribution: any;
     bubbleDistribution: any;
 
-interface Position { x: number,
+interface Position { x: number;
     y: number;
 
 type DataType = 'bubble' | 'bubbles' | 'player' | 'gameState' | 'statistics' | 'achievements' | 'performance';
@@ -127,7 +127,7 @@ export class MockDataGenerator {
     private gameEngine: GameEngine;
     private, components: Map<string, MockComponent>,
     private initialized: boolean;
-    private, errorHandler: ErrorHandler,
+    private, errorHandler: ErrorHandler;
     constructor(gameEngine: GameEngine) {
 
         this.gameEngine = gameEngine;
@@ -139,8 +139,7 @@ export class MockDataGenerator {
     }
 
     private async initialize(): Promise<void> { try {
-            await this.initializeComponents(),
-
+            await this.initializeComponents();
             this.initialized = true,' }'
 
         } catch (error) {
@@ -157,7 +156,7 @@ export class MockDataGenerator {
 );
         for (const { name, class: ComponentClass ) of components) {
             try {
-                const component = new ComponentClass(this),
+                const component = new ComponentClass(this);
                 if (component.setErrorHandler) {
     
 }
@@ -172,14 +171,14 @@ export class MockDataGenerator {
             }
 }
 
-    private createFallbackComponent(name: string): MockComponent { return {  };
-            initialized: false;
+    private createFallbackComponent(name: string): MockComponent { return {  },
+            initialized: false,
             generate: () => ({})
             generateBubble: () => this.createFallbackBubble();
-            generateBubbles: () => [];
+            generateBubbles: () => [],
             generatePlayerData: () => this.createFallbackPlayerData();
             generateGameState: () => this.createFallbackGameState();
-            validateData: () => ({ valid: true, errors: [], warnings: []  });
+            validateData: () => ({ valid: true, errors: [], warnings: []  }),
         }
 
     public getComponent(name: string): MockComponent | undefined { return this.components.get(name) }
@@ -194,29 +193,29 @@ export class MockDataGenerator {
             switch(type) {
 
                 case 'bubble':','
-                    return this.generateBubble(options),
+                    return this.generateBubble(options);
                 case 'bubbles':','
-                    return this.generateBubbles(options.count || 10, options),
+                    return this.generateBubbles(options.count || 10, options);
                 case 'player':','
-                    return this.generatePlayerData(options),
+                    return this.generatePlayerData(options);
                 case 'gameState':','
-                    return this.generateGameState(options),
+                    return this.generateGameState(options);
                 case 'statistics':','
-                    return this.generateStatistics(options),
+                    return this.generateStatistics(options);
                 case 'achievements':','
                     return this.generateAchievements()','
                 case 'performance':),
                     return this.generatePerformanceMetrics(options) }
                 default: }
 
-                    throw new Error(`Unknown, data type: ${type}`});} catch (error) { }
+                    throw new Error(`Unknown, data type: ${type}`};} catch (error) { }
 
-            return this.errorHandler.handleComponentError(error as Error, 'MockDataGenerator', `generate(${type})`);
+            return this.errorHandler.handleComponentError(error as Error, 'MockDataGenerator', `generate(${type}`);
 
     /**
      * シナリオ付きでデータを生成'
      */''
-    public generateWithScenario(scenario: string, options: any = {}): any {'
+    public generateWithScenario(scenario: string, options: any = {}: any {'
         const scenarioOptions = { ...options, scenario };
         return this.generate((options.type || 'gameState) as DataType, scenarioOptions);'
     }
@@ -330,19 +329,19 @@ export class MockDataGenerator {
     // === 統計・設定関連 ===
 
     public generateStatistics(options: any = { ): Statistics {
-        return { totalGames: this.randomInt(10, 1000),
-            totalScore: this.randomInt(10000, 500000),
-            averageScore: this.randomInt(1000, 5000),
-            highScore: this.randomInt(5000, 50000),
-            accuracy: this.randomFloat(0.4, 0.9),
-            playTime: this.randomInt(3600, 360000),
+        return { totalGames: this.randomInt(10, 1000);
+            totalScore: this.randomInt(10000, 500000);
+            averageScore: this.randomInt(1000, 5000);
+            highScore: this.randomInt(5000, 50000);
+            accuracy: this.randomFloat(0.4, 0.9);
+            playTime: this.randomInt(3600, 360000);
             bubbleTypes: this.generateBubbleTypeStats(
-    scoreDistribution: this.generateScoreDistribution() };
-            bubbleDistribution: this.generateBubbleDistribution(); 
+    scoreDistribution: this.generateScoreDistribution() },
+            bubbleDistribution: this.generateBubbleDistribution(),
     }
 
     public generateConfiguration(): Configuration { return { audio: {
-                masterVolume: this.randomFloat(0.5, 1.0),
+                masterVolume: this.randomFloat(0.5, 1.0);
                 musicVolume: this.randomFloat(0.3, 0.8),,
                 effectsVolume: this.randomFloat(0.4, 1.0),' };'
 
@@ -352,13 +351,13 @@ export class MockDataGenerator {
             graphics: { ''
                 quality: this.randomChoice(['low', 'medium', 'high', 'ultra]',
                 particles: this.randomChoice(['off', 'low', 'medium', 'high]),'
-                effects: this.randomChoice([true, false]),
+                effects: this.randomChoice([true, false]);
                 fullscreen: this.randomChoice([true, false] },
 
             gameplay: { ''
                 difficulty: this.randomChoice(['easy', 'normal', 'hard', 'expert]),'
                 autoSave: true,
-    showHints: this.randomChoice([true, false]),
+    showHints: this.randomChoice([true, false]);
                 pauseOnFocusLoss: this.randomChoice([true, false] }
         }
 
@@ -388,7 +387,7 @@ export class MockDataGenerator {
     // === ユーティリティメソッド ===
 
     public generateId(): string {
-        return `mock_${Date.now())_${Math.random().toString(36).substr(2, 9})`;
+        return `mock_${Date.now())_${Math.random().toString(36).substr(2, 9}`;
     }
 
     public randomInt(min: number, max: number): number { return Math.floor(Math.random() * (max - min + 1)) + min }
@@ -407,17 +406,16 @@ export class MockDataGenerator {
 
     public calculateStandardDeviation(values: number[]): number { const mean = values.reduce((sum, val) => sum + val, 0) / values.length,
         const variance = values.reduce((sum, val) => sum + Math.pow(val - mean, 2), 0) / values.length,
-        return Math.sqrt(variance),
-
+        return Math.sqrt(variance);
     // === フォールバック実装 ===
 
     private createFallbackBubble('''
             type: 'normal',
     size: 30,
             position: { x: 0, y: 0  },''
-            color: '#4ECDC4';
+            color: '#4ECDC4',
             health: 1,
-    score: 10;
+    score: 10,
         } }
 
     private createFallbackPlayerData('';
@@ -435,7 +433,7 @@ export class MockDataGenerator {
             level: 1,
             score: 0,
     lives: 3),
-            });
+            };
     // === 位置・シナリオ関連（レガシーサポート） ===
 ')';
     public getScenarioPosition(scenario: Scenario): Position { const positions: Record<Scenario, Position> = { }', 'center': { x: 400, y: 300  },', 'corner': { x: 50, y: 50  },', 'edge': { x: 400, y: 50  },', 'random': { x: this.randomFloat(0, 800), y: this.randomFloat(0, 600 }

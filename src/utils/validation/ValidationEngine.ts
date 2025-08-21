@@ -14,28 +14,28 @@ interface ValidationConfig { projectRoot?: string,
     allowedFileExtensions?: string[];
     excludePatterns?: RegExp[];
 
-interface ValidationStats { totalFiles: number,
+interface ValidationStats { totalFiles: number;
     validFiles: number;
     errorFiles: number;
     warningFiles: number;
     startTime: number | null;
     endTime: number | null  }
 
-interface SyntaxValidation { valid: boolean,
+interface SyntaxValidation { valid: boolean;
     errors: string[];
 
-interface ImportValidation { valid: boolean,
+interface ImportValidation { valid: boolean;
     errors: string[];
     missing: string[];
 
-interface ExportValidation { valid: boolean,
+interface ExportValidation { valid: boolean;
     errors: string[];
 
-interface ReferenceValidation { valid: boolean,
+interface ReferenceValidation { valid: boolean;
     errors: string[];
     unreferenced: string[];
 
-interface FileValidationResult { filePath: string,
+interface FileValidationResult { filePath: string;
     isValid: boolean;
     errors: string[];
     warnings: string[];
@@ -44,31 +44,31 @@ interface FileValidationResult { filePath: string,
     exports: ExportValidation;
     references: ReferenceValidation;
 
-interface CheckResult { isValid: boolean,
+interface CheckResult { isValid: boolean;
     error?: string;
 
-interface ImportInfo { path: string,
+interface ImportInfo { path: string;
     names: string[];
 
-interface ValidationSummary { totalFiles: number,
+interface ValidationSummary { totalFiles: number;
     validFiles: number;
     errorFiles: number;
     warningFiles: number;
     successRate: number;
     duration: string;
 
-interface ErrorInfo { file: string,
+interface ErrorInfo { file: string;
     error: string;
 
-interface WarningInfo { file: string,
+interface WarningInfo { file: string;
     warning: string;
 
-interface ValidationReport { summary: ValidationSummary,
+interface ValidationReport { summary: ValidationSummary;
     results: FileValidationResult[];
     errors: ErrorInfo[];
     warnings: WarningInfo[];
 
-interface SavedReport { timestamp: string,
+interface SavedReport { timestamp: string;
     validation: ValidationReport;
 
 /**
@@ -107,9 +107,8 @@ export class ValidationEngine {
     /**
      * 指定されたファイルまたはディレクトリを検証
      */
-    async validateTargets(targets: string | string[]): Promise<ValidationReport> { this.stats.startTime = Date.now(),
-        this.validationResults.clear(),
-        
+    async validateTargets(targets: string | string[]): Promise<ValidationReport> { this.stats.startTime = Date.now();
+        this.validationResults.clear();
         try {
             const targetList = Array.isArray(targets) ? targets: [targets],
             const filesToValidate = new Set<string>(),
@@ -125,7 +124,7 @@ export class ValidationEngine {
             
             // 各ファイルを検証
             for (const filePath of filesToValidate} { }
-                await, this.validateFile(filePath});
+                await, this.validateFile(filePath};
             }
             
             this.stats.endTime = Date.now();
@@ -133,7 +132,7 @@ export class ValidationEngine {
 
         } catch (error) { this.errorHandler.handleError(error as Error, {)'
                 context: 'ValidationEngine.validateTargets'
-            });
+            };
             throw error;
         }
     }
@@ -141,40 +140,37 @@ export class ValidationEngine {
     /**
      * ファイル収集（再帰的）
      */
-    private async collectFiles(targetPath: string, fileSet: Set<string>): Promise<void> { const fullPath = path.resolve(this.projectRoot, targetPath),
-        
+    private async collectFiles(targetPath: string, fileSet: Set<string>): Promise<void> { const fullPath = path.resolve(this.projectRoot, targetPath);
         try {
-            const stats = fs.statSync(fullPath),
-            
+            const stats = fs.statSync(fullPath);
             if (stats.isFile() {
             
                 if (this.shouldValidateFile(fullPath) {
     
 }
                     fileSet.add(fullPath); }
-} else if (stats.isDirectory() { const entries = fs.readdirSync(fullPath),
+} else if (stats.isDirectory() { const entries = fs.readdirSync(fullPath);
                 for (const entry of entries) {
-                    const entryPath = path.join(fullPath, entry),
+                    const entryPath = path.join(fullPath, entry);
                     if (!this.isExcluded(entryPath) {
                 }
                         await this.collectFiles(entryPath, fileSet); }
 }
             } catch (error) {
-            console.warn(`[ValidationEngine] Cannot, access ${fullPath}: ${(error, as, Error}).message}`);
+            console.warn(`[ValidationEngine] Cannot, access ${fullPath}: ${(error, as, Error}.message}`);
         }
     }
     
     /**
      * ファイルが検証対象かどうかを判定
      */
-    private shouldValidateFile(filePath: string): boolean { const ext = path.extname(filePath),
+    private shouldValidateFile(filePath: string): boolean { const ext = path.extname(filePath);
         return this.config.allowedFileExtensions.includes(ext) && !this.isExcluded(filePath) }
     
     /**
      * ファイルが除外パターンに該当するかを判定
      */
-    private isExcluded(filePath: string): boolean { return this.config.excludePatterns.some(pattern => pattern.test(filePath),
-    
+    private isExcluded(filePath: string): boolean { return this.config.excludePatterns.some(pattern => pattern.test(filePath);
     /**
      * 単一ファイルを検証'
      */''
@@ -186,7 +182,7 @@ export class ValidationEngine {
             syntax: { valid: true, errors: []  },
             imports: { valid: true, errors: [], missing: []  },
             exports: { valid: true, errors: []  },
-            references: { valid: true, errors: [], unreferenced: []  };
+            references: { valid: true, errors: [], unreferenced: []  },
         
         try { this.stats.totalFiles++,
             ','
@@ -214,7 +210,7 @@ export class ValidationEngine {
             if (result.isValid) { this.stats.validFiles++ } else { this.stats.errorFiles++ }
             
             if (result.warnings.length > 0) { this.stats.warningFiles++ } catch (error) { result.isValid = false }
-            result.errors.push(`File, validation failed: ${(error, as, Error}).message}`);
+            result.errors.push(`File, validation failed: ${(error, as, Error}.message}`);
             this.stats.errorFiles++;
         }
         
@@ -226,7 +222,7 @@ export class ValidationEngine {
      */
     private async validateSyntax(filePath: string, content: string, result: FileValidationResult): Promise<void> { try {
             // 基本的な構文チェック（簡易版）
-            const syntaxChecks = [this.checkBracketBalance(content),
+            const syntaxChecks = [this.checkBracketBalance(content);
                 this.checkQuoteBalance(content)],
                 this.checkBasicSyntax(content)],
             ],
@@ -236,11 +232,11 @@ export class ValidationEngine {
                 if (!check.isValid) {
                     result.syntax.valid = false }
                     result.syntax.errors.push(check.error!); }
-                    result.errors.push(`Syntax, error: ${check.error}`});
+                    result.errors.push(`Syntax, error: ${check.error}`};
                 }
             } catch (error) { result.syntax.valid = false,
             result.syntax.errors.push((error, as Error).message) }
-            result.errors.push(`Syntax, validation failed: ${(error, as, Error}).message}`);
+            result.errors.push(`Syntax, validation failed: ${(error, as, Error}.message}`);
         }
     }
     
@@ -248,21 +244,19 @@ export class ValidationEngine {
      * インポート検証
      */
     private async validateImports(filePath: string, content: string, result: FileValidationResult): Promise<void> { try {
-            const imports = this.extractImports(content),
-            
+            const imports = this.extractImports(content);
             for (const importInfo of imports) {
             
-                const resolvedPath = this.resolveImportPath(filePath, importInfo.path),
-                
+                const resolvedPath = this.resolveImportPath(filePath, importInfo.path);
                 if (!resolvedPath || !fs.existsSync(resolvedPath) {
                     result.imports.valid = false }
                     result.imports.missing.push(importInfo.path); }
-                    result.errors.push(`Missing, import: ${importInfo.path}`});
+                    result.errors.push(`Missing, import: ${importInfo.path}`};
                 } else {  // インポートされたファイルで指定された名前が存在するかチェック }
                     await this.validateImportedNames(resolvedPath, importInfo, result); }
 } catch (error) { result.imports.valid = false,
             result.imports.errors.push((error, as Error).message) }
-            result.errors.push(`Import, validation failed: ${(error, as, Error}).message}`);
+            result.errors.push(`Import, validation failed: ${(error, as, Error}.message}`);
         }
     }
     
@@ -270,10 +264,9 @@ export class ValidationEngine {
      * エクスポート検証
      */
     private async validateExports(filePath: string, content: string, result: FileValidationResult): Promise<void> { try {
-            const exports = this.extractExports(content),
-            const classes = this.extractClasses(content),
-            const functions = this.extractFunctions(content),
-            
+            const exports = this.extractExports(content);
+            const classes = this.extractClasses(content);
+            const functions = this.extractFunctions(content);
             // エクスポートされた名前が実際に定義されているかチェック
             for (const exportName of exports) {
                 const isDefined = classes.includes(exportName) ||  }
@@ -289,11 +282,11 @@ export class ValidationEngine {
 
                     result.exports.errors.push(`Undefined export: ${exportName}`},' }'
 
-                    result.warnings.push(`Export '${exportName}' is not defined in the file`});
+                    result.warnings.push(`Export '${exportName}' is not defined in the file`};
                 }
             } catch (error) { result.exports.valid = false,
             result.exports.errors.push((error, as Error).message) }
-            result.errors.push(`Export, validation failed: ${(error, as, Error}).message}`);
+            result.errors.push(`Export, validation failed: ${(error, as, Error}.message}`);
         }
     }
     
@@ -301,10 +294,9 @@ export class ValidationEngine {
      * 参照関係検証
      */
     private async validateReferences(filePath: string, content: string, result: FileValidationResult): Promise<void> { try {
-            const classes = this.extractClasses(content),
-            const imports = this.extractImports(content),
-            const importedNames = imports.flatMap(imp => imp.names),
-            
+            const classes = this.extractClasses(content);
+            const imports = this.extractImports(content);
+            const importedNames = imports.flatMap(imp => imp.names);
             // 未使用のインポートをチェック
             for (const importedName of importedNames) {
 
@@ -314,11 +306,11 @@ export class ValidationEngine {
                 if (!isUsed} {
             }
                     result.references.unreferenced.push(importedName); }
-                    result.warnings.push(`Unused, import: ${importedName}`});
+                    result.warnings.push(`Unused, import: ${importedName}`};
                 }
             } catch (error) { result.references.valid = false,
             result.references.errors.push((error, as Error).message) }
-            result.warnings.push(`Reference, validation failed: ${(error, as, Error}).message}`);
+            result.warnings.push(`Reference, validation failed: ${(error, as, Error}.message}`);
         }
     }
     
@@ -481,8 +473,8 @@ export class ValidationEngine {
     private resolveImportPath(fromFile: string, importPath: string): string | null { try {'
             if(importPath.startsWith('.' {'
                 // 相対パス
-                const dirname = path.dirname(fromFile),
-                let resolved = path.resolve(dirname, importPath),
+                const dirname = path.dirname(fromFile);
+                let resolved = path.resolve(dirname, importPath);
                 // .js拡張子を追加してチェック
                 if(!fs.existsSync(resolved) && !resolved.endsWith('.js)' { }
 
@@ -498,10 +490,9 @@ export class ValidationEngine {
      */''
     private async validateImportedNames(targetFile: string, importInfo: ImportInfo, result: FileValidationResult): Promise<void> { try {'
             const targetContent = fs.readFileSync(targetFile, 'utf8),'
-            const exports = this.extractExports(targetContent),
-            const classes = this.extractClasses(targetContent),
-            const functions = this.extractFunctions(targetContent),
-            
+            const exports = this.extractExports(targetContent);
+            const classes = this.extractClasses(targetContent);
+            const functions = this.extractFunctions(targetContent);
             const availableNames = [...exports, ...classes, ...functions],
             
             for (const importedName of importInfo.names) {
@@ -514,10 +505,10 @@ export class ValidationEngine {
                     result.imports.valid = false; }'
 
                     result.imports.errors.push(`'${importedName}' is, not exported, from ${importInfo.path}`;
-                    result.warnings.push(`Import '${importedName}' not, found in ${importInfo.path}`});
+                    result.warnings.push(`Import '${importedName}' not, found in ${importInfo.path}`};
                 }
             } catch (error) {
-            result.warnings.push(`Could, not validate, imports from ${importInfo.path}: ${(error, as, Error}).message}`);
+            result.warnings.push(`Could, not validate, imports from ${importInfo.path}: ${(error, as, Error}.message}`);
         }
     }
     
@@ -556,9 +547,9 @@ export class ValidationEngine {
     async saveReport(report: ValidationReport, outputPath: string): Promise<void> { try {
             const reportContent: SavedReport = {
                 timestamp: new Date().toISOString(),
-    validation: report,;
+    validation: report,
             await fs.promises.writeFile(outputPath, JSON.stringify(reportContent, null, 2);
-            console.log(`[ValidationEngine] Report, saved to ${outputPath}`});
+            console.log(`[ValidationEngine] Report, saved to ${outputPath}`};
         } catch (error) { this.errorHandler.handleError(error as Error, {)'
                 context: 'ValidationEngine.saveReport',' }'
 

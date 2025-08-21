@@ -94,10 +94,10 @@ describe('Username Input Positioning Visual Regression Tests', (') => {  let bro
             keyboard: { press: jest.fn() }
         },
         browser.newPage.mockResolvedValue(page);
-    });
+    };
     afterAll(async () => { if (browser) { }
             await browser.close(};)'
-        });'}');
+        };'}');
     describe('Username Input Form Centering', () => { testConfigurations.forEach((config) => { }
             it(`should center username input form correctly on ${config.name}`, async () => {  // Set viewport for this test configuration
                 await page.setViewport({)
@@ -167,13 +167,13 @@ describe('Username Input Positioning Visual Regression Tests', (') => {  let bro
                     // Transform to actual canvas coordinates
                     const transformCoordinates = (baseX, baseY) => ({ x: baseX * canvasInfo.scale)
                        , y: baseY * canvasInfo.scale }
-                    }),
+                    },
                     return { title: { }
-                            ...transformCoordinates(BASE_LAYOUT.title.x, BASE_LAYOUT.title.y})
-                            visible: true;
-                        })
+                            ...transformCoordinates(BASE_LAYOUT.title.x, BASE_LAYOUT.title.y}
+                            visible: true,
+                        }
                         inputBox: { )
-                            ...transformCoordinates(BASE_LAYOUT.inputBox.x, BASE_LAYOUT.inputBox.y),
+                            ...transformCoordinates(BASE_LAYOUT.inputBox.x, BASE_LAYOUT.inputBox.y);
                             width: BASE_LAYOUT.inputBox.width * canvasInfo.scale,
                             height: BASE_LAYOUT.inputBox.height * canvasInfo.scale,
                             visible: true,
@@ -183,24 +183,24 @@ describe('Username Input Positioning Visual Regression Tests', (') => {  let bro
                                 ...transformCoordinates(BASE_LAYOUT.buttons.ok.x, BASE_LAYOUT.buttons.ok.y},
                                 width: BASE_LAYOUT.buttons.ok.width * canvasInfo.scale,
                                 height: BASE_LAYOUT.buttons.ok.height * canvasInfo.scale,
-                                visible: true;
+                                visible: true,
                             },
                             cancel: {
                                 ...transformCoordinates(BASE_LAYOUT.buttons.cancel.x, BASE_LAYOUT.buttons.cancel.y},
                                 width: BASE_LAYOUT.buttons.cancel.width * canvasInfo.scale,
                                 height: BASE_LAYOUT.buttons.cancel.height * canvasInfo.scale,
-                                visible: true;
+                                visible: true,
                             }
                         },
                         helpText: {
                             ...transformCoordinates(BASE_LAYOUT.helpText.x, BASE_LAYOUT.helpText.y},
-                            visible: true;
+                            visible: true,
                         },
                         canvasInfo: { width: canvasInfo.actualWidth)
                             height: canvasInfo.actualHeight),
                            , scale: canvasInfo.scale }
-            });
-                    }),
+            };
+                    },
                 expect(result).not.toBeNull();
                 // Verify title is centered horizontally
                 expect(Math.abs(result.title.x - config.expected.centerX).toBeLessThanOrEqual(config.expected.tolerance);
@@ -216,15 +216,15 @@ describe('Username Input Positioning Visual Regression Tests', (') => {  let bro
                 expect(result.buttons.ok.visible).toBe(true);
                 expect(result.buttons.cancel.visible).toBe(true);
                 expect(result.helpText.visible).toBe(true);
-            });'
+            };'
         }'}');
     describe('Zoom Level Tests', () => {  const zoomLevels = [0.5, 0.75, 1.0, 1.25, 1.5, 2.0] }
         zoomLevels.forEach((zoom) => { }
             it(`should maintain centering at ${zoom * 100}% zoom level`, async () => {  await page.setViewport({)
                     width: 1200),
                    , height: 800) }
-                    deviceScaleFactor: zoom) };
-                });
+                    deviceScaleFactor: zoom) },
+                };
                 // Mock centered positioning at different zoom levels
                 const mockResult = { inputBox: {
                         x: 400 * zoom,
@@ -243,15 +243,15 @@ describe('Username Input Positioning Visual Regression Tests', (') => {  let bro
                     return { inputBox: {
                             x: 400 * arguments[0],
                             y: 280 * arguments[0],
-                            width: 400 * arguments[0] };
-                            height: 50 * arguments[0] };
-                            centered: true;
+                            width: 400 * arguments[0] },
+                            height: 50 * arguments[0] },
+                            centered: true,
                         }
                     } }, zoom);
                 expect(result.inputBox.centered).toBe(true);
                 // Verify input box remains proportional
                 expect(result.inputBox.width / result.inputBox.height).toBeCloseTo(8, 1); // 400/50 = 8
-            });'
+            };'
         }'}');
     describe('Aspect Ratio Tests', (') => { const aspectRatios = [' }'
             { name: '16:9', width: 1920, height: 1080 },''
@@ -264,8 +264,8 @@ describe('Username Input Positioning Visual Regression Tests', (') => {  let bro
             it(`should maintain proper centering with ${aspect.name} aspect ratio`, async () => {  await page.setViewport({)
                     width: aspect.width),
                    , height: aspect.height) }
-                    deviceScaleFactor: 1) };
-                });
+                    deviceScaleFactor: 1) },
+                };
                 const expectedCenterX = aspect.width / 2;
                 const expectedCenterY = aspect.height / 2;
                 page.evaluate.mockResolvedValue({
@@ -275,7 +275,7 @@ describe('Username Input Positioning Visual Regression Tests', (') => {  let bro
                         width: 400),
                         height: 50),
                        , centered: true) }
-                    }),
+                    },
                 const result = await page.evaluate(() => ({
                     title: { x: arguments[0] / 2, y: arguments[1] / 2 - 100 },
                     inputBox: { x: arguments[0] / 2 - 200,
@@ -284,10 +284,10 @@ describe('Username Input Positioning Visual Regression Tests', (') => {  let bro
                         height: 50),
                        , centered: true,
                     };
-                }), aspect.width, aspect.height);
+                }, aspect.width, aspect.height);
                 expect(result.inputBox.centered).toBe(true);
                 expect(result.title.x).toBeCloseTo(expectedCenterX, 1);
-            });'
+            };'
         }'}');
     describe('Visual Screenshot Tests', (') => { }'
         it('should capture baseline screenshot for visual comparison', async () => { }'
@@ -296,20 +296,20 @@ describe('Username Input Positioning Visual Regression Tests', (') => {  let bro
             const mockScreenshotPath = '/tmp/username-input-baseline.png';
             page.screenshot.mockResolvedValue(mockScreenshotPath);
             const screenshotPath = await page.screenshot({ path: mockScreenshotPath)
-                fullPage: false) };
-            });
+                fullPage: false) },
+            };
             expect(page.screenshot).toHaveBeenCalledWith({ path: mockScreenshotPath)
         fullPage: false) }
             }
             expect(screenshotPath).toBe(mockScreenshotPath);
-        });
+        };
         testConfigurations.slice(0, 3).forEach((config) => {  }
             it(`should capture screenshot for ${config.name} configuration`, async () => {  await page.setViewport({)
                     width: config.viewport.width),
                    , height: config.viewport.height) }
                     deviceScaleFactor: config.deviceScaleFactor) };'
-                });
-                const screenshotPath = `/tmp/username-input-${config.name.toLowerCase(').replace(/\s+/g, '-'})}.png`;'
+                };
+                const screenshotPath = `/tmp/username-input-${config.name.toLowerCase(').replace(/\s+/g, '-'}}.png`;'
                 page.screenshot.mockResolvedValue(screenshotPath);
                 const result = await page.screenshot({ path: screenshotPath)
                     fullPage: false,
@@ -317,15 +317,15 @@ describe('Username Input Positioning Visual Regression Tests', (') => {  let bro
                     path: screenshotPath),
         fullPage: false) }
                 };
-            });'
+            };'
         }'}');
     describe('Edge Case Scenarios', (') => {  ''
         it('should handle very small screens gracefully', async () => {
             await page.setViewport({)
                 width: 240),
                , height: 320) }
-                deviceScaleFactor: 1) };
-            });
+                deviceScaleFactor: 1) },
+            };
             page.evaluate.mockResolvedValue({ inputBox: {
                     x: 20, // Adjusted for small screen,
                     y: 135,
@@ -333,7 +333,7 @@ describe('Username Input Positioning Visual Regression Tests', (') => {  let bro
                     height: 25),
                     visible: true),
                    , withinBounds: true) }
-                }) });
+                } };
             const result = await page.evaluate(() => ({ inputBox: {
                     x: 20,
                     y: 135,
@@ -342,15 +342,15 @@ describe('Username Input Positioning Visual Regression Tests', (') => {  let bro
                     visible: true),
                    , withinBounds: true,
                 }
-            });
+            };
             expect(result.inputBox.visible).toBe(true);
             expect(result.inputBox.withinBounds).toBe(true);'
             expect(result.inputBox.x + result.inputBox.width).toBeLessThanOrEqual(240);'}');
         it('should handle very large screens correctly', async () => {  await page.setViewport({)
                 width: 5120),
                , height: 2880) }
-                deviceScaleFactor: 1) };
-            });
+                deviceScaleFactor: 1) },
+            };
             const expectedCenterX = 2560;
             const expectedCenterY = 1440;
             page.evaluate.mockResolvedValue({ inputBox: {
@@ -359,7 +359,7 @@ describe('Username Input Positioning Visual Regression Tests', (') => {  let bro
                     width: 800),
                     height: 100),
                    , centered: true) }
-                }),
+                },
             const result = await page.evaluate(() => ({ inputBox: {
                     x: 2560 - 400,
                     y: 1440 - 50,
@@ -367,9 +367,9 @@ describe('Username Input Positioning Visual Regression Tests', (') => {  let bro
                     height: 100),
                    , centered: true,
                 }
-            });
+            };
             expect(result.inputBox.centered).toBe(true);
             const actualCenterX = result.inputBox.x + result.inputBox.width / 2;
             expect(Math.abs(actualCenterX - expectedCenterX).toBeLessThanOrEqual(10);
-        });'
+        };'
     }'}');

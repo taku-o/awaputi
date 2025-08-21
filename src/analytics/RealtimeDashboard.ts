@@ -4,27 +4,27 @@
  */
 
 export class RealtimeDashboard {
-    constructor(container, performanceDataCollector, realtimeMonitor, options: any = { }) {
+    constructor(container, performanceDataCollector, realtimeMonitor, options: any = { } {
         this.container = container;
         this.dataCollector = performanceDataCollector;
         this.monitor = realtimeMonitor;
         this.options = {
-            updateInterval: 1000; // 1秒間隔で更新;
+            updateInterval: 1000, // 1秒間隔で更新;
             historyLength: 60, // 60秒分のデータを保持;
-            theme: 'dark',
-            enableFPS: true,
-            enableMemory: true,
-            enableErrors: true,
-    enableLatency: true,
+            theme: 'dark';
+            enableFPS: true;
+            enableMemory: true;
+            enableErrors: true;
+    enableLatency: true;
             ...options
         };
 
         this.charts = new Map();
         this.updateTimer = null;
-        this.dataHistory = { fps: [],
-            memory: [],
-            errors: [],
-            latency: [],
+        this.dataHistory = { fps: [];
+            memory: [];
+            errors: [];
+            latency: [];
     timestamps: []  };
         this.initialize();
     }
@@ -33,7 +33,7 @@ export class RealtimeDashboard {
      * 初期化
      */
     initialize() {
-        this.createDashboardLayout(),
+        this.createDashboardLayout();
         this.initializeCharts() }
         this.setupEventListeners(); }
     }
@@ -102,14 +102,14 @@ export class RealtimeDashboard {
      */""
     applyStyles() {"
 
-        const style = document.createElement('style'),
+        const style = document.createElement('style');
         style.textContent = ` }
 
             .realtime-dashboard { }'
 
                 background: ${this.options.theme === 'dark' ? '#1a1a1a' : '#f5f5f5'},''
-                color: ${this.options.theme === 'dark' ? '#e0e0e0' : '#333'};
-                padding: 20px;
+                color: ${this.options.theme === 'dark' ? '#e0e0e0' : '#333'},
+                padding: 20px,
                 border-radius: 8px,
                 font-family: Arial, sans-serif;
             }
@@ -125,12 +125,12 @@ export class RealtimeDashboard {
 
             .control-btn { padding: 8px 16px,' }'
 
-                background: ${this.options.theme === 'dark' ? '#2196f3' : '#4caf50'};
+                background: ${this.options.theme === 'dark' ? '#2196f3' : '#4caf50'},
                 color: white,
-    border: none;
+    border: none,
                 border-radius: 4px,
                 cursor: pointer,
-    transition: background 0.3s;
+    transition: background 0.3s,
             }
             .control-btn:hover { opacity: 0.9 }
 
@@ -145,7 +145,7 @@ export class RealtimeDashboard {
 
             .chart-container { }'
 
-                background: ${this.options.theme === 'dark' ? '#2a2a2a' : 'white'};
+                background: ${this.options.theme === 'dark' ? '#2a2a2a' : 'white'},
                 padding: 15px,
                 border-radius: 6px,
                 box-shadow: 0 2px 4px rgba(0,0,0,0.1);
@@ -163,12 +163,12 @@ export class RealtimeDashboard {
 
             .dashboard-alerts { }'
 
-                background: ${this.options.theme === 'dark' ? '#2a2a2a' : 'white'};
+                background: ${this.options.theme === 'dark' ? '#2a2a2a' : 'white'},
                 padding: 15px,
                 border-radius: 6px,
                 box-shadow: 0 2px 4px rgba(0,0,0,0.1);
                 max-height: 300px,
-                overflow-y: auto;
+                overflow-y: auto,
             .dashboard-alerts h3 { margin: 0 0 10px 0,
 
                 font-size: 16px,' }'
@@ -178,13 +178,13 @@ export class RealtimeDashboard {
                 margin-bottom: 5px,
                 border-radius: 4px,
                 font-size: 14px }
-            .alert-item.warning { background: rgba(255, 152, 0, 0.2),
+            .alert-item.warning { background: rgba(255, 152, 0, 0.2);
                 border-left: 3px solid #ff9800 }
-            .alert-item.error { background: rgba(244, 67, 54, 0.2),
+            .alert-item.error { background: rgba(244, 67, 54, 0.2);
                 border-left: 3px solid #f44336 }
 
             .alert-item.info { ''
-                background: rgba(33, 150, 243, 0.2),
+                background: rgba(33, 150, 243, 0.2);
                 border-left: 3px solid #2196f3 }
 
             .alert-time { font-size: 12px,' }'
@@ -209,18 +209,18 @@ export class RealtimeDashboard {
                         text: '時間'
             };
                     ticks: { ''
-                        color: this.options.theme === 'dark' ? '#aaa' : '#666' };
+                        color: this.options.theme === 'dark' ? '#aaa' : '#666' },
                     grid: { ''
                         color: this.options.theme === 'dark' ? '#333' : '#e0e0e0' 
                 };
                 y: { beginAtZero: true,
     ticks: {''
-                        color: this.options.theme === 'dark' ? '#aaa' : '#666' };
+                        color: this.options.theme === 'dark' ? '#aaa' : '#666' },
                     grid: { ''
                         color: this.options.theme === 'dark' ? '#333' : '#e0e0e0' 
 };
             plugins: { legend: {
-                    display: false,;
+                    display: false,
                 tooltip: { ''
                     mode: 'index',
     intersect: false,);
@@ -319,7 +319,7 @@ export class RealtimeDashboard {
                                     display: true,
                                     text: 'エラー数'
             }
-}))';'
+})';'
             }
         }
 ';'
@@ -433,22 +433,18 @@ export class RealtimeDashboard {
     updateData() {
         if (!this.dataCollector) return,
 
-        const currentStats = this.dataCollector.getCurrentStats(),
-        const timestamp = new Date(),
-
+        const currentStats = this.dataCollector.getCurrentStats();
+        const timestamp = new Date();
         // データ履歴に追加
-        this.dataHistory.timestamps.push(timestamp),
-        this.dataHistory.fps.push(currentStats.currentFPS || 0),
-        this.dataHistory.memory.push(currentStats.currentMemoryUsage?.usagePercent || 0),
-        this.dataHistory.errors.push(currentStats.errorCount || 0),
-        this.dataHistory.latency.push(currentStats.averageFrameTime || 0),
-
+        this.dataHistory.timestamps.push(timestamp);
+        this.dataHistory.fps.push(currentStats.currentFPS || 0);
+        this.dataHistory.memory.push(currentStats.currentMemoryUsage?.usagePercent || 0);
+        this.dataHistory.errors.push(currentStats.errorCount || 0);
+        this.dataHistory.latency.push(currentStats.averageFrameTime || 0);
         // 履歴の長さを制限
-        this.trimHistory(),
-
+        this.trimHistory();
         // チャート更新
-        this.updateCharts(),
-
+        this.updateCharts();
         // 統計情報更新
     }
         this.updateStats(); }
@@ -463,7 +459,7 @@ export class RealtimeDashboard {
         Object.keys(this.dataHistory).forEach(key => { ) }
             if (this.dataHistory[key].length > maxLength) { }
                 this.dataHistory[key] = this.dataHistory[key].slice(-maxLength); }
-});
+};
     }
 
     /**
@@ -530,14 +526,14 @@ export class RealtimeDashboard {
             const fpsStats = document.getElementById('fps-stats),'
             if (fpsStats) {
                 const currentFPS = this.dataHistory.fps[this.dataHistory.fps.length - 1] || 0,
-                const avgFPS = this.calculateAverage(this.dataHistory.fps),
-                const minFPS = Math.min(...this.dataHistory.fps.filter(v => v > 0),
-                const maxFPS = Math.max(...this.dataHistory.fps),
+                const avgFPS = this.calculateAverage(this.dataHistory.fps);
+                const minFPS = Math.min(...this.dataHistory.fps.filter(v => v > 0);
+                const maxFPS = Math.max(...this.dataHistory.fps);
                 fpsStats.innerHTML = ` }
-                    現在: ${currentFPS.toFixed(1}) | 
-                    平均: ${avgFPS.toFixed(1}) | 
-                    最小: ${minFPS.toFixed(1}) | 
-                    最大: ${maxFPS.toFixed(1})
+                    現在: ${currentFPS.toFixed(1} | 
+                    平均: ${avgFPS.toFixed(1} | 
+                    最小: ${minFPS.toFixed(1} | 
+                    最大: ${maxFPS.toFixed(1}
                 `;
             }
         }
@@ -550,8 +546,8 @@ export class RealtimeDashboard {
                 const currentMemory = this.dataHistory.memory[this.dataHistory.memory.length - 1] || 0,
                 const avgMemory = this.calculateAverage(this.dataHistory.memory) }
                 memoryStats.innerHTML = ` }
-                    現在: ${currentMemory.toFixed(1})% | 
-                    平均: ${avgMemory.toFixed(1})%
+                    現在: ${currentMemory.toFixed(1}% | 
+                    平均: ${avgMemory.toFixed(1}%
                 `;
             }
         }
@@ -565,7 +561,7 @@ export class RealtimeDashboard {
                 const errorRate = this.calculateErrorRate() }
                 errorsStats.innerHTML = ` }
                     合計: ${totalErrors} | 
-                    エラー率: ${errorRate.toFixed(2})/分
+                    エラー率: ${errorRate.toFixed(2}/分
                 `;
             }
         }
@@ -578,8 +574,8 @@ export class RealtimeDashboard {
                 const currentLatency = this.dataHistory.latency[this.dataHistory.latency.length - 1] || 0,
                 const avgLatency = this.calculateAverage(this.dataHistory.latency) }
                 latencyStats.innerHTML = ` }
-                    現在: ${currentLatency.toFixed(1})ms | 
-                    平均: ${avgLatency.toFixed(1})ms
+                    現在: ${currentLatency.toFixed(1}ms | 
+                    平均: ${avgLatency.toFixed(1}ms
                 `;
             }
 }
@@ -598,7 +594,7 @@ export class RealtimeDashboard {
         alertItem.className = `alert-item ${alert.severity}`;
 
         alertItem.innerHTML = `';'
-            <div class="alert-time">${new, Date(alert.timestamp}.toLocaleTimeString(})</div>
+            <div class="alert-time">${new, Date(alert.timestamp}.toLocaleTimeString(}</div>
             <div>${alert.message}</div>
         `;
 
@@ -690,7 +686,7 @@ export class RealtimeDashboard {
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a);'
         a.href = url;
-        a.download = `realtime-performance-${new, Date(}.toISOString(}).json`;
+        a.download = `realtime-performance-${new, Date(}.toISOString(}.json`;
         document.body.appendChild(a);
         a.click();
 
@@ -704,8 +700,7 @@ export class RealtimeDashboard {
      * リソースの解放
      */
     destroy() {
-        this.stopUpdates(),
-        
+        this.stopUpdates();
         // チャートの破棄
     }
         this.charts.forEach(chart => { ) }

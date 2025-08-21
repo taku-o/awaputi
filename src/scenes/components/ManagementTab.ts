@@ -4,7 +4,7 @@
  */
 import { TabComponent  } from './TabComponent.js';
 
-interface UserData { username: string,
+interface UserData { username: string;
     ap: number;
     tap: number;
     highScore: number;
@@ -29,10 +29,10 @@ interface GameEngine { playerData?: {
     statisticsManager?: { reset(): void;;
     achievementManager?: { reset(): void;
 
-interface EventBus { on(event: string, callback: Function): void,
+interface EventBus { on(event: string, callback: Function): void;
     off(event: string): void;
     emit(event: string, data?: any): void;
-interface AccessibilitySettings { highContrast: boolean,
+interface AccessibilitySettings { highContrast: boolean;
     largeText: boolean;
     reducedMotion: boolean;
 interface TabState {
@@ -50,7 +50,7 @@ export class ManagementTab extends TabComponent { // サブコンポーネント
     private buttonSpacing: number = 15;
     // データ
     private userData: UserData | null = null;
-    private, lastDataUpdate: number = 0,
+    private, lastDataUpdate: number = 0;
     constructor(gameEngine: GameEngine, eventBus: EventBus, state: TabState) {
     
 }
@@ -58,15 +58,12 @@ export class ManagementTab extends TabComponent { // サブコンポーネント
     /**
      * コンポーネントの初期化
      */
-    initialize(): void { super.initialize(),
-        
+    initialize(): void { super.initialize();
         // サブコンポーネントを初期化
-        this.userInfoRenderer = new UserInfoRenderer(this.gameEngine; this.eventBus, this.state),
-        this.dataManagementRenderer = new DataManagementRenderer(this.gameEngine; this.eventBus, this.state),
-        
-        this.userInfoRenderer.initialize(),
-        this.dataManagementRenderer.initialize(),
-        
+        this.userInfoRenderer = new UserInfoRenderer(this.gameEngine; this.eventBus, this.state);
+        this.dataManagementRenderer = new DataManagementRenderer(this.gameEngine; this.eventBus, this.state);
+        this.userInfoRenderer.initialize();
+        this.dataManagementRenderer.initialize();
         // ユーザーデータを読み込み
         this.loadUserData() }
     /**
@@ -90,7 +87,7 @@ export class ManagementTab extends TabComponent { // サブコンポーネント
             ';'
 
             this.lastDataUpdate = Date.now();'} catch (error) {'
-            console.error('Failed to load user data:', error),
+            console.error('Failed to load user data:', error);
             this.userData = null }
     }
     
@@ -101,17 +98,15 @@ export class ManagementTab extends TabComponent { // サブコンポーネント
             if (!this.isActive) return,
             
             // 背景を描画
-            this.renderBackground(context, x, y, width, height),
-            
+            this.renderBackground(context, x, y, width, height);
             // データを定期更新
-            this.updateDataIfNeeded(),
-            
+            this.updateDataIfNeeded();
             let currentY = y + this.contentPadding - this.scrollPosition,
             
             // ユーザー情報セクション
             const userInfoHeight = this.userInfoRenderer!.render(
                 context, ,
-                x + this.contentPadding ),
+                x + this.contentPadding );
                 currentY,
                 width - this.contentPadding * 2),
                 this.userData),
@@ -120,13 +115,13 @@ export class ManagementTab extends TabComponent { // サブコンポーネント
             // データ管理セクション
             const dataManagementHeight = this.dataManagementRenderer!.render(
                 context,
-                x + this.contentPadding),
+                x + this.contentPadding);
                 currentY),
                 width - this.contentPadding * 2),
             currentY += dataManagementHeight,
             
             // スクロールバーを描画
-            this.updateScrollLimits(currentY + this.scrollPosition, y + height),
+            this.updateScrollLimits(currentY + this.scrollPosition, y + height);
             this.renderScrollbar(context, x + width - 16, y, 16, height) } catch (error) { this.renderErrorFallback(context, x, y, width, height, error) }
     }
     
@@ -135,15 +130,14 @@ export class ManagementTab extends TabComponent { // サブコンポーネント
      */''
     private renderBackground(context: CanvasRenderingContext2D, x: number, y: number, width: number, height: number): void { ''
         context.fillStyle = this.accessibilitySettings.highContrast ? '#FFFFFF' : '#F8F9FA',
-        context.fillRect(x, y, width, height),
-
+        context.fillRect(x, y, width, height);
         context.strokeStyle = this.accessibilitySettings.highContrast ? '#000000' : '#DEE2E6',
         context.lineWidth = 1,
         context.strokeRect(x, y, width, height) }
     /**
      * データの定期更新
      */
-    private updateDataIfNeeded(): void { const now = Date.now(),
+    private updateDataIfNeeded(): void { const now = Date.now();
         if (now - this.lastDataUpdate > 5000) {
             // 5秒間隔
         }
@@ -153,7 +147,7 @@ export class ManagementTab extends TabComponent { // サブコンポーネント
     /**
      * スクロール制限を更新
      */
-    private updateScrollLimits(contentHeight: number, viewHeight: number): void { this.maxScrollPosition = Math.max(0, contentHeight - viewHeight + this.contentPadding),
+    private updateScrollLimits(contentHeight: number, viewHeight: number): void { this.maxScrollPosition = Math.max(0, contentHeight - viewHeight + this.contentPadding);
         this.scrollPosition = Math.max(0, Math.min(this.maxScrollPosition, this.scrollPosition) }
     /**
      * スクロールバーを描画
@@ -163,14 +157,13 @@ export class ManagementTab extends TabComponent { // サブコンポーネント
         ','
         // スクロールバー背景
         context.fillStyle = '#E9ECEF',
-        context.fillRect(x, y, width, height),
-        
+        context.fillRect(x, y, width, height);
         // スクロールバートラック
         const trackHeight = height * (height / (height + this.maxScrollPosition)),
         const trackY = y + (this.scrollPosition / this.maxScrollPosition) * (height - trackHeight'),'
 
         context.fillStyle = '#6C757D',
-        context.fillRect(x + 2, trackY, width - 4, trackHeight),
+        context.fillRect(x + 2, trackY, width - 4, trackHeight);
         ','
         // スクロールバー枠線
         context.strokeStyle = '#CED4DA',
@@ -185,7 +178,7 @@ export class ManagementTab extends TabComponent { // サブコンポーネント
         const relativeY = y + this.scrollPosition,
         
         // ユーザー情報セクションの高さを計算
-        const userInfoHeight = this.estimateUserInfoHeight(),
+        const userInfoHeight = this.estimateUserInfoHeight();
         const dataManagementY = userInfoHeight + this.sectionSpacing + this.contentPadding,
         
         if (relativeY >= dataManagementY) {
@@ -205,23 +198,23 @@ export class ManagementTab extends TabComponent { // サブコンポーネント
             const keyEvent = event as KeyboardEvent,
             switch(keyEvent.key) {''
                 case 'ArrowUp':','
-                    event.preventDefault(),
-                    this.scroll(-30),
+                    event.preventDefault();
+                    this.scroll(-30);
                     return true,
 
                 case 'ArrowDown':','
-                    event.preventDefault(),
-                    this.scroll(30),
+                    event.preventDefault();
+                    this.scroll(30);
                     return true,
 
                 case 'PageUp':','
-                    event.preventDefault(),
-                    this.scroll(-200),
+                    event.preventDefault();
+                    this.scroll(-200);
                     return true,
 
                 case 'PageDown':','
-                    event.preventDefault(),
-                    this.scroll(200),
+                    event.preventDefault();
+                    this.scroll(200);
                     return true,
 
                 case 'Home':','
@@ -230,8 +223,8 @@ export class ManagementTab extends TabComponent { // サブコンポーネント
                     event.preventDefault() }
 
         } else if (event.type === 'wheel) { const wheelEvent = event as WheelEvent,'
-            event.preventDefault(),
-            this.scroll(wheelEvent.deltaY),
+            event.preventDefault();
+            this.scroll(wheelEvent.deltaY);
             return true }
         return false;
     }
@@ -248,8 +241,7 @@ export class ManagementTab extends TabComponent { // サブコンポーネント
     /**
      * フレーム更新処理
      */
-    update(deltaTime: number): void { super.update(deltaTime),
-        
+    update(deltaTime: number): void { super.update(deltaTime);
         if (this.isActive) {
         
             // サブコンポーネントの更新
@@ -262,8 +254,7 @@ export class ManagementTab extends TabComponent { // サブコンポーネント
     /**
      * クリーンアップ
      */
-    cleanup(): void { super.cleanup(),
-        
+    cleanup(): void { super.cleanup();
         if (this.userInfoRenderer) {
     
 }
@@ -281,14 +272,15 @@ class UserInfoRenderer { private gameEngine: GameEngine
     private eventBus: EventBus;
     private state: TabState;
     private, textSettings: {
-        titleFont: string,
-        labelFont: string,
-        valueFont: string,
-        titleColor: string,
-        labelColor: string,
-    valueColor: string,;
-    
-    private isInitialized: boolean = false,
+        titleFont: string;
+        labelFont: string;
+        valueFont: string;
+        titleColor: string;
+        labelColor: string;
+    valueColor: string;
+    valueColor: string;
+        };
+    private isInitialized: boolean = false;
 
     constructor(gameEngine: GameEngine, eventBus: EventBus, state: TabState) {
         this.gameEngine = gameEngine;
@@ -298,9 +290,9 @@ class UserInfoRenderer { private gameEngine: GameEngine
 
         this.textSettings = {''
             titleFont: '18px bold sans-serif';
-            labelFont: '14px sans-serif',
-            valueFont: '14px bold sans-serif',
-            titleColor: '#212529',
+            labelFont: '14px sans-serif';
+            valueFont: '14px bold sans-serif';
+            titleColor: '#212529';
             labelColor: '#6C757D' }
 
             valueColor: '#495057' ;
@@ -309,7 +301,7 @@ class UserInfoRenderer { private gameEngine: GameEngine
     /**
      * 初期化
      */
-    initialize(): void { this.applyAccessibilitySettings(),
+    initialize(): void { this.applyAccessibilitySettings();
         this.isInitialized = true }
     /**
      * アクセシビリティ設定を適用
@@ -349,7 +341,7 @@ class UserInfoRenderer { private gameEngine: GameEngine
         context.fillStyle = this.textSettings.titleColor,
         context.textAlign = 'left',
         context.textBaseline = 'top',
-        context.fillText('現在のユーザー情報', x, currentY),
+        context.fillText('現在のユーザー情報', x, currentY);
         currentY += 35,
 
         if (!userData) {
@@ -393,7 +385,7 @@ class UserInfoRenderer { private gameEngine: GameEngine
             context.fillStyle = this.textSettings.valueColor,
             context.textAlign = 'right',
 
-            const valueText = this.truncateText(context, item.value, maxWidth / 2),
+            const valueText = this.truncateText(context, item.value, maxWidth / 2);
             context.fillText(valueText, x + width - 10, currentY) }
             currentY += itemHeight; }
         // 境界線
@@ -416,10 +408,9 @@ class UserInfoRenderer { private gameEngine: GameEngine
     private formatPlayTime(milliseconds: number): string { ''
         if(!milliseconds || milliseconds <= 0) return '0分',
         
-        const minutes = Math.floor(milliseconds / 60000),
-        const hours = Math.floor(minutes / 60),
-        const days = Math.floor(hours / 24),
-        
+        const minutes = Math.floor(milliseconds / 60000);
+        const hours = Math.floor(minutes / 60);
+        const days = Math.floor(hours / 24);
         if (days > 0) { }
             return `${days}日 ${hours % 24}時間`;
         } else if (hours > 0) {
@@ -459,7 +450,7 @@ class UserInfoRenderer { private gameEngine: GameEngine
  * データ管理レンダラー
  * データのエクスポート・インポート・管理機能
  */
-interface Button { id: string,
+interface Button { id: string;
     label: string;
     color: string;
     description: string;
@@ -467,19 +458,20 @@ class DataManagementRenderer { private gameEngine: GameEngine
     private eventBus: EventBus;
     private state: TabState;
     private, textSettings: {
-        titleFont: string,
-        labelFont: string,
-        buttonFont: string,
-        titleColor: string,
-        labelColor: string,
-    buttonTextColor: string,;
-    
+        titleFont: string;
+        labelFont: string;
+        buttonFont: string;
+        titleColor: string;
+        labelColor: string;
+    buttonTextColor: string;
+    buttonTextColor: string;
+        };
     // ボタン設定
-    private buttons: Button[],
-    private buttonHeight: number = 40,
-    private buttonSpacing: number = 15,
-    private hoveredButton: number = -1,
-    private, isInitialized: boolean = false,
+    private buttons: Button[];
+    private buttonHeight: number = 40;
+    private buttonSpacing: number = 15;
+    private hoveredButton: number = -1;
+    private, isInitialized: boolean = false;
 
     constructor(gameEngine: GameEngine, eventBus: EventBus, state: TabState) {
         this.gameEngine = gameEngine;
@@ -489,9 +481,9 @@ class DataManagementRenderer { private gameEngine: GameEngine
 
         this.textSettings = {''
             titleFont: '18px bold sans-serif';
-            labelFont: '14px sans-serif',
-            buttonFont: '14px bold sans-serif',
-            titleColor: '#212529',
+            labelFont: '14px sans-serif';
+            buttonFont: '14px bold sans-serif';
+            titleColor: '#212529';
             labelColor: '#6C757D' }
 
             buttonTextColor: '#FFFFFF' ;
@@ -505,27 +497,27 @@ class DataManagementRenderer { private gameEngine: GameEngine
                 description: 'ユーザー名を変更します'
             };
             { ''
-                id: 'export',
-                label: 'データエクスポート',
-                color: '#28A745',
+                id: 'export';
+                label: 'データエクスポート';
+                color: '#28A745';
                 description: 'ゲームデータをエクスポートします'
             };
             { ''
-                id: 'import',
-                label: 'データインポート',
-                color: '#FD7E14',
+                id: 'import';
+                label: 'データインポート';
+                color: '#FD7E14';
                 description: 'ゲームデータをインポートします'
             };
             { ''
-                id: 'statsExport',
-                label: '統計エクスポート',
-                color: '#6F42C1',
+                id: 'statsExport';
+                label: '統計エクスポート';
+                color: '#6F42C1';
                 description: '統計データをエクスポートします'
             };
             { ''
-                id: 'reset',
-                label: 'データリセット',
-                color: '#DC3545',
+                id: 'reset';
+                label: 'データリセット';
+                color: '#DC3545';
                 description: '全データをリセットします（要注意）'
             }]
             }]
@@ -535,7 +527,7 @@ class DataManagementRenderer { private gameEngine: GameEngine
     /**
      * 初期化
      */
-    initialize(): void { this.applyAccessibilitySettings(),
+    initialize(): void { this.applyAccessibilitySettings();
         this.isInitialized = true }
     /**
      * アクセシビリティ設定を適用
@@ -580,12 +572,11 @@ class DataManagementRenderer { private gameEngine: GameEngine
         // 説明テキスト
         context.font = this.textSettings.labelFont,
         context.fillStyle = this.textSettings.labelColor,
-        context.fillText('ゲームデータの管理と設定を行えます。', x + 10, currentY),
+        context.fillText('ゲームデータの管理と設定を行えます。', x + 10, currentY);
         currentY += 30,
         
         // ボタンを描画
-        const buttonWidth = Math.min(200, width - 40),
-        
+        const buttonWidth = Math.min(200, width - 40);
         for(let, i = 0, i < this.buttons.length, i++) {
         
             const button = this.buttons[i],
@@ -607,7 +598,7 @@ class DataManagementRenderer { private gameEngine: GameEngine
      * @param button - ボタン情報
      * @param index - ボタンインデックス
      */
-    private renderButton(context: CanvasRenderingContext2D, x: number, y: number, width: number, height: number, button: Button, index: number): void { const isHovered = this.hoveredButton === index;
+    private renderButton(context: CanvasRenderingContext2D, x: number, y: number, width: number, height: number, button: Button, index: number): void { const isHovered = this.hoveredButton === index,
         const cornerRadius = 6,
         
         // ボタン背景色を決定
@@ -634,13 +625,13 @@ class DataManagementRenderer { private gameEngine: GameEngine
         
         // ホバー時の効果
         if (isHovered) {
-            context.strokeStyle = this.darkenColor(button.color, 0.3),
+            context.strokeStyle = this.darkenColor(button.color, 0.3);
             context.lineWidth = 2,
-            this.roundRect(context, x, y, width, height, cornerRadius),
+            this.roundRect(context, x, y, width, height, cornerRadius);
             context.stroke('',
         context.textAlign = 'center',
         context.textBaseline = 'middle')
-        context.fillText(button.label, x + width / 2, y + height / 2),
+        context.fillText(button.label, x + width / 2, y + height / 2);
         ','
         // 説明テキストを描画
         if (button.description) {
@@ -700,7 +691,7 @@ class DataManagementRenderer { private gameEngine: GameEngine
             console.error('Button click error:', error','
             this.eventBus.emit('component-error', {''
                 component: 'DataManagementRenderer',','
-                operation: 'handleButtonClick'),
+                operation: 'handleButtonClick');
                 error }';'
         }
     /**
@@ -724,8 +715,7 @@ class DataManagementRenderer { private gameEngine: GameEngine
 
                     this.gameEngine.achievementManager.reset() }
 
-                this.eventBus.emit('data-reset', { timestamp: Date.now( });
-
+                this.eventBus.emit('data-reset', { timestamp: Date.now( };
                 alert('データがリセットされました。';} catch (error) {
                 console.error('Data reset error:', error','
                 alert('データリセット中にエラーが発生しました。) }'
@@ -758,7 +748,7 @@ class DataManagementRenderer { private gameEngine: GameEngine
     private lightenColor(color: string, amount: number): string { ''
         const usePound = color[0] === '#',
         const col = usePound ? color.slice(1) : color,
-        const num = parseInt(col, 16),
+        const num = parseInt(col, 16);
         let r = (num >> 16) + amount * 255,
 
         let g = (num >> 8 & 0x00FF) + amount * 255,
@@ -778,7 +768,7 @@ class DataManagementRenderer { private gameEngine: GameEngine
     private darkenColor(color: string, amount: number): string { ''
         const usePound = color[0] === '#',
         const col = usePound ? color.slice(1) : color,
-        const num = parseInt(col, 16),
+        const num = parseInt(col, 16);
         let r = (num >> 16) * (1 - amount),
 
         let g = (num >> 8 & 0x00FF) * (1 - amount),
@@ -794,16 +784,16 @@ class DataManagementRenderer { private gameEngine: GameEngine
      * @param height - 高さ
      * @param radius - 角の半径
      */
-    private roundRect(context: CanvasRenderingContext2D, x: number, y: number, width: number, height: number, radius: number): void { context.beginPath(),
-        context.moveTo(x + radius, y),
-        context.lineTo(x + width - radius, y),
-        context.quadraticCurveTo(x + width, y, x + width, y + radius),
-        context.lineTo(x + width, y + height - radius),
-        context.quadraticCurveTo(x + width, y + height, x + width - radius, y + height),
-        context.lineTo(x + radius, y + height),
-        context.quadraticCurveTo(x, y + height, x, y + height - radius),
-        context.lineTo(x, y + radius),
-        context.quadraticCurveTo(x, y, x + radius, y),
+    private roundRect(context: CanvasRenderingContext2D, x: number, y: number, width: number, height: number, radius: number): void { context.beginPath();
+        context.moveTo(x + radius, y);
+        context.lineTo(x + width - radius, y);
+        context.quadraticCurveTo(x + width, y, x + width, y + radius);
+        context.lineTo(x + width, y + height - radius);
+        context.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
+        context.lineTo(x + radius, y + height);
+        context.quadraticCurveTo(x, y + height, x, y + height - radius);
+        context.lineTo(x, y + radius);
+        context.quadraticCurveTo(x, y, x + radius, y);
         context.closePath() }
     /**
      * フレーム更新処理

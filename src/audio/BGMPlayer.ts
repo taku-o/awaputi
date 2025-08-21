@@ -1,7 +1,7 @@
 import { getErrorHandler  } from '../utils/ErrorHandler.js';
 
 // BGMトラック型定義
-interface BGMTrack { id: string,
+interface BGMTrack { id: string;
     name: string;
     buffer: AudioBuffer;
     duration: number;
@@ -21,17 +21,17 @@ interface StopOptions { fadeOut?: boolean,
     fadeOutDuration?: number;
 
 // 再生統計型定義
-interface PlaybackStats { totalPlayTime: number,
+interface PlaybackStats { totalPlayTime: number;
     loopCount: number;
     trackSwitches: number;
 
 // トラック状態型定義
-interface TrackState { id: string,
+interface TrackState { id: string;
     name: string;
     duration: number;
 
 // BGMプレイヤー状態型定義
-interface BGMPlayerState { isPlaying: boolean,
+interface BGMPlayerState { isPlaying: boolean;
     isPaused: boolean;
     currentTrack: TrackState | null;
     currentTime: number;
@@ -71,8 +71,8 @@ export class BGMPlayer {
     private nextTrackOptions: PlayOptions | null = null;
     // 統計情報
     private, playbackStats: PlaybackStats = {
-        totalPlayTime: 0,
-        loopCount: 0,
+        totalPlayTime: 0;
+        loopCount: 0;
     trackSwitches: 0 };
     constructor(audioContext: AudioContext, bgmGainNode: GainNode) {
         this.audioContext = audioContext;
@@ -149,11 +149,11 @@ export class BGMPlayer {
                 this._scheduleLoop(track.duration - startOffset); }
             }
 
-            console.log(`BGM "${track.name}" started, playing (loop: ${loop}`});
+            console.log(`BGM "${track.name}" started, playing (loop: ${loop}`};
             ";"
         } catch (error) { (getErrorHandler() as ErrorHandler").handleError(error as Error, 'BGM_PLAYER_ERROR', {''"
                 operation: 'play',','
-                track: track?.name || 'unknown', : undefined),
+                track: track?.name || 'unknown', : undefined);
                 options: options,);
         }
     }
@@ -242,7 +242,7 @@ export class BGMPlayer {
         } catch (error) { (getErrorHandler() as ErrorHandler").handleError(error as Error, 'BGM_PLAYER_ERROR', {''"
                 operation: 'performSeamlessLoop',')',
                 track: this.currentTrack?.name || 'unknown'
-            });
+            };
         }
     }
     
@@ -281,9 +281,8 @@ export class BGMPlayer {
             if (fadeOut && fadeOutDuration > 0 && this.fadeGainNode) {
             
                 // フェードアウト
-                this.fadeGainNode.gain.setValueAtTime(this.fadeGainNode.gain.value, this.audioContext.currentTime),
-                this.fadeGainNode.gain.linearRampToValueAtTime(0, this.audioContext.currentTime + fadeOutDuration),
-                
+                this.fadeGainNode.gain.setValueAtTime(this.fadeGainNode.gain.value, this.audioContext.currentTime);
+                this.fadeGainNode.gain.linearRampToValueAtTime(0, this.audioContext.currentTime + fadeOutDuration);
                 // フェードアウト完了後に停止
             
             }
@@ -301,7 +300,7 @@ export class BGMPlayer {
             ';'
 
         } catch (error) { (getErrorHandler() as ErrorHandler').handleError(error as Error, 'BGM_PLAYER_ERROR', {''
-                operation: 'stop'),
+                operation: 'stop');
                 options: options,);
         }
     }
@@ -341,7 +340,7 @@ export class BGMPlayer {
             if (this.fadeGainNode) {
             ,
                 // 音量を0にして一時停止をシミュレート
-                this.fadeGainNode.gain.setValueAtTime(0, this.audioContext.currentTime),
+                this.fadeGainNode.gain.setValueAtTime(0, this.audioContext.currentTime);
                 this.pauseTime = this.audioContext.currentTime;
                 this.isPaused = true;
 
@@ -351,7 +350,7 @@ export class BGMPlayer {
 
             } catch (error) { (getErrorHandler() as ErrorHandler').handleError(error as Error, 'BGM_PLAYER_ERROR', {''
                 operation: 'pause'
-            });
+            };
         }
     }
     
@@ -369,7 +368,7 @@ export class BGMPlayer {
             
                 // 音量を復元
                 const targetVolume = 1.0, // または保存されている音量値
-                this.fadeGainNode.gain.setValueAtTime(targetVolume, this.audioContext.currentTime),
+                this.fadeGainNode.gain.setValueAtTime(targetVolume, this.audioContext.currentTime);
                 // 統計更新（一時停止時間を除外）
                 if (this.pauseTime > 0) {
     
@@ -384,7 +383,7 @@ export class BGMPlayer {
 
             } catch (error) { (getErrorHandler() as ErrorHandler').handleError(error as Error, 'BGM_PLAYER_ERROR', {''
                 operation: 'resume'
-            });
+            };
         }
     }
     
@@ -410,7 +409,7 @@ export class BGMPlayer {
 
             } catch (error) { (getErrorHandler() as ErrorHandler').handleError(error as Error, 'BGM_PLAYER_ERROR', {''
                 operation: 'setVolume',
-    volume: volume),
+    volume: volume);
                 fadeTime: fadeTime,);
         }
     }
@@ -429,11 +428,11 @@ export class BGMPlayer {
             rate = Math.max(0.25, Math.min(4.0, rate);
             this.currentSource.playbackRate.setValueAtTime(rate, this.audioContext.currentTime);
             
-            console.log(`Playback, rate set, to ${rate}`});
+            console.log(`Playback, rate set, to ${rate}`};
             ';'
 
         } catch (error) { (getErrorHandler() as ErrorHandler').handleError(error as Error, 'BGM_PLAYER_ERROR', {''
-                operation: 'setPlaybackRate'),
+                operation: 'setPlaybackRate');
                 rate: rate,';'
         }
     }
@@ -450,7 +449,7 @@ export class BGMPlayer {
 
             ' }'
 
-            console.log(`Next, track queued: "${track.name"}"`}";
+            console.log(`Next, track queued: "${track.name"}"`}",
             ";"
         } catch (error) { (getErrorHandler() as ErrorHandler").handleError(error as Error, 'BGM_PLAYER_ERROR', {''"
                 operation: 'queueNext',')',
@@ -465,7 +464,7 @@ export class BGMPlayer {
      */ : undefined''
     setLoop(enabled: boolean): void { this.loopEnabled = enabled,' }'
 
-        console.log(`Loop ${enabled ? 'enabled' : 'disabled}`});'
+        console.log(`Loop ${enabled ? 'enabled' : 'disabled}`};'
     }
     
     /**
@@ -473,7 +472,7 @@ export class BGMPlayer {
      * @param time - クロスフェード時間（秒）
      */
     setCrossfadeTime(time: number): void { this.crossfadeTime = Math.max(0, Math.min(5, time) }
-        console.log(`Crossfade, time set, to ${this.crossfadeTime}s`});
+        console.log(`Crossfade, time set, to ${this.crossfadeTime}s`};
     }
     
     /**
@@ -495,14 +494,14 @@ export class BGMPlayer {
             isPaused: this.isPaused,
     currentTrack: this.currentTrack ? { : undefined
                 id: this.currentTrack.id,
-    name: this.currentTrack.name };
+    name: this.currentTrack.name },
                 duration: this.currentTrack.duration 
     } : null;
             currentTime: this.getCurrentTime();
-            loopEnabled: this.loopEnabled;
-            crossfadeTime: this.crossfadeTime;
-            volume: this.fadeGainNode ? this.fadeGainNode.gain.value : 0;
-            playbackRate: this.currentSource ? this.currentSource.playbackRate.value : 1;
+            loopEnabled: this.loopEnabled,
+            crossfadeTime: this.crossfadeTime,
+            volume: this.fadeGainNode ? this.fadeGainNode.gain.value : 0,
+            playbackRate: this.currentSource ? this.currentSource.playbackRate.value : 1,
             hasNextTrack: !!this.nextTrack,
     stats: { ...this.playbackStats }
     

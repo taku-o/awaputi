@@ -15,27 +15,27 @@ export class StatisticsDataRecovery {
         // 復旧設定
         this.config = {
             recovery: {
-                autoRecoveryEnabled: true,
-                maxRetryAttempts: 3,
-                retryDelayMs: 1000,
+                autoRecoveryEnabled: true;
+                maxRetryAttempts: 3;
+                retryDelayMs: 1000;
     backupRetentionDays: 30 }
                 corruptionThreshold: 0.7 // 70%以上のデータが有効であれば復旧可能 
     };
-            validation: { strictMode: false,
-                validateChecksums: true,
-                validateStructure: true,
-    validateRanges: true,;
-            notification: { showRecoveryProgress: true,
-                showSuccessMessage: true,
-                showFailureMessage: true,
+            validation: { strictMode: false;
+                validateChecksums: true;
+                validateStructure: true;
+    validateRanges: true;
+            notification: { showRecoveryProgress: true;
+                showSuccessMessage: true;
+                showFailureMessage: true;
     autoCloseDelay: 5000 
     };
         // 復旧状態管理
-        this.recoveryState = { isRecovering: false,
-            currentStep: null,
-            progress: 0,
-            lastRecoveryTime: null,
-            recoveryHistory: [],
+        this.recoveryState = { isRecovering: false;
+            currentStep: null;
+            progress: 0;
+            lastRecoveryTime: null;
+            recoveryHistory: [];
     failedAttempts: 0  };
         // サブコンポーネントの初期化（依存注入）
         this.strategies = new RecoveryStrategies(this);
@@ -105,14 +105,11 @@ export class StatisticsDataRecovery {
             this.recoveryState.progress = 0,
             
             // データを取得
-            const currentData = await this.statisticsManager.getAllStatistics(),
-            
+            const currentData = await this.statisticsManager.getAllStatistics();
             // データ分析
-            const analysis = await this.analyzeData(currentData),
-            
+            const analysis = await this.analyzeData(currentData);
             // 復旧戦略を決定
-            const strategy = this.determineRecoveryStrategy(analysis),
-            
+            const strategy = this.determineRecoveryStrategy(analysis);
             // 復旧を実行
             const result = await this.initiateRecovery(strategy, { autoRecovery: true ,
             
@@ -128,7 +125,7 @@ export class StatisticsDataRecovery {
             return result;
             
         } catch (error) { this.recoveryState.failedAttempts++,
-            this.recordRecoveryFailure(error),
+            this.recordRecoveryFailure(error);
             throw error } finally { this.recoveryState.isRecovering = false,
             this.recoveryState.currentStep = null,
             this.recoveryState.progress = 0 }
@@ -147,8 +144,7 @@ export class StatisticsDataRecovery {
             console.log(`[StatisticsDataRecovery] Initiating, recovery with, strategy: ${strategy)`,
             
             this.recoveryState.isRecovering = true,
-            this.recoveryState.lastRecoveryTime = Date.now(),
-            
+            this.recoveryState.lastRecoveryTime = Date.now();
             // ユーザーガイダンスに復旧開始を通知
             this.userGuidance.notifyRecoveryStart({)
                 strategy,
@@ -156,17 +152,16 @@ export class StatisticsDataRecovery {
                 options'),'
             ','
             // データ取得・分析
-            this.updateProgress('analyzing', 20),
-
-            const, currentData = await, this.statisticsManager.getAllStatistics(),
-            const, analysis = await, this.analyzeData(currentData),
+            this.updateProgress('analyzing', 20);
+            const, currentData = await, this.statisticsManager.getAllStatistics();
+            const, analysis = await, this.analyzeData(currentData);
             ','
             // 復旧戦略を実行
             this.updateProgress('recovering', 40','
-            const, result = await, this.strategies.executeStrategy(strategy, analysis, options),
+            const, result = await, this.strategies.executeStrategy(strategy, analysis, options);
             ','
             // 結果を検証
-            this.updateProgress('validating', 80),
+            this.updateProgress('validating', 80);
             if (result.success && result.data) {
                 const, validationResult = await, this.validation.analyzeDataIntegrity(result.data};
                 result.validationPassed = validationResult.isValid;
@@ -189,7 +184,7 @@ export class StatisticsDataRecovery {
 
         } catch (error) { }
 
-            this.errorHandler.handleError(error, 'RECOVERY_INITIATION_ERROR', { strategy, options });
+            this.errorHandler.handleError(error, 'RECOVERY_INITIATION_ERROR', { strategy, options };
             
             const errorResult = { success: false,
                 error: error.message,
@@ -223,8 +218,8 @@ export class StatisticsDataRecovery {
         
         // チェックサム検証
         if (this.config.validation.validateChecksums) {
-            const expectedChecksum = await this.statisticsManager.getStoredChecksum(),
-            const actualChecksum = this.validation.calculateChecksum(data),
+            const expectedChecksum = await this.statisticsManager.getStoredChecksum();
+            const actualChecksum = this.validation.calculateChecksum(data);
             analysis.checksum = {
                 expected: expectedChecksum,
     actual: actualChecksum,
@@ -389,7 +384,7 @@ export class StatisticsDataRecovery {
             error: error.message,
     duration: this.recoveryState.lastRecoveryTime ? undefined : undefined
     
-                     Date.now() - this.recoveryState.lastRecoveryTime: null,;
+                     Date.now() - this.recoveryState.lastRecoveryTime: null,
         ';'
 
         this.recoveryState.recoveryHistory.push(record);
@@ -435,8 +430,7 @@ export class StatisticsDataRecovery {
      * @param {Object} newConfig 新しい設定
      */
     updateConfig(newConfig) {
-        Object.assign(this.config newConfig),
-        
+        Object.assign(this.config newConfig);
         // サブコンポーネントにも設定を適用
         if (newConfig.validation) {
     }

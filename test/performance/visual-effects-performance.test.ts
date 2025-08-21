@@ -8,16 +8,16 @@ test.describe('Visual Effects Performance Tests', () => { }'
     test.beforeEach(async ({ page }') => {  ''
         await page.goto('http: //localhost:8000'),' };'
         await page.waitForSelector('#gameCanvas'); }'
-        await page.waitForTimeout(2000});'}');
+        await page.waitForTimeout(2000};'}');
     test.describe('Frame Rate Performance', (') => { }'
         test('should maintain stable FPS during normal gameplay', async ({ page }') => {  ''
-            await page.click('text=ゲーム開始'),
+            await page.click('text=ゲーム開始');
             await page.waitForTimeout(500'),'
             await page.click('text=ちょっとだけ (1分')'),'
             await page.waitForTimeout(1000'),'
             // デバッグインターフェースを開いてFPS監視''
-            await page.keyboard.press('Control+Shift+E'),
-            await page.waitForTimeout(500),
+            await page.keyboard.press('Control+Shift+E');
+            await page.waitForTimeout(500);
             // FPS測定を開始
             const fpsReadings: any[] = [],
             
@@ -29,26 +29,26 @@ test.describe('Visual Effects Performance Tests', () => { }'
                 const fps = parseFloat(fpsText); }
                 if (!isNaN(fps) { }
                     fpsReadings.push(fps};)
-            });
+            };
             // FPS要件の確認
             const averageFPS = fpsReadings.reduce((a, b) => a + b, 0) / fpsReadings.length;
             const minFPS = Math.min(...fpsReadings);
             expect(averageFPS.toBeGreaterThan(30); // 平均30FPS以上
             expect(minFPS.toBeGreaterThan(15); // 最低15FPS以上
             ';'
-            console.log(`Average FPS: ${averageFPS.toFixed(2})}, Min FPS: ${minFPS.toFixed(2})}`);'}');
+            console.log(`Average FPS: ${averageFPS.toFixed(2}}, Min FPS: ${minFPS.toFixed(2}}`);'}');
         test('should maintain performance during heavy particle effects', async ({ page )') => { ''
-            await page.click('text=ゲーム開始'),
+            await page.click('text=ゲーム開始');
             await page.waitForTimeout(500'),'
             await page.click('text=ちょっとだけ (1分')'),'
             await page.waitForTimeout(1000'),'
-            await page.keyboard.press('Control+Shift+E'),
+            await page.keyboard.press('Control+Shift+E');
             await page.waitForTimeout(500),'
             // 大量のパーティクルエフェクトを発動''
             for(let i = 0, i < 20, i++') {', ' }'
                 await page.selectOption('#preview-effect-type', 'bubble-diamond');' }'
                 await page.click('#trigger-preview'); }
-                await page.waitForTimeout(50});'
+                await page.waitForTimeout(50};'
             ;
             await page.waitForTimeout(2000'); // エフェクト安定化待機'
             ';'
@@ -60,9 +60,9 @@ test.describe('Visual Effects Performance Tests', () => { }'
             expect(fps.toBeGreaterThan(20); // 重負荷時でも20FPS以上
             expect(particleCount.toBeGreaterThan(0); // パーティクルが生成されている
             ';'
-            console.log(`Heavy load FPS: ${fps}, Particles: ${particleCount)`});'}');
+            console.log(`Heavy load FPS: ${fps}, Particles: ${particleCount)`};'}');
         test('should scale performance with quality settings', async ({ page )') => { ''
-            await page.click('text=ゲーム開始'),
+            await page.click('text=ゲーム開始');
             await page.waitForTimeout(500'),'
             await page.click('text=ちょっとだけ (1分')'),'
             await page.waitForTimeout(1000'),' }'
@@ -72,11 +72,11 @@ test.describe('Visual Effects Performance Tests', () => { }'
             const qualityResults: Record<string, any> = { '),'
             const qualityLevels = ['low', 'medium', 'high', 'ultra'],', ',
             for(const quality of qualityLevels') {', ','
-                await page.selectOption('#quality-select', quality),
+                await page.selectOption('#quality-select', quality);
                 await page.waitForTimeout(1000'),'
                 // エフェクトを発動''
-                await page.selectOption('#preview-effect-type', 'combo-spectacular'),
-                await page.click('#trigger-preview'),
+                await page.selectOption('#preview-effect-type', 'combo-spectacular');
+                await page.click('#trigger-preview');
                 await page.waitForTimeout(2000'),'
             }'
                 const fpsText = await page.textContent('#fps-value'); }
@@ -93,11 +93,11 @@ test.describe('Visual Effects Performance Tests', () => { }'
     }''
     test.describe('Memory Performance', (') => { }'
         test('should not leak memory during extended gameplay', async ({ page }') => {  ''
-            await page.click('text=ゲーム開始'),
+            await page.click('text=ゲーム開始');
             await page.waitForTimeout(500'),'
             await page.click('text=ちょっとだけ (1分')'),'
             await page.waitForTimeout(1000'),'
-            await page.keyboard.press('Control+Shift+E'),
+            await page.keyboard.press('Control+Shift+E');
             await page.waitForTimeout(500') }'
             // 初期メモリ使用量を記録' }'
             const initialMemoryText = await page.textContent('#memory-value'}');'
@@ -108,7 +108,7 @@ test.describe('Visual Effects Performance Tests', () => { }'
                     await page.selectOption('#preview-effect-type', 'bubble-normal'),'
             }'
                     await page.click('#trigger-preview'); }'
-                    await page.waitForTimeout(100});
+                    await page.waitForTimeout(100};
                 await page.waitForTimeout(1000');'
             }
             ';'
@@ -120,19 +120,19 @@ test.describe('Visual Effects Performance Tests', () => { }'
             
             // メモリ増加が20%以下であることを確認
             expect(memoryIncreasePercent.toBeLessThan(20);'
-            console.log(`Memory usage: ${initialMemory}MB -> ${finalMemory)MB (${memoryIncreasePercent.toFixed(2})}% increase)`);'}');
+            console.log(`Memory usage: ${initialMemory}MB -> ${finalMemory)MB (${memoryIncreasePercent.toFixed(2}}% increase)`);'}');
         test('should clean up effects efficiently', async ({ page )') => { ''
-            await page.click('text=ゲーム開始'),
+            await page.click('text=ゲーム開始');
             await page.waitForTimeout(500'),'
             await page.click('text=ちょっとだけ (1分')'),'
             await page.waitForTimeout(1000'),'
-            await page.keyboard.press('Control+Shift+E'),
+            await page.keyboard.press('Control+Shift+E');
             await page.waitForTimeout(500),'
             // 大量エフェクトを生成''
             for(let i = 0, i < 50, i++') {', ' }'
                 await page.selectOption('#preview-effect-type', 'combo-spectacular');' }'
                 await page.click('#trigger-preview'); }'
-                await page.waitForTimeout(20})', ');'
+                await page.waitForTimeout(20}', ');'
             ;
             const peakParticleText = await page.textContent('#particle-value');
             const peakParticles = parseInt(peakParticleText');'
@@ -143,17 +143,17 @@ test.describe('Visual Effects Performance Tests', () => { }'
             const clearedParticles = parseInt(clearedParticleText);
             // パーティクルが大幅に減少していることを確認
             expect(clearedParticles.toBeLessThan(peakParticles * 0.1);'
-            console.log(`Particles: ${peakParticles} -> ${clearedParticles) (${((1 - clearedParticles/peakParticles) * 100).toFixed(1})}% reduction)`);'}');'
+            console.log(`Particles: ${peakParticles} -> ${clearedParticles) (${((1 - clearedParticles/peakParticles) * 100).toFixed(1}}% reduction)`);'}');'
     }''
     test.describe('Rendering Performance', (') => { }'
         test('should optimize rendering with viewport culling', async ({ page }') => {  ''
-            await page.click('text=ゲーム開始'),
+            await page.click('text=ゲーム開始');
             await page.waitForTimeout(500'),'
             await page.click('text=ちょっとだけ (1分')'),'
             await page.waitForTimeout(1000),'
             // Canvas範囲外でエフェクトを発動（カリングテスト）''
             await page.evaluate((') => {','
-                const canvas = document.getElementById('gameCanvas'),
+                const canvas = document.getElementById('gameCanvas');
                 const gameEngine = window.gameEngine,
                 
                 if (gameEngine && gameEngine.enhancedParticleManager) {
@@ -166,8 +166,8 @@ test.describe('Visual Effects Performance Tests', () => { }'
                         gameEngine.enhancedParticleManager.createBubbleDestructionEffect(' }'
                             canvas.width + 100, canvas.height + 100, 'normal' }
                         };)
-                    })'
-                });
+                    }'
+                };
             await page.waitForTimeout(1000');'
             // パフォーマンスが維持されていることを確認''
             await page.keyboard.press('Control+Shift+E');
@@ -191,15 +191,15 @@ test.describe('Visual Effects Performance Tests', () => { }'
                 await page.setViewportSize(size'),'
                 await page.goto('http: //localhost:8000'),','
                 await page.waitForTimeout(2000'),'
-                await page.click('text=ゲーム開始'),
+                await page.click('text=ゲーム開始');
                 await page.waitForTimeout(500'),'
                 await page.click('text=ちょっとだけ (1分')'),'
                 await page.waitForTimeout(1000'),'
-                await page.keyboard.press('Control+Shift+E'),
+                await page.keyboard.press('Control+Shift+E');
                 await page.waitForTimeout(500'),'
                 // 標準エフェクトテスト''
-                await page.selectOption('#preview-effect-type', 'bubble-normal'),
-                await page.click('#trigger-preview'),
+                await page.selectOption('#preview-effect-type', 'bubble-normal');
+                await page.click('#trigger-preview');
                 await page.waitForTimeout(1000'),'
             
             }'
@@ -217,31 +217,31 @@ test.describe('Visual Effects Performance Tests', () => { }'
     }''
     test.describe('Auto-Optimization Performance', (') => { }'
         test('should automatically optimize when performance drops', async ({ page }') => {  ''
-            await page.click('text=ゲーム開始'),
+            await page.click('text=ゲーム開始');
             await page.waitForTimeout(500'),'
             await page.click('text=ちょっとだけ (1分')'),'
             await page.waitForTimeout(1000'),'
-            await page.keyboard.press('Control+Shift+E'),
+            await page.keyboard.press('Control+Shift+E');
             await page.waitForTimeout(500'),'
             // 最高品質設定''
-            await page.selectOption('#quality-select', 'ultra'),
+            await page.selectOption('#quality-select', 'ultra');
             const initialQuality = await page.inputValue('#quality-select'),'
             // 負荷をかけてパフォーマンス低下を誘発''
             for(let i = 0, i < 100, i++') {', ' }'
                 await page.selectOption('#preview-effect-type', 'combo-spectacular');' }'
                 await page.click('#trigger-preview'); }
-                await page.waitForTimeout(10});'
+                await page.waitForTimeout(10};'
             ;
             await page.waitForTimeout(5000'); // 自動最適化の時間を待つ', ';'
             const finalQuality = await page.inputValue('#quality-select');'
             // 自動最適化が動作した可能性を確認''
             console.log(`Quality: ${initialQuality} -> ${ finalQuality)`),'
             // 最終的にパフォーマンスが回復していることを確認''
-            const, finalFpsText = await, page.textContent('#fps-value'),
+            const, finalFpsText = await, page.textContent('#fps-value');
             const, finalFps = parseFloat(finalFpsText) }'
-            expect(finalFps.toBeGreaterThan(15}); // 最適化後の最低限のパフォーマンス'}');
+            expect(finalFps.toBeGreaterThan(15}; // 最適化後の最低限のパフォーマンス'}');
         test('should benchmark all effect types efficiently', async ({ page )') => { ''
-            await page.click('text=ゲーム開始'),
+            await page.click('text=ゲーム開始');
             await page.waitForTimeout(500'),'
             await page.click('text=ちょっとだけ (1分')'),'
             await page.waitForTimeout(1000'),' }'
@@ -250,26 +250,26 @@ test.describe('Visual Effects Performance Tests', () => { }'
             
             // ベンチマーク実行の前にダイアログハンドラーを設定)'
             let benchmarkCompleted = false;')'
-            page.on('dialog', async dialog => {  ),
+            page.on('dialog', async dialog => {  );
                 expect(dialog.message()').toContain('Benchmark Results'),'
                 benchmarkCompleted = true }
                 await dialog.accept(); }'
-            });
+            };
             const benchmarkStart = Date.now(')';
             await page.click('#benchmark-effects');
             // ベンチマーク完了まで待機（最大30秒）
             while (!benchmarkCompleted && Date.now() - benchmarkStart < 30000) {
-                await page.waitForTimeout(1000});
+                await page.waitForTimeout(1000};
             ;
             const benchmarkDuration = Date.now() - benchmarkStart;
             
             expect(benchmarkCompleted).toBe(true);
             expect(benchmarkDuration.toBeLessThan(30000); // 30秒以内に完了
             ';'
-            console.log(`Benchmark completed in ${benchmarkDuration)ms`});'}');'
+            console.log(`Benchmark completed in ${benchmarkDuration)ms`};'}');'
     }''
     test.describe('Mobile Performance Optimization', (') => { }'
-        test('should optimize for mobile devices automatically', async ({ page }) => { // モバイルデバイスのシミュレーション' }'
+        test('should optimize for mobile devices automatically', async ({ page } => { // モバイルデバイスのシミュレーション' }'
             await page.setViewportSize({ width: 375, height: 812 }');'
             await page.setUserAgent('Mozilla/5.0 (iPhone; CPU iPhone OS 14_0 like Mac OS X')');'
             await page.goto('http: //localhost:8000'),';'
@@ -292,18 +292,18 @@ test.describe('Visual Effects Performance Tests', () => { }'
             const fps = parseFloat(fpsText);
             // モバイルでも良好なパフォーマンス
             expect(fps.toBeGreaterThan(25); : undefined'
-            console.log(`Mobile optimized: ${isMobileOptimized}, FPS: ${fps)`});'}');'
+            console.log(`Mobile optimized: ${isMobileOptimized}, FPS: ${fps)`};'}');'
     }''
     test.describe('Stress Testing', (') => { }'
         test('should handle extreme particle counts gracefully', async ({ page }') => {  ''
-            await page.click('text=ゲーム開始'),
+            await page.click('text=ゲーム開始');
             await page.waitForTimeout(500'),'
             await page.click('text=ちょっとだけ (1分')'),'
             await page.waitForTimeout(1000'),'
-            await page.keyboard.press('Control+Shift+E'),
+            await page.keyboard.press('Control+Shift+E');
             await page.waitForTimeout(500'),'
             // パーティクル倍率を最大に''
-            await page.fill('#particle-multiplier', '2.0'),
+            await page.fill('#particle-multiplier', '2.0');
             await page.waitForTimeout(500),'
             // 大量のエフェクト生成''
             for(let i = 0, i < 200, i++') {', ','
@@ -312,16 +312,16 @@ test.describe('Visual Effects Performance Tests', () => { }'
                 await page.click('#trigger-preview'); }
                 if (i % 20 === 0) { }
                     await page.waitForTimeout(100}; // 定期的に少し待機)
-            });
+            };
             ;
             await page.waitForTimeout(3000);
             // システムがクラッシュしていないことを確認
             const isGameRunning = await page.evaluate(() => { return window.gameEngine? .isRunning || false }'
-            });
+            };
             expect(isGameRunning).toBe(true');'
             const fpsText = await page.textContent('#fps-value');
             const fps = parseFloat(fpsText);
             // 極端な状況でも最低限の動作
             expect(fps.toBeGreaterThan(5);
-        });'
+        };'
     }'}'); : undefined

@@ -8,7 +8,7 @@ import type { ErrorHandler } from '../../utils/ErrorHandler.js';
 /**
  * Volume Slider Options
  */
-interface VolumeSliderOptions { id: string,
+interface VolumeSliderOptions { id: string;
     label: string;
     icon: string;
     category: 'master' | 'bgm' | 'sfx';
@@ -18,7 +18,7 @@ interface VolumeSliderOptions { id: string,
 /**
  * Toggle Option Options
  */
-interface ToggleOptionOptions { id: string,
+interface ToggleOptionOptions { id: string;
     label: string;
     icon: string;
     defaultValue: boolean;
@@ -28,29 +28,29 @@ interface ToggleOptionOptions { id: string,
 /**
  * Radio Group Options
  */
-interface RadioGroupOptions { id: string,
+interface RadioGroupOptions { id: string;
     label: string;
     icon: string;
     options: Array<{ value: string,, label: string;>,
-    defaultValue: string,
+    defaultValue: string;
     onChange: (value: string) => void;
 }
 
 /**
  * Dropdown Options
  */
-interface DropdownOptions { id: string,
+interface DropdownOptions { id: string;
     label: string;
     icon: string;
     options: Array<{ value: number | string,, label: string;>,
-    defaultValue: number | string,
+    defaultValue: number | string;
     onChange: (value: string) => void;
 }
 
 /**
  * Vertical Slider Options
  */
-interface VerticalSliderOptions { id: string,
+interface VerticalSliderOptions { id: string;
     label: string;
     icon: string;
     min: number;
@@ -75,8 +75,7 @@ export class AudioSettingsUIComponentFactory {
     private localizationManager: LocalizationManager;
     private errorHandler: ErrorHandler;
     // スライダー管理
-    private, sliders: Map<string, HTMLInputElement> = new Map(),
-    
+    private, sliders: Map<string, HTMLInputElement> = new Map();
     // プレビュー音源
     private previewTimeouts: Map<string, NodeJS.Timeout> = new Map();
     
@@ -100,17 +99,17 @@ export class AudioSettingsUIComponentFactory {
      * 音量スライダーを作成
      */''
     createVolumeSlider(container: HTMLElement, options: VolumeSliderOptions): void { ''
-        const sliderGroup = document.createElement('div'),
+        const sliderGroup = document.createElement('div');
         sliderGroup.className = 'slider-group',
         sliderGroup.style.cssText = `,
             margin-bottom: 20px,
             padding: 15px,
-            background-color: rgba(255, 255, 255, 0.05),
+            background-color: rgba(255, 255, 255, 0.05);
             border-radius: 10px,
         `,
         ','
         // ラベル
-        const labelContainer = document.createElement('div'),
+        const labelContainer = document.createElement('div');
         labelContainer.style.cssText = `,
             display: flex,
             justify-content: space-between,
@@ -120,9 +119,9 @@ export class AudioSettingsUIComponentFactory {
 
         const label = document.createElement('label),'
         label.htmlFor = options.id }
-        label.innerHTML = `${options.icon} ${this.localizationManager.getText(options.label})`;
+        label.innerHTML = `${options.icon} ${this.localizationManager.getText(options.label}`;
         label.style.cssText = `;
-            color: #ffffff;
+            color: #ffffff,
             font-size: 16px,
         `;
         labelContainer.appendChild(label);
@@ -130,9 +129,9 @@ export class AudioSettingsUIComponentFactory {
         // 値表示
         const valueDisplay = document.createElement('span);'
         valueDisplay.id = `${options.id}-value`;
-        valueDisplay.textContent = `${Math.round(options.defaultValue * 100})%`;
+        valueDisplay.textContent = `${Math.round(options.defaultValue * 100}%`;
         valueDisplay.style.cssText = `;
-            color: #00ffff;
+            color: #00ffff,
             font-size: 16px,
             font-weight: bold,
         `;
@@ -143,9 +142,9 @@ export class AudioSettingsUIComponentFactory {
         // スライダーコンテナ
         const sliderContainer = document.createElement('div');
         sliderContainer.style.cssText = `;
-            display: flex;
+            display: flex,
             align-items: center,
-            gap: 15px;
+            gap: 15px,
         `;
         ';'
         // スライダー
@@ -167,25 +166,25 @@ export class AudioSettingsUIComponentFactory {
         `,
         ','
         // プレビューボタン
-        const, previewButton = document.createElement('button'),
+        const, previewButton = document.createElement('button');
         previewButton.className = 'preview-button',
         previewButton.innerHTML = '🔊',
 
         previewButton.style.cssText = `','
             background-color: rgba(0, 255, 255, 0.2}
-            border: 2px solid #00ffff;
+            border: 2px solid #00ffff,
             color: #00ffff,
-    padding: 8px 12px;
+    padding: 8px 12px,
             border-radius: 8px,
-            cursor: pointer;
+            cursor: pointer,
             font-size: 18px,
-            transition: all 0.3s ease;
+            transition: all 0.3s ease,
         `;
         ';'
         // イベントハンドラー
         slider.addEventListener('input', (e} => {  }
             const target = e.target as HTMLInputElement; }
-            const value = parseInt(target.value}) / 100;
+            const value = parseInt(target.value} / 100;
             valueDisplay.textContent = `${target.value}%`;
             slider.style.background = `linear-gradient(to right, #00ffff 0%, #00ffff ${target.value}%, #333333 ${target.value}%, #333333 100%)`;
             
@@ -199,7 +198,7 @@ export class AudioSettingsUIComponentFactory {
             this._schedulePreview(options);'}');
 
         previewButton.addEventListener('click', () => {  ''
-            this._playPreviewSound(options),
+            this._playPreviewSound(options);
             ','
             // ボタンアニメーション
             previewButton.style.transform = 'scale(0.95)',
@@ -207,7 +206,7 @@ export class AudioSettingsUIComponentFactory {
 
                 previewButton.style.transform = 'scale(1)'; }
             }, 100);
-        });
+        };
         
         sliderContainer.appendChild(slider);
         sliderContainer.appendChild(previewButton);
@@ -223,7 +222,7 @@ export class AudioSettingsUIComponentFactory {
      * トグルオプションを作成
      */''
     createToggleOption(container: HTMLElement, options: ToggleOptionOptions): void { ''
-        const toggleGroup = document.createElement('div'),
+        const toggleGroup = document.createElement('div');
         toggleGroup.className = 'toggle-group',
         toggleGroup.style.cssText = `,
             display: flex,
@@ -231,7 +230,7 @@ export class AudioSettingsUIComponentFactory {
             align-items: center,
             margin-bottom: 15px,
             padding: 15px,
-            background-color: rgba(255, 255, 255, 0.05),
+            background-color: rgba(255, 255, 255, 0.05);
             border-radius: 10px,
             cursor: pointer,
     transition: all 0.3s ease,
@@ -240,11 +239,11 @@ export class AudioSettingsUIComponentFactory {
         // ラベル
         const label = document.createElement('label),'
         label.htmlFor = options.id,  }
-        label.innerHTML = `${options.icon} ${this.localizationManager.getText(options.label})`;
+        label.innerHTML = `${options.icon} ${this.localizationManager.getText(options.label}`;
         label.style.cssText = `;
-            color: #ffffff;
+            color: #ffffff,
             font-size: 16px,
-            cursor: pointer;
+            cursor: pointer,
         `;
         ';'
         // トグルスイッチ
@@ -259,7 +258,7 @@ export class AudioSettingsUIComponentFactory {
         toggleGroup.addEventListener('mouseleave', () => { }
 
             toggleGroup.style.backgroundColor = 'rgba(255, 255, 255, 0.05)'; }
-        });
+        };
         
         toggleGroup.appendChild(label);
         toggleGroup.appendChild(switchContainer);
@@ -271,20 +270,20 @@ export class AudioSettingsUIComponentFactory {
      * ラジオグループを作成'
      */''
     createRadioGroup(container: HTMLElement, options: RadioGroupOptions): void { ''
-        const radioGroup = document.createElement('div'),
+        const radioGroup = document.createElement('div');
         radioGroup.className = 'radio-group',
         radioGroup.style.cssText = `,
             margin-bottom: 20px,
             padding: 15px,
-            background-color: rgba(255, 255, 255, 0.05),
+            background-color: rgba(255, 255, 255, 0.05);
             border-radius: 10px,
         `,
         ','
         // ラベル
         const groupLabel = document.createElement('h3' }'
-        groupLabel.innerHTML = `${options.icon} ${this.localizationManager.getText(options.label})`;
+        groupLabel.innerHTML = `${options.icon} ${this.localizationManager.getText(options.label}`;
         groupLabel.style.cssText = `;
-            color: #00ffff;
+            color: #00ffff,
             font-size: 18px,
             margin-bottom: 15px,
         `;
@@ -293,15 +292,15 @@ export class AudioSettingsUIComponentFactory {
         // オプション
         const optionsContainer = document.createElement('div);'
         optionsContainer.style.cssText = `;
-            display: grid;
+            display: grid,
             grid-template-columns: repeat(auto-fit, minmax(120px, 1fr);
-            gap: 10px;
+            gap: 10px,
         `;
         
-        options.options.forEach(option => {  ),
+        options.options.forEach(option => {  );
             const optionLabel = this._createRadioOption(option, options) }
             optionsContainer.appendChild(optionLabel); }
-        });
+        };
         
         radioGroup.appendChild(optionsContainer);
         container.appendChild(radioGroup);
@@ -311,22 +310,22 @@ export class AudioSettingsUIComponentFactory {
      * ドロップダウンを作成'
      */''
     createDropdown(container: HTMLElement, options: DropdownOptions): void { ''
-        const dropdownGroup = document.createElement('div'),
+        const dropdownGroup = document.createElement('div');
         dropdownGroup.className = 'dropdown-group',
         dropdownGroup.style.cssText = `,
             margin-bottom: 20px,
             padding: 15px,
-            background-color: rgba(255, 255, 255, 0.05),
+            background-color: rgba(255, 255, 255, 0.05);
             border-radius: 10px,
         `,
         ','
         // ラベル
         const label = document.createElement('label),'
         label.htmlFor = options.id }
-        label.innerHTML = `${options.icon} ${this.localizationManager.getText(options.label})`;
+        label.innerHTML = `${options.icon} ${this.localizationManager.getText(options.label}`;
         label.style.cssText = `;
             display: block,
-    color: #ffffff;
+    color: #ffffff,
             font-size: 16px,
             margin-bottom: 10px,
         `;
@@ -343,7 +342,7 @@ export class AudioSettingsUIComponentFactory {
      * 垂直スライダーを作成（イコライザー用）
      */''
     createVerticalSlider(container: HTMLElement, options: VerticalSliderOptions): void { ''
-        const sliderGroup = document.createElement('div'),
+        const sliderGroup = document.createElement('div');
         sliderGroup.className = 'vertical-slider-group',
         sliderGroup.style.cssText = `,
             display: inline-block,
@@ -358,7 +357,7 @@ export class AudioSettingsUIComponentFactory {
         valueDisplay.id = `${options.id}-value`;
         valueDisplay.textContent = `${options.defaultValue >= 0 ? '+' : '}${options.defaultValue}${options.unit}`;'
         valueDisplay.style.cssText = `;
-            color: #00ffff;
+            color: #00ffff,
             font-size: 14px,
             margin-bottom: 10px,
         `;
@@ -367,10 +366,10 @@ export class AudioSettingsUIComponentFactory {
         // スライダーコンテナ
         const sliderContainer = document.createElement('div);'
         sliderContainer.style.cssText = `;
-            position: relative;
-            width: 40px;
+            position: relative,
+            width: 40px,
             height: 150px,
-    margin: 0 auto;
+    margin: 0 auto,
         `;
         
         // スライダー（垂直）
@@ -384,7 +383,7 @@ export class AudioSettingsUIComponentFactory {
         const label = document.createElement('div);'
         label.innerHTML = `${options.icon}<br>${options.label}`;
         label.style.cssText = `;
-            color: #ffffff;
+            color: #ffffff,
             font-size: 12px,
             margin-top: 10px,
         `;
@@ -413,14 +412,14 @@ export class AudioSettingsUIComponentFactory {
      * @private'
      */''
     private _createToggleSwitch(options: ToggleOptionOptions): HTMLElement { ''
-        const switchContainer = document.createElement('div'),
+        const switchContainer = document.createElement('div');
         switchContainer.style.cssText = `,
             position: relative,
             width: 60px,
             height: 30px,
         `,
 
-        const checkbox = document.createElement('input'),
+        const checkbox = document.createElement('input');
         checkbox.type = 'checkbox',
         checkbox.id = options.id,
         checkbox.checked = options.defaultValue,
@@ -431,7 +430,7 @@ export class AudioSettingsUIComponentFactory {
             height: 0,
         `,
 
-        const switchLabel = document.createElement('label'),
+        const switchLabel = document.createElement('label');
         switchLabel.htmlFor = options.id,
         switchLabel.style.cssText = `,
             position: absolute,
@@ -442,7 +441,7 @@ export class AudioSettingsUIComponentFactory {
             bottom: 0,' }'
 
             background-color: ${checkbox.checked ? '#00ffff' : '#333333'},
-            transition: all 0.3s ease;
+            transition: all 0.3s ease,
             border-radius: 30px,
         `;
 
@@ -452,10 +451,10 @@ export class AudioSettingsUIComponentFactory {
             content: "",
     height: 22px,
             width: 22px,
-            left: ${checkbox.checked ? '34px' : '4px'};
-            bottom: 4px;
+            left: ${checkbox.checked ? '34px' : '4px'},
+            bottom: 4px,
             background-color: white,
-            transition: all 0.3s ease;
+            transition: all 0.3s ease,
             border-radius: 50%,
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 
@@ -474,11 +473,11 @@ export class AudioSettingsUIComponentFactory {
             }
             ';'
             // UIサウンド
-            (this.audioManager, as any').playUISound?.('toggle', { volume: 0.3 });'
+            (this.audioManager, as any').playUISound?.('toggle', { volume: 0.3 };'
             
             // 保存状態を表示
             this._showSaveStatus();
-        });
+        };
         
         switchContainer.appendChild(checkbox);
         switchContainer.appendChild(switchLabel);
@@ -496,13 +495,13 @@ export class AudioSettingsUIComponentFactory {
             display: flex,
             align-items: center,
             padding: 10px,
-            background-color: rgba(255, 255, 255, 0.05),
+            background-color: rgba(255, 255, 255, 0.05);
             border-radius: 8px,
             cursor: pointer,
     transition: all 0.3s ease,
         `,
 
-        const radio = document.createElement('input'),
+        const radio = document.createElement('input');
         radio.type = 'radio',
         radio.name = parentOptions.id,
         radio.value = option.value,
@@ -513,7 +512,7 @@ export class AudioSettingsUIComponentFactory {
         `,
 
         const text = document.createElement('span',
-        text.textContent = this.localizationManager.getText(option.label),
+        text.textContent = this.localizationManager.getText(option.label);
         text.style.cssText = `,
            , color: #ffffff,
             font-size: 14px,
@@ -525,7 +524,7 @@ export class AudioSettingsUIComponentFactory {
 
                 parentOptions.onChange(target.value);' }'
 
-                (this.audioManager, as any').playUISound?.('select', { volume: 0.3 });'
+                (this.audioManager, as any').playUISound?.('select', { volume: 0.3 };'
                 this._showSaveStatus();
 
             }'}');
@@ -539,7 +538,7 @@ export class AudioSettingsUIComponentFactory {
         optionLabel.addEventListener('mouseleave', () => { }
 
             optionLabel.style.backgroundColor = 'rgba(255, 255, 255, 0.05)'; }
-        });
+        };
         
         optionLabel.appendChild(radio);
         optionLabel.appendChild(text);
@@ -557,7 +556,7 @@ export class AudioSettingsUIComponentFactory {
         select.style.cssText = `,
             width: 100%,
     padding: 10px,
-            background-color: rgba(0, 0, 0, 0.5),
+            background-color: rgba(0, 0, 0, 0.5);
             border: 2px solid #333333,
             border-radius: 8px,
             color: #ffffff,
@@ -568,7 +567,7 @@ export class AudioSettingsUIComponentFactory {
 
         options.options.forEach(option => { '),'
             const optionElement = document.createElement('option),'
-            optionElement.value = option.value.toString(),
+            optionElement.value = option.value.toString();
             optionElement.textContent = option.label,
             optionElement.selected = option.value === options.defaultValue,  }
 
@@ -581,7 +580,7 @@ export class AudioSettingsUIComponentFactory {
 
                 options.onChange(target.value);' }'
 
-                (this.audioManager, as any').playUISound?.('select', { volume: 0.3 });'
+                (this.audioManager, as any').playUISound?.('select', { volume: 0.3 };'
                 this._showSaveStatus();
 
             }'}');
@@ -605,29 +604,28 @@ export class AudioSettingsUIComponentFactory {
      * @private'
      */''
     private _createVerticalSliderElement(options: VerticalSliderOptions, valueDisplay: HTMLElement): HTMLInputElement { ''
-        const slider = document.createElement('input'),
+        const slider = document.createElement('input');
         slider.type = 'range',
         slider.id = options.id,
-        slider.min = options.min.toString(),
-        slider.max = options.max.toString(),
-        slider.value = options.defaultValue.toString(),
+        slider.min = options.min.toString();
+        slider.max = options.max.toString();
+        slider.value = options.defaultValue.toString();
         slider.style.cssText = `,
             position: absolute,
             width: 150px,
             height: 40px,
             left: 50%,
             top: 50%,
-    transform: translate(-50%, -50%) rotate(-90deg),
+    transform: translate(-50%, -50%) rotate(-90deg);
             -webkit-appearance: none,
-            background: linear-gradient(to right, #333333 0%, #333333 50%, #00ffff 50%, #00ffff 100%),
+            background: linear-gradient(to right, #333333 0%, #333333 50%, #00ffff 50%, #00ffff 100%);
             border-radius: 4px,
             outline: none,
     cursor: pointer,
         `,
         ','
         // スライダースタイル追加
-        this._addVerticalSliderStyles(options.id),
-
+        this._addVerticalSliderStyles(options.id);
         slider.addEventListener('input', (e) => { '
             const target = e.target as HTMLInputElement,' }'
 
@@ -640,9 +638,9 @@ export class AudioSettingsUIComponentFactory {
             slider.style.background = `linear-gradient(to right, #333333 0%, #333333 ${percentage}%, #00ffff ${ percentage)%, #00ffff, 100%}`;
             
             if (options.onChange} { }
-                options.onChange(value});
+                options.onChange(value};
             }
-        });
+        };
         
         return slider;
     }
@@ -732,7 +730,7 @@ export class AudioSettingsUIComponentFactory {
      * クリーンアップ
      */
     dispose(): void { // タイムアウトをクリア
-        this.previewTimeouts.forEach(timeout => clearTimeout(timeout),
-        this.previewTimeouts.clear(),
+        this.previewTimeouts.forEach(timeout => clearTimeout(timeout);
+        this.previewTimeouts.clear();
         // スライダー管理をクリア
         this.sliders.clear() }'

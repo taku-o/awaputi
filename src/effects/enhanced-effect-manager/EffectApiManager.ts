@@ -3,7 +3,7 @@ import { getErrorHandler  } from '../../utils/ErrorHandler';
 /**
  * レンダリング設定インターフェース
  */
-interface RenderSettings { enableLighting: boolean,
+interface RenderSettings { enableLighting: boolean;
     enableShadows: boolean;
     enableReflections: boolean;
     enablePostProcessing: boolean;
@@ -16,18 +16,19 @@ interface RenderSettings { enableLighting: boolean,
 /**
  * 拡張変換状態インターフェース
  */
-interface EnhancedTransform { depthOfField: number,
+interface EnhancedTransform { depthOfField: number;
     motionBlur: {
-        ,x: number,
-        y: number,
-    intensity: number,;
-    chromatic: number,
-    vignette: number,
-    noise: number,
-    scanlines: number,
-    glitch: { intensity: number,
-    frequency: number,
-
+        ,x: number;
+        y: number;
+    intensity: number;
+    chromatic: number;
+    vignette: number;
+    noise: number;
+    scanlines: number;
+    glitch: { intensity: number;
+    frequency: number;
+    frequency: number;
+        };
 /**
  * 遷移効果オプションインターフェース
  */'
@@ -55,11 +56,12 @@ interface TransitionEffect { id: number,''
     duration: number;
     elapsed: number;
     options: TransitionOptions;
-
+    options: TransitionOptions;
+        };
 /**
  * エフェクトコントローラーインターフェース
  */
-interface EffectController { effectId: number,
+interface EffectController { effectId: number;
     transitionEffects: TransitionEffect[];
     performanceMetrics: Record<string, any> }
 
@@ -72,14 +74,14 @@ export class EffectApiManager {
     private effectController: EffectController;
     private errorHandler: any;
     private renderSettings: RenderSettings;
-    private, enhancedTransform: EnhancedTransform,
+    private, enhancedTransform: EnhancedTransform;
     constructor(canvas: HTMLCanvasElement, effectController: EffectController) {
 
         this.canvas = canvas;
 
         this.effectController = effectController;
         this.errorHandler = getErrorHandler('''
-            qualityLevel: 'high'; // 'low', 'medium', 'high', 'ultra';
+            qualityLevel: 'high', // 'low', 'medium', 'high', 'ultra';
             enableBatching: false;
             reducedEffects: false;
     transitionSmoothing: false;
@@ -87,7 +89,7 @@ export class EffectApiManager {
     };
         // 拡張変換状態
         this.enhancedTransform = { depthOfField: 0 }
-            motionBlur: { x: 0, y: 0, intensity: 0  },
+            motionBlur: { x: 0, y: 0, intensity: 0  };
             chromatic: 0;
             vignette: 0;
             noise: 0);
@@ -121,7 +123,7 @@ export class EffectApiManager {
              };
             
             this.effectController.transitionEffects.push(effect);
-            console.log(`[EffectApiManager] 遷移効果を追加: ${type} (${duration}ms}`});
+            console.log(`[EffectApiManager] 遷移効果を追加: ${type} (${duration}ms}`};
 
             return effect.id;} catch (error) { this.errorHandler.handleError(error, {)'
                 context: 'EffectApiManager.addTransitionEffect',' }'
@@ -227,7 +229,7 @@ export class EffectApiManager {
             }
             ';'
 
-            console.log(`[EffectApiManager] 品質レベルを${level}に設定しました`});
+            console.log(`[EffectApiManager] 品質レベルを${level}に設定しました`};
         } catch (error) { this.errorHandler.handleError(error, {)'
                 context: 'EffectApiManager.setQualityLevel'
             }';'
@@ -258,10 +260,10 @@ export class EffectApiManager {
 
             ' }'
 
-            console.log(`[EffectApiManager] 遷移スムージング: ${enabled ? '有効' : '無効'} (${duration}ms}`});
+            console.log(`[EffectApiManager] 遷移スムージング: ${enabled ? '有効' : '無効'} (${duration}ms}`};
         } catch (error) { this.errorHandler.handleError(error, {)'
                 context: 'EffectApiManager.setTransitionSmoothing'
-            });
+            };
         }
     }
     
@@ -274,10 +276,10 @@ export class EffectApiManager {
      */
     setDepthOfField(intensity: number): void { try {
             this.enhancedTransform.depthOfField = Math.max(0, Math.min(1, intensity) }
-            console.log(`[EffectApiManager] 被写界深度を設定: ${intensity}`});
+            console.log(`[EffectApiManager] 被写界深度を設定: ${intensity}`};
         } catch (error) { this.errorHandler.handleError(error, {)'
                 context: 'EffectApiManager.setDepthOfField'
-            });
+            };
         }
     }
     
@@ -287,10 +289,10 @@ export class EffectApiManager {
     setMotionBlur(x: number, y: number, intensity: number): void { try { }
             this.enhancedTransform.motionBlur = { x, y, intensity };
 
-            console.log(`[EffectApiManager] モーションブラーを設定: (${x}, ${y}, ${intensity}`});
+            console.log(`[EffectApiManager] モーションブラーを設定: (${x}, ${y}, ${intensity}`};
         } catch (error) { this.errorHandler.handleError(error, {)'
                 context: 'EffectApiManager.setMotionBlur'
-            });
+            };
         }
     }
     
@@ -300,10 +302,10 @@ export class EffectApiManager {
     setChromaticAberration(intensity: number): void { try {
             this.enhancedTransform.chromatic = Math.max(0, Math.min(1, intensity) }
 
-            console.log(`[EffectApiManager] 色収差を設定: ${intensity}`});
+            console.log(`[EffectApiManager] 色収差を設定: ${intensity}`};
         } catch (error) { this.errorHandler.handleError(error, {)'
                 context: 'EffectApiManager.setChromaticAberration'
-            });
+            };
         }
     }
     
@@ -313,10 +315,10 @@ export class EffectApiManager {
     setVignette(intensity: number): void { try {
             this.enhancedTransform.vignette = Math.max(0, Math.min(1, intensity) }
 
-            console.log(`[EffectApiManager] ビネット効果を設定: ${intensity}`});
+            console.log(`[EffectApiManager] ビネット効果を設定: ${intensity}`};
         } catch (error) { this.errorHandler.handleError(error, {)'
                 context: 'EffectApiManager.setVignette'
-            });
+            };
         }
     }
     
@@ -325,13 +327,13 @@ export class EffectApiManager {
      */
     setGlitchEffect(intensity: number, frequency: number): void { try {
             this.enhancedTransform.glitch = { 
-                intensity: Math.max(0, Math.min(1, intensity),
+                intensity: Math.max(0, Math.min(1, intensity);
                 frequency: Math.max(0, frequency }
 
-            console.log(`[EffectApiManager] グリッチ効果を設定: ${intensity}, ${frequency}`});
+            console.log(`[EffectApiManager] グリッチ効果を設定: ${intensity}, ${frequency}`};
         } catch (error) { this.errorHandler.handleError(error, {)'
                 context: 'EffectApiManager.setGlitchEffect'
-            });
+            };
         }
     }
     

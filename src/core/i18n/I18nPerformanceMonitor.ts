@@ -8,27 +8,27 @@
 import { getErrorHandler  } from '../../utils/ErrorHandler.js';
 
 // 型定義
-export interface PerformanceMeasurement { duration: number,
+export interface PerformanceMeasurement { duration: number;
     timestamp: number;
     success: boolean;
 
-export interface TranslationMeasurement { id: string,
+export interface TranslationMeasurement { id: string;
     startTime: number;
     key: string;
     language: string;
 
-export interface LanguageSwitchResult { result: any,
+export interface LanguageSwitchResult { result: any;
     duration: number;
 
-export interface RenderingResult { result: any,
+export interface RenderingResult { result: any;
     duration: number;
 
-export interface MemoryInfo { used: number,
+export interface MemoryInfo { used: number;
     total: number;
     limit: number;
     timestamp: number;
 
-export interface NetworkInfo { effectiveType: string,
+export interface NetworkInfo { effectiveType: string;
     downlink: number;
     rtt: number;
     timestamp: number;
@@ -40,23 +40,23 @@ export interface PerformanceMetrics { translationTimes: Map<string, PerformanceM
     cachePerformance: Map<string, any>;
     networkPerformance: Map<number, NetworkInfo> }
 
-export interface PerformanceThresholds { translationTime: number,
+export interface PerformanceThresholds { translationTime: number;
     languageSwitchTime: number;
     renderingTime: number;
     memoryGrowth: number;
     cacheHitRate: number;
     networkTimeout: number;
 
-export interface PerformanceAlert { type: string,
+export interface PerformanceAlert { type: string;
     details: any;
     timestamp: number;
     severity: AlertSeverity;
 
-export interface AlertCategories { performance: PerformanceAlert[],
+export interface AlertCategories { performance: PerformanceAlert[];
     memory: PerformanceAlert[];
     network: PerformanceAlert[];
 
-export interface PerformanceStatistics { startTime: number,
+export interface PerformanceStatistics { startTime: number;
     totalTranslations: number;
     totalLanguageSwitches: number;
     totalRenders: number;
@@ -66,30 +66,30 @@ export interface PerformanceStatistics { startTime: number,
     avgTranslationsPerMinute?: number;
     avgSwitchesPerMinute?: number;
 
-export interface AutoOptimizationConfig { enabled: boolean,
+export interface AutoOptimizationConfig { enabled: boolean;
     adaptiveThresholds: boolean;
     memoryCleanup: boolean;
     cacheOptimization: boolean;
 
-export interface TranslationPerformanceAnalysis { totalTranslations: number,
+export interface TranslationPerformanceAnalysis { totalTranslations: number;
     averageTime: number;
     slowTranslations: number;
     fastestLanguage: LanguagePerformance | null;
     slowestLanguage: LanguagePerformance | null }
 
-export interface LanguagePerformance { language: string,
+export interface LanguagePerformance { language: string;
     averageTime: number;
 
-export interface LanguageSwitchPerformanceAnalysis { totalSwitches: number,
+export interface LanguageSwitchPerformanceAnalysis { totalSwitches: number;
     averageTime: number;
     slowSwitches: number;
     commonSwitchPatterns: SwitchPattern[];
 
-export interface SwitchPattern { pattern: string,
+export interface SwitchPattern { pattern: string;
     count: number;
     percentage: number;
 
-export interface RenderingPerformanceAnalysis { totalRenders: number,
+export interface RenderingPerformanceAnalysis { totalRenders: number;
     averageTime: number;
     averageFPS: number;
     droppedFrames: number;
@@ -102,18 +102,18 @@ export interface MemoryTrendAnalysis {,
     maxUsage?: number;
     minUsage?: number;
 
-export interface PerformanceAnalysis { translationPerformance: TranslationPerformanceAnalysis,
+export interface PerformanceAnalysis { translationPerformance: TranslationPerformanceAnalysis;
     languageSwitchPerformance: LanguageSwitchPerformanceAnalysis;
     renderingPerformance: RenderingPerformanceAnalysis;
     memoryTrends: MemoryTrendAnalysis;
     recommendations: PerformanceRecommendation[];
 
-export interface PerformanceRecommendation { type: RecommendationType,
+export interface PerformanceRecommendation { type: RecommendationType;
     severity: AlertSeverity;
     message: string;
     action: OptimizationAction;
 
-export interface PerformanceReport { timestamp: number,
+export interface PerformanceReport { timestamp: number;
     uptime: number;
     statistics: PerformanceStatistics;
     analysis: PerformanceAnalysis;
@@ -121,7 +121,7 @@ export interface PerformanceReport { timestamp: number,
     thresholds: PerformanceThresholds;
     autoOptimization: AutoOptimizationConfig;
 
-export interface LanguageStats { totalTime: number,
+export interface LanguageStats { totalTime: number;
     count: number;
 
 export interface PerformanceIssueDetails { key?: string,
@@ -139,7 +139,7 @@ export interface PerformanceIssueDetails { key?: string,
     downlink?: number;
     rtt?: number;
 
-export interface NetworkConnection { effectiveType: string,
+export interface NetworkConnection { effectiveType: string;
     downlink: number;
     rtt: number;
 
@@ -153,9 +153,9 @@ declare global { interface Navigator {
     }
     
     interface Performance { memory?: {
-            usedJSHeapSiz,e: number,
-            totalJSHeapSize: number,
-    jsHeapSizeLimit: number,
+            usedJSHeapSiz,e: number;
+            totalJSHeapSize: number;
+    jsHeapSizeLimit: number;
 }
 
 export type AlertSeverity = 'low' | 'medium' | 'high';
@@ -172,7 +172,7 @@ export class I18nPerformanceMonitor {
     // 統計データ
     private statistics: PerformanceStatistics;
     // 自動最適化設定
-    private, autoOptimization: AutoOptimizationConfig,
+    private, autoOptimization: AutoOptimizationConfig;
     // 監視インターバル
     private monitoringInterval?: number,
     private memoryMonitoringInterval?: number,
@@ -192,28 +192,28 @@ export class I18nPerformanceMonitor {
         };
         
         // パフォーマンス閾値
-        this.thresholds = { translationTime: 10;      // 10ms以内
+        this.thresholds = { translationTime: 10,      // 10ms以内
             languageSwitchTime: 500,  // 500ms以内,
             renderingTime: 16.67,     // 60FPS (16.67ms),
             memoryGrowth: 20,         // 20%以内の増加,
             cacheHitRate: 80,         // 80%以上,
-            networkTimeout: 5000      // 5秒以内  };
+            networkTimeout: 5000      // 5秒以内  },
         // アラート設定
         this.alerts = { performance: [],
             memory: [],
-    network: []  };
+    network: []  },
         // 統計データ
         this.statistics = { startTime: Date.now(
             totalTranslations: 0,
             totalLanguageSwitches: 0,
             totalRenders: 0,
             performanceIssues: 0,
-    optimizations: 0  };
+    optimizations: 0  },
         // 自動最適化設定
         this.autoOptimization = { enabled: true,
             adaptiveThresholds: true,
             memoryCleanup: true,
-    cacheOptimization: true,;
+    cacheOptimization: true,
         // 監視開始
         this.startMonitoring();
     }
@@ -246,7 +246,7 @@ export class I18nPerformanceMonitor {
     startTranslationMeasurement(key: string, language: string): TranslationMeasurement {
         const measurementId = `${key}_${language}_${Date.now())`,
         return { id: measurementId,
-            startTime: performance.now(),
+            startTime: performance.now();
             key };
             language }
         }
@@ -254,7 +254,7 @@ export class I18nPerformanceMonitor {
     /**
      * 翻訳性能の測定終了
      */
-    endTranslationMeasurement(measurement: TranslationMeasurement success: boolean = true): number { const endTime = performance.now(),
+    endTranslationMeasurement(measurement: TranslationMeasurement success: boolean = true): number { const endTime = performance.now();
         const duration = endTime - measurement.startTime,
         
         // メトリクス記録 }
@@ -273,7 +273,7 @@ export class I18nPerformanceMonitor {
 
             this.recordPerformanceIssue('translation', {
                 key: measurement.key,
-    language: measurement.language),
+    language: measurement.language);
                 duration) }
                 threshold: this.thresholds.translationTime); 
     }
@@ -282,7 +282,7 @@ export class I18nPerformanceMonitor {
         if (duration > this.thresholds.translationTime * 2) {
     
 }
-            console.warn(`Slow, translation detected: ${measurement.key} (${duration.toFixed(2})ms)`);
+            console.warn(`Slow, translation detected: ${measurement.key} (${duration.toFixed(2}ms)`),
         }
         
         return duration;
@@ -295,8 +295,8 @@ export class I18nPerformanceMonitor {
             const startTime = performance.now(); }
             const measurementId = `switch_${fromLanguage}_${toLanguage}_${Date.now())`,
             
-            try { const result = await callback(),
-                const endTime = performance.now(),
+            try { const result = await callback();
+                const endTime = performance.now();
                 const duration = endTime - startTime,
                 
                 // メトリクス記録 }
@@ -316,7 +316,7 @@ export class I18nPerformanceMonitor {
                         from: fromLanguage,
     to: toLanguage),
                         duration) }
-                        threshold: this.thresholds.languageSwitchTime); 
+                        threshold: this.thresholds.languageSwitchTime),
     }
                 
                 resolve({ result, duration ) }
@@ -325,22 +325,21 @@ export class I18nPerformanceMonitor {
                 const endTime = performance.now('',
                 this.recordPerformanceIssue('languageSwitchError', {
                 from: fromLanguage,
-    to: toLanguage),
+    to: toLanguage);
                     duration,
-                    error: (error, as Error).message  }));
+                    error: (error, as Error).message  });
                 reject(error);
             }
-        });
+        };
     }
     
     /**
      * レンダリング性能の測定
      */
     async measureRenderingPerformance<T>(renderCallback: () => Promise<T>): Promise<RenderingResult> { return new Promise(async (resolve, reject) => { 
-            const startTime = performance.now(),
-            
+            const startTime = performance.now();
             try {
-                const result = await renderCallback(),
+                const result = await renderCallback();
                 const endTime = performance.now()','
                 const renderKey = 'ui_update')
                 if (!this.metrics.renderingTimes.has(renderKey) { }
@@ -357,29 +356,27 @@ export class I18nPerformanceMonitor {
                 if (duration > this.thresholds.renderingTime) {
 
                     this.recordPerformanceIssue('rendering', {
-                duration),
-                        threshold: this.thresholds.renderingTime) })
-                        fps: Math.round(1000 / duration); 
-    });
+                duration);
+                        threshold: this.thresholds.renderingTime) }
+                        fps: Math.round(1000 / duration),
+    };
                 }
                 
-                resolve({ result, duration ),
-
+                resolve({ result, duration );
                 ' }'
 
             } catch (error) {
-                this.recordPerformanceIssue('renderingError', {),
-                    error: (error, as Error).message  });
+                this.recordPerformanceIssue('renderingError', {);
+                    error: (error, as Error).message  };
                 reject(error);
             }
-        });
+        };
     }
     
     /**
      * システムメトリクスの収集
      */
-    private collectSystemMetrics(): void { const now = Date.now(),
-        
+    private collectSystemMetrics(): void { const now = Date.now();
         // メモリ使用量
         if (performance.memory) {
             const memoryInfo: MemoryInfo = {
@@ -408,8 +405,7 @@ export class I18nPerformanceMonitor {
     private monitorMemoryUsage(): void { if (!performance.memory) return,
         
         const currentMemory = performance.memory.usedJSHeapSize,
-        const memoryHistory = Array.from(this.metrics.memoryUsage.values(),
-        
+        const memoryHistory = Array.from(this.metrics.memoryUsage.values();
         if (memoryHistory.length > 1) {
         
             const previousMemory = memoryHistory[memoryHistory.length - 2].used,
@@ -417,7 +413,7 @@ export class I18nPerformanceMonitor {
 
             if (memoryGrowth > this.thresholds.memoryGrowth) {''
                 this.recordPerformanceIssue('memoryGrowth', {
-                    current: currentMemory),
+                    current: currentMemory);
                     previous: previousMemory,
     growth: memoryGrowth,
                     threshold: this.thresholds.memoryGrowth), 
@@ -433,7 +429,7 @@ export class I18nPerformanceMonitor {
                 effectiveType: connection.effectiveType,
                 downlink: connection.downlink,
                 rtt: connection.rtt,
-    timestamp: Date.now( };
+    timestamp: Date.now( },
 
             this.metrics.networkPerformance.set(Date.now(), networkInfo');'
             ';'
@@ -442,7 +438,7 @@ export class I18nPerformanceMonitor {
 
                 this.recordPerformanceIssue('slowNetwork', {
                 effectiveType: connection.effectiveType,
-    downlink: connection.downlink })
+    downlink: connection.downlink }
                     rtt: connection.rtt); 
     }
     }
@@ -451,11 +447,11 @@ export class I18nPerformanceMonitor {
      * パフォーマンス分析
      */
     analyzePerformance(): PerformanceAnalysis { const analysis: PerformanceAnalysis = {
-            translationPerformance: this.analyzeTranslationPerformance(),
-            languageSwitchPerformance: this.analyzeLanguageSwitchPerformance(),
-            renderingPerformance: this.analyzeRenderingPerformance(),
+            translationPerformance: this.analyzeTranslationPerformance();
+            languageSwitchPerformance: this.analyzeLanguageSwitchPerformance();
+            renderingPerformance: this.analyzeRenderingPerformance();
             memoryTrends: this.analyzeMemoryTrends(
-    recommendations: [] };
+    recommendations: [] },
         // 推奨事項の生成
         this.generateRecommendations(analysis);
         
@@ -470,7 +466,7 @@ export class I18nPerformanceMonitor {
             averageTime: 0,
             slowTranslations: 0,
             fastestLanguage: null,
-    slowestLanguage: null,;
+    slowestLanguage: null,
         let totalTime = 0;
         let totalCount = 0;
         const languageAverages = new Map<string, LanguageStats>();
@@ -478,8 +474,7 @@ export class I18nPerformanceMonitor {
         for(const [key, measurements] of this.metrics.translationTimes) {
 
             const [language] = key.split(':),'
-            const validMeasurements = measurements.filter(m => m.success),
-            
+            const validMeasurements = measurements.filter(m => m.success);
             if (validMeasurements.length === 0) continue,
             
             const avgTime = validMeasurements.reduce((sum, m) => sum + m.duration, 0) / validMeasurements.length,
@@ -532,15 +527,14 @@ export class I18nPerformanceMonitor {
             totalSwitches: 0,
             averageTime: 0,
             slowSwitches: 0,
-    commonSwitchPatterns: [] };
+    commonSwitchPatterns: [] },
         let totalTime = 0;
         let totalCount = 0;
         const switchCounts = new Map<string, number>();
         
         for(const [switchKey, measurements] of this.metrics.languageSwitchTimes) {
         
-            const validMeasurements = measurements.filter(m => m.success),
-            
+            const validMeasurements = measurements.filter(m => m.success);
             if (validMeasurements.length === 0) continue,
             
             const avgTime = validMeasurements.reduce((sum, m) => sum + m.duration, 0) / validMeasurements.length,
@@ -569,7 +563,7 @@ export class I18nPerformanceMonitor {
         
         analysis.commonSwitchPatterns = sortedSwitches.map(([pattern, count]) => ({ pattern,
             count,
-            percentage: (count / totalCount) * 100  });
+            percentage: (count / totalCount) * 100  },
         return analysis;
     }
     
@@ -596,8 +590,7 @@ export class I18nPerformanceMonitor {
     /**
      * メモリトレンドの分析
      */
-    private analyzeMemoryTrends(): MemoryTrendAnalysis { const memoryData = Array.from(this.metrics.memoryUsage.values(),
-
+    private analyzeMemoryTrends(): MemoryTrendAnalysis { const memoryData = Array.from(this.metrics.memoryUsage.values();
         if (memoryData.length < 2) { }'
 
             return { trend: 'insufficient_data' }
@@ -610,7 +603,7 @@ export class I18nPerformanceMonitor {
         const changeRate = ((final - initial) / initial) * 100;
         
         return { trend,
-            changeRate: Math.abs(changeRate),
+            changeRate: Math.abs(changeRate);
             currentUsage: final,
     maxUsage: Math.max(...recent.map(d = > d.used  }
             minUsage: Math.min(...recent.map(d => d.used); 
@@ -669,8 +662,7 @@ export class I18nPerformanceMonitor {
      */
     private optimizeIfNeeded(): void { if (!this.autoOptimization.enabled) return,
         
-        const analysis = this.analyzePerformance(),
-        
+        const analysis = this.analyzePerformance();
         for (const recommendation of analysis.recommendations) {
         
             if (this.shouldAutoOptimize(recommendation) {
@@ -713,7 +705,7 @@ export class I18nPerformanceMonitor {
                     break
             }
                 default: }
-                    console.warn(`Unknown, optimization action: ${recommendation.action}`});
+                    console.warn(`Unknown, optimization action: ${recommendation.action}`};
             }
             
             this.statistics.optimizations++;
@@ -742,7 +734,7 @@ export class I18nPerformanceMonitor {
                 for (const [key, value] of metricMap) {
                     if (Array.isArray(value) {
                         // 配列データの場合、古いエントリを削除
-                        const recentEntries = value.filter(entry => ),
+                        const recentEntries = value.filter(entry => );
                             !entry.timestamp || entry.timestamp > oneHourAgo) }
 
                         metricMap.set(key, recentEntries); }
@@ -766,7 +758,7 @@ export class I18nPerformanceMonitor {
     private recordPerformanceIssue(type: string, details: PerformanceIssueDetails): void { const issue: PerformanceAlert = {
             type,
             details,
-            timestamp: Date.now() severity: this.calculateSeverity(type details };
+            timestamp: Date.now() severity: this.calculateSeverity(type details },
         
         this.alerts.performance.push(issue');'
         this.statistics.performanceIssues++;
@@ -779,7 +771,7 @@ export class I18nPerformanceMonitor {
         ';'
         // 重要な問題はコンソールに出力
         if(issue.severity === 'high' { }
-            console.warn(`Performance issue detected: ${type}`, details});
+            console.warn(`Performance issue detected: ${type}`, details};
         }
     }
     
@@ -798,7 +790,7 @@ export class I18nPerformanceMonitor {
             case 'slowNetwork':','
                 return details.effectiveType === 'slow-2g' ? 'high' : 'medium' }
 
-            default: return 'low';
+            default: return 'low',
     
     /**
      * パフォーマンス統計の更新
@@ -814,14 +806,13 @@ export class I18nPerformanceMonitor {
     /**
      * パフォーマンスレポートの生成
      */
-    generatePerformanceReport(): PerformanceReport { const analysis = this.analyzePerformance(),
-        
+    generatePerformanceReport(): PerformanceReport { const analysis = this.analyzePerformance();
         return { timestamp: Date.now(
             uptime: Date.now() - this.statistics.startTime,
     statistics: this.statistics,
             analysis,
             alerts: this.alerts,
-    thresholds: this.thresholds };
+    thresholds: this.thresholds },
             autoOptimization: this.autoOptimization 
     }
     
@@ -831,8 +822,7 @@ export class I18nPerformanceMonitor {
     adjustThresholds(newThresholds: Partial<PerformanceThresholds> = { ): void {
         if (this.autoOptimization.adaptiveThresholds) {
             // 履歴データに基づく閾値の自動調整
-            const analysis = this.analyzePerformance(),
-            
+            const analysis = this.analyzePerformance();
             // 翻訳時間の閾値調整
             if (analysis.translationPerformance.averageTime > 0) {
                 const suggestedThreshold = analysis.translationPerformance.averageTime * 1.2,
@@ -852,7 +842,7 @@ export class I18nPerformanceMonitor {
      * 設定を更新
      */'
     updateConfiguration(config: Partial<AutoOptimizationConfig>): void { ''
-        Object.assign(this.autoOptimization, config),
+        Object.assign(this.autoOptimization, config);
         console.log('Performance monitor configuration updated:', config }
     
     /**
@@ -865,10 +855,10 @@ export class I18nPerformanceMonitor {
      * メトリクス情報を取得
      */
     getMetrics(): PerformanceMetrics { return { translationTimes: new Map(this.metrics.translationTimes,
-            languageSwitchTimes: new Map(this.metrics.languageSwitchTimes),
-            renderingTimes: new Map(this.metrics.renderingTimes),
+            languageSwitchTimes: new Map(this.metrics.languageSwitchTimes);
+            renderingTimes: new Map(this.metrics.renderingTimes);
             memoryUsage: new Map(this.metrics.memoryUsage,
-    cachePerformance: new Map(this.metrics.cachePerformance) };
+    cachePerformance: new Map(this.metrics.cachePerformance) },
             networkPerformance: new Map(this.metrics.networkPerformance); 
     }
     
@@ -876,7 +866,7 @@ export class I18nPerformanceMonitor {
      * 監視の停止
      */
     stopMonitoring(): void { if (this.monitoringInterval) {
-            clearInterval(this.monitoringInterval),
+            clearInterval(this.monitoringInterval);
             this.monitoringInterval = undefined }
         
         if (this.memoryMonitoringInterval) {
@@ -898,8 +888,7 @@ export class I18nPerformanceMonitor {
     /**
      * クリーンアップ
      */
-    cleanup(): void { this.stopMonitoring(),
-        
+    cleanup(): void { this.stopMonitoring();
         // データのクリア
         for (const metricMap of Object.values(this.metrics') { }'
 

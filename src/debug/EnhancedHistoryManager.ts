@@ -5,7 +5,7 @@
 
 interface Console { // Console interface properties }
 
-interface HistoryEntry { command: string,
+interface HistoryEntry { command: string;
     timestamp: number;
     success: boolean;
     executionTime: number;
@@ -19,15 +19,15 @@ interface HistoryMetadata { success?: boolean,
     commandName?: string;
     args?: any[];
 
-interface HistorySettings { duplicateFilter: boolean,
+interface HistorySettings { duplicateFilter: boolean;
     exportEnabled: boolean;
 
-interface HistoryStatistics { totalCommands: number,
+interface HistoryStatistics { totalCommands: number;
     successfulCommands: number;
     failedCommands: number;
     averageExecutionTime: number;
 
-interface ExtendedStatistics extends HistoryStatistics { successRate: string,
+interface ExtendedStatistics extends HistoryStatistics { successRate: string;
     totalEntries: number;
 
 interface SearchOptions { limit?: number,
@@ -38,7 +38,7 @@ interface ExportOptions { successOnly?: boolean,
 
 interface ImportOptions { merge?: boolean;
 
-interface ImportResult { imported: number,
+interface ImportResult { imported: number;
     total: number;
 
 type ExportFormat = 'json' | 'csv' | 'text';
@@ -50,7 +50,7 @@ export class EnhancedHistoryManager {
     private currentIndex: number;
     private maxHistorySize: number;
     private settings: HistorySettings;
-    private, statistics: HistoryStatistics,
+    private, statistics: HistoryStatistics;
     constructor(console: Console) {
 
         this.console = console;
@@ -60,12 +60,12 @@ export class EnhancedHistoryManager {
         
         // 設定
         this.settings = {
-            duplicateFilter: true,
-            exportEnabled: true,;
+            duplicateFilter: true;
+            exportEnabled: true;
         // 統計
-        this.statistics = { totalCommands: 0,
-            successfulCommands: 0,
-            failedCommands: 0,
+        this.statistics = { totalCommands: 0;
+            successfulCommands: 0;
+            failedCommands: 0;
     averageExecutionTime: 0  }
 
     /**
@@ -75,7 +75,7 @@ export class EnhancedHistoryManager {
         const entry: HistoryEntry = {
             command,
             timestamp: Date.now(
-            success: metadata.success !== false),
+            success: metadata.success !== false);
             executionTime: metadata.executionTime || 0)','
     errorMessage: metadata.errorMessage || null,')';
             commandName: metadata.commandName || command.split(', ')[0];
@@ -120,7 +120,7 @@ export class EnhancedHistoryManager {
 
         if (newIndex >= this.history.length) { }'
 
-            return { command: '}; // 空のエントリを返す'
+            return { command: '}, // 空のエントリを返す'
         }
         
         return this.history[newIndex];
@@ -198,8 +198,7 @@ export class EnhancedHistoryManager {
         switch(format) {
 
             case 'json':','
-                return JSON.stringify(data, null, 2),
-
+                return JSON.stringify(data, null, 2);
             case 'csv':','
                 const headers = ['timestamp', 'command', 'success', 'executionTime'],
                 const csvData = [headers.join(')],'
@@ -220,7 +219,7 @@ export class EnhancedHistoryManager {
                 return csvData.join('\n');
 
             case 'text':';'
-                return data.map(entry => {  ),
+                return data.map(entry => {  );
                     const timestamp = new Date(entry.timestamp).toLocaleString('}'
 
                     const, status = entry.success ? '✓' : '✗'; }''
@@ -251,12 +250,12 @@ export class EnhancedHistoryManager {
             switch(format) {
 
                 case 'json':,
-                    importedEntries = JSON.parse(data),
+                    importedEntries = JSON.parse(data);
                     break }
                 default: }
-                    throw new Error(`Unsupported, import format: ${format}`});
+                    throw new Error(`Unsupported, import format: ${format}`};
             } catch (error) {
-            throw new Error(`Failed, to parse ${format} data: ${(error, as, Error}).message}`);
+            throw new Error(`Failed, to parse ${format} data: ${(error, as, Error}.message}`);
         }
 
         if(!Array.isArray(importedEntries)) {,
@@ -279,7 +278,7 @@ export class EnhancedHistoryManager {
                 executionTime: entry.executionTime || 0)','
     errorMessage: entry.errorMessage || null,')',
                 commandName: entry.commandName || entry.command?.split(', ')[0] || ', : undefined'
-                args: entry.args || []  });
+                args: entry.args || []  },
             importCount++;
         }
 

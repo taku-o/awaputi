@@ -3,7 +3,7 @@
  * テストデータの可視化表示クラス
  */
 
-interface TestResult { id: string,
+interface TestResult { id: string;
     name: string;
     status: 'passed' | 'failed' | 'skipped';
     duration: number;
@@ -13,19 +13,20 @@ interface TestResult { id: string,
     category?: string,  }
 
 interface CoverageData { lines: {
-        tota,l: number,
-        covered: number,
-    percentage: number,;
-    branches: { total: number,
-        covered: number,
-    percentage: number,;
-    functions: { total: number,
-        covered: number,
-    percentage: number,;
-    statements: { total: number,
-        covered: number,
-    percentage: number,
-
+        tota,l: number;
+        covered: number;
+    percentage: number;
+    branches: { total: number;
+        covered: number;
+    percentage: number;
+    functions: { total: number;
+        covered: number;
+    percentage: number;
+    statements: { total: number;
+        covered: number;
+    percentage: number;
+    percentage: number;
+        };
 export class TestDataVisualizer {
     private visualizer: any;
     constructor(visualizer: any) {
@@ -52,7 +53,7 @@ export class TestDataVisualizer {
                 </div>";"
             </div>"";
             <div class="test-results-table">;
-                ${this.renderTestTable(results})
+                ${this.renderTestTable(results}
             </div>;
         `;
 
@@ -74,7 +75,7 @@ export class TestDataVisualizer {
                 ${this.renderCoverageSummary(coverage"}""
             </div>"";
             <div class="coverage-breakdown">;
-                ${this.renderCoverageBreakdown(coverage})
+                ${this.renderCoverageBreakdown(coverage}
             </div>;
         `;
     }
@@ -204,7 +205,7 @@ export class TestDataVisualizer {
                         <div class="progress-bar">"";
                             <div class="progress-fill" style="width: ${coverage.statements.percentage}%"></div>"
                         </div>"";
-                        <span class="coverage-text">${coverage.statements.percentage.toFixed(1})%</span>
+                        <span class="coverage-text">${coverage.statements.percentage.toFixed(1}%</span>
                     </div>;
                     <small>${coverage.statements.covered}/${coverage.statements.total} statements covered</small>
                 </div>;
@@ -249,14 +250,14 @@ export class TestDataVisualizer {
 
             statusFilter.addEventListener('change', () => {  }
                 this.filterTests(); }
-            });
+            };
         }
 
         if (searchFilter) {', ' }
 
             searchFilter.addEventListener('input', () => {  }
                 this.filterTests(); }
-            });
+            };
         }
     }
 
@@ -273,10 +274,9 @@ export class TestDataVisualizer {
 ','
 
             const matchesStatus = !statusFilter || status === statusFilter,
-            const matchesSearch = !searchFilter || name.includes(searchFilter),
-
+            const matchesSearch = !searchFilter || name.includes(searchFilter);
  : undefined', '
-            element.style.display = matchesStatus && matchesSearch ? '' : 'none' });
+            element.style.display = matchesStatus && matchesSearch ? '' : 'none' };
     }
 
     private calculatePerformanceMetrics(results: TestResult[]): { totalDuration: number,
@@ -285,7 +285,7 @@ export class TestDataVisualizer {
     fastestTest: TestResult | null  } { if (!results.length) {
             return { totalDuration: 0,
                 averageDuration: 0,
-    slowestTest: null,;
+    slowestTest: null,
                 fastestTest: null,
 
         const totalDuration = results.reduce((sum, test) => sum + test.duration, 0);
@@ -322,7 +322,7 @@ export class TestDataVisualizer {
             case 'failed': return '✗',
             case 'skipped': return '⚠' }
 
-            default: return '? ';
+            default: return '? ',
 
  : undefined';'
     private truncateText(text: string, maxLength: number): string { ''

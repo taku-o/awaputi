@@ -10,34 +10,35 @@ import { HelpAnimationManager  } from './HelpAnimationManager';
 import { HelpRenderer  } from './HelpRenderer';
 
 // コールバックインターフェース
-interface HelpEventCallbacks { onGoBack: (() => void) | null,
+interface HelpEventCallbacks { onGoBack: (() => void) | null;
     onFeedbackRequest: ((data: FeedbackRequestData) => void) | null;
     onEffectivenessReport: ((report: any) => void) | null;
     onSearchFocus: (() => void) | null  }
 }
 
 // フィードバックリクエストデータ
-interface FeedbackRequestData { topic: any,
+interface FeedbackRequestData { topic: any;
     content: any;
     category: string;
-    position?: { x: number,, y: number,
+    position?: { x: number,, y: number;
     quickMode?: boolean;
 }
 
 // イベント状態インターフェース
-interface EventState { searchFocused: boolean,
+interface EventState { searchFocused: boolean;
     lastInputTime: number;
     hasActiveListeners: boolean;
 
 // レイアウト情報インターフェース
 interface HelpLayout {
-    searchBar: { ,x: number, y: number, width: number,, height: number,;
-    sidebar: { x: number, y: number, width: number,, height: number,;
-    content: { x: number, y: number, width: number,, height: number,;
-    backButton: { x: number, y: number, width: number,, height: number,
-
+    searchBar: { ,x: number, y: number, width: number,, height: number;
+    sidebar: { x: number, y: number, width: number,, height: number;
+    content: { x: number, y: number, width: number,, height: number;
+    backButton: { x: number, y: number, width: number,, height: number;
+    backButton: { x: number, y: number, width: number,, height: number;
+        };
 // キーボードハンドラータイプ
-type KeyboardHandler = (event: KeyboardEvent) => void,
+type KeyboardHandler = (event: KeyboardEvent) => void;
 
 /**
  * Help Event Manager
@@ -94,19 +95,20 @@ export class HelpEventManager {
             'ArrowRight': () => this.navigateRight()';'
             'Enter': () => this.selectCurrentItem()';'
             'Escape': () => this.goBack()';'
-            'Tab': (event: KeyboardEvent) => this.handleTabNavigation(event,
+            'Tab': (event: KeyboardEvent) => this.handleTabNavigation(event;
             '/': (event: KeyboardEvent) => {  event.preventDefault(), this.focusSearchBar()  }
 
             'F': (event: KeyboardEvent) => { if (event.ctrlKey) { event.preventDefault(), this.showFeedbackDialog(
-            });
+            };
             'E': (event: KeyboardEvent) => { if (event.ctrlKey && event.shiftKey) { event.preventDefault(), this.showEffectivenessReport() };
         
         // コールバック
-        this.callbacks = { onGoBack: null,
-            onFeedbackRequest: null,
-            onEffectivenessReport: null,
-    onSearchFocus: null,
-
+        this.callbacks = { onGoBack: null;
+            onFeedbackRequest: null;
+            onEffectivenessReport: null;
+    onSearchFocus: null;
+    onSearchFocus: null;
+        };
     /**
      * イベントリスナーの設定
      */''
@@ -117,7 +119,6 @@ export class HelpEventManager {
         this.boundContextMenuHandler = (event: MouseEvent) => this.handleContextMenu(event);
         this.boundResizeHandler = () => this.updateInputPosition();
         this.boundWheelHandler = (event: WheelEvent) => this.handleWheel(event);
-
         this.boundMouseMoveHandler = (event: MouseEvent) => this.handleMouseMove(event);
         this.boundMouseUpHandler = (event: MouseEvent) => this.handleMouseUp(event);
         ';'
@@ -178,7 +179,7 @@ export class HelpEventManager {
         // Placeholderスタイル（CSS）
         const style = document.createElement('style';
         style.textContent = `;
-            .help-search-input::placeholder { color: #999,
+            .help-search-input: :placeholder { color: #999;
                 font-style: italic;
                 opacity: 0.8  }
 
@@ -343,7 +344,7 @@ export class HelpEventManager {
      * キーボード入力処理
      */
     private handleKeyPress(event: KeyboardEvent): void { // 入力スロットリング
-        const now = Date.now(),
+        const now = Date.now();
         if (now - this.lastInputTime < this.inputThrottleMs) {
     
 }
@@ -360,10 +361,10 @@ export class HelpEventManager {
             ';'
             // Enterキーで検索実行
             if(event.key === 'Enter' {'
-                event.preventDefault(),
+                event.preventDefault();
                 this.executeSearch()','
             if(event.key === 'Escape' {'
-                event.preventDefault(),
+                event.preventDefault();
                 this.goBack() }
                 return; }
             }
@@ -378,7 +379,7 @@ export class HelpEventManager {
 ';'
         // `/` キーで検索フォーカス（特別処理）
         if (event.key === '/' && !this.searchFocused) {
-            event.preventDefault(),
+            event.preventDefault();
             this.focusSearchBar() }
             return; }
         }
@@ -387,7 +388,7 @@ export class HelpEventManager {
         const handler = this.keyboardHandlers[event.key];
         if (handler) {
             try {'
-                handler(event),
+                handler(event);
                 ','
                 // ナビゲーション変更のアナウンス
                 if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'Enter].includes(event.key) {'
@@ -412,7 +413,7 @@ export class HelpEventManager {
      */
     private executeSearch(): void { ''
         if(this.hiddenInput && this.hiddenInput.value.trim()) {''
-            console.log('HelpEventManager: executing search, for:', this.hiddenInput.value),
+            console.log('HelpEventManager: executing search, for:', this.hiddenInput.value);
             // 検索結果にフォーカスを移動
             this.searchFocused = false;
             this.hiddenInput.blur() }
@@ -421,7 +422,7 @@ export class HelpEventManager {
     /**
      * ナビゲーション変更のアナウンス
      */
-    private announceNavigationChange(key: string): void { const state = this.contentManager.getState(),
+    private announceNavigationChange(key: string): void { const state = this.contentManager.getState();
         this.accessibilityManager.announceNavigationChange(
             key, ,
             state.categories, )
@@ -433,11 +434,10 @@ export class HelpEventManager {
     /**
      * ナビゲーション処理
      */
-    private async navigateUp(): Promise<void> { this.contentManager.navigateUp(),
-        
+    private async navigateUp(): Promise<void> { this.contentManager.navigateUp();
         // フォーカス遷移アニメーション
         if (this.animationManager) {
-            this.animationManager.startFocusTransition(),
+            this.animationManager.startFocusTransition();
                 this.accessibilityManager.getCurrentFocusIndex() }
                 this.accessibilityManager.getCurrentFocusIndex(); }
         }
@@ -448,11 +448,10 @@ export class HelpEventManager {
             this.gameEngine.helpRenderer.scrollToSelectedItem(state); }
 }
 
-    private async navigateDown(): Promise<void> { this.contentManager.navigateDown(),
-        
+    private async navigateDown(): Promise<void> { this.contentManager.navigateDown();
         // フォーカス遷移アニメーション
         if (this.animationManager) {
-            this.animationManager.startFocusTransition(),
+            this.animationManager.startFocusTransition();
                 this.accessibilityManager.getCurrentFocusIndex() }
                 this.accessibilityManager.getCurrentFocusIndex(); }
         }
@@ -463,14 +462,11 @@ export class HelpEventManager {
             this.gameEngine.helpRenderer.scrollToSelectedItem(state); }
 }
 
-    private async navigateLeft(): Promise<void> { const state = this.contentManager.getState(),
-        const fromIndex = state.categories.findIndex(c => c.id === state.selectedCategory),
-        
-        await this.contentManager.navigateLeft(),
-        
-        const newState = this.contentManager.getState(),
-        const toIndex = newState.categories.findIndex(c => c.id === newState.selectedCategory),
-        
+    private async navigateLeft(): Promise<void> { const state = this.contentManager.getState();
+        const fromIndex = state.categories.findIndex(c => c.id === state.selectedCategory);
+        await this.contentManager.navigateLeft();
+        const newState = this.contentManager.getState();
+        const toIndex = newState.categories.findIndex(c => c.id === newState.selectedCategory);
         // カテゴリ遷移アニメーション
         if (this.animationManager && fromIndex !== toIndex) {
     
@@ -482,14 +478,11 @@ export class HelpEventManager {
         if (this.gameEngine.helpRenderer) { this.gameEngine.helpRenderer.scrollToSelectedItem(newState) }
     }
 
-    private async navigateRight(): Promise<void> { const state = this.contentManager.getState(),
-        const fromIndex = state.categories.findIndex(c => c.id === state.selectedCategory),
-        
-        await this.contentManager.navigateRight(),
-        
-        const newState = this.contentManager.getState(),
-        const toIndex = newState.categories.findIndex(c => c.id === newState.selectedCategory),
-        
+    private async navigateRight(): Promise<void> { const state = this.contentManager.getState();
+        const fromIndex = state.categories.findIndex(c => c.id === state.selectedCategory);
+        await this.contentManager.navigateRight();
+        const newState = this.contentManager.getState();
+        const toIndex = newState.categories.findIndex(c => c.id === newState.selectedCategory);
         // カテゴリ遷移アニメーション
         if (this.animationManager && fromIndex !== toIndex) {
     
@@ -506,13 +499,11 @@ export class HelpEventManager {
      */
     private async selectCurrentItem(): Promise<void> { ''
         const state = this.contentManager.getState()','
-        console.log('HelpEventManager: selectCurrentItem -, isSearching:', state.isSearching, 'searchResults:', state.searchResults.length),
-
+        console.log('HelpEventManager: selectCurrentItem -, isSearching:', state.isSearching, 'searchResults:', state.searchResults.length);
         if (state.isSearching && state.searchResults.length > 0) {
             // 検索結果から選択
-            console.log('HelpEventManager: selecting search result at, index:', state.selectedTopicIndex),
-
-            const result = await this.contentManager.selectSearchResult(state.selectedTopicIndex),
+            console.log('HelpEventManager: selecting search result at, index:', state.selectedTopicIndex);
+            const result = await this.contentManager.selectSearchResult(state.selectedTopicIndex);
             if (result) {''
                 console.log('HelpEventManager: search, result selected, successfully','
                 if (this.animationManager') {'
@@ -528,7 +519,7 @@ export class HelpEventManager {
                     this.hiddenInput.value = '; }'
 }
         } else {  // 通常のトピック選択
-            const result = await this.contentManager.selectTopic(state.selectedTopicIndex),
+            const result = await this.contentManager.selectTopic(state.selectedTopicIndex);
             if (result && this.animationManager) { }'
 
                 this.animationManager.startContentTransition(result.newContent, 'slide'; }'
@@ -538,8 +529,7 @@ export class HelpEventManager {
     /**
      * 戻る処理
      */
-    private goBack(): void { const state = this.contentManager.getState(),
-
+    private goBack(): void { const state = this.contentManager.getState();
         if (state.isSearching || this.searchFocused) {
             // 検索モードを終了
             this.searchFocused = false;
@@ -549,7 +539,7 @@ export class HelpEventManager {
             if (this.hiddenInput) {''
                 this.hiddenInput.value = ','
                 this.hiddenInput.blur()','
-            this.contentManager.performSearch(),
+            this.contentManager.performSearch();
             if (this.animationManager) {
         }
                 this.animationManager.startSearchTransition(false); }
@@ -574,8 +564,7 @@ export class HelpEventManager {
             // 位置を更新
             this.updateInputPosition()','
             this.hiddenInput.value = this.currentSearchQuery || ')'
-            this.hiddenInput.focus(),
-
+            this.hiddenInput.focus();
             // カーソルを最後に移動
         }
 
@@ -594,11 +583,10 @@ export class HelpEventManager {
     /**
      * タブナビゲーション処理
      */
-    private handleTabNavigation(event: KeyboardEvent): void { this.accessibilityManager.handleTabNavigation(event),
-        
+    private handleTabNavigation(event: KeyboardEvent): void { this.accessibilityManager.handleTabNavigation(event);
         // フォーカス遷移アニメーション
         if (this.animationManager) {
-            this.animationManager.startFocusTransition(),
+            this.animationManager.startFocusTransition();
                 this.accessibilityManager.getCurrentFocusIndex() }
                 this.accessibilityManager.getCurrentFocusIndex(); }
 }
@@ -607,9 +595,8 @@ export class HelpEventManager {
      * フィードバックダイアログ表示
      */
     private showFeedbackDialog(): void { if (this.callbacks.onFeedbackRequest) {
-            const state = this.contentManager.getState(),
-            const currentTopic = this.contentManager.getCurrentTopic(),
-            
+            const state = this.contentManager.getState();
+            const currentTopic = this.contentManager.getCurrentTopic();
             this.callbacks.onFeedbackRequest({)
                 topic: currentTopic,
     content: state.currentContent),
@@ -621,7 +608,7 @@ export class HelpEventManager {
      */
     private async showEffectivenessReport(): Promise<void> { if (this.callbacks.onEffectivenessReport) {
             try {
-                const report = await this.contentManager.getEffectivenessReport(),
+                const report = await this.contentManager.getEffectivenessReport();
                 this.callbacks.onEffectivenessReport(report),' }'
 
             } catch (error) { console.error('Failed to generate effectiveness report:', error }
@@ -633,7 +620,7 @@ export class HelpEventManager {
     private handleClick(event: MouseEvent): void { const canvas = this.gameEngine.canvas,
         if (!canvas) return,
 
-        const rect = canvas.getBoundingClientRect(),
+        const rect = canvas.getBoundingClientRect();
         const x = event.clientX - rect.left,
         const y = event.clientY - rect.top,
 
@@ -650,8 +637,8 @@ export class HelpEventManager {
             
             // スクロールバーハンドルのドラッグ開始
             if (renderer.isPointInScrollbarHandle(x, y) {
-                event.preventDefault(),
-                renderer.startScrollbarDrag(y),
+                event.preventDefault();
+                renderer.startScrollbarDrag(y);
                 // ドラッグ中のカーソル変更
                 if (this.gameEngine.canvas) {
         }
@@ -663,11 +650,11 @@ export class HelpEventManager {
             
             // スクロールバートラックのクリック（ページスクロール）
             if (renderer.isPointInScrollbarTrack(x, y) {
-                event.preventDefault(),
+                event.preventDefault();
                 const sidebar = this.getLayout().sidebar,
                 const trackY = sidebar.y + 10,
                 const trackHeight = sidebar.height - 20,
-                const scrollInfo = renderer.getScrollInfo(),
+                const scrollInfo = renderer.getScrollInfo();
                 const handleHeight = Math.max(20, (scrollInfo.viewHeight / scrollInfo.contentHeight) * trackHeight),
                 const currentHandleY = trackY + (scrollInfo.offset / scrollInfo.maxOffset) * (trackHeight - handleHeight),
                 
@@ -706,13 +693,13 @@ export class HelpEventManager {
     private handleWheel(event: WheelEvent): void { const canvas = this.gameEngine.canvas,
         if (!canvas) return,
 
-        const rect = canvas.getBoundingClientRect(),
+        const rect = canvas.getBoundingClientRect();
         const x = event.clientX - rect.left,
         const y = event.clientY - rect.top,
 
         // サイドバー内でのホイールスクロール
         if (this.isPointInSidebar(x, y) && this.gameEngine.helpRenderer) {
-            event.preventDefault(),
+            event.preventDefault();
             const deltaY = event.deltaY * 0.5, // スクロール感度を調整
             this.gameEngine.helpRenderer.scrollSidebar(deltaY) }
     }
@@ -723,13 +710,13 @@ export class HelpEventManager {
     private handleMouseMove(event: MouseEvent): void { const canvas = this.gameEngine.canvas,
         if (!canvas || !this.gameEngine.helpRenderer) return,
 
-        const rect = canvas.getBoundingClientRect(),
+        const rect = canvas.getBoundingClientRect();
         const x = event.clientX - rect.left,
         const y = event.clientY - rect.top,
 
         // スクロールバードラッグ中の処理
         if (this.gameEngine.helpRenderer.isScrollbarDragging() {
-            event.preventDefault(),
+            event.preventDefault();
             this.gameEngine.helpRenderer.updateScrollbarDrag(y) }
             return; }
         }
@@ -759,8 +746,8 @@ export class HelpEventManager {
      * マウスアップ処理
      */
     private handleMouseUp(event: MouseEvent): void { if (this.gameEngine.helpRenderer && this.gameEngine.helpRenderer.isScrollbarDragging() {
-            event.preventDefault(),
-            this.gameEngine.helpRenderer.endScrollbarDrag(),
+            event.preventDefault();
+            this.gameEngine.helpRenderer.endScrollbarDrag();
             // カーソルをリセット
             if (this.gameEngine.canvas) {', ' }
 
@@ -771,7 +758,7 @@ export class HelpEventManager {
     /**
      * サイドバークリック処理
      */
-    private async handleSidebarClick(x: number, y: number): Promise<void> { const layout = this.getLayout(),
+    private async handleSidebarClick(x: number, y: number): Promise<void> { const layout = this.getLayout();
         const sidebar = layout.sidebar,
         
         // スクロールオフセットを適用した相対Y座標を計算
@@ -782,8 +769,7 @@ export class HelpEventManager {
         const itemHeight = 40,
         let currentY = 10, // 上部マージン
 
-        const state = this.contentManager.getState(),
-        
+        const state = this.contentManager.getState();
         // カテゴリクリック判定
         for(let, i = 0, i < state.categories.length, i++) {
             const category = state.categories[i],
@@ -792,8 +778,7 @@ export class HelpEventManager {
             // カテゴリ項目の判定
             if (adjustedY >= currentY && adjustedY < currentY + itemHeight) {
                 const categoryId = category.id,
-                const result = await this.contentManager.selectCategory(categoryId),
-                
+                const result = await this.contentManager.selectCategory(categoryId);
                 if (result && this.animationManager) {
         }
                     this.animationManager.startCategoryTransition(result.fromIndex, result.toIndex); }
@@ -815,8 +800,7 @@ export class HelpEventManager {
                     const topicHeight = 30,
                     
                     if (adjustedY >= currentY && adjustedY < currentY + topicHeight - 5) {
-                        const result = await this.contentManager.selectTopic(j),
-
+                        const result = await this.contentManager.selectTopic(j);
                         if (result && this.animationManager) {
             }
 
@@ -838,10 +822,9 @@ export class HelpEventManager {
     /**
      * コンテンツエリアクリック処理
      */
-    private async handleContentClick(x: number, y: number): Promise<void> { const layout = this.getLayout(),
+    private async handleContentClick(x: number, y: number): Promise<void> { const layout = this.getLayout();
         const content = layout.content,
-        const state = this.contentManager.getState(),
-        
+        const state = this.contentManager.getState();
         // 検索結果表示中の場合
         if (state.isSearching && state.searchResults.length > 0) {
             const relativeY = y - content.y,
@@ -853,7 +836,7 @@ export class HelpEventManager {
             for (let, i = 0, i < state.searchResults.length, i++) {
                 if (relativeY >= currentY && relativeY < currentY + itemHeight) {
                     // 検索結果を選択
-                    const result = await this.contentManager.selectSearchResult(i),
+                    const result = await this.contentManager.selectSearchResult(i);
                     if (result && this.animationManager) {
         }
 
@@ -870,12 +853,11 @@ export class HelpEventManager {
     /**
      * コンテキストメニュー処理
      */
-    private handleContextMenu(event: MouseEvent): void { event.preventDefault(),
-        
+    private handleContextMenu(event: MouseEvent): void { event.preventDefault();
         const canvas = this.gameEngine.canvas,
         if (!canvas) return,
 
-        const rect = canvas.getBoundingClientRect(),
+        const rect = canvas.getBoundingClientRect();
         const x = event.clientX - rect.left,
         const y = event.clientY - rect.top,
 
@@ -889,23 +871,22 @@ export class HelpEventManager {
     /**
      * クイックフィードバック表示
      */
-    private showQuickFeedback(x: number, y: number): void { const state = this.contentManager.getState(),
+    private showQuickFeedback(x: number, y: number): void { const state = this.contentManager.getState();
         if (!state.currentContent) return,
 
-        const currentTopic = this.contentManager.getCurrentTopic(),
+        const currentTopic = this.contentManager.getCurrentTopic();
         if (currentTopic && this.callbacks.onFeedbackRequest) {
             this.callbacks.onFeedbackRequest({ topic: currentTopic) }
                 content: state.currentContent }
                 category: state.selectedCategory }
-                position: { x, y })
-                quickMode: true);
+                position: { x, y }
+                quickMode: true),
     }
 
     /**
      * 検索入力処理
      */
-    private async handleSearchInput(query: string): Promise<void> { await this.contentManager.performSearch(query),
-        
+    private async handleSearchInput(query: string): Promise<void> { await this.contentManager.performSearch(query);
         // 検索遷移アニメーション
         if (this.animationManager) {
             const isEntering = query.trim().length > 0 }
@@ -915,16 +896,16 @@ export class HelpEventManager {
     /**
      * 座標判定ヘルパー
      */
-    private isPointInSearchBar(x: number, y: number): boolean { const layout = this.getLayout(),
+    private isPointInSearchBar(x: number, y: number): boolean { const layout = this.getLayout();
         return this.isPointInRect(x, y, layout.searchBar) }
 
-    private isPointInSidebar(x: number, y: number): boolean { const layout = this.getLayout(),
+    private isPointInSidebar(x: number, y: number): boolean { const layout = this.getLayout();
         return this.isPointInRect(x, y, layout.sidebar) }
 
-    private isPointInContent(x: number, y: number): boolean { const layout = this.getLayout(),
+    private isPointInContent(x: number, y: number): boolean { const layout = this.getLayout();
         return this.isPointInRect(x, y, layout.content) }
 
-    private isPointInBackButton(x: number, y: number): boolean { const layout = this.getLayout(),
+    private isPointInBackButton(x: number, y: number): boolean { const layout = this.getLayout();
         return this.isPointInRect(x, y, layout.backButton) }
 
     private isPointInRect(x: number, y: number, rect: { x: number, y: number, width: number,  height: number ): boolean {
@@ -953,14 +934,14 @@ export class HelpEventManager {
      * 状態取得
      */
     public getEventState(): EventState { return { searchFocused: this.searchFocused,
-            lastInputTime: this.lastInputTime };
+            lastInputTime: this.lastInputTime },
             hasActiveListeners: Boolean(this.boundKeyHandler); 
     }
 
     /**
      * クリーンアップ
      */
-    public destroy(): void { this.removeEventListeners(),
+    public destroy(): void { this.removeEventListeners();
         // カーソルをリセット
         if (this.gameEngine.canvas) {', ' }
 
@@ -992,10 +973,10 @@ export class HelpInputValidator { private maxSearchLength: number = 100' }'
             return { valid: false, error: 'Search query must be a string'
             }
 
-        if (query.length > this.maxSearchLength) { return { valid: false,;
+        if (query.length > this.maxSearchLength) { return { valid: false,
                 error: `Search query too long (max ${this.maxSearchLength} characters}`
             }
-                sanitized: query.substring(0, this.maxSearchLength});
+                sanitized: query.substring(0, this.maxSearchLength};
             }
 ';'
 

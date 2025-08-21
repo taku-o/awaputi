@@ -15,7 +15,7 @@
  */
 
 // 型定義
-export interface Achievement { id: string,
+export interface Achievement { id: string;
     name: string;
     description: string;
     icon: string;
@@ -26,7 +26,7 @@ export interface Achievement { id: string,
     difficulty?: DifficultyLevel;
     hidden?: boolean,  }
 
-export interface AchievementCondition { type: ConditionType,
+export interface AchievementCondition { type: ConditionType;
     value?: number | boolean;
     bubbleType?: BubbleType;
     hp?: number;
@@ -38,23 +38,23 @@ export interface AchievementCondition { type: ConditionType,
     endHour?: number;
     [key: string]: any;
 
-export interface AchievementReward { ap: number,
+export interface AchievementReward { ap: number;
     items?: RewardItem[];
     unlocks?: string[];
     titles?: string[];
 
-export interface RewardItem { type: ItemType,
+export interface RewardItem { type: ItemType;
     id: string;
     quantity: number;
 
-export interface Category { name: string,
+export interface Category { name: string;
     description: string;
     icon: string;
     color: string;
     priority?: number;
     unlockRequirements?: string[];
 
-export interface AchievementStatistics { total: number,
+export interface AchievementStatistics { total: number;
     byCategory: Record<CategoryType, number>;
     byType: Record<AchievementType, number>;
     totalAP: number;
@@ -69,7 +69,7 @@ export interface AchievementFilter { category?: CategoryType,
     difficulty?: DifficultyLevel;
     unlocked?: boolean;
 
-export interface AchievementSearchResult { achievements: Achievement[],
+export interface AchievementSearchResult { achievements: Achievement[];
     totalCount: number;
     categories: string[];
 
@@ -155,7 +155,7 @@ export class AchievementDefinitions {
                 category: 'basic',
                 type: 'single',
                 condition: { type: 'bubblesPopped', value: 1  },
-                reward: { ap: 10 };
+                reward: { ap: 10 },
             bubbleHunter: { ''
                 id: 'bubbleHunter',
                 name: '泡ハンター',
@@ -165,7 +165,7 @@ export class AchievementDefinitions {
                 type: 'cumulative',' }'
 
                 condition: { type: 'bubblesPopped', value: 100  },
-                reward: { ap: 50 };
+                reward: { ap: 50 },
             bubbleMaster: { ''
                 id: 'bubbleMaster',
                 name: '泡マスター',
@@ -175,7 +175,7 @@ export class AchievementDefinitions {
                 type: 'cumulative',' }'
 
                 condition: { type: 'bubblesPopped', value: 1000  },
-                reward: { ap: 200 };
+                reward: { ap: 200 },
             // スコア実績
             firstThousand: { ''
                 id: 'firstThousand',
@@ -186,7 +186,7 @@ export class AchievementDefinitions {
                 type: 'single',' }'
 
                 condition: { type: 'singleGameScore', value: 1000  },
-                reward: { ap: 25 };
+                reward: { ap: 25 },
             scoreKing: { ''
                 id: 'scoreKing',
                 name: 'スコアキング',
@@ -196,7 +196,7 @@ export class AchievementDefinitions {
                 type: 'single',' }'
 
                 condition: { type: 'singleGameScore', value: 10000  },
-                reward: { ap: 100 };
+                reward: { ap: 100 },
             megaScore: { ''
                 id: 'megaScore',
                 name: 'メガスコア',
@@ -206,7 +206,7 @@ export class AchievementDefinitions {
                 type: 'single',' }'
 
                 condition: { type: 'singleGameScore', value: 50000  },
-                reward: { ap: 250 };
+                reward: { ap: 250 },
             scoreGod: { ''
                 id: 'scoreGod',
                 name: 'スコアゴッド',
@@ -216,7 +216,7 @@ export class AchievementDefinitions {
                 type: 'single',' }'
 
                 condition: { type: 'singleGameScore', value: 100000  },
-                reward: { ap: 500 };
+                reward: { ap: 500 },
             cumulativeScoreBronze: { ''
                 id: 'cumulativeScoreBronze',
                 name: '累計ブロンズ',
@@ -226,7 +226,7 @@ export class AchievementDefinitions {
                 type: 'cumulative',' }'
 
                 condition: { type: 'cumulativeScore', value: 100000  },
-                reward: { ap: 100 };
+                reward: { ap: 100 },
             cumulativeScoreSilver: { ''
                 id: 'cumulativeScoreSilver',
                 name: '累計シルバー',
@@ -236,7 +236,7 @@ export class AchievementDefinitions {
                 type: 'cumulative',' }'
 
                 condition: { type: 'cumulativeScore', value: 500000  },
-                reward: { ap: 200 };
+                reward: { ap: 200 },
             cumulativeScoreGold: { ''
                 id: 'cumulativeScoreGold',
                 name: '累計ゴールド',
@@ -246,7 +246,7 @@ export class AchievementDefinitions {
                 type: 'cumulative',' }'
 
                 condition: { type: 'cumulativeScore', value: 1000000  },
-                reward: { ap: 500 };
+                reward: { ap: 500 },
             // コンボ実績
             comboStarter: { ''
                 id: 'comboStarter',
@@ -257,7 +257,7 @@ export class AchievementDefinitions {
                 type: 'single',' }'
 
                 condition: { type: 'maxCombo', value: 10  },
-                reward: { ap: 30 };
+                reward: { ap: 30 },
             comboMaster: { ''
                 id: 'comboMaster',
                 name: 'コンボマスター',
@@ -267,7 +267,7 @@ export class AchievementDefinitions {
                 type: 'single',' }'
 
                 condition: { type: 'maxCombo', value: 50  },
-                reward: { ap: 150 };
+                reward: { ap: 150 },
             comboLegend: { ''
                 id: 'comboLegend',
                 name: 'コンボレジェンド',
@@ -277,7 +277,7 @@ export class AchievementDefinitions {
                 type: 'single',' }'
 
                 condition: { type: 'maxCombo', value: 100  },
-                reward: { ap: 300 };
+                reward: { ap: 300 },
             comboGod: { ''
                 id: 'comboGod',
                 name: 'コンボゴッド',
@@ -287,7 +287,7 @@ export class AchievementDefinitions {
                 type: 'single',' }'
 
                 condition: { type: 'maxCombo', value: 200  },
-                reward: { ap: 500 };
+                reward: { ap: 500 },
             // 特殊泡実績
             rainbowHunter: { ''
                 id: 'rainbowHunter',
@@ -298,7 +298,7 @@ export class AchievementDefinitions {
                 type: 'cumulative',' }'
 
                 condition: { type: 'bubbleTypePopped', bubbleType: 'rainbow', value: 10  },
-                reward: { ap: 75 };
+                reward: { ap: 75 },
             diamondBreaker: { ''
                 id: 'diamondBreaker',
                 name: 'ダイヤモンドブレイカー',
@@ -308,7 +308,7 @@ export class AchievementDefinitions {
                 type: 'cumulative',' }'
 
                 condition: { type: 'bubbleTypePopped', bubbleType: 'diamond', value: 5  },
-                reward: { ap: 100 };
+                reward: { ap: 100 },
             bossSlayer: { ''
                 id: 'bossSlayer',
                 name: 'ボススレイヤー',
@@ -318,7 +318,7 @@ export class AchievementDefinitions {
                 type: 'cumulative',' }'
 
                 condition: { type: 'bubbleTypePopped', bubbleType: 'boss', value: 3  },
-                reward: { ap: 200 };
+                reward: { ap: 200 },
             goldenTouch: { ''
                 id: 'goldenTouch',
                 name: '黄金の手',
@@ -328,7 +328,7 @@ export class AchievementDefinitions {
                 type: 'cumulative',' }'
 
                 condition: { type: 'bubbleTypePopped', bubbleType: 'golden', value: 5  },
-                reward: { ap: 80 };
+                reward: { ap: 80 },
             phantomHunter: { ''
                 id: 'phantomHunter',
                 name: '幻影ハンター',
@@ -338,7 +338,7 @@ export class AchievementDefinitions {
                 type: 'cumulative',' }'
 
                 condition: { type: 'bubbleTypePopped', bubbleType: 'phantom', value: 10  },
-                reward: { ap: 120 };
+                reward: { ap: 120 },
             explosiveExpert: { ''
                 id: 'explosiveExpert',
                 name: '爆発エキスパート',
@@ -348,7 +348,7 @@ export class AchievementDefinitions {
                 type: 'cumulative',' }'
 
                 condition: { type: 'bubbleTypePopped', bubbleType: 'explosive', value: 20  },
-                reward: { ap: 150 };
+                reward: { ap: 150 },
             magneticMaster: { ''
                 id: 'magneticMaster',
                 name: '磁力マスター',
@@ -358,7 +358,7 @@ export class AchievementDefinitions {
                 type: 'cumulative',' }'
 
                 condition: { type: 'bubbleTypePopped', bubbleType: 'magnetic', value: 15  },
-                reward: { ap: 120 };
+                reward: { ap: 120 },
             frozenBreaker: { ''
                 id: 'frozenBreaker',
                 name: 'アイスブレイカー',
@@ -368,7 +368,7 @@ export class AchievementDefinitions {
                 type: 'cumulative',' }'
 
                 condition: { type: 'bubbleTypePopped', bubbleType: 'frozen', value: 25  },
-                reward: { ap: 100 };
+                reward: { ap: 100 },
             multiplierChaser: { ''
                 id: 'multiplierChaser',
                 name: '倍率ハンター',
@@ -378,7 +378,7 @@ export class AchievementDefinitions {
                 type: 'cumulative',' }'
 
                 condition: { type: 'bubbleTypePopped', bubbleType: 'multiplier', value: 10  },
-                reward: { ap: 180 };
+                reward: { ap: 180 },
             // サバイバル実績
             survivor: { ''
                 id: 'survivor',
@@ -389,7 +389,7 @@ export class AchievementDefinitions {
                 type: 'single',' }'
 
                 condition: { type: 'survivalTime', value: 300000  },
-                reward: { ap: 100 };
+                reward: { ap: 100 },
             ironWill: { ''
                 id: 'ironWill',
                 name: '鉄の意志',
@@ -399,7 +399,7 @@ export class AchievementDefinitions {
                 type: 'single',' }'
 
                 condition: { type: 'lowHpSurvival', hp: 10, time: 60000  },
-                reward: { ap: 150 };
+                reward: { ap: 150 },
             lowHpHero: { ''
                 id: 'lowHpHero',
                 name: '低HPヒーロー',
@@ -409,7 +409,7 @@ export class AchievementDefinitions {
                 type: 'single',' }'
 
                 condition: { type: 'lowHpScore', hp: 5, score: 3000  },
-                reward: { ap: 200 };
+                reward: { ap: 200 },
             // ステージ実績
             stageExplorer: { ''
                 id: 'stageExplorer',
@@ -420,7 +420,7 @@ export class AchievementDefinitions {
                 type: 'cumulative',' }'
 
                 condition: { type: 'stagesCleared', value: 5  },
-                reward: { ap: 100 };
+                reward: { ap: 100 },
             allStagesClear: { ''
                 id: 'allStagesClear',
                 name: '全ステージ制覇',
@@ -430,7 +430,7 @@ export class AchievementDefinitions {
                 type: 'single',' }'
 
                 condition: { type: 'allStagesCleared', value: true,,
-                reward: { ap: 500 };
+                reward: { ap: 500 },
             stageCompletionist: { ''
                 id: 'stageCompletionist',
                 name: 'ステージコンプリート',
@@ -440,7 +440,7 @@ export class AchievementDefinitions {
                 type: 'single',' }'
 
                 condition: { type: 'allStagesMultiple', value: 10  },
-                reward: { ap: 400 };
+                reward: { ap: 400 },
             // テクニック実績
             perfectionist: { ''
                 id: 'perfectionist',
@@ -451,7 +451,7 @@ export class AchievementDefinitions {
                 type: 'single',' }'
 
                 condition: { type: 'perfectGame', minBubbles: 50  },
-                reward: { ap: 300 };
+                reward: { ap: 300 },
             speedster: { ''
                 id: 'speedster',
                 name: 'スピードスター',
@@ -461,7 +461,7 @@ export class AchievementDefinitions {
                 type: 'single',' }'
 
                 condition: { type: 'speedChallenge', bubbles: 100, time: 60000  },
-                reward: { ap: 200 };
+                reward: { ap: 200 },
             accuracyExpert: { ''
                 id: 'accuracyExpert',
                 name: '精密射手',
@@ -471,7 +471,7 @@ export class AchievementDefinitions {
                 type: 'single',' }'
 
                 condition: { type: 'accuracy', value: 95  },
-                reward: { ap: 200 };
+                reward: { ap: 200 },
             accuracyMaster: { ''
                 id: 'accuracyMaster',
                 name: '精密マスター',
@@ -481,7 +481,7 @@ export class AchievementDefinitions {
                 type: 'single',' }'
 
                 condition: { type: 'accuracy', value: 99  },
-                reward: { ap: 400 };
+                reward: { ap: 400 },
             // プレイ継続実績
             consecutiveDays3: { ''
                 id: 'consecutiveDays3',
@@ -492,7 +492,7 @@ export class AchievementDefinitions {
                 type: 'single',' }'
 
                 condition: { type: 'consecutiveDays', value: 3  },
-                reward: { ap: 50 };
+                reward: { ap: 50 },
             consecutiveDays7: { ''
                 id: 'consecutiveDays7',
                 name: 'ウィークプレイヤー',
@@ -502,7 +502,7 @@ export class AchievementDefinitions {
                 type: 'single',' }'
 
                 condition: { type: 'consecutiveDays', value: 7  },
-                reward: { ap: 150 };
+                reward: { ap: 150 },
             consecutiveDays30: { ''
                 id: 'consecutiveDays30',
                 name: 'マンスリープレイヤー',
@@ -512,7 +512,7 @@ export class AchievementDefinitions {
                 type: 'single',' }'
 
                 condition: { type: 'consecutiveDays', value: 30  },
-                reward: { ap: 500 };
+                reward: { ap: 500 },
             totalPlayTime1h: { ''
                 id: 'totalPlayTime1h',
                 name: '1時間プレイ',
@@ -522,7 +522,7 @@ export class AchievementDefinitions {
                 type: 'cumulative',' }'
 
                 condition: { type: 'totalPlayTime', value: 3600000  },
-                reward: { ap: 75 };
+                reward: { ap: 75 },
             totalPlayTime10h: { ''
                 id: 'totalPlayTime10h',
                 name: '10時間プレイ',
@@ -532,7 +532,7 @@ export class AchievementDefinitions {
                 type: 'cumulative',' }'
 
                 condition: { type: 'totalPlayTime', value: 36000000  },
-                reward: { ap: 200 };
+                reward: { ap: 200 },
             gamesPlayed50: { ''
                 id: 'gamesPlayed50',
                 name: '50ゲーム達成',
@@ -542,7 +542,7 @@ export class AchievementDefinitions {
                 type: 'cumulative',' }'
 
                 condition: { type: 'gamesPlayed', value: 50  },
-                reward: { ap: 100 };
+                reward: { ap: 100 },
             gamesPlayed500: { ''
                 id: 'gamesPlayed500',
                 name: '500ゲーム達成',
@@ -552,7 +552,7 @@ export class AchievementDefinitions {
                 type: 'cumulative',' }'
 
                 condition: { type: 'gamesPlayed', value: 500  },
-                reward: { ap: 300 };
+                reward: { ap: 300 },
             // コレクション実績
             bubbleCollector: { ''
                 id: 'bubbleCollector',
@@ -563,7 +563,7 @@ export class AchievementDefinitions {
                 type: 'single',' }'
 
                 condition: { type: 'allBubbleTypes', value: true,,
-                reward: { ap: 300 };
+                reward: { ap: 300 },
             // チャレンジ実績
             noItemChallenge: { ''
                 id: 'noItemChallenge',
@@ -574,7 +574,7 @@ export class AchievementDefinitions {
                 type: 'single',' }'
 
                 condition: { type: 'noItemScore', value: 5000  },
-                reward: { ap: 250 };
+                reward: { ap: 250 },
             earlyBirdSpecial: { ''
                 id: 'earlyBirdSpecial',
                 name: '早朝プレイヤー',
@@ -584,7 +584,7 @@ export class AchievementDefinitions {
                 type: 'single',' }'
 
                 condition: { type: 'timeSpecificScore', startHour: 6, endHour: 8, score: 1000  },
-                reward: { ap: 150 };
+                reward: { ap: 150 },
             nightOwlSpecial: { ''
                 id: 'nightOwlSpecial',
                 name: '夜更かしプレイヤー',
@@ -661,7 +661,7 @@ export class AchievementDefinitions {
                 description: '特殊チャレンジ実績',
                 icon: '🚀',
                 color: '#E91E63'
-            }))
+            })
     }
 
     /**
@@ -728,8 +728,7 @@ export class AchievementDefinitions {
      * @param filter フィルター条件
      * @returns 検索結果
      */
-    searchAchievements(filter: AchievementFilter): AchievementSearchResult { let achievements = Object.values(this.achievements),
-
+    searchAchievements(filter: AchievementFilter): AchievementSearchResult { let achievements = Object.values(this.achievements);
         // フィルター適用
         if (filter.category) {
     
@@ -750,7 +749,7 @@ export class AchievementDefinitions {
         const categories = [...new Set(achievements.map(a => a.category)];
 
         return { achievements,
-            totalCount: achievements.length };
+            totalCount: achievements.length },
             categories }
         }
 
@@ -758,7 +757,7 @@ export class AchievementDefinitions {
      * 実績統計を取得
      * @returns 実績統計情報
      */
-    getStatistics(): AchievementStatistics { const achievements = Object.values(this.achievements),
+    getStatistics(): AchievementStatistics { const achievements = Object.values(this.achievements);
         const categories = Object.keys(this.categories) as CategoryType[],
         
         const stats: AchievementStatistics = {
@@ -766,20 +765,20 @@ export class AchievementDefinitions {
             byCategory: {} as Record<CategoryType, number>,
             byType: { single: 0,
                 cumulative: 0,
-    progressive: 0 };
+    progressive: 0 },
             totalAP: 0,
-    averageAP: 0;
+    averageAP: 0,
         },
 
         // カテゴリ別統計
         categories.forEach(category => {  ) }
             stats.byCategory[category] = this.getAchievementsByCategory(category).length; }
-        });
+        };
 
         // タイプ別統計
         achievements.forEach(achievement => { stats.byType[achievement.type]++ }
             stats.totalAP += achievement.reward.ap); }
-        });
+        };
 
         stats.averageAP = Math.round(stats.totalAP / achievements.length);
 
@@ -817,7 +816,7 @@ export class AchievementDefinitions {
      * @param id 実績ID
      * @returns 難易度
      */
-    getAchievementDifficulty(id: string): DifficultyLevel { const achievement = this.getAchievement(id),
+    getAchievementDifficulty(id: string): DifficultyLevel { const achievement = this.getAchievement(id);
         if(!achievement) return 'medium',
 
         // APによる難易度推定
@@ -833,11 +832,11 @@ export class AchievementDefinitions {
      * @param id 実績ID
      * @returns 関連実績の配列
      */
-    getRelatedAchievements(id: string): Achievement[] { const achievement = this.getAchievement(id),
+    getRelatedAchievements(id: string): Achievement[] { const achievement = this.getAchievement(id);
         if (!achievement) return [],
 
         // 同じカテゴリの実績を関連として返す
-        return this.getAchievementsByCategory(achievement.category),
+        return this.getAchievementsByCategory(achievement.category);
             .filter(a => a.id !== id)','
             .slice(0, 5), // 最大5個 }
     }'}'

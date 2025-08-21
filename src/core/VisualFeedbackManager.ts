@@ -82,13 +82,13 @@ export class VisualFeedbackManager {'
                     ['levelUp', { color: '#fdcb6e', pattern: 'scale', intensity: 0.9  }],''
                     ['warning', { color: '#e17055', pattern: 'border', intensity: 0.7 )]
                 ]  },
-            positioning: { screenEdges: true,
-                gameArea: true,
-                uiElements: true,
-    fullScreen: false,;
-            performance: { maxConcurrentEffects: 10,
-                reducedMotion: false,
-    gpuAcceleration: true,;
+            positioning: { screenEdges: true;
+                gameArea: true;
+                uiElements: true;
+    fullScreen: false;
+            performance: { maxConcurrentEffects: 10;
+                reducedMotion: false;
+    gpuAcceleration: true;
         // 視覚効果管理
         this.activeEffects = new Map();
         this.effectQueue = [];
@@ -103,17 +103,17 @@ export class VisualFeedbackManager {'
         this.animationFrameId = null;
         
         // 統計情報
-        this.stats = { effectsTriggered: 0,
-            effectsByType: new Map(),
-            effectsByEvent: new Map(),
-            averageIntensity: 0,
-    totalDuration: 0,
+        this.stats = { effectsTriggered: 0;
+            effectsByType: new Map();
+            effectsByEvent: new Map();
+            averageIntensity: 0;
+    totalDuration: 0;
             sessionStart: Date.now()','
     preferredPatterns: ['flash', 'glow', 'pulse']);
-            colorPreferences: new Map(),
-            reducedMotion: false,
-            audioVisualization: true,
-            gameEventFeedback: true,
+            colorPreferences: new Map();
+            reducedMotion: false;
+            audioVisualization: true;
+            gameEventFeedback: true;
     customMappings: new Map(  };
         
         // サブコンポーネントの初期化（依存注入）
@@ -144,13 +144,11 @@ export class VisualFeedbackManager {'
     initialize() {
         try {
             // ユーザー設定の読み込み（委任）
-            this.configManager.loadUserPreferences(),
-            
+            this.configManager.loadUserPreferences();
             // 視覚フィードバック要素の作成（委任）
-            this.configManager.createFeedbackElements(),
-            
+            this.configManager.createFeedbackElements();
             // オーディオ分析の設定（委任）
-            this.configManager.setupAudioAnalysis(),
+            this.configManager.setupAudioAnalysis();
             // イベントリスナーの設定（委任）
             this.triggerHandler.setupEventListeners() }
 
@@ -158,7 +156,7 @@ export class VisualFeedbackManager {'
 
         } catch (error) { getErrorHandler().handleError(error, 'VISUAL_FEEDBACK_ERROR', {''
                 operation: 'initialize'
-            });
+            };
         }
     }
     
@@ -196,7 +194,7 @@ export class VisualFeedbackManager {'
         if (!patternFunction) {
     
 }
-            console.warn(`Unknown, effect pattern: ${type}`});
+            console.warn(`Unknown, effect pattern: ${type}`};
             return;
         }
         
@@ -210,8 +208,7 @@ export class VisualFeedbackManager {'
         
         if (effect) {
         
-            this.activeEffects.set(effectId, effect),
-            
+            this.activeEffects.set(effectId, effect);
             // エフェクト終了時の処理
             setTimeout(() => {
     
@@ -231,7 +228,7 @@ export class VisualFeedbackManager {'
     generateEffectId() {
     
 }
-        return `effect_${Date.now())_${Math.random().toString(36).substr(2, 9})`;
+        return `effect_${Date.now())_${Math.random().toString(36).substr(2, 9}`;
     }
     
     /**
@@ -268,7 +265,7 @@ export class VisualFeedbackManager {'
      * エフェクトのクリーンアップ
      */
     cleanupEffect(effectId) {
-        const effect = this.activeEffects.get(effectId),
+        const effect = this.activeEffects.get(effectId);
         if (effect) {''
             if(effect.cleanup && typeof, effect.cleanup === 'function' { }
                 effect.cleanup(); }
@@ -387,17 +384,17 @@ export class VisualFeedbackManager {'
         const sessionDuration = Date.now() - this.stats.sessionStart,
         
         return { : undefined
-            timestamp: new Date().toISOString(),
+            timestamp: new Date().toISOString();
     configuration: {
                 enabled: this.config.enabled }
-                globalIntensity: this.config.globalIntensity };
+                globalIntensity: this.config.globalIntensity },
                 audioVisualization: this.userPreferences.audioVisualization 
     };
             statistics: { ...this.stats,
                 sessionDuration,
                 effectsPerMinute: this.stats.effectsTriggered / (sessionDuration / 60000
                 activeEffects: this.activeEffects.size,
-    queuedEffects: this.effectQueue.length  })
+    queuedEffects: this.effectQueue.length  }
             userPreferences: this.userPreferences,
     performance: { maxConcurrentEffects: this.config.performance.maxConcurrentEffects)
                 averageActiveEffects: this.stats.effectsTriggered / (sessionDuration / 1000  }

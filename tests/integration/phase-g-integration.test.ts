@@ -69,7 +69,7 @@ global.AudioContext = jest.fn() as jest.Mock.mockImplementation(() => ({
         frequencyBinCount: 1024,
         getByteFrequencyData: jest.fn(
         fftSize: 2048
-    ),
+    );
     destination: {},
     close: jest.fn().mockResolvedValue(undefined,
     resume: jest.fn().mockResolvedValue(undefined,
@@ -86,10 +86,10 @@ describe('Phase G統合テストスイート', () => {
     
     beforeEach(() => {
         // Reset all mocks
-        jest.clearAllMocks(),
+        jest.clearAllMocks();
         // Setup canvas mocks
         mockCanvas = new HTMLCanvasElement('),'
-        mockContext = mockCanvas.getContext('2d'),
+        mockContext = mockCanvas.getContext('2d');
         // Mock DOM elements
         global.document = {
             createElement: jest.fn().mockReturnValue(mockCanvas),
@@ -99,21 +99,21 @@ describe('Phase G統合テストスイート', () => {
         removeChild: jest.fn( },
             addEventListener: jest.fn(
             removeEventListener: jest.fn(
-        dispatchEvent: jest.fn( };
+        dispatchEvent: jest.fn( },
         
         // Mock localStorage
         global.localStorage = {
             getItem: jest.fn(').mockReturnValue('{')',
             setItem: jest.fn(
             removeItem: jest.fn(
-        clear: jest.fn( };
+        clear: jest.fn( },
         
         // Mock console to reduce noise
         global.console = {
             log: jest.fn(
             warn: jest.fn(
             error: jest.fn(
-        clear: jest.fn( };
+        clear: jest.fn( },
     }');'
     describe('Phase G.1: Balance Adjuster Tool統合テスト', (') => {'
         test('Balance Adjuster sub-components統合テスト（モック実装）', async () => {
@@ -129,7 +129,7 @@ describe('Phase G統合テストスイート', () => {
                 validator: {
                     runQuickTests: jest.fn().mockResolvedValue({ passed: 5, failed: 0 ,
                     runBalanceTests: jest.fn().mockResolvedValue({ passed: 3,
-        failed: 1 });
+        failed: 1 },
                 },
                 exporter: {
                     saveChanges: jest.fn().mockResolvedValue({ success: true, appliedChanges: [] ,
@@ -140,17 +140,17 @@ describe('Phase G統合テストスイート', () => {
             const config = mockBalanceSystem.dataLoader.loadCurrentConfiguration();
             expect(config.toBeDefined();
             expect(config.scoring.normal).toBe(10);
-            const impact = mockBalanceSystem.calculator.previewBalanceImpact({),
+            const impact = mockBalanceSystem.calculator.previewBalanceImpact({);
             expect(impact.impact').toBe('moderate'),'
-            const testResult = await mockBalanceSystem.validator.runQuickTests({),
-            expect(testResult.passed).toBe(5),
-            expect(testResult.failed).toBe(0),
-            const saveResult = await mockBalanceSystem.exporter.saveChanges({}, {),
-            expect(saveResult.success).toBe(true),
+            const testResult = await mockBalanceSystem.validator.runQuickTests({);
+            expect(testResult.passed).toBe(5);
+            expect(testResult.failed).toBe(0);
+            const saveResult = await mockBalanceSystem.exporter.saveChanges({}, {);
+            expect(saveResult.success).toBe(true);
             // Verify all components were called
-            expect(mockBalanceSystem.dataLoader.loadCurrentConfiguration).toHaveBeenCalled(),
-            expect(mockBalanceSystem.calculator.previewBalanceImpact).toHaveBeenCalled(),
-            expect(mockBalanceSystem.validator.runQuickTests).toHaveBeenCalled(),
+            expect(mockBalanceSystem.dataLoader.loadCurrentConfiguration).toHaveBeenCalled();
+            expect(mockBalanceSystem.calculator.previewBalanceImpact).toHaveBeenCalled();
+            expect(mockBalanceSystem.validator.runQuickTests).toHaveBeenCalled();
             expect(mockBalanceSystem.exporter.saveChanges).toHaveBeenCalled() }');'
     }
     describe('Phase G.2: AudioAccessibilitySupport統合テスト', (') => {'
@@ -162,7 +162,7 @@ describe('Phase G統合テストスイート', () => {
                 muted: false,
                 play: jest.fn(
                 pause: jest.fn(
-                getStatus: jest.fn(() => ({ volume: 1.0, muted: false )) });
+                getStatus: jest.fn(() => ({ volume: 1.0, muted: false )) }),
             const mockAudioAccessibilitySupport = {
                 audioManager: mockAudioManager,
                 descriptionManager: {
@@ -236,7 +236,7 @@ describe('Phase G統合テストスイート', () => {
                 updateFocusState: jest.fn(
                 renderFocusEffects: jest.fn(
                 handleFocusEvents: jest.fn(
-        destroy: jest.fn( };
+        destroy: jest.fn( },
             
             expect(mockManager.initialize().resolves.toBe(true);
             expect(mockManager.getStatus().active).toBe(true);
@@ -256,13 +256,13 @@ describe('Phase G統合テストスイート', () => {
                 showFeedback: jest.fn(
                 triggerAnimation: jest.fn(
                 updateConfiguration: jest.fn(
-        destroy: jest.fn( };
+        destroy: jest.fn( },
             
             expect(mockManager.initialize().resolves.toBe(true);
             expect(mockManager.getStatus().active).toBe(true);
             expect((') => mockManager.showFeedback('success').not.toThrow();'
             expect((') => mockManager.triggerAnimation('bounce').not.toThrow();'
-            expect(() => mockManager.updateConfiguration({)).not.toThrow(),
+            expect(() => mockManager.updateConfiguration({)).not.toThrow();
             expect(() => mockManager.destroy().not.toThrow() }');'
     }
     describe('Phase G Cross-Component統合テスト', (') => {'
@@ -273,13 +273,13 @@ describe('Phase G統合テストスイート', () => {
                     this.initialized = true;
                     this.components = ['dataLoader', 'calculator', 'validator', 'exporter'] }
                 getStatus() { return { initialized: this.initialized, components: this.components }; }
-            })();
+            }();
             const audioSupport = new (class MockAudioAccessibilitySupport {
                 constructor(') {'
                     this.initialized = true;
                     this.components = ['description', 'cue', 'feedback', 'settings', 'event', 'legacy'] }
                 getStatus() { return { initialized: this.initialized, components: this.components }; }
-            })();
+            }();
             expect(balanceAdjuster.getStatus().initialized).toBe(true);
             expect(audioSupport.getStatus().initialized).toBe(true);
             expect(balanceAdjuster.getStatus().components.length).toBe(4);
@@ -295,8 +295,8 @@ describe('Phase G統合テストスイート', () => {
             // Simulate error handling across components
             try {'),'
                 throw new Error('Test integration error') } catch (error) {
-                errorHandler.handleError(error),
-                const recovery = errorHandler.recover(),
+                errorHandler.handleError(error);
+                const recovery = errorHandler.recover();
                 expect(recovery.toBe(true) }
             
             expect(errorHandler.handleError).toHaveBeenCalled();
@@ -331,33 +331,33 @@ describe('Phase G統合テストスイート', () => {
                 const component = {
                     id: i,
                     data: new Array(1000).fill(i),
-                   , destroy: jest.fn(() => { component.data = null));
+                   , destroy: jest.fn(() => { component.data = null)),
                 components.push(component);
             }
             
             // Cleanup all components
             components.forEach(component => component.destroy();
             // Verify cleanup
-            components.forEach(component => {),
-                expect(component.destroy).toHaveBeenCalled(),
+            components.forEach(component => {);
+                expect(component.destroy).toHaveBeenCalled();
                 expect(component.data).toBeNull() }');'
         }
         test('応答時間統合テスト', async () => {
             const startTime = Date.now('),'
             // Simulate component operations
             const operations = [
-                Promise.resolve('operation1'),
-                Promise.resolve('operation2'),
-                Promise.resolve('operation3'),
+                Promise.resolve('operation1');
+                Promise.resolve('operation2');
+                Promise.resolve('operation3');
                 Promise.resolve('operation4')
             ],
             
-            const results = await Promise.all(operations),
-            const endTime = Date.now(),
+            const results = await Promise.all(operations);
+            const endTime = Date.now();
             const responseTime = endTime - startTime,
             
-            expect(results.toHaveLength(4),
+            expect(results.toHaveLength(4);
             expect(responseTime.toBeLessThan(100), // Should complete within 100ms
-        });
+        };
     }
 }');'

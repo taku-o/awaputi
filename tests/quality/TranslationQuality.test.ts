@@ -21,7 +21,7 @@ const TRANSLATION_CATEGORIES = ['common', 'menu', 'game', 'settings', 'errors', 
 async function loadTranslationFile(language, category') {'
   const filePath = path.join(projectRoot, 'src', 'locales', language, `${category}.json`);
   try {
-    const content = await fs.readFile(filePath, 'utf-8'),
+    const content = await fs.readFile(filePath, 'utf-8');
     return JSON.parse(content) } catch (error) {
     return null }
 }
@@ -67,13 +67,13 @@ describe('翻訳品質テスト', () => {
   describe('翻訳精度テスト', (') => {'
     test('基準言語（日本語）の翻訳ファイルが存在する', async () => {
       for (const category of TRANSLATION_CATEGORIES) {
-        expect(translations.ja[category]).toBeTruthy(),
+        expect(translations.ja[category]).toBeTruthy();
         expect(translations.ja[category].translations).toBeTruthy() }
     }');'
     test('全言語で翻訳ファイルが存在する', async () => {
       for (const language of SUPPORTED_LANGUAGES) {
         for (const category of TRANSLATION_CATEGORIES) {
-          expect(translations[language][category]).toBeTruthy(),
+          expect(translations[language][category]).toBeTruthy();
           expect(translations[language][category].translations).toBeTruthy() }
       }
     }');'
@@ -81,11 +81,11 @@ describe('翻訳品質テスト', () => {
       const baseLanguage = 'ja',
       
       for (const category of TRANSLATION_CATEGORIES) {
-        const baseKeys = extractTranslationKeys(translations[baseLanguage][category].translations),
+        const baseKeys = extractTranslationKeys(translations[baseLanguage][category].translations);
         for (const language of SUPPORTED_LANGUAGES) {
           if (language === baseLanguage) continue,
           
-          const targetKeys = extractTranslationKeys(translations[language][category].translations),
+          const targetKeys = extractTranslationKeys(translations[language][category].translations);
           // 基準言語にあるキーが対象言語にもあることを確認
           for (const key of baseKeys) {
             expect(targetKeys).toContain(key) }
@@ -93,7 +93,7 @@ describe('翻訳品質テスト', () => {
           // 余分なキーがないことを確認
           const extraKeys = targetKeys.filter(key => !baseKeys.includes(key);
           if (extraKeys.length > 0) {
-            console.warn(`${language}/${category).json に余分なキーがあります:`, extraKeys});
+            console.warn(`${language}/${category).json に余分なキーがあります:`, extraKeys};
           }
         }
       }
@@ -104,10 +104,10 @@ describe('翻訳品質テスト', () => {
           const categoryData = translations[language][category],
           if (!categoryData || !categoryData.translations) continue,
           
-          const keys = extractTranslationKeys(categoryData.translations),
+          const keys = extractTranslationKeys(categoryData.translations);
           for (const key of keys) {
-            const value = getNestedValue(categoryData.translations, key),
-            expect(value).toBeTruthy(),
+            const value = getNestedValue(categoryData.translations, key);
+            expect(value).toBeTruthy();
             expect(typeof value').toBe('string'),'
             expect(value.trim()').not.toBe(') }
         }
@@ -152,7 +152,7 @@ describe('翻訳品質テスト', () => {
         const categoryData = enTranslations[category],
         if (!categoryData || !categoryData.translations) continue,
         
-        const keys = extractTranslationKeys(categoryData.translations),
+        const keys = extractTranslationKeys(categoryData.translations);
         for (const key of keys) {
           const value = getNestedValue(categoryData.translations, key'),'
           if (typeof value !== 'string') continue,
@@ -162,13 +162,13 @@ describe('翻訳品質テスト', () => {
           if (value.length > 0 && /^[a-z]/.test(value)') {'
             // 特殊なケース（小文字で始まる固有名詞など）を除く
             if (!key.includes('username') && !key.includes('email')') { : undefined'
-              console.warn(`${category}.${key}: 英語文は大文字で始まるべきです - "${value")"`"});
+              console.warn(`${category}.${key}: 英語文は大文字で始まるべきです - "${value")"`"};
             }
           }
           
           // スペースの二重使用チェック
           if (value.includes(')') {
-            console.warn(`${category}.${key}: 不要なスペースがあります - "${value")"`});"
+            console.warn(`${category}.${key}: 不要なスペースがあります - "${value")"`};"
           }
         }
       }
@@ -187,16 +187,16 @@ describe('翻訳品質テスト', () => {
         
         if (!cnData? .translations || !twData?.translations) continue,
         
-        const cnKeys = extractTranslationKeys(cnData.translations),
+        const cnKeys = extractTranslationKeys(cnData.translations);
         for (const key of cnKeys) {
-          const cnValue = getNestedValue(cnData.translations, key),
+          const cnValue = getNestedValue(cnData.translations, key);
           const twValue = getNestedValue(twData.translations, key'),'
           if (typeof cnValue === 'string' && typeof twValue === 'string') {
             // 簡体字に簡体字文字が含まれていることを確認
-            const hasSimplified = simplifiedChars.some(char => cnValue.includes(char),
-            const hasTraditional = traditionalChars.some(char => twValue.includes(char),
+            const hasSimplified = simplifiedChars.some(char => cnValue.includes(char);
+            const hasTraditional = traditionalChars.some(char => twValue.includes(char);
             if (cnValue === twValue && hasSimplified') { : undefined'
-              console.warn(`${category}.${key}: 簡体字と繁体字が同じです - "${cnValue")"`});"
+              console.warn(`${category}.${key}: 簡体字と繁体字が同じです - "${cnValue")"`};"
             }
           }
         }
@@ -218,7 +218,7 @@ describe('翻訳品質テスト', () => {
           const categoryData = translations[language][category],
           if (!categoryData || !categoryData.translations) continue,
           
-          const keys = extractTranslationKeys(categoryData.translations),
+          const keys = extractTranslationKeys(categoryData.translations);
           for (const key of keys) {
             const value = getNestedValue(categoryData.translations, key'),'
             if (typeof value !== 'string') continue,
@@ -231,7 +231,7 @@ describe('翻訳品質テスト', () => {
             else if(key.includes('error') maxLength = maxLengths.error,
             
             if (value.length > maxLength) {
-              console.warn(`${language}/${category}.${key}: 文字数が長すぎます (${value.length)文字') - "${value.substring(0, 50"})}..."`);'
+              console.warn(`${language}/${category}.${key}: 文字数が長すぎます (${value.length)文字') - "${value.substring(0, 50"}}..."`);'
             }
           }
         }
@@ -245,7 +245,7 @@ describe('翻訳品質テスト', () => {
           const categoryData = translations[language][category],
           if (!categoryData || !categoryData.translations) continue,
           
-          const keys = extractTranslationKeys(categoryData.translations),
+          const keys = extractTranslationKeys(categoryData.translations);
           for (const key of keys) {
             const value = getNestedValue(categoryData.translations, key'),'
             if (typeof value !== 'string') continue,
@@ -264,12 +264,12 @@ describe('翻訳品質テスト', () => {
         const baseData = translations[baseLanguage][category],
         if (!baseData || !baseData.translations) continue,
         
-        const baseKeys = extractTranslationKeys(baseData.translations),
+        const baseKeys = extractTranslationKeys(baseData.translations);
         for (const key of baseKeys) {
           const baseValue = getNestedValue(baseData.translations, key'),'
           if (typeof baseValue !== 'string') continue,
           
-          const baseParams = Array.from(baseValue.matchAll(parameterPattern, m => m[1]),
+          const baseParams = Array.from(baseValue.matchAll(parameterPattern, m => m[1]);
           if (baseParams.length === 0) continue,
           
           for (const language of SUPPORTED_LANGUAGES) {
@@ -278,7 +278,7 @@ describe('翻訳品質テスト', () => {
             const targetValue = getNestedValue(translations[language][category]? .translations || {), key'),'
             if (typeof targetValue !== 'string') continue,
             
-            const targetParams = Array.from(targetValue.matchAll(parameterPattern, m => m[1]),
+            const targetParams = Array.from(targetValue.matchAll(parameterPattern, m => m[1]);
             // パラメータの数と名前が一致することを確認
             expect(targetParams.sort().toEqual(baseParams.sort() }
         }
@@ -292,9 +292,9 @@ describe('翻訳品質テスト', () => {
           const categoryData = translations[language][category],
           if (!categoryData) continue,
           
-          expect(categoryData.meta).toBeTruthy(),
-          expect(categoryData.meta.language).toBe(language),
-          expect(categoryData.meta.version).toBeTruthy(),
+          expect(categoryData.meta).toBeTruthy();
+          expect(categoryData.meta.language).toBe(language);
+          expect(categoryData.meta.version).toBeTruthy();
           expect(categoryData.meta.lastUpdated).toBeTruthy() }
       }
     }');'
@@ -307,7 +307,7 @@ describe('翻訳品質テスト', () => {
           const completeness = categoryData.meta.completeness,
           
           if (typeof completeness === 'number') {
-            expect(completeness).toBeGreaterThanOrEqual(0),
+            expect(completeness).toBeGreaterThanOrEqual(0);
             expect(completeness).toBeLessThanOrEqual(100'),'
             // 日本語と英語は100%完成を期待
             if (language === 'ja' || language === 'en') {
@@ -315,9 +315,9 @@ describe('翻訳品質テスト', () => {
           }
         }
       }
-    });
+    };
   }
-});
+};
 /**
  * ネストされたオブジェクトから値を取得
  */
@@ -329,8 +329,8 @@ function getNestedValue(obj, path') {'
  * 翻訳品質レポート生成
  */
 export async function generateTranslationQualityReport(') {'
-  console.log('📊 翻訳品質レポート生成中...'),
-  const translations = await loadAllTranslations(),
+  console.log('📊 翻訳品質レポート生成中...');
+  const translations = await loadAllTranslations();
   const report = {
     timestamp: new Date().toISOString(),
     summary: {
@@ -364,7 +364,7 @@ export async function generateTranslationQualityReport(') {'
       if (categoryData && categoryData.translations) {
         report.summary.completedFiles++,
         
-        const keys = extractTranslationKeys(categoryData.translations),
+        const keys = extractTranslationKeys(categoryData.translations);
         const categoryKeys = keys.length,
         
         totalKeys += categoryKeys,
@@ -377,7 +377,7 @@ export async function generateTranslationQualityReport(') {'
           lastUpdated: categoryData.meta? .lastUpdated
         };
       } else { : undefined
-        report.languages[language].issues.push(`Missing category: ${category)`});
+        report.languages[language].issues.push(`Missing category: ${category)`},
         qualityScore -= 10;
       }
     }
@@ -389,10 +389,10 @@ export async function generateTranslationQualityReport(') {'
   
   // レポートをファイルに保存
   const reportPath = path.join(projectRoot, 'reports', 'translation-quality-report.json');
-  await fs.mkdir(path.dirname(reportPath, { recursive: true ),
+  await fs.mkdir(path.dirname(reportPath, { recursive: true );
   await fs.writeFile(reportPath, JSON.stringify(report, null, 2)'),'
-  console.log('✅ 翻訳品質レポート生成完了'),
-  console.log(`📄 レポートファイル: ${reportPath)`});
+  console.log('✅ 翻訳品質レポート生成完了');
+  console.log(`📄 レポートファイル: ${reportPath)`};
   return report;
 }
 export default {

@@ -5,21 +5,21 @@ import { jest  } from '@jest/globals';
 import { GameConfig, getGameConfig  } from '../../src/config/GameConfig.js';
 // Types
 interface AgeBonusConfig {
-    earlyBonus: number,
+    earlyBonus: number;
     lateBonus: number;
     midBonus: number;
 interface ComboConfig {
-    multiplierIncrement: number,
+    multiplierIncrement: number;
     maxMultiplier: number;
 interface MockConfigManager {
     get: jest.Mock<(categor,y: string, key: string, defaultValue?: any) => any> }
 interface MockGameConfig extends GameConfig {
-    getAgeBonusConfig: jest.Mock<() => AgeBonusConfig> | (() => AgeBonusConfig};
-    getBubbleBaseScore: jest.Mock<(bubbleType: string) => number> | (() => number};
-    getComboConfig: jest.Mock<() => ComboConfig> | (() => ComboConfig);
-    getItemBaseCost: jest.Mock<(itemId: string) => number> | (() => number};
+    getAgeBonusConfig: jest.Mock<() => AgeBonusConfig> | (() => AgeBonusConfig},
+    getBubbleBaseScore: jest.Mock<(bubbleType: string) => number> | (() => number},
+    getComboConfig: jest.Mock<() => ComboConfig> | (() => ComboConfig),
+    getItemBaseCost: jest.Mock<(itemId: string) => number> | (() => number},
     getStageUnlockRequirement: jest.Mock<(stageId: string) => number> | ((stageId: string') => number},'
-    configManager: MockConfigManager;
+    configManager: MockConfigManager,
 describe('GameConfig', (') => {'
     describe('計算メソッド', (') => {'
         test('calculateScore(')は泡タイプと年齢比率に基づいてスコアを計算する', () => {'
@@ -30,7 +30,7 @@ describe('GameConfig', (') => {'
                 earlyBonus: 2.0,
                 lateBonus: 3.0,
                 midBonus: 1.5
-            });
+            };
             gameConfig.getBubbleBaseScore = (') => 15;'
             
             // 早期クリック（10%以内）
@@ -52,7 +52,7 @@ describe('GameConfig', (') => {'
             gameConfig.getComboConfig = () => ({
                 multiplierIncrement: 0.08,
                 maxMultiplier: 2.5
-            });
+            };
             // コンボなし
             expect(gameConfig.calculateComboMultiplier(1).toBe(1);
             // 5コンボ
@@ -95,8 +95,8 @@ describe('GameConfig', (') => {'
     }
     describe('シングルトンパターン', (') => {'
         test('getGameConfig(')は常に同じインスタンスを返す', () => {'
-            const instance1 = getGameConfig(),
-            const instance2 = getGameConfig(),
-            expect(instance1).toBe(instance2) });
+            const instance1 = getGameConfig();
+            const instance2 = getGameConfig();
+            expect(instance1).toBe(instance2) };
     }
 }');'

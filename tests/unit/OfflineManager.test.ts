@@ -5,13 +5,13 @@ interface MockDataStorage {
     save: jest.Mock<(ke,y: string, data => Promise<void>>);
     load: jest.Mock<(ke,y: string) => Promise<any>> }
 interface MockSyncManager {
-    sync: jest.Mock<() => Promise<void>>,
+    sync: jest.Mock<() => Promise<void>>;
     cloudStorage: {
         set: jest.Mock<(ke,y: string, data => Promise<boolean>>);
         remove: jest.Mock<(ke,y: string') => Promise<boolean>> };'
 }
 interface OfflineOperation {
-    id: string,
+    id: string;
     type: 'save' | 'remove';
     key: string;
     data?: any;
@@ -20,24 +20,24 @@ interface OfflineOperation {
     status: 'pending' | 'processing' | 'failed';
     lastError?: string;
 interface OfflineState {
-    isOnline: boolean,
+    isOnline: boolean;
     connectionQuality: 'unknown' | 'good' | 'poor' | 'unstable' | 'offline';
     lastOnlineTime?: number;
     lastOfflineTime?: number;
     heartbeatFailures: number;
     offlineOperations: OfflineOperation[];
 interface OfflineStatus {
-    isOnline: boolean,
+    isOnline: boolean;
     connectionQuality: string;
     offlineOperations: number;
     offlineDuration?: number;
 interface MockPerformance {
     now: jest.Mock<(') => number> }'
 interface MockDocument {
-    addEventListener: jest.Mock,
+    addEventListener: jest.Mock;
     hidden: boolean;
 interface MockWindow {
-    addEventListener: jest.Mock,
+    addEventListener: jest.Mock;
     removeEventListener: jest.Mock }
 describe('OfflineManager', () => {
     let offlineManager: OfflineManager,
@@ -49,7 +49,7 @@ describe('OfflineManager', () => {
         // DataStorage mock
         mockDataStorage = {
             save: jest.fn(
-        load: jest.fn( };
+        load: jest.fn( },
         
         // SyncManager mock
         mockSyncManager = {
@@ -75,7 +75,8 @@ describe('OfflineManager', () => {
         // performance mock
         global.performance = {
             now: jest.fn(() => 100)) as MockPerformance as any,
-        
+            now: jest.fn(() => 100)) as MockPerformance as any,
+        };
         // document mock
         global.document = {
             addEventListener: jest.fn(
@@ -85,12 +86,12 @@ describe('OfflineManager', () => {
         // window mock
         global.window = {
             addEventListener: jest.fn(
-        removeEventListener: jest.fn( } as MockWindow as any;
+        removeEventListener: jest.fn( } as MockWindow as any,
         
         // Use fake timers
         jest.useFakeTimers();
         offlineManager = new OfflineManager(mockDataStorage, mockSyncManager);
-    });
+    };
     afterEach(() => {
         if (offlineManager) {
             offlineManager.destroy() }
@@ -99,14 +100,14 @@ describe('OfflineManager', () => {
     }');'
     describe('初期化', (') => {'
         test('基本設定で正常に初期化される', () => {
-            expect(offlineManager.dataStorage).toBe(mockDataStorage),
-            expect(offlineManager.syncManager).toBe(mockSyncManager),
-            expect(offlineManager.config.enableOfflineMode).toBe(true),
+            expect(offlineManager.dataStorage).toBe(mockDataStorage);
+            expect(offlineManager.syncManager).toBe(mockSyncManager);
+            expect(offlineManager.config.enableOfflineMode).toBe(true);
             expect(offlineManager.config.maxOfflineOperations).toBe(1000) }');'
         test('オンライン状態が正しく初期化される', async () => {
             // Wait for initialization
-            await new Promise(resolve => setTimeout(resolve, 50),
-            expect(offlineManager.state.isOnline).toBe(true),
+            await new Promise(resolve => setTimeout(resolve, 50);
+            expect(offlineManager.state.isOnline).toBe(true);
             expect(offlineManager.state.offlineOperations).toEqual([]'),'
             // Connection check runs on init, so it becomes 'good'
             expect(['unknown', 'good']).toContain(offlineManager.state.connectionQuality) }, 10000'); // Set timeout to 10 seconds'
@@ -116,10 +117,10 @@ describe('OfflineManager', () => {
     }
     describe('オンライン状態変更', (') => {'
         test('オフライン移行が正しく処理される', async (') => {'
-            const emitSpy = jest.spyOn(offlineManager, 'emitEvent'),
-            await offlineManager.handleOnlineStateChange(false),
-            expect(offlineManager.state.isOnline).toBe(false),
-            expect(offlineManager.state.lastOfflineTime).toBeTruthy(),
+            const emitSpy = jest.spyOn(offlineManager, 'emitEvent');
+            await offlineManager.handleOnlineStateChange(false);
+            expect(offlineManager.state.isOnline).toBe(false);
+            expect(offlineManager.state.lastOfflineTime).toBeTruthy();
             expect(offlineManager.state.connectionQuality').toBe('offline'),'
             expect(emitSpy').toHaveBeenCalledWith('offlineTransition', expect.any(Object) }');
         test('オンライン復帰が正しく処理される', async () => {
@@ -127,21 +128,21 @@ describe('OfflineManager', () => {
             offlineManager.state.isOnline = false,
             offlineManager.state.lastOfflineTime = Date.now(') - 60000,'
             
-            const emitSpy = jest.spyOn(offlineManager, 'emitEvent'),
+            const emitSpy = jest.spyOn(offlineManager, 'emitEvent');
             mockFetch.mockResolvedValueOnce({ ok: true ,
-            await offlineManager.handleOnlineStateChange(true),
-            expect(offlineManager.state.isOnline).toBe(true),
-            expect(offlineManager.state.lastOnlineTime).toBeTruthy(),
-            expect(offlineManager.state.heartbeatFailures).toBe(0),
+            await offlineManager.handleOnlineStateChange(true);
+            expect(offlineManager.state.isOnline).toBe(true);
+            expect(offlineManager.state.lastOnlineTime).toBeTruthy();
+            expect(offlineManager.state.heartbeatFailures).toBe(0);
             expect(emitSpy').toHaveBeenCalledWith('onlineRecovery', expect.any(Object) }');
         test('状態変更イベントが発行される', async (') => {'
-            const emitSpy = jest.spyOn(offlineManager, 'emitEvent'),
-            await offlineManager.handleOnlineStateChange(false),
+            const emitSpy = jest.spyOn(offlineManager, 'emitEvent');
+            await offlineManager.handleOnlineStateChange(false);
             expect(emitSpy').toHaveBeenCalledWith('connectionStateChanged', {'
                 isOnline: false,
                 previousState: true,
-                timestamp: expect.any(Number});
-            });
+                timestamp: expect.any(Number},
+            };
         }
     }');'
     describe('オフライン操作記録', (') => {'
@@ -164,7 +165,7 @@ describe('OfflineManager', () => {
             // Fill the queue
             for (let i = 0, i < 1000, i++') {'
                 offlineManager.state.offlineOperations.push({
-                    id: `old-${i}`;
+                    id: `old-${i}`,
                     type: 'save',
                     key: `oldKey-${i}`;);
                     timestamp: Date.now(') - 60000,'
@@ -190,7 +191,7 @@ describe('OfflineManager', () => {
         test('オフラインモード無効時にエラーが発生する', async (') => {'
             offlineManager.config.enableOfflineMode = false,
             
-            const operation = { type: 'save' as const, key: 'test', data: {} };
+            const operation = { type: 'save' as const, key: 'test', data: {} },
             
             await expect(offlineManager.recordOfflineOperation(operation)')'
                 .rejects.toThrow('Offline mode is disabled');
@@ -202,7 +203,7 @@ describe('OfflineManager', () => {
                 id: 'op1',
                 type: 'save',
                 key: 'testKey',
-                data: { test: 'data' };
+                data: { test: 'data' },
                 timestamp: Date.now(','
                 retries: 0,
                 status: 'pending'
@@ -234,7 +235,7 @@ describe('OfflineManager', () => {
                 id: 'op1',
                 type: 'save',
                 key: 'testKey',
-                data: { test: 'data' };
+                data: { test: 'data' },
                 timestamp: Date.now(','
                 retries: 0,
                 status: 'pending'
@@ -253,7 +254,7 @@ describe('OfflineManager', () => {
                 id: 'op1',
                 type: 'save',
                 key: 'testKey',
-                data: { test: 'data' };
+                data: { test: 'data' },
                 timestamp: Date.now(','
                 retries: 2,
                 status: 'pending'
@@ -268,7 +269,7 @@ describe('OfflineManager', () => {
     }
     describe('接続品質チェック', (') => {'
         test('良好な接続が正しく判定される', async () => {
-            (global.performance.now as jest.Mock})
+            (global.performance.now as jest.Mock}
                 .mockReturnValueOnce(0)
                 .mockReturnValueOnce(100); // 100ms
             
@@ -279,7 +280,7 @@ describe('OfflineManager', () => {
             expect(offlineManager.state.heartbeatFailures).toBe(0);
         }');'
         test('低品質な接続が正しく判定される', async () => {
-            (global.performance.now as jest.Mock})
+            (global.performance.now as jest.Mock}
                 .mockReturnValueOnce(0)
                 .mockReturnValueOnce(800); // 800ms
             
@@ -289,7 +290,7 @@ describe('OfflineManager', () => {
             expect(offlineManager.state.connectionQuality').toBe('poor');'
         }');'
         test('不安定な接続が正しく判定される', async () => {
-            (global.performance.now as jest.Mock})
+            (global.performance.now as jest.Mock}
                 .mockReturnValueOnce(0)
                 .mockReturnValueOnce(1500); // 1500ms
             
@@ -299,14 +300,14 @@ describe('OfflineManager', () => {
             expect(offlineManager.state.connectionQuality').toBe('unstable');'
         }');'
         test('接続失敗が正しく処理される', async (') => {'
-            mockFetch.mockRejectedValue(new Error('Network error'),
-            const quality = await offlineManager.checkConnectionQuality(),
-            expect(offlineManager.state.heartbeatFailures).toBe(1),
+            mockFetch.mockRejectedValue(new Error('Network error');
+            const quality = await offlineManager.checkConnectionQuality();
+            expect(offlineManager.state.heartbeatFailures).toBe(1);
             expect(quality').toBe('unstable') }');
         test('複数回の接続失敗でオフライン状態になる', async (') => {'
             offlineManager.state.heartbeatFailures = 2,
-            mockFetch.mockRejectedValue(new Error('Network error'),
-            const quality = await offlineManager.checkConnectionQuality(),
+            mockFetch.mockRejectedValue(new Error('Network error');
+            const quality = await offlineManager.checkConnectionQuality();
             expect(quality').toBe('offline'),'
             expect(offlineManager.state.connectionQuality').toBe('offline') }');
         test('オフライン状態では接続チェックしない', async () => {
@@ -323,11 +324,11 @@ describe('OfflineManager', () => {
     }
     describe('ハートビート監視', (') => {'
         test('ハートビート監視が開始される', () => {
-            offlineManager.startHeartbeat(),
+            offlineManager.startHeartbeat();
             expect(offlineManager.heartbeatTimer).toBeTruthy() }');'
         test('ハートビート監視が停止される', () => {
-            offlineManager.startHeartbeat(),
-            offlineManager.stopHeartbeat(),
+            offlineManager.startHeartbeat();
+            offlineManager.stopHeartbeat();
             expect(offlineManager.heartbeatTimer).toBeNull() }');'
         test('ハートビート間隔で接続チェックが実行される', async (') => {'
             const checkSpy = jest.spyOn(offlineManager, 'checkConnectionQuality'}')'
@@ -345,12 +346,12 @@ describe('OfflineManager', () => {
     describe('オフライン状態管理', (') => {'
         test('オフライン状態が正しく保存される', async (') => {'
             offlineManager.state.lastOnlineTime = 123456789,
-            offlineManager.state.offlineOperations = [{ id: 'op1' } as OfflineOperation];
+            offlineManager.state.offlineOperations = [{ id: 'op1' } as OfflineOperation],
             
             await offlineManager.saveOfflineState();
             expect(mockDataStorage.save').toHaveBeenCalledWith('_offlineState', expect.objectContaining({'
                 lastOnlineTime: 123456789,
-        offlineOperations: expect.any(Array)) })');'
+        offlineOperations: expect.any(Array)) }');'
         }
         test('オフライン状態が正しく復元される', async (') => {'
             const savedState: Partial<OfflineState> = {
@@ -397,8 +398,8 @@ describe('OfflineManager', () => {
             expect(offlineManager.config.heartbeatInterval).toBe(60000);
         }');'
         test('ハートビート間隔変更時に再起動される', (') => {'
-            const startSpy = jest.spyOn(offlineManager, 'startHeartbeat'),
-            offlineManager.updateConfig({ heartbeatInterval: 15000 });
+            const startSpy = jest.spyOn(offlineManager, 'startHeartbeat');
+            offlineManager.updateConfig({ heartbeatInterval: 15000 },
             expect(startSpy).toHaveBeenCalled();
         }');'
     }
@@ -406,7 +407,7 @@ describe('OfflineManager', () => {
         test('オフライン状態が正しく返される', (') => {'
             offlineManager.state.isOnline = false,
             offlineManager.state.connectionQuality = 'poor',
-            offlineManager.state.offlineOperations = [{ id: 'op1' }, { id: 'op2' }] as OfflineOperation[];
+            offlineManager.state.offlineOperations = [{ id: 'op1' }, { id: 'op2' }] as OfflineOperation[],
             offlineManager.state.lastOfflineTime = Date.now() - 60000;
             
             const status = offlineManager.getOfflineStatus() as OfflineStatus;
@@ -419,7 +420,7 @@ describe('OfflineManager', () => {
     }
     describe('オフライン操作クリア', (') => {'
         test('オフライン操作がクリアされる', (') => {'
-            offlineManager.state.offlineOperations = [{ id: 'op1' }, { id: 'op2' }] as OfflineOperation[];
+            offlineManager.state.offlineOperations = [{ id: 'op1' }, { id: 'op2' }] as OfflineOperation[],
             
             offlineManager.clearOfflineOperations();
             expect(offlineManager.state.offlineOperations).toEqual([]);
@@ -433,7 +434,7 @@ describe('OfflineManager', () => {
             expect(offlineManager.eventListeners.get('connectionStateChanged').toContain(listener) }');'
         test('イベントが正しく発行される', () => {
             const listener = jest.fn('),'
-            const testData = { test: 'data' };
+            const testData = { test: 'data' },
             
             offlineManager.on('testEvent', listener');'
             offlineManager.emitEvent('testEvent', testData);
@@ -442,9 +443,9 @@ describe('OfflineManager', () => {
     }
     describe('リソース管理', (') => {'
         test('destroy(')でリソースが適切に解放される', () => {'
-            offlineManager.startHeartbeat(),
-            offlineManager.destroy(),
-            expect(offlineManager.heartbeatTimer).toBeNull(),
-            expect(offlineManager.eventListeners.size).toBe(0) });
+            offlineManager.startHeartbeat();
+            offlineManager.destroy();
+            expect(offlineManager.heartbeatTimer).toBeNull();
+            expect(offlineManager.eventListeners.size).toBe(0) };
     }
 }');'

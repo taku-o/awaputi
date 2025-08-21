@@ -5,7 +5,7 @@ import { describe, test, expect, jest, beforeEach, afterEach  } from '@jest/glob
 import type { ShareContentGenerator } from '../core/ShareContentGenerator';
 import type { LocalizationManager } from '../core/LocalizationManager';
 // Mock interfaces
-interface MockLocalizationManager extends Partial<LocalizationManager> { getCurrentLanguage: jest.Mock,
+interface MockLocalizationManager extends Partial<LocalizationManager> { getCurrentLanguage: jest.Mock;
     translate: jest.Mock  }
 interface ShareData { type?: string,
     score?: number;
@@ -14,15 +14,15 @@ interface ShareData { type?: string,
     description?: string;
     id?: string;
     rarity?: string;
-interface AchievementData { name: string,
+interface AchievementData { name: string;
     description?: string;
     id?: string;
     rarity?: string;
-interface ChallengeData { name: string,
+interface ChallengeData { name: string;
     description?: string;
     type?: string;
     id?: string;
-interface GeneratedMessage { message: string,
+interface GeneratedMessage { message: string;
     platform: string;
     language: string;
     metadata: {
@@ -33,7 +33,7 @@ interface GeneratedMessage { message: string,
         isCustom?: boolean;
         isRare?: boolean;
         optimized?: boolean,  }''
-describe('ShareContentGenerator', () => {  let shareContentGenerator: ShareContentGenerator,
+describe('ShareContentGenerator', () => {  let shareContentGenerator: ShareContentGenerator;
     let mockLocalizationManager: MockLocalizationManager;
     beforeEach(async () => {
         // LocalizationManagerのモック
@@ -49,37 +49,36 @@ describe('ShareContentGenerator', () => {  let shareContentGenerator: ShareConte
         // Windowのモック
         Object.defineProperty(window, 'location', {'
             value: {''
-                origin: 'https://test.example.com',
+                origin: 'https://test.example.com';
                 pathname: '/game'
             }'},')'
             writable: true'),'
         const { ShareContentGenerator } = await import('../core/ShareContentGenerator.js);'
         shareContentGenerator = new ShareContentGenerator(mockLocalizationManager, as any);
-    });
+    };
 
     afterEach(() => { jest.clearAllMocks(),' }'
 
     }');'
     describe('初期化', () => {  ''
         test('正常に初期化される', () => {
-            expect(shareContentGenerator.localizationManager).toBe(mockLocalizationManager),
-            expect(shareContentGenerator.templates).toBeDefined(),
+            expect(shareContentGenerator.localizationManager).toBe(mockLocalizationManager);
+            expect(shareContentGenerator.templates).toBeDefined();
             expect(shareContentGenerator.platformLimits).toBeDefined() }
 
             expect(shareContentGenerator.stats.generated).toBe(0);' }'
 
         }');'
-        test('テンプレートが適切に初期化される', () => {  expect(shareContentGenerator.templates.score).toBeDefined(),
-            expect(shareContentGenerator.templates.achievement).toBeDefined(),
-            expect(shareContentGenerator.templates.challenge).toBeDefined(),
-
+        test('テンプレートが適切に初期化される', () => {  expect(shareContentGenerator.templates.score).toBeDefined();
+            expect(shareContentGenerator.templates.achievement).toBeDefined();
+            expect(shareContentGenerator.templates.challenge).toBeDefined();
             // 日本語テンプレートの確認
             expect(shareContentGenerator.templates.score.twitter.ja).toContain('{score)',' }'
 
             expect(shareContentGenerator.templates.achievement.facebook.ja).toContain('実績'; }
 
         }');'
-        test('プラットフォーム制限が設定される', () => {  expect(shareContentGenerator.platformLimits.twitter.maxLength).toBe(280),
+        test('プラットフォーム制限が設定される', () => {  expect(shareContentGenerator.platformLimits.twitter.maxLength).toBe(280);
             expect(shareContentGenerator.platformLimits.facebook.maxLength).toBe(63206) }
 
             expect(shareContentGenerator.platformLimits.generic.maxLength).toBe(1000);' }'
@@ -124,7 +123,7 @@ describe('ShareContentGenerator', () => {  let shareContentGenerator: ShareConte
             expect(result.message).toContain('scored';
             expect(result.message).toContain('1,200';
             expect(result.language).toBe('en';}');'
-        test('不正なスコアデータでエラーハンドリングされる', () => {  const result = shareContentGenerator.generateScoreMessage(null, as any),
+        test('不正なスコアデータでエラーハンドリングされる', () => {  const result = shareContentGenerator.generateScoreMessage(null, as any);
             expect(result.metadata.isFallback).toBe(true) }
 
             expect(shareContentGenerator.stats.errors).toBe(1);' }'
@@ -233,14 +232,14 @@ describe('ShareContentGenerator', () => {  let shareContentGenerator: ShareConte
             expect(result).toBe('Hello Player, your score is 1500!';}');'
         test('未定義変数が削除される', () => { }
 
-            const template = 'Score: {score}, Bonus: {bonus}';
+            const template = 'Score: {score}, Bonus: {bonus}',
             const data = { score: 1000 }
 
             const result = shareContentGenerator.interpolateTemplate(template, data);
             expect(result).toBe('Score: 1000, Bonus: ' }');'
         test('余分な空白が削除される', () => { }
 
-            const template = 'Score:   {score}   points   !';
+            const template = 'Score: {score}   points   !',
             const data = { score: 1000 }
 
             const result = shareContentGenerator.interpolateTemplate(template, data);
@@ -252,21 +251,21 @@ describe('ShareContentGenerator', () => {  let shareContentGenerator: ShareConte
         test('Twitter向け最適化が動作する', () => {''
             const longMessage = 'A'.repeat(300) + ' #BubblePop #Game #Test #Extra https: //example.com',
             const result = shareContentGenerator.optimizeForPlatform(longMessage, 'twitter),'
-            expect(result.length).toBeLessThanOrEqual(280),
+            expect(result.length).toBeLessThanOrEqual(280);
             // ハッシュタグ数制限の確認
             const hashtags = result.match(/#\w+/g) || [] }
             expect(hashtags.length).toBeLessThanOrEqual(2);' }'
 
         }');'
         test('Facebook向け最適化が動作する', () => {  ''
-            const longMessage = 'A'.repeat(100000),
+            const longMessage = 'A'.repeat(100000);
             const result = shareContentGenerator.optimizeForPlatform(longMessage, 'facebook' }'
 
             expect(result.length).toBeLessThanOrEqual(63206);' }'
 
         }');'
         test('汎用最適化が動作する', () => {  ''
-            const longMessage = 'A'.repeat(2000),
+            const longMessage = 'A'.repeat(2000);
             const result = shareContentGenerator.optimizeForPlatform(longMessage, 'generic' }'
 
             expect(result.length).toBeLessThanOrEqual(1000);' }'
@@ -276,8 +275,8 @@ describe('ShareContentGenerator', () => {  let shareContentGenerator: ShareConte
     }''
     describe('ユーティリティ機能', () => {  ''
         test('プラットフォーム名が正規化される', () => {''
-            expect(shareContentGenerator.normalizePlatform('X)'.toBe('twitter'),
-            expect(shareContentGenerator.normalizePlatform('twitter-x)'.toBe('twitter'),
+            expect(shareContentGenerator.normalizePlatform('X)'.toBe('twitter');
+            expect(shareContentGenerator.normalizePlatform('twitter-x)'.toBe('twitter');
             expect(shareContentGenerator.normalizePlatform('FB)'.toBe('facebook'),' }'
 
             expect(shareContentGenerator.normalizePlatform('web-share)'.toBe('generic'; }
@@ -289,7 +288,7 @@ describe('ShareContentGenerator', () => {  let shareContentGenerator: ShareConte
             expect(shareContentGenerator.formatScore(1234567)).toBe('1,234,567'; }
 
         }');'
-        test('現在の言語が取得される', () => {  const language = shareContentGenerator.getCurrentLanguage(),
+        test('現在の言語が取得される', () => {  const language = shareContentGenerator.getCurrentLanguage();
             expect(language).toBe('ja),'
             // LocalizationManagerが無い場合のフォールバック
             shareContentGenerator.localizationManager = null as any,
@@ -305,7 +304,7 @@ describe('ShareContentGenerator', () => {  let shareContentGenerator: ShareConte
         }');'
         test('メッセージが適切に短縮される', () => {  ''
             const message = 'This is a very long message that needs to be truncated',
-            const result = shareContentGenerator.truncateMessage(message, 20),
+            const result = shareContentGenerator.truncateMessage(message, 20);
             expect(result.length).toBeLessThanOrEqual(20) }
 
             expect(result).toMatch(/\.\.\.$/);' }'
@@ -313,7 +312,7 @@ describe('ShareContentGenerator', () => {  let shareContentGenerator: ShareConte
         }');'
         test('テンプレートの安全性チェックが動作する', () => { }
 
-            expect(shareContentGenerator.validateTemplate('Hello {name}).toBe(true);'
+            expect(shareContentGenerator.validateTemplate('Hello {name}.toBe(true);'
             expect(shareContentGenerator.validateTemplate('<script>alert("xss"")</script>')).toBe(false);"
             expect(shareContentGenerator.validateTemplate('javascript: alert("xss"")).toBe(false,'
             expect(shareContentGenerator.validateTemplate('<iframe, src="evil.com"></iframe>).toBe(false);'}');'
@@ -333,7 +332,7 @@ describe('ShareContentGenerator', () => {  let shareContentGenerator: ShareConte
         test('統計がリセットされる', () => {  shareContentGenerator.stats.generated = 10,
             shareContentGenerator.stats.errors = 2,
             
-            shareContentGenerator.resetStats(),
+            shareContentGenerator.resetStats();
             expect(shareContentGenerator.stats.generated).toBe(0) }
 
             expect(shareContentGenerator.stats.errors).toBe(0);' }'
@@ -347,8 +346,8 @@ describe('ShareContentGenerator', () => {  let shareContentGenerator: ShareConte
             const languages = ['ja', 'en', 'zh-CN', 'zh-TW', 'ko']; }
             const scoreData: ShareData = { score: 1000 }
 
-            languages.forEach(lang => {  ),
-                mockLocalizationManager.getCurrentLanguage.mockReturnValue(lang),
+            languages.forEach(lang => {  );
+                mockLocalizationManager.getCurrentLanguage.mockReturnValue(lang);
                 const result = shareContentGenerator.generateScoreMessage(scoreData, 'twitter),'
                 expect(result.language).toBe(lang) }
 
@@ -373,12 +372,12 @@ describe('ShareContentGenerator', () => {  let shareContentGenerator: ShareConte
     }''
     describe('デバッグ機能', () => {  ''
         test('デバッグ情報が取得される', () => {'
-            const debugInfo = shareContentGenerator.getDebugInfo(),
+            const debugInfo = shareContentGenerator.getDebugInfo();
             expect(debugInfo).toHaveProperty('templates',
             expect(debugInfo).toHaveProperty('platforms',
             expect(debugInfo).toHaveProperty('currentLanguage',
             expect(debugInfo).toHaveProperty('stats' }'
             expect(debugInfo.localizationManager).toBe(true); }
-        });
+        };
 
     }'}');

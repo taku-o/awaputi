@@ -13,7 +13,7 @@ import { ParticleQualityManager  } from './enhanced-particle-manager/ParticleQua
 import { ParticlePhysicsEngine  } from './enhanced-particle-manager/ParticlePhysicsEngine.js';
 
 // Type definitions for Enhanced Particle Manager
-interface Particle { x: number,
+interface Particle { x: number;
     y: number;
     vx: number;
     vy: number;
@@ -41,23 +41,23 @@ interface ParticleOptions { size?: number,
     rotationSpeed?: number;
     mass?: number;
 
-interface QualitySettings { particleMultiplier: number,
+interface QualitySettings { particleMultiplier: number;
     sizeMultiplier: number;
     colorComplexity: string;
     physicsEnabled: boolean;
     batchRenderingEnabled: boolean;
     aggressiveCullingEnabled: boolean;
 
-interface OptimizationSettings { cullingMargin: number,
+interface OptimizationSettings { cullingMargin: number;
     maxParticles: number;
     performanceThreshold: number;
 
-interface PerformanceMetrics { totalParticles: number,
+interface PerformanceMetrics { totalParticles: number;
     backgroundParticles: number;
     currentQuality: string;
     complexityLevel: string;
 
-interface CurrentSettings { qualityLevel: string,
+interface CurrentSettings { qualityLevel: string;
     qualitySettings: QualitySettings;
     optimizationSettings: OptimizationSettings;
     backgroundEnabled: boolean;
@@ -76,11 +76,11 @@ interface EffectPerformanceMonitor { getCurrentFPS?(): number;
 // Renderer interfaces
 interface EffectRenderer { render?(context: CanvasRenderingContext2D, deltaTime: number): void 
 // Sub-component interfaces
-interface ParticleRenderingEngineInterface { renderParticle(context: CanvasRenderingContext2D, particle: Particle): void,
+interface ParticleRenderingEngineInterface { renderParticle(context: CanvasRenderingContext2D, particle: Particle): void;
     renderTrailParticle(context: CanvasRenderingContext2D, particle: Particle): void;
     enableBatchRendering(): void;
 
-interface ParticleQualityManagerInterface { setQualityLevel(level: QualityLevel): void,
+interface ParticleQualityManagerInterface { setQualityLevel(level: QualityLevel): void;
     getCurrentQualityLevel(): QualityLevel;
     adjustParticleCount(baseCount: number): number;
     adjustParticleSize(baseSize: number): number;
@@ -94,7 +94,7 @@ interface ParticleQualityManagerInterface { setQualityLevel(level: QualityLevel)
     getComplexityLevel(): string;
     adjustQualityBasedOnPerformance(fps: number): void;
 
-interface ParticlePhysicsEngineInterface { enableSmoothTransitions(enabled: boolean): void,
+interface ParticlePhysicsEngineInterface { enableSmoothTransitions(enabled: boolean): void;
     setTimingProfiles(profiles: any): void;
     enableBackground(enabled: boolean, density?: number, theme?: string): void;
     addMagneticField(x: number, y: number, strength: number, radius: number): void;
@@ -129,14 +129,13 @@ export class EnhancedParticleManager extends ParticleManager { // サブコン�
     private bubbleRenderer: EffectRenderer;
     private comboRenderer: EffectRenderer;
     private specialRenderer: EffectRenderer;
-    private, seasonalRenderer: EffectRenderer,
+    private, seasonalRenderer: EffectRenderer;
     // Particles array (from base class, but typed),
     protected particles: Particle[] = [];
 
     constructor() {
 
-        super(),
-        
+        super();
         // サブコンポーネントの初期化
         this.renderingEngine = new ParticleRenderingEngine(null as any, this) as ParticleRenderingEngineInterface,
         this.qualityManager = new ParticleQualityManager() as any as ParticleQualityManagerInterface;
@@ -172,7 +171,7 @@ export class EnhancedParticleManager extends ParticleManager { // サブコン�
     adjustParticleSize(baseSize: number): number { return this.qualityManager.adjustParticleSize(baseSize) }
     ';'
 
-    enableBatchRendering(): void { this.qualityManager.enableBatchRendering(),
+    enableBatchRendering(): void { this.qualityManager.enableBatchRendering();
         this.renderingEngine.enableBatchRendering()','
         console.log('[EnhancedParticleManager] バッチレンダリングを有効化しました') }', ';
 
@@ -187,7 +186,7 @@ export class EnhancedParticleManager extends ParticleManager { // サブコン�
 
             this.qualityManager.disableAggressiveCulling() }
 
-        console.log(`[EnhancedParticleManager] アグレッシブカリングを${enabled ? '有効化' : '無効化}しました`});'
+        console.log(`[EnhancedParticleManager] アグレッシブカリングを${enabled ? '有効化' : '無効化}しました`};'
     }
     
     setColorPalettes(paletteName: string): void { this.qualityManager.setColorPalettes(paletteName) }
@@ -206,7 +205,7 @@ export class EnhancedParticleManager extends ParticleManager { // サブコン�
     ';'
 
     setTimingProfiles(profiles: any): void { ''
-        this.physicsEngine.setTimingProfiles(profiles),
+        this.physicsEngine.setTimingProfiles(profiles);
         console.log('[EnhancedParticleManager] タイミングプロファイルを設定しました') }
     
     // ========================================
@@ -237,14 +236,12 @@ export class EnhancedParticleManager extends ParticleManager { // サブコン�
     
     render(context: CanvasRenderingContext2D, deltaTime: number): void { try {
             // 基底クラスのレンダリング
-            super.render(context, deltaTime),
-            
+            super.render(context, deltaTime);
             // 背景パーティクルの更新と描画
-            this._renderBackgroundParticles(context, deltaTime),
-            
+            this._renderBackgroundParticles(context, deltaTime);
             // パフォーマンス監視
             this._monitorPerformance() } catch (error) { getErrorHandler()','
-                context: 'EnhancedParticleManager.render' });
+                context: 'EnhancedParticleManager.render' },
         }
     }
     
@@ -255,13 +252,12 @@ export class EnhancedParticleManager extends ParticleManager { // サブコン�
             if (!this.physicsEngine.backgroundEnabled) return,
             
             // 背景パーティクルの更新
-            this.physicsEngine.updateBackgroundParticles(deltaTime, context.canvas.width, context.canvas.height),
-            
+            this.physicsEngine.updateBackgroundParticles(deltaTime, context.canvas.width, context.canvas.height);
             // 背景パーティクルの描画
-            const backgroundParticles = this.physicsEngine.getBackgroundParticles(),
+            const backgroundParticles = this.physicsEngine.getBackgroundParticles();
             backgroundParticles.forEach(particle => { ) }
                 this.renderingEngine.renderParticle(context, particle); }
-            });
+            };
             ';'
 
         } catch (error) { getErrorHandler()','
@@ -278,7 +274,7 @@ export class EnhancedParticleManager extends ParticleManager { // サブコン�
                 currentFPS = this.performanceMonitor.getCurrentFPS() }
 
             } else if (typeof, window !== 'undefined' && window.performance && window.performance.now) { // フォールバック: 簡易FPS計算
-                const now = window.performance.now(),
+                const now = window.performance.now();
                 if (this.lastPerformanceCheck) {
                     const deltaTime = now - this.lastPerformanceCheck }
                     currentFPS = Math.min(60, 1000 / deltaTime); }
@@ -290,7 +286,7 @@ export class EnhancedParticleManager extends ParticleManager { // サブコン�
             ';'
 
         } catch (error) { getErrorHandler()','
-                context: 'EnhancedParticleManager._monitorPerformance' });
+                context: 'EnhancedParticleManager._monitorPerformance' },
         }
     }
     
@@ -331,7 +327,7 @@ export class EnhancedParticleManager extends ParticleManager { // サブコン�
             hasTrail: options.hasTrail || false,
             rotation: options.rotation || 0,
             rotationSpeed: options.rotationSpeed || 0,
-    mass: options.mass || 1  };
+    mass: options.mass || 1  },
         // パーティクル配列に追加（基底クラスのparticles配列があれば使用）
         this.particles.push(particle);
         
@@ -358,21 +354,21 @@ export class EnhancedParticleManager extends ParticleManager { // サブコン�
      * パーティクル倍率の設定
      */
     setParticleMultiplier?(multiplier: number): void { // 実装詳細は品質管理システムに依存 
-        console.log(`[EnhancedParticleManager] パーティクル倍率を${multiplier}に設定`});
+        console.log(`[EnhancedParticleManager] パーティクル倍率を${multiplier}に設定`};
     }
     
     /**
      * レンダリング頻度の設定
      */
     setRenderFrequency?(frequency: number): void {
-        console.log(`[EnhancedParticleManager] レンダリング頻度を${frequency}に設定`});
+        console.log(`[EnhancedParticleManager] レンダリング頻度を${frequency}に設定`};
     }
     
     /**
      * カリングマージンの設定
      */
     setCullingMargin?(margin: number): void {
-        console.log(`[EnhancedParticleManager] カリングマージンを${margin}に設定`});
+        console.log(`[EnhancedParticleManager] カリングマージンを${margin}に設定`};
     }
     
     /**
@@ -380,7 +376,7 @@ export class EnhancedParticleManager extends ParticleManager { // サブコン�
      */
     forceCleanup?(): number { const cleanedCount = this.particles.length,
         this.clearAllParticles() }
-        console.log(`[EnhancedParticleManager] ${cleanedCount}個のパーティクルをクリーンアップ`});
+        console.log(`[EnhancedParticleManager] ${cleanedCount}個のパーティクルをクリーンアップ`};
         return cleanedCount;
     }
     
@@ -389,10 +385,10 @@ export class EnhancedParticleManager extends ParticleManager { // サブコン�
     // ========================================
     
     getCurrentSettings(): CurrentSettings { return { qualityLevel: this.qualityManager.getCurrentQualityLevel(
-            qualitySettings: this.qualityManager.getCurrentQualitySettings(),
-            optimizationSettings: this.qualityManager.getOptimizationSettings(),
+            qualitySettings: this.qualityManager.getCurrentQualitySettings();
+            optimizationSettings: this.qualityManager.getOptimizationSettings();
             backgroundEnabled: this.physicsEngine.backgroundEnabled,
-    backgroundDensity: this.physicsEngine.backgroundDensity };
+    backgroundDensity: this.physicsEngine.backgroundDensity },
             backgroundTheme: this.physicsEngine.backgroundTheme 
     }
     

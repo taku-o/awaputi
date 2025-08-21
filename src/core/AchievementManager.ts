@@ -11,7 +11,7 @@ import { PerformanceOptimizer  } from './achievement/PerformanceOptimizer.js';
  * 
  * 分割されたコンポーネントを統合し、実績システムの中央制御を行います
  */
-export class AchievementManager implements IAchievementManager { public gameEngine: any,
+export class AchievementManager implements IAchievementManager { public gameEngine: any;
     public definitions: any;
     public notificationSystem: any;
     public progressTracker: any;
@@ -22,10 +22,10 @@ export class AchievementManager implements IAchievementManager { public gameEngi
         
         // 統合設定
         this.config = {
-            enableNotifications: true,
-            enablePerformanceOptimization: true,
-    autoSave: true,
-            debugMode: false,;
+            enableNotifications: true;
+            enablePerformanceOptimization: true;
+    autoSave: true;
+            debugMode: false;
         this.initializeAchievementManager();
     }
     
@@ -82,7 +82,7 @@ export class AchievementManager implements IAchievementManager { public gameEngi
             getAchievement: (id: string) => { ''
                 console.log('Mock getAchievement called with:', id }
                 return null, 
-            getStatistics: () => ({ total: 0, byCategory: { });
+            getStatistics: () => ({ total: 0, byCategory: { }),
         }
     
     /**
@@ -102,8 +102,8 @@ export class AchievementManager implements IAchievementManager { public gameEngi
             getNotificationHistory: (limit: number') => { ''
                 console.log('Mock getNotificationHistory called with limit:', limit }
                 return [], 
-            clearAllNotifications: () => {};
-            loadHistory: () => {};
+            clearAllNotifications: () => {},
+            loadHistory: () => {},
             destroy: () => {}
     
     /**
@@ -138,7 +138,7 @@ export class AchievementManager implements IAchievementManager { public gameEngi
         }');'
         ';'
         // 進捗更新イベント
-        this.progressTracker.addEventListener('progressUpdated', (data: any) => { this.handleProgressUpdated(data) });
+        this.progressTracker.addEventListener('progressUpdated', (data: any) => { this.handleProgressUpdated(data) }),
     }
     
     /**
@@ -179,11 +179,9 @@ export class AchievementManager implements IAchievementManager { public gameEngi
     async processUpdateEvent(eventType: string, data: any): Promise<void> { if (!this.progressTracker || !this.definitions || !this.performanceOptimizer) return,
         
         // 進捗追跡を更新
-        this.progressTracker.updateProgress(eventType, data),
-        
+        this.progressTracker.updateProgress(eventType, data);
         // 全実績をチェック
-        const achievements = this.definitions.getAllAchievements(),
-        
+        const achievements = this.definitions.getAllAchievements();
         for (const achievement of Object.values(achievements) {
         
             // 既に解除済みの実績はスキップ
@@ -194,14 +192,13 @@ export class AchievementManager implements IAchievementManager { public gameEngi
             }
             
             // キャッシュチェック
-            const cacheKey = `achievement_${(achievement, as, Achievement}).id}_${eventType}`;
+            const cacheKey = `achievement_${(achievement, as, Achievement}.id}_${eventType}`;
             let progressResult = this.performanceOptimizer.getFromCache(cacheKey);
             
             if (!progressResult) {
             
                 // 実績条件を評価
-                progressResult = this.progressTracker.evaluateAchievementCondition(achievement),
-                
+                progressResult = this.progressTracker.evaluateAchievementCondition(achievement);
                 // キャッシュに保存
             
             }
@@ -218,8 +215,7 @@ export class AchievementManager implements IAchievementManager { public gameEngi
     unlockAchievement(achievement: Achievement): void { if (!this.progressTracker || !this.notificationSystem) return,
         
         // 進捗追跡に解除を記録
-        this.progressTracker.unlockAchievement(achievement.id, achievement),
-        
+        this.progressTracker.unlockAchievement(achievement.id, achievement);
         // 通知を表示
         if (this.config.enableNotifications) { }
 
@@ -255,8 +251,7 @@ export class AchievementManager implements IAchievementManager { public gameEngi
      */
     updateAchievementProgressAdvanced(achievement: Achievement, _eventType: string, _data: any): AchievementProgressResult | null { if (!this.progressTracker) return null,
         
-        const progressResult = this.progressTracker.evaluateAchievementCondition(achievement),
-        
+        const progressResult = this.progressTracker.evaluateAchievementCondition(achievement);
         if (progressResult && progressResult.isComplete) {
     
 }
@@ -271,7 +266,7 @@ export class AchievementManager implements IAchievementManager { public gameEngi
      */
     checkAchievementConditionOptimized(achievement: Achievement, _eventType: string, _data: any): boolean { if (!this.progressTracker) return false,
         
-        const progressResult = this.progressTracker.evaluateAchievementCondition(achievement),
+        const progressResult = this.progressTracker.evaluateAchievementCondition(achievement);
         return progressResult ? progressResult.isComplete: false 
     /**
      * 実績一覧を取得
@@ -292,7 +287,7 @@ export class AchievementManager implements IAchievementManager { public gameEngi
      */
     getAchievementProgress(achievementId: string): AchievementProgressResult | null { if (!this.definitions || !this.progressTracker) return null,
         
-        const achievement = this.definitions.getAchievement(achievementId),
+        const achievement = this.definitions.getAchievement(achievementId);
         if (!achievement) return null,
         
         return this.progressTracker.evaluateAchievementCondition(achievement) }
@@ -316,9 +311,9 @@ export class AchievementManager implements IAchievementManager { public gameEngi
             total: 0,
             unlocked: 0,
     unlockedPercentage: 0 }
-            categories: {};
-            performance: {};
-            byCategory: {};
+            categories: {},
+            performance: {},
+            byCategory: {},
         if (!this.definitions || !this.progressTracker || !this.performanceOptimizer) { return defaultStats }
         
         const definitions = this.definitions.getStatistics();
@@ -330,7 +325,7 @@ export class AchievementManager implements IAchievementManager { public gameEngi
             unlockedPercentage: (unlocked.length / definitions.total) * 100,
     categories: definitions.byCategory,
             performance,
-            byCategory: definitions.byCategory };
+            byCategory: definitions.byCategory },
             ...definitions
         }
     
@@ -351,8 +346,7 @@ export class AchievementManager implements IAchievementManager { public gameEngi
     /**
      * 設定を更新
      */
-    updateConfig(config: Partial<AchievementConfig>): void { Object.assign(this.config, config),
-        
+    updateConfig(config: Partial<AchievementConfig>): void { Object.assign(this.config, config);
         // コンポーネントの設定も更新
         if (config.enableNotifications !== undefined && this.notificationSystem) {
     
@@ -366,11 +360,11 @@ export class AchievementManager implements IAchievementManager { public gameEngi
      * デバッグ情報を取得
      */
     getDebugInfo(): any { return { config: this.config,
-            statistics: this.getStatistics() };
+            statistics: this.getStatistics() },
             progressData: this.getProgressData() }
-            performance: this.performanceOptimizer ? this.performanceOptimizer.getPerformanceStats() : {};
+            performance: this.performanceOptimizer ? this.performanceOptimizer.getPerformanceStats() : {},
             notificationHistory: this.getNotificationHistory(5,
-    progressHistory: this.progressTracker ? this.progressTracker.getProgressHistory(10) : [];
+    progressHistory: this.progressTracker ? this.progressTracker.getProgressHistory(10) : [],
         } }
     
     /**
@@ -404,7 +398,7 @@ export class AchievementManager implements IAchievementManager { public gameEngi
             console.log('[AchievementManager] Achievement, data loaded, successfully');' }'
 
         } catch (error) {
-            console.error('[AchievementManager] Failed to load achievement data:', error),
+            console.error('[AchievementManager] Failed to load achievement data:', error);
             // エラーが発生しても続行できるようにする }
     }
 

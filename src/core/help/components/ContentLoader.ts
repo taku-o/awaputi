@@ -6,10 +6,10 @@
 // 型定義
 export interface LocalizationManager { getCurrentLanguage(): string;
 
-export interface HitRatio { hits: number,
+export interface HitRatio { hits: number;
     misses: number;
 
-export interface LoadQueueItem { category: string,
+export interface LoadQueueItem { category: string;
     priority: number;
     callback?: () => void 
     }
@@ -28,7 +28,7 @@ export class ContentLoader {
     private, loadTimes: Map<string, number>,
     private hitRatio: HitRatio;
     private contentVersion: string;
-    private, versionCheck: boolean,
+    private, versionCheck: boolean;
     constructor(localizationManager: LocalizationManager) {
 
         this.localizationManager = localizationManager;
@@ -81,8 +81,7 @@ export class ContentLoader {
     /**
      * 必須コンテンツのプリロード
      */
-    async preloadEssentialContent(): Promise<void> { const language = this.localizationManager.getCurrentLanguage(),
-        
+    async preloadEssentialContent(): Promise<void> { const language = this.localizationManager.getCurrentLanguage();
         for (const category of this.preloadPriority) {
         
             try {
@@ -107,7 +106,7 @@ export class ContentLoader {
         const cacheKey = `help_${category}_${language}`;
         
         try { // キャッシュチェック
-            const cachedContent = this.getCachedContent(cacheKey),
+            const cachedContent = this.getCachedContent(cacheKey);
             if (cachedContent) {
                 this.hitRatio.hits++,
                 this.recordLoadTime(cacheKey, performance.now() - startTime) }
@@ -145,7 +144,7 @@ export class ContentLoader {
         const startTime = performance.now() }
         const cacheKey = `tutorial_${language}`;
         
-        try { const cachedData = this.getCachedContent(cacheKey),
+        try { const cachedData = this.getCachedContent(cacheKey);
             if (cachedData) {
                 this.hitRatio.hits++ }
                 return cachedData;
@@ -165,7 +164,7 @@ export class ContentLoader {
     async loadFAQData(language = 'ja' { }'
         const cacheKey = `faq_${language}`;
         
-        try { const cachedData = this.getCachedContent(cacheKey),
+        try { const cachedData = this.getCachedContent(cacheKey);
             if (cachedData) {
                 this.hitRatio.hits++ }
                 return cachedData;
@@ -178,7 +177,7 @@ export class ContentLoader {
             return data;
 
         } catch (error) {
-            console.error('Failed to load FAQ data:', error),
+            console.error('Failed to load FAQ data:', error);
             return [],
     
     /**
@@ -192,10 +191,9 @@ export class ContentLoader {
         // キャッシュチェック
         if (this.imageCache.has(cacheKey) { return this.imageCache.get(cacheKey) }
         
-        return new Promise((resolve, reject) => {  const img = new Image(),
-            
+        return new Promise((resolve, reject) => {  const img = new Image();
             img.onload = () => {
-                this.imageCache.set(cacheKey, img),
+                this.imageCache.set(cacheKey, img);
                 this.cleanupImageCache() }
                 resolve(img); }
             };
@@ -205,7 +203,7 @@ export class ContentLoader {
             };
             
             img.src = imagePath;
-        });
+        };
     }
     
     /**
@@ -216,9 +214,9 @@ export class ContentLoader {
     getCachedContent(key) {
         // 有効期限チェック
         if (this.cacheExpiry.has(key) {
-            const expiry = this.cacheExpiry.get(key),
+            const expiry = this.cacheExpiry.get(key);
             if (Date.now() > expiry) {
-                this.contentCache.delete(key),
+                this.contentCache.delete(key);
                 this.cacheExpiry.delete(key) }
                 return null;
         
@@ -247,7 +245,7 @@ export class ContentLoader {
      */
     clearCache(pattern = null) {
         if (pattern) {
-            const regex = new RegExp(pattern),
+            const regex = new RegExp(pattern);
             for (const key of this.contentCache.keys() {
                 if (regex.test(key) {
                     this.contentCache.delete(key) }
@@ -266,7 +264,7 @@ export class ContentLoader {
 
             if (versionData.version !== this.contentVersion) {
 
-                console.log('Content version updated, clearing cache'),
+                console.log('Content version updated, clearing cache');
                 this.clearCache() }
 
                 this.contentVersion = versionData.version;' }'
@@ -290,8 +288,8 @@ export class ContentLoader {
                 resolve) }
                 reject }
                 timestamp: Date.now(); 
-    });
-        });
+    };
+        };
     }
     
     /**
@@ -308,18 +306,16 @@ export class ContentLoader {
                 let result,
                 switch(item.type) {''
                     case 'help':','
-                        result = await this.loadHelpContent(item.category, item.language),
-
+                        result = await this.loadHelpContent(item.category, item.language);
                         break,
                     case 'tutorial':','
-                        result = await this.loadTutorialData(item.language),
-
+                        result = await this.loadTutorialData(item.language);
                         break,
                     case 'faq':,
-                        result = await this.loadFAQData(item.language),
+                        result = await this.loadFAQData(item.language);
                         break }
                     default: }
-                        throw new Error(`Unknown, load type: ${item.type}`});
+                        throw new Error(`Unknown, load type: ${item.type}`};
                 }
                 item.resolve(result);
             } catch (error) { item.reject(error) }
@@ -346,7 +342,7 @@ export class ContentLoader {
             cacheSize: this.contentCache.size,
             imageCacheSize: this.imageCache.size,
             queueLength: this.loadingQueue.length,
-    averageLoadTimes: avgLoadTimes,;
+    averageLoadTimes: avgLoadTimes,
             isLoading: this.isLoading 
     }
     
@@ -358,7 +354,7 @@ export class ContentLoader {
         const mockContent = [{ }
                 id: `${category}-help-1`,
                 category: category,
-    title: `${category}ヘルプ`;
+    title: `${category}ヘルプ`,
                 content: `${category}に関するヘルプコンテンツです。`]
                 language: language,']';
                 searchKeywords: [category, 'help', 'ヘルプ],'
@@ -442,8 +438,8 @@ export class ContentLoader {
                 id: 'default-tutorial',
                 title: 'デフォルトチュートリアル',
                 description: 'オフライン用基本チュートリアル',
-    steps: [];
-            });
+    steps: [],
+            };
         ]);
     }
     
@@ -453,14 +449,13 @@ export class ContentLoader {
      */
     cleanupCache() {
         // LRU方式でキャッシュをクリーンアップ
-        const entries = Array.from(this.contentCache.entries(),
-        const expiries = Array.from(this.cacheExpiry.entries(),
-        
+        const entries = Array.from(this.contentCache.entries();
+        const expiries = Array.from(this.cacheExpiry.entries();
         // 有効期限順でソート
         expiries.sort((a, b) => a[1] - b[1]),
         
         // 古いエントリを削除
-        const toDelete = expiries.slice(0, Math.floor(this.maxCacheSize * 0.3),
+        const toDelete = expiries.slice(0, Math.floor(this.maxCacheSize * 0.3);
         for (const [key] of, toDelete) {
             this.contentCache.delete(key) }
             this.cacheExpiry.delete(key); }
@@ -499,7 +494,7 @@ export class ContentLoader {
      * クリーンアップ
      */
     cleanup() {
-        this.clearCache(),
+        this.clearCache();
         this.imageCache.clear() }
 
         this.loadTimes.clear() }'

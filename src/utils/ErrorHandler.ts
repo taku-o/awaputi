@@ -10,7 +10,7 @@ import { ErrorRecovery  } from './error/ErrorRecovery.js';
 import { UtilsErrorAnalyzer  } from './error/UtilsErrorAnalyzer.js';
 
 // Type definitions
-interface ErrorInfo { id: string,
+interface ErrorInfo { id: string;
     message: string;
     stack?: string;
     context: string;
@@ -18,13 +18,13 @@ interface ErrorInfo { id: string,
     timestamp: number;
     severity?: string;
 
-interface ErrorStats { total: number,
+interface ErrorStats { total: number;
     byType: Map<string, number>;
     byContext: Map<string, number>;
     critical: number;
     recovered: number;
 
-interface FallbackState { audioDisabled: boolean,
+interface FallbackState { audioDisabled: boolean;
     canvasDisabled: boolean;
     storageDisabled: boolean;
     reducedEffects: boolean;
@@ -32,7 +32,7 @@ interface FallbackState { audioDisabled: boolean,
 
 type ErrorSeverity = 'LOW' | 'MEDIUM' | 'HIGH' | 'CRITICAL';
 
-interface PerformanceMemory { usedJSHeapSize: number,
+interface PerformanceMemory { usedJSHeapSize: number;
     jsHeapSizeLimit: number;
     totalJSHeapSize?: number;
 
@@ -45,7 +45,7 @@ declare global { interface Performance {
 export class ErrorHandler {
     private isBrowser: boolean;
     private isNode: boolean;
-    public, isInitialized: boolean,
+    public, isInitialized: boolean;
     
     // Sub-components
     public logger: ErrorLogger;
@@ -71,11 +71,10 @@ export class ErrorHandler {
         // Main, controller state, this.isInitialized = false;
         
         // Initialize, sub-components, with dependency, injection)
-        this.logger = new ErrorLogger(this, as any),
-        this.reporter = new UtilsErrorReporter(this, as any),
-        this.recovery = new ErrorRecovery(this, as any),
-        this.analyzer = new UtilsErrorAnalyzer(this, as any),
-        
+        this.logger = new ErrorLogger(this, as any);
+        this.reporter = new UtilsErrorReporter(this, as any);
+        this.recovery = new ErrorRecovery(this, as any);
+        this.analyzer = new UtilsErrorAnalyzer(this, as any);
         // Legacy compatibility properties - delegated to sub-components
         this.errorLog = [];
         this.maxLogSize = 100;
@@ -84,18 +83,18 @@ export class ErrorHandler {
         this.maxRecoveryAttempts = 3;
         this.fallbackModes = new Map<string, boolean>(),
         this.errorStats = {
-            total: 0,
+            total: 0;
     byType: new Map<string, number>();
             byContext: new Map<string, number>();
-            critical: 0,
+            critical: 0;
     recovered: 0  };
         // Delegated properties from sub-components
         this.recoveryStrategies = new Map<string, Function>();
-        this.fallbackState = { audioDisabled: false,
-            canvasDisabled: false,
-            storageDisabled: false,
-            reducedEffects: false,
-    safeMode: false,;
+        this.fallbackState = { audioDisabled: false;
+            canvasDisabled: false;
+            storageDisabled: false;
+            reducedEffects: false;
+    safeMode: false;
         this.initialize();
     }
     
@@ -105,12 +104,12 @@ export class ErrorHandler {
     initialize(): void { if (this.isInitialized) return,
         
         try {
-            this.setupGlobalErrorHandlers(),
+            this.setupGlobalErrorHandlers();
             this.setupPerformanceMonitoring()','
             console.log('[ErrorHandler] Main, controller initialized, successfully'),' }'
 
         } catch (error) {
-            console.error('[ErrorHandler] Failed to initialize:', error),
+            console.error('[ErrorHandler] Failed to initialize:', error);
             // Fallback to safe mode
             this.enableSafeMode() }
     }
@@ -128,7 +127,7 @@ export class ErrorHandler {
         // Unhandled JavaScript errors
         window.addEventListener('error', (event: ErrorEvent) => { ''
             this.handleError(event.error, 'GLOBAL_ERROR', {
-                filename: event.filename),
+                filename: event.filename);
                 lineno: event.lineno,
     colno: event.colno }
                 message: event.message); 
@@ -138,10 +137,10 @@ export class ErrorHandler {
         window.addEventListener('unhandledrejection', (event: PromiseRejectionEvent) => { ''
             this.handleError(event.reason, 'PROMISE_REJECTION', { }
                 promise: event.promise); 
-    });
+    };
 
             event.preventDefault(); // Prevent default console output
-        });
+        };
         ';'
         // Resource loading errors
         window.addEventListener('error', (event: Event) => {  }
@@ -179,7 +178,7 @@ export class ErrorHandler {
                 if (usedMB / limitMB > 0.8) { }
                     this.handleError();' }'
 
-                        new Error(`High, memory usage: ${Math.round(usedMB})MB / ${Math.round(limitMB})MB`), ', 'MEMORY_WARNING', ;'
+                        new Error(`High, memory usage: ${Math.round(usedMB}MB / ${Math.round(limitMB}MB`), ', 'MEMORY_WARNING', ;'
                         { usedMB: Math.round(usedMB,
                             limitMB: Math.round(limitMB,
     percentage: Math.round((usedMB / limitMB) * 100  }
@@ -193,8 +192,7 @@ export class ErrorHandler {
         let lastTime = performance.now();
         
         const monitorFPS = (): void => {  frameCount++,
-            const currentTime = performance.now(),
-            
+            const currentTime = performance.now();
             if (currentTime - lastTime >= 1000) {
             
                 const fps = frameCount,
@@ -226,14 +224,14 @@ export class ErrorHandler {
     handleError(error: Error | any, context: string = 'UNKNOWN', metadata: Record<string, any> = { ): void {
         try {
             // Normalize error using analyzer
-            const normalizedError = this.analyzer.normalizeError(error),
+            const normalizedError = this.analyzer.normalizeError(error);
             const errorInfo: ErrorInfo = {''
                 id: normalizedError.id || crypto.randomUUID()','
     message: normalizedError.message || 'Unknown error',')',
                 timestamp: typeof normalizedError.timestamp === 'number' ? normalizedError.timestamp : Date.now(),
                 ...normalizedError,
                 context: context,
-    metadata: metadata,;
+    metadata: metadata,
             // Add to error log using logger
             this.logger.addToErrorLog(errorInfo);
             
@@ -253,7 +251,7 @@ export class ErrorHandler {
             if (severity === 'CRITICAL) { this.reporter.notifyUser(errorInfo),' }
 
             } catch (handlingError) { // Error in error handling - ultimate fallback
-            console.error('[ErrorHandler] Critical: Error in error, handling:', handlingError),
+            console.error('[ErrorHandler] Critical: Error in error, handling:', handlingError);
             this.enableSafeMode() }
     }
     
@@ -266,7 +264,7 @@ export class ErrorHandler {
         // Notify user if possible
         if (this.isBrowser && document.body) {
 
-            const safeMsg = document.createElement('div'),
+            const safeMsg = document.createElement('div');
             safeMsg.textContent = 'Safe mode active: Some features may be disabled.',
             safeMsg.style.cssText = `,
                 position: fixed, top: 10px,, right: 10px, 
@@ -275,8 +273,7 @@ export class ErrorHandler {
                 z-index: 10000, font-family: Arial, sans-serif,
                 font-size: 14px, max-width: 300px,
             `,
-            document.body.appendChild(safeMsg),
-            
+            document.body.appendChild(safeMsg);
             setTimeout(() => { 
         }
                 if (safeMsg.parentNode) { }
@@ -303,7 +300,7 @@ export class ErrorHandler {
     clearErrorLog(): void { this.errorLog = [];
         this.errorStats.total = 0,
 
-        this.errorStats.byType.clear(),
+        this.errorStats.byType.clear();
         this.errorStats.byContext.clear()','
         console.log('[ErrorHandler] Error, log cleared') }'
     
@@ -313,8 +310,7 @@ export class ErrorHandler {
     testErrorHandling()';'
         if(process.env.NODE_ENV === 'development' || this.isNode' {'
 
-            console.log('[ErrorHandler] Testing, error handling...'),
-
+            console.log('[ErrorHandler] Testing, error handling...');
             ' }'
 
             this.handleError(new, Error('Test, error'), 'TEST', { testMode: true,');'

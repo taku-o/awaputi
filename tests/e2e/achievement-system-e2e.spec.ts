@@ -11,16 +11,15 @@ test.describe('Achievement System E2E Tests', () => {
         await page.goto('http: //localhost:8000',
         
         // ゲームが読み込まれるまで待機
-        await page.waitForLoadState('networkidle'),
-        
+        await page.waitForLoadState('networkidle');
         // キャンバスが表示されるまで待機
         await page.waitForSelector('#gameCanvas') }');'
 
     test('初回実績解除フロー', async ({ page )') => {'
         // ユーザー登録フォームがある場合は入力
-        const userNameInput = page.locator('input[placeholder*="名前"]'),
+        const userNameInput = page.locator('input[placeholder*="名前"]');
         if (await userNameInput.isVisible()') {'
-            await userNameInput.fill('テストユーザー'),
+            await userNameInput.fill('テストユーザー');
             await page.click('button: has-text("開始"")' }"
 
         // ゲーム開始
@@ -31,7 +30,7 @@ test.describe('Achievement System E2E Tests', () => {
         await expect(gameCanvas).toBeVisible();
 
         // バブルをクリックして実績解除を試行
-        await gameCanvas.click({ position: { x: 200, y: 200 } );
+        await gameCanvas.click({ position: { x: 200, y: 200 } ),
         await page.waitForTimeout(100');'
         
         // 初回ポップ実績の通知が表示されることを確認
@@ -46,9 +45,9 @@ test.describe('Achievement System E2E Tests', () => {
 
     test('スコア実績解除フロー', async ({ page )') => {'
         // ゲーム開始まで
-        const userNameInput = page.locator('input[placeholder*="名前"]'),
+        const userNameInput = page.locator('input[placeholder*="名前"]');
         if (await userNameInput.isVisible()') {'
-            await userNameInput.fill('スコアテスター'),
+            await userNameInput.fill('スコアテスター');
             await page.click('button: has-text("開始"")' }"
 
         await page.click('button: has-text("ゲーム開始"")',"
@@ -75,11 +74,11 @@ test.describe('Achievement System E2E Tests', () => {
         await page.click('button: has-text("実績"")',"
         
         // 実績画面が表示されることを確認
-        const achievementScreen = page.locator('.achievement-screen'),
+        const achievementScreen = page.locator('.achievement-screen');
         await expect(achievementScreen).toBeVisible('),'
 
         // カテゴリフィルターが表示されることを確認
-        const categoryButtons = page.locator('.category-filter button'),
+        const categoryButtons = page.locator('.category-filter button');
         await expect(categoryButtons).toHaveCount(6'), // All, Score, Play, Technique, Collection, Special'
 
         // 各カテゴリをクリックしてフィルタリング動作を確認
@@ -87,13 +86,12 @@ test.describe('Achievement System E2E Tests', () => {
         
         // スコア関連実績のみが表示されることを確認
         const scoreAchievements = page.locator('.achievement-item: has-text("スコア"")',"
-        await expect(scoreAchievements.first().toBeVisible(),
-
+        await expect(scoreAchievements.first().toBeVisible();
         // 実績詳細表示の確認
         await scoreAchievements.first().click('),'
         
-        const achievementDetail = page.locator('.achievement-detail'),
-        await expect(achievementDetail).toBeVisible(),
+        const achievementDetail = page.locator('.achievement-detail');
+        await expect(achievementDetail).toBeVisible();
         await expect(achievementDetail').toContainText('解除条件'),'
         await expect(achievementDetail').toContainText('報酬') }');
 
@@ -105,7 +103,7 @@ test.describe('Achievement System E2E Tests', () => {
         await page.click('button: has-text("統計"")',"
         
         // 統計情報が表示されることを確認
-        const statsSection = page.locator('.achievement-stats'),
+        const statsSection = page.locator('.achievement-stats');
         await expect(statsSection).toBeVisible('),'
 
         // 全体統計の表示確認
@@ -121,9 +119,9 @@ test.describe('Achievement System E2E Tests', () => {
 
     test('複数実績の連続解除', async ({ page )') => {'
         // ゲーム開始
-        const userNameInput = page.locator('input[placeholder*="名前"]'),
+        const userNameInput = page.locator('input[placeholder*="名前"]');
         if (await userNameInput.isVisible()') {'
-            await userNameInput.fill('連続解除テスター'),
+            await userNameInput.fill('連続解除テスター');
             await page.click('button: has-text("開始"")' }"
 
         await page.click('button: has-text("ゲーム開始"")',"
@@ -138,7 +136,7 @@ test.describe('Achievement System E2E Tests', () => {
                     x: 150 + (i % 5) * 100, 
                     y: 150 + Math.floor(i / 5) * 80 
                 } 
-            });
+            };
             await page.waitForTimeout(100');'
         }
 
@@ -149,7 +147,7 @@ test.describe('Achievement System E2E Tests', () => {
         await expect(notifications.first().toBeVisible({ timeout: 5000 ,
         
         // 通知キューが正しく動作することを確認
-        const notificationCount = await notifications.count(),
+        const notificationCount = await notifications.count();
         expect(notificationCount).toBeGreaterThanOrEqual(1'),'
         
         // 通知が適切に管理されることを確認（最大3つまで同時表示）
@@ -167,7 +165,7 @@ test.describe('Achievement System E2E Tests', () => {
         // ゲーム開始
         const userNameInput = page.locator('input[placeholder*="名前"]');
         if (await userNameInput.isVisible()') {'
-            await userNameInput.fill('音響テスター'),
+            await userNameInput.fill('音響テスター');
             await page.click('button: has-text("開始"")' }"
 
         await page.click('button: has-text("ゲーム開始"")',"
@@ -177,10 +175,10 @@ test.describe('Achievement System E2E Tests', () => {
 
         // 音響効果の再生を監視
         let soundPlayed = false;
-        page.on('console', msg => {),
+        page.on('console', msg => {);
             if (msg.text(').includes('Achievement sound played') {'
                 soundPlayed = true }
-        });
+        };
 
         // バブルをクリックして実績解除
         await gameCanvas.click({ position: { x: 200, y: 200 } )');'
@@ -190,15 +188,15 @@ test.describe('Achievement System E2E Tests', () => {
         await expect(notification).toBeVisible({ timeout: 5000 ,
 
         // 音響効果が再生されたことを確認（コンソールログで）
-        await page.waitForTimeout(1000),
+        await page.waitForTimeout(1000);
         // 注: 実際の音響再生の検証は制限されるため、関連要素の確認で代用
     }');'
 
     test('実績データの永続化確認', async ({ page )') => {'
         // 初回セッション
-        const userNameInput = page.locator('input[placeholder*="名前"]'),
+        const userNameInput = page.locator('input[placeholder*="名前"]');
         if (await userNameInput.isVisible()') {'
-            await userNameInput.fill('永続化テスター'),
+            await userNameInput.fill('永続化テスター');
             await page.click('button: has-text("開始"")' }"
 
         await page.click('button: has-text("ゲーム開始"")',"
@@ -214,18 +212,16 @@ test.describe('Achievement System E2E Tests', () => {
         await page.click('button: has-text("メニュー"")',"
         await page.click('button: has-text("実績"")',"
         
-        const unlockedAchievement = page.locator('.achievement-item.unlocked'),
-        await expect(unlockedAchievement.first().toBeVisible(),
-
+        const unlockedAchievement = page.locator('.achievement-item.unlocked');
+        await expect(unlockedAchievement.first().toBeVisible();
         // ページをリロードして永続化を確認
         await page.reload('),'
-        await page.waitForLoadState('networkidle'),
-
+        await page.waitForLoadState('networkidle');
         // 実績画面に再度移動
         await page.click('button: has-text("実績"")',"
         
         // 解除済み実績が保持されていることを確認
-        const persistedAchievement = page.locator('.achievement-item.unlocked'),
+        const persistedAchievement = page.locator('.achievement-item.unlocked');
         await expect(persistedAchievement.first().toBeVisible() }');'
 
     test('モバイル表示での実績システム', async ({ page ) => {
@@ -235,7 +231,7 @@ test.describe('Achievement System E2E Tests', () => {
         // ゲーム開始
         const userNameInput = page.locator('input[placeholder*="名前"]');
         if (await userNameInput.isVisible()') {'
-            await userNameInput.fill('モバイルテスター'),
+            await userNameInput.fill('モバイルテスター');
             await page.click('button: has-text("開始"")' }"
 
         await page.click('button: has-text("ゲーム開始"")',"
@@ -251,18 +247,18 @@ test.describe('Achievement System E2E Tests', () => {
         await expect(notification).toBeVisible({ timeout: 5000 ,
 
         // 通知がモバイル画面に適切に収まることを確認
-        const notificationBox = await notification.boundingBox(),
+        const notificationBox = await notification.boundingBox();
         expect(notificationBox.width).toBeLessThanOrEqual(375'),'
 
         // 実績画面のモバイル表示確認
         await page.click('button: has-text("メニュー"")',"
         await page.click('button: has-text("実績"")',"
         
-        const achievementScreen = page.locator('.achievement-screen'),
+        const achievementScreen = page.locator('.achievement-screen');
         await expect(achievementScreen).toBeVisible('),'
 
         // カテゴリフィルターがモバイルで適切に表示されることを確認
-        const categoryButtons = page.locator('.category-filter button'),
+        const categoryButtons = page.locator('.category-filter button');
         await expect(categoryButtons.first().toBeVisible() }');'
 
     test('実績システムのパフォーマンス確認', async ({ page ) => {
@@ -271,7 +267,7 @@ test.describe('Achievement System E2E Tests', () => {
             window.performanceMarks = [],
             const originalMarkMethod = performance.mark,
             performance.mark = function(name {
-                window.performanceMarks.push({ name, time: Date.now() });
+                window.performanceMarks.push({ name, time: Date.now() },
                 return originalMarkMethod.call(this, name);
             };
         }');'
@@ -279,7 +275,7 @@ test.describe('Achievement System E2E Tests', () => {
         // ゲーム開始
         const userNameInput = page.locator('input[placeholder*="名前"]');
         if (await userNameInput.isVisible()') {'
-            await userNameInput.fill('パフォーマンステスター'),
+            await userNameInput.fill('パフォーマンステスター');
             await page.click('button: has-text("開始"")' }"
 
         await page.click('button: has-text("ゲーム開始"")',"
@@ -295,7 +291,7 @@ test.describe('Achievement System E2E Tests', () => {
                     x: 100 + (i % 10) * 50, 
                     y: 100 + Math.floor(i / 10) * 50 
                 } 
-            });
+            };
             // 高速クリック
             await page.waitForTimeout(20);
         }
@@ -318,23 +314,21 @@ test.describe('Achievement System E2E Tests', () => {
         await page.click('button: has-text("実績"")',"
         
         // キーボードナビゲーション確認
-        await page.keyboard.press('Tab'),
-        
+        await page.keyboard.press('Tab');
         // フォーカスが適切に移動することを確認
-        const focusedElement = page.locator(':focus'),
+        const focusedElement = page.locator(':focus');
         await expect(focusedElement).toBeVisible('),'
 
         // 実績項目がキーボードでアクセス可能であることを確認
-        await page.keyboard.press('Enter'),
-        
+        await page.keyboard.press('Enter');
         // ARIAラベルが適切に設定されていることを確認
-        const achievementItems = page.locator('[role="button"], [aria-label*="実績"]'),
+        const achievementItems = page.locator('[role="button"], [aria-label*="実績"]');
         await expect(achievementItems.first().toBeVisible('),'
 
         // スクリーンリーダー対応のテキストが存在することを確認
-        const srOnlyText = page.locator('.sr-only, [aria-hidden="false"]'),
-        const srTextCount = await srOnlyText.count(),
-        expect(srTextCount).toBeGreaterThan(0) });
+        const srOnlyText = page.locator('.sr-only, [aria-hidden="false"]');
+        const srTextCount = await srOnlyText.count();
+        expect(srTextCount).toBeGreaterThan(0) };
 }');'
 
 test.describe('Achievement System Error Handling', (') => {'
@@ -343,8 +337,7 @@ test.describe('Achievement System Error Handling', (') => {'
         await page.route('**/*', route => route.abort()'),'
         
         // ページ読み込み（エラー状態）
-        await page.goto('http://localhost:8000', { waitUntil: 'domcontentloaded' });
-        
+        await page.goto('http://localhost:8000', { waitUntil: 'domcontentloaded' },
         // オフライン状態でもゲームが動作することを確認
         // (実績システムはLocalStorageベースのため影響を受けない')'
         
@@ -366,19 +359,18 @@ test.describe('Achievement System Error Handling', (') => {'
         // ゲーム開始
         const userNameInput = page.locator('input[placeholder*="名前"]');
         if (await userNameInput.isVisible()') {'
-            await userNameInput.fill('ストレージテスター'),
+            await userNameInput.fill('ストレージテスター');
             await page.click('button: has-text("開始"")' }"
 
         await page.click('button: has-text("ゲーム開始"")',"
         
         const gameCanvas = page.locator('#gameCanvas');
-        await gameCanvas.click({ position: { x: 200, y: 200 } );
-
+        await gameCanvas.click({ position: { x: 200, y: 200 } ),
         // エラーが発生してもゲームが継続することを確認
         await expect(gameCanvas).toBeVisible(');'
         
         // エラーメッセージが適切に表示されることを確認
         const errorMessage = page.locator('.error-message, .warning-message');
         // エラーハンドリングにより graceful degradation が動作することを確認
-    });
+    };
 }');'

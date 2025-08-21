@@ -15,7 +15,7 @@
  */
 
 // 型定義
-export interface TriggerConfig { onHover: boolean,
+export interface TriggerConfig { onHover: boolean;
     onFocus: boolean;
     onError: boolean;
     onStuck: boolean;
@@ -24,18 +24,18 @@ export interface TriggerConfig { onHover: boolean,
     onInactivity: number;
     onMultipleErrors: number;
 
-export interface UserBehaviorTracking { errorCount: number,
+export interface UserBehaviorTracking { errorCount: number;
     inactivityTimer: number | null;
     lastActivity: number;
     visitCount: number;
     stuckDetection: StuckDetectionData;
     hoverTracking: HoverTrackingData;
 
-export interface StuckDetectionData { sameElementClicks: number,
+export interface StuckDetectionData { sameElementClicks: number;
     lastClickedElement: HTMLElement | null;
     timeThreshold: number;
 
-export interface HoverTrackingData { currentElement: HTMLElement | null,
+export interface HoverTrackingData { currentElement: HTMLElement | null;
     hoverStartTime: number | null;
     hoverThreshold: number;
 
@@ -53,27 +53,27 @@ export interface TriggerContext { targetElement?: HTMLElement,
     triggerSource?: TriggerSource;
     sessionContext?: SessionContext;
 
-export interface SessionContext { sessionDuration: number,
+export interface SessionContext { sessionDuration: number;
     pageViews: number;
     interactionCount: number;
     errorHistory: ErrorRecord[];
     userAgent: string;
     viewport: ViewportInfo;
 
-export interface ErrorRecord { timestamp: number,
+export interface ErrorRecord { timestamp: number;
     type: string;
     message: string;
     element?: HTMLElement;
     resolved: boolean;
 
-export interface ViewportInfo { width: number,
+export interface ViewportInfo { width: number;
     height: number;
     devicePixelRatio: number;
     orientation?: string;
 
 export interface TriggerCallback { (triggerType: TriggerType, context: TriggerContext): void;
 
-export interface EventListenerRegistry { hoverHandler?: (event: MouseEvent) => void,
+export interface EventListenerRegistry { hoverHandler?: (event: MouseEvent) => void;
     hoverLeaveHandler?: (event: MouseEvent) => void;
     focusHandler?: (event: FocusEvent) => void;
     errorHandler?: (event: ErrorEvent | PromiseRejectionEvent) => void;
@@ -83,7 +83,7 @@ export interface EventListenerRegistry { hoverHandler?: (event: MouseEvent) => v
     events?: string[],  }
 }
 
-export interface TriggerStatistics { errorCount: number,
+export interface TriggerStatistics { errorCount: number;
     visitCount: number;
     lastActivity: number;
     inactivityDuration: number;
@@ -91,35 +91,35 @@ export interface TriggerStatistics { errorCount: number,
     triggerHistory: TriggerHistoryEntry[];
     sessionStats: SessionStatistics;
 
-export interface TriggerHistoryEntry { timestamp: number,
+export interface TriggerHistoryEntry { timestamp: number;
     type: TriggerType;
     context: TriggerContext;
     resolved: boolean;
 
-export interface SessionStatistics { startTime: number,
+export interface SessionStatistics { startTime: number;
     duration: number;
     triggerCount: Record<TriggerType, number>;
     averageResponseTime: number;
     userEngagement: EngagementMetrics;
 
-export interface EngagementMetrics { mouseMovements: number,
+export interface EngagementMetrics { mouseMovements: number;
     keystrokes: number;
     clicks: number;
     scrollEvents: number;
     focusChanges: number;
 
-export interface TriggerSensitivity { hover: SensitivityLevel,
+export interface TriggerSensitivity { hover: SensitivityLevel;
     focus: SensitivityLevel;
     stuck: SensitivityLevel;
     inactivity: SensitivityLevel;
     error: SensitivityLevel;
 
-export interface AdaptiveTriggerConfig { enabled: boolean,
+export interface AdaptiveTriggerConfig { enabled: boolean;
     learningRate: number;
     adaptationThreshold: number;
     sensitivityAdjustment: TriggerSensitivity;
 
-export interface AnalyticsData { trigger_type: TriggerType,
+export interface AnalyticsData { trigger_type: TriggerType;
     context: string;
     timestamp: number;
     session_id: string;
@@ -132,13 +132,13 @@ export type TriggerSource = 'user' | 'system' | 'adaptive' | 'contextual';
 export type SensitivityLevel = 'low' | 'medium' | 'high' | 'adaptive';
 
 // 定数
-export const DEFAULT_TRIGGER_CONFIG: TriggerConfig = { onHover: true,
-    onFocus: true,
-    onError: true,
-    onStuck: true,
-    onRequest: true,
-    onFirstVisit: true,
-    onInactivity: 5000,
+export const DEFAULT_TRIGGER_CONFIG: TriggerConfig = { onHover: true;
+    onFocus: true;
+    onError: true;
+    onStuck: true;
+    onRequest: true;
+    onFirstVisit: true;
+    onInactivity: 5000;
     onMultipleErrors: 3  } as const;
 ';'
 
@@ -154,35 +154,35 @@ export const ACTIVITY_EVENTS = [';'
 ] as const;
 
 export const TRIGGER_SENSITIVITY_THRESHOLDS = { hover: {
-        low: 3000,
-        medium: 2000,
-        high: 1000,
+        low: 3000;
+        medium: 2000;
+        high: 1000;
     adaptive: 1500 };
-    stuck: { low: 5,
-        medium: 3,
-        high: 2,
+    stuck: { low: 5;
+        medium: 3;
+        high: 2;
     adaptive: 3 };
-    inactivity: { low: 10000,
-        medium: 5000,
-        high: 2000,
+    inactivity: { low: 10000;
+        medium: 5000;
+        high: 2000;
     adaptive: 5000 
     } as const;
 ';'
 
 export const KEYBOARD_SHORTCUTS = {;
-    HELP_F1: 'F1',
-    HELP_CTRL_H: 'h',
+    HELP_F1: 'F1';
+    HELP_CTRL_H: 'h';
     ESC: 'Escape'
             } as const;
 ';'
 
 export const STORAGE_KEYS = {;
-    visitCount: 'bubblePop_visitCount',
-    triggerHistory: 'bubblePop_triggerHistory',
+    visitCount: 'bubblePop_visitCount';
+    triggerHistory: 'bubblePop_triggerHistory';
     userBehavior: 'bubblePop_userBehavior'
             } as const;
 // ユーティリティ関数
-export function isInteractiveElement(element: HTMLElement): boolean {,
+export function isInteractiveElement(element: HTMLElement): boolean {;
     const tagName = element.tagName.toLowerCase()','
     const role = element.getAttribute('role',
     ','
@@ -203,19 +203,19 @@ export function calculateEngagementScore(metrics: EngagementMetrics, sessionDura
     // 時間で正規化 (1分あたりのスコア),
     return sessionDuration > 0 ? (weightedScore / sessionDuration) * 60000 : 0 }
 
-export function getSensitivityThreshold(triggerType: keyof typeof TRIGGER_SENSITIVITY_THRESHOLDS, level: SensitivityLevel): number { const thresholds = TRIGGER_SENSITIVITY_THRESHOLDS[triggerType],
+export function getSensitivityThreshold(triggerType: keyof typeof TRIGGER_SENSITIVITY_THRESHOLDS, level: SensitivityLevel): number { const thresholds = TRIGGER_SENSITIVITY_THRESHOLDS[triggerType];
     return thresholds ? thresholds[level] : thresholds?.medium || 2000 }
  : undefined
 export function generateSessionId(): string {
-    return `session_${Date.now())_${Math.random().toString(36).substr(2, 9})`;
+    return `session_${Date.now())_${Math.random().toString(36).substr(2, 9}`;
 }
 
 export function serializeTriggerContext(context: TriggerContext): string { const serializable = {
         ...context,
         targetElement: context.targetElement ? { : undefined
-            tagName: context.targetElement.tagName,
-            id: context.targetElement.id,
-            className: context.targetElement.className,
+            tagName: context.targetElement.tagName;
+            id: context.targetElement.id;
+            className: context.targetElement.className;
     textContent: context.targetElement.textContent?.slice(0, 100), : undefined; : null;;
     return JSON.stringify(serializable);
 }
@@ -231,7 +231,7 @@ export class HelpTriggerManager {
     private engagementMetrics: EngagementMetrics;
     private adaptiveConfig: AdaptiveTriggerConfig;
     private sessionId: string;
-    private, sessionStartTime: number,
+    private, sessionStartTime: number;
     constructor() {  }
         this.triggers = { ...DEFAULT_TRIGGER_CONFIG;
         this.triggerCallbacks = new Map();
@@ -241,16 +241,16 @@ export class HelpTriggerManager {
         this.sessionId = generateSessionId();
         this.sessionStartTime = Date.now();
         
-        this.userBehavior = { errorCount: 0,
-            inactivityTimer: null,
+        this.userBehavior = { errorCount: 0;
+            inactivityTimer: null;
     lastActivity: Date.now(
-            visitCount: this.getVisitCount('',
-    hover: 'adaptive',
-                focus: 'adaptive',
-                stuck: 'adaptive',
-                inactivity: 'adaptive',
+            visitCount: this.getVisitCount('';
+    hover: 'adaptive';
+                focus: 'adaptive';
+                stuck: 'adaptive';
+                inactivity: 'adaptive';
                 error: 'high'
-            }))
+            })
         ';'
         this.initializeTriggers();
         this.startSessionTracking()';'
@@ -260,12 +260,12 @@ export class HelpTriggerManager {
     /**
      * トリガーを初期化
      */
-    private initializeTriggers(): void { this.setupHoverTriggers(),
-        this.setupFocusTriggers(),
-        this.setupErrorTriggers(),
-        this.setupStuckDetection(),
-        this.setupInactivityDetection(),
-        this.setupFirstVisitTrigger(),
+    private initializeTriggers(): void { this.setupHoverTriggers();
+        this.setupFocusTriggers();
+        this.setupErrorTriggers();
+        this.setupStuckDetection();
+        this.setupInactivityDetection();
+        this.setupFirstVisitTrigger();
         this.setupKeyboardTriggers() }
 
     /**
@@ -310,8 +310,8 @@ export class HelpTriggerManager {
 
                         triggerSource: 'user',' }'
 
-                        priority: 'low' }))
-                }), threshold';'
+                        priority: 'low' })
+                }, threshold';'
         };
 
         const hoverLeaveHandler = (e: MouseEvent'): void => {  this.userBehavior.hoverTracking.currentElement = null }'
@@ -344,7 +344,7 @@ export class HelpTriggerManager {
 
                             triggerSource: 'user',' }'
 
-                            priority: 'medium' })'}')'
+                            priority: 'medium' }'}')'
                 }, 1000');'
             }
         };
@@ -364,7 +364,7 @@ export class HelpTriggerManager {
             const errorRecord: ErrorRecord = {''
                 timestamp: Date.now()','
     type: error.type || 'unhandledrejection',')',
-                message: 'message' in error ? error.message : String(error.reason), 
+                message: 'message' in error ? error.message : String(error.reason),
                 resolved: false,
             };
             this.sessionContext.errorHistory.push(errorRecord);
@@ -405,14 +405,13 @@ export class HelpTriggerManager {
             if (stuckData.lastClickedElement === target) {
                 stuckData.sameElementClicks++,
 
-                const threshold = getSensitivityThreshold('stuck', this.adaptiveConfig.sensitivityAdjustment.stuck),
-
+                const threshold = getSensitivityThreshold('stuck', this.adaptiveConfig.sensitivityAdjustment.stuck);
                 if (stuckData.sameElementClicks >= threshold) {''
                     this.triggerHelp('stuck', {
                 targetElement: target','
     clickCount: stuckData.sameElementClicks,
                         priority: 'high',')',
-                        triggerSource: 'adaptive') })
+                        triggerSource: 'adaptive') }
                     // リセット }
                     this.resetStuckDetection(); }
 } else {  stuckData.sameElementClicks = 1,
@@ -517,7 +516,7 @@ export class HelpTriggerManager {
     /**
      * 最後のアクティビティを更新
      */
-    private updateLastActivity(): void { this.userBehavior.lastActivity = Date.now(),
+    private updateLastActivity(): void { this.userBehavior.lastActivity = Date.now();
         this.restartInactivityTimer() }
 
     /**
@@ -556,7 +555,7 @@ export class HelpTriggerManager {
         const historyEntry: TriggerHistoryEntry = { timestamp: Date.now(
             type: triggerType,
             context: enhancedContext,
-    resolved: false,;
+    resolved: false,
         this.triggerHistory.push(historyEntry);
         
         // 履歴サイズを制限
@@ -605,20 +604,20 @@ export class HelpTriggerManager {
         switch(triggerType) {
 
             case 'hover':','
-                this.userBehavior.hoverTracking.hoverThreshold = Math.max(500),
+                this.userBehavior.hoverTracking.hoverThreshold = Math.max(500);
                     this.userBehavior.hoverTracking.hoverThreshold * (1 - adjustment)'),'
 
                 break,
             case 'stuck':','
                 // スタック検出の閾値を調整（最小2, 最大10）
                 const currentThreshold = getSensitivityThreshold('stuck', this.adaptiveConfig.sensitivityAdjustment.stuck','
-                const newThreshold = Math.max(2, Math.min(10),
+                const newThreshold = Math.max(2, Math.min(10);
                     currentThreshold + (direction === 'increase' ? -1 : 1)'),'
                 this.triggers.onMultipleErrors = newThreshold,
 
                 break,
             case 'inactivity':','
-                this.triggers.onInactivity = Math.max(1000),
+                this.triggers.onInactivity = Math.max(1000);
                     this.triggers.onInactivity * (1 - adjustment)') }'
                 break; }
 }
@@ -638,14 +637,13 @@ export class HelpTriggerManager {
      * 訪問回数を取得
      */
     private getVisitCount(): number { try {
-            const stored = localStorage.getItem(STORAGE_KEYS.visitCount),
+            const stored = localStorage.getItem(STORAGE_KEYS.visitCount);
             const count = stored ? parseInt(stored, 10) + 1 : 1,
-            localStorage.setItem(STORAGE_KEYS.visitCount, count.toString(),
-
+            localStorage.setItem(STORAGE_KEYS.visitCount, count.toString();
             return count,' }'
 
         } catch (error) {
-            console.warn('[HelpTriggerManager] Failed to access visit count:', error),
+            console.warn('[HelpTriggerManager] Failed to access visit count:', error);
             return 1,
 
     /**
@@ -655,10 +653,10 @@ export class HelpTriggerManager {
         
         // アナリティクスに送信
         this.sendAnalytics({)
-            trigger_type: triggerType,;
+            trigger_type: triggerType,
             context: serializeTriggerContext(context} }
-            timestamp: Date.now());
-            session_id: this.sessionId;
+            timestamp: Date.now()),
+            session_id: this.sessionId,
         } }
 
     /**
@@ -697,7 +695,7 @@ export class HelpTriggerManager {
      * トリガー設定を更新
      */'
     updateTriggers(newTriggers: Partial<TriggerConfig>): void { ''
-        Object.assign(this.triggers, newTriggers),
+        Object.assign(this.triggers, newTriggers);
         ','
         // 非アクティブ検出の更新
         if ('onInactivity' in, newTriggers) {
@@ -715,14 +713,14 @@ export class HelpTriggerManager {
      * 適応的設定を更新
      */'
     updateAdaptiveConfig(newConfig: Partial<AdaptiveTriggerConfig>): void { ''
-        Object.assign(this.adaptiveConfig, newConfig),
+        Object.assign(this.adaptiveConfig, newConfig);
         console.log('[HelpTriggerManager] Adaptive configuration updated:', newConfig }
 
     /**
      * 非アクティブタイマーを停止
      */
     private stopInactivityTimer(): void { if (this.userBehavior.inactivityTimer) {
-            clearTimeout(this.userBehavior.inactivityTimer),
+            clearTimeout(this.userBehavior.inactivityTimer);
             this.userBehavior.inactivityTimer = null }
     }
 
@@ -740,7 +738,7 @@ export class HelpTriggerManager {
             onInactivity: () => this.setupInactivityDetection()','
         const listenerType = triggerType.replace('on', ').toLowerCase(),'
         
-        this.removeListeners(listenerType),
+        this.removeListeners(listenerType);
         if (enabled && setupMethods[triggerType]) {
     
 }
@@ -750,7 +748,7 @@ export class HelpTriggerManager {
     /**
      * リスナーを削除
      */
-    private removeListeners(type: string): void { const listeners = this.activeListeners.get(type),
+    private removeListeners(type: string): void { const listeners = this.activeListeners.get(type);
         if (!listeners) return,
 
         switch(type) {
@@ -828,7 +826,7 @@ export class HelpTriggerManager {
     /**
      * 平均応答時間を計算
      */
-    private calculateAverageResponseTime(): number { const resolvedTriggers = this.triggerHistory.filter(entry => entry.resolved),
+    private calculateAverageResponseTime(): number { const resolvedTriggers = this.triggerHistory.filter(entry => entry.resolved);
         if (resolvedTriggers.length === 0) return 0,
         
         // 実装の簡素化のため、固定値を返す
@@ -839,8 +837,8 @@ export class HelpTriggerManager {
      * トリガーを解決済みにマーク
      */
     markTriggerResolved(triggerType: TriggerType, timestamp?: number): void { const entry = this.triggerHistory
-            .reverse(),
-            .find(entry => ),
+            .reverse();
+            .find(entry => );
                 entry.type === triggerType && ),
                 !entry.resolved &&),
                 (!timestamp || entry.timestamp === timestamp)),
@@ -861,8 +859,8 @@ export class HelpTriggerManager {
             visitCount: this.userBehavior.visitCount,
             lastActivity: this.userBehavior.lastActivity,
             inactivityDuration: Date.now() - this.userBehavior.lastActivity,
-    triggersActive: Object.keys(this.triggers).filter(key => this.triggers[key, as keyof, TriggerConfig]),
-            triggerHistory: [...this.triggerHistory] };
+    triggersActive: Object.keys(this.triggers).filter(key => this.triggers[key, as keyof, TriggerConfig]);
+            triggerHistory: [...this.triggerHistory] },
             sessionStats: this.getSessionStatistics(); 
     }
 
@@ -870,13 +868,13 @@ export class HelpTriggerManager {
      * 統計データを永続化
      */
     saveStatistics(): void { try {
-            const stats = this.getStats(),
+            const stats = this.getStats();
             const serializedStats = {
                 ...stats,
                 triggerHistory: stats.triggerHistory.map(entry => ({)
                     ...entry),
                     context: serializeTriggerContext(entry.context)  }
-                });
+                };
             };
             ';'
 
@@ -889,7 +887,7 @@ export class HelpTriggerManager {
     destroy(): void { // すべてのリスナーを削除
         this.activeListeners.forEach((_, type) => {  }
             this.removeListeners(type); }
-        });
+        };
         
         // タイマーをクリア
         this.stopInactivityTimer();

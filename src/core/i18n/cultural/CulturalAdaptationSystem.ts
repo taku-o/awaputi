@@ -1,15 +1,16 @@
 import { getErrorHandler  } from '../../../utils/ErrorHandler.js';
 
-interface ColorSettings { lucky: string[],
+interface ColorSettings { lucky: string[];
     unlucky: string[];
     preferred: string[];
     avoided: string[];
 
-interface NumberSettings { lucky: number[],
+interface NumberSettings { lucky: number[];
     unlucky: number[];
     preferred: number[];
-    symbolism: { [key: number]: string,
-
+    symbolism: { [key: number]: string;
+    symbolism: { [key: number]: string;
+        };
 interface GestureSettings { pointing?: string,
     beckoning?: string;
     thumbsUp?: string;
@@ -39,18 +40,18 @@ interface CommunicationSettings { ''
     hierarchyImportance?: 'very-high';
     individualismImportance?: 'high' }
 
-interface CulturalSettings { colors: ColorSettings,
+interface CulturalSettings { colors: ColorSettings;
     numbers: NumberSettings;
     gestures: GestureSettings;
     layout: LayoutSettings;
     communication: CommunicationSettings;
 
-interface CulturalTaboos { visual: string[],
+interface CulturalTaboos { visual: string[];
     behavioral: string[];
     content: string[];
     interaction: string[];
 
-interface CurrentCulture { language: string,
+interface CurrentCulture { language: string;
     region: string | null;
     cultureKey: string;
     settings: CulturalSettings;
@@ -62,7 +63,7 @@ interface TabooWarning { type: string,''
     suggestion: string;
     culturalContext?: string;
 
-interface TabooValidationResult { valid: boolean,
+interface TabooValidationResult { valid: boolean;
     warnings: TabooWarning[];
     culture?: string;
 
@@ -95,12 +96,12 @@ export class CulturalAdaptationSystem {
                     pointing: 'avoid-direct', // 直接指差しを避ける,
                     beckoning: 'palm-down', // 手のひらを下にして招く,
                     thumbsUp: 'positive', // 親指立ては肯定的,
-                    okSign: 'money-symbol' // OKサインはお金を表す  };
+                    okSign: 'money-symbol' // OKサインはお金を表す  },
                 layout: { ''
                     readingOrder: 'top-to-bottom-right-to-left',
                     preferredAlignment: 'center',
                     whitespaceImportance: 'high', // 余白の重要性が高い,
-                    hierarchyStyle: 'subtle' // 控えめな階層表現  };
+                    hierarchyStyle: 'subtle' // 控えめな階層表現  },
                 communication: { ''
                     directness: 'indirect', // 間接的コミュニケーション,
                     politenessLevel: 'high', // 高い敬語レベル,
@@ -127,12 +128,12 @@ export class CulturalAdaptationSystem {
                     pointing: 'use-full-hand', // 全手で指示,
                     beckoning: 'palm-up', // 手のひらを上にして招く,
                     thumbsUp: 'offensive', // 親指立ては侮辱的,
-                    showingSole: 'offensive' // 足の裏を見せるのは侮辱的  };
+                    showingSole: 'offensive' // 足の裏を見せるのは侮辱的  },
                 layout: { ''
                     readingOrder: 'right-to-left',
                     preferredAlignment: 'right',
                     whitespaceImportance: 'medium',
-                    hierarchyStyle: 'clear' // 明確な階層表現  };
+                    hierarchyStyle: 'clear' // 明確な階層表現  },
                 communication: { ''
                     directness: 'moderate', // 中程度の直接性,
                     politenessLevel: 'high', // 高い礼儀レベル,
@@ -160,12 +161,12 @@ export class CulturalAdaptationSystem {
                     pointing: 'avoid-single-finger', // 一本指での指差しを避ける,
                     beckoning: 'palm-down', // 手のひらを下にして招く,
                     bowing: 'respectful', // お辞儀は敬意を表す,
-                    giftReceiving: 'both-hands' // 両手で受け取る  };
+                    giftReceiving: 'both-hands' // 両手で受け取る  },
                 layout: { ''
                     readingOrder: 'top-to-bottom-left-to-right',
                     preferredAlignment: 'center',
                     whitespaceImportance: 'medium',
-                    hierarchyStyle: 'traditional' // 伝統的階層表現  };
+                    hierarchyStyle: 'traditional' // 伝統的階層表現  },
                 communication: { ''
                     directness: 'indirect', // 間接的コミュニケーション,
                     politenessLevel: 'very-high', // 非常に高い礼儀レベル,
@@ -192,12 +193,12 @@ export class CulturalAdaptationSystem {
                     pointing: 'avoid-direct', // 直接指差しを避ける,
                     beckoning: 'palm-down', // 手のひらを下にして招く,
                     bowing: 'essential', // お辞儀は必須,
-                    receiving: 'both-hands' // 両手で受け取る  };
+                    receiving: 'both-hands' // 両手で受け取る  },
                 layout: { ''
                     readingOrder: 'left-to-right-top-to-bottom',
                     preferredAlignment: 'left',
                     whitespaceImportance: 'high',
-                    hierarchyStyle: 'strict' // 厳格な階層表現  };
+                    hierarchyStyle: 'strict' // 厳格な階層表現  },
                 communication: { ''
                     directness: 'very-indirect', // 非常に間接的,
                     politenessLevel: 'very-high', // 非常に高い敬語レベル,
@@ -210,7 +211,7 @@ export class CulturalAdaptationSystem {
                     lucky: ['#008000', '#0066CC', '#FFD700], // 緑、青、金,'
                     unlucky: ['#000000], // 黒,'
                     preferred: ['#FF0000', '#0066CC', '#008000], // 赤、青、緑,'
-                    avoided: []  };
+                    avoided: []  },
                 numbers: { lucky: [7],
                     unlucky: [13],
     preferred: [1, 3, 7, 10],,
@@ -223,12 +224,12 @@ export class CulturalAdaptationSystem {
                     pointing: 'acceptable', // 指差しは受け入れられる,
                     beckoning: 'palm-up', // 手のひらを上にして招く,
                     thumbsUp: 'very-positive', // 親指立ては非常に肯定的,
-                    handshake: 'standard' // 握手は標準的  };
+                    handshake: 'standard' // 握手は標準的  },
                 layout: { ''
                     readingOrder: 'left-to-right-top-to-bottom',
                     preferredAlignment: 'left',
                     whitespaceImportance: 'medium',
-                    hierarchyStyle: 'clear' // 明確な階層表現  })'
+                    hierarchyStyle: 'clear' // 明確な階層表現  }'
                 communication: { ''
                     directness: 'direct', // 直接的コミュニケーション,
                     politenessLevel: 'medium', // 中程度の礼儀レベル,
@@ -322,12 +323,12 @@ export class CulturalAdaptationSystem {
                 region: region,
                 cultureKey: cultureKey,
                 settings: culturalSettings,
-    appliedAt: new Date().toISOString(  };
+    appliedAt: new Date().toISOString(  },
             
             // 文化的適応を適用
             this.applyGlobalCulturalAdaptations();
             
-            console.log(`Cultural, adaptation set, for: ${cultureKey}`});
+            console.log(`Cultural, adaptation set, for: ${cultureKey}`};
             return true;
             ';'
 
@@ -347,8 +348,7 @@ export class CulturalAdaptationSystem {
         if(!this.currentCulture || this.appliedAdaptations.has(`color-${element.id || 'anonymous}`}}' { return false }', ';
 
         try { const colorSettings = this.currentCulture.settings.colors,
-            const computedStyle = window.getComputedStyle(element),
-            
+            const computedStyle = window.getComputedStyle(element);
             // 現在の色を分析
             const currentBgColor = computedStyle.backgroundColor,
             const currentTextColor = computedStyle.color,
@@ -388,11 +388,11 @@ export class CulturalAdaptationSystem {
             let adaptedContent = textContent,
             ','
 
-            numberSettings.unlucky.forEach(unluckyNumber => { ),
+            numberSettings.unlucky.forEach(unluckyNumber => { );
                 const regex = new RegExp(`\\b${unluckyNumber)\\b`, 'g'),
                 if (regex.test(adaptedContent) {
                     // 不吉な数字を代替案に置換
-                    const, alternative = this.suggestAlternativeNumber(unluckyNumber),
+                    const, alternative = this.suggestAlternativeNumber(unluckyNumber);
                     adaptedContent = adaptedContent.replace(regex, `${alternative}`};
                     ';'
 
@@ -403,9 +403,9 @@ export class CulturalAdaptationSystem {
 
                     element.setAttribute('data-original-number', unluckyNumber.toString());' }'
 
-                    element.setAttribute('data-alternative-number', alternative.toString()});
+                    element.setAttribute('data-alternative-number', alternative.toString()};
                 }
-            });
+            };
             
             // 幸運な数字を強調
             numberSettings.lucky.forEach(luckyNumber => {  ),' }'
@@ -414,7 +414,7 @@ export class CulturalAdaptationSystem {
 
                 adaptedContent = adaptedContent.replace(regex'}'''
                     `<span class="cultural-lucky-number">${luckyNumber}</span>`);
-            });
+            };
             
             if (adaptedContent !== textContent) {
             
@@ -440,13 +440,11 @@ export class CulturalAdaptationSystem {
 
             gestureElements.forEach(gestureEl => { '),'
                 const gestureType = gestureEl.getAttribute('data-gesture) || ,'
-                                 this.detectGestureType(gestureEl, as HTMLElement),
-                
+                                 this.detectGestureType(gestureEl, as HTMLElement);
                 if (gestureType) {
                 ','
 
-                    const interpretation = this.getGestureInterpretation(gestureType),
-
+                    const interpretation = this.getGestureInterpretation(gestureType);
                     if (interpretation.includes('offensive') || interpretation.includes('rude) {'
                         // 不適切なジェスチャーを代替案に置換
                         const alternative = this.suggestAlternativeGesture(gestureType) }
@@ -456,7 +454,7 @@ export class CulturalAdaptationSystem {
                         adaptationsApplied++;' }'
 
                     } else if (interpretation.includes('avoid') || interpretation.includes('inappropriate)' { // 避けるべきジェスチャーを隠すか警告を表示
-                        gestureEl.classList.add('cultural-gesture-warning'),
+                        gestureEl.classList.add('cultural-gesture-warning');
                         gestureEl.setAttribute('title', '文化的に不適切な可能性があります),'
                         adaptationsApplied++ }
 }';'
@@ -465,7 +463,7 @@ export class CulturalAdaptationSystem {
             ';'
 
         } catch (error) { getErrorHandler().handleError(error, 'GESTURE_ADAPTATION_ERROR', {)
-                element: element.tagName  });
+                element: element.tagName  },
             return false;
     
     /**
@@ -485,7 +483,7 @@ export class CulturalAdaptationSystem {
 
                     break,
                 case 'top-to-bottom-right-to-left':','
-                    element.classList.add('vertical-text'),
+                    element.classList.add('vertical-text');
                     element.style.writingMode = 'vertical-rl',
 
                     break,
@@ -519,16 +517,13 @@ export class CulturalAdaptationSystem {
             switch(layoutSettings.hierarchyStyle) {
 
                 case 'subtle':','
-                    element.classList.add('subtle-hierarchy'),
-
+                    element.classList.add('subtle-hierarchy');
                     break,
                 case 'traditional':','
-                    element.classList.add('traditional-hierarchy'),
-
+                    element.classList.add('traditional-hierarchy');
                     break,
                 case 'strict':','
-                    element.classList.add('strict-hierarchy'),
-
+                    element.classList.add('strict-hierarchy');
                     break,
                 case 'clear':','
                 default: element.classList.add('clear-hierarchy' }
@@ -594,19 +589,19 @@ export class CulturalAdaptationSystem {
             [...taboos.visual, ...taboos.behavioral, ...taboos.content, ...taboos.interaction] :;
             taboos[contentType] || [];
         
-        relevantTaboos.forEach(taboo => {  ),
+        relevantTaboos.forEach(taboo => {  );
             if (this.detectTabooViolation(content, taboo) {
                 warnings.push({)
                     type: taboo,
     severity: this.getTabooSeverity(taboo) }
                     suggestion: this.getTabooAlternative(taboo) }
                     culturalContext: this.getTabooContext(taboo); 
-    });
+    };
             }
-        });
+        };
         
         return { valid: warnings.length === 0,
-            warnings: warnings,;
+            warnings: warnings,
             culture: this.currentCulture.cultureKey 
     }
     
@@ -622,12 +617,12 @@ export class CulturalAdaptationSystem {
         const, root = document.documentElement,
         const, colors = this.currentCulture!.settings.colors,
 
-        root.style.setProperty('--cultural-primary-color', colors.preferred[0] || '#0066CC'),
+        root.style.setProperty('--cultural-primary-color', colors.preferred[0] || '#0066CC');
         root.style.setProperty('--cultural-secondary-color', colors.preferred[1] || '#008000'};
         root.style.setProperty('--cultural-accent-color', colors.lucky[0] || '#FFD700};'
         
         // 文化的スタイルシートを動的に追加 }
-        this.injectCulturalCSS(});
+        this.injectCulturalCSS(};
     }
 
     private injectCulturalCSS()';'
@@ -635,7 +630,7 @@ export class CulturalAdaptationSystem {
         if (existingStyle) {
 
             existingStyle.remove()','
-        const style = document.createElement('style'),
+        const style = document.createElement('style');
         style.id = 'cultural-adaptation-styles',
         style.textContent = this.generateCulturalCSS() }
         document.head.appendChild(style); }
@@ -647,11 +642,11 @@ export class CulturalAdaptationSystem {
         return ` }
             .culture-${cultureKey} .cultural-lucky-number {
                 color: ${settings.colors.lucky[0]}
-                font-weight: bold;
-                text-shadow: 0 0 2px ${settings.colors.lucky[0]}40;
+                font-weight: bold,
+                text-shadow: 0 0 2px ${settings.colors.lucky[0]}40,
             }
             
-            .culture-${cultureKey} .cultural-number-adapted { position: relative;
+            .culture-${cultureKey} .cultural-number-adapted { position: relative,
             ';'
 
             .culture-${cultureKey} .cultural-number-adapted::after { ''
@@ -675,8 +670,8 @@ export class CulturalAdaptationSystem {
                 padding-left: 15px }
             
             .culture-${cultureKey} .strict-hierarchy {
-                border: 1px solid ${settings.colors.preferred[1]};
-                padding: 10px;
+                border: 1px solid ${settings.colors.preferred[1]},
+                padding: 10px,
                 margin-left: 20px }
         `;
     }
@@ -704,7 +699,7 @@ export class CulturalAdaptationSystem {
             case 'accent':','
                 return colors.lucky[0] || '#FFD700' }
 
-            default: return colors.preferred[0] || '#0066CC';
+            default: return colors.preferred[0] || '#0066CC',
 
     private getLuckyColor('';
         return, this.currentCulture!.settings.colors.lucky[0] || '#FFD700';
@@ -719,7 +714,7 @@ export class CulturalAdaptationSystem {
 
     private getGestureInterpretation(gestureType: string): string { ''
         const cultureKey = this.currentCulture!.language.split('-'[0],
-        const interpretations = this.gestureInterpretations.get(gestureType),
+        const interpretations = this.gestureInterpretations.get(gestureType);
         return interpretations ? interpretations[cultureKey] || interpretations['en] : 'neutral' }'
 
     private detectGestureType(element: HTMLElement): string | null { const classList = element.className,
@@ -733,17 +728,16 @@ export class CulturalAdaptationSystem {
         return null }
     
     private detectTabooViolation(content: string, taboo: string): boolean { // 簡略化したタブー検出ロジック
-        const contentLower = content.toLowerCase(),
-
+        const contentLower = content.toLowerCase();
         switch(taboo) {
 
             case 'number-4-emphasis':','
-                return /\b4\b/.test(content) && this.currentCulture!.language.startsWith('ja'),
+                return /\b4\b/.test(content) && this.currentCulture!.language.startsWith('ja');
             case 'death-imagery':','
-                return /death|skull|grave/.test(contentLower),
+                return /death|skull|grave/.test(contentLower);
             case 'left-hand-use':','
                 return /left.hand/.test(contentLower) && this.currentCulture!.language.startsWith('ar) }'
-            default: return false;
+            default: return false,
 
     private getTabooSeverity(taboo: string): 'medium' | 'high' { ''
         const highSeverityTaboos = ['death-imagery', 'religious-imagery', 'offensive-gestures],'
@@ -812,7 +806,7 @@ export class CulturalAdaptationSystem {
             currentCulture: this.currentCulture ? this.currentCulture.cultureKey : null,
             appliedAdaptations: this.appliedAdaptations.size,
             gestureInterpretations: this.gestureInterpretations.size,
-    culturalTaboos: Array.from(this.culturalTaboos.values( };
+    culturalTaboos: Array.from(this.culturalTaboos.values( },
                 .reduce((sum, taboos) => sum + Object.values(taboos).reduce((s, arr) => s + arr.length, 0), 0); }
         }
 }

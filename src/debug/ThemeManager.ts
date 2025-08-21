@@ -5,7 +5,7 @@
 interface DebugInterface {
     debugPanel: HTMLElement;
 
-interface ThemeColors { background: string,
+interface ThemeColors { background: string;
     panel: string;
     border: string;
     text: string;
@@ -17,10 +17,10 @@ interface ThemeColors { background: string,
     error: string;
     info: string;
 
-interface Theme { name: string,
+interface Theme { name: string;
     colors: ThemeColors;
 
-interface AvailableTheme { key: string,
+interface AvailableTheme { key: string;
     name: string;
 
 type ThemeName = 'dark' | 'light' | 'highContrast';
@@ -38,47 +38,47 @@ export class ThemeManager {
                 name: 'Dark';
                 colors: {''
                     background: 'rgba(0, 0, 0, 0.9)';
-                    panel: '#2d2d2d',
-                    border: '#333',
-                    text: '#ffffff',
-                    textSecondary: '#cccccc',
-                    textMuted: '#888888',
-                    accent: '#0066cc',
-                    success: '#00ff00',
-                    warning: '#ffaa00',
+                    panel: '#2d2d2d';
+                    border: '#333';
+                    text: '#ffffff';
+                    textSecondary: '#cccccc';
+                    textMuted: '#888888';
+                    accent: '#0066cc';
+                    success: '#00ff00';
+                    warning: '#ffaa00';
                     error: '#ff4444' }
 
                     info: '#00aaff' 
     };
             light: { ''
-                name: 'Light',
+                name: 'Light';
                 colors: {''
                     background: 'rgba(255, 255, 255, 0.95)';
-                    panel: '#f5f5f5',
-                    border: '#cccccc',
-                    text: '#000000',
-                    textSecondary: '#333333',
-                    textMuted: '#666666',
-                    accent: '#0066cc',
-                    success: '#00aa00',
-                    warning: '#cc8800',
-                    error: '#cc0000',
+                    panel: '#f5f5f5';
+                    border: '#cccccc';
+                    text: '#000000';
+                    textSecondary: '#333333';
+                    textMuted: '#666666';
+                    accent: '#0066cc';
+                    success: '#00aa00';
+                    warning: '#cc8800';
+                    error: '#cc0000';
                     info: '#0088cc'
             }
             };
             highContrast: { ''
-                name: 'High Contrast',
+                name: 'High Contrast';
                 colors: {''
-                    background: '#000000',
-                    panel: '#000000',
-                    border: '#ffffff',
-                    text: '#ffffff',
-                    textSecondary: '#ffffff',
-                    textMuted: '#cccccc',
-                    accent: '#ffff00',
-                    success: '#00ff00',
-                    warning: '#ffff00',
-                    error: '#ff0000',
+                    background: '#000000';
+                    panel: '#000000';
+                    border: '#ffffff';
+                    text: '#ffffff';
+                    textSecondary: '#ffffff';
+                    textMuted: '#cccccc';
+                    accent: '#ffff00';
+                    success: '#00ff00';
+                    warning: '#ffff00';
+                    error: '#ff0000';
                     info: '#00ffff'
             }
 };
@@ -92,7 +92,7 @@ export class ThemeManager {
     public setTheme(themeName: string): boolean { ''
         if (!this.themes[themeName]) { }'
 
-            console.warn(`Theme '${themeName}' not, found`});
+            console.warn(`Theme '${themeName}' not, found`};
             return false;
         }
 
@@ -100,7 +100,7 @@ export class ThemeManager {
         this.applyTheme();
         this.saveTheme();
         
-        console.log(`Theme, changed to: ${themeName}`});
+        console.log(`Theme, changed to: ${themeName}`};
         return true;
     }
 
@@ -228,7 +228,7 @@ export class ThemeManager {
 
         // 現在のテーマクラスを追加' }'
 
-        const themeClass = `theme-${this.currentTheme.replace(/([A-Z]}/g, '-$1'}.toLowerCase(})`;
+        const themeClass = `theme-${this.currentTheme.replace(/([A-Z]}/g, '-$1'}.toLowerCase(}`;
         debugPanel.classList.add(themeClass);
     }
 
@@ -242,7 +242,7 @@ export class ThemeManager {
         style.id = 'debug-theme-styles';
         style.textContent = `;
             /* CSS変数ベースのテーマサポート */
-            .enhanced-debug-interface { --debug-bg: rgba(0, 0, 0, 0.9),
+            .enhanced-debug-interface { --debug-bg: rgba(0, 0, 0, 0.9);
                 --debug-panel: #2d2d2d,
                 --debug-border: #333,
                 --debug-text: #ffffff,
@@ -255,7 +255,7 @@ export class ThemeManager {
                 --debug-info: #00aaff }
 
             /* テーマ固有スタイル */
-            .enhanced-debug-interface.theme-light { --debug-bg: rgba(255, 255, 255, 0.95),
+            .enhanced-debug-interface.theme-light { --debug-bg: rgba(255, 255, 255, 0.95);
                 --debug-panel: #f5f5f5,
                 --debug-border: #cccccc,
                 --debug-text: #000000,
@@ -286,7 +286,7 @@ export class ThemeManager {
 
             /* CSS変数を使用するスタイル */
             .debug-panel { background: var(--debug-panel)
-               , color: var(--debug-text),
+               , color: var(--debug-text);
                 border-color: var(--debug-border) }
 
             .test-result.test-success { color: var(--debug-success }
@@ -336,7 +336,7 @@ export class ThemeManager {
     /**
      * システム設定に合わせてテーマを自動設定
      */
-    public autoSetTheme(): void { const systemTheme = this.detectSystemTheme(),
+    public autoSetTheme(): void { const systemTheme = this.detectSystemTheme();
         this.setTheme(systemTheme) }
 
     /**

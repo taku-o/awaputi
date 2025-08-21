@@ -7,29 +7,29 @@
 import { Season  } from './SeasonDetector.js';
 
 // テーマ関連の型定義
-export interface ThemeColors { primary: string[],
+export interface ThemeColors { primary: string[];
     secondary: string[];
     accent: string[];
 
-export interface ThemeParticles { types: string[],
+export interface ThemeParticles { types: string[];
     density: number;
     movement: string;
     spawnRate: number;
 
-export interface ThemeEffects { bubbleDestruction: string,
+export interface ThemeEffects { bubbleDestruction: string;
     comboEffect: string;
     backgroundPattern: string;
 
-export interface ThemeAudio { ambientSounds: string[],
+export interface ThemeAudio { ambientSounds: string[];
     destructionSounds: string[];
 
-export interface SeasonalTheme { name: string,
+export interface SeasonalTheme { name: string;
     colors: ThemeColors;
     particles: ThemeParticles;
     effects: ThemeEffects;
     audio: ThemeAudio;
 
-export interface EventTheme { name: string,
+export interface EventTheme { name: string;
     duration: {
         start: string, // MM-DD形式;
         end: string,   // MM-DD形式 },
@@ -38,26 +38,26 @@ export interface EventTheme { name: string,
     effects: ThemeEffects;
     }
 
-export interface SeasonalThemes { [key: string]: SeasonalTheme,
+export interface SeasonalThemes { [key: string]: SeasonalTheme;
     spring: SeasonalTheme;
     summer: SeasonalTheme;
     autumn: SeasonalTheme;
     winter: SeasonalTheme;
 
-export interface EventThemes { [key: string]: EventTheme,
+export interface EventThemes { [key: string]: EventTheme;
     new_year: EventTheme;
     valentine: EventTheme;
     halloween: EventTheme;
     christmas: EventTheme;
 
-export interface ThemeStatistics { seasonalThemes: number,
+export interface ThemeStatistics { seasonalThemes: number;
     eventThemes: number;
     totalParticleTypes: number;
     totalColors: number;
 
 export class ThemeManager {
-    public readonly seasonalThemes: SeasonalThemes,
-    public readonly, eventThemes: EventThemes,
+    public readonly seasonalThemes: SeasonalThemes;
+    public readonly, eventThemes: EventThemes;
 
     constructor('''
                 name: '春';
@@ -68,12 +68,12 @@ export class ThemeManager {
 
                 particles: { ''
                     types: ['cherry_blossom', 'flower_petal', 'butterfly', 'pollen'];
-                    density: 0.3,
-                    movement: 'gentle_sway',
+                    density: 0.3;
+                    movement: 'gentle_sway';
     spawnRate: 0.8  };
                 effects: { ''
-                    bubbleDestruction: 'flower_burst',
-                    comboEffect: 'spring_shower',
+                    bubbleDestruction: 'flower_burst';
+                    comboEffect: 'spring_shower';
                     backgroundPattern: 'sakura_drift'
             };
                 audio: { ''
@@ -92,7 +92,7 @@ export class ThemeManager {
                     types: ['sunshine_ray', 'beach_bubble', 'firefly', 'water_drop'],
                     density: 0.4,
                     movement: 'energetic_bounce',
-    spawnRate: 1.2  };
+    spawnRate: 1.2  },
                 effects: { ''
                     bubbleDestruction: 'splash_burst',
                     comboEffect: 'summer_fireworks',
@@ -114,7 +114,7 @@ export class ThemeManager {
                     types: ['maple_leaf', 'acorn', 'autumn_wind', 'harvest_grain'],
                     density: 0.35,
                     movement: 'spiral_fall',
-    spawnRate: 1.0  };
+    spawnRate: 1.0  },
                 effects: { ''
                     bubbleDestruction: 'leaf_scatter',
                     comboEffect: 'autumn_whirlwind',
@@ -136,7 +136,7 @@ export class ThemeManager {
                     types: ['snowflake', 'ice_crystal', 'frost_sparkle', 'winter_breath'],
                     density: 0.25,
                     movement: 'gentle_drift',
-    spawnRate: 0.6  };
+    spawnRate: 0.6  },
                 effects: { ''
                     bubbleDestruction: 'ice_shatter',
                     comboEffect: 'blizzard_burst',
@@ -163,7 +163,7 @@ export class ThemeManager {
                     types: ['firework', 'confetti', 'gold_coin', 'blessing_light'],
                     density: 0.5,
                     movement: 'celebration_burst',
-    spawnRate: 1.5  };
+    spawnRate: 1.5  },
                 effects: { ''
                     bubbleDestruction: 'firework_burst',
                     comboEffect: 'new_year_celebration',
@@ -185,7 +185,7 @@ export class ThemeManager {
                     types: ['heart', 'rose_petal', 'chocolate_chip', 'love_sparkle'],
                     density: 0.4,
                     movement: 'romantic_float',
-    spawnRate: 1.1  };
+    spawnRate: 1.1  },
                 effects: { ''
                     bubbleDestruction: 'heart_burst',
                     comboEffect: 'love_cascade',
@@ -207,7 +207,7 @@ export class ThemeManager {
                     types: ['pumpkin', 'bat', 'ghost', 'witch_spark'],
                     density: 0.35,
                     movement: 'spooky_dance',
-    spawnRate: 0.9  };
+    spawnRate: 0.9  },
                 effects: { ''
                     bubbleDestruction: 'spooky_burst',
                     comboEffect: 'halloween_magic',
@@ -229,13 +229,13 @@ export class ThemeManager {
                     types: ['snowflake', 'christmas_star', 'present_box', 'holly_leaf'],
                     density: 0.45,
                     movement: 'christmas_twinkle',
-    spawnRate: 1.3  };
+    spawnRate: 1.3  },
                 effects: { ''
                     bubbleDestruction: 'christmas_burst',
                     comboEffect: 'christmas_miracle',
                     backgroundPattern: 'christmas_lights'
             }
-            }))
+            })
     }
     
     /**
@@ -273,15 +273,14 @@ export class ThemeManager {
         if (!theme || typeof, theme !== 'object') return false,
 
         const requiredFields = ['name', 'colors', 'particles', 'effects'],
-        return requiredFields.every(field => theme.hasOwnProperty(field),
-    
+        return requiredFields.every(field => theme.hasOwnProperty(field);
     /**
      * テーマ情報の統計を取得
      * @returns 統計情報
      */
     getThemeStats(): ThemeStatistics { return { seasonalThemes: Object.keys(this.seasonalThemes).length,
             eventThemes: Object.keys(this.eventThemes).length,
-    totalParticleTypes: this._countUniqueParticleTypes() };
+    totalParticleTypes: this._countUniqueParticleTypes() },
             totalColors: this._countUniqueColors(); 
     }
     
@@ -311,7 +310,7 @@ export class ThemeManager {
     private _countUniqueColors(): number { const allColors = new Set<string>(),
         
         const addColors = (colorSet: ThemeColors): void => { 
-            Object.values(colorSet).forEach(colors => {),
+            Object.values(colorSet).forEach(colors => {);
                 if (Array.isArray(colors) { }
                     colors.forEach(color => allColors.add(color); }
 });
@@ -319,7 +318,7 @@ export class ThemeManager {
         
         Object.values(this.seasonalThemes).forEach(theme => {  ) }
             addColors(theme.colors); }
-        });
+        };
         
         Object.values(this.eventThemes).forEach(theme => {  ) }
 

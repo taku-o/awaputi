@@ -7,13 +7,13 @@
 export interface SettingsManager {
     configManager: ConfigManager;
 
-export interface ConfigManager { setDefaultValue(key: string, value: any): void,
+export interface ConfigManager { setDefaultValue(key: string, value: any): void;
     set(category: string, key: string, value: any): void;
     setValidationRule(key: string, rule: ValidationRule): void;
     get(key: string): any;
     getDefault(key: string): any;
 
-export interface ValidationRule { type: string,
+export interface ValidationRule { type: string;
     min?: number;
     max?: number;
     values?: any[];
@@ -21,7 +21,7 @@ export interface ValidationRule { type: string,
 
 export interface ValidationRules { [key: string]: ValidationRule;
 
-export interface AccessibilitySettings { highContrast: boolean,
+export interface AccessibilitySettings { highContrast: boolean;
     reducedMotion: boolean;
     largeText: boolean;
     screenReader: boolean;
@@ -34,21 +34,21 @@ export interface AccessibilitySettings { highContrast: boolean,
     profiles: AccessibilityProfile;
     importExport: boolean;
 
-export interface ControlsSettings { keyboardEnabled: boolean,
+export interface ControlsSettings { keyboardEnabled: boolean;
     mouseEnabled: boolean;
     touchEnabled: boolean;
 
-export interface KeyboardShortcuts { pause: string[],
+export interface KeyboardShortcuts { pause: string[];
     menu: string[];
     settings: string[];
     help: string[];
 
-export interface UISettings { showFPS: boolean,
+export interface UISettings { showFPS: boolean;
     showDebugInfo: boolean;
     animationSpeed: number;
     uiScale: number;
 
-export interface SocialSettings { enableSharing: boolean,
+export interface SocialSettings { enableSharing: boolean;
     autoPromptHighScore: boolean;
     autoPromptAchievements: boolean;
     defaultPlatform: SocialPlatform;
@@ -60,11 +60,11 @@ export interface SocialSettings { enableSharing: boolean,
 
 export interface NotificationSettings { 'challenges.enabled': boolean,', 'challenges.newChallenge': boolean,', 'challenges.challengeComplete': boolean,', 'challenges.dailyReminder': boolean,', 'challenges.weeklyReminder': boolean,', 'achievements.enabled': boolean,', 'achievements.unlocked': boolean,', 'achievements.progress': boolean,', 'achievements.rare': boolean,', 'leaderboard.enabled': boolean,', 'leaderboard.newRecord': boolean,', 'leaderboard.rankChange': boolean,', 'system.enabled': boolean,', 'system.updates': boolean,', 'system.maintenance': boolean;
 
-export interface PrivacySettings { dataCollection: boolean,
+export interface PrivacySettings { dataCollection: boolean;
     analytics: boolean;
     crashReports: boolean;
 
-export interface DefaultSettings { masterVolume: number,
+export interface DefaultSettings { masterVolume: number;
     sfxVolume: number;
     bgmVolume: number;
     isMuted: boolean;
@@ -78,18 +78,18 @@ export interface DefaultSettings { masterVolume: number,
     notifications: NotificationSettings;
     privacy: PrivacySettings;
 
-export interface ParsedSettingKey { category: string,
+export interface ParsedSettingKey { category: string;
     settingName: string;
     fullKey: string;
     isLegacy: boolean;
 
-export interface ValidationResult { isValid: boolean,
+export interface ValidationResult { isValid: boolean;
     errors: string[];
 
-export interface SettingsCount { total: number,
+export interface SettingsCount { total: number;
     categories: number;
 
-export interface DataManagerStats { totalSettings: number,
+export interface DataManagerStats { totalSettings: number;
     categoriesCount: number;
     systemLanguage: string;
     defaultsGenerated: boolean;
@@ -153,7 +153,7 @@ export class SettingsDataManager {
                 subtitles: false,
                 profiles: 'default'
             };
-                importExport: false,;
+                importExport: false,
             // 操作設定
             controls: { keyboardEnabled: true,
                 mouseEnabled: true,
@@ -171,7 +171,7 @@ export class SettingsDataManager {
             ui: { showFPS: false,
                 showDebugInfo: false,
                 animationSpeed: 1.0,
-    uiScale: 1.0 };
+    uiScale: 1.0 },
             // ソーシャル共有設定
             social: { enableSharing: true,
                 autoPromptHighScore: true,
@@ -181,7 +181,7 @@ export class SettingsDataManager {
                 screenshotQuality: 'high', // 'low', 'medium', 'high'','
                 privacyLevel: 'public', // 'public', 'friends', 'private'','
                 customMessage: ','
-    showWatermark: true,;
+    showWatermark: true,
             // 通知設定（平坦化構造）
             notifications: { ', 'challenges.enabled': true,'
                 'challenges.newChallenge': true,
@@ -203,7 +203,8 @@ export class SettingsDataManager {
             privacy: { dataCollection: true,
                 analytics: true,
     crashReports: true,
-    
+    crashReports: true,
+        };
     /**
      * システム言語を検出
      * @returns 検出された言語コード
@@ -242,7 +243,7 @@ export class SettingsDataManager {
                     this.configManager.setValidationRule(fullKey, validationRules[key]); }
 }
 
-            console.log(`[SettingsDataManager] Category '${category}' setup, completed with ${Object.keys(defaultValues}).length} settings`);'} catch (error) { }'
+            console.log(`[SettingsDataManager] Category '${category}' setup, completed with ${Object.keys(defaultValues}.length} settings`);'} catch (error) { }'
 
             console.error(`[SettingsDataManager] Failed to setup category '${category}':`, error';'
             throw error;
@@ -264,19 +265,19 @@ export class SettingsDataManager {
             return { ''
                 category: 'legacy',
     settingName: key,
-                fullKey: key,;
+                fullKey: key,
                 isLegacy: true;;'} else if (parts.length === 2) { ''
             // 新しい形式（例: 'audio.masterVolume'）
             return { category: parts[0],
                 settingName: parts[1],
-    fullKey: key,;
+    fullKey: key,
                 isLegacy: false; else {
             // ネストされた形式（例: 'accessibility.highContrast'）'
             return { category: parts[0],''
                 settingName: parts.slice(1).join('.'
             }'
                 fullKey: key;;
-                isLegacy: false;
+                isLegacy: false,
     }
     
     /**
@@ -309,12 +310,11 @@ export class SettingsDataManager {
      * @param key 設定キー
      * @returns デフォルト値
      */
-    getDefaultValue(key: string): any { const parsed = this.parseSettingKey(key),
-        
+    getDefaultValue(key: string): any { const parsed = this.parseSettingKey(key);
         if (parsed.isLegacy) {
         
             // レガシーキーの場合はレガシー値を取得
-            const legacyValue = this.getLegacyValue(key),
+            const legacyValue = this.getLegacyValue(key);
             if (legacyValue !== undefined) {
     
 }
@@ -372,11 +372,11 @@ export class SettingsDataManager {
 
                 errors.push(`Missing, required category: ${category}`}';} else if(typeof, settings[category] !== 'object' || settings[category] === null' { }
 
-                errors.push(`Category '${category}' must, be an, object`});
+                errors.push(`Category '${category}' must, be an, object`};
             }
         }
         
-        return { isValid: errors.length = == 0 };
+        return { isValid: errors.length = == 0 },
             errors }
         }
     
@@ -384,13 +384,12 @@ export class SettingsDataManager {
      * 統計情報を取得
      * @returns データ管理統計
      */
-    getStats(): DataManagerStats { const defaultSettings = this.getDefaultSettings(),
-        const settingsCount = this._countSettings(defaultSettings),
-        
+    getStats(): DataManagerStats { const defaultSettings = this.getDefaultSettings();
+        const settingsCount = this._countSettings(defaultSettings);
         return { totalSettings: settingsCount.total,
             categoriesCount: settingsCount.categories,
             systemLanguage: this.detectSystemLanguage(
-    defaultsGenerated: true,;
+    defaultsGenerated: true,
             structureValid: true,
     
     /**
@@ -404,7 +403,7 @@ export class SettingsDataManager {
 
         for(const [key, value] of Object.entries(obj)) {''
             if (typeof, value === 'object' && value !== null && !Array.isArray(value) {
-                categories.add(key),
+                categories.add(key);
                 const subCount = this._countSettings(value, categories) }
                 total += subCount.total; }
             } else { total++ }

@@ -8,29 +8,29 @@
 import { seoLogger  } from '../SEOLogger.js';
 import { seoErrorHandler  } from '../SEOErrorHandler.js';
 
-interface MainController { baseUrl: string,
+interface MainController { baseUrl: string;
     validationRules: Map<string, ValidationRules> }
 
-interface ValidationRules { required: string[],
+interface ValidationRules { required: string[];
     titleLength?: {
-        mi,n: number,
-    max: number,;
-    descriptionLength?: { min: number,
-    max: number,;
+        mi,n: number;
+    max: number;
+    descriptionLength?: { min: number;
+    max: number;
     cardTypes?: string[];
 }
 
-interface TestResult { name: string,
+interface TestResult { name: string;
     passed: boolean;
     message: string;
 
-interface ValidationResults { category: string,
+interface ValidationResults { category: string;
     tests: TestResult[];
     passed: number;
     failed: number;
     warnings: number;
 
-interface MetaTags { title: string,
+interface MetaTags { title: string;
     description: string;
     charset: string;
     keywords: string;
@@ -50,7 +50,7 @@ interface TwitterCardTags { ', 'twitter: card': string,'
 
 export class MetaTagValidator {
     private mainController: MainController;
-    private, baseUrl: string,
+    private, baseUrl: string;
     constructor(mainController: MainController) {
 
         this.mainController = mainController
@@ -65,8 +65,8 @@ export class MetaTagValidator {
      */''
     async validateMetaTags('''
                 category: 'Meta, Tags';
-                tests: [];
-                passed: 0;
+                tests: [],
+                passed: 0,
                 failed: 0,
     warnings: 0);
             }''
@@ -81,7 +81,7 @@ export class MetaTagValidator {
             ';'
             // 必須タグの存在確認
             for (const requiredTag of rules.required) { const test: TestResult = { }
-                    name: `Required meta, tag: ${requiredTag}`;
+                    name: `Required meta, tag: ${requiredTag}`,
                     passed: false,
                     message: ';'
                 },
@@ -102,14 +102,15 @@ export class MetaTagValidator {
                 const titleTest: TestResult = {''
                     name: 'Title length validation',
                     passed: false,
-
+                    passed: false,
+        };
                     message: '};'
                 const titleLength = metaTags.title.length;
                 if (titleLength >= rules.titleLength.min && titleLength <= rules.titleLength.max) { titleTest.passed = true }
-                    titleTest.message = `✅ Title length optimal: ${titleLength} characters`;
+                    titleTest.message = `✅ Title length optimal: ${titleLength} characters`,
                     results.passed++;
                 } else {  }
-                    titleTest.message = `⚠️ Title length suboptimal: ${titleLength} characters (recommended: ${rules.titleLength.min}-${rules.titleLength.max}})`;
+                    titleTest.message = `⚠️ Title length suboptimal: ${titleLength} characters (recommended: ${rules.titleLength.min}-${rules.titleLength.max}}`,
                     results.warnings++;
                 }
                 
@@ -125,10 +126,10 @@ export class MetaTagValidator {
                     message: '};'
                 const descLength = metaTags.description.length;
                 if (descLength >= rules.descriptionLength.min && descLength <= rules.descriptionLength.max) { descTest.passed = true }
-                    descTest.message = `✅ Description length optimal: ${descLength} characters`;
+                    descTest.message = `✅ Description length optimal: ${descLength} characters`,
                     results.passed++;
                 } else {  }
-                    descTest.message = `⚠️ Description length suboptimal: ${descLength} characters (recommended: ${rules.descriptionLength.min}-${rules.descriptionLength.max}})`;
+                    descTest.message = `⚠️ Description length suboptimal: ${descLength} characters (recommended: ${rules.descriptionLength.min}-${rules.descriptionLength.max}}`,
                     results.warnings++;
                 }
 
@@ -163,7 +164,7 @@ export class MetaTagValidator {
             ';'
             // 必須OGタグの存在確認
             for (const requiredTag of rules.required) { const test: TestResult = { }
-                    name: `Required OG, tag: ${requiredTag}`;
+                    name: `Required OG, tag: ${requiredTag}`,
                     passed: false,
                     message: ';'
                 },
@@ -188,10 +189,10 @@ export class MetaTagValidator {
                     message: '};'
                 const imageUrl = ogTags['og: image],'
                 if(this._isValidImageUrl(imageUrl) { imageTest.passed = true }
-                    imageTest.message = `✅ Valid OG image URL: ${imageUrl}`;
+                    imageTest.message = `✅ Valid OG image URL: ${imageUrl}`,
                     results.passed++;
                 } else {  }
-                    imageTest.message = `❌ Invalid OG image URL: ${imageUrl}`;
+                    imageTest.message = `❌ Invalid OG image URL: ${imageUrl}`,
                     results.failed++;
                 }
                 
@@ -225,7 +226,7 @@ export class MetaTagValidator {
             ';'
             // 必須Twitterタグの存在確認
             for (const requiredTag of rules.required) { const test: TestResult = { }
-                    name: `Required Twitter, tag: ${requiredTag}`;
+                    name: `Required Twitter, tag: ${requiredTag}`,
                     passed: false,
                     message: ';'
                 },
@@ -250,10 +251,10 @@ export class MetaTagValidator {
                     message: '};'
                 const cardType = twitterTags['twitter: card],'
                 if(rules.cardTypes.includes(cardType) { cardTest.passed = true }
-                    cardTest.message = `✅ Valid card type: ${cardType}`;
+                    cardTest.message = `✅ Valid card type: ${cardType}`,
                     results.passed++;
                 } else {  }
-                    cardTest.message = `❌ Invalid card type: ${cardType}`;
+                    cardTest.message = `❌ Invalid card type: ${cardType}`,
                     results.failed++;
                 }
                 
@@ -274,7 +275,7 @@ export class MetaTagValidator {
                 tests: [],
                 passed: 0,
                 failed: 0,
-    warnings: 0) })
+    warnings: 0) }
             // 画像の最適化確認
             const socialImages = await this._extractSocialMediaImages();
             
@@ -285,7 +286,7 @@ export class MetaTagValidator {
     
 }
                     const test: TestResult = { }
-                        name: `${platform} image optimization`;
+                        name: `${platform} image optimization`,
                         passed: false,
                         message: ';'
                     },
@@ -328,7 +329,7 @@ export class MetaTagValidator {
             'og:title': 'BubblePop - 泡割りゲーム',
             'og:description': 'HTML5 Canvas を使用したバブルポップゲーム',
             'og:image': `${this.baseUrl}/assets/images/og-image.png`,', 'og:url': this.baseUrl,'
-            'og:type': 'website';
+            'og: type': 'website',
         }
     
     /**
@@ -355,7 +356,7 @@ export class MetaTagValidator {
      * @private
      */)
     private _isValidImageUrl(url: string): boolean { try {
-            new URL(url),
+            new URL(url);
             return url.match(/\.(jpg|jpeg|png|webp|gif|svg)$/i) !== null } catch { return false,
     
     /**

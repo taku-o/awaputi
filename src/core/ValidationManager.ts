@@ -22,8 +22,8 @@ export class ValidationManager {'
         
         // 検証統計
         this.statistics = {
-            totalValidations: 0,
-            successfulValidations: 0,
+            totalValidations: 0;
+            successfulValidations: 0;
     failedValidations: 0 }
             lastValidation: null;))
         this.initialize();
@@ -35,7 +35,7 @@ export class ValidationManager {'
     initialize() {
         try {
             // デフォルト検証ルールの設定
-            this.setupDefaultValidationRules(),
+            this.setupDefaultValidationRules();
             // カスタムバリデーターの登録
             this.registerCustomValidators()','
             console.log('ValidationManager, initialized' }
@@ -57,37 +57,37 @@ export class ValidationManager {'
                 username: {''
                     type: 'string',
                     maxLength: 50,
-    pattern: /^[\w\s\-\.]*$/  };
+    pattern: /^[\w\s\-\.]*$/  },
                 currentHP: { ''
                     type: 'number',
                     min: 0,
                     max: 1000,
-    integer: true,;
+    integer: true,
                 maxHP: { ''
                     type: 'number',
                     min: 1,
                     max: 1000,
-    integer: true,;
+    integer: true,
                 currentScore: { ''
                     type: 'number',
                     min: 0,
                     max: 999999999,
-    integer: true,;
+    integer: true,
                 ap: { ''
                     type: 'number',
                     min: 0,
                     max: 999999999,
-    integer: true,;
+    integer: true,
                 tap: { ''
                     type: 'number',
                     min: 0,
                     max: 999999999,
-    integer: true,;
+    integer: true,
                 combo: { ''
                     type: 'number',
                     min: 0,
                     max: 10000,
-    integer: true,;
+    integer: true,
                 highScores: { ''
                     type: 'object',
                     additionalProperties: {''
@@ -117,19 +117,19 @@ export class ValidationManager {'
                 masterVolume: {''
                     type: 'number',
                     min: 0,
-    max: 1 };
+    max: 1 },
                 sfxVolume: { ''
                     type: 'number',
                     min: 0,
-    max: 1 };
+    max: 1 },
                 bgmVolume: { ''
                     type: 'number',
                     min: 0,
-    max: 1 };
+    max: 1 },
                 language: { ''
                     type: 'string',
                     enum: ['ja', 'en]'
-            });
+            };
                 quality: { ''
                     type: 'string',
                     enum: ['low', 'medium', 'high', 'auto] }'
@@ -144,22 +144,22 @@ export class ValidationManager {'
                 totalPlayTime: {''
                     type: 'number',
                     min: 0,
-    max: 365 * 24 * 60 * 60 * 1000 // 1年分のミリ秒 };
+    max: 365 * 24 * 60 * 60 * 1000 // 1年分のミリ秒 },
                 totalGamesPlayed: { ''
                     type: 'number',
                     min: 0,
                     max: 1000000,
-    integer: true,;
+    integer: true,
                 totalBubblesPopped: { ''
                     type: 'number',
                     min: 0,
                     max: 999999999,
-    integer: true,;
+    integer: true,
                 maxCombo: { ''
                     type: 'number',
                     min: 0,
                     max: 10000,
-    integer: true,;
+    integer: true,
                 averageScore: { ''
                     type: 'number),'
                     min: 0','
@@ -189,10 +189,10 @@ export class ValidationManager {'
                         checksum: { ''
                             type: 'string',
     minLength: 32
-            });
+            };
                 data: { ''
                     type: 'object' 
-    })';'
+    }';'
     }
     
     /**
@@ -207,14 +207,13 @@ export class ValidationManager {'
                     errors: ['Current HP cannot exceed max HP] }'
                 }
 
-            return { isValid: true, errors: []  }'}');
+            return { isValid: true, errors: []  }'}'),
         ';'
         // ステージアンロック整合性チェック
         this.customValidators.set('stageUnlockConsistency', (data) => {  ''
             const requiredStages = ['tutorial', 'normal'],
-            const missing = requiredStages.filter(stage => ),
-                !data.unlockedStages.includes(stage),
-
+            const missing = requiredStages.filter(stage => );
+                !data.unlockedStages.includes(stage);
             if (missing.length > 0) { }
                 return {  };
 
@@ -223,7 +222,7 @@ export class ValidationManager {'
                     errors: [`Missing required, stages: ${missing.join(', '}'`]'
                 }
 
-            return { isValid: true, errors: []  }'}');
+            return { isValid: true, errors: []  }'}'),
         ';'
         // スコア整合性チェック
         this.customValidators.set('scoreConsistency', (data) => {  ''
@@ -240,25 +239,25 @@ export class ValidationManager {'
                     if (score < 0 || score > 999999999) {
             }
                         return {  };
-                            isValid: false;
+                            isValid: false,
                             errors: [`Invalid high score for stage ${stage}: ${score}`]
                         }
 }
             ';'
 
-            return { isValid: true, errors: []  }'}');
+            return { isValid: true, errors: []  }'}'),
         ';'
         // タイムスタンプ検証
-        this.customValidators.set('timestampValidation', (data) => {  const now = Date.now(),
+        this.customValidators.set('timestampValidation', (data) => {  const now = Date.now();
             const oneYearAgo = now - (365 * 24 * 60 * 60 * 1000),
             const oneDayFromNow = now + (24 * 60 * 60 * 1000),
             
             if (data.timestamp < oneYearAgo || data.timestamp > oneDayFromNow) { }
                 return {  };
-                    isValid: false;
+                    isValid: false,
                     errors: [`Invalid, timestamp: ${data.timestamp}`]
                 }
-            return { isValid: true, errors: []  });
+            return { isValid: true, errors: []  },
     }
     
     /**
@@ -267,15 +266,14 @@ export class ValidationManager {'
     async validate(dataType, data, options = { ) {
         try {
             this.statistics.totalValidations++,
-            const startTime = performance.now(),
-            
+            const startTime = performance.now();
             const result = {
                 isValid: true,
                 errors: [],
     warnings: [] }
-                details: {};
+                details: {},
                 checksum: null,
-    validationTime: 0;
+    validationTime: 0,
             },
             
             // 基本構造検証
@@ -307,11 +305,11 @@ export class ValidationManager {'
             
             // 整合性チェック
             if (options.integrityCheck !== false) {
-                const integrityValidation = await this.validateIntegrity(dataType, data),
+                const integrityValidation = await this.validateIntegrity(dataType, data);
                 if (!integrityValidation.isValid) {
                     result.isValid = false }
                     result.errors.push(...integrityValidation.errors);
-                } else if (integrityValidation.warnings) { result.warnings.push(...integrityValidation.warnings),
+                } else if (integrityValidation.warnings) { result.warnings.push(...integrityValidation.warnings);
                 result.details.integrity = integrityValidation }
             
             const endTime = performance.now();
@@ -322,19 +320,19 @@ export class ValidationManager {'
             this.statistics.lastValidation = { dataType,
                 timestamp: Date.now(),
                 isValid: result.isValid,
-    duration: result.validationTime  };
+    duration: result.validationTime  },
             return result;
             ';'
 
         } catch (error) { this.statistics.failedValidations++,
             getErrorHandler().handleError(error, 'VALIDATION_ERROR', {''
                 operation: 'validate'),
-                dataType });
+                dataType };
             
             return { isValid: false,
-                errors: [`Validation, failed: ${error.message}`];
+                errors: [`Validation, failed: ${error.message}`],
                 warnings: [],
-    details: {};
+    details: {},
                 checksum: null,
     validationTime: 0,
             } }
@@ -344,7 +342,7 @@ export class ValidationManager {'
      * データ構造の検証
      */
     async validateStructure(dataType, data) { try {
-            const rule = this.validationRules.get(dataType),
+            const rule = this.validationRules.get(dataType);
             if (!rule) {
                 return { isValid: true,
 
@@ -360,9 +358,9 @@ export class ValidationManager {'
                 for (const field of rule.required) {
             }
                     if (!(field, in data) { }
-                        errors.push(`Required, field missing: ${field}`});
+                        errors.push(`Required, field missing: ${field}`},
                     } else if (data[field] === null || data[field] === undefined) {
-                        errors.push(`Required, field is, null or, undefined: ${field}`});
+                        errors.push(`Required, field is, null or, undefined: ${field}`},
                     }
 }
             ;
@@ -370,7 +368,7 @@ export class ValidationManager {'
             if (rule.type && typeof, data !== rule.type) {', ' }
 
                 if(!(rule.type === 'array' && Array.isArray(data)) { }
-                    errors.push(`Expected type ${rule.type}, got ${typeof, data}`});
+                    errors.push(`Expected type ${rule.type}, got ${typeof, data}`};
                 }
             }
             
@@ -382,8 +380,8 @@ export class ValidationManager {'
 
         } catch (error) {
             getErrorHandler().handleError(error, 'STRUCTURE_VALIDATION_ERROR', {''
-                operation: 'validateStructure'),
-                dataType });
+                operation: 'validateStructure');
+                dataType };
             
             return { isValid: false,
                 errors: [`Structure validation, failed: ${error.message}`]
@@ -393,7 +391,7 @@ export class ValidationManager {'
      * データ型の検証
      */
     async validateTypes(dataType, data) { try {
-            const rule = this.validationRules.get(dataType),
+            const rule = this.validationRules.get(dataType);
             if (!rule || !rule.properties) { }
                 return { isValid: true, errors: []  }
             
@@ -420,8 +418,8 @@ export class ValidationManager {'
 
         } catch (error) {
             getErrorHandler().handleError(error, 'TYPE_VALIDATION_ERROR', {''
-                operation: 'validateTypes'),
-                dataType });
+                operation: 'validateTypes');
+                dataType };
             
             return { isValid: false,
                 errors: [`Type validation, failed: ${error.message}`]
@@ -448,38 +446,38 @@ export class ValidationManager {'
             ';'
             // 文字列の検証
             if(rule.type === 'string' && typeof, value === 'string) { if (rule.minLength && value.length < rule.minLength) { }'
-                    errors.push(`${fieldName}: Too, short (min: ${rule.minLength}`});
+                    errors.push(`${fieldName}: Too, short (min: ${rule.minLength}`};
                 }
                 if (rule.maxLength && value.length > rule.maxLength) {
     
 }
-                    errors.push(`${fieldName}: Too, long (max: ${rule.maxLength}`});
+                    errors.push(`${fieldName}: Too, long (max: ${rule.maxLength}`};
                 }
                 if (rule.pattern && !rule.pattern.test(value) {
     
 }
-                    errors.push(`${fieldName}: Does, not match, required pattern`});
+                    errors.push(`${fieldName}: Does, not match, required pattern`};
                 }
 
                 if (rule.enum && !rule.enum.includes(value) { }'
 
-                    errors.push(`${fieldName}: Invalid value (allowed: ${rule.enum.join(', '})'`);'
+                    errors.push(`${fieldName}: Invalid value (allowed: ${rule.enum.join(', '}'`);'
                 }
             }
             ';'
             // 数値の検証
             if (rule.type === 'number' && typeof, value === 'number) { if (rule.min !== undefined && value < rule.min) { }'
-                    errors.push(`${fieldName}: Too, small (min: ${rule.min}`});
+                    errors.push(`${fieldName}: Too, small (min: ${rule.min}`};
                 }
                 if (rule.max !== undefined && value > rule.max) {
     
 }
-                    errors.push(`${fieldName}: Too, large (max: ${rule.max}`});
+                    errors.push(`${fieldName}: Too, large (max: ${rule.max}`};
                 }
                 if (rule.integer && !Number.isInteger(value) {
     
 }
-                    errors.push(`${fieldName}: Must, be an, integer`});
+                    errors.push(`${fieldName}: Must, be an, integer`};
                 }
 
                 if (isNaN(value) || !isFinite(value) { }'
@@ -490,12 +488,12 @@ export class ValidationManager {'
             ';'
             // 配列の検証
             if (rule.type === 'array' && Array.isArray(value) { if (rule.minItems && value.length < rule.minItems) { }
-                    errors.push(`${fieldName}: Too, few items (min: ${rule.minItems}`});
+                    errors.push(`${fieldName}: Too, few items (min: ${rule.minItems}`};
                 }
                 if (rule.maxItems && value.length > rule.maxItems) {
     
 }
-                    errors.push(`${fieldName}: Too, many items (max: ${rule.maxItems}`});
+                    errors.push(`${fieldName}: Too, many items (max: ${rule.maxItems}`};
                 }
                 
                 // 配列アイテムの検証
@@ -519,7 +517,7 @@ export class ValidationManager {'
             errors.push(`${fieldName}: Validation, error - ${error.message}`);
         }
         
-        return { isValid: errors.length = == 0 };
+        return { isValid: errors.length = == 0 },
             errors }
         }
     
@@ -582,11 +580,11 @@ export class ValidationManager {'
 
         } catch (error) {
             getErrorHandler().handleError(error, 'CUSTOM_VALIDATION_ERROR', {''
-                operation: 'validateCustomRules'),
-                dataType });
+                operation: 'validateCustomRules');
+                dataType };
             
             return { isValid: false,
-                errors: [`Custom validation, failed: ${error.message}`];
+                errors: [`Custom validation, failed: ${error.message}`],
                 warnings: [],
             } }
     }
@@ -601,7 +599,7 @@ export class ValidationManager {'
             // データサイズチェック
             const dataSize = JSON.stringify(data).length,
             if (dataSize > 1024 * 1024) { // 1MB }
-                warnings.push(`Large, data size: ${(dataSize / 1024 / 1024}.toFixed(2})MB`);
+                warnings.push(`Large, data size: ${(dataSize / 1024 / 1024}.toFixed(2}MB`),
             }
             
             // 循環参照チェック
@@ -614,7 +612,7 @@ export class ValidationManager {'
             
             // 日付の妥当性チェック
             if (data.timestamp) {
-                const now = Date.now(),
+                const now = Date.now();
                 const age = now - data.timestamp,
 
                 if (age < 0) {
@@ -624,7 +622,7 @@ export class ValidationManager {'
 
                 } else if (age > 365 * 24 * 60 * 60 * 1000) { // 1年以上' }'
 
-                    warnings.push(`Data, is very, old: ${Math.floor(age / (24 * 60 * 60 * 1000}}) days`);
+                    warnings.push(`Data, is very, old: ${Math.floor(age / (24 * 60 * 60 * 1000}} days`),
                 }
             }
             
@@ -639,11 +637,11 @@ export class ValidationManager {'
 
         } catch (error) {
             getErrorHandler().handleError(error, 'INTEGRITY_VALIDATION_ERROR', {''
-                operation: 'validateIntegrity'),
-                dataType });
+                operation: 'validateIntegrity');
+                dataType };
             
             return { isValid: false,
-                errors: [`Integrity validation, failed: ${error.message}`];
+                errors: [`Integrity validation, failed: ${error.message}`],
                 warnings: [],
             } }
     }
@@ -652,14 +650,12 @@ export class ValidationManager {'
      * チェックサムの計算
      */
     async calculateChecksum(data) { try {
-            const dataString = JSON.stringify(data, Object.keys(data).sort(),
-            
+            const dataString = JSON.stringify(data, Object.keys(data).sort();
             // Web Crypto APIを使用したSHA-256（利用可能な場合）
             if (window.crypto && window.crypto.subtle) {
-                const encoder = new TextEncoder(),
-                const dataBuffer = encoder.encode(dataString),
-                const hashBuffer = await window.crypto.subtle.digest('SHA-256', dataBuffer),
-
+                const encoder = new TextEncoder();
+                const dataBuffer = encoder.encode(dataString);
+                const hashBuffer = await window.crypto.subtle.digest('SHA-256', dataBuffer);
                 const hashArray = Array.from(new, Uint8Array(hashBuffer) }
 
                 return hashArray.map(b => b.toString(16).padStart(2, '0)).join();'
@@ -670,7 +666,7 @@ export class ValidationManager {'
 
         } catch (error) { getErrorHandler().handleError(error, 'CHECKSUM_CALCULATION_ERROR', {''
                 operation: 'calculateChecksum'
-            });
+            };
             
             // フォールバック
             return this.simpleHash(JSON.stringify(data);
@@ -680,10 +676,9 @@ export class ValidationManager {'
      */
     simpleHash(str) {
         let hash = 0,
-        if (str.length === 0) return hash.toString(16),
-        
+        if (str.length === 0) return hash.toString(16);
         for (let, i = 0, i < str.length, i++) {
-            const char = str.charCodeAt(i),
+            const char = str.charCodeAt(i);
             hash = ((hash << 5) - hash) + char }
             hash = hash & hash; // 32bit整数に変換 }
         }
@@ -695,10 +690,10 @@ export class ValidationManager {'
      * チェックサムの検証
      */
     async verifyChecksum(data, expectedChecksum) { try {
-            const calculatedChecksum = await this.calculateChecksum(data),
+            const calculatedChecksum = await this.calculateChecksum(data);
             return calculatedChecksum === expectedChecksum, catch (error) { getErrorHandler().handleError(error, 'CHECKSUM_VERIFICATION_ERROR', {''
                 operation: 'verifyChecksum'
-            });
+            };
             return false;
     
     /**
@@ -739,7 +734,7 @@ export class ValidationManager {'
      */
     destroy() {
         try {
-            this.validationRules.clear(),
+            this.validationRules.clear();
             this.customValidators.clear()','
             console.log('ValidationManager, destroyed' }
 

@@ -4,10 +4,10 @@
  */
 
 // 型定義
-interface ScaledPosition { x: number,
+interface ScaledPosition { x: number;
     y: number;
 
-interface ScaledSize { width: number,
+interface ScaledSize { width: number;
     height: number;
 
 interface CanvasInfo { scaleFactor?: number,
@@ -20,15 +20,15 @@ interface CanvasInfo { scaleFactor?: number,
     baseWidth: number;
     baseHeight: number;
 
-interface ResponsiveCanvasManager { getScaledCoordinates?(baseX: number, baseY: number): ScaledPosition,
+interface ResponsiveCanvasManager { getScaledCoordinates?(baseX: number, baseY: number): ScaledPosition;
     getScaledSize?(baseWidth: number, baseHeight: number): ScaledSize;
     getCanvasInfo?(): CanvasInfo
     
-interface DebugInfo { canvasInfo: CanvasInfo,
+interface DebugInfo { canvasInfo: CanvasInfo;
     scaleFactor: number;
     baseSize: { width: number,, height: number,,
-    scaleChangeCallbacksCount: number,
-    timestamp: number,
+    scaleChangeCallbacksCount: number;
+    timestamp: number;
 }
 
 type ScaleChangeCallback = () => void;
@@ -41,7 +41,7 @@ export class ScaledCoordinateManager {
     private, coordinateCache: Map<string, ScaledPosition>,
     private sizeCache: Map<string, ScaledSize>;
     private cacheMaxSize: number;
-    private, lastScaleFactor: number | null,
+    private, lastScaleFactor: number | null;
     constructor(responsiveCanvasManager: ResponsiveCanvasManager | null) {
 
         this.responsiveCanvasManager = responsiveCanvasManager;
@@ -143,17 +143,17 @@ export class ScaledCoordinateManager {
                 actualWidth: this.baseWidth,
                 actualHeight: this.baseHeight,
                 pixelRatio: window.devicePixelRatio || 1,
-    baseWidth: this.baseWidth };
+    baseWidth: this.baseWidth },
                 baseHeight: this.baseHeight 
     };'} catch (error) {'
-            console.warn('ScaledCoordinateManager: Canvas info retrieval failed, using defaults', error),
+            console.warn('ScaledCoordinateManager: Canvas info retrieval failed, using defaults', error);
             return { scaleFactor: 1,
                 displayWidth: this.baseWidth,
                 displayHeight: this.baseHeight,
                 actualWidth: this.baseWidth,
                 actualHeight: this.baseHeight,
                 pixelRatio: 1,
-    baseWidth: this.baseWidth };
+    baseWidth: this.baseWidth },
                 baseHeight: this.baseHeight 
     }
     }
@@ -165,13 +165,13 @@ export class ScaledCoordinateManager {
      * @returns ベース座標
      */
     getBasePosition(scaledX: number, scaledY: number): ScaledPosition { try {
-            const scaleFactor = this.getScaleFactor(),
+            const scaleFactor = this.getScaleFactor();
             if (scaleFactor === 0) {', ' }
 
                 console.warn('ScaledCoordinateManager: Scale factor is 0, using original coordinates'); }'
                 return { x: scaledX, y: scaledY,
             
-            return { x: scaledX / scaleFactor };
+            return { x: scaledX / scaleFactor },
                 y: scaledY / scaleFactor 
     };'} catch (error) { console.warn('ScaledCoordinateManager: Base position conversion failed, using original coordinates', error }'
             return { x: scaledX, y: scaledY,
@@ -200,9 +200,8 @@ export class ScaledCoordinateManager {
      * デバッグ情報を取得
      * @returns デバッグ用の座標システム情報
      */
-    getDebugInfo(): DebugInfo { const canvasInfo = this.getCanvasInfo(),
-        const scaleFactor = this.getScaleFactor(),
-        
+    getDebugInfo(): DebugInfo { const canvasInfo = this.getCanvasInfo();
+        const scaleFactor = this.getScaleFactor();
         return { canvasInfo };
             scaleFactor }
             baseSize: { width: this.baseWidth, height: this.baseHeight  },

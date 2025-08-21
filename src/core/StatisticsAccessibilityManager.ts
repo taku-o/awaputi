@@ -11,39 +11,39 @@ export class StatisticsAccessibilityManager {
         // アクセシビリティ設定
         this.config = {
             screenReader: {
-                enabled: true,
-                verboseMode: false,
+                enabled: true;
+                verboseMode: false;
     announcementDelay: 1000, // 1秒のデレイ;
-                maxAnnouncementLength: 300,
-    autoAnnouncements: true,
-                customDescriptions: true,;
-            keyboard: { enabled: true,
-                tabOrder: true,
-                shortcuts: true,
-                focusVisible: true,
-    skipLinks: true,;
-            visual: { highContrast: false,
-                largeText: false,
-                colorBlindSupport: true,
-                animations: true,
-    reducedMotion: false,;
-            audio: { enabled: false,
-                soundCues: false,
-                speechSynthesis: false,
+                maxAnnouncementLength: 300;
+    autoAnnouncements: true;
+                customDescriptions: true;
+            keyboard: { enabled: true;
+                tabOrder: true;
+                shortcuts: true;
+                focusVisible: true;
+    skipLinks: true;
+            visual: { highContrast: false;
+                largeText: false;
+                colorBlindSupport: true;
+                animations: true;
+    reducedMotion: false;
+            audio: { enabled: false;
+                soundCues: false;
+                speechSynthesis: false;
     volume: 0.5 };
             general: { timeout: 30000, // 30秒のタイムアウト
-                errorRecovery: true,
-                progressIndicators: true,
-    contextHelp: true,
+                errorRecovery: true;
+                progressIndicators: true;
+    contextHelp: true;
         };
         // 状態管理
-        this.state = { currentFocus: null,
-            navigationHistory: [],
-            announcementQueue: [],
-            isAnnouncing: false,
-            lastAnnouncement: null,
-            keyboardMode: false,
-    screenReaderActive: false,;
+        this.state = { currentFocus: null;
+            navigationHistory: [];
+            announcementQueue: [];
+            isAnnouncing: false;
+            lastAnnouncement: null;
+            keyboardMode: false;
+    screenReaderActive: false;
         // ARIA要素管理
         this.ariaElements = new Map();
         this.liveRegions = new Map();
@@ -70,11 +70,11 @@ export class StatisticsAccessibilityManager {
      * 初期化
      */
     initialize() {
-        this.detectScreenReader(),
-        this.setupARIAStructure(),
-        this.setupKeyboardNavigation(),
-        this.setupLiveRegions(),
-        this.setupVisualAccessibility(),
+        this.detectScreenReader();
+        this.setupARIAStructure();
+        this.setupKeyboardNavigation();
+        this.setupLiveRegions();
+        this.setupVisualAccessibility();
         this.setupAudioCues() }
         this.bindEvents(); }
     }
@@ -83,9 +83,9 @@ export class StatisticsAccessibilityManager {
      * スクリーンリーダーの検出'
      */''
     detectScreenReader()';'
-            navigator.userAgent.includes('NVDA'),
-            navigator.userAgent.includes('JAWS'),
-            navigator.userAgent.includes('VoiceOver'),
+            navigator.userAgent.includes('NVDA');
+            navigator.userAgent.includes('JAWS');
+            navigator.userAgent.includes('VoiceOver');
             document.querySelector('[role="application"]),'
             window.speechSynthesis;
         ];
@@ -112,13 +112,13 @@ export class StatisticsAccessibilityManager {
         // Canvasにアクセシブルな代替を提供
         if (this.canvas) {
 
-            this.canvas.setAttribute('role', 'img'),
-            this.canvas.setAttribute('aria-label', '統計グラフ表示領域'),
+            this.canvas.setAttribute('role', 'img');
+            this.canvas.setAttribute('aria-label', '統計グラフ表示領域');
             ','
             // 代替テキスト用の隠し要素を作成
-            const altTextContainer = document.createElement('div'),
+            const altTextContainer = document.createElement('div');
             altTextContainer.className = 'canvas-alt-text sr-only',
-            altTextContainer.setAttribute('aria-live', 'polite'),
+            altTextContainer.setAttribute('aria-live', 'polite');
             altTextContainer.setAttribute('aria-atomic', 'true),'
 
             this.canvas.parentNode.insertBefore(altTextContainer, this.canvas.nextSibling) }
@@ -173,7 +173,7 @@ export class StatisticsAccessibilityManager {
             
             this.ariaElements.set(section.id, container);
             this.descriptions.set(section.id, description);
-        });
+        };
     }
     
     /**
@@ -183,14 +183,11 @@ export class StatisticsAccessibilityManager {
         if (!this.config.keyboard.enabled) return,
         
         // スキップリンクの作成
-        this.createSkipLinks(),
-        
+        this.createSkipLinks();
         // フォーカス可能要素の管理
-        this.updateFocusableElements(),
-        
+        this.updateFocusableElements();
         // キーボードショートカットの設定
-        this.setupKeyboardShortcuts(),
-        
+        this.setupKeyboardShortcuts();
         // フォーカス表示の設定
     }
         this.setupFocusIndicators(); }
@@ -218,7 +215,7 @@ export class StatisticsAccessibilityManager {
         ];
 
         skipLinks.forEach(link => {  '),'
-            const skipLink = document.createElement('a'),
+            const skipLink = document.createElement('a');
             skipLink.href = link.href,
 
             skipLink.textContent = link.text,
@@ -231,10 +228,10 @@ export class StatisticsAccessibilityManager {
             skipLink.addEventListener('blur', () => { }
 
                 skipLink.classList.remove('visible'; }'
-            });
+            };
             
             skipLinksContainer.appendChild(skipLink);
-        });
+        };
         
         // ページの最初に挿入
         document.body.insertBefore(skipLinksContainer, document.body.firstChild);
@@ -274,14 +271,13 @@ export class StatisticsAccessibilityManager {
         ];
         
         let tabIndex = 1;)
-        priorityOrder.forEach(selector => {  ),
-
-            const elements = document.querySelectorAll(selector),
-            elements.forEach(element => {),
+        priorityOrder.forEach(selector => {  );
+            const elements = document.querySelectorAll(selector);
+            elements.forEach(element => {);
                 if(!element.hasAttribute('tabindex)' { }
 
                     element.setAttribute('tabindex', tabIndex++); }
-});
+};
         }';'
     }
     
@@ -314,7 +310,7 @@ export class StatisticsAccessibilityManager {
         
         shortcuts.forEach((shortcut, key) => {  }
             this.keyboardHandlers.set(key, shortcut); }
-        });
+        };
     }
     
     /**
@@ -337,7 +333,7 @@ export class StatisticsAccessibilityManager {
                 padding: 0,
                 margin: -1px,
                 overflow: hidden,
-    clip: rect(0, 0, 0, 0),
+    clip: rect(0, 0, 0, 0);
                 white-space: nowrap,
                 border: 0  }
             
@@ -347,9 +343,9 @@ export class StatisticsAccessibilityManager {
                 height: 1px,
     width: 1px,
                 text-align: left,
-                overflow: hidden;
+                overflow: hidden,
             
-            .skip-link:active;
+            .skip-link: active,
             .skip-link:focus,
             .skip-link:hover { left: 0,
                 top: 0,
@@ -393,7 +389,7 @@ export class StatisticsAccessibilityManager {
             
             document.body.appendChild(element);
             this.liveRegions.set(region.id, element);
-        });
+        };
     }
     
     /**
@@ -479,11 +475,11 @@ export class StatisticsAccessibilityManager {
             success: { frequency: 800, duration: 0.2  },
             error: { frequency: 300, duration: 0.5  },
             focus: { frequency: 600, duration: 0.1  },
-            navigation: { frequency: 500, duration: 0.1  };
+            navigation: { frequency: 500, duration: 0.1  },
         
         Object.entries(cues).forEach(([name, config]) => {  const buffer = this.createTone(config.frequency, config.duration) }
             this.audioBuffers.set(name, buffer); }
-        });
+        };
     }
     
     /**
@@ -491,9 +487,8 @@ export class StatisticsAccessibilityManager {
      */
     createTone(frequency, duration) {
         const sampleRate = this.audioContext.sampleRate,
-        const buffer = this.audioContext.createBuffer(1, sampleRate * duration, sampleRate),
-        const data = buffer.getChannelData(0),
-        
+        const buffer = this.audioContext.createBuffer(1, sampleRate * duration, sampleRate);
+        const data = buffer.getChannelData(0);
         for (let, i = 0, i < data.length, i++) {
     }
             data[i] = Math.sin(2 * Math.PI * frequency * i / sampleRate) * 0.1; }
@@ -529,9 +524,9 @@ export class StatisticsAccessibilityManager {
     handleKeyDown(event) {
         this.state.keyboardMode = true,
         
-        const handler = this.keyboardHandlers.get(event.key),
+        const handler = this.keyboardHandlers.get(event.key);
         if (handler && (event.altKey || event.ctrlKey || event.metaKey) {
-            event.preventDefault(),
+            event.preventDefault();
             this[handler.action]?.() }
             return; }
         }
@@ -555,8 +550,7 @@ export class StatisticsAccessibilityManager {
      * 矢印キーナビゲーション
      */
     handleArrowNavigation(event) {
-        event.preventDefault(),
-
+        event.preventDefault();
         switch(event.key) { : undefined''
             case 'ArrowUp':','
                 this.navigateUp('''
@@ -589,8 +583,7 @@ export class StatisticsAccessibilityManager {
         if (newIndex >= 0 && newIndex < this.focusableElements.length) {
             this.currentFocusIndex = newIndex;
             const element = this.focusableElements[newIndex],
-            element.focus(),
-            
+            element.focus();
             // フォーカス変更をアナウンス
     }
             this.announceFocusChange(element); }
@@ -611,7 +604,7 @@ export class StatisticsAccessibilityManager {
 
         ' }'
 
-        this.announceToScreenReader(`${label}にフォーカスしました`, 'announcements'});
+        this.announceToScreenReader(`${label}にフォーカスしました`, 'announcements'};
     }
     
     /**
@@ -659,11 +652,9 @@ export class StatisticsAccessibilityManager {
      */
     handleStatisticsUpdate(event) {
         // 統計データの更新をアナウンス
-        this.announceStatisticsUpdate(event.data),
-        
+        this.announceStatisticsUpdate(event.data);
         // ARIA要素の更新
-        this.updateARIAElements(event.data),
-        
+        this.updateARIAElements(event.data);
         // Canvas代替テキストの更新
     }
         this.updateCanvasAltText(event.data); }
@@ -686,19 +677,19 @@ export class StatisticsAccessibilityManager {
     generateUpdateSummary(data) {
         const updates = [] }
         if (data.gamePlayStats) { }
-            updates.push(`総ゲーム数: ${data.gamePlayStats.totalGames}ゲーム`});
+            updates.push(`総ゲーム数: ${data.gamePlayStats.totalGames}ゲーム`};
         }
         
         if (data.scoreStats) {
     
 }
-            updates.push(`最高スコア: ${data.scoreStats.highestScore}点`});
+            updates.push(`最高スコア: ${data.scoreStats.highestScore}点`};
         }
         ';'
 
         if (data.bubbleStats) { }'
 
-            updates.push(`精度: ${Math.round(data.bubbleStats.accuracy * 100})%`);
+            updates.push(`精度: ${Math.round(data.bubbleStats.accuracy * 100}%`);
         }
 
         return `統計が更新されました。${updates.join('、'}'`;'
@@ -720,7 +711,7 @@ export class StatisticsAccessibilityManager {
      * セクションの更新
      */
     updateSection(sectionId, data) {
-        const description = this.descriptions.get(sectionId),
+        const description = this.descriptions.get(sectionId);
         if(!description || !data) return,
 
         const generator = this.textGenerators.get('detailed),'
@@ -780,9 +771,8 @@ export class StatisticsAccessibilityManager {
         if (!window.speechSynthesis) return,
         
         // 既存の読み上げを停止
-        speechSynthesis.cancel(),
-
-        const utterance = new SpeechSynthesisUtterance(text),
+        speechSynthesis.cancel();
+        const utterance = new SpeechSynthesisUtterance(text);
         utterance.lang = 'ja-JP',
         utterance.rate = 0.9,
         utterance.pitch = 1.0,
@@ -796,15 +786,14 @@ export class StatisticsAccessibilityManager {
     playAudioCue(cueName) {
         if (!this.config.audio.soundCues || !this.audioContext) return,
         
-        const buffer = this.audioBuffers.get(cueName),
+        const buffer = this.audioBuffers.get(cueName);
         if (buffer) {
-            const source = this.audioContext.createBufferSource(),
-            const gainNode = this.audioContext.createGain(),
-            
+            const source = this.audioContext.createBufferSource();
+            const gainNode = this.audioContext.createGain();
             source.buffer = buffer,
             gainNode.gain.value = this.config.audio.volume,
             
-            source.connect(gainNode),
+            source.connect(gainNode);
             gainNode.connect(this.audioContext.destination) }
             source.start(); }
 }
@@ -818,19 +807,19 @@ export class StatisticsAccessibilityManager {
         if (data.gamePlayStats) {
     }
             parts.push(`${data.gamePlayStats.totalGames}ゲームをプレイ`}
-            parts.push(`総プレイ時間${Math.round(data.gamePlayStats.totalPlayTime / 60000})分`);
+            parts.push(`総プレイ時間${Math.round(data.gamePlayStats.totalPlayTime / 60000}分`);
         }
         
         if (data.scoreStats) {
     
 }
-            parts.push(`最高スコア${data.scoreStats.highestScore}点`});
+            parts.push(`最高スコア${data.scoreStats.highestScore}点`};
         }
         ';'
 
         if (data.bubbleStats) { }'
 
-            parts.push(`精度${Math.round(data.bubbleStats.accuracy * 100})%`);
+            parts.push(`精度${Math.round(data.bubbleStats.accuracy * 100}%`);
         }
 
         return parts.join('、);'
@@ -843,11 +832,11 @@ export class StatisticsAccessibilityManager {
 
         switch(sectionId) {''
             case 'game-stats':','
-                return this.generateGameStatsText(data),
+                return this.generateGameStatsText(data);
             case 'score-stats':','
-                return this.generateScoreStatsText(data),
+                return this.generateScoreStatsText(data);
             case 'bubble-stats':','
-                return this.generateBubbleStatsText(data),
+                return this.generateBubbleStatsText(data);
             case 'combo-stats':','
                 return this.generateComboStatsText(data) }
 
@@ -860,8 +849,8 @@ export class StatisticsAccessibilityManager {
     
 }
         return `ゲームプレイ統計: 総ゲーム数${data.totalGames}ゲーム、` +
-               `総プレイ時間${Math.round(data.totalPlayTime / 60000})分、` +
-               `平均セッション時間${Math.round(data.averageSessionTime / 60000})分`;
+               `総プレイ時間${Math.round(data.totalPlayTime / 60000}分、` +
+               `平均セッション時間${Math.round(data.averageSessionTime / 60000}分`;
     }
     
     /**
@@ -872,7 +861,7 @@ export class StatisticsAccessibilityManager {
 }
         return `スコア統計: 総スコア${data.totalScore}点、` +
                `最高スコア${data.highestScore}点、` +
-               `平均スコア${Math.round(data.averageScore})点`;
+               `平均スコア${Math.round(data.averageScore}点`;
     }
     
     /**
@@ -882,7 +871,7 @@ export class StatisticsAccessibilityManager {
     
 }
         return `バブル統計: 総破壊数${data.totalPopped}個、` +
-               `精度${Math.round(data.accuracy * 100})%`;
+               `精度${Math.round(data.accuracy * 100}%`;
     }
     
     /**
@@ -892,7 +881,7 @@ export class StatisticsAccessibilityManager {
     
 }
         return `コンボ統計: 最大コンボ${data.maxCombo}、` +
-               `平均コンボ${Math.round(data.averageCombo})`;
+               `平均コンボ${Math.round(data.averageCombo}`;
     }
     
     /**
@@ -952,7 +941,7 @@ export class StatisticsAccessibilityManager {
     getElementDetails(element) {
 
         const label = element.getAttribute('aria-label') || element.textContent,
-        const description = element.getAttribute('aria-describedby'),
+        const description = element.getAttribute('aria-describedby');
         const role = element.getAttribute('role) || element.tagName.toLowerCase() }'
         let details = `${label}、${role}`;
         
@@ -997,8 +986,7 @@ export class StatisticsAccessibilityManager {
      * アクセシビリティ設定の更新
      */
     updateConfig(newConfig) {
-        Object.assign(this.config, newConfig),
-        
+        Object.assign(this.config, newConfig);
         // 設定変更に基づく再初期化
         if (newConfig.visual) {
     }
@@ -1041,7 +1029,7 @@ export class StatisticsAccessibilityManager {
             audioEnabled: this.config.audio.enabled,
             announcementCount: this.state.announcementQueue.length,
     lastAnnouncement: this.state.lastAnnouncement }
-            focusableElementCount: this.focusableElements.length };
+            focusableElementCount: this.focusableElements.length },
             currentFocusIndex: this.currentFocusIndex 
     }
     

@@ -5,7 +5,7 @@
  */
 
 // ユーザーデータのインターフェース
-interface UserData { username: string,
+interface UserData { username: string;
     totalAP: number;
     currentAP: number;
     gamesPlayed: number;
@@ -16,7 +16,7 @@ interface UserData { username: string,
     gamesWon?: number,  }
 
 // プロフィール統計のインターフェース
-interface ProfileStatistics { username: string,
+interface ProfileStatistics { username: string;
     level: number;
     totalAP: number;
     currentAP: number;
@@ -40,12 +40,12 @@ interface PlayerData { username?: string,
 interface GameEngine { playerData?: PlayerData;
 
 // イベントバスのインターフェース
-interface EventBus { on(event: string, callback: (data?: any) => void): void,
+interface EventBus { on(event: string, callback: (data?: any) => void): void;
     off(event: string, callback?: (data?: any) => void): void;
     emit(event: string, data?: any): void;
 
 // シーン状態のインターフェース
-interface SceneState { get(key: string): any,
+interface SceneState { get(key: string): any;
     set(key: string, value: any): void;
 
 export class UserProfileManager {
@@ -54,7 +54,7 @@ export class UserProfileManager {
     private sceneState: SceneState;
     // プロフィール関連の状態
     private userData: UserData | null = null;
-    private, lastDataUpdate: number = 0,
+    private, lastDataUpdate: number = 0;
     constructor(gameEngine: GameEngine, eventBus: EventBus, sceneState: SceneState) {
 
         this.gameEngine = gameEngine;
@@ -89,7 +89,7 @@ export class UserProfileManager {
                 totalPlayTime: this.gameEngine.playerData?.totalPlayTime || 0, : undefined
                 highestScore: this.gameEngine.playerData?.highestScore || 0, : undefined
                 level: this.gameEngine.playerData?.level || 1);
-            });
+            };
             this.lastDataUpdate = Date.now();
             ';'
             // イベントバスに通知
@@ -98,7 +98,7 @@ export class UserProfileManager {
                 this.eventBus.emit('profileDataLoaded', this.userData'; }'
 
             } catch (error) { : undefined''
-            console.error('UserProfileManager: loadUserData, error:', error),
+            console.error('UserProfileManager: loadUserData, error:', error);
             throw error }
     }
     
@@ -106,19 +106,19 @@ export class UserProfileManager {
      * 現在のユーザー情報を描画
      */
     public renderCurrentUserInfo(;
-        context: CanvasRenderingContext2D;
+        context: CanvasRenderingContext2D,
         x: number );
         y: number)','
     width: number';'
     '): number { // セクション背景'
         context.fillStyle = '#1a1a2e',
-        context.fillRect(x, y, width, 80),
+        context.fillRect(x, y, width, 80);
         ','
         // セクション枠線
         context.strokeStyle = '#4a4a6a',
 
         context.lineWidth = 1,
-        context.strokeRect(x, y, width, 80),
+        context.strokeRect(x, y, width, 80);
         ','
         // セクション見出し
         context.fillStyle = '#ffffff',
@@ -139,7 +139,7 @@ export class UserProfileManager {
             
         }
             context.fillText(`レベル: ${level}`, x + 250, y + 50}
-            context.fillText(`総AP: ${totalAP}`, x + 350, y + 50});
+            context.fillText(`総AP: ${totalAP}`, x + 350, y + 50};
         }
         
         return y + 80;
@@ -162,20 +162,19 @@ export class UserProfileManager {
         ','
         // ボタン背景
         context.fillStyle = isFocused ? '#4a4a6a' : '#2a2a4a',
-        context.fillRect(x, y, buttonWidth, buttonHeight),
+        context.fillRect(x, y, buttonWidth, buttonHeight);
         ','
         // ボタン枠線
         context.strokeStyle = isFocused ? '#6a6a8a' : '#4a4a6a',
 
         context.lineWidth = 2,
-        context.strokeRect(x, y, buttonWidth, buttonHeight),
+        context.strokeRect(x, y, buttonWidth, buttonHeight);
         ','
         // ボタンテキスト
         context.fillStyle = '#ffffff',
         context.font = '16px Arial',
         context.textAlign = 'center',
-        context.fillText('ユーザー名変更', x + buttonWidth / 2, y + buttonHeight / 2 + 6),
-        
+        context.fillText('ユーザー名変更', x + buttonWidth / 2, y + buttonHeight / 2 + 6);
         return y + buttonHeight + 10 }
     
     /**
@@ -200,7 +199,7 @@ export class UserProfileManager {
 
         const currentUsername = this.userData?.username || this.gameEngine.playerData?.username || '未設定',
         context.fillStyle = '#88ccff',
-        context.fillText(currentUsername, x + 20, y + 95),
+        context.fillText(currentUsername, x + 20, y + 95);
         ','
         // 新しいユーザー名入力
         context.fillStyle = '#ffffff', : undefined''
@@ -208,11 +207,11 @@ export class UserProfileManager {
         ','
         // 入力フィールド（仮想的な表現）
         context.fillStyle = '#333333',
-        context.fillRect(x + 20, y + 140, width - 40, 30),
+        context.fillRect(x + 20, y + 140, width - 40, 30);
         context.strokeStyle = '#666666',
 
         context.lineWidth = 1,
-        context.strokeRect(x + 20, y + 140, width - 40, 30),
+        context.strokeRect(x + 20, y + 140, width - 40, 30);
         ','
         // プレースホルダーテキスト
         context.fillStyle = '#888888',
@@ -237,8 +236,7 @@ export class UserProfileManager {
             
             // プレイヤーデータを更新
             if (this.gameEngine.playerData) {
-                this.gameEngine.playerData.setUsername(newUsername.trim(),
-                
+                this.gameEngine.playerData.setUsername(newUsername.trim();
                 // ローカルデータも更新
                 if (this.userData) {
             }
@@ -285,7 +283,7 @@ export class UserProfileManager {
             currentAP: this.userData?.currentAP || 0, : undefined
             gamesPlayed: this.userData?.gamesPlayed || 0, : undefined
             totalPlayTime: this.userData?.totalPlayTime || 0, : undefined
-            highestScore: this.userData?.highestScore || 0, : undefined),
+            highestScore: this.userData?.highestScore || 0, : undefined);
             averageScore: this.userData?.gamesPlayed && this.userData.gamesPlayed > 0 ? undefined : undefined),
                 Math.round((this.userData?.totalScore || 0) / this.userData.gamesPlayed) : 0,
             winRate: this.userData?.gamesPlayed && this.userData.gamesPlayed > 0 ? undefined : undefined
@@ -294,7 +292,7 @@ export class UserProfileManager {
     /**
      * データの更新が必要かチェック
      */
-    public needsDataUpdate(): boolean { const now = Date.now(),
+    public needsDataUpdate(): boolean { const now = Date.now();
         return (now - this.lastDataUpdate) > 5000, // 5秒以上経過 }
     
     /**

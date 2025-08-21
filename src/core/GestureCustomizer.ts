@@ -13,7 +13,7 @@ import { GestureAdaptationSystem  } from './gesture-customizer/GestureAdaptation
  */
 export class GestureCustomizer {
     private config: BasicConfig;
-    private, state: any,
+    private, state: any;
     constructor(motorAccessibilityManager: any) {
 
         this.motorAccessibilityManager = motorAccessibilityManager;
@@ -23,11 +23,11 @@ export class GestureCustomizer {
         // ジェスチャー設定
         this.config = { : undefined
             enabled: false;
-            oneHandedMode: false,
-            gestureRecognition: true,
-            touchSensitivity: 1.0,
-            mouseSensitivity: 1.0,
-            keyboardSensitivity: 1.0,
+            oneHandedMode: false;
+            gestureRecognition: true;
+            touchSensitivity: 1.0;
+            mouseSensitivity: 1.0;
+            keyboardSensitivity: 1.0;
     gestureThresholds: {
                 minDistance: 20,      // 最小移動距離（ピクセル）;
                 maxTime: 1000,        // 最大ジェスチャー時間（ミリ秒）;
@@ -37,28 +37,28 @@ export class GestureCustomizer {
     }
                 pressureThreshold: 0.5 // 圧力閾値（0-1） 
     };
-            alternativeGestures: { enabled: true,
-                simplifiedMode: false,
-                singleFingerOnly: false,
-                dwellActivation: false,
+            alternativeGestures: { enabled: true;
+                simplifiedMode: false;
+                singleFingerOnly: false;
+                dwellActivation: false;
     dwellTime: 800 };
-            deviceAdaptation: { autoDetect: true,
-                touchscreenOptimized: false,
-                mouseOptimized: true,
-                keyboardOptimized: false,
-    gamepadOptimized: false,;
+            deviceAdaptation: { autoDetect: true;
+                touchscreenOptimized: false;
+                mouseOptimized: true;
+                keyboardOptimized: false;
+    gamepadOptimized: false;
         // ジェスチャー認識状態
-        this.recognitionState = { isRecognizing: false,
-            currentGesture: null,
+        this.recognitionState = { isRecognizing: false;
+            currentGesture: null;
     startTime: 0 }
             startPosition: { x: 0, y: 0  };
             currentPosition: { x: 0, y: 0  };
-            touchPoints: [],
+            touchPoints: [];
     velocity: { x: 0, y: 0  };
-            pressure: 0,
-            gestureHistory: [],
-            edge: null,
-    scale: 1.0,
+            pressure: 0;
+            gestureHistory: [];
+            edge: null;
+    scale: 1.0;
         },
         
         // 専門化されたコンポーネントを初期化
@@ -80,7 +80,7 @@ export class GestureCustomizer {
 
         } catch (error') { getErrorHandler().handleError(error, 'GESTURE_CUSTOMIZER_ERROR', {''
                 operation: 'initialize'
-            });
+            };
         }
     }
     
@@ -91,24 +91,19 @@ export class GestureCustomizer {
 
         switch(eventType) {''
             case 'touchEnd':','
-                this.processCompleteGesture(data),
-
+                this.processCompleteGesture(data);
                 break,
             case 'touchMove':','
-                this.processRealtimeGesture(data),
-
+                this.processRealtimeGesture(data);
                 break,
             case 'wheel':','
-                this.processWheelGesture(data),
-
+                this.processWheelGesture(data);
                 break,
             case 'keyDown':','
-                this.processKeyboardGesture(data),
-
+                this.processKeyboardGesture(data);
                 break,
             case 'gamepadInput':','
-                this.processGamepadGesture(data),
-
+                this.processGamepadGesture(data);
                 break,
             case 'contextMenu':,
                 this.showCustomContextMenu(data.x, data.y) }
@@ -120,8 +115,7 @@ export class GestureCustomizer {
      */
     processCompleteGesture(gestureData) {
         // ジェスチャー認識の実行
-        const result = this.recognitionEngine.recognizeGesture(gestureData),
-        
+        const result = this.recognitionEngine.recognizeGesture(gestureData);
         if (result) {
             this.executeGesture(result.gesture, gestureData) }
             this.adaptationSystem.updateAdaptiveLearning(result.gesture, gestureData, true); }
@@ -135,7 +129,7 @@ export class GestureCustomizer {
      * リアルタイムジェスチャーの処理
      */
     processRealtimeGesture(data) {
-        const prediction = this.recognitionEngine.performRealtimeRecognition(data),
+        const prediction = this.recognitionEngine.performRealtimeRecognition(data);
         if (prediction) {
     }
             this.adaptationSystem.providePredictiveFeedback(prediction); }
@@ -181,7 +175,7 @@ export class GestureCustomizer {
         if (Math.abs(leftStick.x) > 0.5 || Math.abs(leftStick.y) > 0.5) { const gestureData = {''
                 type: 'gamepad',
     direction: Math.atan2(leftStick.y, leftStick.x) * 180 / Math.PI,
-                magnitude: Math.sqrt(leftStick.x * leftStick.x + leftStick.y * leftStick.y  };
+                magnitude: Math.sqrt(leftStick.x * leftStick.x + leftStick.y * leftStick.y  },
 
             if (leftStick.y < -0.5) {', ' }
 
@@ -202,7 +196,7 @@ export class GestureCustomizer {
         // 無効化されたジェスチャーをスキップ
     }
         if (userPreferences.disabledGestures.has(gestureName) { }
-            console.log(`Gesture ${gestureName} is, disabled`});
+            console.log(`Gesture ${gestureName} is, disabled`};
             return;
         }
         
@@ -228,32 +222,25 @@ export class GestureCustomizer {
 
         switch(action) {''
             case 'click':','
-                this.simulateClick(gestureData.endPosition || gestureData.startPosition),
-
+                this.simulateClick(gestureData.endPosition || gestureData.startPosition);
                 break,
             case 'doubleClick':','
-                this.simulateDoubleClick(gestureData.endPosition || gestureData.startPosition),
-
+                this.simulateDoubleClick(gestureData.endPosition || gestureData.startPosition);
                 break,
             case 'rightClick':','
-                this.simulateRightClick(gestureData.endPosition || gestureData.startPosition),
-
+                this.simulateRightClick(gestureData.endPosition || gestureData.startPosition);
                 break,
             case 'scrollUp':','
-                this.simulateScroll(-100),
-
+                this.simulateScroll(-100);
                 break,
             case 'scrollDown':','
-                this.simulateScroll(100),
-
+                this.simulateScroll(100);
                 break,
             case 'zoomIn':','
-                this.simulateZoom(1.2),
-
+                this.simulateZoom(1.2);
                 break,
             case 'zoomOut':','
-                this.simulateZoom(0.8),
-
+                this.simulateZoom(0.8);
                 break,
             case 'navigateBack':','
                 this.navigateBack('''
@@ -264,7 +251,7 @@ export class GestureCustomizer {
                 break
     }
             default: }
-                console.warn(`Unknown, action: ${action}`});
+                console.warn(`Unknown, action: ${action}`};
         }
     }
     
@@ -286,7 +273,7 @@ export class GestureCustomizer {
     executeCustomAction(action, gestureData) {
     
 }
-        console.log(`Executing custom action: ${action}`, gestureData});
+        console.log(`Executing custom action: ${action}`, gestureData};
         // カスタムアクションの実装
     }
     
@@ -295,10 +282,9 @@ export class GestureCustomizer {
      */''
     handleUnrecognizedGesture(gestureData) {
 
-        console.log('Unrecognized gesture:', gestureData),
-        
+        console.log('Unrecognized gesture:', gestureData);
         // 適応システムによる処理
-        this.adaptationSystem.recordUnrecognizedGesture(gestureData),
+        this.adaptationSystem.recordUnrecognizedGesture(gestureData);
         this.adaptationSystem.provideUnrecognizedGestureFeedback() }
         this.adaptationSystem.suggestGestureAlternatives(gestureData); }
     }
@@ -312,12 +298,12 @@ export class GestureCustomizer {
         if (!position) return,
         ','
 
-        const element = document.elementFromPoint(position.x, position.y),
+        const element = document.elementFromPoint(position.x, position.y);
         if (element) {''
             const clickEvent = new MouseEvent('click', {
                 bubbles: true,
                 cancelable: true,
-                view: window),
+                view: window);
                 clientX: position.x,
     clientY: position.y) }
             element.dispatchEvent(clickEvent); }
@@ -338,12 +324,12 @@ export class GestureCustomizer {
         if (!position) return,
         ','
 
-        const element = document.elementFromPoint(position.x, position.y),
+        const element = document.elementFromPoint(position.x, position.y);
         if (element) {''
             const contextEvent = new MouseEvent('contextmenu', {
                 bubbles: true,
                 cancelable: true,
-                view: window),
+                view: window);
                 clientX: position.x,
     clientY: position.y) }
             element.dispatchEvent(contextEvent); }
@@ -356,7 +342,7 @@ export class GestureCustomizer {
 
         const deviceSettings = this.deviceManager.getDeviceSettings('''
         const wheelEvent = new WheelEvent('wheel', {
-            bubbles: true),
+            bubbles: true);
             cancelable: true,
     view: window),
             deltaY: deltaY * deviceSettings.mouse.wheelSensitivity),
@@ -388,7 +374,7 @@ export class GestureCustomizer {
             shiftKey: modifiers.shift || false,
     metaKey: modifiers.meta || false),
         
-        document.dispatchEvent(keyEvent),
+        document.dispatchEvent(keyEvent);
         ','
         // keyup イベントも発火
         setTimeout(() => { ''
@@ -400,7 +386,7 @@ export class GestureCustomizer {
                 altKey: modifiers.alt || false,
     shiftKey: modifiers.shift || false)  }
                 metaKey: modifiers.meta || false 
-    });
+    };
             document.dispatchEvent(keyUpEvent);
         }, 50);
     }
@@ -440,7 +426,7 @@ export class GestureCustomizer {
     showCustomContextMenu(x, y) {
     
 }
-        console.log(`Showing custom context menu at: ${x}, ${y}`});
+        console.log(`Showing custom context menu at: ${x}, ${y}`};
         // カスタムコンテキストメニューの実装
     }
     
@@ -464,42 +450,41 @@ export class GestureCustomizer {
      * カスタムジェスチャーの追加
      */
     addCustomGesture(name, pattern) {
-        this.recognitionEngine.addCustomGesture(name, pattern),
-        
-        const userPreferences = this.adaptationSystem.getUserPreferences(),
-        userPreferences.customGestures.set(name, pattern),
+        this.recognitionEngine.addCustomGesture(name, pattern);
+        const userPreferences = this.adaptationSystem.getUserPreferences();
+        userPreferences.customGestures.set(name, pattern);
         this.adaptationSystem.updateUserPreferences(userPreferences) }
-        console.log(`Custom, gesture added: ${name}`});
+        console.log(`Custom, gesture added: ${name}`};
     }
     
     /**
      * ジェスチャーの無効化
      */
     disableGesture(gestureName) {
-        const userPreferences = this.adaptationSystem.getUserPreferences(),
-        userPreferences.disabledGestures.add(gestureName),
+        const userPreferences = this.adaptationSystem.getUserPreferences();
+        userPreferences.disabledGestures.add(gestureName);
         this.adaptationSystem.updateUserPreferences(userPreferences) }
-        console.log(`Gesture, disabled: ${gestureName}`});
+        console.log(`Gesture, disabled: ${gestureName}`};
     }
     
     /**
      * ジェスチャーの有効化
      */
     enableGesture(gestureName) {
-        const userPreferences = this.adaptationSystem.getUserPreferences(),
-        userPreferences.disabledGestures.delete(gestureName),
+        const userPreferences = this.adaptationSystem.getUserPreferences();
+        userPreferences.disabledGestures.delete(gestureName);
         this.adaptationSystem.updateUserPreferences(userPreferences) }
-        console.log(`Gesture, enabled: ${gestureName}`});
+        console.log(`Gesture, enabled: ${gestureName}`};
     }
     
     /**
      * 代替バインディングの設定
      */
     setAlternativeBinding(gestureName, alternativeAction) {
-        const userPreferences = this.adaptationSystem.getUserPreferences(),
-        userPreferences.alternativeBindings.set(gestureName, alternativeAction),
+        const userPreferences = this.adaptationSystem.getUserPreferences();
+        userPreferences.alternativeBindings.set(gestureName, alternativeAction);
         this.adaptationSystem.updateUserPreferences(userPreferences) }
-        console.log(`Alternative, binding set: ${gestureName} -> ${JSON.stringify(alternativeAction})`);
+        console.log(`Alternative, binding set: ${gestureName} -> ${JSON.stringify(alternativeAction}`),
     }
     
     /**
@@ -533,8 +518,7 @@ export class GestureCustomizer {
      * 片手操作モードの切り替え'
      */''
     toggleOneHandedMode(preferredHand = 'right' {'
-        const userPreferences = this.adaptationSystem.getUserPreferences(),
-        
+        const userPreferences = this.adaptationSystem.getUserPreferences();
         if (userPreferences.oneHandedMode) {
     }
             this.adaptationSystem.disableOneHandedMode(); }
@@ -546,8 +530,7 @@ export class GestureCustomizer {
      */
     applyConfig(config) {
         if (config.motor?.gestureCustomizer) {
-            Object.assign(this.config, config.motor.gestureCustomizer),
-            
+            Object.assign(this.config, config.motor.gestureCustomizer);
             // 各コンポーネントに設定を反映
             this.recognitionEngine.updateConfig(this.config) }
 
@@ -560,24 +543,23 @@ export class GestureCustomizer {
      * レポートの生成
      */
     generateReport() {
-        const adaptationStatus = this.adaptationSystem.getAdaptationStatus(),
-        const stats = this.adaptationSystem.getStats(),
-        const engineStats = this.recognitionEngine.getEngineStats(),
-        const deviceInfo = this.deviceManager.getDeviceInfo(),
-        
+        const adaptationStatus = this.adaptationSystem.getAdaptationStatus();
+        const stats = this.adaptationSystem.getStats();
+        const engineStats = this.recognitionEngine.getEngineStats();
+        const deviceInfo = this.deviceManager.getDeviceInfo();
         const sessionDuration = Date.now() - stats.sessionStart,
         
         return { : undefined
-            timestamp: new Date().toISOString(),
+            timestamp: new Date().toISOString();
     configuration: {
                 enabled: this.config.enabled }
-                oneHandedMode: adaptationStatus.oneHandedMode };
+                oneHandedMode: adaptationStatus.oneHandedMode },
                 gestureComplexity: adaptationStatus.gestureComplexity 
     };
             statistics: { ...stats,
                 sessionDuration gesturesPerMinute: stats.gesturesRecognized / (sessionDuration / 60000'),'
                 successRate: stats.successfulGestures / stats.gesturesRecognized,
-    engineStats: engineStats,;
+    engineStats: engineStats,
             userProfile: adaptationStatus.userProfile,
             deviceInfo: deviceInfo,
     adaptationSystem: adaptationStatus,

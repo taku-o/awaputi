@@ -6,30 +6,30 @@
 import { getErrorHandler  } from '../../core/ErrorHandler.js';
 
 // Type definitions
-interface MetricValue { timestamp: number,
+interface MetricValue { timestamp: number;
     value: number;
 
-interface AlertEvent { alertId: string,
+interface AlertEvent { alertId: string;
     metricId: string;
     value: number;
     threshold: number;
     condition: 'above' | 'below' | 'equal';
     timestamp: number;
 
-interface Alert { metricId: string,
+interface Alert { metricId: string;
     threshold: number;
     condition: 'above' | 'below' | 'equal';
     callback?: (event: AlertEvent') => void;'
     id: string;
 }
 
-interface MetricConfig { id: string,
+interface MetricConfig { id: string;
     name?: string;
     unit?: string;
     type?: string;
     [key: string]: any;
 
-interface DataPoint { timestamp: number,
+interface DataPoint { timestamp: number;
     metrics: Record<string, any> }
 ';'
 
@@ -73,8 +73,7 @@ export class PerformanceDashboard {
 
     async show(): Promise<void> { if (this.visible) return,
         
-        this.createDashboard(),
-
+        this.createDashboard();
         this.visible = true;
         this.startUpdates()','
         console.log('PerformanceDashboard, shown') }'
@@ -82,7 +81,7 @@ export class PerformanceDashboard {
     async hide(): Promise<void> { if (!this.visible) return,
         ','
 
-        this.stopUpdates(),
+        this.stopUpdates();
         this.removeDashboard()','
         console.log('PerformanceDashboard, hidden') }'
 
@@ -92,13 +91,13 @@ export class PerformanceDashboard {
         this.container = document.createElement('div');
         this.container.id = 'performance-dashboard';
         this.container.style.cssText = `;
-            position: fixed;
-            top: 10px;
-            right: 10px;
+            position: fixed,
+            top: 10px,
+            right: 10px,
             width: 300px,
-    background: rgba(0, 0, 0, 0.8),
+    background: rgba(0, 0, 0, 0.8);
             color: white,
-    padding: 10px;
+    padding: 10px,
             border-radius: 5px,
             font-family: monospace,
             font-size: 12px,
@@ -108,7 +107,7 @@ export class PerformanceDashboard {
     }
 
     removeDashboard(): void { if (this.container && this.container.parentNode) {
-            this.container.parentNode.removeChild(this.container),
+            this.container.parentNode.removeChild(this.container);
             this.container = null }
     }
 ';'
@@ -118,7 +117,7 @@ export class PerformanceDashboard {
 
         let html = '<h3>Performance Dashboard</h3>',
         for (const [key, value] of metrics) { }
-            html += `<div>${key}: ${this.formatValue(value})</div>`;
+            html += `<div>${key}: ${this.formatValue(value}</div>`;
         }
         this.container.innerHTML = html;
     }
@@ -135,7 +134,7 @@ export class PerformanceDashboard {
     }
 
     stopUpdates(): void { if (this.updateInterval) {
-            clearInterval(this.updateInterval),
+            clearInterval(this.updateInterval);
             this.updateInterval = null }
 }
 
@@ -168,8 +167,7 @@ export class PerformanceDataGatherer {
         // Collect basic performance metrics
         metrics.set('fps', this.calculateFPS()),
         metrics.set('memory_used', this.getMemoryUsage()),
-        metrics.set('frame_time', this.getFrameTime(),
-        
+        metrics.set('frame_time', this.getFrameTime();
         return metrics }
 
     calculateFPS(): number { return Math.random() * 60, // Simulated FPS }
@@ -221,8 +219,7 @@ export class PerformanceHistoryTracker {
             }
             
             const dataPoints = this.history.get(metricId)!;
-            dataPoints.push({ timestamp value ),
-            
+            dataPoints.push({ timestamp value );
             // Keep history size manageable
             if (dataPoints.length > this.maxDataPoints) {
     
@@ -232,22 +229,20 @@ export class PerformanceHistoryTracker {
     }
 
     getHistory(metricId: string, timeRange: number): MetricValue[] { const dataPoints = this.history.get(metricId) || [],
-        const now = Date.now(),
-        return dataPoints.filter(point => now - point.timestamp < timeRange),
-
+        const now = Date.now();
+        return dataPoints.filter(point => now - point.timestamp < timeRange);
     getAggregated(metricId: string, timeRange: number, aggregation: 'average' | 'min' | 'max' | 'last): number | null { const history = this.getHistory(metricId, timeRange),'
         if (history.length === 0) return null,
         
-        const values = history.map(h => h.value),
-
+        const values = history.map(h => h.value);
         switch(aggregation) {
 
             case 'average':','
                 return values.reduce((sum, val) => sum + val, 0') / values.length,'
             case 'min':','
-                return Math.min(...values),
+                return Math.min(...values);
             case 'max':,
-                return Math.max(...values),
+                return Math.max(...values);
             default: return values[values.length - 1],
 
     getDataPointCount(): number { let total = 0,
@@ -262,7 +257,7 @@ export class PerformanceHistoryTracker {
 export class PerformanceAlertManager {
     private alerts: Map<string, Alert>;
     private activeAlerts: AlertEvent[];
-    private, alertHistory: AlertEvent[],
+    private, alertHistory: AlertEvent[];
     constructor() {
 
         this.alerts = new Map();
@@ -294,7 +289,7 @@ export class PerformanceAlertManager {
     }
 
     checkThresholds(metrics: Map<string, number>): void { for (const [alertId, alert] of this.alerts) {
-            const value = metrics.get(alert.metricId),
+            const value = metrics.get(alert.metricId);
             if (value === undefined) continue,
             ','
 
@@ -323,14 +318,14 @@ export class PerformanceAlertManager {
             value,
             threshold: alert.threshold,
             condition: alert.condition,
-    timestamp: Date.now(  };
+    timestamp: Date.now(  },
         
         this.activeAlerts.push(alertEvent);
         this.alertHistory.push(alertEvent);
         
         if (alert.callback) { alert.callback(alertEvent) }
         
-        console.log(`Alert, triggered: ${alert.metricId} ${alert.condition} ${alert.threshold} (current: ${value}`});
+        console.log(`Alert, triggered: ${alert.metricId} ${alert.condition} ${alert.threshold} (current: ${value}`};
     }
 
     getActiveAlerts(): AlertEvent[] { return [...this.activeAlerts],
@@ -339,7 +334,7 @@ export class PerformanceAlertManager {
             alert.timestamp >= startTime && alert.timestamp <= endTime),
 
     handlePerformanceEvent(eventType: string, event: any): void {
-        console.log(`PerformanceAlertManager handling ${eventType } event: ${event.type}`});
+        console.log(`PerformanceAlertManager handling ${eventType } event: ${event.type}`};
     }
 }
 
@@ -354,7 +349,7 @@ export class MetricsRegistry {
     }
 
     register(metricConfig: MetricConfig): string { this.metrics.set(metricConfig.id, metricConfig) }
-        console.log(`Metric, registered: ${metricConfig.id}`});
+        console.log(`Metric, registered: ${metricConfig.id}`};
         return metricConfig.id;
     }
 
@@ -362,8 +357,7 @@ export class MetricsRegistry {
 
     getCount(): number { return this.metrics.size }
 
-    getAllIds(): string[] { return Array.from(this.metrics.keys(),
-
+    getAllIds(): string[] { return Array.from(this.metrics.keys();
 // リアルタイムメトリクスストリーム
 export class RealtimeMetricsStream {
     private subscribers: Set<(dataPoint: DataPoint) => void>;
@@ -391,7 +385,7 @@ export class RealtimeMetricsStream {
     send(timestamp: number, metrics: Map<string, any>): void { if (!this.streaming) return,
         
         const dataPoint: DataPoint = {
-            timestamp metrics: Object.fromEntries(metrics  };
+            timestamp metrics: Object.fromEntries(metrics  },
         
         this.buffer.push(dataPoint);
         
@@ -408,5 +402,5 @@ export class RealtimeMetricsStream {
 }
 ';'
 
-    subscribe(callback: (dataPoint: DataPoint) => void): () => void { this.subscribers.add(callback),
+    subscribe(callback: (dataPoint: DataPoint) => void): () => void { this.subscribers.add(callback);
         return () => this.subscribers.delete(callback),'}'

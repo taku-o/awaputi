@@ -2,21 +2,21 @@
  * Error Panel - エラーレポート表示パネル
  */
 
-interface ErrorEntry { id: number,
+interface ErrorEntry { id: number;
     timestamp: number;
     level: 'error' | 'warn' | 'info';
     message: string;
     context: Record<string, any>;
     count: number;
 
-interface ErrorStats { total: number,
+interface ErrorStats { total: number;
     error: number;
     warn: number;
     info: number;
 
 interface ErrorPatterns { [pattern: string]: number;
 
-interface ExportData { exportTime: string,
+interface ExportData { exportTime: string;
     gameEngine: string;
     errors: ErrorEntry[];
 
@@ -29,7 +29,7 @@ export class ErrorPanel {
     private debugInterface: DebugInterface;
     private element: HTMLElement | null = null;
     private errorReporter: any;
-    private, errors: ErrorEntry[] = [],
+    private, errors: ErrorEntry[] = [];
     constructor(gameEngine: GameEngine, debugInterface: DebugInterface) {
 
         this.gameEngine = gameEngine;
@@ -108,7 +108,7 @@ export class ErrorPanel {
         const filterSelect = this.element.querySelector('#error-filter') as HTMLSelectElement;
         filterSelect?.addEventListener('change', (e) => {  const target = e.target as HTMLSelectElement }
             this.filterErrors(target.value); }
-        });
+        };
     }
 
     /**
@@ -159,20 +159,19 @@ export class ErrorPanel {
     /**
      * エラーを追加'
      */''
-    addError(level: 'error' | 'warn' | 'info', message: string, context: Record<string, any> = {}): void { const error: ErrorEntry = {
-            id: Date.now() + Math.random(),
-            timestamp: Date.now(),
+    addError(level: 'error' | 'warn' | 'info', message: string, context: Record<string, any> = {}: void { const error: ErrorEntry = {
+            id: Date.now() + Math.random();
+            timestamp: Date.now();
             level: level,
             message: message,
             context: context,
-    count: 1 };
+    count: 1 },
         // 重複エラーをチェック
         const existing = this.errors.find(e => e.message === message && e.level === level);
         if (existing) {
             existing.count++ }
             existing.timestamp = Date.now(); }
-        } else {  this.errors.unshift(error),
-            
+        } else {  this.errors.unshift(error);
             // 最大100件に制限
             if (this.errors.length > 100) { }
                 this.errors = this.errors.slice(0, 100); }
@@ -192,8 +191,8 @@ export class ErrorPanel {
     /**
      * エラー表示を更新
      */
-    private updateErrorDisplay(): void { this.updateErrorStats(),
-        this.updateErrorList(),
+    private updateErrorDisplay(): void { this.updateErrorStats();
+        this.updateErrorList();
         this.updateErrorPatterns() }
 
     /**
@@ -226,8 +225,7 @@ export class ErrorPanel {
 
         const filterSelect = this.element.querySelector('#error-filter') as HTMLSelectElement,
         const filter = filterSelect?.value || 'all', : undefined''
-        const filteredErrors = filter === 'all' ? this.errors : this.errors.filter(e => e.level === filter),
-
+        const filteredErrors = filter === 'all' ? this.errors : this.errors.filter(e => e.level === filter);
         filteredErrors.slice(0, 20).forEach(error => { '),' }
 
             const div = document.createElement('div'); }
@@ -239,11 +237,11 @@ export class ErrorPanel {
                     <span class="error-time">${new, Date(error.timestamp}.toLocaleTimeString("}"</span>""
                     ${error.count > 1 ? `<span, class="error-count">×${error.count}</span>` : ''
                 </div>';'
-                <div class="error-message">${this.escapeHtml(error.message})</div>""
+                <div class="error-message">${this.escapeHtml(error.message}</div>""
                 ${Object.keys(error.context"}.length > 0 ? `<div, class="error-context">${JSON.stringify(error.context"}"</div>` : ''"
             `;
             list.appendChild(div);
-        });
+        };
     }
 
     /**
@@ -260,7 +258,7 @@ export class ErrorPanel {
         this.errors.forEach(error => {  '),'
             const key = error.message.split(', ').slice(0, 3).join('), // 最初の3単語でパターン化 }'
             messagePatterns[key] = (messagePatterns[key] || 0) + error.count; }
-        });
+        };
 
         const topPatterns = Object.entries(messagePatterns);
             .sort(([,a], [,b]) => b - a);
@@ -273,7 +271,7 @@ export class ErrorPanel {
 
                 ${topPatterns.map(([pattern, count]} => ' }'
 
-                    `<div class="pattern-item">${this.escapeHtml(pattern}): ${count}件</div>`""
+                    `<div class="pattern-item">${this.escapeHtml(pattern}: ${count}件</div>`""
                 ").join('')}"
             `;
 
@@ -286,7 +284,7 @@ export class ErrorPanel {
      * エラーをクリア
      */
     clearErrors(): void { this.errors = [];
-        this.saveErrors(),
+        this.saveErrors();
         this.updateErrorDisplay() }
 
     /**
@@ -295,15 +293,14 @@ export class ErrorPanel {
     exportErrors(): void { const data: ExportData = {''
             exportTime: new Date().toISOString('''
             gameEngine: 'BubblePop',
-    errors: this.errors })', ')';'
+    errors: this.errors }', ')';'
         const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' }';'
         const url = URL.createObjectURL(blob);
 
         const a = document.createElement('a);'
         a.href = url;
         a.download = `debug-errors-${Date.now()).json`,
-        a.click(),
-        
+        a.click();
         URL.revokeObjectURL(url) }
 
     /**
@@ -325,7 +322,7 @@ export class ErrorPanel {
     private setElementText(id: string, text: string): void { if (!this.element) return,
 
         const element = this.element.querySelector(`#${id}`} as, HTMLElement; }
-        if (element}) { element.textContent = text }
+        if (element} { element.textContent = text }
     }
 
     /**

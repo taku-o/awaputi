@@ -433,14 +433,12 @@ export class StatisticsEventHandler {
             effStats.bubblesPerSecond = effStats.bubblesPerMinute / 60,
             
             // ピーク効率更新
-            effStats.peakEfficiency = Math.max(effStats.peakEfficiency, currentEfficiency),
-            
+            effStats.peakEfficiency = Math.max(effStats.peakEfficiency, currentEfficiency);
             // セッション別効率記録
-            effStats.bestEfficiencySession = Math.max(effStats.bestEfficiencySession, currentEfficiency),
-            effStats.worstEfficiencySession = Math.min(effStats.worstEfficiencySession, currentEfficiency),
-            
+            effStats.bestEfficiencySession = Math.max(effStats.bestEfficiencySession, currentEfficiency);
+            effStats.worstEfficiencySession = Math.min(effStats.worstEfficiencySession, currentEfficiency);
             // 効率トレンド記録（最新20ゲーム）
-            effStats.efficiencyTrend.push(currentEfficiency),
+            effStats.efficiencyTrend.push(currentEfficiency);
             if (effStats.efficiencyTrend.length > 20) {
     }
                 effStats.efficiencyTrend.shift(); }
@@ -455,7 +453,7 @@ export class StatisticsEventHandler {
         const reactionStats = this.statistics.reactionTimeStats,
         
         // 最新の反応時間記録（最大100個）
-        reactionStats.recentTimes.push(reactionTime),
+        reactionStats.recentTimes.push(reactionTime);
         if (reactionStats.recentTimes.length > 100) {
     }
             reactionStats.recentTimes.shift(); }
@@ -535,8 +533,7 @@ export class StatisticsEventHandler {
         
         if (gameDamage > 0) {
         
-            hpStats.maxDamageInSingleGame = Math.max(hpStats.maxDamageInSingleGame, gameDamage),
-            
+            hpStats.maxDamageInSingleGame = Math.max(hpStats.maxDamageInSingleGame, gameDamage);
             const totalGames = this.statistics.totalGamesPlayed,
             const currentAvg = hpStats.averageDamagePerGame,
             hpStats.averageDamagePerGame =  }
@@ -591,20 +588,17 @@ export class StatisticsEventHandler {
         const timeStats = this.statistics.timeStats,
         
         // ピークプレイ時間の計算
-        const maxHourPlay = Math.max(...timeStats.playTimeByHour),
-        timeStats.peakPlayingHour = timeStats.playTimeByHour.indexOf(maxHourPlay),
-        
-        const maxDayPlay = Math.max(...timeStats.playTimeByDay),
-        timeStats.peakPlayingDay = timeStats.playTimeByDay.indexOf(maxDayPlay),
-        
+        const maxHourPlay = Math.max(...timeStats.playTimeByHour);
+        timeStats.peakPlayingHour = timeStats.playTimeByHour.indexOf(maxHourPlay);
+        const maxDayPlay = Math.max(...timeStats.playTimeByDay);
+        timeStats.peakPlayingDay = timeStats.playTimeByDay.indexOf(maxDayPlay);
         // 連続プレイ日数の更新（簡易版）
-        const today = new Date().toDateString(),
-        const lastPlay = new Date(this.statistics.timeStats.lastPlayDate).toDateString(),
-        
+        const today = new Date().toDateString();
+        const lastPlay = new Date(this.statistics.timeStats.lastPlayDate).toDateString();
         if (today === lastPlay) {
     }
             // 今日既にプレイ済み - ストリーク維持 }
-        } else {  const yesterday = new Date(),
+        } else {  const yesterday = new Date();
             yesterday.setDate(yesterday.getDate() - 1),
             
             if (lastPlay === yesterday.toDateString() { }
@@ -652,7 +646,7 @@ export function getStatisticsEventHandler(statistics, sessionStats) { if (!stati
  * @returns {StatisticsEventHandler} 新しいシングルトンインスタンス
  */
 export function reinitializeStatisticsEventHandler(statistics, sessionStats) {,
-    statisticsEventHandlerInstance = new StatisticsEventHandler(statistics, sessionStats),
+    statisticsEventHandlerInstance = new StatisticsEventHandler(statistics, sessionStats);
     return statisticsEventHandlerInstance }
 
 export default StatisticsEventHandler;

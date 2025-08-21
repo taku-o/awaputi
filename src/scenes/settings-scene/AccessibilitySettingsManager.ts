@@ -12,7 +12,7 @@ import { getLoggingSystem  } from '../../core/LoggingSystem';
 import { GameEngine  } from '../../types/gameEngine';
 
 // 型定義
-interface Profile { name: string,
+interface Profile { name: string;
     description?: string;
     settings: ProfileSettings;
     created?: number;
@@ -20,38 +20,38 @@ interface Profile { name: string,
 
 interface ProfileSettings { [key: string]: any;
 
-interface ProfileHistoryEntry { profile: string,
+interface ProfileHistoryEntry { profile: string;
     timestamp: number;
 
-interface ValidationResult { valid: boolean,
+interface ValidationResult { valid: boolean;
     error?: string;
     data?: any;
 
-interface Notification { message: string,
+interface Notification { message: string;
     type: NotificationType;
     timestamp: number;
     id: string;
 
-interface Statistics { settingsChanged: number,
+interface Statistics { settingsChanged: number;
     profilesUsed: number;
     exportCount: number;
     importCount: number;
     validationErrors: number;
     sessionStart: number;
 
-interface ExtendedStatistics extends Statistics { sessionDuration: number,
+interface ExtendedStatistics extends Statistics { sessionDuration: number;
     profileCount: number;
     currentProfile: string;
     validationErrors: number;
     notifications: number;
 
-interface ValidationError { key: string,
+interface ValidationError { key: string;
     error: string;
 
-interface SettingOption { value: string,
+interface SettingOption { value: string;
     label: string;
 
-interface AccessibilitySetting { key: string,
+interface AccessibilitySetting { key: string;
     label: string;
     type: SettingType;
     description: string;
@@ -61,13 +61,13 @@ interface AccessibilitySetting { key: string,
     step?: number;
     options?: SettingOption[];
 
-interface ExportData { timestamp: string,
+interface ExportData { timestamp: string;
     version: string;
     currentProfile: string;
     settings: ProfileSettings;
-    profiles?: { [key: string]: Profile,
+    profiles?: { [key: string]: Profile;
 
-interface ProfileInfo { name: string,
+interface ProfileInfo { name: string;
     displayName: string;
     description: string;
     isCustom: boolean;
@@ -75,16 +75,16 @@ interface ProfileInfo { name: string,
 
 // ゲームエンジンの拡張型
 interface ExtendedGameEngine extends GameEngine { settingsManager?: {
-        get(key: string): any,
-        set(key: string, value: any): void,
+        get(key: string): any;
+        set(key: string, value: any): void;
 ';'
 // 型定義
 type NotificationType = 'info' | 'success' | 'error' | 'warning';
 type SettingType = 'toggle' | 'slider' | 'select' | 'text';
-type ValidatorFunction = (value: any, ...args: any[]) => ValidationResult,
-type PreviewCallback = (value: any) => void,
+type ValidatorFunction = (value: any, ...args: any[]) => ValidationResult;
+type PreviewCallback = (value: any) => void;
 
-export class AccessibilitySettingsManager { private gameEngine: ExtendedGameEngine,
+export class AccessibilitySettingsManager { private gameEngine: ExtendedGameEngine;
     private loggingSystem: any;
     ';'
     // 設定プロファイル管理
@@ -100,11 +100,11 @@ export class AccessibilitySettingsManager { private gameEngine: ExtendedGameEngi
     
     // 設定統計
     private stats: Statistics = {
-        settingsChanged: 0,
-        profilesUsed: 0,
-        exportCount: 0,
-        importCount: 0,
-        validationErrors: 0,
+        settingsChanged: 0;
+        profilesUsed: 0;
+        exportCount: 0;
+        importCount: 0;
+        validationErrors: 0;
     sessionStart: Date.now(  }
     
     // 通知システム
@@ -121,9 +121,9 @@ export class AccessibilitySettingsManager { private gameEngine: ExtendedGameEngi
      * 初期化処理
      */
     private initialize(): void { try {
-            this.setupValidators(),
-            this.setupPreviewCallbacks(),
-            this.loadProfiles(),
+            this.setupValidators();
+            this.setupPreviewCallbacks();
+            this.loadProfiles();
             this.setupDefaultProfile()','
             this.loggingSystem.info('AccessibilitySettingsManager', 'Accessibility settings manager initialized',' }'
 
@@ -171,14 +171,14 @@ export class AccessibilitySettingsManager { private gameEngine: ExtendedGameEngi
             return { valid: true;'}');
         ';'
         // コントラスト比検証（アクセシビリティ）
-        this.validators.set('contrastRatio', (foreground: string, background: string): ValidationResult => {  const ratio = this.calculateContrastRatio(foreground, background),
+        this.validators.set('contrastRatio', (foreground: string, background: string): ValidationResult => {  const ratio = this.calculateContrastRatio(foreground, background);
             if (ratio < 4.5) { }
                 return {  };
-                    valid: false;
-                    error: `コントラスト比が不十分です (${ratio.toFixed(2}):1)。4.5:1以上が推奨です` 
+                    valid: false,
+                    error: `コントラスト比が不十分です (${ratio.toFixed(2}:1)。4.5:1以上が推奨です` 
                 }
 
-            return { valid: true, data: { ratio  }'}');
+            return { valid: true, data: { ratio  }'}'),
         ';'
         // フォントサイズ検証
         this.validators.set('fontSize', (value: any): ValidationResult => { const numValue = parseFloat(value),' }'
@@ -252,7 +252,7 @@ export class AccessibilitySettingsManager { private gameEngine: ExtendedGameEngi
                 Object.entries(profiles).forEach(([name, settings]) => {  }
                     this.profiles.set(name, settings as Profile); }
 
-                });'} catch (error) {'
+                };'} catch (error) {'
             this.loggingSystem.warn('AccessibilitySettingsManager', 'Failed to load profiles', error' }'
     }
     
@@ -339,7 +339,7 @@ export class AccessibilitySettingsManager { private gameEngine: ExtendedGameEngi
               min: 8, max: 32, step: 1,
               description: '基本フォントサイズを調整します（ピクセル）',' }'
 
-              validator: 'fontSize' };
+              validator: 'fontSize' },
             { key: 'accessibility.contrastLevel', label: 'コントラストレベル', type: 'select',
 
               options: ['
@@ -355,7 +355,7 @@ export class AccessibilitySettingsManager { private gameEngine: ExtendedGameEngi
             }]'
               ],
               description: '画面のコントラスト強度を選択します',
-              validator: 'options' };
+              validator: 'options' },
             { key: 'accessibility.keyboardNavigation', label: 'キーボードナビゲーション', type: 'toggle',''
               description: 'キーボードのみでの操作を有効にします',' }'
 
@@ -368,7 +368,7 @@ export class AccessibilitySettingsManager { private gameEngine: ExtendedGameEngi
               description: '音声内容を字幕で表示します',' }'
 
               validator: 'boolean'
-            });
+            };
         ]);
     }
     
@@ -379,7 +379,7 @@ export class AccessibilitySettingsManager { private gameEngine: ExtendedGameEngi
         this.validationErrors = [];
         
         try {
-            const setting = this.getExtendedAccessibilitySettings().find(s => s.key === key),
+            const setting = this.getExtendedAccessibilitySettings().find(s => s.key === key);
             if (!setting) { }'
 
                 return { valid: false, error: '不明な設定項目です'
@@ -436,18 +436,18 @@ export class AccessibilitySettingsManager { private gameEngine: ExtendedGameEngi
     /**
      * 設定値の設定（検証付き）
      */
-    public setSetting(key: string, value: any): boolean { const validationResult = this.validateSetting(key, value),
+    public setSetting(key: string, value: any): boolean { const validationResult = this.validateSetting(key, value);
         ','
 
         if (!validationResult.valid) { }'
 
-            this.showNotification(`設定エラー: ${validationResult.error}`, 'error'});
+            this.showNotification(`設定エラー: ${validationResult.error}`, 'error'};
             return false;
         }
         
         // 設定値を実際に設定
         if (this.gameEngine.settingsManager) {
-            this.gameEngine.settingsManager.set(key, value),
+            this.gameEngine.settingsManager.set(key, value);
             this.stats.settingsChanged++,
             
             // リアルタイムプレビューの適用
@@ -469,7 +469,7 @@ export class AccessibilitySettingsManager { private gameEngine: ExtendedGameEngi
     public switchProfile(profileName: string): boolean { ''
         if(!this.profiles.has(profileName)) { }'
 
-            this.showNotification(`プロファイル '${profileName}' が見つかりません`, 'error'});
+            this.showNotification(`プロファイル '${profileName}' が見つかりません`, 'error'};
             return false;
         }
         
@@ -479,8 +479,7 @@ export class AccessibilitySettingsManager { private gameEngine: ExtendedGameEngi
         // 現在のプロファイル履歴に追加
         this.profileHistory.push({ )
             profile: this.currentProfile,
-    timestamp: Date.now( });
-        
+    timestamp: Date.now( };
         // 履歴サイズ制限
         if (this.profileHistory.length > 10) { this.profileHistory.shift() }
         
@@ -504,16 +503,16 @@ export class AccessibilitySettingsManager { private gameEngine: ExtendedGameEngi
     public createProfile(name: string, description: string = '): boolean { ''
         if(this.profiles.has(name)) { }'
 
-            this.showNotification(`プロファイル '${name}' は既に存在します`, 'error'});
+            this.showNotification(`プロファイル '${name}' は既に存在します`, 'error'};
             return false;
         }
         
         // 現在の設定を取得
         const currentSettings: ProfileSettings = {}
-        this.getExtendedAccessibilitySettings().forEach(setting => {  ),
+        this.getExtendedAccessibilitySettings().forEach(setting => {  );
             if (this.gameEngine.settingsManager) { }
                 currentSettings[setting.key] = this.gameEngine.settingsManager.get(setting.key); }
-});
+};
         
         this.profiles.set(name, { name: name)
            , description: description),
@@ -534,12 +533,12 @@ export class AccessibilitySettingsManager { private gameEngine: ExtendedGameEngi
                 timestamp: new Date('''
                 version: '1.0.0',
     currentProfile: this.currentProfile }
-                settings: {}))
+                settings: {})
             // 現在の設定を収集
-            this.getExtendedAccessibilitySettings().forEach(setting => {  ),
+            this.getExtendedAccessibilitySettings().forEach(setting => {  );
                 if (this.gameEngine.settingsManager) { }
                     exportData.settings[setting.key] = this.gameEngine.settingsManager.get(setting.key); }
-});
+};
             
             // プロファイルを含める場合
             if (includeProfiles) {
@@ -566,15 +565,14 @@ export class AccessibilitySettingsManager { private gameEngine: ExtendedGameEngi
             ';'
             // ダウンロードリンクを作成
             const blob = new Blob([exportContent], { type: 'application/json ',''
-            const url = URL.createObjectURL(blob),
+            const url = URL.createObjectURL(blob);
             const a = document.createElement('a),'
             a.href = url,
             a.download = filename,
-            document.body.appendChild(a),
-            a.click(),
-
-            document.body.removeChild(a),
-            URL.revokeObjectURL(url),
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
             ','
 
             this.stats.exportCount++,
@@ -593,8 +591,7 @@ export class AccessibilitySettingsManager { private gameEngine: ExtendedGameEngi
      * 設定のインポート
      */
     public importSettings(file: File): Promise<boolean>,
-        return new Promise((resolve, reject) => {  const reader = new FileReader(),
-            
+        return new Promise((resolve, reject) => {  const reader = new FileReader();
             reader.onload = (event: ProgressEvent<FileReader>) => {
                 try {
                     const importData = JSON.parse(event.target!.result, as string) as ExportData,
@@ -609,28 +606,28 @@ export class AccessibilitySettingsManager { private gameEngine: ExtendedGameEngi
                     let importedCount = 0;
                     
                     // 設定をインポート
-                    Object.entries(importData.settings).forEach(([key, value]) => {  const validationResult = this.validateSetting(key, value),
+                    Object.entries(importData.settings).forEach(([key, value]) => {  const validationResult = this.validateSetting(key, value);
                         if (validationResult.valid) { }
 
                             this.gameEngine.settingsManager?.set(key, value); }
                             importedCount++; }
 
                         } else { : undefined''
-                            this.loggingSystem.warn('AccessibilitySettingsManager', `Invalid setting: ${key }`, validationResult.error});
+                            this.loggingSystem.warn('AccessibilitySettingsManager', `Invalid setting: ${key }`, validationResult.error};
                         }
-                    });
+                    };
                     
                     // プロファイルをインポート
                     if (importData.profiles) { Object.entries(importData.profiles).forEach(([name, profile]) => {  }
                             this.profiles.set(name, profile); }
-                        });
+                        };
                     }
                     
                     this.saveProfiles();
                     this.stats.importCount++;
 
                     this.showNotification(`設定をインポートしました（${ importedCount}項目）`, 'success'}
-                    resolve(true});
+                    resolve(true};
 
                 } catch (error) {
                     this.loggingSystem.error('AccessibilitySettingsManager', 'Import failed', error','
@@ -639,14 +636,14 @@ export class AccessibilitySettingsManager { private gameEngine: ExtendedGameEngi
             };
 
             reader.onerror = () => {  ''
-                const error = new Error('ファイル読み込みエラー'),
+                const error = new Error('ファイル読み込みエラー');
                 this.loggingSystem.error('AccessibilitySettingsManager', 'File read failed', error','
                 this.showNotification('ファイル読み込みに失敗しました', 'error) }'
                 reject(error); }
             };
             
             reader.readAsText(file);
-        });
+        };
     }
     
     /**
@@ -679,7 +676,7 @@ export class AccessibilitySettingsManager { private gameEngine: ExtendedGameEngi
 
         }, 5000');'
 
-        this.loggingSystem.info('AccessibilitySettingsManager', `Notification: ${type} - ${message}`;
+        this.loggingSystem.info('AccessibilitySettingsManager', `Notification: ${type} - ${message}`,
     }
     
     /**
@@ -715,8 +712,8 @@ export class AccessibilitySettingsManager { private gameEngine: ExtendedGameEngi
                 description: profile.description || ','
     isCustom: profile.custom || false) }
                 created: profile.created || null); 
-    });
-        });
+    };
+        };
 
         return profiles.sort((a, b) => {  // デフォルトプロファイルを最初に
             if (a.name === 'default') return -1,
@@ -728,7 +725,7 @@ export class AccessibilitySettingsManager { private gameEngine: ExtendedGameEngi
             
             // 標準プロファイルは名前順
             return a.displayName.localeCompare(b.displayName);
-        });
+        };
     }
     
     /**
@@ -738,7 +735,7 @@ export class AccessibilitySettingsManager { private gameEngine: ExtendedGameEngi
             sessionDuration: Date.now() - this.stats.sessionStart,
             profileCount: this.profiles.size,
             currentProfile: this.currentProfile,
-    validationErrors: this.validationErrors.length };
+    validationErrors: this.validationErrors.length },
             notifications: this.notifications.length 
     }
     

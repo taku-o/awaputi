@@ -10,18 +10,18 @@
  */
 
 // Type definitions
-interface DirtyRegionBounds { x: number,
+interface DirtyRegionBounds { x: number;
     y: number;
     width: number;
     height: number;
 
-interface DirtyRegionStats { totalRegions: number,
+interface DirtyRegionStats { totalRegions: number;
     mergedRegions: number;
     skippedRedraws: number;
     pixelsSaved: number;
     performanceGain: number;
 
-interface DirtyRegionConfig { enabled: boolean,
+interface DirtyRegionConfig { enabled: boolean;
     regions: Set<DirtyRegionBounds>;
     mergedRegions: DirtyRegionBounds[];
     frameRegions: Map<number, DirtyRegionBounds[]>;
@@ -34,7 +34,7 @@ interface DirtyRegionConfig { enabled: boolean,
     hotspots: Map<string, number>;
     stats: DirtyRegionStats;
 
-interface TrackedObject { id: string | number,
+interface TrackedObject { id: string | number;
     x?: number;
     y?: number;
     width?: number;
@@ -45,7 +45,7 @@ interface TrackedObject { id: string | number,
     visible?: boolean;
     dirty?: boolean;
 
-interface ObjectTracking { x: number,
+interface ObjectTracking { x: number;
     y: number;
     width: number;
     height: number;
@@ -71,24 +71,24 @@ export class BasicDirtyRegionManager {
 
         // Dirty region management
         this.config = {
-            enabled: true,
-            regions: new Set(),
-            mergedRegions: [],
-            frameRegions: new Map(),
+            enabled: true;
+            regions: new Set();
+            mergedRegions: [];
+            frameRegions: new Map();
             // Region optimization parameters
            , minRegionSize: 32, // Minimum size for a dirty region,
             maxRegionCount: 8, // Maximum number of regions per frame;
             mergeThreshold: 0.3, // Merge regions if overlap > 30%;
             expansionFactor: 1.1, // Expand regions by 10% to reduce edge effects;
             // Region tracking
-            regionHistory: [],
+            regionHistory: [];
     historySize: 30, // 30 frames of history;
             hotspots: new Map(), // Frequently dirty areas;
             // Optimization statistics
             stats: {
-                totalRegions: 0,
-                mergedRegions: 0,
-                skippedRedraws: 0,
+                totalRegions: 0;
+                mergedRegions: 0;
+                skippedRedraws: 0;
     pixelsSaved: 0 }
                 performanceGain: 0 
     };
@@ -132,10 +132,9 @@ export class BasicDirtyRegionManager {
             // Check if object has changed
             if (this.hasObjectChanged(obj) {
                 // Add current object bounds as dirty
-                this.addDirtyRegion(this.calculateObjectBounds(obj),
-                
+                this.addDirtyRegion(this.calculateObjectBounds(obj);
                 // Add previous bounds if object moved
-                const prevBounds = this.getPreviousObjectBounds(obj),
+                const prevBounds = this.getPreviousObjectBounds(obj);
                 if (prevBounds) {
             }
                     this.addDirtyRegion(prevBounds); }
@@ -149,7 +148,7 @@ export class BasicDirtyRegionManager {
     /**
      * Check if object has changed since last frame
      */
-    hasObjectChanged(obj: TrackedObject): boolean { const tracking = this.objectTracking.get(obj.id),
+    hasObjectChanged(obj: TrackedObject): boolean { const tracking = this.objectTracking.get(obj.id);
         if (!tracking) {
     
 }
@@ -163,8 +162,8 @@ export class BasicDirtyRegionManager {
             tracking.height !== (obj.height || 0) ||;
             tracking.rotation !== (obj.rotation || 0) ||;
             tracking.scale !== (obj.scale || 1) ||;
-            tracking.alpha !== (obj.alpha !== undefined ? obj.alpha : 1) ||;
-            tracking.visible !== (obj.visible !== undefined ? obj.visible : true) ||;
+            tracking.alpha !== (obj.alpha !== undefined ? obj.alpha: 1) ||,
+            tracking.visible !== (obj.visible !== undefined ? obj.visible: true) ||,
             tracking.dirty !== (obj.dirty || false);
         );
     }
@@ -172,12 +171,12 @@ export class BasicDirtyRegionManager {
     /**
      * Get previous frame bounds for object
      */
-    getPreviousObjectBounds(obj: TrackedObject): DirtyRegionBounds | null { const tracking = this.objectTracking.get(obj.id),
+    getPreviousObjectBounds(obj: TrackedObject): DirtyRegionBounds | null { const tracking = this.objectTracking.get(obj.id);
         if (!tracking) return null,
 
         return { x: tracking.x,
             y: tracking.y,
-    width: tracking.width };
+    width: tracking.width },
             height: tracking.height 
     }
 
@@ -188,7 +187,7 @@ export class BasicDirtyRegionManager {
             x: obj.x || 0,
             y: obj.y || 0,
             width: obj.width || 0,
-    height: obj.height || 0 };
+    height: obj.height || 0 },
         // Account for rotation and scaling
         if (obj.rotation || (obj.scale !== undefined && obj.scale !== 1) {
             const centerX = bounds.x + bounds.width / 2,
@@ -216,7 +215,7 @@ export class BasicDirtyRegionManager {
             x: Math.floor(bounds.x - bounds.width * (this.config.expansionFactor - 1) / 2),
             y: Math.floor(bounds.y - bounds.height * (this.config.expansionFactor - 1) / 2),
             width: Math.ceil(bounds.width * this.config.expansionFactor,
-    height: Math.ceil(bounds.height * this.config.expansionFactor };
+    height: Math.ceil(bounds.height * this.config.expansionFactor },
 
         // Only, add if, region meets, minimum size, requirements
         if (expanded.width >= this.config.minRegionSize || ;
@@ -243,7 +242,7 @@ export class BasicDirtyRegionManager {
             
             for (const mergedRegion of this.config.mergedRegions) {
                 if (this.shouldMergeRegions(region, mergedRegion, threshold) {
-                    this.mergeRegions(mergedRegion, region),
+                    this.mergeRegions(mergedRegion, region);
                     wasMerged = true }
                     break; }
 }
@@ -258,8 +257,8 @@ export class BasicDirtyRegionManager {
      * Check if two regions should be merged
      */
     shouldMergeRegions(region1: DirtyRegionBounds, region2: DirtyRegionBounds, threshold: number): boolean { // Calculate intersection
-        const intersectX = Math.max(region1.x, region2.x),
-        const intersectY = Math.max(region1.y, region2.y),
+        const intersectX = Math.max(region1.x, region2.x);
+        const intersectY = Math.max(region1.y, region2.y);
         const intersectWidth = Math.min(region1.x + region1.width, region2.x + region2.width) - intersectX,
         const intersectHeight = Math.min(region1.y + region1.height, region2.y + region2.height) - intersectY,
         
@@ -281,11 +280,10 @@ export class BasicDirtyRegionManager {
     /**
      * Merge two regions
      */
-    mergeRegions(target: DirtyRegionBounds, source: DirtyRegionBounds): void { const minX = Math.min(target.x, source.x),
-        const minY = Math.min(target.y, source.y),
-        const maxX = Math.max(target.x + target.width, source.x + source.width),
-        const maxY = Math.max(target.y + target.height, source.y + source.height),
-        
+    mergeRegions(target: DirtyRegionBounds, source: DirtyRegionBounds): void { const minX = Math.min(target.x, source.x);
+        const minY = Math.min(target.y, source.y);
+        const maxX = Math.max(target.x + target.width, source.x + source.width);
+        const maxY = Math.max(target.y + target.height, source.y + source.height);
         target.x = minX,
         target.y = minY,
         target.width = maxX - minX,
@@ -302,7 +300,7 @@ export class BasicDirtyRegionManager {
             regions.sort((a, b) => (a.width * a.height) - (b.width * b.height)),
             
             while (regions.length > maxRegions) {
-                const smallest = regions.shift(),
+                const smallest = regions.shift();
                 if (smallest && regions.length > 0) {
                     const target = regions[0], // Merge with next smallest
         }
@@ -320,7 +318,7 @@ export class BasicDirtyRegionManager {
             width: obj.width || 0,
             height: obj.height || 0,
             rotation: obj.rotation || 0,
-            scale: obj.scale || 1),
+            scale: obj.scale || 1);
             alpha: obj.alpha !== undefined ? obj.alpha : 1,
     visible: obj.visible !== undefined ? obj.visible : true),
             dirty: obj.dirty || false  }
@@ -372,10 +370,10 @@ export class BasicDirtyRegionManager {
     /**
      * Reset dirty region manager
      */
-    reset(): void { this.config.regions.clear(),
+    reset(): void { this.config.regions.clear();
         this.config.mergedRegions = [],
-        this.userDirtyRegions.clear(),
-        this.objectTracking.clear(),
+        this.userDirtyRegions.clear();
+        this.objectTracking.clear();
         this.config.stats = {
             totalRegions: 0,
             mergedRegions: 0,

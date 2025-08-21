@@ -19,13 +19,14 @@ describe('Phase G機能統合テスト', (') => {'
                 dataLoader: null,
                 calculator: null,
                 validator: null,
-                exporter: null,;
-            
+                exporter: null,
+                exporter: null,
+        };
             // Main Controller読み込み
             try {
-                const mainPath = path.join(PROJECT_ROOT, 'tools/balance/balance-adjuster.js'),
-                const content = await fs.readFile(mainPath, 'utf8'),
-                balanceComponents.main = { content, wordCount: content.split(/\s+/).length };
+                const mainPath = path.join(PROJECT_ROOT, 'tools/balance/balance-adjuster.js');
+                const content = await fs.readFile(mainPath, 'utf8');
+                balanceComponents.main = { content, wordCount: content.split(/\s+/).length },
             } catch (error') {'
                 console.warn('balance-adjuster.js読み込み失敗:', error.message') }'
             
@@ -35,10 +36,10 @@ describe('Phase G機能統合テスト', (') => {'
             for (const componentName of componentNames) {
                 try {
                     const componentPath = path.join(PROJECT_ROOT, `tools/balance/${componentName).js`),
-                    const, content = await, fs.readFile(componentPath, 'utf8'),
+                    const, content = await, fs.readFile(componentPath, 'utf8');
                     balanceComponents[componentName.toLowerCase(').replace('balance', ')] = {
                         content,
-                        wordCount: content.split(/\s+/}).length
+                        wordCount: content.split(/\s+/}.length
                     };
                 } catch (error) {
                     console.warn(`${componentName}読み込み失敗:`, error.message);
@@ -47,10 +48,10 @@ describe('Phase G機能統合テスト', (') => {'
         }');'
         test('Main Controllerファイルサイズ検証', () => {
             if (balanceComponents.main) {
-                expect(balanceComponents.main.wordCount).toBeLessThanOrEqual(2500),
+                expect(balanceComponents.main.wordCount).toBeLessThanOrEqual(2500);
                 console.log(`✅ balance-adjuster.js: ${balanceComponents.main.wordCount}語`);
             } else {
-                console.warn('⚠️ Main Controller読み込み失敗'),
+                console.warn('⚠️ Main Controller読み込み失敗');
                 expect(true.toBe(true), // テスト続行
             }
         }');'
@@ -60,13 +61,13 @@ describe('Phase G機能統合テスト', (') => {'
             
             for (const comp of expectedComponents) {
                 if (balanceComponents[comp]) {
-                    loadedComponents.push(comp),
-                    console.log(`✅ ${comp}: ${balanceComponents[comp].wordCount)語`});
+                    loadedComponents.push(comp);
+                    console.log(`✅ ${comp}: ${balanceComponents[comp].wordCount)語`};
                 }
             }
             
             expect(loadedComponents.length).toBeGreaterThan(0);
-            console.log(`Balance Adjuster Components読み込み: ${loadedComponents.length}/${expectedComponents.length)`});
+            console.log(`Balance Adjuster Components読み込み: ${loadedComponents.length}/${expectedComponents.length)`};
         }');'
         test('Main Controller Pattern実装確認', () => {
             if (balanceComponents.main') {'
@@ -109,13 +110,14 @@ describe('Phase G機能統合テスト', (') => {'
                 feedbackManager: null,
                 settingsManager: null,
                 eventManager: null,
-                legacyAdapter: null,;
-            
+                legacyAdapter: null,
+                legacyAdapter: null,
+        };
             // Main Controller読み込み
             try {
-                const mainPath = path.join(PROJECT_ROOT, 'src/audio/accessibility/AudioAccessibilitySupport.js'),
-                const content = await fs.readFile(mainPath, 'utf8'),
-                audioComponents.main = { content, wordCount: content.split(/\s+/).length };
+                const mainPath = path.join(PROJECT_ROOT, 'src/audio/accessibility/AudioAccessibilitySupport.js');
+                const content = await fs.readFile(mainPath, 'utf8');
+                audioComponents.main = { content, wordCount: content.split(/\s+/).length },
             } catch (error') {'
                 console.warn('AudioAccessibilitySupport.js読み込み失敗:', error.message') }'
             
@@ -132,11 +134,11 @@ describe('Phase G機能統合テスト', (') => {'
             for (const componentName of componentNames) {
                 try {
                     const componentPath = path.join(PROJECT_ROOT, `src/audio/accessibility/${componentName).js`),
-                    const, content = await, fs.readFile(componentPath, 'utf8'),
+                    const, content = await, fs.readFile(componentPath, 'utf8');
                     const, key = componentName.toLowerCase(').replace('audio', '').replace('manager', '').replace('adapter', 'adapter'),'
                     audioComponents[key] = {
                         content,
-                        wordCount: content.split(/\s+/}).length
+                        wordCount: content.split(/\s+/}.length
                     };
                 } catch (error) {
                     console.warn(`${componentName}読み込み失敗:`, error.message);
@@ -145,10 +147,10 @@ describe('Phase G機能統合テスト', (') => {'
         }');'
         test('Main Controllerファイルサイズ検証', () => {
             if (audioComponents.main) {
-                expect(audioComponents.main.wordCount).toBeLessThanOrEqual(2500),
+                expect(audioComponents.main.wordCount).toBeLessThanOrEqual(2500);
                 console.log(`✅ AudioAccessibilitySupport.js: ${audioComponents.main.wordCount}語`);
             } else {
-                console.warn('⚠️ Main Controller読み込み失敗'),
+                console.warn('⚠️ Main Controller読み込み失敗');
                 expect(true.toBe(true), // テスト続行
             }
         }');'
@@ -160,13 +162,13 @@ describe('Phase G機能統合テスト', (') => {'
             
             for (const comp of expectedComponents) {
                 if (audioComponents[comp]) {
-                    loadedComponents.push(comp),
-                    console.log(`✅ ${comp}: ${audioComponents[comp].wordCount)語`});
+                    loadedComponents.push(comp);
+                    console.log(`✅ ${comp}: ${audioComponents[comp].wordCount)語`};
                 }
             }
             
             expect(loadedComponents.length).toBeGreaterThan(0);
-            console.log(`Audio Accessibility Components読み込み: ${loadedComponents.length}/${expectedComponents.length)`});
+            console.log(`Audio Accessibility Components読み込み: ${loadedComponents.length}/${expectedComponents.length)`};
         }');'
         test('WCAG準拠機能確認', () => {
             if (audioComponents.main') {'
@@ -198,8 +200,9 @@ describe('Phase G機能統合テスト', (') => {'
         beforeAll(async (') => {'
             visualManagers = {
                 focus: null,
-                feedback: null,;
-            
+                feedback: null,
+                feedback: null,
+        };
             // VisualFocusManager確認
             const focusLocations = [
                 'src/core/visual/focus/VisualFocusManager.js',
@@ -209,7 +212,7 @@ describe('Phase G機能統合テスト', (') => {'
             for (const location of focusLocations) {
                 try {
                     const focusPath = path.join(PROJECT_ROOT, location'),'
-                    const content = await fs.readFile(focusPath, 'utf8'),
+                    const content = await fs.readFile(focusPath, 'utf8');
                     visualManagers.focus = { 
                         content, 
                         wordCount: content.split(/\s+/).length,
@@ -230,7 +233,7 @@ describe('Phase G機能統合テスト', (') => {'
             for (const location of feedbackLocations) {
                 try {
                     const feedbackPath = path.join(PROJECT_ROOT, location'),'
-                    const content = await fs.readFile(feedbackPath, 'utf8'),
+                    const content = await fs.readFile(feedbackPath, 'utf8');
                     visualManagers.feedback = { 
                         content, 
                         wordCount: content.split(/\s+/).length,
@@ -244,7 +247,7 @@ describe('Phase G機能統合テスト', (') => {'
         }');'
         test('VisualFocusManager存在確認', () => {
             if (visualManagers.focus) {
-                console.log(`✅ VisualFocusManager: ${visualManagers.focus.wordCount}語 (${visualManagers.focus.location})`);
+                console.log(`✅ VisualFocusManager: ${visualManagers.focus.wordCount}語 (${visualManagers.focus.location}`),
                 expect(visualManagers.focus.content').toContain('VisualFocusManager');'
             } else {
                 console.warn('⚠️ VisualFocusManager読み込み失敗') }
@@ -254,7 +257,7 @@ describe('Phase G機能統合テスト', (') => {'
         }');'
         test('VisualFeedbackManager存在確認', () => {
             if (visualManagers.feedback) {
-                console.log(`✅ VisualFeedbackManager: ${visualManagers.feedback.wordCount}語 (${visualManagers.feedback.location})`);
+                console.log(`✅ VisualFeedbackManager: ${visualManagers.feedback.wordCount}語 (${visualManagers.feedback.location}`),
                 expect(visualManagers.feedback.content').toContain('VisualFeedbackManager');'
             } else {
                 console.warn('⚠️ VisualFeedbackManager読み込み失敗') }
@@ -276,7 +279,7 @@ describe('Phase G機能統合テスト', (') => {'
             
             console.log(`Visual Manager分割状況: ${splitImplemented}/${totalManagers)`),
             // 分割が部分的でも実装状況として記録
-            expect(splitImplemented.toBeGreaterThanOrEqual(0)});
+            expect(splitImplemented.toBeGreaterThanOrEqual(0)};
         }');'
     }
     describe('Phase G統合システム機能テスト', (') => {'
@@ -294,7 +297,7 @@ describe('Phase G機能統合テスト', (') => {'
             for (const filePath of targetFiles) {
                 try {
                     const fullPath = path.join(PROJECT_ROOT, filePath'),'
-                    const content = await fs.readFile(fullPath, 'utf8'),
+                    const content = await fs.readFile(fullPath, 'utf8');
                     const wordCount = content.split(/\s+/).length,
                     
                     results.push({
@@ -315,15 +318,15 @@ describe('Phase G機能統合テスト', (') => {'
             for (const result of results') {'
                 const status = result.exists ?   : undefined
                     (result.compliant ? '✅' : '❌') : '⚠️',
-                console.log(`${status} ${result.file}: ${result.wordCount')語 ${result.exists ? '' : '(未実装'})'}`);
+                console.log(`${status} ${result.file}: ${result.wordCount')語 ${result.exists ? '' : '(未実装'}'}`);
             }
             
             // 存在するファイルは全て制限内である
             const existingFiles = results.filter(r => r.exists);
             const compliantFiles = existingFiles.filter(r => r.compliant);
             if (existingFiles.length > 0) {
-                expect(compliantFiles.length).toBe(existingFiles.length),
-                console.log(`\n✅ MCP互換性: ${compliantFiles.length}/${existingFiles.length)ファイルが制限内`});
+                expect(compliantFiles.length).toBe(existingFiles.length);
+                console.log(`\n✅ MCP互換性: ${compliantFiles.length}/${existingFiles.length)ファイルが制限内`};
             }
         }');'
         test('Phase G完了状況総合評価', (') => {'
@@ -363,7 +366,7 @@ describe('Phase G機能統合テスト', (') => {'
                                  info.status === 'partial' ? '🔄' : '❌',
                 
                 console.log(`${statusIcon} ${phase}: ${info.target} (${info.status)`),
-                if (info.status === 'implemented' || info.status === 'partial'}) {
+                if (info.status === 'implemented' || info.status === 'partial'} {
                     implementedCount++ }
             }
             
@@ -371,11 +374,11 @@ describe('Phase G機能統合テスト', (') => {'
             console.log(`\n📈 Phase G完了率: ${completionRate}% (${implementedCount}/${totalPhases)`),
             // 最低50%以上の実装を期待
             expect(completionRate.toBeGreaterThanOrEqual(50)'),'
-            console.log('\n🚀 Phase, G統合テスト完了'),
-            console.log('✅ Main, Controller Pattern適用済み'),
-            console.log('✅ MCPツール互換性達成'),
-            console.log('✅ API後方互換性維持'),
-            console.log('✅ システム統合性確認済み'});
-        });
+            console.log('\n🚀 Phase, G統合テスト完了');
+            console.log('✅ Main, Controller Pattern適用済み');
+            console.log('✅ MCPツール互換性達成');
+            console.log('✅ API後方互換性維持');
+            console.log('✅ システム統合性確認済み'};
+        };
     }
 }');'

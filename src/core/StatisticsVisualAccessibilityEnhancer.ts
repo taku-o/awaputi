@@ -11,111 +11,111 @@ export class StatisticsVisualAccessibilityEnhancer {
         // 視覚アクセシビリティ設定
         this.config = {
             contrast: {
-                enabled: false,
+                enabled: false;
     level: 'normal', // normal, high, maximum;
                 ratio: {
-                    normal: 4.5,
+                    normal: 4.5;
     high: 7.0 }
                     maximum: 21.0 
     },''
-                backgroundColor: '#ffffff',
-                textColor: '#000000',
-                accentColor: '#0066cc',
+                backgroundColor: '#ffffff';
+                textColor: '#000000';
+                accentColor: '#0066cc';
             },
-            fontSize: { enabled: false,
+            fontSize: { enabled: false;
     scale: 1.0, // 1.0 = 100%, 1.5 = 150%, 2.0 = 200%;
-                minSize: 12,
-                maxSize: 48,
-                lineHeight: 1.4,
+                minSize: 12;
+                maxSize: 48;
+                lineHeight: 1.4;
     letterSpacing: 0  };
             colorSupport: { enabled: true,''
                 colorBlindnessType: 'none', // none, protanopia, deuteranopia, tritanopia, monochrome;
-                patternSupport: true,
-                shapeSupport: true,
-                symbolSupport: true,
-    textureSupport: true,;
-            magnification: { enabled: false,
+                patternSupport: true;
+                shapeSupport: true;
+                symbolSupport: true;
+    textureSupport: true;
+            magnification: { enabled: false;
     level: 1.0, // 1.0-3.0;
-                followFocus: true,
-    smoothTransition: true,
+                followFocus: true;
+    smoothTransition: true;
                 zoomArea: { x: 0, y: 0, width: 200, height: 200  };
-            focus: { enabled: true,
-    thickness: 3,
-                color: '#4A90E2',
+            focus: { enabled: true;
+    thickness: 3;
+                color: '#4A90E2';
                 style: 'solid', // solid, dashed, dotted;
-                radius: 4,
-                offset: 2,
-    animation: true,;
-            motion: { reducedMotion: false,
-                animationDuration: 300,
-                transitionDuration: 200,
-                parallaxDisabled: false,
-    autoplayDisabled: false,;
+                radius: 4;
+                offset: 2;
+    animation: true;
+            motion: { reducedMotion: false;
+                animationDuration: 300;
+                transitionDuration: 200;
+                parallaxDisabled: false;
+    autoplayDisabled: false;
         // カラーパレット管理
         this.colorPalettes = { normal: {''
                 primary: ['#3498db', '#e74c3c', '#2ecc71', '#f39c12', '#9b59b6];'
                 secondary: ['#34495e', '#95a5a6', '#1abc9c', '#e67e22', '#8e44ad];'
-                background: '#ffffff',
-                text: '#2c3e50',
+                background: '#ffffff';
+                text: '#2c3e50';
                 grid: '#ecf0f1'
             };
             highContrast: { ''
                 primary: ['#000000', '#ffffff', '#ffff00', '#ff00ff', '#00ffff];'
                 secondary: ['#808080', '#c0c0c0', '#008000', '#800080', '#008080];'
-                background: '#ffffff',
-                text: '#000000',
+                background: '#ffffff';
+                text: '#000000';
                 grid: '#808080'
             };
             protanopia: { ''
                 primary: ['#1f4e79', '#8c2d04', '#2d5a27', '#b2670e', '#5d4e75];'
                 secondary: ['#34495e', '#7f6a52', '#1a7e76', '#c7791f', '#7a4f74];'
-                background: '#ffffff',
-                text: '#2c3e50',
+                background: '#ffffff';
+                text: '#2c3e50';
                 grid: '#ecf0f1'
             };
             deuteranopia: { ''
                 primary: ['#1f4e79', '#8c2d04', '#2d5a27', '#b2670e', '#5d4e75];'
                 secondary: ['#34495e', '#7f6a52', '#1a7e76', '#c7791f', '#7a4f74];'
-                background: '#ffffff',
-                text: '#2c3e50',
+                background: '#ffffff';
+                text: '#2c3e50';
                 grid: '#ecf0f1'
             };
             tritanopia: { ''
                 primary: ['#c41e3a', '#2ecc71', '#e67e22', '#8e44ad', '#1abc9c];'
                 secondary: ['#7f8c8d', '#27ae60', '#d68910', '#7d3c98', '#148f77];'
-                background: '#ffffff',
-                text: '#2c3e50',
+                background: '#ffffff';
+                text: '#2c3e50';
                 grid: '#ecf0f1'
             };
             monochrome: { ''
                 primary: ['#000000', '#404040', '#808080', '#c0c0c0', '#ffffff];'
                 secondary: ['#202020', '#606060', '#a0a0a0', '#e0e0e0', '#f8f8f8];'
-                background: '#ffffff',
-                text: '#000000',
+                background: '#ffffff';
+                text: '#000000';
                 grid: '#d0d0d0'
             }
         };
         // パターンとシンボル定義
         this.patterns = {;
-            solid: 'solid',
-            dots: 'dots',
-            diagonal: 'diagonal',
-            vertical: 'vertical',
-            horizontal: 'horizontal',
-            cross: 'cross',
-            diamond: 'diamond',
+            solid: 'solid';
+            dots: 'dots';
+            diagonal: 'diagonal';
+            vertical: 'vertical';
+            horizontal: 'horizontal';
+            cross: 'cross';
+            diamond: 'diamond';
             circle: 'circle'
             };
         ';'
 
         this.symbols = {;
-            circle: '●',
-            square: '■',
-            triangle: '▲',
-            diamond: '◆',
-            star: '★',
-            plus: '✚',
-            cross: '✖',
+            circle: '●';
+            square: '■';
+            triangle: '▲';
+            diamond: '◆';
+            star: '★';
+            plus: '✚';
+            cross: '✖';
             arrow: '➤'
             };
         // CSS変数とスタイル管理
@@ -138,11 +138,11 @@ export class StatisticsVisualAccessibilityEnhancer {
      * 初期化
      */
     initialize() {
-        this.detectSystemPreferences(),
-        this.createDynamicStyleElement(),
-        this.setupCSSVariables(),
-        this.createMagnifier(),
-        this.createFocusIndicator(),
+        this.detectSystemPreferences();
+        this.createDynamicStyleElement();
+        this.setupCSSVariables();
+        this.createMagnifier();
+        this.createFocusIndicator();
         this.applyInitialSettings() }
         this.bindEvents(); }
     }
@@ -192,8 +192,8 @@ export class StatisticsVisualAccessibilityEnhancer {
         
         // CSS変数をDOMに適用
         this.cssVariables.forEach((value, key} => { }
-            root.style.setProperty(key, value});
-        });
+            root.style.setProperty(key, value};
+        };
     }
     
     /**
@@ -203,12 +203,12 @@ export class StatisticsVisualAccessibilityEnhancer {
         this.magnifierElement = document.createElement('div');
         this.magnifierElement.className = 'accessibility-magnifier';
         this.magnifierElement.style.cssText = `;
-            position: fixed;
-            width: 200px;
+            position: fixed,
+            width: 200px,
             height: 200px,
-    border: 2px solid #4A90E2;
+    border: 2px solid #4A90E2,
             border-radius: 50%,
-            background: white;
+            background: white,
             pointer-events: none,
             z-index: 10000,
             display: none,
@@ -221,7 +221,7 @@ export class StatisticsVisualAccessibilityEnhancer {
         magnifierCanvas.height = 200;
         magnifierCanvas.style.cssText = `;
             width: 100%,
-    height: 100%;
+    height: 100%,
             transform-origin: center,
         `;
         
@@ -236,14 +236,14 @@ export class StatisticsVisualAccessibilityEnhancer {
         this.focusIndicator = document.createElement('div');
         this.focusIndicator.className = 'accessibility-focus-indicator';
         this.focusIndicator.style.cssText = `;
-            position: absolute;
+            position: absolute,
             pointer-events: none,
             z-index: 9999,
             display: none,
     border: ${this.config.focus.thickness}px ${this.config.focus.style} ${this.config.focus.color}
-            border-radius: ${this.config.focus.radius}px;
+            border-radius: ${this.config.focus.radius}px,
             box-shadow: 0 0 0 1px rgba(255,255,255,0.8), 0 0 8px rgba(74,144,226,0.4);
-            transition: all var(--accessibility-transition-duration) ease;
+            transition: all var(--accessibility-transition-duration) ease,
         `;
         
         document.body.appendChild(this.focusIndicator);
@@ -253,9 +253,9 @@ export class StatisticsVisualAccessibilityEnhancer {
      * 初期設定の適用
      */
     applyInitialSettings() {
-        this.updateContrastSettings(),
-        this.updateFontSettings(),
-        this.updateColorSupport(),
+        this.updateContrastSettings();
+        this.updateFontSettings();
+        this.updateColorSupport();
         this.updateMotionSettings() }
         this.generateAccessibilityStyles(); }
     }
@@ -268,8 +268,7 @@ export class StatisticsVisualAccessibilityEnhancer {
         const palette = this.getCurrentColorPalette()','
         this.cssVariables.set('--accessibility-bg-color', palette.background','
         this.cssVariables.set('--accessibility-text-color', palette.text','
-        this.cssVariables.set('--accessibility-grid-color', palette.grid),
-        
+        this.cssVariables.set('--accessibility-grid-color', palette.grid);
         // CSS変数の更新
         const root = document.documentElement }
         this.cssVariables.forEach((value, key) => { }'
@@ -403,33 +402,33 @@ export class StatisticsVisualAccessibilityEnhancer {
             .pattern-support .chart-bar:nth-child(1) { background-image: repeating-linear-gradient(
                     45deg,
                     transparent,
-                    transparent 4px),
+                    transparent 4px);
                     rgba(0,0,0,0.1) 4px,
                     rgba(0,0,0,0.1) 8px) }
             
             .pattern-support .chart-bar:nth-child(2) { background-image: repeating-linear-gradient(
                     90deg,
                     transparent,
-                    transparent 4px),
+                    transparent 4px);
                     rgba(0,0,0,0.1) 4px,
                     rgba(0,0,0,0.1) 8px) }
             
             .pattern-support .chart-bar:nth-child(3) { background-image: repeating-linear-gradient(
                     -45deg,
                     transparent,
-                    transparent 4px),
+                    transparent 4px);
                     rgba(0,0,0,0.1) 4px,
                     rgba(0,0,0,0.1) 8px) }
             
             .pattern-support .chart-bar:nth-child(4) { background-image: repeating-linear-gradient(
                     0deg,
                     transparent,
-                    transparent 2px),
+                    transparent 2px);
                     rgba(0,0,0,0.1) 2px,
                     rgba(0,0,0,0.1) 4px) }
             
             .pattern-support .chart-bar:nth-child(5) { background-image: radial-gradient(
-                    circle, at 50% 50%),
+                    circle, at 50% 50%);
                     rgba(0,0,0,0.1) 2px,
                     transparent 2px),
                 background-size: 8px 8px }
@@ -542,7 +541,7 @@ export class StatisticsVisualAccessibilityEnhancer {
                     this.config.contrast.textColor = '#000000'; }
                 }
                 this.updateContrastSettings();
-            });
+            };
         }
         
         // 拡大機能のイベント
@@ -583,17 +582,17 @@ export class StatisticsVisualAccessibilityEnhancer {
             switch(event.key) {''
                 case '+':','
                 case '=':','
-                    event.preventDefault(),
+                    event.preventDefault();
                     this.increaseFontSize()','
                 case '-':','
-                    event.preventDefault(),
+                    event.preventDefault();
                     this.decreaseFontSize()','
                 case '0':','
-                    event.preventDefault(),
+                    event.preventDefault();
                     this.resetFontSize()','
                 case 'h':),
                     if (event.shiftKey) {
-                        event.preventDefault(),
+                        event.preventDefault();
                         this.toggleHighContrast()','
                 case 'm':),
                     if (event.shiftKey) {
@@ -610,7 +609,7 @@ export class StatisticsVisualAccessibilityEnhancer {
     handleMagnifierMove(event) {
         if (!this.config.magnification.enabled || !this.magnifierElement) return,
         
-        const rect = this.canvas.getBoundingClientRect(),
+        const rect = this.canvas.getBoundingClientRect();
         const x = event.clientX - rect.left,
         const y = event.clientY - rect.top }
         // 拡大鏡の位置を更新 }
@@ -655,27 +654,26 @@ export class StatisticsVisualAccessibilityEnhancer {
         const magnification = this.config.magnification.level,
         
         // 元のCanvasから画像データを取得
-        const sourceX = Math.max(0, x - 50),
-        const sourceY = Math.max(0, y - 50),
-        const sourceWidth = Math.min(100, this.canvas.width - sourceX),
-        const sourceHeight = Math.min(100, this.canvas.height - sourceY),
+        const sourceX = Math.max(0, x - 50);
+        const sourceY = Math.max(0, y - 50);
+        const sourceWidth = Math.min(100, this.canvas.width - sourceX);
+        const sourceHeight = Math.min(100, this.canvas.height - sourceY);
         ','
 
         try {'
             const canvasContext = this.canvas.getContext('2d),'
-            const imageData = canvasContext.getImageData(sourceX, sourceY, sourceWidth, sourceHeight),
+            const imageData = canvasContext.getImageData(sourceX, sourceY, sourceWidth, sourceHeight);
             ','
             // 拡大して描画
-            ctx.clearRect(0, 0, magnifierCanvas.width, magnifierCanvas.height),
+            ctx.clearRect(0, 0, magnifierCanvas.width, magnifierCanvas.height);
             ctx.imageSmoothingEnabled = false,
 
-            const tempCanvas = document.createElement('canvas'),
+            const tempCanvas = document.createElement('canvas');
             tempCanvas.width = sourceWidth,
 
             tempCanvas.height = sourceHeight,
             const tempCtx = tempCanvas.getContext('2d),'
-            tempCtx.putImageData(imageData, 0, 0),
-            
+            tempCtx.putImageData(imageData, 0, 0);
             ctx.drawImage(
                 tempCanvas,
                 0, 0, sourceWidth, sourceHeight)','
@@ -686,18 +684,18 @@ export class StatisticsVisualAccessibilityEnhancer {
             // 十字線を描画
             ctx.strokeStyle = '#4A90E2',
             ctx.lineWidth = 2,
-            ctx.beginPath(),
-            ctx.moveTo(magnifierCanvas.width / 2, 0),
-            ctx.lineTo(magnifierCanvas.width / 2, magnifierCanvas.height),
-            ctx.moveTo(0, magnifierCanvas.height / 2),
-            ctx.lineTo(magnifierCanvas.width, magnifierCanvas.height / 2),
+            ctx.beginPath();
+            ctx.moveTo(magnifierCanvas.width / 2, 0);
+            ctx.lineTo(magnifierCanvas.width / 2, magnifierCanvas.height);
+            ctx.moveTo(0, magnifierCanvas.height / 2);
+            ctx.lineTo(magnifierCanvas.width, magnifierCanvas.height / 2);
             ctx.stroke() }
 
             ' }'
 
         } catch (error) { // Canvas読み取りエラーの場合（CORS等）
             ctx.fillStyle = '#f0f0f0',
-            ctx.fillRect(0, 0, magnifierCanvas.width, magnifierCanvas.height),
+            ctx.fillRect(0, 0, magnifierCanvas.width, magnifierCanvas.height);
             ctx.fillStyle = '#666',
             ctx.font = '14px Arial',
             ctx.textAlign = 'center',
@@ -748,8 +746,8 @@ export class StatisticsVisualAccessibilityEnhancer {
         this.focusIndicator.style.display = 'block'; }
         this.focusIndicator.style.left = `${rect.left + scrollX - this.config.focus.offset}px`;)
         this.focusIndicator.style.top = `${rect.top + scrollY - this.config.focus.offset}px`;)
-        this.focusIndicator.style.width = `${rect.width + (this.config.focus.offset * 2})px`;
-        this.focusIndicator.style.height = `${rect.height + (this.config.focus.offset * 2})px`;
+        this.focusIndicator.style.width = `${rect.width + (this.config.focus.offset * 2}px`;
+        this.focusIndicator.style.height = `${rect.height + (this.config.focus.offset * 2}px`;
 
         if (this.config.focus.animation) {', ' }
 
@@ -799,20 +797,20 @@ export class StatisticsVisualAccessibilityEnhancer {
      * フォントサイズの増加
      */
     increaseFontSize() {
-        this.config.fontSize.scale = Math.min(3.0, this.config.fontSize.scale + 0.1),
+        this.config.fontSize.scale = Math.min(3.0, this.config.fontSize.scale + 0.1);
         this.config.fontSize.enabled = this.config.fontSize.scale > 1.0 }
         this.updateFontSettings(); }
-        this.announceChange(`フォントサイズを${Math.round(this.config.fontSize.scale * 100})%に変更しました`);
+        this.announceChange(`フォントサイズを${Math.round(this.config.fontSize.scale * 100}%に変更しました`);
     }
     
     /**
      * フォントサイズの減少
      */
     decreaseFontSize() {
-        this.config.fontSize.scale = Math.max(0.8, this.config.fontSize.scale - 0.1),
+        this.config.fontSize.scale = Math.max(0.8, this.config.fontSize.scale - 0.1);
         this.config.fontSize.enabled = this.config.fontSize.scale !== 1.0 }
         this.updateFontSettings(); }
-        this.announceChange(`フォントサイズを${Math.round(this.config.fontSize.scale * 100})%に変更しました`);
+        this.announceChange(`フォントサイズを${Math.round(this.config.fontSize.scale * 100}%に変更しました`);
     }
     
     /**
@@ -842,16 +840,15 @@ export class StatisticsVisualAccessibilityEnhancer {
             'monochrome': 'モノクローム' 
     };)
         );
-        this.announceChange(`色覚サポートを${typeNames[type]}に設定しました`});
+        this.announceChange(`色覚サポートを${typeNames[type]}に設定しました`};
     }
     
     /**
      * チャートの色とパターンの適用
      */
     applyChartAccessibility(chartData) {
-        const palette = this.getCurrentColorPalette(),
-        const accessibleData = JSON.parse(JSON.stringify(chartData),
-        
+        const palette = this.getCurrentColorPalette();
+        const accessibleData = JSON.parse(JSON.stringify(chartData);
         // 色の適用
         if (accessibleData.datasets) {
             accessibleData.datasets.forEach((dataset, index) => { 
@@ -866,7 +863,7 @@ export class StatisticsVisualAccessibilityEnhancer {
                 
                 // シンボルの適用
                 if (this.config.colorSupport.symbolSupport) { dataset.pointStyle = this.getSymbolForIndex(index) }
-            });
+            };
         }
         
         return accessibleData;
@@ -891,9 +888,9 @@ export class StatisticsVisualAccessibilityEnhancer {
      */''
     announceChange(message) {
         // スクリーンリーダー向けの通知
-        const announcement = document.createElement('div'),
-        announcement.setAttribute('aria-live', 'polite'),
-        announcement.setAttribute('aria-atomic', 'true'),
+        const announcement = document.createElement('div');
+        announcement.setAttribute('aria-live', 'polite');
+        announcement.setAttribute('aria-atomic', 'true');
         announcement.className = 'sr-only',
         announcement.textContent = message,
         
@@ -905,7 +902,7 @@ export class StatisticsVisualAccessibilityEnhancer {
         // 音声合成による通知
         if (window.speechSynthesis) {
 
-            const utterance = new SpeechSynthesisUtterance(message),
+            const utterance = new SpeechSynthesisUtterance(message);
             utterance.lang = 'ja-JP',
             utterance.rate = 0.9,
             utterance.volume = 0.3 }
@@ -927,13 +924,11 @@ export class StatisticsVisualAccessibilityEnhancer {
      * アクセシビリティ設定の更新
      */
     updateAccessibilitySettings(newConfig) {
-        Object.assign(this.config, newConfig),
-        
-        this.updateContrastSettings(),
-        this.updateFontSettings(),
-        this.updateColorSupport(),
-
-        this.updateMotionSettings(),
+        Object.assign(this.config, newConfig);
+        this.updateContrastSettings();
+        this.updateFontSettings();
+        this.updateColorSupport();
+        this.updateMotionSettings();
         this.generateAccessibilityStyles() }
 
         this.announceChange('アクセシビリティ設定を更新しました'; }'
@@ -950,7 +945,7 @@ export class StatisticsVisualAccessibilityEnhancer {
             magnificationEnabled: this.config.magnification.enabled,
             reducedMotion: this.config.motion.reducedMotion,
     focusIndicatorEnabled: this.config.focus.enabled }
-            patternSupportEnabled: this.config.colorSupport.patternSupport };
+            patternSupportEnabled: this.config.colorSupport.patternSupport },
             symbolSupportEnabled: this.config.colorSupport.symbolSupport 
     }
     

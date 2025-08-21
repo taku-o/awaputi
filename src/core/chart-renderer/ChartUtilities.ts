@@ -20,7 +20,7 @@ export interface ChartContext extends CanvasRenderingContext2D { canvas: HTMLCan
 export interface ChartRenderer { render: (context: ChartContext, data: any[], options: ChartOptions) => ChartRenderResult  }
 }
 
-export interface ChartRenderResult { type: ChartType,
+export interface ChartRenderResult { type: ChartType;
     dataPoints: number;
     min?: number;
     max?: number;
@@ -51,13 +51,13 @@ export interface ChartOptions { padding?: number,
     layout?: LayoutConfig;
      }
 
-export interface ChartTheme { colors: ThemeColors,
+export interface ChartTheme { colors: ThemeColors;
     palette: string[];
     background?: string;
     gradients?: ThemeGradients;
      }
 
-export interface ThemeColors { primary: string,
+export interface ThemeColors { primary: string;
     secondary: string;
     accent: string;
     dark: string;
@@ -67,38 +67,38 @@ export interface ThemeColors { primary: string,
     grid: string;
     axis: string;
 
-export interface ThemeGradients { primary: string[],
+export interface ThemeGradients { primary: string[];
     secondary: string[];
     accent: string[];
 
-export interface AnimationConfig { enabled: boolean,
+export interface AnimationConfig { enabled: boolean;
     duration: number;
     easing: EasingFunction;
     staggerDelay?: number;
     loop?: boolean;
 
-export interface InteractionConfig { hover: HoverConfig,
+export interface InteractionConfig { hover: HoverConfig;
     click: ClickConfig;
     tooltip: TooltipConfig;
 
-export interface HoverConfig { enabled: boolean,
+export interface HoverConfig { enabled: boolean;
     highlightColor?: string;
     cursor?: string;
     scale?: number;
 
-export interface ClickConfig { enabled: boolean,
+export interface ClickConfig { enabled: boolean;
     callback?: (data: any, event: MouseEvent) => void;
     selectMultiple?: boolean,  }
 }
 
-export interface TooltipConfig { enabled: boolean,
+export interface TooltipConfig { enabled: boolean;
     template?: string;
     position?: TooltipPosition;
     style?: TooltipStyle;
     formatter?: (data: any) => string  }
 }
 
-export interface TooltipStyle { background: string,
+export interface TooltipStyle { background: string;
     color: string;
     border: string;
     borderRadius: number;
@@ -107,18 +107,18 @@ export interface TooltipStyle { background: string,
     fontFamily: string;
     shadow?: string;
 
-export interface LayoutConfig { type: LayoutType,
+export interface LayoutConfig { type: LayoutType;
     columns?: number;
     rows?: number;
     gap?: number;
     responsive?: boolean;
 
-export interface ChartArea { x: number,
+export interface ChartArea { x: number;
     y: number;
     width: number;
     height: number;
 
-export interface ChartScales { xScale: number,
+export interface ChartScales { xScale: number;
     yScale: number;
     xMin: number;
     xMax: number;
@@ -127,7 +127,7 @@ export interface ChartScales { xScale: number,
     xRange?: number;
     yRange?: number;
 
-export interface AnimationFrame { id: string,
+export interface AnimationFrame { id: string;
     progress: number;
     duration: number;
     startTime: number;
@@ -136,47 +136,47 @@ export interface AnimationFrame { id: string,
     complete?: () => void  }
 }
 
-export interface ActiveInteraction { type: InteractionType,
+export interface ActiveInteraction { type: InteractionType;
     element?: HTMLElement;
     data?: any;
     startTime: number;
     position?: InteractionPosition;
 
-export interface InteractionPosition { x: number,
+export interface InteractionPosition { x: number;
     y: number;
     clientX: number;
     clientY: number;
 
-export interface LayoutArea { x: number,
+export interface LayoutArea { x: number;
     y: number;
     width: number;
     height: number;
     index: number;
 
-export interface LayoutResult { areas: LayoutArea[],
+export interface LayoutResult { areas: LayoutArea[];
     totalArea: ChartArea;
     columns: number;
     rows: number;
 
-export interface AreaChartData { x: number,
+export interface AreaChartData { x: number;
     value: number;
     label?: string;
     color?: string;
     series?: string;
 
-export interface AreaData { path: AreaChartData[],
+export interface AreaData { path: AreaChartData[];
     gradient: CanvasGradient;
     color: string;
     opacity: number;
 
-export interface ScatterChartData { x: number,
+export interface ScatterChartData { x: number;
     y: number;
     size?: number;
     label?: string;
     color?: string;
     series?: string;
 
-export interface ScatterPoint { x: number,
+export interface ScatterPoint { x: number;
     y: number;
     radius: number;
     dataX: number;
@@ -184,12 +184,12 @@ export interface ScatterPoint { x: number,
     label?: string;
     color: string;
 
-export interface ProgressData { value: number,
+export interface ProgressData { value: number;
     max: number;
     label?: string;
     color?: string;
 
-export interface ProgressBarData { x: number,
+export interface ProgressBarData { x: number;
     y: number;
     width: number;
     height: number;
@@ -199,7 +199,7 @@ export interface ProgressBarData { x: number,
     percentage: number;
     color: string;
 
-export interface RenderPerformance { renderTime: number,
+export interface RenderPerformance { renderTime: number;
     animationFrames?: number;
     interactionEvents?: number;
     memoryUsage?: number;
@@ -212,26 +212,26 @@ export type TooltipPosition = 'top' | 'bottom' | 'left' | 'right' | 'follow' | '
 export type LayoutType = 'grid' | 'flex' | 'stack' | 'float' | 'absolute';
 
 // 定数
-export const DEFAULT_ANIMATION_CONFIG: AnimationConfig = { enabled: true,
-    duration: 1000,
-    easing: 'ease-out',
-    staggerDelay: 50,
+export const DEFAULT_ANIMATION_CONFIG: AnimationConfig = { enabled: true;
+    duration: 1000;
+    easing: 'ease-out';
+    staggerDelay: 50;
     loop: false, as const;
 export const DEFAULT_INTERACTION_CONFIG: InteractionConfig = { hover: {'
-        enabled: true,
-        cursor: 'pointer',
+        enabled: true;
+        cursor: 'pointer';
     scale: 1.1  };
-    click: { enabled: true,
-    selectMultiple: false,;
+    click: { enabled: true;
+    selectMultiple: false;
     tooltip: { enabled: true,''
-        position: 'follow',
+        position: 'follow';
         style: {''
             background: 'rgba(0, 0, 0, 0.8)',
-            color: '#FFFFFF',
-            border: 'none',
-            borderRadius: 4,
-    padding: 8,
-            fontSize: 12,
+            color: '#FFFFFF';
+            border: 'none';
+            borderRadius: 4;
+    padding: 8;
+            fontSize: 12;
             fontFamily: 'Arial, sans-serif' }
 } as const;
 ';'
@@ -240,7 +240,7 @@ export const EASING_FUNCTIONS: Record<EasingFunction, (t: number) => number> = {
     ease: (t) => t * t * (3 - 2 * t','
     'ease-in': (t') => t * t,'
     'ease-out': (t) => t * (2 - t','
-    'ease-in-out': (t) => t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t,
+    'ease-in-out': (t) => t < 0.5 ? 2 * t * t: -1 + (4 - 2 * t) * t;
     bounce: (t) => { 
         if (t < 0.36) return 7.5625 * t * t,
         if (t < 0.73) return 7.5625 * (t -= 0.545) * t + 0.75,
@@ -249,34 +249,33 @@ export const EASING_FUNCTIONS: Record<EasingFunction, (t: number) => number> = {
     elastic: (t) => t === 0 || t === 1 ? t : -Math.pow(2, 10 * (t - 1) * Math.sin((t - 1.1) * 5 * Math.PI);
 } as const;
 
-export const LAYOUT_DEFAULTS = { GRID_COLUMNS: 2,
-    GRID_GAP: 10,
-    MIN_CHART_SIZE: 100,
+export const LAYOUT_DEFAULTS = { GRID_COLUMNS: 2;
+    GRID_GAP: 10;
+    MIN_CHART_SIZE: 100;
     ASPECT_RATIO: 16 / 9  } as const;
-export const AREA_CONFIG = { DEFAULT_OPACITY: 0.6,
-    LINE_WIDTH: 2,
+export const AREA_CONFIG = { DEFAULT_OPACITY: 0.6;
+    LINE_WIDTH: 2;
     GRADIENT_STOPS: [0, 1] } as const;
 
-export const SCATTER_CONFIG = { DEFAULT_RADIUS: 5,
-    MIN_RADIUS: 2,
-    MAX_RADIUS: 20,
+export const SCATTER_CONFIG = { DEFAULT_RADIUS: 5;
+    MIN_RADIUS: 2;
+    MAX_RADIUS: 20;
     BORDER_WIDTH: 1  } as const;
-export const PROGRESS_CONFIG = { DEFAULT_HEIGHT: 30,
-    DEFAULT_SPACING: 10,
-    MIN_VALUE: 0,
+export const PROGRESS_CONFIG = { DEFAULT_HEIGHT: 30;
+    DEFAULT_SPACING: 10;
+    MIN_VALUE: 0;
     MAX_VALUE: 100  } as const;
 // ユーティリティ関数
 export function interpolate(start: number, end: number, progress: number): number { return start + (end - start) * progress }
 ';'
 
-export function clamp(value: number, min: number, max: number): number {,
+export function clamp(value: number, min: number, max: number): number {;
     return Math.min(Math.max(value, min), max') }'
 
-export function generateGradient(context: CanvasRenderingContext2D, area: ChartArea, colors: string[], direction: 'horizontal' | 'vertical' = 'vertical'): CanvasGradient {,
+export function generateGradient(context: CanvasRenderingContext2D, area: ChartArea, colors: string[], direction: 'horizontal' | 'vertical' = 'vertical'): CanvasGradient {;
     const gradient = direction === 'horizontal',
-        ? context.createLinearGradient(area.x, 0, area.x + area.width, 0),
-        : context.createLinearGradient(0, area.y, 0, area.y + area.height),
-    
+        ? context.createLinearGradient(area.x, 0, area.x + area.width, 0);
+        : context.createLinearGradient(0, area.y, 0, area.y + area.height);
     colors.forEach((color, index) => {  }
         gradient.addColorStop(index / (colors.length - 1), color); }
     };
@@ -289,7 +288,7 @@ export function calculateGridLayout(chartCount: number, maxColumns: number = 4):
     return { columns, rows }
 
 export function formatPercentage(value: number, max: number, decimals: number = 1): string { const percentage = (value / max) * 100 }
-    return `${percentage.toFixed(decimals})%`;
+    return `${percentage.toFixed(decimals}%`;
 }
 
 /**
@@ -298,7 +297,7 @@ export function formatPercentage(value: number, max: number, decimals: number = 
 export class ChartAnimationEngine {
     private animations: Map<string, AnimationFrame>;
     private isAnimating: boolean;
-    private, animationFrameId: number | null,
+    private, animationFrameId: number | null;
     constructor() {
 
         this.animations = new Map();
@@ -321,8 +320,7 @@ export class ChartAnimationEngine {
             }
             
             const animationId = `chart_${Date.now())`,
-            const startTime = performance.now(),
-            
+            const startTime = performance.now();
             const animationFrame: AnimationFrame = { id: animationId,
                 progress: 0,
     duration: animationConfig.duration,
@@ -345,8 +343,7 @@ export class ChartAnimationEngine {
      * データの補間
      */
     private interpolateData(data: any[], progress: number, config: AnimationConfig): any[] { const easingFunc = EASING_FUNCTIONS[config.easing],
-        const easedProgress = easingFunc(progress),
-        
+        const easedProgress = easingFunc(progress);
         return data.map((item, index) => { 
             const delay = (config.staggerDelay || 0) * index,
             const adjustedProgress = clamp((progress * config.duration - delay) / config.duration, 0, 1'),'
@@ -367,14 +364,13 @@ export class ChartAnimationEngine {
         this.isAnimating = true;
         
         const animate = () => { 
-            const currentTime = performance.now(),
+            const currentTime = performance.now();
             let hasActiveAnimations = false,
             
             for(const [id, frame] of this.animations) {
             
                 const elapsed = currentTime - frame.startTime,
-                const progress = Math.min(elapsed / frame.duration, 1),
-                
+                const progress = Math.min(elapsed / frame.duration, 1);
                 if (progress < 1) {
                     frame.progress = progress }
                     frame.update(progress); }
@@ -393,7 +389,7 @@ export class ChartAnimationEngine {
     /**
      * 全アニメーションの停止
      */ : undefined
-    stopAllAnimations(): void { this.animations.clear(),
+    stopAllAnimations(): void { this.animations.clear();
         if (this.animationFrameId) {
             cancelAnimationFrame(this.animationFrameId) }
             this.animationFrameId = null; }
@@ -446,12 +442,11 @@ export class ChartInteractionManager {
     setupTooltips(canvas: HTMLCanvasElement, renderResult: ChartRenderResult, config: TooltipConfig): void { if (!this.tooltipElement) {
             this.createTooltipElement(config.style || DEFAULT_INTERACTION_CONFIG.tooltip.style) }
         
-        const mouseMoveHandler = (event: MouseEvent) => {  const rect = canvas.getBoundingClientRect(),
+        const mouseMoveHandler = (event: MouseEvent) => {  const rect = canvas.getBoundingClientRect();
             const x = event.clientX - rect.left,
             const y = event.clientY - rect.top,
             
-            const dataPoint = this.getDataPointAtPosition(x, y, renderResult),
-            
+            const dataPoint = this.getDataPointAtPosition(x, y, renderResult);
             if (dataPoint) { }
                 this.showTooltip(event, dataPoint, config); }
             } else { this.hideTooltip() }
@@ -487,11 +482,11 @@ export class ChartInteractionManager {
      * クリックイベントの設定
      */
     private setupClickEvents(canvas: HTMLCanvasElement, renderResult: ChartRenderResult, config: ClickConfig): void { const clickHandler = (event: MouseEvent) => { 
-            const rect = canvas.getBoundingClientRect(),
+            const rect = canvas.getBoundingClientRect();
             const x = event.clientX - rect.left,
             const y = event.clientY - rect.top,
             
-            const dataPoint = this.getDataPointAtPosition(x, y, renderResult),
+            const dataPoint = this.getDataPointAtPosition(x, y, renderResult);
             ','
 
             if (dataPoint && config.callback) { }'
@@ -528,13 +523,13 @@ export class ChartInteractionManager {
     private createTooltipElement(style: TooltipStyle): void { ''
         this.tooltipElement = document.createElement('div');
         this.tooltipElement.style.cssText = `,
-            position: absolute;
-            background: ${style.background};
-            color: ${style.color};
+            position: absolute,
+            background: ${style.background},
+            color: ${style.color},
             border: ${style.border}
-            border-radius: ${style.borderRadius}px;
-            padding: ${style.padding}px;
-            font-size: ${style.fontSize}px;
+            border-radius: ${style.borderRadius}px,
+            padding: ${style.padding}px,
+            font-size: ${style.fontSize}px,
             font-family: ${style.fontFamily}
             pointer-events: none,
             z-index: 10000,
@@ -550,15 +545,14 @@ export class ChartInteractionManager {
      */
     private showTooltip(event: MouseEvent, data: any, config: TooltipConfig): void { if (!this.tooltipElement) return,
         
-        const content = config.formatter ? config.formatter(data) : this.formatTooltipContent(data),
+        const content = config.formatter ? config.formatter(data) : this.formatTooltipContent(data);
         this.tooltipElement.textContent = content,
         
         // 位置の調整
         let x = event.clientX + 10,
         let y = event.clientY - 10,
         
-        const rect = this.tooltipElement.getBoundingClientRect(),
-        
+        const rect = this.tooltipElement.getBoundingClientRect();
         if (x + rect.width > window.innerWidth) {
     
 }
@@ -592,7 +586,7 @@ export class ChartInteractionManager {
         if (data.dataX !== undefined && data.dataY !== undefined) {
     
 }
-            return `(${data.dataX}, ${data.dataY})`;
+            return `(${data.dataX}, ${data.dataY}`;
         }
         
         if (data.percentage !== undefined) {
@@ -641,11 +635,11 @@ export class ChartInteractionManager {
         switch(layout.type) {
 
             case 'grid':','
-                return this.calculateGridLayout(totalWidth, totalHeight, chartCount, layout),
+                return this.calculateGridLayout(totalWidth, totalHeight, chartCount, layout);
             case 'flex':','
-                return this.calculateFlexLayout(totalWidth, totalHeight, chartCount, layout),
+                return this.calculateFlexLayout(totalWidth, totalHeight, chartCount, layout);
             case 'stack':,
-                return this.calculateStackLayout(totalWidth, totalHeight, chartCount, layout),
+                return this.calculateStackLayout(totalWidth, totalHeight, chartCount, layout);
             default:
 }
                 return this.calculateGridLayout(totalWidth, totalHeight, chartCount, layout);
@@ -656,8 +650,7 @@ export class ChartInteractionManager {
     private calculateGridLayout(width: number, height: number, chartCount: number, layout: LayoutConfig): LayoutResult {
         const { columns, rows } = layout.columns && layout.rows 
             ? { columns: layout.columns, rows: layout.rows 
-            : calculateGridLayout(chartCount, layout.columns || LAYOUT_DEFAULTS.GRID_COLUMNS),
-        
+            : calculateGridLayout(chartCount, layout.columns || LAYOUT_DEFAULTS.GRID_COLUMNS);
         const gap = layout.gap || LAYOUT_DEFAULTS.GRID_GAP,
         const chartWidth = (width - (columns - 1) * gap) / columns,
         const chartHeight = (height - (rows - 1) * gap) / rows,
@@ -667,9 +660,8 @@ export class ChartInteractionManager {
         for(let, i = 0, i < chartCount, i++) {
         
             const col = i % columns,
-            const row = Math.floor(i / columns),
-            
-            areas.push({),
+            const row = Math.floor(i / columns);
+            areas.push({);
                 x: col * (chartWidth + gap),
                 y: row * (chartHeight + gap),
                 width: chartWidth,
@@ -692,7 +684,7 @@ export class ChartInteractionManager {
         
         for(let, i = 0, i < chartCount, i++) {
         
-            areas.push({),
+            areas.push({);
                 x: i * (chartWidth + gap),
                 y: 0,
                 width: chartWidth,
@@ -736,12 +728,10 @@ export class ChartInteractionManager {
 export class AreaChartRenderer implements ChartRenderer { render(context: ChartContext, data: (number | AreaChartData)[], options: ChartOptions): ChartRenderResult {
         try {
             const canvas = context.canvas,
-            const chartArea = this.calculateChartArea(canvas, options),
-            const processedData = this.processData(data),
-            
+            const chartArea = this.calculateChartArea(canvas, options);
+            const processedData = this.processData(data);
             // スケールの計算
-            const scales = this.calculateScales(processedData, chartArea),
-            
+            const scales = this.calculateScales(processedData, chartArea);
             // 軸の描画
             if (options.showAxes) {
     
@@ -757,12 +747,12 @@ export class AreaChartRenderer implements ChartRenderer { render(context: ChartC
             ';'
 
             return { ''
-                type: 'area',
-                dataPoints: processedData.length,
-                yMin: scales.yMin,
-                yMax: scales.yMax,
-                xMin: scales.xMin,
-    xMax: scales.xMax,
+                type: 'area';
+                dataPoints: processedData.length;
+                yMin: scales.yMin;
+                yMax: scales.yMax;
+                xMin: scales.xMin;
+    xMax: scales.xMax;
                 areas,
                 chartArea };
                 scales }
@@ -782,7 +772,7 @@ export class AreaChartRenderer implements ChartRenderer { render(context: ChartC
     private calculateChartArea(canvas: HTMLCanvasElement, options: ChartOptions): ChartArea { const padding = options.padding || 20,
         return { x: padding,
             y: padding,
-    width: canvas.width - (padding * 2) };
+    width: canvas.width - (padding * 2) },
             height: canvas.height - (padding * 2); 
     }
 ';'
@@ -794,21 +784,19 @@ export class AreaChartRenderer implements ChartRenderer { render(context: ChartC
                 return { value: item, x: index,
             return { ...item, x: item.x ? ? index  }
  : undefined
-    private calculateScales(data: AreaChartData[], chartArea: ChartArea): ChartScales { const values = data.map(d => d.value),
-        const xValues = data.map(d => d.x),
-        
-        const yMin = Math.min(0, Math.min(...values),
-        const yMax = Math.max(...values),
-        const xMin = Math.min(...xValues),
-        const xMax = Math.max(...xValues),
-        
+    private calculateScales(data: AreaChartData[], chartArea: ChartArea): ChartScales { const values = data.map(d => d.value);
+        const xValues = data.map(d => d.x);
+        const yMin = Math.min(0, Math.min(...values);
+        const yMax = Math.max(...values);
+        const xMin = Math.min(...xValues);
+        const xMax = Math.max(...xValues);
         return { xScale: chartArea.width / (xMax - xMin || 1,
             yScale: chartArea.height / (yMax - yMin || 1),
             xMin,
             xMax,
             yMin,
             yMax,
-            xRange: xMax - xMin };
+            xRange: xMax - xMin },
             yRange: yMax - yMin 
     }
 
@@ -816,15 +804,14 @@ export class AreaChartRenderer implements ChartRenderer { render(context: ChartC
         context.lineWidth = 1,
         
         // Y軸
-        context.beginPath(),
-        context.moveTo(chartArea.x, chartArea.y),
-        context.lineTo(chartArea.x, chartArea.y + chartArea.height),
-        context.stroke(),
-        
+        context.beginPath();
+        context.moveTo(chartArea.x, chartArea.y);
+        context.lineTo(chartArea.x, chartArea.y + chartArea.height);
+        context.stroke();
         // X軸
-        context.beginPath(),
-        context.moveTo(chartArea.x, chartArea.y + chartArea.height),
-        context.lineTo(chartArea.x + chartArea.width, chartArea.y + chartArea.height),
+        context.beginPath();
+        context.moveTo(chartArea.x, chartArea.y + chartArea.height);
+        context.lineTo(chartArea.x + chartArea.width, chartArea.y + chartArea.height);
         context.stroke() }
 
     private renderGrid(context: ChartContext, chartArea: ChartArea, scales: ChartScales, options: ChartOptions): void { ''
@@ -835,8 +822,8 @@ export class AreaChartRenderer implements ChartRenderer { render(context: ChartC
         const ySteps = 5,
         for(let, i = 0, i <= ySteps, i++) {
             const y = chartArea.y + (chartArea.height / ySteps) * i,
-            context.beginPath(),
-            context.moveTo(chartArea.x, y),
+            context.beginPath();
+            context.moveTo(chartArea.x, y);
             context.lineTo(chartArea.x + chartArea.width, y) }
             context.stroke(); }
 }
@@ -846,18 +833,16 @@ export class AreaChartRenderer implements ChartRenderer { render(context: ChartC
         const baseY = chartArea.y + chartArea.height,
         
         // エリアパスの作成
-        context.beginPath(),
-        
+        context.beginPath();
         // 底辺の開始点
         const firstX = chartArea.x + (data[0].x - scales.xMin) * scales.xScale,
-        context.moveTo(firstX, baseY),
-        
+        context.moveTo(firstX, baseY);
         // 上辺のパス
         data.forEach((item) => { 
             const x = chartArea.x + (item.x - scales.xMin) * scales.xScale,
             const y = chartArea.y + chartArea.height - (item.value - scales.yMin) * scales.yScale }
             context.lineTo(x, y); }
-        });
+        };
         
         // 底辺に戻る
         const lastX = chartArea.x + (data[data.length - 1].x - scales.xMin) * scales.xScale;
@@ -887,12 +872,10 @@ export class AreaChartRenderer implements ChartRenderer { render(context: ChartC
 export class ScatterChartRenderer implements ChartRenderer { render(context: ChartContext, data: (number | ScatterChartData)[], options: ChartOptions): ChartRenderResult {
         try {
             const canvas = context.canvas,
-            const chartArea = this.calculateChartArea(canvas, options),
-            const processedData = this.processData(data),
-            
+            const chartArea = this.calculateChartArea(canvas, options);
+            const processedData = this.processData(data);
             // スケールの計算
-            const scales = this.calculateScales(processedData, chartArea),
-            
+            const scales = this.calculateScales(processedData, chartArea);
             // 軸の描画
             if (options.showAxes) {
     
@@ -908,12 +891,12 @@ export class ScatterChartRenderer implements ChartRenderer { render(context: Cha
             ';'
 
             return { ''
-                type: 'scatter',
-                dataPoints: processedData.length,
-                xMin: scales.xMin,
-                xMax: scales.xMax,
-                yMin: scales.yMin,
-    yMax: scales.yMax,
+                type: 'scatter';
+                dataPoints: processedData.length;
+                xMin: scales.xMin;
+                xMax: scales.xMax;
+                yMin: scales.yMin;
+    yMax: scales.yMax;
                 points,
                 chartArea };
                 scales }
@@ -933,7 +916,7 @@ export class ScatterChartRenderer implements ChartRenderer { render(context: Cha
     private calculateChartArea(canvas: HTMLCanvasElement, options: ChartOptions): ChartArea { const padding = options.padding || 20,
         return { x: padding,
             y: padding,
-    width: canvas.width - (padding * 2) };
+    width: canvas.width - (padding * 2) },
             height: canvas.height - (padding * 2); 
     }
 ';'
@@ -947,26 +930,24 @@ export class ScatterChartRenderer implements ChartRenderer { render(context: Cha
                 y: item.y ? ? 0, : undefined
                 size: clamp(item.size ? ? SCATTER_CONFIG.DEFAULT_RADIUS, SCATTER_CONFIG.MIN_RADIUS, SCATTER_CONFIG.MAX_RADIUS), : undefined
                 label: item.label,
-    color: item.color };
+    color: item.color },
                 series: item.series 
     };
     }
 
-    private calculateScales(data: ScatterChartData[], chartArea: ChartArea): ChartScales { const xValues = data.map(d => d.x),
-        const yValues = data.map(d => d.y),
-        
-        const xMin = Math.min(...xValues),
-        const xMax = Math.max(...xValues),
-        const yMin = Math.min(...yValues),
-        const yMax = Math.max(...yValues),
-        
+    private calculateScales(data: ScatterChartData[], chartArea: ChartArea): ChartScales { const xValues = data.map(d => d.x);
+        const yValues = data.map(d => d.y);
+        const xMin = Math.min(...xValues);
+        const xMax = Math.max(...xValues);
+        const yMin = Math.min(...yValues);
+        const yMax = Math.max(...yValues);
         return { xScale: chartArea.width / (xMax - xMin || 1,
             yScale: chartArea.height / (yMax - yMin || 1),
             xMin,
             xMax,
             yMin,
             yMax,
-            xRange: xMax - xMin };
+            xRange: xMax - xMin },
             yRange: yMax - yMin 
     }
 
@@ -974,15 +955,14 @@ export class ScatterChartRenderer implements ChartRenderer { render(context: Cha
         context.lineWidth = 1,
         
         // Y軸
-        context.beginPath(),
-        context.moveTo(chartArea.x, chartArea.y),
-        context.lineTo(chartArea.x, chartArea.y + chartArea.height),
-        context.stroke(),
-        
+        context.beginPath();
+        context.moveTo(chartArea.x, chartArea.y);
+        context.lineTo(chartArea.x, chartArea.y + chartArea.height);
+        context.stroke();
         // X軸
-        context.beginPath(),
-        context.moveTo(chartArea.x, chartArea.y + chartArea.height),
-        context.lineTo(chartArea.x + chartArea.width, chartArea.y + chartArea.height),
+        context.beginPath();
+        context.moveTo(chartArea.x, chartArea.y + chartArea.height);
+        context.lineTo(chartArea.x + chartArea.width, chartArea.y + chartArea.height);
         context.stroke() }
 
     private renderGrid(context: ChartContext, chartArea: ChartArea, scales: ChartScales, options: ChartOptions): void { ''
@@ -994,8 +974,8 @@ export class ScatterChartRenderer implements ChartRenderer { render(context: Cha
         // 水平グリッド線
         for(let, i = 0, i <= gridSteps, i++) {
             const y = chartArea.y + (chartArea.height / gridSteps) * i,
-            context.beginPath(),
-            context.moveTo(chartArea.x, y),
+            context.beginPath();
+            context.moveTo(chartArea.x, y);
             context.lineTo(chartArea.x + chartArea.width, y) }
             context.stroke(); }
         }
@@ -1003,8 +983,8 @@ export class ScatterChartRenderer implements ChartRenderer { render(context: Cha
         // 垂直グリッド線
         for(let, i = 0; i <= gridSteps; i++) {
             const x = chartArea.x + (chartArea.width / gridSteps) * i,
-            context.beginPath(),
-            context.moveTo(x, chartArea.y),
+            context.beginPath();
+            context.moveTo(x, chartArea.y);
             context.lineTo(x, chartArea.y + chartArea.height) }
             context.stroke(); }
 }
@@ -1019,13 +999,12 @@ export class ScatterChartRenderer implements ChartRenderer { render(context: Cha
             
             // 散布点の描画
             context.fillStyle = color,
-            context.beginPath(),
-            context.arc(x, y, radius, 0, 2 * Math.PI),
+            context.beginPath();
+            context.arc(x, y, radius, 0, 2 * Math.PI);
             context.fill('',
             context.strokeStyle = '#FFFFFF')
             context.lineWidth = SCATTER_CONFIG.BORDER_WIDTH)
-            context.stroke(),
-            
+            context.stroke();
             points.push({
                 x,
                 y,
@@ -1034,7 +1013,7 @@ export class ScatterChartRenderer implements ChartRenderer { render(context: Cha
                 dataY: item.y,
     label: item.label) }
                 color }
-        });
+        };
         
         return points;
 
@@ -1044,16 +1023,16 @@ export class ScatterChartRenderer implements ChartRenderer { render(context: Cha
 export class ProgressBarRenderer implements ChartRenderer { render(context: ChartContext, data: (number | ProgressData)[], options: ChartOptions): ChartRenderResult {
         try {
             const canvas = context.canvas,
-            const chartArea = this.calculateChartArea(canvas, options),
-            const processedData = this.processData(data),
+            const chartArea = this.calculateChartArea(canvas, options);
+            const processedData = this.processData(data);
             ','
             // プログレスバーの描画
-            const bars = this.renderProgressBars(context, processedData, chartArea, options),
+            const bars = this.renderProgressBars(context, processedData, chartArea, options);
             ','
 
             return { ''
-                type: 'progress',
-    dataPoints: processedData.length,
+                type: 'progress';
+    dataPoints: processedData.length;
                 bars };
                 chartArea }
             } catch (error) {
@@ -1072,7 +1051,7 @@ export class ProgressBarRenderer implements ChartRenderer { render(context: Char
     private calculateChartArea(canvas: HTMLCanvasElement, options: ChartOptions): ChartArea { const padding = options.padding || 20,
         return { x: padding,
             y: padding,
-    width: canvas.width - (padding * 2) };
+    width: canvas.width - (padding * 2) },
             height: canvas.height - (padding * 2); 
     }
 ';'
@@ -1082,13 +1061,13 @@ export class ProgressBarRenderer implements ChartRenderer { render(context: Char
             if(typeof, item === 'number' { }'
                 return {  };
                     value: clamp(item, PROGRESS_CONFIG.MIN_VALUE, PROGRESS_CONFIG.MAX_VALUE) }
-                    label: `Progress ${index + 1}`;
-                    max: PROGRESS_CONFIG.MAX_VALUE;
+                    label: `Progress ${index + 1}`,
+                    max: PROGRESS_CONFIG.MAX_VALUE,
                 } }
             return { value: clamp(item.value, PROGRESS_CONFIG.MIN_VALUE, item.max || PROGRESS_CONFIG.MAX_VALUE) };
                 max: item.max || PROGRESS_CONFIG.MAX_VALUE }
-                label: item.label || `Progress ${index + 1}`;
-                color: item.color;
+                label: item.label || `Progress ${index + 1}`,
+                color: item.color,
             } }
 
     private renderProgressBars(context: ChartContext, data: ProgressData[], chartArea: ChartArea, options: ChartOptions): ProgressBarData[] { const barHeight = PROGRESS_CONFIG.DEFAULT_HEIGHT,
@@ -1104,17 +1083,14 @@ export class ProgressBarRenderer implements ChartRenderer { render(context: Char
             ','
             // 背景バー
             context.fillStyle = '#E5E7EB',
-            context.fillRect(chartArea.x, y, chartArea.width, barHeight),
-            
+            context.fillRect(chartArea.x, y, chartArea.width, barHeight);
             // プログレスバー
             context.fillStyle = color,
-            context.fillRect(chartArea.x, y, progressWidth, barHeight),
-            
+            context.fillRect(chartArea.x, y, progressWidth, barHeight);
             // 枠線
             context.strokeStyle = options.theme.colors.dark,
             context.lineWidth = 1,
-            context.strokeRect(chartArea.x, y, chartArea.width, barHeight),
-            
+            context.strokeRect(chartArea.x, y, chartArea.width, barHeight);
             // ラベルとパーセンテージ }
             context.fillStyle = options.theme.colors.dark;' }'
 

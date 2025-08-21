@@ -52,17 +52,15 @@ export class MainMenuRenderer {
             const canvas = this.gameEngine.canvas as HTMLCanvasElement,
             
             // Canvas状態の保存（エラー時の復旧用）
-            context.save(),
-            
+            context.save();
             // 座標計算機を更新
-            this.updateCoordinateCalculator(),
+            this.updateCoordinateCalculator();
             const calc = this.coordinateCalculator!,
             
             // タイトル
-            context.save(),
+            context.save();
             // フォント読み込みのフォールバック処理
-            const titleFontSize = calc.scaleFontSize(60),
-
+            const titleFontSize = calc.scaleFontSize(60);
             const titleFonts = [' }'
 
                 `bold ${titleFontSize}px 'Noto Sans JP', Arial, sans-serif`,
@@ -145,7 +143,7 @@ export class MainMenuRenderer {
             this.errorHandler.handleError(error, 'RENDER_ERROR', { ')'
                 context: 'MainMenuRenderer.renderMainMenu,'
     canvasWidth: this.gameEngine.canvas?.width, : undefined),
-                canvasHeight: this.gameEngine.canvas?.height  });
+                canvasHeight: this.gameEngine.canvas?.height  },
         }
     }
     
@@ -162,9 +160,8 @@ export class MainMenuRenderer {
             const baseSpacing = 10,
             
             // Canvas座標系に変換
-            const itemSize = calc.toCanvasSize(baseItemWidth, baseItemHeight),
-            const itemX = calc.getCenterX(baseItemWidth),
-            
+            const itemSize = calc.toCanvasSize(baseItemWidth, baseItemHeight);
+            const itemX = calc.getCenterX(baseItemWidth);
             menuItems.forEach((item, index) => { 
                 const baseY = baseStartY + index * (baseItemHeight + baseSpacing),
                 const canvasY = calc.toCanvasCoordinates(0, baseY).y,
@@ -172,13 +169,13 @@ export class MainMenuRenderer {
 
                 context.save()','
                 context.fillStyle = isSelected ? '#0066CC' : '#333333',')'
-                context.fillRect(itemX, canvasY, itemSize.width, itemSize.height),
+                context.fillRect(itemX, canvasY, itemSize.width, itemSize.height);
                 ','
                 // 枠線
                 context.strokeStyle = isSelected ? '#FFFFFF' : '#666666',
 
                 context.lineWidth = calc.uniformScale * 2,
-                context.strokeRect(itemX, canvasY, itemSize.width, itemSize.height),
+                context.strokeRect(itemX, canvasY, itemSize.width, itemSize.height);
                 ','
                 // テキスト
                 context.fillStyle = '#FFFFFF',' }'
@@ -195,9 +192,9 @@ export class MainMenuRenderer {
                 
                 context.restore();
 
-            });'} catch (error) { this.errorHandler.handleError(error, 'RENDER_ERROR', {''
+            };'} catch (error) { this.errorHandler.handleError(error, 'RENDER_ERROR', {''
                 context: 'MainMenuRenderer.renderMenuItems'
-            });
+            };
         }
     }
     
