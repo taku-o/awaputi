@@ -8,14 +8,17 @@ import { getErrorHandler  } from '../utils/ErrorHandler.js';
 
 // Interfaces for profile management
 interface ProfileConfig {
-    enabled: boolean,
-    autoRecommendation: boolean,
-    profileSharing: boolean,
-    cloudSync: boolean,
-    maxProfiles: number,
-    autoSaveInterval: number,
+    enabled: boolean;
+    autoRecommendation: boolean;
+    profileSharing: boolean;
+    cloudSync: boolean;
+    maxProfiles: number;
+    autoSaveInterval: number;
     profileAnalytics: boolean;
-    interface ProfileSettings { // Visual settings
+}
+
+interface ProfileSettings { 
+    // Visual settings
     textScaling?: number;
     colorContrast?: 'normal' | 'high' | 'highest';
     focusIndicators?: boolean;
