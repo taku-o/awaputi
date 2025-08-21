@@ -1,53 +1,68 @@
 import { getErrorHandler  } from '../utils/ErrorHandler.js';
 
 // 音楽スケール型定義
-interface Scales { major: number[],
-    minor: number[],
-    pentatonic: number[],
+interface Scales {
+    major: number[];
+    minor: number[];
+    pentatonic: number[];
     blues: number[];
+}
 
 // 和音進行型定義
-interface ChordProgressions { pop: string[],
-    jazz: string[],
-    classical: string[],
+interface ChordProgressions {
+    pop: string[];
+    jazz: string[];
+    classical: string[];
     ambient: string[];
+}
 
 // リズムパターン型定義
-interface RhythmPatterns { simple: number[],
-    complex: number[],
-    syncopated: number[],
+interface RhythmPatterns {
+    simple: number[];
+    complex: number[];
+    syncopated: number[];
     ambient: number[];
+}
 
 // トラック設定型定義
-interface TrackConfig { style?: string,
+interface TrackConfig {
+    style?: string;
     duration?: number;
     tempo?: number;
     key?: string;
     timeSignature?: string;
+}
 
 // メロディ音符型定義
-interface MelodyNote { frequency: number,
-    scaleIndex: number,
-    duration: number,
+interface MelodyNote {
+    frequency: number;
+    scaleIndex: number;
+    duration: number;
     velocity: number;
+}
 
 // ハーモニー音符型定義
-interface HarmonyNote { frequency: number,
-    scaleIndex: number,
-    duration: number,
+interface HarmonyNote {
+    frequency: number;
+    scaleIndex: number;
+    duration: number;
     velocity: number;
+}
 
 // メロディデータ型定義
 type MelodyData = (MelodyNote | null)[];
 // ハーモニーデータ型定義
-type HarmonyData = (HarmonyNote | null')[];'
+type HarmonyData = (HarmonyNote | null)[];
 
 // ローマ数字マッピング型定義
-interface RomanToNumberMap { [key: string]: number;
+interface RomanToNumberMap {
+    [key: string]: number;
+}
 
 // ノートマッピング型定義
-interface NoteMap { [key: string]: number;
-;
+interface NoteMap {
+    [key: string]: number;
+}
 // 音楽スタイル型定義
 type MusicStyle = 'ambient' | 'energetic' | 'exciting' | 'dramatic';
 
@@ -59,72 +74,78 @@ export class BGMGenerator {
     private scales: Scales;
     private chordProgressions: ChordProgressions;
     private rhythmPatterns: RhythmPatterns;
-    private, baseFrequency: number','
+    private baseFrequency: number;
 
     constructor(audioContext: AudioContext) {
         this.audioContext = audioContext;
         
         // 音楽理論定義
         this.scales = {
-            major: [0, 2, 4, 5, 7, 9, 11];
-    minor: [0, 2, 3, 5, 7, 8, 10];
-    pentatonic: [0, 2, 4, 7, 9] };
-            blues: [0, 3, 5, 6, 7, 10] }
+            major: [0, 2, 4, 5, 7, 9, 11],
+            minor: [0, 2, 3, 5, 7, 8, 10],
+            pentatonic: [0, 2, 4, 7, 9],
+            blues: [0, 3, 5, 6, 7, 10]
         };
-        ';'
 
-        this.chordProgressions = {;
+        this.chordProgressions = {
             pop: ['I', 'V', 'vi', 'IV'],
             jazz: ['ii', 'V', 'I', 'vi'],
             classical: ['I', 'IV', 'V', 'I'],
-            ambient: ['i', 'VII', 'VI', 'VII] };'
+            ambient: ['i', 'VII', 'VI', 'VII']
+        };
         
-        this.rhythmPatterns = { simple: [1, 0, 1, 0, 1, 0, 1, 0],
+        this.rhythmPatterns = {
+            simple: [1, 0, 1, 0, 1, 0, 1, 0],
             complex: [1, 0, 1, 1, 0, 1, 0, 1],
             syncopated: [1, 0, 0, 1, 0, 1, 1, 0],
-            ambient: [1, 0, 0, 0, 1, 0, 0, 0] };
+            ambient: [1, 0, 0, 0, 1, 0, 0, 0]
+        };
 
-        // 基音周波数 (A4 = 440Hz);
+        // 基音周波数 (A4 = 440Hz)
         this.baseFrequency = 440;
 
-        console.log('BGMGenerator, initialized');
+        console.log('BGMGenerator initialized');
     }
     
     /**
      * BGMトラックを生成
      * @param trackConfig - トラック設定
-     * @returns 生成されたオーディオバッファ'
-     */''
-    generateTrack(trackConfig: TrackConfig): AudioBuffer | null { try {
-            const { ''
-                style = 'ambient,
+     * @returns 生成されたオーディオバッファ
+     */
+    generateTrack(trackConfig: TrackConfig): AudioBuffer | null {
+        try {
+            const {
+                style = 'ambient',
                 duration = 30,
                 tempo = 120,
-                key = 'C,
-                timeSignature = '4/4' } = trackConfig;
+                key = 'C',
+                timeSignature = '4/4'
+            } = trackConfig;
             
-            console.log(`Generating ${style} track: ${duration}s, ${tempo}BPM, key=${ key)`),
+            console.log(`Generating ${style} track: ${duration}s, ${tempo}BPM, key=${key}`);
             
-            const, sampleRate = this.audioContext.sampleRate,
-            const, buffer = this.audioContext.createBuffer(2, duration * sampleRate, sampleRate);
-            ','
+            const sampleRate = this.audioContext.sampleRate;
+            const buffer = this.audioContext.createBuffer(2, duration * sampleRate, sampleRate);
             // スタイルに応じた生成
-            switch(style, as, MusicStyle) {
-
-                case 'ambient':','
-                    return, this.generateAmbientTrack(buffer, trackConfig);
-                case 'energetic':','
-                    return, this.generateEnergeticTrack(buffer, trackConfig);
-                case 'exciting':','
-                    return, this.generateExcitingTrack(buffer, trackConfig}''
+            switch(style as MusicStyle) {
+                case 'ambient':
+                    return this.generateAmbientTrack(buffer, trackConfig);
+                case 'energetic':
+                    return this.generateEnergeticTrack(buffer, trackConfig);
+                case 'exciting':
+                    return this.generateExcitingTrack(buffer, trackConfig);
                 case 'dramatic':
-                    return this.generateDramaticTrack(buffer, trackConfig}
-                default: }
-                    return this.generateAmbientTrack(buffer, trackConfig}
-        } catch (error) { getErrorHandler().handleError(error as Error, 'BGM_GENERATOR_ERROR', {''
-                operation: 'generateTrack'),
-                trackConfig: trackConfig,';'
+                    return this.generateDramaticTrack(buffer, trackConfig);
+                default:
+                    return this.generateAmbientTrack(buffer, trackConfig);
+            }
+        } catch (error) {
+            getErrorHandler().handleError(error as Error, 'BGM_GENERATOR_ERROR', {
+                operation: 'generateTrack',
+                trackConfig: trackConfig
+            });
             return null;
+        }
     
     /**
      * アンビエントトラックを生成

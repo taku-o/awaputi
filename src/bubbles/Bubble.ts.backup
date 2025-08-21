@@ -630,178 +630,166 @@ export class Bubble implements BubbleInterface {
 
             case 'pink':
                 // HP回復効果
-                this.effects.push({
-                    type: 'heal',
-                    amount: config.healAmount || 25
-                });
-                break;
+                this.effects.push({)'
+                    type: 'heal,')',
+                    amount: config.healAmount || 25'),'
+                break,
 
-            case 'poison':
+            case 'poison':,
                 // ダメージ効果
-                this.effects.push({
-                    type: 'damage',
-                    amount: config.damageAmount || 8
-                });
-                break;
+                this.effects.push({)'
+                    type: 'damage,')',
+                    amount: config.damageAmount || 8'),'
+                break,
 
-            case 'spiky':
+            case 'spiky':,
                 // とげとげの泡：連鎖破壊効果
-                this.effects.push({
-                    type: 'chain_destroy',
-                    position: { ...this.position },
-                    radius: config.chainRadius || 120
-                });
-                break;
+                this.effects.push({ }
 
-            case 'rainbow':
+                    type: 'chain_destroy'
+            }''
+                    position: { ...this.position,')'
+                    radius: config.chainRadius || 120'),'
+                break  },
+
+            case 'rainbow':,
                 // 虹色の泡：ボーナスタイム効果
-                this.effects.push({
-                    type: 'bonus_time',
-                    duration: config.bonusTimeMs || 8000
-                });
-                break;
+                this.effects.push({ ')'
+                    type: 'bonus_time,')',
+                    duration: config.bonusTimeMs || 8000'),'
+                break,
 
-            case 'clock':
+            case 'clock':,
                 // 時計の泡：時間停止効果
-                this.effects.push({
-                    type: 'time_stop',
-                    duration: config.timeStopMs || 2500
-                });
-                break;
+                this.effects.push({)'
+                    type: 'time_stop,')',
+                    duration: config.timeStopMs || 2500'),'
+                break,
 
-            case 'score':
+            case 'score':,
                 // S字の泡：追加スコア効果
-                this.effects.push({
-                    type: 'bonus_score',
-                    amount: config.bonusScore || 80
-                });
-                break;
+                this.effects.push({)'
+                    type: 'bonus_score,')',
+                    amount: config.bonusScore || 80'),'
+                break,
 
-            case 'electric':
+            case 'electric':,
                 // ビリビリの泡：画面揺れ・操作不能効果
-                this.effects.push({
-                    type: 'screen_shake',
-                    intensity: config.shakeIntensity || 15,
-                    duration: config.disableDuration || 1500
-                });
-                break;
+                this.effects.push({)'
+                    type: 'screen_shake')','
+    intensity: config.shakeIntensity || 15,'),
+                    duration: config.disableDuration || 1500'),'
+                break,
 
-            case 'escaping':
+            case 'escaping':,
                 // 逃げる泡：通常の効果なし（逃げる行動は update で処理）
-                break;
+                break,
 
-            case 'cracked':
+            case 'cracked':,
                 // ひび割れの泡：通常の効果なし（早期破裂は maxAge で処理済み）
-                break;
+                break,
 
-            case 'boss':
+            case 'boss':,
                 // ボス泡：通常の効果なし（高スコア・高耐久は設定済み）
-                break;
+                break,
             // 新しい泡タイプの特殊効果
-            case 'golden':
+            case 'golden':,
                 // 黄金の泡：スコア倍率効果
-                this.effects.push({
-                    type: 'score_multiplier',
-                    multiplier: config.multiplier || 2.0,
-                    duration: 5000 // 5秒間
-                });
-                break;
+                this.effects.push({)'
+                    type: 'score_multiplier')','
+    multiplier: config.multiplier || 2.0,'),
+                    duration: 5000 // 5秒間)','
+                break,
 
-            case 'frozen':
+            case 'frozen':,
                 // 氷の泡：周囲の泡を遅くする効果
-                this.effects.push({
-                    type: 'slow_area',
-                    position: { ...this.position },
-                    radius: 120,
-                    slowFactor: config.slowEffect || 0.5,
-                    duration: 8000 // 8秒間
-                });
-                break;
+                this.effects.push({''
+                    type: 'slow_area'
+            }
+                    position: { ...this.position)
+                    radius: 120','  },
+    slowFactor: config.slowEffect || 0.5,'),
+                    duration: 8000 // 8秒間)','
+                break,
 
-            case 'magnetic':
+            case 'magnetic':,
                 // 磁石の泡：他の泡を引き寄せる効果
-                this.effects.push({
-                    type: 'magnetic_pull',
-                    position: { ...this.position },
-                    radius: config.magnetRadius || 100,
-                    strength: 150
-                });
-                break;
+                this.effects.push({ ''
+                    type: 'magnetic_pull'
+            };
+                    position: { ...this.position''
+                    radius: config.magnetRadius || 100,')'  },
+                    strength: 150'),'
+                break,
 
-            case 'explosive':
+            case 'explosive':,
                 // 爆発の泡：大きな爆発効果
-                this.effects.push({
-                    type: 'big_explosion',
-                    position: { ...this.position },
-                    radius: config.explosionRadius || 150,
-                    damage: 15
-                });
-                break;
+                this.effects.push({ ''
+                    type: 'big_explosion'
+            };
+                    position: { ...this.position''
+                    radius: config.explosionRadius || 150,')'  },
+                    damage: 15'),'
+                break,
 
-            case 'phantom':
+            case 'phantom':,
                 // 幻の泡：特殊効果なし（すり抜け効果は別途処理）
-                break;
+                break,
 
-            case 'multiplier':
+            case 'multiplier':,
                 // 倍率の泡：次の泡のスコアを倍増
-                this.effects.push({
-                    type: 'next_score_multiplier',
-                    multiplier: config.scoreMultiplier || 3.0,
-                    duration: 10000 // 10秒間
-                });
-                break;
-        }
+                this.effects.push({ ')'
+                    type: 'next_score_multiplier,
+    multiplier: config.scoreMultiplier || 3.0),
+                    duration: 10000 // 10秒間),
+                break  }
     }
     
     /**
      * 位置が範囲内かチェック
      */
-    public containsPoint(x: number, y: number): boolean {
-        const dx = x - this.position.x;
-        const dy = y - this.position.y;
+    public containsPoint(x: number, y: number): boolean { const dx = x - this.position.x,
+        const dy = y - this.position.y,
         const distance = Math.sqrt(dx * dx + dy * dy);
-        return distance <= this.size;
-    }
+        return distance <= this.size }
     
     /**
      * スコアを取得
      */
-    public getScore(): number {
-        const config = this.getTypeConfig();
-        let baseScore = config.score;
+    public getScore(): number { const config = this.getTypeConfig();
+        let baseScore = config.score,
         
         // 年齢によるボーナス
-        const ageRatio = this.age / this.maxAge;
+        const ageRatio = this.age / this.maxAge,
         if (ageRatio < 0.1) {
             // 発生直後
-            baseScore *= 2;
-        } else if (ageRatio > 0.9) {
-            // 破裂直前
-            baseScore *= 3;
         }
+            baseScore *= 2; }
+        } else if (ageRatio > 0.9) { // 破裂直前
+            baseScore *= 3 }
         
         return Math.floor(baseScore);
     }
     
     /**
      * 特殊タイプの振る舞い更新
-     */
-    public updateSpecialBehavior(deltaTime: number, mousePosition?: Position): void {
-        // deltaTimeは将来のフレーム補間で使用予定
-        console.log('Special behavior update with deltaTime:', deltaTime);
+     */''
+    public updateSpecialBehavior(deltaTime: number, mousePosition?: Position): void { // deltaTimeは将来のフレーム補間で使用予定
+        console.log('Special behavior update with deltaTime:', deltaTime','
         switch(this.type) {
-            case 'escaping':
+
+            case 'escaping':,
                 // 逃げる泡：マウスから離れる動き
                 if (mousePosition) {
-                    const dx = this.position.x - mousePosition.x;
-                    const dy = this.position.y - mousePosition.y;
+                    const dx = this.position.x - mousePosition.x,
+                    const dy = this.position.y - mousePosition.y,
                     const distance = Math.sqrt(dx * dx + dy * dy);
                     if (distance < 100 && distance > 0) {
-                        const escapeForce = 50 / distance;
-                        this.velocity.x += (dx / distance) * escapeForce;
-                        this.velocity.y += (dy / distance) * escapeForce;
-                    }
-                }
+                        const escapeForce = 50 / distance,
+                        this.velocity.x += (dx / distance) * escapeForce }
+
+                        this.velocity.y += (dy / distance') * escapeForce; }'
+}
                 break;
 
             case 'magnetic':
@@ -818,10 +806,5 @@ export class Bubble implements BubbleInterface {
     
     /**
      * 効果を取得してクリア
-     */
-    public getAndClearEffects(): BubbleEffect[] {
-        const effects = [...this.effects];
-        this.effects = [];
-        return effects;
-    }
-}
+     */''
+    public getAndClearEffects();
