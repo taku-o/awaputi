@@ -7,38 +7,37 @@ import { ErrorHandler  } from '../utils/ErrorHandler.js';
 
 export class ShareDialog {
 
-    constructor(socialSharingManager, options = {) {
+    constructor(socialSharingManager: any, options: any = {}) {
         this.socialSharingManager = socialSharingManager;
         
         // 設定
         this.config = {
             // 表示設定
-            title: options.title || '共有,
-            width: options.width || 480,
-            height: options.height || 'auto,
-            maxHeight: options.maxHeight || '80vh,
+            title: options.title || '共有',
+            width: options.width || 480',
+            height: options.height || 'auto'',
+            maxHeight: options.maxHeight || '80vh'',
             position: options.position || 'center', // center, top, bottom;
             backdrop: options.backdrop !== false,
             animation: options.animation !== false,
             closeOnBackdrop: options.closeOnBackdrop !== false,
-            closeOnEscape: options.closeOnEscape !== false,
-            ,
+            closeOnEscape: options.closeOnEscape !== false',
             // 機能設定
             platforms: options.platforms || ['web-share', 'twitter', 'facebook', 'copy'],
             showPlatformLabels: options.showPlatformLabels !== false,
             showPlatformIcons: options.showPlatformIcons !== false,
             showScreenshotPreview: options.showScreenshotPreview === true,
-            allowMessageEdit: options.allowMessageEdit === true;
-            ,
+            allowMessageEdit: options.allowMessageEdit === true,
+            ',
             // スタイル設定
-            theme: options.theme || 'default', // default, minimal, elegant, gaming,
+            theme: options.theme || 'default', // default, minimal, elegant, gaming',
             styles: {''
-                backgroundColor: options.backgroundColor || '#FFFFFF' ,
-                textColor: options.textColor || '#333333,
-                borderRadius: options.borderRadius || '12px,
-                fontSize: options.fontSize || '14px,
+                backgroundColor: options.backgroundColor || '#FFFFFF' ',
+                textColor: options.textColor || '#333333',
+                borderRadius: options.borderRadius || '12px',
+                fontSize: options.fontSize || '14px',
                 fontFamily: options.fontFamily || 'system-ui, -apple-system, sans-serif';
-                zIndex: options.zIndex || 10000,
+                zIndex: options.zIndex || 10000',
                 backdropColor: options.backdropColor || 'rgba(0, 0, 0, 0.6)' };
             
             // アクセシビリティ設定
@@ -50,7 +49,7 @@ export class ShareDialog {
                     returnElement: options.returnFocusElement || null,
     initialElement: options.initialFocusElement || null ,
                 highContrast: options.highContrast === true,
-    reducedMotion: options.reducedMotion === true;
+    reducedMotion: options.reducedMotion === true
     },
         
         // 状態管理
@@ -73,13 +72,13 @@ export class ShareDialog {
             platforms: [],
             messageEditor: null,
             screenshotPreview: null,
-    announcer: null;
+    announcer: null
         // イベントハンドラー
-        this.handlers = { backdropClick: this.handleBackdropClick.bind(this,
+        this.handlers = { backdropClick: this.handleBackdropClick.bind(this)
             keydown: this.handleKeydown.bind(this),
             close: this.handleClose.bind(this),
             platformClick: this.handlePlatformClick.bind(this),
-            messageChange: this.handleMessageChange.bind(this,
+            messageChange: this.handleMessageChange.bind(this)
     resize: this.handleResize.bind(this  };
         
         // フォーカス管理
@@ -91,7 +90,7 @@ export class ShareDialog {
             shares: 0,
             cancellations: 0,
     messageEdits: 0 }
-            platforms: {  },
+            platforms: {  }',
         this.initialize()';'
         this.log('ShareDialog初期化完了);'
     }
@@ -148,12 +147,12 @@ export class ShareDialog {
         if (this.config.accessibility.enabled) {
 
             this.elements.announcer = document.createElement('div');
-            this.elements.announcer.className = 'share-dialog-announcer,
+            this.elements.announcer.className = 'share-dialog-announcer',
             this.elements.announcer.setAttribute('aria-live', 'polite');
             this.elements.announcer.setAttribute('aria-atomic', 'true');
-            this.elements.announcer.style.position = 'absolute,
-            this.elements.announcer.style.left = '-10000px,
-            this.elements.announcer.style.width = '1px,
+            this.elements.announcer.style.position = 'absolute',
+            this.elements.announcer.style.left = '-10000px',
+            this.elements.announcer.style.width = '1px',
             this.elements.announcer.style.height = '1px' }
 
             this.elements.announcer.style.overflow = 'hidden'; }
@@ -212,7 +211,7 @@ export class ShareDialog {
         if (this.config.showScreenshotPreview) {
 
             this.elements.screenshotPreview = document.createElement('div');
-            this.elements.screenshotPreview.className = 'share-dialog-screenshot,
+            this.elements.screenshotPreview.className = 'share-dialog-screenshot',
             this.elements.screenshotPreview.style.display = 'none' }
             body.appendChild(this.elements.screenshotPreview); }
         }
@@ -221,18 +220,18 @@ export class ShareDialog {
         if (this.config.allowMessageEdit) {
 
             const messageContainer = document.createElement('div');
-            messageContainer.className = 'share-dialog-message-container,
+            messageContainer.className = 'share-dialog-message-container',
 
             const messageLabel = document.createElement('label');
-            messageLabel.className = 'share-dialog-message-label,
-            messageLabel.textContent = 'メッセージ,
+            messageLabel.className = 'share-dialog-message-label',
+            messageLabel.textContent = 'メッセージ',
             messageLabel.setAttribute('for', 'share-message-editor');
             this.elements.messageEditor = document.createElement('textarea');
-            this.elements.messageEditor.id = 'share-message-editor,
-            this.elements.messageEditor.className = 'share-dialog-message-editor,
+            this.elements.messageEditor.id = 'share-message-editor',
+            this.elements.messageEditor.className = 'share-dialog-message-editor',
             this.elements.messageEditor.setAttribute('placeholder', '共有メッセージを入力...');
             this.elements.messageEditor.setAttribute('rows', '3');
-            this.elements.messageEditor.setAttribute('maxlength', '280),
+            this.elements.messageEditor.setAttribute('maxlength', '280)',
             
             messageContainer.appendChild(messageLabel);
             messageContainer.appendChild(this.elements.messageEditor);
@@ -292,7 +291,7 @@ export class ShareDialog {
         let content = ';'
         
         if (this.config.showPlatformIcons) {
-        ,
+        '`,
 
             ' }'
 
@@ -306,7 +305,7 @@ export class ShareDialog {
         }
         ";"
         button.innerHTML = content;""
-        button.setAttribute('aria-label', `${platformInfo.label}で共有`}';'
+        button.setAttribute('aria-label'`, `${platformInfo.label}で共有`}';'
         
         return button;
     }
@@ -331,12 +330,12 @@ export class ShareDialog {
      * アイコンの取得'
      */''
     getIcon(platform) {
-        const icons = {, 'web-share': '📤',
-            'twitter': '🐦,
-            'facebook': '📘,
-            'line': '💬,
-            'whatsapp': '📱,
-            'telegram': '✈️,
+        const icons = {, 'web-share': '📤'',
+            'twitter': '🐦',
+            'facebook': '📘',
+            'line': '💬',
+            'whatsapp': '📱',
+            'telegram': '✈️',
             'email': '📧'
             }
 
@@ -350,37 +349,37 @@ export class ShareDialog {
      * スタイルの適用'
      */''
     applyStyles('''
-            position: 'fixed,
-            top: '0,
-            left: '0,
-            width: '100%,
+            position: 'fixed',
+            top: '0',
+            left: '0',
+            width: '100%',
             height: '100%);'
             backgroundColor: styles.backdropColor,
-    zIndex: styles.zIndex,
-            display: 'flex,
-            alignItems: this.getVerticalAlignment(,
-    justifyContent: 'center,
-            padding: '20px,
+    zIndex: styles.zIndex',
+            display: 'flex',
+            alignItems: this.getVerticalAlignment(',
+    justifyContent: 'center',
+            padding: '20px',
             boxSizing: 'border-box' ,
         
         // ダイアログスタイル
         Object.assign(dialog.style, { backgroundColor: styles.backgroundColor,
             color: styles.textColor,
             borderRadius: styles.borderRadius),
-            fontSize: styles.fontSize,
-    fontFamily: styles.fontFamily,' }'
+            fontSize: styles.fontSize',
+    fontFamily: styles.fontFamily`,' }'
 
-            width: this.config.width === 'auto' ? 'auto' : `${this.config.width}px`),
+            width: this.config.width === 'auto' ? 'auto' : `${this.config.width}px`)'`,
             height: this.config.height === 'auto' ? 'auto' : `${ this.config.height'px,
-            maxHeight: this.config.maxHeight,
-            maxWidth: '90vw,
-            boxShadow: '0, 20px 60px, rgba(0, 0, 0, 0.3},
-            overflow: 'hidden,
-            display: 'flex,
-            flexDirection: 'column,
-            transition: this.config.animation ? 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1}' : 'none,
+            maxHeight: this.config.maxHeight',
+            maxWidth: '90vw',
+            boxShadow: '0, 20px 60px, rgba(0, 0, 0', 0.3}',
+            overflow: 'hidden',
+            display: 'flex',
+            flexDirection: 'column',
+            transition: this.config.animation ? 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1}' : 'none',
             transform: 'scale(0.9'}',''
-            opacity: '0' ,
+            opacity: '0' ',
         
         // テーマ別スタイル
         this.applyThemeStyles();
@@ -398,10 +397,10 @@ export class ShareDialog {
     getVerticalAlignment() {
 
         switch(this.config.position) {''
-            case 'top':,
-                return 'flex-start,
-            case 'bottom':,
-                return 'flex-end,
+            case 'top': '',
+                return 'flex-start',
+            case 'bottom': '',
+                return 'flex-end',
             case 'center':' }'
 
             default: return 'center,
@@ -409,34 +408,33 @@ export class ShareDialog {
     /**
      * テーマスタイルの適用
      */
-    applyThemeStyles() {
-        const dialog = this.elements.dialog,
+    applyThemeStyles() { const dialog = this.elements.dialog',
 
         switch(this.config.theme) {''
-            case 'minimal':,
-                Object.assign(dialog.style, {''
-                    backgroundColor: '#FAFAFA,',
-                    color: '#333333,'),
-                    border: '1px solid #E0E0E0'),
+            case 'minimal': '',
+                Object.assign(dialog.style', {''
+                    backgroundColor: '#FAFAFA','',
+                    color: '#333333',')',
+                    border: '1px solid #E0E0E0')',
 
-                    boxShadow: '0 8px 32px rgba(0, 0, 0, 0.12)' }
+                    boxShadow: '0 8px 32px rgba(0, 0, 0', 0.12)' }
                 };
                 break;
 
             case 'elegant':';'
                 Object.assign(dialog.style, { ')'
-                    backgroundColor: '#2D2D3A,'),
-                    color: '#F0F0F0,
-                    border: '1px solid rgba(255, 255, 255, 0.1),
-                    boxShadow: '0 25px 80px rgba(0, 0, 0, 0.5)' };
+                    backgroundColor: '#2D2D3A',')',
+                    color: '#F0F0F0',
+                    border: '1px solid rgba(255, 255, 255', 0.1)',
+                    boxShadow: '0 25px 80px rgba(0, 0, 0', 0.5)' };
                 break;
 
             case 'gaming':';'
                 Object.assign(dialog.style, { ''
-                    backgroundColor: '#0A0A0F,',
-                    color: '#00FF41,'),
-                    border: '2px solid #00FF41,
-                    boxShadow: '0 0 30px rgba(0, 255, 65, 0.3)' };
+                    backgroundColor: '#0A0A0F','',
+                    color: '#00FF41',')',
+                    border: '2px solid #00FF41',
+                    boxShadow: '0 0 30px rgba(0, 255, 65', 0.3)' };
                 break;
         }
     }
@@ -447,13 +445,13 @@ export class ShareDialog {
     applyResponsiveStyles()';'
         const mediaQuery = window.matchMedia('(max-width: 768px),
 
-        if (mediaQuery.matches) { const dialog = this.elements.dialog,
+        if (mediaQuery.matches) { const dialog = this.elements.dialog',
 
             Object.assign(dialog.style, {''
-                width: '100%,
-                maxWidth: '100vw,
-                height: 'auto,
-                maxHeight: '100vh,',
+                width: '100%',
+                maxWidth: '100vw',
+                height: 'auto',
+                maxHeight: '100vh','',
                 borderRadius: '0',' }'
 
                 margin: '0'); 
@@ -465,11 +463,11 @@ export class ShareDialog {
     applyAccessibilityStyles() {
         // 高コントラストモード
         if (this.config.accessibility.highContrast) {
-            const dialog = this.elements.dialog,
+            const dialog = this.elements.dialog',
 
             Object.assign(dialog.style, {''
-                backgroundColor: '#000000,',
-                color: '#FFFFFF',' }'
+                backgroundColor: '#000000','',
+                color: '#FFFFFF'`,' }'
 
                 border: '3px solid #FFFFFF'); 
     }
@@ -487,7 +485,7 @@ export class ShareDialog {
             .share-dialog-platform:focus,
             .share-dialog-close:focus,
             .share-dialog-cancel:focus,
-            .share-dialog-message-editor:focus { outline: 3px solid #007AFF,
+            .share-dialog-message-editor:focus { outline: 3px solid #007AFF'`,
                 outline-offset: 2px }
         `;
         document.head.appendChild(style);
@@ -553,9 +551,9 @@ export class ShareDialog {
             button:not([disabled]),
             input: not([disabled],
     textarea: not([disabled],
-            select: not([disabled],
+            select: not([disabled]",
             [tabindex]:not([tabindex="-1"]);
-        ,
+        '",
         
         this.focusableElements = Array.from();
             this.elements.dialog.querySelectorAll(selector); }
@@ -584,7 +582,7 @@ export class ShareDialog {
             this.stats.shows++;
             
             // 現在のフォーカス要素を記録
-            this.state.previousFocus = document.activeElement,
+            this.state.previousFocus = document.activeElement'`,
             
             // スクリーンショット表示
             if (screenshot && this.elements.screenshotPreview) {
@@ -643,7 +641,7 @@ export class ShareDialog {
             // アニメーション
             if (this.config.animation) {
 
-                await this.playHideAnimation(,
+                await this.playHideAnimation(',
 
             this.elements.backdrop.style.display = 'none,
             
@@ -652,12 +650,12 @@ export class ShareDialog {
             // フォーカスを戻す)
             this.restorePreviousFocus();
             // 状態のリセット
-            this.resetState(),
+            this.resetState()',
             this.log('ShareDialog非表示' }
 
             ' }'
 
-        } catch (error) { this.state.closing = false,
+        } catch (error) { this.state.closing = false',
             this.handleError('SHARE_DIALOG_HIDE_FAILED', error);
     }
     
@@ -665,10 +663,10 @@ export class ShareDialog {
      * 表示アニメーションの再生
      */
     async playShowAnimation() { return new Promise((resolve) => { 
-            const dialog = this.elements.dialog,
+            const dialog = this.elements.dialog',
 
             requestAnimationFrame(() => {''
-                dialog.style.transform = 'scale(1),
+                dialog.style.transform = 'scale(1)',
                 dialog.style.opacity = '1' }
                 setTimeout(resolve, 300);     }
 }
@@ -677,9 +675,9 @@ export class ShareDialog {
      */'
     async playHideAnimation() { ''
         return new Promise((resolve) => { 
-            const dialog = this.elements.dialog,
+            const dialog = this.elements.dialog',
 
-            dialog.style.transform = 'scale(0.9),
+            dialog.style.transform = 'scale(0.9)',
             dialog.style.opacity = '0' }
             setTimeout(resolve, 300); }
         }
@@ -689,16 +687,16 @@ export class ShareDialog {
      */
     showScreenshotPreview(screenshot) {
 
-        if(!this.elements.screenshotPreview) return,
+        if(!this.elements.screenshotPreview) return',
 
         const img = document.createElement('img');
-        img.src = screenshot.url,
-        img.alt = 'スクリーンショットプレビュー,
-        img.style.maxWidth = '100%,
-        img.style.height = 'auto,
+        img.src = screenshot.url',
+        img.alt = 'スクリーンショットプレビュー',
+        img.style.maxWidth = '100%',
+        img.style.height = 'auto',
         img.style.borderRadius = '8px,
 
-        this.elements.screenshotPreview.innerHTML = ,
+        this.elements.screenshotPreview.innerHTML = ',
         this.elements.screenshotPreview.appendChild(img);
 
         this.elements.screenshotPreview.style.display = 'block'; }
@@ -711,7 +709,7 @@ export class ShareDialog {
         if (!this.config.accessibility.enabled) return,
         
         let focusElement = null,
-        ,
+        ',
         // カスタム初期フォーカス要素
         if (this.config.accessibility.focus.initialElement) {
     }
@@ -734,7 +732,7 @@ export class ShareDialog {
         if(!this.config.accessibility.enabled) return,
         
         const returnElement = this.config.accessibility.focus.returnElement || ,
-                             this.state.previousFocus,
+                             this.state.previousFocus',
 
         if(returnElement && typeof, returnElement.focus === 'function' { }
             setTimeout(() => {  }
@@ -752,7 +750,7 @@ export class ShareDialog {
         this.state.editedMessage = null,
         this.state.focusedElement = null,
         this.state.previousFocus = null,
-        ,
+        ',
         // スクリーンショットプレビューのクリア
         if (this.elements.screenshotPreview) {''
             this.elements.screenshotPreview.innerHTML = ' }'
@@ -779,7 +777,7 @@ export class ShareDialog {
      * キーボードハンドラー
      */
     handleKeydown(event) {
-        if (!this.state.visible) return,
+        if (!this.state.visible) return',
 
         switch(event.key) {''
             case 'Escape':,
@@ -798,7 +796,7 @@ export class ShareDialog {
         if (this.focusableElements.length === 0) return,
         
         const firstElement = this.focusableElements[0],
-        const lastElement = this.focusableElements[this.focusableElements.length - 1],
+        const lastElement = this.focusableElements[this.focusableElements.length - 1]',
         
         if (event.shiftKey) {
             // Shift + Tab
@@ -823,7 +821,7 @@ export class ShareDialog {
     /**
      * プラットフォームクリックハンドラー
      */''
-    async handlePlatformClick(event) { const button = event.currentTarget,
+    async handlePlatformClick(event) { const button = event.currentTarget',
         const platform = button.getAttribute('data-platform),
         
         try {
@@ -842,19 +840,19 @@ export class ShareDialog {
             // プラットフォーム別の共有処理
             let result;
             switch(platform) {
-                : undefined,
+                : undefined',
                 case 'web-share':,
                     result = await this.socialSharingManager.share(shareData);
-                    break,
+                    break',
                 case 'twitter':,
                     result = await this.socialSharingManager.shareViaTwitterUrl(shareData);
-                    break,
+                    break',
                 case 'facebook':,
                     result = await this.socialSharingManager.shareViaFacebookUrl(shareData);
-                    break,
+                    break',
                 case 'copy':,
                     result = await this.copyToClipboard(shareData);
-                    break,
+                    break',
                 default:
 }
                     result = await this.socialSharingManager.share(shareData, { platform );
@@ -865,7 +863,7 @@ export class ShareDialog {
                 await this.hide();
 
                 this.handleShareError(platform, result?.error || 'Unknown error'; }'
-            } catch (error) { this.handleShareError(platform, error);
+            } catch (error) { this.handleShareError(platform`, error);
     }
     
     /**
@@ -888,7 +886,7 @@ export class ShareDialog {
             const text = `${shareData.title || shareData.text} ${shareData.url || window.location.href}`;
             
             if (navigator.clipboard) {
-            ,
+            ',
 
                 ' }'
 
@@ -899,7 +897,7 @@ export class ShareDialog {
                 textArea.value = text,
 
                 document.body.appendChild(textArea);
-                textArea.select(),
+                textArea.select()',
                 document.execCommand('copy',' }'
 
                 document.body.removeChild(textArea); }
@@ -914,10 +912,10 @@ export class ShareDialog {
     /**
      * 共有成功の処理
      */
-    handleShareSuccess(platform, result) {
+    handleShareSuccess(platform`, result) {
     
 }
-        this.log(`${platform}での共有成功`, result);
+        this.log(`${platform}での共有成功``, result);
         
         // アクセシビリティアナウンス
         if (this.config.accessibility.announcements && this.elements.announcer) { const platformInfo = this.getPlatformInfo(platform);
@@ -931,7 +929,7 @@ export class ShareDialog {
     handleShareError(platform, error) {
 
         this.handleError('PLATFORM_SHARE_FAILED, error, { platform ',
-        ,
+        ',
         // アクセシビリティアナウンス
         if (this.config.accessibility.announcements && this.elements.announcer) {
     }
@@ -946,9 +944,8 @@ export class ShareDialog {
     
 }
         this.config = { ...this.config, ...newConfig,
-        ,
         // スタイルの再適用
-        this.applyStyles(),
+        this.applyStyles()',
         this.log('ShareDialog設定更新', newConfig);
     
     /**
@@ -965,8 +962,8 @@ export class ShareDialog {
     destroy() {
         // 非表示
         if (this.state.visible) {''
-            this.hide(),
-        document.removeEventListener('keydown, this.handlers.keydown',
+            this.hide()',
+        document.removeEventListener('keydown, this.handlers.keydown'',
         window.removeEventListener('resize', this.handlers.resize);
         // DOM要素の削除
         if (this.elements.backdrop && this.elements.backdrop.parentNode) {
@@ -984,7 +981,7 @@ export class ShareDialog {
     handleError(type, error, context = { ) {
         const errorInfo = {
             type,
-            error: error.message || error,
+            error: error.message || error'",
             context }
             timestamp: Date.now() };
 
@@ -1002,9 +999,9 @@ export class ShareDialog {
     log(message, data = null, level = 'info' {'
         const logEntry = {''
             timestamp: Date.now('''
-        const, consoleMethod = level === 'error' ? 'error' : ' }''
+        const`, consoleMethod = level === 'error' ? 'error' : ' }''
                             level === 'warn' ? 'warn' : 'log';);
 
-        console[consoleMethod](`[ShareDialog] ${message}`, data || '');
+        console[consoleMethod](`[ShareDialog] ${message}``, data || '');
 
     }'}'
