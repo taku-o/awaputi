@@ -6,23 +6,28 @@
  * Main Controller Pattern適用版
  */
 
-import fs from 'fs';
-import path from 'path';
+import * as fs from 'fs';
+import * as path from 'path';
 import { ConfigurationParser  } from './test-configuration/ConfigurationParser.js';
 import { ExpectationGenerator  } from './test-configuration/ExpectationGenerator.js';
 import { TestFileOperations  } from './test-configuration/TestFileOperations.js';
 import { ConfigurationValidator  } from './test-configuration/ConfigurationValidator.js';
 
 // Type definitions
-interface TestConfigurationOptions { projectRoot?: string,
+interface TestConfigurationOptions {
+    projectRoot?: string;
     testsDir?: string;
     configSourceDir?: string;
     backupEnabled?: boolean;
     dryRun?: boolean;
-    interface ErrorHandler { handleError: (error: Error, context: string, details?: any) => void 
-    }
+}
 
-interface ConfigurationManager { get: (namespace: string, path: string) => any  }
+interface ErrorHandler {
+    handleError: (error: Error, context: string, details?: any) => void;
+}
+
+interface ConfigurationManager {
+    get: (namespace: string, path: string) => any;
 }
 
 interface TestFilePatterns { bubble: string,
@@ -161,20 +166,29 @@ interface ValidationResult { valid: boolean,
     /**
      * フォールバック用のコンポーネントを作成
      */
-    createFallbackComponent(name: string): Component { return { initialized: false,
+    createFallbackComponent(name: string): Component {
+        return {
+            initialized: false,
             // 基本的なフォールバック実装
-            parseAllConfigurations: () => null };
-            generateTestCode: () => null,' }'
-
-            updateTestFile: () => ({ success: false, error: 'Component not available'
-            }',''
-            validateConfigurationSync: () => ({ valid: false, issues: ['Component not available], warnings: [], bubbleTypesCount: 0, sourceFiles: []  };'
-        }
+            parseAllConfigurations: () => null,
+            generateTestCode: () => null,
+            updateTestFile: () => ({ success: false, error: 'Component not available' }),
+            validateConfigurationSync: () => ({ 
+                valid: false, 
+                issues: ['Component not available'], 
+                warnings: [], 
+                bubbleTypesCount: 0, 
+                sourceFiles: [] 
+            })
+        };
+    }
 
     /**
      * コンポーネントを取得
      */
-    getComponent(name: string): Component | undefined { return this.components.get(name);
+    getComponent(name: string): Component | undefined {
+        return this.components.get(name);
+    }
     
     // === 公開API（後方互換性維持） ===
 
