@@ -383,66 +383,74 @@ export class PerformanceErrorRecoverySystem {
 
         await this.handleDetectedError(syntheticError);
     }
-';'
 
-    getSystemStatus(): SystemStatus { ''
-        if (!this.initialized) { }'
+    getSystemStatus(): SystemStatus {
+        if (!this.initialized) {
+            return { status: 'not_initialized' };
+        }
 
-            return { status: 'not_initialized' }
-';'
-
-        return { ''
-            status: 'operational,
+        return {
+            status: 'operational',
             detectionStatus: this.errorDetector.getDetectionStatus(),
             degradationLevel: this.degradationManager.getCurrentDegradationLevel(),
             recoveryStatistics: this.recoveryEngine.getRecoveryStatistics(),
-            degradationStatistics: this.degradationManager.getDegradationStatistics(
-    activeNotifications: this.userCommunicator.getActiveNotifications() ,
-            uptime: Date.now() - this.initializationTime 
+            degradationStatistics: this.degradationManager.getDegradationStatistics(),
+            activeNotifications: this.userCommunicator.getActiveNotifications(),
+            uptime: Date.now() - this.initializationTime
+        };
     }
-';'
 
-    async restorePerformance(targetLevel: number = 0): Promise<DegradationResult> { ''
-        if (!this.initialized) {', ' }
-
-            throw new Error('System, not initialized'; }'
+    async restorePerformance(targetLevel: number = 0): Promise<DegradationResult> {
+        if (!this.initialized) {
+            throw new Error('System not initialized');
         }
 
-        try { const result = await this.degradationManager.restoreToLevel(targetLevel);
+        try {
+            const result = await this.degradationManager.restoreToLevel(targetLevel);
             await this.userCommunicator.notifyPerformanceRestoration(result);
-            return result,' }'
-
+            return result;
         } catch (error) {
             console.error('Performance restoration failed:', error);
-            throw error }
+            throw error;
+        }
     }
 
     // Configuration and management methods
-    updateDetectionThresholds(newThresholds: any): void { this.errorDetector.updateThresholds(newThresholds);
+    updateDetectionThresholds(newThresholds: any): void {
+        this.errorDetector.updateThresholds(newThresholds);
+    }
 
-    enableMonitoring(): void { this.errorDetector.startMonitoring();
+    enableMonitoring(): void {
+        this.errorDetector.startMonitoring();
+    }
 
-    disableMonitoring(): void { this.errorDetector.stopMonitoring();
+    disableMonitoring(): void {
+        this.errorDetector.stopMonitoring();
+    }
 
     // Helper component cleanup
-    destroy(): void { this.errorDetector.stopMonitoring();
-        this.userCommunicator.cleanup()','
-        console.log('PerformanceErrorRecoverySystem, destroyed') }'
+    destroy(): void {
+        this.errorDetector.stopMonitoring();
+        this.userCommunicator.cleanup();
+        console.log('PerformanceErrorRecoverySystem destroyed');
+    }
 }
 
 // Simplified helper components for UI and logging
-class PerformanceUserCommunicator { private notificationContainer: HTMLElement | null = null
-    private, activeNotifications: Map<string, HTMLElement> = new Map();
+class PerformanceUserCommunicator {
+    private notificationContainer: HTMLElement | null = null;
+    private activeNotifications: Map<string, HTMLElement> = new Map();
     private messageTemplates: Map<string, MessageTemplate> = new Map();
 
     async initialize(): Promise<void> {
         this.createNotificationContainer();
         this.setupMessageTemplates();
-        this.setupStyles()','
-        console.log('User, communicator initialized') }'
+        this.setupStyles();
+        console.log('User communicator initialized');
+    }
 
-    createNotificationContainer()';'
-        if (typeof, document === 'undefined') return;
+    createNotificationContainer(): void {
+        if (typeof document === 'undefined') return;
 
         this.notificationContainer = document.createElement('div');
         this.notificationContainer.id = 'performance-notifications';
@@ -450,165 +458,202 @@ class PerformanceUserCommunicator { private notificationContainer: HTMLElement |
         document.body.appendChild(this.notificationContainer);
     }
 
-    setupMessageTemplates('''
-        this.messageTemplates.set('recovery_success', { ''
-            title: 'パフォーマンス復旧完了',','
-            icon: '✅,')',
-            type: 'success')','
+    setupMessageTemplates(): void {
+        this.messageTemplates.set('recovery_success', {
+            title: 'パフォーマンス復旧完了',
+            icon: '✅',
+            type: 'success'
+        });
 
-        this.messageTemplates.set('degradation', {''
-            title: 'パフォーマンス調整中',','
-            icon: '⚠️,')',
-            type: 'warning')','
+        this.messageTemplates.set('degradation', {
+            title: 'パフォーマンス調整中',
+            icon: '⚠️',
+            type: 'warning'
+        });
 
-        this.messageTemplates.set('critical_error', {''
-            title: '重要なエラーが発生',','
-            icon: '🚨,')',
+        this.messageTemplates.set('critical_error', {
+            title: '重要なエラーが発生',
+            icon: '🚨',
             type: 'error'
-            }
+        });
+    }
 
-    setupStyles()';'
-        if (typeof, document === 'undefined') return;
+    setupStyles(): void {
+        if (typeof document === 'undefined') return;
 
         const styleId = 'performance-notification-styles';
         if(document.getElementById(styleId)) return;
 
-        const style = document.createElement('style);'
+        const style = document.createElement('style');
         style.id = styleId;
-        style.textContent = `;
-            .performance-notifications-container { position: fixed,
-                top: 20px,
-    right: 20px,
-                z-index: 10001,
-                max-width: 400px }
-            .performance-notification { background: white,
-                border: 1px solid #ddd,
-                border-radius: 8px,
-                margin-bottom: 10px,
-                padding: 15px,
-                box-shadow: 0 2px 10px rgba(0,0,0,0.1 }
+        style.textContent = `
+            .performance-notifications-container {
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                z-index: 10001;
+                max-width: 400px;
+            }
+            .performance-notification {
+                background: white;
+                border: 1px solid #ddd;
+                border-radius: 8px;
+                margin-bottom: 10px;
+                padding: 15px;
+                box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            }
         `;
         document.head.appendChild(style);
     }
 
-    async notifyRecoverySuccess(error: ClassifiedError, result: RecoveryResult): Promise<void> { }'
-
-        this.showNotification('recovery_success', `${error.detector}の問題が解決されました`}
+    async notifyRecoverySuccess(error: ClassifiedError, result: RecoveryResult): Promise<void> {
+        this.showNotification('recovery_success', `${error.detector}の問題が解決されました`);
     }
 
-    async notifyDegradation(error: ClassifiedError, result: DegradationResult): Promise<void> { }'
-
-        this.showNotification('degradation', `性能調整中（レベル: ${result.currentLevel}）`}
+    async notifyDegradation(error: ClassifiedError, result: DegradationResult): Promise<void> {
+        this.showNotification('degradation', `性能調整中（レベル: ${result.currentLevel}）`);
     }
 
-    async notifyCriticalError(error: DetectedError | Error): Promise<void> { ''
-        const errorType = 'type' in error ? error.type: error.name,' 
-        this.showNotification('critical_error', `重要なエラー: ${errorType}`}
+    async notifyCriticalError(error: DetectedError | Error): Promise<void> {
+        const errorType = 'type' in error ? error.type : error.name;
+        this.showNotification('critical_error', `重要なエラー: ${errorType}`);
     }
 
-    async notifySystemEmergency(error: Error): Promise<void> { ''
-        this.showNotification('critical_error', 'システム緊急事態が発生しました) }'
+    async notifySystemEmergency(error: Error): Promise<void> {
+        this.showNotification('critical_error', 'システム緊急事態が発生しました');
+    }
 
-    async notifyPerformanceRestoration(result: DegradationResult): Promise<void> { ''
-        this.showNotification('recovery_success', 'パフォーマンスが復旧されました) }'
+    async notifyPerformanceRestoration(result: DegradationResult): Promise<void> {
+        this.showNotification('recovery_success', 'パフォーマンスが復旧されました');
+    }
 
-    showNotification(type: string, message: string): void { if (!this.notificationContainer) return,
-','
+    showNotification(type: string, message: string): void {
+        if (!this.notificationContainer) return;
 
         const template = this.messageTemplates.get(type);
-        if(!template) return,
+        if(!template) return;
 
         const notification = document.createElement('div');
         notification.className = `performance-notification ${template.type}`;
 
-        notification.innerHTML = `';'
-            <div style="font-weight: bold;">${template.icon} ${template.title}</div>""
+        notification.innerHTML = `
+            <div style="font-weight: bold;">${template.icon} ${template.title}</div>
             <div style="margin-top: 5px;">${message}</div>
         `;
 
         this.notificationContainer.appendChild(notification);
 
         // Auto-remove after 5 seconds
-        setTimeout(() => {  if (notification.parentNode) { }
-                notification.parentNode.removeChild(notification); }
-}, 5000);
+        setTimeout(() => {
+            if (notification.parentNode) {
+                notification.parentNode.removeChild(notification);
+            }
+        }, 5000);
     }
 
-    getActiveNotifications(): number { return this.activeNotifications.size }
+    getActiveNotifications(): number {
+        return this.activeNotifications.size;
+    }
 
-    cleanup(): void { if (this.notificationContainer && this.notificationContainer.parentNode) {
+    cleanup(): void {
+        if (this.notificationContainer && this.notificationContainer.parentNode) {
             this.notificationContainer.parentNode.removeChild(this.notificationContainer);
+        }
+    }
 }
-";"
-class TroubleshootingGuide { ""
-    async initialize(): Promise<void> {""
-        console.log('Troubleshooting, guide initialized') }'
+class TroubleshootingGuide {
+    async initialize(): Promise<void> {
+        console.log('Troubleshooting guide initialized');
+    }
 
-    getGuideForError(error: DetectedError): string { const guides: Record<string, string> = {''
-            frameRate: 'グラフィック設定を下げることを検討してください,
-            memory: 'ブラウザタブを閉じてメモリを解放してください,
+    getGuideForError(error: DetectedError): string {
+        const guides: Record<string, string> = {
+            frameRate: 'グラフィック設定を下げることを検討してください',
+            memory: 'ブラウザタブを閉じてメモリを解放してください',
             network: 'インターネット接続を確認してください'
-            };
+        };
         return guides[error.detector] || '一般的なトラブルシューティングを実行してください';
+    }
+}
 
-class PerformanceErrorLogger { private logs: LogEntry[] = []
-    private, maxLogSize: number = 100','
+class PerformanceErrorLogger {
+    private logs: LogEntry[] = [];
+    private maxLogSize: number = 100;
 
-    async initialize()','
-        console.log('Error, logger initialized') }'
+    async initialize(): Promise<void> {
+        console.log('Error logger initialized');
+    }
 
-    async logError(error: DetectedError): Promise<void> { ''
-        this.addLog('error', error','
-        console.error('Performance error logged:', error }
+    async logError(error: DetectedError): Promise<void> {
+        this.addLog('error', error);
+        console.error('Performance error logged:', error);
+    }
 
-    async logRecoverySuccess(error: ClassifiedError, result: RecoveryResult): Promise<void> { ''
-        this.addLog('recovery_success', { error, result )','
-        console.log('Recovery success logged:', result }
+    async logRecoverySuccess(error: ClassifiedError, result: RecoveryResult): Promise<void> {
+        this.addLog('recovery_success', { error, result });
+        console.log('Recovery success logged:', result);
+    }
 
-    async logDegradation(error: ClassifiedError, result: DegradationResult): Promise<void> { ''
-        this.addLog('degradation', { error, result )','
-        console.warn('Degradation logged:', result }
+    async logDegradation(error: ClassifiedError, result: DegradationResult): Promise<void> {
+        this.addLog('degradation', { error, result });
+        console.warn('Degradation logged:', result);
+    }
 
-    async logCriticalError(error: Error): Promise<void> { ''
-        this.addLog('critical', error','
-        console.error('Critical error logged:', error }
+    async logCriticalError(error: Error): Promise<void> {
+        this.addLog('critical', error);
+        console.error('Critical error logged:', error);
+    }
 
-    addLog(type: LogEntry['type'], data: any): void { this.logs.push({)
-            type),
+    addLog(type: LogEntry['type'], data: any): void {
+        this.logs.push({
+            type,
             data,
-            timestamp: Date.now(  ,
+            timestamp: Date.now()
+        });
 
-        if (this.logs.length > this.maxLogSize) { this.logs.shift();
+        if (this.logs.length > this.maxLogSize) {
+            this.logs.shift();
+        }
     }
 
-    getLogs(): LogEntry[] { return [...this.logs] }
+    getLogs(): LogEntry[] {
+        return [...this.logs];
+    }
+}
 
-class ErrorMonitoringIntegration { private criticalErrorCallbacks: Array<(error: Error | DetectedError) => void> = [];
+class ErrorMonitoringIntegration {
+    private criticalErrorCallbacks: Array<(error: Error | DetectedError) => void> = [];
 
-    async initialize()','
-        console.log('Monitoring, integration initialized') }'
+    async initialize(): Promise<void> {
+        console.log('Monitoring integration initialized');
     }
 
-    onCriticalError(callback: (error: Error | DetectedError) => void): void { this.criticalErrorCallbacks.push(callback);
+    onCriticalError(callback: (error: Error | DetectedError) => void): void {
+        this.criticalErrorCallbacks.push(callback);
+    }
 
-    async reportCriticalError(error: Error | DetectedError): Promise<void> { ''
+    async reportCriticalError(error: Error | DetectedError): Promise<void> {
         console.error('Reporting critical error to monitoring system:', error);
-        this.criticalErrorCallbacks.forEach(callback => { )
-            try {);
-
-                callback(error); }'
-
-            } catch (err) { console.error('Critical error callback failed:', err     }
+        this.criticalErrorCallbacks.forEach(callback => {
+            try {
+                callback(error);
+            } catch (err) {
+                console.error('Critical error callback failed:', err);
+            }
+        });
+    }
 }
 // Singleton instance
-let performanceErrorRecoverySystemInstance: PerformanceErrorRecoverySystem | null = null,
+let performanceErrorRecoverySystemInstance: PerformanceErrorRecoverySystem | null = null;
 
 /**
  * Get singleton PerformanceErrorRecoverySystem instance
  * @returns PerformanceErrorRecoverySystem instance
  */
-export function getPerformanceErrorRecoverySystem(): PerformanceErrorRecoverySystem { if (!performanceErrorRecoverySystemInstance) {
-        performanceErrorRecoverySystemInstance = new PerformanceErrorRecoverySystem() };
+export function getPerformanceErrorRecoverySystem(): PerformanceErrorRecoverySystem {
+    if (!performanceErrorRecoverySystemInstance) {
+        performanceErrorRecoverySystemInstance = new PerformanceErrorRecoverySystem();
+    }
     return performanceErrorRecoverySystemInstance;
 }
 
@@ -616,6 +661,10 @@ export function getPerformanceErrorRecoverySystem(): PerformanceErrorRecoverySys
  * Reinitialize performance error recovery system
  * @returns PerformanceErrorRecoverySystem instance
  */
-export function reinitializePerformanceErrorRecoverySystem(): PerformanceErrorRecoverySystem { if (performanceErrorRecoverySystemInstance) {
-        performanceErrorRecoverySystemInstance.destroy() }''
+export function reinitializePerformanceErrorRecoverySystem(): PerformanceErrorRecoverySystem {
+    if (performanceErrorRecoverySystemInstance) {
+        performanceErrorRecoverySystemInstance.destroy();
+    }
     performanceErrorRecoverySystemInstance = new PerformanceErrorRecoverySystem();
+    return performanceErrorRecoverySystemInstance;
+}
