@@ -65,11 +65,12 @@ export class DataAggregationProcessor {
      * @param {Object} options - オプション
      * @returns {Promise<Object>} 集計結果
      */
-    async getAdvancedAggregatedData(aggregationRules, options: any = {}) {
-        const startTime = performance.now();
-        const requestId = this.generateRequestId();
-        
-        const {
+    async getAdvancedAggregatedData(aggregationRules: any, options: any = {}): Promise<any> {
+        try {
+            const startTime = performance.now();
+            const requestId = this.generateRequestId();
+            
+            const {
                 dataTypes = ['sessionData'],
                 multiGroupBy = [],
                 customAggregations = {},
@@ -92,10 +93,9 @@ export class DataAggregationProcessor {
                 }
             }
             // 複数データタイプからのデータ収集
-            const aggregatedResults = {};
+            const aggregatedResults: any = {};
             
             for (const dataType of dataTypes) {
-            
                 // データタイプ固有の集計処理
                 const typeResult = await this.performAdvancedAggregation(dataType, {
                     multiGroupBy,
@@ -135,10 +135,10 @@ export class DataAggregationProcessor {
                 totalGroups: this.countTotalGroups(finalResult),
                 cached: false
             });
-        } catch (error) {
+        } catch (error: any) {
             console.error('Advanced aggregation error:', error);
             return this.createErrorResponse('ADVANCED_AGGREGATION_ERROR',
-                error.message, 500, { requestId });
+                error.message, 500, { requestId: '' });
         }
     }
     /**
@@ -211,9 +211,9 @@ export class DataAggregationProcessor {
             const { period = 'last7d' } = query;
             // 並列でデータを取得
             const [sessions, interactions, performance] = await Promise.all([
-                this.storageManager.getData('sessionData', { ...query, period }).then(r => r || []),
-                this.storageManager.getData('bubbleInteractions', { ...query, period }).then(r => r || []),
-                this.storageManager.getData('performanceData', { ...query, period }).then(r => r || [])
+                this.storageManager.getData('sessionData', { ...query, period }).then((r: any) => r || []),
+                this.storageManager.getData('bubbleInteractions', { ...query, period }).then((r: any) => r || []),
+                this.storageManager.getData('performanceData', { ...query, period }).then((r: any) => r || [])
             ]);
             
             // サマリー統計の計算
@@ -251,9 +251,9 @@ export class DataAggregationProcessor {
         const groups = this.groupData(data, groupBy);
         
         // 各グループの集計
-        const result = {};
-        for(const [groupKey, groupData] of Object.entries(groups)) {
-            result[groupKey] = this.aggregateGroup(groupData, aggregateBy);
+        const result: any = {};
+        for (const [groupKey, groupData] of Object.entries(groups)) {
+            result[groupKey] = this.aggregateGroup(groupData as any[], aggregateBy);
         }
         
         return result;
@@ -270,7 +270,7 @@ export class DataAggregationProcessor {
             return { 'all': data };
         }
         
-        const groups = {};
+        const groups: any = {};
         
         for (const item of data) {
             const groupKey = groupBy.map(key => {
@@ -297,31 +297,31 @@ export class DataAggregationProcessor {
      * @returns {Object} 集計結果
      */
     aggregateGroup(groupData: any[], aggregateBy: any): any {
-        const result = {
+        const result: any = {
             count: groupData.length
         };
         
-        for(const [field, operations] of Object.entries(aggregateBy)) {
+        for (const [field, operations] of Object.entries(aggregateBy)) {
             const values = groupData.map(item => item[field]).filter(val => val != null);
-            if(values.length === 0) continue;
+            if (values.length === 0) continue;
             
-            if(operations.includes('sum')) {
+            if ((operations as any[]).includes('sum')) {
                 result[`${field}_sum`] = values.reduce((sum, val) => sum + Number(val), 0);
             }
 
-            if(operations.includes('avg')) {
+            if ((operations as any[]).includes('avg')) {
                 result[`${field}_avg`] = values.reduce((sum, val) => sum + Number(val), 0) / values.length;
             }
 
-            if(operations.includes('min')) {
+            if ((operations as any[]).includes('min')) {
                 result[`${field}_min`] = Math.min(...values.map(Number));
             }
 
-            if(operations.includes('max')) {
+            if ((operations as any[]).includes('max')) {
                 result[`${field}_max`] = Math.max(...values.map(Number));
             }
 
-            if (operations.includes('count')) {
+            if ((operations as any[]).includes('count')) {
                 result[`${field}_count`] = values.length;
             }
         }
@@ -341,7 +341,7 @@ export class DataAggregationProcessor {
         // 期間設定の処理
         if (period) {
             const now = Date.now();
-            switch(period) {
+            switch (period) {
                 case 'last24h':
                     query.startDate = now - 24 * 60 * 60 * 1000;
                     break;
@@ -391,7 +391,7 @@ export class DataAggregationProcessor {
             return { noData: true };
         }
         
-        const bubbleTypes = {};
+        const bubbleTypes: any = {};
         const reactionTimes = [];
         let totalScore = 0;
         
@@ -451,11 +451,11 @@ export class DataAggregationProcessor {
         }
         
         // 簡略化実装
-        const groupedData = this.groupData(rawData, rules.multiGroupBy);
-        const aggregatedResult = {};
+        const groupedData = this.groupData(rawData, rules.multiGroupBy || []);
+        const aggregatedResult: any = {};
         
-        for(const [groupKey, groupData] of Object.entries(groupedData)) {
-            aggregatedResult[groupKey] = this.aggregateGroup(groupData, rules.customAggregations);
+        for (const [groupKey, groupData] of Object.entries(groupedData)) {
+            aggregatedResult[groupKey] = this.aggregateGroup(groupData as any[], rules.customAggregations || {});
         }
         
         return {
@@ -473,7 +473,7 @@ export class DataAggregationProcessor {
         const { timeField, interval, aggregateBy } = rules;
         const intervalMs = this.getIntervalMilliseconds(interval);
         
-        const timeGroups = {};
+        const timeGroups: any = {};
         for (const record of data) {
             const timestamp = record[timeField];
             if (!timestamp) continue;
@@ -514,7 +514,7 @@ export class DataAggregationProcessor {
     }
 
     getIntervalMilliseconds(interval: string): number {
-        const intervals = {
+        const intervals: any = {
             'minute': 60 * 1000,
             'hour': 60 * 60 * 1000,
             'day': 24 * 60 * 60 * 1000,
@@ -524,7 +524,7 @@ export class DataAggregationProcessor {
         return intervals[interval] || intervals['hour'];
     }
     
-    consolidateAggregationResults(aggregatedResults, options: any = {}) {
+    consolidateAggregationResults(aggregatedResults: any, options: any = {}): any {
         return {
             summary: this.createAggregationSummary(aggregatedResults),
             details: aggregatedResults
@@ -532,11 +532,11 @@ export class DataAggregationProcessor {
     }
     
     createAggregationSummary(aggregatedResults: any): any {
-        const summary = {};
-        for(const [dataType, result] of Object.entries(aggregatedResults)) {
+        const summary: any = {};
+        for (const [dataType, result] of Object.entries(aggregatedResults)) {
             summary[dataType] = {
-                totalGroups: Object.keys(result.groups || {}).length,
-                totalRecords: result.metadata?.totalRecords || 0
+                totalGroups: Object.keys((result as any).groups || {}).length,
+                totalRecords: (result as any).metadata?.totalRecords || 0
             };
         }
         return summary;
@@ -546,8 +546,8 @@ export class DataAggregationProcessor {
         let total = 0;
         if (result.details) {
             for (const typeResult of Object.values(result.details)) {
-                if (typeResult.groups) {
-                    total += Object.keys(typeResult.groups).length;
+                if ((typeResult as any).groups) {
+                    total += Object.keys((typeResult as any).groups).length;
                 }
             }
         }
