@@ -4,23 +4,32 @@
  */
 
 // Type definitions
-interface MainController { ruleDefinitions?: {
-        getRule: (ruleName: string) => Rule | null  }
+interface MainController {
+    ruleDefinitions?: {
+        getRule: (ruleName: string) => Rule | null;
     };
-    [key: string]: any,
+    [key: string]: any;
+}
 
-interface Rule { autoFix: boolean;
+interface Rule {
+    autoFix: boolean;
     autoFixFn?: (oldValue: any, fixedValue: any, context: ValidationContext) => any;
     [key: string]: any;
 }
 
-interface ValidationContext { [key: string]: any;
-    interface ProcessorConfig { enableDetailedReports?: boolean,
+interface ValidationContext {
+    [key: string]: any;
+}
+
+interface ProcessorConfig {
+    enableDetailedReports?: boolean;
     includePerformanceMetrics?: boolean;
     maxSuggestions?: number;
-    autoFixThreshold?: 'low' | 'medium' | 'high' | 'critical' }
+    autoFixThreshold?: 'low' | 'medium' | 'high' | 'critical';
+}
 
-interface RuleExecutionResult { skipped?: boolean,
+interface RuleExecutionResult {
+    skipped?: boolean;
     ruleName: string;
     category?: string;
     valid: boolean;
@@ -30,23 +39,27 @@ interface RuleExecutionResult { skipped?: boolean,
     error?: boolean;
     suggestion?: string;
     autoFix?: boolean;
-    autoFixFn?: (oldValue: any, fixedValue: any, context: ValidationContext') => any;'
+    autoFixFn?: (oldValue: any, fixedValue: any, context: ValidationContext) => any;
     originalError?: Error;
-     }
 }
 
-interface ProcessedIssue { rule: string,
-    message: string,
-    severity: string,
+interface ProcessedIssue {
+    rule: string;
+    message: string;
+    severity: string;
     category: string;
     executionTime?: number;
     originalError?: Error;
-     }
+}
 
-interface ProcessedSuggestion { rule: string,
-    suggestion: string,
+interface ProcessedSuggestion {
+    rule: string;
+    suggestion: string;
     severity: string;
-    interface AppliedRule { name: string;
+}
+
+interface AppliedRule {
+    name: string;
     category?: string;
     result: 'passed' | 'failed';
     executionTime?: number;

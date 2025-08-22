@@ -10,35 +10,52 @@ import { ErrorRecovery  } from './error/ErrorRecovery.js';
 import { UtilsErrorAnalyzer  } from './error/UtilsErrorAnalyzer.js';
 
 // Type definitions
-interface ErrorInfo { id: string,
+interface ErrorInfo {
+    id: string;
     message: string;
     stack?: string;
-    context: string,
+    context: string;
     metadata: Record<string, any>;
     timestamp: number;
     severity?: string;
-    interface ErrorStats { total: number,
+}
+
+interface ErrorStats {
+    total: number;
     byType: Map<string, number>;
     byContext: Map<string, number>;
-    critical: number,
+    critical: number;
     recovered: number;
-    interface FallbackState { audioDisabled: boolean,
-    canvasDisabled: boolean,
-    storageDisabled: boolean,
-    reducedEffects: boolean,
+}
+
+interface FallbackState {
+    audioDisabled: boolean;
+    canvasDisabled: boolean;
+    storageDisabled: boolean;
+    reducedEffects: boolean;
     safeMode: boolean;
-    type ErrorSeverity = 'LOW' | 'MEDIUM' | 'HIGH' | 'CRITICAL';
-    interface PerformanceMemory { usedJSHeapSize: number,
+}
+
+type ErrorSeverity = 'LOW' | 'MEDIUM' | 'HIGH' | 'CRITICAL';
+
+interface PerformanceMemory {
+    usedJSHeapSize: number;
     jsHeapSizeLimit: number;
     totalJSHeapSize?: number;
-    declare global { interface Performance {
+}
+
+declare global {
+    interface Performance {
         memory?: PerformanceMemory;
+    }
     interface Window {
-    performance: Performance;
-    export class ErrorHandler {
+        performance: Performance;
+    }
+}
+export class ErrorHandler {
     private isBrowser: boolean;
     private isNode: boolean;
-    public, isInitialized: boolean;
+    public isInitialized: boolean;
     
     // Sub-components
     public logger: ErrorLogger;
@@ -56,37 +73,44 @@ interface ErrorInfo { id: string,
     // Delegated properties from sub-components
     public recoveryStrategies: Map<string, Function>;
     public fallbackState: FallbackState;
-    constructor(',
-        this.isBrowser = typeof, window !== 'undefined' && typeof, document !== 'undefined,
-        this.isNode = typeof, process !== 'undefined' && !!process.versions && !!process.versions.node,
+    constructor() {
+        this.isBrowser = typeof window !== 'undefined' && typeof document !== 'undefined';
+        this.isNode = typeof process !== 'undefined' && !!process.versions && !!process.versions.node;
         
-        // Main, controller state, this.isInitialized = false;
+        // Main controller state
+        this.isInitialized = false;
         
-        // Initialize, sub-components, with dependency, injection)
-        this.logger = new ErrorLogger(this, as any);
-    this.reporter = new UtilsErrorReporter(this, as any);
-    this.recovery = new ErrorRecovery(this, as any);
-    this.analyzer = new UtilsErrorAnalyzer(this, as any);
+        // Initialize sub-components with dependency injection
+        this.logger = new ErrorLogger(this as any);
+        this.reporter = new UtilsErrorReporter(this as any);
+        this.recovery = new ErrorRecovery(this as any);
+        this.analyzer = new UtilsErrorAnalyzer(this as any);
+        
         // Legacy compatibility properties - delegated to sub-components
         this.errorLog = [];
-    this.maxLogSize = 100;
-    this.criticalErrors = new Set<string>();
-    this.recoveryAttempts = new Map<string, number>(),
+        this.maxLogSize = 100;
+        this.criticalErrors = new Set<string>();
+        this.recoveryAttempts = new Map<string, number>();
         this.maxRecoveryAttempts = 3;
-    this.fallbackModes = new Map<string, boolean>(),
+        this.fallbackModes = new Map<string, boolean>();
         this.errorStats = {
             total: 0,
-    byType: new Map<string, number>();
-    byContext: new Map<string, number>();
-    critical: 0,
-    recovered: 0  };
+            byType: new Map<string, number>(),
+            byContext: new Map<string, number>(),
+            critical: 0,
+            recovered: 0
+        };
+        
         // Delegated properties from sub-components
         this.recoveryStrategies = new Map<string, Function>();
-        this.fallbackState = { audioDisabled: false,
+        this.fallbackState = {
+            audioDisabled: false,
             canvasDisabled: false,
             storageDisabled: false,
             reducedEffects: false,
-    safeMode: false;
+            safeMode: false
+        };
+        
         this.initialize();
     }
     
