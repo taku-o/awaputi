@@ -18,7 +18,7 @@ interface BrowserSupportConfig {
     fallbackRequired?: boolean;
 }
 
-interface BrowserInfo {
+export interface BrowserInfo {
     name: string;
     version: number;
     isSupported: boolean;
@@ -27,7 +27,7 @@ interface BrowserInfo {
     fallbacksRequired: string[];
 }
 
-interface CanvasSupport {
+export interface CanvasSupport {
     available: boolean;
     context2d: boolean;
     toDataURL: boolean;
@@ -36,7 +36,7 @@ interface CanvasSupport {
     errorMessage: string | null;
 }
 
-interface LocalStorageSupport {
+export interface LocalStorageSupport {
     available: boolean;
     readable: boolean;
     writable: boolean;
@@ -46,7 +46,7 @@ interface LocalStorageSupport {
     estimatedQuota: number;
 }
 
-interface ModulesSupport {
+export interface ModulesSupport {
     available: boolean;
     dynamicImport: boolean;
     staticImport: boolean;
@@ -97,7 +97,7 @@ interface Recommendation {
     priority: 'high' | 'medium' | 'low';
 }
 
-interface ComprehensiveSupport {
+export interface ComprehensiveSupportInfo {
     browser: BrowserInfo;
     canvas: CanvasSupport;
     localStorage: LocalStorageSupport;
@@ -684,7 +684,7 @@ class BrowserCompatibilityManager {
     /**
      * 包括的ブラウザサポート情報の取得
      */
-    static getComprehensiveSupport(): ComprehensiveSupport {
+    static getComprehensiveSupport(): ComprehensiveSupportInfo {
         return {
             browser: this.getBrowserInfo(),
             canvas: this.getCanvasSupport(),
