@@ -1,70 +1,70 @@
-import { getErrorHandler  } from '../utils/ErrorHandler',
+import { getErrorHandler } from '../utils/ErrorHandler';
 
 // 音楽スケール型定義
 interface Scales {
-    major: number[]
-    minor: number[]
-    pentatonic: number[]
-    blues: number[]
+    major: number[];
+    minor: number[];
+    pentatonic: number[];
+    blues: number[];
 }
 
 // 和音進行型定義
 interface ChordProgressions {
-    pop: string[]
-    jazz: string[]
-    classical: string[]
-    ambient: string[]
+    pop: string[];
+    jazz: string[];
+    classical: string[];
+    ambient: string[];
 }
 
 // リズムパターン型定義
 interface RhythmPatterns {
-    simple: number[]
-    complex: number[]
-    syncopated: number[]
-    ambient: number[]
+    simple: number[];
+    complex: number[];
+    syncopated: number[];
+    ambient: number[];
 }
 
 // トラック設定型定義
 interface TrackConfig {
-    style?: string,
-    duration?: number,
-    tempo?: number,
-    key?: string,
-    timeSignature?: string,
+    style?: string;
+    duration?: number;
+    tempo?: number;
+    key?: string;
+    timeSignature?: string;
 }
 
 // メロディ音符型定義
 interface MelodyNote {
-    frequency: number,
-    scaleIndex: number,
-    duration: number,
-    velocity: number,
+    frequency: number;
+    scaleIndex: number;
+    duration: number;
+    velocity: number;
 }
 
 // ハーモニー音符型定義
 interface HarmonyNote {
-    frequency: number,
-    scaleIndex: number,
-    duration: number,
-    velocity: number,
+    frequency: number;
+    scaleIndex: number;
+    duration: number;
+    velocity: number;
 }
 
 // メロディデータ型定義
-type MelodyData = (MelodyNote | null)[]
+type MelodyData = (MelodyNote | null)[];
 // ハーモニーデータ型定義
-type HarmonyData = (HarmonyNote | null)[]
+type HarmonyData = (HarmonyNote | null)[];
 
 // ローマ数字マッピング型定義
 interface RomanToNumberMap {
-    [key: string]: number,
+    [key: string]: number;
 }
 
 // ノートマッピング型定義
 interface NoteMap {
-    [key: string]: number,
+    [key: string]: number;
 }
 // 音楽スタイル型定義
-type MusicStyle = 'ambient' | 'energetic' | 'exciting' | 'dramatic',
+type MusicStyle = 'ambient' | 'energetic' | 'exciting' | 'dramatic';
 
 /**
  * BGM生成クラス - 音楽理論ベースのプロシージャルBGM生成
@@ -74,32 +74,32 @@ export class BGMGenerator {
     private scales: Scales;
     private chordProgressions: ChordProgressions;
     private rhythmPatterns: RhythmPatterns;
-    private baseFrequency: number,
+    private baseFrequency: number;
 
     constructor(audioContext: AudioContext) {
         this.audioContext = audioContext;
         
         // 音楽理論定義
         this.scales = {
-            major: [0, 2, 4, 5, 7, 9, 11]
-            minor: [0, 2, 3, 5, 7, 8, 10]
-            pentatonic: [0, 2, 4, 7, 9]
+            major: [0, 2, 4, 5, 7, 9, 11],
+            minor: [0, 2, 3, 5, 7, 8, 10],
+            pentatonic: [0, 2, 4, 7, 9],
             blues: [0, 3, 5, 6, 7, 10]
-        }
+        };
 
         this.chordProgressions = {
-            pop: ['I', 'V', 'vi', 'IV']
-            jazz: ['ii', 'V', 'I', 'vi']
-            classical: ['I', 'IV', 'V', 'I']
+            pop: ['I', 'V', 'vi', 'IV'],
+            jazz: ['ii', 'V', 'I', 'vi'],
+            classical: ['I', 'IV', 'V', 'I'],
             ambient: ['i', 'VII', 'VI', 'VII']
-        }
+        };
         
         this.rhythmPatterns = {
-            simple: [1, 0, 1, 0, 1, 0, 1, 0]
-            complex: [1, 0, 1, 1, 0, 1, 0, 1]
-            syncopated: [1, 0, 0, 1, 0, 1, 1, 0]
+            simple: [1, 0, 1, 0, 1, 0, 1, 0],
+            complex: [1, 0, 1, 1, 0, 1, 0, 1],
+            syncopated: [1, 0, 0, 1, 0, 1, 1, 0],
             ambient: [1, 0, 0, 0, 1, 0, 0, 0]
-        }
+        };
 
         // 基音周波数 (A4 = 440Hz)
         this.baseFrequency = 440;
@@ -116,10 +116,10 @@ export class BGMGenerator {
         try {
             const {
                 style = 'ambient',
-                duration = 30;
-                tempo = 120;
+                duration = 30,
+                tempo = 120,
                 key = 'C',
-                timeSignature = '4/4
+                timeSignature = '4/4'
             } = trackConfig;
             
             console.log(`Generating ${style} track: ${duration}s, ${tempo}BPM, key=${key}`);
@@ -223,7 +223,7 @@ export class BGMGenerator {
             // 現在の和音
             const chordIndex = Math.floor(t / (beatDuration * 4)) % progression.length;
             const chord = this.getChordFrequencies(progression[chordIndex], rootFreq, scale);
-            const bassFreq = this.getChordFrequencies(progression[chordIndex], bassRootFreq, scale)[0]
+            const bassFreq = this.getChordFrequencies(progression[chordIndex], bassRootFreq, scale)[0];
             
             let sample = 0;
             
@@ -235,7 +235,7 @@ export class BGMGenerator {
             // アルペジオメロディ
             const arpeggioSpeed = 8; // 1拍に8音
             const arpeggioIndex = Math.floor(beatPosition * arpeggioSpeed) % chord.length;
-            const arpeggioFreq = chord[arpeggioIndex]
+            const arpeggioFreq = chord[arpeggioIndex];
             const arpeggioEnvelope = Math.exp(-(beatPosition % (1/arpeggioSpeed)) * arpeggioSpeed * 4);
             sample += Math.sin(2 * Math.PI * arpeggioFreq * t) * 0.25 * arpeggioEnvelope;
             
@@ -285,12 +285,12 @@ export class BGMGenerator {
             // 現在の和音
             const chordIndex = Math.floor(t / (beatDuration * 2)) % progression.length;
             const chord = this.getChordFrequencies(progression[chordIndex], rootFreq, scale);
-            const bassFreq = this.getChordFrequencies(progression[chordIndex], bassRootFreq, scale)[0]
+            const bassFreq = this.getChordFrequencies(progression[chordIndex], bassRootFreq, scale)[0];
             
             let sample = 0;
             
             // 強力なベース（シンコペーション）
-            const syncopatedPattern = [1, 0, 1, 1, 0, 1, 0, 1]
+            const syncopatedPattern = [1, 0, 1, 1, 0, 1, 0, 1];
             const patternIndex = Math.floor(beatPosition * 8) % syncopatedPattern.length;
             if (syncopatedPattern[patternIndex]) {
                 const bassEnv = Math.exp(-beatPosition * 12);
@@ -406,14 +406,14 @@ export class BGMGenerator {
     getFrequencyFromNote(note: string, octave: number = 4): number {
         // ノート名をセミトーン数に変換
         const noteMap: NoteMap = {
-            'C': 0, 'C#': 1, 'Db': 1, 'D': 2, 'D#': 3, 'Eb': 3;
-            'E': 4, 'F': 5, 'F#': 6, 'Gb': 6, 'G': 7, 'G#': 8;
+            'C': 0, 'C#': 1, 'Db': 1, 'D': 2, 'D#': 3, 'Eb': 3,
+            'E': 4, 'F': 5, 'F#': 6, 'Gb': 6, 'G': 7, 'G#': 8,
             'Ab': 8, 'A': 9, 'A#': 10, 'Bb': 10, 'B': 11
-        }
+        };
 
         // マイナーキーの処理（'Am' -> 'A'）
-        const baseNote = note.replace('m', ');
-        const semitones = noteMap[baseNote]
+        const baseNote = note.replace('m', '');
+        const semitones = noteMap[baseNote];
         
         if (semitones === undefined) {
             console.warn(`Unknown note: ${note}, using C`);
@@ -435,15 +435,15 @@ export class BGMGenerator {
     getChordFrequencies(chordSymbol: string, rootFreq: number, scale: number[]): number[] {
         // ローマ数字を度数に変換
         const romanToNumber: RomanToNumberMap = {
-            'I': 0, 'i': 0, 'II': 1, 'ii': 1, 'III': 2, 'iii': 2;
-            'IV': 3, 'iv': 3, 'V': 4, 'v': 4, 'VI': 5, 'vi': 5;
+            'I': 0, 'i': 0, 'II': 1, 'ii': 1, 'III': 2, 'iii': 2,
+            'IV': 3, 'iv': 3, 'V': 4, 'v': 4, 'VI': 5, 'vi': 5,
             'VII': 6, 'vii': 6
-        }
+        };
         
-        const degree = romanToNumber[chordSymbol]
+        const degree = romanToNumber[chordSymbol];
         if (degree === undefined) {
             console.warn(`Unknown chord symbol: ${chordSymbol}`);
-            return [rootFreq]
+            return [rootFreq];
         }
         
         // 三和音を構成（根音、三度、五度）
@@ -451,7 +451,7 @@ export class BGMGenerator {
             scale[degree % scale.length],                    // 根音
             scale[(degree + 2) % scale.length],              // 三度
             scale[(degree + 4) % scale.length]               // 五度
-        ]
+        ];
         
         return chordTones.map(semitones => {
             return rootFreq * Math.pow(2, semitones / 12);
@@ -466,7 +466,7 @@ export class BGMGenerator {
      * @returns メロディデータ
      */
     generateMelody(scale: number[], rhythm: number[], rootFreq: number): MelodyData {
-        const melody: MelodyData = []
+        const melody: MelodyData = [];
         const noteCount = rhythm.length;
         
         for(let i = 0; i < noteCount; i++) {
@@ -477,8 +477,8 @@ export class BGMGenerator {
                 const scaleIndex = this.selectNextNote(previousNote, scale.length);
                 const frequency = rootFreq * Math.pow(2, scale[scaleIndex] / 12);
                 melody.push({
-                    frequency: frequency;
-                    scaleIndex: scaleIndex;
+                    frequency: frequency,
+                    scaleIndex: scaleIndex,
                     duration: 1, // 相対的な長さ
                     velocity: 0.7 + Math.random() * 0.3 // ランダムなベロシティ
                 });
@@ -498,7 +498,7 @@ export class BGMGenerator {
      */
     selectNextNote(currentNote: number, scaleLength: number): number {
         // 隣接音を優遇する確率分布
-        const weights: number[] = []
+        const weights: number[] = [];
         for(let i = 0; i < scaleLength; i++) {
             const distance = Math.abs(i - currentNote);
             weights[i] = distance === 0 ? 0.3 :      // 同じ音
@@ -512,7 +512,7 @@ export class BGMGenerator {
         let random = Math.random() * totalWeight;
         
         for(let i = 0; i < weights.length; i++) {
-            random -= weights[i]
+            random -= weights[i];
             if (random <= 0) {
                 return i;
             }
@@ -529,19 +529,19 @@ export class BGMGenerator {
      * @returns ハーモニーデータ
      */
     generateHarmony(melody: MelodyData, chordProgression: string[], scale: number[]): HarmonyData {
-        const harmony: HarmonyData = []
+        const harmony: HarmonyData = [];
         
         melody.forEach((note, index) => {
             if (note) {
                 const chordIndex = Math.floor(index / (melody.length / chordProgression.length));
-                const currentChord = chordProgression[chordIndex % chordProgression.length]
+                const currentChord = chordProgression[chordIndex % chordProgression.length];
                 
                 // メロディに対するハーモニー音を選択
                 const harmonyNote = this.findHarmonyNote(note.scaleIndex, currentChord, scale);
                 harmony.push({
-                    frequency: note.frequency * Math.pow(2, (harmonyNote - note.scaleIndex) / 12);
-                    scaleIndex: harmonyNote;
-                    duration: note.duration;
+                    frequency: note.frequency * Math.pow(2, (harmonyNote - note.scaleIndex) / 12),
+                    scaleIndex: harmonyNote,
+                    duration: note.duration,
                     velocity: note.velocity * 0.7 // ハーモニーは少し小さく
                 });
             } else {
@@ -565,7 +565,7 @@ export class BGMGenerator {
             (melodyNote + 2) % scale.length, // 三度上
             (melodyNote - 2 + scale.length) % scale.length, // 三度下
             (melodyNote + 4) % scale.length  // 五度上
-        ]
+        ];
         
         // 現在の和音に含まれる音を優先
         const chordTones = this.getChordTones(chord, scale);
@@ -574,7 +574,7 @@ export class BGMGenerator {
         );
         
         if (validOptions.length > 0) {
-            return validOptions[Math.floor(Math.random() * validOptions.length)]
+            return validOptions[Math.floor(Math.random() * validOptions.length)];
         }
         
         return harmonyOptions[0]; // フォールバック
@@ -589,13 +589,13 @@ export class BGMGenerator {
     getChordTones(chord: string, scale: number[]): number[] {
         const romanToNumber: RomanToNumberMap = {
             'I': 0, 'i': 0, 'ii': 1, 'III': 2, 'iv': 3, 'V': 4, 'vi': 5, 'VII': 6
-        }
+        };
         
         const degree = romanToNumber[chord] || 0;
         return [
-            scale[degree % scale.length]
-            scale[(degree + 2) % scale.length]
+            scale[degree % scale.length],
+            scale[(degree + 2) % scale.length],
             scale[(degree + 4) % scale.length]
-        ]
+        ];
     }
 }

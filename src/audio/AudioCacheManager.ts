@@ -12,7 +12,7 @@
  * - **CacheStatistics**: キャッシュパフォーマンス・メトリクス統計
  * 
  * **Cache Features**:
- * - LRU (Least, Recently Used) eviction policy
+ * - LRU (Least Recently Used) eviction policy
  * - Memory usage monitoring and automatic cleanup
  * - Progressive loading for large audio files
  * - Hit/miss ratio tracking and performance analytics
@@ -101,12 +101,12 @@ interface CacheEntry {
 
 // キャッシュ統計型定義
 interface CacheStats {
-    audioBuffer: any,
-    metadata: any,
-    chunk: any,
-    memory: any,
-    performance: any,
-    detailed: any,
+    audioBuffer: any;
+    metadata: any;
+    chunk: any;
+    memory: any;
+    performance: any;
+    detailed: any;
     settings: CacheSettings;
 }
 // ステータス型定義
@@ -139,8 +139,8 @@ export class AudioCacheManager {
     private memoryManager: CacheMemoryManager;
     private dataLoader: CacheDataLoader;
     private statistics: CacheStatistics;
-    constructor(audioContext: AudioContext) {
 
+    constructor(audioContext: AudioContext) {
         this.audioContext = audioContext;
         this.configManager = getConfigurationManager();
         this.errorHandler = getErrorHandler();
@@ -202,7 +202,7 @@ export class AudioCacheManager {
         }
     }
     // ========================================
-    // Public API Methods (delegation, to sub-components)
+    // Public API Methods (delegation to sub-components)
     // ========================================
     
     /**
@@ -277,7 +277,7 @@ export class AudioCacheManager {
     setMaxCacheSize(maxSize: number): void {
         try {
             this.cacheSettings.maxMemorySize = maxSize;
-            this.audioBufferCache.maxSize = maxSize;
+            this.audioBufferCache = new LRUCache(maxSize);
             // 設定を保存
             this.configManager.set('audio', 'cache.maxMemorySize', maxSize);
 
@@ -297,12 +297,12 @@ export class AudioCacheManager {
      */
     getCacheStats(): CacheStats {
         return {
-            audioBuffer: this.audioBufferCache.getStats();
-            metadata: this.metadataCache.getStats();
-            chunk: this.chunkCache.getStats();
-            memory: this.memoryManager.getCurrentMemoryUsage();
-            performance: this.dataLoader.getLoaderStats();
-            detailed: this.statistics.generateSummary();
+            audioBuffer: this.audioBufferCache.getStats(),
+            metadata: this.metadataCache.getStats(),
+            chunk: this.chunkCache.getStats(),
+            memory: this.memoryManager.getCurrentMemoryUsage(),
+            performance: this.dataLoader.getLoaderStats(),
+            detailed: this.statistics.generateSummary(),
             settings: this.cacheSettings
         };
     }
@@ -394,7 +394,7 @@ export class AudioCacheManager {
             // メモリ設定の更新
             if (cacheConfig.maxMemorySize) {
                 this.cacheSettings.maxMemorySize = cacheConfig.maxMemorySize;
-                this.audioBufferCache.maxSize = cacheConfig.maxMemorySize;
+                this.audioBufferCache = new LRUCache(cacheConfig.maxMemorySize);
             }
             
             if (cacheConfig.maxEntries) {
