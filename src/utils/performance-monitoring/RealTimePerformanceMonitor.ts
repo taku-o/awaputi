@@ -6,64 +6,85 @@
 import { getErrorHandler  } from '../../core/ErrorHandler.js';
 
 // Configuration interfaces
-interface MonitoringConfig { interval: number,
-    enableDashboard: boolean,
-    enableHistory: boolean,
-    enableAlerts: boolean,
-    enableRealtimeStream: boolean,
-    metricsFilter: string[],
-    retention: number,
-    bufferSize: number,
+interface MonitoringConfig {
+    interval: number;
+    enableDashboard: boolean;
+    enableHistory: boolean;
+    enableAlerts: boolean;
+    enableRealtimeStream: boolean;
+    metricsFilter: string[];
+    retention: number;
+    bufferSize: number;
     samplingRate: number;
+}
 
 // Event detection interfaces
-interface EventDetector { threshold: number;
+interface EventDetector {
+    threshold: number;
     duration?: number;
     samples?: number;
-    condition: ((value: number, threshold: number) => boolean) | ((values: HistoryEntry[]) => boolean,
+    condition: ((value: number, threshold: number) => boolean) | ((values: HistoryEntry[]) => boolean);
     active: boolean;
     startTime?: number | null;
     history?: HistoryEntry[];
-    }
+}
 
-interface HistoryEntry { value: number,
+interface HistoryEntry {
+    value: number;
     timestamp: number;
+}
 
 // Performance event interfaces
-interface PerformanceEvent { type: string,
+interface PerformanceEvent {
+    type: string;
     detected: number;
     resolved?: number;
     duration?: number;
     metrics: Map<string, any>;
     severity?: string;
+}
 
 // Stream interfaces
-interface RealtimeStream { active: boolean,
-    buffer: StreamDataPoint[],
-    bufferSize: number,
+interface RealtimeStream {
+    active: boolean;
+    buffer: StreamDataPoint[];
+    bufferSize: number;
     lastFlush: number;
-    interface StreamDataPoint { timestamp: number,
+}
+
+interface StreamDataPoint {
+    timestamp: number;
     metrics: Record<string, any>;
     events: string[];
+}
 
 // Data collector interfaces
-interface IDataCollector { initialize(): Promise<void>,
-    collect(): Promise<Map<string, any>> }
+interface IDataCollector {
+    initialize(): Promise<void>;
+    collect(): Promise<Map<string, any>>;
+}
 
 // Error handler type
-interface ErrorHandler { handleError(error: any, context?: { contex,t: string ): void;
+interface ErrorHandler {
+    handleError(error: any, context?: { context: string }): void;
+}
 
 // Performance monitoring system interface
-interface PerformanceMonitoringSystem { ''
-    onRealTimeData?(timestamp: number, metrics: Map<string, any>'): void;'
-    onPerformanceEvent?(type: 'detected' | 'resolved', event: PerformanceEvent): void 
+interface PerformanceMonitoringSystem {
+    onRealTimeData?(timestamp: number, metrics: Map<string, any>): void;
+    onPerformanceEvent?(type: 'detected' | 'resolved', event: PerformanceEvent): void;
+} 
 // Navigator extensions
-declare global { interface Navigator {
+declare global {
+    interface Navigator {
         connection?: {
-            downlin,k?: number };
+            downlink?: number;
+            effectiveType?: string;
+        };
         battery?: any;
         getBattery?(): any;
     }
+}
 
 type StreamCallback = (dataPoint: StreamDataPoint) => void;
 type UnsubscribeFunction = () => void;
@@ -88,26 +109,24 @@ export class RealTimePerformanceMonitor {
     // Performance event detection
     private eventDetectors: Map<string, EventDetector>;
     private detectedEvents: PerformanceEvent[];
-    private, eventThresholds: Map<string, any>;
+    private eventThresholds: Map<string, any>;
 
     constructor(performanceMonitoringSystem: PerformanceMonitoringSystem) {
-
         this.performanceMonitoringSystem = performanceMonitoringSystem;
         this.errorHandler = getErrorHandler();
         
         // Real-time monitoring configuration
         this.monitoringConfig = {
-            interval: 1000, // 1秒間隔;
+            interval: 1000, // 1秒間隔
             enableDashboard: true,
             enableHistory: true,
             enableAlerts: true,
             enableRealtimeStream: true,
-    metricsFilter: [], // 空の場合は全メトリクス;
-            retention: 24 * 60 * 60 * 1000, // 24時間;
+            metricsFilter: [], // 空の場合は全メトリクス
+            retention: 24 * 60 * 60 * 1000, // 24時間
             bufferSize: 1000, // データポイント数
-    };
-            samplingRate: 1.0 // 100%サンプリング 
-    };
+            samplingRate: 1.0 // 100%サンプリング
+        };
         // Monitoring state
         this.monitoring = false;
         this.monitoringInterval = null;
@@ -129,11 +148,10 @@ export class RealTimePerformanceMonitor {
         this.eventDetectors = new Map<string, EventDetector>();
         this.detectedEvents = [];
         this.eventThresholds = new Map<string, any>();
-        ';'
 
         this.initializeCollectors();
-        this.setupEventDetectors()';'
-        console.log('[RealTimePerformanceMonitor] Real-time performance monitoring component initialized);'
+        this.setupEventDetectors();
+        console.log('[RealTimePerformanceMonitor] Real-time performance monitoring component initialized');
     }
     
     /**
@@ -148,88 +166,78 @@ export class RealTimePerformanceMonitor {
             await this.interactionDataCollector.initialize();
             await this.batteryDataCollector.initialize();
 
-            console.log('[RealTimePerformanceMonitor] Data, collectors initialized'),' }'
+            console.log('[RealTimePerformanceMonitor] Data collectors initialized');
 
-        } catch (error) { this.errorHandler.handleError(error, {)'
+        } catch (error) {
+            this.errorHandler.handleError(error, {
                 context: 'RealTimePerformanceMonitor.initializeCollectors'
-            }';'
+            });
         }
     }
     
     /**
-     * Setup performance event detectors'
-     */''
-    private setupEventDetectors()';'
-        this.eventDetectors.set('fps_drop', { threshold: 45)
-            duration: 3000, // 3秒間);
+     * Setup performance event detectors
+     */
+    private setupEventDetectors(): void {
+        this.eventDetectors.set('fps_drop', {
+            threshold: 45,
+            duration: 3000, // 3秒間
             condition: (value: number, threshold: number) => value < threshold,
             active: false,
-    startTime: null'
-            }
-
-        }');'
-        ';'
+            startTime: null
+        });
         // Memory leak detector
-        this.eventDetectors.set('memory_leak', { threshold: 10, // 10MB/min growth)
-            samples: 10),
+        this.eventDetectors.set('memory_leak', {
+            threshold: 10, // 10MB/min growth
+            samples: 10,
             condition: (values: HistoryEntry[]) => this.detectMemoryLeak(values),
-            active: false),
-            history: []')  }'
-
-        }');'
-        ';'
+            active: false,
+            history: []
+        });
         // Frame time spike detector
         this.eventDetectors.set('frame_spike', {
-                threshold: 50, // 50ms);
+            threshold: 50, // 50ms
             condition: (value: number, threshold: number) => value > threshold,
-            active: false'
-            
-            }
-
-        }');'
-        ';'
+            active: false
+        });
         // Network latency spike detector
         this.eventDetectors.set('network_spike', {
-                threshold: 500, // 500ms);
+            threshold: 500, // 500ms
             condition: (value: number, threshold: number) => value > threshold,
-            active: false'
-            
-            }
-
-        }');'
-        ';'
+            active: false
+        });
         // Input lag detector
         this.eventDetectors.set('input_lag', {
-                threshold: 100, // 100ms);
+            threshold: 100, // 100ms
             condition: (value: number, threshold: number) => value > threshold,
-            active: false,);
+            active: false
+        });
     }
     
     /**
      * Start real-time monitoring
      * @param config - Monitoring configuration
      */
-    async startMonitoring(config: Partial<MonitoringConfig> = { ): Promise<void> {''
+    async startMonitoring(config: Partial<MonitoringConfig> = {}): Promise<void> {
         if (this.monitoring) {
-
-            console.warn('[RealTimePerformanceMonitor] Monitoring, is already, active) }'
-            return; }
+            console.warn('[RealTimePerformanceMonitor] Monitoring is already active');
+            return;
         }
         
         // Update configuration
-        Object.assign(this.monitoringConfig config);
+        Object.assign(this.monitoringConfig, config);
         
         this.monitoring = true;
         
-        try { // Start data collection interval
-            this.monitoringInterval = setInterval(() => {  }
-                this.collectRealTimeData(); }
-            } this.monitoringConfig.interval');'
+        try {
+            // Start data collection interval
+            this.monitoringInterval = setInterval(() => {
+                this.collectRealTimeData();
+            }, this.monitoringConfig.interval);
             
             // Initialize real-time stream
             if (this.monitoringConfig.enableRealtimeStream) {
-
-                this.initializeStream()','
+                this.initializeStream();
             console.log('[RealTimePerformanceMonitor] Real-time, monitoring started');
 
             ' }'
@@ -775,58 +783,78 @@ class MemoryDataCollector implements IDataCollector { private baselineMemory: nu
         ]);
 }
 
-class RenderDataCollector implements IDataCollector { private lastRenderTime: number = 0
+class RenderDataCollector implements IDataCollector {
+    private lastRenderTime: number = 0;
     
     async initialize(): Promise<void> {
-        this.lastRenderTime = performance.now( }
-    ';'
+        this.lastRenderTime = performance.now();
+    }
 
-    async, collect(): Promise<Map<string, any>> { const now = performance.now();
-        const renderTime = Math.random()','
-            ['render_time, renderTime],')',
-            ['draw_calls', Math.floor(Math.random() * 50') + 10],'
-            ['triangles', Math.floor(Math.random() * 10000) + 1000],
+    async collect(): Promise<Map<string, any>> {
+        const now = performance.now();
+        const renderTime = Math.random() * 10 + 5; // Simulated
+        
+        return new Map([
+            ['render_time', renderTime],
+            ['draw_calls', Math.floor(Math.random() * 50) + 10],
+            ['triangles', Math.floor(Math.random() * 10000) + 1000]
         ]);
+    }
 }
 
-class NetworkDataCollector implements IDataCollector { private connection: any
+class NetworkDataCollector implements IDataCollector {
+    private connection: any;
     
     async initialize(): Promise<void> {
-        this.connection = navigator.connection }
-    ';'
+        this.connection = navigator.connection;
+    }
 
-    async collect(): Promise<Map<string, any>> { ''
-        const latency = Math.random(',
-            ['network_latency', latency],','
-            ['bandwidth, bandwidth * 125], // Convert to KB/s')',
-            ['error_rate', Math.random() * 2],
+    async collect(): Promise<Map<string, any>> {
+        const latency = Math.random() * 100 + 10; // Simulated
+        const bandwidth = this.connection?.downlink || 10; // Mbps
+        
+        return new Map([
+            ['network_latency', latency],
+            ['bandwidth', bandwidth * 125], // Convert to KB/s
+            ['error_rate', Math.random() * 2]
         ]);
+    }
 }
 
-class InteractionDataCollector implements IDataCollector { : undefined
+class InteractionDataCollector implements IDataCollector {
     private lastInputTime: number = 0;
+    
     async initialize(): Promise<void> {
         this.lastInputTime = Date.now();
-    ';'
-    async collect(): Promise<Map<string, any>> { const inputLag = Math.random() * 30 + 5, // Simulated input lag
-        const responseTime = Math.random(',
-            ['input_lag', inputLag],','
-            ['response_time', responseTime]);
+    }
+    async collect(): Promise<Map<string, any>> {
+        const inputLag = Math.random() * 30 + 5; // Simulated input lag
+        const responseTime = Math.random() * 50 + 10; // Simulated
+        
+        return new Map([
+            ['input_lag', inputLag],
+            ['response_time', responseTime]
         ]);
+    }
 }
 
-class BatteryDataCollector implements IDataCollector { private battery: any
+class BatteryDataCollector implements IDataCollector {
+    private battery: any;
     
     async initialize(): Promise<void> {
-        this.battery = navigator.battery || navigator.getBattery?.( }
-     : undefined';'
-    async, collect(): Promise<Map<string, any>> { const powerConsumption = Math.random() * 400 + 200, // Simulated power consumption
-        const thermalState = Math.floor(Math.random() * 3), // 0-2 thermal levels
-        ','
+        if (navigator.getBattery) {
+            this.battery = await navigator.getBattery();
+        } else {
+            this.battery = navigator.battery;
+        }
+    }
+    async collect(): Promise<Map<string, any>> {
+        const powerConsumption = Math.random() * 400 + 200; // Simulated power consumption
+        const thermalState = Math.floor(Math.random() * 3); // 0-2 thermal levels
 
-        return new Map(['],
+        return new Map([
             ['power_consumption', powerConsumption],
-            ['thermal_state', thermalState]','
-        ]') }'
-
-    }'}'
+            ['thermal_state', thermalState]
+        ]);
+    }
+}

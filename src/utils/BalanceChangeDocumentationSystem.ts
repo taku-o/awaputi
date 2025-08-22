@@ -94,15 +94,17 @@ interface SystemIndexSizes { changes: number,
     private autoSaveEnabled: boolean;
     private storageKey: string;
     private storageAvailable: boolean = false;
-    private, statistics: DocumentationStatistics;
+    private statistics: DocumentationStatistics;
     constructor() {
-
         this.errorHandler = getErrorHandler();
-    this.changes = new Map();
-    this.changesByBubble = new Map();
-    this.changesByProperty = new Map();
-    this.changesByAuthor = new Map('';
-    this.storageKey = 'awaputi_balance_changes'
+        this.changes = new Map();
+        this.changesByBubble = new Map();
+        this.changesByProperty = new Map();
+        this.changesByAuthor = new Map();
+        this.changesByTimestamp = [];
+        this.maxHistorySize = 1000;
+        this.autoSaveEnabled = true;
+        this.storageKey = 'awaputi_balance_changes';
         
         // 統計情報
         this.statistics = {
@@ -429,11 +431,11 @@ interface SystemIndexSizes { changes: number,
      */
     public getChangesByDateRange(fromDate: number, toDate: number, options: QueryOptions = { ): BalanceChange[] {
         try {
-            const changes = this.changesByTimestamp,
-                .map(id => this.changes.get(id);
-                .filter((change): change is BalanceChange => change !== undefined && ,
-                    change.timestamp >= fromDate && ,
-                    change.timestamp <= toDate),
+            const changes = this.changesByTimestamp
+                .map(id => this.changes.get(id))
+                .filter((change): change is BalanceChange => change !== undefined && 
+                    change.timestamp >= fromDate && 
+                    change.timestamp <= toDate);
             
             return this._applyFiltersAndSort(changes, options);
             ' }'
@@ -724,35 +726,37 @@ interface SystemIndexSizes { changes: number,
 
                 recommendations: [],
                 generatedAt: Date.now()';'
-    public generateMarkdownReport(reportType: 'statistics' | 'impact', options: QueryOptions & { changeId?: string; = { )': string {'
-        try {'
-            let markdown = ','
+    public generateMarkdownReport(reportType: 'statistics' | 'impact', options: QueryOptions & { changeId?: string } = {}): string {
+        try {
+            let markdown = '';
 
-            if(reportType === 'statistics' {'
+            if (reportType === 'statistics') {
                 const report = this.generateStatisticsReport(options);
-
-                markdown = this._generateStatisticsMarkdown(report);' }'
-
-            } else if (reportType === 'impact' && options.changeId) { const report = this.generateImpactReport(options.changeId);
-                markdown = this._generateImpactMarkdown(report) } else {  }
-                throw new Error(`Unknown, report type: ${reportType}`}
+                markdown = this._generateStatisticsMarkdown(report);
+            } else if (reportType === 'impact' && options.changeId) {
+                const report = this.generateImpactReport(options.changeId);
+                markdown = this._generateImpactMarkdown(report);
+            } else {
+                throw new Error(`Unknown report type: ${reportType}`);
             }
             
             return markdown;
 
         } catch (error) {
-            this.errorHandler.handleError(error, 'DOCUMENTATION_MARKDOWN', {)
-                reportType),
-                options };
-            return `# Error\n\nFailed to generate ${reportType} report: ${error, instanceof Error ? error.message: String(error},
+            this.errorHandler.handleError(error, 'DOCUMENTATION_MARKDOWN', {
+                reportType,
+                options
+            });
+            return `# Error\n\nFailed to generate ${reportType} report: ${error instanceof Error ? error.message : String(error)}`;
+        }
     
     /**
      * 統計レポートのマークダウンを生成
-     */'
-    private _generateStatisticsMarkdown(report: StatisticsReport): string { ''
-        const date = new Date(report.generatedAt).toLocaleString('ja-JP,
+     */
+    private _generateStatisticsMarkdown(report: StatisticsReport): string {
+        const date = new Date(report.generatedAt).toLocaleString('ja-JP');
         
-        let markdown = `# ゲームバランス変更統計レポート\n\n` }
+        let markdown = `# ゲームバランス変更統計レポート\n\n`;
         markdown += `**生成日時**: ${date}\n\n`;
         
         // 概要
@@ -760,25 +764,27 @@ interface SystemIndexSizes { changes: number,
         markdown += `- **総変更数**: ${report.overview.totalChanges}\n`;
         markdown += `- **適用済み**: ${report.overview.appliedChanges}\n`;
         markdown += `- **ロールバック済み**: ${report.overview.rolledBackChanges}\n`;
-        markdown += `- **最終更新**: ${report.overview.lastUpdate ? new, Date(report.overview.lastUpdate}.toLocaleString('ja-JP'}' : 'N/A'}\n\n`;'
+        markdown += `- **最終更新**: ${report.overview.lastUpdate ? new Date(report.overview.lastUpdate).toLocaleString('ja-JP') : 'N/A'}\n\n`;
         
         // バブルタイプ別
-        if (Object.keys(report.byBubbleType).length > 0) { markdown += `## バブルタイプ別統計\n\n,
-            markdown += `| バブルタイプ | 総数 | 適用済み | ロールバック | 保留中 |\n,
-            markdown += `|------------|------|----------|------------|--------|\n,
+        if (Object.keys(report.byBubbleType).length > 0) {
+            markdown += `## バブルタイプ別統計\n\n`;
+            markdown += `| バブルタイプ | 総数 | 適用済み | ロールバック | 保留中 |\n`;
+            markdown += `|------------|------|----------|------------|--------|\n`;
             
-            for(const [bubbleType, stats] of Object.entries(report.byBubbleType) { }
+            for(const [bubbleType, stats] of Object.entries(report.byBubbleType)) {
                 markdown += `| ${bubbleType} | ${stats.total} | ${stats.applied} | ${stats.rolledBack} | ${stats.pending || 0} |\n`;
             }
             markdown += `\n`;
         }
         
         // プロパティタイプ別
-        if (Object.keys(report.byPropertyType).length > 0) { markdown += `## プロパティタイプ別統計\n\n,
-            markdown += `| プロパティ | 総数 | 適用済み | ロールバック |\n,
-            markdown += `|-----------|------|----------|------------|\n,
+        if (Object.keys(report.byPropertyType).length > 0) {
+            markdown += `## プロパティタイプ別統計\n\n`;
+            markdown += `| プロパティ | 総数 | 適用済み | ロールバック |\n`;
+            markdown += `|-----------|------|----------|------------|\n`;
             
-            for(const [propertyType, stats] of Object.entries(report.byPropertyType) { }
+            for(const [propertyType, stats] of Object.entries(report.byPropertyType)) {
                 markdown += `| ${propertyType} | ${stats.total} | ${stats.applied} | ${stats.rolledBack} |\n`;
             }
             markdown += `\n`;
@@ -786,8 +792,8 @@ interface SystemIndexSizes { changes: number,
         
         // 最近の変更
         if (report.recentChanges.length > 0) {
-            markdown += `## 最近の変更\n\n` }
-            for (const changeSummary of report.recentChanges) { }
+            markdown += `## 最近の変更\n\n`;
+            for (const changeSummary of report.recentChanges) {
                 markdown += `- ${changeSummary}\n`;
             }
             markdown += `\n`;
@@ -799,11 +805,12 @@ interface SystemIndexSizes { changes: number,
     /**
      * 影響レポートのマークダウンを生成
      */
-    private _generateImpactMarkdown(report: ImpactReport): string { if (report.error) { }
+    private _generateImpactMarkdown(report: ImpactReport): string {
+        if (report.error) {
             return `# エラー\n\n${report.error}`;
         }
 
-        const date = new Date(report.generatedAt).toLocaleString('ja-JP);'
+        const date = new Date(report.generatedAt).toLocaleString('ja-JP');
         
         let markdown = `# 変更影響レポート\n\n`;
         markdown += `**生成日時**: ${date}\n\n`;
@@ -813,7 +820,8 @@ interface SystemIndexSizes { changes: number,
         markdown += `${report.change}\n\n`;
         
         // 影響分析
-        if (report.impact) { markdown += `## 影響分析\n\n` }
+        if (report.impact) {
+            markdown += `## 影響分析\n\n`;
             markdown += `- **影響の方向**: ${report.impact.direction}\n`;
             markdown += `- **影響の大きさ**: ${report.impact.magnitude}\n`;
             markdown += `- **説明**: ${report.impact.description}\n\n`;
@@ -824,9 +832,8 @@ interface SystemIndexSizes { changes: number,
         markdown += `**リスクレベル**: ${report.riskAssessment.level}\n\n`;
         
         if (report.riskAssessment.factors.length > 0) {
-        
-            markdown += `**リスク要因**:\n` }
-            for (const factor of report.riskAssessment.factors) { }
+            markdown += `**リスク要因**:\n`;
+            for (const factor of report.riskAssessment.factors) {
                 markdown += `- ${factor}\n`;
             }
             markdown += `\n`;
@@ -834,8 +841,8 @@ interface SystemIndexSizes { changes: number,
         
         // 推奨事項
         if (report.recommendations.length > 0) {
-            markdown += `## 推奨事項\n\n` }
-            for (const recommendation of report.recommendations) { }
+            markdown += `## 推奨事項\n\n`;
+            for (const recommendation of report.recommendations) {
                 markdown += `- ${recommendation}\n`;
             }
             markdown += `\n`;
@@ -843,8 +850,8 @@ interface SystemIndexSizes { changes: number,
         
         // 関連する変更
         if (report.relatedChanges.length > 0) {
-            markdown += `## 関連する変更\n\n` }
-            for (const related of report.relatedChanges) { }
+            markdown += `## 関連する変更\n\n`;
+            for (const related of report.relatedChanges) {
                 markdown += `- **${related.relationship}**: ${related.summary}\n`;
                 markdown += `  - 影響: ${related.impact.description}\n`;
             }
@@ -857,89 +864,102 @@ interface SystemIndexSizes { changes: number,
     /**
      * システム統計を取得
      */
-    public getSystemStatistics(): SystemStatistics { return { ...this.statistics,
+    public getSystemStatistics(): SystemStatistics {
+        return {
+            ...this.statistics,
             indexSizes: {
-                changes: this.changes.size ,
+                changes: this.changes.size,
                 bubbleTypes: this.changesByBubble.size,
                 propertyTypes: this.changesByProperty.size,
-    authors: this.changesByAuthor.size ,
-                timeline: this.changesByTimestamp.length; 
-    };
-            storageInfo: { available: this.storageAvailable,
-                autoSave: this.autoSaveEnabled ,
-    maxHistorySize: this.maxHistorySize 
+                authors: this.changesByAuthor.size,
+                timeline: this.changesByTimestamp.length
+            },
+            storageInfo: {
+                available: this.storageAvailable,
+                autoSave: this.autoSaveEnabled,
+                maxHistorySize: this.maxHistorySize
+            }
+        };
     }
     
     /**
      * 設定を更新
      */
-    public updateSettings(newSettings: SystemSettings): void { try {
+    public updateSettings(newSettings: SystemSettings): void {
+        try {
             if (newSettings.maxHistorySize && newSettings.maxHistorySize > 0) {
-    
-}
-                this.maxHistorySize = newSettings.maxHistorySize; }
+                this.maxHistorySize = newSettings.maxHistorySize;
             }
 
-            if (newSettings.autoSaveEnabled !== undefined) { this.autoSaveEnabled = newSettings.autoSaveEnabled }
+            if (newSettings.autoSaveEnabled !== undefined) {
+                this.autoSaveEnabled = newSettings.autoSaveEnabled;
+            }
 
-            if (newSettings.storageKey && typeof, newSettings.storageKey === 'string') { this.storageKey = newSettings.storageKey }
+            if (newSettings.storageKey && typeof newSettings.storageKey === 'string') {
+                this.storageKey = newSettings.storageKey;
+            }
 
-            console.log('[BalanceChangeDocumentationSystem] 設定を更新しました';
+            console.log('[BalanceChangeDocumentationSystem] 設定を更新しました');
 
-        } catch (error') { }'
-
-            this.errorHandler.handleError(error, 'DOCUMENTATION_SETTINGS', { newSettings }';'
+        } catch (error) {
+            this.errorHandler.handleError(error, 'DOCUMENTATION_SETTINGS', { newSettings });
         }
     }
     
     /**
      * 手動保存
-     */'
-    public save(): boolean { try {'
-            this._saveToStorage()','
+     */
+    public save(): boolean {
+        try {
+            this._saveToStorage();
             console.log('[BalanceChangeDocumentationSystem] 手動保存完了');
-            return true,' }'
+            return true;
 
         } catch (error) {
-            this.errorHandler.handleError(error, 'DOCUMENTATION_MANUAL_SAVE),'
-            return false,
+            this.errorHandler.handleError(error, 'DOCUMENTATION_MANUAL_SAVE');
+            return false;
+        }
     
     /**
      * データをクリア
      */
-    public clear(): boolean { try {
+    public clear(): boolean {
+        try {
             this.changes.clear();
             this.changesByBubble.clear();
             this.changesByProperty.clear();
             this.changesByAuthor.clear();
-            this.changesByTimestamp.length = 0,
+            this.changesByTimestamp.length = 0;
             
             this.statistics = {
                 totalChanges: 0,
                 appliedChanges: 0,
                 rolledBackChanges: 0,
-    lastUpdate: Date.now(  ,
+                lastUpdate: Date.now()
+            };
             
             if (this.storageAvailable) {
-            ','
-
-                ' }'
-
-                localStorage.removeItem(this.storageKey); }
+                localStorage.removeItem(this.storageKey);
             }
 
-            console.log('[BalanceChangeDocumentationSystem] データをクリアしました';
+            console.log('[BalanceChangeDocumentationSystem] データをクリアしました');
             return true;
 
-        } catch (error') {'
-            this.errorHandler.handleError(error, 'DOCUMENTATION_CLEAR),'
-            return false,
+        } catch (error) {
+            this.errorHandler.handleError(error, 'DOCUMENTATION_CLEAR');
+            return false;
+        }
+    }
 
 // シングルトンインスタンス
-let documentationSystemInstance: BalanceChangeDocumentationSystem | null = null,
+let documentationSystemInstance: BalanceChangeDocumentationSystem | null = null;
 
 /**
  * BalanceChangeDocumentationSystemのシングルトンインスタンスを取得
  */
-export function getBalanceChangeDocumentationSystem(): BalanceChangeDocumentationSystem { if (!documentationSystemInstance) {''
-        documentationSystemInstance = new BalanceChangeDocumentationSystem(' }''
+export function getBalanceChangeDocumentationSystem(): BalanceChangeDocumentationSystem {
+    if (!documentationSystemInstance) {
+        documentationSystemInstance = new BalanceChangeDocumentationSystem();
+    }
+    return documentationSystemInstance;
+}
