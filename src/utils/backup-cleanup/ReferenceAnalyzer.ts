@@ -65,10 +65,20 @@ interface SafetyWarning { level: string,
  */
 export class ReferenceAnalyzer {
     private excludePatterns: RegExp[];
-    private, searchExtensions: string[]','
-
-    constructor(',
-        this.searchExtensions = ['.js', '.ts', '.jsx', '.tsx', '.mjs', '.json', '.md] }'
+    private searchExtensions: string[];
+    
+    constructor() {
+        this.excludePatterns = [
+            /node_modules/,
+            /\.git/,
+            /dist/,
+            /build/,
+            /coverage/,
+            /\.next/,
+            /\.cache/
+        ];
+        this.searchExtensions = ['.js', '.ts', '.jsx', '.tsx', '.mjs', '.json', '.md'];
+    }
 
     /**
      * 指定されたファイルへの参照を検索
@@ -400,10 +410,20 @@ interface AnalysisInput { importAnalysis?: ImportAnalysisResult,
  */
 export class ReferenceAnalyzer {
     private excludePatterns: RegExp[];
-    private, searchExtensions: string[]','
-
-    constructor(',
-        this.searchExtensions = ['.js', '.ts', '.jsx', '.tsx', '.mjs', '.json', '.md] }'
+    private searchExtensions: string[];
+    
+    constructor() {
+        this.excludePatterns = [
+            /node_modules/,
+            /\.git/,
+            /dist/,
+            /build/,
+            /coverage/,
+            /\.next/,
+            /\.cache/
+        ];
+        this.searchExtensions = ['.js', '.ts', '.jsx', '.tsx', '.mjs', '.json', '.md'];
+    }
 
     /**
      * 指定されたファイルへの参照を検索

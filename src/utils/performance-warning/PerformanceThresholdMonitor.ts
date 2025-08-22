@@ -6,229 +6,282 @@
 import { getErrorHandler  } from '../../core/ErrorHandler.js';
 
 // 型定義
-interface PerformanceThresholds { fps: { critica,l: number,
-        warning: number,
-        good: number,
-    excellent: number,
-    frameTime: { critical: number,
+interface PerformanceThresholds {
+    fps: {
+        critical: number;
         warning: number;
-    },
-        good: number,
-    excellent: number,
-    memory: { critical: number,
+        good: number;
+        excellent: number;
+    };
+    frameTime: {
+        critical: number;
         warning: number;
-    },
-        good: number,
-    excellent: number,
-    stability: { critical: number,
+        good: number;
+        excellent: number;
+    };
+    memory: {
+        critical: number;
         warning: number;
-    },
-        good: number,
-    excellent: number,
-    variance: { critical: number,
+        good: number;
+        excellent: number;
+    };
+    stability: {
+        critical: number;
         warning: number;
-    },
-        good: number,
-    excellent: number,
-    excellent: number;
-        };
-interface MonitoringConfig { enabled: boolean,
-    interval: number,
-    lastCheck: number,
-    metricsBuffer: MetricsData[],
-    bufferSize: number,
-    bufferSize: number;
-        };
-interface ViolationTracking { active: Map<string, ViolationData>,
-    history: ViolationHistoryEntry[],
-    cooldowns: Map<string, number>;
-    consecutiveCounts: Map<string, number> }
+        good: number;
+        excellent: number;
+    };
+    variance: {
+        critical: number;
+        warning: number;
+        good: number;
+        excellent: number;
+    };
+}
 
-interface MetricsData { timestamp: number,
-    fps: number,
-    frameTime: number,
-    memory: MemoryInfo,
-    stability: number,
+interface MonitoringConfig {
+    enabled: boolean;
+    interval: number;
+    lastCheck: number;
+    metricsBuffer: MetricsData[];
+    bufferSize: number;
+}
+
+interface ViolationTracking {
+    active: Map<string, ViolationData>;
+    history: ViolationHistoryEntry[];
+    cooldowns: Map<string, number>;
+    consecutiveCounts: Map<string, number>;
+}
+
+interface MetricsData {
+    timestamp: number;
+    fps: number;
+    frameTime: number;
+    memory: MemoryInfo;
+    stability: number;
     variance: number;
     memoryHealthScore?: number;
     leakRisk?: string;
     stabilityScore?: number;
     performanceZone?: string;
-    jitterLevel?: number }
+    jitterLevel?: number;
+}
 
-interface MemoryInfo { used: number,
+interface MemoryInfo {
+    used: number;
     total: number;
     limit?: number;
     pressure: number;
-    interface ViolationData { id: string,
-    severity: string,
-    firstDetected: number,
-    lastDetected: number,
-    count: number,
-    data: any,
+}
+
+interface ViolationData {
+    id: string;
+    severity: string;
+    firstDetected: number;
+    lastDetected: number;
+    count: number;
+    data: any;
     resolved: boolean;
     escalated?: boolean;
     escalatedAt?: number;
-    interface ViolationHistoryEntry extends ViolationData { resolvedAt: number,
+}
+
+interface ViolationHistoryEntry extends ViolationData {
+    resolvedAt: number;
     duration: number;
-    interface MonitoringStats { activeViolations: number,
-    totalViolationsDetected: number,
-    metricsBufferSize: number,
-    monitoringEnabled: boolean,
-    lastCheck: number,
+}
+
+interface MonitoringStats {
+    activeViolations: number;
+    totalViolationsDetected: number;
+    metricsBufferSize: number;
+    monitoringEnabled: boolean;
+    lastCheck: number;
     thresholds: PerformanceThresholds;
-    export class PerformanceThresholdMonitor {
+}
+export class PerformanceThresholdMonitor {
     private performanceWarningSystem: any;
     private errorHandler: any;
     private thresholds: PerformanceThresholds;
     private monitoring: MonitoringConfig;
     private violations: ViolationTracking;
-    private, monitoringInterval: NodeJS.Timeout | null = null;
+    private monitoringInterval: NodeJS.Timeout | null = null;
+    
     constructor(performanceWarningSystem: any) {
-
         this.performanceWarningSystem = performanceWarningSystem;
-    this.errorHandler = getErrorHandler();
+        this.errorHandler = getErrorHandler();
         
         // Performance thresholds configuration
         this.thresholds = {
-            fps: { critical: 20  ,
+            fps: {
+                critical: 20,
                 warning: 30,
-    good: 45 }
-                excellent: 55 
-    };
-            frameTime: { critical: 50, // 50ms
-                warning: 33, // 33ms  },
-                good: 22, // 22ms;
-                excellent: 18 // 18ms  };
-            memory: { critical: 0.95, // 95% of limit
-                warning: 0.8,   // 80% of limit  },
-                good: 0.6,      // 60% of limit;
-                excellent: 0.4  // 40% of limit  };
-            stability: { critical: 0.3,  // 30% stability score
-                warning: 0.5,   // 50% stability score  },
-                good: 0.7,      // 70% stability score;
-                excellent: 0.9  // 90% stability score  };
-            variance: { critical: 20,   // 20ms variance
-                warning: 10,    // 10ms variance  },
-                good: 5,        // 5ms variance;
-                excellent: 2    // 2ms variance  }
+                good: 45,
+                excellent: 55
+            },
+            frameTime: {
+                critical: 50, // 50ms
+                warning: 33, // 33ms
+                good: 22, // 22ms
+                excellent: 18 // 18ms
+            },
+            memory: {
+                critical: 0.95, // 95% of limit
+                warning: 0.8,   // 80% of limit
+                good: 0.6,      // 60% of limit
+                excellent: 0.4  // 40% of limit
+            },
+            stability: {
+                critical: 0.3,  // 30% stability score
+                warning: 0.5,   // 50% stability score
+                good: 0.7,      // 70% stability score
+                excellent: 0.9  // 90% stability score
+            },
+            variance: {
+                critical: 20,   // 20ms variance
+                warning: 10,    // 10ms variance
+                good: 5,        // 5ms variance
+                excellent: 2    // 2ms variance
+            }
         };
+        
         // Monitoring state
-        this.monitoring = { enabled: true,
-            interval: 1000, // 1 second;
+        this.monitoring = {
+            enabled: true,
+            interval: 1000, // 1 second
             lastCheck: 0,
             metricsBuffer: [],
-    bufferSize: 60 // 1 minute of data  };
+            bufferSize: 60 // 1 minute of data
+        };
+        
         // Violation tracking
-        this.violations = { active: new Map(
+        this.violations = {
+            active: new Map(),
             history: [],
-    cooldowns: new Map(
-            consecutiveCounts: new Map()','
-        console.log('[PerformanceThresholdMonitor] Threshold, monitoring component, initialized') }'
+            cooldowns: new Map(),
+            consecutiveCounts: new Map()
+        };
+        
+        console.log('[PerformanceThresholdMonitor] Threshold monitoring component initialized');
+    }
     
     /**
      * Start performance monitoring
      */
-    startMonitoring(): void { if (!this.monitoring.enabled) return,
+    startMonitoring(): void {
+        if (!this.monitoring.enabled) return;
         
-        this.monitoringInterval = setInterval(() => {  }
-
-            this.checkPerformanceMetrics();' }'
-
-        }, this.monitoring.interval';'
-
-        console.log('[PerformanceThresholdMonitor] Performance, monitoring started');
+        this.monitoringInterval = setInterval(() => {
+            this.checkPerformanceMetrics();
+        }, this.monitoring.interval);
+        
+        console.log('[PerformanceThresholdMonitor] Performance monitoring started');
     }
     
     /**
      * Stop performance monitoring
-     */'
-    stopMonitoring(): void { if (this.monitoringInterval) {''
+     */
+    stopMonitoring(): void {
+        if (this.monitoringInterval) {
             clearInterval(this.monitoringInterval);
-            this.monitoringInterval = null }
-
-        console.log('[PerformanceThresholdMonitor] Performance monitoring stopped);'
+            this.monitoringInterval = null;
+        }
+        
+        console.log('[PerformanceThresholdMonitor] Performance monitoring stopped');
     }
     
     /**
      * Check performance metrics and detect threshold violations
      */
-    checkPerformanceMetrics(): void { try {
+    checkPerformanceMetrics(): void {
+        try {
             const now = Date.now();
-            this.monitoring.lastCheck = now,
+            this.monitoring.lastCheck = now;
             
             // Get performance metrics from various sources
             const metrics = this.gatherPerformanceMetrics();
+            
             // Add to metrics buffer
-            this.monitoring.metricsBuffer.push({)
-                timestamp: now ),
-                ...metrics),
+            this.monitoring.metricsBuffer.push({
+                timestamp: now,
+                ...metrics
+            });
             
             // Keep buffer size manageable
             if (this.monitoring.metricsBuffer.length > this.monitoring.bufferSize) {
-    
-}
-                this.monitoring.metricsBuffer.shift(); }
+                this.monitoring.metricsBuffer.shift();
             }
             
             // Analyze metrics for threshold violations
-            this.analyzeMetricsForViolations(metrics');'
-
-        } catch (error) { this.errorHandler.handleError(error, {')'
+            this.analyzeMetricsForViolations(metrics);
+        } catch (error) {
+            this.errorHandler.handleError(error, {
                 context: 'PerformanceThresholdMonitor.checkPerformanceMetrics'
-                }
-}
+            });
+        }
+    }
     /**
      * Gather performance metrics from available sources
      * @returns {object} Performance metrics
      */
-    gatherPerformanceMetrics(): MetricsData { const metrics: MetricsData = {
+    gatherPerformanceMetrics(): MetricsData {
+        const metrics: MetricsData = {
             fps: 60,
-    frameTime: 16.67 }
-            memory: { used: 0, total: 0, pressure: 0  ,
+            frameTime: 16.67,
+            memory: { used: 0, total: 0, pressure: 0 },
             stability: 1.0,
             variance: 0,
-    timestamp: Date.now();
+            timestamp: Date.now()
         };
         
-        try { // Try to get metrics from PerformanceOptimizer
-            if ((window, as any).getPerformanceOptimizer) {
-                const optimizer = (window, as any).getPerformanceOptimizer();
+        try {
+            // Try to get metrics from PerformanceOptimizer
+            if ((window as any).getPerformanceOptimizer) {
+                const optimizer = (window as any).getPerformanceOptimizer();
                 if (optimizer && optimizer.getStats) {
                     const stats = optimizer.getStats();
-                    metrics.fps = stats.averageFPS || stats.currentFPS || 60,
-                    metrics.frameTime = stats.frameTime || 16.67,
-                    metrics.stability = stats.stabilityScore || 1.0 }
-                    metrics.variance = stats.frameTimeVariance || 0; }
-}
+                    metrics.fps = stats.averageFPS || stats.currentFPS || 60;
+                    metrics.frameTime = stats.frameTime || 16.67;
+                    metrics.stability = stats.stabilityScore || 1.0;
+                    metrics.variance = stats.frameTimeVariance || 0;
+                }
+            }
             
             // Get memory information
-            if ((performance, as any).memory) { const memInfo = (performance, as any).memory,
+            if ((performance as any).memory) {
+                const memInfo = (performance as any).memory;
                 metrics.memory = {
                     used: memInfo.usedJSHeapSize,
                     total: memInfo.totalJSHeapSize,
                     limit: memInfo.jsHeapSizeLimit,
-    pressure: memInfo.jsHeapSizeLimit > 0 ? undefined : undefined
-                        memInfo.usedJSHeapSize / memInfo.jsHeapSizeLimit : 0 }
+                    pressure: memInfo.jsHeapSizeLimit > 0 ?
+                        memInfo.usedJSHeapSize / memInfo.jsHeapSizeLimit : 0
+                };
+            }
             
             // Try to get metrics from MemoryManager
-            if ((window, as any).getMemoryManager) { const memoryManager = (window, as any).getMemoryManager();
+            if ((window as any).getMemoryManager) {
+                const memoryManager = (window as any).getMemoryManager();
                 if (memoryManager && memoryManager.getStats) {
-
-                    const memStats = memoryManager.getStats(' }'
-
-                    metrics.leakRisk = memStats.leakRiskLevel || 'low'; }
-}
-            );
-            // Try to get metrics from FrameStabilizer)
-            if ((window, as any).getFrameStabilizer) { const stabilizer = (window, as any).getFrameStabilizer();
+                    const memStats = memoryManager.getStats();
+                    metrics.memoryHealthScore = memStats.healthScore;
+                    metrics.leakRisk = memStats.leakRiskLevel || 'low';
+                }
+            }
+            // Try to get metrics from FrameStabilizer
+            if ((window as any).getFrameStabilizer) {
+                const stabilizer = (window as any).getFrameStabilizer();
                 if (stabilizer && stabilizer.getStabilizationStatus) {
-
-                    const status = stabilizer.getStabilizationStatus(',
-                    metrics.performanceZone = status.adaptive?.performanceZone || 'optimal' }
-                    metrics.jitterLevel = status.timing?.jitterLevel || 0; }'}')'
-            } catch (error) { // Fallback to basic metrics if integration fails
-            console.warn('[PerformanceThresholdMonitor] Failed to gather advanced metrics, using fallbacks') }'
+                    const status = stabilizer.getStabilizationStatus();
+                    metrics.performanceZone = status.adaptive?.performanceZone || 'optimal';
+                    metrics.jitterLevel = status.timing?.jitterLevel || 0;
+                }
+            }
+        } catch (error) {
+            // Fallback to basic metrics if integration fails
+            console.warn('[PerformanceThresholdMonitor] Failed to gather advanced metrics, using fallbacks');
+        }
         
         return metrics;
     }
@@ -236,8 +289,9 @@ interface MemoryInfo { used: number,
     /**
      * Analyze metrics for threshold violations
      * @param {object} metrics - Current performance metrics
-     */ : undefined
-    analyzeMetricsForViolations(metrics: MetricsData): void { // Check FPS violations
+     */
+    analyzeMetricsForViolations(metrics: MetricsData): void {
+        // Check FPS violations
         this.checkFPSViolations(metrics.fps);
         // Check memory violations
         this.checkMemoryViolations(metrics.memory);
@@ -247,45 +301,47 @@ interface MemoryInfo { used: number,
         this.checkVarianceViolations(metrics.variance);
         // Check for performance zone violations
         if (metrics.performanceZone) {
-    
-}
-            this.checkPerformanceZoneViolations(metrics.performanceZone); }
+            this.checkPerformanceZoneViolations(metrics.performanceZone);
         }
         
         // Check for memory leak violations
-        if (metrics.leakRisk) { this.checkMemoryLeakViolations(metrics.leakRisk);
+        if (metrics.leakRisk) {
+            this.checkMemoryLeakViolations(metrics.leakRisk);
+        }
         
         // Check for jitter violations
-        if (metrics.jitterLevel !== undefined) { this.checkJitterViolations(metrics.jitterLevel);
+        if (metrics.jitterLevel !== undefined) {
+            this.checkJitterViolations(metrics.jitterLevel);
+        }
     }
     
     /**
      * Check FPS-related threshold violations
      * @param {number} fps - Current FPS
      */
-    checkFPSViolations(fps: number): void { const thresholds = this.thresholds.fps,
-
+    checkFPSViolations(fps: number): void {
+        const thresholds = this.thresholds.fps;
+        
         if (fps < thresholds.critical) {
-
-            this.recordViolation('fps_critical', 'critical', {''
-                metric: 'fps),'
-                value: fps','
-    threshold: thresholds.critical,' }'
-
-                severity: 'critical');' 
-    } else if (fps < thresholds.warning) { ''
-            this.recordViolation('fps_warning', 'warning', {''
-                metric: 'fps),'
-                value: fps','
-    threshold: thresholds.warning,'),
-                severity: 'warning')'
-            }
-
-        } else {  // Clear violations if performance improves
-            this.clearViolation('fps_critical'),' }'
-
-            this.clearViolation('fps_warning'; }'
-}
+            this.recordViolation('fps_critical', 'critical', {
+                metric: 'fps',
+                value: fps,
+                threshold: thresholds.critical,
+                severity: 'critical'
+            });
+        } else if (fps < thresholds.warning) {
+            this.recordViolation('fps_warning', 'warning', {
+                metric: 'fps',
+                value: fps,
+                threshold: thresholds.warning,
+                severity: 'warning'
+            });
+        } else {
+            // Clear violations if performance improves
+            this.clearViolation('fps_critical');
+            this.clearViolation('fps_warning');
+        }
+    }
     
     /**
      * Check memory-related threshold violations

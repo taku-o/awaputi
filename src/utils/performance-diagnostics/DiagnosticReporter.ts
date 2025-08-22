@@ -4,144 +4,192 @@
  */
 
 // Type definitions
-interface MainController { [key: string]: any;
-    interface DataCollection { duration: number,
-    sampleCount: number,
-    metricsCollected: number,
-    dataQuality: Record<string, any> }
+interface MainController {
+    [key: string]: any;
+}
 
-interface Bottleneck { type: string,
+interface DataCollection {
+    duration: number;
+    sampleCount: number;
+    metricsCollected: number;
+    dataQuality: Record<string, any>;
+}
+
+interface Bottleneck {
+    type: string;
     severity: string;
     metric?: string;
     [key: string]: any;
-    interface Anomaly { detectionType: string,
-    severity: string,
+}
+
+interface Anomaly {
+    detectionType: string;
+    severity: string;
     metric: string;
     [key: string]: any;
-    interface OverallAssessment { healthScore: number,
-    performanceLevel: string,
+}
+
+interface OverallAssessment {
+    healthScore: number;
+    performanceLevel: string;
     criticalIssues: any[];
     [key: string]: any;
-    interface DiagnosticResults { dataCollection?: DataCollection,
+}
+
+interface DiagnosticResults {
+    dataCollection?: DataCollection;
     bottlenecks?: Bottleneck[];
     anomalies?: Anomaly[];
     overallAssessment?: OverallAssessment;
     recommendations?: Recommendation[];
     [key: string]: any;
-    interface DiagnosticSession { id: string,
-    duration: number,
-    results: DiagnosticResults,
-    options: { detailLeve,l?: string;
+}
+
+interface DiagnosticSession {
+    id: string;
+    duration: number;
+    results: DiagnosticResults;
+    options: {
+        detailLevel?: string;
         [key: string]: any;
-    [key: string]: any  ,
+    };
+    [key: string]: any;
+}
 
-interface ReportSummary { sessionId: string,
-    duration: number,
-    timestamp: string,
-    overallHealth: number,
-    performanceLevel: string,
-    criticalIssues: number,
-    bottlenecks: number,
-    anomalies: number,
-    recommendations: number,
+interface ReportSummary {
+    sessionId: string;
+    duration: number;
+    timestamp: string;
+    overallHealth: number;
+    performanceLevel: string;
+    criticalIssues: number;
+    bottlenecks: number;
+    anomalies: number;
     recommendations: number;
-        };
-interface TechnicalDetails { dataCollection: {
-        duratio,n: number,
-        sampleCount: number,
-    metricsCollected: number,
-    dataQuality: Record<string, any> } };
-    bottleneckAnalysis: { totalBottlenecks: number,
-        criticalBottlenecks: number;
-    },
-    categories: Record<string, number> };
-    anomalyDetection: { totalAnomalies: number,
-        criticalAnomalies: number;
-    },
-    detectionTypes: Record<string, number> };
-    systemAssessment: OverallAssessment;
-    }
+}
 
-interface Report { type: string,
+interface TechnicalDetails {
+    dataCollection: {
+        duration: number;
+        sampleCount: number;
+        metricsCollected: number;
+        dataQuality: Record<string, any>;
+    };
+    bottleneckAnalysis: {
+        totalBottlenecks: number;
+        criticalBottlenecks: number;
+        categories: Record<string, number>;
+    };
+    anomalyDetection: {
+        totalAnomalies: number;
+        criticalAnomalies: number;
+        detectionTypes: Record<string, number>;
+    };
+    systemAssessment: OverallAssessment;
+}
+
+interface Report {
+    type: string;
     title: string;
     summary?: ReportSummary;
     technicalDetails?: TechnicalDetails;
     rawResults?: DiagnosticResults;
     generatedAt: string;
-    interface Recommendation { type: string,
-    priority: 'high' | 'medium' | 'low,
-    category: string,
-    title: string,
-    description: string,
-    actions: string[],
-    estimatedImpact: string,
-    implementationEffort: string,
+}
+
+interface Recommendation {
+    type: string;
+    priority: 'high' | 'medium' | 'low';
+    category: string;
+    title: string;
+    description: string;
+    actions: string[];
+    estimatedImpact: string;
+    implementationEffort: string;
     timeToImplement: string;
-    interface ReportingCapabilities { reportTypes: string[],
-    outputFormats: string[],
-    recommendationTypes: string[],
-    customTemplates: boolean,
+}
+
+interface ReportingCapabilities {
+    reportTypes: string[];
+    outputFormats: string[];
+    recommendationTypes: string[];
+    customTemplates: boolean;
     realTimeReporting: boolean;
-    interface ReportingConfig { reportTemplate?: string,
+}
+
+interface ReportingConfig {
+    reportTemplate?: string;
     recommendationSettings?: Record<string, any>;
     [key: string]: any;
-    interface ReportTemplate { generate(session: DiagnosticSession): Promise<Report>;
-    export class DiagnosticReporter {
+}
+
+interface ReportTemplate {
+    generate(session: DiagnosticSession): Promise<Report>;
+}
+export class DiagnosticReporter {
     private mainController: MainController;
     private reportGenerator: DiagnosticReportGenerator;
-    private, recommendationEngine: RecommendationEngine;
+    private recommendationEngine: RecommendationEngine;
+    
     constructor(mainController: MainController) {
-
         this.mainController = mainController;
         
         // Reporting components
         this.reportGenerator = new DiagnosticReportGenerator();
-    this.recommendationEngine = new RecommendationEngine(' }''
-        console.log('[DiagnosticReporter] Reporter, component initialized'); }'
+        this.recommendationEngine = new RecommendationEngine();
+        console.log('[DiagnosticReporter] Reporter component initialized');
     }
     
     /**
      * Initialize reporting components
      */
-    async initialize(): Promise<void> { try {
+    async initialize(): Promise<void> {
+        try {
             await this.reportGenerator.initialize();
             await this.recommendationEngine.initialize();
-            console.log('[DiagnosticReporter] All, reporting components, initialized'),' }'
-
+            console.log('[DiagnosticReporter] All reporting components initialized');
         } catch (error) {
             console.error('[DiagnosticReporter] Failed to initialize reporting components:', error);
-            throw error }
+            throw error;
+        }
     }
     
     /**
      * Generate comprehensive diagnostic report
      */
-    async generateReport(diagnosticSession: DiagnosticSession): Promise<Report> { return await this.reportGenerator.generate(diagnosticSession);
+    async generateReport(diagnosticSession: DiagnosticSession): Promise<Report> {
+        return await this.reportGenerator.generate(diagnosticSession);
+    }
     
     /**
      * Generate recommendations based on analysis results
      */
-    async generateRecommendations(analysisResults: DiagnosticResults): Promise<Recommendation[]> { return await this.recommendationEngine.generate(analysisResults);
+    async generateRecommendations(analysisResults: DiagnosticResults): Promise<Recommendation[]> {
+        return await this.recommendationEngine.generate(analysisResults);
+    }
     
     /**
      * Generate quick summary report
      */
-    async generateSummaryReport(diagnosticSession: DiagnosticSession): Promise<Report> { const summary: ReportSummary = {
+    async generateSummaryReport(diagnosticSession: DiagnosticSession): Promise<Report> {
+        const summary: ReportSummary = {
             sessionId: diagnosticSession.id,
             duration: diagnosticSession.duration,
-            timestamp: new Date().toISOString(',
-    performanceLevel: diagnosticSession.results.overallAssessment?.performanceLevel || 'unknown', : undefined
-            criticalIssues: diagnosticSession.results.overallAssessment?.criticalIssues?.length || 0, : undefined
-            bottlenecks: diagnosticSession.results.bottlenecks?.length || 0, : undefined
-            anomalies: diagnosticSession.results.anomalies?.length || 0, : undefined
-            recommendations: diagnosticSession.results.recommendations?.length || 0  };
-        ';'
-
-        return { : undefined''
-            type: 'summary',','
-            title: 'Performance Diagnostic Summary,
-    summary: summary,
-            generatedAt: new Date().toISOString();
+            timestamp: new Date().toISOString(),
+            overallHealth: diagnosticSession.results.overallAssessment?.healthScore || 0,
+            performanceLevel: diagnosticSession.results.overallAssessment?.performanceLevel || 'unknown',
+            criticalIssues: diagnosticSession.results.overallAssessment?.criticalIssues?.length || 0,
+            bottlenecks: diagnosticSession.results.bottlenecks?.length || 0,
+            anomalies: diagnosticSession.results.anomalies?.length || 0,
+            recommendations: diagnosticSession.results.recommendations?.length || 0
+        };
+        
+        return {
+            type: 'summary',
+            title: 'Performance Diagnostic Summary',
+            summary: summary,
+            generatedAt: new Date().toISOString()
+        };
     }
     
     /**

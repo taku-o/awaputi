@@ -10,106 +10,139 @@ import { getBalanceConfigurationValidator  } from './BalanceConfigurationValidat
 import { getErrorHandler, ErrorHandler  } from './ErrorHandler.js';
 
 // Type definitions
-interface RecommendedRange { min: number,
-    max: number,
-    recommended: number | string  }
+interface RecommendedRange {
+    min: number;
+    max: number;
+    recommended: number | string;
+}
 
-interface Guideline { category: string,
-    property: string,
-    description: string,
-    principles: string[],
+interface Guideline {
+    category: string;
+    property: string;
+    description: string;
+    principles: string[];
     recommendedRanges: Record<string, RecommendedRange>;
-    adjustmentSteps: number,
+    adjustmentSteps: number;
     testingRequirements: string[];
     retrievedAt?: number;
-    interface ChangeRecord { id: string,
-    timestamp: number,
-    change: any,
-    rationale: string,
-    author: string,
+}
+
+interface ChangeRecord {
+    id: string;
+    timestamp: number;
+    change: any;
+    rationale: string;
+    author: string;
     reviewStatus: string;
-    interface ValidationResult { validationId: string,
-    isValid: boolean,
-    issues: string[],
+}
+
+interface ValidationResult {
+    validationId: string;
+    isValid: boolean;
+    issues: string[];
     recommendations: string[];
     impactAnalysis?: ImpactReport;
     guideline?: string;
     timestamp: number;
     error?: string;
-    interface ValidationSubResult { isValid: boolean,
-    issues: string[],
+}
+
+interface ValidationSubResult {
+    isValid: boolean;
+    issues: string[];
     recommendations: string[];
-';'
+}
 
-interface ImpactCalculation { ''
-    (oldValue: any, newValue: any'): number | string  }'
+interface ImpactCalculation {
+    (oldValue: any, newValue: any): number | string;
+}
 
-interface ImpactRule { affectedSystems: string[],
+interface ImpactRule {
+    affectedSystems: string[];
     calculations: Record<string, ImpactCalculation>;
     thresholds: {
-        mino,r: number;
-    },
-        moderate: number,
-    major: number,
-    major: number;
-        };
-interface SystemImpact { system: string,
+        minor: number;
+        moderate: number;
+        major: number;
+    };
+}
 
-    magnitude: number,
-    direction: 'increase' | 'decrease' | 'neutral,
-    description: string,
-    confidence: 'low' | 'medium' | 'high'
-            }
+interface SystemImpact {
+    system: string;
+    magnitude: number;
+    direction: 'increase' | 'decrease' | 'neutral';
+    description: string;
+    confidence: 'low' | 'medium' | 'high';
+}
 
-interface ImpactReport { changeId: string,
-    configType: string,
-    bubbleType: string,
-    propertyType: string,
-    oldValue: any,
-    newValue: any,
-    impacts: SystemImpact[],
-    recommendations: string[],
-    riskLevel: 'low' | 'minor' | 'moderate' | 'major,
+interface ImpactReport {
+    changeId: string;
+    configType: string;
+    bubbleType: string;
+    propertyType: string;
+    oldValue: any;
+    newValue: any;
+    impacts: SystemImpact[];
+    recommendations: string[];
+    riskLevel: 'low' | 'minor' | 'moderate' | 'major';
     timestamp: number;
     error?: string;
-    interface AdjustmentContext { bubbleType: string,
-    propertyType: string,
-    configType: string;
-    interface ChangeContext { oldValue: any,
-    newValue: any,
-    configType: string,
-    bubbleType: string,
+}
+
+interface AdjustmentContext {
+    bubbleType: string;
     propertyType: string;
-    interface HistoryFilters { bubbleType?: string,
+    configType: string;
+}
+
+interface ChangeContext {
+    oldValue: any;
+    newValue: any;
+    configType: string;
+    bubbleType: string;
+    propertyType: string;
+}
+
+interface HistoryFilters {
+    bubbleType?: string;
     propertyType?: string;
     dateFrom?: number;
     dateTo?: number;
-    interface GuidelineInfo { key: string,
-    category: string,
-    property: string,
+}
+
+interface GuidelineInfo {
+    key: string;
+    category: string;
+    property: string;
     description: string;
-    interface Statistics { totalChanges: number,
-    recentChanges: number,
+}
+
+interface Statistics {
+    totalChanges: number;
+    recentChanges: number;
     changesByType: Record<string, number>;
-    availableGuidelines: number,
+    availableGuidelines: number;
     impactRules: number;
-    interface DocumentChangeResult { success: boolean;
+}
+
+interface DocumentChangeResult {
+    success: boolean;
     changeId?: string;
     timestamp?: number;
     error?: string;
-    export class BalanceGuidelinesManager {
+}
+export class BalanceGuidelinesManager {
     private configManager: any;
     private validator: any;
     private errorHandler: ErrorHandler;
-    private, guidelines: Map<string, Guideline>,
+    private guidelines: Map<string, Guideline>;
     private changeHistory: ChangeRecord[];
-    private, impactRules: Map<string, ImpactRule>,
+    private impactRules: Map<string, ImpactRule>;
     
     constructor() {
-    
         this.configManager = getConfigurationManager();
-    this.validator = getBalanceConfigurationValidator();
-    this.errorHandler = getErrorHandler();
+        this.validator = getBalanceConfigurationValidator();
+        this.errorHandler = getErrorHandler();
         
         // バランス調整ガイドライン
         this.guidelines = new Map();
@@ -122,89 +155,93 @@ interface ImpactReport { changeId: string,
         
         // ガイドラインを初期化
         this._initializeGuidelines();
-    this._initializeImpactRules() };
-        console.log('[BalanceGuidelinesManager] 初期化完了'); }'
+        this._initializeImpactRules();
+        
+        console.log('[BalanceGuidelinesManager] 初期化完了');
+    }
     }
     
     /**
-     * バランス調整ガイドラインを初期化'
-     */''
-    private _initializeGuidelines('''
-        this.guidelines.set('bubble.health', { ''
-            category: 'bubble,
-            property: 'health,
-            description: '泡の耐久値調整ガイドライン,
-            principles: [','
-                '通常泡の耐久値は1を基準とする,
-                '硬い泡（stone, iron, diamond）は段階的に増加させる,
-                'ボス泡は通常泡の5-10倍の耐久値を持つ',]','
-                '特殊効果泡は1-2の耐久値に制限する'],
+     * バランス調整ガイドラインを初期化
+     */
+    private _initializeGuidelines(): void {
+        this.guidelines.set('bubble.health', {
+            category: 'bubble',
+            property: 'health',
+            description: '泡の耐久値調整ガイドライン',
+            principles: [
+                '通常泡の耐久値は1を基準とする',
+                '硬い泡（stone, iron, diamond）は段階的に増加させる',
+                'ボス泡は通常泡の5-10倍の耐久値を持つ',
+                '特殊効果泡は1-2の耐久値に制限する'
             ],
-            recommendedRanges: {  }
-                normal: { min: 1, max: 1, recommended: 1  ,
-                stone: { min: 2, max: 3, recommended: 2  ,
-                iron: { min: 3, max: 4, recommended: 3  ,
-                diamond: { min: 4, max: 6, recommended: 4  ,
-                boss: { min: 5, max: 15, recommended: 8  ,
-                special: { min: 1, max: 2, recommended: 1  }
-            adjustmentSteps: 1','
-    testingRequirements: [','
-                '破壊時間の計測,
-                'プレイヤーストレス測定',]';'
-                '難易度曲線の検証')]';'
-            ]');'
+            recommendedRanges: {
+                normal: { min: 1, max: 1, recommended: 1 },
+                stone: { min: 2, max: 3, recommended: 2 },
+                iron: { min: 3, max: 4, recommended: 3 },
+                diamond: { min: 4, max: 6, recommended: 4 },
+                boss: { min: 5, max: 15, recommended: 8 },
+                special: { min: 1, max: 2, recommended: 1 }
+            },
+            adjustmentSteps: 1,
+            testingRequirements: [
+                '破壊時間の計測',
+                'プレイヤーストレス測定',
+                '難易度曲線の検証'
+            ]
+        });
 
-        this.guidelines.set('bubble.score', { ''
-            category: 'bubble,
-            property: 'score,
-            description: '泡のスコア値調整ガイドライン,
-            principles: [','
-                'スコア値は耐久値に比例して設定する,
-                '特殊効果の価値を考慮する,
-                'ボス泡は特別に高いスコアを設定する',]','
-                'プレイヤーのリスク・リワード比を適切に保つ'],
+        this.guidelines.set('bubble.score', {
+            category: 'bubble',
+            property: 'score',
+            description: '泡のスコア値調整ガイドライン',
+            principles: [
+                'スコア値は耐久値に比例して設定する',
+                '特殊効果の価値を考慮する',
+                'ボス泡は特別に高いスコアを設定する',
+                'プレイヤーのリスク・リワード比を適切に保つ'
             ],
-            recommendedRanges: {  }
-                normal: { min: 10, max: 20, recommended: 15  ,
-                stone: { min: 25, max: 40, recommended: 35  ,
-                iron: { min: 50, max: 80, recommended: 65  ,
-                diamond: { min: 100, max: 150, recommended: 120  ,
+            recommendedRanges: {
+                normal: { min: 10, max: 20, recommended: 15 },
+                stone: { min: 25, max: 40, recommended: 35 },
+                iron: { min: 50, max: 80, recommended: 65 },
+                diamond: { min: 100, max: 150, recommended: 120 },
+                boss: { min: 500, max: 1200, recommended: 800 },
+                special: { min: 20, max: 500, recommended: 'varies' }
+            },
+            adjustmentSteps: 5,
+            testingRequirements: [
+                'スコア進行の検証',
+                'プレイ動機の測定',
+                '経済バランスの確認'
+            ]
+        });
 
-                boss: { min: 500, max: 1200, recommended: 800  ,''
-                special: { min: 20, max: 500, recommended: 'varies'
-             ,
-            adjustmentSteps: 5','
-    testingRequirements: [','
-                'スコア進行の検証,
-                'プレイ動機の測定',]';'
-                '経済バランスの確認')]';'
-            ]');'
-
-        this.guidelines.set('bubble.size', { ''
-            category: 'bubble,
-            property: 'size,
-            description: '泡のサイズ調整ガイドライン,
-            principles: [','
-                'サイズは視認性と操作性のバランスを考慮する,
-                '硬い泡は若干大きくして難易度を示す,
-                'ボス泡は存在感を示すため大きくする',]','
-                '特殊効果泡は識別しやすいサイズにする'],
+        this.guidelines.set('bubble.size', {
+            category: 'bubble',
+            property: 'size',
+            description: '泡のサイズ調整ガイドライン',
+            principles: [
+                'サイズは視認性と操作性のバランスを考慮する',
+                '硬い泡は若干大きくして難易度を示す',
+                'ボス泡は存在感を示すため大きくする',
+                '特殊効果泡は識別しやすいサイズにする'
             ],
-            recommendedRanges: {  }
-                normal: { min: 45, max: 55, recommended: 50  ,
-                stone: { min: 50, max: 60, recommended: 55  ,
-                iron: { min: 55, max: 65, recommended: 60  ,
-                diamond: { min: 60, max: 70, recommended: 65  ,
-
-                boss: { min: 80, max: 120, recommended: 90  ,''
-                special: { min: 40, max: 60, recommended: 'varies'
-             ,
-            adjustmentSteps: 5','
-    testingRequirements: [','
-                'タップ精度の測定,
-                '画面密度の検証',]';'
-                'アクセシビリティテスト')]';'
-            ]');'
+            recommendedRanges: {
+                normal: { min: 45, max: 55, recommended: 50 },
+                stone: { min: 50, max: 60, recommended: 55 },
+                iron: { min: 55, max: 65, recommended: 60 },
+                diamond: { min: 60, max: 70, recommended: 65 },
+                boss: { min: 80, max: 120, recommended: 90 },
+                special: { min: 40, max: 60, recommended: 'varies' }
+            },
+            adjustmentSteps: 5,
+            testingRequirements: [
+                'タップ精度の測定',
+                '画面密度の検証',
+                'アクセシビリティテスト'
+            ]
+        });
 
         this.guidelines.set('bubble.maxAge', { ''
             category: 'bubble,
