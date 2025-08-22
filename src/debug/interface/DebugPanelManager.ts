@@ -1,465 +1,363 @@
-import { BaseComponent  } from '../BaseComponent.js';
+import { BaseComponent } from '../BaseComponent.js';
 
 // Type definitions
-interface PanelConfig { id: string,
-    name: string,
-    content: string,
-    visible: boolean,
-    order: number,
-    icon: string,
-    shortcut: string,
-    category: string,
+interface PanelConfig {
+    id: string;
+    name: string;
+    content: string;
+    visible: boolean;
+    order: number;
+    icon: string;
+    shortcut: string;
+    category: string;
     description: string;
     onActivate?: () => void;
     onDeactivate?: () => void;
     [key: string]: any;
 }
 
-interface PanelStatistics { totalPanels: number,
-    activePanels: number,
-    switchCount: number,
+interface PanelStatistics {
+    totalPanels: number;
+    activePanels: number;
+    switchCount: number;
     sessionStartTime: number;
-    interface MainController { container?: HTMLElement;
+}
+
+interface MainController {
+    container?: HTMLElement;
+}
 
 /**
  * DebugPanelManager - デバッグパネルの管理コンポーネント
  */
-export class DebugPanelManager extends BaseComponent { private panels: Map<string, PanelConfig>,
+export class DebugPanelManager extends BaseComponent {
+    private panels: Map<string, PanelConfig>;
     private panelHistory: string[];
     private activePanel: string | null;
-    private, panelElements: Map<string, HTMLElement>,
+    private panelElements: Map<string, HTMLElement>;
     private panelStatistics: PanelStatistics;
-    constructor(mainController: MainController) {
 
-        super(mainController, 'DebugPanelManager),'
-        this.panels = new Map<string, PanelConfig>(),
+    constructor(mainController: MainController) {
+        super(mainController, 'DebugPanelManager');
+        
+        this.panels = new Map<string, PanelConfig>();
         this.panelHistory = [];
-    this.activePanel = null;
-    this.panelElements = new Map<string, HTMLElement>(),
+        this.activePanel = null;
+        this.panelElements = new Map<string, HTMLElement>();
         this.panelStatistics = {
             totalPanels: 0,
-    activePanels: 0,
-    switchCount: 0 };
-            sessionStartTime: Date.now(); 
+            activePanels: 0,
+            switchCount: 0,
+            sessionStartTime: Date.now()
+        };
     }
 
-    async _doInitialize(): Promise<void> { this.registerDefaultPanels();
+    async _doInitialize(): Promise<void> {
+        this.registerDefaultPanels();
         this.setupPanelEventHandlers();
+    }
 
     /**
      * パネルを登録
-     * @param id - パネルID
-     * @param config - パネル設定'
-     */''
-    registerPanel(id: string, config: Partial<PanelConfig>): void { const panelConfig: PanelConfig = {
-            id: id,
-            name: config.name || id,
-            content: config.content || ','
-    visible: config.visible !== false,
-            order: config.order || this.panels.size,
-            icon: config.icon || ','
-            shortcut: config.shortcut || ','
-            category: config.category || 'general,
-            description: config.description || ','
-            ...config,
-
-        this.panels.set(id, panelConfig);
-        this.panelStatistics.totalPanels++;
-
-        // パネルタブを作成
-        this.addPanelTab(id, panelConfig);
-        // パネルコンテンツを作成
-        this.addPanelContent(id, panelConfig);
-
-    /**
-     * パネルタブを追加
-     * @param id - パネルID
-     * @param config - パネル設定
-     */''
-    addPanelTab(id: string, config: PanelConfig): void { const controller = this.mainController as MainController;
-        const tabsContainer = controller.container?.querySelector('.debug-tabs,
-        if(!tabsContainer) return,
-
-        const tab = document.createElement('div'), : undefined' 
-        tab.className = `debug-tab ${config.visible ? 'active' : '}`;'
-        tab.dataset.panelId = id;
-
-        tab.innerHTML = `';'
-            ${config.icon ? `<span, class="tab-icon">${config.icon}</span>` : '}''
-            <span class="tab-label">${config.name}</span>""
-            ${config.shortcut ? `<span, class="tab-shortcut">${config.shortcut}</span>` : ''
-        `;
-';'
-        // クリックイベント
-        tab.addEventListener('click', () => this.switchPanel(id));
-        ';'
-        // キーボードナビゲーション
-        tab.setAttribute('tabindex', '0');
-        tab.addEventListener('keydown', (e) => {  ''
-            if (e.key === 'Enter' || e.key === ', ') {
-    
-}
-                e.preventDefault(); }
-                this.switchPanel(id); }
-};
-
-        tabsContainer.appendChild(tab);
-        this.panelElements.set(`${id}-tab`, tab);
-    }
-
-    /**
-     * パネルコンテンツを追加
-     * @param id - パネルID'
-     * @param config - パネル設定'
-     */''
-    addPanelContent(id: string, config: PanelConfig): void { const controller = this.mainController as MainController;
-        const contentContainer = controller.container?.querySelector('.debug-content,
-        if(!contentContainer) return,
-
-        const content = document.createElement('div'), : undefined' 
-        content.className = `debug-panel-content ${config.visible ? 'active' : '}`;'
-        content.dataset.panelId = id;
-        content.innerHTML = config.content || `<p>Panel: ${config.name}</p>`;
-
-        contentContainer.appendChild(content);
-        this.panelElements.set(`${id}-content`, content);
-    }
-
-    /**
-     * パネルを切り替え
-     * @param panelId - 切り替え先パネルID
      */
-    switchPanel(panelId: string): void { const panel = this.panels.get(panelId);
-        if (!panel) { }
-            console.warn(`Panel, not found: ${panelId}`};
-            return;
+    registerPanel(config: PanelConfig): void {
+        this.panels.set(config.id, config);
+        this.panelStatistics.totalPanels = this.panels.size;
+        
+        // パネル要素を作成
+        this.createPanelElement(config);
+        
+        console.log(`Panel registered: ${config.id}`);
+    }
+
+    /**
+     * パネル要素作成
+     */
+    private createPanelElement(config: PanelConfig): void {
+        const panelElement = document.createElement('div');
+        panelElement.id = `debug-panel-${config.id}`;
+        panelElement.className = 'debug-panel';
+        panelElement.style.display = config.visible ? 'block' : 'none';
+        panelElement.innerHTML = config.content;
+        
+        this.panelElements.set(config.id, panelElement);
+        
+        // コンテナに追加
+        if (this.mainController.container) {
+            this.mainController.container.appendChild(panelElement);
         }
-
-        // 現在のアクティブパネルを非アクティブに
-        if (this.activePanel) { this.deactivatePanel(this.activePanel);
-
-        // 新しいパネルをアクティブに
-        this.activatePanel(panelId);
-        
-        // 履歴に追加
-        this.addToHistory(panelId);
-        
-        // 統計を更新
-        this.panelStatistics.switchCount++;
-        
-        // イベント通知
-        this.notifyPanelSwitch(this.activePanel, panelId);
-        
-        this.activePanel = panelId;
-        
-        // UI更新
-        this.updatePanelUI();
     }
 
     /**
      * パネルをアクティブ化
-     * @param panelId - パネルID
      */
-    activatePanel(panelId: string): void { const tab = this.panelElements.get(`${panelId)-tab`),
-        const, content = this.panelElements.get(`${panelId)-content`};
-
-        if(tab} {', ' }
-
-            tab.classList.add('active');' }'
-
-            tab.setAttribute('aria-selected', 'true'}
+    activatePanel(panelId: string): boolean {
+        const config = this.panels.get(panelId);
+        if (!config) {
+            console.warn(`Panel not found: ${panelId}`);
+            return false;
         }
 
-        if (content) {
-
-            content.classList.add('active');
-
-            content.setAttribute('aria-hidden', 'false); }'
+        // 現在のパネルを非アクティブ化
+        if (this.activePanel) {
+            this.deactivatePanel(this.activePanel);
         }
 
-        // パネル固有の初期化処理
-        const panel = this.panels.get(panelId);
-        if (panel?.onActivate) { panel.onActivate();
+        // パネルをアクティブ化
+        const element = this.panelElements.get(panelId);
+        if (element) {
+            element.style.display = 'block';
+        }
+
+        // 履歴を更新
+        this.panelHistory.push(panelId);
+        this.activePanel = panelId;
+        this.panelStatistics.switchCount++;
+
+        // コールバック実行
+        if (config.onActivate) {
+            config.onActivate();
+        }
+
+        console.log(`Panel activated: ${panelId}`);
+        return true;
     }
 
     /**
      * パネルを非アクティブ化
-     * @param panelId - パネルID
-     */ : undefined
-    deactivatePanel(panelId: string): void { const tab = this.panelElements.get(`${panelId)-tab`),
-        const, content = this.panelElements.get(`${panelId)-content`};
-
-        if(tab} {', ' }
-
-            tab.classList.remove('active');' }'
-
-            tab.setAttribute('aria-selected', 'false'}
+     */
+    deactivatePanel(panelId: string): boolean {
+        const config = this.panels.get(panelId);
+        if (!config) {
+            return false;
         }
 
-        if (content) {
-
-            content.classList.remove('active');
-
-            content.setAttribute('aria-hidden', 'true); }'
+        // パネルを非表示
+        const element = this.panelElements.get(panelId);
+        if (element) {
+            element.style.display = 'none';
         }
 
-        // パネル固有のクリーンアップ処理
-        const panel = this.panels.get(panelId);
-        if (panel?.onDeactivate) { panel.onDeactivate();
+        // コールバック実行
+        if (config.onDeactivate) {
+            config.onDeactivate();
+        }
+
+        if (this.activePanel === panelId) {
+            this.activePanel = null;
+        }
+
+        console.log(`Panel deactivated: ${panelId}`);
+        return true;
     }
 
     /**
-     * パネル履歴に追加
-     * @param panelId - パネルID
-     */ : undefined
-    addToHistory(panelId: string): void { // 重複を避けるため、既存の履歴から削除
-        this.panelHistory = this.panelHistory.filter(id => id !== panelId);
+     * パネル切り替え
+     */
+    switchToPanel(panelId: string): boolean {
+        return this.activatePanel(panelId);
+    }
+
+    /**
+     * 前のパネルに戻る
+     */
+    goToPreviousPanel(): boolean {
+        if (this.panelHistory.length < 2) {
+            return false;
+        }
+
+        // 現在のパネルを履歴から削除
+        this.panelHistory.pop();
+        // 前のパネルを取得
+        const previousPanelId = this.panelHistory.pop();
         
-        // 先頭に追加
-        this.panelHistory.unshift(panelId);
-        // 履歴の長さを制限（最大20件）
-        if (this.panelHistory.length > 20) {
-    
-}
-            this.panelHistory = this.panelHistory.slice(0, 20); }
-}
-
-    /**
-     * パネル切り替えイベントを通知
-     * @param fromPanel - 切り替え元パネル
-     * @param toPanel - 切り替え先パネル
-     */''
-    notifyPanelSwitch(fromPanel: string | null, toPanel: string): void { ''
-        const event = new CustomEvent('panelSwitch', {
-            };
-            detail: { from: fromPanel, to: toPanel, timestamp: Date.now(   ,
-        const controller = this.mainController as MainController;
-        if (controller.container) { controller.container.dispatchEvent(event);
-    }
-
-    /**
-     * パネルUIを更新'
-     */''
-    updatePanelUI()';'
-        const statusElement = controller.container?.querySelector('.debug-status);'
-        if (statusElement && this.activePanel) { const panel = this.panels.get(this.activePanel), : undefined 
-            statusElement.textContent = `Active: ${panel?.name }` }
-
-        // パネル統計の更新
-        this.updatePanelStatistics();
-    }
-
-    /**
-     * パネル統計を更新
-     */ : undefined
-    updatePanelStatistics(): void { this.panelStatistics.activePanels = Array.from(this.panels.values()))
-            .filter(panel => panel.visible).length,
-        ','
-
-        const controller = this.mainController as MainController,
-        const statsElement = controller.container?.querySelector('.panel-statistics),'
-        if (statsElement) {
-    
-}
-            statsElement.innerHTML = ` : undefined 
-                <div>Total Panels: ${this.panelStatistics.totalPanels}</div>
-                <div>Active Panels: ${this.panelStatistics.activePanels}</div>
-                <div>Switch Count: ${this.panelStatistics.switchCount}</div>
-            `;
+        if (previousPanelId) {
+            return this.activatePanel(previousPanelId);
         }
+
+        return false;
     }
 
     /**
-     * デフォルトパネルを登録'
-     */''
-    registerDefaultPanels('''
-        this.registerPanel('console', { ''
-            name: 'Console,
-            icon: '💻,
-            shortcut: 'Ctrl+1',','
-            category: 'development,')',
-            content: '<div class="console-output"></div><input type="text" class="console-input" placeholder="Enter command...">,
-            onActivate: () => this.focusConsoleInput('''
-        this.registerPanel('performance', {''
-            name: 'Performance,
-            icon: '📊,
-            shortcut: 'Ctrl+2',','
-            category: 'monitoring,')',
-            content: '<div class="performance-charts"></div>,
-            onActivate: () => this.updatePerformanceData('''
-        this.registerPanel('memory', {''
-            name: 'Memory,
-            icon: '🧠,
-            shortcut: 'Ctrl+3',','
-            category: 'monitoring,')',
-            content: '<div class="memory-usage"></div>')'),'
-','
-        // Network パネル
-        this.registerPanel('network', {''
-            name: 'Network,
-            icon: '🌐,
-            shortcut: 'Ctrl+4',','
-            category: 'monitoring,')',
-            content: '<div class="network-requests"></div>')'),'
-','
-        // Settings パネル
-        this.registerPanel('settings', {''
-            name: 'Settings,
-            icon: '⚙️,
-            shortcut: 'Ctrl+5',','
-            category: 'configuration,')',
-            content: '<div class="debug-settings"></div>');
-    }
-
-    /**
-     * パネルイベントハンドラーを設定
+     * デフォルトパネル登録
      */
-    setupPanelEventHandlers(): void { // パネル切り替えのキーボードショートカット処理は
-        // DebugCommandProcessorで処理される }
+    private registerDefaultPanels(): void {
+        this.registerPanel({
+            id: 'overview',
+            name: 'Overview',
+            content: '<div class="overview-panel">Debug Overview</div>',
+            visible: false,
+            order: 1,
+            icon: '📊',
+            shortcut: 'Ctrl+Shift+O',
+            category: 'general',
+            description: 'Debug system overview and status'
+        });
+
+        this.registerPanel({
+            id: 'console',
+            name: 'Console',
+            content: '<div class="console-panel">Debug Console</div>',
+            visible: false,
+            order: 2,
+            icon: '💻',
+            shortcut: 'Ctrl+Shift+C',
+            category: 'general',
+            description: 'Interactive debug console'
+        });
+
+        this.registerPanel({
+            id: 'performance',
+            name: 'Performance',
+            content: '<div class="performance-panel">Performance Monitor</div>',
+            visible: false,
+            order: 3,
+            icon: '⚡',
+            shortcut: 'Ctrl+Shift+P',
+            category: 'monitoring',
+            description: 'Performance metrics and monitoring'
+        });
+
+        this.registerPanel({
+            id: 'errors',
+            name: 'Errors',
+            content: '<div class="errors-panel">Error Log</div>',
+            visible: false,
+            order: 4,
+            icon: '❌',
+            shortcut: 'Ctrl+Shift+E',
+            category: 'monitoring',
+            description: 'Error logs and exception tracking'
+        });
+    }
 
     /**
-     * コンソール入力にフォーカス
-     */''
-    focusConsoleInput()';'
-        const input = this.panelElements.get('console-content')?.querySelector('.console-input) as HTMLInputElement;'
-        if (input) { setTimeout(() => input.focus(), 100);
-}
+     * イベントハンドラー設定
+     */
+    private setupPanelEventHandlers(): void {
+        // キーボードショートカット処理
+        document.addEventListener('keydown', (event) => {
+            this.handleKeyboardShortcuts(event);
+        });
+    }
 
     /**
-     * パフォーマンスデータを更新'
-     */ : undefined''
-    updatePerformanceData()';'
-        const chartsContainer = this.panelElements.get('performance-content')?.querySelector('.performance-charts';
-        if (chartsContainer) { chartsContainer.innerHTML = ` : undefined''
-                <div class="chart">FPS: ${Math.floor(Math.random( } * 60 + 30"}"</div>""
-                <div class="chart">Memory: ${Math.floor(Math.random() * 100 + 50"}"MB</div>""
-                <div class="chart">CPU: ${Math.floor(Math.random() * 50 + 20}%</div>
-            `;
+     * キーボードショートカット処理
+     */
+    private handleKeyboardShortcuts(event: KeyboardEvent): void {
+        if (!event.ctrlKey || !event.shiftKey) {
+            return;
         }
-    }
 
-    // === 公開API ===
-
-    /**
-     * アクティブパネルを取得
-     * @returns アクティブパネルID
-     */
-    getActivePanel(): string | null { return this.activePanel }
-
-    /**
-     * パネル履歴を取得
-     * @returns パネル履歴
-     */
-    getPanelHistory(): string[] { return [...this.panelHistory],
-
-    /**
-     * 登録されたパネル一覧を取得
-     * @returns パネル設定配列
-     */
-    getRegisteredPanels(): PanelConfig[] { return Array.from(this.panels.values()));
-
-    /**
-     * パネル情報を取得
-     * @param panelId - パネルID
-     * @returns パネル情報
-     */
-    getPanelInfo(panelId: string): PanelConfig | null { return this.panels.get(panelId) || null }
-
-    /**
-     * 全パネル一覧を取得
-     * @returns パネルMap
-     */
-    getAllPanels(): Map<string, PanelConfig> { return new Map(this.panels);
-
-    /**
-     * 表示中のパネル一覧を取得
-     * @returns 表示中パネル配列
-     */
-    getVisiblePanels(): PanelConfig[] { return Array.from(this.panels.values())).filter(panel => panel.visible);
-    /**
-     * パネル統計を取得
-     * @returns 統計情報
-     */
-    getPanelStatistics(): PanelStatistics {
-        return { ...this.panelStatistics }
-
-    /**
-     * パネルの表示/非表示を切り替え
-     * @param panelId - パネルID
-     * @param visible - 表示フラグ
-     */
-    setPanelVisibility(panelId: string, visible: boolean): void { const panel = this.panels.get(panelId);
-        if (panel) {
-            panel.visible = visible,
-            const tab = this.panelElements.get(`${panelId)-tab`),
-            const, content = this.panelElements.get(`${panelId}-content`}"
-            " }"
-            if (tab"}"", " }"
-                tab.style.display = visible ? 'block' : 'none'; 
-    }''
-            if(content) {', ' }
-
-                content.style.display = visible ? 'block' : 'none'; 
-    }
-            
-            this.updatePanelStatistics();
-        }
-    }
-
-    /**
-     * パネルコンテンツを更新
-     * @param panelId - パネルID
-     * @param content - 新しいコンテンツ
-     */
-    updatePanelContent(panelId: string, content: string): void { const panel = this.panels.get(panelId);
-        const contentElement = this.panelElements.get(`${panelId}-content`}
-        if (panel && contentElement} {
-            panel.content = content }
-            contentElement.innerHTML = content; }
-}
-
-    /**
-     * パネルを削除
-     * @param panelId - パネルID
-     */
-    removePanel(panelId: string): void { if (this.panels.has(panelId) {
-            // アクティブパネルの場合は他のパネルに切り替え
-            if (this.activePanel === panelId) {
-                const remainingPanels = Array.from(this.panels.keys())).filter(id => id !== panelId);
-                if (remainingPanels.length > 0) {
+        for (const [panelId, config] of this.panels) {
+            if (config.shortcut && this.matchesShortcut(event, config.shortcut)) {
+                event.preventDefault();
+                this.activatePanel(panelId);
+                break;
             }
-                    this.switchPanel(remainingPanels[0]); }
-}
-
-            // パネル要素を削除
-            const tab = this.panelElements.get(`${ panelId)-tab`),
-            const, content = this.panelElements.get(`${panelId)-content`),
-            
-            if (tab) tab.remove();
-            if (content) content.remove();
-            // データ構造から削除
-            this.panels.delete(panelId);
-            this.panelElements.delete(`${panelId)-tab`),
-            this.panelElements.delete(`${panelId)-content`};
-            this.panelHistory = this.panelHistory.filter(id => id !== panelId};
-            
-            this.panelStatistics.totalPanels--; }
-            this.updatePanelStatistics(    }
-}
-    /**
-     * クリーンアップ
-     */
-    cleanup(): void { // イベントリスナーの削除
-        for (const element of this.panelElements.values() {
-    
-}
-            element.remove(); }
         }
+    }
+
+    /**
+     * ショートカット一致判定
+     */
+    private matchesShortcut(event: KeyboardEvent, shortcut: string): boolean {
+        const key = event.key.toLowerCase();
+        const shortcutKey = shortcut.toLowerCase().split('+').pop();
+        return key === shortcutKey;
+    }
+
+    /**
+     * パネル一覧取得
+     */
+    getPanels(): PanelConfig[] {
+        return Array.from(this.panels.values()).sort((a, b) => a.order - b.order);
+    }
+
+    /**
+     * アクティブパネル取得
+     */
+    getActivePanel(): string | null {
+        return this.activePanel;
+    }
+
+    /**
+     * パネル統計取得
+     */
+    getStatistics(): PanelStatistics {
+        return {
+            ...this.panelStatistics,
+            activePanels: this.activePanel ? 1 : 0
+        };
+    }
+
+    /**
+     * パネル削除
+     */
+    removePanel(panelId: string): boolean {
+        const config = this.panels.get(panelId);
+        if (!config) {
+            return false;
+        }
+
+        // アクティブパネルの場合は非アクティブ化
+        if (this.activePanel === panelId) {
+            this.deactivatePanel(panelId);
+        }
+
+        // 要素を削除
+        const element = this.panelElements.get(panelId);
+        if (element && element.parentNode) {
+            element.parentNode.removeChild(element);
+        }
+
+        // マップから削除
+        this.panels.delete(panelId);
+        this.panelElements.delete(panelId);
         
+        // 履歴から削除
+        this.panelHistory = this.panelHistory.filter(id => id !== panelId);
+
+        this.panelStatistics.totalPanels = this.panels.size;
+
+        console.log(`Panel removed: ${panelId}`);
+        return true;
+    }
+
+    /**
+     * 全パネルクリア
+     */
+    clearAllPanels(): void {
+        // 全パネルを非アクティブ化
+        for (const panelId of this.panels.keys()) {
+            this.deactivatePanel(panelId);
+        }
+
+        // 要素を削除
+        for (const element of this.panelElements.values()) {
+            if (element.parentNode) {
+                element.parentNode.removeChild(element);
+            }
+        }
+
         // データクリア
         this.panels.clear();
         this.panelElements.clear();
         this.panelHistory = [];
         this.activePanel = null;
+        this.panelStatistics.totalPanels = 0;
+        this.panelStatistics.activePanels = 0;
 
-        super.cleanup();
+        console.log('All panels cleared');
+    }
+
+    /**
+     * クリーンアップ
+     */
+    destroy(): void {
+        this.clearAllPanels();
+        console.log('DebugPanelManager destroyed');
+    }
+}
+
+export default DebugPanelManager;

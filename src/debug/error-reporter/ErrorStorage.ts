@@ -3,233 +3,398 @@
  * エラーの永続化ストレージクラス
  */
 
-interface StoredError { id: string,
-    timestamp: number,
-    severity: string,
-    category: string,
+interface StoredError {
+    id: string;
+    timestamp: number;
+    severity: string;
+    category: string;
     message: string;
     stack?: string;
     context?: any;
     sessionId: string;
-    interface StorageConfig { maxItems: number,
-    storageKey: string,
-    useIndexedDB: boolean,
+}
+
+interface StorageConfig {
+    maxItems: number;
+    storageKey: string;
+    useIndexedDB: boolean;
     compressionEnabled: boolean;
-    interface StorageStatistics { totalStored: number,
+}
+
+interface StorageStatistics {
+    totalStored: number;
     totalSize: number;
     oldestTimestamp?: number;
     newestTimestamp?: number;
-    errorsByCategory: { [category: string]: number,
-    errorsByCategory: { [category: string]: number;
-         },
+    errorsByCategory: { [category: string]: number };
+}
+
 export class ErrorStorage {
     private config: StorageConfig;
-    private, cache: StoredError[] = [];
-    private initialized = false,
+    private cache: StoredError[] = [];
+    private initialized = false;
 
-    constructor(config: Partial<StorageConfig> = {) {
-
+    constructor(config: Partial<StorageConfig> = {}) {
         this.config = {
             maxItems: 1000,
-            storageKey: 'bubblePop_errors,
+            storageKey: 'debug-errors',
             useIndexedDB: true,
-    compressionEnabled: false;
+            compressionEnabled: false,
             ...config
         };
-    public async initialize(): Promise<void> { if (this.initialized) return,
+    }
+
+    /**
+     * 初期化
+     */
+    async initialize(): Promise<void> {
+        if (this.initialized) return;
 
         try {
-            if (this.config.useIndexedDB && this.isIndexedDBAvailable() {
-    
-}
-                await this.initializeIndexedDB(); }
-            } else { this.initializeLocalStorage();
-            
-            await this.loadFromStorage();
-
-            this.initialized = true;'} catch (error) {'
-            console.warn('[ErrorStorage] Failed to initialize, falling back to memory storage:', error);
-            this.initialized = true }
+            if (this.config.useIndexedDB && this.isIndexedDBAvailable()) {
+                await this.initializeIndexedDB();
+            } else {
+                this.initializeLocalStorage();
+            }
+            this.initialized = true;
+            console.log('ErrorStorage initialized');
+        } catch (error) {
+            console.error('Failed to initialize ErrorStorage:', error);
+            // フォールバックとしてメモリキャッシュのみ使用
+            this.initialized = true;
+        }
     }
 
-    public async store(error: StoredError): Promise<void> { if (!this.initialized) {
-            await this.initialize();
+    /**
+     * エラーを保存
+     */
+    async storeError(error: Omit<StoredError, 'id' | 'timestamp'>): Promise<string> {
+        const storedError: StoredError = {
+            id: this.generateId(),
+            timestamp: Date.now(),
+            ...error
+        };
 
-        // Add to cache
-        this.cache.push(error);
+        this.cache.push(storedError);
 
-        // Enforce size limit
-        while (this.cache.length > this.config.maxItems) { this.cache.shift();
+        // キャッシュサイズ制限
+        if (this.cache.length > this.config.maxItems) {
+            this.cache.shift();
+        }
 
-        // Persist to storage
-        await this.persistToStorage();
+        try {
+            if (this.config.useIndexedDB && this.isIndexedDBAvailable()) {
+                await this.saveToIndexedDB(storedError);
+            } else {
+                this.saveToLocalStorage();
+            }
+        } catch (error) {
+            console.warn('Failed to persist error to storage:', error);
+        }
+
+        return storedError.id;
     }
 
-    public async getErrors(filter?: { category?: string,
-        severity?: string,
-        timeframe?: number,
-        limit?: number)
-    ): Promise<StoredError[]>,
-        if (!this.initialized) {
-    
-}
-            await this.initialize(); }
+    /**
+     * エラーを取得
+     */
+    async getErrors(options: {
+        category?: string;
+        severity?: string;
+        limit?: number;
+        offset?: number;
+        startTime?: number;
+        endTime?: number;
+    } = {}): Promise<StoredError[]> {
+        await this.loadFromStorage();
+
+        let results = [...this.cache];
+
+        // フィルタリング
+        if (options.category) {
+            results = results.filter(error => error.category === options.category);
         }
 
-        let filtered = [...this.cache];
-
-        if (filter) {
-
-            if (filter.category) {
-    
-}
-                filtered = filtered.filter(e => e.category === filter.category); }
-            }
-            if (filter.severity) { filtered = filtered.filter(e => e.severity === filter.severity);
-            }
-            if (filter.timeframe) {
-                const cutoff = Date.now() - filter.timeframe }
-                filtered = filtered.filter(e => e.timestamp > cutoff); }
-            }
-            if (filter.limit) { filtered = filtered.slice(-filter.limit);
+        if (options.severity) {
+            results = results.filter(error => error.severity === options.severity);
         }
 
-        return filtered;
-    }
-
-    public async clearErrors(filter?: { category?: string,
-        severity?: string,
-        olderThan?: number)
-    ): Promise<number>,
-        if (!this.initialized) {
-    
-}
-            await this.initialize(); }
+        if (options.startTime) {
+            results = results.filter(error => error.timestamp >= options.startTime!);
         }
 
-        let toRemove = 0;
-
-        if (!filter) {
-
-            toRemove = this.cache.length }
-            this.cache = []; }
-        } else {  const originalLength = this.cache.length,
-            this.cache = this.cache.filter(error => { );
-                if (filter.category && error.category === filter.category) return false,
-                if (filter.severity && error.severity === filter.severity) return false }
-                if (filter.olderThan && error.timestamp < filter.olderThan) return false; }
-                return true;);
-            toRemove = originalLength - this.cache.length;
+        if (options.endTime) {
+            results = results.filter(error => error.timestamp <= options.endTime!);
         }
 
-        await this.persistToStorage();
-        return toRemove;
-    }
+        // ソート（新しい順）
+        results.sort((a, b) => b.timestamp - a.timestamp);
 
-    public async getStatistics(): Promise<StorageStatistics> { if (!this.initialized) {
-            await this.initialize();
-
-        const errorsByCategory: { [category: string]: number, = {}
-        let totalSize = 0;
-        let oldestTimestamp: number | undefined,
-        let newestTimestamp: number | undefined };
-
-        this.cache.forEach(error => {  );
-            errorsByCategory[error.category] = (errorsByCategory[error.category] || 0) + 1,
-            totalSize += JSON.stringify(error).length,
-            
-            if (!oldestTimestamp || error.timestamp < oldestTimestamp) { }
-                oldestTimestamp = error.timestamp; }
-            }
-            if (!newestTimestamp || error.timestamp > newestTimestamp) { newestTimestamp = error.timestamp }'}');
-
-        return { totalStored: this.cache.length,
-            totalSize,
-            oldestTimestamp,
-            newestTimestamp };
-            errorsByCategory }
-        }
-
-    public async exportErrors(format: 'json' | 'csv' = 'json): Promise<string> {,'
-        const errors = await this.getErrors()','
-        if(format === 'csv' { }
-            return this.convertToCSV(errors);
+        // ページネーション
+        const offset = options.offset || 0;
+        const limit = options.limit || results.length;
         
-        return JSON.stringify({ )
-            errors,
-            exportedAt: new Date().toISOString(),
-    statistics: await this.getStatistics() , null, 2);
+        return results.slice(offset, offset + limit);
     }
 
-    private async initializeIndexedDB(): Promise<void> { // IndexedDB initialization would go here
-        // Simplified for TypeScript conversion }
-;
-    private initializeLocalStorage(): void { // LocalStorage initialization
-        if(!this.isLocalStorageAvailable()) {''
-            throw new Error('No, storage mechanism, available' }'
+    /**
+     * エラーを削除
+     */
+    async deleteError(id: string): Promise<boolean> {
+        const index = this.cache.findIndex(error => error.id === id);
+        if (index === -1) return false;
+
+        this.cache.splice(index, 1);
+
+        try {
+            if (this.config.useIndexedDB && this.isIndexedDBAvailable()) {
+                await this.deleteFromIndexedDB(id);
+            } else {
+                this.saveToLocalStorage();
+            }
+            return true;
+        } catch (error) {
+            console.warn('Failed to delete error from storage:', error);
+            return false;
+        }
     }
 
-    private async loadFromStorage(): Promise<void> { try {
-            if (this.config.useIndexedDB && this.isIndexedDBAvailable() {
-    
-}
-                await this.loadFromIndexedDB(); }
+    /**
+     * 全エラーを削除
+     */
+    async clearAll(): Promise<void> {
+        this.cache = [];
 
-            } else { this.loadFromLocalStorage(),' }'
-
-            } catch (error) { console.warn('[ErrorStorage] Failed to load from storage:', error }
+        try {
+            if (this.config.useIndexedDB && this.isIndexedDBAvailable()) {
+                await this.clearIndexedDB();
+            } else {
+                localStorage.removeItem(this.config.storageKey);
+            }
+        } catch (error) {
+            console.warn('Failed to clear error storage:', error);
+        }
     }
 
-    private async loadFromIndexedDB(): Promise<void> { // IndexedDB loading would go here }
+    /**
+     * 統計情報を取得
+     */
+    getStatistics(): StorageStatistics {
+        const stats: StorageStatistics = {
+            totalStored: this.cache.length,
+            totalSize: this.calculateCacheSize(),
+            errorsByCategory: {}
+        };
 
-    private loadFromLocalStorage(): void { try {
+        if (this.cache.length > 0) {
+            const timestamps = this.cache.map(error => error.timestamp);
+            stats.oldestTimestamp = Math.min(...timestamps);
+            stats.newestTimestamp = Math.max(...timestamps);
+
+            // カテゴリ別統計
+            for (const error of this.cache) {
+                stats.errorsByCategory[error.category] = (stats.errorsByCategory[error.category] || 0) + 1;
+            }
+        }
+
+        return stats;
+    }
+
+    /**
+     * IndexedDB初期化
+     */
+    private async initializeIndexedDB(): Promise<void> {
+        return new Promise((resolve, reject) => {
+            const request = indexedDB.open('ErrorStorage', 1);
+
+            request.onerror = () => reject(request.error);
+            request.onsuccess = () => resolve();
+
+            request.onupgradeneeded = (event) => {
+                const db = (event.target as IDBOpenDBRequest).result;
+                
+                if (!db.objectStoreNames.contains('errors')) {
+                    const store = db.createObjectStore('errors', { keyPath: 'id' });
+                    store.createIndex('timestamp', 'timestamp');
+                    store.createIndex('category', 'category');
+                    store.createIndex('severity', 'severity');
+                }
+            };
+        });
+    }
+
+    /**
+     * LocalStorage初期化
+     */
+    private initializeLocalStorage(): void {
+        try {
             const stored = localStorage.getItem(this.config.storageKey);
             if (stored) {
-                const parsed = JSON.parse(stored);
-                this.cache = Array.isArray(parsed) ? parsed: [],';'
-            } catch (error) { console.warn('[ErrorStorage] Failed to load from localStorage:', error }
+                this.cache = JSON.parse(stored);
+            }
+        } catch (error) {
+            console.warn('Failed to load from localStorage:', error);
+            this.cache = [];
+        }
     }
 
-    private async persistToStorage(): Promise<void> { try {
-            if (this.config.useIndexedDB && this.isIndexedDBAvailable() {
-    
-}
-                await this.persistToIndexedDB(); }
+    /**
+     * IndexedDBへの保存
+     */
+    private async saveToIndexedDB(error: StoredError): Promise<void> {
+        return new Promise((resolve, reject) => {
+            const request = indexedDB.open('ErrorStorage', 1);
 
-            } else { this.persistToLocalStorage(),' }'
+            request.onsuccess = () => {
+                const db = request.result;
+                const transaction = db.transaction(['errors'], 'readwrite');
+                const store = transaction.objectStore('errors');
 
-            } catch (error) { console.warn('[ErrorStorage] Failed to persist to storage:', error }
+                const addRequest = store.add(error);
+                addRequest.onsuccess = () => resolve();
+                addRequest.onerror = () => reject(addRequest.error);
+
+                transaction.oncomplete = () => db.close();
+            };
+
+            request.onerror = () => reject(request.error);
+        });
     }
 
-    private async persistToIndexedDB(): Promise<void> { // IndexedDB persistence would go here }
-
-    private persistToLocalStorage(): void { try {
+    /**
+     * LocalStorageへの保存
+     */
+    private saveToLocalStorage(): void {
+        try {
             const data = JSON.stringify(this.cache);
-            localStorage.setItem(this.config.storageKey, data),' }'
-
-        } catch (error) { console.warn('[ErrorStorage] Failed to persist to localStorage:', error }
+            localStorage.setItem(this.config.storageKey, data);
+        } catch (error) {
+            console.warn('Failed to save to localStorage:', error);
+        }
     }
 
-    private convertToCSV(errors: StoredError[]): string { ''
-        const headers = ['id', 'timestamp', 'severity', 'category', 'message'],
-        const rows = errors.map(error => [)','
-            error.id','
-            new Date(error.timestamp).toISOString()]','
-            error.message.replace(/"/g, '"")']','
-        ]'),'
-','
+    /**
+     * ストレージからの読み込み
+     */
+    private async loadFromStorage(): Promise<void> {
+        if (this.cache.length > 0) return; // Already loaded
 
-        return [','
-            headers.join(','),]','
-            ...rows.map(row => row.map(cell => `"${cell""`").join('
-            }}' }]'
-        ].join('\n'}';'
+        try {
+            if (this.config.useIndexedDB && this.isIndexedDBAvailable()) {
+                await this.loadFromIndexedDB();
+            } else {
+                this.initializeLocalStorage();
+            }
+        } catch (error) {
+            console.warn('Failed to load from storage:', error);
+        }
     }
 
-    private isIndexedDBAvailable('';
-        return, typeof window !== 'undefined' && 'indexedDB' in, window;
+    /**
+     * IndexedDBからの読み込み
+     */
+    private async loadFromIndexedDB(): Promise<void> {
+        return new Promise((resolve, reject) => {
+            const request = indexedDB.open('ErrorStorage', 1);
+
+            request.onsuccess = () => {
+                const db = request.result;
+                const transaction = db.transaction(['errors'], 'readonly');
+                const store = transaction.objectStore('errors');
+                const getAllRequest = store.getAll();
+
+                getAllRequest.onsuccess = () => {
+                    this.cache = getAllRequest.result || [];
+                    resolve();
+                };
+
+                getAllRequest.onerror = () => reject(getAllRequest.error);
+                transaction.oncomplete = () => db.close();
+            };
+
+            request.onerror = () => reject(request.error);
+        });
     }
 
-    private, isLocalStorageAvailable('';
-            return, typeof window !== 'undefined' && 'localStorage' in, window;
-        } catch { return, false,' }'
+    /**
+     * IndexedDBから削除
+     */
+    private async deleteFromIndexedDB(id: string): Promise<void> {
+        return new Promise((resolve, reject) => {
+            const request = indexedDB.open('ErrorStorage', 1);
+
+            request.onsuccess = () => {
+                const db = request.result;
+                const transaction = db.transaction(['errors'], 'readwrite');
+                const store = transaction.objectStore('errors');
+
+                const deleteRequest = store.delete(id);
+                deleteRequest.onsuccess = () => resolve();
+                deleteRequest.onerror = () => reject(deleteRequest.error);
+
+                transaction.oncomplete = () => db.close();
+            };
+
+            request.onerror = () => reject(request.error);
+        });
+    }
+
+    /**
+     * IndexedDBクリア
+     */
+    private async clearIndexedDB(): Promise<void> {
+        return new Promise((resolve, reject) => {
+            const request = indexedDB.open('ErrorStorage', 1);
+
+            request.onsuccess = () => {
+                const db = request.result;
+                const transaction = db.transaction(['errors'], 'readwrite');
+                const store = transaction.objectStore('errors');
+
+                const clearRequest = store.clear();
+                clearRequest.onsuccess = () => resolve();
+                clearRequest.onerror = () => reject(clearRequest.error);
+
+                transaction.oncomplete = () => db.close();
+            };
+
+            request.onerror = () => reject(request.error);
+        });
+    }
+
+    /**
+     * IndexedDB利用可能チェック
+     */
+    private isIndexedDBAvailable(): boolean {
+        return typeof indexedDB !== 'undefined';
+    }
+
+    /**
+     * ID生成
+     */
+    private generateId(): string {
+        return `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+    }
+
+    /**
+     * キャッシュサイズ計算
+     */
+    private calculateCacheSize(): number {
+        try {
+            return JSON.stringify(this.cache).length;
+        } catch (error) {
+            return 0;
+        }
+    }
+
+    /**
+     * クリーンアップ
+     */
+    destroy(): void {
+        this.cache = [];
+        this.initialized = false;
+        console.log('ErrorStorage destroyed');
+    }
+}
+
+export default ErrorStorage;
