@@ -1,38 +1,55 @@
 // Type definitions
-interface PerformanceMetrics { frameTime: number,
-    renderTime: number,
-    cullTime: number,
-    compositionTime: number,
-    dirtyRegionTime: number,
-    renderEfficiency: number,
-    cullingEfficiency: number,
-    cacheEfficiency: number,
+interface PerformanceMetrics {
+    frameTime: number;
+    renderTime: number;
+    cullTime: number;
+    compositionTime: number;
+    dirtyRegionTime: number;
+    renderEfficiency: number;
+    cullingEfficiency: number;
+    cacheEfficiency: number;
     overallEfficiency: number;
     performanceGain?: number;
-    interface PerformanceBaseline { renderTime: number,
-    drawCalls: number,
+}
+
+interface PerformanceBaseline {
+    renderTime: number;
+    drawCalls: number;
     pixelsRendered: number;
-    interface PerformanceFrameData { timestamp: number,
-    renderTime: number,
-    totalObjects: number,
+}
+
+interface PerformanceFrameData {
+    timestamp: number;
+    renderTime: number;
+    totalObjects: number;
     efficiency: number;
-    interface PerformanceConfig { enabled: boolean,
-    metrics: PerformanceMetrics,
-    history: PerformanceFrameData[],
-    historySize: number,
-    adaptiveMode: boolean,
-    performanceTarget: number,
-    optimizationTrigger: number,
+}
+
+interface PerformanceConfig {
+    enabled: boolean;
+    metrics: PerformanceMetrics;
+    history: PerformanceFrameData[];
+    historySize: number;
+    adaptiveMode: boolean;
+    performanceTarget: number;
+    optimizationTrigger: number;
     baseline: PerformanceBaseline;
-    interface PerformanceStats extends PerformanceMetrics { uptime: number,
-    totalFrames: number,
-    avgFPS: number,
-    baseline: PerformanceBaseline,
+}
+
+interface PerformanceStats extends PerformanceMetrics {
+    uptime: number;
+    totalFrames: number;
+    avgFPS: number;
+    baseline: PerformanceBaseline;
     optimizationLevel: string;
-    type OptimizationLevel = 'conservative' | 'balanced' | 'aggressive';
-    type PerformanceTrend = 'improving' | 'stable' | 'degrading';
-    type OperationType = 'cull' | 'composition' | 'dirtyRegion';
-    interface PerformanceConfigUpdate { enabled?: boolean,
+}
+
+type OptimizationLevel = 'conservative' | 'balanced' | 'aggressive';
+type PerformanceTrend = 'improving' | 'stable' | 'degrading';
+type OperationType = 'cull' | 'composition' | 'dirtyRegion';
+
+interface PerformanceConfigUpdate {
+    enabled?: boolean;
     historySize?: number;
     adaptiveMode?: boolean;
     performanceTarget?: number;

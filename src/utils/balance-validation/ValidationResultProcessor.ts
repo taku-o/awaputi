@@ -493,20 +493,19 @@ interface RulePerformanceInfo { name: string,
     
     /**
      * Generate detailed report
-     */ : undefined
-    generateDetailedReport(result: ProcessedResult): string { ''
-        if (!this.config.enableDetailedReports) {', ' }
+     */
+    generateDetailedReport(result: ProcessedResult): string {
+        if (!this.config.enableDetailedReports) {
 
             return 'Detailed reporting is disabled';
-        ';'
+        }
 
-        const lines: string[] = [],
-        lines.push('=== Validation, Report ===');
+        const lines: string[] = [];
+        lines.push('=== Validation Report ===');
         lines.push(`Overall Result: ${ result.valid ? 'VALID' : 'INVALID}`},' }
 
         lines.push(`Timestamp: ${new, Date(result.metadata.timestamp}.toISOString(}`);
-        lines.push();
-        ';'
+        lines.push('');
         // Summary
         if (result.summary) {', ' }
 

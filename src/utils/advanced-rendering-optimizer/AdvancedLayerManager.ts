@@ -1,54 +1,71 @@
-import { getErrorHandler  } from '../ErrorHandler.js';
+import { getErrorHandler } from '../ErrorHandler.js';
 
 // Type definitions
-interface LayerConfig { cachingEnabled?: boolean,
+interface LayerConfig {
+    cachingEnabled?: boolean;
     globalAlpha?: number;
     globalCompositeOperation?: string;
     maxLayers?: number;
     cacheThreshold?: number;
     invalidationThreshold?: number;
     enableBlending?: boolean;
-    interface LayerProperties { opacity?: number,
+}
+
+interface LayerProperties {
+    opacity?: number;
     blendMode?: string;
     static?: boolean;
     cacheable?: boolean;
-    interface BoundingBox { x: number,
-    y: number,
-    width: number,
+}
+
+interface BoundingBox {
+    x: number;
+    y: number;
+    width: number;
     height: number;
-    interface Layer { name: string,
-    order: number,
-    enabled: boolean,
-    visible: boolean,
-    opacity: number,
-    blendMode: string,
-    canvas: HTMLCanvasElement | null,
-    context: CanvasRenderingContext2D | null,
-    static: boolean,
-    cacheable: boolean,
-    dirty: boolean,
-    lastModified: number,
-    objects: Set<string>,
-    boundingBox: BoundingBox,
-    renderTime: number,
-    complexity: number,
-    cacheHits: number,
+}
+
+interface Layer {
+    name: string;
+    order: number;
+    enabled: boolean;
+    visible: boolean;
+    opacity: number;
+    blendMode: string;
+    canvas: HTMLCanvasElement | null;
+    context: CanvasRenderingContext2D | null;
+    static: boolean;
+    cacheable: boolean;
+    dirty: boolean;
+    lastModified: number;
+    objects: Set<string>;
+    boundingBox: BoundingBox;
+    renderTime: number;
+    complexity: number;
+    cacheHits: number;
     cacheMisses: number;
-    interface LayerStats { totalLayers: number,
-    activeLayers: number,
-    cachedLayers: number,
-    renderTime: number,
-    compositionTime: number,
+}
+
+interface LayerStats {
+    totalLayers: number;
+    activeLayers: number;
+    cachedLayers: number;
+    renderTime: number;
+    compositionTime: number;
     cacheHitRatio: number;
-    interface Viewport { x?: number,
+}
+
+interface Viewport {
+    x?: number;
     y?: number;
     width?: number;
     height?: number;
     scale?: number;
-';'
+}
 
-interface ErrorHandler { ''
+interface ErrorHandler {
     logError(message: string, error: Error): void;
+}
 
 /**
  * Layer Management System
@@ -57,7 +74,7 @@ interface ErrorHandler { ''
 export class AdvancedLayerManager {
     private errorHandler: ErrorHandler;
     private mainCanvas: HTMLCanvasElement;
-    private, layers: Map<string, Layer>,
+    private layers: Map<string, Layer>;
     private layerOrder: string[];
     private staticLayers: Set<string>;
     private dynamicLayers: Set<string>;
@@ -65,124 +82,127 @@ export class AdvancedLayerManager {
     private cachedLayers: Map<string, number>;
     private cacheInvalidation: Set<string>;
     private globalAlpha: number;
-    private globalCompositeOperation: string';'
-    private stats: LayerStats';'
+    private globalCompositeOperation: string;
+    private stats: LayerStats;
     private config: Required<Omit<LayerConfig, 'cachingEnabled' | 'globalAlpha' | 'globalCompositeOperation'>>;
-    constructor(mainCanvas: HTMLCanvasElement, config: LayerConfig = {) {
-
+    constructor(mainCanvas: HTMLCanvasElement, config: LayerConfig = {}) {
         this.errorHandler = getErrorHandler();
-    this.mainCanvas = mainCanvas;
+        this.mainCanvas = mainCanvas;
         
         // Layer management state
         this.layers = new Map();
-    this.layerOrder = [];
-    this.staticLayers = new Set();
-    this.dynamicLayers = new Set();
+        this.layerOrder = [];
+        this.staticLayers = new Set();
+        this.dynamicLayers = new Set();
         
         // Caching system
-        this.cachingEnabled = config.cachingEnabled !== undefined ? config.cachingEnabled: true;
-    this.cachedLayers = new Map();
-    this.cacheInvalidation = new Set('';
-    this.globalCompositeOperation = config.globalCompositeOperation || 'source-over'
+        this.cachingEnabled = config.cachingEnabled !== undefined ? config.cachingEnabled : true;
+        this.cachedLayers = new Map();
+        this.cacheInvalidation = new Set();
+        this.globalAlpha = config.globalAlpha || 1.0;
+        this.globalCompositeOperation = config.globalCompositeOperation || 'source-over';
         
         // Performance tracking
         this.stats = {
             totalLayers: 0,
-    activeLayers: 0,
-    cachedLayers: 0,
-    renderTime: 0,
-    compositionTime: 0 };
+            activeLayers: 0,
+            cachedLayers: 0,
+            renderTime: 0,
+            compositionTime: 0,
             cacheHitRatio: 0 
-    };
+        };
+        
         // Configuration
-        this.config = { maxLayers: config.maxLayers || 16,
-            cacheThreshold: config.cacheThreshold || 100, // ms;
-            invalidationThreshold: config.invalidationThreshold || 10, // frames;
-            enableBlending: config.enableBlending !== undefined ? config.enableBlending : true,));
-    
+        this.config = {
+            maxLayers: config.maxLayers || 16,
+            cacheThreshold: config.cacheThreshold || 100, // ms
+            invalidationThreshold: config.invalidationThreshold || 10, // frames
+            enableBlending: config.enableBlending !== undefined ? config.enableBlending : true
+        };
+    }
     /**
      * Create a new rendering layer
      * @param name - Layer name
      * @param order - Rendering order (lower = rendered, first)
      * @param properties - Layer properties
      */
-    createLayer(name: string, order: number, properties: LayerProperties = { ): Layer | null {
-        try {'
-            if(this.layers.has(name)) { }'
-
-                throw new Error(`Layer '${name}' already, exists`}';'
-            }
-            ';'
-
-            if (this.layers.size >= this.config.maxLayers) { }'
-
-                throw new Error(`Maximum, layer count (${this.config.maxLayers} exceeded`}';'
+    createLayer(name: string, order: number, properties: LayerProperties = {}): Layer | null {
+        try {
+            if (this.layers.has(name)) {
+                throw new Error(`Layer '${name}' already exists`);
             }
             
-            const layer: Layer = { name;
+            if (this.layers.size >= this.config.maxLayers) {
+                throw new Error(`Maximum layer count (${this.config.maxLayers}) exceeded`);
+            }
+            
+            const layer: Layer = {
+                name,
                 order,
                 enabled: true,
-    visible: true,
+                visible: true,
                 opacity: properties.opacity || 1.0,
-                blendMode: properties.blendMode || 'source-over';
+                blendMode: properties.blendMode || 'source-over',
                 // Layer canvas for caching
                 canvas: null,
-                context: null;
+                context: null,
                 // Properties
                 static: properties.static || false,
                 cacheable: properties.cacheable || false,
                 dirty: true,
-                lastModified: Date.now();
+                lastModified: Date.now(),
                 // Content tracking
-            objects: new Set(),
-                boundingBox: { x: 0, y: 0, width: 0, height: 0   ,
+                objects: new Set(),
+                boundingBox: { x: 0, y: 0, width: 0, height: 0 },
                 
                 // Performance tracking
                 renderTime: 0,
                 complexity: 0,
                 cacheHits: 0,
-    cacheMisses: 0;
-            },
-            ;
+                cacheMisses: 0
+            };
+            
             // Create layer canvas if cacheable
             if (layer.cacheable && this.cachingEnabled) {
-
                 layer.canvas = document.createElement('canvas');
-                layer.canvas.width = this.mainCanvas.width,
-
-                layer.canvas.height = this.mainCanvas.height }
-
-                layer.context = layer.canvas.getContext('2d'; }'
+                layer.canvas.width = this.mainCanvas.width;
+                layer.canvas.height = this.mainCanvas.height;
+                layer.context = layer.canvas.getContext('2d');
             }
             
             this.layers.set(name, layer);
             this._updateLayerOrder(name);
             
             // Track layer type
-            if (layer.static) { this.staticLayers.add(name) } else { this.dynamicLayers.add(name);
+            if (layer.static) {
+                this.staticLayers.add(name);
+            } else {
+                this.dynamicLayers.add(name);
+            }
             
             this.stats.totalLayers = this.layers.size;
             
-            console.log(`[LayerManager] Layer, created: ${name} (order: ${order}`};
+            console.log(`[LayerManager] Layer created: ${name} (order: ${order})`);
             return layer;
 
         } catch (error) {
             this.errorHandler.logError('Failed to create layer', error as Error);
-            return null,
-    
+            return null;
+        }
+    }
     /**
      * Remove a layer
      * @param name - Layer name
      */
-    removeLayer(name: string): boolean { try {
+    removeLayer(name: string): boolean {
+        try {
             const layer = this.layers.get(name);
-            if (!layer) return false,
+            if (!layer) return false;
             
             // Clean up canvas
             if (layer.canvas) {
-                layer.canvas = null
-}
-                layer.context = null; }
+                layer.canvas = null;
+                layer.context = null;
             }
             
             // Remove from tracking sets
@@ -197,71 +217,81 @@ export class AdvancedLayerManager {
             this.layers.delete(name);
             this.stats.totalLayers = this.layers.size;
             
-            console.log(`[LayerManager] Layer, removed: ${name}`};
+            console.log(`[LayerManager] Layer removed: ${name}`);
             return true;
 
         } catch (error) {
             this.errorHandler.logError('Failed to remove layer', error as Error);
-            return false,
-    
+            return false;
+        }
+    }
     /**
      * Get layer by name
      * @param name - Layer name
      * @returns Layer object
      */
-    getLayer(name: string): Layer | null { return this.layers.get(name) || null }
+    getLayer(name: string): Layer | null {
+        return this.layers.get(name) || null;
+    }
     
     /**
      * Set layer visibility
      * @param name - Layer name
      * @param visible - Visibility state
      */
-    setLayerVisibility(name: string, visible: boolean): void { const layer = this.layers.get(name);
+    setLayerVisibility(name: string, visible: boolean): void {
+        const layer = this.layers.get(name);
         if (layer) {
-            layer.visible = visible }
-            this._markLayerDirty(name); }
-}
+            layer.visible = visible;
+            this._markLayerDirty(name);
+        }
+    }
     
     /**
      * Set layer opacity
      * @param name - Layer name
      * @param opacity - Opacity value (0-1)
      */
-    setLayerOpacity(name: string, opacity: number): void { const layer = this.layers.get(name);
+    setLayerOpacity(name: string, opacity: number): void {
+        const layer = this.layers.get(name);
         if (layer) {
-            layer.opacity = Math.max(0, Math.min(1, opacity);
-            this._markLayerDirty(name); }
-}
+            layer.opacity = Math.max(0, Math.min(1, opacity));
+            this._markLayerDirty(name);
+        }
+    }
     
     /**
      * Set layer blend mode
      * @param name - Layer name
      * @param blendMode - Blend mode
      */
-    setLayerBlendMode(name: string, blendMode: string): void { const layer = this.layers.get(name);
+    setLayerBlendMode(name: string, blendMode: string): void {
+        const layer = this.layers.get(name);
         if (layer) {
-            layer.blendMode = blendMode }
-            this._markLayerDirty(name); }
-}
+            layer.blendMode = blendMode;
+            this._markLayerDirty(name);
+        }
+    }
     
     /**
      * Mark layer as dirty for re-rendering
      * @param name - Layer name
      */
-    markLayerDirty(name: string): void { this._markLayerDirty(name);
-    
+    markLayerDirty(name: string): void {
+        this._markLayerDirty(name);
+    }
     /**
      * Add object to layer
      * @param layerName - Layer name
      * @param objectId - Object ID
      * @param bounds - Object bounds
      */
-    addObjectToLayer(layerName: string, objectId: string, bounds: BoundingBox | null = null): void { const layer = this.layers.get(layerName);
+    addObjectToLayer(layerName: string, objectId: string, bounds: BoundingBox | null = null): void {
+        const layer = this.layers.get(layerName);
         if (layer) {
             layer.objects.add(objectId);
             if (bounds) {
-        }
-                this._updateLayerBounds(layer, bounds); }
+                this._updateLayerBounds(layer, bounds);
             }
             
             this._markLayerDirty(layerName);
@@ -273,27 +303,29 @@ export class AdvancedLayerManager {
      * @param layerName - Layer name
      * @param objectId - Object ID
      */
-    removeObjectFromLayer(layerName: string, objectId: string): void { const layer = this.layers.get(layerName);
+    removeObjectFromLayer(layerName: string, objectId: string): void {
+        const layer = this.layers.get(layerName);
         if (layer) {
             layer.objects.delete(objectId);
-            this._markLayerDirty(layerName); }
-}
+            this._markLayerDirty(layerName);
+        }
+    }
     
     /**
      * Render all layers to main canvas
      * @param mainContext - Main canvas context
      * @param viewport - Viewport information
      */
-    renderLayers(mainContext: CanvasRenderingContext2D, viewport: Viewport | null = null): void { const startTime = performance.now();
+    renderLayers(mainContext: CanvasRenderingContext2D, viewport: Viewport | null = null): void {
+        const startTime = performance.now();
         try {
-            let activeLayers = 0,
+            let activeLayers = 0;
             
             // Render layers in order
             for (const layerName of this.layerOrder) {
                 const layer = this.layers.get(layerName);
                 if (!layer || !layer.enabled || !layer.visible || layer.opacity <= 0) {
-            }
-                    continue; }
+                    continue;
                 }
                 
                 activeLayers++;
@@ -303,10 +335,16 @@ export class AdvancedLayerManager {
                 const originalOperation = mainContext.globalCompositeOperation;
                 
                 mainContext.globalAlpha = originalAlpha * layer.opacity;
-                if (this.config.enableBlending) { mainContext.globalCompositeOperation = layer.blendMode as GlobalCompositeOperation }
+                if (this.config.enableBlending) {
+                    mainContext.globalCompositeOperation = layer.blendMode as GlobalCompositeOperation;
+                }
                 
                 // Render layer
-                if (layer.cacheable && this._shouldUseCache(layer) { this._renderCachedLayer(mainContext, layer, viewport) } else { this._renderLayerDirect(mainContext, layer, viewport);
+                if (layer.cacheable && this._shouldUseCache(layer)) {
+                    this._renderCachedLayer(mainContext, layer, viewport);
+                } else {
+                    this._renderLayerDirect(mainContext, layer, viewport);
+                }
                 
                 // Restore context settings
                 mainContext.globalAlpha = originalAlpha;
@@ -318,24 +356,27 @@ export class AdvancedLayerManager {
 
         } catch (error) {
             this.errorHandler.logError('Failed to render layers', error as Error);
+        }
     }
     
     /**
      * Get rendering statistics
      * @returns Performance statistics
      */
-    getStats(): LayerStats { this.stats.cachedLayers = this.cachedLayers.size }
-        return { ...this.stats }
+    getStats(): LayerStats {
+        this.stats.cachedLayers = this.cachedLayers.size;
+        return { ...this.stats };
+    }
     
     /**
      * Clear all layer caches
      */
-    clearCaches(): void { for (const layer of this.layers.values() {
+    clearCaches(): void {
+        for (const layer of this.layers.values()) {
             if (layer.canvas && layer.context) {
-    
-}
-                layer.context.clearRect(0, 0, layer.canvas.width, layer.canvas.height); }
-}
+                layer.context.clearRect(0, 0, layer.canvas.width, layer.canvas.height);
+            }
+        }
         this.cachedLayers.clear();
         this.cacheInvalidation.clear();
     }
@@ -346,82 +387,93 @@ export class AdvancedLayerManager {
      * Update layer order array
      * @private
      */
-    private _updateLayerOrder(layerName: string): void { const layer = this.layers.get(layerName);
-        if (!layer) return,
+    private _updateLayerOrder(layerName: string): void {
+        const layer = this.layers.get(layerName);
+        if (!layer) return;
         
         // Remove if already exists
         this.layerOrder = this.layerOrder.filter(name => name !== layerName);
         
         // Insert at correct position
-        let inserted = false,
-        for(let, i = 0, i < this.layerOrder.length, i++) {
+        let inserted = false;
+        for (let i = 0; i < this.layerOrder.length; i++) {
             const otherLayer = this.layers.get(this.layerOrder[i]);
             if (otherLayer && layer.order < otherLayer.order) {
                 this.layerOrder.splice(i, 0, layerName);
-                inserted = true }
-                break; }
-}
+                inserted = true;
+                break;
+            }
+        }
         
-        if (!inserted) { this.layerOrder.push(layerName);
+        if (!inserted) {
+            this.layerOrder.push(layerName);
+        }
     }
     
     /**
      * Mark layer as dirty
      * @private
      */
-    private _markLayerDirty(name: string): void { const layer = this.layers.get(name);
+    private _markLayerDirty(name: string): void {
+        const layer = this.layers.get(name);
         if (layer) {
-            layer.dirty = true,
+            layer.dirty = true;
             layer.lastModified = Date.now();
-            this.cachedLayers.delete(name); }
-}
+            this.cachedLayers.delete(name);
+        }
+    }
     
     /**
      * Update layer bounding box
      * @private
      */
-    private _updateLayerBounds(layer: Layer, objectBounds: BoundingBox): void { if (layer.objects.size === 1) { }
-            layer.boundingBox = { ...objectBounds } else {  const bounds = layer.boundingBox,
+    private _updateLayerBounds(layer: Layer, objectBounds: BoundingBox): void {
+        if (layer.objects.size === 1) {
+            layer.boundingBox = { ...objectBounds };
+        } else {
+            const bounds = layer.boundingBox;
             const right = Math.max(bounds.x + bounds.width, objectBounds.x + objectBounds.width);
             const bottom = Math.max(bounds.y + bounds.height, objectBounds.y + objectBounds.height);
             bounds.x = Math.min(bounds.x, objectBounds.x);
             bounds.y = Math.min(bounds.y, objectBounds.y);
-            bounds.width = right - bounds.x }
-            bounds.height = bottom - bounds.y; }
-}
+            bounds.width = right - bounds.x;
+            bounds.height = bottom - bounds.y;
+        }
+    }
     
     /**
      * Check if layer should use cache
      * @private
      */
-    private _shouldUseCache(layer: Layer): boolean { if (!layer.cacheable || !this.cachingEnabled) return false,
-        if (layer.dirty) return false,
-        if(!this.cachedLayers.has(layer.name) return false,
+    private _shouldUseCache(layer: Layer): boolean {
+        if (!layer.cacheable || !this.cachingEnabled) return false;
+        if (layer.dirty) return false;
+        if (!this.cachedLayers.has(layer.name)) return false;
         
-        return layer.renderTime > this.config.cacheThreshold }
-    
+        return layer.renderTime > this.config.cacheThreshold;
+    }
     /**
      * Render cached layer
      * @private
      */
-    private _renderCachedLayer(mainContext: CanvasRenderingContext2D, layer: Layer, viewport: Viewport | null): void { if (layer.canvas) {
+    private _renderCachedLayer(mainContext: CanvasRenderingContext2D, layer: Layer, viewport: Viewport | null): void {
+        if (layer.canvas) {
             mainContext.drawImage(layer.canvas, 0, 0);
-            layer.cacheHits++ }
+            layer.cacheHits++;
+        }
     }
     
     /**
      * Render layer directly
      * @private
      */
-    private _renderLayerDirect(mainContext: CanvasRenderingContext2D, layer: Layer, viewport: Viewport | null): void { const startTime = performance.now();
+    private _renderLayerDirect(mainContext: CanvasRenderingContext2D, layer: Layer, viewport: Viewport | null): void {
+        const startTime = performance.now();
         // If layer is cacheable, render to layer canvas first
-        const targetContext = (layer.cacheable && layer.context) ? layer.context: mainContext,
+        const targetContext = (layer.cacheable && layer.context) ? layer.context : mainContext;
         
         if (layer.cacheable && layer.context) {
-        
             // Clear layer canvas
-        
-        
             layer.context.clearRect(0, 0, layer.canvas!.width, layer.canvas!.height);
         }
         
@@ -434,11 +486,12 @@ export class AdvancedLayerManager {
         if (layer.cacheable && layer.context && targetContext !== mainContext) {
             mainContext.drawImage(layer.canvas!, 0, 0);
             // Mark as cached if render time exceeds threshold
-            if (layer.renderTime > this.config.cacheThreshold) {''
+            if (layer.renderTime > this.config.cacheThreshold) {
                 this.cachedLayers.set(layer.name, Date.now());
-                layer.dirty = false; }
-}
+                layer.dirty = false;
+            }
+        }
         
         layer.cacheMisses++;
-
-    }'}'
+    }
+}
