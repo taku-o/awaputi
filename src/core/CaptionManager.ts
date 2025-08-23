@@ -1,126 +1,162 @@
 import { getErrorHandler  } from '../utils/ErrorHandler.js';
 
 // 型定義
-interface AudioAccessibilityManager { accessibilityManager?: AccessibilityManager;
-    interface AccessibilityManager { gameEngine?: GameEngine;
-    interface GameEngine { audioManager?: AudioManager,
-    addEventListener?: (event: string, handler: (event: any) => void) => void  }
+interface AudioAccessibilityManager {
+    accessibilityManager?: AccessibilityManager;
 }
 
-interface AudioManager { playSound?: (soundId: string, options?: PlaySoundOptions) => any,
-    playMusic?: (musicId: string, options?: PlayMusicOptions) => any 
-    }
+interface AccessibilityManager {
+    gameEngine?: GameEngine;
+}
 
-interface PlaySoundOptions { volume?: number,
+interface GameEngine {
+    audioManager?: AudioManager;
+    addEventListener?: (event: string, handler: (event: any) => void) => void;
+}
+
+interface AudioManager {
+    playSound?: (soundId: string, options?: PlaySoundOptions) => any;
+    playMusic?: (musicId: string, options?: PlayMusicOptions) => any;
+}
+
+interface PlaySoundOptions {
+    volume?: number;
     category?: string;
-    interface PlayMusicOptions { volume?: number,
+}
+
+interface PlayMusicOptions {
+    volume?: number;
     loop?: boolean;
-    interface CaptionConfig { enabled: boolean,
-    realTimeCaption: boolean,
-    soundEffectDescriptions: boolean,
-    musicDescriptions: boolean,
-    ambientSoundDescriptions: boolean,
-    captionDelay: number,
-    maxCaptionLines: number,
+}
+
+interface CaptionConfig {
+    enabled: boolean;
+    realTimeCaption: boolean;
+    soundEffectDescriptions: boolean;
+    musicDescriptions: boolean;
+    ambientSoundDescriptions: boolean;
+    captionDelay: number;
+    maxCaptionLines: number;
     captionDuration: {
-        shor,t: number;
-    },
-        medium: number,
-        long: number,
-    persistent: number,
-    positioning: { default: string,
-    alternatives: string[]  ,
-    styling: { fontSize: string,
+        short: number;
+        medium: number;
+        long: number;
+        persistent: number;
+    };
+    positioning: {
+        default: string;
+        alternatives: string[];
+    };
+    styling: {
+        fontSize: string;
         fontFamily: string;
-    },
-        fontWeight: string,
-        textColor: string,
-        backgroundColor: string,
-        borderColor: string,
-        borderWidth: string,
-        borderRadius: string,
-        padding: string,
-        margin: string,
-        textShadow: string,
-        lineHeight: string,
-    letterSpacing: string,
-    animation: { fadeIn: number,
+        fontWeight: string;
+        textColor: string;
+        backgroundColor: string;
+        borderColor: string;
+        borderWidth: string;
+        borderRadius: string;
+        padding: string;
+        margin: string;
+        textShadow: string;
+        lineHeight: string;
+        letterSpacing: string;
+    };
+    animation: {
+        fadeIn: number;
         fadeOut: number;
-    },
-        slideIn: boolean,
-    bounce: boolean,
-    bounce: boolean;
-        };
-interface SoundDescription { text: string,
-    category: string,
-    duration: string,
+        slideIn: boolean;
+        bounce: boolean;
+    };
+}
+
+interface SoundDescription {
+    text: string;
+    category: string;
     duration: string;
-        };
-interface MusicDescription { text: string,
-    mood: string,
-    tempo: string,
+}
+
+interface MusicDescription {
+    text: string;
+    mood: string;
     tempo: string;
-        };
-interface CaptionStats { captionsDisplayed: number,
+}
+
+interface CaptionStats {
+    captionsDisplayed: number;
     captionsByCategory: Map<string, number>;
-    averageDisplayTime: number,
-    totalDisplayTime: number,
-    userInteractions: number,
-    sessionStart: number,
+    averageDisplayTime: number;
+    totalDisplayTime: number;
+    userInteractions: number;
     sessionStart: number;
-        };
-interface UserPreferences { enabled: boolean,
-    position: string,
-    fontSize: number,
-    fontFamily: string,
-    textColor: string,
-    backgroundColor: string,
-    showSoundEffects: boolean,
-    showMusic: boolean,
-    showAmbientSounds: boolean,
-    autoHide: boolean,
-    hideDelay: number,
+}
+
+interface UserPreferences {
+    enabled: boolean;
+    position: string;
+    fontSize: number;
+    fontFamily: string;
+    textColor: string;
+    backgroundColor: string;
+    showSoundEffects: boolean;
+    showMusic: boolean;
+    showAmbientSounds: boolean;
+    autoHide: boolean;
+    hideDelay: number;
     customDescriptions: Map<string, string>;
-    languagePreference: string,
-    verbosityLevel: string,
+    languagePreference: string;
     verbosityLevel: string;
-        };
-interface LanguageConfig { soundPrefix: string,
-    musicPrefix: string,
+}
+
+interface LanguageConfig {
+    soundPrefix: string;
+    musicPrefix: string;
     categories: {
-        gam,e: string;
-    },
-        ui: string,
-        special: string,
-    ambient: string,
-    ambient: string;
-        };
-interface CaptionData { element: HTMLElement,
-    startTime: number,
-    duration: number,
-    description: SoundDescription,
-    options: any,
-    options: any;
-        };
-interface AudioEvent { soundId: string,
-    category: string,
-    volume: number,
-    duration: number,
+        game: string;
+        ui: string;
+        special: string;
+        ambient: string;
+    };
+}
+
+interface CaptionData {
+    element: HTMLElement;
+    startTime: number;
     duration: number;
-        };
-interface GameEvent { bubble?: any,
+    description: SoundDescription;
+    options: any;
+}
+
+interface AudioEvent {
+    soundId: string;
+    category: string;
+    volume: number;
+    duration: number;
+}
+
+interface GameEvent {
+    bubble?: any;
     count?: number;
     type?: string;
     level?: number;
     score?: number;
     message?: string;
-    interface AccessibilityEvent extends Event { detail: { component: string,
-    config: any,
-    config: any;
-         },
-interface ManualCaptionOptions { category?: string,
+}
+
+interface AccessibilityEvent extends Event {
+    detail: {
+        component: string;
+        config: any;
+    };
+}
+
+interface ManualCaptionOptions {
+    category?: string;
     duration?: string;
-    interface CaptionReport { timestamp: string,
+}
+
+interface CaptionReport {
+    timestamp: string;
     configuration: {
         enable,d: boolean;
     },

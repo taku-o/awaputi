@@ -7,13 +7,15 @@ import { LoggingSystem  } from '../LoggingSystem.js';
 import { ErrorHandler  } from '../../utils/ErrorHandler.js';
 
 // 型定義
-export interface GameEngine { helpManager?: HelpManager;
+export interface GameEngine {
+    helpManager?: HelpManager;
     helpFeedbackSystem?: HelpFeedbackSystem;
-    accessibilityManager?: AccessibilityManager
-};
-export interface HelpManager { searchEngine?: SearchEngine;
-    contentLoader?: ContentLoader
-};
+    accessibilityManager?: AccessibilityManager;
+}
+export interface HelpManager {
+    searchEngine?: SearchEngine;
+    contentLoader?: ContentLoader;
+}
 export interface HelpFeedbackSystem {
     // フィードバックシステムのインターフェース
 }
@@ -26,47 +28,58 @@ export interface SearchEngine {
 export interface ContentLoader {
     // コンテンツローダーのインターフェース
 }
-export interface AnalyticsConfig { sessionTimeout: number;
+export interface AnalyticsConfig {
+    sessionTimeout: number;
     maxEvents: number;
     enableRealTimeTracking: boolean;
     enableOfflineStorage: boolean;
     dataRetentionDays: number;
-};
-export interface HelpUsageAnalytics { totalSessions: number;
+}
+export interface HelpUsageAnalytics {
+    totalSessions: number;
     totalPageViews: number;
     uniqueUsers: Set<string>;
     averageSessionDuration: number;
     topHelpCategories: Map<string, number>;
     topHelpTopics: Map<string, number>;
     searchQueries: Map<string, number>;
-    exitPoints: Map<string, number>; };
-export interface ContentAnalytics { topicViews: Map<string, TopicViewStats>;
-    categoryViews: Map<string, CategoryViewStats>; };
-export interface TopicViewStats { viewCount: number;
+    exitPoints: Map<string, number>;
+}
+export interface ContentAnalytics {
+    topicViews: Map<string, TopicViewStats>;
+    categoryViews: Map<string, CategoryViewStats>;
+}
+export interface TopicViewStats {
+    viewCount: number;
     totalViewTime: number;
     exitCount: number;
-};
-export interface CategoryViewStats { viewCount: number;
+}
+export interface CategoryViewStats {
+    viewCount: number;
     totalViewTime: number;
     exitCount: number;
-};
-export interface TutorialUsageAnalytics { totalStarts: number;
+}
+export interface TutorialUsageAnalytics {
+    totalStarts: number;
     totalCompletions: number;
     completionRate: number;
     averageCompletionTime: number;
-    dropOffPoints: Map<string, number>
-    skipRates: Map<string, number>
-    retryRates: Map<string, number> };
-export interface UserBehaviorAnalytics { navigationPatterns: Map<string, number>,
+    dropOffPoints: Map<string, number>;
+    skipRates: Map<string, number>;
+    retryRates: Map<string, number>;
+}
+export interface UserBehaviorAnalytics {
+    navigationPatterns: Map<string, number>;
     timeSpentBySection: Map<string, TimeStats>;
-    commonUserJourneys: Map<string, number>
+    commonUserJourneys: Map<string, number>;
     bounceRate: number;
-    returnUserRate: number
-};
-export interface TimeStats { total: number;
+    returnUserRate: number;
+}
+export interface TimeStats {
+    total: number;
     count: number;
-    average: number
-};
+    average: number;
+}
 export interface EffectivenessAnalytics { helpfulnessRatings: Map<string, RatingData>,
     problemResolutionRate: number;
     userSatisfactionScore: number;
