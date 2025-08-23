@@ -4,6 +4,9 @@ CLAUDE.local.md
 .*.swp
 .container-use/
 
+# Working Directory
+git-worktree
+
 # Kiro IDE settings (exclude personal settings, include specs)
 .kiro/settings/
 !.kiro/specs/
