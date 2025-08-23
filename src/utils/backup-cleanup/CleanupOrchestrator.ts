@@ -1,103 +1,135 @@
-import { BackupFileInvestigator  } from './BackupFileInvestigator.js';
-import { ReferenceAnalyzer  } from './ReferenceAnalyzer.js';
-import { SafetyVerifier  } from './SafetyVerifier.js';
-import { SequentialFileRemover  } from './SequentialFileRemover.js';
-import { IntegrityValidator  } from './IntegrityValidator.js';
-import { CleanupReporter  } from './CleanupReporter.js';
+import { BackupFileInvestigator } from './BackupFileInvestigator.js';
+import { ReferenceAnalyzer } from './ReferenceAnalyzer.js';
+import { SafetyVerifier } from './SafetyVerifier.js';
+import { SequentialFileRemover } from './SequentialFileRemover.js';
+import { IntegrityValidator } from './IntegrityValidator.js';
+import { CleanupReporter } from './CleanupReporter.js';
 
 // Type definitions
-interface CleanupOptions { dryRun?: boolean,
+interface CleanupOptions {
+    dryRun?: boolean;
     verbose?: boolean;
     safetyMode?: boolean;
     confirmationRequired?: boolean;
     reportOutputDir?: string;
     [key: string]: any;
-    interface FileInvestigationResult { filePath: string,
-    exists: boolean,
-    currentFileExists: boolean,
+}
+
+interface FileInvestigationResult {
+    filePath: string;
+    exists: boolean;
+    currentFileExists: boolean;
     investigationFailed: boolean;
     sizeAnalysis?: {
-        byte,s: number;
-    },
-    wordCount: number,
-    wordCount: number;
-        };
-interface ReferenceAnalysisResult { filePath: string,
-    safetyAssessment: { safeToDelet,e: boolean;
-    },
+        bytes: number;
+        wordCount: number;
+    };
+}
 
-interface SafetyVerificationResult { filePath: string,
-    overallSafety: boolean,
+interface ReferenceAnalysisResult {
+    filePath: string;
+    safetyAssessment: {
+        safeToDelete: boolean;
+    };
+}
+
+interface SafetyVerificationResult {
+    filePath: string;
     overallSafety: boolean;
-        };
-interface InvestigationPhaseResult { investigationResults: FileInvestigationResult[],
-    referenceResults: ReferenceAnalysisResult[],
-    investigationSummary: any,
-    safeFiles: FileInvestigationResult[],
-    totalFiles: number,
-    safeForDeletion: number,
-    safeForDeletion: number;
-        };
-interface SafetyPhaseResult { verificationResults: SafetyVerificationResult[],
-    safetyReport: any,
-    verifiedSafeFiles: FileInvestigationResult[],
-    totalCandidates: number,
-    verifiedSafe: number,
-    verifiedSafe: number;
-        };
-interface DeletionResult { status: string;
-    filePath?: string;
-    interface DeletionPhaseResult { deletionResults: {
-        deletion,s: DeletionResult[],
-    deletionSummary: any,
-    sizeReduction: any,
-    successfulDeletions: DeletionResult[],
-    failedDeletions: DeletionResult[];
-    } };
+}
 
-interface IntegrityValidationResult { buildIntegrity: any,
-    basicTests: any,
-    importResolution: any,
+interface InvestigationPhaseResult {
+    investigationResults: FileInvestigationResult[];
+    referenceResults: ReferenceAnalysisResult[];
+    investigationSummary: any;
+    safeFiles: FileInvestigationResult[];
+    totalFiles: number;
+    safeForDeletion: number;
+}
+
+interface SafetyPhaseResult {
+    verificationResults: SafetyVerificationResult[];
+    safetyReport: any;
+    verifiedSafeFiles: FileInvestigationResult[];
+    totalCandidates: number;
+    verifiedSafe: number;
+}
+
+interface DeletionResult {
+    status: string;
+    filePath?: string;
+}
+
+interface DeletionPhaseResult {
+    deletionResults: {
+        deletions: DeletionResult[];
+    };
+    deletionSummary: any;
+    sizeReduction: any;
+    successfulDeletions: DeletionResult[];
+    failedDeletions: DeletionResult[];
+}
+
+interface IntegrityValidationResult {
+    buildIntegrity: any;
+    basicTests: any;
+    importResolution: any;
     coreFeatures: any;
-    interface IntegrityPhaseResult { validationResults: IntegrityValidationResult,
+}
+
+interface IntegrityPhaseResult {
+    validationResults: IntegrityValidationResult;
     integrityReport: {
         summary: {
-            overallIntegrit,y: boolean;
-    },
+            overallIntegrity: boolean;
+        };
+    };
     overallIntegrityStatus: boolean;
 }
 
-interface ReportingPhaseResult { finalReport: any,
-    recoveryInstructions: any,
+interface ReportingPhaseResult {
+    finalReport: any;
+    recoveryInstructions: any;
     reportFileName: string;
-    interface ExecutionState { phase: string,
-    startTime: string | null,
-    endTime: string | null,
-    results: { investigatio,n?: InvestigationPhaseResult,
-        safety?: SafetyPhaseResult,
-        deletion?: DeletionPhaseResult,
-        integrity?: IntegrityPhaseResult,
-        reports?: ReportingPhaseResult;  },
+}
+
+interface ExecutionState {
+    phase: string;
+    startTime: string | null;
+    endTime: string | null;
+    results: {
+        investigation?: InvestigationPhaseResult;
+        safety?: SafetyPhaseResult;
+        deletion?: DeletionPhaseResult;
+        integrity?: IntegrityPhaseResult;
+        reports?: ReportingPhaseResult;
+    };
     errors: any[];
 }
 
-interface ErrorRecoveryResult { recovered: boolean,
+interface ErrorRecoveryResult {
+    recovered: boolean;
     action: string;
-    interface FinalResult { status: string,
-    executionState: ExecutionState,
+}
+
+interface FinalResult {
+    status: string;
+    executionState: ExecutionState;
     summary: {
-        totalExecutionTim,e: number | null ,
-        phase: string,
-    filesProcessed: number,
-    filesDeleted: number,
-    errorsEncountered: number,
-    recommendations: string[],
-    dryRun: boolean;
-    error?: { message: string,
-    phase: string;
+        totalExecutionTime: number | null;
+        phase: string;
+        filesProcessed: number;
+        filesDeleted: number;
+        errorsEncountered: number;
+        recommendations: string[];
+        dryRun: boolean;
     };
-    phase: string;
-        };
+    error?: {
+        message: string;
+        phase: string;
+    };
+}
+
 /**
  * CleanupOrchestrator - バックアップファイルクリーンアップの総合調整クラス
  * Issue #104 のバックアップファイル削除プロセス全体を安全に調整・実行する機能を提供
@@ -112,14 +144,15 @@ export class CleanupOrchestrator {
     private reporter: CleanupReporter;
     private executionState: ExecutionState;
 
-    constructor(options: CleanupOptions = {) {
+    constructor(options: CleanupOptions = {}) {
         this.options = {
             dryRun: options.dryRun || false,
             verbose: options.verbose || false,
-    safetyMode: options.safetyMode !== false, // デフォルトは安全モード;
+            safetyMode: options.safetyMode !== false, // デフォルトは安全モード
             confirmationRequired: options.confirmationRequired !== false,
-            reportOutputDir: options.reportOutputDir || './.kiro/reports';
-            ...options;
+            reportOutputDir: options.reportOutputDir || './.kiro/reports',
+            ...options
+        };
 
         // コンポーネント初期化
         this.investigator = new BackupFileInvestigator();
@@ -127,246 +160,264 @@ export class CleanupOrchestrator {
         this.safetyVerifier = new SafetyVerifier();
         this.fileRemover = new SequentialFileRemover();
         this.integrityValidator = new IntegrityValidator();
-        this.reporter = new CleanupReporter('''
-            phase: 'initialized,
+        this.reporter = new CleanupReporter();
+        
+        this.executionState = {
+            phase: 'initialized',
             startTime: null,
             endTime: null,
-    results: {  },
-            errors: []);
-        }''
+            results: {},
+            errors: []
+        };
 
-        this.log('CleanupOrchestrator initialized', 'info';
+        this.log('CleanupOrchestrator initialized', 'info');
     }
 
     /**
-     * メインクリーンアップ処理の実行'
-     */''
-    async executeCleanup()';'
-        this.log('Starting backup file cleanup process...', 'info';
-        this.executionState.startTime = new Date().toISOString('';
+     * メインクリーンアップ処理の実行
+     */
+    async executeCleanup(): Promise<FinalResult> {
+        this.log('Starting backup file cleanup process...', 'info');
+        this.executionState.startTime = new Date().toISOString();
         this.executionState.phase = 'starting';
-'
 
-        try { // Phase, 1: 調査フェーズ''
-            this.executionState.phase = 'investigation',')'
-            this.log('Phase, 1: Investigation - Starting file investigation...', 'info);'
+        try {
+            // Phase 1: 調査フェーズ
+            this.executionState.phase = 'investigation';
+            this.log('Phase 1: Investigation - Starting file investigation...', 'info');
             const investigationResults = await this.runInvestigationPhase();
             this.executionState.results.investigation = investigationResults;
 
             if (investigationResults.safeFiles.length === 0) {
-
                 this.log('No files identified as safe for deletion. Stopping process.', 'warn');
-
                 return this.generateFinalResult('no_safe_files');
-';'
+            }
+
             // Phase 2: 安全性検証フェーズ
             this.executionState.phase = 'safety_verification';
-            this.log('Phase, 2: Safety Verification - Verifying deletion safety...', 'info);'
+            this.log('Phase 2: Safety Verification - Verifying deletion safety...', 'info');
             const safetyResults = await this.runSafetyVerificationPhase(investigationResults.safeFiles);
             this.executionState.results.safety = safetyResults;
 
             if (safetyResults.verifiedSafeFiles.length === 0) {
-
                 this.log('No files passed safety verification. Stopping process.', 'warn');
-
-                return this.generateFinalResult('no_verified_safe_files);'
+                return this.generateFinalResult('no_verified_safe_files');
+            }
 
             // ユーザー確認（必要な場合）
             if (this.options.confirmationRequired && !this.options.dryRun) {
                 const confirmed = await this.requestUserConfirmation(safetyResults.verifiedSafeFiles);
-                if (!confirmed) {''
+                if (!confirmed) {
                     this.log('User cancelled the deletion process.', 'info');
-
-                    return this.generateFinalResult('user_cancelled);'
+                    return this.generateFinalResult('user_cancelled');
+                }
+            }
 
             // Phase 3: 削除実行フェーズ（ドライランでない場合のみ）
-            let, deletionResults: DeletionPhaseResult | null = null;
+            let deletionResults: DeletionPhaseResult | null = null;
             if (!this.options.dryRun) {
-
                 this.executionState.phase = 'deletion';
-                this.log('Phase 3: Deletion - Executing file deletion...', 'info';
+                this.log('Phase 3: Deletion - Executing file deletion...', 'info');
                 deletionResults = await this.runDeletionPhase(safetyResults.verifiedSafeFiles);
-                this.executionState.results.deletion = deletionResults; }
-
-            } else { }'
-
-                this.log('Dry run mode - Skipping actual deletion', 'info); }'
+                this.executionState.results.deletion = deletionResults;
+            } else {
+                this.log('Dry run mode - Skipping actual deletion', 'info');
             }
 
             // Phase 4: 整合性確認フェーズ（削除実行後のみ）
-            let, integrityResults: IntegrityPhaseResult | null = null,
+            let integrityResults: IntegrityPhaseResult | null = null;
             if (!this.options.dryRun && deletionResults) {
-
                 this.executionState.phase = 'integrity_validation';
-                this.log('Phase 4: Integrity Validation - Checking system integrity...', 'info';
-                integrityResults = await this.runIntegrityValidationPhase(';'
-            this.executionState.phase = 'reporting',')'
-            this.log('Phase 5: Reporting - Generating comprehensive report...', 'info';
-            const reportResults = await this.runReportingPhase(';'
-            this.executionState.phase = 'completed',')'
-            this.executionState.endTime = new Date().toISOString()';'
-            return this.generateFinalResult('success), catch (error) { }'
+                this.log('Phase 4: Integrity Validation - Checking system integrity...', 'info');
+                integrityResults = await this.runIntegrityValidationPhase();
+                this.executionState.results.integrity = integrityResults;
+            }
 
-            this.log(`Cleanup, process failed: ${(error, as, Error'}'.message}`, 'error');
+            // Phase 5: レポート生成フェーズ
+            this.executionState.phase = 'reporting';
+            this.log('Phase 5: Reporting - Generating comprehensive report...', 'info');
+            const reportResults = await this.runReportingPhase();
+            this.executionState.results.reports = reportResults;
+
+            this.executionState.phase = 'completed';
+            this.executionState.endTime = new Date().toISOString();
+            return this.generateFinalResult('success');
+        } catch (error) {
+            this.log(`Cleanup process failed: ${(error as Error).message}`, 'error');
             this.executionState.errors.push(error);
             this.executionState.phase = 'failed';
-            this.executionState.endTime = new Date().toISOString()';'
-            return this.generateFinalResult('error', error as Error';'
+            this.executionState.endTime = new Date().toISOString();
+            return this.generateFinalResult('error', error as Error);
+        }
+    }
 
     /**
-     * 調査フェーズの実行'
-     */''
-    async runInvestigationPhase()';'
-        this.log('Investigating target backup files...', 'info);'
+     * 調査フェーズの実行
+     */
+    private async runInvestigationPhase(): Promise<InvestigationPhaseResult> {
+        this.log('Investigating target backup files...', 'info');
         
         // 全対象ファイルの調査
         const investigationResults = await this.investigator.investigateTargetFiles();
         
         // 参照分析
-        const referenceResults: ReferenceAnalysisResult[] = [],
+        const referenceResults: ReferenceAnalysisResult[] = [];
         for (const fileResult of investigationResults) {
-            if (fileResult.exists) {''
-                this.log(`Analyzing references for ${fileResult.filePath}...`, 'verbose'}
-                const referenceAnalysis = await this.referenceAnalyzer.generateReferenceReport(fileResult.filePath, {);
-                referenceResults.push(referenceAnalysis    }
-}
+            if (fileResult.exists) {
+                this.log(`Analyzing references for ${fileResult.filePath}...`, 'verbose');
+                const referenceAnalysis = await this.referenceAnalyzer.generateReferenceReport(fileResult.filePath, {});
+                referenceResults.push(referenceAnalysis);
+            }
+        }
+
         // 調査サマリー生成
         const investigationSummary = await this.reporter.generateInvestigationSummary(investigationResults);
 
         // 安全な削除候補の特定
-        const safeFiles = investigationResults.filter(file => {  );
+        const safeFiles = investigationResults.filter(file => {
             const referenceResult = referenceResults.find(r => r.filePath === file.filePath);
-            return file.exists && ,
-                   file.currentFileExists && ,
-                   !file.investigationFailed &&,
-                   referenceResult && }
-                   referenceResult.safetyAssessment.safeToDelete; }
-        };
+            return file.exists &&
+                   file.currentFileExists &&
+                   !file.investigationFailed &&
+                   referenceResult &&
+                   referenceResult.safetyAssessment.safeToDelete;
+        });
 
-        return { investigationResults,
+        return {
+            investigationResults,
             referenceResults,
             investigationSummary,
             safeFiles,
-            totalFiles: investigationResults.length };
-            safeForDeletion: safeFiles.length; 
+            totalFiles: investigationResults.length,
+            safeForDeletion: safeFiles.length
+        };
     }
 
     /**
      * 安全性検証フェーズの実行
      */
-    async runSafetyVerificationPhase(candidateFiles: FileInvestigationResult[]): Promise<SafetyPhaseResult> { ''
-        this.log(`Verifying, safety for ${candidateFiles.length) candidate, files...`, 'info'),
+    private async runSafetyVerificationPhase(candidateFiles: FileInvestigationResult[]): Promise<SafetyPhaseResult> {
+        this.log(`Verifying safety for ${candidateFiles.length} candidate files...`, 'info');
         
-        const, verificationResults: SafetyVerificationResult[] = [],
+        const verificationResults: SafetyVerificationResult[] = [];
         
-        for(const, file, of, candidateFiles) {
-        ','
-
-            this.log(`Safety, verification for ${file.filePath}...`, 'verbose'}
-            const verification = await this.safetyVerifier.verifyDeletionSafety(file.filePath); }
-            verificationResults.push(verification}
+        for (const file of candidateFiles) {
+            this.log(`Safety verification for ${file.filePath}...`, 'verbose');
+            const verification = await this.safetyVerifier.verifyDeletionSafety(file.filePath);
+            verificationResults.push(verification);
         }
 
         // 安全性レポート生成
         const safetyReport = await this.safetyVerifier.generateSafetyReport(verificationResults);
 
         // 確実に安全なファイルのみ選別
-        const verifiedSafeFiles = candidateFiles.filter(file => {  );
+        const verifiedSafeFiles = candidateFiles.filter(file => {
             const verification = verificationResults.find(v => v.filePath === file.filePath);
-            return verification && verification.overallSafety;);
+            return verification && verification.overallSafety;
+        });
 
-        return { verificationResults,
+        return {
+            verificationResults,
             safetyReport,
             verifiedSafeFiles,
-            totalCandidates: candidateFiles.length };
-            verifiedSafe: verifiedSafeFiles.length; 
+            totalCandidates: candidateFiles.length,
+            verifiedSafe: verifiedSafeFiles.length
+        };
     }
 
     /**
      * 削除実行フェーズの実行
      */
-    async runDeletionPhase(verifiedFiles: FileInvestigationResult[]): Promise<DeletionPhaseResult> { ''
-        this.log(`Executing, deletion for ${verifiedFiles.length) verified, files...`, 'info'),
+    private async runDeletionPhase(verifiedFiles: FileInvestigationResult[]): Promise<DeletionPhaseResult> {
+        this.log(`Executing deletion for ${verifiedFiles.length} verified files...`, 'info');
         
         // 段階的安全削除実行
-        const, deletionResults = await, this.fileRemover.removeFilesSafely(verifiedFiles};
+        const deletionResults = await this.fileRemover.removeFilesSafely(verifiedFiles);
         
         // 削除サマリー生成
-        const deletionSummary = await this.reporter.generateDeletionSummary(deletionResults}
+        const deletionSummary = await this.reporter.generateDeletionSummary(deletionResults);
         
-        // サイズ削減計算 }
-        const beforeSizes = { files: verifiedFiles.map(f => ({ bytes: f.sizeAnalysis?.bytes || 0, words: f.sizeAnalysis?.wordCount || 0 ) } : undefined
-        const afterSizes = { files: [] , // 削除後はファイルが存在しない
+        // サイズ削減計算
+        const beforeSizes = { files: verifiedFiles.map(f => ({ bytes: f.sizeAnalysis?.bytes || 0, words: f.sizeAnalysis?.wordCount || 0 })) };
+        const afterSizes = { files: [] }; // 削除後はファイルが存在しない
         const sizeReduction = await this.reporter.calculateSizeReduction(beforeSizes, afterSizes);
 
-        return { deletionResults,
+        return {
+            deletionResults,
             deletionSummary,
             sizeReduction,
-            successfulDeletions: deletionResults.deletions.filter(d => d.status === 'deleted'),' };'
-
-            failedDeletions: deletionResults.deletions.filter(d => d.status !== 'deleted'; }'
-        }
+            successfulDeletions: deletionResults.deletions.filter(d => d.status === 'deleted'),
+            failedDeletions: deletionResults.deletions.filter(d => d.status !== 'deleted')
+        };
+    }
 
     /**
-     * 整合性確認フェーズの実行'
-     */''
-    async runIntegrityValidationPhase()';'
-        this.log('Validating system integrity after deletion...', 'info);'
+     * 整合性確認フェーズの実行
+     */
+    private async runIntegrityValidationPhase(): Promise<IntegrityPhaseResult> {
+        this.log('Validating system integrity after deletion...', 'info');
         
         // 包括的整合性検証
-        const validationResults: IntegrityValidationResult = { buildIntegrity: await this.integrityValidator.validateBuildIntegrity(
+        const validationResults: IntegrityValidationResult = {
+            buildIntegrity: await this.integrityValidator.validateBuildIntegrity(),
             basicTests: await this.integrityValidator.runBasicTests(),
-            importResolution: await this.integrityValidator.checkImportResolution(
-    coreFeatures: await this.integrityValidator.validateCoreFeatures() ,
+            importResolution: await this.integrityValidator.checkImportResolution(),
+            coreFeatures: await this.integrityValidator.validateCoreFeatures()
+        };
 
         // 整合性レポート生成
         const integrityReport = await this.integrityValidator.generateIntegrityReport(validationResults);
 
-        return { validationResults,
-            integrityReport };
-            overallIntegrityStatus: integrityReport.summary.overallIntegrity 
+        return {
+            validationResults,
+            integrityReport,
+            overallIntegrityStatus: integrityReport.summary.overallIntegrity
+        };
     }
 
     /**
      * レポート生成フェーズの実行
-     */''
-    async runReportingPhase()';'
-        this.log('Generating comprehensive cleanup report...', 'info);'
+     */
+    private async runReportingPhase(): Promise<ReportingPhaseResult> {
+        this.log('Generating comprehensive cleanup report...', 'info');
         
         // 復旧手順作成
         const deletedFiles = this.executionState.results.deletion?.successfulDeletions || [];
         const recoveryInstructions = await this.reporter.createRecoveryInstructions(deletedFiles);
         
         // 最終包括レポート生成
-        const finalReport = await this.reporter.generateFinalReport({ : undefined
-            investigationSummary: this.executionState.results.investigation?.investigationSummary, : undefined
-            deletionSummary: this.executionState.results.deletion?.deletionSummary, : undefined
-            integrityValidation: this.executionState.results.integrity?.integrityReport, : undefined);
-            sizeReduction: this.executionState.results.deletion?.sizeReduction),
-            recoveryInstructions,
-        // レポート保存 : undefined
-        const timestamp = new Date().toISOString().replace(/[:.]/g, '-) }'
+        const finalReport = await this.reporter.generateFinalReport({
+            investigationSummary: this.executionState.results.investigation?.investigationSummary,
+            deletionSummary: this.executionState.results.deletion?.deletionSummary,
+            integrityValidation: this.executionState.results.integrity?.integrityReport,
+            sizeReduction: this.executionState.results.deletion?.sizeReduction,
+            recoveryInstructions
+        });
+        
+        // レポート保存
+        const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
         const reportFileName = `backup-cleanup-report-${timestamp}.json`;
         await this.reporter.saveReportToFile(finalReport, reportFileName);
 
-        return { finalReport,
-            recoveryInstructions };
-            reportFileName }
-        }
+        return {
+            finalReport,
+            recoveryInstructions,
+            reportFileName
+        };
+    }
 
     /**
-     * ユーザー確認の要求'
-     */''
-    async requestUserConfirmation(filesToDelete: FileInvestigationResult[]): Promise<boolean> { ''
-        console.log('\n = == DELETION, CONFIRMATION ===),'
-        console.log(`The following ${filesToDelete.length} files will be deleted: `} }
-        filesToDelete.forEach((file, index} => {  }
-
+     * ユーザー確認の要求
+     */
+    private async requestUserConfirmation(filesToDelete: FileInvestigationResult[]): Promise<boolean> {
+        console.log('\n=== DELETION CONFIRMATION ===');
+        console.log(`The following ${filesToDelete.length} files will be deleted:`);
+        filesToDelete.forEach((file, index) => {
             console.log(`${index + 1}. ${file.filePath}`);
-        }');'
+        });
 
-        console.log('\nThese, files have, been verified, as safe, for deletion.');
-        console.log('Continue, with deletion? (y/N'):');'
+        console.log('\nThese files have been verified as safe for deletion.');
+        console.log('Continue with deletion? (y/N):');
         
         // 実際のプロダクションでは readline を使用するが、
         // この実装では自動的にtrueを返す（テスト用）
@@ -376,81 +427,81 @@ export class CleanupOrchestrator {
     /**
      * プロセスの中断処理
      */
-    async interruptProcess(reason: string): Promise<FinalResult> { ''
-        this.log(`Process, interrupted: ${reason)`, 'warn'),
-        this.executionState.phase = 'interrupted,
-        this.executionState.endTime = new, Date().toISOString();
+    async interruptProcess(reason: string): Promise<FinalResult> {
+        this.log(`Process interrupted: ${reason}`, 'warn');
+        this.executionState.phase = 'interrupted';
+        this.executionState.endTime = new Date().toISOString();
+        
         // 緊急レポート生成
-        if(this.executionState.results.investigation} {
-
-            await this.runReportingPhase(}
-
-        return this.generateFinalResult('interrupted', new Error(reason);
+        if (this.executionState.results.investigation) {
+            await this.runReportingPhase();
+        }
+        
+        return this.generateFinalResult('interrupted', new Error(reason));
+    }
 
     /**
      * エラー処理とプロセス回復
-     */'
-    async handleErrorAndRecover(error: Error, phase: string): Promise<ErrorRecoveryResult> { }'
+     */
+    private async handleErrorAndRecover(error: Error, phase: string): Promise<ErrorRecoveryResult> {
+        this.log(`Error in ${phase}: ${error.message}`, 'error');
+        this.executionState.errors.push({ phase, error: error.message, timestamp: new Date().toISOString() });
 
-        this.log(`Error in ${phase}: ${ error.message}`, 'error'}
-        this.executionState.errors.push({ phase, error: error.message, timestamp: new Date().toISOString() }),
-        ';'
         // フェーズ別回復戦略
-        switch(phase) {
-
-            case 'investigation':','
+        switch (phase) {
+            case 'investigation':
                 // 調査エラーは致命的でない場合が多い
-        }
+                this.log('Investigation errors detected, continuing with available data...', 'warn');
+                return { recovered: true, action: 'continue_with_partial_data' };
 
-                this.log('Investigation errors detected, continuing with available data...', 'warn');' }'
-
-                return { recovered: true, action: 'continue_with_partial_data'
-            }''
-            case 'safety_verification':';'
+            case 'safety_verification':
                 // 安全性検証エラーは中止が適切
                 this.log('Safety verification failed, stopping deletion process for safety', 'error');
-                return { recovered: false, action: 'abort_deletion'
-            }''
-            case 'deletion':';'
+                return { recovered: false, action: 'abort_deletion' };
+
+            case 'deletion':
                 // 削除エラーは即座に中止
                 this.log('Deletion error detected, stopping further deletions', 'error');
-                return { recovered: false, action: 'stop_deletions'
-            }''
-            case 'integrity_validation':';'
+                return { recovered: false, action: 'stop_deletions' };
+
+            case 'integrity_validation':
                 // 整合性エラーは警告だが続行可能
                 this.log('Integrity validation issues detected, flagging for review', 'warn');
-                return { recovered: true, action: 'flag_for_review'
-            ,
+                return { recovered: true, action: 'flag_for_review' };
 
-            default:';'
-                return { recovered: false, action: 'abort_process'
-            }
+            default:
+                return { recovered: false, action: 'abort_process' };
+        }
     }
 
     /**
      * 最終結果の生成
      */
-    generateFinalResult(status: string, error: Error | null = null): FinalResult { const result: FinalResult = {
+    private generateFinalResult(status: string, error: Error | null = null): FinalResult {
+        const result: FinalResult = {
             status,
             executionState: this.executionState,
-    summary: { totalExecutionTime: this.executionState.endTime ? undefined : undefined
-                    new Date(this.executionState.endTime).getTime() - new Date(this.executionState.startTime!).getTime() : ,
-                    null  },
+            summary: {
+                totalExecutionTime: this.executionState.endTime && this.executionState.startTime ?
+                    new Date(this.executionState.endTime).getTime() - new Date(this.executionState.startTime).getTime() :
+                    null,
                 phase: this.executionState.phase,
-    filesProcessed: this.executionState.results.investigation?.totalFiles || 0, : undefined
-                filesDeleted: this.executionState.results.deletion?.successfulDeletions?.length || 0, : undefined
-                errorsEncountered: this.executionState.errors.length  ,
-            recommendations: this.generateRecommendations(status,
-    dryRun: this.options.dryRun ,
+                filesProcessed: this.executionState.results.investigation?.totalFiles || 0,
+                filesDeleted: this.executionState.results.deletion?.successfulDeletions?.length || 0,
+                errorsEncountered: this.executionState.errors.length,
+                recommendations: this.generateRecommendations(status),
+                dryRun: this.options.dryRun
+            }
+        };
 
         if (error) {
-
             result.error = {
-                message: error.message }
-                phase: this.executionState.phase 
-    }
+                message: error.message,
+                phase: this.executionState.phase
+            };
+        }
 
-        this.log(`Cleanup process completed with status: ${status}`, status === 'success' ? 'info' : 'warn'};
+        this.log(`Cleanup process completed with status: ${status}`, status === 'success' ? 'info' : 'warn');
         
         return result;
     }
@@ -458,60 +509,66 @@ export class CleanupOrchestrator {
     /**
      * ステータス別推奨事項の生成
      */
-    generateRecommendations(status: string): string[] { const recommendations: string[] = [],
+    private generateRecommendations(status: string): string[] {
+        const recommendations: string[] = [];
 
-        switch(status) {
-
-            case 'success':','
+        switch (status) {
+            case 'success':
                 recommendations.push('file-size-report.jsonを更新してください');
                 recommendations.push('プロジェクトドキュメントを更新してください');
                 recommendations.push('今後のクリーンアップ手順を確立してください');
-                break,
+                break;
 
-            case 'no_safe_files':','
+            case 'no_safe_files':
                 recommendations.push('対象ファイルの状況を手動で確認してください');
                 recommendations.push('参照関係を詳しく調査してください');
-                break,
+                break;
 
-            case 'no_verified_safe_files':','
+            case 'no_verified_safe_files':
                 recommendations.push('安全性検証の警告を確認してください');
                 recommendations.push('手動で安全性を確認後、再実行を検討してください');
-                break,
+                break;
 
-            case 'user_cancelled':','
+            case 'user_cancelled':
                 recommendations.push('必要に応じて後で再実行してください');
-                break,
+                break;
 
-            case 'error':','
+            case 'error':
                 recommendations.push('エラーの詳細を確認し、問題を修正してください');
                 recommendations.push('システムの整合性を確認してください');
-                break,
+                break;
 
-            case 'interrupted':','
+            case 'interrupted':
                 recommendations.push('中断の原因を確認してください');
                 recommendations.push('可能であれば安全に再開してください');
-                break; }
+                break;
         }
 
         return recommendations;
     }
 
     /**
-     * ログ出力'
-     */''
-    log(message: string, level: string = 'info): void { const timestamp = new Date().toISOString(),' }
+     * ログ出力
+     */
+    private log(message: string, level: string = 'info'): void {
+        const timestamp = new Date().toISOString();
+        const prefix = `[${timestamp}] [${level.toUpperCase()}]`;
+        if (this.options.verbose || level === 'error' || level === 'warn') {
+            console.log(`${prefix} ${message}`);
+        }
+    }
 
-        const prefix = `[${timestamp}] [${ level.toUpperCase(}'
-        if(this.options.verbose || level === 'error' || level === 'warn} { }'
-            console.log(`${prefix} ${message}`    }
-}
     /**
      * 実行状態の取得
      */
     getExecutionState(): ExecutionState {
-        return { ...this.executionState }
+        return { ...this.executionState };
+    }
 
     /**
-     * 設定オプションの取得'
-     */]'
-    getOptions(']';
+     * 設定オプションの取得
+     */
+    getOptions(): Required<CleanupOptions> {
+        return { ...this.options };
+    }
+}
