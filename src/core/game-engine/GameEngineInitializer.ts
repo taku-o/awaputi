@@ -32,56 +32,55 @@ export class GameEngineInitializer {
     
     /**
      * ブラウザ互換性のチェック
-     */''
-    checkBrowserCompatibility()';'
-            canvas: !!document.createElement('canvas'.getContext,
-            audio: !!window.AudioContext || !!(window, as any').webkitAudioContext;'
+     */
+    checkBrowserCompatibility(): void {
+        const features = {
+            canvas: !!document.createElement('canvas').getContext,
+            audio: !!window.AudioContext || !!(window as any).webkitAudioContext,
             requestAnimationFrame: !!window.requestAnimationFrame,
             localStorage: !!window.localStorage,
-            webGL: !!document.createElement('canvas').getContext('webgl);'
+            webGL: !!document.createElement('canvas').getContext('webgl')
         };
         
-        const unsupportedFeatures = Object.entries(features);
-            .filter(([_, supported]) => !supported);
+        const unsupportedFeatures = Object.entries(features)
+            .filter(([_, supported]) => !supported)
             .map(([feature]) => feature);
 
-        if (unsupportedFeatures.length > 0) {', ' }
-
-            console.warn('[GameEngineInitializer] Unsupported features:', unsupportedFeatures'; }'
+        if (unsupportedFeatures.length > 0) {
+            console.warn('[GameEngineInitializer] Unsupported features:', unsupportedFeatures);
         }
 
-        console.log('[GameEngineInitializer] Browser, compatibility check, completed');
+        console.log('[GameEngineInitializer] Browser compatibility check completed');
     }
     
     /**
      * シーンの初期化
-     */'
-    async initializeScenes(): Promise<void> { ''
+     */
+    async initializeScenes(): Promise<void> {
         if (!this.gameEngine.sceneManager) {
-
-            console.error('[GameEngineInitializer] SceneManager, not found');
-            return; }
+            console.error('[GameEngineInitializer] SceneManager not found');
+            return;
         }
         
-        try { // 動的インポートでシーンをロード
-            const [}
+        try {
+            // 動的インポートでシーンをロード
+            const [
                 { MainMenuScene },
                 { StageSelectScene },
                 { GameScene },
                 { ShopScene },
                 { UserInfoScene },
-                { SettingsScene }]
-                { HelpScene }']'
-            ] = await Promise.all([);
-                import('../../scenes/MainMenuScene.js');
-                import('../../scenes/StageSelectScene.js');
-                import('../../scenes/GameScene.js');
-                import('../../scenes/ShopScene.js');
-                import('../../scenes/UserInfoScene.js');
-                import('../../scenes/SettingsScene.js'),]';'
-                import('../../scenes/HelpScene.js']';'
-            ]');'
-            ';'
+                { SettingsScene },
+                { HelpScene }
+            ] = await Promise.all([
+                import('../../scenes/MainMenuScene.js'),
+                import('../../scenes/StageSelectScene.js'),
+                import('../../scenes/GameScene.js'),
+                import('../../scenes/ShopScene.js'),
+                import('../../scenes/UserInfoScene.js'),
+                import('../../scenes/SettingsScene.js'),
+                import('../../scenes/HelpScene.js')
+            ]);
             // シーンを登録
             this.gameEngine.sceneManager.addScene('menu', new MainMenuScene(this.gameEngine));
             this.gameEngine.sceneManager.addScene('stageSelect', new StageSelectScene(this.gameEngine));
@@ -91,55 +90,66 @@ export class GameEngineInitializer {
             this.gameEngine.sceneManager.addScene('settings', new SettingsScene(this.gameEngine));
             this.gameEngine.sceneManager.addScene('help', new HelpScene(this.gameEngine));
 
-            console.log('[GameEngineInitializer] All, scenes initialized');
+            console.log('[GameEngineInitializer] All scenes initialized');
         } catch (error) {
             console.error('[GameEngineInitializer] Failed to initialize scenes:', error);
-            throw error }
+            throw error;
+        }
     }
     
     /**
      * ソーシャル機能の初期化
      */
-    initializeSocialFeatures(): void { if (this.gameEngine.socialSharingManager?.initialize) {
-            try {'
-                this.gameEngine.socialSharingManager.initialize()','
-                console.log('[GameEngineInitializer] Social, features initialized'),' }'
-
-            } catch (error) { : undefined''
-                console.warn('[GameEngineInitializer] Failed to initialize social features:', error 
-}
+    initializeSocialFeatures(): void {
+        if (this.gameEngine.socialSharingManager?.initialize) {
+            try {
+                this.gameEngine.socialSharingManager.initialize();
+                console.log('[GameEngineInitializer] Social features initialized');
+            } catch (error) {
+                console.warn('[GameEngineInitializer] Failed to initialize social features:', error);
+            }
+        }
+    }
     
     /**
      * オーディオシステムの初期化
      */
-    async initializeAudioSystem(): Promise<void> { if (this.gameEngine.audioManager?.initialize) {
-            try {'
+    async initializeAudioSystem(): Promise<void> {
+        if (this.gameEngine.audioManager?.initialize) {
+            try {
                 await this.gameEngine.audioManager.initialize();
-                console.log('[GameEngineInitializer] Audio, system initialized'),' }'
-
-            } catch (error) { : undefined''
-                console.warn('[GameEngineInitializer] Failed to initialize audio system:', error 
-}
+                console.log('[GameEngineInitializer] Audio system initialized');
+            } catch (error) {
+                console.warn('[GameEngineInitializer] Failed to initialize audio system:', error);
+            }
+        }
+    }
     
     /**
      * SEOシステムとの統合機能を設定
      */
     // @ts-ignore - 将来の実装で使用予定
-    private __setupSEOIntegration(): void { try {
+    private __setupSEOIntegration(): void {
+        try {
             // SEOシステムが利用可能な場合のみ統合
-            if ((window, as any).seoMetaManager && (window, as any).structuredDataEngine) {
+            if ((window as any).seoMetaManager && (window as any).structuredDataEngine) {
                 // 将来的にSEOMonitorを実装する場合はここで初期化
-                console.log('[GameEngineInitializer] SEO, integration setup, completed'),' }'
-
-            } catch (error) { console.warn('[GameEngineInitializer] SEO integration not available:', error }
+                console.log('[GameEngineInitializer] SEO integration setup completed');
+            }
+        } catch (error) {
+            console.warn('[GameEngineInitializer] SEO integration not available:', error);
+        }
     }
     
     /**
      * リソースの破棄
-     */'
-    destroy(): void { if (this.seoMonitor?.stopMonitoring) {''
-            this.seoMonitor.stopMonitoring()','
+     */
+    destroy(): void {
+        if (this.seoMonitor?.stopMonitoring) {
+            this.seoMonitor.stopMonitoring();
+        }
         console.log('[GameEngineInitializer] Destroyed');
+    }
 }
 
-export default GameEngineInitializer; : undefined
+export default GameEngineInitializer;
