@@ -96,6 +96,11 @@ export class ConfigurationValidator extends BaseComponent {
         this.validationRules = new Map();
         this.validationHistory = [];
         this.validationCache = new Map();
+        this.validationCategories = {
+            critical: [],
+            important: [],
+            optional: []
+        };
     }
     async _doInitialize(): Promise<void> {
         this.setupValidationRules();
@@ -707,4 +712,4 @@ export class ConfigurationValidator extends BaseComponent {
         this.validationCache.clear();
         super.cleanup();
     }
-}'
+}

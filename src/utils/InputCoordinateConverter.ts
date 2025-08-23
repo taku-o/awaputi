@@ -4,13 +4,20 @@
  */
 
 // 型定義
-interface Point { x: number,
+interface Point {
+    x: number;
     y: number;
-    interface BaseRect { x: number,
-    y: number,
-    width: number,
+}
+
+interface BaseRect {
+    x: number;
+    y: number;
+    width: number;
     height: number;
-    interface ConvertedCoordinates { x: number,
+}
+
+interface ConvertedCoordinates {
+    x: number;
     y: number;
     canvasX?: number;
     canvasY?: number;
@@ -18,43 +25,57 @@ interface Point { x: number,
     scaledY?: number;
     touchIndex?: number;
     originalEvent: Event;
-    interface ScaledEvent { type: string,
-    x: number,
+}
+
+interface ScaledEvent {
+    type: string;
+    x: number;
     y: number;
     canvasX?: number;
     canvasY?: number;
     scaledX?: number;
     scaledY?: number;
-    originalEvent: Event,
-    timestamp: number,
-    preventDefault: () => void,
-    stopPropagation: () => void 
-    }
+    originalEvent: Event;
+    timestamp: number;
+    preventDefault: () => void;
+    stopPropagation: () => void;
+}
 
-interface ValidationResult { valid: boolean,
+interface ValidationResult {
+    valid: boolean;
     clampedPoint: Point;
-    interface ScaledCoordinateManager { getCanvasInfo(): any,
+}
+
+interface ScaledCoordinateManager {
+    getCanvasInfo(): any;
     getScaleFactor(): number;
     validateCoordinates(x: number, y: number): boolean;
-    export class InputCoordinateConverter {
+}
+
+export class InputCoordinateConverter {
     private scaledCoordinateManager: ScaledCoordinateManager;
+    
     constructor(scaledCoordinateManager: ScaledCoordinateManager) {
-        this.scaledCoordinateManager = scaledCoordinateManager };
+        this.scaledCoordinateManager = scaledCoordinateManager;
+    }
     /**
      * マウスイベントの座標を変換
      * @param {MouseEvent} event - マウスイベント
      * @returns {Object} {x, y, originalEvent} - 変換された座標と元のイベント
      */
-    convertMouseEvent(event) {
+    convertMouseEvent(event: MouseEvent): ConvertedCoordinates {
         try {
             const canvasInfo = this.scaledCoordinateManager.getCanvasInfo();
-            const canvas = event.target,
+            const canvas = event.target as HTMLCanvasElement;
             
             if (!canvas || !canvasInfo) {
-                console.warn('InputCoordinateConverter: Canvas, or canvas, info not, available for, mouse event');
-                return { x: event.clientX }
-                    y: event.clientY };
-                    originalEvent: event;
+                console.warn('InputCoordinateConverter: Canvas or canvas info not available for mouse event');
+                return {
+                    x: event.clientX,
+                    y: event.clientY,
+                    originalEvent: event
+                };
+            }
             
             // キャンバスの境界矩形を取得
             const rect = canvas.getBoundingClientRect();
@@ -67,24 +88,34 @@ interface ValidationResult { valid: boolean,
             const scaleFactor = this.scaledCoordinateManager.getScaleFactor();
             const baseX = canvasX / scaleFactor;
             const baseY = canvasY / scaleFactor;
-            // 座標の妥当性を検証
-            if(!this.scaledCoordinateManager.validateCoordinates(baseX, baseY)) { ''
-                console.warn('InputCoordinateConverter: Invalid converted mouse coordinates', { baseX, baseY ','
-                return { x: event.clientX,
-                    y: event.clientY };
-                    originalEvent: event;
             
-            return { x: baseX,
+            // 座標の妥当性を検証
+            if (!this.scaledCoordinateManager.validateCoordinates(baseX, baseY)) {
+                console.warn('InputCoordinateConverter: Invalid converted mouse coordinates', { baseX, baseY });
+                return {
+                    x: event.clientX,
+                    y: event.clientY,
+                    originalEvent: event
+                };
+            }
+            
+            return {
+                x: baseX,
                 y: baseY,
                 canvasX: canvasX,
                 canvasY: canvasY,
                 scaledX: baseX * scaleFactor,
-    scaledY: baseY * scaleFactor };
-                originalEvent: event;;'} catch (error) {'
+                scaledY: baseY * scaleFactor,
+                originalEvent: event
+            };
+        } catch (error) {
             console.warn('InputCoordinateConverter: Mouse event conversion failed', error);
-            return { x: event.clientX,
-                y: event.clientY };
-                originalEvent: event;
+            return {
+                x: event.clientX,
+                y: event.clientY,
+                originalEvent: event
+            };
+        }
     }
     
     /**
@@ -93,26 +124,30 @@ interface ValidationResult { valid: boolean,
      * @param {number} touchIndex - タッチポイントのインデックス（デフォルト: 0）
      * @returns {Object} {x, y, originalEvent} - 変換された座標と元のイベント
      */
-    convertTouchEvent(event, touchIndex = 0) {
+    convertTouchEvent(event: TouchEvent, touchIndex: number = 0): ConvertedCoordinates {
         try {
             const canvasInfo = this.scaledCoordinateManager.getCanvasInfo();
-            const canvas = event.target,
+            const canvas = event.target as HTMLCanvasElement;
 
-            if (!canvas || !canvasInfo) {''
-                console.warn('InputCoordinateConverter: Canvas, or canvas, info not, available for, touch event');
-                return { x: 0 }
-                    y: 0 };
-                    originalEvent: event;
+            if (!canvas || !canvasInfo) {
+                console.warn('InputCoordinateConverter: Canvas or canvas info not available for touch event');
+                return {
+                    x: 0,
+                    y: 0,
+                    originalEvent: event
+                };
+            }
             
             // タッチポイントを取得
             const touches = event.touches || event.changedTouches;
             if (!touches || touchIndex >= touches.length) {
-
-                console.warn('InputCoordinateConverter: Touch point not available', { touchIndex, touchesLength: touches?.length ;
-                return { : undefined
-                    x: 0 }
-                    y: 0 };
-                    originalEvent: event;
+                console.warn('InputCoordinateConverter: Touch point not available', { touchIndex, touchesLength: touches?.length });
+                return {
+                    x: 0,
+                    y: 0,
+                    originalEvent: event
+                };
+            }
             
             const touch = touches[touchIndex];
             const rect = canvas.getBoundingClientRect();
@@ -125,25 +160,35 @@ interface ValidationResult { valid: boolean,
             const scaleFactor = this.scaledCoordinateManager.getScaleFactor();
             const baseX = canvasX / scaleFactor;
             const baseY = canvasY / scaleFactor;
-            // 座標の妥当性を検証
-            if(!this.scaledCoordinateManager.validateCoordinates(baseX, baseY)) { ''
-                console.warn('InputCoordinateConverter: Invalid converted touch coordinates', { baseX, baseY ','
-                return { x: 0,
-                    y: 0 };
-                    originalEvent: event;
             
-            return { x: baseX,
+            // 座標の妥当性を検証
+            if (!this.scaledCoordinateManager.validateCoordinates(baseX, baseY)) {
+                console.warn('InputCoordinateConverter: Invalid converted touch coordinates', { baseX, baseY });
+                return {
+                    x: 0,
+                    y: 0,
+                    originalEvent: event
+                };
+            }
+            
+            return {
+                x: baseX,
                 y: baseY,
                 canvasX: canvasX,
                 canvasY: canvasY,
                 scaledX: baseX * scaleFactor,
                 scaledY: baseY * scaleFactor,
-    touchIndex: touchIndex,
-                originalEvent: event;;'} catch (error) {'
+                touchIndex: touchIndex,
+                originalEvent: event
+            };
+        } catch (error) {
             console.warn('InputCoordinateConverter: Touch event conversion failed', error);
-            return { x: 0,
-                y: 0 };
-                originalEvent: event;
+            return {
+                x: 0,
+                y: 0,
+                originalEvent: event
+            };
+        }
     }
     
     /**
@@ -152,18 +197,21 @@ interface ValidationResult { valid: boolean,
      * @param {Object} baseRect - ベース座標系での矩形 {x, y, width, height}
      * @returns {boolean} 点が矩形内にあるかどうか
      */
-    isPointInScaledRect(point, baseRect) {
+    isPointInScaledRect(point: Point, baseRect: BaseRect): boolean {
         try {
             if (!point || !baseRect) {
-    }
                 return false;
+            }
             
-            return point.x >= baseRect.x &&;
-                   point.x <= baseRect.x + baseRect.width &&;
-                   point.y >= baseRect.y &&';'
-                   point.y <= baseRect.y + baseRect.height;'} catch (error) {'
+            return point.x >= baseRect.x &&
+                   point.x <= baseRect.x + baseRect.width &&
+                   point.y >= baseRect.y &&
+                   point.y <= baseRect.y + baseRect.height;
+        } catch (error) {
             console.warn('InputCoordinateConverter: Rectangle hit test failed', error);
-            return false,
+            return false;
+        }
+    }
     
     /**
      * 円内の点判定（スケーリング対応）
@@ -172,20 +220,22 @@ interface ValidationResult { valid: boolean,
      * @param {number} baseRadius - ベース座標系での半径
      * @returns {boolean} 点が円内にあるかどうか
      */
-    isPointInScaledCircle(point, baseCenter, baseRadius) {
+    isPointInScaledCircle(point: Point, baseCenter: Point, baseRadius: number): boolean {
         try {
             if (!point || !baseCenter || baseRadius <= 0) {
-    }
                 return false;
+            }
             
             const dx = point.x - baseCenter.x;
             const dy = point.y - baseCenter.y;
             const distance = Math.sqrt(dx * dx + dy * dy);
-            ';'
 
-            return distance <= baseRadius;} catch (error) {
+            return distance <= baseRadius;
+        } catch (error) {
             console.warn('InputCoordinateConverter: Circle hit test failed', error);
-            return false,
+            return false;
+        }
+    }
     
     /**
      * スケーリング対応イベントオブジェクトを作成
@@ -193,10 +243,11 @@ interface ValidationResult { valid: boolean,
      * @param {Object} convertedCoordinates - 変換された座標
      * @returns {Object} スケーリング対応イベント
      */
-    createScaledEvent(originalEvent, convertedCoordinates = null) {
+    createScaledEvent(originalEvent: Event, convertedCoordinates: ConvertedCoordinates | null = null): ScaledEvent {
         try {
-            const coords = convertedCoordinates || this.convertMouseEvent(originalEvent);
-            return { type: originalEvent.type,
+            const coords = convertedCoordinates || this.convertMouseEvent(originalEvent as MouseEvent);
+            return {
+                type: originalEvent.type,
                 x: coords.x,
                 y: coords.y,
                 canvasX: coords.canvasX,
@@ -204,19 +255,22 @@ interface ValidationResult { valid: boolean,
                 scaledX: coords.scaledX,
                 scaledY: coords.scaledY,
                 originalEvent: originalEvent,
-    timestamp: Date.now(),
-                preventDefault: () => originalEvent.preventDefault() };
-                stopPropagation: () => originalEvent.stopPropagation(); 
-    };'} catch (error) {'
+                timestamp: Date.now(),
+                preventDefault: () => originalEvent.preventDefault(),
+                stopPropagation: () => originalEvent.stopPropagation()
+            };
+        } catch (error) {
             console.warn('InputCoordinateConverter: Scaled event creation failed', error);
-            return { type: originalEvent.type,
+            return {
+                type: originalEvent.type,
                 x: 0,
                 y: 0,
                 originalEvent: originalEvent,
-                timestamp: Date.now(
-    preventDefault: () => originalEvent.preventDefault() };
-                stopPropagation: () => originalEvent.stopPropagation(); 
-    }
+                timestamp: Date.now(),
+                preventDefault: () => originalEvent.preventDefault(),
+                stopPropagation: () => originalEvent.stopPropagation()
+            };
+        }
     }
     
     /**
@@ -224,21 +278,23 @@ interface ValidationResult { valid: boolean,
      * @param {Object} point - 検証する点 {x, y}
      * @returns {Object} {valid, clampedPoint} - 検証結果とクランプされた座標
      */
-    validateAndClampCoordinates(point) {
+    validateAndClampCoordinates(point: Point): ValidationResult {
         try {
             const canvasInfo = this.scaledCoordinateManager.getCanvasInfo();
-            const clampedX = Math.max(0, Math.min(canvasInfo.baseWidth, point.x);
-            const clampedY = Math.max(0, Math.min(canvasInfo.baseHeight, point.y);
+            const clampedX = Math.max(0, Math.min(canvasInfo.baseWidth, point.x));
+            const clampedY = Math.max(0, Math.min(canvasInfo.baseHeight, point.y));
             const valid = (point.x === clampedX && point.y === clampedY);
-            return {  };
+            return {
                 valid: valid,
-                clampedPoint: { x: clampedX, y: clampedY;
-
-             },'} catch (error) {'
+                clampedPoint: { x: clampedX, y: clampedY }
+            };
+        } catch (error) {
             console.warn('InputCoordinateConverter: Coordinate validation failed', error);
-            return {  };
+            return {
                 valid: false,
-                clampedPoint: { x: 0, y: 0  }
+                clampedPoint: { x: 0, y: 0 }
+            };
+        }
     }
     
     /**
@@ -246,41 +302,52 @@ interface ValidationResult { valid: boolean,
      * @param {TouchEvent} event - タッチイベント
      * @returns {Array} 変換されたタッチポイントの配列
      */
-    convertMultiTouchEvent(event) {
+    convertMultiTouchEvent(event: TouchEvent): ConvertedCoordinates[] {
         try {
-            const touches = event.touches || event.changedTouches,
+            const touches = event.touches || event.changedTouches;
             if (!touches) {
-    }
                 return [];
-            
-            const convertedTouches = [];
-            for(let, i = 0; i < touches.length; i++) {
-                const convertedTouch = this.convertTouchEvent(event, i);
-                convertedTouches.push(convertedTouch); }
             }
-            ';'
+            
+            const convertedTouches: ConvertedCoordinates[] = [];
+            for (let i = 0; i < touches.length; i++) {
+                const convertedTouch = this.convertTouchEvent(event, i);
+                convertedTouches.push(convertedTouch);
+            }
 
-            return convertedTouches;} catch (error) {
+            return convertedTouches;
+        } catch (error) {
             console.warn('InputCoordinateConverter: Multi-touch conversion failed', error);
-            return [],
+            return [];
+        }
+    }
     
     /**
      * デバッグ用の座標情報を取得
      * @param {Event} event - 入力イベント
      * @returns {Object} デバッグ情報
      */
-    getDebugInfo(event) {
+    getDebugInfo(event: Event): any {
         const canvasInfo = this.scaledCoordinateManager.getCanvasInfo();
-        const scaleFactor = this.scaledCoordinateManager.getScaleFactor()','
-        if(event.type.includes('touch' { }
-            convertedCoords = this.convertTouchEvent(event); }
-        } else { convertedCoords = this.convertMouseEvent(event);
+        const scaleFactor = this.scaledCoordinateManager.getScaleFactor();
+        let convertedCoords: ConvertedCoordinates;
         
-        return { eventType: event.type,
+        if (event.type.includes('touch')) {
+            convertedCoords = this.convertTouchEvent(event as TouchEvent);
+        } else {
+            convertedCoords = this.convertMouseEvent(event as MouseEvent);
+        }
+        
+        return {
+            eventType: event.type,
             canvasInfo: canvasInfo,
             scaleFactor: scaleFactor,
-    originalCoords: { clientX: event.clientX  ,
-                clientY: event.clientY 
-    };
+            originalCoords: {
+                clientX: (event as MouseEvent).clientX,
+                clientY: (event as MouseEvent).clientY
+            },
             convertedCoords: convertedCoords,
-            timestamp: Date.now();
+            timestamp: Date.now()
+        };
+    }
+}
