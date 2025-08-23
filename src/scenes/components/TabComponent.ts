@@ -3,29 +3,35 @@
  * UserInfoSceneのタブ機能を分離するための基底クラス
  */
 
-import { GameEngine  } from '../../core/GameEngine';
-import { ComponentEventBus  } from './ComponentEventBus';
-import { SceneState  } from './SceneState';
+import { GameEngine } from '../../core/GameEngine.js';
+import { ComponentEventBus } from './ComponentEventBus.js';
+import { SceneState } from './SceneState.js';
 
-export interface AccessibilitySettings { highContrast: boolean,
-    largeText: boolean,
+export interface AccessibilitySettings {
+    highContrast: boolean;
+    largeText: boolean;
     reducedMotion: boolean;
-    export abstract class TabComponent { protected gameEngine: GameEngine;
-    protected, eventBus: ComponentEventBus;
+}
+
+export abstract class TabComponent {
+    protected gameEngine: GameEngine;
+    protected eventBus: ComponentEventBus;
     protected state: SceneState;
+    
     // タブコンポーネントの基本プロパティ
     protected isActive: boolean = false;
     protected isInitialized: boolean = false;
     
     // エラーハンドリング
-    protected errorHandler: any, // ErrorHandlerの型定義が必要
+    protected errorHandler: any; // ErrorHandlerの型定義が必要
     
     // アクセシビリティ設定
-    protected, accessibilitySettings: AccessibilitySettings;
+    protected accessibilitySettings: AccessibilitySettings;
+
     constructor(gameEngine: GameEngine, eventBus: ComponentEventBus, state: SceneState) {
         this.gameEngine = gameEngine;
-    this.eventBus = eventBus;
-    this.state = state;
+        this.eventBus = eventBus;
+        this.state = state;
         
         // エラーハンドリング
         this.errorHandler = gameEngine.errorHandler;
@@ -33,30 +39,35 @@ export interface AccessibilitySettings { highContrast: boolean,
         // アクセシビリティ設定
         this.accessibilitySettings = state.accessibilitySettings || {
             highContrast: false,
-    largeText: false,
-    reducedMotion: false,
-    reducedMotion: false;
+            largeText: false,
+            reducedMotion: false
         };
+    }
+
     /**
      * コンポーネントの初期化
      * 子クラスでオーバーライドして実装
      */
-    initialize(): void { this.isInitialized = true }
+    initialize(): void {
+        this.isInitialized = true;
+    }
     
     /**
      * タブがアクティブになった時の処理
      */
-    activate(): void { this.isActive = true;
+    activate(): void {
+        this.isActive = true;
         if (!this.isInitialized) {
-    
-}
-            this.initialize(); }
-}
+            this.initialize();
+        }
+    }
     
     /**
      * タブが非アクティブになった時の処理
      */
-    deactivate(): void { this.isActive = false }
+    deactivate(): void {
+        this.isActive = false;
+    }
     
     /**
      * レンダリング処理
@@ -75,21 +86,27 @@ export interface AccessibilitySettings { highContrast: boolean,
      * @param y - クリックY座標
      * @returns イベントが処理された場合true
      */
-    handleClick(x: number, y: number): boolean { return false }
+    handleClick(x: number, y: number): boolean {
+        return false;
+    }
     
     /**
      * 入力イベント処理
      * @param event - 入力イベント
      * @returns イベントが処理された場合true
      */
-    handleInput(event: Event): boolean { return false }
+    handleInput(event: Event): boolean {
+        return false;
+    }
     
     /**
      * フレーム更新処理
      * @param deltaTime - 前フレームからの経過時間（ミリ秒）
      */
-    update(deltaTime: number): void { // 基本実装では何もしない
-        // 必要に応じて子クラスでオーバーライド }
+    update(deltaTime: number): void {
+        // 基本実装では何もしない
+        // 必要に応じて子クラスでオーバーライド
+    }
     
     /**
      * エラー発生時のフォールバック描画
@@ -100,32 +117,38 @@ export interface AccessibilitySettings { highContrast: boolean,
      * @param height - 描画高さ
      * @param error - 発生したエラー
      */
-    protected renderErrorFallback(;
+    protected renderErrorFallback(
         context: CanvasRenderingContext2D,
-    x: number, ;
-        y: number, ;
-        width: number ),
+        x: number,
+        y: number,
+        width: number,
         height: number,
-    error: Error';'
-    '): void { // エラーメッセージを表示'
-        context.fillStyle = this.accessibilitySettings.highContrast ? '#FF0000' : '#FF6B6B,
+        error: Error
+    ): void {
+        // エラーメッセージを表示
+        context.fillStyle = this.accessibilitySettings.highContrast ? '#FF0000' : '#FF6B6B';
         context.fillRect(x, y, width, height);
-        context.fillStyle = this.accessibilitySettings.highContrast ? '#FFFFFF' : '#333333,
-        context.font = this.accessibilitySettings.largeText ? '18px sans-serif' : '16px sans-serif,
-        context.textAlign = 'center,
-        context.textBaseline = 'middle,
+        
+        context.fillStyle = this.accessibilitySettings.highContrast ? '#FFFFFF' : '#333333';
+        context.font = this.accessibilitySettings.largeText ? '18px sans-serif' : '16px sans-serif';
+        context.textAlign = 'center';
+        context.textBaseline = 'middle';
 
-        const errorText = 'コンポーネントの読み込みでエラーが発生しました,
+        const errorText = 'コンポーネントの読み込みでエラーが発生しました';
         context.fillText(errorText, x + width / 2, y + height / 2);
-        ','
+        
         // デバッグ情報（開発時のみ）
         if (this.gameEngine.debugMode) {
-
-            context.font = '12px monospace' }
-            context.fillText(error.message, x + width / 2, y + height / 2 + 30); }
-}
+            context.font = '12px monospace';
+            context.fillText(error.message, x + width / 2, y + height / 2 + 30);
+        }
+    }
     
     /**
-     * コンポーネントのクリーンアップ'
-     */''
-    cleanup();
+     * コンポーネントのクリーンアップ
+     */
+    cleanup(): void {
+        this.isActive = false;
+        this.isInitialized = false;
+    }
+}
