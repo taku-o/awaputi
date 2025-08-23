@@ -1,6 +1,9 @@
 // TypeScript conversion - basic types
-interface BasicConfig { [key: string]: any;
-    import { ErrorPreventionHandler  } from './error-recovery-manager/ErrorPreventionHandler.js';
+interface BasicConfig {
+    [key: string]: any;
+}
+
+import { ErrorPreventionHandler } from './error-recovery-manager/ErrorPreventionHandler.js';
 import { UndoRedoSystem  } from './error-recovery-manager/UndoRedoSystem.js';
 import { AutoSaveSystem  } from './error-recovery-manager/AutoSaveSystem.js';
 
@@ -12,11 +15,19 @@ import { AutoSaveSystem  } from './error-recovery-manager/AutoSaveSystem.js';
  */
 export class ErrorRecoveryManager {
     private config: BasicConfig;
-    private, state: any;
+    private gameEngine: any;
+    private isInitialized: boolean;
+    private errorTypes: any;
+    private statistics: any;
+    private history: any[];
+    private preventionHandler?: ErrorPreventionHandler;
+    private undoRedoSystem?: UndoRedoSystem;
+    private autoSaveSystem?: AutoSaveSystem;
+    private warningElement?: HTMLElement;
     /**
-     * ErrorRecoveryManagerを初期化 };
-     * @param {Object} gameEngine - ゲームエンジンインスタンス'
-     */''
+     * ErrorRecoveryManagerを初期化
+     * @param {Object} gameEngine - ゲームエンジンインスタンス
+     */
     constructor(gameEngine: any) {
         this.gameEngine = gameEngine;
         this.isInitialized = false;
@@ -28,154 +39,167 @@ export class ErrorRecoveryManager {
             preventionEnabled: true,
             recoveryEnabled: true,
             undoRedoEnabled: true,
-            warningEnabled: true;
+            warningEnabled: true,
             // エラー防止設定
-            prevention: { confirmCriticalActions: true  ,
+            prevention: {
+                confirmCriticalActions: true,
                 preventAccidentalClicks: true,
-    safetyDelays: { criticalAction: 1000  ,
-    destructiveAction: 2000 }
-                    gameReset: 3000 
-    };
-                warningThresholds: { lowHP: 2,
-                    lowScore: 50  ,
-    timeRunningOut: 10000 // 10秒 ,
-                doubleClickPrevention: 500 ,
+                safetyDelays: {
+                    criticalAction: 1000,
+                    destructiveAction: 2000,
+                    gameReset: 3000
+                },
+                warningThresholds: {
+                    lowHP: 2,
+                    lowScore: 50,
+                    timeRunningOut: 10000, // 10秒
+                    doubleClickPrevention: 500
+                }
+            },
             
             // エラー回復設定
-            recovery: { autoSave: true,
-    saveInterval: 30000, // 30秒  },
+            recovery: {
+                autoSave: true,
+                saveInterval: 30000, // 30秒
                 maxUndoSteps: 10,
                 maxRedoSteps: 10,
                 maxSavePoints: 5,
-    gracePeriod: 5000, // 5秒の猶予期間,
-                emergencyRestore: true,
+                gracePeriod: 5000, // 5秒の猶予期間
+                emergencyRestore: true
+            },
             // エラーメッセージ設定
-            messages: { showDetailed: true,
-                showSuggestions: true ,
-    showPreventionTips: true,
-                language: 'ja,
-                verbosity: 'detailed' // concise, detailed, verbose },
+            messages: {
+                showDetailed: true,
+                showSuggestions: true,
+                showPreventionTips: true,
+                language: 'ja',
+                verbosity: 'detailed' // concise, detailed, verbose
+            },
             
             // UI設定
-            ui: { ''
-                position: 'center', // center, top, bottom  },
-                animation: 'slide,
-    duration: 5000,
+            ui: {
+                position: 'center', // center, top, bottom
+                animation: 'slide',
+                duration: 5000,
                 persistent: false,
-                backgroundColor: '#f8f9fa,
+                backgroundColor: '#f8f9fa',
                 borderColor: '#dc3545'
             }
         };
         // エラータイプの定義
-        this.errorTypes = { // ゲームプレイエラー
+        this.errorTypes = {
+            // ゲームプレイエラー
             gameplay: {
-                missedBubble: {''
-                    name: 'バブルの取り逃し' ,
-                    severity: 'medium,
-    recoverable: false,
+                missedBubble: {
+                    name: 'バブルの取り逃し',
+                    severity: 'medium',
+                    recoverable: false,
                     preventable: true,
-                    message: 'バブルを取り逃しました,
-                    suggestion: 'もう少し早めにクリックしてみましょう,
+                    message: 'バブルを取り逃しました',
+                    suggestion: 'もう少し早めにクリックしてみましょう',
                     prevention: 'バブルの色が変わったらすぐにクリック'
-            };
-                wrongBubble: { ''
-                    name: '間違ったバブルをクリック' ,
-                    severity: 'low,
-    recoverable: false,
+                },
+                wrongBubble: {
+                    name: '間違ったバブルをクリック',
+                    severity: 'low',
+                    recoverable: false,
                     preventable: true,
-                    message: '意図しないバブルをクリックしました,
-                    suggestion: '狙いを定めてからクリックしましょう,
+                    message: '意図しないバブルをクリックしました',
+                    suggestion: '狙いを定めてからクリックしましょう',
                     prevention: 'マウスカーソルの位置を確認してからクリック'
-            };
-                poisonBubble: { ''
-                    name: 'ポイズンバブルをクリック' ,
-                    severity: 'high,
-    recoverable: false,
+                },
+                poisonBubble: {
+                    name: 'ポイズンバブルをクリック',
+                    severity: 'high',
+                    recoverable: false,
                     preventable: true,
-                    message: '危険なポイズンバブルをクリックしました,
-                    suggestion: 'ピンクバブルでHPを回復しましょう,
+                    message: '危険なポイズンバブルをクリックしました',
+                    suggestion: 'ピンクバブルでHPを回復しましょう',
                     prevention: '緑色のバブルは避けるようにしましょう'
-            };
-                comboBreak: { ''
-                    name: 'コンボが途切れた' ,
-                    severity: 'medium,
-    recoverable: false,
+                },
+                comboBreak: {
+                    name: 'コンボが途切れた',
+                    severity: 'medium',
+                    recoverable: false,
                     preventable: true,
-                    message: 'コンボが途切れました,
-                    suggestion: '次は連続してバブルをクリックしてみましょう,
+                    message: 'コンボが途切れました',
+                    suggestion: '次は連続してバブルをクリックしてみましょう',
                     prevention: 'ミスをしないよう慎重にプレイ'
-            }
-            };
+                }
+            },
             // UI/UXエラー
-            interface: { accidentalPause: {''
-                    name: '誤って一時停止,
-                    severity: 'low,
-    recoverable: true,
+            interface: {
+                accidentalPause: {
+                    name: '誤って一時停止',
+                    severity: 'low',
+                    recoverable: true,
                     preventable: true,
-                    message: 'ゲームが一時停止されました,
-                    suggestion: 'スペースキーまたは再生ボタンで再開,
+                    message: 'ゲームが一時停止されました',
+                    suggestion: 'スペースキーまたは再生ボタンで再開',
                     prevention: 'ポーズボタンの位置を確認'
-        }
-                accidentalReset: { ''
-                    name: '誤ってリセット' ,
-                    severity: 'high,
-    recoverable: true,
+                },
+                accidentalReset: {
+                    name: '誤ってリセット',
+                    severity: 'high',
+                    recoverable: true,
                     preventable: true,
-                    message: 'ゲームがリセットされました,
-                    suggestion: '前回のセーブから復元できます,
+                    message: 'ゲームがリセットされました',
+                    suggestion: '前回のセーブから復元できます',
                     prevention: 'リセット前に確認ダイアログを表示'
-            };
-                settingsChanged: { ''
-                    name: '意図しない設定変更' ,
-                    severity: 'medium,
-    recoverable: true,
+                },
+                settingsChanged: {
+                    name: '意図しない設定変更',
+                    severity: 'medium',
+                    recoverable: true,
                     preventable: true,
-                    message: '設定が変更されました,
-                    suggestion: '前の設定に戻すことができます,
+                    message: '設定が変更されました',
+                    suggestion: '前の設定に戻すことができます',
                     prevention: '設定変更時の確認'
-            };
-                menuNavigation: { ''
-                    name: 'メニューでの迷子' ,
-                    severity: 'low,
-    recoverable: true,
+                },
+                menuNavigation: {
+                    name: 'メニューでの迷子',
+                    severity: 'low',
+                    recoverable: true,
                     preventable: true,
-                    message: 'メニューで迷子になりました,
-                    suggestion: 'ホームボタンでメインメニューに戻れます,
+                    message: 'メニューで迷子になりました',
+                    suggestion: 'ホームボタンでメインメニューに戻れます',
                     prevention: 'パンくずナビゲーションの表示'
-            }
-            };
+                }
+            },
             // 入力エラー
-            input: { doubleClick: {''
-                    name: 'ダブルクリック,
-                    severity: 'low,
-    recoverable: false,
+            input: {
+                doubleClick: {
+                    name: 'ダブルクリック',
+                    severity: 'low',
+                    recoverable: false,
                     preventable: true,
-                    message: '同じバブルを二度クリックしました,
-                    suggestion: '一度のクリックで十分です,
+                    message: '同じバブルを二度クリックしました',
+                    suggestion: '一度のクリックで十分です',
                     prevention: 'クリック後少し待ってから次の操作'
-        }
-                rapidClicks: { ''
-                    name: '連打し過ぎ' ,
-                    severity: 'medium,
-    recoverable: false,
+                },
+                rapidClicks: {
+                    name: '連打し過ぎ',
+                    severity: 'medium',
+                    recoverable: false,
                     preventable: true,
-                    message: 'クリックが速すぎます,
-                    suggestion: 'もう少しゆっくりクリックしてみましょう,
+                    message: 'クリックが速すぎます',
+                    suggestion: 'もう少しゆっくりクリックしてみましょう',
                     prevention: 'クリック間隔を空ける'
-            };
-                misclick: { ''
-                    name: 'ミスクリック' ,
-                    severity: 'low,
-    recoverable: false,
+                },
+                misclick: {
+                    name: 'ミスクリック',
+                    severity: 'low',
+                    recoverable: false,
                     preventable: true,
-                    message: '意図しない場所をクリックしました,
-                    suggestion: '正確に狙ってクリックしましょう,
+                    message: '意図しない場所をクリックしました',
+                    suggestion: '正確に狙ってクリックしましょう',
                     prevention: 'マウス感度を調整'
-            }
-            };
+                }
+            },
             // システムエラー
-            system: { performanceDrop: {''
-                    name: 'パフォーマンス低下,
+            system: {
+                performanceDrop: {
+                    name: 'パフォーマンス低下',
                     severity: 'medium,
     recoverable: true,
                     preventable: true,
