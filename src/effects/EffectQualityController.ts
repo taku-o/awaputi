@@ -136,7 +136,7 @@ export class EffectQualityController {
     private currentQuality: QualityLevelType = 'high';
     private autoAdjustEnabled: boolean = true;
     private lastAdjustTime: number = 0;
-    private readonly adjustmentCooldown: number = 2000, // 2秒のクールダウン
+    private readonly adjustmentCooldown: number = 2000; // 2秒のクールダウン
     
     // パフォーマンス監視
     private frameRateHistory: number[] = [];
@@ -473,6 +473,7 @@ export class EffectQualityController {
             backgroundParticles: 0
         };
     }
+}
 
 // シングルトンインスタンスの作成と管理
 let effectQualityControllerInstance: EffectQualityController | null = null;

@@ -6,30 +6,33 @@ import { SeasonalEffectRenderer  } from './renderers/SeasonalEffectRenderer.js';
 import { getErrorHandler  } from '../utils/ErrorHandler.js';
 import { getEffectQualityController  } from './EffectQualityController.js';
 import { getEffectPerformanceMonitor  } from './EffectPerformanceMonitor.js';
-';'
 // サブコンポーネントのインポート
 import { ParticleRenderingEngine  } from './enhanced-particle-manager/ParticleRenderingEngine.js';
 import { ParticleQualityManager  } from './enhanced-particle-manager/ParticleQualityManager.js';
 import { ParticlePhysicsEngine  } from './enhanced-particle-manager/ParticlePhysicsEngine.js';
 
 // Type definitions for Enhanced Particle Manager
-interface Particle { x: number,
-    y: number,
-    vx: number,
-    vy: number,
-    size: number,
-    color: string,
-    alpha: number,
-    life: number,
-    maxLife: number,
-    type: string,
-    active: boolean,
-    gravityAffected: boolean,
-    hasTrail: boolean,
-    rotation: number,
-    rotationSpeed: number,
+interface Particle {
+    x: number;
+    y: number;
+    vx: number;
+    vy: number;
+    size: number;
+    color: string;
+    alpha: number;
+    life: number;
+    maxLife: number;
+    type: string;
+    active: boolean;
+    gravityAffected: boolean;
+    hasTrail: boolean;
+    rotation: number;
+    rotationSpeed: number;
     mass: number;
-    interface ParticleOptions { size?: number,
+}
+
+interface ParticleOptions {
+    size?: number;
     color?: string;
     alpha?: number;
     life?: number;
@@ -39,39 +42,66 @@ interface Particle { x: number,
     rotation?: number;
     rotationSpeed?: number;
     mass?: number;
-    interface QualitySettings { particleMultiplier: number,
-    sizeMultiplier: number,
-    colorComplexity: string,
-    physicsEnabled: boolean,
-    batchRenderingEnabled: boolean,
+}
+
+interface QualitySettings {
+    particleMultiplier: number;
+    sizeMultiplier: number;
+    colorComplexity: string;
+    physicsEnabled: boolean;
+    batchRenderingEnabled: boolean;
     aggressiveCullingEnabled: boolean;
-    interface OptimizationSettings { cullingMargin: number,
-    maxParticles: number,
+}
+
+interface OptimizationSettings {
+    cullingMargin: number;
+    maxParticles: number;
     performanceThreshold: number;
-    interface PerformanceMetrics { totalParticles: number,
-    backgroundParticles: number,
-    currentQuality: string,
+}
+
+interface PerformanceMetrics {
+    totalParticles: number;
+    backgroundParticles: number;
+    currentQuality: string;
     complexityLevel: string;
-    interface CurrentSettings { qualityLevel: string,
-    qualitySettings: QualitySettings,
-    optimizationSettings: OptimizationSettings,
-    backgroundEnabled: boolean,
-    backgroundDensity: number,
+}
+
+interface CurrentSettings {
+    qualityLevel: string;
+    qualitySettings: QualitySettings;
+    optimizationSettings: OptimizationSettings;
+    backgroundEnabled: boolean;
+    backgroundDensity: number;
     backgroundTheme: string;
-    type QualityLevel = 'low' | 'medium' | 'high' | 'ultra';
+}
+type QualityLevel = 'low' | 'medium' | 'high' | 'ultra';
 
 // External dependencies interfaces
-interface ErrorHandler { handleError(error: Error, context?: any): void;
-    interface EffectQualityController { getCurrentQualityLevel(): string;
-    interface EffectPerformanceMonitor { getCurrentFPS?(): number;
+interface ErrorHandler {
+    handleError(error: Error, context?: any): void;
+}
+
+interface EffectQualityController {
+    getCurrentQualityLevel(): string;
+}
+
+interface EffectPerformanceMonitor {
+    getCurrentFPS?(): number;
+}
 
 // Renderer interfaces
-interface EffectRenderer { render?(context: CanvasRenderingContext2D, deltaTime: number): void 
+interface EffectRenderer {
+    render?(context: CanvasRenderingContext2D, deltaTime: number): void;
+}
 // Sub-component interfaces
-interface ParticleRenderingEngineInterface { renderParticle(context: CanvasRenderingContext2D, particle: Particle): void;
+interface ParticleRenderingEngineInterface {
+    renderParticle(context: CanvasRenderingContext2D, particle: Particle): void;
     renderTrailParticle(context: CanvasRenderingContext2D, particle: Particle): void;
     enableBatchRendering(): void;
-    interface ParticleQualityManagerInterface { setQualityLevel(level: QualityLevel): void;
+}
+
+interface ParticleQualityManagerInterface {
+    setQualityLevel(level: QualityLevel): void;
     getCurrentQualityLevel(): QualityLevel;
     adjustParticleCount(baseCount: number): number;
     adjustParticleSize(baseSize: number): number;
@@ -84,17 +114,21 @@ interface ParticleRenderingEngineInterface { renderParticle(context: CanvasRende
     getOptimizationSettings(): OptimizationSettings;
     getComplexityLevel(): string;
     adjustQualityBasedOnPerformance(fps: number): void;
-    interface ParticlePhysicsEngineInterface { enableSmoothTransitions(enabled: boolean): void;
+}
+
+interface ParticlePhysicsEngineInterface {
+    enableSmoothTransitions(enabled: boolean): void;
     setTimingProfiles(profiles: any): void;
     enableBackground(enabled: boolean, density?: number, theme?: string): void;
     addMagneticField(x: number, y: number, strength: number, radius: number): void;
     setWindForce(x: number, y: number): void;
     updateBackgroundParticles(deltaTime: number, width: number, height: number): void;
     getBackgroundParticles(): Particle[];
-    backgroundEnabled: boolean,
-    backgroundDensity: number,
-    backgroundTheme: string,
+    backgroundEnabled: boolean;
+    backgroundDensity: number;
+    backgroundTheme: string;
     backgroundParticles: Particle[];
+}
 
 /**
  * 強化されたパーティクル管理クラス (Main, Controller Pattern)
@@ -103,10 +137,11 @@ interface ParticleRenderingEngineInterface { renderParticle(context: CanvasRende
  * Main Controller Pattern適用：
  * - ParticleRenderingEngine: レンダリング処理とパーティクル描画
  * - ParticleQualityManager: 品質制御と最適化設定管理
- * -, ParticlePhysicsEngine: 物理演算とアニメーション処理
+ * - ParticlePhysicsEngine: 物理演算とアニメーション処理
  * - 既存Renderer群: 泡・コンボ・特殊・季節限定効果
  */
-export class EnhancedParticleManager extends ParticleManager { // サブコンポーネント
+export class EnhancedParticleManager extends ParticleManager {
+    // サブコンポーネント
     private renderingEngine: ParticleRenderingEngineInterface;
     private qualityManager: ParticleQualityManagerInterface;
     private physicsEngine: ParticlePhysicsEngineInterface;
@@ -122,23 +157,23 @@ export class EnhancedParticleManager extends ParticleManager { // サブコン�
     private seasonalRenderer: EffectRenderer;
     // Particles array (from base class, but typed)
     protected particles: Particle[] = [];
+    
     constructor() {
-
         super();
         // サブコンポーネントの初期化
-        this.renderingEngine = new ParticleRenderingEngine(null as any, this) as ParticleRenderingEngineInterface,
+        this.renderingEngine = new ParticleRenderingEngine(null as any, this) as ParticleRenderingEngineInterface;
         this.qualityManager = new ParticleQualityManager() as any as ParticleQualityManagerInterface;
-    this.physicsEngine = new ParticlePhysicsEngine() as any as ParticlePhysicsEngineInterface;
+        this.physicsEngine = new ParticlePhysicsEngine() as any as ParticlePhysicsEngineInterface;
         
         // 外部依存システム
         this.qualityController = getEffectQualityController();
-    this.performanceMonitor = getEffectPerformanceMonitor();
+        this.performanceMonitor = getEffectPerformanceMonitor();
         
         // 既存エフェクトレンダラーの初期化
         this.bubbleRenderer = new BubbleEffectRenderer(this);
-    this.comboRenderer = new ComboEffectRenderer(this);
-    this.specialRenderer = new SpecialEffectRenderer(this);
-    this.seasonalRenderer = new SeasonalEffectRenderer(this);
+        this.comboRenderer = new ComboEffectRenderer(this);
+        this.specialRenderer = new SpecialEffectRenderer(this);
+        this.seasonalRenderer = new SeasonalEffectRenderer(this);
 
         console.log('[EnhancedParticleManager] Main Controller Pattern初期化完了');
     }
@@ -147,13 +182,21 @@ export class EnhancedParticleManager extends ParticleManager { // サブコン�
     // 品質管理API - Quality Managerにデリゲート
     // ========================================
     
-    setQualityLevel(level: QualityLevel): void { this.qualityManager.setQualityLevel(level);
+    setQualityLevel(level: QualityLevel): void {
+        this.qualityManager.setQualityLevel(level);
+    }
     
-    getCurrentQualityLevel(): QualityLevel { return this.qualityManager.getCurrentQualityLevel();
+    getCurrentQualityLevel(): QualityLevel {
+        return this.qualityManager.getCurrentQualityLevel();
+    }
     
-    adjustParticleCount(baseCount: number): number { return this.qualityManager.adjustParticleCount(baseCount);
+    adjustParticleCount(baseCount: number): number {
+        return this.qualityManager.adjustParticleCount(baseCount);
+    }
     
-    adjustParticleSize(baseSize: number): number { return this.qualityManager.adjustParticleSize(baseSize);
+    adjustParticleSize(baseSize: number): number {
+        return this.qualityManager.adjustParticleSize(baseSize);
+    }
     enableBatchRendering(): void {
         this.qualityManager.enableBatchRendering();
         this.renderingEngine.enableBatchRendering();
@@ -165,19 +208,22 @@ export class EnhancedParticleManager extends ParticleManager { // サブコン�
         console.log('[EnhancedParticleManager] アグレッシブカリングを有効化しました');
     }
     
-    setAggressiveCulling(enabled: boolean): void { if (enabled) {
+    setAggressiveCulling(enabled: boolean): void {
+        if (enabled) {
             this.qualityManager.enableAggressiveCulling();
-
-        } else { }'
-
+        } else {
             this.qualityManager.disableAggressiveCulling();
-
+        }
         console.log(`[EnhancedParticleManager] アグレッシブカリングを${enabled ? '有効化' : '無効化'}しました`);
     }
     
-    setColorPalettes(paletteName: string): void { this.qualityManager.setColorPalettes(paletteName);
+    setColorPalettes(paletteName: string): void {
+        this.qualityManager.setColorPalettes(paletteName);
+    }
     
-    setPhysicsEnhancements(enabled: boolean): void { this.qualityManager.setPhysicsEnhancements(enabled);
+    setPhysicsEnhancements(enabled: boolean): void {
+        this.qualityManager.setPhysicsEnhancements(enabled);
+    }
     
     getActiveParticleCount(): number {
         // ParticleManagerの基本メソッドを使用
@@ -203,27 +249,40 @@ export class EnhancedParticleManager extends ParticleManager { // サブコン�
         this.physicsEngine.enableBackground(enabled, density, theme);
     }
     
-    setBackgroundDensity(density: number): void { this.physicsEngine.enableBackground(true, density, this.physicsEngine.backgroundTheme);
+    setBackgroundDensity(density: number): void {
+        this.physicsEngine.enableBackground(true, density, this.physicsEngine.backgroundTheme);
+    }
     
-    setBackgroundTheme(theme: string): void { this.physicsEngine.enableBackground(true, this.physicsEngine.backgroundDensity, theme);
+    setBackgroundTheme(theme: string): void {
+        this.physicsEngine.enableBackground(true, this.physicsEngine.backgroundDensity, theme);
+    }
     
-    addMagneticField(x: number, y: number, strength: number, radius: number): void { this.physicsEngine.addMagneticField(x, y, strength, radius);
+    addMagneticField(x: number, y: number, strength: number, radius: number): void {
+        this.physicsEngine.addMagneticField(x, y, strength, radius);
+    }
     
-    setWindForce(x: number, y: number): void { this.physicsEngine.setWindForce(x, y);
+    setWindForce(x: number, y: number): void {
+        this.physicsEngine.setWindForce(x, y);
+    }
     
     // ========================================
     // レンダリングAPI - Rendering Engineにデリゲート
     // ========================================
     
-    renderParticle(context: CanvasRenderingContext2D, particle: Particle): void { this.renderingEngine.renderParticle(context, particle);
+    renderParticle(context: CanvasRenderingContext2D, particle: Particle): void {
+        this.renderingEngine.renderParticle(context, particle);
+    }
     
-    renderTrailParticle(context: CanvasRenderingContext2D, particle: Particle): void { this.renderingEngine.renderTrailParticle(context, particle);
+    renderTrailParticle(context: CanvasRenderingContext2D, particle: Particle): void {
+        this.renderingEngine.renderTrailParticle(context, particle);
+    }
     
     // ========================================
     // 統合レンダリング - Base class + サブコンポーネント
     // ========================================
     
-    render(context: CanvasRenderingContext2D, deltaTime: number): void { try {
+    render(context: CanvasRenderingContext2D, deltaTime: number): void {
+        try {
             // 基底クラスのレンダリング
             super.render(context, deltaTime);
             // 背景パーティクルの更新と描画
@@ -266,7 +325,6 @@ export class EnhancedParticleManager extends ParticleManager { // サブコン�
         try {
             let currentFPS = 60; // Default value
             if(this.performanceMonitor && typeof this.performanceMonitor.getCurrentFPS === 'function') {
-
                 currentFPS = this.performanceMonitor.getCurrentFPS();
             } else if (typeof window !== 'undefined' && window.performance && window.performance.now) {
                 // フォールバック: 簡易FPS計算
@@ -274,7 +332,6 @@ export class EnhancedParticleManager extends ParticleManager { // サブコン�
                 if (this.lastPerformanceCheck) {
                     const deltaTime = now - this.lastPerformanceCheck;
                     currentFPS = Math.min(60, 1000 / deltaTime);
-                }
                 }
                 this.lastPerformanceCheck = now;
             }
@@ -360,7 +417,6 @@ export class EnhancedParticleManager extends ParticleManager { // サブコン�
         // 実装詳細は品質管理システムに依存 
         console.log(`[EnhancedParticleManager] パーティクル倍率を${multiplier}に設定`);
     }
-    }
     
     /**
      * レンダリング頻度の設定
@@ -368,14 +424,12 @@ export class EnhancedParticleManager extends ParticleManager { // サブコン�
     setRenderFrequency?(frequency: number): void {
         console.log(`[EnhancedParticleManager] レンダリング頻度を${frequency}に設定`);
     }
-    }
     
     /**
      * カリングマージンの設定
      */
     setCullingMargin?(margin: number): void {
         console.log(`[EnhancedParticleManager] カリングマージンを${margin}に設定`);
-    }
     }
     
     /**

@@ -130,13 +130,15 @@ export class EffectPerformanceMonitor {
         particlesRendered: 0,
         effectsRendered: 0,
         drawCalls: 0,
-    lastResetTime: 0  };
+        lastResetTime: 0
+    };
     // カリング統計
     private cullingStats: CullingStats = {
         totalEffects: 0,
         culledEffects: 0,
         visibleEffects: 0,
-    offScreenEffects: 0 };
+        offScreenEffects: 0
+    };
     // パフォーマンス警告
     private readonly warningThresholds: WarningThresholds = {
         lowFrameRate: 30,
@@ -488,7 +490,7 @@ export class EffectPerformanceMonitor {
             
             // プールに戻す
             if (effect.poolable && effect.type && this.effectPools.has(effect.type)) {
-                this.effectPools.get(effect.type)!.push(effect); }
+                this.effectPools.get(effect.type)!.push(effect);
             }
             
             this.activeEffects.delete(effectId);
