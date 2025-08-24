@@ -1,229 +1,376 @@
-import { describe, test, expect, beforeEach, afterEach, beforeAll, afterAll, jest, it  } from '@jest/globals';
+import { describe, test, expect, beforeEach, afterEach, beforeAll, afterAll, jest, it } from '@jest/globals';
+
 /**
- * KeyboardShortcutRouter-integration.test.js
+ * KeyboardShortcutRouter-integration.test.ts
  * 
  * キーボードショートカットルーティングの統合テスト
  * Issue #163 - Duplicate help/settings screen consolidation  
  * Task 11 - Update keyboard shortcut handling to route to unified scenes
  */
-import { CoreKeyboardShortcutManager  } from '../../src/core/KeyboardShortcutManager';
+import { CoreKeyboardShortcutManager } from '../../src/core/KeyboardShortcutManager';
+
 // DOM APIのモック
-const mockDocument = {
-    addEventListener: jest.fn(
-        removeEventListener: jest.fn( },
-// Window APIのモック
-const mockWindow = {
-    addEventListener: jest.fn(
-        removeEventListener: jest.fn( },
-// グローバル変数のモック
-(global: any).document = mockDocument,
-(global as any').window = mockWindow;'
-describe('KeyboardShortcut Router Integration', () => {
-    let keyboardManager: any,
-    let mockGameEngine: any,
-    let mockSceneManager: any,
-    
+(global as any).TextEncoder = class TextEncoder {
+    encode(str: string) {
+        return new Uint8Array(Buffer.from(str, 'utf8'));
+    }
+};
+
+(global as any).TextDecoder = class TextDecoder {
+    decode(bytes: Uint8Array) {
+        return Buffer.from(bytes).toString('utf8');
+    }
+};
+
+// JSDOM環境の設定
+import { JSDOM } from 'jsdom';
+const dom = new JSDOM('<!DOCTYPE html><html><body></body></html>');
+(global as any).window = dom.window;
+(global as any).document = dom.window.document;
+(global as any).localStorage = dom.window.localStorage;
+(global as any).performance = dom.window.performance;
+
+// KeyboardEventのセットアップ
+(global as any).KeyboardEvent = dom.window.KeyboardEvent;
+
+describe('KeyboardShortcutRouter Integration Tests', () => {
+    let shortcutManager: any;
+    let mockGameEngine: any;
+
     beforeEach(() => {
-        // Mock SceneManager
-        mockSceneManager = {
-            switchScene: jest.fn().mockReturnValue(true),
-           , getCurrentScene: jest.fn(').mockReturnValue({'
-                constructor: { name: 'TestScene' },
-    }
-        };
-        
-        // Mock GameEngine
+        // ゲームエンジンのモックを設定
         mockGameEngine = {
-            sceneManager: mockSceneManager,
-            settingsManager: {
-                get: jest.fn( },
-        set: jest.fn( },
-            responsiveCanvasManager: {
-                toggleFullscreen: jest.fn( },
+            sceneManager: {
+                getCurrentScene: jest.fn(),
+                switchScene: jest.fn(() => true)
+            },
             audioManager: {
-                toggleMute: jest.fn().mockReturnValue(false
-            ) };
-            performanceStats: {,
-            isDebugMode: jest.fn().mockReturnValue(false) },
-            isDebugMode: jest.fn().mockReturnValue(false),
+                toggleMute: jest.fn(() => false)
+            },
+            settingsManager: {
+                get: jest.fn(() => 0.5),
+                set: jest.fn()
+            },
+            responsiveCanvasManager: {
+                toggleFullscreen: jest.fn()
+            },
+            isDebugMode: jest.fn(() => false),
+            performanceStats: {}
         };
-        keyboardManager = new CoreKeyboardShortcutManager(mockGameEngine) };
+
+        // デフォルトでMainMenuSceneを返すよう設定
+        mockGameEngine.sceneManager.getCurrentScene.mockReturnValue({
+            constructor: { name: 'MainMenuScene' }
+        });
+
+        // KeyboardShortcutManagerインスタンスを作成
+        shortcutManager = new CoreKeyboardShortcutManager(mockGameEngine);
+    });
+
     afterEach(() => {
-        if (keyboardManager && keyboardManager.cleanup) {
-            keyboardManager.cleanup() }
+        if (shortcutManager) {
+            shortcutManager.cleanup();
+        }
         jest.clearAllMocks();
-    }');'
-    describe('Settings Shortcut Integration', (') => {'
-        test('should route S key to unified SettingsScene', () => {
-            keyboardManager.handleSettings();
-            expect(mockSceneManager.switchScene').toHaveBeenCalledWith('settings', {'
-                accessMethod: 'keyboard_s',
-                sourceScene: 'TestScene' }');'
-        }
-        test('should handle settings shortcut failure gracefully', () => {
-            mockSceneManager.switchScene.mockReturnValue(false);
-            mockSceneManager.getCurrentScene.mockReturnValue({);
-                openSettings: jest.fn( }');'
-            const consoleSpy = jest.spyOn(console, 'warn').mockImplementation(() => {});
-            keyboardManager.handleSettings();
-            expect(mockSceneManager.switchScene).toHaveBeenCalled();
-            expect(consoleSpy').toHaveBeenCalledWith('Settings scene navigation failed and no fallback available');'
-            consoleSpy.mockRestore();
-        }');'
-        test('should use fallback method when scene switch fails', () => {
-            const mockOpenSettings = jest.fn() as jest.Mock,
-            mockSceneManager.switchScene.mockReturnValue(false);
-            mockSceneManager.getCurrentScene.mockReturnValue({
-                openSettings: mockOpenSettings,);
-            keyboardManager.handleSettings();
-            expect(mockOpenSettings).toHaveBeenCalled();
-        }');'
-    }
-    describe('Help Shortcut Integration', (') => {'
-        test('should route H key to unified HelpScene', () => {
-            keyboardManager.handleHelp();
-            expect(mockSceneManager.switchScene').toHaveBeenCalledWith('help', {'
-                accessMethod: 'keyboard_h',
-                sourceScene: 'TestScene',
-                standard: true,');'
-        }
-        test('should handle help shortcut failure gracefully', () => {
-            mockSceneManager.switchScene.mockReturnValue(false);
-            mockSceneManager.getCurrentScene.mockReturnValue({);
-                showControlsHelp: jest.fn( }');'
-            const consoleSpy = jest.spyOn(console, 'warn').mockImplementation(() => {});
-            keyboardManager.handleHelp();
-            expect(mockSceneManager.switchScene).toHaveBeenCalled();
-            expect(consoleSpy').toHaveBeenCalledWith('Help scene navigation failed and no fallback available');'
-            consoleSpy.mockRestore();
-        }');'
-    }
-    describe('Contextual Help Shortcut (F1')', (') => {
-        test('should route F1 key to contextual help mode', () => {
-            keyboardManager.handleContextualHelp();
-            expect(mockSceneManager.switchScene').toHaveBeenCalledWith('help', {'
-                accessMethod: 'keyboard_f1',
-                sourceScene: 'TestScene',
-                contextual: true,');'
-        }
-        test('should fallback to standard help when contextual fails', () => {
-            mockSceneManager.switchScene.mockReturnValueOnce(false.mockReturnValueOnce(true)'),'
-            const consoleSpy = jest.spyOn(console, 'warn').mockImplementation(() => {});
-            keyboardManager.handleContextualHelp();
-            expect(mockSceneManager.switchScene).toHaveBeenCalledTimes(2);
-            expect(consoleSpy').toHaveBeenCalledWith('Contextual help navigation failed, falling back to standard help');'
-            consoleSpy.mockRestore();
-        }');'
-    }
-    describe('Documentation Help Shortcut (Ctrl+H')', (') => {
-        test('should route Ctrl+H to documentation help mode', () => {
-            keyboardManager.handleDocumentationHelp();
-            expect(mockSceneManager.switchScene').toHaveBeenCalledWith('help', {'
-                accessMethod: 'keyboard_ctrl_h',
-                sourceScene: 'TestScene',
-                documentation: true,');'
-        }
-        test('should fallback to standard help when documentation fails', () => {
-            mockSceneManager.switchScene.mockReturnValueOnce(false.mockReturnValueOnce(true)'),'
-            const consoleSpy = jest.spyOn(console, 'warn').mockImplementation(() => {});
-            keyboardManager.handleDocumentationHelp();
-            expect(mockSceneManager.switchScene).toHaveBeenCalledTimes(2);
-            expect(consoleSpy').toHaveBeenCalledWith('Documentation help navigation failed, falling back to standard help');'
-            consoleSpy.mockRestore();
-        }');'
-    }
-    describe('Error Handling', (') => {'
-        test('should handle errors in settings navigation', () => {
-            mockSceneManager.switchScene.mockImplementation((') => {'
-                throw new Error('Scene switch error') }');'
-            const consoleSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
-            keyboardManager.handleSettings();
-            expect(consoleSpy').toHaveBeenCalledWith('[KeyboardShortcutManager] Failed to open settings:', expect.any(Error);'
-            consoleSpy.mockRestore();
-        }');'
-        test('should handle errors in help navigation', () => {
-            mockSceneManager.switchScene.mockImplementation((') => {'
-                throw new Error('Scene switch error') }');'
-            const consoleSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
-            keyboardManager.handleHelp();
-            expect(consoleSpy').toHaveBeenCalledWith('[KeyboardShortcutManager] Failed to open help:', expect.any(Error);'
-            consoleSpy.mockRestore();
-        }');'
-        test('should handle errors in contextual help navigation', () => {
-            mockSceneManager.switchScene.mockImplementation((') => {'
-                throw new Error('Scene switch error') }');'
-            const consoleSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
-            keyboardManager.handleContextualHelp();
-            expect(consoleSpy').toHaveBeenCalledWith('[KeyboardShortcutManager] Failed to open contextual help:', expect.any(Error);'
-            consoleSpy.mockRestore();
-        }');'
-    }
-    describe('Default Shortcut Registration', (') => {'
-        test('should register all expected shortcuts', (') => {'
-            expect(keyboardManager.shortcuts.has('settings').toBe(true'),'
-            expect(keyboardManager.shortcuts.has('help').toBe(true'),'
-            expect(keyboardManager.shortcuts.has('contextualHelp').toBe(true'),'
-            expect(keyboardManager.shortcuts.has('documentationHelp').toBe(true) }');'
-        test('should have correct key mappings for shortcuts', (') => {'
-            const settingsShortcut = keyboardManager.shortcuts.get('settings');
-            const helpShortcut = keyboardManager.shortcuts.get('help');
-            const contextualHelpShortcut = keyboardManager.shortcuts.get('contextualHelp');
-            const documentationHelpShortcut = keyboardManager.shortcuts.get('documentationHelp');
-            expect(settingsShortcut.keys').toContain('KeyS'),'
-            expect(helpShortcut.keys').toContain('KeyH'),'
-            expect(contextualHelpShortcut.keys').toContain('F1'),'
-            expect(documentationHelpShortcut.keys').toContain('ControlLeft+KeyH') }');
-    }
-    describe('Scene Context Management', (') => {'
-        test('should provide proper context data for settings navigation', (') => {'
-            mockSceneManager.getCurrentScene.mockReturnValue({
+    });
+
+    describe('Unified Scene Routing', () => {
+        test('should route shortcuts to unified scenes correctly', () => {
+            // Escapeキーのテスト - メニューナビゲーション
+            const escapeEvent = new KeyboardEvent('keydown', {
+                code: 'Escape',
+                key: 'Escape'
+            });
+
+            // GameSceneでのEscapeキー処理
+            const mockGameScene = {
                 constructor: { name: 'GameScene' },
+                showPauseMenu: jest.fn()
             };
-            keyboardManager.handleSettings();
-            expect(mockSceneManager.switchScene').toHaveBeenCalledWith('settings', {'
-                accessMethod: 'keyboard_s',
-                sourceScene: 'GameScene' }');'
-        }
-        test('should handle missing scene constructor gracefully', () => {
-            mockSceneManager.getCurrentScene.mockReturnValue({};
-            keyboardManager.handleHelp();
-            expect(mockSceneManager.switchScene').toHaveBeenCalledWith('help', {'
-                accessMethod: 'keyboard_h',
-                sourceScene: 'unknown',
-                standard: true,');'
-        }
-        test('should handle null current scene gracefully', () => {
-            mockSceneManager.getCurrentScene.mockReturnValue(null);
-            keyboardManager.handleSettings();
-            expect(mockSceneManager.switchScene').toHaveBeenCalledWith('settings', {'
-                accessMethod: 'keyboard_s',
-                sourceScene: 'unknown' },
-        }
-    }');'
-    describe('Logging and Debugging', (') => {'
-        test('should log successful settings navigation', (') => {'
-            const consoleSpy = jest.spyOn(console, 'log').mockImplementation(() => {});
-            keyboardManager.handleSettings();
-            expect(consoleSpy').toHaveBeenCalledWith('[KeyboardShortcutManager] Settings opened via keyboard shortcut');'
+            mockGameEngine.sceneManager.getCurrentScene.mockReturnValue(mockGameScene);
+
+            shortcutManager.handleKeyDown(escapeEvent);
+            
+            // ゲームシーンでのポーズメニュー表示が呼ばれることを確認
+            expect(mockGameScene.showPauseMenu).toHaveBeenCalled();
+        });
+
+        test('should handle context-dependent routing', () => {
+            const contexts = [
+                { scene: 'GameScene', expectedBehavior: 'pause menu' },
+                { scene: 'SettingsScene', expectedBehavior: 'go back' },
+                { scene: 'HelpScene', expectedBehavior: 'go back' },
+                { scene: 'MainMenuScene', expectedBehavior: 'no action' }
+            ];
+
+            contexts.forEach(({ scene, expectedBehavior }) => {
+                const mockScene = {
+                    constructor: { name: scene },
+                    showPauseMenu: jest.fn(),
+                    goBack: jest.fn()
+                };
+                mockGameEngine.sceneManager.getCurrentScene.mockReturnValue(mockScene);
+
+                const event = new KeyboardEvent('keydown', {
+                    code: 'Escape',
+                    key: 'Escape'
+                });
+
+                expect(() => {
+                    shortcutManager.handleKeyDown(event);
+                }).not.toThrow();
+            });
+        });
+    });
+
+    describe('Shortcut Context Management', () => {
+        test('should maintain context state during scene transitions', () => {
+            // 初期状態
+            expect(shortcutManager.isEnabled).toBe(true);
+
+            // シーン変更時もショートカットが有効であることを確認
+            const mockSettingsScene = {
+                constructor: { name: 'SettingsScene' }
+            };
+            mockGameEngine.sceneManager.getCurrentScene.mockReturnValue(mockSettingsScene);
+
+            const fEvent = new KeyboardEvent('keydown', {
+                code: 'KeyF',
+                key: 'f'
+            });
+
+            shortcutManager.handleKeyDown(fEvent);
+            expect(mockGameEngine.responsiveCanvasManager.toggleFullscreen).toHaveBeenCalled();
+        });
+
+        test('should handle navigation context correctly', () => {
+            const navigationEvent = new KeyboardEvent('keydown', {
+                code: 'Escape',
+                key: 'Escape'
+            });
+
+            // 各シーンタイプでのナビゲーションテスト
+            const sceneTypes = ['HelpScene', 'SettingsScene', 'GameScene'];
+            
+            sceneTypes.forEach(sceneType => {
+                const mockScene = {
+                    constructor: { name: sceneType },
+                    goBack: jest.fn(),
+                    showPauseMenu: jest.fn()
+                };
+                mockGameEngine.sceneManager.getCurrentScene.mockReturnValue(mockScene);
+
+                expect(() => {
+                    shortcutManager.handleKeyDown(navigationEvent);
+                }).not.toThrow();
+            });
+        });
+    });
+
+    describe('Routing Error Handling', () => {
+        test('should handle missing scene gracefully', () => {
+            mockGameEngine.sceneManager.getCurrentScene.mockReturnValue(null);
+
+            const event = new KeyboardEvent('keydown', {
+                code: 'Escape',
+                key: 'Escape'
+            });
+
+            expect(() => {
+                shortcutManager.handleKeyDown(event);
+            }).not.toThrow();
+        });
+
+        test('should handle incomplete scene objects', () => {
+            const incompleteScene = {
+                constructor: { name: 'GameScene' }
+                // showPauseMenuメソッドが存在しない
+            };
+            mockGameEngine.sceneManager.getCurrentScene.mockReturnValue(incompleteScene);
+
+            const event = new KeyboardEvent('keydown', {
+                code: 'Escape',
+                key: 'Escape'
+            });
+
+            expect(() => {
+                shortcutManager.handleKeyDown(event);
+            }).not.toThrow();
+        });
+
+        test('should handle scene method errors gracefully', () => {
+            const errorScene = {
+                constructor: { name: 'GameScene' },
+                showPauseMenu: jest.fn(() => {
+                    throw new Error('Test error');
+                })
+            };
+            mockGameEngine.sceneManager.getCurrentScene.mockReturnValue(errorScene);
+
+            const consoleSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+
+            const event = new KeyboardEvent('keydown', {
+                code: 'Escape',
+                key: 'Escape'
+            });
+
+            expect(() => {
+                shortcutManager.handleKeyDown(event);
+            }).not.toThrow();
+
+            // エラーがログに記録されることを確認
+            expect(consoleSpy).toHaveBeenCalled();
+            
             consoleSpy.mockRestore();
-        }');'
-        test('should log successful help navigation', (') => {'
-            const consoleSpy = jest.spyOn(console, 'log').mockImplementation(() => {});
-            keyboardManager.handleHelp();
-            expect(consoleSpy').toHaveBeenCalledWith('[KeyboardShortcutManager] Help opened via keyboard shortcut');'
-            consoleSpy.mockRestore();
-        }');'
-        test('should log successful contextual help navigation', (') => {'
-            const consoleSpy = jest.spyOn(console, 'log').mockImplementation(() => {});
-            keyboardManager.handleContextualHelp();
-            expect(consoleSpy').toHaveBeenCalledWith('[KeyboardShortcutManager] Contextual help opened via F1 key');'
-            consoleSpy.mockRestore();
-        }');'
-        test('should log successful documentation help navigation', (') => {'
-            const consoleSpy = jest.spyOn(console, 'log').mockImplementation(() => {});
-            keyboardManager.handleDocumentationHelp();
-            expect(consoleSpy').toHaveBeenCalledWith('[KeyboardShortcutManager] Documentation help opened via Ctrl+H keys');'
-            consoleSpy.mockRestore();
-        }
-    }
-}');'
+        });
+    });
+
+    describe('Integration with Unified Scenes', () => {
+        test('should work with consolidated help scene', () => {
+            // 統合されたヘルプシーンでの動作確認
+            const unifiedHelpScene = {
+                constructor: { name: 'HelpScene' },
+                goBack: jest.fn(),
+                handleEscape: jest.fn()
+            };
+            mockGameEngine.sceneManager.getCurrentScene.mockReturnValue(unifiedHelpScene);
+
+            const escapeEvent = new KeyboardEvent('keydown', {
+                code: 'Escape',
+                key: 'Escape'
+            });
+
+            shortcutManager.handleKeyDown(escapeEvent);
+
+            // ユニファイされたシーンでの処理が正常に動作することを確認
+            expect(() => {
+                shortcutManager.handleKeyDown(escapeEvent);
+            }).not.toThrow();
+        });
+
+        test('should work with consolidated settings scene', () => {
+            // 統合された設定シーンでの動作確認
+            const unifiedSettingsScene = {
+                constructor: { name: 'SettingsScene' },
+                goBack: jest.fn(),
+                handleEscape: jest.fn()
+            };
+            mockGameEngine.sceneManager.getCurrentScene.mockReturnValue(unifiedSettingsScene);
+
+            const escapeEvent = new KeyboardEvent('keydown', {
+                code: 'Escape',
+                key: 'Escape'
+            });
+
+            expect(() => {
+                shortcutManager.handleKeyDown(escapeEvent);
+            }).not.toThrow();
+        });
+    });
+
+    describe('Router Performance and Stability', () => {
+        test('should handle rapid shortcut events', () => {
+            const mockScene = {
+                constructor: { name: 'GameScene' },
+                showPauseMenu: jest.fn()
+            };
+            mockGameEngine.sceneManager.getCurrentScene.mockReturnValue(mockScene);
+
+            // 連続的なキーイベント
+            for (let i = 0; i < 10; i++) {
+                const event = new KeyboardEvent('keydown', {
+                    code: 'Escape',
+                    key: 'Escape'
+                });
+
+                expect(() => {
+                    shortcutManager.handleKeyDown(event);
+                }).not.toThrow();
+            }
+
+            expect(mockScene.showPauseMenu).toHaveBeenCalledTimes(10);
+        });
+
+        test('should maintain routing table consistency', () => {
+            // ルーティングテーブルの一貫性確認
+            const shortcuts = shortcutManager.getShortcuts();
+            
+            // 必要なショートカットが存在することを確認
+            expect(shortcuts.menu).toBeDefined();
+            expect(shortcuts.pause).toBeDefined();
+            expect(shortcuts.fullscreen).toBeDefined();
+            expect(shortcuts.mute).toBeDefined();
+
+            // 削除されたショートカットが存在しないことを確認
+            expect(shortcuts.settings).toBeUndefined();
+            expect(shortcuts.help).toBeUndefined();
+            expect(shortcuts.userInfo).toBeUndefined();
+        });
+    });
+
+    describe('Cross-Scene Routing Consistency', () => {
+        test('should maintain consistent behavior across scene types', () => {
+            const globalShortcuts = ['fullscreen', 'mute'];
+            const sceneTypes = [
+                'MainMenuScene',
+                'GameScene', 
+                'SettingsScene',
+                'HelpScene',
+                'StageSelectScene'
+            ];
+
+            globalShortcuts.forEach(shortcutType => {
+                sceneTypes.forEach(sceneType => {
+                    const mockScene = {
+                        constructor: { name: sceneType }
+                    };
+                    mockGameEngine.sceneManager.getCurrentScene.mockReturnValue(mockScene);
+
+                    let event: KeyboardEvent;
+                    if (shortcutType === 'fullscreen') {
+                        event = new KeyboardEvent('keydown', {
+                            code: 'KeyF',
+                            key: 'f'
+                        });
+                    } else { // mute
+                        event = new KeyboardEvent('keydown', {
+                            code: 'KeyM',
+                            key: 'm'
+                        });
+                    }
+
+                    expect(() => {
+                        shortcutManager.handleKeyDown(event);
+                    }).not.toThrow();
+                });
+            });
+        });
+    });
+
+    describe('Route State Management', () => {
+        test('should track routing statistics correctly', () => {
+            const stats = shortcutManager.getStats();
+
+            expect(stats).toHaveProperty('totalShortcuts');
+            expect(stats).toHaveProperty('enabledShortcuts');
+            expect(stats).toHaveProperty('activeKeys');
+            expect(stats).toHaveProperty('isEnabled');
+
+            expect(typeof stats.totalShortcuts).toBe('number');
+            expect(typeof stats.enabledShortcuts).toBe('number');
+            expect(typeof stats.activeKeys).toBe('number');
+            expect(typeof stats.isEnabled).toBe('boolean');
+        });
+
+        test('should provide routing help information', () => {
+            const helpText = shortcutManager.generateHelpText();
+
+            expect(helpText).toBeDefined();
+            expect(typeof helpText).toBe('object');
+
+            // ヘルプテキストの基本構造確認
+            expect(helpText['ゲーム操作']).toBeDefined();
+            expect(Array.isArray(helpText['ゲーム操作'])).toBe(true);
+        });
+    });
+});

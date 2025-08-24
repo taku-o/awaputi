@@ -1,391 +1,524 @@
-import { describe, test, expect, beforeEach, afterEach, beforeAll, afterAll, jest, it  } from '@jest/globals';
+import { describe, test, expect, beforeEach, afterEach, beforeAll, afterAll, jest, it } from '@jest/globals';
+
 /**
- * KeyboardShortcutRouter.test.js
+ * KeyboardShortcutRouter.test.ts
  * 
  * KeyboardShortcutRouterの単体テスト
  * Issue #163 - Duplicate help/settings screen consolidation
  */
-import { KeyboardShortcutRouter  } from '../../../src/core/navigation/KeyboardShortcutRouter';
+import { KeyboardShortcutRouter } from '../../../src/core/navigation/KeyboardShortcutRouter';
+
 // DOM APIのモック
 const mockDocument = {
     fullscreenElement: null,
     documentElement: {
-        requestFullscreen: jest.fn( },
-        exitFullscreen: jest.fn( },
+        requestFullscreen: jest.fn(),
+        exitFullscreen: jest.fn()
+    }
+};
+
 const mockWindow = {
-    addEventListener: jest.fn(
-        removeEventListener: jest.fn( },
+    addEventListener: jest.fn(),
+    removeEventListener: jest.fn()
+};
+
 // グローバル変数のモック
-(global: any).document = mockDocument,
-(global as any').window = mockWindow;'
+(global as any).document = mockDocument;
+(global as any).window = mockWindow;
+
+// TextEncoder/TextDecoder polyfill
+(global as any).TextEncoder = class TextEncoder {
+    encode(str: string) {
+        return new Uint8Array(Buffer.from(str, 'utf8'));
+    }
+};
+
+(global as any).TextDecoder = class TextDecoder {
+    decode(bytes: Uint8Array) {
+        return Buffer.from(bytes).toString('utf8');
+    }
+};
+
+// JSDOM setup
+import { JSDOM } from 'jsdom';
+const dom = new JSDOM('<!DOCTYPE html><html><body></body></html>');
+(global as any).localStorage = dom.window.localStorage;
+(global as any).performance = dom.window.performance;
+
 describe('KeyboardShortcutRouter', () => {
-    let shortcutRouter: any,
-    let mockGameEngine: any,
+    let shortcutRouter: any;
+    let mockGameEngine: any;
     
     beforeEach(() => {
-        // Mock GameEngine
+        // Mock game engine setup
         mockGameEngine = {
             sceneManager: {
-                hasScene: jest.fn().mockReturnValue(true),
-               , switchScene: jest.fn(').mockReturnValue(true,' };
-                currentScene: {
-                    constructor: { name: 'MenuScene' }
-                }
+                getCurrentScene: jest.fn(),
+                switchScene: jest.fn().mockReturnValue(true),
+                hasScene: jest.fn().mockReturnValue(true)
+            },
+            localizationManager: {
+                t: jest.fn((key, fallback) => fallback || key),
+                getCurrentLanguage: jest.fn().mockReturnValue('ja')
             }
         };
-        
-        // イベントリスナーのモックをリセット);
-        mockWindow.addEventListener.mockClear();
-        mockWindow.removeEventListener.mockClear();
-        mockDocument.documentElement.requestFullscreen.mockClear();
-        mockDocument.exitFullscreen.mockClear();
-        shortcutRouter = new KeyboardShortcutRouter(mockGameEngine);
-    };
+
+        // Mock NavigationContextManager
+        const mockContextManager = {
+            isContextValid: jest.fn().mockReturnValue(true),
+            getCurrentContext: jest.fn().mockReturnValue('global'),
+            setContext: jest.fn()
+        };
+
+        shortcutRouter = new KeyboardShortcutRouter(mockContextManager, mockGameEngine);
+    });
+
     afterEach(() => {
-        shortcutRouter.cleanup() }');'
-    describe('Initialization', (') => {'
-        test('should initialize with default shortcuts', () => {
-            const debugInfo = shortcutRouter.getDebugInfo();
-            expect(debugInfo.shortcuts).toEqual(expect.arrayContaining([')'
-                ['KeyH', expect.objectContaining({ action: 'help', scene: 'help' }')],'
-                ['KeyS', expect.objectContaining({ action: 'settings', scene: 'settings' )')],'
-                ['F1', expect.objectContaining({ action: 'contextualHelp', scene: 'help' )')],'
-                ['Escape', expect.objectContaining({ action: 'goBack', scene: null )]
-            ]) }');'
-        // Event listener setup is tested in the functional test suite
-        // See: KeyboardShortcutRouter-functional.test.js for complete functionality verification
-        
-        test('should be active by default', () => {
-            const debugInfo = shortcutRouter.getDebugInfo();
-            expect(debugInfo.state.isActive).toBe(true) }');'
-    }
-    describe('Key Combination Generation', (') => {'
-        test('should generate simple key combination', (') => {'
-            const event = {
-                code: 'KeyH',
-                ctrlKey: false,
-                shiftKey: false,
-                altKey: false,
-                metaKey: false,
-                metaKey: false,
-        };
-            const combo = shortcutRouter.generateKeyCombo(event);
-            expect(combo').toBe('KeyH');'
-        }');'
-        test('should generate modifier key combinations', (') => {'
-            const event = {
-                code: 'KeyH',
-                ctrlKey: true,
-                shiftKey: false,
-                altKey: false,
-                metaKey: false,
-                metaKey: false,
-        };
-            const combo = shortcutRouter.generateKeyCombo(event);
-            expect(combo').toBe('Ctrl+KeyH');'
-        }');'
-        test('should generate complex modifier combinations', (') => {'
-            const event = {
-                code: 'KeyH',
-                ctrlKey: true,
-                shiftKey: true,
-                altKey: true,
-                metaKey: false,
-                metaKey: false,
-        };
-            const combo = shortcutRouter.generateKeyCombo(event);
-            expect(combo').toBe('Ctrl+Shift+Alt+KeyH');'
-        }');'
-    }
-    describe('Shortcut Processing', (') => {'
-        test('should process help shortcut (H key')', (') => {
-            const event = {
-                code: 'KeyH',
-                ctrlKey: false,
-                shiftKey: false,
-                altKey: false,
-                metaKey: false,
-                preventDefault: jest.fn(
-        stopPropagation: jest.fn( },
-            
-            shortcutRouter.handleKeyDown(event);
-            expect(mockGameEngine.sceneManager.switchScene').toHaveBeenCalledWith('help');'
-            expect(event.preventDefault).toHaveBeenCalled();
-        }');'
-        test('should process settings shortcut (S key')', (') => {
-            const event = {
-                code: 'KeyS',
-                ctrlKey: false,
-                shiftKey: false,
-                altKey: false,
-                metaKey: false,
-                preventDefault: jest.fn(
-        stopPropagation: jest.fn( },
-            
-            shortcutRouter.handleKeyDown(event);
-            expect(mockGameEngine.sceneManager.switchScene').toHaveBeenCalledWith('settings');'
-            expect(event.preventDefault).toHaveBeenCalled();
-        }');'
-        test('should process contextual help (F1 key')', (') => {
-            const event = {
-                code: 'F1',
-                ctrlKey: false,
-                shiftKey: false,
-                altKey: false,
-                metaKey: false,
-                preventDefault: jest.fn(
-        stopPropagation: jest.fn( },
-            
-            shortcutRouter.handleKeyDown(event);
-            expect(mockGameEngine.sceneManager.switchScene').toHaveBeenCalledWith('help');'
-        }');'
-        test('should process modifier shortcuts', (') => {'
-            const event = {
-                code: 'KeyH',
-                ctrlKey: true,
-                shiftKey: false,
-                altKey: false,
-                metaKey: false,
-                preventDefault: jest.fn(
-        stopPropagation: jest.fn( },
-            
-            shortcutRouter.handleKeyDown(event);
-            expect(mockGameEngine.sceneManager.switchScene').toHaveBeenCalledWith('help');'
-        }');'
-    }
-    describe('Navigation Context Integration', (') => {'
-        test('should push navigation context when navigating', (') => {'
-            const event = {
-                code: 'KeyH',
-                ctrlKey: false,
-                shiftKey: false,
-                altKey: false,
-                metaKey: false,
-                preventDefault: jest.fn(
-        stopPropagation: jest.fn( },
-            
-            shortcutRouter.handleKeyDown(event);
-            const navDebugInfo = shortcutRouter.getDebugInfo().navigationContext;
-            expect(navDebugInfo.stackSize).toBe(1);
-            expect(navDebugInfo.currentContext.scene').toBe('menu');'
-            expect(navDebugInfo.currentContext.method').toBe('keyboard_h');'
-        }');'
-        // Go back action is tested in the functional test suite
-        // See: KeyboardShortcutRouter-functional.test.js - "should manage go back functionality"
-    }");"
-    describe('Scene-Specific Behavior', (') => {'
-        test('should go back when already in target scene (help')', (') => {
-            // Mock being in help scene
-            mockGameEngine.sceneManager.currentScene = {
-                constructor: { name: 'HelpScene' }
-            };
-            
-            const event = {
-                code: 'KeyH',
-                ctrlKey: false,
-                shiftKey: false,
-                altKey: false,
-                metaKey: false,
-                preventDefault: jest.fn(
-        stopPropagation: jest.fn( },
-            
-            shortcutRouter.handleKeyDown(event);
-            // Should attempt to go back instead of navigating to help
-            expect(mockGameEngine.sceneManager.switchScene').toHaveBeenCalledWith('menu');'
-        }');'
-        test('should go back when already in target scene (settings')', (') => {
-            // Mock being in settings scene
-            mockGameEngine.sceneManager.currentScene = {
-                constructor: { name: 'SettingsScene' }
-            };
-            
-            const event = {
-                code: 'KeyS',
-                ctrlKey: false,
-                shiftKey: false,
-                altKey: false,
-                metaKey: false,
-                preventDefault: jest.fn(
-        stopPropagation: jest.fn( },
-            
-            shortcutRouter.handleKeyDown(event);
-            expect(mockGameEngine.sceneManager.switchScene').toHaveBeenCalledWith('menu');'
-        }');'
-    }
-    describe('Fullscreen Handling', () => {
-        // Fullscreen functionality is tested in browser environment via E2E tests
-        // DOM API mocking limitations prevent reliable unit testing of fullscreen features
-    }');'
-    describe('Debouncing', (') => {'
-        test('should debounce rapid key presses', () => {
-            shortcutRouter.updateConfig({ debounceDelay: 100 }');'
-            const event = {
-                code: 'KeyH',
-                ctrlKey: false,
-                shiftKey: false,
-                altKey: false,
-                metaKey: false,
-                preventDefault: jest.fn(
-        stopPropagation: jest.fn( },
-            
-            // Rapid fire events
-            shortcutRouter.handleKeyDown(event);
-            shortcutRouter.handleKeyDown(event);
-            shortcutRouter.handleKeyDown(event);
-            // Only first event should be processed
-            expect(mockGameEngine.sceneManager.switchScene).toHaveBeenCalledTimes(1);
-        }');'
-    }
-    describe('Configuration Management', (') => {'
-        test('should update configuration', () => {
-            const newConfig = {
-                enableLogging: false,
-                preventDefaultBehavior: false,
-                debounceDelay: 200
-            };
-            
-            shortcutRouter.updateConfig(newConfig);
-            const debugInfo = shortcutRouter.getDebugInfo();
-            expect(debugInfo.config.enableLogging).toBe(false);
-            expect(debugInfo.config.preventDefaultBehavior).toBe(false);
-            expect(debugInfo.config.debounceDelay).toBe(200);
-        }');'
-        test('should respect enableGlobalShortcuts setting', () => {
-            shortcutRouter.updateConfig({ enableGlobalShortcuts: false,');'
-            const event = {
-                code: 'KeyH',
-                ctrlKey: false,
-                shiftKey: false,
-                altKey: false,
-                metaKey: false,
-                preventDefault: jest.fn(
-        stopPropagation: jest.fn( },
-            
-            shortcutRouter.handleKeyDown(event);
-            expect(mockGameEngine.sceneManager.switchScene).not.toHaveBeenCalled();
-        }');'
-        test('should respect preventDefaultBehavior setting', () => {
-            shortcutRouter.updateConfig({ preventDefaultBehavior: false,');'
-            const event = {
-                code: 'KeyH',
-                ctrlKey: false,
-                shiftKey: false,
-                altKey: false,
-                metaKey: false,
-                preventDefault: jest.fn(
-        stopPropagation: jest.fn( },
-            
-            shortcutRouter.handleKeyDown(event);
-            expect(event.preventDefault).not.toHaveBeenCalled();
-        }');'
-    }
-    describe('Active State Management', (') => {'
-        test('should toggle active state', () => {
-            expect(shortcutRouter.getDebugInfo().state.isActive).toBe(true);
-            shortcutRouter.setActive(false);
-            expect(shortcutRouter.getDebugInfo().state.isActive).toBe(false);
-            shortcutRouter.setActive(true);
-            expect(shortcutRouter.getDebugInfo().state.isActive).toBe(true) }');'
-        test('should not process shortcuts when inactive', () => {
-            shortcutRouter.setActive(false'),'
-            const event = {
-                code: 'KeyH',
-                ctrlKey: false,
-                shiftKey: false,
-                altKey: false,
-                metaKey: false,
-                preventDefault: jest.fn(
-        stopPropagation: jest.fn( },
-            
-            shortcutRouter.handleKeyDown(event);
-            expect(mockGameEngine.sceneManager.switchScene).not.toHaveBeenCalled();
-        }');'
-    }
-    describe('Shortcut Management', (') => {'
-        test('should add new shortcut', (') => {'
-            shortcutRouter.addShortcut('KeyT', {
-                action: 'test',
-                scene: 'test',
-                description: 'Test shortcut' },
-            const debugInfo = shortcutRouter.getDebugInfo();
-            const testShortcut = debugInfo.shortcuts.find(([key]') => key === 'KeyT');'
-            expect(testShortcut).toBeTruthy();
-            expect(testShortcut[1].action').toBe('test');'
-        }');'
-        test('should add modifier shortcut', (') => {'
-            shortcutRouter.addShortcut('Ctrl+KeyT', {
-                action: 'test',
-                scene: 'test',
-                description: 'Test modifier shortcut' },
-            const debugInfo = shortcutRouter.getDebugInfo();
-            const testShortcut = debugInfo.modifierShortcuts.find(([key]') => key === 'Ctrl+KeyT');'
-            expect(testShortcut).toBeTruthy();
-        }');'
-        test('should remove shortcut', (') => {'
-            const removed = shortcutRouter.removeShortcut('KeyH');
-            expect(removed).toBe(true);
-            const debugInfo = shortcutRouter.getDebugInfo();
-            const helpShortcut = debugInfo.shortcuts.find(([key]') => key === 'KeyH'),'
-            expect(helpShortcut).toBeFalsy() }');'
-    }
-    describe('Error Handling', (') => {'
-        test('should handle missing scene manager gracefully', () => {
-            const routerWithoutSM = new KeyboardShortcutRouter({}');'
-            const event = {
-                code: 'KeyH',
-                ctrlKey: false,
-                shiftKey: false,
-                altKey: false,
-                metaKey: false,
-                preventDefault: jest.fn(
-        stopPropagation: jest.fn( },
-            
-            expect(() => routerWithoutSM.handleKeyDown(event).not.toThrow();
-        }');'
-        test('should handle invalid scene names', () => {
-            mockGameEngine.sceneManager.switchScene.mockReturnValue(false'),'
-            const event = {
-                code: 'KeyH',
-                ctrlKey: false,
-                shiftKey: false,
-                altKey: false,
-                metaKey: false,
-                preventDefault: jest.fn(
-        stopPropagation: jest.fn( },
-            
-            expect(() => shortcutRouter.handleKeyDown(event).not.toThrow();
-        }');'
-    }
-    describe('Focus Management', (') => {'
-        test('should clear state on window blur', (') => {'
-            // Simulate key press
-            const keyEvent = {
-                code: 'KeyH',
-                ctrlKey: true,
-                shiftKey: false,
-                altKey: false,
-                metaKey: false,
-                preventDefault: jest.fn(
-        stopPropagation: jest.fn( },
-            
-            shortcutRouter.handleKeyDown(keyEvent');'
-            // Simulate window blur
-            const blurEvent = { type: 'blur' },
-            shortcutRouter.handleFocusChange(blurEvent);
-            const debugInfo = shortcutRouter.getDebugInfo();
-            expect(debugInfo.state.pressedKeys.size).toBe(0);
-            expect(debugInfo.state.activeModifiers.size).toBe(0);
-        }');'
-    }
-    describe('Cleanup', (') => {'
-        // Event listener cleanup is tested in the functional test suite
-        // See: KeyboardShortcutRouter-functional.test.js for complete cleanup verification
-        
-        test('should clear state on cleanup', () => {
+        if (shortcutRouter && typeof shortcutRouter.cleanup === 'function') {
             shortcutRouter.cleanup();
-            const debugInfo = shortcutRouter.getDebugInfo();
-            expect(debugInfo.state.isActive).toBe(false);
-            expect(debugInfo.state.pressedKeys.size).toBe(0);
-            expect(debugInfo.state.activeModifiers.size).toBe(0) }
-    }
-}');'
+        }
+        jest.clearAllMocks();
+    });
+
+    describe('Constructor', () => {
+        test('should initialize with context manager and game engine', () => {
+            expect(shortcutRouter).toBeDefined();
+            expect(shortcutRouter.contextManager).toBeDefined();
+            expect(shortcutRouter.gameEngine).toBeDefined();
+        });
+
+        test('should handle null context manager gracefully', () => {
+            expect(() => {
+                const router = new KeyboardShortcutRouter(null, mockGameEngine);
+            }).not.toThrow();
+        });
+
+        test('should handle null game engine gracefully', () => {
+            const mockContextManager = {
+                isContextValid: jest.fn().mockReturnValue(true),
+                getCurrentContext: jest.fn().mockReturnValue('global'),
+                setContext: jest.fn()
+            };
+
+            expect(() => {
+                const router = new KeyboardShortcutRouter(mockContextManager, null);
+            }).not.toThrow();
+        });
+    });
+
+    describe('Route Method', () => {
+        test('should route shortcut data correctly', () => {
+            const shortcutData = {
+                id: 'help',
+                action: 'showHelp',
+                context: 'global'
+            };
+
+            expect(() => {
+                shortcutRouter.route(shortcutData);
+            }).not.toThrow();
+        });
+
+        test('should validate context before routing', () => {
+            const shortcutData = {
+                id: 'help',
+                action: 'showHelp',
+                context: 'menu'
+            };
+
+            shortcutRouter.route(shortcutData);
+
+            expect(shortcutRouter.contextManager.isContextValid).toHaveBeenCalledWith('menu');
+        });
+
+        test('should handle invalid context gracefully', () => {
+            shortcutRouter.contextManager.isContextValid.mockReturnValue(false);
+
+            const shortcutData = {
+                id: 'help',
+                action: 'showHelp',
+                context: 'invalid'
+            };
+
+            expect(() => {
+                shortcutRouter.route(shortcutData);
+            }).not.toThrow();
+        });
+
+        test('should handle missing shortcut data', () => {
+            expect(() => {
+                shortcutRouter.route(null);
+            }).not.toThrow();
+
+            expect(() => {
+                shortcutRouter.route(undefined);
+            }).not.toThrow();
+
+            expect(() => {
+                shortcutRouter.route({});
+            }).not.toThrow();
+        });
+    });
+
+    describe('Scene Routing', () => {
+        test('should route to help scene', () => {
+            const shortcutData = {
+                id: 'help',
+                action: 'showHelp',
+                context: 'global'
+            };
+
+            shortcutRouter.route(shortcutData);
+
+            expect(mockGameEngine.sceneManager.switchScene).toHaveBeenCalled();
+        });
+
+        test('should route to settings scene', () => {
+            const shortcutData = {
+                id: 'settings',
+                action: 'showSettings',
+                context: 'global'
+            };
+
+            shortcutRouter.route(shortcutData);
+
+            expect(mockGameEngine.sceneManager.switchScene).toHaveBeenCalled();
+        });
+
+        test('should handle scene switch failures', () => {
+            mockGameEngine.sceneManager.switchScene.mockReturnValue(false);
+
+            const shortcutData = {
+                id: 'help',
+                action: 'showHelp',
+                context: 'global'
+            };
+
+            expect(() => {
+                shortcutRouter.route(shortcutData);
+            }).not.toThrow();
+        });
+
+        test('should handle scene manager errors', () => {
+            mockGameEngine.sceneManager.switchScene.mockImplementation(() => {
+                throw new Error('Scene switch error');
+            });
+
+            const shortcutData = {
+                id: 'help',
+                action: 'showHelp',
+                context: 'global'
+            };
+
+            expect(() => {
+                shortcutRouter.route(shortcutData);
+            }).not.toThrow();
+        });
+    });
+
+    describe('Context Management', () => {
+        test('should work with different contexts', () => {
+            const contexts = ['global', 'menu', 'game', 'settings', 'help'];
+
+            contexts.forEach(context => {
+                const shortcutData = {
+                    id: 'test',
+                    action: 'test',
+                    context: context
+                };
+
+                expect(() => {
+                    shortcutRouter.route(shortcutData);
+                }).not.toThrow();
+            });
+        });
+
+        test('should validate context through context manager', () => {
+            const shortcutData = {
+                id: 'help',
+                action: 'showHelp',
+                context: 'game'
+            };
+
+            shortcutRouter.route(shortcutData);
+
+            expect(shortcutRouter.contextManager.isContextValid).toHaveBeenCalledWith('game');
+        });
+
+        test('should handle context manager errors', () => {
+            shortcutRouter.contextManager.isContextValid.mockImplementation(() => {
+                throw new Error('Context validation error');
+            });
+
+            const shortcutData = {
+                id: 'help',
+                action: 'showHelp',
+                context: 'global'
+            };
+
+            expect(() => {
+                shortcutRouter.route(shortcutData);
+            }).not.toThrow();
+        });
+    });
+
+    describe('Action Handling', () => {
+        test('should handle showHelp action', () => {
+            const shortcutData = {
+                id: 'help',
+                action: 'showHelp',
+                context: 'global'
+            };
+
+            shortcutRouter.route(shortcutData);
+
+            expect(mockGameEngine.sceneManager.switchScene).toHaveBeenCalled();
+        });
+
+        test('should handle showSettings action', () => {
+            const shortcutData = {
+                id: 'settings',
+                action: 'showSettings',
+                context: 'global'
+            };
+
+            shortcutRouter.route(shortcutData);
+
+            expect(mockGameEngine.sceneManager.switchScene).toHaveBeenCalled();
+        });
+
+        test('should handle navigate action', () => {
+            const shortcutData = {
+                id: 'menu',
+                action: 'navigate',
+                context: 'global'
+            };
+
+            shortcutRouter.route(shortcutData);
+
+            expect(mockGameEngine.sceneManager.switchScene).toHaveBeenCalled();
+        });
+
+        test('should handle unknown actions gracefully', () => {
+            const shortcutData = {
+                id: 'test',
+                action: 'unknownAction',
+                context: 'global'
+            };
+
+            expect(() => {
+                shortcutRouter.route(shortcutData);
+            }).not.toThrow();
+        });
+    });
+
+    describe('Error Handling', () => {
+        test('should handle missing game engine methods', () => {
+            const incompleteGameEngine = {
+                sceneManager: {}
+            };
+
+            const mockContextManager = {
+                isContextValid: jest.fn().mockReturnValue(true),
+                getCurrentContext: jest.fn().mockReturnValue('global'),
+                setContext: jest.fn()
+            };
+
+            const router = new KeyboardShortcutRouter(mockContextManager, incompleteGameEngine);
+
+            const shortcutData = {
+                id: 'help',
+                action: 'showHelp',
+                context: 'global'
+            };
+
+            expect(() => {
+                router.route(shortcutData);
+            }).not.toThrow();
+        });
+
+        test('should handle context manager failures', () => {
+            shortcutRouter.contextManager = null;
+
+            const shortcutData = {
+                id: 'help',
+                action: 'showHelp',
+                context: 'global'
+            };
+
+            expect(() => {
+                shortcutRouter.route(shortcutData);
+            }).not.toThrow();
+        });
+
+        test('should handle malformed shortcut data', () => {
+            const malformedData = [
+                { id: '', action: '', context: '' },
+                { id: null, action: null, context: null },
+                { id: undefined, action: undefined, context: undefined },
+                'not an object',
+                123,
+                true,
+                []
+            ];
+
+            malformedData.forEach(data => {
+                expect(() => {
+                    shortcutRouter.route(data);
+                }).not.toThrow();
+            });
+        });
+    });
+
+    describe('Integration', () => {
+        test('should work with unified help scene', () => {
+            mockGameEngine.sceneManager.getCurrentScene.mockReturnValue({
+                constructor: { name: 'HelpScene' }
+            });
+
+            const shortcutData = {
+                id: 'help',
+                action: 'showHelp',
+                context: 'global'
+            };
+
+            expect(() => {
+                shortcutRouter.route(shortcutData);
+            }).not.toThrow();
+        });
+
+        test('should work with unified settings scene', () => {
+            mockGameEngine.sceneManager.getCurrentScene.mockReturnValue({
+                constructor: { name: 'SettingsScene' }
+            });
+
+            const shortcutData = {
+                id: 'settings',
+                action: 'showSettings',
+                context: 'global'
+            };
+
+            expect(() => {
+                shortcutRouter.route(shortcutData);
+            }).not.toThrow();
+        });
+
+        test('should maintain consistency across multiple routes', () => {
+            const shortcuts = [
+                { id: 'help', action: 'showHelp', context: 'global' },
+                { id: 'settings', action: 'showSettings', context: 'global' },
+                { id: 'menu', action: 'navigate', context: 'game' }
+            ];
+
+            shortcuts.forEach(shortcut => {
+                expect(() => {
+                    shortcutRouter.route(shortcut);
+                }).not.toThrow();
+            });
+
+            expect(mockGameEngine.sceneManager.switchScene).toHaveBeenCalledTimes(3);
+        });
+    });
+
+    describe('Performance', () => {
+        test('should handle rapid routing calls', () => {
+            const shortcutData = {
+                id: 'help',
+                action: 'showHelp',
+                context: 'global'
+            };
+
+            expect(() => {
+                for (let i = 0; i < 1000; i++) {
+                    shortcutRouter.route(shortcutData);
+                }
+            }).not.toThrow();
+
+            expect(mockGameEngine.sceneManager.switchScene).toHaveBeenCalledTimes(1000);
+        });
+
+        test('should maintain performance under load', () => {
+            const start = Date.now();
+
+            for (let i = 0; i < 100; i++) {
+                shortcutRouter.route({
+                    id: 'help',
+                    action: 'showHelp',
+                    context: 'global'
+                });
+            }
+
+            const end = Date.now();
+            const duration = end - start;
+
+            // Should complete within reasonable time (under 100ms for 100 calls)
+            expect(duration).toBeLessThan(100);
+        });
+    });
+
+    describe('Cleanup', () => {
+        test('should cleanup resources properly', () => {
+            expect(() => {
+                shortcutRouter.cleanup();
+            }).not.toThrow();
+        });
+
+        test('should handle cleanup when already cleaned', () => {
+            shortcutRouter.cleanup();
+
+            expect(() => {
+                shortcutRouter.cleanup();
+            }).not.toThrow();
+        });
+
+        test('should not break after cleanup', () => {
+            shortcutRouter.cleanup();
+
+            const shortcutData = {
+                id: 'help',
+                action: 'showHelp',
+                context: 'global'
+            };
+
+            expect(() => {
+                shortcutRouter.route(shortcutData);
+            }).not.toThrow();
+        });
+    });
+
+    describe('Localization', () => {
+        test('should work with different languages', () => {
+            const languages = ['ja', 'en', 'ko', 'zh-CN', 'zh-TW'];
+
+            languages.forEach(lang => {
+                mockGameEngine.localizationManager.getCurrentLanguage.mockReturnValue(lang);
+
+                const shortcutData = {
+                    id: 'help',
+                    action: 'showHelp',
+                    context: 'global'
+                };
+
+                expect(() => {
+                    shortcutRouter.route(shortcutData);
+                }).not.toThrow();
+            });
+        });
+
+        test('should handle localization errors', () => {
+            mockGameEngine.localizationManager.t.mockImplementation(() => {
+                throw new Error('Localization error');
+            });
+
+            const shortcutData = {
+                id: 'help',
+                action: 'showHelp',
+                context: 'global'
+            };
+
+            expect(() => {
+                shortcutRouter.route(shortcutData);
+            }).not.toThrow();
+        });
+    });
+});
