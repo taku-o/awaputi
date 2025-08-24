@@ -43,7 +43,7 @@ export class EventRankingManager {
     /**
      * ランキングシステムを初期化
      */
-    initialize() {
+    initialize(): void {
         this.load();
         this.startPeriodicUpdates();
         console.log('EventRankingManager initialized');
@@ -52,7 +52,7 @@ export class EventRankingManager {
     /**
      * ランキングティア（階級）を初期化
      */
-    initializeRankingTiers() {
+    initializeRankingTiers(): any[] {
         return [
             {
                 name: 'Legend',
@@ -100,7 +100,7 @@ export class EventRankingManager {
     /**
      * イベントランキングを更新
      */
-    updateEventRanking(eventId: any, playerId: any, score: any, stats: any) {
+    updateEventRanking(eventId: any, playerId: any, score: any, stats: any): boolean {
         if (!eventId || !playerId || typeof score !== 'number') {
             console.warn('Invalid parameters for updateEventRanking');
             return false;
@@ -161,7 +161,7 @@ export class EventRankingManager {
     /**
      * ランキングを再計算
      */
-    recalculateRanking(eventId: any) {
+    recalculateRanking(eventId: any): void {
         const ranking = this.eventRankings[eventId];
         if (!ranking) return;
         
@@ -187,7 +187,7 @@ export class EventRankingManager {
     /**
      * ランクに対応するティアを取得
      */
-    getTierForRank(rank: any) {
+    getTierForRank(rank: any): any {
         for (const tier of this.rankingTiers) {
             if (rank >= tier.minRank && rank <= tier.maxRank) {
                 return tier;
@@ -199,7 +199,7 @@ export class EventRankingManager {
     /**
      * イベントリーダーボードを取得
      */
-    getEventLeaderboard(eventId: any, limit = 10, offset = 0) {
+    getEventLeaderboard(eventId: any, limit = 10, offset = 0): any {
         // キャッシュチェック
         const cacheKey = `${eventId}_${limit}_${offset}`;
         const cached = this.leaderboardCache.get(cacheKey);
@@ -232,6 +232,7 @@ export class EventRankingManager {
                 ...player,
                 tierInfo: this.getTierForRank(player.rank)
             }));
+
         const leaderboard = {
             eventId,
             players: sortedPlayers,
@@ -240,6 +241,7 @@ export class EventRankingManager {
             topScore: ranking.topScore,
             lastUpdate: ranking.lastUpdate
         };
+        
         // キャッシュに保存
         this.leaderboardCache.set(cacheKey, {
             data: leaderboard,
@@ -252,7 +254,7 @@ export class EventRankingManager {
     /**
      * プレイヤーの特定イベントでのランキング情報を取得
      */
-    getPlayerEventRanking(playerId: any, eventId: any) {
+    getPlayerEventRanking(playerId: any, eventId: any): any {
         const ranking = this.eventRankings[eventId];
         if (!ranking || !ranking.players[playerId]) {
             return null;
@@ -264,11 +266,12 @@ export class EventRankingManager {
             tierInfo: this.getTierForRank(playerData.rank),
             percentile: this.calculatePercentile(playerData.rank, ranking.totalParticipants)
         };
+    }
     
     /**
      * パーセンタイルを計算
      */
-    calculatePercentile(rank: any, totalParticipants: any) {
+    calculatePercentile(rank: any, totalParticipants: any): number {
         if (totalParticipants <= 1) return 100;
         return Math.round(((totalParticipants - rank) / (totalParticipants - 1)) * 100);
     }
@@ -276,14 +279,14 @@ export class EventRankingManager {
     /**
      * ランキング報酬を配布
      */
-    distributeRankingRewards(eventId: any) {
+    distributeRankingRewards(eventId: any): boolean {
         const ranking = this.eventRankings[eventId];
         if (!ranking) {
             console.warn(`No ranking data found for event: ${eventId}`);
             return false;
         }
         
-        const rewardedPlayers = [];
+        const rewardedPlayers: any[] = [];
         
         Object.values(ranking.players).forEach((player: any) => {
             const tier = this.getTierForRank(player.rank);
@@ -312,7 +315,7 @@ export class EventRankingManager {
     /**
      * ランキング報酬を付与
      */
-    grantRankingRewards(playerId: any, eventId: any, tierRewards: any, rank: any) {
+    grantRankingRewards(playerId: any, eventId: any, tierRewards: any, rank: any): any {
         const rewards = {
             ap: tierRewards.ap || 0,
             items: [...(tierRewards.items || [])],
@@ -344,7 +347,7 @@ export class EventRankingManager {
     /**
      * ランキング報酬通知を送信
      */
-    sendRankingRewardNotification(playerId: any, eventId: any, tier: any, rank: any, rewards: any) {
+    sendRankingRewardNotification(playerId: any, eventId: any, tier: any, rank: any, rewards: any): void {
         if (!this.gameEngine.achievementNotificationSystem) return;
         const message = `${tier.name}ランク達成！ (${rank}位)`;
         const rewardText = [];
@@ -365,7 +368,7 @@ export class EventRankingManager {
     /**
      * イベント統計を更新
      */
-    updateEventStatistics(eventId: any) {
+    updateEventStatistics(eventId: any): void {
         const ranking = this.eventRankings[eventId];
         if (!ranking) return;
         
@@ -379,7 +382,7 @@ export class EventRankingManager {
     /**
      * プレイヤーランキング履歴を更新
      */
-    updatePlayerRankingHistory(playerId: any, eventId: any, score: any, stats: any) {
+    updatePlayerRankingHistory(playerId: any, eventId: any, score: any, stats: any): void {
         if (!this.playerRankings[playerId]) {
             this.playerRankings[playerId] = {
                 playerId,
@@ -409,7 +412,7 @@ export class EventRankingManager {
     /**
      * 定期的なランキング更新を開始
      */
-    startPeriodicUpdates() {
+    startPeriodicUpdates(): void {
         if (this.updateTimer) {
             clearInterval(this.updateTimer);
         }
@@ -427,7 +430,7 @@ export class EventRankingManager {
     /**
      * 定期的な更新を停止
      */
-    stopPeriodicUpdates() {
+    stopPeriodicUpdates(): void {
         if (this.updateTimer) {
             clearInterval(this.updateTimer);
             this.updateTimer = null;
@@ -437,7 +440,7 @@ export class EventRankingManager {
     /**
      * リーダーボードキャッシュをクリア
      */
-    clearLeaderboardCache(eventId = null) {
+    clearLeaderboardCache(eventId: any = null): void {
         if (eventId) {
             // 特定イベントのキャッシュのみクリア
             for (const key of this.leaderboardCache.keys()) {
@@ -454,15 +457,14 @@ export class EventRankingManager {
     /**
      * プレイヤー名を取得
      */
-    getPlayerName(playerId: any) {
+    getPlayerName(playerId: any): string {
         return this.gameEngine.playerData?.getPlayerName() || `Player_${playerId.slice(-6)}`;
-    }
     }
     
     /**
      * 報酬配布記録
      */
-    recordRankingRewardDistribution(eventId: any, rewardedPlayers: any) {
+    recordRankingRewardDistribution(eventId: any, rewardedPlayers: any): void {
         this.rewardDistributionHistory = this.rewardDistributionHistory || {};
         this.rewardDistributionHistory[eventId] = {
             eventId,
@@ -476,7 +478,7 @@ export class EventRankingManager {
     /**
      * データを保存
      */
-    save() {
+    save(): void {
         try {
             const data = {
                 eventRankings: this.eventRankings,
@@ -488,12 +490,11 @@ export class EventRankingManager {
             console.error('Failed to save ranking data:', error);
         }
     }
-    }
     
     /**
      * データを読み込み
      */
-    load() {
+    load(): void {
         try {
             const data = localStorage.getItem('eventRankingData');
             if (data) {
@@ -513,7 +514,7 @@ export class EventRankingManager {
     /**
      * ランキングデータをリセット
      */
-    reset() {
+    reset(): void {
         this.eventRankings = {};
         this.playerRankings = {};
         this.rewardDistributionHistory = {};
@@ -526,10 +527,9 @@ export class EventRankingManager {
     /**
      * クリーンアップ
      */
-    cleanup() {
+    cleanup(): void {
         this.stopPeriodicUpdates();
         this.clearLeaderboardCache();
-
         this.save();
     }
 }
