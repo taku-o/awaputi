@@ -5,61 +5,62 @@
  * Canvas 2D APIを使用してさまざまなタイプのグラフを描画する統合エンジンです。
  */
 
-import { BarChartRenderer  } from './chart-renderer/BarChartRenderer';
-import { LineChartRenderer  } from './chart-renderer/LineChartRenderer';
-import { PieChartRenderer  } from './chart-renderer/PieChartRenderer';
-import { ChartAnimationEngine, 
-    ChartInteractionManager,
-    ChartLayoutManager,
-    AreaChartRenderer,
-    ScatterChartRenderer,
-    ProgressBarRenderer '  }'
-
-} from './chart-renderer/ChartUtilities';
+import { getErrorHandler } from '../utils/ErrorHandler';
 
 /**
  * チャートテーマインターフェース
  */
-export interface ChartTheme { colors: { primar,y: string,
-        secondary: string,
-        success: string,
-        warning: string,
-        danger: string,
-        info: string,
-        light: string,
-    dark: string,
-    palette: string[],
-    fonts: { family: string,
-    size: {
+export interface ChartTheme {
+    colors: {
+        primary: string;
+        secondary: string;
+        success: string;
+        warning: string;
+        danger: string;
+        info: string;
+        light: string;
+        dark: string;
+        palette: string[];
+    };
+    fonts: {
+        family: string;
+        size: {
             small: number;
-    },
-            normal: number,
-            large: number,
-    title: number,
-        weight: { normal: string,
-    bold: string;
-    },
-    spacing: { padding: number,
-        margin: number;
-    },
-    gap: number,
-    borders: { width: number,
-        radius: number;
-    },
-    style: string,
-    shadows: { light: string,
-        medium: string;
-    },
-    heavy: string,
-    animation: { duration: number,
-    easing: string;
-    },
-    easing: string;
+            normal: number;
+            large: number;
+            title: number;
         };
+        weight: {
+            normal: string;
+            bold: string;
+        };
+    };
+    spacing: {
+        padding: number;
+        margin: number;
+        gap: number;
+    };
+    borders: {
+        width: number;
+        radius: number;
+        style: string;
+    };
+    shadows: {
+        light: string;
+        medium: string;
+        heavy: string;
+    };
+    animation: {
+        duration: number;
+        easing: string;
+    };
+}
+
 /**
  * チャートオプションインターフェース
  */
-export interface ChartOptions { width?: number,
+export interface ChartOptions {
+    width?: number;
     height?: number;
     padding?: number;
     fontSize?: number;
@@ -75,18 +76,24 @@ export interface ChartOptions { width?: number,
     accessibility?: boolean;
     area?: ChartArea;
     theme?: ChartTheme;
-    breakpoint?: 'small' | 'medium' | 'large' };
+    breakpoint?: 'small' | 'medium' | 'large';
+}
+
 /**
  * チャートエリアインターフェース
  */
-interface ChartArea { x: number,
-    y: number,
-    width: number,
+interface ChartArea {
+    x: number;
+    y: number;
+    width: number;
     height: number;
+}
+
 /**
  * レンダリング結果インターフェース
  */
-export interface RenderResult { type: string;
+export interface RenderResult {
+    type: string;
     dataPoints?: number;
     min?: number;
     max?: number;
@@ -95,495 +102,526 @@ export interface RenderResult { type: string;
     layout?: string;
     charts?: RenderResult[];
     totalArea?: ChartArea;
+}
+
 /**
  * チャートデータインターフェース
  */
-export interface ChartData { value?: number,
-    label?: string;
-    [key: string]: any;
-/**
- * 複数チャート設定インターフェース
- */
-export interface MultiChartConfig { type: string,
-    data: ChartData[];
-    options?: ChartOptions;
-/**
- * キャッシュエントリインターフェース
- */
-interface CacheEntry { result: RenderResult,
-    canvas: HTMLCanvasElement,
-    timestamp: number;
-/**
- * チャートレンダラーインターフェース
- */
-interface ChartRendererInterface { render(context: CanvasRenderingContext2D, data: ChartData[], options: ChartOptions): RenderResult;
-    export class CoreChartRenderer {
-    private chartTypes: Record<string, ChartRendererInterface>;
-    private animationEngine: ChartAnimationEngine;
-    private interactionManager: ChartInteractionManager;
-    private layoutManager: ChartLayoutManager;
-    private defaultTheme: ChartTheme;
-    private, currentTheme: ChartTheme;
-    private responsiveBreakpoints = {
-        small: 480,
-    medium: 768,
-    large: 1024 
- };
-    private performanceConfig = { maxDataPoints: 1000,
-        animationFrameLimit: 60,
-    cacheEnabled: true;
-    private renderCache: Map<string, CacheEntry>;
-
-    constructor() { // 専門化されたレンダラーを初期化
-        this.chartTypes = {
-            bar: new BarChartRenderer(),
-            line: new LineChartRenderer(),
-            pie: new PieChartRenderer(),
-            area: new AreaChartRenderer(
-    scatter: new ScatterChartRenderer( }
-            progress: new, ProgressBarRenderer(); }
-        };
-        
-        // 支援コンポーネントを初期化
-        this.animationEngine = new ChartAnimationEngine();
-        this.interactionManager = new ChartInteractionManager();
-        this.layoutManager = new ChartLayoutManager();
-        
-        // テーマとスタイル設定
-        this.defaultTheme = this.createDefaultTheme();
-        this.currentTheme = this.defaultTheme;
-        
-        // レンダリングキャッシュ
-        this.renderCache = new Map();
-    }
-    
-    /**
-     * メインの描画メソッド
-     */
-    render(;
-        context: CanvasRenderingContext2D,
-        type: string ),
-        data: ChartData[] | ChartData,
-    options: ChartOptions = { ): RenderResult {
-        try {
-            // 入力検証
-            if(!this.validateInput(context, type, data)) {''
-                throw new Error('Invalid, input parameters) }'
-            // レンダラーの取得
-            const renderer = this.chartTypes[type];
-            if (!renderer) {
-    
+export interface ChartData {
+    labels: string[];
+    datasets: ChartDataset[];
 }
-                throw new Error(`Unsupported, chart type: ${type}`} }
-            
-            // オプションの統合
-            const mergedOptions = this.mergeOptions(options);
-            
-            // レスポンシブ調整
-            const responsiveOptions = this.applyResponsiveSettings(context, mergedOptions);
-            
-            // キャッシュチェック
-            const cacheKey = this.generateCacheKey(type, data, responsiveOptions);
-            if (this.performanceConfig.cacheEnabled && this.renderCache.has(cacheKey) {
-                const cached = this.renderCache.get(cacheKey);
-                if (cached && this.isCacheValid(cached) {
-            }
-                    return this.applyCachedRender(context, cached);
-            
-            // コンテキストの準備
-            this.prepareContext(context, responsiveOptions);
-            
-            // データの前処理
-            const processedData = this.preprocessData(data, type, responsiveOptions);
-            
-            // レンダリング結果
-            let renderResult: RenderResult,
-            // アニメーション対応
-            if (responsiveOptions.animated) {
-                renderResult = this.animationEngine.animateChart();
-                    context, renderer, processedData, responsiveOptions); }
-            } else { renderResult = renderer.render(context, processedData, responsiveOptions);
-            // インタラクション設定
-            if (responsiveOptions.interactive) {
-                this.interactionManager.setupInteractions();
-                    context.canvas, renderResult, responsiveOptions); }
-            // アクセシビリティ設定
-            this.setupAccessibility(context, renderResult, responsiveOptions);
-            
-            // レンダリング結果をキャッシュ
-            if (this.performanceConfig.cacheEnabled) { this.cacheRenderResult(cacheKey, renderResult, context);
-            return renderResult;
 
-        } catch (error) {
-            console.error('Chart rendering failed:', error','
-            return this.renderErrorChart(context, (error as Error).message, options'),'
-    
+/**
+ * チャートデータセットインターフェース
+ */
+export interface ChartDataset {
+    label: string;
+    data: number[];
+    backgroundColor?: string | string[];
+    borderColor?: string | string[];
+    borderWidth?: number;
+    fill?: boolean;
+}
+
+/**
+ * チャートポイント情報
+ */
+interface ChartPoint {
+    x: number;
+    y: number;
+    value: number;
+    label: string;
+    color: string;
+}
+
+/**
+ * レンダリング統計
+ */
+interface RenderStats {
+    renders: number;
+    lastRender: number;
+    renderTime: number;
+    errors: number;
+    cacheHits: number;
+    cacheMisses: number;
+}
+
+/**
+ * チャート種別
+ */
+export enum ChartType {
+    BAR = 'bar',
+    LINE = 'line',
+    PIE = 'pie',
+    AREA = 'area',
+    SCATTER = 'scatter',
+    PROGRESS = 'progress'
+}
+
+export class ChartRenderer {
+    private canvas: HTMLCanvasElement | null = null;
+    private ctx: CanvasRenderingContext2D | null = null;
+    private config: Required<ChartOptions>;
+    private theme: ChartTheme;
+    private stats: RenderStats;
+    private cache: Map<string, ImageData> = new Map();
+    private animationFrameId: number | null = null;
+
+    constructor(canvas?: HTMLCanvasElement, options: ChartOptions = {}) {
+        this.canvas = canvas || null;
+        this.ctx = this.canvas?.getContext('2d') || null;
+
+        // デフォルト設定
+        this.config = {
+            width: options.width || 400,
+            height: options.height || 300,
+            padding: options.padding || 20,
+            fontSize: options.fontSize || 12,
+            fontFamily: options.fontFamily || 'Arial, sans-serif',
+            backgroundColor: options.backgroundColor || '#ffffff',
+            showLegend: options.showLegend !== false,
+            showGrid: options.showGrid !== false,
+            showAxes: options.showAxes !== false,
+            showTooltip: options.showTooltip !== false,
+            animated: options.animated !== false,
+            interactive: options.interactive !== false,
+            responsive: options.responsive !== false,
+            accessibility: options.accessibility !== false,
+            area: options.area || { x: 0, y: 0, width: 400, height: 300 },
+            theme: options.theme || this.getDefaultTheme(),
+            breakpoint: options.breakpoint || 'medium'
+        };
+
+        this.theme = this.config.theme;
+
+        // 統計初期化
+        this.stats = {
+            renders: 0,
+            lastRender: 0,
+            renderTime: 0,
+            errors: 0,
+            cacheHits: 0,
+            cacheMisses: 0
+        };
+
+        this.initializeCanvas();
+        console.log('[ChartRenderer] 初期化完了');
+    }
+
     /**
-     * 複数グラフの同時描画
+     * キャンバスの初期化
      */
-    renderMultiple(
-        context: CanvasRenderingContext2D)','
-    charts: MultiChartConfig[],
-        layout: string = 'grid'): RenderResult { // レイアウト計算を専門コンポーネントに委譲
-        const layoutConfig = this.layoutManager.calculateLayout();
-            context, charts.length, layout),
-        
-        const results: RenderResult[] = [],
-        
-        charts.forEach((chart, index) => { 
-            const chartArea = layoutConfig.areas[index],
-            
-            // サブコンテキストの作成
-            const subContext = this.createSubContext(context, chartArea);
-            // 個別チャートの描画
-            const result = this.render(
-                subContext,
-                chart.type);
-                chart.data),
-                { ...chart.options, area: chartArea )
-            );
-            results.push(result); }'
+    private initializeCanvas(): void {
+        if (!this.canvas || !this.ctx) return;
 
-        }');'
-        ';'
+        // キャンバスサイズの設定
+        this.canvas.width = this.config.width;
+        this.canvas.height = this.config.height;
 
-        return { ''
-            type: 'multiple,
-            layout: layout,
-    charts: results,
-            totalArea: layoutConfig.totalArea ;
-    } }
-    
-    /**
-     * テーマの設定'
-     */''
-    setTheme(theme: string | Partial<ChartTheme>): void { ''
-        if(typeof, theme === 'string' { }
-            this.currentTheme = this.getPresetTheme(theme); }
-        } else {  }
-            this.currentTheme = { ...this.defaultTheme, ...theme }
-        
-        // レンダリングキャッシュをクリア
-        this.clearCache();
+        // デフォルトスタイルの設定
+        this.ctx.font = `${this.config.fontSize}px ${this.config.fontFamily}`;
+        this.ctx.fillStyle = this.theme.colors.dark;
+        this.ctx.strokeStyle = this.theme.colors.primary;
+
+        // 背景色の設定
+        this.ctx.fillStyle = this.config.backgroundColor;
+        this.ctx.fillRect(0, 0, this.config.width, this.config.height);
     }
-    
+
     /**
-     * レスポンシブ設定の適用
-     */''
-    private applyResponsiveSettings(context: CanvasRenderingContext2D, options: ChartOptions): ChartOptions { const canvas = context.canvas,
-        const width = canvas.width,
-
-        let breakpoint: 'small' | 'medium' | 'large' = 'large,
-        if (width <= this.responsiveBreakpoints.small) {', ' }
-
-            breakpoint = 'small'; }
-
-        } else if (width <= this.responsiveBreakpoints.medium) { ''
-            breakpoint = 'medium' }
-        const responsiveOptions = { ...options,
-        ','
-        // ブレークポイント別設定
-        switch(breakpoint) {
-
-            case 'small':','
-                responsiveOptions.fontSize = Math.max(10, (options.fontSize || 12) * 0.8),
-                responsiveOptions.padding = Math.max(5, (options.padding || 20) * 0.7),
-                responsiveOptions.showLegend = false,
-                responsiveOptions.showGrid = false,
-                break,
-
-            case 'medium':','
-                responsiveOptions.fontSize = Math.max(12, (options.fontSize || 12) * 0.9),
-                responsiveOptions.padding = Math.max(10, (options.padding || 20) * 0.85),
-                responsiveOptions.showLegend = true,
-                responsiveOptions.showGrid = true,
-                break,
-
-            case 'large':,
-                // デフォルト設定を使用
-        }
-                break; }
-        responsiveOptions.breakpoint = breakpoint;
-        return responsiveOptions;
-    }
-    
-    /**
-     * データの前処理
+     * デフォルトテーマの取得
      */
-    private preprocessData(data: ChartData[] | ChartData, type: string, options: ChartOptions): ChartData[] { if (!data || (Array.isArray(data) && data.length === 0)) {
-            return this.createEmptyDataset(type);
-        let processedData = Array.isArray(data) ? [...data] : [data];
-        
-        // データポイント数制限
-        if (processedData.length > this.performanceConfig.maxDataPoints) { processedData = this.downsampleData(processedData, this.performanceConfig.maxDataPoints);
-        // データの正規化
-        processedData = this.normalizeData(processedData, type);
-        
-        // 欠損値の処理
-        processedData = this.handleMissingValues(processedData, options);
-        
-        return processedData;
-    }
-    
-    /**
-     * デフォルトテーマの作成
-     */''
-    private createDefaultTheme('''
-                primary: '#3B82F6,
-                secondary: '#8B5CF6,
-                success: '#10B981,
-                warning: '#F59E0B,
-                danger: '#EF4444,
-                info: '#06B6D4,
-                light: '#F8FAFC,
-                dark: '#1E293B';
+    private getDefaultTheme(): ChartTheme {
+        return {
+            colors: {
+                primary: '#007AFF',
+                secondary: '#5856D6',
+                success: '#34C759',
+                warning: '#FF9500',
+                danger: '#FF3B30',
+                info: '#5AC8FA',
+                light: '#F2F2F7',
+                dark: '#1C1C1E',
+                palette: ['#007AFF', '#5856D6', '#34C759', '#FF9500', '#FF3B30', '#5AC8FA']
             },
-
-            palette: [','
-                '#3B82F6', '#8B5CF6', '#10B981', '#F59E0B', ]';'
-                '#EF4444', '#06B6D4', '#8D4654', '#7C3AED'];
-            ],
-            fonts: { ''
-                family: 'system-ui, -apple-system, sans-serif'  },
+            fonts: {
+                family: 'system-ui, -apple-system, sans-serif',
                 size: {
-                    small: 10 ,
+                    small: 10,
                     normal: 12,
-                    large: 14,
-    title: 16 
- };
-                weight: { ''
-                    normal: 'normal' ,
+                    large: 16,
+                    title: 18
+                },
+                weight: {
+                    normal: 'normal',
                     bold: 'bold'
-            }
-            },
-            spacing: { padding: 20,
-                margin: 10 ,
-    gap: 5 
-};
-            borders: { width: 1,
-    radius: 4 ,
-                style: 'solid'
-            };
-            shadows: { ''
-                light: '0 1px 3px rgba(0, 0, 0, 0.1)'  },
-                medium: '0 4px 6px rgba(0, 0, 0, 0.1),
-                heavy: '0 10px 15px rgba(0, 0, 0, 0.1)' },
-
-            animation: { duration: 800,''
-                easing: 'easeInOutCubic'
                 }
-}
-    /**
-     * オプションのマージ'
-     */''
-    private mergeOptions(options: ChartOptions): ChartOptions { const defaultOptions: ChartOptions = {
-            width: 400,
-            height: 300,
-            padding: this.currentTheme.spacing.padding,
-    fontSize: this.currentTheme.fonts.size.normal,
-            fontFamily: this.currentTheme.fonts.family,
-            backgroundColor: '#FFFFFF,
-            showLegend: true,
-            showGrid: true,
-            showAxes: true,
-            showTooltip: true,
-            animated: false,
-            interactive: true,
-            responsive: true,
-    accessibility: true,
-        return { ...defaultOptions, ...options, theme: this.currentTheme  }
-    /**
-     * コンテキストの準備
-     */
-    private prepareContext(context: CanvasRenderingContext2D, options: ChartOptions): void { // 高DPI対応
-        const devicePixelRatio = window.devicePixelRatio || 1,
-        const canvas = context.canvas,
-        
-        if (devicePixelRatio !== 1) {
-        
-            const rect = canvas.getBoundingClientRect();
-            canvas.width = rect.width * devicePixelRatio,
-            canvas.height = rect.height * devicePixelRatio }
-
-            context.scale(devicePixelRatio, devicePixelRatio); }
-        // アンチエイリアシング設定
-        context.imageSmoothingEnabled = true;
-        context.imageSmoothingQuality = 'high';
-        
-        // 背景色設定
-        if (options.backgroundColor) {
-            context.fillStyle = options.backgroundColor }
-
-            context.fillRect(0, 0, canvas.width, canvas.height); }
-        // フォント設定
-        context.font = `${options.fontSize}px ${options.fontFamily}`;
-        context.textAlign = 'left';
-        context.textBaseline = 'top';
-    }
-    
-    /**
-     * エラーチャートの描画
-     */
-    private renderErrorChart(context: CanvasRenderingContext2D, errorMessage: string, options: ChartOptions): RenderResult { const mergedOptions = this.mergeOptions(options);
-        this.prepareContext(context, mergedOptions);
-        const canvas = context.canvas,
-        const centerX = canvas.width / 2,
-        const centerY = canvas.height / 2,
-        
-        // エラーアイコン
-        context.fillStyle = this.currentTheme.colors.danger,
-        context.fillRect(centerX - 20, centerY - 30, 40, 4);
-        context.fillRect(centerX - 2, centerY - 15, 4, 20);
-        context.fillRect(centerX - 2, centerY + 10, 4, 4);
-        // エラーメッセージ
-        context.fillStyle = this.currentTheme.colors.dark }
-        context.font = `${mergedOptions.fontSize}px ${mergedOptions.fontFamily}`;
-        context.textAlign = 'center';
-        context.fillText('グラフの描画に失敗しました', centerX, centerY + 30';'
-        context.fillText(errorMessage, centerX, centerY + 50);
-        ';'
-
-        return { ''
-            type: 'error,
-    message: errorMessage,
-            timestamp: Date.now();
-    }
-    
-    /**
-     * アクセシビリティ設定
-     */'
-    private setupAccessibility(context: CanvasRenderingContext2D, renderResult: RenderResult, options: ChartOptions): void { ''
-        if(!options.accessibility) return,
-        
-        const canvas = context.canvas,
-        ','
-        // ARIA属性の設定
-        canvas.setAttribute('role', 'img');
-        canvas.setAttribute('aria-label', this.generateAriaLabel(renderResult, options);
-        ','
-        // 代替テキストの生成
-        const altText = this.generateAltText(renderResult, options);
-        canvas.setAttribute('aria-describedby', 'chart-description');
-        ','
-        // 説明要素の作成（既存の要素がない場合）
-        let descElement = document.getElementById('chart-description,
-        if (!descElement) {
-
-            descElement = document.createElement('div');
-            descElement.id = 'chart-description,
-            descElement.className = 'sr-only,
-            descElement.style.position = 'absolute,
-            descElement.style.left = '-10000px' }
-            document.body.appendChild(descElement); }
-        descElement.textContent = altText;
-    }
-    
-    /**
-     * ヘルパーメソッド群'
-     */''
-    private validateInput(context: CanvasRenderingContext2D, type: string, data: any): boolean { return context !== null && '
-               context.canvas !== null && ','
-               typeof type === 'string' && ,
-               type.length > 0 && ,
-               data !== null && ,
-               data !== undefined }
-    private generateCacheKey(type: string, data: any, options: ChartOptions): string { const dataHash = this.hashData(data);
-        const optionsHash = this.hashObject(options);
-        return `${type}_${dataHash}_${optionsHash}`;
-    }
-    
-    private hashData(data: any): string { return btoa(JSON.stringify(data).slice(0, 16);
-    private hashObject(obj: any): string { return btoa(JSON.stringify(obj).slice(0, 16);
-    private isCacheValid(cached: CacheEntry): boolean { return Date.now() - cached.timestamp < 300000, // 5分間有効 }
-    private applyCachedRender(context: CanvasRenderingContext2D, cached: CacheEntry): RenderResult { const canvas = context.canvas,
-        context.drawImage(cached.canvas, 0, 0, canvas.width, canvas.height);
-        return cached.result }
-
-    private cacheRenderResult(key: string, result: RenderResult, context: CanvasRenderingContext2D): void { ''
-        const cacheCanvas = document.createElement('canvas');
-        const cacheContext = cacheCanvas.getContext('2d),'
-        if (!cacheContext) return,
-        
-        cacheCanvas.width = context.canvas.width,
-        cacheCanvas.height = context.canvas.height,
-        cacheContext.drawImage(context.canvas, 0, 0);
-        this.renderCache.set(key, {
-                result: result),
-            canvas: cacheCanvas,
-    timestamp: Date.now(  }),
-        
-        // キャッシュサイズ制限
-        if (this.renderCache.size > 50) {
-            const oldestKey = this.renderCache.keys().next().value }
-            this.renderCache.delete(oldestKey); }
-    }
-    
-    private clearCache(): void { this.renderCache.clear();
-    private createSubContext(context: CanvasRenderingContext2D, area: ChartArea): CanvasRenderingContext2D { // サブコンテキストの作成（簡略化）
-        return context }
-    private downsampleData(data: ChartData[], maxPoints: number): ChartData[] { if (data.length <= maxPoints) return data,
-        
-        const step = Math.ceil(data.length / maxPoints);
-        return data.filter((_, index) => index % step === 0),
-    private normalizeData(data: ChartData[], type: string): ChartData[] { // データの正規化（型に応じて）
-        return data.map(item => { '),'
-            }
-
-            if(typeof, item === 'number' { }'
-                return { value: item, label: item.toString(  }
-            return item;
-        }
-    }
-    
-    private handleMissingValues(data: ChartData[], options: ChartOptions): ChartData[] { // 欠損値の処理
-        return data.filter(item => );
-            item !== null && '),
-            item !== undefined && '),
-            (typeof, item === 'object' ? item.value !== null && item.value !== undefined : true));
-    private createEmptyDataset(type: string): ChartData[] { return [] }
-
-    private getPresetTheme(themeName: string): ChartTheme { const presets: Record<string, ChartTheme> = {
-            dark: { ...this.defaultTheme  },
-                colors: { '
-                    ...this.defaultTheme.colors  },
-                    primary: '#60A5FA,
-                    light: '#1E293B,
-                    dark: '#F8FAFC'
-            }
             },
-            minimal: { ...this.defaultTheme,
-                colors: {'
-                    ...this.defaultTheme.colors  },
-                    primary: '#000000'
-            }
-
-                },''
-                palette: ['#000000', '#666666', '#CCCCCC];'
+            spacing: {
+                padding: 16,
+                margin: 8,
+                gap: 4
+            },
+            borders: {
+                width: 1,
+                radius: 4,
+                style: 'solid'
+            },
+            shadows: {
+                light: '0 1px 3px rgba(0,0,0,0.1)',
+                medium: '0 4px 6px rgba(0,0,0,0.1)',
+                heavy: '0 10px 25px rgba(0,0,0,0.2)'
+            },
+            animation: {
+                duration: 300,
+                easing: 'ease-in-out'
             }
         };
-        
-        return presets[themeName] || this.defaultTheme;
     }
-    
-    private generateAriaLabel(renderResult: RenderResult, options: ChartOptions): string {
-        return `${renderResult.type}グラフ：${renderResult.dataPoints || 0}個のデータポイント`;
+
+    /**
+     * バーチャートの描画
+     */
+    renderBarChart(data: ChartData, options: ChartOptions = {}): RenderResult {
+        try {
+            const startTime = performance.now();
+            
+            if (!this.ctx || !data.datasets.length) {
+                throw new Error('Invalid data or context');
+            }
+
+            this.clearCanvas();
+            
+            const chartArea = this.calculateChartArea();
+            const barWidth = chartArea.width / data.labels.length * 0.8;
+            const maxValue = Math.max(...data.datasets[0].data);
+            const scale = chartArea.height / maxValue;
+
+            // バーの描画
+            data.labels.forEach((label, index) => {
+                const value = data.datasets[0].data[index];
+                const barHeight = value * scale;
+                const x = chartArea.x + (index * chartArea.width / data.labels.length) + (chartArea.width / data.labels.length - barWidth) / 2;
+                const y = chartArea.y + chartArea.height - barHeight;
+
+                // バー
+                this.ctx!.fillStyle = data.datasets[0].backgroundColor as string || this.theme.colors.primary;
+                this.ctx!.fillRect(x, y, barWidth, barHeight);
+
+                // ラベル
+                this.ctx!.fillStyle = this.theme.colors.dark;
+                this.ctx!.textAlign = 'center';
+                this.ctx!.fillText(label, x + barWidth / 2, chartArea.y + chartArea.height + 20);
+
+                // 値
+                this.ctx!.fillText(value.toString(), x + barWidth / 2, y - 5);
+            });
+
+            const endTime = performance.now();
+            this.stats.renders++;
+            this.stats.lastRender = Date.now();
+            this.stats.renderTime = endTime - startTime;
+
+            return {
+                type: 'bar',
+                dataPoints: data.labels.length,
+                min: Math.min(...data.datasets[0].data),
+                max: maxValue,
+                timestamp: Date.now()
+            };
+        } catch (error) {
+            this.stats.errors++;
+            getErrorHandler().handleError(error as Error, {
+                context: 'ChartRenderer.renderBarChart',
+                data
+            });
+            
+            return {
+                type: 'bar',
+                message: 'Render failed',
+                timestamp: Date.now()
+            };
+        }
     }
-    
-    private generateAltText(renderResult: RenderResult, options: ChartOptions): string {
-        let description = `${renderResult.type}グラフが表示されています。`;
+
+    /**
+     * 線グラフの描画
+     */
+    renderLineChart(data: ChartData, options: ChartOptions = {}): RenderResult {
+        try {
+            const startTime = performance.now();
+            
+            if (!this.ctx || !data.datasets.length) {
+                throw new Error('Invalid data or context');
+            }
+
+            this.clearCanvas();
+            
+            const chartArea = this.calculateChartArea();
+            const maxValue = Math.max(...data.datasets[0].data);
+            const scaleX = chartArea.width / (data.labels.length - 1);
+            const scaleY = chartArea.height / maxValue;
+
+            this.ctx.strokeStyle = data.datasets[0].borderColor as string || this.theme.colors.primary;
+            this.ctx.lineWidth = data.datasets[0].borderWidth || 2;
+            
+            this.ctx.beginPath();
+            
+            data.labels.forEach((label, index) => {
+                const value = data.datasets[0].data[index];
+                const x = chartArea.x + (index * scaleX);
+                const y = chartArea.y + chartArea.height - (value * scaleY);
+
+                if (index === 0) {
+                    this.ctx!.moveTo(x, y);
+                } else {
+                    this.ctx!.lineTo(x, y);
+                }
+
+                // ポイント
+                this.ctx!.fillStyle = this.theme.colors.primary;
+                this.ctx!.beginPath();
+                this.ctx!.arc(x, y, 3, 0, Math.PI * 2);
+                this.ctx!.fill();
+            });
+            
+            this.ctx.stroke();
+
+            const endTime = performance.now();
+            this.stats.renders++;
+            this.stats.lastRender = Date.now();
+            this.stats.renderTime = endTime - startTime;
+
+            return {
+                type: 'line',
+                dataPoints: data.labels.length,
+                min: Math.min(...data.datasets[0].data),
+                max: maxValue,
+                timestamp: Date.now()
+            };
+        } catch (error) {
+            this.stats.errors++;
+            getErrorHandler().handleError(error as Error, {
+                context: 'ChartRenderer.renderLineChart',
+                data
+            });
+            
+            return {
+                type: 'line',
+                message: 'Render failed',
+                timestamp: Date.now()
+            };
+        }
+    }
+
+    /**
+     * 円グラフの描画
+     */
+    renderPieChart(data: ChartData, options: ChartOptions = {}): RenderResult {
+        try {
+            const startTime = performance.now();
+            
+            if (!this.ctx || !data.datasets.length) {
+                throw new Error('Invalid data or context');
+            }
+
+            this.clearCanvas();
+            
+            const chartArea = this.calculateChartArea();
+            const centerX = chartArea.x + chartArea.width / 2;
+            const centerY = chartArea.y + chartArea.height / 2;
+            const radius = Math.min(chartArea.width, chartArea.height) / 2 * 0.8;
+            
+            const total = data.datasets[0].data.reduce((sum, value) => sum + value, 0);
+            let currentAngle = -Math.PI / 2;
+
+            data.labels.forEach((label, index) => {
+                const value = data.datasets[0].data[index];
+                const angle = (value / total) * Math.PI * 2;
+                
+                // セクター
+                this.ctx!.fillStyle = this.theme.colors.palette[index % this.theme.colors.palette.length];
+                this.ctx!.beginPath();
+                this.ctx!.arc(centerX, centerY, radius, currentAngle, currentAngle + angle);
+                this.ctx!.lineTo(centerX, centerY);
+                this.ctx!.fill();
+
+                // ラベル
+                const labelAngle = currentAngle + angle / 2;
+                const labelX = centerX + Math.cos(labelAngle) * (radius * 0.7);
+                const labelY = centerY + Math.sin(labelAngle) * (radius * 0.7);
+                
+                this.ctx!.fillStyle = this.theme.colors.light;
+                this.ctx!.textAlign = 'center';
+                this.ctx!.fillText(`${label}: ${Math.round(value / total * 100)}%`, labelX, labelY);
+
+                currentAngle += angle;
+            });
+
+            const endTime = performance.now();
+            this.stats.renders++;
+            this.stats.lastRender = Date.now();
+            this.stats.renderTime = endTime - startTime;
+
+            return {
+                type: 'pie',
+                dataPoints: data.labels.length,
+                timestamp: Date.now()
+            };
+        } catch (error) {
+            this.stats.errors++;
+            getErrorHandler().handleError(error as Error, {
+                context: 'ChartRenderer.renderPieChart',
+                data
+            });
+            
+            return {
+                type: 'pie',
+                message: 'Render failed',
+                timestamp: Date.now()
+            };
+        }
+    }
+
+    /**
+     * チャートエリアの計算
+     */
+    private calculateChartArea(): ChartArea {
+        const padding = this.config.padding;
+        return {
+            x: padding,
+            y: padding,
+            width: this.config.width - padding * 2,
+            height: this.config.height - padding * 2
+        };
+    }
+
+    /**
+     * キャンバスのクリア
+     */
+    private clearCanvas(): void {
+        if (!this.ctx) return;
         
-        if (renderResult.dataPoints) {
-    
-}
-            description += `${renderResult.dataPoints}個のデータポイントがあります。`;
+        this.ctx.fillStyle = this.config.backgroundColor;
+        this.ctx.fillRect(0, 0, this.config.width, this.config.height);
+    }
+
+    /**
+     * グリッドの描画
+     */
+    private drawGrid(): void {
+        if (!this.ctx || !this.config.showGrid) return;
+        
+        const chartArea = this.calculateChartArea();
+        this.ctx.strokeStyle = this.theme.colors.light;
+        this.ctx.lineWidth = 0.5;
+
+        // 垂直線
+        for (let i = 0; i <= 10; i++) {
+            const x = chartArea.x + (chartArea.width / 10) * i;
+            this.ctx.beginPath();
+            this.ctx.moveTo(x, chartArea.y);
+            this.ctx.lineTo(x, chartArea.y + chartArea.height);
+            this.ctx.stroke();
         }
 
-        if (renderResult.min !== undefined && renderResult.max !== undefined) {
-    
-}
-            description += `値の範囲は${renderResult.min}から${renderResult.max}です。`;
+        // 水平線
+        for (let i = 0; i <= 10; i++) {
+            const y = chartArea.y + (chartArea.height / 10) * i;
+            this.ctx.beginPath();
+            this.ctx.moveTo(chartArea.x, y);
+            this.ctx.lineTo(chartArea.x + chartArea.width, y);
+            this.ctx.stroke();
         }
-        
-        return description;
+    }
 
-// 削除されたクラス定義は別ファイルに移動済み
+    /**
+     * 軸の描画
+     */
+    private drawAxes(): void {
+        if (!this.ctx || !this.config.showAxes) return;
+        
+        const chartArea = this.calculateChartArea();
+        this.ctx.strokeStyle = this.theme.colors.dark;
+        this.ctx.lineWidth = 1;
+
+        // X軸
+        this.ctx.beginPath();
+        this.ctx.moveTo(chartArea.x, chartArea.y + chartArea.height);
+        this.ctx.lineTo(chartArea.x + chartArea.width, chartArea.y + chartArea.height);
+        this.ctx.stroke();
+
+        // Y軸
+        this.ctx.beginPath();
+        this.ctx.moveTo(chartArea.x, chartArea.y);
+        this.ctx.lineTo(chartArea.x, chartArea.y + chartArea.height);
+        this.ctx.stroke();
+    }
+
+    /**
+     * 設定の更新
+     */
+    updateConfig(newOptions: Partial<ChartOptions>): void {
+        this.config = { ...this.config, ...newOptions };
+        this.theme = this.config.theme;
+        this.initializeCanvas();
+    }
+
+    /**
+     * キャンバスの設定
+     */
+    setCanvas(canvas: HTMLCanvasElement): void {
+        this.canvas = canvas;
+        this.ctx = canvas.getContext('2d');
+        this.initializeCanvas();
+    }
+
+    /**
+     * 統計の取得
+     */
+    getStats(): RenderStats {
+        return { ...this.stats };
+    }
+
+    /**
+     * キャッシュのクリア
+     */
+    clearCache(): void {
+        this.cache.clear();
+    }
+
+    /**
+     * アニメーションの停止
+     */
+    stopAnimation(): void {
+        if (this.animationFrameId) {
+            cancelAnimationFrame(this.animationFrameId);
+            this.animationFrameId = null;
+        }
+    }
+
+    /**
+     * リソースのクリーンアップ
+     */
+    destroy(): void {
+        this.stopAnimation();
+        this.clearCache();
+        this.canvas = null;
+        this.ctx = null;
+        console.log('[ChartRenderer] クリーンアップ完了');
+    }
+}
+
+// シングルトンインスタンス
+let chartRendererInstance: ChartRenderer | null = null;
+
+/**
+ * ChartRendererのシングルトンインスタンスを取得
+ */
+export function getChartRenderer(canvas?: HTMLCanvasElement, options?: ChartOptions): ChartRenderer {
+    if (!chartRendererInstance) {
+        chartRendererInstance = new ChartRenderer(canvas, options);
+    }
+    return chartRendererInstance;
+}

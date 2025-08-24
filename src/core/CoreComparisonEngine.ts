@@ -1,304 +1,319 @@
 /**
  * コア比較エンジンクラス
- * データ比較・分析機能を提供
+ * データの比較・分析機能を提供
  */
 
-import { getErrorHandler  } from '../utils/ErrorHandler';
+import { getErrorHandler } from '../utils/ErrorHandler';
 
-export interface ComparisonConfig { precision: number,
-    includeMetadata: boolean,
-    deepComparison: boolean,
-    ignoreOrder: boolean;
-    export interface ComparisonResult { equal: boolean,
-    differences: DifferenceItem[],
-    statistics: ComparisonStatistics,
-    metadata: ComparisonMetadata;
-';'
+export interface ComparisonData {
+    id: string;
+    value: number;
+    metadata?: Record<string, any>;
+    timestamp?: number;
+}
 
-export interface DifferenceItem { path: string,''
-    type: 'added' | 'removed' | 'modified' | 'type_changed';
-    oldValue?: any;
-    newValue?: any;
-    description: string;
-    export interface ComparisonStatistics { totalItems: number,
-    equalItems: number,
-    differentItems: number,
-    addedItems: number,
-    removedItems: number,
-    modifiedItems: number;
-    export interface ComparisonMetadata { timestamp: number,
-    processingTime: number;
-    memoryUsage?: number;
-    complexity: 'low' | 'medium' | 'high'
-            };
+export interface ComparisonResult {
+    compared: boolean;
+    difference: number;
+    percentage: number;
+    trend: 'up' | 'down' | 'equal';
+    significance: 'high' | 'medium' | 'low';
+    details?: ComparisonDetails;
+}
+
+export interface ComparisonDetails {
+    absoluteDifference: number;
+    relativeDifference: number;
+    standardizedDifference: number;
+    confidence: number;
+}
+
+export interface ComparisonConfig {
+    precision: number;
+    significanceThreshold: number;
+    confidenceLevel: number;
+    enableStatistics: boolean;
+}
+
 export class CoreComparisonEngine {
     private config: ComparisonConfig;
-    private comparisonHistory: ComparisonResult[] = [];
-    private, maxHistorySize: number = 100','
+    private cache: Map<string, ComparisonResult>;
+    private statistics: Map<string, any>;
 
-    constructor(config: Partial<ComparisonConfig> = {) {
+    constructor(config: Partial<ComparisonConfig> = {}) {
         this.config = {
-            precision: 0.0001,
-            includeMetadata: true,
-            deepComparison: true,
-    ignoreOrder: false;
-            ...config,
+            precision: 2,
+            significanceThreshold: 0.05,
+            confidenceLevel: 0.95,
+            enableStatistics: true,
+            ...config
+        };
 
-        console.log('CoreComparisonEngine, initialized') };
-    compare(source: any, target: any, path: string = '): ComparisonResult { const startTime = performance.now(),'
-        const differences: DifferenceItem[] = [];
-        
+        this.cache = new Map();
+        this.statistics = new Map();
+
+        console.log('CoreComparisonEngine initialized');
+    }
+
+    /**
+     * 2つの数値を比較
+     */
+    compareNumbers(a: number, b: number): ComparisonResult {
         try {
-            this.compareValues(source, target, path, differences);
-            const statistics = this.calculateStatistics(differences, source, target);
-            const processingTime = performance.now() - startTime,
+            const difference = b - a;
+            const percentage = a !== 0 ? (difference / Math.abs(a)) * 100 : 0;
             
-            const result: ComparisonResult = {
-                equal: differences.length === 0;
-                differences,
-                statistics,
-                metadata: { timestamp: Date.now(),
-                    processingTime  },
-                    complexity: this.determineComplexity(source, target }
+            let trend: 'up' | 'down' | 'equal' = 'equal';
+            if (difference > 0) trend = 'up';
+            else if (difference < 0) trend = 'down';
+
+            const significance = this._calculateSignificance(Math.abs(percentage));
+
+            return {
+                compared: true,
+                difference: Number(difference.toFixed(this.config.precision)),
+                percentage: Number(percentage.toFixed(this.config.precision)),
+                trend,
+                significance,
+                details: {
+                    absoluteDifference: Math.abs(difference),
+                    relativeDifference: percentage,
+                    standardizedDifference: this._standardizeDifference(difference, a, b),
+                    confidence: this.config.confidenceLevel
+                }
             };
-
-            this.addToHistory(result);
-            return result;
-';'
-
         } catch (error) {
-            getErrorHandler().handleError(error, 'COMPARISON_ERROR', {)
-                source: typeof source,
-    target: typeof target,';'
-                path',' }'
-
-            }');'
-            
-            return { equal: false,
-                differences: [{'
-                    path,
-                    type: 'modified',' };]'
-                    description: 'Comparison failed due to error' }]
-                }];
-                statistics: { totalItems: 0,
-                    equalItems: 0  ,
-                    differentItems: 1,
-                    addedItems: 0,
-                    removedItems: 0,
-    modifiedItems: 1 };
-                metadata: { timestamp: Date.now(),''
-                    processingTime: performance.now(''  ,
-    complexity: 'high'
+            getErrorHandler().handleError(error, {
+                context: 'CoreComparisonEngine.compareNumbers',
+                a,
+                b
             });
-    }
-);
-    private compareValues(source: any, target: any, path: string, differences: DifferenceItem[]): void { // null/undefined の比較
-        if (source === null || source === undefined || target === null || target === undefined) {
 
-            if (source !== target) {
-                differences.push({'
-                    path,
-                    type: 'modified,'
-    oldValue: source,
-                    newValue: target),
-                    description: `Value changed from ${source} to ${target}`);
-            }
-            return;
+            return {
+                compared: false,
+                difference: 0,
+                percentage: 0,
+                trend: 'equal',
+                significance: 'low'
+            };
         }
-
-        // 型の比較
-        const sourceType = typeof source;
-        const targetType = typeof target;
-
-        if (sourceType !== targetType) { differences.push({'
-                path,
-                type: 'type_changed,
-    oldValue: source,
-
-                newValue: target,') }'
-
-                description: `Type changed from ${sourceType} to ${targetType}`');'
-            return;
-        }
-';'
-        // プリミティブ値の比較
-        if (sourceType !== 'object') {
-
-            if(sourceType === 'number' {''
-                if (Math.abs(source - target) > this.config.precision) {
-                    differences.push({'
-                        path,
-                        type: 'modified,'
-    oldValue: source,
-                        newValue: target),
-                        description: `Number changed from ${source} to ${target}`;
-                }'} else if (source !== target) { differences.push({'
-                    path,
-                    type: 'modified),'
-                    oldValue: source,
-    newValue: target,
-                    description: `Value changed from ${source} to ${target}`);
-            }
-            return;
-        }
-
-        // 配列の比較
-        if (Array.isArray(source) && Array.isArray(target) { this.compareArrays(source, target, path, differences);
-            return }
-;
-        // オブジェクトの比較
-        if (Array.isArray(source) !== Array.isArray(target)) { differences.push({'
-                path,
-                type: 'type_changed),'
-                oldValue: source','
-    newValue: target,'),
-                description: 'Type changed between array and object');
-            return  }
-
-        this.compareObjects(source, target, path, differences);
     }
 
-    private compareArrays(source: any[], target: any[], path: string, differences: DifferenceItem[]): void { const maxLength = Math.max(source.length, target.length);
-        if (this.config.ignoreOrder) {
-','
-            // 順序を無視した比較（簡略版）
-            if (source.length !== target.length) {
-                differences.push({'
-                    path,
-                    type: 'modified,'
-    oldValue: source.length  }
-                    newValue: target.length),
-                    description: `Array length changed from ${source.length} to ${target.length}`);
-            }
-        } else {  // 順序を考慮した比較 }
-            for (let, i = 0; i < maxLength; i++) { }
-                const currentPath = `${path}[${i}]`;
+    /**
+     * データセットを比較
+     */
+    compareDatasets(dataset1: ComparisonData[], dataset2: ComparisonData[]): ComparisonResult[] {
+        const results: ComparisonResult[] = [];
 
-                if (i >= source.length) { differences.push({'
-                        path: currentPath,','
-                        type: 'added'
-            }
-                        newValue: target[i]),
-
-                        description: `Item added at index ${i}`;'} else if (i >= target.length) { differences.push({'
-                        path: currentPath,','
-                        type: 'removed,
-    oldValue: source[i],
-                        description: `Item removed from index ${i}`);
-                } else if (this.config.deepComparison) { this.compareValues(source[i], target[i], currentPath, differences),' }'
-
-                } else if (source[i] !== target[i]) { differences.push({'
-                        path: currentPath,
-                        type: 'modified),'
-                        oldValue: source[i],
-    newValue: target[i],
-                        description: `Array item changed at index ${i}`);
-                    }
-}
-    private compareObjects(source: Record<string, any>, target: Record<string, any>, path: string, differences: DifferenceItem[]): void { const sourceKeys = Object.keys(source);
-        const targetKeys = Object.keys(target);
-        const allKeys = new Set([...sourceKeys, ...targetKeys]);
-        for (const key of allKeys) { }
-            const currentPath = path ? `${path}.${key}` : key;
-
-            if(!(key, in source)) { differences.push({'
-                    path: currentPath,','
-                    type: 'added')','
-    newValue: target[key],' }'
-
-                    description: `Property '${key}' was added`;'} else if(!(key, in target)) { differences.push({'
-                    path: currentPath,','
-                    type: 'removed')','
-    oldValue: source[key],' }'
-
-                    description: `Property '${key}' was removed`);
-            } else if (this.config.deepComparison) { this.compareValues(source[key], target[key], currentPath, differences),' }'
-
-            } else if (source[key] !== target[key]) { differences.push({'
-                    path: currentPath,
-                    type: 'modified),'
-                    oldValue: source[key]','
-    newValue: target[key],' }'
-
-                    description: `Property '${key}' was modified`);
-            }
-}
-
-    private calculateStatistics(differences: DifferenceItem[], source: any, target: any): ComparisonStatistics { const stats: ComparisonStatistics = {
-            totalItems: 0,
-            equalItems: 0,
-            differentItems: differences.length,
-            addedItems: 0,
-            removedItems: 0,
-    modifiedItems: 0 };
-';'
-
-        differences.forEach(diff => {  );
-            switch(diff.type) {
-
-                case 'added':,
-                    stats.addedItems++;
-
-                    break,
-                case 'removed':,
-                    stats.removedItems++;
-
-                    break,
-                case 'modified':','
-                case 'type_changed': }
-                    stats.modifiedItems++; }
-                    break; }
-};
-
-        // 総アイテム数を概算
-        stats.totalItems = this.countItems(source) + this.countItems(target);
-        stats.equalItems = stats.totalItems - stats.differentItems;
-
-        return stats;
-    }
-';'
-
-    private countItems(obj: any): number { ''
-        if(obj === null || obj === undefined) return 1,
-        if(typeof, obj !== 'object) return 1,'
-        if(Array.isArray(obj) return obj.length,
-        return Object.keys(obj).length }
-
-    private determineComplexity(source: any, target: any): 'low' | 'medium' | 'high' { const sourceSize = this.getObjectSize(source);
-        const targetSize = this.getObjectSize(target);
-        const maxSize = Math.max(sourceSize, targetSize);
-        if(maxSize < 10) return 'low,
-        if(maxSize < 100) return 'medium,
-        return 'high' }
-';'
-
-    private getObjectSize(obj: any): number { ''
-        if(obj === null || obj === undefined) return 0,
-        if(typeof, obj !== 'object) return 1,'
-        
         try {
-            return JSON.stringify(obj).length } catch { return 1000, // エラーの場合は大きなサイズとして扱う }
+            const maxLength = Math.max(dataset1.length, dataset2.length);
+
+            for (let i = 0; i < maxLength; i++) {
+                const data1 = dataset1[i];
+                const data2 = dataset2[i];
+
+                if (data1 && data2) {
+                    const result = this.compareNumbers(data1.value, data2.value);
+                    results.push({
+                        ...result,
+                        details: {
+                            ...result.details!,
+                            confidence: this._calculateConfidence(data1, data2)
+                        }
+                    });
+                } else {
+                    results.push({
+                        compared: false,
+                        difference: 0,
+                        percentage: 0,
+                        trend: 'equal',
+                        significance: 'low'
+                    });
+                }
+            }
+        } catch (error) {
+            getErrorHandler().handleError(error, {
+                context: 'CoreComparisonEngine.compareDatasets',
+                dataset1Length: dataset1.length,
+                dataset2Length: dataset2.length
+            });
+        }
+
+        return results;
     }
 
-    private addToHistory(result: ComparisonResult): void { this.comparisonHistory.push(result);
-        if (this.comparisonHistory.length > this.maxHistorySize) {
-    
-}
-            this.comparisonHistory.splice(0, this.comparisonHistory.length - this.maxHistorySize); }
-}
+    /**
+     * 統計的比較
+     */
+    compareStatistically(values1: number[], values2: number[]): ComparisonResult {
+        try {
+            const stats1 = this._calculateStatistics(values1);
+            const stats2 = this._calculateStatistics(values2);
 
-    getHistory(): ComparisonResult[] { return [...this.comparisonHistory],
+            const meanDiff = stats2.mean - stats1.mean;
+            const percentage = stats1.mean !== 0 ? (meanDiff / Math.abs(stats1.mean)) * 100 : 0;
 
-    clearHistory(): void { this.comparisonHistory = [] }
+            let trend: 'up' | 'down' | 'equal' = 'equal';
+            if (meanDiff > 0) trend = 'up';
+            else if (meanDiff < 0) trend = 'down';
 
+            const significance = this._calculateStatisticalSignificance(stats1, stats2);
+            const confidence = this._calculateStatisticalConfidence(stats1, stats2);
+
+            return {
+                compared: true,
+                difference: Number(meanDiff.toFixed(this.config.precision)),
+                percentage: Number(percentage.toFixed(this.config.precision)),
+                trend,
+                significance,
+                details: {
+                    absoluteDifference: Math.abs(meanDiff),
+                    relativeDifference: percentage,
+                    standardizedDifference: meanDiff / Math.sqrt((stats1.variance + stats2.variance) / 2),
+                    confidence
+                }
+            };
+        } catch (error) {
+            getErrorHandler().handleError(error, {
+                context: 'CoreComparisonEngine.compareStatistically',
+                values1Length: values1.length,
+                values2Length: values2.length
+            });
+
+            return {
+                compared: false,
+                difference: 0,
+                percentage: 0,
+                trend: 'equal',
+                significance: 'low'
+            };
+        }
+    }
+
+    /**
+     * 有意性を計算
+     */
+    private _calculateSignificance(percentage: number): 'high' | 'medium' | 'low' {
+        if (percentage >= 50) return 'high';
+        if (percentage >= 10) return 'medium';
+        return 'low';
+    }
+
+    /**
+     * 標準化差分を計算
+     */
+    private _standardizeDifference(difference: number, a: number, b: number): number {
+        const mean = (a + b) / 2;
+        const std = Math.sqrt(((a - mean) ** 2 + (b - mean) ** 2) / 2);
+        return std !== 0 ? difference / std : 0;
+    }
+
+    /**
+     * 信頼度を計算
+     */
+    private _calculateConfidence(data1: ComparisonData, data2: ComparisonData): number {
+        // 基本的な信頼度計算
+        let confidence = this.config.confidenceLevel;
+
+        // メタデータがある場合は信頼度を調整
+        if (data1.metadata?.quality && data2.metadata?.quality) {
+            const avgQuality = (data1.metadata.quality + data2.metadata.quality) / 2;
+            confidence *= avgQuality;
+        }
+
+        return Number(confidence.toFixed(3));
+    }
+
+    /**
+     * 統計情報を計算
+     */
+    private _calculateStatistics(values: number[]): any {
+        if (values.length === 0) {
+            return { mean: 0, variance: 0, stdDev: 0, count: 0 };
+        }
+
+        const sum = values.reduce((acc, val) => acc + val, 0);
+        const mean = sum / values.length;
+        
+        const variance = values.reduce((acc, val) => acc + (val - mean) ** 2, 0) / values.length;
+        const stdDev = Math.sqrt(variance);
+
+        return {
+            mean,
+            variance,
+            stdDev,
+            count: values.length,
+            sum,
+            min: Math.min(...values),
+            max: Math.max(...values)
+        };
+    }
+
+    /**
+     * 統計的有意性を計算
+     */
+    private _calculateStatisticalSignificance(stats1: any, stats2: any): 'high' | 'medium' | 'low' {
+        // 簡易的なt検定の近似
+        const pooledStd = Math.sqrt((stats1.variance + stats2.variance) / 2);
+        if (pooledStd === 0) return 'low';
+
+        const tStat = Math.abs(stats1.mean - stats2.mean) / (pooledStd * Math.sqrt(2 / Math.min(stats1.count, stats2.count)));
+        
+        if (tStat >= 2.576) return 'high';    // p < 0.01
+        if (tStat >= 1.96) return 'medium';   // p < 0.05
+        return 'low';
+    }
+
+    /**
+     * 統計的信頼度を計算
+     */
+    private _calculateStatisticalConfidence(stats1: any, stats2: any): number {
+        // サンプルサイズと分散に基づく信頼度計算
+        const minSampleSize = Math.min(stats1.count, stats2.count);
+        const maxVariance = Math.max(stats1.variance, stats2.variance);
+
+        let confidence = this.config.confidenceLevel;
+
+        // サンプルサイズが少ない場合は信頼度を下げる
+        if (minSampleSize < 10) confidence *= 0.8;
+        else if (minSampleSize < 30) confidence *= 0.9;
+
+        // 分散が大きい場合は信頼度を下げる
+        if (maxVariance > 100) confidence *= 0.9;
+
+        return Number(confidence.toFixed(3));
+    }
+
+    /**
+     * キャッシュをクリア
+     */
+    clearCache(): void {
+        this.cache.clear();
+        this.statistics.clear();
+    }
+
+    /**
+     * 設定を更新
+     */
     updateConfig(newConfig: Partial<ComparisonConfig>): void {
-        this.config = { ...this.config, ...newConfig }
+        this.config = { ...this.config, ...newConfig };
+        this.clearCache(); // 設定変更時はキャッシュをクリア
+    }
 
-    getConfig(): ComparisonConfig {
-        return { ...this.config,
+    /**
+     * 統計情報を取得
+     */
+    getStatistics(): Map<string, any> {
+        return new Map(this.statistics);
+    }
+}
 
 // シングルトンインスタンス
-let instance: CoreComparisonEngine | null = null,
+let instance: CoreComparisonEngine | null = null;
 
-export function getCoreComparisonEngine(): CoreComparisonEngine { if (!instance) {''
-        instance = new CoreComparisonEngine(' }''
+export function getCoreComparisonEngine(config?: Partial<ComparisonConfig>): CoreComparisonEngine {
+    if (!instance) {
+        instance = new CoreComparisonEngine(config);
+    }
+    return instance;
+}
