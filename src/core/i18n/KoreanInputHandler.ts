@@ -223,8 +223,7 @@ export type InputElementType = HTMLInputElement | HTMLTextAreaElement;
         if (this.optimizationSettings.autoComplete) {
             inputElement.setAttribute('autocomplete', 'on');
         }
-        }
-
+        
         // 맞춤법 검사 비활성화 (한국어는 브라우저 지원이 제한적)
         inputElement.setAttribute('spellcheck', 'false');
     }
@@ -325,7 +324,6 @@ export type InputElementType = HTMLInputElement | HTMLTextAreaElement;
         if (fixed !== text) {
             inputElement.value = fixed;
             console.log('Fixed separated jamo');
-        }
         }
         
         // 띄어쓰기 최적화
