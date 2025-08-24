@@ -7,28 +7,34 @@ import { jest } from '@jest/globals';
 import { crossEnvironmentManager } from './CrossEnvironmentManager';
 
 export class NodeEnvironmentSupport {
-  constructor(') {'
+  private isNodeEnvironment: boolean;
+  private polyfillsApplied: Set<string>;
+  private consoleOverrides: Map<string, any>;
+
+  constructor() {
     this.isNodeEnvironment = typeof window === 'undefined' && typeof global !== 'undefined';
     this.polyfillsApplied = new Set();
     this.consoleOverrides = new Map();
     
     if (this.isNodeEnvironment) {
-      this.setupNodeEnvironment() };
+      this.setupNodeEnvironment();
+    }
   }
 
   /**
    * Sets up comprehensive Node.js environment compatibility
    */
-  setupNodeEnvironment(') {'
+  setupNodeEnvironment() {
     console.log('Setting up Node.js environment support...');
     this.setupGlobalObjects();
     this.setupWebAPIs();
     this.setupBrowserSpecificAPIs();
     this.setupTestUtilities();
-    this.setupConsoleEnvironmentFeatures('),'
+    this.setupConsoleEnvironmentFeatures();
     
-    console.log('Node.js environment setup complete:', {);
-      polyfills: Array.from(this.polyfillsApplied }
+    console.log('Node.js environment setup complete:', {
+      polyfills: Array.from(this.polyfillsApplied)
+    });
   }
 
   /**
@@ -36,276 +42,287 @@ export class NodeEnvironmentSupport {
    */
   setupGlobalObjects() {
     // Window object
-    if (typeof (global as any').window = == 'undefined') {'
-      (global as any').window = {'
+    if (typeof (global as any).window === 'undefined') {
+      (global as any).window = {
         // Dimensions
         innerWidth: 1024,
-        innerHeight: 768;
+        innerHeight: 768,
         outerWidth: 1024,
-        outerHeight: 768;
-        outerHeight: 768;
-        };
+        outerHeight: 768,
+        
         // Device properties
         devicePixelRatio: 1,
         screen: {
-          width: 1920 },
-          height: 1080;
+          width: 1920,
+          height: 1080,
           availWidth: 1920,
-          availHeight: 1040;
+          availHeight: 1040,
           colorDepth: 24,
           pixelDepth: 24
         },
         
         // Navigation
         location: {
-          href: 'http://localhost:3000/' },
+          href: 'http://localhost:3000/',
           origin: 'http://localhost:3000',
           protocol: 'http:',
           host: 'localhost:3000',
-          hostname: 'localhost';
+          hostname: 'localhost',
           port: '3000',
-          pathname: '/';
-          search: ','
-          hash: '};'
+          pathname: '/',
+          search: '',
+          hash: ''
+        },
         
         // History
         history: {
-          length: 1 },
-          state: null;
-          pushState: jest.fn(
-          replaceState: jest.fn(
-          back: jest.fn(
-          forward: jest.fn(
-          go: jest.fn(' };'
+          length: 1,
+          state: null,
+          pushState: jest.fn(),
+          replaceState: jest.fn(),
+          back: jest.fn(),
+          forward: jest.fn(),
+          go: jest.fn()
+        },
         
         // Navigator
         navigator: {
-          userAgent: 'Mozilla/5.0 (Node.js Test Environment) AppleWebKit/537.36 (KHTML, like Gecko') Chrome/91.0.4472.124 Safari/537.36';' };
+          userAgent: 'Mozilla/5.0 (Node.js Test Environment) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
           platform: process.platform,
-          language: 'en-US';
-          languages: ['en-US', 'en'];
+          language: 'en-US',
+          languages: ['en-US', 'en'],
           onLine: true,
-          cookieEnabled: true;
+          cookieEnabled: true,
           doNotTrack: null,
           hardwareConcurrency: require('os').cpus().length
         },
         
         // Console
-        console: global.console;
+        console: global.console,
         
         // Timers
         setTimeout: global.setTimeout,
-        clearTimeout: global.clearTimeout;
+        clearTimeout: global.clearTimeout,
         setInterval: global.setInterval,
-        clearInterval: global.clearInterval;
+        clearInterval: global.clearInterval,
         
         // Animation frame
         requestAnimationFrame: jest.fn((callback) => {
-          return setTimeout(callback, 16), // ~60fps
-        )),
+          return setTimeout(callback, 16); // ~60fps
+        }),
         cancelAnimationFrame: jest.fn((id) => {
-          clearTimeout(id)),
+          clearTimeout(id);
+        }),
         
         // Events
-        addEventListener: jest.fn(
-        removeEventListener: jest.fn(
-        dispatchEvent: jest.fn(
+        addEventListener: jest.fn(),
+        removeEventListener: jest.fn(),
+        dispatchEvent: jest.fn(),
         
         // Misc
-        alert: jest.fn(
-        confirm: jest.fn(() => true,
-        prompt: jest.fn((') => 'test';'
-        open: jest.fn(
-        close: jest.fn(
-        focus: jest.fn(
-        blur: jest.fn(
+        alert: jest.fn(),
+        confirm: jest.fn(() => true),
+        prompt: jest.fn(() => 'test'),
+        open: jest.fn(),
+        close: jest.fn(),
+        focus: jest.fn(),
+        blur: jest.fn(),
         
         // Custom properties for testing
         __NODE_ENV_TESTING__: true
-      '),'
+      };
       
-      this.polyfillsApplied.add('window'))
+      this.polyfillsApplied.add('window');
+    }
 
-    // Document object (basic implementation),
-    if (typeof (global as any').document = == 'undefined') {'
-      (global: any).document = this.createMockDocument('),'
-      this.polyfillsApplied.add('document') }
+    // Document object (basic implementation)
+    if (typeof (global as any).document === 'undefined') {
+      (global as any).document = this.createMockDocument();
+      this.polyfillsApplied.add('document');
+    }
 
     // Ensure window and document are cross-referenced
-    global.window.document = global.document;
-    global.document.defaultView = global.window;
+    (global as any).window.document = (global as any).document;
+    (global as any).document.defaultView = (global as any).window;
   }
 
   /**
    * Creates a comprehensive mock document object
    */
-  createMockDocument(') {'
+  createMockDocument() {
     const mockElement = this.createMockElement('div');
     return {
       // Basic properties
       nodeType: 9, // DOCUMENT_NODE
       nodeName: '#document',
-      documentElement: this.createMockElement('html';
-      body: this.createMockElement('body',
-      head: this.createMockElement('head';
+      documentElement: this.createMockElement('html'),
+      body: this.createMockElement('body'),
+      head: this.createMockElement('head'),
       
       // State properties
       readyState: 'complete',
-      visibilityState: 'visible';
-      hidden: false;
+      visibilityState: 'visible',
+      hidden: false,
       
       // URL properties
       URL: 'http://localhost:3000/',
       documentURI: 'http://localhost:3000/',
       baseURI: 'http://localhost:3000/',
-      domain: 'localhost';
+      domain: 'localhost',
       
       // Element creation
-      createElement: jest.fn((tagName) => this.createMockElement(tagName.toLowerCase(),
-      createElementNS: jest.fn((ns, tagName) => this.createMockElement(tagName.toLowerCase());
-      createTextNode: jest.fn((data') => ({'
+      createElement: jest.fn((tagName) => this.createMockElement(tagName.toLowerCase())),
+      createElementNS: jest.fn((ns, tagName) => this.createMockElement(tagName.toLowerCase())),
+      createTextNode: jest.fn((data) => ({
         nodeType: 3, // TEXT_NODE
         nodeName: '#text',
-        nodeValue: data;
+        nodeValue: data,
         textContent: data
-      )),
-      createDocumentFragment: jest.fn((') => ({'
+      })),
+      createDocumentFragment: jest.fn(() => ({
         nodeType: 11, // DOCUMENT_FRAGMENT_NODE
         nodeName: '#document-fragment',
-        appendChild: jest.fn(
+        appendChild: jest.fn(),
         children: []
-      )),
+      })),
       
       // Element selection
-      getElementById: jest.fn((id') => {'
+      getElementById: jest.fn((id) => {
         const element = this.createMockElement('div');
-        element.id = id,
-        return element),
-      getElementsByClassName: jest.fn(() => [],
-      getElementsByTagName: jest.fn(() => [];
-      querySelector: jest.fn(() => mockElement,
-      querySelectorAll: jest.fn(() => [];
+        element.id = id;
+        return element;
+      }),
+      getElementsByClassName: jest.fn(() => []),
+      getElementsByTagName: jest.fn(() => []),
+      querySelector: jest.fn(() => mockElement),
+      querySelectorAll: jest.fn(() => []),
       
       // Events
-      addEventListener: jest.fn(
-      removeEventListener: jest.fn(
-      dispatchEvent: jest.fn(
+      addEventListener: jest.fn(),
+      removeEventListener: jest.fn(),
+      dispatchEvent: jest.fn(),
       createEvent: jest.fn(() => ({
-        initEvent: jest.fn(
-        preventDefault: jest.fn(
-        stopPropagation: jest.fn());
+        initEvent: jest.fn(),
+        preventDefault: jest.fn(),
+        stopPropagation: jest.fn()
+      })),
       
       // Styles
-      createStyleSheet: jest.fn(
-      styleSheets: [];
+      createStyleSheet: jest.fn(),
+      styleSheets: [],
       
       // Custom properties for testing
       __MOCK_DOCUMENT__: true
-    ) }
+    };
+  }
 
   /**
    * Creates a comprehensive mock DOM element
    */
-  createMockElement(tagName {
-    const element = {
+  createMockElement(tagName: string) {
+    const element: any = {
       // Basic properties
       nodeType: 1, // ELEMENT_NODE
-      nodeName: tagName.toUpperCase(
-      tagName: tagName.toUpperCase(','
-      tagName: tagName.toUpperCase(','
-        };
+      nodeName: tagName.toUpperCase(),
+      tagName: tagName.toUpperCase(),
+      
       // Attributes
-      id: ','
-      className: ','
+      id: '',
+      className: '',
       classList: {
-        add: jest.fn( },
-        remove: jest.fn(
-        toggle: jest.fn(
+        add: jest.fn(),
+        remove: jest.fn(),
+        toggle: jest.fn(),
         contains: jest.fn(() => false),
         replace: jest.fn()
-      '),'
+      },
       
       // Content
-      innerHTML: ','
-      outerHTML: ','
-      textContent: ','
-      innerText: ','
-      innerText: ','
-        };
+      innerHTML: '',
+      outerHTML: '',
+      textContent: '',
+      innerText: '',
+      
       // Dimensions and position
       offsetWidth: 100,
-      offsetHeight: 100;
+      offsetHeight: 100,
       clientWidth: 100,
-      clientHeight: 100;
+      clientHeight: 100,
       scrollWidth: 100,
-      scrollHeight: 100;
+      scrollHeight: 100,
       offsetLeft: 0,
-      offsetTop: 0;
+      offsetTop: 0,
       scrollLeft: 0,
-      scrollTop: 0;
-      scrollTop: 0;
-        };
+      scrollTop: 0,
+      
       // Style
-      style: new Proxy({), {
-        get: (') => ',
+      style: new Proxy({}, {
+        get: () => '',
         set: () => true
       }),
       
       // Attributes methods
-      getAttribute: jest.fn(() => null,
-      setAttribute: jest.fn(
-      removeAttribute: jest.fn(
-      hasAttribute: jest.fn(() => false,
-      getAttributeNames: jest.fn(() => [];
+      getAttribute: jest.fn(() => null),
+      setAttribute: jest.fn(),
+      removeAttribute: jest.fn(),
+      hasAttribute: jest.fn(() => false),
+      getAttributeNames: jest.fn(() => []),
       
       // DOM tree methods
       appendChild: jest.fn((child) => {
-        element.children = element.children || [],
+        element.children = element.children || [];
         element.children.push(child);
-        return child),
-      removeChild: jest.fn(
-      insertBefore: jest.fn(
-      replaceChild: jest.fn(
-      cloneNode: jest.fn(() => this.createMockElement(tagName;
+        return child;
+      }),
+      removeChild: jest.fn(),
+      insertBefore: jest.fn(),
+      replaceChild: jest.fn(),
+      cloneNode: jest.fn(() => this.createMockElement(tagName)),
       
       // Selection methods
-      querySelector: jest.fn(
-      querySelectorAll: jest.fn(() => [],
-      getElementsByClassName: jest.fn(() => [];
-      getElementsByTagName: jest.fn(() => [];
+      querySelector: jest.fn(),
+      querySelectorAll: jest.fn(() => []),
+      getElementsByClassName: jest.fn(() => []),
+      getElementsByTagName: jest.fn(() => []),
       
       // Events
-      addEventListener: jest.fn(
-      removeEventListener: jest.fn(
-      dispatchEvent: jest.fn(
+      addEventListener: jest.fn(),
+      removeEventListener: jest.fn(),
+      dispatchEvent: jest.fn(),
       
       // Misc methods
-      focus: jest.fn(
-      blur: jest.fn(
-      click: jest.fn(
-      scrollIntoView: jest.fn(
-      
-      // Form-specific properties (if applicable')'
-      ...(tagName === 'input' || tagName === 'textarea' || tagName === 'select' ? { : undefined
-        value: ';'
+      focus: jest.fn(),
+      blur: jest.fn(),
+      click: jest.fn(),
+      scrollIntoView: jest.fn()
+    };
+
+    // Form-specific properties (if applicable)
+    if (tagName === 'input' || tagName === 'textarea' || tagName === 'select') {
+      Object.assign(element, {
+        value: '',
         checked: false,
-        disabled: false;
+        disabled: false,
         readOnly: false,
         required: false
-      ) : {,
-      
-      // Canvas-specific methods (if applicable')'
-      ...(tagName === 'canvas' ? { : undefined
+      });
+    }
+    
+    // Canvas-specific methods (if applicable)
+    if (tagName === 'canvas') {
+      Object.assign(element, {
         width: 800,
-        height: 600;
-        getContext: jest.fn((type') => {'
+        height: 600,
+        getContext: jest.fn((type) => {
           if (type === '2d') {
-            return crossEnvironmentManager.setupCanvasCompatibility()),
-          return null),
-        toDataURL: jest.fn((') => 'data:image/png,base64,mock');'
-        toBlob: jest.fn((callback) => callback && callback(new Blob())
-      ) : {)}
-    };
+            return crossEnvironmentManager.setupCanvasCompatibility();
+          }
+          return null;
+        }),
+        toDataURL: jest.fn(() => 'data:image/png;base64,mock'),
+        toBlob: jest.fn((callback) => callback && callback(new Blob()))
+      });
+    }
 
     // Add parent/child relationships
     element.parentNode = null;
@@ -325,45 +342,66 @@ export class NodeEnvironmentSupport {
    */
   setupWebAPIs() {
     // Blob API
-    if (typeof (global as any').Blob = == 'undefined') {'
-      (global: any).Blob = class MockBlob {
-        constructor(parts = [], options = {) {
-          this.size = parts.reduce((size, part) => size + (part.length || 0), 0'),'
-          this.type = options.type || ';'
-          this.parts = parts }
+    if (typeof (global as any).Blob === 'undefined') {
+      (global as any).Blob = class MockBlob {
+        size: number;
+        type: string;
+        parts: any[];
+
+        constructor(parts: any[] = [], options: any = {}) {
+          this.size = parts.reduce((size, part) => size + (part.length || 0), 0);
+          this.type = options.type || '';
+          this.parts = parts;
+        }
         
-        slice(start = 0, end = this.size, contentType = ') {'
-          return new MockBlob(this.parts.slice(start, end), { type: contentType,);
+        slice(start = 0, end = this.size, contentType = '') {
+          return new MockBlob(this.parts.slice(start, end), { type: contentType });
         }
         
         stream() {
-          return new ReadableStream() }
+          return new ReadableStream();
+        }
         
-        text(') {'
-          return Promise.resolve(this.parts.join(') }'
+        text() {
+          return Promise.resolve(this.parts.join(''));
+        }
         
         arrayBuffer() {
-          return Promise.resolve(new ArrayBuffer(this.size)') }'
+          return Promise.resolve(new ArrayBuffer(this.size));
+        }
       };
       
       this.polyfillsApplied.add('Blob');
     }
 
     // File API
-    if (typeof (global as any').File = == 'undefined') {'
-      (global: any).File = class MockFile extends global.Blob {
-        constructor(parts, name, options = {) {
+    if (typeof (global as any).File === 'undefined') {
+      (global as any).File = class MockFile extends (global as any).Blob {
+        name: string;
+        lastModified: number;
+
+        constructor(parts: any[], name: string, options: any = {}) {
           super(parts, options);
           this.name = name;
-          this.lastModified = options.lastModified || Date.now(') }'
+          this.lastModified = options.lastModified || Date.now();
+        }
       };
       
       this.polyfillsApplied.add('File');
     }
 
     // FileReader API
-    if (typeof (global as any').FileReader = == 'undefined') {'
-      (global: any).FileReader = class MockFileReader {
+    if (typeof (global as any).FileReader === 'undefined') {
+      (global as any).FileReader = class MockFileReader {
+        readyState: number;
+        result: any;
+        error: any;
+        onload: any;
+        onerror: any;
+        onloadstart: any;
+        onloadend: any;
+        onprogress: any;
+
         constructor() {
           this.readyState = 0; // EMPTY
           this.result = null;
@@ -373,27 +411,31 @@ export class NodeEnvironmentSupport {
           this.onerror = null;
           this.onloadstart = null;
           this.onloadend = null;
-          this.onprogress = null }
+          this.onprogress = null;
+        }
         
-        readAsText(file {
+        readAsText(file: any) {
           this.readyState = 1; // LOADING
           if (this.onloadstart) this.onloadstart();
-          setTimeout((') => {'
+          setTimeout(() => {
             this.readyState = 2; // DONE
             this.result = 'mock file content';
             if (this.onload) this.onload();
-            if (this.onloadend) this.onloadend() }, 10);
+            if (this.onloadend) this.onloadend();
+          }, 10);
         }
         
-        readAsDataURL(file {
-          this.readAsText(file'),'
-          this.result = 'data:text/plain,base64,bW9jayBmaWxlIGNvbnRlbnQ=' }
-        
-        readAsArrayBuffer(file {
+        readAsDataURL(file: any) {
           this.readAsText(file);
-          this.result = new ArrayBuffer(16) }
+          this.result = 'data:text/plain;base64,bW9jayBmaWxlIGNvbnRlbnQ=';
+        }
         
-        abort(') {'
+        readAsArrayBuffer(file: any) {
+          this.readAsText(file);
+          this.result = new ArrayBuffer(16);
+        }
+        
+        abort() {
           this.readyState = 2; // DONE
         }
       };
@@ -402,58 +444,78 @@ export class NodeEnvironmentSupport {
     }
 
     // URL API
-    if (typeof (global as any').URL = == 'undefined') {'
-      (global: any).URL = class MockURL {
-        constructor(url, base') {'
+    if (typeof (global as any).URL === 'undefined') {
+      (global as any).URL = class MockURL {
+        href: string;
+        origin: string;
+        protocol: string;
+        host: string;
+        hostname: string;
+        port: string;
+        pathname: string;
+        search: string;
+        hash: string;
+
+        constructor(url: string, base?: string) {
           this.href = url;
-          this.origin = 'http: //localhost:3000';
-          this.protocol = 'http: ';
-          this.host = 'localhost: 3000';
+          this.origin = 'http://localhost:3000';
+          this.protocol = 'http:';
+          this.host = 'localhost:3000';
           this.hostname = 'localhost';
           this.port = '3000';
           this.pathname = '/';
-          this.search = ';'
-          this.hash = ' }'
+          this.search = '';
+          this.hash = '';
+        }
         
-        static createObjectURL(object {
-          return 'blob: http://localhost:3000/mock-object-url'
-            }
+        static createObjectURL(object: any) {
+          return 'blob:http://localhost:3000/mock-object-url';
+        }
         
-        static revokeObjectURL(url {
+        static revokeObjectURL(url: string) {
           // Mock implementation
         }
-      ');'
+      };
       
       this.polyfillsApplied.add('URL');
     }
 
     // FormData API
-    if (typeof (global as any').FormData = == 'undefined') {'
-      (global: any).FormData = class MockFormData {
+    if (typeof (global as any).FormData === 'undefined') {
+      (global as any).FormData = class MockFormData {
+        data: Map<string, any[]>;
+
         constructor() {
-          this.data = new Map() }
-        
-        append(name, value) {
-          if (!this.data.has(name) {
-            this.data.set(name, []) }
-          this.data.get(name.push(value);
+          this.data = new Map();
         }
         
-        delete(name {
-          this.data.delete(name) }
+        append(name: string, value: any) {
+          if (!this.data.has(name)) {
+            this.data.set(name, []);
+          }
+          this.data.get(name)!.push(value);
+        }
         
-        get(name {
+        delete(name: string) {
+          this.data.delete(name);
+        }
+        
+        get(name: string) {
           const values = this.data.get(name);
           return values ? values[0] : null;
+        }
         
-        getAll(name {
-          return this.data.get(name || []) }
+        getAll(name: string) {
+          return this.data.get(name) || [];
+        }
         
-        has(name {
-          return this.data.has(name) }
+        has(name: string) {
+          return this.data.has(name);
+        }
         
-        set(name, value) {
-          this.data.set(name, [value]') }'
+        set(name: string, value: any) {
+          this.data.set(name, [value]);
+        }
       };
       
       this.polyfillsApplied.add('FormData');
@@ -463,107 +525,131 @@ export class NodeEnvironmentSupport {
   /**
    * Sets up browser-specific APIs with Node.js fallbacks
    */
-  setupBrowserSpecificAPIs(') {'
+  setupBrowserSpecificAPIs() {
     // Geolocation API
-    if (typeof global.navigator !== 'undefined' && !global.navigator.geolocation) {
-      global.navigator.geolocation = {
+    if (typeof (global as any).navigator !== 'undefined' && !(global as any).navigator.geolocation) {
+      (global as any).navigator.geolocation = {
         getCurrentPosition: jest.fn((success, error) => {
           if (success) {
             success({
               coords: {
-                latitude: 37.7749 },
-                longitude: -122.4194;
+                latitude: 37.7749,
+                longitude: -122.4194,
                 accuracy: 10
               }
-            );
+            });
           }
-        },
-        watchPosition: jest.fn(() => 1,
+        }),
+        watchPosition: jest.fn(() => 1),
         clearWatch: jest.fn()
-      ');'
-      
-      this.polyfillsApplied.add('geolocation');
-    )
-
-    // Notification API
-    if (typeof (global as any').Notification = == 'undefined') {'
-      (global: any).Notification = class MockNotification {
-        constructor(title, options = {)') {'
-          this.title = title;
-          this.body = options.body || ';'
-          this.icon = options.icon || ';'
-          this.tag = options.tag || ';'
-          
-          setTimeout(() => {
-            if (this.onshow) this.onshow() }, 10);
-        }
-        
-        static requestPermission(') {'
-          return Promise.resolve('granted') }
-        
-        close() {
-          if (this.onclose) this.onclose(') }'
       };
       
-      global.Notification.permission = 'granted';
+      this.polyfillsApplied.add('geolocation');
+    }
+
+    // Notification API
+    if (typeof (global as any).Notification === 'undefined') {
+      (global as any).Notification = class MockNotification {
+        title: string;
+        body: string;
+        icon: string;
+        tag: string;
+        onshow: any;
+        onclose: any;
+
+        constructor(title: string, options: any = {}) {
+          this.title = title;
+          this.body = options.body || '';
+          this.icon = options.icon || '';
+          this.tag = options.tag || '';
+          
+          setTimeout(() => {
+            if (this.onshow) this.onshow();
+          }, 10);
+        }
+        
+        static requestPermission() {
+          return Promise.resolve('granted');
+        }
+        
+        close() {
+          if (this.onclose) this.onclose();
+        }
+      };
+      
+      (global as any).Notification.permission = 'granted';
       this.polyfillsApplied.add('Notification');
     }
 
     // IntersectionObserver API
-    if (typeof (global as any').IntersectionObserver = == 'undefined') {'
-      (global: any).IntersectionObserver = class MockIntersectionObserver {
-        constructor(callback, options = {) {
+    if (typeof (global as any).IntersectionObserver === 'undefined') {
+      (global as any).IntersectionObserver = class MockIntersectionObserver {
+        callback: any;
+        options: any;
+        observedElements: Set<any>;
+
+        constructor(callback: any, options: any = {}) {
           this.callback = callback;
           this.options = options;
-          this.observedElements = new Set() }
+          this.observedElements = new Set();
+        }
         
-        observe(element {
+        observe(element: any) {
           this.observedElements.add(element);
           // Simulate intersection
           setTimeout(() => {
             this.callback([{
               target: element,
-              isIntersecting: true;
-              intersectionRatio: 1 }]);
+              isIntersecting: true,
+              intersectionRatio: 1
+            }]);
           }, 10);
         }
         
-        unobserve(element {
-          this.observedElements.delete(element) }
+        unobserve(element: any) {
+          this.observedElements.delete(element);
+        }
         
         disconnect() {
-          this.observedElements.clear(') }'
+          this.observedElements.clear();
+        }
       };
       
       this.polyfillsApplied.add('IntersectionObserver');
     }
 
     // ResizeObserver API
-    if (typeof (global as any').ResizeObserver = == 'undefined') {'
-      (global: any).ResizeObserver = class MockResizeObserver {
-        constructor(callback {
+    if (typeof (global as any).ResizeObserver === 'undefined') {
+      (global as any).ResizeObserver = class MockResizeObserver {
+        callback: any;
+        observedElements: Set<any>;
+
+        constructor(callback: any) {
           this.callback = callback;
-          this.observedElements = new Set() }
+          this.observedElements = new Set();
+        }
         
-        observe(element {
+        observe(element: any) {
           this.observedElements.add(element);
           // Simulate resize
           setTimeout(() => {
             this.callback([{
               target: element,
               contentRect: {
-                width: element.offsetWidth || 100 },
+                width: element.offsetWidth || 100,
                 height: element.offsetHeight || 100
               }
             }]);
           }, 10);
         }
         
-        unobserve(element {
-          this.observedElements.delete(element) }
+        unobserve(element: any) {
+          this.observedElements.delete(element);
+        }
         
         disconnect() {
-          this.observedElements.clear(') }'
+          this.observedElements.clear();
+        }
       };
       
       this.polyfillsApplied.add('ResizeObserver');
@@ -575,34 +661,35 @@ export class NodeEnvironmentSupport {
    */
   setupTestUtilities() {
     // Mock requestIdleCallback
-    if (typeof (global as any').requestIdleCallback = == 'undefined') {'
-      (global: any).requestIdleCallback = jest.fn((callback) => {
+    if (typeof (global as any).requestIdleCallback === 'undefined') {
+      (global as any).requestIdleCallback = jest.fn((callback) => {
         return setTimeout(() => {
           callback({
             didTimeout: false,
             timeRemaining: () => 50
-          )), 1) });
+          });
+        }, 1);
+      });
       
-      (global: any).cancelIdleCallback = jest.fn(clearTimeout');'
+      (global as any).cancelIdleCallback = jest.fn(clearTimeout);
       this.polyfillsApplied.add('requestIdleCallback');
     }
 
     // Mock Image constructor
-    if (typeof (global as any').Image = == 'undefined') {'
-      (global: any).Image = class MockImage {
-        constructor(') {'
-          this.src = ';'
-          this.alt = ';'
-          this.width = 0;
-          this.height = 0;
-          this.complete = false;
-          this.naturalWidth = 0;
-          this.naturalHeight = 0;
-          
-          this.onload = null;
-          this.onerror = null }
+    if (typeof (global as any).Image === 'undefined') {
+      (global as any).Image = class MockImage {
+        src: string = '';
+        alt: string = '';
+        width: number = 0;
+        height: number = 0;
+        complete: boolean = false;
+        naturalWidth: number = 0;
+        naturalHeight: number = 0;
+        onload: any = null;
+        onerror: any = null;
+        private _src: string = '';
         
-        set src(value {
+        set src(value: string) {
           this._src = value;
           // Simulate image loading
           setTimeout(() => {
@@ -611,30 +698,34 @@ export class NodeEnvironmentSupport {
             this.naturalHeight = 100;
             this.width = 100;
             this.height = 100;
-            if (this.onload) this.onload() }, 10);
+            if (this.onload) this.onload();
+          }, 10);
         }
         
-        get src(') {'
-          return this._src || ' }'
+        get src() {
+          return this._src || '';
+        }
       };
       
       this.polyfillsApplied.add('Image');
     }
 
     // Mock crypto.getRandomValues for Node.js
-    if (typeof (global as any').crypto = == 'undefined') {'
-      import crypto from 'crypto',
-      (global: any).crypto = {
-        getRandomValues: (array) => {
+    if (typeof (global as any).crypto === 'undefined') {
+      const crypto = require('crypto');
+      (global as any).crypto = {
+        getRandomValues: (array: any) => {
           const bytes = crypto.randomBytes(array.length);
           array.set(bytes);
-          return array },
+          return array;
+        },
         
-        randomUUID: () => crypto.randomUUID ? crypto.randomUUID(') : '
-          'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c {);
-            const r = Math.random(') * 16 | 0,'
-            const v = c === 'x' ? r: (r & 0x3 | 0x8;
-            return v.toString(16) }');'
+        randomUUID: () => crypto.randomUUID ? crypto.randomUUID() :
+          'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+            const r = Math.random() * 16 | 0;
+            const v = c === 'x' ? r : (r & 0x3 | 0x8);
+            return v.toString(16);
+          })
       };
       
       this.polyfillsApplied.add('crypto');
@@ -650,32 +741,34 @@ export class NodeEnvironmentSupport {
     // Memory usage monitoring
     this.setupMemoryMonitoring();
     // Process signal handling for tests
-    this.setupProcessSignalHandling() }
+    this.setupProcessSignalHandling();
+  }
 
   /**
    * Sets up enhanced console output for Node.js testing
    */
-  setupEnhancedConsole(') {'
+  setupEnhancedConsole() {
     const originalConsole = { ...console };
     
     // Store original methods
-    this.consoleOverrides.set('log', originalConsole.log');'
-    this.consoleOverrides.set('warn', originalConsole.warn');'
-    this.consoleOverrides.set('error', originalConsole.error');'
-    this.consoleOverrides.set('info', originalConsole.info');'
+    this.consoleOverrides.set('log', originalConsole.log);
+    this.consoleOverrides.set('warn', originalConsole.warn);
+    this.consoleOverrides.set('error', originalConsole.error);
+    this.consoleOverrides.set('info', originalConsole.info);
     
     // Enhanced logging with timestamps and context
-    const createEnhancedLogger = (level, color = ') => {'
-      return (...args) => {
+    const createEnhancedLogger = (level: string, color = '') => {
+      return (...args: any[]) => {
         const timestamp = new Date().toISOString();
-        const prefix = `[${timestamp}] [${level.toUpperCase('}}] [NODE-TEST]`;'
+        const prefix = `[${timestamp}] [${level.toUpperCase()}] [NODE-TEST]`;
         
         if (process.env.NODE_ENV === 'test' && !process.env.VERBOSE_TESTS) {
           // Suppress most console output during tests unless explicitly enabled
-          return }
+          return;
+        }
         
-        originalConsole[level](color + prefix, ...args');'
-      }
+        (originalConsole as any)[level](color + prefix, ...args);
+      };
     };
     
     console.log = createEnhancedLogger('log', '\x1b[37m'); // White
@@ -690,53 +783,52 @@ export class NodeEnvironmentSupport {
   setupMemoryMonitoring() {
     // Monitor memory usage during tests
     const memoryMonitor = {
-      start: process.memoryUsage(
+      start: process.memoryUsage(),
       current: () => process.memoryUsage(),
-      current: () => process.memoryUsage();
-        };
       getUsageReport: () => {
         const current = process.memoryUsage();
-        const start = memoryMonitor.start,
+        const start = memoryMonitor.start;
         
         return {
           current: {
-            rss: Math.round(current.rss / 1024 / 1024 * 100) / 100 },
-            heapTotal: Math.round(current.heapTotal / 1024 / 1024 * 100) / 100;
+            rss: Math.round(current.rss / 1024 / 1024 * 100) / 100,
+            heapTotal: Math.round(current.heapTotal / 1024 / 1024 * 100) / 100,
             heapUsed: Math.round(current.heapUsed / 1024 / 1024 * 100) / 100,
             external: Math.round(current.external / 1024 / 1024 * 100) / 100
           },
           growth: {
-            rss: Math.round((current.rss - start.rss) / 1024 / 1024 * 100) / 100 },
-            heapTotal: Math.round((current.heapTotal - start.heapTotal) / 1024 / 1024 * 100) / 100;
+            rss: Math.round((current.rss - start.rss) / 1024 / 1024 * 100) / 100,
+            heapTotal: Math.round((current.heapTotal - start.heapTotal) / 1024 / 1024 * 100) / 100,
             heapUsed: Math.round((current.heapUsed - start.heapUsed) / 1024 / 1024 * 100) / 100,
             external: Math.round((current.external - start.external) / 1024 / 1024 * 100) / 100
           }
-        }
+        };
       }
     };
     
-    (global: any).__memoryMonitor = memoryMonitor;
+    (global as any).__memoryMonitor = memoryMonitor;
   }
 
   /**
    * Sets up process signal handling for graceful test termination
    */
   setupProcessSignalHandling() {
-    const handleExit = (signal) => {
+    const handleExit = (signal: string) => {
       if (process.env.VERBOSE_TESTS) {
         console.log(`\nReceived ${signal}, cleaning up Node.js test environment...`);
         
-        if (global.__memoryMonitor) {
-          const report = global.__memoryMonitor.getUsageReport('),'
-          console.log('Memory usage report:', report') }'
+        if ((global as any).__memoryMonitor) {
+          const report = (global as any).__memoryMonitor.getUsageReport();
+          console.log('Memory usage report:', report);
+        }
         
-        console.log('Applied polyfills:', Array.from(this.polyfillsApplied)');'
+        console.log('Applied polyfills:', Array.from(this.polyfillsApplied));
       }
     };
     
-    process.on('SIGINT', (') => handleExit('SIGINT')');
-    process.on('SIGTERM', (') => handleExit('SIGTERM')');
-    process.on('exit', (') => handleExit('exit');'
+    process.on('SIGINT', () => handleExit('SIGINT'));
+    process.on('SIGTERM', () => handleExit('SIGTERM'));
+    process.on('exit', () => handleExit('exit'));
   }
 
   /**
@@ -744,7 +836,8 @@ export class NodeEnvironmentSupport {
    */
   restoreConsole() {
     for (const [method, originalFn] of this.consoleOverrides) {
-      console[method] = originalFn }
+      (console as any)[method] = originalFn;
+    }
     this.consoleOverrides.clear();
   }
 
@@ -754,37 +847,43 @@ export class NodeEnvironmentSupport {
   getEnvironmentInfo() {
     return {
       nodeVersion: process.version,
-      platform: process.platform;
+      platform: process.platform,
       arch: process.arch,
-      memoryUsage: process.memoryUsage(
-      uptime: process.uptime(
-      polyfillsApplied: Array.from(this.polyfillsApplied,
+      memoryUsage: process.memoryUsage(),
+      uptime: process.uptime(),
+      polyfillsApplied: Array.from(this.polyfillsApplied),
       environmentVariables: {
-        NODE_ENV: process.env.NODE_ENV },
-        VERBOSE_TESTS: process.env.VERBOSE_TESTS;
+        NODE_ENV: process.env.NODE_ENV,
+        VERBOSE_TESTS: process.env.VERBOSE_TESTS,
         CI: process.env.CI
       }
-    }
+    };
   }
 
   /**
    * Validates Node.js environment setup
    */
-  validateEnvironment(') {'
+  validateEnvironment() {
     const validation = {
       globalObjects: {
-        window: typeof global.window !== 'undefined' },
-        document: typeof global.document !== 'undefined';
-        navigator: typeof global.navigator !== 'undefined'
+        window: typeof (global as any).window !== 'undefined',
+        document: typeof (global as any).document !== 'undefined',
+        navigator: typeof (global as any).navigator !== 'undefined'
       },
       webAPIs: {
-        fetch: typeof global.fetch !== 'undefined' },
-        Blob: typeof global.Blob !== 'undefined';
-        URL: typeof global.URL !== 'undefined',
-        FormData: typeof global.FormData !== 'undefined'
+        fetch: typeof (global as any).fetch !== 'undefined',
+        Blob: typeof (global as any).Blob !== 'undefined',
+        URL: typeof (global as any).URL !== 'undefined',
+        FormData: typeof (global as any).FormData !== 'undefined'
       },
-      polyfills: Array.from(this.polyfillsApplied','
-      memoryMonitoring: typeof global.__memoryMonitor !== 'undefined'
+      polyfills: Array.from(this.polyfillsApplied),
+      memoryMonitoring: typeof (global as any).__memoryMonitor !== 'undefined',
+      isReady: false,
+      readiness: {
+        globalObjects: false,
+        webAPIs: false,
+        polyfills: false
+      }
     };
     
     const allGlobalsReady = Object.values(validation.globalObjects).every(Boolean);
@@ -793,7 +892,7 @@ export class NodeEnvironmentSupport {
     validation.isReady = allGlobalsReady && allWebAPIsReady;
     validation.readiness = {
       globalObjects: allGlobalsReady,
-      webAPIs: allWebAPIsReady;
+      webAPIs: allWebAPIsReady,
       polyfills: this.polyfillsApplied.size > 0
     };
     
@@ -805,6 +904,6 @@ export class NodeEnvironmentSupport {
 export const nodeEnvironmentSupport = new NodeEnvironmentSupport();
 
 // Export helper functions
-export const isNodeTestEnvironment = () => nodeEnvironmentSupported.isNodeEnvironment;
+export const isNodeTestEnvironment = () => nodeEnvironmentSupport.isNodeEnvironment;
 export const getNodeEnvironmentInfo = () => nodeEnvironmentSupport.getEnvironmentInfo();
-export const validateNodeEnvironment = () => nodeEnvironmentSupport.validateEnvironment(');'
+export const validateNodeEnvironment = () => nodeEnvironmentSupport.validateEnvironment();
