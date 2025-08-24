@@ -4,74 +4,172 @@
  * Main Controller Patternに従い、サブコンポーネントに処理を委譲
  */
 
-import { ErrorHandler  } from '../utils/ErrorHandler.js';
-';'
-// サブコンポーネントのインポート
-import { MobileAccessibilityValidator  } from './mobile-accessibility/MobileAccessibilityValidator.js';
+import { ErrorHandler } from '../utils/ErrorHandler.js';
+import { MobileAccessibilityValidator } from './mobile-accessibility/MobileAccessibilityValidator.js';
 
-class MobileAccessibilityManager { constructor(gameEngine) {
+interface AccessibilityConfig {
+    screenReader: {
+        enabled: boolean;
+        announcements: boolean;
+        liveRegions: boolean;
+        roleDescriptions: boolean;
+        keyboardNavigation: boolean;
+        focusManagement: boolean;
+    };
+    visualSupport: {
+        highContrast: boolean;
+        colorBlindnessSupport: boolean;
+        colorBlindnessType: 'none' | 'protanopia' | 'deuteranopia' | 'tritanopia';
+        fontSize: 'small' | 'normal' | 'large' | 'xlarge';
+        lineHeight: 'normal' | 'relaxed' | 'loose';
+        letterSpacing: 'normal' | 'wide' | 'wider';
+    };
+    motorSupport: {
+        touchAreaEnlarged: boolean;
+        hoverAlternatives: boolean;
+        gestureAlternatives: boolean;
+        voiceControl: boolean;
+        switchControl: boolean;
+    };
+    cognitiveSupport: {
+        reducedMotion: boolean;
+        simplifiedUI: boolean;
+        contentPausing: boolean;
+        timeExtensions: boolean;
+        readingMode: boolean;
+    };
+    auditorySupport: {
+        visualIndicators: boolean;
+        hapticFeedback: boolean;
+        captions: boolean;
+        signLanguage: boolean;
+    };
+}
+
+interface ScreenReaderState {
+    active: boolean;
+    currentFocus: HTMLElement | null;
+    announceQueue: string[];
+    liveRegions: Map<string, HTMLElement>;
+    navigationMode: 'normal' | 'explore' | 'reading';
+}
+
+interface ColorSupport {
+    filters: Map<string, string>;
+    contrastRatios: Map<string, number>;
+    colorPalettes: Map<string, string[]>;
+    currentFilter: string | null;
+}
+
+interface FocusManager {
+    focusableElements: HTMLElement[];
+    currentIndex: number;
+    focusHistory: HTMLElement[];
+    trapStack: HTMLElement[];
+}
+
+interface FeedbackSystems {
+    speechSynthesis: SpeechSynthesis | null;
+    haptics: any | null;
+    audioBeeps: Map<string, HTMLAudioElement>;
+}
+
+export class MobileAccessibilityManager {
+    private gameEngine: any;
+    private errorHandler: any;
+    private validator: MobileAccessibilityValidator;
+    private accessibilityConfig: AccessibilityConfig;
+    private screenReaderState: ScreenReaderState;
+    private colorSupport: ColorSupport;
+    private focusManager: FocusManager;
+    private feedbackSystems: FeedbackSystems;
+
+    constructor(gameEngine: any) {
         this.gameEngine = gameEngine;
         this.errorHandler = ErrorHandler.getInstance();
-        ','
+        
         // サブコンポーネントの初期化（依存性注入）
         this.validator = new MobileAccessibilityValidator(this);
         
         // アクセシビリティ設定
-        this.accessibilityConfig = { screenReader: { enabled: false,
+        this.accessibilityConfig = {
+            screenReader: {
+                enabled: false,
                 announcements: true,
                 liveRegions: true,
                 roleDescriptions: true,
-    keyboardNavigation: true,
-                focusManagement: true,
-            visualSupport: { highContrast: false,
-                colorBlindnessSupport: false  ,
-                colorBlindnessType: 'none', // 'protanopia', 'deuteranopia', 'tritanopia'';'
-                fontSize: 'normal', // 'small', 'normal', 'large', 'xlarge'';'
-                lineHeight: 'normal', // 'normal', 'relaxed', 'loose'';'
-                letterSpacing: 'normal' // 'normal', 'wide', 'wider' };
-            motorSupport: { touchAreaEnlarged: false,
-                hoverAlternatives: true  ,
+                keyboardNavigation: true,
+                focusManagement: true
+            },
+            visualSupport: {
+                highContrast: false,
+                colorBlindnessSupport: false,
+                colorBlindnessType: 'none',
+                fontSize: 'normal',
+                lineHeight: 'normal',
+                letterSpacing: 'normal'
+            },
+            motorSupport: {
+                touchAreaEnlarged: false,
+                hoverAlternatives: true,
                 gestureAlternatives: true,
-    voiceControl: false,
-                switchControl: false,
-            cognitiveSupport: { reducedMotion: false,
-                simplifiedUI: false  ,
+                voiceControl: false,
+                switchControl: false
+            },
+            cognitiveSupport: {
+                reducedMotion: false,
+                simplifiedUI: false,
                 contentPausing: true,
-    timeExtensions: false,
-                readingMode: false,
-            auditorySupport: { visualIndicators: true,
-                hapticFeedback: true  ,
-    captions: false,
-                signLanguage: false;
+                timeExtensions: false,
+                readingMode: false
+            },
+            auditorySupport: {
+                visualIndicators: true,
+                hapticFeedback: true,
+                captions: false,
+                signLanguage: false
+            }
+        };
+
         // スクリーンリーダー状態
-        this.screenReaderState = { active: false,
+        this.screenReaderState = {
+            active: false,
             currentFocus: null,
             announceQueue: [],
-    liveRegions: new Map(
-            navigationMode: 'normal' // 'normal', 'explore', 'reading' };
+            liveRegions: new Map(),
+            navigationMode: 'normal'
+        };
         
         // 色覚支援設定
-        this.colorSupport = { filters: new Map(
-            contrastRatios: new Map(
-            colorPalettes: new Map(
-    currentFilter: null;
+        this.colorSupport = {
+            filters: new Map(),
+            contrastRatios: new Map(),
+            colorPalettes: new Map(),
+            currentFilter: null
+        };
+
         // フォーカス管理
-        this.focusManager = { focusableElements: [],
+        this.focusManager = {
+            focusableElements: [],
             currentIndex: -1,
             focusHistory: [],
-    trapStack: []  };
-        // 音声・触覚フィードバック)
-        this.feedbackSystems = { speechSynthesis: null)
-            haptics: null),
-            audioBeeps: new Map( };
-        )
+            trapStack: []
+        };
+
+        // 音声・触覚フィードバック
+        this.feedbackSystems = {
+            speechSynthesis: null,
+            haptics: null,
+            audioBeeps: new Map()
+        };
+
         this.initialize();
     }
     
     /**
      * システム初期化（軽量化）
      */
-    initialize() {
+    private initialize(): void {
         try {
             this.detectAccessibilityCapabilities();
             this.setupScreenReaderSupport();
@@ -82,10 +180,10 @@ class MobileAccessibilityManager { constructor(gameEngine) {
             this.loadAccessibilitySettings();
             this.applyInitialSettings();
 
-            console.log('[MobileAccessibilityManager] モバイルアクセシビリティシステム初期化完了');' }'
-
+            console.log('[MobileAccessibilityManager] モバイルアクセシビリティシステム初期化完了');
         } catch (error) {
-            this.errorHandler.handleError(error, 'MobileAccessibilityManager.initialize' }'
+            this.errorHandler.handleError(error, 'MobileAccessibilityManager.initialize');
+        }
     }
     
     // ========================================
@@ -95,1001 +193,649 @@ class MobileAccessibilityManager { constructor(gameEngine) {
     /**
      * モバイルアクセシビリティ検証（MobileAccessibilityValidatorに委譲）
      */
-    async validateAccessibility() { ''
-        return await this.validator.validateMobileAccessibility()','
-    async checkWCAGCompliance(level = 'AA) {,'
+    public async validateAccessibility(): Promise<any> {
+        return await this.validator.validateMobileAccessibility();
+    }
+
+    public async checkWCAGCompliance(level: string = 'AA'): Promise<any> {
         return await this.validator.checkWCAGCompliance(level);
-    
+    }
+
     /**
-     * 検証レポート生成（MobileAccessibilityValidatorに委譲）
+     * アクセシビリティ機能の有効化
      */
-    generateValidationReport(options = { ) {
-    
-}
-        return this.validator.generateValidationReport(options);
-    
-    /**
-     * 検証設定更新（MobileAccessibilityValidatorに委譲）
-     */
-    updateValidationConfig(newConfig) { return this.validator.updateValidationConfig(newConfig);
-    
-    /**
-     * 最新検証結果取得（MobileAccessibilityValidatorに委譲）
-     */
-    getLastValidationResults() { return this.validator.getLastValidationResults();
-    
-    /**
-     * アクセシビリティ機能検出
-     */
-    detectAccessibilityCapabilities() {
-        this.capabilities = {'
-            // スクリーンリーダー検出
-            screenReader: this.detectScreenReader()';'
-            speechSynthesis: 'speechSynthesis' in window && 'SpeechSynthesisUtterance' in window','
-            // CSS色フィルターサポート')'
-            cssFilters: CSS.supports('filter', 'hue-rotate(0deg)'),
-            // 振動API
-            haptics: 'vibrate' in navigator;
-            ','
-            // プリファレンス検出
-            prefersReducedMotion: window.matchMedia('(prefers-reduced-motion: reduce)').matches,
-            prefersHighContrast: window.matchMedia('(prefers-contrast: high)').matches,
-            prefersReducedTransparency: window.matchMedia('(prefers-reduced-transparency: reduce)).matches,'
-            ','
-            // デバイス機能
-            hasKeyboard: this.detectKeyboardSupport(',
-    hasTouch: 'ontouchstart' in window }
-'
-            hasPointer: 'PointerEvent' in window }', ')';'
-        console.log('[MobileAccessibilityManager] アクセシビリティ機能検出完了', this.capabilities';'
-    }
-    
-    /**
-     * スクリーンリーダー検出'
-     */''
-    detectScreenReader()';'
-        if (navigator.userAgent.includes('iPhone') || navigator.userAgent.includes('iPad)' { ''
-            return window.speechSynthesis && window.speechSynthesis.speaking !== undefined ? 'voiceover' : null;
-        ';'
-        // Android TalkBack検出
-        if(navigator.userAgent.includes('Android)' { ''
-            return window.speechSynthesis ? 'talkback' : null;
-        ';'
-        // その他スクリーンリーダー
-        if (window.navigator.userAgent.includes('NVDA') || ';'
-            window.navigator.userAgent.includes('JAWS' ||';'
-            window.speechSynthesis' { ''
-            return 'generic' }
-        
-        return null;
-    }
-    
-    /**
-     * キーボードサポート検出'
-     */''
-    detectKeyboardSupport()';'
-               navigator.userAgent.includes('iPad'; // iPadは外部キーボード想定'
-    }
-    
-    /**
-     * スクリーンリーダーサポート設定
-     */
-    setupScreenReaderSupport() {
-        if (!this.capabilities.screenReader) return,
-        
-        // ARIA ライブリージョン作成
-        this.createLiveRegions();
-        // フォーカス管理設定
-        this.setupFocusManagement();
-        // キーボードナビゲーション
-        this.setupScreenReaderKeyboardShortcuts();
-        // 動的コンテンツアナウンス
-        this.setupDynamicAnnouncements();
-
-        console.log('[MobileAccessibilityManager] スクリーンリーダーサポート設定完了'); }'}'
-    
-    /**
-     * ARIAライブリージョン作成'
-     */''
-    createLiveRegions()';'
-        this.createLiveRegion('game-status', 'polite', 'ゲーム状態');
-        ';'
-        // スコア・時間アナウンス用
-        this.createLiveRegion('score-updates', 'polite', 'スコア更新');
-        ';'
-        // 重要な通知用
-        this.createLiveRegion('announcements', 'assertive', '重要な通知');
-        ';'
-        // エラー・警告用
-        this.createLiveRegion('errors', 'assertive', 'エラーと警告';
-    }
-    
-    /**
-     * ライブリージョン作成'
-     */''
-    createLiveRegion(id, politeness, description) {', ' }
-
-        const region = document.createElement('div'); }
-
-        region.id = `sr-${id}`;
-        region.className = 'screen-reader-only';
-        region.setAttribute('aria-live', politeness';'
-        region.setAttribute('aria-label', description);
-        region.style.cssText = `;
-            position: absolute,
-            left: -10000px,
-            width: 1px,
-            height: 1px,
-    overflow: hidden;
-        `;
-        
-        document.body.appendChild(region);
-        this.screenReaderState.liveRegions.set(id, region);
-    }
-    
-    /**
-     * フォーカス管理設定
-     */
-    setupFocusManagement() {
-        // フォーカス可能要素の自動検出
-        this.updateFocusableElements();
-        // フォーカストラップ設定
-        this.setupFocusTrap();
-        // フォーカスインジケーター強化
-        this.enhanceFocusIndicators();
-        // タッチデバイスでのフォーカス管理
-    }
-        this.setupTouchFocusManagement(); }
-    }
-    
-    /**
-     * フォーカス可能要素更新（簡略化）
-     */''
-    updateFocusableElements('';
-            'button', 'input', 'select', 'textarea', 'a[href]',';'
-            '[tabindex]:not([tabindex="-1"]", '[role="button"]', '[role="link"]','
-            '[role="menuitem"]', '.focusable';
-        ];
-
-        this.focusManager.focusableElements = Array.from()';'
-            document.querySelectorAll(selectors.join(', ')';'
-        ').filter(el => !el.disabled && !el.hasAttribute('aria-hidden' && el.offsetParent !== null');
-        
-        // ゲームCanvas追加
-        const canvas = this.gameEngine.canvas;
-        if(canvas && !canvas.hasAttribute('tabindex)' { ''
-            canvas.setAttribute('tabindex', '0');
-            canvas.setAttribute('role', 'application');
-            canvas.setAttribute('aria-label', 'BubblePop ゲーム領域),'
-            this.focusManager.focusableElements.push(canvas);
-    }
-    
-    /**
-     * フォーカストラップ設定'
-     */''
-    setupFocusTrap()';'
-        document.addEventListener('keydown', (e) => {  ''
-            if (e.key === 'Tab' && this.focusManager.trapStack.length > 0) { }
-                this.handleTrappedTabNavigation(e);     }
-}
-    /**
-     * トラップされたTab ナビゲーション処理
-     */
-    handleTrappedTabNavigation(e) {
-        const currentTrap = this.focusManager.trapStack[this.focusManager.trapStack.length - 1],
-        const focusableInTrap = currentTrap.querySelectorAll()','
-            'button, input, select, textarea, a[href], [tabindex]:not([tabindex="-1"]"),'
-        
-        if (focusableInTrap.length === 0) return,
-        
-        const firstElement = focusableInTrap[0],
-        const lastElement = focusableInTrap[focusableInTrap.length - 1],
-        
-        if (e.shiftKey) {
-            // Shift+Tab: 後方移動
-            if (document.activeElement === firstElement) {
-                e.preventDefault(  }
-                lastElement.focus(); }
-} else {  // Tab: 前方移動
-            if (document.activeElement === lastElement) {
-    
-}
-                e.preventDefault(); }
-                firstElement.focus();     }
-}
-    /**
-     * フォーカスインジケーター強化（簡略化）
-     */''
-    enhanceFocusIndicators()';'
-        const style = document.createElement('style);'
-        style.textContent = `;
-            .enhanced-focus { outline: 3px solid #4CAF50 !important,
-                outline-offset: 2px !important,
-                box-shadow: 0 0 0 6px rgba(76, 175, 80, 0.3) !important,
-                z-index: 1000 !important }
-
-        `;
-        document.head.appendChild(style);
-
-        document.addEventListener('focusin', (e) => {  ''
-            e.target.classList.add('enhanced-focus' }'
-
-            this.announceElementFocus(e.target);' }'
-
-        }');'
-
-        document.addEventListener('focusout', (e) => { }
-
-            e.target.classList.remove('enhanced-focus'; }'
-        }';'
-    }
-    
-    /**
-     * タッチデバイスフォーカス管理'
-     */''
-    setupTouchFocusManagement()';'
-        document.addEventListener('touchstart', (e) => {  const target = e.target,
-            if (this.isInteractiveElement(target) { }
-                this.setVirtualFocus(target); }
-
-            }'}, { passive: true,');
-        ';'
-        // タッチ終了時のフォーカス解除
-        document.addEventListener('touchend', () => {  setTimeout(() => { }
-                this.clearVirtualFocus(); }
-            }, 100);
-        }, { passive: true,);
-    }
-    
-    /**
-     * 仮想フォーカス設定
-     */
-    setVirtualFocus(element) {
-
-        this.clearVirtualFocus()','
-        element.classList.add('virtual-focus) }'
-        this.announceElementFocus(element); }
-    }
-    
-    /**
-     * 仮想フォーカス解除'
-     */''
-    clearVirtualFocus()';'
-        document.querySelectorAll('.virtual-focus'.forEach(el => {  '),' }
-
-            el.classList.remove('virtual-focus'; }'
-        }
-    }
-    
-    /**
-     * 要素フォーカスアナウンス
-     */
-    announceElementFocus(element) {
-
-        if(!this.accessibilityConfig.screenReader.enabled) return,
-
-        let announcement = ','
-        ','
-        // 要素の説明を構築
-        const label = element.getAttribute('aria-label') || ','
-                     element.getAttribute('title') || ,
-                     element.textContent || ,
-                     element.value ||,
-                     element.alt,
-
-        const role = element.getAttribute('role) || ,'
-                    element.tagName.toLowerCase();
-        const state = this.getElementState(element);
-
-        ' }'
-
-        announcement = `${label}, ${this.translateRole(role'}'${state}`;
-
-        this.announceToScreenReader(announcement, 'polite);'
-    }
-    
-    /**
-     * 要素状態取得
-     */
-    getElementState(element) {
-        const states = [],
-
-        if(element.disabled) states.push('無効,
-        if(element.checked) states.push('チェック済み,
-        if(element.selected) states.push('選択済み');
-        if (element.getAttribute('aria-expanded') === 'true') states.push('展開済み');
-        if (element.getAttribute('aria-expanded') === 'false') states.push('折りたたみ済み,
-        if(element.required) states.push('必須');
-
-        ' }'
-
-        return states.length > 0 ? `, ${states.join(', '}'` : ';
-    }
-    
-    /**
-     * ロール翻訳'
-     */''
-    translateRole(role) {
-        const roleTranslations = {', 'button': 'ボタン','
-            'link': 'リンク,
-            'textbox': 'テキストボックス,
-            'checkbox': 'チェックボックス,
-            'radio': 'ラジオボタン,
-            'menuitem': 'メニュー項目,
-            'tab': 'タブ,
-            'slider': 'スライダー,
-            'application': 'アプリケーション'
+    public enableFeature(feature: string, options: any = {}): void {
+        try {
+            switch (feature) {
+                case 'screenReader':
+                    this.enableScreenReader(options);
+                    break;
+                case 'highContrast':
+                    this.enableHighContrast(options);
+                    break;
+                case 'colorBlindnessSupport':
+                    this.enableColorBlindnessSupport(options);
+                    break;
+                case 'touchAreaEnlargement':
+                    this.enableTouchAreaEnlargement(options);
+                    break;
+                case 'hapticFeedback':
+                    this.enableHapticFeedback(options);
+                    break;
+                default:
+                    console.warn(`Unknown accessibility feature: ${feature}`);
             }
-
-            'canvas': 'キャンバス' }
-        };
-        
-        return roleTranslations[role] || role;
+        } catch (error) {
+            this.errorHandler.handleError(error, `MobileAccessibilityManager.enableFeature.${feature}`);
+        }
     }
-    
+
     /**
-     * スクリーンリーダーキーボードショートカット'
-     */''
-    setupScreenReaderKeyboardShortcuts()';'
-        document.addEventListener('keydown', (e) => {  if (!this.accessibilityConfig.screenReader.enabled) return,
-            
-            // ゲーム固有のショートカット
-            if (e.target === this.gameEngine.canvas) { }
-                this.handleGameKeyboardShortcuts(e); }
+     * アクセシビリティ機能の無効化
+     */
+    public disableFeature(feature: string): void {
+        try {
+            switch (feature) {
+                case 'screenReader':
+                    this.disableScreenReader();
+                    break;
+                case 'highContrast':
+                    this.disableHighContrast();
+                    break;
+                case 'colorBlindnessSupport':
+                    this.disableColorBlindnessSupport();
+                    break;
+                case 'touchAreaEnlargement':
+                    this.disableTouchAreaEnlargement();
+                    break;
+                case 'hapticFeedback':
+                    this.disableHapticFeedback();
+                    break;
+                default:
+                    console.warn(`Unknown accessibility feature: ${feature}`);
             }
-            
-            // 一般的なスクリーンリーダーショートカット
-            this.handleScreenReaderShortcuts(e);
+        } catch (error) {
+            this.errorHandler.handleError(error, `MobileAccessibilityManager.disableFeature.${feature}`);
         }
     }
-    
-    /**
-     * ゲームキーボードショートカット処理
-     */
-    handleGameKeyboardShortcuts(e) {
 
-        switch(e.key) {''
-            case 'h':','
-            case 'H':','
-                e.preventDefault();
-                this.announceGameHelp('','
-            case 's':','
-            case 'S':','
-                e.preventDefault();
-                this.announceGameStatus('','
-            case 'r':','
-            case 'R':);
-                if (e.ctrlKey) {
-                    e.preventDefault();
-                    this.announceGameRules('','
-            case 'Enter':','
-            case ', ':);
-                e.preventDefault();
-                this.handleGameAction(e);
-                break; }
-}
-    
-    /**'
-     * スクリーンリーダーショートカット処理'
-     */''
-    handleScreenReaderShortcuts(e) {
-        // Ctrl+, で読み上げモード切り替え
-        if(e.ctrlKey && e.key === ',' {'
-            e.preventDefault();
-            this.toggleReadingMode()','
-        if(e.ctrlKey && e.key === '.' {'
-            e.preventDefault();
-            this.announceCurrentPosition(); }
-}
-    
+    // ========================================
+    // プライベートメソッド
+    // ========================================
+
     /**
-     * 動的アナウンス設定
+     * アクセシビリティ機能の検出
      */
-    setupDynamicAnnouncements() {
-        // ゲーム状態変更の監視
-        this.setupGameStateAnnouncements();
-        // UI変更の監視
-        this.setupUIChangeAnnouncements();
-        // エラー・成功メッセージの監視
-    }
-        this.setupNotificationAnnouncements(); }
-    }
-    
-    /**
-     * ゲーム状態アナウンス設定
-     */
-    setupGameStateAnnouncements() {
-        // スコア変更時
-        if (this.gameEngine.scoreManager) {
-            const originalUpdateScore = this.gameEngine.scoreManager.updateScore,
-            this.gameEngine.scoreManager.updateScore = (points) => { 
-                const result = originalUpdateScore.call(this.gameEngine.scoreManager, points);
-                this.announceScoreUpdate(points, this.gameEngine.scoreManager.getScore(); }
-                return result;
-        }
+    private detectAccessibilityCapabilities(): void {
+        // スクリーンリーダーの検出
+        const hasScreenReader = 'speechSynthesis' in window || 
+                               navigator.userAgent.includes('NVDA') ||
+                               navigator.userAgent.includes('JAWS') ||
+                               navigator.userAgent.includes('VoiceOver');
         
-        // HP変更時
-        if (this.gameEngine.playerData) {
-            const originalSetHP = this.gameEngine.playerData.setHP,
-            this.gameEngine.playerData.setHP = (hp) => { 
-                const oldHP = this.gameEngine.playerData.getHP();
-                const result = originalSetHP.call(this.gameEngine.playerData, hp);
-                this.announceHPChange(oldHP, hp); }
-                return result;
+        if (hasScreenReader) {
+            this.accessibilityConfig.screenReader.enabled = true;
+        }
+
+        // ハプティックフィードバックの検出
+        if ('vibrate' in navigator) {
+            this.accessibilityConfig.auditorySupport.hapticFeedback = true;
         }
     }
-    
+
     /**
-     * UI変更アナウンス設定
+     * スクリーンリーダーサポートのセットアップ
      */
-    setupUIChangeAnnouncements() {
-        // MutationObserver でDOM変更を監視
-        const observer = new MutationObserver((mutations) => { ''
-            mutations.forEach((mutation) => { }
+    private setupScreenReaderSupport(): void {
+        if ('speechSynthesis' in window) {
+            this.feedbackSystems.speechSynthesis = window.speechSynthesis;
+        }
 
-                if(mutation.type === 'childList' { }
-;
-                    this.handleDOMChanges(mutation);' }'
+        // ARIAライブリージョンの設定
+        this.setupLiveRegions();
+    }
 
-                } else if (mutation.type === 'attributes) { this.handleAttributeChanges(mutation) }'
-
-            }';}');
-        
-        observer.observe(document.body, { childList: true)
-            subtree: true)' }'
-            attributes: true,')';
-            attributeFilter: ['aria-label', 'aria-describedby', 'aria-live] }'
-    
     /**
-     * DOM変更処理
+     * ARIAライブリージョンの設定
      */
-    handleDOMChanges(mutation) {
-        // 新しく追加された要素のアナウンス
-        mutation.addedNodes.forEach(node => { );
-            if (node.nodeType === Node.ELEMENT_NODE) { }
-                this.announceNewElement(node); }
-};
-        
-        // 削除された要素のアナウンス
-        mutation.removedNodes.forEach(node => {  );
-            if (node.nodeType === Node.ELEMENT_NODE) { }
-                this.announceRemovedElement(node);     }
-}
-    /**
-     * 属性変更処理
-     */''
-    handleAttributeChanges(mutation) {
+    private setupLiveRegions(): void {
+        const gameContainer = document.getElementById('game-container');
+        if (!gameContainer) return;
 
-        if(mutation.attributeName === 'aria-live' {'
-            // ライブリージョンの更新
-    }
-            this.updateLiveRegion(mutation.target); }
-}
-    
-    /**
-     * 通知アナウンス設定
-     */''
-    setupNotificationAnnouncements()';'
-        document.addEventListener('notification:show', (e) => { this.announceNotification(e.detail),' }'
+        // スコア表示用ライブリージョン
+        const scoreRegion = document.createElement('div');
+        scoreRegion.setAttribute('aria-live', 'polite');
+        scoreRegion.setAttribute('aria-label', 'Score updates');
+        scoreRegion.style.position = 'absolute';
+        scoreRegion.style.left = '-9999px';
+        gameContainer.appendChild(scoreRegion);
+        this.screenReaderState.liveRegions.set('score', scoreRegion);
 
-        }');'
-        ';'
-        // エラーイベントリスナー
-        document.addEventListener('error:show', (e) => { this.announceError(e.detail) });
+        // ゲーム状態用ライブリージョン
+        const statusRegion = document.createElement('div');
+        statusRegion.setAttribute('aria-live', 'assertive');
+        statusRegion.setAttribute('aria-label', 'Game status');
+        statusRegion.style.position = 'absolute';
+        statusRegion.style.left = '-9999px';
+        gameContainer.appendChild(statusRegion);
+        this.screenReaderState.liveRegions.set('status', statusRegion);
     }
-    
+
     /**
-     * 色覚支援初期化
+     * 色覚支援の初期化
      */
-    initializeColorSupport() {
-        this.setupColorFilters();
-        this.setupContrastControls();
-        this.setupColorPalettes();
+    private initializeColorSupport(): void {
+        // 色覚異常用フィルターの設定
+        this.colorSupport.filters.set('protanopia', 'grayscale(50%) sepia(50%) hue-rotate(-50deg)');
+        this.colorSupport.filters.set('deuteranopia', 'grayscale(50%) sepia(50%) hue-rotate(50deg)');
+        this.colorSupport.filters.set('tritanopia', 'grayscale(50%) sepia(50%) hue-rotate(180deg)');
 
-        console.log('[MobileAccessibilityManager] 色覚支援システム初期化完了'); }'}'
-    
-    /**
-     * 色フィルター設定（簡略化）'
-     */''
-    setupColorFilters()';'
-            'protanopia': 'hue-rotate(120deg) saturate(0.8),
-            'deuteranopia': 'hue-rotate(-120deg) saturate(0.8),
-            'tritanopia': 'hue-rotate(180deg) saturate(0.9),
-            'high-contrast': 'contrast(1.5) brightness(1.2)';
-        };
-        
-        Object.entries(filters).forEach(([type, filter]) => {  }
-            this.colorSupport.filters.set(type, { filter, description: `${type }補正フィルター` }
-        };
-    }
-    
-    /**
-     * コントラスト制御設定'
-     */''
-    setupContrastControls()';'
-        this.colorSupport.contrastRatios.set('normal', 4.5';'
+        // コントラスト比の設定
+        this.colorSupport.contrastRatios.set('normal', 4.5);
+        this.colorSupport.contrastRatios.set('large', 3.0);
         this.colorSupport.contrastRatios.set('enhanced', 7.0);
-        
-        // 動的コントラスト調整
-        this.setupDynamicContrast();
     }
-    
+
     /**
-     * 動的コントラスト設定（簡略化）
+     * キーボードナビゲーションのセットアップ
      */
-    setupDynamicContrast() {
-        const observer = new MutationObserver(() => { ''
-            if (this.accessibilityConfig.visualSupport.highContrast) {','
-                document.querySelectorAll('*).forEach(el => {),'
-                    const style = getComputedStyle(el);
-                    const bgColor = style.backgroundColor,
-                    const textColor = style.color,
-                    ','
+    private setupKeyboardNavigation(): void {
+        document.addEventListener('keydown', this.handleKeyboardNavigation.bind(this));
+        this.updateFocusableElements();
+    }
 
-                    if (bgColor && textColor) {''
-                        const ratio = this.calculateContrastRatio(bgColor, textColor);
-
-                        const target = this.colorSupport.contrastRatios.get('enhanced'; }'
-                        if (ratio < target) this.enhanceElementContrast(el, ratio, target); }
-}
-
-            }'}');
-        
-        observer.observe(document.body, { childList: true)
-            subtree: true)' }'
-            attributes: true,')';
-            attributeFilter: ['style', 'class] }'
-    
     /**
-     * コントラスト比計算（MobileAccessibilityValidatorに委譲）
+     * フォーカス可能な要素の更新
      */
-    calculateContrastRatio(backgroundColor, textColor) { return this.validator.calculateContrastRatio(backgroundColor, textColor);
-    
+    private updateFocusableElements(): void {
+        const focusableSelectors = [
+            'button:not([disabled])',
+            '[href]',
+            'input:not([disabled])',
+            'select:not([disabled])',
+            'textarea:not([disabled])',
+            '[tabindex]:not([tabindex="-1"])'
+        ].join(',');
+
+        this.focusManager.focusableElements = Array.from(
+            document.querySelectorAll(focusableSelectors)
+        ) as HTMLElement[];
+    }
+
     /**
-     * 要素コントラスト強化（簡略化）
+     * キーボードナビゲーションの処理
      */
-    enhanceElementContrast(element, currentRatio, targetRatio) {
-        const adjustment = targetRatio / currentRatio,
+    private handleKeyboardNavigation(event: KeyboardEvent): void {
+        if (!this.accessibilityConfig.screenReader.keyboardNavigation) return;
 
-        if (adjustment > 1.2) {
-    }
-
-            element.style.filter = `contrast(${ adjustment }`; }'
-'
-            element.classList.add('contrast-enhanced'}';'
-        }
-    }
-    
-    /**
-     * 色パレット設定（簡略化）'
-     */''
-    setupColorPalettes('';
-        this.colorSupport.colorPalettes.set('accessible', { ')'
-            primary: '#0066CC, secondary: '#FF6600', success: '#008844', ')',
-            warning: '#FF9900', error: '#CC0000', text: '#000000', background: '#FFFFFF')'),'
-
-        this.colorSupport.colorPalettes.set('high-contrast', {''
-            primary: '#FFFFFF, secondary: '#FFFF00', success: '#00FF00',')',
-            warning: '#FFFF00', error: '#FF0000', text: '#FFFFFF', background: '#000000'
-            }
-    
-    /**
-     * キーボードナビゲーション設定'
-     */''
-    setupKeyboardNavigation()';'
-        document.addEventListener('keydown', (e) => { this.handleKeyboardNavigation(e) });
-        
-        // フォーカス移動のショートカット
-        this.setupFocusNavigationShortcuts();
-    }
-    
-    /**
-     * キーボードナビゲーション処理（簡略化）
-     */
-    handleKeyboardNavigation(e) {
-
-        switch(e.key) {''
-            case 'Tab':','
-                this.handleTabNavigation(e);
-                break,
-            case 'ArrowUp':','
-            case 'ArrowDown':','
-            case 'ArrowLeft':','
-            case 'ArrowRight':,
-                if (e.target === this.gameEngine.canvas) {
-    }
-
-                    e.preventDefault();' }'
-
-                    this.announceToScreenReader(`${e.key}方向に移動`, 'polite'}
-                }
+        switch (event.key) {
+            case 'Tab':
+                this.handleTabNavigation(event);
+                break;
+            case 'ArrowUp':
+            case 'ArrowDown':
+            case 'ArrowLeft':
+            case 'ArrowRight':
+                this.handleArrowNavigation(event);
+                break;
+            case 'Enter':
+            case ' ':
+                this.handleActivation(event);
                 break;
         }
     }
-    
+
     /**
-     * Tabナビゲーション処理（簡略化）
+     * Tabナビゲーションの処理
      */
-    handleTabNavigation(e) {
-        if (this.focusManager.focusableElements.length > 0) {
-            e.preventDefault();
-            let nextIndex = e.shiftKey ? undefined : undefined,
-                this.focusManager.currentIndex - 1 : ,
-                this.focusManager.currentIndex + 1,
-            
-            if (nextIndex < 0) nextIndex = this.focusManager.focusableElements.length - 1,
-            if (nextIndex >= this.focusManager.focusableElements.length) nextIndex = 0,
-            
-            this.focusManager.currentIndex = nextIndex }
-            this.focusManager.focusableElements[nextIndex].focus(); }
-}
-    
-    /**
-     * フィードバックシステム初期化
-     */
-    initializeFeedbackSystems() {
-        // 音声合成初期化
-        if (this.capabilities.speechSynthesis) {
-            this.feedbackSystems.speechSynthesis = window.speechSynthesis }
-            this.setupSpeechSynthesis(); }
+    private handleTabNavigation(event: KeyboardEvent): void {
+        const direction = event.shiftKey ? -1 : 1;
+        const currentIndex = this.focusManager.currentIndex;
+        const nextIndex = (currentIndex + direction) % this.focusManager.focusableElements.length;
+        
+        if (nextIndex >= 0 && nextIndex < this.focusManager.focusableElements.length) {
+            this.focusManager.focusableElements[nextIndex].focus();
+            this.focusManager.currentIndex = nextIndex;
         }
-        
-        // 触覚フィードバック初期化
-        if (this.capabilities.haptics) { this.setupHapticFeedback();
-        
-        // 音声ビープ初期化
-        this.setupAudioBeeps();
     }
-    
+
     /**
-     * 音声合成設定（簡略化）
+     * 矢印キーナビゲーションの処理
      */
-    setupSpeechSynthesis() {
+    private handleArrowNavigation(event: KeyboardEvent): void {
+        // ゲーム内での方向キーナビゲーション
+        event.preventDefault();
+        this.announceDirection(event.key);
+    }
 
-        const voices = this.feedbackSystems.speechSynthesis.getVoices()','
-        this.selectedVoice = voices.find(voice => voice.lang.startsWith('ja) || voices[0];'
-
-        if (voices.length === 0) {''
-            this.feedbackSystems.speechSynthesis.addEventListener('voiceschanged', () => { }
-
-                const newVoices = this.feedbackSystems.speechSynthesis.getVoices();
-;
-                this.selectedVoice = newVoices.find(voice => voice.lang.startsWith('ja' || newVoices[0]; }'
-                }
-}
     /**
-     * 音声ビープ設定
+     * アクティベーション処理
      */
-    setupAudioBeeps() {
-        // AudioContext を使用した音声ビープ
-        if (window.AudioContext || window.webkitAudioContext) {
-            const AudioContext = window.AudioContext || window.webkitAudioContext,
-            this.audioContext = new AudioContext();
-            
-            // 各種ビープ音を作成
-    }
-            this.createAudioBeeps(); }
-}
-    
-    /**
-     * ビープ音作成
-     */
-    createAudioBeeps() { const beepTypes = { }
-            focus: { frequency: 800, duration: 100  ,
-            success: { frequency: 1000, duration: 200  ,
-            error: { frequency: 400, duration: 300  ,
-            navigation: { frequency: 600, duration: 100  ,
-        
-        Object.entries(beepTypes).forEach(([type, config]) => { this.feedbackSystems.audioBeeps.set(type, config);
-    }
-    
-    /**
-     * ビープ音再生
-     */
-    playAudioBeep(type) {
-        if(!this.audioContext || !this.feedbackSystems.audioBeeps.has(type) return,
-        
-        const config = this.feedbackSystems.audioBeeps.get(type);
-        const oscillator = this.audioContext.createOscillator();
-        const gainNode = this.audioContext.createGain();
-        oscillator.connect(gainNode);
-        gainNode.connect(this.audioContext.destination);
-        oscillator.frequency.setValueAtTime(config.frequency, this.audioContext.currentTime);
-        oscillator.type = 'sine,
-        
-        gainNode.gain.setValueAtTime(0.1, this.audioContext.currentTime);
-        gainNode.gain.exponentialRampToValueAtTime(0.01, this.audioContext.currentTime + config.duration / 1000);
-        oscillator.start(this.audioContext.currentTime);
-        oscillator.stop(this.audioContext.currentTime + config.duration / 1000); }
-    }
-    
-    /**
-     * アクセシビリティイベントリスナー設定
-     */
-    setupAccessibilityEventListeners() {
-        // メディアクエリ変更の監視
-        this.setupMediaQueryListeners();
-        // フォーカス状態の監視
-        this.setupFocusListeners();
-        // カスタムアクセシビリティイベント
-    }
-        this.setupCustomAccessibilityEvents(); }
-    }
-    
-    /**
-     * メディアクエリリスナー設定
-     */''
-    setupMediaQueryListeners()';'
-        const motionQuery = window.matchMedia('(prefers-reduced-motion: reduce),'
-        motionQuery.addListener((e) => {  this.accessibilityConfig.cognitiveSupport.reducedMotion = e.matches }
-
-            this.applyMotionSettings();' }'
-
-        }');'
-        ';'
-        // コントラスト設定変更
-        const contrastQuery = window.matchMedia('(prefers-contrast: high),'
-        contrastQuery.addListener((e) => {  this.accessibilityConfig.visualSupport.highContrast = e.matches }
-            this.applyContrastSettings();     }
-}
-    /**
-     * フォーカスリスナー設定'
-     */''
-    setupFocusListeners()';'
-        document.addEventListener('focusin', (e) => { }
-
-            this.playAudioBeep('focus'; }
-
-        }');'
-
-        document.addEventListener('focusout', (e) => {  // フォーカス履歴に追加
-            this.focusManager.focusHistory.push(e.target);
-            if (this.focusManager.focusHistory.length > 10) { }
-                this.focusManager.focusHistory.shift(); }
-            }'}');
-    }
-    
-    /**
-     * スクリーンリーダーアナウンス'
-     */''
-    announceToScreenReader(message, priority = 'polite' {'
-
-        if(!this.accessibilityConfig.screenReader.enabled) return,
-
-        const regionId = priority === 'assertive' ? 'announcements' : 'game-status,
-        const region = this.screenReaderState.liveRegions.get(regionId);
-        if (region) {
-            // 既存の内容をクリア
-            region.textContent = ','
-            
-            // 少し遅延してからメッセージを設定（再読み上げを確実にする）
-    }
-            setTimeout(() => {  }
-                region.textContent = message; }
-            }, 10);
+    private handleActivation(event: KeyboardEvent): void {
+        const activeElement = document.activeElement as HTMLElement;
+        if (activeElement && typeof activeElement.click === 'function') {
+            activeElement.click();
         }
-        
-        // 音声合成でも読み上げ
-        if (this.capabilities.speechSynthesis && this.selectedVoice) { this.speakMessage(message);
-        
-        console.log(`[MobileAccessibilityManager] アナウンス (${priority}}: ${message}`);
     }
-    
+
     /**
-     * 音声メッセージ読み上げ
+     * フィードバックシステムの初期化
      */
-    speakMessage(message) {
-        // 既存の読み上げを停止
-        this.feedbackSystems.speechSynthesis.cancel();
-        const utterance = new SpeechSynthesisUtterance(message);
-        utterance.voice = this.selectedVoice,
-        utterance.rate = 0.9,
-        utterance.pitch = 1.0,
-        utterance.volume = 0.8 }
-        this.feedbackSystems.speechSynthesis.speak(utterance); }
+    private initializeFeedbackSystems(): void {
+        // 音声フィードバック用の音源を設定
+        const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
+        
+        // 基本的な効果音の生成
+        this.generateAudioBeeps(audioContext);
     }
-    
+
     /**
-     * ゲーム固有のアナウンス関数群（簡略化）
-     */''
-    announceGameHelp('';
-        const, helpMessage = 'BubblePop ゲーム。スペース/エンターでポップ、Sで状態確認、矢印キーで移動';
-        this.announceToScreenReader(helpMessage, 'polite);'
+     * オーディオビープ音の生成
+     */
+    private generateAudioBeeps(audioContext: AudioContext): void {
+        const frequencies = {
+            success: 800,
+            warning: 600,
+            error: 400,
+            focus: 1000
+        };
+
+        Object.entries(frequencies).forEach(([type, frequency]) => {
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+            
+            oscillator.frequency.value = frequency;
+            oscillator.type = 'sine';
+            
+            gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.2);
+            
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+            
+            // AudioElementとして保存（実際の実装では音声ファイルを使用）
+            const audio = document.createElement('audio');
+            this.feedbackSystems.audioBeeps.set(type, audio);
+        });
     }
-    
-    announceGameStatus() {
-    
-        if (!this.gameEngine.scoreManager || !this.gameEngine.playerData) return,
-        const score = this.gameEngine.scoreManager.getScore();
 
-        const hp = this.gameEngine.playerData.getHP();' }'
-
-        this.announceToScreenReader(`スコア: ${score}点、HP: ${hp}`, 'polite'}';'
-    }
-    ';'
-
-    announceScoreUpdate(points, totalScore) { }'
-
-        this.announceToScreenReader(`${points}点獲得。合計: ${ totalScore}点`, 'polite'};' }'
-'
-        this.playAudioBeep('success'}
-    }
-    
-    announceHPChange(oldHP, newHP) { const change = newHP - oldHP }
-
-        const message = change > 0 ? `HP回復: ${Math.abs(change}` : `HPダメージ: ${Math.abs(change}`;
-        this.announceToScreenReader(`${message}。現在: ${ newHP}`, 'polite'};' }'
-'
-        this.playAudioBeep(change > 0 ? 'success' : 'error'}';'
-    }
-    
     /**
-     * 設定関連メソッド'
-     */''
-    enableScreenReader()';'
-        this.announceToScreenReader('スクリーンリーダーサポートが有効になりました', 'assertive);'
-        this.saveAccessibilitySettings();
-    }
-    
-    disableScreenReader() {
-    
-        this.accessibilityConfig.screenReader.enabled = false }
-        this.saveAccessibilitySettings(); }
-    }
-    
-    setColorBlindnessSupport(type) {
-    
-        this.accessibilityConfig.visualSupport.colorBlindnessType = type,
-        this.applyColorFilter(type);
-        this.saveAccessibilitySettings(); }
-    }
-    
-    applyColorFilter(type) {
-    ','
-
-        const filter = this.colorSupport.filters.get(type);
-        if (filter && type !== 'none') {
-            document.body.style.filter = filter.filter }
-            this.colorSupport.currentFilter = type; }
-
-        } else {
-            document.body.style.filter = ' }'
-            this.colorSupport.currentFilter = null; }
-}
-    
-    setFontSize(size) {
-    
-        this.accessibilityConfig.visualSupport.fontSize = size,
-        this.applyFontSettings();
-        this.saveAccessibilitySettings(); }
+     * アクセシビリティイベントリスナーのセットアップ
+     */
+    private setupAccessibilityEventListeners(): void {
+        // フォーカス変更の監視
+        document.addEventListener('focusin', this.handleFocusChange.bind(this));
+        document.addEventListener('focusout', this.handleFocusLoss.bind(this));
+        
+        // 画面向きの変更
+        window.addEventListener('orientationchange', this.handleOrientationChange.bind(this));
+        
+        // ウィンドウリサイズ
+        window.addEventListener('resize', this.handleWindowResize.bind(this));
     }
 
-    applyFontSettings('''
-            small: '0.8em,
-            normal: '1em,
-            large: '1.2em','
-            xlarge: '1.5em);'
+    /**
+     * フォーカス変更の処理
+     */
+    private handleFocusChange(event: FocusEvent): void {
+        const target = event.target as HTMLElement;
+        this.screenReaderState.currentFocus = target;
+        this.focusManager.focusHistory.push(target);
+        
+        // フォーカス音の再生
+        this.playAudioBeep('focus');
+        
+        // スクリーンリーダー向けの説明
+        this.announceElement(target);
+    }
+
+    /**
+     * フォーカス喪失の処理
+     */
+    private handleFocusLoss(event: FocusEvent): void {
+        this.screenReaderState.currentFocus = null;
+    }
+
+    /**
+     * 画面向き変更の処理
+     */
+    private handleOrientationChange(): void {
+        setTimeout(() => {
+            this.updateFocusableElements();
+            this.announceOrientationChange();
+        }, 100);
+    }
+
+    /**
+     * ウィンドウリサイズの処理
+     */
+    private handleWindowResize(): void {
+        this.updateFocusableElements();
+    }
+
+    /**
+     * アクセシビリティ設定の読み込み
+     */
+    private loadAccessibilitySettings(): void {
+        const savedSettings = localStorage.getItem('accessibilitySettings');
+        if (savedSettings) {
+            try {
+                const settings = JSON.parse(savedSettings);
+                this.accessibilityConfig = { ...this.accessibilityConfig, ...settings };
+            } catch (error) {
+                console.warn('Failed to load accessibility settings:', error);
+            }
         }
-        const size = sizeMap[this.accessibilityConfig.visualSupport.fontSize];
-        document.documentElement.style.fontSize = size;
     }
-    
+
     /**
-     * 設定の保存と読み込み'
-     */''
-    loadAccessibilitySettings()';'
-            const saved = localStorage.getItem('bubblepop_accessibility_settings);'
-            if (saved) { const settings = JSON.parse(saved);
-
-                this.accessibilityConfig = { ...this.accessibilityConfig, ...settings,'} catch (error) {'
-            console.warn('[MobileAccessibilityManager] 設定読み込みエラー:', error);
-    }
-
-    saveAccessibilitySettings()';'
-            localStorage.setItem('bubblepop_accessibility_settings);'
-
-                JSON.stringify(this.accessibilityConfig);'} catch (error) {'
-            this.errorHandler.handleError(error, 'MobileAccessibilityManager.saveAccessibilitySettings' }'
-    }
-    
-    applyInitialSettings() {
-    
-        this.applyFontSettings();
-        this.applyColorFilter(this.accessibilityConfig.visualSupport.colorBlindnessType);
+     * 初期設定の適用
+     */
+    private applyInitialSettings(): void {
+        // 高コントラストモードの適用
         if (this.accessibilityConfig.visualSupport.highContrast) {
-    
-}
-            this.applyContrastSettings(); }
+            this.enableHighContrast();
         }
         
-        if (this.accessibilityConfig.cognitiveSupport.reducedMotion) { this.applyMotionSettings();
+        // 色覚異常サポートの適用
+        if (this.accessibilityConfig.visualSupport.colorBlindnessSupport) {
+            this.enableColorBlindnessSupport({
+                type: this.accessibilityConfig.visualSupport.colorBlindnessType
+            });
+        }
+        
+        // フォントサイズの適用
+        this.applyFontSize(this.accessibilityConfig.visualSupport.fontSize);
     }
-    
-    applyContrastSettings() {
-    ','
 
-        if (this.accessibilityConfig.visualSupport.highContrast) {''
-            document.body.classList.add('high-contrast');
+    // ========================================
+    // 機能実装メソッド
+    // ========================================
 
-            this.applyColorFilter('high-contrast'); }
-
-        } else { }'
-
-            document.body.classList.remove('high-contrast'; }'
-}
-    
-    applyMotionSettings() {
-    ','
-
-        if (this.accessibilityConfig.cognitiveSupport.reducedMotion) {
-    
-}
-
-            document.body.classList.add('reduced-motion'); }
-
-        } else { }'
-
-            document.body.classList.remove('reduced-motion'; }'
-}
-    
     /**
-     * アクセシビリティ統計取得
+     * スクリーンリーダーの有効化
      */
-    getAccessibilityStatistics() {
-        return { screenReaderEnabled: this.accessibilityConfig.screenReader.enabled,
-            colorBlindnessSupport: this.accessibilityConfig.visualSupport.colorBlindnessType,
-            currentFilter: this.colorSupport.currentFilter,
-    fontSize: this.accessibilityConfig.visualSupport.fontSize }
-            capabilities: this.capabilities ,
-            focusableElementsCount: this.focusManager.focusableElements.length; 
+    private enableScreenReader(options: any = {}): void {
+        this.accessibilityConfig.screenReader.enabled = true;
+        this.screenReaderState.active = true;
+        
+        // スクリーンリーダー用のスタイルを追加
+        this.addScreenReaderStyles();
+        
+        this.announce('Screen reader enabled');
     }
-    
+
     /**
-     * ユーティリティメソッド'
-     */''
-    isInteractiveElement(element) {
-
-        const interactiveTags = ['BUTTON', 'INPUT', 'SELECT', 'TEXTAREA', 'A'],
-        const interactiveRoles = ['button', 'link', 'menuitem', 'tab'],
-
-        return interactiveTags.includes(element.tagName) ||','
-               interactiveRoles.includes(element.getAttribute('role)' ||','
-               element.hasAttribute('onclick') ||' }'
-
-               element.classList.contains('interactive'; }'
+     * スクリーンリーダーの無効化
+     */
+    private disableScreenReader(): void {
+        this.accessibilityConfig.screenReader.enabled = false;
+        this.screenReaderState.active = false;
+        
+        this.removeScreenReaderStyles();
+        
+        this.announce('Screen reader disabled');
     }
-    
+
+    /**
+     * 高コントラストモードの有効化
+     */
+    private enableHighContrast(options: any = {}): void {
+        this.accessibilityConfig.visualSupport.highContrast = true;
+        document.body.classList.add('high-contrast');
+    }
+
+    /**
+     * 高コントラストモードの無効化
+     */
+    private disableHighContrast(): void {
+        this.accessibilityConfig.visualSupport.highContrast = false;
+        document.body.classList.remove('high-contrast');
+    }
+
+    /**
+     * 色覚異常サポートの有効化
+     */
+    private enableColorBlindnessSupport(options: any = {}): void {
+        this.accessibilityConfig.visualSupport.colorBlindnessSupport = true;
+        const type = options.type || 'protanopia';
+        this.accessibilityConfig.visualSupport.colorBlindnessType = type;
+        
+        const filter = this.colorSupport.filters.get(type);
+        if (filter) {
+            document.body.style.filter = filter;
+            this.colorSupport.currentFilter = type;
+        }
+    }
+
+    /**
+     * 色覚異常サポートの無効化
+     */
+    private disableColorBlindnessSupport(): void {
+        this.accessibilityConfig.visualSupport.colorBlindnessSupport = false;
+        document.body.style.filter = '';
+        this.colorSupport.currentFilter = null;
+    }
+
+    /**
+     * タッチ領域拡大の有効化
+     */
+    private enableTouchAreaEnlargement(options: any = {}): void {
+        this.accessibilityConfig.motorSupport.touchAreaEnlarged = true;
+        document.body.classList.add('enlarged-touch-targets');
+    }
+
+    /**
+     * タッチ領域拡大の無効化
+     */
+    private disableTouchAreaEnlargement(): void {
+        this.accessibilityConfig.motorSupport.touchAreaEnlarged = false;
+        document.body.classList.remove('enlarged-touch-targets');
+    }
+
+    /**
+     * ハプティックフィードバックの有効化
+     */
+    private enableHapticFeedback(options: any = {}): void {
+        this.accessibilityConfig.auditorySupport.hapticFeedback = true;
+    }
+
+    /**
+     * ハプティックフィードバックの無効化
+     */
+    private disableHapticFeedback(): void {
+        this.accessibilityConfig.auditorySupport.hapticFeedback = false;
+    }
+
+    // ========================================
+    // ユーティリティメソッド
+    // ========================================
+
+    /**
+     * 音声アナウンス
+     */
+    private announce(text: string, priority: 'polite' | 'assertive' = 'polite'): void {
+        if (!this.screenReaderState.active) return;
+
+        const liveRegion = priority === 'assertive' 
+            ? this.screenReaderState.liveRegions.get('status')
+            : this.screenReaderState.liveRegions.get('score');
+
+        if (liveRegion) {
+            liveRegion.textContent = text;
+        }
+
+        // 音声合成での読み上げ
+        if (this.feedbackSystems.speechSynthesis) {
+            const utterance = new SpeechSynthesisUtterance(text);
+            this.feedbackSystems.speechSynthesis.speak(utterance);
+        }
+    }
+
+    /**
+     * 要素の説明をアナウンス
+     */
+    private announceElement(element: HTMLElement): void {
+        if (!element) return;
+
+        const label = element.getAttribute('aria-label') || 
+                     element.getAttribute('title') ||
+                     element.textContent ||
+                     element.tagName.toLowerCase();
+
+        this.announce(`Focused on ${label}`);
+    }
+
+    /**
+     * 方向のアナウンス
+     */
+    private announceDirection(key: string): void {
+        const directions: { [key: string]: string } = {
+            'ArrowUp': 'Moving up',
+            'ArrowDown': 'Moving down',
+            'ArrowLeft': 'Moving left',
+            'ArrowRight': 'Moving right'
+        };
+
+        const direction = directions[key];
+        if (direction) {
+            this.announce(direction);
+        }
+    }
+
+    /**
+     * 画面向き変更のアナウンス
+     */
+    private announceOrientationChange(): void {
+        const orientation = window.screen && (window.screen as any).orientation 
+            ? (window.screen as any).orientation.type
+            : window.innerWidth > window.innerHeight ? 'landscape' : 'portrait';
+
+        this.announce(`Screen orientation changed to ${orientation}`);
+    }
+
+    /**
+     * オーディオビープの再生
+     */
+    private playAudioBeep(type: string): void {
+        const audio = this.feedbackSystems.audioBeeps.get(type);
+        if (audio && audio.play) {
+            audio.play().catch(error => {
+                console.warn('Audio beep playback failed:', error);
+            });
+        }
+    }
+
+    /**
+     * フォントサイズの適用
+     */
+    private applyFontSize(size: string): void {
+        const fontSizes: { [key: string]: string } = {
+            'small': '12px',
+            'normal': '16px',
+            'large': '20px',
+            'xlarge': '24px'
+        };
+
+        const fontSize = fontSizes[size] || fontSizes['normal'];
+        document.documentElement.style.fontSize = fontSize;
+    }
+
+    /**
+     * スクリーンリーダー用スタイルの追加
+     */
+    private addScreenReaderStyles(): void {
+        const styleId = 'accessibility-screen-reader-styles';
+        if (document.getElementById(styleId)) return;
+
+        const styles = document.createElement('style');
+        styles.id = styleId;
+        styles.textContent = `
+            .sr-only {
+                position: absolute !important;
+                width: 1px !important;
+                height: 1px !important;
+                padding: 0 !important;
+                margin: -1px !important;
+                overflow: hidden !important;
+                clip: rect(0, 0, 0, 0) !important;
+                white-space: nowrap !important;
+                border: 0 !important;
+            }
+            
+            .sr-only:focus,
+            .sr-only:active {
+                position: static !important;
+                width: auto !important;
+                height: auto !important;
+                padding: inherit !important;
+                margin: inherit !important;
+                overflow: visible !important;
+                clip: auto !important;
+                white-space: inherit !important;
+            }
+        `;
+        document.head.appendChild(styles);
+    }
+
+    /**
+     * スクリーンリーダー用スタイルの削除
+     */
+    private removeScreenReaderStyles(): void {
+        const styleElement = document.getElementById('accessibility-screen-reader-styles');
+        if (styleElement) {
+            styleElement.remove();
+        }
+    }
+
+    /**
+     * バイブレーション（ハプティック）フィードバック
+     */
+    public vibrate(pattern: number | number[] = 100): void {
+        if (this.accessibilityConfig.auditorySupport.hapticFeedback && 'vibrate' in navigator) {
+            navigator.vibrate(pattern);
+        }
+    }
+
+    /**
+     * 設定の保存
+     */
+    public saveSettings(): void {
+        try {
+            localStorage.setItem('accessibilitySettings', JSON.stringify(this.accessibilityConfig));
+        } catch (error) {
+            this.errorHandler.handleError(error, 'MobileAccessibilityManager.saveSettings');
+        }
+    }
+
+    /**
+     * 現在の設定を取得
+     */
+    public getConfig(): AccessibilityConfig {
+        return { ...this.accessibilityConfig };
+    }
+
     /**
      * クリーンアップ
      */
-    cleanup() {
-        try {
-            this.saveAccessibilitySettings();
-            // 音声合成停止
-            if (this.feedbackSystems.speechSynthesis) {''
-                this.feedbackSystems.speechSynthesis.cancel()','
-            if(this.audioContext && this.audioContext.state !== 'closed' { }
-                this.audioContext.close(); }
+    public dispose(): void {
+        // イベントリスナーの削除
+        document.removeEventListener('keydown', this.handleKeyboardNavigation);
+        document.removeEventListener('focusin', this.handleFocusChange);
+        document.removeEventListener('focusout', this.handleFocusLoss);
+        window.removeEventListener('orientationchange', this.handleOrientationChange);
+        window.removeEventListener('resize', this.handleWindowResize);
+
+        // ライブリージョンの削除
+        this.screenReaderState.liveRegions.forEach(region => {
+            if (region.parentNode) {
+                region.parentNode.removeChild(region);
             }
-            
-            // ライブリージョン削除
-            this.screenReaderState.liveRegions.forEach(region => {  );
-                if (region.parentNode) { }
-                    region.parentNode.removeChild(region); }
-                }'}');
+        });
 
-            console.log('[MobileAccessibilityManager] クリーンアップ完了');
-        } catch (error) {
-            this.errorHandler.handleError(error, 'MobileAccessibilityManager.cleanup' }'
+        // スタイルの削除
+        this.removeScreenReaderStyles();
+
+        console.log('[MobileAccessibilityManager] クリーンアップ完了');
+    }
 }
-
-// シングルトンインスタンス
-let mobileAccessibilityManagerInstance = null;
-';'
-
-export function getMobileAccessibilityManager(gameEngine = null) { if (!mobileAccessibilityManagerInstance && gameEngine) {''
-        mobileAccessibilityManagerInstance = new MobileAccessibilityManager(gameEngine) };
-    return mobileAccessibilityManagerInstance;
-}
-
-export { MobileAccessibilityManager  };
