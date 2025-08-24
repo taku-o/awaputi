@@ -3,7 +3,21 @@
  * イベントキューとバッチ処理による効率的なデータ収集を実装
  */
 export class StatisticsCollector {
-    constructor(statisticsManager) {
+    private statisticsManager: any;
+    private eventQueue: any[];
+    private batchSize: number;
+    private flushInterval: number;
+    private isProcessing: boolean;
+    private lastFlushTime: number;
+    private eventBuffer: Map<string, any[]>;
+    private eventCategories: any;
+    private flushTimer: any;
+    private batchProcessor: any;
+    private sessionId: string | null;
+    private processingMetrics: any;
+    private errorMetrics: any;
+
+    constructor(statisticsManager: any) {
         this.statisticsManager = statisticsManager;
         
         // イベントキュー
@@ -18,15 +32,20 @@ export class StatisticsCollector {
         
         // 統計収集カテゴリ
         this.eventCategories = {
-            BUBBLE: 'bubble,
-            COMBO: 'combo,
-            DAMAGE: 'damage,
-            HEAL: 'heal,
-            SPECIAL_EFFECT: 'special_effect,
-            GAME_STATE: 'game_state,
-            USER_ACTION: 'user_action' };
-            PERFORMANCE: 'performance' 
-    };
+            BUBBLE: 'bubble',
+            COMBO: 'combo',
+            DAMAGE: 'damage',
+            HEAL: 'heal',
+            SPECIAL_EFFECT: 'special_effect',
+            GAME_STATE: 'game_state',
+            USER_ACTION: 'user_action',
+            PERFORMANCE: 'performance'
+        };
+        
+        this.sessionId = null;
+        this.processingMetrics = null;
+        this.errorMetrics = null;
+        
         this.setupEventListeners();
         this.startBatchProcessing();
     }
@@ -34,14 +53,14 @@ export class StatisticsCollector {
     /**
      * イベント収集メソッド
      */
-    collectEvent(eventType, data, category = this.eventCategories.GAME_STATE) {
+    collectEvent(eventType: string, data: any, category: string = this.eventCategories.GAME_STATE): void {
         const event = {
             type: eventType,
             category: category,
             data: data,
-    timestamp: Date.now(),
-            sessionId: this.generateSessionId(); 
-    };
+            timestamp: Date.now(),
+            sessionId: this.generateSessionId()
+        };
         
         // イベントバッファに追加
         this.addToBuffer(event);
@@ -50,133 +69,156 @@ export class StatisticsCollector {
         this.eventQueue.push(event);
         
         // バッチサイズに達した場合、即座にフラッシュ
-        if (this.eventQueue.length >= this.batchSize) { this.flushEvents();
+        if (this.eventQueue.length >= this.batchSize) {
+            this.flushEvents();
+        }
     }
     
     /**
      * バブル関連イベントの収集
      */
-    collectBubbleEvent(eventType, bubbleData) { this.collectEvent(eventType, {
+    collectBubbleEvent(eventType: string, bubbleData: any): void {
+        this.collectEvent(eventType, {
             bubbleType: bubbleData.type,
-            position: bubbleData.position),
+            position: bubbleData.position,
             reactionTime: bubbleData.reactionTime,
-    comboMultiplier: bubbleData.comboMultiplier }
-            scoreEarned: bubbleData.scoreEarned), this.eventCategories.BUBBLE); }
+            comboMultiplier: bubbleData.comboMultiplier,
+            scoreEarned: bubbleData.scoreEarned
+        }, this.eventCategories.BUBBLE);
     }
     
     /**
      * コンボ関連イベントの収集
      */
-    collectComboEvent(eventType, comboData) { this.collectEvent(eventType, {
-            comboCount: comboData.count),
+    collectComboEvent(eventType: string, comboData: any): void {
+        this.collectEvent(eventType, {
+            comboCount: comboData.count,
             comboMultiplier: comboData.multiplier,
-    comboBroken: comboData.broken }
-            totalScore: comboData.totalScore), this.eventCategories.COMBO); }
+            comboBroken: comboData.broken,
+            totalScore: comboData.totalScore
+        }, this.eventCategories.COMBO);
     }
     
     /**
      * ダメージ関連イベントの収集
      */
-    collectDamageEvent(eventType, damageData) { this.collectEvent(eventType, {
-            damageAmount: damageData.amount),
+    collectDamageEvent(eventType: string, damageData: any): void {
+        this.collectEvent(eventType, {
+            damageAmount: damageData.amount,
             damageSource: damageData.source,
-    currentHP: damageData.currentHP }
-            maxHP: damageData.maxHP), this.eventCategories.DAMAGE); }
+            currentHP: damageData.currentHP,
+            maxHP: damageData.maxHP
+        }, this.eventCategories.DAMAGE);
     }
     
     /**
      * 回復関連イベントの収集
      */
-    collectHealEvent(eventType, healData) { this.collectEvent(eventType, {
-            healAmount: healData.amount),
+    collectHealEvent(eventType: string, healData: any): void {
+        this.collectEvent(eventType, {
+            healAmount: healData.amount,
             healSource: healData.source,
-    currentHP: healData.currentHP }
-            maxHP: healData.maxHP), this.eventCategories.HEAL); }
+            currentHP: healData.currentHP,
+            maxHP: healData.maxHP
+        }, this.eventCategories.HEAL);
     }
     
     /**
      * 特殊効果関連イベントの収集
      */
-    collectSpecialEffectEvent(eventType, effectData) { this.collectEvent(eventType, {
-            effectType: effectData.type),
+    collectSpecialEffectEvent(eventType: string, effectData: any): void {
+        this.collectEvent(eventType, {
+            effectType: effectData.type,
             duration: effectData.duration,
-    intensity: effectData.intensity }
-            triggeredBy: effectData.triggeredBy), this.eventCategories.SPECIAL_EFFECT); }
+            intensity: effectData.intensity,
+            triggeredBy: effectData.triggeredBy
+        }, this.eventCategories.SPECIAL_EFFECT);
     }
     
     /**
      * ユーザー操作関連イベントの収集
      */
-    collectUserActionEvent(eventType, actionData) { this.collectEvent(eventType, {
-            actionType: actionData.type),
+    collectUserActionEvent(eventType: string, actionData: any): void {
+        this.collectEvent(eventType, {
+            actionType: actionData.type,
             position: actionData.position,
-    timestamp: actionData.timestamp }
-            inputDevice: actionData.inputDevice), this.eventCategories.USER_ACTION); }
+            timestamp: actionData.timestamp,
+            inputDevice: actionData.inputDevice
+        }, this.eventCategories.USER_ACTION);
     }
     
     /**
      * パフォーマンス関連イベントの収集
      */
-    collectPerformanceEvent(eventType, performanceData) { this.collectEvent(eventType, {
-            frameRate: performanceData.frameRate),
+    collectPerformanceEvent(eventType: string, performanceData: any): void {
+        this.collectEvent(eventType, {
+            frameRate: performanceData.frameRate,
             memoryUsage: performanceData.memoryUsage,
-    processingTime: performanceData.processingTime }
-            renderTime: performanceData.renderTime), this.eventCategories.PERFORMANCE); }
+            processingTime: performanceData.processingTime,
+            renderTime: performanceData.renderTime
+        }, this.eventCategories.PERFORMANCE);
     }
     
     /**
      * イベントバッファへの追加
      */
-    addToBuffer(event) {
-    
-}
+    addToBuffer(event: any): void {
         const key = `${event.category}_${event.type}`;
         
-        if (!this.eventBuffer.has(key) { this.eventBuffer.set(key, []);
+        if (!this.eventBuffer.has(key)) {
+            this.eventBuffer.set(key, []);
+        }
         
-        this.eventBuffer.get(key).push(event);
+        this.eventBuffer.get(key)!.push(event);
         
         // バッファサイズ制限
-        const buffer = this.eventBuffer.get(key);
-        if (buffer.length > 50) { buffer.shift(), // 古いイベントを削除 }
+        const buffer = this.eventBuffer.get(key)!;
+        if (buffer.length > 50) {
+            buffer.shift(); // 古いイベントを削除
+        }
     }
     
     /**
      * イベントリスナーの設定
-     */''
-    setupEventListeners()';'
-        window.addEventListener('beforeunload', () => { this.flushEvents(true) });
+     */
+    setupEventListeners(): void {
+        window.addEventListener('beforeunload', () => {
+            this.flushEvents(true);
+        });
         
         // 定期的なフラッシュ
-        this.flushTimer = setInterval(() => {  const now = Date.now();
-            if (now - this.lastFlushTime >= this.flushInterval) { }
-                this.flushEvents(); }
-            }'}, this.flushInterval';
-        ';'
+        this.flushTimer = setInterval(() => {
+            const now = Date.now();
+            if (now - this.lastFlushTime >= this.flushInterval) {
+                this.flushEvents();
+            }
+        }, this.flushInterval);
+        
         // フォーカス喪失時のフラッシュ
-        window.addEventListener('blur', () => { this.flushEvents() });
+        window.addEventListener('blur', () => {
+            this.flushEvents();
+        });
     }
     
     /**
      * バッチ処理の開始
      */
-    startBatchProcessing() {
-        this.batchProcessor = setInterval(() => { 
-    }
-            if (!this.isProcessing && this.eventQueue.length > 0) { }
-                this.processEventBatch(); }
-}, 100); // 100ms間隔でバッチ処理
+    startBatchProcessing(): void {
+        this.batchProcessor = setInterval(() => {
+            if (!this.isProcessing && this.eventQueue.length > 0) {
+                this.processEventBatch();
+            }
+        }, 100); // 100ms間隔でバッチ処理
     }
     
     /**
      * イベントキューのフラッシュ
      */
-    flushEvents(immediate = false) {
-        if (this.eventQueue.length === 0) return,
+    flushEvents(immediate: boolean = false): void {
+        if (this.eventQueue.length === 0) return;
         
         if (immediate || this.eventQueue.length >= this.batchSize) {
-    }
-            this.processEventBatch(); }
+            this.processEventBatch();
         }
         
         this.lastFlushTime = Date.now();
@@ -185,31 +227,32 @@ export class StatisticsCollector {
     /**
      * イベントバッチの処理
      */
-    async processEventBatch() { if (this.isProcessing) return,
+    async processEventBatch(): Promise<void> {
+        if (this.isProcessing) return;
         
         this.isProcessing = true;
         const startTime = performance.now();
+        
         try {
             const eventsToProcess = this.eventQueue.splice(0, this.batchSize);
             if (eventsToProcess.length === 0) {
-            
-                this.isProcessing = false }
-                return; }
+                this.isProcessing = false;
+                return;
             }
             
             // カテゴリ別にイベントをグループ化
             const categorizedEvents = this.categorizeEvents(eventsToProcess);
             
             // 非同期でカテゴリ別処理
-            await Promise.all([);]
-                this.processBubbleEvents(categorizedEvents.bubble || []);
-                this.processComboEvents(categorizedEvents.combo || []);
-                this.processDamageEvents(categorizedEvents.damage || []);
-                this.processHealEvents(categorizedEvents.heal || []);
-                this.processSpecialEffectEvents(categorizedEvents.special_effect || []);
-                this.processGameStateEvents(categorizedEvents.game_state || []);
-                this.processUserActionEvents(categorizedEvents.user_action || []);
-                this.processPerformanceEvents(categorizedEvents.performance || []);
+            await Promise.all([
+                this.processBubbleEvents(categorizedEvents.bubble || []),
+                this.processComboEvents(categorizedEvents.combo || []),
+                this.processDamageEvents(categorizedEvents.damage || []),
+                this.processHealEvents(categorizedEvents.heal || []),
+                this.processSpecialEffectEvents(categorizedEvents.special_effect || []),
+                this.processGameStateEvents(categorizedEvents.game_state || []),
+                this.processUserActionEvents(categorizedEvents.user_action || []),
+                this.processPerformanceEvents(categorizedEvents.performance || [])
             ]);
             
             // 処理時間の記録
@@ -218,174 +261,204 @@ export class StatisticsCollector {
 
         } catch (error) {
             console.error('Error processing event batch:', error);
-            this.handleProcessingError(error) } finally { this.isProcessing = false }
+            this.handleProcessingError(error);
+        } finally {
+            this.isProcessing = false;
+        }
     }
     
     /**
      * イベントのカテゴリ別分類
      */
-    categorizeEvents(events) {
-    
-}
-        const categorized = {};
+    categorizeEvents(events: any[]): any {
+        const categorized: any = {};
         
-        events.forEach(event => {  )
-            const category = event.category),
-            if (!categorized[category]) { }
-                categorized[category] = []; }
+        events.forEach(event => {
+            const category = event.category;
+            if (!categorized[category]) {
+                categorized[category] = [];
             }
             categorized[category].push(event);
-        };
+        });
         
         return categorized;
     }
     
     /**
      * バブル関連イベントの処理
-     */'
-    async processBubbleEvents(events) { for (const event of events) {''
+     */
+    async processBubbleEvents(events: any[]): Promise<void> {
+        for (const event of events) {
             switch(event.type) {
-
-                case 'bubble_popped':,
+                case 'bubble_popped':
                     this.statisticsManager.onBubblePopped(
-                        event.data.bubbleType)','
-                        event.data.reactionTime',
-                    '),'
-
-                    break,
-                case 'bubble_missed':,
+                        event.data.bubbleType,
+                        event.data.reactionTime
+                    );
+                    break;
+                
+                case 'bubble_missed':
                     this.statisticsManager.statistics.totalBubblesMissed++;
-
-                    break,
-                case 'bubble_spawned':,
+                    break;
+                
+                case 'bubble_spawned':
                     // バブル生成統計の更新
+                    break;
             }
-                    break;     }
-}
+        }
+    }
+    
     /**
      * コンボ関連イベントの処理
      */
-    async processComboEvents(events) { for (const event of events) {''
+    async processComboEvents(events: any[]): Promise<void> {
+        for (const event of events) {
             switch(event.type) {
-
-                case 'combo_updated':,
+                case 'combo_updated':
                     this.statisticsManager.onComboUpdate(
-                        event.data.comboCount)','
-                        event.data.comboBroken',
-                    '),'
-
-                    break,
-                case 'combo_broken':,
+                        event.data.comboCount,
+                        event.data.comboBroken
+                    );
+                    break;
+                
+                case 'combo_broken':
                     this.statisticsManager.onComboUpdate(0, true);
-                    break;     }
-}
+                    break;
+            }
+        }
+    }
+    
     /**
      * ダメージ関連イベントの処理
-     */'
-    async processDamageEvents(events) { for (const event of events) {''
+     */
+    async processDamageEvents(events: any[]): Promise<void> {
+        for (const event of events) {
             switch(event.type) {
-
-                case 'damage_taken':,
+                case 'damage_taken':
                     this.statisticsManager.onDamageTaken(event.data.damageAmount);
-                    break;     }
-}
+                    break;
+            }
+        }
+    }
+    
     /**
      * 回復関連イベントの処理
-     */'
-    async processHealEvents(events) { for (const event of events) {''
+     */
+    async processHealEvents(events: any[]): Promise<void> {
+        for (const event of events) {
             switch(event.type) {
-
-                case 'hp_healed':,
+                case 'hp_healed':
                     this.statisticsManager.onHpHealed(event.data.healAmount);
-                    break;     }
-}
+                    break;
+            }
+        }
+    }
+    
     /**
      * 特殊効果関連イベントの処理
-     */'
-    async processSpecialEffectEvents(events) { for (const event of events) {''
+     */
+    async processSpecialEffectEvents(events: any[]): Promise<void> {
+        for (const event of events) {
             switch(event.type) {
-
-                case 'special_effect_activated':,
+                case 'special_effect_activated':
                     this.statisticsManager.onSpecialEffect(event.data.effectType);
-                    break;     }
-}
+                    break;
+            }
+        }
+    }
+    
     /**
      * ゲーム状態関連イベントの処理
-     */'
-    async processGameStateEvents(events) { for (const event of events) {''
+     */
+    async processGameStateEvents(events: any[]): Promise<void> {
+        for (const event of events) {
             switch(event.type) {
-
-                case 'game_started':','
+                case 'game_started':
                     this.statisticsManager.onGameStart(event.data.stageId);
-                    break,
-                case 'game_ended':,
+                    break;
+                
+                case 'game_ended':
                     this.statisticsManager.onGameEnd(event.data);
-                    break;     }
-}
+                    break;
+            }
+        }
+    }
+    
     /**
      * ユーザー操作関連イベントの処理
-     */'
-    async processUserActionEvents(events) { for (const event of events) {''
+     */
+    async processUserActionEvents(events: any[]): Promise<void> {
+        for (const event of events) {
             switch(event.type) {
-
-                case 'drag_operation':','
-                    this.statisticsManager.onDragOperation('''
-                case 'click_action': ,
+                case 'drag_operation':
+                    this.statisticsManager.onDragOperation();
+                    break;
+                
+                case 'click_action':
                     // クリック統計の更新
+                    break;
             }
-                    break;     }
-}
+        }
+    }
+    
     /**
-     * パフォーマンス関連イベントの処理)
-     */)
-    async processPerformanceEvents(events) { // パフォーマンス統計の更新
-        // 将来的にパフォーマンス最適化で使用 }
+     * パフォーマンス関連イベントの処理
+     */
+    async processPerformanceEvents(events: any[]): Promise<void> {
+        // パフォーマンス統計の更新
+        // 将来的にパフォーマンス最適化で使用
+    }
     
     /**
      * 処理メトリクスの記録
      */
-    recordProcessingMetrics(processingTime, eventCount) {
+    recordProcessingMetrics(processingTime: number, eventCount: number): void {
         // 処理時間の統計
         if (!this.processingMetrics) {
             this.processingMetrics = {
                 totalProcessingTime: 0,
                 totalEventsProcessed: 0,
-    averageProcessingTime: 0 }
-                maxProcessingTime: 0 
-    }
+                averageProcessingTime: 0,
+                maxProcessingTime: 0
+            };
+        }
         
         this.processingMetrics.totalProcessingTime += processingTime;
         this.processingMetrics.totalEventsProcessed += eventCount;
-        this.processingMetrics.averageProcessingTime = ;
+        this.processingMetrics.averageProcessingTime = 
             this.processingMetrics.totalProcessingTime / this.processingMetrics.totalEventsProcessed;
-        this.processingMetrics.maxProcessingTime = ;
+        this.processingMetrics.maxProcessingTime = 
             Math.max(this.processingMetrics.maxProcessingTime, processingTime);
     }
     
     /**
      * 処理エラーのハンドリング
-     */''
-    handleProcessingError(error) {
-
+     */
+    handleProcessingError(error: any): void {
         console.error('StatisticsCollector processing error:', error);
+        
         // エラー統計の更新
         if (!this.errorMetrics) {
             this.errorMetrics = {
                 totalErrors: 0,
-                errorTypes: new Map()','
-        const errorType = error.name || 'UnknownError'),
-        this.errorMetrics.errorTypes.set();
+                errorTypes: new Map()
+            };
+        }
+        
+        this.errorMetrics.totalErrors++;
+        const errorType = error.name || 'UnknownError';
+        this.errorMetrics.errorTypes.set(
             errorType,
             (this.errorMetrics.errorTypes.get(errorType) || 0) + 1
-}
-        ); }
+        );
     }
     
     /**
      * セッションIDの生成
      */
-    generateSessionId() { if (!this.sessionId) { }
-            this.sessionId = `session_${Date.now())_${Math.random().toString(36).substr(2, 9}`;
+    generateSessionId(): string {
+        if (!this.sessionId) {
+            this.sessionId = `session_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
         }
         return this.sessionId;
     }
@@ -393,45 +466,54 @@ export class StatisticsCollector {
     /**
      * 統計概要の取得
      */
-    getCollectorStatistics() {
-        return { queueSize: this.eventQueue.length,
-            bufferSize: Array.from(this.eventBuffer.values())).reduce((sum, buffer) => sum + buffer.length, 0),
+    getCollectorStatistics(): any {
+        return {
+            queueSize: this.eventQueue.length,
+            bufferSize: Array.from(this.eventBuffer.values()).reduce((sum, buffer) => sum + buffer.length, 0),
             processingMetrics: this.processingMetrics,
-    errorMetrics: this.errorMetrics }
-            sessionId: this.sessionId ,
-            isProcessing: this.isProcessing 
+            errorMetrics: this.errorMetrics,
+            sessionId: this.sessionId,
+            isProcessing: this.isProcessing
+        };
     }
     
     /**
      * バッファのクリア
      */
-    clearBuffer() {
+    clearBuffer(): void {
         this.eventBuffer.clear();
-        this.eventQueue.length = 0; }
+        this.eventQueue.length = 0;
     }
     
     /**
      * バッチ処理メソッド（後方互換性のため）
      * processEventBatch への alias
      */
-    async processBatch() { return this.processEventBatch();
+    async processBatch(): Promise<void> {
+        return this.processEventBatch();
+    }
     
     /**
      * リソースのクリーンアップ
      */
-    destroy() {
+    destroy(): void {
         // タイマーのクリア
         if (this.flushTimer) {
-    }
-            clearInterval(this.flushTimer); }
+            clearInterval(this.flushTimer);
         }
-        if (this.batchProcessor) { clearInterval(this.batchProcessor);
+        
+        if (this.batchProcessor) {
+            clearInterval(this.batchProcessor);
+        }
         
         // 最後のフラッシュ
         this.flushEvents(true);
+        
         // バッファのクリア
-        this.clearBuffer()';'
-        window.removeEventListener('beforeunload', this.flushEvents';'
-        window.removeEventListener('blur', this.flushEvents';'
-
-    }'}'
+        this.clearBuffer();
+        
+        // イベントリスナーの削除
+        window.removeEventListener('beforeunload', () => this.flushEvents(true));
+        window.removeEventListener('blur', () => this.flushEvents());
+    }
+}

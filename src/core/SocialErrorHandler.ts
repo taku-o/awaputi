@@ -359,13 +359,8 @@ export class SocialErrorHandler {
      */
     async recoverFromMemoryError(error: any, context: any): Promise<boolean> {
         try {
-<<<<<<< HEAD
-            // ガベージコレクションの強制実行（可能な場合）
-            if ((window as any).gc) {
-=======
             // ガベージコレクションのヒント
             if (typeof (window as any).gc === 'function') {
->>>>>>> feature/typescript-migration-st
                 (window as any).gc();
             }
             
@@ -750,7 +745,6 @@ export class SocialErrorHandler {
                 debugData[info] = context[info];
             }
         });
->>>>>>> feature/typescript-migration-st
         
         return debugData;
     }
@@ -758,22 +752,17 @@ export class SocialErrorHandler {
     /**
      * スタックトレースの取得
      */
-<<<<<<< HEAD
     private getStackTrace(error: any): string {
-        if (error && error.stack && this.debugMode) {
+        if (error?.stack) {
             return error.stack;
         }
         
-        // スタックトレースを生成
-        if (this.debugMode) {
-            try {
-                throw new Error();
-            } catch (e: any) {
-                return e.stack || 'No stack trace available';
-            }
+        // エラーオブジェクトがない場合は新しいエラーからスタックトレースを取得
+        try {
+            throw new Error('Stack trace');
+        } catch (e: any) {
+            return e.stack || 'No stack trace available';
         }
-        
-        return 'Stack trace disabled';
     }
     
     /**
@@ -862,29 +851,9 @@ export class SocialErrorHandler {
     }
     
     /**
-     * スタックトレースの取得
-     */
-    private getStackTrace(error: any): string {
-        if (error?.stack) {
-            return error.stack;
-        }
-        
-        // エラーオブジェクトがない場合は新しいエラーからスタックトレースを取得
-        try {
-            throw new Error('Stack trace');
-        } catch (e: any) {
-            return e.stack || 'No stack trace available';
-        }
-    }
-    
-    /**
      * エラー履歴への追加
      */
-<<<<<<< HEAD
     private addToHistory(errorInfo: ErrorInfo): void {
-=======
-    addToHistory(errorInfo: ErrorInfo): void {
->>>>>>> feature/typescript-migration-st
         this.errorHistory.unshift(errorInfo);
         if (this.errorHistory.length > this.maxHistorySize) {
             this.errorHistory = this.errorHistory.slice(0, this.maxHistorySize);
@@ -894,21 +863,7 @@ export class SocialErrorHandler {
     /**
      * 統計の更新
      */
-<<<<<<< HEAD
     private updateStatistics(errorType: string, component: string): void {
-        this.errorStats.totalErrors++;
-        
-        if (!this.errorStats.errorsByType[errorType]) {
-            this.errorStats.errorsByType[errorType] = 0;
-        }
-        this.errorStats.errorsByType[errorType]++;
-        
-        if (!this.errorStats.errorsByComponent[component]) {
-            this.errorStats.errorsByComponent[component] = 0;
-        }
-        this.errorStats.errorsByComponent[component]++;
-=======
-    updateStatistics(errorType: string, component: string): void {
         this.errorStats.totalErrors++;
         
         // エラータイプ別カウント
@@ -916,7 +871,6 @@ export class SocialErrorHandler {
         
         // コンポーネント別カウント
         this.errorStats.errorsByComponent[component] = (this.errorStats.errorsByComponent[component] || 0) + 1;
->>>>>>> feature/typescript-migration-st
     }
     
     /**
@@ -1001,66 +955,23 @@ export class SocialErrorHandler {
     /**
      * エラー通知コールバックの登録
      */
-<<<<<<< HEAD
     addErrorNotificationCallback(callback: ErrorNotificationCallback): void {
         this.errorNotificationCallbacks.add(callback);
-=======
-    sanitizeContext(context: any): any {
-        try {
-            // 循環参照を除去してJSONシリアライズ可能にする
-            return JSON.parse(JSON.stringify(context));
-        } catch (error) {
-            return { error: 'Context serialization failed' };
-        }
-    }
-    
-    /**
-     * HTMLエスケープ
-     */
-    escapeHtml(text: string): string {
-        const div = document.createElement('div');
-        div.textContent = text;
-        return div.innerHTML;
-    }
-    
-    /**
-     * エラー通知コールバックの登録
-     */
-    addErrorCallback(callback: Function): void {
-        if (typeof callback === 'function') {
-            this.errorNotificationCallbacks.add(callback);
-        }
->>>>>>> feature/typescript-migration-st
     }
     
     /**
      * エラー通知コールバックの削除
      */
-<<<<<<< HEAD
     removeErrorNotificationCallback(callback: ErrorNotificationCallback): void {
-=======
-    removeErrorCallback(callback: Function): void {
->>>>>>> feature/typescript-migration-st
         this.errorNotificationCallbacks.delete(callback);
     }
     
     /**
-<<<<<<< HEAD
      * デバッグモードの設定
      */
     setDebugMode(enabled: boolean): void {
         this.debugMode = enabled;
-=======
-     * コールバックへの通知
-     */
-    notifyCallbacks(errorInfo: any): void {
-        this.errorNotificationCallbacks.forEach(callback => {
-            try {
-                callback(errorInfo);
-            } catch (error) {
-                console.error('Error notification callback failed:', error);
-            }
-        });
+        console.log(`[SocialErrorHandler] デバッグモード: ${enabled ? 'ON' : 'OFF'}`);
     }
     
     /**
@@ -1114,25 +1025,20 @@ export class SocialErrorHandler {
     /**
      * エラー履歴の取得
      */
-<<<<<<< HEAD
-    getErrorHistory(limit?: number): ErrorInfo[] {
-        if (limit && limit > 0) {
-            return this.errorHistory.slice(0, limit);
-        }
-        return [...this.errorHistory];
-=======
     getErrorHistory(limit: number = 50): ErrorInfo[] {
         return this.errorHistory.slice(0, limit);
->>>>>>> feature/typescript-migration-st
     }
     
     /**
      * エラー統計の取得
      */
-<<<<<<< HEAD
     getErrorStats(): ErrorStats {
         return { ...this.errorStats };
-=======
+    }
+    
+    /**
+     * エラー統計の詳細取得
+     */
     getErrorStatistics(): any {
         return {
             ...this.errorStats,
@@ -1142,13 +1048,31 @@ export class SocialErrorHandler {
             topErrors: this.getTopErrors(),
             topComponents: this.getTopComponents()
         };
->>>>>>> feature/typescript-migration-st
     }
     
     /**
      * 復旧試行回数のリセット
      */
-<<<<<<< HEAD
+    getTopErrors(limit: number = 5): Array<{type: string, count: number}> {
+        return Object.entries(this.errorStats.errorsByType)
+            .sort((a, b) => b[1] - a[1])
+            .slice(0, limit)
+            .map(([type, count]) => ({ type, count }));
+    }
+    
+    /**
+     * トップコンポーネントエラーの取得
+     */
+    getTopComponents(limit: number = 5): Array<{component: string, count: number}> {
+        return Object.entries(this.errorStats.errorsByComponent)
+            .sort((a, b) => b[1] - a[1])
+            .slice(0, limit)
+            .map(([component, count]) => ({ component, count }));
+    }
+    
+    /**
+     * 復旧試行回数のリセット
+     */
     resetRecoveryAttempts(errorType?: string): void {
         if (errorType) {
             // 特定のエラータイプの復旧試行回数をリセット
@@ -1161,41 +1085,15 @@ export class SocialErrorHandler {
             // 全ての復旧試行回数をリセット
             this.recoveryAttempts.clear();
         }
-=======
-    getTopErrors(limit: number = 5): Array<{type: string, count: number}> {
-        return Object.entries(this.errorStats.errorsByType)
-            .sort((a, b) => b[1] - a[1])
-            .slice(0, limit)
-            .map(([type, count]) => ({ type, count }));
->>>>>>> feature/typescript-migration-st
     }
     
     /**
      * エラーハンドラーのクリーンアップ
      */
-<<<<<<< HEAD
-    destroy(): void {
-=======
-    getTopComponents(limit: number = 5): Array<{component: string, count: number}> {
-        return Object.entries(this.errorStats.errorsByComponent)
-            .sort((a, b) => b[1] - a[1])
-            .slice(0, limit)
-            .map(([component, count]) => ({ component, count }));
-    }
-    
-    /**
-     * デバッグモードの切り替え
-     */
-    setDebugMode(enabled: boolean): void {
-        this.debugMode = enabled;
-        console.log(`[SocialErrorHandler] デバッグモード: ${enabled ? 'ON' : 'OFF'}`);
-    }
-    
     /**
      * エラー履歴のクリア
      */
     clearErrorHistory(): void {
->>>>>>> feature/typescript-migration-st
         this.errorHistory = [];
         this.recoveryAttempts.clear();
         this.errorNotificationCallbacks.clear();
@@ -1233,4 +1131,3 @@ export class SocialErrorHandler {
 
 // シングルトンインスタンス
 export const socialErrorHandler = new SocialErrorHandler();
->>>>>>> feature/typescript-migration-st

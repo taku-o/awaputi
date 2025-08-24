@@ -445,7 +445,7 @@ export class SettingsManager {
      * @param {Object} options インポートオプション
      * @returns {Promise<Object>} インポート結果
      */
-    async import(settingsJson: string, options: any = {}): Promise<any>
+    async import(settingsJson: string, options: any = {}): Promise<any> {
         return await this.exportImport.import(settingsJson, options);
     }
     

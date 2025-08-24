@@ -681,7 +681,6 @@ export class SpeechSynthesisManager {
     /**
      * テキストの発話
      */
-<<<<<<< HEAD
     speak(text: string, options: SpeakOptions = {}): boolean {
         if (!this.config.enabled || !this.isSupported || !text) {
             return false;
@@ -692,19 +691,6 @@ export class SpeechSynthesisManager {
             return false;
         }
 
-=======
-    speak(text: string, options: any = {}): boolean {
-        if (!this.config.enabled || !this.isSupported || !text) {
-            return false;
-        }
-        
-        // 重複メッセージのスキップ
-        if (this.userPreferences.skipRepeatedMessages &&
-            this.isRepeatedMessage(text)) {
-            return false;
-        }
-        
->>>>>>> feature/typescript-migration-st
         const utterance = this.createUtterance(text, options);
 
         // 緊急メッセージの場合は割り込み
@@ -730,20 +716,13 @@ export class SpeechSynthesisManager {
     /**
      * 重複メッセージの判定
      */
-<<<<<<< HEAD
-    isRepeatedMessage(text: string): boolean {
-=======
     private isRepeatedMessage(text: string): boolean {
->>>>>>> feature/typescript-migration-st
         // 簡単な実装：最後のメッセージと同じかチェック
         if (this.lastSpokenText === text) {
             return true;
         }
-<<<<<<< HEAD
 
-=======
-        
->>>>>>> feature/typescript-migration-st
+
         this.lastSpokenText = text;
         return false;
     }
@@ -751,7 +730,6 @@ export class SpeechSynthesisManager {
     /**
      * 緊急メッセージの発話
      */
-<<<<<<< HEAD
     speakUrgent(text: string, options: SpeakOptions = {}): boolean {
         return this.speak(text, { ...options, urgent: true });
     }
@@ -760,25 +738,12 @@ export class SpeechSynthesisManager {
      * キューをクリアして発話
      */
     speakNow(text: string, options: SpeakOptions = {}): boolean {
-=======
-    speakUrgent(text: string, options: any = {}): boolean {
-        return this.speak(text, { ...options, urgent: true });
-    }
-    
-    /**
-     * キューをクリアして発話
-     */
-    speakNow(text: string, options: any = {}): boolean {
->>>>>>> feature/typescript-migration-st
         this.clearQueue();
         this.stop();
         return this.speak(text, options);
     }
-<<<<<<< HEAD
 
-=======
-    
->>>>>>> feature/typescript-migration-st
+
     /**
      * 一時停止
      */
@@ -830,7 +795,6 @@ export class SpeechSynthesisManager {
     clearQueue(): void {
         this.speechQueue.length = 0;
     }
-<<<<<<< HEAD
 
     /**
      * 音声設定の変更
@@ -846,23 +810,6 @@ export class SpeechSynthesisManager {
             this.config.speech.volume = Math.max(0, Math.min(1, settings.volume));
         }
 
-=======
-    
-    /**
-     * 音声設定の変更
-     */
-    setVoiceSettings(settings: any): void {
-        if (settings.rate !== undefined) {
-            this.config.speech.rate = Math.max(0.1, Math.min(10, settings.rate));
-        }
-        if (settings.pitch !== undefined) {
-            this.config.speech.pitch = Math.max(0, Math.min(2, settings.pitch));
-        }
-        if (settings.volume !== undefined) {
-            this.config.speech.volume = Math.max(0, Math.min(1, settings.volume));
-        }
-        
->>>>>>> feature/typescript-migration-st
         // ユーザー設定も更新
         Object.assign(this.userPreferences, settings);
         this.saveUserPreferences();
@@ -874,23 +821,15 @@ export class SpeechSynthesisManager {
      */
     setVoice(language: string, voiceName: string): boolean {
         const voice = this.availableVoices.find(v =>
-<<<<<<< HEAD
             v.name === voiceName && v.lang.startsWith(language));
 
-=======
-            v.name === voiceName && v.lang.startsWith(language)
-        );
->>>>>>> feature/typescript-migration-st
         if (voice) {
             this.selectedVoices.set(language, voice);
             console.log(`Voice set for ${language}:`, voiceName);
             return true;
         }
-<<<<<<< HEAD
 
-=======
-        
->>>>>>> feature/typescript-migration-st
+
         console.warn(`Voice not found: ${voiceName} for ${language}`);
         return false;
     }
@@ -898,18 +837,10 @@ export class SpeechSynthesisManager {
     /**
      * 利用可能な音声の取得
      */
-<<<<<<< HEAD
-    getAvailableVoices(language: string | null = null): SpeechSynthesisVoice[] {
-        if (language) {
-            return this.availableVoices.filter(voice =>
-                voice.lang.startsWith(language));
-=======
     getAvailableVoices(language?: string): SpeechSynthesisVoice[] {
         if (language) {
             return this.availableVoices.filter(voice =>
-                voice.lang.startsWith(language)
-            );
->>>>>>> feature/typescript-migration-st
+                voice.lang.startsWith(language));
         }
         return this.availableVoices;
     }
@@ -940,26 +871,10 @@ export class SpeechSynthesisManager {
         if (config.speechSynthesis) {
             Object.assign(this.config, config.speechSynthesis);
             this.applyUserPreferences();
-<<<<<<< HEAD
             console.log('SpeechSynthesisManager configuration applied');
         }
     }
 
-    /**
-     * 音声テスト
-     */
-    testVoice(text: string | null = null, language: string = 'ja'): boolean {
-        const testText = text || (language === 'ja' ?
-            'こんにちは。音声合成のテストです。' :
-            'Hello. This is a speech synthesis test.');
-        return this.speak(testText, { language });
-    }
-
-=======
-        }
-        console.log('SpeechSynthesisManager configuration applied');
-    }
-    
     /**
      * 音声テスト
      */
@@ -969,8 +884,7 @@ export class SpeechSynthesisManager {
             'Hello. This is a speech synthesis test.');
         return this.speak(testText, { language });
     }
-    
->>>>>>> feature/typescript-migration-st
+
     /**
      * イベントリスナーの追加
      */
@@ -986,7 +900,6 @@ export class SpeechSynthesisManager {
      */
     removeEventListener(event: string, callback: Function): void {
         if (this.eventListeners.has(event)) {
-<<<<<<< HEAD
             this.eventListeners.get(event)!.delete(callback);
         }
     }
@@ -994,29 +907,13 @@ export class SpeechSynthesisManager {
     /**
      * イベントの発行
      */
-    emit(event: string, data: any): void {
+    private emit(event: string, data: any): void {
         if (this.eventListeners.has(event)) {
             this.eventListeners.get(event)!.forEach(callback => {
                 try {
                     callback(data);
                 } catch (error) {
-                    console.error(`Error in speech synthesis event listener:`, error);
-=======
-            this.eventListeners.get(event).delete(callback);
-        }
-    }
-    
-    /**
-     * イベントの発行
-     */
-    private emit(event: string, data: any): void {
-        if (this.eventListeners.has(event)) {
-            this.eventListeners.get(event).forEach(callback => {
-                try {
-                    callback(data);
-                } catch (error) {
                     console.error('Error in speech synthesis event listener:', error);
->>>>>>> feature/typescript-migration-st
                 }
             });
         }
@@ -1027,11 +924,8 @@ export class SpeechSynthesisManager {
      */
     generateReport(): any {
         const sessionDuration = Date.now() - this.stats.sessionStart;
-<<<<<<< HEAD
 
-=======
-        
->>>>>>> feature/typescript-migration-st
+
         return {
             timestamp: new Date().toISOString(),
             system: {
@@ -1056,22 +950,16 @@ export class SpeechSynthesisManager {
             userPreferences: this.userPreferences
         };
     }
-<<<<<<< HEAD
 
-=======
-    
->>>>>>> feature/typescript-migration-st
+
     /**
      * 有効状態の設定
      */
     setEnabled(enabled: boolean): void {
         this.config.enabled = enabled && this.isSupported;
         this.userPreferences.enabled = this.config.enabled;
-<<<<<<< HEAD
 
-=======
-        
->>>>>>> feature/typescript-migration-st
+
         if (!enabled) {
             this.stop();
             this.clearQueue();
@@ -1086,11 +974,8 @@ export class SpeechSynthesisManager {
      */
     destroy(): void {
         console.log('Destroying SpeechSynthesisManager...');
-<<<<<<< HEAD
 
-=======
-        
->>>>>>> feature/typescript-migration-st
+
         // 音声停止
         this.stop();
         this.clearQueue();
@@ -1103,13 +988,8 @@ export class SpeechSynthesisManager {
 
         // データのクリア
         this.selectedVoices.clear();
-<<<<<<< HEAD
         this.config.pronunciation.customDictionary.clear();
 
-=======
-        this.voicePreferences.clear();
-        this.config.pronunciation.customDictionary.clear();
->>>>>>> feature/typescript-migration-st
         console.log('SpeechSynthesisManager destroyed');
     }
 }

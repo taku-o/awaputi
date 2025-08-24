@@ -273,6 +273,7 @@ export class SocialPlatformAdapters {
         }
     }
 
+    /**
      * LINEシェアURL生成
      * @param shareData - 共有データ
      * @param options - オプション
@@ -435,6 +436,7 @@ export class SocialPlatformAdapters {
         }
     }
 
+    /**
      * プラットフォーム別シェア処理
      * @param platform - プラットフォーム
      * @param shareData - 共有データ
