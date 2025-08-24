@@ -4,19 +4,96 @@
  * 検索機能、カテゴリ表示、ユーザーフィードバック機能を提供
  */
 
-import { ErrorHandler  } from '../../utils/ErrorHandler.js';
-import { LoggingSystem  } from '../LoggingSystem.js';
+import { ErrorHandler } from '../../utils/ErrorHandler.js';
+import { LoggingSystem } from '../LoggingSystem.js';
 
 // 型定義
-export interface GameEngine { helpManager?: HelpManager;
-    export interface HelpManager { contentLoader?: ContentLoader;
-';'
+export interface GameEngine {
+    helpManager?: HelpManager;
+}
 
-export interface ContentLoader {,
-    loadFAQData('';
-    export type DifficultyLevel = 'beginner' | 'intermediate' | 'advanced';
-    export type SortOrder = 'relevance' | 'popularity' | 'recent' | 'alphabetical' | 'helpful';
-    export type FeedbackType = 'helpful' | 'not_helpful' | 'suggestion'
+export interface HelpManager {
+    contentLoader?: ContentLoader;
+}
+
+export interface ContentLoader {
+    loadFAQData(): Promise<any>;
+}
+
+export interface FAQData {
+    id: string;
+    question: string;
+    answer: string;
+    category: string;
+    tags: string[];
+    difficulty: DifficultyLevel;
+    popularity: number;
+    helpfulCount: number;
+    notHelpfulCount: number;
+    lastUpdated: number;
+    relatedQuestions: string[];
+    searchKeywords: string[];
+}
+
+export interface CategoryData {
+    id: string;
+    name: string;
+    description: string;
+    icon: string;
+    priority: number;
+    faqCount?: number;
+}
+
+export interface FeedbackData {
+    faqId: string;
+    userId?: string;
+    type: FeedbackType;
+    rating?: number;
+    comment?: string;
+    timestamp: number;
+    helpful: boolean;
+}
+
+export interface UsageStatistics {
+    faqId: string;
+    viewCount: number;
+    searchCount: number;
+    feedbackCount: number;
+    averageRating: number;
+    lastAccessed: number;
+}
+
+export interface SearchResult {
+    results: FAQData[];
+    totalCount: number;
+    query: string;
+    filters: string[];
+    sortOrder: SortOrder;
+    hasMore: boolean;
+}
+
+export interface DisplayConfig {
+    itemsPerPage: number;
+    expandedItems: Set<string>;
+    showCategories: boolean;
+    showSearchBox: boolean;
+    showFeedback: boolean;
+    animationDuration: number;
+}
+
+export interface SearchOptions {
+    query?: string;
+    categories?: string[];
+    tags?: string[];
+    difficulty?: DifficultyLevel;
+    sortOrder?: SortOrder;
+    limit?: number;
+    offset?: number;
+}
+
+export type DifficultyLevel = 'beginner' | 'intermediate' | 'advanced';
+export type SortOrder = 'relevance' | 'popularity' | 'recent' | 'alphabetical' | 'helpful';
+export type FeedbackType = 'helpful' | 'not_helpful' | 'suggestion';
 
 /**
  * FAQシステムクラス
@@ -25,7 +102,7 @@ export class FAQSystem {
     private gameEngine: GameEngine;
     private loggingSystem: LoggingSystem;
     // FAQ データ管理
-    private, faqDatabase: Map<string, FAQData>;
+    private faqDatabase: Map<string, FAQData>;
     private categories: Map<string, CategoryData>;
     private searchIndex: Map<string, Set<string>>;
     
@@ -35,680 +112,641 @@ export class FAQSystem {
     private userPreferences: Map<string, any>;
     
     // 検索・フィルタリング
-    private searchEngine: any, // 将来の拡張用
+    private searchEngine: any; // 将来の拡張用
     private activeFilters: Set<string>;
     private sortOrder: SortOrder;
+    
     // 表示設定
     private displayConfig: DisplayConfig;
+    
     // FAQカテゴリ定義
     private defaultCategories: CategoryData[];
+    
     // デフォルトFAQデータ
-    private defaultFAQs: FAQData[]);
+    private defaultFAQs: FAQData[];
+
     constructor(gameEngine: GameEngine) {
         this.gameEngine = gameEngine;
-    this.loggingSystem = LoggingSystem.getInstance ? LoggingSystem.getInstance() : new LoggingSystem();
+        this.loggingSystem = LoggingSystem.getInstance ? LoggingSystem.getInstance() : new LoggingSystem();
         
         // FAQ データ管理
         this.faqDatabase = new Map<string, FAQData>();
-    this.categories = new Map<string, CategoryData>();
-    this.searchIndex = new Map<string, Set<string>>();
+        this.categories = new Map<string, CategoryData>();
+        this.searchIndex = new Map<string, Set<string>>();
         
         // ユーザーフィードバック
         this.feedbackData = new Map<string, FeedbackData>();
-    this.usageStatistics = new Map<string, UsageStatistics>();
-    this.userPreferences = new Map<string, any>();
+        this.usageStatistics = new Map<string, UsageStatistics>();
+        this.userPreferences = new Map<string, any>();
         
         // 検索・フィルタリング
         this.searchEngine = null;
-    this.activeFilters = new Set<string>();
-    this.sortOrder = 'relevance';
+        this.activeFilters = new Set<string>();
+        this.sortOrder = 'relevance';
         
         // 表示設定
         this.displayConfig = {
             itemsPerPage: 10,
-    expandedItems: new Set<string>(),
-    showCategories: true,
-    showSearchBox: true,
-    showFeedback: true,
-    animationDuration: 300 
-    };
+            expandedItems: new Set<string>(),
+            showCategories: true,
+            showSearchBox: true,
+            showFeedback: true,
+            animationDuration: 300
+        };
+
         // FAQカテゴリ定義
-        this.defaultCategories = [{;
-                id: 'gameplay,
-                name: 'ゲームプレイ,
-                description: 'ゲームの基本操作や遊び方について,
-                icon: '🎮,
-    priority: 1  };
-            { ''
-                id: 'bubbles,
-                name: '泡の種類,
-                description: '特殊泡の効果や使い方について,
-                icon: '🫧,
-    priority: 2  };
-            { ''
-                id: 'scoring,
-                name: 'スコアシステム,
-                description: 'スコアの計算方法やコンボについて,
-                icon: '🏆,
-    priority: 3  };
-            { ''
-                id: 'controls,
-                name: '操作方法,
-                description: 'キーボードやマウスの操作について,
-                icon: '⌨️,
-    priority: 4  };
-            { ''
-                id: 'settings,
-                name: '設定,
-                description: 'ゲーム設定や環境設定について,
-                icon: '⚙️,
-    priority: 5  };
-            { ''
-                id: 'troubleshooting,
-                name: 'トラブルシューティング,
-                description: '問題解決や不具合報告について,
-                icon: '🔧,
-    priority: 6  }]
-            }]
+        this.defaultCategories = [
+            {
+                id: 'gameplay',
+                name: 'ゲームプレイ',
+                description: 'ゲームの基本操作や遊び方について',
+                icon: '🎮',
+                priority: 1
+            },
+            {
+                id: 'bubbles',
+                name: '泡の種類',
+                description: '特殊泡の効果や使い方について',
+                icon: '🫧',
+                priority: 2
+            },
+            {
+                id: 'scoring',
+                name: 'スコアシステム',
+                description: 'スコアの計算方法やコンボについて',
+                icon: '🏆',
+                priority: 3
+            },
+            {
+                id: 'controls',
+                name: '操作方法',
+                description: 'キーボードやマウスの操作について',
+                icon: '⌨️',
+                priority: 4
+            },
+            {
+                id: 'settings',
+                name: '設定',
+                description: 'ゲーム設定やカスタマイズについて',
+                icon: '⚙️',
+                priority: 5
+            },
+            {
+                id: 'troubleshooting',
+                name: 'トラブルシューティング',
+                description: '問題の解決方法について',
+                icon: '🔧',
+                priority: 6
+            }
         ];
+
         // デフォルトFAQデータ
-        this.defaultFAQs = [// ゲームプレイ関連;
-            { ''
-                id: 'how_to_play,
-                category: 'gameplay,
-                question: 'ゲームはどうやって遊ぶの？',]';'
-                answer: '画面に現れる泡をクリックして割るゲームです。泡が自然破裂する前に割る必要があります。特殊な泡にはそれぞれ異なる効果があります。',']';
-                tags: ['基本', '初心者', '遊び方];'
-                difficulty: 'beginner,
-                lastUpdated: new Date().toISOString(',
-    id: 'game_objective,
-                category: 'gameplay,
-                question: 'ゲームの目的は何？,
-                answer: 'できるだけ高いスコアを獲得することが目的です。泡を連続して割ってコンボを決めたり、特殊泡を活用してボーナスポイントを稼ぎましょう。,
-                tags: ['目的', 'スコア', 'コンボ],';
-                difficulty: 'beginner',')';
-                lastUpdated: new Date().toISOString(',
-    id: 'special_bubbles_types,
-                category: 'bubbles,
-                question: '特殊泡にはどんな種類がある？,
-                answer: '虹色泡（ボーナスタイム）、ピンク泡（HP回復）、時計泡（時間停止）、電気泡（画面震動）、毒泡（ダメージ）、石泡・鉄泡（複数回クリック必要）など、18種類以上の特殊泡があります。,
-                tags: ['特殊泡', '種類', '効果],';
-                difficulty: 'intermediate',')';
-                lastUpdated: new Date().toISOString(',
-    id: 'rainbow_bubble_effect,
-                category: 'bubbles,
-                question: '虹色の泡の効果は？,
-                answer: '虹色泡を割るとボーナスタイムが発動し、一定時間すべての泡のスコアが2倍になります。見つけたら優先的に割りましょう。,
-                tags: ['虹色泡', 'ボーナスタイム', 'スコア2倍],';
-                difficulty: 'beginner',')';
-                lastUpdated: new Date().toISOString(',
-    id: 'combo_system,
-                category: 'scoring,
-                question: 'コンボシステムはどう動作する？,
-                answer: '泡を連続して素早く割るとコンボが発生し、スコアにボーナスが付きます。コンボ数が高いほど獲得スコアが増加します。時間が空くとコンボは途切れます。,
-                tags: ['コンボ', 'ボーナス', 'スコア],';
-                difficulty: 'intermediate',')';
-                lastUpdated: new Date().toISOString(',
-    id: 'score_calculation,
-                category: 'scoring,
-                question: 'スコアはどうやって計算される？,
-                answer: '基本スコア + コンボボーナス + 特殊泡ボーナス + タイミングボーナスで計算されます。難しい泡ほど高得点で、コンボ中は倍率が上がります。,
-                tags: ['スコア計算', 'ボーナス', '倍率],';
-                difficulty: 'advanced',')';
-                lastUpdated: new Date().toISOString(',
-    id: 'mouse_controls,
-                category: 'controls,
-                question: 'マウス操作方法は？,
-                answer: '左クリックで泡を割る、ドラッグで泡を押し退けることができます。右クリックは使用しません。,
-                tags: ['マウス', 'クリック', 'ドラッグ],';
-                difficulty: 'beginner',')';
-                lastUpdated: new Date().toISOString(',
-    id: 'keyboard_shortcuts,
-                category: 'controls,
-                question: 'キーボードショートカットはある？,
-                answer: 'Escキー：メニューを開く、Hキー：ヘルプを表示、Pキー：ポーズ、Ctrl+Shift+D：デバッグモード切り替え、などがあります。,
-                tags: ['キーボード', 'ショートカット', 'ホットキー],';
-                difficulty: 'intermediate',')';
-                lastUpdated: new Date().toISOString(',
-    id: 'audio_settings,
-                category: 'settings,
-                question: '音量設定はどこで変更できる？,
-                answer: 'メインメニューの設定から音量を調整できます。BGM、効果音、マスター音量をそれぞれ個別に設定可能です。,
-                tags: ['音量', '設定', 'BGM', '効果音],';
-                difficulty: 'beginner',')';
-                lastUpdated: new Date().toISOString(',
-    id: 'performance_settings,
-                category: 'settings,
-                question: 'ゲームが重い時はどうすれば？,
-                answer: '設定で視覚効果を下げる、パーティクル数を減らす、フレームレート制限を設定する、ブラウザの他のタブを閉じるなどを試してください。,
-                tags: ['パフォーマンス', '重い', '最適化],';
-                difficulty: 'intermediate',')';
-                lastUpdated: new Date().toISOString(',
-    id: 'game_not_loading,
-                category: 'troubleshooting,
-                question: 'ゲームが読み込まれない,
-                answer: 'ブラウザを更新する、キャッシュをクリアする、JavaScriptが有効になっているか確認する、対応ブラウザ（Chrome、Firefox、Safari、Edge）を使用しているか確認してください。,
-                tags: ['読み込み', 'エラー', 'ブラウザ],';
-                difficulty: 'beginner',')';
-                lastUpdated: new Date().toISOString(',
-    id: 'save_data_lost,
-                category: 'troubleshooting,
-                question: 'セーブデータが消えた,
-                answer: 'ブラウザのローカルストレージが削除された可能性があります。プライベートモード使用、クッキー削除、ブラウザのストレージクリアが原因の場合があります。バックアップ機能を使用することをお勧めします。,
-                tags: ['セーブデータ', '消失', 'ローカルストレージ],';
-                difficulty: 'intermediate'),
-                lastUpdated: new Date().toISOString(),
-                viewCount: 0,
-                helpfulCount: 0,
-    notHelpfulCount: 0  }
+        this.defaultFAQs = [
+            {
+                id: 'gameplay-001',
+                question: 'ゲームの目的は何ですか？',
+                answer: 'BubblePopの目的は、色の付いた泡を割ってスコアを獲得することです。同じ色の泡を3つ以上繋げて割ると、高得点とコンボが獲得できます。',
+                category: 'gameplay',
+                tags: ['基本', '目的', 'スコア'],
+                difficulty: 'beginner',
+                popularity: 95,
+                helpfulCount: 150,
+                notHelpfulCount: 5,
+                lastUpdated: Date.now(),
+                relatedQuestions: ['gameplay-002', 'scoring-001'],
+                searchKeywords: ['目的', 'ゲーム', '泡', 'スコア', '基本']
+            },
+            {
+                id: 'gameplay-002',
+                question: '泡を割る方法を教えてください',
+                answer: 'マウスクリックまたはタップで泡を選択し、同じ色の泡が3つ以上隣接している場合に割ることができます。より多くの泡を一度に割ると高得点が獲得できます。',
+                category: 'gameplay',
+                tags: ['基本', '操作', '泡'],
+                difficulty: 'beginner',
+                popularity: 88,
+                helpfulCount: 132,
+                notHelpfulCount: 8,
+                lastUpdated: Date.now(),
+                relatedQuestions: ['controls-001', 'scoring-002'],
+                searchKeywords: ['泡', '割る', 'クリック', 'タップ', '操作']
+            },
+            {
+                id: 'bubbles-001',
+                question: '特殊泡にはどんな種類がありますか？',
+                answer: 'レインボー泡（全色対応）、ボム泡（周囲破壊）、フリーズ泡（時間停止）、コンボ泡（連鎖効果）などがあります。それぞれ特別な効果を持っています。',
+                category: 'bubbles',
+                tags: ['特殊泡', '種類', '効果'],
+                difficulty: 'intermediate',
+                popularity: 76,
+                helpfulCount: 98,
+                notHelpfulCount: 12,
+                lastUpdated: Date.now(),
+                relatedQuestions: ['bubbles-002', 'gameplay-003'],
+                searchKeywords: ['特殊泡', 'レインボー', 'ボム', 'フリーズ', 'コンボ']
+            }
         ];
+
         this.initialize();
     }
-    
+
     /**
-     * システムの初期化
+     * FAQシステムの初期化
      */
-    async initialize(): Promise<void> { try {
-            // カテゴリの初期化
-            this.initializeCategories();
-            // FAQ データの初期化
-            await this.initializeFAQData();
+    async initialize(): Promise<void> {
+        try {
+            this.loggingSystem.info('FAQSystem', 'Initializing FAQ system...');
+            
+            // デフォルトカテゴリの登録
+            this.setupDefaultCategories();
+            
+            // デフォルトFAQデータの登録
+            this.setupDefaultFAQs();
+            
+            // 外部データの読み込み
+            await this.loadExternalFAQData();
+            
             // 検索インデックスの構築
             this.buildSearchIndex();
-            // ユーザー統計の読み込み
-            this.loadUserStatistics()','
-            this.loggingSystem.info('FAQSystem', 'FAQ system initialized',' }'
-
-        } catch (error) {
-            this.loggingSystem.error('FAQSystem', 'Failed to initialize FAQ system', error','
-            ErrorHandler.handle(error as Error, 'FAQSystem.initialize' }'
-    }
-    
-    /**
-     * カテゴリの初期化
-     */
-    private initializeCategories(): void { this.defaultCategories.forEach(category => { 
-            this.categories.set(category.id, {
-                ...category);
-                faqCount: 0,
-    viewCount: 0),
-                lastAccessed: null); 
-    }
-    }
-    
-    /**
-     * FAQ データの初期化
-     */
-    private async initializeFAQData(): Promise<void> { // デフォルトFAQをデータベースに追加
-        this.defaultFAQs.forEach(faq => { 
-            this.faqDatabase.set(faq.id, {
-                ...faq);
-                id: faq.id),
-                createdAt: new Date().toISOString(),
-    popularity: 0 }
-                relevanceScore: 0 
-    };
-            // カテゴリのFAQ数を更新
-            const category = this.categories.get(faq.category);
-            if (category) { category.faqCount!++ }
-        };
-        
-        // 外部FAQデータの読み込み（必要に応じて）
-        await this.loadExternalFAQData();
-    }
-    
-    /**
-     * 外部FAQデータの読み込み
-     */
-    private async loadExternalFAQData(): Promise<void> { try {
-            if (this.gameEngine.helpManager?.contentLoader) {
-                const faqContent = await this.gameEngine.helpManager.contentLoader.loadFAQData();
-                if (faqContent && Array.isArray(faqContent) {
-                    faqContent.forEach(faq => { );
-                        if (!this.faqDatabase.has(faq.id) {
-                            this.faqDatabase.set(faq.id, faq);
-                            const category = this.categories.get(faq.category);
-                            if (category) { }
-                                category.faqCount!++;     }
-}
-                }'} catch (error) {'
-            this.loggingSystem.warn('FAQSystem', 'Failed to load external FAQ data', error);
-            // エラーが発生してもデフォルトデータで継続 }
-    }
-    
-    /**
-     * 検索インデックスの構築
-     */ : undefined
-    private buildSearchIndex(): void { this.searchIndex.clear();
-        for(const [faqId, faq] of this.faqDatabase) {
-        
-            // 検索可能なテキストを抽出
-            const searchableText = [faq.question],
-                faq.answer,'],
-                ...(faq.tags || []'),
-            ].join(').toLowerCase(),'
             
-            // キーワードごとにインデックス化
-            const words = searchableText.split(/\s+/);
-            words.forEach(word => { );
-                if (word.length >= 2) { // 2文字以上のワードのみ
-        
+            // 統計データの初期化
+            this.initializeStatistics();
+            
+            this.loggingSystem.info('FAQSystem', 'FAQ system initialized successfully');
+        } catch (error) {
+            this.loggingSystem.error('FAQSystem', 'Failed to initialize FAQ system', error);
+            ErrorHandler.handle(error as Error, 'FAQSystem.initialize');
         }
-                    if (!this.searchIndex.has(word) { }
-                        this.searchIndex.set(word, new Set<string>(); }
-                    }
-                    this.searchIndex.get(word)!.add(faqId);
-                    }
-}
     }
-    
+
     /**
-     * FAQ検索
-     * @param query - 検索クエリ
+     * FAQ検索の実行
      * @param options - 検索オプション
      * @returns 検索結果
      */
-    searchFAQs(query: string, options: SearchOptions = { ): SearchResult {
+    search(options: SearchOptions = {}): SearchResult {
         try {
-            if (!query || query.trim().length === 0) {
-                return this.getAllFAQs(options);
-            
-            const searchTerms = query.toLowerCase().split(/\s+/);
-            const matchingFAQs = new Map<string, number>(); // FAQ ID -> スコア
-            
-            // 検索語ごとにマッチングFAQを収集
-            searchTerms.forEach(term => {  );
-                if (this.searchIndex.has(term) {
-                    const faqIds = this.searchIndex.get(term)!,
-                    for (const faqId of faqIds) {
-                }
-                        const currentScore = matchingFAQs.get(faqId) || 0; }
-                        matchingFAQs.set(faqId, currentScore + 1); }
-}
-            };
-            
-            // 完全一致・部分一致のボーナススコア
-            for(const [faqId, faq] of this.faqDatabase) {
-                const questionLower = faq.question.toLowerCase();
-                const answerLower = faq.answer.toLowerCase();
-                let bonusScore = 0,
-                
-                // 質問での完全一致
-                if(questionLower.includes(query.toLowerCase()) {
+            const {
+                query = '',
+                categories = [],
+                tags = [],
+                difficulty,
+                sortOrder = this.sortOrder,
+                limit = this.displayConfig.itemsPerPage,
+                offset = 0
+            } = options;
+
+            let results = Array.from(this.faqDatabase.values());
+
+            // テキスト検索
+            if (query.trim()) {
+                results = this.performTextSearch(results, query);
+                this.trackSearch(query);
             }
-                    bonusScore += 10; }
-                }
-                
-                // 回答での部分一致
-                if(answerLower.includes(query.toLowerCase()) { bonusScore += 5 }
-                
-                // タグでの一致
-                if (faq.tags) {
-                    for (const tag of faq.tags) {
-                        if (tag.toLowerCase().includes(query.toLowerCase()) {
-                }
-                            bonusScore += 3;     }
-}
-                if (bonusScore > 0) {
-                
-                    const currentScore = matchingFAQs.get(faqId) || 0 }
-                    matchingFAQs.set(faqId, currentScore + bonusScore); }
-}
-            
-            // 結果をスコア順にソート
-            const sortedResults = Array.from(matchingFAQs.entries()));
-                .sort((a, b) => b[1] - a[1]);
-                .map(([faqId, score]) => ({ ...this.faqDatabase.get(faqId)!,
-                    relevanceScore: score,);
-            // フィルタリングとページネーション
-            return this.applyFiltersAndPagination(sortedResults, options);
 
+            // カテゴリフィルタ
+            if (categories.length > 0) {
+                results = results.filter(faq => categories.includes(faq.category));
+            }
+
+            // タグフィルタ
+            if (tags.length > 0) {
+                results = results.filter(faq => 
+                    tags.some(tag => faq.tags.includes(tag))
+                );
+            }
+
+            // 難易度フィルタ
+            if (difficulty) {
+                results = results.filter(faq => faq.difficulty === difficulty);
+            }
+
+            // ソート
+            results = this.sortResults(results, sortOrder);
+
+            // ページネーション
+            const totalCount = results.length;
+            const paginatedResults = results.slice(offset, offset + limit);
+
+            this.loggingSystem.debug('FAQSystem', `Search completed: ${totalCount} results`, {
+                query, categories, tags, difficulty, sortOrder
+            });
+
+            return {
+                results: paginatedResults,
+                totalCount,
+                query,
+                filters: [...categories, ...tags, difficulty].filter(Boolean) as string[],
+                sortOrder,
+                hasMore: offset + limit < totalCount
+            };
         } catch (error) {
-            this.loggingSystem.error('FAQSystem', 'FAQ search error', error);
-            return { faqs: [],
+            this.loggingSystem.error('FAQSystem', 'Search failed', error);
+            return {
+                results: [],
                 totalCount: 0,
-                page: 1,
-    totalPages: 0 ,
-                hasMore: false }
-    
-    /**
-     * 全FAQ取得
-     * @param options - 取得オプション
-     * @returns FAQ一覧
-     */
-    getAllFAQs(options: SearchOptions = { ): SearchResult {
-        const allFAQs = Array.from(this.faqDatabase.values()));
-        return this.applyFiltersAndPagination(allFAQs, options);
-    
-    /**
-     * カテゴリ別FAQ取得
-     * @param categoryId - カテゴリID
-     * @param options - 取得オプション
-     * @returns FAQ一覧
-     */
-    getFAQsByCategory(categoryId: string, options: SearchOptions = { ): SearchResult {
-        const categoryFAQs = Array.from(this.faqDatabase.values()));
-            .filter(faq => faq.category === categoryId);
-        return this.applyFiltersAndPagination(categoryFAQs, options);
-    /**
-     * フィルタリングとページネーションの適用
-     * @param faqs - FAQ配列
-     * @param options - オプション
-     * @returns 処理済みFAQ配列
-     */
-    private applyFiltersAndPagination(faqs: FAQData[], options: SearchOptions): SearchResult { let filteredFAQs = [...faqs],
-        
-        // 難易度フィルター
-        if (options.difficulty) {
-    
-}
-            filteredFAQs = filteredFAQs.filter(faq => faq.difficulty === options.difficulty); }
+                query: options.query || '',
+                filters: [],
+                sortOrder: options.sortOrder || 'relevance',
+                hasMore: false
+            };
         }
-        
-        // タグフィルター
-        if (options.tags && options.tags.length > 0) {
-            filteredFAQs = filteredFAQs.filter(faq => );
-                faq.tags && faq.tags.some(tag => options.tags!.includes(tag);
-            ); }
-        }
-        
-        // ソート
-        filteredFAQs = this.sortFAQs(filteredFAQs, options.sortBy || this.sortOrder);
-        
-        // ページネーション
-        const page = options.page || 1;
-        const itemsPerPage = options.itemsPerPage || this.displayConfig.itemsPerPage;
-        const startIndex = (page - 1) * itemsPerPage;
-        const endIndex = startIndex + itemsPerPage;
-        
-        return { faqs: filteredFAQs.slice(startIndex, endIndex);
-            totalCount: filteredFAQs.length,
-            page: page,
-    totalPages: Math.ceil(filteredFAQs.length / itemsPerPage) ,
-            hasMore: endIndex < filteredFAQs.length; 
     }
-    
+
     /**
-     * FAQ配列のソート
-     * @param faqs - FAQ配列
-     * @param sortBy - ソート基準
-     * @returns ソート済みFAQ配列
-     */
-    private sortFAQs(faqs: FAQData[], sortBy: SortOrder): FAQData[] { ''
-        switch(sortBy) {
-
-            case 'popularity':','
-                return faqs.sort((a, b) => (b.viewCount || 0) - (a.viewCount || 0)'),'
-
-            case 'recent':','
-                return faqs.sort((a, b) => new Date(b.lastUpdated).getTime() - new Date(a.lastUpdated).getTime()),
-
-            case 'alphabetical':','
-                return faqs.sort((a, b) => a.question.localeCompare(b.question)),
-
-            case 'helpful':','
-                return faqs.sort((a, b) => (b.helpfulCount || 0) - (a.helpfulCount || 0)'),'
-
-            case 'relevance':,
-            default:
-}
-                return faqs.sort((a, b) => (b.relevanceScore || 0) - (a.relevanceScore || 0));
-    
-    /**
-     * FAQ詳細取得
+     * FAQの詳細取得
      * @param faqId - FAQ ID
-     * @returns FAQ詳細
+     * @returns FAQ詳細データ
      */
-    getFAQ(faqId: string): FAQData | null { const faq = this.faqDatabase.get(faqId);
-        if (faq) {
-            // 閲覧数を増加
-            faq.viewCount = (faq.viewCount || 0) + 1,
-            faq.lastViewed = new Date().toISOString();
-            // カテゴリの閲覧数も更新
-            const category = this.categories.get(faq.category);
-            if (category) {
-                category.viewCount = (category.viewCount || 0) + 1,
-                category.lastAccessed = new Date().toISOString()','
-            this.updateUsageStatistics(faqId, 'view');
-            return { ...faq }
-        return null;
+    getFAQById(faqId: string): FAQData | null {
+        try {
+            const faq = this.faqDatabase.get(faqId);
+            if (faq) {
+                this.trackView(faqId);
+                return faq;
+            }
+            return null;
+        } catch (error) {
+            this.loggingSystem.error('FAQSystem', `Failed to get FAQ: ${faqId}`, error);
+            return null;
+        }
     }
-    
+
     /**
-     * ユーザーフィードバックの記録
+     * カテゴリ一覧の取得
+     * @returns カテゴリデータ配列
+     */
+    getCategories(): CategoryData[] {
+        try {
+            const categories = Array.from(this.categories.values());
+            
+            // FAQカウントの更新
+            for (const category of categories) {
+                category.faqCount = Array.from(this.faqDatabase.values())
+                    .filter(faq => faq.category === category.id).length;
+            }
+
+            return categories.sort((a, b) => a.priority - b.priority);
+        } catch (error) {
+            this.loggingSystem.error('FAQSystem', 'Failed to get categories', error);
+            return [];
+        }
+    }
+
+    /**
+     * フィードバックの送信
      * @param faqId - FAQ ID
      * @param feedbackType - フィードバックタイプ
-     * @param comment - コメント（オプション）'
-     */''
-    recordFeedback(faqId: string, feedbackType: FeedbackType, comment: string = '): void { try {'
+     * @param userId - ユーザーID（オプション）
+     * @param comment - コメント（オプション）
+     * @param rating - 評価（オプション）
+     */
+    submitFeedback(
+        faqId: string, 
+        feedbackType: FeedbackType, 
+        userId?: string, 
+        comment?: string, 
+        rating?: number
+    ): boolean {
+        try {
             const faq = this.faqDatabase.get(faqId);
-            if (!faq) return,
-            ','
-            // FAQのフィードバック統計を更新
-            switch(feedbackType) {
-
-                case 'helpful':','
-                    faq.helpfulCount = (faq.helpfulCount || 0') + 1,'
-
-                    break,
-                case 'not_helpful':,
-                    faq.notHelpfulCount = (faq.notHelpfulCount || 0) + 1 }
-                    break; }
-            }
-            
-            // フィードバックデータを保存
-            const feedbackId = `${faqId}_${Date.now()),
-            this.feedbackData.set(feedbackId, { faqId: faqId)
-            type: feedbackType),
-                comment: comment),
-                timestamp: new Date().toISOString(),
-    userAgent: navigator.userAgent'
+            if (!faq) {
+                throw new Error(`FAQ not found: ${faqId}`);
             }
 
-            }');'
-            ';'
-            // 統計更新
-            this.updateUsageStatistics(faqId, 'feedback', feedbackType';'
+            const feedback: FeedbackData = {
+                faqId,
+                userId,
+                type: feedbackType,
+                comment,
+                rating,
+                timestamp: Date.now(),
+                helpful: feedbackType === 'helpful'
+            };
 
-            this.loggingSystem.info('FAQSystem', `Feedback recorded: ${faqId} - ${feedbackType}`}';} catch (error) {'
-            this.loggingSystem.error('FAQSystem', 'Failed to record feedback', error' }'
-    }
-    
-    /**
-     * 使用統計の更新
-     * @param faqId - FAQ ID
-     * @param action - アクション
-     * @param details - 詳細情報'
-     */''
-    private updateUsageStatistics(faqId: string, action: string, details: string = '): void {'
-        const statsKey = `${faqId}_${action}`;
-        const currentStats = this.usageStatistics.get(statsKey) || { count: 0,
-            lastAction: null,
-    details: []  ,
-        currentStats.count++;
-        currentStats.lastAction = new Date().toISOString();
-        
-        if (details) { currentStats.details.push({)
-                value: details,
-                timestamp: new Date().toISOString();
-    };
-            
-            // 詳細は最新10件のみ保持
-            if (currentStats.details.length > 10) { currentStats.details = currentStats.details.slice(-10);
-        }
-        
-        this.usageStatistics.set(statsKey, currentStats);
-    }
-    
-    /**
-     * ユーザー統計の読み込み
-     */''
-    private loadUserStatistics()';'
-            const savedStats = localStorage.getItem('awaputi_faq_stats);'
-            if (savedStats) { const parsedStats: UserStatisticsData = JSON.parse(savedStats,
-                this.usageStatistics = new Map(parsedStats.usageStatistics || [] }
+            const feedbackId = `${faqId}_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+            this.feedbackData.set(feedbackId, feedback);
 
-                this.userPreferences = new, Map(parsedStats.userPreferences || []);' }'
+            // FAQ統計の更新
+            if (feedbackType === 'helpful') {
+                faq.helpfulCount++;
+            } else if (feedbackType === 'not_helpful') {
+                faq.notHelpfulCount++;
+            }
 
-            } catch (error) {
-            this.loggingSystem.warn('FAQSystem', 'Failed to load user statistics', error);
-    }
-    
-    /**
-     * ユーザー統計の保存
-     */
-    private saveUserStatistics(): void { try {
-            const statsData: UserStatisticsData = {
-                usageStatistics: Array.from(this.usageStatistics.entries(
-                userPreferences: Array.from(this.userPreferences.entries(
-                lastSaved: new Date())).toISOString()','
-            localStorage.setItem('awaputi_faq_stats', JSON.stringify(statsData),' }'
+            // 使用統計の更新
+            this.updateFeedbackStatistics(faqId, feedback);
 
+            this.loggingSystem.debug('FAQSystem', `Feedback submitted for FAQ: ${faqId}`, {
+                type: feedbackType, userId, rating
+            });
+
+            return true;
         } catch (error) {
-            this.loggingSystem.warn('FAQSystem', 'Failed to save user statistics', error);
+            this.loggingSystem.error('FAQSystem', 'Failed to submit feedback', error);
+            return false;
+        }
     }
-    
+
     /**
-     * カテゴリ一覧取得
-     * @returns カテゴリ一覧
-     */
-    getCategories(): CategoryData[] { return Array.from(this.categories.values()))
-            .sort((a, b) => a.priority - b.priority),
-    
-    /**
-     * 人気FAQ取得
+     * 人気のFAQ取得
      * @param limit - 取得件数
-     * @returns 人気FAQ一覧
+     * @param category - カテゴリフィルタ
+     * @returns 人気FAQリスト
      */
-    getPopularFAQs(limit: number = 5): FAQData[] { return Array.from(this.faqDatabase.values()))
-            .sort((a, b) => (b.viewCount || 0) - (a.viewCount || 0)),
-            .slice(0, limit);
+    getPopularFAQs(limit: number = 10, category?: string): FAQData[] {
+        try {
+            let faqs = Array.from(this.faqDatabase.values());
+            
+            if (category) {
+                faqs = faqs.filter(faq => faq.category === category);
+            }
+
+            return faqs
+                .sort((a, b) => b.popularity - a.popularity)
+                .slice(0, limit);
+        } catch (error) {
+            this.loggingSystem.error('FAQSystem', 'Failed to get popular FAQs', error);
+            return [];
+        }
     }
-    
-    /**
-     * 最近のFAQ取得
-     * @param limit - 取得件数
-     * @returns 最近のFAQ一覧
-     */
-    getRecentFAQs(limit: number = 5): FAQData[] { return Array.from(this.faqDatabase.values()))
-            .sort((a, b) => new Date(b.lastUpdated).getTime() - new Date(a.lastUpdated).getTime();
-            .slice(0, limit);
-    }
-    
+
     /**
      * 関連FAQ取得
-     * @param faqId - FAQ ID
+     * @param faqId - 基準となるFAQ ID
      * @param limit - 取得件数
-     * @returns 関連FAQ一覧
+     * @returns 関連FAQリスト
      */
-    getRelatedFAQs(faqId: string, limit: number = 3): RelatedFAQ[] { const targetFAQ = this.faqDatabase.get(faqId);
-        if (!targetFAQ) return [],
-        
-        const relatedFAQs = Array.from(this.faqDatabase.values()));
-            .filter(faq => faq.id !== faqId);
-            .map(faq => { 
-                let, score = 0)
-                ),
-                // 同じカテゴリ),
-                if (faq.category === targetFAQ.category) { }
-                    score += 5; }
-                }
-                
-                // 共通タグ
-                if (targetFAQ.tags && faq.tags) {
-                    const commonTags = targetFAQ.tags.filter(tag => faq.tags!.includes(tag);
-                    score += commonTags.length * 2; }
-                }
-                
-                // 同じ難易度
-                if (faq.difficulty === targetFAQ.difficulty) { score += 1 }
-                
-                return { ...faq, relationScore: score,)
-            .filter(faq => faq.relationScore > 0);
-            .sort((a, b) => b.relationScore - a.relationScore),
-            .slice(0, limit);
-        return relatedFAQs }
-    
-    /**
-     * FAQ検索サジェスト取得
-     * @param query - 検索クエリ
-     * @param limit - 取得件数
-     * @returns サジェスト一覧
-     */
-    getSearchSuggestions(query: string, limit: number = 5): string[] { if (!query || query.length < 2) return [],
-        
-        const queryLower = query.toLowerCase();
-        const suggestions = new Set<string>(),
-        
-        // 質問からの抽出
-        for (const faq of this.faqDatabase.values() {
-            const question = faq.question.toLowerCase();
-            if (question.includes(queryLower) {
-        }
-                suggestions.add(faq.question); }
+    getRelatedFAQs(faqId: string, limit: number = 5): FAQData[] {
+        try {
+            const baseFAQ = this.faqDatabase.get(faqId);
+            if (!baseFAQ) {
+                return [];
             }
-            
-            // タグからの抽出
-            if (faq.tags) {
-                for (const tag of faq.tags) {
-                    if (tag.toLowerCase().includes(queryLower) {
+
+            // 明示的な関連質問
+            const explicitRelated = baseFAQ.relatedQuestions
+                .map(id => this.faqDatabase.get(id))
+                .filter(Boolean) as FAQData[];
+
+            if (explicitRelated.length >= limit) {
+                return explicitRelated.slice(0, limit);
             }
-                        suggestions.add(tag);     }
-}
-            if (suggestions.size >= limit) break;
+
+            // 同カテゴリの関連FAQ
+            const categoryRelated = Array.from(this.faqDatabase.values())
+                .filter(faq => 
+                    faq.id !== faqId && 
+                    faq.category === baseFAQ.category &&
+                    !explicitRelated.some(related => related.id === faq.id)
+                )
+                .sort((a, b) => b.popularity - a.popularity);
+
+            const combined = [...explicitRelated, ...categoryRelated];
+            return combined.slice(0, limit);
+        } catch (error) {
+            this.loggingSystem.error('FAQSystem', `Failed to get related FAQs for: ${faqId}`, error);
+            return [];
         }
-        
-        return Array.from(suggestions).slice(0, limit);
     }
-    
+
     /**
-     * システム統計取得
-     * @returns システム統計
+     * FAQ統計情報の取得
+     * @param faqId - FAQ ID
+     * @returns 統計データ
      */
-    getSystemStats(): SystemStats { return { totalFAQs: this.faqDatabase.size,
-            totalCategories: this.categories.size,
-    totalViews: Array.from(this.faqDatabase.values())).reduce((sum, faq) => sum + (faq.viewCount || 0), 0),
-            totalFeedback: this.feedbackData.size,
-            mostPopularFAQ: this.getPopularFAQs(1)[0],
-    categoryStats: Object.fromEntries();
-                Array.from(this.categories.entries())).map(([id, category]) => [id,
-                    {
-                        name: category.name,
-    faqCount: category.faqCount || 0 ,
-                        viewCount: category.viewCount || 0 }]
-                    }]
-                ]);
-            );
-    
+    getFAQStatistics(faqId: string): UsageStatistics | null {
+        try {
+            return this.usageStatistics.get(faqId) || null;
+        } catch (error) {
+            this.loggingSystem.error('FAQSystem', `Failed to get statistics for FAQ: ${faqId}`, error);
+            return null;
+        }
+    }
+
     /**
-     * リソースのクリーンアップ
+     * FAQデータのエクスポート
+     * @param format - エクスポート形式
+     * @returns エクスポートされたデータ
      */
-    cleanup(): void { try {
-            // 統計データの保存
-            this.saveUserStatistics();
-            // データのクリア
+    exportFAQData(format: 'json' | 'csv' = 'json'): string {
+        try {
+            const data = {
+                faqs: Array.from(this.faqDatabase.values()),
+                categories: Array.from(this.categories.values()),
+                statistics: Array.from(this.usageStatistics.values()),
+                exportedAt: Date.now()
+            };
+
+            if (format === 'json') {
+                return JSON.stringify(data, null, 2);
+            } else {
+                return this.convertToCSV(data);
+            }
+        } catch (error) {
+            this.loggingSystem.error('FAQSystem', 'Failed to export FAQ data', error);
+            throw error;
+        }
+    }
+
+    /**
+     * リソースの破棄
+     */
+    destroy(): void {
+        try {
             this.faqDatabase.clear();
             this.categories.clear();
             this.searchIndex.clear();
             this.feedbackData.clear();
             this.usageStatistics.clear();
-            this.userPreferences.clear()','
-            this.loggingSystem.info('FAQSystem', 'FAQ system cleaned up',' }'
+            this.userPreferences.clear();
+            this.activeFilters.clear();
+            this.displayConfig.expandedItems.clear();
 
+            this.loggingSystem.info('FAQSystem', 'FAQ system destroyed');
         } catch (error) {
-            this.loggingSystem.error('FAQSystem', 'Failed to cleanup FAQ system', error);
+            this.loggingSystem.error('FAQSystem', 'Failed to destroy FAQ system', error);
+        }
+    }
+
+    // プライベートメソッド
+
+    private setupDefaultCategories(): void {
+        for (const category of this.defaultCategories) {
+            this.categories.set(category.id, category);
+        }
+    }
+
+    private setupDefaultFAQs(): void {
+        for (const faq of this.defaultFAQs) {
+            this.faqDatabase.set(faq.id, faq);
+        }
+    }
+
+    private async loadExternalFAQData(): Promise<void> {
+        try {
+            const contentLoader = this.gameEngine.helpManager?.contentLoader;
+            if (contentLoader) {
+                const externalData = await contentLoader.loadFAQData();
+                if (externalData && externalData.faqs) {
+                    for (const faq of externalData.faqs) {
+                        this.faqDatabase.set(faq.id, faq);
+                    }
+                }
+            }
+        } catch (error) {
+            this.loggingSystem.warn('FAQSystem', 'Failed to load external FAQ data', error);
+            // 外部データが読み込めなくてもデフォルトデータで動作
+        }
+    }
+
+    private buildSearchIndex(): void {
+        for (const faq of this.faqDatabase.values()) {
+            const keywords = [
+                ...faq.searchKeywords,
+                ...faq.tags,
+                faq.question,
+                faq.answer,
+                faq.category
+            ].join(' ').toLowerCase();
+
+            const words = keywords.split(/\s+/)
+                .filter(word => word.length > 1)
+                .filter(word => !this.isStopWord(word));
+
+            for (const word of words) {
+                if (!this.searchIndex.has(word)) {
+                    this.searchIndex.set(word, new Set());
+                }
+                this.searchIndex.get(word)!.add(faq.id);
+            }
+        }
+    }
+
+    private performTextSearch(faqs: FAQData[], query: string): FAQData[] {
+        const queryWords = query.toLowerCase()
+            .split(/\s+/)
+            .filter(word => word.length > 1)
+            .filter(word => !this.isStopWord(word));
+
+        if (queryWords.length === 0) {
+            return faqs;
+        }
+
+        const matchingIds = new Set<string>();
+        
+        for (const word of queryWords) {
+            const wordMatches = this.searchIndex.get(word);
+            if (wordMatches) {
+                for (const id of wordMatches) {
+                    matchingIds.add(id);
+                }
+            }
+        }
+
+        return faqs.filter(faq => matchingIds.has(faq.id));
+    }
+
+    private sortResults(results: FAQData[], sortOrder: SortOrder): FAQData[] {
+        switch (sortOrder) {
+            case 'popularity':
+                return results.sort((a, b) => b.popularity - a.popularity);
+            case 'recent':
+                return results.sort((a, b) => b.lastUpdated - a.lastUpdated);
+            case 'alphabetical':
+                return results.sort((a, b) => a.question.localeCompare(b.question));
+            case 'helpful':
+                return results.sort((a, b) => {
+                    const aRatio = a.helpfulCount / (a.helpfulCount + a.notHelpfulCount) || 0;
+                    const bRatio = b.helpfulCount / (b.helpfulCount + b.notHelpfulCount) || 0;
+                    return bRatio - aRatio;
+                });
+            case 'relevance':
+            default:
+                return results; // すでに関連性順でソート済み
+        }
+    }
+
+    private trackView(faqId: string): void {
+        const stats = this.usageStatistics.get(faqId) || {
+            faqId,
+            viewCount: 0,
+            searchCount: 0,
+            feedbackCount: 0,
+            averageRating: 0,
+            lastAccessed: 0
+        };
+
+        stats.viewCount++;
+        stats.lastAccessed = Date.now();
+        this.usageStatistics.set(faqId, stats);
+    }
+
+    private trackSearch(query: string): void {
+        // 検索クエリの統計追跡（実装は省略）
+    }
+
+    private updateFeedbackStatistics(faqId: string, feedback: FeedbackData): void {
+        const stats = this.usageStatistics.get(faqId) || {
+            faqId,
+            viewCount: 0,
+            searchCount: 0,
+            feedbackCount: 0,
+            averageRating: 0,
+            lastAccessed: 0
+        };
+
+        stats.feedbackCount++;
+        if (feedback.rating) {
+            const totalRating = stats.averageRating * (stats.feedbackCount - 1) + feedback.rating;
+            stats.averageRating = totalRating / stats.feedbackCount;
+        }
+
+        this.usageStatistics.set(faqId, stats);
+    }
+
+    private initializeStatistics(): void {
+        for (const faq of this.faqDatabase.values()) {
+            if (!this.usageStatistics.has(faq.id)) {
+                this.usageStatistics.set(faq.id, {
+                    faqId: faq.id,
+                    viewCount: 0,
+                    searchCount: 0,
+                    feedbackCount: 0,
+                    averageRating: 0,
+                    lastAccessed: 0
+                });
+            }
+        }
+    }
+
+    private isStopWord(word: string): boolean {
+        const stopWords = [
+            // 日本語ストップワード
+            'の', 'に', 'は', 'を', 'が', 'で', 'と', 'から', 'まで', 'より', 'こと', 'もの',
+            // 英語ストップワード
+            'the', 'a', 'an', 'and', 'or', 'but', 'in', 'on', 'at', 'to', 'for', 'of', 'with', 'by'
+        ];
+        return stopWords.includes(word);
+    }
+
+    private convertToCSV(data: any): string {
+        // 簡易CSV変換（実装は省略）
+        return 'CSV conversion not implemented';
+    }
 }
 
 // シングルトンインスタンス管理
-let faqSystemInstance: FAQSystem | null = null,
+let faqSystemInstance: FAQSystem | null = null;
 
 /**
  * FAQSystemのシングルトンインスタンスを取得
  * @param gameEngine - ゲームエンジン
  * @returns FAQSystemインスタンス
  */
-export function getFAQSystem(gameEngine: GameEngine): FAQSystem { if (!faqSystemInstance) {
-        faqSystemInstance = new FAQSystem(gameEngine) };
+export function getFAQSystem(gameEngine: GameEngine): FAQSystem {
+    if (!faqSystemInstance) {
+        faqSystemInstance = new FAQSystem(gameEngine);
+    }
     return faqSystemInstance;
 }
 
@@ -717,8 +755,12 @@ export function getFAQSystem(gameEngine: GameEngine): FAQSystem { if (!faqSystem
  * @param gameEngine - ゲームエンジン
  * @returns 新しいFAQSystemインスタンス
  */
-export function reinitializeFAQSystem(gameEngine: GameEngine): FAQSystem { if (faqSystemInstance) {
-        faqSystemInstance.cleanup() }''
+export function reinitializeFAQSystem(gameEngine: GameEngine): FAQSystem {
+    if (faqSystemInstance) {
+        faqSystemInstance.destroy();
+    }
     faqSystemInstance = new FAQSystem(gameEngine);
+    return faqSystemInstance;
+}
 
-    return faqSystemInstance;}
+export default FAQSystem;
