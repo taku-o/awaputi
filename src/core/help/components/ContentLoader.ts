@@ -4,17 +4,78 @@
  */
 
 // 型定義
-export interface LocalizationManager { getCurrentLanguage(): string;
-    export interface HitRatio { hits: number,
+export interface LocalizationManager {
+    getCurrentLanguage(): string;
+}
+
+export interface HitRatio {
+    hits: number;
     misses: number;
-    export interface LoadQueueItem { category: string,
+}
+
+export interface LoadQueueItem {
+    type: string;
+    category: string;
+    language: string;
     priority: number;
-    callback?: () => void 
-    };
+    callback?: () => void;
+    resolve: (value: any) => void;
+    reject: (error: any) => void;
+    timestamp: number;
+}
+
+export interface HelpContentItem {
+    id: string;
+    category: string;
+    title: string;
+    content: string;
+    language: string;
+    searchKeywords: string[];
+    lastUpdated: string;
+}
+
+export interface TutorialStep {
+    id: string;
+    title: string;
+    instructions: string;
+    targetElement: string;
+    waitForAction: string;
+}
+
+export interface TutorialData {
+    id: string;
+    title: string;
+    description: string;
+    language: string;
+    steps: TutorialStep[];
+}
+
+export interface FAQData {
+    id: string;
+    question: string;
+    answer: string;
+    category: string;
+    language: string;
+    lastUpdated: string;
+}
+
+export interface PerformanceStats {
+    cacheHitRate: number;
+    cacheSize: number;
+    imageCacheSize: number;
+    queueLength: number;
+    averageLoadTimes: { [key: string]: number };
+    isLoading: boolean;
+}
+
+export interface VersionData {
+    version: string;
+}
+
 export class ContentLoader {
     private localizationManager: LocalizationManager;
-    private, contentCache: Map<string, any>,
-    private imageCache: Map<string, any>;
+    private contentCache: Map<string, any>;
+    private imageCache: Map<string, HTMLImageElement>;
     private cacheExpiry: Map<string, number>;
     private maxCacheSize: number;
     private cacheTimeout: number;
@@ -22,33 +83,30 @@ export class ContentLoader {
     private preloadPriority: string[];
     private loadingQueue: LoadQueueItem[];
     private isLoading: boolean;
-    private, loadTimes: Map<string, number>,
+    private loadTimes: Map<string, number[]>;
     private hitRatio: HitRatio;
     private contentVersion: string;
-    private, versionCheck: boolean;
-    constructor(localizationManager: LocalizationManager) {
+    private versionCheck: boolean;
 
+    constructor(localizationManager: LocalizationManager) {
         this.localizationManager = localizationManager;
         
         // キャッシュシステム
-        this.contentCache = new Map<string, any>(),
-        this.imageCache = new Map<string, any>(),
-        this.cacheExpiry = new Map<string, number>(),
+        this.contentCache = new Map<string, any>();
+        this.imageCache = new Map<string, HTMLImageElement>();
+        this.cacheExpiry = new Map<string, number>();
         this.maxCacheSize = 50; // 最大キャッシュ項目数
         this.cacheTimeout = 30 * 60 * 1000; // 30分のキャッシュタイムアウト
         
         // 遅延読み込み設定
         this.lazyLoadingEnabled = true;
-        this.preloadPriority = ['gameplay', 'basic'], // 優先読み込みカテゴリ
+        this.preloadPriority = ['gameplay', 'basic']; // 優先読み込みカテゴリ
         this.loadingQueue = [];
         this.isLoading = false;
-        ','
 
         // パフォーマンス監視
-
-    };
-        this.loadTimes = new Map<string, number>(); }'
-        this.hitRatio = { hits: 0, misses: 0 }
+        this.loadTimes = new Map<string, number[]>();
+        this.hitRatio = { hits: 0, misses: 0 };
 
         // バージョン管理
         this.contentVersion = '1.0.0';
@@ -60,58 +118,63 @@ export class ContentLoader {
     /**
      * 初期化処理
      */
-    async initialize(): Promise<void> { try {
+    async initialize(): Promise<void> {
+        try {
             // 優先度の高いコンテンツをプリロード
             if (this.lazyLoadingEnabled) {
-    
-}
-                await this.preloadEssentialContent(); }
+                await this.preloadEssentialContent();
             }
             
             // バージョンチェック
-            if (this.versionCheck) { await this.checkContentVersion(),' }'
-
-            } catch (error) { console.warn('ContentLoader initialization warning:', error }
+            if (this.versionCheck) {
+                await this.checkContentVersion();
+            }
+        } catch (error) {
+            console.warn('ContentLoader initialization warning:', error);
+        }
     }
     
     /**
      * 必須コンテンツのプリロード
      */
-    async preloadEssentialContent(): Promise<void> { const language = this.localizationManager.getCurrentLanguage();
-        for (const category of this.preloadPriority) {
+    async preloadEssentialContent(): Promise<void> {
+        const language = this.localizationManager.getCurrentLanguage();
         
+        for (const category of this.preloadPriority) {
             try {
-    
-}
-                await this.loadHelpContent(category, language); }
-        } catch (error) { }
-
+                await this.loadHelpContent(category, language);
+            } catch (error) {
                 console.warn(`Failed to preload ${category}:`, error);
                 // プリロード失敗は致命的ではない
             }
-}
+        }
+    }
     
     /**
      * ヘルプコンテンツを読み込み
-     * @param {string} category - カテゴリ
-     * @param {string} language - 言語
-     * @returns {Promise<Array>} - ヘルプコンテンツ配列
-     */''
-    async loadHelpContent(category, language = 'ja) { const startTime = performance.now() }'
+     * @param category - カテゴリ
+     * @param language - 言語
+     * @returns ヘルプコンテンツ配列
+     */
+    async loadHelpContent(category: string, language: string = 'ja'): Promise<HelpContentItem[]> {
+        const startTime = performance.now();
         const cacheKey = `help_${category}_${language}`;
         
-        try { // キャッシュチェック
+        try {
+            // キャッシュチェック
             const cachedContent = this.getCachedContent(cacheKey);
             if (cachedContent) {
                 this.hitRatio.hits++;
                 this.recordLoadTime(cacheKey, performance.now() - startTime);
                 return cachedContent;
+            }
             
             this.hitRatio.misses++;
+            
             // 遅延読み込み対応
-            if (this.lazyLoadingEnabled && this.isLoading) {', ' }
-
+            if (this.lazyLoadingEnabled && this.isLoading) {
                 return this.queueLoad('help', category, language);
+            }
             
             this.isLoading = true;
             
@@ -131,18 +194,28 @@ export class ContentLoader {
             // フォールバック: キャッシュされた古いコンテンツまたはデフォルトコンテンツ
             const fallbackContent = this.getFallbackContent(category, language);
             return fallbackContent || [];
-            ';'
+            
+        } finally {
+            this.isLoading = false;
+            this.processLoadingQueue();
+        }
+    }
 
-        } finally { this.isLoading = false;
-            this.processLoadingQueue()','
-    async loadTutorialData(language = 'ja' {'
+    /**
+     * チュートリアルデータを読み込み
+     * @param language - 言語
+     * @returns チュートリアルデータ配列
+     */
+    async loadTutorialData(language: string = 'ja'): Promise<TutorialData[]> {
         const startTime = performance.now();
         const cacheKey = `tutorial_${language}`;
         
-        try { const cachedData = this.getCachedContent(cacheKey);
+        try {
+            const cachedData = this.getCachedContent(cacheKey);
             if (cachedData) {
-                this.hitRatio.hits++ }
+                this.hitRatio.hits++;
                 return cachedData;
+            }
             
             this.hitRatio.misses++;
             
@@ -154,15 +227,25 @@ export class ContentLoader {
             return data;
 
         } catch (error) {
-            console.error('Failed to load tutorial data:', error','
-            return this.getDefaultTutorialData()','
-    async loadFAQData(language = 'ja' { }'
+            console.error('Failed to load tutorial data:', error);
+            return this.getDefaultTutorialData();
+        }
+    }
+
+    /**
+     * FAQデータを読み込み
+     * @param language - 言語
+     * @returns FAQデータ配列
+     */
+    async loadFAQData(language: string = 'ja'): Promise<FAQData[]> {
         const cacheKey = `faq_${language}`;
         
-        try { const cachedData = this.getCachedContent(cacheKey);
+        try {
+            const cachedData = this.getCachedContent(cacheKey);
             if (cachedData) {
-                this.hitRatio.hits++ }
+                this.hitRatio.hits++;
                 return cachedData;
+            }
             
             this.hitRatio.misses++;
             
@@ -173,61 +256,68 @@ export class ContentLoader {
 
         } catch (error) {
             console.error('Failed to load FAQ data:', error);
-            return [],
-    
-    /**
-     * 画像を遅延読み込み
-     * @param {string} imagePath - 画像パス
-     * @returns {Promise<HTMLImageElement>} - 読み込み済み画像
-     */
-    async loadImage(imagePath) {
-        const cacheKey = `image_${imagePath}`;
-        
-        // キャッシュチェック
-        if (this.imageCache.has(cacheKey) { return this.imageCache.get(cacheKey);
-        
-        return new Promise((resolve, reject) => {  const img = new Image();
-            img.onload = () => {
-                this.imageCache.set(cacheKey, img);
-                this.cleanupImageCache();
-                resolve(img); }
-            };
-            
-            img.onerror = () => {  }
-                reject(new, Error(`Failed, to load, image: ${imagePath}`);
-            };
-            
-            img.src = imagePath;
+            return [];
         }
     }
     
     /**
-     * キャッシュからコンテンツを取得
-     * @param {string} key - キャッシュキー
-     * @returns {*} - キャッシュされたコンテンツまたはnull
+     * 画像を遅延読み込み
+     * @param imagePath - 画像パス
+     * @returns 読み込み済み画像
      */
-    getCachedContent(key) {
+    async loadImage(imagePath: string): Promise<HTMLImageElement> {
+        const cacheKey = `image_${imagePath}`;
+        
+        // キャッシュチェック
+        if (this.imageCache.has(cacheKey)) {
+            return this.imageCache.get(cacheKey)!;
+        }
+        
+        return new Promise((resolve, reject) => {
+            const img = new Image();
+            
+            img.onload = () => {
+                this.imageCache.set(cacheKey, img);
+                this.cleanupImageCache();
+                resolve(img);
+            };
+            
+            img.onerror = () => {
+                reject(new Error(`Failed to load image: ${imagePath}`));
+            };
+            
+            img.src = imagePath;
+        });
+    }
+    
+    /**
+     * キャッシュからコンテンツを取得
+     * @param key - キャッシュキー
+     * @returns キャッシュされたコンテンツまたはnull
+     */
+    getCachedContent(key: string): any | null {
         // 有効期限チェック
-        if (this.cacheExpiry.has(key) {
-            const expiry = this.cacheExpiry.get(key);
+        if (this.cacheExpiry.has(key)) {
+            const expiry = this.cacheExpiry.get(key)!;
             if (Date.now() > expiry) {
                 this.contentCache.delete(key);
                 this.cacheExpiry.delete(key);
                 return null;
+            }
+        }
         
         return this.contentCache.get(key) || null;
     }
     
     /**
      * コンテンツをキャッシュに保存
-     * @param {string} key - キャッシュキー
-     * @param {*} content - 保存するコンテンツ
+     * @param key - キャッシュキー
+     * @param content - 保存するコンテンツ
      */
-    setCachedContent(key, content) {
+    setCachedContent(key: string, content: any): void {
         // キャッシュサイズ制限チェック
         if (this.contentCache.size >= this.maxCacheSize) {
-    }
-            this.cleanupCache(); }
+            this.cleanupCache();
         }
         
         this.contentCache.set(key, content);
@@ -236,126 +326,141 @@ export class ContentLoader {
     
     /**
      * キャッシュをクリア
-     * @param {string} pattern - クリアするキーのパターン（省略可）
+     * @param pattern - クリアするキーのパターン（省略可）
      */
-    clearCache(pattern = null) {
+    clearCache(pattern: string | null = null): void {
         if (pattern) {
             const regex = new RegExp(pattern);
-            for (const key of this.contentCache.keys() {
-                if (regex.test(key) {
+            for (const key of this.contentCache.keys()) {
+                if (regex.test(key)) {
                     this.contentCache.delete(key);
-                    this.cacheExpiry.delete(key); }
-}
-        } else {  this.contentCache.clear();
-            this.cacheExpiry.clear(); }
-}
+                    this.cacheExpiry.delete(key);
+                }
+            }
+        } else {
+            this.contentCache.clear();
+            this.cacheExpiry.clear();
+        }
+    }
     
     /**
      * コンテンツバージョンをチェック
-     */''
-    async checkContentVersion()';'
-            const response = await fetch('/data/help/version.json);'
-            const versionData = await response.json();
+     */
+    async checkContentVersion(): Promise<void> {
+        try {
+            const response = await fetch('/data/help/version.json');
+            const versionData: VersionData = await response.json();
 
             if (versionData.version !== this.contentVersion) {
-
                 console.log('Content version updated, clearing cache');
                 this.clearCache();
-
-                this.contentVersion = versionData.version;' }'
-
-            } catch (error) { console.warn('Version check failed:', error }
+                this.contentVersion = versionData.version;
+            }
+        } catch (error) {
+            console.warn('Version check failed:', error);
+        }
     }
     
     /**
      * 読み込みをキューに追加
-     * @param {string} type - 読み込みタイプ
-     * @param {string} category - カテゴリ
-     * @param {string} language - 言語
-     * @returns {Promise} - 読み込み完了Promise
+     * @param type - 読み込みタイプ
+     * @param category - カテゴリ
+     * @param language - 言語
+     * @returns 読み込み完了Promise
      */
-    queueLoad(type, category, language) {
-        return new Promise((resolve, reject) => { 
+    queueLoad(type: string, category: string, language: string): Promise<any> {
+        return new Promise((resolve, reject) => {
             this.loadingQueue.push({
                 type,
                 category,
                 language,
-                resolve);
-                reject }
-                timestamp: Date.now(); 
-    }
-        };
+                priority: 0,
+                resolve,
+                reject,
+                timestamp: Date.now()
+            });
+        });
     }
     
     /**
      * 読み込みキューを処理
      */
-    async processLoadingQueue() { if (this.loadingQueue.length === 0 || this.isLoading) {
-            return }
+    async processLoadingQueue(): Promise<void> {
+        if (this.loadingQueue.length === 0 || this.isLoading) {
+            return;
+        }
         
         const batch = this.loadingQueue.splice(0, 3); // 3つずつバッチ処理
         
         for (const item of batch) {
-        
             try {
-                let result,
-                switch(item.type) {''
-                    case 'help':','
+                let result: any;
+                
+                switch (item.type) {
+                    case 'help':
                         result = await this.loadHelpContent(item.category, item.language);
-                        break,
-                    case 'tutorial':','
+                        break;
+                    case 'tutorial':
                         result = await this.loadTutorialData(item.language);
-                        break,
-                    case 'faq':,
+                        break;
+                    case 'faq':
                         result = await this.loadFAQData(item.language);
-                        break }
-                    default: }
-                        throw new Error(`Unknown, load type: ${item.type}`}
+                        break;
+                    default:
+                        throw new Error(`Unknown load type: ${item.type}`);
                 }
+                
                 item.resolve(result);
-            } catch (error) { item.reject(error);
+            } catch (error) {
+                item.reject(error);
+            }
         }
         
         // 残りのキューがあれば再帰処理
-        if (this.loadingQueue.length > 0) { setTimeout(() => this.processLoadingQueue(), 100);
-}
+        if (this.loadingQueue.length > 0) {
+            setTimeout(() => this.processLoadingQueue(), 100);
+        }
+    }
     
     /**
      * パフォーマンス統計を取得
-     * @returns {Object} - パフォーマンス統計
+     * @returns パフォーマンス統計
      */
-    getPerformanceStats() {
-        const totalRequests = this.hitRatio.hits + this.hitRatio.misses,
-        const hitRate = totalRequests > 0 ? (this.hitRatio.hits / totalRequests) * 100 : 0 }
-        const avgLoadTimes = {};
-        for(const [key, times] of this.loadTimes) {
-            const avg = times.reduce((sum, time) => sum + time, 0) / times.length }
-            avgLoadTimes[key] = Math.round(avg * 100) / 100; }
+    getPerformanceStats(): PerformanceStats {
+        const totalRequests = this.hitRatio.hits + this.hitRatio.misses;
+        const hitRate = totalRequests > 0 ? (this.hitRatio.hits / totalRequests) * 100 : 0;
+        
+        const avgLoadTimes: { [key: string]: number } = {};
+        for (const [key, times] of this.loadTimes) {
+            const avg = times.reduce((sum, time) => sum + time, 0) / times.length;
+            avgLoadTimes[key] = Math.round(avg * 100) / 100;
         }
         
-        return { cacheHitRate: Math.round(hitRate * 100) / 100,
+        return {
+            cacheHitRate: Math.round(hitRate * 100) / 100,
             cacheSize: this.contentCache.size,
             imageCacheSize: this.imageCache.size,
             queueLength: this.loadingQueue.length,
-    averageLoadTimes: avgLoadTimes,
-            isLoading: this.isLoading 
+            averageLoadTimes: avgLoadTimes,
+            isLoading: this.isLoading
+        };
     }
     
     /**
      * 実際のヘルプコンテンツを取得（実装固有）
      * @private
-     */''
-    async fetchHelpContent(category, language) { // 実際の実装では外部ファイルまたはAPIから読み込み
-        const mockContent = [{ }
-                id: `${category}-help-1,
-                category: category,
-    title: `${category}ヘルプ,
-                content: `${category}に関するヘルプコンテンツです。`]
-                language: language,']';
-                searchKeywords: [category, 'help', 'ヘルプ],'
-                lastUpdated: new Date().toISOString();
-            }
-        ];
+     */
+    private async fetchHelpContent(category: string, language: string): Promise<HelpContentItem[]> {
+        // 実際の実装では外部ファイルまたはAPIから読み込み
+        const mockContent: HelpContentItem[] = [{
+            id: `${category}-help-1`,
+            category: category,
+            title: `${category}ヘルプ`,
+            content: `${category}に関するヘルプコンテンツです。`,
+            language: language,
+            searchKeywords: [category, 'help', 'ヘルプ'],
+            lastUpdated: new Date().toISOString()
+        }];
         
         // ネットワーク遅延をシミュレート
         await new Promise(resolve => setTimeout(resolve, 100 + Math.random() * 200));
@@ -366,43 +471,41 @@ export class ContentLoader {
     /**
      * チュートリアルデータを取得（実装固有）
      * @private
-     */''
-    async fetchTutorialData(language) { const mockData = [{''
-                id: 'basic-tutorial,
-                title: '基本チュートリアル,
-                description: 'ゲームの基本操作を学習します,
-                language: language,
-    steps: [','
-                    {''
-                        id: 'step1,
-                        title: 'ステップ1,
-                        instructions: '最初のステップです,
-                        targetElement: '.bubble,
-                        waitForAction: 'click' }]
-                    }]
-                ];
-            }
-        ],
+     */
+    private async fetchTutorialData(language: string): Promise<TutorialData[]> {
+        const mockData: TutorialData[] = [{
+            id: 'basic-tutorial',
+            title: '基本チュートリアル',
+            description: 'ゲームの基本操作を学習します',
+            language: language,
+            steps: [{
+                id: 'step1',
+                title: 'ステップ1',
+                instructions: '最初のステップです',
+                targetElement: '.bubble',
+                waitForAction: 'click'
+            }]
+        }];
         
-        await new Promise(resolve => setTimeout(resolve, 150);
+        await new Promise(resolve => setTimeout(resolve, 150));
         return mockData;
     }
     
     /**
      * FAQデータを取得（実装固有）
-     * @private'
-     */''
-    async fetchFAQData(language) { const mockData = [{''
-                id: 'faq-1,
-                question: 'よくある質問1,
-                answer: '回答1,
-                category: 'basic,
-                language: language,
-    lastUpdated: new Date().toISOString( }]
-            }]
-        ];
+     * @private
+     */
+    private async fetchFAQData(language: string): Promise<FAQData[]> {
+        const mockData: FAQData[] = [{
+            id: 'faq-1',
+            question: 'よくある質問1',
+            answer: '回答1',
+            category: 'basic',
+            language: language,
+            lastUpdated: new Date().toISOString()
+        }];
         
-        await new Promise(resolve => setTimeout(resolve, 80);
+        await new Promise(resolve => setTimeout(resolve, 80));
         return mockData;
     }
     
@@ -410,85 +513,101 @@ export class ContentLoader {
      * フォールバックコンテンツを取得
      * @private
      */
-    getFallbackContent(category, language) { // キャッシュから期限切れでも利用可能なコンテンツを探す }
+    private getFallbackContent(category: string, language: string): HelpContentItem[] | null {
+        // キャッシュから期限切れでも利用可能なコンテンツを探す
         const fallbackKey = `help_${category}_${language}`;
         
         // 期限切れでもキャッシュから取得
         const cached = this.contentCache.get(fallbackKey);
-        if (cached) { return cached }
-        ';'
+        if (cached) {
+            return cached;
+        }
+        
         // デフォルト言語のコンテンツを試す
-        if(language !== 'ja' { }
+        if (language !== 'ja') {
             const jaKey = `help_${category}_ja`;
             const jaCached = this.contentCache.get(jaKey);
-            if (jaCached) { return jaCached,
+            if (jaCached) {
+                return jaCached;
+            }
+        }
         
-        return null }
+        return null;
+    }
     
     /**
      * デフォルトチュートリアルデータを取得
-     * @private'
-     */''
-    getDefaultTutorialData('''
-                id: 'default-tutorial,
-                title: 'デフォルトチュートリアル,
-                description: 'オフライン用基本チュートリアル,
-    steps: [] };
-        ]);
+     * @private
+     */
+    private getDefaultTutorialData(): TutorialData[] {
+        return [{
+            id: 'default-tutorial',
+            title: 'デフォルトチュートリアル',
+            description: 'オフライン用基本チュートリアル',
+            language: 'ja',
+            steps: []
+        }];
     }
     
     /**
      * キャッシュクリーンアップ
      * @private
      */
-    cleanupCache() {
+    private cleanupCache(): void {
         // LRU方式でキャッシュをクリーンアップ
-        const entries = Array.from(this.contentCache.entries()));
-        const expiries = Array.from(this.cacheExpiry.entries()));
+        const entries = Array.from(this.contentCache.entries());
+        const expiries = Array.from(this.cacheExpiry.entries());
+        
         // 有効期限順でソート
-        expiries.sort((a, b) => a[1] - b[1]),
+        expiries.sort((a, b) => a[1] - b[1]);
         
         // 古いエントリを削除
-        const toDelete = expiries.slice(0, Math.floor(this.maxCacheSize * 0.3);
-        for (const [key] of, toDelete) {
+        const toDelete = expiries.slice(0, Math.floor(this.maxCacheSize * 0.3));
+        for (const [key] of toDelete) {
             this.contentCache.delete(key);
-            this.cacheExpiry.delete(key); }
-}
+            this.cacheExpiry.delete(key);
+        }
+    }
     
     /**
      * 画像キャッシュクリーンアップ
      * @private
      */
-    cleanupImageCache() {
-        const maxImageCache = 20,
+    private cleanupImageCache(): void {
+        const maxImageCache = 20;
         if (this.imageCache.size > maxImageCache) {
             // 古い画像を削除（単純に最初の要素を削除）
-            const firstKey = this.imageCache.keys().next().value }
-            this.imageCache.delete(firstKey); }
-}
+            const firstKey = this.imageCache.keys().next().value;
+            if (firstKey) {
+                this.imageCache.delete(firstKey);
+            }
+        }
+    }
     
     /**
      * 読み込み時間を記録
      * @private
      */
-    recordLoadTime(key, time) {
-        if (!this.loadTimes.has(key) {
-    }
-            this.loadTimes.set(key, []); }
+    private recordLoadTime(key: string, time: number): void {
+        if (!this.loadTimes.has(key)) {
+            this.loadTimes.set(key, []);
         }
         
-        const times = this.loadTimes.get(key);
+        const times = this.loadTimes.get(key)!;
         times.push(time);
         
         // 最新10回の記録のみ保持
-        if (times.length > 10) { times.shift();
+        if (times.length > 10) {
+            times.shift();
+        }
     }
     
     /**
      * クリーンアップ
      */
-    cleanup() {
+    cleanup(): void {
         this.clearCache();
         this.imageCache.clear();
-
-        this.loadTimes.clear() }'
+        this.loadTimes.clear();
+    }
+}
