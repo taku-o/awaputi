@@ -10,31 +10,31 @@ export const PERFORMANCE_THRESHOLDS = {
   // Continuous Integration Environment
   ci: {
     frameRate: {
-      min: 25,           // Minimum acceptable FPS };
+      min: 25,           // Minimum acceptable FPS
       target: 30,        // Target FPS
       max: 45,          // Maximum expected FPS
       variance: 5        // Acceptable variance in FPS
     },
     renderTime: {
-      max: 50,          // Maximum render time in ms };
+      max: 50,          // Maximum render time in ms
       average: 35,      // Target average render time
       target: 25,       // Optimal render time
       variance: 10      // Acceptable variance in ms
     },
     memoryUsage: {
-      max: 100 * 1024 * 1024,          // 100MB maximum memory usage };
+      max: 100 * 1024 * 1024,          // 100MB maximum memory usage
       growth: 10 * 1024 * 1024,        // 10MB acceptable growth per operation
       leak: 5 * 1024 * 1024,           // 5MB acceptable memory leak per test
       baseline: 20 * 1024 * 1024       // 20MB baseline memory usage
     },
     loadTime: {
-      max: 5000,        // 5 seconds maximum load time };
+      max: 5000,        // 5 seconds maximum load time
       target: 3000,     // 3 seconds target load time
       component: 1000,  // 1 second per component load
       asset: 500        // 500ms per asset load
     },
     network: {
-      timeout: 10000,   // 10 seconds network timeout };
+      timeout: 10000,   // 10 seconds network timeout
       retries: 3,       // Maximum network retries
       delay: 1000       // Delay between retries
     }
@@ -43,31 +43,31 @@ export const PERFORMANCE_THRESHOLDS = {
   // Local Development Environment
   local: {
     frameRate: {
-      min: 35 },
+      min: 35,
       target: 45,
       max: 60,
       variance: 8
     },
     renderTime: {
-      max: 35 },
+      max: 35,
       average: 25,
       target: 16,
       variance: 8
     },
     memoryUsage: {
-      max: 150 * 1024 * 1024,          // 150MB maximum };
+      max: 150 * 1024 * 1024,          // 150MB maximum
       growth: 15 * 1024 * 1024,        // 15MB acceptable growth
       leak: 8 * 1024 * 1024,           // 8MB acceptable leak
       baseline: 30 * 1024 * 1024       // 30MB baseline
     },
     loadTime: {
-      max: 3000 },
+      max: 3000,
       target: 2000,
       component: 500,
       asset: 200
     },
     network: {
-      timeout: 5000 },
+      timeout: 5000,
       retries: 2,
       delay: 500
     }
@@ -76,31 +76,31 @@ export const PERFORMANCE_THRESHOLDS = {
   // Production Environment
   production: {
     frameRate: {
-      min: 45 },
+      min: 45,
       target: 55,
       max: 60,
       variance: 5
     },
     renderTime: {
-      max: 25 },
+      max: 25,
       average: 18,
       target: 16,
       variance: 5
     },
     memoryUsage: {
-      max: 200 * 1024 * 1024,          // 200MB maximum };
+      max: 200 * 1024 * 1024,          // 200MB maximum
       growth: 20 * 1024 * 1024,        // 20MB acceptable growth
       leak: 10 * 1024 * 1024,          // 10MB acceptable leak
       baseline: 40 * 1024 * 1024       // 40MB baseline
     },
     loadTime: {
-      max: 2000 },
+      max: 2000,
       target: 1500,
       component: 300,
       asset: 150
     },
     network: {
-      timeout: 3000 },
+      timeout: 3000,
       retries: 1,
       delay: 200
     }
@@ -191,21 +191,21 @@ export const TEST_CONFIGURATIONS = {
  */
 export const DEVICE_ADJUSTMENTS = {
   mobile: {
-    frameRateMultiplier: 0.8,     // 80% of desktop expectations };
+    frameRateMultiplier: 0.8,     // 80% of desktop expectations
     renderTimeMultiplier: 1.5,    // 50% more render time allowed
     memoryMultiplier: 0.6,        // 60% of desktop memory limits
     loadTimeMultiplier: 2.0       // Double the load time allowance
   },
   
   desktop: {
-    frameRateMultiplier: 1.0 },
+    frameRateMultiplier: 1.0,
     renderTimeMultiplier: 1.0,
     memoryMultiplier: 1.0,
     loadTimeMultiplier: 1.0
   },
 
   tablet: {
-    frameRateMultiplier: 0.9 },
+    frameRateMultiplier: 0.9,
     renderTimeMultiplier: 1.2,
     memoryMultiplier: 0.8,
     loadTimeMultiplier: 1.5
@@ -219,39 +219,40 @@ export const DEVICE_ADJUSTMENTS = {
  * @param {string} component - Component name (optional)
  * @returns {Object} Adjusted performance thresholds
  */
-export function getPerformanceThresholds(environment = 'local', device = 'desktop', component = null) {
-  const baseThresholds = PERFORMANCE_THRESHOLDS[environment] || PERFORMANCE_THRESHOLDS.local,
-  const deviceAdjustments = DEVICE_ADJUSTMENTS[device] || DEVICE_ADJUSTMENTS.desktop,
+export function getPerformanceThresholds(environment = 'local', device = 'desktop', component: string | null = null) {
+  const baseThresholds = PERFORMANCE_THRESHOLDS[environment as keyof typeof PERFORMANCE_THRESHOLDS] || PERFORMANCE_THRESHOLDS.local;
+  const deviceAdjustments = DEVICE_ADJUSTMENTS[device as keyof typeof DEVICE_ADJUSTMENTS] || DEVICE_ADJUSTMENTS.desktop;
   
   // Apply device-specific adjustments
-  const adjustedThresholds = JSON.parse(JSON.stringify(baseThresholds);
+  const adjustedThresholds = JSON.parse(JSON.stringify(baseThresholds));
   // Adjust frame rate
-  adjustedThresholds.frameRate.min *= deviceAdjustments.frameRateMultiplier,
-  adjustedThresholds.frameRate.target *= deviceAdjustments.frameRateMultiplier,
-  adjustedThresholds.frameRate.max *= deviceAdjustments.frameRateMultiplier,
+  adjustedThresholds.frameRate.min *= deviceAdjustments.frameRateMultiplier;
+  adjustedThresholds.frameRate.target *= deviceAdjustments.frameRateMultiplier;
+  adjustedThresholds.frameRate.max *= deviceAdjustments.frameRateMultiplier;
   
   // Adjust render time
-  adjustedThresholds.renderTime.max *= deviceAdjustments.renderTimeMultiplier,
-  adjustedThresholds.renderTime.average *= deviceAdjustments.renderTimeMultiplier,
-  adjustedThresholds.renderTime.target *= deviceAdjustments.renderTimeMultiplier,
+  adjustedThresholds.renderTime.max *= deviceAdjustments.renderTimeMultiplier;
+  adjustedThresholds.renderTime.average *= deviceAdjustments.renderTimeMultiplier;
+  adjustedThresholds.renderTime.target *= deviceAdjustments.renderTimeMultiplier;
   
   // Adjust memory usage
-  adjustedThresholds.memoryUsage.max *= deviceAdjustments.memoryMultiplier,
-  adjustedThresholds.memoryUsage.growth *= deviceAdjustments.memoryMultiplier,
-  adjustedThresholds.memoryUsage.leak *= deviceAdjustments.memoryMultiplier,
+  adjustedThresholds.memoryUsage.max *= deviceAdjustments.memoryMultiplier;
+  adjustedThresholds.memoryUsage.growth *= deviceAdjustments.memoryMultiplier;
+  adjustedThresholds.memoryUsage.leak *= deviceAdjustments.memoryMultiplier;
   
   // Adjust load time
-  adjustedThresholds.loadTime.max *= deviceAdjustments.loadTimeMultiplier,
-  adjustedThresholds.loadTime.target *= deviceAdjustments.loadTimeMultiplier,
-  adjustedThresholds.loadTime.component *= deviceAdjustments.loadTimeMultiplier,
+  adjustedThresholds.loadTime.max *= deviceAdjustments.loadTimeMultiplier;
+  adjustedThresholds.loadTime.target *= deviceAdjustments.loadTimeMultiplier;
+  adjustedThresholds.loadTime.component *= deviceAdjustments.loadTimeMultiplier;
   
   // Add component-specific thresholds if requested
-  if (component && COMPONENT_THRESHOLDS[component]) {
-    adjustedThresholds.component = {};
-    const componentThresholds = COMPONENT_THRESHOLDS[component];
+  if (component && COMPONENT_THRESHOLDS[component as keyof typeof COMPONENT_THRESHOLDS]) {
+    (adjustedThresholds as any).component = {};
+    const componentThresholds = COMPONENT_THRESHOLDS[component as keyof typeof COMPONENT_THRESHOLDS];
     
-    for (const [metric, values] of Object.entries(componentThresholds) {
-      adjustedThresholds.component[metric] = values[environment] || values.local }
+    for (const [metric, values] of Object.entries(componentThresholds)) {
+      (adjustedThresholds as any).component[metric] = (values as any)[environment] || (values as any).local;
+    }
   }
   
   return adjustedThresholds;
@@ -260,18 +261,18 @@ export function getPerformanceThresholds(environment = 'local', device = 'deskto
 /**
  * Gets test configuration for specific environment and test type
  * @param {string} environment - Environment type
- * @param {string} testType - Test type (standard, quick, comprehensive')'
+ * @param {string} testType - Test type (standard, quick, comprehensive)
  * @returns {Object} Test configuration
  */
 export function getTestConfiguration(environment = 'local', testType = 'standard') {
-  const config = TEST_CONFIGURATIONS[testType] || TEST_CONFIGURATIONS.standard,
+  const config = TEST_CONFIGURATIONS[testType as keyof typeof TEST_CONFIGURATIONS] || TEST_CONFIGURATIONS.standard;
   
   return {
-    retries: config.retries[environment] || config.retries.local,
-    timeout: config.timeout[environment] || config.timeout.local,
-    warmupIterations: config.warmupIterations[environment] || config.warmupIterations.local,
-    measurementIterations: config.measurementIterations[environment] || config.measurementIterations.local,
-    stabilizationDelay: config.stabilizationDelay[environment] || config.stabilizationDelay.local
+    retries: (config.retries as any)[environment] || config.retries.local,
+    timeout: (config.timeout as any)[environment] || config.timeout.local,
+    warmupIterations: (config.warmupIterations as any)[environment] || config.warmupIterations.local,
+    measurementIterations: (config.measurementIterations as any)[environment] || config.measurementIterations.local,
+    stabilizationDelay: (config.stabilizationDelay as any)[environment] || config.stabilizationDelay.local
   };
 }
 
@@ -282,44 +283,44 @@ export function getTestConfiguration(environment = 'local', testType = 'standard
  * @param {string} metric - Specific metric to validate
  * @returns {Object} Validation result
  */
-export function validatePerformanceResult(result, thresholds, metric') {'
+export function validatePerformanceResult(result: any, thresholds: any, metric: string) {
   const validation = {
     passed: false,
     metric,
     result,
     threshold: thresholds[metric],
-    message: ','
+    message: '',
     severity: 'info'
   };
 
-  if (!thresholds[metric]') {'
-    validation.message = `No threshold defined for metric: ${metric}`,
+  if (!thresholds[metric]) {
+    validation.message = `No threshold defined for metric: ${metric}`;
     validation.severity = 'warning';
     return validation;
   }
 
-  switch (metric') {'
+  switch (metric) {
     case 'frameRate':
-      validation.passed = result.fps >= thresholds.frameRate.min,
+      validation.passed = result.fps >= thresholds.frameRate.min;
       validation.message = validation.passed 
-        ? `Frame rate ${result.fps.toFixed(2}} FPS meets minimum ${thresholds.frameRate.min} FPS`
-        : `Frame rate ${result.fps.toFixed(2'}} FPS below minimum ${thresholds.frameRate.min} FPS`;'
+        ? `Frame rate ${result.fps.toFixed(2)} FPS meets minimum ${thresholds.frameRate.min} FPS`
+        : `Frame rate ${result.fps.toFixed(2)} FPS below minimum ${thresholds.frameRate.min} FPS`;
       validation.severity = validation.passed ? 'info' : 'error';
       break;
 
     case 'renderTime':
       validation.passed = result.averageTime <= thresholds.renderTime.max;
       validation.message = validation.passed
-        ? `Render time ${result.averageTime.toFixed(2}}ms within limit ${thresholds.renderTime.max}ms`
-        : `Render time ${result.averageTime.toFixed(2'}}ms exceeds limit ${thresholds.renderTime.max}ms`;'
+        ? `Render time ${result.averageTime.toFixed(2)}ms within limit ${thresholds.renderTime.max}ms`
+        : `Render time ${result.averageTime.toFixed(2)}ms exceeds limit ${thresholds.renderTime.max}ms`;
       validation.severity = validation.passed ? 'info' : 'error';
       break;
 
     case 'memoryUsage':
       validation.passed = result.totalGrowth <= thresholds.memoryUsage.growth;
       validation.message = validation.passed
-        ? `Memory growth ${(result.totalGrowth / 1024 / 1024).toFixed(2}}MB within limit ${(thresholds.memoryUsage.growth / 1024 / 1024).toFixed(2}}MB`
-        : `Memory growth ${(result.totalGrowth / 1024 / 1024).toFixed(2}}MB exceeds limit ${(thresholds.memoryUsage.growth / 1024 / 1024).toFixed(2'}}MB`;'
+        ? `Memory growth ${(result.totalGrowth / 1024 / 1024).toFixed(2)}MB within limit ${(thresholds.memoryUsage.growth / 1024 / 1024).toFixed(2)}MB`
+        : `Memory growth ${(result.totalGrowth / 1024 / 1024).toFixed(2)}MB exceeds limit ${(thresholds.memoryUsage.growth / 1024 / 1024).toFixed(2)}MB`;
       validation.severity = validation.passed ? 'info' : 'error';
       break;
 
@@ -332,7 +333,7 @@ export function validatePerformanceResult(result, thresholds, metric') {'
       break;
 
     default:
-      validation.message = `Unknown, metric: ${metric}`,
+      validation.message = `Unknown metric: ${metric}`;
       validation.severity = 'warning';
   }
 
@@ -344,7 +345,7 @@ export function validatePerformanceResult(result, thresholds, metric') {'
  * @param {Object} options - Configuration options
  * @returns {Object} Complete test suite configuration
  */
-export function createPerformanceTestSuite(options = {}') {'
+export function createPerformanceTestSuite(options: any = {}) {
   const {
     environment = 'local',
     device = 'desktop',
@@ -365,13 +366,14 @@ export function createPerformanceTestSuite(options = {}') {'
     testType,
     thresholds: finalThresholds,
     config: testConfig,
-    components: components.map(component => ({
-      name: component),
-     , thresholds: getPerformanceThresholds(environment, device, component) },
+    components: components.map((component: string) => ({
+      name: component,
+      thresholds: getPerformanceThresholds(environment, device, component)
+    })),
     metadata: {
-      created: new Date().toISOString(',' };
+      created: new Date().toISOString(),
       version: '1.0.0',
       generator: 'performance-thresholds.js'
     }
-  }
+  };
 }
