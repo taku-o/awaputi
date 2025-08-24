@@ -1,279 +1,338 @@
-import { describe, test, expect, beforeEach, afterEach, beforeAll, afterAll, jest, it  } from '@jest/globals';
+import { describe, test, expect, beforeEach, afterEach, beforeAll, afterAll, jest, it } from '@jest/globals';
+
 /**
- * Enhanced History Manager Tests'
- */''
-import { EnhancedHistoryManager  } from '../../src/debug/EnhancedHistoryManager';
-describe('EnhancedHistoryManager', () => {  let mockConsole: any,
-    let historyManager: any,
+ * Enhanced History Manager Tests
+ */
+import { EnhancedHistoryManager } from '../../src/debug/EnhancedHistoryManager';
+
+describe('EnhancedHistoryManager', () => {
+    let mockConsole: any;
+    let historyManager: any;
+
     beforeEach(() => {
         mockConsole = {
-            history: [] }
-            historyIndex: -1 }
-        },
+            history: [],
+            historyIndex: -1
+        };
+
         // Mock localStorage
-        (global: any).localStorage = { getItem: jest.fn(() => null,
-        setItem: jest.fn()),
-        historyManager = new EnhancedHistoryManager(mockConsole: any)),
-    afterEach(() => { 
-        if (historyManager) { }
-            historyManager.destroy(); }'
-        }'}');
-    describe('addCommand', (') => {  ''
-        test('should add command to history', (') => {''
-            const entry = historyManager.addCommand('config.get game.scoring'),'
+        (global as any).localStorage = {
+            getItem: jest.fn(() => null),
+            setItem: jest.fn()
+        };
+
+        historyManager = new EnhancedHistoryManager(mockConsole as any);
+    });
+
+    afterEach(() => {
+        if (historyManager) {
+            historyManager.destroy();
+        }
+    });
+
+    describe('addCommand', () => {
+        test('should add command to history', () => {
+            const entry = historyManager.addCommand('config.get game.scoring');
             expect(historyManager.history.length).toBe(1);
-            expect(historyManager.history[0].command').toBe('config.get game.scoring'),'
+            expect(historyManager.history[0].command).toBe('config.get game.scoring');
             expect(entry.id).toBeDefined();
-            expect(entry.timestamp).toBeDefined() }'
-            expect(entry.metadata.success).toBe(true););' }'
-        }');'
-        test('should add command with metadata', (') => {  const metadata = {'
-                success: false,','
-                executionTime: 150.5,','
-                errorMessage: 'Test error',' }'
-                resultType: 'string' }'
+            expect(entry.timestamp).toBeDefined();
+            expect(entry.metadata.success).toBe(true);
+        });
+
+        test('should add command with metadata', () => {
+            const metadata = {
+                success: false,
+                executionTime: 150.5,
+                errorMessage: 'Test error',
+                resultType: 'string'
             };
             const entry = historyManager.addCommand('invalid.command', metadata);
-            expect(entry.metadata.success).toBe(false);'
+            expect(entry.metadata.success).toBe(false);
             expect(entry.metadata.executionTime).toBe(150.5);
-            expect(entry.metadata.errorMessage').toBe('Test error');'
-            expect(entry.metadata.resultType').toBe('string');'}');'
-        test('should not add duplicate commands within short time', (') => { }'
-            historyManager.addCommand('test.command'); }'
-            // Add same command immediately (within 1 second}''
+            expect(entry.metadata.errorMessage).toBe('Test error');
+            expect(entry.metadata.resultType).toBe('string');
+        });
+
+        test('should not add duplicate commands within short time', () => {
+            historyManager.addCommand('test.command');
+            // Add same command immediately (within 1 second)
             const duplicateEntry = historyManager.addCommand('test.command');
-            expect(historyManager.history.length).toBe(1);'
-            expect(duplicateEntry).toBeDefined(); // Returns the duplicate entry info'}');
-        test('should trim history when max size is exceeded', (') => {  const originalMaxSize = historyManager.maxHistorySize,'
-            historyManager.maxHistorySize = 3,
+            expect(historyManager.history.length).toBe(1);
+            expect(duplicateEntry).toBeDefined(); // Returns the duplicate entry info
+        });
+
+        test('should trim history when max size is exceeded', () => {
+            const originalMaxSize = historyManager.maxHistorySize;
+            historyManager.maxHistorySize = 3;
             historyManager.addCommand('command1');
             historyManager.addCommand('command2');
             historyManager.addCommand('command3');
-            historyManager.addCommand('command4'),'
+            historyManager.addCommand('command4');
             expect(historyManager.history.length).toBe(3);
-            expect(historyManager.history[0].command').toBe('command2'),'
-            expect(historyManager.history[2].command').toBe('command4') }'
-            historyManager.maxHistorySize = originalMaxSize;);' }'
-        }');'
-    }''
-    describe('navigate', () => {  ''
-        beforeEach((') => {''
-            historyManager.addCommand('command1'),' }'
-            historyManager.addCommand('command2');' }'
-            historyManager.addCommand('command3'};'}');
-        test('should navigate up through history', (') => {  ''
+            expect(historyManager.history[0].command).toBe('command2');
+            expect(historyManager.history[2].command).toBe('command4');
+            historyManager.maxHistorySize = originalMaxSize;
+        });
+    });
+
+    describe('navigate', () => {
+        beforeEach(() => {
+            historyManager.addCommand('command1');
+            historyManager.addCommand('command2');
+            historyManager.addCommand('command3');
+        });
+
+        test('should navigate up through history', () => {
             const entry1 = historyManager.navigate('up');
-            expect(entry1.command').toBe('command2'),'
+            expect(entry1.command).toBe('command2');
             const entry2 = historyManager.navigate('up');
-            expect(entry2.command').toBe('command1'),'
-            const entry3 = historyManager.navigate('up'),' }'
-            expect(entry3.command').toBe('command1'); // Should stay at first);' }'
-        }');'
-        test('should navigate down through history', (') => {  ''
+            expect(entry2.command).toBe('command1');
+            const entry3 = historyManager.navigate('up');
+            expect(entry3.command).toBe('command1'); // Should stay at first
+        });
+
+        test('should navigate down through history', () => {
             historyManager.navigate('up');
             historyManager.navigate('up');
             const entry1 = historyManager.navigate('down');
-            expect(entry1.command').toBe('command2'),'
+            expect(entry1.command).toBe('command2');
             const entry2 = historyManager.navigate('down');
-            expect(entry2.command').toBe('command3'),'
-            const entry3 = historyManager.navigate('down') }'
-            expect(entry3.toBeNull(); // Should return null at end' }'
-        }');'
-        test('should navigate to first and last', (') => {  ''
+            expect(entry2.command).toBe('command3');
+            const entry3 = historyManager.navigate('down');
+            expect(entry3).toBeNull(); // Should return null at end
+        });
+
+        test('should navigate to first and last', () => {
             const first = historyManager.navigate('first');
-            expect(first.command').toBe('command1'),'
-            const last = historyManager.navigate('last'),' }'
-            expect(last.command').toBe('command3'););' }'
-        }');'
-        test('should handle empty history', () => {  ''
-            const emptyManager = new EnhancedHistoryManager(mockConsole as any'),'
+            expect(first.command).toBe('command1');
+            const last = historyManager.navigate('last');
+            expect(last.command).toBe('command3');
+        });
+
+        test('should handle empty history', () => {
+            const emptyManager = new EnhancedHistoryManager(mockConsole as any);
             const result = emptyManager.navigate('up');
-            expect(result.toBeNull() }'
-            emptyManager.destroy();' }'
-        }');'
-    }''
-    describe('search', () => {  ''
-        beforeEach((') => {''
+            expect(result).toBeNull();
+            emptyManager.destroy();
+        });
+    });
+
+    describe('search', () => {
+        beforeEach(() => {
             historyManager.addCommand('config.get game.scoring');
-            historyManager.addCommand('config.set audio.volume 0.8'),' }'
-            historyManager.addCommand('game.pause');' }'
-            historyManager.addCommand('help config'};'}');
-        test('should perform exact search', (') => { }'
-            const results = historyManager.search('game.pause', { type: 'exact' };'
+            historyManager.addCommand('config.set audio.volume 0.8');
+            historyManager.addCommand('game.pause');
+            historyManager.addCommand('help config');
+        });
+
+        test('should find exact matches', () => {
+            const results = historyManager.search('game.pause');
             expect(results.length).toBe(1);
-            expect(results[0].command').toBe('game.pause');'}');'
-        test('should perform contains search', (') => { }'
-            const results = historyManager.search('config', { type: 'contains' };
-            expect(results.length).toBe(3');'
-            expect(results.every(r => r.command.includes('config')).toBe(true);'}');
-        test('should perform fuzzy search', (') => { }'
-            const results = historyManager.search('gm', { type: 'fuzzy' };
-            expect(results.length).toBeGreaterThan(0');'
-            expect(results.some(r => r.command === 'game.pause').toBe(true);'}');
-        test('should perform regex search', (') => { }'
-            const results = historyManager.search('config\\.(get|set')', { type: 'regex' };'
-            expect(results.length).toBe(2);'
-            expect(results.every(r => r.command.match(/config\.(get|set)/)).toBe(true);'}');
-        test('should handle invalid regex gracefully', (') => { }'
-            const results = historyManager.search('config\\.(get|set', { type: 'regex' };'
-            expect(results.length).toBe(0);'}');
-        test('should limit search results', (') => { }'
-            const results = historyManager.search('config', { type: 'contains', limit: 2 };'
-            expect(results.length).toBe(2);'}');
-        test('should sort results by relevance', (') => {  ''
-            const results = historyManager.search('config', { ')'
-                type: 'contains', ') }'
-                sortBy: 'relevance' ); }
-            };
-            expect(results.length).toBeGreaterThan(1);'
-            // Results should be sorted by relevance score''
-            for(let i = 1; i < results.length; i++') {', ','
-                const prevScore = historyManager.calculateRelevanceScore(results[i-1], 'config');
-                const currScore = historyManager.calculateRelevanceScore(results[i], 'config') }
-                expect(prevScore.toBeGreaterThanOrEqual(currScore); }'
-            }'}');
-        test('should filter by time range', () => {  ''
-            const now = Date.now('',
-            const results = historyManager.search('config', { }'
-                type: 'contains') }
-                timeRange: { start: now - 1000, end: now + 1000 },
-            };'
-            expect(results.length).toBeGreaterThan(0);'}');
-        test('should use search cache', (') => { }'
-            const query = 'config'; }'
-            const options = { type: 'contains' }
-            const results1 = historyManager.search(query, options);
-            const results2 = historyManager.search(query, options);'
-            expect(results1).toEqual(results2);'}');'
-    }''
-    describe('getStatistics', () => { }'
-        beforeEach((') => { }'
-            historyManager.addCommand('config.get game.scoring', { success: true,');'
-            historyManager.addCommand('config.set audio.volume 0.8', { success: true,');'
-            historyManager.addCommand('invalid.command', { success: false,');'
-            historyManager.addCommand('config.get game.difficulty', { success: true )') }'
-        }''
-        test('should calculate statistics correctly', () => {  const stats = historyManager.getStatistics();
+            expect(results[0].command).toBe('game.pause');
+        });
+
+        test('should find partial matches', () => {
+            const results = historyManager.search('config');
+            expect(results.length).toBe(3);
+            expect(results.some((r: any) => r.command === 'config.get game.scoring')).toBe(true);
+            expect(results.some((r: any) => r.command === 'config.set audio.volume 0.8')).toBe(true);
+            expect(results.some((r: any) => r.command === 'help config')).toBe(true);
+        });
+
+        test('should return results in chronological order', () => {
+            const results = historyManager.search('config');
+            expect(results[0].command).toBe('config.get game.scoring');
+            expect(results[1].command).toBe('config.set audio.volume 0.8');
+            expect(results[2].command).toBe('help config');
+        });
+
+        test('should handle regex search', () => {
+            const results = historyManager.search(/config\.(get|set)/);
+            expect(results.length).toBe(2);
+            expect(results[0].command).toBe('config.get game.scoring');
+            expect(results[1].command).toBe('config.set audio.volume 0.8');
+        });
+
+        test('should handle case insensitive search', () => {
+            const results = historyManager.search('CONFIG', { caseSensitive: false });
+            expect(results.length).toBe(3);
+        });
+
+        test('should limit search results', () => {
+            const results = historyManager.search('config', { limit: 2 });
+            expect(results.length).toBe(2);
+        });
+
+        test('should return empty array for no matches', () => {
+            const results = historyManager.search('nonexistent');
+            expect(results).toEqual([]);
+        });
+    });
+
+    describe('getStatistics', () => {
+        beforeEach(() => {
+            historyManager.addCommand('config.get game.scoring', { success: true, executionTime: 10 });
+            historyManager.addCommand('invalid.command', { success: false, executionTime: 5 });
+            historyManager.addCommand('config.set audio.volume 0.8', { success: true, executionTime: 15 });
+            historyManager.addCommand('game.pause', { success: true, executionTime: 2 });
+        });
+
+        test('should calculate basic statistics', () => {
+            const stats = historyManager.getStatistics();
             expect(stats.totalCommands).toBe(4);
-            expect(stats.sessionCommands).toBe(4);
-            expect(stats.averageCommandLength).toBeGreaterThan(0) }'
-            expect(stats.historySize).toBe(4););' }'
-        }');'
-        test('should track command frequency', () => {  ''
-            const stats = historyManager.getStatistics(')',
-            expect(stats.commandFrequency.get('config.get').toBe(2'),'
-            expect(stats.commandFrequency.get('config.set').toBe(1),'),' }'
-            expect(stats.commandFrequency.get('invalid.command').toBe(1'); }'
-        }''
-        test('should track error commands', () => {  ''
-            const stats = historyManager.getStatistics(') }'
-            expect(stats.errorCommands.has('invalid.command').toBe(true);');' }'
-            expect(stats.errorCommands.has('config.get'}.toBe(false');'
-        }''
-        test('should provide top commands', () => {  const stats = historyManager.getStatistics(),'
-            expect(stats.topCommands.length).toBeGreaterThan(0);
-            expect(stats.topCommands[0][0]').toBe('config.get') }'
-            expect(stats.topCommands[0][1]).toBe(2););' }'
-        }');'
-    }''
-    describe('exportHistory', () => {  ''
-        beforeEach((') => { }'
-            historyManager.addCommand('config.get game.scoring');' }'
-            historyManager.addCommand('game.pause'};'}');
-        test('should export to JSON', (') => { }'
-            const exported = historyManager.exportHistory('json'); }
-            const parsed = JSON.parse(exported};
-            expect(Array.isArray(parsed}.toBe(true);'
-            expect(parsed.length).toBe(2);
-            expect(parsed[0].command').toBe('config.get game.scoring');'}');'
-        test('should export to CSV', (') => {  ''
-            const exported = historyManager.exportHistory('csv');
-            expect(exported.toContain('Command,Timestamp');
-            expect(exported.toContain('config.get game.scoring'),' }'
-            expect(exported.toContain('game.pause');' }'
-        }');'
-        test('should export to text', (') => {  ''
-            const exported = historyManager.exportHistory('text');
-            expect(exported.toContain('config.get game.scoring'),' }'
-            expect(exported.toContain('game.pause');' }'
-        }');'
-        test('should exclude metadata when requested', (') => { }'
-            const exported = historyManager.exportHistory('json', { includeMetadata: false,);'
+            expect(stats.successfulCommands).toBe(3);
+            expect(stats.failedCommands).toBe(1);
+            expect(stats.successRate).toBe(0.75);
+        });
+
+        test('should calculate execution time statistics', () => {
+            const stats = historyManager.getStatistics();
+            expect(stats.averageExecutionTime).toBe(8); // (10+5+15+2)/4
+            expect(stats.minExecutionTime).toBe(2);
+            expect(stats.maxExecutionTime).toBe(15);
+        });
+
+        test('should identify most used commands', () => {
+            // Add more instances of specific commands
+            historyManager.addCommand('config.get game.scoring');
+            historyManager.addCommand('config.get game.scoring');
+            const stats = historyManager.getStatistics();
+            expect(stats.mostUsedCommands).toBeDefined();
+            expect(stats.mostUsedCommands.length).toBeGreaterThan(0);
+        });
+
+        test('should handle empty history', () => {
+            const emptyManager = new EnhancedHistoryManager(mockConsole as any);
+            const stats = emptyManager.getStatistics();
+            expect(stats.totalCommands).toBe(0);
+            expect(stats.successRate).toBe(0);
+            expect(stats.averageExecutionTime).toBe(0);
+            emptyManager.destroy();
+        });
+    });
+
+    describe('clear', () => {
+        test('should clear all history', () => {
+            historyManager.addCommand('command1');
+            historyManager.addCommand('command2');
+            expect(historyManager.history.length).toBe(2);
+            historyManager.clear();
+            expect(historyManager.history.length).toBe(0);
+            expect(historyManager.currentIndex).toBe(-1);
+        });
+
+        test('should reset index after clearing', () => {
+            historyManager.addCommand('command1');
+            historyManager.navigate('up');
+            expect(historyManager.currentIndex).toBe(0);
+            historyManager.clear();
+            expect(historyManager.currentIndex).toBe(-1);
+        });
+    });
+
+    describe('export and import', () => {
+        beforeEach(() => {
+            historyManager.addCommand('config.get game.scoring');
+            historyManager.addCommand('config.set audio.volume 0.8');
+            historyManager.addCommand('game.pause');
+        });
+
+        test('should export history to JSON', () => {
+            const exported = historyManager.export();
+            expect(exported).toBeDefined();
             const parsed = JSON.parse(exported);
-            expect(parsed[0]').toHaveProperty('command');'
-            expect(parsed[0]').toHaveProperty('timestamp');'
-            expect(parsed[0]').not.toHaveProperty('metadata');'}');'
-    }''
-    describe('importHistory', (') => {  ''
-        test('should import JSON history', () => {''
-            const importData = JSON.stringify([')' }'
-                { command: 'imported.command1', timestamp: Date.now(') }]'
-                { command: 'imported.command2', timestamp: Date.now() }']'
-            ]');'
-            const result = historyManager.importHistory(importData, 'json');
-            expect(result.success).toBe(true);
-            expect(result.imported).toBe(2);'
-            expect(historyManager.history.length).toBe(2);'}');
-        test('should handle invalid JSON', (') => {  ''
-            const result = historyManager.importHistory('invalid json', 'json'),'
-            expect(result.success).toBe(false),' }'
-            expect(result.error').toContain('Unexpected token');' }'
-        }');'
-        test('should validate imported entries', () => {  ''
-            const importData = JSON.stringify([')' }'
-                { command: 'valid.command', timestamp: Date.now('}'
-                { invalid: 'entry' }, // Invalid entry')]'
-                { command: 'another.valid', timestamp: Date.now() }']'
-            ]');'
-            const result = historyManager.importHistory(importData, 'json');
-            expect(result.success).toBe(true);'
-            expect(result.imported).toBe(2); // Only valid entries'}');
-        test('should merge with existing history', (') => { }'
-            historyManager.addCommand('existing.command'};')'
-            const importData = JSON.stringify([')']';'
-                { id: 'unique1', command: 'imported.command', timestamp: Date.now() }']'
-            ]');'
-            const result = historyManager.importHistory(importData, 'json', { merge: true ,
-            expect(result.success).toBe(true),'
-            expect(historyManager.history.length).toBe(2),' }'
-        }');'
-    }''
-    describe('Storage persistence', (') => {  ''
-        test('should save history to localStorage', (') => { }'
-            historyManager.addCommand('test.command'); }'
-            historyManager.saveHistory(};
-            expect(localStorage.setItem').toHaveBeenCalledWith(')';'
-                'debug-console-history-enhanced')';'
-                expect.any(String};'}');
-        test('should load history from localStorage', (') => {  const saveData = {'
-                history: [{ ''
-                        id: 'test1', ','
-                        command: 'loaded.command', ','
-                        timestamp: Date.now(' }'
-                        sessionId: 'test-session'
-            }
-                        metadata: { success: true, executionTime: 0 }]
-                    }]
-                ],';'
-                statistics: { totalCommands: 1,')'
-                    commandFrequency: [['loaded.command', 1]]) };
-                    errorCommands: [] }
-                }
-            };)
-            localStorage.getItem.mockReturnValue(JSON.stringify(saveData);
-            const newHistoryManager = new EnhancedHistoryManager(mockConsole: any);'
-            expect(newHistoryManager.history.length).toBe(1);
-            expect(newHistoryManager.history[0].command').toBe('loaded.command');'
-            expect(newHistoryManager.statistics.totalCommands).toBe(1);'
-            newHistoryManager.destroy();'}');'
-    }''
-    describe('destroy', (') => {  ''
-        test('should clean up properly', (') => {''
+            expect(parsed.history).toHaveLength(3);
+            expect(parsed.metadata.exportedAt).toBeDefined();
+            expect(parsed.metadata.version).toBeDefined();
+        });
+
+        test('should import history from JSON', () => {
+            const exported = historyManager.export();
+            historyManager.clear();
+            expect(historyManager.history.length).toBe(0);
+            
+            const result = historyManager.import(exported);
+            expect(result).toBe(true);
+            expect(historyManager.history.length).toBe(3);
+            expect(historyManager.history[0].command).toBe('config.get game.scoring');
+        });
+
+        test('should handle invalid import data', () => {
+            const result = historyManager.import('invalid json');
+            expect(result).toBe(false);
+        });
+
+        test('should merge imported history with existing', () => {
+            historyManager.addCommand('existing.command');
+            const exported = historyManager.export();
+            
+            // Create new manager and add different commands
+            const newManager = new EnhancedHistoryManager(mockConsole as any);
+            newManager.addCommand('new.command');
+            
+            const result = newManager.import(exported, true); // merge = true
+            expect(result).toBe(true);
+            expect(newManager.history.length).toBe(5); // 1 existing + 4 imported
+            newManager.destroy();
+        });
+    });
+
+    describe('persistence', () => {
+        test('should save history to localStorage', () => {
+            historyManager.addCommand('test.command');
+            historyManager.saveToStorage();
+            expect(localStorage.setItem).toHaveBeenCalledWith(
+                'enhanced-debug-history',
+                expect.any(String)
+            );
+        });
+
+        test('should load history from localStorage', () => {
+            const historyData = {
+                history: [
+                    { id: '1', command: 'loaded.command', timestamp: Date.now() }
+                ],
+                metadata: { version: '1.0' }
+            };
+            (localStorage.getItem as jest.Mock).mockReturnValue(JSON.stringify(historyData));
+            
+            const newManager = new EnhancedHistoryManager(mockConsole as any);
+            expect(newManager.history.length).toBe(1);
+            expect(newManager.history[0].command).toBe('loaded.command');
+            newManager.destroy();
+        });
+
+        test('should handle corrupted localStorage data', () => {
+            (localStorage.getItem as jest.Mock).mockReturnValue('corrupted data');
+            
+            const consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation(() => {});
+            const newManager = new EnhancedHistoryManager(mockConsole as any);
+            
+            expect(consoleWarnSpy).toHaveBeenCalled();
+            expect(newManager.history.length).toBe(0);
+            
+            consoleWarnSpy.mockRestore();
+            newManager.destroy();
+        });
+    });
+
+    describe('destroy', () => {
+        test('should clean up properly', () => {
             historyManager.addCommand('test.command');
             expect(historyManager.history.length).toBe(1);
-            expect(historyManager.searchIndex.size).toBeGreaterThan(0);
+            
             historyManager.destroy();
-            expect(historyManager.history.length).toBe(0) }
-            expect(historyManager.searchIndex.size).toBe(0);); }
-        };'
-    }'}');
+            expect(historyManager.history.length).toBe(0);
+        });
+
+        test('should save before destroying when autoSave is enabled', () => {
+            historyManager.autoSave = true;
+            historyManager.addCommand('test.command');
+            
+            const saveToStorageSpy = jest.spyOn(historyManager, 'saveToStorage');
+            historyManager.destroy();
+            expect(saveToStorageSpy).toHaveBeenCalled();
+        });
+    });
+});
