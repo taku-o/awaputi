@@ -24,31 +24,34 @@ const performanceConfig = PerformanceTestUtils.createPerformanceTestConfig();
 const environmentThresholds = PerformanceTestUtils.getEnvironmentThresholds();
 // MockFactoryからの標準化されたモック
 const mockCanvas = MockFactory.createCanvasMock();
-const mockGameEngine = MockFactory.createGameEngineMock(');'
+const mockGameEngine = MockFactory.createGameEngineMock();
+
 describe('統計システムパフォーマンステスト', () => {
-    let statisticsManager: any,
-    let statisticsCollector: any,
-    let statisticsAnalyzer: any,
-    let chartRenderer: any,
-    let statisticsExporter: any,
-    let statisticsPerformanceOptimizer: any,
+    let statisticsManager: any;
+    let statisticsCollector: any;
+    let statisticsAnalyzer: any;
+    let chartRenderer: any;
+    let statisticsExporter: any;
+    let statisticsPerformanceOptimizer: any;
     
     // Test suite components
-    let dataCollectionTests: any,
-    let analysisRenderingTests: any,
-    let exportMemoryOptimizationTests: any,
+    let dataCollectionTests: any;
+    let analysisRenderingTests: any;
+    let exportMemoryOptimizationTests: any;
 
     beforeAll(async () => {
         // MockFactoryからの標準化されたモック適用
         const performanceMock = MockFactory.createPerformanceMock();
-        const storageMock = MockFactory.createStorageMock('),'
+        const storageMock = MockFactory.createStorageMock();
         // グローバルAPIのモック設定
         if (typeof global !== 'undefined') {
-            (global: any).performance = performanceMock,
-            (global as any').localStorage = storageMock }'
+            (global as any).performance = performanceMock;
+            (global as any).localStorage = storageMock;
+        }
         if (typeof window !== 'undefined') {
-            window.performance = performanceMock,
-            window.localStorage = storageMock }
+            window.performance = performanceMock;
+            window.localStorage = storageMock;
+        }
 
         // 必要なクラスをインポート
         try {
@@ -64,8 +67,10 @@ describe('統計システムパフォーマンステスト', () => {
             statisticsAnalyzer = new StatisticsAnalyzerModule.StatisticsAnalyzer(statisticsManager);
             chartRenderer = new ChartRendererModule.ChartRenderer(mockCanvas);
             statisticsExporter = new StatisticsExporterModule.StatisticsExporter(statisticsManager);
-            statisticsPerformanceOptimizer = new StatisticsPerformanceOptimizerModule.StatisticsPerformanceOptimizer(statisticsManager) } catch (error') {'
-            console.error('Failed to import modules:', error) }
+            statisticsPerformanceOptimizer = new StatisticsPerformanceOptimizerModule.StatisticsPerformanceOptimizer(statisticsManager);
+        } catch (error) {
+            console.error('Failed to import modules:', error);
+        }
         
         // Create main test suite object for dependency injection
         const mainTestSuite = {
@@ -83,40 +88,46 @@ describe('統計システムパフォーマンステスト', () => {
         // Initialize sub-components with dependency injection
         dataCollectionTests = new DataCollectionPerformanceTests(mainTestSuite);
         analysisRenderingTests = new AnalysisRenderingPerformanceTests(mainTestSuite);
-        exportMemoryOptimizationTests = new ExportMemoryOptimizationTests(mainTestSuite');'
+        exportMemoryOptimizationTests = new ExportMemoryOptimizationTests(mainTestSuite);
         console.log('[StatisticsPerformance] Main test controller initialized successfully');
-    };
+    });
     beforeEach(async () => {
         jest.clearAllMocks();
         // 環境に応じたパフォーマンステスト準備
-        await PerformanceTestUtils.waitForStableEnvironment(performanceConfig.stabilizationDelay'),'
+        await PerformanceTestUtils.waitForStableEnvironment(performanceConfig.stabilizationDelay);
         // Performance mock のリセット
-        if (performance && typeof performance.now === 'function' && performance.now.mockReturnValue) {
-            performance.now.mockReturnValue(Date.now() }
+        if (performance && typeof performance.now === 'function' && (performance.now as any).mockReturnValue) {
+            (performance.now as any).mockReturnValue(Date.now());
+        }
         
         // メモリ使用量の環境対応リセット
-        if (performance && performance.memory) {
-            const baseMemory = environmentThresholds.memoryUsage.max * 0.3, // ベースライン30%
-            performance.memory.usedJSHeapSize = baseMemory }
-    };
+        if (performance && (performance as any).memory) {
+            const baseMemory = environmentThresholds.memoryUsage.max * 0.3; // ベースライン30%
+            (performance as any).memory.usedJSHeapSize = baseMemory;
+        }
+    });
     afterAll(() => {
         // クリーンアップ
-        statisticsManager? .destroy();
+        statisticsManager?.destroy();
         statisticsCollector?.destroy();
         statisticsAnalyzer?.destroy();
         chartRenderer?.destroy();
         statisticsExporter?.destroy();
-        statisticsPerformanceOptimizer?.destroy('),'
-        console.log('[StatisticsPerformance] Main test controller destroyed') }');'
+        statisticsPerformanceOptimizer?.destroy();
+        console.log('[StatisticsPerformance] Main test controller destroyed');
+    });
     // Register all test suites using sub-components
     if (typeof dataCollectionTests !== 'undefined') {
-        dataCollectionTests.registerTests(') }'
+        dataCollectionTests.registerTests();
+    }
     
     if (typeof analysisRenderingTests !== 'undefined') {
-        analysisRenderingTests.registerTests(') }'
+        analysisRenderingTests.registerTests();
+    }
     
     if (typeof exportMemoryOptimizationTests !== 'undefined') {
-        exportMemoryOptimizationTests.registerTests() }
+        exportMemoryOptimizationTests.registerTests();
+    }
     
     // Legacy helper methods for backward compatibility
     /**
@@ -124,7 +135,7 @@ describe('統計システムパフォーマンステスト', () => {
      * @returns {Object} Component references
      */
     function getTestComponents() {
-        return { : undefined
+        return {
             dataCollection: dataCollectionTests,
             analysisRendering: analysisRenderingTests,
             exportMemoryOptimization: exportMemoryOptimizationTests,
@@ -136,19 +147,21 @@ describe('統計システムパフォーマンステスト', () => {
                 statisticsExporter,
                 statisticsPerformanceOptimizer
             }
-        }
+        };
     }
     
     /**
      * Configure test suite settings
      * @param {Object} config - Test configuration
      */
-    function configureTestSuite(config) {
+    function configureTestSuite(config: any) {
         if (config.performanceConfig) {
-            Object.assign(performanceConfig, config.performanceConfig) }
+            Object.assign(performanceConfig, config.performanceConfig);
+        }
         
         if (config.environmentThresholds) {
-            Object.assign(environmentThresholds, config.environmentThresholds') }'
+            Object.assign(environmentThresholds, config.environmentThresholds);
+        }
         
         console.log('[StatisticsPerformance] Test configuration updated');
     }
@@ -162,18 +175,19 @@ describe('統計システムパフォーマンステスト', () => {
             initialized: true,
             componentCount: 3,
             components: {
-                dataCollection: !!dataCollectionTests },
+                dataCollection: !!dataCollectionTests,
                 analysisRendering: !!analysisRenderingTests,
                 exportMemoryOptimization: !!exportMemoryOptimizationTests
             },
             performanceConfig,
             environmentThresholds
-        }
+        };
     }
     
     // Make helper functions available globally for compatibility
-    (global: any).getStatisticsPerformanceTestComponents = getTestComponents,
-    (global: any).configureStatisticsPerformanceTestSuite = configureTestSuite,
-    (global: any).getStatisticsPerformanceTestSuiteStatus = getTestSuiteStatus,
-}');'
+    (global as any).getStatisticsPerformanceTestComponents = getTestComponents;
+    (global as any).configureStatisticsPerformanceTestSuite = configureTestSuite;
+    (global as any).getStatisticsPerformanceTestSuiteStatus = getTestSuiteStatus;
+});
+
 console.log('[StatisticsPerformance] Performance test suite loaded successfully');
