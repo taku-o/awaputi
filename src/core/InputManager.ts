@@ -1,21 +1,60 @@
 // TypeScript conversion - basic types
-interface BasicConfig { [key: string]: any;
-    import { getBrowserCompatibility, type, ScreenInfo  } from '../utils/BrowserCompatibility.js';
+interface BasicConfig { 
+    [key: string]: any;
+}
+
+import { getBrowserCompatibility } from '../utils/BrowserCompatibility.js';
+
+interface Point {
+    x: number;
+    y: number;
+}
+
+interface GestureState {
+    isPinching: boolean;
+    isRotating: boolean;
+    lastPinchDistance: number;
+    lastRotationAngle: number;
+}
+
+interface TouchInfo {
+    id: number;
+    x: number;
+    y: number;
+    startX: number;
+    startY: number;
+    timestamp: number;
+}
 
 /**
  * 入力管理クラス - ドラッグ操作を含む統一的な入力処理（クロスブラウザ・デバイス対応強化版）
  */
 export class InputManager {
     private config: BasicConfig;
-    private, state: any;
-    constructor(canvas: any) {
+    private state: any;
+    private canvas: HTMLCanvasElement;
+    private isDragging: boolean;
+    private dragStartPosition: Point;
+    private dragCurrentPosition: Point;
+    private draggedBubble: any;
+    private activeTouches: Map<number, TouchInfo>;
+    private maxTouches: number;
+    private gestureState: GestureState;
+    private eventQueue: any[];
+    private isProcessingEvents: boolean;
+    private dragThreshold: number;
+    private clickThreshold: number;
+    private tapTimeout: number;
+    private isMouseDown: boolean;
+    private mouseDownTime: number;
+    private lastTapTime: number;
+    private tapCount: number;
 
-        this.canvas = canvas
-
-    };
-        this.isDragging = false; }
-        this.dragStartPosition = { x: 0, y: 0  }
-        this.dragCurrentPosition = { x: 0, y: 0  }
+    constructor(canvas: HTMLCanvasElement) {
+        this.canvas = canvas;
+        this.isDragging = false;
+        this.dragStartPosition = { x: 0, y: 0 };
+        this.dragCurrentPosition = { x: 0, y: 0 };
         this.draggedBubble = null;
         
         // デバイス固有の設定
@@ -26,13 +65,26 @@ export class InputManager {
         this.maxTouches = 2; // 最大同時タッチ数
         
         // ジェスチャー認識
-        this.gestureState = { isPinching: false,
+        this.gestureState = { 
+            isPinching: false,
             isRotating: false,
             lastPinchDistance: 0,
-    lastRotationAngle: 0  };
+            lastRotationAngle: 0  
+        };
+
         // イベント処理の最適化
         this.eventQueue = [];
         this.isProcessingEvents = false;
+        
+        // 状態管理
+        this.isMouseDown = false;
+        this.mouseDownTime = 0;
+        this.lastTapTime = 0;
+        this.tapCount = 0;
+
+        // 初期化
+        this.config = {};
+        this.state = {};
         
         this.setupEventListeners();
     }
@@ -40,616 +92,360 @@ export class InputManager {
     /**
      * デバイス固有の設定を行う
      */
-    setupDeviceSpecificSettings() {
-        const deviceInfo = getBrowserCompatibility().deviceInfo,
-        const browserInfo = getBrowserCompatibility().browserInfo,
+    setupDeviceSpecificSettings(): void {
+        const deviceInfo = getBrowserCompatibility().deviceInfo;
+        const browserInfo = getBrowserCompatibility().browserInfo;
+
         // タッチデバイスの設定
         if (deviceInfo.isTouchDevice) {
             this.dragThreshold = deviceInfo.isMobile ? 15 : 10; // モバイルは少し大きく
             this.clickThreshold = 300; // タッチデバイスは長めに
-    }
-            this.tapTimeout = 200; // ダブルタップ判定時間 }
-        } else {  this.dragThreshold = 5;
-            this.clickThreshold = 200 }
-            this.tapTimeout = 300; }
+            this.tapTimeout = 200; // ダブルタップ判定時間
+        } else {  
+            this.dragThreshold = 5;
+            this.clickThreshold = 200;
+            this.tapTimeout = 300;
         }
-        ;
+
         // ブラウザ固有の調整
         if (browserInfo.name === 'safari' && deviceInfo.isMobile) {
             // iOS Safari は特別な処理が必要
-            this.clickThreshold = 400 }
-            this.dragThreshold = 20; }
+            this.clickThreshold = 400;
+            this.dragThreshold = 20;
         }
-        
-        // 状態管理
-        this.isMouseDown = false;
-        this.mouseDownTime = 0;
-        this.lastTapTime = 0;
-        this.tapCount = 0;
     }
     
     /**
      * イベントリスナーを設定
      */
-    setupEventListeners() {
-        const deviceInfo = getBrowserCompatibility().deviceInfo,
-        const features = getBrowserCompatibility().features,
+    setupEventListeners(): void {
+        const deviceInfo = getBrowserCompatibility().deviceInfo;
+        const features = getBrowserCompatibility().features;
         
         // ポインターイベントが利用可能な場合は優先的に使用
         if (features.pointerEvents) {
-    }
-            this.setupPointerEvents(); }
-        } else {  // フォールバック: マウス・タッチイベント }
-            this.setupMouseAndTouchEvents(); }
+            this.setupPointerEvents();
+        } else {  
+            // フォールバック: マウス・タッチイベント
+            this.setupMouseAndTouchEvents();
         }
         
         // キーボードイベント（デスクトップ用）
-        if (deviceInfo.isDesktop) { this.setupKeyboardEvents();
+        if (deviceInfo.isDesktop) { 
+            this.setupKeyboardEvents();
+        }
         
         // ジェスチャーイベント（タッチデバイス用）
         if (deviceInfo.isTouchDevice) {
-
             this.setupGestureEvents();
-
-        this.canvas.addEventListener('contextmenu', (event) => {  }
-            event.preventDefault(); }
         }
-    
-    /**
-     * ポインターイベントを設定'
-     */''
-    setupPointerEvents()';'
-        this.canvas.addEventListener('pointerdown', (event) => { }
 
-            this.handleEnhancedPointerDown(event); }
-
-        };
-        this.canvas.addEventListener('pointermove', (event) => { }
-
-            this.handleEnhancedPointerMove(event); }
-
-        };
-        this.canvas.addEventListener('pointerup', (event) => { }
-
-            this.handleEnhancedPointerUp(event); }
-
-        };
-        this.canvas.addEventListener('pointercancel', (event) => { this.handlePointerCancel(event);
-    
-    /**
-     * マウス・タッチイベントを設定（フォールバック）'
-     */''
-    setupMouseAndTouchEvents()';'
-        this.canvas.addEventListener('mousedown', (event) => this.handlePointerDown(event));
-        this.canvas.addEventListener('mousemove', (event) => this.handlePointerMove(event));
-        this.canvas.addEventListener('mouseup', (event) => this.handlePointerUp(event));
-        
-        // タッチイベント
-        const touchOptions = { passive: false,''
-        this.canvas.addEventListener('touchstart', (event) => {  event.preventDefault();
-
-            this.handleTouchStart(event);' }'
-
-        }, touchOptions');'
-        this.canvas.addEventListener('touchmove', (event) => {  event.preventDefault();
-
-            this.handleTouchMove(event);' }'
-
-        }, touchOptions');'
-        this.canvas.addEventListener('touchend', (event) => {  event.preventDefault();
-
-            this.handleTouchEnd(event);' }'
-
-        }, touchOptions');'
-        this.canvas.addEventListener('touchcancel', (event) => {  event.preventDefault();
-            this.handleTouchCancel(event); }
-        }, touchOptions);
+        this.canvas.addEventListener('contextmenu', (event) => {
+            event.preventDefault();
+        });
     }
     
     /**
-     * キーボードイベントを設定'
-     */''
-    setupKeyboardEvents()';'
-        document.addEventListener('keydown', (event) => { }
+     * ポインターイベントを設定
+     */
+    setupPointerEvents(): void {
+        this.canvas.addEventListener('pointerdown', this.handlePointerDown.bind(this), { passive: false });
+        this.canvas.addEventListener('pointermove', this.handlePointerMove.bind(this), { passive: false });
+        this.canvas.addEventListener('pointerup', this.handlePointerUp.bind(this), { passive: false });
+        this.canvas.addEventListener('pointercancel', this.handlePointerCancel.bind(this), { passive: false });
+    }
 
-            this.handleKeyDown(event); }
+    /**
+     * マウス・タッチイベントを設定
+     */
+    setupMouseAndTouchEvents(): void {
+        // マウスイベント
+        this.canvas.addEventListener('mousedown', this.handleMouseDown.bind(this), { passive: false });
+        this.canvas.addEventListener('mousemove', this.handleMouseMove.bind(this), { passive: false });
+        this.canvas.addEventListener('mouseup', this.handleMouseUp.bind(this), { passive: false });
 
-        };
-        document.addEventListener('keyup', (event) => { this.handleKeyUp(event);
-    
+        // タッチイベント
+        this.canvas.addEventListener('touchstart', this.handleTouchStart.bind(this), { passive: false });
+        this.canvas.addEventListener('touchmove', this.handleTouchMove.bind(this), { passive: false });
+        this.canvas.addEventListener('touchend', this.handleTouchEnd.bind(this), { passive: false });
+        this.canvas.addEventListener('touchcancel', this.handleTouchCancel.bind(this), { passive: false });
+    }
+
+    /**
+     * キーボードイベントを設定
+     */
+    setupKeyboardEvents(): void {
+        document.addEventListener('keydown', this.handleKeyDown.bind(this));
+        document.addEventListener('keyup', this.handleKeyUp.bind(this));
+    }
+
     /**
      * ジェスチャーイベントを設定
      */
-    setupGestureEvents() {
-        // iOS Safari のジェスチャーイベント
-        if(getBrowserCompatibility().browserInfo.name === 'safari') {''
-            this.canvas.addEventListener('gesturestart', (event) => { 
+    setupGestureEvents(): void {
+        this.canvas.addEventListener('gesturestart', this.handleGestureStart.bind(this), { passive: false });
+        this.canvas.addEventListener('gesturechange', this.handleGestureChange.bind(this), { passive: false });
+        this.canvas.addEventListener('gestureend', this.handleGestureEnd.bind(this), { passive: false });
     }
 
-                event.preventDefault();' }'
-
-                this.handleGestureStart(event); }
-
-            };
-            this.canvas.addEventListener('gesturechange', (event) => {  event.preventDefault(),' }'
-
-                this.handleGestureChange(event); }
-
-            };
-            this.canvas.addEventListener('gestureend', (event) => {  event.preventDefault();
-                this.handleGestureEnd(event); }
-            }
+    // ポインターイベントハンドラー
+    handlePointerDown(event: PointerEvent): void {
+        event.preventDefault();
+        const point = this.getEventPosition(event);
+        this.startDrag(point, event.pointerId);
     }
-    
-    /**
-     * ポインター押下処理
-     */
-    handlePointerDown(event) {
-        const position = this.getPointerPosition(event);
-        this.isMouseDown = true }
-        this.mouseDownTime = Date.now(); }
-        this.dragStartPosition = { ...position;
-        this.dragCurrentPosition = { ...position;
-        this.isDragging = false;
-        this.draggedBubble = null;
+
+    handlePointerMove(event: PointerEvent): void {
+        event.preventDefault();
+        const point = this.getEventPosition(event);
+        this.updateDrag(point, event.pointerId);
+    }
+
+    handlePointerUp(event: PointerEvent): void {
+        event.preventDefault();
+        const point = this.getEventPosition(event);
+        this.endDrag(point, event.pointerId);
+    }
+
+    handlePointerCancel(event: PointerEvent): void {
+        event.preventDefault();
+        this.cancelDrag(event.pointerId);
+    }
+
+    // マウスイベントハンドラー
+    handleMouseDown(event: MouseEvent): void {
+        event.preventDefault();
+        const point = this.getEventPosition(event);
+        this.startDrag(point, -1); // マウスIDは-1
+    }
+
+    handleMouseMove(event: MouseEvent): void {
+        event.preventDefault();
+        const point = this.getEventPosition(event);
+        this.updateDrag(point, -1);
+    }
+
+    handleMouseUp(event: MouseEvent): void {
+        event.preventDefault();
+        const point = this.getEventPosition(event);
+        this.endDrag(point, -1);
+    }
+
+    // タッチイベントハンドラー
+    handleTouchStart(event: TouchEvent): void {
+        event.preventDefault();
         
-        // イベントを通知
-        this.notifyPointerDown(position);
-    
-    /**
-     * ポインター移動処理
-     */
-    handlePointerMove(event) { const position = this.getPointerPosition(event);
-        this.dragCurrentPosition = { ...position;
-        
-        // ドラッグ判定
-        if (this.isMouseDown && !this.isDragging) {
-            const distance = this.calculateDistance(this.dragStartPosition, position);
-            if (distance > this.dragThreshold) {
-        }
-                this.startDrag(); }
-}
-        
-        // ドラッグ中の処理
-        if (this.isDragging) { this.notifyDragMove(position) } else {  // 通常のマウス移動 }
-            this.notifyPointerMove(position); }
-}
-    
-    /**
-     * ポインター離上処理
-     */
-    handlePointerUp(event) {
-        const position = this.getPointerPosition(event);
-        const holdTime = Date.now() - this.mouseDownTime,
-        
-        if (this.isDragging) {
-            // ドラッグ終了処理
-    }
-            this.endDrag(position); }
-        } else if (holdTime < this.clickThreshold) { // クリック処理
-            this.notifyClick(position);
-        
-        this.isMouseDown = false;
-        this.isDragging = false;
-        this.draggedBubble = null;
-    }
-    
-    /**
-     * ドラッグ開始
-     */
-    startDrag() {
-        this.isDragging = true }
-        this.notifyDragStart(this.dragStartPosition); }
-    }
-    
-    /**
-     * ドラッグ終了
-     */
-    endDrag(endPosition) {
-        const dragVector = {
-            x: endPosition.x - this.dragStartPosition.x }
-            y: endPosition.y - this.dragStartPosition.y 
-    };
-        this.notifyDragEnd(this.dragStartPosition, endPosition, dragVector);
-    }
-    
-    /**
-     * ポインター位置を取得
-     */
-    getPointerPosition(event) {
-
-        const rect = this.canvas.getBoundingClientRect()','
-        if (event.type.startsWith('mouse') || event.type.startsWith('pointer)' {
-            x = event.clientX - rect.left }
-
-            y = event.clientY - rect.top;' }'
-
-        } else if (event.type.startsWith('touch' // タッチイベントの安全な処理'
-            const touches = event.touches || event.changedTouches || [],
-            if(touches.length > 0) {
-                const touch = touches[0],
-                x = touch.clientX - rect.left }
-                y = touch.clientY - rect.top; }
-            } else {  // フォールバック: マウスイベントとして処理
-                x = event.clientX - rect.left }
-                y = event.clientY - rect.top; }
-} else {  // その他のイベントはマウスイベントとして処理
-            x = event.clientX - rect.left }
-            y = event.clientY - rect.top; }
-        }
-        
-        // 座標変換システムで使用できるよう元のイベントも含める
-        return { x, 
-            y };
-            originalEvent: event,
-    
-    /**
-     * 距離を計算
-     */
-    calculateDistance(pos1, pos2) {
-        const dx = pos2.x - pos1.x,
-        const dy = pos2.y - pos1.y }
-        return Math.sqrt(dx * dx + dy * dy);
-    
-    /**
-     * ドラッグベクトルを正規化
-     */
-    normalizeDragVector(vector) { const magnitude = Math.sqrt(vector.x * vector.x + vector.y * vector.y);
-        if (magnitude === 0) return { x: 0, y: 0  }
-        return { x: vector.x / magnitude ,
-            y: vector.y / magnitude 
-    }
-    
-    /**
-     * ドラッグ力を計算（距離に基づく）
-     */
-    calculateDragForce(dragVector) {
-        const distance = Math.sqrt(dragVector.x * dragVector.x + dragVector.y * dragVector.y);
-        const maxForce = 1000, // 最大力
-        const forceMultiplier = Math.min(distance / 100, 5), // 距離に応じた倍率（最大5倍）
-        
-    }
-        return Math.min(maxForce * forceMultiplier, maxForce);
-    
-    // イベント通知メソッド（オーバーライド用）
-    notifyPointerDown(position) { // サブクラスでオーバーライド }
-    
-    notifyPointerMove(position) { // サブクラスでオーバーライド }
-    
-    notifyClick(position) { // サブクラスでオーバーライド }
-    
-    notifyDragStart(startPosition) { // サブクラスでオーバーライド }
-    
-    notifyDragMove(currentPosition) { // サブクラスでオーバーライド }
-    
-    notifyDragEnd(startPosition, endPosition, dragVector) { // サブクラスでオーバーライド }
-    
-    /**
-     * 拡張ポインター押下処理（ポインターイベント用）
-     */
-    handleEnhancedPointerDown(event) {
-        const position = this.getEnhancedPointerPosition(event);
-        // マルチタッチ対応
-        this.activeTouches.set(event.pointerId, {
-                id: event.pointerId),
-            position: position,
-    startTime: Date.now(),
-            type: event.pointerType 
-    };
-        // 最初のタッチの場合は通常の処理
-        if (this.activeTouches.size === 1) { this.handlePointerDown(event) } else if (this.activeTouches.size === 2) { // 2点タッチの場合はジェスチャー開始
-            this.startMultiTouchGesture();
-    }
-    
-    /**
-     * 拡張ポインター移動処理
-     */
-    handleEnhancedPointerMove(event) {
-        const position = this.getEnhancedPointerPosition(event);
-        if (this.activeTouches.has(event.pointerId) {
-            this.activeTouches.get(event.pointerId).position = position,
-            
-            if (this.activeTouches.size === 1) {
-    }
-                this.handlePointerMove(event); }
-            } else if (this.activeTouches.size === 2) { this.handleMultiTouchMove();
-}
-    
-    /**
-     * 拡張ポインター離上処理
-     */
-    handleEnhancedPointerUp(event) {
-        if (this.activeTouches.has(event.pointerId) {
-            const touch = this.activeTouches.get(event.pointerId);
-            this.activeTouches.delete(event.pointerId);
-            if (this.activeTouches.size === 0) {
-    }
-                this.handlePointerUp(event); }
-            } else if (this.activeTouches.size === 1) { // マルチタッチからシングルタッチに戻る
-                this.endMultiTouchGesture();
-}
-    
-    /**
-     * ポインターキャンセル処理
-     */
-    handlePointerCancel(event) {
-        if (this.activeTouches.has(event.pointerId) {
-            this.activeTouches.delete(event.pointerId);
-            if (this.activeTouches.size === 0) {
-    }
-                this.resetInputState(); }
-}
-    }
-    
-    /**
-     * タッチ開始処理
-     */
-    handleTouchStart(event) {
-        // マルチタッチ対応
-        for (let, i = 0, i < event.touches.length && i < this.maxTouches, i++) {
-            const touch = event.touches[i],
-            const position = this.getTouchPosition(touch);
-            this.activeTouches.set(touch.identifier, {
-                id: touch.identifier),
-                position: position,
-                startTime: Date.now('
-            }
-
-                type: 'touch' });
-        );
-        if (this.activeTouches.size === 1) {
-            // シングルタッチ
-            const firstTouch = Array.from(this.activeTouches.values())))[0],
-            this.handlePointerDown({ )
-                clientX: firstTouch.position.x)','
-    clientY: firstTouch.position.y,' }'
-
-                type: 'touchstart'); 
-    } else if (this.activeTouches.size === 2) { // マルチタッチジェスチャー開始
-            this.startMultiTouchGesture();
-    }
-    
-    /**
-     * タッチ移動処理
-     */
-    handleTouchMove(event) {
-        // アクティブなタッチを更新
-        for (let, i = 0, i < event.touches.length, i++) {
-            const touch = event.touches[i],
-            if (this.activeTouches.has(touch.identifier) {
-                const position = this.getTouchPosition(touch);
-                this.activeTouches.get(touch.identifier).position = position; }
-}
-        
-        if (this.activeTouches.size === 1) { ','
-
-            const firstTouch = Array.from(this.activeTouches.values())))[0],
-            this.handlePointerMove({)
-                clientX: firstTouch.position.x)','
-    clientY: firstTouch.position.y,' }'
-
-                type: 'touchmove'); 
-    } else if (this.activeTouches.size === 2) { this.handleMultiTouchMove();
-    }
-    
-    /**
-     * タッチ終了処理
-     */
-    handleTouchEnd(event) {
-        // 終了したタッチを削除
-        for (let, i = 0, i < event.changedTouches.length, i++) {
-            const touch = event.changedTouches[i],
-            if (this.activeTouches.has(touch.identifier) {
-                const touchData = this.activeTouches.get(touch.identifier);
-                this.activeTouches.delete(touch.identifier);
-                // タップ判定
-                if (this.activeTouches.size === 0) {
-                    const holdTime = Date.now() - touchData.startTime,
-                    if (holdTime < this.clickThreshold && !this.isDragging) {
-    }
-                        this.handleTap(touchData.position, holdTime); }
-}
-            }
-        }
-
-        if (this.activeTouches.size === 0) { this.handlePointerUp({)
-                clientX: 0)','
-    clientY: 0,' }'
-
-                type: 'touchend'); 
-    } else if (this.activeTouches.size === 1) { this.endMultiTouchGesture();
-    }
-    
-    /**
-     * タッチキャンセル処理
-     */
-    handleTouchCancel(event) {
-        this.activeTouches.clear();
-        this.resetInputState(); }
-    }
-    
-    /**
-     * キーボード押下処理
-     */
-    handleKeyDown(event) {
-        // ゲーム固有のキーボードショートカット
-        switch(event.code) {''
-            case 'Space':','
-                event.preventDefault()','
-                this.notifyKeyAction('pause');
-                break,
-            case 'Escape':','
-                this.notifyKeyAction('menu');
-                break,
-            case 'KeyF':','
-                if (getBrowserCompatibility().deviceInfo.isDesktop) {
-    }
-
-                    this.notifyKeyAction('fullscreen'; }'
-                }
-                break;
+        for (let i = 0; i < event.changedTouches.length; i++) {
+            const touch = event.changedTouches[i];
+            const point = this.getEventPosition(touch);
+            this.startDrag(point, touch.identifier);
         }
     }
-    
-    /**
-     * キーボード離上処理
-     */
-    handleKeyUp(event) { // 必要に応じて実装 }
-    
-    /**
-     * ジェスチャー開始処理（iOS Safari）
-     */
-    handleGestureStart(event) {
-        this.gestureState.isPinching = true }
-        this.gestureState.lastPinchDistance = event.scale; }
+
+    handleTouchMove(event: TouchEvent): void {
+        event.preventDefault();
+        
+        for (let i = 0; i < event.changedTouches.length; i++) {
+            const touch = event.changedTouches[i];
+            const point = this.getEventPosition(touch);
+            this.updateDrag(point, touch.identifier);
+        }
     }
-    
-    /**
-     * ジェスチャー変更処理（iOS Safari）
-     */
-    handleGestureChange(event) {
+
+    handleTouchEnd(event: TouchEvent): void {
+        event.preventDefault();
+        
+        for (let i = 0; i < event.changedTouches.length; i++) {
+            const touch = event.changedTouches[i];
+            const point = this.getEventPosition(touch);
+            this.endDrag(point, touch.identifier);
+        }
+    }
+
+    handleTouchCancel(event: TouchEvent): void {
+        event.preventDefault();
+        
+        for (let i = 0; i < event.changedTouches.length; i++) {
+            const touch = event.changedTouches[i];
+            this.cancelDrag(touch.identifier);
+        }
+    }
+
+    // キーボードイベントハンドラー
+    handleKeyDown(event: KeyboardEvent): void {
+        // キーボード処理は必要に応じて実装
+        console.log('Key down:', event.key);
+    }
+
+    handleKeyUp(event: KeyboardEvent): void {
+        // キーボード処理は必要に応じて実装
+        console.log('Key up:', event.key);
+    }
+
+    // ジェスチャーイベントハンドラー
+    handleGestureStart(event: any): void {
+        event.preventDefault();
+        this.gestureState.isPinching = true;
+        this.gestureState.lastPinchDistance = 0;
+    }
+
+    handleGestureChange(event: any): void {
+        event.preventDefault();
         if (this.gestureState.isPinching) {
-            const scaleDelta = event.scale - this.gestureState.lastPinchDistance,
-            this.notifyPinchGesture(event.scale, scaleDelta);
-            this.gestureState.lastPinchDistance = event.scale; }
-}
-    
-    /**
-     * ジェスチャー終了処理（iOS Safari）
-     */
-    handleGestureEnd(event) {
-        this.gestureState.isPinching = false }
-        this.gestureState.lastPinchDistance = 0; }
+            // ピンチジェスチャー処理
+            console.log('Gesture change:', event.scale);
+        }
     }
-    
-    /**
-     * マルチタッチジェスチャー開始
-     */
-    startMultiTouchGesture() {
-        if (this.activeTouches.size !== 2) return,
-        
-        const touches = Array.from(this.activeTouches.values()));
-        const distance = this.calculateDistance(touches[0].position, touches[1].position);
-        this.gestureState.isPinching = true,
-        this.gestureState.lastPinchDistance = distance,
-        
-        // ドラッグ状態をリセット
-        this.isDragging = false }
-        this.isMouseDown = false; }
-    }
-    
-    /**
-     * マルチタッチ移動処理
-     */
-    handleMultiTouchMove() {
-        if (this.activeTouches.size !== 2 || !this.gestureState.isPinching) return,
-        
-        const touches = Array.from(this.activeTouches.values()));
-        const currentDistance = this.calculateDistance(touches[0].position, touches[1].position);
-        const scaleDelta = currentDistance - this.gestureState.lastPinchDistance,
-        
-        if (Math.abs(scaleDelta) > 5) { // 最小変化量
-            const scale = currentDistance / this.gestureState.lastPinchDistance,
-            this.notifyPinchGesture(scale, scaleDelta);
-            this.gestureState.lastPinchDistance = currentDistance; }
-}
-    
-    /**
-     * マルチタッチジェスチャー終了
-     */
-    endMultiTouchGesture() {
-        this.gestureState.isPinching = false }
-        this.gestureState.lastPinchDistance = 0; }
-    }
-    
-    /**
-     * タップ処理
-     */
-    handleTap(position, holdTime) {
-        const currentTime = Date.now();
-        // ダブルタップ判定
-        if (currentTime - this.lastTapTime < this.tapTimeout) {
-            this.tapCount++;
-            if (this.tapCount === 2) {
-                this.notifyDoubleTap(position);
-                this.tapCount = 0 }
-                return; }
-} else { this.tapCount = 1 }
-        
-        this.lastTapTime = currentTime;
-        
-        // シングルタップとして処理
-        setTimeout(() => {  if (this.tapCount === 1) {
-                this.notifyClick(position);
-                this.tapCount = 0; }
-}, this.tapTimeout);
-    }
-    
-    /**
-     * 拡張ポインター位置取得
-     */
-    getEnhancedPointerPosition(event) {
-        const rect = this.canvas.getBoundingClientRect();
-        return { x: event.clientX - rect.left,
-            y: event.clientY - rect.top,
-    pressure: event.pressure || 1 }
-            tiltX: event.tiltX || 0 ,
-            tiltY: event.tiltY || 0 
-    }
-    
-    /**
-     * タッチ位置取得
-     */
-    getTouchPosition(touch) {
-        const rect = this.canvas.getBoundingClientRect();
-        return { x: touch.clientX - rect.left ,
-            y: touch.clientY - rect.top 
-    }
-    
-    /**
-     * 入力状態をリセット
-     */
-    resetInputState() {
-        this.isMouseDown = false;
-        this.isDragging = false;
-        this.draggedBubble = null;
-        this.activeTouches.clear();
-        this.gestureState.isPinching = false }
-        this.gestureState.lastPinchDistance = 0; }
-    }
-    
-    /**
-     * デバイス情報を取得
-     */
-    getDeviceInfo() {
-        return { ...getBrowserCompatibility().deviceInfo,
-            activeTouches: this.activeTouches.size,
-    maxTouches: this.maxTouches }
-            dragThreshold: this.dragThreshold ,
-            clickThreshold: this.clickThreshold 
-    }
-    
-    // 拡張通知メソッド
-    notifyDoubleTap(position) { // サブクラスでオーバーライド }
-    
-    notifyPinchGesture(scale, scaleDelta) { // サブクラスでオーバーライド }
-    
-    notifyKeyAction(action) { // サブクラスでオーバーライド }
-    
-    /**
-     * 現在のドラッグ状態を取得
-     */
-    getDragState() { return {  };
-            isDragging: this.isDragging }
-            startPosition: { ...this.dragStartPosition,
-            currentPosition: { ...this.dragCurrentPosition,
-            draggedBubble: this.draggedBubble ,
-            activeTouches: this.activeTouches.size,
-    gestureState: { ...this.gestureState }
-    
-    /**
-     * クリーンアップ
-     */
-    cleanup() { }
 
-        this.resetInputState() }')'
+    handleGestureEnd(event: any): void {
+        event.preventDefault();
+        this.gestureState.isPinching = false;
+        this.gestureState.lastPinchDistance = 0;
+    }
+
+    // 共通ドラッグ処理
+    startDrag(point: Point, id: number): void {
+        this.isDragging = true;
+        this.dragStartPosition = { ...point };
+        this.dragCurrentPosition = { ...point };
+        this.isMouseDown = true;
+        this.mouseDownTime = Date.now();
+
+        // タッチ情報を記録
+        if (id !== -1) {
+            this.activeTouches.set(id, {
+                id,
+                x: point.x,
+                y: point.y,
+                startX: point.x,
+                startY: point.y,
+                timestamp: Date.now()
+            });
+        }
+    }
+
+    updateDrag(point: Point, id: number): void {
+        if (!this.isDragging) return;
+
+        this.dragCurrentPosition = { ...point };
+
+        // タッチ情報を更新
+        if (id !== -1 && this.activeTouches.has(id)) {
+            const touch = this.activeTouches.get(id)!;
+            touch.x = point.x;
+            touch.y = point.y;
+        }
+
+        // ドラッグ閾値チェック
+        const distance = this.getDistance(this.dragStartPosition, point);
+        if (distance > this.dragThreshold) {
+            // 実際のドラッグ処理
+            this.processDrag(point);
+        }
+    }
+
+    endDrag(point: Point, id: number): void {
+        const dragDuration = Date.now() - this.mouseDownTime;
+        const distance = this.getDistance(this.dragStartPosition, point);
+
+        if (distance < this.dragThreshold && dragDuration < this.clickThreshold) {
+            // クリック/タップとして処理
+            this.processClick(point);
+        } else {
+            // ドラッグ終了として処理
+            this.processDragEnd(point);
+        }
+
+        // 状態リセット
+        this.isDragging = false;
+        this.isMouseDown = false;
+        this.draggedBubble = null;
+
+        // タッチ情報を削除
+        if (id !== -1) {
+            this.activeTouches.delete(id);
+        }
+    }
+
+    cancelDrag(id: number): void {
+        this.isDragging = false;
+        this.isMouseDown = false;
+        this.draggedBubble = null;
+
+        if (id !== -1) {
+            this.activeTouches.delete(id);
+        }
+    }
+
+    // ヘルパーメソッド
+    getEventPosition(event: MouseEvent | Touch | PointerEvent): Point {
+        const rect = this.canvas.getBoundingClientRect();
+        return {
+            x: event.clientX - rect.left,
+            y: event.clientY - rect.top
+        };
+    }
+
+    getDistance(point1: Point, point2: Point): number {
+        const dx = point2.x - point1.x;
+        const dy = point2.y - point1.y;
+        return Math.sqrt(dx * dx + dy * dy);
+    }
+
+    // 実際の処理メソッド（サブクラスでオーバーライド）
+    protected processClick(point: Point): void {
+        console.log('Click at:', point);
+        // 具体的なクリック処理は継承先で実装
+    }
+
+    protected processDrag(point: Point): void {
+        console.log('Drag to:', point);
+        // 具体的なドラッグ処理は継承先で実装
+    }
+
+    protected processDragEnd(point: Point): void {
+        console.log('Drag end at:', point);
+        // 具体的なドラッグ終了処理は継承先で実装
+    }
+
+    // 公開API
+    getDragStartPosition(): Point {
+        return { ...this.dragStartPosition };
+    }
+
+    getDragCurrentPosition(): Point {
+        return { ...this.dragCurrentPosition };
+    }
+
+    isDraggingActive(): boolean {
+        return this.isDragging;
+    }
+
+    getActiveTouches(): TouchInfo[] {
+        return Array.from(this.activeTouches.values());
+    }
+
+    // クリーンアップ
+    destroy(): void {
+        // すべてのイベントリスナーを削除
+        this.canvas.removeEventListener('pointerdown', this.handlePointerDown.bind(this));
+        this.canvas.removeEventListener('pointermove', this.handlePointerMove.bind(this));
+        this.canvas.removeEventListener('pointerup', this.handlePointerUp.bind(this));
+        this.canvas.removeEventListener('pointercancel', this.handlePointerCancel.bind(this));
+        
+        this.canvas.removeEventListener('mousedown', this.handleMouseDown.bind(this));
+        this.canvas.removeEventListener('mousemove', this.handleMouseMove.bind(this));
+        this.canvas.removeEventListener('mouseup', this.handleMouseUp.bind(this));
+
+        this.canvas.removeEventListener('touchstart', this.handleTouchStart.bind(this));
+        this.canvas.removeEventListener('touchmove', this.handleTouchMove.bind(this));
+        this.canvas.removeEventListener('touchend', this.handleTouchEnd.bind(this));
+        this.canvas.removeEventListener('touchcancel', this.handleTouchCancel.bind(this));
+
+        document.removeEventListener('keydown', this.handleKeyDown.bind(this));
+        document.removeEventListener('keyup', this.handleKeyUp.bind(this));
+
+        // 状態クリア
+        this.activeTouches.clear();
+    }
+}
