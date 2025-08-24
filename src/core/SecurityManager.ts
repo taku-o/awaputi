@@ -1,4 +1,4 @@
-import { getErrorHandler  } from '../utils/ErrorHandler.js';
+import { getErrorHandler } from '../utils/ErrorHandler.js';
 
 // 型定義
 interface EncryptionConfig {
@@ -90,7 +90,6 @@ interface KeyManagerStatus {
  * - GDPR準拠機能
  */
 export class SecurityManager {
-
     private version: string = '1.0.0';
     private encryptionConfig: EncryptionConfig;
     private config: SecurityConfig;
@@ -108,6 +107,7 @@ export class SecurityManager {
             tagLength: 128,
             saltLength: 128
         };
+        
         // セキュリティ設定
         this.config = {
             encryptionEnabled: false, // デフォルトでは無効
@@ -116,6 +116,7 @@ export class SecurityManager {
             secureDeleteEnabled: true,
             auditLoggingEnabled: true
         };
+        
         // キー管理
         this.keyManager = new KeyManager(this);
         
@@ -135,31 +136,33 @@ export class SecurityManager {
             secureDeletes: 0,
             lastSecurityEvent: null
         };
+        
         this.initialize();
     }
     
     /**
      * SecurityManagerの初期化
      */
-    async initialize() {
+    async initialize(): Promise<void> {
         try {
             // Web Crypto APIの利用可能性チェック
             if (!window.crypto || !window.crypto.subtle) {
-
                 console.warn('Web Crypto API not available, using fallback implementations');
                 this.config.encryptionEnabled = false;
             }
+            
             // キー管理の初期化
             await this.keyManager.initialize();
 
             console.log('SecurityManager initialized');
 
         } catch (error) {
-            getErrorHandler().handleError(error, 'SECURITY_MANAGER_INITIALIZATION_ERROR', {
+            getErrorHandler().handleError(error as Error, 'SECURITY_MANAGER_INITIALIZATION_ERROR', {
                 operation: 'initialize'
             });
         }
     }
+    
     /**
      * データの暗号化
      */
@@ -174,8 +177,10 @@ export class SecurityManager {
             }
             
             this.statistics.encryptionOperations++;
+            
             // データをJSON文字列に変換
             const plaintext = typeof data === 'string' ? data : JSON.stringify(data);
+            
             // Web Crypto APIを使用した暗号化
             const result = await this.performEncryption(plaintext, options);
 
@@ -191,15 +196,15 @@ export class SecurityManager {
             };
 
         } catch (error) {
-            getErrorHandler().handleError(error, 'ENCRYPTION_ERROR', {
+            getErrorHandler().handleError(error as Error, 'ENCRYPTION_ERROR', {
                 operation: 'encryptData',
                 options
             });
             
             return {
                 success: false,
-                data: data, // フォールバック
-                error: error.message
+                data: null,
+                error: (error as Error).message
             };
         }
     }
@@ -207,184 +212,73 @@ export class SecurityManager {
     /**
      * データの復号化
      */
-    async decryptData(encryptedData: any, metadata: any, options: any = {}): Promise<DecryptionResult> {
+    async decryptData(encryptedData: any, metadata: any = {}): Promise<DecryptionResult> {
         try {
             if (!this.config.encryptionEnabled) {
                 return {
                     success: true,
-                    data: encryptedData // 暗号化されていないデータとして返す
+                    data: encryptedData // 暗号化なしのデータをそのまま返す
                 };
             }
             
             this.statistics.decryptionOperations++;
             
-            // Web Crypto APIを使用した復号化
-            const plaintext = await this.performDecryption(encryptedData, metadata, options);
+            const decryptedText = await this.performDecryption(encryptedData, metadata);
             
-            // JSONパース試行
-            let data;
+            // JSON形式の場合はパース
+            let result;
             try {
-                data = JSON.parse(plaintext);
-            } catch (parseError) {
-                data = plaintext; // 文字列として返す
+                result = JSON.parse(decryptedText);
+            } catch {
+                result = decryptedText; // JSON以外の場合はそのまま
             }
-
+            
             this.logSecurityEvent('DECRYPTION', {
-                dataSize: plaintext.length,
-                algorithm: metadata.algorithm || this.encryptionConfig.algorithm
+                algorithm: this.encryptionConfig.algorithm
             });
             
             return {
                 success: true,
-                data
+                data: result
             };
 
         } catch (error) {
-            getErrorHandler().handleError(error, 'DECRYPTION_ERROR', {
+            getErrorHandler().handleError(error as Error, 'DECRYPTION_ERROR', {
                 operation: 'decryptData',
-                options
+                metadata
             });
             
             return {
                 success: false,
-                error: error.message
+                error: (error as Error).message
             };
         }
     }
     
     /**
-     * 暗号化の実行
+     * データの整合性チェック
      */
-    private async performEncryption(plaintext: string, options: any = {}): Promise<any> {
+    async checkIntegrity(data: any, expectedHash: string): Promise<IntegrityResult> {
         try {
-            // キーの取得または生成
-            const key = await this.keyManager.getEncryptionKey();
-            // IVの生成
-            const iv = window.crypto.getRandomValues(new Uint8Array(this.encryptionConfig.ivLength / 8));
-            // データのエンコード
-            const encoder = new TextEncoder();
-            const data = encoder.encode(plaintext);
-            // 暗号化の実行
-            const encryptedBuffer = await window.crypto.subtle.encrypt(
-                {
-                    name: this.encryptionConfig.algorithm,
-                    iv: iv,
-                    tagLength: this.encryptionConfig.tagLength
-                },
-                key,
-                data
-            );
-            
-            // 結果の組み立て
-            const encryptedArray = new Uint8Array(encryptedBuffer);
-            const result = new Uint8Array(iv.length + encryptedArray.length);
-            result.set(iv);
-            result.set(encryptedArray, iv.length);
-            // Base64エンコード
-            const encryptedData = this.arrayBufferToBase64(result);
-            const metadata = {
-                algorithm: this.encryptionConfig.algorithm,
-                keyLength: this.encryptionConfig.keyLength,
-                ivLength: this.encryptionConfig.ivLength,
-                tagLength: this.encryptionConfig.tagLength,
-                timestamp: Date.now(),
-                version: this.version
-            };
-            return { encryptedData, metadata };
-        } catch (error) {
-            // フォールバック: Base64エンコードのみ
-            console.warn('Encryption failed, using Base64 fallback:', error);
-            
-            return {
-                encryptedData: btoa(plaintext),
-                metadata: {
-                    algorithm: 'BASE64',
-                    fallback: true,
-                    timestamp: Date.now()
-                }
-            };
-        }
-    }
-    
-    /**
-     * 復号化の実行
-     */
-    private async performDecryption(encryptedData: string, metadata: any, options: any = {}): Promise<string> {
-        try {
-            // フォールバック形式のチェック
-            if (metadata.algorithm === 'BASE64' || metadata.fallback) {
-                return atob(encryptedData);
+            if (!this.config.integrityCheckEnabled) {
+                return {
+                    isValid: true,
+                    expectedHash,
+                    actualHash: 'N/A',
+                    error: 'Integrity check is disabled'
+                };
             }
             
-            // キーの取得
-            const key = await this.keyManager.getEncryptionKey();
-            
-            // Base64デコード
-            const encryptedBuffer = this.base64ToArrayBuffer(encryptedData);
-            const encryptedArray = new Uint8Array(encryptedBuffer);
-            
-            // IVの抽出
-            const ivLength = metadata.ivLength / 8 || this.encryptionConfig.ivLength / 8;
-            const iv = encryptedArray.slice(0, ivLength);
-            const ciphertext = encryptedArray.slice(ivLength);
-            
-            // 復号化の実行
-            const decryptedBuffer = await window.crypto.subtle.decrypt(
-                {
-                    name: metadata.algorithm || this.encryptionConfig.algorithm,
-                    iv: iv,
-                    tagLength: metadata.tagLength || this.encryptionConfig.tagLength
-                },
-                key,
-                ciphertext
-            );
-            
-            // テキストデコード
-            const decoder = new TextDecoder();
-            return decoder.decode(decryptedBuffer);
-
-        } catch (error) {
-            // フォールバック: Base64デコード
-            console.warn('Decryption failed, trying Base64 fallback:', error);
-            try {
-                return atob(encryptedData);
-            } catch (base64Error) {
-                throw new Error(`Decryption failed: ${error.message}`);
-            }
-        }
-    }
-    
-    /**
-     * データ整合性の計算
-     */
-    async calculateIntegrity(data: any): Promise<string> {
-        try {
             this.statistics.integrityChecks++;
             
-            return await this.integrityChecker.calculate(data);
-        } catch (error) {
-            getErrorHandler().handleError(error, 'INTEGRITY_CALCULATION_ERROR', {
-                operation: 'calculateIntegrity'
-            });
-            
-            // フォールバック: シンプルハッシュ
-            return this.simpleHash(JSON.stringify(data));
-        }
-    }
-    
-    /**
-     * データ整合性の検証
-     */
-    async verifyIntegrity(data: any, expectedHash: string): Promise<IntegrityResult> {
-        try {
-            const actualHash = await this.calculateIntegrity(data);
+            const actualHash = await this.integrityChecker.calculate(data);
             const isValid = actualHash === expectedHash;
-
+            
             if (!isValid) {
                 this.statistics.integrityViolations++;
                 this.logSecurityEvent('INTEGRITY_VIOLATION', {
-                    expected: expectedHash,
-                    actual: actualHash
+                    expectedHash,
+                    actualHash
                 });
             }
             
@@ -395,15 +289,15 @@ export class SecurityManager {
             };
 
         } catch (error) {
-            getErrorHandler().handleError(error, 'INTEGRITY_VERIFICATION_ERROR', {
-                operation: 'verifyIntegrity'
+            getErrorHandler().handleError(error as Error, 'INTEGRITY_CHECK_ERROR', {
+                operation: 'checkIntegrity'
             });
             
             return {
                 isValid: false,
                 expectedHash,
-                actualHash: '',
-                error: error.message
+                actualHash: 'ERROR',
+                error: (error as Error).message
             };
         }
     }
@@ -414,137 +308,233 @@ export class SecurityManager {
     async anonymizeData(data: any, options: any = {}): Promise<AnonymizationResult> {
         try {
             if (!this.config.anonymizationEnabled) {
-                return { success: true, data };
+                return {
+                    success: true,
+                    data: data,
+                    error: 'Anonymization is disabled'
+                };
             }
             
             this.statistics.dataAnonymizations++;
-
+            
             const anonymizedData = await this.privacyManager.anonymize(data, options);
-
-            this.logSecurityEvent('ANONYMIZATION', {
-                originalSize: JSON.stringify(data).length,
-                anonymizedSize: JSON.stringify(anonymizedData).length
+            
+            this.logSecurityEvent('DATA_ANONYMIZATION', {
+                fieldsAnonymized: Object.keys(options.fields || {}).length
             });
             
             return {
                 success: true,
                 data: anonymizedData
             };
+
         } catch (error) {
-            getErrorHandler().handleError(error, 'ANONYMIZATION_ERROR', {
+            getErrorHandler().handleError(error as Error, 'ANONYMIZATION_ERROR', {
                 operation: 'anonymizeData',
                 options
             });
             
             return {
                 success: false,
-                data,
-                error: error.message
+                data: null,
+                error: (error as Error).message
             };
         }
     }
+    
     /**
-     * GDPR準拠のデータ削除
+     * セキュアな削除
      */
-    async secureDelete(dataKey: string): Promise<SecureDeleteResult> {
+    async secureDelete(key: string): Promise<SecureDeleteResult> {
         try {
             if (!this.config.secureDeleteEnabled) {
-                return { success: false, error: 'Secure delete is disabled' };
+                // 通常の削除
+                localStorage.removeItem(key);
+                sessionStorage.removeItem(key);
+                
+                return {
+                    success: true,
+                    operations: 1
+                };
             }
             
             this.statistics.secureDeletes++;
             
-            // 複数回の上書きによる安全な削除のシミュレーション
-            const deleteOperations = [];
+            // セキュアな削除の実装
+            const operations = await this.performSecureDelete(key);
             
-            // 1. データの無作為化（複数回）
-            for (let i = 0; i < 3; i++) {
-                deleteOperations.push(this.overwriteData(dataKey));
-            }
-            
-            // 2. メタデータの削除
-            deleteOperations.push(this.deleteMetadata(dataKey));
-            
-            // 3. ガベージコレクションの要求
-            if (window.gc) {
-                window.gc();
-            }
-
-            await Promise.all(deleteOperations);
-
             this.logSecurityEvent('SECURE_DELETE', {
-                dataKey,
-                operations: deleteOperations.length
+                key,
+                operations
             });
             
             return {
                 success: true,
-                operations: deleteOperations.length
+                operations
             };
 
         } catch (error) {
-            getErrorHandler().handleError(error, 'SECURE_DELETE_ERROR', {
+            getErrorHandler().handleError(error as Error, 'SECURE_DELETE_ERROR', {
                 operation: 'secureDelete',
-                dataKey
+                key
             });
             
             return {
                 success: false,
-                error: error.message
+                error: (error as Error).message
             };
         }
     }
     
     /**
-     * データの上書き（安全な削除用）
+     * 暗号化の実行
      */
-    private async overwriteData(dataKey: string): Promise<boolean> {
+    private async performEncryption(plaintext: string, options: any): Promise<any> {
         try {
-            // ランダムデータで上書き
-            const randomData = this.generateRandomData(1024);
-            
-            // LocalStorageの場合
-            if (typeof Storage !== 'undefined') {
-                localStorage.setItem(dataKey, randomData);
-                localStorage.removeItem(dataKey);
+            if (!window.crypto || !window.crypto.subtle) {
+                // フォールバック: 簡易暗号化
+                return this.fallbackEncryption(plaintext);
             }
-
-            return true;
-        } catch (error) {
-            console.warn('Data overwrite failed:', error);
-            return false;
-        }
-    }
-    
-    /**
-     * メタデータの削除
-     */
-    private async deleteMetadata(dataKey: string): Promise<boolean> {
-        try {
-            // 関連するメタデータキーの削除
-            const metadataKeys = [
-                `${dataKey}_metadata`,
-                `${dataKey}_integrity`,
-                `${dataKey}_timestamp`
-            ];
             
-            metadataKeys.forEach(key => {
-                try {
-                    localStorage.removeItem(key);
-                } catch (error) {
-                    console.warn(`Failed to delete metadata key ${key}:`, error);
+            const key = await this.keyManager.getEncryptionKey();
+            const iv = window.crypto.getRandomValues(new Uint8Array(this.encryptionConfig.ivLength / 8));
+            
+            const encoder = new TextEncoder();
+            const data = encoder.encode(plaintext);
+            
+            const encryptedData = await window.crypto.subtle.encrypt(
+                {
+                    name: 'AES-GCM',
+                    iv: iv
+                },
+                key,
+                data
+            );
+            
+            return {
+                encryptedData: this.arrayBufferToBase64(encryptedData),
+                metadata: {
+                    iv: this.arrayBufferToBase64(iv.buffer),
+                    algorithm: 'AES-GCM'
                 }
-            });
+            };
 
-            return true;
         } catch (error) {
-            console.warn('Metadata deletion failed:', error);
-            return false;
+            // フォールバック使用
+            console.warn('Web Crypto encryption failed, using fallback:', error);
+            return this.fallbackEncryption(plaintext);
         }
     }
     
     /**
-     * ランダムデータの生成
+     * 復号化の実行
+     */
+    private async performDecryption(encryptedData: string, metadata: any): Promise<string> {
+        try {
+            if (!window.crypto || !window.crypto.subtle || !metadata.iv) {
+                // フォールバック: 簡易復号化
+                return this.fallbackDecryption(encryptedData);
+            }
+            
+            const key = await this.keyManager.getEncryptionKey();
+            const iv = this.base64ToArrayBuffer(metadata.iv);
+            const data = this.base64ToArrayBuffer(encryptedData);
+            
+            const decryptedData = await window.crypto.subtle.decrypt(
+                {
+                    name: 'AES-GCM',
+                    iv: new Uint8Array(iv)
+                },
+                key,
+                data
+            );
+            
+            const decoder = new TextDecoder();
+            return decoder.decode(decryptedData);
+
+        } catch (error) {
+            // フォールバック使用
+            console.warn('Web Crypto decryption failed, using fallback:', error);
+            return this.fallbackDecryption(encryptedData);
+        }
+    }
+    
+    /**
+     * セキュアな削除の実行
+     */
+    private async performSecureDelete(key: string): Promise<number> {
+        let operations = 0;
+        
+        // 複数回の上書き
+        const overwriteData = this.generateRandomData(100);
+        for (let i = 0; i < 3; i++) {
+            localStorage.setItem(key, overwriteData + i);
+            sessionStorage.setItem(key, overwriteData + i);
+            operations++;
+        }
+        
+        // 最終削除
+        localStorage.removeItem(key);
+        sessionStorage.removeItem(key);
+        operations++;
+        
+        return operations;
+    }
+    
+    /**
+     * フォールバック暗号化（XOR方式）
+     */
+    private fallbackEncryption(plaintext: string): any {
+        const key = this.generateSimpleKey();
+        let encrypted = '';
+        
+        for (let i = 0; i < plaintext.length; i++) {
+            encrypted += String.fromCharCode(
+                plaintext.charCodeAt(i) ^ key.charCodeAt(i % key.length)
+            );
+        }
+        
+        return {
+            encryptedData: btoa(encrypted),
+            metadata: {
+                algorithm: 'XOR',
+                keyHint: this.simpleHash(key)
+            }
+        };
+    }
+    
+    /**
+     * フォールバック復号化（XOR方式）
+     */
+    private fallbackDecryption(encryptedData: string): string {
+        try {
+            const key = this.generateSimpleKey();
+            const encrypted = atob(encryptedData);
+            let decrypted = '';
+            
+            for (let i = 0; i < encrypted.length; i++) {
+                decrypted += String.fromCharCode(
+                    encrypted.charCodeAt(i) ^ key.charCodeAt(i % key.length)
+                );
+            }
+            
+            return decrypted;
+        } catch (error) {
+            throw new Error('Fallback decryption failed');
+        }
+    }
+    
+    /**
+     * 簡易キー生成
+     */
+    private generateSimpleKey(): string {
+        // ブラウザ固有の値を使用
+        const seed = navigator.userAgent + screen.width + screen.height;
+        return this.simpleHash(seed);
+    }
+    
+    /**
+     * ランダムデータ生成
      */
     private generateRandomData(length: number): string {
         const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -552,7 +542,6 @@ export class SecurityManager {
         
         for (let i = 0; i < length; i++) {
             result += characters.charAt(Math.floor(Math.random() * characters.length));
-        }
         }
         
         return result;
@@ -566,7 +555,7 @@ export class SecurityManager {
             return;
         }
         
-        const event = {
+        const event: SecurityEvent = {
             type: eventType,
             timestamp: Date.now(),
             details,
@@ -574,7 +563,9 @@ export class SecurityManager {
             sessionId: this.getSessionId()
         };
         
+        this.statistics.lastSecurityEvent = event;
         console.log('Security Event:', event);
+    }
     
     /**
      * セッションIDの取得
@@ -595,7 +586,6 @@ export class SecurityManager {
         for (let i = 0; i < bytes.byteLength; i++) {
             binary += String.fromCharCode(bytes[i]);
         }
-        }
         return btoa(binary);
     }
     
@@ -608,7 +598,6 @@ export class SecurityManager {
         for (let i = 0; i < binary.length; i++) {
             bytes[i] = binary.charCodeAt(i);
         }
-        }
         return bytes.buffer;
     }
     
@@ -618,11 +607,11 @@ export class SecurityManager {
     private simpleHash(str: string): string {
         let hash = 0;
         if (str.length === 0) return hash.toString(16);
+        
         for (let i = 0; i < str.length; i++) {
             const char = str.charCodeAt(i);
             hash = ((hash << 5) - hash) + char;
             hash = hash & hash; // 32bit整数に変換
-        }
         }
 
         return Math.abs(hash).toString(16).padStart(8, '0');
@@ -661,12 +650,18 @@ export class SecurityManager {
             this.keyManager.destroy();
             console.log('SecurityManager destroyed');
         } catch (error) {
-            getErrorHandler().handleError(error, 'SECURITY_MANAGER_DESTROY_ERROR', {
+            getErrorHandler().handleError(error as Error, 'SECURITY_MANAGER_DESTROY_ERROR', {
                 operation: 'destroy'
             });
         }
     }
+    
+    // encryptionConfigへの読み取りアクセスを提供
+    get encryptionConfigRef(): EncryptionConfig {
+        return this.encryptionConfig;
+    }
 }
+
 /**
  * キー管理クラス
  */
@@ -674,6 +669,7 @@ class KeyManager {
     private securityManager: SecurityManager;
     private keys: Map<string, CryptoKey>;
     private keyDerivationSalt: Uint8Array | null;
+    
     constructor(securityManager: SecurityManager) {
         this.securityManager = securityManager;
         this.keys = new Map();
@@ -702,7 +698,7 @@ class KeyManager {
             this.keys.set(keyId, key);
             return key;
         } catch (error) {
-            throw new Error(`Failed to get encryption key: ${error.message}`);
+            throw new Error(`Failed to get encryption key: ${(error as Error).message}`);
         }
     }
     
@@ -721,7 +717,7 @@ class KeyManager {
                 baseKeyMaterial,
                 {
                     name: 'AES-GCM',
-                    length: this.securityManager.encryptionConfig.keyLength
+                    length: this.securityManager.encryptionConfigRef.keyLength
                 },
                 false, // extractable
                 ['encrypt', 'decrypt']
@@ -729,7 +725,7 @@ class KeyManager {
             
             return key;
         } catch (error) {
-            throw new Error(`Key derivation failed: ${error.message}`);
+            throw new Error(`Key derivation failed: ${(error as Error).message}`);
         }
     }
     
@@ -748,7 +744,7 @@ class KeyManager {
                 ['deriveKey']
             );
         } catch (error) {
-            throw new Error(`Base key material generation failed: ${error.message}`);
+            throw new Error(`Base key material generation failed: ${(error as Error).message}`);
         }
     }
 
@@ -760,7 +756,7 @@ class KeyManager {
             }
             
             // 新しいソルトを生成
-            const salt = window.crypto.getRandomValues(new Uint8Array(this.securityManager.encryptionConfig.saltLength / 8));
+            const salt = window.crypto.getRandomValues(new Uint8Array(this.securityManager.encryptionConfigRef.saltLength / 8));
             localStorage.setItem('_security_salt', this.uint8ArrayToBase64(salt));
             
             return salt;
@@ -770,11 +766,11 @@ class KeyManager {
             return new Uint8Array(16).fill(42);
         }
     }
+    
     private uint8ArrayToBase64(array: Uint8Array): string {
         let binary = '';
         for (let i = 0; i < array.byteLength; i++) {
             binary += String.fromCharCode(array[i]);
-        }
         }
         return btoa(binary);
     }
@@ -784,7 +780,6 @@ class KeyManager {
         const array = new Uint8Array(binary.length);
         for (let i = 0; i < binary.length; i++) {
             array[i] = binary.charCodeAt(i);
-        }
         }
         return array;
     }
@@ -815,6 +810,7 @@ class IntegrityChecker {
     async calculate(data: any): Promise<string> {
         try {
             const dataString = typeof data === 'string' ? data : JSON.stringify(data, Object.keys(data).sort());
+            
             // Web Crypto APIを使用したSHA-256
             if (window.crypto && window.crypto.subtle) {
                 const encoder = new TextEncoder();
@@ -823,16 +819,18 @@ class IntegrityChecker {
                 const hashArray = Array.from(new Uint8Array(hashBuffer));
                 
                 return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+            }
             
             // フォールバック
-            return this.securityManager.simpleHash(dataString);
+            return (this.securityManager as any).simpleHash(dataString);
 
         } catch (error) {
             console.warn('Integrity calculation failed:', error);
-            return this.securityManager.simpleHash(JSON.stringify(data));
+            return (this.securityManager as any).simpleHash(JSON.stringify(data));
         }
     }
 }
+
 /**
  * プライバシー管理クラス
  */
@@ -847,67 +845,91 @@ class PrivacyManager {
         try {
             const anonymizedData = { ...data };
             
-            // データタイプ別の匿名化
-            if (data.username) {
-                anonymizedData.username = this.anonymizeString(data.username);
+            // フィールド指定がある場合
+            if (options.fields) {
+                for (const field of Object.keys(options.fields)) {
+                    if (field in anonymizedData) {
+                        anonymizedData[field] = this.anonymizeField(
+                            anonymizedData[field],
+                            options.fields[field]
+                        );
+                    }
+                }
             }
             
-            // IPアドレスやユーザーエージェントの除去
-            delete anonymizedData.userAgent;
-            delete anonymizedData.ipAddress;
-            delete anonymizedData.sessionId;
-            
-            // タイムスタンプの粗い化（時間単位に丸める）
-            if (data.timestamp) {
-                anonymizedData.timestamp = Math.floor(data.timestamp / (60 * 60 * 1000)) * (60 * 60 * 1000);
-            }
-            
-            // 統計データの場合は値の範囲化
-            if (options.statisticsMode) {
-                this.anonymizeStatistics(anonymizedData);
+            // デフォルトの匿名化ルール
+            if (options.useDefaults !== false) {
+                // IPアドレス
+                if (anonymizedData.ip) {
+                    anonymizedData.ip = this.anonymizeIP(anonymizedData.ip);
+                }
+                
+                // メールアドレス
+                if (anonymizedData.email) {
+                    anonymizedData.email = this.anonymizeEmail(anonymizedData.email);
+                }
+                
+                // ユーザー名
+                if (anonymizedData.username) {
+                    anonymizedData.username = this.anonymizeUsername(anonymizedData.username);
+                }
             }
             
             return anonymizedData;
-
+            
         } catch (error) {
-            console.warn('Data anonymization failed:', error);
-            return data;
+            throw new Error(`Anonymization failed: ${(error as Error).message}`);
         }
-    }
-    ','
-
-    private anonymizeString(str: string): string { ''
-        if(!str || str.length === 0) return ','
-        ','
-        // 最初と最後の文字を保持、中間をマスク
-        if (str.length <= 2) {
-            return '*'.repeat(str.length);
-        }
-
-        return str[0] + '*'.repeat(str.length - 2) + str[str.length - 1];
     }
     
-    private anonymizeStatistics(data: any): void {
-        // 数値を範囲に変換
-        const ranges = {
-            totalPlayTime: [0, 3600000, 7200000, 14400000, Infinity],
-            totalGamesPlayed: [0, 10, 50, 100, 500, Infinity],
-            totalBubblesPopped: [0, 100, 1000, 5000, 10000, Infinity]
-        };
-        
-        for (const [field, range] of Object.entries(ranges)) {
-            if (data[field] !== undefined) {
-                data[field] = this.valueToRange(data[field], range);
-            }
+    private anonymizeField(value: any, method: string): any {
+        switch (method) {
+            case 'hash':
+                return (this.securityManager as any).simpleHash(String(value));
+            case 'mask':
+                return this.maskString(String(value));
+            case 'random':
+                return (this.securityManager as any).generateRandomData(8);
+            case 'remove':
+                return undefined;
+            default:
+                return value;
         }
     }
-
-    private valueToRange(value: number, ranges: number[]): string {
-        for (let i = 0; i < ranges.length - 1; i++) {
-            if (value >= ranges[i] && value < ranges[i + 1]) {
-                return `${ranges[i]}-${ranges[i + 1] === Infinity ? '∞' : ranges[i + 1]}`;
-            }
+    
+    private anonymizeIP(ip: string): string {
+        const parts = ip.split('.');
+        if (parts.length === 4) {
+            // IPv4: 最後のオクテットを0に
+            return `${parts[0]}.${parts[1]}.${parts[2]}.0`;
         }
-        return 'unknown';
+        return 'xxx.xxx.xxx.0';
+    }
+    
+    private anonymizeEmail(email: string): string {
+        const parts = email.split('@');
+        if (parts.length === 2) {
+            const username = parts[0];
+            const domain = parts[1];
+            return `${username.charAt(0)}***@${domain}`;
+        }
+        return '***@***.***';
+    }
+    
+    private anonymizeUsername(username: string): string {
+        if (username.length <= 3) {
+            return '***';
+        }
+        return username.charAt(0) + '*'.repeat(username.length - 2) + username.charAt(username.length - 1);
+    }
+    
+    private maskString(str: string): string {
+        if (str.length <= 4) {
+            return '*'.repeat(str.length);
+        }
+        const visibleChars = Math.floor(str.length / 4);
+        return str.substring(0, visibleChars) + 
+               '*'.repeat(str.length - visibleChars * 2) + 
+               str.substring(str.length - visibleChars);
     }
 }
