@@ -15,532 +15,515 @@
  */
 
 // 型定義
-export interface MainController { config: MainControllerConfig,
-    state: MainControllerState,
-    elements: MainControllerElements,
+export interface MainController {
+    config: MainControllerConfig;
+    state: MainControllerState;
+    elements: MainControllerElements;
     focusStateManager: FocusStateManager;
     accessibilityManager?: AccessibilityManager;
-    export interface MainControllerConfig { navigationFeedback: NavigationFeedbackConfig,
-    keyboardHints: KeyboardHintsConfig,
-    visualCues: VisualCuesConfig,
+}
+
+export interface MainControllerConfig {
+    navigationFeedback: NavigationFeedbackConfig;
+    keyboardHints: KeyboardHintsConfig;
+    visualCues: VisualCuesConfig;
     announcements: AnnouncementsConfig;
-    export interface NavigationFeedbackConfig { enabled: boolean,
-    showDirection: boolean,
-    showPosition: boolean,
-    fadeTimeout: number;
-    export interface KeyboardHintsConfig { enabled: boolean,
-    autoHide: boolean,
-    hideDelay: number,
-    detailed: boolean;
-    export interface VisualCuesConfig {
-    breadcrumbs: boolean;
-    export interface AnnouncementsConfig {
+}
+
+export interface NavigationFeedbackConfig {
     enabled: boolean;
-    export interface MainControllerState { animationTimers: Map<string, number>,
-    keyboardHintVisible: boolean,
-    currentFocusElement: HTMLElement | null  };
-export interface MainControllerElements { navigationIndicator: HTMLElement,
-    keyboardHint: HTMLElement,
+    showDirection: boolean;
+    showPosition: boolean;
+    fadeTimeout: number;
+}
+
+export interface KeyboardHintsConfig {
+    enabled: boolean;
+    autoHide: boolean;
+    hideDelay: number;
+    detailed: boolean;
+}
+
+export interface VisualCuesConfig {
+    breadcrumbs: boolean;
+}
+
+export interface AnnouncementsConfig {
+    enabled: boolean;
+}
+
+export interface MainControllerState {
+    animationTimers: Map<string, number>;
+    keyboardHintVisible: boolean;
+    currentFocusElement: HTMLElement | null;
+}
+
+export interface MainControllerElements {
+    navigationIndicator: HTMLElement;
+    keyboardHint: HTMLElement;
     breadcrumbTrail: HTMLElement;
-    export interface FocusStateManager { getNavigationDirection(): NavigationDirectionInfo | null,
-    getElementPosition(element: HTMLElement, index: number): string | null  };
+}
+
+export interface FocusStateManager {
+    getNavigationDirection(): NavigationDirectionInfo | null;
+    getElementPosition(element: HTMLElement, index: number): string | null;
+}
+
 export interface AccessibilityManager {
     config: AccessibilityConfig;
-    export interface AccessibilityConfig {
+}
+
+export interface AccessibilityConfig {
     keyboard: KeyboardAccessibilityConfig;
-    export interface KeyboardAccessibilityConfig {
+}
+
+export interface KeyboardAccessibilityConfig {
     navigationMode: NavigationMode;
-    export interface NavigationDirectionInfo { icon: string,
+}
+
+export interface NavigationDirectionInfo {
+    icon: string;
     text: string;
-    export interface KeyboardHint { key: string,
+}
+
+export interface KeyboardHint {
+    key: string;
     description: string;
-    export interface AccessibilityReport { totalFocusableElements: number,
-    visibleFocusableElements: number,
-    keyboardHintsEnabled: boolean,
-    navigationFeedbackEnabled: boolean,
-    breadcrumbsEnabled: boolean,
-    currentFocusPath: string[] | null };
-export interface AccessibilitySettings { announcements?: boolean,
+}
+
+export interface AccessibilityReport {
+    totalFocusableElements: number;
+    visibleFocusableElements: number;
+    keyboardHintsEnabled: boolean;
+    navigationFeedbackEnabled: boolean;
+    breadcrumbsEnabled: boolean;
+    currentFocusPath: string[] | null;
+}
+
+export interface AccessibilitySettings {
+    announcements?: boolean;
     detailedHints?: boolean;
     breadcrumbs?: boolean;
-    export interface ElementValidationResult { isValid: boolean,
-    isFocusable: boolean,
-    isVisible: boolean,
+}
+
+export interface ElementValidationResult {
+    isValid: boolean;
+    isFocusable: boolean;
+    isVisible: boolean;
     accessibility: ElementAccessibilityInfo;
-    export interface ElementAccessibilityInfo { hasAriaLabel: boolean,
-    hasTitle: boolean,
-    hasTextContent: boolean,
-    role: string | null,
-    tabIndex: number | null };
-export interface ScreenReaderAnnouncementOptions { priority: AnnounceLevel;
+}
+
+export interface ElementAccessibilityInfo {
+    hasAriaLabel: boolean;
+    hasTitle: boolean;
+    hasTextContent: boolean;
+    role: string | null;
+    tabIndex: number | null;
+}
+
+export interface ScreenReaderAnnouncementOptions {
+    priority: AnnounceLevel;
     delay?: number;
     clearAfter?: number;
+}
 
 // 列挙型
 export type NavigationMode = '1d' | '2d' | 'spatial' | 'grid';
-    export type AnnounceLevel = 'polite' | 'assertive' | 'off';
-    export type FeedbackType = 'navigation' | 'keyboardHint' | 'breadcrumb';
-    export type ElementRole = ';'
-    | 'button' | 'input' | 'select' | 'textarea' | 'link' | 'checkbox', ';'
+export type AnnounceLevel = 'polite' | 'assertive' | 'off';
+export type FeedbackType = 'navigation' | 'keyboardHint' | 'breadcrumb';
+export type ElementRole = 
+    | 'button' | 'input' | 'select' | 'textarea' | 'link' | 'checkbox'
     | 'radio' | 'menuitem' | 'tab' | 'option' | 'generic';
 
 // 定数
-export const FOCUSABLE_SELECTORS = [']';
-    'a[href],
-    'button: not([disabled])';
-    'input: not([disabled])';
-    'select: not([disabled])';
-    'textarea: not([disabled])';
-    '[tabindex]:not([tabindex="-1"]",'
-    '[contenteditable="true"]';
+export const FOCUSABLE_SELECTORS = [
+    'a[href]',
+    'button:not([disabled])',
+    'input:not([disabled])',
+    'select:not([disabled])',
+    'textarea:not([disabled])',
+    '[tabindex]:not([tabindex="-1"])',
+    '[contenteditable="true"]'
 ] as const;
-    export const DEFAULT_NAVIGATION_FEEDBACK_CONFIG: NavigationFeedbackConfig = { enabled: true,
+
+export const DEFAULT_NAVIGATION_FEEDBACK_CONFIG: NavigationFeedbackConfig = {
+    enabled: true,
     showDirection: true,
     showPosition: true,
-    fadeTimeout: 2000  };
-export const DEFAULT_KEYBOARD_HINTS_CONFIG: KeyboardHintsConfig = { enabled: true,
+    fadeTimeout: 2000
+} as const;
+
+export const DEFAULT_KEYBOARD_HINTS_CONFIG: KeyboardHintsConfig = {
+    enabled: true,
     autoHide: true,
     hideDelay: 5000,
-    detailed: false;
-export const DEFAULT_VISUAL_CUES_CONFIG: VisualCuesConfig = { breadcrumbs: true,
+    detailed: false
+} as const;
 
-export const DEFAULT_ANNOUNCEMENTS_CONFIG: AnnouncementsConfig = { enabled: true,
+export const KEYBOARD_HINTS: Record<string, KeyboardHint> = {
+    'Tab': { key: 'Tab', description: '次の要素に移動' },
+    'Shift+Tab': { key: 'Shift+Tab', description: '前の要素に移動' },
+    'Enter': { key: 'Enter', description: '選択・実行' },
+    'Space': { key: 'Space', description: '選択・チェック' },
+    'Escape': { key: 'Escape', description: 'キャンセル・閉じる' },
+    'ArrowKeys': { key: '矢印キー', description: '方向移動' }
+} as const;
 
-export const KEYBOARD_HINT_LIMITS = { MAX_HINTS: 8,
-    MAX_LABEL_LENGTH: 20,
-    MAX_PATH_DEPTH: 4  } as const;
-export const SCREEN_READER_STYLES = `;
-    position: absolute !important,
-    width: 1px !important,
-    height: 1px !important,
-    padding: 0 !important,
-    margin: -1px !important,
-    overflow: hidden !important,
-    clip: rect(0, 0, 0, 0) !important;
-    white-space: nowrap !important,
-    border: 0 !important;
-` as const;
-';'
 // ユーティリティ関数
-export function isValidHTMLElement(element: any): element is HTMLElement { return element &&;
-           element.nodeType === Node.ELEMENT_NODE &&','
-           typeof element.getBoundingClientRect === 'function' };
-}
-
-export function getElementRole(element: HTMLElement): ElementRole {;
-    const role = element.getAttribute('role),'
-    if (role) return role as ElementRole,
-    ','
+export function isFocusableElement(element: HTMLElement): boolean {
+    if (element.hasAttribute('tabindex')) {
+        const tabindex = parseInt(element.getAttribute('tabindex') || '0', 10);
+        return tabindex >= 0;
+    }
 
     const tagName = element.tagName.toLowerCase();
-    switch(tagName) {
+    const disabledElements = ['button', 'input', 'select', 'textarea'];
+    
+    if (disabledElements.includes(tagName)) {
+        return !element.hasAttribute('disabled');
+    }
 
-        case 'button': return 'button,
-        case 'input': {''
-            const type = (element, as HTMLInputElement').type,'
-            return type === 'checkbox' ? 'checkbox' : ' }'
+    return FOCUSABLE_SELECTORS.some(selector => {
+        try {
+            return element.matches(selector.replace(':not([disabled])', ''));
+        } catch {
+            return false;
+        }
+    });
+}
 
-                   type === 'radio' ? 'radio' : 'input'; 
-    }''
-        case 'select': return 'select';
-        case 'textarea': return 'textarea';
-        case 'a': return 'link';
-        default: return 'generic';
+export function getElementAccessibilityInfo(element: HTMLElement): ElementAccessibilityInfo {
+    return {
+        hasAriaLabel: element.hasAttribute('aria-label'),
+        hasTitle: element.hasAttribute('title'),
+        hasTextContent: (element.textContent?.trim().length || 0) > 0,
+        role: element.getAttribute('role'),
+        tabIndex: element.hasAttribute('tabindex') ? 
+            parseInt(element.getAttribute('tabindex') || '0', 10) : null
+    };
+}
 
-export function getElementLabel(element: HTMLElement): string {;
-    return element.getAttribute('aria-label') ||','
-           element.getAttribute('title' ||','
-           element.textContent?.trim()','
-           element.className.split(', ')[0] ||,
-           element.tagName.toLowerCase() };
- : undefined';'
-export function truncateText(text: string, maxLength: number): string {;
-    return text.length > maxLength ? text.substring(0, maxLength) + '...' : text;
+export function validateAccessibilityElement(element: HTMLElement): ElementValidationResult {
+    const isFocusable = isFocusableElement(element);
+    const accessibility = getElementAccessibilityInfo(element);
+    
+    const isVisible = element.offsetParent !== null && 
+        getComputedStyle(element).visibility !== 'hidden' &&
+        getComputedStyle(element).display !== 'none';
 
-export function createScreenReaderElement(id: string, priority: AnnounceLevel = 'polite'): HTMLElement {;
-    const element = document.createElement('div');
-    element.id = id,
-    element.className = 'sr-only,
-    element.setAttribute('aria-live', priority','
-    element.setAttribute('aria-atomic', 'true),'
-    element.style.cssText = SCREEN_READER_STYLES,
-    return element };
+    return {
+        isValid: isFocusable && (
+            accessibility.hasAriaLabel || 
+            accessibility.hasTitle || 
+            accessibility.hasTextContent
+        ),
+        isFocusable,
+        isVisible,
+        accessibility
+    };
+}
+
 export class FocusAccessibilitySupport {
     private mainController: MainController;
     private config: MainControllerConfig;
     private state: MainControllerState;
-    private, elements: MainControllerElements;
-    constructor(mainController: MainController) {
+    private elements: MainControllerElements;
+    private focusStateManager: FocusStateManager;
 
+    // Accessibility features
+    private screenReader: HTMLElement | null = null;
+    private keyboardHints: Map<string, HTMLElement> = new Map();
+
+    constructor(mainController: MainController) {
         this.mainController = mainController;
         this.config = mainController.config;
-        this.state = mainController.state };
-        this.elements = mainController.elements; }
+        this.state = mainController.state;
+        this.elements = mainController.elements;
+        this.focusStateManager = mainController.focusStateManager;
+
+        this.initializeAccessibilityFeatures();
+        console.log('FocusAccessibilitySupport initialized');
+    }
+
+    /**
+     * アクセシビリティ機能の初期化
+     */
+    private initializeAccessibilityFeatures(): void {
+        this.createScreenReaderElement();
+        this.initializeKeyboardHints();
+        this.setupNavigationFeedback();
+    }
+
+    /**
+     * スクリーンリーダー用要素の作成
+     */
+    private createScreenReaderElement(): void {
+        this.screenReader = document.createElement('div');
+        this.screenReader.setAttribute('aria-live', 'polite');
+        this.screenReader.setAttribute('aria-atomic', 'true');
+        this.screenReader.style.cssText = `
+            position: absolute;
+            left: -10000px;
+            width: 1px;
+            height: 1px;
+            overflow: hidden;
+        `;
+        document.body.appendChild(this.screenReader);
+    }
+
+    /**
+     * キーボードヒントの初期化
+     */
+    private initializeKeyboardHints(): void {
+        if (!this.config.keyboardHints.enabled) {
+            return;
+        }
+
+        Object.entries(KEYBOARD_HINTS).forEach(([key, hint]) => {
+            const hintElement = this.createKeyboardHintElement(hint);
+            this.keyboardHints.set(key, hintElement);
+            this.elements.keyboardHint.appendChild(hintElement);
+        });
+    }
+
+    /**
+     * キーボードヒント要素の作成
+     */
+    private createKeyboardHintElement(hint: KeyboardHint): HTMLElement {
+        const element = document.createElement('div');
+        element.className = 'keyboard-hint';
+        element.innerHTML = `
+            <span class="key">${hint.key}</span>
+            <span class="description">${hint.description}</span>
+        `;
+        element.style.display = 'none';
+        return element;
+    }
+
+    /**
+     * ナビゲーションフィードバックの設定
+     */
+    private setupNavigationFeedback(): void {
+        if (!this.config.navigationFeedback.enabled) {
+            return;
+        }
+
+        // Navigation indicator styling
+        this.elements.navigationIndicator.style.cssText = `
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 8px 12px;
+            border-radius: 4px;
+            font-size: 14px;
+            z-index: 9999;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        `;
     }
 
     /**
      * ナビゲーションフィードバックの表示
      */
-    showNavigationFeedback(element: HTMLElement, index: number): void { if (!this.config.navigationFeedback.enabled) return,
+    showNavigationFeedback(element: HTMLElement, index: number): void {
+        if (!this.config.navigationFeedback.enabled) {
+            return;
+        }
+
+        const direction = this.focusStateManager.getNavigationDirection();
+        const position = this.focusStateManager.getElementPosition(element, index);
+
+        let feedbackText = '';
         
-        const indicator = this.elements.navigationIndicator,
-        const direction = this.mainController.focusStateManager.getNavigationDirection();
-        const position = this.mainController.focusStateManager.getElementPosition(element, index);
-        ','
-        // 方向インジケータ
         if (this.config.navigationFeedback.showDirection && direction) {
-
-            const directionElement = indicator.querySelector('.direction');
-            const statusElement = indicator.querySelector('.status),'
-            
-            if (directionElement) directionElement.textContent = direction.icon }
-            if (statusElement) statusElement.textContent = direction.text; }
+            feedbackText += `${direction.icon} ${direction.text}`;
         }
-        ';'
-        // 位置情報
+        
         if (this.config.navigationFeedback.showPosition && position) {
-
-            const positionElement = indicator.querySelector('.position) }'
-
-            if(positionElement) positionElement.textContent = position; }
+            feedbackText += (feedbackText ? ' - ' : '') + position;
         }
-        ';'
-        // 表示
-        indicator.classList.add('visible');
-        ';'
-        // 自動非表示タイマー
-        this.clearTimer('navigation);'
 
-        const timer = window.setTimeout(() => { }'
+        if (feedbackText) {
+            this.elements.navigationIndicator.textContent = feedbackText;
+            this.elements.navigationIndicator.style.opacity = '1';
 
-            indicator.classList.remove('visible'; }
-
-        }, this.config.navigationFeedback.fadeTimeout';'
-
-        this.state.animationTimers.set('navigation', timer);
+            // Auto-hide after timeout
+            this.clearAnimationTimer('navigationFeedback');
+            const timerId = window.setTimeout(() => {
+                this.elements.navigationIndicator.style.opacity = '0';
+            }, this.config.navigationFeedback.fadeTimeout);
+            
+            this.state.animationTimers.set('navigationFeedback', timerId);
+        }
     }
 
     /**
      * キーボードヒントの表示
      */
-    showKeyboardHints(element: HTMLElement): void { if (!this.config.keyboardHints.enabled) return,
-        ','
+    showKeyboardHints(): void {
+        if (!this.config.keyboardHints.enabled || this.state.keyboardHintVisible) {
+            return;
+        }
 
-        const hints = this.generateKeyboardHints(element);
-        if(!hints.length) return,
-        ','
+        this.keyboardHints.forEach(element => {
+            element.style.display = 'block';
+        });
 
-        const hint = this.elements.keyboardHint,
-        const shortcutsContainer = hint.querySelector('.shortcuts),'
+        this.elements.keyboardHint.style.opacity = '1';
+        this.state.keyboardHintVisible = true;
 
-        if(!shortcutsContainer) return,
-        
-        // ショートカット情報を更新
-        shortcutsContainer.innerHTML = hints.map(hint => `)','
-            <div class="shortcut">") }"
-                <span class="description">${hint.description}</span>")""
-                <span class="key">${ hint.key"</span>"
-            </div>",
-        `").join(''),"
-        ','
-        // 表示
-        hint.classList.add('visible,
-        this.state.keyboardHintVisible = true,
-        ','
-        // 自動非表示タイマー
-        if(this.config.keyboardHints.autoHide} {'
-
-            this.clearTimer('keyboardHint}'
-            const, timer = window.setTimeout(() => { }
-
-                this.hideKeyboardHints(});'}, this.config.keyboardHints.hideDelay';
-
-            this.state.animationTimers.set('keyboardHint', timer';'
+        // Auto-hide if enabled
+        if (this.config.keyboardHints.autoHide) {
+            this.clearAnimationTimer('keyboardHints');
+            const timerId = window.setTimeout(() => {
+                this.hideKeyboardHints();
+            }, this.config.keyboardHints.hideDelay);
+            
+            this.state.animationTimers.set('keyboardHints', timerId);
         }
     }
 
     /**
-     * キーボードヒントの非表示'
-     */''
-    hideKeyboardHints()';'
-        hint.classList.remove('visible');
-        this.state.keyboardHintVisible = false;
+     * キーボードヒントの非表示
+     */
+    hideKeyboardHints(): void {
+        this.keyboardHints.forEach(element => {
+            element.style.display = 'none';
+        });
 
-        this.clearTimer('keyboardHint);'
+        this.elements.keyboardHint.style.opacity = '0';
+        this.state.keyboardHintVisible = false;
+        this.clearAnimationTimer('keyboardHints');
     }
 
     /**
-     * キーボードヒントの切り替え
+     * スクリーンリーダーアナウンス
      */
-    toggleKeyboardHints(): void { if (this.state.keyboardHintVisible) {
-            this.hideKeyboardHints() } else {  // 現在フォーカスされている要素のヒントを表示
-            if (this.state.currentFocusElement) { }
-                this.showKeyboardHints(this.state.currentFocusElement);     }
-}
+    announceToScreenReader(message: string, options: ScreenReaderAnnouncementOptions = { priority: 'polite' }): void {
+        if (!this.config.announcements.enabled || !this.screenReader) {
+            return;
+        }
+
+        const announce = () => {
+            if (this.screenReader) {
+                this.screenReader.setAttribute('aria-live', options.priority);
+                this.screenReader.textContent = message;
+
+                if (options.clearAfter) {
+                    setTimeout(() => {
+                        if (this.screenReader) {
+                            this.screenReader.textContent = '';
+                        }
+                    }, options.clearAfter);
+                }
+            }
+        };
+
+        if (options.delay) {
+            setTimeout(announce, options.delay);
+        } else {
+            announce();
+        }
+    }
+
     /**
      * パンくずリストの更新
      */
-    updateBreadcrumbTrail(element: HTMLElement): void { if (!this.config.visualCues.breadcrumbs) return,
+    updateBreadcrumbTrail(focusPath: HTMLElement[]): void {
+        if (!this.config.visualCues.breadcrumbs) {
+            return;
+        }
 
-        const path = this.generateElementPath(element);
-        const breadcrumb = this.elements.breadcrumbTrail,
-        const pathContainer = breadcrumb.querySelector('.path),'
-        
-        if (!pathContainer) return,
+        const breadcrumbs = focusPath.map((element, index) => {
+            const info = getElementAccessibilityInfo(element);
+            let label = '';
 
-        pathContainer.innerHTML = path.map(item => `)','
-            <span class="item">${item"</span>""
-        `").join('<span, class="separator">›</span>'),"
-
-        breadcrumb.classList.add('visible');
-        ','
-        // 自動非表示
-        this.clearTimer('breadcrumb};'
-
-        const, timer = window.setTimeout((} => { }'
-
-            breadcrumb.classList.remove('visible'}';}, this.config.navigationFeedback.fadeTimeout';
-
-        this.state.animationTimers.set('breadcrumb', timer';'
-    }
-
-    /**
-     * キーボードヒント生成'
-     */''
-    generateKeyboardHints(element: HTMLElement): KeyboardHint[] { const hints: KeyboardHint[] = [],
-        
-        // 基本ナビゲーション
-        hints.push(' }'
-
-            { key: 'Tab', description: '次の要素'
-            ,''
-            { key: 'Shift+Tab', description: '前の要素'
-            ,')'
-            { key: 'Enter', description: '実行'
-            }')'
-            { key: 'Escape', description: 'キャンセル' )
-        ),
-        
-        // コンテキスト固有のヒント
-        const role = getElementRole(element);
-        switch(role) {
-
-            case 'button':','
-                hints.push({ key: 'Space', description: 'クリック' )','
-
-                break,
-            case 'checkbox':','
-            case 'radio':','
-                hints.push({ key: 'Space', description: '切り替え' )','
-
-                break,
-            case 'select': }
-
-                hints.push() }'
-
-                    { key: '↑↓', description: '選択'
-            }')'
-                    { key: 'Space', description: '開く''', '),'
-                break }
-
-        ';'
-        // 2Dナビゲーションが有効な場合
-        if (this.mainController.accessibilityManager?.config.keyboard.navigationMode === '2d') {
-            : undefined' }'
-
-            hints.push({ key: '↑↓←→', description: '2D移動'}
-        
-        // グローバルショートカット
-        hints.push()';'
-            { key: 'F1', description: 'ヘルプ'
-            ,')'
-            { key: 'Alt+C', description: 'コントラスト'
-            }')'
-            { key: 'Alt+F', description: 'フォーカス表示' )
-        ),
-        
-        return hints.slice(0, KEYBOARD_HINT_LIMITS.MAX_HINTS);
-
-    /**
-     * 要素パスの生成
-     */
-    generateElementPath(element: HTMLElement): string[] { const path: string[] = [],
-        let current: HTMLElement | null = element,
-        
-        while(current && current !== document.body) {
-        
-            const label = getElementLabel(current);
-            if (label && label.length > 0) {
-    
-}
-                path.unshift(truncateText(label, KEYBOARD_HINT_LIMITS.MAX_LABEL_LENGTH); }
+            if (info.hasAriaLabel) {
+                label = element.getAttribute('aria-label') || '';
+            } else if (info.hasTextContent) {
+                label = element.textContent?.trim() || '';
+            } else if (info.hasTitle) {
+                label = element.getAttribute('title') || '';
+            } else {
+                label = element.tagName.toLowerCase();
             }
-            
-            current = current.parentElement;
-            ';'
-            // パスの長さ制限
-            if(path.length >= KEYBOARD_HINT_LIMITS.MAX_PATH_DEPTH) break;
-        }
-        
-        return path;
+
+            return `<span class="breadcrumb-item">${label}</span>`;
+        }).join('<span class="breadcrumb-separator"> → </span>');
+
+        this.elements.breadcrumbTrail.innerHTML = breadcrumbs;
     }
 
     /**
-     * アクセシビリティアナウンス
+     * アニメーションタイマーのクリア
      */
-    announceToScreenReader('
-        message: string, ')';
-        priority: AnnounceLevel = 'polite')','
-    options: Partial<ScreenReaderAnnouncementOptions> = { ': void {''
-        if(!this.config.announcements.enabled) return,
-        const opts: ScreenReaderAnnouncementOptions = {
-            priority,
-            delay: 0,
-    clearAfter: 1000;
-            ...options,
-        ','
-        // aria-live要素を使用してスクリーンリーダーに通知
-        let announcer = document.getElementById('focus-announcer),'
-
-        if (!announcer) {
-
-            announcer = createScreenReaderElement('focus-announcer', opts.priority);
-            document.body.appendChild(announcer); }
+    private clearAnimationTimer(name: string): void {
+        const timerId = this.state.animationTimers.get(name);
+        if (timerId) {
+            clearTimeout(timerId);
+            this.state.animationTimers.delete(name);
         }
-        
-        const announce = () => {  if (announcer) {
-                announcer.textContent = message,
-                
-                // メッセージをクリア
-                if (opts.clearAfter && opts.clearAfter > 0) {
-    
-}
-                    setTimeout(() => { }'
-
-                        if(announcer) announcer.textContent = '; }'
-                    }, opts.clearAfter);
-                }
-};
-        
-        if (opts.delay && opts.delay > 0) { setTimeout(announce, opts.delay) } else { announce();
     }
 
     /**
-     * フォーカス可能要素の検証
-     */'
-    validateFocusableElement(element: HTMLElement): boolean { ''
-        return FOCUSABLE_SELECTORS.some(selector => element.matches(selector)) ||','
-               element.getAttribute('tabindex' !== null }'
-    }
-
-    /**
-     * 要素の可視性チェック
+     * アクセシビリティレポートの生成
      */
-    isElementVisible(element: HTMLElement): boolean { if(!isValidHTMLElement(element) return false,
-        ','
+    generateAccessibilityReport(): AccessibilityReport {
+        const focusableElements = document.querySelectorAll(FOCUSABLE_SELECTORS.join(','));
+        const visibleFocusableElements = Array.from(focusableElements).filter(
+            element => validateAccessibilityElement(element as HTMLElement).isVisible
+        );
 
-        const rect = element.getBoundingClientRect();
-        const style = window.getComputedStyle(element);
-        return rect.width > 0 && ','
-
-               rect.height > 0 &&','
-               style.visibility !== 'hidden' &&','
-               style.display !== 'none' &&','
-               style.opacity !== '0' }
-
-    /**
-     * 要素の完全な検証
-     */'
-    validateElement(element: HTMLElement): ElementValidationResult { const isFocusable = this.validateFocusableElement(element);
-        const isVisible = this.isElementVisible(element);
-        ','
-
-        const accessibility: ElementAccessibilityInfo = {''
-            hasAriaLabel: !!element.getAttribute('aria-label,
-            hasTitle: !!element.getAttribute('title,'
-            hasTextContent: !!element.textContent?.trim()','
-            role: element.getAttribute('role,'
-    tabIndex: element.tabIndex  ,
-        return { isValid: isFocusable && isVisible,
-            isFocusable,
-            isVisible };
-            accessibility }
-        }
-
-    /**
-     * アクセシビリティ設定の適用
-     */
-    applyAccessibilitySettings(settings: AccessibilitySettings): void { if (settings.announcements !== undefined) {
-            this.config.announcements.enabled = settings.announcements }
-        
-        if (settings.detailedHints !== undefined) { this.config.keyboardHints.detailed = settings.detailedHints }
-
-        if (settings.breadcrumbs !== undefined) { this.config.visualCues.breadcrumbs = settings.breadcrumbs }
-
-        console.log('Focus accessibility settings applied:', settings';'
-    }
-
-    /**
-     * レポート生成'
-     */''
-    generateAccessibilityReport()';'
-        const focusableElements = document.querySelectorAll(FOCUSABLE_SELECTORS.join(', ');
-        const visibleElements = Array.from(focusableElements);
-            .filter((el): el is HTMLElement => isValidHTMLElement(el);
-            .filter(el => this.isElementVisible(el);
-        
-        return { totalFocusableElements: focusableElements.length,
-            visibleFocusableElements: visibleElements.length,
+        return {
+            totalFocusableElements: focusableElements.length,
+            visibleFocusableElements: visibleFocusableElements.length,
             keyboardHintsEnabled: this.config.keyboardHints.enabled,
             navigationFeedbackEnabled: this.config.navigationFeedback.enabled,
             breadcrumbsEnabled: this.config.visualCues.breadcrumbs,
-    currentFocusPath: this.state.currentFocusElement ? undefined : undefined,
-                this.generateElementPath(this.state.currentFocusElement) : null }
-
-    /**
-     * タイマーのクリア
-     */
-    private clearTimer(type: FeedbackType): void { const timer = this.state.animationTimers.get(type);
-        if (timer) {
-            clearTimeout(timer);
-            this.state.animationTimers.delete(type); }
-}
-
-    /**
-     * すべてのタイマーのクリア
-     */
-    private clearAllTimers(): void { this.state.animationTimers.forEach((timer) => {  }
-            clearTimeout(timer); }
+            currentFocusPath: this.state.currentFocusElement ? 
+                [this.state.currentFocusElement.tagName.toLowerCase()] : null
         };
-        this.state.animationTimers.clear();
-    }
-
-    /**'
-     * フィードバック要素の非表示'
-     */''
-    private hideAllFeedback()';'
-        this.elements.navigationIndicator.classList.remove('visible');
-        this.elements.breadcrumbTrail.classList.remove('visible);'
-        this.hideKeyboardHints();
     }
 
     /**
-     * アナウンサー要素の削除'
-     */''
-    private removeAnnouncerElement()';'
-        const announcer = document.getElementById('focus-announcer);'
-        if (announcer && announcer.parentNode) { announcer.parentNode.removeChild(announcer);
+     * 設定の更新
+     */
+    updateSettings(settings: AccessibilitySettings): void {
+        if (settings.announcements !== undefined) {
+            this.config.announcements.enabled = settings.announcements;
+        }
+
+        if (settings.detailedHints !== undefined) {
+            this.config.keyboardHints.detailed = settings.detailedHints;
+        }
+
+        if (settings.breadcrumbs !== undefined) {
+            this.config.visualCues.breadcrumbs = settings.breadcrumbs;
+        }
+
+        console.log('Accessibility settings updated:', settings);
     }
 
     /**
      * リソースの解放
      */
-    dispose(): void { // すべてのタイマーをクリア
-        this.clearAllTimers();
-        // フィードバック要素を非表示
-        this.hideAllFeedback();
-        // アナウンサー要素を削除
-        this.removeAnnouncerElement()','
-        console.log('FocusAccessibilitySupport, disposed');
+    destroy(): void {
+        console.log('Destroying FocusAccessibilitySupport...');
 
-    }'}'
+        // Clear all timers
+        this.state.animationTimers.forEach(timerId => clearTimeout(timerId));
+        this.state.animationTimers.clear();
+
+        // Remove screen reader element
+        if (this.screenReader && this.screenReader.parentNode) {
+            this.screenReader.parentNode.removeChild(this.screenReader);
+        }
+
+        // Clear keyboard hints
+        this.keyboardHints.clear();
+
+        console.log('FocusAccessibilitySupport destroyed');
+    }
+}
