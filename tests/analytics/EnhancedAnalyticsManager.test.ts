@@ -5,530 +5,559 @@ import { describe, test, expect, beforeEach, afterEach, beforeAll, afterAll, jes
  */
 import { EnhancedAnalyticsManager } from '../../src/analytics/EnhancedAnalyticsManager';
 import Analytics from '../../src/utils/Analytics';
+
 // Analyticsのモック作成
 jest.mock('../../src/utils/Analytics.js');
 jest.mock('../../src/analytics/PrivacyManager.js');
-jest.mock('../../src/analytics/IndexedDBStorageManager.js');
-jest.mock('../../src/analytics/DataCollector.js');
-jest.mock('../../src/analytics/GameBalanceCollector.js');
-// モッククラスの定義
-class MockPrivacyManager {
-    constructor() {
-        this.consentStatus = true }
-    
-    async requestConsent() {
-        return true }
-    
-    checkConsent() {
-        return this.consentStatus }
-    
-    anonymizeData(data {
-        return { ...data, anonymized: true;
-    )
-    ;
-    setOptOut(feature, status) {
-        this.optOutFeatures = this.optOutFeatures || {};
-        this.optOutFeatures[feature] = status;
-    }
-    
-    isOptedOut(feature {
-        return this.optOutFeatures && this.optOutFeatures[feature])
-    ,
-    async exportUserData(callback {
-        return await callback() }
-    
-    async deleteUserData(callback {
-        return await callback() }
-}
-class MockIndexedDBStorageManager {
-    constructor() {
-        this.data = {}
-    }
-    
-    async initialize() {
-        return true }
-    
-    async saveData(storeName, data) {
-        this.data[storeName] = this.data[storeName] || [],
-        this.data[storeName].push(data);
-        return true }
-    
-    async getData(storeName, query) {
-        return this.data[storeName] || [] }
-    
-    async deleteData(storeName, query) {
-        this.data[storeName] = [],
-        return true }
-    
-    close() {
-        // Mock implementation
-    }
-}
-class MockDataCollector {
-    constructor(') {'
-        this.currentSessionId = 'test-session-123';
-        this.eventStats = {
-            totalEvents: 0,
-            sessionEvents: 0;
-            bubbleEvents: 0
-        }
-    }
-    
-    startSession(sessionInfo {
-        this.sessionInfo = sessionInfo;
-        this.eventStats.sessionEvents++ }
-    
-    endSession(endInfo {
-        this.endInfo = endInfo;
-        this.eventStats.sessionEvents++ }
-    
-    collectBubbleInteraction(bubbleData {
-        this.eventStats.bubbleEvents++,
-        this.eventStats.totalEvents++ }
-    
-    collectScoreData(scoreData {
-        this.eventStats.totalEvents++ }
-    
-    collectItemUsageData(itemData {
-        this.eventStats.totalEvents++ }
-    
-    collectPerformanceData(performanceData {
-        this.eventStats.totalEvents++ }
-    
-    collectGameBalanceData(balanceData {
-        this.eventStats.totalEvents++)
-    ,
-    getEventStats() {
-        return this.eventStats }
-    
-    destroy() {
-        // Mock implementation
-    }
-}
-class MockGameBalanceCollector {
-    constructor(') {'
-        this.collectedData = [] }
-    
-    collectBubbleSpawn(bubbleInfo {
-        this.collectedData.push({ type: 'bubbleSpawn', data: bubbleInfo )' }'
-    
-    collectScoreData(scoreInfo {
-        this.collectedData.push({ type: 'scoreData', data: scoreInfo )' }'
-    
-    collectItemEffectData(itemInfo {
-        this.collectedData.push({ type: 'itemEffect', data: itemInfo )' }'
-    
-    collectStageDifficultyData(stageInfo {
-        this.collectedData.push({ type: 'stageDifficulty', data: stageInfo )' }'
-    
-    collectGameBalanceData(balanceData {
-        this.collectedData.push({ type: 'gameBalance', data: balanceData;
-}
-// グローバルモック設定
-(global: any).performance = {
-    now: jest.fn(() => Date.now(),
-    memory: {
-        usedJSHeapSize: 50000000 },
-        totalJSHeapSize: 100000000;
-        jsHeapSizeLimit: 200000000
-            };
-);
-(global: any).requestAnimationFrame = jest.fn(callback => setTimeout(callback, 16)');'
+
 describe('EnhancedAnalyticsManager', () => {
-    let analyticsManager: any;
+    let manager: any;
     let mockAnalytics: any;
+    let mockPrivacyManager: any;
+
     beforeEach(() => {
-        // Analytics基底クラスのモック
         mockAnalytics = {
-            trackEvent: jest.fn(
-            trackError: jest.fn(
-            generateSessionId: jest.fn((') => 'test-session-id'),'
-        startTime: Date.now()
-        ),
-        // デフォルトエクスポートのモック設定
-        jest.mocked(Analytics.mockImplementation(() => mockAnalytics)'),'
-        // コンソールをモック
-        jest.spyOn(console, 'info').mockImplementation(() => {)}');'
-        jest.spyOn(console, 'warn').mockImplementation(() => {}');'
-        jest.spyOn(console, 'error').mockImplementation(() => {}');'
-        // モッククラスを設定
-        require('../../src/analytics/PrivacyManager.js').PrivacyManager = MockPrivacyManager;
-        require('../../src/analytics/IndexedDBStorageManager.js').IndexedDBStorageManager = MockIndexedDBStorageManager;
-        require('../../src/analytics/DataCollector.js').DataCollector = MockDataCollector;
-        require('../../src/analytics/GameBalanceCollector.js').GameBalanceCollector = MockGameBalanceCollector;
-        
-        analyticsManager = new EnhancedAnalyticsManager({
-            autoInitialize: false
-        );
-        // アナリティクスのモックを設定
-        analyticsManager.analytics = mockAnalytics };
+            trackEvent: jest.fn(),
+            initialize: jest.fn(),
+            getSession: jest.fn().mockReturnValue({ id: 'session_123' }),
+            destroy: jest.fn()
+        };
+
+        mockPrivacyManager = {
+            checkConsent: jest.fn().mockReturnValue(true),
+            anonymizeData: jest.fn((data: any) => ({ ...data, anonymized: true })),
+            isOptedOut: jest.fn().mockReturnValue(false)
+        };
+
+        (Analytics as any).mockImplementation(() => mockAnalytics);
+
+        manager = new EnhancedAnalyticsManager(mockPrivacyManager);
+    });
+
     afterEach(() => {
-        if (analyticsManager) {
-            analyticsManager.destroy() }
         jest.clearAllMocks();
-        jest.restoreAllMocks();
-    }');'
-    describe('初期化', (') => {'
-        test('デフォルト設定で正しく初期化される', () => {
-            expect(analyticsManager.options.enableGameAnalytics).toBe(true);
-            expect(analyticsManager.options.enablePerformanceTracking).toBe(true);
-            expect(analyticsManager.options.enableBehaviorAnalysis).toBe(true);
-            expect(analyticsManager.isInitialized).toBe(false);
-            expect(analyticsManager.isGameAnalyticsEnabled).toBe(false) }');'
-        test('カスタム設定で初期化される', () => {
-            const customManager = new EnhancedAnalyticsManager({
-                enableGameAnalytics: false,
-                enablePerformanceTracking: false;
-                autoInitialize: false,);
-            expect(customManager.options.enableGameAnalytics).toBe(false);
-            expect(customManager.options.enablePerformanceTracking).toBe(false);
-        }');'
-        test('initialize(')が正常に完了する', async () => {'
-            await analyticsManager.initialize();
-            expect(analyticsManager.isInitialized).toBe(true);
-            expect(analyticsManager.isGameAnalyticsEnabled).toBe(true);
-            expect(analyticsManager.privacyManager).toBeInstanceOf(MockPrivacyManager);
-            expect(analyticsManager.storageManager).toBeInstanceOf(MockIndexedDBStorageManager);
-            expect(analyticsManager.dataCollector).toBeInstanceOf(MockDataCollector);
-            expect(analyticsManager.gameBalanceCollector).toBeInstanceOf(MockGameBalanceCollector) }');'
-        test('同意がない場合は初期化をスキップする', async () => {
-            const consentDeniedManager = new EnhancedAnalyticsManager({
-                autoInitialize: false,);
-            // プライバシーマネージャーをモック
-            consentDeniedManager.privacyManager = new MockPrivacyManager();
-            consentDeniedManager.privacyManager.consentStatus = false;
-            await consentDeniedManager.initialize();
-            expect(consentDeniedManager.isGameAnalyticsEnabled).toBe(false);
-        }');'
-    }
-    describe('基本的な追跡機能', () => {
-        beforeEach(async () => {
-            await analyticsManager.initialize() }');'
-        test('ゲームセッション開始を追跡する', (') => {'
-            const sessionInfo = {
-                stageId: 'normal',
-                difficulty: 'medium';
-                soundEnabled: true,
-                effectsEnabled: true;
-                playerLevel: 5
+    });
+
+    describe('初期化', () => {
+        test('正しく初期化される', () => {
+            expect(manager).toBeDefined();
+            expect(manager.privacyManager).toBe(mockPrivacyManager);
+        });
+
+        test('デフォルト設定で初期化される', () => {
+            const defaultManager = new EnhancedAnalyticsManager();
+            expect(defaultManager).toBeDefined();
+        });
+    });
+
+    describe('イベント追跡', () => {
+        test('基本イベントが追跡される', async () => {
+            const eventData = {
+                type: 'bubble_pop',
+                bubbleId: 'bubble_123',
+                score: 100,
+                timestamp: Date.now()
             };
-            analyticsManager.startGameSession(sessionInfo);
-            expect(mockAnalytics.trackEvent').toHaveBeenCalledWith('game_session_start', {'
-                stage_id: 'normal',
-                difficulty: 'medium';
-                player_level: 5);
-            expect(analyticsManager.dataCollector.sessionInfo').toEqual(expect.objectContaining({'
-                stageId: 'normal',
-                difficulty: 'medium'))') }'
-        test('ゲームセッション終了を追跡する', (') => {'
-            const endInfo = {
-                duration: 120000,
-                finalScore: 1500;
-                bubblesPopped: 50,
-                bubblesMissed: 5;
-                maxCombo: 10,
-                completed: true;
-                exitReason: 'completed'
+
+            await manager.trackEvent('interaction', eventData);
+
+            expect(mockAnalytics.trackEvent).toHaveBeenCalledWith(
+                'interaction',
+                expect.objectContaining(eventData)
+            );
+        });
+
+        test('セッションイベントが追跡される', async () => {
+            const sessionData = {
+                sessionId: 'session_456',
+                startTime: Date.now(),
+                userId: 'user_789'
             };
-            analyticsManager.endGameSession(endInfo);
-            expect(mockAnalytics.trackEvent').toHaveBeenCalledWith('game_session_end', {'
-                duration: 120000,
-                final_score: 1500;
-                completed: true,
-                exit_reason: 'completed')') }'
-        test('バブルインタラクションを追跡する', (') => {'
-            const bubbleData = {
-                bubbleType: 'normal',
-                action: 'popped';
-                reactionTime: 450,
-                position: { x: 100, y: 200 },
-                scoreGained: 10;
-                comboCount: 3
+
+            await manager.trackSessionStart(sessionData);
+
+            expect(mockAnalytics.trackEvent).toHaveBeenCalledWith(
+                'session_start',
+                expect.objectContaining(sessionData)
+            );
+        });
+
+        test('パフォーマンスイベントが追跡される', async () => {
+            const performanceData = {
+                fps: 58.5,
+                memoryUsage: 65000000,
+                renderTime: 16.7,
+                timestamp: Date.now()
             };
-            analyticsManager.trackBubbleInteraction(bubbleData);
-            expect(mockAnalytics.trackEvent').toHaveBeenCalledWith('bubble_interaction', {'
-                bubble_type: 'normal',
-                action: 'popped';
-                reaction_time: 450);
-            expect(analyticsManager.dataCollector.eventStats.bubbleEvents).toBe(1) }');'
-        test('スコア獲得を追跡する', (') => {'
-            const scoreData = {
-                type: 'bubble',
-                amount: 20;
-                totalScore: 500,
-                source: 'stone';
-                multiplier: 2,
-                comboCount: 5
+
+            await manager.trackPerformance(performanceData);
+
+            expect(mockAnalytics.trackEvent).toHaveBeenCalledWith(
+                'performance',
+                expect.objectContaining(performanceData)
+            );
+        });
+    });
+
+    describe('プライバシー管理', () => {
+        test('同意確認が実行される', async () => {
+            const eventData = { type: 'test_event' };
+
+            await manager.trackEvent('test', eventData);
+
+            expect(mockPrivacyManager.checkConsent).toHaveBeenCalled();
+        });
+
+        test('オプトアウト時にイベントが追跡されない', async () => {
+            mockPrivacyManager.isOptedOut.mockReturnValue(true);
+
+            const eventData = { type: 'test_event' };
+            await manager.trackEvent('test', eventData);
+
+            expect(mockAnalytics.trackEvent).not.toHaveBeenCalled();
+        });
+
+        test('データが匿名化される', async () => {
+            const eventData = {
+                userId: 'user_123',
+                ipAddress: '192.168.1.1',
+                userAgent: 'Mozilla/5.0'
             };
-            analyticsManager.trackScore(scoreData);
-            expect(mockAnalytics.trackEvent').toHaveBeenCalledWith('score_gained', {'
-                score_type: 'bubble',
-                amount: 20;
-                total_score: 500)') }'
-        test('アイテム使用を追跡する', (') => {'
-            const itemData = {
-                itemType: 'timeExtender',
-                cost: 50;
-                effectiveness: 0.8,
-                duration: 5000
+
+            await manager.trackEvent('privacy_test', eventData);
+
+            expect(mockPrivacyManager.anonymizeData).toHaveBeenCalledWith(
+                expect.objectContaining(eventData)
+            );
+        });
+    });
+
+    describe('バッチ処理', () => {
+        test('複数イベントがバッチで処理される', async () => {
+            const events = [
+                { type: 'event1', data: { value: 1 } },
+                { type: 'event2', data: { value: 2 } },
+                { type: 'event3', data: { value: 3 } }
+            ];
+
+            await manager.trackEventBatch(events);
+
+            expect(mockAnalytics.trackEvent).toHaveBeenCalledTimes(3);
+        });
+
+        test('大量イベントが効率的に処理される', async () => {
+            const events = Array.from({ length: 1000 }, (_, i) => ({
+                type: 'bulk_event',
+                data: { index: i, timestamp: Date.now() + i }
+            }));
+
+            const startTime = Date.now();
+            await manager.trackEventBatch(events);
+            const endTime = Date.now();
+
+            expect(mockAnalytics.trackEvent).toHaveBeenCalledTimes(1000);
+            expect(endTime - startTime).toBeLessThan(2000); // 2秒以内
+        });
+    });
+
+    describe('カスタム次元', () => {
+        test('カスタム次元が追加される', () => {
+            const customDimensions = {
+                gameMode: 'classic',
+                difficulty: 'normal',
+                userLevel: 15
             };
-            analyticsManager.trackItemUsage(itemData);
-            expect(mockAnalytics.trackEvent').toHaveBeenCalledWith('item_used', {'
-                item_type: 'timeExtender',
-                cost: 50;
-                effectiveness: 0.8) }
-    }');'
-    describe('ゲームバランス分析機能', () => {
-        beforeEach(async () => {
-            await analyticsManager.initialize() }');'
-        test('ゲームバランスデータを追跡する', (') => {'
-            const balanceData = {
-                type: 'bubbleFrequency',
-                stageId: 'normal';
-                difficulty: 'medium',
-                bubbleFrequency: {
-                    normal: 10 },
-                    stone: 3;
-                    rainbow: 1
-                },
-                scoreDistribution: {
-                    normal: [10, 15, 12] };
-                    stone: [30, 25, 35]
-                },
-                completionRate: 0.75,
-                averagePlayTime: 180000
+
+            manager.setCustomDimensions(customDimensions);
+
+            expect(manager.customDimensions).toEqual(customDimensions);
+        });
+
+        test('カスタム次元がイベントに含まれる', async () => {
+            manager.setCustomDimensions({ testDimension: 'testValue' });
+
+            const eventData = { type: 'test_event' };
+            await manager.trackEvent('test', eventData);
+
+            expect(mockAnalytics.trackEvent).toHaveBeenCalledWith(
+                'test',
+                expect.objectContaining({
+                    customDimensions: { testDimension: 'testValue' }
+                })
+            );
+        });
+    });
+
+    describe('A/Bテスト統合', () => {
+        test('A/Bテスト情報が追跡される', async () => {
+            const abTestInfo = {
+                experimentId: 'button_color_test',
+                variant: 'red_button',
+                userId: 'user_123'
             };
-            analyticsManager.trackGameBalance(balanceData);
-            expect(mockAnalytics.trackEvent').toHaveBeenCalledWith('game_balance', {'
-                balance_type: 'bubbleFrequency',
-                stage_id: 'normal';
-                difficulty: 'medium')') }'
-        test('ゲームバランス警告を生成する', (') => {'
-            const balanceData = {
-                type: 'scoreDistribution',
-                stageId: 'normal';
-                difficulty: 'medium',
-                scoreDistribution: {
-                    normal: [10, 500, 12] // 異常に高いスコア
-                },
-                completionRate: 0.05 // 異常に低い完了率
+
+            await manager.trackABTest(abTestInfo);
+
+            expect(mockAnalytics.trackEvent).toHaveBeenCalledWith(
+                'ab_test',
+                expect.objectContaining(abTestInfo)
+            );
+        });
+
+        test('コンバージョンイベントが追跡される', async () => {
+            const conversionData = {
+                experimentId: 'checkout_flow_test',
+                variant: 'simplified_flow',
+                conversionType: 'purchase',
+                value: 29.99
             };
-            analyticsManager.trackGameBalance(balanceData);
-            expect(console.warn).toHaveBeenCalledWith(');'
-                expect.stringContaining('[Game Balance Warning]');
-                expect.any(Object);
-        }');'
-    }
-    describe('パフォーマンス監視', () => {
-        beforeEach(async () => {
-            await analyticsManager.initialize() }');'
-        test('パフォーマンス監視が開始される', () => {
-            analyticsManager.startPerformanceMonitoring();
-            expect(analyticsManager.performanceMonitor.fps).toBeDefined();
-            expect(analyticsManager.performanceMonitor.memoryUsage).toBeDefined() }');'
-        test('パフォーマンス指標を収集する', () => {
-            analyticsManager.collectPerformanceMetrics();
-            expect(analyticsManager.dataCollector.eventStats.totalEvents).toBeGreaterThan(0) }');'
-        test('低FPS警告を生成する', () => {
-            const lowFpsMetrics = {
-                fps: 20, // 30fps以下
-                memoryUsage: {
-                    used: 50000000 },
-                    total: 100000000;
-                    limit: 200000000
-                },
-                errorCount: 0,
-        timestamp: Date.now( };
-            analyticsManager.checkPerformanceWarnings(lowFpsMetrics);
-            expect(console.warn).toHaveBeenCalledWith(');'
-                expect.stringContaining('[Performance Warning]');
-                expect.stringContaining('Low FPS detected');
-        }');'
-        test('高メモリ使用量警告を生成する', () => {
-            const highMemoryMetrics = {
-                fps: 60,
-                memoryUsage: {
-                    used: 170000000, // 80%以上 };
-                    total: 200000000,
-                    limit: 200000000
-                },
-                errorCount: 0,
-        timestamp: Date.now( };
-            analyticsManager.checkPerformanceWarnings(highMemoryMetrics);
-            expect(console.warn).toHaveBeenCalledWith(');'
-                expect.stringContaining('[Performance Warning]');
-                expect.stringContaining('High memory usage');
-        }');'
-    }
-    describe('プレイヤー行動分析', () => {
-        beforeEach(async () => {
-            await analyticsManager.initialize('),'
-            // セッション開始
-            analyticsManager.initializePlayerBehaviorTracking({
-                stageId: 'normal',
-                difficulty: 'medium';
-                previousBestScore: 1000 }');'
-        }
-        test('プレイヤー行動を追跡する', (') => {'
-            const behaviorData = {
-                type: 'interaction',
-                action: 'popped';
-                bubbleType: 'normal',
-                reactionTime: 300;
-                currentScore: 150
+
+            await manager.trackConversion(conversionData);
+
+            expect(mockAnalytics.trackEvent).toHaveBeenCalledWith(
+                'conversion',
+                expect.objectContaining(conversionData)
+            );
+        });
+    });
+
+    describe('リアルタイム分析', () => {
+        test('リアルタイムイベントが送信される', async () => {
+            manager.enableRealTimeAnalytics(true);
+
+            const eventData = { type: 'realtime_event', urgent: true };
+            await manager.trackEvent('realtime', eventData);
+
+            expect(mockAnalytics.trackEvent).toHaveBeenCalledWith(
+                'realtime',
+                expect.objectContaining({
+                    realTime: true,
+                    ...eventData
+                })
+            );
+        });
+
+        test('しきい値を超えたイベントがリアルタイム送信される', async () => {
+            manager.setRealTimeThreshold(100);
+
+            const highValueEvent = { type: 'high_score', score: 150 };
+            const lowValueEvent = { type: 'regular_score', score: 50 };
+
+            await manager.trackEvent('score', highValueEvent);
+            await manager.trackEvent('score', lowValueEvent);
+
+            expect(mockAnalytics.trackEvent).toHaveBeenCalledWith(
+                'score',
+                expect.objectContaining({
+                    realTime: true,
+                    ...highValueEvent
+                })
+            );
+        });
+    });
+
+    describe('セッション管理', () => {
+        test('セッション情報が自動追加される', async () => {
+            const eventData = { type: 'test_event' };
+            await manager.trackEvent('test', eventData);
+
+            expect(mockAnalytics.trackEvent).toHaveBeenCalledWith(
+                'test',
+                expect.objectContaining({
+                    sessionInfo: expect.objectContaining({
+                        sessionId: 'session_123'
+                    })
+                })
+            );
+        });
+
+        test('セッション終了が追跡される', async () => {
+            const sessionEndData = {
+                sessionId: 'session_123',
+                duration: 300000,
+                totalScore: 1500,
+                eventsCount: 45
             };
-            analyticsManager.trackPlayerBehavior(behaviorData);
-            expect(analyticsManager.dataCollector.eventStats.totalEvents).toBeGreaterThan(0);
-        }');'
-        test('長時間セッションを検出する', () => {
-            // 30分以上のセッション時間をシミュレート
-            const originalStartTime = analyticsManager.playerBehavior.sessionData.startTime,
-            analyticsManager.playerBehavior.sessionData.startTime = Date.now() - (31 * 60 * 1000'),'
-            const behaviorData = {
-                type: 'interaction',
-                action: 'popped';
-                bubbleType: 'normal'
+
+            await manager.trackSessionEnd(sessionEndData);
+
+            expect(mockAnalytics.trackEvent).toHaveBeenCalledWith(
+                'session_end',
+                expect.objectContaining(sessionEndData)
+            );
+        });
+    });
+
+    describe('エラー追跡', () => {
+        test('エラーイベントが追跡される', async () => {
+            const errorData = {
+                errorType: 'JavaScript',
+                message: 'Cannot read property of null',
+                stack: 'Error at line 42',
+                url: 'http://localhost:8000/game.js'
             };
-            analyticsManager.trackPlayerBehavior(behaviorData);
-            expect(console.info).toHaveBeenCalledWith(');'
-                expect.stringContaining('[Analytics] Long session detected');
-        }');'
-        test('離脱行動を分析する', (') => {'
-            const exitData = {
-                type: 'exit',
-                reason: 'quit';
-                stageProgress: 0.6,
-                timeRemaining: 60000;
-                playerHP: 20,
-                currentScore: 500
+
+            await manager.trackError(errorData);
+
+            expect(mockAnalytics.trackEvent).toHaveBeenCalledWith(
+                'error',
+                expect.objectContaining(errorData)
+            );
+        });
+
+        test('未処理エラーが自動追跡される', () => {
+            const errorHandler = jest.fn();
+            manager.enableAutoErrorTracking(errorHandler);
+
+            const mockError = new Error('Test error');
+            window.dispatchEvent(new ErrorEvent('error', {
+                error: mockError,
+                message: 'Test error',
+                filename: 'test.js',
+                lineno: 42
+            }));
+
+            expect(errorHandler).toHaveBeenCalled();
+        });
+    });
+
+    describe('カスタムメトリクス', () => {
+        test('カスタムメトリクスが記録される', async () => {
+            const metrics = {
+                bubblesPerMinute: 15.5,
+                accuracyRate: 0.85,
+                averageReactionTime: 250
             };
-            const sessionDuration = 120000;
-            analyticsManager.trackExitBehavior(exitData, sessionDuration);
-            expect(analyticsManager.playerBehavior.sessionStats.exitEvents).toHaveLength(1);
-        }');'
-        test('プレイスタイルを分析する', (') => {'
-            // 攻撃的プレイスタイル（速い反応時間）
-            const aggressivePattern = {
-                bubbleType: 'normal',
-                action: 'popped';
-                reactionTime: 250,
-                accuracy: 1
+
+            await manager.trackCustomMetrics('gameplay', metrics);
+
+            expect(mockAnalytics.trackEvent).toHaveBeenCalledWith(
+                'custom_metrics',
+                expect.objectContaining({
+                    category: 'gameplay',
+                    metrics
+                })
+            );
+        });
+
+        test('時系列メトリクスが記録される', async () => {
+            const timeSeriesData = [
+                { timestamp: Date.now() - 60000, value: 10 },
+                { timestamp: Date.now() - 30000, value: 15 },
+                { timestamp: Date.now(), value: 20 }
+            ];
+
+            await manager.trackTimeSeriesMetric('score_progression', timeSeriesData);
+
+            expect(mockAnalytics.trackEvent).toHaveBeenCalledWith(
+                'time_series_metric',
+                expect.objectContaining({
+                    metricName: 'score_progression',
+                    data: timeSeriesData
+                })
+            );
+        });
+    });
+
+    describe('データ品質', () => {
+        test('無効なデータが拒否される', async () => {
+            const invalidData = [
+                null,
+                undefined,
+                { type: null },
+                { data: undefined },
+                ''
+            ];
+
+            for (const data of invalidData) {
+                await manager.trackEvent('test', data);
+            }
+
+            expect(mockAnalytics.trackEvent).not.toHaveBeenCalled();
+        });
+
+        test('データバリデーションが実行される', async () => {
+            const validator = jest.fn().mockReturnValue(true);
+            manager.setDataValidator(validator);
+
+            const eventData = { type: 'validated_event', value: 100 };
+            await manager.trackEvent('test', eventData);
+
+            expect(validator).toHaveBeenCalledWith(
+                expect.objectContaining(eventData)
+            );
+        });
+
+        test('スキーマ検証が実行される', async () => {
+            const schema = {
+                type: 'string',
+                value: 'number',
+                timestamp: 'number'
             };
-            analyticsManager.analyzePlayStyle(aggressivePattern);
-            expect(analyticsManager.playerBehavior.playStyle.aggressive).toBe(1);
-        }');'
-        test('スキル向上を計算する', () => {
-            // 履歴データを設定
-            analyticsManager.playerBehavior.skillProgression.accuracyHistory = [0.6, 0.7, 0.8],
-            analyticsManager.playerBehavior.skillProgression.reactionTimeHistory = [800, 700, 600],
-            const improvement = analyticsManager.calculateSkillImprovement();
-            expect(improvement').toHaveProperty('improved'),'
-            expect(improvement').toHaveProperty('accuracyDelta'),'
-            expect(improvement').toHaveProperty('reactionTimeDelta') }');
-    }
-    describe('エラーハンドリング', () => {
-        beforeEach(async () => {
-            await analyticsManager.initialize() }');'
-        test('エラーを追跡する', (') => {'
-            const error = new Error('Test error');
-            const context = { component: 'TestComponent' };
-            analyticsManager.trackError(error, context);
-            expect(mockAnalytics.trackError).toHaveBeenCalledWith(error, context);
-            expect(analyticsManager.performanceMonitor.errorCount).toBe(1);
-        }');'
-        test('初期化エラーを処理する', (') => {'
-            const error = new Error('Initialization failed');
-            analyticsManager.handleInitializationError(error);
-            expect(analyticsManager.isGameAnalyticsEnabled).toBe(false);
-            expect(console.warn').toHaveBeenCalledWith('
-                'Falling back to basic analytics only') }');'
-    }
+
+            manager.setEventSchema('test_event', schema);
+
+            const validEvent = {
+                type: 'test_event',
+                value: 100,
+                timestamp: Date.now()
+            };
+
+            const invalidEvent = {
+                type: 'test_event',
+                value: 'invalid', // Should be number
+                timestamp: Date.now()
+            };
+
+            await manager.trackEvent('test_event', validEvent);
+            await manager.trackEvent('test_event', invalidEvent);
+
+            expect(mockAnalytics.trackEvent).toHaveBeenCalledTimes(1);
+        });
+    });
+
     describe('設定管理', () => {
-        beforeEach(async () => {
-            await analyticsManager.initialize() }');'
-        test('設定を更新する', () => {
-            const newSettings = {
-                enableGameAnalytics: false,
-                enablePerformanceTracking: true;
-                privacySettings: {
-                    dataCollection: true },
-                    errorReporting: false;
+        test('設定が更新される', () => {
+            const newConfig = {
+                enableRealTime: true,
+                batchSize: 50,
+                flushInterval: 5000,
+                enableDebug: true
             };
-            analyticsManager.updateSettings(newSettings);
-            expect(analyticsManager.options.enableGameAnalytics).toBe(false);
-            expect(analyticsManager.options.enablePerformanceTracking).toBe(true);
-            expect(analyticsManager.isGameAnalyticsEnabled).toBe(false);
-        }');'
-        test('統計情報を取得する', () => {
-            const stats = analyticsManager.getAnalyticsStats();
-            expect(stats').toHaveProperty('isInitialized'),'
-            expect(stats').toHaveProperty('isGameAnalyticsEnabled'),'
-            expect(stats').toHaveProperty('performanceMonitor'),'
-            expect(stats').toHaveProperty('playerSkillLevel'),'
-            expect(stats').toHaveProperty('playStyleDistribution') }');
-    }
-    describe('データ管理', () => {
-        beforeEach(async () => {
-            await analyticsManager.initialize() }');'
-        test('データをエクスポートする', async () => {
-            const exportedData = await analyticsManager.exportData();
-            expect(exportedData').toHaveProperty('sessions'),'
-            expect(exportedData').toHaveProperty('bubbleInteractions'),'
-            expect(exportedData').toHaveProperty('performance') }');
-        test('データを削除する', async () => {
-            await analyticsManager.deleteData();
-            expect(analyticsManager.storageManager.data.sessions).toEqual([]);
-            expect(analyticsManager.storageManager.data.bubbleInteractions).toEqual([]);
-            expect(analyticsManager.storageManager.data.performance).toEqual([]) }');'
-    }
-    describe('既存機能との互換性', (') => {'
-        test('基本のAnalyticsのメソッドが利用可能', () => {
-            expect(analyticsManager.analytics.trackEvent).toBeDefined();
-            expect(analyticsManager.analytics.trackError).toBeDefined() }');'
-        test('基本のAnalyticsが無効でも動作する', async () => {
-            const managerWithoutAnalytics = new EnhancedAnalyticsManager({
-                autoInitialize: false,);
-            // Analytics基底クラスのメソッドが存在しない場合をシミュレート
-            managerWithoutAnalytics.analytics = null;
+
+            manager.updateConfiguration(newConfig);
+
+            expect(manager.configuration).toMatchObject(newConfig);
+        });
+
+        test('機能フラグが適用される', async () => {
+            manager.setFeatureFlag('advanced_tracking', false);
+
+            const eventData = { type: 'advanced_event' };
+            await manager.trackAdvancedEvent(eventData);
+
+            // 機能が無効なので追跡されない
+            expect(mockAnalytics.trackEvent).not.toHaveBeenCalled();
+
+            manager.setFeatureFlag('advanced_tracking', true);
+            await manager.trackAdvancedEvent(eventData);
+
+            // 機能が有効なので追跡される
+            expect(mockAnalytics.trackEvent).toHaveBeenCalled();
+        });
+    });
+
+    describe('パフォーマンス最適化', () => {
+        test('イベントキューイングが機能する', async () => {
+            manager.enableEventQueuing(true);
+
+            const events = Array.from({ length: 100 }, (_, i) => ({
+                type: 'queued_event',
+                data: { index: i }
+            }));
+
+            // イベントを一気に送信
+            const promises = events.map(event => 
+                manager.trackEvent('queued', event)
+            );
+
+            await Promise.all(promises);
+
+            expect(manager.getQueueSize()).toBe(0); // キューが処理済み
+        });
+
+        test('バッチ送信が最適化される', async () => {
+            manager.setBatchSize(10);
+            manager.setFlushInterval(100); // 100ms
+
+            const events = Array.from({ length: 25 }, (_, i) => ({
+                type: 'batch_event',
+                data: { index: i }
+            }));
+
+            for (const event of events) {
+                await manager.trackEvent('batch', event);
+            }
+
+            // 少し待ってバッチ処理を完了させる
+            await new Promise(resolve => setTimeout(resolve, 200));
+
+            // 25個のイベントが10個ずつ3バッチで送信される
+            expect(mockAnalytics.trackEvent).toHaveBeenCalledTimes(25);
+        });
+    });
+
+    describe('デバッグ機能', () => {
+        test('デバッグモードが有効化される', () => {
+            const consoleSpy = jest.spyOn(console, 'log').mockImplementation();
+
+            manager.enableDebugMode(true);
+            manager.trackEvent('debug_test', { value: 123 });
+
+            expect(consoleSpy).toHaveBeenCalledWith(
+                expect.stringContaining('Analytics Debug')
+            );
+
+            consoleSpy.mockRestore();
+        });
+
+        test('統計情報が取得される', () => {
+            manager.incrementEventCount('test_event', 5);
+            manager.incrementEventCount('another_event', 3);
+
+            const stats = manager.getStatistics();
+
+            expect(stats.totalEvents).toBe(8);
+            expect(stats.eventCounts.test_event).toBe(5);
+            expect(stats.eventCounts.another_event).toBe(3);
+        });
+    });
+
+    describe('エラーハンドリング', () => {
+        test('Analytics初期化エラーが処理される', () => {
+            mockAnalytics.initialize.mockRejectedValue(new Error('Init failed'));
+
+            expect(() => {
+                new EnhancedAnalyticsManager(mockPrivacyManager);
+            }).not.toThrow();
+        });
+
+        test('イベント送信エラーが処理される', async () => {
+            mockAnalytics.trackEvent.mockRejectedValue(new Error('Send failed'));
+
+            const eventData = { type: 'error_test' };
             
-            await managerWithoutAnalytics.initialize();
-            // エラーが発生せずに動作することを確認
-            expect((') => {'
-                managerWithoutAnalytics.startGameSession({
-                    stageId: 'test',
-                    difficulty: 'easy' }
-            }.not.toThrow(');'
-        }
-        test('段階的な機能無効化が正常に動作する', async () => {
-            const limitedManager = new EnhancedAnalyticsManager({
-                enableGameAnalytics: false,
-                enablePerformanceTracking: false;
-                enableBehaviorAnalysis: false,
-                autoInitialize: false,);
-            await limitedManager.initialize();
-            // 機能が無効化されていても基本動作は維持される
-            expect((') => {'
-                limitedManager.trackBubbleInteraction({
-                    bubbleType: 'normal',
-                    action: 'popped' }
-            }.not.toThrow();
-        }
-    }');'
-    describe('メモリ管理', (') => {'
-        test('destroy(')が正常に動作する', async () => {'
-            await analyticsManager.initialize();
-            analyticsManager.destroy();
-            expect(analyticsManager.isInitialized).toBe(false);
-            expect(analyticsManager.isGameAnalyticsEnabled).toBe(false) }');'
-        test('破棄後の操作でエラーが発生しない', async () => {
-            await analyticsManager.initialize();
-            analyticsManager.destroy();
-            // 破棄後の操作でエラーが発生しないことを確認
-            expect((') => {'
-                analyticsManager.trackBubbleInteraction({
-                    bubbleType: 'normal',
-                    action: 'popped' }
-            }.not.toThrow();
-        }
-    }');'
-}
+            await expect(
+                manager.trackEvent('test', eventData)
+            ).resolves.not.toThrow();
+        });
+
+        test('プライバシー処理エラーが処理される', async () => {
+            mockPrivacyManager.anonymizeData.mockRejectedValue(new Error('Privacy failed'));
+
+            const eventData = { type: 'privacy_error_test' };
+
+            await expect(
+                manager.trackEvent('test', eventData)
+            ).resolves.not.toThrow();
+        });
+    });
+
+    describe('リソース管理', () => {
+        test('destroyメソッドでリソースがクリーンアップされる', () => {
+            manager.destroy();
+
+            expect(mockAnalytics.destroy).toHaveBeenCalled();
+            expect(manager.isDestroyed).toBe(true);
+        });
+
+        test('破棄後のイベント追跡が無視される', async () => {
+            manager.destroy();
+
+            const eventData = { type: 'post_destroy_event' };
+            await manager.trackEvent('test', eventData);
+
+            expect(mockAnalytics.trackEvent).not.toHaveBeenCalled();
+        });
+    });
+});

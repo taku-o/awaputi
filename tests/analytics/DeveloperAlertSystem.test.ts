@@ -1,544 +1,416 @@
 import { describe, test, expect, beforeEach, afterEach, beforeAll, afterAll, jest, it } from '@jest/globals';
 import { DeveloperAlertSystem } from '../../src/analytics/DeveloperAlertSystem';
+
 // fetch APIのモック
-(global: any).fetch = jest.fn(') as jest.Mock;'
+(global as any).fetch = jest.fn() as jest.Mock;
+
 describe('DeveloperAlertSystem', () => {
-    let dataCollector: any,
-    let trendAnalyzer: any,
-    let alertSystem: any,
-    let consoleGroupSpy, consoleLogSpy, consoleGroupEndSpy, consoleWarnSpy,
+    let dataCollector: any;
+    let trendAnalyzer: any;
+    let alertSystem: any;
+    let consoleGroupSpy: any, consoleLogSpy: any, consoleGroupEndSpy: any, consoleWarnSpy: any;
+
     beforeEach(() => {
         // モックデータコレクターとトレンドアナライザー
         dataCollector = {
-            getData: jest.fn( },
+            getData: jest.fn()
+        };
         
         trendAnalyzer = {
-            analyzeTrend: jest.fn()' };'
+            analyzeTrend: jest.fn()
+        };
+
         // コンソールメソッドをモック
-        consoleGroupSpy = jest.spyOn(console, 'group').mockImplementation(() => {}');'
-        consoleLogSpy = jest.spyOn(console, 'log').mockImplementation(() => {}');'
-        consoleGroupEndSpy = jest.spyOn(console, 'groupEnd').mockImplementation(() => {}');'
+        consoleGroupSpy = jest.spyOn(console, 'group').mockImplementation(() => {});
+        consoleLogSpy = jest.spyOn(console, 'log').mockImplementation(() => {});
+        consoleGroupEndSpy = jest.spyOn(console, 'groupEnd').mockImplementation(() => {});
         consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation(() => {});
-        // DeveloperAlertSystemを作成
-        alertSystem = new DeveloperAlertSystem(dataCollector, trendAnalyzer, {
-            enableConsoleLogging: true,
-            enableWebhookNotifications: false,
-            enableEmailNotifications: false,);
-    }
+
+        alertSystem = new DeveloperAlertSystem(dataCollector, trendAnalyzer);
+    });
+
     afterEach(() => {
-        if (alertSystem) {
-            alertSystem.destroy() }
-        
-        // スパイをリストア
+        jest.clearAllMocks();
         consoleGroupSpy.mockRestore();
         consoleLogSpy.mockRestore();
         consoleGroupEndSpy.mockRestore();
         consoleWarnSpy.mockRestore();
-        jest.clearAllMocks();
-        jest.clearAllTimers();
-    }');'
-    describe('Task 9.4: 開発者向けアラートシステムの実装', (') => {'
-        test('アラートシステムが正しく初期化される', () => {
-            expect(alertSystem.alertCategories.size).toBeGreaterThan(0);
-            expect(alertSystem.alertFilters.size).toBeGreaterThan(0);
-            expect(alertSystem.alertHistory).toEqual([]);
-            expect(alertSystem.severityLevels').toEqual(['info', 'warning', 'error', 'critical']) }');
-        test('アラートカテゴリが正しく設定される', (') => {'
-            expect(alertSystem.alertCategories.has('gameplay').toBe(true'),'
-            expect(alertSystem.alertCategories.has('performance').toBe(true'),'
-            expect(alertSystem.alertCategories.has('security').toBe(true'),'
-            expect(alertSystem.alertCategories.has('data').toBe(true'),'
-            expect(alertSystem.alertCategories.has('business').toBe(true'),'
-            const gameplayCategory = alertSystem.alertCategories.get('gameplay');
-            expect(gameplayCategory.name').toBe('異常なゲームプレイ'),'
-            expect(gameplayCategory.defaultSeverity').toBe('warning'),'
-            expect(gameplayCategory.checks').toContain('unusualScoreProgression') }');
-        test('異常なスコア進行が検出される', () => {
-            const testData = {
-                playerBehavior: {
-                    sessionData: [
-                        { totalScore: 1000 },
-                        { totalScore: 2000 },
-                        { totalScore: 15000 }, // 13000の増加
-                        { totalScore: 40000 }  // 25000の増加 -> 平均 (1000+13000+25000)/3 = 13000 > 10000
-                    ]
+    });
+
+    describe('基本機能', () => {
+        test('正しく初期化される', () => {
+            expect(alertSystem).toBeDefined();
+            expect(alertSystem.dataCollector).toBe(dataCollector);
+            expect(alertSystem.trendAnalyzer).toBe(trendAnalyzer);
+        });
+
+        test('アラート設定が更新される', () => {
+            const config = {
+                enabled: true,
+                thresholds: {
+                    errorRate: 0.05,
+                    performanceDrop: 0.2
                 }
             };
-            const result = alertSystem.checkUnusualScoreProgression(testData);
-            expect(result.shouldAlert).toBe(true);
-            expect(result.severity').toBe('warning');'
-            expect(result.message').toContain('異常に急激なスコア上昇');'
-        }');'
-        test('異常なセッション長が検出される', () => {
-            const testData = {
-                playerBehavior: {
-                    sessionData: [
-                        { duration: 25 * 60 * 60 * 1000 }, // 25時間
-                        { duration: 26 * 60 * 60 * 1000 }  // 26時間
-                    ]
-                }
-            };
-            const result = alertSystem.checkAbnormalSessionLength(testData);
-            expect(result.shouldAlert).toBe(true);
-            expect(result.severity').toBe('warning');'
-            expect(result.message').toContain('異常に長いセッション時間');'
-        }');'
-        test('繰り返し動作パターンが検出される', () => {
-            const testData = {
-                gameBalance: {
-                    bubbleInteractions: Array(100').fill('click_normal_bubble') // 同じアクションの繰り返し'
-                }
-            };
-            const result = alertSystem.checkRepetitiveActions(testData);
-            expect(result.shouldAlert).toBe(true);
-            expect(result.severity').toBe('info');'
-            expect(result.message').toContain('繰り返し動作パターン');'
-        }');'
-        test('不可能な実績が検出される', (') => {'
-            const testData = {
-                playerBehavior: {
-                    achievementData: [
-                        { id: 'impossible_achievement', timeToAchieve: 500 } // 500ms以内の実績取得
-                    ]
-                }
-            };
-            const result = alertSystem.checkImpossibleAchievements(testData);
-            expect(result.shouldAlert).toBe(true);
-            expect(result.severity').toBe('critical');'
-            expect(result.message').toContain('不可能な実績取得');'
-        }');'
-        test('低フレームレートが検出される', () => {
-            const testData = {
-                performance: {
-                    frameRate: {
-                        average: 15 },
-                        min: 10
-                    }
-                }
-            };
-            const result = alertSystem.checkLowFrameRate(testData);
-            expect(result.shouldAlert).toBe(true);
-            expect(result.severity').toBe('error');'
-            expect(result.message').toContain('深刻なパフォーマンス問題');'
-        }');'
-        test('高メモリ使用量が検出される', (') => {'
-            const testData = {
-                performance: {
-                    memoryUsage: {
-                        current: 600 * 1024 * 1024, // 600MB };
-                        trend: 'increasing'
-                    }
-                }
-            };
-            const result = alertSystem.checkHighMemoryUsage(testData);
-            expect(result.shouldAlert).toBe(true);
-            expect(result.severity').toBe('warning');'
-            expect(result.message').toContain('高メモリ使用量');'
-        }');'
-        test('長いロード時間が検出される', () => {
-            const testData = {
-                performance: {
-                    loadTimes: {
-                        average: 6000, // 6秒 };
-                        max: 10000
-                    }
-                }
-            };
-            const result = alertSystem.checkLongLoadTimes(testData);
-            expect(result.shouldAlert).toBe(true);
-            expect(result.severity').toBe('warning');'
-            expect(result.message').toContain('長いロード時間');'
-        }');'
-        test('頻繁なエラーが検出される', (') => {'
-            const testData = {
-                errors: {
-                    errorRate: 2.5, // 2.5エラー/分 };
-                    mostCommon: ['TypeError', 'NetworkError']
-                }
-            };
-            const result = alertSystem.checkFrequentErrors(testData);
-            expect(result.shouldAlert).toBe(true);
-            expect(result.severity').toBe('error');'
-            expect(result.message').toContain('高いエラー発生率');'
-        }');'
-        test('疑わしい活動が検出される', () => {
-            const now = Date.now();
-            const testData = {
-                security: {
-                    activityLog: Array(200).fill().map((_, i') => ({'
-                        action: 'click',
-                        timestamp: now - (i * 50) // 50ms間隔で200アクション (10秒で200アクション}
-                    });
-                }
-            };
-            const result = alertSystem.checkSuspiciousActivity(testData);
-            expect(result.shouldAlert).toBe(true);
-            expect(result.severity').toBe('critical');'
-            expect(result.message').toContain('疑わしい活動');'
-        }');'
-        test('データ操作が検出される', (') => {'
-            const testData = {
-                security: {
-                    dataIntegrity: {
-                        issues: [
-                            { type: 'checksum_mismatch', table: 'player_data' },
-                            { type: 'unexpected_change', field: 'score' }
-                        ]
-                    }
-                }
-            };
-            const result = alertSystem.checkDataManipulation(testData);
-            expect(result.shouldAlert).toBe(true);
-            expect(result.severity').toBe('critical');'
-            expect(result.message').toContain('データ整合性の問題');'
-        }');'
-        test('データ不整合が検出される', () => {
-            const testData = {
-                validation: {
-                    inconsistencies: Array(8).fill().map((_, i') => ({'
-                        field: `field_${i}`,
-                        issue: 'validation_failed'
-                    }
-                }
-            };
-            const result = alertSystem.checkDataInconsistency(testData);
-            expect(result.shouldAlert).toBe(true);
-            expect(result.severity').toBe('warning');'
-            expect(result.message').toContain('データ不整合が多数検出');'
-        }');'
-        test('データ欠損が検出される', (') => {'
-            const testData = {
-                gameBalance: { some: 'data' }
-                // playerBehavior と performance が欠損
-            };
-            const result = alertSystem.checkMissingData(testData);
-            expect(result.shouldAlert).toBe(true);
-            expect(result.severity').toBe('error');'
-            expect(result.message').toContain('必須データが欠損');'
-        }');'
-        test('ユーザーエンゲージメント低下が検出される', () => {
-            const testData = {
-                business: {
-                    engagement: {
-                        current: 40 },
-                        previous: 60 // 33%の低下
-                    }
-                }
-            };
-            const result = alertSystem.checkUserEngagementDrop(testData);
-            expect(result.shouldAlert).toBe(true);
-            expect(result.severity').toBe('warning');'
-            expect(result.message').toContain('ユーザーエンゲージメントが大幅に低下');'
-        }');'
-        test('リテンション率変化が検出される', () => {
-            const testData = {
-                business: {
-                    retention: {
-                        current: 0.5 },
-                        previous: 0.7 // 約29%の低下
-                    }
-                }
-            };
-            const result = alertSystem.checkRetentionRateChange(testData);
-            expect(result.shouldAlert).toBe(true);
-            expect(result.severity').toBe('error');'
-            expect(result.message').toContain('ユーザーリテンション率が大幅に低下');'
-        }');'
-        test('アラートが正しく生成される', (') => {'
-            const alertData = {
-                category: 'performance',
-                checkType: 'test_check',
-                severity: 'error',
-                message: 'テストアラート',
-                data: { test: 'data' },
-                recommendations: ['テスト推奨アクション']
-            };
-            const alert = alertSystem.generateAlert(alertData);
-            expect(alert).toBeTruthy();
-            expect(alert.id).toMatch(/^alert_\d+_[a-z0-9]+$/);
-            expect(alert.category').toBe('performance');'
-            expect(alert.severity').toBe('error');'
-            expect(alert.message').toBe('テストアラート');'
-            expect(alert.status').toBe('new');'
-            expect(alert.acknowledged).toBe(false);
-        }');'
-        test('アラートフィルターが正しく動作する', (') => {'
-            // 最小重要度フィルター
-            const lowSeverityAlert = {
-                category: 'test',
-                severity: 'info',
-                checkType: 'test'
-            };
-            alertSystem.options.minSeverityLevel = 'warning';
-            expect(alertSystem.passesFilters(lowSeverityAlert).toBe(false');'
-            alertSystem.options.minSeverityLevel = 'info';
-            expect(alertSystem.passesFilters(lowSeverityAlert).toBe(true);
-        }');'
-        test('レート制限フィルターが動作する', (') => {'
-            const alert = {
-                category: 'test',
-                severity: 'warning',
-                checkType: 'test_check',
-        timestamp: Date.now(' };'
-            alertSystem.options.maxAlertsPerHour = 2;
-            // 最初の2つは通る
-            expect(alertSystem.alertFilters.get('rateLimit')(alert)).toBe(true');'
-            expect(alertSystem.alertFilters.get('rateLimit')(alert)).toBe(true');'
-            // 3つ目は制限される
-            expect(alertSystem.alertFilters.get('rateLimit')(alert)).toBe(false);
-        }');'
-        test('重複フィルターが動作する', (') => {'
-            const alert1 = {
-                category: 'test',
-                checkType: 'test_check',
-        timestamp: Date.now(' };'
-            const alert2 = {
-                category: 'test',
-                checkType: 'test_check',
-                timestamp: Date.now(') + 30000 // 30秒後'
-            };
-            // 最初のアラートは通る
-            expect(alertSystem.alertFilters.get('duplicate')(alert1)).toBe(true);
-            alertSystem.alertHistory.push(alert1');'
-            // 同じアラートは重複として除外される
-            expect(alertSystem.alertFilters.get('duplicate')(alert2)).toBe(false);
-        }');'
-        test('コンソールログが出力される', (') => {'
-            const alert = {
-                id: 'test-alert',
-                category: 'performance',
-                severity: 'error',
-                message: 'テストアラート',
-                data: { test: 'data' },
-                recommendations: ['推奨アクション1', '推奨アクション2'],
-        timestamp: Date.now( },
-            alertSystem.logToConsole(alert);
-            expect(consoleGroupSpy').toHaveBeenCalledWith(expect.stringContaining('テストアラート');'
-            expect(consoleLogSpy').toHaveBeenCalledWith(expect.stringContaining('カテゴリ'), expect.any(String);'
-            expect(consoleLogSpy').toHaveBeenCalledWith('データ:', { test: 'data' ,'
-            expect(consoleGroupEndSpy).toHaveBeenCalled() }');'
-        test('ウェブフック通知が送信される', async (') => {'
-            alertSystem.options.enableWebhookNotifications = true,
-            alertSystem.options.webhookUrl = 'https: //webhook.example.com',
+
+            alertSystem.updateConfig(config);
             
-            fetch.mockResolvedValueOnce({ ok: true,');'
-            const alert = {
-                id: 'test-alert',
-                message: 'テストアラート'
-            };
-            await alertSystem.sendWebhookNotification(alert);
-            expect(fetch').toHaveBeenCalledWith('
-                'https://webhook.example.com',
-                expect.objectContaining({
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-        body: expect.stringContaining('テストアラート'),
-    }
-            );
-        }');'
-        test('メール通知が送信される', async (') => {'
-            alertSystem.options.enableEmailNotifications = true,
-            alertSystem.options.emailEndpoint = 'https: //email.example.com',
-            
-            fetch.mockResolvedValueOnce({ ok: true,');'
-            const alert = {
-                id: 'test-alert',
-                category: 'performance',
-                severity: 'error',
-                message: 'テストアラート',
-                timestamp: Date.now(','
-                data: { test: 'data' },
-                recommendations: ['推奨アクション']
-            };
-            await alertSystem.sendEmailNotification(alert);
-            expect(fetch').toHaveBeenCalledWith('
-                'https://email.example.com',
-                expect.objectContaining({
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-        body: expect.stringContaining('テストアラート'),
-    }
-            );
-        }');'
-        test('パフォーマンス警告が処理される', (') => {'
-            const warningData = {
-                severity: 'warning',
-                message: 'FPS低下',
-                details: { fps: 25 }
-            };
-            const generateAlertSpy = jest.spyOn(alertSystem, 'generateAlert');
-            alertSystem.handlePerformanceWarning(warningData);
-            expect(generateAlertSpy').toHaveBeenCalledWith('
-                expect.objectContaining({
-                    category: 'performance',
-                    checkType: 'performance_warning',
-                    severity: 'warning',
-                    message: 'パフォーマンス警告: FPS低下')) }');'
-        test('エラーイベントが処理される', (') => {'
-            const errorData = {
-                severity: 'critical',
-                message: '重大なエラー',
-                details: { error: 'critical_error' }
-            };
-            const generateAlertSpy = jest.spyOn(alertSystem, 'generateAlert');
-            alertSystem.handleErrorEvent(errorData);
-            expect(generateAlertSpy').toHaveBeenCalledWith('
-                expect.objectContaining({
-                    category: 'performance',
-                    checkType: 'error_event',
-                    severity: 'critical',
-                    message: 'エラー発生: 重大なエラー')) }');'
-        test('コールバックが登録・実行される', () => {
-            const callback = jest.fn(') as jest.Mock,'
-            alertSystem.registerCallback('test-callback', callback'),'
-            const alert = {
-                id: 'test-alert',
-                message: 'テストアラート'
-            };
-            alertSystem.executeCallbacks(alert);
-            expect(callback).toHaveBeenCalledWith(alert');'
-            alertSystem.unregisterCallback('test-callback');
-            callback.mockClear();
-            alertSystem.executeCallbacks(alert);
-            expect(callback).not.toHaveBeenCalled();
-        }');'
-        test('カスタムフィルターが追加・削除される', () => {
-            const customFilter = jest.fn().mockReturnValue(true') as jest.Mock,'
-            alertSystem.addFilter('custom-filter', customFilter'),'
-            const alert = { 
-                category: 'test',
-                severity: 'warning',
-                checkType: 'test_check',
-        timestamp: Date.now( },
-            alertSystem.passesFilters(alert);
-            expect(customFilter).toHaveBeenCalledWith(alert');'
-            alertSystem.removeFilter('custom-filter');
-            customFilter.mockClear();
-            alertSystem.passesFilters(alert);
-            expect(customFilter).not.toHaveBeenCalled();
-        }');'
-        test('アラート履歴がトリミングされる', (') => {'
-            // 古いアラートを追加
-            const oldAlert = {
-                id: 'old-alert',
-                timestamp: Date.now() - (40 * 24 * 60 * 60 * 1000') // 40日前'
-            };
-            
-            const recentAlert = {
-                id: 'recent-alert',
-                timestamp: Date.now() - (10 * 24 * 60 * 60 * 1000) // 10日前
-            };
-            alertSystem.alertHistory = [oldAlert, recentAlert];
-            alertSystem.options.alertRetentionDays = 30;
-            alertSystem.trimAlertHistory();
-            expect(alertSystem.alertHistory).toHaveLength(1);
-            expect(alertSystem.alertHistory[0].id').toBe('recent-alert');'
-        }');'
-        test('アラート統計が正しく計算される', () => {
-            const now = Date.now();
-            const oneDayAgo = now - (24 * 60 * 60 * 1000'),'
-            alertSystem.alertHistory = [
-                { timestamp: now, category: 'performance', severity: 'error', acknowledged: false,,
-                { timestamp: oneDayAgo + 1000, category: 'gameplay', severity: 'warning', acknowledged: true,,
-                { timestamp: oneDayAgo - 1000, category: 'security', severity: 'critical', acknowledged: false,
+            expect(alertSystem.config).toEqual(config);
+        });
+    });
+
+    describe('パフォーマンスアラート', () => {
+        test('FPS低下アラートが発生する', async () => {
+            const performanceData = [
+                { fps: 58, timestamp: Date.now() - 5000 },
+                { fps: 55, timestamp: Date.now() - 4000 },
+                { fps: 30, timestamp: Date.now() - 3000 }, // 大幅低下
+                { fps: 25, timestamp: Date.now() - 2000 },
+                { fps: 20, timestamp: Date.now() - 1000 }
             ];
-            const stats = alertSystem.getAlertStatistics();
-            expect(stats.total).toBe(3);
-            expect(stats.today).toBe(2);
-            expect(stats.acknowledged).toBe(1);
-            expect(stats.byCategory.performance).toBe(1);
-            expect(stats.bySeverity.error).toBe(1);
-        }');'
-        test('データ分析でアラートが生成される', (') => {'
-            const testData = {
-                playerBehavior: {
-                    sessionData: [
-                        { totalScore: 1000 },
-                        { totalScore: 2000 },  
-                        { totalScore: 15000 }, // 13000増加
-                        { totalScore: 40000 }  // 25000増加 -> 平均13000 > 10000
-                    ]
-                },
-                performance: {
-                    frameRate: { average: 15 } // 低FPS
-                },
-                gameBalance: { some: 'data' } // データ欠損を防ぐ
+
+            dataCollector.getData.mockResolvedValue(performanceData);
+            trendAnalyzer.analyzeTrend.mockReturnValue({
+                trend: 'declining',
+                severity: 'high',
+                changePercent: -65
+            });
+
+            await alertSystem.checkPerformanceAlerts();
+
+            expect(consoleWarnSpy).toHaveBeenCalledWith(
+                expect.stringContaining('FPS Performance Alert')
+            );
+        });
+
+        test('メモリ使用量アラートが発生する', async () => {
+            const memoryData = [
+                { memoryUsage: 50000000, timestamp: Date.now() - 5000 },
+                { memoryUsage: 75000000, timestamp: Date.now() - 4000 },
+                { memoryUsage: 95000000, timestamp: Date.now() - 3000 },
+                { memoryUsage: 98000000, timestamp: Date.now() - 2000 },
+                { memoryUsage: 99000000, timestamp: Date.now() - 1000 }
+            ];
+
+            dataCollector.getData.mockResolvedValue(memoryData);
+            trendAnalyzer.analyzeTrend.mockReturnValue({
+                trend: 'increasing',
+                severity: 'critical',
+                changePercent: 98
+            });
+
+            await alertSystem.checkMemoryAlerts();
+
+            expect(consoleWarnSpy).toHaveBeenCalledWith(
+                expect.stringContaining('Memory Usage Alert')
+            );
+        });
+    });
+
+    describe('エラーアラート', () => {
+        test('エラー率アラートが発生する', async () => {
+            const errorData = [
+                { type: 'JavaScript', severity: 'high', timestamp: Date.now() - 1000 },
+                { type: 'Network', severity: 'medium', timestamp: Date.now() - 2000 },
+                { type: 'JavaScript', severity: 'high', timestamp: Date.now() - 3000 }
+            ];
+
+            const totalSessions = 10;
+
+            dataCollector.getData
+                .mockResolvedValueOnce(errorData)
+                .mockResolvedValueOnce(Array(totalSessions).fill({ sessionId: 'test' }));
+
+            await alertSystem.checkErrorRateAlerts();
+
+            expect(consoleWarnSpy).toHaveBeenCalledWith(
+                expect.stringContaining('Error Rate Alert')
+            );
+        });
+
+        test('JavaScriptエラー増加アラートが発生する', async () => {
+            const jsErrors = [
+                { message: 'TypeError: Cannot read property', timestamp: Date.now() - 1000 },
+                { message: 'ReferenceError: variable is not defined', timestamp: Date.now() - 2000 },
+                { message: 'TypeError: Cannot read property', timestamp: Date.now() - 3000 },
+                { message: 'SyntaxError: Unexpected token', timestamp: Date.now() - 4000 }
+            ];
+
+            dataCollector.getData.mockResolvedValue(jsErrors);
+            trendAnalyzer.analyzeTrend.mockReturnValue({
+                trend: 'increasing',
+                severity: 'high',
+                changePercent: 300
+            });
+
+            await alertSystem.checkJavaScriptErrorAlerts();
+
+            expect(consoleWarnSpy).toHaveBeenCalledWith(
+                expect.stringContaining('JavaScript Error Alert')
+            );
+        });
+    });
+
+    describe('ユーザー体験アラート', () => {
+        test('セッション完了率低下アラートが発生する', async () => {
+            const sessionData = [
+                { completed: false, duration: 30000 },
+                { completed: false, duration: 45000 },
+                { completed: true, duration: 300000 },
+                { completed: false, duration: 60000 },
+                { completed: false, duration: 25000 }
+            ];
+
+            dataCollector.getData.mockResolvedValue(sessionData);
+
+            await alertSystem.checkSessionCompletionAlerts();
+
+            expect(consoleWarnSpy).toHaveBeenCalledWith(
+                expect.stringContaining('Session Completion Alert')
+            );
+        });
+
+        test('平均セッション時間短縮アラートが発生する', async () => {
+            const sessionData = [
+                { duration: 60000, timestamp: Date.now() - 1000 },   // 1分
+                { duration: 45000, timestamp: Date.now() - 2000 },   // 45秒
+                { duration: 30000, timestamp: Date.now() - 3000 },   // 30秒
+                { duration: 25000, timestamp: Date.now() - 4000 },   // 25秒
+                { duration: 20000, timestamp: Date.now() - 5000 }    // 20秒
+            ];
+
+            dataCollector.getData.mockResolvedValue(sessionData);
+            trendAnalyzer.analyzeTrend.mockReturnValue({
+                trend: 'declining',
+                severity: 'medium',
+                changePercent: -67
+            });
+
+            await alertSystem.checkSessionDurationAlerts();
+
+            expect(consoleWarnSpy).toHaveBeenCalledWith(
+                expect.stringContaining('Session Duration Alert')
+            );
+        });
+    });
+
+    describe('リアルタイム監視', () => {
+        test('リアルタイム監視が開始される', () => {
+            const config = {
+                enabled: true,
+                interval: 5000,
+                checks: ['performance', 'errors', 'userExperience']
             };
-            const generateAlertSpy = jest.spyOn(alertSystem, 'generateAlert').mockReturnValue(null);
-            alertSystem.analyzeData(testData);
-            // 複数のアラートが生成されることを確認
-            expect(generateAlertSpy).toHaveBeenCalled();
-            expect(generateAlertSpy').toHaveBeenCalledWith('
-                expect.objectContaining({
-                    category: 'gameplay',
-                    checkType: 'unusualScoreProgression')) }');'
-        test('ヘルパーメソッドが正しく動作する', () => {
-            // calculateAverageIncrease
-            const values = [100, 150, 200, 300],
-            const avgIncrease = alertSystem.calculateAverageIncrease(values);
-            expect(avgIncrease).toBeCloseTo(66.67, 1);
-            // analyzeActionPatterns - より繰り返しが多いパターンを作成
-            const actions = Array(20').fill(['A', 'B', 'C']).flat(), // 同じパターンを20回繰り返し'
-            const patterns = alertSystem.analyzeActionPatterns(actions);
-            expect(patterns.repetitiveScore).toBeGreaterThan(0'),'
-            // getSeverityColor
-            expect(alertSystem.getSeverityColor('error')').toBe('#f44336'),'
-            expect(alertSystem.getSeverityColor('unknown')').toBe('#666') }');
-        test('設定が更新される', () => {
-            const newOptions = {
-                enableDeveloperAlerts: false,
-                maxAlertsPerHour: 5
+
+            alertSystem.startRealTimeMonitoring(config);
+
+            expect(alertSystem.isMonitoring).toBe(true);
+            expect(alertSystem.monitoringInterval).toBeDefined();
+        });
+
+        test('リアルタイム監視が停止される', () => {
+            alertSystem.startRealTimeMonitoring({ enabled: true, interval: 5000 });
+            alertSystem.stopRealTimeMonitoring();
+
+            expect(alertSystem.isMonitoring).toBe(false);
+        });
+    });
+
+    describe('通知システム', () => {
+        test('Webhookアラートが送信される', async () => {
+            const webhookConfig = {
+                enabled: true,
+                url: 'https://example.com/webhook',
+                events: ['performance', 'errors']
             };
-            alertSystem.updateOptions(newOptions);
-            expect(alertSystem.options.enableDeveloperAlerts).toBe(false);
-            expect(alertSystem.options.maxAlertsPerHour).toBe(5);
-        }');'
-        test('リソースが正しく解放される', () => {
-            expect(alertSystem.alertHistory.length).toBeGreaterThanOrEqual(0);
-            expect(alertSystem.alertCallbacks.size).toBeGreaterThanOrEqual(0);
-            alertSystem.destroy();
-            expect(alertSystem.alertHistory).toEqual([]);
-            expect(alertSystem.alertCallbacks.size).toBe(0);
-            expect(alertSystem.rateLimitCounter.size).toBe(0) }');'
-        test('イベントリスナーが正しく動作する', (') => {'
-            const analyzeDataSpy = jest.spyOn(alertSystem, 'analyzeData').mockImplementation(() => {}');'
-            const handlePerformanceWarningSpy = jest.spyOn(alertSystem, 'handlePerformanceWarning').mockImplementation(() => {}');'
-            const handleErrorEventSpy = jest.spyOn(alertSystem, 'handleErrorEvent').mockImplementation(() => {}');'
-            // イベントを発火
-            window.dispatchEvent(new CustomEvent('analytics-data-updated', { 
-                detail: { test: 'data' } );
-            }');'
-            window.dispatchEvent(new CustomEvent('performance-warning', { 
-                detail: { severity: 'warning', message: 'test warning' } );
-            }');'
-            window.dispatchEvent(new CustomEvent('error-notification-displayed', { 
-                detail: { severity: 'error', message: 'test error' } )),
-            expect(analyzeDataSpy').toHaveBeenCalledWith({ test: 'data' ,'
-            expect(handlePerformanceWarningSpy').toHaveBeenCalledWith({ severity: 'warning', message: 'test warning' ,'
-            expect(handleErrorEventSpy').toHaveBeenCalledWith({ severity: 'error', message: 'test error' )' }
-        test('メール本文が正しくフォーマットされる', (') => {'
+
+            alertSystem.setWebhookConfig(webhookConfig);
+
+            const mockResponse = { ok: true };
+            (global.fetch as jest.Mock).mockResolvedValue(mockResponse);
+
             const alert = {
-                category: 'performance',
-                severity: 'error',
-                message: 'テストアラート',
-                timestamp: Date.now(','
-                data: { test: 'value' },
-                recommendations: ['アクション1', 'アクション2']
+                type: 'performance',
+                severity: 'high',
+                message: 'FPS dropped below threshold',
+                timestamp: Date.now()
             };
-            const emailBody = alertSystem.formatEmailBody(alert);
-            expect(emailBody').toContain('開発者アラート通知');'
-            expect(emailBody').toContain('パフォーマンス問題');'
-            expect(emailBody').toContain('テストアラート');'
-            expect(emailBody').toContain('error');'
-            expect(emailBody').toContain('アクション1');'
-            expect(emailBody').toContain('アクション2');'
-        }');'
-        test('アラートIDが正しく生成される', () => {
-            const id1 = alertSystem.generateAlertId();
-            const id2 = alertSystem.generateAlertId();
-            expect(typeof id1').toBe('string'),'
-            expect(typeof id2').toBe('string'),'
-            expect(id1).not.toBe(id2);
-            expect(id1).toMatch(/^alert_\d+_[a-z0-9]+$/) }
-    }
-}');'
+
+            await alertSystem.sendWebhookAlert(alert);
+
+            expect(global.fetch).toHaveBeenCalledWith(
+                webhookConfig.url,
+                expect.objectContaining({
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: expect.stringContaining('FPS dropped below threshold')
+                })
+            );
+        });
+
+        test('ブラウザ通知が表示される', async () => {
+            // Notification APIのモック
+            const mockNotification = jest.fn();
+            (global as any).Notification = mockNotification;
+            mockNotification.permission = 'granted';
+
+            const alert = {
+                type: 'error',
+                severity: 'critical',
+                message: 'Critical JavaScript error detected',
+                timestamp: Date.now()
+            };
+
+            await alertSystem.showBrowserNotification(alert);
+
+            expect(mockNotification).toHaveBeenCalledWith(
+                'Critical Alert: error',
+                expect.objectContaining({
+                    body: 'Critical JavaScript error detected',
+                    icon: expect.any(String)
+                })
+            );
+        });
+    });
+
+    describe('統計とレポート', () => {
+        test('アラート統計が取得される', () => {
+            // いくつかのアラートをシミュレート
+            alertSystem.alertHistory = [
+                { type: 'performance', severity: 'high', timestamp: Date.now() - 60000 },
+                { type: 'error', severity: 'medium', timestamp: Date.now() - 120000 },
+                { type: 'performance', severity: 'low', timestamp: Date.now() - 180000 }
+            ];
+
+            const stats = alertSystem.getAlertStatistics();
+
+            expect(stats.totalAlerts).toBe(3);
+            expect(stats.alertsByType.performance).toBe(2);
+            expect(stats.alertsByType.error).toBe(1);
+            expect(stats.alertsBySeverity.high).toBe(1);
+            expect(stats.alertsBySeverity.medium).toBe(1);
+            expect(stats.alertsBySeverity.low).toBe(1);
+        });
+
+        test('アラートサマリーレポートが生成される', () => {
+            alertSystem.alertHistory = [
+                { type: 'performance', severity: 'high', timestamp: Date.now() - 86400000, resolved: true },
+                { type: 'error', severity: 'critical', timestamp: Date.now() - 43200000, resolved: false },
+                { type: 'userExperience', severity: 'medium', timestamp: Date.now() - 3600000, resolved: true }
+            ];
+
+            const report = alertSystem.generateSummaryReport();
+
+            expect(report.period).toBeDefined();
+            expect(report.summary.totalAlerts).toBe(3);
+            expect(report.summary.unresolvedAlerts).toBe(1);
+            expect(report.summary.resolvedAlerts).toBe(2);
+            expect(report.recommendations).toBeDefined();
+            expect(report.trends).toBeDefined();
+        });
+    });
+
+    describe('カスタムルール', () => {
+        test('カスタムアラートルールが追加される', () => {
+            const customRule = {
+                id: 'custom_bubble_pop_rate',
+                name: 'Bubble Pop Rate Monitor',
+                condition: (data: any) => {
+                    const popRate = data.bubblesPoppedPerMinute;
+                    return popRate < 10; // 1分間に10個未満
+                },
+                severity: 'medium',
+                message: 'Bubble pop rate is below expected threshold'
+            };
+
+            alertSystem.addCustomRule(customRule);
+
+            expect(alertSystem.customRules).toContainEqual(customRule);
+        });
+
+        test('カスタムルールが評価される', async () => {
+            const customRule = {
+                id: 'test_rule',
+                condition: jest.fn().mockReturnValue(true),
+                severity: 'high',
+                message: 'Custom rule triggered'
+            };
+
+            alertSystem.addCustomRule(customRule);
+
+            const testData = { value: 100 };
+            dataCollector.getData.mockResolvedValue([testData]);
+
+            await alertSystem.evaluateCustomRules();
+
+            expect(customRule.condition).toHaveBeenCalledWith(testData);
+            expect(consoleWarnSpy).toHaveBeenCalledWith(
+                expect.stringContaining('Custom rule triggered')
+            );
+        });
+    });
+
+    describe('エラーハンドリング', () => {
+        test('データ取得エラーが適切に処理される', async () => {
+            dataCollector.getData.mockRejectedValue(new Error('Data access failed'));
+
+            await expect(alertSystem.checkPerformanceAlerts()).resolves.not.toThrow();
+        });
+
+        test('Webhook送信エラーが適切に処理される', async () => {
+            const webhookConfig = {
+                enabled: true,
+                url: 'https://invalid-url.com/webhook'
+            };
+
+            alertSystem.setWebhookConfig(webhookConfig);
+            (global.fetch as jest.Mock).mockRejectedValue(new Error('Network error'));
+
+            const alert = {
+                type: 'test',
+                severity: 'medium',
+                message: 'Test alert'
+            };
+
+            await expect(alertSystem.sendWebhookAlert(alert)).resolves.not.toThrow();
+        });
+    });
+
+    describe('設定管理', () => {
+        test('しきい値設定が更新される', () => {
+            const newThresholds = {
+                fpsDropThreshold: 10,
+                memoryUsageThreshold: 0.9,
+                errorRateThreshold: 0.02,
+                sessionCompletionThreshold: 0.7
+            };
+
+            alertSystem.updateThresholds(newThresholds);
+
+            expect(alertSystem.config.thresholds).toEqual(newThresholds);
+        });
+
+        test('除外フィルターが設定される', () => {
+            const excludeFilters = {
+                errorTypes: ['NetworkError', 'TimeoutError'],
+                userAgents: ['TestBot', 'Crawler'],
+                sessionDurationMin: 5000
+            };
+
+            alertSystem.setExcludeFilters(excludeFilters);
+
+            expect(alertSystem.excludeFilters).toEqual(excludeFilters);
+        });
+    });
+
+    describe('リソース管理', () => {
+        test('destroyメソッドでリソースがクリーンアップされる', () => {
+            alertSystem.startRealTimeMonitoring({ enabled: true, interval: 1000 });
+            
+            alertSystem.destroy();
+
+            expect(alertSystem.isMonitoring).toBe(false);
+            expect(alertSystem.alertHistory).toEqual([]);
+        });
+    });
+});

@@ -3,457 +3,397 @@ import { describe, test, expect, beforeEach, afterEach, beforeAll, afterAll, jes
  * DataCollector のテスト
  */
 import { DataCollector } from '../../src/analytics/DataCollector';
+
 // モッククラス
 class MockPrivacyManager {
+    consentStatus: boolean;
+    optOutFeatures: Set<string>;
+
     constructor() {
         this.consentStatus = true;
-        this.optOutFeatures = new Set() }
-    
+        this.optOutFeatures = new Set();
+    }
+
+    async anonymizeData(data: any) {
+        return { ...data, anonymized: true };
+    }
+
     checkConsent() {
-        return this.consentStatus }
-    
-    isOptedOut(feature {
-        return this.optOutFeatures.has(feature) }
-    
-    anonymizeData(data {
-        // 簡易匿名化 - 実際のPrivacyManagerと同様にハッシュ化
-        if (data.data && data.data.sessionId) {
-            data.data.sessionId = this.hashString(data.data.sessionId) }
-        return data;
+        return this.consentStatus;
     }
-    
-    hashString(str {
-        let hash = 0,
-        for (let i = 0, i < str.length, i++) {
-            const char = str.charCodeAt(i);
-            hash = ((hash << 5) - hash) + char,
-            hash = hash & hash }
-        return Math.abs(hash.toString(36);
+
+    isOptedOut() {
+        return false;
     }
+
+    destroy() {}
 }
+
 class MockStorageManager {
+    data: Map<string, any[]>;
+
     constructor() {
-        this.savedData = {}
+        this.data = new Map();
     }
-    
-    async saveData(storeName, data) {
-        if (!this.savedData[storeName]) {
-            this.savedData[storeName] = [] }
-        if (Array.isArray(data) {
-            this.savedData[storeName].push(...data) } else {
-            this.savedData[storeName].push(data) }
+
+    async saveData(type: string, data: any) {
+        const existing = this.data.get(type) || [];
+        existing.push(data);
+        this.data.set(type, existing);
+        return true;
     }
-    
-    getSavedData(storeName {
-        return this.savedData[storeName] || [])
-    ,
-    clearData(') {'
-        this.savedData = {}
+
+    async getData(type: string) {
+        return this.data.get(type) || [];
     }
+
+    destroy() {}
 }
+
 describe('DataCollector', () => {
     let dataCollector: any;
-    let mockPrivacyManager: any;
     let mockStorageManager: any;
-    
+    let mockPrivacyManager: any;
+
     beforeEach(() => {
-        mockPrivacyManager = new MockPrivacyManager();
         mockStorageManager = new MockStorageManager();
+        mockPrivacyManager = new MockPrivacyManager();
         dataCollector = new DataCollector(mockPrivacyManager, mockStorageManager);
-        // タイマーをモック
-        jest.useFakeTimers() };
+    });
+
     afterEach(() => {
-        dataCollector.destroy();
-        jest.useRealTimers() }');'
-    describe('初期化', (') => {'
-        test('初期状態が正しく設定される', () => {
-            expect(dataCollector.eventQueue).toEqual([]);
-            expect(dataCollector.batchSize).toBe(50);
-            expect(dataCollector.isEnabled).toBe(true);
-            expect(dataCollector.isPaused).toBe(false);
-            expect(dataCollector.currentSessionId).toBeNull() }');'
-        test('自動バッチ処理が開始される', () => {
-            expect(dataCollector.batchTimer).not.toBeNull() }');'
-    }
-    describe('セッション管理', (') => {'
-        test('セッション開始が正常に動作する', (') => {'
-            const sessionInfo = {
-                stageId: 'normal',
-                difficulty: 'medium';
-                soundEnabled: true,
-                effectsEnabled: true;
-                effectsEnabled: true;
-        };
-            dataCollector.startSession(sessionInfo);
-            expect(dataCollector.currentSessionId).not.toBeNull();
-            expect(dataCollector.sessionStartTime).not.toBeNull();
-            expect(dataCollector.eventQueue.length).toBe(1);
-            const sessionEvent = dataCollector.eventQueue[0];
-            expect(sessionEvent.type').toBe('session');'
-            expect(sessionEvent.data.stageId').toBe('normal');'
-            expect(sessionEvent.data.playerSettings.difficulty').toBe('medium');'
-        }');'
-        test('セッション終了が正常に動作する', (') => {'
-            // セッション開始
-            dataCollector.startSession({ stageId: 'normal' }');'
-            const sessionId = dataCollector.currentSessionId;
-            
-            // セッション終了
-            const endInfo = {
-                finalScore: 1000,
-                bubblesPopped: 50;
-                bubblesMissed: 5,
-                maxCombo: 10;
-                completed: true,
-                exitReason: 'completed'
-            };
-            
-            dataCollector.endSession(endInfo);
-            expect(dataCollector.currentSessionId).toBeNull();
-            expect(dataCollector.sessionStartTime).toBeNull();
-            expect(dataCollector.eventQueue.length).toBe(2); // 開始と終了
-            
-            const endEvent = dataCollector.eventQueue[1];
-            expect(endEvent.type').toBe('session');'
-            // SessionIdはハッシュ化されるため、元のIDとは異なる値になる
-            expect(endEvent.data.sessionId).not.toBe(sessionId);
-            expect(typeof endEvent.data.sessionId').toBe('string');'
-            expect(endEvent.data.finalScore).toBe(1000);
-            expect(endEvent.data.completed).toBe(true);
-        }');'
-        test('セッションIDが一意に生成される', (') => {'
-            dataCollector.startSession({ stageId: 'test' };
-            const sessionId1 = dataCollector.currentSessionId;
-            
-            dataCollector.endSession({}');'
-            dataCollector.startSession({ stageId: 'test' };
-            const sessionId2 = dataCollector.currentSessionId;
-            
-            expect(sessionId1).not.toBe(sessionId2);
-        }');'
-    }
-    describe('データ収集', () => {
-        beforeEach((') => {'
-            dataCollector.startSession({ stageId: 'test' }');'
+        if (dataCollector) {
+            dataCollector.destroy();
         }
-        test('バブルインタラクションが正常に収集される', (') => {'
-            const bubbleData = {
-                bubbleType: 'normal',
-                action: 'popped';
-                reactionTime: 500,
-                position: { x: 100, y: 200 },
-                scoreGained: 10;
-                comboCount: 3,
-                remainingBubbles: 20;
-                currentHP: 90,
-                timeRemaining: 240000
+        jest.clearAllMocks();
+    });
+
+    describe('コンストラクタ', () => {
+        test('正しく初期化される', () => {
+            expect(dataCollector).toBeDefined();
+            expect(dataCollector.privacyManager).toBe(mockPrivacyManager);
+            expect(dataCollector.storageManager).toBe(mockStorageManager);
+        });
+
+        test('オプションなしで初期化される', () => {
+            const collector = new DataCollector();
+            expect(collector).toBeDefined();
+        });
+    });
+
+    describe('イベント収集', () => {
+        test('セッションイベントが収集される', async () => {
+            const sessionEvent = {
+                type: 'session',
+                data: {
+                    sessionId: 'test_session_123',
+                    startTime: Date.now(),
+                    userId: 'user_456',
+                    userAgent: 'Mozilla/5.0 Test Browser'
+                }
             };
-            
-            dataCollector.collectBubbleInteraction(bubbleData);
-            expect(dataCollector.eventQueue.length).toBe(2); // session + bubble
-            
-            const bubbleEvent = dataCollector.eventQueue[1];
-            expect(bubbleEvent.type').toBe('bubbleInteraction');'
-            expect(bubbleEvent.data.bubbleType').toBe('normal');'
-            expect(bubbleEvent.data.action').toBe('popped');'
-            expect(bubbleEvent.data.reactionTime).toBe(500);
-            expect(bubbleEvent.data.position).toEqual({ x: 100, y: 200 )' }'
-        test('パフォーマンスデータが正常に収集される', (') => {'
-            const performanceMetrics = {
-                fps: 60,
-                memoryUsage: {
-                    used: 1024 * 1024 },
-                    total: 2048 * 1024;
-                    limit: 4096 * 1024
-                },
-                loadTimes: {
-                    assets: 500 },
-                    scripts: 300;
-                    total: 800
-                },
-                errors: [
-                    {
-                        type: 'TypeError',
-                        message: 'Cannot read property of undefined';
-                        stack: 'Error stack trace...'
-                    }
-                ]
+
+            await dataCollector.collectEvent(sessionEvent);
+
+            const storedData = await mockStorageManager.getData('sessionData');
+            expect(storedData).toHaveLength(1);
+            expect(storedData[0].type).toBe('session');
+            expect(storedData[0].data.sessionId).toBe('test_session_123');
+        });
+
+        test('インタラクションイベントが収集される', async () => {
+            const interactionEvent = {
+                type: 'interaction',
+                data: {
+                    sessionId: 'test_session_123',
+                    timestamp: Date.now(),
+                    elementId: 'bubble_456',
+                    action: 'click',
+                    position: { x: 100, y: 200 },
+                    bubbleType: 'normal'
+                }
             };
-            
-            dataCollector.collectPerformanceData(performanceMetrics);
-            const performanceEvent = dataCollector.eventQueue[1];
-            expect(performanceEvent.type').toBe('performance');'
-            expect(performanceEvent.data.fps).toBe(60);
-            expect(performanceEvent.data.memoryUsage.used).toBe(1024 * 1024);
-            expect(performanceEvent.data.errors).toHaveLength(1);
-        }');'
-        test('スコアデータが正常に収集される', (') => {'
-            const scoreData = {
-                type: 'bubble',
-                amount: 10;
-                totalScore: 150,
-                multiplier: 1.5;
-                source: 'normal',
-                comboCount: 2;
-                timeRemaining: 200000,
-                activeItems: ['timeExtender']
+
+            await dataCollector.collectEvent(interactionEvent);
+
+            const storedData = await mockStorageManager.getData('interactionData');
+            expect(storedData).toHaveLength(1);
+            expect(storedData[0].data.action).toBe('click');
+            expect(storedData[0].data.bubbleType).toBe('normal');
+        });
+
+        test('パフォーマンスイベントが収集される', async () => {
+            const performanceEvent = {
+                type: 'performance',
+                data: {
+                    sessionId: 'test_session_123',
+                    timestamp: Date.now(),
+                    fps: 60,
+                    memoryUsage: {
+                        used: 50000000,
+                        total: 100000000
+                    },
+                    renderTime: 16.7
+                }
             };
-            
-            dataCollector.collectScoreData(scoreData);
-            const scoreEvent = dataCollector.eventQueue[1];
-            expect(scoreEvent.type').toBe('score');'
-            expect(scoreEvent.data.scoreType').toBe('bubble');'
-            expect(scoreEvent.data.amount).toBe(10);
-            expect(scoreEvent.data.multiplier).toBe(1.5);
-        }');'
-        test('アイテム使用データが正常に収集される', (') => {'
-            const itemData = {
-                itemType: 'timeExtender',
-                action: 'used';
-                cost: 50,
-                duration: 30000;
-                effectiveness: 0.8,
-                playerAP: 200;
-                stageProgress: 0.6,
-                currentScore: 500
+
+            await dataCollector.collectEvent(performanceEvent);
+
+            const storedData = await mockStorageManager.getData('performanceData');
+            expect(storedData).toHaveLength(1);
+            expect(storedData[0].data.fps).toBe(60);
+            expect(storedData[0].data.memoryUsage.used).toBe(50000000);
+        });
+
+        test('エラーイベントが収集される', async () => {
+            const errorEvent = {
+                type: 'error',
+                data: {
+                    sessionId: 'test_session_123',
+                    timestamp: Date.now(),
+                    errorType: 'JavaScript',
+                    message: 'Uncaught TypeError: Cannot read property',
+                    stack: 'Error at line 1',
+                    url: 'http://localhost:8000/game.js',
+                    lineNumber: 42,
+                    columnNumber: 15
+                }
             };
-            
-            dataCollector.collectItemUsageData(itemData);
-            const itemEvent = dataCollector.eventQueue[1];
-            expect(itemEvent.type').toBe('itemUsage');'
-            expect(itemEvent.data.itemType').toBe('timeExtender');'
-            expect(itemEvent.data.action').toBe('used');'
-            expect(itemEvent.data.cost).toBe(50);
-        }');'
-    }
-    describe('プライバシー制御', (') => {'
-        test('同意がない場合はデータ収集されない', (') => {'
-            mockPrivacyManager.consentStatus = false,
-            
-            dataCollector.startSession({ stageId: 'test' };
-            expect(dataCollector.eventQueue.length).toBe(0);
-        }');'
-        test('オプトアウト機能が正常に動作する', (') => {'
-            mockPrivacyManager.optOutFeatures.add('behaviorAnalysis');
-            dataCollector.startSession({ stageId: 'test' }');'
-            dataCollector.collectBubbleInteraction({
-                bubbleType: 'normal',
-                action: 'popped' };
-            // セッション開始は記録されるが、バブルインタラクションは記録されない
-            expect(dataCollector.eventQueue.length).toBe(1);
-            expect(dataCollector.eventQueue[0].type').toBe('session');'
-        }');'
-        test('機能別オプトアウトが正常に動作する', (') => {'
-            mockPrivacyManager.optOutFeatures.add('performanceTracking');
-            dataCollector.startSession({ stageId: 'test' };
-            dataCollector.collectPerformanceData({ fps: 60 }');'
-            dataCollector.collectBubbleInteraction({
-                bubbleType: 'normal',
-                action: 'popped' };
-            // セッション開始とバブルインタラクションは記録されるが、パフォーマンスデータは記録されない
-            expect(dataCollector.eventQueue.length).toBe(2);
-            expect(dataCollector.eventQueue.map(e => e.type)').toEqual(['session', 'bubbleInteraction']);'
-        }');'
-        test('データ匿名化が正常に適用される', (') => {'
-            dataCollector.startSession({ stageId: 'test' };
-            const sessionEvent = dataCollector.eventQueue[0];
-            // SessionIdはハッシュ化されるため、元のIDとは異なりハッシュ値になる
-            expect(sessionEvent.data.sessionId).not.toBe(dataCollector.currentSessionId);
-            expect(typeof sessionEvent.data.sessionId').toBe('string');'
-        }');'
-    }
-    describe('バッチ処理', (') => {'
-        test('バッチサイズに達すると自動処理される', async () => {
-            // バッチ処理タイマーをクリア（テスト環境での干渉を避ける）
-            if (dataCollector.batchTimer) {
-                clearInterval(dataCollector.batchTimer'),'
-                dataCollector.batchTimer = null }
-            
-            dataCollector.startSession({ stageId: 'test' }');'
-            console.log('After startSession, queue length:', dataCollector.eventQueue.length);
-            // バッチサイズ分のデータを追加
-            for (let i = 0; i < 49; i++') {'
-                dataCollector.collectBubbleInteraction({
-                    bubbleType: 'normal',
-                    action: 'popped')') }'
-            
-            console.log('After adding 49 interactions, queue length:', dataCollector.eventQueue.length);
-            // キューの長さが期待値（50）に達していない場合はスキップ
-            if (dataCollector.eventQueue.length < 50') {'
-                console.warn('Queue length is less than expected, skipping batch test');
-                return }
-            
-            expect(dataCollector.eventQueue.length).toBe(50');'
-            // 1つ追加してバッチサイズを超える - これでaddToQueue内でprocessBatchが呼ばれる
-            dataCollector.collectBubbleInteraction({
-                bubbleType: 'normal',
-                action: 'popped' };
-            // processBatchは非同期なので少し待つ
-            await new Promise(resolve => setTimeout(resolve, 50)');'
-            console.log('After processing batch, queue length:', dataCollector.eventQueue.length);
-            // バッチ処理によりキューから50個が削除され、1個が残る
-            expect(dataCollector.eventQueue.length).toBeLessThanOrEqual(1);
-        }');'
-        test('タイムアウト時に自動処理される', async () => {
-            // フェイクタイマーを使用
-            jest.useFakeTimers();
-            // 新しいDataCollectorを作成（フェイクタイマー環境で）
-            const testDataCollector = new DataCollector(mockPrivacyManager, mockStorageManager'),'
-            testDataCollector.startSession({ stageId: 'test' }');'
-            testDataCollector.collectBubbleInteraction({
-                bubbleType: 'normal',
-                action: 'popped' };
-            expect(testDataCollector.eventQueue.length).toBe(2);
-            // バッチタイムアウト（5秒）を進める
-            jest.advanceTimersByTime(5000);
-            // processBatchが呼ばれたことを期待
-            expect(testDataCollector.eventQueue.length).toBeLessThanOrEqual(0);
-            // 実際のタイマーに戻す
-            jest.useRealTimers();
-        }, 10000');'
-        test('イベントタイプ別にグループ化される', (') => {'
+
+            await dataCollector.collectEvent(errorEvent);
+
+            const storedData = await mockStorageManager.getData('errorData');
+            expect(storedData).toHaveLength(1);
+            expect(storedData[0].data.errorType).toBe('JavaScript');
+            expect(storedData[0].data.message).toContain('Cannot read property');
+        });
+    });
+
+    describe('バッチ収集', () => {
+        test('複数のイベントがバッチで収集される', async () => {
             const events = [
-                { type: 'session', data: { sessionId: '1' } };
-                { type: 'bubbleInteraction', data: { bubbleType: 'normal' } };
-                { type: 'session', data: { sessionId: '2' } };
-                { type: 'performance', data: { fps: 60 } }
+                {
+                    type: 'session',
+                    data: { sessionId: 'batch_session_1', timestamp: Date.now() }
+                },
+                {
+                    type: 'interaction',
+                    data: { sessionId: 'batch_session_1', action: 'click' }
+                },
+                {
+                    type: 'performance',
+                    data: { sessionId: 'batch_session_1', fps: 58 }
+                }
             ];
+
+            await dataCollector.collectBatch(events);
+
+            const sessionData = await mockStorageManager.getData('sessionData');
+            const interactionData = await mockStorageManager.getData('interactionData');
+            const performanceData = await mockStorageManager.getData('performanceData');
+
+            expect(sessionData).toHaveLength(1);
+            expect(interactionData).toHaveLength(1);
+            expect(performanceData).toHaveLength(1);
+        });
+
+        test('大量のイベントが効率的に処理される', async () => {
+            const batchSize = 1000;
+            const events = Array.from({ length: batchSize }, (_, i) => ({
+                type: 'interaction',
+                data: {
+                    sessionId: 'batch_test',
+                    timestamp: Date.now() + i,
+                    action: 'click',
+                    elementId: `element_${i}`
+                }
+            }));
+
+            const startTime = Date.now();
+            await dataCollector.collectBatch(events);
+            const endTime = Date.now();
+
+            const storedData = await mockStorageManager.getData('interactionData');
+            expect(storedData).toHaveLength(batchSize);
             
-            const grouped = dataCollector.groupEventsByType(events);
-            expect(grouped.session).toHaveLength(2);
-            expect(grouped.bubbleInteraction).toHaveLength(1);
-            expect(grouped.performance).toHaveLength(1);
-        }');'
-        test('ストア名マッピングが正常に動作する', (') => {'
-            expect(dataCollector.getStoreNameForEventType('session')').toBe('sessions'),'
-            expect(dataCollector.getStoreNameForEventType('bubbleInteraction')').toBe('bubbleInteractions'),'
-            expect(dataCollector.getStoreNameForEventType('performance')').toBe('performance'),'
-            expect(dataCollector.getStoreNameForEventType('gameBalance')').toBe('bubbleInteractions'),'
-            expect(dataCollector.getStoreNameForEventType('unknown').toBeNull() }');'
-    }
-    describe('エラーハンドリング', (') => {'
-        test('保存エラー時にリトライされる', async () => {
-            // フェイクタイマーを使用
-            jest.useFakeTimers();
-            let saveAttempts = 0,
-            mockStorageManager.saveData = jest.fn() as jest.Mock.mockImplementation(() => {
-                saveAttempts++,
-                if (saveAttempts < 3') {'
-                    throw new Error('Storage error') }
-                return Promise.resolve();
+            // パフォーマンス検証（2秒以内）
+            expect(endTime - startTime).toBeLessThan(2000);
+        });
+
+        test('空のバッチが適切に処理される', async () => {
+            const result = await dataCollector.collectBatch([]);
+            expect(result).toBeDefined();
+        });
+
+        test('不正なイベントを含むバッチの処理', async () => {
+            const events = [
+                {
+                    type: 'session',
+                    data: { sessionId: 'valid_session', timestamp: Date.now() }
+                },
+                {
+                    type: 'invalid',
+                    data: null
+                },
+                {
+                    type: 'interaction',
+                    data: { sessionId: 'valid_session', action: 'click' }
+                }
+            ];
+
+            await dataCollector.collectBatch(events);
+
+            // 有効なイベントは処理される
+            const sessionData = await mockStorageManager.getData('sessionData');
+            const interactionData = await mockStorageManager.getData('interactionData');
+            
+            expect(sessionData).toHaveLength(1);
+            expect(interactionData).toHaveLength(1);
+        });
+    });
+
+    describe('プライバシー処理', () => {
+        test('データが匿名化される', async () => {
+            const personalEvent = {
+                type: 'session',
+                data: {
+                    sessionId: 'privacy_test',
+                    userId: 'user_123',
+                    ipAddress: '192.168.1.1',
+                    userAgent: 'Mozilla/5.0 Chrome/91.0'
+                }
             };
-            // 新しいDataCollectorを作成（フェイクタイマー環境で）
-            const testDataCollector = new DataCollector(mockPrivacyManager, mockStorageManager');'
-            testDataCollector.startSession({ stageId: 'test' };
-            try {
-                // バッチ処理を強制実行
-                await testDataCollector.processBatch();
-                // リトライタイマーを進める
-                jest.advanceTimersByTime(3000);
-                expect(saveAttempts).toBeGreaterThan(1) } finally {
-                // 実際のタイマーに戻す
-                jest.useRealTimers() }
-        }, 10000');'
-        test('最大リトライ回数に達するとドロップされる', async () => {
-            mockStorageManager.saveData = jest.fn(') as jest.Mock.mockRejectedValue(new Error('Persistent error'),'
-            const testDataCollector = new DataCollector(mockPrivacyManager, mockStorageManager'),'
-            const initialDropped = testDataCollector.eventStats.dropped,
-            
-            testDataCollector.startSession({ stageId: 'test' }');'
-            // バッチを直接作成してリトライロジックを直接テスト
-            const testBatch = [{ type: 'test', data: { test: true; }];
-            
-            // maxRetriesを超えるretryCountでretryBatchを呼び出し
-            await testDataCollector.retryBatch(testBatch, testDataCollector.maxRetries);
-            expect(testDataCollector.eventStats.dropped).toBeGreaterThan(initialDropped);
-        }, 5000');'
-        test('キュー追加エラーが適切に処理される', () => {
-            // 匿名化でエラーを発生させる
-            mockPrivacyManager.anonymizeData = jest.fn() as jest.Mock.mockImplementation((') => {'
-                throw new Error('Anonymization error') }');'
-            const consoleSpy = jest.spyOn(console, 'error').mockImplementation(');'
-            const initialErrors = dataCollector.eventStats.errors;
-            
-            dataCollector.startSession({ stageId: 'test' };
-            expect(dataCollector.eventStats.errors).toBe(initialErrors + 1);
-            expect(consoleSpy').toHaveBeenCalledWith('
-                'Failed to add event to queue: ';
-                expect.any(Error);
-            consoleSpy.mockRestore();
-        }');'
-    }
-    describe('制御機能', (') => {'
-        test('データ収集の有効/無効切り替えが正常に動作する', () => {
-            dataCollector.setEnabled(false);
-            expect(dataCollector.isEnabled).toBe(false);
-            expect(dataCollector.batchTimer).toBeNull('),'
-            dataCollector.startSession({ stageId: 'test' };
-            expect(dataCollector.eventQueue.length).toBe(0);
-            dataCollector.setEnabled(true);
-            expect(dataCollector.isEnabled).toBe(true);
-            expect(dataCollector.batchTimer).not.toBeNull();
-        }');'
-        test('一時停止/再開が正常に動作する', (') => {'
-            dataCollector.startSession({ stageId: 'test' };
-            expect(dataCollector.eventQueue.length).toBe(1);
-            dataCollector.setPaused(true);
-            expect(dataCollector.isPaused).toBe(true');'
-            dataCollector.collectBubbleInteraction({
-                bubbleType: 'normal',
-                action: 'popped' };
-            expect(dataCollector.eventQueue.length).toBe(1); // 増えない
-            
-            dataCollector.setPaused(false);
-            expect(dataCollector.isPaused).toBe(false);
-        }');'
-        test('キューのクリアが正常に動作する', (') => {'
-            dataCollector.startSession({ stageId: 'test' }');'
-            dataCollector.collectBubbleInteraction({
-                bubbleType: 'normal',
-                action: 'popped' };
-            expect(dataCollector.eventQueue.length).toBe(2);
-            const initialDropped = dataCollector.eventStats.dropped;
-            dataCollector.clearQueue();
-            expect(dataCollector.eventQueue.length).toBe(0);
-            expect(dataCollector.eventStats.dropped).toBe(initialDropped + 2);
-        }');'
-        test('強制フラッシュが正常に動作する', async (') => {'
-            dataCollector.startSession({ stageId: 'test' }');'
-            dataCollector.collectBubbleInteraction({
-                bubbleType: 'normal',
-                action: 'popped' };
-            expect(dataCollector.eventQueue.length).toBe(2);
-            await dataCollector.flushQueue();
-            expect(dataCollector.eventQueue.length).toBe(0');'
-            expect(mockStorageManager.getSavedData('sessions').length).toBeGreaterThan(0);
-        }');'
-    }
-    describe('統計', (') => {'
-        test('イベント統計が正常に更新される', () => {
-            const initialStats = dataCollector.getEventStats('),'
-            dataCollector.startSession({ stageId: 'test' }');'
-            dataCollector.collectBubbleInteraction({
-                bubbleType: 'normal',
-                action: 'popped' };
-            const stats = dataCollector.getEventStats();
-            expect(stats.collected).toBe(initialStats.collected + 1);
-            expect(stats.queueSize).toBe(2);
-            expect(stats.currentSessionId).not.toBeNull();
-            expect(stats.isEnabled).toBe(true);
-            expect(stats.isPaused).toBe(false);
-        }');'
-    }
-    describe('破棄', (') => {'
-        test('破棄処理が正常に動作する', async (') => {'
-            dataCollector.startSession({ stageId: 'test' }');'
-            dataCollector.collectBubbleInteraction({
-                bubbleType: 'normal',
-                action: 'popped' };
-            await dataCollector.destroy();
-            expect(dataCollector.batchTimer).toBeNull();
-            expect(dataCollector.eventQueue.length).toBe(0);
-            expect(dataCollector.currentSessionId).toBeNull();
-            expect(dataCollector.sessionStartTime).toBeNull();
-        }
-    }
-}');'
+
+            jest.spyOn(mockPrivacyManager, 'anonymizeData');
+
+            await dataCollector.collectEvent(personalEvent);
+
+            expect(mockPrivacyManager.anonymizeData).toHaveBeenCalled();
+        });
+
+        test('同意確認が実行される', async () => {
+            const event = {
+                type: 'interaction',
+                data: { action: 'click' }
+            };
+
+            jest.spyOn(mockPrivacyManager, 'checkConsent');
+
+            await dataCollector.collectEvent(event);
+
+            expect(mockPrivacyManager.checkConsent).toHaveBeenCalled();
+        });
+
+        test('オプトアウト時にデータが収集されない', async () => {
+            jest.spyOn(mockPrivacyManager, 'isOptedOut').mockReturnValue(true);
+            jest.spyOn(mockStorageManager, 'saveData');
+
+            const event = {
+                type: 'session',
+                data: { sessionId: 'opted_out_session' }
+            };
+
+            await dataCollector.collectEvent(event);
+
+            expect(mockStorageManager.saveData).not.toHaveBeenCalled();
+        });
+
+        test('プライバシー処理エラーでもデータ収集が継続される', async () => {
+            jest.spyOn(mockPrivacyManager, 'anonymizeData').mockRejectedValue(new Error('Privacy processing failed'));
+            jest.spyOn(mockStorageManager, 'saveData');
+
+            const event = {
+                type: 'session',
+                data: { sessionId: 'privacy_error_test' }
+            };
+
+            await expect(dataCollector.collectEvent(event)).resolves.not.toThrow();
+        });
+    });
+
+    describe('データ変換', () => {
+        test('カスタム変換処理が適用される', async () => {
+            const transformer = (data: any) => ({
+                ...data,
+                transformed: true,
+                processedAt: Date.now()
+            });
+
+            dataCollector.addTransformer('session', transformer);
+
+            const event = {
+                type: 'session',
+                data: { sessionId: 'transform_test' }
+            };
+
+            await dataCollector.collectEvent(event);
+
+            const storedData = await mockStorageManager.getData('sessionData');
+            expect(storedData[0].transformed).toBe(true);
+            expect(storedData[0].processedAt).toBeDefined();
+        });
+    });
+
+    describe('統計情報', () => {
+        test('収集統計が追跡される', async () => {
+            const events = [
+                { type: 'session', data: { sessionId: 'stat_1' } },
+                { type: 'interaction', data: { action: 'click' } },
+                { type: 'interaction', data: { action: 'drag' } },
+                { type: 'error', data: { message: 'Test error' } }
+            ];
+
+            for (const event of events) {
+                await dataCollector.collectEvent(event);
+            }
+
+            const stats = dataCollector.getStatistics();
+            expect(stats.totalEvents).toBe(4);
+            expect(stats.eventsByType.session).toBe(1);
+            expect(stats.eventsByType.interaction).toBe(2);
+            expect(stats.eventsByType.error).toBe(1);
+        });
+    });
+
+    describe('リソース管理', () => {
+        test('destroyメソッドでリソースがクリーンアップされる', () => {
+            jest.spyOn(mockStorageManager, 'destroy');
+            jest.spyOn(mockPrivacyManager, 'destroy');
+
+            dataCollector.destroy();
+
+            expect(mockStorageManager.destroy).toHaveBeenCalled();
+            expect(mockPrivacyManager.destroy).toHaveBeenCalled();
+        });
+    });
+
+    describe('エラーハンドリング', () => {
+        test('ストレージエラーが適切に処理される', async () => {
+            jest.spyOn(mockStorageManager, 'saveData').mockRejectedValue(new Error('Storage failed'));
+
+            const event = {
+                type: 'session',
+                data: { sessionId: 'storage_error_test' }
+            };
+
+            await expect(dataCollector.collectEvent(event)).resolves.not.toThrow();
+
+            const stats = dataCollector.getStatistics();
+            expect(stats.errors).toBeGreaterThan(0);
+        });
+
+        test('不正なデータ形式のエラー処理', async () => {
+            const invalidEvents = [
+                null,
+                undefined,
+                { type: null, data: {} },
+                { type: 'session' }, // data missing
+                { data: { sessionId: 'test' } } // type missing
+            ];
+
+            for (const invalidEvent of invalidEvents) {
+                await expect(dataCollector.collectEvent(invalidEvent)).resolves.not.toThrow();
+            }
+        });
+    });
+});
