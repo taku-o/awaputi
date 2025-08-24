@@ -99,6 +99,7 @@ export class SecurityManager {
     private privacyManager: PrivacyManager;
     private statistics: SecurityStatistics;
     private sessionId?: string;
+    private errorHandler: any;
 
     constructor() {
         this.encryptionConfig = {
@@ -124,6 +125,9 @@ export class SecurityManager {
         
         // プライバシー管理
         this.privacyManager = new PrivacyManager(this);
+        
+        // エラーハンドラーの取得
+        this.errorHandler = getErrorHandler();
         
         // セキュリティ統計
         this.statistics = {
@@ -553,7 +557,6 @@ export class SecurityManager {
         for (let i = 0; i < length; i++) {
             result += characters.charAt(Math.floor(Math.random() * characters.length));
         }
-        }
         
         return result;
     }
@@ -575,6 +578,7 @@ export class SecurityManager {
         };
         
         console.log('Security Event:', event);
+    }
     
     /**
      * セッションIDの取得
@@ -583,7 +587,7 @@ export class SecurityManager {
         if (!this.sessionId) {
             this.sessionId = this.generateRandomData(16);
         }
-        return this.sessionId;
+        return this.sessionId!;
     }
     
     /**
@@ -594,7 +598,6 @@ export class SecurityManager {
         let binary = '';
         for (let i = 0; i < bytes.byteLength; i++) {
             binary += String.fromCharCode(bytes[i]);
-        }
         }
         return btoa(binary);
     }
@@ -608,21 +611,19 @@ export class SecurityManager {
         for (let i = 0; i < binary.length; i++) {
             bytes[i] = binary.charCodeAt(i);
         }
-        }
         return bytes.buffer;
     }
     
     /**
      * シンプルハッシュ関数（フォールバック用）
      */
-    private simpleHash(str: string): string {
+    public simpleHash(str: string): string {
         let hash = 0;
         if (str.length === 0) return hash.toString(16);
         for (let i = 0; i < str.length; i++) {
             const char = str.charCodeAt(i);
             hash = ((hash << 5) - hash) + char;
             hash = hash & hash; // 32bit整数に変換
-        }
         }
 
         return Math.abs(hash).toString(16).padStart(8, '0');
@@ -775,7 +776,6 @@ class KeyManager {
         for (let i = 0; i < array.byteLength; i++) {
             binary += String.fromCharCode(array[i]);
         }
-        }
         return btoa(binary);
     }
     
@@ -784,7 +784,6 @@ class KeyManager {
         const array = new Uint8Array(binary.length);
         for (let i = 0; i < binary.length; i++) {
             array[i] = binary.charCodeAt(i);
-        }
         }
         return array;
     }
@@ -823,6 +822,7 @@ class IntegrityChecker {
                 const hashArray = Array.from(new Uint8Array(hashBuffer));
                 
                 return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+            }
             
             // フォールバック
             return this.securityManager.simpleHash(dataString);
@@ -874,11 +874,10 @@ class PrivacyManager {
             return data;
         }
     }
-    ','
 
-    private anonymizeString(str: string): string { ''
-        if(!str || str.length === 0) return ','
-        ','
+    private anonymizeString(str: string): string {
+        if(!str || str.length === 0) return '';
+        
         // 最初と最後の文字を保持、中間をマスク
         if (str.length <= 2) {
             return '*'.repeat(str.length);

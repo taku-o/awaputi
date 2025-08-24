@@ -3,8 +3,51 @@
  * アクセシブルなリーダーボード表示コンポーネント
  */
 
+interface LeaderboardEntry {
+    id?: string | number;
+    rank: number;
+    playerName: string;
+    score: number;
+    timestamp: number;
+    isCurrentPlayer?: boolean;
+}
+
+interface LeaderboardOptions {
+    container?: HTMLElement;
+    maxEntries?: number;
+    showPlayerRank?: boolean;
+    showPagination?: boolean;
+    itemsPerPage?: number;
+    theme?: string;
+    responsive?: boolean;
+    animations?: boolean;
+    accessibility?: boolean;
+    announcements?: boolean;
+    keyboardNavigation?: boolean;
+    highContrast?: boolean;
+    reducedMotion?: boolean;
+    screenReaderDescriptions?: boolean;
+    localization?: boolean;
+    defaultLanguage?: string;
+    rtlSupport?: boolean;
+}
+
+interface LeaderboardManager {
+    getRanking(period: string, type: string, options: { limit: number; search: string }): Promise<{ entries: LeaderboardEntry[]; total: number; hasMore: boolean }>;
+}
+
 export class SocialLeaderboardUI {
-    constructor(leaderboardManager, options = {) {
+    private leaderboardManager: LeaderboardManager | null;
+    private config: any;
+    private state: any;
+    private elements: any;
+    private handlers: any;
+    private cache: Map<string, any>;
+    private lastUpdate: number;
+    private stats: any;
+    private searchTimeout?: NodeJS.Timeout;
+
+    constructor(leaderboardManager: LeaderboardManager | null, options: LeaderboardOptions = {}) {
         this.leaderboardManager = leaderboardManager;
         
         // 設定
@@ -14,68 +57,81 @@ export class SocialLeaderboardUI {
             maxEntries: options.maxEntries || 10,
             showPlayerRank: options.showPlayerRank !== false,
             showPagination: options.showPagination === true,
-            itemsPerPage: options.itemsPerPage || 10;
+            itemsPerPage: options.itemsPerPage || 10,
             // スタイル設定
-            theme: options.theme || 'default', // default, minimal, gaming, elegant,
+            theme: options.theme || 'default', // default, minimal, gaming, elegant
             responsive: options.responsive !== false,
-            animations: options.animations !== false;
+            animations: options.animations !== false,
             // アクセシビリティ設定
             accessibility: {
-                enabled: options.accessibility !== false ,
+                enabled: options.accessibility !== false,
                 announcements: options.announcements !== false,
                 keyboardNavigation: options.keyboardNavigation !== false,
                 highContrast: options.highContrast === true,
-    reducedMotion: options.reducedMotion = == true  }
-                screenReaderDescriptions: options.screenReaderDescriptions !== false 
-    };
+                reducedMotion: options.reducedMotion === true,
+                screenReaderDescriptions: options.screenReaderDescriptions !== false
+            },
             // 多言語設定
-            localization: { enabled: options.localization !== false,''
-                defaultLanguage: options.defaultLanguage || 'ja' ,
-    rtlSupport: options.rtlSupport === true  }
+            localization: {
+                enabled: options.localization !== false,
+                defaultLanguage: options.defaultLanguage || 'ja',
+                rtlSupport: options.rtlSupport === true
+            }
         };
+        
         // 状態管理
-        this.state = {;
-            currentLeaderboard: 'overall,
+        this.state = {
+            currentLeaderboard: 'overall',
             currentPage: 1,
-    selectedEntry: null,
+            selectedEntry: null,
             focusedElement: null,
-            sortOrder: 'desc,
-            filterPeriod: 'all,
-            searchQuery: ','
-    loading: false;
+            sortOrder: 'desc',
+            filterPeriod: 'all',
+            searchQuery: '',
+            loading: false
+        };
+        
         // DOM要素
-        this.elements = { container: null,
+        this.elements = {
+            container: null,
             header: null,
             controls: null,
             content: null,
             entries: [],
             pagination: null,
             announcer: null,
-    loadingIndicator: null;
+            loadingIndicator: null
+        };
+        
         // イベントハンドラー
-        this.handlers = { keydown: this.handleKeydown.bind(this,
+        this.handlers = {
+            keydown: this.handleKeydown.bind(this),
             click: this.handleClick.bind(this),
             focus: this.handleFocus.bind(this),
             resize: this.handleResize.bind(this),
-            filterChange: this.handleFilterChange.bind(this,
-    searchInput: this.handleSearchInput.bind(this  };
+            filterChange: this.handleFilterChange.bind(this),
+            searchInput: this.handleSearchInput.bind(this)
+        };
         
         // データキャッシュ
         this.cache = new Map();
         this.lastUpdate = 0;
         
         // 統計
-        this.stats = { renders: 0,
+        this.stats = {
+            renders: 0,
             interactions: 0,
             keyboardNavigations: 0,
-    searches: 0  };
+            searches: 0
+        };
+        
         this.initialize();
     }
     
     /**
      * 初期化
      */
-    initialize() {
+    private initialize(): void {
         try {
             // DOM要素の作成
             this.createElements();
@@ -85,56 +141,59 @@ export class SocialLeaderboardUI {
             this.setupEventListeners();
             // アクセシビリティの設定
             if (this.config.accessibility.enabled) {
-    }
-                this.setupAccessibility(); }
+                this.setupAccessibility();
             }
-            ;
+            
             // 初期データの読み込み
-            this.loadInitialData()';'
-            this.log('SocialLeaderboardUI初期化完了);'
+            this.loadInitialData();
+            this.log('SocialLeaderboardUI初期化完了');
 
         } catch (error) {
-            this.handleError('LEADERBOARD_UI_INIT_FAILED', error' }'
+            this.handleError('LEADERBOARD_UI_INIT_FAILED', error);
+        }
     }
     
     /**
-     * DOM要素の作成'
-     */''
-    createElements()';'
+     * DOM要素の作成
+     */
+    private createElements(): void {
         this.elements.container = document.createElement('div');
         this.elements.container.className = 'social-leaderboard-ui';
         this.elements.container.setAttribute('role', 'region');
-        this.elements.container.setAttribute('aria-label', 'リーダーボード);'
+        this.elements.container.setAttribute('aria-label', 'リーダーボード');
         
         // ヘッダー
         this.elements.header = this.createHeader();
         // コントロール
-        this.elements.controls = this.createControls()';'
+        this.elements.controls = this.createControls();
+        
         this.elements.content = document.createElement('div');
         this.elements.content.className = 'leaderboard-content';
         this.elements.content.setAttribute('role', 'main');
         this.elements.content.setAttribute('aria-live', 'polite');
-        this.elements.content.setAttribute('aria-busy', 'false);'
+        this.elements.content.setAttribute('aria-busy', 'false');
         
         // ページネーション
-        if (this.config.showPagination) { this.elements.pagination = this.createPagination();
+        if (this.config.showPagination) {
+            this.elements.pagination = this.createPagination();
+        }
         
         // ローディングインジケーター
         this.elements.loadingIndicator = this.createLoadingIndicator();
+        
         // スクリーンリーダー用アナウンサー
         if (this.config.accessibility.enabled) {
-
             this.elements.announcer = document.createElement('div');
-            this.elements.announcer.className = 'leaderboard-announcer sr-only,
+            this.elements.announcer.className = 'leaderboard-announcer sr-only';
             this.elements.announcer.setAttribute('aria-live', 'polite');
-            this.elements.announcer.setAttribute('aria-atomic', 'true),'
-            this.elements.announcer.style.cssText = ,
-                position: absolute !important,
-                left: -10000px !important,
-                width: 1px !important,
-                height: 1px !important,
-    overflow: hidden !important }
-            `; }
+            this.elements.announcer.setAttribute('aria-atomic', 'true');
+            this.elements.announcer.style.cssText = `
+                position: absolute !important;
+                left: -10000px !important;
+                width: 1px !important;
+                height: 1px !important;
+                overflow: hidden !important;
+            `;
         }
         
         // 要素の組み立て
@@ -142,11 +201,15 @@ export class SocialLeaderboardUI {
         this.elements.container.appendChild(this.elements.controls);
         this.elements.container.appendChild(this.elements.content);
         
-        if (this.elements.pagination) { this.elements.container.appendChild(this.elements.pagination);
+        if (this.elements.pagination) {
+            this.elements.container.appendChild(this.elements.pagination);
+        }
         
         this.elements.container.appendChild(this.elements.loadingIndicator);
         
-        if (this.elements.announcer) { this.elements.container.appendChild(this.elements.announcer);
+        if (this.elements.announcer) {
+            this.elements.container.appendChild(this.elements.announcer);
+        }
         
         // 指定されたコンテナに追加
         this.config.container.appendChild(this.elements.container);
@@ -154,8 +217,8 @@ export class SocialLeaderboardUI {
     
     /**
      * ヘッダーの作成
-     */''
-    createHeader()';'
+     */
+    private createHeader(): HTMLDivElement {
         const header = document.createElement('div');
         header.className = 'leaderboard-header';
 
@@ -176,14 +239,14 @@ export class SocialLeaderboardUI {
     }
     
     /**
-     * コントロールの作成'
-     */''
-    createControls()';'
+     * コントロールの作成
+     */
+    private createControls(): HTMLDivElement {
         const controls = document.createElement('div');
         controls.className = 'leaderboard-controls';
         controls.setAttribute('role', 'toolbar');
         controls.setAttribute('aria-label', 'リーダーボード制御');
-        ';'
+        
         // フィルター選択
         const filterGroup = document.createElement('div');
         filterGroup.className = 'control-group filter-group';
@@ -196,30 +259,24 @@ export class SocialLeaderboardUI {
         filterSelect.id = 'leaderboard-filter';
         filterSelect.className = 'leaderboard-filter';
         filterSelect.setAttribute('aria-label', '表示期間を選択');
-        ';'
 
-        const filterOptions = [';'
-            { value: 'all', label: '全期間'
-            ,''
-            { value: 'daily', label: '今日'
-            ,''
-            { value: 'weekly', label: '今週'
-            ,]'
-            { value: 'monthly', label: '今月'
-            }]
+        const filterOptions = [
+            { value: 'all', label: '全期間' },
+            { value: 'daily', label: '今日' },
+            { value: 'weekly', label: '今週' },
+            { value: 'monthly', label: '今月' }
         ];
 
-        filterOptions.forEach(option => {  '),'
-            const optionElement = document.createElement('option),'
-            optionElement.value = option.value,
-            optionElement.textContent = option.label }
-            filterSelect.appendChild(optionElement); }
-        };
-        ';'
+        filterOptions.forEach(option => {
+            const optionElement = document.createElement('option');
+            optionElement.value = option.value;
+            optionElement.textContent = option.label;
+            filterSelect.appendChild(optionElement);
+        });
 
         filterGroup.appendChild(filterLabel);
         filterGroup.appendChild(filterSelect);
-        ';'
+        
         // 検索ボックス
         const searchGroup = document.createElement('div');
         searchGroup.className = 'control-group search-group';
@@ -242,10 +299,9 @@ export class SocialLeaderboardUI {
         searchButton.innerHTML = '🔍';
         
         searchGroup.appendChild(searchLabel);
-
         searchGroup.appendChild(searchInput);
         searchGroup.appendChild(searchButton);
-        ';'
+        
         // 更新ボタン
         const refreshButton = document.createElement('button');
         refreshButton.type = 'button';
@@ -261,9 +317,9 @@ export class SocialLeaderboardUI {
     }
     
     /**
-     * ページネーションの作成'
-     */''
-    createPagination()';'
+     * ページネーションの作成
+     */
+    private createPagination(): HTMLElement {
         const pagination = document.createElement('nav');
         pagination.className = 'leaderboard-pagination';
         pagination.setAttribute('role', 'navigation');
@@ -294,9 +350,9 @@ export class SocialLeaderboardUI {
     }
     
     /**
-     * ローディングインジケーターの作成'
-     */''
-    createLoadingIndicator()';'
+     * ローディングインジケーターの作成
+     */
+    private createLoadingIndicator(): HTMLDivElement {
         const indicator = document.createElement('div');
         indicator.className = 'loading-indicator';
         indicator.style.display = 'none';
@@ -318,10 +374,10 @@ export class SocialLeaderboardUI {
     }
     
     /**
-     * スタイルの適用'
-     */''
-    applyStyles()';'
-        const style = document.createElement('style);'
+     * スタイルの適用
+     */
+    private applyStyles(): void {
+        const style = document.createElement('style');
         style.textContent = this.generateCSS();
         document.head.appendChild(style);
     }
@@ -329,361 +385,444 @@ export class SocialLeaderboardUI {
     /**
      * CSSの生成
      */
-    generateCSS() {
-        return ,
+    private generateCSS(): string {
+        return `
             .social-leaderboard-ui {
-                background: #ffffff,
-                border-radius: 8px,
+                background: #ffffff;
+                border-radius: 8px;
                 box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-                padding: 24px,
-    margin: 16px 0 }
-                font-family: system-ui, -apple-system, sans-serif; }
+                padding: 24px;
+                margin: 16px 0;
+                font-family: system-ui, -apple-system, sans-serif;
             }
             
-            .leaderboard-header { text-align: center,
-                margin-bottom: 24px }
+            .leaderboard-header {
+                text-align: center;
+                margin-bottom: 24px;
+            }
             
-            .leaderboard-title { font-size: 24px,
-                font-weight: 600,
-                color: #333,
-    margin: 0 0 8px 0  }
+            .leaderboard-title {
+                font-size: 24px;
+                font-weight: 600;
+                color: #333;
+                margin: 0 0 8px 0;
+            }
             
-            .leaderboard-subtitle { font-size: 14px,
-                color: #666,
-    margin: 0 }
+            .leaderboard-subtitle {
+                font-size: 14px;
+                color: #666;
+                margin: 0;
+            }
             
-            .leaderboard-controls { display: flex,
-    gap: 16px,
-                margin-bottom: 24px,
-                flex-wrap: wrap,
-                align-items: center,
+            .leaderboard-controls {
+                display: flex;
+                gap: 16px;
+                margin-bottom: 24px;
+                flex-wrap: wrap;
+                align-items: center;
+            }
             
-            .control-group { display: flex,
-                align-items: center,
-                gap: 8px  }
+            .control-group {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+            }
             
-            .control-group label { font-size: 14px,
-                font-weight: 500,
-                color: #555  }
+            .control-group label {
+                font-size: 14px;
+                font-weight: 500;
+                color: #555;
+            }
             
-            .leaderboard-filter;
-            .leaderboard-search { padding: 8px 12px,
-                border: 1px solid #ddd,
-                border-radius: 4px,
-                font-size: 14px }
+            .leaderboard-filter,
+            .leaderboard-search {
+                padding: 8px 12px;
+                border: 1px solid #ddd;
+                border-radius: 4px;
+                font-size: 14px;
+            }
             
             .leaderboard-filter:focus,
-            .leaderboard-search:focus { outline: 3px solid #007AFF,
-                outline-offset: 2px }
+            .leaderboard-search:focus {
+                outline: 3px solid #007AFF;
+                outline-offset: 2px;
+            }
             
             .search-button,
-            .refresh-button { padding: 8px 16px,
-                background: #007AFF,
-                color: white,
-    border: none,
-                border-radius: 4px,
-                font-size: 14px,
-                cursor: pointer,
-    transition: background-color 0.2s  }
+            .refresh-button {
+                padding: 8px 16px;
+                background: #007AFF;
+                color: white;
+                border: none;
+                border-radius: 4px;
+                font-size: 14px;
+                cursor: pointer;
+                transition: background-color 0.2s;
+            }
             
-            .search-button: hover,
-            .refresh-button:hover { background: #0056b3 }
+            .search-button:hover,
+            .refresh-button:hover {
+                background: #0056b3;
+            }
             
             .search-button:focus,
-            .refresh-button:focus { outline: 3px solid #007AFF,
-                outline-offset: 2px }
+            .refresh-button:focus {
+                outline: 3px solid #007AFF;
+                outline-offset: 2px;
+            }
             
-            .leaderboard-content { min-height: 200px }
+            .leaderboard-content {
+                min-height: 200px;
+            }
             
-            .leaderboard-entry { display: flex,
-                align-items: center,
-                padding: 12px 16px,
-    border: 1px solid #eee,
-                border-radius: 6px,
-                margin-bottom: 8px,
-                background: #fafafa,
-                transition: all 0.2s ease,
-                cursor: pointer,
-    position: relative,
+            .leaderboard-entry {
+                display: flex;
+                align-items: center;
+                padding: 12px 16px;
+                border: 1px solid #eee;
+                border-radius: 6px;
+                margin-bottom: 8px;
+                background: #fafafa;
+                transition: all 0.2s ease;
+                cursor: pointer;
+                position: relative;
+            }
             
-            .leaderboard-entry:hover { background: #f0f8ff,
-                border-color: #007AFF }
+            .leaderboard-entry:hover {
+                background: #f0f8ff;
+                border-color: #007AFF;
+            }
             
-            .leaderboard-entry:focus { outline: 3px solid #007AFF,
-                outline-offset: 2px,
-                background: #f0f8ff  }
+            .leaderboard-entry:focus {
+                outline: 3px solid #007AFF;
+                outline-offset: 2px;
+                background: #f0f8ff;
+            }
             
-            .leaderboard-entry.current-player { background: #fff3cd,
-                border-color: #ffc107 }
+            .leaderboard-entry.current-player {
+                background: #fff3cd;
+                border-color: #ffc107;
+            }
             
-            .entry-rank { font-size: 18px,
-                font-weight: bold,
-                color: #333,
-                min-width: 40px,
-                text-align: center,
+            .entry-rank {
+                font-size: 18px;
+                font-weight: bold;
+                color: #333;
+                min-width: 40px;
+                text-align: center;
+            }
             
-            .entry-rank.top-3 { color: #ffd700 }
+            .entry-rank.top-3 {
+                color: #ffd700;
+            }
             
-            .entry-name { flex: 1,
-                font-size: 16px,
-                font-weight: 500,
-                color: #333,
-    margin: 0 16px  }
+            .entry-name {
+                flex: 1;
+                font-size: 16px;
+                font-weight: 500;
+                color: #333;
+                margin: 0 16px;
+            }
             
-            .entry-score { font-size: 16px,
-                font-weight: 600,
-                color: #007AFF  }
+            .entry-score {
+                font-size: 16px;
+                font-weight: 600;
+                color: #007AFF;
+            }
             
-            .entry-metadata { font-size: 12px,
-    color: #666,
-                margin-top: 4px }
+            .entry-metadata {
+                font-size: 12px;
+                color: #666;
+                margin-top: 4px;
+            }
             
-            .leaderboard-pagination { display: flex,
-                justify-content: center,
-                align-items: center,
-                gap: 16px,
-                margin-top: 24px }
+            .leaderboard-pagination {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                gap: 16px;
+                margin-top: 24px;
+            }
             
-            .pagination-button { padding: 8px 16px,
-                background: #f8f9fa,
-    border: 1px solid #ddd,
-                border-radius: 4px,
-                font-size: 14px,
-                cursor: pointer,
-    transition: background-color 0.2s  }
+            .pagination-button {
+                padding: 8px 16px;
+                background: #f8f9fa;
+                border: 1px solid #ddd;
+                border-radius: 4px;
+                font-size: 14px;
+                cursor: pointer;
+                transition: background-color 0.2s;
+            }
             
-            .pagination-button:hover:not(:disabled) { background: #e9ecef }
+            .pagination-button:hover:not(:disabled) {
+                background: #e9ecef;
+            }
             
-            .pagination-button:focus { outline: 3px solid #007AFF,
-                outline-offset: 2px }
+            .pagination-button:focus {
+                outline: 3px solid #007AFF;
+                outline-offset: 2px;
+            }
             
-            .pagination-button:disabled { opacity: 0.5,
-                cursor: not-allowed  }
+            .pagination-button:disabled {
+                opacity: 0.5;
+                cursor: not-allowed;
+            }
             
-            .page-info { font-size: 14px,
-    color: #666 }
+            .page-info {
+                font-size: 14px;
+                color: #666;
+            }
             
-            .loading-indicator { text-align: center,
-    padding: 40px }
+            .loading-indicator {
+                text-align: center;
+                padding: 40px;
+            }
             
-            .loading-spinner { width: 40px,
-                height: 40px,
-    border: 4px solid #f3f3f3,
-                border-top: 4px solid #007AFF,
-                border-radius: 50%,
-                animation: spin 1s linear infinite,
-    margin: 0 auto 16px  }
+            .loading-spinner {
+                width: 40px;
+                height: 40px;
+                border: 4px solid #f3f3f3;
+                border-top: 4px solid #007AFF;
+                border-radius: 50%;
+                animation: spin 1s linear infinite;
+                margin: 0 auto 16px;
+            }
             
             @keyframes spin {
-                0% { transform: rotate(0deg);
-                100% { transform: rotate(360deg }
+                0% { transform: rotate(0deg); }
+                100% { transform: rotate(360deg); }
+            }
             
-            .loading-message { font-size: 16px,
-                color: #666  }
+            .loading-message {
+                font-size: 16px;
+                color: #666;
+            }
             
-            .sr-only { position: absolute !important,
-                left: -10000px !important,
-                width: 1px !important,
-                height: 1px !important,
-                overflow: hidden !important,
-    clip: rect(1px, 1px, 1px, 1px) !important,
-                clip-path: inset(50%) !important }
+            .sr-only {
+                position: absolute !important;
+                left: -10000px !important;
+                width: 1px !important;
+                height: 1px !important;
+                overflow: hidden !important;
+                clip: rect(1px, 1px, 1px, 1px) !important;
+                clip-path: inset(50%) !important;
+            }
             
             /* 高コントラストモード */
-            .high-contrast-mode .social-leaderboard-ui { background: #000000 !important,
-                color: #ffffff !important,
-    border: 2px solid #ffffff !important  }
+            .high-contrast-mode .social-leaderboard-ui {
+                background: #000000 !important;
+                color: #ffffff !important;
+                border: 2px solid #ffffff !important;
+            }
             
-            .high-contrast-mode .leaderboard-entry { background: #333333 !important,
-                border-color: #ffffff !important,
-                color: #ffffff !important  }
+            .high-contrast-mode .leaderboard-entry {
+                background: #333333 !important;
+                border-color: #ffffff !important;
+                color: #ffffff !important;
+            }
             
-            .high-contrast-mode .leaderboard-entry: hover,
-            .high-contrast-mode .leaderboard-entry:focus { background: #555555 !important }
+            .high-contrast-mode .leaderboard-entry:hover,
+            .high-contrast-mode .leaderboard-entry:focus {
+                background: #555555 !important;
+            }
             
             /* 動きの軽減モード */
-            .reduced-motion-mode * { animation-duration: 0.01ms !important,
-                animation-iteration-count: 1 !important,
-                transition-duration: 0.01ms !important }
-            ';'
-
-            /* レスポンシブ対応 */''
-            @media(max-width: 768px) { .social-leaderboard-ui {
-                    padding: 16px,
-    margin: 8px 0 }
-                
-                .leaderboard-controls { flex-direction: column,
-                    align-items: stretch,
-                    gap: 12px  }
-                
-                .control-group { flex-direction: column,
-                    align-items: stretch,
-                    gap: 4px  }
-                
-                .leaderboard-entry { flex-direction: column,
-                    align-items: stretch,
-                    text-align: center,
-                    gap: 8px  }
-                
-                .entry-rank { min-width: auto,
-                
-                .leaderboard-pagination { flex-direction: column,
-                    gap: 12px  }
+            .reduced-motion-mode * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
             }
-            ';'
 
-            /* RTL言語サポート */''
-            [dir="rtl"] .leaderboard-entry { direction: rtl;"
+            /* レスポンシブ対応 */
+            @media(max-width: 768px) {
+                .social-leaderboard-ui {
+                    padding: 16px;
+                    margin: 8px 0;
+                }
+                
+                .leaderboard-controls {
+                    flex-direction: column;
+                    align-items: stretch;
+                    gap: 12px;
+                }
+                
+                .control-group {
+                    flex-direction: column;
+                    align-items: stretch;
+                    gap: 4px;
+                }
+                
+                .leaderboard-entry {
+                    flex-direction: column;
+                    align-items: stretch;
+                    text-align: center;
+                    gap: 8px;
+                }
+                
+                .entry-rank {
+                    min-width: auto;
+                }
+                
+                .leaderboard-pagination {
+                    flex-direction: column;
+                    gap: 12px;
+                }
+            }
 
-            [dir = "rtl"] .entry-rank { text-align: center,
+            /* RTL言語サポート */
+            [dir="rtl"] .leaderboard-entry {
+                direction: rtl;
+            }
+
+            [dir="rtl"] .entry-rank {
+                text-align: center;
+            }
         `;
     }
     
     /**
-     * イベントリスナーの設定"
-     */""
-    setupEventListeners() {"
-        // キーボードナビゲーション""
-        this.elements.container.addEventListener('keydown', this.handlers.keydown','
-        ','
+     * イベントリスナーの設定
+     */
+    private setupEventListeners(): void {
+        // キーボードナビゲーション
+        this.elements.container.addEventListener('keydown', this.handlers.keydown);
+        
         // フォーカス管理
-        this.elements.container.addEventListener('focusin', this.handlers.focus','
-        ','
+        this.elements.container.addEventListener('focusin', this.handlers.focus);
+        
         // フィルター変更
-        const filterSelect = this.elements.controls.querySelector('.leaderboard-filter,
+        const filterSelect = this.elements.controls.querySelector('.leaderboard-filter');
         if (filterSelect) {
-    }
-
-            filterSelect.addEventListener('change', this.handlers.filterChange'; }'
+            filterSelect.addEventListener('change', this.handlers.filterChange);
         }
-        ';'
+        
         // 検索
         const searchInput = this.elements.controls.querySelector('.leaderboard-search');
-        const searchButton = this.elements.controls.querySelector('.search-button';
+        const searchButton = this.elements.controls.querySelector('.search-button');
         if (searchInput) {
-
-            searchInput.addEventListener('input', this.handlers.searchInput','
-            searchInput.addEventListener('keydown', (event) => { }
-
-                if(event.key === 'Enter' { }'
-                    this.executeSearch(); }
-}
-
-        }''
-        if (searchButton) {', ' }
-
-            searchButton.addEventListener('click', this.executeSearch.bind(this)); }
+            searchInput.addEventListener('input', this.handlers.searchInput);
+            searchInput.addEventListener('keydown', (event: KeyboardEvent) => {
+                if (event.key === 'Enter') {
+                    this.executeSearch();
+                }
+            });
         }
-        ';'
+        if (searchButton) {
+            searchButton.addEventListener('click', this.executeSearch.bind(this));
+        }
+        
         // 更新ボタン
-        const refreshButton = this.elements.controls.querySelector('.refresh-button';
-        if (refreshButton) {', ' }
-
-            refreshButton.addEventListener('click', this.refresh.bind(this); }
+        const refreshButton = this.elements.controls.querySelector('.refresh-button');
+        if (refreshButton) {
+            refreshButton.addEventListener('click', this.refresh.bind(this));
         }
-        ';'
+        
         // ページネーション
         if (this.elements.pagination) {
-
             const prevButton = this.elements.pagination.querySelector('.prev-button');
-            const nextButton = this.elements.pagination.querySelector('.next-button),'
+            const nextButton = this.elements.pagination.querySelector('.next-button');
 
             if (prevButton) {
+                prevButton.addEventListener('click', () => this.goToPage(this.state.currentPage - 1));
+            }
+            if (nextButton) {
+                nextButton.addEventListener('click', () => this.goToPage(this.state.currentPage + 1));
+            }
         }
-
-                prevButton.addEventListener('click', () => this.goToPage(this.state.currentPage - 1); }
-
-            }''
-            if (nextButton) {', ' }
-
-                nextButton.addEventListener('click', () => this.goToPage(this.state.currentPage + 1)); }
-}
-        ';'
+        
         // ウィンドウリサイズ
-        window.addEventListener('resize', this.handlers.resize';'
+        window.addEventListener('resize', this.handlers.resize);
     }
     
     /**
-     * アクセシビリティの設定'
-     */''
-    setupAccessibility()';'
-        this.elements.container.setAttribute('tabindex', '0);'
+     * アクセシビリティの設定
+     */
+    private setupAccessibility(): void {
+        this.elements.container.setAttribute('tabindex', '0');
         
         // ARIA属性の設定
         this.updateAriaAttributes();
         
         // スクリーンリーダー用の説明
-        if (this.config.accessibility.screenReaderDescriptions) { this.addScreenReaderDescriptions();
+        if (this.config.accessibility.screenReaderDescriptions) {
+            this.addScreenReaderDescriptions();
+        }
     }
     
     /**
      * ARIA属性の更新
-     */''
-    updateAriaAttributes()';'
-        this.elements.content.setAttribute('aria-label, `${ entriesCount)件のリーダーボードエントリー`,
-        ','
+     */
+    private updateAriaAttributes(): void {
+        const entriesCount = this.elements.entries.length;
+        this.elements.content.setAttribute('aria-label', `${entriesCount}件のリーダーボードエントリー`);
+        
         // エントリーにARIA属性を設定
-        this.elements.entries.forEach((entry, index) => { ''
-            entry.setAttribute('role', 'button'};
-            entry.setAttribute('tabindex', '0'};' }'
-
-            entry.setAttribute('aria-posinset', (index + 1).toString());' }'
-
-            entry.setAttribute('aria-setsize', entriesCount.toString();
-        };
+        this.elements.entries.forEach((entry: HTMLElement, index: number) => {
+            entry.setAttribute('role', 'button');
+            entry.setAttribute('tabindex', '0');
+            entry.setAttribute('aria-posinset', (index + 1).toString());
+            entry.setAttribute('aria-setsize', entriesCount.toString());
+        });
     }
     
     /**
-     * スクリーンリーダー用説明の追加'
-     */''
-    addScreenReaderDescriptions()';'
+     * スクリーンリーダー用説明の追加
+     */
+    private addScreenReaderDescriptions(): void {
         const description = document.createElement('div');
         description.id = 'leaderboard-description';
         description.className = 'sr-only';
-        description.textContent = `;
-            リーダーボードでは上位プレイヤーのスコアを確認できます。;
-            矢印キーでエントリー間を移動し、Enterキーで詳細を表示できます。;
-            フィルターと検索機能を使用してランキングを絞り込むことができます。;
+        description.textContent = `
+            リーダーボードでは上位プレイヤーのスコアを確認できます。
+            矢印キーでエントリー間を移動し、Enterキーで詳細を表示できます。
+            フィルターと検索機能を使用してランキングを絞り込むことができます。
         `;
 
         this.elements.container.appendChild(description);
-        this.elements.container.setAttribute('aria-describedby', 'leaderboard-description);'
+        this.elements.container.setAttribute('aria-describedby', 'leaderboard-description');
     }
     
     /**
      * 初期データの読み込み
      */
-    async loadInitialData() { try {
+    private async loadInitialData(): Promise<void> {
+        try {
             this.showLoading(true);
             await this.loadLeaderboardData();
-            this.render(),' }'
-
+            this.render();
         } catch (error) {
-            this.handleError('INITIAL_DATA_LOAD_FAILED', error) } finally { this.showLoading(false);
+            this.handleError('INITIAL_DATA_LOAD_FAILED', error);
+        } finally {
+            this.showLoading(false);
+        }
     }
     
     /**
      * リーダーボードデータの読み込み
      */
-    async loadLeaderboardData() {
+    private async loadLeaderboardData(): Promise<any> {
         const cacheKey = `${this.state.currentLeaderboard}_${this.state.filterPeriod}_${this.state.searchQuery}`;
         
         // キャッシュチェック
-        if (this.cache.has(cacheKey) && Date.now() - this.lastUpdate < 60000) { return this.cache.get(cacheKey);
+        if (this.cache.has(cacheKey) && Date.now() - this.lastUpdate < 60000) {
+            return this.cache.get(cacheKey);
+        }
         
-        try { let data,
+        try {
+            let data: any;
             
             if (this.leaderboardManager) {
-            
                 data = await this.leaderboardManager.getRanking(
-                    this.state.filterPeriod);
-                    this.state.currentLeaderboard),
+                    this.state.filterPeriod,
+                    this.state.currentLeaderboard,
                     {
-                        limit: this.config.maxEntries),
-                        search: this.state.searchQuery  }
+                        limit: this.config.maxEntries,
+                        search: this.state.searchQuery
+                    }
                 );
-            } else {  // フォールバックデータ }
-                data = this.generateMockData(); }
+            } else {
+                // フォールバックデータ
+                data = this.generateMockData();
             }
             
             // キャッシュに保存
@@ -695,141 +834,149 @@ export class SocialLeaderboardUI {
         } catch (error) {
             this.handleError('LEADERBOARD_DATA_LOAD_FAILED', error);
             return this.generateMockData();
+        }
+    }
+    
     /**
-     * モックデータの生成'
-     */''
-    generateMockData(',
-        const names = ['プレイヤー1', 'プレイヤー2', 'プレイヤー3', 'プレイヤー4', 'プレイヤー5]),'
-        for (let i = 0, i < Math.min(this.config.maxEntries, 5), i++) { mockEntries.push({)
-                rank: i + 1,
-    playerName: names[i] || `プレイヤー${i + 1),
-                score: (1000 - i * 100) + Math.floor(Math.random( } * 100} }
-                timestamp: Date.now() - (i * 3600000,
-                isCurrentPlayer: i === 2 // 3位を現在のプレイヤーとする } }
+     * モックデータの生成
+     */
+    private generateMockData(): { entries: LeaderboardEntry[]; total: number; hasMore: boolean } {
+        const names = ['プレイヤー1', 'プレイヤー2', 'プレイヤー3', 'プレイヤー4', 'プレイヤー5'];
+        const mockEntries: LeaderboardEntry[] = [];
         
-        return { entries: mockEntries,
-            total: mockEntries.length ,
-            hasMore: false,
+        for (let i = 0; i < Math.min(this.config.maxEntries, 5); i++) {
+            mockEntries.push({
+                rank: i + 1,
+                playerName: names[i] || `プレイヤー${i + 1}`,
+                score: (1000 - i * 100) + Math.floor(Math.random() * 100),
+                timestamp: Date.now() - (i * 3600000),
+                isCurrentPlayer: i === 2 // 3位を現在のプレイヤーとする
+            });
+        }
+        
+        return {
+            entries: mockEntries,
+            total: mockEntries.length,
+            hasMore: false
+        };
+    }
     
     /**
      * リーダーボードのレンダリング
      */
-    async render() { try {
+    private async render(): Promise<void> {
+        try {
             this.stats.renders++;
             
             const data = await this.loadLeaderboardData();
             this.renderEntries(data.entries);
             this.updatePagination(data);
             this.updateAriaAttributes();
+            
             // アクセシビリティアナウンス
-            if (this.config.accessibility.announcements && this.elements.announcer) { }'
-
-                this.announce(`リーダーボードが更新されました。${data.entries.length}件のエントリーが表示されています。`}';'
+            if (this.config.accessibility.announcements && this.elements.announcer) {
+                this.announce(`リーダーボードが更新されました。${data.entries.length}件のエントリーが表示されています。`);
             }
 
-            this.log('リーダーボードレンダリング完了', { entriesCount: data.entries.length ','
-
-            ' }'
+            this.log('リーダーボードレンダリング完了', { entriesCount: data.entries.length });
 
         } catch (error) {
-            this.handleError('LEADERBOARD_RENDER_FAILED', error' }'
+            this.handleError('LEADERBOARD_RENDER_FAILED', error);
+        }
     }
     
     /**
-     * エントリーのレンダリング'
-     */''
-    renderEntries(entries) {
+     * エントリーのレンダリング
+     */
+    private renderEntries(entries: LeaderboardEntry[]): void {
         // 既存のエントリーをクリア
-        this.elements.content.innerHTML = ','
-        this.elements.entries = [],
+        this.elements.content.innerHTML = '';
+        this.elements.entries = [];
         
         if (entries.length === 0) {
             this.renderEmptyState();
-            return; }
+            return;
         }
         
-        entries.forEach((entry, index) => {  const entryElement = this.createEntryElement(entry, index);
+        entries.forEach((entry, index) => {
+            const entryElement = this.createEntryElement(entry, index);
             this.elements.entries.push(entryElement);
-            this.elements.content.appendChild(entryElement);     }
-}
+            this.elements.content.appendChild(entryElement);
+        });
+    }
+    
     /**
-     * エントリー要素の作成'
-     */''
-    createEntryElement(entry, index) {
-
+     * エントリー要素の作成
+     */
+    private createEntryElement(entry: LeaderboardEntry, index: number): HTMLDivElement {
         const element = document.createElement('div');
-        element.className = 'leaderboard-entry,
-        element.setAttribute('data-entry-id', entry.id || index','
+        element.className = 'leaderboard-entry';
+        element.setAttribute('data-entry-id', (entry.id || index).toString());
         element.setAttribute('role', 'button');
-        element.setAttribute('tabindex', '0),'
+        element.setAttribute('tabindex', '0');
 
         if (entry.isCurrentPlayer) {
-    }
-
-            element.classList.add('current-player'); }
+            element.classList.add('current-player');
         }
-        ';'
+        
         // ランク
         const rank = document.createElement('div');
         rank.className = 'entry-rank';
-        if (entry.rank <= 3) {', ' }
-
-            rank.classList.add('top-3'); }
+        if (entry.rank <= 3) {
+            rank.classList.add('top-3');
         }
-        rank.textContent = entry.rank;
-        ';'
+        rank.textContent = entry.rank.toString();
+        
         // 名前
         const name = document.createElement('div');
         name.className = 'entry-name';
         name.textContent = entry.playerName;
-        ';'
+        
         // スコア
         const score = document.createElement('div');
         score.className = 'entry-score';
-        score.textContent = entry.score.toLocaleString()';'
+        score.textContent = entry.score.toLocaleString();
+        
         const metadata = document.createElement('div');
         metadata.className = 'entry-metadata';
         metadata.textContent = this.formatTimestamp(entry.timestamp);
         
         element.appendChild(rank);
         element.appendChild(name);
-
         element.appendChild(score);
         element.appendChild(metadata);
-        ';'
+        
         // ARIA属性
-        element.setAttribute('aria-label'';'
-            `${entry.rank}位: ${entry.playerName}, スコア: ${entry.score.toLocaleString(}点`);
-        ';'
+        element.setAttribute('aria-label',
+            `${entry.rank}位: ${entry.playerName}, スコア: ${entry.score.toLocaleString()}点`);
+        
         // イベントリスナー
         element.addEventListener('click', () => this.selectEntry(entry, element));
-        element.addEventListener('keydown', (event) => {  ''
-            if (event.key === 'Enter' || event.key === ', ') {
-    
-}
-                event.preventDefault(); }
-                this.selectEntry(entry, element); }
-};
+        element.addEventListener('keydown', (event: KeyboardEvent) => {
+            if (event.key === 'Enter' || event.key === ' ') {
+                event.preventDefault();
+                this.selectEntry(entry, element);
+            }
+        });
         
         return element;
     }
     
-    /**'
-     * 空の状態のレンダリング'
-     */''
-    renderEmptyState()';'
+    /**
+     * 空の状態のレンダリング
+     */
+    private renderEmptyState(): void {
         const emptyState = document.createElement('div');
         emptyState.className = 'empty-state';
-        emptyState.style.cssText = `;
-            text-align: center,
-            padding: 40px,
-    color: #666,
+        emptyState.style.cssText = `
+            text-align: center;
+            padding: 40px;
+            color: #666;
         `;
-        ';'
 
-        emptyState.innerHTML = `';'
-            <div style="font-size: 48px; margin-bottom: 16px;">📊</div>""
-            <div style="font-size: 18px; margin-bottom: 8px;">データがありません</div>""
+        emptyState.innerHTML = `
+            <div style="font-size: 48px; margin-bottom: 16px;">📊</div>
+            <div style="font-size: 18px; margin-bottom: 8px;">データがありません</div>
             <div style="font-size: 14px;">条件を変更してお試しください</div>
         `;
         
@@ -839,57 +986,55 @@ export class SocialLeaderboardUI {
     /**
      * ページネーションの更新
      */
-    updatePagination(data) {
-        if (!this.elements.pagination) return,"
+    private updatePagination(data: { total: number }): void {
+        if (!this.elements.pagination) return;
 
-        const totalPages = Math.ceil(data.total / this.config.itemsPerPage),""
-        const prevButton = this.elements.pagination.querySelector('.prev-button');
-        const nextButton = this.elements.pagination.querySelector('.next-button');
-        const pageInfo = this.elements.pagination.querySelector('.page-info,
+        const totalPages = Math.ceil(data.total / this.config.itemsPerPage);
+        const prevButton = this.elements.pagination.querySelector('.prev-button') as HTMLButtonElement;
+        const nextButton = this.elements.pagination.querySelector('.next-button') as HTMLButtonElement;
+        const pageInfo = this.elements.pagination.querySelector('.page-info') as HTMLSpanElement;
         
-        prevButton.disabled = this.state.currentPage <= 1 }
-        nextButton.disabled = this.state.currentPage >= totalPages; }
-        pageInfo.textContent = `ページ ${this.state.currentPage} / ${totalPages}`;
+        if (prevButton) prevButton.disabled = this.state.currentPage <= 1;
+        if (nextButton) nextButton.disabled = this.state.currentPage >= totalPages;
+        if (pageInfo) pageInfo.textContent = `ページ ${this.state.currentPage} / ${totalPages}`;
     }
     
     /**
-     * エントリーの選択'
-     */''
-    selectEntry(entry, element) {
+     * エントリーの選択
+     */
+    private selectEntry(entry: LeaderboardEntry, element: HTMLDivElement): void {
         this.stats.interactions++;
-        ','
+        
         // 既存の選択をクリア
-        this.elements.entries.forEach(el => el.classList.remove('selected),
-        ','
+        this.elements.entries.forEach((el: HTMLElement) => el.classList.remove('selected'));
+        
         // 新しい選択を設定
-        element.classList.add('selected),'
-        this.state.selectedEntry = entry,
+        element.classList.add('selected');
+        this.state.selectedEntry = entry;
         
         // アクセシビリティアナウンス
-    }
-        if (this.config.accessibility.announcements && this.elements.announcer) { }'
-
-            this.announce(`${entry.playerName}のエントリーが選択されました。${entry.rank}位、${entry.score.toLocaleString(}点。`);
+        if (this.config.accessibility.announcements && this.elements.announcer) {
+            this.announce(`${entry.playerName}のエントリーが選択されました。${entry.rank}位、${entry.score.toLocaleString()}点。`);
         }
-        ';'
+        
         // イベントの発火
-        this.dispatchEvent('entrySelected', { entry, element )','
+        this.dispatchEvent('entrySelected', { entry, element });
 
         this.log('エントリー選択', entry);
+    }
     
     /**
      * タイムスタンプのフォーマット
      */
-    formatTimestamp(timestamp) {
+    private formatTimestamp(timestamp: number): string {
         const date = new Date(timestamp);
         const now = new Date();
-        const diffMs = now - date,
+        const diffMs = now.getTime() - date.getTime();
         const diffMins = Math.floor(diffMs / 60000);
         const diffHours = Math.floor(diffMs / 3600000);
         const diffDays = Math.floor(diffMs / 86400000);
-        ' }'
-
-        if(diffMins < 1) return 'たった今'; }
+        
+        if (diffMins < 1) return 'たった今';
         if (diffMins < 60) return `${diffMins}分前`;
         if (diffHours < 24) return `${diffHours}時間前`;
         if (diffDays < 7) return `${diffDays}日前`;
@@ -900,27 +1045,31 @@ export class SocialLeaderboardUI {
     /**
      * キーボードイベントハンドラー
      */
-    handleKeydown(event) {
+    private handleKeydown(event: KeyboardEvent): void {
         this.stats.keyboardNavigations++;
 
-        switch(event.key) {''
-            case 'ArrowDown':','
+        switch (event.key) {
+            case 'ArrowDown':
                 event.preventDefault();
-                this.focusNext()','
-            case 'ArrowUp':','
+                this.focusNext();
+                break;
+            case 'ArrowUp':
                 event.preventDefault();
-                this.focusPrevious()','
-            case 'Home':','
+                this.focusPrevious();
+                break;
+            case 'Home':
                 event.preventDefault();
-                this.focusFirst()','
-            case 'End':','
+                this.focusFirst();
+                break;
+            case 'End':
                 event.preventDefault();
-                this.focusLast(',
-            case 'Enter':','
-            case , ':')',
-                if(event.target.classList.contains('leaderboard-entry' {'
+                this.focusLast();
+                break;
+            case 'Enter':
+            case ' ':
+                if ((event.target as HTMLElement)?.classList.contains('leaderboard-entry')) {
                     event.preventDefault();
-                    event.target.click(); }
+                    (event.target as HTMLElement).click();
                 }
                 break;
         }
@@ -929,171 +1078,189 @@ export class SocialLeaderboardUI {
     /**
      * 次の要素にフォーカス
      */
-    focusNext() {
-        const current = document.activeElement,
-        const entries = this.elements.entries,
+    private focusNext(): void {
+        const current = document.activeElement;
+        const entries = this.elements.entries;
         const currentIndex = entries.indexOf(current);
         if (currentIndex >= 0 && currentIndex < entries.length - 1) {
-    }
-            entries[currentIndex + 1].focus(); }
-        } else if (entries.length > 0) { entries[0].focus();
+            entries[currentIndex + 1].focus();
+        } else if (entries.length > 0) {
+            entries[0].focus();
+        }
     }
     
     /**
      * 前の要素にフォーカス
      */
-    focusPrevious() {
-        const current = document.activeElement,
-        const entries = this.elements.entries,
+    private focusPrevious(): void {
+        const current = document.activeElement;
+        const entries = this.elements.entries;
         const currentIndex = entries.indexOf(current);
         if (currentIndex > 0) {
-    }
-            entries[currentIndex - 1].focus(); }
-        } else if (entries.length > 0) { entries[entries.length - 1].focus();
+            entries[currentIndex - 1].focus();
+        } else if (entries.length > 0) {
+            entries[entries.length - 1].focus();
+        }
     }
     
     /**
      * 最初の要素にフォーカス
      */
-    focusFirst() {
+    private focusFirst(): void {
         if (this.elements.entries.length > 0) {
+            this.elements.entries[0].focus();
+        }
     }
-            this.elements.entries[0].focus(); }
-}
     
     /**
      * 最後の要素にフォーカス
      */
-    focusLast() {
+    private focusLast(): void {
         if (this.elements.entries.length > 0) {
+            this.elements.entries[this.elements.entries.length - 1].focus();
+        }
     }
-            this.elements.entries[this.elements.entries.length - 1].focus(); }
-}
     
     /**
      * フォーカスハンドラー
      */
-    handleFocus(event) { this.state.focusedElement = event.target }
+    private handleFocus(event: FocusEvent): void {
+        this.state.focusedElement = event.target;
+    }
+    
+    /**
+     * クリックハンドラー
+     */
+    private handleClick(event: MouseEvent): void {
+        // 実装が必要な場合はここに追加
+    }
     
     /**
      * フィルター変更ハンドラー
      */
-    handleFilterChange(event) {
-        this.state.filterPeriod = event.target.value,
-        this.state.currentPage = 1,
+    private handleFilterChange(event: Event): void {
+        const target = event.target as HTMLSelectElement;
+        this.state.filterPeriod = target.value;
+        this.state.currentPage = 1;
         this.refresh();
+        
         // アクセシビリティアナウンス
+        if (this.config.accessibility.announcements && this.elements.announcer) {
+            this.announce(`フィルターが${target.selectedOptions[0].textContent}に変更されました。`);
+        }
     }
-        if (this.config.accessibility.announcements && this.elements.announcer) { }
-            this.announce(`フィルターが${event.target.selectedOptions[0].textContent}に変更されました。`    }
-}
+    
     /**
      * 検索入力ハンドラー
      */
-    handleSearchInput(event) {
-        this.state.searchQuery = event.target.value,
+    private handleSearchInput(event: Event): void {
+        const target = event.target as HTMLInputElement;
+        this.state.searchQuery = target.value;
         
         // デバウンス処理
-        clearTimeout(this.searchTimeout);
-        this.searchTimeout = setTimeout(() => {  }
-            this.executeSearch(); }
-        }, 500);
+        if (this.searchTimeout) {
+            clearTimeout(this.searchTimeout);
         }
+        this.searchTimeout = setTimeout(() => {
+            this.executeSearch();
+        }, 500);
+    }
     
     /**
      * 検索実行
      */
-    async executeSearch() { this.stats.searches++;
-        this.state.currentPage = 1,
+    private async executeSearch(): Promise<void> {
+        this.stats.searches++;
+        this.state.currentPage = 1;
         await this.refresh();
+        
         // アクセシビリティアナウンス
         if (this.config.accessibility.announcements && this.elements.announcer) {
             const query = this.state.searchQuery.trim();
-
-            if (query) { }'
-
-                this.announce(`"${query"}"で検索しました。`"}";"
-            } else { }"
-                this.announce('検索をクリアしました。'; }'
-}
+            if (query) {
+                this.announce(`"${query}"で検索しました。`);
+            } else {
+                this.announce('検索をクリアしました。');
+            }
+        }
     }
     
     /**
      * ページ移動
      */
-    async goToPage(page) { if (page < 1) return,
+    private async goToPage(page: number): Promise<void> {
+        if (page < 1) return;
         
-        this.state.currentPage = page,
+        this.state.currentPage = page;
         await this.refresh();
+        
         // アクセシビリティアナウンス
-        if (this.config.accessibility.announcements && this.elements.announcer) { }
-            this.announce(`ページ${page}に移動しました。`    }
-}
+        if (this.config.accessibility.announcements && this.elements.announcer) {
+            this.announce(`ページ${page}に移動しました。`);
+        }
+    }
+    
     /**
      * リサイズハンドラー
      */
-    handleResize() {
+    private handleResize(): void {
         // レスポンシブ調整のロジック
-    }
-        this.updateResponsiveLayout(); }
+        this.updateResponsiveLayout();
     }
     
     /**
      * レスポンシブレイアウトの更新
      */
-    updateResponsiveLayout() {
-        const isMobile = window.innerWidth < 768,
+    private updateResponsiveLayout(): void {
+        const isMobile = window.innerWidth < 768;
 
         if (isMobile) {
+            this.elements.container.classList.add('mobile-layout');
+        } else {
+            this.elements.container.classList.remove('mobile-layout');
+        }
     }
-
-            this.elements.container.classList.add('mobile-layout'); }
-
-        } else { }'
-
-            this.elements.container.classList.remove('mobile-layout'; }'
-}
     
     /**
      * ローディング状態の表示/非表示
      */
-    showLoading(show) {
-        this.state.loading = show,
+    private showLoading(show: boolean): void {
+        this.state.loading = show;
 
-        if (this.elements.loadingIndicator) {''
-            this.elements.loadingIndicator.style.display = show ? 'block' : 'none' }
+        if (this.elements.loadingIndicator) {
+            this.elements.loadingIndicator.style.display = show ? 'block' : 'none';
+            this.elements.loadingIndicator.setAttribute('aria-hidden', show ? 'false' : 'true');
+        }
 
-            this.elements.loadingIndicator.setAttribute('aria-hidden', show ? 'false' : 'true); '
-    }
-
-        if (this.elements.content) {', ' }
-
-            this.elements.content.setAttribute('aria-busy', show ? 'true' : 'false); '
+        if (this.elements.content) {
+            this.elements.content.setAttribute('aria-busy', show ? 'true' : 'false');
+        }
     }
     
     /**
      * リフレッシュ
      */
-    async refresh() { try {
+    private async refresh(): Promise<void> {
+        try {
             this.showLoading(true);
             // キャッシュをクリア
             this.cache.clear();
             await this.render();
-            ' }'
-
         } catch (error) {
-            this.handleError('REFRESH_FAILED', error) } finally { this.showLoading(false);
+            this.handleError('REFRESH_FAILED', error);
+        } finally {
+            this.showLoading(false);
+        }
     }
     
     /**
      * アナウンス
      */
-    announce(message) {
-
-        if (this.elements.announcer) {''
-            this.elements.announcer.textContent = ' }'
-            setTimeout(() => {  }
-                this.elements.announcer.textContent = message; }
+    private announce(message: string): void {
+        if (this.elements.announcer) {
+            this.elements.announcer.textContent = '';
+            setTimeout(() => {
+                this.elements.announcer.textContent = message;
             }, 100);
         }
     }
@@ -1101,64 +1268,61 @@ export class SocialLeaderboardUI {
     /**
      * イベントのディスパッチ
      */
-    dispatchEvent(type, data) {
-    
-}
-        const event = new CustomEvent(`leaderboard-${type}`, { detail: data)
-            bubbles: true,);
+    private dispatchEvent(type: string, data: any): void {
+        const event = new CustomEvent(`leaderboard-${type}`, {
+            detail: data,
+            bubbles: true
+        });
         this.elements.container.dispatchEvent(event);
     }
     
     /**
      * 統計情報の取得
      */
-    getStats() {
-    
-}
-        return { ...this.stats }
+    public getStats(): any {
+        return { ...this.stats };
+    }
     
     /**
      * 設定の更新
      */
-    updateConfig(newConfig) {
-    
-}
-
-        this.config = { ...this.config, ...newConfig,
-        this.applyStyles()','
-        this.log('設定更新', newConfig' }'
+    public updateConfig(newConfig: Partial<LeaderboardOptions>): void {
+        this.config = { ...this.config, ...newConfig };
+        this.applyStyles();
+        this.log('設定更新', newConfig);
+    }
     
     /**
-     * クリーンアップ'
-     */''
-    destroy()';'
-        this.elements.container.removeEventListener('keydown', this.handlers.keydown';'
+     * クリーンアップ
+     */
+    public destroy(): void {
+        this.elements.container.removeEventListener('keydown', this.handlers.keydown);
         window.removeEventListener('resize', this.handlers.resize);
         
         // タイマーのクリア
-        if (this.searchTimeout) { clearTimeout(this.searchTimeout);
+        if (this.searchTimeout) {
+            clearTimeout(this.searchTimeout);
+        }
         
         // DOM要素の削除
-        if (this.elements.container && this.elements.container.parentNode) { }
-
-            this.elements.container.parentNode.removeChild(this.elements.container); }
+        if (this.elements.container && this.elements.container.parentNode) {
+            this.elements.container.parentNode.removeChild(this.elements.container);
         }
 
-        this.log('SocialLeaderboardUI破棄完了);'
+        this.log('SocialLeaderboardUI破棄完了');
     }
     
     /**
      * エラーハンドリング
      */
-    handleError(type, error, context = { ) { }
-        console.error(`[SocialLeaderboardUI] ${type}:`, error, context}
+    private handleError(type: string, error: any, context: any = {}): void {
+        console.error(`[SocialLeaderboardUI] ${type}:`, error, context);
     }
     
     /**
      * ログ記録
-     */'
-    log(message, data = null) { }'
-
-        console.log(`[SocialLeaderboardUI] ${message}`, data || ''}';'
-
-    }'}'
+     */
+    private log(message: string, data: any = null): void {
+        console.log(`[SocialLeaderboardUI] ${message}`, data || '');
+    }
+}
