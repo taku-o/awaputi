@@ -15,511 +15,569 @@
  */
 
 // 型定義
-export interface MainController { config: VisualFocusConfig,
-    state: VisualFocusState,
-    elements: VisualFocusElements,
+export interface MainController {
+    config: VisualFocusConfig;
+    state: VisualFocusState;
+    elements: VisualFocusElements;
     cssClasses: CSSClasses;
-    export interface VisualFocusConfig { focusRing: FocusRingConfig,
-    navigationFeedback: NavigationFeedbackConfig,
-    highContrast: HighContrastConfig,
+}
+
+export interface VisualFocusConfig {
+    focusRing: FocusRingConfig;
+    navigationFeedback: NavigationFeedbackConfig;
+    highContrast: HighContrastConfig;
     animations: AnimationConfig;
-    export interface FocusRingConfig { color: string,
-    width: number,
-    offset: number,
-    borderRadius: number,
-    animationDuration: number,
+}
+
+export interface FocusRingConfig {
+    color: string;
+    width: number;
+    offset: number;
+    borderRadius: number;
+    animationDuration: number;
     enabled: boolean;
-    export interface NavigationFeedbackConfig { fadeTimeout: number,
+}
+
+export interface NavigationFeedbackConfig {
+    fadeTimeout: number;
     enabled: boolean;
-    export interface HighContrastConfig { color: string,
-    width: number,
+}
+
+export interface HighContrastConfig {
+    color: string;
+    width: number;
     enabled: boolean;
-    export interface AnimationConfig { enabled: boolean,
-    duration: number,
-    easing: string,
+}
+
+export interface AnimationConfig {
+    enabled: boolean;
+    duration: number;
+    easing: string;
     reducedMotion: boolean;
-    export interface VisualFocusState { animationTimers: Map<string, number>,
-    currentFocusElement: HTMLElement | null,
-    isHighContrastMode: boolean,
+}
+
+export interface VisualFocusState {
+    animationTimers: Map<string, number>;
+    currentFocusElement: HTMLElement | null;
+    isHighContrastMode: boolean;
     keyboardMode: boolean;
-    export interface VisualFocusElements { focusRing: HTMLElement,
+}
+
+export interface VisualFocusElements {
+    focusRing: HTMLElement;
     focusOverlay: HTMLElement;
-    export interface CSSClasses { keyboardMode: string,
-    mouseMode: string,
-    highContrast: string,
-    focusRing: string,
+}
+
+export interface CSSClasses {
+    keyboardMode: string;
+    mouseMode: string;
+    highContrast: string;
+    focusRing: string;
     focusOverlay: string;
-    export interface ElementBounds { left: number,
-    top: number,
-    width: number,
-    height: number,
-    right: number,
-    bottom: number;
-    export interface ViewportBounds { top: number,
-    left: number,
-    bottom: number,
+}
+
+export interface ElementBounds {
+    left: number;
+    top: number;
+    width: number;
+    height: number;
     right: number;
-    export interface EffectOptions { duration?: number,
+    bottom: number;
+}
+
+export interface ViewportBounds {
+    top: number;
+    left: number;
+    bottom: number;
+    right: number;
+}
+
+export interface EffectOptions {
+    duration?: number;
     delay?: number;
     easing?: string;
     autoRemove?: boolean;
-    export interface CustomEffectStyle { position: string,
-    left: string,
-    top: string,
-    width: string,
-    height: string,
-    pointerEvents: string,
+}
+
+export interface CustomEffectStyle {
+    position: string;
+    left: string;
+    top: string;
+    width: string;
+    height: string;
+    pointerEvents: string;
     zIndex: string;
-    export interface RenderingOptimizationResult { shouldRender: boolean;
+}
+
+export interface RenderingOptimizationResult {
+    shouldRender: boolean;
     reason?: string;
     elementBounds?: ElementBounds;
     viewportBounds?: ViewportBounds;
+}
 
 // 列挙型
 export type EffectType = 'pulse' | 'glow' | 'ripple' | 'flash' | 'slide' | 'zoom';
-    export type LandmarkType = 'main' | 'nav' | 'aside' | 'header' | 'footer' | 'section' | 'article';
-    export type GroupType = 'form' | 'fieldset' | 'section' | 'nav' | 'aside' | 'group' | 'radiogroup';
-    export type TimerType = 'focusRing' | 'overlay' | 'fadeOut' | 'customEffect';
+export type LandmarkType = 'main' | 'nav' | 'aside' | 'header' | 'footer' | 'section' | 'article';
+export type GroupType = 'form' | 'fieldset' | 'section' | 'nav' | 'aside' | 'group' | 'radiogroup';
+export type TimerType = 'focusRing' | 'overlay' | 'fadeOut' | 'customEffect';
 
 // 定数
-export const LANDMARK_SELECTORS: LandmarkType[] = [']';
-    'main', 'nav', 'aside', 'header', 'footer', 'section', 'article'];
+export const LANDMARK_SELECTORS: string[] = [
+    'main', 'nav', 'aside', 'header', 'footer', 'section', 'article'
 ];
-';'
 
-export const GROUP_SELECTORS: GroupType[] = [']';
-    'form', 'fieldset', 'section', 'nav', 'aside'];
+export const GROUP_SELECTORS: string[] = [
+    'form', 'fieldset', 'section', 'nav', 'aside'
 ];
-    export const GROUP_ROLES: string[] = ['group', 'radiogroup'];
-    export const EFFECT_DURATIONS: Record<EffectType, number> = { pulse: 1000,
+
+export const GROUP_ROLES: string[] = ['group', 'radiogroup'];
+
+export const EFFECT_DURATIONS: Record<EffectType, number> = {
+    pulse: 1000,
     glow: 1500,
     ripple: 800,
     flash: 500,
     slide: 600,
-    zoom: 400  };
-';'
+    zoom: 400
+};
 
-export const CSS_ANIMATIONS: Record<EffectType, string> = {;
-    pulse: 'custom-pulse 1s ease-in-out,
-    glow: 'custom-glow 1.5s ease-in-out,
-    ripple: 'custom-ripple 0.8s ease-out,
-    flash: 'custom-flash 0.5s linear,
-    slide: 'custom-slide 0.6s ease-in-out,
-    zoom: 'custom-zoom 0.4s ease-out'
-            };
-export const DEFAULT_EFFECT_OPTIONS: Required<EffectOptions> = { duration: 2000,
+export const DEFAULT_FOCUS_RING_CONFIG: FocusRingConfig = {
+    color: '#4A90E2',
+    width: 2,
+    offset: 2,
+    borderRadius: 4,
+    animationDuration: 150,
+    enabled: true
+} as const;
 
-    delay: 0,
-    easing: 'ease-in-out,
-    autoRemove: true;
-export const Z_INDEX = { FOCUS_RING: 9999,
-    FOCUS_OVERLAY: 9998,
-    CUSTOM_EFFECT: 9998,
-    LANDMARK: 9997,
-    GROUP: 9996  } as const;
-';'
+export const HIGH_CONTRAST_COLORS = {
+    DEFAULT: '#FFFF00',
+    ALT: '#00FFFF',
+    ERROR: '#FF0000',
+    SUCCESS: '#00FF00'
+} as const;
 
-export const CSS_CLASSES = {;
-    ACTIVE: 'active,
-    HIGHLIGHTED: 'highlighted,
-    CUSTOM_EFFECT: 'visual-focus-custom-effect,
-    LANDMARK: 'visual-focus-landmark,
-    GROUP: 'visual-focus-group'
-            } as const;
 // ユーティリティ関数
-export function getElementBounds(element: HTMLElement): ElementBounds { const rect = element.getBoundingClientRect();
-    const scrollX = window.pageXOffset || document.documentElement.scrollLeft,
-    const scrollY = window.pageYOffset || document.documentElement.scrollTop,
-    
-    return { left: rect.left + scrollX,
+export function getElementBounds(element: HTMLElement): ElementBounds {
+    const rect = element.getBoundingClientRect();
+    const scrollX = window.pageXOffset || document.documentElement.scrollLeft;
+    const scrollY = window.pageYOffset || document.documentElement.scrollTop;
+
+    return {
+        left: rect.left + scrollX,
         top: rect.top + scrollY,
         width: rect.width,
         height: rect.height,
-    right: rect.right + scrollX };
-        bottom: rect.bottom + scrollY 
-    }
-
-export function getViewportBounds(): ViewportBounds { return { top: 0,
-        left: 0,
-    bottom: window.innerHeight };
-        right: window.innerWidth 
-    }
-
-export function isElementInViewport(bounds: ElementBounds, viewport: ViewportBounds): boolean { return !(bounds.bottom < viewport.top || bounds.top > viewport.bottom ||
-             bounds.right < viewport.left || bounds.left > viewport.right) };
-export function createCustomEffectStyles(;
-    bounds: ElementBounds
-    ),
-    effectType: EffectType,
-    config: FocusRingConfig','
-'): CustomEffectStyle { const baseStyle: CustomEffectStyle = {''
-        position: 'absolute' };
-        left: `${bounds.left}px`;
-        top: `${bounds.top}px`;
-        width: `${bounds.width}px`;
-        height: `${bounds.height}px`,''
-        pointerEvents: 'none,
-    zIndex: Z_INDEX.CUSTOM_EFFECT.toString();
+        right: rect.right + scrollX,
+        bottom: rect.bottom + scrollY
     };
-
-    return baseStyle;
 }
 
-export function getEffectCSS(effectType: EffectType, config: FocusRingConfig): string { const animation = CSS_ANIMATIONS[effectType] || CSS_ANIMATIONS.pulse;
-
-    switch(effectType) {', ' };
-        case 'pulse': return ` }
-                border: 2px solid ${config.color}
-                border-radius: ${config.borderRadius}px,
-                animation: ${animation}
-
-            `;
-        case 'glow':
-            return `;
-                box-shadow: 0 0 20px ${config.color}
-                border-radius: ${config.borderRadius}px,
-                animation: ${animation}
-
-            `;
-        case 'ripple': return `;
-                border: 1px solid ${config.color}
-                border-radius: 50%,
-    animation: ${animation}
-
-            `;
-        case 'flash': return `;
-                background-color: ${config.color},
-                opacity: 0.3,
-    animation: ${animation}
-
-            `;
-        case 'slide': return `;
-                border-left: 4px solid ${config.color},
-                animation: ${animation}
-
-            `;
-        case 'zoom': return `;
-                border: 2px solid ${config.color}
-                border-radius: ${config.borderRadius}px,
-                animation: ${animation}
-
-            `;
-        default: return ';'
-
-export function clearTimerIfExists(timers: Map<string, number>, timerType: TimerType): void { const timer = timers.get(timerType);
-    if (timer) {
-        clearTimeout(timer) };
-        timers.delete(timerType); }
+export function getViewportBounds(): ViewportBounds {
+    return {
+        top: window.pageYOffset,
+        left: window.pageXOffset,
+        bottom: window.pageYOffset + window.innerHeight,
+        right: window.pageXOffset + window.innerWidth
+    };
 }
 
-export function prefersReducedMotion()';'
-           window.matchMedia('(prefers-reduced-motion: reduce)).matches }'
+export function isElementInViewport(elementBounds: ElementBounds, viewportBounds: ViewportBounds): boolean {
+    return !(elementBounds.right < viewportBounds.left ||
+             elementBounds.left > viewportBounds.right ||
+             elementBounds.bottom < viewportBounds.top ||
+             elementBounds.top > viewportBounds.bottom);
+}
+
+export function optimizeRendering(element: HTMLElement): RenderingOptimizationResult {
+    const elementBounds = getElementBounds(element);
+    const viewportBounds = getViewportBounds();
+
+    // Check if element is in viewport
+    if (!isElementInViewport(elementBounds, viewportBounds)) {
+        return {
+            shouldRender: false,
+            reason: 'Element is outside viewport',
+            elementBounds,
+            viewportBounds
+        };
+    }
+
+    // Check if element is visible
+    const computedStyle = getComputedStyle(element);
+    if (computedStyle.visibility === 'hidden' || computedStyle.display === 'none') {
+        return {
+            shouldRender: false,
+            reason: 'Element is not visible',
+            elementBounds,
+            viewportBounds
+        };
+    }
+
+    return {
+        shouldRender: true,
+        elementBounds,
+        viewportBounds
+    };
+}
+
+export function isLandmarkElement(element: HTMLElement): boolean {
+    const tagName = element.tagName.toLowerCase();
+    const role = element.getAttribute('role');
+    
+    return LANDMARK_SELECTORS.includes(tagName) || 
+           (role && LANDMARK_SELECTORS.includes(role));
+}
+
+export function isGroupElement(element: HTMLElement): boolean {
+    const tagName = element.tagName.toLowerCase();
+    const role = element.getAttribute('role');
+    
+    return GROUP_SELECTORS.includes(tagName) || 
+           (role && GROUP_ROLES.includes(role));
+}
 
 export class FocusEffectRenderer {
     private mainController: MainController;
     private config: VisualFocusConfig;
     private state: VisualFocusState;
-    private, elements: VisualFocusElements;
-    constructor(mainController: MainController) {
+    private elements: VisualFocusElements;
+    private cssClasses: CSSClasses;
 
+    // Style cache for performance
+    private styleCache: Map<string, CustomEffectStyle> = new Map();
+
+    constructor(mainController: MainController) {
         this.mainController = mainController;
         this.config = mainController.config;
-        this.state = mainController.state };
-        this.elements = mainController.elements; }
+        this.state = mainController.state;
+        this.elements = mainController.elements;
+        this.cssClasses = mainController.cssClasses;
+
+        this.initializeRenderer();
+        console.log('FocusEffectRenderer initialized');
     }
 
     /**
-     * フォーカスリングの位置調整
+     * レンダラーの初期化
      */
-    positionFocusRing(element: HTMLElement): void { if (!this.config.focusRing.enabled) return,
-        
-        const bounds = getElementBounds(element);
-        const ring = this.elements.focusRing,
-        const offset = this.config.focusRing.offset }
-        ring.style.left = `${bounds.left - offset}px`;
-        ring.style.top = `${bounds.top - offset}px`;
-        ring.style.width = `${bounds.width + offset * 2}px`;
-        ring.style.height = `${bounds.height + offset * 2}px`;
-        
-        // アクセシビリティ対応の調整
-        this.adjustRingForAccessibility(ring);
-        // アニメーション付きで表示
-        ring.classList.add(CSS_CLASSES.ACTIVE);
-        ';'
-        // 前のタイマーをクリア
-        clearTimerIfExists(this.state.animationTimers, 'focusRing);'
-        
-        // 自動非表示タイマー
-        const timer = window.setTimeout(() => { ring.classList.remove(CSS_CLASSES.ACTIVE),' }'
-
-        }, this.config.navigationFeedback.fadeTimeout';'
-
-        this.state.animationTimers.set('focusRing', timer);
+    private initializeRenderer(): void {
+        this.setupFocusRing();
+        this.setupFocusOverlay();
+        this.bindEvents();
     }
 
     /**
-     * フォーカスオーバーレイの更新
+     * フォーカスリングの設定
      */
-    updateFocusOverlay(element: HTMLElement): void { const bounds = getElementBounds(element);
-        const overlay = this.elements.focusOverlay }
-        overlay.style.left = `${bounds.left}px`;
-        overlay.style.top = `${bounds.top}px`;
-        overlay.style.width = `${bounds.width}px`;
-        overlay.style.height = `${bounds.height}px`;
-        
-        overlay.classList.add(CSS_CLASSES.ACTIVE);
-        
-        // フェードアウトタイマー
-        const fadeDelay = this.config.focusRing.animationDuration * 3;
-        setTimeout(() => { overlay.classList.remove(CSS_CLASSES.ACTIVE) }, fadeDelay);
+    private setupFocusRing(): void {
+        if (!this.config.focusRing.enabled) {
+            return;
+        }
+
+        this.elements.focusRing.style.cssText = `
+            position: absolute;
+            pointer-events: none;
+            border: ${this.config.focusRing.width}px solid ${this.config.focusRing.color};
+            border-radius: ${this.config.focusRing.borderRadius}px;
+            transition: all ${this.config.focusRing.animationDuration}ms ease;
+            opacity: 0;
+            z-index: 9999;
+        `;
+
+        this.elements.focusRing.className = this.cssClasses.focusRing;
+    }
+
+    /**
+     * フォーカスオーバーレイの設定
+     */
+    private setupFocusOverlay(): void {
+        this.elements.focusOverlay.style.cssText = `
+            position: absolute;
+            pointer-events: none;
+            background: rgba(74, 144, 226, 0.1);
+            border-radius: 4px;
+            opacity: 0;
+            transition: opacity 200ms ease;
+            z-index: 9998;
+        `;
+
+        this.elements.focusOverlay.className = this.cssClasses.focusOverlay;
+    }
+
+    /**
+     * イベントのバインド
+     */
+    private bindEvents(): void {
+        // High contrast mode detection
+        if (window.matchMedia) {
+            const mediaQuery = window.matchMedia('(prefers-contrast: high)');
+            mediaQuery.addListener(() => {
+                this.state.isHighContrastMode = mediaQuery.matches;
+                this.updateHighContrastMode();
+            });
+            this.state.isHighContrastMode = mediaQuery.matches;
+        }
+
+        // Reduced motion detection
+        if (window.matchMedia) {
+            const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+            mediaQuery.addListener(() => {
+                this.config.animations.reducedMotion = mediaQuery.matches;
+                this.updateAnimationSettings();
+            });
+            this.config.animations.reducedMotion = mediaQuery.matches;
+        }
+    }
+
+    /**
+     * フォーカスリングの位置付け
+     */
+    positionFocusRing(element: HTMLElement): void {
+        if (!this.config.focusRing.enabled) {
+            return;
+        }
+
+        const optimization = optimizeRendering(element);
+        if (!optimization.shouldRender) {
+            this.hideFocusRing();
+            return;
+        }
+
+        const bounds = optimization.elementBounds!;
+        const offset = this.config.focusRing.offset;
+
+        this.elements.focusRing.style.left = `${bounds.left - offset}px`;
+        this.elements.focusRing.style.top = `${bounds.top - offset}px`;
+        this.elements.focusRing.style.width = `${bounds.width + (offset * 2)}px`;
+        this.elements.focusRing.style.height = `${bounds.height + (offset * 2)}px`;
+        this.elements.focusRing.style.opacity = '1';
+
+        // Update state
+        this.state.currentFocusElement = element;
+
+        // Handle landmark elements
+        if (isLandmarkElement(element)) {
+            this.highlightLandmark(element);
+        }
+
+        // Handle group elements
+        if (isGroupElement(element)) {
+            this.showGroupIndicator(element);
+        }
+    }
+
+    /**
+     * フォーカスリングの非表示
+     */
+    hideFocusRing(): void {
+        this.elements.focusRing.style.opacity = '0';
+        this.hideFocusOverlay();
+        this.hideGroupIndicator();
+        this.state.currentFocusElement = null;
+    }
+
+    /**
+     * フォーカスオーバーレイの表示
+     */
+    showFocusOverlay(element: HTMLElement): void {
+        const optimization = optimizeRendering(element);
+        if (!optimization.shouldRender) {
+            return;
+        }
+
+        const bounds = optimization.elementBounds!;
+
+        this.elements.focusOverlay.style.left = `${bounds.left}px`;
+        this.elements.focusOverlay.style.top = `${bounds.top}px`;
+        this.elements.focusOverlay.style.width = `${bounds.width}px`;
+        this.elements.focusOverlay.style.height = `${bounds.height}px`;
+        this.elements.focusOverlay.style.opacity = '1';
+    }
+
+    /**
+     * フォーカスオーバーレイの非表示
+     */
+    hideFocusOverlay(): void {
+        this.elements.focusOverlay.style.opacity = '0';
     }
 
     /**
      * ランドマーク要素のハイライト
      */
-    highlightLandmarks(element: HTMLElement): void { // 前のハイライトをクリア
-        this.clearLandmarkHighlights();
-        // ランドマーク要素を検出
-        let current: HTMLElement | null = element,
+    private highlightLandmark(element: HTMLElement): void {
+        element.classList.add('landmark-highlighted');
         
-        while(current && current !== document.body) {
+        // Auto-remove after delay
+        this.clearTimer('landmarkHighlight');
+        const timerId = window.setTimeout(() => {
+            element.classList.remove('landmark-highlighted');
+        }, 3000);
         
-            if (this.isLandmarkElement(current) {
-                current.classList.add(CSS_CLASSES.LANDMARK, CSS_CLASSES.HIGHLIGHTED }
-                break; }
-            }
-            current = current.parentElement
-        }
+        this.state.animationTimers.set('landmarkHighlight', timerId);
     }
 
     /**
-     * グループインジケータの更新
+     * グループインジケータの表示
      */
-    updateGroupIndicators(element: HTMLElement): void { // 前のグループインジケータをクリア
-        this.clearGroupIndicators();
-        // 現在の要素のグループを検出
-        let current: HTMLElement | null = element.parentElement,
-        
-        while(current && current !== document.body) {
-        
-            if (this.isGroupElement(current) {
-                current.classList.add(CSS_CLASSES.GROUP, CSS_CLASSES.ACTIVE }
-                break; }
-            }
-            current = current.parentElement;
-        }
+    private showGroupIndicator(element: HTMLElement): void {
+        element.classList.add('group-focused');
+        this.showFocusOverlay(element);
     }
 
     /**
-     * すべての視覚エフェクトをクリア
+     * グループインジケータの非表示
      */
-    clearAllEffects(): void { // フォーカスリング
-        this.elements.focusRing.classList.remove(CSS_CLASSES.ACTIVE);
-        // フォーカスオーバーレイ
-        this.elements.focusOverlay.classList.remove(CSS_CLASSES.ACTIVE);
-        // ランドマークハイライト
-        this.clearLandmarkHighlights();
-        // グループインジケータ
-        this.clearGroupIndicators();
-        // カスタムエフェクト
-        this.clearCustomEffects();
-        // すべてのタイマーをクリア
-        this.clearAllTimers();
-
-    /**
-     * エフェクトのフェードアウト
-     */''
-    fadeOutEffects()';'
-        clearTimerIfExists(this.state.animationTimers, 'fadeOut';
-        ';'
-
-        const timer = window.setTimeout(() => { this.clearAllEffects(),' }'
-
-        }, fadeDelay');'
-
-        this.state.animationTimers.set('fadeOut', timer);
-    }
-
-    /**
-     * ウィンドウリサイズ時の位置再計算
-     */
-    handleWindowResize(): void { // フォーカスリングの位置を再計算
-        if(this.state.currentFocusElement && );
-            document.body.classList.contains(this.mainController.cssClasses.keyboardMode) {
-            // 少し遅延させてレイアウトの安定を待つ
-            setTimeout(() => { 
-        }
-                if (this.state.currentFocusElement) { }
-                    this.positionFocusRing(this.state.currentFocusElement); }
-                }'}, 100');
+    private hideGroupIndicator(): void {
+        if (this.state.currentFocusElement) {
+            this.state.currentFocusElement.classList.remove('group-focused');
         }
     }
 
     /**
      * カスタムエフェクトの作成
      */
-    createCustomEffect('
-        element: HTMLElement, ')';
-        effectType: EffectType = 'pulse')','
-    options: Partial<EffectOptions> = { ': HTMLElement {''
-        const bounds = getElementBounds(element }
-        const opts: Required<EffectOptions> = { ...DEFAULT_EFFECT_OPTIONS, ...options,
-
-        const effect = document.createElement('div),'
-        effect.className = `${CSS_CLASSES.CUSTOM_EFFECT} ${effectType}`;
-        
-        // 基本スタイルを適用
-        const baseStyles = createCustomEffectStyles(bounds, effectType, this.config.focusRing);
-        Object.assign(effect.style, baseStyles);
-        
-        // エフェクト固有のCSSを追加
-        const effectCSS = getEffectCSS(effectType, this.config.focusRing);
-        effect.style.cssText += effectCSS;
-        // モーション設定の確認
-        if(prefersReducedMotion()) { ''
-            effect.style.animation = 'none' }
-        
-        // 遅延実行
-        if (opts.delay > 0) { setTimeout(() => {  }
-                document.body.appendChild(effect); }
-            }, opts.delay);
-        } else { document.body.appendChild(effect);
-        
-        // 自動削除
-        if (opts.autoRemove) {
-            const duration = opts.duration || EFFECT_DURATIONS[effectType],
-            setTimeout(() => { 
+    createCustomEffect(element: HTMLElement, effectType: EffectType, options: EffectOptions = {}): void {
+        if (!this.config.animations.enabled || this.config.animations.reducedMotion) {
+            return;
         }
-                if (effect.parentNode) { }
-                    effect.parentNode.removeChild(effect); }
-}, duration);
+
+        const optimization = optimizeRendering(element);
+        if (!optimization.shouldRender) {
+            return;
         }
-        
-        return effect;
-    }
 
-    /**
-     * パフォーマンス最適化のための描画制御
-     */
-    optimizeRendering(): RenderingOptimizationResult { // 要素が画面外にある場合はスキップ
-        if (this.state.currentFocusElement) {
-            const elementBounds = getElementBounds(this.state.currentFocusElement);
-            const viewportBounds = getViewportBounds();
-            // 要素が画面外の場合
-            if(!isElementInViewport(elementBounds, viewportBounds)) {
-                return { shouldRender: false,''
-                    reason: 'Element is outside viewport' }
-                    elementBounds };
-                    viewportBounds     }
-}
-        return { shouldRender: true,
+        const bounds = optimization.elementBounds!;
+        const duration = options.duration || EFFECT_DURATIONS[effectType];
+        const delay = options.delay || 0;
+        const easing = options.easing || this.config.animations.easing;
 
-    /**
-     * アクセシビリティ対応の描画調整
-     */
-    adjustForAccessibility(): void { // 高コントラストモード対応
-        if (this.state.isHighContrastMode) {
-    
-}
-            this.adjustRingForAccessibility(this.elements.focusRing);
-        
-        // 縮小モーション設定対応
-        if (prefersReducedMotion() { this.disableAnimations();
-    }
+        // Create effect element
+        const effectElement = document.createElement('div');
+        effectElement.className = `custom-effect custom-effect-${effectType}`;
 
-    /**
-     * フォーカスリングのアクセシビリティ調整
-     */
-    private adjustRingForAccessibility(ring: HTMLElement): void { ''
-        if (this.state.isHighContrastMode) {
+        const style = this.getEffectStyle(bounds, effectType);
+        Object.assign(effectElement.style, style);
 
-            ring.style.borderWidth = this.config.highContrast.width + 'px' }
-            ring.style.borderColor = this.config.highContrast.color; }
-}
+        // Add animation
+        effectElement.style.animation = `${effectType} ${duration}ms ${easing} ${delay}ms`;
 
-    /**
-     * アニメーションの無効化'
-     */''
-    private disableAnimations('';
-        this.elements.focusRing.style.animation = 'none';
-        this.elements.focusOverlay.style.animation = 'none';
-        
-        // カスタムエフェクトのアニメーションも無効化)
-        document.querySelectorAll(`.${ CSS_CLASSES.CUSTOM_EFFECT)`}.forEach((element} => { }'
+        document.body.appendChild(effectElement);
 
-            (element, as HTMLElement'}'.style.animation = 'none';
-        }';'
-    }
-
-    /**
-     * ランドマーク要素かどうかの判定
-     */'
-    private isLandmarkElement(element: HTMLElement): boolean { ''
-        const tagName = element.tagName.toLowerCase()','
-        const role = element.getAttribute('role),'
-        
-        return LANDMARK_SELECTORS.includes(tagName) ||,
-               (role !== null && LANDMARK_SELECTORS.includes(role, as LandmarkType);
-
-    /**
-     * グループ要素かどうかの判定
-     */'
-    private isGroupElement(element: HTMLElement): boolean { ''
-        const tagName = element.tagName.toLowerCase()','
-        const role = element.getAttribute('role),'
-        
-        return GROUP_SELECTORS.includes(tagName) ||,
-               (role !== null && GROUP_ROLES.includes(role);
-
-    /**
-     * ランドマークハイライトのクリア
-     */
-    private clearLandmarkHighlights(): void {
-        document.querySelectorAll(`.${CSS_CLASSES.LANDMARK}.${ CSS_CLASSES.HIGHLIGHTED)`}.forEach(el => {}
-            el.classList.remove(CSS_CLASSES.HIGHLIGHTED}
+        // Clean up after animation
+        const cleanup = () => {
+            if (effectElement.parentNode) {
+                effectElement.parentNode.removeChild(effectElement);
+            }
         };
+
+        if (options.autoRemove !== false) {
+            setTimeout(cleanup, duration + delay + 100);
+        }
     }
 
     /**
-     * グループインジケータのクリア
+     * エフェクトスタイルの取得
      */
-    private clearGroupIndicators(): void {
-        document.querySelectorAll(`.${CSS_CLASSES.GROUP}.${CSS_CLASSES.ACTIVE}`).forEach(el => {  );
-            el.classList.remove(CSS_CLASSES.ACTIVE);     }
-}
-    /**
-     * カスタムエフェクトのクリア
-     */
-    private clearCustomEffects(): void { document.querySelectorAll(`.${CSS_CLASSES.CUSTOM_EFFECT)`}.forEach(el => { }
-            if (el.parentNode) { }
-                el.parentNode.removeChild(el    }
-}
-    }
+    private getEffectStyle(bounds: ElementBounds, effectType: EffectType): CustomEffectStyle {
+        const cacheKey = `${effectType}-${bounds.left}-${bounds.top}-${bounds.width}-${bounds.height}`;
+        
+        if (this.styleCache.has(cacheKey)) {
+            return this.styleCache.get(cacheKey)!;
+        }
 
-    /**
-     * すべてのタイマーのクリア
-     */
-    private clearAllTimers(): void { this.state.animationTimers.forEach((timer) => {  }
-            clearTimeout(timer); }
+        const style: CustomEffectStyle = {
+            position: 'absolute',
+            left: `${bounds.left}px`,
+            top: `${bounds.top}px`,
+            width: `${bounds.width}px`,
+            height: `${bounds.height}px`,
+            pointerEvents: 'none',
+            zIndex: '9997'
         };
-        this.state.animationTimers.clear();
+
+        this.styleCache.set(cacheKey, style);
+        return style;
+    }
+
+    /**
+     * ハイコントラストモードの更新
+     */
+    private updateHighContrastMode(): void {
+        if (this.state.isHighContrastMode && this.config.highContrast.enabled) {
+            this.elements.focusRing.style.borderColor = this.config.highContrast.color;
+            this.elements.focusRing.style.borderWidth = `${this.config.highContrast.width}px`;
+            document.body.classList.add(this.cssClasses.highContrast);
+        } else {
+            this.elements.focusRing.style.borderColor = this.config.focusRing.color;
+            this.elements.focusRing.style.borderWidth = `${this.config.focusRing.width}px`;
+            document.body.classList.remove(this.cssClasses.highContrast);
+        }
+    }
+
+    /**
+     * アニメーション設定の更新
+     */
+    private updateAnimationSettings(): void {
+        if (this.config.animations.reducedMotion) {
+            this.elements.focusRing.style.transition = 'none';
+            this.elements.focusOverlay.style.transition = 'none';
+        } else {
+            this.elements.focusRing.style.transition = `all ${this.config.focusRing.animationDuration}ms ease`;
+            this.elements.focusOverlay.style.transition = 'opacity 200ms ease';
+        }
+    }
+
+    /**
+     * タイマーのクリア
+     */
+    private clearTimer(name: string): void {
+        const timerId = this.state.animationTimers.get(name);
+        if (timerId) {
+            clearTimeout(timerId);
+            this.state.animationTimers.delete(name);
+        }
+    }
+
+    /**
+     * スタイルキャッシュのクリア
+     */
+    clearStyleCache(): void {
+        this.styleCache.clear();
+        console.log('Style cache cleared');
+    }
+
+    /**
+     * レンダリング統計の取得
+     */
+    getRenderingStats() {
+        return {
+            cacheSize: this.styleCache.size,
+            activeTimers: this.state.animationTimers.size,
+            currentElement: this.state.currentFocusElement?.tagName || null,
+            highContrastMode: this.state.isHighContrastMode,
+            keyboardMode: this.state.keyboardMode
+        };
     }
 
     /**
      * リソースの解放
      */
-    dispose(): void { // すべてのエフェクトをクリア
-        this.clearAllEffects();
-        // DOMからクラスを削除
-        document.querySelectorAll(`.${CSS_CLASSES.LANDMARK)`}.forEach(el => {}
-            el.classList.remove(CSS_CLASSES.LANDMARK}
-        };
-        
-        document.querySelectorAll(`.${CSS_CLASSES.GROUP}`).forEach(el => {  );
-            el.classList.remove(CSS_CLASSES.GROUP);' }'
+    destroy(): void {
+        console.log('Destroying FocusEffectRenderer...');
 
-        }');'
+        // Clear all timers
+        this.state.animationTimers.forEach(timerId => clearTimeout(timerId));
+        this.state.animationTimers.clear();
 
-        console.log('FocusEffectRenderer, disposed');
+        // Clear style cache
+        this.clearStyleCache();
 
-    }'}'
+        // Hide effects
+        this.hideFocusRing();
+        this.hideFocusOverlay();
+
+        console.log('FocusEffectRenderer destroyed');
+    }
+}
