@@ -1,52 +1,59 @@
-import { describe, test, expect, beforeEach, afterEach, beforeAll, afterAll, jest, it  } from '@jest/globals';
 /**
  * PWA Installation E2E Test
  * PWAインストールフローのE2Eテスト
  */
 
-import { test, expect   } from '@playwright/test';
+import { test, expect } from '@playwright/test';
 
 test.describe('PWA Installation Flow', () => {
-    test.beforeEach(async ({ page }') => {'
+    test.beforeEach(async ({ page }) => {
         // PWAテスト用の設定
         await page.goto('/');
+        
         // Service Worker登録を待つ
-        await page.waitForFunction((') => 'serviceWorker' in navigator),'
+        await page.waitForFunction(() => 'serviceWorker' in navigator);
         
         // PWAManagerの初期化を待つ  
-        await page.waitForFunction(() => window.pwaManager !== undefined) }');'
+        await page.waitForFunction(() => (window as any).pwaManager !== undefined);
+    });
 
-    test('should have valid PWA manifest', async ({ page )') => {'
+    test('should have valid PWA manifest', async ({ page }) => {
         // Manifestリンクの存在確認
         const manifestLink = await page.locator('link[rel="manifest"]');
-        await expect(manifestLink).toBeVisible('),'
+        await expect(manifestLink).toBeVisible();
         
         // Manifestファイルの読み込み確認
         const manifestHref = await manifestLink.getAttribute('href');
+        if (!manifestHref) throw new Error('Manifest href not found');
+        
         const manifestResponse = await page.request.get(manifestHref);
-        expect(manifestResponse.ok().toBeTruthy();
+        expect(manifestResponse.ok()).toBeTruthy();
+        
         // Manifest内容の検証
         const manifest = await manifestResponse.json();
-        expect(manifest.name').toBe('BubblePop'),'
-        expect(manifest.short_name').toBe('BubblePop'),'
-        expect(manifest.theme_color').toBe('#4CAF50'),'
-        expect(manifest.background_color').toBe('#ffffff'),'
-        expect(manifest.display').toBe('standalone'),'
-        expect(manifest.start_url').toBe('/'),'
+        expect(manifest.name).toBe('BubblePop');
+        expect(manifest.short_name).toBe('BubblePop');
+        expect(manifest.theme_color).toBe('#4CAF50');
+        expect(manifest.background_color).toBe('#ffffff');
+        expect(manifest.display).toBe('standalone');
+        expect(manifest.start_url).toBe('/');
         
         // アイコンの存在確認
         expect(manifest.icons).toBeDefined();
         expect(manifest.icons.length).toBeGreaterThan(0);
+        
         // 必要なアイコンサイズの確認
-        const iconSizes = manifest.icons.map(icon => icon.sizes);
-        expect(iconSizes').toContain('192x192'),'
-        expect(iconSizes').toContain('512x512') }');
+        const iconSizes = manifest.icons.map((icon: any) => icon.sizes);
+        expect(iconSizes).toContain('192x192');
+        expect(iconSizes).toContain('512x512');
+    });
 
-    test('should register service worker successfully', async ({ page ) => {
+    test('should register service worker successfully', async ({ page }) => {
         // Service Worker登録の確認
         const swRegistered = await page.evaluate(async () => {
             const registration = await navigator.serviceWorker.getRegistration();
-            return registration !== undefined };
+            return registration !== undefined;
+        });
         
         expect(swRegistered).toBeTruthy();
         
@@ -54,264 +61,341 @@ test.describe('PWA Installation Flow', () => {
         const swState = await page.evaluate(async () => {
             const registration = await navigator.serviceWorker.getRegistration();
             return {
-                active: registration.active !== null,
-                scope: registration.scope,
-                state: registration.active? .state
-            }
-        };
+                active: registration?.active !== null,
+                scope: registration?.scope,
+                state: registration?.active?.state
+            };
+        });
         
         expect(swState.active).toBeTruthy();
-        expect(swState.state').toBe('activated');'
-        expect(swState.scope').toContain('/');'
-    }');'
+        expect(swState.state).toBe('activated');
+        expect(swState.scope).toContain('/');
+    });
 
-    test('should have proper PWA meta tags', async ({ page )') => {'
+    test('should have proper PWA meta tags', async ({ page }) => {
         // 必須メタタグの確認
-        await expect(page.locator('meta[name="viewport"]').toBeVisible('),'
-        await expect(page.locator('meta[name="theme-color"]').toBeVisible('),'
-        await expect(page.locator('meta[name="apple-mobile-web-app-capable"]').toBeVisible('),'
-        await expect(page.locator('meta[name="mobile-web-app-capable"]').toBeVisible('),'
+        await expect(page.locator('meta[name="viewport"]')).toBeVisible();
+        await expect(page.locator('meta[name="theme-color"]')).toBeVisible();
+        await expect(page.locator('meta[name="apple-mobile-web-app-capable"]')).toBeVisible();
+        await expect(page.locator('meta[name="mobile-web-app-capable"]')).toBeVisible();
         
         // メタタグの値確認
         const themeColor = await page.getAttribute('meta[name="theme-color"]', 'content');
-        expect(themeColor').toBe('#4CAF50'),'
+        expect(themeColor).toBe('#4CAF50');
         
         const appleCapable = await page.getAttribute('meta[name="apple-mobile-web-app-capable"]', 'content');
-        expect(appleCapable').toBe('yes'),'
+        expect(appleCapable).toBe('yes');
         
         const mobileCapable = await page.getAttribute('meta[name="mobile-web-app-capable"]', 'content');
-        expect(mobileCapable').toBe('yes') }');
+        expect(mobileCapable).toBe('yes');
+    });
 
-    test('should have proper icon files', async ({ page )') => {'
+    test('should have proper icon files', async ({ page }) => {
         // Manifestからアイコン一覧を取得
         const manifestLink = await page.locator('link[rel="manifest"]');
         const manifestHref = await manifestLink.getAttribute('href');
+        if (!manifestHref) throw new Error('Manifest href not found');
+        
         const manifestResponse = await page.request.get(manifestHref);
         const manifest = await manifestResponse.json();
+        
         // 各アイコンファイルの存在確認
         for (const icon of manifest.icons) {
             const iconResponse = await page.request.get(icon.src);
-            expect(iconResponse.ok().toBeTruthy();
+            expect(iconResponse.ok()).toBeTruthy();
+            
             // Content-Typeの確認
-            const contentType = iconResponse.headers(')['content-type'],'
-            expect(contentType').toContain('image/') }'
+            const contentType = iconResponse.headers()['content-type'];
+            expect(contentType).toContain('image/');
+        }
         
         // Apple Touch Iconの確認
         const appleIcons = await page.locator('link[rel="apple-touch-icon"]').all();
-        for (const appleIcon of appleIcons') {'
-            const href = await appleIcon.getAttribute('href');
-            if (href) {
-                const iconResponse = await page.request.get(href);
-                expect(iconResponse.ok().toBeTruthy(') }'
+        expect(appleIcons.length).toBeGreaterThan(0);
+    });
+
+    test('should handle beforeinstallprompt event', async ({ page }) => {
+        // installプロンプトイベントのハンドリング確認
+        const hasInstallButton = await page.evaluate(() => {
+            const pwaManager = (window as any).pwaManager;
+            return pwaManager && pwaManager.deferredPrompt !== null;
+        });
+        
+        // Desktop環境でのみインストールプロンプトが表示される
+        if (hasInstallButton) {
+            // インストールボタンの表示確認
+            const installButton = page.locator('[data-testid="pwa-install-button"]');
+            await expect(installButton).toBeVisible();
         }
-        
-        // Faviconの確認
-        const favicon32 = await page.request.get('/favicon-32x32.png');
-        expect(favicon32.ok().toBeTruthy(');'
-        
-        const favicon16 = await page.request.get('/favicon-16x16.png');
-        expect(favicon16.ok().toBeTruthy();
-    }');'
+    });
 
-    test('should initialize PWAManager correctly', async ({ page ) => {
-        // PWAManagerの初期化確認
-        const pwaManagerState = await page.evaluate(() => {
-            if (!window.pwaManager) return null,
-            
-            return window.pwaManager.getPWAState() };
-        
-        expect(pwaManagerState).not.toBeNull();
-        expect(pwaManagerState.features).toBeDefined();
-        expect(pwaManagerState.features.serviceWorkerSupported).toBeTruthy();
-        expect(pwaManagerState.features.manifestSupported).toBeTruthy();
-    }');'
-
-    test('should handle install prompt (Chrome/Edge')', async ({ page, browserName )') => {
-        // Chrome/Edgeでのみテスト実行
-        test.skip(browserName !== 'chromium', 'Install prompt is only available in Chrome/Edge');
-        // beforeinstallpromptイベントのシミュレーション
-        await page.evaluate((') => {'
-            const event = new Event('beforeinstallprompt');
-            event.preventDefault = () => {}; : undefined
-            event.prompt = async (') => ({ outcome: 'accepted' }'),
-            event.userChoice = Promise.resolve({ outcome: 'accepted' }');'
-            event.platforms = ['web'];
-            
-            window.dispatchEvent(event);
-        };
-        
-        // PWAManagerでインストール可能状態の確認
-        const canInstall = await page.evaluate(() => {
-            return window.pwaManager && window.pwaManager.canInstall() };
-        
-        // インストールプロンプトの表示テスト
-        if (canInstall) {
-            const installResult = await page.evaluate(async () => {
-                return await window.pwaManager.promptInstall() };
-            
-            expect(installResult).toBeDefined();
-        }
-    }');'
-
-    test('should work offline after caching', async ({ page, context } => {
-        // 初期読み込みでキャッシュを作成
-        await page.reload('),'
-        await page.waitForLoadState('networkidle');
-        // Service Workerの準備完了を待つ
-        await page.waitForTimeout(2000);
-        // オフライン状態にする
-        await context.setOffline(true);
-        // オフライン状態でページリロード
-        await page.reload('),'
-        
-        // ページが正常に表示されることを確認
-        await expect(page.locator('#gameCanvas').toBeVisible('),'
-        await expect(page.locator('#gameUI').toBeVisible();
-        // オフライン状態の表示確認
-        const isOffline = await page.evaluate(() => !navigator.onLine),
-        expect(isOffline).toBeTruthy();
-        // PWAManagerのオフライン検出確認
-        const pwaOfflineState = await page.evaluate(() => {
-            return window.pwaManager && window.pwaManager.isOffline() };
-        expect(pwaOfflineState).toBeTruthy();
-        
-        // オンライン状態に戻す
-        await context.setOffline(false);
-    }');'
-
-    test('should display standalone mode correctly', async ({ page ) => {
-        // スタンドアロンモードのシミュレーション
-        await page.addInitScript((') => {'
-            // display-mode: standalone のシミュレーション
-            Object.defineProperty(window, 'matchMedia', {
-                writable: true),
-               , value: (query') => {'
-                    if (query === '(display-mode: standalone')') {'
-                        return {
-                            matches: true,
-                            media: query,
-                            onchange: null,
-                            addListener: () => {},
-                            removeListener: () => {},
-                            addEventListener: () => {},
-                            removeEventListener: () => {},
-                            dispatchEvent: () => {}
-                        }
-                    }
-                    return {
-                        matches: false,
-                        media: query,
-                        onchange: null,
-                        addListener: () => {},
-                        removeListener: () => {},
-                        addEventListener: () => {},
-                        removeEventListener: () => {},
-                        dispatchEvent: () => {}
-                    }
-                }
-            }
-        };
-        
-        await page.reload();
-        
-        // スタンドアロンモードの検出確認
-        const isStandalone = await page.evaluate((') => {'
-            return window.matchMedia('(display-mode: standalone')').matches };'
-        
-        expect(isStandalone).toBeTruthy();
-        
-        // PWAManagerでの検出確認
-        const pwaStandaloneState = await page.evaluate(() => {
-            const state = window.pwaManager && window.pwaManager.getPWAState();
-            return state ? state.isStandalone: false;);
-        
-        expect(pwaStandaloneState).toBeTruthy();
-    }');'
-
-    test('should handle app installation event', async ({ page ) => {
-        // appinstalledイベントのシミュレーション
-        let installEventFired = false,
-        
-        await page.evaluate((') => {'
-            window.addEventListener('appinstalled', () => {
-                window.appInstallEventFired = true }
-        };
-        
-        // イベント発火のシミュレーション
-        await page.evaluate((') => {'
-            const event = new Event('appinstalled');
-            window.dispatchEvent(event: any) },
-        
-        // イベントハンドラーの実行確認
-        const eventFired = await page.evaluate(() => window.appInstallEventFired);
-        expect(eventFired).toBeTruthy();
-        
-        // PWAManagerでのインストール状態更新確認
-        const isInstalled = await page.evaluate(() => {
-            const state = window.pwaManager && window.pwaManager.getPWAState();
-            return state ? state.isInstalled: false;);
-        
-        // Note: シミュレーションなので実際の状態変更は期待しない
-        expect(typeof isInstalled').toBe('boolean');'
-    }');'
-
-    test('should have proper cache strategy', async ({ page ) => {
-        // キャッシュの存在確認
+    test('should cache essential assets', async ({ page }) => {
+        // キャッシュストレージの確認
         const cacheNames = await page.evaluate(async () => {
-            return await caches.keys() });
+            return await caches.keys();
+        });
         
         expect(cacheNames.length).toBeGreaterThan(0);
         
-        // メインキャッシュの内容確認
-        const cacheContents = await page.evaluate(async () => {
-            const cacheNames = await caches.keys();
-            if (cacheNames.length === 0) return [],
-            
-            const cache = await caches.open(cacheNames[0]);
-            const requests = await cache.keys();
-            return requests.map(req => req.url) }');'
-        
-        // 基本リソースがキャッシュされていることを確認
-        const hasMainPage = cacheContents.some(url => url.includes('/') || url.includes('index.html')');'
-        const hasManifest = cacheContents.some(url => url.includes('manifest.json')');'
-        const hasServiceWorker = cacheContents.some(url => url.includes('sw.js');
-        
-        expect(hasMainPage).toBeTruthy();
-        // Note: manifest.jsonとsw.jsのキャッシュは設定によって異なる場合がある
-    }');'
-
-    test('should handle network state changes', async ({ page, context ) => {
-        let networkEvents = [],
-        
-        // ネットワーク状態変更イベントの監視
-        await page.evaluate((') => {'
-            window.networkEvents = [],
-            
-            window.addEventListener('online', (') => {'
-                window.networkEvents.push({ type: 'online', timestamp: Date.now() },
-            }');'
-            
-            window.addEventListener('offline', (') => {'
-                window.networkEvents.push({ type: 'offline', timestamp: Date.now() },
+        // 必須アセットのキャッシュ確認
+        const cachedUrls = await page.evaluate(async () => {
+            const urls: string[] = [];
+            for (const cacheName of await caches.keys()) {
+                const cache = await caches.open(cacheName);
+                const requests = await cache.keys();
+                urls.push(...requests.map(req => req.url));
             }
-        };
+            return urls;
+        });
         
-        // オフライン状態にする
+        // 重要なアセットがキャッシュされているか確認
+        expect(cachedUrls.some(url => url.includes('index.html') || url.endsWith('/'))).toBeTruthy();
+        expect(cachedUrls.some(url => url.includes('.js'))).toBeTruthy();
+        expect(cachedUrls.some(url => url.includes('.css'))).toBeTruthy();
+    });
+
+    test('should work offline after installation', async ({ page, context }) => {
+        // まず全てのアセットをロード
+        await page.waitForLoadState('networkidle');
+        
+        // オフラインモードに切り替え
         await context.setOffline(true);
-        await page.waitForTimeout(500);
         
-        // オンライン状態に戻す
+        // ページをリロード
+        await page.reload();
+        
+        // オフラインでも動作することを確認
+        await expect(page.locator('body')).toBeVisible();
+        
+        // 基本的な要素が表示されることを確認
+        await expect(page.locator('#gameCanvas')).toBeVisible();
+        
+        // オンラインに戻す
         await context.setOffline(false);
-        await page.waitForTimeout(500);
+    });
+
+    test('should handle app installation flow', async ({ page }) => {
+        // インストール可能な場合のフローテスト
+        const canInstall = await page.evaluate(() => {
+            return (window as any).pwaManager && (window as any).pwaManager.deferredPrompt !== null;
+        });
         
-        // イベントの発火確認
-        networkEvents = await page.evaluate(() => window.networkEvents');'
+        if (canInstall) {
+            // インストールボタンをクリック
+            await page.click('[data-testid="pwa-install-button"]');
+            
+            // インストールダイアログのモック（実際のプロンプトはテストできない）
+            const installAttempted = await page.evaluate(() => {
+                const pwaManager = (window as any).pwaManager;
+                return pwaManager.promptInstall !== undefined;
+            });
+            
+            expect(installAttempted).toBeTruthy();
+        }
+    });
+
+    test('should update service worker when available', async ({ page }) => {
+        // Service Worker更新のチェック
+        const updateAvailable = await page.evaluate(async () => {
+            const registration = await navigator.serviceWorker.getRegistration();
+            if (!registration) return false;
+            
+            // 更新をチェック
+            await registration.update();
+            
+            return registration.waiting !== null || registration.installing !== null;
+        });
         
-        // オフライン・オンラインイベントが発火していることを確認
-        const hasOfflineEvent = networkEvents.some(event => event.type === 'offline');
-        const hasOnlineEvent = networkEvents.some(event => event.type === 'online');
+        // 更新がある場合の処理確認
+        if (updateAvailable) {
+            // 更新通知の表示確認
+            const updateNotification = page.locator('[data-testid="sw-update-notification"]');
+            await expect(updateNotification).toBeVisible();
+        }
+    });
+
+    test('should handle push notification permission', async ({ page, context }) => {
+        // 通知権限の確認
+        const permission = await page.evaluate(() => {
+            return Notification.permission;
+        });
         
-        expect(hasOfflineEvent).toBeTruthy();
-        expect(hasOnlineEvent).toBeTruthy();
-    }
-}');'
+        // 権限が未決定の場合
+        if (permission === 'default') {
+            // 通知許可ボタンの確認
+            const notificationButton = page.locator('[data-testid="enable-notifications"]');
+            
+            if (await notificationButton.isVisible()) {
+                // 権限リクエストのモック
+                await context.grantPermissions(['notifications']);
+                
+                // ボタンクリック
+                await notificationButton.click();
+                
+                // 権限が付与されたことを確認
+                const newPermission = await page.evaluate(() => {
+                    return Notification.permission;
+                });
+                
+                expect(['granted', 'denied']).toContain(newPermission);
+            }
+        }
+    });
+
+    test('should have proper app shortcuts', async ({ page }) => {
+        // Manifestからショートカットを取得
+        const manifestLink = await page.locator('link[rel="manifest"]');
+        const manifestHref = await manifestLink.getAttribute('href');
+        if (!manifestHref) throw new Error('Manifest href not found');
+        
+        const manifestResponse = await page.request.get(manifestHref);
+        const manifest = await manifestResponse.json();
+        
+        // ショートカットの存在確認
+        if (manifest.shortcuts) {
+            expect(manifest.shortcuts.length).toBeGreaterThan(0);
+            
+            // 各ショートカットの検証
+            for (const shortcut of manifest.shortcuts) {
+                expect(shortcut.name).toBeDefined();
+                expect(shortcut.url).toBeDefined();
+                
+                // アイコンがある場合の確認
+                if (shortcut.icons) {
+                    for (const icon of shortcut.icons) {
+                        const iconResponse = await page.request.get(icon.src);
+                        expect(iconResponse.ok()).toBeTruthy();
+                    }
+                }
+            }
+        }
+    });
+
+    test('should have proper theme and colors', async ({ page }) => {
+        // ステータスバーの色確認（メタタグ）
+        const statusBarStyle = await page.getAttribute('meta[name="apple-mobile-web-app-status-bar-style"]', 'content');
+        expect(['default', 'black', 'black-translucent']).toContain(statusBarStyle);
+        
+        // CSS変数でのテーマカラー確認
+        const themeColors = await page.evaluate(() => {
+            const styles = getComputedStyle(document.documentElement);
+            return {
+                primary: styles.getPropertyValue('--primary-color'),
+                secondary: styles.getPropertyValue('--secondary-color'),
+                background: styles.getPropertyValue('--background-color')
+            };
+        });
+        
+        // 色が定義されているか確認
+        if (themeColors.primary) {
+            expect(themeColors.primary).toBeTruthy();
+            expect(themeColors.secondary).toBeTruthy();
+            expect(themeColors.background).toBeTruthy();
+        }
+    });
+
+    test('should handle app badge updates', async ({ page }) => {
+        // Badge APIのサポート確認
+        const badgeSupported = await page.evaluate(() => {
+            return 'setAppBadge' in navigator;
+        });
+        
+        if (badgeSupported) {
+            // バッジ設定のテスト
+            await page.evaluate(async () => {
+                await (navigator as any).setAppBadge(5);
+            });
+            
+            // バッジクリアのテスト
+            await page.evaluate(async () => {
+                await (navigator as any).clearAppBadge();
+            });
+            
+            // エラーが発生しないことを確認
+            const errors = await page.evaluate(() => {
+                return (window as any).__pwaErrors || [];
+            });
+            
+            expect(errors.length).toBe(0);
+        }
+    });
+
+    test('should persist data across sessions', async ({ page, context }) => {
+        // データを保存
+        await page.evaluate(() => {
+            localStorage.setItem('pwa-test-data', 'test-value');
+            sessionStorage.setItem('pwa-session-data', 'session-value');
+        });
+        
+        // 新しいページで確認
+        const newPage = await context.newPage();
+        await newPage.goto('/');
+        
+        // LocalStorageは永続化される
+        const localData = await newPage.evaluate(() => {
+            return localStorage.getItem('pwa-test-data');
+        });
+        expect(localData).toBe('test-value');
+        
+        // SessionStorageは新しいタブでは空
+        const sessionData = await newPage.evaluate(() => {
+            return sessionStorage.getItem('pwa-session-data');
+        });
+        expect(sessionData).toBeNull();
+        
+        await newPage.close();
+    });
+
+    test('should handle deep links properly', async ({ page }) => {
+        // ディープリンクのテスト
+        const deepLinks = [
+            '/#/game',
+            '/#/settings',
+            '/#/help',
+            '/#/stats'
+        ];
+        
+        for (const link of deepLinks) {
+            await page.goto(link);
+            await page.waitForLoadState('networkidle');
+            
+            // ページが正しくロードされることを確認
+            await expect(page.locator('body')).toBeVisible();
+            
+            // エラーが発生していないことを確認
+            const errors = await page.evaluate(() => {
+                return (window as any).__jsErrors || [];
+            });
+            
+            expect(errors.length).toBe(0);
+        }
+    });
+
+    test('should have responsive design for different devices', async ({ page }) => {
+        // 異なるデバイスサイズでのテスト
+        const devices = [
+            { name: 'Mobile', width: 375, height: 667 },
+            { name: 'Tablet', width: 768, height: 1024 },
+            { name: 'Desktop', width: 1920, height: 1080 }
+        ];
+        
+        for (const device of devices) {
+            await page.setViewportSize({ width: device.width, height: device.height });
+            await page.waitForTimeout(500);
+            
+            // レイアウトが正しく表示されることを確認
+            await expect(page.locator('#gameCanvas')).toBeVisible();
+            
+            // ビューポートメタタグが機能していることを確認
+            const viewport = await page.evaluate(() => {
+                return {
+                    width: window.innerWidth,
+                    height: window.innerHeight
+                };
+            });
+            
+            expect(viewport.width).toBeLessThanOrEqual(device.width);
+            expect(viewport.height).toBeLessThanOrEqual(device.height);
+        }
+    });
+});

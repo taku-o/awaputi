@@ -1,4 +1,3 @@
-import { describe, test, expect, beforeEach, afterEach, beforeAll, afterAll, jest, it  } from '@jest/globals';
 /**
  * local-execution-e2e.spec.js
  * E2E tests for local execution using file:// protocol with Playwright - Issue #63
@@ -9,21 +8,21 @@ import { describe, test, expect, beforeEach, afterEach, beforeAll, afterAll, jes
  * - Developer guidance system functionality
  * - Browser compatibility across different engines
  * 
- *, Requirements: 1.1, 2.1, 5.1
+ * Requirements: 1.1, 2.1, 5.1
  */
 
-import { test, expect   } from '@playwright/test';
+import { test, expect } from '@playwright/test';
 import path from 'path';
 
 // Test configuration for local file execution
 const TEST_CONFIG = {
-    // Path to the project root (adjust based on test runner location)'),'
-    projectRoot: path.resolve(__dirname, '../..');
-    // Timeout for local file operations (usually faster than server'),'
+    // Path to the project root (adjust based on test runner location)
+    projectRoot: path.resolve(__dirname, '../..'),
+    // Timeout for local file operations (usually faster than server)
     localTimeout: 10000,
     // Expected elements and behaviors
     expectedElements: {
-        gameCanvas: '#gameCanvas' },
+        gameCanvas: '#gameCanvas',
         loadingScreen: '#loadingScreen',
         gameUI: '#gameUI',
         localGuidance: '[data-testid="local-guidance-banner"]'
@@ -31,323 +30,352 @@ const TEST_CONFIG = {
 };
 
 test.describe('Local File Execution E2E Tests', () => {
-    let indexPath: any,
+    let indexPath: string;
 
-    test.beforeAll((') => {'
+    test.beforeAll(() => {
         // Construct absolute path to index.html
-        indexPath = `file://${path.join(TEST_CONFIG.projectRoot, 'index.html'}}`;
+        indexPath = `file://${path.join(TEST_CONFIG.projectRoot, 'index.html')}`;
         console.log('Testing local file execution at:', indexPath);
-    }');'
+    });
 
-    test.describe('Basic Local Execution', (') => {'
-        test('should load index.html from file:// protocol', async ({ page }') => {'
+    test.describe('Basic Local Execution', () => {
+        test('should load index.html from file:// protocol', async ({ page }) => {
             // Navigate to local file
-            await page.goto(indexPath, { waitUntil: 'domcontentloaded', timeout: TEST_CONFIG.localTimeout };
+            await page.goto(indexPath, { waitUntil: 'domcontentloaded', timeout: TEST_CONFIG.localTimeout });
+            
             // Verify basic page structure
-            await expect(page).toHaveTitle(/BubblePop/');'
-            await expect(page.locator('body').toBeVisible(');'
+            await expect(page).toHaveTitle(/BubblePop/);
+            await expect(page.locator('body')).toBeVisible();
 
-            // Check that we're running from file:// protocol'
+            // Check that we're running from file:// protocol
             const protocol = await page.evaluate(() => window.location.protocol);
-            expect(protocol').toBe('file: ' }');
-        test('should detect local execution mode', async ({ page )') => {'
-            await page.goto(indexPath, { waitUntil: 'domcontentloaded' },
+            expect(protocol).toBe('file:');
+        });
+
+        test('should detect local execution mode', async ({ page }) => {
+            await page.goto(indexPath, { waitUntil: 'domcontentloaded' });
+            
             // Wait for local execution detection
-            await page.waitForFunction(() => window.AWAPUTI_LOCAL_EXECUTION !== undefined, {
+            await page.waitForFunction(() => (window as any).AWAPUTI_LOCAL_EXECUTION !== undefined, {
                 timeout: TEST_CONFIG.localTimeout
-            };
+            });
 
             // Verify local execution was detected
-            const isLocalExecution = await page.evaluate(() => window.AWAPUTI_LOCAL_EXECUTION);
-            expect(isLocalExecution).toBe(true');'
+            const isLocalExecution = await page.evaluate(() => (window as any).AWAPUTI_LOCAL_EXECUTION);
+            expect(isLocalExecution).toBe(true);
 
             // Verify HTML class was added
             const htmlClasses = await page.locator('html').getAttribute('class');
-            expect(htmlClasses').toContain('awaputi-local-execution');'
-        }');'
+            expect(htmlClasses).toContain('awaputi-local-execution');
+        });
 
-        test('should handle ES6 module loading gracefully', async ({ page )') => {'
+        test('should handle ES6 module loading gracefully', async ({ page }) => {
             // Collect console messages to monitor module loading
-            const consoleMessages: any[] = [],
-            page.on('console', msg => {);
-                consoleMessages.push({ type: msg.type(), text: msg.text() },
-            }');'
+            const consoleMessages: { type: string; text: string }[] = [];
+            page.on('console', msg => {
+                consoleMessages.push({ type: msg.type(), text: msg.text() });
+            });
 
-            await page.goto(indexPath, { waitUntil: 'domcontentloaded' },
+            await page.goto(indexPath, { waitUntil: 'domcontentloaded' });
+            
             // Wait for module loading attempt
             await page.waitForTimeout(2000);
 
             // Check if local execution fallback was triggered
-            const localExecutionMessages = consoleMessages.filter(msg => ');'
+            const localExecutionMessages = consoleMessages.filter(msg => 
                 msg.text.includes('Local file execution detected') ||
-                msg.text.includes('ES6 module loading failed');
+                msg.text.includes('ES6 module loading failed')
+            );
 
             expect(localExecutionMessages.length).toBeGreaterThan(0);
-        }
-    }');'
+        });
+    });
 
-    test.describe('Favicon Generation and Display', (') => {'
-        test('should generate and display favicons', async ({ page }') => {'
-            await page.goto(indexPath, { waitUntil: 'domcontentloaded' },
+    test.describe('Favicon Generation and Display', () => {
+        test('should generate and display favicons', async ({ page }) => {
+            await page.goto(indexPath, { waitUntil: 'domcontentloaded' });
+            
             // Wait for potential favicon generation
-            await page.waitForTimeout(3000');'
+            await page.waitForTimeout(3000);
 
             // Check for favicon link elements in the head
             const faviconLinks = await page.locator('head link[rel*="icon"]').count();
             expect(faviconLinks).toBeGreaterThan(0);
 
-            // Verify at least one favicon has a data URL (generated');'
-            const dataUrlFavicons = await page.locator('head link[href^="data: image"]').count(
-            if (dataUrlFavicons === 0') {'
-                // If no data URLs, check for existing favicon files
-                const staticFavicons = await page.locator('head link[href*="favicon"]').count();
-                expect(staticFavicons).toBeGreaterThan(0) }
-        }');'
+            // Verify at least one favicon has a data URL (generated)
+            const dataUrlFavicons = await page.locator('head link[href^="data:image"]').count();
+            expect(dataUrlFavicons).toBeGreaterThan(0);
+        });
 
-        test('should handle favicon generation errors gracefully', async ({ page )') => {'
-            // Monitor console for any error messages
-            const errorMessages: any[] = [],
-            page.on('console', msg => {);
-                if (msg.type(') === 'error') {'
-                    errorMessages.push(msg.text() }
-            }');'
-
-            await page.goto(indexPath, { waitUntil: 'domcontentloaded' },
-            await page.waitForTimeout(5000);
-
-            // Filter out expected CORS errors (these are handled gracefully);
-            const unexpectedErrors = errorMessages.filter(error => ')'
-                !error.includes('CORS') &&
-                !error.includes('Failed to fetch') &&
-                !error.includes('ERR_FILE_NOT_FOUND') &&
-                !error.toLowerCase(').includes('favicon');'
-
-            // Should not have unexpected errors during favicon generation
-            expect(unexpectedErrors).toHaveLength(0);
-        }
-    }');'
-
-    test.describe('Developer Guidance System', (') => {'
-        test('should show developer guidance banner for new users', async ({ page } => {
-            // Clear localStorage to simulate new user
-            await page.goto(indexPath);
-            await page.evaluate((') => {'
-                localStorage.removeItem('awaputi_local_guidance_dismissed') };
-            await page.reload();
-
-            // Wait for guidance system to initialize
-            await page.waitForTimeout(2000');'
-
-            // Look for guidance banner or notification
-            const guidanceBanner = page.locator('div').filter({ hasText: /development server|npm run dev|file:\/\// ,
-            const bannerCount = await guidanceBanner.count();
-            // Should show guidance for new users in local execution
-            if (bannerCount > 0) {
-                await expect(guidanceBanner.first().toBeVisible(') } else {'
-                // Alternative: check if fallback guidance was shown
-                const fallbackGuidance = page.locator('div').filter({ hasText: /Local File Execution Detected/ ,
-                await expect(fallbackGuidance).toBeVisible() }
-        }');'
-
-        test('should hide guidance after user dismissal', async ({ page ) => {
-            await page.goto(indexPath);
-            // Wait for guidance to appear
-            await page.waitForTimeout(2000'),'
-
-            // Look for dismiss button and click it
-            const dismissButton = page.locator('button').filter({ hasText: /dismiss|continue|close/i ),
-            const dismissCount = await dismissButton.count();
-
-            if (dismissCount > 0) {
-                await dismissButton.first().click();
-                // Reload page to test persistence
-                await page.reload();
-                await page.waitForTimeout(2000'),'
-
-                // Guidance should not appear again
-                const guidanceBanner = page.locator('div').filter({ hasText: /development server|npm run dev/ ,
-                const bannerCount = await guidanceBanner.count();
-                expect(bannerCount).toBe(0) }
-        }');'
-
-        test('should provide actionable development server instructions', async ({ page ) => {
-            await page.goto(indexPath);
-            await page.waitForTimeout(2000'),'
-
-            // Look for development server commands
-            const devServerInstructions = page.locator('text=/npm run dev|python.*http\.server|npx serve/i');
-            const instructionCount = await devServerInstructions.count();
-            // Should provide at least one development server option
-            expect(instructionCount).toBeGreaterThan(0) }
-    }');'
-
-    test.describe('Game Engine Integration', (') => {'
-        test('should initialize game engine in local mode', async ({ page }') => {'
-            await page.goto(indexPath, { waitUntil: 'domcontentloaded' },
-            // Wait for game initialization
-            await page.waitForTimeout(5000);
-
-            // Check if game canvas is present
-            await expect(page.locator(TEST_CONFIG.expectedElements.gameCanvas).toBeVisible();
-
-            // Check if loading screen is handled
-            const loadingScreen = page.locator(TEST_CONFIG.expectedElements.loadingScreen);
-            const isLoadingVisible = await loadingScreen.isVisible();
-
-            // Loading screen should either be hidden or show appropriate message
-            if (isLoadingVisible) {
-                const loadingText = await loadingScreen.textContent();
-                expect(loadingText).toMatch(/読み込み|loading|local/i) }
-        }');'
-
-        test('should handle resource loading failures gracefully', async ({ page )') => {'
-            const networkErrors: any[] = [],
-            page.on('response', response => {);
-                if (!response.ok() && response.url(').includes('.js') {'
-                    networkErrors.push({);
-                        url: response.url(
-                        status: response.status(
-                        statusText: response.statusText(},
-                }
-            }');'
-
-            await page.goto(indexPath, { waitUntil: 'domcontentloaded' },
-            await page.waitForTimeout(5000);
-
-            // Check if game still functions despite resource loading issues
-            const gameCanvas = page.locator(TEST_CONFIG.expectedElements.gameCanvas);
-            await expect(gameCanvas).toBeVisible();
-
-            // Network errors are expected in file:// protocol, but game should still load
-            console.log(`Detected ${networkErrors.length) network, errors (expected, in local, mode)`}
-        };
-    }');'
-
-    test.describe('Browser Compatibility', (') => {'
-        test('should work in Chromium-based browsers', async ({ page }') => {'
-            await page.goto(indexPath, { waitUntil: 'domcontentloaded' },
-            // Check Canvas support
-            const canvasSupported = await page.evaluate((') => {'
-                const canvas = document.createElement('canvas');
-                return canvas.getContext && canvas.getContext('2d') !== null };
-            expect(canvasSupported).toBe(true);
-
-            // Check localStorage support
-            const localStorageSupported = await page.evaluate((') => {'
-                try {
-                    localStorage.setItem('test', 'test');
-                    localStorage.removeItem('test');
-                    return true } catch (e) {
-                    return false }
-            };
-            // localStorage might be restricted in file:// but should not crash
-            expect(typeof localStorageSupported').toBe('boolean');'
-
-            // Verify basic game elements are present
-            await expect(page.locator(TEST_CONFIG.expectedElements.gameCanvas).toBeVisible();
-        }');'
-
-        test('should handle security restrictions appropriately', async ({ page )') => {'
-            // Monitor console for security-related warnings
-            const securityMessages: any[] = [],
-            page.on('console', msg => {);
-                if (msg.text(').includes('CORS') || msg.text(').includes('security') || 
-                    msg.text(').includes('cross-origin') || msg.text(').includes('ERR_FILE_NOT_FOUND') {
-                    securityMessages.push(msg.text() }
-            }');'
-
-            await page.goto(indexPath, { waitUntil: 'domcontentloaded' },
+        test('should generate correct favicon sizes', async ({ page }) => {
+            await page.goto(indexPath, { waitUntil: 'domcontentloaded' });
             await page.waitForTimeout(3000);
 
-            // Security messages are expected in local file execution
-            console.log(`Security/CORS messages: ${securityMessages.length) (expected)`,
+            // Check specific favicon sizes
+            const favicon16 = await page.locator('link[sizes="16x16"]').count();
+            const favicon32 = await page.locator('link[sizes="32x32"]').count();
+            const appleTouchIcon = await page.locator('link[rel="apple-touch-icon"]').count();
 
-            // But, the page, should still, be functional, await expect(page.locator('body').toBeVisible();
-            await, expect(page.locator(TEST_CONFIG.expectedElements.gameCanvas).toBeVisible(}
-        };
-    }');'
+            expect(favicon16).toBeGreaterThan(0);
+            expect(favicon32).toBeGreaterThan(0);
+            expect(appleTouchIcon).toBeGreaterThan(0);
+        });
+    });
 
-    test.describe('Performance and User Experience', (') => {'
-        test('should load within reasonable time limits', async ({ page } => {
-            const startTime = Date.now('),'
-
-            await page.goto(indexPath, { waitUntil: 'domcontentloaded' },
-            // Wait for local mode initialization
-            await page.waitForFunction(() => window.AWAPUTI_LOCAL_EXECUTION !== undefined, {
-                timeout: TEST_CONFIG.localTimeout
-            };
-
-            const endTime = Date.now();
-            const loadTime = endTime - startTime;
-
-            // Local file execution should be reasonably fast (under 10 seconds);
-            expect(loadTime).toBeLessThan(10000);
-            console.log(`Local execution initialization time: ${loadTime)ms`},
-        }');'
-
-        test('should not show excessive error messages to users', async ({ page )') => {'
-            await page.goto(indexPath, { waitUntil: 'domcontentloaded' },
-            await page.waitForTimeout(5000');'
-
-            // Check for user-visible error messages
-            const errorElements = page.locator('.error-message, .error, [class*="error"]').filter({ hasText: /error|failed|not found/i ),
-            const visibleErrors = await errorElements.filter({ hasNotText: /console/ ).count(
-
-            // Should minimize user-visible errors (some console errors are acceptable);
-            expect(visibleErrors).toBeLessThan(3) }');'
-
-        test('should provide smooth user interaction', async ({ page )') => {'
-            await page.goto(indexPath, { waitUntil: 'domcontentloaded' },
-            await page.waitForTimeout(3000);
-
-            // Test basic interactions
-            const gameCanvas = page.locator(TEST_CONFIG.expectedElements.gameCanvas);
-            await expect(gameCanvas).toBeVisible();
-
-            // Try clicking on canvas
-            await gameCanvas.click(');'
-
-            // Verify no JavaScript errors occurred during interaction
-            const jsErrors: any[] = [],
-            page.on('pageerror', error => {);
-                jsErrors.push(error.message) };
-
-            await page.waitForTimeout(1000);
-            expect(jsErrors).toHaveLength(0);
-        }
-    }');'
-
-    test.describe('Accessibility in Local Mode', (') => {'
-        test('should maintain accessibility features in local execution', async ({ page }') => {'
-            await page.goto(indexPath, { waitUntil: 'domcontentloaded' },
-            // Check for accessibility attributes
-            const gameCanvas = page.locator(TEST_CONFIG.expectedElements.gameCanvas);
-            await expect(gameCanvas').toHaveAttribute('role');'
-            await expect(gameCanvas').toHaveAttribute('aria-label');'
-
-            // Check for screen reader content
-            const screenReaderContent = page.locator('.screen-reader-only');
-            await expect(screenReaderContent).toBeAttached(');'
-
-            // Verify game instructions are accessible
-            const gameInstructions = page.locator('#gameInstructions');
-            await expect(gameInstructions).toBeAttached();
-        }');'
-
-        test('should support keyboard navigation', async ({ page )') => {'
-            await page.goto(indexPath, { waitUntil: 'domcontentloaded' },
-            await page.waitForTimeout(2000');'
-
-            // Test tab navigation
-            await page.keyboard.press('Tab');
+    test.describe('Developer Guidance System', () => {
+        test('should show local execution guidance banner', async ({ page }) => {
+            await page.goto(indexPath, { waitUntil: 'domcontentloaded' });
             
-            // Check if focus is visible and functional
-            const focusedElement = await page.locator(':focus').count();
-            expect(focusedElement).toBeGreaterThan(0');'
+            // Wait for guidance banner
+            await page.waitForSelector(TEST_CONFIG.expectedElements.localGuidance, {
+                timeout: TEST_CONFIG.localTimeout
+            });
 
-            // Test escape key for menu
-            await page.keyboard.press('Escape');
-            // Should not cause any JavaScript errors
-        }
-    };
-}');'
+            // Verify banner is visible
+            const banner = page.locator(TEST_CONFIG.expectedElements.localGuidance);
+            await expect(banner).toBeVisible();
+
+            // Check banner content
+            const bannerText = await banner.textContent();
+            expect(bannerText).toContain('local file');
+        });
+
+        test('should allow dismissing guidance banner', async ({ page }) => {
+            await page.goto(indexPath, { waitUntil: 'domcontentloaded' });
+            
+            // Wait for guidance banner
+            await page.waitForSelector(TEST_CONFIG.expectedElements.localGuidance);
+
+            // Find and click dismiss button
+            const dismissButton = page.locator('[data-testid="dismiss-guidance"]');
+            await expect(dismissButton).toBeVisible();
+            await dismissButton.click();
+
+            // Verify banner is hidden
+            await expect(page.locator(TEST_CONFIG.expectedElements.localGuidance)).toBeHidden();
+        });
+
+        test('should remember guidance dismissal', async ({ page }) => {
+            // First visit - dismiss banner
+            await page.goto(indexPath, { waitUntil: 'domcontentloaded' });
+            await page.waitForSelector(TEST_CONFIG.expectedElements.localGuidance);
+            await page.click('[data-testid="dismiss-guidance"]');
+
+            // Reload page
+            await page.reload({ waitUntil: 'domcontentloaded' });
+
+            // Banner should not appear
+            await page.waitForTimeout(2000);
+            const bannerVisible = await page.locator(TEST_CONFIG.expectedElements.localGuidance).isVisible();
+            expect(bannerVisible).toBe(false);
+        });
+    });
+
+    test.describe('Game Functionality in Local Mode', () => {
+        test('should initialize game engine', async ({ page }) => {
+            await page.goto(indexPath, { waitUntil: 'domcontentloaded' });
+            
+            // Wait for game initialization
+            await page.waitForFunction(() => (window as any).gameEngine !== undefined, {
+                timeout: TEST_CONFIG.localTimeout
+            });
+
+            // Verify game engine is initialized
+            const gameEngineInitialized = await page.evaluate(() => {
+                return (window as any).gameEngine && typeof (window as any).gameEngine.init === 'function';
+            });
+            expect(gameEngineInitialized).toBe(true);
+        });
+
+        test('should display game canvas', async ({ page }) => {
+            await page.goto(indexPath, { waitUntil: 'domcontentloaded' });
+            
+            // Wait for canvas
+            await page.waitForSelector(TEST_CONFIG.expectedElements.gameCanvas, {
+                timeout: TEST_CONFIG.localTimeout
+            });
+
+            // Verify canvas is visible and has dimensions
+            const canvas = page.locator(TEST_CONFIG.expectedElements.gameCanvas);
+            await expect(canvas).toBeVisible();
+
+            const dimensions = await canvas.boundingBox();
+            expect(dimensions?.width).toBeGreaterThan(0);
+            expect(dimensions?.height).toBeGreaterThan(0);
+        });
+
+        test('should handle local storage in file:// protocol', async ({ page }) => {
+            await page.goto(indexPath, { waitUntil: 'domcontentloaded' });
+
+            // Test localStorage availability
+            const localStorageAvailable = await page.evaluate(() => {
+                try {
+                    const testKey = '__awaputi_test__';
+                    localStorage.setItem(testKey, 'test');
+                    const result = localStorage.getItem(testKey) === 'test';
+                    localStorage.removeItem(testKey);
+                    return result;
+                } catch {
+                    return false;
+                }
+            });
+
+            expect(localStorageAvailable).toBe(true);
+        });
+    });
+
+    test.describe('Cross-Browser Compatibility', () => {
+        test('should work in Chromium-based browsers', async ({ page, browserName }) => {
+            test.skip(browserName !== 'chromium', 'Chromium-only test');
+            
+            await page.goto(indexPath, { waitUntil: 'domcontentloaded' });
+            await page.waitForSelector(TEST_CONFIG.expectedElements.gameCanvas);
+            
+            // Chromium-specific checks
+            const hasChromiumFeatures = await page.evaluate(() => {
+                return 'chrome' in window || 'opr' in window;
+            });
+            
+            // Should work regardless of Chromium features
+            await expect(page.locator(TEST_CONFIG.expectedElements.gameCanvas)).toBeVisible();
+        });
+
+        test('should work in Firefox', async ({ page, browserName }) => {
+            test.skip(browserName !== 'firefox', 'Firefox-only test');
+            
+            await page.goto(indexPath, { waitUntil: 'domcontentloaded' });
+            await page.waitForSelector(TEST_CONFIG.expectedElements.gameCanvas);
+            
+            // Firefox-specific checks
+            const hasFirefoxFeatures = await page.evaluate(() => {
+                return 'InstallTrigger' in window;
+            });
+            
+            // Should work regardless of Firefox features
+            await expect(page.locator(TEST_CONFIG.expectedElements.gameCanvas)).toBeVisible();
+        });
+
+        test('should work in WebKit/Safari', async ({ page, browserName }) => {
+            test.skip(browserName !== 'webkit', 'WebKit-only test');
+            
+            await page.goto(indexPath, { waitUntil: 'domcontentloaded' });
+            await page.waitForSelector(TEST_CONFIG.expectedElements.gameCanvas);
+            
+            // WebKit-specific checks
+            const hasWebKitFeatures = await page.evaluate(() => {
+                return 'webkitRequestAnimationFrame' in window;
+            });
+            
+            // Should work regardless of WebKit features
+            await expect(page.locator(TEST_CONFIG.expectedElements.gameCanvas)).toBeVisible();
+        });
+    });
+
+    test.describe('Error Handling', () => {
+        test('should handle CORS errors gracefully', async ({ page }) => {
+            const errors: string[] = [];
+            page.on('pageerror', error => {
+                errors.push(error.message);
+            });
+
+            await page.goto(indexPath, { waitUntil: 'domcontentloaded' });
+            await page.waitForTimeout(3000);
+
+            // Check that no CORS errors occurred
+            const corsErrors = errors.filter(err => 
+                err.includes('CORS') || 
+                err.includes('Cross-Origin') ||
+                err.includes('blocked by CORS policy')
+            );
+            
+            expect(corsErrors).toHaveLength(0);
+        });
+
+        test('should handle missing resources', async ({ page }) => {
+            const failedRequests: string[] = [];
+            
+            page.on('requestfailed', request => {
+                failedRequests.push(request.url());
+            });
+
+            await page.goto(indexPath, { waitUntil: 'domcontentloaded' });
+            await page.waitForTimeout(3000);
+
+            // Game should still initialize despite any missing resources
+            const gameInitialized = await page.evaluate(() => (window as any).gameEngine !== undefined);
+            expect(gameInitialized).toBe(true);
+        });
+    });
+
+    test.describe('Progressive Enhancement', () => {
+        test('should provide basic functionality without JavaScript', async ({ page }) => {
+            // Disable JavaScript
+            await page.setJavaScriptEnabled(false);
+            await page.goto(indexPath, { waitUntil: 'domcontentloaded' });
+
+            // Check for noscript content
+            const noscriptContent = await page.locator('noscript').textContent();
+            expect(noscriptContent).toBeTruthy();
+
+            // Re-enable JavaScript for other tests
+            await page.setJavaScriptEnabled(true);
+        });
+
+        test('should enhance progressively with JavaScript', async ({ page }) => {
+            await page.goto(indexPath, { waitUntil: 'domcontentloaded' });
+            
+            // Wait for progressive enhancement
+            await page.waitForFunction(() => {
+                return document.body.classList.contains('js-enabled') || 
+                       (window as any).gameEngine !== undefined;
+            }, { timeout: TEST_CONFIG.localTimeout });
+
+            // Verify enhancement occurred
+            const enhanced = await page.evaluate(() => {
+                return document.body.classList.contains('js-enabled') ||
+                       document.documentElement.classList.contains('awaputi-loaded');
+            });
+            
+            expect(enhanced).toBe(true);
+        });
+    });
+
+    test.describe('Performance in Local Mode', () => {
+        test('should load quickly from local filesystem', async ({ page }) => {
+            const startTime = Date.now();
+            
+            await page.goto(indexPath, { waitUntil: 'domcontentloaded' });
+            await page.waitForSelector(TEST_CONFIG.expectedElements.gameCanvas);
+            
+            const loadTime = Date.now() - startTime;
+            
+            // Local file should load very quickly (under 5 seconds)
+            expect(loadTime).toBeLessThan(5000);
+        });
+
+        test('should not make external network requests', async ({ page }) => {
+            const externalRequests: string[] = [];
+            
+            page.on('request', request => {
+                const url = request.url();
+                if (url.startsWith('http://') || url.startsWith('https://')) {
+                    externalRequests.push(url);
+                }
+            });
+
+            await page.goto(indexPath, { waitUntil: 'networkidle' });
+            await page.waitForTimeout(3000);
+
+            // Should have minimal or no external requests
+            console.log('External requests made:', externalRequests);
+            
+            // Filter out expected external resources (like CDNs for fonts)
+            const unexpectedRequests = externalRequests.filter(url => 
+                !url.includes('fonts.googleapis.com') &&
+                !url.includes('fonts.gstatic.com')
+            );
+            
+            expect(unexpectedRequests).toHaveLength(0);
+        });
+    });
+});
