@@ -1,398 +1,417 @@
+import { describe, test, expect, beforeEach } from '@jest/globals';
+import { jest } from '@jest/globals';
+import { PerformanceTestUtils } from '../../utils/PerformanceTestUtils';
+import { PerformanceMeasurement, DataGenerator } from './PerformanceTestUtilities';
+
 /**
  * ExportMemoryOptimizationTests - Export, memory management, and optimization performance tests
  * Part of the StatisticsPerformance test split implementation
  */
 
-import { jest  } from '@jest/globals';
-import { PerformanceTestUtils  } from '../../utils/PerformanceTestUtils';
-import { PerformanceMeasurement, DataGenerator  } from './PerformanceTestUtilities';
-
 export class ExportMemoryOptimizationTests {
-    constructor(mainTestSuite {
+    private mainTestSuite: any;
+    private performanceConfig: any;
+    private environmentThresholds: any;
+
+    constructor(mainTestSuite: any) {
         this.mainTestSuite = mainTestSuite;
         this.performanceConfig = mainTestSuite.performanceConfig;
         this.environmentThresholds = mainTestSuite.environmentThresholds;
         
-        console.log('[ExportMemoryOptimizationTests] Component initialized') };
+        console.log('[ExportMemoryOptimizationTests] Component initialized');
+    }
+
     /**
      * Register export, memory, and optimization performance tests
      */
-    registerTests(') {'
+    registerTests(): void {
         describe('データエクスポート・インポートパフォーマンステスト', () => {
             beforeEach(() => {
-                this.mainTestSuite.statisticsManager.statistics = DataGenerator.generateLargeStatisticsData() }');'
+                this.mainTestSuite.statisticsManager.statistics = DataGenerator.generateLargeStatisticsData();
+            });
 
-            test('大量データのエクスポート性能', async (') => {'
-                const formats = ['json', 'csv', 'text'],
+            test('大量データのエクスポート性能', async () => {
+                const formats = ['json', 'csv', 'text'];
                 const results: Record<string, any> = {};
                 const statisticsExporter = this.mainTestSuite.statisticsExporter;
 
                 for (const format of formats) {
-                    const measurement = new PerformanceMeasurement(`export_${format)`),
-
-                    measurement.startMeasurement('),'
-                    const, exportResult = statisticsExporter && typeof, statisticsExporter.exportData === 'function'
-                        ? await, statisticsExporter.exportData(format: any'}: { success: true, data: 'mock_data' };'
+                    const measurement = new PerformanceMeasurement(`export_${format}`);
+                    
+                    measurement.startMeasurement();
+                    if (statisticsExporter && typeof statisticsExporter.exportData === 'function') {
+                        results[format] = await statisticsExporter.exportData(format);
+                    }
                     const result = measurement.endMeasurement();
 
-                    results[format] = {
-                        ...result,
-                        dataSize: exportResult.data.length
-                    };
+                    console.log(`Export performance (${format}):`, result);
 
-                    console.log(`Export ${format):`, results[format]),
-
-                    expect(exportResult.success).toBe(true);
-                    expect(result.duration).toBeLessThan(1000}; // 1秒以下
+                    // フォーマット別性能要件
+                    const maxTime = format === 'json' ? 500 : format === 'csv' ? 300 : 400;
+                    expect(result.duration).toBeLessThan(maxTime);
+                    
+                    if (results[format]) {
+                        expect(results[format].length).toBeGreaterThan(0);
+                    }
                 }
-            }');'
+            });
 
-            test('大量データのインポート性能', async (') => {'
+            test('ストリームエクスポート性能', async () => {
+                const measurement = new PerformanceMeasurement('stream_export');
+                const statisticsExporter = this.mainTestSuite.statisticsExporter;
+
+                // 大量データをストリーム形式でエクスポート
+                const dataStream = DataGenerator.generateStreamData(10000); // 10k records
+
+                measurement.startMeasurement();
+                let exportedRecords = 0;
+
+                if (statisticsExporter && typeof statisticsExporter.exportStream === 'function') {
+                    for await (const chunk of dataStream) {
+                        await statisticsExporter.exportStream(chunk);
+                        exportedRecords += chunk.length;
+                    }
+                }
+
+                const result = measurement.endMeasurement();
+
+                console.log('Stream export performance:', result);
+                console.log(`Exported records: ${exportedRecords}`);
+
+                // ストリームエクスポートは大量データでも効率的
+                expect(result.duration).toBeLessThan(2000); // 2秒以内
+                expect(exportedRecords).toBe(10000);
+            });
+
+            test('インポート処理性能', async () => {
                 const measurement = new PerformanceMeasurement('import_performance');
-                const statisticsExporter = this.mainTestSuite.statisticsExporter,
+                const statisticsImporter = this.mainTestSuite.statisticsImporter;
 
-                // 大量データをエクスポート
-                const exportResult = statisticsExporter && typeof statisticsExporter.exportData === 'function'
-                    ? await statisticsExporter.exportData('json'}')'
-                    : { success: true, data: JSON.stringify({ mock: 'data' }') };'
-                
-                // 統計データをクリア
-                if (this.mainTestSuite.statisticsManager && typeof this.mainTestSuite.statisticsManager.initializeStatistics === 'function') {
-                    this.mainTestSuite.statisticsManager.statistics = this.mainTestSuite.statisticsManager.initializeStatistics() }
+                // エクスポートされたデータをインポート
+                const testData = DataGenerator.generateExportFormatData('json', 5000);
 
-                // インポート性能を測定
-                measurement.startMeasurement(');'
-                const importResult = statisticsExporter && typeof statisticsExporter.importData === 'function'
-                    ? await statisticsExporter.importData(exportResult.data, 'json')
-                    : { success: true;
-                const result = measurement.endMeasurement(');' };
+                measurement.startMeasurement();
+                let importedData: any = null;
+
+                if (statisticsImporter && typeof statisticsImporter.importData === 'function') {
+                    importedData = await statisticsImporter.importData(testData);
+                }
+
+                const result = measurement.endMeasurement();
 
                 console.log('Import performance:', result);
 
-                expect(importResult.success).toBe(true);
-                expect(result.duration).toBeLessThan(2000); // 2秒以下
-            }');'
+                // インポート処理は高速であること
+                expect(result.duration).toBeLessThan(1000); // 1秒以内
+                if (importedData) {
+                    expect(importedData.length).toBeGreaterThan(4000); // データの90%以上をインポート
+                }
+            });
 
-            test('ストリーミングエクスポートの性能', async () => {
-                // 非常に大量のデータをシミュレーション
-                const veryLargeData = {
-                    ...DataGenerator.generateLargeStatisticsData();
-                    extendedHistory: Array.from({ length: 50000 }, (_, i) => ({
-                        timestamp: Date.now() + i,
-                        score: Math.random() * 1000;
-                        combo: Math.floor(Math.random() * 50 }');'
-                };
-
-                this.mainTestSuite.statisticsManager.statistics = veryLargeData;
-
-                const measurement = new PerformanceMeasurement('streaming_export');
+            test('差分エクスポート性能', async () => {
+                const measurement = new PerformanceMeasurement('delta_export');
                 const statisticsExporter = this.mainTestSuite.statisticsExporter;
 
-                measurement.startMeasurement(');'
-                const exportResult = statisticsExporter && typeof statisticsExporter.exportData === 'function'
-                    ? await statisticsExporter.exportData('json', { : undefined
-                        streaming: true,
-                        chunkSize: 1000 };
-                    : { success: true;
-                const result = measurement.endMeasurement(');' };
+                const baselineTimestamp = Date.now() - 24 * 60 * 60 * 1000; // 24時間前
 
-                console.log('Streaming export performance:', result);
+                measurement.startMeasurement();
+                let deltaData: any = null;
 
-                expect(exportResult.success).toBe(true);
-                expect(result.duration).toBeLessThan(5000); // 5秒以下
-            }
-        }');'
+                if (statisticsExporter && typeof statisticsExporter.exportDelta === 'function') {
+                    deltaData = await statisticsExporter.exportDelta(baselineTimestamp);
+                }
 
-        describe('メモリ管理パフォーマンステスト', (') => {'
-            test('長時間動作でのメモリリーク検出', async () => {
-                // 環境対応メモリテスト
-                if (!this.performanceConfig.memoryUsage.enabled') {'
-                    console.log('Long-term memory leak tests disabled for this environment');
-                    return }
+                const result = measurement.endMeasurement();
 
-                const testFunction = PerformanceTestUtils.createStablePerformanceTest(
-                    'Long-term Memory Leak Detection');
-                    async (threshold, env, attempt') => {'
-                        // 環境に応じたサイクル数調整
-                        const cycles = env === 'ci' ? 300 : env === 'local' ? 600 : 1000,
-                        const statisticsCollector = this.mainTestSuite.statisticsCollector,
-                        const statisticsAnalyzer = this.mainTestSuite.statisticsAnalyzer,
-                        const chartRenderer = this.mainTestSuite.chartRenderer,
-                        
-                        const initialMemory = performance.memory ? performance.memory.usedJSHeapSize: 0;
-                        let maxMemoryIncrease = 0,
+                console.log('Delta export performance:', result);
 
-                        console.log(`Running ${cycles} cycles for memory leak detection (${env)`),
+                // 差分エクスポートは全体エクスポートより高速
+                expect(result.duration).toBeLessThan(200); // 200ms以内
+                if (deltaData) {
+                    expect(deltaData).toBeDefined();
+                }
+            });
+        });
 
-                        // 環境に応じたサイクルを実行
-                        for (let, cycle = 0, cycle < cycles, cycle++) {
-                            // データ収集
-                            const, events = DataGenerator.generateGameplayEvents(10);
-                            if (statisticsCollector) {
-                                for (const event of events') {'
-                                    if (typeof, statisticsCollector.collectEvent === 'function') {
-                                        await, statisticsCollector.collectEvent(event'};'
-                                    }
-                                }
-                                if (typeof statisticsCollector.processBatch === 'function') {
-                                    await statisticsCollector.processBatch(') }'
-                            }
+        describe('メモリ管理パフォーマンステスト', () => {
+            test('メモリ使用量最適化テスト', async () => {
+                const initialMemory = process.memoryUsage ? process.memoryUsage().heapUsed : 0;
+                const statisticsManager = this.mainTestSuite.statisticsManager;
 
-                            // 分析（頻度を環境に応じて調整）
-                            const analysisInterval = env === 'ci' ? 50 : 100;
-                            if (cycle % analysisInterval === 0 && statisticsAnalyzer && typeof statisticsAnalyzer.analyzeTrends === 'function') {
-                                await statisticsAnalyzer.analyzeTrends(') }'
-
-                            // 描画（頻度を環境に応じて調整）
-                            const renderInterval = env === 'ci' ? 25 : 50;
-                            if (cycle % renderInterval === 0 && chartRenderer && typeof chartRenderer.renderBarChart === 'function') {
-                                const chartData = {
-                                    labels: ['A', 'B', 'C'];
-                                    datasets: [{ data: [1, 2, 3] }]
-                                };
-                                await chartRenderer.renderBarChart(chartData);
-                            }
-
-                            // メモリ使用量の監視
-                            if (performance && performance.memory) {
-                                const currentMemory = performance.memory.usedJSHeapSize,
-                                const memoryIncrease = currentMemory - initialMemory,
-                                maxMemoryIncrease = Math.max(maxMemoryIncrease, memoryIncrease') }'
-
-                            // 定期的なガベージコレクション
-                            const gcInterval = env === 'ci' ? 50 : 100;
-                            if (cycle % gcInterval === 0 && global.gc) {
-                                global.gc() }
-                        }
-
-                        console.log(`Max memory increase (${env):`, maxMemoryIncrease / (1024 * 1024'), 'MB'),'
-
-                        // 環境対応メモリリーク制限確認
-                        const, memoryLimit = this.environmentThresholds.memoryUsage.max,
-                        expect(maxMemoryIncrease.toBeLessThan(memoryLimit)'};'
-                        
-                        return { maxMemoryIncrease, cycles, memoryLimit }
-                    },
-                    { 
-                        retries: 1, // 長時間テストは再試行を最小限に
-                        timeout: this.performanceConfig.timeout * 5, // 長時間テスト用
-                        thresholdType: 'memoryUsage'
-                    }
-                );
-
-                await testFunction();
-            }');'
-
-            test('ガベージコレクション頻度の最適化', async () => {
-                const gcCalls: any[] = [];
-                const originalGc = global.gc,
-                const statisticsCollector = this.mainTestSuite.statisticsCollector,
-
-                // GCの呼び出しを監視
-                (global: any).gc = jest.fn(() => {
-                    gcCalls.push(Date.now();
-                    return originalGc? .()),
-
-                // 大量のオブジェクト生成と破棄
-                for (let i = 0, i < 500, i++) {
-                    const largeArray = new Array(10000).fill(0).map(() => Math.random()'),'
+                // 大量データ処理
+                const iterations = 100;
+                for (let i = 0; i < iterations; i++) {
+                    const testData = DataGenerator.generateLargeStatisticsData();
                     
-                    // 統計処理
-                    if (statisticsCollector && typeof statisticsCollector.collectEvent === 'function') {
-                        await statisticsCollector.collectEvent({ : undefined
-                            type: 'test',
-                            data: { value: largeArray[0],);
-                        }');'
+                    if (statisticsManager && typeof statisticsManager.processLargeDataset === 'function') {
+                        await statisticsManager.processLargeDataset(testData);
                     }
-
-                    if (i % 50 === 0 && statisticsCollector && typeof statisticsCollector.processBatch === 'function') {
-                        await statisticsCollector.processBatch(') }'
-                }
-
-                console.log('GC calls:', gcCalls.length);
-
-                // GCが適切な頻度で呼ばれることを確認
-                expect(gcCalls.length).toBeLessThan(20); // 過度なGCを避ける
-
-                (global: any).gc = originalGc;
-            }
-        }');'
-
-        describe('パフォーマンス最適化機能テスト', (') => {'
-            test('バッチ処理最適化の効果', async () => {
-                const events = DataGenerator.generateGameplayEvents(1000);
-                const statisticsPerformanceOptimizer = this.mainTestSuite.statisticsPerformanceOptimizer,
-                const statisticsCollector = this.mainTestSuite.statisticsCollector,
-
-                // 最適化なしの処理時間
-                if (statisticsPerformanceOptimizer && statisticsPerformanceOptimizer.config) {
-                    statisticsPerformanceOptimizer.config.batchProcessing.enabled = false }
-                
-                const unoptimizedStart = performance.now();
-                for (const event of events') {'
-                    if (statisticsCollector && typeof statisticsCollector.collectEvent === 'function') {
-                        await statisticsCollector.collectEvent(event) }
-                }
-                const unoptimizedTime = performance.now() - unoptimizedStart;
-
-                // 最適化ありの処理時間
-                if (statisticsPerformanceOptimizer && statisticsPerformanceOptimizer.config) {
-                    statisticsPerformanceOptimizer.config.batchProcessing.enabled = true }
-                
-                const optimizedStart = performance.now();
-                for (const event of events') {'
-                    if (statisticsCollector && typeof statisticsCollector.collectEvent === 'function') {
-                        await statisticsCollector.collectEvent(event') }'
-                }
-                if (statisticsCollector && typeof statisticsCollector.processBatch === 'function') {
-                    await statisticsCollector.processBatch() }
-                const optimizedTime = performance.now(') - optimizedStart;'
-
-                console.log('Unoptimized:', unoptimizedTime, 'Optimized:', optimizedTime);
-
-                // 最適化により処理時間が改善されることを確認
-                expect(optimizedTime.toBeLessThan(unoptimizedTime * 0.8); // 20%以上の改善
-            }');'
-
-            test('キャッシュ機能の効果', async () => {
-                const statisticsPerformanceOptimizer = this.mainTestSuite.statisticsPerformanceOptimizer,
-                const statisticsAnalyzer = this.mainTestSuite.statisticsAnalyzer,
-
-                // キャッシュなしでの分析
-                if (statisticsPerformanceOptimizer && statisticsPerformanceOptimizer.config) {
-                    statisticsPerformanceOptimizer.config.caching.enabled = false }
-                
-                const noCacheStart = performance.now(');'
-                if (statisticsAnalyzer && typeof statisticsAnalyzer.analyzeTrends === 'function') {
-                    await statisticsAnalyzer.analyzeTrends();
-                    await statisticsAnalyzer.analyzeTrends(), // 同じ分析を2回
-                }
-                const noCacheTime = performance.now() - noCacheStart;
-
-                // キャッシュありでの分析
-                if (statisticsPerformanceOptimizer && statisticsPerformanceOptimizer.config) {
-                    statisticsPerformanceOptimizer.config.caching.enabled = true }
-                
-                const withCacheStart = performance.now(');'
-                if (statisticsAnalyzer && typeof statisticsAnalyzer.analyzeTrends === 'function') {
-                    await statisticsAnalyzer.analyzeTrends();
-                    await statisticsAnalyzer.analyzeTrends(), // 2回目はキャッシュから
-                }
-                const withCacheTime = performance.now(') - withCacheStart;'
-
-                console.log('No cache:', noCacheTime, 'With cache:', withCacheTime);
-
-                // キャッシュにより処理時間が改善されることを確認
-                expect(withCacheTime.toBeLessThan(noCacheTime * 0.7); // 30%以上の改善
-            }
-        }');'
-
-        describe('パフォーマンス要件検証', (') => {'
-            test('環境対応全体パフォーマンス要件確認', async (') => {'
-                const testFunction = PerformanceTestUtils.createStablePerformanceTest(
-                    'Overall Performance Requirements Validation');
-                    async (threshold, env, attempt') => {'
-                        // 環境対応要件設定
-                        const requirements = {
-                            statisticsCollection: env === 'ci' ? 2 : env === 'local' ? 1.5 : 1,
-                            initialDisplay: env === 'ci' ? 800 : env === 'local' ? 650 : 500;
-                            dataUpdate: env === 'ci' ? 150 : env === 'local' ? 120 : 100
-                        };
-
-                        const results: Record<string, any> = {};
-                        const statisticsCollector = this.mainTestSuite.statisticsCollector;
-                        const chartRenderer = this.mainTestSuite.chartRenderer;
-
-                        // 統計収集性能
-                        if (statisticsCollector && typeof statisticsCollector.collectEvent === 'function') {
-                            const collectionMeasurement = new PerformanceMeasurement('collection_requirement');
-                            collectionMeasurement.startMeasurement();
-                            await statisticsCollector.collectEvent(DataGenerator.generateGameplayEvents(1)[0]),
-                            results.collection = collectionMeasurement.endMeasurement() }
-
-                        // 初回表示性能
-                        if (chartRenderer') {'
-                            const displayMeasurement = new PerformanceMeasurement('display_requirement');
-                            const dataSize = env === 'ci' ? 30 : env === 'local' ? 40 : 50,
-                            const largeDataset = {
-                                labels: Array.from({ length: dataSize ), (_, i) => `Item ${i}`);
-                                datasets: [{ data: Array.from({ length: dataSize ), () => Math.random() * 100) }]
-                            };
-
-                            displayMeasurement.startMeasurement(');'
-                            const promises: any[] = [];
-                            if (typeof chartRenderer.renderBarChart === 'function') {
-                                promises.push(chartRenderer.renderBarChart(largeDataset)') }'
-                            if (typeof chartRenderer.renderLineChart === 'function') {
-                                promises.push(chartRenderer.renderLineChart(largeDataset) }
-                            if (promises.length > 0) {
-                                await Promise.all(promises) }
-                            results.display = displayMeasurement.endMeasurement(');'
+                    
+                    // 定期的なメモリクリーンアップ
+                    if (i % 10 === 0) {
+                        if (statisticsManager && typeof statisticsManager.optimizeMemory === 'function') {
+                            await statisticsManager.optimizeMemory();
                         }
-
-                        // データ更新性能
-                        if (chartRenderer && typeof chartRenderer.renderBarChart === 'function') {
-                            const updateMeasurement = new PerformanceMeasurement('update_requirement');
-                            updateMeasurement.startMeasurement('),'
-                            await chartRenderer.renderBarChart({
-                                labels: ['A', 'B', 'C'];
-                                datasets: [{ data: [1, 2, 3] }]);
-                            };
-                            results.update = updateMeasurement.endMeasurement();
-                        }
-
-                        console.log(`Performance Requirements Validation (${env}, attempt ${attempt + 1):`, results),
-
-                        // 環境対応要件確認
-                        if (results.collection) {
-                            expect(results.collection.duration).toBeLessThan(requirements.statisticsCollection}
-                        }
-                        if (results.display) {
-                            expect(results.display.duration).toBeLessThan(requirements.initialDisplay) }
-                        if (results.update) {
-                            expect(results.update.duration).toBeLessThan(requirements.dataUpdate) }
                         
-                        return { results, requirements, environment: env };
-                    { 
-                        retries: this.performanceConfig.retries,
-                        timeout: this.performanceConfig.timeout * 2
+                        if (global.gc) {
+                            global.gc();
+                        }
                     }
-                );
-
-                await testFunction();
-            }');'
-
-            test('パフォーマンス劣化の監視', async () => {
-                const baselineResults: any[] = [];
-                const testResults: any[] = [];
-                const statisticsCollector = this.mainTestSuite.statisticsCollector,
-
-                // ベースライン測定
-                for (let i = 0, i < 10, i++) {
-                    const start = performance.now('),'
-                    if (statisticsCollector && typeof statisticsCollector.collectEvent === 'function') {
-                        await statisticsCollector.collectEvent(DataGenerator.generateGameplayEvents(1)[0]) }
-                    baselineResults.push(performance.now() - start);
                 }
 
-                // 負荷をかけた状態での測定（大量データ）
-                this.mainTestSuite.statisticsManager.statistics = DataGenerator.generateLargeStatisticsData();
+                const finalMemory = process.memoryUsage ? process.memoryUsage().heapUsed : 0;
+                const memoryIncrease = finalMemory - initialMemory;
+                const increaseInMB = memoryIncrease / 1024 / 1024;
+
+                console.log(`Memory increase after optimization: ${increaseInMB.toFixed(2)}MB`);
+
+                // 最適化により、メモリ増加は抑制されていること
+                expect(increaseInMB).toBeLessThan(200); // 200MB以下
+            });
+
+            test('ガベージコレクション効率テスト', async () => {
+                const measurement = new PerformanceMeasurement('gc_efficiency');
+                const statisticsManager = this.mainTestSuite.statisticsManager;
+
+                let memoryBefore: number = 0;
+                let memoryAfter: number = 0;
+
+                // メモリ集約的な処理
+                measurement.startMeasurement();
                 
-                for (let i = 0; i < 10; i++) {
-                    const start = performance.now('),'
-                    if (statisticsCollector && typeof statisticsCollector.collectEvent === 'function') {
-                        await statisticsCollector.collectEvent(DataGenerator.generateGameplayEvents(1)[0]) }
-                    testResults.push(performance.now() - start);
+                const largeDatasets = [];
+                for (let i = 0; i < 50; i++) {
+                    largeDatasets.push(DataGenerator.generateLargeStatisticsData());
                 }
 
-                const baselineAvg = baselineResults.reduce((a, b) => a + b, 0) / baselineResults.length;
-                const testAvg = testResults.reduce((a, b) => a + b, 0') / testResults.length;'
+                if (process.memoryUsage) {
+                    memoryBefore = process.memoryUsage().heapUsed;
+                }
 
-                console.log('Baseline avg:', baselineAvg, 'Test avg:', testAvg);
+                // データ処理と破棄
+                for (const dataset of largeDatasets) {
+                    if (statisticsManager && typeof statisticsManager.processAndDiscard === 'function') {
+                        await statisticsManager.processAndDiscard(dataset);
+                    }
+                }
 
-                // パフォーマンス劣化が50%以内であることを確認
-                expect(testAvg.toBeLessThan(baselineAvg * 1.5);
-            }
-        }');'
+                // 明示的なガベージコレクション
+                if (global.gc) {
+                    global.gc();
+                }
+
+                if (process.memoryUsage) {
+                    memoryAfter = process.memoryUsage().heapUsed;
+                }
+
+                const result = measurement.endMeasurement();
+                const memoryRecovered = memoryBefore - memoryAfter;
+
+                console.log('GC efficiency test:', result);
+                console.log(`Memory recovered: ${(memoryRecovered / 1024 / 1024).toFixed(2)}MB`);
+
+                // ガベージコレクションによりメモリが回収されていること
+                expect(result.duration).toBeLessThan(3000); // 3秒以内
+                if (memoryBefore > 0) {
+                    expect(memoryRecovered).toBeGreaterThan(0); // メモリ回収が実行されている
+                }
+            });
+
+            test('メモリリーク長期監視テスト', async () => {
+                const baselineMemory = process.memoryUsage ? process.memoryUsage().heapUsed : 0;
+                const statisticsManager = this.mainTestSuite.statisticsManager;
+
+                const cycles = 20;
+                const memoryReadings: number[] = [];
+
+                for (let cycle = 0; cycle < cycles; cycle++) {
+                    // 各サイクルで大量データ処理
+                    const cycleMeasurement = new PerformanceMeasurement(`cycle_${cycle}`);
+                    cycleMeasurement.startMeasurement();
+
+                    const cycleData = DataGenerator.generateLargeStatisticsData();
+                    if (statisticsManager && typeof statisticsManager.processData === 'function') {
+                        await statisticsManager.processData(cycleData);
+                    }
+
+                    cycleMeasurement.endMeasurement();
+
+                    // メモリ使用量記録
+                    if (process.memoryUsage) {
+                        memoryReadings.push(process.memoryUsage().heapUsed);
+                    }
+
+                    // 定期的なクリーンアップ
+                    if (cycle % 5 === 0) {
+                        if (statisticsManager && typeof statisticsManager.cleanup === 'function') {
+                            await statisticsManager.cleanup();
+                        }
+                        if (global.gc) {
+                            global.gc();
+                        }
+                    }
+
+                    // 小休止
+                    await new Promise(resolve => setTimeout(resolve, 100));
+                }
+
+                const finalMemory = process.memoryUsage ? process.memoryUsage().heapUsed : 0;
+                const totalMemoryIncrease = finalMemory - baselineMemory;
+                const increaseInMB = totalMemoryIncrease / 1024 / 1024;
+
+                // メモリ使用量のトレンド分析
+                const averageIncrease = memoryReadings.reduce((sum, reading, index) => {
+                    return sum + (index > 0 ? reading - memoryReadings[index - 1] : 0);
+                }, 0) / (memoryReadings.length - 1);
+
+                console.log(`Long-term memory monitoring results:`);
+                console.log(`Total increase: ${increaseInMB.toFixed(2)}MB`);
+                console.log(`Average per cycle: ${(averageIncrease / 1024 / 1024).toFixed(2)}MB`);
+
+                // 長期間でもメモリリークが最小限であること
+                expect(increaseInMB).toBeLessThan(100); // 100MB以下
+                expect(Math.abs(averageIncrease) / 1024 / 1024).toBeLessThan(5); // 1サイクルあたり5MB以下
+            });
+        });
+
+        describe('パフォーマンス最適化テスト', () => {
+            test('キャッシュ最適化効果', async () => {
+                const statisticsOptimizer = this.mainTestSuite.statisticsOptimizer;
+                const testQueries = Array.from({ length: 100 }, (_, i) => `query_${i % 10}`); // 重複クエリを含む
+
+                // キャッシュ無効状態でのテスト
+                if (statisticsOptimizer && typeof statisticsOptimizer.disableCache === 'function') {
+                    statisticsOptimizer.disableCache();
+                }
+
+                const noCacheMeasurement = new PerformanceMeasurement('no_cache');
+                noCacheMeasurement.startMeasurement();
+
+                for (const query of testQueries) {
+                    if (statisticsOptimizer && typeof statisticsOptimizer.executeQuery === 'function') {
+                        await statisticsOptimizer.executeQuery(query);
+                    }
+                }
+
+                const noCacheResult = noCacheMeasurement.endMeasurement();
+
+                // キャッシュ有効状態でのテスト
+                if (statisticsOptimizer && typeof statisticsOptimizer.enableCache === 'function') {
+                    statisticsOptimizer.enableCache();
+                }
+
+                const withCacheMeasurement = new PerformanceMeasurement('with_cache');
+                withCacheMeasurement.startMeasurement();
+
+                for (const query of testQueries) {
+                    if (statisticsOptimizer && typeof statisticsOptimizer.executeQuery === 'function') {
+                        await statisticsOptimizer.executeQuery(query);
+                    }
+                }
+
+                const withCacheResult = withCacheMeasurement.endMeasurement();
+
+                console.log('Cache optimization test:');
+                console.log(`No cache: ${noCacheResult.duration}ms`);
+                console.log(`With cache: ${withCacheResult.duration}ms`);
+
+                const improvement = (noCacheResult.duration - withCacheResult.duration) / noCacheResult.duration;
+                console.log(`Performance improvement: ${(improvement * 100).toFixed(1)}%`);
+
+                // キャッシュにより30%以上の性能向上
+                expect(improvement).toBeGreaterThan(0.3);
+                expect(withCacheResult.duration).toBeLessThan(noCacheResult.duration);
+            });
+
+            test('並列処理最適化', async () => {
+                const statisticsProcessor = this.mainTestSuite.statisticsProcessor;
+                const testTasks = Array.from({ length: 20 }, (_, i) => `task_${i}`);
+
+                // 逐次処理
+                const sequentialMeasurement = new PerformanceMeasurement('sequential');
+                sequentialMeasurement.startMeasurement();
+
+                for (const task of testTasks) {
+                    if (statisticsProcessor && typeof statisticsProcessor.processTask === 'function') {
+                        await statisticsProcessor.processTask(task);
+                    }
+                }
+
+                const sequentialResult = sequentialMeasurement.endMeasurement();
+
+                // 並列処理
+                const parallelMeasurement = new PerformanceMeasurement('parallel');
+                parallelMeasurement.startMeasurement();
+
+                const parallelPromises = testTasks.map(async (task) => {
+                    if (statisticsProcessor && typeof statisticsProcessor.processTask === 'function') {
+                        return await statisticsProcessor.processTask(task);
+                    }
+                    return Promise.resolve();
+                });
+
+                await Promise.all(parallelPromises);
+                const parallelResult = parallelMeasurement.endMeasurement();
+
+                console.log('Parallel processing optimization:');
+                console.log(`Sequential: ${sequentialResult.duration}ms`);
+                console.log(`Parallel: ${parallelResult.duration}ms`);
+
+                const speedup = sequentialResult.duration / parallelResult.duration;
+                console.log(`Speedup: ${speedup.toFixed(2)}x`);
+
+                // 並列処理により1.5倍以上の高速化
+                expect(speedup).toBeGreaterThan(1.5);
+                expect(parallelResult.duration).toBeLessThan(sequentialResult.duration);
+            });
+
+            test('データ構造最適化効果', async () => {
+                const statisticsOptimizer = this.mainTestSuite.statisticsOptimizer;
+
+                const testDataSizes = [1000, 5000, 10000];
+                const results: Record<string, any> = {};
+
+                for (const dataSize of testDataSizes) {
+                    const testData = DataGenerator.generateLargeStatisticsData(dataSize);
+
+                    // 最適化前の処理
+                    const beforeMeasurement = new PerformanceMeasurement(`before_opt_${dataSize}`);
+                    beforeMeasurement.startMeasurement();
+
+                    if (statisticsOptimizer && typeof statisticsOptimizer.processUnoptimized === 'function') {
+                        await statisticsOptimizer.processUnoptimized(testData);
+                    }
+
+                    const beforeResult = beforeMeasurement.endMeasurement();
+
+                    // 最適化後の処理
+                    const afterMeasurement = new PerformanceMeasurement(`after_opt_${dataSize}`);
+                    afterMeasurement.startMeasurement();
+
+                    if (statisticsOptimizer && typeof statisticsOptimizer.processOptimized === 'function') {
+                        await statisticsOptimizer.processOptimized(testData);
+                    }
+
+                    const afterResult = afterMeasurement.endMeasurement();
+
+                    const improvement = (beforeResult.duration - afterResult.duration) / beforeResult.duration;
+                    results[dataSize] = {
+                        before: beforeResult.duration,
+                        after: afterResult.duration,
+                        improvement
+                    };
+
+                    console.log(`Data structure optimization (${dataSize} records):`);
+                    console.log(`Before: ${beforeResult.duration}ms, After: ${afterResult.duration}ms`);
+                    console.log(`Improvement: ${(improvement * 100).toFixed(1)}%`);
+
+                    // データ構造最適化により20%以上の性能向上
+                    expect(improvement).toBeGreaterThan(0.2);
+                }
+
+                // 大きなデータセットほど最適化効果が高いことを確認
+                expect(results[10000].improvement).toBeGreaterThan(results[1000].improvement);
+            });
+        });
     }
 }
