@@ -22,7 +22,7 @@ interface ConfigWatcher {
 
 interface ListenerConfig {
     id: string;
-    callback: Function;
+    callback: SettingsListener;
     priority: string;
     once: boolean;
     addedAt: number;
@@ -267,7 +267,7 @@ export class SettingsManager {
      * @param {Object} options オプション
      * @returns {string} リスナーID
      */
-    addListener(key: string, callback: Function, options: any = {}): string {
+    addListener(key: string, callback: SettingsListener, options: any = {}): string {
         const listenerId = options.id || `listener_${Date.now()}_${Math.random()}`;
         const priority = options.priority || 'normal';
         
@@ -297,7 +297,7 @@ export class SettingsManager {
      * @param {string} key 設定キー
      * @param {Function} callback コールバック関数
      */
-    removeListener(key: string, callback: Function): void {
+    removeListener(key: string, callback: SettingsListener): void {
         if (this.listeners.has(key)) {
             const listeners = this.listeners.get(key)!;
             const index = listeners.findIndex(listener => listener.callback === callback);
@@ -343,7 +343,7 @@ export class SettingsManager {
                 const listeners = [...this.listeners.get(key)!];
                 for (const listener of listeners) {
                     try {
-                        listener.callback(newValue, oldValue, key);
+                        listener.callback(key, key, newValue, oldValue);
                         
                         // onceオプションの処理
                         if (listener.once) {
@@ -445,7 +445,7 @@ export class SettingsManager {
      * @param {Object} options インポートオプション
      * @returns {Promise<Object>} インポート結果
      */
-    async import(settingsJson: string, options: any = {}): Promise<any> {
+    async import(settingsJson: string, options: any = {}): Promise<any>
         return await this.exportImport.import(settingsJson, options);
     }
     

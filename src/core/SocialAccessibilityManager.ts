@@ -165,7 +165,7 @@ export class SocialAccessibilityManager {
                 transitions: false
             }
         };
-
+        
         // 状態管理
         this.state = {
             enabled: true,
@@ -174,7 +174,7 @@ export class SocialAccessibilityManager {
             announcements: [],
             screenReaderActive: false
         };
-
+        
         // DOM要素管理
         this.elements = {
             announcer: null,
@@ -182,7 +182,7 @@ export class SocialAccessibilityManager {
             focusIndicator: null,
             contrastOverlay: null
         };
-
+        
         // イベントハンドラー
         this.handlers = {
             keydown: this.handleKeydown.bind(this),
@@ -246,12 +246,12 @@ export class SocialAccessibilityManager {
         if (window.matchMedia('(prefers-contrast: high)').matches) {
             this.config.highContrast.enabled = true;
         }
-
+        
         // 動きの軽減の検出
         if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
             this.config.reducedMotion.enabled = true;
         }
-
+        
         // カラースキームの検出
         const darkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
         if (darkMode) {
@@ -304,7 +304,7 @@ export class SocialAccessibilityManager {
         // フォーカス表示の強化
         this.elements.focusIndicator = document.createElement('style');
         this.elements.focusIndicator.textContent = this.generateFocusStyles();
-
+        
         // コントラストオーバーレイ
         this.elements.contrastOverlay = document.createElement('div');
         this.elements.contrastOverlay.id = 'social-contrast-overlay';
@@ -420,8 +420,8 @@ export class SocialAccessibilityManager {
         }
         
         // Accessibility APIの検出
-        if (navigator.userAgentData && navigator.userAgentData.getHighEntropyValues) {
-            navigator.userAgentData.getHighEntropyValues(['uaFullVersion']).then(ua => {
+        if ((navigator as any).userAgentData && (navigator as any).userAgentData.getHighEntropyValues) {
+            (navigator as any).userAgentData.getHighEntropyValues(['uaFullVersion']).then((ua: any) => {
                 // より詳細な検出ロジック
             });
         }
@@ -618,7 +618,7 @@ export class SocialAccessibilityManager {
     /**
      * 高コントラストモードの有効化
      */
-    private enableHighContrast(): void {
+    enableHighContrast(): void {
         document.body.classList.add('high-contrast-mode');
         this.config.highContrast.enabled = true;
         this.announce('高コントラストモードが有効になりました');
@@ -628,7 +628,7 @@ export class SocialAccessibilityManager {
     /**
      * 高コントラストモードの無効化
      */
-    private disableHighContrast(): void {
+    disableHighContrast(): void {
         document.body.classList.remove('high-contrast-mode');
         this.config.highContrast.enabled = false;
         this.announce('高コントラストモードが無効になりました');
@@ -638,7 +638,7 @@ export class SocialAccessibilityManager {
     /**
      * 高コントラストモードの切り替え
      */
-    private toggleHighContrast(): void {
+    toggleHighContrast(): void {
         if (this.config.highContrast.enabled) {
             this.disableHighContrast();
         } else {
@@ -649,7 +649,7 @@ export class SocialAccessibilityManager {
     /**
      * 動きの軽減モードの有効化
      */
-    private enableReducedMotion(): void {
+    enableReducedMotion(): void {
         document.body.classList.add('reduced-motion-mode');
         this.config.reducedMotion.enabled = true;
         this.announce('動きの軽減モードが有効になりました');
@@ -659,7 +659,7 @@ export class SocialAccessibilityManager {
     /**
      * 動きの軽減モードの無効化
      */
-    private disableReducedMotion(): void {
+    disableReducedMotion(): void {
         document.body.classList.remove('reduced-motion-mode');
         this.config.reducedMotion.enabled = false;
         this.announce('動きの軽減モードが無効になりました');
@@ -669,7 +669,7 @@ export class SocialAccessibilityManager {
     /**
      * メイン共有ボタンにフォーカス
      */
-    private focusMainShareButton(): void {
+    focusMainShareButton(): void {
         const mainButton = document.querySelector('.share-button-main') as HTMLElement;
         if (mainButton) {
             mainButton.focus();
@@ -680,7 +680,7 @@ export class SocialAccessibilityManager {
     /**
      * 共有ダイアログの表示
      */
-    private showShareDialog(): void {
+    showShareDialog(): void {
         if (this.socialSharingManager) {
             // デフォルト共有データで表示
             this.socialSharingManager.promptShareScore({
@@ -693,7 +693,7 @@ export class SocialAccessibilityManager {
     /**
      * 現在の状態のアナウンス
      */
-    private announceCurrentState(): void {
+    announceCurrentState(): void {
         const state = this.getCurrentState();
         this.announce(state, 'assertive');
     }
@@ -701,13 +701,13 @@ export class SocialAccessibilityManager {
     /**
      * 現在の状態の取得
      */
-    private getCurrentState(): string {
+    getCurrentState(): string {
         let state = 'BubblePopソーシャル機能。';
 
         if (this.state.currentFocus) {
             const element = this.state.currentFocus;
             const role = element.getAttribute('role') || element.tagName.toLowerCase();
-            const label = element.getAttribute('aria-label') || element.textContent;
+            const label = element.getAttribute('aria-label') || element.textContent || '';
             state += `現在フォーカス中: ${role} ${label}。`;
         }
 
@@ -725,8 +725,8 @@ export class SocialAccessibilityManager {
     /**
      * 現在のダイアログを閉じる
      */
-    private closeCurrentDialog(): void {
-        const openDialog = document.querySelector('.share-dialog[style*="block"]');
+    closeCurrentDialog(): void {
+        const openDialog = document.querySelector('.share-dialog[style*="block"]') as HTMLElement;
         if (openDialog) {
             const closeButton = openDialog.querySelector('.dialog-close') as HTMLElement;
             if (closeButton) {
@@ -763,9 +763,9 @@ export class SocialAccessibilityManager {
      */
     private handleTabNavigation(event: KeyboardEvent): void {
         // フォーカストラップの実装
-        const dialog = (event.target as Element).closest('[role="dialog"]');
+        const dialog = (event.target as Element).closest('[role="dialog"]') as HTMLElement;
         if (dialog) {
-            this.handleDialogTabNavigation(event, dialog as HTMLElement);
+            this.handleDialogTabNavigation(event, dialog);
         }
     }
     
@@ -775,12 +775,12 @@ export class SocialAccessibilityManager {
     private handleDialogTabNavigation(event: KeyboardEvent, dialog: HTMLElement): void {
         const focusableElements = dialog.querySelectorAll(
             'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
-        );
+        ) as NodeListOf<HTMLElement>;
         
         if (focusableElements.length === 0) return;
         
-        const firstElement = focusableElements[0] as HTMLElement;
-        const lastElement = focusableElements[focusableElements.length - 1] as HTMLElement;
+        const firstElement = focusableElements[0];
+        const lastElement = focusableElements[focusableElements.length - 1];
         
         if (event.shiftKey) {
             // Shift+Tab
@@ -802,7 +802,7 @@ export class SocialAccessibilityManager {
      */
     private handleEscapeKey(event: KeyboardEvent): void {
         // 最上位のモーダルを閉じる
-        const modals = document.querySelectorAll('[role="dialog"]:not([style*="none"])');
+        const modals = document.querySelectorAll('[role="dialog"]:not([style*="none"])') as NodeListOf<HTMLElement>;
         if (modals.length > 0) {
             const topModal = modals[modals.length - 1];
             const closeButton = topModal.querySelector('[aria-label*="閉じる"], .dialog-close') as HTMLElement;
@@ -884,7 +884,7 @@ export class SocialAccessibilityManager {
      */
     validateAccessibility(): AccessibilityViolation[] {
         const violations: AccessibilityViolation[] = [];
-
+        
         // フォーカス可能要素の検証
         const focusableElements = document.querySelectorAll('button, [href], input, select, textarea');
         focusableElements.forEach(element => {
@@ -936,7 +936,7 @@ export class SocialAccessibilityManager {
      * カラーコントラスト計算
      */
     private calculateColorContrast(element: Element): number {
-        const styles = window.getComputedStyle(element);
+        const styles = window.getComputedStyle(element as HTMLElement);
         const bgcolor = styles.backgroundColor;
         const color = styles.color;
         
@@ -1061,7 +1061,7 @@ export class SocialAccessibilityManager {
             timestamp: Date.now()
         };
 
-        if (ErrorHandler) {
+        if (ErrorHandler && typeof ErrorHandler.handleError === 'function') {
             ErrorHandler.handleError(error, 'SocialAccessibilityManager', context);
         }
 

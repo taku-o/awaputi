@@ -5,6 +5,11 @@
  */
 
 // 型定義
+interface PlatformStats {
+    requests: number;
+    successes: number;
+    failures: number;
+}
 interface PerformanceStats {
     shareRequests: number;
     successfulShares: number;
@@ -26,6 +31,11 @@ interface ErrorStats {
     recent: ErrorRecord[];
 }
 
+interface ErrorRecord {
+    type: string;
+    timestamp: number;
+    data: any;
+}
 interface UserBehaviorStats {
     sharePromptViews: number;
     sharePromptAccepts: number;
@@ -53,12 +63,6 @@ interface AnalyticsEvent {
     timestamp: number;
     data: any;
     sessionTime?: number;
-}
-
-interface ErrorRecord {
-    type: string;
-    timestamp: number;
-    data: any;
 }
 
 interface ShareEventData {
@@ -145,7 +149,6 @@ interface DebugInfo {
     userBehavior: UserBehaviorReport;
     i18n: I18nReport;
 }
-
 export class SocialAnalyticsTracker {
     private performanceStats: PerformanceStats;
     private errorStats: ErrorStats;
@@ -553,6 +556,7 @@ export class SocialAnalyticsTracker {
             screenshotCaptures: 0,
             averageTimeToShare: 0
         };
+        
         this.i18nStats = {
             languageUsage: new Map(),
             regionUsage: new Map(),
@@ -560,6 +564,7 @@ export class SocialAnalyticsTracker {
             translationErrors: 0,
             cachedTranslations: 0
         };
+        
         this.eventHistory = [];
         this.timestamps.sessionStart = Date.now();
     }

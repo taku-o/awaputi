@@ -6,17 +6,14 @@
 
 // 型定義
 interface PlatformConfig {
-    [platform: string]: {
-        maxTextLength?: number;
-        hashtagLimit?: number;
-        urlLength?: number;
-        imageSupported?: boolean;
-        hashtagSupported?: boolean;
-        urlRequired?: boolean;
-        supported?: boolean;
-        filesSupported?: boolean;
-        [key: string]: any;
-    };
+    maxTextLength?: number;
+    hashtagLimit?: number;
+    urlLength?: number;
+    imageSupported?: boolean;
+    hashtagSupported?: boolean;
+    urlRequired?: boolean;
+    supported?: boolean;
+    filesSupported?: boolean;
 }
 
 interface ShareData {
@@ -27,6 +24,12 @@ interface ShareData {
     files?: File[];
     image?: string;
     description?: string;
+    score?: number;
+    isPersonalBest?: boolean;
+    achievement?: {
+        isRare: boolean;
+    };
+    platform?: string;
     [key: string]: any;
 }
 
@@ -36,6 +39,7 @@ interface ShareResult {
     reason?: string;
     error?: string;
     url?: string;
+    timestamp?: number;
 }
 
 interface ShareOptions {
@@ -44,6 +48,7 @@ interface ShareOptions {
     display?: string;
     width?: number;
     height?: number;
+    useWebAPI?: boolean;
     [key: string]: any;
 }
 
@@ -62,10 +67,16 @@ interface LineShareOptions extends ShareOptions {
     type?: 'text' | 'image';
 }
 
+interface ValidationResult {
+    valid: boolean;
+    errors: string[];
+    warnings: string[];
+}
+
 type PlatformType = 'twitter' | 'facebook' | 'line' | 'android' | 'ios' | 'web' | 'unknown';
 
 export class SocialPlatformAdapters {
-    private platformConfig: PlatformConfig;
+    private platformConfig: Record<string, PlatformConfig>;
 
     constructor() {
         // プラットフォーム設定
@@ -101,7 +112,6 @@ export class SocialPlatformAdapters {
      */
     detectPlatform(): PlatformType {
         const userAgent = navigator.userAgent.toLowerCase();
-        
         if (userAgent.includes('twitter')) {
             return 'twitter';
         } else if (userAgent.includes('facebook') || userAgent.includes('fb')) {
@@ -145,10 +155,9 @@ export class SocialPlatformAdapters {
         let hashtags = shareData.hashtags || [];
 
         // テキスト長制限への対応
-        const hashtagText = hashtags.slice(0, config.hashtagLimit).join(' ');
+        const hashtagText = hashtags.slice(0, config.hashtagLimit!).join(' ');
         const urlLength = shareData.url ? config.urlLength! : 0;
         const availableLength = config.maxTextLength! - urlLength - hashtagText.length - 5; // 余裕分
-
         if (text.length > availableLength) {
             text = this.truncateForTwitter(text, availableLength);
         }
@@ -157,7 +166,7 @@ export class SocialPlatformAdapters {
         if (text) params.append('text', text);
         if (shareData.url) params.append('url', shareData.url);
         if (hashtags.length > 0) {
-            params.append('hashtags', hashtags.slice(0, config.hashtagLimit).join(','));
+            params.append('hashtags', hashtags.slice(0, config.hashtagLimit!).join(','));
         }
         if (options.via) params.append('via', options.via);
         if (options.related && options.related.length > 0) {
@@ -264,7 +273,6 @@ export class SocialPlatformAdapters {
         }
     }
 
-    /**
      * LINEシェアURL生成
      * @param shareData - 共有データ
      * @param options - オプション
@@ -291,9 +299,98 @@ export class SocialPlatformAdapters {
     }
 
     /**
-     * 汎用的なWeb Share API使用
+     * Twitter用ハッシュタグの生成
      * @param shareData - 共有データ
-     * @returns Promise<ShareResult>
+     * @returns ハッシュタグ配列
+     */
+    generateTwitterHashtags(shareData: ShareData): string[] {
+        const hashtags: string[] = [];
+        const config = this.platformConfig.twitter;
+        
+        // ゲーム固有のハッシュタグ
+        hashtags.push('BubblePop');
+        
+        // スコア関連
+        if (shareData.score) {
+            if (shareData.score >= 100000) {
+                hashtags.push('HighScore');
+            }
+            if (shareData.isPersonalBest) {
+                hashtags.push('PersonalBest');
+            }
+        }
+        
+        // 実績関連
+        if (shareData.achievement) {
+            hashtags.push('Achievement');
+            if (shareData.achievement.isRare) {
+                hashtags.push('RareAchievement');
+            }
+        }
+        
+        return hashtags.slice(0, config.hashtagLimit!);
+    }
+
+    /**
+     * Twitter向けテキスト短縮
+     * @param text - 元のテキスト
+     * @param maxLength - 最大長
+     * @returns 短縮されたテキスト
+     */
+    truncateForTwitter(text: string, maxLength: number): string {
+        if (text.length <= maxLength) {
+            return text;
+        }
+        
+        // 単語境界で切り詰め
+        const truncated = text.substring(0, maxLength - 3);
+        const lastSpace = truncated.lastIndexOf(' ');
+        
+        if (lastSpace > maxLength * 0.7) {
+            return truncated.substring(0, lastSpace) + '...';
+        } else {
+            return truncated + '...';
+        }
+    }
+
+    /**
+     * プラットフォーム固有の最適化されたメッセージ生成
+     * @param shareData - 共有データ
+     * @param platform - プラットフォーム
+     * @returns 最適化されたメッセージ
+     */
+    generateOptimizedMessage(shareData: ShareData, platform: PlatformType | string): string {
+        const config = this.platformConfig[platform];
+        if (!config) return shareData.text || '';
+
+        let message = shareData.text || '';
+
+        switch (platform) {
+            case 'twitter':
+                // Twitter向け最適化
+                const hashtags = this.generateTwitterHashtags(shareData);
+                const hashtagText = hashtags.map(tag => `#${tag}`).join(' ');
+                const availableLength = config.maxTextLength! - hashtagText.length - 10; // URL分
+                
+                if (message.length > availableLength) {
+                    message = this.truncateForTwitter(message, availableLength);
+                }
+                
+                return `${message} ${hashtagText}`;
+
+            case 'facebook':
+                // Facebook向け最適化（ハッシュタグなし）
+                return shareData.description || message;
+                
+            default:
+                return message;
+        }
+    }
+
+    /**
+     * Web Share APIを使用した共有
+     * @param shareData - 共有データ
+     * @returns 共有結果
      */
     async shareViaWebAPI(shareData: ShareData): Promise<ShareResult> {
         if (!this.isWebShareSupported()) {
@@ -309,7 +406,7 @@ export class SocialPlatformAdapters {
             text: shareData.text,
             url: shareData.url
         };
-
+        
         // ファイル共有対応チェック
         if (shareData.files && this.isFileSharingSupported()) {
             data.files = shareData.files;
@@ -317,10 +414,18 @@ export class SocialPlatformAdapters {
 
         try {
             await navigator.share(data);
-            return { success: true, platform: 'web-share' };
+            return { 
+                success: true,
+                platform: 'web-share',
+                timestamp: Date.now()
+            };
         } catch (error: any) {
             if (error.name === 'AbortError') {
-                return { success: false, reason: 'user_cancelled' };
+                return { 
+                    success: false,
+                    reason: 'user_cancelled',
+                    platform: 'web-share'
+                };
             }
             return {
                 success: false,
@@ -330,86 +435,6 @@ export class SocialPlatformAdapters {
         }
     }
 
-    /**
-     * プラットフォーム最適化されたメッセージ生成
-     * @param shareData - 共有データ
-     * @param platform - プラットフォーム
-     * @returns 最適化されたメッセージ
-     */
-    generateOptimizedMessage(shareData: ShareData, platform: PlatformType): string {
-        const config = this.platformConfig[platform];
-        if (!config || !config.maxTextLength) {
-            return shareData.text || '';
-        }
-
-        let message = shareData.text || '';
-        const maxLength = config.maxTextLength;
-
-        // URL考慮（Twitterの場合）
-        if (platform === 'twitter' && shareData.url) {
-            maxLength! -= config.urlLength || 23;
-        }
-
-        // ハッシュタグ考慮
-        if (shareData.hashtags && config.hashtagSupported) {
-            const hashtags = shareData.hashtags.slice(0, config.hashtagLimit || 3);
-            const hashtagText = hashtags.map(tag => `#${tag}`).join(' ');
-            maxLength! -= hashtagText.length + 1; // スペース分
-        }
-
-        // テキスト切り詰め
-        if (message.length > maxLength!) {
-            message = this.truncateText(message, maxLength!);
-        }
-
-        // ハッシュタグ追加
-        if (shareData.hashtags && config.hashtagSupported) {
-            const hashtags = shareData.hashtags.slice(0, config.hashtagLimit || 3);
-            if (hashtags.length > 0) {
-                message += ' ' + hashtags.map(tag => `#${tag}`).join(' ');
-            }
-        }
-
-        return message;
-    }
-
-    /**
-     * Twitterでのテキスト切り詰め
-     * @param text - テキスト
-     * @param maxLength - 最大長
-     * @returns 切り詰められたテキスト
-     */
-    private truncateForTwitter(text: string, maxLength: number): string {
-        if (text.length <= maxLength) {
-            return text;
-        }
-
-        // 単語境界で切り詰め
-        let truncated = text.substring(0, maxLength - 3);
-        const lastSpace = truncated.lastIndexOf(' ');
-        
-        if (lastSpace > 0 && lastSpace > maxLength * 0.8) {
-            truncated = truncated.substring(0, lastSpace);
-        }
-
-        return truncated + '...';
-    }
-
-    /**
-     * 汎用的なテキスト切り詰め
-     * @param text - テキスト
-     * @param maxLength - 最大長
-     * @returns 切り詰められたテキスト
-     */
-    private truncateText(text: string, maxLength: number): string {
-        if (text.length <= maxLength) {
-            return text;
-        }
-
-        return text.substring(0, maxLength - 3) + '...';
-    }
-
-    /**
      * プラットフォーム別シェア処理
      * @param platform - プラットフォーム
      * @param shareData - 共有データ
@@ -538,7 +563,7 @@ export class SocialPlatformAdapters {
             case 'files':
                 return config.filesSupported === true;
             default:
-                return config[feature] === true;
+                return false;
         }
     }
 
@@ -549,6 +574,37 @@ export class SocialPlatformAdapters {
      */
     getPlatformConfig(platform: PlatformType): any {
         return { ...this.platformConfig[platform] } || {};
+    }
+
+    /**
+     * プラットフォーム機能確認
+     * @param platform - プラットフォーム
+     * @returns 機能対応状況
+     */
+    getPlatformCapabilities(platform: string): any {
+        const config = this.platformConfig[platform];
+        if (!config) {
+            return { supported: false };
+        }
+
+        return { 
+            supported: true,
+            ...config,
+            currentPlatform: this.detectPlatform()
+        };
+    }
+
+    /**
+     * 全プラットフォームの対応状況取得
+     * @returns 全プラットフォーム対応状況
+     */
+    getAllPlatformCapabilities(): any {
+        return {
+            twitter: this.getPlatformCapabilities('twitter'),
+            facebook: this.getPlatformCapabilities('facebook'),
+            webShare: this.getPlatformCapabilities('webShare'),
+            currentPlatform: this.detectPlatform()
+        };
     }
 
     /**
@@ -569,6 +625,70 @@ export class SocialPlatformAdapters {
             this.platformConfig[platform] = {};
         }
         Object.assign(this.platformConfig[platform], config);
+    }
+
+    /**
+     * URLの検証とサニタイゼーション
+     * @param url - URL
+     * @returns サニタイズされたURL
+     */
+    sanitizeUrl(url: string): string {
+        if (!url) return '';
+        
+        try {
+            const urlObj = new URL(url);
+            // HTTP/HTTPSのみ許可
+            if (urlObj.protocol !== 'http:' && urlObj.protocol !== 'https:') {
+                return '';
+            }
+            return urlObj.toString();
+        } catch (error) {
+            return '';
+        }
+    }
+
+    /**
+     * 共有データの検証
+     * @param shareData - 共有データ
+     * @returns 検証結果
+     */
+    validateShareData(shareData: ShareData): ValidationResult {
+        const errors: string[] = [];
+        const warnings: string[] = [];
+
+        if (!shareData) {
+            errors.push('共有データが指定されていません');
+            return { valid: false, errors, warnings };
+        }
+        
+        // 必須フィールドの確認
+        if (!shareData.text && !shareData.title) {
+            errors.push('テキストまたはタイトルが必要です');
+        }
+        
+        // URL検証
+        if (shareData.url && !this.sanitizeUrl(shareData.url)) {
+            errors.push('無効なURLです');
+        }
+
+        // プラットフォーム固有の検証
+        if (shareData.platform) {
+            const config = this.platformConfig[shareData.platform];
+            if (!config) {
+                warnings.push(`未対応のプラットフォーム: ${shareData.platform}`);
+            } else {
+                // テキスト長チェック
+                if (shareData.text && shareData.text.length > config.maxTextLength!) {
+                    warnings.push(`テキストが長すぎます (${shareData.text.length}/${config.maxTextLength})`);
+                }
+            }
+        }
+
+        return { 
+            valid: errors.length === 0,
+            errors,
+            warnings
+        };
     }
 
     /**

@@ -4,15 +4,10 @@
  */
 
 // 型定義
-interface LeaderboardManager {
-    getLeaderboard: (type: string, options?: any) => Promise<LeaderboardEntry[]>;
-    refreshData: () => Promise<void>;
-    [key: string]: any;
-}
-
 interface LeaderboardEntry {
+    id?: string | number;
     rank: number;
-    playerId: string;
+    playerId?: string;
     playerName: string;
     score: number;
     avatar?: string;
@@ -20,6 +15,34 @@ interface LeaderboardEntry {
     badges?: string[];
     achievements?: string[];
     metadata?: any;
+    isCurrentPlayer?: boolean;
+}
+
+interface LeaderboardOptions {
+    container?: HTMLElement;
+    maxEntries?: number;
+    showPlayerRank?: boolean;
+    showPagination?: boolean;
+    itemsPerPage?: number;
+    theme?: string;
+    responsive?: boolean;
+    animations?: boolean;
+    accessibility?: boolean;
+    announcements?: boolean;
+    keyboardNavigation?: boolean;
+    highContrast?: boolean;
+    reducedMotion?: boolean;
+    screenReaderDescriptions?: boolean;
+    localization?: boolean;
+    defaultLanguage?: string;
+    rtlSupport?: boolean;
+}
+
+interface LeaderboardManager {
+    getLeaderboard?: (type: string, options?: any) => Promise<LeaderboardEntry[]>;
+    getRanking?: (period: string, type: string, options: { limit: number; search: string }) => Promise<{ entries: LeaderboardEntry[]; total: number; hasMore: boolean }>;
+    refreshData?: () => Promise<void>;
+    [key: string]: any;
 }
 
 interface LeaderboardConfig {
@@ -94,7 +117,7 @@ interface FilterOption {
 }
 
 export class SocialLeaderboardUI {
-    private leaderboardManager: LeaderboardManager;
+    private leaderboardManager: LeaderboardManager | null;
     private config: LeaderboardConfig;
     private state: LeaderboardState;
     private elements: LeaderboardElements;
@@ -102,8 +125,9 @@ export class SocialLeaderboardUI {
     private cache: Map<string, LeaderboardEntry[]>;
     private lastUpdate: number;
     private stats: LeaderboardStats;
+    private searchTimeout?: NodeJS.Timeout;
 
-    constructor(leaderboardManager: LeaderboardManager, options: any = {}) {
+    constructor(leaderboardManager: LeaderboardManager | null, options: LeaderboardOptions = {}) {
         this.leaderboardManager = leaderboardManager;
         
         // 設定
@@ -115,7 +139,7 @@ export class SocialLeaderboardUI {
             showPagination: options.showPagination === true,
             itemsPerPage: options.itemsPerPage || 10,
             // スタイル設定
-            theme: options.theme || 'default',
+            theme: options.theme || 'default' as any, // default, minimal, gaming, elegant
             responsive: options.responsive !== false,
             animations: options.animations !== false,
             // アクセシビリティ設定
@@ -134,7 +158,7 @@ export class SocialLeaderboardUI {
                 rtlSupport: options.rtlSupport === true
             }
         };
-
+        
         // 状態管理
         this.state = {
             currentLeaderboard: 'overall',
@@ -146,7 +170,7 @@ export class SocialLeaderboardUI {
             searchQuery: '',
             loading: false
         };
-
+        
         // DOM要素
         this.elements = {
             container: null,
@@ -158,7 +182,7 @@ export class SocialLeaderboardUI {
             announcer: null,
             loadingIndicator: null
         };
-
+        
         // イベントハンドラー
         this.handlers = {
             keydown: this.handleKeydown.bind(this),
@@ -180,7 +204,7 @@ export class SocialLeaderboardUI {
             keyboardNavigations: 0,
             searches: 0
         };
-
+        
         this.initialize();
     }
     
@@ -199,6 +223,7 @@ export class SocialLeaderboardUI {
             if (this.config.accessibility.enabled) {
                 this.setupAccessibility();
             }
+            
             // 初期データの読み込み
             this.loadInitialData();
             this.log('SocialLeaderboardUI初期化完了');
@@ -221,7 +246,7 @@ export class SocialLeaderboardUI {
         this.elements.header = this.createHeader();
         // コントロール
         this.elements.controls = this.createControls();
-        // コンテンツ
+        
         this.elements.content = document.createElement('div');
         this.elements.content.className = 'leaderboard-content';
         this.elements.content.setAttribute('role', 'main');
@@ -235,7 +260,7 @@ export class SocialLeaderboardUI {
         
         // ローディングインジケーター
         this.elements.loadingIndicator = this.createLoadingIndicator();
-
+        
         // スクリーンリーダー用アナウンサー
         if (this.config.accessibility.enabled) {
             this.elements.announcer = document.createElement('div');
@@ -446,6 +471,309 @@ export class SocialLeaderboardUI {
                 this.elements.container.classList.add('responsive');
             }
         }
+        
+        // CSSも追加
+        const style = document.createElement('style');
+        style.textContent = this.generateCSS();
+        document.head.appendChild(style);
+    }
+    
+    /**
+     * CSSの生成
+     */
+    private generateCSS(): string {
+        return `
+            .social-leaderboard-ui {
+                background: #ffffff;
+                border-radius: 8px;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+                padding: 24px;
+                margin: 16px 0;
+                font-family: system-ui, -apple-system, sans-serif;
+            }
+            
+            .leaderboard-header {
+                text-align: center;
+                margin-bottom: 24px;
+            }
+            
+            .leaderboard-title {
+                font-size: 24px;
+                font-weight: 600;
+                color: #333;
+                margin: 0 0 8px 0;
+            }
+            
+            .leaderboard-subtitle {
+                font-size: 14px;
+                color: #666;
+                margin: 0;
+            }
+            
+            .leaderboard-controls {
+                display: flex;
+                gap: 16px;
+                margin-bottom: 24px;
+                flex-wrap: wrap;
+                align-items: center;
+            }
+            
+            .control-group {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+            }
+            
+            .control-group label {
+                font-size: 14px;
+                font-weight: 500;
+                color: #555;
+            }
+            
+            .leaderboard-filter,
+            .leaderboard-search {
+                padding: 8px 12px;
+                border: 1px solid #ddd;
+                border-radius: 4px;
+                font-size: 14px;
+            }
+            
+            .leaderboard-filter:focus,
+            .leaderboard-search:focus {
+                outline: 3px solid #007AFF;
+                outline-offset: 2px;
+            }
+            
+            .search-button,
+            .refresh-button {
+                padding: 8px 16px;
+                background: #007AFF;
+                color: white;
+                border: none;
+                border-radius: 4px;
+                font-size: 14px;
+                cursor: pointer;
+                transition: background-color 0.2s;
+            }
+            
+            .search-button:hover,
+            .refresh-button:hover {
+                background: #0056b3;
+            }
+            
+            .search-button:focus,
+            .refresh-button:focus {
+                outline: 3px solid #007AFF;
+                outline-offset: 2px;
+            }
+            
+            .leaderboard-content {
+                min-height: 200px;
+            }
+            
+            .leaderboard-entry {
+                display: flex;
+                align-items: center;
+                padding: 12px 16px;
+                border: 1px solid #eee;
+                border-radius: 6px;
+                margin-bottom: 8px;
+                background: #fafafa;
+                transition: all 0.2s ease;
+                cursor: pointer;
+                position: relative;
+            }
+            
+            .leaderboard-entry:hover {
+                background: #f0f8ff;
+                border-color: #007AFF;
+            }
+            
+            .leaderboard-entry:focus {
+                outline: 3px solid #007AFF;
+                outline-offset: 2px;
+                background: #f0f8ff;
+            }
+            
+            .leaderboard-entry.current-player {
+                background: #fff3cd;
+                border-color: #ffc107;
+            }
+            
+            .entry-rank {
+                font-size: 18px;
+                font-weight: bold;
+                color: #333;
+                min-width: 40px;
+                text-align: center;
+            }
+            
+            .entry-rank.top-3 {
+                color: #ffd700;
+            }
+            
+            .entry-name {
+                flex: 1;
+                font-size: 16px;
+                font-weight: 500;
+                color: #333;
+                margin: 0 16px;
+            }
+            
+            .entry-score {
+                font-size: 16px;
+                font-weight: 600;
+                color: #007AFF;
+            }
+            
+            .entry-metadata {
+                font-size: 12px;
+                color: #666;
+                margin-top: 4px;
+            }
+            
+            .leaderboard-pagination {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                gap: 16px;
+                margin-top: 24px;
+            }
+            
+            .pagination-button {
+                padding: 8px 16px;
+                background: #f8f9fa;
+                border: 1px solid #ddd;
+                border-radius: 4px;
+                font-size: 14px;
+                cursor: pointer;
+                transition: background-color 0.2s;
+            }
+            
+            .pagination-button:hover:not(:disabled) {
+                background: #e9ecef;
+            }
+            
+            .pagination-button:focus {
+                outline: 3px solid #007AFF;
+                outline-offset: 2px;
+            }
+            
+            .pagination-button:disabled {
+                opacity: 0.5;
+                cursor: not-allowed;
+            }
+            
+            .page-info {
+                font-size: 14px;
+                color: #666;
+            }
+            
+            .loading-indicator {
+                text-align: center;
+                padding: 40px;
+            }
+            
+            .loading-spinner {
+                width: 40px;
+                height: 40px;
+                border: 4px solid #f3f3f3;
+                border-top: 4px solid #007AFF;
+                border-radius: 50%;
+                animation: spin 1s linear infinite;
+                margin: 0 auto 16px;
+            }
+            
+            @keyframes spin {
+                0% { transform: rotate(0deg); }
+                100% { transform: rotate(360deg); }
+            }
+            
+            .loading-message {
+                font-size: 16px;
+                color: #666;
+            }
+            
+            .sr-only {
+                position: absolute !important;
+                left: -10000px !important;
+                width: 1px !important;
+                height: 1px !important;
+                overflow: hidden !important;
+                clip: rect(1px, 1px, 1px, 1px) !important;
+                clip-path: inset(50%) !important;
+            }
+            
+            /* 高コントラストモード */
+            .high-contrast-mode .social-leaderboard-ui {
+                background: #000000 !important;
+                color: #ffffff !important;
+                border: 2px solid #ffffff !important;
+            }
+            
+            .high-contrast-mode .leaderboard-entry {
+                background: #333333 !important;
+                border-color: #ffffff !important;
+                color: #ffffff !important;
+            }
+            
+            .high-contrast-mode .leaderboard-entry:hover,
+            .high-contrast-mode .leaderboard-entry:focus {
+                background: #555555 !important;
+            }
+            
+            /* 動きの軽減モード */
+            .reduced-motion-mode * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+
+            /* レスポンシブ対応 */
+            @media(max-width: 768px) {
+                .social-leaderboard-ui {
+                    padding: 16px;
+                    margin: 8px 0;
+                }
+                
+                .leaderboard-controls {
+                    flex-direction: column;
+                    align-items: stretch;
+                    gap: 12px;
+                }
+                
+                .control-group {
+                    flex-direction: column;
+                    align-items: stretch;
+                    gap: 4px;
+                }
+                
+                .leaderboard-entry {
+                    flex-direction: column;
+                    align-items: stretch;
+                    text-align: center;
+                    gap: 8px;
+                }
+                
+                .entry-rank {
+                    min-width: auto;
+                }
+                
+                .leaderboard-pagination {
+                    flex-direction: column;
+                    gap: 12px;
+                }
+            }
+
+            /* RTL言語サポート */
+            [dir="rtl"] .leaderboard-entry {
+                direction: rtl;
+            }
+
+            [dir="rtl"] .entry-rank {
+                text-align: center;
+            }
+        `;
     }
 
     /**
@@ -479,6 +807,35 @@ export class SocialLeaderboardUI {
         const searchInput = this.elements.container.querySelector('.leaderboard-search') as HTMLInputElement;
         if (searchInput) {
             searchInput.addEventListener('input', this.handlers.searchInput);
+            searchInput.addEventListener('keydown', (event: KeyboardEvent) => {
+                if (event.key === 'Enter') {
+                    this.executeSearch();
+                }
+            });
+        }
+        
+        const searchButton = this.elements.container.querySelector('.search-button') as HTMLButtonElement;
+        if (searchButton) {
+            searchButton.addEventListener('click', this.executeSearch.bind(this));
+        }
+        
+        // 更新ボタン
+        const refreshButton = this.elements.container.querySelector('.refresh-button') as HTMLButtonElement;
+        if (refreshButton) {
+            refreshButton.addEventListener('click', this.refresh.bind(this));
+        }
+        
+        // ページネーション
+        if (this.elements.pagination) {
+            const prevButton = this.elements.pagination.querySelector('.prev-button') as HTMLButtonElement;
+            const nextButton = this.elements.pagination.querySelector('.next-button') as HTMLButtonElement;
+
+            if (prevButton) {
+                prevButton.addEventListener('click', () => this.goToPage(this.state.currentPage - 1));
+            }
+            if (nextButton) {
+                nextButton.addEventListener('click', () => this.goToPage(this.state.currentPage + 1));
+            }
         }
     }
 
@@ -493,62 +850,116 @@ export class SocialLeaderboardUI {
         
         // スクリーンリーダー用の説明
         if (this.config.accessibility.screenReaderDescriptions) {
-            const description = document.createElement('div');
-            description.id = 'leaderboard-description';
-            description.className = 'sr-only';
-            description.textContent = 'プレイヤーランキングを表示しています。矢印キーで項目を移動できます。';
+            this.addScreenReaderDescriptions();
+        }
+    }
+    
+    /**
+     * ARIA属性の更新
+     */
+    private updateAriaAttributes(): void {
+        const entriesCount = this.elements.entries.length;
+        if (this.elements.content) {
+            this.elements.content.setAttribute('aria-label', `${entriesCount}件のリーダーボードエントリー`);
+        }
+        
+        // エントリーにARIA属性を設定
+        this.elements.entries.forEach((entry: HTMLElement, index: number) => {
+            entry.setAttribute('role', 'button');
+            entry.setAttribute('tabindex', '0');
+            entry.setAttribute('aria-posinset', (index + 1).toString());
+            entry.setAttribute('aria-setsize', entriesCount.toString());
+        });
+    }
+    
+    /**
+     * スクリーンリーダー用説明の追加
+     */
+    private addScreenReaderDescriptions(): void {
+        const description = document.createElement('div');
+        description.id = 'leaderboard-description';
+        description.className = 'sr-only';
+        description.textContent = `
+            リーダーボードでは上位プレイヤーのスコアを確認できます。
+            矢印キーでエントリー間を移動し、Enterキーで詳細を表示できます。
+            フィルターと検索機能を使用してランキングを絞り込むことができます。
+        `;
+
+        if (this.elements.container) {
             this.elements.container.appendChild(description);
             this.elements.container.setAttribute('aria-describedby', 'leaderboard-description');
         }
     }
-
     /**
      * 初期データの読み込み
      */
     private async loadInitialData(): Promise<void> {
         try {
-            this.showLoading();
-            await this.loadLeaderboardData();
-            this.hideLoading();
+            this.showLoading(true);
+            await this.render();
         } catch (error) {
-            this.hideLoading();
-            this.handleError('LEADERBOARD_DATA_LOAD_FAILED', error);
+            this.handleError('INITIAL_DATA_LOAD_FAILED', error);
+        } finally {
+            this.showLoading(false);
         }
     }
 
     /**
      * リーダーボードデータの読み込み
      */
-    private async loadLeaderboardData(): Promise<void> {
-        const cacheKey = `${this.state.currentLeaderboard}-${this.state.filterPeriod}`;
+    private async loadLeaderboardData(): Promise<any> {
+        const cacheKey = `${this.state.currentLeaderboard}_${this.state.filterPeriod}_${this.state.searchQuery}`;
         
         // キャッシュチェック
-        if (this.cache.has(cacheKey) && (Date.now() - this.lastUpdate) < 60000) {
-            const cachedData = this.cache.get(cacheKey)!;
-            this.renderLeaderboard(cachedData);
-            return;
+        if (this.cache.has(cacheKey) && Date.now() - this.lastUpdate < 60000) {
+            return this.cache.get(cacheKey);
         }
-
-        // データの取得
-        const entries = await this.leaderboardManager.getLeaderboard(
-            this.state.currentLeaderboard,
-            {
-                period: this.state.filterPeriod,
-                limit: this.config.maxEntries
-            }
-        );
-
-        // キャッシュに保存
-        this.cache.set(cacheKey, entries);
-        this.lastUpdate = Date.now();
-
-        // 検索フィルター適用
-        const filteredEntries = this.applySearchFilter(entries);
         
-        // 描画
-        this.renderLeaderboard(filteredEntries);
+        try {
+            let data: any;
+            
+            if (this.leaderboardManager) {
+                if (this.leaderboardManager.getRanking) {
+                    data = await this.leaderboardManager.getRanking(
+                        this.state.filterPeriod,
+                        this.state.currentLeaderboard,
+                        {
+                            limit: this.config.maxEntries,
+                            search: this.state.searchQuery
+                        }
+                    );
+                } else if (this.leaderboardManager.getLeaderboard) {
+                    const entries = await this.leaderboardManager.getLeaderboard(
+                        this.state.currentLeaderboard,
+                        {
+                            period: this.state.filterPeriod,
+                            limit: this.config.maxEntries
+                        }
+                    );
+                    data = {
+                        entries: this.applySearchFilter(entries),
+                        total: entries.length,
+                        hasMore: false
+                    };
+                } else {
+                    data = this.generateMockData();
+                }
+            } else {
+                // フォールバックデータ
+                data = this.generateMockData();
+            }
+            
+            // キャッシュに保存
+            this.cache.set(cacheKey, data);
+            this.lastUpdate = Date.now();
+            
+            return data;
+        } catch (error) {
+            this.handleError('LEADERBOARD_DATA_LOAD_FAILED', error);
+            return this.generateMockData();
+        }
     }
-
+    
     /**
      * 検索フィルターの適用
      */
@@ -562,100 +973,139 @@ export class SocialLeaderboardUI {
             entry.playerName.toLowerCase().includes(query)
         );
     }
+    
+    /**
+     * モックデータの生成
+     */
+    private generateMockData(): { entries: LeaderboardEntry[]; total: number; hasMore: boolean } {
+        const names = ['プレイヤー1', 'プレイヤー2', 'プレイヤー3', 'プレイヤー4', 'プレイヤー5'];
+        const mockEntries: LeaderboardEntry[] = [];
+        
+        for (let i = 0; i < Math.min(this.config.maxEntries, 5); i++) {
+            mockEntries.push({
+                rank: i + 1,
+                playerName: names[i] || `プレイヤー${i + 1}`,
+                score: (1000 - i * 100) + Math.floor(Math.random() * 100),
+                timestamp: Date.now() - (i * 3600000),
+                isCurrentPlayer: i === 2 // 3位を現在のプレイヤーとする
+            });
+        }
+        
+        return {
+            entries: mockEntries,
+            total: mockEntries.length,
+            hasMore: false
+        };
+    }
+    
+    /**
+     * リーダーボードのレンダリング
+     */
+    private async render(): Promise<void> {
+        try {
+            this.stats.renders++;
+            
+            const data = await this.loadLeaderboardData();
+            this.renderEntries(data.entries);
+            this.updatePagination(data);
+            this.updateAriaAttributes();
+            
+            // アクセシビリティアナウンス
+            if (this.config.accessibility.announcements && this.elements.announcer) {
+                this.announce(`リーダーボードが更新されました。${data.entries.length}件のエントリーが表示されています。`);
+            }
+
+            this.log('リーダーボードレンダリング完了', { entriesCount: data.entries.length });
+
+        } catch (error) {
+            this.handleError('LEADERBOARD_RENDER_FAILED', error);
+        }
+    }
 
     /**
-     * リーダーボードの描画
+     * エントリーのレンダリング
      */
-    private renderLeaderboard(entries: LeaderboardEntry[]): void {
+    private renderEntries(entries: LeaderboardEntry[]): void {
         if (!this.elements.content) return;
-
-        this.stats.renders++;
-        this.elements.entries = [];
-
-        // コンテンツクリア
+        
+        // 既存のエントリーをクリア
         this.elements.content.innerHTML = '';
-
+        this.elements.entries = [];
+        
         if (entries.length === 0) {
             this.renderEmptyState();
             return;
         }
-
-        // エントリーの描画
+        
+        // ページネーション対応
         const startIndex = (this.state.currentPage - 1) * this.config.itemsPerPage;
         const endIndex = startIndex + this.config.itemsPerPage;
-        const pageEntries = entries.slice(startIndex, endIndex);
-
+        const pageEntries = this.config.showPagination 
+            ? entries.slice(startIndex, endIndex)
+            : entries;
+        
         pageEntries.forEach((entry, index) => {
-            const entryElement = this.createLeaderboardEntry(entry, startIndex + index);
-            this.elements.content.appendChild(entryElement);
+            const entryElement = this.createEntryElement(entry, startIndex + index);
             this.elements.entries.push(entryElement);
+            this.elements.content.appendChild(entryElement);
         });
-
-        // ページネーション更新
-        if (this.config.showPagination) {
-            this.updatePagination(entries.length);
-        }
-
-        // スクリーンリーダー通知
-        this.announceUpdate(`リーダーボードが更新されました。${entries.length}件のエントリーが表示されています。`);
     }
-
+    
     /**
-     * リーダーボードエントリーの作成
+     * エントリー要素の作成
      */
-    private createLeaderboardEntry(entry: LeaderboardEntry, visualIndex: number): HTMLElement {
-        const entryElement = document.createElement('div');
-        entryElement.className = 'leaderboard-entry';
-        entryElement.setAttribute('role', 'listitem');
-        entryElement.setAttribute('tabindex', '0');
-        entryElement.setAttribute('aria-label', 
-            `${entry.rank}位 ${entry.playerName} スコア ${entry.score.toLocaleString()}`);
+    private createEntryElement(entry: LeaderboardEntry, index: number): HTMLDivElement {
+        const element = document.createElement('div');
+        element.className = 'leaderboard-entry';
+        element.setAttribute('data-entry-id', (entry.id || index).toString());
+        element.setAttribute('role', 'button');
+        element.setAttribute('tabindex', '0');
 
+        if (entry.isCurrentPlayer) {
+            element.classList.add('current-player');
+        }
+        
         // ランク
-        const rankElement = document.createElement('div');
-        rankElement.className = 'entry-rank';
-        rankElement.textContent = entry.rank.toString();
-        
-        // プレイヤー情報
-        const playerElement = document.createElement('div');
-        playerElement.className = 'entry-player';
-        
-        if (entry.avatar) {
-            const avatarElement = document.createElement('img');
-            avatarElement.className = 'player-avatar';
-            avatarElement.src = entry.avatar;
-            avatarElement.alt = `${entry.playerName}のアバター`;
-            playerElement.appendChild(avatarElement);
+        const rank = document.createElement('div');
+        rank.className = 'entry-rank';
+        if (entry.rank <= 3) {
+            rank.classList.add('top-3');
         }
-
-        const nameElement = document.createElement('div');
-        nameElement.className = 'player-name';
-        nameElement.textContent = entry.playerName;
-        playerElement.appendChild(nameElement);
-
+        rank.textContent = entry.rank.toString();
+        
+        // 名前
+        const name = document.createElement('div');
+        name.className = 'entry-name';
+        name.textContent = entry.playerName;
+        
         // スコア
-        const scoreElement = document.createElement('div');
-        scoreElement.className = 'entry-score';
-        scoreElement.textContent = entry.score.toLocaleString();
-
-        // バッジ
-        if (entry.badges && entry.badges.length > 0) {
-            const badgesElement = document.createElement('div');
-            badgesElement.className = 'entry-badges';
-            entry.badges.forEach(badge => {
-                const badgeElement = document.createElement('span');
-                badgeElement.className = 'badge';
-                badgeElement.textContent = badge;
-                badgesElement.appendChild(badgeElement);
-            });
-            playerElement.appendChild(badgesElement);
-        }
-
-        entryElement.appendChild(rankElement);
-        entryElement.appendChild(playerElement);
-        entryElement.appendChild(scoreElement);
-
-        return entryElement;
+        const score = document.createElement('div');
+        score.className = 'entry-score';
+        score.textContent = entry.score.toLocaleString();
+        
+        const metadata = document.createElement('div');
+        metadata.className = 'entry-metadata';
+        metadata.textContent = this.formatTimestamp(entry.timestamp);
+        
+        element.appendChild(rank);
+        element.appendChild(name);
+        element.appendChild(score);
+        element.appendChild(metadata);
+        
+        // ARIA属性
+        element.setAttribute('aria-label',
+            `${entry.rank}位: ${entry.playerName}, スコア: ${entry.score.toLocaleString()}点`);
+        
+        // イベントリスナー
+        element.addEventListener('click', () => this.selectEntry(entry, element));
+        element.addEventListener('keydown', (event: KeyboardEvent) => {
+            if (event.key === 'Enter' || event.key === ' ') {
+                event.preventDefault();
+                this.selectEntry(entry, element);
+            }
+        });
+        
+        return element;
     }
 
     /**
@@ -664,87 +1114,116 @@ export class SocialLeaderboardUI {
     private renderEmptyState(): void {
         if (!this.elements.content) return;
 
-        const emptyElement = document.createElement('div');
-        emptyElement.className = 'leaderboard-empty';
-        emptyElement.setAttribute('role', 'status');
-        emptyElement.setAttribute('aria-live', 'polite');
+        const emptyState = document.createElement('div');
+        emptyState.className = 'empty-state';
+        emptyState.setAttribute('role', 'status');
+        emptyState.setAttribute('aria-live', 'polite');
+        emptyState.style.cssText = `
+            text-align: center;
+            padding: 40px;
+            color: #666;
+        `;
 
-        const messageElement = document.createElement('div');
-        messageElement.className = 'empty-message';
-        messageElement.textContent = this.state.searchQuery ? 
+        const message = this.state.searchQuery ? 
             '検索条件に一致するプレイヤーが見つかりません。' : 
             'リーダーボードにデータがありません。';
 
-        emptyElement.appendChild(messageElement);
-        this.elements.content.appendChild(emptyElement);
+        emptyState.innerHTML = `
+            <div style="font-size: 48px; margin-bottom: 16px;">📊</div>
+            <div style="font-size: 18px; margin-bottom: 8px;">${message}</div>
+            <div style="font-size: 14px;">条件を変更してお試しください</div>
+        `;
+        
+        this.elements.content.appendChild(emptyState);
     }
 
     /**
      * ページネーションの更新
      */
-    private updatePagination(totalEntries: number): void {
+    private updatePagination(data: { total: number }): void {
         if (!this.elements.pagination) return;
 
-        const totalPages = Math.ceil(totalEntries / this.config.itemsPerPage);
+        const totalPages = Math.ceil(data.total / this.config.itemsPerPage);
         const prevButton = this.elements.pagination.querySelector('.prev-button') as HTMLButtonElement;
         const nextButton = this.elements.pagination.querySelector('.next-button') as HTMLButtonElement;
         const pageInfo = this.elements.pagination.querySelector('.page-info') as HTMLSpanElement;
-
-        if (prevButton) {
-            prevButton.disabled = this.state.currentPage <= 1;
-        }
-
-        if (nextButton) {
-            nextButton.disabled = this.state.currentPage >= totalPages;
-        }
-
-        if (pageInfo) {
-            pageInfo.textContent = `ページ ${this.state.currentPage} / ${totalPages}`;
-        }
-    }
-
-    /**
-     * ローディング表示
-     */
-    private showLoading(): void {
-        this.state.loading = true;
-        if (this.elements.loadingIndicator) {
-            this.elements.loadingIndicator.style.display = 'block';
-        }
-        if (this.elements.content) {
-            this.elements.content.setAttribute('aria-busy', 'true');
-        }
-    }
-
-    /**
-     * ローディング非表示
-     */
-    private hideLoading(): void {
-        this.state.loading = false;
-        if (this.elements.loadingIndicator) {
-            this.elements.loadingIndicator.style.display = 'none';
-        }
-        if (this.elements.content) {
-            this.elements.content.setAttribute('aria-busy', 'false');
-        }
-    }
-
-    /**
-     * スクリーンリーダー通知
-     */
-    private announceUpdate(message: string): void {
-        if (!this.config.accessibility.announcements || !this.elements.announcer) {
-            return;
-        }
-
-        this.elements.announcer.textContent = message;
         
-        // すぐにクリアして再度読み上げ可能にする
-        setTimeout(() => {
-            if (this.elements.announcer) {
-                this.elements.announcer.textContent = '';
-            }
-        }, 1000);
+        if (prevButton) prevButton.disabled = this.state.currentPage <= 1;
+        if (nextButton) nextButton.disabled = this.state.currentPage >= totalPages;
+        if (pageInfo) pageInfo.textContent = `ページ ${this.state.currentPage} / ${totalPages}`;
+    }
+    
+    /**
+     * エントリーの選択
+     */
+    private selectEntry(entry: LeaderboardEntry, element: HTMLDivElement): void {
+        this.stats.interactions++;
+        
+        // 既存の選択をクリア
+        this.elements.entries.forEach((el: HTMLElement) => el.classList.remove('selected'));
+        
+        // 新しい選択を設定
+        element.classList.add('selected');
+        this.state.selectedEntry = entry;
+        
+        // アクセシビリティアナウンス
+        if (this.config.accessibility.announcements && this.elements.announcer) {
+            this.announce(`${entry.playerName}のエントリーが選択されました。${entry.rank}位、${entry.score.toLocaleString()}点。`);
+        }
+        
+        // イベントの発火
+        this.dispatchEvent('entrySelected', { entry, element });
+
+        this.log('エントリー選択', entry);
+    }
+    
+    /**
+     * タイムスタンプのフォーマット
+     */
+    private formatTimestamp(timestamp: number): string {
+        const date = new Date(timestamp);
+        const now = new Date();
+        const diffMs = now.getTime() - date.getTime();
+        const diffMins = Math.floor(diffMs / 60000);
+        const diffHours = Math.floor(diffMs / 3600000);
+        const diffDays = Math.floor(diffMs / 86400000);
+        
+        if (diffMins < 1) return 'たった今';
+        if (diffMins < 60) return `${diffMins}分前`;
+        if (diffHours < 24) return `${diffHours}時間前`;
+        if (diffDays < 7) return `${diffDays}日前`;
+        
+        return date.toLocaleDateString();
+    }
+
+    /**
+     * ローディング状態の表示/非表示
+     */
+    private showLoading(show: boolean): void {
+        this.state.loading = show;
+
+        if (this.elements.loadingIndicator) {
+            this.elements.loadingIndicator.style.display = show ? 'block' : 'none';
+            this.elements.loadingIndicator.setAttribute('aria-hidden', show ? 'false' : 'true');
+        }
+
+        if (this.elements.content) {
+            this.elements.content.setAttribute('aria-busy', show ? 'true' : 'false');
+        }
+    }
+
+    /**
+     * アナウンス
+     */
+    private announce(message: string): void {
+        if (this.elements.announcer) {
+            this.elements.announcer.textContent = '';
+            setTimeout(() => {
+                if (this.elements.announcer) {
+                    this.elements.announcer.textContent = message;
+                }
+            }, 100);
+        }
     }
 
     /**
@@ -752,83 +1231,86 @@ export class SocialLeaderboardUI {
      */
     private handleKeydown(event: KeyboardEvent): void {
         this.stats.keyboardNavigations++;
-        
+
         switch (event.key) {
-            case 'ArrowUp':
-                event.preventDefault();
-                this.navigateEntries('up');
-                break;
             case 'ArrowDown':
                 event.preventDefault();
-                this.navigateEntries('down');
+                this.focusNext();
+                break;
+            case 'ArrowUp':
+                event.preventDefault();
+                this.focusPrevious();
                 break;
             case 'Home':
                 event.preventDefault();
-                this.navigateToFirst();
+                this.focusFirst();
                 break;
             case 'End':
                 event.preventDefault();
-                this.navigateToLast();
+                this.focusLast();
                 break;
             case 'Enter':
             case ' ':
-                event.preventDefault();
-                this.selectCurrentEntry();
+                if ((event.target as HTMLElement)?.classList.contains('leaderboard-entry')) {
+                    event.preventDefault();
+                    (event.target as HTMLElement).click();
+                }
                 break;
         }
     }
 
     /**
-     * エントリー間のナビゲーション
+     * 次のエントリーにフォーカス
      */
-    private navigateEntries(direction: 'up' | 'down'): void {
-        if (this.elements.entries.length === 0) return;
-
-        const currentIndex = this.elements.entries.indexOf(this.state.focusedElement as HTMLElement);
-        let newIndex: number;
-
-        if (direction === 'up') {
-            newIndex = currentIndex > 0 ? currentIndex - 1 : this.elements.entries.length - 1;
-        } else {
-            newIndex = currentIndex < this.elements.entries.length - 1 ? currentIndex + 1 : 0;
+    private focusNext(): void {
+        const current = document.activeElement;
+        const entries = this.elements.entries;
+        const currentIndex = entries.indexOf(current as HTMLElement);
+        if (currentIndex >= 0 && currentIndex < entries.length - 1) {
+            entries[currentIndex + 1].focus();
+        } else if (entries.length > 0) {
+            entries[0].focus();
         }
-
-        this.focusEntry(this.elements.entries[newIndex]);
     }
-
+    
     /**
-     * 最初のエントリーにナビゲート
+     * 前のエントリーにフォーカス
      */
-    private navigateToFirst(): void {
+    private focusPrevious(): void {
+        const current = document.activeElement;
+        const entries = this.elements.entries;
+        const currentIndex = entries.indexOf(current as HTMLElement);
+        if (currentIndex > 0) {
+            entries[currentIndex - 1].focus();
+        } else if (entries.length > 0) {
+            entries[entries.length - 1].focus();
+        }
+    }
+    
+    /**
+     * 最初の要素にフォーカス
+     */
+    private focusFirst(): void {
         if (this.elements.entries.length > 0) {
-            this.focusEntry(this.elements.entries[0]);
+            this.elements.entries[0].focus();
         }
     }
-
+    
     /**
-     * 最後のエントリーにナビゲート
+     * 最後のエントリーにフォーカス
      */
-    private navigateToLast(): void {
+    private focusLast(): void {
         if (this.elements.entries.length > 0) {
-            this.focusEntry(this.elements.entries[this.elements.entries.length - 1]);
+            this.elements.entries[this.elements.entries.length - 1].focus();
         }
     }
-
     /**
-     * エントリーにフォーカス
+     * フォーカスイベントハンドラー
      */
-    private focusEntry(entryElement: HTMLElement): void {
-        this.state.focusedElement = entryElement;
-        entryElement.focus();
-    }
-
-    /**
-     * 現在のエントリーを選択
-     */
-    private selectCurrentEntry(): void {
-        if (this.state.focusedElement) {
-            // エントリー選択のロジック（実装依存）
-            this.stats.interactions++;
+    private handleFocus(event: FocusEvent): void {
+        const target = event.target as HTMLElement;
+        if (target.classList.contains('leaderboard-entry')) {
+            this.state.focusedElement = target;
         }
     }
 
@@ -842,7 +1324,7 @@ export class SocialLeaderboardUI {
         
         // 更新ボタン
         if (target.classList.contains('refresh-button')) {
-            this.refreshData();
+            this.refresh();
             return;
         }
 
@@ -854,23 +1336,13 @@ export class SocialLeaderboardUI {
 
         // ページネーション
         if (target.classList.contains('prev-button')) {
-            this.previousPage();
+            this.goToPage(this.state.currentPage - 1);
             return;
         }
 
         if (target.classList.contains('next-button')) {
-            this.nextPage();
+            this.goToPage(this.state.currentPage + 1);
             return;
-        }
-    }
-
-    /**
-     * フォーカスイベントハンドラー
-     */
-    private handleFocus(event: FocusEvent): void {
-        const target = event.target as HTMLElement;
-        if (target.classList.contains('leaderboard-entry')) {
-            this.state.focusedElement = target;
         }
     }
 
@@ -879,93 +1351,121 @@ export class SocialLeaderboardUI {
      */
     private handleResize(event: Event): void {
         // レスポンシブレイアウトの調整
-        this.adjustResponsiveLayout();
+        this.updateResponsiveLayout();
     }
-
     /**
      * フィルター変更ハンドラー
      */
     private handleFilterChange(event: Event): void {
-        const select = event.target as HTMLSelectElement;
-        this.state.filterPeriod = select.value as any;
+        const target = event.target as HTMLSelectElement;
+        this.state.filterPeriod = target.value as any;
         this.state.currentPage = 1;
-        this.loadLeaderboardData();
+        this.refresh();
+        
+        // アクセシビリティアナウンス
+        if (this.config.accessibility.announcements && this.elements.announcer) {
+            this.announce(`フィルターが${target.selectedOptions[0].textContent}に変更されました。`);
+        }
     }
-
     /**
      * 検索入力ハンドラー
      */
     private handleSearchInput(event: Event): void {
-        const input = event.target as HTMLInputElement;
-        this.state.searchQuery = input.value;
+        const target = event.target as HTMLInputElement;
+        this.state.searchQuery = target.value;
         
         // デバウンス処理
-        clearTimeout((this as any).searchTimeout);
-        (this as any).searchTimeout = setTimeout(() => {
-            this.executeSearch();
-        }, 300);
-    }
-
-    /**
-     * データ更新
-     */
-    async refreshData(): Promise<void> {
-        try {
-            this.cache.clear();
-            await this.loadLeaderboardData();
-            this.announceUpdate('リーダーボードが更新されました。');
-        } catch (error) {
-            this.handleError('LEADERBOARD_REFRESH_FAILED', error);
+        if (this.searchTimeout) {
+            clearTimeout(this.searchTimeout);
         }
+        this.searchTimeout = setTimeout(() => {
+            this.executeSearch();
+        }, 500);
     }
-
+    
     /**
      * 検索実行
      */
-    private executeSearch(): void {
+    private async executeSearch(): Promise<void> {
         this.stats.searches++;
         this.state.currentPage = 1;
-        this.loadLeaderboardData();
-    }
-
-    /**
-     * 前のページ
-     */
-    private previousPage(): void {
-        if (this.state.currentPage > 1) {
-            this.state.currentPage--;
-            this.loadLeaderboardData();
-        }
-    }
-
-    /**
-     * 次のページ
-     */
-    private nextPage(): void {
-        this.state.currentPage++;
-        this.loadLeaderboardData();
-    }
-
-    /**
-     * レスポンシブレイアウト調整
-     */
-    private adjustResponsiveLayout(): void {
-        if (!this.config.responsive || !this.elements.container) return;
-
-        const containerWidth = this.elements.container.offsetWidth;
+        await this.refresh();
         
-        if (containerWidth < 768) {
-            this.elements.container.classList.add('mobile');
-        } else {
-            this.elements.container.classList.remove('mobile');
+        // アクセシビリティアナウンス
+        if (this.config.accessibility.announcements && this.elements.announcer) {
+            const query = this.state.searchQuery.trim();
+            if (query) {
+                this.announce(`"${query}"で検索しました。`);
+            } else {
+                this.announce('検索をクリアしました。');
+            }
         }
+    }
+
+    /**
+     * ページ移動
+     */
+    private async goToPage(page: number): Promise<void> {
+        if (page < 1) return;
+        
+        this.state.currentPage = page;
+        await this.refresh();
+        
+        // アクセシビリティアナウンス
+        if (this.config.accessibility.announcements && this.elements.announcer) {
+            this.announce(`ページ${page}に移動しました。`);
+        }
+    }
+    
+    /**
+     * レスポンシブレイアウトの更新
+     */
+    private updateResponsiveLayout(): void {
+        if (!this.elements.container) return;
+        
+        const isMobile = window.innerWidth < 768;
+
+        if (isMobile) {
+            this.elements.container.classList.add('mobile-layout');
+        } else {
+            this.elements.container.classList.remove('mobile-layout');
+        }
+    }
+    
+    /**
+     * リフレッシュ
+     */
+    private async refresh(): Promise<void> {
+        try {
+            this.showLoading(true);
+            // キャッシュをクリア
+            this.cache.clear();
+            await this.render();
+        } catch (error) {
+            this.handleError('REFRESH_FAILED', error);
+        } finally {
+            this.showLoading(false);
+        }
+    }
+
+    /**
+     * イベントの発火
+     */
+    private dispatchEvent(type: string, data: any): void {
+        if (!this.elements.container) return;
+        
+        const event = new CustomEvent(`leaderboard-${type}`, {
+            detail: data,
+            bubbles: true
+        });
+        this.elements.container.dispatchEvent(event);
     }
 
     /**
      * エラーハンドリング
      */
-    private handleError(errorType: string, error: any): void {
-        console.error(`[SocialLeaderboardUI] ${errorType}:`, error);
+    private handleError(type: string, error: any, context: any = {}): void {
+        console.error(`[SocialLeaderboardUI] ${type}:`, error, context);
         
         // エラー表示
         if (this.elements.content) {
@@ -980,31 +1480,32 @@ export class SocialLeaderboardUI {
     }
 
     /**
-     * ログ出力
+     * ログ記録
      */
-    private log(message: string, data?: any): void {
+    private log(message: string, data: any = null): void {
         console.log(`[SocialLeaderboardUI] ${message}`, data || '');
     }
-
+    
     /**
      * 統計情報の取得
      */
-    getStats(): LeaderboardStats {
+    public getStats(): LeaderboardStats {
         return { ...this.stats };
     }
 
     /**
      * 設定の更新
      */
-    updateConfig(newConfig: Partial<LeaderboardConfig>): void {
+    public updateConfig(newConfig: Partial<LeaderboardOptions>): void {
         Object.assign(this.config, newConfig);
         this.applyStyles();
+        this.log('設定更新', newConfig);
     }
 
     /**
      * クリーンアップ
      */
-    destroy(): void {
+    public destroy(): void {
         // イベントリスナーの削除
         if (this.elements.container) {
             this.elements.container.removeEventListener('keydown', this.handlers.keydown);
@@ -1015,6 +1516,11 @@ export class SocialLeaderboardUI {
         if (this.config.responsive) {
             window.removeEventListener('resize', this.handlers.resize);
         }
+        
+        // タイマーのクリア
+        if (this.searchTimeout) {
+            clearTimeout(this.searchTimeout);
+        }
 
         // DOM要素の削除
         if (this.elements.container && this.elements.container.parentNode) {
@@ -1024,5 +1530,7 @@ export class SocialLeaderboardUI {
         // 参照のクリア
         this.cache.clear();
         this.elements.entries = [];
+
+        this.log('SocialLeaderboardUI破棄完了');
     }
 }

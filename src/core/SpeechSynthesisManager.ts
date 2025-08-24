@@ -202,6 +202,7 @@ export class SpeechSynthesisManager {
         this.initialize();
     }
 
+
     /**
      * 初期化
      */
@@ -233,7 +234,7 @@ export class SpeechSynthesisManager {
     /**
      * カスタム発音辞書の初期化
      */
-    initializeCustomDictionary(): void {
+    private initializeCustomDictionary(): void {
         const gameDictionary = new Map([
             // ゲーム用語
             ['バブル', 'バブル'],
@@ -273,7 +274,7 @@ export class SpeechSynthesisManager {
     /**
      * 音声の読み込み
      */
-    async loadVoices(): Promise<void> {
+    private async loadVoices(): Promise<void> {
         return new Promise<void>((resolve) => {
             const loadVoicesOnce = () => {
                 this.availableVoices = this.speechSynthesis.getVoices();
@@ -298,7 +299,7 @@ export class SpeechSynthesisManager {
     /**
      * 音声の分析
      */
-    analyzeVoices(): void {
+    private analyzeVoices(): void {
         const voicesByLanguage = new Map<string, VoiceAnalysis[]>();
 
         this.availableVoices.forEach(voice => {
@@ -325,7 +326,7 @@ export class SpeechSynthesisManager {
     /**
      * 音声の性別検出（ヒューリスティック）
      */
-    detectGender(voiceName: string): 'male' | 'female' | 'unknown' {
+    private detectGender(voiceName: string): 'male' | 'female' | 'unknown' {
         const name = voiceName.toLowerCase();
 
         if (name.includes('kyoko') || name.includes('haruka') || name.includes('sayaka')) {
@@ -351,7 +352,7 @@ export class SpeechSynthesisManager {
     /**
      * 音声品質の推定
      */
-    estimateQuality(voice: SpeechSynthesisVoice): 'high' | 'medium' | 'low' {
+    private estimateQuality(voice: SpeechSynthesisVoice): 'high' | 'medium' | 'low' {
         // ローカル音声は一般的に高品質
         if (voice.localService) {
             return 'high';
@@ -374,7 +375,7 @@ export class SpeechSynthesisManager {
     /**
      * 自動音声選択
      */
-    autoSelectVoices(): void {
+    private autoSelectVoices(): void {
         for (const preferredLang of this.config.voice.preferredLanguages) {
             const lang = preferredLang.split('-')[0];
             const voices = this.voicesByLanguage.get(lang) || [];
@@ -413,7 +414,7 @@ export class SpeechSynthesisManager {
     /**
      * ユーザー設定の読み込み
      */
-    loadUserPreferences(): void {
+    private loadUserPreferences(): void {
         try {
             const saved = localStorage.getItem('speechSynthesis_preferences');
             if (saved) {
@@ -430,7 +431,7 @@ export class SpeechSynthesisManager {
     /**
      * ユーザー設定の保存
      */
-    saveUserPreferences(): void {
+    private saveUserPreferences(): void {
         try {
             localStorage.setItem('speechSynthesis_preferences', JSON.stringify(this.userPreferences));
         } catch (error) {
@@ -441,7 +442,7 @@ export class SpeechSynthesisManager {
     /**
      * ユーザー設定の適用
      */
-    applyUserPreferences(): void {
+    private applyUserPreferences(): void {
         this.config.speech.rate = this.userPreferences.rate;
         this.config.speech.pitch = this.userPreferences.pitch;
         this.config.speech.volume = this.userPreferences.volume;
@@ -451,7 +452,7 @@ export class SpeechSynthesisManager {
     /**
      * イベントリスナーの設定
      */
-    setupEventListeners(): void {
+    private setupEventListeners(): void {
         document.addEventListener('visibilitychange', () => {
             if (document.hidden && this.userPreferences.respectGamePause) {
                 this.pause();
@@ -485,7 +486,7 @@ export class SpeechSynthesisManager {
     /**
      * 言語の自動検出
      */
-    detectLanguage(text: string): string {
+    private detectLanguage(text: string): string {
         if (!this.config.autoLanguageDetection) {
             return this.config.voice.preferredLanguages[0].split('-')[0];
         }
@@ -496,6 +497,7 @@ export class SpeechSynthesisManager {
             }
         }
 
+
         // デフォルト言語
         return 'ja';
     }
@@ -503,7 +505,7 @@ export class SpeechSynthesisManager {
     /**
      * テキストの前処理
      */
-    preprocessText(text: string, language: string): string {
+    private preprocessText(text: string, language: string): string {
         let processed = text;
 
         // カスタム辞書による置換
@@ -511,6 +513,7 @@ export class SpeechSynthesisManager {
             const regex = new RegExp(original, 'gi');
             processed = processed.replace(regex, replacement);
         }
+
 
         // 数字のフォーマット（日本語）
         if (language === 'ja' && this.config.pronunciation.numberFormatting) {
@@ -531,7 +534,7 @@ export class SpeechSynthesisManager {
     /**
      * 日本語数字のフォーマット
      */
-    formatJapaneseNumbers(text: string): string {
+    private formatJapaneseNumbers(text: string): string {
         // 点数の読み方改善
         text = text.replace(/(\d+)点/g, '$1 点');
         text = text.replace(/(\d+)秒/g, '$1 秒');
@@ -548,7 +551,7 @@ export class SpeechSynthesisManager {
     /**
      * 略語の展開
      */
-    expandAbbreviations(text: string, language: string): string {
+    private expandAbbreviations(text: string, language: string): string {
         const abbreviations = new Map([
             ['HP', language === 'ja' ? 'ヒットポイント' : 'Hit Points'],
             ['AP', language === 'ja' ? 'アワプチポイント' : 'Awaputi Points'],
@@ -567,7 +570,7 @@ export class SpeechSynthesisManager {
     /**
      * 記号のフォーマット
      */
-    formatSymbols(text: string, language: string): string {
+    private formatSymbols(text: string, language: string): string {
         if (language === 'ja') {
             text = text.replace(/!/g, '！');
             text = text.replace(/\?/g, '？');
@@ -580,9 +583,10 @@ export class SpeechSynthesisManager {
     /**
      * 発話の作成
      */
-    createUtterance(text: string, options: SpeakOptions = {}): SpeechSynthesisUtterance {
+    private createUtterance(text: string, options: SpeakOptions = {}): SpeechSynthesisUtterance {
         const processedText = this.preprocessText(text, options.language || 'ja');
         const utterance = new SpeechSynthesisUtterance(processedText);
+
 
         // 言語設定
         const language = options.language || this.detectLanguage(text);
@@ -638,7 +642,7 @@ export class SpeechSynthesisManager {
     /**
      * 次のキューを処理
      */
-    processNextInQueue(): void {
+    private processNextInQueue(): void {
         if (this.speechQueue.length > 0 && !this.isPlaying && !this.isStopping) {
             const nextItem = this.speechQueue.shift()!;
             this.speakImmediate(nextItem.utterance);
@@ -648,10 +652,11 @@ export class SpeechSynthesisManager {
     /**
      * 即座に発話
      */
-    speakImmediate(utterance: SpeechSynthesisUtterance): void {
+    private speakImmediate(utterance: SpeechSynthesisUtterance): void {
         try {
             this.speechSynthesis.speak(utterance);
             this.stats.totalUtterances++;
+
 
             // 統計更新
             const language = utterance.lang?.split('-')[0] || 'unknown';
@@ -676,6 +681,7 @@ export class SpeechSynthesisManager {
     /**
      * テキストの発話
      */
+<<<<<<< HEAD
     speak(text: string, options: SpeakOptions = {}): boolean {
         if (!this.config.enabled || !this.isSupported || !text) {
             return false;
@@ -686,6 +692,19 @@ export class SpeechSynthesisManager {
             return false;
         }
 
+=======
+    speak(text: string, options: any = {}): boolean {
+        if (!this.config.enabled || !this.isSupported || !text) {
+            return false;
+        }
+        
+        // 重複メッセージのスキップ
+        if (this.userPreferences.skipRepeatedMessages &&
+            this.isRepeatedMessage(text)) {
+            return false;
+        }
+        
+>>>>>>> feature/typescript-migration-st
         const utterance = this.createUtterance(text, options);
 
         // 緊急メッセージの場合は割り込み
@@ -711,12 +730,20 @@ export class SpeechSynthesisManager {
     /**
      * 重複メッセージの判定
      */
+<<<<<<< HEAD
     isRepeatedMessage(text: string): boolean {
+=======
+    private isRepeatedMessage(text: string): boolean {
+>>>>>>> feature/typescript-migration-st
         // 簡単な実装：最後のメッセージと同じかチェック
         if (this.lastSpokenText === text) {
             return true;
         }
+<<<<<<< HEAD
 
+=======
+        
+>>>>>>> feature/typescript-migration-st
         this.lastSpokenText = text;
         return false;
     }
@@ -724,6 +751,7 @@ export class SpeechSynthesisManager {
     /**
      * 緊急メッセージの発話
      */
+<<<<<<< HEAD
     speakUrgent(text: string, options: SpeakOptions = {}): boolean {
         return this.speak(text, { ...options, urgent: true });
     }
@@ -732,11 +760,25 @@ export class SpeechSynthesisManager {
      * キューをクリアして発話
      */
     speakNow(text: string, options: SpeakOptions = {}): boolean {
+=======
+    speakUrgent(text: string, options: any = {}): boolean {
+        return this.speak(text, { ...options, urgent: true });
+    }
+    
+    /**
+     * キューをクリアして発話
+     */
+    speakNow(text: string, options: any = {}): boolean {
+>>>>>>> feature/typescript-migration-st
         this.clearQueue();
         this.stop();
         return this.speak(text, options);
     }
+<<<<<<< HEAD
 
+=======
+    
+>>>>>>> feature/typescript-migration-st
     /**
      * 一時停止
      */
@@ -788,6 +830,7 @@ export class SpeechSynthesisManager {
     clearQueue(): void {
         this.speechQueue.length = 0;
     }
+<<<<<<< HEAD
 
     /**
      * 音声設定の変更
@@ -803,6 +846,23 @@ export class SpeechSynthesisManager {
             this.config.speech.volume = Math.max(0, Math.min(1, settings.volume));
         }
 
+=======
+    
+    /**
+     * 音声設定の変更
+     */
+    setVoiceSettings(settings: any): void {
+        if (settings.rate !== undefined) {
+            this.config.speech.rate = Math.max(0.1, Math.min(10, settings.rate));
+        }
+        if (settings.pitch !== undefined) {
+            this.config.speech.pitch = Math.max(0, Math.min(2, settings.pitch));
+        }
+        if (settings.volume !== undefined) {
+            this.config.speech.volume = Math.max(0, Math.min(1, settings.volume));
+        }
+        
+>>>>>>> feature/typescript-migration-st
         // ユーザー設定も更新
         Object.assign(this.userPreferences, settings);
         this.saveUserPreferences();
@@ -814,14 +874,23 @@ export class SpeechSynthesisManager {
      */
     setVoice(language: string, voiceName: string): boolean {
         const voice = this.availableVoices.find(v =>
+<<<<<<< HEAD
             v.name === voiceName && v.lang.startsWith(language));
 
+=======
+            v.name === voiceName && v.lang.startsWith(language)
+        );
+>>>>>>> feature/typescript-migration-st
         if (voice) {
             this.selectedVoices.set(language, voice);
             console.log(`Voice set for ${language}:`, voiceName);
             return true;
         }
+<<<<<<< HEAD
 
+=======
+        
+>>>>>>> feature/typescript-migration-st
         console.warn(`Voice not found: ${voiceName} for ${language}`);
         return false;
     }
@@ -829,10 +898,18 @@ export class SpeechSynthesisManager {
     /**
      * 利用可能な音声の取得
      */
+<<<<<<< HEAD
     getAvailableVoices(language: string | null = null): SpeechSynthesisVoice[] {
         if (language) {
             return this.availableVoices.filter(voice =>
                 voice.lang.startsWith(language));
+=======
+    getAvailableVoices(language?: string): SpeechSynthesisVoice[] {
+        if (language) {
+            return this.availableVoices.filter(voice =>
+                voice.lang.startsWith(language)
+            );
+>>>>>>> feature/typescript-migration-st
         }
         return this.availableVoices;
     }
@@ -863,6 +940,7 @@ export class SpeechSynthesisManager {
         if (config.speechSynthesis) {
             Object.assign(this.config, config.speechSynthesis);
             this.applyUserPreferences();
+<<<<<<< HEAD
             console.log('SpeechSynthesisManager configuration applied');
         }
     }
@@ -877,6 +955,22 @@ export class SpeechSynthesisManager {
         return this.speak(testText, { language });
     }
 
+=======
+        }
+        console.log('SpeechSynthesisManager configuration applied');
+    }
+    
+    /**
+     * 音声テスト
+     */
+    testVoice(text?: string, language: string = 'ja'): boolean {
+        const testText = text || (language === 'ja' ?
+            'こんにちは。音声合成のテストです。' :
+            'Hello. This is a speech synthesis test.');
+        return this.speak(testText, { language });
+    }
+    
+>>>>>>> feature/typescript-migration-st
     /**
      * イベントリスナーの追加
      */
@@ -892,6 +986,7 @@ export class SpeechSynthesisManager {
      */
     removeEventListener(event: string, callback: Function): void {
         if (this.eventListeners.has(event)) {
+<<<<<<< HEAD
             this.eventListeners.get(event)!.delete(callback);
         }
     }
@@ -906,6 +1001,22 @@ export class SpeechSynthesisManager {
                     callback(data);
                 } catch (error) {
                     console.error(`Error in speech synthesis event listener:`, error);
+=======
+            this.eventListeners.get(event).delete(callback);
+        }
+    }
+    
+    /**
+     * イベントの発行
+     */
+    private emit(event: string, data: any): void {
+        if (this.eventListeners.has(event)) {
+            this.eventListeners.get(event).forEach(callback => {
+                try {
+                    callback(data);
+                } catch (error) {
+                    console.error('Error in speech synthesis event listener:', error);
+>>>>>>> feature/typescript-migration-st
                 }
             });
         }
@@ -916,7 +1027,11 @@ export class SpeechSynthesisManager {
      */
     generateReport(): any {
         const sessionDuration = Date.now() - this.stats.sessionStart;
+<<<<<<< HEAD
 
+=======
+        
+>>>>>>> feature/typescript-migration-st
         return {
             timestamp: new Date().toISOString(),
             system: {
@@ -941,14 +1056,22 @@ export class SpeechSynthesisManager {
             userPreferences: this.userPreferences
         };
     }
+<<<<<<< HEAD
 
+=======
+    
+>>>>>>> feature/typescript-migration-st
     /**
      * 有効状態の設定
      */
     setEnabled(enabled: boolean): void {
         this.config.enabled = enabled && this.isSupported;
         this.userPreferences.enabled = this.config.enabled;
+<<<<<<< HEAD
 
+=======
+        
+>>>>>>> feature/typescript-migration-st
         if (!enabled) {
             this.stop();
             this.clearQueue();
@@ -963,7 +1086,11 @@ export class SpeechSynthesisManager {
      */
     destroy(): void {
         console.log('Destroying SpeechSynthesisManager...');
+<<<<<<< HEAD
 
+=======
+        
+>>>>>>> feature/typescript-migration-st
         // 音声停止
         this.stop();
         this.clearQueue();
@@ -976,8 +1103,13 @@ export class SpeechSynthesisManager {
 
         // データのクリア
         this.selectedVoices.clear();
+<<<<<<< HEAD
         this.config.pronunciation.customDictionary.clear();
 
+=======
+        this.voicePreferences.clear();
+        this.config.pronunciation.customDictionary.clear();
+>>>>>>> feature/typescript-migration-st
         console.log('SpeechSynthesisManager destroyed');
     }
 }

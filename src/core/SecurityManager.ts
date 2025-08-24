@@ -98,6 +98,7 @@ export class SecurityManager {
     private privacyManager: PrivacyManager;
     private statistics: SecurityStatistics;
     private sessionId?: string;
+    private errorHandler: any;
 
     constructor() {
         this.encryptionConfig = {
@@ -125,6 +126,9 @@ export class SecurityManager {
         
         // プライバシー管理
         this.privacyManager = new PrivacyManager(this);
+        
+        // エラーハンドラーの取得
+        this.errorHandler = getErrorHandler();
         
         // セキュリティ統計
         this.statistics = {
@@ -574,7 +578,7 @@ export class SecurityManager {
         if (!this.sessionId) {
             this.sessionId = this.generateRandomData(16);
         }
-        return this.sessionId;
+        return this.sessionId!;
     }
     
     /**
@@ -604,7 +608,7 @@ export class SecurityManager {
     /**
      * シンプルハッシュ関数（フォールバック用）
      */
-    private simpleHash(str: string): string {
+    public simpleHash(str: string): string {
         let hash = 0;
         if (str.length === 0) return hash.toString(16);
         

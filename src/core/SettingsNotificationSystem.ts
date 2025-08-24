@@ -5,23 +5,27 @@
 
 import { getErrorHandler } from '../utils/ErrorHandler.js';
 
-interface ListenerOptions {
-    immediate?: boolean;
-    debounce?: number;
-    priority?: string;
-    context?: string;
-}
-
+/**
+ * リスナー情報の型定義
+ */
 interface ListenerInfo {
     id: string;
-    callback: Function;
-    options: ListenerOptions;
+    callback: (newValue: any, oldValue: any, settingKey: string) => void;
+    options: {
+        immediate: boolean;
+        debounce: number;
+        priority: 'high' | 'normal' | 'low';
+        context: string;
+    };
     addedAt: number;
     callCount: number;
     lastCalled: number | null;
     debounceTimer?: NodeJS.Timeout;
 }
 
+/**
+ * 監視情報の型定義
+ */
 interface WatcherInfo {
     id: string;
     componentName: string;
@@ -33,6 +37,9 @@ interface WatcherInfo {
     isActive: boolean;
 }
 
+/**
+ * 通知情報の型定義
+ */
 interface NotificationInfo {
     id: string;
     settingKey: string;
@@ -49,7 +56,10 @@ interface NotificationInfo {
     }>;
 }
 
-interface Statistics {
+/**
+ * 統計情報の型定義
+ */
+interface Stats {
     totalNotifications: number;
     successfulNotifications: number;
     failedNotifications: number;
@@ -63,7 +73,7 @@ export class SettingsNotificationSystem {
     private listeners: Map<string, Map<string, ListenerInfo>>;
     private componentWatchers: Map<string, WatcherInfo>;
     private notificationHistory: NotificationInfo[];
-    private stats: Statistics;
+    private stats: Stats;
     private debugMode: boolean;
 
     constructor() {
@@ -97,7 +107,7 @@ export class SettingsNotificationSystem {
      * @param {Object} options - オプション
      * @returns {string} リスナーID
      */
-    addListener(settingKey: string, callback: Function, options: ListenerOptions = {}): string | null {
+    addListener(settingKey: string, callback: (newValue: any, oldValue: any, settingKey: string) => void, options: Partial<ListenerInfo['options']> = {}): string | null {
         try {
             const listenerId = this._generateListenerId();
             
@@ -302,7 +312,7 @@ export class SettingsNotificationSystem {
         for (const listenerInfo of sortedListeners) {
             try {
                 // デバウンス処理
-                if (listenerInfo.options.debounce! > 0) {
+                if (listenerInfo.options.debounce > 0) {
                     this._debounceCallback(listenerInfo, newValue, oldValue, settingKey);
                 } else {
                     this._executeCallback(listenerInfo, newValue, oldValue, settingKey);
@@ -310,13 +320,13 @@ export class SettingsNotificationSystem {
                 
                 notification.listeners.push({
                     id: listenerInfo.id,
-                    context: listenerInfo.options.context!,
+                    context: listenerInfo.options.context,
                     success: true
                 });
             } catch (error) {
                 notification.listeners.push({
                     id: listenerInfo.id,
-                    context: listenerInfo.options.context!,
+                    context: listenerInfo.options.context,
                     success: false,
                     error: (error as Error).message
                 });
@@ -436,8 +446,8 @@ export class SettingsNotificationSystem {
         const priorityOrder: Record<string, number> = { 'high': 3, 'normal': 2, 'low': 1 };
         
         return listeners.sort((a, b) => {
-            const aPriority = priorityOrder[a.options.priority!] || 2;
-            const bPriority = priorityOrder[b.options.priority!] || 2;
+            const aPriority = priorityOrder[a.options.priority] || 2;
+            const bPriority = priorityOrder[b.options.priority] || 2;
             return bPriority - aPriority;
         });
     }
@@ -481,7 +491,7 @@ export class SettingsNotificationSystem {
      * 統計情報を取得
      * @returns {Object} 統計情報
      */
-    getStats(): any {
+    getStats(): Stats & { activeListeners: number; activeWatchers: number; notificationHistorySize: number } {
         return {
             ...this.stats,
             activeListeners: Array.from(this.listeners.values()).reduce((sum, listeners) => sum + listeners.size, 0),

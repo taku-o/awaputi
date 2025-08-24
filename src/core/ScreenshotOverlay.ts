@@ -128,7 +128,7 @@ export class ScreenshotOverlay {
         this.config = {
             // レイアウト設定
             layout: {
-                scorePosition: 'top-right',
+                scorePosition: 'top-right',     // top-left, top-right, bottom-left, bottom-right, center
                 logoPosition: 'bottom-left',
                 watermarkPosition: 'bottom-right',
                 padding: 20,
@@ -150,6 +150,7 @@ export class ScreenshotOverlay {
                 shadowBlur: 5,
                 shadowOffset: { x: 2, y: 2 }
             },
+            
             // ロゴ設定
             logo: {
                 enabled: true,
@@ -190,6 +191,7 @@ export class ScreenshotOverlay {
                 iconSize: 24,
                 maxWidth: 300
             },
+            
             // 統計情報設定
             stats: {
                 enabled: false,
@@ -209,6 +211,7 @@ export class ScreenshotOverlay {
             measurements: new Map()
         };
         
+        // 統計情報
         this.stats = {
             overlaysCreated: 0,
             totalTime: 0,
@@ -657,25 +660,26 @@ export class ScreenshotOverlay {
     }
     
     /**
-     * カスタム画像の描画（実装予定）
+     * カスタム画像の描画
      */
     async drawCustomImage(ctx: CanvasRenderingContext2D, element: any, config: OverlayConfig, canvasWidth: number, canvasHeight: number): Promise<void> {
-        // TODO: 実装予定
+        // TODO: 画像描画実装
         this.log('カスタム画像の描画は未実装です', element);
     }
     
     /**
-     * カスタムシェイプの描画（実装予定）
+     * カスタムシェイプの描画
      */
     async drawCustomShape(ctx: CanvasRenderingContext2D, element: any, config: OverlayConfig, canvasWidth: number, canvasHeight: number): Promise<void> {
-        // TODO: 実装予定
+        // TODO: シェイプ描画実装
         this.log('カスタムシェイプの描画は未実装です', element);
     }
     
     /**
      * 角丸四角形の描画
      */
-    drawRoundedRect(ctx: CanvasRenderingContext2D, x: number, y: number, width: number, height: number, radius: number, fillColor?: string, strokeColor?: string, strokeWidth?: number): void {
+    drawRoundedRect(ctx: CanvasRenderingContext2D, x: number, y: number, width: number, height: number, 
+                    radius: number, fillColor?: string, strokeColor?: string, strokeWidth?: number): void {
         ctx.beginPath();
         ctx.moveTo(x + radius, y);
         ctx.lineTo(x + width - radius, y);
@@ -703,7 +707,8 @@ export class ScreenshotOverlay {
     /**
      * 位置の計算
      */
-    calculatePosition(position: string | Position, elementWidth: number, elementHeight: number, canvasWidth: number, canvasHeight: number, padding: number): Position {
+    calculatePosition(position: string | Position, elementWidth: number, elementHeight: number, 
+                     canvasWidth: number, canvasHeight: number, padding: number): Position {
         let x: number, y: number;
 
         switch(position) {
@@ -834,6 +839,7 @@ export class ScreenshotOverlay {
                     borderWidth: 0
                 }
             },
+            
             elegant: {
                 score: {
                     backgroundColor: 'rgba(50, 50, 70, 0.9)',
@@ -845,6 +851,7 @@ export class ScreenshotOverlay {
                     strokeColor: '#FFFFFF'
                 }
             },
+            
             gaming: {
                 score: {
                     backgroundColor: 'rgba(0, 255, 0, 0.8)',
@@ -857,6 +864,7 @@ export class ScreenshotOverlay {
                     fontSize: 36
                 }
             },
+            
             social: {
                 layout: {
                     scorePosition: 'center',
@@ -926,6 +934,7 @@ export class ScreenshotOverlay {
         this.cache.fonts.clear();
         this.cache.images.clear();
         this.cache.measurements.clear();
+        
         this.log('オーバーレイキャッシュをクリアしました');
     }
     

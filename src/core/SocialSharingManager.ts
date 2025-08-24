@@ -20,6 +20,15 @@ interface SocialSharingSettings {
     promptDelay: number;
 }
 
+interface Dependencies {
+    statisticsManager?: any;
+    achievementManager?: any;
+    localizationManager?: any;
+    screenshotCapture?: any;
+    leaderboardManager?: any;
+    challengeSystem?: any;
+}
+
 interface GameData {
     score: number;
     level: number;
@@ -45,27 +54,21 @@ interface ShareData {
     url?: string;
     files?: File[];
     hashtags?: string[];
+    fileData?: any;
+    [key: string]: any;
 }
 
 interface ShareOptions {
     urgent?: boolean;
     useWebAPI?: boolean;
     fallback?: boolean;
+    [key: string]: any;
 }
 
 interface ShareResult {
     success: boolean;
     platform?: string;
     error?: string;
-}
-
-interface Dependencies {
-    statisticsManager?: any;
-    achievementManager?: any;
-    localizationManager?: any;
-    screenshotCapture?: any;
-    leaderboardManager?: any;
-    challengeSystem?: any;
 }
 
 interface GameEngine {
@@ -123,7 +126,7 @@ export class SocialSharingManager {
     async init(): Promise<void> {
         try {
             // ShareContentGeneratorの初期化
-            this.shareContentGenerator = new ShareContentGenerator();
+            this.shareContentGenerator = new ShareContentGenerator(this.gameEngine);
             
             // 設定の読み込み
             await this.loadSettings();
@@ -217,14 +220,15 @@ export class SocialSharingManager {
      */
     setupEventListeners(): void {
         // ゲーム終了時の処理
-        this.gameEngine.on('gameEnd', (gameData) => {
+        this.gameEngine.on('gameEnd', (gameData: GameData) => {
             this.handleGameEnd(gameData);
         });
 
         // ハイスコア達成時の処理
-        this.gameEngine.on('highScore', (scoreData) => {
+        this.gameEngine.on('highScore', (scoreData: ScoreData) => {
             this.handleHighScore(scoreData);
         });
+
 
         // 実績解除時の処理
         if (this.achievementManager) {
@@ -236,6 +240,7 @@ export class SocialSharingManager {
         // オンライン状態の変化
         window.addEventListener('online', () => this.onOnlineStatusChange());
         window.addEventListener('offline', () => this.onOnlineStatusChange());
+
 
         // ページ離脱時の処理
         window.addEventListener('beforeunload', (event) => this.onBeforeUnload(event));
@@ -331,11 +336,18 @@ export class SocialSharingManager {
             
             this.analyticsTracker.trackShareEvent('share_request', {
                 platform: shareData.platform || 'auto',
-                hasScreenshot: !!shareData.files,
+                hasScreenshot: !!shareData.files || !!shareData.fileData,
                 startTime
             });
 
+            // データ検証
+            const validation = this.platformAdapters.validateShareData(shareData);
+            if (!validation.valid) {
+                throw new Error(`Share data validation failed: ${validation.errors.join(', ')}`);
+            }
+
             let result: ShareResult;
+
 
             // プラットフォーム別共有処理
             if (shareData.platform === 'twitter') {
@@ -360,7 +372,8 @@ export class SocialSharingManager {
             this.analyticsTracker.trackShareEvent('share_failure', {
                 platform: shareData.platform,
                 error: (error as Error).message,
-                endTime: Date.now()
+                endTime: Date.now(),
+                startTime
             });
 
             this.analyticsTracker.trackError('share_failed', {
