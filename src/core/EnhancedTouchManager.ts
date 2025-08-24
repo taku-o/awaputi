@@ -1,8 +1,11 @@
 // TypeScript conversion - basic types
-interface BasicConfig { [key: string]: any;
-    import { getConfigurationManager  } from './ConfigurationManager.js';
-import { getErrorHandler  } from '../utils/ErrorHandler.js';
-import { getBrowserCompatibility  } from '../utils/BrowserCompatibility.js';
+interface BasicConfig { 
+    [key: string]: any;
+}
+
+import { getConfigurationManager } from './ConfigurationManager.js';
+import { getErrorHandler } from '../utils/ErrorHandler.js';
+import { getBrowserCompatibility } from '../utils/BrowserCompatibility.js';
 
 /**
  * Enhanced Touch Manager
@@ -10,9 +13,20 @@ import { getBrowserCompatibility  } from '../utils/BrowserCompatibility.js';
  */
 export class EnhancedTouchManager {
     private config: BasicConfig;
-    private, state: any;
-    constructor(canvas, gameEngine: any) {
+    private canvas: any;
+    private gameEngine: any;
+    private configManager: any;
+    private errorHandler: any;
+    private touchSensitivity: number;
+    private multiTouchEnabled: boolean;
+    private gestureThresholds: any;
+    private touchState: any;
+    private touchPool: any;
+    private accidentalTouchPrevention: any;
+    private callbacks: any;
+    private enable3DTouch: boolean = false;
 
+    constructor(canvas: any, gameEngine: any) {
         this.canvas = canvas;
         this.gameEngine = gameEngine;
         this.configManager = getConfigurationManager();
@@ -24,179 +38,207 @@ export class EnhancedTouchManager {
         
         // ジェスチャー閾値設定
         this.gestureThresholds = {
-            swipe: { minDistance: 50  ,
-    maxTime: 500 }
+            swipe: { 
+                minDistance: 50,
+                maxTime: 500,
                 minVelocity: 0.5 
-    };
-            pinch: { minScale: 0.1,
-                maxScale: 3.0  ,
-    minDistance: 30 };
-            longPress: { duration: 500,
-    maxMovement: 10  ,
-            doubleTap: { maxInterval: 300,
-    maxDistance: 25 
-     ,
+            },
+            pinch: { 
+                minScale: 0.1,
+                maxScale: 3.0,
+                minDistance: 30 
+            },
+            longPress: { 
+                duration: 500,
+                maxMovement: 10 
+            },
+            doubleTap: { 
+                maxInterval: 300,
+                maxDistance: 25 
+            }
+        };
+
         // タッチ状態管理
-        this.touchState = { touches: new Map(), // タッチポイントのMap
-            activeGestures: new Set(), // アクティブなジェスチャー;
-            gestureHistory: [], // ジェスチャー履歴;
+        this.touchState = { 
+            touches: new Map(), // タッチポイントのMap
+            activeGestures: new Set(), // アクティブなジェスチャー
+            gestureHistory: [], // ジェスチャー履歴
             lastTapTime: 0,
-    tapCount: 0  };
+            tapCount: 0,
+            lastTapPosition: null,
+            pinchData: null
+        };
+
         // パフォーマンス最適化
-        this.touchPool = { pool: [],
+        this.touchPool = { 
+            pool: [],
             maxSize: 50,
-    active: new Set(  }
+            active: new Set()
+        };
         
         // 誤タッチ防止設定
-        this.accidentalTouchPrevention = { enabled: true,
-            edgeThreshold: 20, // 画面端からの距離;
-            minTouchSize: 5, // 最小タッチサイズ;
-            maxTouchSize: 100, // 最大タッチサイズ;
-            rapidTapThreshold: 50 // 連続タップ間隔  };
+        this.accidentalTouchPrevention = { 
+            enabled: true,
+            edgeThreshold: 20, // 画面端からの距離
+            minTouchSize: 5, // 最小タッチサイズ
+            maxTouchSize: 100, // 最大タッチサイズ
+            rapidTapThreshold: 50 // 連続タップ間隔
+        };
+
         // コールバック登録
-        this.callbacks = { onTouchStart: null,
+        this.callbacks = { 
+            onTouchStart: null,
             onTouchMove: null,
             onTouchEnd: null,
             onSwipe: null,
             onPinch: null,
             onLongPress: null,
-    onDoubleTap: null;
+            onDoubleTap: null
+        };
+
         this.initialize();
     }
     
     /**
      * 初期化処理
      */
-    initialize() {
+    initialize(): void {
         try {
             // タッチイベントプールの初期化
             this.initializeTouchPool();
             // イベントリスナーの設定
             this.setupEventListeners();
             // デバイス固有の最適化
-            this.applyDeviceOptimizations()','
+            this.applyDeviceOptimizations();
             console.log('[EnhancedTouchManager] 初期化完了');
 
-            ' }'
-
-        } catch (error) { this.errorHandler.logError(error, {)'
+        } catch (error) {
+            this.errorHandler.logError(error, {
                 context: 'EnhancedTouchManager.initialize'
-                }
-}
+            });
+        }
+    }
+
     /**
      * タッチイベントプールの初期化
      */
-    initializeTouchPool() {
-
-        for(let, i = 0, i < 10, i++) {
-            this.touchPool.pool.push({'
+    initializeTouchPool(): void {
+        for(let i = 0; i < 10; i++) {
+            this.touchPool.pool.push({
                 id: null,
-                id: null };
-                type: '}'
-                position: { x: 0, y: 0  ,
-                startPosition: { x: 0, y: 0  ,
-                previousPosition: { x: 0, y: 0  ,
+                type: '',
+                position: { x: 0, y: 0 },
+                startPosition: { x: 0, y: 0 },
+                previousPosition: { x: 0, y: 0 },
                 timestamp: 0,
                 startTime: 0,
                 pressure: 1.0,
-    radius: { x: 0, y: 0  }
-                force: 0),
-                isActive: false';'
+                radius: { x: 0, y: 0 },
+                force: 0,
+                isActive: false,
+                longPressTimer: null
+            });
+        }
     }
     
     /**
-     * イベントリスナーの設定'
-     */''
-    setupEventListeners()';'
-        this.canvas.addEventListener('touchstart', (e) => this.handleTouchStart(e), options');'
-        this.canvas.addEventListener('touchmove', (e) => this.handleTouchMove(e), options');'
-        this.canvas.addEventListener('touchend', (e) => this.handleTouchEnd(e), options');'
-        this.canvas.addEventListener('touchcancel', (e) => this.handleTouchCancel(e), options);
-        ';'
+     * イベントリスナーの設定
+     */
+    setupEventListeners(): void {
+        const options = { passive: false };
+        
+        this.canvas.addEventListener('touchstart', (e: any) => this.handleTouchStart(e), options);
+        this.canvas.addEventListener('touchmove', (e: any) => this.handleTouchMove(e), options);
+        this.canvas.addEventListener('touchend', (e: any) => this.handleTouchEnd(e), options);
+        this.canvas.addEventListener('touchcancel', (e: any) => this.handleTouchCancel(e), options);
+        
         // ポインターイベント（フォールバック）
         if (window.PointerEvent) {
-
-            this.canvas.addEventListener('pointerdown', (e) => this.handlePointerDown(e)),
-            this.canvas.addEventListener('pointermove', (e) => this.handlePointerMove(e)),
-            this.canvas.addEventListener('pointerup', (e) => this.handlePointerUp(e));
-
-            this.canvas.addEventListener('pointercancel', (e) => this.handlePointerCancel(e)); }
+            this.canvas.addEventListener('pointerdown', (e: any) => this.handlePointerDown(e));
+            this.canvas.addEventListener('pointermove', (e: any) => this.handlePointerMove(e));
+            this.canvas.addEventListener('pointerup', (e: any) => this.handlePointerUp(e));
+            this.canvas.addEventListener('pointercancel', (e: any) => this.handlePointerCancel(e));
         }
-        ';'
+        
         // コンテキストメニュー無効化
-        this.canvas.addEventListener('contextmenu', (e) => e.preventDefault();
+        this.canvas.addEventListener('contextmenu', (e: any) => e.preventDefault());
     }
     
     /**
      * デバイス固有の最適化
      */
-    applyDeviceOptimizations() {
-        const deviceInfo = getBrowserCompatibility().deviceInfo,
-        const browserInfo = getBrowserCompatibility()','
+    applyDeviceOptimizations(): void {
+        const deviceInfo = getBrowserCompatibility().deviceInfo;
+        const browserInfo = getBrowserCompatibility();
+        
         if (deviceInfo.platform === 'ios') {
             // iOS Safari のタッチ遅延を防ぐ
-            this.canvas.style.touchAction = 'manipulation,
-            this.canvas.style.webkitTouchCallout = 'none,
-            this.canvas.style.webkitUserSelect = 'none,
-            ','
+            this.canvas.style.touchAction = 'manipulation';
+            this.canvas.style.webkitTouchCallout = 'none';
+            this.canvas.style.webkitUserSelect = 'none';
+            
             // 3D Touch / Force Touch対応
-            if ('ontouchforcechange' in, document'
-    }
-                this.enable3DTouch = true; }
-}
-        ';'
+            if ('ontouchforcechange' in document) {
+                this.enable3DTouch = true;
+            }
+        }
+        
         // Android固有の最適化
         if(deviceInfo.platform === 'android') {
             // Androidのタッチ最適化
-            this.canvas.style.touchAction = 'none' }
-
-            this.canvas.style.userSelect = 'none'; }
+            this.canvas.style.touchAction = 'none';
+            this.canvas.style.userSelect = 'none';
         }
         
         // 小画面デバイスの調整
         if (deviceInfo.screenInfo.width < 400) {
-            this.gestureThresholds.swipe.minDistance = 30 }
-            this.gestureThresholds.doubleTap.maxDistance = 35; }
-}
+            this.gestureThresholds.swipe.minDistance = 30;
+            this.gestureThresholds.doubleTap.maxDistance = 35;
+        }
+    }
     
     /**
      * タッチ開始処理
      */
-    handleTouchStart(event) {
+    handleTouchStart(event: any): void {
         event.preventDefault();
         try {
-            const touches = event.changedTouches,
+            const touches = event.changedTouches;
             
-            for (let, i = 0, i < touches.length, i++) {
-                const touch = touches[i],
+            for (let i = 0; i < touches.length; i++) {
+                const touch = touches[i];
                 const touchData = this.getTouchFromPool();
-                if (!touchData) continue,
+                if (!touchData) continue;
+                
                 // タッチデータの初期化
                 const position = this.getTouchPosition(touch);
-                touchData.id = touch.identifier }
-
-                touchData.type = 'start'; }
-                touchData.position = { ...position,
-                touchData.startPosition = { ...position,
-                touchData.previousPosition = { ...position,
+                touchData.id = touch.identifier;
+                touchData.type = 'start';
+                touchData.position = { ...position };
+                touchData.startPosition = { ...position };
+                touchData.previousPosition = { ...position };
                 touchData.timestamp = Date.now();
                 touchData.startTime = Date.now();
-                touchData.pressure = touch.force || 1.0,
-                touchData.radius = { x: touch.radiusX || 1,
-                    y: touch.radiusY || 1  ,
+                touchData.pressure = touch.force || 1.0;
+                touchData.radius = { 
+                    x: touch.radiusX || 1,
+                    y: touch.radiusY || 1 
+                };
                 touchData.isActive = true;
                 
                 // 誤タッチ防止チェック
-                if (this.isAccidentalTouch(touchData) {
+                if (this.isAccidentalTouch(touchData)) {
                     this.returnTouchToPool(touchData);
-                    continue; }
+                    continue;
                 }
                 
                 // タッチ状態に追加
                 this.touchState.touches.set(touch.identifier, touchData);
                 
                 // コールバック呼び出し
-                if (this.callbacks.onTouchStart) { this.callbacks.onTouchStart(touchData);
+                if (this.callbacks.onTouchStart) {
+                    this.callbacks.onTouchStart(touchData);
+                }
                 
                 // ジェスチャー検出開始
                 this.startGestureDetection();
@@ -205,58 +247,67 @@ export class EnhancedTouchManager {
             // 16ms以内の応答を保証
             this.processImmediateFeedback();
 
-        } catch (error) { this.errorHandler.logError(error, {)'
+        } catch (error) {
+            this.errorHandler.logError(error, {
                 context: 'EnhancedTouchManager.handleTouchStart'
-                }
-}
+            });
+        }
+    }
+
     /**
      * タッチ移動処理
      */
-    handleTouchMove(event) {
+    handleTouchMove(event: any): void {
         event.preventDefault();
         try {
-            const touches = event.changedTouches,
+            const touches = event.changedTouches;
             
-            for (let, i = 0, i < touches.length, i++) {
-                const touch = touches[i],
+            for (let i = 0; i < touches.length; i++) {
+                const touch = touches[i];
                 const touchData = this.touchState.touches.get(touch.identifier);
-                if (!touchData) continue }
-                // 位置更新 }
-                touchData.previousPosition = { ...touchData.position,
+                if (!touchData) continue;
+                
+                // 位置更新
+                touchData.previousPosition = { ...touchData.position };
                 touchData.position = this.getTouchPosition(touch);
                 touchData.timestamp = Date.now();
-                touchData.pressure = touch.force || 1.0,
+                touchData.pressure = touch.force || 1.0;
                 
                 // コールバック呼び出し
-                if (this.callbacks.onTouchMove) { this.callbacks.onTouchMove(touchData);
+                if (this.callbacks.onTouchMove) {
+                    this.callbacks.onTouchMove(touchData);
+                }
             }
             
             // ジェスチャー検出更新
             this.updateGestureDetection();
 
-        } catch (error) { this.errorHandler.logError(error, {)'
+        } catch (error) {
+            this.errorHandler.logError(error, {
                 context: 'EnhancedTouchManager.handleTouchMove'
-                }
-}
+            });
+        }
+    }
+
     /**
      * タッチ終了処理
      */
-    handleTouchEnd(event) {
+    handleTouchEnd(event: any): void {
         event.preventDefault();
         try {
-            const touches = event.changedTouches,
+            const touches = event.changedTouches;
             
-            for (let, i = 0, i < touches.length, i++) {
-                const touch = touches[i],
+            for (let i = 0; i < touches.length; i++) {
+                const touch = touches[i];
                 const touchData = this.touchState.touches.get(touch.identifier);
-                if(!touchData) continue,
+                if(!touchData) continue;
 
-                touchData.type = 'end,
+                touchData.type = 'end';
                 touchData.timestamp = Date.now();
+                
                 // コールバック呼び出し
                 if (this.callbacks.onTouchEnd) {
-    }
-                    this.callbacks.onTouchEnd(touchData); }
+                    this.callbacks.onTouchEnd(touchData);
                 }
                 
                 // タップ検出
@@ -270,122 +321,137 @@ export class EnhancedTouchManager {
             // ジェスチャー検出終了
             this.endGestureDetection();
 
-        } catch (error) { this.errorHandler.logError(error, {)'
+        } catch (error) {
+            this.errorHandler.logError(error, {
                 context: 'EnhancedTouchManager.handleTouchEnd'
-                }
-}
+            });
+        }
+    }
+
     /**
      * タッチキャンセル処理
      */
-    handleTouchCancel(event) {
+    handleTouchCancel(event: any): void {
         event.preventDefault();
         try {
-            const touches = event.changedTouches,
+            const touches = event.changedTouches;
             
-            for (let, i = 0, i < touches.length, i++) {
-                const touch = touches[i],
+            for (let i = 0; i < touches.length; i++) {
+                const touch = touches[i];
                 const touchData = this.touchState.touches.get(touch.identifier);
                 if (touchData) {
                     this.touchState.touches.delete(touch.identifier);
-                    this.returnTouchToPool(touchData); }
-}
+                    this.returnTouchToPool(touchData);
+                }
+            }
             
             // 全ジェスチャーをリセット
             this.resetGestures();
 
-        } catch (error) { this.errorHandler.logError(error, {)'
+        } catch (error) {
+            this.errorHandler.logError(error, {
                 context: 'EnhancedTouchManager.handleTouchCancel'
-            }';'
+            });
         }
     }
     
     /**
-     * ポインターイベントハンドラー（フォールバック）'
-     */''
-    handlePointerDown(event) {
-
-        if(event.pointerType === 'touch' {'
+     * ポインターイベントハンドラー（フォールバック）
+     */
+    handlePointerDown(event: any): void {
+        if(event.pointerType === 'touch') {
             // タッチイベントとして処理
             const fakeTouch = {
                 identifier: event.pointerId,
                 clientX: event.clientX,
                 clientY: event.clientY,
                 force: event.pressure,
-    radiusX: event.width / 2 }
-                radiusY: event.height / 2 
-    };
-            this.handleTouchStart({ );
+                radiusX: event.width / 2,
+                radiusY: event.height / 2
+            };
+            this.handleTouchStart({
                 preventDefault: () => {},
-                changedTouches: [fakeTouch]     }
-}
-    handlePointerMove(event) {
+                changedTouches: [fakeTouch]
+            });
+        }
+    }
 
-        if (event.pointerType === 'touch' && this.touchState.touches.has(event.pointerId) {
+    handlePointerMove(event: any): void {
+        if (event.pointerType === 'touch' && this.touchState.touches.has(event.pointerId)) {
             const fakeTouch = {
                 identifier: event.pointerId,
                 clientX: event.clientX,
-    clientY: event.clientY }
-                force: event.pressure 
-    };
-            this.handleTouchMove({ );
+                clientY: event.clientY,
+                force: event.pressure
+            };
+            this.handleTouchMove({
                 preventDefault: () => {},
-                changedTouches: [fakeTouch]     }
-}
-    handlePointerUp(event) {
-
-        if (event.pointerType === 'touch' && this.touchState.touches.has(event.pointerId) {
-            const fakeTouch = {
+                changedTouches: [fakeTouch]
+            });
+        }
     }
-                identifier: event.pointerId 
-    };
-            this.handleTouchEnd({ );
-                preventDefault: () => {},
-                changedTouches: [fakeTouch]     }
-}
-    handlePointerCancel(event) {
 
-        if (event.pointerType === 'touch' && this.touchState.touches.has(event.pointerId) {
+    handlePointerUp(event: any): void {
+        if (event.pointerType === 'touch' && this.touchState.touches.has(event.pointerId)) {
             const fakeTouch = {
-    }
-                identifier: event.pointerId 
-    };
-            this.handleTouchCancel({ );
+                identifier: event.pointerId
+            };
+            this.handleTouchEnd({
                 preventDefault: () => {},
-                changedTouches: [fakeTouch]     }
-}
+                changedTouches: [fakeTouch]
+            });
+        }
+    }
+
+    handlePointerCancel(event: any): void {
+        if (event.pointerType === 'touch' && this.touchState.touches.has(event.pointerId)) {
+            const fakeTouch = {
+                identifier: event.pointerId
+            };
+            this.handleTouchCancel({
+                preventDefault: () => {},
+                changedTouches: [fakeTouch]
+            });
+        }
+    }
+
     /**
      * タッチ位置を取得
      */
-    getTouchPosition(touch) {
+    getTouchPosition(touch: any): any {
         const rect = this.canvas.getBoundingClientRect();
-        return { x: (touch.clientX - rect.left) * this.touchSensitivity ,
-            y: (touch.clientY - rect.top) * this.touchSensitivity 
+        return { 
+            x: (touch.clientX - rect.left) * this.touchSensitivity,
+            y: (touch.clientY - rect.top) * this.touchSensitivity
+        };
     }
     
     /**
      * タッチプールから取得
      */
-    getTouchFromPool() {
+    getTouchFromPool(): any {
         if (this.touchPool.pool.length > 0) {
             const touch = this.touchPool.pool.pop();
             this.touchPool.active.add(touch);
             return touch;
-        ';'
+        }
+        
         // プールが空の場合は新規作成
         if (this.touchPool.active.size < this.touchPool.maxSize) {
-            const touch = {'
+            const touch = {
                 id: null,
-
-                type: '}'
-                position: { x: 0, y: 0  ,
-                startPosition: { x: 0, y: 0  ,
-                previousPosition: { x: 0, y: 0  ,
+                type: '',
+                position: { x: 0, y: 0 },
+                startPosition: { x: 0, y: 0 },
+                previousPosition: { x: 0, y: 0 },
                 timestamp: 0,
                 startTime: 0,
                 pressure: 1.0,
-    radius: { x: 0, y: 0  ,
+                radius: { x: 0, y: 0 },
                 force: 0,
-    isActive: false ,
+                isActive: false,
+                longPressTimer: null
+            };
             this.touchPool.active.add(touch);
             return touch;
         }
@@ -396,38 +462,43 @@ export class EnhancedTouchManager {
     /**
      * タッチをプールに返却
      */
-    returnTouchToPool(touch) {
-        if (this.touchPool.active.has(touch) {
+    returnTouchToPool(touch: any): void {
+        if (this.touchPool.active.has(touch)) {
             this.touchPool.active.delete(touch);
-            touch.isActive = false }
-            this.touchPool.pool.push(touch); }
-}
+            touch.isActive = false;
+            this.touchPool.pool.push(touch);
+        }
+    }
     
     /**
      * 誤タッチ判定
      */
-    isAccidentalTouch(touchData) {
-        if (!this.accidentalTouchPrevention.enabled) return false,
+    isAccidentalTouch(touchData: any): boolean {
+        if (!this.accidentalTouchPrevention.enabled) return false;
         
-        const pos = touchData.position,
+        const pos = touchData.position;
         const rect = this.canvas.getBoundingClientRect();
-        const edge = this.accidentalTouchPrevention.edgeThreshold,
+        const edge = this.accidentalTouchPrevention.edgeThreshold;
         
         // 画面端チェック
-        if (pos.x < edge || pos.x > rect.width - edge ||,
+        if (pos.x < edge || pos.x > rect.width - edge ||
             pos.y < edge || pos.y > rect.height - edge) {
-    }
             return true;
+        }
         
         // タッチサイズチェック
         const size = Math.max(touchData.radius.x, touchData.radius.y);
-        if (size < this.accidentalTouchPrevention.minTouchSize ||;
-            size > this.accidentalTouchPrevention.maxTouchSize) { return true }
+        if (size < this.accidentalTouchPrevention.minTouchSize ||
+            size > this.accidentalTouchPrevention.maxTouchSize) {
+            return true;
+        }
         
         // 連続タップチェック
         const now = Date.now();
-        const lastTouch = Array.from(this.touchState.touches.values())).pop();
-        if (lastTouch && now - lastTouch.startTime < this.accidentalTouchPrevention.rapidTapThreshold) { return true }
+        const lastTouch = Array.from(this.touchState.touches.values()).pop();
+        if (lastTouch && now - lastTouch.startTime < this.accidentalTouchPrevention.rapidTapThreshold) {
+            return true;
+        }
         
         return false;
     }
@@ -435,69 +506,76 @@ export class EnhancedTouchManager {
     /**
      * 即時フィードバック処理
      */
-    processImmediateFeedback() {
+    processImmediateFeedback(): void {
         // 16ms以内に視覚的フィードバックを提供
         if (this.gameEngine && this.gameEngine.provideTouchFeedback) {
-            requestAnimationFrame(() => { 
-                this.gameEngine.provideTouchFeedback();
-                    Array.from(this.touchState.touches.values()));
-                );     }
-}
+            requestAnimationFrame(() => {
+                this.gameEngine.provideTouchFeedback(
+                    Array.from(this.touchState.touches.values())
+                );
+            });
+        }
     }
     
     /**
      * ジェスチャー検出開始
      */
-    startGestureDetection() {
-        const touchCount = this.touchState.touches.size,
+    startGestureDetection(): void {
+        const touchCount = this.touchState.touches.size;
         
         if (touchCount === 1) {
             // シングルタッチジェスチャー
-    }
-            this.detectLongPress(); }
-        } else if (touchCount === 2) { // マルチタッチジェスチャー
+            this.detectLongPress();
+        } else if (touchCount === 2) {
+            // マルチタッチジェスチャー
             this.detectPinch();
+        }
     }
     
     /**
      * ジェスチャー検出更新
      */
-    updateGestureDetection() {
-        const touchCount = this.touchState.touches.size,
+    updateGestureDetection(): void {
+        const touchCount = this.touchState.touches.size;
         
         if (touchCount === 1) {
-    }
-            this.detectSwipe(); }
-        } else if (touchCount === 2) { this.updatePinch();
+            this.detectSwipe();
+        } else if (touchCount === 2) {
+            this.updatePinch();
+        }
     }
     
     /**
      * ジェスチャー検出終了
      */
-    endGestureDetection() {
+    endGestureDetection(): void {
         // アクティブなジェスチャーを終了
+        this.touchState.activeGestures.forEach((gesture: any) => {
+            this.endGesture(gesture);
+        });
     }
-        this.touchState.activeGestures.forEach(gesture => { );
-            this.endGesture(gesture);     }
-}
+
     /**
      * タップ検出
      */
-    detectTap(touchData) { const duration = touchData.timestamp - touchData.startTime,
+    detectTap(touchData: any): void {
+        const duration = touchData.timestamp - touchData.startTime;
         const distance = this.calculateDistance(
-            touchData.startPosition);
-            touchData.position),
+            touchData.startPosition,
+            touchData.position
+        );
         
         // タップ条件チェック
-        if (duration < this.gestureThresholds.longPress.duration &&,
+        if (duration < this.gestureThresholds.longPress.duration &&
             distance < this.gestureThresholds.longPress.maxMovement) {
             
             const now = Date.now();
             // ダブルタップ検出
             if (now - this.touchState.lastTapTime < this.gestureThresholds.doubleTap.maxInterval) {
                 const tapDistance = this.calculateDistance(
-                    touchData.position);
-                    this.touchState.lastTapPosition || touchData.position),
+                    touchData.position,
+                    this.touchState.lastTapPosition || touchData.position
+                );
                 
                 if (tapDistance < this.gestureThresholds.doubleTap.maxDistance) {
                     this.touchState.tapCount++;
@@ -505,82 +583,93 @@ export class EnhancedTouchManager {
                     if (this.touchState.tapCount === 2) {
                         // ダブルタップ
                         if (this.callbacks.onDoubleTap) {
-                            this.callbacks.onDoubleTap({)
-                                position: touchData.position }
-                                timestamp: now); 
-    }
+                            this.callbacks.onDoubleTap({
+                                position: touchData.position,
+                                timestamp: now
+                            });
+                        }
                         this.touchState.tapCount = 0;
                     }
-} else { this.touchState.tapCount = 1 }
+                } else {
+                    this.touchState.tapCount = 1;
+                }
+            } else {
+                this.touchState.tapCount = 1;
+            }
             
             this.touchState.lastTapTime = now;
-            this.touchState.lastTapPosition = { ...touchData.position }
+            this.touchState.lastTapPosition = { ...touchData.position };
+        }
     }
     
     /**
      * スワイプ検出
      */
-    detectSwipe() { const touches = Array.from(this.touchState.touches.values()));
-        if (touches.length !== 1) return,
+    detectSwipe(): void {
+        const touches = Array.from(this.touchState.touches.values());
+        if (touches.length !== 1) return;
         
-        const touch = touches[0],
+        const touch = touches[0];
         const distance = this.calculateDistance(touch.startPosition, touch.position);
-        const duration = Date.now() - touch.startTime,
-        const velocity = distance / duration,
+        const duration = Date.now() - touch.startTime;
+        const velocity = distance / duration;
         
-        if (distance > this.gestureThresholds.swipe.minDistance &&,
-            duration < this.gestureThresholds.swipe.maxTime &&,
+        if (distance > this.gestureThresholds.swipe.minDistance &&
+            duration < this.gestureThresholds.swipe.maxTime &&
             velocity > this.gestureThresholds.swipe.minVelocity) {
             
             const direction = this.calculateSwipeDirection(
-                touch.startPosition);
-                touch.position),
+                touch.startPosition,
+                touch.position
+            );
             
             if (this.callbacks.onSwipe) {
                 this.callbacks.onSwipe({
                     direction,
                     distance,
                     velocity,
-                    startPosition: touch.startPosition,' }'
-
-                    endPosition: touch.position'); }'
+                    startPosition: touch.startPosition,
+                    endPosition: touch.position
+                });
             }
-            ';'
+            
             // ジェスチャー履歴に追加
-            this.addToGestureHistory('swipe', { direction, velocity );
+            this.addToGestureHistory('swipe', { direction, velocity });
+        }
     }
     
     /**
      * 長押し検出
      */
-    detectLongPress() {
-        const touches = Array.from(this.touchState.touches.values()));
-        if (touches.length !== 1) return,
+    detectLongPress(): void {
+        const touches = Array.from(this.touchState.touches.values());
+        if (touches.length !== 1) return;
         
-        const touch = touches[0],
+        const touch = touches[0];
         
         // 長押しタイマー設定
-        const longPressTimer = setTimeout(() => { 
+        const longPressTimer = setTimeout(() => {
             const currentTouch = this.touchState.touches.get(touch.id);
-            if (!currentTouch) return,
+            if (!currentTouch) return;
             
             const distance = this.calculateDistance(
-                currentTouch.startPosition);
-                currentTouch.position),
+                currentTouch.startPosition,
+                currentTouch.position
+            );
             
             if (distance < this.gestureThresholds.longPress.maxMovement) {
                 if (this.callbacks.onLongPress) {
                     this.callbacks.onLongPress({
-            };
-                        position: currentTouch.position,') }'
-
-                        duration: this.gestureThresholds.longPress.duration'); }'
+                        position: currentTouch.position,
+                        duration: this.gestureThresholds.longPress.duration
+                    });
                 }
 
                 this.addToGestureHistory('longPress', {
-                position: currentTouch.position 
-    
-            , this.gestureThresholds.longPress.duration);
+                    position: currentTouch.position
+                });
+            }
+        }, this.gestureThresholds.longPress.duration);
         
         // タイマーを保存
         touch.longPressTimer = longPressTimer;
@@ -589,202 +678,224 @@ export class EnhancedTouchManager {
     /**
      * ピンチ検出
      */
-    detectPinch() {
-        const touches = Array.from(this.touchState.touches.values()));
-        if (touches.length !== 2) return,
+    detectPinch(): void {
+        const touches = Array.from(this.touchState.touches.values());
+        if (touches.length !== 2) return;
         
         const initialDistance = this.calculateDistance(
-            touches[0].position);
-            touches[1].position),
+            touches[0].position,
+            touches[1].position
+        );
         
         // ピンチ状態を保存
         this.touchState.pinchData = {
             initialDistance,
             currentDistance: initialDistance,
-    scale: 1.0 }
-
-            center: this.calculateCenter(touches[0].position, touches[1].position); }
+            scale: 1.0,
+            center: this.calculateCenter(touches[0].position, touches[1].position)
         };
 
-        this.touchState.activeGestures.add('pinch);'
+        this.touchState.activeGestures.add('pinch');
     }
     
     /**
      * ピンチ更新
      */
-    updatePinch() {
-        if (!this.touchState.pinchData) return,
+    updatePinch(): void {
+        if (!this.touchState.pinchData) return;
         
-        const touches = Array.from(this.touchState.touches.values()));
-        if (touches.length !== 2) return,
+        const touches = Array.from(this.touchState.touches.values());
+        if (touches.length !== 2) return;
         
         const currentDistance = this.calculateDistance(
-            touches[0].position);
-            touches[1].position),
+            touches[0].position,
+            touches[1].position
+        );
         
-        const scale = currentDistance / this.touchState.pinchData.initialDistance,
+        const scale = currentDistance / this.touchState.pinchData.initialDistance;
         const center = this.calculateCenter(touches[0].position, touches[1].position);
+        
         // 最小変化量チェック
-        if (Math.abs(currentDistance - this.touchState.pinchData.currentDistance) > ,
+        if (Math.abs(currentDistance - this.touchState.pinchData.currentDistance) >
             this.gestureThresholds.pinch.minDistance) {
             
-            this.touchState.pinchData.currentDistance = currentDistance,
-            this.touchState.pinchData.scale = scale,
-            this.touchState.pinchData.center = center,
+            this.touchState.pinchData.currentDistance = currentDistance;
+            this.touchState.pinchData.scale = scale;
+            this.touchState.pinchData.center = center;
             
             if (this.callbacks.onPinch) {
-                this.callbacks.onPinch({)
-                    scale: Math.max(),
-                        this.gestureThresholds.pinch.minScale),
-                        Math.min(this.gestureThresholds.pinch.maxScale, scale);
-                    center }
-                    distance: currentDistance;);
+                this.callbacks.onPinch({
+                    scale: Math.max(
+                        this.gestureThresholds.pinch.minScale,
+                        Math.min(this.gestureThresholds.pinch.maxScale, scale)
+                    ),
+                    center,
+                    distance: currentDistance
+                });
             }
-}
+        }
+    }
     
     /**
      * ジェスチャー終了
      */
-    endGesture(gestureName) {
-
+    endGesture(gestureName: string): void {
         this.touchState.activeGestures.delete(gestureName);
-        if (gestureName === 'pinch' }
-            this.touchState.pinchData = null; }
-}
+        if (gestureName === 'pinch') {
+            this.touchState.pinchData = null;
+        }
+    }
     
     /**
      * ジェスチャーリセット
      */
-    resetGestures() {
+    resetGestures(): void {
         this.touchState.activeGestures.clear();
-        this.touchState.pinchData = null,
+        this.touchState.pinchData = null;
         
         // 長押しタイマーをクリア
-        this.touchState.touches.forEach(touch => { );
-            if (touch.longPressTimer) { }
-                clearTimeout(touch.longPressTimer);     }
-}
+        this.touchState.touches.forEach((touch: any) => {
+            if (touch.longPressTimer) {
+                clearTimeout(touch.longPressTimer);
+            }
+        });
+    }
+
     /**
      * 距離計算
      */
-    calculateDistance(pos1, pos2) {
-        const dx = pos2.x - pos1.x,
-        const dy = pos2.y - pos1.y }
+    calculateDistance(pos1: any, pos2: any): number {
+        const dx = pos2.x - pos1.x;
+        const dy = pos2.y - pos1.y;
         return Math.sqrt(dx * dx + dy * dy);
+    }
     
     /**
      * 中心点計算
      */
-    calculateCenter(pos1, pos2) { return { x: (pos1.x + pos2.x) / 2 ,
-            y: (pos1.y + pos2.y) / 2 
+    calculateCenter(pos1: any, pos2: any): any {
+        return { 
+            x: (pos1.x + pos2.x) / 2,
+            y: (pos1.y + pos2.y) / 2
+        };
     }
     
     /**
      * スワイプ方向計算
      */
-    calculateSwipeDirection(startPos, endPos) {
-        const dx = endPos.x - startPos.x,
-        const dy = endPos.y - startPos.y,
-        const angle = Math.atan2(dy, dx) * 180 / Math.PI,
+    calculateSwipeDirection(startPos: any, endPos: any): string {
+        const dx = endPos.x - startPos.x;
+        const dy = endPos.y - startPos.y;
+        const angle = Math.atan2(dy, dx) * 180 / Math.PI;
 
-        if(angle >= -45 && angle < 45) return 'right,
-        if(angle >= 45 && angle < 135) return 'down,
-        if(angle >= -135 && angle < -45) return 'up' }
-
+        if(angle >= -45 && angle < 45) return 'right';
+        if(angle >= 45 && angle < 135) return 'down';
+        if(angle >= -135 && angle < -45) return 'up';
         return 'left';
+    }
     
     /**
      * ジェスチャー履歴に追加
      */
-    addToGestureHistory(type, data) {
-        this.touchState.gestureHistory.push({)
-            type),
-            data }
-            timestamp: Date.now(); 
-    };
+    addToGestureHistory(type: string, data: any): void {
+        this.touchState.gestureHistory.push({
+            type,
+            data,
+            timestamp: Date.now()
+        });
         
         // 履歴サイズ制限
-        if (this.touchState.gestureHistory.length > 50) { this.touchState.gestureHistory.shift();
+        if (this.touchState.gestureHistory.length > 50) {
+            this.touchState.gestureHistory.shift();
+        }
     }
     
     /**
      * タッチ感度調整
      */
-    adjustTouchSensitivity(level) { this.touchSensitivity = Math.max(0.5, Math.min(2.0, level);
-        console.log(`[EnhancedTouchManager] タッチ感度を ${this.touchSensitivity} に調整`}
+    adjustTouchSensitivity(level: number): void {
+        this.touchSensitivity = Math.max(0.5, Math.min(2.0, level));
+        console.log(`[EnhancedTouchManager] タッチ感度を ${this.touchSensitivity} に調整`);
     }
     
     /**
      * ジェスチャー閾値設定
      */
-    configureTouchSettings(settings) {
+    configureTouchSettings(settings: any): void {
         if (settings.sensitivity !== undefined) {
-    }
-            this.adjustTouchSensitivity(settings.sensitivity); }
+            this.adjustTouchSensitivity(settings.sensitivity);
         }
         
-        if (settings.multiTouch !== undefined) { this.multiTouchEnabled = settings.multiTouch }
+        if (settings.multiTouch !== undefined) {
+            this.multiTouchEnabled = settings.multiTouch;
+        }
         
-        if (settings.gestures) { Object.assign(this.gestureThresholds, settings.gestures);
+        if (settings.gestures) {
+            Object.assign(this.gestureThresholds, settings.gestures);
+        }
         
-        if (settings.accidentalTouchPrevention) { Object.assign(this.accidentalTouchPrevention, settings.accidentalTouchPrevention);
+        if (settings.accidentalTouchPrevention) {
+            Object.assign(this.accidentalTouchPrevention, settings.accidentalTouchPrevention);
+        }
     }
     
     /**
      * タッチ機能情報取得
      */
-    getTouchCapabilities() {
-
-        const browserInfo = getBrowserCompatibility('''
+    getTouchCapabilities(): any {
+        return {
             touchSupported: 'ontouchstart' in window,
             forceSupported: 'ontouchforcechange' in document,
             pointerSupported: window.PointerEvent !== undefined,
-            multiTouchEnabled: this.multiTouchEnabled),
+            multiTouchEnabled: this.multiTouchEnabled,
             sensitivity: this.touchSensitivity,
-    activeGestures: Array.from(this.touchState.activeGestures),
-            activeTouches: this.touchState.touches.size 
+            activeGestures: Array.from(this.touchState.activeGestures),
+            activeTouches: this.touchState.touches.size
+        };
     }
     
     /**
      * コールバック登録
      */
-    registerCallback(event, callback) {
-
+    registerCallback(event: string, callback: any): void {
         if(this.callbacks.hasOwnProperty(event) && typeof callback === 'function') {
+            this.callbacks[event] = callback;
+        }
     }
-            this.callbacks[event] = callback; }
-}
     
     /**
      * 現在のタッチ状態取得
      */
-    getTouchState() {
-        return { touchCount: this.touchState.touches.size,
-            touches: Array.from(this.touchState.touches.values())).map(t => ({)
+    getTouchState(): any {
+        return {
+            touchCount: this.touchState.touches.size,
+            touches: Array.from(this.touchState.touches.values()).map((t: any) => ({
                 id: t.id,
-    position: { ...t.position );
-                pressure: t.pressure ,
-                duration: Date.now() - t.startTime 
-    };
-            activeGestures: Array.from(this.touchState.activeGestures,
-    lastGesture: this.touchState.gestureHistory[this.touchState.gestureHistory.length - 1] } }
+                position: { ...t.position },
+                pressure: t.pressure,
+                duration: Date.now() - t.startTime
+            })),
+            activeGestures: Array.from(this.touchState.activeGestures),
+            lastGesture: this.touchState.gestureHistory[this.touchState.gestureHistory.length - 1]
+        };
+    }
     
     /**
-     * クリーンアップ'
-     */''
-    cleanup()))';'
-        this.canvas.removeEventListener('touchstart', this.handleTouchStart, options';'
-        this.canvas.removeEventListener('touchmove', this.handleTouchMove, options';'
-        this.canvas.removeEventListener('touchend', this.handleTouchEnd, options';'
+     * クリーンアップ
+     */
+    cleanup(): void {
+        const options = { passive: false };
+        
+        this.canvas.removeEventListener('touchstart', this.handleTouchStart, options);
+        this.canvas.removeEventListener('touchmove', this.handleTouchMove, options);
+        this.canvas.removeEventListener('touchend', this.handleTouchEnd, options);
         this.canvas.removeEventListener('touchcancel', this.handleTouchCancel, options);
 
         if (window.PointerEvent) {
-
-            this.canvas.removeEventListener('pointerdown', this.handlePointerDown','
-            this.canvas.removeEventListener('pointermove', this.handlePointerMove','
-            this.canvas.removeEventListener('pointerup', this.handlePointerUp' }'
-
-            this.canvas.removeEventListener('pointercancel', this.handlePointerCancel); }
+            this.canvas.removeEventListener('pointerdown', this.handlePointerDown);
+            this.canvas.removeEventListener('pointermove', this.handlePointerMove);
+            this.canvas.removeEventListener('pointerup', this.handlePointerUp);
+            this.canvas.removeEventListener('pointercancel', this.handlePointerCancel);
         }
         
         // ジェスチャーリセット
@@ -792,7 +903,7 @@ export class EnhancedTouchManager {
         
         // タッチ状態クリア
         this.touchState.touches.clear();
-        this.touchPool.active.clear()';'
+        this.touchPool.active.clear();
         console.log('[EnhancedTouchManager] クリーンアップ完了');
-
-    }'}'
+    }
+}
