@@ -1,255 +1,348 @@
 /**
  * CoreKeyboardShortcutManager - Removed Shortcuts Tests
- * Issue #169対応 - 削除されたショートカット（S、H、I）のテスト
+ * Issue #169対応 - 削除されたショートカットの非存在テスト
  */
-import { jest  } from '@jest/globals';
+import { jest } from '@jest/globals';
+
 // TextEncoder/TextDecoder polyfill for Node.js environment
-import { TextEncoder, TextDecoder  } from 'util';
-(global: any).TextEncoder = TextEncoder,
-(global as any').TextDecoder = TextDecoder;'
+import { TextEncoder, TextDecoder } from 'util';
+(global as any).TextEncoder = TextEncoder;
+(global as any).TextDecoder = TextDecoder;
+
 // DOM environment setup
-import { JSDOM  } from 'jsdom';
+import { JSDOM } from 'jsdom';
 const dom = new JSDOM('<!DOCTYPE html><html><body></body></html>');
-(global: any).document = dom.window.document,
-(global: any).window = dom.window,
-(global: any).localStorage = dom.window.localStorage,
-(global: any).performance = dom.window.performance,
+(global as any).document = dom.window.document;
+(global as any).window = dom.window;
+(global as any).localStorage = dom.window.localStorage;
+(global as any).performance = dom.window.performance;
+
 // Mock game engine components
 const mockGameEngine = {
     sceneManager: {
-        getCurrentScene: jest.fn((') => ({'
-            constructor: { name: 'GameScene' ,
-            togglePause: jest.fn( },
-            closeSettings: jest.fn(
-            showingSettings: false
-    )),
-        switchScene: jest.fn(() => true),
-    ),
+        getCurrentScene: jest.fn(() => ({
+            constructor: { name: 'MainMenuScene' }
+        })),
+        switchScene: jest.fn(() => true)
+    },
     audioManager: {
-        toggleMute: jest.fn(() => false)) },
+        toggleMute: jest.fn(() => false)
+    },
     settingsManager: {
-        get: jest.fn(() => 0.5) },
-        set: jest.fn(
+        get: jest.fn(() => 0.5),
+        set: jest.fn()
+    },
     responsiveCanvasManager: {
-        toggleFullscreen: jest.fn() },
+        toggleFullscreen: jest.fn()
+    },
     isDebugMode: jest.fn(() => false),
-        performanceStats: {
-            };
-);
+    performanceStats: {}
+};
+
 // Import after mocking
-const { CoreKeyboardShortcutManager ') = await import('../../src/core/KeyboardShortcutManager.js'),'
-describe('CoreKeyboardShortcutManager - Removed Shortcuts (Issue #169')', () => {'
-    let shortcutManager: any,
-    let consoleLogSpy: any,
-    let consoleWarnSpy: any,
-    let consoleErrorSpy: any,
-    beforeEach((') => {'
-        // Console spies
-        consoleLogSpy = jest.spyOn(console, 'log').mockImplementation(() => {}');'
-        consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation(() => {}');'
-        consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+const { CoreKeyboardShortcutManager } = await import('../../src/core/KeyboardShortcutManager.js');
+
+describe('CoreKeyboardShortcutManager - Removed Shortcuts (Issue #169)', () => {
+    let shortcutManager: any;
+
+    beforeEach(() => {
         // Clear localStorage
         localStorage.clear();
         // Reset mock calls
         jest.clearAllMocks();
         // Create instance
         shortcutManager = new CoreKeyboardShortcutManager(mockGameEngine);
-    };
+    });
+
     afterEach(() => {
         if (shortcutManager) {
-            shortcutManager.cleanup() }
-        // Restore console
-        consoleLogSpy.mockRestore();
-        consoleWarnSpy.mockRestore();
-        consoleErrorSpy.mockRestore();
-    }');'
-    describe('Removed Shortcuts Verification', (') => {'
-        test('should NOT respond to S key press (settings shortcut removed')', (') => {
-            // S key press event
+            shortcutManager.cleanup();
+        }
+    });
+
+    describe('Settings Shortcut (S key) - REMOVED', () => {
+        test('should not register S key shortcut', () => {
+            const shortcuts = shortcutManager.getShortcuts();
+            expect(shortcuts.settings).toBeUndefined();
+        });
+
+        test('should not respond to S key press', () => {
             const event = new KeyboardEvent('keydown', {
                 code: 'KeyS',
-                key: 's',
-                preventDefault: jest.fn(
-        stopPropagation: jest.fn(),
-            // Mock current scene
-            mockGameEngine.sceneManager.getCurrentScene.mockReturnValue({'),'
-                constructor: { name: 'MainMenuScene' ,
-        openSettings: jest.fn(),
-            // Simulate key press
+                key: 's'
+            });
+
+            // Mock scene manager switchScene to verify it's NOT called
+            const switchSceneSpy = jest.spyOn(mockGameEngine.sceneManager, 'switchScene');
+
             shortcutManager.handleKeyDown(event);
-            // Verify no settings action was triggered
-            expect(mockGameEngine.sceneManager.switchScene').not.toHaveBeenCalledWith('settings', expect.any(Object);'
-            expect(mockGameEngine.sceneManager.getCurrentScene().openSettings).not.toHaveBeenCalled();
-        }');'
-        test('should NOT respond to H key press (help shortcut removed')', (') => {
-            // H key press event
+
+            // Verify no scene switch occurred
+            expect(switchSceneSpy).not.toHaveBeenCalledWith('settings');
+            expect(switchSceneSpy).not.toHaveBeenCalledWith('SettingsScene');
+            
+            switchSceneSpy.mockRestore();
+        });
+
+        test('should not have handleSettings method accessible', () => {
+            // Verify the specific handler method is not accessible
+            expect(typeof shortcutManager.handleSettings).toBe('undefined');
+        });
+    });
+
+    describe('Help Shortcut (H key) - REMOVED', () => {
+        test('should not register H key shortcut', () => {
+            const shortcuts = shortcutManager.getShortcuts();
+            expect(shortcuts.help).toBeUndefined();
+        });
+
+        test('should not respond to H key press', () => {
             const event = new KeyboardEvent('keydown', {
                 code: 'KeyH',
-                key: 'h',
-                preventDefault: jest.fn(
-        stopPropagation: jest.fn(),
-            // Mock current scene
-            mockGameEngine.sceneManager.getCurrentScene.mockReturnValue({'),'
-                constructor: { name: 'MainMenuScene' ,
-        showControlsHelp: jest.fn(),
-            // Simulate key press
+                key: 'h'
+            });
+
+            // Mock scene manager switchScene to verify it's NOT called
+            const switchSceneSpy = jest.spyOn(mockGameEngine.sceneManager, 'switchScene');
+
             shortcutManager.handleKeyDown(event);
-            // Verify no help action was triggered
-            expect(mockGameEngine.sceneManager.switchScene').not.toHaveBeenCalledWith('help', expect.any(Object);'
-            expect(mockGameEngine.sceneManager.getCurrentScene().showControlsHelp).not.toHaveBeenCalled();
-        }');'
-        test('should NOT respond to I key press (userInfo shortcut removed')', (') => {
-            // I key press event
+
+            // Verify no scene switch occurred
+            expect(switchSceneSpy).not.toHaveBeenCalledWith('help');
+            expect(switchSceneSpy).not.toHaveBeenCalledWith('HelpScene');
+            
+            switchSceneSpy.mockRestore();
+        });
+
+        test('should not have handleHelp method accessible', () => {
+            // Verify the specific handler method is not accessible
+            expect(typeof shortcutManager.handleHelp).toBe('undefined');
+        });
+    });
+
+    describe('User Info Shortcut (I key) - REMOVED', () => {
+        test('should not register I key shortcut', () => {
+            const shortcuts = shortcutManager.getShortcuts();
+            expect(shortcuts.userInfo).toBeUndefined();
+        });
+
+        test('should not respond to I key press', () => {
             const event = new KeyboardEvent('keydown', {
                 code: 'KeyI',
-                key: 'i',
-                preventDefault: jest.fn(
-        stopPropagation: jest.fn(),
-            // Mock current scene
-            mockGameEngine.sceneManager.getCurrentScene.mockReturnValue({'),'
-                constructor: { name: 'MainMenuScene' ,
-        openUserInfo: jest.fn(),
-            // Simulate key press
+                key: 'i'
+            });
+
+            // Mock scene manager switchScene to verify it's NOT called
+            const switchSceneSpy = jest.spyOn(mockGameEngine.sceneManager, 'switchScene');
+
             shortcutManager.handleKeyDown(event);
-            // Verify no user info action was triggered
-            expect(mockGameEngine.sceneManager.getCurrentScene().openUserInfo).not.toHaveBeenCalled();
-        }');'
-        test('should verify removed handler methods no longer exist', () => {
-            // Verify methods are not defined
-            expect(shortcutManager.handleSettings).toBeUndefined();
-            expect(shortcutManager.handleHelp).toBeUndefined();
-            expect(shortcutManager.handleUserInfo).toBeUndefined() }');'
-        test('should verify removed shortcuts are not registered', () => {
+
+            // Verify no scene switch occurred
+            expect(switchSceneSpy).not.toHaveBeenCalledWith('userInfo');
+            expect(switchSceneSpy).not.toHaveBeenCalledWith('UserInfoScene');
+            
+            switchSceneSpy.mockRestore();
+        });
+
+        test('should not have handleUserInfo method accessible', () => {
+            // Verify the specific handler method is not accessible
+            expect(typeof shortcutManager.handleUserInfo).toBe('undefined');
+        });
+    });
+
+    describe('Multiple Removed Shortcuts Verification', () => {
+        test('should not register any of the removed shortcuts', () => {
             const shortcuts = shortcutManager.getShortcuts();
-            // Verify S, H, I shortcuts are not registered
+            const removedShortcuts = ['settings', 'help', 'userInfo'];
+
+            removedShortcuts.forEach(shortcutName => {
+                expect(shortcuts[shortcutName]).toBeUndefined();
+            });
+        });
+
+        test('should not respond to any removed shortcut keys', () => {
+            const removedKeyEvents = [
+                { code: 'KeyS', key: 's', description: 'Settings' },
+                { code: 'KeyH', key: 'h', description: 'Help' },
+                { code: 'KeyI', key: 'i', description: 'User Info' }
+            ];
+
+            const switchSceneSpy = jest.spyOn(mockGameEngine.sceneManager, 'switchScene');
+
+            removedKeyEvents.forEach(({ code, key, description }) => {
+                const event = new KeyboardEvent('keydown', { code, key });
+                
+                switchSceneSpy.mockClear();
+                shortcutManager.handleKeyDown(event);
+
+                // Verify no scene switches occurred for any removed shortcuts
+                expect(switchSceneSpy).not.toHaveBeenCalled();
+            });
+
+            switchSceneSpy.mockRestore();
+        });
+
+        test('should have reduced total shortcut count', () => {
+            const stats = shortcutManager.getStats();
+            
+            // After removing 3 shortcuts, the total should be reduced
+            // This is a regression test to ensure shortcuts were actually removed
+            expect(stats.totalShortcuts).toBeLessThan(25);
+            expect(stats.totalShortcuts).toBeGreaterThan(5);
+        });
+    });
+
+    describe('Shortcut Context Independence', () => {
+        test('removed shortcuts should not work in any scene context', () => {
+            const sceneContexts = [
+                { constructor: { name: 'MainMenuScene' } },
+                { constructor: { name: 'GameScene' } },
+                { constructor: { name: 'SettingsScene' } },
+                { constructor: { name: 'HelpScene' } }
+            ];
+
+            const removedKeys = ['KeyS', 'KeyH', 'KeyI'];
+            const switchSceneSpy = jest.spyOn(mockGameEngine.sceneManager, 'switchScene');
+
+            sceneContexts.forEach(sceneContext => {
+                mockGameEngine.sceneManager.getCurrentScene.mockReturnValue(sceneContext);
+
+                removedKeys.forEach(keyCode => {
+                    switchSceneSpy.mockClear();
+                    const event = new KeyboardEvent('keydown', {
+                        code: keyCode,
+                        key: keyCode.slice(-1).toLowerCase()
+                    });
+
+                    shortcutManager.handleKeyDown(event);
+
+                    // Verify no scene switches occurred
+                    expect(switchSceneSpy).not.toHaveBeenCalled();
+                });
+            });
+
+            switchSceneSpy.mockRestore();
+        });
+    });
+
+    describe('Help Text Generation - Removed Shortcuts', () => {
+        test('should not include removed shortcuts in help text', () => {
+            const helpText = shortcutManager.generateHelpText();
+            const allHelpEntries = Object.values(helpText).flat();
+            
+            // Convert all help entries to lowercase string for searching
+            const helpString = JSON.stringify(allHelpEntries).toLowerCase();
+            
+            // Verify removed shortcuts are not mentioned
+            expect(helpString).not.toContain('設定');  // Settings in Japanese
+            expect(helpString).not.toContain('ヘルプ'); // Help in Japanese  
+            expect(helpString).not.toContain('ユーザー情報'); // User Info in Japanese
+            expect(helpString).not.toContain('key s'); // S key reference
+            expect(helpString).not.toContain('key h'); // H key reference
+            expect(helpString).not.toContain('key i'); // I key reference
+        });
+
+        test('should have consistent help text structure without removed shortcuts', () => {
+            const helpText = shortcutManager.generateHelpText();
+            
+            // Verify help text structure is still intact
+            expect(helpText['ゲーム操作']).toBeDefined();
+            expect(Array.isArray(helpText['ゲーム操作'])).toBe(true);
+            
+            // But verify removed shortcuts are not in any category
+            Object.values(helpText).forEach(category => {
+                const categoryString = JSON.stringify(category).toLowerCase();
+                expect(categoryString).not.toContain('s キー');
+                expect(categoryString).not.toContain('h キー');
+                expect(categoryString).not.toContain('i キー');
+            });
+        });
+    });
+
+    describe('Shortcut Registration Verification', () => {
+        test('should not have removed shortcut configurations', () => {
+            const shortcuts = shortcutManager.getShortcuts();
+            
+            // Verify specific shortcut configurations don't exist
             expect(shortcuts.settings).toBeUndefined();
             expect(shortcuts.help).toBeUndefined();
-            expect(shortcuts.userInfo).toBeUndefined() }');'
-    }
-    describe('Remaining Shortcuts Still Work', (') => {'
-        test('should still respond to Space key (pause functionality')', (') => {
-            // Space key press event
-            const event = new KeyboardEvent('keydown', {
-                code: 'Space',
-                key: ', ',
-                preventDefault: jest.fn(
-        stopPropagation: jest.fn( }');'
-            // Mock current scene with pause functionality
-            const mockScene = {
-                constructor: { name: 'GameScene' },
-        togglePause: jest.fn( },
-            mockGameEngine.sceneManager.getCurrentScene.mockReturnValue(mockScene);
-            // Simulate key press
-            shortcutManager.handleKeyDown(event);
-            // Verify pause was triggered
-            expect(mockScene.togglePause).toHaveBeenCalled();
-        }');'
-        test('should still respond to Escape key (menu functionality')', (') => {
-            // Escape key press event
-            const event = new KeyboardEvent('keydown', {
-                code: 'Escape',
-                key: 'Escape',
-                preventDefault: jest.fn(
-        stopPropagation: jest.fn( }');'
-            // Mock current scene
-            mockGameEngine.sceneManager.getCurrentScene.mockReturnValue({
-                constructor: { name: 'GameScene' },
-            // Simulate key press
-            shortcutManager.handleKeyDown(event);
-            // Verify menu switch was triggered
-            expect(mockGameEngine.sceneManager.switchScene').toHaveBeenCalledWith('menu');'
-        }');'
-        test('should still respond to F key (fullscreen functionality')', (') => {
-            // F key press event
-            const event = new KeyboardEvent('keydown', {
-                code: 'KeyF',
-                key: 'f',
-                preventDefault: jest.fn(
-        stopPropagation: jest.fn(),
-            // Simulate key press
-            shortcutManager.handleKeyDown(event);
-            // Verify fullscreen toggle was triggered
-            expect(mockGameEngine.responsiveCanvasManager.toggleFullscreen).toHaveBeenCalled();
-        }');'
-        test('should verify remaining shortcuts are still registered', () => {
-            const shortcuts = shortcutManager.getShortcuts();
-            // Verify essential shortcuts still exist
+            expect(shortcuts.userInfo).toBeUndefined();
+            
+            // But verify other shortcuts still exist
             expect(shortcuts.pause).toBeDefined();
             expect(shortcuts.menu).toBeDefined();
             expect(shortcuts.fullscreen).toBeDefined();
-            expect(shortcuts.mute).toBeDefined() }');'
-    }
-    describe('Help Text Generation Excludes Removed Shortcuts', (') => {'
-        test('should not include removed shortcuts in generated help text', () => {
-            const helpText = shortcutManager.generateHelpText();
-            // Convert all help sections to a single string for easy searching
-            const allHelpText = Object.values(helpText)
-                .flat(')'
-                .join(', ')
-                .toLowerCase();
-            // Verify S, H, I shortcuts are not mentioned
-            expect(allHelpText).not.toMatch(/keys?\s*s[:\s]/'), // "Key S:" or "Keys S:"'
-            expect(allHelpText).not.toMatch(/keys?\s*h[:\s]/"), // "Key H:" or "Keys H:"
-            expect(allHelpText).not.toMatch(/keys?\s*i[:\s]/"), // "Key I:" or "Keys, I:"
-            
-            // Verify settings, help, userInfo are not mentioned
-            expect(allHelpText).not.toMatch(/settings|設定/);
-            expect(allHelpText).not.toMatch(/help|ヘルプ/);
-            expect(allHelpText).not.toMatch(/user\s*info|ユーザー情報/) }");"
-        test('should include remaining shortcuts in generated help text', () => {
-            const helpText = shortcutManager.generateHelpText();
-            // Convert all help sections to a single string for easy searching
-            const allHelpText = Object.values(helpText)
-                .flat(')'
-                .join(', ')
-                .toLowerCase();
-            // Verify remaining essential shortcuts are mentioned
-            expect(allHelpText).toMatch(/space|スペース/), // Pause
-            expect(allHelpText).toMatch(/escape|エスケープ/), // Menu
-            expect(allHelpText).toMatch(/f(? ![a-z])|f\s/), // Fullscreen (F key but not part of other words}
-        )');'
-    }
-    describe('No Console Errors for Removed Shortcuts', (') => {'
-        test('should not generate console errors when removed keys are pressed', (') => {'
-            // Test S key
-            const sEvent = new KeyboardEvent('keydown', { : undefined
-                code: 'KeyS',
-                key: 's'
-            };
-            shortcutManager.handleKeyDown(sEvent');'
-            // Test H key  
-            const hEvent = new KeyboardEvent('keydown', {
-                code: 'KeyH',
-                key: 'h'
-            );
-            shortcutManager.handleKeyDown(hEvent'),'
-            // Test I key
-            const iEvent = new KeyboardEvent('keydown', {
-                code: 'KeyI',
-                key: 'i'
-            );
-            shortcutManager.handleKeyDown(iEvent);
-            // Verify no console errors were generated
-            expect(consoleErrorSpy).not.toHaveBeenCalled() }');'
-    }
-    describe('KeyboardShortcutManager Initialization', (') => {'
-        test('should initialize without errors after shortcut removal', (') => {'
-            // This test verifies that removing shortcuts doesn't break initialization'
-            expect(shortcutManager).toBeInstanceOf(CoreKeyboardShortcutManager);
-            expect(shortcutManager.shortcuts).toBeInstanceOf(Map);
-            expect(shortcutManager.isEnabled).toBe(true) }');'
-        test('should have fewer total shortcuts after removal', () => {
+            expect(shortcuts.mute).toBeDefined();
+        });
+
+        test('should have clean shortcut key mappings without removed keys', () => {
             const shortcuts = shortcutManager.getShortcuts();
-            const stats = shortcutManager.getStats();
-            // Should have fewer shortcuts than before (originally had settings, help, userInfo}
-            // This is a regression test to ensure removal actually reduced the count
-            expect(stats.totalShortcuts).toBeLessThan(20'); // Arbitrary reasonable upper bound'
+            const allKeys: string[] = [];
+
+            // Collect all registered keys
+            Object.values(shortcuts).forEach((shortcut: any) => {
+                if (shortcut && shortcut.keys) {
+                    allKeys.push(...shortcut.keys);
+                }
+            });
+
+            // Verify removed keys are not in any shortcut mapping
+            expect(allKeys).not.toContain('KeyS');
+            expect(allKeys).not.toContain('KeyH');
+            expect(allKeys).not.toContain('KeyI');
+        });
+    });
+
+    describe('Memory and Performance Impact', () => {
+        test('should not allocate memory for removed shortcut handlers', () => {
+            // Check that removed handler methods don't exist on the instance
+            const handlerMethods = ['handleSettings', 'handleHelp', 'handleUserInfo'];
             
-            // Specifically verify the count doesn't include removed shortcuts'
-            const shortcutNames = Object.keys(shortcuts);
-            expect(shortcutNames').not.toContain('settings');'
-            expect(shortcutNames').not.toContain('help');'
-            expect(shortcutNames').not.toContain('userInfo');'
-        }
-    }
-}');'
+            handlerMethods.forEach(methodName => {
+                expect(shortcutManager[methodName]).toBeUndefined();
+            });
+        });
+
+        test('should have expected number of active listeners after removal', () => {
+            const stats = shortcutManager.getStats();
+            
+            // After removing 3 shortcuts, we should have fewer registered listeners
+            // This is a performance test to ensure we're not keeping unused handlers
+            expect(stats.totalShortcuts).toBeLessThan(20);
+            expect(stats.enabledShortcuts).toBe(stats.totalShortcuts);
+        });
+    });
+
+    describe('Backward Compatibility Verification', () => {
+        test('should handle attempts to use removed shortcuts gracefully', () => {
+            // Even if someone tries to call removed functionality, it shouldn't crash
+            const removedKeys = [
+                { code: 'KeyS', key: 's' },
+                { code: 'KeyH', key: 'h' },
+                { code: 'KeyI', key: 'i' }
+            ];
+
+            removedKeys.forEach(({ code, key }) => {
+                const event = new KeyboardEvent('keydown', { code, key });
+                
+                expect(() => {
+                    shortcutManager.handleKeyDown(event);
+                }).not.toThrow();
+            });
+        });
+
+        test('should maintain stable API surface after shortcut removal', () => {
+            // Verify core API methods still exist and work
+            expect(typeof shortcutManager.getShortcuts).toBe('function');
+            expect(typeof shortcutManager.getStats).toBe('function');
+            expect(typeof shortcutManager.generateHelpText).toBe('function');
+            expect(typeof shortcutManager.setEnabled).toBe('function');
+            expect(typeof shortcutManager.cleanup).toBe('function');
+            
+            // And they don't throw errors
+            expect(() => shortcutManager.getShortcuts()).not.toThrow();
+            expect(() => shortcutManager.getStats()).not.toThrow();
+            expect(() => shortcutManager.generateHelpText()).not.toThrow();
+        });
+    });
+});
