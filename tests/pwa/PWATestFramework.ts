@@ -17,40 +17,61 @@ import { PWAPerformanceTests } from './pwa-test-framework/PWAPerformanceTests';
 import { PWAReportGenerator } from './pwa-test-framework/PWAReportGenerator';
 
 export class PWATestFramework {
+    public testResults: any[];
+    public testSuite: Map<string, any>;
+    public timeouts: Map<string, any>;
+    public mockData: Map<string, any>;
+    public config: {
+        defaultTimeout: number;
+        retryAttempts: number;
+        verbose: boolean;
+        baseUrl: string;
+        manifestUrl: string;
+        serviceWorkerUrl: string;
+        expectedConfig: {
+            appName: string;
+            themeColor: string;
+            backgroundColor: string;
+            displayMode: string;
+            orientation: string;
+        };
+    };
+    public executor: PWATestExecutor;
+    public featureTests: PWAFeatureTests;
+    public performanceTests: PWAPerformanceTests;
+    public reportGenerator: PWAReportGenerator;
+    public state: any;
+
     constructor() {
         this.testResults = [];
         this.testSuite = new Map();
         this.timeouts = new Map();
-        this.mockData = new Map(');'
+        this.mockData = new Map();
         
         // テスト設定
         this.config = {
             defaultTimeout: 10000,
-            retryAttempts: 3;
+            retryAttempts: 3,
             verbose: true,
-            verbose: true;
-        };
             // テスト対象URL
             baseUrl: window.location.origin,
-            manifestUrl: '/manifest.json';
+            manifestUrl: '/manifest.json',
             serviceWorkerUrl: '/sw.js',
-            serviceWorkerUrl: '/sw.js';
-        };
             // 期待される設定値
             expectedConfig: {
-                appName: 'BubblePop' },
-                themeColor: '#4CAF50';
+                appName: 'BubblePop',
+                themeColor: '#4CAF50',
                 backgroundColor: '#ffffff',
-                displayMode: 'standalone';
+                displayMode: 'standalone',
                 orientation: 'portrait-primary'
             }
         };
         
         // Initialize sub-components with dependency injection
-        this.executor = new PWATestExecutor(this: any);
-        this.featureTests = new PWAFeatureTests(this: any);
-        this.performanceTests = new PWAPerformanceTests(this: any);
-        this.reportGenerator = new PWAReportGenerator(this as any');'
+        this.executor = new PWATestExecutor(this);
+        this.featureTests = new PWAFeatureTests(this);
+        this.performanceTests = new PWAPerformanceTests(this);
+        this.reportGenerator = new PWAReportGenerator(this);
         
         // Legacy state reference for backward compatibility
         this.state = this.executor.state;
@@ -59,186 +80,217 @@ export class PWATestFramework {
     }
     
     /**
-     * 全テストスイートの実行
+     * Main test execution entry point
      */
-    async runAllTests() {
-        return await this.executor.runAllTests() }
-    
-    // ===== DELEGATED METHODS - Maintain backward compatibility =====
+    async run() {
+        console.log('[PWATestFramework] PWAテスト実行開始');
+        
+        try {
+            // Run all test suites using the executor
+            const testReport = await this.executor.runAllTests();
+            
+            console.log('[PWATestFramework] PWAテスト実行完了');
+            console.log(`[PWATestFramework] テスト結果: ${this.executor.state.passedTests}件成功, ${this.executor.state.failedTests}件失敗`);
+            
+            return testReport;
+            
+        } catch (error: any) {
+            console.error('[PWATestFramework] PWAテスト実行エラー:', error);
+            throw error;
+        }
+    }
     
     /**
-     * Run basic PWA tests - delegated to feature tests
+     * Legacy method for backward compatibility - delegates to executor
      */
-    async runBasicPWATests() {
-        return await this.featureTests.runBasicPWATests() }
+    async runTest(testName: string, description: string, testFunction: () => Promise<any>, timeout?: number) {
+        return this.executor.runTest(testName, description, testFunction, timeout);
+    }
     
     /**
-     * Run Service Worker tests - delegated to feature tests
+     * Legacy method for backward compatibility - delegates to executor
      */
-    async runServiceWorkerTests() {
-        return await this.featureTests.runServiceWorkerTests() }
+    assert(condition: boolean, message: string) {
+        return this.executor.assert(condition, message);
+    }
     
     /**
-     * Run installation tests - delegated to feature tests
+     * Legacy method for backward compatibility - delegates to executor
      */
-    async runInstallationTests() {
-        return await this.featureTests.runInstallationTests() }
+    skipTest(testName: string, reason: string) {
+        return this.executor.skipTest(testName, reason);
+    }
     
     /**
-     * Run offline tests - delegated to performance tests
+     * Legacy method for backward compatibility - delegates to executor
      */
-    async runOfflineTests() {
-        return await this.performanceTests.runOfflineTests() }
+    getTestStatus() {
+        return this.executor.getTestStatus();
+    }
     
     /**
-     * Run icon and UI tests - delegated to feature tests
-     */
-    async runIconAndUITests() {
-        return await this.featureTests.runIconAndUITests() }
-    
-    /**
-     * Run performance tests - delegated to performance tests
-     */
-    async runPerformanceTests() {
-        return await this.performanceTests.runPerformanceTests() }
-    
-    /**
-     * Run browser compatibility tests - delegated to feature tests
-     */
-    async runBrowserCompatibilityTests() {
-        return await this.featureTests.runBrowserCompatibilityTests() }
-    
-    /**
-     * Run individual test - delegated to executor
-     */
-    async runTest(testId, testName, testFunction) {
-        return await this.executor.runTest(testId, testName, testFunction) }
-    
-    /**
-     * Assert condition - delegated to executor
-     */
-    assert(condition, message) {
-        return this.executor.assert(condition, message) }
-    
-    /**
-     * Wait for Service Worker state - delegated to executor
-     */
-    async waitForServiceWorkerState(registration, targetState) {
-        return await this.executor.waitForServiceWorkerState(registration, targetState) }
-    
-    /**
-     * Create timeout - delegated to executor
-     */
-    createTimeout(ms {
-        return this.executor.createTimeout(ms) }
-    
-    /**
-     * Start test session - delegated to executor
-     */
-    startTestSession() {
-        return this.executor.startTestSession() }
-    
-    /**
-     * End test session - delegated to executor
-     */
-    endTestSession() {
-        return this.executor.endTestSession() }
-    
-    /**
-     * Generate test report - delegated to report generator
+     * Generate test report - delegates to report generator
      */
     generateTestReport() {
-        return this.reportGenerator.generateTestReport() }
+        return this.reportGenerator.generateTestReport();
+    }
     
     /**
-     * Generate HTML report - delegated to report generator
+     * Generate HTML report - delegates to report generator
      */
     generateHTMLReport() {
-        return this.reportGenerator.generateHTMLReport() }
+        return this.reportGenerator.generateHTMLReport();
+    }
     
     /**
-     * Error logging - delegated to executor
+     * Save HTML report - delegates to report generator
      */
-    logError(message, error) {
-        return this.executor.logError(message, error) }
+    saveHTMLReport(filename?: string) {
+        return this.reportGenerator.saveHTMLReport(filename);
+    }
     
     /**
-     * Get component references for advanced usage
-     * @returns {Object} Component references
+     * Generate JSON report - delegates to report generator
      */
-    getComponents() {
-        return {
-            executor: this.executor,
-            featureTests: this.featureTests,
-            performanceTests: this.performanceTests,
-            reportGenerator: this.reportGenerator
+    generateJSONReport() {
+        return this.reportGenerator.generateJSONReport();
+    }
+    
+    /**
+     * Save JSON report - delegates to report generator
+     */
+    saveJSONReport(filename?: string) {
+        return this.reportGenerator.saveJSONReport(filename);
+    }
+    
+    /**
+     * Log report to console - delegates to report generator
+     */
+    logReport() {
+        return this.reportGenerator.logReport();
+    }
+    
+    /**
+     * Wait for Service Worker state - delegates to executor
+     */
+    async waitForServiceWorkerState(registration: ServiceWorkerRegistration, targetState: string, timeout?: number) {
+        return this.executor.waitForServiceWorkerState(registration, targetState, timeout);
+    }
+    
+    /**
+     * Wait for condition - delegates to executor
+     */
+    async waitForCondition(conditionFn: () => boolean, timeout?: number, checkInterval?: number) {
+        return this.executor.waitForCondition(conditionFn, timeout, checkInterval);
+    }
+    
+    /**
+     * Wait for element - delegates to executor
+     */
+    async waitForElement(selector: string, timeout?: number) {
+        return this.executor.waitForElement(selector, timeout);
+    }
+    
+    /**
+     * Create mock response - delegates to executor
+     */
+    createMockResponse(data: any, options?: ResponseInit) {
+        return this.executor.createMockResponse(data, options);
+    }
+    
+    /**
+     * Clean up resources
+     */
+    cleanup() {
+        // Clean up sub-components
+        if (this.executor) {
+            this.executor.cleanup();
         }
-    }
-    
-    /**
-     * Configure framework settings
-     * @param {Object} config - Framework configuration
-     */
-    configure(config {
-        if (config.defaultTimeout !== undefined) {
-            this.config.defaultTimeout = config.defaultTimeout }
         
-        if (config.retryAttempts !== undefined) {
-            this.config.retryAttempts = config.retryAttempts }
-        
-        if (config.verbose !== undefined) {
-            this.config.verbose = config.verbose }
-        
-        if (config.expectedConfig) {
-            Object.assign(this.config.expectedConfig, config.expectedConfig') }'
-        
-        console.log('[PWATestFramework] Configuration updated');
-    }
-    
-    /**
-     * Get framework status
-     * @returns {Object} Framework status
-     */
-    getStatus() {
-        return {
-            initialized: true,
-            testResultsCount: this.testResults.length,
-            executorState: this.executor.getState(
-            config: this.config
-        }
-    }
-    
-    /**
-     * Reset framework
-     */
-    reset() {
-        this.testResults = [];
+        // Clear framework-level resources
         this.testSuite.clear();
         this.timeouts.clear();
-        this.mockData.clear('),'
+        this.mockData.clear();
+        this.testResults = [];
         
-        // Reset executor state
-        this.executor.state.isRunning = false,
-        this.executor.state.currentTest = null,
-        this.executor.state.startTime = null,
-        this.executor.state.totalTests = 0,
-        this.executor.state.passedTests = 0,
-        this.executor.state.failedTests = 0,
-        this.executor.state.skippedTests = 0,
-        
-        console.log('[PWATestFramework] Framework reset') }
+        console.log('[PWATestFramework] Cleanup completed');
+    }
+    
+    /**
+     * Set configuration
+     */
+    setConfig(newConfig: Partial<typeof this.config>) {
+        this.config = { ...this.config, ...newConfig };
+        console.log('[PWATestFramework] Configuration updated:', newConfig);
+    }
+    
+    /**
+     * Get configuration
+     */
+    getConfig() {
+        return this.config;
+    }
+    
+    /**
+     * Add mock data
+     */
+    addMockData(key: string, data: any) {
+        this.mockData.set(key, data);
+        console.log(`[PWATestFramework] Mock data added for key: ${key}`);
+    }
+    
+    /**
+     * Get mock data
+     */
+    getMockData(key: string) {
+        return this.mockData.get(key);
+    }
+    
+    /**
+     * Clear mock data
+     */
+    clearMockData() {
+        this.mockData.clear();
+        console.log('[PWATestFramework] Mock data cleared');
+    }
+    
+    /**
+     * Get test results
+     */
+    getTestResults() {
+        return this.testResults;
+    }
+    
+    /**
+     * Clear test results
+     */
+    clearTestResults() {
+        this.testResults = [];
+        console.log('[PWATestFramework] Test results cleared');
+    }
+    
+    /**
+     * Get framework version
+     */
+    getVersion() {
+        return '2.0.0'; // Version after refactoring to Main Controller Pattern
+    }
+    
+    /**
+     * Get framework info
+     */
+    getInfo() {
+        return {
+            name: 'PWA Test Framework',
+            version: this.getVersion(),
+            components: [
+                'PWATestExecutor',
+                'PWAFeatureTests', 
+                'PWAPerformanceTests',
+                'PWAReportGenerator'
+            ],
+            initialized: Date.now(),
+            config: this.config
+        };
+    }
 }
-
-// グローバル関数として利用可能にする
-window.PWATestFramework = PWATestFramework;
-
-// 簡単にテストを実行するためのヘルパー関数
-window.runPWATests = async function() {
-    const framework = new PWATestFramework();
-    const report = await framework.runAllTests('),'
-    
-    console.log('PWAテスト完了:', report'),'
-    
-    return report };
-
-console.log('[PWATestFramework] PWAテストフレームワーク読み込み完了');
