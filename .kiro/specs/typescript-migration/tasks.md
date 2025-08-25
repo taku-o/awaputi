@@ -297,36 +297,11 @@
 - [x] **src/core/** (114ファイル) - **82,955エラー最多**
 
 ##### **フェーズ4: 特別対応**
-- [ ] **src/main.ts** - 単一ファイルだが299エラー（早期対応）
+- [x] **src/main.ts** - 単一ファイルだが299エラー（早期対応）
 
 ##### **フェーズ5: テストディレクトリ**
-- [ ] **test/debug** -
-- [ ] **test/e2e** -
-- [ ] **test/integration** -
-- [ ] **test/performance** -
-- [ ] **test/unit** -
-- [ ] **test/visual** -
-- [ ] **test/*.ts** -
-- [ ] **tests/** -
-- [ ] **tests/accessibility** -
-- [ ] **tests/analytics** -
-- [ ] **tests/config** -
-- [ ] **tests/core** -
-- [ ] **tests/debug** -
-- [ ] **tests/e2e** -
-- [ ] **tests/help** -
-- [ ] **tests/integration** -
-- [ ] **tests/mocks** -
-- [ ] **tests/performance** -
-- [ ] **tests/pwa** -
-- [ ] **tests/quality** -
-- [ ] **tests/reports** -
-- [ ] **tests/scenes/** -
-- [ ] **tests/unit/** -
-- [ ] **tests/utils/** -
-- [ ] **tests/validation/** -
-- [ ] **tests/visual/** -
-- [ ] **tests/*.ts** -
+- [x] **test** -
+- [ ] **tests** -
 
 ## Phase 8: anyの置き換え
 - [ ] 36. anyの使用を最小化
