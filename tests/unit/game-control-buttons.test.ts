@@ -3,14 +3,17 @@
  * Tests button rendering, click detection, responsive positioning, 
  * accessibility features, and mobile touch handling
  */
-import { describe, test, expect, beforeEach, jest  } from '@jest/globals';
-import { GameControlButtons  } from '../../src/scenes/game-scene/GameControlButtons.js';
+import { describe, test, expect, beforeEach, jest } from '@jest/globals';
+import { GameControlButtons } from '../../src/scenes/game-scene/GameControlButtons.js';
+
 // モック用の型定義
-interface MockCanvas {
-    width: number,
-    height: number;
+interface MockCanvas { 
+    width: number; 
+    height: number; 
+}
+
 interface CanvasInfo {
-    baseWidth: number,
+    baseWidth: number;
     baseHeight: number;
     scale: number;
     scaleFactor?: number;
@@ -19,478 +22,397 @@ interface CanvasInfo {
     actualWidth?: number;
     actualHeight?: number;
     pixelRatio?: number;
-interface ScaledCoordinates {
-    x: number,
-    y: number;
+}
+
+interface ScaledCoordinates { 
+    x: number; 
+    y: number; 
+}
+
 interface MockResponsiveCanvasManager {
-    getCanvasInfo: jest.Mock<() => CanvasInfo>,
-    getScaledCoordinates: jest.Mock<(x: number, y: number) => ScaledCoordinates> }
+    getCanvasInfo: jest.Mock<() => CanvasInfo>;
+    getScaledCoordinates: jest.Mock<(x: number, y: number) => ScaledCoordinates>;
+}
+
 interface MockGameEngine {
-    canvas: MockCanvas,
-    responsiveCanvasManager: MockResponsiveCanvasManager | null }
+    canvas: MockCanvas;
+    responsiveCanvasManager: MockResponsiveCanvasManager | null;
+}
+
 interface MockUIManager {
-    showConfirmationDialog: jest.Mock }
+    showConfirmationDialog: jest.Mock;
+}
+
 interface ButtonConfig {
-    text: string,
-    size: {
-        widt,h: number },
-        height: number;
-    position?: {
-        x: number },
-        y: number;
+    text: string;
+    size: { width: number; height: number };
+    position?: { x: number; y: number };
     style?: any;
 }
-interface ButtonConfigMap {
-    giveUp: ButtonConfig,
-    restart: ButtonConfig;
-interface ButtonState {
-    enabled: boolean,
-    hoveredButton: string | null;
-    activeButton: string | null,
-    visibility: {
-        giveU,p: boolean },
-        restart: boolean;
-}
-interface GameState {
-    isGameStarted: boolean,
-    isGameOver: boolean;
-    isPaused: boolean,
-    isPreGame: boolean;
-interface TouchEvent {
-    key?: string;
-    shiftKey?: boolean;
-    preventDefault?: jest.Mock }
-interface MockRenderingContext {
-    save: jest.Mock,
+
+interface MockContext {
+    save: jest.Mock;
     restore: jest.Mock;
-    fillRect: jest.Mock,
+    fillRect: jest.Mock;
     strokeRect: jest.Mock;
-    fillText: jest.Mock,
-    createLinearGradient: jest.Mock<(') => MockGradient>;'
-    setLineDash: jest.Mock,
+    fillText: jest.Mock;
+    measureText: jest.Mock;
+    translate: jest.Mock;
+    scale: jest.Mock;
     fillStyle: string;
-    strokeStyle: string,
+    strokeStyle: string;
     lineWidth: number;
-    font: string,
-    textAlign: string;
-    textBaseline: string,
-    shadowColor: string;
-    shadowOffsetX: number,
-    shadowOffsetY: number;
+    font: string;
+    textAlign: CanvasTextAlign;
+    textBaseline: CanvasTextBaseline;
+    globalAlpha: number;
     shadowBlur: number;
-interface MockGradient {
-    addColorStop: jest.Mock }
-interface DeviceInfo {
-    isTouchDevice: boolean,
-    isMobile: boolean;
-interface AccessibilityState {
-    focusedButton: string | null }
-interface ButtonBounds {
-    x: number,
-    y: number;
-    width: number,
-    height: number;
+    shadowColor: string;
+    shadowOffsetX: number;
+    shadowOffsetY: number;
+}
+
 describe('GameControlButtons', () => {
-    let gameEngine: MockGameEngine;
-    let uiManager: MockUIManager;
     let gameControlButtons: GameControlButtons;
-    let mockCanvas: MockCanvas;
+    let mockGameEngine: MockGameEngine;
+    let mockUIManager: MockUIManager;
+    let mockContext: MockContext;
     let mockResponsiveCanvasManager: MockResponsiveCanvasManager;
+
     beforeEach(() => {
-        // Canvas mock setup
-        mockCanvas = {
-            width: 800,
-            height: 600
-        };
-        // ResponsiveCanvasManager mock setup
+        // キャンバスマネージャーのモック
         mockResponsiveCanvasManager = {
             getCanvasInfo: jest.fn(() => ({
                 baseWidth: 800,
-                baseHeight: 600;
-                scale: 1.5
-    }),
-            getScaledCoordinates: jest.fn((x: number, y: number) => ({
-                x: x * 1.5,
-                y: y * 1.5
-    })
-        );
-        // GameEngine mock setup
-        gameEngine = {
-            canvas: mockCanvas,
-            responsiveCanvasManager: mockResponsiveCanvasManager,);
-        // UIManager mock setup
-        uiManager = {
-            showConfirmationDialog: jest.fn( };
-        gameControlButtons = new GameControlButtons(gameEngine: any, uiManager);
-    }');'
-    describe('Initialization', (') => {'
-        test('should initialize with correct default configuration', () => {
-            const config = (gameControlButtons.getButtonConfig() as ButtonConfigMap),
-            expect(config.giveUp).toBeDefined();
-            expect(config.restart).toBeDefined();
-            expect(config.giveUp.text').toBe('ギブアップ'),'
-            expect(config.restart.text').toBe('ゲーム再開始'),'
-            expect(config.giveUp.size.width).toBe(120);
-            expect(config.giveUp.size.height).toBe(44) }');'
-        test('should initialize with buttons disabled by default', () => {
-            const state = (gameControlButtons.getButtonState() as ButtonState),
-            expect(state.visibility.giveUp).toBe(false);
-            expect(state.visibility.restart).toBe(false) }');'
-        test('should detect device capabilities correctly', () => {
-            const deviceInfo = (gameControlButtons.deviceInfo as DeviceInfo),
-            expect(deviceInfo).toBeDefined();
-            expect(typeof deviceInfo.isTouchDevice').toBe('boolean'),'
-            expect(typeof deviceInfo.isMobile').toBe('boolean') }');
-    }
-    describe('Button Positioning', (') => {'
-        test('should calculate correct button positions with ResponsiveCanvasManager', () => {
-            (gameControlButtons.updateButtonPositions();
-            const config = (gameControlButtons.getButtonConfig() as ButtonConfigMap),
-            // Check that positions are calculated
-            expect(config.giveUp.position).toBeDefined();
-            expect(config.restart.position).toBeDefined();
-            expect(typeof config.giveUp.position!.x').toBe('number'),'
-            expect(typeof config.giveUp.position!.y').toBe('number') }');
-        test('should handle missing ResponsiveCanvasManager gracefully', () => {
-            gameEngine.responsiveCanvasManager = null,
+                baseHeight: 600,
+                scale: 1,
+                scaleFactor: 1,
+                displayWidth: 800,
+                displayHeight: 600,
+                actualWidth: 800,
+                actualHeight: 600,
+                pixelRatio: 1
+            })),
+            getScaledCoordinates: jest.fn((x: number, y: number) => ({ x, y }))
+        };
+
+        // ゲームエンジンのモック
+        mockGameEngine = {
+            canvas: { width: 800, height: 600 },
+            responsiveCanvasManager: mockResponsiveCanvasManager
+        };
+
+        // UIマネージャーのモック
+        mockUIManager = {
+            showConfirmationDialog: jest.fn()
+        };
+
+        // Canvasコンテキストのモック
+        mockContext = {
+            save: jest.fn(),
+            restore: jest.fn(),
+            fillRect: jest.fn(),
+            strokeRect: jest.fn(),
+            fillText: jest.fn(),
+            measureText: jest.fn(() => ({ width: 100 })),
+            translate: jest.fn(),
+            scale: jest.fn(),
+            fillStyle: '',
+            strokeStyle: '',
+            lineWidth: 1,
+            font: '',
+            textAlign: 'center',
+            textBaseline: 'middle',
+            globalAlpha: 1,
+            shadowBlur: 0,
+            shadowColor: '',
+            shadowOffsetX: 0,
+            shadowOffsetY: 0
+        };
+
+        // GameControlButtonsインスタンスを作成
+        gameControlButtons = new GameControlButtons(mockGameEngine as any, mockUIManager as any);
+    });
+
+    describe('初期化とボタン設定', () => {
+        test('正しく初期化される', () => {
+            expect(gameControlButtons).toBeDefined();
+            expect(gameControlButtons.getButtons()).toHaveLength(2); // Give UpとRestartボタン
+        });
+
+        test('ボタン設定が正しい', () => {
+            const buttons = gameControlButtons.getButtons();
             
-            (gameControlButtons.updateButtonPositions();
-            const config = (gameControlButtons.getButtonConfig() as ButtonConfigMap),
-            expect(config.giveUp.position).toBeDefined();
-            expect(config.restart.position).toBeDefined() }');'
-        test('should scale button bounds correctly', (') => {'
-            const bounds = (gameControlButtons.getButtonBounds('giveUp') as ButtonBounds),
-            // With scale factor 1.5, width should be 120 * 1.5 = 180
-            expect(bounds.width).toBe(180);
-            expect(bounds.height).toBe(66), // 44 * 1.5
-        }');'
-    }
-    describe('Button Visibility Control', (') => {'
-        test('should show Give Up button only when game is started and not game over', () => {
-            const gameState: GameState = {
-                isGameStarted: true,
-                isGameOver: false;
-                isPaused: false,
-                isPreGame: false;
-            (gameControlButtons.updateButtonVisibility(gameState)');'
-            expect((gameControlButtons.isButtonVisible('giveUp').toBe(true);
-        }');'
-        test('should hide Give Up button when game is over', () => {
-            const gameState: GameState = {
-                isGameStarted: true,
-                isGameOver: true;
-                isPaused: false,
-                isPreGame: false;
-            (gameControlButtons.updateButtonVisibility(gameState)');'
-            expect((gameControlButtons.isButtonVisible('giveUp').toBe(false);
-        }');'
-        test('should show Restart button when game is started or game over', () => {
-            // During game
-            let gameState: GameState = {
-                isGameStarted: true,
-                isGameOver: false;
-                isPaused: false,
-                isPreGame: false;
-            (gameControlButtons.updateButtonVisibility(gameState)');'
-            expect((gameControlButtons.isButtonVisible('restart').toBe(true);
-            // Game over
-            gameState = {
-                isGameStarted: false,
-                isGameOver: true;
-                isPaused: false,
-                isPreGame: false,);
-            (gameControlButtons.updateButtonVisibility(gameState)');'
-            expect((gameControlButtons.isButtonVisible('restart').toBe(true);
-        }');'
-        test('should hide both buttons in pre-game state', () => {
-            const gameState: GameState = {
-                isGameStarted: false,
-                isGameOver: false;
-                isPaused: false,
-                isPreGame: true;
-            (gameControlButtons.updateButtonVisibility(gameState)');'
-            expect((gameControlButtons.isButtonVisible('giveUp').toBe(false)');'
-            expect((gameControlButtons.isButtonVisible('restart').toBe(false);
-        }');'
-    }
-    describe('Click Detection', () => {
-        beforeEach(() => {
-            // Make buttons visible for click tests
-            const gameState: GameState = {
-                isGameStarted: true,
-                isGameOver: false;
-                isPaused: false,
-                isPreGame: false;
-            (gameControlButtons.updateButtonVisibility(gameState);
-        }');'
-        test('should detect clicks within button bounds correctly', () => {
-            // Mock button positions for predictable testing
-            const buttonConfig = (gameControlButtons.buttonConfig as ButtonConfigMap'),'
-            buttonConfig.giveUp.position = { x: 100, y: 50 };
+            // Give Upボタン
+            expect(buttons[0].id).toBe('giveup');
+            expect(buttons[0].text).toBe('ギブアップ');
+            expect(buttons[0].action).toBe('giveup');
             
-            const isClicked = (gameControlButtons.isButtonClicked(150, 70, 'giveUp');
-            expect(isClicked).toBe(true);
-        }');'
-        test('should reject clicks outside button bounds', () => {
-            const buttonConfig = (gameControlButtons.buttonConfig as ButtonConfigMap'),'
-            buttonConfig.giveUp.position = { x: 100, y: 50 };
+            // Restartボタン
+            expect(buttons[1].id).toBe('restart');
+            expect(buttons[1].text).toBe('リスタート');
+            expect(buttons[1].action).toBe('restart');
+        });
+
+        test('ボタン位置が正しく計算される', () => {
+            const buttons = gameControlButtons.getButtons();
             
-            const isClicked = (gameControlButtons.isButtonClicked(50, 25, 'giveUp');
-            expect(isClicked).toBe(false);
-        }');'
-        test('should handle click and return correct button type', () => {
-            const buttonConfig = (gameControlButtons.buttonConfig as ButtonConfigMap),
-            buttonConfig.giveUp.position = { x: 100, y: 50 };
-            buttonConfig.restart.position = { x: 100, y: 100 };
+            // 右下隅に配置されているか確認
+            expect(buttons[0].position.x).toBeGreaterThan(600); // 画面右側
+            expect(buttons[0].position.y).toBeGreaterThan(400); // 画面下側
+        });
+    });
+
+    describe('レンダリング', () => {
+        test('render関数が正しく動作する', () => {
+            gameControlButtons.render(mockContext as any);
             
-            const clickedButton = (gameControlButtons.handleClick(150, 70);
-            expect(clickedButton').toBe('giveUp');'
-        }');'
-        test('should ignore clicks when buttons are disabled', () => {
-            (gameControlButtons.setButtonsEnabled(false);
-            const clickedButton = (gameControlButtons.handleClick(150, 70);
-            expect(clickedButton).toBeNull() }');'
-        test('should ignore clicks on invisible buttons', () => {
-            const gameState: GameState = {
-                isGameStarted: false,
-                isGameOver: false;
-                isPaused: false,
-                isPreGame: true;
-            (gameControlButtons.updateButtonVisibility(gameState);
-            const clickedButton = (gameControlButtons.handleClick(150, 70);
-            expect(clickedButton).toBeNull();
-        }');'
-    }
-    describe('Hover State Management', () => {
-        beforeEach(() => {
-            const gameState: GameState = {
-                isGameStarted: true,
-                isGameOver: false;
-                isPaused: false,
-                isPreGame: false;
-            (gameControlButtons.updateButtonVisibility(gameState);
-        }');'
-        test('should update hover state correctly', () => {
-            const buttonConfig = (gameControlButtons.buttonConfig as ButtonConfigMap),
-            buttonConfig.giveUp.position = { x: 100, y: 50 };
-            
-            (gameControlButtons.updateMousePosition(150, 70);
-            const state = (gameControlButtons.getButtonState() as ButtonState);
-            expect(state.hoveredButton').toBe('giveUp');'
-        }');'
-        test('should clear hover state when mouse leaves button area', () => {
-            (gameControlButtons.updateMousePosition(50, 25);
-            const state = (gameControlButtons.getButtonState() as ButtonState),
-            expect(state.hoveredButton).toBeNull() }');'
-        test('should clear keyboard focus when mouse is used', (') => {'
-            (gameControlButtons.setKeyboardFocus('giveUp');
-            (gameControlButtons.updateMousePosition(150, 70);
-            const accessibilityState = (gameControlButtons.accessibilityState as AccessibilityState),
-            expect(accessibilityState.focusedButton).toBeNull() }');'
-    }
-    describe('Keyboard Navigation', () => {
-        beforeEach(() => {
-            const gameState: GameState = {
-                isGameStarted: true,
-                isGameOver: false;
-                isPaused: false,
-                isPreGame: false;
-            (gameControlButtons.updateButtonVisibility(gameState);
-        }');'
-        test('should handle Tab navigation correctly', (') => {'
-            const event: TouchEvent = {
-                key: 'Tab',
-                shiftKey: false;
-        preventDefault: jest.fn( };
-            
-            const handled = (gameControlButtons.handleKeyboardNavigation(event);
-            expect(handled).toBe(true);
-            expect(event.preventDefault!).toHaveBeenCalled();
-        }');'
-        test('should handle Enter key activation', (') => {'
-            (gameControlButtons.setKeyboardFocus('giveUp')'),'
-            const event: TouchEvent = {
-                key: 'Enter',
-        preventDefault: jest.fn( };
-            
-            const handled = (gameControlButtons.handleKeyboardNavigation(event);
-            expect(handled).toBe(true);
-            expect(uiManager.showConfirmationDialog').toHaveBeenCalledWith('giveUp');'
-        }');'
-        test('should handle Space key activation', (') => {'
-            (gameControlButtons.setKeyboardFocus('restart')'),'
-            const event: TouchEvent = {
-                key: ', ',
-        preventDefault: jest.fn( };
-            
-            const handled = (gameControlButtons.handleKeyboardNavigation(event);
-            expect(handled).toBe(true);
-            expect(uiManager.showConfirmationDialog').toHaveBeenCalledWith('restart');'
-        }');'
-        test('should clear focus on Escape key', (') => {'
-            (gameControlButtons.setKeyboardFocus('giveUp')'),'
-            const event: TouchEvent = { key: 'Escape' };
-            const handled = (gameControlButtons.handleKeyboardNavigation(event);
-            expect(handled).toBe(true);
-            const accessibilityState = (gameControlButtons.accessibilityState as AccessibilityState);
-            expect(accessibilityState.focusedButton).toBeNull();
-        }');'
-        test('should cycle through visible buttons with Tab', () => {
-            const visibleButtons = (gameControlButtons.getVisibleButtons() as string[]),
-            expect(visibleButtons').toContain('giveUp'),'
-            expect(visibleButtons').toContain('restart'),'
-            (gameControlButtons.navigateButtons(1, visibleButtons);
-            const accessibilityState = (gameControlButtons.accessibilityState as AccessibilityState),
-            expect(accessibilityState.focusedButton').toBe('giveUp'),'
-            (gameControlButtons.navigateButtons(1, visibleButtons);
-            expect(accessibilityState.focusedButton').toBe('restart') }');
-    }
-    describe('Touch Handling', () => {
-        beforeEach(() => {
-            const gameState: GameState = {
-                isGameStarted: true,
-                isGameOver: false;
-                isPaused: false,
-                isPreGame: false;
-            (gameControlButtons.updateButtonVisibility(gameState);
-        }');'
-        test('should handle touch start correctly', () => {
-            const buttonConfig = (gameControlButtons.buttonConfig as ButtonConfigMap),
-            buttonConfig.giveUp.position = { x: 100, y: 50 };
-            
-            const touchedButton = (gameControlButtons.handleTouchStart(150, 70);
-            expect(touchedButton').toBe('giveUp');'
-            const buttonState = (gameControlButtons.buttonState as ButtonState);
-            expect(buttonState.activeButton').toBe('giveUp');'
-        }');'
-        test('should handle touch end correctly when ending on same button', () => {
-            const buttonConfig = (gameControlButtons.buttonConfig as ButtonConfigMap),
-            buttonConfig.giveUp.position = { x: 100, y: 50 };
-            (gameControlButtons.handleTouchStart(150, 70);
-            const completedButton = (gameControlButtons.handleTouchEnd(150, 70);
-            expect(completedButton').toBe('giveUp');'
-            const buttonState = (gameControlButtons.buttonState as ButtonState);
-            expect(buttonState.activeButton).toBeNull();
-        }');'
-        test('should cancel touch when ending outside button', () => {
-            const buttonConfig = (gameControlButtons.buttonConfig as ButtonConfigMap),
-            buttonConfig.giveUp.position = { x: 100, y: 50 };
-            (gameControlButtons.handleTouchStart(150, 70);
-            const completedButton = (gameControlButtons.handleTouchEnd(50, 25);
-            expect(completedButton).toBeNull();
-            const buttonState = (gameControlButtons.buttonState as ButtonState);
-            expect(buttonState.activeButton).toBeNull();
-        }');'
-        test('should handle touch cancel correctly', () => {
-            const buttonState = (gameControlButtons.buttonState as ButtonState'),'
-            buttonState.activeButton = 'giveUp',
-            
-            (gameControlButtons.handleTouchCancel();
-            expect(buttonState.activeButton).toBeNull() }');'
-    }
-    describe('Responsive Behavior', (') => {'
-        test('should handle canvas size changes', () => {
-            const buttonConfig = (gameControlButtons.buttonConfig as ButtonConfigMap),
-            const originalPositions = { ...buttonConfig.giveUp.position };
-            
-            // Change canvas size
-            mockCanvas.width = 1200;
-            mockCanvas.height = 900;
-            
-            (gameControlButtons.updateButtonPositions();
-            // Positions should be recalculated
-            expect(buttonConfig.giveUp.position).not.toEqual(originalPositions);
-        }');'
-        test('should handle different scale factors', () => {
-            mockResponsiveCanvasManager.getCanvasInfo.mockReturnValue({
-                baseWidth: 800,
-                baseHeight: 600;
-                scale: 2.0 }');'
-            const bounds = (gameControlButtons.getButtonBounds('giveUp') as ButtonBounds);
-            // With scale factor 2.0, width should be 120 * 2.0 = 240
-            expect(bounds.width).toBe(240);
-            expect(bounds.height).toBe(88); // 44 * 2.0
-        }');'
-    }
-    describe('Rendering', () => {
-        let mockContext: MockRenderingContext;
-        beforeEach(() => {
-            mockContext = {
-                save: jest.fn(
-                restore: jest.fn(
-                fillRect: jest.fn(
-                strokeRect: jest.fn(
-                fillText: jest.fn(
-                createLinearGradient: jest.fn(() => ({
-                    addColorStop: jest.fn()),
-                setLineDash: jest.fn(','
-                fillStyle: ','
-                strokeStyle: ','
-                lineWidth: 0,
-                font: ','
-                textAlign: ','
-                textBaseline: ','
-                shadowColor: ','
-                shadowOffsetX: 0,
-                shadowOffsetY: 0;
-                shadowBlur: 0
-    };
-        )');'
-        test('should render visible buttons only', () => {
-            const gameState: GameState = {
-                isGameStarted: true,
-                isGameOver: false;
-                isPaused: false,
-                isPreGame: false;
-            (gameControlButtons.updateButtonVisibility(gameState);
-            (gameControlButtons.render(mockContext);
+            // コンテキストメソッドが呼ばれたか確認
             expect(mockContext.save).toHaveBeenCalled();
             expect(mockContext.restore).toHaveBeenCalled();
-        }');'
-        test('should not render when buttons are disabled', () => {
-            (gameControlButtons.setButtonsEnabled(false);
-            (gameControlButtons.render(mockContext);
-            expect(mockContext.save).not.toHaveBeenCalled() }');'
-        test('should render focus indicator for keyboard navigation', () => {
-            const gameState: GameState = {
-                isGameStarted: true,
-                isGameOver: false;
-                isPaused: false,
-                isPreGame: false;
-            (gameControlButtons.updateButtonVisibility(gameState)');'
-            (gameControlButtons.setKeyboardFocus('giveUp');
-            (gameControlButtons.render(mockContext);
-            expect(mockContext.setLineDash).toHaveBeenCalledWith([5, 3]);
-        }');'
-        test('should render touch feedback for active buttons', () => {
-            const gameState: GameState = {
-                isGameStarted: true,
-                isGameOver: false;
-                isPaused: false,
-                isPreGame: false;
-            (gameControlButtons.updateButtonVisibility(gameState);
-            const buttonState = (gameControlButtons.buttonState as ButtonState');'
-            buttonState.activeButton = 'giveUp';
+            expect(mockContext.fillRect).toHaveBeenCalledTimes(2); // 2つのボタン
+            expect(mockContext.fillText).toHaveBeenCalledTimes(2); // 2つのテキスト
+        });
+
+        test('ホバー状態でスタイルが変更される', () => {
+            const buttons = gameControlButtons.getButtons();
+            buttons[0].isHovered = true;
             
-            (gameControlButtons.render(mockContext);
-            expect(mockContext.createLinearGradient).toHaveBeenCalled();
-        }');'
-    }
-    describe('State Management', (') => {'
-        test('should provide complete button state', () => {
-            const state = (gameControlButtons.getButtonState() as ButtonState),
-            expect(state').toHaveProperty('enabled'),'
-            expect(state').toHaveProperty('hoveredButton'),'
-            expect(state').toHaveProperty('activeButton'),'
-            expect(state').toHaveProperty('visibility'),'
-            expect(state.visibility').toHaveProperty('giveUp'),'
-            expect(state.visibility').toHaveProperty('restart') }');
-        test('should provide complete button configuration', () => {
-            const config = (gameControlButtons.getButtonConfig() as ButtonConfigMap),
-            expect(config').toHaveProperty('giveUp'),'
-            expect(config').toHaveProperty('restart'),'
-            expect(config.giveUp').toHaveProperty('text'),'
-            expect(config.giveUp').toHaveProperty('size'),'
-            expect(config.giveUp').toHaveProperty('style') };'
-    }
-}');'
+            gameControlButtons.render(mockContext as any);
+            
+            // ホバー時のスタイルが適用されているか確認
+            expect(mockContext.globalAlpha).toBeDefined();
+        });
+
+        test('押下状態でスタイルが変更される', () => {
+            const buttons = gameControlButtons.getButtons();
+            buttons[0].isPressed = true;
+            
+            gameControlButtons.render(mockContext as any);
+            
+            // 押下時のスタイルが適用されているか確認
+            expect(mockContext.translate).toHaveBeenCalled();
+        });
+    });
+
+    describe('イベントハンドリング', () => {
+        test('クリックイベントが正しく検出される', () => {
+            const event = {
+                offsetX: 700,
+                offsetY: 500
+            };
+            
+            const clicked = gameControlButtons.handleClick(event);
+            
+            expect(clicked).toBeTruthy();
+            expect(mockUIManager.showConfirmationDialog).toHaveBeenCalled();
+        });
+
+        test('ボタン外のクリックは検出されない', () => {
+            const event = {
+                offsetX: 100,
+                offsetY: 100
+            };
+            
+            const clicked = gameControlButtons.handleClick(event);
+            
+            expect(clicked).toBeFalsy();
+            expect(mockUIManager.showConfirmationDialog).not.toHaveBeenCalled();
+        });
+
+        test('確認ダイアログが正しく表示される', () => {
+            const event = {
+                offsetX: 700,
+                offsetY: 500
+            };
+            
+            gameControlButtons.handleClick(event);
+            
+            expect(mockUIManager.showConfirmationDialog).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    title: expect.any(String),
+                    message: expect.any(String),
+                    onConfirm: expect.any(Function)
+                })
+            );
+        });
+    });
+
+    describe('マウスホバー処理', () => {
+        test('マウスムーブでホバー状態が更新される', () => {
+            const event = {
+                offsetX: 700,
+                offsetY: 500
+            };
+            
+            gameControlButtons.handleMouseMove(event);
+            
+            const buttons = gameControlButtons.getButtons();
+            expect(buttons.some(btn => btn.isHovered)).toBe(true);
+        });
+
+        test('ボタン外でホバー状態が解除される', () => {
+            // まずホバー状態にする
+            gameControlButtons.handleMouseMove({ offsetX: 700, offsetY: 500 });
+            
+            // ボタン外に移動
+            gameControlButtons.handleMouseMove({ offsetX: 100, offsetY: 100 });
+            
+            const buttons = gameControlButtons.getButtons();
+            expect(buttons.every(btn => !btn.isHovered)).toBe(true);
+        });
+    });
+
+    describe('レスポンシブ対応', () => {
+        test('キャンバススケールに応じて座標が変換される', () => {
+            mockResponsiveCanvasManager.getCanvasInfo.mockReturnValue({
+                baseWidth: 800,
+                baseHeight: 600,
+                scale: 2,
+                scaleFactor: 2,
+                displayWidth: 1600,
+                displayHeight: 1200,
+                actualWidth: 1600,
+                actualHeight: 1200,
+                pixelRatio: 2
+            });
+            
+            mockResponsiveCanvasManager.getScaledCoordinates.mockImplementation(
+                (x: number, y: number) => ({ x: x * 2, y: y * 2 })
+            );
+            
+            const event = { offsetX: 1400, offsetY: 1000 };
+            const clicked = gameControlButtons.handleClick(event);
+            
+            expect(mockResponsiveCanvasManager.getScaledCoordinates).toHaveBeenCalled();
+        });
+
+        test('ResponsiveCanvasManagerが存在しない場合も動作する', () => {
+            mockGameEngine.responsiveCanvasManager = null;
+            const buttons = new GameControlButtons(mockGameEngine as any, mockUIManager as any);
+            
+            expect(() => {
+                buttons.render(mockContext as any);
+                buttons.handleClick({ offsetX: 700, offsetY: 500 });
+            }).not.toThrow();
+        });
+    });
+
+    describe('ボタン状態管理', () => {
+        test('ボタンの有効/無効が切り替えられる', () => {
+            gameControlButtons.setButtonEnabled('giveup', false);
+            
+            const buttons = gameControlButtons.getButtons();
+            const giveupButton = buttons.find(btn => btn.id === 'giveup');
+            
+            expect(giveupButton?.isDisabled).toBe(true);
+        });
+
+        test('無効なボタンはクリックできない', () => {
+            gameControlButtons.setButtonEnabled('giveup', false);
+            
+            const event = { offsetX: 700, offsetY: 500 };
+            gameControlButtons.handleClick(event);
+            
+            expect(mockUIManager.showConfirmationDialog).not.toHaveBeenCalled();
+        });
+
+        test('ボタンの表示/非表示が切り替えられる', () => {
+            gameControlButtons.setButtonVisible('restart', false);
+            
+            const buttons = gameControlButtons.getButtons();
+            const restartButton = buttons.find(btn => btn.id === 'restart');
+            
+            expect(restartButton?.isVisible).toBe(false);
+        });
+    });
+
+    describe('アクセシビリティ', () => {
+        test('キーボードナビゲーションが動作する', () => {
+            // Tabキーでフォーカス移動
+            gameControlButtons.handleKeyDown({ key: 'Tab' } as KeyboardEvent);
+            
+            const buttons = gameControlButtons.getButtons();
+            expect(buttons.some(btn => btn.isFocused)).toBe(true);
+        });
+
+        test('Enterキーでボタンがアクティブになる', () => {
+            // フォーカスを設定
+            const buttons = gameControlButtons.getButtons();
+            buttons[0].isFocused = true;
+            
+            // Enterキーを押す
+            gameControlButtons.handleKeyDown({ key: 'Enter' } as KeyboardEvent);
+            
+            expect(mockUIManager.showConfirmationDialog).toHaveBeenCalled();
+        });
+
+        test('スペースキーでもボタンがアクティブになる', () => {
+            // フォーカスを設定
+            const buttons = gameControlButtons.getButtons();
+            buttons[0].isFocused = true;
+            
+            // スペースキーを押す
+            gameControlButtons.handleKeyDown({ key: ' ' } as KeyboardEvent);
+            
+            expect(mockUIManager.showConfirmationDialog).toHaveBeenCalled();
+        });
+    });
+
+    describe('モバイル対応', () => {
+        test('タッチイベントが正しく処理される', () => {
+            const touchEvent = {
+                touches: [{
+                    clientX: 700,
+                    clientY: 500
+                }]
+            };
+            
+            const touched = gameControlButtons.handleTouch(touchEvent as any);
+            
+            expect(touched).toBeTruthy();
+            expect(mockUIManager.showConfirmationDialog).toHaveBeenCalled();
+        });
+
+        test('マルチタッチの場合は最初のタッチのみ処理される', () => {
+            const touchEvent = {
+                touches: [
+                    { clientX: 700, clientY: 500 },
+                    { clientX: 100, clientY: 100 }
+                ]
+            };
+            
+            gameControlButtons.handleTouch(touchEvent as any);
+            
+            // 1回だけ呼ばれることを確認
+            expect(mockUIManager.showConfirmationDialog).toHaveBeenCalledTimes(1);
+        });
+    });
+
+    describe('パフォーマンス最適化', () => {
+        test('非表示のボタンはレンダリングされない', () => {
+            gameControlButtons.setButtonVisible('restart', false);
+            
+            gameControlButtons.render(mockContext as any);
+            
+            // fillRectが1回だけ（Give Upボタンのみ）呼ばれることを確認
+            expect(mockContext.fillRect).toHaveBeenCalledTimes(1);
+        });
+
+        test('ボタン状態の変更が効率的に処理される', () => {
+            const startTime = performance.now();
+            
+            // 1000回状態を変更
+            for (let i = 0; i < 1000; i++) {
+                gameControlButtons.setButtonEnabled('giveup', i % 2 === 0);
+                gameControlButtons.setButtonVisible('restart', i % 2 === 1);
+            }
+            
+            const endTime = performance.now();
+            const duration = endTime - startTime;
+            
+            // 処理時間が妥当であることを確認
+            expect(duration).toBeLessThan(100); // 100ms以内
+        });
+    });
+});

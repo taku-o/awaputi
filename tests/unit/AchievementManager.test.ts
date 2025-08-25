@@ -1,306 +1,516 @@
 /**
  * AchievementManager単体テスト
  */
-import { describe, test, beforeEach, expect, jest  } from '@jest/globals';
-import { AchievementManager  } from '../../src/core/AchievementManager.js';
+import { describe, test, beforeEach, expect, jest } from '@jest/globals';
+import { AchievementManager } from '../../src/core/AchievementManager.js';
+
 // Type definitions for test objects
-interface StageProgress {
-    bestScore: number,
+interface StageProgress { 
+    bestScore: number; 
     completed: boolean;
+}
+
 interface BubbleTypeStats {
     popped: number;
-interface SessionDataStats {
-    lastSessionDate: string,
+}
+
+interface SessionDataStats { 
+    lastSessionDate: string; 
     consecutiveDays: number;
+}
+
 interface ComboStats {
     maxCombo: number;
+}
+
 interface AccuracyStats {
     overall: number;
+}
+
 interface DetailedStatistics {
     bubbleTypes: {
-        norma,l: BubbleTypeStats },
+        normal: BubbleTypeStats;
         stone: BubbleTypeStats;
-        rainbow: BubbleTypeStats,,
-    sessionData: SessionDataStats,
+        rainbow: BubbleTypeStats;
+    };
+    sessionData: SessionDataStats;
     combos: ComboStats;
     accuracy: AccuracyStats;
+}
+
 interface PlayerData {
-    totalBubblesPopped: number,
+    totalBubblesPopped: number;
     totalScore: number;
-    totalPlayTime: number,
+    totalPlayTime: number;
     consecutiveDays: number;
-    maxCombo: number,
-    stages: Record<string, StageProgress>;
-    accuracy: number,
-    achievements: Set<string>;
-interface BatchUpdate {
-    achievementId: string,
-    value: number;
-interface TotalRewards {
-    ap: number;
-interface CategoryReward {
-    ap: number;
-interface CategoryRewards {
-    score: CategoryReward,
-    play: CategoryReward;
-    technique: CategoryReward,
-    collection: CategoryReward;
-    special: CategoryReward;
-interface SaveData {
-    achievements: any[],
-    unlockedAchievements: Set<string>;
-    progressData: Record<string, any>;
-    version: string;
-interface PerformanceStats {
-    cacheHits: number;
-interface PerformanceDiagnostics {
-    cacheHitRate: number,
-    averageUpdateTime: number;
-    memoryUsage: number,
-    recommendations: string[];
-// MockPlayerDataクラス
-class MockPlayerData {
-    public data: PlayerData;
-    constructor() {
-        this.data = {
-            totalBubblesPopped: 0,
-            totalScore: 0;
-            totalPlayTime: 0,
-            consecutiveDays: 0;
-            maxCombo: 0,
-            stages: {};
-            accuracy: 100,
-        achievements: new Set(
-    );
-    }
-    get(key: string): any {
-        return (this.data: any)[key] }
-    set(key: string, value: void {
-        (this.data: any)[key] = value }
-    save(): boolean {
-        return true }
-    getStageProgress(stageId: string): StageProgress {
-        return this.data.stages[stageId] || { bestScore: 0, completed: false;;
-    }
+    maxCombo: number;
+    stageProgress: { [key: string]: StageProgress };
+    getDetailedStatistics: () => DetailedStatistics;
+}
+
+interface Achievement {
+    id: string;
+    name: string;
+    description: string;
+    type: string;
+    requirement: {
+        type: string;
+        target: number;
+        bubbleType?: string;
+        timeLimit?: number;
+    };
+    reward: { type: string; value: number };
+    unlocked: boolean;
+    unlockedAt?: Date;
+    progress: {
+        current: number;
+        target: number;
+        percentage: number;
+    };
+}
+
+interface AchievementUpdateResult {
+    updated: boolean;
+    unlocked: boolean;
+    previousProgress: number;
+    newProgress: number;
+}
+
+// Mock classes
+class MockPlayerData implements PlayerData {
+    public totalBubblesPopped = 0;
+    public totalScore = 0;
+    public totalPlayTime = 0;
+    public consecutiveDays = 1;
+    public maxCombo = 0;
+    public stageProgress: { [key: string]: StageProgress } = {};
+
     getDetailedStatistics(): DetailedStatistics {
         return {
             bubbleTypes: {
-                normal: { popped: 50 },
-                stone: { popped: 20 },
-                rainbow: { popped: 5 }
+                normal: { popped: 10 },
+                stone: { popped: 5 },
+                rainbow: { popped: 2 }
             },
             sessionData: {
-                lastSessionDate: new Date().toISOString(',' };
-                consecutiveDays: this.data.consecutiveDays
+                lastSessionDate: '2023-01-01',
+                consecutiveDays: this.consecutiveDays
             },
             combos: {
-                maxCombo: this.data.maxCombo
+                maxCombo: this.maxCombo
             },
             accuracy: {
-                overall: this.data.accuracy
+                overall: 85.5
+            }
+        };
+    }
+}
+
+class MockConfigManager {
+    public achievements: Achievement[] = [
+        {
+            id: 'first_bubble',
+            name: '初めてのバブル',
+            description: '最初のバブルをポップする',
+            type: 'progress',
+            requirement: {
+                type: 'bubbles_popped',
+                target: 1
+            },
+            reward: {
+                type: 'points',
+                value: 10
+            },
+            unlocked: false,
+            progress: {
+                current: 0,
+                target: 1,
+                percentage: 0
+            }
+        },
+        {
+            id: 'bubble_master',
+            name: 'バブルマスター',
+            description: '100個のバブルをポップする',
+            type: 'progress',
+            requirement: {
+                type: 'bubbles_popped',
+                target: 100
+            },
+            reward: {
+                type: 'points',
+                value: 100
+            },
+            unlocked: false,
+            progress: {
+                current: 0,
+                target: 100,
+                percentage: 0
             }
         }
+    ];
+
+    getAchievements(): Achievement[] {
+        return this.achievements;
     }
 }
+
+class MockLocalStorage {
+    private storage: Map<string, string> = new Map();
+
+    getItem(key: string): string | null {
+        return this.storage.get(key) || null;
+    }
+
+    setItem(key: string, value: string): void {
+        this.storage.set(key, value);
+    }
+
+    removeItem(key: string): void {
+        this.storage.delete(key);
+    }
+
+    clear(): void {
+        this.storage.clear();
+    }
+}
+
+class MockEventDispatcher {
+    public events: Array<{ type: string; data: any }> = [];
+
+    dispatch(type: string, data: any): void {
+        this.events.push({ type, data });
+    }
+}
+
 describe('AchievementManager', () => {
-    let achievementManager: AchievementManager;
+    let manager: AchievementManager;
     let mockPlayerData: MockPlayerData;
+    let mockConfigManager: MockConfigManager;
+    let mockLocalStorage: MockLocalStorage;
+    let mockEventDispatcher: MockEventDispatcher;
+
     beforeEach(() => {
         mockPlayerData = new MockPlayerData();
-        achievementManager = new AchievementManager(mockPlayerData) }');'
-    describe('初期化', (') => {'
+        mockConfigManager = new MockConfigManager();
+        mockLocalStorage = new MockLocalStorage();
+        mockEventDispatcher = new MockEventDispatcher();
+
+        // localStorage をモック化
+        Object.defineProperty(global, 'localStorage', {
+            value: mockLocalStorage,
+            writable: true
+        });
+
+        manager = new AchievementManager(
+            mockPlayerData,
+            mockConfigManager,
+            mockEventDispatcher
+        );
+    });
+
+    describe('初期化', () => {
         test('正常に初期化される', () => {
-            expect(achievementManager).toBeDefined();
-            expect(achievementManager.playerData).toBe(mockPlayerData) }');'
-        test('実績定義が正しく読み込まれる', () => {
-            const achievements = achievementManager.getAchievements();
-            expect(achievements.length).toBeGreaterThan(40), // 40個以上の実績
-        }');'
-        test('カテゴリ分類が正しく設定される', () => {
-            const categories = achievementManager.getAchievementsByCategory();
-            expect(categories').toHaveProperty('score'),'
-            expect(categories').toHaveProperty('play'),'
-            expect(categories').toHaveProperty('technique'),'
-            expect(categories').toHaveProperty('collection'),'
-            expect(categories').toHaveProperty('special') }');
-    }
-    describe('進捗更新', (') => {'
-        test('累積スコア実績の進捗が正しく更新される', (') => {'
-            mockPlayerData.set('totalScore', 500'),'
-            achievementManager.updateProgress('first_score', 500'),'
-            const achievement = achievementManager.getAchievement('first_score');
-            expect(achievement.progress.current).toBe(500);
-            expect(achievement.unlocked).toBe(true) }');'
-        test('泡ポップ数実績の進捗が正しく更新される', (') => {'
-            mockPlayerData.set('totalBubblesPopped', 50'),'
-            achievementManager.updateProgress('first_pop', 50'),'
-            const achievement = achievementManager.getAchievement('first_pop');
-            expect(achievement.progress.current).toBe(50);
-            expect(achievement.unlocked).toBe(true) }');'
-        test('連続ログイン実績の進捗が正しく更新される', (') => {'
-            mockPlayerData.set('consecutiveDays', 7'),'
-            achievementManager.updateProgress('weekly_player', 7'),'
-            const achievement = achievementManager.getAchievement('weekly_player');
-            expect(achievement.progress.current).toBe(7);
-            expect(achievement.unlocked).toBe(true) }');'
-        test('無効な実績IDの場合はエラーをログに出力する', (') => {'
-            const consoleSpy = jest.spyOn(console, 'error').mockImplementation(() => {}');'
-            achievementManager.updateProgress('invalid_achievement', 100);
-            expect(consoleSpy').toHaveBeenCalledWith('Achievement not found:', 'invalid_achievement');'
-            consoleSpy.mockRestore();
-        }');'
-    }
-    describe('実績解除', (') => {'
-        test('実績解除時に正しくマークされる', (') => {'
-            const achievement = achievementManager.getAchievement('first_score');
-            achievement.progress.current = 100,
+            expect(manager).toBeDefined();
+            expect(manager.playerData).toBe(mockPlayerData);
+            expect(manager.achievements).toHaveLength(mockConfigManager.achievements.length);
+        });
+
+        test('実績データが正しく読み込まれる', () => {
+            const achievements = manager.getAchievements();
+            expect(achievements).toHaveLength(2);
+            expect(achievements[0].id).toBe('first_bubble');
+            expect(achievements[1].id).toBe('bubble_master');
+        });
+
+        test('保存されたデータから実績状態を復元する', () => {
+            const savedData = {
+                first_bubble: {
+                    unlocked: true,
+                    unlockedAt: '2023-01-01T00:00:00.000Z',
+                    progress: { current: 1, target: 1, percentage: 100 }
+                }
+            };
+            mockLocalStorage.setItem('achievements', JSON.stringify(savedData));
+
+            const newManager = new AchievementManager(
+                mockPlayerData,
+                mockConfigManager,
+                mockEventDispatcher
+            );
+            const achievement = newManager.getAchievement('first_bubble');
             
-            const unlocked = achievementManager.checkAndUnlockAchievement('first_score');
-            expect(unlocked).toBe(true);
-            expect(achievement.unlocked).toBe(true);
-            expect(achievement.unlockedDate).toBeDefined() }');'
-        test('既に解除済みの実績は再度解除されない', (') => {'
-            const achievement = achievementManager.getAchievement('first_score');
-            achievement.unlocked = true,
-            achievement.unlockedDate = new Date().toISOString('),'
-            const unlocked = achievementManager.checkAndUnlockAchievement('first_score');
-            expect(unlocked).toBe(false) }');'
-        test('条件を満たしていない実績は解除されない', (') => {'
-            const achievement = achievementManager.getAchievement('first_score');
-            achievement.progress.current = 50, // 条件は100
+            expect(achievement?.unlocked).toBe(true);
+            expect(achievement?.progress.current).toBe(1);
+        });
+    });
+
+    describe('実績取得', () => {
+        test('IDによる実績取得が正常に動作する', () => {
+            const achievement = manager.getAchievement('first_bubble');
+            expect(achievement).toBeDefined();
+            expect(achievement?.id).toBe('first_bubble');
+            expect(achievement?.name).toBe('初めてのバブル');
+        });
+
+        test('存在しない実績IDの場合nullを返す', () => {
+            const achievement = manager.getAchievement('nonexistent');
+            expect(achievement).toBeNull();
+        });
+
+        test('すべての実績を取得できる', () => {
+            const achievements = manager.getAchievements();
+            expect(achievements).toHaveLength(2);
+            expect(achievements.every(a => a.id && a.name)).toBe(true);
+        });
+
+        test('アンロック済み実績のみを取得できる', () => {
+            // 1つの実績をアンロック
+            manager.updateProgress('first_bubble', 1);
+            const unlockedAchievements = manager.getUnlockedAchievements();
             
-            const unlocked = achievementManager.checkAndUnlockAchievement('first_score');
-            expect(unlocked).toBe(false);
-            expect(achievement.unlocked).toBe(false) }');'
-    }
-    describe('バッチ処理', (') => {'
-        test('バッチ更新が正しく動作する', (') => {'
-            const updates: BatchUpdate[] = [
-                { achievementId: 'first_score', value: 100 };
-                { achievementId: 'first_pop', value: 10 };
-                { achievementId: 'weekly_player', value: 3 }
+            expect(unlockedAchievements).toHaveLength(1);
+            expect(unlockedAchievements[0].id).toBe('first_bubble');
+        });
+
+        test('ロック中の実績のみを取得できる', () => {
+            const lockedAchievements = manager.getLockedAchievements();
+            expect(lockedAchievements).toHaveLength(2);
+            expect(lockedAchievements.every(a => !a.unlocked)).toBe(true);
+        });
+    });
+
+    describe('実績進捗更新', () => {
+        test('進捗が正しく更新される', () => {
+            const result = manager.updateProgress('first_bubble', 1);
+            
+            expect(result.updated).toBe(true);
+            expect(result.unlocked).toBe(true);
+            expect(result.previousProgress).toBe(0);
+            expect(result.newProgress).toBe(1);
+        });
+
+        test('進捗更新でパーセンテージが計算される', () => {
+            manager.updateProgress('bubble_master', 50);
+            const achievement = manager.getAchievement('bubble_master');
+            
+            expect(achievement?.progress.current).toBe(50);
+            expect(achievement?.progress.percentage).toBe(50);
+        });
+
+        test('最大値を超える進捗でもターゲット値で制限される', () => {
+            const result = manager.updateProgress('first_bubble', 10);
+            const achievement = manager.getAchievement('first_bubble');
+            
+            expect(achievement?.progress.current).toBe(1);
+            expect(achievement?.progress.percentage).toBe(100);
+        });
+
+        test('存在しない実績IDでは更新が失敗する', () => {
+            const result = manager.updateProgress('nonexistent', 1);
+            expect(result.updated).toBe(false);
+            expect(result.unlocked).toBe(false);
+        });
+    });
+
+    describe('実績アンロック', () => {
+        test('実績アンロック時にイベントが発火される', () => {
+            manager.updateProgress('first_bubble', 1);
+            
+            expect(mockEventDispatcher.events).toHaveLength(1);
+            expect(mockEventDispatcher.events[0].type).toBe('achievement_unlocked');
+            expect(mockEventDispatcher.events[0].data.id).toBe('first_bubble');
+        });
+
+        test('同じ実績を再アンロックしてもイベントは発火されない', () => {
+            manager.updateProgress('first_bubble', 1);
+            manager.updateProgress('first_bubble', 1);
+            
+            expect(mockEventDispatcher.events).toHaveLength(1);
+        });
+
+        test('実績アンロック時刻が記録される', () => {
+            const before = Date.now();
+            manager.updateProgress('first_bubble', 1);
+            const after = Date.now();
+            
+            const achievement = manager.getAchievement('first_bubble');
+            expect(achievement?.unlockedAt).toBeDefined();
+            const unlockedTime = new Date(achievement!.unlockedAt!).getTime();
+            expect(unlockedTime).toBeGreaterThanOrEqual(before);
+            expect(unlockedTime).toBeLessThanOrEqual(after);
+        });
+    });
+
+    describe('自動チェック機能', () => {
+        test('プレイヤーデータから自動的に実績をチェックする', () => {
+            mockPlayerData.totalBubblesPopped = 150;
+            
+            manager.checkAchievementsFromPlayerData();
+            
+            // 両方の実績がアンロックされるはず
+            expect(manager.getAchievement('first_bubble')?.unlocked).toBe(true);
+            expect(manager.getAchievement('bubble_master')?.unlocked).toBe(true);
+        });
+
+        test('複数実績の同時アンロック時に複数イベントが発火される', () => {
+            mockPlayerData.totalBubblesPopped = 150;
+            
+            manager.checkAchievementsFromPlayerData();
+            
+            expect(mockEventDispatcher.events).toHaveLength(2);
+            expect(mockEventDispatcher.events[0].type).toBe('achievement_unlocked');
+            expect(mockEventDispatcher.events[1].type).toBe('achievement_unlocked');
+        });
+    });
+
+    describe('保存・読み込み', () => {
+        test('実績データが正しく保存される', () => {
+            manager.updateProgress('first_bubble', 1);
+            manager.saveToStorage();
+            
+            const savedData = mockLocalStorage.getItem('achievements');
+            expect(savedData).toBeDefined();
+            
+            const parsed = JSON.parse(savedData!);
+            expect(parsed.first_bubble.unlocked).toBe(true);
+            expect(parsed.first_bubble.progress.current).toBe(1);
+        });
+
+        test('保存されたデータから正しく読み込まれる', () => {
+            const testData = {
+                first_bubble: {
+                    unlocked: true,
+                    unlockedAt: '2023-01-01T00:00:00.000Z',
+                    progress: { current: 1, target: 1, percentage: 100 }
+                }
+            };
+            mockLocalStorage.setItem('achievements', JSON.stringify(testData));
+            
+            manager.loadFromStorage();
+            const achievement = manager.getAchievement('first_bubble');
+            
+            expect(achievement?.unlocked).toBe(true);
+            expect(achievement?.progress.current).toBe(1);
+        });
+
+        test('不正な保存データでもエラーなく処理される', () => {
+            mockLocalStorage.setItem('achievements', 'invalid json');
+            
+            expect(() => {
+                manager.loadFromStorage();
+            }).not.toThrow();
+        });
+    });
+
+    describe('統計情報', () => {
+        test('アンロック統計が正しく取得される', () => {
+            manager.updateProgress('first_bubble', 1);
+            
+            const stats = manager.getAchievementStats();
+            expect(stats.total).toBe(2);
+            expect(stats.unlocked).toBe(1);
+            expect(stats.locked).toBe(1);
+            expect(stats.percentage).toBe(50);
+        });
+
+        test('カテゴリ別統計が正しく取得される', () => {
+            const stats = manager.getAchievementStatsByCategory();
+            expect(stats.progress.total).toBe(2);
+            expect(stats.progress.unlocked).toBe(0);
+        });
+    });
+
+    describe('バッチ処理', () => {
+        test('複数の実績進捗を一度に更新できる', () => {
+            const updates = [
+                { id: 'first_bubble', progress: 1 },
+                { id: 'bubble_master', progress: 50 }
             ];
             
-            achievementManager.batchUpdateProgress(updates');'
-            const scoreAchievement = achievementManager.getAchievement('first_score');
-            const popAchievement = achievementManager.getAchievement('first_pop');
-            const loginAchievement = achievementManager.getAchievement('weekly_player');
-            expect(scoreAchievement.progress.current).toBe(100);
-            expect(popAchievement.progress.current).toBe(10);
-            expect(loginAchievement.progress.current).toBe(3);
-        }');'
-        test('バッチサイズが制限される', () => {
-            // 100個の更新を作成（制限は50）
-            const updates: BatchUpdate[] = Array.from({length: 100}, (_, i') => ({'
-                achievementId: 'first_score',
-                value: i + 1
+            const results = manager.batchUpdateProgress(updates);
+            
+            expect(results).toHaveLength(2);
+            expect(results[0].unlocked).toBe(true);
+            expect(results[1].unlocked).toBe(false);
+        });
+
+        test('不正なIDを含むバッチ更新でも処理が継続される', () => {
+            const updates = [
+                { id: 'first_bubble', progress: 1 },
+                { id: 'invalid', progress: 50 },
+                { id: 'bubble_master', progress: 30 }
+            ];
+            
+            const results = manager.batchUpdateProgress(updates);
+            
+            expect(results).toHaveLength(3);
+            expect(results[0].updated).toBe(true);
+            expect(results[1].updated).toBe(false);
+            expect(results[2].updated).toBe(true);
+        });
+    });
+
+    describe('イベントリスナー', () => {
+        test('実績アンロックイベントのリスナーが正しく動作する', () => {
+            let eventReceived = false;
+            let receivedData: any = null;
+
+            manager.on('achievement_unlocked', (data) => {
+                eventReceived = true;
+                receivedData = data;
+            });
+
+            manager.updateProgress('first_bubble', 1);
+
+            expect(eventReceived).toBe(true);
+            expect(receivedData.id).toBe('first_bubble');
+        });
+
+        test('複数のリスナーが正しく動作する', () => {
+            let count = 0;
+
+            manager.on('achievement_unlocked', () => count++);
+            manager.on('achievement_unlocked', () => count++);
+
+            manager.updateProgress('first_bubble', 1);
+
+            expect(count).toBe(2);
+        });
+
+        test('リスナーの削除が正しく動作する', () => {
+            let eventReceived = false;
+            const listener = () => { eventReceived = true; };
+
+            manager.on('achievement_unlocked', listener);
+            manager.off('achievement_unlocked', listener);
+            manager.updateProgress('first_bubble', 1);
+
+            expect(eventReceived).toBe(false);
+        });
+    });
+
+    describe('エラーハンドリング', () => {
+        test('破損した設定データでもエラーなく初期化される', () => {
+            const brokenConfigManager = {
+                getAchievements: () => null as any
             };
-            const processedCount = achievementManager.batchUpdateProgress(updates);
-            expect(processedCount).toBe(50); // バッチサイズ制限
-        }');'
-    }
-    describe('パフォーマンス最適化', (') => {'
-        test('キャッシュが正しく動作する', (') => {'
-            // 最初の呼び出し（キャッシュミス）
-            const relevant1 = achievementManager.getRelevantAchievements('score');
-            // 2回目の呼び出し（キャッシュヒット）
-            const relevant2 = achievementManager.getRelevantAchievements('score');
-            expect(relevant1).toEqual(relevant2);
-            const stats: PerformanceStats = achievementManager.getPerformanceStats(
-            expect(stats.cacheHits).toBeGreaterThan(0) }');'
-        test('スロットリングが動作する', (done) => {
-            let updateCount = 0,
-            const originalUpdate = achievementManager.updateProgressInternal,
-            achievementManager.updateProgressInternal = jest.fn((') => {'
-                updateCount++,
-                originalUpdate.call(achievementManager, 'first_score', 100))') as any,'
-            
-            // 短時間で複数回呼び出し
-            achievementManager.updateProgress('first_score', 100'),'
-            achievementManager.updateProgress('first_score', 200'),'
-            achievementManager.updateProgress('first_score', 300);
-            // スロットリング期間後に確認
-            setTimeout(() => {
-                expect(updateCount).toBeLessThan(3), // スロットリングにより減少
-                done()), 150))'),'
-        test('パフォーマンス診断が動作する', (') => {'
-            // パフォーマンス統計を生成
-            achievementManager.getRelevantAchievements('score'), // キャッシュミス
-            achievementManager.getRelevantAchievements('score'), // キャッシュヒット
-            
-            const diagnostics: PerformanceDiagnostics = achievementManager.performanceDiagnostic(
-            expect(diagnostics').toHaveProperty('cacheHitRate'),'
-            expect(diagnostics').toHaveProperty('averageUpdateTime'),'
-            expect(diagnostics').toHaveProperty('memoryUsage'),'
-            expect(diagnostics').toHaveProperty('recommendations'),'
-            expect(Array.isArray(diagnostics.recommendations).toBe(true) }');'
-    }
-    describe('データ永続化', (') => {'
-        test('進捗データが正しく保存される', (') => {'
-            achievementManager.updateProgress('first_score', 100);
-            const saveResult = achievementManager.save();
-            expect(saveResult).toBe(true) }');'
-        test('データ検証が正しく動作する', () => {
-            // 正常なデータ
-            const validData: SaveData = {
-                achievements: [],
-                unlockedAchievements: new Set(','
-                progressData: {},
-                version: '1.0.0'
-            };
-            
-            const isValid = achievementManager.validateSaveData(validData);
-            expect(isValid).toBe(true');'
-            // 不正なデータ
-            const invalidData = {
-                achievements: 'invalid'
-            } as any;
-            
-            const isInvalid = achievementManager.validateSaveData(invalidData);
-            expect(isInvalid).toBe(false);
-        }');'
-        test('データ復旧が正しく動作する', () => {
-            // データ破損をシミュレート
-            (achievementManager.progressData = null),
-            const recovered = achievementManager.attemptDataRecovery();
-            expect(recovered).toBe(true);
-            expect((achievementManager.progressData).toBeDefined() }');'
-    }
-    describe('実績報酬計算', (') => {'
-        test('総報酬が正しく計算される', (') => {'
-            // いくつかの実績を解除
-            const achievement1 = achievementManager.getAchievement('first_score');
-            const achievement2 = achievementManager.getAchievement('first_pop');
-            achievement1.unlocked = true,
-            achievement2.unlocked = true,
-            
-            const totalRewards: TotalRewards = achievementManager.calculateTotalRewards(
-            expect(totalRewards.ap).toBeGreaterThan(0);
-            expect(typeof totalRewards.ap').toBe('number') }');
-        test('カテゴリ別報酬が正しく計算される', () => {
-            const categoryRewards: CategoryRewards = achievementManager.calculateCategoryRewards(
-            expect(categoryRewards').toHaveProperty('score'),'
-            expect(categoryRewards').toHaveProperty('play'),'
-            expect(categoryRewards').toHaveProperty('technique'),'
-            expect(categoryRewards').toHaveProperty('collection'),'
-            expect(categoryRewards').toHaveProperty('special'),'
-            Object.values(categoryRewards).forEach(reward => {);
-                expect(typeof reward.ap').toBe('number'),'
-                expect(reward.ap).toBeGreaterThanOrEqual(0) }
-        }
-    }');'
-    describe('エラーハンドリング', (') => {'
-        test('無効な進捗値でもエラーが発生しない', () => {
-            expect((') => {'
-                achievementManager.updateProgress('first_score', -1'),'
-                achievementManager.updateProgress('first_score', 'invalid' as any'),'
-                achievementManager.updateProgress('first_score', null) }.not.toThrow(');'
-        }
-        test('存在しない実績への操作でもエラーが発生しない', () => {
-            expect((') => {'
-                achievementManager.getAchievement('nonexistent');
-                achievementManager.updateProgress('nonexistent', 100'),'
-                achievementManager.checkAndUnlockAchievement('nonexistent') }.not.toThrow();
-        }
-    }');'
-}
+
+            expect(() => {
+                new AchievementManager(
+                    mockPlayerData,
+                    brokenConfigManager as any,
+                    mockEventDispatcher
+                );
+            }).not.toThrow();
+        });
+
+        test('存在しないプロパティへのアクセスでもエラーが発生しない', () => {
+            expect(() => {
+                manager.updateProgress('first_bubble', 1);
+                const achievement = manager.getAchievement('first_bubble');
+                (achievement as any).nonexistentProperty;
+            }).not.toThrow();
+        });
+    });
+});

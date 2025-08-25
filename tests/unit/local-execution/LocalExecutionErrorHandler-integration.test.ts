@@ -10,18 +10,18 @@ import LocalExecutionErrorHandler from '../../../src/utils/local-execution/Local
 import { ErrorHandler  } from '../../../src/utils/ErrorHandler.js';
 // Type definitions
 interface MockWindow {
-    location: { protoco,l: string,
+    location: { protocol: string,
     addEventListener: jest.Mock<void, [string, EventListener]> };
     removeEventListener: jest.Mock<void, [string, EventListener]>;
     performance: { now: (') => number };'
-}
+
 interface MockDocument {
     addEventListener: jest.Mock<void, [string, EventListener]>;
     createElement: jest.Mock<any, [string]>;
     querySelector: jest.Mock<any, [string]>;
     body: {
         appendChil,d: jest.Mock<void, [any]> }
-}
+
 interface MockSessionStorage {
     getItem: jest.Mock<string | null, [string]>;
     setItem: jest.Mock<void, [string, string]>;
@@ -37,16 +37,22 @@ interface ErrorStats {
 interface ErrorCategory {
     name: string,
     severity: string;
-    recoverable: boolean;
+    recoverable: boolean
+
+
 interface ErrorAnalysis {
     category: string,
     severity: string;
-    recoverable: boolean;
+    recoverable: boolean
+
+
 interface DebugInfo {
     isInitialized: boolean,
     config: any;
     errorCategories: Record<string, ErrorCategory>;
-    handledGuidanceTypes: string[];
+    handledGuidanceTypes: string[]
+
+
 // モック設定
 const mockWindow: MockWindow = {
     location: { protocol: 'file:' },
@@ -95,8 +101,7 @@ describe('LocalExecutionErrorHandler Integration Tests', () => {
     afterEach(() => {
         // クリーンアップ
         if (LocalExecutionErrorHandler.isInitialized) {
-            LocalExecutionErrorHandler.isInitialized = false }
-    }');'
+            LocalExecutionErrorHandler.isInitialized = false ) });
     describe('Initialization Integration', (') => {'
         test('should initialize with main ErrorHandler integration', async () => {
             const config = {
@@ -105,33 +110,33 @@ describe('LocalExecutionErrorHandler Integration Tests', () => {
             LocalExecutionErrorHandler.initialize(config, mockErrorHandler);
             expect(LocalExecutionErrorHandler.isInitialized).toBe(true);
             expect(LocalExecutionErrorHandler.errorHandlerInstance).toBe(mockErrorHandler);
-            expect(mockErrorHandler.configure).toHaveBeenCalled();
-        }');'
+            expect(mockErrorHandler.configure).toHaveBeenCalled()
+        });
         test('should initialize without main ErrorHandler integration when disabled', async () => {
             const config = {
                 enableMainErrorHandlerIntegration: false;
             LocalExecutionErrorHandler.initialize(config);
             expect(LocalExecutionErrorHandler.isInitialized).toBe(true);
-            expect(LocalExecutionErrorHandler.errorHandlerInstance).toBeNull();
-        }');'
+            expect(LocalExecutionErrorHandler.errorHandlerInstance).toBeNull()
+        });
         test('should fallback gracefully when main ErrorHandler fails', async () => {
             const failingErrorHandler = {
                 configure: jest.fn((') => { throw new Error('Configuration failed')) }') as unknown as MockErrorHandler;
             const consoleSpy = jest.spyOn(console, 'warn').mockImplementation(() => {});
             LocalExecutionErrorHandler.initialize({
-                enableMainErrorHandlerIntegration: true,, failingErrorHandler);
+                enableMainErrorHandlerIntegration: true, failingErrorHandler);
             expect(LocalExecutionErrorHandler.isInitialized).toBe(true);
             expect(consoleSpy).toHaveBeenCalledWith(');'
                 expect.stringContaining('Failed to integrate with main ErrorHandler');
-            consoleSpy.mockRestore();
-        }');'
+            consoleSpy.mockRestore()
+        })
     }
     describe('Error Reporting Integration', () => {
         beforeEach(() => {
             LocalExecutionErrorHandler.initialize({
                 enableMainErrorHandlerIntegration: true,
-                enableDebugLogging: false,, mockErrorHandler);
-        }');'
+                enableDebugLogging: false, mockErrorHandler)
+        });
         test('should report CORS errors to main ErrorHandler', (') => {'
             const error = new Error('CORS policy blocked');
             const resource = 'test-resource.js',
@@ -143,8 +148,8 @@ describe('LocalExecutionErrorHandler Integration Tests', () => {
                     resource,
                     category: 'cors',
                     localExecution: true,);
-            );
-        }');'
+            )
+        });
         test('should report compatibility errors to main ErrorHandler', (') => {'
             const error = new Error('Canvas not supported');
             const feature = 'canvas',
@@ -155,8 +160,8 @@ describe('LocalExecutionErrorHandler Integration Tests', () => {
                 expect.objectContaining({
                     feature,
                     localExecution: true,);
-            );
-        }');'
+            )
+        });
         test('should report security errors to main ErrorHandler', (') => {'
             const error = new Error('X-Frame-Options blocked');
             const policy = 'X-Frame-Options',
@@ -167,13 +172,13 @@ describe('LocalExecutionErrorHandler Integration Tests', () => {
                 expect.objectContaining({
                     policy,
                     localExecution: true,);
-            );
-        }');'
+            )
+        })
     }
     describe('Configuration Integration', (') => {'
         test('should register local execution error categories', () => {
             LocalExecutionErrorHandler.initialize({
-                enableMainErrorHandlerIntegration: true,, mockErrorHandler);
+                enableMainErrorHandlerIntegration: true, mockErrorHandler);
             expect(mockErrorHandler.configure').toHaveBeenCalledWith('
                 expect.objectContaining({
                     localExecution: expect.objectContaining({
@@ -181,21 +186,21 @@ describe('LocalExecutionErrorHandler Integration Tests', () => {
                             LOCAL_EXECUTION_CORS: expect.objectContaining({
                                 name: 'Local Execution CORS Error',
                                 severity: 'HIGH';
-                                recoverable: true,);
+                                recoverable: true,)
     }
     }
     }
-            );
-        }');'
+            )
+        });
         test('should register local execution user messages', () => {
             LocalExecutionErrorHandler.initialize({
-                enableMainErrorHandlerIntegration: true,, mockErrorHandler);
+                enableMainErrorHandlerIntegration: true, mockErrorHandler);
             const configCalls = mockErrorHandler.configure.mock.calls;
             expect(configCalls.length).toBeGreaterThan(0);
             const messageConfigCall = configCalls.find(call => 
                 call[0] && call[0].messages && call[0].messages.userMessages);
-            expect(messageConfigCall).toBeDefined();
-        }');'
+            expect(messageConfigCall).toBeDefined()
+        })
     }
     describe('Fallback Behavior', (') => {'
         test('should work without main ErrorHandler when integration is disabled', () => {
@@ -204,7 +209,7 @@ describe('LocalExecutionErrorHandler Integration Tests', () => {
             const error = new Error('Test error');
             // エラーが発生しないことを確認
             expect((') => {'
-                LocalExecutionErrorHandler.handleResourceError(error, 'test.js') }.not.toThrow(');'
+                LocalExecutionErrorHandler.handleResourceError(error, 'test.js') ).not.toThrow(');'
         }
         test('should handle main ErrorHandler reporting failures gracefully', () => {
             mockErrorHandler.handleError = jest.fn((') => {'
@@ -217,9 +222,9 @@ describe('LocalExecutionErrorHandler Integration Tests', () => {
                 LocalExecutionErrorHandler.handleResourceError('),'
                     new Error('Test error');
                     'test.js'
-                ) }.not.toThrow();
-            consoleSpy.mockRestore();
-        }');'
+                ) ).not.toThrow();
+            consoleSpy.mockRestore()
+        });
         test('should use static ErrorHandler methods when instance is not available', () => {
             // ErrorHandlerクラスのモック
             const originalErrorHandler = LocalExecutionErrorHandler.errorHandlerInstance,
@@ -233,14 +238,14 @@ describe('LocalExecutionErrorHandler Integration Tests', () => {
             const error = new Error('Test error');
             LocalExecutionErrorHandler.handleResourceError(error, 'test.js');
             // クリーンアップ
-            LocalExecutionErrorHandler.errorHandlerInstance = originalErrorHandler;
-        }');'
+            LocalExecutionErrorHandler.errorHandlerInstance = originalErrorHandler
+        })
     }
     describe('Debug Information Integration', (') => {'
         test('should provide comprehensive debug information', () => {
             LocalExecutionErrorHandler.initialize({
                 enableMainErrorHandlerIntegration: true,
-                enableDebugLogging: true,, mockErrorHandler);
+                enableDebugLogging: true, mockErrorHandler);
             const debugInfo = LocalExecutionErrorHandler.getDebugInfo();
             expect(debugInfo).toMatchObject({
                 isInitialized: true,
@@ -248,20 +253,20 @@ describe('LocalExecutionErrorHandler Integration Tests', () => {
                     enableMainErrorHandlerIntegration: true,
                 errorCategories: LocalExecutionErrorHandler.ERROR_CATEGORIES;
         handledGuidanceTypes: expect.any(Array) }
-        }');'
+        })
     }
     describe('User-Friendly Message Generation', () => {
         beforeEach(() => {
             LocalExecutionErrorHandler.initialize({
                 enableMainErrorHandlerIntegration: true,
-                enableUserNotifications: true,, mockErrorHandler);
-        }');'
+                enableUserNotifications: true, mockErrorHandler)
+        });
         test('should generate appropriate CORS error messages', (') => {'
             const message = LocalExecutionErrorHandler._generateCompatibilityMessage('modules');
-            expect(message').toContain('ES6 modules are not supported') }');
+            expect(message').toContain('ES6 modules are not supported') });
         test('should generate appropriate security policy messages', (') => {'
             const message = LocalExecutionErrorHandler._generateSecurityMessage('X-Frame-Options');
-            expect(message').toContain('X-Frame-Options policy') }');
+            expect(message').toContain('X-Frame-Options policy') })
     }
     describe('Error Analysis Integration', (') => {'
         test('should analyze and categorize errors correctly', () => {
@@ -278,9 +283,9 @@ describe('LocalExecutionErrorHandler Integration Tests', () => {
             expect(unknownError').toMatchObject({'
                 category: 'unknown',
                 severity: 'medium';
-                recoverable: true,);
+                recoverable: true,)
         }
-    }');'
+    });
     describe('Performance and Memory Management', (') => {'
         test('should not cause memory leaks in integration', () => {
             const initialErrorHandlerInstance = LocalExecutionErrorHandler.errorHandlerInstance,
@@ -288,23 +293,23 @@ describe('LocalExecutionErrorHandler Integration Tests', () => {
             // 複数回の初期化
             for (let i = 0, i < 10, i++) {
                 LocalExecutionErrorHandler.initialize({
-                    enableMainErrorHandlerIntegration: true,, mockErrorHandler);
+                    enableMainErrorHandlerIntegration: true, mockErrorHandler)
             }
             
             // インスタンスが適切に管理されていることを確認
-            expect(LocalExecutionErrorHandler.errorHandlerInstance).toBe(mockErrorHandler);
-        }');'
+            expect(LocalExecutionErrorHandler.errorHandlerInstance).toBe(mockErrorHandler)
+        });
         test('should handle rapid error reporting without issues', () => {
             LocalExecutionErrorHandler.initialize({
-                enableMainErrorHandlerIntegration: true,, mockErrorHandler);
+                enableMainErrorHandlerIntegration: true, mockErrorHandler);
             // 大量のエラーレポート
             for (let i = 0; i < 100; i++) {
                 LocalExecutionErrorHandler.handleResourceError();
                     new Error(`Error ${i)`},
                     `resource${i}.js`
-                );
+                )
             }
-            expect(mockErrorHandler.handleError).toHaveBeenCalledTimes(100);
+            expect(mockErrorHandler.handleError).toHaveBeenCalledTimes(100)
         }
     }
-}');'
+});

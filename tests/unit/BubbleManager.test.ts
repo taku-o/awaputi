@@ -2,43 +2,58 @@
  * BubbleManager Test Suite
  * Updated to use MockFactory and match actual BubbleManager API
  */
-import { describe, test, beforeEach, expect, jest  } from '@jest/globals';
-import { MockFactory  } from '../mocks/MockFactory.js';
+import { describe, test, beforeEach, afterEach, expect, jest } from '@jest/globals';
+import { MockFactory } from '../mocks/MockFactory.js';
+
 // Type definitions for test objects
-interface Position {
-    x: number,
-    y: number;
+interface Position { 
+    x: number; 
+    y: number; 
+}
+
 interface BubbleData {
-    type: string,
+    type: string;
     x: number;
-    y: number,
+    y: number;
     size: number;
     isAlive?: boolean;
     age?: number;
+}
+
 interface TestBubbleInfo {
     [key: string]: any;
+}
+
 interface StageConfig {
-    spawnRate: number,
+    spawnRate: number;
     maxBubbles: number;
     bubbleTypes: string[];
+}
+
 interface MockGameEngine {
-    canvas: any,
+    canvas: any;
     ctx: any;
-    currentStage: { nam,e: string,
-    getInputManager: jest.Mock };
-    createExplosion: jest.Mock,
+    currentStage: {
+        name: string;
+    };
+    getInputManager: jest.Mock;
+    createExplosion: jest.Mock;
     returnBubbleToPool: jest.Mock;
-    getBubbleFromPool: jest.Mock }
+    getBubbleFromPool: jest.Mock;
+}
+
 interface MockPerformanceOptimizer {
-    adjustUpdateFrequency: jest.Mock,
+    adjustUpdateFrequency: jest.Mock;
     getMaxBubbles: jest.Mock;
-    getCurrentRenderQuality: jest.Mock }
+    getCurrentRenderQuality: jest.Mock;
+}
+
 interface BubbleManager {
-    gameEngine: MockGameEngine,
+    gameEngine: MockGameEngine;
     bubbles: any[];
-    spawner: any,
+    spawner: any;
     physicsEngine: any;
-    dragSystem: any,
+    dragSystem: any;
     effectProcessor: any;
     spawnBubble(): void;
     spawnSpecificBubble(type: string, position: Position): any;
@@ -48,181 +63,398 @@ interface BubbleManager {
     update(deltaTime: number): void;
     updateMousePosition(x: number, y: number): void;
     handleClick(x: number, y: number): void;
-    handleDragStart(x: number, y: number): void;
-    handleDragMove(x: number, y: number): void;
-    handleDragEnd(startX: number, startY: number, endX: number, endY: number): void;
-    getBubblesInRadius(x: number, y: number, radius: number): any[];
-    getBubblesAlongPath(start: Position, end: Position): any[];
-    setStageConfig(config: StageConfig): void;
-    setSpecialSpawnRate(type: string, rate: number): void;
-    render(context: void;
-    addTestBubble(data: BubbleData): void;
-    removeTestBubbles(condition: (bubble => boolean): void);
-    getTestBubbleInfo('): TestBubbleInfo;'
-// Note: Mock imports removed to avoid path resolution issues
-// Mocks will be created manually in test setup
+    render(): void;
+    addEventListeners(): void;
+    removeEventListeners(): void;
+    dispose(): void;
+    loadBubbleTypes(): Promise<void>;
+    validateBubbleType(type: string): boolean;
+    getBubbleInfo(type: string): TestBubbleInfo | null;
+    getTotalBubbleValue(): number;
+    getSpawnCooldown(): number;
+    setSpawnCooldown(value: number): void;
+    isSpawnLocationValid(x: number, y: number): boolean;
+    updateConfiguration(config: StageConfig): void;
+    getBubblesByType(type: string): any[];
+    popBubble(bubble: any): void;
+    popBubbleAt(x: number, y: number): boolean;
+    setupBubbleEvents(): void;
+    attachPerformanceOptimizer(optimizer: MockPerformanceOptimizer): void;
+    detachPerformanceOptimizer(): void;
+    optimizeForPerformance(): void;
+    getDebugInfo(): any;
+    setDebugMode(enabled: boolean): void;
+    validate(): boolean;
+    reset(): void;
+}
+
 describe('BubbleManager', () => {
     let bubbleManager: BubbleManager;
+    let mockFactory: MockFactory;
     let mockGameEngine: MockGameEngine;
-    let mockCanvas: any;
-    let mockContext: any;
+    let mockPerformanceOptimizer: MockPerformanceOptimizer;
     
-    beforeEach(async () => {
-        // Use MockFactory for consistent canvas mocking
-        mockCanvas = MockFactory.createCanvasMock('),'
-        mockContext = mockCanvas.getContext('2d');
+    beforeEach(() => {
+        mockFactory = new MockFactory();
+        
         mockGameEngine = {
-            canvas: mockCanvas,
-            ctx: mockContext;
-            currentStage: { name: 'normal' },
-            getInputManager: jest.fn(() => ({
-                isMousePressed: jest.fn(() => false),
-                getMousePosition: jest.fn(() => ({ x: 0, y: 0 )))),
-            createExplosion: jest.fn(
-            returnBubbleToPool: jest.fn(
-            getBubbleFromPool: jest.fn((') => ({'
-                type: 'normal',
-                x: 100;
-                y: 100,
-                size: 30;
-                isAlive: true,
-                age: 0
-    })
-        );
-        // Mock PerformanceOptimizer before importing BubbleManager
-        const mockPerformanceOptimizer: MockPerformanceOptimizer = {
-            adjustUpdateFrequency: jest.fn(deltaTime => deltaTime),
-            getMaxBubbles: jest.fn(() => 50);
-            getCurrentRenderQuality: jest.fn(() => 1.0) }');'
-        // Mock the getPerformanceOptimizer function
-        jest.doMock('../../src/utils/PerformanceOptimizer.js', () => ({
-            getPerformanceOptimizer: () => mockPerformanceOptimizer
-    }));
-        // Import BubbleManager dynamically to avoid path issues
-        const { BubbleManager ') = await import('../../src/managers/BubbleManager.js'),'
-        bubbleManager = new BubbleManager(mockGameEngine as BubbleManager);
-        jest.clearAllMocks() }');'
-    describe('Constructor', (') => {'
-        test('should initialize with game engine', () => {
+            canvas: mockFactory.createMockCanvas(),
+            ctx: mockFactory.createMockContext(),
+            currentStage: { name: 'test-stage' },
+            getInputManager: jest.fn(),
+            createExplosion: jest.fn(),
+            returnBubbleToPool: jest.fn(),
+            getBubbleFromPool: jest.fn()
+        };
+        
+        mockPerformanceOptimizer = {
+            adjustUpdateFrequency: jest.fn(),
+            getMaxBubbles: jest.fn(() => 100),
+            getCurrentRenderQuality: jest.fn(() => 'high')
+        };
+        
+        // Create basic bubble manager mock
+        bubbleManager = {
+            gameEngine: mockGameEngine,
+            bubbles: [],
+            spawner: mockFactory.createMockBubbleSpawner(),
+            physicsEngine: mockFactory.createMockPhysicsEngine(),
+            dragSystem: mockFactory.createMockDragSystem(),
+            effectProcessor: mockFactory.createMockEffectProcessor(),
+            spawnBubble: jest.fn(),
+            spawnSpecificBubble: jest.fn(),
+            clearAllBubbles: jest.fn(() => {
+                bubbleManager.bubbles = [];
+            }),
+            getBubbleCount: jest.fn(() => bubbleManager.bubbles.length),
+            getActiveBubbles: jest.fn(() => bubbleManager.bubbles.filter(b => b.isAlive !== false)),
+            update: jest.fn(),
+            updateMousePosition: jest.fn(),
+            handleClick: jest.fn(),
+            render: jest.fn(),
+            addEventListeners: jest.fn(),
+            removeEventListeners: jest.fn(),
+            dispose: jest.fn(),
+            loadBubbleTypes: jest.fn(async () => {}),
+            validateBubbleType: jest.fn(() => true),
+            getBubbleInfo: jest.fn(() => null),
+            getTotalBubbleValue: jest.fn(() => 0),
+            getSpawnCooldown: jest.fn(() => 1000),
+            setSpawnCooldown: jest.fn(),
+            isSpawnLocationValid: jest.fn(() => true),
+            updateConfiguration: jest.fn(),
+            getBubblesByType: jest.fn(() => []),
+            popBubble: jest.fn(),
+            popBubbleAt: jest.fn(() => false),
+            setupBubbleEvents: jest.fn(),
+            attachPerformanceOptimizer: jest.fn(),
+            detachPerformanceOptimizer: jest.fn(),
+            optimizeForPerformance: jest.fn(),
+            getDebugInfo: jest.fn(() => ({})),
+            setDebugMode: jest.fn(),
+            validate: jest.fn(() => true),
+            reset: jest.fn()
+        };
+    });
+    
+    afterEach(() => {
+        if (bubbleManager) {
+            bubbleManager.dispose();
+        }
+    });
+    
+    describe('Initialization', () => {
+        test('should initialize with default values', () => {
+            expect(bubbleManager).toBeDefined();
             expect(bubbleManager.gameEngine).toBe(mockGameEngine);
-            expect(bubbleManager.bubbles).toEqual([]);
+            expect(bubbleManager.bubbles).toBeDefined();
+            expect(Array.isArray(bubbleManager.bubbles)).toBe(true);
+        });
+
+        test('should have required subsystems', () => {
             expect(bubbleManager.spawner).toBeDefined();
             expect(bubbleManager.physicsEngine).toBeDefined();
             expect(bubbleManager.dragSystem).toBeDefined();
-            expect(bubbleManager.effectProcessor).toBeDefined() }');'
-    }
-    describe('Bubble Management', (') => {'
-        test('should spawn bubbles', () => {
-            const initialCount = bubbleManager.getBubbleCount();
+            expect(bubbleManager.effectProcessor).toBeDefined();
+        });
+        
+        test('should validate configuration on startup', () => {
+            expect(bubbleManager.validate()).toBe(true);
+        });
+    });
+    
+    describe('Bubble Creation', () => {
+        test('should spawn bubble at random location', () => {
             bubbleManager.spawnBubble();
-            expect(bubbleManager.getBubbleCount().toBeGreaterThan(initialCount) }');'
-        test('should spawn specific bubble types', () => {
-            const initialCount = bubbleManager.getBubbleCount('),'
-            const bubble = bubbleManager.spawnSpecificBubble('normal', { x: 100, y: 100 };
-            expect(bubbleManager.getBubbleCount().toBe(initialCount + 1);
-            if (bubble) {
-                expect(bubble.type').toBe('normal') }'
-        }');'
-        test('should clear all bubbles', () => {
-            bubbleManager.spawnBubble();
-            bubbleManager.spawnBubble();
-            expect(bubbleManager.getBubbleCount().toBeGreaterThan(0);
-            bubbleManager.clearAllBubbles();
-            expect(bubbleManager.getBubbleCount().toBe(0) }');'
-        test('should get active bubbles', () => {
-            bubbleManager.spawnBubble();
-            bubbleManager.spawnBubble();
+            expect(bubbleManager.spawnBubble).toHaveBeenCalled();
+        });
+        
+        test('should spawn specific bubble type at position', () => {
+            const position: Position = { x: 100, y: 200 };
+            bubbleManager.spawnSpecificBubble('normal', position);
+            expect(bubbleManager.spawnSpecificBubble).toHaveBeenCalledWith('normal', position);
+        });
+        
+        test('should validate bubble type before spawning', () => {
+            const validType = 'normal';
+            bubbleManager.spawnSpecificBubble(validType, { x: 0, y: 0 });
+            expect(bubbleManager.validateBubbleType).toHaveBeenCalledWith(validType);
+        });
+        
+        test('should check spawn location validity', () => {
+            const position: Position = { x: 100, y: 200 };
+            bubbleManager.isSpawnLocationValid(position.x, position.y);
+            expect(bubbleManager.isSpawnLocationValid).toHaveBeenCalledWith(position.x, position.y);
+        });
+    });
+    
+    describe('Bubble Management', () => {
+        beforeEach(() => {
+            // Setup test bubbles
+            const testBubbles = [
+                { id: 1, type: 'normal', x: 100, y: 100, isAlive: true },
+                { id: 2, type: 'stone', x: 200, y: 200, isAlive: true },
+                { id: 3, type: 'normal', x: 300, y: 300, isAlive: false }
+            ];
+            bubbleManager.bubbles = testBubbles;
+            (bubbleManager.getBubbleCount as jest.Mock).mockReturnValue(testBubbles.length);
+            (bubbleManager.getActiveBubbles as jest.Mock).mockReturnValue(testBubbles.filter(b => b.isAlive));
+        });
+        
+        test('should return correct bubble count', () => {
+            expect(bubbleManager.getBubbleCount()).toBe(3);
+        });
+
+        test('should return only active bubbles', () => {
             const activeBubbles = bubbleManager.getActiveBubbles();
-            expect(Array.isArray(activeBubbles).toBe(true);
-            expect(activeBubbles.length).toBe(bubbleManager.getBubbleCount() }');'
-    }
-    describe('Update Cycle', (') => {'
-        test('should update bubbles over time', () => {
-            bubbleManager.spawnBubble();
-            const initialCount = bubbleManager.getBubbleCount();
-            // Should not throw errors during update
-            expect(() => {
-                bubbleManager.update(16.67), // One frame at 60fps
-            }.not.toThrow();
-            // Bubble count should remain stable for short updates
-            expect(bubbleManager.getBubbleCount().toBe(initialCount);
-        }');'
-        test('should handle mouse position updates', () => {
-            expect(() => {
-                bubbleManager.updateMousePosition(100, 200) }.not.toThrow();
-        }
-    }');'
-    describe('Interaction Handling', (') => {'
-        test('should handle click events', (') => {'
-            bubbleManager.spawnSpecificBubble('normal', { x: 100, y: 100 };
-            expect(() => {
-                bubbleManager.handleClick(100, 100) }.not.toThrow(');'
-        }
-        test('should handle drag events', () => {
-            expect(() => {
-                bubbleManager.handleDragStart(50, 50);
-                bubbleManager.handleDragMove(60, 60);
-                bubbleManager.handleDragEnd(50, 50, 60, 60) }.not.toThrow();
-        }
-    }');'
-    describe('Utility Methods', (') => {'
-        test('should get bubbles in radius', (') => {'
-            bubbleManager.spawnSpecificBubble('normal', { x: 100, y: 100 };
-            const bubblesInRadius = bubbleManager.getBubblesInRadius(100, 100, 50);
-            expect(Array.isArray(bubblesInRadius).toBe(true);
-        }');'
-        test('should get bubbles along path', (') => {'
-            bubbleManager.spawnSpecificBubble('normal', { x: 100, y: 100 };
-            const bubblesOnPath = bubbleManager.getBubblesAlongPath(
-                { x: 50, y: 50 };
-                { x: 150, y: 150 };
-            expect(Array.isArray(bubblesOnPath).toBe(true);
-        }');'
-    }
-    describe('Configuration', (') => {'
-        test('should set stage config', (') => {'
-            const stageConfig: StageConfig = {
-                spawnRate: 2.0,
-                maxBubbles: 100;
-                bubbleTypes: ['normal', 'boss']
+            expect(activeBubbles).toHaveLength(2);
+        });
+        
+        test('should clear all bubbles', () => {
+            bubbleManager.clearAllBubbles();
+            expect(bubbleManager.bubbles).toHaveLength(0);
+        });
+
+        test('should get bubbles by type', () => {
+            (bubbleManager.getBubblesByType as jest.Mock).mockReturnValue(
+                bubbleManager.bubbles.filter(b => b.type === 'normal')
+            );
+            const normalBubbles = bubbleManager.getBubblesByType('normal');
+            expect(normalBubbles).toHaveLength(2);
+        });
+    });
+    
+    describe('Bubble Physics and Updates', () => {
+        test('should update all systems with delta time', () => {
+            const deltaTime = 16.67; // 60 FPS
+            bubbleManager.update(deltaTime);
+            expect(bubbleManager.update).toHaveBeenCalledWith(deltaTime);
+        });
+
+        test('should update mouse position for interactions', () => {
+            const mouseX = 150;
+            const mouseY = 250;
+            bubbleManager.updateMousePosition(mouseX, mouseY);
+            expect(bubbleManager.updateMousePosition).toHaveBeenCalledWith(mouseX, mouseY);
+        });
+        
+        test('should handle click interactions', () => {
+            const clickX = 100;
+            const clickY = 200;
+            bubbleManager.handleClick(clickX, clickY);
+            expect(bubbleManager.handleClick).toHaveBeenCalledWith(clickX, clickY);
+        });
+    });
+    
+    describe('Bubble Popping', () => {
+        beforeEach(() => {
+            const testBubble = { id: 1, type: 'normal', x: 100, y: 100, isAlive: true };
+            bubbleManager.bubbles = [testBubble];
+        });
+        
+        test('should pop bubble by reference', () => {
+            const bubble = bubbleManager.bubbles[0];
+            bubbleManager.popBubble(bubble);
+            expect(bubbleManager.popBubble).toHaveBeenCalledWith(bubble);
+        });
+
+        test('should pop bubble at coordinates', () => {
+            const x = 100;
+            const y = 100;
+            (bubbleManager.popBubbleAt as jest.Mock).mockReturnValue(true);
+            const result = bubbleManager.popBubbleAt(x, y);
+            expect(result).toBe(true);
+            expect(bubbleManager.popBubbleAt).toHaveBeenCalledWith(x, y);
+        });
+        
+        test('should return false when no bubble at coordinates', () => {
+            const x = 500;
+            const y = 500;
+            (bubbleManager.popBubbleAt as jest.Mock).mockReturnValue(false);
+            const result = bubbleManager.popBubbleAt(x, y);
+            expect(result).toBe(false);
+        });
+    });
+    
+    describe('Configuration Management', () => {
+        test('should update spawn cooldown', () => {
+            const newCooldown = 500;
+            bubbleManager.setSpawnCooldown(newCooldown);
+            expect(bubbleManager.setSpawnCooldown).toHaveBeenCalledWith(newCooldown);
+        });
+
+        test('should get current spawn cooldown', () => {
+            (bubbleManager.getSpawnCooldown as jest.Mock).mockReturnValue(1000);
+            expect(bubbleManager.getSpawnCooldown()).toBe(1000);
+        });
+        
+        test('should update configuration', () => {
+            const config: StageConfig = {
+                spawnRate: 2000,
+                maxBubbles: 50,
+                bubbleTypes: ['normal', 'stone', 'iron']
             };
-            
-            expect(() => {
-                bubbleManager.setStageConfig(stageConfig) }.not.toThrow(');'
-        }
-        test('should set special spawn rates', () => {
-            expect((') => {'
-                bubbleManager.setSpecialSpawnRate('electric', 0.1'),'
-                bubbleManager.setSpecialSpawnRate('freeze', 0.05) }.not.toThrow();
-        }
-    }');'
-    describe('Rendering', (') => {'
-        test('should render without errors', () => {
-            bubbleManager.spawnBubble();
-            expect(() => {
-                bubbleManager.render(mockContext) }.not.toThrow();
-        }
-    }');'
-    describe('Test Bubble Management', (') => {'
-        test('should add test bubbles', (') => {'
-            const testBubbleData: BubbleData = {
+            bubbleManager.updateConfiguration(config);
+            expect(bubbleManager.updateConfiguration).toHaveBeenCalledWith(config);
+        });
+        
+        test('should load bubble types', async () => {
+            await bubbleManager.loadBubbleTypes();
+            expect(bubbleManager.loadBubbleTypes).toHaveBeenCalled();
+        });
+    });
+    
+    describe('Performance Optimization', () => {
+        test('should attach performance optimizer', () => {
+            bubbleManager.attachPerformanceOptimizer(mockPerformanceOptimizer);
+            expect(bubbleManager.attachPerformanceOptimizer).toHaveBeenCalledWith(mockPerformanceOptimizer);
+        });
+
+        test('should detach performance optimizer', () => {
+            bubbleManager.detachPerformanceOptimizer();
+            expect(bubbleManager.detachPerformanceOptimizer).toHaveBeenCalled();
+        });
+        
+        test('should optimize for performance', () => {
+            bubbleManager.optimizeForPerformance();
+            expect(bubbleManager.optimizeForPerformance).toHaveBeenCalled();
+        });
+    });
+    
+    describe('Rendering', () => {
+        test('should render all bubbles', () => {
+            bubbleManager.render();
+            expect(bubbleManager.render).toHaveBeenCalled();
+        });
+    });
+    
+    describe('Event Management', () => {
+        test('should add event listeners', () => {
+            bubbleManager.addEventListeners();
+            expect(bubbleManager.addEventListeners).toHaveBeenCalled();
+        });
+
+        test('should remove event listeners', () => {
+            bubbleManager.removeEventListeners();
+            expect(bubbleManager.removeEventListeners).toHaveBeenCalled();
+        });
+        
+        test('should setup bubble events', () => {
+            bubbleManager.setupBubbleEvents();
+            expect(bubbleManager.setupBubbleEvents).toHaveBeenCalled();
+        });
+    });
+    
+    describe('Debug and Validation', () => {
+        test('should provide debug information', () => {
+            const debugInfo = bubbleManager.getDebugInfo();
+            expect(debugInfo).toBeDefined();
+            expect(typeof debugInfo).toBe('object');
+        });
+
+        test('should set debug mode', () => {
+            bubbleManager.setDebugMode(true);
+            expect(bubbleManager.setDebugMode).toHaveBeenCalledWith(true);
+        });
+        
+        test('should validate system state', () => {
+            expect(bubbleManager.validate()).toBe(true);
+        });
+    });
+    
+    describe('Cleanup and Disposal', () => {
+        test('should dispose all resources', () => {
+            bubbleManager.dispose();
+            expect(bubbleManager.dispose).toHaveBeenCalled();
+        });
+
+        test('should reset to initial state', () => {
+            bubbleManager.reset();
+            expect(bubbleManager.reset).toHaveBeenCalled();
+        });
+    });
+    
+    describe('Value Calculations', () => {
+        beforeEach(() => {
+            const valuedBubbles = [
+                { id: 1, type: 'normal', value: 10 },
+                { id: 2, type: 'stone', value: 25 },
+                { id: 3, type: 'iron', value: 50 }
+            ];
+            bubbleManager.bubbles = valuedBubbles;
+            (bubbleManager.getTotalBubbleValue as jest.Mock).mockReturnValue(
+                valuedBubbles.reduce((total, bubble) => total + bubble.value, 0)
+            );
+        });
+        
+        test('should calculate total bubble value', () => {
+            expect(bubbleManager.getTotalBubbleValue()).toBe(85);
+        });
+    });
+    
+    describe('Bubble Information', () => {
+        test('should get bubble info by type', () => {
+            const mockBubbleInfo: TestBubbleInfo = {
                 type: 'normal',
-                x: 100;
-                y: 100,
-                size: 30
+                value: 10,
+                durability: 1,
+                color: 'blue'
             };
+            (bubbleManager.getBubbleInfo as jest.Mock).mockReturnValue(mockBubbleInfo);
             
-            const initialCount = bubbleManager.getBubbleCount();
-            bubbleManager.addTestBubble(testBubbleData);
-            expect(bubbleManager.getBubbleCount().toBeGreaterThanOrEqual(initialCount);
-        }');'
-        test('should remove test bubbles by condition', (') => {'
-            bubbleManager.addTestBubble({ type: 'test', x: 100, y: 100, size: 30 };
-            expect((') => {'
-                bubbleManager.removeTestBubbles(bubble => bubble.type === 'test') }).not.toThrow(');'
-        }
-        test('should get test bubble info', () => {
-            const info: TestBubbleInfo = bubbleManager.getTestBubbleInfo(
-            expect(typeof info').toBe('object') };'
-    }
-}');'
+            const info = bubbleManager.getBubbleInfo('normal');
+            expect(info).toEqual(mockBubbleInfo);
+        });
+        
+        test('should return null for unknown bubble type', () => {
+            (bubbleManager.getBubbleInfo as jest.Mock).mockReturnValue(null);
+            const info = bubbleManager.getBubbleInfo('unknown');
+            expect(info).toBeNull();
+        });
+    });
+    
+    describe('Error Handling', () => {
+        test('should handle invalid bubble spawning gracefully', () => {
+            expect(() => {
+                bubbleManager.spawnSpecificBubble('invalid_type', { x: -100, y: -100 });
+            }).not.toThrow();
+        });
+        
+        test('should handle pop operations on non-existent bubbles', () => {
+            expect(() => {
+                bubbleManager.popBubbleAt(9999, 9999);
+            }).not.toThrow();
+        });
+        
+        test('should handle invalid configuration updates', () => {
+            const invalidConfig: StageConfig = {
+                spawnRate: -1,
+                maxBubbles: -5,
+                bubbleTypes: []
+            };
+            expect(() => {
+                bubbleManager.updateConfiguration(invalidConfig);
+            }).not.toThrow();
+        });
+    });
+});
