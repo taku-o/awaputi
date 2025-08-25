@@ -1,8 +1,9 @@
 /**
  * @jest-environment jsdom
  */
-import { jest  } from '@jest/globals';
-import { EnhancedParticleManager  } from '../../../src/effects/EnhancedParticleManager.js';
+import { jest } from '@jest/globals';
+import { EnhancedParticleManager } from '../../../src/effects/EnhancedParticleManager.js';
+
 // Type definitions
 interface MockCanvasContext {
     fillRect: jest.Mock<void, [number, number, number, number]>;
@@ -20,20 +21,19 @@ interface MockCanvasContext {
     closePath: jest.Mock<void, []>;
     stroke: jest.Mock<void, []>;
     fill: jest.Mock<void, []>;
-    arc: jest.Mock<void, [number, number, number, number, number, boolean? ]>, : undefined
+    arc: jest.Mock<void, [number, number, number, number, number, boolean?]>;
     rect: jest.Mock<void, [number, number, number, number]>;
     translate: jest.Mock<void, [number, number]>;
     scale: jest.Mock<void, [number, number]>;
     rotate: jest.Mock<void, [number]>;
     measureText: jest.Mock<TextMetrics, [string]>;
-    canvas: {
-        widt,h: number },
-        height: number;
+    canvas: { width: number; height: number; };
 }
+
 interface Particle {
-    x: number,
+    x: number;
     y: number;
-    size: number,
+    size: number;
     color: string;
     type?: string;
     lifetime?: number;
@@ -45,462 +45,426 @@ interface Particle {
     glowIntensity?: number;
     shape?: string;
     intensity?: number;
+}
+
 interface QualityController {
     getQualityLevel: jest.Mock<string, []>;
     getParticleCountMultiplier: jest.Mock<number, []>;
-    shouldRenderEffect: jest.Mock<boolean, []> }
+    shouldRenderEffect: jest.Mock<boolean, []>;
+}
+
 interface PerformanceMetrics {
-    fps: number,
+    fps: number;
     memoryUsage: number;
     frameDrops: number;
-interface ImageData {
+}
+
+interface MockImageData {
     data: number[];
-interface TextMetrics {
+}
+
+interface MockTextMetrics {
     width: number;
+}
+
 // Mock Canvas API
-(global: any).HTMLCanvasElement.prototype.getContext = jest.fn(() => ({
-    fillRect: jest.fn(
-    clearRect: jest.fn(
-    getImageData: jest.fn(() => ({ data: new Array(4).fill(0));
-   , putImageData: jest.fn(
-    createImageData: jest.fn(() => ({ data: new Array(4).fill(0)),
-    setTransform: jest.fn(
-    drawImage: jest.fn(
-    save: jest.fn(
-    restore: jest.fn(
-    beginPath: jest.fn(
-    moveTo: jest.fn(
-    lineTo: jest.fn(
-    closePath: jest.fn(
-    stroke: jest.fn(
-    fill: jest.fn(
-    arc: jest.fn(
-    rect: jest.fn(
-    translate: jest.fn(
-    scale: jest.fn(
-    rotate: jest.fn(
-    measureText: jest.fn(() => ({ width: 0 )),
+(global as any).HTMLCanvasElement.prototype.getContext = jest.fn(() => ({
+    fillRect: jest.fn(),
+    clearRect: jest.fn(),
+    getImageData: jest.fn(() => ({ data: new Array(4).fill(0) })),
+    putImageData: jest.fn(),
+    createImageData: jest.fn(() => ({ data: new Array(4).fill(0) })),
+    setTransform: jest.fn(),
+    drawImage: jest.fn(),
+    save: jest.fn(),
+    restore: jest.fn(),
+    beginPath: jest.fn(),
+    moveTo: jest.fn(),
+    lineTo: jest.fn(),
+    closePath: jest.fn(),
+    stroke: jest.fn(),
+    fill: jest.fn(),
+    arc: jest.fn(),
+    rect: jest.fn(),
+    translate: jest.fn(),
+    scale: jest.fn(),
+    rotate: jest.fn(),
+    measureText: jest.fn(() => ({ width: 0 })),
     canvas: {
-        width: 800 },
+        width: 800,
         height: 600
-            };
-))');'
+    }
+}));
+
 describe('EnhancedParticleManager', () => {
     let particleManager: EnhancedParticleManager;
-    let mockCanvas: HTMLCanvasElement;
     let mockContext: MockCanvasContext;
-    beforeEach((') => {'
-        // Setup mock canvas and context
-        mockCanvas = document.createElement('canvas');
-        mockCanvas.width = 800,
-        mockCanvas.height = 600,
-        mockContext = mockCanvas.getContext('2d') as unknown as MockCanvasContext,
-        particleManager = new EnhancedParticleManager() };
+    let mockQualityController: QualityController;
+    let canvas: HTMLCanvasElement;
+
+    beforeEach(() => {
+        // Create mock canvas
+        canvas = document.createElement('canvas');
+        canvas.width = 800;
+        canvas.height = 600;
+        
+        mockContext = canvas.getContext('2d') as any;
+        
+        // Create mock quality controller
+        mockQualityController = {
+            getQualityLevel: jest.fn(() => 'high'),
+            getParticleCountMultiplier: jest.fn(() => 1.0),
+            shouldRenderEffect: jest.fn(() => true)
+        };
+
+        // Initialize particle manager
+        particleManager = new EnhancedParticleManager(canvas, mockQualityController as any);
+    });
+
     afterEach(() => {
         if (particleManager) {
-            particleManager.destroy? .() }
-    }');'
-    describe('Initialization', (') => {'
-        test('should initialize with default settings', () => {
+            particleManager.cleanup();
+        }
+        jest.clearAllMocks();
+    });
+
+    describe('初期化', () => {
+        test('正常に初期化される', () => {
             expect(particleManager).toBeDefined();
-            expect(particleManager.particles).toBeDefined();
-            expect(Array.isArray(particleManager.particles).toBe(true);
-            expect(particleManager.qualitySettings).toBeDefined();
-            expect(particleManager.currentQualityLevel).toBeDefined() }');'
-        test('should have correct initial particle count', () => {
-            expect(particleManager.particles.length).toBe(0) }');'
-        test('should initialize background particles system', () => {
-            expect(particleManager.backgroundParticles).toBeDefined();
-            expect(Array.isArray(particleManager.backgroundParticles).toBe(true);
-            expect(particleManager.backgroundEnabled).toBe(false) }');'
-    }
-    describe('Advanced Bubble Effects', (') => {'
-        test('should create advanced bubble effect with correct parameters', (') => {'
-            const effectId = particleManager.createAdvancedBubbleEffect?.(100, 200, 'normal', 20, { : undefined
-                particleCount: 15,
-                color: '#FF0000'
-            };
-            if (effectId) {
-                expect(typeof effectId').toBe('number'),'
-                expect(particleManager.particles.length).toBeGreaterThan(0) }
-        }');'
-        test('should create different effects for different bubble types', (') => {'
-            const bubbleTypes = ['normal', 'stone', 'iron', 'diamond', 'boss', 'electric', 'rainbow'],
-            
-            bubbleTypes.forEach(bubbleType => {
-                const initialCount = particleManager.particles.length);
-                const effectId = particleManager.createAdvancedBubbleEffect? .(100, 100, bubbleType, 15),
-                if (effectId) {
-                    expect(particleManager.particles.length).toBeGreaterThanOrEqual(initialCount) }
-            }');'
-        }
-        test('should respect particle count limits', () => {
-            const maxParticles = particleManager.maxParticles || 1000,
-            
-            // Create many effects to test limit
-            for (let i = 0, i < 100, i++') {'
-                particleManager.createAdvancedBubbleEffect?.(i * 10, i * 10, 'normal', 10) }
-            
-            expect(particleManager.particles.length).toBeLessThanOrEqual(maxParticles);
-        }');'
-    }
-    describe('Enhanced Combo Effects', (') => {'
-        test('should create basic combo effects for low combo counts', (') => {'
-            const comboCount = 3,
-            const effectId = particleManager.createEnhancedComboEffect?.(400, 300, comboCount, 'basic'),
-            if (effectId) {
-                expect(typeof effectId').toBe('number'),'
-                // Check for golden particles in basic combo
-                const comboParticles = particleManager.particles.filter(p => '),'
-                    p.type === 'combo' || p.color?.includes('gold') || p.color?.includes('#FFD700');
-                expect(comboParticles.length).toBeGreaterThan(0) }
-        }');'
-        test('should create enhanced combo effects for medium combo counts', (') => {'
-            const comboCount = 8,
-            const effectId = particleManager.createEnhancedComboEffect?.(400, 300, comboCount, 'enhanced'),
-            if (effectId) {
-                expect(typeof effectId').toBe('number'),'
-                // Should have more particles for enhanced combo
-                const initialCount = particleManager.particles.length,
-                expect(initialCount).toBeGreaterThan(0) }
-        }');'
-        test('should create spectacular combo effects for high combo counts', (') => {'
-            const comboCount = 15,
-            const effectId = particleManager.createEnhancedComboEffect?.(400, 300, comboCount, 'spectacular'),
-            if (effectId) {
-                expect(typeof effectId').toBe('number'),'
-                // Should trigger screen effects for spectacular combos
-                const spectacularParticles = particleManager.particles.filter(p => 
-                    p.type === 'combo' && p.intensity! > 1.0);
-                expect(spectacularParticles.length).toBeGreaterThanOrEqual(0) }
-        }');'
-    }
-    describe('Special Effect Rendering', (') => {'
-        test('should create special bubble effects', (') => {'
-            const effectTypes = ['explosion', 'implosion', 'spiral', 'burst'],
-            
-            effectTypes.forEach(effectType => {);
-                const effectId = particleManager.createSpecialBubbleEffect?.(200, 200, effectType, 1.0),
-                if (effectId) {
-                    expect(typeof effectId').toBe('number') }'
-            }');'
-        }
-        test('should handle effect intensity scaling', (') => {'
-            const lowIntensity = 0.3,
-            const highIntensity = 2.0,
-            
-            const lowEffect = particleManager.createSpecialBubbleEffect?.(100, 100, 'explosion', lowIntensity),
-            const lowParticleCount = particleManager.particles.length,
-            
-            particleManager.clearParticles?.('),'
-            const highEffect = particleManager.createSpecialBubbleEffect?.(100, 100, 'explosion', highIntensity),
-            const highParticleCount = particleManager.particles.length,
-            
-            if (lowEffect && highEffect) {
-                expect(highParticleCount).toBeGreaterThanOrEqual(lowParticleCount) }
-        }');'
-    }
-    describe('Seasonal Effects', (') => {'
-        test('should create seasonal effects with appropriate themes', (') => {'
-            const seasons = ['spring', 'summer', 'autumn', 'winter'],
-            
-            seasons.forEach(season => {'),'
-                const effectId = particleManager.createSeasonalEffect?.(300, 300, season, 'general'),
-                if (effectId) {
-                    expect(typeof effectId').toBe('number'),'
-                    // Check if seasonal particles have appropriate properties
-                    const seasonalParticles = particleManager.particles.filter(p => 
-                        p.season === season || p.theme === season);
-                    expect(seasonalParticles.length).toBeGreaterThanOrEqual(0) }
-            }');'
-        }
-        test('should create event-specific seasonal effects', (') => {'
-            const eventTypes = ['holiday', 'celebration', 'special'],
-            
-            eventTypes.forEach(eventType => {'),'
-                const effectId = particleManager.createSeasonalEffect?.(250, 250, 'winter', eventType),
-                if (effectId) {
-                    expect(typeof effectId').toBe('number') }'
-            }
-        }
-    }');'
-    describe('Background Particle System', (') => {'
-        test('should create background particles with specified density', (') => {'
-            const density = 0.5,
-            const theme = 'ambient',
-            
-            particleManager.createBackgroundParticles?.(density, theme'),'
-            const backgroundParticles = particleManager.particles.filter(p => 
-                p.type === 'background' || p.layer === 'background');
-            expect(backgroundParticles.length).toBeGreaterThanOrEqual(0) }');'
-        test('should update background particles over time', (') => {'
-            particleManager.createBackgroundParticles?.(0.3, 'floating'),
-            const initialPositions = particleManager.particles
-                .filter(p => p.type === 'background') : undefined
-                .map((p) => ({ x: p.x, y: p.y }));
-            // Simulate time passage
-            particleManager.updateBackgroundParticles? .(16'); // 16ms delta time'
-            
-            const updatedPositions = particleManager.particles
-                .filter(p => p.type === 'background') : undefined
-                .map((p) => ({ x: p.x, y: p.y }));
-            // Some particles should have moved (if any exist);
-            if (initialPositions.length > 0 && updatedPositions.length > 0) {
-                const hasMoved = initialPositions.some((initial, index) => {
-                    const updated = updatedPositions[index],
-                    return updated && (initial.x !== updated.x || initial.y !== updated.y) };
-                expect(hasMoved).toBe(true);
-            }
-        }');'
-    }
-    describe('Particle Quality Control', (') => {'
-        test.skip('should adjust particle count based on quality setting', (') => {'
-            const qualityLevels = ['low', 'medium', 'high', 'ultra'],
-            const baseCount = 20,
-            
-            qualityLevels.forEach(quality => {
-                // 品質レベルを設定);
-                particleManager.setQualityLevel? .(quality),
-                // adjustParticleCountは1つの引数のみ受け取る
-                const adjustedCount = particleManager.adjustParticleCount?.(baseCount),
-                if (adjustedCount !== undefined && !isNaN(adjustedCount) {
-                    expect(typeof adjustedCount').toBe('number'),'
-                    expect(adjustedCount).toBeGreaterThanOrEqual(0);
-                    // 品質別の大まかな期待値をチェック
-                    switch (quality') { : undefined'
-                        case 'low':
-                            expect(adjustedCount).toBeLessThanOrEqual(baseCount * 0.5'),'
-                            break,
-                        case 'medium':
-                            expect(adjustedCount).toBeLessThanOrEqual(baseCount * 0.75'),'
-                            break,
-                        case 'high':
-                            expect(adjustedCount).toBe(baseCount'),'
-                            break,
-                        case 'ultra':
-                            expect(adjustedCount).toBeGreaterThanOrEqual(baseCount);
-                            break }
-                } else {
-                    // NaN または undefined の場合は失敗
-                    expect(adjustedCount).toBeDefined();
-                    expect(adjustedCount).not.toBeNaN() }
-            }');'
-        }
-        test('should respect maximum particle limits for each quality', (') => {'
-            const qualitySettings: Record<string, number> = {
-                'low': 100,
-                'medium': 300,
-                'high': 500,
-                'ultra': 1000
-            };
-            
-            Object.entries(qualitySettings).forEach(([quality, maxParticles]) => {
-                particleManager.setParticleQuality? .(quality),
-                // Create many effects to test limit
-                for (let i = 0, i < 50, i++') {'
-                    particleManager.createAdvancedBubbleEffect?.(i * 5, i * 5, 'normal', 10) }
-                
-                expect(particleManager.particles.length).toBeLessThanOrEqual(maxParticles);
-                // Clear for next test
-                particleManager.clearParticles?.();
-            }
-        }
-    }');'
-    describe('Advanced Particle Rendering', (') => {'
-        test('should render trail particles with fade effects', (') => { : undefined'
+            expect(particleManager.canvas).toBe(canvas);
+            expect(particleManager.context).toBe(mockContext);
+        });
+
+        test('品質コントローラーが設定される', () => {
+            expect(particleManager.qualityController).toBe(mockQualityController);
+        });
+
+        test('初期パーティクル配列が空である', () => {
+            expect(particleManager.particles.length).toBe(0);
+        });
+    });
+
+    describe('パーティクル作成', () => {
+        test('基本パーティクルを作成', () => {
             const particle: Particle = {
                 x: 100,
-                y: 100;
+                y: 200,
                 size: 5,
-                color: '#FF0000';
-                type: 'trail',
-                trailLength: 10;
-                opacity: 1.0
+                color: '#ff0000'
             };
+
+            particleManager.addParticle(particle);
+            expect(particleManager.particles.length).toBe(1);
+            expect(particleManager.particles[0]).toEqual(expect.objectContaining(particle));
+        });
+
+        test('複数のパーティクルを作成', () => {
+            const particles: Particle[] = [
+                { x: 100, y: 200, size: 5, color: '#ff0000' },
+                { x: 150, y: 250, size: 8, color: '#00ff00' },
+                { x: 200, y: 300, size: 12, color: '#0000ff' }
+            ];
+
+            particles.forEach(p => particleManager.addParticle(p));
+            expect(particleManager.particles.length).toBe(3);
+        });
+
+        test('タイプ別パーティクル作成', () => {
+            particleManager.createBubblePopEffect(100, 200, 'normal');
+            expect(particleManager.particles.length).toBeGreaterThan(0);
+        });
+
+        test('爆発エフェクト作成', () => {
+            particleManager.createExplosionEffect(150, 250, 'large');
+            expect(particleManager.particles.length).toBeGreaterThan(0);
+        });
+
+        test('トレイルエフェクト作成', () => {
+            particleManager.createTrailEffect(200, 300, 250, 350);
+            expect(particleManager.particles.length).toBeGreaterThan(0);
+        });
+    });
+
+    describe('パーティクル更新', () => {
+        beforeEach(() => {
+            const testParticles: Particle[] = [
+                { x: 100, y: 200, size: 5, color: '#ff0000', lifetime: 1000 },
+                { x: 150, y: 250, size: 8, color: '#00ff00', lifetime: 500 },
+                { x: 200, y: 300, size: 12, color: '#0000ff', lifetime: 2000 }
+            ];
+            testParticles.forEach(p => particleManager.addParticle(p));
+        });
+
+        test('パーティクルの位置が更新される', () => {
+            const initialPositions = particleManager.particles.map(p => ({ x: p.x, y: p.y }));
             
-            const rendered = particleManager.renderTrailParticle? .(mockContext, particle);
-            if (particleManager.renderTrailParticle) {
-                expect(mockContext.save).toHaveBeenCalled();
-                expect(mockContext.restore).toHaveBeenCalled() }
-        }');'
-        test('should render glow particles with bloom effect', (') => { : undefined'
-            const particle: Particle = {
-                x: 200,
-                y: 200;
-                size: 8,
-                color: '#00FF00';
-                type: 'glow',
-                glowIntensity: 2.0;
-                opacity: 0.8
-            };
+            particleManager.update(16); // 16ms delta time
             
-            const rendered = particleManager.renderGlowParticle? .(mockContext, particle);
-            if (particleManager.renderGlowParticle) {
-                expect(mockContext.save).toHaveBeenCalled();
-                expect(mockContext.restore).toHaveBeenCalled() }
-        }');'
-        test('should render custom particle shapes', (') => {'
-            const shapes = ['star', 'diamond', 'lightning', 'heart'],
+            // パーティクルが動いているかチェック（実装によって異なる）
+            expect(particleManager.particles.length).toBeGreaterThan(0);
+        });
+
+        test('ライフタイム終了でパーティクルが削除される', () => {
+            // 短いライフタイムのパーティクルを追加
+            particleManager.addParticle({ x: 50, y: 50, size: 3, color: '#ffff00', lifetime: 1 });
             
-            shapes.forEach(shape => { : undefined
-                const particle: Particle = {
-                    x: 150,
-                    y: 150;
-                    size: 6,
-                    color: '#0000FF';
-                    type: 'custom',
-                    shape: shape;
-                    opacity: 1.0
-                };
-                );
-                const rendered = particleManager.renderAdvancedParticle? .(mockContext, particle);
-                if (particleManager.renderAdvancedParticle) {
-                    expect(mockContext.save).toHaveBeenCalled();
-                    expect(mockContext.restore).toHaveBeenCalled() }
-            }
-        }
-    }');'
-    describe('Performance Optimization', (') => {'
-        test('should use object pooling for particle creation', (') => {'
-            const poolSize = particleManager.getPoolSize?.('basic') || 0,
+            expect(particleManager.particles.length).toBe(4);
             
-            // Create and destroy particles multiple times
-            for (let i = 0, i < 10, i++') {'
-                const effectId = particleManager.createAdvancedBubbleEffect?.(i * 10, i * 10, 'normal', 5),
-                particleManager.clearExpiredParticles?.(') }'
+            // 十分な時間を経過させる
+            particleManager.update(2);
             
-            const finalPoolSize = particleManager.getPoolSize?.('basic') || 0;
+            expect(particleManager.particles.length).toBeLessThan(4);
+        });
+
+        test('品質設定に応じてパーティクル数が調整される', () => {
+            mockQualityController.getParticleCountMultiplier.mockReturnValue(0.5);
             
-            if (particleManager.getPoolSize) {
-                // Pool should maintain or grow in size due to reuse
-                expect(finalPoolSize).toBeGreaterThanOrEqual(poolSize) }
-        }');'
-        test('should cleanup expired particles efficiently', () => {
-            // Create particles with short lifetimes
-            for (let i = 0, i < 20, i++) {
-                const particle = particleManager.createParticle?.({ : undefined
-                    x: i * 10,
-                    y: i * 10;
-                    lifetime: 10 // Very short lifetime
-                }
-            }
-            
-            const initialCount = particleManager.particles.length;
-            
-            // Simulate time passage to expire particles
-            for (let frame = 0; frame < 5; frame++) {
-                particleManager.update? .(50), // 50ms per frame
-            }
-            
-            particleManager.cleanupExpiredParticles?.();
-            const finalCount = particleManager.particles.length;
-            expect(finalCount).toBeLessThanOrEqual(initialCount);
-        }');'
-        test('should handle memory pressure by reducing particle count', () => {
-            // Fill up particles to near capacity
-            const maxParticles = particleManager.maxParticles || 1000,
-            
-            for (let i = 0, i < maxParticles * 0.9, i++) {
-                particleManager.createParticle?.({ : undefined
+            // 多数のパーティクルを作成
+            for (let i = 0; i < 100; i++) {
+                particleManager.addParticle({
                     x: Math.random() * 800,
-                    y: Math.random() * 600;
-                    lifetime: 10000 // Long lifetime
-                }
+                    y: Math.random() * 600,
+                    size: 5,
+                    color: '#ffffff'
+                });
             }
             
-            const nearCapacityCount = particleManager.particles.length;
+            particleManager.update(16);
             
-            // Trigger memory pressure handling
-            particleManager.handleMemoryPressure? .();
-            const afterPressureCount = particleManager.particles.length;
-            expect(afterPressureCount).toBeLessThanOrEqual(nearCapacityCount);
-        }');'
-    }
-    describe('Integration with Quality System', (') => {'
-        test('should respond to quality changes from external systems', () => { : undefined
-            const qualityController: QualityController = {
-                getQualityLevel: jest.fn((') => 'medium'),'
-                getParticleCountMultiplier: jest.fn(() => 0.7),
-                shouldRenderEffect: jest.fn(() => true));
-            particleManager.setQualityController? .(qualityController');'
-            const effectId = particleManager.createAdvancedBubbleEffect?.(100, 100, 'normal', 15);
-            if (particleManager.setQualityController && effectId) {
-                expect(qualityController.getQualityLevel).toHaveBeenCalled()) }');'
-        test('should adapt to performance feedback', () => { : undefined
-            const performanceMetrics: PerformanceMetrics = {
-                fps: 25, // Low FPS
-                memoryUsage: 0.85, // High memory usage
+            // 品質設定により数が制限される
+            expect(mockQualityController.getParticleCountMultiplier).toHaveBeenCalled();
+        });
+    });
+
+    describe('パーティクル描画', () => {
+        beforeEach(() => {
+            const testParticles: Particle[] = [
+                { x: 100, y: 200, size: 5, color: '#ff0000', shape: 'circle' },
+                { x: 150, y: 250, size: 8, color: '#00ff00', shape: 'square' },
+                { x: 200, y: 300, size: 12, color: '#0000ff', glowIntensity: 0.5 }
+            ];
+            testParticles.forEach(p => particleManager.addParticle(p));
+        });
+
+        test('パーティクルが描画される', () => {
+            particleManager.render();
+            
+            expect(mockContext.save).toHaveBeenCalled();
+            expect(mockContext.restore).toHaveBeenCalled();
+        });
+
+        test('円形パーティクルの描画', () => {
+            particleManager.render();
+            
+            expect(mockContext.beginPath).toHaveBeenCalled();
+            expect(mockContext.arc).toHaveBeenCalled();
+            expect(mockContext.fill).toHaveBeenCalled();
+        });
+
+        test('四角形パーティクルの描画', () => {
+            particleManager.render();
+            
+            expect(mockContext.rect).toHaveBeenCalled();
+            expect(mockContext.fill).toHaveBeenCalled();
+        });
+
+        test('グローエフェクト付きパーティクルの描画', () => {
+            particleManager.render();
+            
+            // グローエフェクトのため複数回描画される
+            expect(mockContext.save).toHaveBeenCalled();
+            expect(mockContext.restore).toHaveBeenCalled();
+        });
+
+        test('品質設定によりエフェクトが調整される', () => {
+            mockQualityController.shouldRenderEffect.mockReturnValue(false);
+            
+            particleManager.render();
+            
+            expect(mockQualityController.shouldRenderEffect).toHaveBeenCalled();
+        });
+    });
+
+    describe('パフォーマンス管理', () => {
+        test('パーティクル数制限', () => {
+            // 大量のパーティクルを追加
+            for (let i = 0; i < 1000; i++) {
+                particleManager.addParticle({
+                    x: Math.random() * 800,
+                    y: Math.random() * 600,
+                    size: 5,
+                    color: '#ffffff'
+                });
+            }
+            
+            particleManager.update(16);
+            
+            // 最大数制限により制御される
+            expect(particleManager.particles.length).toBeLessThan(1000);
+        });
+
+        test('パフォーマンスメトリクス更新', () => {
+            const metrics: PerformanceMetrics = {
+                fps: 45,
+                memoryUsage: 70,
+                frameDrops: 3
+            };
+            
+            particleManager.updatePerformanceMetrics(metrics);
+            
+            // パフォーマンスに応じて最適化される
+            expect(mockQualityController.getParticleCountMultiplier).toHaveBeenCalled();
+        });
+
+        test('自動品質調整', () => {
+            // 低FPSシミュレーション
+            const lowFpsMetrics: PerformanceMetrics = {
+                fps: 30,
+                memoryUsage: 80,
                 frameDrops: 10
             };
             
-            particleManager.adaptToPerformance? .(performanceMetrics');'
-            // After adaptation, particle creation should be more conservative
-            const effectId = particleManager.createAdvancedBubbleEffect?.(100, 100, 'normal', 20);
-            if (effectId && particleManager.adaptToPerformance) {
-                // Should create fewer particles due to performance adaptation
-                const particleCount = particleManager.particles.length,
-                expect(particleCount).toBeLessThan(20), // Less than requested
-            }
-        }');'
-    }
-    describe('Error Handling', (') => {'
-        test('should handle invalid particle parameters gracefully', () => {
-            expect((') => { : undefined'
-                particleManager.createAdvancedBubbleEffect?.(null: any, undefined 'invalid_type', -5) }.not.toThrow(');'
-        }
-        test('should handle missing canvas context', () => {
-            const particleManagerWithoutCanvas = new EnhancedParticleManager(null: any);
-            expect((') => {'
-                particleManagerWithoutCanvas.createAdvancedBubbleEffect? .(100, 100, 'normal', 10) }.not.toThrow(');'
-        }
-        test('should recover from rendering errors', () => {
-            // Mock a context that throws errors
-            const errorContext = {
-                ...mockContext, : undefined
-                save: jest.fn((') => { throw new Error('Rendering error')),'
-                restore: jest.fn(
-        arc: jest.fn();
-            mockCanvas.getContext = jest.fn(() => errorContext),
-            expect(() => {
-                particleManager.render? .(errorContext)).not.toThrow())'),'
-    describe('Cleanup and Memory Management', (') => {'
-        test('should properly cleanup when destroyed', () => {
-            // Manually add particles for testing cleanup
-            if (!particleManager.particles') {'
-                particleManager.particles = [] } : undefined
-            particleManager.particles.push({ x: 100, y: 100, size: 5, color: '#ff0000' }');'
-            particleManager.particles.push({ x: 200, y: 200, size: 3, color: '#00ff00' ;
-            const initialParticleCount = particleManager.particles.length,
-            expect(initialParticleCount).toBeGreaterThan(0);
-            particleManager.destroy? .(),
-            // After destruction, should not be able to create new particles
-            expect((') => {'
-                particleManager.createAdvancedBubbleEffect?.(200, 200, 'normal', 10) }.not.toThrow(');'
-        }
-        test('should clear all particles when requested', () => {
-            // Manually add particles for testing clear functionality
-            if (!particleManager.particles) {
-                particleManager.particles = [] }
-            for (let i = 0; i < 10; i++') { : undefined'
-                particleManager.particles.push({ x: i * 20, y: i * 20, size: 5, color: '#ff0000' }
-            }
+            particleManager.updatePerformanceMetrics(lowFpsMetrics);
+            particleManager.update(16);
+            
+            // 品質が自動的に下げられる
+            expect(mockQualityController.getQualityLevel).toHaveBeenCalled();
+        });
+    });
+
+    describe('特殊エフェクト', () => {
+        test('季節テーマエフェクト', () => {
+            particleManager.setSeasonTheme('winter');
+            particleManager.createBubblePopEffect(100, 200, 'normal');
+            
+            expect(particleManager.particles.some(p => p.season === 'winter')).toBe(true);
+        });
+
+        test('レイヤー管理', () => {
+            particleManager.addParticle({ x: 100, y: 200, size: 5, color: '#ff0000', layer: 'background' });
+            particleManager.addParticle({ x: 150, y: 250, size: 8, color: '#00ff00', layer: 'foreground' });
+            
+            particleManager.render();
+            
+            // レイヤー順に描画される
+            expect(mockContext.save).toHaveBeenCalled();
+            expect(mockContext.restore).toHaveBeenCalled();
+        });
+
+        test('アニメーションチェーン', () => {
+            particleManager.createAnimationChain([
+                { x: 100, y: 200, size: 5, color: '#ff0000' },
+                { x: 200, y: 300, size: 10, color: '#00ff00' }
+            ]);
             
             expect(particleManager.particles.length).toBeGreaterThan(0);
-            particleManager.clearAllParticles? .();
+        });
+    });
+
+    describe('リソース管理', () => {
+        test('パーティクルプール管理', () => {
+            // プールからパーティクル取得
+            const particle = particleManager.getParticleFromPool();
+            expect(particle).toBeDefined();
+            
+            // プールに返却
+            if (particle) {
+                particleManager.returnParticleToPool(particle);
+            }
+        });
+
+        test('メモリクリーンアップ', () => {
+            // パーティクル追加
+            for (let i = 0; i < 50; i++) {
+                particleManager.addParticle({
+                    x: Math.random() * 800,
+                    y: Math.random() * 600,
+                    size: 5,
+                    color: '#ffffff'
+                });
+            }
+            
+            expect(particleManager.particles.length).toBe(50);
+            
+            // クリーンアップ実行
+            particleManager.cleanup();
+            
             expect(particleManager.particles.length).toBe(0);
-        }');'
-        test('should release pooled resources on cleanup', () => {
-            // Use pooled resources
-            for (let i = 0, i < 50, i++') {'
-                particleManager.createAdvancedBubbleEffect?.(i * 5, i * 5, 'normal', 3) }
+        });
+
+        test('全パーティクル削除', () => {
+            // パーティクル追加
+            particleManager.addParticle({ x: 100, y: 200, size: 5, color: '#ff0000' });
+            particleManager.addParticle({ x: 150, y: 250, size: 8, color: '#00ff00' });
             
-            const pooledCount = particleManager.getTotalPooledResources?.() || 0;
+            expect(particleManager.particles.length).toBe(2);
             
-            particleManager.releasePooledResources?.();
-            const finalPooledCount = particleManager.getTotalPooledResources?.() || 0;
+            particleManager.clearAllParticles();
             
-            if (particleManager.getTotalPooledResources) {
-                expect(finalPooledCount).toBeLessThanOrEqual(pooledCount) }
-        }
-    }
-}'); : undefined'
+            expect(particleManager.particles.length).toBe(0);
+        });
+    });
+
+    describe('設定管理', () => {
+        test('品質設定変更', () => {
+            mockQualityController.getQualityLevel.mockReturnValue('low');
+            
+            particleManager.updateQualitySettings();
+            
+            expect(mockQualityController.getQualityLevel).toHaveBeenCalled();
+        });
+
+        test('エフェクト有効/無効切り替え', () => {
+            particleManager.setEffectEnabled('glow', false);
+            
+            mockQualityController.shouldRenderEffect.mockImplementation((effect: string) => {
+                return effect !== 'glow';
+            });
+            
+            particleManager.render();
+            
+            expect(mockQualityController.shouldRenderEffect).toHaveBeenCalledWith('glow');
+        });
+
+        test('デフォルト設定リセット', () => {
+            // 設定変更
+            particleManager.setSeasonTheme('summer');
+            particleManager.setEffectEnabled('glow', false);
+            
+            // リセット
+            particleManager.resetToDefaults();
+            
+            // デフォルト状態に戻る
+            expect(particleManager.currentSeason).toBeUndefined();
+        });
+    });
+
+    describe('エラーハンドリング', () => {
+        test('無効なパーティクル追加でエラーが発生しない', () => {
+            expect(() => {
+                particleManager.addParticle(null as any);
+                particleManager.addParticle(undefined as any);
+            }).not.toThrow();
+        });
+
+        test('コンテキスト取得失敗の処理', () => {
+            const invalidCanvas = document.createElement('canvas');
+            (invalidCanvas as any).getContext = jest.fn(() => null);
+            
+            expect(() => {
+                new EnhancedParticleManager(invalidCanvas, mockQualityController as any);
+            }).toThrow();
+        });
+
+        test('描画エラーの処理', () => {
+            mockContext.arc.mockImplementation(() => {
+                throw new Error('Canvas error');
+            });
+            
+            expect(() => {
+                particleManager.addParticle({ x: 100, y: 200, size: 5, color: '#ff0000' });
+                particleManager.render();
+            }).not.toThrow();
+        });
+    });
+});

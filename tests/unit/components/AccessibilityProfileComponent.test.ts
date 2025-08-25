@@ -1,318 +1,460 @@
-import { jest  } from '@jest/globals';
-import { AccessibilityProfileComponent  } from '../../../src/components/AccessibilityProfileComponent.js';
+import { jest } from '@jest/globals';
+import { AccessibilityProfileComponent } from '../../../src/components/AccessibilityProfileComponent.js';
+
 // Type definitions
 interface MockGameEngine {
     settingsManager: {
-        ge,t: jest.Mock<any, [string]> };
-        set: jest.Mock<void, [string, any]> };
+        get: jest.Mock<any, [string]>;
+        set: jest.Mock<void, [string, any]>;
+    };
     audioManager: {
-        playUISound: jest.Mock<void, [string]> }
+        playUISound: jest.Mock<void, [string]>;
+    };
 }
+
 interface MockErrorHandler {
-    handleError: jest.Mock<void, [Error, string? , any?]> }
-interface MockLocalizationManager { : undefined
-    getText: jest.Mock<string, [string]> }
+    handleError: jest.Mock<void, [Error, string?, any?]>;
+}
+
+interface MockLocalizationManager {
+    getText: jest.Mock<string, [string]>;
+}
+
 interface AccessibilityProfile {
-    name: string,
+    name: string;
     displayName: string;
     description: string;
     isCustom?: boolean;
+}
+
 interface MockAccessibilitySettingsManager {
     getCurrentProfile: jest.Mock<AccessibilityProfile | null, []>;
     getAvailableProfiles: jest.Mock<AccessibilityProfile[], []>;
     switchProfile: jest.Mock<boolean, [string]>;
-    getStats: jest.Mock<{ profilesUse,d: number,, currentProfile: string;, []>;
+    getStats: jest.Mock<{ profilesUsed: number; currentProfile: string }, []>;
 }
+
 interface ComponentStats {
-    isInitialized: boolean,
+    isInitialized: boolean;
     currentProfile: string;
-    availableProfilesCount: number,
+    availableProfilesCount: number;
     profilesUsed: number;
+}
+
 interface Announcer {
-    announce: jest.Mock<void, [string]> }
+    announce: jest.Mock<void, [string]>;
+}
+
 // モックの作成
 const mockGameEngine: MockGameEngine = {
     settingsManager: {
-        get: jest.fn( },
-        set: jest.fn( },
+        get: jest.fn(),
+        set: jest.fn()
+    },
     audioManager: {
-        playUISound: jest.fn( }
+        playUISound: jest.fn()
+    }
 };
+
 const mockErrorHandler: MockErrorHandler = {
-    handleError: jest.fn( },
+    handleError: jest.fn()
+};
+
 const mockLocalizationManager: MockLocalizationManager = {
-    getText: jest.fn( },
+    getText: jest.fn()
+};
+
 const mockAccessibilitySettingsManager: MockAccessibilitySettingsManager = {
-    getCurrentProfile: jest.fn(
-    getAvailableProfiles: jest.fn(
-    switchProfile: jest.fn(
-        getStats: jest.fn()' };'
-// モジュールのモック
-jest.mock('../../../src/utils/ErrorHandler.js', () => ({
-    getErrorHandler: () => mockErrorHandler
-})');'
-jest.mock('../../../src/core/LocalizationManager.js', () => ({
-    getLocalizationManager: () => mockLocalizationManager
-})');'
+    getCurrentProfile: jest.fn(),
+    getAvailableProfiles: jest.fn(),
+    switchProfile: jest.fn(),
+    getStats: jest.fn()
+};
+
+const mockAnnouncer: Announcer = {
+    announce: jest.fn()
+};
+
+// テストプロファイル
+const testProfiles: AccessibilityProfile[] = [
+    {
+        name: 'default',
+        displayName: 'Default',
+        description: 'Standard accessibility settings'
+    },
+    {
+        name: 'high-contrast',
+        displayName: 'High Contrast',
+        description: 'High contrast display for better visibility'
+    },
+    {
+        name: 'large-text',
+        displayName: 'Large Text',
+        description: 'Larger text for easier reading'
+    },
+    {
+        name: 'motion-reduced',
+        displayName: 'Reduced Motion',
+        description: 'Reduced animations and motion effects'
+    },
+    {
+        name: 'custom',
+        displayName: 'Custom Profile',
+        description: 'User-defined accessibility settings',
+        isCustom: true
+    }
+];
+
 describe('AccessibilityProfileComponent', () => {
-    let component: AccessibilityProfileComponent,
-    let parentContainer: HTMLDivElement,
-    beforeEach((') => {'
-        // DOM環境をセットアップ
-        document.body.innerHTML = ','
-        parentContainer = document.createElement('div');
-        document.body.appendChild(parentContainer);
-        // モックをリセット
+    let accessibilityProfileComponent: AccessibilityProfileComponent;
+
+    beforeEach(() => {
         jest.clearAllMocks();
-        // デフォルトの翻訳を設定
-        mockLocalizationManager.getText.mockImplementation((key: string') => {'
+
+        // デフォルトの戻り値を設定
+        mockLocalizationManager.getText.mockImplementation((key: string) => {
             const translations: Record<string, string> = {
-                'settings.accessibility.profile': 'Accessibility Profile',
-                'settings.accessibility.profiles.default': 'Default',
-                'settings.accessibility.profiles.highContrast': 'High Contrast',
-                'settings.accessibility.profiles.motorImpairment': 'Motor Impairment'
+                'accessibility.profile.current': 'Current Profile: {{profile}}',
+                'accessibility.profile.switch': 'Switch Profile',
+                'accessibility.profile.default': 'Default',
+                'accessibility.profile.high-contrast': 'High Contrast',
+                'accessibility.profile.large-text': 'Large Text',
+                'accessibility.profile.motion-reduced': 'Reduced Motion',
+                'accessibility.profile.custom': 'Custom Profile',
+                'accessibility.profile.switched': 'Switched to {{profile}} profile',
+                'accessibility.profile.error': 'Failed to switch profile'
             };
-            return translations[key] || key;
-        }');'
-        // デフォルトのプロファイルを設定
-        mockAccessibilitySettingsManager.getCurrentProfile.mockReturnValue({
-            name: 'default',
-            displayName: 'Default',
-            description: 'Default accessibility settings')'),'
-        mockAccessibilitySettingsManager.getAvailableProfiles.mockReturnValue([
-            { name: 'default', displayName: 'Default', description: 'Default accessibility settings', isCustom: false,,
-            { name: 'highContrast', displayName: 'High Contrast', description: 'High contrast mode', isCustom: false,')'
-            { name: 'motorImpairment', displayName: 'Motor Impairment', description: 'Motor accessibility support', isCustom: false )
-        ]'),'
+            return translations[key] || key
+        });
+
+        mockAccessibilitySettingsManager.getCurrentProfile.mockReturnValue(testProfiles[0]);
+        mockAccessibilitySettingsManager.getAvailableProfiles.mockReturnValue(testProfiles);
+        mockAccessibilitySettingsManager.switchProfile.mockReturnValue(true);
         mockAccessibilitySettingsManager.getStats.mockReturnValue({
-            profilesUsed: 1,
-            currentProfile: 'default'),
-        component = new AccessibilityProfileComponent(mockGameEngine, mockAccessibilitySettingsManager) };
-    afterEach(() => {
-        if (component) {
-            component.dispose() }
-    }');'
-    describe('Constructor', (') => {'
-        test('should initialize with default values', () => {
-            expect(component.gameEngine).toBe(mockGameEngine);
-            expect(component.accessibilitySettingsManager).toBe(mockAccessibilitySettingsManager);
-            expect(component.isInitialized).toBe(false);
-            expect(component.currentProfile').toBe('default') }');
-        test('should handle missing accessibility settings manager', () => {
-            const newComponent = new AccessibilityProfileComponent(mockGameEngine, null as any);
-            expect(newComponent.accessibilitySettingsManager).toBeNull();
-            expect(mockErrorHandler.handleError).toHaveBeenCalled() }');'
-    }
-    describe('Initialization', (') => {'
-        test('should initialize successfully', () => {
-            const result = component.initialize(parentContainer);
+            profilesUsed: 3,
+            currentProfile: 'default'
+        });
+
+        accessibilityProfileComponent = new AccessibilityProfileComponent(
+            mockGameEngine,
+            mockErrorHandler,
+            mockLocalizationManager,
+            mockAccessibilitySettingsManager,
+            mockAnnouncer
+        );
+    });
+
+    describe('初期化', () => {
+
+        it('正常に初期化される', () => {
+            expect(accessibilityProfileComponent).toBeInstanceOf(AccessibilityProfileComponent)
+        
+});
+it('初期化時に現在のプロファイルを取得する', async () => {
+            await accessibilityProfileComponent.initialize();
+
+            expect(mockAccessibilitySettingsManager.getCurrentProfile).toHaveBeenCalled();
+            expect(mockAccessibilitySettingsManager.getAvailableProfiles).toHaveBeenCalled()
+        
+});
+
+        it('利用可能なプロファイルを読み込む', async () => {
+
+            await accessibilityProfileComponent.initialize();
+
+            const profiles = accessibilityProfileComponent.getAvailableProfiles();
+            expect(profiles).toHaveLength(5);
+            expect(profiles[0].name).toBe('default')
+        
+})
+ 
+});
+
+    describe('プロファイル表示', () => {
+
+        beforeEach(async () => {
+            await accessibilityProfileComponent.initialize()
+        
+});
+it('現在のプロファイルを表示する', () => {
+            const currentProfile = accessibilityProfileComponent.getCurrentProfile();
+            expect(currentProfile).toEqual(testProfiles[0])
+        
+});
+
+        it('利用可能なプロファイル一覧を表示する', () => {
+
+            const profiles = accessibilityProfileComponent.getAvailableProfiles();
+            expect(profiles).toHaveLength(5);
+            expect(profiles.map(p => p.name)).toEqual([
+                'default', 'high-contrast', 'large-text', 'motion-reduced', 'custom'
+            ])
+        
+});
+it('プロファイルの詳細情報を表示する', () => {
+            const profile = accessibilityProfileComponent.getProfileDetails('high-contrast');
+            expect(profile).toEqual(testProfiles[1])
+        
+});
+
+        it('存在しないプロファイルの詳細を要求した場合nullを返す', () => {
+
+            const profile = accessibilityProfileComponent.getProfileDetails('nonexistent');
+            expect(profile).toBeNull()
+        
+})
+ 
+});
+
+    describe('プロファイル切り替え', () => {
+
+        beforeEach(async () => {
+            await accessibilityProfileComponent.initialize()
+        
+});
+it('プロファイルを正常に切り替える', async () => {
+            const result = await accessibilityProfileComponent.switchProfile('high-contrast');
+
             expect(result).toBe(true);
-            expect(component.isInitialized).toBe(true);
-            expect(component.container).toBeDefined();
-            expect(component.container!.parentNode).toBe(parentContainer) }');'
-        test('should prevent double initialization', (') => {'
-            const consoleSpy = jest.spyOn(console, 'warn').mockImplementation(() => {});
-            component.initialize(parentContainer);
-            const result = component.initialize(parentContainer);
-            expect(result).toBe(true);
-            expect(consoleSpy').toHaveBeenCalledWith('[AccessibilityProfileComponent] Already initialized');'
-            consoleSpy.mockRestore();
-        }');'
-        test('should handle invalid parent container', () => {
-            const result = component.initialize(null);
+            expect(mockAccessibilitySettingsManager.switchProfile).toHaveBeenCalledWith('high-contrast');
+            expect(mockAnnouncer.announce).toHaveBeenCalledWith(
+                expect.stringContaining('Switched to')
+            )
+        
+});
+
+        it('プロファイル切り替え時にUI音を再生する', async () => {
+
+            await accessibilityProfileComponent.switchProfile('large-text');
+
+            expect(mockGameEngine.audioManager.playUISound).toHaveBeenCalledWith('profile-switch')
+        
+});
+it('無効なプロファイル名で切り替えを試行した場合エラーを処理する', async () => {
+            mockAccessibilitySettingsManager.switchProfile.mockReturnValue(false);
+
+            const result = await accessibilityProfileComponent.switchProfile('invalid-profile');
+
             expect(result).toBe(false);
-            expect(mockErrorHandler.handleError).toHaveBeenCalled() }');'
-        test('should create dropdown menu', () => {
-            component.initialize(parentContainer);
-            const dropdown = component.dropdown,
-            
-            expect(dropdown).toBeDefined();
-            expect(dropdown!.tagName').toBe('SELECT'),'
-            expect(dropdown!.getAttribute('role')').toBe('combobox'),'
-            expect(dropdown!.getAttribute('aria-label')').toBe('Accessibility Profile') }');
-        test('should populate dropdown options', () => {
-            component.initialize(parentContainer);
-            const options = component.dropdown!.options,
-            
-            expect(options.length).toBe(3);
-            expect(options[0].value').toBe('default'),'
-            expect(options[0].textContent').toBe('Default'),'
-            expect(options[1].value').toBe('highContrast'),'
-            expect(options[2].value').toBe('motorImpairment') }');
-    }
-    describe('Profile Management', () => {
-        beforeEach(() => {
-            component.initialize(parentContainer) }');'
-        test('should switch profile successfully', () => {
-            mockAccessibilitySettingsManager.switchProfile.mockReturnValue(true'),'
-            const result = component.switchProfile('highContrast');
-            expect(result).toBe(true);
-            expect(mockAccessibilitySettingsManager.switchProfile').toHaveBeenCalledWith('highContrast'),'
-            expect(component.currentProfile').toBe('highContrast'),'
-            expect(component.dropdown!.value').toBe('highContrast'),'
-            expect(mockGameEngine.audioManager.playUISound').toHaveBeenCalledWith('button-click') }');
-        test('should handle profile switch failure', () => {
-            mockAccessibilitySettingsManager.switchProfile.mockReturnValue(false'),'
-            const result = component.switchProfile('highContrast');
+            expect(mockErrorHandler.handleError).toHaveBeenCalled()
+        
+});
+
+        it('存在しないプロファイルへの切り替えを拒否する', async () => {
+
+            const result = await accessibilityProfileComponent.switchProfile('nonexistent');
+
             expect(result).toBe(false);
-            expect(component.currentProfile').toBe('default'), // 変わらない'
-            expect(mockGameEngine.audioManager.playUISound').toHaveBeenCalledWith('error') }');
-        test('should handle dropdown change event', (') => {'
-            const changeEvent = new Event('change');
-            component.dropdown!.value = 'motorImpairment',
-            mockAccessibilitySettingsManager.switchProfile.mockReturnValue(true);
-            component.dropdown!.dispatchEvent(changeEvent);
-            expect(mockAccessibilitySettingsManager.switchProfile').toHaveBeenCalledWith('motorImpairment'),'
-            expect(component.currentProfile').toBe('motorImpairment') }');
-        test('should get current profile', () => {
-            const profile = component.getCurrentProfile();
-            expect(profile!.name').toBe('default'),'
-            expect(mockAccessibilitySettingsManager.getCurrentProfile).toHaveBeenCalled() }');'
-        test('should get available profiles', () => {
-            const profiles = component.getAvailableProfiles();
-            expect(profiles).toHaveLength(3);
-            expect(profiles[0].name').toBe('default'),'
-            expect(mockAccessibilitySettingsManager.getAvailableProfiles).toHaveBeenCalled() }');'
-    }
-    describe('UI Updates', () => {
-        beforeEach(() => {
-            component.initialize(parentContainer) }');'
-        test('should update display for current profile', (') => {'
-            mockAccessibilitySettingsManager.getCurrentProfile.mockReturnValue({
-                name: 'highContrast',
-                displayName: 'High Contrast',
-                description: 'High contrast mode for better visibility' },
-            component.updateDisplay();
-            expect(component.dropdown!.value').toBe('highContrast');'
-            expect(component.currentProfile').toBe('highContrast');'
-        }');'
-        test('should refresh profiles list', (') => {'
-            const newProfiles: AccessibilityProfile[] = [
-                { name: 'default', displayName: 'Default', description: 'Default settings' },
-                { name: 'custom1', displayName: 'Custom Profile 1', description: 'Custom profile', isCustom: true,
-            ];
-            mockAccessibilitySettingsManager.getAvailableProfiles.mockReturnValue(newProfiles);
-            component.refreshProfiles();
-            const options = component.dropdown!.options;
-            expect(options.length).toBe(2);
-            expect(options[1].value').toBe('custom1');'
-            expect(options[1].textContent').toBe('Custom Profile 1');'
-        }');'
-    }
-    describe('Event Handling', () => {
-        beforeEach(() => {
-            component.initialize(parentContainer) }');'
-        test('should handle keyboard events on dropdown', (') => {'
-            const enterEvent = new KeyboardEvent('keydown', { key: 'Enter' }');'
-            const spaceEvent = new KeyboardEvent('keydown', { key: ', ' }');'
-            const escapeEvent = new KeyboardEvent('keydown', { key: 'Escape' },
-            component.handleDropdownKeydown(enterEvent);
-            expect(enterEvent.preventDefault).toBeDefined();
-            component.handleDropdownKeydown(spaceEvent);
-            expect(spaceEvent.preventDefault).toBeDefined();
-            component.handleDropdownKeydown(escapeEvent);
-            expect(escapeEvent.preventDefault).toBeDefined();
-        }');'
-        test('should handle focus events', (') => {'
-            const focusEvent = new Event('focus');
-            const blurEvent = new Event('blur');
-            component.dropdown!.dispatchEvent(focusEvent'),'
-            expect(component.dropdown!.classList.contains('focused').toBe(true);
-            component.dropdown!.dispatchEvent(blurEvent'),'
-            expect(component.dropdown!.classList.contains('focused').toBe(false) }');'
-    }
-    describe('External API', () => {
-        beforeEach(() => {
-            component.initialize(parentContainer) }');'
-        test('should report enabled status', () => {
-            expect(component.isEnabled().toBe(true);
-            component.dispose();
-            expect(component.isEnabled().toBe(false) }');'
-        test('should control visibility', () => {
-            component.setVisible(false);
-            expect(component.container!.style.display').toBe('none'),'
-            component.setVisible(true);
-            expect(component.container!.style.display').toBe('block') }');
-        test('should return stats', () => {
-            const stats = component.getStats();
-            expect(stats').toHaveProperty('isInitialized', true),'
-            expect(stats').toHaveProperty('currentProfile', 'default'),'
-            expect(stats').toHaveProperty('availableProfilesCount'),'
-            expect(stats').toHaveProperty('profilesUsed') }');
-        test('should handle profile change callback', () => {
-            const callback = jest.fn('),'
-            component.onProfileChanged = callback,
+            expect(mockAccessibilitySettingsManager.switchProfile).not.toHaveBeenCalled()
+        
+})
+ 
+});
+
+    describe('プロファイル管理', () => {
+
+        beforeEach(async () => {
+            await accessibilityProfileComponent.initialize()
+        
+});
+it('カスタムプロファイルを識別する', () => {
+            const customProfiles = accessibilityProfileComponent.getCustomProfiles();
+            expect(customProfiles).toHaveLength(1);
+            expect(customProfiles[0].name).toBe('custom');
+            expect(customProfiles[0].isCustom).toBe(true)
+        
+});
+
+        it('デフォルトプロファイルを識別する', () => {
+
+            const defaultProfiles = accessibilityProfileComponent.getDefaultProfiles();
+            expect(defaultProfiles).toHaveLength(4);
+            expect(defaultProfiles.every(p => !p.isCustom)).toBe(true)
+        
+});
+it('プロファイルの使用統計を取得する', () => {
+            const stats = accessibilityProfileComponent.getUsageStats();
+            expect(stats.profilesUsed).toBe(3);
+            expect(stats.currentProfile).toBe('default')
+        
+})
+    });
+
+    describe('アクセシビリティ機能', () => {
+
+        beforeEach(async () => {
+            await accessibilityProfileComponent.initialize()
+        
+});
+it('プロファイル切り替え時にアクセシビリティ通知を行う', async () => {
+            await accessibilityProfileComponent.switchProfile('high-contrast');
+
+            expect(mockAnnouncer.announce).toHaveBeenCalledWith(
+                expect.stringContaining('High Contrast')
+            )
+        
+});
+
+        it('キーボードナビゲーションをサポートする', () => {
+
+            const keyboardHandler = accessibilityProfileComponent.getKeyboardHandler();
+            expect(keyboardHandler).toBeDefined();
+            expect(typeof keyboardHandler.handleKeyDown).toBe('function')
+        
+});
+it('ARIA属性を適切に設定する', () => {
+            const ariaAttributes = accessibilityProfileComponent.getAriaAttributes();
+            expect(ariaAttributes.role).toBe('group');
+            expect(ariaAttributes['aria-label']).toContain('Accessibility Profile')
+        
+})
+    });
+
+    describe('エラーハンドリング', () => {
+
+        it('初期化エラーを適切に処理する', async () => {
+            mockAccessibilitySettingsManager.getCurrentProfile.mockImplementation(() => {
+                throw new Error('Initialization failed')
             
-            component.switchProfile('highContrast');
-            expect(callback').toHaveBeenCalledWith('highContrast', 'default') }');
-    }
-    describe('Error Handling', (') => {'
-        test('should handle switch profile errors', () => {
-            component.initialize(parentContainer);
-            mockAccessibilitySettingsManager.switchProfile.mockImplementation((') => {'
-                throw new Error('Profile switch error') }');'
-            component.switchProfile('highContrast');
-            expect(mockErrorHandler.handleError).toHaveBeenCalled();
-            expect(component.currentProfile').toBe('default'); // フォールバック'
-        }');'
-        test('should handle getCurrentProfile errors', () => {
-            component.initialize(parentContainer);
-            mockAccessibilitySettingsManager.getCurrentProfile.mockImplementation((') => {'
-                throw new Error('Get profile error') };
-            const profile = component.getCurrentProfile();
-            expect(profile).toBeNull();
-            expect(mockErrorHandler.handleError).toHaveBeenCalled();
-        }');'
-        test('should handle dropdown population errors', () => {
-            mockAccessibilitySettingsManager.getAvailableProfiles.mockImplementation((') => {'
-                throw new Error('Get profiles error') };
-            component.initialize(parentContainer);
-            expect(mockErrorHandler.handleError).toHaveBeenCalled();
-        }');'
-    }
-    describe('Accessibility', () => {
-        beforeEach(() => {
-            component.initialize(parentContainer) }');'
-        test('should have proper ARIA attributes', (') => {'
-            expect(component.dropdown!.getAttribute('role')').toBe('combobox'),'
-            expect(component.dropdown!.getAttribute('aria-label')').toBe('Accessibility Profile'),'
-            expect(component.dropdown!.getAttribute('aria-expanded')').toBe('false') }');
-        test('should update ARIA attributes on focus', (') => {'
-            const focusEvent = new Event('focus');
-            component.dropdown!.dispatchEvent(focusEvent'),'
-            expect(component.dropdown!.getAttribute('aria-expanded')').toBe('true') }');
-        test('should announce profile changes', () => {
-            mockAccessibilitySettingsManager.switchProfile.mockReturnValue(true);
-            component.announcer = { announce: jest.fn(') } as Announcer;'
+});
+await accessibilityProfileComponent.initialize();
+
+            expect(mockErrorHandler.handleError).toHaveBeenCalledWith(
+                expect.any(Error),
+                'AccessibilityProfileComponent initialization failed'
+            )
+        
+});
+
+        it('プロファイル切り替えエラーを処理する', async () => {
+
+            mockAccessibilitySettingsManager.switchProfile.mockImplementation(() => {
+                throw new Error('Switch failed')
             
-            component.switchProfile('highContrast');
-            expect(component.announcer.announce').toHaveBeenCalledWith('
-                'Accessibility profile changed to High Contrast');
-        }');'
-    }
-    describe('Cleanup', (') => {'
-        test('should dispose properly', () => {
-            component.initialize(parentContainer);
-            const container = component.container,
+});
+const result = await accessibilityProfileComponent.switchProfile('high-contrast');
+
+            expect(result).toBe(false);
+            expect(mockErrorHandler.handleError).toHaveBeenCalled()
+        
+});
+
+        it('存在しないプロファイルへのアクセスでエラーを処理する', () => {
+            expect(() => {
+                accessibilityProfileComponent.getProfileDetails('invalid')
+            }).not.toThrow();
+
+            const result = accessibilityProfileComponent.getProfileDetails('invalid');
+            expect(result).toBeNull()
+        })
+    });
+
+    describe('パフォーマンステスト', () => {
+        it('大量のプロファイル切り替えが効率的に実行される', async () => {
+            await accessibilityProfileComponent.initialize();
+
+            const startTime = Date.now();
+
+            // 複数のプロファイル切り替えを実行
+            for (let i = 0; i < 10; i++) {
+                const profileName = testProfiles[i % testProfiles.length].name;
+                await accessibilityProfileComponent.switchProfile(profileName)
+            }
+
+            const endTime = Date.now();
+            const duration = endTime - startTime;
+
+            expect(duration).toBeLessThan(1000); // 1秒以内
+        });
+
+        it('メモリ使用量が適切に管理される', async () => {
+            await accessibilityProfileComponent.initialize();
+
+            // 大量の操作を実行してメモリリークをチェック
+            for (let i = 0; i < 100; i++) {
+                accessibilityProfileComponent.getAvailableProfiles();
+                accessibilityProfileComponent.getCurrentProfile()
+            }
+
+            // メモリが適切に管理されることを確認
+            expect(accessibilityProfileComponent.getAvailableProfiles()).toHaveLength(5)
+        })
+    });
+
+    describe('イベントハンドリング', () => {
+
+        beforeEach(async () => {
+            await accessibilityProfileComponent.initialize()
+        
+});
+it('プロファイル変更イベントを発行する', async () => {
+            const eventHandler = jest.fn();
+            accessibilityProfileComponent.addEventListener('profileChanged', eventHandler);
+
+            await accessibilityProfileComponent.switchProfile('high-contrast');
+
+            expect(eventHandler).toHaveBeenCalledWith({
+                type: 'profileChanged',
+                previousProfile: 'default',
+                currentProfile: 'high-contrast'
             
-            component.dispose();
-            expect(component.container).toBeNull();
-            expect(component.isInitialized).toBe(false);
-            expect(container!.parentNode).toBeNull() }');'
-        test('should handle dispose errors', () => {
-            component.initialize(parentContainer);
-            // DOM エラーをシミュレート
-            (component.container!.parentNode as any).removeChild = jest.fn((') => {'
-                throw new Error('DOM error')),
-            component.dispose();
-            expect(mockErrorHandler.handleError).toHaveBeenCalled())'),'
-        test('should remove event listeners on dispose', () => {
-            component.initialize(parentContainer);
-            const dropdown = component.dropdown,
-            
-            // イベントリスナーが追加されていることを確認
-            expect((dropdown.onchange).toBeDefined();
-            component.dispose();
-            // イベントリスナーが削除されていることを確認
-            expect(component.dropdown).toBeNull()) }');'
+})
+        });
+
+        it('エラーイベントを発行する', async () => {
+
+            const errorHandler = jest.fn();
+            accessibilityProfileComponent.addEventListener('error', errorHandler);
+
+            mockAccessibilitySettingsManager.switchProfile.mockReturnValue(false);
+            await accessibilityProfileComponent.switchProfile('invalid');
+
+            expect(errorHandler).toHaveBeenCalled()
+        
+})
+ 
+});
+
+    describe('統合テスト', () => {
+
+        it('完全なワークフロー（初期化→プロファイル表示→切り替え）が動作する', async () => {
+            // 1. 初期化
+            await accessibilityProfileComponent.initialize();
+            expect(mockAccessibilitySettingsManager.getCurrentProfile).toHaveBeenCalled();
+
+            // 2. プロファイル一覧表示
+            const profiles = accessibilityProfileComponent.getAvailableProfiles();
+            expect(profiles).toHaveLength(5);
+
+            // 3. プロファイル切り替え
+            const switchResult = await accessibilityProfileComponent.switchProfile('high-contrast');
+            expect(switchResult).toBe(true);
+
+            // 4. 変更後の確認
+            expect(mockAccessibilitySettingsManager.switchProfile).toHaveBeenCalledWith('high-contrast');
+            expect(mockAnnouncer.announce).toHaveBeenCalled();
+        });
+    });
+});
+
+// テストユーティリティ関数
+function createMockProfile(overrides: Partial<AccessibilityProfile> = {}): AccessibilityProfile {
+    return {
+        name: 'test-profile',
+        displayName: 'Test Profile',
+        description: 'Test profile description',
+        ...overrides
+    };
+}
+
+
+
+function createMockStats(overrides: Partial<ComponentStats> = {}): ComponentStats {
+    return {
+        isInitialized: true,
+        currentProfile: 'default',
+        availableProfilesCount: 5,
+        profilesUsed: 3,
+        ...overrides
+    };
 }
