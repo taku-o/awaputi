@@ -58,7 +58,7 @@ interface TooltipContent {
     description?: string;
 }
 
-interface Tooltip {
+interface _Tooltip {
     x: number;
     y: number;
     content: TooltipContent;
@@ -130,20 +130,20 @@ describe('ContextManager', () => {
     describe('初期化', () => {
         test('正常に初期化される', () => {
             expect(contextManager).toBeInstanceOf(ContextManager);
-            expect(contextManager.gameEngine).toBe(mockGameEngine);
-            expect(contextManager.tooltipElements).toBeInstanceOf(Map);
+            expect((contextManager as any).gameEngine).toBe(mockGameEngine);
+            expect((contextManager as any).tooltipElements).toBeInstanceOf(Map);
         });
 
         test('初期状態が正しく設定される', () => {
-            expect(contextManager.currentTooltip).toBeNull();
-            expect(contextManager.contextCache).toBeInstanceOf(Map);
-            expect(contextManager.tooltipElements.size).toBe(0);
+            expect((contextManager as any).currentTooltip).toBeNull();
+            expect((contextManager as any).contextCache).toBeInstanceOf(Map);
+            expect((contextManager as any).tooltipElements.size).toBe(0);
         });
     });
 
     describe('コンテキスト検出', () => {
         test('現在のコンテキストを検出できる', () => {
-            const context = contextManager.detectCurrentContext() as GameContext;
+            const context = contextManager.detectCurrentContext() as unknown as GameContext;
             expect(context).toBeDefined();
             expect(context.sceneName).toBe('GameScene');
             expect(context.sceneState).toBeDefined();
@@ -151,7 +151,7 @@ describe('ContextManager', () => {
         });
 
         test('GameSceneの詳細コンテキストを検出', () => {
-            const context = contextManager.detectCurrentContext() as GameContext;
+            const context = contextManager.detectCurrentContext() as unknown as GameContext;
             expect(context.gameState!.bubbleCount).toBe(5);
             expect(context.gameState!.timeRemaining).toBe(120);
             expect(context.gameState!.currentScore).toBe(1500);
@@ -165,7 +165,7 @@ describe('ContextManager', () => {
                 getCurrentState: jest.fn(() => ({ menuSelection: 'start' }))
             } as any);
             
-            const context = contextManager.detectCurrentContext() as GameContext;
+            const context = contextManager.detectCurrentContext() as unknown as GameContext;
             expect(context.sceneName).toBe('MainMenuScene');
             expect(context.sceneState!.menuSelection).toBe('start');
         });
@@ -190,7 +190,7 @@ describe('ContextManager', () => {
                     activeBubbleTypes: []
                 }
             };
-            const help = contextManager.getRelevantHelp(context) as HelpItem[];
+            const help = contextManager.getRelevantHelp(context as any) as unknown as HelpItem[];
             expect(help).toBeDefined();
             expect(help.length).toBeGreaterThan(0);
             expect(help[0].priority).toBeDefined();
@@ -207,7 +207,7 @@ describe('ContextManager', () => {
                     activeBubbleTypes: []
                 }
             };
-            const help = contextManager.getRelevantHelp(context) as HelpItem[];
+            const help = contextManager.getRelevantHelp(context as any) as unknown as HelpItem[];
             expect(help[0].priority).toBe('high');
             expect(help[0].category).toBe('urgent');
         });
@@ -217,7 +217,7 @@ describe('ContextManager', () => {
                 sceneName: 'MainMenuScene',
                 sceneState: { menuSelection: 'start' }
             };
-            const help = contextManager.getRelevantHelp(context) as HelpItem[];
+            const help = contextManager.getRelevantHelp(context as any) as unknown as HelpItem[];
             expect(help).toBeDefined();
             expect(help.some((h: HelpItem) => h.category === 'navigation')).toBe(true);
         });
@@ -227,7 +227,7 @@ describe('ContextManager', () => {
                 sceneName: 'UnknownScene',
                 sceneState: {}
             };
-            const help = contextManager.getRelevantHelp(context) as HelpItem[];
+            const help = contextManager.getRelevantHelp(context as any) as unknown as HelpItem[];
             expect(help).toBeDefined();
             expect(help.length).toBeGreaterThan(0);
             expect(help.some((h: HelpItem) => h.category === 'basic')).toBe(true);
@@ -244,9 +244,9 @@ describe('ContextManager', () => {
                 title: 'テストツールチップ',
                 description: 'これはテスト用のツールチップです'
             };
-            contextManager.registerTooltip(mockElement as any, content);
-            expect(contextManager.tooltipElements.has(mockElement)).toBe(true);
-            expect(contextManager.tooltipElements.get(mockElement)).toEqual(content);
+            contextManager.registerTooltip(mockElement as any, content as any);
+            expect((contextManager as any).tooltipElements.has(mockElement)).toBe(true);
+            expect((contextManager as any).tooltipElements.get(mockElement)).toEqual(content);
         });
 
         test('コンテキストツールチップを表示できる', () => {
@@ -256,10 +256,10 @@ describe('ContextManager', () => {
             };
             const result = contextManager.showContextualTooltip(200, 150, content);
             expect(result).toBe(true);
-            expect(contextManager.currentTooltip).toBeDefined();
-            expect(contextManager.currentTooltip!.x).toBe(200);
-            expect(contextManager.currentTooltip!.y).toBe(150);
-            expect(contextManager.currentTooltip!.content).toEqual(content);
+            expect((contextManager as any).currentTooltip).toBeDefined();
+            expect((contextManager as any).currentTooltip!.x).toBe(200);
+            expect((contextManager as any).currentTooltip!.y).toBe(150);
+            expect((contextManager as any).currentTooltip!.content).toEqual(content);
         });
 
         test('ツールチップ位置が画面境界に調整される', () => {
@@ -267,7 +267,7 @@ describe('ContextManager', () => {
             
             // Try to show near right edge
             contextManager.showContextualTooltip(750, 150, content);
-            const tooltip = contextManager.currentTooltip!;
+            const tooltip = (contextManager as any).currentTooltip!;
             // Automatically adjusted to left
             expect(tooltip.x).toBeLessThan(750);
         });
@@ -276,7 +276,7 @@ describe('ContextManager', () => {
             const content: TooltipContent = { title: 'テスト', description: 'テスト' };
             contextManager.showContextualTooltip(100, 100, content);
             contextManager.hideTooltip();
-            expect(contextManager.currentTooltip).toBeNull();
+            expect((contextManager as any).currentTooltip).toBeNull();
         });
 
         test('複数のツールチップ要素を管理できる', () => {
@@ -287,9 +287,9 @@ describe('ContextManager', () => {
             
             contextManager.registerTooltip(element1 as any, content1);
             contextManager.registerTooltip(element2 as any, content2);
-            expect(contextManager.tooltipElements.size).toBe(2);
-            expect(contextManager.tooltipElements.get(element1)).toEqual(content1);
-            expect(contextManager.tooltipElements.get(element2)).toEqual(content2);
+            expect((contextManager as any).tooltipElements.size).toBe(2);
+            expect((contextManager as any).tooltipElements.get(element1)).toEqual(content1);
+            expect((contextManager as any).tooltipElements.get(element2)).toEqual(content2);
         });
     });
 
@@ -381,7 +381,7 @@ describe('ContextManager', () => {
             contextManager.detectCurrentContext();
             // Simulate frame update
             contextManager.clearContextCache();
-            expect(contextManager.contextCache.size).toBe(0);
+            expect((contextManager as any).contextCache.size).toBe(0);
         });
     });
 
@@ -390,7 +390,7 @@ describe('ContextManager', () => {
             mockGameEngine.sceneManager.getCurrentScene.mockImplementation(() => {
                 throw new Error('Scene error');
             });
-            const context = contextManager.detectCurrentContext() as GameContext;
+            const context = contextManager.detectCurrentContext() as unknown as GameContext;
             expect(context).toBeDefined();
             expect(context.sceneName).toBe('unknown');
             expect(context.error).toBe(true);
@@ -400,7 +400,7 @@ describe('ContextManager', () => {
             const invalidContent = null as any;
             const result = contextManager.showContextualTooltip(100, 100, invalidContent);
             expect(result).toBe(false);
-            expect(contextManager.currentTooltip).toBeNull();
+            expect((contextManager as any).currentTooltip).toBeNull();
         });
 
         test('不正な座標でのツールチップ表示', () => {
@@ -408,8 +408,8 @@ describe('ContextManager', () => {
             const result = contextManager.showContextualTooltip(-100, -100, content);
             expect(result).toBe(true);
             // Coordinates are automatically adjusted
-            expect(contextManager.currentTooltip!.x).toBeGreaterThanOrEqual(0);
-            expect(contextManager.currentTooltip!.y).toBeGreaterThanOrEqual(0);
+            expect((contextManager as any).currentTooltip!.x).toBeGreaterThanOrEqual(0);
+            expect((contextManager as any).currentTooltip!.y).toBeGreaterThanOrEqual(0);
         });
     });
 
@@ -420,9 +420,9 @@ describe('ContextManager', () => {
             contextManager.registerTooltip(element as any, content);
             contextManager.showContextualTooltip(100, 100, content);
             contextManager.destroy();
-            expect(contextManager.tooltipElements.size).toBe(0);
-            expect(contextManager.currentTooltip).toBeNull();
-            expect(contextManager.contextCache.size).toBe(0);
+            expect((contextManager as any).tooltipElements.size).toBe(0);
+            expect((contextManager as any).currentTooltip).toBeNull();
+            expect((contextManager as any).contextCache.size).toBe(0);
         });
     });
 });

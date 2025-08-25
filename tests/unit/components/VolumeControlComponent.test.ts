@@ -166,7 +166,7 @@ describe('VolumeControlComponent', () => {
     
     afterEach(() => {
         if (volumeControl) {
-            volumeControl.destroy();
+            (volumeControl as any).destroy();
         }
     });
     
@@ -240,19 +240,19 @@ describe('VolumeControlComponent', () => {
         });
         
         test('ミュート状態でUI表示が変更される', () => {
-            volumeControl.setMuted(true);
+            (volumeControl as any).setMuted(true);
             expect(mockMuteButton.classList.add).toHaveBeenCalledWith('muted');
             expect(mockMuteButton.textContent).toBe('ミュート解除');
         });
         
         test('ミュート解除でUI表示が元に戻る', () => {
-            volumeControl.setMuted(false);
+            (volumeControl as any).setMuted(false);
             expect(mockMuteButton.classList.remove).toHaveBeenCalledWith('muted');
             expect(mockMuteButton.textContent).toBe('ミュート');
         });
         
         test('プログラムでミュート状態を設定できる', () => {
-            volumeControl.setMuted(true);
+            (volumeControl as any).setMuted(true);
             expect(mockGameEngine.settingsManager.set).toHaveBeenCalledWith('audio.muted', true);
         });
     });
@@ -267,7 +267,7 @@ describe('VolumeControlComponent', () => {
         });
         
         test('ミュート切り替え時にUI音が再生される', () => {
-            volumeControl.setMuted(true);
+            (volumeControl as any).setMuted(true);
             expect(mockGameEngine.audioManager.playUISound).toHaveBeenCalledWith('mute_toggle');
         });
     });
@@ -350,13 +350,13 @@ describe('VolumeControlComponent', () => {
         });
         
         test('ミュート状態を取得できる', () => {
-            volumeControl.setMuted(true);
-            expect(volumeControl.isMuted()).toBe(true);
+            (volumeControl as any).setMuted(true);
+            expect((volumeControl as any).isMuted()).toBe(true);
         });
         
         test('コンポーネント統計を取得できる', () => {
             volumeControl.setVolume(0.8);
-            volumeControl.setMuted(false);
+            (volumeControl as any).setMuted(false);
             
             const stats: ComponentStats = volumeControl.getStats();
             expect(stats.isInitialized).toBe(true);
@@ -386,7 +386,7 @@ describe('VolumeControlComponent', () => {
         });
         
         test('ミュート状態が設定に保存される', () => {
-            volumeControl.setMuted(true);
+            (volumeControl as any).setMuted(true);
             expect(mockGameEngine.settingsManager.set).toHaveBeenCalledWith('audio.muted', true);
         });
         
@@ -418,7 +418,7 @@ describe('VolumeControlComponent', () => {
         });
         
         test('ミュートボタンのaria-pressedが更新される', () => {
-            volumeControl.setMuted(true);
+            (volumeControl as any).setMuted(true);
             expect(mockMuteButton.setAttribute).toHaveBeenCalledWith('aria-pressed', 'true');
         });
     });
@@ -473,21 +473,21 @@ describe('VolumeControlComponent', () => {
         
         test('画面サイズに応じてコンポーネントが調整される', () => {
             // レスポンシブ調整のテスト
-            volumeControl.updateResponsiveLayout();
+            (volumeControl as any).updateResponsiveLayout();
             // 実装依存の詳細テスト
         });
     });
     
     describe('コンポーネントのライフサイクル', () => {
         test('destroyメソッドでリソースがクリーンアップされる', () => {
-            volumeControl.destroy();
+            (volumeControl as any).destroy();
             
             expect(mockSlider.removeEventListener).toHaveBeenCalled();
             expect(mockMuteButton.removeEventListener).toHaveBeenCalled();
         });
         
         test('destroy後は操作が無効になる', () => {
-            volumeControl.destroy();
+            (volumeControl as any).destroy();
             
             // destroy後の操作はエラーハンドラで処理される
             volumeControl.setVolume(0.5);

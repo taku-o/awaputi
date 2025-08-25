@@ -4,19 +4,19 @@ import { FontFallbackHandler } from '../../../../../src/core/i18n/font-loading/F
 // Type definitions
 interface MockCanvasContext {
     font: string;
-    measureText: jest.Mock<{ width: number }, [string]>;
+    measureText: jest.Mock<{ width: number }>;
 }
 
 interface MockCanvas {
-    getContext: jest.Mock<MockCanvasContext, [string]>;
+    getContext: jest.Mock<MockCanvasContext>;
 }
 
 interface MockElement {
     style: {
         fontFamily?: string;
     };
-    getAttribute?: jest.Mock<string | null, [string]>;
-    setAttribute?: jest.Mock<void, [string, string]>;
+    getAttribute?: jest.Mock<string | null>;
+    setAttribute?: jest.Mock<void>;
 }
 
 interface FallbackInfo {

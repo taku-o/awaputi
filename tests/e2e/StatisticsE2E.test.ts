@@ -429,7 +429,7 @@ test.describe('統計機能E2Eテスト', () => {
             
             // スワイプナビゲーションのテスト
             const chartArea = page.locator('[data-testid="chart-area"]');
-            await chartArea.swipe({ direction: 'left' });
+            await (chartArea as any).swipe({ direction: 'left' });
             
             // タブナビゲーションがモバイル用に変更されることを確認
             const mobileTabNav = page.locator('[data-testid="mobile-tab-nav"]');

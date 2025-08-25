@@ -123,11 +123,11 @@ describe('Bubble Class Tests', () => {
         test('should create a bubble with default properties', () => {
             const bubble = new Bubble(100, 200, 'normal', mockGameEngine as any);
             
-            expect(bubble.x).toBe(100);
-            expect(bubble.y).toBe(200);
+            expect((bubble as any).x).toBe(100);
+            expect((bubble as any).y).toBe(200);
             expect(bubble.type).toBe('normal');
             expect(bubble.isAlive).toBe(true);
-            expect(bubble.radius).toBeGreaterThan(0)
+            expect((bubble as any).radius).toBeGreaterThan(0)
         
 });
 test('should initialize with correct bubble type configuration', () => {
@@ -135,7 +135,7 @@ test('should initialize with correct bubble type configuration', () => {
             
             expect(bubble.type).toBe('diamond');
             expect(bubble.health).toBeGreaterThan(0);
-            expect(bubble.score).toBeGreaterThan(0)
+            expect((bubble as any).score).toBeGreaterThan(0)
         
 });
 
@@ -155,15 +155,15 @@ test('should initialize with correct bubble type configuration', () => {
                 
                 expect(bubble.type).toBe(type);
                 expect(bubble.isAlive).toBe(true);
-                expect(bubble.x).toBe(150);
-                expect(bubble.y).toBe(150);
+                expect((bubble as any).x).toBe(150);
+                expect((bubble as any).y).toBe(150);
                 
                 // Type-specific checks
                 if (type === 'boss') {
                     expect(bubble.health).toBeGreaterThan(50);
                 }
                 if (type === 'diamond') {
-                    expect(bubble.score).toBeGreaterThanOrEqual(100);
+                    expect((bubble as any).score).toBeGreaterThanOrEqual(100);
                 }
             });
         });
@@ -228,12 +228,12 @@ test('should render special effects for electric bubble', () => {
         test('should handle escaping bubble behavior', () => {
 
             const bubble = new Bubble(100, 100, 'escaping', mockGameEngine as any);
-            const initialY = bubble.y;
+            const initialY = (bubble as any).y;
             
             bubble.update(16);
             
             // Escaping bubbles should move upward
-            expect(bubble.y).toBeLessThanOrEqual(initialY)
+            expect((bubble as any).y).toBeLessThanOrEqual(initialY)
         
 })
  
@@ -245,7 +245,7 @@ test('should render special effects for electric bubble', () => {
             const bubble1 = new Bubble(100, 100, 'normal', mockGameEngine as any);
             const bubble2 = new Bubble(110, 110, 'normal', mockGameEngine as any);
             
-            const collision = bubble1.isCollidingWith(bubble2);
+            const collision = (bubble1 as any).isCollidingWith(bubble2);
             expect(typeof collision).toBe('boolean')
         
 });
@@ -253,7 +253,7 @@ test('should not collide with distant bubbles', () => {
             const bubble1 = new Bubble(100, 100, 'normal', mockGameEngine as any);
             const bubble2 = new Bubble(500, 500, 'normal', mockGameEngine as any);
             
-            expect(bubble1.isCollidingWith(bubble2)).toBe(false)
+            expect((bubble1 as any).isCollidingWith(bubble2)).toBe(false)
         
 });
 
@@ -261,8 +261,8 @@ test('should not collide with distant bubbles', () => {
 
             const bubble = new Bubble(100, 100, 'normal', mockGameEngine as any);
             
-            expect(bubble.contains(100, 100)).toBe(true);
-            expect(bubble.contains(200, 200)).toBe(false)
+            expect((bubble as any).contains(100, 100)).toBe(true);
+            expect((bubble as any).contains(200, 200)).toBe(false)
         
 })
  
@@ -307,14 +307,14 @@ test('should die when health reaches zero', () => {
             
             // Electric bubbles should have special properties
             expect(bubble.type).toBe('electric');
-            expect(bubble.hasSpecialEffects()).toBe(true)
+            expect((bubble as any).hasSpecialEffects()).toBe(true)
         
 });
 test('should handle rainbow bubble effects', () => {
             const bubble = new Bubble(100, 100, 'rainbow', mockGameEngine as any);
             
             expect(bubble.type).toBe('rainbow');
-            expect(bubble.hasSpecialEffects()).toBe(true)
+            expect((bubble as any).hasSpecialEffects()).toBe(true)
         
 });
 
@@ -324,7 +324,7 @@ test('should handle rainbow bubble effects', () => {
             
             expect(bubble.type).toBe('boss');
             expect(bubble.health).toBeGreaterThan(50);
-            expect(bubble.score).toBeGreaterThan(50)
+            expect((bubble as any).score).toBeGreaterThan(50)
         
 })
  
@@ -335,7 +335,7 @@ test('should handle rainbow bubble effects', () => {
         test('should handle click event', () => {
             const bubble = new Bubble(100, 100, 'normal', mockGameEngine as any);
             
-            const result = bubble.onClick();
+            const result = (bubble as any).onClick();
             expect(typeof result).toBe('boolean')
         
 });
@@ -343,7 +343,7 @@ test('should not respond to clicks when dead', () => {
             const bubble = new Bubble(100, 100, 'normal', mockGameEngine as any);
             bubble.isAlive = false;
             
-            const result = bubble.onClick();
+            const result = (bubble as any).onClick();
             expect(result).toBe(false)
         
 });
@@ -353,7 +353,7 @@ test('should not respond to clicks when dead', () => {
             const bubble = new Bubble(100, 100, 'spiky', mockGameEngine as any);
             
             // Spiky bubbles may damage the player on click
-            const result = bubble.onClick();
+            const result = (bubble as any).onClick();
             expect(typeof result).toBe('boolean')
         
 })

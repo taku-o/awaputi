@@ -98,8 +98,8 @@ describe('BubbleManager', () => {
         mockFactory = new MockFactory();
         
         mockGameEngine = {
-            canvas: mockFactory.createMockCanvas(),
-            ctx: mockFactory.createMockContext(),
+            canvas: (mockFactory as any).createMockCanvas(),
+            ctx: (mockFactory as any).createMockContext(),
             currentStage: { name: 'test-stage' },
             getInputManager: jest.fn(),
             createExplosion: jest.fn(),
@@ -117,10 +117,10 @@ describe('BubbleManager', () => {
         bubbleManager = {
             gameEngine: mockGameEngine,
             bubbles: [],
-            spawner: mockFactory.createMockBubbleSpawner(),
-            physicsEngine: mockFactory.createMockPhysicsEngine(),
-            dragSystem: mockFactory.createMockDragSystem(),
-            effectProcessor: mockFactory.createMockEffectProcessor(),
+            spawner: (mockFactory as any).createMockBubbleSpawner(),
+            physicsEngine: (mockFactory as any).createMockPhysicsEngine(),
+            dragSystem: (mockFactory as any).createMockDragSystem(),
+            effectProcessor: (mockFactory as any).createMockEffectProcessor(),
             spawnBubble: jest.fn(),
             spawnSpecificBubble: jest.fn(),
             clearAllBubbles: jest.fn(() => {

@@ -1,4 +1,4 @@
-import { describe, test, expect, beforeEach, afterEach, beforeAll, afterAll, jest, it } from '@jest/globals';
+import { describe, test, expect, beforeEach, afterEach } from '@jest/globals';
 /**
  * ErrorTrackingSystem のテスト
  */
@@ -51,7 +51,7 @@ describe('ErrorTrackingSystem', () => {
         test('デフォルト設定で初期化される', () => {
             const defaultTracker = new ErrorTrackingSystem();
             expect(defaultTracker).toBeDefined();
-            expect(defaultTracker.config.maxErrors).toBe(100);
+            expect((defaultTracker as any).config.maxErrors).toBe(100);
         });
 
         test('イベントリスナーが設定される', () => {

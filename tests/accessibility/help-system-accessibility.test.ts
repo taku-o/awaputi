@@ -3,17 +3,16 @@
  */
 import { jest } from '@jest/globals';
 import { HelpScene } from '../../src/scenes/HelpScene';
-import { TutorialOverlay } from '../../src/core/help/TutorialOverlay';
-import { TooltipSystem } from '../../src/core/help/TooltipSystem';
+// Unused imports removed - TutorialOverlay and TooltipSystem are tested but not imported
 
 // ARIA属性検証ヘルパー
-const validateARIA = (element: any) => {
+const _validateARIA = (element: any) => {
     const requiredAttrs = ['role', 'aria-label', 'aria-describedby'];
     return requiredAttrs.every(attr => element.hasAttribute && element.hasAttribute(attr));
 };
 
 // キーボード操作シミュレーター
-const simulateKeyPress = (key: string, target = document) => {
+const _simulateKeyPress = (key: string, target = document) => {
     const event = new KeyboardEvent('keydown', {
         key: key,
         code: `Key${key.toUpperCase()}`,
@@ -217,7 +216,7 @@ describe('Help System Accessibility Tests', () => {
                 setAttribute: jest.fn(),
                 textContent: ''
             };
-            global.document.getElementById.mockReturnValue(liveRegion);
+            (global.document.getElementById as any).mockReturnValue(liveRegion);
             tutorialOverlay.announceStep(step);
             expect(liveRegion.setAttribute).toHaveBeenCalledWith('aria-live', 'polite');
             expect(liveRegion.textContent).toContain('ステップ1');
@@ -230,7 +229,7 @@ describe('Help System Accessibility Tests', () => {
                 getAttribute: jest.fn(() => null),
                 getBoundingClientRect: () => ({ left: 100, top: 100, width: 50, height: 50 })
             };
-            global.document.querySelector.mockReturnValue(targetElement);
+            (global.document.querySelector as any).mockReturnValue(targetElement);
             tutorialOverlay.highlightElement('.bubble', 'このバブルをクリック');
             expect(targetElement.setAttribute).toHaveBeenCalledWith('aria-describedby', 'tutorial-instructions');
             expect(targetElement.setAttribute).toHaveBeenCalledWith('aria-label', expect.stringContaining('クリック'));
@@ -314,7 +313,7 @@ describe('Help System Accessibility Tests', () => {
             const content = { title: 'テスト', description: 'テスト説明' };
             
             // フォーカス時にツールチップ表示
-            const focusEvent = { type: 'focus' };
+            const _focusEvent = { type: 'focus' };
             tooltipSystem.show(100, 100, content);
             expect(tooltipSystem.currentTooltip).toBeDefined();
 

@@ -1,7 +1,6 @@
-import { describe, test, expect, beforeEach, afterEach, beforeAll, afterAll, jest, it } from '@jest/globals';
+import { describe, test, expect, beforeEach, afterEach, jest } from '@jest/globals';
 import { RealtimeDashboard } from '../../src/analytics/RealtimeDashboard';
-import { PerformanceDataCollector } from '../../src/analytics/PerformanceDataCollector';
-import { RealtimeMonitor } from '../../src/analytics/RealtimeMonitor';
+// Removed unused imports - PerformanceDataCollector and RealtimeMonitor
 
 // Chart.jsのモック
 (global as any).Chart = jest.fn().mockImplementation(() => ({
@@ -249,9 +248,9 @@ describe('RealtimeDashboard', () => {
                 enableFPS: false,
                 enableMemory: true
             });
-            expect(customDashboard.options.updateInterval).toBe(2000);
-            expect(customDashboard.options.historyLength).toBe(120);
-            expect(customDashboard.options.theme).toBe('light');
+            expect((customDashboard as any).options.updateInterval).toBe(2000);
+            expect((customDashboard as any).options.historyLength).toBe(120);
+            expect((customDashboard as any).options.theme).toBe('light');
             expect(container.querySelector('#fps-chart')).toBeFalsy();
             expect(container.querySelector('#memory-chart')).toBeTruthy();
             customDashboard.destroy();

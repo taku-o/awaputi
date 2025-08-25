@@ -86,19 +86,19 @@ describe('ShareContentGenerator', () => {
 
     describe('初期化', () => {
         test('正常に初期化される', () => {
-            expect(shareContentGenerator.localizationManager).toBe(mockLocalizationManager);
-            expect(shareContentGenerator.templates).toBeDefined();
+            expect((shareContentGenerator as any).localizationManager).toBe(mockLocalizationManager);
+            expect((shareContentGenerator as any).templates).toBeDefined();
             expect(shareContentGenerator.platformLimits).toBeDefined();
             expect(shareContentGenerator.stats.generated).toBe(0);
         });
 
         test('テンプレートが適切に初期化される', () => {
-            expect(shareContentGenerator.templates.score).toBeDefined();
-            expect(shareContentGenerator.templates.achievement).toBeDefined();
-            expect(shareContentGenerator.templates.challenge).toBeDefined();
+            expect((shareContentGenerator as any).templates.score).toBeDefined();
+            expect((shareContentGenerator as any).templates.achievement).toBeDefined();
+            expect((shareContentGenerator as any).templates.challenge).toBeDefined();
             // 日本語テンプレートの確認
-            expect(shareContentGenerator.templates.score.twitter.ja).toContain('{score}');
-            expect(shareContentGenerator.templates.achievement.facebook.ja).toContain('実績');
+            expect((shareContentGenerator as any).templates.score.twitter.ja).toContain('{score}');
+            expect((shareContentGenerator as any).templates.achievement.facebook.ja).toContain('実績');
         });
 
         test('プラットフォーム制限が設定される', () => {
@@ -245,7 +245,7 @@ describe('ShareContentGenerator', () => {
             const template = 'Hello {name}, your score is {score}!';
             const data = { name: 'Player', score: 1500 };
 
-            const result = shareContentGenerator.interpolateTemplate(template, data);
+            const result = (shareContentGenerator as any).interpolateTemplate(template, data);
             expect(result).toBe('Hello Player, your score is 1500!');
         });
 
@@ -253,7 +253,7 @@ describe('ShareContentGenerator', () => {
             const template = 'Score: {score}, Bonus: {bonus}';
             const data = { score: 1000 };
 
-            const result = shareContentGenerator.interpolateTemplate(template, data);
+            const result = (shareContentGenerator as any).interpolateTemplate(template, data);
             expect(result).toBe('Score: 1000, Bonus: ');
         });
 
@@ -261,7 +261,7 @@ describe('ShareContentGenerator', () => {
             const template = 'Score: {score}   points   !';
             const data = { score: 1000 };
 
-            const result = shareContentGenerator.interpolateTemplate(template, data);
+            const result = (shareContentGenerator as any).interpolateTemplate(template, data);
             expect(result).toBe('Score: 1000 points !');
         });
     });
@@ -291,10 +291,10 @@ describe('ShareContentGenerator', () => {
 
     describe('ユーティリティ機能', () => {
         test('プラットフォーム名が正規化される', () => {
-            expect(shareContentGenerator.normalizePlatform('X')).toBe('twitter');
-            expect(shareContentGenerator.normalizePlatform('twitter-x')).toBe('twitter');
-            expect(shareContentGenerator.normalizePlatform('FB')).toBe('facebook');
-            expect(shareContentGenerator.normalizePlatform('web-share')).toBe('generic');
+            expect((shareContentGenerator as any).normalizePlatform('X')).toBe('twitter');
+            expect((shareContentGenerator as any).normalizePlatform('twitter-x')).toBe('twitter');
+            expect((shareContentGenerator as any).normalizePlatform('FB')).toBe('facebook');
+            expect((shareContentGenerator as any).normalizePlatform('web-share')).toBe('generic');
         });
 
         test('スコアが適切にフォーマットされる', () => {
@@ -303,11 +303,11 @@ describe('ShareContentGenerator', () => {
         });
 
         test('現在の言語が取得される', () => {
-            const language = shareContentGenerator.getCurrentLanguage();
+            const language = (shareContentGenerator as any).getCurrentLanguage();
             expect(language).toBe('ja');
             // LocalizationManagerが無い場合のフォールバック
-            shareContentGenerator.localizationManager = null as any;
-            const fallbackLanguage = shareContentGenerator.getCurrentLanguage();
+            (shareContentGenerator as any).localizationManager = null as any;
+            const fallbackLanguage = (shareContentGenerator as any).getCurrentLanguage();
             expect(fallbackLanguage).toBe('ja'); // navigator.languageからの抽出
         });
 

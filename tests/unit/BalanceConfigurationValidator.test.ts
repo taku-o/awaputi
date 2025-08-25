@@ -6,7 +6,7 @@ import { BalanceConfigurationValidator, getBalanceConfigurationValidator } from 
 
 // Type definitions for test objects
 interface MockErrorHandler {
-    handleError: jest.Mock<void, [Error]>;
+    handleError: jest.Mock<void>;
 }
 
 interface BubbleConfig {
@@ -461,14 +461,14 @@ describe('BalanceConfigurationValidator', () => {
         });
 
         test('個別プロパティのバリデーション', () => {
-            const result = validator.validateProperty('health', 5);
+            const result = (validator as any).validateProperty('health', 5);
 
             expect(result.isValid).toBe(true);
             expect(result.error).toBeNull();
         });
 
         test('無効値での個別プロパティバリデーション', () => {
-            const result = validator.validateProperty('health', -1);
+            const result = (validator as any).validateProperty('health', -1);
 
             expect(result.isValid).toBe(false);
             expect(result.error).toBeDefined();

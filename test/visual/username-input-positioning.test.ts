@@ -7,7 +7,7 @@ import { jest } from '@jest/globals';
 describe('Username Input Positioning Visual Regression Tests', () => {
     let browser: any;
     let page: any;
-    let gameEngine: any;
+    let _gameEngine: any;
 
     // Test configurations for different screen sizes and pixel ratios
     const testConfigurations = [
@@ -171,11 +171,11 @@ describe('Username Input Positioning Visual Regression Tests', () => {
 
                 // Check username input positioning
                 const result = await page.evaluate(() => {
-                    if (!window.gameEngine || !window.gameEngine.sceneManager) {
+                    if (!(window as any).gameEngine || !((window as any).gameEngine as any).sceneManager) {
                         return null;
                     }
 
-                    const currentScene = window.gameEngine.sceneManager.currentScene;
+                    const currentScene = ((window as any).gameEngine as any).sceneManager.currentScene;
                     if (!currentScene || !currentScene.usernameInputManager) {
                         return null;
                     }
@@ -292,7 +292,7 @@ describe('Username Input Positioning Visual Regression Tests', () => {
 
                 page.evaluate.mockResolvedValue(mockResult);
 
-                const result = await page.evaluate((zoomLevel) => {
+                const result = await page.evaluate((zoomLevel: any) => {
                     // Mock evaluation for zoom test
                     return {
                         inputBox: {
@@ -344,7 +344,7 @@ describe('Username Input Positioning Visual Regression Tests', () => {
                     }
                 });
 
-                const result = await page.evaluate((width, height) => ({
+                const result = await page.evaluate((width: any, height: any) => ({
                     title: { x: width / 2, y: height / 2 - 100 },
                     inputBox: {
                         x: width / 2 - 200,
@@ -392,7 +392,7 @@ describe('Username Input Positioning Visual Regression Tests', () => {
                 const screenshotPath = `/tmp/username-input-${config.name.toLowerCase().replace(/\s+/g, '-')}.png`;
                 page.screenshot.mockResolvedValue(screenshotPath);
 
-                const result = await page.screenshot({
+                const _result = await page.screenshot({
                     path: screenshotPath,
                     fullPage: false
                 });

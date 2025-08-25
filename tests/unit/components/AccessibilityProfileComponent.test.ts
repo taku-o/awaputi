@@ -4,20 +4,20 @@ import { AccessibilityProfileComponent } from '../../../src/components/Accessibi
 // Type definitions
 interface MockGameEngine {
     settingsManager: {
-        get: jest.Mock<any, [string]>;
-        set: jest.Mock<void, [string, any]>;
+        get: jest.Mock<any>;
+        set: jest.Mock<void>;
     };
     audioManager: {
-        playUISound: jest.Mock<void, [string]>;
+        playUISound: jest.Mock<void>;
     };
 }
 
 interface MockErrorHandler {
-    handleError: jest.Mock<void, [Error, string?, any?]>;
+    handleError: jest.Mock<void>;
 }
 
 interface MockLocalizationManager {
-    getText: jest.Mock<string, [string]>;
+    getText: jest.Mock<string>;
 }
 
 interface AccessibilityProfile {
@@ -28,10 +28,10 @@ interface AccessibilityProfile {
 }
 
 interface MockAccessibilitySettingsManager {
-    getCurrentProfile: jest.Mock<AccessibilityProfile | null, []>;
-    getAvailableProfiles: jest.Mock<AccessibilityProfile[], []>;
-    switchProfile: jest.Mock<boolean, [string]>;
-    getStats: jest.Mock<{ profilesUsed: number; currentProfile: string }, []>;
+    getCurrentProfile: jest.Mock<AccessibilityProfile | null>;
+    getAvailableProfiles: jest.Mock<AccessibilityProfile[]>;
+    switchProfile: jest.Mock<boolean>;
+    getStats: jest.Mock<{ profilesUsed: number; currentProfile: string }>;
 }
 
 interface ComponentStats {
@@ -42,7 +42,7 @@ interface ComponentStats {
 }
 
 interface Announcer {
-    announce: jest.Mock<void, [string]>;
+    announce: jest.Mock<void>;
 }
 
 // モックの作成
@@ -192,14 +192,14 @@ it('現在のプロファイルを表示する', () => {
         
 });
 it('プロファイルの詳細情報を表示する', () => {
-            const profile = accessibilityProfileComponent.getProfileDetails('high-contrast');
+            const profile = (accessibilityProfileComponent as any).getProfileDetails('high-contrast');
             expect(profile).toEqual(testProfiles[1])
         
 });
 
         it('存在しないプロファイルの詳細を要求した場合nullを返す', () => {
 
-            const profile = accessibilityProfileComponent.getProfileDetails('nonexistent');
+            const profile = (accessibilityProfileComponent as any).getProfileDetails('nonexistent');
             expect(profile).toBeNull()
         
 })
@@ -258,7 +258,7 @@ it('無効なプロファイル名で切り替えを試行した場合エラー�
         
 });
 it('カスタムプロファイルを識別する', () => {
-            const customProfiles = accessibilityProfileComponent.getCustomProfiles();
+            const customProfiles = (accessibilityProfileComponent as any).getCustomProfiles();
             expect(customProfiles).toHaveLength(1);
             expect(customProfiles[0].name).toBe('custom');
             expect(customProfiles[0].isCustom).toBe(true)
@@ -267,13 +267,13 @@ it('カスタムプロファイルを識別する', () => {
 
         it('デフォルトプロファイルを識別する', () => {
 
-            const defaultProfiles = accessibilityProfileComponent.getDefaultProfiles();
+            const defaultProfiles = (accessibilityProfileComponent as any).getDefaultProfiles();
             expect(defaultProfiles).toHaveLength(4);
             expect(defaultProfiles.every(p => !p.isCustom)).toBe(true)
         
 });
 it('プロファイルの使用統計を取得する', () => {
-            const stats = accessibilityProfileComponent.getUsageStats();
+            const stats = (accessibilityProfileComponent as any).getUsageStats();
             expect(stats.profilesUsed).toBe(3);
             expect(stats.currentProfile).toBe('default')
         
@@ -297,13 +297,13 @@ it('プロファイル切り替え時にアクセシビリティ通知を行う'
 
         it('キーボードナビゲーションをサポートする', () => {
 
-            const keyboardHandler = accessibilityProfileComponent.getKeyboardHandler();
+            const keyboardHandler = (accessibilityProfileComponent as any).getKeyboardHandler();
             expect(keyboardHandler).toBeDefined();
             expect(typeof keyboardHandler.handleKeyDown).toBe('function')
         
 });
 it('ARIA属性を適切に設定する', () => {
-            const ariaAttributes = accessibilityProfileComponent.getAriaAttributes();
+            const ariaAttributes = (accessibilityProfileComponent as any).getAriaAttributes();
             expect(ariaAttributes.role).toBe('group');
             expect(ariaAttributes['aria-label']).toContain('Accessibility Profile')
         
@@ -341,10 +341,10 @@ const result = await accessibilityProfileComponent.switchProfile('high-contrast'
 
         it('存在しないプロファイルへのアクセスでエラーを処理する', () => {
             expect(() => {
-                accessibilityProfileComponent.getProfileDetails('invalid')
+                (accessibilityProfileComponent as any).getProfileDetails('invalid')
             }).not.toThrow();
 
-            const result = accessibilityProfileComponent.getProfileDetails('invalid');
+            const result = (accessibilityProfileComponent as any).getProfileDetails('invalid');
             expect(result).toBeNull()
         })
     });
@@ -389,7 +389,7 @@ const result = await accessibilityProfileComponent.switchProfile('high-contrast'
 });
 it('プロファイル変更イベントを発行する', async () => {
             const eventHandler = jest.fn();
-            accessibilityProfileComponent.addEventListener('profileChanged', eventHandler);
+            (accessibilityProfileComponent as any).addEventListener('profileChanged', eventHandler);
 
             await accessibilityProfileComponent.switchProfile('high-contrast');
 
@@ -404,7 +404,7 @@ it('プロファイル変更イベントを発行する', async () => {
         it('エラーイベントを発行する', async () => {
 
             const errorHandler = jest.fn();
-            accessibilityProfileComponent.addEventListener('error', errorHandler);
+            (accessibilityProfileComponent as any).addEventListener('error', errorHandler);
 
             mockAccessibilitySettingsManager.switchProfile.mockReturnValue(false);
             await accessibilityProfileComponent.switchProfile('invalid');
@@ -438,7 +438,7 @@ it('プロファイル変更イベントを発行する', async () => {
 });
 
 // テストユーティリティ関数
-function createMockProfile(overrides: Partial<AccessibilityProfile> = {}): AccessibilityProfile {
+function _createMockProfile(overrides: Partial<AccessibilityProfile> = {}): AccessibilityProfile {
     return {
         name: 'test-profile',
         displayName: 'Test Profile',
@@ -449,7 +449,7 @@ function createMockProfile(overrides: Partial<AccessibilityProfile> = {}): Acces
 
 
 
-function createMockStats(overrides: Partial<ComponentStats> = {}): ComponentStats {
+function _createMockStats(overrides: Partial<ComponentStats> = {}): ComponentStats {
     return {
         isInitialized: true,
         currentProfile: 'default',

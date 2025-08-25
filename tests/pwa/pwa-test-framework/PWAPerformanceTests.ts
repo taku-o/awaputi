@@ -186,7 +186,7 @@ export class PWAPerformanceTests {
                         dnsLookupTime: navTiming.domainLookupEnd - navTiming.domainLookupStart,
                         tcpConnectTime: navTiming.connectEnd - navTiming.connectStart,
                         responseTime: navTiming.responseEnd - navTiming.responseStart,
-                        domProcessingTime: navTiming.domComplete - navTiming.domLoading,
+                        domProcessingTime: navTiming.domComplete - (navTiming as any).domLoading,
                         totalLoadTime: navTiming.loadEventEnd - navTiming.navigationStart
                     };
                 }

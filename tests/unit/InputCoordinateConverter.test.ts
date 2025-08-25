@@ -49,12 +49,12 @@ describe('InputCoordinateConverter', () => {
     beforeEach(() => {
         // Mock canvas element
         mockCanvas = {
-            getBoundingClientRect: jest.fn().mockReturnValue({
+            getBoundingClientRect: jest.fn<() => DOMRect>().mockReturnValue({
                 left: 100,
                 top: 50,
                 width: 800,
                 height: 600
-            }),
+            } as DOMRect),
             width: 1600,
             height: 1200,
             clientWidth: 800,
@@ -63,7 +63,7 @@ describe('InputCoordinateConverter', () => {
 
         // Mock ResponsiveCanvasManager
         mockCanvasManager = {
-            getCanvasInfo: jest.fn().mockReturnValue({
+            getCanvasInfo: jest.fn<() => CanvasInfo>().mockReturnValue({
                 scaleFactor: 1.5,
                 scale: 1.5,
                 displayWidth: 800,
@@ -74,10 +74,10 @@ describe('InputCoordinateConverter', () => {
                 baseWidth: 1024,
                 baseHeight: 768
             }),
-            getScaleFactor: jest.fn().mockReturnValue(1.5),
-            getPixelRatio: jest.fn().mockReturnValue(2),
-            getDisplayDimensions: jest.fn().mockReturnValue({ width: 800, height: 600 }),
-            getBaseDimensions: jest.fn().mockReturnValue({ width: 1024, height: 768 })
+            getScaleFactor: jest.fn<() => number>().mockReturnValue(1.5),
+            getPixelRatio: jest.fn<() => number>().mockReturnValue(2),
+            getDisplayDimensions: jest.fn<() => { width: number; height: number }>().mockReturnValue({ width: 800, height: 600 }),
+            getBaseDimensions: jest.fn<() => { width: number; height: number }>().mockReturnValue({ width: 1024, height: 768 })
         };
 
         converter = new InputCoordinateConverter(mockCanvas, mockCanvasManager as any);
@@ -398,12 +398,12 @@ describe('InputCoordinateConverter', () => {
     describe('設定変更対応', () => {
         test('キャンバスサイズ変更への対応', () => {
             // キャンバスサイズ変更
-            (mockCanvas.getBoundingClientRect as jest.Mock).mockReturnValue({
+            (mockCanvas.getBoundingClientRect as jest.Mock<() => DOMRect>).mockReturnValue({
                 left: 50,
                 top: 25,
                 width: 1200,
                 height: 900
-            });
+            } as DOMRect);
 
             const mouseEvent = {
                 clientX: 650,

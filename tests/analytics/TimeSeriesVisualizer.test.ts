@@ -1,4 +1,4 @@
-import { describe, test, expect, beforeEach, afterEach, beforeAll, afterAll, jest, it } from '@jest/globals';
+import { describe, test, expect, beforeEach } from '@jest/globals';
 import { TimeSeriesVisualizer } from '../../src/analytics/TimeSeriesVisualizer';
 
 // モックChartRenderer

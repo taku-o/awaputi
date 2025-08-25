@@ -109,15 +109,15 @@ afterEach(() => {
 
         test('正常に初期化される', () => {
             expect(errorHandler).toBeInstanceOf(ConfigurationErrorHandler);
-            expect(errorHandler.errorTypes).toBeDefined();
-            expect(errorHandler.recoveryStrategies).toBeInstanceOf(Map);
-            expect(errorHandler.errorStats).toBeDefined()
+            expect((errorHandler as any).errorTypes).toBeDefined();
+            expect((errorHandler as any).recoveryStrategies).toBeInstanceOf(Map);
+            expect((errorHandler as any).errorStats).toBeDefined()
         
 });
 test('復旧戦略が設定される', () => {
-            expect(errorHandler.recoveryStrategies.size).toBeGreaterThan(0);
-            expect(errorHandler.recoveryStrategies.has('CONFIGURATION_ACCESS')).toBe(true);
-            expect(errorHandler.recoveryStrategies.has('CALCULATION_ERROR')).toBe(true)
+            expect((errorHandler as any).recoveryStrategies.size).toBeGreaterThan(0);
+            expect((errorHandler as any).recoveryStrategies.has('CONFIGURATION_ACCESS')).toBe(true);
+            expect((errorHandler as any).recoveryStrategies.has('CALCULATION_ERROR')).toBe(true)
         
 });
 
@@ -144,7 +144,7 @@ test('復旧戦略が設定される', () => {
 
             const result: ErrorHandlingResult = errorHandler.handleError(
                 error,
-                errorHandler.errorTypes.CONFIGURATION_ACCESS,
+                (errorHandler as any).errorTypes.CONFIGURATION_ACCESS,
                 context
             );
 
@@ -163,7 +163,7 @@ test('復旧戦略が設定される', () => {
 
             const result: ErrorHandlingResult = errorHandler.handleError(
                 error,
-                errorHandler.errorTypes.CONFIGURATION_ACCESS,
+                (errorHandler as any).errorTypes.CONFIGURATION_ACCESS,
                 context
             );
 
@@ -176,16 +176,16 @@ test('復旧戦略が設定される', () => {
         test('エラー統計が更新される', () => {
             const error = new Error('テストエラー');
             const context: ConfigurationAccessContext = { category: 'test', key: 'test' };
-            const initialTotal = errorHandler.errorStats.total;
+            const initialTotal = (errorHandler as any).errorStats.total;
             
             errorHandler.handleError(
                 error,
-                errorHandler.errorTypes.CONFIGURATION_ACCESS,
+                (errorHandler as any).errorTypes.CONFIGURATION_ACCESS,
                 context
             );
 
-            expect(errorHandler.errorStats.total).toBe(initialTotal + 1);
-            expect(errorHandler.errorStats.recovered).toBe(1)
+            expect((errorHandler as any).errorStats.total).toBe(initialTotal + 1);
+            expect((errorHandler as any).errorStats.recovered).toBe(1)
         })
     });
 
@@ -201,7 +201,7 @@ test('復旧戦略が設定される', () => {
 
             const result: ErrorHandlingResult = errorHandler.handleError(
                 error,
-                errorHandler.errorTypes.CONFIGURATION_VALIDATION,
+                (errorHandler as any).errorTypes.CONFIGURATION_VALIDATION,
                 context
             );
 
@@ -222,7 +222,7 @@ test('復旧戦略が設定される', () => {
 
             const result: ErrorHandlingResult = errorHandler.handleError(
                 error,
-                errorHandler.errorTypes.CONFIGURATION_VALIDATION,
+                (errorHandler as any).errorTypes.CONFIGURATION_VALIDATION,
                 context
             );
 
@@ -244,7 +244,7 @@ test('復旧戦略が設定される', () => {
 
             const result: ErrorHandlingResult = errorHandler.handleError(
                 error,
-                errorHandler.errorTypes.CONFIGURATION_VALIDATION,
+                (errorHandler as any).errorTypes.CONFIGURATION_VALIDATION,
                 context
             );
 
@@ -266,7 +266,7 @@ test('復旧戦略が設定される', () => {
 
             const result: ErrorHandlingResult = errorHandler.handleError(
                 error,
-                errorHandler.errorTypes.CALCULATION_ERROR,
+                (errorHandler as any).errorTypes.CALCULATION_ERROR,
                 context
             );
 
@@ -287,7 +287,7 @@ test('復旧戦略が設定される', () => {
 
             const result: ErrorHandlingResult = errorHandler.handleError(
                 error,
-                errorHandler.errorTypes.CALCULATION_ERROR,
+                (errorHandler as any).errorTypes.CALCULATION_ERROR,
                 context
             );
 
@@ -310,7 +310,7 @@ test('復旧戦略が設定される', () => {
 
             const result: ErrorHandlingResult = errorHandler.handleError(
                 error,
-                errorHandler.errorTypes.CALCULATION_OVERFLOW,
+                (errorHandler as any).errorTypes.CALCULATION_OVERFLOW,
                 context
             );
 
@@ -331,14 +331,14 @@ test('復旧戦略が設定される', () => {
 
             const result: ErrorHandlingResult = errorHandler.handleError(
                 error,
-                errorHandler.errorTypes.CACHE_ERROR,
+                (errorHandler as any).errorTypes.CACHE_ERROR,
                 context
             );
 
             expect(result.success).toBe(true);
             expect(result.recovered).toBe(true);
             expect(result.message).toBe('直接アクセスに切り替え');
-            expect(errorHandler.fallbackState.disableCache).toBe(true)
+            expect((errorHandler as any).fallbackState.disableCache).toBe(true)
         })
     });
 
@@ -352,14 +352,14 @@ test('復旧戦略が設定される', () => {
 
             const result: ErrorHandlingResult = errorHandler.handleError(
                 error,
-                errorHandler.errorTypes.DEPENDENCY_ERROR,
+                (errorHandler as any).errorTypes.DEPENDENCY_ERROR,
                 context
             );
 
             expect(result.success).toBe(true);
             expect(result.recovered).toBe(true);
             expect(result.message).toBe('セーフモードを有効化');
-            expect(errorHandler.fallbackState.safeMode).toBe(true)
+            expect((errorHandler as any).fallbackState.safeMode).toBe(true)
         })
     });
 
@@ -372,7 +372,7 @@ test('復旧戦略が設定される', () => {
             for (let i = 0; i < 3; i++) {
                 errorHandler.handleError(
                     error,
-                    errorHandler.errorTypes.CONFIGURATION_ACCESS,
+                    (errorHandler as any).errorTypes.CONFIGURATION_ACCESS,
                     context
                 )
             }
@@ -380,7 +380,7 @@ test('復旧戦略が設定される', () => {
             // 4回目は失敗するはず
             const result: ErrorHandlingResult = errorHandler.handleError(
                 error,
-                errorHandler.errorTypes.CONFIGURATION_ACCESS,
+                (errorHandler as any).errorTypes.CONFIGURATION_ACCESS,
                 context
             );
 
@@ -403,7 +403,7 @@ test('復旧戦略が設定される', () => {
             (errorHandler as any)._monitorErrorRate();
             
             // セーフモードが有効化されるはず
-            expect(errorHandler.fallbackState.safeMode).toBe(true)
+            expect((errorHandler as any).fallbackState.safeMode).toBe(true)
         })
     });
 
@@ -412,7 +412,7 @@ test('復旧戦略が設定される', () => {
             const error = new Error('テストエラー');
             errorHandler.handleError(
                 error,
-                errorHandler.errorTypes.CONFIGURATION_ACCESS,
+                (errorHandler as any).errorTypes.CONFIGURATION_ACCESS,
                 { category: 'test', key: 'test', defaultValue: 'default' }
             );
 
@@ -426,8 +426,8 @@ test('復旧戦略が設定される', () => {
 
         test('フォールバック状態の取得', () => {
 
-            errorHandler.fallbackState.safeMode = true;
-            errorHandler.fallbackState.disableCache = true;
+            (errorHandler as any).fallbackState.safeMode = true;
+            (errorHandler as any).fallbackState.disableCache = true;
             
             const state: FallbackState = errorHandler.getFallbackState();
             expect(state.safeMode).toBe(true);
@@ -436,12 +436,12 @@ test('復旧戦略が設定される', () => {
         
 });
 test('フォールバック状態のリセット', () => {
-            errorHandler.fallbackState.safeMode = true;
-            errorHandler.fallbackState.disableCache = true;
+            (errorHandler as any).fallbackState.safeMode = true;
+            (errorHandler as any).fallbackState.disableCache = true;
             
             errorHandler.resetFallbackState();
-            expect(errorHandler.fallbackState.safeMode).toBe(false);
-            expect(errorHandler.fallbackState.disableCache).toBe(false)
+            expect((errorHandler as any).fallbackState.safeMode).toBe(false);
+            expect((errorHandler as any).fallbackState.disableCache).toBe(false)
         
 })
     });
@@ -460,12 +460,12 @@ test('フォールバック状態のリセット', () => {
     describe('エラーハンドラー内でのエラー処理', () => {
         test('復旧戦略でエラーが発生した場合の処理', () => {
             // 復旧戦略を破壊的に変更
-            const originalStrategy = errorHandler.recoveryStrategies.get(
-                errorHandler.errorTypes.CONFIGURATION_ACCESS
+            const originalStrategy = (errorHandler as any).recoveryStrategies.get(
+                (errorHandler as any).errorTypes.CONFIGURATION_ACCESS
             );
 
-            errorHandler.recoveryStrategies.set(
-                errorHandler.errorTypes.CONFIGURATION_ACCESS,
+            (errorHandler as any).recoveryStrategies.set(
+                (errorHandler as any).errorTypes.CONFIGURATION_ACCESS,
                 {
                     maxAttempts: 1,
                     strategy: () => {
@@ -477,7 +477,7 @@ test('フォールバック状態のリセット', () => {
             const error = new Error('テストエラー');
             const result: ErrorHandlingResult = errorHandler.handleError(
                 error,
-                errorHandler.errorTypes.CONFIGURATION_ACCESS,
+                (errorHandler as any).errorTypes.CONFIGURATION_ACCESS,
                 { category: 'test', key: 'test' }
             );
 
@@ -485,8 +485,8 @@ test('フォールバック状態のリセット', () => {
             expect(result.message).toContain('復旧戦略実行エラー');
 
             // 元の戦略を復元
-            errorHandler.recoveryStrategies.set(
-                errorHandler.errorTypes.CONFIGURATION_ACCESS,
+            (errorHandler as any).recoveryStrategies.set(
+                (errorHandler as any).errorTypes.CONFIGURATION_ACCESS,
                 originalStrategy
             )
         });
@@ -508,13 +508,13 @@ test('フォールバック状態のリセット', () => {
             const error = new Error('テストエラー');
             const result: ErrorHandlingResult = errorHandler.handleError(
                 error,
-                errorHandler.errorTypes.CONFIGURATION_ACCESS,
+                (errorHandler as any).errorTypes.CONFIGURATION_ACCESS,
                 { category: 'test', key: 'test' }
             );
 
             expect(result.success).toBe(false);
             expect(result.message).toBe('エラーハンドラー内でエラー発生');
-            expect(errorHandler.fallbackState.safeMode).toBe(true);
+            expect((errorHandler as any).fallbackState.safeMode).toBe(true);
 
             // 元のメソッドを復元
             errorHandler.handleError = originalHandleError;

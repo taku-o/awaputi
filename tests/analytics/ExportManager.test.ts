@@ -1,4 +1,4 @@
-import { describe, test, expect, beforeEach, afterEach, beforeAll, afterAll, jest, it } from '@jest/globals';
+import { describe, test, expect, beforeEach, jest } from '@jest/globals';
 import { ExportManager } from '../../src/analytics/ExportManager';
 
 // Mock Storage Manager
@@ -47,7 +47,7 @@ class MockPrivacyManager {
     async anonymizeData(data: any): Promise<any> {
         // 簡単な匿名化処理
         const anonymized = JSON.parse(JSON.stringify(data));
-        for (const [dataType, records] of Object.entries(anonymized)) {
+        for (const [_dataType, records] of Object.entries(anonymized)) {
             if (Array.isArray(records)) {
                 records.forEach((record: any) => {
                     if (record.playerId) {

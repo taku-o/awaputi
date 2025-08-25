@@ -1,4 +1,4 @@
-import { describe, test, expect, beforeEach, afterEach, beforeAll, afterAll, jest, it } from '@jest/globals';
+import { describe, test, expect, beforeEach } from '@jest/globals';
 /**
  * Test Data Generation Commands Test Suite
  * テストデータ生成コマンドの単体テスト
@@ -303,14 +303,14 @@ describe('TestDataGenerationCommands', () => {
             const commands = new TestDataGenerationCommands(mockGameEngineNoManager);
             const result = await commands.generateBubblesCommand(['5'], {}, mockConsole);
             expect(result).toContain('Generated 5 random bubbles');
-            expect(commands.generatedData.has('lastBubbles')).toBe(true);
+            expect((commands as any).generatedData.has('lastBubbles')).toBe(true);
         });
         test('should handle missing statistics manager gracefully', async () => {
             const mockGameEngineNoStats: Record<string, any> = {};
             const commands = new TestDataGenerationCommands(mockGameEngineNoStats);
             const result = await commands.generateStatisticsCommand(['daily'], {}, mockConsole);
             expect(result).toContain('Generated 1 daily statistics entries');
-            expect(commands.generatedData.has('lastStatistics')).toBe(true);
+            expect((commands as any).generatedData.has('lastStatistics')).toBe(true);
         });
         test('should handle invalid JSON parameters', async () => {
             await expect(testDataCommands.generateGameStateCommand(['normal', 'invalid-json'], {}, mockConsole))
@@ -321,9 +321,9 @@ describe('TestDataGenerationCommands', () => {
         test('should work with DeveloperConsole', () => {
             const console = new DeveloperConsole(mockGameEngine);
             testDataCommands.registerCommands(console);
-            expect(console.commands.has('test.bubbles')).toBe(true);
-            expect(console.commands.has('test.gamestate')).toBe(true);
-            expect(console.commandGroups.get('test').size).toBe(10);
+            expect((console as any).commands.has('test.bubbles')).toBe(true);
+            expect((console as any).commands.has('test.gamestate')).toBe(true);
+            expect((console as any).commandGroups.get('test').size).toBe(10);
         });
     });
     describe('Cleanup', () => {

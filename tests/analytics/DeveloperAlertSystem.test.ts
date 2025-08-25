@@ -1,4 +1,4 @@
-import { describe, test, expect, beforeEach, afterEach, beforeAll, afterAll, jest, it } from '@jest/globals';
+import { describe, test, expect, beforeEach, afterEach } from '@jest/globals';
 import { DeveloperAlertSystem } from '../../src/analytics/DeveloperAlertSystem';
 
 // fetch APIのモック
@@ -252,7 +252,7 @@ describe('DeveloperAlertSystem', () => {
             // Notification APIのモック
             const mockNotification = jest.fn();
             (global as any).Notification = mockNotification;
-            mockNotification.permission = 'granted';
+            (mockNotification as any).permission = 'granted';
 
             const alert = {
                 type: 'error',

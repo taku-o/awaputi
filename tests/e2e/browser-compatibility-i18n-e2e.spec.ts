@@ -483,7 +483,7 @@ test.describe('Browser-Specific Edge Cases', () => {
         hasDateTimeFormat: typeof Intl.DateTimeFormat !== 'undefined',
         hasCollator: typeof Intl.Collator !== 'undefined',
         hasRelativeTimeFormat: typeof Intl.RelativeTimeFormat !== 'undefined',
-        hasListFormat: typeof Intl.ListFormat !== 'undefined',
+        hasListFormat: typeof (Intl as any).ListFormat !== 'undefined',
         hasPluralRules: typeof Intl.PluralRules !== 'undefined'
       };
       

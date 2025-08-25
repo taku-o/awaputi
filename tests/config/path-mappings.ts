@@ -1,4 +1,4 @@
-import { describe, test, expect, beforeEach, afterEach, beforeAll, afterAll, jest, it } from '@jest/globals';
+// Removed unused Jest imports - this file is a configuration module
 /**
  * Path Mappings Configuration for Phase G Test Suite Repair
  * Phase G後のファイル再編成に対応したインポートパスマッピング

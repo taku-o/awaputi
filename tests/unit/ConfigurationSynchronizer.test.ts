@@ -138,7 +138,7 @@ describe('ConfigurationSynchronizer', () => {
         });
 
         test('should initialize with configuration manager', () => {
-            const configManager = synchronizer.getConfigurationManager();
+            const configManager = (synchronizer as any).getConfigurationManager();
             expect(configManager).toBeDefined();
         });
     });
@@ -157,7 +157,7 @@ describe('ConfigurationSynchronizer', () => {
             const result = synchronizer.registerConfigurationSource(sourceConfig);
             expect(result).toBe(true);
 
-            const sources = synchronizer.getRegisteredSources();
+            const sources = (synchronizer as any).getRegisteredSources();
             expect(sources.length).toBe(1);
             expect(sources[0].source.name).toBe('test-source');
         });
@@ -176,7 +176,7 @@ describe('ConfigurationSynchronizer', () => {
             synchronizer.registerConfigurationSource(sourceConfig1);
             synchronizer.registerConfigurationSource(sourceConfig2);
 
-            const sources = synchronizer.getRegisteredSources();
+            const sources = (synchronizer as any).getRegisteredSources();
             expect(sources.length).toBe(2);
         });
 
@@ -194,7 +194,7 @@ describe('ConfigurationSynchronizer', () => {
             synchronizer.registerConfigurationSource(lowPrioritySource);
             synchronizer.registerConfigurationSource(highPrioritySource);
 
-            const sortedSources = synchronizer.getRegisteredSources();
+            const sortedSources = (synchronizer as any).getRegisteredSources();
             expect(sortedSources[0].source.name).toBe('high-priority');
             expect(sortedSources[1].source.name).toBe('low-priority');
         });
@@ -215,7 +215,7 @@ describe('ConfigurationSynchronizer', () => {
             synchronizer.registerConfigurationSource(sourceConfig1);
             synchronizer.registerConfigurationSource(sourceConfig2);
 
-            const validation = synchronizer.validateConfiguration();
+            const validation = (synchronizer as any).validateConfiguration();
             expect(validation.success).toBeDefined();
             expect(validation.discrepancies).toBeDefined();
         });
@@ -234,7 +234,7 @@ describe('ConfigurationSynchronizer', () => {
             synchronizer.registerConfigurationSource(conflictingSource1);
             synchronizer.registerConfigurationSource(conflictingSource2);
 
-            const validation = synchronizer.validateConfiguration();
+            const validation = (synchronizer as any).validateConfiguration();
             expect(validation.discrepancies.length).toBeGreaterThan(0);
         });
 
@@ -246,7 +246,7 @@ describe('ConfigurationSynchronizer', () => {
 
             synchronizer.registerConfigurationSource(problematicSource);
 
-            const validation = synchronizer.validateConfiguration();
+            const validation = (synchronizer as any).validateConfiguration();
             expect(validation.recommendations).toBeDefined();
             expect(Array.isArray(validation.recommendations)).toBe(true);
         });
@@ -261,7 +261,7 @@ describe('ConfigurationSynchronizer', () => {
 
             synchronizer.registerConfigurationSource(sourceConfig);
 
-            const report = synchronizer.synchronizeConfiguration();
+            const report = (synchronizer as any).synchronizeConfiguration();
             expect(report.success).toBe(true);
             expect(report.changedKeys).toBeDefined();
         });
@@ -281,7 +281,7 @@ describe('ConfigurationSynchronizer', () => {
 
             synchronizer.registerConfigurationSource(sourceConfig);
 
-            const report = synchronizer.synchronizeConfiguration(options);
+            const report = (synchronizer as any).synchronizeConfiguration(options);
             expect(report.success).toBe(true);
             expect(report.backupCreated).toBe(true);
             expect(report.validationPassed).toBeDefined();
@@ -296,7 +296,7 @@ describe('ConfigurationSynchronizer', () => {
 
             synchronizer.registerConfigurationSource(invalidSource);
 
-            const report = synchronizer.synchronizeConfiguration();
+            const report = (synchronizer as any).synchronizeConfiguration();
             expect(report.success).toBe(false);
             expect(report.errors.length).toBeGreaterThan(0);
         });
@@ -304,13 +304,13 @@ describe('ConfigurationSynchronizer', () => {
 
     describe('Configuration Backup and Restore', () => {
         test('should create configuration backup', () => {
-            const backupResult = synchronizer.createBackup('test-backup');
+            const backupResult = (synchronizer as any).createBackup('test-backup');
             expect(backupResult).toBe(true);
         });
 
         test('should restore configuration from backup', () => {
             // Create a backup first
-            synchronizer.createBackup('restore-test');
+            (synchronizer as any).createBackup('restore-test');
 
             // Make some changes
             const sourceConfig: SourceConfig = {
@@ -318,18 +318,18 @@ describe('ConfigurationSynchronizer', () => {
                 source: { name: 'change-source', priority: 1 }
             };
             synchronizer.registerConfigurationSource(sourceConfig);
-            synchronizer.synchronizeConfiguration();
+            (synchronizer as any).synchronizeConfiguration();
 
             // Restore from backup
-            const restoreResult = synchronizer.restoreFromBackup('restore-test');
+            const restoreResult = (synchronizer as any).restoreFromBackup('restore-test');
             expect(restoreResult).toBe(true);
         });
 
         test('should list available backups', () => {
-            synchronizer.createBackup('backup-1');
-            synchronizer.createBackup('backup-2');
+            (synchronizer as any).createBackup('backup-1');
+            (synchronizer as any).createBackup('backup-2');
 
-            const backups = synchronizer.listBackups();
+            const backups = (synchronizer as any).listBackups();
             expect(Array.isArray(backups)).toBe(true);
             expect(backups.length).toBeGreaterThanOrEqual(2);
         });
@@ -337,7 +337,7 @@ describe('ConfigurationSynchronizer', () => {
 
     describe('Configuration Export and Import', () => {
         test('should export configuration to JSON', () => {
-            const exportResult = synchronizer.exportConfiguration();
+            const exportResult = (synchronizer as any).exportConfiguration();
             expect(exportResult).toBeDefined();
             expect(typeof exportResult).toBe('string');
 
@@ -346,7 +346,7 @@ describe('ConfigurationSynchronizer', () => {
         });
 
         test('should import configuration from JSON', () => {
-            const originalConfig = synchronizer.exportConfiguration();
+            const originalConfig = (synchronizer as any).exportConfiguration();
             
             // Modify configuration
             const sourceConfig: SourceConfig = {
@@ -354,16 +354,16 @@ describe('ConfigurationSynchronizer', () => {
                 source: { name: 'import-test', priority: 1 }
             };
             synchronizer.registerConfigurationSource(sourceConfig);
-            synchronizer.synchronizeConfiguration();
+            (synchronizer as any).synchronizeConfiguration();
 
             // Import original configuration
-            const importResult = synchronizer.importConfiguration(originalConfig);
+            const importResult = (synchronizer as any).importConfiguration(originalConfig);
             expect(importResult).toBe(true);
         });
 
         test('should handle invalid JSON during import', () => {
             const invalidJson = '{ invalid json }';
-            const importResult = synchronizer.importConfiguration(invalidJson);
+            const importResult = (synchronizer as any).importConfiguration(invalidJson);
             expect(importResult).toBe(false);
         });
     });
@@ -376,22 +376,22 @@ describe('ConfigurationSynchronizer', () => {
             };
 
             synchronizer.registerConfigurationSource(sourceConfig);
-            synchronizer.synchronizeConfiguration();
+            (synchronizer as any).synchronizeConfiguration();
 
-            const stats = synchronizer.getStatistics();
+            const stats = (synchronizer as any).getStatistics();
             expect(stats.totalSynchronizations).toBeGreaterThan(0);
             expect(stats.lastSynchronizationTime).toBeDefined();
         });
 
         test('should reset statistics', () => {
             // Perform some operations
-            synchronizer.synchronizeConfiguration();
-            synchronizer.validateConfiguration();
+            (synchronizer as any).synchronizeConfiguration();
+            (synchronizer as any).validateConfiguration();
 
             // Reset statistics
-            synchronizer.resetStatistics();
+            (synchronizer as any).resetStatistics();
 
-            const stats = synchronizer.getStatistics();
+            const stats = (synchronizer as any).getStatistics();
             expect(stats.totalSynchronizations).toBe(0);
             expect(stats.totalValidations).toBe(0);
         });
@@ -408,7 +408,7 @@ describe('ConfigurationSynchronizer', () => {
                 synchronizer.registerConfigurationSource(sourceConfig);
             }
 
-            synchronizer.synchronizeConfiguration();
+            (synchronizer as any).synchronizeConfiguration();
 
             const endTime = performance.now();
             const duration = endTime - startTime;

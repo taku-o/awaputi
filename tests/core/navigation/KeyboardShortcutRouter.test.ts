@@ -1,4 +1,4 @@
-import { describe, test, expect, beforeEach, afterEach, beforeAll, afterAll, jest, it } from '@jest/globals';
+import { describe, test, expect, beforeEach, afterEach } from '@jest/globals';
 
 /**
  * KeyboardShortcutRouter.test.ts
@@ -333,7 +333,7 @@ describe('KeyboardShortcutRouter', () => {
             };
 
             expect(() => {
-                router.route(shortcutData);
+                (router as any).route(shortcutData);
             }).not.toThrow();
         });
 

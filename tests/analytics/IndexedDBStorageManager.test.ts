@@ -1,4 +1,4 @@
-import { describe, test, expect, beforeEach, afterEach, beforeAll, afterAll, jest, it } from '@jest/globals';
+import { describe, test, expect, beforeEach, afterEach } from '@jest/globals';
 /**
  * IndexedDBStorageManager のテスト
  */
@@ -55,7 +55,7 @@ class MockIDBObjectStore {
     
     put(data: any): any {
         const key = typeof this.keyPath === 'string' ? data[this.keyPath] : 
-                   Array.isArray(this.keyPath) ? this.keyPath.map((k: string) => data[k]).join('|') :
+                   Array.isArray(this.keyPath) ? (this.keyPath as any).map((k: string) => data[k]).join('|') :
                    this.autoIncrement ? Date.now() : data.id;
         this.data.set(key, data);
         return { onsuccess: null, onerror: null };
@@ -84,7 +84,7 @@ class MockIDBObjectStore {
         return { onsuccess: null, onerror: null };
     }
     
-    openCursor(range?: any): any {
+    openCursor(_range?: any): any {
         const request = { onsuccess: null, onerror: null };
         setTimeout(() => {
             const values = Array.from(this.data.values());
@@ -127,13 +127,13 @@ class MockIDBIndex {
     keyPath: string;
     unique: boolean;
 
-    constructor(name: string, keyPath: string, options: any) {
-        this.name = name;
-        this.keyPath = keyPath;
+    constructor(_name: string, _keyPath: string, options: any) {
+        this.name = _name;
+        this.keyPath = _keyPath;
         this.unique = options.unique || false;
     }
     
-    openCursor(range?: any): any {
+    openCursor(_range?: any): any {
         // 簡易実装
         const request = { onsuccess: null, onerror: null };
         setTimeout(() => {
@@ -236,7 +236,7 @@ describe('IndexedDBStorageManager', () => {
             configurable: true
         });
         // モックをリセット
-        global.indexedDB.open.mockClear();
+        (global.indexedDB.open as any).mockClear();
     });
 
     afterEach(() => {
@@ -347,7 +347,7 @@ describe('IndexedDBStorageManager', () => {
 
     describe('KeyRange作成', () => {
         test('bound範囲が正常に作成される', () => {
-            const range = manager.createKeyRange({
+            const _range = manager.createKeyRange({
                 lower: 100,
                 upper: 200
             });
@@ -355,7 +355,7 @@ describe('IndexedDBStorageManager', () => {
         });
 
         test('lowerBound範囲が正常に作成される', () => {
-            const range = manager.createKeyRange({
+            const _range = manager.createKeyRange({
                 lower: 100,
                 lowerExclusive: true
             });
@@ -363,7 +363,7 @@ describe('IndexedDBStorageManager', () => {
         });
 
         test('upperBound範囲が正常に作成される', () => {
-            const range = manager.createKeyRange({
+            const _range = manager.createKeyRange({
                 upper: 200,
                 upperExclusive: false
             });

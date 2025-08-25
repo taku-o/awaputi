@@ -24,7 +24,7 @@ const performanceConfig = PerformanceTestUtils.createPerformanceTestConfig();
 const environmentThresholds = PerformanceTestUtils.getEnvironmentThresholds();
 // MockFactoryからの標準化されたモック
 const mockCanvas = MockFactory.createCanvasMock();
-const mockGameEngine = MockFactory.createGameEngineMock();
+const mockGameEngine = (MockFactory as any).createGameEngineMock();
 
 describe('統計システムパフォーマンステスト', () => {
     let statisticsManager: any;

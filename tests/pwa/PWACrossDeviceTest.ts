@@ -1,4 +1,4 @@
-import { describe, test, expect, beforeEach, afterEach, beforeAll, afterAll, jest, it  } from '@jest/globals';
+// Removed unused Jest imports - this file contains test utilities rather than Jest tests
 /**
  * PWA Cross-Device Test Suite
  * クロスデバイス・クロスブラウザ対応のPWAテストスイート

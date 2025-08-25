@@ -8,15 +8,15 @@ import { LeaderboardManager } from '../../../src/core/LeaderboardManager.js';
 // Type definitions
 interface MockLocalStorage {
     data: Record<string, string>;
-    getItem: jest.Mock<string | null, [string]>;
-    setItem: jest.Mock<void, [string, string]>;
-    removeItem: jest.Mock<void, [string]>;
-    clear: jest.Mock<void, []>;
+    getItem: jest.Mock<(key: string) => string | null>;
+    setItem: jest.Mock<(key: string, value: string) => void>;
+    removeItem: jest.Mock<(key: string) => void>;
+    clear: jest.Mock<() => void>;
 }
 
 interface MockStatisticsManager {
-    recordEvent: jest.Mock<void, [string, any]>;
-    updateScore: jest.Mock<void, [number]>;
+    recordEvent: jest.Mock<(...args: any[]) => void>;
+    updateScore: jest.Mock<(...args: any[]) => void>;
 }
 
 interface MockGameEngine {
@@ -36,61 +36,6 @@ interface ScoreData {
 
 interface LeaderboardEntry extends ScoreData {
     timestamp: number;
-}
-
-interface GetLeaderboardOptions {
-    limit?: number;
-    period?: string;
-    since?: number;
-}
-
-interface PaginationOptions { page: number; pageSize: number; }
-
-
-
-interface PaginatedResult {
-    data: LeaderboardEntry[];
-    currentPage: number;
-    totalPages: number;
-    totalItems: number;
-    isLastPage: boolean;
-}
-
-interface PlayerRankResult {
-    rank: number;
-    totalPlayers: number;
-    score?: number;
-    found?: boolean;
-}
-
-interface ValidationResult {
-    isValid: boolean;
-    errors: string[];
-    warnings?: string[];
-}
-
-interface MemoryUsage { leaderboards: number; cache: number; }
-
-
-
-interface Config {
-    maxEntriesPerLeaderboard: number;
-    storageKey: string;
-    cacheTTL: number;
-    dataVersion: string;
-}
-
-interface Backup {
-    leaderboards: Record<string, LeaderboardEntry[]>;
-    timestamp: number;
-    version: string;
-}
-
-interface Stats {
-    saveCount: number;
-    validationErrors: number;
-    cacheMisses: number;
-    cacheHits: number;
 }
 
 // LocalStorage Mock
@@ -141,39 +86,32 @@ describe('LeaderboardManager', () => {
         mockLocalStorage.clear();
         mockLocalStorage.getItem.mockClear();
         mockLocalStorage.setItem.mockClear();
-        leaderboardManager = new LeaderboardManager(mockGameEngine)
-    
-});
-describe('初期化', () => {
+        leaderboardManager = new LeaderboardManager(mockGameEngine as any);
+    });
+    describe('初期化', () => {
         it('正常に初期化される', () => {
             expect(leaderboardManager).toBeInstanceOf(LeaderboardManager);
-            expect(leaderboardManager.gameEngine).toBe(mockGameEngine)
-        
-});
+            expect((leaderboardManager as any).gameEngine).toBe(mockGameEngine);
+        });
 
         it('設定が正しく初期化される', () => {
+            expect((leaderboardManager as any).config).toBeDefined();
+            expect((leaderboardManager as any).config.maxEntriesPerLeaderboard).toBe(100);
+            expect((leaderboardManager as any).config.storageKey).toBe('awaputi_leaderboards');
+        });
 
-            expect(leaderboardManager.config).toBeDefined();
-            expect(leaderboardManager.config.maxEntriesPerLeaderboard).toBe(100);
-            expect(leaderboardManager.config.storageKey).toBe('awaputi_leaderboards')
-        
-});
-it('データ構造が初期化される', () => {
-            expect(leaderboardManager.leaderboards).toBeInstanceOf(Map);
-            expect(leaderboardManager.playerScores).toBeInstanceOf(Map);
-            expect(leaderboardManager.cache).toBeInstanceOf(Map)
-        
-});
+        it('データ構造が初期化される', () => {
+            expect((leaderboardManager as any).leaderboards).toBeInstanceOf(Map);
+            expect((leaderboardManager as any).playerScores).toBeInstanceOf(Map);
+            expect((leaderboardManager as any).cache).toBeInstanceOf(Map);
+        });
 
         it('統計が初期化される', () => {
-
-            expect(leaderboardManager.stats).toBeDefined();
-            expect(leaderboardManager.stats.saveCount).toBe(0);
-            expect(leaderboardManager.stats.validationErrors).toBe(0)
-        
-})
- 
-});
+            expect((leaderboardManager as any).stats).toBeDefined();
+            expect((leaderboardManager as any).stats.saveCount).toBe(0);
+            expect((leaderboardManager as any).stats.validationErrors).toBe(0);
+        });
+    });
 
     describe('データ管理', () => {
         it('初期化時にデータを読み込む', async () => {
@@ -188,24 +126,24 @@ it('データ構造が初期化される', () => {
             
             mockLocalStorage.setItem('awaputi_leaderboards', JSON.stringify(mockData));
             await leaderboardManager.initialize();
-            expect(leaderboardManager.leaderboards.has('overall')).toBe(true)
+            expect((leaderboardManager as any).leaderboards.has('overall')).toBe(true);
         });
 
         it('データを保存する', async () => {
-            leaderboardManager.leaderboards.set('test', [
+            (leaderboardManager as any).leaderboards.set('test', [
                 { playerId: 'player1', score: 5000, timestamp: Date.now() }
             ]);
             await leaderboardManager.save();
             expect(mockLocalStorage.setItem).toHaveBeenCalled();
             const savedData = JSON.parse(mockLocalStorage.getItem('awaputi_leaderboards')!);
-            expect(savedData.leaderboards.test).toBeDefined()
+            expect(savedData.leaderboards.test).toBeDefined();
         });
 
         it('無効なデータを処理する', async () => {
             mockLocalStorage.setItem('awaputi_leaderboards', 'invalid json');
             await leaderboardManager.initialize();
             // エラーが発生してもシステムは動作する
-            expect(leaderboardManager.leaderboards.size).toBe(0)
+            expect((leaderboardManager as any).leaderboards.size).toBe(0);
         });
 
         it('データバージョンを管理する', async () => {
@@ -217,8 +155,8 @@ it('データ構造が初期化される', () => {
             mockLocalStorage.setItem('awaputi_leaderboards', JSON.stringify(oldVersionData));
             await leaderboardManager.initialize();
             // バージョン移行が実行される
-            expect(leaderboardManager.leaderboards).toBeDefined()
-        })
+            expect((leaderboardManager as any).leaderboards).toBeDefined();
+        });
     });
 
     describe('スコア記録', () => {
@@ -249,7 +187,7 @@ it('データ構造が初期化される', () => {
             ];
             
             for (const score of scores) {
-                await leaderboardManager.addScore('overall', score)
+                await leaderboardManager.addScore('overall', score);
             }
             
             const leaderboard = leaderboardManager.getLeaderboard('overall');
@@ -273,12 +211,12 @@ it('データ構造が初期化される', () => {
             await leaderboardManager.addScore('stage_normal', normalScore);
             await leaderboardManager.addScore('stage_hard', hardScore);
             expect(leaderboardManager.getLeaderboard('stage_normal').length).toBe(1);
-            expect(leaderboardManager.getLeaderboard('stage_hard').length).toBe(1)
+            expect(leaderboardManager.getLeaderboard('stage_hard').length).toBe(1);
         });
 
         it('最大エントリ数制限を適用する', async () => {
             // 制限を小さく設定
-            leaderboardManager.config.maxEntriesPerLeaderboard = 3;
+            (leaderboardManager as any).config.maxEntriesPerLeaderboard = 3;
             
             // 4つのスコアを追加
             for (let i = 0; i < 4; i++) {
@@ -286,7 +224,7 @@ it('データ構造が初期化される', () => {
                     playerId: `player${i}`,
                     score: 1000 + i * 100,
                     timestamp: Date.now() + i
-                })
+                });
             }
             
             const leaderboard = leaderboardManager.getLeaderboard('test');
@@ -300,61 +238,57 @@ it('データ構造が初期化される', () => {
             await leaderboardManager.addScore('overall', {
                 playerId: 'player1',
                 score: 10000
-            
-});
-// より高いスコア
+            });
+
+            // より高いスコア
             const result = await leaderboardManager.addScore('overall', {
                 playerId: 'player1',
                 score: 15000
-            
-});
+            });
 
             expect(result.isNewRecord).toBe(true);
             expect(result.previousBest).toBe(10000);
             
             const leaderboard = leaderboardManager.getLeaderboard('overall');
             expect(leaderboard.length).toBe(1);
-            expect(leaderboard[0].score).toBe(15000)
+            expect(leaderboard[0].score).toBe(15000);
         });
 
         it('低いスコアは記録しない', async () => {
-
             // 高いスコア
             await leaderboardManager.addScore('overall', {
                 playerId: 'player1',
                 score: 15000
-            
-});
-// より低いスコア
+            });
+
+            // より低いスコア
             const result = await leaderboardManager.addScore('overall', {
                 playerId: 'player1',
                 score: 10000
-            
-});
+            });
 
             expect(result.isNewRecord).toBe(false);
             const leaderboard = leaderboardManager.getLeaderboard('overall');
             expect(leaderboard[0].score).toBe(15000); // 高いスコアが維持される
-        })
+        });
     });
 
     // 簡略化された他のテスト
     describe('基本機能テスト', () => {
         it('エラーハンドリングが機能する', () => {
             expect(() => {
-                leaderboardManager.getLeaderboard('nonexistent')
-            }).not.toThrow()
+                leaderboardManager.getLeaderboard('nonexistent');
+            }).not.toThrow();
         });
 
         it('設定更新が機能する', () => {
             const newConfig = { maxEntriesPerLeaderboard: 50 };
             expect(() => {
-                leaderboardManager.updateConfig(newConfig)
-            }).not.toThrow()
+                leaderboardManager.updateConfig(newConfig);
+            }).not.toThrow();
         });
 
         it('メモリ使用量を取得できる', () => {
-
             const memoryUsage = leaderboardManager.getMemoryUsage();
             expect(memoryUsage).toBeDefined();
             expect(typeof memoryUsage.leaderboards).toBe('number');

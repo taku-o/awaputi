@@ -1,4 +1,4 @@
-import { describe, test, expect, beforeEach, afterEach, beforeAll, afterAll, jest, it } from '@jest/globals';
+import { describe, test, expect, beforeEach, afterEach, jest } from '@jest/globals';
 /**
  * PerformanceDataCollector のテスト
  */
@@ -78,8 +78,8 @@ describe('PerformanceDataCollector', () => {
                 maxDataPoints: 500,
                 enableDetailedTiming: false
             });
-            expect(customCollector.options.maxDataPoints).toBe(500);
-            expect(customCollector.options.enableDetailedTiming).toBe(false);
+            expect((customCollector as any).options.maxDataPoints).toBe(500);
+            expect((customCollector as any).options.enableDetailedTiming).toBe(false);
             customCollector.destroy();
         });
     });
@@ -229,7 +229,7 @@ describe('PerformanceDataCollector', () => {
 
     describe('カスタム測定', () => {
         test('カスタム測定を開始・終了できる', () => {
-            const startMark = collector.startMeasure('test-operation');
+            const _startMark = collector.startMeasure('test-operation');
             expect(mockPerformance.mark).toHaveBeenCalledWith('test-operation-start');
             
             const mockMeasure = {
@@ -264,7 +264,7 @@ describe('PerformanceDataCollector', () => {
                     sessionId: 'test-session'
                 });
             }
-            expect(limitedCollector.performanceData.fps).toHaveLength(3);
+            expect((limitedCollector as any).performanceData.fps).toHaveLength(3);
             limitedCollector.destroy();
         });
 

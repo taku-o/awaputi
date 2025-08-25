@@ -1,4 +1,4 @@
-import { describe, test, expect, beforeEach, afterEach, beforeAll, afterAll, jest, it } from '@jest/globals';
+import { describe, test, expect, beforeEach, jest } from '@jest/globals';
 /**
  * PrivacyManager のテスト
  */
@@ -46,7 +46,7 @@ describe('PrivacyManager', () => {
         localStorageMock.getItem.mockClear();
         localStorageMock.setItem.mockClear();
         localStorageMock.removeItem.mockClear();
-        global.document.createElement.mockClear();
+        (global.document.createElement as any).mockClear();
     });
 
     describe('初期化', () => {
@@ -69,8 +69,8 @@ describe('PrivacyManager', () => {
             };
             localStorageMock.getItem.mockReturnValue(JSON.stringify(consentData));
             const newManager = new PrivacyManager();
-            expect(newManager.consentStatus).toBe(true);
-            expect(newManager.optOutFeatures.has('performanceTracking')).toBe(true);
+            expect((newManager as any).consentStatus).toBe(true);
+            expect((newManager as any).optOutFeatures.has('performanceTracking')).toBe(true);
         });
 
         test('古いバージョンの同意データは無視される', () => {
@@ -81,13 +81,13 @@ describe('PrivacyManager', () => {
             };
             localStorageMock.getItem.mockReturnValue(JSON.stringify(consentData));
             const newManager = new PrivacyManager();
-            expect(newManager.consentStatus).toBeNull();
+            expect((newManager as any).consentStatus).toBeNull();
         });
 
         test('不正な同意データは無視される', () => {
             localStorageMock.getItem.mockReturnValue('invalid json');
             const newManager = new PrivacyManager();
-            expect(newManager.consentStatus).toBeNull();
+            expect((newManager as any).consentStatus).toBeNull();
         });
     });
 
@@ -288,18 +288,18 @@ describe('PrivacyManager', () => {
 
         test('GDPR適用チェックが正常に動作する', () => {
             // ヨーロッパのタイムゾーン
-            global.Intl.DateTimeFormat.mockImplementation(() => ({
+            (global.Intl.DateTimeFormat as any).mockImplementation(() => ({
                 resolvedOptions: () => ({ timeZone: 'Europe/London' })
             }));
             const euManager = new PrivacyManager();
-            expect(euManager.isGDPRApplicable()).toBe(true);
+            expect((euManager as any).isGDPRApplicable()).toBe(true);
 
             // 非ヨーロッパのタイムゾーン
-            global.Intl.DateTimeFormat.mockImplementation(() => ({
+            (global.Intl.DateTimeFormat as any).mockImplementation(() => ({
                 resolvedOptions: () => ({ timeZone: 'America/New_York' })
             }));
             const usManager = new PrivacyManager();
-            expect(usManager.isGDPRApplicable()).toBe(false);
+            expect((usManager as any).isGDPRApplicable()).toBe(false);
         });
     });
 
@@ -312,7 +312,7 @@ describe('PrivacyManager', () => {
                     addEventListener: jest.fn()
                 }))
             };
-            global.document.createElement.mockReturnValue(mockElement);
+            (global.document.createElement as any).mockReturnValue(mockElement);
             const dialog = manager.createConsentDialog();
             expect(global.document.createElement).toHaveBeenCalledWith('div');
             expect(mockElement.className).toBe('analytics-consent-dialog');
@@ -335,7 +335,7 @@ describe('PrivacyManager', () => {
                 })),
                 remove: jest.fn()
             };
-            global.document.createElement.mockReturnValue(mockElement);
+            (global.document.createElement as any).mockReturnValue(mockElement);
             const promise = manager.requestConsent();
             // Promise解決を待つ
             const result = await promise;

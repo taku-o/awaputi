@@ -40,23 +40,23 @@ interface NotificationSettings {
 }
 
 interface MockCanvasGradient {
-    addColorStop: jest.Mock<void, [number, string]>;
+    addColorStop: jest.Mock<(offset: number, color: string) => void>;
 }
 
 interface MockCanvasRenderingContext2D {
-    save: jest.Mock<void, []>;
-    restore: jest.Mock<void, []>;
-    clearRect: jest.Mock<void, [number, number, number, number]>;
-    fillRect: jest.Mock<void, [number, number, number, number]>;
-    strokeRect: jest.Mock<void, [number, number, number, number]>;
-    beginPath: jest.Mock<void, []>;
-    arc: jest.Mock<void, [number, number, number, number, number]>;
-    fill: jest.Mock<void, []>;
-    stroke: jest.Mock<void, []>;
-    createLinearGradient: jest.Mock<MockCanvasGradient, [number, number, number, number]>;
-    measureText: jest.Mock<{ width: number }, [string]>;
-    fillText: jest.Mock<void, [string, number, number]>;
-    strokeText: jest.Mock<void, [string, number, number]>;
+    save: jest.Mock<() => void>;
+    restore: jest.Mock<() => void>;
+    clearRect: jest.Mock<(x: number, y: number, width: number, height: number) => void>;
+    fillRect: jest.Mock<(x: number, y: number, width: number, height: number) => void>;
+    strokeRect: jest.Mock<(x: number, y: number, width: number, height: number) => void>;
+    beginPath: jest.Mock<() => void>;
+    arc: jest.Mock<(x: number, y: number, radius: number, startAngle: number, endAngle: number, counterclockwise?: boolean) => void>;
+    fill: jest.Mock<() => void>;
+    stroke: jest.Mock<() => void>;
+    createLinearGradient: jest.Mock<(x0: number, y0: number, x1: number, y1: number) => MockCanvasGradient>;
+    measureText: jest.Mock<(text: string) => { width: number }>;
+    fillText: jest.Mock<(text: string, x: number, y: number, maxWidth?: number) => void>;
+    strokeText: jest.Mock<(text: string, x: number, y: number, maxWidth?: number) => void>;
     fillStyle: string;
     strokeStyle: string;
     lineWidth: number;
@@ -69,7 +69,7 @@ interface MockCanvasRenderingContext2D {
 interface MockCanvas {
     width: number;
     height: number;
-    getContext: jest.Mock<MockCanvasRenderingContext2D | null, [string]>;
+    getContext: jest.Mock<MockCanvasRenderingContext2D | null>;
 }
 
 // Mock AudioManagerクラス
@@ -93,21 +93,21 @@ describe('AchievementNotificationSystem', () => {
         
         // Canvas context をモック
         mockContext = {
-            save: jest.fn(),
-            restore: jest.fn(),
-            clearRect: jest.fn(),
-            fillRect: jest.fn(),
-            strokeRect: jest.fn(),
-            beginPath: jest.fn(),
-            arc: jest.fn(),
-            fill: jest.fn(),
-            stroke: jest.fn(),
-            createLinearGradient: jest.fn(() => ({
-                addColorStop: jest.fn()
+            save: jest.fn<() => void>(),
+            restore: jest.fn<() => void>(),
+            clearRect: jest.fn<(x: number, y: number, width: number, height: number) => void>(),
+            fillRect: jest.fn<(x: number, y: number, width: number, height: number) => void>(),
+            strokeRect: jest.fn<(x: number, y: number, width: number, height: number) => void>(),
+            beginPath: jest.fn<() => void>(),
+            arc: jest.fn<(x: number, y: number, radius: number, startAngle: number, endAngle: number, counterclockwise?: boolean) => void>(),
+            fill: jest.fn<() => void>(),
+            stroke: jest.fn<() => void>(),
+            createLinearGradient: jest.fn<(x0: number, y0: number, x1: number, y1: number) => MockCanvasGradient>(() => ({
+                addColorStop: jest.fn<(offset: number, color: string) => void>()
             } as MockCanvasGradient)),
-            measureText: jest.fn(() => ({ width: 100 })),
-            fillText: jest.fn(),
-            strokeText: jest.fn(),
+            measureText: jest.fn<(text: string) => { width: number }>(() => ({ width: 100 })),
+            fillText: jest.fn<(text: string, x: number, y: number, maxWidth?: number) => void>(),
+            strokeText: jest.fn<(text: string, x: number, y: number, maxWidth?: number) => void>(),
             fillStyle: '#000000',
             strokeStyle: '#000000',
             lineWidth: 1,
@@ -121,31 +121,31 @@ describe('AchievementNotificationSystem', () => {
         mockCanvas = {
             width: 800,
             height: 600,
-            getContext: jest.fn(() => mockContext)
+            getContext: jest.fn<(contextId: string) => MockCanvasRenderingContext2D | null>(() => mockContext)
         };
         
         notificationSystem = new AchievementNotificationSystem(
-            mockCanvas,
-            mockAudioManager
+            mockCanvas as any,
+            mockAudioManager as any
         );
     });
 
     describe('初期化', () => {
         test('正常に初期化される', () => {
             expect(notificationSystem).toBeDefined();
-            expect(notificationSystem.canvas).toBe(mockCanvas);
-            expect(notificationSystem.audioManager).toBe(mockAudioManager);
+            expect((notificationSystem as any).canvas).toBe(mockCanvas);
+            expect((notificationSystem as any).audioManager).toBe(mockAudioManager);
         });
 
         test('デフォルト設定が適用される', () => {
-            const settings = notificationSystem.getSettings();
+            const settings = (notificationSystem as any).getSettings();
             expect(settings.displayDuration).toBe(3000);
             expect(settings.animationDuration).toBe(500);
             expect(settings.maxVisibleNotifications).toBe(3);
         });
 
         test('通知キューが初期化される', () => {
-            expect(notificationSystem.getActiveNotifications()).toHaveLength(0);
+            expect((notificationSystem as any).getActiveNotifications()).toHaveLength(0);
         });
     });
 
@@ -160,18 +160,18 @@ describe('AchievementNotificationSystem', () => {
                 rarity: 'common'
             };
 
-            notificationSystem.showAchievementUnlocked(achievement);
+            (notificationSystem as any).showAchievementUnlocked(achievement);
             
-            const notifications = notificationSystem.getActiveNotifications();
+            const notifications = (notificationSystem as any).getActiveNotifications();
             expect(notifications).toHaveLength(1);
             expect(notifications[0].achievement.id).toBe('test_achievement');
             expect(notifications[0].type).toBe('achievement_unlocked');
         });
 
         test('レベルアップ通知が正常に表示される', () => {
-            notificationSystem.showLevelUp(5, 'バブル破壊レベル');
+            (notificationSystem as any).showLevelUp(5, 'バブル破壊レベル');
             
-            const notifications = notificationSystem.getActiveNotifications();
+            const notifications = (notificationSystem as any).getActiveNotifications();
             expect(notifications).toHaveLength(1);
             expect(notifications[0].type).toBe('level_up');
         });
@@ -184,9 +184,9 @@ describe('AchievementNotificationSystem', () => {
                 rarity: 'legendary'
             };
 
-            notificationSystem.showSpecialAchievement(achievement);
+            (notificationSystem as any).showSpecialAchievement(achievement);
             
-            const notifications = notificationSystem.getActiveNotifications();
+            const notifications = (notificationSystem as any).getActiveNotifications();
             expect(notifications).toHaveLength(1);
             expect(notifications[0].type).toBe('special_achievement');
         });
@@ -217,12 +217,12 @@ describe('AchievementNotificationSystem', () => {
                 rarity: 'common'
             };
 
-            notificationSystem.showAchievementUnlocked(achievement1);
-            notificationSystem.showAchievementUnlocked(achievement2);
-            notificationSystem.showAchievementUnlocked(achievement3);
-            notificationSystem.showAchievementUnlocked(achievement4);
+            (notificationSystem as any).showAchievementUnlocked(achievement1);
+            (notificationSystem as any).showAchievementUnlocked(achievement2);
+            (notificationSystem as any).showAchievementUnlocked(achievement3);
+            (notificationSystem as any).showAchievementUnlocked(achievement4);
             
-            const notifications = notificationSystem.getActiveNotifications();
+            const notifications = (notificationSystem as any).getActiveNotifications();
             expect(notifications).toHaveLength(3); // maxVisibleNotifications = 3
         });
     });
@@ -236,7 +236,7 @@ describe('AchievementNotificationSystem', () => {
                 rarity: 'common'
             };
 
-            notificationSystem.showAchievementUnlocked(achievement);
+            (notificationSystem as any).showAchievementUnlocked(achievement);
             
             expect(mockAudioManager.playedSounds).toHaveLength(1);
             expect(mockAudioManager.playedSounds[0].soundId).toBe('achievement_unlocked');
@@ -250,7 +250,7 @@ describe('AchievementNotificationSystem', () => {
                 rarity: 'rare'
             };
 
-            notificationSystem.showAchievementUnlocked(rareAchievement);
+            (notificationSystem as any).showAchievementUnlocked(rareAchievement);
             
             expect(mockAudioManager.playedSounds).toHaveLength(1);
             expect(mockAudioManager.playedSounds[0].soundId).toBe('achievement_rare');
@@ -264,14 +264,14 @@ describe('AchievementNotificationSystem', () => {
                 rarity: 'legendary'
             };
 
-            notificationSystem.showAchievementUnlocked(legendaryAchievement);
+            (notificationSystem as any).showAchievementUnlocked(legendaryAchievement);
             
             expect(mockAudioManager.playedSounds).toHaveLength(1);
             expect(mockAudioManager.playedSounds[0].soundId).toBe('achievement_legendary');
         });
 
         test('音声無効時は音声が再生されない', () => {
-            notificationSystem.setSoundEnabled(false);
+            (notificationSystem as any).setSoundEnabled(false);
             
             const achievement: Achievement = {
                 id: 'test_achievement',
@@ -280,7 +280,7 @@ describe('AchievementNotificationSystem', () => {
                 rarity: 'common'
             };
 
-            notificationSystem.showAchievementUnlocked(achievement);
+            (notificationSystem as any).showAchievementUnlocked(achievement);
             
             expect(mockAudioManager.playedSounds).toHaveLength(0);
         });
@@ -296,7 +296,7 @@ describe('AchievementNotificationSystem', () => {
                 rarity: 'common'
             };
 
-            notificationSystem.showAchievementUnlocked(achievement);
+            (notificationSystem as any).showAchievementUnlocked(achievement);
             notificationSystem.render();
             
             // Canvas コンテキストの描画メソッドが呼ばれたことを確認
@@ -320,8 +320,8 @@ describe('AchievementNotificationSystem', () => {
                 rarity: 'rare'
             };
 
-            notificationSystem.showAchievementUnlocked(achievement1);
-            notificationSystem.showAchievementUnlocked(achievement2);
+            (notificationSystem as any).showAchievementUnlocked(achievement1);
+            (notificationSystem as any).showAchievementUnlocked(achievement2);
             notificationSystem.render();
             
             // 複数の通知が描画されたことを確認
@@ -337,7 +337,7 @@ describe('AchievementNotificationSystem', () => {
                 rarity: 'common'
             };
 
-            notificationSystem.showAchievementUnlocked(achievement);
+            (notificationSystem as any).showAchievementUnlocked(achievement);
             
             // アニメーション開始時（フェードイン）
             notificationSystem.render();
@@ -362,7 +362,7 @@ describe('AchievementNotificationSystem', () => {
 
             notificationSystem.updateSettings(newSettings);
             
-            const settings = notificationSystem.getSettings();
+            const settings = (notificationSystem as any).getSettings();
             expect(settings.displayDuration).toBe(5000);
             expect(settings.animationDuration).toBe(1000);
             expect(settings.maxVisibleNotifications).toBe(5);
@@ -375,7 +375,7 @@ describe('AchievementNotificationSystem', () => {
 
             notificationSystem.updateSettings(partialSettings);
             
-            const settings = notificationSystem.getSettings();
+            const settings = (notificationSystem as any).getSettings();
             expect(settings.displayDuration).toBe(4000);
             expect(settings.animationDuration).toBe(500); // デフォルト値維持
             expect(settings.maxVisibleNotifications).toBe(3); // デフォルト値維持
@@ -391,11 +391,11 @@ describe('AchievementNotificationSystem', () => {
                 rarity: 'common'
             };
 
-            notificationSystem.showAchievementUnlocked(achievement);
-            expect(notificationSystem.getActiveNotifications()).toHaveLength(1);
+            (notificationSystem as any).showAchievementUnlocked(achievement);
+            expect((notificationSystem as any).getActiveNotifications()).toHaveLength(1);
             
             notificationSystem.removeNotification('test_achievement');
-            expect(notificationSystem.getActiveNotifications()).toHaveLength(0);
+            expect((notificationSystem as any).getActiveNotifications()).toHaveLength(0);
         });
 
         test('全通知のクリアが正常に動作する', () => {
@@ -412,12 +412,12 @@ describe('AchievementNotificationSystem', () => {
                 rarity: 'common'
             };
 
-            notificationSystem.showAchievementUnlocked(achievement1);
-            notificationSystem.showAchievementUnlocked(achievement2);
-            expect(notificationSystem.getActiveNotifications()).toHaveLength(2);
+            (notificationSystem as any).showAchievementUnlocked(achievement1);
+            (notificationSystem as any).showAchievementUnlocked(achievement2);
+            expect((notificationSystem as any).getActiveNotifications()).toHaveLength(2);
             
             notificationSystem.clearAllNotifications();
-            expect(notificationSystem.getActiveNotifications()).toHaveLength(0);
+            expect((notificationSystem as any).getActiveNotifications()).toHaveLength(0);
         });
 
         test('自動削除タイマーが正常に動作する', () => {
@@ -430,14 +430,14 @@ describe('AchievementNotificationSystem', () => {
                 rarity: 'common'
             };
 
-            notificationSystem.showAchievementUnlocked(achievement);
-            expect(notificationSystem.getActiveNotifications()).toHaveLength(1);
+            (notificationSystem as any).showAchievementUnlocked(achievement);
+            expect((notificationSystem as any).getActiveNotifications()).toHaveLength(1);
             
             // 表示時間経過をシミュレート
             jest.advanceTimersByTime(3500); // displayDuration + animationDuration
             notificationSystem.update();
             
-            expect(notificationSystem.getActiveNotifications()).toHaveLength(0);
+            expect((notificationSystem as any).getActiveNotifications()).toHaveLength(0);
             
             jest.useRealTimers();
         });

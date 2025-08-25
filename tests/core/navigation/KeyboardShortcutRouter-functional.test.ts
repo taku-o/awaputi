@@ -1,4 +1,4 @@
-import { describe, test, expect, beforeEach, afterEach, beforeAll, afterAll, jest, it } from '@jest/globals';
+import { describe, test, expect, beforeEach, afterEach } from '@jest/globals';
 
 /**
  * KeyboardShortcutRouter Functional Tests
@@ -129,7 +129,7 @@ describe('KeyboardShortcutRouter Functional Tests', () => {
             };
 
             expect(() => {
-                brokenRouter.route(shortcutData);
+                (brokenRouter as any).route(shortcutData);
             }).not.toThrow();
         });
 

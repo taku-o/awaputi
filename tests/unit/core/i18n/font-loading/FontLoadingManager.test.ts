@@ -21,28 +21,28 @@ interface LoadResult {
 }
 
 interface MockSourceManager {
-    loadFromSource: jest.Mock<Promise<LoadResult>, [string, string, any]>;
-    getAvailableSources: jest.Mock<string[], []>;
-    isSourceAvailable: jest.Mock<boolean, [string]>;
-    enableSource: jest.Mock<void, [string]>;
-    disableSource: jest.Mock<void, [string]>;
-    clearLoadHistory: jest.Mock<void, []>;
-    getStats: jest.Mock<any, []>;
+    loadFromSource: jest.Mock<(source: string, fontFamily: string, options?: any) => Promise<LoadResult>>;
+    getAvailableSources: jest.Mock<() => string[]>;
+    isSourceAvailable: jest.Mock<(source: string) => boolean>;
+    enableSource: jest.Mock<(source: string) => void>;
+    disableSource: jest.Mock<(source: string) => void>;
+    clearLoadHistory: jest.Mock<() => void>;
+    getStats: jest.Mock<() => any>;
     enabledSources?: string[];
     timeouts?: any;
 }
 
 interface MockFallbackHandler {
-    getSystemFontForLanguage: jest.Mock<string, [string]>;
-    applyFallback: jest.Mock<boolean, [any, string, string?]>;
-    clearFallbackHistory: jest.Mock<void, []>;
-    getStats: jest.Mock<any, []>;
+    getSystemFontForLanguage: jest.Mock<(language: string) => string>;
+    applyFallback: jest.Mock<(fontFamily: string, element?: any) => boolean>;
+    clearFallbackHistory: jest.Mock<() => void>;
+    getStats: jest.Mock<() => any>;
 }
 
 interface MockErrorHandler {
-    handleFontError: jest.Mock<boolean, [Error, any]>;
-    clearErrorHistory: jest.Mock<void, []>;
-    getErrorStats: jest.Mock<any, []>;
+    handleFontError: jest.Mock<(error: any) => boolean>;
+    clearErrorHistory: jest.Mock<() => void>;
+    getErrorStats: jest.Mock<() => any>;
 }
 
 interface FontConfig {
@@ -61,18 +61,13 @@ interface MockElement {
     };
 }
 
-interface MultiElementResult {
-    total: number;
-    successful: number;
-    failed: number;
-}
 interface ConsoleSpy {
-    warn: jest.SpyInstance;
-    log: jest.SpyInstance;
+    warn: jest.SpiedFunction<typeof console.warn>;
+    log: jest.SpiedFunction<typeof console.log>;
 }
 
 interface GlobalErrorHandler {
-    handleError: jest.Mock<void, [Error]>;
+    handleError: jest.Mock<(error: any) => void>;
 }
 
 describe('FontLoadingManager', () => {
@@ -165,7 +160,7 @@ describe('FontLoadingManager', () => {
                 timeouts: { google: 1000 }
             };
             
-            fontLoadingManager.updateConfig(config);
+            (fontLoadingManager as any).updateConfig(config);
             
             mockSourceManager.loadFromSource.mockImplementation(() => 
                 new Promise(resolve => setTimeout(() => resolve({
@@ -194,7 +189,7 @@ describe('FontLoadingManager', () => {
                 loadTime: 50
             });
             
-            const result = await fontLoadingManager.applyFontToElement(
+            const result = await (fontLoadingManager as any).applyFontToElement(
                 mockElement as any,
                 'Roboto',
                 'en'
@@ -218,7 +213,7 @@ describe('FontLoadingManager', () => {
                 loadTime: 10
             });
             
-            const result = await fontLoadingManager.applyFontToElements(
+            const result = await (fontLoadingManager as any).applyFontToElements(
                 mockElements as any,
                 'Arial',
                 'en'
@@ -245,7 +240,7 @@ describe('FontLoadingManager', () => {
                 loadTime: 20
             });
             
-            const result = await fontLoadingManager.applyFontToElements(
+            const result = await (fontLoadingManager as any).applyFontToElements(
                 mockElements as any,
                 'Helvetica',
                 'en'
@@ -293,20 +288,20 @@ describe('FontLoadingManager', () => {
                 }
             };
             
-            fontLoadingManager.updateConfig(config);
-            expect(fontLoadingManager.getConfig()).toMatchObject(config);
+            (fontLoadingManager as any).updateConfig(config);
+            expect((fontLoadingManager as any).getConfig()).toMatchObject(config);
         });
         
         test('should merge configuration updates', () => {
-            fontLoadingManager.updateConfig({
+            (fontLoadingManager as any).updateConfig({
                 enabledSources: ['system']
             });
             
-            fontLoadingManager.updateConfig({
+            (fontLoadingManager as any).updateConfig({
                 timeouts: { google: 2000 }
             });
             
-            const config = fontLoadingManager.getConfig();
+            const config = (fontLoadingManager as any).getConfig();
             expect(config.enabledSources).toContain('system');
             expect(config.timeouts?.google).toBe(2000);
         });
@@ -327,14 +322,14 @@ describe('FontLoadingManager', () => {
                 totalErrors: 2
             });
             
-            const stats = fontLoadingManager.getStats();
+            const stats = (fontLoadingManager as any).getStats();
             expect(stats.sourceStats.totalLoads).toBe(10);
             expect(stats.fallbackStats.totalFallbacks).toBe(2);
             expect(stats.errorStats.totalErrors).toBe(2);
         });
         
         test('should clear all statistics', () => {
-            fontLoadingManager.clearStats();
+            (fontLoadingManager as any).clearStats();
             
             expect(mockSourceManager.clearLoadHistory).toHaveBeenCalled();
             expect(mockFallbackHandler.clearFallbackHistory).toHaveBeenCalled();
@@ -348,7 +343,7 @@ describe('FontLoadingManager', () => {
                 handleError: jest.fn()
             };
             
-            fontLoadingManager.setGlobalErrorHandler(globalHandler.handleError);
+            (fontLoadingManager as any).setGlobalErrorHandler(globalHandler.handleError);
             
             mockSourceManager.loadFromSource.mockRejectedValue(new Error('Test error'));
             
@@ -382,7 +377,7 @@ describe('FontLoadingManager', () => {
                 loadTime: 50
             });
             
-            const results = await fontLoadingManager.loadFontsBatch(fonts);
+            const results = await (fontLoadingManager as any).loadFontsBatch(fonts);
             
             expect(results).toHaveLength(3);
             expect(mockSourceManager.loadFromSource).toHaveBeenCalledTimes(3);
@@ -403,7 +398,7 @@ describe('FontLoadingManager', () => {
                 })
                 .mockRejectedValueOnce(new Error('Load failed'));
             
-            const results = await fontLoadingManager.loadFontsBatch(fonts);
+            const results = await (fontLoadingManager as any).loadFontsBatch(fonts);
             
             expect(results[0].success).toBe(true);
             expect(results[1].success).toBe(false);

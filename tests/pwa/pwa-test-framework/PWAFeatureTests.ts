@@ -1,4 +1,4 @@
-import { describe, test, expect, beforeEach, afterEach, beforeAll, afterAll, jest, it  } from '@jest/globals';
+import { test } from '@jest/globals';
 /**
  * PWAFeatureTests - Basic PWA features, Service Worker, and installation tests
  * Part of the PWATestFramework split implementation
@@ -72,7 +72,7 @@ export class PWAFeatureTests {
             const isBrowser = window.matchMedia('(display-mode: browser)').matches;
             
             // iOS Safari detection
-            const isIOSStandalone = window.navigator.standalone === true;
+            const isIOSStandalone = (window.navigator as any).standalone === true;
             
             return {
                 displayMode: {

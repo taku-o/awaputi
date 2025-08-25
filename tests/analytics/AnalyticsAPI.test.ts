@@ -1,6 +1,6 @@
-import { jest } from '@jest/globals';
+import { describe, test, expect, beforeEach, jest } from '@jest/globals';
 import { AnalyticsAPI } from '../../src/analytics/AnalyticsAPI';
-import { MockFactory } from '../mocks/MockFactory';
+// Removed unused import - MockFactory
 
 // Mock Storage Manager
 class MockStorageManager {
@@ -293,7 +293,7 @@ describe('AnalyticsAPI', () => {
         
         test('PrivacyManagerなしでも動作する', async () => {
             const apiWithoutPrivacy = new AnalyticsAPI(mockStorageManager, null);
-            const result = await apiWithoutPrivacy.getData('/sessions');
+            const result = await (apiWithoutPrivacy as any).getData('/sessions');
             expect(result.success).toBe(true);
             expect(result.metadata.anonymized).toBe(false);
         });

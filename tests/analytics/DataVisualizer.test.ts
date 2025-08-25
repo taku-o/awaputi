@@ -1,4 +1,4 @@
-import { describe, test, expect, beforeEach, afterEach, beforeAll, afterAll, jest, it } from '@jest/globals';
+import { describe, test, expect, beforeEach, afterEach } from '@jest/globals';
 /**
  * DataVisualizer のテスト
  */
@@ -224,10 +224,10 @@ describe('DataVisualizer', () => {
                 colorScheme: 'viridis'
             });
             
-            expect(customVisualizer.options.defaultWidth).toBe(600);
-            expect(customVisualizer.options.defaultHeight).toBe(500);
-            expect(customVisualizer.options.enableInteractivity).toBe(false);
-            expect(customVisualizer.options.colorScheme).toBe('viridis');
+            expect((customVisualizer as any).options.defaultWidth).toBe(600);
+            expect((customVisualizer as any).options.defaultHeight).toBe(500);
+            expect((customVisualizer as any).options.enableInteractivity).toBe(false);
+            expect((customVisualizer as any).options.colorScheme).toBe('viridis');
             
             customVisualizer.destroy();
         });
@@ -242,8 +242,8 @@ describe('DataVisualizer', () => {
 
         test('D3.jsが利用できない場合はフォールバック', () => {
             const fallbackVisualizer = new DataVisualizer();
-            fallbackVisualizer.fallbackToCanvasRenderer();
-            expect(fallbackVisualizer.useCanvasFallback).toBe(true);
+            (fallbackVisualizer as any).fallbackToCanvasRenderer();
+            expect((fallbackVisualizer as any).useCanvasFallback).toBe(true);
         });
     });
 

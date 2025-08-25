@@ -60,28 +60,28 @@ jest.mock('../../src/core/ConfigurationManager.js');
 jest.mock('../../src/utils/ErrorHandler.js');
 
 let mockGetCalls: MockCall[] = [];
-const mockGet = jest.fn((category: string, key: string, defaultValue?: any) => {
+const mockGet = jest.fn<(category: string, key: string, defaultValue?: any) => any>((category: string, key: string, defaultValue?: any) => {
     mockGetCalls.push({ category, key, defaultValue });
     // 戻り値は各テストで設定
     return defaultValue;
 });
 
-const mockSet = jest.fn((category: string, key: string, value: any) => {
+const mockSet = jest.fn<(category: string, key: string, value: any) => boolean>((category: string, key: string, value: any) => {
     return true;
 });
 
-const mockSetValidationRule = jest.fn();
-const mockGetCategory = jest.fn(() => ({}));
+const mockSetValidationRule = jest.fn<(category: string, rules: any) => void>();
+const mockGetCategory = jest.fn<(category: string) => Record<string, any>>(() => ({}));
 
 const mockConfigManager: MockConfigManager = {
-    get: mockGet as any,
-    set: mockSet as any,
+    get: mockGet,
+    set: mockSet,
     setValidationRule: mockSetValidationRule,
     getCategory: mockGetCategory
 };
 
 // ConfigurationManagerのモック
-(getConfigurationManager as jest.Mock).mockReturnValue(mockConfigManager);
+(getConfigurationManager as jest.Mock<() => MockConfigManager>).mockReturnValue(mockConfigManager);
 
 describe('PerformanceConfig', () => {
     let performanceConfig: PerformanceConfig;

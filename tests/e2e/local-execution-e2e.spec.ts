@@ -310,7 +310,7 @@ test.describe('Local File Execution E2E Tests', () => {
     test.describe('Progressive Enhancement', () => {
         test('should provide basic functionality without JavaScript', async ({ page }) => {
             // Disable JavaScript
-            await page.setJavaScriptEnabled(false);
+            await (page as any).setJavaScriptEnabled(false);
             await page.goto(indexPath, { waitUntil: 'domcontentloaded' });
 
             // Check for noscript content
@@ -318,7 +318,7 @@ test.describe('Local File Execution E2E Tests', () => {
             expect(noscriptContent).toBeTruthy();
 
             // Re-enable JavaScript for other tests
-            await page.setJavaScriptEnabled(true);
+            await (page as any).setJavaScriptEnabled(true);
         });
 
         test('should enhance progressively with JavaScript', async ({ page }) => {

@@ -1,4 +1,4 @@
-import { describe, test, expect, beforeEach, afterEach, beforeAll, afterAll, jest, it } from '@jest/globals';
+import { describe, test, expect, beforeEach, afterEach } from '@jest/globals';
 import { RealtimeDashboard } from '../../src/analytics/RealtimeDashboard';
 import { PerformanceWarningSystem } from '../../src/analytics/PerformanceWarningSystem';
 import { DeveloperAlertSystem } from '../../src/analytics/DeveloperAlertSystem';

@@ -85,12 +85,12 @@ describe('UIPositionCalculator', () => {
     
     beforeEach(() => {
         mockScaledCoordinateManager = new MockScaledCoordinateManager();
-        uiPositionCalculator = new UIPositionCalculator(mockScaledCoordinateManager);
+        uiPositionCalculator = new UIPositionCalculator(mockScaledCoordinateManager as any);
     });
     
     describe('constructor', () => {
         test('should initialize with ScaledCoordinateManager', () => {
-            expect(uiPositionCalculator.scaledCoordinateManager).toBe(mockScaledCoordinateManager);
+            expect((uiPositionCalculator as any).scaledCoordinateManager).toBe(mockScaledCoordinateManager);
         });
         
         test('should initialize device type detection', () => {
@@ -218,7 +218,7 @@ describe('UIPositionCalculator', () => {
                 configurable: true
             });
             
-            const calculator = new UIPositionCalculator(mockScaledCoordinateManager);
+            const calculator = new UIPositionCalculator(mockScaledCoordinateManager as any);
             const margins = calculator.getResponsiveMargins();
             expect(margins.top).toBe(10);
             expect(margins.left).toBe(10);
@@ -328,7 +328,7 @@ describe('UIPositionCalculator', () => {
                 configurable: true
             });
             
-            const calculator = new UIPositionCalculator(mockScaledCoordinateManager);
+            const calculator = new UIPositionCalculator(mockScaledCoordinateManager as any);
             expect(calculator.getDeviceType()).toBe('desktop');
         });
         
@@ -344,7 +344,7 @@ describe('UIPositionCalculator', () => {
                 configurable: true
             });
             
-            const calculator = new UIPositionCalculator(mockScaledCoordinateManager);
+            const calculator = new UIPositionCalculator(mockScaledCoordinateManager as any);
             expect(calculator.getDeviceType()).toBe('tablet');
         });
         
@@ -360,7 +360,7 @@ describe('UIPositionCalculator', () => {
                 configurable: true
             });
             
-            const calculator = new UIPositionCalculator(mockScaledCoordinateManager);
+            const calculator = new UIPositionCalculator(mockScaledCoordinateManager as any);
             expect(calculator.getDeviceType()).toBe('mobile');
         })
     });
@@ -385,7 +385,7 @@ describe('UIPositionCalculator', () => {
                     configurable: true
                 });
                 
-                const calculator = new UIPositionCalculator(mockScaledCoordinateManager);
+                const calculator = new UIPositionCalculator(mockScaledCoordinateManager as any);
                 expect(calculator.getDeviceType()).toBe(testCase.expected);
                 
                 // すべてのデバイスタイプで基本的な位置計算が機能することを確認

@@ -44,15 +44,15 @@ describe('ConfigurationMigrationUtility', () => {
     
     describe('Constructor', () => {
         test('should initialize with correct properties', () => {
-            expect(migrationUtility.configManager).toBeDefined();
-            expect(migrationUtility.errorHandler).toBeDefined();
-            expect(migrationUtility.migrationHistory).toEqual([]);
+            expect((migrationUtility as any).configManager).toBeDefined();
+            expect((migrationUtility as any).errorHandler).toBeDefined();
+            expect((migrationUtility as any).migrationHistory).toEqual([]);
         });
     });
     
     describe('_getHardcodedBubbleConfig', () => {
         test('should return correct config for normal bubble', () => {
-            const config: BubbleConfig | null = migrationUtility._getHardcodedBubbleConfig('normal');
+            const config: BubbleConfig | null = (migrationUtility as any)._getHardcodedBubbleConfig('normal');
             expect(config).toEqual({
                 health: 1,
                 size: 50,
@@ -63,7 +63,7 @@ describe('ConfigurationMigrationUtility', () => {
         });
         
         test('should return correct config for boss bubble', () => {
-            const config: BubbleConfig | null = migrationUtility._getHardcodedBubbleConfig('boss');
+            const config: BubbleConfig | null = (migrationUtility as any)._getHardcodedBubbleConfig('boss');
             expect(config).toEqual({
                 health: 8,
                 size: 90,
@@ -74,7 +74,7 @@ describe('ConfigurationMigrationUtility', () => {
         });
         
         test('should return null for unknown bubble type', () => {
-            const config: BubbleConfig | null = migrationUtility._getHardcodedBubbleConfig('unknown');
+            const config: BubbleConfig | null = (migrationUtility as any)._getHardcodedBubbleConfig('unknown');
             expect(config).toBeNull();
         });
     });
@@ -89,7 +89,7 @@ describe('ConfigurationMigrationUtility', () => {
                 score: 25,
                 healAmount: 25
             };
-            const effects: SpecialEffects = migrationUtility._extractSpecialEffects('pink', config);
+            const effects: SpecialEffects = (migrationUtility as any)._extractSpecialEffects('pink', config);
             expect(effects).toEqual({ healAmount: 25 });
         });
         
@@ -101,7 +101,7 @@ describe('ConfigurationMigrationUtility', () => {
                 color: '#87CEEB',
                 score: 15
             };
-            const effects: SpecialEffects = migrationUtility._extractSpecialEffects('normal', config);
+            const effects: SpecialEffects = (migrationUtility as any)._extractSpecialEffects('normal', config);
             expect(effects).toEqual({});
         });
     });

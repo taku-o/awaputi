@@ -78,8 +78,8 @@ interface PerformanceReport {
 
 // モックAnalyticsManager
 class MockAnalyticsManager {
-    public trackEvent: jest.Mock<void, [string, EventData]>;
-    public trackPlayerBehavior: jest.Mock<void, [string, EventData]>;
+    public trackEvent: jest.Mock<void>;
+    public trackPlayerBehavior: jest.Mock<void>;
     public performanceHistory: PerformanceHistory[];
 
     constructor() {
@@ -125,11 +125,11 @@ describe('AnalyticsPerformanceOptimizer', () => {
     describe('初期化', () => {
         test('正常に初期化される', () => {
             expect(optimizer).toBeDefined();
-            expect(optimizer.analyticsManager).toBe(mockAnalyticsManager);
+            expect((optimizer as any).analyticsManager).toBe(mockAnalyticsManager);
         });
 
         test('デフォルト設定が適用される', () => {
-            const config = optimizer.getConfig();
+            const config = (optimizer as any).getConfig();
             expect(config.batchSize).toBe(10);
             expect(config.batchTimeout).toBe(5000);
             expect(config.cacheSize).toBe(100);
@@ -167,7 +167,7 @@ describe('AnalyticsPerformanceOptimizer', () => {
         });
 
         test('バッチサイズに達したときに自動処理される', () => {
-            const config = optimizer.getConfig();
+            const config = (optimizer as any).getConfig();
             
             // バッチサイズ分のイベントを追加
             for (let i = 0; i < config.batchSize; i++) {
@@ -208,15 +208,15 @@ describe('AnalyticsPerformanceOptimizer', () => {
         test('データがキャッシュに保存される', () => {
             const testData = { cached: true, value: 'test' };
             
-            optimizer.cache('test_key', testData);
-            const retrieved = optimizer.getCached('test_key');
+            (optimizer as any).cache('test_key', testData);
+            const retrieved = (optimizer as any).getCached('test_key');
             
             expect(retrieved).toEqual(testData);
         });
 
         test('キャッシュヒット統計が記録される', () => {
-            optimizer.cache('hit_test', { data: 'cached' });
-            optimizer.getCached('hit_test');
+            (optimizer as any).cache('hit_test', { data: 'cached' });
+            (optimizer as any).getCached('hit_test');
             
             const stats = optimizer.getOptimizationStats();
             expect(stats.cacheHits).toBe(1);
@@ -224,7 +224,7 @@ describe('AnalyticsPerformanceOptimizer', () => {
         });
 
         test('キャッシュミス統計が記録される', () => {
-            optimizer.getCached('non_existent_key');
+            (optimizer as any).getCached('non_existent_key');
             
             const stats = optimizer.getOptimizationStats();
             expect(stats.cacheMisses).toBe(1);
@@ -232,11 +232,11 @@ describe('AnalyticsPerformanceOptimizer', () => {
         });
 
         test('キャッシュサイズ制限が適用される', () => {
-            const config = optimizer.getConfig();
+            const config = (optimizer as any).getConfig();
             
             // キャッシュ容量を超えるデータを追加
             for (let i = 0; i < config.cacheSize + 10; i++) {
-                optimizer.cache(`key_${i}`, { value: i });
+                (optimizer as any).cache(`key_${i}`, { value: i });
             }
             
             const stats = optimizer.getOptimizationStats();
@@ -256,7 +256,7 @@ describe('AnalyticsPerformanceOptimizer', () => {
                 customConfig
             );
 
-            customOptimizer.cache('expiring_key', { data: 'will_expire' });
+            (customOptimizer as any).cache('expiring_key', { data: 'will_expire' });
             
             // タイムアウト時間を経過
             jest.advanceTimersByTime(1100);
@@ -280,16 +280,16 @@ describe('AnalyticsPerformanceOptimizer', () => {
                 configurable: true
             });
 
-            optimizer.checkPerformance();
+            (optimizer as any).checkPerformance();
             
             const stats = optimizer.getOptimizationStats();
             expect(stats.performanceWarnings).toBeGreaterThan(0);
         });
 
         test('FPS履歴が記録される', () => {
-            optimizer.recordFPS(60);
-            optimizer.recordFPS(58);
-            optimizer.recordFPS(55);
+            (optimizer as any).recordFPS(60);
+            (optimizer as any).recordFPS(58);
+            (optimizer as any).recordFPS(55);
 
             const metrics = optimizer.getPerformanceMetrics();
             expect(metrics.fps).toBeDefined();
@@ -308,9 +308,9 @@ describe('AnalyticsPerformanceOptimizer', () => {
     describe('最適化統計', () => {
         test('統計データが正しく取得される', () => {
             optimizer.batchEvent('stats_test', { data: 'test' });
-            optimizer.cache('stats_cache', { cached: true });
-            optimizer.getCached('stats_cache'); // キャッシュヒット
-            optimizer.getCached('non_existent'); // キャッシュミス
+            (optimizer as any).cache('stats_cache', { cached: true });
+            (optimizer as any).getCached('stats_cache'); // キャッシュヒット
+            (optimizer as any).getCached('non_existent'); // キャッシュミス
 
             const stats = optimizer.getOptimizationStats();
             
@@ -324,7 +324,7 @@ describe('AnalyticsPerformanceOptimizer', () => {
             // テストデータを設定
             optimizer.batchEvent('report_test', { data: 'test1' });
             optimizer.batchEvent('report_test', { data: 'test2' });
-            optimizer.cache('report_cache', { cached: true });
+            (optimizer as any).cache('report_cache', { cached: true });
             
             const report = optimizer.generatePerformanceReport();
             
@@ -336,7 +336,7 @@ describe('AnalyticsPerformanceOptimizer', () => {
         test('パフォーマンス推奨事項が生成される', () => {
             // 低いキャッシュヒット率を設定
             for (let i = 0; i < 10; i++) {
-                optimizer.getCached(`miss_key_${i}`); // すべてキャッシュミス
+                (optimizer as any).getCached(`miss_key_${i}`); // すべてキャッシュミス
             }
 
             const report = optimizer.generatePerformanceReport();
@@ -353,9 +353,9 @@ describe('AnalyticsPerformanceOptimizer', () => {
                 batchTimeout: 3000
             };
 
-            optimizer.updateConfig(newConfig);
+            (optimizer as any).updateConfig(newConfig);
             
-            const config = optimizer.getConfig();
+            const config = (optimizer as any).getConfig();
             expect(config.batchSize).toBe(15);
             expect(config.batchTimeout).toBe(3000);
             expect(config.cacheSize).toBe(100); // 元の値が保持される
@@ -368,10 +368,10 @@ describe('AnalyticsPerformanceOptimizer', () => {
                 cacheSize: -10
             };
 
-            const originalConfig = optimizer.getConfig();
-            optimizer.updateConfig(invalidConfig);
+            const originalConfig = (optimizer as any).getConfig();
+            (optimizer as any).updateConfig(invalidConfig);
             
-            const config = optimizer.getConfig();
+            const config = (optimizer as any).getConfig();
             // 元の設定が保持される
             expect(config.batchSize).toBe(originalConfig.batchSize);
             expect(config.batchTimeout).toBe(originalConfig.batchTimeout);
@@ -383,7 +383,7 @@ describe('AnalyticsPerformanceOptimizer', () => {
         test('メモリクリーンアップが実行される', () => {
             // キャッシュにデータを追加
             for (let i = 0; i < 50; i++) {
-                optimizer.cache(`cleanup_key_${i}`, { data: `value_${i}` });
+                (optimizer as any).cache(`cleanup_key_${i}`, { data: `value_${i}` });
             }
 
             const beforeCleanup = optimizer.getOptimizationStats();

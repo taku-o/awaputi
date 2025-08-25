@@ -1,4 +1,4 @@
-import { describe, test, expect, beforeEach, afterEach, beforeAll, afterAll, jest, it } from '@jest/globals';
+import { describe, test, expect, beforeEach, afterEach } from '@jest/globals';
 /**
  * RealtimeMonitor のテスト
  */
@@ -90,9 +90,9 @@ describe('RealtimeMonitor', () => {
                 memoryThreshold: 90,
                 enableConsoleWarnings: false
             });
-            expect(customMonitor.options.fpsThreshold).toBe(25);
-            expect(customMonitor.options.memoryThreshold).toBe(90);
-            expect(customMonitor.options.enableConsoleWarnings).toBe(false);
+            expect((customMonitor as any).options.fpsThreshold).toBe(25);
+            expect((customMonitor as any).options.memoryThreshold).toBe(90);
+            expect((customMonitor as any).options.enableConsoleWarnings).toBe(false);
             customMonitor.destroy();
         });
     });
@@ -212,7 +212,7 @@ describe('RealtimeMonitor', () => {
                     message: `Test alert ${i}`
                 });
             }
-            expect(limitedMonitor.alerts).toHaveLength(3);
+            expect((limitedMonitor as any).alerts).toHaveLength(3);
             limitedMonitor.destroy();
         });
 

@@ -6,30 +6,30 @@ import { EnhancedEffectManager } from '../../../src/effects/EnhancedEffectManage
 
 // Type definitions
 interface MockCanvasContext {
-    fillRect: jest.Mock<void, [number, number, number, number]>;
-    strokeRect: jest.Mock<void, [number, number, number, number]>;
-    clearRect: jest.Mock<void, [number, number, number, number]>;
-    save: jest.Mock<void, []>;
-    restore: jest.Mock<void, []>;
-    beginPath: jest.Mock<void, []>;
-    closePath: jest.Mock<void, []>;
-    moveTo: jest.Mock<void, [number, number]>;
-    lineTo: jest.Mock<void, [number, number]>;
-    arc: jest.Mock<void, [number, number, number, number, number, boolean?]>;
-    rect: jest.Mock<void, [number, number, number, number]>;
-    fill: jest.Mock<void, []>;
-    stroke: jest.Mock<void, []>;
-    createLinearGradient: jest.Mock<CanvasGradient, [number, number, number, number]>;
-    createRadialGradient: jest.Mock<CanvasGradient, [number, number, number, number, number, number]>;
-    translate: jest.Mock<void, [number, number]>;
-    scale: jest.Mock<void, [number, number]>;
-    rotate: jest.Mock<void, [number]>;
-    setTransform: jest.Mock<void, [number, number, number, number, number, number]>;
+    fillRect: jest.Mock<(...args: any[]) => void>;
+    strokeRect: jest.Mock<(...args: any[]) => void>;
+    clearRect: jest.Mock<(...args: any[]) => void>;
+    save: jest.Mock<() => void>;
+    restore: jest.Mock<() => void>;
+    beginPath: jest.Mock<() => void>;
+    closePath: jest.Mock<() => void>;
+    moveTo: jest.Mock<(...args: any[]) => void>;
+    lineTo: jest.Mock<(...args: any[]) => void>;
+    arc: jest.Mock<(...args: any[]) => void>;
+    rect: jest.Mock<(...args: any[]) => void>;
+    fill: jest.Mock<() => void>;
+    stroke: jest.Mock<() => void>;
+    createLinearGradient: jest.Mock<(...args: any[]) => MockCanvasGradient>;
+    createRadialGradient: jest.Mock<(...args: any[]) => MockCanvasGradient>;
+    translate: jest.Mock<(...args: any[]) => void>;
+    scale: jest.Mock<(...args: any[]) => void>;
+    rotate: jest.Mock<(...args: any[]) => void>;
+    setTransform: jest.Mock<(...args: any[]) => void>;
     canvas: { width: number; height: number; };
 }
 
-interface CanvasGradient {
-    addColorStop: jest.Mock<void, [number, string]>;
+interface MockCanvasGradient {
+    addColorStop: jest.Mock<(offset: number, color: string) => void>;
 }
 
 interface TransitionEffect {
@@ -115,11 +115,11 @@ interface PerformanceMetrics {
     rect: jest.fn(),
     fill: jest.fn(),
     stroke: jest.fn(),
-    createLinearGradient: jest.fn(() => ({
-        addColorStop: jest.fn()
+    createLinearGradient: jest.fn<(...args: any[]) => MockCanvasGradient>(() => ({
+        addColorStop: jest.fn<(offset: number, color: string) => void>()
     })),
-    createRadialGradient: jest.fn(() => ({
-        addColorStop: jest.fn()
+    createRadialGradient: jest.fn<(...args: any[]) => MockCanvasGradient>(() => ({
+        addColorStop: jest.fn<(offset: number, color: string) => void>()
     })),
     translate: jest.fn(),
     scale: jest.fn(),
@@ -141,7 +141,7 @@ describe('EnhancedEffectManager', () => {
         mockCanvas.width = 800;
         mockCanvas.height = 600;
         mockContext = mockCanvas.getContext('2d') as unknown as MockCanvasContext;
-        effectManager = new EnhancedEffectManager(mockCanvas)
+        effectManager = new EnhancedEffectManager(mockCanvas);
     });
 
     afterEach(() => {
@@ -153,7 +153,7 @@ describe('EnhancedEffectManager', () => {
     describe('Initialization', () => {
         test('should initialize with enhanced features', () => {
             expect(effectManager).toBeDefined();
-            expect(effectManager.canvas).toBe(mockCanvas);
+            expect((effectManager as any).canvas).toBe(mockCanvas);
             expect(effectManager.transitionEffects).toBeDefined();
             expect(effectManager.lightSources).toBeDefined();
             expect(effectManager.backgroundEffects).toBeDefined();
@@ -161,7 +161,7 @@ describe('EnhancedEffectManager', () => {
         
         test('should extend base EffectManager functionality', () => {
             // Should inherit base functionality
-            expect(effectManager.effects).toBeDefined();
+            expect((effectManager as any).effects).toBeDefined();
             expect(typeof effectManager.update).toBe('function');
             expect(typeof effectManager.render).toBe('function')
         
@@ -169,10 +169,10 @@ describe('EnhancedEffectManager', () => {
 
         test('should initialize with default render settings', () => {
 
-            expect(effectManager.renderSettings).toBeDefined();
-            expect(effectManager.renderSettings.enableLighting).toBe(true);
-            expect(effectManager.renderSettings.enableShadows).toBe(true);
-            expect(effectManager.renderSettings.qualityLevel).toBe('high')
+            expect((effectManager as any).renderSettings).toBeDefined();
+            expect((effectManager as any).renderSettings.enableLighting).toBe(true);
+            expect((effectManager as any).renderSettings.enableShadows).toBe(true);
+            expect((effectManager as any).renderSettings.qualityLevel).toBe('high')
         
 })
  
@@ -280,16 +280,16 @@ test('should support multiple light sources', () => {
             const initialIntensity = initialLight!.intensity;
 
             // Add animation to light source
-            if (effectManager.animateLightSource) {
-                effectManager.animateLightSource(lightId, {
+            if ((effectManager as any).animateLightSource) {
+                (effectManager as any).animateLightSource(lightId, {
                     intensity: { target: 0.5, duration: 1000 }
                 });
             }
 
-            effectManager.updateLightSources(500); // 500ms
+            (effectManager as any).updateLightSources(500); // 500ms
 
             const updatedLight = effectManager.lightSources.find(l => l.id === lightId);
-            if (effectManager.animateLightSource) {
+            if ((effectManager as any).animateLightSource) {
                 expect(updatedLight!.intensity).not.toBe(initialIntensity);
             }
         });

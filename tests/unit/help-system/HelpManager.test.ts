@@ -55,11 +55,6 @@ interface UserProgress {
     usageStats: Map<string, UsageStats>;
 }
 
-interface Tooltip {
-    content: string;
-    element?: any;
-}
-
 interface ContextualHelp {
     context: string;
     content?: string;
@@ -75,18 +70,6 @@ const mockGameEngine: MockGameEngine = {
         getCurrentScene: jest.fn(() => ({ constructor: { name: 'GameScene' } }))
     },
     canvas: { width: 800, height: 600 }
-};
-
-const mockContentLoader: MockContentLoader = {
-    loadHelpContent: jest.fn(),
-    getCachedContent: jest.fn(),
-    setCachedContent: jest.fn()
-};
-
-const mockSearchEngine: MockSearchEngine = {
-    search: jest.fn(),
-    indexContent: jest.fn(),
-    getSuggestions: jest.fn()
 };
 
 // Mock setup removed since we're using actual classes
@@ -107,14 +90,14 @@ describe('HelpManager', () => {
     describe('初期化', () => {
         test('正常に初期化される', () => {
             expect(helpManager).toBeInstanceOf(HelpManager);
-            expect(helpManager.gameEngine).toBe(mockGameEngine);
-            expect(helpManager.isInitialized).toBe(true);
+            expect((helpManager as any).gameEngine).toBe(mockGameEngine);
+            expect((helpManager as any).initialized).toBe(true);
         });
         
         test('必要なコンポーネントが初期化される', () => {
-            expect(helpManager.contentLoader).toBeDefined();
-            expect(helpManager.searchEngine).toBeDefined();
-            expect(helpManager.contextManager).toBeDefined();
+            expect((helpManager as any).contentLoader).toBeDefined();
+            expect((helpManager as any).searchEngine).toBeDefined();
+            expect((helpManager as any).contextManager).toBeDefined();
         });
     });
     
@@ -127,18 +110,18 @@ describe('HelpManager', () => {
             language: 'ja'
         };
         test('ヘルプコンテンツを読み込める', async () => {
-            jest.spyOn(helpManager.contentLoader, 'loadHelpContent').mockResolvedValue([mockHelpContent]);
+            jest.spyOn((helpManager as any).contentLoader, 'loadHelpContent').mockResolvedValue([mockHelpContent]);
             const result = await helpManager.loadHelpContent('gameplay', 'ja');
-            expect(helpManager.contentLoader.loadHelpContent).toHaveBeenCalledWith('gameplay', 'ja');
+            expect((helpManager as any).contentLoader.loadHelpContent).toHaveBeenCalledWith('gameplay', 'ja');
             expect(result).toEqual([mockHelpContent]);
         });
         test('読み込みエラーが適切に処理される', async () => {
             const error = new Error('読み込みエラー');
-            jest.spyOn(helpManager.contentLoader, 'loadHelpContent').mockRejectedValue(error);
+            jest.spyOn((helpManager as any).contentLoader, 'loadHelpContent').mockRejectedValue(error);
             await expect(helpManager.loadHelpContent('gameplay', 'ja')).rejects.toThrow('読み込みエラー');
         });
         test('ヘルプセクションを取得できる', () => {
-            helpManager.helpContent = new Map([
+            (helpManager as any).helpContent = new Map([
                 ['test-section', mockHelpContent]
             ]);
             const result = helpManager.getHelpSection('test-section');
@@ -154,22 +137,22 @@ describe('HelpManager', () => {
             { id: 'result2', title: 'Result 2', relevance: 0.7 }
         ];
         test('コンテンツを検索できる', async () => {
-            jest.spyOn(helpManager.searchEngine, 'search').mockResolvedValue(mockSearchResults);
+            jest.spyOn((helpManager as any).searchEngine, 'search').mockResolvedValue(mockSearchResults);
             const result = await helpManager.searchContent('テスト', { category: 'gameplay' });
-            expect(helpManager.searchEngine.search).toHaveBeenCalledWith('テスト', { category: 'gameplay' });
+            expect((helpManager as any).searchEngine.search).toHaveBeenCalledWith('テスト', { category: 'gameplay' });
             expect(result).toEqual(mockSearchResults);
         });
         test('検索エラーが適切に処理される', async () => {
             const error = new Error('検索エラー');
-            jest.spyOn(helpManager.searchEngine, 'search').mockRejectedValue(error);
+            jest.spyOn((helpManager as any).searchEngine, 'search').mockRejectedValue(error);
             const result = await helpManager.searchContent('テスト');
             expect(result).toEqual([]); // Error returns empty array
         });
         test('検索提案を取得できる', async () => {
             const mockSuggestions = ['suggestion1', 'suggestion2'];
-            jest.spyOn(helpManager.searchEngine, 'getSuggestions').mockResolvedValue(mockSuggestions);
-            const result = await helpManager.getSearchSuggestions('テス');
-            expect(helpManager.searchEngine.getSuggestions).toHaveBeenCalledWith('テス');
+            jest.spyOn((helpManager as any).searchEngine, 'getSuggestions').mockResolvedValue(mockSuggestions);
+            const result = await (helpManager as any).getSearchSuggestions('テス');
+            expect((helpManager as any).searchEngine.getSuggestions).toHaveBeenCalledWith('テス');
             expect(result).toEqual(mockSuggestions);
         });
     });
@@ -187,13 +170,13 @@ describe('HelpManager', () => {
             const element = { x: 100, y: 100 };
             const content = 'ツールチップの内容';
             helpManager.showTooltip(element, content);
-            expect(helpManager.currentTooltip).toBeDefined();
-            expect(helpManager.currentTooltip!.content).toBe(content);
+            expect((helpManager as any).currentTooltip).toBeDefined();
+            expect((helpManager as any).currentTooltip!.content).toBe(content);
         });
         test('ツールチップを非表示にできる', () => {
-            helpManager.currentTooltip = { content: 'test' };
+            (helpManager as any).currentTooltip = { content: 'test' };
             helpManager.hideTooltip();
-            expect(helpManager.currentTooltip).toBeNull();
+            expect((helpManager as any).currentTooltip).toBeNull();
         });
     });
     
@@ -202,20 +185,20 @@ describe('HelpManager', () => {
             const sectionId = 'test-section';
             const duration = 5000;
             helpManager.trackHelpUsage(sectionId, duration);
-            expect(helpManager.usageStats.has(sectionId)).toBe(true);
-            const stats = helpManager.usageStats.get(sectionId)!;
+            expect((helpManager as any).usageStats.has(sectionId)).toBe(true);
+            const stats = (helpManager as any).usageStats.get(sectionId)!;
             expect(stats.totalTime).toBe(duration);
             expect(stats.viewCount).toBe(1);
         });
         test('ヘルプセクションを既読としてマークできる', () => {
             const sectionId = 'test-section';
             helpManager.markAsRead(sectionId);
-            expect(helpManager.readSections.has(sectionId)).toBe(true);
+            expect((helpManager as any).readSections.has(sectionId)).toBe(true);
         });
         test('ユーザーヘルプ進捗を取得できる', () => {
-            helpManager.readSections.add('section1');
-            helpManager.readSections.add('section2');
-            helpManager.usageStats.set('section1', { totalTime: 1000, viewCount: 1 });
+            (helpManager as any).readSections.add('section1');
+            (helpManager as any).readSections.add('section2');
+            (helpManager as any).usageStats.set('section1', { totalTime: 1000, viewCount: 1 });
             const progress = helpManager.getUserHelpProgress() as UserProgress;
             expect(progress.readSections).toEqual(['section1', 'section2']);
             expect(progress.totalReadSections).toBe(2);
@@ -224,7 +207,7 @@ describe('HelpManager', () => {
     });
     describe('エラーハンドリング', () => {
         test('不正な言語でのコンテンツ読み込みエラーを処理', async () => {
-            jest.spyOn(helpManager.contentLoader, 'loadHelpContent').mockRejectedValue(new Error('Invalid language'));
+            jest.spyOn((helpManager as any).contentLoader, 'loadHelpContent').mockRejectedValue(new Error('Invalid language'));
             const result = await helpManager.loadHelpContent('gameplay', 'invalid');
             expect(result).toEqual([]);
         });
@@ -237,13 +220,13 @@ describe('HelpManager', () => {
     });
     describe('メモリ管理', () => {
         test('cleanup時にリソースが適切に解放される', () => {
-            helpManager.helpContent = new Map([['test', { id: 'test' } as HelpContent]]);
-            helpManager.usageStats = new Map([['test', { totalTime: 0, viewCount: 0 }]]);
-            helpManager.readSections = new Set(['section1']);
+            (helpManager as any).helpContent = new Map([['test', { id: 'test' } as HelpContent]]);
+            (helpManager as any).usageStats = new Map([['test', { totalTime: 0, viewCount: 0 }]]);
+            (helpManager as any).readSections = new Set(['section1']);
             helpManager.destroy();
-            expect(helpManager.helpContent.size).toBe(0);
-            expect(helpManager.usageStats.size).toBe(0);
-            expect(helpManager.readSections.size).toBe(0);
+            expect((helpManager as any).helpContent.size).toBe(0);
+            expect((helpManager as any).usageStats.size).toBe(0);
+            expect((helpManager as any).readSections.size).toBe(0);
         });
     });
     describe('多言語対応', () => {

@@ -40,7 +40,7 @@ interface MockGameEngine {
 }
 
 interface MockUIManager {
-    showConfirmationDialog: jest.Mock;
+    showConfirmationDialog: jest.Mock<any>;
 }
 
 interface ButtonConfig {
@@ -51,14 +51,14 @@ interface ButtonConfig {
 }
 
 interface MockContext {
-    save: jest.Mock;
-    restore: jest.Mock;
-    fillRect: jest.Mock;
-    strokeRect: jest.Mock;
-    fillText: jest.Mock;
-    measureText: jest.Mock;
-    translate: jest.Mock;
-    scale: jest.Mock;
+    save: jest.Mock<() => void>;
+    restore: jest.Mock<() => void>;
+    fillRect: jest.Mock<(x: number, y: number, width: number, height: number) => void>;
+    strokeRect: jest.Mock<(x: number, y: number, width: number, height: number) => void>;
+    fillText: jest.Mock<(text: string, x: number, y: number) => void>;
+    measureText: jest.Mock<(text: string) => TextMetrics>;
+    translate: jest.Mock<(x: number, y: number) => void>;
+    scale: jest.Mock<(x: number, y: number) => void>;
     fillStyle: string;
     strokeStyle: string;
     lineWidth: number;
@@ -82,7 +82,7 @@ describe('GameControlButtons', () => {
     beforeEach(() => {
         // キャンバスマネージャーのモック
         mockResponsiveCanvasManager = {
-            getCanvasInfo: jest.fn(() => ({
+            getCanvasInfo: jest.fn<() => CanvasInfo>(() => ({
                 baseWidth: 800,
                 baseHeight: 600,
                 scale: 1,
@@ -93,7 +93,7 @@ describe('GameControlButtons', () => {
                 actualHeight: 600,
                 pixelRatio: 1
             })),
-            getScaledCoordinates: jest.fn((x: number, y: number) => ({ x, y }))
+            getScaledCoordinates: jest.fn<(x: number, y: number) => ScaledCoordinates>((x: number, y: number) => ({ x, y }))
         };
 
         // ゲームエンジンのモック
@@ -104,19 +104,19 @@ describe('GameControlButtons', () => {
 
         // UIマネージャーのモック
         mockUIManager = {
-            showConfirmationDialog: jest.fn()
+            showConfirmationDialog: jest.fn<any>()
         };
 
         // Canvasコンテキストのモック
         mockContext = {
-            save: jest.fn(),
-            restore: jest.fn(),
-            fillRect: jest.fn(),
-            strokeRect: jest.fn(),
-            fillText: jest.fn(),
-            measureText: jest.fn(() => ({ width: 100 })),
-            translate: jest.fn(),
-            scale: jest.fn(),
+            save: jest.fn<() => void>(),
+            restore: jest.fn<() => void>(),
+            fillRect: jest.fn<(x: number, y: number, width: number, height: number) => void>(),
+            strokeRect: jest.fn<(x: number, y: number, width: number, height: number) => void>(),
+            fillText: jest.fn<(text: string, x: number, y: number) => void>(),
+            measureText: jest.fn<(text: string) => TextMetrics>(() => ({ width: 100 } as TextMetrics)),
+            translate: jest.fn<(x: number, y: number) => void>(),
+            scale: jest.fn<(x: number, y: number) => void>(),
             fillStyle: '',
             strokeStyle: '',
             lineWidth: 1,
@@ -176,7 +176,7 @@ describe('GameControlButtons', () => {
 
         test('ホバー状態でスタイルが変更される', () => {
             const buttons = gameControlButtons.getButtons();
-            buttons[0].isHovered = true;
+            (buttons[0] as any).isHovered = true;
             
             gameControlButtons.render(mockContext as any);
             
@@ -186,7 +186,7 @@ describe('GameControlButtons', () => {
 
         test('押下状態でスタイルが変更される', () => {
             const buttons = gameControlButtons.getButtons();
-            buttons[0].isPressed = true;
+            (buttons[0] as any).isPressed = true;
             
             gameControlButtons.render(mockContext as any);
             
@@ -248,7 +248,7 @@ describe('GameControlButtons', () => {
             gameControlButtons.handleMouseMove(event);
             
             const buttons = gameControlButtons.getButtons();
-            expect(buttons.some(btn => btn.isHovered)).toBe(true);
+            expect(buttons.some(btn => (btn as any).isHovered)).toBe(true);
         });
 
         test('ボタン外でホバー状態が解除される', () => {
@@ -259,7 +259,7 @@ describe('GameControlButtons', () => {
             gameControlButtons.handleMouseMove({ offsetX: 100, offsetY: 100 });
             
             const buttons = gameControlButtons.getButtons();
-            expect(buttons.every(btn => !btn.isHovered)).toBe(true);
+            expect(buttons.every(btn => !(btn as any).isHovered)).toBe(true);
         });
     });
 
@@ -333,13 +333,13 @@ describe('GameControlButtons', () => {
             gameControlButtons.handleKeyDown({ key: 'Tab' } as KeyboardEvent);
             
             const buttons = gameControlButtons.getButtons();
-            expect(buttons.some(btn => btn.isFocused)).toBe(true);
+            expect(buttons.some(btn => (btn as any).isFocused)).toBe(true);
         });
 
         test('Enterキーでボタンがアクティブになる', () => {
             // フォーカスを設定
             const buttons = gameControlButtons.getButtons();
-            buttons[0].isFocused = true;
+            (buttons[0] as any).isFocused = true;
             
             // Enterキーを押す
             gameControlButtons.handleKeyDown({ key: 'Enter' } as KeyboardEvent);
@@ -350,7 +350,7 @@ describe('GameControlButtons', () => {
         test('スペースキーでもボタンがアクティブになる', () => {
             // フォーカスを設定
             const buttons = gameControlButtons.getButtons();
-            buttons[0].isFocused = true;
+            (buttons[0] as any).isFocused = true;
             
             // スペースキーを押す
             gameControlButtons.handleKeyDown({ key: ' ' } as KeyboardEvent);

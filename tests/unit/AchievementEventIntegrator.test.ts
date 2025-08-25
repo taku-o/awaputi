@@ -162,20 +162,20 @@ describe('AchievementEventIntegrator', () => {
     describe('初期化', () => {
         test('正常に初期化される', () => {
             expect(integrator).toBeDefined();
-            expect(integrator.achievementManager).toBe(mockAchievementManager);
-            expect(integrator.playerData).toBe(mockPlayerData);
+            expect((integrator as any).achievementManager).toBe(mockAchievementManager);
+            expect((integrator as any).playerData).toBe(mockPlayerData);
         });
 
         test('セッション追跡が初期化される', () => {
-            expect(integrator.sessionTracking).toBeDefined();
-            expect(integrator.sessionTracking.bubblesPopped).toBe(0);
-            expect(integrator.sessionTracking.startTime).toBeDefined();
+            expect((integrator as any).sessionTracking).toBeDefined();
+            expect((integrator as any).sessionTracking.bubblesPopped).toBe(0);
+            expect((integrator as any).sessionTracking.startTime).toBeDefined();
         });
     });
 
     describe('BubbleManager統合', () => {
         beforeEach(() => {
-            integrator.integrateBubbleManager(mockBubbleManager);
+            (integrator as any).integrateBubbleManager(mockBubbleManager);
         });
 
         test('popBubbleメソッドが正しく拡張される', () => {
@@ -209,7 +209,7 @@ describe('AchievementEventIntegrator', () => {
         test('速度チャレンジが追跡される', () => {
             // 短時間で複数のバブルをポップ
             const startTime = Date.now();
-            integrator.sessionTracking.startTime = startTime;
+            (integrator as any).sessionTracking.startTime = startTime;
             
             for (let i = 0; i < 10; i++) {
                 mockBubbleManager.popBubble({ type: 'normal' });
@@ -226,7 +226,7 @@ describe('AchievementEventIntegrator', () => {
 
     describe('ScoreManager統合', () => {
         beforeEach(() => {
-            integrator.integrateScoreManager(mockScoreManager);
+            (integrator as any).integrateScoreManager(mockScoreManager);
         });
 
         test('addScoreメソッドが正しく拡張される', () => {
@@ -245,7 +245,7 @@ describe('AchievementEventIntegrator', () => {
 
         test('コンボ追跡が動作する', () => {
             // コンボを構築
-            integrator.sessionTracking.currentCombo = 5;
+            (integrator as any).sessionTracking.currentCombo = 5;
             mockScoreManager.addScore(100);
             // コンボを破る
             mockScoreManager.breakCombo();
@@ -269,7 +269,7 @@ describe('AchievementEventIntegrator', () => {
 
     describe('GameScene統合', () => {
         beforeEach(() => {
-            integrator.integrateGameScene(mockGameScene);
+            (integrator as any).integrateGameScene(mockGameScene);
         });
 
         test('gameOverメソッドが正しく拡張される', () => {
@@ -289,7 +289,7 @@ describe('AchievementEventIntegrator', () => {
 
         test('プレイ時間実績が追跡される', () => {
             // セッション時間をシミュレート
-            integrator.sessionTracking.startTime = Date.now() - 60000; // 1分前
+            (integrator as any).sessionTracking.startTime = Date.now() - 60000; // 1分前
             
             mockGameScene.gameOver('cleared');
             const updateCalls = mockAchievementManager.updateProgressCalls;
@@ -301,7 +301,7 @@ describe('AchievementEventIntegrator', () => {
 
         test('低HP生存実績が追跡される', () => {
             // 低HP状態をシミュレート
-            integrator.sessionTracking.lowHPSurvival = true;
+            (integrator as any).sessionTracking.lowHPSurvival = true;
             
             mockGameScene.gameOver('cleared');
             const updateCalls = mockAchievementManager.updateProgressCalls;
@@ -313,8 +313,8 @@ describe('AchievementEventIntegrator', () => {
 
         test('パーフェクトゲーム実績が追跡される', () => {
             // パーフェクトゲーム条件をシミュレート
-            integrator.sessionTracking.damageReceived = 0;
-            integrator.sessionTracking.accuracy = 100;
+            (integrator as any).sessionTracking.damageReceived = 0;
+            (integrator as any).sessionTracking.accuracy = 100;
             
             mockGameScene.gameOver('cleared');
             const updateCalls = mockAchievementManager.updateProgressCalls;
@@ -327,61 +327,61 @@ describe('AchievementEventIntegrator', () => {
 
     describe('イベント処理', () => {
         test('バブルポップイベントが正しく処理される', () => {
-            integrator.handleBubblePopped('normal', { x: 100, y: 100 });
-            expect(integrator.sessionTracking.bubblesPopped).toBe(1);
+            (integrator as any).handleBubblePopped('normal', { x: 100, y: 100 });
+            expect((integrator as any).sessionTracking.bubblesPopped).toBe(1);
             expect(mockAchievementManager.updateProgressCalls.length).toBeGreaterThan(0);
         });
 
         test('スコア追加イベントが正しく処理される', () => {
-            integrator.handleScoreAdded(100, 2);
-            expect(integrator.sessionTracking.totalScore).toBe(200);
+            (integrator as any).handleScoreAdded(100, 2);
+            expect((integrator as any).sessionTracking.totalScore).toBe(200);
             expect(mockAchievementManager.updateProgressCalls.length).toBeGreaterThan(0);
         });
 
         test('ゲーム終了イベントが正しく処理される', () => {
-            integrator.handleGameOver('cleared');
+            (integrator as any).handleGameOver('cleared');
             expect(mockAchievementManager.updateProgressCalls.length).toBeGreaterThan(0);
         });
 
         test('複数イベントの連続処理が正しく動作する', () => {
-            integrator.handleBubblePopped('normal', { x: 100, y: 100 });
-            integrator.handleScoreAdded(100);
-            integrator.handleBubblePopped('stone', { x: 200, y: 200 });
-            integrator.handleGameOver('cleared');
+            (integrator as any).handleBubblePopped('normal', { x: 100, y: 100 });
+            (integrator as any).handleScoreAdded(100);
+            (integrator as any).handleBubblePopped('stone', { x: 200, y: 200 });
+            (integrator as any).handleGameOver('cleared');
             
-            expect(integrator.sessionTracking.bubblesPopped).toBe(2);
+            expect((integrator as any).sessionTracking.bubblesPopped).toBe(2);
             expect(mockAchievementManager.updateProgressCalls.length).toBeGreaterThan(0);
         });
     });
 
     describe('セッション追跡', () => {
         test('セッション統計が正しく更新される', () => {
-            integrator.updateSessionTracking({
+            (integrator as any).updateSessionTracking({
                 bubblesPopped: 5,
                 score: 500,
                 combo: 3
             });
-            expect(integrator.sessionTracking.bubblesPopped).toBe(5);
-            expect(integrator.sessionTracking.totalScore).toBe(500);
-            expect(integrator.sessionTracking.currentCombo).toBe(3);
+            expect((integrator as any).sessionTracking.bubblesPopped).toBe(5);
+            expect((integrator as any).sessionTracking.totalScore).toBe(500);
+            expect((integrator as any).sessionTracking.currentCombo).toBe(3);
         });
 
         test('セッションリセットが正しく動作する', () => {
             // セッションデータを設定
-            integrator.sessionTracking.bubblesPopped = 10;
-            integrator.sessionTracking.totalScore = 1000;
+            (integrator as any).sessionTracking.bubblesPopped = 10;
+            (integrator as any).sessionTracking.totalScore = 1000;
             
-            integrator.resetSessionTracking();
-            expect(integrator.sessionTracking.bubblesPopped).toBe(0);
-            expect(integrator.sessionTracking.totalScore).toBe(0);
-            expect(integrator.sessionTracking.startTime).toBeDefined();
+            (integrator as any).resetSessionTracking();
+            expect((integrator as any).sessionTracking.bubblesPopped).toBe(0);
+            expect((integrator as any).sessionTracking.totalScore).toBe(0);
+            expect((integrator as any).sessionTracking.startTime).toBeDefined();
         });
 
         test('セッション時間計算が正しく動作する', () => {
             const startTime = Date.now() - 60000; // 1分前
-            integrator.sessionTracking.startTime = startTime;
+            (integrator as any).sessionTracking.startTime = startTime;
             
-            const sessionTime = integrator.getSessionTime();
+            const sessionTime = (integrator as any).getSessionTime();
             expect(sessionTime).toBeGreaterThanOrEqual(60000);
             expect(sessionTime).toBeLessThan(70000); // 多少の誤差を許容
         });
@@ -390,9 +390,9 @@ describe('AchievementEventIntegrator', () => {
     describe('統合テスト', () => {
         test('完全なゲームフローでの実績更新', () => {
             // 統合を設定
-            integrator.integrateBubbleManager(mockBubbleManager);
-            integrator.integrateScoreManager(mockScoreManager);
-            integrator.integrateGameScene(mockGameScene);
+            (integrator as any).integrateBubbleManager(mockBubbleManager);
+            (integrator as any).integrateScoreManager(mockScoreManager);
+            (integrator as any).integrateGameScene(mockGameScene);
             
             // ゲームプレイをシミュレート
             mockBubbleManager.popBubble({ type: 'normal' });

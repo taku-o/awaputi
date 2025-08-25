@@ -16,23 +16,26 @@ import { MockFactory } from './mocks/MockFactory';
 // Initialize environment manager for test stability
 try {
     EnvironmentManager.setupTestEnvironment();
-    ModuleLoadingOptimizer.optimizeESModuleLoading('),'
-    console.debug('[Setup] Environment stabilization initialized') } catch (error') {'
-    console.error('[Setup] Environment stabilization failed:', error) }
+    ModuleLoadingOptimizer.optimizeESModuleLoading();
+    console.debug('[Setup] Environment stabilization initialized');
+} catch (error: any) {
+    console.error('[Setup] Environment stabilization failed:', error);
+}
 
 // Set up global environment variables
-(global: any).__PROD__ = false,
-(global: any).__ANALYTICS_ID__ = null,
+(global as any).__PROD__ = false;
+(global as any).__ANALYTICS_ID__ = null;
 
-(global: any).webkitAudioContext = global.AudioContext,
+(global as any).webkitAudioContext = global.AudioContext;
 
 // Mock requestAnimationFrame
-(global: any).requestAnimationFrame = (callback) => {
-  return setTimeout(callback, 16), // ~60fps
+(global as any).requestAnimationFrame = (callback: FrameRequestCallback) => {
+    return setTimeout(callback, 16); // ~60fps
 };
 
-(global: any).cancelAnimationFrame = (id) => {
-  clearTimeout(id) };
+(global as any).cancelAnimationFrame = (id: number) => {
+    clearTimeout(id);
+};
 
 // Use MockFactory for enhanced performance and storage mocking
 // (MockFactory.setupGlobalMocks() is called automatically on import)
@@ -40,168 +43,198 @@ try {
 // localStorage mock is now fully functional with jest.fn() methods
 
 // Mock console methods for cleaner test output
-(global: any).console = {
-  ...console,
-  log: () => {},
-  warn: () => {},
-  error: () => {},
-  info: () => {}
+(global as any).console = {
+    ...console,
+    log: () => {},
+    warn: () => {},
+    error: () => {},
+    info: () => {}
 };
 
 // Canvas mocking is handled by jest-canvas-mock
 
 // Mock touch events
-(global: any).TouchEvent = class TouchEvent extends Event {
-  constructor(type, options = {} {
-    super(type, options);
-    this.touches = options.touches || [];
-    this.targetTouches = options.targetTouches || [];
-    this.changedTouches = options.changedTouches || [] }
+(global as any).TouchEvent = class TouchEvent extends Event {
+    touches: Touch[];
+    targetTouches: Touch[];
+    changedTouches: Touch[];
+    
+    constructor(type: string, options: any = {}) {
+        super(type, options);
+        this.touches = options.touches || [];
+        this.targetTouches = options.targetTouches || [];
+        this.changedTouches = options.changedTouches || [];
+    }
 };
 
 // Mock pointer events
-(global: any).PointerEvent = class PointerEvent extends Event {
-  constructor(type, options = {} {
-    super(type, options'),'
-    this.pointerId = options.pointerId || 1;
-    this.pointerType = options.pointerType || 'mouse';
-    this.clientX = options.clientX || 0;
-    this.clientY = options.clientY || 0 }
+(global as any).PointerEvent = class PointerEvent extends Event {
+    pointerId: number;
+    pointerType: string;
+    clientX: number;
+    clientY: number;
+    
+    constructor(type: string, options: any = {}) {
+        super(type, options);
+        this.pointerId = options.pointerId || 1;
+        this.pointerType = options.pointerType || 'mouse';
+        this.clientX = options.clientX || 0;
+        this.clientY = options.clientY || 0;
+    }
 };
 
 // Mock navigator
-Object.defineProperty(global.navigator, 'userAgent', {'),'
-  value: 'Mozilla/5.0 (Windows NT 10.0, Win64, x64) AppleWebKit/537.36 (KHTML, like Gecko') Chrome/91.0.4472.124 Safari/537.36','
-  writable: true,');'
+Object.defineProperty(global.navigator, 'userAgent', {
+    value: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
+    writable: true
+});
 
 // Mock window dimensions
 Object.defineProperty(global.window, 'innerWidth', {
-  value: 1024,
-  writable: true)'),'
+    value: 1024,
+    writable: true
+});
 
 Object.defineProperty(global.window, 'innerHeight', {
-  value: 768,
-  writable: true);
+    value: 768,
+    writable: true
+});
+
 // Mock screen
-(global as any').screen = {'
-  width: 1920,
-  height: 1080,
-  availWidth: 1920,
-  availHeight: 1040
+(global as any).screen = {
+    width: 1920,
+    height: 1080,
+    availWidth: 1920,
+    availHeight: 1040
 };
 
 // Mock devicePixelRatio
 Object.defineProperty(global.window, 'devicePixelRatio', {
-  value: 1,
-  writable: true);
+    value: 1,
+    writable: true
+});
+
 // Mock Notification API
-(global as any').Notification = class Notification {'
-  static permission = 'granted',
-  static requestPermission = jest.fn((') => Promise.resolve('granted'),'
-  
-  constructor(title, options = {)') {'
-    this.title = title;
-    this.body = options.body || ';'
-    this.icon = options.icon || ';'
-    this.badge = options.badge || ';'
-    this.onclick = null;
-    this.onclose = null;
-    this.onerror = null;
-    this.onshow = null)
-  ;
-  close() {
-    if (this.onclose) this.onclose() }
+(global as any).Notification = class Notification {
+    static permission = 'granted';
+    static requestPermission = jest.fn(() => Promise.resolve('granted'));
+    
+    title: string;
+    body: string;
+    icon: string;
+    badge: string;
+    onclick: (() => void) | null = null;
+    onclose: (() => void) | null = null;
+    onerror: (() => void) | null = null;
+    onshow: (() => void) | null = null;
+    
+    constructor(title: string, options: any = {}) {
+        this.title = title;
+        this.body = options.body || '';
+        this.icon = options.icon || '';
+        this.badge = options.badge || '';
+    }
+    
+    close() {
+        if (this.onclose) this.onclose();
+    }
 };
 
 // Mock IndexedDB
 const mockIDBDatabase = {
-  createObjectStore: jest.fn(() => ({
-    add: jest.fn(() => Promise.resolve(),
-    get: jest.fn(() => Promise.resolve(undefined),
-    put: jest.fn(() => Promise.resolve(),
-    delete: jest.fn(() => Promise.resolve(),
-    clear: jest.fn(() => Promise.resolve(
-    count: jest.fn(() => Promise.resolve(0,
-    openCursor: jest.fn(() => Promise.resolve(null)),
-  transaction: jest.fn(() => ({
-    objectStore: jest.fn(() => mockIDBDatabase.createObjectStore(),
-    oncomplete: null,
-    onerror: null,
-    onabort: null
-  )),
-  close: jest.fn(','
-  version: 1,
-  name: 'test'
-);
+    createObjectStore: jest.fn(() => ({
+        add: jest.fn(() => Promise.resolve()),
+        get: jest.fn(() => Promise.resolve(undefined)),
+        put: jest.fn(() => Promise.resolve()),
+        delete: jest.fn(() => Promise.resolve()),
+        clear: jest.fn(() => Promise.resolve()),
+        count: jest.fn(() => Promise.resolve(0)),
+        openCursor: jest.fn(() => Promise.resolve(null))
+    })),
+    transaction: jest.fn(() => ({
+        objectStore: jest.fn(() => mockIDBDatabase.createObjectStore()),
+        oncomplete: null,
+        onerror: null,
+        onabort: null
+    })),
+    close: jest.fn(),
+    version: 1,
+    name: 'test'
+};
+
 const mockIDBRequest = {
-  result: mockIDBDatabase,
-  error: null,
-  onsuccess: null,
-  onerror: null,
-  onupgradeneeded: null,
-  onupgradeneeded: null,
-        };
-(global: any).indexedDB = {
-  open: jest.fn(() => {
-    const request = { ...mockIDBRequest });
-    // Simulate async behavior
-    setTimeout(() => {
-      if (request.onsuccess) request.onsuccess({ target: request )},
-      if (request.onupgradeneeded) request.onupgradeneeded({ target: request,);
-    }, 0);
-    return request;
-  },
-  deleteDatabase: jest.fn(() => mockIDBRequest,
-  cmp: jest.fn(),
-(global: any).IDBDatabase = function() { return mockIDBDatabase }),
-(global: any).IDBTransaction = function() { }
-(global: any).IDBRequest = function() { return mockIDBRequest },
-(global: any).IDBObjectStore = function() { return mockIDBDatabase.createObjectStore() },
-(global: any).IDBCursor = function() { }
-(global: any).IDBKeyRange = {
-  bound: jest.fn(
-  lowerBound: jest.fn(
-  upperBound: jest.fn(
-  only: jest.fn( },
+    result: mockIDBDatabase,
+    error: null,
+    onsuccess: null,
+    onerror: null,
+    onupgradeneeded: null
+};
+
+(global as any).indexedDB = {
+    open: jest.fn(() => {
+        const request = { ...mockIDBRequest };
+        // Simulate async behavior
+        setTimeout(() => {
+            if (request.onsuccess) request.onsuccess({ target: request } as any);
+            if (request.onupgradeneeded) request.onupgradeneeded({ target: request } as any);
+        }, 0);
+        return request;
+    }),
+    deleteDatabase: jest.fn(() => mockIDBRequest),
+    cmp: jest.fn()
+};
+
+(global as any).IDBDatabase = function() { return mockIDBDatabase; };
+(global as any).IDBTransaction = function() { };
+(global as any).IDBRequest = function() { return mockIDBRequest; };
+(global as any).IDBObjectStore = function() { return mockIDBDatabase.createObjectStore(); };
+(global as any).IDBCursor = function() { };
+(global as any).IDBKeyRange = {
+    bound: jest.fn(),
+    lowerBound: jest.fn(),
+    upperBound: jest.fn(),
+    only: jest.fn()
+};
 
 // Helper function to create mock canvas element
-(global: any).createMockCanvas = (width = 800, height = 600') => {'
-  const canvas = document.createElement('canvas');
-  canvas.width = width,
-  canvas.height = height,
-  return canvas };
+(global as any).createMockCanvas = (width = 800, height = 600) => {
+    const canvas = document.createElement('canvas');
+    canvas.width = width;
+    canvas.height = height;
+    return canvas;
+};
 
 // Helper function to create mock mouse event
-(global: any).createMockMouseEvent = (type, x = 0, y = 0, options = {} => {
-  return new MouseEvent(type, {
-    clientX: x,
-    clientY: y,
-    bubbles: true,
-    cancelable: true,
-    ...options
-  }
+(global as any).createMockMouseEvent = (type: string, x = 0, y = 0, options: any = {}) => {
+    return new MouseEvent(type, {
+        clientX: x,
+        clientY: y,
+        bubbles: true,
+        cancelable: true,
+        ...options
+    });
 };
 
 // Helper function to create mock touch event
-(global: any).createMockTouchEvent = (type, touches = [], options = {} => {
-  return new TouchEvent(type, {
-    touches,
-    targetTouches: touches,
-    changedTouches: touches,
-    bubbles: true,
-    cancelable: true,
-    ...options
-  }
+(global as any).createMockTouchEvent = (type: string, touches: Touch[] = [], options: any = {}) => {
+    return new TouchEvent(type, {
+        touches,
+        targetTouches: touches,
+        changedTouches: touches,
+        bubbles: true,
+        cancelable: true,
+        ...options
+    });
 };
 
 // Helper function to advance time in tests
-(global: any).advanceTime = (ms) => {
-  // Timer advancement will be handled by individual test files
+(global as any).advanceTime = (ms: number) => {
+    // Timer advancement will be handled by individual test files
 };
 
 // Setup completed - beforeEach/afterEach should be used in individual test files
 
-// Environment cleanup registration (Issue #106 Task 4');'
+// Environment cleanup registration (Issue #106 Task 4)
 if (typeof afterAll !== 'undefined') {
     afterAll(async () => {
         try {
@@ -209,18 +242,22 @@ if (typeof afterAll !== 'undefined') {
             EnvironmentManager.cleanupTestEnvironment();
             EnvironmentManager.preventMemoryLeaks();
             await ModuleLoadingOptimizer.handleAsyncModuleCleanup();
-            ModuleLoadingOptimizer.cleanup('),'
+            ModuleLoadingOptimizer.cleanup();
             
-            console.debug('[Setup] Global cleanup completed') } catch (error') {'
-            console.error('[Setup] Global cleanup failed:', error) }
-    }
+            console.debug('[Setup] Global cleanup completed');
+        } catch (error: any) {
+            console.error('[Setup] Global cleanup failed:', error);
+        }
+    });
 }
 
-// Per-test cleanup (Issue #106 Task 4');'
+// Per-test cleanup (Issue #106 Task 4)
 if (typeof afterEach !== 'undefined') {
     afterEach(async () => {
         try {
-            ModuleLoadingOptimizer.preventModuleCacheLeaks() } catch (error') {'
-            console.warn('[Setup] Per-test cleanup failed:', error) }
-    }');'
+            ModuleLoadingOptimizer.preventModuleCacheLeaks();
+        } catch (error: any) {
+            console.warn('[Setup] Per-test cleanup failed:', error);
+        }
+    });
 }

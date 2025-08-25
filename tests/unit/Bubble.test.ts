@@ -252,24 +252,24 @@ describe('Bubble Class Tests', () => {
             const position: Position = { x: 100, y: 100 };
             const bubble = new Bubble('rainbow', position);
             
-            expect(bubble.hasSpecialEffect).toBe(true);
-            expect(bubble.getSpecialEffectType()).toBe('rainbow')
+            expect((bubble as any).hasSpecialEffect).toBe(true);
+            expect((bubble as any).getSpecialEffectType()).toBe('rainbow')
         });
         
         test('bomb bubble should have explosion capability', () => {
             const position: Position = { x: 100, y: 100 };
             const bubble = new Bubble('bomb', position);
             
-            expect(bubble.hasSpecialEffect).toBe(true);
-            expect(bubble.getSpecialEffectType()).toBe('explosion')
+            expect((bubble as any).hasSpecialEffect).toBe(true);
+            expect((bubble as any).getSpecialEffectType()).toBe('explosion')
         });
         
         test('freeze bubble should have freeze capability', () => {
             const position: Position = { x: 100, y: 100 };
             const bubble = new Bubble('freeze', position);
             
-            expect(bubble.hasSpecialEffect).toBe(true);
-            expect(bubble.getSpecialEffectType()).toBe('freeze')
+            expect((bubble as any).hasSpecialEffect).toBe(true);
+            expect((bubble as any).getSpecialEffectType()).toBe('freeze')
         })
     });
     
@@ -281,7 +281,7 @@ describe('Bubble Class Tests', () => {
             const bubble1 = new Bubble('normal', position1);
             const bubble2 = new Bubble('normal', position2);
             
-            expect(bubble1.isCollidingWith(bubble2)).toBe(true)
+            expect((bubble1 as any).isCollidingWith(bubble2)).toBe(true)
         });
         
         test('should not detect collision when bubbles are far apart', () => {
@@ -291,7 +291,7 @@ describe('Bubble Class Tests', () => {
             const bubble1 = new Bubble('normal', position1);
             const bubble2 = new Bubble('normal', position2);
             
-            expect(bubble1.isCollidingWith(bubble2)).toBe(false)
+            expect((bubble1 as any).isCollidingWith(bubble2)).toBe(false)
         })
     });
     

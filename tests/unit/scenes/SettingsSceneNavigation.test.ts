@@ -6,7 +6,7 @@ import { jest, describe, beforeEach, afterEach, test, expect } from '@jest/globa
 
 // Type definitions
 interface MockSceneManager {
-    switchScene: jest.Mock<boolean, [string]>;
+    switchScene: jest.Mock<boolean>;
 }
 
 interface MockGameEngine {
@@ -15,7 +15,7 @@ interface MockGameEngine {
 
 interface KeyEvent {
     key: string;
-    preventDefault: jest.Mock<void, []>;
+    preventDefault: jest.Mock<void>;
 }
 
 // Mock SceneManager

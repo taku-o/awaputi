@@ -212,7 +212,7 @@ describe('AchievementManager', () => {
     describe('初期化', () => {
         test('正常に初期化される', () => {
             expect(manager).toBeDefined();
-            expect(manager.playerData).toBe(mockPlayerData);
+            expect((manager as any).playerData).toBe(mockPlayerData);
             expect(manager.achievements).toHaveLength(mockConfigManager.achievements.length);
         });
 
@@ -270,7 +270,7 @@ describe('AchievementManager', () => {
             const unlockedAchievements = manager.getUnlockedAchievements();
             
             expect(unlockedAchievements).toHaveLength(1);
-            expect(unlockedAchievements[0].id).toBe('first_bubble');
+            expect((unlockedAchievements[0] as any).id).toBe('first_bubble');
         });
 
         test('ロック中の実績のみを取得できる', () => {
@@ -284,10 +284,10 @@ describe('AchievementManager', () => {
         test('進捗が正しく更新される', () => {
             const result = manager.updateProgress('first_bubble', 1);
             
-            expect(result.updated).toBe(true);
-            expect(result.unlocked).toBe(true);
-            expect(result.previousProgress).toBe(0);
-            expect(result.newProgress).toBe(1);
+            expect((result as any).updated).toBe(true);
+            expect((result as any).unlocked).toBe(true);
+            expect((result as any).previousProgress).toBe(0);
+            expect((result as any).newProgress).toBe(1);
         });
 
         test('進捗更新でパーセンテージが計算される', () => {
@@ -308,8 +308,8 @@ describe('AchievementManager', () => {
 
         test('存在しない実績IDでは更新が失敗する', () => {
             const result = manager.updateProgress('nonexistent', 1);
-            expect(result.updated).toBe(false);
-            expect(result.unlocked).toBe(false);
+            expect((result as any).updated).toBe(false);
+            expect((result as any).unlocked).toBe(false);
         });
     });
 
@@ -346,7 +346,7 @@ describe('AchievementManager', () => {
         test('プレイヤーデータから自動的に実績をチェックする', () => {
             mockPlayerData.totalBubblesPopped = 150;
             
-            manager.checkAchievementsFromPlayerData();
+            (manager as any).checkAchievementsFromPlayerData();
             
             // 両方の実績がアンロックされるはず
             expect(manager.getAchievement('first_bubble')?.unlocked).toBe(true);
@@ -356,7 +356,7 @@ describe('AchievementManager', () => {
         test('複数実績の同時アンロック時に複数イベントが発火される', () => {
             mockPlayerData.totalBubblesPopped = 150;
             
-            manager.checkAchievementsFromPlayerData();
+            (manager as any).checkAchievementsFromPlayerData();
             
             expect(mockEventDispatcher.events).toHaveLength(2);
             expect(mockEventDispatcher.events[0].type).toBe('achievement_unlocked');
@@ -367,7 +367,7 @@ describe('AchievementManager', () => {
     describe('保存・読み込み', () => {
         test('実績データが正しく保存される', () => {
             manager.updateProgress('first_bubble', 1);
-            manager.saveToStorage();
+            (manager as any).saveToStorage();
             
             const savedData = mockLocalStorage.getItem('achievements');
             expect(savedData).toBeDefined();
@@ -387,7 +387,7 @@ describe('AchievementManager', () => {
             };
             mockLocalStorage.setItem('achievements', JSON.stringify(testData));
             
-            manager.loadFromStorage();
+            (manager as any).loadFromStorage();
             const achievement = manager.getAchievement('first_bubble');
             
             expect(achievement?.unlocked).toBe(true);
@@ -398,7 +398,7 @@ describe('AchievementManager', () => {
             mockLocalStorage.setItem('achievements', 'invalid json');
             
             expect(() => {
-                manager.loadFromStorage();
+                (manager as any).loadFromStorage();
             }).not.toThrow();
         });
     });
@@ -456,7 +456,7 @@ describe('AchievementManager', () => {
             let eventReceived = false;
             let receivedData: any = null;
 
-            manager.on('achievement_unlocked', (data) => {
+            (manager as any).on('achievement_unlocked', (data) => {
                 eventReceived = true;
                 receivedData = data;
             });
@@ -470,8 +470,8 @@ describe('AchievementManager', () => {
         test('複数のリスナーが正しく動作する', () => {
             let count = 0;
 
-            manager.on('achievement_unlocked', () => count++);
-            manager.on('achievement_unlocked', () => count++);
+            (manager as any).on('achievement_unlocked', () => count++);
+            (manager as any).on('achievement_unlocked', () => count++);
 
             manager.updateProgress('first_bubble', 1);
 
@@ -482,8 +482,8 @@ describe('AchievementManager', () => {
             let eventReceived = false;
             const listener = () => { eventReceived = true; };
 
-            manager.on('achievement_unlocked', listener);
-            manager.off('achievement_unlocked', listener);
+            (manager as any).on('achievement_unlocked', listener);
+            (manager as any).off('achievement_unlocked', listener);
             manager.updateProgress('first_bubble', 1);
 
             expect(eventReceived).toBe(false);

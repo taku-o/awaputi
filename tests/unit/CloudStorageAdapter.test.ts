@@ -88,17 +88,17 @@ describe('CloudStorageAdapter', () => {
     describe('初期化', () => {
 
         test('基本設定で正常に初期化される', () => {
-            expect(adapter.config.provider).toBe('test');
-            expect(adapter.config.apiEndpoint).toBe('https://api.test.com');
-            expect(adapter.config.timeout).toBe(30000);
-            expect(adapter.syncQueue).toEqual([])
+            expect((adapter as any).config.provider).toBe('test');
+            expect((adapter as any).config.apiEndpoint).toBe('https://api.test.com');
+            expect((adapter as any).config.timeout).toBe(30000);
+            expect((adapter as any).syncQueue).toEqual([])
         
 });
 test('デフォルト設定が適用される', () => {
             const defaultAdapter = new CloudStorageAdapter();
-            expect(defaultAdapter.config.provider).toBe('generic');
-            expect(defaultAdapter.config.timeout).toBe(30000);
-            expect(defaultAdapter.config.retryAttempts).toBe(3)
+            expect((defaultAdapter as any).config.provider).toBe('generic');
+            expect((defaultAdapter as any).config.timeout).toBe(30000);
+            expect((defaultAdapter as any).config.retryAttempts).toBe(3)
         
 });
 
@@ -110,9 +110,9 @@ test('デフォルト設定が適用される', () => {
                 chunkSize: 2048
             
 });
-expect(customAdapter.config.timeout).toBe(60000);
-            expect(customAdapter.config.retryAttempts).toBe(5);
-            expect(customAdapter.config.chunkSize).toBe(2048)
+expect((customAdapter as any).config.timeout).toBe(60000);
+            expect((customAdapter as any).config.retryAttempts).toBe(5);
+            expect((customAdapter as any).config.chunkSize).toBe(2048)
         
 })
     });
@@ -123,7 +123,7 @@ expect(customAdapter.config.timeout).toBe(60000);
                 token: 'valid-token',
                 expiresAt: new Date(Date.now() + 60 * 60 * 1000) // 1時間後
             };
-            expect(adapter.isTokenValid(validAuthData)).toBe(true)
+            expect((adapter as any).isTokenValid(validAuthData)).toBe(true)
         });
 
         test('期限切れトークンが無効と判定される', () => {
@@ -131,13 +131,13 @@ expect(customAdapter.config.timeout).toBe(60000);
                 token: 'expired-token',
                 expiresAt: new Date(Date.now() - 60 * 60 * 1000) // 1時間前
             };
-            expect(adapter.isTokenValid(expiredAuthData)).toBe(false)
+            expect((adapter as any).isTokenValid(expiredAuthData)).toBe(false)
         });
 
         test('不正な認証データが無効と判定される', () => {
-            expect(adapter.isTokenValid(null)).toBe(false);
-            expect(adapter.isTokenValid({} as any)).toBe(false);
-            expect(adapter.isTokenValid({ token: 'test' } as any)).toBe(false)
+            expect((adapter as any).isTokenValid(null)).toBe(false);
+            expect((adapter as any).isTokenValid({} as any)).toBe(false);
+            expect((adapter as any).isTokenValid({ token: 'test' } as any)).toBe(false)
         });
 
         test('認証成功時に適切に処理される', async () => {
@@ -157,8 +157,8 @@ expect(customAdapter.config.timeout).toBe(60000);
             };
             const result = await adapter.authenticate(credentials);
             expect(result).toBe(true);
-            expect(adapter.authToken).toBe('new-token');
-            expect(adapter.userId).toBe('user123');
+            expect((adapter as any).authToken).toBe('new-token');
+            expect((adapter as any).userId).toBe('user123');
             expect(localStorage.setItem).toHaveBeenCalledWith(
                 'bubblePop_cloudAuth',
                 expect.stringContaining('new-token')
@@ -169,8 +169,8 @@ expect(customAdapter.config.timeout).toBe(60000);
     describe('データ操作', () => {
         beforeEach(() => {
             // 認証済み状態にセットアップ
-            adapter.authToken = 'test-token';
-            adapter.userId = 'test-user'
+            (adapter as any).authToken = 'test-token';
+            (adapter as any).userId = 'test-user'
         });
 
         test('データ保存が正常に実行される', async () => {
@@ -235,7 +235,7 @@ const result = await adapter.get('nonexistentKey');
     describe('オフライン機能', () => {
         test('オフライン時に操作がキューに追加される', async () => {
             (navigator as any).onLine = false;
-            adapter.authToken = 'test-token';
+            (adapter as any).authToken = 'test-token';
             
             try {
                 await adapter.set('testKey', { data: 'test' })
@@ -243,16 +243,16 @@ const result = await adapter.get('nonexistentKey');
                 expect(error.message).toContain('Offline - queued for sync')
             }
             
-            expect(adapter.syncQueue).toHaveLength(1);
-            expect(adapter.syncQueue[0].operation).toBe('set');
-            expect(adapter.syncQueue[0].key).toBe('testKey')
+            expect((adapter as any).syncQueue).toHaveLength(1);
+            expect((adapter as any).syncQueue[0].operation).toBe('set');
+            expect((adapter as any).syncQueue[0].key).toBe('testKey')
         });
 
         test('オンライン復帰時に同期キューが処理される', async () => {
             // オフライン操作をキューに追加
-            adapter.addToSyncQueue('set', 'testKey', { data: 'test' });
-            adapter.addToSyncQueue('remove', 'oldKey');
-            expect(adapter.syncQueue).toHaveLength(2);
+            (adapter as any).addToSyncQueue('set', 'testKey', { data: 'test' });
+            (adapter as any).addToSyncQueue('remove', 'oldKey');
+            expect((adapter as any).syncQueue).toHaveLength(2);
 
             // モックAPI応答
             mockFetch
@@ -266,18 +266,18 @@ const result = await adapter.get('nonexistentKey');
                 } as MockResponse);
 
             // 認証済み状態でオンライン復帰をシミュレート
-            adapter.authToken = 'test-token';
+            (adapter as any).authToken = 'test-token';
             (navigator as any).onLine = true;
             
             await adapter.processSyncQueue();
-            expect(adapter.syncQueue).toHaveLength(0)
+            expect((adapter as any).syncQueue).toHaveLength(0)
         })
     });
 
     describe('チャンク処理', () => {
         test('大容量データがチャンクに分割される', async () => {
             const largeData = { data: 'x'.repeat(2000000) }; // 2MB
-            adapter.authToken = 'test-token';
+            (adapter as any).authToken = 'test-token';
             
             // チャンク保存のモック
             mockFetch.mockResolvedValue({
@@ -285,7 +285,7 @@ const result = await adapter.get('nonexistentKey');
                 json: () => Promise.resolve({ success: true })
             } as MockResponse);
 
-            const result = await adapter.setChunked('largeKey', largeData);
+            const result = await (adapter as any).setChunked('largeKey', largeData);
             expect(result).toBe(true);
             expect(mockFetch).toHaveBeenCalledTimes(3); // チャンク数 + 完了通知
         })
@@ -319,13 +319,13 @@ const result = await adapter.get('nonexistentKey');
 
         test('汎用プロバイダーが作成される', () => {
             const genericAdapter = createCloudStorageAdapter();
-            expect(genericAdapter.config.provider).toBe('generic')
+            expect((genericAdapter as any).config.provider).toBe('generic')
         
 });
 test('AWS プロバイダー設定が適用される', () => {
             const awsAdapter = createCloudStorageAdapter('aws');
-            expect(awsAdapter.config.provider).toBe('aws');
-            expect(awsAdapter.config.apiEndpoint).toContain('aws')
+            expect((awsAdapter as any).config.provider).toBe('aws');
+            expect((awsAdapter as any).config.apiEndpoint).toContain('aws')
         
 });
 
@@ -336,9 +336,9 @@ test('AWS プロバイダー設定が適用される', () => {
                 customOption: 'test'
             
 });
-expect(customAdapter.config.provider).toBe('gcp');
-            expect(customAdapter.config.timeout).toBe(15000);
-            expect(customAdapter.config.customOption).toBe('test')
+expect((customAdapter as any).config.provider).toBe('gcp');
+            expect((customAdapter as any).config.timeout).toBe(15000);
+            expect(((customAdapter as any).config as any).customOption).toBe('test')
         
 })
     });
@@ -346,7 +346,7 @@ expect(customAdapter.config.provider).toBe('gcp');
     describe('エラーハンドリング', () => {
 
         test('認証なしでのデータ操作でエラーが発生する', async () => {
-            adapter.authToken = null;
+            (adapter as any).authToken = null;
             
             await expect(adapter.set('key', 'data')).rejects.toThrow('Not authenticated');
             await expect(adapter.get('key')).rejects.toThrow('Not authenticated');
@@ -354,7 +354,7 @@ expect(customAdapter.config.provider).toBe('gcp');
         
 });
 test('ネットワークエラーが適切に処理される', async () => {
-            adapter.authToken = 'test-token';
+            (adapter as any).authToken = 'test-token';
             mockFetch.mockRejectedValueOnce(new Error('Network error'));
             
             await expect(adapter.set('key', 'data')).rejects.toThrow('Network error')
@@ -362,7 +362,7 @@ test('ネットワークエラーが適切に処理される', async () => {
 });
 
         test('タイムアウトエラーが適切に処理される', async () => {
-            adapter.authToken = 'test-token';
+            (adapter as any).authToken = 'test-token';
             
             // タイムアウトをシミュレート
             mockFetch.mockImplementationOnce(() => 
@@ -381,10 +381,10 @@ test('ネットワークエラーが適切に処理される', async () => {
             const removeSpy = jest.spyOn(adapter, 'destroy');
             adapter.destroy();
             
-            expect(adapter.syncQueue).toEqual([]);
-            expect(adapter.conflictQueue).toEqual([]);
-            expect(adapter.authToken).toBeNull();
-            expect(adapter.userId).toBeNull();
+            expect((adapter as any).syncQueue).toEqual([]);
+            expect((adapter as any).conflictQueue).toEqual([]);
+            expect((adapter as any).authToken).toBeNull();
+            expect((adapter as any).userId).toBeNull();
         });
     });
 });

@@ -1,4 +1,4 @@
-import { describe, test, expect, beforeEach, afterEach, beforeAll, afterAll, jest, it } from '@jest/globals';
+import { describe, test, expect, beforeEach, afterEach } from '@jest/globals';
 /**
  * ChartRenderer のテスト
  */
@@ -229,13 +229,13 @@ describe('ChartRenderer', () => {
 
     describe('円グラフ作成', () => {
         test('円グラフを作成できる', () => {
-            const chart = chartRenderer.createPieChart('test-canvas-pie', {
+            const _chart = chartRenderer.createPieChart('test-canvas-pie', {
                 label: 'テスト円グラフ',
                 dataCount: 6,
                 legendPosition: 'bottom'
             });
             
-            expect(chart).toBeDefined();
+            expect(_chart).toBeDefined();
             expect((global as any).Chart).toHaveBeenCalledWith(
                 expect.anything(),
                 expect.objectContaining({

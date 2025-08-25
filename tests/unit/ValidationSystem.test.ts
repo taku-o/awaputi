@@ -47,9 +47,9 @@ describe('ValidationSystem', () => {
     
     describe('基本機能', () => {
         test('ValidationSystemクラスが正しく初期化される', () => {
-            expect(validationSystem.rules).toBeInstanceOf(Map);
-            expect(validationSystem.defaultValues).toBeInstanceOf(Map);
-            expect(validationSystem.validationErrors).toEqual([]);
+            expect((validationSystem as any).rules).toBeInstanceOf(Map);
+            expect((validationSystem as any).defaultValues).toBeInstanceOf(Map);
+            expect((validationSystem as any).validationErrors).toEqual([]);
         });
 
         test('シングルトンインスタンスが正しく動作する', () => {
@@ -65,8 +65,8 @@ describe('ValidationSystem', () => {
         test('単一のルールを設定できる', () => {
             validationSystem.setRule('game', 'score', { type: 'number', min: 0 
 });
-expect(validationSystem.rules.has('game.score')).toBe(true);
-            expect(validationSystem.rules.get('game.score')).toEqual({ type: 'number', min: 0 
+expect((validationSystem as any).rules.has('game.score')).toBe(true);
+            expect((validationSystem as any).rules.get('game.score')).toEqual({ type: 'number', min: 0 
 })
         });
 
@@ -79,9 +79,9 @@ expect(validationSystem.rules.has('game.score')).toBe(true);
 
             validationSystem.setRules('user', rules);
 
-            expect(validationSystem.rules.has('user.username')).toBe(true);
-            expect(validationSystem.rules.has('user.email')).toBe(true);
-            expect(validationSystem.rules.has('user.age')).toBe(true)
+            expect((validationSystem as any).rules.has('user.username')).toBe(true);
+            expect((validationSystem as any).rules.has('user.email')).toBe(true);
+            expect((validationSystem as any).rules.has('user.age')).toBe(true)
         });
 
         test('ルールの更新ができる', () => {
@@ -91,7 +91,7 @@ expect(validationSystem.rules.has('game.score')).toBe(true);
 validationSystem.setRule('game', 'level', { type: 'number', min: 1, max: 100 
 });
             
-            const rule = validationSystem.rules.get('game.level');
+            const rule = (validationSystem as any).rules.get('game.level');
             expect(rule?.max).toBe(100)
         });
 
@@ -99,10 +99,10 @@ validationSystem.setRule('game', 'level', { type: 'number', min: 1, max: 100
 
             validationSystem.setRule('temp', 'value', { type: 'string' 
 });
-expect(validationSystem.rules.has('temp.value')).toBe(true);
+expect((validationSystem as any).rules.has('temp.value')).toBe(true);
             
             validationSystem.removeRule('temp', 'value');
-            expect(validationSystem.rules.has('temp.value')).toBe(false)
+            expect((validationSystem as any).rules.has('temp.value')).toBe(false)
         
 })
     });
@@ -110,7 +110,7 @@ expect(validationSystem.rules.has('temp.value')).toBe(true);
     describe('デフォルト値設定', () => {
         test('デフォルト値を設定できる', () => {
             validationSystem.setDefaultValue('game', 'score', 0);
-            expect(validationSystem.defaultValues.get('game.score')).toBe(0)
+            expect((validationSystem as any).defaultValues.get('game.score')).toBe(0)
         });
 
         test('複数のデフォルト値を一括設定できる', () => {
@@ -122,9 +122,9 @@ expect(validationSystem.rules.has('temp.value')).toBe(true);
 
             validationSystem.setDefaultValues('game', defaults);
 
-            expect(validationSystem.defaultValues.get('game.username')).toBe('Guest');
-            expect(validationSystem.defaultValues.get('game.score')).toBe(0);
-            expect(validationSystem.defaultValues.get('game.level')).toBe(1)
+            expect((validationSystem as any).defaultValues.get('game.username')).toBe('Guest');
+            expect((validationSystem as any).defaultValues.get('game.score')).toBe(0);
+            expect((validationSystem as any).defaultValues.get('game.level')).toBe(1)
         });
 
         test('デフォルト値の取得ができる', () => {
@@ -270,9 +270,9 @@ expect(validationSystem.validate('custom', 'always-false', 'anything').isValid).
 });
 validationSystem.validate('test', 'value', 5);
             
-            expect(validationSystem.validationErrors.length).toBeGreaterThan(0);
-            expect(validationSystem.validationErrors[0].category).toBe('test');
-            expect(validationSystem.validationErrors[0].key).toBe('value')
+            expect((validationSystem as any).validationErrors.length).toBeGreaterThan(0);
+            expect((validationSystem as any).validationErrors[0].category).toBe('test');
+            expect((validationSystem as any).validationErrors[0].key).toBe('value')
         
 });
 
@@ -282,10 +282,10 @@ validationSystem.validate('test', 'value', 5);
 });
 validationSystem.validate('test', 'value', 5);
             
-            expect(validationSystem.validationErrors.length).toBeGreaterThan(0);
+            expect((validationSystem as any).validationErrors.length).toBeGreaterThan(0);
             
             validationSystem.clearErrors();
-            expect(validationSystem.validationErrors.length).toBe(0)
+            expect((validationSystem as any).validationErrors.length).toBe(0)
         
 });
 
@@ -299,11 +299,11 @@ validationSystem.setRule('category2', 'value', { type: 'number', min: 10
             validationSystem.validate('category1', 'value', 5);
             validationSystem.validate('category2', 'value', 5);
             
-            expect(validationSystem.validationErrors.length).toBe(2);
+            expect((validationSystem as any).validationErrors.length).toBe(2);
             
             validationSystem.clearErrors('category1');
-            expect(validationSystem.validationErrors.length).toBe(1);
-            expect(validationSystem.validationErrors[0].category).toBe('category2')
+            expect((validationSystem as any).validationErrors.length).toBe(1);
+            expect((validationSystem as any).validationErrors[0].category).toBe('category2')
         })
     });
 

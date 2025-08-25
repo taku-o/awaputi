@@ -247,7 +247,7 @@ describe('AudioConfig', () => {
             audioConfig.setReverbConfig(reverbConfig);
             
             const effectConfig = audioConfig.getEffectConfig();
-            expect(effectConfig.reverbConfig).toEqual(reverbConfig);
+            expect(effectConfig.reverbConfig as any).toEqual(reverbConfig);
         });
     });
 
@@ -260,7 +260,7 @@ describe('AudioConfig', () => {
             audioConfig.setMuted(true);
             
             expect(() => {
-                audioConfig.saveConfig();
+                (audioConfig as any).saveConfig();
             }).not.toThrow();
         });
 
@@ -269,7 +269,7 @@ describe('AudioConfig', () => {
             audioConfig.setMasterVolume(0.7);
             audioConfig.setSfxVolume(0.5);
             audioConfig.setBgmVolume(0.3);
-            audioConfig.saveConfig();
+            (audioConfig as any).saveConfig();
             
             // 設定を変更
             audioConfig.setMasterVolume(1.0);
@@ -277,7 +277,7 @@ describe('AudioConfig', () => {
             audioConfig.setBgmVolume(1.0);
             
             // 設定を復元
-            audioConfig.loadConfig();
+            (audioConfig as any).loadConfig();
             
             expect(audioConfig.getMasterVolume()).toBe(0.7);
             expect(audioConfig.getSfxVolume()).toBe(0.5);
@@ -292,7 +292,7 @@ describe('AudioConfig', () => {
             audioConfig.setMuted(true);
             
             // デフォルトにリセット
-            audioConfig.resetToDefault();
+            (audioConfig as any).resetToDefault();
             
             // デフォルト値の確認
             expect(audioConfig.getMasterVolume()).toBe(1.0);

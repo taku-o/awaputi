@@ -453,7 +453,7 @@ describe('音響システムパフォーマンステスト', () => {
             
             // 複数の音響データをキャッシュに読み込み
             for (const sound of testSounds) {
-                await audioCacheManager.preload(sound);
+                await (audioCacheManager as any).preload(sound);
             }
             
             const afterLoadMemory = measureMemoryUsage();
@@ -471,14 +471,14 @@ describe('音響システムパフォーマンステスト', () => {
             const testData = new ArrayBuffer(10 * 1024 * 1024); // 10MB のテストデータ
             
             const compressionPerformance = await measurePerformance(async () => {
-                return audioDataOptimizer.compressAudioData(testData);
+                return (audioDataOptimizer as any).compressAudioData(testData);
             });
 
             // 圧縮時間が許容範囲内
             expect(compressionPerformance.average).toBeLessThan(500); // 500ms未満
             
             // 圧縮効果の確認
-            const optimizationStats: OptimizationStats = audioDataOptimizer.getOptimizationStats();
+            const optimizationStats: OptimizationStats = (audioDataOptimizer as any).getOptimizationStats();
             expect(optimizationStats.compressionRatio).toBeGreaterThan(0.5); // 50%以上圧縮
             expect(optimizationStats.qualityScore).toBeGreaterThan(0.8); // 品質80%以上維持
         });
@@ -495,7 +495,7 @@ describe('音響システムパフォーマンステスト', () => {
             const beforeGCMemory = measureMemoryUsage();
             
             // ガベージコレクションを実行
-            audioCacheManager.cleanup();
+            (audioCacheManager as any).cleanup();
             (audioManager as any).garbageCollect?.();
             
             // 少し待ってメモリ解放を確認
@@ -659,7 +659,7 @@ describe('音響システムパフォーマンステスト', () => {
                 
                 // 定期的なクリーンアップ
                 if (minute % 10 === 0) {
-                    audioCacheManager.cleanup();
+                    (audioCacheManager as any).cleanup();
                 }
             }
             

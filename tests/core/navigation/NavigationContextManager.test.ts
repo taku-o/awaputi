@@ -1,4 +1,4 @@
-import { describe, test, expect, beforeEach, afterEach, beforeAll, afterAll, jest, it } from '@jest/globals';
+import { describe, test, expect, beforeEach, afterEach } from '@jest/globals';
 
 /**
  * NavigationContextManager.test.ts
@@ -275,7 +275,7 @@ describe('NavigationContextManager', () => {
 
             expect(() => {
                 const context = manager.getCurrentContext();
-                const isValid = manager.isContextValid('global');
+                const isValid = (manager as any).isContextValid('global');
             }).not.toThrow();
         });
 

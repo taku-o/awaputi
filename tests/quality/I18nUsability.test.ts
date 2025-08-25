@@ -199,7 +199,7 @@ describe('多言語対応ユーザビリティテスト', () => {
       // 新しいインスタンスでも設定が復元される
       const { LocalizationManager } = await import('../../src/core/LocalizationManager.js');
       const newInstance = new LocalizationManager();
-      await newInstance.initialize();
+      await (newInstance as any).initialize();
       expect(newInstance.getCurrentLanguage()).toBe('en');
     });
     test('エラー状況での適切なフォールバック', async () => {

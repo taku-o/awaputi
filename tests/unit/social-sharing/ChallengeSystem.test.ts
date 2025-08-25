@@ -1046,7 +1046,7 @@ it('クリーンアップが正常に実行される', () => {
 });
 
 // テストユーティリティ関数
-function createMockChallengeData(overrides: Partial<ChallengeData> = {}): ChallengeData {
+function _createMockChallengeData(overrides: Partial<ChallengeData> = {}): ChallengeData {
     return {
         id: 'test_challenge',
         type: ChallengeType.DAILY,
@@ -1059,7 +1059,7 @@ function createMockChallengeData(overrides: Partial<ChallengeData> = {}): Challe
     };
 }
 
-function createMockGameData(overrides: Partial<GameData> = {}): GameData {
+function _createMockGameData(overrides: Partial<GameData> = {}): GameData {
     return {
         score: 7500,
         duration: 300000, // 5分

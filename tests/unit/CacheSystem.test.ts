@@ -90,10 +90,10 @@ describe('CacheSystem', () => {
             cacheSystem.set('key1', 'value1');
             cacheSystem.set('key2', 'value2');
             cacheSystem.set('key3', 'value3');
-            expect(cacheSystem.size()).toBe(3);
+            expect((cacheSystem as any).size()).toBe(3);
             
             cacheSystem.clear();
-            expect(cacheSystem.size()).toBe(0);
+            expect((cacheSystem as any).size()).toBe(0);
             expect(cacheSystem.get('key1')).toBeNull();
             expect(cacheSystem.get('key2')).toBeNull();
             expect(cacheSystem.get('key3')).toBeNull();
@@ -135,7 +135,7 @@ describe('CacheSystem', () => {
             // 最初のキーは削除されているはず
             expect(cacheSystem.has('key0')).toBe(false);
             expect(cacheSystem.has('key10')).toBe(true);
-            expect(cacheSystem.size()).toBe(10);
+            expect((cacheSystem as any).size()).toBe(10);
         });
 
         test('アクセスによってLRU順序が更新される', () => {
@@ -206,12 +206,12 @@ describe('CacheSystem', () => {
             cacheSystem.set('key1', 'value1', { ttl: 40 });
             cacheSystem.set('key2', 'value2', { ttl: 40 });
             
-            expect(cacheSystem.size()).toBe(2);
+            expect((cacheSystem as any).size()).toBe(2);
             
             // クリーンアップが実行されるまで待つ
             await new Promise(resolve => setTimeout(resolve, 100));
             
-            expect(cacheSystem.size()).toBe(0);
+            expect((cacheSystem as any).size()).toBe(0);
         });
 
         test('手動クリーンアップが動作する', async () => {
@@ -226,7 +226,7 @@ describe('CacheSystem', () => {
             
             expect(cacheSystem.has('key1')).toBe(false);
             expect(cacheSystem.has('key2')).toBe(true);
-            expect(cacheSystem.size()).toBe(1);
+            expect((cacheSystem as any).size()).toBe(1);
         });
     });
 
@@ -251,7 +251,7 @@ describe('CacheSystem', () => {
             expect(duration).toBeLessThan(1000); // 1秒以内
             
             // メモリ使用量が制限されていることを確認
-            expect(cacheSystem.size()).toBe(10); // maxSize = 10
+            expect((cacheSystem as any).size()).toBe(10); // maxSize = 10
         });
     });
 
