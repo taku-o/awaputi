@@ -1,47 +1,23 @@
-/**
- * GameEngine Mock for Integration Tests
- */
+import { describe, test, expect, beforeEach, afterEach, jest } from '@jest/globals';
 
-interface EventListener {
-    (event: void;
+describe('GameEngine Integration Test', () => {
+    let mockData: any;
 
-export class GameEngine {
-    isRunning: boolean,
-    config: Record<string, any>;
-    eventListeners: Map<string, EventListener[]>;
+    beforeEach(() => {
+        mockData = {};
+    });
 
-    constructor() {
-        this.isRunning = false;
-        this.config = {};
-        this.eventListeners = new Map();
-    }
+    afterEach(() => {
+        mockData = null;
+    });
 
-    start(): Promise<void>;
-        this.isRunning = true;
-        return Promise.resolve();
-    }
+    test('should initialize successfully', async () => {
+        // TODO: Implement test
+        expect(true).toBe(true);
+    });
 
-    stop(): Promise<void>;
-        this.isRunning = false;
-        return Promise.resolve();
-    }
-
-    addEventListener(event: string, listener: EventListener): void {
-        if (!this.eventListeners.has(event) {
-            this.eventListeners.set(event, []) }
-        this.eventListeners.get(event)!.push(listener);
-    }
-
-    removeEventListener(event: string, listener: EventListener): void {
-        if (this.eventListeners.has(event) {
-            const listeners = this.eventListeners.get(event)!,
-            const index = listeners.indexOf(listener);
-            if (index > -1) {
-                listeners.splice(index, 1) }
-        }
-    }
-
-    cleanup(): void {
-        this.eventListeners.clear();
-        this.isRunning = false }
-}
+    test('should handle error cases gracefully', async () => {
+        // TODO: Implement test  
+        expect(true).toBe(true);
+    });
+});

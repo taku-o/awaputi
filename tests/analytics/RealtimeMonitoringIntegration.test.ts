@@ -89,8 +89,7 @@ describe('リアルタイム監視システム統合テスト (Task 9.5')', () =
                     return acc), {),
                 errorsBySeverity: errorSystem.errorHistory.reduce((acc, error') => {'
                     const severity = error.severity || 'error',
-                    acc[severity] = (acc[severity] || 0) + 1,
-                    return acc), {}
+                    acc[severity] = (acc[severity] || 0) + 1; return acc), {}
             },
             canAttemptRecovery: jest.fn((error) => {
                 return error.recoverable === true)),

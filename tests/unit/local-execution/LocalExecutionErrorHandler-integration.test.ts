@@ -116,7 +116,7 @@ describe('LocalExecutionErrorHandler Integration Tests', () => {
         }');'
         test('should fallback gracefully when main ErrorHandler fails', async () => {
             const failingErrorHandler = {
-                configure: jest.fn((') => { throw new Error('Configuration failed'))) }') as unknown as MockErrorHandler;
+                configure: jest.fn((') => { throw new Error('Configuration failed')) }') as unknown as MockErrorHandler;
             const consoleSpy = jest.spyOn(console, 'warn').mockImplementation(() => {});
             LocalExecutionErrorHandler.initialize({
                 enableMainErrorHandlerIntegration: true,, failingErrorHandler);
