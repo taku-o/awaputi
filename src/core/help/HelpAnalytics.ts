@@ -355,7 +355,7 @@ export type DataType = 'categoryId' | 'topicId' | 'searchQuery' | 'feedback' | '
  * ヘルプシステムの使用状況を追跡・分析するクラス
  */
 export class HelpAnalytics {
-    private gameEngine: GameEngine;
+    private _gameEngine: GameEngine;
     private loggingSystem: LoggingSystem;
     // 追跡対象イベント
     private events: Map<string, AnalyticsEvent>;
@@ -368,7 +368,7 @@ export class HelpAnalytics {
     // キャッシュ関連
     private contentCache?: Map<string, CacheEntry>;
     private searchCache?: Map<string, CacheEntry>;
-    private cacheConfig?: CacheConfig;
+    private _cacheConfig?: CacheConfig;
     
     // パフォーマンス関連
     private performanceMetrics?: PerformanceMetrics;
@@ -377,7 +377,7 @@ export class HelpAnalytics {
     private fallbackInterface?: FallbackInterface;
 
     constructor(gameEngine: GameEngine) {
-        this.gameEngine = gameEngine;
+        this._gameEngine = gameEngine;
         this.loggingSystem = LoggingSystem.getInstance ? LoggingSystem.getInstance() : new LoggingSystem();
         
         // 追跡対象イベント
@@ -466,12 +466,12 @@ export class HelpAnalytics {
             // ページ離脱時の処理
             this.setupUnloadHandlers();
             
-            this.loggingSystem.info('HelpAnalytics', 'Help analytics initialized', {
+            (this.loggingSystem as any).info('HelpAnalytics', 'Help analytics initialized', {
                 validation: validationResult.isValid ? 'passed' : 'failed',
                 fallbackReady: !!this.fallbackInterface
             });
         } catch (error) {
-            this.loggingSystem.error('HelpAnalytics', 'Failed to initialize help analytics', error);
+            (this.loggingSystem as any).error('HelpAnalytics', 'Failed to initialize help analytics', error);
             ErrorHandler.handle(error as Error, 'HelpAnalytics.initialize');
         }
     }
@@ -536,7 +536,7 @@ export class HelpAnalytics {
 
             this.loggingSystem.debug('HelpAnalytics', 'Map initialization completed');
         } catch (error) {
-            this.loggingSystem.error('HelpAnalytics', 'Failed to ensure map initialization', error);
+            (this.loggingSystem as any).error('HelpAnalytics', 'Failed to ensure map initialization', error);
         }
     }
     
@@ -574,7 +574,7 @@ export class HelpAnalytics {
 
             this.loggingSystem.debug('HelpAnalytics', `Help session started: ${sessionId} from ${entryPoint}`);
         } catch (error) {
-            this.loggingSystem.error('HelpAnalytics', 'Failed to start help session', error);
+            (this.loggingSystem as any).error('HelpAnalytics', 'Failed to start help session', error);
         }
     }
     
@@ -612,7 +612,7 @@ export class HelpAnalytics {
 
             this.currentSession = null;
         } catch (error) {
-            this.loggingSystem.error('HelpAnalytics', 'Failed to end help session', error);
+            (this.loggingSystem as any).error('HelpAnalytics', 'Failed to end help session', error);
         }
     }
     
@@ -672,7 +672,7 @@ export class HelpAnalytics {
 
             this.loggingSystem.debug('HelpAnalytics', `Page view tracked: ${page}`, pageData);
         } catch (error) {
-            this.loggingSystem.error('HelpAnalytics', 'Failed to track page view', error);
+            (this.loggingSystem as any).error('HelpAnalytics', 'Failed to track page view', error);
         }
     }
     
@@ -715,7 +715,7 @@ export class HelpAnalytics {
 
             this.loggingSystem.debug('HelpAnalytics', `Search query tracked: "${query}" (${resultCount} results)`);
         } catch (error) {
-            this.loggingSystem.error('HelpAnalytics', 'Failed to track search query', error);
+            (this.loggingSystem as any).error('HelpAnalytics', 'Failed to track search query', error);
         }
     }
     
@@ -740,7 +740,7 @@ export class HelpAnalytics {
             
             this.loggingSystem.debug('HelpAnalytics', `Category selection recorded: ${categoryId}`);
         } catch (error) {
-            this.loggingSystem.error('HelpAnalytics', 'Failed to record category selection', error);
+            (this.loggingSystem as any).error('HelpAnalytics', 'Failed to record category selection', error);
         }
     }
     
@@ -781,7 +781,7 @@ export class HelpAnalytics {
 
             this.loggingSystem.debug('HelpAnalytics', `Feedback tracked for ${contentId}: ${rating}/5`);
         } catch (error) {
-            this.loggingSystem.error('HelpAnalytics', 'Failed to track feedback', error);
+            (this.loggingSystem as any).error('HelpAnalytics', 'Failed to track feedback', error);
         }
     }
     
@@ -801,7 +801,7 @@ export class HelpAnalytics {
 
             this.loggingSystem.debug('HelpAnalytics', `Tutorial start tracked: ${tutorialId}`);
         } catch (error) {
-            this.loggingSystem.error('HelpAnalytics', 'Failed to track tutorial start', error);
+            (this.loggingSystem as any).error('HelpAnalytics', 'Failed to track tutorial start', error);
         }
     }
     
@@ -833,7 +833,7 @@ export class HelpAnalytics {
 
             this.loggingSystem.debug('HelpAnalytics', `Tutorial completion tracked: ${tutorialId} (${completionTime}ms)`);
         } catch (error) {
-            this.loggingSystem.error('HelpAnalytics', 'Failed to track tutorial completion', error);
+            (this.loggingSystem as any).error('HelpAnalytics', 'Failed to track tutorial completion', error);
         }
     }
     
@@ -855,7 +855,7 @@ export class HelpAnalytics {
 
             this.loggingSystem.debug('HelpAnalytics', `Tutorial drop-off tracked: ${tutorialId} at ${stepId}`);
         } catch (error) {
-            this.loggingSystem.error('HelpAnalytics', 'Failed to track tutorial drop-off', error);
+            (this.loggingSystem as any).error('HelpAnalytics', 'Failed to track tutorial drop-off', error);
         }
     }
     
@@ -889,7 +889,7 @@ export class HelpAnalytics {
 
             this.loggingSystem.debug('HelpAnalytics', `Event tracked: ${eventType}`, eventData);
         } catch (error) {
-            this.loggingSystem.error('HelpAnalytics', 'Failed to track event', error);
+            (this.loggingSystem as any).error('HelpAnalytics', 'Failed to track event', error);
         }
     }
     
@@ -930,14 +930,14 @@ export class HelpAnalytics {
                 recommendations: recommendations
             };
 
-            this.loggingSystem.info('HelpAnalytics', 'Usage report generated', {
+            (this.loggingSystem as any).info('HelpAnalytics', 'Usage report generated', {
                 period: reportPeriod,
                 sessionsAnalyzed: filteredSessions.length
             });
             
             return report;
         } catch (error) {
-            this.loggingSystem.error('HelpAnalytics', 'Failed to generate usage report', error);
+            (this.loggingSystem as any).error('HelpAnalytics', 'Failed to generate usage report', error);
             throw error;
         }
     }
@@ -957,7 +957,7 @@ export class HelpAnalytics {
             };
             
             if (format === 'json') {
-                return JSON.stringify(exportData, (key, value) => {
+                return JSON.stringify(exportData, (_key, value) => {
                     if (value instanceof Map) {
                         return Array.from(value.entries());
                     }
@@ -971,7 +971,7 @@ export class HelpAnalytics {
                 return this.convertToCSV(exportData);
             }
         } catch (error) {
-            this.loggingSystem.error('HelpAnalytics', 'Failed to export data', error);
+            (this.loggingSystem as any).error('HelpAnalytics', 'Failed to export data', error);
             throw error;
         }
     }
@@ -1028,7 +1028,7 @@ export class HelpAnalytics {
 
             this.loggingSystem.info('HelpAnalytics', 'Analytics data reset');
         } catch (error) {
-            this.loggingSystem.error('HelpAnalytics', 'Failed to reset analytics', error);
+            (this.loggingSystem as any).error('HelpAnalytics', 'Failed to reset analytics', error);
         }
     }
     
@@ -1055,7 +1055,7 @@ export class HelpAnalytics {
             
             this.loggingSystem.info('HelpAnalytics', 'Help analytics destroyed');
         } catch (error) {
-            this.loggingSystem.error('HelpAnalytics', 'Failed to destroy help analytics', error);
+            (this.loggingSystem as any).error('HelpAnalytics', 'Failed to destroy help analytics', error);
         }
     }
     
@@ -1343,7 +1343,7 @@ export class HelpAnalytics {
     }
     
     private initializeContentCaching(): void {
-        this.cacheConfig = {
+        this._cacheConfig = {
             maxContentCacheSize: 100,
             maxSearchCacheSize: 50,
             cacheExpiryTime: 30 * 60 * 1000, // 30分

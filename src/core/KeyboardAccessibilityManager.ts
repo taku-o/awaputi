@@ -53,7 +53,7 @@ export interface KeyboardReport {
  */
 export class KeyboardAccessibilityManager {
     private accessibilityManager: any;
-    private gameEngine: any;
+    private _gameEngine: any;
     private keyboardManager: any;
     private customizations: KeyboardCustomization;
     private config: KeyboardConfig;
@@ -62,7 +62,7 @@ export class KeyboardAccessibilityManager {
 
     constructor(accessibilityManager: any, existingKeyboardManager: any) {
         this.accessibilityManager = accessibilityManager;
-        this.gameEngine = accessibilityManager.gameEngine;
+        this._gameEngine = accessibilityManager.gameEngine;
         this.keyboardManager = existingKeyboardManager;
         
         // カスタマイズ設定
@@ -137,9 +137,9 @@ export class KeyboardAccessibilityManager {
         Object.entries(existingShortcuts).forEach(([name, shortcut]) => {
             // カスタマイズ可能かどうかの設定
             const enhanced = {
-                ...shortcut,
-                customizable: !this.config.reservedKeys.has(shortcut.keys[0]),
-                originalKeys: [...shortcut.keys],
+                ...(shortcut as any),
+                customizable: !this.config.reservedKeys.has((shortcut as any).keys[0]),
+                originalKeys: [...(shortcut as any).keys],
                 category: this.categorizeShortcut(name),
                 priority: this.getShortcutPriority(name),
                 accessibility: {
@@ -168,7 +168,7 @@ export class KeyboardAccessibilityManager {
         };
 
         for (const [category, shortcuts] of Object.entries(categories)) {
-            if (shortcuts.includes(name)) {
+            if ((shortcuts as string[]).includes(name)) {
                 return category;
             }
         }
@@ -298,14 +298,14 @@ export class KeyboardAccessibilityManager {
             // カスタムショートカットの保存
             this.customizations.shortcuts.forEach((shortcut, name) => {
                 if (JSON.stringify(shortcut.keys) !== JSON.stringify(shortcut.originalKeys)) {
-                    config.customShortcuts[name] = shortcut.keys;
+                    (config as any).customShortcuts[name] = shortcut.keys;
                 }
             });
 
             // プロファイルの保存
             this.customizations.profiles.forEach((profile, name) => {
                 if (name !== 'default') {
-                    config.profiles[name] = profile;
+                    (config as any).profiles[name] = profile;
                 }
             });
 
@@ -361,7 +361,7 @@ export class KeyboardAccessibilityManager {
     /**
      * アクセシビリティフィードバック
      */
-    provideAccessibilityFeedback(name: string, keyCombo: string) {
+    provideAccessibilityFeedback(name: string, _keyCombo: string) {
         const shortcut = this.customizations.shortcuts.get(name);
         if (!shortcut) return;
         
@@ -446,7 +446,7 @@ export class KeyboardAccessibilityManager {
      * 競合チェック
      */
     private checkForConflicts(keys: string[], excludeAction: string | null = null): ConflictInfo[] {
-        const conflicts = [];
+        const conflicts: ConflictInfo[] = [];
         const keyCombo = keys.join('+');
         
         this.customizations.shortcuts.forEach((shortcut, name) => {

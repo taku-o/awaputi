@@ -437,7 +437,7 @@ export class BalanceCalculator {
         const {
             currentTAP = 0,
             unlockedStages = [],
-            completedAchievements = []
+            completedAchievements: _completedAchievements = []
         } = playerState;
         
         const config = this.getBalanceConfig();
@@ -484,7 +484,7 @@ export class BalanceCalculator {
     suggestBalanceAdjustments(gameData: GameData): BalanceSuggestions {
         const {
             averagePlayTime = 0,
-            averageScore = 0,
+            averageScore: _averageScore = 0,
             stageCompletionRates = {},
             itemUsageRates = {}
         } = gameData;

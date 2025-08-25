@@ -541,7 +541,7 @@ export class ChartInteractionManager {
      */
     setupTooltips(canvas: HTMLCanvasElement, renderResult: ChartRenderResult, config: TooltipConfig): void {
         if (!this.tooltipElement) {
-            this.createTooltipElement(config.style || DEFAULT_INTERACTION_CONFIG.tooltip.style);
+            this.createTooltipElement(config.style || DEFAULT_INTERACTION_CONFIG.tooltip.style!);
         }
         
         const mouseMoveHandler = (event: MouseEvent) => {
@@ -561,14 +561,14 @@ export class ChartInteractionManager {
             this.hideTooltip();
         };
 
-        this.addEventListener(canvas, 'mousemove', mouseMoveHandler);
-        this.addEventListener(canvas, 'mouseleave', mouseLeaveHandler);
+        this.addEventListener(canvas, 'mousemove', mouseMoveHandler as EventListener);
+        this.addEventListener(canvas, 'mouseleave', mouseLeaveHandler as EventListener);
     }
 
     /**
      * ホバーエフェクトの設定
      */
-    private setupHoverEffects(canvas: HTMLCanvasElement, renderResult: ChartRenderResult, config: HoverConfig): void {
+    private setupHoverEffects(canvas: HTMLCanvasElement, _renderResult: ChartRenderResult, config: HoverConfig): void {
         const mouseEnterHandler = () => {
             canvas.style.cursor = config.cursor || 'pointer';
         };
@@ -597,7 +597,7 @@ export class ChartInteractionManager {
             }
         };
 
-        this.addEventListener(canvas, 'click', clickHandler);
+        this.addEventListener(canvas, 'click', clickHandler as EventListener);
     }
 
     /**

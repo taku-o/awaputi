@@ -87,7 +87,7 @@ export class EventRankingSystem extends EventRankingManager {
     private categoryRankings: Map<string, CategoryRankingData> = new Map();
     private realtimeRankings: Map<string, any> = new Map();
     private settings: RankingSettings;
-    private rankingUpdateInterval: number | null = null;
+    private rankingUpdateInterval: any = null;
 
     constructor(gameEngine: any) {
         super(gameEngine);

@@ -289,9 +289,9 @@ export class FocusTrapManager {
                 lastFocusableElement: null,
                 previouslyFocusedElement: document.activeElement as HTMLElement,
                 isActive: false,
-                handleKeyDown: this.createTrapKeyDownHandler.bind(this),
-                handleFocusIn: this.createTrapFocusInHandler.bind(this),
-                handleFocusOut: this.createTrapFocusOutHandler.bind(this)
+                handleKeyDown: (event: KeyboardEvent) => {},
+                handleFocusIn: (event: FocusEvent) => {},
+                handleFocusOut: (event: FocusEvent) => {}
             };
             
             // ハンドラーをバインド

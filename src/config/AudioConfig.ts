@@ -6,7 +6,7 @@
  */
 
 import { getConfigurationManager, ConfigurationManager } from '../core/ConfigurationManager.js';
-import { getErrorHandler, ErrorHandler } from '../utils/ErrorHandler.js';
+import { getErrorHandler } from '../utils/ErrorHandler.js';
 
 /**
  * 音量設定の型定義
@@ -125,7 +125,7 @@ export interface AudioManager {
 
 export class AudioConfig {
     private configManager: ConfigurationManager;
-    private errorHandler: ErrorHandler;
+    private errorHandler: any;
     
     constructor() {
         this.configManager = getConfigurationManager();
@@ -234,84 +234,79 @@ export class AudioConfig {
      */
     private _setupValidationRules(): void {
         // 音量設定の検証ルール
-        this.configManager.setValidationRule('audio', 'volumes.master', {
+        this.configManager.setValidationRule('audio.volumes.master', {
             type: 'number',
-            min: 0,
-            max: 1
+            validate: (value: any) => typeof value === 'number' && value >= 0 && value <= 1
         });
 
-        this.configManager.setValidationRule('audio', 'volumes.sfx', {
+        this.configManager.setValidationRule('audio.volumes.sfx', {
             type: 'number',
-            min: 0,
-            max: 1
+            validate: (value: any) => typeof value === 'number' && value >= 0 && value <= 1
         });
 
-        this.configManager.setValidationRule('audio', 'volumes.bgm', {
+        this.configManager.setValidationRule('audio.volumes.bgm', {
             type: 'number',
-            min: 0,
-            max: 1
+            validate: (value: any) => typeof value === 'number' && value >= 0 && value <= 1
         });
 
-        this.configManager.setValidationRule('audio', 'volumes.muted', {
-            type: 'boolean'
+        this.configManager.setValidationRule('audio.volumes.muted', {
+            type: 'boolean',
+            validate: (value: any) => typeof value === 'boolean'
         });
         
         // 音質設定の検証ルール
-        this.configManager.setValidationRule('audio', 'quality.sampleRate', {
+        this.configManager.setValidationRule('audio.quality.sampleRate', {
             type: 'number',
-            validator: (value: any) => [8000, 11025, 22050, 44100, 48000, 96000].includes(value)
+            validate: (value: any) => [8000, 11025, 22050, 44100, 48000, 96000].includes(value)
         });
 
-        this.configManager.setValidationRule('audio', 'quality.bufferSize', {
+        this.configManager.setValidationRule('audio.quality.bufferSize', {
             type: 'number',
-            validator: (value: any) => [256, 512, 1024, 2048, 4096, 8192, 16384].includes(value)
+            validate: (value: any) => [256, 512, 1024, 2048, 4096, 8192, 16384].includes(value)
         });
         
         // 音響効果設定の検証ルール
-        this.configManager.setValidationRule('audio', 'effects.compressor.threshold', {
+        this.configManager.setValidationRule('audio.effects.compressor.threshold', {
             type: 'number',
-            min: -100,
-            max: 0
+            validate: (value: any) => typeof value === 'number' && value >= -100 && value <= 0
         });
 
-        this.configManager.setValidationRule('audio', 'effects.compressor.knee', {
+        this.configManager.setValidationRule('audio.effects.compressor.knee', {
             type: 'number',
-            min: 0,
-            max: 40
+            validate: (value: any) => typeof value === 'number' && value >= 0 && value <= 40
         });
 
-        this.configManager.setValidationRule('audio', 'effects.compressor.ratio', {
+        this.configManager.setValidationRule('audio.effects.compressor.ratio', {
             type: 'number',
-            min: 1,
-            max: 20
+            validate: (value: any) => typeof value === 'number' && value >= 1 && value <= 20
         });
         
         // イコライザー設定の検証ルール
-        this.configManager.setValidationRule('audio', 'effects.equalizer.enabled', {
-            type: 'boolean'
+        this.configManager.setValidationRule('audio.effects.equalizer.enabled', {
+            type: 'boolean',
+            validate: (value: any) => typeof value === 'boolean'
         });
 
         // 各バンドのゲイン検証ルール（-20dB to +20dB）
         const bandValidation = {
             type: 'number' as const,
-            min: -20,
-            max: 20
+            validate: (value: any) => typeof value === 'number' && value >= -20 && value <= 20
         };
-        this.configManager.setValidationRule('audio', 'effects.equalizer.bands.bass', bandValidation);
-        this.configManager.setValidationRule('audio', 'effects.equalizer.bands.lowMid', bandValidation);
-        this.configManager.setValidationRule('audio', 'effects.equalizer.bands.mid', bandValidation);
-        this.configManager.setValidationRule('audio', 'effects.equalizer.bands.highMid', bandValidation);
-        this.configManager.setValidationRule('audio', 'effects.equalizer.bands.treble', bandValidation);
+        this.configManager.setValidationRule('audio.effects.equalizer.bands.bass', bandValidation);
+        this.configManager.setValidationRule('audio.effects.equalizer.bands.lowMid', bandValidation);
+        this.configManager.setValidationRule('audio.effects.equalizer.bands.mid', bandValidation);
+        this.configManager.setValidationRule('audio.effects.equalizer.bands.highMid', bandValidation);
+        this.configManager.setValidationRule('audio.effects.equalizer.bands.treble', bandValidation);
         
         // 環境音設定の検証ルール
-        this.configManager.setValidationRule('audio', 'environmental.enabled', {
-            type: 'boolean'
+        this.configManager.setValidationRule('audio.environmental.enabled', {
+            type: 'boolean',
+            validate: (value: any) => typeof value === 'boolean'
         });
 
-        this.configManager.setValidationRule('audio', 'environmental.volume', {
+        this.configManager.setValidationRule('audio.environmental.volume', {
             type: 'number',
-            min: 0,
-            max: 1
+            validate: (value: any) => typeof value === 'number' && value >= 0 && value <= 1
         });
     }
 
@@ -321,10 +316,10 @@ export class AudioConfig {
      */
     getVolumeConfig(): VolumeConfig {
         return {
-            master: this.configManager.get('audio', 'volumes.master', 0.7),
-            sfx: this.configManager.get('audio', 'volumes.sfx', 0.8),
-            bgm: this.configManager.get('audio', 'volumes.bgm', 0.5),
-            muted: this.configManager.get('audio', 'volumes.muted', false)
+            master: this.configManager.get('audio', 'volumes.master') ?? 0.7,
+            sfx: this.configManager.get('audio', 'volumes.sfx') ?? 0.8,
+            bgm: this.configManager.get('audio', 'volumes.bgm') ?? 0.5,
+            muted: this.configManager.get('audio', 'volumes.muted') ?? false
         };
     }
 
@@ -333,7 +328,7 @@ export class AudioConfig {
      * @returns マスター音量 (0-1)
      */
     getMasterVolume(): number {
-        return this.configManager.get('audio', 'volumes.master', 0.7);
+        return this.configManager.get('audio', 'volumes.master') ?? 0.7;
     }
 
     /**
@@ -341,7 +336,7 @@ export class AudioConfig {
      * @returns SFX音量 (0-1)
      */
     getSfxVolume(): number {
-        return this.configManager.get('audio', 'volumes.sfx', 0.8);
+        return this.configManager.get('audio', 'volumes.sfx') ?? 0.8;
     }
 
     /**
@@ -349,7 +344,7 @@ export class AudioConfig {
      * @returns BGM音量 (0-1)
      */
     getBgmVolume(): number {
-        return this.configManager.get('audio', 'volumes.bgm', 0.5);
+        return this.configManager.get('audio', 'volumes.bgm') ?? 0.5;
     }
 
     /**
@@ -357,7 +352,7 @@ export class AudioConfig {
      * @returns ミュート状態
      */
     isMuted(): boolean {
-        return this.configManager.get('audio', 'volumes.muted', false);
+        return this.configManager.get('audio', 'volumes.muted') ?? false;
     }
 
     /**
@@ -412,10 +407,10 @@ export class AudioConfig {
      */
     getQualityConfig(): QualityConfig {
         return {
-            sampleRate: this.configManager.get('audio', 'quality.sampleRate', 44100),
-            bufferSize: this.configManager.get('audio', 'quality.bufferSize', 4096),
-            channels: this.configManager.get('audio', 'quality.channels', 1),
-            bitDepth: this.configManager.get('audio', 'quality.bitDepth', 16)
+            sampleRate: this.configManager.get('audio', 'quality.sampleRate') ?? 44100,
+            bufferSize: this.configManager.get('audio', 'quality.bufferSize') ?? 4096,
+            channels: this.configManager.get('audio', 'quality.channels') ?? 1,
+            bitDepth: this.configManager.get('audio', 'quality.bitDepth') ?? 16
         };
     }
 
@@ -424,7 +419,7 @@ export class AudioConfig {
      * @returns サンプルレート (Hz)
      */
     getSampleRate(): number {
-        return this.configManager.get('audio', 'quality.sampleRate', 44100);
+        return this.configManager.get('audio', 'quality.sampleRate') ?? 44100;
     }
 
     /**
@@ -432,7 +427,7 @@ export class AudioConfig {
      * @returns バッファサイズ
      */
     getBufferSize(): number {
-        return this.configManager.get('audio', 'quality.bufferSize', 4096);
+        return this.configManager.get('audio', 'quality.bufferSize') ?? 4096;
     }
 
     /**
@@ -459,19 +454,19 @@ export class AudioConfig {
      */
     getEffectConfig(): EffectConfig {
         return {
-            reverbEnabled: this.configManager.get('audio', 'effects.reverb', true),
-            compression: this.configManager.get('audio', 'effects.compression', true),
+            reverbEnabled: this.configManager.get('audio', 'effects.reverb') ?? true,
+            compression: this.configManager.get('audio', 'effects.compression') ?? true,
             compressor: {
-                threshold: this.configManager.get('audio', 'effects.compressor.threshold', -20),
-                knee: this.configManager.get('audio', 'effects.compressor.knee', 40),
-                ratio: this.configManager.get('audio', 'effects.compressor.ratio', 12),
-                attack: this.configManager.get('audio', 'effects.compressor.attack', 0.003),
-                release: this.configManager.get('audio', 'effects.compressor.release', 0.25)
+                threshold: this.configManager.get('audio', 'effects.compressor.threshold') ?? -20,
+                knee: this.configManager.get('audio', 'effects.compressor.knee') ?? 40,
+                ratio: this.configManager.get('audio', 'effects.compressor.ratio') ?? 12,
+                attack: this.configManager.get('audio', 'effects.compressor.attack') ?? 0.003,
+                release: this.configManager.get('audio', 'effects.compressor.release') ?? 0.25
             },
             reverb: {
-                duration: this.configManager.get('audio', 'effects.reverb.duration', 2.0),
-                decay: this.configManager.get('audio', 'effects.reverb.decay', 0.5),
-                wet: this.configManager.get('audio', 'effects.reverb.wet', 0.3)
+                duration: this.configManager.get('audio', 'effects.reverb.duration') ?? 2.0,
+                decay: this.configManager.get('audio', 'effects.reverb.decay') ?? 0.5,
+                wet: this.configManager.get('audio', 'effects.reverb.wet') ?? 0.3
             }
         };
     }
@@ -481,7 +476,7 @@ export class AudioConfig {
      * @returns リバーブ効果の有効状態
      */
     isReverbEnabled(): boolean {
-        return this.configManager.get('audio', 'effects.reverb', true);
+        return this.configManager.get('audio', 'effects.reverb') ?? true;
     }
 
     /**
@@ -489,7 +484,7 @@ export class AudioConfig {
      * @returns コンプレッション効果の有効状態
      */
     isCompressionEnabled(): boolean {
-        return this.configManager.get('audio', 'effects.compression', true);
+        return this.configManager.get('audio', 'effects.compression') ?? true;
     }
 
     /**
@@ -516,11 +511,11 @@ export class AudioConfig {
      */
     getCompressorConfig(): CompressorConfig {
         return {
-            threshold: this.configManager.get('audio', 'effects.compressor.threshold', -20),
-            knee: this.configManager.get('audio', 'effects.compressor.knee', 40),
-            ratio: this.configManager.get('audio', 'effects.compressor.ratio', 12),
-            attack: this.configManager.get('audio', 'effects.compressor.attack', 0.003),
-            release: this.configManager.get('audio', 'effects.compressor.release', 0.25)
+            threshold: this.configManager.get('audio', 'effects.compressor.threshold') ?? -20,
+            knee: this.configManager.get('audio', 'effects.compressor.knee') ?? 40,
+            ratio: this.configManager.get('audio', 'effects.compressor.ratio') ?? 12,
+            attack: this.configManager.get('audio', 'effects.compressor.attack') ?? 0.003,
+            release: this.configManager.get('audio', 'effects.compressor.release') ?? 0.25
         };
     }
 
@@ -530,9 +525,9 @@ export class AudioConfig {
      */
     getReverbConfig(): ReverbConfig {
         return {
-            duration: this.configManager.get('audio', 'effects.reverb.duration', 2.0),
-            decay: this.configManager.get('audio', 'effects.reverb.decay', 0.5),
-            wet: this.configManager.get('audio', 'effects.reverb.wet', 0.3)
+            duration: this.configManager.get('audio', 'effects.reverb.duration') ?? 2.0,
+            decay: this.configManager.get('audio', 'effects.reverb.decay') ?? 0.5,
+            wet: this.configManager.get('audio', 'effects.reverb.wet') ?? 0.3
         };
     }
 

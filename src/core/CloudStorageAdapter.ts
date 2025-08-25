@@ -135,11 +135,7 @@ export class CloudStorageAdapter {
             this.isInitialized = true;
             console.log('CloudStorageAdapter: 初期化が完了しました');
         } catch (error) {
-            getErrorHandler().handleError(error as Error, {
-                context: 'CloudStorageAdapter.initialize',
-                operation: 'initialize',
-                provider: this.config.provider
-            });
+            getErrorHandler().handleError(error as Error, 'CloudStorageAdapter.initialize');
         }
     }
     
@@ -164,10 +160,7 @@ export class CloudStorageAdapter {
             console.log('CloudStorageAdapter: No valid auth token found');
             return false;
         } catch (error) {
-            getErrorHandler().handleError(error as Error, {
-                context: 'CloudStorageAdapter.checkAuthStatus',
-                operation: 'checkAuthStatus'
-            });
+            getErrorHandler().handleError(error as Error, 'CloudStorageAdapter.checkAuthStatus');
             return false;
         }
     }
@@ -242,10 +235,7 @@ export class CloudStorageAdapter {
 
             throw new Error('Invalid authentication response');
         } catch (error) {
-            getErrorHandler().handleError(error as Error, {
-                context: 'CloudStorageAdapter.authenticate',
-                operation: 'authenticate'
-            });
+            getErrorHandler().handleError(error as Error, 'CloudStorageAdapter.authenticate');
             throw error;
         }
     }
@@ -282,11 +272,7 @@ export class CloudStorageAdapter {
             
             return response.success || false;
         } catch (error) {
-            getErrorHandler().handleError(error as Error, {
-                context: 'CloudStorageAdapter.set',
-                operation: 'set',
-                key
-            });
+            getErrorHandler().handleError(error as Error, 'CloudStorageAdapter.set');
             throw error;
         }
     }
@@ -318,11 +304,7 @@ export class CloudStorageAdapter {
                 return null; // データが存在しない場合
             }
 
-            getErrorHandler().handleError(error, {
-                context: 'CloudStorageAdapter.get',
-                operation: 'get',
-                key
-            });
+            getErrorHandler().handleError(error, 'CloudStorageAdapter.get');
             throw error;
         }
     }
@@ -347,11 +329,7 @@ export class CloudStorageAdapter {
             
             return response.success || false;
         } catch (error) {
-            getErrorHandler().handleError(error as Error, {
-                context: 'CloudStorageAdapter.remove',
-                operation: 'remove',
-                key
-            });
+            getErrorHandler().handleError(error as Error, 'CloudStorageAdapter.remove');
             throw error;
         }
     }
@@ -374,10 +352,7 @@ export class CloudStorageAdapter {
             
             return response.keys || [];
         } catch (error) {
-            getErrorHandler().handleError(error as Error, {
-                context: 'CloudStorageAdapter.keys',
-                operation: 'keys'
-            });
+            getErrorHandler().handleError(error as Error, 'CloudStorageAdapter.keys');
             return [];
         }
     }
@@ -400,10 +375,7 @@ export class CloudStorageAdapter {
             
             return response.totalSize || 0;
         } catch (error) {
-            getErrorHandler().handleError(error as Error, {
-                context: 'CloudStorageAdapter.getSize',
-                operation: 'getSize'
-            });
+            getErrorHandler().handleError(error as Error, 'CloudStorageAdapter.getSize');
             return 0;
         }
     }
@@ -441,11 +413,7 @@ export class CloudStorageAdapter {
             
             return response.success || false;
         } catch (error) {
-            getErrorHandler().handleError(error as Error, {
-                context: 'CloudStorageAdapter.setChunked',
-                operation: 'setChunked',
-                key
-            });
+            getErrorHandler().handleError(error as Error, 'CloudStorageAdapter.setChunked');
             throw error;
         }
     }
@@ -660,10 +628,7 @@ export class CloudStorageAdapter {
 
             console.log('CloudStorageAdapter: Destroyed');
         } catch (error) {
-            getErrorHandler().handleError(error as Error, {
-                context: 'CloudStorageAdapter.destroy',
-                operation: 'destroy'
-            });
+            getErrorHandler().handleError(error as Error, 'CloudStorageAdapter.destroy');
         }
     }
 }

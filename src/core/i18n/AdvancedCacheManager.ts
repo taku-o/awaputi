@@ -104,7 +104,7 @@ export type SerializationFormat = 'json' | 'msgpack';
 
 export class AdvancedCacheManager {
     private maxMemorySize: number;
-    private maxEntries: number;
+    private _maxEntries: number;
     private defaultTTL: number;
     private cleanupInterval: number;
 
@@ -119,8 +119,8 @@ export class AdvancedCacheManager {
     // パフォーマンス設定
     private performanceMode: PerformanceMode;
     private compressionThreshold: number;
-    private hotCacheRatio: number;
-    private warmCacheRatio: number;
+    private _hotCacheRatio: number;
+    private _warmCacheRatio: number;
 
     // 統計情報
     private stats: CacheStats;
@@ -139,7 +139,7 @@ export class AdvancedCacheManager {
     constructor(options: CacheOptions = {}) {
         // 基本設定
         this.maxMemorySize = options.maxMemorySize || 20 * 1024 * 1024; // 20MB
-        this.maxEntries = options.maxEntries || 1000;
+        this._maxEntries = options.maxEntries || 1000;
         this.defaultTTL = options.defaultTTL || 600000; // 10分
         this.cleanupInterval = options.cleanupInterval || 60000; // 1分
         
@@ -158,8 +158,8 @@ export class AdvancedCacheManager {
         // パフォーマンス設定
         this.performanceMode = 'balanced';
         this.compressionThreshold = 1024;
-        this.hotCacheRatio = 0.3;
-        this.warmCacheRatio = 0.5;
+        this._hotCacheRatio = 0.3;
+        this._warmCacheRatio = 0.5;
         
         // 統計情報
         this.stats = {
@@ -507,7 +507,7 @@ export class AdvancedCacheManager {
     /**
      * 最適なレイヤーを計算
      */
-    private _calculateOptimalLayer(accessPattern: AccessPattern, metadata: CacheMetadata): CacheLayer {
+    private _calculateOptimalLayer(accessPattern: AccessPattern, _metadata: CacheMetadata): CacheLayer {
         const recentAccessRate = accessPattern.recentAccesses / Math.max(accessPattern.totalAccesses, 1);
         const avgAccessInterval = accessPattern.avgAccessInterval;
 
@@ -542,7 +542,7 @@ export class AdvancedCacheManager {
     /**
      * アクセス情報を更新
      */
-    private _updateAccessInfo(key: string, metadata: CacheMetadata): void {
+    private _updateAccessInfo(_key: string, metadata: CacheMetadata): void {
         metadata.lastAccessed = Date.now();
         metadata.accessCount++;
     }
@@ -563,7 +563,7 @@ export class AdvancedCacheManager {
     /**
      * アクセスパターンを追跡
      */
-    private _trackAccessPattern(key: string, accessTime: number): void {
+    private _trackAccessPattern(key: string, _accessTime: number): void {
         const pattern = this.accessPatterns.get(key);
         if (!pattern) return;
         
@@ -660,7 +660,7 @@ export class AdvancedCacheManager {
     /**
      * 統計を更新
      */
-    private _updateStats(dataSize: number, accessTime: number): void {
+    private _updateStats(_dataSize: number, accessTime: number): void {
         this.stats.currentMemoryUsage = this._getCurrentMemoryUsage();
         this.stats.totalEntries = this.metadata.size;
         
@@ -672,7 +672,7 @@ export class AdvancedCacheManager {
     /**
      * 平均アクセス時間を更新
      */
-    private _updateAverageAccessTime(accessTime: number): void {
+    private _updateAverageAccessTime(_accessTime: number): void {
         const times = this.stats.accessTimes;
         if (times.length > 100) {
             times.shift();
@@ -729,7 +729,7 @@ export class AdvancedCacheManager {
         const now = Date.now();
         const cleanupThreshold = 24 * 60 * 60 * 1000;
         
-        for(const [key, pattern] of this.accessPatterns) {
+        for(const [_key, pattern] of this.accessPatterns) {
             if (now - pattern.lastAccessTime > cleanupThreshold) {
                 pattern.recentAccesses = Math.max(0, pattern.recentAccesses - 1);
             }

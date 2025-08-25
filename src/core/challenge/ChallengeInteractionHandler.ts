@@ -340,7 +340,7 @@ export class ChallengeInteractionHandler {
     private handlers: EventHandlers;
     private focusableElements: FocusableElement[];
     private focusHistory: FocusHistoryEntry[];
-    private touchState: TouchEvent | null;
+    private touchState: TouchEvent | null; // Used for touch gesture detection
     private navigationState: NavigationState;
     private preventDoubleClickHandlers: Map<HTMLElement, ClickPreventionHandler>;
 
@@ -745,7 +745,7 @@ export class ChallengeInteractionHandler {
         this.elements.challengeItems.forEach(item => {
             // ダブルクリック防止ハンドラーを作成
             const preventedHandler = this.createDoubleClickPrevention(
-                this.handlers.challengeClick,
+                this.handlers.challengeClick as (event: Event) => void,
                 this.config.doubleClickDelay || GESTURE_THRESHOLDS.maxClickDelay
             );
 

@@ -4,6 +4,10 @@
  * ExportManager統合、多形式エクスポート、エクスポート統計管理を専門的に処理します
  */
 export class DataExportHandler {
+    private storageManager: any;
+    private privacyManager: any;
+    private exportManager: any;
+
     constructor(storageManager: any, privacyManager: any = null) {
         this.storageManager = storageManager;
         this.privacyManager = privacyManager;
@@ -18,11 +22,11 @@ export class DataExportHandler {
      */
     async initializeExportManager() {
         try {
-            const { ExportManager } = await import('../ExportManager.ts');
+            const { ExportManager } = await import('../ExportManager');
             this.exportManager = new ExportManager(this.storageManager, this.privacyManager);
             console.log('Export Manager initialized');
         } catch (error) {
-            console.warn('ExportManager not available:', error.message);
+            console.warn('ExportManager not available:', (error as any).message);
             // Fallback implementation
             this.exportManager = this.createFallbackExportManager();
         }
@@ -33,7 +37,7 @@ export class DataExportHandler {
      */
     createFallbackExportManager() {
         return {
-            exportData: async(options) => {
+            exportData: async(options: any) => {
                 return {
                     success: true,
                     data: JSON.stringify({ message: 'Basic export', options }),
@@ -110,7 +114,7 @@ export class DataExportHandler {
                 success: false,
                 error: {
                     code: 'EXPORT_ERROR',
-                    message: error.message,
+                    message: (error as any).message,
                     status: 500,
                     timestamp: new Date().toISOString(),
                     endpoint: '/export'
@@ -160,9 +164,9 @@ export class DataExportHandler {
      * @param {Object} filters - フィルター条件
      * @returns {Promise<Object>} バッチデータ
      */
-    async getBatchDataForExport(dataTypes, filters = {}) {
+    async getBatchDataForExport(dataTypes: any, filters = {}) {
         try {
-            const batchData = {};
+            const batchData: any = {};
             
             for (const dataType of dataTypes) {
                 try {
@@ -180,7 +184,7 @@ export class DataExportHandler {
                 metadata: {
                     dataTypes,
                     filters,
-                    totalRecords: Object.values(batchData).reduce((sum, arr) => sum + arr.length, 0),
+                    totalRecords: Object.values(batchData).reduce((sum, arr) => sum + (arr as any).length, 0),
                     timestamp: new Date().toISOString()
                 }
             };
@@ -188,7 +192,7 @@ export class DataExportHandler {
             console.error('Batch data retrieval error:', error);
             return {
                 success: false,
-                error: error.message,
+                error: (error as any).message,
                 data: {},
                 metadata: {
                     dataTypes,
@@ -203,7 +207,7 @@ export class DataExportHandler {
      * @param {Object} data - 匿名化対象データ
      * @returns {Promise<Object>} 匿名化されたデータ
      */
-    async anonymizeExportData(data) {
+    async anonymizeExportData(data: any) {
         if (!this.privacyManager) {
             console.warn('Privacy manager not available, skipping anonymization');
             return { data, anonymized: false };
@@ -218,7 +222,7 @@ export class DataExportHandler {
             };
         } catch (error) {
             console.error('Anonymization error:', error);
-            return { data, anonymized: false, error: error.message };
+            return { data, anonymized: false, error: (error as any).message };
         }
     }
     
@@ -228,7 +232,7 @@ export class DataExportHandler {
      * @param {string} format - 出力フォーマット
      * @returns {Promise<Object>} 変換結果
      */
-    async convertToFormat(data, format) {
+    async convertToFormat(data: any, format: any) {
         try {
             switch(format.toLowerCase()) {
                 case 'json':
@@ -251,7 +255,7 @@ export class DataExportHandler {
         } catch (error) {
             return {
                 success: false,
-                error: error.message,
+                error: (error as any).message,
                 data: null
             };
         }
@@ -262,7 +266,7 @@ export class DataExportHandler {
      * @param {Object} data - 変換対象データ
      * @returns {Object} CSV変換結果
      */
-    convertToCSV(data) {
+    convertToCSV(data: any) {
         try {
             if (!data || typeof data !== 'object') {
                 throw new Error('Invalid data for CSV conversion');
@@ -300,7 +304,7 @@ export class DataExportHandler {
         } catch (error) {
             return {
                 success: false,
-                error: error.message,
+                error: (error as any).message,
                 data: null
             };
         }
@@ -311,7 +315,7 @@ export class DataExportHandler {
      * @param {Object} data - 変換対象データ
      * @returns {Object} XML変換結果
      */
-    convertToXML(data) {
+    convertToXML(data: any) {
         try {
             if (!data || typeof data !== 'object') {
                 throw new Error('Invalid data for XML conversion');
@@ -320,7 +324,7 @@ export class DataExportHandler {
             // 簡単なXML変換実装
             let xmlContent = '<?xml version="1.0" encoding="UTF-8"?>\n<root>\n';
 
-            const convertValue = (value, indent = '  ') => {
+            const convertValue = (value: any, indent = '  ') => {
                 if(Array.isArray(value)) {
                     let result = '';
                     for(let i = 0; i < value.length; i++) {
@@ -355,7 +359,7 @@ export class DataExportHandler {
         } catch (error) {
             return {
                 success: false,
-                error: error.message,
+                error: (error as any).message,
                 data: null
             };
         }
@@ -367,7 +371,7 @@ export class DataExportHandler {
      * @param {Object} result - エクスポート結果
      * @returns {Object} メタデータ
      */
-    generateExportMetadata(options, result) {
+    generateExportMetadata(options: any, result: any) {
         return {
             exportId: `export_${Date.now()}_${Math.random().toString(36).substr(2, 6)}`,
             timestamp: new Date().toISOString(),
@@ -387,7 +391,7 @@ export class DataExportHandler {
      * @param {any} data - データ
      * @returns {number} レコード数
      */
-    countRecords(data) {
+    countRecords(data: any) {
         if(Array.isArray(data)) {
             return data.length;
         } else if (typeof data === 'object' && data !== null) {

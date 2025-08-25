@@ -3,7 +3,14 @@
  * 統計的手法を用いて異常なプレイパターンを検出し、注意喚起メッセージを生成します
  */
 export class AnomalyDetector {
-    constructor(storageManager) {
+    private storageManager: any;
+    private detectionRules: Map<string, any>;
+    private alertHistory: any[];
+    private maxAlertHistory: number;
+    private thresholds: any;
+    private anomalyTypes: any;
+
+    constructor(storageManager: any) {
         this.storageManager = storageManager;
         this.detectionRules = new Map();
         this.alertHistory = [];
@@ -38,56 +45,56 @@ export class AnomalyDetector {
     initializeDetectionRules() {
         // スコア異常値検出
         this.detectionRules.set(this.anomalyTypes.SCORE_OUTLIER, {
-            detect: (data) => this.detectScoreOutliers(data),
+            detect: (data: any) => this.detectScoreOutliers(data),
             severity: 'medium',
             description: 'スコアに異常な変動が検出されました'
         });
         
         // 精度急降下検出
         this.detectionRules.set(this.anomalyTypes.ACCURACY_DROP, {
-            detect: (data) => this.detectAccuracyDrop(data),
+            detect: (data: any) => this.detectAccuracyDrop(data),
             severity: 'high',
             description: '精度が急激に低下しています'
         });
         
         // プレイ時間異常検出
         this.detectionRules.set(this.anomalyTypes.PLAY_TIME_ANOMALY, {
-            detect: (data) => this.detectPlayTimeAnomaly(data),
+            detect: (data: any) => this.detectPlayTimeAnomaly(data),
             severity: 'low',
             description: 'プレイ時間に異常なパターンが見られます'
         });
         
         // コンボ一貫性異常検出
         this.detectionRules.set(this.anomalyTypes.COMBO_INCONSISTENCY, {
-            detect: (data) => this.detectComboInconsistency(data),
+            detect: (data: any) => this.detectComboInconsistency(data),
             severity: 'medium',
             description: 'コンボパフォーマンスに一貫性がありません'
         });
         
         // バブルインタラクション異常検出
         this.detectionRules.set(this.anomalyTypes.BUBBLE_INTERACTION_ANOMALY, {
-            detect: (data) => this.detectBubbleInteractionAnomaly(data),
+            detect: (data: any) => this.detectBubbleInteractionAnomaly(data),
             severity: 'high',
             description: 'バブル操作パターンに異常が検出されました'
         });
         
         // セッション頻度異常検出
         this.detectionRules.set(this.anomalyTypes.SESSION_FREQUENCY_ANOMALY, {
-            detect: (data) => this.detectSessionFrequencyAnomaly(data),
+            detect: (data: any) => this.detectSessionFrequencyAnomaly(data),
             severity: 'low',
             description: 'セッション頻度に異常なパターンがあります'
         });
         
         // パフォーマンス劣化検出
         this.detectionRules.set(this.anomalyTypes.PERFORMANCE_DEGRADATION, {
-            detect: (data) => this.detectPerformanceDegradation(data),
+            detect: (data: any) => this.detectPerformanceDegradation(data),
             severity: 'high',
             description: 'システムパフォーマンスの劣化が検出されました'
         });
         
         // 異常な終了パターン検出
         this.detectionRules.set(this.anomalyTypes.UNUSUAL_QUIT_PATTERN, {
-            detect: (data) => this.detectUnusualQuitPattern(data),
+            detect: (data: any) => this.detectUnusualQuitPattern(data),
             severity: 'medium',
             description: '異常な終了パターンが検出されました'
         });
@@ -196,18 +203,18 @@ export class AnomalyDetector {
     /**
      * スコア異常値を検出
      */
-    detectScoreOutliers(data) {
-        const scores = data.sessions.map(s => s.finalScore || 0);
+    detectScoreOutliers(data: any) {
+        const scores = data.sessions.map((s: any) => s.finalScore || 0);
         if (scores.length < 5) return [];
 
-        const mean = scores.reduce((a, b) => a + b, 0) / scores.length;
-        const variance = scores.reduce((sum, score) => sum + Math.pow(score - mean, 2), 0) / scores.length;
+        const mean = scores.reduce((a: any, b: any) => a + b, 0) / scores.length;
+        const variance = scores.reduce((sum: any, score: any) => sum + Math.pow(score - mean, 2), 0) / scores.length;
         const stdDev = Math.sqrt(variance);
         
         if (stdDev === 0) return [];
 
         const outliers = [];
-        data.sessions.forEach((session, index) => {
+        data.sessions.forEach((session: any, index: any) => {
             const zScore = Math.abs((session.finalScore - mean) / stdDev);
             if (zScore > this.thresholds.statistical) {
                 outliers.push({
@@ -227,8 +234,8 @@ export class AnomalyDetector {
     /**
      * 精度急降下を検出
      */
-    detectAccuracyDrop(data) {
-        const accuracies = data.sessions.map(s => {
+    detectAccuracyDrop(data: any) {
+        const accuracies = data.sessions.map((s: any) => {
             const total = (s.bubblesPopped || 0) + (s.bubblesMissed || 0);
             return total > 0 ? (s.bubblesPopped || 0) / total : 0;
         });
@@ -257,8 +264,8 @@ export class AnomalyDetector {
     /**
      * プレイ時間異常を検出
      */
-    detectPlayTimeAnomaly(data) {
-        const playTimes = data.sessions.map(s => {
+    detectPlayTimeAnomaly(data: any) {
+        const playTimes = data.sessions.map((s: any) => {
             if (s.endTime && s.startTime) {
                 return (s.endTime - s.startTime) / 1000;
             }
@@ -267,14 +274,14 @@ export class AnomalyDetector {
 
         if (playTimes.length < 5) return [];
 
-        const mean = playTimes.reduce((a, b) => a + b, 0) / playTimes.length;
-        const variance = playTimes.reduce((sum, time) => sum + Math.pow(time - mean, 2), 0) / playTimes.length;
+        const mean = playTimes.reduce((a: any, b: any) => a + b, 0) / playTimes.length;
+        const variance = playTimes.reduce((sum: any, time: any) => sum + Math.pow(time - mean, 2), 0) / playTimes.length;
         const stdDev = Math.sqrt(variance);
 
         if (stdDev === 0) return [];
 
         const anomalies = [];
-        data.sessions.forEach((session, index) => {
+        data.sessions.forEach((session: any, index: any) => {
             const playTime = playTimes[index];
             const zScore = Math.abs((playTime - mean) / stdDev);
 
@@ -296,8 +303,8 @@ export class AnomalyDetector {
     /**
      * コンボ一貫性異常を検出
      */
-    detectComboInconsistency(data) {
-        const combos = data.sessions.map(s => s.maxCombo || 0);
+    detectComboInconsistency(data: any) {
+        const combos = data.sessions.map((s: any) => s.maxCombo || 0);
         if (combos.length < 5) return [];
 
         // 移動平均と標準偏差を計算
@@ -306,9 +313,9 @@ export class AnomalyDetector {
 
         for (let i = windowSize; i < combos.length; i++) {
             const window = combos.slice(i - windowSize, i);
-            const windowMean = window.reduce((a, b) => a + b, 0) / window.length;
+            const windowMean = window.reduce((a: any, b: any) => a + b, 0) / window.length;
             const windowStdDev = Math.sqrt(
-                window.reduce((sum, combo) => sum + Math.pow(combo - windowMean, 2), 0) / window.length
+                window.reduce((sum: any, combo: any) => sum + Math.pow(combo - windowMean, 2), 0) / window.length
             );
 
             const currentCombo = combos[i];
@@ -333,12 +340,12 @@ export class AnomalyDetector {
     /**
      * バブルインタラクション異常を検出
      */
-    detectBubbleInteractionAnomaly(data) {
+    detectBubbleInteractionAnomaly(data: any) {
         if (!data.interactions || data.interactions.length === 0) return [];
 
         // セッション別にインタラクションを分析
         const sessionGroups = new Map();
-        data.interactions.forEach(interaction => {
+        data.interactions.forEach((interaction: any) => {
             if (!sessionGroups.has(interaction.sessionId)) {
                 sessionGroups.set(interaction.sessionId, []);
             }
@@ -348,18 +355,18 @@ export class AnomalyDetector {
         const anomalies = [];
         sessionGroups.forEach((interactions, sessionId) => {
             const reactionTimes = interactions
-                .filter(i => i.reactionTime && i.reactionTime > 0)
-                .map(i => i.reactionTime);
+                .filter((i: any) => i.reactionTime && i.reactionTime > 0)
+                .map((i: any) => i.reactionTime);
             
             if (reactionTimes.length < 5) return;
 
-            const mean = reactionTimes.reduce((a, b) => a + b, 0) / reactionTimes.length;
+            const mean = reactionTimes.reduce((a: any, b: any) => a + b, 0) / reactionTimes.length;
             const stdDev = Math.sqrt(
-                reactionTimes.reduce((sum, time) => sum + Math.pow(time - mean, 2), 0) / reactionTimes.length
+                reactionTimes.reduce((sum: any, time: any) => sum + Math.pow(time - mean, 2), 0) / reactionTimes.length
             );
 
             // 異常に遅い反応時間の検出
-            const slowReactions = reactionTimes.filter(time => 
+            const slowReactions = reactionTimes.filter((time: any) => 
                 stdDev > 0 && (time - mean) / stdDev > this.thresholds.statistical
             );
 
@@ -382,20 +389,20 @@ export class AnomalyDetector {
     /**
      * セッション頻度異常を検出
      */
-    detectSessionFrequencyAnomaly(data) {
+    detectSessionFrequencyAnomaly(data: any) {
         if (data.sessions.length < 7) return [];
 
         // 日別セッション数を計算
         const dailySessions = new Map();
-        data.sessions.forEach(session => {
+        data.sessions.forEach((session: any) => {
             const date = new Date(session.startTime).toDateString();
             dailySessions.set(date, (dailySessions.get(date) || 0) + 1);
         });
 
         const sessionCounts = Array.from(dailySessions.values());
-        const mean = sessionCounts.reduce((a, b) => a + b, 0) / sessionCounts.length;
+        const mean = sessionCounts.reduce((a: any, b: any) => a + b, 0) / sessionCounts.length;
         const stdDev = Math.sqrt(
-            sessionCounts.reduce((sum, count) => sum + Math.pow(count - mean, 2), 0) / sessionCounts.length
+            sessionCounts.reduce((sum: any, count: any) => sum + Math.pow(count - mean, 2), 0) / sessionCounts.length
         );
 
         if (stdDev === 0) return [];
@@ -420,14 +427,14 @@ export class AnomalyDetector {
     /**
      * パフォーマンス劣化を検出
      */
-    detectPerformanceDegradation(data) {
+    detectPerformanceDegradation(data: any) {
         if (!data.performance || data.performance.length < 10) return [];
 
-        const fpsData = data.performance.map(p => p.fps).filter(fps => fps > 0);
+        const fpsData = data.performance.map((p: any) => p.fps).filter((fps: any) => fps > 0);
         if (fpsData.length < 5) return [];
 
-        const mean = fpsData.reduce((a, b) => a + b, 0) / fpsData.length;
-        const lowPerformanceCount = fpsData.filter(fps => fps < 30).length;
+        const mean = fpsData.reduce((a: any, b: any) => a + b, 0) / fpsData.length;
+        const lowPerformanceCount = fpsData.filter((fps: any) => fps < 30).length;
         const degradationRatio = lowPerformanceCount / fpsData.length;
 
         if (degradationRatio > 0.3) { // 30%以上が低フレームレート
@@ -447,8 +454,8 @@ export class AnomalyDetector {
     /**
      * 異常な終了パターンを検出
      */
-    detectUnusualQuitPattern(data) {
-        const quitSessions = data.sessions.filter(s => s.exitReason === 'quit');
+    detectUnusualQuitPattern(data: any) {
+        const quitSessions = data.sessions.filter((s: any) => s.exitReason === 'quit');
         const totalSessions = data.sessions.length;
 
         if (totalSessions < 10) return [];
@@ -457,13 +464,13 @@ export class AnomalyDetector {
         
         if (quitRatio > 0.4) { // 40%以上が途中終了
             // 終了タイミングを分析
-            const quitTimes = quitSessions.map(s => {
+            const quitTimes = quitSessions.map((s: any) => {
                 const duration = s.endTime ? 
                     (s.endTime - s.startTime) / 1000 : s.duration || 0;
                 return duration;
             });
 
-            const averageQuitTime = quitTimes.reduce((a, b) => a + b, 0) / quitTimes.length;
+            const averageQuitTime = quitTimes.reduce((a: any, b: any) => a + b, 0) / quitTimes.length;
 
             return [{
                 timestamp: Date.now(),
@@ -481,9 +488,9 @@ export class AnomalyDetector {
     /**
      * 重要度別の分布を計算
      */
-    calculateSeverityBreakdown(results) {
-        const breakdown = { low: 0, medium: 0, high: 0, critical: 0 };
-        results.forEach(result => {
+    calculateSeverityBreakdown(results: any) {
+        const breakdown: any = { low: 0, medium: 0, high: 0, critical: 0 };
+        results.forEach((result: any) => {
             breakdown[result.severity] = (breakdown[result.severity] || 0) + 1;
         });
         return breakdown;
@@ -492,7 +499,7 @@ export class AnomalyDetector {
     /**
      * 異常検出サマリーを生成
      */
-    generateAnomalySummary(results) {
+    generateAnomalySummary(results: any) {
         if (results.length === 0) {
             return '異常なパターンは検出されませんでした。';
         }
@@ -508,12 +515,12 @@ export class AnomalyDetector {
 
         // 最も一般的な異常タイプを特定
         const typeCount = new Map();
-        results.forEach(result => {
+        results.forEach((result: any) => {
             typeCount.set(result.type, (typeCount.get(result.type) || 0) + 1);
         });
 
         const mostCommonType = Array.from(typeCount.entries())
-            .sort((a, b) => b[1] - a[1])[0];
+            .sort((a: any, b: any) => b[1] - a[1])[0];
 
         if (mostCommonType) {
             summary += ` 最も多い問題は「${this.getTypeDisplayName(mostCommonType[0])}」です。`;
@@ -525,11 +532,11 @@ export class AnomalyDetector {
     /**
      * 推奨事項を生成
      */
-    generateRecommendations(results) {
+    generateRecommendations(results: any) {
         const recommendations = [];
         const typeCount = new Map();
         
-        results.forEach(result => {
+        results.forEach((result: any) => {
             typeCount.set(result.type, (typeCount.get(result.type) || 0) + 1);
         });
 

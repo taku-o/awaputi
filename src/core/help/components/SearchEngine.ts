@@ -323,7 +323,7 @@ export class SearchEngine {
      * ボーナススコア計算
      * @private
      */
-    private calculateBonusScore(token: string, document: SearchDocument, originalQuery: string): number {
+    private calculateBonusScore(_token: string, document: SearchDocument, originalQuery: string): number {
         let bonus = 0;
         
         // 完全一致ボーナス
@@ -519,7 +519,7 @@ export class SearchEngine {
      * インデックスに追加
      * @private
      */
-    private addToIndex(token: string, docId: string, field: string, weight: number): void {
+    private addToIndex(token: string, docId: string, _field: string, _weight: number): void {
         if (!this.textIndex.has(token)) {
             this.textIndex.set(token, []);
         }
@@ -588,7 +588,7 @@ export class SearchEngine {
         if (this.searchCache.size >= this.maxCacheSize) {
             // 古いキャッシュを削除
             const oldestKey = this.searchCache.keys().next().value;
-            this.searchCache.delete(oldestKey);
+            this.searchCache.delete(oldestKey as string);
         }
         
         this.searchCache.set(key, {

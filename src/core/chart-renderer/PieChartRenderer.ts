@@ -685,9 +685,9 @@ export class PieChartRenderer {
             centerX,
             centerY,
             radius,
-            innerRadius,
+            innerRadius: innerRadius || undefined,
             size
-        };
+        } as PieChartArea;
     }
 
     /**
@@ -752,10 +752,10 @@ export class PieChartRenderer {
                 angle: sliceAngle,
                 midAngle,
                 radius: chartArea.radius,
-                innerRadius: chartArea.innerRadius,
+                innerRadius: chartArea.innerRadius || undefined,
                 centerX: chartArea.centerX + slicePosition.x,
                 centerY: chartArea.centerY + slicePosition.y
-            };
+            } as SliceGeometry;
 
             // スライスの描画
             context.fillStyle = color;
@@ -798,13 +798,13 @@ export class PieChartRenderer {
                 color,
                 value: item.value,
                 percentage: item.percentage,
-                label: item.label,
-                category: item.category,
+                label: item.label || undefined,
+                category: item.category || undefined,
                 exploded,
                 selected: false,
                 geometry,
                 data: item
-            };
+            } as SliceData;
 
             slices.push(sliceData);
 
@@ -823,7 +823,7 @@ export class PieChartRenderer {
     /**
      * ラベルの描画
      */
-    private renderLabels(context: PieChartContext, data: ProcessedPieData[], slices: SliceData[], chartArea: PieChartArea, options: PieChartOptions): void {
+    private renderLabels(context: PieChartContext, _data: ProcessedPieData[], slices: SliceData[], chartArea: PieChartArea, options: PieChartOptions): void {
         const labelOptions = options.labelOptions || {};
         const fontSize = options.fontSize || DEFAULT_PIE_OPTIONS.fontSize!;
         const fontFamily = options.fontFamily || DEFAULT_PIE_OPTIONS.fontFamily!;
@@ -835,7 +835,7 @@ export class PieChartRenderer {
         
         const labelBounds: LabelBounds[] = [];
         
-        slices.forEach((slice, index) => {
+        slices.forEach((slice, _index) => {
             const labelRadius = chartArea.radius * 0.7; // 内側のラベル位置
             const x = slice.geometry.centerX + Math.cos(slice.midAngle) * labelRadius;
             const y = slice.geometry.centerY + Math.sin(slice.midAngle) * labelRadius;

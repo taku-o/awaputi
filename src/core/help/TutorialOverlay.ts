@@ -101,10 +101,10 @@ export class TutorialOverlay extends ScenesBaseDialog {
     private instructionPanel: HTMLElement | null;
     private navigationPanel: HTMLElement | null;
     private progressBar: HTMLElement | null;
-    private highlightElement: HTMLElement | null;
+    private _highlightElement: HTMLElement | null;
     private spotlight: HTMLElement | null;
     // レイアウト設定
-    private layout: TutorialLayout;
+    private layout: any;
     // スタイル設定
     private styles: TutorialStyles;
     // チュートリアル状態
@@ -163,7 +163,7 @@ export class TutorialOverlay extends ScenesBaseDialog {
         this.instructionPanel = null;
         this.navigationPanel = null;
         this.progressBar = null;
-        this.highlightElement = null;
+        this._highlightElement = null;
         this.spotlight = null;
 
         this.initialize();
@@ -181,10 +181,10 @@ export class TutorialOverlay extends ScenesBaseDialog {
             this.setupComponentIntegration();
             // CSSスタイルの追加
             this.injectStyles();
-            this.loggingSystem.info('TutorialOverlay', 'Tutorial overlay initialized successfully');
+            (this.loggingSystem as any).info('TutorialOverlay', 'Tutorial overlay initialized successfully');
         } catch (error) {
-            this.loggingSystem.error('TutorialOverlay', 'Failed to initialize tutorial overlay', error);
-            this.errorHandler.handleError(error, 'TutorialOverlay.initialize');
+            (this.loggingSystem as any).error('TutorialOverlay', 'Failed to initialize tutorial overlay', error);
+            this.errorHandler.logError('TUTORIAL_OVERLAY_INIT_ERROR', error as Error, { method: 'initialize' });
         }
     }
     
@@ -209,7 +209,7 @@ export class TutorialOverlay extends ScenesBaseDialog {
 
             this.loggingSystem.debug('TutorialOverlay', 'All tutorial components initialized');
         } catch (error) {
-            this.errorHandler.handleError(error, 'TutorialOverlay.initializeComponents');
+            this.errorHandler.logError('TUTORIAL_OVERLAY_COMPONENT_INIT_ERROR', error as Error, { method: 'initializeComponents' });
         }
     }
     
@@ -240,7 +240,7 @@ export class TutorialOverlay extends ScenesBaseDialog {
 
             this.loggingSystem.debug('TutorialOverlay', 'Component integration setup completed');
         } catch (error) {
-            this.errorHandler.handleError(error, 'TutorialOverlay.setupComponentIntegration');
+            this.errorHandler.logError('TUTORIAL_OVERLAY_INTEGRATION_ERROR', error as Error, { method: 'setupComponentIntegration' });
         }
     }
 
@@ -280,7 +280,7 @@ export class TutorialOverlay extends ScenesBaseDialog {
             this.loggingSystem.info('TutorialOverlay', `Tutorial started: ${tutorial.id}`);
             return true;
         } catch (error) {
-            this.errorHandler.handleError(error, 'TutorialOverlay.startTutorial');
+            this.errorHandler.logError('TUTORIAL_OVERLAY_START_ERROR', error as Error, { method: 'startTutorial' });
             this.tutorialState.isActive = false;
             return false;
         }
@@ -300,7 +300,7 @@ export class TutorialOverlay extends ScenesBaseDialog {
             }
         } catch (error) {
             this.progressTracker?.recordError(error, 'nextStep');
-            this.errorHandler.handleError(error, 'TutorialOverlay.nextStep');
+            this.errorHandler.logError('TUTORIAL_OVERLAY_NEXT_STEP_ERROR', error as Error, { method: 'nextStep' });
         }
     }
     
@@ -317,7 +317,7 @@ export class TutorialOverlay extends ScenesBaseDialog {
             }
         } catch (error) {
             this.progressTracker?.recordError(error, 'previousStep');
-            this.errorHandler.handleError(error, 'TutorialOverlay.previousStep');
+            this.errorHandler.logError('TUTORIAL_OVERLAY_PREV_STEP_ERROR', error as Error, { method: 'previousStep' });
         }
     }
     
@@ -328,14 +328,14 @@ export class TutorialOverlay extends ScenesBaseDialog {
         try {
             if (!this.tutorialState.isActive) return;
 
-            this.progressTracker?.recordStepSkip(this.stepManager?.stepIndex || 0, 'user_choice');
+            this.progressTracker?.recordStepSkip((this.stepManager as any)?.stepIndex || 0, 'user_choice');
             const success = this.stepManager?.skipCurrentStep();
             if (success) {
                 this.displayCurrentStep();
             }
         } catch (error) {
             this.progressTracker?.recordError(error, 'skipStep');
-            this.errorHandler.handleError(error, 'TutorialOverlay.skipStep');
+            this.errorHandler.logError('TUTORIAL_OVERLAY_SKIP_STEP_ERROR', error as Error, { method: 'skipStep' });
         }
     }
     
@@ -344,11 +344,11 @@ export class TutorialOverlay extends ScenesBaseDialog {
      */
     displayCurrentStep(): void {
         try {
-            const currentStep = this.stepManager?.currentStep;
+            const currentStep = (this.stepManager as any)?.currentStep;
             if (!currentStep) return;
             
             // 進捗追跡にステップ開始を記録
-            this.progressTracker?.recordStepStart(this.stepManager?.stepIndex || 0, currentStep);
+            this.progressTracker?.recordStepStart((this.stepManager as any)?.stepIndex || 0, currentStep);
 
             // 前のハイライトをクリア
             this.clearHighlight();
@@ -360,16 +360,16 @@ export class TutorialOverlay extends ScenesBaseDialog {
 
             // 要素ハイライトを設定
             if (currentStep.target) {
-                this.highlightElement(currentStep.target, currentStep.highlightOptions);
+                this._highlightElement(currentStep.target, currentStep.highlightOptions);
             }
 
             // アニメーションを開始
             this.startStepAnimation(currentStep);
 
-            this.loggingSystem.debug('TutorialOverlay', `Step displayed: ${(this.stepManager?.stepIndex || 0) + 1}`);
+            this.loggingSystem.debug('TutorialOverlay', `Step displayed: ${((this.stepManager as any)?.stepIndex || 0) + 1}`);
         } catch (error) {
             this.progressTracker?.recordError(error, 'displayCurrentStep');
-            this.errorHandler.handleError(error, 'TutorialOverlay.displayCurrentStep');
+            this.errorHandler.logError('TUTORIAL_OVERLAY_DISPLAY_ERROR', error as Error, { method: 'displayCurrentStep' });
         }
     }
     
@@ -401,7 +401,7 @@ export class TutorialOverlay extends ScenesBaseDialog {
             // アニメーションを開始
             const animationType = options.animation || 'pulse';
             const intensity = options.intensity || 1.0;
-            this.animationController?.startHighlightAnimation(this.highlightElement, animationType, intensity);
+            this.animationController?.startHighlightAnimation(this._highlightElement, animationType, intensity);
             
             // スポットライトエフェクト
             if (options.spotlight !== false) {
@@ -409,7 +409,7 @@ export class TutorialOverlay extends ScenesBaseDialog {
             }
         } catch (error) {
             this.progressTracker?.recordError(error, 'highlightElement');
-            this.errorHandler.handleError(error, 'TutorialOverlay.highlightElement');
+            this.errorHandler.logError('TUTORIAL_OVERLAY_HIGHLIGHT_ERROR', error as Error, { method: 'highlightElement' });
         }
     }
     
@@ -422,10 +422,10 @@ export class TutorialOverlay extends ScenesBaseDialog {
         const rect = targetElement.getBoundingClientRect();
         const padding = this.layout.highlightPadding;
 
-        this.highlightElement = document.createElement('div');
-        this.highlightElement.className = 'tutorial-highlight';
+        this._highlightElement = document.createElement('div');
+        this._highlightElement.className = 'tutorial-highlight';
 
-        Object.assign(this.highlightElement.style, {
+        Object.assign(this._highlightElement.style, {
             position: 'fixed',
             left: `${rect.left - padding}px`,
             top: `${rect.top - padding}px`,
@@ -439,7 +439,7 @@ export class TutorialOverlay extends ScenesBaseDialog {
             transition: 'all 0.3s ease'
         });
 
-        document.body.appendChild(this.highlightElement);
+        document.body.appendChild(this._highlightElement);
     }
     
     /**
@@ -483,9 +483,9 @@ export class TutorialOverlay extends ScenesBaseDialog {
      * ハイライトをクリア
      */
     clearHighlight(): void {
-        if (this.highlightElement) {
-            this.highlightElement.remove();
-            this.highlightElement = null;
+        if (this._highlightElement) {
+            this._highlightElement.remove();
+            this._highlightElement = null;
         }
         
         if (this.spotlight) {
@@ -692,7 +692,7 @@ export class TutorialOverlay extends ScenesBaseDialog {
             this.closeTutorial();
             this.loggingSystem.info('TutorialOverlay', 'Tutorial completed successfully');
         } catch (error) {
-            this.errorHandler.handleError(error, 'TutorialOverlay.completeTutorial');
+            this.errorHandler.logError('TUTORIAL_OVERLAY_COMPLETE_ERROR', error as Error, { method: 'completeTutorial' });
         }
     }
     
@@ -729,7 +729,7 @@ export class TutorialOverlay extends ScenesBaseDialog {
 
             this.loggingSystem.info('TutorialOverlay', 'Tutorial closed');
         } catch (error) {
-            this.errorHandler.handleError(error, 'TutorialOverlay.closeTutorial');
+            this.errorHandler.logError('TUTORIAL_OVERLAY_CLOSE_ERROR', error as Error, { method: 'closeTutorial' });
         }
     }
     
@@ -753,10 +753,10 @@ export class TutorialOverlay extends ScenesBaseDialog {
         try {
             // ハイライトやスポットライトの位置を更新
             if (this.tutorialState.highlightedElement) {
-                const currentStep = this.stepManager?.currentStep;
+                const currentStep = (this.stepManager as any)?.currentStep;
                 this.clearHighlight();
                 if (currentStep) {
-                    this.highlightElement(this.tutorialState.highlightedElement, currentStep.highlightOptions);
+                    this._highlightElement(this.tutorialState.highlightedElement, currentStep.highlightOptions);
                 }
             }
         } catch (error) {

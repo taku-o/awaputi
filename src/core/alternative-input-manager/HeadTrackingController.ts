@@ -607,7 +607,7 @@ export class HeadTrackingController {
     /**
      * ジェスチャーパターンを検出
      */
-    private detectGesturePattern(gestureName: string, gestureConfig: GesturePattern): boolean {
+    private detectGesturePattern(_gestureName: string, gestureConfig: GesturePattern): boolean {
         const buffer = this.headState.gestureBuffer;
         const now = Date.now();
 

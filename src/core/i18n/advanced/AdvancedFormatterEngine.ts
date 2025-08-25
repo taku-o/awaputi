@@ -111,7 +111,7 @@ export class AdvancedFormatterEngine {
                 categories: ['one', 'other'],
                 rules: {
                     one: (n) => n === 1 && n % 1 === 0,
-                    other: (n) => true
+                    other: (_n) => true
                 },
                 examples: { 
                     one: [1],
@@ -127,7 +127,7 @@ export class AdvancedFormatterEngine {
                     two: (n) => n === 2,
                     few: (n) => n % 100 >= 3 && n % 100 <= 10,
                     many: (n) => n % 100 >= 11 && n % 100 <= 99,
-                    other: (n) => true
+                    other: (_n) => true
                 },
                 examples: {
                     zero: [0],
@@ -428,7 +428,7 @@ export class AdvancedFormatterEngine {
             }
             
             // 適用可能なパターンを検索
-            const applicablePattern = generationRule.patterns.find(pattern =>
+            const applicablePattern = generationRule.patterns.find((pattern: any) =>
                 pattern.condition(data)
             );
             
@@ -537,13 +537,13 @@ export class AdvancedFormatterEngine {
             });
             
             // 文脈依存パターンを処理
-            result = result.replace(/\{(\w+),\s*select,\s*([^}]+)\}/g, (match, variable, selectDef) => {
+            result = result.replace(/\{(\w+),\s*select,\s*([^}]+)\}/g, (_match, variable, selectDef) => {
                 const value = data[variable];
                 return this.formatContextual(selectDef, value, language);
             });
             
             // 日付・時刻パターンを処理
-            result = result.replace(/\{(\w+),\s*(date|time|datetime),\s*([^}]+)\}/g, (match, variable, type, format) => {
+            result = result.replace(/\{(\w+),\s*(date|time|datetime),\s*([^}]+)\}/g, (match, variable, _type, format) => {
                 const dateValue = data[variable];
                 if (dateValue) {
                     return this.formatDateTime(dateValue, format, language);
@@ -563,7 +563,7 @@ export class AdvancedFormatterEngine {
             // カスタムプロセッサを処理
             for (const [processorName, processor] of customProcessors) {
                 const regex = new RegExp(`\\{(\\w+),\\s*${processorName},\\s*([^}]+)\\}`, 'g');
-                result = result.replace(regex, (match, variable, processorDef) => {
+                result = result.replace(regex, (_match, variable, processorDef) => {
                     const value = data[variable];
                     return processor(value, processorDef, language, {
                         ...options,
@@ -693,42 +693,42 @@ export class AdvancedFormatterEngine {
         return result;
     }
     
-    private generateRelativeTimeExpression(time: string, lang: string): string {
+    private generateRelativeTimeExpression(time: string, _lang: string): string {
         // 実装プレースホルダー
         return time;
     }
 
-    private generateFutureTimeExpression(time: string, lang: string): string {
+    private generateFutureTimeExpression(time: string, _lang: string): string {
         // 実装プレースホルダー
         return time;
     }
 
-    private generateComparativeExpression(data: any, lang: string): string {
+    private generateComparativeExpression(data: any, _lang: string): string {
         // 実装プレースホルダー
         return JSON.stringify(data);
     }
 
-    private generateSuperlativeExpression(data: any, lang: string): string {
+    private generateSuperlativeExpression(data: any, _lang: string): string {
         // 実装プレースホルダー
         return JSON.stringify(data);
     }
 
-    private applyTemplate(translation: string, template: string, data: any): string {
+    private applyTemplate(translation: string, _template: string, _data: any): string {
         // 実装プレースホルダー
         return translation;
     }
 
-    private postProcessGeneration(translation: string, type: string, language: string): string {
+    private postProcessGeneration(translation: string, _type: string, _language: string): string {
         // 実装プレースホルダー
         return translation;
     }
 
-    private formatDateTime(dateValue: any, format: string, language: string): string {
+    private formatDateTime(dateValue: any, _format: string, _language: string): string {
         // 実装プレースホルダー
         return dateValue.toString();
     }
 
-    private formatNumber(numberValue: number, format: string, language: string): string {
+    private formatNumber(numberValue: number, _format: string, _language: string): string {
         // 実装プレースホルダー
         return numberValue.toString();
     }
@@ -841,7 +841,7 @@ export class AdvancedFormatterEngine {
         const currentTime = Date.now();
 
         // 期限切れエントリを削除
-        const validEntries = entries.filter(([key, entry]) =>
+        const validEntries = entries.filter(([_key, entry]) =>
             currentTime - entry.timestamp <= this.memoryConfig.expirationTime
         );
         

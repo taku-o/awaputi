@@ -455,7 +455,7 @@ export class InterfaceSimplifier {
     private simplificationRules: SimplificationRules;
     private originalStates: Map<string, OriginalState>;
     private observedElements: Set<HTMLElement>;
-    private mutationObserver: MutationObserver;
+    private mutationObserver!: MutationObserver;
     private appliedStyles: Map<string, StyleInjection>;
 
     constructor() {

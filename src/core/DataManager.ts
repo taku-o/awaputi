@@ -142,7 +142,7 @@ export class DataManager {
 
     constructor(gameEngine: GameEngineInterface | null) {
         this.gameEngine = gameEngine;
-        this.errorHandler = ErrorHandler.getInstance();
+        this.errorHandler = getErrorHandler();
         
         // 基本プロパティ
         this.isInitialized = false;

@@ -502,7 +502,7 @@ export function detectMediaQueryState(): MediaQueryState {
 }
 
 export class ChallengeUIRenderer {
-    private challengeUI: ChallengeUIReference;
+    private challengeUI: ChallengeUIReference; // Used for theme management
     private config: UIRenderConfig;
     private state: ChallengeUIState;
     private elements: ChallengeUIElements;
@@ -928,7 +928,7 @@ export class ChallengeUIRenderer {
     private createChallengeItemElements(
         challenge: Challenge,
         progressPercent: number,
-        isCompleted: boolean
+        _isCompleted: boolean
     ): ChallengeItemElements {
         const difficultyInfo = getDifficultyInfo(challenge.difficulty);
         
@@ -1032,7 +1032,7 @@ export class ChallengeUIRenderer {
             deadline,
             reward,
             badges: badges.length > 0 ? badges : undefined
-        };
+        } as ChallengeItemElements;
     }
     
     /**

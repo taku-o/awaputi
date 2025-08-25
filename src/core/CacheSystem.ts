@@ -117,7 +117,7 @@ export class CacheSystem {
     private config: CacheConfig;
     private stats: CacheStats;
     private accessHistory: Map<string, number>;
-    private lastCleanup: number;
+    private lastCleanup: number; // Timestamp of last cleanup
     private cleanupTimer: NodeJS.Timeout | null = null;
     private memoryMonitorTimer: NodeJS.Timeout | null = null;
     
@@ -192,7 +192,7 @@ export class CacheSystem {
 
             return true;
         } catch (error) {
-            ErrorHandler.handleError(error, {
+            (ErrorHandler as any).handleError(error, {
                 context: 'CacheSystem.set',
                 key,
                 value
@@ -233,7 +233,7 @@ export class CacheSystem {
 
             return entry.value;
         } catch (error) {
-            ErrorHandler.handleError(error, {
+            (ErrorHandler as any).handleError(error, {
                 context: 'CacheSystem.get',
                 key
             });
@@ -255,7 +255,7 @@ export class CacheSystem {
 
             return false;
         } catch (error) {
-            ErrorHandler.handleError(error, {
+            (ErrorHandler as any).handleError(error, {
                 context: 'CacheSystem.delete',
                 key
             });
@@ -292,7 +292,7 @@ export class CacheSystem {
 
             return count;
         } catch (error) {
-            ErrorHandler.handleError(error, {
+            (ErrorHandler as any).handleError(error, {
                 context: 'CacheSystem.clear',
                 prefix
             });
@@ -316,7 +316,7 @@ export class CacheSystem {
 
             return true;
         } catch (error) {
-            ErrorHandler.handleError(error, {
+            (ErrorHandler as any).handleError(error, {
                 context: 'CacheSystem.updateExpiry',
                 key,
                 ttl
@@ -347,7 +347,7 @@ export class CacheSystem {
 
             return true;
         } catch (error) {
-            ErrorHandler.handleError(error, {
+            (ErrorHandler as any).handleError(error, {
                 context: 'CacheSystem.has',
                 key
             });
@@ -407,7 +407,7 @@ export class CacheSystem {
 
             return count;
         } catch (error) {
-            ErrorHandler.handleError(error, {
+            (ErrorHandler as any).handleError(error, {
                 context: 'CacheSystem.cleanup'
             });
             return 0;
@@ -443,7 +443,7 @@ export class CacheSystem {
             if (this.stats.size < 0) this.stats.size = 0;
 
         } catch (error) {
-            ErrorHandler.handleError(error, {
+            (ErrorHandler as any).handleError(error, {
                 context: 'CacheSystem._evictItems',
                 count
             });
@@ -621,7 +621,7 @@ export class CacheSystem {
             const beforeMemory = this._estimateMemoryUsage();
             
             // 1. 期限切れエントリの削除
-            const expiredCount = this._cleanupExpiredEntries();
+            const _expiredCount = this._cleanupExpiredEntries();
             
             // 2. 低優先度エントリの削除（メモリ使用量が高い場合）
             const memoryKB = parseInt(beforeMemory);
@@ -1045,4 +1045,4 @@ export function getCacheSystem(options: CacheOptions = {}): CacheSystem {
     return instance;
 }
 
-export { CacheSystem };
+// CacheSystem already exported above

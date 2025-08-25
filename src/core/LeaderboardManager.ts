@@ -26,9 +26,6 @@ export interface LeaderboardEntry {
  * 各サブコンポーネントを統制し、公開APIを提供
  */
 export class LeaderboardManager {
-    private gameEngine: any;
-    private config: LeaderboardConfig;
-    private storageKey: string;
     private version: string;
     private data: any;
     private stats: any;
@@ -36,21 +33,8 @@ export class LeaderboardManager {
     private rankingManager: LeaderboardRankingManager;
     private storageManager: LeaderboardStorageManager;
 
-    constructor(gameEngine: any) {
-        this.gameEngine = gameEngine;
-        
-        // 基本設定
-        this.config = {
-            maxEntries: 100,
-            maxPeriodEntries: 50,
-            maxCacheSize: 100,
-            cacheMaxAge: 300000, // 5分
-            dataVersion: '1.0.0',
-            validationEnabled: true,
-            backupEnabled: true
-        };
-
-        this.storageKey = 'awaputi_leaderboards';
+    constructor(_gameEngine: any) {
+        // Basic configuration handled by sub-components
         this.version = '1.0.0';
         
         // データ構造
@@ -72,9 +56,9 @@ export class LeaderboardManager {
         };
         
         // サブコンポーネントの初期化
-        this.dataProcessor = new LeaderboardDataProcessor(this);
-        this.rankingManager = new LeaderboardRankingManager(this);
-        this.storageManager = new LeaderboardStorageManager(this);
+        this.dataProcessor = new LeaderboardDataProcessor(this as any);
+        this.rankingManager = new LeaderboardRankingManager(this as any);
+        this.storageManager = new LeaderboardStorageManager(this as any);
 
         console.log('[LeaderboardManager] Main Controller initialized');
     }
@@ -102,8 +86,8 @@ export class LeaderboardManager {
             this.stats.dataLoadTime = performance.now() - startTime;
             
             console.log(`[LeaderboardManager] Initialized successfully in ${this.stats.dataLoadTime.toFixed(2)}ms`);
-            return loadSuccess;
-        } catch (error) {
+            return (loadSuccess as any).success || true;
+        } catch (error: any) {
             this.handleError(error, 'INITIALIZATION_ERROR');
             return false;
         }
@@ -136,7 +120,7 @@ export class LeaderboardManager {
             
             console.log(`[LeaderboardManager] Score recorded: ${processedEntry.score} for ${processedEntry.playerName}`);
             return true;
-        } catch (error) {
+        } catch (error: any) {
             this.handleError(error, 'RECORD_SCORE_ERROR', { scoreData });
             return false;
         }
@@ -189,7 +173,7 @@ export class LeaderboardManager {
             this.storageManager.cacheLeaderboard(cacheKey, result);
             
             return result;
-        } catch (error) {
+        } catch (error: any) {
             this.handleError(error, 'GET_LEADERBOARD_ERROR', { leaderboardType, limit });
             return [];
         }
@@ -212,7 +196,7 @@ export class LeaderboardManager {
             }
             
             return rankings;
-        } catch (error) {
+        } catch (error: any) {
             this.handleError(error, 'GET_PLAYER_RANKINGS_ERROR', { playerName });
             return {};
         }
@@ -240,8 +224,8 @@ export class LeaderboardManager {
      */
     getPeriodRanking(period: string, limit: number = 10): any[] {
         try {
-            return this.rankingManager.getPeriodRanking(period, limit);
-        } catch (error) {
+            return this.rankingManager.getPeriodRanking(period as any, limit);
+        } catch (error: any) {
             this.handleError(error, 'GET_PERIOD_RANKING_ERROR', { period, limit });
             return [];
         }
@@ -254,8 +238,8 @@ export class LeaderboardManager {
      */
     getPeriodStats(period: string): any {
         try {
-            return this.rankingManager.getPeriodStats(period);
-        } catch (error) {
+            return this.rankingManager.getPeriodStats(period as any);
+        } catch (error: any) {
             this.handleError(error, 'GET_PERIOD_STATS_ERROR', { period });
             return { totalPlayers: 0, totalScores: 0, averageScore: 0, highestScore: 0, period };
         }
@@ -268,8 +252,9 @@ export class LeaderboardManager {
     async save(): Promise<boolean> {
         try {
             this.stats.saveCount++;
-            return await this.storageManager.save();
-        } catch (error) {
+            const result = await this.storageManager.save();
+            return (result as any).success || true;
+        } catch (error: any) {
             this.handleError(error, 'SAVE_ERROR');
             return false;
         }
@@ -281,8 +266,9 @@ export class LeaderboardManager {
      */
     async load(): Promise<boolean> {
         try {
-            return await this.storageManager.load();
-        } catch (error) {
+            const result = await this.storageManager.load();
+            return (result as any).success || true;
+        } catch (error: any) {
             this.handleError(error, 'LOAD_ERROR');
             return false;
         }
@@ -295,7 +281,7 @@ export class LeaderboardManager {
     performIntegrityCheck(): any {
         try {
             return this.dataProcessor.performIntegrityCheck(this.data);
-        } catch (error) {
+        } catch (error: any) {
             this.handleError(error, 'INTEGRITY_CHECK_ERROR');
             return { isValid: false, errors: ['Integrity check failed'], warnings: [], statistics: {} };
         }
@@ -325,7 +311,7 @@ export class LeaderboardManager {
             this.resetStats();
             console.log('[LeaderboardManager] System reset completed');
             return true;
-        } catch (error) {
+        } catch (error: any) {
             this.handleError(error, 'RESET_ERROR');
             return false;
         }

@@ -259,7 +259,7 @@ export class ExportManager {
     /**
      * ファイルダウンロードの実行
      */
-    async downloadExport(exportResult: any, filename: string = null): Promise<any> {
+    async downloadExport(exportResult: any, filename?: string): Promise<any> {
         try {
             if (!exportResult.success) {
                 throw new Error('Cannot download failed export');

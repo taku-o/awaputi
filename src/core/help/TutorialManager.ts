@@ -7,8 +7,7 @@
 import { ErrorHandler } from '../../utils/ErrorHandler.js';
 import { LoggingSystem } from '../LoggingSystem.js';
 import { CacheSystem } from '../CacheSystem.js';
-import { ContentLoader, getContentLoader } from './components/ContentLoader.js';
-import { TutorialModel } from './DataModels.js';
+import { ContentLoader } from './components/ContentLoader.js';  
 import { TutorialOverlay, getTutorialOverlay } from './TutorialOverlay.js';
 
 // 分割されたコンポーネントをインポート
@@ -133,7 +132,7 @@ export interface TutorialValidationEngine {
 export class TutorialManager {
     private gameEngine: GameEngine;
     private loggingSystem: LoggingSystem;
-    private cacheSystem: CacheSystem;
+    private _cacheSystem: CacheSystem;
     private contentLoader: ContentLoader;
     private tutorialOverlay: TutorialOverlay;
     
@@ -154,15 +153,15 @@ export class TutorialManager {
     constructor(gameEngine: GameEngine) {
         this.gameEngine = gameEngine;
         this.loggingSystem = LoggingSystem.getInstance ? LoggingSystem.getInstance() : new LoggingSystem();
-        this.cacheSystem = CacheSystem.getInstance ? CacheSystem.getInstance() : new CacheSystem();
-        this.contentLoader = getContentLoader();
+        this._cacheSystem = (CacheSystem as any).getInstance ? (CacheSystem as any).getInstance() : new CacheSystem();
+        this.contentLoader = new ContentLoader(this.gameEngine);
         this.tutorialOverlay = getTutorialOverlay(gameEngine, gameEngine?.eventBus, gameEngine?.state);
         
         // 分割されたコンポーネントを初期化
-        this.accessibilityManager = getTutorialAccessibilityManager(gameEngine?.accessibilityManager, this.loggingSystem);
-        this.statsManager = getTutorialStatsManager(this.loggingSystem);
-        this.progressManager = getTutorialProgressManager(this.loggingSystem);
-        this.validationEngine = getTutorialValidationEngine(gameEngine, this.loggingSystem);
+        this.accessibilityManager = getTutorialAccessibilityManager(gameEngine?.accessibilityManager, this.loggingSystem) as any;
+        this.statsManager = getTutorialStatsManager(this.loggingSystem) as any;
+        this.progressManager = getTutorialProgressManager(this.loggingSystem) as any;
+        this.validationEngine = getTutorialValidationEngine(gameEngine, this.loggingSystem) as any;
         
         // チュートリアル状態
         this.currentTutorial = null;
@@ -198,7 +197,7 @@ export class TutorialManager {
             
             this.loggingSystem.info('TutorialManager', 'Tutorial system initialized successfully');
         } catch (error) {
-            this.loggingSystem.error('TutorialManager', 'Failed to initialize tutorial system', error);
+            this.loggingSystem.error('TutorialManager', 'Failed to initialize tutorial system', error as string);
             ErrorHandler.handle(error as Error, 'TutorialManager.initialize');
         }
     }
@@ -245,7 +244,7 @@ export class TutorialManager {
             return true;
 
         } catch (error) {
-            this.loggingSystem.error('TutorialManager', `Failed to start tutorial: ${tutorialId}`, error);
+            this.loggingSystem.error('TutorialManager', `Failed to start tutorial: ${tutorialId}`, error as string);
             return false;
         }
     }
@@ -261,7 +260,7 @@ export class TutorialManager {
             }
             this.loggingSystem.info('TutorialManager', 'Tutorial paused');
         } catch (error) {
-            this.loggingSystem.error('TutorialManager', 'Failed to pause tutorial', error);
+            this.loggingSystem.error('TutorialManager', 'Failed to pause tutorial', error as string);
         }
     }
 
@@ -276,7 +275,7 @@ export class TutorialManager {
             }
             this.loggingSystem.info('TutorialManager', 'Tutorial resumed');
         } catch (error) {
-            this.loggingSystem.error('TutorialManager', 'Failed to resume tutorial', error);
+            this.loggingSystem.error('TutorialManager', 'Failed to resume tutorial', error as string);
         }
     }
 
@@ -293,7 +292,7 @@ export class TutorialManager {
             this.stopTutorial();
             this.loggingSystem.info('TutorialManager', 'Tutorial skipped');
         } catch (error) {
-            this.loggingSystem.error('TutorialManager', 'Failed to skip tutorial', error);
+            this.loggingSystem.error('TutorialManager', 'Failed to skip tutorial', error as string);
         }
     }
 
@@ -315,7 +314,7 @@ export class TutorialManager {
                 this.completeTutorial();
             }
         } catch (error) {
-            this.loggingSystem.error('TutorialManager', 'Failed to advance to next step', error);
+            this.loggingSystem.error('TutorialManager', 'Failed to advance to next step', error as string);
         }
     }
 
@@ -334,7 +333,7 @@ export class TutorialManager {
                 this.executeStep(this.currentStep);
             }
         } catch (error) {
-            this.loggingSystem.error('TutorialManager', 'Failed to go to previous step', error);
+            this.loggingSystem.error('TutorialManager', 'Failed to go to previous step', error as string);
         }
     }
 
@@ -424,7 +423,7 @@ export class TutorialManager {
                 await this.executeStep(stepIndex);
             }
         } catch (error) {
-            this.loggingSystem.error('TutorialManager', `Step execution error: ${stepIndex}`, error);
+            this.loggingSystem.error('TutorialManager', `Step execution error: ${stepIndex}`, error as string);
         }
     }
 
@@ -469,7 +468,7 @@ export class TutorialManager {
                 this.tutorialOverlay.showStep(step);
             }
         } catch (error) {
-            this.loggingSystem.error('TutorialManager', 'Failed to show step instructions', error);
+            this.loggingSystem.error('TutorialManager', 'Failed to show step instructions', error as string);
         }
     }
 
@@ -480,10 +479,10 @@ export class TutorialManager {
     highlightElement(highlightData: string | object): void {
         try {
             if (this.tutorialOverlay) {
-                this.tutorialOverlay.highlightElement(highlightData);
+                (this.tutorialOverlay as any).highlightElement?.(highlightData);
             }
         } catch (error) {
-            this.loggingSystem.error('TutorialManager', 'Failed to highlight element', error);
+            this.loggingSystem.error('TutorialManager', 'Failed to highlight element', error as string);
         }
     }
 
@@ -496,7 +495,7 @@ export class TutorialManager {
                 await this.tutorialOverlay.show(this.currentTutorial);
             }
         } catch (error) {
-            this.loggingSystem.error('TutorialManager', 'Failed to show tutorial overlay', error);
+            this.loggingSystem.error('TutorialManager', 'Failed to show tutorial overlay', error as string);
         }
     }
 
@@ -542,7 +541,7 @@ export class TutorialManager {
             
             this.loggingSystem.info('TutorialManager', `Tutorial completed: ${tutorialId}`);
         } catch (error) {
-            this.loggingSystem.error('TutorialManager', 'Failed to complete tutorial', error);
+            this.loggingSystem.error('TutorialManager', 'Failed to complete tutorial', error as string);
         }
     }
 
@@ -561,7 +560,7 @@ export class TutorialManager {
             
             this.loggingSystem.info('TutorialManager', 'Tutorial stopped');
         } catch (error) {
-            this.loggingSystem.error('TutorialManager', 'Failed to stop tutorial', error);
+            this.loggingSystem.error('TutorialManager', 'Failed to stop tutorial', error as string);
         }
     }
 
@@ -574,7 +573,7 @@ export class TutorialManager {
                 this.tutorialOverlay.clearHighlight();
             }
         } catch (error) {
-            this.loggingSystem.error('TutorialManager', 'Failed to clear highlight', error);
+            this.loggingSystem.error('TutorialManager', 'Failed to clear highlight', error as string);
         }
     }
 
@@ -586,7 +585,7 @@ export class TutorialManager {
             const tutorialIds = ['basic-tutorial', 'advanced-bubbles'];
             
             for (const tutorialId of tutorialIds) {
-                const tutorial = await this.contentLoader.loadTutorial(tutorialId);
+                const tutorial = await (this.contentLoader as any).loadTutorialData(tutorialId);
                 if (tutorial) {
                     this.tutorialData.set(tutorialId, tutorial);
                 }
@@ -596,7 +595,7 @@ export class TutorialManager {
             await this.loadGuidedTourData();
 
         } catch (error) {
-            this.loggingSystem.error('TutorialManager', 'Failed to load tutorial data', error);
+            this.loggingSystem.error('TutorialManager', 'Failed to load tutorial data', error as string);
         }
     }
 
@@ -613,7 +612,7 @@ export class TutorialManager {
                 }
             }
         } catch (error) {
-            this.loggingSystem.error('TutorialManager', 'Failed to load guided tour data', error);
+            this.loggingSystem.error('TutorialManager', 'Failed to load guided tour data', error as string);
         }
     }
 
@@ -640,7 +639,7 @@ export class TutorialManager {
                 });
             }
         } catch (error) {
-            this.loggingSystem.error('TutorialManager', 'Failed to setup overlay integration', error);
+            this.loggingSystem.error('TutorialManager', 'Failed to setup overlay integration', error as string);
         }
     }
 
@@ -667,7 +666,7 @@ export class TutorialManager {
                     break;
             }
         } catch (error) {
-            this.loggingSystem.error('TutorialManager', 'Failed to handle overlay navigation', error);
+            this.loggingSystem.error('TutorialManager', 'Failed to handle overlay navigation', error as string);
         }
     }
 
@@ -694,7 +693,7 @@ export class TutorialManager {
             
             return tutorials;
         } catch (error) {
-            this.loggingSystem.error('TutorialManager', 'Failed to get available tutorials', error);
+            this.loggingSystem.error('TutorialManager', 'Failed to get available tutorials', error as string);
             return [];
         }
     }
@@ -713,7 +712,7 @@ export class TutorialManager {
                 this.currentTutorial
             );
         } catch (error) {
-            this.loggingSystem.error('TutorialManager', 'Failed to get tutorial statistics', error);
+            this.loggingSystem.error('TutorialManager', 'Failed to get tutorial statistics', error as string);
             return {};
         }
     }
@@ -734,7 +733,7 @@ export class TutorialManager {
                 }
             }
         } catch (error) {
-            this.loggingSystem.error('TutorialManager', 'Failed to update accessibility config', error);
+            this.loggingSystem.error('TutorialManager', 'Failed to update accessibility config', error as string);
         }
     }
 

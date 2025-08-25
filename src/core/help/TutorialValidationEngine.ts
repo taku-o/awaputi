@@ -4,7 +4,7 @@
  * ステップ検証、インタラクション検出、タイムアウト処理を担当
  */
 
-import { ErrorHandler } from '../../utils/ErrorHandler.js';
+import { /* ErrorHandler */ } from '../../utils/ErrorHandler.js';
 import { LoggingSystem } from '../LoggingSystem.js';
 
 // 型定義
@@ -121,9 +121,9 @@ export class TutorialValidationEngine {
     initialize(): void {
         try {
             this.setupValidationFunctions();
-            this.loggingSystem.log('TutorialValidationEngineが初期化されました', 'info', 'TutorialValidationEngine');
+            (this.loggingSystem as any).log('TutorialValidationEngineが初期化されました', 'info', 'TutorialValidationEngine');
         } catch (error) {
-            this.loggingSystem.log(`バリデーションエンジン初期化エラー: ${(error as Error).message}`, 'error', 'TutorialValidationEngine');
+            (this.loggingSystem as any).log(`バリデーションエンジン初期化エラー: ${(error as Error).message}`, 'error', 'TutorialValidationEngine');
         }
     }
     
@@ -131,7 +131,7 @@ export class TutorialValidationEngine {
      * バリデーション関数をセットアップ
      */
     setupValidationFunctions(): void {
-        this.validationFunctions.set('validateBubblePop', async (actionResult, step, gameEngine) => {
+        this.validationFunctions.set('validateBubblePop', async (actionResult, _step, gameEngine) => {
             const bubbleManager = gameEngine?.bubbleManager;
             
             if (!bubbleManager) {
@@ -152,7 +152,7 @@ export class TutorialValidationEngine {
         });
         
         // 泡をドラッグするバリデーション
-        this.validationFunctions.set('validateBubbleDrag', async (actionResult, step, gameEngine) => {
+        this.validationFunctions.set('validateBubbleDrag', async (actionResult, step, _gameEngine) => {
             if (!actionResult || !actionResult.dragDistance) {
                 return { success: false, error: 'ドラッグ操作が検出されませんでした' };
             }
@@ -169,7 +169,7 @@ export class TutorialValidationEngine {
         });
         
         // 特殊泡を割るバリデーション
-        this.validationFunctions.set('validateSpecialBubblePop', async (actionResult, step, gameEngine) => {
+        this.validationFunctions.set('validateSpecialBubblePop', async (actionResult, _step, _gameEngine) => {
             const bubbleType = actionResult?.bubbleType;
             
             if (!bubbleType) {
@@ -189,7 +189,7 @@ export class TutorialValidationEngine {
         });
         
         // コンボ達成バリデーション
-        this.validationFunctions.set('validateCombo', async (actionResult, step, gameEngine) => {
+        this.validationFunctions.set('validateCombo', async (_actionResult, step, gameEngine) => {
             const scoreManager = gameEngine?.scoreManager;
             
             if (!scoreManager) {
@@ -210,7 +210,7 @@ export class TutorialValidationEngine {
         });
         
         // メニューナビゲーションバリデーション
-        this.validationFunctions.set('validateMenuNavigation', async (actionResult, step, gameEngine) => {
+        this.validationFunctions.set('validateMenuNavigation', async (_actionResult, step, gameEngine) => {
             const targetScene = step.targetScene;
             const currentScene = gameEngine?.sceneManager?.currentScene?.constructor?.name;
             
@@ -229,7 +229,7 @@ export class TutorialValidationEngine {
         });
         
         // スコア達成バリデーション
-        this.validationFunctions.set('validateScore', async (actionResult, step, gameEngine) => {
+        this.validationFunctions.set('validateScore', async (_actionResult, step, gameEngine) => {
             const scoreManager = gameEngine?.scoreManager;
             
             if (!scoreManager) {

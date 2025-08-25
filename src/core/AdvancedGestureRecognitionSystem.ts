@@ -94,7 +94,7 @@ interface GestureState {
     rotation: number;
     touches: TouchState[];
     pinch?: PinchState;
-    rotation?: RotationState;
+    rotationState?: RotationState;
 }
 
 interface TouchState {
@@ -212,13 +212,13 @@ export class AdvancedGestureRecognitionSystem {
     private gesturePatterns: GesturePatterns;
     private gestureHistory: GestureHistory[];
     private maxHistoryLength: number;
-    private learningData: LearningData;
+    private _learningData: LearningData;
     private longPressTimer: ReturnType<typeof setTimeout> | null;
-    private gestureAnalyzer?: GestureAnalyzer;
+    private _gestureAnalyzer?: GestureAnalyzer;
 
     constructor(gameEngine: GameEngine) {
         this.gameEngine = gameEngine;
-        this.errorHandler = ErrorHandler.getInstance();
+        this.errorHandler = new ErrorHandler();
 
         // ジェスチャー設定
         this.gestureConfig = {
@@ -295,7 +295,7 @@ export class AdvancedGestureRecognitionSystem {
         this.maxHistoryLength = 100;
         
         // 学習データ
-        this.learningData = {
+        this._learningData = {
             patterns: new Map<string, unknown>(),
             accuracy: new Map<string, number>(),
             adaptiveThresholds: new Map<string, number>()
@@ -406,7 +406,7 @@ export class AdvancedGestureRecognitionSystem {
     /**
      * タッチキャンセル処理
      */
-    private handleTouchCancel(e: TouchEvent): void {
+    private handleTouchCancel(_e: TouchEvent): void {
         try {
             this.cancelGestureRecognition();
         } catch (error) {
@@ -429,7 +429,7 @@ export class AdvancedGestureRecognitionSystem {
         }
     }
     
-    private handleMouseUp(e: MouseEvent): void {
+    private handleMouseUp(_e: MouseEvent): void {
         if (this.gestureState.active) {
             this.completeGestureAnalysis();
         }
@@ -439,7 +439,7 @@ export class AdvancedGestureRecognitionSystem {
      * マウスイベントをタッチイベントに変換
      */
     private mouseEventToTouch(e: MouseEvent): Touch {
-        const rect = this.gameEngine.canvas.getBoundingClientRect();
+        const _rect = this.gameEngine.canvas.getBoundingClientRect();
         return {
             identifier: 0,
             clientX: e.clientX,
@@ -544,7 +544,7 @@ export class AdvancedGestureRecognitionSystem {
     /**
      * シングルタッチジェスチャー開始
      */
-    private startSingleTouchGesture(touch: Touch): void {
+    private startSingleTouchGesture(_touch: Touch): void {
         this.gestureState.type = 'single';
         
         // 長押し検出タイマー
@@ -659,7 +659,7 @@ export class AdvancedGestureRecognitionSystem {
     /**
      * シングルタッチ移動分析
      */
-    private analyzeSingleTouchMovement(touch: Touch): void {
+    private analyzeSingleTouchMovement(_touch: Touch): void {
         const movement = this.calculateMovement();
         
         // スワイプ検出
@@ -763,8 +763,8 @@ export class AdvancedGestureRecognitionSystem {
      * 回転ジェスチャー分析
      */
     private analyzeRotationGesture(touches: Touch[]): void {
-        if (!this.gestureState.rotation) {
-            this.gestureState.rotation = {
+        if (!this.gestureState.rotationState) {
+            this.gestureState.rotationState = {
                 initialAngle: this.calculateAngleBetweenTouches(touches[0], touches[1]),
                 currentAngle: 0,
                 totalRotation: 0
@@ -772,13 +772,13 @@ export class AdvancedGestureRecognitionSystem {
         }
         
         const currentAngle = this.calculateAngleBetweenTouches(touches[0], touches[1]);
-        const angleDiff = this.normalizeAngleDifference(currentAngle - this.gestureState.rotation.initialAngle);
+        const angleDiff = this.normalizeAngleDifference(currentAngle - (this.gestureState.rotationState as RotationState).initialAngle);
         
-        this.gestureState.rotation.currentAngle = currentAngle;
-        this.gestureState.rotation.totalRotation += angleDiff;
+        (this.gestureState.rotationState as RotationState).currentAngle = currentAngle;
+        (this.gestureState.rotationState as RotationState).totalRotation += angleDiff;
         
         // 回転閾値チェック
-        if (Math.abs(this.gestureState.rotation.totalRotation) > Math.PI / 6) { // 30度
+        if (Math.abs((this.gestureState.rotationState as RotationState).totalRotation) > Math.PI / 6) { // 30度
             this.recognizeRotationGesture();
         }
     }
@@ -842,8 +842,8 @@ export class AdvancedGestureRecognitionSystem {
         this.gestureState.active = false;
         this.gestureState.type = null;
         this.gestureState.touches = [];
-        this.gestureState.pinch = undefined;
-        this.gestureState.rotation = undefined;
+        delete this.gestureState.pinch;
+        delete this.gestureState.rotationState;
         
         if (this.longPressTimer) {
             clearTimeout(this.longPressTimer);
@@ -914,18 +914,18 @@ export class AdvancedGestureRecognitionSystem {
             center: circularResult.center,
             radius: circularResult.radius,
             totalAngle: circularResult.totalAngle
-        };
+        } as GestureData;
         this.dispatchGestureEvent('circular', gesture);
         this.handleCircularGameAction(gesture);
     }
 
     private recognizeRotationGesture(): void {
-        if (!this.gestureState.rotation) return;
+        if (!this.gestureState.rotationState) return;
         
         const gesture: GestureData = {
             type: 'rotation',
-            angle: this.gestureState.rotation.totalRotation,
-            direction: this.gestureState.rotation.totalRotation > 0 ? 'clockwise' : 'counterclockwise'
+            angle: (this.gestureState.rotationState as RotationState).totalRotation,
+            direction: (this.gestureState.rotationState as RotationState).totalRotation > 0 ? 'clockwise' : 'counterclockwise'
         };
 
         this.dispatchGestureEvent('rotation', gesture);
@@ -1076,7 +1076,7 @@ export class AdvancedGestureRecognitionSystem {
         return recentTaps.length + 1;
     }
     
-    private calculatePatternSimilarity(pattern: GesturePattern): number {
+    private calculatePatternSimilarity(_pattern: GesturePattern): number {
         // パターンマッチングアルゴリズム実装
         // 現在のジェスチャーパスと学習済みパターンの類似度を計算
         return 0.5; // プレースホルダー
@@ -1151,7 +1151,7 @@ export class AdvancedGestureRecognitionSystem {
      */
     private initializeGestureAnalysis(): void {
         // 分析エンジン初期化
-        this.gestureAnalyzer = {
+        this._gestureAnalyzer = {
             pathAnalyzer: new PathAnalyzer(),
             patternMatcher: new PatternMatcher(),
             learningEngine: new LearningEngine()
@@ -1159,20 +1159,20 @@ export class AdvancedGestureRecognitionSystem {
     }
 
     // iOS ジェスチャーイベント処理用のスタブメソッド
-    private startPinchGesture(e: Event): void {
+    private startPinchGesture(_e: Event): void {
         // iOS ピンチ開始処理
     }
 
-    private updatePinchGesture(e: Event): void {
+    private updatePinchGesture(_e: Event): void {
         // iOS ピンチ更新処理
     }
 
-    private endPinchGesture(e: Event): void {
+    private endPinchGesture(_e: Event): void {
         // iOS ピンチ終了処理
     }
 
     // ジェスチャー認識終了処理用のスタブメソッド
-    private endGestureRecognition(touches: Touch[]): void {
+    private endGestureRecognition(_touches: Touch[]): void {
         // ジェスチャー認識終了処理
     }
     
@@ -1229,7 +1229,7 @@ export class AdvancedGestureRecognitionSystem {
  * パス分析クラス（プレースホルダー）
  */
 class PathAnalyzer {
-    analyze(path: PathPoint[]): Record<string, unknown> {
+    analyze(_path: PathPoint[]): Record<string, unknown> {
         // パス分析ロジック
         return {};
     }
@@ -1239,7 +1239,7 @@ class PathAnalyzer {
  * パターンマッチングクラス（プレースホルダー）
  */
 class PatternMatcher {
-    match(pattern1: unknown, pattern2: unknown): number {
+    match(_pattern1: unknown, _pattern2: unknown): number {
         // パターンマッチングロジック
         return 0.5;
     }
@@ -1249,7 +1249,7 @@ class PatternMatcher {
  * 学習エンジンクラス（プレースホルダー）
  */
 class LearningEngine {
-    learn(data: unknown): void {
+    learn(_data: unknown): void {
         // 機械学習ロジック
     }
 }
@@ -1264,4 +1264,4 @@ export function getAdvancedGestureRecognitionSystem(gameEngine: GameEngine | nul
     return advancedGestureRecognitionSystemInstance;
 }
 
-export { AdvancedGestureRecognitionSystem };
+// Already exported as default export

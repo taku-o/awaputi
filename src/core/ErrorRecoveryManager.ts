@@ -575,7 +575,7 @@ export class ErrorRecoveryManager {
      */
     private recoverFromAccidentalReset(): void {
         if (this.autoSaveSystem) {
-            this.autoSaveSystem.restoreLastSave();
+            (this.autoSaveSystem as any).restoreLatest();
         }
     }
 
@@ -593,7 +593,7 @@ export class ErrorRecoveryManager {
      */
     private recoverFromSaveFailure(): void {
         if (this.autoSaveSystem) {
-            this.autoSaveSystem.forceSave();
+            (this.autoSaveSystem as any).forceSave();
         }
     }
 
@@ -635,7 +635,7 @@ export class ErrorRecoveryManager {
             return false;
         }
 
-        const result = this.autoSaveSystem.save();
+        const result = (this.autoSaveSystem as any).save();
         if (result) {
             this.statistics.manualSaves++;
         }
@@ -661,11 +661,11 @@ export class ErrorRecoveryManager {
         }
         
         if (this.undoRedoSystem) {
-            this.undoRedoSystem.updateConfig(this.config.recovery);
+            (this.undoRedoSystem as any).updateConfig(this.config.recovery);
         }
         
         if (this.autoSaveSystem) {
-            this.autoSaveSystem.updateConfig(this.config.recovery);
+            (this.autoSaveSystem as any).updateConfig(this.config.recovery);
         }
     }
 
@@ -695,7 +695,7 @@ export class ErrorRecoveryManager {
      */
     private handleBeforeUnload(event: BeforeUnloadEvent): void {
         if (this.autoSaveSystem) {
-            this.autoSaveSystem.save();
+            (this.autoSaveSystem as any).save();
         }
     }
 

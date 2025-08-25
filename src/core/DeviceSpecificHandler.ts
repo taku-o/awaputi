@@ -324,8 +324,8 @@ export class DeviceSpecificHandler {
         
         // コンテナ最適化
         if (container) {
-            container.style.webkitOverflowScrolling = 'touch';
-            container.style.webkitBackfaceVisibility = 'hidden';
+            (container.style as any).webkitOverflowScrolling = 'touch';
+            (container.style as any).webkitBackfaceVisibility = 'hidden';
         }
     }
     
@@ -340,8 +340,8 @@ export class DeviceSpecificHandler {
         
         // タッチコールアウト無効化
         if (this.iosConfig.touchDelayFix.touchCalloutDisabled) {
-            document.body.style.webkitTouchCallout = 'none';
-            document.body.style.webkitUserSelect = 'none';
+            (document.body.style as any).webkitTouchCallout = 'none';
+            (document.body.style as any).webkitUserSelect = 'none';
         }
         
         // CSS touch-action設定

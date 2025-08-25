@@ -256,7 +256,7 @@ export class GameEngine {
             this.bubbleManager = new BubbleManager(this.canvas);
             this.scoreManager = new ScoreManager(this);
             this.sceneManager = new SceneManager(this);
-            this.settingsManager = new SettingsManager();
+            this.settingsManager = new SettingsManager(this);
             this.statisticsManager = new StatisticsManager(this);
             
             // Item system
@@ -266,11 +266,11 @@ export class GameEngine {
             this.achievementManager = new AchievementManager(this);
             
             // Keyboard shortcuts
-            this.keyboardShortcutManager = new CoreKeyboardShortcutManager();
+            this.keyboardShortcutManager = new CoreKeyboardShortcutManager(this);
             
             // Social features
-            this.socialSharingManager = new SocialSharingManager();
-            this.leaderboardManager = new LeaderboardManager();
+            this.socialSharingManager = new SocialSharingManager(this);
+            this.leaderboardManager = new LeaderboardManager(this);
             
             console.log('[GameEngine] Game systems initialized');
 
@@ -298,10 +298,10 @@ export class GameEngine {
             this.audioManager = new AudioManager(this.configManager, audioConfig);
             
             // Effect systems
-            this.particleManager = new ParticleManager();
+            this.particleManager = new ParticleManager(this);
             this.effectManager = new EffectManager(this.canvas);
-            this.enhancedParticleManager = new EnhancedParticleManager();
-            this.enhancedEffectManager = new EnhancedEffectManager();
+            this.enhancedParticleManager = new EnhancedParticleManager(this);
+            this.enhancedEffectManager = new EnhancedEffectManager(this);
             
             console.log('[GameEngine] Audio and effects initialized');
 
@@ -541,8 +541,8 @@ export class GameEngine {
         if (this.sceneManager && typeof this.sceneManager.start === 'function') {
             this.sceneManager.start();
         }
-        if (this.audioManager && typeof this.audioManager.start === 'function') {
-            this.audioManager.start(); 
+        if (this.audioManager && typeof (this.audioManager as any).start === 'function') {
+            (this.audioManager as any).start(); 
         }
     }
     

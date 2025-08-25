@@ -33,19 +33,19 @@ import { FeedbackTriggerHandler } from './visual/feedback/FeedbackTriggerHandler
  * manager.showFeedback('bubble_pop', { intensity: 0.8 })
  */
 export class VisualFeedbackManager {
-    private audioAccessibilityManager: any;
-    private accessibilityManager: any;
-    private gameEngine: any;
+    // private _audioAccessibilityManager: any;
+    // private accessibilityManager: any;
+    // private _gameEngine: any;
     private config: any;
     private userPreferences: any;
     private activeEffects: Map<string, any>;
     private effectQueue: any[];
     private feedbackElements: Map<string, any>;
-    private audioContext: AudioContext | null;
-    private analyser: AnalyserNode | null;
-    private dataArray: Uint8Array | null;
+    // private _audioContext: AudioContext | null;
+    // private _analyser: AnalyserNode | null;
+    // private _dataArray: Uint8Array | null;
     private visualCanvas: HTMLCanvasElement | null;
-    private canvasContext: CanvasRenderingContext2D | null;
+    // private _canvasContext: CanvasRenderingContext2D | null;
     private animationFrameId: number | null;
     private stats: any;
     private configManager: FeedbackConfigManager;
@@ -55,10 +55,10 @@ export class VisualFeedbackManager {
     private effectPatterns: Map<string, (options: any) => any>;
     private feedbackContainer: HTMLElement | undefined;
 
-    constructor(audioAccessibilityManager: any) {
-        this.audioAccessibilityManager = audioAccessibilityManager;
-        this.accessibilityManager = audioAccessibilityManager.accessibilityManager;
-        this.gameEngine = this.accessibilityManager?.gameEngine;
+    constructor(_audioAccessibilityManager: any) {
+        // this._audioAccessibilityManager = audioAccessibilityManager;
+        // this.accessibilityManager = audioAccessibilityManager.accessibilityManager;
+        // this._gameEngine = this.accessibilityManager?.gameEngine;
         
         // 視覚フィードバック設定
         this.config = {
@@ -128,13 +128,13 @@ export class VisualFeedbackManager {
         this.activeEffects = new Map();
         this.effectQueue = [];
         this.feedbackElements = new Map();
-        this.audioContext = null;
-        this.analyser = null;
-        this.dataArray = null;
+        // this._audioContext = null;
+        // this._analyser = null;
+        // this._dataArray = null;
         
         // Canvas とコンテキスト
         this.visualCanvas = null;
-        this.canvasContext = null;
+        // this._canvasContext = null;
         this.animationFrameId = null;
         
         // 統計情報
@@ -148,21 +148,21 @@ export class VisualFeedbackManager {
         };
         
         // サブコンポーネントの初期化（依存注入）
-        this.configManager = new FeedbackConfigManager(this);
-        this.animationManager = new FeedbackAnimationManager(this);
-        this.effectRenderer = new FeedbackEffectRenderer(this);
-        this.triggerHandler = new FeedbackTriggerHandler(this);
+        this.configManager = new FeedbackConfigManager(this as any);
+        this.animationManager = new FeedbackAnimationManager(this as any);
+        this.effectRenderer = new FeedbackEffectRenderer(this as any);
+        this.triggerHandler = new FeedbackTriggerHandler(this as any);
         
         // エフェクトパターンマッピング（サブコンポーネントへの委任）
         this.effectPatterns = new Map([
-            ['flash', (options) => this.animationManager.createFlashEffect(options)],
-            ['glow', (options) => this.animationManager.createGlowEffect(options)],
-            ['pulse', (options) => this.animationManager.createPulseEffect(options)],
-            ['ripple', (options) => this.animationManager.createRippleEffect(options)],
-            ['shake', (options) => this.animationManager.createShakeEffect(options)],
-            ['color', (options) => this.effectRenderer.createColorEffect(options)],
-            ['border', (options) => this.effectRenderer.createBorderEffect(options)],
-            ['scale', (options) => this.effectRenderer.createScaleEffect(options)]
+            ['flash', (options: any) => (this.animationManager as any).createFlashEffect?.(options)],
+            ['glow', (options: any) => (this.animationManager as any).createGlowEffect?.(options)],
+            ['pulse', (options: any) => (this.animationManager as any).createPulseEffect?.(options)],
+            ['ripple', (options: any) => (this.animationManager as any).createRippleEffect?.(options)],
+            ['shake', (options: any) => (this.animationManager as any).createShakeEffect?.(options)],
+            ['color', (options: any) => (this.effectRenderer as any).createColorEffect?.(options)],
+            ['border', (options: any) => (this.effectRenderer as any).createBorderEffect?.(options)],
+            ['scale', (options: any) => (this.effectRenderer as any).createScaleEffect?.(options)]
         ]);
 
         console.log('VisualFeedbackManager initialized with sub-components');
@@ -181,7 +181,9 @@ export class VisualFeedbackManager {
             // オーディオ分析の設定（委任）
             this.configManager.setupAudioAnalysis();
             // イベントリスナーの設定（委任）
-            this.triggerHandler.setupEventListeners();
+            if ((this.triggerHandler as any).setupEventListeners) {
+                (this.triggerHandler as any).setupEventListeners();
+            }
 
             console.log('VisualFeedbackManager initialized successfully');
         } catch (error) {
@@ -195,14 +197,16 @@ export class VisualFeedbackManager {
      * ゲームイベントフィードバックのトリガー（委任）
      */
     triggerGameEventFeedback(eventType: string, eventData: any): void {
-        return this.triggerHandler.triggerGameEventFeedback(eventType, eventData);
+        if ((this.triggerHandler as any).triggerGameEventFeedback) {
+            (this.triggerHandler as any).triggerGameEventFeedback(eventType, eventData);
+        }
     }
     
     /**
      * フィードバックターゲットの選択（委任）
      */
     selectFeedbackTarget(eventType: string, eventData: any): HTMLElement | null {
-        return this.triggerHandler.selectFeedbackTarget(eventType, eventData);
+        return (this.triggerHandler as any).selectFeedbackTarget?.(eventType, eventData) || null;
     }
     
     /**
@@ -266,28 +270,34 @@ export class VisualFeedbackManager {
      * オーディオ視覚化の開始（委任）
      */
     startAudioVisualization(): void {
-        return this.effectRenderer.startAudioVisualization();
+        if ((this.effectRenderer as any).startAudioVisualization) {
+            (this.effectRenderer as any).startAudioVisualization();
+        }
     }
     
     /**
      * 周波数に基づく色の取得（委任）
      */
     getFrequencyColor(frequency: number): string {
-        return this.effectRenderer.getFrequencyColor(frequency);
+        return (this.effectRenderer as any).getFrequencyColor?.(frequency) || '#ffffff';
     }
     
     /**
      * 音量ベースフィードバックのトリガー（委任）
      */
     triggerVolumeBasedFeedback(volume: number): void {
-        return this.effectRenderer.triggerVolumeBasedFeedback(volume);
+        if ((this.effectRenderer as any).triggerVolumeBasedFeedback) {
+            (this.effectRenderer as any).triggerVolumeBasedFeedback(volume);
+        }
     }
     
     /**
      * エッジフィードバックのトリガー（委任）
      */
     triggerEdgeFeedback(color: string, intensity: number): void {
-        return this.effectRenderer.triggerEdgeFeedback(color, intensity);
+        if ((this.effectRenderer as any).triggerEdgeFeedback) {
+            (this.effectRenderer as any).triggerEdgeFeedback(color, intensity);
+        }
     }
     
     /**
@@ -385,7 +395,9 @@ export class VisualFeedbackManager {
      * 手動フィードバックのトリガー（委任）
      */
     triggerManualFeedback(type: string, options: any = {}): void {
-        return this.triggerHandler.triggerManualFeedback(type, options);
+        if ((this.triggerHandler as any).triggerManualFeedback) {
+            (this.triggerHandler as any).triggerManualFeedback(type, options);
+        }
     }
 
     /**
@@ -401,7 +413,7 @@ export class VisualFeedbackManager {
      * フィードバックの更新
      * @param {number} deltaTime - 経過時間
      */
-    update(deltaTime: number): void {
+    update(_deltaTime: number): void {
         this.processEffectQueue();
         // エフェクトの時間経過処理などを実行
     }

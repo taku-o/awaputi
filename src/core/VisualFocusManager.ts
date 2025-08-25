@@ -32,9 +32,9 @@ import { FocusAccessibilitySupport } from './visual/focus/FocusAccessibilitySupp
  * @since Original implementation - Enhanced with component architecture
  */
 export class VisualFocusManager {
-    private accessibilityManager: any;
-    private focusManager: any;
-    private gameEngine: any;
+    private _accessibilityManager: any;
+    private _focusManager: any;
+    private _gameEngine: any;
     private config: any;
     private state: any;
     private focusStateManager: FocusStateManager;
@@ -43,9 +43,9 @@ export class VisualFocusManager {
     private focusAccessibilitySupport: FocusAccessibilitySupport;
 
     constructor(accessibilityManager: any, focusManager: any) {
-        this.accessibilityManager = accessibilityManager;
-        this.focusManager = focusManager;
-        this.gameEngine = accessibilityManager.gameEngine;
+        this._accessibilityManager = accessibilityManager;
+        this._focusManager = focusManager;
+        this._gameEngine = accessibilityManager.gameEngine;
         
         // 視覚フィードバック設定
         this.config = {
@@ -106,13 +106,34 @@ export class VisualFocusManager {
         };
         
         // Main Controller Pattern: サブコンポーネント管理
-        this.focusStateManager = new FocusStateManager(this);
-        this.focusEffectRenderer = new FocusEffectRenderer(this);
-        this.focusEventHandler = new FocusEventHandler(this);
-        this.focusAccessibilitySupport = new FocusAccessibilitySupport(this);
+        this.focusStateManager = new FocusStateManager(this as any);
+        this.focusEffectRenderer = new FocusEffectRenderer(this as any);
+        this.focusEventHandler = new FocusEventHandler(this as any);
+        this.focusAccessibilitySupport = new FocusAccessibilitySupport(this as any);
 
         console.log('VisualFocusManager initialized with component architecture');
         this.initialize();
+    }
+
+    // Getters for MainController compatibility
+    get accessibilityManager(): any {
+        return this._accessibilityManager;
+    }
+
+    get focusManager(): any {
+        return this._focusManager;
+    }
+
+    get gameEngine(): any {
+        return this._gameEngine;
+    }
+
+    get elements(): any {
+        return {};
+    }
+
+    get cssClasses(): any {
+        return this.state.cssClasses;
     }
     
     /**
@@ -121,17 +142,17 @@ export class VisualFocusManager {
     initialize(): void {
         try {
             // 依存コンポーネントの初期化
-            this.focusStateManager.initialize();
-            this.focusEffectRenderer.initialize();
-            this.focusEventHandler.initialize();
-            this.focusAccessibilitySupport.initialize();
+            (this.focusStateManager as any).initialize();
+            (this.focusEffectRenderer as any).initialize();
+            (this.focusEventHandler as any).initialize();
+            (this.focusAccessibilitySupport as any).initialize();
 
             // システム設定の適用
             this.applySystemSettings();
             
             console.log('VisualFocusManager: 初期化完了');
         } catch (error) {
-            getErrorHandler().handleError(error, 'VISUAL_FOCUS_MANAGER_INIT_ERROR', {
+            getErrorHandler().logError('VISUAL_FOCUS_MANAGER_INIT_ERROR', error as Error, {
                 operation: 'initialize'
             });
         }
@@ -141,7 +162,7 @@ export class VisualFocusManager {
      * システム設定の適用（State Managerに委任）
      */
     applySystemSettings(): void {
-        this.focusStateManager.applySystemSettings();
+        (this.focusStateManager as any).applySystemSettings();
     }
     
     /**
@@ -150,20 +171,20 @@ export class VisualFocusManager {
     handleFocusChange(element: HTMLElement, index?: number, keyboardMode?: boolean): void {
         try {
             // 状態管理の更新
-            this.focusStateManager.updateFocusState(element, index, keyboardMode);
+            (this.focusStateManager as any).updateFocusState(element, index, keyboardMode);
             
             // 視覚エフェクトの適用
-            this.focusEffectRenderer.renderFocusEffect(element, index, keyboardMode);
+            (this.focusEffectRenderer as any).renderFocusEffect(element, index, keyboardMode);
             
             // アクセシビリティサポートの適用
-            this.focusAccessibilitySupport.provideFocusSupport(element, index, keyboardMode);
+            (this.focusAccessibilitySupport as any).provideFocusSupport(element, index, keyboardMode);
             
             // イベントハンドリング
-            this.focusEventHandler.handleFocusEvent(element, index, keyboardMode);
+            (this.focusEventHandler as any).handleFocusEvent(element, index, keyboardMode);
             
             console.log('VisualFocusManager: フォーカス変更処理完了', { element, index, keyboardMode });
         } catch (error) {
-            getErrorHandler().handleError(error, 'VISUAL_FOCUS_CHANGE_ERROR', {
+            getErrorHandler().logError('VISUAL_FOCUS_CHANGE_ERROR', error as Error, {
                 operation: 'handleFocusChange',
                 element: element?.tagName,
                 index,
@@ -176,77 +197,77 @@ export class VisualFocusManager {
      * ハイコントラストモードの設定（State Managerに委任）
      */
     setHighContrastMode(enabled: boolean): void {
-        this.focusStateManager.setHighContrastMode(enabled);
+        (this.focusStateManager as any).setHighContrastMode(enabled);
     }
     
     /**
      * フォーカスリングの表示（Effect Rendererに委任）
      */
     showFocusRing(element: HTMLElement): void {
-        this.focusEffectRenderer.showFocusRing(element);
+        (this.focusEffectRenderer as any).showFocusRing(element);
     }
     
     /**
      * フォーカスリングの非表示（Effect Rendererに委任）
      */
     hideFocusRing(element?: HTMLElement): void {
-        this.focusEffectRenderer.hideFocusRing(element);
+        (this.focusEffectRenderer as any).hideFocusRing(element);
     }
     
     /**
      * ナビゲーションフィードバックの表示（Effect Rendererに委任）
      */
     showNavigationFeedback(direction: string, position?: { x: number; y: number }): void {
-        this.focusEffectRenderer.showNavigationFeedback(direction, position);
+        (this.focusEffectRenderer as any).showNavigationFeedback(direction, position);
     }
     
     /**
      * キーボードヒントの表示（Accessibility Supportに委任）
      */
     showKeyboardHints(element: HTMLElement): void {
-        this.focusAccessibilitySupport.showKeyboardHints(element);
+        (this.focusAccessibilitySupport as any).showKeyboardHints(element);
     }
     
     /**
      * キーボードヒントの非表示（Accessibility Supportに委任）
      */
     hideKeyboardHints(): void {
-        this.focusAccessibilitySupport.hideKeyboardHints();
+        (this.focusAccessibilitySupport as any).hideKeyboardHints();
     }
     
     /**
      * ビジュアルキューの追加（Effect Rendererに委任）
      */
     addVisualCue(type: string, element: HTMLElement, options?: any): void {
-        this.focusEffectRenderer.addVisualCue(type, element, options);
+        (this.focusEffectRenderer as any).addVisualCue(type, element, options);
     }
     
     /**
      * ビジュアルキューの削除（Effect Rendererに委任）
      */
     removeVisualCue(type: string, element?: HTMLElement): void {
-        this.focusEffectRenderer.removeVisualCue(type, element);
+        (this.focusEffectRenderer as any).removeVisualCue(type, element);
     }
     
     /**
      * フォーカスパスの更新（State Managerに委任）
      */
     updateFocusPath(path: any[]): void {
-        this.focusStateManager.updateFocusPath(path);
+        (this.focusStateManager as any).updateFocusPath(path);
     }
     
     /**
      * アニメーション開始（Effect Rendererに委任）
      */
     startAnimation(type: string, element: HTMLElement, options?: any): void {
-        this.focusEffectRenderer.startAnimation(type, element, options);
+        (this.focusEffectRenderer as any).startAnimation(type, element, options);
     }
     
     /**
      * アニメーション停止（Effect Rendererに委任）
      */
     stopAnimation(type: string, element?: HTMLElement): void {
-        this.focusEffectRenderer.stopAnimation(type, element);
+        (this.focusEffectRenderer as any).stopAnimation(type, element);
     }
     
     /**
@@ -258,14 +279,14 @@ export class VisualFocusManager {
             this.config = { ...this.config, ...newConfig };
             
             // 各コンポーネントに設定を通知
-            this.focusStateManager.updateConfig(this.config);
-            this.focusEffectRenderer.updateConfig(this.config);
-            this.focusEventHandler.updateConfig(this.config);
-            this.focusAccessibilitySupport.updateConfig(this.config);
+            (this.focusStateManager as any).updateConfig(this.config);
+            (this.focusEffectRenderer as any).updateConfig(this.config);
+            (this.focusEventHandler as any).updateConfig(this.config);
+            (this.focusAccessibilitySupport as any).updateConfig(this.config);
             
             console.log('VisualFocusManager: 設定更新完了', this.config);
         } catch (error) {
-            getErrorHandler().handleError(error, 'VISUAL_FOCUS_CONFIG_UPDATE_ERROR', {
+            getErrorHandler().logError('VISUAL_FOCUS_CONFIG_UPDATE_ERROR', error as Error, {
                 operation: 'updateConfig',
                 newConfig
             });
@@ -291,10 +312,10 @@ export class VisualFocusManager {
      */
     getStatistics(): any {
         return {
-            focusStateManager: this.focusStateManager.getStatistics(),
-            focusEffectRenderer: this.focusEffectRenderer.getStatistics(),
-            focusEventHandler: this.focusEventHandler.getStatistics(),
-            focusAccessibilitySupport: this.focusAccessibilitySupport.getStatistics()
+            focusStateManager: (this.focusStateManager as any).getStatistics(),
+            focusEffectRenderer: (this.focusEffectRenderer as any).getStatistics(),
+            focusEventHandler: (this.focusEventHandler as any).getStatistics(),
+            focusAccessibilitySupport: (this.focusAccessibilitySupport as any).getStatistics()
         };
     }
     
@@ -308,10 +329,10 @@ export class VisualFocusManager {
             state: this.getState(),
             statistics: this.getStatistics(),
             componentStatus: {
-                focusStateManager: this.focusStateManager.isInitialized(),
-                focusEffectRenderer: this.focusEffectRenderer.isInitialized(),
-                focusEventHandler: this.focusEventHandler.isInitialized(),
-                focusAccessibilitySupport: this.focusAccessibilitySupport.isInitialized()
+                focusStateManager: (this.focusStateManager as any).isInitialized(),
+                focusEffectRenderer: (this.focusEffectRenderer as any).isInitialized(),
+                focusEventHandler: (this.focusEventHandler as any).isInitialized(),
+                focusAccessibilitySupport: (this.focusAccessibilitySupport as any).isInitialized()
             }
         };
     }
@@ -331,7 +352,7 @@ export class VisualFocusManager {
             
             console.log(`VisualFocusManager ${enabled ? 'enabled' : 'disabled'}`);
         } catch (error) {
-            getErrorHandler().handleError(error, 'VISUAL_FOCUS_ENABLE_ERROR', {
+            getErrorHandler().logError('VISUAL_FOCUS_ENABLE_ERROR', error as Error, {
                 operation: 'setEnabled',
                 enabled
             });
@@ -344,17 +365,17 @@ export class VisualFocusManager {
     disable(): void {
         try {
             // すべてのビジュアルエフェクトを停止
-            this.focusEffectRenderer.clearAllEffects();
+            (this.focusEffectRenderer as any).clearAllEffects();
             
             // イベントリスナーを削除
-            this.focusEventHandler.removeEventListeners();
+            (this.focusEventHandler as any).removeEventListeners();
             
             // アクセシビリティサポートを停止
-            this.focusAccessibilitySupport.disable();
+            (this.focusAccessibilitySupport as any).disable();
             
             console.log('VisualFocusManager: 無効化完了');
         } catch (error) {
-            getErrorHandler().handleError(error, 'VISUAL_FOCUS_DISABLE_ERROR', {
+            getErrorHandler().logError('VISUAL_FOCUS_DISABLE_ERROR', error as Error, {
                 operation: 'disable'
             });
         }
@@ -371,10 +392,10 @@ export class VisualFocusManager {
             this.disable();
             
             // サブコンポーネントのクリーンアップ
-            this.focusStateManager?.destroy();
-            this.focusEffectRenderer?.destroy();
-            this.focusEventHandler?.destroy();
-            this.focusAccessibilitySupport?.destroy();
+            (this.focusStateManager as any)?.destroy?.();
+            (this.focusEffectRenderer as any)?.destroy?.();
+            (this.focusEventHandler as any)?.destroy?.();
+            (this.focusAccessibilitySupport as any)?.destroy?.();
             
             // 状態とタイマーのクリア
             this.state.activeVisualCues.clear();
@@ -384,7 +405,7 @@ export class VisualFocusManager {
             
             console.log('VisualFocusManager: クリーンアップ完了');
         } catch (error) {
-            getErrorHandler().handleError(error, 'VISUAL_FOCUS_DESTROY_ERROR', {
+            getErrorHandler().logError('VISUAL_FOCUS_DESTROY_ERROR', error as Error, {
                 operation: 'destroy'
             });
         }

@@ -108,7 +108,7 @@ export class AchievementStatsUI {
     private statsCache: StatisticsData | null;
     private lastCacheUpdate: number;
     private cacheTimeout: number;
-    private padding: number;
+    private _padding: number;
     private sectionSpacing: number;
     private itemHeight: number;
     private colors: ColorScheme;
@@ -122,7 +122,7 @@ export class AchievementStatsUI {
         this.cacheTimeout = 5000; // 5秒キャッシュ
         
         // UI設定
-        this.padding = 20;
+        this._padding = 20;
         this.sectionSpacing = 30;
         this.itemHeight = 25;
         
@@ -247,7 +247,7 @@ export class AchievementStatsUI {
             reward: achievement.reward,
             unlockedDate: achievement.unlockedDate!,
             category: achievement.category
-        }));
+        } as RecentUnlock));
     }
     
     /**
@@ -324,7 +324,7 @@ export class AchievementStatsUI {
     /**
      * 全体統計を描画
      */
-    public renderOverallStats(context: CanvasRenderingContext2D, x: number, y: number, width: number, height: number): number {
+    public renderOverallStats(context: CanvasRenderingContext2D, x: number, y: number, width: number, _height: number): number {
         const stats = this.getStatistics().overall;
 
         context.save();
@@ -359,7 +359,7 @@ export class AchievementStatsUI {
     /**
      * カテゴリ別統計を描画
      */
-    public renderCategoryStats(context: CanvasRenderingContext2D, x: number, y: number, width: number, height: number): number {
+    public renderCategoryStats(context: CanvasRenderingContext2D, x: number, y: number, width: number, _height: number): number {
         const categoryStats = this.getStatistics().categories;
 
         context.save();
@@ -371,7 +371,7 @@ export class AchievementStatsUI {
         let currentY = y + 40;
         
         // カテゴリごとの統計を描画
-        Object.entries(categoryStats).forEach(([key, stats]) => {
+        Object.entries(categoryStats).forEach(([_key, stats]) => {
             currentY = this.renderCategoryItem(context, x, currentY, width, stats);
         });
         
@@ -382,7 +382,7 @@ export class AchievementStatsUI {
     /**
      * 最近の解除実績を描画
      */
-    public renderRecentUnlocks(context: CanvasRenderingContext2D, x: number, y: number, width: number, height: number): number {
+    public renderRecentUnlocks(context: CanvasRenderingContext2D, x: number, y: number, width: number, _height: number): number {
         const recentUnlocks = this.getStatistics().recent;
 
         context.save();
@@ -411,7 +411,7 @@ export class AchievementStatsUI {
     /**
      * 進捗チャートを描画
      */
-    public renderProgressChart(context: CanvasRenderingContext2D, x: number, y: number, width: number, height: number): number {
+    public renderProgressChart(context: CanvasRenderingContext2D, x: number, y: number, width: number, _height: number): number {
         const progressStats = this.getStatistics().progress;
 
         context.save();

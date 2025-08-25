@@ -234,7 +234,7 @@ export class CalculationEngine {
      * @returns 計算結果
      * @private
      */
-    private _executeOptimizedCalculation(calculator: Calculator, method: string, params: any[], options: CalculationOptions): any {
+    private _executeOptimizedCalculation(calculator: Calculator, method: string, params: any[], _options: CalculationOptions): any {
         // メモ化が有効で、メモ化可能な計算の場合
         if (this.optimizationConfig.memoization && calculator._memoized) {
             if (!calculator._memoized[method]) {

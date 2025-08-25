@@ -140,7 +140,7 @@ export class RegionalFormattingTest {
         for (const testCase of testCases) {
             try {
                 const settings = this.regionalSettingsManager.getCompleteSettings(testCase.language);
-                const formatter = this.formatterEngine.formatters.get('number');
+                const formatter = (this.formatterEngine as any).formatters.get('number');
                 if (!formatter) {
                     throw new Error('Number formatter not found');
                 }
@@ -171,7 +171,7 @@ export class RegionalFormattingTest {
         for (const testCase of testCases) {
             try {
                 const settings = this.regionalSettingsManager.getCompleteSettings(testCase.language);
-                const formatter = this.formatterEngine.formatters.get('date');
+                const formatter = (this.formatterEngine as any).formatters.get('date');
                 if (!formatter) {
                     throw new Error('Date formatter not found');
                 }
@@ -201,7 +201,7 @@ export class RegionalFormattingTest {
         for (const testCase of testCases) {
             try {
                 const settings = this.regionalSettingsManager.getCompleteSettings(testCase.language);
-                const formatter = this.formatterEngine.formatters.get('date');
+                const formatter = (this.formatterEngine as any).formatters.get('date');
                 if (!formatter) {
                     throw new Error('Date formatter not found');
                 }
@@ -231,7 +231,7 @@ export class RegionalFormattingTest {
         for (const testCase of testCases) {
             try {
                 const settings = this.regionalSettingsManager.getCompleteSettings(testCase.language);
-                const formatter = this.formatterEngine.formatters.get('currency');
+                const formatter = (this.formatterEngine as any).formatters.get('currency');
                 if (!formatter) {
                     throw new Error('Currency formatter not found');
                 }
@@ -259,9 +259,9 @@ export class RegionalFormattingTest {
         for (const language of languages) {
             try {
                 const settings = this.regionalSettingsManager.getCompleteSettings(language);
-                const numberFormatter = this.formatterEngine.formatters.get('number');
-                const currencyFormatter = this.formatterEngine.formatters.get('currency');
-                const dateFormatter = this.formatterEngine.formatters.get('date');
+                const numberFormatter = (this.formatterEngine as any).formatters.get('number');
+                const currencyFormatter = (this.formatterEngine as any).formatters.get('currency');
+                const dateFormatter = (this.formatterEngine as any).formatters.get('date');
 
                 if (!numberFormatter || !currencyFormatter || !dateFormatter) {
                     throw new Error('Required formatters not found');

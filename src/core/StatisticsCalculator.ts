@@ -10,10 +10,10 @@ import { ErrorHandler } from '../utils/ErrorHandler.js';
  * 統計計算クラス
  */
 export class StatisticsCalculator {
-    private trendPeriods: any;
+    private _trendPeriods: any;
 
     constructor() {
-        this.trendPeriods = {
+        this._trendPeriods = {
             daily: 1,
             weekly: 7,
             monthly: 30
@@ -44,7 +44,9 @@ export class StatisticsCalculator {
                 summary: this.generateSummary(statistics, sessionStats)
             };
         } catch (error) {
-            ErrorHandler.handleError(error, 'StatisticsCalculator', 'getDetailedStatistics');
+            new ErrorHandler().logError('STATISTICS_CALCULATION_ERROR', error as Error, {
+                method: 'getDetailedStatistics'
+            });
             return this.getEmptyDetailedStats();
         }
     }
@@ -123,7 +125,7 @@ export class StatisticsCalculator {
     calculateDetailedEfficiency(statistics: any): any {
         const effStats = statistics.efficiencyStats || {};
         const totalTime = statistics.totalPlayTime || 0;
-        const totalBubbles = statistics.totalBubblesPopped || 0;
+        const _totalBubbles = statistics.totalBubblesPopped || 0;
         
         return {
             bubblesPerMinute: effStats.bubblesPerMinute || 0,
@@ -175,7 +177,7 @@ export class StatisticsCalculator {
      * @returns {Object} 行動分析
      */
     calculateBehaviorAnalysis(statistics: any): any {
-        const behavior = statistics.playerBehaviorStats || {};
+        const _behavior = statistics.playerBehaviorStats || {};
         
         return {
             playStyle: this.determinePlayStyle(statistics),
@@ -305,7 +307,7 @@ export class StatisticsCalculator {
         }
         
         const sorted = [...values].sort((a, b) => a - b);
-        const len = sorted.length;
+        const _len = sorted.length;
         
         return {
             p25: this.getPercentile(sorted, 25),
@@ -482,7 +484,7 @@ export class StatisticsCalculator {
      * @param {Object} sessionStats - セッション統計
      * @returns {Object} サマリー
      */
-    generateSummary(statistics: any, sessionStats: any): any {
+    generateSummary(statistics: any, _sessionStats: any): any {
         return {
             level: this.determineSkillLevel(statistics),
             rating: this.calculateOverallRating(statistics),
@@ -552,29 +554,29 @@ export class StatisticsCalculator {
     }
 
     // プレースホルダーメソッド（実装の完全性のため）
-    calculateTimeConsistency(statistics: any): number { return 75; }
-    calculateAccuracyConsistency(statistics: any): number { return 80; }
-    calculatePerformanceVariability(statistics: any): number { return 15; }
-    calculateReliabilityIndex(statistics: any): number { return 85; }
-    calculateScoreTrend(statistics: any): string { return 'improving'; }
-    calculateAccuracyTrend(statistics: any): string { return 'stable'; }
-    calculatePlayTimeTrend(statistics: any): string { return 'stable'; }
-    calculateOverallTrend(statistics: any): string { return 'improving'; }
-    calculateActionEfficiency(statistics: any): number { return 75; }
-    calculateResourceEfficiency(statistics: any): number { return 80; }
-    calculateLearningEfficiency(statistics: any): number { return 70; }
-    calculateScoreRank(statistics: any): string { return 'A'; }
-    calculateEfficiencyRank(statistics: any): string { return 'B+'; }
-    calculateAccuracyRank(statistics: any): string { return 'A-'; }
-    calculateConsistencyRank(statistics: any): string { return 'B'; }
-    calculateOverallRank(statistics: any): string { return 'A-'; }
-    determinePlayStyle(statistics: any): string { return 'Balanced'; }
-    calculateAggression(statistics: any): number { return 60; }
-    calculatePatience(statistics: any): number { return 70; }
-    calculateAdaptability(statistics: any): number { return 75; }
-    calculateRiskTaking(statistics: any): number { return 50; }
-    calculateLearningPattern(statistics: any): string { return 'Steady'; }
-    calculateProgression(statistics: any): string { return 'Good'; }
+    calculateTimeConsistency(_statistics: any): number { return 75; }
+    calculateAccuracyConsistency(_statistics: any): number { return 80; }
+    calculatePerformanceVariability(_statistics: any): number { return 15; }
+    calculateReliabilityIndex(_statistics: any): number { return 85; }
+    calculateScoreTrend(_statistics: any): string { return 'improving'; }
+    calculateAccuracyTrend(_statistics: any): string { return 'stable'; }
+    calculatePlayTimeTrend(_statistics: any): string { return 'stable'; }
+    calculateOverallTrend(_statistics: any): string { return 'improving'; }
+    calculateActionEfficiency(_statistics: any): number { return 75; }
+    calculateResourceEfficiency(_statistics: any): number { return 80; }
+    calculateLearningEfficiency(_statistics: any): number { return 70; }
+    calculateScoreRank(_statistics: any): string { return 'A'; }
+    calculateEfficiencyRank(_statistics: any): string { return 'B+'; }
+    calculateAccuracyRank(_statistics: any): string { return 'A-'; }
+    calculateConsistencyRank(_statistics: any): string { return 'B'; }
+    calculateOverallRank(_statistics: any): string { return 'A-'; }
+    determinePlayStyle(_statistics: any): string { return 'Balanced'; }
+    calculateAggression(_statistics: any): number { return 60; }
+    calculatePatience(_statistics: any): number { return 70; }
+    calculateAdaptability(_statistics: any): number { return 75; }
+    calculateRiskTaking(_statistics: any): number { return 50; }
+    calculateLearningPattern(_statistics: any): string { return 'Steady'; }
+    calculateProgression(_statistics: any): string { return 'Good'; }
     calculateTimeUtilization(statistics: any): number { return 85; }
 }
 

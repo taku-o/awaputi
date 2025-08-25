@@ -4,7 +4,17 @@
  */
 
 export class DeveloperAlertSystem {
-    constructor(dataCollector, trendAnalyzer, options: any = {}) {
+    private dataCollector: any;
+    private trendAnalyzer: any;
+    private options: any;
+    private alertHistory: any[];
+    private alertCategories: Map<string, any>;
+    private alertFilters: Map<string, any>;
+    private alertCallbacks: Map<string, any>;
+    private severityLevels: string[];
+    private rateLimitCounter: Map<string, any>;
+
+    constructor(dataCollector: any, trendAnalyzer: any, options: any = {}) {
         this.dataCollector = dataCollector;
         this.trendAnalyzer = trendAnalyzer;
         this.options = {
@@ -119,14 +129,14 @@ export class DeveloperAlertSystem {
      * アラートフィルターの設定
      */
     setupAlertFilters() {
-        this.alertFilters.set('severity', (alert) => {
+        this.alertFilters.set('severity', (alert: any) => {
             const minLevel = this.severityLevels.indexOf(this.options.minSeverityLevel);
             const alertLevel = this.severityLevels.indexOf(alert.severity);
             return alertLevel >= minLevel;
         });
 
         // レート制限フィルター
-        this.alertFilters.set('rateLimit', (alert) => {
+        this.alertFilters.set('rateLimit', (alert: any) => {
             const now = Date.now();
             const hourStart = Math.floor(now / (60 * 60 * 1000)) * (60 * 60 * 1000);
             const key = `${alert.category}_${hourStart}`;
@@ -141,7 +151,7 @@ export class DeveloperAlertSystem {
         });
 
         // 重複アラートフィルター
-        this.alertFilters.set('duplicate', (alert) => {
+        this.alertFilters.set('duplicate', (alert: any) => {
             const recentAlerts = this.alertHistory.filter(a => 
                 a.category === alert.category &&
                 a.checkType === alert.checkType &&
@@ -173,7 +183,7 @@ export class DeveloperAlertSystem {
     /**
      * データ分析とアラート生成
      */
-    analyzeData(data) {
+    analyzeData(data: any) {
         if (!this.options.enableDeveloperAlerts) return;
 
         for (const [categoryName, category] of this.alertCategories.entries()) {
@@ -196,7 +206,7 @@ export class DeveloperAlertSystem {
     /**
      * 個別チェックの実行
      */
-    runCheck(category, checkType, data) {
+    runCheck(category: any, checkType: any, data: any) {
         switch (`${category}.${checkType}`) {
             case 'gameplay.unusualScoreProgression':
                 return this.checkUnusualScoreProgression(data);
@@ -234,13 +244,13 @@ export class DeveloperAlertSystem {
     /**
      * 異常なスコア進行のチェック
      */
-    checkUnusualScoreProgression(data) {
+    checkUnusualScoreProgression(data: any) {
         if (!data.playerBehavior?.sessionData) return { shouldAlert: false };
         
         const sessions = data.playerBehavior.sessionData.slice(-10); // 最新10セッション
         if (sessions.length < 3) return { shouldAlert: false };
         
-        const scoreProgression = sessions.map(s => s.totalScore || 0);
+        const scoreProgression = sessions.map((s: any) => s.totalScore || 0);
         const avgIncrease = this.calculateAverageIncrease(scoreProgression);
         
         // 異常に急激なスコア上昇を検出
@@ -268,11 +278,11 @@ export class DeveloperAlertSystem {
     /**
      * 異常なセッション長のチェック
      */
-    checkAbnormalSessionLength(data) {
+    checkAbnormalSessionLength(data: any) {
         if (!data.playerBehavior?.sessionData) return { shouldAlert: false };
         
         const recentSessions = data.playerBehavior.sessionData.slice(-5);
-        const avgDuration = recentSessions.reduce((sum, s) => sum + (s.duration || 0), 0) / recentSessions.length;
+        const avgDuration = recentSessions.reduce((sum: any, s: any) => sum + (s.duration || 0), 0) / recentSessions.length;
         
         // 24時間以上の連続プレイ
         if (avgDuration > 24 * 60 * 60 * 1000) {
@@ -297,7 +307,7 @@ export class DeveloperAlertSystem {
     /**
      * 繰り返し動作のチェック
      */
-    checkRepetitiveActions(data) {
+    checkRepetitiveActions(data: any) {
         if (!data.gameBalance?.bubbleInteractions) return { shouldAlert: false };
         
         const interactions = data.gameBalance.bubbleInteractions;
@@ -326,7 +336,7 @@ export class DeveloperAlertSystem {
     /**
      * 不可能な実績のチェック
      */
-    checkImpossibleAchievements(data) {
+    checkImpossibleAchievements(data: any) {
         if (!data.playerBehavior?.achievementData) return { shouldAlert: false };
         
         const achievements = data.playerBehavior.achievementData;
@@ -352,7 +362,7 @@ export class DeveloperAlertSystem {
     /**
      * 低フレームレートのチェック
      */
-    checkLowFrameRate(data) {
+    checkLowFrameRate(data: any) {
         if (!data.performance?.frameRate) return { shouldAlert: false };
         
         const avgFPS = data.performance.frameRate.average;
@@ -381,7 +391,7 @@ export class DeveloperAlertSystem {
     /**
      * 高メモリ使用量のチェック
      */
-    checkHighMemoryUsage(data) {
+    checkHighMemoryUsage(data: any) {
         if (!data.performance?.memoryUsage) return { shouldAlert: false };
         
         const memoryUsage = data.performance.memoryUsage.current;
@@ -410,7 +420,7 @@ export class DeveloperAlertSystem {
     /**
      * 長いロード時間のチェック
      */
-    checkLongLoadTimes(data) {
+    checkLongLoadTimes(data: any) {
         if (!data.performance?.loadTimes) return { shouldAlert: false };
         
         const avgLoadTime = data.performance.loadTimes.average;
@@ -439,7 +449,7 @@ export class DeveloperAlertSystem {
     /**
      * 頻繁なエラーのチェック
      */
-    checkFrequentErrors(data) {
+    checkFrequentErrors(data: any) {
         if (!data.errors?.errorRate) return { shouldAlert: false };
         
         const errorRate = data.errors.errorRate; // エラー/分
@@ -468,7 +478,7 @@ export class DeveloperAlertSystem {
     /**
      * 疑わしい活動のチェック
      */
-    checkSuspiciousActivity(data) {
+    checkSuspiciousActivity(data: any) {
         if (!data.security?.activityLog) return { shouldAlert: false };
         
         const suspiciousPatterns = this.analyzeSuspiciousPatterns(data.security.activityLog);
@@ -496,7 +506,7 @@ export class DeveloperAlertSystem {
     /**
      * データ操作のチェック
      */
-    checkDataManipulation(data) {
+    checkDataManipulation(data: any) {
         if (!data.security?.dataIntegrity) return { shouldAlert: false };
         
         const integrityIssues = data.security.dataIntegrity.issues || [];
@@ -521,7 +531,7 @@ export class DeveloperAlertSystem {
     /**
      * データ不整合のチェック
      */
-    checkDataInconsistency(data) {
+    checkDataInconsistency(data: any) {
         if (!data.validation?.inconsistencies) return { shouldAlert: false };
         
         const inconsistencies = data.validation.inconsistencies;
@@ -549,7 +559,7 @@ export class DeveloperAlertSystem {
     /**
      * データ欠損のチェック
      */
-    checkMissingData(data) {
+    checkMissingData(data: any) {
         const requiredFields = ['playerBehavior', 'gameBalance', 'performance'];
         const missingFields = requiredFields.filter(field => !data[field]);
         
@@ -576,7 +586,7 @@ export class DeveloperAlertSystem {
     /**
      * ユーザーエンゲージメント低下のチェック
      */
-    checkUserEngagementDrop(data) {
+    checkUserEngagementDrop(data: any) {
         if (!data.business?.engagement) return { shouldAlert: false };
         
         const currentEngagement = data.business.engagement.current;
@@ -610,7 +620,7 @@ export class DeveloperAlertSystem {
     /**
      * リテンション率変化のチェック
      */
-    checkRetentionRateChange(data) {
+    checkRetentionRateChange(data: any) {
         if (!data.business?.retention) return { shouldAlert: false };
         
         const currentRetention = data.business.retention.current;
@@ -644,7 +654,7 @@ export class DeveloperAlertSystem {
     /**
      * アラートの生成
      */
-    generateAlert(alertData) {
+    generateAlert(alertData: any) {
         const alert = {
             id: this.generateAlertId(),
             timestamp: Date.now(),
@@ -674,7 +684,7 @@ export class DeveloperAlertSystem {
     /**
      * フィルターチェック
      */
-    passesFilters(alert) {
+    passesFilters(alert: any) {
         for (const [name, filter] of this.alertFilters.entries()) {
             if (!filter(alert)) {
                 return false;
@@ -686,7 +696,7 @@ export class DeveloperAlertSystem {
     /**
      * アラート送信
      */
-    sendAlert(alert) {
+    sendAlert(alert: any) {
         // コンソールログ
         if (this.options.enableConsoleLogging) {
             this.logToConsole(alert);
@@ -706,7 +716,7 @@ export class DeveloperAlertSystem {
     /**
      * コンソールログ出力
      */
-    logToConsole(alert) {
+    logToConsole(alert: any) {
         const category = this.alertCategories.get(alert.category);
         const emoji = category?.icon || '🔔';
         const color = this.getSeverityColor(alert.severity);
@@ -722,7 +732,7 @@ export class DeveloperAlertSystem {
         
         if (alert.recommendations.length > 0) {
             console.log('推奨アクション:');
-            alert.recommendations.forEach((rec, i) => {
+            alert.recommendations.forEach((rec: any, i: any) => {
                 console.log(`  ${i + 1}. ${rec}`);
             });
         }
@@ -733,7 +743,7 @@ export class DeveloperAlertSystem {
     /**
      * ウェブフック通知送信
      */
-    async sendWebhookNotification(alert) {
+    async sendWebhookNotification(alert: any) {
         try {
             await fetch(this.options.webhookUrl, {
                 method: 'POST',
@@ -754,7 +764,7 @@ export class DeveloperAlertSystem {
     /**
      * メール通知送信
      */
-    async sendEmailNotification(alert) {
+    async sendEmailNotification(alert: any) {
         try {
             await fetch(this.options.emailEndpoint, {
                 method: 'POST',
@@ -775,7 +785,7 @@ export class DeveloperAlertSystem {
     /**
      * メール本文のフォーマット
      */
-    formatEmailBody(alert) {
+    formatEmailBody(alert: any) {
         const category = this.alertCategories.get(alert.category);
         let body = `開発者アラート通知\n\n`;
         body += `カテゴリ: ${category?.name || alert.category}\n`;
@@ -789,7 +799,7 @@ export class DeveloperAlertSystem {
         
         if (alert.recommendations.length > 0) {
             body += `推奨アクション:\n`;
-            alert.recommendations.forEach((rec, i) => {
+            alert.recommendations.forEach((rec: any, i: any) => {
                 body += `${i + 1}. ${rec}\n`;
             });
         }
@@ -800,7 +810,7 @@ export class DeveloperAlertSystem {
     /**
      * コールバック実行
      */
-    executeCallbacks(alert) {
+    executeCallbacks(alert: any) {
         for (const [name, callback] of this.alertCallbacks.entries()) {
             try {
                 callback(alert);
@@ -813,7 +823,7 @@ export class DeveloperAlertSystem {
     /**
      * ヘルパーメソッド
      */
-    calculateAverageIncrease(values) {
+    calculateAverageIncrease(values: any) {
         if (values.length < 2) return 0;
         
         let totalIncrease = 0;
@@ -824,7 +834,7 @@ export class DeveloperAlertSystem {
         return totalIncrease / (values.length - 1);
     }
 
-    analyzeActionPatterns(actions) {
+    analyzeActionPatterns(actions: any) {
         const patterns = new Map();
         let repetitiveCount = 0;
         
@@ -843,20 +853,20 @@ export class DeveloperAlertSystem {
         };
     }
 
-    detectImpossibleAchievements(achievements) {
+    detectImpossibleAchievements(achievements: any) {
         // 簡単な実装例 - 実際はより複雑なロジックが必要
-        return achievements.filter(achievement => {
+        return achievements.filter((achievement: any) => {
             // 短時間での不可能な実績取得など
             return achievement.timeToAchieve < 1000; // 1秒未満での実績取得
         });
     }
 
-    analyzeSuspiciousPatterns(activityLog) {
+    analyzeSuspiciousPatterns(activityLog: any) {
         let riskScore = 0;
         const patterns = [];
         
         // 短時間での大量アクション
-        const recentActions = activityLog.filter(log => 
+        const recentActions = activityLog.filter((log: any) => 
             Date.now() - log.timestamp < 60000 // 1分以内
         );
         
@@ -874,7 +884,7 @@ export class DeveloperAlertSystem {
         return { riskScore, patterns };
     }
 
-    getSeverityColor(severity) {
+    getSeverityColor(severity: any) {
         const colors = {
             info: '#2196f3',
             warning: '#ff9800',
@@ -887,7 +897,7 @@ export class DeveloperAlertSystem {
     /**
      * パフォーマンス警告の処理
      */
-    handlePerformanceWarning(warningData) {
+    handlePerformanceWarning(warningData: any) {
         this.generateAlert({
             category: 'performance',
             checkType: 'performance_warning',
@@ -904,7 +914,7 @@ export class DeveloperAlertSystem {
     /**
      * エラーイベントの処理
      */
-    handleErrorEvent(errorData) {
+    handleErrorEvent(errorData: any) {
         this.generateAlert({
             category: 'performance',
             checkType: 'error_event',
@@ -921,7 +931,7 @@ export class DeveloperAlertSystem {
     /**
      * アラートコールバックの登録
      */
-    registerCallback(name, callback) {
+    registerCallback(name: any, callback: any) {
         this.alertCallbacks.set(name, callback);
     }
 

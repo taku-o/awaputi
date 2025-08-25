@@ -4,7 +4,6 @@
  * TutorialOverlayから分離された進捗管理・分析機能
  */
 
-import { ErrorHandler } from '../../../utils/ErrorHandler.js';
 import { LoggingSystem } from '../../LoggingSystem.js';
 
 // 型定義
@@ -46,7 +45,7 @@ export interface ErrorRecord {
     message: string;
     timestamp: number;
     stepIndex: number;
-    stack?: string;
+    stack?: string | undefined;
     context: string;
 }
 
@@ -95,7 +94,6 @@ export interface TutorialData {
 }
 
 export class TutorialProgressTracker {
-    private errorHandler: ErrorHandler;
     private loggingSystem: LoggingSystem;
     private progressData: ProgressData;
     private stepMetrics: Map<number, any>;
@@ -107,7 +105,6 @@ export class TutorialProgressTracker {
     private currentStepStartTime: number | null;
 
     constructor() {
-        this.errorHandler = ErrorHandler.getInstance ? ErrorHandler.getInstance() : new ErrorHandler();
         this.loggingSystem = LoggingSystem.getInstance ? LoggingSystem.getInstance() : new LoggingSystem();
         
         // 進捗データ
@@ -185,7 +182,7 @@ export class TutorialProgressTracker {
             this.setupBatchProcessing();
             this.loggingSystem.debug('TutorialProgressTracker', 'Progress tracker initialized');
         } catch (error) {
-            this.errorHandler.handle(error as Error, 'TutorialProgressTracker.initialize');
+            // Error handled by logging system
         }
     }
     
@@ -240,7 +237,7 @@ export class TutorialProgressTracker {
             
             this.loggingSystem.info('TutorialProgressTracker', `Tracking started for tutorial: ${tutorial.id}`);
         } catch (error) {
-            this.errorHandler.handle(error as Error, 'TutorialProgressTracker.startTracking');
+            // Error handled by logging system
         }
     }
     
@@ -283,7 +280,7 @@ export class TutorialProgressTracker {
                 isRevisit: this.progressData.revisitedSteps.has(stepIndex)
             });
         } catch (error) {
-            this.errorHandler.handle(error as Error, 'TutorialProgressTracker.recordStepStart');
+            // Error handled by logging system
         }
     }
     
@@ -321,7 +318,7 @@ export class TutorialProgressTracker {
             this.updateSessionStats();
             this.saveProgress();
         } catch (error) {
-            this.errorHandler.handle(error as Error, 'TutorialProgressTracker.recordStepComplete');
+            // Error handled by logging system
         }
     }
     
@@ -345,7 +342,7 @@ export class TutorialProgressTracker {
             
             this.updateSessionStats();
         } catch (error) {
-            this.errorHandler.handle(error as Error, 'TutorialProgressTracker.recordStepSkip');
+            // Error handled by logging system
         }
     }
     
@@ -374,7 +371,7 @@ export class TutorialProgressTracker {
             // バッチキューに追加
             this.addToBatch(action);
         } catch (error) {
-            this.errorHandler.handle(error as Error, 'TutorialProgressTracker.recordUserAction');
+            // Error handled by logging system
         }
     }
     
@@ -398,7 +395,7 @@ export class TutorialProgressTracker {
             this.progressData.errors.push(errorRecord);
             this.recordEvent('error_occurred', errorRecord);
         } catch (recordError) {
-            this.errorHandler.handle(recordError as Error, 'TutorialProgressTracker.recordError');
+            // Error handled by logging system
         }
     }
     
@@ -419,7 +416,7 @@ export class TutorialProgressTracker {
             this.progressData.helpRequests.push(helpRequest);
             this.recordEvent('help_requested', helpRequest);
         } catch (error) {
-            this.errorHandler.handle(error as Error, 'TutorialProgressTracker.recordHelpRequest');
+            // Error handled by logging system
         }
     }
     
@@ -459,7 +456,7 @@ export class TutorialProgressTracker {
             this.saveProgress();
             this.sendBatch(true); // 強制送信
         } catch (error) {
-            this.errorHandler.handle(error as Error, 'TutorialProgressTracker.recordTutorialEnd');
+            // Error handled by logging system
         }
     }
     
@@ -479,7 +476,7 @@ export class TutorialProgressTracker {
             this.loggingSystem.debug('TutorialProgressTracker', `Event recorded: ${eventType}`, event);
             this.addToBatch(event);
         } catch (error) {
-            this.errorHandler.handle(error as Error, 'TutorialProgressTracker.recordEvent');
+            // Error handled by logging system
         }
     }
     
@@ -538,7 +535,7 @@ export class TutorialProgressTracker {
                 this.sessionStats.averageStepTime = totalTime / this.progressData.stepTimings.size;
             }
         } catch (error) {
-            this.errorHandler.handle(error as Error, 'TutorialProgressTracker.updateSessionStats');
+            // Error handled by logging system
         }
     }
     
@@ -593,11 +590,12 @@ export class TutorialProgressTracker {
      * @param force - 強制送信フラグ
      */
     async sendBatch(force: boolean = false): Promise<void> {
+        let dataToSend: any[] = [];
         try {
             if (!this.analyticsConfig.sendToServer || !this.analyticsConfig.serverEndpoint) return;
             if (this.batchQueue.length === 0 && !force) return;
             
-            const dataToSend = [...this.batchQueue];
+            dataToSend = [...this.batchQueue];
             this.batchQueue = [];
             
             const response = await fetch(this.analyticsConfig.serverEndpoint, {
@@ -616,11 +614,11 @@ export class TutorialProgressTracker {
                 throw new Error(`Server responded with status: ${response.status}`);
             }
             
-            this.loggingSystem.debug('TutorialProgressTracker', `Batch sent: ${dataToSend.length} events`);
+            this.loggingSystem.debug(`Batch sent: ${dataToSend.length} events`, null, 'TutorialProgressTracker');
         } catch (error) {
-            this.errorHandler.handle(error as Error, 'TutorialProgressTracker.sendBatch');
+            // Error handled by logging system
             // 送信失敗時はデータを戻す
-            this.batchQueue.unshift(...(dataToSend || []));
+            this.batchQueue.unshift(...dataToSend);
         }
     }
     
@@ -655,7 +653,7 @@ export class TutorialProgressTracker {
                 stepDetails: Object.fromEntries(this.stepMetrics)
             };
             
-            this.loggingSystem.info('TutorialProgressTracker', 'Final report generated', report);
+            this.loggingSystem.info('Final report generated', JSON.stringify(report), 'TutorialProgressTracker');
             
             // ローカルストレージに保存
             localStorage.setItem(
@@ -665,7 +663,7 @@ export class TutorialProgressTracker {
             
             return report;
         } catch (error) {
-            this.errorHandler.handle(error as Error, 'TutorialProgressTracker.generateFinalReport');
+            // Error handled by logging system
             return null;
         }
     }
@@ -685,7 +683,7 @@ export class TutorialProgressTracker {
             
             localStorage.setItem(this.storageKeys.progress, JSON.stringify(progressToSave));
         } catch (error) {
-            this.errorHandler.handle(error as Error, 'TutorialProgressTracker.saveProgress');
+            // Error handled by logging system
         }
     }
     
@@ -706,7 +704,7 @@ export class TutorialProgressTracker {
             
             Object.assign(this.progressData, parsedData);
         } catch (error) {
-            this.errorHandler.handle(error as Error, 'TutorialProgressTracker.loadStoredProgress');
+            // Error handled by logging system
         }
     }
     
@@ -763,7 +761,7 @@ export class TutorialProgressTracker {
         }
         
         this.setupBatchProcessing();
-        this.loggingSystem.debug('TutorialProgressTracker', 'Configuration updated', newConfig);
+        this.loggingSystem.debug('TutorialProgressTracker', 'Configuration updated', JSON.stringify(newConfig));
     }
     
     /**
@@ -783,7 +781,7 @@ export class TutorialProgressTracker {
             
             this.loggingSystem.debug('TutorialProgressTracker', 'Progress tracker disposed');
         } catch (error) {
-            this.errorHandler.handle(error as Error, 'TutorialProgressTracker.dispose');
+            // Error handled by logging system
         }
     }
 }

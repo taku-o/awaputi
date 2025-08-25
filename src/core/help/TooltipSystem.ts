@@ -4,7 +4,6 @@
  * コンテキスト対応ヘルプの提供
  */
 
-import { ErrorHandler } from '../../utils/ErrorHandler.js';
 import { LoggingSystem } from '../LoggingSystem.js';
 
 // 型定義
@@ -96,10 +95,10 @@ export interface TooltipStyles {
 
 export interface AnimationInfo {
     tooltip: TooltipInfo;
-    showTimer?: NodeJS.Timeout;
-    element?: HTMLElement;
-    fadeAnimation?: number;
-    animationType?: AnimationType;
+    showTimer?: NodeJS.Timeout | undefined;
+    element?: HTMLElement | undefined;
+    fadeAnimation?: number | undefined;
+    animationType?: AnimationType | undefined;
 }
 
 export type PositionStrategy = (rect: DOMRect, tooltipSize: TooltipSize) => TooltipPosition;
@@ -111,10 +110,8 @@ export class TooltipSystem {
     private gameEngine: GameEngine;
     private loggingSystem: LoggingSystem;
     private canvas: HTMLCanvasElement | null;
-    private ctx: CanvasRenderingContext2D | null;
     // ツールチップ管理
     private activeTooltips: Map<string, TooltipInfo>;
-    private tooltipQueue: TooltipInfo[];
     private hoveredElements: Set<string>;
     // ツールチップ設定
     private config: TooltipSystemConfig;
@@ -130,11 +127,9 @@ export class TooltipSystem {
         this.gameEngine = gameEngine;
         this.loggingSystem = LoggingSystem.getInstance ? LoggingSystem.getInstance() : new LoggingSystem();
         this.canvas = null;
-        this.ctx = null;
         
         // ツールチップ管理
         this.activeTooltips = new Map<string, TooltipInfo>();
-        this.tooltipQueue = [];
         this.hoveredElements = new Set<string>();
         
         // ツールチップ設定
@@ -194,17 +189,15 @@ export class TooltipSystem {
             // Canvas要素の取得
             if (this.gameEngine.canvas) {
                 this.canvas = this.gameEngine.canvas;
-                this.ctx = this.canvas.getContext('2d');
             }
             
             // イベントリスナーの設定
             this.setupEventListeners();
             // 既存のUI要素のツールチップ設定
             this.setupDefaultTooltips();
-            this.loggingSystem.info('TooltipSystem', 'Tooltip system initialized');
+            this.loggingSystem.info('Tooltip system initialized', null, 'TooltipSystem');
         } catch (error) {
-            this.loggingSystem.error('TooltipSystem', 'Failed to initialize tooltip system', error);
-            ErrorHandler.handle(error as Error, 'TooltipSystem.initialize');
+            this.loggingSystem.error('Failed to initialize tooltip system', (error as Error).message, 'TooltipSystem');
         }
     }
     
@@ -282,9 +275,9 @@ export class TooltipSystem {
                 priority: config.priority || 0
             };
             this.activeTooltips.set(config.id, tooltipInfo);
-            this.loggingSystem.debug('TooltipSystem', `Tooltip area registered: ${config.id}`);
+            this.loggingSystem.debug(`Tooltip area registered: ${config.id}`, null, 'TooltipSystem');
         } catch (error) {
-            this.loggingSystem.error('TooltipSystem', `Failed to register tooltip area: ${config.id}`, error);
+            this.loggingSystem.error(`Failed to register tooltip area: ${config.id}`, (error as Error).message, 'TooltipSystem');
         }
     }
     
@@ -297,10 +290,10 @@ export class TooltipSystem {
             if (this.activeTooltips.has(id)) {
                 this.activeTooltips.delete(id);
                 this.hideTooltip(id);
-                this.loggingSystem.debug('TooltipSystem', `Tooltip area unregistered: ${id}`);
+                this.loggingSystem.debug(`Tooltip area unregistered: ${id}`, null, 'TooltipSystem');
             }
         } catch (error) {
-            this.loggingSystem.error('TooltipSystem', `Failed to unregister tooltip area: ${id}`, error);
+            this.loggingSystem.error(`Failed to unregister tooltip area: ${id}`, (error as Error).message, 'TooltipSystem');
         }
     }
     
@@ -319,7 +312,7 @@ export class TooltipSystem {
             // 現在ホバー中の要素をチェック
             const hoveredTooltips: TooltipInfo[] = [];
             
-            for (const [id, tooltip] of this.activeTooltips) {
+            for (const [, tooltip] of this.activeTooltips) {
                 if (!tooltip.enabled) continue;
                 
                 if (this.isPointInBounds(x, y, tooltip.bounds)) {
@@ -353,7 +346,7 @@ export class TooltipSystem {
                 }
             }
         } catch (error) {
-            this.loggingSystem.error('TooltipSystem', 'Mouse move handling error', error);
+            this.loggingSystem.error('Mouse move handling error', (error as Error).message, 'TooltipSystem');
         }
     }
     
@@ -406,7 +399,7 @@ export class TooltipSystem {
             });
 
         } catch (error) {
-            this.loggingSystem.error('TooltipSystem', `Failed to show tooltip: ${tooltip.id}`, error);
+            this.loggingSystem.error(`Failed to show tooltip: ${tooltip.id}`, (error as Error).message, 'TooltipSystem');
         }
     }
     
@@ -417,7 +410,7 @@ export class TooltipSystem {
      * @param mouseY - マウスY座標
      * @param animationType - アニメーションタイプ
      */
-    createTooltipElement(tooltip: TooltipInfo, mouseX: number, mouseY: number, animationType: AnimationType = 'fadeUp'): void {
+    createTooltipElement(tooltip: TooltipInfo, _mouseX: number, _mouseY: number, animationType: AnimationType = 'fadeUp'): void {
         try {
             // DOM要素の作成
             const element = document.createElement('div');
@@ -442,9 +435,9 @@ export class TooltipSystem {
                 animation.element = element;
             }
 
-            this.loggingSystem.debug('TooltipSystem', `Tooltip shown with ${animationType}: ${tooltip.id}`);
+            this.loggingSystem.debug(`Tooltip shown with ${animationType}: ${tooltip.id}`, null, 'TooltipSystem');
         } catch (error) {
-            this.loggingSystem.error('TooltipSystem', `Failed to create tooltip element: ${tooltip.id}`, error);
+            this.loggingSystem.error(`Failed to create tooltip element: ${tooltip.id}`, (error as Error).message, 'TooltipSystem');
         }
     }
     
@@ -514,8 +507,11 @@ export class TooltipSystem {
                 right: canvasRect.left + tooltip.bounds.x + tooltip.bounds.width,
                 bottom: canvasRect.top + tooltip.bounds.y + tooltip.bounds.height,
                 width: tooltip.bounds.width,
-                height: tooltip.bounds.height
-            };
+                height: tooltip.bounds.height,
+                x: canvasRect.left + tooltip.bounds.x,
+                y: canvasRect.top + tooltip.bounds.y,
+                toJSON: () => ({})
+            } as DOMRect;
 
             const tooltipSize = {
                 width: elementRect.width,
@@ -533,7 +529,7 @@ export class TooltipSystem {
             element.style.top = `${Math.round(position.y)}px`;
 
         } catch (error) {
-            this.loggingSystem.error('TooltipSystem', 'Failed to update tooltip position', error);
+            this.loggingSystem.error('Failed to update tooltip position', (error as Error).message, 'TooltipSystem');
         }
     }
     
@@ -596,7 +592,7 @@ export class TooltipSystem {
                 // アニメーション完了
                 const animation = this.animations.get(tooltipId);
                 if (animation) {
-                    animation.fadeAnimation = undefined;
+                    animation.fadeAnimation = undefined as number | undefined;
                 }
                 this.finalizeAnimation(element, animationType, 'in');
             }
@@ -723,7 +719,7 @@ export class TooltipSystem {
      * @param animationType - アニメーションタイプ
      * @param direction - 方向
      */
-    finalizeAnimation(element: HTMLElement, animationType: AnimationType, direction: AnimationDirection): void {
+    finalizeAnimation(element: HTMLElement, _animationType: AnimationType, direction: AnimationDirection): void {
         if (direction === 'in') {
             element.style.opacity = '1';
             element.style.transform = 'none';
@@ -786,7 +782,7 @@ export class TooltipSystem {
                 this.animations.delete(tooltipId);
             }
         } catch (error) {
-            this.loggingSystem.error('TooltipSystem', `Failed to hide tooltip: ${tooltipId}`, error);
+            this.loggingSystem.error(`Failed to hide tooltip: ${tooltipId}`, (error as Error).message, 'TooltipSystem');
         }
     }
     
@@ -823,7 +819,6 @@ export class TooltipSystem {
     animateTooltipOut(element: HTMLElement, tooltipId: string, animationType: AnimationType = 'fadeDown'): void {
         const startTime = performance.now();
         const duration = this.config.fadeOutDuration;
-        const startOpacity = parseFloat(element.style.opacity) || 1;
         
         const animate = (currentTime: number) => {
             const elapsed = currentTime - startTime;
@@ -860,7 +855,7 @@ export class TooltipSystem {
             }
             this.hoveredElements.clear();
         } catch (error) {
-            this.loggingSystem.error('TooltipSystem', 'Failed to hide all tooltips', error);
+            this.loggingSystem.error('Failed to hide all tooltips', (error as Error).message, 'TooltipSystem');
         }
     }
     
@@ -905,7 +900,7 @@ export class TooltipSystem {
 
             return true;
         } catch (error) {
-            this.loggingSystem.error('TooltipSystem', 'Condition check error', error);
+            this.loggingSystem.error('Condition check error', (error as Error).message, 'TooltipSystem');
             return true; // エラー時はツールチップを表示
         }
     }
@@ -974,9 +969,9 @@ export class TooltipSystem {
             this.hoveredElements.clear();
             this.animations.clear();
             
-            this.loggingSystem.info('TooltipSystem', 'Tooltip system cleaned up');
+            this.loggingSystem.info('Tooltip system cleaned up', null, 'TooltipSystem');
         } catch (error) {
-            this.loggingSystem.error('TooltipSystem', 'Failed to cleanup tooltip system', error);
+            this.loggingSystem.error('Failed to cleanup tooltip system', (error as Error).message, 'TooltipSystem');
         }
     }
 }

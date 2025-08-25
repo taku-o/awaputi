@@ -377,13 +377,13 @@ export class TutorialStepManager {
         try {
             this.progressData.totalDuration = Date.now() - (this.progressData.startTime || 0);
 
-            this.loggingSystem.info('TutorialStepManager', 'Tutorial completed', {
+            this.loggingSystem.info('TutorialStepManager', 'Tutorial completed', JSON.stringify({
                 tutorial: this.currentTutorial?.id,
                 totalSteps: this.totalSteps,
                 completedSteps: this.completedSteps.size,
                 skippedSteps: this.progressData.skippedSteps.size,
                 totalDuration: this.progressData.totalDuration
-            });
+            }));
 
             // 進捗保存
             if (this.config.saveProgress) {
@@ -474,7 +474,7 @@ export class TutorialStepManager {
      */
     updateConfig(newConfig: Partial<StepManagerConfig>): void {
         Object.assign(this.config, newConfig);
-        this.loggingSystem.debug('TutorialStepManager', 'Configuration updated', newConfig);
+        this.loggingSystem.debug('TutorialStepManager', 'Configuration updated', JSON.stringify(newConfig));
     }
 
     /**

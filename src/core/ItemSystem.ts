@@ -147,7 +147,7 @@ export class ItemManager implements IItemManager {
     /**
      * アイテムの効果を適用する
      */
-    applyItemEffect(itemId: string, level: number): void {
+    applyItemEffect(itemId: string, level?: number): void {
         const itemDef = ITEM_DEFINITIONS[itemId];
         if (!itemDef) return;
 

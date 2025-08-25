@@ -5,9 +5,9 @@
  * Updated: 2024 with load() method for GameEngineInitializer compatibility
  */
 
-import { SeasonalEventManager, type SeasonalEventData, type SeasonInfo } from './events/SeasonalEventManager.js';
-import { EventNotificationSystem, type NotificationData } from './events/EventNotificationSystem.js';
-import { EventHistoryManager, type HistoryEntry, type DetailedStatistics } from './events/EventHistoryManager.js';
+import { SeasonalEventManager } from './events/SeasonalEventManager.js';
+import { EventNotificationSystem } from './events/EventNotificationSystem.js';
+import { EventHistoryManager } from './events/EventHistoryManager.js';
 import { EventRankingSystem } from './events/EventRankingSystem.js';
 import { GameEngine } from './GameEngine';
 
@@ -117,8 +117,8 @@ export class EventStageManager {
                     highScore: { threshold: 15000, ap: 300 }
                 },
                 availability: {
-                    startDate: null,
-                    endDate: null,
+                    startDate: undefined,
+                    endDate: undefined,
                     recurring: 'weekly'
                 }
             },
@@ -143,8 +143,8 @@ export class EventStageManager {
                     highScore: { threshold: 12000, ap: 100 }
                 },
                 availability: {
-                    startDate: null,
-                    endDate: null,
+                    startDate: undefined,
+                    endDate: undefined,
                     recurring: 'monthly'
                 }
             },
@@ -168,8 +168,8 @@ export class EventStageManager {
                     highScore: { threshold: 10000, ap: 200 }
                 },
                 availability: {
-                    startDate: null,
-                    endDate: null,
+                    startDate: undefined,
+                    endDate: undefined,
                     recurring: 'weekly'
                 }
             }
@@ -191,7 +191,7 @@ export class EventStageManager {
         
         // 季節イベントも追加
         const seasonalEvents = this.seasonalEventManager.getActiveSeasonalEvents();
-        availableEvents.push(...seasonalEvents);
+        availableEvents.push(...(seasonalEvents as EventStage[]));
         
         return availableEvents;
     }
@@ -287,9 +287,9 @@ export class EventStageManager {
         try {
             // バブル設定
             if (event.bubbleTypes && this.gameEngine.bubbleManager) {
-                this.gameEngine.bubbleManager.setEventBubbleTypes(event.bubbleTypes);
-                this.gameEngine.bubbleManager.setSpawnRateMultiplier(event.spawnRate || 1.0);
-                this.gameEngine.bubbleManager.setMaxBubbles(event.maxBubbles || 15);
+                (this.gameEngine.bubbleManager as any).setEventBubbleTypes(event.bubbleTypes);
+                (this.gameEngine.bubbleManager as any).setSpawnRateMultiplier(event.spawnRate || 1.0);
+                (this.gameEngine.bubbleManager as any).setMaxBubbles(event.maxBubbles || 15);
             }
             
             // 特別ルールを適用
@@ -299,7 +299,7 @@ export class EventStageManager {
             
             // 季節エフェクトを適用
             if (event.type === 'seasonal') {
-                this.seasonalEventManager.applySeasonalEffects(event, event.specialRules || {});
+                this.seasonalEventManager.applySeasonalEffects(event as any, event.specialRules || {});
             }
             
             console.log(`Event settings applied: ${event.name}`);
@@ -320,15 +320,15 @@ export class EventStageManager {
         // 特別なバブルスポーン率
         if (this.gameEngine.bubbleManager) {
             if (specialRules.goldenSpawnRate) {
-                this.gameEngine.bubbleManager.setSpecialBubbleSpawnRate('golden', specialRules.goldenSpawnRate);
+                (this.gameEngine.bubbleManager as any).setSpecialBubbleSpawnRate('golden', specialRules.goldenSpawnRate);
             }
 
             if (specialRules.phantomSpawnRate) {
-                this.gameEngine.bubbleManager.setSpecialBubbleSpawnRate('phantom', specialRules.phantomSpawnRate);
+                (this.gameEngine.bubbleManager as any).setSpecialBubbleSpawnRate('phantom', specialRules.phantomSpawnRate);
             }
 
             if (specialRules.rainbowChainBonus) {
-                this.gameEngine.bubbleManager.setChainBonus('rainbow', specialRules.rainbowChainBonus);
+                (this.gameEngine.bubbleManager as any).setChainBonus('rainbow', specialRules.rainbowChainBonus);
             }
         }
         
@@ -355,7 +355,7 @@ export class EventStageManager {
         
         try {
             // イベント完了を履歴に記録
-            this.historyManager.recordEventCompletion(event, results);
+            this.historyManager.recordEventCompletion(event, results as any);
             
             // ランキングを更新
             if (this.rankingSystem && this.rankingSystem.updatePlayerScore && 'score' in results) {
@@ -363,10 +363,10 @@ export class EventStageManager {
             }
             
             // イベント終了通知
-            this.notificationSystem.notifyEventEnd(event, results);
+            this.notificationSystem.notifyEventEnd(event, results as any);
             
             // 報酬を付与
-            this.grantEventRewards(event, results);
+            this.grantEventRewards(event, results as any);
             
             // アクティブイベントから削除
             this.activeEvents.delete(eventId);
@@ -397,8 +397,8 @@ export class EventStageManager {
         }
         
         // チェーンボーナス報酬
-        if (event.rewards.chainBonus && results.maxChain >= event.rewards.chainBonus.threshold) {
-            this.grantReward(event.rewards.chainBonus);
+        if ((event.rewards as any).chainBonus && results.maxChain >= (event.rewards as any).chainBonus.threshold) {
+            this.grantReward((event.rewards as any).chainBonus);
         }
     }
     
@@ -410,9 +410,9 @@ export class EventStageManager {
             this.gameEngine.playerData.addAP(reward.ap);
         }
         
-        if (reward.items && this.gameEngine.itemManager && this.gameEngine.itemManager.grantItem) {
+        if (reward.items && this.gameEngine.itemManager && (this.gameEngine.itemManager as any).grantItem) {
             reward.items.forEach((item: any) => {
-                this.gameEngine.itemManager.grantItem(item.id, item.quantity || 1);
+                (this.gameEngine.itemManager as any).grantItem(item.id, item.quantity || 1);
             });
         }
     }
@@ -479,8 +479,8 @@ export class EventStageManager {
     /**
      * アクティブな通知を取得
      */
-    getActiveNotifications(): NotificationData[] {
-        return this.notificationSystem.getActiveNotifications();
+    getActiveNotifications(): any[] {
+        return (this.notificationSystem as any).getActiveNotifications();
     }
     
     /**
@@ -540,13 +540,13 @@ export class EventStageManager {
      * イベント通知をチェック
      * 互換性のためのメソッド（EventStageDataManager用）
      */
-    checkEventNotifications(): NotificationData[] {
+    checkEventNotifications(): any[] {
         try {
             console.log('[DEBUG] EventStageManager.checkEventNotifications() 実行');
             
             // 通知システムから通知をチェック
-            if (this.notificationSystem && typeof this.notificationSystem.checkNotifications === 'function') {
-                return this.notificationSystem.checkNotifications();
+            if (this.notificationSystem && typeof (this.notificationSystem as any).checkNotifications === 'function') {
+                return (this.notificationSystem as any).checkNotifications();
             }
             
             // フォールバック: 空の通知配列を返す

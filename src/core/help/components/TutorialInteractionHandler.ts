@@ -353,7 +353,7 @@ export class TutorialInteractionHandler {
      * タッチ終了イベントを処理
      * @param event - タッチイベント
      */
-    handleTouchEnd(event: TouchEvent): void {
+    handleTouchEnd(_event: TouchEvent): void {
         try {
             if (!this.pointerState.isDown) return;
             
@@ -383,7 +383,7 @@ export class TutorialInteractionHandler {
      * タップジェスチャーを処理
      * @param duration - タップ継続時間
      */
-    handleTapGesture(duration: number): void {
+    handleTapGesture(_duration: number): void {
         const currentTime = Date.now();
         const timeSinceLastTap = currentTime - this.pointerState.lastTapTime;
         
@@ -670,7 +670,7 @@ export class TutorialInteractionHandler {
 
         return Array.from(document.querySelectorAll(selectors.join(', ')))
             .filter(element => {
-                return element.offsetParent !== null &&
+                return (element as any).offsetParent !== null &&
                        getComputedStyle(element).visibility !== 'hidden';
             }) as HTMLElement[];
     }
@@ -688,7 +688,7 @@ export class TutorialInteractionHandler {
                                                   navigator.userAgent.includes('JAWS') ||
                                                   window.speechSynthesis !== undefined;
 
-            this.loggingSystem.debug('TutorialInteractionHandler', 'Accessibility settings configured', this.accessibility);
+            this.loggingSystem.debug('TutorialInteractionHandler', 'Accessibility settings configured', JSON.stringify(this.accessibility));
         } catch (error) {
             this.errorHandler.handleError(error, 'TutorialInteractionHandler.setupAccessibility');
         }
@@ -731,7 +731,7 @@ export class TutorialInteractionHandler {
      */
     updateAccessibilitySettings(settings: Partial<AccessibilityConfig>): void {
         Object.assign(this.accessibility, settings);
-        this.loggingSystem.debug('TutorialInteractionHandler', 'Accessibility settings updated', settings);
+        this.loggingSystem.debug('TutorialInteractionHandler', 'Accessibility settings updated', JSON.stringify(settings));
     }
     
     /**
@@ -740,7 +740,7 @@ export class TutorialInteractionHandler {
      */
     updateGestureSettings(gestureSettings: Partial<Gestures>): void {
         Object.assign(this.gestures, gestureSettings);
-        this.loggingSystem.debug('TutorialInteractionHandler', 'Gesture settings updated', gestureSettings);
+        this.loggingSystem.debug('TutorialInteractionHandler', 'Gesture settings updated', JSON.stringify(gestureSettings));
     }
     
     /**

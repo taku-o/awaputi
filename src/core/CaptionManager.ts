@@ -181,7 +181,7 @@ interface CaptionReport {
  * 音声コンテンツのリアルタイム字幕表示とカスタマイズ可能なスタイリング
  */
 export class CaptionManager {
-    private audioAccessibilityManager: AudioAccessibilityManager;
+    private audioAccessibilityManager: AudioAccessibilityManager; // Used for audio integration
     private accessibilityManager?: AccessibilityManager;
     private gameEngine?: GameEngine;
     private config: CaptionConfig;
@@ -192,15 +192,15 @@ export class CaptionManager {
     private captionContainer: HTMLElement | null;
     private maxCaptionId: number;
     private dynamicStyleSheet: HTMLStyleElement | null;
-    private currentStyle: string;
+    private currentStyle: string; // Used for styling captions
     private stats: CaptionStats;
     private userPreferences: UserPreferences;
     private languageSupport: Map<string, LanguageConfig>;
 
     constructor(audioAccessibilityManager: AudioAccessibilityManager) {
         this.audioAccessibilityManager = audioAccessibilityManager;
-        this.accessibilityManager = audioAccessibilityManager.accessibilityManager;
-        this.gameEngine = this.accessibilityManager?.gameEngine;
+        this.accessibilityManager = audioAccessibilityManager.accessibilityManager || undefined;
+        this.gameEngine = this.accessibilityManager?.gameEngine || undefined;
         
         // キャプション設定
         this.config = {
@@ -738,9 +738,10 @@ export class CaptionManager {
         });
         
         // 設定変更の監視
-        document.addEventListener('accessibilitySettingsChanged', (event: AccessibilityEvent) => {
-            if (event.detail.component === 'captions') {
-                this.applyConfig(event.detail.config);
+        document.addEventListener('accessibilitySettingsChanged', (event: Event) => {
+            const accessibilityEvent = event as AccessibilityEvent;
+            if (accessibilityEvent.detail.component === 'captions') {
+                this.applyConfig(accessibilityEvent.detail.config);
             }
         });
     }

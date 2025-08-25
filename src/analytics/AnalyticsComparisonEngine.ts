@@ -12,8 +12,8 @@ export class AnalyticsComparisonEngine {
     private dataComparator: DataComparator;
     private algorithms: ComparisonAlgorithms;
     private renderer: ComparisonResultRenderer;
-    private comparisonPeriods: any;
-    private metrics: any;
+    private _comparisonPeriods: any;
+    private _metrics: any;
     private cache: Map<string, any>;
     private cacheExpiry: number;
 
@@ -26,8 +26,8 @@ export class AnalyticsComparisonEngine {
         this.renderer = new ComparisonResultRenderer();
         
         // 比較期間設定をデータコンパレーターから取得
-        this.comparisonPeriods = this.dataComparator.comparisonPeriods;
-        this.metrics = this.dataComparator.metrics;
+        this._comparisonPeriods = (this.dataComparator as any).comparisonPeriods;
+        this._metrics = (this.dataComparator as any).metrics;
         
         // キャッシュ設定
         this.cache = new Map();
@@ -41,12 +41,12 @@ export class AnalyticsComparisonEngine {
      */
     async compareWithPastData(options: any = {}): Promise<any> {
         try {
-            return await this.dataComparator.compareWithPastData(options, this.storageManager);
+            return await (this.dataComparator as any).compareWithPastData(options, this.storageManager);
         } catch (error) {
             console.error('AnalyticsComparisonEngine.compareWithPastData error:', error);
             return { 
                 success: false,
-                error: error.message
+                error: (error as any).message
             };
         }
     }
@@ -58,12 +58,12 @@ export class AnalyticsComparisonEngine {
      */
     async benchmarkComparison(options: any = {}): Promise<any> {
         try {
-            return await this.dataComparator.benchmarkComparison(options, this.storageManager);
+            return await (this.dataComparator as any).benchmarkComparison(options, this.storageManager);
         } catch (error) {
             console.error('AnalyticsComparisonEngine.benchmarkComparison error:', error);
             return {
                 success: false,
-                error: error.message
+                error: (error as any).message
             };
         }
     }
@@ -75,12 +75,12 @@ export class AnalyticsComparisonEngine {
      */
     async stageComparison(options: any = {}): Promise<any> {
         try {
-            return await this.dataComparator.stageComparison(options, this.storageManager);
+            return await (this.dataComparator as any).stageComparison(options, this.storageManager);
         } catch (error) {
             console.error('AnalyticsComparisonEngine.stageComparison error:', error);
             return {
                 success: false,
-                error: error.message
+                error: (error as any).message
             };
         }
     }
@@ -93,12 +93,12 @@ export class AnalyticsComparisonEngine {
      */
     generateImprovementSuggestions(comparisonResult: any, options: any = {}): any {
         try {
-            return this.algorithms.generateImprovementSuggestions(comparisonResult, options);
+            return (this.algorithms as any).generateImprovementSuggestions(comparisonResult, options);
         } catch (error) {
             console.error('AnalyticsComparisonEngine.generateImprovementSuggestions error:', error);
             return {
                 success: false,
-                error: error.message
+                error: (error as any).message
             };
         }
     }
@@ -111,12 +111,12 @@ export class AnalyticsComparisonEngine {
      */
     async trendAnalysis(period: string = 'month', metrics: string[] = ['score', 'accuracy']): Promise<any> {
         try {
-            return await this.algorithms.trendAnalysis(period, metrics, this.storageManager);
+            return await (this.algorithms as any).trendAnalysis(period, metrics, this.storageManager);
         } catch (error) {
             console.error('AnalyticsComparisonEngine.trendAnalysis error:', error);
             return {
                 success: false,
-                error: error.message
+                error: (error as any).message
             };
         }
     }
@@ -129,12 +129,12 @@ export class AnalyticsComparisonEngine {
      */
     renderResults(comparisonResult: any, options: any = {}): any {
         try {
-            return this.renderer.renderResults(comparisonResult, options);
+            return (this.renderer as any).renderResults(comparisonResult, options);
         } catch (error) {
             console.error('AnalyticsComparisonEngine.renderResults error:', error);
             return {
                 success: false,
-                error: error.message
+                error: (error as any).message
             };
         }
     }
@@ -147,12 +147,12 @@ export class AnalyticsComparisonEngine {
      */
     generateSummaryReport(comparisonResult: any, options: any = {}): any {
         try {
-            return this.renderer.generateSummaryReport(comparisonResult, options);
+            return (this.renderer as any).generateSummaryReport(comparisonResult, options);
         } catch (error) {
             console.error('AnalyticsComparisonEngine.generateSummaryReport error:', error);
             return {
                 success: false,
-                error: error.message
+                error: (error as any).message
             };
         }
     }
@@ -165,12 +165,12 @@ export class AnalyticsComparisonEngine {
      */
     generateDetailedReport(comparisonResult: any, options: any = {}): any {
         try {
-            return this.renderer.generateDetailedReport(comparisonResult, options);
+            return (this.renderer as any).generateDetailedReport(comparisonResult, options);
         } catch (error) {
             console.error('AnalyticsComparisonEngine.generateDetailedReport error:', error);
             return {
                 success: false,
-                error: error.message
+                error: (error as any).message
             };
         }
     }

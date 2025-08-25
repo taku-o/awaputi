@@ -141,45 +141,14 @@ interface Statistics {
     inputMethodUsage: Map<string, number>;
 }
 
-interface UserSettings {
-    switchSettings: {
-        scanSpeed: number;
-        activationSound: boolean;
-        visualFeedback: boolean;
-    };
-    eyeTrackingSettings: {
-        dwellTime: number;
-        showGazeCursor: boolean;
-        calibrationReminder: boolean;
-    };
-    voiceSettings: {
-        customCommands: Map<string, string>;
-        voiceEngine: string;
-        feedbackVoice: boolean;
-    };
-    headTrackingSettings: {
-        invertX: boolean;
-        invertY: boolean;
-        gestureEnabled: boolean;
-    };
-    generalSettings: {
-        audioFeedback: boolean;
-        hapticFeedback: boolean;
-        confirmActions: boolean;
-    };
-}
 
 export class AlternativeInputManager {
-    private motorAccessibilityManager: MotorAccessibilityManager;
-    private accessibilityManager: unknown;
-    private gameEngine: unknown;
     private switchController: SwitchInputController;
     private eyeTrackingController: EyeTrackingController;
     private voiceController: VoiceInputController;
     private headTrackingController: HeadTrackingController;
     private config: InputConfig;
     private state: InputState;
-    private activeMethod: string | null;
     private inputState: {
         switch: SwitchState;
         eyeTracking: EyeTrackingState;
@@ -189,22 +158,16 @@ export class AlternativeInputManager {
         scanning: ScanningState;
     };
     private interactiveElements: Map<string, Element>;
-    private focusableElements: Element[];
-    private scanningGroups: Element[][];
-    private currentFocusIndex: number;
     private feedbackElements: Map<string, Element>;
     private scanHighlight: Element | null;
     private gazePointer: Element | null;
     private externalDevices: Map<string, number>;
     private statistics: Statistics;
     private stats: Statistics;
-    private userSettings: UserSettings;
     private gamepadCheckInterval: ReturnType<typeof setInterval> | null = null;
 
-    constructor(motorAccessibilityManager: MotorAccessibilityManager) {
-        this.motorAccessibilityManager = motorAccessibilityManager;
-        this.accessibilityManager = motorAccessibilityManager.accessibilityManager;
-        this.gameEngine = this.accessibilityManager?.gameEngine;
+    constructor(_motorAccessibilityManager: MotorAccessibilityManager) {
+        // motorAccessibilityManager not used in current implementation
         
         // サブコンポーネントを初期化
         this.switchController = new SwitchInputController();
@@ -309,7 +272,6 @@ export class AlternativeInputManager {
         };
 
         // 入力状態管理（従来互換性のため保持）
-        this.activeMethod = null;
         this.inputState = {
             switch: { 
                 isPressed: false, 
@@ -353,9 +315,6 @@ export class AlternativeInputManager {
         
         // 要素管理（サブコントローラーに委譲予定）
         this.interactiveElements = new Map();
-        this.focusableElements = [];
-        this.scanningGroups = [];
-        this.currentFocusIndex = -1;
         
         // フィードバック要素
         this.feedbackElements = new Map();
@@ -379,41 +338,14 @@ export class AlternativeInputManager {
             averageActivationTime: 0,
             calibrationAttempts: 0,
             sessionStart: Date.now(),
-            averageResponseTime: 0,
             preferredMethod: 'switch',
             totalInputs: 0,
             inputMethodUsage: new Map()
-        };
+        } as any;
         
         this.stats = { ...this.statistics };
 
-        this.userSettings = {
-            switchSettings: { 
-                scanSpeed: 2000, 
-                activationSound: true, 
-                visualFeedback: true 
-            },
-            eyeTrackingSettings: { 
-                dwellTime: 800, 
-                showGazeCursor: true, 
-                calibrationReminder: true 
-            },
-            voiceSettings: { 
-                customCommands: new Map(), 
-                voiceEngine: 'default', 
-                feedbackVoice: true 
-            },
-            headTrackingSettings: { 
-                invertX: false, 
-                invertY: false, 
-                gestureEnabled: true 
-            },
-            generalSettings: { 
-                audioFeedback: true, 
-                hapticFeedback: true, 
-                confirmActions: true 
-            }
-        };
+        // User settings initialization complete
         
         console.log('[AlternativeInputManager] Initialized with sub-controllers');
         this.initialize();
@@ -601,7 +533,7 @@ export class AlternativeInputManager {
         };
         
         this.switchController.updateConfig({ scanning: contrastConfig });
-        this.eyeTrackingController.updateConfig(contrastConfig);
+        this.eyeTrackingController.updateConfig(contrastConfig as any);
     }
     
     /**
@@ -747,15 +679,15 @@ export class AlternativeInputManager {
     
     // スキャニング機能（サブコントローラーに委譲）
     startScanning() { 
-        this.switchController.startScanning?.(); 
+        (this.switchController as any).startScanning?.(); 
     }
     
     stopScanning() { 
-        this.switchController.stopScanning?.(); 
+        (this.switchController as any).stopScanning?.(); 
     }
     
     selectCurrentElement() { 
-        this.switchController.selectCurrentElement?.(); 
+        (this.switchController as any).selectCurrentElement?.(); 
     }
     
     /**
@@ -819,7 +751,7 @@ export class AlternativeInputManager {
         
         // 各コントローラーにコンテキストを通知
         if (this.voiceController.setContext) {
-            this.voiceController.setContext(context);
+            this.voiceController.setContext(context as any);
         }
         
         console.log(`[AlternativeInputManager] Context changed to: ${context}`);
@@ -827,23 +759,23 @@ export class AlternativeInputManager {
     
     // ナビゲーションメソッド（delegation to switch controller）
     focusNextElement() { 
-        this.switchController.focusNextElement?.(); 
+        (this.switchController as any).focusNextElement?.(); 
     }
     
     focusPreviousElement() { 
-        this.switchController.focusPreviousElement?.(); 
+        (this.switchController as any).focusPreviousElement?.(); 
     }
     
     activateCurrentElement() { 
-        this.switchController.activateCurrentElement?.(); 
+        (this.switchController as any).activateCurrentElement?.(); 
     }
     
     cancelCurrentAction() { 
-        this.switchController.cancelCurrentAction?.(); 
+        (this.switchController as any).cancelCurrentAction?.(); 
     }
     
     toggleScanning() { 
-        this.switchController.toggleScanning?.(); 
+        (this.switchController as any).toggleScanning?.(); 
     }
     
     /**
@@ -935,15 +867,15 @@ export class AlternativeInputManager {
         
         // 各コントローラーに設定を委譲
         if (newConfig.switchInput) {
-            this.switchController.updateConfig({ switchInput: newConfig.switchInput });
+            this.switchController.updateConfig({ switchInput: newConfig.switchInput } as any);
         }
         
         if (newConfig.eyeTracking) {
-            this.eyeTrackingController.updateConfig(newConfig.eyeTracking);
+            this.eyeTrackingController.updateConfig(newConfig.eyeTracking as any);
         }
         
         if (newConfig.voiceControl) {
-            this.voiceController.updateConfig({ voiceControl: newConfig.voiceControl });
+            this.voiceController.updateConfig({ voiceControl: newConfig.voiceControl } as any);
         }
         
         if (newConfig.headTracking) {
@@ -1083,8 +1015,6 @@ export class AlternativeInputManager {
         
         // データのクリア
         this.interactiveElements.clear();
-        this.focusableElements = [];
-        this.scanningGroups = [];
         this.feedbackElements.clear();
         this.externalDevices.clear();
         

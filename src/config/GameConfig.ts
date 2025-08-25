@@ -6,8 +6,8 @@
  */
 
 import { getConfigurationManager, ConfigurationManager } from '../core/ConfigurationManager.js';
-import { ORIGINAL_BALANCE_CONFIG, OriginalBalanceConfig } from './GameBalance.js';
-import { getErrorHandler, ErrorHandler } from '../utils/ErrorHandler.js';
+import { ORIGINAL_BALANCE_CONFIG } from './GameBalance.js';
+import { getErrorHandler } from '../utils/ErrorHandler.js';
 
 /**
  * スコア設定の型定義
@@ -82,7 +82,7 @@ export interface ValidationRule {
 
 export class GameConfig {
     private configManager: ConfigurationManager;
-    private errorHandler: ErrorHandler;
+    private errorHandler: any;
 
     constructor() {
         this.configManager = getConfigurationManager();
@@ -213,36 +213,31 @@ export class GameConfig {
      */
     private _setupValidationRules(): void {
         // スコア設定の検証ルール
-        this.configManager.setValidationRule('game', 'scoring.combo.multiplierIncrement', {
+        this.configManager.setValidationRule('game.scoring.combo.multiplierIncrement', {
             type: 'number',
-            min: 0.01,
-            max: 0.5
+            validate: (value: any) => typeof value === 'number' && value >= 0.01 && value <= 0.5
         });
 
-        this.configManager.setValidationRule('game', 'scoring.combo.maxMultiplier', {
+        this.configManager.setValidationRule('game.scoring.combo.maxMultiplier', {
             type: 'number',
-            min: 1,
-            max: 10
+            validate: (value: any) => typeof value === 'number' && value >= 1 && value <= 10
         });
         
         // ステージ設定の検証ルール
-        this.configManager.setValidationRule('game', 'stages.difficulty.*.spawnRate', {
+        this.configManager.setValidationRule('game.stages.difficulty.*.spawnRate', {
             type: 'number',
-            min: 0.5,
-            max: 5.0
+            validate: (value: any) => typeof value === 'number' && value >= 0.5 && value <= 5.0
         });
 
-        this.configManager.setValidationRule('game', 'stages.difficulty.*.maxBubbles', {
+        this.configManager.setValidationRule('game.stages.difficulty.*.maxBubbles', {
             type: 'number',
-            min: 5,
-            max: 100
+            validate: (value: any) => typeof value === 'number' && value >= 5 && value <= 100
         });
         
         // アイテム設定の検証ルール
-        this.configManager.setValidationRule('game', 'items.costMultiplier', {
+        this.configManager.setValidationRule('game.items.costMultiplier', {
             type: 'number',
-            min: 1.0,
-            max: 3.0
+            validate: (value: any) => typeof value === 'number' && value >= 1.0 && value <= 3.0
         });
     }
 
@@ -264,7 +259,7 @@ export class GameConfig {
      * @returns 基本スコア
      */
     getBubbleBaseScore(bubbleType: string): number {
-        return this.configManager.get('game', `scoring.baseScores.${bubbleType}`, 15);
+        return this.configManager.get('game', `scoring.baseScores.${bubbleType}`) ?? 15;
     }
 
     /**
@@ -301,8 +296,8 @@ export class GameConfig {
      */
     getStageDifficulty(stageId: string): StageDifficultyConfig {
         return {
-            spawnRate: this.configManager.get('game', `stages.difficulty.${stageId}.spawnRate`, 1.5),
-            maxBubbles: this.configManager.get('game', `stages.difficulty.${stageId}.maxBubbles`, 20)
+            spawnRate: this.configManager.get('game', `stages.difficulty.${stageId}.spawnRate`) ?? 1.5,
+            maxBubbles: this.configManager.get('game', `stages.difficulty.${stageId}.maxBubbles`) ?? 20
         };
     }
 
@@ -312,7 +307,7 @@ export class GameConfig {
      * @returns 開放条件（必要TAP）
      */
     getStageUnlockRequirement(stageId: string): number {
-        return this.configManager.get('game', `stages.unlockRequirements.${stageId}`, 0);
+        return this.configManager.get('game', `stages.unlockRequirements.${stageId}`) ?? 0;
     }
 
     /**
@@ -322,7 +317,7 @@ export class GameConfig {
     getItemConfig(): ItemConfig {
         return {
             baseCosts: this._getConfigObject('game', 'items.baseCosts'),
-            costMultiplier: this.configManager.get('game', 'items.costMultiplier', 1.3),
+            costMultiplier: this.configManager.get('game', 'items.costMultiplier') ?? 1.3,
             effects: this._getConfigObject('game', 'items.effects'),
             maxLevels: this._getConfigObject('game', 'items.maxLevels')
         };
@@ -334,7 +329,7 @@ export class GameConfig {
      * @returns 基本コスト
      */
     getItemBaseCost(itemId: string): number {
-        return this.configManager.get('game', `items.baseCosts.${itemId}`, 100);
+        return this.configManager.get('game', `items.baseCosts.${itemId}`) ?? 100;
     }
 
     /**
@@ -343,7 +338,7 @@ export class GameConfig {
      * @returns 効果値
      */
     getItemEffect(itemId: string): number | object {
-        return this.configManager.get('game', `items.effects.${itemId}`, 1);
+        return this.configManager.get('game', `items.effects.${itemId}`) ?? 1;
     }
 
     /**
@@ -352,7 +347,7 @@ export class GameConfig {
      * @returns 最大レベル
      */
     getItemMaxLevel(itemId: string): number {
-        return this.configManager.get('game', `items.maxLevels.${itemId}`, 1);
+        return this.configManager.get('game', `items.maxLevels.${itemId}`) ?? 1;
     }
 
     /**
@@ -373,7 +368,7 @@ export class GameConfig {
      * @returns 生存時間（ミリ秒）
      */
     getBubbleMaxAge(bubbleType: string): number {
-        return this.configManager.get('game', `bubbles.maxAge.${bubbleType}`, 12000);
+        return this.configManager.get('game', `bubbles.maxAge.${bubbleType}`) ?? 12000;
     }
 
     /**
@@ -382,7 +377,7 @@ export class GameConfig {
      * @returns 耐久値
      */
     getBubbleHealth(bubbleType: string): number {
-        return this.configManager.get('game', `bubbles.health.${bubbleType}`, 1);
+        return this.configManager.get('game', `bubbles.health.${bubbleType}`) ?? 1;
     }
 
     /**
@@ -504,8 +499,8 @@ export class GameConfig {
     calculateItemCost(itemId: string, currentLevel: number): number {
         try {
             const baseCost = this.getItemBaseCost(itemId);
-            const multiplier = this.configManager.get('game', 'items.costMultiplier', 1.3);
-            return Math.floor(baseCost * Math.pow(multiplier, currentLevel));
+            const multiplier = this.configManager.get('game', 'items.costMultiplier') ?? 1.3;
+            return Math.floor(baseCost * Math.pow(multiplier as number, currentLevel));
         } catch (error) {
             this.errorHandler.handleError(error as Error, 'GAME_CONFIG_CALCULATE_COST_ERROR', {
                 context: 'GameConfig.calculateItemCost',

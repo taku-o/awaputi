@@ -423,9 +423,9 @@ export class StatisticsAnalyzer {
      */
     generateActionPlan(analysisResult: any): any {
         const plan = {
-            immediate: [],  // 即座に実行可能
-            shortTerm: [],  // 1週間以内
-            longTerm: []    // 1ヶ月以内
+            immediate: [] as string[],  // 即座に実行可能
+            shortTerm: [] as string[],  // 1週間以内
+            longTerm: [] as string[]    // 1ヶ月以内
         };
         
         const priorityAreas = this.identifyPriorityAreas(analysisResult);
@@ -491,7 +491,9 @@ export class StatisticsAnalyzer {
     cacheAnalysisResult(key: string, result: any): void {
         if (this.analysisCache.size >= this.analysisConfigs.cache.maxSize) {
             const oldestKey = this.analysisCache.keys().next().value;
-            this.analysisCache.delete(oldestKey);
+            if (oldestKey !== undefined) {
+                this.analysisCache.delete(oldestKey);
+            }
         }
         
         this.analysisCache.set(key, {

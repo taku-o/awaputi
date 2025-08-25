@@ -437,8 +437,8 @@ export class UIComplexityAnalyzer {
     private analysisHistory: AnalysisResult[];
     private thresholds: ComplexityThresholds;
     private weightings: ComplexityWeightings;
-    private mutationObserver: MutationObserver;
-    private intersectionObserver: IntersectionObserver;
+    private mutationObserver!: MutationObserver;
+    private intersectionObserver!: IntersectionObserver;
     private analysisTimer?: number;
     private config: AnalysisConfig;
     

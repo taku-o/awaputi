@@ -198,7 +198,7 @@ export class AchievementProgressTracker {
     private config: TrackerConfig;
     private progressHistory: ProgressHistoryEntry[];
     private eventHandlers: Record<string, EventHandler[]>;
-    private autoSaveInterval?: number;
+    private autoSaveInterval?: number | undefined;
 
     constructor() {
         // 進捗データ
@@ -293,7 +293,7 @@ export class AchievementProgressTracker {
                     bubbleType: condition.bubbleType,
                     progress: Math.min(current / target, 1),
                     isComplete: current >= target
-                };
+                } as ConditionEvaluationResult;
             },
 
             // 生存時間
@@ -320,7 +320,7 @@ export class AchievementProgressTracker {
                     hp: condition.hp,
                     progress: qualifying.length > 0 ? 1 : 0,
                     isComplete: qualifying.length > 0
-                };
+                } as ConditionEvaluationResult;
             },
 
             // 低HPスコア
@@ -335,7 +335,7 @@ export class AchievementProgressTracker {
                     hp: condition.hp,
                     progress: qualifying.length > 0 ? 1 : 0,
                     isComplete: qualifying.length > 0
-                };
+                } as ConditionEvaluationResult;
             },
 
             // ステージクリア
@@ -351,7 +351,7 @@ export class AchievementProgressTracker {
             },
 
             // 全ステージクリア
-            allStagesCleared: (progress: ProgressData, condition: AchievementCondition): ConditionEvaluationResult => {
+            allStagesCleared: (progress: ProgressData, _condition: AchievementCondition): ConditionEvaluationResult => {
                 const cleared = progress.allStagesCleared || false;
                 return {
                     current: cleared ? 1 : 0,
@@ -373,7 +373,7 @@ export class AchievementProgressTracker {
                     minBubbles: condition.minBubbles,
                     progress: qualifying.length > 0 ? 1 : 0,
                     isComplete: qualifying.length > 0
-                };
+                } as ConditionEvaluationResult;
             },
 
             // スピードチャレンジ
@@ -388,7 +388,7 @@ export class AchievementProgressTracker {
                     bubbles: condition.bubbles,
                     progress: qualifying.length > 0 ? 1 : 0,
                     isComplete: qualifying.length > 0
-                };
+                } as ConditionEvaluationResult;
             },
 
             // 精度
@@ -440,7 +440,7 @@ export class AchievementProgressTracker {
             },
 
             // 全泡タイプ
-            allBubbleTypes: (progress: ProgressData, condition: AchievementCondition): ConditionEvaluationResult => {
+            allBubbleTypes: (progress: ProgressData, _condition: AchievementCondition): ConditionEvaluationResult => {
                 const bubbleTypes = progress.bubbleTypesCounts || {};
                 const requiredTypes = [
                     'normal', 'stone', 'iron', 'diamond', 'rainbow', 'pink',
@@ -472,7 +472,7 @@ export class AchievementProgressTracker {
                     completedStages,
                     progress: requiredStages.length > 0 ? completedStages.length / requiredStages.length : 0,
                     isComplete: completedStages.length === requiredStages.length
-                };
+                } as ConditionEvaluationResult;
             },
 
             // アイテム使用なしスコア

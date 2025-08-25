@@ -4,7 +4,7 @@
  * ヘルプ機能におけるエラーの分類、処理、復旧を担当
  */
 
-import { ErrorHandler } from '../../utils/ErrorHandler.js';
+// import { ErrorHandler } from '../../utils/ErrorHandler.js';
 import { LoggingSystem } from '../LoggingSystem.js';
 
 // 型定義
@@ -96,7 +96,7 @@ export type FallbackStrategy = (error: Error, options: any) => ErrorResult;
  * ヘルプシステム専用エラーハンドラー
  */
 export class HelpErrorHandler {
-    private gameEngine: GameEngine;
+    private _gameEngine: GameEngine;
     private loggingSystem: LoggingSystem;
     private errorCategories: Record<string, string>;
     private errorStats: Map<string, ErrorStatistics>;
@@ -105,7 +105,7 @@ export class HelpErrorHandler {
     private fallbackStrategies: Map<string, FallbackStrategy>;
 
     constructor(gameEngine: GameEngine) {
-        this.gameEngine = gameEngine;
+        this._gameEngine = gameEngine;
         this.loggingSystem = LoggingSystem.getInstance ? LoggingSystem.getInstance() : new LoggingSystem();
         
         // エラーカテゴリの定義
@@ -149,9 +149,9 @@ export class HelpErrorHandler {
                 });
             });
 
-            this.loggingSystem.info('HelpErrorHandler', 'Help error handler initialized successfully');
+            (this.loggingSystem as any).info('HelpErrorHandler', 'Help error handler initialized successfully');
         } catch (error) {
-            this.loggingSystem.error('HelpErrorHandler', 'Failed to initialize help error handler', error);
+            (this.loggingSystem as any).error('HelpErrorHandler', 'Failed to initialize help error handler', error);
         }
     }
 
@@ -181,7 +181,7 @@ export class HelpErrorHandler {
             
             return result;
         } catch (handlingError) {
-            this.loggingSystem.error('HelpErrorHandler', 'Failed to handle content load error', handlingError);
+            (this.loggingSystem as any).error('HelpErrorHandler', 'Failed to handle content load error', handlingError);
             return this.getDefaultErrorResult();
         }
     }
@@ -194,7 +194,7 @@ export class HelpErrorHandler {
      */
     handleTutorialError(error: Error, currentStep: TutorialStep | null = null): ErrorResult {
         try {
-            this.logError(this.errorCategories.TUTORIAL_EXECUTION, error, { currentStep });
+            this.logError(this.errorCategories.TUTORIAL_EXECUTION, error, { currentStep: currentStep || undefined });
             const strategy = this.fallbackStrategies.get(this.errorCategories.TUTORIAL_EXECUTION);
             if (!strategy) {
                 return this.getDefaultErrorResult();
@@ -211,7 +211,7 @@ export class HelpErrorHandler {
             
             return result;
         } catch (handlingError) {
-            this.loggingSystem.error('HelpErrorHandler', 'Failed to handle tutorial error', handlingError);
+            (this.loggingSystem as any).error('HelpErrorHandler', 'Failed to handle tutorial error', handlingError);
             return this.getDefaultErrorResult();
         }
     }
@@ -241,7 +241,7 @@ export class HelpErrorHandler {
             
             return result;
         } catch (handlingError) {
-            this.loggingSystem.error('HelpErrorHandler', 'Failed to handle search error', handlingError);
+            (this.loggingSystem as any).error('HelpErrorHandler', 'Failed to handle search error', handlingError);
             return this.getDefaultErrorResult();
         }
     }
@@ -274,7 +274,7 @@ export class HelpErrorHandler {
             
             return recovered;
         } catch (error) {
-            this.loggingSystem.error('HelpErrorHandler', `Recovery attempt failed for: ${errorType}`, error);
+            (this.loggingSystem as any).error('HelpErrorHandler', `Recovery attempt failed for: ${errorType}`, error);
             return false;
         }
     }
@@ -287,7 +287,7 @@ export class HelpErrorHandler {
     showUserFriendlyError(error: Error, suggestions: string[] = []): void {
         try {
             const userMessage = this.translateErrorToUserMessage(error);
-            const errorData: UserErrorData = {
+            const _errorData: UserErrorData = {
                 message: userMessage,
                 suggestions,
                 timestamp: Date.now(),
@@ -296,14 +296,14 @@ export class HelpErrorHandler {
             };
             
             // エラー表示UI（後続のタスクで実装）
-            this.loggingSystem.info('HelpErrorHandler', `User-friendly error: ${userMessage}`);
+            (this.loggingSystem as any).info('HelpErrorHandler', `User-friendly error: ${userMessage}`);
             console.warn('ヘルプエラー:', userMessage);
 
             if (suggestions.length > 0) {
                 console.info('解決提案:', suggestions);
             }
         } catch (error) {
-            this.loggingSystem.error('HelpErrorHandler', 'Failed to show user-friendly error', error);
+            (this.loggingSystem as any).error('HelpErrorHandler', 'Failed to show user-friendly error', error);
         }
     }
 
@@ -322,7 +322,7 @@ export class HelpErrorHandler {
                 stats.lastOccurred = Date.now();
             }
 
-            this.loggingSystem.error('HelpErrorHandler', `${category} error`, {
+            (this.loggingSystem as any).error('HelpErrorHandler', `${category} error`, {
                 error: error.message,
                 stack: error.stack,
                 context,
@@ -350,9 +350,9 @@ export class HelpErrorHandler {
                 timestamp: Date.now()
             };
 
-            this.loggingSystem.debug('HelpErrorHandler', 'Error reported to analytics', analyticsData);
+            (this.loggingSystem as any).debug('HelpErrorHandler', 'Error reported to analytics', analyticsData);
         } catch (error) {
-            this.loggingSystem.error('HelpErrorHandler', 'Failed to report error to analytics', error);
+            (this.loggingSystem as any).error('HelpErrorHandler', 'Failed to report error to analytics', error);
         }
     }
 
@@ -385,7 +385,7 @@ export class HelpErrorHandler {
      */
     private setupFallbackStrategies(): void {
         // コンテンツ読み込みエラー戦略
-        this.fallbackStrategies.set(this.errorCategories.CONTENT_LOAD, (error: Error, options: FallbackOptions): ErrorResult => {
+        this.fallbackStrategies.set(this.errorCategories.CONTENT_LOAD, (_error: Error, options: FallbackOptions): ErrorResult => {
             // 1. キャッシュされたコンテンツを試行
             if (options.useCache) {
                 return {
@@ -415,7 +415,7 @@ export class HelpErrorHandler {
         });
 
         // チュートリアルエラー戦略
-        this.fallbackStrategies.set(this.errorCategories.TUTORIAL_EXECUTION, (error: Error, options: TutorialOptions): ErrorResult => {
+        this.fallbackStrategies.set(this.errorCategories.TUTORIAL_EXECUTION, (_error: Error, options: TutorialOptions): ErrorResult => {
             const { currentStep } = options;
             // 1. 前のステップに戻る
             if (currentStep && currentStep.stepIndex > 0) {
@@ -435,7 +435,7 @@ export class HelpErrorHandler {
         });
 
         // 検索エラー戦略
-        this.fallbackStrategies.set(this.errorCategories.SEARCH_OPERATION, (error: Error, options: SearchOptions): ErrorResult => {
+        this.fallbackStrategies.set(this.errorCategories.SEARCH_OPERATION, (_error: Error, options: SearchOptions): ErrorResult => {
             const { query } = options;
             // 1. 簡略化された検索
             if (query && query.length > 3) {
@@ -455,7 +455,7 @@ export class HelpErrorHandler {
         });
 
         // ツールチップエラー戦略
-        this.fallbackStrategies.set(this.errorCategories.TOOLTIP_DISPLAY, (error: Error, options: any): ErrorResult => {
+        this.fallbackStrategies.set(this.errorCategories.TOOLTIP_DISPLAY, (_error: Error, _options: any): ErrorResult => {
             return {
                 success: true,
                 strategy: 'basic_tooltip',
@@ -464,7 +464,7 @@ export class HelpErrorHandler {
         });
 
         // コンテキスト検出エラー戦略
-        this.fallbackStrategies.set(this.errorCategories.CONTEXT_DETECTION, (error: Error, options: any): ErrorResult => {
+        this.fallbackStrategies.set(this.errorCategories.CONTEXT_DETECTION, (_error: Error, _options: any): ErrorResult => {
             return {
                 success: true,
                 strategy: 'default_context',
@@ -686,7 +686,7 @@ export class HelpErrorHandler {
             this.fallbackStrategies.clear();
             this.loggingSystem.info('HelpErrorHandler', 'Help error handler destroyed');
         } catch (error) {
-            this.loggingSystem.error('HelpErrorHandler', 'Failed to destroy help error handler', error);
+            (this.loggingSystem as any).error('HelpErrorHandler', 'Failed to destroy help error handler', error);
         }
     }
 }

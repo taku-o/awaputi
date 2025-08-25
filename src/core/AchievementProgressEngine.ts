@@ -149,7 +149,7 @@ export class AchievementProgressEngine {
         
         // 最大値型進捗計算
         this.calculators.set('maximum', {
-            calculate: (current: number, newValue: unknown, target: number): number => {
+            calculate: (current: number, newValue: unknown, _target: number): number => {
                 const value = Number(newValue) || 0;
                 return Math.max(current, value);
             },
@@ -160,7 +160,7 @@ export class AchievementProgressEngine {
         
         // 連続型進捗計算
         this.calculators.set('consecutive', {
-            calculate: (current: number, newValue: unknown, target: number, context?: CalculationContext): number => {
+            calculate: (current: number, _newValue: unknown, target: number, context?: CalculationContext): number => {
                 if (context && context.isConsecutive) {
                     return Math.min(current + 1, target);
                 } else {
@@ -174,7 +174,7 @@ export class AchievementProgressEngine {
         
         // 条件達成型進捗計算
         this.calculators.set('conditional', {
-            calculate: (current: number, conditionsMet: unknown, target: number): number => {
+            calculate: (current: number, conditionsMet: unknown, _target: number): number => {
                 if (Array.isArray(conditionsMet)) {
                     return conditionsMet.length;
                 }
@@ -209,23 +209,23 @@ export class AchievementProgressEngine {
      */
     private registerDefaultEvaluators(): void {
         this.conditionEvaluators.set('equals', (value, condition) => {
-            return value === condition.target;
+            return (value as number) === (condition.target as number);
         });
 
         this.conditionEvaluators.set('greater_than', (value, condition) => {
-            return value > condition.target;
+            return (value as number) > (condition.target as number);
         });
 
         this.conditionEvaluators.set('greater_equal', (value, condition) => {
-            return value >= condition.target;
+            return (value as number) >= (condition.target as number);
         });
 
         this.conditionEvaluators.set('less_than', (value, condition) => {
-            return value < condition.target;
+            return (value as number) < (condition.target as number);
         });
 
         this.conditionEvaluators.set('range', (value, condition) => {
-            return value >= condition.min && value <= condition.max;
+            return (value as number) >= (condition.min as number) && (value as number) <= (condition.max as number);
         });
         
         // 時間ベース条件
@@ -444,7 +444,7 @@ export class AchievementProgressEngine {
     /**
      * 中間マイルストーンをチェック
      */
-    private checkMilestones(achievementType: string, currentProgress: number, targetValue: number, context: CalculationContext): Milestone[] {
+    private checkMilestones(_achievementType: string, currentProgress: number, targetValue: number, context: CalculationContext): Milestone[] {
         const milestones: Milestone[] = [];
         
         if (context.milestones && Array.isArray(context.milestones)) {

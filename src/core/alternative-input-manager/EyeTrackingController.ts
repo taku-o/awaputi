@@ -542,7 +542,7 @@ export class EyeTrackingController {
     /**
      * 滞留活性化を処理
      */
-    private handleDwellActivation(gazeData: GazePoint, timestamp: number): void {
+    private handleDwellActivation(gazeData: GazePoint, _timestamp: number): void {
         this.stats.dwellActivations++;
 
         // 視線位置の要素を取得
@@ -637,7 +637,7 @@ export class EyeTrackingController {
     /**
      * まばたきイベントを処理
      */
-    private handleBlinkEvent(timestamp: number): void {
+    private handleBlinkEvent(_timestamp: number): void {
         this.stats.blinkEvents++;
 
         // まばたきによる特別なアクション
@@ -808,7 +808,7 @@ export class EyeTrackingController {
     /**
      * 単一ポイントの精度をテスト
      */
-    private async testSinglePoint(point: CalibrationPoint): Promise<GazePoint | null> {
+    private async testSinglePoint(_point: CalibrationPoint): Promise<GazePoint | null> {
         return new Promise<GazePoint | null>((resolve) => {
             // テスト用の視線予測を取得
             const predictions: GazePoint[] = [];

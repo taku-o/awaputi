@@ -643,8 +643,8 @@ export class ChallengeDataController {
             id: String(challenge.id || generateChallengeId()),
             title: String(challenge.title || '').trim(),
             description: String(challenge.description || '').trim(),
-            type: isValidChallengeType(challenge.type || '') ? challenge.type : 'daily',
-            difficulty: isValidChallengeDifficulty(challenge.difficulty || '') ? challenge.difficulty : 'easy',
+            type: isValidChallengeType(challenge.type || '') ? (challenge.type as ChallengeType) : 'daily' as ChallengeType,
+            difficulty: isValidChallengeDifficulty(challenge.difficulty || '') ? (challenge.difficulty as ChallengeDifficulty) : 'easy' as ChallengeDifficulty,
             progress: Math.max(VALIDATION_RULES.minProgress, Number(challenge.progress || 0)),
             target: Math.max(VALIDATION_RULES.minTarget, Number(challenge.target || 1)),
             reward: challenge.reward || {},
@@ -790,7 +790,7 @@ export class ChallengeDataController {
                 success: true,
                 imported: validatedChallenges.length,
                 errors: errors.length > 0 ? errors : undefined
-            };
+            } as ChallengeImportResult;
         } catch (error) {
             const errorMessage = error instanceof Error ? error.message : 'Unknown error';
             this.challengeUI.handleError('CHALLENGE_IMPORT_FAILED', error as Error);

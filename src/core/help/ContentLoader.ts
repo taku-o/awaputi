@@ -8,7 +8,7 @@ import { ErrorHandler } from '../../utils/ErrorHandler.js';
 import { getLocalizationManager } from '../LocalizationManager.js';
 import { CacheSystem } from '../CacheSystem.js';
 import { LoggingSystem } from '../LoggingSystem.js';
-import { HelpContentModel, TutorialModel, FAQModel, UserProgressModel } from './DataModels.js';
+import { HelpContentModel, TutorialModel, FAQModel } from './DataModels.js';
 
 // 型定義
 export interface LocalizationManager {
@@ -90,16 +90,16 @@ export class ContentLoader {
     
     // キャッシュ管理
     private contentCache: Map<string, CachedContentItem>;
-    private versionCache: Map<string, VersionInfo>;
+    private _versionCache: Map<string, VersionInfo>;
     private loadingPromises: Map<string, Promise<any>>;
     
     // バージョン管理
-    private contentVersions: Map<string, string>;
+    private _contentVersions: Map<string, string>;
     private manifestCache: Map<string, ContentManifest>;
 
     constructor(localizationManager: LocalizationManager | null = null) {
-        this.localizationManager = localizationManager || getLocalizationManager();
-        this.cacheSystem = CacheSystem.getInstance ? CacheSystem.getInstance() : new CacheSystem();
+        this.localizationManager = localizationManager || getLocalizationManager() as LocalizationManager;
+        this.cacheSystem = (CacheSystem as any).getInstance ? (CacheSystem as any).getInstance() : new CacheSystem();
         this.loggingSystem = LoggingSystem.getInstance ? LoggingSystem.getInstance() : new LoggingSystem();
         
         // デフォルト設定
@@ -114,11 +114,11 @@ export class ContentLoader {
         
         // キャッシュ管理
         this.contentCache = new Map<string, CachedContentItem>();
-        this.versionCache = new Map<string, VersionInfo>();
+        this._versionCache = new Map<string, VersionInfo>();
         this.loadingPromises = new Map<string, Promise<any>>();
         
         // バージョン管理
-        this.contentVersions = new Map<string, string>();
+        this._contentVersions = new Map<string, string>();
         this.manifestCache = new Map<string, ContentManifest>();
         
         this.initialize();
@@ -140,7 +140,7 @@ export class ContentLoader {
 
             this.loggingSystem.info('ContentLoader', 'Content loader initialized successfully');
         } catch (error) {
-            this.loggingSystem.error('ContentLoader', 'Failed to initialize content loader', error);
+            this.loggingSystem.error('ContentLoader', 'Failed to initialize content loader', error as any);
             ErrorHandler.handle(error, 'ContentLoader.initialize');
         }
     }
@@ -193,7 +193,7 @@ export class ContentLoader {
             }
             
         } catch (error) {
-            this.loggingSystem.error('ContentLoader', `Failed to load help content: ${language}`, error);
+            this.loggingSystem.error('ContentLoader', `Failed to load help content: ${language}`, error as any);
             
             // フォールバック処理
             if (language !== this.config.defaultLanguage) {
@@ -246,7 +246,7 @@ export class ContentLoader {
             return tutorials;
             
         } catch (error) {
-            this.loggingSystem.error('ContentLoader', `Failed to load tutorial data: ${language}`, error);
+            this.loggingSystem.error('ContentLoader', `Failed to load tutorial data: ${language}`, error as any);
             
             // フォールバック処理
             if (language !== this.config.defaultLanguage) {

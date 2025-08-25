@@ -42,9 +42,9 @@ export class InputManager {
     private gestureState: GestureState;
     private eventQueue: any[];
     private isProcessingEvents: boolean;
-    private dragThreshold: number;
-    private clickThreshold: number;
-    private tapTimeout: number;
+    private dragThreshold: number = 5;
+    private clickThreshold: number = 200;
+    private tapTimeout: number = 300;
     private isMouseDown: boolean;
     private mouseDownTime: number;
     private lastTapTime: number;
@@ -93,8 +93,8 @@ export class InputManager {
      * デバイス固有の設定を行う
      */
     setupDeviceSpecificSettings(): void {
-        const deviceInfo = getBrowserCompatibility().deviceInfo;
-        const browserInfo = getBrowserCompatibility().browserInfo;
+        const deviceInfo = (getBrowserCompatibility() as any).deviceInfo;
+        const browserInfo = (getBrowserCompatibility() as any).browserInfo;
 
         // タッチデバイスの設定
         if (deviceInfo.isTouchDevice) {
@@ -119,7 +119,7 @@ export class InputManager {
      * イベントリスナーを設定
      */
     setupEventListeners(): void {
-        const deviceInfo = getBrowserCompatibility().deviceInfo;
+        const deviceInfo = (getBrowserCompatibility() as any).deviceInfo;
         const features = getBrowserCompatibility().features;
         
         // ポインターイベントが利用可能な場合は優先的に使用

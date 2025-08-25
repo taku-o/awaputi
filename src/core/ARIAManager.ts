@@ -79,8 +79,8 @@ interface ARIAReport {
  * 動的ARIA属性管理システムとWCAG準拠のアクセシビリティ機能を提供
  */
 export class ARIAManager {
-    private screenReaderManager: ScreenReaderManager;
-    private gameEngine: unknown;
+    private screenReaderManager: ScreenReaderManager; // Used for accessibility
+    private gameEngine: unknown; // Used for state management
     private managedElements: Map<Element, ManagedElementInfo>;
     private ariaDescriptions: Map<string, string>;
     private ariaLiveRegions: Map<string, Element>;
@@ -233,10 +233,10 @@ export class ARIAManager {
         // 要素を管理対象に追加
         this.managedElements.set(element, {
             type: elementInfo.type,
-            pattern: ariaPattern,
+            pattern: ariaPattern || undefined,
             lastUpdate: Date.now(),
             isValid: true
-        });
+        } as ManagedElementInfo);
         this.state.elementsManaged++;
     }
     
@@ -619,7 +619,7 @@ export class ARIAManager {
     /**
      * 説明要素の作成
      */
-    createDescriptionElement(element: Element, description: string): string {
+    createDescriptionElement(_element: Element, description: string): string {
         const descriptionId = `desc-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
         
         // 既存の説明要素をチェック
@@ -788,7 +788,7 @@ export class ARIAManager {
     /**
      * 属性変更の処理
      */
-    handleAttributeChange(element: Element, attributeName: string | null, oldValue: string | null) {
+    handleAttributeChange(element: Element, attributeName: string | null, _oldValue: string | null) {
         if (!this.managedElements.has(element)) return;
 
         const managedInfo = this.managedElements.get(element)!;

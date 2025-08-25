@@ -27,7 +27,7 @@ export class APIEndpointManager {
         maxRequestsPerHour: number,
         requestHistory: Map<string, any[]>;
     };
-    private accessControl: {
+    private _accessControl: {
         enabled: boolean,
         allowedOrigins: string[],
         requireAuthentication: boolean;
@@ -57,7 +57,7 @@ export class APIEndpointManager {
         };
         
         // アクセス制御設定
-        this.accessControl = {
+        this._accessControl = {
             enabled: false, // 将来の機能拡張用
             allowedOrigins: ['*'],
             requireAuthentication: false
@@ -199,7 +199,8 @@ export class APIEndpointManager {
             if (!requestOptions.skipAnonymization && 
                 endpointConfig.options.anonymizeData && 
                 this.privacyManager) {
-                data = await this.privacyManager.anonymizeData({ data }.then((result: any) => result.data));
+                const anonymResult = await this.privacyManager.anonymizeData({ data });
+                data = anonymResult.data;
                 isAnonymized = true;
             }
             const responseTime = performance.now() - startTime;

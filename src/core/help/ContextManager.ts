@@ -4,7 +4,6 @@
  * 現在の状況に応じた適切なヘルプコンテンツの提供を担当
  */
 
-import { ErrorHandler } from '../../utils/ErrorHandler.js';
 import { LoggingSystem } from '../LoggingSystem.js';
 
 // 型定義
@@ -158,9 +157,9 @@ export class ContextManager {
     // ツールチップ管理
     private activeTooltips: Map<string, ActiveTooltip>;
     private tooltipRegistry: Map<string, TooltipData>;
-    private tooltipElements: Map<string, HTMLElement>;
-    private currentTooltip: string | null;
-    private contextCache: Map<string, any>;
+    // private tooltipElements: Map<string, HTMLElement>;
+    // private currentTooltip: string | null;
+    // private contextCache: Map<string, any>;
     private tooltipConfig: TooltipOptions;
     
     // 動的ヘルプ
@@ -179,9 +178,9 @@ export class ContextManager {
         // ツールチップ管理
         this.activeTooltips = new Map<string, ActiveTooltip>();
         this.tooltipRegistry = new Map<string, TooltipData>();
-        this.tooltipElements = new Map<string, HTMLElement>();
-        this.currentTooltip = null;
-        this.contextCache = new Map<string, any>();
+        // this.tooltipElements = new Map<string, HTMLElement>();
+        // this.currentTooltip = null;
+        // this.contextCache = new Map<string, any>();
         this.tooltipConfig = {
             showDelay: 800,
             hideDelay: 300,
@@ -205,7 +204,7 @@ export class ContextManager {
      */
     initialize(): void {
         try {
-            this.loggingSystem.info('ContextManager', 'Initializing context manager...');
+            this.loggingSystem.info('Initializing context manager...', null, 'ContextManager');
             
             // デフォルトコンテキスト検出器の設定
             this.setupDefaultDetectors();
@@ -219,10 +218,9 @@ export class ContextManager {
             // イベントリスナーの設定
             this.setupEventListeners();
             
-            this.loggingSystem.info('ContextManager', 'Context manager initialized successfully');
+            this.loggingSystem.info('Context manager initialized successfully', null, 'ContextManager');
         } catch (error) {
-            this.loggingSystem.error('ContextManager', 'Failed to initialize context manager', error);
-            ErrorHandler.handle(error, 'ContextManager.initialize');
+            this.loggingSystem.error('Failed to initialize context manager', (error as Error).message, 'ContextManager');
         }
     }
 
@@ -248,7 +246,7 @@ export class ContextManager {
                         context[name] = detected;
                     }
                 } catch (error) {
-                    this.loggingSystem.error('ContextManager', `Detector error: ${name}`, error);
+                    this.loggingSystem.error(`Detector error: ${name}`, (error as Error).message, 'ContextManager');
                 }
             }
 
@@ -261,11 +259,11 @@ export class ContextManager {
                 this.currentContext = context;
             }
 
-            this.loggingSystem.debug('ContextManager', `Context detected: ${context.scene}`);
+            this.loggingSystem.debug(`Context detected: ${context.scene}`, null, 'ContextManager');
 
             return context;
         } catch (error) {
-            this.loggingSystem.error('ContextManager', 'Failed to detect current context', error);
+            this.loggingSystem.error('Failed to detect current context', (error as Error).message, 'ContextManager');
             return null;
         }
     }
@@ -302,11 +300,11 @@ export class ContextManager {
             // 重複排除とスコアリング
             const uniqueHelp = this.deduplicateAndScore(relevantHelp, context);
             
-            this.loggingSystem.debug('ContextManager', `Found ${uniqueHelp.length} relevant help items`);
+            this.loggingSystem.debug(`Found ${uniqueHelp.length} relevant help items`, null, 'ContextManager');
 
             return uniqueHelp;
         } catch (error) {
-            this.loggingSystem.error('ContextManager', 'Failed to get relevant help', error);
+            this.loggingSystem.error('Failed to get relevant help', (error as Error).message, 'ContextManager');
             return [];
         }
     }
@@ -321,7 +319,7 @@ export class ContextManager {
         try {
             const targetElement = typeof element === 'string' ? document.querySelector(element) as HTMLElement : element;
             if (!targetElement) {
-                this.loggingSystem.warn('ContextManager', `Tooltip target not found: ${element}`);
+                this.loggingSystem.warn(`Tooltip target not found: ${element}`, null, 'ContextManager');
                 return;
             }
 
@@ -338,9 +336,9 @@ export class ContextManager {
             // イベントリスナーの追加
             this.attachTooltipListeners(targetElement, tooltipId);
 
-            this.loggingSystem.debug('ContextManager', `Tooltip registered: ${tooltipId}`);
+            this.loggingSystem.debug(`Tooltip registered: ${tooltipId}`, null, 'ContextManager');
         } catch (error) {
-            this.loggingSystem.error('ContextManager', 'Failed to register tooltip', error);
+            this.loggingSystem.error('Failed to register tooltip', (error as Error).message, 'ContextManager');
         }
     }
 
@@ -381,11 +379,11 @@ export class ContextManager {
             // 自動非表示タイマー
             setTimeout(() => this.hideTooltip(tooltipId), options.autoHide || 5000);
 
-            this.loggingSystem.debug('ContextManager', `Contextual tooltip shown at (${x}, ${y})`);
+            this.loggingSystem.debug(`Contextual tooltip shown at (${x}, ${y})`, null, 'ContextManager');
 
             return tooltipId;
         } catch (error) {
-            this.loggingSystem.error('ContextManager', 'Failed to show contextual tooltip', error);
+            this.loggingSystem.error('Failed to show contextual tooltip', (error as Error).message, 'ContextManager');
             return null;
         }
     }
@@ -428,11 +426,11 @@ export class ContextManager {
             // プライオリティ順にソート
             suggestions.sort((a, b) => a.priority - b.priority);
 
-            this.loggingSystem.debug('ContextManager', `Generated ${suggestions.length} action suggestions`);
+            this.loggingSystem.debug(`Generated ${suggestions.length} action suggestions`, null, 'ContextManager');
 
             return suggestions.slice(0, 5); // 最大5個
         } catch (error) {
-            this.loggingSystem.error('ContextManager', 'Failed to suggest next actions', error);
+            this.loggingSystem.error('Failed to suggest next actions', (error as Error).message, 'ContextManager');
             return [];
         }
     }
@@ -453,7 +451,7 @@ export class ContextManager {
             if (struggles.length > 0) {
                 const helpContent = this.generateHelpForStruggles(struggles);
                 
-                this.loggingSystem.info('ContextManager', `Smart help generated for ${struggles.length} struggles`);
+                this.loggingSystem.info(`Smart help generated for ${struggles.length} struggles`, null, 'ContextManager');
 
                 return {
                     type: 'smart_help',
@@ -466,7 +464,7 @@ export class ContextManager {
 
             return null;
         } catch (error) {
-            this.loggingSystem.error('ContextManager', 'Failed to get smart help', error);
+            this.loggingSystem.error('Failed to get smart help', (error as Error).message, 'ContextManager');
             return null;
         }
     }
@@ -478,7 +476,7 @@ export class ContextManager {
      */
     private setupDefaultDetectors(): void {
         // ゲーム状態検出器
-        this.contextDetectors.set('gameState', (context: Context) => {
+        this.contextDetectors.set('gameState', (_context: Context) => {
             if (!this.gameEngine) return null;
             
             return {
@@ -490,7 +488,7 @@ export class ContextManager {
         });
 
         // UI状態検出器
-        this.contextDetectors.set('uiState', (context: Context) => {
+        this.contextDetectors.set('uiState', (_context: Context) => {
             return {
                 activeDialogs: document.querySelectorAll('.dialog:not(.hidden)').length,
                 hoveredElements: document.querySelectorAll(':hover').length,
@@ -499,7 +497,7 @@ export class ContextManager {
         });
 
         // ユーザー活動検出器
-        this.contextDetectors.set('userActivity', (context: Context) => {
+        this.contextDetectors.set('userActivity', (_context: Context) => {
             const lastAction = this.userBehaviorTracker.lastActivity;
             const timeSinceLastAction = lastAction ? Date.now() - lastAction : Infinity;
             
@@ -534,12 +532,12 @@ export class ContextManager {
      * ヘルププロバイダーの設定
      */
     private setupHelpProviders(): void {
-        this.helpProviders.set('MainMenuScene', (context: Context) => [
+        this.helpProviders.set('MainMenuScene', (_context: Context) => [
             { id: 'menu_navigation', title: 'メニューの使い方', priority: 1 },
             { id: 'game_start', title: 'ゲームの始め方', priority: 2 }
         ]);
 
-        this.helpProviders.set('GameScene', (context: Context) => [
+        this.helpProviders.set('GameScene', (_context: Context) => [
             { id: 'bubble_basics', title: '泡の割り方', priority: 1 },
             { id: 'scoring_system', title: 'スコアシステム', priority: 2 },
             { id: 'special_bubbles', title: '特殊な泡について', priority: 3 }
@@ -705,7 +703,7 @@ export class ContextManager {
      * @param context - コンテキスト
      * @returns スコア付きヘルプアイテム
      */
-    private deduplicateAndScore(helpItems: HelpItem[], context: Context): HelpItem[] {
+    private deduplicateAndScore(helpItems: HelpItem[], _context: Context): HelpItem[] {
         const unique = new Map<string, HelpItem>();
         
         helpItems.forEach(item => {
@@ -863,7 +861,7 @@ export class ContextManager {
      * @param currentState - 現在の状態
      * @returns 行動ベース提案
      */
-    private getBehaviorBasedSuggestions(currentState: Context): ActionSuggestion[] {
+    private getBehaviorBasedSuggestions(_currentState: Context): ActionSuggestion[] {
         // ユーザーの行動パターンに基づく提案
         const suggestions: ActionSuggestion[] = [];
         const recentActions = this.userBehaviorTracker.actions.slice(-10);
@@ -891,7 +889,7 @@ export class ContextManager {
      * @param userBehavior - ユーザー行動データ
      * @returns 分析結果
      */
-    private analyzeUserBehavior(userBehavior: any): BehaviorPatterns {
+    private analyzeUserBehavior(_userBehavior: any): BehaviorPatterns {
         const patterns: BehaviorPatterns = {
             clickFrequency: 0,
             averageIdleTime: 0,
@@ -1003,7 +1001,7 @@ export class ContextManager {
     destroy(): void {
         try {
             // アクティブなツールチップを削除
-            for (const [id, tooltip] of this.activeTooltips.entries()) {
+            for (const [id, ] of this.activeTooltips.entries()) {
                 this.hideTooltip(id);
             }
 
@@ -1015,9 +1013,9 @@ export class ContextManager {
             this.contextDetectors.clear();
             this.helpProviders.clear();
 
-            this.loggingSystem.info('ContextManager', 'Context manager destroyed');
+            this.loggingSystem.info('Context manager destroyed', null, 'ContextManager');
         } catch (error) {
-            this.loggingSystem.error('ContextManager', 'Failed to destroy context manager', error);
+            this.loggingSystem.error('Failed to destroy context manager', (error as Error).message, 'ContextManager');
         }
     }
 }

@@ -332,10 +332,7 @@ export class ChartRenderer {
             };
         } catch (error) {
             this.stats.errors++;
-            getErrorHandler().handleError(error as Error, {
-                context: 'ChartRenderer.renderBarChart',
-                data
-            });
+            getErrorHandler().handleError(error as Error, 'ChartRenderer.renderBarChart');
             
             return {
                 type: 'bar',
@@ -402,10 +399,7 @@ export class ChartRenderer {
             };
         } catch (error) {
             this.stats.errors++;
-            getErrorHandler().handleError(error as Error, {
-                context: 'ChartRenderer.renderLineChart',
-                data
-            });
+            getErrorHandler().handleError(error as Error, 'ChartRenderer.renderLineChart');
             
             return {
                 type: 'line',
@@ -471,10 +465,7 @@ export class ChartRenderer {
             };
         } catch (error) {
             this.stats.errors++;
-            getErrorHandler().handleError(error as Error, {
-                context: 'ChartRenderer.renderPieChart',
-                data
-            });
+            getErrorHandler().handleError(error as Error, 'ChartRenderer.renderPieChart');
             
             return {
                 type: 'pie',

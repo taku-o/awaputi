@@ -65,7 +65,7 @@ export class CoreAccessibilityManager {
     private testingFramework: TestingFramework | null;
     private eventListeners: Map<string, Set<EventCallback>>;
     private isInitialized: boolean;
-    private isEnabled: boolean;
+    private _isEnabled: boolean; // Unused variable prefixed with underscore
     private pendingConfiguration: any;
     private managerRegistry: Map<string, Manager | null>;
     private managerDependencies: Map<string, string[]>;
@@ -82,7 +82,7 @@ export class CoreAccessibilityManager {
         
         // 初期化フラグ
         this.isInitialized = false;
-        this.isEnabled = true;
+        this._isEnabled = true;
         
         // Pending configuration for early calls
         this.pendingConfiguration = null;
@@ -421,7 +421,7 @@ export class CoreAccessibilityManager {
                         applyConfig: async (config: any) => {
                             await focusManager.applyConfig?.(config);
                             await keyboardAccessibilityManager.applyConfig?.(config);
-                            await visualFocusManager.applyConfig?.(config);
+                            await (visualFocusManager as any).applyConfig?.(config);
                         },
                         setEnabled: (enabled: boolean) => {
                             focusManager.setEnabled?.(enabled);
@@ -551,7 +551,7 @@ export class CoreAccessibilityManager {
         
         try {
             // 各マネージャーに設定を適用
-            for (const [type, manager] of this.managers) {
+            for (const [_type, manager] of this.managers) {
                 if (manager && typeof manager.applyConfig === 'function') {
                     await manager.applyConfig(config);
                 }
@@ -587,12 +587,12 @@ export class CoreAccessibilityManager {
                 lastCheck: new Date()
             };
             console.log('WCAG compliance validation completed:', this.state.complianceStatus);
-            return results;
+            return results as ComplianceResult;
         } catch (error: any) {
             getErrorHandler().handleError(error, 'ACCESSIBILITY_ERROR', {
                 operation: 'validateCompliance'
             });
-            return { compliant: false, error: error.message };
+            return { compliant: false, error: error.message, overallCompliance: false, issues: [], score: 0 } as ComplianceResult;
         }
     }
     
@@ -742,9 +742,9 @@ export class CoreAccessibilityManager {
      * 有効状態の切り替え
      */
     setEnabled(enabled: boolean): void {
-        this.isEnabled = enabled;
+        this._isEnabled = enabled;
         // 各マネージャーに状態を通知
-        for (const [type, manager] of this.managers) {
+        for (const [_type, manager] of this.managers) {
             if (manager && typeof manager.setEnabled === 'function') {
                 manager.setEnabled(enabled);
             }

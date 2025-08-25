@@ -4,6 +4,13 @@
  */
 
 export class AnalyticsErrorNotificationSystem {
+    private options: any;
+    private errorHistory: any[];
+    private errorTypes: Map<string, any>;
+    private recoveryAttempts: Map<string, any>;
+    private notificationContainer: HTMLElement | null;
+    private _isInitialized: boolean;
+
     constructor(options: any = {}) {
         this.options = {
             enableErrorNotifications: true,
@@ -23,7 +30,7 @@ export class AnalyticsErrorNotificationSystem {
         this.errorTypes = new Map();
         this.recoveryAttempts = new Map();
         this.notificationContainer = null;
-        this.isInitialized = false;
+        this._isInitialized = false;
 
         this.initialize();
     }
@@ -35,7 +42,7 @@ export class AnalyticsErrorNotificationSystem {
         this.setupErrorTypes();
         this.createNotificationContainer();
         this.setupGlobalErrorHandlers();
-        this.isInitialized = true;
+        this._isInitialized = true;
     }
 
     /**
@@ -364,12 +371,13 @@ export class AnalyticsErrorNotificationSystem {
         });
 
         window.addEventListener('error', (event) => {
-            if (event.target !== window && event.target.tagName) {
+            const target = event.target as any;
+            if (target !== window && target?.tagName) {
                 this.handleError({
                     type: 'resource',
-                    message: `Failed to load ${event.target.tagName.toLowerCase()}: ${event.target.src || event.target.href}`,
-                    element: event.target.tagName,
-                    src: event.target.src || event.target.href,
+                    message: `Failed to load ${target.tagName.toLowerCase()}: ${target.src || target.href}`,
+                    element: target.tagName,
+                    src: target.src || target.href,
                     timestamp: Date.now()
                 });
             }
@@ -379,7 +387,7 @@ export class AnalyticsErrorNotificationSystem {
     /**
      * エラーの処理
      */
-    handleError(errorData) {
+    handleError(errorData: any) {
         if (!this.options.enableErrorNotifications) return;
 
         const processedError = this.processError(errorData);
@@ -403,7 +411,7 @@ export class AnalyticsErrorNotificationSystem {
     /**
      * エラーの処理と拡張
      */
-    processError(errorData) {
+    processError(errorData: any) {
         const errorType = this.errorTypes.get(errorData.type) || this.errorTypes.get('javascript');
         
         const processedError = {
@@ -426,8 +434,8 @@ export class AnalyticsErrorNotificationSystem {
     /**
      * エラー詳細の抽出
      */
-    extractErrorDetails(errorData) {
-        const details = {};
+    extractErrorDetails(errorData: any) {
+        const details: any = {};
         
         if (errorData.filename) details.filename = errorData.filename;
         if (errorData.lineno) details.line = errorData.lineno;
@@ -475,8 +483,8 @@ export class AnalyticsErrorNotificationSystem {
 
             if (navigator.storage && navigator.storage.estimate) {
                 navigator.storage.estimate().then(estimate => {
-                    localStorage.quota = Math.round(estimate.quota / 1024 / 1024);
-                    localStorage.usage = Math.round(estimate.usage / 1024 / 1024);
+                    localStorage.quota = Math.round((estimate.quota || 0) / 1024 / 1024);
+                    localStorage.usage = Math.round((estimate.usage || 0) / 1024 / 1024);
                 });
             }
 
@@ -489,7 +497,7 @@ export class AnalyticsErrorNotificationSystem {
     /**
      * エラー記録
      */
-    recordError(errorData) {
+    recordError(errorData: any) {
         this.errorHistory.unshift(errorData);
         
         // 履歴のトリミング
@@ -501,7 +509,7 @@ export class AnalyticsErrorNotificationSystem {
     /**
      * エラー通知の表示
      */
-    showErrorNotification(errorData) {
+    showErrorNotification(errorData: any) {
         if (!this.notificationContainer) return;
 
         const errorType = this.errorTypes.get(errorData.type);
@@ -554,7 +562,7 @@ export class AnalyticsErrorNotificationSystem {
                 </div>
             ` : ''}
             <div class="error-actions">
-                ${errorData.actions.map(action => `
+                ${errorData.actions.map((action: string) => `
                     <button class="error-action ${action === '再読み込み' || action === 'レポート送信' ? 'primary' : ''}"
                             onclick="window.errorNotificationSystem?.handleErrorAction('${errorData.id}', '${action}')">
                         ${action}
@@ -574,7 +582,7 @@ export class AnalyticsErrorNotificationSystem {
         const updateProgress = () => {
             const elapsed = Date.now() - startTime;
             const progress = Math.max(0, 100 - (elapsed / timeout) * 100);
-            progressBar.style.width = `${progress}%`;
+            if (progressBar) (progressBar as any).style.width = `${progress}%`;
             
             if (progress > 0 && document.contains(notification)) {
                 requestAnimationFrame(updateProgress);
@@ -596,7 +604,7 @@ export class AnalyticsErrorNotificationSystem {
     /**
      * エラー詳細のフォーマット
      */
-    formatErrorDetails(details) {
+    formatErrorDetails(details: any) {
         return Object.entries(details)
             .map(([key, value]) => `${key}: ${value}`)
             .join('<br>');
@@ -605,7 +613,7 @@ export class AnalyticsErrorNotificationSystem {
     /**
      * 自動復旧の判定
      */
-    canAttemptRecovery(errorData) {
+    canAttemptRecovery(errorData: any) {
         if (!errorData.recoverable) return false;
         
         const attempts = this.recoveryAttempts.get(errorData.type) || 0;
@@ -615,7 +623,7 @@ export class AnalyticsErrorNotificationSystem {
     /**
      * 自動復旧の試行
      */
-    async attemptAutoRecovery(errorData) {
+    async attemptAutoRecovery(errorData: any) {
         const attempts = (this.recoveryAttempts.get(errorData.type) || 0) + 1;
         this.recoveryAttempts.set(errorData.type, attempts);
         this.showRecoveryStatus(errorData.id, 'attempting');
@@ -653,7 +661,7 @@ export class AnalyticsErrorNotificationSystem {
     /**
      * 復旧状況の表示
      */
-    showRecoveryStatus(errorId, status) {
+    showRecoveryStatus(errorId: any, status: any) {
         const statusElement = document.getElementById(`recovery-status-${errorId}`);
         if (!statusElement) return;
 
@@ -663,13 +671,13 @@ export class AnalyticsErrorNotificationSystem {
             failed: '<div class="recovery-status" style="color: #f44336;">❌ 自動復旧に失敗しました</div>'
         };
 
-        statusElement.innerHTML = statusTexts[status] || '';
+        statusElement.innerHTML = (statusTexts as any)[status] || '';
     }
 
     /**
      * ネットワークエラーからの復旧
      */
-    async recoverFromNetworkError(errorData) {
+    async recoverFromNetworkError(errorData: any) {
         // 簡単な接続テスト
         try {
             const response = await fetch('/', { method: 'HEAD' });
@@ -682,7 +690,7 @@ export class AnalyticsErrorNotificationSystem {
     /**
      * リソースエラーからの復旧
      */
-    async recoverFromResourceError(errorData) {
+    async recoverFromResourceError(errorData: any) {
         // リソースの再読み込みを試行
         if (errorData.details.source) {
             try {
@@ -698,7 +706,7 @@ export class AnalyticsErrorNotificationSystem {
     /**
      * ストレージエラーからの復旧
      */
-    async recoverFromStorageError(errorData) {
+    async recoverFromStorageError(errorData: any) {
         try {
             // ストレージテスト
             const testKey = '__storage_test__';
@@ -713,7 +721,7 @@ export class AnalyticsErrorNotificationSystem {
     /**
      * パフォーマンスエラーからの復旧
      */
-    async recoverFromPerformanceError(errorData) {
+    async recoverFromPerformanceError(errorData: any) {
         // メモリクリーンアップの試行
         if (window.gc) {
             window.gc();
@@ -724,7 +732,7 @@ export class AnalyticsErrorNotificationSystem {
     /**
      * エラーレポートの送信
      */
-    async sendErrorReport(errorData) {
+    async sendErrorReport(errorData: any) {
         if (!this.options.errorReportingEndpoint) return;
 
         try {
@@ -747,7 +755,7 @@ export class AnalyticsErrorNotificationSystem {
     /**
      * エラーアクションの処理
      */
-    handleErrorAction(errorId, action) {
+    handleErrorAction(errorId: any, action: any) {
         const errorData = this.errorHistory.find(e => e.id === errorId);
         if (!errorData) return;
 
@@ -798,7 +806,7 @@ export class AnalyticsErrorNotificationSystem {
     /**
      * エラー詳細の表示
      */
-    showErrorDetails(errorData) {
+    showErrorDetails(errorData: any) {
         const details = [
             `エラーID: ${errorData.id}`,
             `タイプ: ${errorData.type}`,
@@ -824,7 +832,7 @@ export class AnalyticsErrorNotificationSystem {
     /**
      * ユーザーフィードバックの表示
      */
-    showUserFeedback(errorId) {
+    showUserFeedback(errorId: any) {
         if (!this.options.enableUserFeedback) return;
 
         const feedback = prompt('このエラーについて追加情報があれば教えてください（オプション）:');
@@ -840,7 +848,7 @@ export class AnalyticsErrorNotificationSystem {
     /**
      * エラーの削除
      */
-    dismissError(errorId) {
+    dismissError(errorId: any) {
         const notification = document.querySelector(`[data-error-id="${errorId}"]`);
         if (notification) {
             notification.classList.add('dismissing');
@@ -862,7 +870,7 @@ export class AnalyticsErrorNotificationSystem {
     /**
      * カスタムイベント発火
      */
-    dispatchErrorEvent(errorData) {
+    dispatchErrorEvent(errorData: any) {
         const event = new CustomEvent('error-notification-displayed', {
             detail: errorData
         });
@@ -886,8 +894,8 @@ export class AnalyticsErrorNotificationSystem {
         };
         
         recentErrors.forEach(error => {
-            statistics.errorsByType[error.type] = (statistics.errorsByType[error.type] || 0) + 1;
-            statistics.errorsBySeverity[error.severity] = (statistics.errorsBySeverity[error.severity] || 0) + 1;
+            (statistics.errorsByType as any)[error.type] = ((statistics.errorsByType as any)[error.type] || 0) + 1;
+            (statistics.errorsBySeverity as any)[error.severity] = ((statistics.errorsBySeverity as any)[error.severity] || 0) + 1;
         });
         
         return statistics;
@@ -896,7 +904,7 @@ export class AnalyticsErrorNotificationSystem {
     /**
      * 設定の更新
      */
-    updateOptions(newOptions) {
+    updateOptions(newOptions: any) {
         this.options = { ...this.options, ...newOptions };
     }
 

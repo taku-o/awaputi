@@ -353,8 +353,8 @@ export class ChallengeUI {
         }
 
         // チャレンジシステムのイベント
-        this.challengeSystem.on?.('challengeCompleted', this.handleChallengeCompleted.bind(this));
-        this.challengeSystem.on?.('challengeProgress', this.handleChallengeProgress.bind(this));
+        (this.challengeSystem as any).on?.('challengeCompleted', this.handleChallengeCompleted.bind(this));
+        (this.challengeSystem as any).on?.('challengeProgress', this.handleChallengeProgress.bind(this));
     }
 
     /**
@@ -580,7 +580,7 @@ export class ChallengeUI {
         item.setAttribute('role', 'listitem');
         item.setAttribute('tabindex', index === 0 ? '0' : '-1');
 
-        const progress = challenge.progress || { current: 0, target: 1, percentage: 0 };
+        const progress = (challenge as any).progress || { current: 0, target: 1, percentage: 0 };
         
         item.innerHTML = `
             <div class="challenge-header">
@@ -777,11 +777,11 @@ export class ChallengeUI {
             timestamp: Date.now()
         };
         
-        getErrorHandler().handleError(error, {
+        getErrorHandler().handleError(error as any, {
             context: 'ChallengeUI',
             type,
             ...context
-        });
+        } as any);
         
         this.log('エラー発生', errorInfo, 'error');
     }

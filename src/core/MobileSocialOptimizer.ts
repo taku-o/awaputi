@@ -48,9 +48,9 @@ export interface TouchOptimization {
 
 export class MobileSocialOptimizer {
     private socialSharingManager: any;
-    private touchManager: any;
+    private _touchManager: any;
     private responsiveLayoutManager: any;
-    private isInitialized: boolean;
+    private _isInitialized: boolean;
     private deviceInfo: DeviceCapabilities | null;
     private touchOptimizations: Map<string, TouchOptimization>;
     private gestureHandlers: Map<string, any>;
@@ -59,10 +59,10 @@ export class MobileSocialOptimizer {
 
     constructor(socialSharingManager: any, touchManager: any, responsiveLayoutManager: any) {
         this.socialSharingManager = socialSharingManager;
-        this.touchManager = touchManager;
+        this._touchManager = touchManager;
         this.responsiveLayoutManager = responsiveLayoutManager;
         
-        this.isInitialized = false;
+        this._isInitialized = false;
         this.deviceInfo = null;
         this.touchOptimizations = new Map();
         this.gestureHandlers = new Map();
@@ -254,14 +254,14 @@ export class MobileSocialOptimizer {
         
         // 動的に追加される要素への対応
         this.observeElementAddition(optimization.element, (element) => {
-            this.applyTouchOptimizationToElement(element, optimization);
+            this.applyTouchOptimizationToElement(element as HTMLElement, optimization);
         });
     }
 
     /**
      * 要素へのタッチ最適化適用
      */
-    applyTouchOptimization(name: string, optimization: TouchOptimization): void {
+    applyTouchOptimization(_name: string, optimization: TouchOptimization): void {
         const elements = document.querySelectorAll(optimization.element);
         elements.forEach(element => {
             this.applyTouchOptimizationToElement(element as HTMLElement, optimization);
@@ -457,7 +457,7 @@ export class MobileSocialOptimizer {
     /**
      * 共有ボタンタップハンドラー
      */
-    async handleShareButtonTap(event: Event, data: any): Promise<void> {
+    async handleShareButtonTap(_event: Event, data: any): Promise<void> {
         try {
             this.triggerHapticFeedback('light');
             
@@ -473,7 +473,7 @@ export class MobileSocialOptimizer {
     /**
      * 共有ボタン長押しハンドラー
      */
-    async handleShareButtonLongPress(event: Event, data: any): Promise<void> {
+    async handleShareButtonLongPress(_event: Event, data: any): Promise<void> {
         this.triggerHapticFeedback('medium');
         
         // カスタマイズメニューを表示
@@ -483,7 +483,7 @@ export class MobileSocialOptimizer {
     /**
      * 共有ボタンスワイプハンドラー
      */
-    handleShareButtonSwipe(event: Event, data: any): void {
+    handleShareButtonSwipe(_event: Event, data: any): void {
         // 右スワイプで即座にデフォルト共有
         if (data.direction === 'right') {
             this.triggerHapticFeedback('light');
@@ -498,14 +498,14 @@ export class MobileSocialOptimizer {
     /**
      * ダイアログスワイプハンドラー
      */
-    handleDialogSwipeUp(event: Event, data: any): void {
+    handleDialogSwipeUp(_event: Event, _data: any): void {
         // Implementation for dialog swipe up
     }
 
     /**
      * ダイアログスワイプハンドラー
      */
-    handleDialogSwipeDown(event: Event, data: any): void {
+    handleDialogSwipeDown(_event: Event, data: any): void {
         // 下方向スワイプでダイアログを閉じる
         if (data.distance > 100) {
             this.triggerHapticFeedback('light');
@@ -516,14 +516,14 @@ export class MobileSocialOptimizer {
     /**
      * ダイアログドラッグハンドラー
      */
-    handleDialogDrag(event: Event, data: any): void {
+    handleDialogDrag(_event: Event, _data: any): void {
         // Implementation for dialog drag
     }
 
     /**
      * プラットフォームボタンタップハンドラー
      */
-    async handlePlatformButtonTap(event: Event, data: any): Promise<void> {
+    async handlePlatformButtonTap(_event: Event, data: any): Promise<void> {
         this.triggerHapticFeedback('light');
         
         const platform = data.element.dataset.platform;
@@ -534,7 +534,7 @@ export class MobileSocialOptimizer {
     /**
      * プラットフォームボタンホールドハンドラー
      */
-    handlePlatformButtonHold(event: Event, data: any): void {
+    handlePlatformButtonHold(_event: Event, _data: any): void {
         // Implementation for platform button hold
     }
 
@@ -775,20 +775,20 @@ export class MobileSocialOptimizer {
     }
 
     // Helper methods (simplified implementations)
-    private extractShareDataFromElement(element: HTMLElement): any {
+    private extractShareDataFromElement(_element: HTMLElement): any {
         // Implementation for extracting share data
         return {};
     }
 
-    private async showCustomizeMenu(element: HTMLElement): Promise<void> {
+    private async showCustomizeMenu(_element: HTMLElement): Promise<void> {
         // Implementation for showing customize menu
     }
 
-    private quickShare(element: HTMLElement): void {
+    private quickShare(_element: HTMLElement): void {
         // Implementation for quick share
     }
 
-    private showShareOptions(element: HTMLElement): void {
+    private showShareOptions(_element: HTMLElement): void {
         // Implementation for showing share options
     }
 
@@ -797,7 +797,7 @@ export class MobileSocialOptimizer {
         return {};
     }
 
-    private async shareToMobilePlatform(platform: string, shareData: any): Promise<void> {
+    private async shareToMobilePlatform(_platform: string, _shareData: any): Promise<void> {
         // Implementation for sharing to mobile platform
     }
 

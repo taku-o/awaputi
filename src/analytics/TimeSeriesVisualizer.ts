@@ -3,7 +3,13 @@
  * プレイヤーのパフォーマンス推移を線グラフで表示し、複数指標の同時表示やズーム機能を提供します
  */
 export class TimeSeriesVisualizer {
-    constructor(chartRenderer, trendAnalyzer) {
+    private chartRenderer: any;
+    private trendAnalyzer: any;
+    private chartConfigs: any;
+    private colors: any;
+    private activeCharts: Map<string, any>;
+
+    constructor(chartRenderer: any, trendAnalyzer: any) {
         this.chartRenderer = chartRenderer;
         this.trendAnalyzer = trendAnalyzer;
         
@@ -28,7 +34,7 @@ export class TimeSeriesVisualizer {
                         mode: 'index',
                         intersect: false,
                         callbacks: {
-                            title(context) {
+                            title(context: any) {
                                 return `期間: ${context[0].label}`;
                             }
                         }
@@ -90,17 +96,17 @@ export class TimeSeriesVisualizer {
      * @param {Object} options - 表示オプション
      * @returns {Object} Chart.jsのチャートインスタンス
      */
-    createSingleMetricChart(canvas, timeSeriesData, metric, options: any = {}) {
+    createSingleMetricChart(canvas: any, timeSeriesData: any, metric: any, options: any = {}) {
         const {
             title = `${this.getMetricDisplayName(metric)}の推移`,
             showTrend = true,
             showSeasonalAdjusted = false,
-            period = 'weekly'
+            _period = 'weekly'
         } = options;
 
         // データ準備
-        const labels = timeSeriesData.map(d => d.period);
-        const values = timeSeriesData.map(d => this.getMetricValue(d, metric));
+        const labels = timeSeriesData.map((d: any) => d.period);
+        const values = timeSeriesData.map((d: any) => this.getMetricValue(d, metric));
 
         const datasets = [{
             label: this.getMetricDisplayName(metric),
@@ -119,7 +125,7 @@ export class TimeSeriesVisualizer {
                 data: trendData,
                 borderColor: this.colors.trend,
                 backgroundColor: 'transparent',
-                borderDash: [5, 5],
+                borderDash: [5, 5] as any,
                 fill: false,
                 pointRadius: 0,
                 tension: 0
@@ -128,13 +134,13 @@ export class TimeSeriesVisualizer {
 
         // 季節調整済みデータ追加
         if (showSeasonalAdjusted && timeSeriesData[0].seasonallyAdjusted !== undefined) {
-            const adjustedValues = timeSeriesData.map(d => d.seasonallyAdjusted);
+            const adjustedValues = timeSeriesData.map((d: any) => d.seasonallyAdjusted);
             datasets.push({
                 label: `${this.getMetricDisplayName(metric)} (季節調整済み)`,
                 data: adjustedValues,
                 borderColor: this.colors[metric] + 'AA' || this.colors.score + 'AA',
                 backgroundColor: 'transparent',
-                borderDash: [3, 3],
+                borderDash: [3, 3] as any,
                 fill: false,
                 tension: 0.4
             });
@@ -171,17 +177,17 @@ export class TimeSeriesVisualizer {
      * @param {Object} options - 表示オプション
      * @returns {Object} Chart.jsのチャートインスタンス
      */
-    createMultiMetricChart(canvas, timeSeriesData, metrics, options: any = {}) {
+    createMultiMetricChart(canvas: any, timeSeriesData: any, metrics: any, options: any = {}) {
         const {
             title = '複数指標の推移比較',
             normalizeValues = true
         } = options;
 
-        const labels = timeSeriesData.map(d => d.period);
+        const labels = timeSeriesData.map((d: any) => d.period);
         const datasets = [];
 
-        metrics.forEach(metric => {
-            let values = timeSeriesData.map(d => this.getMetricValue(d, metric));
+        metrics.forEach((metric: any) => {
+            let values = timeSeriesData.map((d: any) => this.getMetricValue(d, metric));
             
             // 正規化処理
             if (normalizeValues) {
@@ -238,7 +244,7 @@ export class TimeSeriesVisualizer {
      * @param {Object} options - 表示オプション
      * @returns {Object} Chart.jsのチャートインスタンス
      */
-    createTrendAnalysisChart(canvas, trendAnalysis, options: any = {}) {
+    createTrendAnalysisChart(canvas: any, trendAnalysis: any, options: any = {}) {
         const {
             showConfidenceInterval = true,
             showAnomalies = false,
@@ -247,8 +253,8 @@ export class TimeSeriesVisualizer {
 
         const { timeSeriesData, trend } = trendAnalysis;
 
-        const labels = timeSeriesData.map(d => d.period);
-        const values = timeSeriesData.map(d => d.averageScore);
+        const labels = timeSeriesData.map((d: any) => d.period);
+        const values = timeSeriesData.map((d: any) => d.averageScore);
 
         const datasets = [{
             label: 'スコア',
@@ -267,7 +273,7 @@ export class TimeSeriesVisualizer {
                 data: trendData,
                 borderColor: trend.direction === 'increasing' ? '#10B981' : '#EF4444',
                 backgroundColor: 'transparent',
-                borderDash: [5, 5],
+                borderDash: [5, 5] as any,
                 fill: false,
                 pointRadius: 0,
                 tension: 0
@@ -282,7 +288,7 @@ export class TimeSeriesVisualizer {
                 data: confidenceData.upper,
                 borderColor: this.colors.trend + '60',
                 backgroundColor: 'transparent',
-                borderDash: [2, 2],
+                borderDash: [2, 2] as any,
                 fill: false,
                 pointRadius: 0
             });
@@ -292,7 +298,7 @@ export class TimeSeriesVisualizer {
                 data: confidenceData.lower,
                 borderColor: this.colors.trend + '60',
                 backgroundColor: this.colors.trend + '10',
-                borderDash: [2, 2],
+                borderDash: [2, 2] as any,
                 fill: '-1', // 上限データセットまで塗りつぶし
                 pointRadius: 0
             });
@@ -303,7 +309,7 @@ export class TimeSeriesVisualizer {
             const anomalies = this.trendAnalyzer.detectAnomalies(timeSeriesData);
             if (anomalies.length > 0) {
                 const anomalyData = new Array(values.length).fill(null);
-                anomalies.forEach(anomaly => {
+                anomalies.forEach((anomaly: any) => {
                     anomalyData[anomaly.index] = anomaly.value;
                 });
                 
@@ -356,7 +362,7 @@ export class TimeSeriesVisualizer {
      * @param {Object} options - 表示オプション
      * @returns {Object} Chart.jsのチャートインスタンス
      */
-    createDashboardChart(canvas, timeSeriesData, options: any = {}) {
+    createDashboardChart(canvas: any, timeSeriesData: any, options: any = {}) {
         const {
             defaultMetric = 'averageScore',
             showControls = true,
@@ -388,7 +394,7 @@ export class TimeSeriesVisualizer {
      * @param {string} metric - 指標名
      * @returns {number} 指標値
      */
-    getMetricValue(dataPoint, metric) {
+    getMetricValue(dataPoint: any, metric: any) {
         const metricMap = {
             score: dataPoint.averageScore,
             accuracy: dataPoint.averageAccuracy,
@@ -397,7 +403,7 @@ export class TimeSeriesVisualizer {
             completionRate: dataPoint.completionRate,
             sessionCount: dataPoint.sessionCount
         };
-        return metricMap[metric] || dataPoint[metric] || 0;
+        return (metricMap as any)[metric] || dataPoint[metric] || 0;
     }
 
     /**
@@ -405,7 +411,7 @@ export class TimeSeriesVisualizer {
      * @param {string} metric - 指標名
      * @returns {string} 表示名
      */
-    getMetricDisplayName(metric) {
+    getMetricDisplayName(metric: any) {
         const displayNames = {
             score: 'スコア',
             accuracy: '精度',
@@ -414,7 +420,7 @@ export class TimeSeriesVisualizer {
             completionRate: '完了率',
             sessionCount: 'セッション数'
         };
-        return displayNames[metric] || metric;
+        return (displayNames as any)[metric] || metric;
     }
 
     /**
@@ -422,20 +428,20 @@ export class TimeSeriesVisualizer {
      * @param {Array} values - 値の配列
      * @returns {Array} トレンドライン値
      */
-    calculateTrendLine(values) {
+    calculateTrendLine(values: any) {
         const n = values.length;
         const indices = Array.from({ length: n }, (_, i) => i);
         
         // 線形回帰
-        const sumX = indices.reduce((a, b) => a + b, 0);
-        const sumY = values.reduce((a, b) => a + b, 0);
-        const sumXY = indices.reduce((sum, x, i) => sum + x * values[i], 0);
-        const sumXX = indices.reduce((sum, x) => sum + x * x, 0);
+        const sumX = indices.reduce((a: any, b: any) => a + b, 0);
+        const sumY = values.reduce((a: any, b: any) => a + b, 0);
+        const sumXY = indices.reduce((sum: any, x: any, i: any) => sum + x * values[i], 0);
+        const sumXX = indices.reduce((sum: any, x: any) => sum + x * x, 0);
         
         const slope = (n * sumXY - sumX * sumY) / (n * sumXX - sumX * sumX);
         const intercept = (sumY - slope * sumX) / n;
         
-        return indices.map(x => slope * x + intercept);
+        return indices.map((x: any) => slope * x + intercept);
     }
 
     /**
@@ -443,9 +449,9 @@ export class TimeSeriesVisualizer {
      * @param {Array} values - 値の配列
      * @returns {Object} 上限・下限の信頼区間
      */
-    calculateConfidenceInterval(values, confidence = 0.95) {
-        const mean = values.reduce((a, b) => a + b, 0) / values.length;
-        const variance = values.reduce((sum, val) => sum + Math.pow(val - mean, 2), 0) / values.length;
+    calculateConfidenceInterval(values: any, confidence = 0.95) {
+        const mean = values.reduce((a: any, b: any) => a + b, 0) / values.length;
+        const variance = values.reduce((sum: any, val: any) => sum + Math.pow(val - mean, 2), 0) / values.length;
         const stdDev = Math.sqrt(variance);
         
         // t分布の近似（簡易版）
@@ -463,13 +469,13 @@ export class TimeSeriesVisualizer {
      * @param {Array} values - 値の配列
      * @returns {Array} 正規化された値
      */
-    normalizeValues(values) {
+    normalizeValues(values: any) {
         const min = Math.min(...values);
         const max = Math.max(...values);
         const range = max - min;
         
         if (range === 0) return values.map(() => 0.5);
-        return values.map(val => (val - min) / range);
+        return values.map((val: any) => (val - min) / range);
     }
 
     /**
@@ -485,7 +491,7 @@ export class TimeSeriesVisualizer {
      * ズーム・パン機能を有効化
      * @param {Object} chart - Chart.jsインスタンス
      */
-    enableZoomPan(chart) {
+    enableZoomPan(chart: any) {
         if (chart.options.plugins && chart.options.plugins.zoom) {
             chart.options.plugins.zoom.zoom.wheel.enabled = true;
             chart.options.plugins.zoom.pan.enabled = true;
@@ -498,12 +504,12 @@ export class TimeSeriesVisualizer {
      * @param {Object} chart - Chart.jsインスタンス
      * @param {Array} timeSeriesData - 時系列データ
      */
-    addAnnotations(chart, timeSeriesData) {
+    addAnnotations(chart: any, timeSeriesData: any) {
         // 重要なポイントに注釈を追加（簡易実装）
         const annotations = [];
         
         // 最高値・最低値のマーク
-        const values = timeSeriesData.map(d => d.averageScore || 0);
+        const values = timeSeriesData.map((d: any) => d.averageScore || 0);
         const maxIndex = values.indexOf(Math.max(...values));
         const minIndex = values.indexOf(Math.min(...values));
         
@@ -549,11 +555,11 @@ export class TimeSeriesVisualizer {
      * @param {string} chartId - チャートID
      * @param {Array} newData - 新しいデータ
      */
-    updateChart(chartId, newData) {
+    updateChart(chartId: any, newData: any) {
         const chart = this.activeCharts.get(chartId);
         if (chart) {
-            chart.data.labels = newData.map(d => d.period);
-            chart.data.datasets[0].data = newData.map(d => d.averageScore || 0);
+            chart.data.labels = newData.map((d: any) => d.period);
+            chart.data.datasets[0].data = newData.map((d: any) => d.averageScore || 0);
             chart.update();
         }
     }
@@ -562,7 +568,7 @@ export class TimeSeriesVisualizer {
      * チャートをリセット（ズーム・パンをリセット）
      * @param {string} chartId - チャートID
      */
-    resetChart(chartId) {
+    resetChart(chartId: any) {
         const chart = this.activeCharts.get(chartId);
         if (chart && chart.resetZoom) {
             chart.resetZoom();
@@ -573,7 +579,7 @@ export class TimeSeriesVisualizer {
      * チャートを破棄
      * @param {string} chartId - チャートID
      */
-    destroyChart(chartId) {
+    destroyChart(chartId: any) {
         const chart = this.activeCharts.get(chartId);
         if (chart) {
             chart.destroy();
@@ -594,7 +600,7 @@ export class TimeSeriesVisualizer {
      * @param {string} chartId - チャートID
      * @returns {Object} チャート設定
      */
-    exportChartConfig(chartId) {
+    exportChartConfig(chartId: any) {
         const chart = this.activeCharts.get(chartId);
         if (chart) {
             return {
@@ -612,19 +618,19 @@ export class TimeSeriesVisualizer {
      * @param {Array} metrics - エクスポートする指標
      * @returns {string} CSV文字列
      */
-    exportToCSV(timeSeriesData, metrics = ['averageScore', 'averageAccuracy', 'averagePlayTime']) {
+    exportToCSV(timeSeriesData: any, metrics = ['averageScore', 'averageAccuracy', 'averagePlayTime']) {
         // メトリック名を正規化（'averageScore' -> 'score'）
-        const normalizedMetrics = metrics.map(m => {
+        const normalizedMetrics = metrics.map((m: any) => {
             if (m === 'averageScore') return 'score';
             if (m === 'averageAccuracy') return 'accuracy';
             if (m === 'averagePlayTime') return 'playTime';
             return m;
         });
 
-        const headers = ['期間', ...normalizedMetrics.map(m => this.getMetricDisplayName(m))];
-        const rows = timeSeriesData.map(d => [
+        const headers = ['期間', ...normalizedMetrics.map((m: any) => this.getMetricDisplayName(m))];
+        const rows = timeSeriesData.map((d: any) => [
             d.period,
-            ...normalizedMetrics.map(m => this.getMetricValue(d, m))
+            ...normalizedMetrics.map((m: any) => this.getMetricValue(d, m))
         ]);
 
         const csvContent = [headers, ...rows]

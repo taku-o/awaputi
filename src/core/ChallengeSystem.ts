@@ -128,13 +128,13 @@ export class ChallengeSystem {
         dataVersion: '1.0.0'
     };
 
-    private challengeTypes = ChallengeType;
-    private progressTypes = ProgressType;
-    private rewardTypes = RewardType;
+    private challengeTypes = ChallengeType; // Type definitions
+    private progressTypes = ProgressType; // Progress type definitions
+    private rewardTypes = RewardType; // Reward type definitions
     
-    private isInitialized: boolean = false;
+    private isInitialized: boolean = false; // System state
     private autoSaveTimer: NodeJS.Timeout | null = null;
-    private lastResetCheck: number;
+    private lastResetCheck: number; // Timestamp tracking
     private stats: ChallengeStats = {
         activeChallenges: 0,
         completedToday: 0,
@@ -178,10 +178,7 @@ export class ChallengeSystem {
             console.log('[ChallengeSystem] 初期化完了');
             this.isInitialized = true;
         } catch (error) {
-            getErrorHandler().handleError(error, {
-                context: 'ChallengeSystem.initialize',
-                component: 'ChallengeSystem'
-            });
+            getErrorHandler().handleError(error as Error, 'ChallengeSystem.initialize');
             throw error;
         }
     }
@@ -190,7 +187,7 @@ export class ChallengeSystem {
      * イベントリスナー設定
      */
     private setupEventListeners(): void {
-        this.gameEngine.on('gameEnd', (data: GameEndData) => {
+        (this.gameEngine as any).on('gameEnd', (data: GameEndData) => {
             this.updateProgress(ProgressType.PLAY_COUNT, 1);
             this.updateProgress(ProgressType.SCORE, data.score);
             this.updateProgress(ProgressType.TIME_PLAYED, data.duration);
@@ -219,39 +216,39 @@ export class ChallengeSystem {
             // 週間統計更新（WeeklyChallengeManagerに通知）
             const weeklyChallengeManager = (this.gameEngine as any).weeklyChallengeManager as WeeklyChallengeManager | undefined;
             if (weeklyChallengeManager) {
-                weeklyChallengeManager.updateWeeklyProgress(ProgressType.SCORE_CUMULATIVE, data.score);
-                weeklyChallengeManager.updateWeeklyProgress(ProgressType.PLAY_COUNT_CUMULATIVE, 1);
-                weeklyChallengeManager.updateWeeklyProgress(ProgressType.TIME_PLAYED_CUMULATIVE, data.duration);
+                (weeklyChallengeManager as any).updateWeeklyProgress(ProgressType.SCORE_CUMULATIVE, data.score);
+                (weeklyChallengeManager as any).updateWeeklyProgress(ProgressType.PLAY_COUNT_CUMULATIVE, 1);
+                (weeklyChallengeManager as any).updateWeeklyProgress(ProgressType.TIME_PLAYED_CUMULATIVE, data.duration);
                 
                 if (data.bubbleStats) {
-                    weeklyChallengeManager.updateWeeklyProgress(ProgressType.BUBBLE_POP_CUMULATIVE, data.bubbleStats.total);
+                    (weeklyChallengeManager as any).updateWeeklyProgress(ProgressType.BUBBLE_POP_CUMULATIVE, data.bubbleStats.total);
                 }
                 
                 if (data.maxCombo) {
-                    weeklyChallengeManager.updateWeeklyProgress(ProgressType.COMBO_BEST, data.maxCombo);
+                    (weeklyChallengeManager as any).updateWeeklyProgress(ProgressType.COMBO_BEST, data.maxCombo);
                 }
                 
-                weeklyChallengeManager.updateWeeklyProgress(ProgressType.CONSECUTIVE_DAYS, 1);
+                (weeklyChallengeManager as any).updateWeeklyProgress(ProgressType.CONSECUTIVE_DAYS, 1);
             }
         });
 
         // 泡ポップイベント
-        this.gameEngine.on('bubblePopped', (bubbleData: any) => {
+        (this.gameEngine as any).on('bubblePopped', (_bubbleData: any) => {
             this.updateProgress(ProgressType.BUBBLE_POP, 1);
         });
 
         // アイテム使用イベント
-        this.gameEngine.on('itemUsed', (itemData: any) => {
+        (this.gameEngine as any).on('itemUsed', (_itemData: any) => {
             this.updateProgress(ProgressType.ITEM_USE, 1);
         });
 
         // 実績解除イベント
-        this.gameEngine.on('achievementUnlocked', (achievementData: any) => {
+        (this.gameEngine as any).on('achievementUnlocked', (_achievementData: any) => {
             this.updateProgress(ProgressType.ACHIEVEMENT, 1);
         });
 
         // ステージクリアイベント
-        this.gameEngine.on('stageClear', (stageData: any) => {
+        (this.gameEngine as any).on('stageClear', (_stageData: any) => {
             this.updateProgress(ProgressType.STAGE_CLEAR, 1);
         });
     }
@@ -270,12 +267,12 @@ export class ChallengeSystem {
                 targetValue: challengeData.targetValue!,
                 reward: challengeData.reward!,
                 startTime: challengeData.startTime || Date.now(),
-                endTime: challengeData.endTime,
+                endTime: challengeData.endTime || undefined,
                 isActive: challengeData.isActive !== false,
                 category: challengeData.category || 'general',
                 difficulty: challengeData.difficulty || 'normal',
                 metadata: challengeData.metadata || {}
-            };
+            } as Challenge;
 
             // データ検証
             if (!this.validateChallengeData(challenge)) {
@@ -299,10 +296,7 @@ export class ChallengeSystem {
             console.log(`[ChallengeSystem] チャレンジ作成: ${challenge.id}`);
             return challenge;
         } catch (error) {
-            getErrorHandler().handleError(error, {
-                context: 'ChallengeSystem.createChallenge',
-                challengeData
-            });
+            getErrorHandler().handleError(error as Error, 'ChallengeSystem.createChallenge');
             return null;
         }
     }
@@ -345,7 +339,7 @@ export class ChallengeSystem {
                 
                 // 進捗イベント発火
                 if (progress.currentValue !== oldValue) {
-                    this.gameEngine.emit('challengeProgress', {
+                    (this.gameEngine as any).emit('challengeProgress', {
                         challengeId: challenge!.id,
                         progressType,
                         oldValue,
@@ -356,12 +350,7 @@ export class ChallengeSystem {
                 }
             }
         } catch (error) {
-            getErrorHandler().handleError(error, {
-                context: 'ChallengeSystem.updateProgress',
-                progressType,
-                value,
-                challengeId
-            });
+            getErrorHandler().handleError(error as Error, 'ChallengeSystem.updateProgress');
         }
     }
 
@@ -386,7 +375,7 @@ export class ChallengeSystem {
             this.stats.completedToday++;
 
             // 完了イベント発火
-            this.gameEngine.emit('challengeCompleted', {
+            (this.gameEngine as any).emit('challengeCompleted', {
                 challengeId,
                 challenge,
                 progress,
@@ -396,10 +385,7 @@ export class ChallengeSystem {
             console.log(`[ChallengeSystem] チャレンジ完了: ${challengeId}`);
             return true;
         } catch (error) {
-            getErrorHandler().handleError(error, {
-                context: 'ChallengeSystem.completeChallenge',
-                challengeId
-            });
+            getErrorHandler().handleError(error as Error, 'ChallengeSystem.completeChallenge');
             return false;
         }
     }
@@ -422,7 +408,7 @@ export class ChallengeSystem {
                 progress.rewardClaimed = true;
                 progress.rewardClaimTime = Date.now();
 
-                this.gameEngine.emit('challengeRewardClaimed', {
+                (this.gameEngine as any).emit('challengeRewardClaimed', {
                     challengeId,
                     challenge,
                     reward: challenge.reward
@@ -434,10 +420,7 @@ export class ChallengeSystem {
             
             return false;
         } catch (error) {
-            getErrorHandler().handleError(error, {
-                context: 'ChallengeSystem.claimReward',
-                challengeId
-            });
+            getErrorHandler().handleError(error as Error, 'ChallengeSystem.claimReward');
             return false;
         }
     }
@@ -473,10 +456,7 @@ export class ChallengeSystem {
             
             return true;
         } catch (error) {
-            getErrorHandler().handleError(error, {
-                context: 'ChallengeSystem.grantReward',
-                reward
-            });
+            getErrorHandler().handleError(error as Error, 'ChallengeSystem.grantReward');
             return false;
         }
     }
@@ -487,7 +467,7 @@ export class ChallengeSystem {
     getActiveChallenges(): Array<Challenge & { progress: any | null }> {
         const activeChallenges: Array<Challenge & { progress: any | null }> = [];
         
-        for (const [challengeId, challenge] of this.challenges) {
+        for (const [challengeId, challenge] of Array.from(this.challenges.entries())) {
             if (challenge.isActive && this.isChallengeActive(challenge)) {
                 const progress = this.playerProgress.get(challengeId);
                 activeChallenges.push({
@@ -525,9 +505,9 @@ export class ChallengeSystem {
             const progress = this.playerProgress.get(challengeId);
             return {
                 ...challenge!,
-                progress,
+                progress: progress || undefined,
                 completionTime: progress?.completionTime
-            };
+            } as (Challenge & { progress: ChallengeProgress | undefined; completionTime?: number });
         });
     }
 
@@ -552,7 +532,7 @@ export class ChallengeSystem {
         };
         
         // タイプ別統計
-        for (const challenge of this.challenges.values()) {
+        for (const challenge of Array.from(this.challenges.values())) {
             if (!stats.byType[challenge.type]) {
                 stats.byType[challenge.type] = {
                     total: 0,
@@ -597,7 +577,7 @@ export class ChallengeSystem {
             // デイリーチャレンジの期限切れをチェック
             const expiredChallenges: string[] = [];
             
-            for (const [challengeId, challenge] of this.challenges) {
+            for (const [challengeId, challenge] of Array.from(this.challenges.entries())) {
                 if (challenge.type === ChallengeType.DAILY && !this.isChallengeActive(challenge)) {
                     expiredChallenges.push(challengeId);
                 }
@@ -615,9 +595,7 @@ export class ChallengeSystem {
             
             console.log(`[ChallengeSystem] 日次リセット実行: ${expiredChallenges.length}件のチャレンジを削除`);
         } catch (error) {
-            getErrorHandler().handleError(error, {
-                context: 'ChallengeSystem.performDailyReset'
-            });
+            getErrorHandler().handleError(error as Error, 'ChallengeSystem.performDailyReset');
         }
     }
 
@@ -687,9 +665,7 @@ export class ChallengeSystem {
 
             console.log('[ChallengeSystem] データ保存完了');
         } catch (error) {
-            getErrorHandler().handleError(error, {
-                context: 'ChallengeSystem.saveData'
-            });
+            getErrorHandler().handleError(error as Error, 'ChallengeSystem.saveData');
         }
     }
 
@@ -710,9 +686,7 @@ export class ChallengeSystem {
 
             console.log('[ChallengeSystem] データ読み込み完了');
         } catch (error) {
-            getErrorHandler().handleError(error, {
-                context: 'ChallengeSystem.loadData'
-            });
+            getErrorHandler().handleError(error as Error, 'ChallengeSystem.loadData');
             // エラー時は空データで初期化
             this.challenges = new Map();
             this.playerProgress = new Map();
@@ -769,11 +743,11 @@ export class ChallengeSystem {
     cleanup(): void {
         this.stopAutoSave();
         this.saveData();
-        this.gameEngine.off('gameEnd');
-        this.gameEngine.off('bubblePopped');
-        this.gameEngine.off('itemUsed');
-        this.gameEngine.off('achievementUnlocked');
-        this.gameEngine.off('stageClear');
+        (this.gameEngine as any).off('gameEnd');
+        (this.gameEngine as any).off('bubblePopped');
+        (this.gameEngine as any).off('itemUsed');
+        (this.gameEngine as any).off('achievementUnlocked');
+        (this.gameEngine as any).off('stageClear');
         console.log('[ChallengeSystem] クリーンアップ完了');
     }
 }

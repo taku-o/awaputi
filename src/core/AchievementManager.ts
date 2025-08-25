@@ -24,10 +24,11 @@ export class AchievementManager implements IAchievementManager {
         
         // 統合設定
         this.config = {
-            enableNotifications: true,
-            enablePerformanceOptimization: true,
-            autoSave: true,
-            debugMode: false
+            notificationDuration: 3000,
+            maxNotifications: 3,
+            enableSounds: true,
+            enableAnimations: true,
+            persistProgress: true
         };
         
         this.initializeAchievementManager();
@@ -126,7 +127,7 @@ export class AchievementManager implements IAchievementManager {
      * @deprecated ProgressTrackerクラスが実装されたため、このメソッドは使用されません
      * モックProgressTrackerオブジェクトを作成
      */
-    private createMockProgressTracker() {
+    private _createMockProgressTracker() {
         console.warn('[AchievementManager] createMockProgressTracker is deprecated. Use ProgressTracker class instead.');
         return new ProgressTracker();
     }
@@ -135,7 +136,7 @@ export class AchievementManager implements IAchievementManager {
      * @deprecated PerformanceOptimizerクラスが実装されたため、このメソッドは使用されません
      * モックPerformanceOptimizerオブジェクトを作成
      */
-    private createMockPerformanceOptimizer() {
+    private _createMockPerformanceOptimizer() {
         console.warn('[AchievementManager] createMockPerformanceOptimizer is deprecated. Use PerformanceOptimizer class instead.');
         return new PerformanceOptimizer();
     }
@@ -161,7 +162,7 @@ export class AchievementManager implements IAchievementManager {
      * 通知システムを設定
      */
     configureNotificationSystem(): void {
-        if (!this.notificationSystem || !this.config.enableNotifications) return;
+        if (!this.notificationSystem || !this.config.enableSounds) return;
         
         this.notificationSystem.updateConfig({
             position: 'top-right',
@@ -183,7 +184,7 @@ export class AchievementManager implements IAchievementManager {
      * 進捗を更新
      */
     updateProgress(eventType: string, data: any): void {
-        if (this.config.enablePerformanceOptimization && this.performanceOptimizer) {
+        if (this.config.persistProgress && this.performanceOptimizer) {
             // パフォーマンス最適化ありで処理
             this.performanceOptimizer.processUpdate(eventType, data, (type: string, eventData: any) => {
                 return this.processUpdateEvent(type, eventData);
@@ -239,7 +240,7 @@ export class AchievementManager implements IAchievementManager {
         this.progressTracker.unlockAchievement(achievement.id, achievement);
 
         // 通知を表示
-        if (this.config.enableNotifications) {
+        if (this.config.enableSounds) {
             this.notificationSystem.createAchievementNotification(achievement);
         }
         
@@ -256,7 +257,7 @@ export class AchievementManager implements IAchievementManager {
      */
     handleAchievementUnlocked(data: any): void {
         // 追加の処理が必要な場合はここに記述
-        if (this.config.debugMode) {
+        if (false) { // debugMode removed from config
             console.log('[AchievementManager] Achievement unlocked event:', data);
         }
     }
@@ -266,7 +267,7 @@ export class AchievementManager implements IAchievementManager {
      */
     handleProgressUpdated(data: any): void {
         // 追加の処理が必要な場合はここに記述
-        if (this.config.debugMode) {
+        if (false) { // debugMode removed from config
             console.log('[AchievementManager] Progress updated event:', data);
         }
     }
@@ -394,8 +395,8 @@ export class AchievementManager implements IAchievementManager {
         Object.assign(this.config, config);
 
         // コンポーネントの設定も更新
-        if (config.enableNotifications !== undefined && this.notificationSystem) {
-            this.notificationSystem.updateConfig({ enabled: config.enableNotifications });
+        if (config.maxNotifications !== undefined && this.notificationSystem) {
+            this.notificationSystem.updateConfig({ enabled: config.maxNotifications > 0 });
         }
         
         if (this.performanceOptimizer) {

@@ -560,14 +560,14 @@ export class BarChartRenderer {
                 processedItem = {
                     value: item.value || 0,
                     label: item.label || `Item ${index + 1}`,
-                    color: item.color,
-                    series: item.series,
-                    category: item.category,
-                    metadata: item.metadata,
+                    color: item.color || undefined,
+                    series: item.series || undefined,
+                    category: item.category || undefined,
+                    metadata: item.metadata || undefined,
                     index,
                     normalizedValue: 0,
                     position: { x: 0, y: 0, width: 0, height: 0 }
-                };
+                } as ProcessedChartData;
             }
             
             return processedItem;

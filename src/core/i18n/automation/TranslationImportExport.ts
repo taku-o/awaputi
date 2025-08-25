@@ -1,6 +1,6 @@
 import { getErrorHandler } from '../../../utils/ErrorHandler.js';
 import { getTranslationKeyManager } from '../management/TranslationKeyManager.js';
-import { getProgressTracker } from '../management/ProgressTracker.js';
+import { ProgressTracker } from '../management/ProgressTracker.js';
 
 // 型定義
 export interface FormatInfo {
@@ -190,7 +190,7 @@ export class TranslationImportExport {
 
     constructor() {
         this.keyManager = getTranslationKeyManager();
-        this.progressTracker = getProgressTracker();
+        this.progressTracker = new ProgressTracker();
 
         // サポートフォーマット
         this.supportedFormats = new Map<string, FormatInfo>([
@@ -583,7 +583,7 @@ export class TranslationImportExport {
     } = {}): Promise<RestoreResult> {
         const {
             validateBackup = true,
-            confirmRestore = true,
+            confirmRestore: _confirmRestore = true,
             createRestorePoint = true
         } = options;
 
@@ -641,7 +641,7 @@ export class TranslationImportExport {
         includeMetadata?: boolean;
         includeEmptyKeys?: boolean;
     } = {}): Promise<any | null> {
-        const { categories = [], includeMetadata = true, includeEmptyKeys = false } = options;
+        const { categories = [], includeMetadata = true, includeEmptyKeys: _includeEmptyKeys = false } = options;
 
         try {
             // ProgressTrackerから翻訳データを取得
@@ -718,7 +718,7 @@ export class TranslationImportExport {
         if (fileName) {
             const extension = fileName.toLowerCase().match(/\.[^.]+$/)?.[0];
             if (extension) {
-                for (const [format, info] of this.supportedFormats) {
+                for (const [format, info] of Array.from(this.supportedFormats)) {
                     if (info.extensions.includes(extension)) {
                         return format;
                     }
@@ -795,7 +795,7 @@ export class TranslationImportExport {
         return rows.map(row => row.join(',')).join('\n');
     }
 
-    private parseCSV(content: string, options: any = {}): any {
+    private parseCSV(content: string, _options: any = {}): any {
         const lines = content.split('\n').map(line => line.trim()).filter(line => line);
         if (lines.length < 2) {
             throw new Error('Invalid CSV format: missing header or data');
@@ -857,22 +857,22 @@ export class TranslationImportExport {
     }
 
     // Mock implementations for missing methods
-    private convertToXLSX(data: any, options: any): string {
+    private convertToXLSX(_data: any, _options: any): string {
         // Mock implementation
         return '';
     }
 
-    private convertToXML(data: any, options: any): string {
+    private convertToXML(_data: any, _options: any): string {
         // Mock implementation
         return '<translations></translations>';
     }
 
-    private convertToProperties(data: any, options: any): string {
+    private convertToProperties(_data: any, _options: any): string {
         // Mock implementation
         return '';
     }
 
-    private parseXLSX(content: string, options: any): any {
+    private parseXLSX(_content: string, _options: any): any {
         // Mock implementation
         return { translations: {} };
     }

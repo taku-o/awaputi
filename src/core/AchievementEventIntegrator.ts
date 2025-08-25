@@ -319,7 +319,7 @@ export class AchievementEventIntegrator {
     /**
      * ステージクリア時のイベント処理
      */
-    private handleStageCleared(stageId: string, data: StageData): void {
+    private handleStageCleared(_stageId: string, data: StageData): void {
         if (this.achievementManager && typeof this.achievementManager.updateProgress === 'function') {
             this.achievementManager.updateProgress('stageCleared', data);
         }
@@ -455,7 +455,7 @@ export class AchievementEventIntegrator {
     /**
      * 定期更新処理
      */
-    public update(deltaTime: number): void {
+    public update(_deltaTime: number): void {
         // 低HPサバイバルチェック
         this.checkLowHpSurvival();
         

@@ -10,21 +10,14 @@ import { getErrorHandler } from '../utils/ErrorHandler.js';
  * - 検証ルールエンジン
  */
 export class ValidationManager {
-    private gameEngine: any;
-    private version: string;
     private validationRules: Map<string, any>;
     private customValidators: Map<string, (data: any) => any>;
-    private checksumAlgorithm: string;
     private statistics: any;
 
-    constructor(gameEngine: any) {
-        this.gameEngine = gameEngine;
-        this.version = '1.0.0';
-        
+    constructor(_gameEngine: any) {
         // 検証ルール
         this.validationRules = new Map();
         this.customValidators = new Map();
-        this.checksumAlgorithm = 'sha256';
         
         // 検証統計
         this.statistics = {
@@ -300,7 +293,7 @@ export class ValidationManager {
         try {
             this.statistics.totalValidations++;
             const startTime = performance.now();
-            const result = {
+            const result: any = {
                 isValid: true,
                 errors: [],
                 warnings: [],
@@ -313,25 +306,25 @@ export class ValidationManager {
             const structureValidation = await this.validateStructure(dataType, data);
             if (!structureValidation.isValid) {
                 result.isValid = false;
-                result.errors.push(...structureValidation.errors);
+                result.errors.push(...(structureValidation.errors || []));
             }
-            result.details.structure = structureValidation;
+            (result.details as any).structure = structureValidation;
             
             // データ型検証
             const typeValidation = await this.validateTypes(dataType, data);
             if (!typeValidation.isValid) {
                 result.isValid = false;
-                result.errors.push(...typeValidation.errors);
+                result.errors.push(...(typeValidation.errors || []));
             }
-            result.details.types = typeValidation;
+            (result.details as any).types = typeValidation;
             
             // カスタム検証ルール
             const customValidation = await this.validateCustomRules(dataType, data);
             if (!customValidation.isValid) {
                 result.isValid = false;
-                result.errors.push(...customValidation.errors);
+                result.errors.push(...(customValidation.errors || []));
             }
-            result.details.custom = customValidation;
+            (result.details as any).custom = customValidation;
             
             // チェックサム計算
             if (options.calculateChecksum !== false) {
@@ -343,11 +336,11 @@ export class ValidationManager {
                 const integrityValidation = await this.validateIntegrity(dataType, data);
                 if (!integrityValidation.isValid) {
                     result.isValid = false;
-                    result.errors.push(...integrityValidation.errors);
+                    result.errors.push(...(integrityValidation.errors || []));
                 } else if (integrityValidation.warnings) {
-                    result.warnings.push(...integrityValidation.warnings);
+                    result.warnings.push(...(integrityValidation.warnings || []));
                 }
-                result.details.integrity = integrityValidation;
+                (result.details as any).integrity = integrityValidation;
             }
             
             const endTime = performance.now();
@@ -368,7 +361,7 @@ export class ValidationManager {
             
             return result;
             
-        } catch (error) {
+        } catch (error: any) {
             this.statistics.failedValidations++;
             getErrorHandler().handleError(error, 'VALIDATION_ERROR', {
                 operation: 'validate',
@@ -426,7 +419,7 @@ export class ValidationManager {
                 checkedFields: rule.required || []
             };
             
-        } catch (error) {
+        } catch (error: any) {
             getErrorHandler().handleError(error, 'STRUCTURE_VALIDATION_ERROR', {
                 operation: 'validateStructure',
                 dataType
@@ -470,7 +463,7 @@ export class ValidationManager {
                 validatedFields: Object.keys(rule.properties)
             };
             
-        } catch (error) {
+        } catch (error: any) {
             getErrorHandler().handleError(error, 'TYPE_VALIDATION_ERROR', {
                 operation: 'validateTypes',
                 dataType
@@ -563,7 +556,7 @@ export class ValidationManager {
                 }
             }
         } catch (error) {
-            errors.push(`${fieldName}: Validation error - ${error.message}`);
+            errors.push(`${fieldName}: Validation error - ${(error as Error).message}`);
         }
         
         return {
@@ -577,8 +570,8 @@ export class ValidationManager {
      */
     async validateCustomRules(dataType: string, data: any): Promise<any> {
         try {
-            const errors = [];
-            const warnings = [];
+            const errors: any[] = [];
+            const warnings: any[] = [];
             
             // データタイプ固有のカスタム検証
             switch (dataType) {
@@ -620,7 +613,7 @@ export class ValidationManager {
                 rulesApplied: Array.from(this.customValidators.keys())
             };
             
-        } catch (error) {
+        } catch (error: any) {
             getErrorHandler().handleError(error, 'CUSTOM_VALIDATION_ERROR', {
                 operation: 'validateCustomRules',
                 dataType
@@ -651,7 +644,7 @@ export class ValidationManager {
             // 循環参照チェック
             try {
                 JSON.stringify(data);
-            } catch (error) {
+            } catch (error: any) {
                 if (error.message.includes('circular')) {
                     errors.push('Circular reference detected in data structure');
                 }
@@ -677,7 +670,7 @@ export class ValidationManager {
                 checks: ['size', 'circularReference', 'timestamp']
             };
             
-        } catch (error) {
+        } catch (error: any) {
             getErrorHandler().handleError(error, 'INTEGRITY_VALIDATION_ERROR', {
                 operation: 'validateIntegrity',
                 dataType

@@ -16,11 +16,9 @@ import { getErrorHandler } from '../utils/ErrorHandler.js';
  */
 export class ImportManager {
     private config: BasicConfig;
-    private state: any;
     private storage: any;
     private validation: any;
     private backup: any;
-    private version: string;
     private importValidators: Map<string, any>;
     private conflictResolvers: Map<string, any>;
     private statistics: any;
@@ -29,7 +27,6 @@ export class ImportManager {
         this.storage = dataStorage;
         this.validation = validationManager;
         this.backup = backupManager;
-        this.version = '1.0.0';
         
         // インポート検証ルール
         this.importValidators = new Map();
@@ -453,7 +450,7 @@ export class ImportManager {
     /**
      * インポートの実行
      */
-    async executeImport(resolvedData: any, options = {}): Promise<any> {
+    async executeImport(resolvedData: any, _options = {}): Promise<any> {
         try {
             const results: any[] = [];
             let hasErrors = false;
@@ -675,10 +672,8 @@ export class ImportManager {
  * 形式検証器
  */
 class FormatValidator { 
-    private importManager: any;
-
-    constructor(importManager: any) {
-        this.importManager = importManager;
+    constructor(_importManager: any) {
+        // importManager not used in current implementation
     }
 
     async validate(importData: any): Promise<any> { 
@@ -848,14 +843,11 @@ class SizeValidator {
  * マージ解決器
  */
 class MergeResolver { 
-    private importManager: any;
-
-    constructor(importManager: any) {
-        this.importManager = importManager;
+    constructor(_importManager: any) {
+        // importManager not used in current implementation
     }
     
-    async resolve(importData: any, conflicts: any[], options = {}): Promise<any> {
-        const userData = importData.userData || importData;
+    async resolve(importData: any, conflicts: any[], _options = {}): Promise<any> {
         const resolvedData = { ...importData };
         
         for (const conflict of conflicts) {
@@ -876,7 +868,7 @@ class MergeResolver {
         return resolvedData;
     }
     
-    async preview(importData: any, conflicts: any[]): Promise<any> { 
+    async preview(_importData: any, conflicts: any[]): Promise<any> { 
         const actions: any[] = [];
         
         for (const conflict of conflicts) {
@@ -910,7 +902,7 @@ class MergeResolver {
         }
     }
     
-    mergePlayerData(existing: any, imported: any, conflicts: any[]): any {
+    mergePlayerData(existing: any, imported: any, _conflicts: any[]): any {
         const merged = { ...existing };
         
         // AP/TAPは大きい方を採用
@@ -921,8 +913,8 @@ class MergeResolver {
         if (imported.highScores) {
             merged.highScores = { ...existing.highScores };
             for(const [stage, score] of Object.entries(imported.highScores)) {
-                if (!merged.highScores[stage] || score > merged.highScores[stage]) {
-                    merged.highScores[stage] = score;     
+                if (!merged.highScores[stage] || (score as number) > merged.highScores[stage]) {
+                    merged.highScores[stage] = score as number;     
                 }
             }
         }
@@ -938,12 +930,12 @@ class MergeResolver {
         return merged;
     }
     
-    mergeSettings(existing: any, imported: any, conflicts: any[]): any { 
+    mergeSettings(existing: any, imported: any, _conflicts: any[]): any { 
         // 設定は新しい値を優先
         return { ...existing, ...imported };
     }
 
-    mergeStatistics(existing: any, imported: any, conflicts: any[]): any {
+    mergeStatistics(existing: any, imported: any, _conflicts: any[]): any {
         const merged = { ...existing };
 
         // 数値統計は大きい方を採用
@@ -986,18 +978,16 @@ class MergeResolver {
  * 上書き解決器
  */
 class OverwriteResolver { 
-    private importManager: any;
-
-    constructor(importManager: any) {
-        this.importManager = importManager;
+    constructor(_importManager: any) {
+        // importManager not used in current implementation
     }
     
-    async resolve(importData: any, conflicts: any[], options = {}): Promise<any> {
+    async resolve(importData: any, _conflicts: any[], _options = {}): Promise<any> {
         // インポートデータで全て上書き
         return importData;
     }
 
-    async preview(importData: any, conflicts: any[]): Promise<any> { 
+    async preview(_importData: any, conflicts: any[]): Promise<any> { 
         const actions = conflicts.map(conflict => ({
             dataType: conflict.dataType,
             action: 'Overwrite all data',
@@ -1012,14 +1002,11 @@ class OverwriteResolver {
  * 保持解決器
  */
 class KeepResolver { 
-    private importManager: any;
-
-    constructor(importManager: any) {
-        this.importManager = importManager;
+    constructor(_importManager: any) {
+        // importManager not used in current implementation
     }
     
-    async resolve(importData: any, conflicts: any[], options = {}): Promise<any> {
-        const userData = importData.userData || importData;
+    async resolve(importData: any, conflicts: any[], _options = {}): Promise<any> {
         const resolvedData = { ...importData };
         
         // 競合があるデータは既存データを保持
@@ -1034,7 +1021,7 @@ class KeepResolver {
         return resolvedData;
     }
 
-    async preview(importData: any, conflicts: any[]): Promise<any> { 
+    async preview(_importData: any, conflicts: any[]): Promise<any> { 
         const actions = conflicts.map(conflict => ({
             dataType: conflict.dataType,
             action: 'Keep existing data',
@@ -1057,7 +1044,6 @@ class SelectiveResolver {
     
     async resolve(importData: any, conflicts: any[], options = {}): Promise<any> {
         const selections = (options as any).selections || {};
-        const userData = importData.userData || importData;
         const resolvedData = { ...importData };
 
         for (const conflict of conflicts) {
@@ -1097,7 +1083,7 @@ class SelectiveResolver {
         return resolvedData;
     }
 
-    async preview(importData: any, conflicts: any[]): Promise<any> { 
+    async preview(_importData: any, conflicts: any[]): Promise<any> { 
         const actions = conflicts.map(conflict => ({
             dataType: conflict.dataType,
             action: 'User selection required',

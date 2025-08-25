@@ -12,10 +12,10 @@ import { getBrowserCompatibility } from '../utils/BrowserCompatibility.js';
  * 高度なタッチ操作管理システム - マルチタッチ、ジェスチャー検出、感度調整
  */
 export class EnhancedTouchManager {
-    private config: BasicConfig;
+    private config: BasicConfig = {};
     private canvas: any;
     private gameEngine: any;
-    private configManager: any;
+    private _configManager: any;
     private errorHandler: any;
     private touchSensitivity: number;
     private multiTouchEnabled: boolean;
@@ -24,12 +24,12 @@ export class EnhancedTouchManager {
     private touchPool: any;
     private accidentalTouchPrevention: any;
     private callbacks: any;
-    private enable3DTouch: boolean = false;
+    private _enable3DTouch: boolean = false;
 
     constructor(canvas: any, gameEngine: any) {
         this.canvas = canvas;
         this.gameEngine = gameEngine;
-        this.configManager = getConfigurationManager();
+        this._configManager = getConfigurationManager();
         this.errorHandler = getErrorHandler();
         
         // タッチ感度設定
@@ -168,10 +168,10 @@ export class EnhancedTouchManager {
      * デバイス固有の最適化
      */
     applyDeviceOptimizations(): void {
-        const deviceInfo = getBrowserCompatibility().deviceInfo;
-        const browserInfo = getBrowserCompatibility();
+        const deviceInfo = (getBrowserCompatibility() as any).deviceInfo;
+        const _browserInfo = getBrowserCompatibility();
         
-        if (deviceInfo.platform === 'ios') {
+        if ((deviceInfo as any).platform === 'ios') {
             // iOS Safari のタッチ遅延を防ぐ
             this.canvas.style.touchAction = 'manipulation';
             this.canvas.style.webkitTouchCallout = 'none';
@@ -179,19 +179,19 @@ export class EnhancedTouchManager {
             
             // 3D Touch / Force Touch対応
             if ('ontouchforcechange' in document) {
-                this.enable3DTouch = true;
+                this._enable3DTouch = true;
             }
         }
         
         // Android固有の最適化
-        if(deviceInfo.platform === 'android') {
+        if((deviceInfo as any).platform === 'android') {
             // Androidのタッチ最適化
             this.canvas.style.touchAction = 'none';
             this.canvas.style.userSelect = 'none';
         }
         
         // 小画面デバイスの調整
-        if (deviceInfo.screenInfo.width < 400) {
+        if ((deviceInfo as any).screenInfo?.width < 400) {
             this.gestureThresholds.swipe.minDistance = 30;
             this.gestureThresholds.doubleTap.maxDistance = 35;
         }
@@ -496,7 +496,7 @@ export class EnhancedTouchManager {
         // 連続タップチェック
         const now = Date.now();
         const lastTouch = Array.from(this.touchState.touches.values()).pop();
-        if (lastTouch && now - lastTouch.startTime < this.accidentalTouchPrevention.rapidTapThreshold) {
+        if (lastTouch && now - (lastTouch as any).startTime < this.accidentalTouchPrevention.rapidTapThreshold) {
             return true;
         }
         
@@ -645,7 +645,7 @@ export class EnhancedTouchManager {
         const touches = Array.from(this.touchState.touches.values());
         if (touches.length !== 1) return;
         
-        const touch = touches[0];
+        const touch = touches[0] as any;
         
         // 長押しタイマー設定
         const longPressTimer = setTimeout(() => {

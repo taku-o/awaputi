@@ -176,7 +176,7 @@ export class ProgressTracker {
     /**
      * ゲーム開始時の進捗を更新
      */
-    private updateGameProgress(data: any): void {
+    private updateGameProgress(_data: any): void {
         this.progressData.gamesPlayed = (this.progressData.gamesPlayed || 0) + 1;
         this.progressData.lastPlayedDate = new Date().toISOString();
     }
@@ -215,7 +215,7 @@ export class ProgressTracker {
     /**
      * ステージクリアの進捗を更新
      */
-    private updateStageProgress(data: any): void {
+    private updateStageProgress(_data: any): void {
         this.progressData.stagesCleared = (this.progressData.stagesCleared || 0) + 1;
     }
 
@@ -232,7 +232,7 @@ export class ProgressTracker {
     /**
      * カスタム進捗を更新
      */
-    private updateCustomProgress(eventType: string, data: any): void {
+    private updateCustomProgress(eventType: string, _data: any): void {
         if (!this.progressData.customEvents) {
             this.progressData.customEvents = {};
         }

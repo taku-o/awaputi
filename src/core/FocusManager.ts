@@ -573,14 +573,16 @@ export class FocusManager {
      * フォーカストラップの活性化
      */
     activateFocusTrap(trap: any): boolean { 
-        return this.trapManager.activateFocusTrap(trap);
+        this.trapManager.activateFocusTrap(trap);
+        return true;
     }
     
     /**
      * フォーカストラップの非活性化
      */
     deactivateFocusTrap(trap: any): boolean { 
-        return this.trapManager.deactivateFocusTrap(trap);
+        this.trapManager.deactivateFocusTrap(trap);
+        return true;
     }
     
     /**

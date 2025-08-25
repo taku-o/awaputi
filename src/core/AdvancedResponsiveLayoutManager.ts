@@ -152,7 +152,7 @@ interface BreakpointConfig {
  * 高度なレスポンシブレイアウト管理システム
  */
 export class AdvancedResponsiveLayoutManager extends ResponsiveCanvasManager {
-    private configManager: ConfigurationManager;
+    private _configManager: ConfigurationManager;
     private errorHandler: ErrorHandler;
     private advancedBreakpoints: Record<string, Breakpoint>;
     private dynamicLayout: DynamicLayout;
@@ -160,13 +160,18 @@ export class AdvancedResponsiveLayoutManager extends ResponsiveCanvasManager {
     private orientationManager: OrientationManager;
     private uiScaling: UIScaling;
     private performance: Performance;
-    private currentSize: any;
+    private _currentSize: any;
 
     constructor(canvas: HTMLCanvasElement, gameEngine: GameEngine) {
         super(canvas, gameEngine);
         
-        this.configManager = getConfigurationManager();
-        this.errorHandler = getErrorHandler();
+        this._configManager = getConfigurationManager() as any;
+        this.errorHandler = {
+            logError: (error: Error, context?: any) => {
+                const handler = getErrorHandler();
+                (handler as any).handle?.(error, 'AdvancedResponsiveLayoutManager', context);
+            }
+        } as ErrorHandler;
 
         // 拡張ブレークポイント定義
         this.advancedBreakpoints = {
@@ -269,7 +274,7 @@ export class AdvancedResponsiveLayoutManager extends ResponsiveCanvasManager {
             }
         };
         
-        this.currentSize = null;
+        this._currentSize = null;
         
         this.initialize();
     }
@@ -278,7 +283,10 @@ export class AdvancedResponsiveLayoutManager extends ResponsiveCanvasManager {
      * 初期化処理
      */
     initialize() {
-        super.initialize?.();
+        // Initialize parent class if needed
+        if (typeof (this as any).constructor.prototype.initialize === 'function') {
+            (this as any).constructor.prototype.initialize.call(this);
+        }
         
         try {
             // セーフエリア検出
@@ -335,7 +343,7 @@ export class AdvancedResponsiveLayoutManager extends ResponsiveCanvasManager {
         // フォールバック: デバイス固有の値
         else {
             const deviceInfo = getBrowserCompatibility();
-            if (deviceInfo.platform === 'ios' && deviceInfo.isMobile) {
+            if ((deviceInfo as any).platform === 'ios' && (deviceInfo as any).isMobile) {
                 // iPhone X系の場合
                 if (window.screen.height >= 812) {
                     this.safeAreaManager.insets = detection.fallbackValues;
@@ -489,7 +497,7 @@ export class AdvancedResponsiveLayoutManager extends ResponsiveCanvasManager {
      * ブレークポイント遷移アニメーション
      */
     animateBreakpointTransition(from: string, to: string) {
-        const canvas = this.canvas;
+        const canvas = (this as any).canvas;
         canvas.style.transition = `all ${this.dynamicLayout.transitionDuration}ms cubic-bezier(0.4, 0, 0.2, 1)`;
 
         setTimeout(() => {
@@ -658,7 +666,7 @@ export class AdvancedResponsiveLayoutManager extends ResponsiveCanvasManager {
     /**
      * セーフエリアパディング計算
      */
-    calculateSafeAreaPadding(viewport: ViewportInfo): { top: number; right: number; bottom: number; left: number } {
+    calculateSafeAreaPadding(_viewport: ViewportInfo): { top: number; right: number; bottom: number; left: number } {
         const insets = this.safeAreaManager.insets;
         const minPadding = 8;
         
@@ -761,10 +769,10 @@ export class AdvancedResponsiveLayoutManager extends ResponsiveCanvasManager {
     /**
      * カスタム調整適用
      */
-    applyCustomAdjustments(layout: Layout, config: BreakpointConfig): Layout {
+    applyCustomAdjustments(layout: Layout, _config: BreakpointConfig): Layout {
         // ゲーム固有の調整
-        if (this.gameEngine && this.gameEngine.getLayoutAdjustments) {
-            const adjustments = this.gameEngine.getLayoutAdjustments(layout);
+        if ((this as any).gameEngine && (this as any).gameEngine.getLayoutAdjustments) {
+            const adjustments = (this as any).gameEngine.getLayoutAdjustments(layout);
             return { ...layout, ...adjustments };
         }
         
@@ -791,7 +799,7 @@ export class AdvancedResponsiveLayoutManager extends ResponsiveCanvasManager {
             this.performance.intersectionObserver = new IntersectionObserver(
                 (entries) => {
                     entries.forEach(entry => {
-                        if (entry.target === this.canvas) {
+                        if (entry.target === (this as any).canvas) {
                             this.handleVisibilityChange(entry.isIntersecting);
                         }
                     });
@@ -799,7 +807,7 @@ export class AdvancedResponsiveLayoutManager extends ResponsiveCanvasManager {
                 { threshold: [0, 0.5, 1] }
             );
             
-            this.performance.intersectionObserver.observe(this.canvas);
+            this.performance.intersectionObserver.observe((this as any).canvas);
         }
     }
     
@@ -908,8 +916,6 @@ export class AdvancedResponsiveLayoutManager extends ResponsiveCanvasManager {
                 to: newOrientation
             });
         }
-        
-        super.handleOrientationChange?.();
     }
     
     /**
@@ -935,8 +941,8 @@ export class AdvancedResponsiveLayoutManager extends ResponsiveCanvasManager {
     handleVisibilityChange(isVisible: boolean) {
         this.dispatchLayoutEvent('visibility-change', { isVisible });
         
-        if (this.gameEngine && this.gameEngine.handleVisibilityChange) {
-            this.gameEngine.handleVisibilityChange(isVisible);
+        if ((this as any).gameEngine && (this as any).gameEngine.handleVisibilityChange) {
+            (this as any).gameEngine.handleVisibilityChange(isVisible);
         }
     }
     
@@ -967,8 +973,8 @@ export class AdvancedResponsiveLayoutManager extends ResponsiveCanvasManager {
         document.dispatchEvent(event);
         
         // ゲームエンジンにも通知
-        if (this.gameEngine && this.gameEngine.onLayoutEvent) {
-            this.gameEngine.onLayoutEvent(type, detail);
+        if ((this as any).gameEngine && (this as any).gameEngine.onLayoutEvent) {
+            (this as any).gameEngine.onLayoutEvent(type, detail);
         }
     }
     
@@ -977,10 +983,11 @@ export class AdvancedResponsiveLayoutManager extends ResponsiveCanvasManager {
      */
     debounce(func: Function, wait: number): (...args: any[]) => void {
         let timeout: ReturnType<typeof setTimeout>;
-        return function executedFunction(...args: any[]) {
+        return function executedFunction(this: any, ...args: any[]) {
+            const self = this;
             const later = () => {
                 clearTimeout(timeout);
-                func.apply(this, args);
+                func.apply(self, args);
             };
             clearTimeout(timeout);
             timeout = setTimeout(later, wait);
@@ -993,26 +1000,26 @@ export class AdvancedResponsiveLayoutManager extends ResponsiveCanvasManager {
     updateCanvasSize() {
         const layout = this.calculateOptimalLayout();
         
-        this.canvas.style.width = layout.canvas.width + 'px';
-        this.canvas.style.height = layout.canvas.height + 'px';
+        (this as any).canvas.style.width = layout.canvas.width + 'px';
+        (this as any).canvas.style.height = layout.canvas.height + 'px';
         
         // 実際のCanvas描画サイズ（高DPI対応）
         const pixelRatio = layout.viewport.pixelRatio;
-        this.canvas.width = layout.canvas.width * pixelRatio;
-        this.canvas.height = layout.canvas.height * pixelRatio;
+        (this as any).canvas.width = layout.canvas.width * pixelRatio;
+        (this as any).canvas.height = layout.canvas.height * pixelRatio;
         
         // コンテキストのスケール調整
-        const context = this.canvas.getContext('2d');
+        const context = (this as any).canvas.getContext('2d');
         if (context) {
             context.scale(pixelRatio, pixelRatio);
         }
         
         // 現在のサイズ情報更新
-        this.currentSize = {
+        (this as any).currentSize = {
             displayWidth: layout.canvas.width,
             displayHeight: layout.canvas.height,
-            actualWidth: this.canvas.width,
-            actualHeight: this.canvas.height,
+            actualWidth: (this as any).canvas.width,
+            actualHeight: (this as any).canvas.height,
             scale: layout.canvas.scale,
             pixelRatio: pixelRatio,
             layout: layout
@@ -1022,12 +1029,12 @@ export class AdvancedResponsiveLayoutManager extends ResponsiveCanvasManager {
         this.positionCanvas(layout);
         
         // ゲームエンジンに通知
-        if (this.gameEngine && this.gameEngine.onCanvasResize) {
-            this.gameEngine.onCanvasResize(this.currentSize);
+        if ((this as any).gameEngine && ((this as any).gameEngine as any).onCanvasResize) {
+            ((this as any).gameEngine as any).onCanvasResize((this as any).currentSize);
         }
 
         this.dispatchLayoutEvent('canvas-resize', {
-            size: this.currentSize,
+            size: (this as any).currentSize,
             layout: layout
         });
     }
@@ -1039,16 +1046,16 @@ export class AdvancedResponsiveLayoutManager extends ResponsiveCanvasManager {
         const safeArea = layout.safeArea;
         
         // セーフエリアを考慮した配置
-        this.canvas.style.position = 'relative';
-        this.canvas.style.marginTop = safeArea.padding.top + 'px';
-        this.canvas.style.marginRight = safeArea.padding.right + 'px';
-        this.canvas.style.marginBottom = safeArea.padding.bottom + 'px';
-        this.canvas.style.marginLeft = safeArea.padding.left + 'px';
+        (this as any).canvas.style.position = 'relative';
+        (this as any).canvas.style.marginTop = safeArea.padding.top + 'px';
+        (this as any).canvas.style.marginRight = safeArea.padding.right + 'px';
+        (this as any).canvas.style.marginBottom = safeArea.padding.bottom + 'px';
+        (this as any).canvas.style.marginLeft = safeArea.padding.left + 'px';
         
         // 中央配置
-        this.canvas.style.display = 'block';
-        this.canvas.style.marginLeft = 'auto';
-        this.canvas.style.marginRight = 'auto';
+        (this as any).canvas.style.display = 'block';
+        (this as any).canvas.style.marginLeft = 'auto';
+        (this as any).canvas.style.marginRight = 'auto';
     }
     
     /**

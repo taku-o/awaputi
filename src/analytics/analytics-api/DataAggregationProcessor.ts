@@ -6,14 +6,14 @@
 export class DataAggregationProcessor {
     private storageManager: any;
     private aggregationCache: Map<string, any>;
-    private maxCacheSize: number;
+    private _maxCacheSize: number;
 
     constructor(storageManager: any) {
         this.storageManager = storageManager;
         
         // 集計キャッシュ（LRUキャッシュ）
         this.aggregationCache = new Map();
-        this.maxCacheSize = 100;
+        this._maxCacheSize = 100;
     }
     /**
      * 集計データ取得
@@ -21,7 +21,7 @@ export class DataAggregationProcessor {
      * @param {Object} options - オプション
      * @returns {Promise<Object>} 集計結果
      */
-    async getAggregatedData(aggregationRules: any, options: any = {}): Promise<any> {
+    async getAggregatedData(aggregationRules: any, _options: any = {}): Promise<any> {
         try {
             const {
                 dataType = 'sessionData',
@@ -65,7 +65,7 @@ export class DataAggregationProcessor {
      * @param {Object} options - オプション
      * @returns {Promise<Object>} 集計結果
      */
-    async getAdvancedAggregatedData(aggregationRules: any, options: any = {}): Promise<any> {
+    async getAdvancedAggregatedData(aggregationRules: any, _options: any = {}): Promise<any> {
         try {
             const startTime = performance.now();
             const requestId = this.generateRequestId();
@@ -147,7 +147,7 @@ export class DataAggregationProcessor {
      * @param {Object} options - オプション
      * @returns {Promise<Object>} 時系列集計結果
      */
-    async getTimeSeriesAggregation(timeSeriesRules: any, options: any = {}): Promise<any> {
+    async getTimeSeriesAggregation(timeSeriesRules: any, _options: any = {}): Promise<any> {
         const requestId = this.generateRequestId();
         try {
             const startTime = performance.now();
@@ -524,7 +524,7 @@ export class DataAggregationProcessor {
         return intervals[interval] || intervals['hour'];
     }
     
-    consolidateAggregationResults(aggregatedResults: any, options: any = {}): any {
+    consolidateAggregationResults(aggregatedResults: any, _options: any = {}): any {
         return {
             summary: this.createAggregationSummary(aggregatedResults),
             details: aggregatedResults

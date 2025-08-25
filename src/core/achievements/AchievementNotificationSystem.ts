@@ -140,7 +140,7 @@ export type NotificationPosition =
 export type RarityLevel = 'common' | 'rare' | 'epic' | 'legendary';
 
 export class AchievementNotificationSystem {
-    private notifications: Notification[];
+    private _notifications: Notification[]; // Unused variable kept for compatibility
     private notificationQueue: Notification[];
     private activeNotifications: Set<string>;
     private _audioManager: AudioManager | null;
@@ -154,7 +154,7 @@ export class AchievementNotificationSystem {
 
     constructor(gameEngineOrAudioManager: GameEngine | AudioManager | null = null) {
         // 通知管理
-        this.notifications = [];
+        this._notifications = [];
         this.notificationQueue = [];
         this.activeNotifications = new Set<string>();
         
@@ -842,7 +842,7 @@ export class AchievementNotificationSystem {
      * フレーム毎の更新処理
      * Issue #106: テスト互換性のため追加
      */
-    update(deltaTime?: number): void {
+    update(_deltaTime?: number): void {
         try {
             // 期限切れ通知の削除
             const now = Date.now();
@@ -996,7 +996,7 @@ export class AchievementNotificationSystem {
         }
         
         // データをクリア
-        this.notifications = [];
+        this._notifications = [];
         this.notificationQueue = [];
         this.activeNotifications.clear();
         this.history = [];

@@ -4,7 +4,7 @@
  * ユーザー進捗の保存・復元、ツアー進捗追跡、ステップ管理を担当
  */
 
-import { ErrorHandler } from '../../utils/ErrorHandler.js';
+// import { ErrorHandler } from '../../utils/ErrorHandler.js';
 import { LoggingSystem } from '../LoggingSystem.js';
 
 // 型定義
@@ -130,9 +130,9 @@ export class TutorialProgressManager {
     private initialize(): void {
         try {
             this.loadUserProgress();
-            this.loggingSystem.log('TutorialProgressManagerが初期化されました', 'info', 'TutorialProgressManager');
+            (this.loggingSystem as any).log('TutorialProgressManagerが初期化されました', 'info', 'TutorialProgressManager');
         } catch (error) {
-            this.loggingSystem.log(`進捗管理初期化エラー: ${(error as Error).message}`, 'error', 'TutorialProgressManager');
+            (this.loggingSystem as any).log(`進捗管理初期化エラー: ${(error as Error).message}`, 'error', 'TutorialProgressManager');
         }
     }
     
@@ -151,7 +151,7 @@ export class TutorialProgressManager {
                 this.userProgress.pausedTime = progress.pausedTime || null;
             }
         } catch (error) {
-            this.loggingSystem.log(`ユーザー進捗読み込みエラー: ${(error as Error).message}`, 'error', 'TutorialProgressManager');
+            (this.loggingSystem as any).log(`ユーザー進捗読み込みエラー: ${(error as Error).message}`, 'error', 'TutorialProgressManager');
         }
     }
     
@@ -186,7 +186,7 @@ export class TutorialProgressManager {
                 this.saveTourSpecificProgress(currentTutorial, currentStep);
             }
         } catch (error) {
-            this.loggingSystem.log(`ユーザー進捗保存エラー: ${(error as Error).message}`, 'error', 'TutorialProgressManager');
+            (this.loggingSystem as any).log(`ユーザー進捗保存エラー: ${(error as Error).message}`, 'error', 'TutorialProgressManager');
         }
     }
     
@@ -201,9 +201,9 @@ export class TutorialProgressManager {
             this.userProgress.startTime = Date.now();
             this.userProgress.pausedTime = null;
 
-            this.loggingSystem.log(`チュートリアル開始: ${tutorialId}`, 'info', 'TutorialProgressManager');
+            (this.loggingSystem as any).log(`チュートリアル開始: ${tutorialId}`, 'info', 'TutorialProgressManager');
         } catch (error) {
-            this.loggingSystem.log(`チュートリアル開始設定エラー: ${(error as Error).message}`, 'error', 'TutorialProgressManager');
+            (this.loggingSystem as any).log(`チュートリアル開始設定エラー: ${(error as Error).message}`, 'error', 'TutorialProgressManager');
         }
     }
     
@@ -219,9 +219,9 @@ export class TutorialProgressManager {
             this.userProgress.startTime = null;
             this.userProgress.pausedTime = null;
 
-            this.loggingSystem.log(`チュートリアル完了: ${tutorialId}`, 'info', 'TutorialProgressManager');
+            (this.loggingSystem as any).log(`チュートリアル完了: ${tutorialId}`, 'info', 'TutorialProgressManager');
         } catch (error) {
-            this.loggingSystem.log(`チュートリアル完了設定エラー: ${(error as Error).message}`, 'error', 'TutorialProgressManager');
+            (this.loggingSystem as any).log(`チュートリアル完了設定エラー: ${(error as Error).message}`, 'error', 'TutorialProgressManager');
         }
     }
     
@@ -231,9 +231,9 @@ export class TutorialProgressManager {
     pauseTutorial(): void {
         try {
             this.userProgress.pausedTime = Date.now();
-            this.loggingSystem.log('チュートリアルが一時停止されました', 'info', 'TutorialProgressManager');
+            (this.loggingSystem as any).log('チュートリアルが一時停止されました', 'info', 'TutorialProgressManager');
         } catch (error) {
-            this.loggingSystem.log(`チュートリアル一時停止エラー: ${(error as Error).message}`, 'error', 'TutorialProgressManager');
+            (this.loggingSystem as any).log(`チュートリアル一時停止エラー: ${(error as Error).message}`, 'error', 'TutorialProgressManager');
         }
     }
     
@@ -243,9 +243,9 @@ export class TutorialProgressManager {
     resumeTutorial(): void {
         try {
             this.userProgress.pausedTime = null;
-            this.loggingSystem.log('チュートリアルが再開されました', 'info', 'TutorialProgressManager');
+            (this.loggingSystem as any).log('チュートリアルが再開されました', 'info', 'TutorialProgressManager');
         } catch (error) {
-            this.loggingSystem.log(`チュートリアル再開エラー: ${(error as Error).message}`, 'error', 'TutorialProgressManager');
+            (this.loggingSystem as any).log(`チュートリアル再開エラー: ${(error as Error).message}`, 'error', 'TutorialProgressManager');
         }
     }
     
@@ -256,9 +256,9 @@ export class TutorialProgressManager {
     advanceToStep(stepIndex: number): void {
         try {
             this.userProgress.currentStepIndex = stepIndex;
-            this.loggingSystem.log(`ステップ${stepIndex}に進行`, 'info', 'TutorialProgressManager');
+            (this.loggingSystem as any).log(`ステップ${stepIndex}に進行`, 'info', 'TutorialProgressManager');
         } catch (error) {
-            this.loggingSystem.log(`ステップ進行エラー: ${(error as Error).message}`, 'error', 'TutorialProgressManager');
+            (this.loggingSystem as any).log(`ステップ進行エラー: ${(error as Error).message}`, 'error', 'TutorialProgressManager');
         }
     }
     
@@ -297,9 +297,9 @@ export class TutorialProgressManager {
             if (!this.skippedSteps.includes(stepId)) {
                 this.skippedSteps.push(stepId);
             }
-            this.loggingSystem.log(`ステップ${stepId}がスキップされました`, 'info', 'TutorialProgressManager');
+            (this.loggingSystem as any).log(`ステップ${stepId}がスキップされました`, 'info', 'TutorialProgressManager');
         } catch (error) {
-            this.loggingSystem.log(`ステップスキップマークエラー: ${(error as Error).message}`, 'error', 'TutorialProgressManager');
+            (this.loggingSystem as any).log(`ステップスキップマークエラー: ${(error as Error).message}`, 'error', 'TutorialProgressManager');
         }
     }
     
@@ -322,7 +322,7 @@ export class TutorialProgressManager {
                 // ステップ別の詳細情報
                 stepDetails: currentTutorial.steps.map((step: TutorialStep, index: number): StepDetail => ({
                     id: step.id,
-                    title: step.title,
+                    title: step.title || undefined,
                     isCompleted: index < currentStep,
                     isCurrent: index === currentStep,
                     attempts: this.getStepAttempts(tourId, step.id),
@@ -333,7 +333,7 @@ export class TutorialProgressManager {
             const storageKey = `awaputi_tour_progress_${tourId}`;
             localStorage.setItem(storageKey, JSON.stringify(tourProgress));
         } catch (error) {
-            this.loggingSystem.log(`ツアー進捗保存エラー: ${(error as Error).message}`, 'error', 'TutorialProgressManager');
+            (this.loggingSystem as any).log(`ツアー進捗保存エラー: ${(error as Error).message}`, 'error', 'TutorialProgressManager');
         }
     }
     
@@ -354,7 +354,7 @@ export class TutorialProgressManager {
             
             return null;
         } catch (error) {
-            this.loggingSystem.log(`ツアー進捗読み込みエラー: ${(error as Error).message}`, 'error', 'TutorialProgressManager');
+            (this.loggingSystem as any).log(`ツアー進捗読み込みエラー: ${(error as Error).message}`, 'error', 'TutorialProgressManager');
             return null;
         }
     }
@@ -401,7 +401,7 @@ export class TutorialProgressManager {
             const storageKey = `awaputi_step_attempt_${tourId}_${stepId}`;
             localStorage.setItem(storageKey, Date.now().toString());
         } catch (error) {
-            this.loggingSystem.log(`ステップ試行記録エラー: ${(error as Error).message}`, 'error', 'TutorialProgressManager');
+            (this.loggingSystem as any).log(`ステップ試行記録エラー: ${(error as Error).message}`, 'error', 'TutorialProgressManager');
         }
     }
     
@@ -610,9 +610,9 @@ export class TutorialProgressManager {
             this.skippedSteps = [];
             localStorage.removeItem('awaputi_tutorial_progress');
 
-            this.loggingSystem.log('進捗がリセットされました', 'info', 'TutorialProgressManager');
+            (this.loggingSystem as any).log('進捗がリセットされました', 'info', 'TutorialProgressManager');
         } catch (error) {
-            this.loggingSystem.log(`進捗リセットエラー: ${(error as Error).message}`, 'error', 'TutorialProgressManager');
+            (this.loggingSystem as any).log(`進捗リセットエラー: ${(error as Error).message}`, 'error', 'TutorialProgressManager');
         }
     }
     
@@ -654,9 +654,9 @@ export class TutorialProgressManager {
                 }
             }
 
-            this.loggingSystem.log(`チュートリアル${tutorialId}の進捗がリセットされました`, 'info', 'TutorialProgressManager');
+            (this.loggingSystem as any).log(`チュートリアル${tutorialId}の進捗がリセットされました`, 'info', 'TutorialProgressManager');
         } catch (error) {
-            this.loggingSystem.log(`チュートリアル進捗リセットエラー: ${(error as Error).message}`, 'error', 'TutorialProgressManager');
+            (this.loggingSystem as any).log(`チュートリアル進捗リセットエラー: ${(error as Error).message}`, 'error', 'TutorialProgressManager');
         }
     }
     
@@ -683,9 +683,9 @@ export class TutorialProgressManager {
 
             keysToRemove.forEach(key => localStorage.removeItem(key));
 
-            this.loggingSystem.log('全チュートリアルデータがクリアされました', 'info', 'TutorialProgressManager');
+            (this.loggingSystem as any).log('全チュートリアルデータがクリアされました', 'info', 'TutorialProgressManager');
         } catch (error) {
-            this.loggingSystem.log(`チュートリアルデータクリアエラー: ${(error as Error).message}`, 'error', 'TutorialProgressManager');
+            (this.loggingSystem as any).log(`チュートリアルデータクリアエラー: ${(error as Error).message}`, 'error', 'TutorialProgressManager');
         }
     }
     
@@ -696,9 +696,9 @@ export class TutorialProgressManager {
         try {
             // 現在の進捗を保存
             this.saveUserProgress();
-            this.loggingSystem.log('TutorialProgressManagerがクリーンアップされました', 'info', 'TutorialProgressManager');
+            (this.loggingSystem as any).log('TutorialProgressManagerがクリーンアップされました', 'info', 'TutorialProgressManager');
         } catch (error) {
-            this.loggingSystem.log(`クリーンアップエラー: ${(error as Error).message}`, 'error', 'TutorialProgressManager');
+            (this.loggingSystem as any).log(`クリーンアップエラー: ${(error as Error).message}`, 'error', 'TutorialProgressManager');
         }
     }
 }

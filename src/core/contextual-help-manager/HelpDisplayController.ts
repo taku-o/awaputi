@@ -388,8 +388,8 @@ export class HelpDisplayController {
     private isDisplaying: boolean;
     private animationInProgress: boolean;
     private animationState: AnimationState;
-    private helpContainer: HTMLElement;
-    private helpOverlay: HTMLElement;
+    private helpContainer!: HTMLElement;
+    private helpOverlay!: HTMLElement;
     private autoHideTimer: AutoHideTimer;
     private mediaQueryHandlers: MediaQueryHandler[];
     private tabNavigationState: TabNavigationState;

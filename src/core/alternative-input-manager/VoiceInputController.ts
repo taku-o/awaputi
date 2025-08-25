@@ -15,15 +15,7 @@ export interface VoiceConfig {
 }
 
 // SpeechRecognition型定義（ブラウザ固有API）
-declare global {
-    interface Window {
-        SpeechRecognition: any;
-        webkitSpeechRecognition: any;
-    }
-    
-    var SpeechRecognition: any;
-    var webkitSpeechRecognition: any;
-}
+// Window interface is defined later in the file
 
 export interface VoiceState {
     isListening: boolean;
@@ -306,13 +298,16 @@ export function hasJapaneseVoice(voices: SpeechSynthesisVoice[]): SpeechSynthesi
 // Window拡張（Web Speech API）
 declare global {
     interface Window {
-        webkitSpeechRecognition: {
+        webkitSpeechRecognition?: {
             new (): ExtendedSpeechRecognition;
         };
-        SpeechRecognition: {
+        SpeechRecognition?: {
             new (): ExtendedSpeechRecognition;
         };
     }
+    
+    var SpeechRecognition: any;
+    var webkitSpeechRecognition: any;
 }
 
 export class VoiceInputController {
@@ -805,7 +800,7 @@ export class VoiceInputController {
     /**
      * コマンドを実行
      */
-    private executeCommand(command: CommandAction, originalTranscript: string): void {
+    private executeCommand(command: CommandAction, _originalTranscript: string): void {
         const handler = this.commandHandlers.get(command);
         if (handler) {
             try {

@@ -514,13 +514,13 @@ export class ErrorPreventionHandler {
         // 警告メッセージ
         if (warningElement) {
             if (context.warning) {
-                warningElement.style.display = 'block';
+                (warningElement as HTMLElement).style.display = 'block';
                 const warningText = warningElement.querySelector('.confirm-warning-text');
                 if (warningText) {
                     warningText.textContent = `${DIALOG_TEXTS.warningPrefix}${context.warning}`;
                 }
             } else {
-                warningElement.style.display = 'none';
+                (warningElement as HTMLElement).style.display = 'none';
             }
         }
         

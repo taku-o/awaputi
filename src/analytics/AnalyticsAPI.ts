@@ -90,7 +90,7 @@ export class AnalyticsAPI {
         }
         
         try {
-            const data = await this.aggregationProcessor.getSessionData(options);
+            const data = await this.aggregationProcessor.getAggregatedData({ dataType: 'sessionData' }, options);
             return this.createSuccessResponse(data);
         } catch (error) {
             return this.createErrorResponse((error as Error).message);
@@ -106,7 +106,7 @@ export class AnalyticsAPI {
         }
         
         try {
-            const data = await this.aggregationProcessor.getBubbleInteractionData(options);
+            const data = await this.aggregationProcessor.getAggregatedData({ dataType: 'bubbleInteractions' }, options);
             return this.createSuccessResponse(data);
         } catch (error) {
             return this.createErrorResponse((error as Error).message);
@@ -122,7 +122,7 @@ export class AnalyticsAPI {
         }
         
         try {
-            const data = await this.aggregationProcessor.getPerformanceData(options);
+            const data = await this.aggregationProcessor.getAggregatedData({ dataType: 'performanceData' }, options);
             return this.createSuccessResponse(data);
         } catch (error) {
             return this.createErrorResponse((error as Error).message);
@@ -138,7 +138,7 @@ export class AnalyticsAPI {
         }
         
         try {
-            const data = await this.aggregationProcessor.aggregateData(options);
+            const data = await this.aggregationProcessor.getAggregatedData(options);
             return this.createSuccessResponse(data);
         } catch (error) {
             return this.createErrorResponse((error as Error).message);
@@ -154,7 +154,7 @@ export class AnalyticsAPI {
         }
         
         try {
-            const exportedData = await this.exportHandler.exportAnalyticsData(options);
+            const exportedData = await this.exportHandler.exportData(options);
             return this.createSuccessResponse(exportedData);
         } catch (error) {
             return this.createErrorResponse((error as Error).message);
@@ -191,7 +191,7 @@ export class AnalyticsAPI {
                 return this.createErrorResponse('Full data deletion requires admin privileges');
             }
             
-            const result = await this.endpointManager.deleteData(storeName, filters);
+            const result = await (this.endpointManager as any).deleteData(storeName, filters);
             return this.createSuccessResponse({ deleted: result });
         } catch (error) {
             return this.createErrorResponse((error as Error).message);
@@ -229,7 +229,7 @@ export class AnalyticsAPI {
         }
         
         try {
-            const usage = await this.endpointManager.getUsageStats();
+            const usage = await (this.endpointManager as any).getUsageStats();
             return this.createSuccessResponse(usage);
         } catch (error) {
             return this.createErrorResponse((error as Error).message);
@@ -261,7 +261,7 @@ export class AnalyticsAPI {
         }
         
         try {
-            const result = await this.aggregationProcessor.executeCustomQuery(query);
+            const result = await (this.aggregationProcessor as any).executeCustomQuery(query);
             return this.createSuccessResponse(result);
         } catch (error) {
             return this.createErrorResponse((error as Error).message);

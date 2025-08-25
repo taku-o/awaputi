@@ -716,10 +716,10 @@ export class HelpPerformanceMonitor {
         if (!Array.isArray(values) || values.length === 0) return 0;
 
         const sum = values.reduce((acc, item) => {
-            return acc + (typeof item === 'object' ? item.value : item);
+            return acc + (typeof item === 'object' ? (item as MetricValue).value : (item as number));
         }, 0);
         
-        return sum / values.length;
+        return (sum as number) / values.length;
     }
     
     /**

@@ -85,8 +85,8 @@ export class GameEngineInitializer {
             this.gameEngine.sceneManager.addScene('menu', new MainMenuScene(this.gameEngine));
             this.gameEngine.sceneManager.addScene('stageSelect', new StageSelectScene(this.gameEngine));
             this.gameEngine.sceneManager.addScene('game', new GameScene(this.gameEngine));
-            this.gameEngine.sceneManager.addScene('shop', new ShopScene());
-            this.gameEngine.sceneManager.addScene('userInfo', new UserInfoScene());
+            this.gameEngine.sceneManager.addScene('shop', new ShopScene(this.gameEngine));
+            this.gameEngine.sceneManager.addScene('userInfo', new UserInfoScene(this.gameEngine));
             this.gameEngine.sceneManager.addScene('settings', new SettingsScene(this.gameEngine));
             this.gameEngine.sceneManager.addScene('help', new HelpScene(this.gameEngine));
 

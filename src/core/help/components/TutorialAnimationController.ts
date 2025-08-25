@@ -210,7 +210,7 @@ export class TutorialAnimationController {
             };
 
             this.startAnimationLoop();
-            this.loggingSystem.debug('TutorialAnimationController', `Started highlight animation: ${type}`, { intensity });
+            this.loggingSystem.debug('TutorialAnimationController', `Started highlight animation: ${type}`, JSON.stringify({ intensity }));
         } catch (error) {
             this.errorHandler.handleError(error as Error, 'TutorialAnimationController.startHighlightAnimation');
         }
@@ -242,7 +242,7 @@ export class TutorialAnimationController {
             };
 
             this.startAnimationLoop();
-            this.loggingSystem.debug('TutorialAnimationController', `Started panel animation: ${type}`, { direction });
+            this.loggingSystem.debug('TutorialAnimationController', `Started panel animation: ${type}`, JSON.stringify({ direction }));
         } catch (error) {
             this.errorHandler.handleError(error as Error, 'TutorialAnimationController.startPanelAnimation');
         }
@@ -274,7 +274,7 @@ export class TutorialAnimationController {
             };
 
             this.startAnimationLoop();
-            this.loggingSystem.debug('TutorialAnimationController', 'Started spotlight animation', { targetRadius, expansion });
+            this.loggingSystem.debug('TutorialAnimationController', 'Started spotlight animation', JSON.stringify({ targetRadius, expansion }));
         } catch (error) {
             this.errorHandler.handleError(error as Error, 'TutorialAnimationController.startSpotlightAnimation');
         }
@@ -346,7 +346,7 @@ export class TutorialAnimationController {
     updateConfig(config: Partial<AnimationConfig>): void {
         try {
             this.animationConfig = { ...this.animationConfig, ...config };
-            this.loggingSystem.debug('TutorialAnimationController', 'Animation config updated', config);
+            this.loggingSystem.debug('TutorialAnimationController', 'Animation config updated', JSON.stringify(config));
         } catch (error) {
             this.errorHandler.handleError(error as Error, 'TutorialAnimationController.updateConfig');
         }

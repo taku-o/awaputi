@@ -223,11 +223,7 @@ export class ChunkProcessor {
                 error: error as Error
             });
 
-            getErrorHandler().handleError(error as Error, {
-                context: 'ChunkProcessor.processArray',
-                processId,
-                itemsCount: items.length
-            });
+            getErrorHandler().handleError(error as Error, 'ChunkProcessor.processArray');
 
             this.processes.delete(processId);
             throw error;
@@ -298,10 +294,7 @@ export class ChunkProcessor {
                 error: error as Error
             });
 
-            getErrorHandler().handleError(error as Error, {
-                context: 'ChunkProcessor.processChunks',
-                processId
-            });
+            getErrorHandler().handleError(error as Error, 'ChunkProcessor.processChunks');
 
             throw error;
         }
