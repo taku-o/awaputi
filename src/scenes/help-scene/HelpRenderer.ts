@@ -177,7 +177,7 @@ export class HelpRenderer {
             try {
                 const canvasInfo = this.gameEngine.responsiveCanvasManager.getCanvasInfo();
                 if (canvasInfo && canvasInfo.scale) {
-                    scale = canvasInfo.scale;
+                    // scale = canvasInfo.scale;
                     canvasWidth = canvasInfo.displayWidth || canvasWidth;
                     canvasHeight = canvasInfo.displayHeight || canvasHeight;
                 }
