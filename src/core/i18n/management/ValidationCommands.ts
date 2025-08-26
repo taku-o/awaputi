@@ -410,7 +410,7 @@ export class ValidationCommands {
      * 未翻訳項目検出
      */
     async checkUntranslatedItems(options: any): Promise<UntranslatedCheckResult> {
-        const { languages = [], categories = [], outputFormat = 'detailed' } = options;
+        const { languages = [], categories = [] } = options;
         
         const results: UntranslatedCheckResult = {
             summary: {

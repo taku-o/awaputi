@@ -58,7 +58,7 @@ export class LazyTranslationLoader {
     // 遅延読み込み設定
     private lazyLoadingEnabled: boolean;
     private preloadCriticalFiles: string[];
-    private loadOnDemandFiles: string[];
+    // private loadOnDemandFiles: string[];
     // キャッシュシステム
     private memoryCache: Map<string, CacheItem>;
     private compressionEnabled: boolean;

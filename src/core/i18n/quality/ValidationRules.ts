@@ -787,7 +787,7 @@ export class ConsistencyValidationRule implements IValidationRule {
     /**
      * 句読点の一貫性をチェック
      */
-    private checkPunctuationConsistency(sourceText: string | undefined, translationText: string, language?: string): PunctuationResult {
+    private checkPunctuationConsistency(sourceText: string | undefined, translationText: string, _language?: string): PunctuationResult {
         if (!sourceText) return { passed: true };
         
         const issues: ConsistencyIssue[] = [];

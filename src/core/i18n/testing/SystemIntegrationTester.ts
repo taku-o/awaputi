@@ -572,7 +572,7 @@ export class SystemIntegrationTester {
         
         // 翻訳メモリ管理テスト
         results.push(await this.runSingleTest('translation-memory-management', async () => {
-            const _initialStats = this.formatterEngine.getStats();
+            // const _initialStats = this.formatterEngine.getStats();
             // メモリクリア
             this.formatterEngine.clearMemory();
             const clearedStats = this.formatterEngine.getStats();

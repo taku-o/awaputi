@@ -591,20 +591,24 @@ export class HelpErrorHandler {
      * @param error - エラーオブジェクト
      * @returns 再試行可能フラグ
      */
+    /*
     private canRetryError(error: Error): boolean {
         const retryableErrors = ['NetworkError', 'TimeoutError', 'AbortError'];
         return retryableErrors.includes(error.constructor.name);
     }
+    */
 
     /**
      * ヘルプ利用可能性の判定
      * @param error - エラーオブジェクト
      * @returns ヘルプ利用可能フラグ
      */
+    /*
     private isHelpAvailable(_error: Error): boolean {
         // 基本的なヘルプは常に利用可能
         return true;
     }
+    */
 
     /**
      * デフォルトヘルプコンテンツの取得

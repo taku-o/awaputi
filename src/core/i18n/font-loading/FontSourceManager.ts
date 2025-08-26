@@ -228,7 +228,7 @@ export class FontSourceManager {
 export class LocalFontSource implements IFontSource {
     // private config: FontSourceConfig;
     private fontDirectory: string;
-    private formats: string[];
+    // private formats: string[];
 
     constructor(config: FontSourceConfig = {}) {
         this.config = config;

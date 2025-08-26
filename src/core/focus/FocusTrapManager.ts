@@ -753,15 +753,15 @@ export class FocusTrapManager {
      * 要素のラベルを取得
      */
     getElementLabel(element: HTMLElement, _options: ElementLabelOptions = {}): string {
-        const _opts: Required<ElementLabelOptions> = {
-            includeAriaLabel: true,
-            includeLabelElement: true,
-            includeTextContent: true,
-            includePlaceholder: true,
-            includeAltText: true,
-            includeTitle: true,
-            ...options
-        };
+        // const _opts: Required<ElementLabelOptions> = {
+        //     includeAriaLabel: true,
+        //     includeLabelElement: true,
+        //     includeTextContent: true,
+        //     includePlaceholder: true,
+        //     includeAltText: true,
+        //     includeTitle: true,
+        //     ...options
+        // };
         
         return getElementAccessibleName(element);
     }

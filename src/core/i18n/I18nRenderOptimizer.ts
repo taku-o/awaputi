@@ -159,7 +159,7 @@ export class I18nRenderOptimizer {
     private domOptimization: DOMOptimization;
     
     // 要素プール
-    private elementPools: Map<string, Element[]>;
+    // private elementPools: Map<string, Element[]>;
     
     // フォント読み込みマネージャー
     private fontLoadingManager: FontLoadingManager | null;
@@ -547,7 +547,7 @@ export class I18nRenderOptimizer {
      */
     private executeBatchDOMOperations(updates: RenderUpdate[]): void {
         // DocumentFragmentを使用した効率的な更新
-        const _fragment = document.createDocumentFragment();
+        // const _fragment = document.createDocumentFragment();
         
         for (const update of updates) {
             if (update.operation === 'textContent' && update.value) {

@@ -188,7 +188,7 @@ export class RenderingOptimizer {
     // レンダリング状態管理
     // private isRenderingOptimized: boolean;
     // private pendingUpdates: Map<string, any>;
-    private updateQueue: any[];
+    // private updateQueue: any[];
     private renderFrameId: number | null;
     private lastRenderTime: number;
     
@@ -394,7 +394,7 @@ export class RenderingOptimizer {
      * 即座の要素更新
      */
     private async processImmediateUpdates(elements: HTMLElement[], language: string, options: BatchedUpdateOptions): Promise<void> {
-        const { animateTransition, _cacheResults } = options;
+        const { animateTransition } = options;
         
         // アニメーション準備
         if (animateTransition) {
@@ -502,7 +502,7 @@ export class RenderingOptimizer {
      * 要素の一括更新
      */
     private async batchUpdateElements(elements: HTMLElement[], language: string, measurements: Map<HTMLElement, ElementMeasurement>, options: BatchedUpdateOptions): Promise<void> {
-        const { _animateTransition, cacheResults } = options;
+        const { cacheResults } = options;
         
         // DOM書き込みの準備
         const updates: ElementUpdatePair[] = [];

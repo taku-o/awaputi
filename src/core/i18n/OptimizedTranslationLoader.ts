@@ -124,7 +124,7 @@ export class OptimizedTranslationLoader {
     
     // 優先度管理
     private priorityQueue: Map<string, LoadPriority>;
-    private preloadQueue: string[];
+    // private preloadQueue: string[];
     
     // 圧縮設定
     // private compressionThreshold: number;

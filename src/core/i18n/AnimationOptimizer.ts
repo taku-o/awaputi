@@ -491,7 +491,7 @@ export class AnimationOptimizer {
     /**
      * 最適化されたアニメーション仕様を取得
      */
-    private getOptimizedAnimationSpec(element: HTMLElement, animationType: string, duration: number): Omit<AnimationSpec, 'element' | 'delay'> {
+    private getOptimizedAnimationSpec(_element: HTMLElement, animationType: string, duration: number): Omit<AnimationSpec, 'element' | 'delay'> {
         const preset = this.presets[animationType] || this.presets.textChange;
         
         // 要素の現在状態を取得

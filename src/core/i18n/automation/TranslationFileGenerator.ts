@@ -875,8 +875,8 @@ export class TranslationFileGenerator {
     
     private async synchronizeCategoryFile(
         _baseCategoryData: any,
-        targetCategoryData: any,
-        options: any
+        _targetCategoryData: any,
+        _options: any
     ): Promise<CategorySyncResult> {
         // Mock implementation
         return { added: [], removed: [], updated: [] };

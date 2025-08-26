@@ -138,7 +138,7 @@ export class UIUpdateOptimizer {
 
     // バッチ処理管理
     // private pendingUpdates: Map<string, any>;
-    private updateQueue: any[];
+    // private updateQueue: any[];
     private batchTimer: NodeJS.Timeout | null;
     // private processingBatch: boolean;
 

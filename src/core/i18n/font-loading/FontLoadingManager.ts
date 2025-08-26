@@ -255,7 +255,7 @@ export class FontLoadingManager {
             }
 
             try {
-                const _result = await this.sourceManager.loadFromSource(sourceName, fontFamily, options);
+                await this.sourceManager.loadFromSource(sourceName, fontFamily, options);
                 return {
                     success: true,
                     fontFamily: fontFamily,
