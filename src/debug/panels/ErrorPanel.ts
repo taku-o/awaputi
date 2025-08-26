@@ -329,7 +329,7 @@ export class ErrorPanel {
     /**
      * エラーをフィルター
      */
-    filterErrors(filter: string): void {
+    filterErrors(_filter: string): void {
         this.updateErrorList();
     }
 

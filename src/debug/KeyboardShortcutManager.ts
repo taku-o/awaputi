@@ -99,8 +99,8 @@ export class DebugKeyboardShortcutManager {
     private statistics: Statistics;
     // イベントハンドラー
     private keydownHandler: (event: KeyboardEvent) => void;
-    private focusHandler: (event: FocusEvent) => void;
-    private blurHandler: (event: FocusEvent) => void;
+    // private focusHandler: (event: FocusEvent) => void;
+    // private blurHandler: (event: FocusEvent) => void;
     constructor(debugInterface: DebugInterface) {
         this.debugInterface = debugInterface;
         
@@ -151,13 +151,13 @@ export class DebugKeyboardShortcutManager {
         this.keydownHandler = (event: KeyboardEvent) => {
             this.execute(event);
         };
-        this.focusHandler = (event: FocusEvent) => {
+        this.focusHandler = (_event: FocusEvent) => {
             // デバッグインターフェースにフォーカスがある場合のみ有効
             if (this.debugInterface.isVisible) {
                 document.addEventListener('keydown', this.keydownHandler, true);
             }
         };
-        this.blurHandler = (event: FocusEvent) => {
+        this.blurHandler = (_event: FocusEvent) => {
             document.removeEventListener('keydown', this.keydownHandler, true);
         };
         
@@ -328,7 +328,7 @@ export class DebugKeyboardShortcutManager {
      * @param code - キーコード
      * @returns 正規化されたキー名
      */
-    normalizeKey(key: string, code: string): string {
+    normalizeKey(key: string, _code: string): string {
         // 特殊キーのマッピング
         const specialKeys: Record<string, string> = {
             ' ': 'space',
@@ -533,7 +533,7 @@ export class DebugKeyboardShortcutManager {
      * @param shortcutString - ショートカット文字列
      * @returns 処理したかどうか
      */
-    startSequence(event: KeyboardEvent, shortcutString: string): boolean {
+    startSequence(_event: KeyboardEvent, shortcutString: string): boolean {
         this.currentSequence = [shortcutString];
         this.isWaitingForSequence = true;
 

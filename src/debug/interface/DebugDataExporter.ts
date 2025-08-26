@@ -328,7 +328,7 @@ export class DebugDataExporter extends BaseComponent {
      * @param format - 形式
      * @param options - オプション
      */
-    exportData(data: any, filename: string, format: string, options: ExportOptions = {}): void {
+    exportData(data: any, filename: string, format: string, _options: ExportOptions = {}): void {
         try {
             const formatConfig = this.exportFormats.get(format);
             if (!formatConfig) {

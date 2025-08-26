@@ -116,7 +116,7 @@ export class TestPanel {
     private debugInterface: DebugInterface;
     private element: HTMLElement | null = null;
     private testSupportTools?: TestSupportTools;
-    private testResults: any[] = [];
+    // private testResults: any[] = [];
 
     constructor(gameEngine: GameEngine, debugInterface: DebugInterface) {
         this.gameEngine = gameEngine;

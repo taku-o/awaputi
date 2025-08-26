@@ -966,7 +966,7 @@ class PerformanceHeatmap {
         }
     }
 
-    private getScoreForCell(targetTime: number, yPosition: number): number {
+    private getScoreForCell(targetTime: number, _yPosition: number): number {
         // 時間と位置に基づいてスコア取得
         const timeTolerances = 2000; // 2秒の許容範囲
         

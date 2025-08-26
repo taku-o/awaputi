@@ -192,7 +192,7 @@ export class MockDataGenerator {
         }
     }
 
-    private createFallbackComponent(name: string): MockComponent { 
+    private createFallbackComponent(_name: string): MockComponent { 
         return {
             initialized: false,
             generate: () => ({}),
@@ -374,7 +374,7 @@ export class MockDataGenerator {
 
     // === 統計・設定関連 ===
 
-    public generateStatistics(options: any = {}): Statistics {
+    public generateStatistics(_options: any = {}): Statistics {
         return { 
             totalGames: this.randomInt(10, 1000),
             totalScore: this.randomInt(10000, 500000),

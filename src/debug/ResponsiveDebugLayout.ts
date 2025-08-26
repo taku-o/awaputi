@@ -540,7 +540,7 @@ export class ResponsiveDebugLayout {
      */
     public destroy(): void {
         // メディアクエリリスナーを削除
-        Object.values(this.mediaQueries).forEach(mq => {
+        Object.values(this.mediaQueries).forEach(_mq => {
             // Note: removeListener is deprecated, but keeping for backward compatibility
             // Modern approach would be to store the handlers and use removeEventListener
         });

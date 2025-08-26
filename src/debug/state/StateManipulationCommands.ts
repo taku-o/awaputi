@@ -4,7 +4,7 @@
  */
 
 export class StateManipulationCommands {
-    constructor(parent?: any) {
+    constructor(_parent?: any) {
         // TypeScript implementation
         console.log('[StateManipulationCommands] Initialized');
     }

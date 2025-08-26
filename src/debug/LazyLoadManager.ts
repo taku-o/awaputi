@@ -76,7 +76,7 @@ export class LazyLoadManager {
     private loadedComponents: Set<string>;
     private loadingComponents: Map<string, Promise<LoadedComponent>>;
     private componentRegistry: Map<string, ComponentConfig>;
-    private preloadQueue: string[];
+    // private preloadQueue: string[];
     private preloadBatch: number;
     private intersectionObserver?: IntersectionObserver;
 
@@ -85,7 +85,7 @@ export class LazyLoadManager {
         this.loadedComponents = new Set();
         this.loadingComponents = new Map();
         this.componentRegistry = new Map();
-        this.preloadQueue = [];
+        // this.preloadQueue = [];
         this.preloadBatch = 2; // 一度に先読みする数
         
         this.initialize();

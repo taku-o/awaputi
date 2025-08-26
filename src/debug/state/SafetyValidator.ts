@@ -4,7 +4,7 @@
  */
 
 export class SafetyValidator {
-    constructor(parent?: any) {
+    constructor(_parent?: any) {
         // TypeScript implementation
         console.log('[SafetyValidator] Initialized');
     }
