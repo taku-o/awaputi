@@ -11,6 +11,17 @@ export { HelpErrorHandler, getHelpErrorHandler, reinitializeHelpErrorHandler } f
 export { TutorialActions, getTutorialActions, reinitializeTutorialActions } from './TutorialActions.js';
 export { TutorialValidationEngine, getTutorialValidationEngine, reinitializeTutorialValidationEngine } from './TutorialValidationEngine.js';
 
+// Import for internal use
+import { getHelpManager } from './HelpManager.js';
+import { getTutorialManager } from './TutorialManager.js';
+import { getContextManager } from './ContextManager.js';
+import { getHelpErrorHandler } from './HelpErrorHandler.js';
+import { getTutorialOverlay } from './TutorialOverlay.js';
+import { getContentLoader } from './components/ContentLoader.js';
+import { getContentValidation } from './ContentValidation.js';
+import { getSearchEngine } from './components/SearchEngine.js';
+import { getMultilingualContentManager } from './MultilingualContentManager.js';
+
 // UI Components
 export { TutorialOverlay, getTutorialOverlay, reinitializeTutorialOverlay } from './TutorialOverlay.js';
 
@@ -75,19 +86,19 @@ export interface HelpSystemInitResult {
  */
 export function initializeHelpSystem(gameEngine: GameEngine): HelpSystemInitResult {
     try {
-        const helpManager = new HelpManager(gameEngine);
-        const tutorialManager = new TutorialManager(gameEngine);
-        const contextManager = new ContextManager(gameEngine);
-        const helpErrorHandler = new HelpErrorHandler(gameEngine);
+        const helpManager = getHelpManager(gameEngine);
+        const tutorialManager = getTutorialManager(gameEngine);
+        const contextManager = getContextManager(gameEngine);
+        const helpErrorHandler = getHelpErrorHandler(gameEngine);
         
         // UI Components
-        const tutorialOverlay = new TutorialOverlay(gameEngine, gameEngine?.eventBus, gameEngine?.state);
+        const tutorialOverlay = getTutorialOverlay(gameEngine, gameEngine?.eventBus, gameEngine?.state);
         
         // Content Management System
-        const contentLoader = new ContentLoader();
-        const contentValidation = new ContentValidation();
-        const searchEngine = new SearchEngine();
-        const multilingualContentManager = new MultilingualContentManager();
+        const contentLoader = getContentLoader();
+        const contentValidation = getContentValidation();
+        const searchEngine = getSearchEngine();
+        const multilingualContentManager = getMultilingualContentManager();
 
         return {
             initialized: true,

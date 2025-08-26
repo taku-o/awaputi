@@ -11,6 +11,26 @@ import { EventHistoryManager } from './events/EventHistoryManager.js';
 import { EventRankingSystem } from './events/EventRankingSystem.js';
 import { GameEngine } from './GameEngine';
 
+interface SeasonInfo {
+    season: string;
+    startDate: number;
+    endDate: number;
+    [key: string]: any;
+}
+
+interface HistoryEntry {
+    eventId: string;
+    date: number;
+    score?: number;
+    [key: string]: any;
+}
+
+interface DetailedStatistics {
+    totalEvents: number;
+    completedEvents: number;
+    [key: string]: any;
+}
+
 interface EventStage {
     id: string;
     name: string;

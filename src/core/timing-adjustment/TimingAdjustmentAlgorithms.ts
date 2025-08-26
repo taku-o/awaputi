@@ -665,11 +665,11 @@ export class TimingAdjustmentAlgorithms {
             
             // 長時間停止しているタイマーの最適化
             if (this.timers.paused.has(timerId)) {
-                // const __pausedTimer = this.timers.paused.get(timerId) as PausedTimer; // Removed: unused variable
-                const pauseDuration = currentTime - pauseInfo.pausedAt;
+                const pausedTimer = this.timers.paused.get(timerId) as PausedTimer;
+                const pauseDuration = currentTime - pausedTimer.pausedAt;
                 
                 // 1時間以上停止している自動停止タイマーを削除
-                if(pauseDuration > AUTO_PAUSE_CLEANUP_TIME && pauseInfo.reason !== 'user') {
+                if(pauseDuration > AUTO_PAUSE_CLEANUP_TIME && pausedTimer.reason !== 'user') {
                     this.unregisterTimer(timerId);
                     removedTimers.push(timerId);
                     optimizedCount++;
@@ -830,10 +830,10 @@ export class TimingAdjustmentAlgorithms {
                         break;
                     case 'resume':
                         if (this.timers.paused.has(timerId)) {
-                            // const __pausedTimer = this.timers.paused.get(timerId) as PausedTimer; // Removed: unused variable
+                            const pausedTimer = this.timers.paused.get(timerId) as PausedTimer;
                             const timer = this.timers.active.get(timerId) as RegisteredTimer;
                             if (timer) {
-                                timer.pausedTime += Date.now() - pauseInfo.pausedAt;
+                                timer.pausedTime += Date.now() - pausedTimer.pausedAt;
                                 this.timers.paused.delete(timerId);
                                 success = true;
                             }
