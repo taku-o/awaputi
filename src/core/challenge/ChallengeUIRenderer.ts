@@ -502,7 +502,7 @@ export function detectMediaQueryState(): MediaQueryState {
 }
 
 export class ChallengeUIRenderer {
-    private challengeUI: ChallengeUIReference; // Used for theme management
+    // private challengeUI: ChallengeUIReference; // Used for theme management
     private config: UIRenderConfig;
     private state: ChallengeUIState;
     private elements: ChallengeUIElements;

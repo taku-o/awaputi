@@ -500,7 +500,7 @@ export class DataManager {
     /**
      * PlayerDataの保存
      */
-    public async savePlayerData(data: any, options?: SaveOptions): Promise<any> {
+    public async savePlayerData(data: any, _options?: SaveOptions): Promise<any> {
         if (this.playerData) {
             return await this.playerData.save();
         }
@@ -512,7 +512,7 @@ export class DataManager {
     /**
      * PlayerDataの読み込み
      */
-    public async loadPlayerData(options?: LoadOptions): Promise<any> {
+    public async loadPlayerData(_options?: LoadOptions): Promise<any> {
         if (this.playerData) {
             return {
                 username: this.playerData.username,
@@ -535,7 +535,7 @@ export class DataManager {
     /**
      * 設定データの保存
      */
-    public async saveSettings(data: any, options?: SaveOptions): Promise<any> {
+    public async saveSettings(data: any, _options?: SaveOptions): Promise<any> {
         if (this.settingsManager) {
             return await this.settingsManager.save();
         }
@@ -547,7 +547,7 @@ export class DataManager {
     /**
      * 設定データの読み込み
      */
-    public async loadSettings(options?: LoadOptions): Promise<any> {
+    public async loadSettings(_options?: LoadOptions): Promise<any> {
         if (this.settingsManager) {
             return this.settingsManager.getAllSettings();
         }

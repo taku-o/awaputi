@@ -128,13 +128,13 @@ export class ChallengeSystem {
         dataVersion: '1.0.0'
     };
 
-    private challengeTypes = ChallengeType; // Type definitions
-    private progressTypes = ProgressType; // Progress type definitions
-    private rewardTypes = RewardType; // Reward type definitions
+    // private challengeTypes = ChallengeType; // Type definitions
+    // private progressTypes = ProgressType; // Progress type definitions
+    // private rewardTypes = RewardType; // Reward type definitions
     
-    private isInitialized: boolean = false; // System state
+    // private isInitialized: boolean = false; // System state
     private autoSaveTimer: NodeJS.Timeout | null = null;
-    private lastResetCheck: number; // Timestamp tracking
+    // private lastResetCheck: number; // Timestamp tracking
     private stats: ChallengeStats = {
         activeChallenges: 0,
         completedToday: 0,

@@ -46,7 +46,7 @@ interface FallbackState {
 }
 
 export class ConfigurationErrorHandler {
-    private errorTypes = ConfigErrorType;
+    // private errorTypes = ConfigErrorType;
     private recoveryStrategies: Map<ConfigErrorType, RecoveryStrategy>;
     private errorStats: ErrorStats;
     // private recoveryAttempts: Map<string, number>;

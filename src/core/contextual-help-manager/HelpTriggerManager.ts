@@ -237,7 +237,7 @@ export class HelpTriggerManager {
     private activeListeners: Map<HTMLElement, ElementTracker>;
     private triggerCallbacks: Map<TriggerEventType, HelpTriggerCallback[]>;
     private triggerHistory: TriggerEvent[];
-    private interactionPatterns: InteractionPattern[];
+    // private interactionPatterns: InteractionPattern[];
     private metrics: TriggerMetrics;
     private sessionContext: SessionContext;
 
@@ -475,7 +475,7 @@ export class HelpTriggerManager {
     /**
      * ホバーリスナーを作成
      */
-    private createHoverListener(element: HTMLElement, helpContent?: string): EventListener {
+    private createHoverListener(element: HTMLElement, _helpContent?: string): EventListener {
         return (_event: Event) => {
             this.behaviorTracking.hoverTracking.currentElement = element;
             this.behaviorTracking.hoverTracking.hoverStartTime = Date.now();
@@ -508,7 +508,7 @@ export class HelpTriggerManager {
     /**
      * フォーカスリスナーを作成
      */
-    private createFocusListener(element: HTMLElement, helpContent?: string): EventListener {
+    private createFocusListener(element: HTMLElement, _helpContent?: string): EventListener {
         return (_event: Event) => {
             this.triggerHelp('focus', {
                 targetElement: element,
@@ -759,7 +759,7 @@ export class HelpTriggerManager {
     /**
      * 手動でヘルプをリクエスト
      */
-    requestHelp(targetElement?: HTMLElement, helpContent?: string): void {
+    requestHelp(targetElement?: HTMLElement, _helpContent?: string): void {
         this.sessionContext.helpRequestCount++;
         
         this.triggerHelp('request', {

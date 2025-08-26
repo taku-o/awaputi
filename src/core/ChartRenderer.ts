@@ -501,6 +501,7 @@ export class ChartRenderer {
     /**
      * グリッドの描画
      */
+    /*
     private drawGrid(): void {
         if (!this.ctx || !this.config.showGrid) return;
         
@@ -526,10 +527,12 @@ export class ChartRenderer {
             this.ctx.stroke();
         }
     }
+    */
 
     /**
      * 軸の描画
      */
+    /*
     private drawAxes(): void {
         if (!this.ctx || !this.config.showAxes) return;
         
@@ -549,6 +552,7 @@ export class ChartRenderer {
         this.ctx.lineTo(chartArea.x, chartArea.y + chartArea.height);
         this.ctx.stroke();
     }
+    */
 
     /**
      * 設定の更新

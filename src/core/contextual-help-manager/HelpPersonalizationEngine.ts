@@ -284,7 +284,7 @@ export class HelpPersonalizationEngine {
     private progressData: ProgressData;
     private sessionData: SessionData | null;
     private adaptationRules: Map<string, AdaptationRule>;
-    private learningPatterns: LearningPattern[];
+    // private learningPatterns: LearningPattern[];
     private metrics: PersonalizationMetrics;
     private interactionHistory: InteractionEvent[];
 

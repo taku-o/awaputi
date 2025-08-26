@@ -164,7 +164,7 @@ export class DataArchiveManager {
     private archiveStorage: Map<string, any> = new Map();
     private archiveIndex: Map<string, any> = new Map();
     private archiveMetadata: Map<string, ArchiveMetadata> = new Map();
-    private archiveStrategies: Map<ArchiveStrategy, (data: any, options: any) => Promise<PartitionResult>>;
+    // private archiveStrategies: Map<ArchiveStrategy, (data: any, options: any) => Promise<PartitionResult>>;
     private searchIndex: SearchIndex;
 
     constructor(compressionManager: CompressionManager) {

@@ -622,7 +622,7 @@ export class StatisticalAnalyzer {
      * t分布の臨界値を取得（近似）
      */
     getTCriticalValue(df: number, confidenceLevel: number): number {
-        const alpha = 1 - confidenceLevel;
+        // const alpha = 1 - confidenceLevel;
         // const _twoTailed = alpha / 2;
         
         if (df > 30) {
