@@ -218,7 +218,7 @@ export class TestDataVisualizer {
         `;
     }
 
-    private renderCoverageBreakdown(coverage: CoverageData): string {
+    private renderCoverageBreakdown(_coverage: CoverageData): string {
         return `
             <div class="coverage-breakdown">
                 <h4>Coverage Breakdown by File</h4>

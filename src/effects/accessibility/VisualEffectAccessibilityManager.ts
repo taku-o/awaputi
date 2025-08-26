@@ -592,7 +592,7 @@ export class VisualEffectAccessibilityManager {
     /**
      * 視覚アラートの描画
      */
-    private renderVisualAlert(context: CanvasRenderingContext2D, effect: Effect): void {
+    private renderVisualAlert(context: CanvasRenderingContext2D, _effect: Effect): void {
         // 点滅や色変化による視覚的なアラート
         const alertColor = this.state.highContrastActive
             ? this.highContrastColors.accent : '#FFD700';

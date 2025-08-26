@@ -123,7 +123,7 @@ export class EffectPerformanceMonitor {
     private memoryCheckInterval: number = 2000; // 2秒間隔
     private lastMemoryCheck: number = 0;
     private memoryUsageHistory: MemoryUsageHistory[] = [];
-    private readonly memoryThreshold: number = 100 * 1024 * 1024; // 100MB
+    // private readonly memoryThreshold: number = 100 * 1024 * 1024; // 100MB
     
     // レンダリング統計
     private renderStats: RenderStats = {
@@ -258,7 +258,7 @@ export class EffectPerformanceMonitor {
     /**
      * パフォーマンスチェックの実行
      */
-    private performPerformanceCheck(currentTime: number): void {
+    private performPerformanceCheck(_currentTime: number): void {
         const stats = this.getPerformanceStats();
         // フレームレート警告
         if (stats.frameRate < this.warningThresholds.lowFrameRate) {

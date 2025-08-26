@@ -508,7 +508,7 @@ export class ErrorRecoveryTracker {
     /**
      * 復旧戦略の実装群
      */
-    private async performMemoryCleanup(error: ErrorInfo, context: any): Promise<RecoveryResult> {
+    private async performMemoryCleanup(_error: ErrorInfo, _context: any): Promise<RecoveryResult> {
         try {
             // ガベージコレクションの実行（可能な場合）
             if ((window as any).gc) {

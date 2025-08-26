@@ -1,7 +1,7 @@
 import { getConfigurationManager } from '../core/ConfigurationManager.js';
 import { getErrorHandler } from '../utils/ErrorHandler.js';
-import { getEffectQualityController } from './EffectQualityController.js';
-import { getSeasonalEffectManager } from './SeasonalEffectManager.js';
+// import { getEffectQualityController } from './EffectQualityController.js';
+// import { getSeasonalEffectManager } from './SeasonalEffectManager.js';
 
 // Type definitions for configuration integration system
 interface ConfigurationManager {
@@ -168,7 +168,7 @@ export class EffectConfigurationIntegrator {
     // 設定同期状態
     private syncInProgress: boolean = false;
     private lastSyncTime: number = 0;
-    private readonly syncInterval: number = 1000; // 1秒間隔で同期チェック
+    // private readonly syncInterval: number = 1000; // 1秒間隔で同期チェック
 
     constructor() {
         this.configManager = getConfigurationManager();

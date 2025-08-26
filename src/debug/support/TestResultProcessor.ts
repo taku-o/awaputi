@@ -4,7 +4,7 @@
  */
 
 export class TestResultProcessor {
-    constructor(parent?: any) {
+    constructor(_parent?: any) {
         // TypeScript implementation
         console.log('[TestResultProcessor] Initialized');
     }

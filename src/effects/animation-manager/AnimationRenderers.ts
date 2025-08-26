@@ -241,7 +241,7 @@ export class LoadingAnimationRenderer {
     /**
      * スピナーをレンダリング
      */
-    static renderSpinner(context: CanvasRenderingContext2D, pos: Position, size: number, rotation: number, options: LoadingAnimationOptions): void {
+    static renderSpinner(context: CanvasRenderingContext2D, pos: Position, size: number, rotation: number, _options: LoadingAnimationOptions): void {
         context.translate(pos.x, pos.y);
         context.rotate(rotation);
         const segments = 8;
@@ -377,7 +377,7 @@ export class InteractiveEffectRenderer {
     /**
      * フォーカスグロー効果をレンダリング
      */
-    static renderFocusGlow(context: CanvasRenderingContext2D, element: ElementBounds, glowOptions?: any): void {
+    static renderFocusGlow(context: CanvasRenderingContext2D, element: ElementBounds, _glowOptions?: any): void {
         if (!element.focusGlow || !element.focusGlow.active) return;
         
         const glow = element.focusGlow;
@@ -461,7 +461,7 @@ export class ParticleEffectRenderer {
     /**
      * トレイルパーティクルをレンダリング
      */
-    static renderTrailParticles(context: CanvasRenderingContext2D, animation: TrailAnimation, progress: number): void {
+    static renderTrailParticles(context: CanvasRenderingContext2D, animation: TrailAnimation, _progress: number): void {
         const trail = animation.trail || [];
         // const options = animation.options;
         

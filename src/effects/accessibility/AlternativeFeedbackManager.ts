@@ -496,7 +496,7 @@ export class AlternativeFeedbackManager {
     /**
      * 視覚代替の描画
      */
-    private renderVisualAlternative(context: CanvasRenderingContext2D, alternative: VisualAlternativePattern, options: any): void {
+    private renderVisualAlternative(context: CanvasRenderingContext2D, alternative: VisualAlternativePattern, _options: any): void {
         const { type, color, duration, position, size, center, radius } = alternative;
         
         context.save();
@@ -640,7 +640,7 @@ export class AlternativeFeedbackManager {
     /**
      * 統合フィードバックの提供
      */
-    provideIntegratedFeedback(effectType: string, visualEffect: any, options: FeedbackOptions = {}): FeedbackResult[] {
+    provideIntegratedFeedback(effectType: string, _visualEffect: any, options: FeedbackOptions = {}): FeedbackResult[] {
         const feedbacks: FeedbackResult[] = [];
         
         // 触覚フィードバック

@@ -4,7 +4,7 @@
  */
 
 export class BubbleGenerationCommands {
-    constructor(parent?: any) {
+    constructor(_parent?: any) {
         // TypeScript implementation
         console.log('[BubbleGenerationCommands] Initialized');
     }

@@ -1,5 +1,5 @@
 import { EffectManager } from './EffectManager.js';
-import { getEffectsConfig } from '../config/EffectsConfig.js';
+// import { getEffectsConfig } from '../config/EffectsConfig.js';
 import { getErrorHandler } from '../utils/ErrorHandler.js';
 import { AccessibilityEffectIntegrator } from './accessibility/AccessibilityEffectIntegrator.js';
 // サブコンポーネントのインポート

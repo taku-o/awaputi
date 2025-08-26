@@ -314,7 +314,7 @@ export class TestChartGenerator {
         };
     }
 
-    private createTimeIntervals(results: TestResult[]): Array<{
+    private createTimeIntervals(_results: TestResult[]): Array<{
         label: string;
         passed: number;
         failed: number;

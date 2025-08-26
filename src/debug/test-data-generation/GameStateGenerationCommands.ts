@@ -4,7 +4,7 @@
  */
 
 export class GameStateGenerationCommands {
-    constructor(parent?: any) {
+    constructor(_parent?: any) {
         // TypeScript implementation
         console.log('[GameStateGenerationCommands] Initialized');
     }

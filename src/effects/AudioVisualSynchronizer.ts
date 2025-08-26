@@ -125,7 +125,7 @@ export class AudioVisualSynchronizer {
     
     // タイミング管理
     // private lastEffectTime: number;
-    private effectQueue: any[];
+    // private effectQueue: any[];
     private maxQueueSize: number;
 
     constructor() {
@@ -157,7 +157,7 @@ export class AudioVisualSynchronizer {
         
         // タイミング管理
         this.lastEffectTime = 0;
-        this.effectQueue = [];
+        // this.effectQueue = [];
         this.maxQueueSize = 50;
 
         this.initializeAudioVisualSync();
@@ -601,7 +601,7 @@ export class AudioVisualSynchronizer {
      * アクティブエフェクトの更新
      * @param deltaTime - 経過時間
      */
-    private updateActiveEffects(deltaTime: number): void {
+    private updateActiveEffects(_deltaTime: number): void {
         const currentTime = performance.now();
         const toRemove: string[] = [];
         

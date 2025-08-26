@@ -576,7 +576,7 @@ export class BubbleAnimationHandler {
     /**
      * バブル終了値を取得
      */
-    private getBubbleEndValues(bubble: Bubble, animationType: BubbleSpawnType): AnimationValues {
+    private getBubbleEndValues(bubble: Bubble, _animationType: BubbleSpawnType): AnimationValues {
         return {
             x: bubble.x,
             y: bubble.y,

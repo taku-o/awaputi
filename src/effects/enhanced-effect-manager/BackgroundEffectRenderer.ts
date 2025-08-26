@@ -224,7 +224,7 @@ export class BackgroundEffectRenderer {
     /**
      * 個別背景効果の更新
      */
-    updateBackgroundEffect(effect: BackgroundEffect, deltaTime: number): void {
+    updateBackgroundEffect(effect: BackgroundEffect, _deltaTime: number): void {
         try {
             switch(effect.effectType) {
                 case 'particles':

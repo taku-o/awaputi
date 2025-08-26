@@ -380,11 +380,11 @@ export class AccessibilityEffectIntegrator {
 
         particleManager.createEnhancedComboEffect = (x: number, y: number, comboCount: number, comboType: string): any => {
             // コンボ効果の処理
-            const accessibleOptions = this.processParticleEffect('combo', {}, {
-                position: { x, y },
-                count: comboCount,
-                type: comboType
-            });
+            // const accessibleOptions = this.processParticleEffect('combo', {}, {
+            //     position: { x, y },
+            //     count: comboCount,
+            //     type: comboType
+            // });
             
             // コンボレベルに応じた代替フィードバック
             this.provideFeedbackForEffect('combo-start', {
@@ -501,7 +501,7 @@ export class AccessibilityEffectIntegrator {
     /**
      * パーティクル効果の処理
      */
-    private processParticleEffect(effectType: string, options: ParticleEffectOptions, context: any): ParticleEffectOptions {
+    private processParticleEffect(_effectType: string, options: ParticleEffectOptions, _context: any): ParticleEffectOptions {
         if (!this.visualAccessibilityManager) return options;
         
         return this.visualAccessibilityManager.applyAccessibilityToParticle(options);

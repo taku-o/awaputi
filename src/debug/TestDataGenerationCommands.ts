@@ -160,7 +160,7 @@ export class TestDataGenerationCommands {
      * @param name - コンポーネント名
      * @returns フォールバック機能
      */
-    createFallbackComponent(name: string): FallbackComponent { 
+    createFallbackComponent(_name: string): FallbackComponent { 
         return { 
             initialized: false,
             processBubbleCommand: () => 'Component not available',
@@ -424,7 +424,7 @@ export class TestDataGenerationCommands {
         return 'Stress testing component not available';
     }
 
-    async clearTestDataCommand(args: string[], context: any, console: any): Promise<string> {
+    async clearTestDataCommand(args: string[], _context: any, _console: any): Promise<string> {
         const type = args[0] || 'all';
 
         if (type === 'all') {
@@ -444,7 +444,7 @@ export class TestDataGenerationCommands {
         }
     }
 
-    async listTestDataCommand(args: string[], context: any, console: any): Promise<string> {
+    async listTestDataCommand(args: string[], _context: any, _console: any): Promise<string> {
         const category = args[0] || 'all';
         let output = '';
 

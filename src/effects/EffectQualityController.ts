@@ -336,7 +336,7 @@ export class EffectQualityController {
      * @param memoryUsage - メモリ使用量
      * @private
      */
-    private performAutoAdjustment(currentTime: number, frameRate: number, memoryUsage?: number): void {
+    private performAutoAdjustment(currentTime: number, frameRate: number, _memoryUsage?: number): void {
         if (currentTime - this.lastAdjustTime < this.adjustmentCooldown) {
             return;
         }

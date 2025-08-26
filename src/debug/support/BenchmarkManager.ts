@@ -4,7 +4,7 @@
  */
 
 export class BenchmarkManager {
-    constructor(parent?: any) {
+    constructor(_parent?: any) {
         // TypeScript implementation
         console.log('[BenchmarkManager] Initialized');
     }

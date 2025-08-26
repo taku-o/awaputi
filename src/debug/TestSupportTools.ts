@@ -24,7 +24,7 @@ export class TestSupportTools extends BaseComponent {
     // private gameEngine: GameEngine;
     private components = new Map<string, TestComponent>();
     // private testEnvironment: TestEnvironment | null = null;
-    private isRunning = false;
+    // private isRunning = false;
     private initialized = false;
 
     constructor(gameEngine: GameEngine) {
@@ -49,7 +49,7 @@ export class TestSupportTools extends BaseComponent {
             this.components.set('resultProcessor', new TestResultProcessor(this));
             
             // 各コンポーネントを初期化
-            for (const [name, component] of this.components) {
+            for (const [_name, component] of this.components) {
                 if (component.initialize) {
                     await component.initialize();
                 }
