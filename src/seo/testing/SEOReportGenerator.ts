@@ -410,7 +410,7 @@ export class SEOReportGenerator {
             </div>
         </div>
 
-        ${Object.entries(results.categories || {}).map(([name, category]) => `
+        ${Object.entries(results.categories || {}).map(([_name, category]) => `
         <div class="category">
             <div class="category-header">
                 <h3>${category.category}</h3>
@@ -441,7 +441,7 @@ export class SEOReportGenerator {
     private generateCSVReport(results: TestResults): string {
         const rows = ['Category,Test Name,Status,Message'];
 
-        Object.entries(results.categories || {}).forEach(([name, category]) => {
+        Object.entries(results.categories || {}).forEach(([_name, category]) => {
             category.tests?.forEach(test => {
                 const status = test.passed ? 'PASSED' : test.message?.includes('⚠️') ? 'WARNING' : 'FAILED';
                 const message = (test.message || '').replace(/,/g, ' ').replace(/"/g, '""');
@@ -480,7 +480,7 @@ export class SEOReportGenerator {
     </summary>
     <categories>`;
 
-        Object.entries(results.categories || {}).forEach(([name, category]) => {
+        Object.entries(results.categories || {}).forEach(([_name, category]) => {
             xml += `
         <category name="${escapeXml(category.category)}">
             <tests>`;
@@ -529,7 +529,7 @@ export class SEOReportGenerator {
 
 `;
 
-        Object.entries(results.categories || {}).forEach(([name, category]) => {
+        Object.entries(results.categories || {}).forEach(([_name, category]) => {
             markdown += `## ${category.category}\n\n`;
 
             category.tests?.forEach(test => {
@@ -645,7 +645,7 @@ export class SEOReportGenerator {
     private generateRecommendations(results: TestResults): Recommendation[] {
         const recommendations: Recommendation[] = [];
 
-        Object.entries(results.categories || {}).forEach(([key, category]) => {
+        Object.entries(results.categories || {}).forEach(([_key, category]) => {
             category.tests?.forEach(test => {
                 if (!test.passed && !test.message?.includes('⚠️')) {
                     recommendations.push({
@@ -761,7 +761,7 @@ export class SEOReportGenerator {
             total: number;
         }> = [];
         
-        Object.entries(results.categories || {}).forEach(([key, category]) => {
+        Object.entries(results.categories || {}).forEach(([_key, category]) => {
             breakdown.push({
                 name: category.category,
                 passed: category.passed || 0,
@@ -778,7 +778,7 @@ export class SEOReportGenerator {
      * 時系列データ生成
      * @private
      */
-    private generateTimeSeriesData(results: TestResults): any[] {
+    private generateTimeSeriesData(_results: TestResults): any[] {
         // 実際の実装では過去のテスト結果を使用
         return [];
     }
@@ -787,7 +787,7 @@ export class SEOReportGenerator {
      * ヒートマップデータ生成
      * @private
      */
-    private generateHeatmapData(results: TestResults): any[] {
+    private generateHeatmapData(_results: TestResults): any[] {
         // 実際の実装では各テストの重要度と結果をマッピング
         return [];
     }
@@ -796,14 +796,14 @@ export class SEOReportGenerator {
      * 可視化データ生成
      * @private
      */
-    private generateVisualizationData(results: TestResults): VisualizationData {
-        return {
-            scoreDistribution: this.calculateScoreDistribution(results),
-            categoryBreakdown: this.calculateCategoryBreakdown(results),
-            timeSeriesData: this.generateTimeSeriesData(results),
-            heatmapData: this.generateHeatmapData(results)
-        };
-    }
+    // private generateVisualizationData(results: TestResults): VisualizationData {
+    //     return {
+    //         scoreDistribution: this.calculateScoreDistribution(results),
+    //         categoryBreakdown: this.calculateCategoryBreakdown(results),
+    //         timeSeriesData: this.generateTimeSeriesData(results),
+    //         heatmapData: this.generateHeatmapData(results)
+    //     };
+    // }
 
     /**
      * 比較レポート生成

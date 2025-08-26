@@ -5,7 +5,7 @@
  * SEOTester のサブコンポーネント
  */
 
-import { seoLogger } from '../SEOLogger.js';
+// import { seoLogger } from '../SEOLogger.js';
 import { seoErrorHandler } from '../SEOErrorHandler.js';
 
 interface MainController {
@@ -372,33 +372,33 @@ export class StructuredDataValidator {
      * Rich Snippetsのテスト
      * @private
      */
-    private async testRichSnippets(structuredData: StructuredDataObject): Promise<TestResult> {
-        const test: TestResult = {
-            name: 'Rich snippets compatibility',
-            passed: false,
-            message: ''
-        };
-        
-        try {
-            // Rich Snippet生成に必要な基本プロパティの確認
-            const requiredForRichSnippets = ['name', 'description', 'image'];
-
-            const hasRequiredProps = requiredForRichSnippets.every(prop => 
-                structuredData[prop] && structuredData[prop] !== ''
-            );
-
-            if (hasRequiredProps) {
-                test.passed = true;
-                test.message = '✅ Rich snippets should display properly';
-            } else {
-                test.message = '⚠️ Rich snippets may not display optimally';
-            }
-        } catch (error) {
-            test.message = `⚠️ Rich snippets test error: ${error instanceof Error ? error.message : 'Unknown error'}`;
-        }
-        
-        return test;
-    }
+    // private async testRichSnippets(structuredData: StructuredDataObject): Promise<TestResult> {
+    //     const test: TestResult = {
+    //         name: 'Rich snippets compatibility',
+    //         passed: false,
+    //         message: ''
+    //     };
+    //     
+    //     try {
+    //         // Rich Snippet生成に必要な基本プロパティの確認
+    //         const requiredForRichSnippets = ['name', 'description', 'image'];
+    // 
+    //         const hasRequiredProps = requiredForRichSnippets.every(prop => 
+    //             structuredData[prop] && structuredData[prop] !== ''
+    //         );
+    // 
+    //         if (hasRequiredProps) {
+    //             test.passed = true;
+    //             test.message = '✅ Rich snippets should display properly';
+    //         } else {
+    //             test.message = '⚠️ Rich snippets may not display optimally';
+    //         }
+    //     } catch (error) {
+    //         test.message = `⚠️ Rich snippets test error: ${error instanceof Error ? error.message : 'Unknown error'}`;
+    //     }
+    //     
+    //     return test;
+    // }
     
     /**
      * JSON-LD形式の有効性確認

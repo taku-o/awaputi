@@ -7,10 +7,10 @@ import { SEOConfig, getBaseUrl, getLocalizedUrl, getSocialImageUrl, LanguageCode
 import { seoLogger } from './SEOLogger.js';
 import { seoErrorHandler } from './SEOErrorHandler.js';
 import {
-    generateJsonLd,
+    // generateJsonLd,
     normalizeLanguageCode,
-    validateSchema,
-    measurePerformance
+    // validateSchema,
+    // measurePerformance
 } from './SEOUtils.js';
 
 // 基本スキーマインターフェース

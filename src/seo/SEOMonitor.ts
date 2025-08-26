@@ -439,68 +439,68 @@ export class SEOMonitor {
     /**
      * Core Web Vitalsアラートのチェック
      */
-    private checkCoreWebVitalsAlerts(coreWebVitals: CoreWebVitalsData, alerts: Alert[]): void {
-        if (!coreWebVitals) return;
-        
-        Object.entries(this.thresholds.coreWebVitals).forEach(([metric, threshold]) => {
-            const value = coreWebVitals[metric as keyof CoreWebVitalsData] as number;
-            if (value > threshold) {
-                const severity: 'critical' | 'warning' = value > threshold * 1.5 ? 'critical' : 'warning';
-                alerts.push({
-                    type: 'coreWebVitals',
-                    severity: severity,
-                    metric: metric,
-                    current: value,
-                    threshold: threshold,
-                    message: `Core Web Vital ${metric} (${value}) exceeds threshold (${threshold})`,
-                    timestamp: new Date().toISOString()
-                });
-            }
-        });
-    }
+    // private checkCoreWebVitalsAlerts(coreWebVitals: CoreWebVitalsData, alerts: Alert[]): void {
+    //     if (!coreWebVitals) return;
+    //     
+    //     Object.entries(this.thresholds.coreWebVitals).forEach(([metric, threshold]) => {
+    //         const value = coreWebVitals[metric as keyof CoreWebVitalsData] as number;
+    //         if (value > threshold) {
+    //             const severity: 'critical' | 'warning' = value > threshold * 1.5 ? 'critical' : 'warning';
+    //             alerts.push({
+    //                 type: 'coreWebVitals',
+    //                 severity: severity,
+    //                 metric: metric,
+    //                 current: value,
+    //                 threshold: threshold,
+    //                 message: `Core Web Vital ${metric} (${value}) exceeds threshold (${threshold})`,
+    //                 timestamp: new Date().toISOString()
+    //             });
+    //         }
+    //     });
+    // }
     
     /**
      * アラートの処理
      */
-    private async processAlerts(alerts: Alert[]): Promise<void> {
-        try {
-            for (const alert of alerts) {
-                // アラートコールバックの実行
-                this.alertCallbacks.forEach(callback => {
-                    try {
-                        callback(alert);
-                    } catch (error) {
-                        seoLogger.error('Alert callback error', error as Error);
-                    }
-                });
-                
-                // アラートのログ出力
-                const logLevel = alert.severity === 'critical' ? 'error' : 'warn';
-                (seoLogger as any)[logLevel](`SEO Alert: ${alert.message}`, alert);
-            }
-        } catch (error) {
-            seoErrorHandler.handle(error as Error, 'processAlerts', alerts);
-        }
-    }
+    // private async processAlerts(alerts: Alert[]): Promise<void> {
+    //     try {
+    //         for (const alert of alerts) {
+    //             // アラートコールバックの実行
+    //             this.alertCallbacks.forEach(callback => {
+    //                 try {
+    //                     callback(alert);
+    //                 } catch (error) {
+    //                     seoLogger.error('Alert callback error', error as Error);
+    //                 }
+    //             });
+    //             
+    //             // アラートのログ出力
+    //             const logLevel = alert.severity === 'critical' ? 'error' : 'warn';
+    //             (seoLogger as any)[logLevel](`SEO Alert: ${alert.message}`, alert);
+    //         }
+    //     } catch (error) {
+    //         seoErrorHandler.handle(error as Error, 'processAlerts', alerts);
+    //     }
+    // }
     
     /**
      * データ保持期間の制限
      */
-    private limitDataRetention(): void {
-        const maxEntries = 100;
-        
-        if (this.monitoringData.lighthouse && this.monitoringData.lighthouse.length > maxEntries) {
-            this.monitoringData.lighthouse = this.monitoringData.lighthouse.slice(-maxEntries);
-        }
-        
-        if (this.monitoringData.coreWebVitals.length > maxEntries) {
-            this.monitoringData.coreWebVitals = this.monitoringData.coreWebVitals.slice(-maxEntries);
-        }
-        
-        if (this.monitoringData.alerts.length > maxEntries) {
-            this.monitoringData.alerts = this.monitoringData.alerts.slice(-maxEntries);
-        }
-    }
+    // private limitDataRetention(): void {
+    //     const maxEntries = 100;
+    //     
+    //     if (this.monitoringData.lighthouse && this.monitoringData.lighthouse.length > maxEntries) {
+    //         this.monitoringData.lighthouse = this.monitoringData.lighthouse.slice(-maxEntries);
+    //     }
+    //     
+    //     if (this.monitoringData.coreWebVitals.length > maxEntries) {
+    //         this.monitoringData.coreWebVitals = this.monitoringData.coreWebVitals.slice(-maxEntries);
+    //     }
+    //     
+    //     if (this.monitoringData.alerts.length > maxEntries) {
+    //         this.monitoringData.alerts = this.monitoringData.alerts.slice(-maxEntries);
+    //     }
+    // }
     
     // パブリックAPI - 専門コンポーネントへのデリゲート
     

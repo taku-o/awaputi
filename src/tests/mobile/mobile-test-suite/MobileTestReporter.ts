@@ -445,7 +445,7 @@ export class MobileTestReporter {
     /**
      * 互換性結果フォーマット
      */
-    private formatCompatibilityResults(compatibility: Map<string, CompatibilityResult>, config: ReportConfig): Record<string, FormattedCompatibilityResult> {
+    private formatCompatibilityResults(compatibility: Map<string, CompatibilityResult>, _config: ReportConfig): Record<string, FormattedCompatibilityResult> {
         const results: Record<string, FormattedCompatibilityResult> = {};
         
         for(const [key, data] of Array.from(compatibility.entries())) {
