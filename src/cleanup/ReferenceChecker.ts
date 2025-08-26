@@ -25,9 +25,9 @@ export class ReferenceChecker {
     }
 
     async checkImportReferences(filePath: string, rootPath: string = process.cwd()): Promise<Reference[]> {
-        const fileName = path.basename(filePath);
+        // const fileName = path.basename(filePath);
         const fileNameWithoutExt = path.basename(filePath, path.extname(filePath));
-        const relativeFromRoot = path.relative(rootPath, filePath);
+        // const relativeFromRoot = path.relative(rootPath, filePath);
 
         const patterns = [
             `import.*from.*['"\`][^'"\`]*${fileNameWithoutExt}[^'"\`]*['"\`]`,

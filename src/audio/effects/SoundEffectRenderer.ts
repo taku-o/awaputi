@@ -624,7 +624,7 @@ export class SoundEffectRenderer {
     /**
      * サウンドバリエーションを生成
      */
-    generateVariations(soundType: string, baseBuffer: AudioBuffer, variationCount: number = 3): AudioBuffer[] {
+    generateVariations(_soundType: string, baseBuffer: AudioBuffer, variationCount: number = 3): AudioBuffer[] {
         const variations: AudioBuffer[] = [];
         
         for (let i = 0; i < variationCount; i++) {

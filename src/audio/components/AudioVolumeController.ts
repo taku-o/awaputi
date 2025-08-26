@@ -442,7 +442,7 @@ export class AudioVolumeController {
         try {
             let cancelledCount = 0;
             
-            this.activeFades.forEach((fadeInfo, gainNode) => {
+            this.activeFades.forEach((_fadeInfo, gainNode) => {
                 this.cancelFade(gainNode);
                 cancelledCount++;
             });

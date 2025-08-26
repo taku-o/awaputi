@@ -79,10 +79,10 @@ export class BiomeTransitionController {
     private readonly activeSources: Map<string, ActiveSource>;
     
     // フェード管理
-    private readonly fadeManager: {
-        activeTransitions: Map<string, any>;
-        crossfadeInProgress: boolean;
-    };
+    // private readonly fadeManager: {
+    //     activeTransitions: Map<string, any>;
+    //     crossfadeInProgress: boolean;
+    // };
 
     constructor(
         audioContext: AudioContext,
@@ -247,7 +247,7 @@ export class BiomeTransitionController {
         try {
             const fadePromises: Promise<void>[] = [];
             
-            for (const [layerId, source] of this.activeSources) {
+            for (const [_layerId, source] of this.activeSources) {
                 if (source.gainNode) {
                     const promise = new Promise<void>((resolve) => {
                         source.gainNode.gain.setTargetAtTime(
@@ -356,7 +356,7 @@ export class BiomeTransitionController {
      */
     stopAllEnvironmental(): void {
         try {
-            for (const [layerId, source] of this.activeSources) {
+            for (const [_layerId, source] of this.activeSources) {
                 try {
                     source.sourceNode.stop();
                     source.sourceNode.disconnect();
@@ -384,7 +384,7 @@ export class BiomeTransitionController {
      */
     updateVolume(globalVolume: number): void {
         try {
-            for (const [layerId, source] of this.activeSources) {
+            for (const [_layerId, source] of this.activeSources) {
                 if (source.gainNode) {
                     source.gainNode.gain.setValueAtTime(
                         globalVolume * (source.originalVolume || 1.0),

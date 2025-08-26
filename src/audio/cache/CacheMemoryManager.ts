@@ -374,7 +374,7 @@ export class CacheMemoryManager {
      * @param size - バッファサイズ
      * @returns 最適化が必要か
      */
-    shouldOptimizeForCache(size: number): boolean {
+    shouldOptimizeForCache(_size: number): boolean {
         const currentUsage = this.mainController.audioBufferCache.currentSize / 
                            this.mainController.audioBufferCache.maxSize;
         return currentUsage > this.cacheSettings.autoOptimization.compressionThreshold;

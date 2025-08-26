@@ -270,7 +270,7 @@ export class AccessibilityProfileComponent {
         dropdownOptions.style.display = 'none';
         
         // 各プロファイルオプションを作成
-        this.profiles.forEach((profile, index) => {
+        this.profiles.forEach((profile, _index) => {
             const option = document.createElement('div');
             option.className = 'dropdown-option';
             option.setAttribute('role', 'option');

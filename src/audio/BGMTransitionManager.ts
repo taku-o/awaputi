@@ -269,8 +269,8 @@ export class BGMTransitionManager {
      */
     private async smartCrossfadeTransition(fromTrack: string, toTrack: string, options: TransitionOptions): Promise<void> {
         const {
-            duration = this.defaultCrossfadeDuration,
-            volume = 1.0
+            duration = this.defaultCrossfadeDuration
+            // volume = 1.0
         } = options;
         
         // トラック情報を取得
@@ -394,7 +394,7 @@ export class BGMTransitionManager {
             const easedProgress = this.applyCurve(progress, curve);
 
             // 現在のBGMを減衰
-            const currentVolume = fromVolume * (1 - easedProgress);
+            // const currentVolume = fromVolume * (1 - easedProgress);
             
             // 新しいBGMを増幅
             const newVolume = toVolume * easedProgress;

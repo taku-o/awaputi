@@ -85,7 +85,7 @@ export class SafetyValidator {
     private getCurrentFilePath(oldFilePath: string): string {
         const dir = path.dirname(oldFilePath);
         const basename = path.basename(oldFilePath);
-        const ext = path.extname(oldFilePath);
+        // const ext = path.extname(oldFilePath);
 
         const currentBasename = basename
             .replace(/_old/g, '')

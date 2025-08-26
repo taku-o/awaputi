@@ -282,7 +282,7 @@ export class AudioFormatHandler {
      */
     private setupQualityWatchers(): void {
         try {
-            const audioQualityWatcher = this.configManager.watch('performance', 'quality.audioQuality', (newValue: number) => {
+            /*const audioQualityWatcher = */this.configManager.watch('performance', 'quality.audioQuality', (newValue: number) => {
                 if (newValue !== undefined && !this.qualityManager.settingFromWatcher) {
                     // 現在値と異なる場合のみ処理
                     if (Math.abs(this.qualityManager.currentQuality - newValue) >= 0.01) {
@@ -294,7 +294,7 @@ export class AudioFormatHandler {
                 }
             });
 
-            const adaptiveModeWatcher = this.configManager.watch('performance', 'adaptive', (newValue: boolean) => {
+            /*const adaptiveModeWatcher = */this.configManager.watch('performance', 'adaptive', (newValue: boolean) => {
                 if (newValue !== undefined) {
                     this.qualityManager.monitoringEnabled = newValue;
                 }

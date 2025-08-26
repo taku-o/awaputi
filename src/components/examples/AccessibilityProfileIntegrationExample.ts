@@ -87,7 +87,7 @@ export class AccessibilityProfileIntegrationExample {
     /**
      * SettingsSceneのhandleCustomComponent()メソッドに追加する例
      */
-    handleAccessibilityProfileComponent(settingItem: SettingItem, parentElement: HTMLElement): HTMLElement | null {
+    handleAccessibilityProfileComponent(_settingItem: SettingItem, parentElement: HTMLElement): HTMLElement | null {
         try {
             // AccessibilityProfileComponentを初期化
             if (!this.accessibilityProfileComponent) {
@@ -157,7 +157,7 @@ export class AccessibilityProfileIntegrationExample {
     /**
      * アクセシビリティプロファイルコンポーネントの位置を調整
      */
-    private positionAccessibilityProfileComponent(x: number, y: number, width: number, height: number): void {
+    private positionAccessibilityProfileComponent(_x: number, _y: number, _width: number, _height: number): void {
         if (this.accessibilityProfileComponent) {
             // DOM要素の位置を調整（実装は環境に依存）
             // 必要に応じてコンポーネントのスタイルを調整

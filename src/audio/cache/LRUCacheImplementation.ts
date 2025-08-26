@@ -5,7 +5,7 @@
  * AudioCacheManager のサブコンポーネント
  */
 
-import { getErrorHandler } from '../../utils/ErrorHandler';
+// import { getErrorHandler } from '../../utils/ErrorHandler';
 
 /**
  * Cache statistics interface
