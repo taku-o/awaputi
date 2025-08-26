@@ -443,6 +443,7 @@ export class CleanupOrchestrator {
     /**
      * エラー処理とプロセス回復
      */
+    /*
     private async handleErrorAndRecover(error: Error, phase: string): Promise<ErrorRecoveryResult> {
         this.log(`Error in ${phase}: ${error.message}`, 'error');
         this.executionState.errors.push({ phase, error: error.message, timestamp: new Date().toISOString() });
@@ -473,6 +474,7 @@ export class CleanupOrchestrator {
                 return { recovered: false, action: 'abort_process' };
         }
     }
+    */
 
     /**
      * 最終結果の生成

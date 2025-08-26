@@ -122,7 +122,7 @@ export class DiagnosticDataCollector {
     /**
      * Start diagnostic data collection
      */
-    async start(options?: CollectionOptions): Promise<void> {
+    async start(_options?: CollectionOptions): Promise<void> {
         this.collecting = true;
         this.samples = [];
         this.metrics = {};

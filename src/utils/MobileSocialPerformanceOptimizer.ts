@@ -218,7 +218,7 @@ export class MobileSocialPerformanceOptimizer {
     private monitoring: PerformanceMonitoring;
     private fpsCounter?: FPSCounter;
     private supportsWebP?: boolean;
-    private optimizeImageQuality?: (imageData: string, targetQuality?: number) => Promise<string> | string;
+    // private optimizeImageQuality?: (imageData: string, targetQuality?: number) => Promise<string> | string;
     // private throttledUpdate?: ThrottledFunction;
 
     constructor() {

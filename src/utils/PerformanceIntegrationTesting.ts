@@ -514,11 +514,11 @@ export class PerformanceIntegrationTesting {
 // 統合テストスイート管理器
 class IntegrationTestSuiteManager {
     private componentTests: Map<string, TestConfig>;
-    private testResults: any[];
+    // private testResults: any[];
 
     constructor() {
         this.componentTests = new Map();
-        this.testResults = [];
+        // this.testResults = [];
     }
 
     async initialize(): Promise<void> {

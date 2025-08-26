@@ -174,10 +174,10 @@ interface ConfigFile {
  * Issue #104 のバックアップファイル削除後の包括的整合性確認機能を提供
  */
 export class IntegrityValidator {
-    private validationResults: any[];
+    // private validationResults: any[];
     
     constructor() {
-        this.validationResults = [];
+        // this.validationResults = [];
     }
 
     /**

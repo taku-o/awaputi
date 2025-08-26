@@ -580,7 +580,7 @@ export class MobilePerformanceOptimizer {
             const maxTime = 100; // 100ms benchmark
             
             const benchmark = () => {
-                const _localStart = performance.now();
+                // const _localStart = performance.now();
                 // CPU-intensive calculation
                 let result = 0;
                 for (let i = 0; i < 10000; i++) {

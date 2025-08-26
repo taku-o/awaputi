@@ -414,6 +414,7 @@ export class AdvancedLayerManager {
      * Mark layer as dirty
      * @private
      */
+    /*
     private markLayerDirty(name: string): void {
         const layer = this.layers.get(name);
         if (layer) {
@@ -422,6 +423,7 @@ export class AdvancedLayerManager {
             this.cachedLayers.delete(name);
         }
     }
+    */
     
     /**
      * Update layer bounding box

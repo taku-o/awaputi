@@ -366,7 +366,7 @@ export class ValidationEngine {
      */
     private async validateReferences(_filePath: string, content: string, result: FileValidationResult): Promise<void> {
         try {
-            const _classes = this.extractClasses(content);
+            // const _classes = this.extractClasses(content);
             const imports = this.extractImports(content);
             const importedNames = imports.flatMap(imp => imp.names);
             

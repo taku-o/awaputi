@@ -6,7 +6,7 @@
  * Main Controller Pattern適用版
  */
 
-import * as fs from 'fs';
+// import * as fs from 'fs';
 import * as path from 'path';
 import { ConfigurationParser  } from './test-configuration/ConfigurationParser.js';
 import { ExpectationGenerator  } from './test-configuration/ExpectationGenerator.js';

@@ -147,7 +147,7 @@ export class IntegrationTestOrchestrator {
     private orchestrationConfig: OrchestrationConfig;
     private testSessions: Map<string, TestSession>;
     private activeTests: Set<string>;
-    private testQueue: any[];
+    // private testQueue: any[];
     private orchestrationMetrics: OrchestrationMetrics;
     private phaseCoordinators: Map<string, PhaseCoordinator>;
     

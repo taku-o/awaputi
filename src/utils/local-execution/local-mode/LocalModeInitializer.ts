@@ -10,7 +10,7 @@ import LocalExecutionDetector from '../LocalExecutionDetector.js';
 import MetaTagOptimizer from '../MetaTagOptimizer.js';
 import FaviconGenerator from '../FaviconGenerator.js';
 import DeveloperGuidanceSystem from '../DeveloperGuidanceSystem.js';
-import BrowserCompatibilityManager from '../BrowserCompatibilityManager.js';
+// import BrowserCompatibilityManager from '../BrowserCompatibilityManager.js';
 import LocalExecutionErrorHandler from '../LocalExecutionErrorHandler.js';
 import { ErrorHandler  } from '../../ErrorHandler.js';
 
@@ -246,8 +246,8 @@ export default class LocalModeInitializer {
      */
     private static _createInitializationTasks(
         config: LocalModeConfig,
-        executionContext: ExecutionContext,
-        logCallback: (message: string) => void
+        _executionContext: ExecutionContext,
+        _logCallback: (message: string) => void
     ): InitializationTask[] {
         const tasks: InitializationTask[] = [];
 

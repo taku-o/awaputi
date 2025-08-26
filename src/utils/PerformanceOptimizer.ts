@@ -244,11 +244,13 @@ export class PerformanceOptimizer {
      */
     private initializeSubComponents(): void {
         try {
+            /*
             const _componentConfig: ComponentConfig = {
                 maxHistorySize: this.maxHistorySize,
                 targetFPS: this.targetFPS,
                 performanceLevel: this.performanceLevel
             };
+            */
             // フレーム解析コンポーネント
             this.analyzer = new DummyPerformanceAnalyzer();
             

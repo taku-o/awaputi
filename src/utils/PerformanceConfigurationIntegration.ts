@@ -306,12 +306,12 @@ class ConfigErrorHandler {
     }
 
     setupRecoveryStrategies(): void {
-        this.recoveryStrategies.set('validation_error', async (key: string, error: Error): Promise<RecoveryResult> => {
+        this.recoveryStrategies.set('validation_error', async (key: string, _error: Error): Promise<RecoveryResult> => {
             console.warn(`[ConfigErrorHandler] Validation error for ${key}, reverting to default`);
             return { strategy: 'revert_to_default', applied: true };
         });
 
-        this.recoveryStrategies.set('sync_error', async (key: string, error: Error): Promise<RecoveryResult> => {
+        this.recoveryStrategies.set('sync_error', async (key: string, _error: Error): Promise<RecoveryResult> => {
             console.warn(`[ConfigErrorHandler] Sync error for ${key}, queuing retry`);
             return { strategy: 'retry_later', applied: true };
         });

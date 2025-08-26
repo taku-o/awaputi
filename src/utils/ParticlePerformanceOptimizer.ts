@@ -208,7 +208,7 @@ interface ParticleQualityManager {
 
 // Dummy implementations for missing dependencies (will be replaced when actual files are converted)
 class DummyParticleCullingSystem implements ParticleCullingSystem {
-    performParticleCulling(particles: any[], camera?: Camera | null): any[] {
+    performParticleCulling(particles: any[], _camera?: Camera | null): any[] {
         console.log(`[ParticleCullingSystem] Culling ${particles.length} particles`);
         // Simple culling: remove 20% of particles as dummy implementation
         return particles.slice(0, Math.floor(particles.length * 0.8));

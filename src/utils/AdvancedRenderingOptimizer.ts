@@ -155,7 +155,7 @@ interface OptimizerStats {
  */
 export class AdvancedRenderingOptimizer {
     private readonly errorHandler: any;
-    private readonly configManager: any;
+    // private readonly configManager: any;
     private readonly canvas: HTMLCanvasElement;
     private readonly ctx: CanvasRenderingContext2D;
     

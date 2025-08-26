@@ -137,7 +137,7 @@ export class LeakDetector {
     private thresholds: DetectionThresholds;
     private analysisWindow: number;
     private lastAnalysis: number;
-    private memoryUsageHistory: any[];
+    // private memoryUsageHistory: any[];
     private leakSuspects: Map<string, LeakSuspect>;
     private memoryPressureEvents: MemoryPressureEvent[];
     private objectCreationPatterns: Map<string, ObjectCreationPattern>;

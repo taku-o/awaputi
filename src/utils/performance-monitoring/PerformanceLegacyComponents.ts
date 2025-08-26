@@ -180,7 +180,7 @@ export class PerformanceDataGatherer {
         console.log('PerformanceDataGatherer initialized');
     }
 
-    async start(config?: PerformanceGathererConfig): Promise<void> {
+    async start(_config?: PerformanceGathererConfig): Promise<void> {
         this.collecting = true;
         console.log('PerformanceDataGatherer started');
     }
@@ -305,7 +305,7 @@ export class PerformanceAlertManager {
         console.log('PerformanceAlertManager initialized');
     }
 
-    async start(config?: AlertManagerConfig): Promise<void> {
+    async start(_config?: AlertManagerConfig): Promise<void> {
         console.log('PerformanceAlertManager started');
     }
 
@@ -426,7 +426,7 @@ export class RealtimeMetricsStream {
         console.log('RealtimeMetricsStream initialized');
     }
 
-    async start(config?: StreamConfig): Promise<void> {
+    async start(_config?: StreamConfig): Promise<void> {
         this.streaming = true;
         console.log('RealtimeMetricsStream started');
     }

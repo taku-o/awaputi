@@ -140,7 +140,7 @@ export class ProactiveCleanupManager {
     private nextCleanup: number;
     private cleanupEfficiency: number;
     private scheduling: SchedulingConfig;
-    private performanceHistory: any[];
+    // private performanceHistory: any[];
     // private cleanupStrategies: Map<string, any>;
     // private lastPerformanceCheck: number;
     private cleanupTargets: CleanupTargets;

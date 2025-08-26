@@ -223,7 +223,7 @@ export class UtilsErrorReporter {
      */
     private getUserFriendlyMessage(errorInfo: ErrorInfo): string {
         const { context } = errorInfo;
-        const message = (errorInfo as any).___message;
+        // const message = (errorInfo as any).___message;
 
         if (context === 'CANVAS_ERROR') {
             return 'グラフィック機能に問題が発生しました。ブラウザを更新してください。';

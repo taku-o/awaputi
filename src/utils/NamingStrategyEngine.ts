@@ -90,7 +90,7 @@ interface StrategyEvaluation {
 export class NamingStrategyEngine {
     private readonly domainPrefixes: Map<string, string>;
     private readonly specialCases: Map<string, SpecialCaseMapping>;
-    private readonly namingConventions: NamingConventions;
+    // private readonly namingConventions: NamingConventions;
 
     constructor() {
         // ドメインベースのプレフィックス定義

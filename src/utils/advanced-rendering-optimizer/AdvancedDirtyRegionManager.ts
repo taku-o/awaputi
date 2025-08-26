@@ -48,7 +48,7 @@ export class AdvancedDirtyRegionManager {
     private enabled: boolean;
     private regions: Set<DirtyRegion>;
     private mergedRegions: DirtyRegion[];
-    private frameRegions: Map<number, DirtyRegion[]>;
+    // private frameRegions: Map<number, DirtyRegion[]>;
     private minRegionSize: number;
     private maxRegionCount: number;
     private mergeThreshold: number;
@@ -286,6 +286,7 @@ export class AdvancedDirtyRegionManager {
     /**
      * Merge two regions into one
      */
+    /*
     private mergeRegions(region1: DirtyRegion, region2: DirtyRegion): DirtyRegion {
         const x = Math.min(region1.x, region2.x);
         const y = Math.min(region1.y, region2.y);
@@ -300,6 +301,7 @@ export class AdvancedDirtyRegionManager {
             frame: Math.max(region1.frame, region2.frame)
         };
     }
+    */
     
     /**
      * Track frequently dirty areas (hotspots)

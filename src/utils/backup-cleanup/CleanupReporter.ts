@@ -288,10 +288,10 @@ interface FinalReport {
  * Issue #104 のクリーンアップ作業の結果を詳細にレポートする機能を提供
  */
 export class CleanupReporter {
-    private reports: any[];
+    // private reports: any[];
     
     constructor() {
-        this.reports = [];
+        // this.reports = [];
     }
 
     /**

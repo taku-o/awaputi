@@ -135,7 +135,8 @@ export class MobileShareUI {
     };
     
     // テーマ設定
-    // private themes: Themes = {
+    /*
+    private themes: Themes = {
         light: {
             background: '#ffffff',
             surface: '#f8f9fa',
@@ -151,6 +152,7 @@ export class MobileShareUI {
             border: '#4a5568'
         }
     };
+    */
     
     // private currentTheme: 'light' | 'dark' = 'light';
 

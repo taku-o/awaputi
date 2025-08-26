@@ -105,7 +105,7 @@ export class RealTimePerformanceMonitor {
     private batteryDataCollector: BatteryDataCollector;
     // Data streaming
     private realtimeStream: RealtimeStream | null;
-    private streamBuffer: StreamDataPoint[];
+    // private streamBuffer: StreamDataPoint[];
     private streamSubscribers: Set<StreamCallback>;
     // Performance event detection
     private eventDetectors: Map<string, EventDetector>;
@@ -851,7 +851,7 @@ class RenderDataCollector implements IDataCollector {
     }
 
     async collect(): Promise<Map<string, any>> {
-        const _now = performance.now();
+        // const _now = performance.now();
         const renderTime = Math.random() * 10 + 5; // Simulated
         
         return new Map([

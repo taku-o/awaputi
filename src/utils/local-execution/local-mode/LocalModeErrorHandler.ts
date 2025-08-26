@@ -233,6 +233,7 @@ export default class LocalModeErrorHandler {
      * @private
      */
     private static _handleErrorLocally(error: Error, context: string, metadata: ErrorMetadata): void {
+        /*
         const _errorInfo: ErrorInfo = {
             error: error.message,
             stack: error.stack,
@@ -240,6 +241,7 @@ export default class LocalModeErrorHandler {
             metadata,
             timestamp: new Date().toISOString()
         };
+        */
 
         console.group(`🚨 LocalMode Error (${context})`);
         console.error('Error:', error.message);

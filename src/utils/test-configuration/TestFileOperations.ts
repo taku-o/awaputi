@@ -88,7 +88,7 @@ export class TestFileOperations extends BaseComponent {
     private dryRun: boolean;
     private testFilePatterns: Record<string, string>;
     private operationHistory: OperationRecord[];
-    private fileOperations!: FileOperations;
+    // private fileOperations!: FileOperations;
 
     constructor(mainController: MainController) {
         super(mainController, 'TestFileOperations');
