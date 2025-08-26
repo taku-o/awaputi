@@ -363,7 +363,7 @@ export class ScoreCalculator {
             currentCombo = 0,
             availableBubbles = [],
             timeRemaining = 0,
-            currentScore = 0
+            // currentScore = 0
         } = gameState;
 
         const strategy: Strategy = {

@@ -339,7 +339,7 @@ export class OfflineManager {
 
         try {
             const startTime = performance.now();
-            const _response = await fetch('/favicon.ico', {
+            await fetch('/favicon.ico', {
                 method: 'HEAD',
                 cache: 'no-cache'
             });

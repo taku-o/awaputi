@@ -672,7 +672,7 @@ export class ImportManager {
  * 形式検証器
  */
 class FormatValidator { 
-    constructor(importManager: any) {
+    constructor(_importManager: any) {
         // importManager not used in current implementation
     }
 
@@ -843,7 +843,7 @@ class SizeValidator {
  * マージ解決器
  */
 class MergeResolver { 
-    constructor(importManager: any) {
+    constructor(_importManager: any) {
         // importManager not used in current implementation
     }
     
@@ -978,7 +978,7 @@ class MergeResolver {
  * 上書き解決器
  */
 class OverwriteResolver { 
-    constructor(importManager: any) {
+    constructor(_importManager: any) {
         // importManager not used in current implementation
     }
     
@@ -1002,7 +1002,7 @@ class OverwriteResolver {
  * 保持解決器
  */
 class KeepResolver { 
-    constructor(importManager: any) {
+    constructor(_importManager: any) {
         // importManager not used in current implementation
     }
     

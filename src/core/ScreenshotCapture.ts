@@ -784,7 +784,7 @@ export class ScreenshotCapture {
         }
         
         // 履歴内のURLもクリーンアップ
-        this.captureHistory.forEach(capture => {
+        this.captureHistory.forEach(_capture => {
             // 必要に応じてURLクリーンアップ
         });
         

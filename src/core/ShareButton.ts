@@ -102,7 +102,7 @@ export class ShareButton {
     private config: ShareButtonConfig;
     private state: ShareButtonState;
     // private element?: HTMLElement;
-    private buttonElements: HTMLElement[] = [];
+    // private buttonElements: HTMLElement[] = [];
     // private isInitialized: boolean = false;
     private elements: ShareButtonElements;
     private handlers: ShareButtonHandlers;

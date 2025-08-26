@@ -40,7 +40,7 @@ export class InputManager {
     private activeTouches: Map<number, TouchInfo>;
     // private maxTouches: number;
     private gestureState: GestureState;
-    private eventQueue: any[];
+    // private eventQueue: any[];
     // private isProcessingEvents: boolean;
     private dragThreshold: number = 5;
     private clickThreshold: number = 200;

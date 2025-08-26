@@ -434,7 +434,7 @@ export class MobileWebShareHandler {
         if (data.files && data.files.length === 1 && data.files[0].type.startsWith('image/')) {
             try {
                 const file = data.files[0];
-                const _dataUrl = await this.fileToDataUrl(file);
+                await this.fileToDataUrl(file);
                 
                 if (navigator.clipboard && (navigator.clipboard as any).write) {
                     const clipboardItem = new ClipboardItem({

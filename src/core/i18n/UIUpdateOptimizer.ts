@@ -155,7 +155,7 @@ export class UIUpdateOptimizer {
     private performanceMetrics: PerformanceMetrics;
 
     // 要素プール
-    private elementPool: Map<string, HTMLElement[]>;
+    // private elementPool: Map<string, HTMLElement[]>;
     private pooledElements: Set<HTMLElement>;
 
     // Intersection Observer
@@ -269,10 +269,10 @@ export class UIUpdateOptimizer {
         
         try {
             const {
-                priority = 'normal',
+                // priority = 'normal',
                 forceImmediate = false,
-                animateChanges = true,
-                preserveState = true
+                // animateChanges = true,
+                // preserveState = true
             } = options;
 
             if (!this.enabled) {
@@ -324,7 +324,7 @@ export class UIUpdateOptimizer {
         const startTime = performance.now();
         
         try {
-            const { animateChanges, _preserveState, deferHidden = [] } = options;
+            const { animateChanges, deferHidden = [] } = options;
             
             this.stats.immediateUpdates++;
             
@@ -376,7 +376,7 @@ export class UIUpdateOptimizer {
         const startTime = performance.now();
         
         try {
-            const { _priority, _animateChanges, deferHidden = [] } = options;
+            const { deferHidden = [] } = options;
             
             this.stats.batchedUpdates++;
             
@@ -667,7 +667,7 @@ export class UIUpdateOptimizer {
      * Document Fragmentを使用したバッチ更新
      */
     private executeBatchUpdatesWithFragment(updates: ElementUpdateSpec[]): void {
-        const _fragment = document.createDocumentFragment();
+        // const _fragment = document.createDocumentFragment();
         
         for (const update of updates) {
             const { element, newText, preserveState } = update;

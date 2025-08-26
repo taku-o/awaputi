@@ -33,7 +33,7 @@ export class LeaderboardManager {
     private rankingManager: LeaderboardRankingManager;
     private storageManager: LeaderboardStorageManager;
 
-    constructor(gameEngine: any) {
+    constructor(_gameEngine: any) {
         // Basic configuration handled by sub-components
         this.version = '1.0.0';
         
