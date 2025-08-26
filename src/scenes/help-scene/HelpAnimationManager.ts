@@ -510,7 +510,7 @@ export class HelpTransitionRenderer {
         
         // カテゴリ項目のハイライト遷移
         for(let i = 0; i < categories.length; i++) {
-            const _category = categories[i];
+            //const _category = categories[i];
             const isFrom = i === transition.fromIndex;
             const isTo = i === transition.toIndex;
             

@@ -1,5 +1,5 @@
 import { getErrorHandler } from '../utils/ErrorHandler.js';
-import type { ErrorHandler } from '../utils/ErrorHandler.js';
+// import type { ErrorHandler } from '../utils/ErrorHandler.js';
 import { 
     UIStateManager, 
     DialogStateManager,
@@ -648,11 +648,11 @@ export class DataManagementUI {
         this.uiState.showError('Backup created successfully', 3000);
     }
 
-    onDataExported(data: any): void {
+    onDataExported(_data: any): void {
         this.uiState.showError('Data exported successfully', 3000);
     }
 
-    onDataImported(data: any): void {
+    onDataImported(_data: any): void {
         this.uiState.showError('Data imported successfully', 3000);
     }
 

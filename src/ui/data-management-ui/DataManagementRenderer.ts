@@ -567,8 +567,8 @@ export class ViewRenderer {
     }
 
     renderOverviewView(bounds: Bounds, backupStatus: BackupStatus, selectedItem: number): void {
-        const colors = this.layoutManager.getColors();
-        const { padding, itemHeight } = this.layoutManager.getLayoutConfig();
+        // const colors = this.layoutManager.getColors();
+        const { padding } = this.layoutManager.getLayoutConfig();
 
         let currentY = bounds.y + 80; // After header
 
@@ -619,7 +619,7 @@ export class ViewRenderer {
     }
 
     renderQuickActionsCard(x: number, y: number, width: number, selectedItem: number): void {
-        const colors = this.layoutManager.getColors();
+        // const colors = this.layoutManager.getColors();
         const { padding, buttonHeight, buttonWidth } = this.layoutManager.getLayoutConfig();
 
         // Card background
@@ -660,7 +660,7 @@ export class ViewRenderer {
     }
 
     renderExportView(bounds: Bounds, selectedItem: number, exportOptions: ExportOptions = {}): void {
-        const colors = this.layoutManager.getColors();
+        // const colors = this.layoutManager.getColors();
         const { padding } = this.layoutManager.getLayoutConfig();
 
         let currentY = bounds.y + 80;
@@ -669,8 +669,8 @@ export class ViewRenderer {
         this.renderExportOptionsCard(bounds.x + padding, currentY, bounds.width - padding * 2, exportOptions, selectedItem);
     }
 
-    renderExportOptionsCard(x: number, y: number, width: number, options: ExportOptions, selectedItem: number): void {
-        const { padding, itemHeight } = this.layoutManager.getLayoutConfig();
+    renderExportOptionsCard(x: number, y: number, width: number, _options: ExportOptions, selectedItem: number): void {
+        const { padding, itemHeight: _ } = this.layoutManager.getLayoutConfig();
 
         // Card background
         this.uiRenderer.drawCard(x, y, width, 200, false);

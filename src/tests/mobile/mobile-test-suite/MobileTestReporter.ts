@@ -611,7 +611,7 @@ export class MobileTestReporter {
     /**
      * HTML用スタイル取得
      */
-    private getHTMLStyles(config: Record<string, any>): string {
+    private getHTMLStyles(_config: Record<string, any>): string {
         return `
             body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 20px; background: #f5f5f5; }
             .container { max-width: 1200px; margin: 0 auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
@@ -742,7 +742,7 @@ export class MobileTestReporter {
             return '<section><h2>Compatibility</h2><p>No compatibility data available.</p></section>';
         }
 
-        const compatRows = compatEntries.map(([key, data]) => `
+        const compatRows = compatEntries.map(([_key, data]) => `
             <tr>
                 <td>${data.device}</td>
                 <td>${data.browser}</td>
@@ -801,7 +801,7 @@ export class MobileTestReporter {
     /**
      * HTMLチャートセクション生成
      */
-    private generateHTMLChartSection(report: TestReport): string {
+    private generateHTMLChartSection(_report: TestReport): string {
         return '<section><h2>Charts</h2><p>Chart data available in console.</p></section>';
     }
     

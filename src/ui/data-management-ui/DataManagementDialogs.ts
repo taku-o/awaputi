@@ -188,7 +188,7 @@ export class DataManagementBaseDialog implements Dialog {
         return this.layoutManager.calculateDialogBounds(defaultWidth, defaultHeight);
     }
 
-    renderDialog(bounds: DialogBounds, data: any): void {
+    renderDialog(_bounds: DialogBounds, _data: any): void {
         // Override in subclasses
     }
 
@@ -375,7 +375,7 @@ export class DataManagementExportDialog extends DataManagementBaseDialog {
         this.renderButtons(contentBounds, buttons, this.selectedButton);
     }
 
-    calculateBounds(data: BaseDialogData): DialogBounds {
+    calculateBounds(_data: BaseDialogData): DialogBounds {
         return this.layoutManager.calculateDialogBounds(450, 400);
     }
 }
@@ -457,7 +457,7 @@ export class DataManagementImportDialog extends DataManagementBaseDialog {
         this.renderButtons(contentBounds, buttons, this.selectedButton);
     }
 
-    calculateBounds(data: BaseDialogData): DialogBounds {
+    calculateBounds(_data: BaseDialogData): DialogBounds {
         return this.layoutManager.calculateDialogBounds(450, 350);
     }
 
@@ -559,7 +559,7 @@ export class ClearDataDialog extends DataManagementBaseDialog {
         this.renderButtons(contentBounds, buttons, this.selectedButton);
     }
 
-    calculateBounds(data: BaseDialogData): DialogBounds {
+    calculateBounds(_data: BaseDialogData): DialogBounds {
         return this.layoutManager.calculateDialogBounds(500, 400);
     }
 }
@@ -749,7 +749,7 @@ export class AlertDialog extends DataManagementBaseDialog {
         this.renderButtons(contentBounds, buttons, this.selectedButton);
     }
 
-    calculateBounds(data: BaseDialogData): DialogBounds {
+    calculateBounds(_data: BaseDialogData): DialogBounds {
         return this.layoutManager.calculateDialogBounds(400, 180);
     }
 }

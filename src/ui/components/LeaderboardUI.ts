@@ -438,7 +438,7 @@ export class LeaderboardUI {
     /**
      * スクロールイベント処理
      */
-    handleScroll(deltaX: number, deltaY: number, options: any = {}): void {
+    handleScroll(_deltaX: number, deltaY: number, options: any = {}): void {
         this.animationController.scroll(deltaY, options);
         this.layout.scrollOffset = Math.max(0, Math.min(
             this.getMaxScrollOffset(),
@@ -492,7 +492,7 @@ export class LeaderboardUI {
     /**
      * エントリー選択
      */
-    selectEntry(entry: RankingEntry, index: number): void {
+    selectEntry(entry: RankingEntry, _index: number): void {
         this.uiState.selectedEntry = entry;
         this.animationController.startSelectAnimation(entry);
     }

@@ -135,7 +135,7 @@ export class MobileShareUI {
     };
     
     // テーマ設定
-    private themes: Themes = {
+    // private themes: Themes = {
         light: {
             background: '#ffffff',
             surface: '#f8f9fa',
@@ -1028,7 +1028,7 @@ export class MobileShareUI {
     /**
      * 汎用共有
      */
-    private async shareViaGeneric(platform: string, shareData: ShareData): Promise<ShareResult> {
+    private async shareViaGeneric(platform: string, _shareData: ShareData): Promise<ShareResult> {
         // プラットフォームに応じた処理を実装
         return { success: true, platform };
     }

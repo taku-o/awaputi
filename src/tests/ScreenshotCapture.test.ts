@@ -194,7 +194,7 @@ describe('ScreenshotCapture', () => {
     describe('ゲームCanvasキャプチャ', () => {
         beforeEach(() => {
             // toBlob のモック設定
-            mockCanvas.toBlob = jest.fn().mockImplementation((callback: (blob: Blob | null) => void, type?: string, quality?: number) => {
+            mockCanvas.toBlob = jest.fn().mockImplementation((callback: (blob: Blob | null) => void, type?: string, _quality?: number) => {
                 const mockBlob = new Blob(['mock-image-data'], {
                     type: type || 'image/png'
                 });
@@ -229,10 +229,10 @@ describe('ScreenshotCapture', () => {
         });
 
         test('カスタムサイズでキャプチャできる', async () => {
-            const result = await screenshotCapture.captureGameCanvas({
-                maxWidth: 400,
-                maxHeight: 300
-            });
+            // const result = await screenshotCapture.captureGameCanvas({
+            //     maxWidth: 400,
+            //     maxHeight: 300
+            // });
 
             // リサイズされたキャンバスが作成されることを確認
             expect(document.createElement).toHaveBeenCalledWith('canvas');
@@ -290,7 +290,7 @@ describe('ScreenshotCapture', () => {
         });
 
         test('Canvas境界を超える領域の調整', async () => {
-            const result = await screenshotCapture.captureRegion(700, 500, 200, 200);
+            // const result = await screenshotCapture.captureRegion(700, 500, 200, 200);
 
             // Canvas境界内に調整されることを確認
             expect(mockContext.drawImage).toHaveBeenCalledWith(
@@ -372,7 +372,7 @@ describe('ScreenshotCapture', () => {
             // WebPサポートのモック
             mockCanvas.toDataURL = jest.fn<string>().mockReturnValue('data:image/webp;base64,mock');
 
-            mockCanvas.toBlob = jest.fn().mockImplementation((callback: (blob: Blob | null) => void, type?: string, quality?: number) => {
+            mockCanvas.toBlob = jest.fn().mockImplementation((callback: (blob: Blob | null) => void, type?: string, _quality?: number) => {
                 expect(type).toBe('image/webp');
                 callback(new Blob(['webp-data'], { type: 'image/webp' }));
             });

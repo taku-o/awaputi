@@ -5,7 +5,7 @@
  */
 
 import { getErrorHandler } from '../../../utils/ErrorHandler.js';
-import type { ErrorHandler } from '../../../utils/ErrorHandler.js';
+// import type { ErrorHandler } from '../../../utils/ErrorHandler.js';
 
 /**
  * Game engine interface

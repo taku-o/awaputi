@@ -520,7 +520,7 @@ export class LeaderboardEventHandler {
      * @param {Array} touches - タッチポイント配列
      * @param {Object} options - オプション
      */
-    handleTouchStart(touches: Touch[], options: any = {}): void {
+    handleTouchStart(touches: Touch[], _options: any = {}): void {
         try {
             touches.forEach(touch => {
                 this.eventState.touches.set(touch.identifier, {
@@ -542,7 +542,7 @@ export class LeaderboardEventHandler {
      * @param {Array} touches - タッチポイント配列
      * @param {Object} options - オプション
      */
-    handleTouchMove(touches: Touch[], options: any = {}): void {
+    handleTouchMove(touches: Touch[], _options: any = {}): void {
         try {
             touches.forEach(touch => {
                 const touchData = this.eventState.touches.get(touch.identifier);
@@ -578,7 +578,7 @@ export class LeaderboardEventHandler {
      * @param {Array} touches - タッチポイント配列
      * @param {Object} options - オプション
      */
-    handleTouchEnd(touches: Touch[], options: any = {}): void {
+    handleTouchEnd(touches: Touch[], _options: any = {}): void {
         try {
             touches.forEach(touch => {
                 const touchData = this.eventState.touches.get(touch.identifier);
@@ -633,7 +633,7 @@ export class LeaderboardEventHandler {
      * @param {string} gestureType - ジェスチャータイプ
      * @param {Object} data - ジェスチャーデータ
      */
-    handleGesture(gestureType: string, data: GestureData): void {
+    handleGesture(gestureType: string, _data: GestureData): void {
         switch (gestureType) {
             case 'swipeUp':
                 this.handleScroll(0, -50, { isGesture: true });
@@ -709,7 +709,7 @@ export class LeaderboardEventHandler {
      * @param {number} y - Y座標
      * @param {Object} target - ターゲット
      */
-    handleScrollbarClick(x: number, y: number, target: EventTarget): void {
+    handleScrollbarClick(_x: number, y: number, target: EventTarget): void {
         // スクロールバーの位置計算
         const relativeY = y - target.bounds.y;
         const scrollRatio = relativeY / target.bounds.height;
@@ -725,7 +725,7 @@ export class LeaderboardEventHandler {
      * @param {string} action - アクション
      * @param {Object} options - オプション
      */
-    executeShortcut(action: string, options: any): void {
+    executeShortcut(action: string, _options: any): void {
         switch (action) {
             case 'selectPrevious':
                 this.selectPreviousEntry();

@@ -340,7 +340,7 @@ describe('ShareButton', () => {
 
         test('プラットフォームボタンのARIA属性が設定される', () => {
             (shareButton as any).elements.platformButtons.forEach(button => {
-                const platform = button.getAttribute('data-platform');
+                // const platform = button.getAttribute('data-platform');
                 expect(button.getAttribute('aria-label')).toContain('で共有');
                 expect(button.getAttribute('role')).toBe('menuitem');
             });
@@ -495,7 +495,7 @@ describe('ShareButton', () => {
             (shareButton as any).socialSharingManager = null as any;
             shareButton.show();
             shareButton.expand();
-            const platformButton = (shareButton as any).elements.platformButtons[0];
+            // const platformButton = (shareButton as any).elements.platformButtons[0];
 
             await expect(async () => {
                 await shareButton.handlePlatformShare('web-share');

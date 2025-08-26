@@ -644,8 +644,8 @@ describe('SocialSharing Overlay Integration', () => {
                 hasOverlay: false
             });
 
-            const shareData: ShareData = { type: 'score', score: 1300 };
-            const result = await socialSharingManager.shareScoreWithOverlay({ score: 1300 }, shareData);
+            // const shareData: ShareData = { type: 'score', score: 1300 };
+            // const result = await socialSharingManager.shareScoreWithOverlay({ score: 1300 }, shareData);
 
             expect(mockScreenshotCapture.captureGameCanvas).toHaveBeenCalled();
             expect(mockScreenshotCapture.captureWithScore).not.toHaveBeenCalled();

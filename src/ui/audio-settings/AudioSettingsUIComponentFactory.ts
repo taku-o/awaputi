@@ -3,7 +3,7 @@ import { getLocalizationManager } from '../../core/LocalizationManager.js';
 import type { AudioManager } from '../../audio/AudioManager.js';
 import type { ConfigurationManager } from '../../core/ConfigurationManager.js';
 import type { LocalizationManager } from '../../core/LocalizationManager.js';
-import type { ErrorHandler } from '../../utils/ErrorHandler.js';
+// import type { ErrorHandler } from '../../utils/ErrorHandler.js';
 
 /**
  * Volume Slider Options

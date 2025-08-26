@@ -624,7 +624,7 @@ export class LeaderboardAnimationController {
      * @param {number} targetOpacity - 目標透明度
      * @param {number} duration - アニメーション時間
      */
-    startFadeAnimation(targetOpacity: number, duration: number = this.animationConfig.transitionDuration): void {
+    startFadeAnimation(targetOpacity: number, _duration: number = this.animationConfig.transitionDuration): void {
         this.animationState.targetFadeOpacity = targetOpacity;
         this.startAnimationLoop();
     }
