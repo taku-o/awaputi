@@ -160,7 +160,7 @@ export class SettingsExportImport {
             } = options;
             
             // 現在の設定を取得
-            const settings = this._getCurrentSettings();
+            const settings = this.getCurrentSettings();
             
             // エクスポートデータを構築
             const exportData: ExportData = {
@@ -247,7 +247,7 @@ export class SettingsExportImport {
             const settingsToImport = importData.settings || importData;
             
             // インポート実行
-            const importResult = await this._performImport(settingsToImport, mergeMode);
+            const importResult = await this.performImport(settingsToImport, mergeMode);
             
             // 統計更新
             this.stats.importCount++;
@@ -336,7 +336,7 @@ export class SettingsExportImport {
     async createBackup(): Promise<BackupInfo> {
         try {
             const backupData: BackupData = {
-                settings: this._getCurrentSettings(),
+                settings: this.getCurrentSettings(),
                 timestamp: new Date().toISOString(),
                 version: '1.0.0'
             };
@@ -404,7 +404,7 @@ export class SettingsExportImport {
      * @returns 現在の設定
      * @private
      */
-    private _getCurrentSettings(): Record<string, any> {
+    private getCurrentSettings(): Record<string, any> {
         // ConfigurationManagerから全設定を取得
         const configData = this.configManager.exportConfig();
         
@@ -423,7 +423,7 @@ export class SettingsExportImport {
      * @returns インポート結果
      * @private
      */
-    private async _performImport(settingsData: Record<string, any>, mergeMode: MergeMode): Promise<ImportResult> {
+    private async performImport(settingsData: Record<string, any>, mergeMode: MergeMode): Promise<ImportResult> {
         const results: ImportResult = {
             imported: 0,
             skipped: 0,
@@ -449,7 +449,7 @@ export class SettingsExportImport {
 
                 case 'merge':
                     // 既存設定とマージ
-                    const currentSettings = this._getCurrentSettings();
+                    const currentSettings = this.getCurrentSettings();
                     const dataManager = this.settingsManager.dataManager;
                     const mergedSettings = dataManager.mergeSettings(currentSettings, settingsData);
                     
@@ -469,7 +469,7 @@ export class SettingsExportImport {
 
                 case 'selective':
                     // 変更された設定のみインポート
-                    const current = this._getCurrentSettings();
+                    const current = this.getCurrentSettings();
                     for (const [key, value] of Object.entries(settingsData)) {
                         if (current[key] !== value) {
                             try {

@@ -159,14 +159,14 @@ export class AudioEffectContextManager {
             return this.initializationPromise;
         }
         
-        this.initializationPromise = this._doInitialize();
+        this.initializationPromise = this.doInitialize();
         return this.initializationPromise;
     }
     
     /**
      * 初期化の実装
      */
-    private async _doInitialize(): Promise<boolean> {
+    private async doInitialize(): Promise<boolean> {
         try {
             if (!this.browserSupport.audioContext) {
                 console.warn('[AudioContextManager] AudioContext is not supported in this browser - audio context manager disabled');
@@ -198,7 +198,7 @@ export class AudioEffectContextManager {
             return true;
 
         } catch (error) {
-            this.errorHandler.handleError(error as Error, 'AudioContextManager._doInitialize');
+            this.errorHandler.handleError(error as Error, 'AudioContextManager.doInitialize');
             this.isInitialized = false;
             throw error;
         }

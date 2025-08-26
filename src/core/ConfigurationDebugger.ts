@@ -199,7 +199,7 @@ export class ConfigurationDebugger {
         
         // デバッグ設定
         this.debugConfig = {
-            enabled: this._isDebugMode(),
+            enabled: this.isDebugMode(),
             trackUsage: true,
             trackPerformance: true,
             trackErrors: true,
@@ -223,16 +223,16 @@ export class ConfigurationDebugger {
         this.logger = getLoggingSystem();
         
         // 初期化
-        this._initialize();
+        this.initialize();
     }
     
     /**
      * 初期化処理
      */
-    private _initialize(): void {
+    private initialize(): void {
         if (this.debugConfig.enabled) {
-            this._setupPeriodicReporting();
-            this._setupPerformanceMonitoring();
+            this.setupPeriodicReporting();
+            this.setupPerformanceMonitoring();
             this.logger.info('ConfigurationDebugger initialized', {
                 config: this.debugConfig
             }, 'ConfigurationDebugger');
@@ -242,7 +242,7 @@ export class ConfigurationDebugger {
     /**
      * デバッグモードの判定
      */
-    private _isDebugMode(): boolean {
+    private isDebugMode(): boolean {
         return process?.env?.NODE_ENV === 'development' ||
                typeof window !== 'undefined' && window.location.search.includes('debug=true') ||
                localStorage.getItem('configDebug') === 'true';
@@ -251,7 +251,7 @@ export class ConfigurationDebugger {
     /**
      * 定期レポートの設定
      */
-    private _setupPeriodicReporting(): void {
+    private setupPeriodicReporting(): void {
         if (this.debugConfig.reportInterval > 0) {
             this.reportTimer = setInterval(() => {
                 this.generatePerformanceReport();
@@ -262,25 +262,25 @@ export class ConfigurationDebugger {
     /**
      * パフォーマンス監視の設定
      */
-    private _setupPerformanceMonitoring(): void {
+    private setupPerformanceMonitoring(): void {
         // ブラウザのパフォーマンス監視
         if (typeof window !== 'undefined' && window.performance) {
             // パフォーマンス観察を設定
-            this._observePerformance();
+            this.observePerformance();
         }
     }
     
     /**
      * パフォーマンス観察
      */
-    private _observePerformance(): void {
+    private observePerformance(): void {
         try {
             if ('PerformanceObserver' in window) {
                 const observer = new PerformanceObserver((list) => {
                     const entries = list.getEntries();
                     for (const entry of entries) {
                         if (entry.name.includes('config')) {
-                            this._recordPerformanceEntry(entry);
+                            this.recordPerformanceEntry(entry);
                         }
                     }
                 });
@@ -294,7 +294,7 @@ export class ConfigurationDebugger {
     /**
      * パフォーマンスエントリの記録
      */
-    private _recordPerformanceEntry(entry: PerformanceEntry): void {
+    private recordPerformanceEntry(entry: PerformanceEntry): void {
         const duration = entry.duration;
         if (duration > this.debugConfig.slowAccessThreshold) {
             this.performanceTracking.slowAccesses.push({
@@ -342,11 +342,11 @@ export class ConfigurationDebugger {
         }
         
         // アクセスパターンの更新
-        this._updateAccessPattern(fullKey, timestamp);
+        this.updateAccessPattern(fullKey, timestamp);
         
         // パフォーマンスデータの記録
         if (this.debugConfig.trackPerformance) {
-            this._recordPerformance(fullKey, accessTime, fromCache);
+            this.recordPerformance(fullKey, accessTime, fromCache);
         }
         
         // ホットキーの更新
@@ -355,13 +355,13 @@ export class ConfigurationDebugger {
         }
         
         // 統計の更新
-        this._updateStatistics();
+        this.updateStatistics();
     }
     
     /**
      * アクセスパターンの更新
      */
-    private _updateAccessPattern(fullKey: string, timestamp: number): void {
+    private updateAccessPattern(fullKey: string, timestamp: number): void {
         let pattern = this.usageTracking.accessPatterns.get(fullKey);
         
         if (!pattern) {
@@ -387,7 +387,7 @@ export class ConfigurationDebugger {
     /**
      * パフォーマンスの記録
      */
-    private _recordPerformance(fullKey: string, accessTime: number, fromCache: boolean): void {
+    private recordPerformance(fullKey: string, accessTime: number, fromCache: boolean): void {
         // アクセス時間の記録
         let times = this.performanceTracking.accessTimes.get(fullKey);
         if (!times) {
@@ -407,13 +407,13 @@ export class ConfigurationDebugger {
         }
         
         // キャッシュヒット率の更新
-        this._updateCacheHitRate(fullKey, fromCache);
+        this.updateCacheHitRate(fullKey, fromCache);
     }
     
     /**
      * キャッシュヒット率の更新
      */
-    private _updateCacheHitRate(fullKey: string, fromCache: boolean): void {
+    private updateCacheHitRate(fullKey: string, fromCache: boolean): void {
         let hitRate = this.performanceTracking.cacheHitRates.get(fullKey);
         if (!hitRate) {
             hitRate = { total: 0, hits: 0 };
@@ -452,7 +452,7 @@ export class ConfigurationDebugger {
         this.errorTracking.errorPatterns.set(errorType, currentCount + 1);
         
         // 復旧統計の更新
-        this._updateRecoveryStats(fullKey, recovered);
+        this.updateRecoveryStats(fullKey, recovered);
         
         // 重要なエラーの記録
         if (errorType === 'critical' || errorType === 'validation_failed') {
@@ -476,7 +476,7 @@ export class ConfigurationDebugger {
     /**
      * 復旧統計の更新
      */
-    private _updateRecoveryStats(fullKey: string, recovered: boolean): void {
+    private updateRecoveryStats(fullKey: string, recovered: boolean): void {
         let stats = this.errorTracking.recoverySuccess.get(fullKey);
         if (!stats) {
             stats = { total: 0, recovered: 0 };
@@ -492,7 +492,7 @@ export class ConfigurationDebugger {
     /**
      * 統計情報の更新
      */
-    private _updateStatistics(): void {
+    private updateStatistics(): void {
         this.statistics.totalAccesses++;
         this.statistics.uniqueKeys = this.usageTracking.accessCount.size;
         
@@ -568,15 +568,15 @@ export class ConfigurationDebugger {
         }
         
         if (options.includeUsage !== false) {
-            report.usage = this._generateUsageReport(options.topN);
+            report.usage = this.generateUsageReport(options.topN);
         }
         
         if (options.includePerformance !== false) {
-            report.performance = this._generatePerformanceReport(options.topN);
+            report.performance = this.generatePerformanceReport(options.topN);
         }
         
         if (options.includeErrors !== false) {
-            report.errors = this._generateErrorReport(options.topN);
+            report.errors = this.generateErrorReport(options.topN);
         }
         
         return report;
@@ -585,7 +585,7 @@ export class ConfigurationDebugger {
     /**
      * 使用状況レポートの生成
      */
-    private _generateUsageReport(topN: number = 10): any {
+    private generateUsageReport(topN: number = 10): any {
         const sortedAccess = Array.from(this.usageTracking.accessCount.entries())
             .sort((a, b) => b[1] - a[1])
             .slice(0, topN);
@@ -602,7 +602,7 @@ export class ConfigurationDebugger {
     /**
      * パフォーマンスレポートの生成
      */
-    private _generatePerformanceReport(topN: number = 10): any {
+    private generatePerformanceReport(topN: number = 10): any {
         const slowest = Array.from(this.performanceTracking.accessTimes.entries())
             .map(([key, times]) => ({
                 key,
@@ -633,7 +633,7 @@ export class ConfigurationDebugger {
     /**
      * エラーレポートの生成
      */
-    private _generateErrorReport(topN: number = 10): any {
+    private generateErrorReport(topN: number = 10): any {
         const errorByKey = Array.from(this.errorTracking.errorsByKey.entries())
             .map(([key, errors]) => ({
                 key,
@@ -671,13 +671,13 @@ export class ConfigurationDebugger {
         this.logger.info('Performance Report', report, 'ConfigurationDebugger');
         
         // アラートの確認
-        this._checkPerformanceAlerts();
+        this.checkPerformanceAlerts();
     }
     
     /**
      * パフォーマンスアラートの確認
      */
-    private _checkPerformanceAlerts(): void {
+    private checkPerformanceAlerts(): void {
         // 遅いアクセスのアラート
         const recentSlowAccesses = this.performanceTracking.slowAccesses
             .filter(access => Date.now() - access.timestamp < 60000); // 1分以内
@@ -718,7 +718,7 @@ export class ConfigurationDebugger {
         }
         
         if (this.debugConfig.enabled && this.debugConfig.reportInterval > 0) {
-            this._setupPeriodicReporting();
+            this.setupPeriodicReporting();
         }
         
         this.logger.info('Debug config updated', this.debugConfig, 'ConfigurationDebugger');

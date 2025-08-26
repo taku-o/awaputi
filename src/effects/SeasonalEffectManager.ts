@@ -133,16 +133,16 @@ export class SeasonalEffectManager {
         this.customThemesEnabled = true;
         this.backgroundEffectEnabled = true;
         
-        this._initializeSeasonalSettings();
-        this._loadCustomThemes();
-        this._updateCurrentTheme();
+        this.initializeSeasonalSettings();
+        this.loadCustomThemes();
+        this.updateCurrentTheme();
     }
     
     /**
      * 季節エフェクト設定の初期化
      * @private
      */
-    private _initializeSeasonalSettings(): void {
+    private initializeSeasonalSettings(): void {
         try {
             this.seasonalEffectsEnabled = this.configManager.get('effects.seasonal.enabled', true);
             this.autoSeasonDetection = this.configManager.get('effects.seasonal.autoDetection', true);
@@ -157,7 +157,7 @@ export class SeasonalEffectManager {
                 this.setAutoSeasonDetection(value);
             });
         } catch (error) {
-            this.errorHandler.handleError(error, 'SeasonalEffectManager._initializeSeasonalSettings');
+            this.errorHandler.handleError(error, 'SeasonalEffectManager.initializeSeasonalSettings');
         }
     }
     
@@ -165,11 +165,11 @@ export class SeasonalEffectManager {
      * カスタムテーマを読み込み
      * @private
      */
-    private _loadCustomThemes(): void {
+    private loadCustomThemes(): void {
         try {
             this.customThemeManager.loadFromStorage();
         } catch (error) {
-            this.errorHandler.handleError(error, 'SeasonalEffectManager._loadCustomThemes');
+            this.errorHandler.handleError(error, 'SeasonalEffectManager.loadCustomThemes');
         }
     }
     
@@ -177,7 +177,7 @@ export class SeasonalEffectManager {
      * 現在のテーマを更新
      * @private
      */
-    private _updateCurrentTheme(): void {
+    private updateCurrentTheme(): void {
         // カスタムテーマが設定されている場合は優先
         if (this.customTheme && this.customThemesEnabled) {
             this.activeTheme = this.customTheme;
@@ -252,7 +252,7 @@ export class SeasonalEffectManager {
             // 季節チェック（頻度制御を追加）
             if (this.seasonDetector.shouldCheckSeason()) {
                 const previousTheme = this.activeTheme?.name;
-                this._updateCurrentTheme();
+                this.updateCurrentTheme();
                 // テーマが実際に変更された場合のみ処理
                 if (previousTheme !== this.activeTheme?.name) {
                     this.seasonDetector.updateLastSeasonCheck();
@@ -264,7 +264,7 @@ export class SeasonalEffectManager {
             
             // 背景エフェクトの更新
             if (this.backgroundEffectEnabled) {
-                this._updateBackgroundEffects(deltaTime);
+                this.updateBackgroundEffects(deltaTime);
             }
 
         } catch (error) {
@@ -282,7 +282,7 @@ export class SeasonalEffectManager {
         try {
             // 背景エフェクトの描画
             if (this.backgroundEffectEnabled) {
-                this._renderBackgroundEffects(context);
+                this.renderBackgroundEffects(context);
             }
             
             // 季節パーティクルの描画
@@ -297,7 +297,7 @@ export class SeasonalEffectManager {
      * @param {number} deltaTime - 経過時間
      * @private
      */
-    private _updateBackgroundEffects(deltaTime: number): void {
+    private updateBackgroundEffects(deltaTime: number): void {
         // 背景エフェクトの実装（簡略化）
         // 季節に応じた背景パーティクルの管理
     }
@@ -307,7 +307,7 @@ export class SeasonalEffectManager {
      * @param {CanvasRenderingContext2D} context - 描画コンテキスト
      * @private
      */
-    private _renderBackgroundEffects(context: CanvasRenderingContext2D): void {
+    private renderBackgroundEffects(context: CanvasRenderingContext2D): void {
         // 背景エフェクトの描画実装（簡略化）
         // 季節に応じた背景パターンの描画
     }
@@ -322,7 +322,7 @@ export class SeasonalEffectManager {
         if (this.themeManager.getAvailableSeasons().includes(season)) {
             this.currentSeason = season;
             this.autoSeasonDetection = false;
-            this._updateCurrentTheme();
+            this.updateCurrentTheme();
         }
     }
     
@@ -333,7 +333,7 @@ export class SeasonalEffectManager {
     setCustomTheme(theme: any): void {
         if (this.themeManager.validateTheme(theme)) {
             this.customTheme = theme;
-            this._updateCurrentTheme();
+            this.updateCurrentTheme();
         }
     }
     
@@ -355,7 +355,7 @@ export class SeasonalEffectManager {
     setAutoSeasonDetection(enabled: boolean): void {
         this.autoSeasonDetection = enabled;
         if (enabled) {
-            this._updateCurrentTheme();
+            this.updateCurrentTheme();
         }
     }
     
@@ -365,7 +365,7 @@ export class SeasonalEffectManager {
      */
     setEventEffectsEnabled(enabled: boolean): void {
         this.eventEffectsEnabled = enabled;
-        this._updateCurrentTheme();
+        this.updateCurrentTheme();
     }
     
     /**
@@ -496,7 +496,7 @@ export class SeasonalEffectManager {
                 this.customThemeManager.restoreFromBackup(settingsData.customThemes);
             }
             
-            this._updateCurrentTheme();
+            this.updateCurrentTheme();
             return true;
         } catch (error) {
             this.errorHandler.handleError(error, 'SeasonalEffectManager.importSettings');

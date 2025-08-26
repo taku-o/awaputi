@@ -77,7 +77,7 @@ export class StructuredDataValidator {
                 warnings: 0
             };
 
-            const structuredData = await this._extractStructuredData();
+            const structuredData = await this.extractStructuredData();
 
             const rules = this.mainController.validationRules.get('structuredData');
 
@@ -159,7 +159,7 @@ export class StructuredDataValidator {
             }
             
             // JSON-LD形式の検証
-            const jsonLdTest = await this._validateJsonLdFormat(structuredData);
+            const jsonLdTest = await this.validateJsonLdFormat(structuredData);
             results.tests.push(jsonLdTest);
             if (jsonLdTest.passed) {
                 results.passed++;
@@ -168,7 +168,7 @@ export class StructuredDataValidator {
             }
             
             // Rich Snippetテスト
-            const richSnippetTest = await this._testRichSnippets(structuredData);
+            const richSnippetTest = await this.testRichSnippets(structuredData);
             results.tests.push(richSnippetTest);
             if (richSnippetTest.passed) {
                 results.passed++;
@@ -197,7 +197,7 @@ export class StructuredDataValidator {
                 warnings: 0
             };
 
-            const structuredData = await this._extractStructuredData();
+            const structuredData = await this.extractStructuredData();
             
             // JSON-LD形式検証
             const formatTest: TestResult = {
@@ -206,7 +206,7 @@ export class StructuredDataValidator {
                 message: ''
             };
 
-            if(this._isValidJsonLd(structuredData)) {
+            if(this.isValidJsonLd(structuredData)) {
                 formatTest.passed = true;
                 formatTest.message = '✅ Valid JSON-LD format';
                 results.passed++;
@@ -224,7 +224,7 @@ export class StructuredDataValidator {
                 message: ''
             };
 
-            const vocabValid = await this._validateSchemaVocabulary(structuredData);
+            const vocabValid = await this.validateSchemaVocabulary(structuredData);
             if (vocabValid) {
                 vocabTest.passed = true;
                 vocabTest.message = '✅ Schema.org vocabulary properly used';
@@ -257,7 +257,7 @@ export class StructuredDataValidator {
                 warnings: 0
             };
 
-            const structuredData = await this._extractStructuredData();
+            const structuredData = await this.extractStructuredData();
 
             const snippetTypes = ['Game', 'SoftwareApplication', 'WebApplication'];
             
@@ -268,7 +268,7 @@ export class StructuredDataValidator {
                     message: ''
                 };
                 
-                const compatible = this._checkRichSnippetCompatibility(structuredData, snippetType);
+                const compatible = this.checkRichSnippetCompatibility(structuredData, snippetType);
                 if (compatible) {
                     test.passed = true;
                     test.message = `✅ Compatible with ${snippetType} rich snippets`;
@@ -288,7 +288,7 @@ export class StructuredDataValidator {
                 message: ''
             };
 
-            const googleCompatible = await this._checkGoogleStructuredDataTestCompatibility(structuredData);
+            const googleCompatible = await this.checkGoogleStructuredDataTestCompatibility(structuredData);
             if (googleCompatible) {
                 googleTest.passed = true;
                 googleTest.message = '✅ Compatible with Google Structured Data Test';
@@ -313,7 +313,7 @@ export class StructuredDataValidator {
      * 構造化データの抽出
      * @private
      */
-    private async _extractStructuredData(): Promise<StructuredDataObject> {
+    private async extractStructuredData(): Promise<StructuredDataObject> {
         // 実際の実装ではページから抽出するが、ここではモックデータを返す
         return {
             '@context': 'https://schema.org',
@@ -340,7 +340,7 @@ export class StructuredDataValidator {
      * JSON-LD形式の検証
      * @private
      */
-    private async _validateJsonLdFormat(structuredData: StructuredDataObject): Promise<TestResult> {
+    private async validateJsonLdFormat(structuredData: StructuredDataObject): Promise<TestResult> {
         const test: TestResult = {
             name: 'JSON-LD format validation',
             passed: false,
@@ -351,7 +351,7 @@ export class StructuredDataValidator {
             // 必須フィールドの存在確認
             if (structuredData['@context'] && structuredData['@type']) {
                 // JSON-LD形式の基本要件を満たしているか確認
-                const isValid = this._isValidJsonLd(structuredData);
+                const isValid = this.isValidJsonLd(structuredData);
                 if (isValid) {
                     test.passed = true;
                     test.message = '✅ Valid JSON-LD structure';
@@ -372,7 +372,7 @@ export class StructuredDataValidator {
      * Rich Snippetsのテスト
      * @private
      */
-    private async _testRichSnippets(structuredData: StructuredDataObject): Promise<TestResult> {
+    private async testRichSnippets(structuredData: StructuredDataObject): Promise<TestResult> {
         const test: TestResult = {
             name: 'Rich snippets compatibility',
             passed: false,
@@ -404,7 +404,7 @@ export class StructuredDataValidator {
      * JSON-LD形式の有効性確認
      * @private
      */
-    private _isValidJsonLd(data: any): boolean {
+    private isValidJsonLd(data: any): boolean {
         if (!data || typeof data !== 'object') return false;
         if (!data['@context'] || !data['@type']) return false;
         
@@ -421,7 +421,7 @@ export class StructuredDataValidator {
      * Schema.org vocabulary検証
      * @private
      */
-    private async _validateSchemaVocabulary(structuredData: StructuredDataObject): Promise<boolean> {
+    private async validateSchemaVocabulary(structuredData: StructuredDataObject): Promise<boolean> {
         // 実際の実装では Schema.org の公式ボキャブラリーと比較
         const knownVideoGameProperties = [
             'name', 'description', 'genre', 'gamePlatform', 'operatingSystem',
@@ -440,7 +440,7 @@ export class StructuredDataValidator {
      * Rich Snippet互換性チェック
      * @private
      */
-    private _checkRichSnippetCompatibility(structuredData: StructuredDataObject, snippetType: string): boolean {
+    private checkRichSnippetCompatibility(structuredData: StructuredDataObject, snippetType: string): boolean {
         const compatibilityMap: Record<string, string[]> = {
             'Game': ['name', 'description', 'genre', 'gamePlatform'],
             'SoftwareApplication': ['name', 'description', 'applicationCategory', 'operatingSystem'],
@@ -455,7 +455,7 @@ export class StructuredDataValidator {
      * Google構造化データテストツール互換性チェック
      * @private
      */
-    private async _checkGoogleStructuredDataTestCompatibility(structuredData: StructuredDataObject): Promise<boolean> {
+    private async checkGoogleStructuredDataTestCompatibility(structuredData: StructuredDataObject): Promise<boolean> {
         // Google構造化データテストツールで問題となりやすい項目をチェック
         const issues: string[] = [];
         
@@ -470,7 +470,7 @@ export class StructuredDataValidator {
         }
         
         // 日付形式チェック
-        if(structuredData.datePublished && !this._isValidISODate(structuredData.datePublished)) {
+        if(structuredData.datePublished && !this.isValidISODate(structuredData.datePublished)) {
             issues.push('Date should be in ISO format');
         }
         
@@ -481,7 +481,7 @@ export class StructuredDataValidator {
      * ISO日付形式の検証
      * @private
      */
-    private _isValidISODate(dateString: string): boolean {
+    private isValidISODate(dateString: string): boolean {
         const isoDateRegex = /^\d{4}-\d{2}-\d{2}(T\d{2}:\d{2}:\d{2}(\.\d{3})?Z?)?$/;
         return isoDateRegex.test(dateString);
     }

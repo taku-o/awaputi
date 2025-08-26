@@ -156,15 +156,15 @@ export class EnhancedEffectManager extends EffectManager {
         this.accessibilityIntegrator = null;
         this.accessibilityEnabled = false;
         
-        this._initializeRenderers();
-        this._initializeAccessibility();
+        this.initializeRenderers();
+        this.initializeAccessibility();
         console.log('[EnhancedEffectManager] Main Controller Pattern初期化完了');
     }
     
     /**
      * レンダラーの初期化
      */
-    private _initializeRenderers(): void {
+    private initializeRenderers(): void {
         try {
             this.transitionRenderer = new EffectTransitionRenderer(this.canvas);
             this.lightingRenderer = new LightingSystemRenderer(this.canvas);
@@ -175,7 +175,7 @@ export class EnhancedEffectManager extends EffectManager {
             console.log('[EnhancedEffectManager] レンダリングコンポーネントを初期化しました');
         } catch (error) {
             getErrorHandler().handleError(error as Error, {
-                context: 'EnhancedEffectManager._initializeRenderers'
+                context: 'EnhancedEffectManager.initializeRenderers'
             });
         }
     }
@@ -183,12 +183,12 @@ export class EnhancedEffectManager extends EffectManager {
     /**
      * アクセシビリティ統合の初期化
      */
-    private _initializeAccessibility(): void {
+    private initializeAccessibility(): void {
         try {
             console.log('[EnhancedEffectManager] アクセシビリティ統合を準備しました');
         } catch (error) {
             getErrorHandler().handleError(error as Error, {
-                context: 'EnhancedEffectManager._initializeAccessibility'
+                context: 'EnhancedEffectManager.initializeAccessibility'
             });
         }
     }
@@ -308,7 +308,7 @@ export class EnhancedEffectManager extends EffectManager {
             // 基底クラスの効果を更新
             this.update(deltaTime);
             // 拡張効果のレンダリング
-            this._renderEnhancedEffects(context, deltaTime);
+            this.renderEnhancedEffects(context, deltaTime);
             // パフォーマンスメトリクス更新
             const renderTime = Date.now() - startTime;
             this.effectController.updatePerformanceMetrics(renderTime);
@@ -322,7 +322,7 @@ export class EnhancedEffectManager extends EffectManager {
     /**
      * 拡張効果レンダリング
      */
-    private _renderEnhancedEffects(context: CanvasRenderingContext2D, deltaTime: number): void {
+    private renderEnhancedEffects(context: CanvasRenderingContext2D, deltaTime: number): void {
         try {
             // 遷移効果
             this.effectController.transitionEffects.forEach((effect: TransitionEffect) => {
@@ -361,7 +361,7 @@ export class EnhancedEffectManager extends EffectManager {
             }
         } catch (error) {
             getErrorHandler().handleError(error as Error, {
-                context: 'EnhancedEffectManager._renderEnhancedEffects'
+                context: 'EnhancedEffectManager.renderEnhancedEffects'
             });
         }
     }

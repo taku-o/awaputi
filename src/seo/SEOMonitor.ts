@@ -207,13 +207,13 @@ export class SEOMonitor {
         this.healthChecker = new HealthChecker(this.config, this.monitoringData, seoLogger, this.alertCallbacks);
         this.metaTagAnalyzer = new MetaTagAnalyzer(this.thresholds);
         
-        this._initialize();
+        this.initialize();
     }
     
     /**
      * 初期化処理
      */
-    private _initialize(): void {
+    private initialize(): void {
         try {
             if(typeof window !== 'undefined' && 'PerformanceObserver' in window) {
                 this.monitoringEngine.setupPerformanceObserver();
@@ -369,7 +369,7 @@ export class SEOMonitor {
                 this.monitoringData.lighthouse.push(checkResults.lighthouse);
                 
                 if (options.enableAlerts) {
-                    this._checkLighthouseAlerts(checkResults.lighthouse, checkResults.alerts);
+                    this.checkLighthouseAlerts(checkResults.lighthouse, checkResults.alerts);
                 }
             }
             
@@ -379,7 +379,7 @@ export class SEOMonitor {
                 this.monitoringData.coreWebVitals.push(checkResults.coreWebVitals);
                 
                 if (options.enableAlerts) {
-                    this._checkCoreWebVitalsAlerts(checkResults.coreWebVitals, checkResults.alerts);
+                    this.checkCoreWebVitalsAlerts(checkResults.coreWebVitals, checkResults.alerts);
                 }
             }
             
@@ -395,13 +395,13 @@ export class SEOMonitor {
             // アラートの処理
             if (checkResults.alerts.length > 0) {
                 this.monitoringData.alerts.push(...checkResults.alerts);
-                await this._processAlerts(checkResults.alerts);
+                await this.processAlerts(checkResults.alerts);
             }
             
             this.monitoringData.lastCheck = checkResults.timestamp;
             
             // データの保持期間制限（最大100エントリ）
-            this._limitDataRetention();
+            this.limitDataRetention();
             
             seoLogger.info('SEO monitoring check completed', {
                 lighthouseScore: checkResults.lighthouse?.seo,
@@ -417,7 +417,7 @@ export class SEOMonitor {
     /**
      * Lighthouseアラートのチェック
      */
-    private _checkLighthouseAlerts(lighthouseScore: LighthouseScore, alerts: Alert[]): void {
+    private checkLighthouseAlerts(lighthouseScore: LighthouseScore, alerts: Alert[]): void {
         if (!lighthouseScore) return;
         
         Object.entries(this.thresholds.lighthouse).forEach(([metric, threshold]) => {
@@ -439,7 +439,7 @@ export class SEOMonitor {
     /**
      * Core Web Vitalsアラートのチェック
      */
-    private _checkCoreWebVitalsAlerts(coreWebVitals: CoreWebVitalsData, alerts: Alert[]): void {
+    private checkCoreWebVitalsAlerts(coreWebVitals: CoreWebVitalsData, alerts: Alert[]): void {
         if (!coreWebVitals) return;
         
         Object.entries(this.thresholds.coreWebVitals).forEach(([metric, threshold]) => {
@@ -462,7 +462,7 @@ export class SEOMonitor {
     /**
      * アラートの処理
      */
-    private async _processAlerts(alerts: Alert[]): Promise<void> {
+    private async processAlerts(alerts: Alert[]): Promise<void> {
         try {
             for (const alert of alerts) {
                 // アラートコールバックの実行
@@ -479,14 +479,14 @@ export class SEOMonitor {
                 (seoLogger as any)[logLevel](`SEO Alert: ${alert.message}`, alert);
             }
         } catch (error) {
-            seoErrorHandler.handle(error as Error, '_processAlerts', alerts);
+            seoErrorHandler.handle(error as Error, 'processAlerts', alerts);
         }
     }
     
     /**
      * データ保持期間の制限
      */
-    private _limitDataRetention(): void {
+    private limitDataRetention(): void {
         const maxEntries = 100;
         
         if (this.monitoringData.lighthouse && this.monitoringData.lighthouse.length > maxEntries) {
@@ -654,7 +654,7 @@ export class SEOMonitor {
             case 'json':
                 return JSON.stringify(report, null, 2);
             case 'html':
-                return this._generateHTMLReport(report);
+                return this.generateHTMLReport(report);
             default:
                 throw new Error(`Unsupported report format: ${format}`);
         }
@@ -663,7 +663,7 @@ export class SEOMonitor {
     /**
      * HTMLレポートの生成
      */
-    private _generateHTMLReport(report: MonitoringReport): string {
+    private generateHTMLReport(report: MonitoringReport): string {
         return `
 <!DOCTYPE html>
 <html>

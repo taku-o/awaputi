@@ -118,7 +118,7 @@ interface AudioManager {
         getCacheStats(): {
             memory: { total: number; };
         };
-        _performAutomaticCleanup(): void;
+        performAutomaticCleanup(): void;
     };
     cleanupInactiveSources?(): void;
     setEffectsEnabled?(enabled: boolean): void;
@@ -368,9 +368,9 @@ export class AudioPerformanceMonitor {
     private initialize(): void {
         try {
             // 設定を読み込み
-            this._loadMonitoringSettings();
+            this.loadMonitoringSettings();
             // CPUベンチマークを実行
-            this._calibrateCPUBenchmark();
+            this.calibrateCPUBenchmark();
             // パフォーマンス監視を開始
             if (this.monitoringSettings.enabled) {
                 this.startMonitoring();
@@ -389,7 +389,7 @@ export class AudioPerformanceMonitor {
      * 監視設定を読み込み
      * @private
      */
-    private _loadMonitoringSettings(): void {
+    private loadMonitoringSettings(): void {
         try {
             const performanceConfig = this.configManager.get('performance') || {};
             
@@ -412,7 +412,7 @@ export class AudioPerformanceMonitor {
 
         } catch (error) {
             getErrorHandler().handleError(error, 'AUDIO_PERFORMANCE_ERROR', {
-                operation: '_loadMonitoringSettings'
+                operation: 'loadMonitoringSettings'
             });
         }
     }
@@ -420,7 +420,7 @@ export class AudioPerformanceMonitor {
      * CPUベンチマークを実行
      * @private
      */
-    private _calibrateCPUBenchmark(): void {
+    private calibrateCPUBenchmark(): void {
         try {
             console.log('Calibrating CPU benchmark...');
             
@@ -441,7 +441,7 @@ export class AudioPerformanceMonitor {
             
         } catch (error) {
             getErrorHandler().handleError(error, 'AUDIO_PERFORMANCE_ERROR', {
-                operation: '_calibrateCPUBenchmark'
+                operation: 'calibrateCPUBenchmark'
             });
             
             // フォールバック値を設定
@@ -461,9 +461,9 @@ export class AudioPerformanceMonitor {
             
             // 監視間隔を設定
             this.monitoringState.intervalId = setInterval(() => {
-                this._collectPerformanceMetrics();
-                this._analyzePerformance();
-                this._checkAlertConditions();
+                this.collectPerformanceMetrics();
+                this.analyzePerformance();
+                this.checkAlertConditions();
             }, this.monitoringSettings.interval);
             
             this.monitoringState.active = true;
@@ -505,23 +505,23 @@ export class AudioPerformanceMonitor {
      * パフォーマンスメトリクスを収集
      * @private
      */
-    private _collectPerformanceMetrics(): void {
+    private collectPerformanceMetrics(): void {
         try {
             // CPU使用率を測定
-            const cpuUsage = this._measureCPUUsage();
+            const cpuUsage = this.measureCPUUsage();
             // メモリ使用量を測定
-            const memoryUsage = this._measureMemoryUsage();
+            const memoryUsage = this.measureMemoryUsage();
             // オーディオノード数を計測
-            const nodeCount = this._countAudioNodes();
+            const nodeCount = this.countAudioNodes();
             // フレームレートを測定（利用可能な場合）
-            const frameRate = this._measureFrameRate();
+            const frameRate = this.measureFrameRate();
             // メトリクスに追加
             this.metrics.addSample(cpuUsage, memoryUsage, nodeCount, frameRate);
             // 詳細メモリ情報を更新
-            this._updateDetailedMemoryInfo();
+            this.updateDetailedMemoryInfo();
         } catch (error) {
             getErrorHandler().handleError(error, 'AUDIO_PERFORMANCE_ERROR', {
-                operation: '_collectPerformanceMetrics'
+                operation: 'collectPerformanceMetrics'
             });
         }
     }
@@ -530,7 +530,7 @@ export class AudioPerformanceMonitor {
      * @returns CPU使用率 (0-1)
      * @private
      */
-    private _measureCPUUsage(): number {
+    private measureCPUUsage(): number {
         try {
             if (!this.cpuBenchmark.calibrated || !this.cpuBenchmark.baselineTime) {
                 return 0;
@@ -556,7 +556,7 @@ export class AudioPerformanceMonitor {
             
         } catch (error) {
             getErrorHandler().handleError(error, 'AUDIO_PERFORMANCE_ERROR', {
-                operation: '_measureCPUUsage'
+                operation: 'measureCPUUsage'
             });
             return 0;
         }
@@ -566,7 +566,7 @@ export class AudioPerformanceMonitor {
      * @returns メモリ使用率 (0-1)
      * @private
      */
-    private _measureMemoryUsage(): number {
+    private measureMemoryUsage(): number {
         try {
             let memoryUsage = 0;
             
@@ -579,14 +579,14 @@ export class AudioPerformanceMonitor {
                 memoryUsage = usedJSHeapSize / jsHeapSizeLimit;
             } else {
                 // フォールバック: AudioContext関連のメモリを推定
-                memoryUsage = this._estimateAudioMemoryUsage();
+                memoryUsage = this.estimateAudioMemoryUsage();
             }
             
             return Math.max(0, Math.min(1, memoryUsage));
             
         } catch (error) {
             getErrorHandler().handleError(error, 'AUDIO_PERFORMANCE_ERROR', {
-                operation: '_measureMemoryUsage'
+                operation: 'measureMemoryUsage'
             });
             return 0;
         }
@@ -596,12 +596,12 @@ export class AudioPerformanceMonitor {
      * @returns 推定使用率 (0-1)
      * @private
      */
-    private _estimateAudioMemoryUsage(): number {
+    private estimateAudioMemoryUsage(): number {
         try {
             let estimatedMemory = 0;
             
             // AudioBufferの推定サイズ
-            const nodeCount = this._countAudioNodes();
+            const nodeCount = this.countAudioNodes();
             const estimatedBufferMemory = nodeCount * 1024 * 1024; // 1MB per node（推定）
             
             // キャッシュメモリ（AudioCacheManagerが利用可能な場合）
@@ -619,7 +619,7 @@ export class AudioPerformanceMonitor {
             
         } catch (error) {
             getErrorHandler().handleError(error, 'AUDIO_PERFORMANCE_ERROR', {
-                operation: '_estimateAudioMemoryUsage'
+                operation: 'estimateAudioMemoryUsage'
             });
             return 0;
         }
@@ -629,7 +629,7 @@ export class AudioPerformanceMonitor {
      * @returns ノード数
      * @private
      */
-    private _countAudioNodes(): number {
+    private countAudioNodes(): number {
         try {
             let nodeCount = 0;
             
@@ -658,7 +658,7 @@ export class AudioPerformanceMonitor {
             
         } catch (error) {
             getErrorHandler().handleError(error, 'AUDIO_PERFORMANCE_ERROR', {
-                operation: '_countAudioNodes'
+                operation: 'countAudioNodes'
             });
             return 0;
         }
@@ -668,7 +668,7 @@ export class AudioPerformanceMonitor {
      * @returns フレームレート（FPS）
      * @private
      */
-    private _measureFrameRate(): number | null {
+    private measureFrameRate(): number | null {
         try {
             // 実際の実装では、requestAnimationFrameを使用してフレームレートを測定
             // ここでは簡略化して固定値を返す
@@ -676,7 +676,7 @@ export class AudioPerformanceMonitor {
             
         } catch (error) {
             getErrorHandler().handleError(error, 'AUDIO_PERFORMANCE_ERROR', {
-                operation: '_measureFrameRate'
+                operation: 'measureFrameRate'
             });
             return null as any;
         }
@@ -685,7 +685,7 @@ export class AudioPerformanceMonitor {
      * 詳細メモリ情報を更新
      * @private
      */
-    private _updateDetailedMemoryInfo(): void {
+    private updateDetailedMemoryInfo(): void {
         try {
             // AudioBufferサイズの推定
             let audioBufferSize = 0;
@@ -699,7 +699,7 @@ export class AudioPerformanceMonitor {
             
         } catch (error) {
             getErrorHandler().handleError(error, 'AUDIO_PERFORMANCE_ERROR', {
-                operation: '_updateDetailedMemoryInfo'
+                operation: 'updateDetailedMemoryInfo'
             });
         }
         }
@@ -707,28 +707,28 @@ export class AudioPerformanceMonitor {
      * パフォーマンスを分析
      * @private
      */
-    private _analyzePerformance(): void {
+    private analyzePerformance(): void {
         try {
             const currentCPU = this.metrics.getLatest('cpuTime');
             const currentMemory = this.metrics.getLatest('memoryUsage');
             const currentNodes = this.metrics.getLatest('audioNodeCount');
             
             // パフォーマンスプロファイルを決定
-            const newProfile = this._determinePerformanceProfile(currentCPU, currentMemory, currentNodes);
+            const newProfile = this.determinePerformanceProfile(currentCPU, currentMemory, currentNodes);
             
             // プロファイルが変更された場合の処理
             if (newProfile !== this.monitoringState.performanceProfile) {
-                this._switchPerformanceProfile(newProfile);
+                this.switchPerformanceProfile(newProfile);
             }
             
             // 自動調整の実行判定
-            if (this._shouldTriggerAutoAdjustment(currentCPU, currentMemory, currentNodes)) {
-                this._performAutoAdjustment();
+            if (this.shouldTriggerAutoAdjustment(currentCPU, currentMemory, currentNodes)) {
+                this.performAutoAdjustment();
             }
             
         } catch (error) {
             getErrorHandler().handleError(error, 'AUDIO_PERFORMANCE_ERROR', {
-                operation: '_analyzePerformance'
+                operation: 'analyzePerformance'
             });
         }
         }
@@ -740,7 +740,7 @@ export class AudioPerformanceMonitor {
      * @returns プロファイル名
      * @private
      */
-    private _determinePerformanceProfile(cpu: number, memory: number, nodes: number): 'normal' | 'degraded' | 'critical' {
+    private determinePerformanceProfile(cpu: number, memory: number, nodes: number): 'normal' | 'degraded' | 'critical' {
         const thresholds = this.monitoringSettings.alertThresholds;
         
         // クリティカルレベルのチェック
@@ -765,7 +765,7 @@ export class AudioPerformanceMonitor {
      * @param newProfile - 新しいプロファイル
      * @private
      */
-    private _switchPerformanceProfile(newProfile: 'normal' | 'degraded' | 'critical'): void {
+    private switchPerformanceProfile(newProfile: 'normal' | 'degraded' | 'critical'): void {
         try {
             const oldProfile = this.monitoringState.performanceProfile;
             this.monitoringState.performanceProfile = newProfile;
@@ -773,14 +773,14 @@ export class AudioPerformanceMonitor {
             console.log(`Performance profile switched: ${oldProfile} -> ${newProfile}`);
             
             // プロファイルに応じた設定を適用
-            this._applyPerformanceProfile(newProfile);
+            this.applyPerformanceProfile(newProfile);
             
             // プロファイル変更をログに記録
-            this._logProfileChange(oldProfile, newProfile);
+            this.logProfileChange(oldProfile, newProfile);
             
         } catch (error) {
             getErrorHandler().handleError(error, 'AUDIO_PERFORMANCE_ERROR', {
-                operation: '_switchPerformanceProfile',
+                operation: 'switchPerformanceProfile',
                 newProfile: newProfile
             });
         }
@@ -790,7 +790,7 @@ export class AudioPerformanceMonitor {
      * @param profileName - プロファイル名
      * @private
      */
-    private _applyPerformanceProfile(profileName: string): void {
+    private applyPerformanceProfile(profileName: string): void {
         try {
             const profile = this.performanceProfiles[profileName];
             if (!profile) {
@@ -820,7 +820,7 @@ export class AudioPerformanceMonitor {
             
         } catch (error) {
             getErrorHandler().handleError(error, 'AUDIO_PERFORMANCE_ERROR', {
-                operation: '_applyPerformanceProfile',
+                operation: 'applyPerformanceProfile',
                 profileName: profileName
             });
         }
@@ -833,7 +833,7 @@ export class AudioPerformanceMonitor {
      * @returns 自動調整が必要か
      * @private
      */
-    private _shouldTriggerAutoAdjustment(cpu: number, memory: number, nodes: number): boolean {
+    private shouldTriggerAutoAdjustment(cpu: number, memory: number, nodes: number): boolean {
         const settings = this.monitoringSettings.autoAdjustment;
         
         if (!settings.enabled) {
@@ -864,7 +864,7 @@ export class AudioPerformanceMonitor {
      * 自動調整を実行
      * @private
      */
-    private _performAutoAdjustment(): void {
+    private performAutoAdjustment(): void {
         try {
             console.log('Performing automatic performance adjustment');
             
@@ -879,7 +879,7 @@ export class AudioPerformanceMonitor {
             }
             
             if (targetProfile !== currentProfile) {
-                this._switchPerformanceProfile(targetProfile);
+                this.switchPerformanceProfile(targetProfile);
             }
             
             // 調整履歴を更新
@@ -887,11 +887,11 @@ export class AudioPerformanceMonitor {
             this.monitoringState.adjustmentCount++;
             
             // 追加の最適化処理
-            this._performAdditionalOptimizations();
+            this.performAdditionalOptimizations();
             
         } catch (error) {
             getErrorHandler().handleError(error, 'AUDIO_PERFORMANCE_ERROR', {
-                operation: '_performAutoAdjustment'
+                operation: 'performAutoAdjustment'
             });
         }
     }
@@ -899,11 +899,11 @@ export class AudioPerformanceMonitor {
      * 追加の最適化処理を実行
      * @private
      */
-    private _performAdditionalOptimizations(): void {
+    private performAdditionalOptimizations(): void {
         try {
             // キャッシュのクリーンアップ
             if (this.audioManager?.cacheManager) {
-                this.audioManager.cacheManager._performAutomaticCleanup();
+                this.audioManager.cacheManager.performAutomaticCleanup();
             }
             
             // 非アクティブなオーディオソースの停止
@@ -915,7 +915,7 @@ export class AudioPerformanceMonitor {
             
         } catch (error) {
             getErrorHandler().handleError(error, 'AUDIO_PERFORMANCE_ERROR', {
-                operation: '_performAdditionalOptimizations'
+                operation: 'performAdditionalOptimizations'
             });
         }
     }
@@ -923,21 +923,21 @@ export class AudioPerformanceMonitor {
      * アラート条件をチェック
      * @private
      */
-    private _checkAlertConditions(): void {
+    private checkAlertConditions(): void {
         try {
             const currentCPU = this.metrics.getLatest('cpuTime');
             const currentMemory = this.metrics.getLatest('memoryUsage');
             const currentNodes = this.metrics.getLatest('audioNodeCount');
             const thresholds = this.monitoringSettings.alertThresholds;
             // CPU使用率アラート
-            this._checkAndTriggerAlert('cpu_high', currentCPU > thresholds.cpuHigh, {
+            this.checkAndTriggerAlert('cpu_high', currentCPU > thresholds.cpuHigh, {
                 type: 'cpu',
                 level: 'high',
                 value: currentCPU,
                 threshold: thresholds.cpuHigh
             });
             
-            this._checkAndTriggerAlert('cpu_critical', currentCPU > thresholds.cpuCritical, {
+            this.checkAndTriggerAlert('cpu_critical', currentCPU > thresholds.cpuCritical, {
                 type: 'cpu',
                 level: 'critical',
                 value: currentCPU,
@@ -945,14 +945,14 @@ export class AudioPerformanceMonitor {
             });
             
             // メモリ使用率アラート
-            this._checkAndTriggerAlert('memory_high', currentMemory > thresholds.memoryHigh, {
+            this.checkAndTriggerAlert('memory_high', currentMemory > thresholds.memoryHigh, {
                 type: 'memory',
                 level: 'high',
                 value: currentMemory,
                 threshold: thresholds.memoryHigh
             });
             
-            this._checkAndTriggerAlert('memory_critical', currentMemory > thresholds.memoryCritical, {
+            this.checkAndTriggerAlert('memory_critical', currentMemory > thresholds.memoryCritical, {
                 type: 'memory',
                 level: 'critical',
                 value: currentMemory,
@@ -960,14 +960,14 @@ export class AudioPerformanceMonitor {
             });
             
             // ノード数アラート
-            this._checkAndTriggerAlert('nodes_high', currentNodes > thresholds.nodeCountHigh, {
+            this.checkAndTriggerAlert('nodes_high', currentNodes > thresholds.nodeCountHigh, {
                 type: 'nodes',
                 level: 'high',
                 value: currentNodes,
                 threshold: thresholds.nodeCountHigh
             });
             
-            this._checkAndTriggerAlert('nodes_critical', currentNodes > thresholds.nodeCountCritical, {
+            this.checkAndTriggerAlert('nodes_critical', currentNodes > thresholds.nodeCountCritical, {
                 type: 'nodes',
                 level: 'critical',
                 value: currentNodes,
@@ -976,7 +976,7 @@ export class AudioPerformanceMonitor {
             
         } catch (error) {
             getErrorHandler().handleError(error, 'AUDIO_PERFORMANCE_ERROR', {
-                operation: '_checkAlertConditions'
+                operation: 'checkAlertConditions'
             });
         }
     }
@@ -987,20 +987,20 @@ export class AudioPerformanceMonitor {
      * @param alertData - アラートデータ
      * @private
      */
-    private _checkAndTriggerAlert(alertId: string, condition: boolean, alertData: any): void { try {
+    private checkAndTriggerAlert(alertId: string, condition: boolean, alertData: any): void { try {
             const isActive = this.alertManager.activeAlerts.has(alertId);
             const isSuppressed = this.alertManager.suppressedAlerts.has(alertId);
             if (condition && !isActive && !isSuppressed) {
                 // 新しいアラートを発生
-                this._triggerAlert(alertId, alertData);
+                this.triggerAlert(alertId, alertData);
             } else if (!condition && isActive) {
                 // アラートを解除
-                this._resolveAlert(alertId);
+                this.resolveAlert(alertId);
             }
             
         } catch (error) {
             getErrorHandler().handleError(error, 'AUDIO_PERFORMANCE_ERROR', {
-                operation: '_checkAndTriggerAlert',
+                operation: 'checkAndTriggerAlert',
                 alertId: alertId
             });
         }
@@ -1011,7 +1011,7 @@ export class AudioPerformanceMonitor {
      * @param alertData - アラートデータ
      * @private
      */
-    private _triggerAlert(alertId: string, alertData: any): void {
+    private triggerAlert(alertId: string, alertData: any): void {
         try {
             const alert: Alert = {
                 id: alertId,
@@ -1031,11 +1031,11 @@ export class AudioPerformanceMonitor {
             console.warn(`Performance alert triggered: ${alertId}`, alertData);
             
             // アラートハンドラーを呼び出し（利用可能な場合）
-            this._notifyAlertHandlers(alert);
+            this.notifyAlertHandlers(alert);
             
         } catch (error) {
             getErrorHandler().handleError(error, 'AUDIO_PERFORMANCE_ERROR', {
-                operation: '_triggerAlert',
+                operation: 'triggerAlert',
                 alertId: alertId
             });
         }
@@ -1045,7 +1045,7 @@ export class AudioPerformanceMonitor {
      * @param alertId - アラートID
      * @private
      */
-    private _resolveAlert(alertId: string): void {
+    private resolveAlert(alertId: string): void {
         try {
             const alert = this.alertManager.activeAlerts.get(alertId);
             if (alert) {
@@ -1057,7 +1057,7 @@ export class AudioPerformanceMonitor {
             
         } catch (error) {
             getErrorHandler().handleError(error, 'AUDIO_PERFORMANCE_ERROR', {
-                operation: '_resolveAlert',
+                operation: 'resolveAlert',
                 alertId: alertId
             });
         }
@@ -1067,7 +1067,7 @@ export class AudioPerformanceMonitor {
      * @param alert - アラート情報
      * @private
      */
-    private _notifyAlertHandlers(alert: Alert): void {
+    private notifyAlertHandlers(alert: Alert): void {
         try {
             // アラートハンドラーが登録されている場合は呼び出し
             if (this.onAlert && typeof this.onAlert === 'function') {
@@ -1076,7 +1076,7 @@ export class AudioPerformanceMonitor {
             
         } catch (error) {
             getErrorHandler().handleError(error, 'AUDIO_PERFORMANCE_ERROR', {
-                operation: '_notifyAlertHandlers',
+                operation: 'notifyAlertHandlers',
                 alertId: alert.id
             });
         }
@@ -1087,7 +1087,7 @@ export class AudioPerformanceMonitor {
      * @param newProfile - 新しいプロファイル
      * @private
      */
-    private _logProfileChange(oldProfile: string, newProfile: string): void {
+    private logProfileChange(oldProfile: string, newProfile: string): void {
         try {
             const logEntry = {
                 timestamp: Date.now(),
@@ -1103,7 +1103,7 @@ export class AudioPerformanceMonitor {
 
         } catch (error) {
             getErrorHandler().handleError(error, 'AUDIO_PERFORMANCE_ERROR', {
-                operation: '_logProfileChange'
+                operation: 'logProfileChange'
             });
         }
     }

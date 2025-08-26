@@ -130,7 +130,7 @@ export class CacheSystem {
             maxSize: options.maxSize || 1000,
             ttl: options.ttl || 60000, // デフォルト有効期限: 60秒
             cleanupInterval: options.cleanupInterval || 300000, // デフォルトクリーンアップ間隔: 5分
-            priorityFunction: options.priorityFunction || this._defaultPriorityFunction.bind(this)
+            priorityFunction: options.priorityFunction || this.defaultPriorityFunction.bind(this)
         };
         
         // キャッシュ統計
@@ -150,10 +150,10 @@ export class CacheSystem {
         this.lastCleanup = Date.now();
         
         // 自動クリーンアップタイマー
-        this._startCleanupTimer();
+        this.startCleanupTimer();
         
         // メモリ監視タイマー
-        this._startMemoryMonitoring();
+        this.startMemoryMonitoring();
     }
     
     /**
@@ -163,7 +163,7 @@ export class CacheSystem {
         try {
             // キャッシュサイズ制限チェック
             if (this.cache.size >= this.config.maxSize && !this.cache.has(key)) {
-                this._evictItems(1);
+                this.evictItems(1);
             }
             
             const ttl = options.ttl || this.config.ttl;
@@ -188,7 +188,7 @@ export class CacheSystem {
             }
             
             // アクセス履歴を更新
-            this._updateAccessHistory(key);
+            this.updateAccessHistory(key);
 
             return true;
         } catch (error) {
@@ -228,7 +228,7 @@ export class CacheSystem {
             
             // アクセス統計を更新
             entry.accessCount++;
-            this._updateAccessHistory(key);
+            this.updateAccessHistory(key);
             this.stats.hits++;
 
             return entry.value;
@@ -366,7 +366,7 @@ export class CacheSystem {
         return {
             ...this.stats,
             hitRate: `${hitRate.toFixed(2)}%`,
-            memoryUsage: this._estimateMemoryUsage()
+            memoryUsage: this.estimateMemoryUsage()
         };
     }
     
@@ -378,8 +378,8 @@ export class CacheSystem {
         
         // クリーンアップタイマーを再設定
         if (newConfig.cleanupInterval) {
-            this._stopCleanupTimer();
-            this._startCleanupTimer();
+            this.stopCleanupTimer();
+            this.startCleanupTimer();
         }
     }
     
@@ -417,7 +417,7 @@ export class CacheSystem {
     /**
      * アイテムを追い出す（キャッシュサイズ制限時）
      */
-    private _evictItems(count: number): void {
+    private evictItems(count: number): void {
         try {
             if (this.cache.size === 0) return;
             
@@ -444,7 +444,7 @@ export class CacheSystem {
 
         } catch (error) {
             (ErrorHandler as any).handleError(error, {
-                context: 'CacheSystem._evictItems',
+                context: 'CacheSystem.evictItems',
                 count
             });
         }
@@ -453,14 +453,14 @@ export class CacheSystem {
     /**
      * アクセス履歴を更新
      */
-    private _updateAccessHistory(key: string): void {
+    private updateAccessHistory(key: string): void {
         this.accessHistory.set(key, Date.now());
     }
     
     /**
      * デフォルトの優先度計算関数（LRU + 優先度）
      */
-    private _defaultPriorityFunction(entry: CacheEntry): number {
+    private defaultPriorityFunction(entry: CacheEntry): number {
         // 基本優先度（ユーザー指定）
         const basePriority = entry.priority * 1000;
         
@@ -477,7 +477,7 @@ export class CacheSystem {
     /**
      * メモリ使用量を推定
      */
-    private _estimateMemoryUsage(): string {
+    private estimateMemoryUsage(): string {
         try {
             let totalSize = 0;
             
@@ -487,7 +487,7 @@ export class CacheSystem {
                 totalSize += key.length * 2; // 文字列は約2バイト/文字
                 
                 // エントリのサイズ
-                totalSize += this._estimateObjectSize(entry.value);
+                totalSize += this.estimateObjectSize(entry.value);
                 // メタデータのサイズ（固定値として推定）
                 totalSize += 40; // 数値4つ + オブジェクトオーバーヘッド
             }
@@ -507,7 +507,7 @@ export class CacheSystem {
     /**
      * オブジェクトのサイズを推定
      */
-    private _estimateObjectSize(obj: any): number {
+    private estimateObjectSize(obj: any): number {
         try {
             const type = typeof obj;
 
@@ -529,7 +529,7 @@ export class CacheSystem {
                 if (sampleSize > 0) {
                     let totalSampleSize = 0;
                     for (let i = 0; i < sampleSize; i++) {
-                        totalSampleSize += this._estimateObjectSize(obj[i]);
+                        totalSampleSize += this.estimateObjectSize(obj[i]);
                     }
                     // 平均サイズ × 全要素数
                     size += (totalSampleSize / sampleSize) * obj.length;
@@ -549,7 +549,7 @@ export class CacheSystem {
                     for (let i = 0; i < sampleSize; i++) {
                         const key = keys[i];
                         totalSampleSize += key.length * 2; // キー名
-                        totalSampleSize += this._estimateObjectSize(obj[key]); // 値
+                        totalSampleSize += this.estimateObjectSize(obj[key]); // 値
                     }
                     // 平均サイズ × 全プロパティ数
                     size += (totalSampleSize / sampleSize) * keys.length;
@@ -567,7 +567,7 @@ export class CacheSystem {
     /**
      * クリーンアップタイマーを開始
      */
-    private _startCleanupTimer(): void {
+    private startCleanupTimer(): void {
         this.cleanupTimer = setInterval(() => {
             this.cleanup();
         }, this.config.cleanupInterval);
@@ -581,7 +581,7 @@ export class CacheSystem {
     /**
      * クリーンアップタイマーを停止
      */
-    private _stopCleanupTimer(): void {
+    private stopCleanupTimer(): void {
         if (this.cleanupTimer) {
             clearInterval(this.cleanupTimer);
             this.cleanupTimer = null;
@@ -591,9 +591,9 @@ export class CacheSystem {
     /**
      * メモリ監視を開始
      */
-    private _startMemoryMonitoring(): void {
+    private startMemoryMonitoring(): void {
         this.memoryMonitorTimer = setInterval(() => {
-            this._performMemoryOptimization();
+            this.performMemoryOptimization();
         }, 120000); // 2分間隔でメモリ最適化
         
         // ノードプロセスが終了しないようにする
@@ -605,7 +605,7 @@ export class CacheSystem {
     /**
      * メモリ監視タイマーを停止
      */
-    private _stopMemoryMonitoring(): void {
+    private stopMemoryMonitoring(): void {
         if (this.memoryMonitorTimer) {
             clearInterval(this.memoryMonitorTimer);
             this.memoryMonitorTimer = null;
@@ -615,29 +615,29 @@ export class CacheSystem {
     /**
      * メモリ最適化を実行
      */
-    private _performMemoryOptimization(): void {
+    private performMemoryOptimization(): void {
         try {
             const beforeSize = this.cache.size;
-            const beforeMemory = this._estimateMemoryUsage();
+            const beforeMemory = this.estimateMemoryUsage();
             
             // 1. 期限切れエントリの削除
-            const _expiredCount = this._cleanupExpiredEntries();
+            const _expiredCount = this.cleanupExpiredEntries();
             
             // 2. 低優先度エントリの削除（メモリ使用量が高い場合）
             const memoryKB = parseInt(beforeMemory);
             if (memoryKB > 5000) {
                 // 5MB以上の場合
-                this._cleanupLowPriorityEntries(Math.floor(this.cache.size * 0.2)); // 20%削除
+                this.cleanupLowPriorityEntries(Math.floor(this.cache.size * 0.2)); // 20%削除
             }
             
             // 3. 古いアクセス履歴のクリーンアップ
-            this._cleanupOldAccessHistory();
+            this.cleanupOldAccessHistory();
             
             // 4. 重複データの最適化
-            this._optimizeDuplicateData();
+            this.optimizeDuplicateData();
             
             const afterSize = this.cache.size;
-            const afterMemory = this._estimateMemoryUsage();
+            const afterMemory = this.estimateMemoryUsage();
             
             if (beforeSize !== afterSize) {
                 console.log(`[CacheSystem] Memory optimization: ${beforeSize} -> ${afterSize} entries, ${beforeMemory} -> ${afterMemory}`);
@@ -650,7 +650,7 @@ export class CacheSystem {
     /**
      * 期限切れエントリをクリーンアップ
      */
-    private _cleanupExpiredEntries(): number {
+    private cleanupExpiredEntries(): number {
         const now = Date.now();
         let count = 0;
         
@@ -672,7 +672,7 @@ export class CacheSystem {
     /**
      * 低優先度エントリをクリーンアップ
      */
-    private _cleanupLowPriorityEntries(targetCount: number): number {
+    private cleanupLowPriorityEntries(targetCount: number): number {
         if (targetCount <= 0 || this.cache.size === 0) return 0;
         
         // 優先度スコアを計算してソート
@@ -706,7 +706,7 @@ export class CacheSystem {
     /**
      * 古いアクセス履歴をクリーンアップ
      */
-    private _cleanupOldAccessHistory(): void {
+    private cleanupOldAccessHistory(): void {
         const now = Date.now();
         const maxAge = 3600000; // 1時間
         const keysToDelete: string[] = [];
@@ -723,7 +723,7 @@ export class CacheSystem {
     /**
      * 重複データを最適化
      */
-    private _optimizeDuplicateData(): void {
+    private optimizeDuplicateData(): void {
         // 同じ値を持つエントリを特定
         const valueMap = new Map<string, Array<{ key: string; entry: CacheEntry }>>();
         
@@ -761,7 +761,7 @@ export class CacheSystem {
         const results: LeakDetectionResult = {
             potentialLeaks: [],
             recommendations: [],
-            memoryUsage: this._estimateMemoryUsage(),
+            memoryUsage: this.estimateMemoryUsage(),
             cacheSize: this.cache.size,
             accessHistorySize: this.accessHistory.size
         };
@@ -846,28 +846,28 @@ export class CacheSystem {
     fixMemoryLeaks(): MemoryFixResult {
         const beforeStats: MemoryStats = {
             cacheSize: this.cache.size,
-            memoryUsage: this._estimateMemoryUsage(),
+            memoryUsage: this.estimateMemoryUsage(),
             accessHistorySize: this.accessHistory.size
         };
         
         // 1. 期限切れエントリの削除
-        const expiredCount = this._cleanupExpiredEntries();
+        const expiredCount = this.cleanupExpiredEntries();
         
         // 2. 古いアクセス履歴の削除
-        this._cleanupOldAccessHistory();
+        this.cleanupOldAccessHistory();
         
         // 3. 重複データの最適化
-        this._optimizeDuplicateData();
+        this.optimizeDuplicateData();
         
         // 4. キャッシュサイズが制限を超えている場合の強制削除
         if (this.cache.size > this.config.maxSize) {
             const excessCount = this.cache.size - this.config.maxSize;
-            this._cleanupLowPriorityEntries(excessCount);
+            this.cleanupLowPriorityEntries(excessCount);
         }
         
         const afterStats: MemoryStats = {
             cacheSize: this.cache.size,
-            memoryUsage: this._estimateMemoryUsage(),
+            memoryUsage: this.estimateMemoryUsage(),
             accessHistorySize: this.accessHistory.size
         };
         
@@ -892,7 +892,7 @@ export class CacheSystem {
             }
             
             // ブラウザ環境では手動でのメモリ解放を試行
-            this._manualMemoryCleanup();
+            this.manualMemoryCleanup();
             return true;
 
         } catch (error) {
@@ -904,12 +904,12 @@ export class CacheSystem {
     /**
      * 手動メモリクリーンアップ
      */
-    private _manualMemoryCleanup(): void {
+    private manualMemoryCleanup(): void {
         // 大きなオブジェクトの参照を削除
         const largeEntries: EntryWithSize[] = [];
         
         for(const [key, entry] of this.cache.entries()) {
-            const estimatedSize = this._estimateObjectSize(entry.value);
+            const estimatedSize = this.estimateObjectSize(entry.value);
             if (estimatedSize > 10000) { // 10KB以上
                 largeEntries.push({ key, size: estimatedSize });
             }
@@ -936,11 +936,11 @@ export class CacheSystem {
     getMemoryReport(): MemoryReport {
         const report: MemoryReport = {
             overview: {
-                totalMemoryUsage: this._estimateMemoryUsage(),
+                totalMemoryUsage: this.estimateMemoryUsage(),
                 cacheSize: this.cache.size,
                 accessHistorySize: this.accessHistory.size,
                 averageEntrySize: this.cache.size > 0 ? 
-                    `${Math.round(parseInt(this._estimateMemoryUsage()) / this.cache.size)} KB` : '0 KB'
+                    `${Math.round(parseInt(this.estimateMemoryUsage()) / this.cache.size)} KB` : '0 KB'
             },
             breakdown: {
                 cacheEntries: '0 KB',
@@ -956,7 +956,7 @@ export class CacheSystem {
         let totalCacheSize = 0;
         
         for(const [key, entry] of this.cache.entries()) {
-            const size = this._estimateObjectSize(entry);
+            const size = this.estimateObjectSize(entry);
             entrySizes.push({ key, size });
             totalCacheSize += size;
         }
@@ -997,8 +997,8 @@ export class CacheSystem {
      */
     destroy(): void {
         // タイマーを停止
-        this._stopCleanupTimer();
-        this._stopMemoryMonitoring();
+        this.stopCleanupTimer();
+        this.stopMemoryMonitoring();
         
         // キャッシュを段階的にクリア（大量データの場合のメモリ負荷軽減）
         const batchSize = 100;

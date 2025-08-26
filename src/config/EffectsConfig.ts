@@ -144,29 +144,29 @@ export class EffectsConfig {
 
     constructor() {
         this.configManager = getConfigurationManager();
-        this._initialize();
+        this.initialize();
     }
 
     /**
      * 初期化処理 - デフォルト設定の登録
      * @private
      */
-    private _initialize(): void {
+    private initialize(): void {
         try {
             // パーティクル設定の初期化
-            this._initializeParticleConfig();
+            this.initializeParticleConfig();
             // 画面効果設定の初期化
-            this._initializeScreenEffectConfig();
+            this.initializeScreenEffectConfig();
             // アニメーション設定の初期化
-            this._initializeAnimationConfig();
+            this.initializeAnimationConfig();
             // 品質設定の初期化
-            this._initializeQualityConfig();
+            this.initializeQualityConfig();
             // 検証ルールの設定
-            this._setupValidationRules();
+            this.setupValidationRules();
             console.log('[EffectsConfig] 初期化完了');
         } catch (error) {
             getErrorHandler().handleError(error as Error, 'EFFECTS_CONFIG_INIT_ERROR', {
-                context: 'EffectsConfig._initialize'
+                context: 'EffectsConfig.initialize'
             });
         }
     }
@@ -175,7 +175,7 @@ export class EffectsConfig {
      * パーティクル設定の初期化
      * @private
      */
-    private _initializeParticleConfig(): void {
+    private initializeParticleConfig(): void {
         this.configManager.set('effects', 'particles.maxCount', 500);
         this.configManager.set('effects', 'particles.poolSize', 100);
         this.configManager.set('effects', 'particles.quality', 1.0);
@@ -202,7 +202,7 @@ export class EffectsConfig {
      * 画面効果設定の初期化
      * @private
      */
-    private _initializeScreenEffectConfig(): void {
+    private initializeScreenEffectConfig(): void {
         this.configManager.set('effects', 'screen.shakeIntensity', 1.0);
         this.configManager.set('effects', 'screen.flashDuration', 200);
         this.configManager.set('effects', 'screen.zoomSensitivity', 1.0);
@@ -228,7 +228,7 @@ export class EffectsConfig {
      * アニメーション設定の初期化
      * @private
      */
-    private _initializeAnimationConfig(): void {
+    private initializeAnimationConfig(): void {
         this.configManager.set('effects', 'animations.duration', 300);
         this.configManager.set('effects', 'animations.easing', 'easeOut');
         this.configManager.set('effects', 'animations.enabled', true);
@@ -254,7 +254,7 @@ export class EffectsConfig {
      * 品質設定の初期化
      * @private
      */
-    private _initializeQualityConfig(): void {
+    private initializeQualityConfig(): void {
         this.configManager.set('effects', 'quality.level', 'high');
         this.configManager.set('effects', 'quality.autoAdjust', true);
         this.configManager.set('effects', 'quality.targetFPS', 60);
@@ -302,7 +302,7 @@ export class EffectsConfig {
      * 検証ルールの設定
      * @private
      */
-    private _setupValidationRules(): void {
+    private setupValidationRules(): void {
         this.configManager.setValidationRule('effects.particles.maxCount', {
             type: 'number',
             validate: (value: any) => typeof value === 'number' && value >= 0 && value <= 2000

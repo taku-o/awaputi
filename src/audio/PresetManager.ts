@@ -202,16 +202,16 @@ export class PresetManager {
     initialize(): void {
         try {
             // 事前定義プリセットを初期化
-            this._initializeBuiltinPresets();
+            this.initializeBuiltinPresets();
             
             // ユーザー定義プリセットを読み込み
-            this._loadUserPresets();
+            this.loadUserPresets();
             
             // 設定変更の監視を開始
-            this._setupConfigWatchers();
+            this.setupConfigWatchers();
             
             // 最後に適用されたプリセットを復元
-            this._restoreLastPreset();
+            this.restoreLastPreset();
             
             console.log('PresetManager initialized successfully');
         } catch (error) {
@@ -226,7 +226,7 @@ export class PresetManager {
      * 事前定義プリセットを初期化
      * @private
      */
-    private _initializeBuiltinPresets(): void {
+    private initializeBuiltinPresets(): void {
         try {
             // ゲーミングプリセット
             this.builtinPresets.set('gaming', {
@@ -371,7 +371,7 @@ export class PresetManager {
             console.log(`Initialized ${this.builtinPresets.size} builtin presets`);
         } catch (error) {
             this.errorHandler.handleError(error as Error, 'AUDIO_ERROR', {
-                operation: '_initializeBuiltinPresets',
+                operation: 'initializeBuiltinPresets',
                 component: 'PresetManager'
             });
         }
@@ -381,12 +381,12 @@ export class PresetManager {
      * ユーザー定義プリセットを読み込み
      * @private
      */
-    private _loadUserPresets(): void {
+    private loadUserPresets(): void {
         try {
             const savedPresets = this.configManager.get('audio', 'userPresets', {});
             
             for (const [id, presetData] of Object.entries(savedPresets)) {
-                if (this._isValidPresetData(presetData)) {
+                if (this.isValidPresetData(presetData)) {
                     this.userPresets.set(id, presetData as PresetData);
                 }
             }
@@ -394,7 +394,7 @@ export class PresetManager {
             console.log(`Loaded ${this.userPresets.size} user presets`);
         } catch (error) {
             this.errorHandler.handleError(error as Error, 'AUDIO_ERROR', {
-                operation: '_loadUserPresets',
+                operation: 'loadUserPresets',
                 component: 'PresetManager'
             });
         }
@@ -404,14 +404,14 @@ export class PresetManager {
      * 設定変更の監視を開始
      * @private
      */
-    private _setupConfigWatchers(): void {
+    private setupConfigWatchers(): void {
         try {
             // ユーザープリセットの変更監視
             const userPresetsWatcher = this.configManager.watch(
                 'audio',
                 'userPresets',
                 (newPresets: any) => {
-                    this._onUserPresetsChanged(newPresets);
+                    this.onUserPresetsChanged(newPresets);
                 }
             );
             this.configWatchers.add(userPresetsWatcher);
@@ -419,7 +419,7 @@ export class PresetManager {
             console.log('Config watchers set up successfully');
         } catch (error) {
             this.errorHandler.handleError(error as Error, 'AUDIO_ERROR', {
-                operation: '_setupConfigWatchers',
+                operation: 'setupConfigWatchers',
                 component: 'PresetManager'
             });
         }
@@ -429,7 +429,7 @@ export class PresetManager {
      * 最後に適用されたプリセットを復元
      * @private
      */
-    private _restoreLastPreset(): void {
+    private restoreLastPreset(): void {
         try {
             const lastPresetId = this.configManager.get('audio', 'lastPresetId', 'default');
             
@@ -441,7 +441,7 @@ export class PresetManager {
             }
         } catch (error) {
             this.errorHandler.handleError(error as Error, 'AUDIO_ERROR', {
-                operation: '_restoreLastPreset',
+                operation: 'restoreLastPreset',
                 component: 'PresetManager'
             });
         }
@@ -451,7 +451,7 @@ export class PresetManager {
      * プリセットデータの妥当性を検証
      * @private
      */
-    private _isValidPresetData(data: any): boolean {
+    private isValidPresetData(data: any): boolean {
         return data && 
                typeof data.id === 'string' &&
                typeof data.name === 'string' &&
@@ -466,12 +466,12 @@ export class PresetManager {
      * ユーザープリセット変更時の処理
      * @private
      */
-    private _onUserPresetsChanged(newPresets: any): void {
+    private onUserPresetsChanged(newPresets: any): void {
         try {
             this.userPresets.clear();
             
             for (const [id, presetData] of Object.entries(newPresets)) {
-                if (this._isValidPresetData(presetData)) {
+                if (this.isValidPresetData(presetData)) {
                     this.userPresets.set(id, presetData as PresetData);
                 }
             }
@@ -479,7 +479,7 @@ export class PresetManager {
             console.log(`User presets updated: ${this.userPresets.size} presets`);
         } catch (error) {
             this.errorHandler.handleError(error as Error, 'AUDIO_ERROR', {
-                operation: '_onUserPresetsChanged',
+                operation: 'onUserPresetsChanged',
                 component: 'PresetManager'
             });
         }
@@ -496,13 +496,13 @@ export class PresetManager {
             }
             
             // 音量設定を適用
-            this._applyVolumeSettings(preset.settings.volumes);
+            this.applyVolumeSettings(preset.settings.volumes);
             
             // イコライザー設定を適用
-            this._applyEqualizerSettings(preset.settings.equalizer);
+            this.applyEqualizerSettings(preset.settings.equalizer);
             
             // エフェクト設定を適用
-            this._applyEffectSettings(preset.settings.effects);
+            this.applyEffectSettings(preset.settings.effects);
             
             // 現在のプリセットを更新
             this.currentPreset = {
@@ -513,7 +513,7 @@ export class PresetManager {
             };
             
             // 履歴に追加
-            this._addToHistory(preset);
+            this.addToHistory(preset);
             
             // 最後に適用されたプリセットとして保存
             this.configManager.set('audio', 'lastPresetId', presetId);
@@ -534,7 +534,7 @@ export class PresetManager {
      * 音量設定を適用
      * @private
      */
-    private _applyVolumeSettings(volumes: VolumeSettings): void {
+    private applyVolumeSettings(volumes: VolumeSettings): void {
         for (const [category, volume] of Object.entries(volumes)) {
             this.audioController.setVolume(category, volume);
         }
@@ -544,7 +544,7 @@ export class PresetManager {
      * イコライザー設定を適用
      * @private
      */
-    private _applyEqualizerSettings(equalizer: EqualizerSettings): void {
+    private applyEqualizerSettings(equalizer: EqualizerSettings): void {
         this.audioController.setEqualizerEnabled(equalizer.enabled);
         
         if (equalizer.enabled) {
@@ -557,7 +557,7 @@ export class PresetManager {
      * エフェクト設定を適用
      * @private
      */
-    private _applyEffectSettings(effects: EffectSettings): void {
+    private applyEffectSettings(effects: EffectSettings): void {
         if (this.audioController.audioManager) {
             this.audioController.audioManager.setAudioEffect('reverb', effects.reverb);
             this.audioController.audioManager.setAudioEffect('compression', effects.compression);
@@ -568,7 +568,7 @@ export class PresetManager {
      * 履歴に追加
      * @private
      */
-    private _addToHistory(preset: PresetData): void {
+    private addToHistory(preset: PresetData): void {
         const historyItem: PresetHistoryItem = {
             id: preset.id,
             appliedAt: Date.now(),
@@ -645,7 +645,7 @@ export class PresetManager {
             }
             
             // 現在の設定を取得
-            const currentSettings = this._getCurrentSettings();
+            const currentSettings = this.getCurrentSettings();
             
             const preset: PresetData = {
                 id,
@@ -659,7 +659,7 @@ export class PresetManager {
             };
             
             this.userPresets.set(id, preset);
-            this._saveUserPresets();
+            this.saveUserPresets();
             
             console.log(`Created user preset: ${name} (${id})`);
             return true;
@@ -677,7 +677,7 @@ export class PresetManager {
      * 現在の設定を取得
      * @private
      */
-    private _getCurrentSettings(): PresetSettings {
+    private getCurrentSettings(): PresetSettings {
         const volumes = this.audioController.getAllVolumes().levels;
         const equalizerEnabled = this.audioController.isEqualizerEnabled();
         const equalizerGains = this.audioController.getEqualizerGains();
@@ -705,7 +705,7 @@ export class PresetManager {
      * ユーザープリセットを保存
      * @private
      */
-    private _saveUserPresets(): void {
+    private saveUserPresets(): void {
         try {
             const presetsData: { [key: string]: PresetData } = {};
             
@@ -716,7 +716,7 @@ export class PresetManager {
             this.configManager.set('audio', 'userPresets', presetsData);
         } catch (error) {
             this.errorHandler.handleError(error as Error, 'AUDIO_ERROR', {
-                operation: '_saveUserPresets',
+                operation: 'saveUserPresets',
                 component: 'PresetManager'
             });
         }
@@ -741,7 +741,7 @@ export class PresetManager {
             
             preset.updatedAt = Date.now();
             
-            this._saveUserPresets();
+            this.saveUserPresets();
             
             console.log(`Updated user preset: ${preset.name} (${presetId})`);
             return true;
@@ -766,7 +766,7 @@ export class PresetManager {
             }
             
             this.userPresets.delete(presetId);
-            this._saveUserPresets();
+            this.saveUserPresets();
             
             // 現在適用中のプリセットが削除された場合はデフォルトに戻す
             if (this.currentPreset && this.currentPreset.id === presetId) {
@@ -863,14 +863,14 @@ export class PresetManager {
                 name: importData.preset.name,
                 description: importData.preset.description || '',
                 type: PRESET_TYPES.USER,
-                settings: importData.preset.settings || this._getDefaultSettings(),
+                settings: importData.preset.settings || this.getDefaultSettings(),
                 tags: importData.preset.tags || [],
                 createdAt: importData.preset.createdAt || Date.now(),
                 updatedAt: Date.now()
             };
             
             this.userPresets.set(preset.id, preset);
-            this._saveUserPresets();
+            this.saveUserPresets();
             
             console.log(`Imported preset: ${preset.name} (${preset.id})`);
             return true;
@@ -887,7 +887,7 @@ export class PresetManager {
      * デフォルト設定を取得
      * @private
      */
-    private _getDefaultSettings(): PresetSettings {
+    private getDefaultSettings(): PresetSettings {
         return {
             volumes: {
                 master: 0.7,

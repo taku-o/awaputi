@@ -208,21 +208,21 @@ export class MemoryOptimizer {
         try {
             // 文字列重複排除
             if (this.optimizationStrategies.stringDeduplication) {
-                optimized = this._deduplicateStrings(optimized, language);
+                optimized = this.deduplicateStrings(optimized, language);
             }
             
             // オブジェクトプーリング
             if (this.optimizationStrategies.objectPooling) {
-                optimized = this._applyObjectPooling(optimized, language);
+                optimized = this.applyObjectPooling(optimized, language);
             }
             
             // 弱参照の活用
             if (this.optimizationStrategies.weakReferences) {
-                this._registerWeakReferences(optimized, language);
+                this.registerWeakReferences(optimized, language);
             }
             
             // メモリ使用量を更新
-            this._updateMemoryUsage('translations', this._calculateObjectSize(optimized));
+            this.updateMemoryUsage('translations', this.calculateObjectSize(optimized));
             
             const optimizationTime = performance.now() - startTime;
             this.stats.totalOptimizations++;
@@ -239,7 +239,7 @@ export class MemoryOptimizer {
     /**
      * 文字列重複排除
      */
-    private _deduplicateStrings(data: any, _language: string): any {
+    private deduplicateStrings(data: any, _language: string): any {
         const deduped: any = {};
         
         const processValue = (value: any): any => {
@@ -280,33 +280,33 @@ export class MemoryOptimizer {
     /**
      * オブジェクトプーリングを適用
      */
-    private _applyObjectPooling(data: any, language: string): any {
+    private applyObjectPooling(data: any, language: string): any {
         const poolKey = `translations_${language}`;
         
         // 既存のプールをチェック
         if (this.translationPool.has(poolKey)) {
             const existingPool = this.translationPool.get(poolKey);
             // 類似したオブジェクト構造を再利用
-            const optimized = this._reuseObjectStructures(data, existingPool);
+            const optimized = this.reuseObjectStructures(data, existingPool);
             this.stats.objectsPooled++;
             return optimized;
         }
         
         // 新しいプールを作成
-        this.translationPool.set(poolKey, this._createObjectPool(data));
+        this.translationPool.set(poolKey, this.createObjectPool(data));
         return data;
     }
     
     /**
      * オブジェクト構造の再利用
      */
-    private _reuseObjectStructures(data: any, pool: any[]): any {
+    private reuseObjectStructures(data: any, pool: any[]): any {
         const reused: any = {};
         
         for (const [key, value] of Object.entries(data)) {
             if (typeof value === 'object' && value !== null && !Array.isArray(value)) {
                 // 類似した構造がプールにあるかチェック
-                const similar = this._findSimilarStructure(value, pool);
+                const similar = this.findSimilarStructure(value, pool);
                 if (similar) {
                     reused[key] = { ...similar, ...value };
                 } else {
@@ -324,7 +324,7 @@ export class MemoryOptimizer {
     /**
      * 類似構造を検索
      */
-    private _findSimilarStructure(target: any, pool: any[]): any | null {
+    private findSimilarStructure(target: any, pool: any[]): any | null {
         const targetKeys = Object.keys(target).sort();
         
         for (const poolItem of pool) {
@@ -346,7 +346,7 @@ export class MemoryOptimizer {
     /**
      * オブジェクトプールを作成
      */
-    private _createObjectPool(data: any): any[] {
+    private createObjectPool(data: any): any[] {
         const pool: any[] = [];
         
         const collectObjects = (obj: any): void => {
@@ -367,7 +367,7 @@ export class MemoryOptimizer {
     /**
      * 弱参照を登録
      */
-    private _registerWeakReferences(data: any, language: string): void {
+    private registerWeakReferences(data: any, language: string): void {
         if (typeof WeakRef !== 'undefined') {
             const weakRef = new WeakRef(data);
             this.objectReferences.set(data, {
@@ -381,7 +381,7 @@ export class MemoryOptimizer {
     /**
      * メモリ使用量を更新
      */
-    private _updateMemoryUsage(category: keyof MemoryUsage, size: number): void {
+    private updateMemoryUsage(category: keyof MemoryUsage, size: number): void {
         if (category !== 'total') {
             this.memoryUsage[category] = size;
         }
@@ -391,35 +391,35 @@ export class MemoryOptimizer {
             .reduce((sum, [, val]) => sum + (val as number), 0);
         
         // メモリ圧迫チェック
-        this._checkMemoryPressure();
+        this.checkMemoryPressure();
     }
     
     /**
      * メモリ圧迫をチェック
      */
-    private _checkMemoryPressure(): void {
+    private checkMemoryPressure(): void {
         const usageRatio = this.memoryUsage.total / this.maxMemoryUsage;
         
         if (usageRatio >= this.criticalThreshold) {
-            this._handleCriticalMemoryPressure();
+            this.handleCriticalMemoryPressure();
         } else if (usageRatio >= this.warningThreshold && !this.isUnderMemoryPressure) {
-            this._handleMemoryWarning();
+            this.handleMemoryWarning();
         } else if (usageRatio < this.warningThreshold && this.isUnderMemoryPressure) {
-            this._handleMemoryRecovery();
+            this.handleMemoryRecovery();
         }
     }
     
     /**
      * 緊急メモリ圧迫への対応
      */
-    private _handleCriticalMemoryPressure(): void {
+    private handleCriticalMemoryPressure(): void {
         console.warn('Critical memory pressure detected, initiating emergency cleanup');
         
         this.isUnderMemoryPressure = true;
         this.stats.memoryPressureEvents++;
         
         // 緊急クリーンアップ
-        this._performEmergencyCleanup();
+        this.performEmergencyCleanup();
         
         // 圧迫ハンドラーを実行
         for (const handler of this.memoryPressureHandlers) {
@@ -434,13 +434,13 @@ export class MemoryOptimizer {
     /**
      * メモリ警告への対応
      */
-    private _handleMemoryWarning(): void {
+    private handleMemoryWarning(): void {
         console.warn('Memory usage exceeds warning threshold');
         
         this.isUnderMemoryPressure = true;
         
         // プリエンプティブクリーンアップ
-        this._performPreemptiveCleanup();
+        this.performPreemptiveCleanup();
         
         // 警告ハンドラーを実行
         for (const handler of this.memoryPressureHandlers) {
@@ -455,7 +455,7 @@ export class MemoryOptimizer {
     /**
      * メモリ回復への対応
      */
-    private _handleMemoryRecovery(): void {
+    private handleMemoryRecovery(): void {
         console.log('Memory pressure relieved');
         
         this.isUnderMemoryPressure = false;
@@ -473,7 +473,7 @@ export class MemoryOptimizer {
     /**
      * 緊急クリーンアップ
      */
-    private _performEmergencyCleanup(): void {
+    private performEmergencyCleanup(): void {
         const startSize = this.memoryUsage.total;
         
         // 文字列プールをクリア
@@ -489,7 +489,7 @@ export class MemoryOptimizer {
         });
         
         // ガベージコレクションを強制実行
-        this._forceGarbageCollection();
+        this.forceGarbageCollection();
         
         const freedMemory = startSize - this.memoryUsage.total;
         this.stats.memoryFreed += freedMemory;
@@ -500,7 +500,7 @@ export class MemoryOptimizer {
     /**
      * プリエンプティブクリーンアップ
      */
-    private _performPreemptiveCleanup(): void {
+    private performPreemptiveCleanup(): void {
         // 古い文字列プールエントリを削除
         if (this.stringPool.size > 1000) {
             const entries = Array.from(this.stringPool.entries());
@@ -513,13 +513,13 @@ export class MemoryOptimizer {
         }
         
         // 弱参照をクリーンアップ
-        this._cleanupWeakReferences();
+        this.cleanupWeakReferences();
     }
     
     /**
      * 弱参照をクリーンアップ
      */
-    private _cleanupWeakReferences(): void {
+    private cleanupWeakReferences(): void {
         if (typeof WeakRef === 'undefined') return;
         
         const toDelete: object[] = [];
@@ -542,7 +542,7 @@ export class MemoryOptimizer {
     /**
      * ガベージコレクションを強制実行
      */
-    private _forceGarbageCollection(): void {
+    private forceGarbageCollection(): void {
         const startTime = performance.now();
         
         // ブラウザのGCを促す（確実ではない）
@@ -567,7 +567,7 @@ export class MemoryOptimizer {
     /**
      * オブジェクトサイズを計算
      */
-    private _calculateObjectSize(obj: any): number {
+    private calculateObjectSize(obj: any): number {
         try {
             // 簡易的なサイズ計算
             const jsonString = JSON.stringify(obj);
@@ -588,7 +588,7 @@ export class MemoryOptimizer {
                     const entries = list.getEntries();
                     for (const entry of entries) {
                         if (entry.entryType === 'measure' && entry.name.includes('memory')) {
-                            this._analyzeMemoryPerformance(entry);
+                            this.analyzeMemoryPerformance(entry);
                         }
                     }
                 });
@@ -605,7 +605,7 @@ export class MemoryOptimizer {
     /**
      * メモリパフォーマンスを分析
      */
-    private _analyzeMemoryPerformance(entry: PerformanceEntry): void {
+    private analyzeMemoryPerformance(entry: PerformanceEntry): void {
         if (entry.duration > 100) { // 100ms以上の処理
             console.warn(`Slow memory operation detected: ${entry.name} took ${entry.duration.toFixed(2)}ms`);
         }
@@ -617,7 +617,7 @@ export class MemoryOptimizer {
     private startPeriodicGC(): void {
         this.gcIntervalId = window.setInterval(() => {
             if (!this.isUnderMemoryPressure) {
-                this._performMaintenanceGC();
+                this.performMaintenanceGC();
             }
         }, this.gcInterval);
     }
@@ -625,9 +625,9 @@ export class MemoryOptimizer {
     /**
      * メンテナンス用ガベージコレクション
      */
-    private _performMaintenanceGC(): void {
+    private performMaintenanceGC(): void {
         // 軽量なクリーンアップ
-        this._cleanupWeakReferences();
+        this.cleanupWeakReferences();
         
         // 文字列プールの最適化
         if (this.stringPool.size > 5000) {

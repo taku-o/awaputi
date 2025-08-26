@@ -141,7 +141,7 @@ export class AdvancedViewportCuller {
             this.visibilityCache.clear();
             
             // Update spatial grid
-            this._updateSpatialGrid();
+            this.updateSpatialGrid();
 
         } catch (error) {
             this.errorHandler.logError('Failed to set viewport', error);
@@ -165,7 +165,7 @@ export class AdvancedViewportCuller {
             };
             
             this.renderableObjects.set(id, object);
-            this._assignToGrid(object);
+            this.assignToGrid(object);
 
         } catch (error) {
             this.errorHandler.logError('Failed to add object to culler', error);
@@ -179,7 +179,7 @@ export class AdvancedViewportCuller {
         try {
             const object = this.renderableObjects.get(id);
             if (object) {
-                this._removeFromGrid(object);
+                this.removeFromGrid(object);
                 this.renderableObjects.delete(id);
                 this.culledObjects.delete(id);
                 this.visibilityCache.delete(id);
@@ -196,9 +196,9 @@ export class AdvancedViewportCuller {
         try {
             const object = this.renderableObjects.get(id);
             if (object) {
-                this._removeFromGrid(object);
+                this.removeFromGrid(object);
                 object.bounds = { ...newBounds };
-                this._assignToGrid(object);
+                this.assignToGrid(object);
                 // Invalidate cached visibility
                 this.visibilityCache.delete(id);
             }
@@ -221,7 +221,7 @@ export class AdvancedViewportCuller {
         try {
             this.culledObjects.clear();
             // Use spatial grid for efficient culling
-            const relevantCells = this._getRelevantGridCells();
+            const relevantCells = this.getRelevantGridCells();
             const objectsToCheck = new Set<string>();
             
             // Collect objects from relevant grid cells
@@ -236,7 +236,7 @@ export class AdvancedViewportCuller {
             // Perform visibility test on collected objects
             for (const objectId of objectsToCheck) {
                 const object = this.renderableObjects.get(objectId);
-                if (object && this._isVisible(object)) {
+                if (object && this.isVisible(object)) {
                     object.visible = true;
                     visibleObjects.push(objectId);
                 } else if (object) {
@@ -255,7 +255,7 @@ export class AdvancedViewportCuller {
             this.stats.cullingTime = endTime - startTime;
             
             // Track performance history
-            this._trackPerformance();
+            this.trackPerformance();
             
             return visibleObjects;
 
@@ -311,7 +311,7 @@ export class AdvancedViewportCuller {
     /**
      * Test if object is visible within frustum
      */
-    private _isVisible(object: RenderableObject): boolean {
+    private isVisible(object: RenderableObject): boolean {
         const bounds = object.bounds;
         
         // Check frustum intersection
@@ -324,7 +324,7 @@ export class AdvancedViewportCuller {
     /**
      * Assign object to spatial grid cells
      */
-    private _assignToGrid(object: RenderableObject): void {
+    private assignToGrid(object: RenderableObject): void {
         const bounds = object.bounds;
         const startX = Math.floor(bounds.x / this.gridSize);
         const startY = Math.floor(bounds.y / this.gridSize);
@@ -348,7 +348,7 @@ export class AdvancedViewportCuller {
     /**
      * Remove object from spatial grid cells
      */
-    private _removeFromGrid(object: RenderableObject): void {
+    private removeFromGrid(object: RenderableObject): void {
         for (const cellKey of object.gridCells) {
             const cell = this.spatialGrid.get(cellKey);
             if (cell) {
@@ -364,7 +364,7 @@ export class AdvancedViewportCuller {
     /**
      * Get grid cells relevant to current viewport
      */
-    private _getRelevantGridCells(): Set<string> {
+    private getRelevantGridCells(): Set<string> {
         const cells = new Set<string>();
         const viewport = this.frustum;
         
@@ -385,14 +385,14 @@ export class AdvancedViewportCuller {
     /**
      * Update spatial grid when viewport changes
      */
-    private _updateSpatialGrid(): void {
+    private updateSpatialGrid(): void {
         // Grid is dynamically managed, no need to pre-populate
     }
     
     /**
      * Track performance metrics
      */
-    private _trackPerformance(): void {
+    private trackPerformance(): void {
         const entry: PerformanceEntry = {
             timestamp: Date.now(),
             cullingTime: this.stats.cullingTime,

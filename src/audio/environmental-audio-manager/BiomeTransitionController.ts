@@ -118,13 +118,13 @@ export class BiomeTransitionController {
             } = options;
             
             // 現在の環境音をフェードアウト
-            await this._fadeOutCurrentEnvironment(fadeTime);
+            await this.fadeOutCurrentEnvironment(fadeTime);
             
             // 新しい環境音レイヤーを準備
-            const newLayers = this._prepareBiomeLayers(biome, { weather, timeOfDay, intensity });
+            const newLayers = this.prepareBiomeLayers(biome, { weather, timeOfDay, intensity });
             
             // 新しい環境音をフェードイン
-            await this._fadeInEnvironment(newLayers, fadeTime);
+            await this.fadeInEnvironment(newLayers, fadeTime);
             
             console.log(`Biome transition completed: ${biome.name}`);
         } catch (error) {
@@ -140,7 +140,7 @@ export class BiomeTransitionController {
      * バイオームレイヤーを準備
      * @private
      */
-    private _prepareBiomeLayers(
+    private prepareBiomeLayers(
         biome: BiomeDefinition,
         options: Partial<TransitionOptions> = {}
     ): PreparedLayer[] {
@@ -164,7 +164,7 @@ export class BiomeTransitionController {
             if (weather) {
                 const weatherEffect = this.biomeDefinitionManager.getWeatherEffect(weather);
                 if (weatherEffect) {
-                    const weatherLayer = this._prepareWeatherLayer(weatherEffect, biome);
+                    const weatherLayer = this.prepareWeatherLayer(weatherEffect, biome);
                     if (weatherLayer) {
                         preparedLayers.push(weatherLayer);
                     }
@@ -196,7 +196,7 @@ export class BiomeTransitionController {
             return preparedLayers;
         } catch (error) {
             getErrorHandler().handleError(error, 'AUDIO_ERROR', {
-                operation: '_prepareBiomeLayers',
+                operation: 'prepareBiomeLayers',
                 component: 'BiomeTransitionController'
             });
             return [];
@@ -207,7 +207,7 @@ export class BiomeTransitionController {
      * 天候レイヤーを準備
      * @private
      */
-    private _prepareWeatherLayer(
+    private prepareWeatherLayer(
         weatherEffect: WeatherEffect,
         biome: BiomeDefinition
     ): PreparedLayer | null {
@@ -232,7 +232,7 @@ export class BiomeTransitionController {
             };
         } catch (error) {
             getErrorHandler().handleError(error, 'AUDIO_ERROR', {
-                operation: '_prepareWeatherLayer',
+                operation: 'prepareWeatherLayer',
                 component: 'BiomeTransitionController'
             });
             return null as any;
@@ -243,7 +243,7 @@ export class BiomeTransitionController {
      * 現在の環境音をフェードアウト
      * @private
      */
-    private async _fadeOutCurrentEnvironment(fadeTime: number = 2.0): Promise<void> {
+    private async fadeOutCurrentEnvironment(fadeTime: number = 2.0): Promise<void> {
         try {
             const fadePromises: Promise<void>[] = [];
             
@@ -279,7 +279,7 @@ export class BiomeTransitionController {
             this.activeSources.clear();
         } catch (error) {
             getErrorHandler().handleError(error, 'AUDIO_ERROR', {
-                operation: '_fadeOutCurrentEnvironment',
+                operation: 'fadeOutCurrentEnvironment',
                 component: 'BiomeTransitionController'
             });
         }
@@ -289,7 +289,7 @@ export class BiomeTransitionController {
      * 環境音をフェードイン
      * @private
      */
-    private async _fadeInEnvironment(layers: PreparedLayer[], fadeTime: number = 2.0): Promise<void> {
+    private async fadeInEnvironment(layers: PreparedLayer[], fadeTime: number = 2.0): Promise<void> {
         try {
             for (const layer of layers) {
                 if (!layer.audioBuffer) continue;
@@ -345,7 +345,7 @@ export class BiomeTransitionController {
             console.log(`Faded in ${layers.length} environmental layers`);
         } catch (error) {
             getErrorHandler().handleError(error, 'AUDIO_ERROR', {
-                operation: '_fadeInEnvironment',
+                operation: 'fadeInEnvironment',
                 component: 'BiomeTransitionController'
             });
         }

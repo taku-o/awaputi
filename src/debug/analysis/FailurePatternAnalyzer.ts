@@ -35,7 +35,7 @@ export class FailurePatternAnalyzer extends BaseComponent {
         this.failurePatterns = new Map<string, FailurePattern>();
     }
 
-    async _doInitialize(): Promise<void> {
+    async doInitialize(): Promise<void> {
         this.setupFailurePatterns();
     }
 

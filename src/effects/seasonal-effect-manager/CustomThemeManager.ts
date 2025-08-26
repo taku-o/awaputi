@@ -90,13 +90,13 @@ export class CustomThemeManager {
      */
     saveCustomTheme(name: string, theme: Partial<CustomTheme>, author: string = 'user'): boolean {
         try {
-            if (!this._validateTheme(theme)) {
+            if (!this.validateTheme(theme)) {
                 throw new Error('Invalid theme data');
             }
             
             const themeData: CustomTheme = {
                 ...theme as CustomTheme,
-                id: this._generateThemeId(),
+                id: this.generateThemeId(),
                 name,
                 author,
                 created: new Date().toISOString(),
@@ -104,8 +104,8 @@ export class CustomThemeManager {
             };
             
             this.customThemes.set(name, themeData);
-            this._addToHistory('save', name, themeData);
-            this._persistToStorage();
+            this.addToHistory('save', name, themeData);
+            this.persistToStorage();
             
             return true;
         } catch (error) {
@@ -132,8 +132,8 @@ export class CustomThemeManager {
         if (this.customThemes.has(name)) {
             const theme = this.customThemes.get(name)!;
             this.customThemes.delete(name);
-            this._addToHistory('delete', name, theme);
-            this._persistToStorage();
+            this.addToHistory('delete', name, theme);
+            this.persistToStorage();
             return true;
         }
         return false;
@@ -179,12 +179,12 @@ export class CustomThemeManager {
         try {
             const theme = JSON.parse(themeJson) as Partial<CustomTheme>;
             
-            if (!this._validateTheme(theme)) {
+            if (!this.validateTheme(theme)) {
                 throw new Error('Invalid theme format');
             }
             
             const name = newName || theme.name || 'Imported Theme';
-            const uniqueName = this._generateUniqueName(name);
+            const uniqueName = this.generateUniqueName(name);
             
             return this.saveCustomTheme(uniqueName, theme, theme.author || 'imported');
         } catch (error) {
@@ -277,7 +277,7 @@ export class CustomThemeManager {
      * @returns 妥当性
      * @private
      */
-    private _validateTheme(theme: any): theme is Partial<CustomTheme> {
+    private validateTheme(theme: any): theme is Partial<CustomTheme> {
         if (!theme || typeof theme !== 'object') return false;
         
         const requiredFields = ['colors', 'particles', 'effects'];
@@ -301,7 +301,7 @@ export class CustomThemeManager {
      * @returns ユニークID
      * @private
      */
-    private _generateThemeId(): string {
+    private generateThemeId(): string {
         return `theme_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
     }
     
@@ -311,7 +311,7 @@ export class CustomThemeManager {
      * @returns ユニーク名
      * @private
      */
-    private _generateUniqueName(baseName: string): string {
+    private generateUniqueName(baseName: string): string {
         let counter = 1;
         let uniqueName = baseName;
         
@@ -330,7 +330,7 @@ export class CustomThemeManager {
      * @param themeData - テーマデータ
      * @private
      */
-    private _addToHistory(action: ThemeHistoryEntry['action'], themeName: string, themeData: CustomTheme): void {
+    private addToHistory(action: ThemeHistoryEntry['action'], themeName: string, themeData: CustomTheme): void {
         const historyEntry: ThemeHistoryEntry = {
             action,
             themeName,
@@ -350,7 +350,7 @@ export class CustomThemeManager {
      * ローカルストレージに保存
      * @private
      */
-    private _persistToStorage(): void {
+    private persistToStorage(): void {
         try {
             const data: StorageData = {
                 themes: Array.from(this.customThemes.entries()),
@@ -392,7 +392,7 @@ export class CustomThemeManager {
                 this.themeHistory = backup.history;
             }
             
-            this._persistToStorage();
+            this.persistToStorage();
             
             return true;
         } catch (error) {

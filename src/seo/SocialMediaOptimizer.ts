@@ -184,18 +184,18 @@ export class SocialMediaOptimizer {
         this.canvas = null;
         this.ctx = null;
         
-        this._initialize();
+        this.initialize();
     }
     
     /**
      * 初期化処理
      */
-    private _initialize(): void {
+    private initialize(): void {
         try {
             // プラットフォーム仕様の設定
-            this._setupPlatformSpecs();
+            this.setupPlatformSpecs();
             // Canvas要素の作成（画像生成用）
-            this._setupCanvas();
+            this.setupCanvas();
             
             this.initialized = true;
             seoLogger.info('SocialMediaOptimizer initialized successfully');
@@ -207,7 +207,7 @@ export class SocialMediaOptimizer {
     /**
      * プラットフォーム仕様の設定
      */
-    private _setupPlatformSpecs(): void {
+    private setupPlatformSpecs(): void {
         // Facebook
         this.platformSpecs.set('facebook', {
             imageSize: { width: 1200, height: 630 },
@@ -257,7 +257,7 @@ export class SocialMediaOptimizer {
     /**
      * Canvas要素の設定
      */
-    private _setupCanvas(): void {
+    private setupCanvas(): void {
         if (typeof document !== 'undefined') {
             this.canvas = document.createElement('canvas');
             this.ctx = this.canvas.getContext('2d');
@@ -284,16 +284,16 @@ export class SocialMediaOptimizer {
             // 最適化されたコンテンツの生成
             const optimized: OptimizedContent = {
                 platform,
-                title: this._optimizeTitle(content.title, specs),
-                description: this._optimizeDescription(content.description, specs),
-                image: await this._optimizeImage(content, specs, platform),
+                title: this.optimizeTitle(content.title, specs),
+                description: this.optimizeDescription(content.description, specs),
+                image: await this.optimizeImage(content, specs, platform),
                 url: content.url || (typeof window !== 'undefined' ? window.location.href : ''),
-                hashtags: this._generateHashtags(content, platform),
-                metadata: this._generatePlatformMetadata(content, specs, platform)
+                hashtags: this.generateHashtags(content, platform),
+                metadata: this.generatePlatformMetadata(content, specs, platform)
             };
             
             // プラットフォーム固有の最適化
-            await this._applyPlatformSpecificOptimizations(optimized, platform, content);
+            await this.applyPlatformSpecificOptimizations(optimized, platform, content);
             
             // キャッシュに保存
             this.shareCache.set(cacheKey, optimized);
@@ -311,33 +311,33 @@ export class SocialMediaOptimizer {
         try {
             if (!this.initialized) {
                 seoLogger.warn('SocialMediaOptimizer not initialized');
-                return this._getFallbackShareContent(platform);
+                return this.getFallbackShareContent(platform);
             }
             
             // プラットフォーム別の動的コンテンツ生成
             switch (platform.toLowerCase() as SharePlatform) {
                 case 'twitter':
-                    return this._generateTwitterShareContent(gameState);
+                    return this.generateTwitterShareContent(gameState);
                 case 'facebook':
-                    return this._generateFacebookShareContent(gameState);
+                    return this.generateFacebookShareContent(gameState);
                 case 'line':
-                    return this._generateLineShareContent(gameState);
+                    return this.generateLineShareContent(gameState);
                 case 'discord':
-                    return this._generateDiscordShareContent(gameState);
+                    return this.generateDiscordShareContent(gameState);
                 default:
                     seoLogger.warn(`Unsupported platform: ${platform}`);
-                    return this._getFallbackShareContent(platform);
+                    return this.getFallbackShareContent(platform);
             }
         } catch (error) {
             seoErrorHandler.handle(error as Error, 'generateShareContent', { platform, gameState });
-            return this._getFallbackShareContent(platform);
+            return this.getFallbackShareContent(platform);
         }
     }
     
     /**
      * Twitter用動的共有コンテンツ生成
      */
-    private _generateTwitterShareContent(gameState: GameState): TwitterShareContent {
+    private generateTwitterShareContent(gameState: GameState): TwitterShareContent {
         const { score, level, bubblesPopped, achievements } = gameState;
         
         let tweetText = 'BubblePop で遊んでいます！🎮✨';
@@ -364,16 +364,16 @@ export class SocialMediaOptimizer {
         
         return {
             text: tweetText,
-            url: this._generateGameUrl(gameState),
-            hashtags: this._generateHashtags({ gameState }, 'twitter'),
-            imageUrl: this._selectDynamicImage(gameState, 'twitter')
+            url: this.generateGameUrl(gameState),
+            hashtags: this.generateHashtags({ gameState }, 'twitter'),
+            imageUrl: this.selectDynamicImage(gameState, 'twitter')
         };
     }
     
     /**
      * Facebook用動的共有コンテンツ生成
      */
-    private _generateFacebookShareContent(gameState: GameState): FacebookShareContent {
+    private generateFacebookShareContent(gameState: GameState): FacebookShareContent {
         const { score, level, bubblesPopped } = gameState;
         
         let title = 'BubblePop - 泡割りゲーム';
@@ -393,8 +393,8 @@ export class SocialMediaOptimizer {
         return {
             title,
             description,
-            url: this._generateGameUrl(gameState),
-            imageUrl: this._selectDynamicImage(gameState, 'facebook'),
+            url: this.generateGameUrl(gameState),
+            imageUrl: this.selectDynamicImage(gameState, 'facebook'),
             quote: score && score > 0 ? `${score.toLocaleString()} 点獲得！` : undefined
         };
     }
@@ -402,7 +402,7 @@ export class SocialMediaOptimizer {
     /**
      * LINE用動的共有コンテンツ生成
      */
-    private _generateLineShareContent(gameState: GameState): LineShareContent {
+    private generateLineShareContent(gameState: GameState): LineShareContent {
         const { score, level } = gameState;
         
         let message = 'BubblePop というゲームで遊んでいます！🎮';
@@ -413,14 +413,14 @@ export class SocialMediaOptimizer {
         
         return {
             message,
-            url: this._generateGameUrl(gameState)
+            url: this.generateGameUrl(gameState)
         };
     }
     
     /**
      * Discord用動的共有コンテンツ生成
      */
-    private _generateDiscordShareContent(gameState: GameState): DiscordShareContent {
+    private generateDiscordShareContent(gameState: GameState): DiscordShareContent {
         const { score, level, bubblesPopped, playTime } = gameState;
         
         const embed: DiscordEmbed = {
@@ -469,7 +469,7 @@ export class SocialMediaOptimizer {
     /**
      * ゲーム状態に応じた動的画像選択
      */
-    private _selectDynamicImage(gameState: GameState, platform: string): string {
+    private selectDynamicImage(gameState: GameState, platform: string): string {
         const { score } = gameState;
         const specs = this.platformSpecs.get(platform);
         
@@ -492,7 +492,7 @@ export class SocialMediaOptimizer {
     /**
      * ゲーム状態を含むURLを生成
      */
-    private _generateGameUrl(gameState: GameState): string {
+    private generateGameUrl(gameState: GameState): string {
         if (typeof window === 'undefined') {
             return 'https://example.com'; // サーバーサイドレンダリング用フォールバック
         }
@@ -517,7 +517,7 @@ export class SocialMediaOptimizer {
     /**
      * フォールバック共有コンテンツ
      */
-    private _getFallbackShareContent(platform: string): FallbackShareContent {
+    private getFallbackShareContent(platform: string): FallbackShareContent {
         return {
             title: 'BubblePop - 泡割りゲーム',
             description: 'HTML5 Canvas を使用したバブルポップゲーム',
@@ -549,13 +549,13 @@ export class SocialMediaOptimizer {
             this.canvas.height = height;
             
             // 背景の描画
-            await this._drawBackground();
+            await this.drawBackground();
             
             // ゲーム状態に基づくコンテンツの描画
-            await this._drawGameContent(gameState);
+            await this.drawGameContent(gameState);
             
             // オーバーレイ（ロゴ、タイトル等）の描画
-            await this._drawOverlay(gameState, platform);
+            await this.drawOverlay(gameState, platform);
             
             // 画像をData URLとして取得
             const dataUrl = this.canvas.toDataURL('image/png', 0.9);
@@ -574,7 +574,7 @@ export class SocialMediaOptimizer {
     /**
      * タイトルの最適化
      */
-    private _optimizeTitle(title: string | undefined, specs: PlatformSpec): string {
+    private optimizeTitle(title: string | undefined, specs: PlatformSpec): string {
         if (!title) {
             title = this.localizationManager ?
                 this.localizationManager.t('seo.defaultTitle') :
@@ -587,7 +587,7 @@ export class SocialMediaOptimizer {
     /**
      * 説明文の最適化
      */
-    private _optimizeDescription(description: string | undefined, specs: PlatformSpec): string {
+    private optimizeDescription(description: string | undefined, specs: PlatformSpec): string {
         if (!description) {
             description = this.localizationManager ?
                 this.localizationManager.t('seo.defaultDescription') :
@@ -600,7 +600,7 @@ export class SocialMediaOptimizer {
     /**
      * 画像の最適化
      */
-    private async _optimizeImage(content: BaseContent, specs: PlatformSpec, platform: string): Promise<string> {
+    private async optimizeImage(content: BaseContent, specs: PlatformSpec, platform: string): Promise<string> {
         // カスタム画像が指定されている場合
         if (content.image) {
             return optimizeImageUrl(content.image, {
@@ -622,7 +622,7 @@ export class SocialMediaOptimizer {
     /**
      * ハッシュタグの生成
      */
-    private _generateHashtags(content: BaseContent, platform: string): string[] {
+    private generateHashtags(content: BaseContent, platform: string): string[] {
         const baseHashtags: Record<SupportedLanguage, string[]> = {
             ja: ['#バブルポップ', '#HTML5ゲーム', '#ブラウザゲーム', '#無料ゲーム'],
             en: ['#BubblePop', '#HTML5Game', '#BrowserGame', '#FreeGame'],
@@ -667,7 +667,7 @@ export class SocialMediaOptimizer {
     /**
      * プラットフォームメタデータの生成
      */
-    private _generatePlatformMetadata(content: BaseContent, specs: PlatformSpec, platform: string): PlatformMetadata {
+    private generatePlatformMetadata(content: BaseContent, specs: PlatformSpec, platform: string): PlatformMetadata {
         const metadata: PlatformMetadata = {
             imageWidth: specs.imageSize.width,
             imageHeight: specs.imageSize.height,
@@ -683,7 +683,7 @@ export class SocialMediaOptimizer {
                 break;
             case 'facebook':
                 metadata.type = 'website';
-                metadata.locale = this._getOGLocale();
+                metadata.locale = this.getOGLocale();
                 break;
             case 'linkedin':
                 metadata.type = 'article';
@@ -699,7 +699,7 @@ export class SocialMediaOptimizer {
     /**
      * プラットフォーム固有の最適化の適用
      */
-    private async _applyPlatformSpecificOptimizations(optimized: OptimizedContent, platform: string, content: BaseContent): Promise<void> {
+    private async applyPlatformSpecificOptimizations(optimized: OptimizedContent, platform: string, content: BaseContent): Promise<void> {
         switch(platform) {
             case 'twitter':
                 // Twitterカード情報の追加
@@ -718,12 +718,12 @@ export class SocialMediaOptimizer {
                 optimized.facebookSpecific = {
                     appId: content.facebookAppId,
                     type: 'game',
-                    locale: this._getOGLocale()
+                    locale: this.getOGLocale()
                 };
                 break;
             case 'pinterest':
                 // Pinterest用の豊富な説明
-                optimized.description = this._expandDescriptionForPinterest(optimized.description, content);
+                optimized.description = this.expandDescriptionForPinterest(optimized.description, content);
                 break;
             case 'discord':
                 // Discord Embed用の情報
@@ -732,7 +732,7 @@ export class SocialMediaOptimizer {
                     description: optimized.description,
                     color: 0x4CAF50, // ゲームのテーマカラー
                     thumbnail: { url: optimized.image },
-                    fields: this._generateDiscordFields(content)
+                    fields: this.generateDiscordFields(content)
                 };
                 break;
         }
@@ -741,7 +741,7 @@ export class SocialMediaOptimizer {
     /**
      * 背景の描画
      */
-    private async _drawBackground(): Promise<void> {
+    private async drawBackground(): Promise<void> {
         if (!this.ctx || !this.canvas) return;
         
         // グラデーション背景
@@ -753,13 +753,13 @@ export class SocialMediaOptimizer {
         this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
         
         // パターンやテクスチャの追加（オプション）
-        await this._drawBackgroundPattern();
+        await this.drawBackgroundPattern();
     }
     
     /**
      * 背景パターンの描画
      */
-    private async _drawBackgroundPattern(): Promise<void> {
+    private async drawBackgroundPattern(): Promise<void> {
         if(!this.ctx || !this.canvas) return;
         
         // 泡のパターンを描画
@@ -782,7 +782,7 @@ export class SocialMediaOptimizer {
     /**
      * ゲームコンテンツの描画
      */
-    private async _drawGameContent(gameState: GameState): Promise<void> {
+    private async drawGameContent(gameState: GameState): Promise<void> {
         if(!this.ctx || !this.canvas || !gameState) return;
         
         this.ctx.fillStyle = '#FFFFFF';
@@ -811,7 +811,7 @@ export class SocialMediaOptimizer {
     /**
      * オーバーレイの描画
      */
-    private async _drawOverlay(gameState: GameState, platform: string): Promise<void> {
+    private async drawOverlay(gameState: GameState, platform: string): Promise<void> {
         if(!this.ctx || !this.canvas) return;
         
         // タイトルの描画
@@ -836,7 +836,7 @@ export class SocialMediaOptimizer {
     /**
      * Pinterest用の詳細説明
      */
-    private _expandDescriptionForPinterest(description: string, content: BaseContent): string {
+    private expandDescriptionForPinterest(description: string, content: BaseContent): string {
         let expanded = description;
         
         // ゲーム機能の詳細を追加
@@ -855,7 +855,7 @@ export class SocialMediaOptimizer {
     /**
      * Discord用フィールドの生成
      */
-    private _generateDiscordFields(content: BaseContent): DiscordField[] {
+    private generateDiscordFields(content: BaseContent): DiscordField[] {
         const fields: DiscordField[] = [];
         
         if (content.gameState?.score) {
@@ -886,7 +886,7 @@ export class SocialMediaOptimizer {
     /**
      * Open Graphロケールの取得
      */
-    private _getOGLocale(): string {
+    private getOGLocale(): string {
         const lang = this.localizationManager ?
             this.localizationManager.getCurrentLanguage() : 'ja';
         

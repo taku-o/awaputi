@@ -171,7 +171,7 @@ export class AdvancedLayerManager {
             }
             
             this.layers.set(name, layer);
-            this._updateLayerOrder(name);
+            this.updateLayerOrder(name);
             
             // Track layer type
             if (layer.static) {
@@ -243,7 +243,7 @@ export class AdvancedLayerManager {
         const layer = this.layers.get(name);
         if (layer) {
             layer.visible = visible;
-            this._markLayerDirty(name);
+            this.markLayerDirty(name);
         }
     }
     
@@ -256,7 +256,7 @@ export class AdvancedLayerManager {
         const layer = this.layers.get(name);
         if (layer) {
             layer.opacity = Math.max(0, Math.min(1, opacity));
-            this._markLayerDirty(name);
+            this.markLayerDirty(name);
         }
     }
     
@@ -269,7 +269,7 @@ export class AdvancedLayerManager {
         const layer = this.layers.get(name);
         if (layer) {
             layer.blendMode = blendMode;
-            this._markLayerDirty(name);
+            this.markLayerDirty(name);
         }
     }
     
@@ -278,7 +278,7 @@ export class AdvancedLayerManager {
      * @param name - Layer name
      */
     markLayerDirty(name: string): void {
-        this._markLayerDirty(name);
+        this.markLayerDirty(name);
     }
     /**
      * Add object to layer
@@ -291,10 +291,10 @@ export class AdvancedLayerManager {
         if (layer) {
             layer.objects.add(objectId);
             if (bounds) {
-                this._updateLayerBounds(layer, bounds);
+                this.updateLayerBounds(layer, bounds);
             }
             
-            this._markLayerDirty(layerName);
+            this.markLayerDirty(layerName);
         }
     }
     
@@ -307,7 +307,7 @@ export class AdvancedLayerManager {
         const layer = this.layers.get(layerName);
         if (layer) {
             layer.objects.delete(objectId);
-            this._markLayerDirty(layerName);
+            this.markLayerDirty(layerName);
         }
     }
     
@@ -340,10 +340,10 @@ export class AdvancedLayerManager {
                 }
                 
                 // Render layer
-                if (layer.cacheable && this._shouldUseCache(layer)) {
-                    this._renderCachedLayer(mainContext, layer, viewport);
+                if (layer.cacheable && this.shouldUseCache(layer)) {
+                    this.renderCachedLayer(mainContext, layer, viewport);
                 } else {
-                    this._renderLayerDirect(mainContext, layer, viewport);
+                    this.renderLayerDirect(mainContext, layer, viewport);
                 }
                 
                 // Restore context settings
@@ -387,7 +387,7 @@ export class AdvancedLayerManager {
      * Update layer order array
      * @private
      */
-    private _updateLayerOrder(layerName: string): void {
+    private updateLayerOrder(layerName: string): void {
         const layer = this.layers.get(layerName);
         if (!layer) return;
         
@@ -414,7 +414,7 @@ export class AdvancedLayerManager {
      * Mark layer as dirty
      * @private
      */
-    private _markLayerDirty(name: string): void {
+    private markLayerDirty(name: string): void {
         const layer = this.layers.get(name);
         if (layer) {
             layer.dirty = true;
@@ -427,7 +427,7 @@ export class AdvancedLayerManager {
      * Update layer bounding box
      * @private
      */
-    private _updateLayerBounds(layer: Layer, objectBounds: BoundingBox): void {
+    private updateLayerBounds(layer: Layer, objectBounds: BoundingBox): void {
         if (layer.objects.size === 1) {
             layer.boundingBox = { ...objectBounds };
         } else {
@@ -445,7 +445,7 @@ export class AdvancedLayerManager {
      * Check if layer should use cache
      * @private
      */
-    private _shouldUseCache(layer: Layer): boolean {
+    private shouldUseCache(layer: Layer): boolean {
         if (!layer.cacheable || !this.cachingEnabled) return false;
         if (layer.dirty) return false;
         if (!this.cachedLayers.has(layer.name)) return false;
@@ -456,7 +456,7 @@ export class AdvancedLayerManager {
      * Render cached layer
      * @private
      */
-    private _renderCachedLayer(mainContext: CanvasRenderingContext2D, layer: Layer, _viewport: Viewport | null): void {
+    private renderCachedLayer(mainContext: CanvasRenderingContext2D, layer: Layer, _viewport: Viewport | null): void {
         if (layer.canvas) {
             mainContext.drawImage(layer.canvas, 0, 0);
             layer.cacheHits++;
@@ -467,7 +467,7 @@ export class AdvancedLayerManager {
      * Render layer directly
      * @private
      */
-    private _renderLayerDirect(mainContext: CanvasRenderingContext2D, layer: Layer, _viewport: Viewport | null): void {
+    private renderLayerDirect(mainContext: CanvasRenderingContext2D, layer: Layer, _viewport: Viewport | null): void {
         const startTime = performance.now();
         // If layer is cacheable, render to layer canvas first
         const targetContext = (layer.cacheable && layer.context) ? layer.context : mainContext;

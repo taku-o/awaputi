@@ -286,9 +286,9 @@ export class EnhancedParticleManager extends ParticleManager {
             // 基底クラスのレンダリング
             super.render(context, deltaTime);
             // 背景パーティクルの更新と描画
-            this._renderBackgroundParticles(context, deltaTime);
+            this.renderBackgroundParticles(context, deltaTime);
             // パフォーマンス監視
-            this._monitorPerformance();
+            this.monitorPerformance();
         } catch (error) {
             getErrorHandler().handleError(error as Error, {
                 context: 'EnhancedParticleManager.render'
@@ -299,7 +299,7 @@ export class EnhancedParticleManager extends ParticleManager {
     /**
      * 背景パーティクルのレンダリング
      */
-    private _renderBackgroundParticles(context: CanvasRenderingContext2D, deltaTime: number): void {
+    private renderBackgroundParticles(context: CanvasRenderingContext2D, deltaTime: number): void {
         try {
             if (!this.physicsEngine.backgroundEnabled) return;
             
@@ -313,7 +313,7 @@ export class EnhancedParticleManager extends ParticleManager {
 
         } catch (error) {
             getErrorHandler().handleError(error as Error, {
-                context: 'EnhancedParticleManager._renderBackgroundParticles'
+                context: 'EnhancedParticleManager.renderBackgroundParticles'
             });
         }
     }
@@ -321,7 +321,7 @@ export class EnhancedParticleManager extends ParticleManager {
     /**
      * パフォーマンス監視
      */
-    private _monitorPerformance(): void {
+    private monitorPerformance(): void {
         try {
             let currentFPS = 60; // Default value
             if(this.performanceMonitor && typeof this.performanceMonitor.getCurrentFPS === 'function') {
@@ -340,7 +340,7 @@ export class EnhancedParticleManager extends ParticleManager {
 
         } catch (error) {
             getErrorHandler().handleError(error as Error, {
-                context: 'EnhancedParticleManager._monitorPerformance'
+                context: 'EnhancedParticleManager.monitorPerformance'
             });
         }
     }
@@ -357,7 +357,7 @@ export class EnhancedParticleManager extends ParticleManager {
             // 基底クラスのcreateParticleメソッドを呼び出し
             const particle = super.createParticle ?
                 super.createParticle(x, y, vx, vy, adjustedOptions) as Particle :
-                this._createEnhancedParticle(x, y, vx, vy, adjustedOptions);
+                this.createEnhancedParticle(x, y, vx, vy, adjustedOptions);
                 
             return particle;
 
@@ -372,7 +372,7 @@ export class EnhancedParticleManager extends ParticleManager {
     /**
      * 拡張パーティクル生成（フォールバック）
      */
-    private _createEnhancedParticle(x: number, y: number, vx: number, vy: number, options: ParticleOptions): Particle {
+    private createEnhancedParticle(x: number, y: number, vx: number, vy: number, options: ParticleOptions): Particle {
         const particle: Particle = {
             x, y, vx, vy,
             size: options.size || 2,

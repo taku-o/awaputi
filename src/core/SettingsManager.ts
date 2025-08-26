@@ -62,7 +62,7 @@ export class SettingsManager {
         this.exportImport = new SettingsExportImport(this);
         
         // ConfigurationManagerのセットアップ
-        this._setupConfigurationManager();
+        this.setupConfigurationManager();
         
         // 設定を読み込み
         this.load();
@@ -74,7 +74,7 @@ export class SettingsManager {
      * ConfigurationManagerのセットアップ
      * @private
      */
-    private _setupConfigurationManager(): void {
+    private setupConfigurationManager(): void {
         const defaultSettings = this.dataManager.getDefaultSettings();
         
         this.dataManager.setupSettingsCategory('audio', {

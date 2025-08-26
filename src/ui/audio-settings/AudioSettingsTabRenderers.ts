@@ -198,7 +198,7 @@ export class AudioSettingsTabRenderers {
             options: presets,
             defaultValue: 'high',
             onChange: (value) => {
-                this._applyQualityPreset(value as QualityPreset);
+                this.applyQualityPreset(value as QualityPreset);
             }
         });
         
@@ -284,7 +284,7 @@ export class AudioSettingsTabRenderers {
         
         // イコライザー
         if ((this.audioManager as any).audioController?.equalizer) {
-            const eqSection = this._createEqualizerSection();
+            const eqSection = this.createEqualizerSection();
             effectsSection.appendChild(eqSection);
         }
         
@@ -402,7 +402,7 @@ export class AudioSettingsTabRenderers {
      * イコライザーセクションを作成
      * @private
      */
-    private _createEqualizerSection(): HTMLElement {
+    private createEqualizerSection(): HTMLElement {
         const eqSection = document.createElement('div');
         eqSection.className = 'settings-subsection';
         eqSection.style.marginTop = '30px';
@@ -449,7 +449,7 @@ export class AudioSettingsTabRenderers {
      * 品質プリセットを適用
      * @private
      */
-    private _applyQualityPreset(preset: QualityPreset): void {
+    private applyQualityPreset(preset: QualityPreset): void {
         const presets: Record<QualityPreset, { sampleRate: number; bufferSize: number }> = {
             low: { sampleRate: 22050, bufferSize: 1024 },
             medium: { sampleRate: 44100, bufferSize: 512 },

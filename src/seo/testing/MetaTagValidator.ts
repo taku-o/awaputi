@@ -86,7 +86,7 @@ export class MetaTagValidator {
             };
             
             // HTMLからメタタグを抽出（実際の実装では DOM から取得）
-            const metaTags = await this._extractMetaTags();
+            const metaTags = await this.extractMetaTags();
             const rules = this.mainController.validationRules.get('metaTags');
             
             if (!rules) {
@@ -176,7 +176,7 @@ export class MetaTagValidator {
                 warnings: 0
             };
             
-            const ogTags = await this._extractOpenGraphTags();
+            const ogTags = await this.extractOpenGraphTags();
             const rules = this.mainController.validationRules.get('openGraph');
             
             if (!rules) {
@@ -212,7 +212,7 @@ export class MetaTagValidator {
                 };
                 
                 const imageUrl = ogTags['og:image'];
-                if (this._isValidImageUrl(imageUrl)) {
+                if (this.isValidImageUrl(imageUrl)) {
                     imageTest.passed = true;
                     imageTest.message = `✅ Valid OG image URL: ${imageUrl}`;
                     results.passed++;
@@ -244,7 +244,7 @@ export class MetaTagValidator {
                 warnings: 0
             };
             
-            const twitterTags = await this._extractTwitterCardTags();
+            const twitterTags = await this.extractTwitterCardTags();
             const rules = this.mainController.validationRules.get('twitterCard');
             
             if (!rules) {
@@ -313,7 +313,7 @@ export class MetaTagValidator {
             };
             
             // 画像の最適化確認
-            const socialImages = await this._extractSocialMediaImages();
+            const socialImages = await this.extractSocialMediaImages();
             
             for (const [platform, imageUrl] of Object.entries(socialImages)) {
                 if (imageUrl) {
@@ -323,7 +323,7 @@ export class MetaTagValidator {
                         message: ''
                     };
                     
-                    const isOptimized = await this._checkImageOptimization(imageUrl);
+                    const isOptimized = await this.checkImageOptimization(imageUrl);
                     if (isOptimized) {
                         test.passed = true;
                         test.message = `✅ ${platform} image properly optimized`;
@@ -349,7 +349,7 @@ export class MetaTagValidator {
      * メタタグの抽出
      * @private
      */
-    private async _extractMetaTags(): Promise<MetaTags> {
+    private async extractMetaTags(): Promise<MetaTags> {
         // 実際の実装では document から抽出
         return {
             title: 'BubblePop - 泡割りゲーム',
@@ -363,7 +363,7 @@ export class MetaTagValidator {
      * Open Graphタグの抽出
      * @private
      */
-    private async _extractOpenGraphTags(): Promise<OpenGraphTags> {
+    private async extractOpenGraphTags(): Promise<OpenGraphTags> {
         return {
             'og:title': 'BubblePop - 泡割りゲーム',
             'og:description': 'HTML5 Canvas を使用したバブルポップゲーム',
@@ -377,7 +377,7 @@ export class MetaTagValidator {
      * Twitter Cardタグの抽出
      * @private
      */
-    private async _extractTwitterCardTags(): Promise<TwitterCardTags> {
+    private async extractTwitterCardTags(): Promise<TwitterCardTags> {
         return {
             'twitter:card': 'summary_large_image',
             'twitter:title': 'BubblePop - 泡割りゲーム',
@@ -390,7 +390,7 @@ export class MetaTagValidator {
      * ソーシャルメディア画像の抽出
      * @private
      */
-    private async _extractSocialMediaImages(): Promise<Record<string, string>> {
+    private async extractSocialMediaImages(): Promise<Record<string, string>> {
         return {
             'Open Graph': `${this.baseUrl}/assets/images/og-image.png`,
             'Twitter Card': `${this.baseUrl}/assets/images/twitter-card.png`,
@@ -402,7 +402,7 @@ export class MetaTagValidator {
      * 画像URLの有効性確認
      * @private
      */
-    private _isValidImageUrl(url: string): boolean {
+    private isValidImageUrl(url: string): boolean {
         try {
             new URL(url);
             return url.match(/\.(jpg|jpeg|png|webp|gif|svg)$/i) !== null;
@@ -415,7 +415,7 @@ export class MetaTagValidator {
      * 画像最適化の確認
      * @private
      */
-    private async _checkImageOptimization(imageUrl: string): Promise<boolean> {
+    private async checkImageOptimization(imageUrl: string): Promise<boolean> {
         // 実際の実装では画像のサイズやフォーマットをチェック
         return imageUrl.includes('optimized') || imageUrl.includes('webp');
     }

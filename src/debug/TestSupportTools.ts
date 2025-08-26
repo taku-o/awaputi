@@ -57,7 +57,7 @@ export class TestSupportTools extends BaseComponent {
 
             this.initialized = true;
         } catch (error) {
-            this._handleError('Failed to initialize TestSupportTools', error);
+            this.handleError('Failed to initialize TestSupportTools', error);
             throw error;
         }
     }
@@ -67,7 +67,7 @@ export class TestSupportTools extends BaseComponent {
         this.testEnvironment = {};
     }
 
-    private _handleError(message: string, error: any): void {
+    private handleError(message: string, error: any): void {
         console.error(`[TestSupportTools] ${message}:`, error);
     }
 

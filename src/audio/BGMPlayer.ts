@@ -159,12 +159,12 @@ export class BGMPlayer {
 
             // 終了時の処理（ループ処理含む）
             this.currentSource.addEventListener('ended', () => {
-                this._handleTrackEnded();
+                this.handleTrackEnded();
             });
             
             // ループタイマーの設定（手動ループ制御）
             if (this.loopEnabled) {
-                this._scheduleLoop(track.duration - startOffset);
+                this.scheduleLoop(track.duration - startOffset);
             }
 
             console.log(`BGM "${track.name}" started playing (loop: ${loop})`);
@@ -182,7 +182,7 @@ export class BGMPlayer {
      * ループスケジューリング
      * @param remainingTime - 残り時間
      */
-    private _scheduleLoop(remainingTime: number): void {
+    private scheduleLoop(remainingTime: number): void {
         if (!this.loopEnabled || !this.currentTrack) {
             return;
         }
@@ -192,7 +192,7 @@ export class BGMPlayer {
         
         setTimeout(() => {
             if (this.isPlaying && this.loopEnabled && this.currentTrack) {
-                this._performSeamlessLoop();
+                this.performSeamlessLoop();
             }
         }, crossfadeStartTime * 1000);
     }
@@ -200,7 +200,7 @@ export class BGMPlayer {
     /**
      * シームレスループの実行
      */
-    private async _performSeamlessLoop(): Promise<void> {
+    private async performSeamlessLoop(): Promise<void> {
         try {
             if (!this.currentTrack || !this.isPlaying || !this.currentSource) {
                 return;
@@ -254,12 +254,12 @@ export class BGMPlayer {
 
                 // 終了処理を設定
                 newSource.addEventListener('ended', () => {
-                    this._handleTrackEnded();
+                    this.handleTrackEnded();
                 });
                 
                 // 次のループをスケジュール
                 if (this.currentTrack) {
-                    this._scheduleLoop(this.currentTrack.duration);
+                    this.scheduleLoop(this.currentTrack.duration);
                 }
             }, crossfadeTime * 1000);
             
@@ -279,7 +279,7 @@ export class BGMPlayer {
     /**
      * トラック終了時の処理
      */
-    private _handleTrackEnded(): void {
+    private handleTrackEnded(): void {
         if (this.nextTrack) {
             // 次のトラックが予約されている場合
             this.play(this.nextTrack, this.nextTrackOptions || {});
@@ -314,11 +314,11 @@ export class BGMPlayer {
 
                 // フェードアウト完了後に停止
                 setTimeout(() => {
-                    this._stopImmediate();
+                    this.stopImmediate();
                 }, fadeOutDuration * 1000);
             } else {
                 // 即座に停止
-                this._stopImmediate();
+                this.stopImmediate();
             }
 
             // 統計更新
@@ -339,7 +339,7 @@ export class BGMPlayer {
     /**
      * 即座に停止
      */
-    private _stopImmediate(): void {
+    private stopImmediate(): void {
         if (this.currentSource) {
             try {
                 this.currentSource.stop();
@@ -557,7 +557,7 @@ export class BGMPlayer {
         try {
             // 再生を停止
             if (this.isPlaying) {
-                this._stopImmediate();
+                this.stopImmediate();
             }
 
             // 統計をリセット

@@ -52,7 +52,7 @@ export class DebugPanelManager extends BaseComponent {
         };
     }
 
-    async _doInitialize(): Promise<void> {
+    async doInitialize(): Promise<void> {
         this.registerDefaultPanels();
         this.setupPanelEventHandlers();
     }

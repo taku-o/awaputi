@@ -437,7 +437,7 @@ class DeveloperGuidanceSystem {
                 const target = e.target as HTMLElement;
                 const command = target.getAttribute('data-command');
                 if (command) {
-                    this._copyToClipboard(command, target);
+                    this.copyToClipboard(command, target);
                 }
             });
         });
@@ -458,7 +458,7 @@ class DeveloperGuidanceSystem {
      * @param button - ボタン要素
      * @private
      */
-    private static async _copyToClipboard(text: string, button: HTMLElement): Promise<void> {
+    private static async copyToClipboard(text: string, button: HTMLElement): Promise<void> {
         try {
             await navigator.clipboard.writeText(text);
             // ボタンのテキストを一時変更

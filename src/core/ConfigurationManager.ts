@@ -116,13 +116,13 @@ export class ConfigurationManager {
         ]);
         
         // 初期化
-        this._initialize();
+        this.initialize();
     }
     
     /**
      * 初期化処理
      */
-    private _initialize(): void {
+    private initialize(): void {
         const categories: ConfigurationCategory[] = [
             'game', 'audio', 'effects', 'performance', 'ui', 'accessibility', 'controls'
         ];
@@ -201,10 +201,10 @@ export class ConfigurationManager {
         this.setDefaultValue('game', 'difficulty', 'normal');
         
         // ゲームバブル詳細設定のデフォルト値を設定
-        this._setupBubbleDefaults();
+        this.setupBubbleDefaults();
         
         // 検証ルールを設定
-        this._setupValidationRules();
+        this.setupValidationRules();
         
         // エラーハンドラを取得
         try {
@@ -219,7 +219,7 @@ export class ConfigurationManager {
     /**
      * バブル設定のデフォルト値を設定
      */
-    private _setupBubbleDefaults(): void {
+    private setupBubbleDefaults(): void {
         const bubbleTypes: BubbleTypeConfig[] = [
             { name: 'normal', baseScore: 10, maxAge: 30000, speed: 1.0, size: 1.0 },
             { name: 'fast', baseScore: 15, maxAge: 20000, speed: 1.5, size: 0.8 },
@@ -238,7 +238,7 @@ export class ConfigurationManager {
     /**
      * 検証ルールを設定
      */
-    private _setupValidationRules(): void {
+    private setupValidationRules(): void {
         // パフォーマンス設定検証
         this.addValidationRule('performance.targetFPS', {
             validate: (value: ConfigurationValue) =>
@@ -272,7 +272,7 @@ export class ConfigurationManager {
             const finalKey = key ? `${keyOrNamespace}.${key}` : keyOrNamespace;
             
             this.accessStats.totalAccesses++;
-            this._trackKeyAccess(finalKey);
+            this.trackKeyAccess(finalKey);
             
             // キャッシュから確認
             const cacheKey = `config:${finalKey}`;
@@ -290,7 +290,7 @@ export class ConfigurationManager {
                 const lazyValue = lazyLoader();
                 const [category, ...pathParts] = finalKey.split('.');
                 const path = pathParts.join('.');
-                this._setValueInternal(category, path, lazyValue);
+                this.setValueInternal(category, path, lazyValue);
                 this.cache.set(cacheKey, lazyValue);
                 // ローダーを削除（一度だけ実行）
                 this.__lazyLoaders.delete(finalKey);
@@ -318,7 +318,7 @@ export class ConfigurationManager {
 
         } catch (error) {
             const keyForError = key ? `${keyOrNamespace}.${key}` : keyOrNamespace;
-            this._handleError(error, 'get', { key: keyForError });
+            this.handleError(error, 'get', { key: keyForError });
             return null as any;
         }
     }
@@ -335,7 +335,7 @@ export class ConfigurationManager {
             const finalValue = value !== undefined ? value : keyOrValue as T;
             
             // 検証
-            if (!this._validateValue(finalKey, finalValue)) {
+            if (!this.validateValue(finalKey, finalValue)) {
                 return false;
             }
             
@@ -361,17 +361,17 @@ export class ConfigurationManager {
             this.cache.delete(cacheKey);
             
             // 変更履歴を記録
-            this._recordChange(finalKey, oldValue, finalValue as ConfigurationValue);
+            this.recordChange(finalKey, oldValue, finalValue as ConfigurationValue);
             
             // ウォッチャーに通知
-            this._notifyWatchers(finalKey, finalValue as ConfigurationValue, oldValue);
+            this.notifyWatchers(finalKey, finalValue as ConfigurationValue, oldValue);
             
             return true;
 
         } catch (error) {
             const keyForError = value !== undefined ? `${keyOrNamespace}.${keyOrValue}` : keyOrNamespace;
             const valueForError = value !== undefined ? value : keyOrValue;
-            this._handleError(error, 'set', { key: keyForError, value: valueForError });
+            this.handleError(error, 'set', { key: keyForError, value: valueForError });
             return false;
         }
     }
@@ -385,10 +385,10 @@ export class ConfigurationManager {
         
         const categoryMap = this.configurations.get(category);
         if (!categoryMap) {
-            return this._hasDefaultValue(category, path);
+            return this.hasDefaultValue(category, path);
         }
         
-        return categoryMap.has(path) || this._hasDefaultValue(category, path);
+        return categoryMap.has(path) || this.hasDefaultValue(category, path);
     }
     
     /**
@@ -413,16 +413,16 @@ export class ConfigurationManager {
                 this.cache.delete(cacheKey);
                 
                 // 変更履歴を記録
-                this._recordChange(key, oldValue, undefined);
+                this.recordChange(key, oldValue, undefined);
                 
                 // ウォッチャーに通知
-                this._notifyWatchers(key, undefined, oldValue);
+                this.notifyWatchers(key, undefined, oldValue);
             }
             
             return result;
 
         } catch (error) {
-            this._handleError(error, 'remove', { key });
+            this.handleError(error, 'remove', { key });
             return false;
         }
     }
@@ -492,17 +492,17 @@ export class ConfigurationManager {
         return (defaultMap.get(path) as T) || null;
     }
     
-    private _hasDefaultValue(category: string, path: string): boolean {
+    private hasDefaultValue(category: string, path: string): boolean {
         const defaultMap = this.defaultValues.get(category);
         return defaultMap ? defaultMap.has(path) : false;
     }
     
-    private _validateValue(key: string, value: ConfigurationValue): boolean {
+    private validateValue(key: string, value: ConfigurationValue): boolean {
         for (const ruleEntry of Array.from(this.validationRules.entries())) {
             const [ruleKey, rule] = ruleEntry;
-            if (this._matchesPattern(key, ruleKey)) {
+            if (this.matchesPattern(key, ruleKey)) {
                 if (!rule.validate(value)) {
-                    this._logWarning(`Validation failed for ${key}: ${rule.errorMessage || 'Invalid value'}`, key);
+                    this.logWarning(`Validation failed for ${key}: ${rule.errorMessage || 'Invalid value'}`, key);
                     return false;
                 }
                 
@@ -516,7 +516,7 @@ export class ConfigurationManager {
         return true;
     }
 
-    private _matchesPattern(key: string, pattern: string): boolean {
+    private matchesPattern(key: string, pattern: string): boolean {
         // Simple pattern matching with wildcards
         const regex = new RegExp(pattern.replace(/\*/g, '.*'));
         return regex.test(key);
@@ -525,7 +525,7 @@ export class ConfigurationManager {
     /**
      * 内部的に値を設定（遅延読み込み用）
      */
-    private _setValueInternal(category: string, path: string, value: ConfigurationValue): void {
+    private setValueInternal(category: string, path: string, value: ConfigurationValue): void {
         const categoryMap = this.configurations.get(category);
         if (!categoryMap) {
             const newMap = new Map<string, ConfigurationValue>();
@@ -536,7 +536,7 @@ export class ConfigurationManager {
         }
     }
     
-    private _recordChange(key: string, oldValue: ConfigurationValue, newValue: ConfigurationValue): void {
+    private recordChange(key: string, oldValue: ConfigurationValue, newValue: ConfigurationValue): void {
         const change: ChangeHistoryEntry = {
             key,
             oldValue,
@@ -552,7 +552,7 @@ export class ConfigurationManager {
         }
     }
     
-    private _notifyWatchers(key: string, newValue: ConfigurationValue, oldValue: ConfigurationValue): void {
+    private notifyWatchers(key: string, newValue: ConfigurationValue, oldValue: ConfigurationValue): void {
         const watchers = this.watchers.get(key);
         if (!watchers) {
             return;
@@ -562,17 +562,17 @@ export class ConfigurationManager {
             try {
                 callback(key, newValue, oldValue);
             } catch (error) {
-                this._handleError(error, 'watcher', { key, callback });
+                this.handleError(error, 'watcher', { key, callback });
             }
         });
     }
     
-    private _trackKeyAccess(key: string): void {
+    private trackKeyAccess(key: string): void {
         const count = this.accessStats.frequentKeys.get(key) || 0;
         this.accessStats.frequentKeys.set(key, count + 1);
     }
     
-    private _logWarning(message: string, key: string): void {
+    private logWarning(message: string, key: string): void {
         const now = Date.now();
         const lastWarning = this.warningCache.get(key);
         if (!lastWarning || now - lastWarning > this.warningRateLimit) {
@@ -581,7 +581,7 @@ export class ConfigurationManager {
         }
     }
 
-    private _handleError(error: any, operation: string, context: any): void {
+    private handleError(error: any, operation: string, context: any): void {
         if (this.errorHandler && this.errorHandler.handleError) {
             this.errorHandler.handleError(error, {
                 context: 'ConfigurationManager',

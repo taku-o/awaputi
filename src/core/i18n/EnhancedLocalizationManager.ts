@@ -448,7 +448,7 @@ export class EnhancedLocalizationManager extends LocalizationManager {
                 return existingPromise;
             }
             
-            const promise = this._loadLanguageDataInternal(language);
+            const promise = this.loadLanguageDataInternal(language);
             this.loadingPromises.set(language, promise);
             
             try {
@@ -470,7 +470,7 @@ export class EnhancedLocalizationManager extends LocalizationManager {
     /**
      * 言語データを内部的に読み込み
      */
-    private async _loadLanguageDataInternal(language: string): Promise<boolean> {
+    private async loadLanguageDataInternal(language: string): Promise<boolean> {
         try {
             // 既に読み込み済みの場合はスキップ
             if (this.translationLoader.isLanguageLoaded(language)) {
@@ -573,7 +573,7 @@ export class EnhancedLocalizationManager extends LocalizationManager {
             // 翻訳データがある場合は追加
             if (translationData) {
                 if (validateData) {
-                    const validation = this._validateTranslationData(translationData);
+                    const validation = this.validateTranslationData(translationData);
                     if (!validation.isValid) {
                         console.warn(`Translation data validation failed for ${normalized}:`, validation.errors);
                         if (!fallbackToDefault) {
@@ -585,7 +585,7 @@ export class EnhancedLocalizationManager extends LocalizationManager {
                 (this as any).addTranslations(normalized, translationData);
                 // キャッシュに事前読み込み
                 if (cachePreload) {
-                    this._preloadTranslationsToCache(normalized, translationData);
+                    this.preloadTranslationsToCache(normalized, translationData);
                 }
             } else if (autoLoad) {
                 // 外部ファイルから読み込み
@@ -612,7 +612,7 @@ export class EnhancedLocalizationManager extends LocalizationManager {
     /**
      * 翻訳データを検証
      */
-    private _validateTranslationData(translationData: any): TranslationValidation {
+    private validateTranslationData(translationData: any): TranslationValidation {
         const validation: TranslationValidation = {
             isValid: true,
             errors: [],
@@ -662,7 +662,7 @@ export class EnhancedLocalizationManager extends LocalizationManager {
     /**
      * 翻訳をキャッシュに事前読み込み
      */
-    private _preloadTranslationsToCache(language: string, translationData: any): void {
+    private preloadTranslationsToCache(language: string, translationData: any): void {
         try {
             for (const [key, value] of Object.entries(translationData)) {
                 if (typeof value === 'string') {
@@ -726,12 +726,12 @@ export class EnhancedLocalizationManager extends LocalizationManager {
             const isLoaded = this.translationLoader.isLanguageLoaded(normalized);
             const translationCount = (this as any).getTranslationCount?.(normalized) || 0;
             
-            const lastUpdated = this._getLanguageLastUpdated(normalized);
+            const lastUpdated = this.getLanguageLastUpdated(normalized);
             return {
                 code: normalized,
-                name: this._getLanguageDisplayName(normalized),
-                nativeName: this._getLanguageNativeName(normalized),
-                isRTL: this._isRTLLanguage(normalized),
+                name: this.getLanguageDisplayName(normalized),
+                nativeName: this.getLanguageNativeName(normalized),
+                isRTL: this.isRTLLanguage(normalized),
                 isLoaded,
                 translationCount,
                 ...(lastUpdated && { lastUpdated })
@@ -745,7 +745,7 @@ export class EnhancedLocalizationManager extends LocalizationManager {
     /**
      * 言語の表示名を取得
      */
-    private _getLanguageDisplayName(language: string): string {
+    private getLanguageDisplayName(language: string): string {
         const displayNames: Record<string, string> = {
             'en': 'English',
             'ja': 'Japanese',
@@ -759,7 +759,7 @@ export class EnhancedLocalizationManager extends LocalizationManager {
     /**
      * 言語のネイティブ名を取得
      */
-    private _getLanguageNativeName(language: string): string {
+    private getLanguageNativeName(language: string): string {
         const nativeNames: Record<string, string> = {
             'en': 'English',
             'ja': '日本語',
@@ -773,7 +773,7 @@ export class EnhancedLocalizationManager extends LocalizationManager {
     /**
      * 右から左に書く言語かチェック
      */
-    private _isRTLLanguage(language: string): boolean {
+    private isRTLLanguage(language: string): boolean {
         const rtlLanguages = ['ar', 'he', 'fa', 'ur'];
         return rtlLanguages.includes(language);
     }
@@ -781,7 +781,7 @@ export class EnhancedLocalizationManager extends LocalizationManager {
     /**
      * 言語の最終更新日時を取得
      */
-    private _getLanguageLastUpdated(language: string): Date | undefined {
+    private getLanguageLastUpdated(language: string): Date | undefined {
         // 実装では翻訳ファイルの更新日時などを取得
         void language; // Mark as used
         return undefined;

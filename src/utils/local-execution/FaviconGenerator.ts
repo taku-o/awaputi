@@ -136,14 +136,14 @@ class FaviconGenerator {
                 // バッチ処理で生成
                 const batchResults = await FaviconPerformanceManager.processBatch(
                     requests,
-                    this._renderFaviconWithCache.bind(this)
+                    this.renderFaviconWithCache.bind(this)
                 );
                 this._processBatchResults(batchResults, result);
             } else {
                 // 順次処理で生成
                 for (const request of requests) {
                     try {
-                        const faviconResult = await this._renderFaviconWithCache(null, request);
+                        const faviconResult = await this.renderFaviconWithCache(null, request);
                         result.generated++;
                         result.details.push(faviconResult);
                     } catch (error) {
@@ -235,7 +235,7 @@ class FaviconGenerator {
      * @param request - リクエスト情報
      * @returns レンダリング結果
      */
-    private static async _renderFaviconWithCache(canvasInfo: CanvasInfo | null, request: GenerationRequest): Promise<FaviconDetail> {
+    private static async renderFaviconWithCache(canvasInfo: CanvasInfo | null, request: GenerationRequest): Promise<FaviconDetail> {
         const { size, config, configHash } = request;
         
         // キャッシュチェック

@@ -91,14 +91,14 @@ export class AudioController {
             return this.initializationPromise;
         }
         
-        this.initializationPromise = this._performInitialization();
+        this.initializationPromise = this.performInitialization();
         return this.initializationPromise;
     }
     
     /**
      * 実際の初期化処理
      */
-    private async _performInitialization(): Promise<void> {
+    private async performInitialization(): Promise<void> {
         try {
             // 専用コンポーネントを初期化
             await this.initializeComponents();

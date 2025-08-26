@@ -154,8 +154,8 @@ export class BalanceGuidelinesManager {
         this.impactRules = new Map();
         
         // ガイドラインを初期化
-        this._initializeGuidelines();
-        this._initializeImpactRules();
+        this.initializeGuidelines();
+        this.initializeImpactRules();
         
         console.log('[BalanceGuidelinesManager] 初期化完了');
     }
@@ -163,7 +163,7 @@ export class BalanceGuidelinesManager {
     /**
      * バランス調整ガイドラインを初期化
      */
-    private _initializeGuidelines(): void {
+    private initializeGuidelines(): void {
         this.guidelines.set('bubble.health', {
             category: 'bubble',
             property: 'health',
@@ -333,7 +333,7 @@ export class BalanceGuidelinesManager {
     /**
      * 影響分析ルールを初期化
      */
-    private _initializeImpactRules(): void {
+    private initializeImpactRules(): void {
         this.impactRules.set('bubble.health', {
             affectedSystems: ['gameplay.difficulty', 'player.stress', 'game.duration'],
             calculations: {
@@ -424,19 +424,19 @@ export class BalanceGuidelinesManager {
             const recommendations: string[] = [];
             
             // 範囲チェック
-            const rangeCheck = this._validateRange(newValue, bubbleType, guideline);
+            const rangeCheck = this.validateRange(newValue, bubbleType, guideline);
             if (!rangeCheck.isValid) {
                 issues.push(...rangeCheck.issues);
                 recommendations.push(...rangeCheck.recommendations);
             }
             // 調整ステップチェック
-            const stepCheck = this._validateAdjustmentStep(oldValue, newValue, guideline);
+            const stepCheck = this.validateAdjustmentStep(oldValue, newValue, guideline);
             if (!stepCheck.isValid) {
                 issues.push(...stepCheck.issues);
                 recommendations.push(...stepCheck.recommendations);
             }
             // 論理的整合性チェック
-            const consistencyCheck = this._validateLogicalConsistency(newValue, bubbleType, propertyType);
+            const consistencyCheck = this.validateLogicalConsistency(newValue, bubbleType, propertyType);
             if (!consistencyCheck.isValid) {
                 issues.push(...consistencyCheck.issues);
                 recommendations.push(...consistencyCheck.recommendations);
@@ -474,7 +474,7 @@ export class BalanceGuidelinesManager {
     /**
      * 範囲の妥当性を検証
      */
-    private _validateRange(value: any, bubbleType: string, guideline: Guideline): ValidationSubResult {
+    private validateRange(value: any, bubbleType: string, guideline: Guideline): ValidationSubResult {
         const issues: string[] = [];
         const recommendations: string[] = [];
 
@@ -518,7 +518,7 @@ export class BalanceGuidelinesManager {
     /**
      * 調整ステップの妥当性を検証
      */
-    private _validateAdjustmentStep(oldValue: any, newValue: any, guideline: Guideline): ValidationSubResult {
+    private validateAdjustmentStep(oldValue: any, newValue: any, guideline: Guideline): ValidationSubResult {
         const issues: string[] = [];
         const recommendations: string[] = [];
 
@@ -553,7 +553,7 @@ export class BalanceGuidelinesManager {
     /**
      * 論理的整合性を検証
      */
-    private _validateLogicalConsistency(value: any, bubbleType: string, propertyType: string): ValidationSubResult {
+    private validateLogicalConsistency(value: any, bubbleType: string, propertyType: string): ValidationSubResult {
         const issues: string[] = [];
         const recommendations: string[] = [];
         // ボス泡の特別チェック
@@ -652,12 +652,12 @@ export class BalanceGuidelinesManager {
             const impactRule = this.impactRules.get(configType);
             if (impactRule) {
                 for (const system of impactRule.affectedSystems) {
-                    const impact = this._calculateSystemImpact(system, oldValue, newValue, impactRule);
+                    const impact = this.calculateSystemImpact(system, oldValue, newValue, impactRule);
                     report.impacts.push(impact);
                 }
                 
                 // リスクレベルの決定
-                report.riskLevel = this._determineRiskLevel(report.impacts, impactRule.thresholds);
+                report.riskLevel = this.determineRiskLevel(report.impacts, impactRule.thresholds);
             }
             // 一般的な推奨事項
             report.recommendations.push('変更後にプレイテストを実施してください');
@@ -694,7 +694,7 @@ export class BalanceGuidelinesManager {
     /**
      * システムへの影響を計算
      */
-    private _calculateSystemImpact(system: string, oldValue: any, newValue: any, impactRule: ImpactRule): SystemImpact {
+    private calculateSystemImpact(system: string, oldValue: any, newValue: any, impactRule: ImpactRule): SystemImpact {
         const impact: SystemImpact = {
             system,
             magnitude: 0,
@@ -731,7 +731,7 @@ export class BalanceGuidelinesManager {
     /**
      * リスクレベルを決定
      */
-    private _determineRiskLevel(impacts: SystemImpact[], thresholds: ImpactRule['thresholds']): 'low' | 'minor' | 'moderate' | 'major' {
+    private determineRiskLevel(impacts: SystemImpact[], thresholds: ImpactRule['thresholds']): 'low' | 'minor' | 'moderate' | 'major' {
         let maxMagnitude = 0;
         
         for (const impact of impacts) {

@@ -405,7 +405,7 @@ export class StatisticsDataRecovery {
         };
         
         this.recoveryState.recoveryHistory.push(record);
-        this._trimRecoveryHistory();
+        this.trimRecoveryHistory();
         console.log('[StatisticsDataRecovery] Recovery success recorded');
     }
     
@@ -424,7 +424,7 @@ export class StatisticsDataRecovery {
         };
         
         this.recoveryState.recoveryHistory.push(record);
-        this._trimRecoveryHistory();
+        this.trimRecoveryHistory();
         console.log('[StatisticsDataRecovery] Recovery failure recorded');
     }
     
@@ -494,7 +494,7 @@ export class StatisticsDataRecovery {
      * 復旧履歴を整理
      * @private
      */
-    _trimRecoveryHistory(): void {
+    trimRecoveryHistory(): void {
         const maxHistory = 100;
         if (this.recoveryState.recoveryHistory.length > maxHistory) {
             this.recoveryState.recoveryHistory = this.recoveryState.recoveryHistory.slice(-maxHistory);

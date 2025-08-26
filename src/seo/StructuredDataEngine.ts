@@ -154,13 +154,13 @@ export class StructuredDataEngine {
         this.schemaCache = new Map();
         this.initialized = false;
 
-        this._initialize();
+        this.initialize();
     }
     
     /**
      * 初期化処理
      */
-    private _initialize(): void {
+    private initialize(): void {
         try {
             // 言語設定の初期化
             if (this.localizationManager) {
@@ -176,7 +176,7 @@ export class StructuredDataEngine {
             }
 
             // スキーマ生成関数の登録
-            this._registerSchemaGenerators();
+            this.registerSchemaGenerators();
 
             this.initialized = true;
             seoLogger.info('StructuredDataEngine initialized successfully');
@@ -281,7 +281,7 @@ export class StructuredDataEngine {
             }
 
             // 動的にスキーマを更新
-            await this._updateSchemaInDOM('VideoGame', enhancedSchema);
+            await this.updateSchemaInDOM('VideoGame', enhancedSchema);
 
             seoLogger.info('Gameplay data updated in structured data', gameplayData);
         } catch (error) {
@@ -292,7 +292,7 @@ export class StructuredDataEngine {
     /**
      * DOM内の特定のスキーマを更新
      */
-    private async _updateSchemaInDOM(schemaType: string, newSchema: BaseSchema): Promise<void> {
+    private async updateSchemaInDOM(schemaType: string, newSchema: BaseSchema): Promise<void> {
         try {
             // 既存のスクリプトタグを検索
             const existingScript = document.querySelector(`script[type="application/ld+json"][data-schema="${schemaType}"]`);
@@ -320,7 +320,7 @@ export class StructuredDataEngine {
                 }
             }
         } catch (error) {
-            seoErrorHandler.handle(error as Error, '_updateSchemaInDOM', { schemaType });
+            seoErrorHandler.handle(error as Error, 'updateSchemaInDOM', { schemaType });
         }
     }
 
@@ -338,8 +338,8 @@ export class StructuredDataEngine {
             const schema: VideoGameSchema = {
                 '@context': 'https://schema.org',
                 '@type': 'VideoGame',
-                name: this._getLocalizedText('game.name', SEOConfig.structuredData.game.name),
-                description: this._getLocalizedText('game.description', 'HTML5 Canvas を使用したバブルポップゲーム'),
+                name: this.getLocalizedText('game.name', SEOConfig.structuredData.game.name),
+                description: this.getLocalizedText('game.description', 'HTML5 Canvas を使用したバブルポップゲーム'),
                 url: getLocalizedUrl(this.currentLang),
                 image: getSocialImageUrl('openGraph'),
                 applicationCategory: SEOConfig.structuredData.game.applicationCategory,
@@ -387,8 +387,8 @@ export class StructuredDataEngine {
             const schema: WebApplicationSchema = {
                 '@context': 'https://schema.org',
                 '@type': 'WebApplication',
-                name: this._getLocalizedText('app.name', SEOConfig.siteName),
-                description: this._getLocalizedText('app.description', 'BubblePop Web Application'),
+                name: this.getLocalizedText('app.name', SEOConfig.siteName),
+                description: this.getLocalizedText('app.description', 'BubblePop Web Application'),
                 url: this.baseUrl,
                 applicationCategory: SEOConfig.structuredData.webApplication.applicationCategory,
                 operatingSystem: ['Any'],
@@ -462,7 +462,7 @@ export class StructuredDataEngine {
     /**
      * スキーマ生成関数の登録
      */
-    private _registerSchemaGenerators(): void {
+    private registerSchemaGenerators(): void {
         this.schemas.set('videoGame', this.generateVideoGameSchema.bind(this));
         this.schemas.set('organization', this.generateOrganizationSchema.bind(this));
         this.schemas.set('webApplication', this.generateWebApplicationSchema.bind(this));
@@ -471,7 +471,7 @@ export class StructuredDataEngine {
     /**
      * ローカライズされたテキストの取得
      */
-    private _getLocalizedText(key: string, fallback: string): string {
+    private getLocalizedText(key: string, fallback: string): string {
         if (this.localizationManager) {
             return this.localizationManager.t(key, fallback);
         }

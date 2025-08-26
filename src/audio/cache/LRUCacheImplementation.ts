@@ -111,7 +111,7 @@ export class LRUCache<T = any> {
             node.hitCount++;
             
             // ノードを最前面に移動
-            this._moveToHead(node);
+            this.moveToHead(node);
             this.stats.hits++;
             return node.value;
         }
@@ -138,18 +138,18 @@ export class LRUCache<T = any> {
             node.hitCount++;
             
             this.currentSize += (size - oldSize);
-            this._moveToHead(node);
+            this.moveToHead(node);
         } else {
             // 新しいエントリを追加
             const newNode = new CacheNode(key, value, size);
             this.cache.set(key, newNode);
-            this._addToHead(newNode);
+            this.addToHead(newNode);
             this.currentSize += size;
         }
         
         // サイズ制限をチェックして必要に応じて削除
         while (this.currentSize > this.maxSize) {
-            this._evictLRU();
+            this.evictLRU();
         }
     }
     
@@ -161,7 +161,7 @@ export class LRUCache<T = any> {
     delete(key: string): boolean {
         if (this.cache.has(key)) {
             const node = this.cache.get(key)!;
-            this._removeNode(node);
+            this.removeNode(node);
             this.cache.delete(key);
             this.currentSize -= node.size;
             return true;
@@ -192,9 +192,9 @@ export class LRUCache<T = any> {
      * @param node - ノード
      * @private
      */
-    private _moveToHead(node: CacheNode<T>): void {
-        this._removeNode(node);
-        this._addToHead(node);
+    private moveToHead(node: CacheNode<T>): void {
+        this.removeNode(node);
+        this.addToHead(node);
     }
     
     /**
@@ -202,7 +202,7 @@ export class LRUCache<T = any> {
      * @param node - ノード
      * @private
      */
-    private _addToHead(node: CacheNode<T>): void {
+    private addToHead(node: CacheNode<T>): void {
         node.prev = this.head;
         node.next = this.head.next;
         this.head.next!.prev = node;
@@ -214,7 +214,7 @@ export class LRUCache<T = any> {
      * @param node - ノード
      * @private
      */
-    private _removeNode(node: CacheNode<T>): void {
+    private removeNode(node: CacheNode<T>): void {
         node.prev!.next = node.next;
         node.next!.prev = node.prev;
     }
@@ -223,10 +223,10 @@ export class LRUCache<T = any> {
      * LRUエントリを削除
      * @private
      */
-    private _evictLRU(): void {
+    private evictLRU(): void {
         const lru = this.tail.prev;
         if (lru !== this.head) {
-            this._removeNode(lru!);
+            this.removeNode(lru!);
             this.cache.delete(lru!.key);
             this.currentSize -= lru!.size;
             this.stats.evictions++;

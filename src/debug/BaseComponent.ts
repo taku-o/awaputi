@@ -24,10 +24,10 @@ export class BaseComponent {
      */
     async initialize(): Promise<void> {
         try {
-            await this._doInitialize();
+            await this.doInitialize();
             this.initialized = true;
         } catch (error) {
-            this._handleError('Initialization failed', error as Error);
+            this.handleError('Initialization failed', error as Error);
             throw error;
         }
     }
@@ -36,7 +36,7 @@ export class BaseComponent {
      * 子クラスでオーバーライドする初期化処理
      * @protected
      */
-    protected async _doInitialize(): Promise<void> {
+    protected async doInitialize(): Promise<void> {
         // Override in subclasses
     }
 
@@ -53,7 +53,7 @@ export class BaseComponent {
      * @param {Error} error - エラーオブジェクト
      * @protected
      */
-    protected _handleError(context: string, error: Error): void {
+    protected handleError(context: string, error: Error): void {
         const message = `[${this.name}] ${context}: ${error.message}`;
         console.error(message, error);
         

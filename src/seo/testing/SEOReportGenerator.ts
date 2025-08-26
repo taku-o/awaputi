@@ -158,15 +158,15 @@ export class SEOReportGenerator {
         try {
             switch(format) {
                 case 'json':
-                    return this._generateJSONReport(results);
+                    return this.generateJSONReport(results);
                 case 'html':
-                    return this._generateHTMLReport(results);
+                    return this.generateHTMLReport(results);
                 case 'csv':
-                    return this._generateCSVReport(results);
+                    return this.generateCSVReport(results);
                 case 'xml':
-                    return this._generateXMLReport(results);
+                    return this.generateXMLReport(results);
                 case 'markdown':
-                    return this._generateMarkdownReport(results);
+                    return this.generateMarkdownReport(results);
                 default:
                     throw new Error(`Unsupported export format: ${format}`);
             }
@@ -244,12 +244,12 @@ export class SEOReportGenerator {
                     totalTests: results.summary?.totalTests || 0,
                     executionTime: results.executionTime || 0
                 },
-                summary: this._generateExecutiveSummary(results),
-                categories: this._enhanceCategoryResults(results.categories || {}),
-                recommendations: includeRecommendations ? this._generateRecommendations(results) : null,
-                timeline: includeTimeline ? this._generateTimeline(results) : null,
-                comparison: includeComparison && previousResults ? this._generateComparison(results, previousResults) : null,
-                visualizations: this._generateVisualizationData(results)
+                summary: this.generateExecutiveSummary(results),
+                categories: this.enhanceCategoryResults(results.categories || {}),
+                recommendations: includeRecommendations ? this.generateRecommendations(results) : null,
+                timeline: includeTimeline ? this.generateTimeline(results) : null,
+                comparison: includeComparison && previousResults ? this.generateComparison(results, previousResults) : null,
+                visualizations: this.generateVisualizationData(results)
             };
 
             return detailedReport;
@@ -267,10 +267,10 @@ export class SEOReportGenerator {
     generateVisualizationData(results: TestResults): VisualizationData {
         try {
             return {
-                scoreDistribution: this._calculateScoreDistribution(results),
-                categoryBreakdown: this._calculateCategoryBreakdown(results),
-                timeSeriesData: this._generateTimeSeriesData(results),
-                heatmapData: this._generateHeatmapData(results)
+                scoreDistribution: this.calculateScoreDistribution(results),
+                categoryBreakdown: this.calculateCategoryBreakdown(results),
+                timeSeriesData: this.generateTimeSeriesData(results),
+                heatmapData: this.generateHeatmapData(results)
             };
         } catch (error) {
             return seoErrorHandler.handle(error, 'generateVisualizationData');
@@ -283,7 +283,7 @@ export class SEOReportGenerator {
      * JSONレポートの生成
      * @private
      */
-    private _generateJSONReport(results: TestResults): string {
+    private generateJSONReport(results: TestResults): string {
         return JSON.stringify(results, null, 2);
     }
 
@@ -291,7 +291,7 @@ export class SEOReportGenerator {
      * HTMLレポートの生成
      * @private
      */
-    private _generateHTMLReport(results: TestResults): string {
+    private generateHTMLReport(results: TestResults): string {
         const timestamp = new Date().toLocaleString('ja-JP');
         const overallScore = results.overallScore || 0;
         const scoreColor = overallScore >= 90 ? '#4CAF50' : overallScore >= 70 ? '#FF9800' : '#f44336';
@@ -438,7 +438,7 @@ export class SEOReportGenerator {
      * CSVレポートの生成
      * @private
      */
-    private _generateCSVReport(results: TestResults): string {
+    private generateCSVReport(results: TestResults): string {
         const rows = ['Category,Test Name,Status,Message'];
 
         Object.entries(results.categories || {}).forEach(([name, category]) => {
@@ -456,7 +456,7 @@ export class SEOReportGenerator {
      * XMLレポートの生成
      * @private
      */
-    private _generateXMLReport(results: TestResults): string {
+    private generateXMLReport(results: TestResults): string {
         const escapeXml = (text: string | number): string => {
             return String(text)
                 .replace(/&/g, '&amp;')
@@ -509,7 +509,7 @@ export class SEOReportGenerator {
      * Markdownレポートの生成
      * @private
      */
-    private _generateMarkdownReport(results: TestResults): string {
+    private generateMarkdownReport(results: TestResults): string {
         const timestamp = new Date().toLocaleString('ja-JP');
         const overallScore = results.overallScore || 0;
         const scoreEmoji = overallScore >= 90 ? '🟢' : overallScore >= 70 ? '🟡' : '🔴';
@@ -549,7 +549,7 @@ export class SEOReportGenerator {
      * エグゼクティブサマリーの生成
      * @private
      */
-    private _generateExecutiveSummary(results: TestResults): ExecutiveSummary {
+    private generateExecutiveSummary(results: TestResults): ExecutiveSummary {
         const overallScore = results.overallScore || 0;
         const totalTests = results.summary?.totalTests || 0;
         const passedTests = results.summary?.passedTests || 0;
@@ -597,15 +597,15 @@ export class SEOReportGenerator {
      * カテゴリ結果の拡張
      * @private
      */
-    private _enhanceCategoryResults(categories: Record<string, CategoryResult>): Record<string, EnhancedCategory> {
+    private enhanceCategoryResults(categories: Record<string, CategoryResult>): Record<string, EnhancedCategory> {
         const enhanced: Record<string, EnhancedCategory> = {};
         
         Object.entries(categories).forEach(([key, category]) => {
             enhanced[key] = {
                 ...category,
                 score: category.tests?.length ? Math.round(((category.passed || 0) / category.tests.length) * 100) : 0,
-                impact: this._calculateCategoryImpact(category),
-                priority: this._calculateCategoryPriority(category)
+                impact: this.calculateCategoryImpact(category),
+                priority: this.calculateCategoryPriority(category)
             };
         });
         
@@ -616,7 +616,7 @@ export class SEOReportGenerator {
      * カテゴリの影響度計算
      * @private
      */
-    private _calculateCategoryImpact(category: CategoryResult): string {
+    private calculateCategoryImpact(category: CategoryResult): string {
         const failedRatio = category.tests?.length ? (category.failed || 0) / category.tests.length : 0;
 
         if (failedRatio > 0.5) return 'High';
@@ -628,7 +628,7 @@ export class SEOReportGenerator {
      * カテゴリの優先度計算
      * @private
      */
-    private _calculateCategoryPriority(category: CategoryResult): string {
+    private calculateCategoryPriority(category: CategoryResult): string {
         const criticalCategories = ['Meta Tags', 'Structured Data', 'Performance Optimization'];
 
         if (criticalCategories.includes(category.category) && (category.failed || 0) > 0) {
@@ -642,7 +642,7 @@ export class SEOReportGenerator {
      * 推奨事項の生成
      * @private
      */
-    private _generateRecommendations(results: TestResults): Recommendation[] {
+    private generateRecommendations(results: TestResults): Recommendation[] {
         const recommendations: Recommendation[] = [];
 
         Object.entries(results.categories || {}).forEach(([key, category]) => {
@@ -652,8 +652,8 @@ export class SEOReportGenerator {
                         category: category.category,
                         test: test.name,
                         issue: test.message || '',
-                        recommendation: this._getRecommendationForTest(test.name),
-                        priority: this._getRecommendationPriority(test.name, category.category)
+                        recommendation: this.getRecommendationForTest(test.name),
+                        priority: this.getRecommendationPriority(test.name, category.category)
                     });
                 }
             });
@@ -669,7 +669,7 @@ export class SEOReportGenerator {
      * テスト別推奨事項の取得
      * @private
      */
-    private _getRecommendationForTest(testName: string): string {
+    private getRecommendationForTest(testName: string): string {
         const recommendations: Record<string, string> = {
             'Required meta tag: title': 'Add a descriptive title tag to your HTML head section.',
             'Required meta tag: description': 'Add a meta description tag with a compelling summary of your page.',
@@ -689,7 +689,7 @@ export class SEOReportGenerator {
      * 推奨事項の優先度取得
      * @private
      */
-    private _getRecommendationPriority(testName: string, category: string): string {
+    private getRecommendationPriority(testName: string, category: string): string {
         const highPriorityTests = [
             'Required meta tag: title',
             'Required meta tag: description',
@@ -708,7 +708,7 @@ export class SEOReportGenerator {
      * タイムラインの生成
      * @private
      */
-    private _generateTimeline(results: TestResults): Timeline {
+    private generateTimeline(results: TestResults): Timeline {
         return {
             testStartTime: new Date(Date.now() - (results.executionTime || 0)).toISOString(),
             testEndTime: new Date().toISOString(),
@@ -727,7 +727,7 @@ export class SEOReportGenerator {
      * スコア分布計算
      * @private
      */
-    private _calculateScoreDistribution(results: TestResults): Record<string, number> {
+    private calculateScoreDistribution(results: TestResults): Record<string, number> {
         const distribution = { excellent: 0, good: 0, fair: 0, poor: 0 };
         
         Object.values(results.categories || {}).forEach(category => {
@@ -746,7 +746,7 @@ export class SEOReportGenerator {
      * カテゴリ別内訳計算
      * @private
      */
-    private _calculateCategoryBreakdown(results: TestResults): Array<{
+    private calculateCategoryBreakdown(results: TestResults): Array<{
         name: string;
         passed: number;
         failed: number;
@@ -778,7 +778,7 @@ export class SEOReportGenerator {
      * 時系列データ生成
      * @private
      */
-    private _generateTimeSeriesData(results: TestResults): any[] {
+    private generateTimeSeriesData(results: TestResults): any[] {
         // 実際の実装では過去のテスト結果を使用
         return [];
     }
@@ -787,7 +787,7 @@ export class SEOReportGenerator {
      * ヒートマップデータ生成
      * @private
      */
-    private _generateHeatmapData(results: TestResults): any[] {
+    private generateHeatmapData(results: TestResults): any[] {
         // 実際の実装では各テストの重要度と結果をマッピング
         return [];
     }
@@ -796,12 +796,12 @@ export class SEOReportGenerator {
      * 可視化データ生成
      * @private
      */
-    private _generateVisualizationData(results: TestResults): VisualizationData {
+    private generateVisualizationData(results: TestResults): VisualizationData {
         return {
-            scoreDistribution: this._calculateScoreDistribution(results),
-            categoryBreakdown: this._calculateCategoryBreakdown(results),
-            timeSeriesData: this._generateTimeSeriesData(results),
-            heatmapData: this._generateHeatmapData(results)
+            scoreDistribution: this.calculateScoreDistribution(results),
+            categoryBreakdown: this.calculateCategoryBreakdown(results),
+            timeSeriesData: this.generateTimeSeriesData(results),
+            heatmapData: this.generateHeatmapData(results)
         };
     }
 
@@ -809,7 +809,7 @@ export class SEOReportGenerator {
      * 比較レポート生成
      * @private
      */
-    private _generateComparison(currentResults: TestResults, previousResults: TestResults): ComparisonResult {
+    private generateComparison(currentResults: TestResults, previousResults: TestResults): ComparisonResult {
         const comparison: ComparisonResult = {
             scoreChange: (currentResults.overallScore || 0) - (previousResults.overallScore || 0),
             testChanges: {

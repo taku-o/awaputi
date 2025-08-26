@@ -52,7 +52,7 @@ export class FontSourceManager {
 
     constructor(config: FontSourceConfig = {}) {
         this.config = config;
-        this.sources = this._initializeSources();
+        this.sources = this.initializeSources();
         this.enabledSources = config.enabledSources || ['system', 'google', 'local'];
         this.sourceAvailability = new Map<string, boolean>();
         this.loadAttempts = new Map<string, LoadAttempt>();
@@ -63,7 +63,7 @@ export class FontSourceManager {
         };
     }
 
-    private _initializeSources(): Record<string, IFontSource> {
+    private initializeSources(): Record<string, IFontSource> {
         return {
             local: new LocalFontSource(this.config),
             google: new GoogleFontSource(this.config),
@@ -97,7 +97,7 @@ export class FontSourceManager {
         });
 
         try {
-            const result = await this._loadWithTimeout(source, fontFamily, sourceName, options);
+            const result = await this.loadWithTimeout(source, fontFamily, sourceName, options);
             this.sourceAvailability.set(sourceName, true);
             return {
                 success: true,
@@ -118,7 +118,7 @@ export class FontSourceManager {
         }
     }
 
-    private async _loadWithTimeout(source: IFontSource, fontFamily: string, sourceName: string, options: FontLoadOptions): Promise<any> {
+    private async loadWithTimeout(source: IFontSource, fontFamily: string, sourceName: string, options: FontLoadOptions): Promise<any> {
         const timeout = options.timeout || this.timeouts[sourceName] || 3000;
 
         return new Promise((resolve, reject) => {
@@ -241,9 +241,9 @@ export class LocalFontSource implements IFontSource {
             throw new Error('CSS Font Loading API not supported');
         }
 
-        const fontPath = this._getFontPath(fontFamily, options.format);
+        const fontPath = this.getFontPath(fontFamily, options.format);
 
-        if (!(await this._checkFontExists(fontPath))) {
+        if (!(await this.checkFontExists(fontPath))) {
             throw new Error(`Font file not found: ${fontPath}`);
         }
 
@@ -258,12 +258,12 @@ export class LocalFontSource implements IFontSource {
         }
     }
 
-    private _getFontPath(fontFamily: string, format: string = 'woff2'): string {
+    private getFontPath(fontFamily: string, format: string = 'woff2'): string {
         const sanitizedName = fontFamily.replace(/\s+/g, '-').toLowerCase();
         return `${this.fontDirectory}/${sanitizedName}.${format}`;
     }
 
-    private async _checkFontExists(fontPath: string): Promise<boolean> {
+    private async checkFontExists(fontPath: string): Promise<boolean> {
         try {
             const response = await fetch(fontPath, { method: 'HEAD' });
             return response.ok;
@@ -299,7 +299,7 @@ export class GoogleFontSource implements IFontSource {
 
         const link = document.createElement('link');
         link.rel = 'stylesheet';
-        link.href = this._buildFontUrl(fontFamily, options);
+        link.href = this.buildFontUrl(fontFamily, options);
 
         return new Promise((resolve, reject) => {
             link.onload = () => {
@@ -315,7 +315,7 @@ export class GoogleFontSource implements IFontSource {
         });
     }
 
-    private _buildFontUrl(fontFamily: string, options: FontLoadOptions = {}): string {
+    private buildFontUrl(fontFamily: string, options: FontLoadOptions = {}): string {
         const family = encodeURIComponent(fontFamily);
         const weights = options.weights || this.weights;
         const display = options.display || this.display;
@@ -339,7 +339,7 @@ export class SystemFontSource implements IFontSource {
     }
 
     async load(fontFamily: string, _options: FontLoadOptions = {}): Promise<{ loaded: boolean; system: boolean }> {
-        if (!this._isFontAvailable(fontFamily)) {
+        if (!this.isFontAvailable(fontFamily)) {
             throw new Error(`System font not available: ${fontFamily}`);
         }
 
@@ -347,7 +347,7 @@ export class SystemFontSource implements IFontSource {
         return { loaded: true, system: true };
     }
 
-    private _isFontAvailable(fontName: string): boolean {
+    private isFontAvailable(fontName: string): boolean {
         if (typeof document === 'undefined') {
             return false;
         }

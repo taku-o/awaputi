@@ -186,7 +186,7 @@ export class AudioCacheManager {
     initialize(): void {
         try {
             // 設定から初期化パラメータを読み込み
-            this._loadCacheSettings();
+            this.loadCacheSettings();
             // メモリ監視を開始
             this.memoryManager.startMemoryMonitoring();
             // 自動クリーンアップを設定
@@ -234,7 +234,7 @@ export class AudioCacheManager {
             if(this.cacheSettings.autoOptimization.enabled && 
                 this.memoryManager.shouldOptimizeForCache(size)) {
                 // 最適化後にキャッシュ
-                this._optimizeAndCache(key, buffer, cacheEntry.metadata);
+                this.optimizeAndCache(key, buffer, cacheEntry.metadata);
             } else {
                 // そのままキャッシュ
                 this.audioBufferCache.set(key, cacheEntry, size);
@@ -387,7 +387,7 @@ export class AudioCacheManager {
     /**
      * キャッシュ設定を読み込み
      */
-    private _loadCacheSettings(): void {
+    private loadCacheSettings(): void {
         try {
             const cacheConfig = this.configManager.get('audio', 'cache') || {};
             
@@ -424,7 +424,7 @@ export class AudioCacheManager {
             
         } catch (error) {
             this.errorHandler.handleError(error as Error, 'AUDIO_CACHE_ERROR', {
-                operation: '_loadCacheSettings'
+                operation: 'loadCacheSettings'
             });
         }
     }
@@ -434,7 +434,7 @@ export class AudioCacheManager {
      * @param buffer - AudioBuffer
      * @param metadata - メタデータ
      */
-    private async _optimizeAndCache(key: string, buffer: AudioBuffer, metadata: any): Promise<void> {
+    private async optimizeAndCache(key: string, buffer: AudioBuffer, metadata: any): Promise<void> {
         try {
             // 最適化を実行
             const optimizedBuffer = this.memoryManager.performSimpleOptimization(buffer);
@@ -454,7 +454,7 @@ export class AudioCacheManager {
             
         } catch (error) {
             this.errorHandler.handleError(error as Error, 'AUDIO_CACHE_ERROR', {
-                operation: '_optimizeAndCache',
+                operation: 'optimizeAndCache',
                 key: key
             });
         }

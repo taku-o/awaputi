@@ -58,7 +58,7 @@ export class DebugSuggestionEngine extends BaseComponent {
         this.contextualSuggestions = new Map<string, Record<string, ContextualSuggestion[]>>();
     }
 
-    async _doInitialize(): Promise<void> {
+    async doInitialize(): Promise<void> {
         this.setupDebugSuggestions();
         this.setupContextualSuggestions();
     }

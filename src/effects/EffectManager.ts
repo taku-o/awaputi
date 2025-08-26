@@ -159,14 +159,14 @@ export class EffectManager {
         };
 
         // 設定変更の監視を開始
-        this._setupConfigWatchers();
+        this.setupConfigWatchers();
     }
     
     /**
      * 設定変更の監視を設定
      * @private
      */
-    private _setupConfigWatchers(): void {
+    private setupConfigWatchers(): void {
         try {
             // Note: 設定システムが実装されたら、適切なwatcherを設定
             // const shakeWatcher = this.effectsConfig.watch('screen.shakeIntensity', (newValue: number) => {
@@ -175,7 +175,7 @@ export class EffectManager {
             // this.configWatchers.set('shakeIntensity', shakeWatcher);
         } catch (error) {
             getErrorHandler().handleError(error, 'EFFECT_ERROR', {
-                context: 'EffectManager._setupConfigWatchers'
+                context: 'EffectManager.setupConfigWatchers'
             });
         }
     }
@@ -184,7 +184,7 @@ export class EffectManager {
      * 設定から効果パラメータを取得
      * @private
      */
-    private _getEffectParameters(): EffectParameters | null {
+    private getEffectParameters(): EffectParameters | null {
         try {
             // effectsConfigが無効な場合はnullを返す
             if (!this.effectsConfig) {
@@ -204,7 +204,7 @@ export class EffectManager {
             };
         } catch (error) {
             getErrorHandler().handleError(error, 'EFFECT_ERROR', {
-                context: 'EffectManager._getEffectParameters'
+                context: 'EffectManager.getEffectParameters'
             });
             // エラーの場合もnullを返す
             return null as any;
@@ -216,7 +216,7 @@ export class EffectManager {
      */
     public addScreenShake(intensity: number, duration?: number, type: ShakeType = 'random'): number {
         try {
-            const params = this._getEffectParameters();
+            const params = this.getEffectParameters();
             // 設定が取得できない場合は何もしない
             if (!params) {
                 return -1;
@@ -257,7 +257,7 @@ export class EffectManager {
      */
     public addFlash(color: string | ColorRGBA, intensity: number, duration?: number, fadeType: FadeType = 'out'): number {
         try {
-            const params = this._getEffectParameters();
+            const params = this.getEffectParameters();
             // 設定が取得できない場合は何もしない
             if (!params) {
                 return -1;
@@ -298,7 +298,7 @@ export class EffectManager {
      */
     public addTint(color: string | ColorRGBA, intensity: number, duration?: number, easing: string = 'linear'): number {
         try {
-            const params = this._getEffectParameters();
+            const params = this.getEffectParameters();
             // 設定が取得できない場合は何もしない
             if (!params) {
                 return -1;
@@ -338,7 +338,7 @@ export class EffectManager {
      */
     public addZoom(targetZoom: number, duration?: number, easing: string = 'easeOut'): number {
         try {
-            const params = this._getEffectParameters();
+            const params = this.getEffectParameters();
             if (!params || !params.enabled) {
                 return -1;
             }
@@ -638,7 +638,7 @@ export class EffectManager {
      */
     public addRotation(angle: number, duration: number, easing: string = 'linear'): number {
         try {
-            const params = this._getEffectParameters();
+            const params = this.getEffectParameters();
             if (!params || !params.enabled) {
                 return -1;
             }
@@ -668,7 +668,7 @@ export class EffectManager {
      */
     public addBlur(intensity: number, duration: number, easing: string = 'easeInOut'): number {
         try {
-            const params = this._getEffectParameters();
+            const params = this.getEffectParameters();
             if (!params || !params.enabled) {
                 return -1;
             }
@@ -698,7 +698,7 @@ export class EffectManager {
      */
     public addFilter(filterType: FilterType, targetValue: number, duration: number, easing: string = 'easeInOut'): number {
         try {
-            const params = this._getEffectParameters();
+            const params = this.getEffectParameters();
             if (!params || !params.enabled) {
                 return -1;
             }
@@ -1192,7 +1192,7 @@ export class EffectManager {
      */
     public applyConfiguration(): void {
         try {
-            const params = this._getEffectParameters();
+            const params = this.getEffectParameters();
             if (!params) return;
             
             // 設定が無効な場合は全効果をクリア
@@ -1246,7 +1246,7 @@ export class EffectManager {
     public updateConfiguration(): void {
         try {
             // 設定を再読み込み
-            const params = this._getEffectParameters();
+            const params = this.getEffectParameters();
 
             // 画面効果が無効になった場合、全ての効果をクリア
             if (params && !params.enabled) {

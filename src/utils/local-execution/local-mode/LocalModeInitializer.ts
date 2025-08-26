@@ -91,7 +91,7 @@ export default class LocalModeInitializer {
         
         try {
             // 1. 実行コンテキスト検出
-            const executionContext = await this._initializeExecutionContext(componentCache, logCallback);
+            const executionContext = await this.initializeExecutionContext(componentCache, logCallback);
             if (!executionContext.isLocal) {
                 logCallback('Not in local execution mode, skipping local mode initialization');
                 return { success: false, reason: 'not_local_execution', executionContext };
@@ -99,15 +99,15 @@ export default class LocalModeInitializer {
             
             // 2. エラーハンドリング初期化
             if (config.enableErrorHandling) {
-                await this._initializeErrorHandling(config, logCallback);
+                await this.initializeErrorHandling(config, logCallback);
             }
             
             // 3. パフォーマンス最適化された並行初期化
             const initializationTasks = this._createInitializationTasks(config, executionContext, logCallback);
-            const results = await this._executeTasksWithOptimization(initializationTasks, config);
+            const results = await this.executeTasksWithOptimization(initializationTasks, config);
             
             // 4. 初期化後処理
-            await this._finalizeInitialization(results, config, logCallback);
+            await this.finalizeInitialization(results, config, logCallback);
             
             this._initializationMetrics.endTime = performance.now();
             this._initializationMetrics.totalExecutionTime = 
@@ -195,7 +195,7 @@ export default class LocalModeInitializer {
      * 実行コンテキスト初期化
      * @private
      */
-    private static async _initializeExecutionContext(
+    private static async initializeExecutionContext(
         componentCache: Map<string, any>,
         logCallback: (message: string) => void
     ): Promise<ExecutionContext> {
@@ -218,7 +218,7 @@ export default class LocalModeInitializer {
      * エラーハンドリング初期化
      * @private
      */
-    private static async _initializeErrorHandling(
+    private static async initializeErrorHandling(
         config: LocalModeConfig,
         logCallback: (message: string) => void
     ): Promise<void> {
@@ -294,7 +294,7 @@ export default class LocalModeInitializer {
      * 最適化されたタスク実行
      * @private
      */
-    private static async _executeTasksWithOptimization(
+    private static async executeTasksWithOptimization(
         tasks: InitializationTask[],
         config: LocalModeConfig
     ): Promise<Record<string, any>> {
@@ -341,7 +341,7 @@ export default class LocalModeInitializer {
      * 初期化後処理
      * @private
      */
-    private static async _finalizeInitialization(
+    private static async finalizeInitialization(
         results: Record<string, any>,
         config: LocalModeConfig,
         logCallback: (message: string) => void

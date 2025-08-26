@@ -74,7 +74,7 @@ export class ExpectationGenerator extends BaseComponent {
         this.templateCache = new Map();
     }
 
-    async _doInitialize(): Promise<void> {
+    async doInitialize(): Promise<void> {
         this.setupTestTemplates();
     }
 

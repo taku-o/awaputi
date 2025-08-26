@@ -87,7 +87,7 @@ export class DebugVisualization extends BaseComponent {
         };
     }
 
-    async _doInitialize(): Promise<void> {
+    async doInitialize(): Promise<void> {
         this.setupThemes();
         this.initializeResponsiveLayout();
         this.bindVisualizationEvents();

@@ -56,7 +56,7 @@ export class ParticleManager {
         
         // 設定システムの初期化
         this.effectsConfig = getEffectsConfig();
-        this._initializeFromConfig();
+        this.initializeFromConfig();
         
         // サブコンポーネントの初期化
         this.renderer = new ParticleRenderer(this);
@@ -66,7 +66,7 @@ export class ParticleManager {
         this.lifecycleManager.initializePool(this.poolSize);
         
         // 設定変更の監視
-        this._setupConfigWatchers();
+        this.setupConfigWatchers();
         
         console.log('[ParticleManager] Main Controller initialized');
     }
@@ -75,7 +75,7 @@ export class ParticleManager {
      * 設定から初期値を設定
      * @private
      */
-    private _initializeFromConfig(): void {
+    private initializeFromConfig(): void {
         try {
             const particleConfig: ParticleManagerConfig = this.effectsConfig.getParticleConfig();
             this.maxParticles = particleConfig.maxCount;
@@ -91,7 +91,7 @@ export class ParticleManager {
             });
         } catch (error) {
             this.errorHandler.handleError(error, {
-                context: 'ParticleManager._initializeFromConfig'
+                context: 'ParticleManager.initializeFromConfig'
             });
             
             // フォールバック値
@@ -106,32 +106,32 @@ export class ParticleManager {
      * 設定変更の監視を設定
      * @private
      */
-    private _setupConfigWatchers(): void {
+    private setupConfigWatchers(): void {
         try {
             // 最大パーティクル数の変更監視
             this.effectsConfig.configManager.watch('effects', 'particles.maxCount', (newValue: number) => {
-                this._onMaxParticleCountChanged(newValue);
+                this.onMaxParticleCountChanged(newValue);
             });
             
             // プールサイズの変更監視
             this.effectsConfig.configManager.watch('effects', 'particles.poolSize', (newValue: number) => {
-                this._onPoolSizeChanged(newValue);
+                this.onPoolSizeChanged(newValue);
             });
             
             // 品質の変更監視
             this.effectsConfig.configManager.watch('effects', 'particles.quality', (newValue: number) => {
-                this._onQualityChanged(newValue);
+                this.onQualityChanged(newValue);
             });
             
             // 有効状態の変更監視
             this.effectsConfig.configManager.watch('effects', 'particles.enabled', (newValue: boolean) => {
-                this._onEnabledChanged(newValue);
+                this.onEnabledChanged(newValue);
             });
 
             console.log('[ParticleManager] 設定変更監視を設定しました');
         } catch (error) {
             this.errorHandler.handleError(error, {
-                context: 'ParticleManager._setupConfigWatchers'
+                context: 'ParticleManager.setupConfigWatchers'
             });
         }
     }
@@ -140,7 +140,7 @@ export class ParticleManager {
      * @param {number} newValue - 新しい最大パーティクル数
      * @private
      */
-    private _onMaxParticleCountChanged(newValue: number): void {
+    private onMaxParticleCountChanged(newValue: number): void {
         try {
             const oldValue = this.maxParticles;
             this.maxParticles = newValue;
@@ -159,7 +159,7 @@ export class ParticleManager {
             console.log(`[ParticleManager] 最大パーティクル数を変更: ${oldValue} → ${newValue}`);
         } catch (error) {
             this.errorHandler.handleError(error, {
-                context: 'ParticleManager._onMaxParticleCountChanged'
+                context: 'ParticleManager.onMaxParticleCountChanged'
             });
         }
     }
@@ -168,7 +168,7 @@ export class ParticleManager {
      * @param {number} newValue - 新しいプールサイズ
      * @private
      */
-    private _onPoolSizeChanged(newValue: number): void {
+    private onPoolSizeChanged(newValue: number): void {
         try {
             const oldValue = this.poolSize;
             this.poolSize = newValue;
@@ -178,7 +178,7 @@ export class ParticleManager {
             console.log(`[ParticleManager] プールサイズを変更: ${oldValue} → ${newValue}`);
         } catch (error) {
             this.errorHandler.handleError(error, {
-                context: 'ParticleManager._onPoolSizeChanged'
+                context: 'ParticleManager.onPoolSizeChanged'
             });
         }
     }
@@ -187,7 +187,7 @@ export class ParticleManager {
      * @param {number} newValue - 新しい品質値
      * @private
      */
-    private _onQualityChanged(newValue: number): void {
+    private onQualityChanged(newValue: number): void {
         try {
             const oldValue = this.quality;
             this.quality = newValue;
@@ -195,7 +195,7 @@ export class ParticleManager {
             console.log(`[ParticleManager] 品質を変更: ${oldValue} → ${newValue}`);
         } catch (error) {
             this.errorHandler.handleError(error, {
-                context: 'ParticleManager._onQualityChanged'
+                context: 'ParticleManager.onQualityChanged'
             });
         }
     }
@@ -204,7 +204,7 @@ export class ParticleManager {
      * @param {boolean} newValue - 新しい有効状態
      * @private
      */
-    private _onEnabledChanged(newValue: boolean): void {
+    private onEnabledChanged(newValue: boolean): void {
         try {
             const oldValue = this.enabled;
             this.enabled = newValue;
@@ -217,7 +217,7 @@ export class ParticleManager {
             console.log(`[ParticleManager] 有効状態を変更: ${oldValue} → ${newValue}`);
         } catch (error) {
             this.errorHandler.handleError(error, {
-                context: 'ParticleManager._onEnabledChanged'
+                context: 'ParticleManager.onEnabledChanged'
             });
         }
     }

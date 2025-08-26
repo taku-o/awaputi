@@ -120,7 +120,7 @@ export class PerformanceProfiler {
         this.collectors = new Map();
         
         // Initialize sub-components
-        this._initializeSubComponents();
+        this.initializeSubComponents();
         
         // Main configuration
         this.config = {
@@ -146,7 +146,7 @@ export class PerformanceProfiler {
     /**
      * Initialize sub-component systems
      */
-    private _initializeSubComponents(): void {
+    private initializeSubComponents(): void {
         try {
             this.collectors.set('frame', new FrameMetricsCollector());
             this.collectors.set('memory', new MemoryMetricsCollector());

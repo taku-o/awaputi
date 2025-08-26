@@ -79,7 +79,7 @@ export class MainMenuScene extends Scene implements IMainMenuScene {
         this.showingControlsHelp = false;
         
         // サブコンポーネントの初期化
-        this._initializeSubComponents();
+        this.initializeSubComponents();
         
         // 初期設定
         this.updateMenuLabels();
@@ -88,7 +88,7 @@ export class MainMenuScene extends Scene implements IMainMenuScene {
     /**
      * サブコンポーネントの初期化
      */
-    private _initializeSubComponents(): void {
+    private initializeSubComponents(): void {
         try {
             this.mainMenuRenderer = new MainMenuRenderer(this.gameEngine);
             this.usernameInputManager = new UsernameInputManager(this.gameEngine);
@@ -98,7 +98,7 @@ export class MainMenuScene extends Scene implements IMainMenuScene {
             console.log('[MainMenuScene] サブコンポーネントを初期化しました');
         } catch (error) {
             this.errorHandler.handleError(error, {
-                context: 'MainMenuScene._initializeSubComponents'
+                context: 'MainMenuScene.initializeSubComponents'
             });
         }
     }

@@ -204,14 +204,14 @@ export class SEOTester {
         this.performanceValidator = new PerformanceValidator(this);
         this.reportGenerator = new SEOReportGenerator(this);
         
-        this._initializeValidationRules();
+        this.initializeValidationRules();
         console.log('SEOTester initialized with Main Controller Pattern');
     }
     
     /**
      * 検証ルールの初期化
      */
-    private _initializeValidationRules(): void {
+    private initializeValidationRules(): void {
         // メタタグ検証ルール
         this.validationRules.set('metaTags', {
             required: ['title', 'description', 'charset'],
@@ -319,7 +319,7 @@ export class SEOTester {
             const endTime = performance.now();
             
             // 結果の集約
-            const aggregatedResults = this._aggregateTestResults(results);
+            const aggregatedResults = this.aggregateTestResults(results);
             aggregatedResults.executionTime = endTime - startTime;
             
             this.performanceMetrics.testExecutionTime = aggregatedResults.executionTime;
@@ -506,7 +506,7 @@ export class SEOTester {
     /**
      * テスト結果の集約
      */
-    private _aggregateTestResults(results: PromiseSettledResult<TestResult>[]): AggregatedTestResults {
+    private aggregateTestResults(results: PromiseSettledResult<TestResult>[]): AggregatedTestResults {
         const aggregated: AggregatedTestResults = {
             summary: {
                 totalTests: 0,
@@ -558,7 +558,7 @@ export class SEOTester {
      */
     reinitialize(): void {
         this.cleanup();
-        this._initializeValidationRules();
+        this.initializeValidationRules();
         console.log('SEOTester reinitialized');
     }
     

@@ -87,29 +87,29 @@ export class GameConfig {
     constructor() {
         this.configManager = getConfigurationManager();
         this.errorHandler = getErrorHandler();
-        this._initialize();
+        this.initialize();
     }
 
     /**
      * 初期化処理 - BALANCE_CONFIGからの設定移行
      * @private
      */
-    private _initialize(): void {
+    private initialize(): void {
         try {
             // スコア設定の移行
-            this._migrateScoreConfig();
+            this.migrateScoreConfig();
             // ステージ設定の移行
-            this._migrateStageConfig();
+            this.migrateStageConfig();
             // アイテム設定の移行
-            this._migrateItemConfig();
+            this.migrateItemConfig();
             // 泡設定の移行
-            this._migrateBubbleConfig();
+            this.migrateBubbleConfig();
             // 検証ルールの設定
-            this._setupValidationRules();
+            this.setupValidationRules();
             console.log('[GameConfig] 初期化完了');
         } catch (error) {
             this.errorHandler.handleError(error as Error, 'GAME_CONFIG_INIT_ERROR', {
-                context: 'GameConfig._initialize'
+                context: 'GameConfig.initialize'
             });
         }
     }
@@ -118,7 +118,7 @@ export class GameConfig {
      * スコア設定の移行
      * @private
      */
-    private _migrateScoreConfig(): void {
+    private migrateScoreConfig(): void {
         const scoring = ORIGINAL_BALANCE_CONFIG.scoring;
         
         // 基本スコア
@@ -141,7 +141,7 @@ export class GameConfig {
      * ステージ設定の移行
      * @private
      */
-    private _migrateStageConfig(): void {
+    private migrateStageConfig(): void {
         const stages = ORIGINAL_BALANCE_CONFIG.stages;
         
         // 開放条件
@@ -160,7 +160,7 @@ export class GameConfig {
      * アイテム設定の移行
      * @private
      */
-    private _migrateItemConfig(): void {
+    private migrateItemConfig(): void {
         const items = ORIGINAL_BALANCE_CONFIG.items;
         
         // 基本コスト
@@ -186,7 +186,7 @@ export class GameConfig {
      * 泡設定の移行
      * @private
      */
-    private _migrateBubbleConfig(): void {
+    private migrateBubbleConfig(): void {
         const bubbles = ORIGINAL_BALANCE_CONFIG.bubbles;
         
         // 生存時間
@@ -211,7 +211,7 @@ export class GameConfig {
      * 検証ルールの設定
      * @private
      */
-    private _setupValidationRules(): void {
+    private setupValidationRules(): void {
         // スコア設定の検証ルール
         this.configManager.setValidationRule('game.scoring.combo.multiplierIncrement', {
             type: 'number',
@@ -247,9 +247,9 @@ export class GameConfig {
      */
     getScoreConfig(): ScoreConfig {
         return {
-            baseScores: this._getConfigObject('game', 'scoring.baseScores'),
-            combo: this._getConfigObject('game', 'scoring.combo') as ComboConfig,
-            ageBonus: this._getConfigObject('game', 'scoring.ageBonus') as AgeBonusConfig
+            baseScores: this.getConfigObject('game', 'scoring.baseScores'),
+            combo: this.getConfigObject('game', 'scoring.combo') as ComboConfig,
+            ageBonus: this.getConfigObject('game', 'scoring.ageBonus') as AgeBonusConfig
         };
     }
 
@@ -267,7 +267,7 @@ export class GameConfig {
      * @returns コンボ設定
      */
     getComboConfig(): ComboConfig {
-        return this._getConfigObject('game', 'scoring.combo') as ComboConfig;
+        return this.getConfigObject('game', 'scoring.combo') as ComboConfig;
     }
 
     /**
@@ -275,7 +275,7 @@ export class GameConfig {
      * @returns 年齢ボーナス設定
      */
     getAgeBonusConfig(): AgeBonusConfig {
-        return this._getConfigObject('game', 'scoring.ageBonus') as AgeBonusConfig;
+        return this.getConfigObject('game', 'scoring.ageBonus') as AgeBonusConfig;
     }
 
     /**
@@ -284,8 +284,8 @@ export class GameConfig {
      */
     getStageConfig(): StageConfig {
         return {
-            unlockRequirements: this._getConfigObject('game', 'stages.unlockRequirements'),
-            difficulty: this._getConfigObject('game', 'stages.difficulty') as Record<string, StageDifficultyConfig>
+            unlockRequirements: this.getConfigObject('game', 'stages.unlockRequirements'),
+            difficulty: this.getConfigObject('game', 'stages.difficulty') as Record<string, StageDifficultyConfig>
         };
     }
 
@@ -316,10 +316,10 @@ export class GameConfig {
      */
     getItemConfig(): ItemConfig {
         return {
-            baseCosts: this._getConfigObject('game', 'items.baseCosts'),
+            baseCosts: this.getConfigObject('game', 'items.baseCosts'),
             costMultiplier: this.configManager.get('game', 'items.costMultiplier') ?? 1.3,
-            effects: this._getConfigObject('game', 'items.effects'),
-            maxLevels: this._getConfigObject('game', 'items.maxLevels')
+            effects: this.getConfigObject('game', 'items.effects'),
+            maxLevels: this.getConfigObject('game', 'items.maxLevels')
         };
     }
 
@@ -356,9 +356,9 @@ export class GameConfig {
      */
     getBubbleConfig(): BubbleConfig {
         return {
-            maxAge: this._getConfigObject('game', 'bubbles.maxAge'),
-            health: this._getConfigObject('game', 'bubbles.health'),
-            specialEffects: this._getConfigObject('game', 'bubbles.specialEffects')
+            maxAge: this.getConfigObject('game', 'bubbles.maxAge'),
+            health: this.getConfigObject('game', 'bubbles.health'),
+            specialEffects: this.getConfigObject('game', 'bubbles.specialEffects')
         };
     }
 
@@ -386,7 +386,7 @@ export class GameConfig {
      * @returns 特殊効果
      */
     getBubbleSpecialEffects(bubbleType: string): Record<string, any> {
-        return this._getConfigObject('game', `bubbles.specialEffects.${bubbleType}`);
+        return this.getConfigObject('game', `bubbles.specialEffects.${bubbleType}`);
     }
 
     /**
@@ -396,7 +396,7 @@ export class GameConfig {
      * @param prefix - 設定キープレフィックス
      * @returns 設定オブジェクト
      */
-    private _getConfigObject(category: string, prefix: string): Record<string, any> {
+    private getConfigObject(category: string, prefix: string): Record<string, any> {
         try {
             const result: Record<string, any> = {};
             const allSettings = this.configManager.getCategory(category);
@@ -427,7 +427,7 @@ export class GameConfig {
             return result;
         } catch (error) {
             this.errorHandler.handleError(error as Error, 'GAME_CONFIG_GET_OBJECT_ERROR', {
-                context: 'GameConfig._getConfigObject',
+                context: 'GameConfig.getConfigObject',
                 category,
                 prefix
             });

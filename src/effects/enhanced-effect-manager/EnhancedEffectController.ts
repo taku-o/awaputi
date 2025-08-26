@@ -192,8 +192,8 @@ export class EnhancedEffectController {
                 lightSource: lightSource,
                 opacity: 0.6,
                 blur: 2,
-                direction: this._calculateShadowDirection(shadowObject, lightSource),
-                distance: this._calculateShadowDistance(shadowObject, lightSource),
+                direction: this.calculateShadowDirection(shadowObject, lightSource),
+                distance: this.calculateShadowDistance(shadowObject, lightSource),
                 created: Date.now()
             };
             
@@ -390,7 +390,7 @@ export class EnhancedEffectController {
     /**
      * 影の方向を計算
      */
-    private _calculateShadowDirection(shadowObject: ShadowObject, lightSource: LightSourceBase): number {
+    private calculateShadowDirection(shadowObject: ShadowObject, lightSource: LightSourceBase): number {
         const dx = shadowObject.x - lightSource.x;
         const dy = shadowObject.y - lightSource.y;
         return Math.atan2(dy, dx);
@@ -399,7 +399,7 @@ export class EnhancedEffectController {
     /**
      * 影の距離を計算
      */
-    private _calculateShadowDistance(shadowObject: ShadowObject, lightSource: LightSourceBase): number {
+    private calculateShadowDistance(shadowObject: ShadowObject, lightSource: LightSourceBase): number {
         const dx = shadowObject.x - lightSource.x;
         const dy = shadowObject.y - lightSource.y;
         const distance = Math.sqrt(dx * dx + dy * dy);

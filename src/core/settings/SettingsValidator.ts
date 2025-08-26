@@ -162,7 +162,7 @@ export class SettingsValidator {
                 return { isValid: true, sanitizedValue: value };
             }
 
-            return this._validateByRule(value, rule, key);
+            return this.validateByRule(value, rule, key);
         } catch (error) {
             return {
                 isValid: false,
@@ -180,14 +180,14 @@ export class SettingsValidator {
      * @param key キー
      * @returns 検証結果
      */
-    private _validateByRule(value: any, rule: ValidationRule, key: string): ValidationResult {
+    private validateByRule(value: any, rule: ValidationRule, key: string): ValidationResult {
         const errors: string[] = [];
         let sanitizedValue = value;
 
         // 型チェック
-        if (rule.type && !this._checkType(value, rule.type as ExpectedType)) {
+        if (rule.type && !this.checkType(value, rule.type as ExpectedType)) {
             errors.push(`Expected ${rule.type}, got ${typeof value}`);
-            sanitizedValue = this._getDefaultForType(rule.type as ExpectedType);
+            sanitizedValue = this.getDefaultForType(rule.type as ExpectedType);
         }
 
         // 数値の範囲チェック
@@ -222,11 +222,11 @@ export class SettingsValidator {
             try {
                 if (!rule.validator(value)) {
                     errors.push(`Custom validation failed for value: ${value}`);
-                    sanitizedValue = this._getDefaultForType(rule.type as ExpectedType);
+                    sanitizedValue = this.getDefaultForType(rule.type as ExpectedType);
                 }
             } catch (error) {
                 errors.push(`Custom validator error: ${(error as Error).message}`);
-                sanitizedValue = this._getDefaultForType(rule.type as ExpectedType);
+                sanitizedValue = this.getDefaultForType(rule.type as ExpectedType);
             }
         }
 
@@ -235,7 +235,7 @@ export class SettingsValidator {
             const sanitizedObject = { ...value };
             for (const [propKey, propRule] of Object.entries(rule.properties)) {
                 if (propKey in value) {
-                    const propResult = this._validateByRule(value[propKey], propRule, `${key}.${propKey}`);
+                    const propResult = this.validateByRule(value[propKey], propRule, `${key}.${propKey}`);
                     if (!propResult.isValid) {
                         errors.push(...(propResult.errors || []).map(e => `${propKey}: ${e}`));
                     }
@@ -259,7 +259,7 @@ export class SettingsValidator {
      * @param expectedType 期待する型
      * @returns 型が正しいか
      */
-    private _checkType(value: any, expectedType: ExpectedType): boolean {
+    private checkType(value: any, expectedType: ExpectedType): boolean {
         switch (expectedType) {
             case 'string':
                 return typeof value === 'string';
@@ -282,7 +282,7 @@ export class SettingsValidator {
      * @param type 型
      * @returns デフォルト値
      */
-    private _getDefaultForType(type: ExpectedType): any {
+    private getDefaultForType(type: ExpectedType): any {
         switch (type) {
             case 'string':
                 return '';

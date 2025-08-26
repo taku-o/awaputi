@@ -121,7 +121,7 @@ export class DebugDataExporter extends BaseComponent {
         };
     }
 
-    async _doInitialize(): Promise<void> {
+    async doInitialize(): Promise<void> {
         this.setupExportFormats();
         this.initializeTestSuites();
     }

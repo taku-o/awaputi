@@ -120,11 +120,11 @@ export class SeasonalParticleRenderer {
             const colors = theme.colors.primary;
             const particleTypes = theme.particles.types;
             
-            this._createThemeSpecificEffect(x, y, effect, {
+            this.createThemeSpecificEffect(x, y, effect, {
                 colors,
                 particleTypes,
                 size: bubbleSize,
-                intensity: this._getEffectIntensity()
+                intensity: this.getEffectIntensity()
             });
 
         } catch (error) {
@@ -155,7 +155,7 @@ export class SeasonalParticleRenderer {
             const colors = theme.colors.accent || theme.colors.primary;
             const particleTypes = theme.particles.types;
             
-            this._createThemeSpecificEffect(x, y, effect, {
+            this.createThemeSpecificEffect(x, y, effect, {
                 colors,
                 particleTypes,
                 intensity: Math.min(comboCount * 0.2, 2.0),
@@ -177,7 +177,7 @@ export class SeasonalParticleRenderer {
      * @param config - 設定
      * @private
      */
-    private _createThemeSpecificEffect(x: number, y: number, effectType: string, config: EffectConfig): void {
+    private createThemeSpecificEffect(x: number, y: number, effectType: string, config: EffectConfig): void {
         const effectId = `seasonal_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
         
         const effect: SeasonalEffect = {
@@ -193,31 +193,31 @@ export class SeasonalParticleRenderer {
         // エフェクトタイプに応じたパーティクル生成
         switch(effectType) {
             case 'flower_burst':
-                this._createFlowerBurstEffect(effect);
+                this.createFlowerBurstEffect(effect);
                 break;
             case 'splash_burst':
-                this._createSplashBurstEffect(effect);
+                this.createSplashBurstEffect(effect);
                 break;
             case 'leaf_scatter':
-                this._createLeafScatterEffect(effect);
+                this.createLeafScatterEffect(effect);
                 break;
             case 'ice_shatter':
-                this._createIceShatterEffect(effect);
+                this.createIceShatterEffect(effect);
                 break;
             case 'firework_burst':
-                this._createFireworkBurstEffect(effect);
+                this.createFireworkBurstEffect(effect);
                 break;
             case 'heart_burst':
-                this._createHeartBurstEffect(effect);
+                this.createHeartBurstEffect(effect);
                 break;
             case 'spooky_burst':
-                this._createSpookyBurstEffect(effect);
+                this.createSpookyBurstEffect(effect);
                 break;
             case 'christmas_burst':
-                this._createChristmasBurstEffect(effect);
+                this.createChristmasBurstEffect(effect);
                 break;
             default:
-                this._createDefaultSeasonalEffect(effect);
+                this.createDefaultSeasonalEffect(effect);
         }
         
         this.activeSeasonalEffects.set(effectId, effect);
@@ -228,12 +228,12 @@ export class SeasonalParticleRenderer {
      * @param effect - エフェクト
      * @private
      */
-    private _createFlowerBurstEffect(effect: SeasonalEffect): void {
-        const particleCount = Math.floor(15 * this._getEffectIntensity());
+    private createFlowerBurstEffect(effect: SeasonalEffect): void {
+        const particleCount = Math.floor(15 * this.getEffectIntensity());
         for (let i = 0; i < particleCount; i++) {
             const angle = (Math.PI * 2 * i) / particleCount;
             const velocity = 2 + Math.random() * 3;
-            const color = this._getRandomColor(effect.config.colors);
+            const color = this.getRandomColor(effect.config.colors);
             
             effect.particles.push({
                 x: effect.x,
@@ -255,12 +255,12 @@ export class SeasonalParticleRenderer {
      * @param effect - エフェクト
      * @private
      */
-    private _createSplashBurstEffect(effect: SeasonalEffect): void {
-        const particleCount = Math.floor(20 * this._getEffectIntensity());
+    private createSplashBurstEffect(effect: SeasonalEffect): void {
+        const particleCount = Math.floor(20 * this.getEffectIntensity());
         for (let i = 0; i < particleCount; i++) {
             const angle = (Math.PI * 2 * i) / particleCount + (Math.random() - 0.5) * 0.5;
             const velocity = 3 + Math.random() * 4;
-            const color = this._getRandomColor(effect.config.colors);
+            const color = this.getRandomColor(effect.config.colors);
             
             effect.particles.push({
                 x: effect.x,
@@ -283,12 +283,12 @@ export class SeasonalParticleRenderer {
      * @param effect - エフェクト
      * @private
      */
-    private _createLeafScatterEffect(effect: SeasonalEffect): void {
-        const particleCount = Math.floor(12 * this._getEffectIntensity());
+    private createLeafScatterEffect(effect: SeasonalEffect): void {
+        const particleCount = Math.floor(12 * this.getEffectIntensity());
         for (let i = 0; i < particleCount; i++) {
             const angle = Math.random() * Math.PI * 2;
             const velocity = 1.5 + Math.random() * 2.5;
-            const color = this._getRandomColor(effect.config.colors);
+            const color = this.getRandomColor(effect.config.colors);
             
             effect.particles.push({
                 x: effect.x,
@@ -311,12 +311,12 @@ export class SeasonalParticleRenderer {
      * @param effect - エフェクト
      * @private
      */
-    private _createIceShatterEffect(effect: SeasonalEffect): void {
-        const particleCount = Math.floor(18 * this._getEffectIntensity());
+    private createIceShatterEffect(effect: SeasonalEffect): void {
+        const particleCount = Math.floor(18 * this.getEffectIntensity());
         for (let i = 0; i < particleCount; i++) {
             const angle = (Math.PI * 2 * i) / particleCount + (Math.random() - 0.5) * 0.3;
             const velocity = 2.5 + Math.random() * 3.5;
-            const color = this._getRandomColor(effect.config.colors);
+            const color = this.getRandomColor(effect.config.colors);
             
             effect.particles.push({
                 x: effect.x,
@@ -338,12 +338,12 @@ export class SeasonalParticleRenderer {
      * @param effect - エフェクト
      * @private
      */
-    private _createFireworkBurstEffect(effect: SeasonalEffect): void {
-        const particleCount = Math.floor(25 * this._getEffectIntensity());
+    private createFireworkBurstEffect(effect: SeasonalEffect): void {
+        const particleCount = Math.floor(25 * this.getEffectIntensity());
         for (let i = 0; i < particleCount; i++) {
             const angle = (Math.PI * 2 * i) / particleCount;
             const velocity = 4 + Math.random() * 4;
-            const color = this._getRandomColor(effect.config.colors);
+            const color = this.getRandomColor(effect.config.colors);
             
             effect.particles.push({
                 x: effect.x,
@@ -367,12 +367,12 @@ export class SeasonalParticleRenderer {
      * @param effect - エフェクト
      * @private
      */
-    private _createHeartBurstEffect(effect: SeasonalEffect): void {
-        const particleCount = Math.floor(12 * this._getEffectIntensity());
+    private createHeartBurstEffect(effect: SeasonalEffect): void {
+        const particleCount = Math.floor(12 * this.getEffectIntensity());
         for (let i = 0; i < particleCount; i++) {
             const angle = (Math.PI * 2 * i) / particleCount;
             const velocity = 1.5 + Math.random() * 2;
-            const color = this._getRandomColor(effect.config.colors);
+            const color = this.getRandomColor(effect.config.colors);
             
             effect.particles.push({
                 x: effect.x,
@@ -395,12 +395,12 @@ export class SeasonalParticleRenderer {
      * @param effect - エフェクト
      * @private
      */
-    private _createSpookyBurstEffect(effect: SeasonalEffect): void {
-        const particleCount = Math.floor(10 * this._getEffectIntensity());
+    private createSpookyBurstEffect(effect: SeasonalEffect): void {
+        const particleCount = Math.floor(10 * this.getEffectIntensity());
         for (let i = 0; i < particleCount; i++) {
             const angle = Math.random() * Math.PI * 2;
             const velocity = 1 + Math.random() * 2;
-            const color = this._getRandomColor(effect.config.colors);
+            const color = this.getRandomColor(effect.config.colors);
             
             effect.particles.push({
                 x: effect.x,
@@ -424,12 +424,12 @@ export class SeasonalParticleRenderer {
      * @param effect - エフェクト
      * @private
      */
-    private _createChristmasBurstEffect(effect: SeasonalEffect): void {
-        const particleCount = Math.floor(16 * this._getEffectIntensity());
+    private createChristmasBurstEffect(effect: SeasonalEffect): void {
+        const particleCount = Math.floor(16 * this.getEffectIntensity());
         for (let i = 0; i < particleCount; i++) {
             const angle = (Math.PI * 2 * i) / particleCount;
             const velocity = 2 + Math.random() * 3;
-            const color = this._getRandomColor(effect.config.colors);
+            const color = this.getRandomColor(effect.config.colors);
             
             effect.particles.push({
                 x: effect.x,
@@ -452,12 +452,12 @@ export class SeasonalParticleRenderer {
      * @param effect - エフェクト
      * @private
      */
-    private _createDefaultSeasonalEffect(effect: SeasonalEffect): void {
-        const particleCount = Math.floor(10 * this._getEffectIntensity());
+    private createDefaultSeasonalEffect(effect: SeasonalEffect): void {
+        const particleCount = Math.floor(10 * this.getEffectIntensity());
         for (let i = 0; i < particleCount; i++) {
             const angle = (Math.PI * 2 * i) / particleCount;
             const velocity = 2 + Math.random() * 2;
-            const color = this._getRandomColor(effect.config.colors);
+            const color = this.getRandomColor(effect.config.colors);
             
             effect.particles.push({
                 x: effect.x,
@@ -498,7 +498,7 @@ export class SeasonalParticleRenderer {
                 }
                 
                 // 特殊効果
-                this._updateSpecialEffects(particle, deltaTime);
+                this.updateSpecialEffects(particle, deltaTime);
                 
                 // ライフサイクル管理
                 particle.life -= particle.decay * deltaTime;
@@ -522,7 +522,7 @@ export class SeasonalParticleRenderer {
      * @param deltaTime - 経過時間
      * @private
      */
-    private _updateSpecialEffects(particle: SeasonalParticle, deltaTime: number): void {
+    private updateSpecialEffects(particle: SeasonalParticle, deltaTime: number): void {
         const time = performance.now() * 0.001;
         
         // パルス効果
@@ -548,7 +548,7 @@ export class SeasonalParticleRenderer {
     renderParticles(context: CanvasRenderingContext2D): void {
         this.activeSeasonalEffects.forEach(effect => {
             effect.particles.forEach(particle => {
-                this._renderParticle(context, particle);
+                this.renderParticle(context, particle);
             });
         });
     }
@@ -559,7 +559,7 @@ export class SeasonalParticleRenderer {
      * @param particle - パーティクル
      * @private
      */
-    private _renderParticle(context: CanvasRenderingContext2D, particle: SeasonalParticle): void {
+    private renderParticle(context: CanvasRenderingContext2D, particle: SeasonalParticle): void {
         context.save();
         const alpha = particle.alpha || particle.life;
         context.globalAlpha = alpha;
@@ -577,14 +577,14 @@ export class SeasonalParticleRenderer {
         // パーティクルタイプ別描画
         switch(particle.type) {
             case 'heart':
-                this._drawHeart(context, size);
+                this.drawHeart(context, size);
                 break;
             case 'star':
             case 'christmas_star':
-                this._drawStar(context, size);
+                this.drawStar(context, size);
                 break;
             default:
-                this._drawCircle(context, size);
+                this.drawCircle(context, size);
         }
         
         context.restore();
@@ -596,7 +596,7 @@ export class SeasonalParticleRenderer {
      * @param size - サイズ
      * @private
      */
-    private _drawHeart(context: CanvasRenderingContext2D, size: number): void {
+    private drawHeart(context: CanvasRenderingContext2D, size: number): void {
         const scale = size / 10;
         context.scale(scale, scale);
         context.beginPath();
@@ -611,7 +611,7 @@ export class SeasonalParticleRenderer {
      * @param size - サイズ
      * @private
      */
-    private _drawStar(context: CanvasRenderingContext2D, size: number): void {
+    private drawStar(context: CanvasRenderingContext2D, size: number): void {
         const spikes = 5;
         const outerRadius = size;
         const innerRadius = size * 0.4;
@@ -639,7 +639,7 @@ export class SeasonalParticleRenderer {
      * @param size - サイズ
      * @private
      */
-    private _drawCircle(context: CanvasRenderingContext2D, size: number): void {
+    private drawCircle(context: CanvasRenderingContext2D, size: number): void {
         context.beginPath();
         context.arc(0, 0, size, 0, Math.PI * 2);
         context.fill();
@@ -650,7 +650,7 @@ export class SeasonalParticleRenderer {
      * @returns 色
      * @private
      */
-    private _getRandomColor(colors: string[]): string {
+    private getRandomColor(colors: string[]): string {
         return colors[Math.floor(Math.random() * colors.length)];
     }
     
@@ -659,7 +659,7 @@ export class SeasonalParticleRenderer {
      * @returns 強度
      * @private
      */
-    private _getEffectIntensity(): number {
+    private getEffectIntensity(): number {
         return this.qualityController ? this.qualityController.getParticleQualityMultiplier() : 1.0;
     }
     
@@ -684,7 +684,7 @@ export class SeasonalParticleRenderer {
         return {
             activeEffects: this.activeSeasonalEffects.size,
             totalParticles: totalParticles,
-            memoryUsage: this._estimateMemoryUsage()
+            memoryUsage: this.estimateMemoryUsage()
         };
     }
     
@@ -693,7 +693,7 @@ export class SeasonalParticleRenderer {
      * @returns メモリ使用量（バイト）
      * @private
      */
-    private _estimateMemoryUsage(): number {
+    private estimateMemoryUsage(): number {
         let usage = 0;
         this.activeSeasonalEffects.forEach(effect => {
             usage += effect.particles.length * 200; // パーティクル当たり約200バイト

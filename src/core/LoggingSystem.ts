@@ -90,7 +90,7 @@ export class LoggingSystem {
      * @param source - ログソース
      */
     debug(message: string, data: any = null, source: string | null = null): void {
-        this._log('debug', message, data, source);
+        this.log('debug', message, data, source);
     }
     
     /**
@@ -100,7 +100,7 @@ export class LoggingSystem {
      * @param source - ログソース
      */
     info(message: string, data: any = null, source: string | null = null): void {
-        this._log('info', message, data, source);
+        this.log('info', message, data, source);
     }
     
     /**
@@ -110,7 +110,7 @@ export class LoggingSystem {
      * @param source - ログソース
      */
     warn(message: string, data: any = null, source: string | null = null): void {
-        this._log('warn', message, data, source);
+        this.log('warn', message, data, source);
     }
     
     /**
@@ -120,7 +120,7 @@ export class LoggingSystem {
      * @param source - ログソース
      */
     error(message: string, data: any = null, source: string | null = null): void {
-        this._log('error', message, data, source);
+        this.log('error', message, data, source);
     }
     
     /**
@@ -140,7 +140,7 @@ export class LoggingSystem {
             changeType: oldValue === undefined ? 'create' : 
                         newValue === undefined ? 'delete' : 'update'
         };
-        this._log('info', `設定変更: ${category}.${key}`, data, source);
+        this.log('info', `設定変更: ${category}.${key}`, data, source);
     }
     
     /**
@@ -161,7 +161,7 @@ export class LoggingSystem {
             resolvedValue
         };
 
-        this._log('warn', `設定競合: ${category}.${key}`, data, source);
+        this.log('warn', `設定競合: ${category}.${key}`, data, source);
     }
     
     /**
@@ -172,14 +172,14 @@ export class LoggingSystem {
      * @param source - アクセスソース
      */
     logConfigAccess(category: string, key: string, value: any, source: string | null = null): void {
-        if (this._isDebugMode()) {
+        if (this.isDebugMode()) {
             const data = {
                 category,
                 key,
                 value
             };
 
-            this._log('debug', `設定アクセス: ${category}.${key}`, data, source);
+            this.log('debug', `設定アクセス: ${category}.${key}`, data, source);
         }
     }
 
@@ -272,7 +272,7 @@ export class LoggingSystem {
      */
     clearLogs(): void {
         this.logs = [];
-        this._resetStats();
+        this.resetStats();
     }
     
     /**
@@ -301,7 +301,7 @@ export class LoggingSystem {
             if (format === 'json') {
                 return JSON.stringify(this.logs, null, 2);
             } else if (format === 'csv') {
-                return this._exportToCsv();
+                return this.exportToCsv();
             } else {
                 console.warn(`未対応のエクスポート形式: ${format}`);
                 return '';
@@ -320,7 +320,7 @@ export class LoggingSystem {
      * @param source - ログソース
      * @private
      */
-    private _log(level: string, message: string, data: any = null, source: string | null = null): void {
+    private log(level: string, message: string, data: any = null, source: string | null = null): void {
         try {
             // ログレベルチェック
             if (this.logLevels[level] < this.logLevels[this.config.logLevel]) {
@@ -355,14 +355,14 @@ export class LoggingSystem {
             }
             
             // 統計更新
-            this._updateStats(logEntry);
+            this.updateStats(logEntry);
             
             // コンソール出力
             if (this.config.enableConsole) {
-                this._logToConsole(logEntry);
+                this.logToConsole(logEntry);
             }
         } catch (error) {
-            ErrorHandler.handle(error as Error, 'LoggingSystem._log');
+            ErrorHandler.handle(error as Error, 'LoggingSystem.log');
         }
     }
 
@@ -371,7 +371,7 @@ export class LoggingSystem {
      * @param logEntry - ログエントリ
      * @private
      */
-    private _logToConsole(logEntry: LogEntry): void {
+    private logToConsole(logEntry: LogEntry): void {
         try {
             const { level, message, data, timestamp, source } = logEntry;
 
@@ -418,7 +418,7 @@ export class LoggingSystem {
      * @param logEntry - ログエントリ
      * @private
      */
-    private _updateStats(logEntry: LogEntry): void {
+    private updateStats(logEntry: LogEntry): void {
         // 総数
         this.stats.total++;
         
@@ -439,7 +439,7 @@ export class LoggingSystem {
      * 統計情報をリセット
      * @private
      */
-    private _resetStats(): void {
+    private resetStats(): void {
         this.stats = {
             total: 0,
             byLevel: {
@@ -457,7 +457,7 @@ export class LoggingSystem {
      * @returns CSV形式のログ
      * @private
      */
-    private _exportToCsv(): string {
+    private exportToCsv(): string {
         const header = ['timestamp', 'level', 'source', 'message', 'data'];
         const rows = [header];
         
@@ -486,7 +486,7 @@ export class LoggingSystem {
      * @returns デバッグモードフラグ
      * @private
      */
-    private _isDebugMode(): boolean {
+    private isDebugMode(): boolean {
         try {
             if (typeof window !== 'undefined' && window.location) {
                 return new URLSearchParams(window.location.search).has('debug') ||

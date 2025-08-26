@@ -102,7 +102,7 @@ export class SeasonDetector {
         const currentDate = `${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
         
         for (const [eventName, event] of Object.entries(eventThemes)) {
-            if (this._isDateInRange(currentDate, event.duration.start, event.duration.end)) {
+            if (this.isDateInRange(currentDate, event.duration.start, event.duration.end)) {
                 this.currentEvent = eventName;
                 return eventName;
             }
@@ -160,7 +160,7 @@ export class SeasonDetector {
      */
     isDateInEventPeriod(eventDuration: EventTheme['duration'], date: Date = new Date()): boolean {
         const currentDate = `${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
-        return this._isDateInRange(currentDate, eventDuration.start, eventDuration.end);
+        return this.isDateInRange(currentDate, eventDuration.start, eventDuration.end);
     }
     
     /**
@@ -204,7 +204,7 @@ export class SeasonDetector {
         const currentDate = `${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
         
         return Object.entries(eventThemes)
-            .filter(([_, event]) => this._isDateInRange(currentDate, event.duration.start, event.duration.end))
+            .filter(([_, event]) => this.isDateInRange(currentDate, event.duration.start, event.duration.end))
             .map(([eventName, _]) => eventName);
     }
     
@@ -235,7 +235,7 @@ export class SeasonDetector {
      * @returns 範囲内かどうか
      * @private
      */
-    private _isDateInRange(date: string, start: string, end: string): boolean {
+    private isDateInRange(date: string, start: string, end: string): boolean {
         // 年をまたぐ場合の処理
         if (start > end) {
             return date >= start || date <= end;

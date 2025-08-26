@@ -91,7 +91,7 @@ export class TranslationLoader {
                 return this.loadingPromises.get(language)!;
             }
             
-            const promise = this._loadLanguageFiles(language);
+            const promise = this.loadLanguageFiles(language);
             this.loadingPromises.set(language, promise);
             
             try {
@@ -152,12 +152,12 @@ export class TranslationLoader {
     /**
      * 言語ファイルを実際に読み込み
      */
-    private async _loadLanguageFiles(language: string): Promise<FlattenedTranslations> {
+    private async loadLanguageFiles(language: string): Promise<FlattenedTranslations> {
         const translations: Record<string, any> = {};
         const loadPromises: Promise<void>[] = [];
         
         for (const file of this.translationFiles) {
-            const promise = this._loadTranslationFile(language, file)
+            const promise = this.loadTranslationFile(language, file)
                 .then(data => {
                     if (data) {
                         // 翻訳データがネストされている場合は展開
@@ -182,7 +182,7 @@ export class TranslationLoader {
         await Promise.all(loadPromises);
         
         // 翻訳データをフラット化
-        const flattened = this._flattenTranslations(translations);
+        const flattened = this.flattenTranslations(translations);
         
         return flattened;
     }
@@ -190,7 +190,7 @@ export class TranslationLoader {
     /**
      * 単一の翻訳ファイルを読み込み
      */
-    private async _loadTranslationFile(language: string, filename: string): Promise<TranslationFileData | null> {
+    private async loadTranslationFile(language: string, filename: string): Promise<TranslationFileData | null> {
         try {
             const url = `${this.baseURL}${language}/${filename}.json`;
             
@@ -217,7 +217,7 @@ export class TranslationLoader {
             
             // メタデータの検証
             if (data.meta) {
-                this._validateMetadata(data.meta, language, filename);
+                this.validateMetadata(data.meta, language, filename);
             }
             
             // キャッシュに保存
@@ -236,7 +236,7 @@ export class TranslationLoader {
     /**
      * 翻訳データのメタデータを検証
      */
-    private _validateMetadata(meta: TranslationMetadata, language: string, filename: string): void {
+    private validateMetadata(meta: TranslationMetadata, language: string, filename: string): void {
         if (meta.language !== language) {
             console.warn(`Language mismatch in ${filename}: expected ${language}, got ${meta.language}`);
         }
@@ -253,12 +253,12 @@ export class TranslationLoader {
     /**
      * 翻訳データをフラット化
      */
-    private _flattenTranslations(categorizedTranslations: Record<string, any>): FlattenedTranslations {
+    private flattenTranslations(categorizedTranslations: Record<string, any>): FlattenedTranslations {
         const flattened: FlattenedTranslations = {};
         for (const [_category, translations] of Object.entries(categorizedTranslations)) {
             if (translations && typeof translations === 'object') {
                 // 各カテゴリのネストされた構造をフラット化
-                this._flattenNestedObject(translations, '', flattened);
+                this.flattenNestedObject(translations, '', flattened);
             }
         }
         
@@ -268,13 +268,13 @@ export class TranslationLoader {
     /**
      * ネストされたオブジェクトを再帰的にフラット化
      */
-    private _flattenNestedObject(obj: Record<string, any>, prefix: string, result: FlattenedTranslations): void {
+    private flattenNestedObject(obj: Record<string, any>, prefix: string, result: FlattenedTranslations): void {
         for (const [key, value] of Object.entries(obj)) {
             const newKey = prefix ? `${prefix}.${key}` : key;
 
             if (value && typeof value === 'object' && !Array.isArray(value)) {
                 // オブジェクトの場合は再帰的に処理
-                this._flattenNestedObject(value, newKey, result);
+                this.flattenNestedObject(value, newKey, result);
             } else {
                 // プリミティブ値または配列の場合はそのまま設定
                 result[newKey] = value as TranslationValue;
@@ -291,7 +291,7 @@ export class TranslationLoader {
                 throw new Error(`Unknown category: ${category}`);
             }
             
-            const data = await this._loadTranslationFile(language, category);
+            const data = await this.loadTranslationFile(language, category);
             return data ? (data.translations || data) : {};
         } catch (error) {
             getErrorHandler().handleError(error as Error, 'TRANSLATION_LOADER_ERROR', {

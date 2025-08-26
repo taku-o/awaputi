@@ -48,9 +48,9 @@ export interface MockedFunction<T extends (...args: any[]) => any> {
 
 // テスト用のCanvasコンテキストモック
 export interface MockCanvasRenderingContext2D extends CanvasRenderingContext2D { 
-    __getEvents(): string[];
-    __getDrawCalls(): any[];
-    __clear(): void;
+    _getEvents(): string[];
+    _getDrawCalls(): any[];
+    _clear(): void;
 }
 
 // テストヘルパー関数の型
@@ -119,9 +119,9 @@ export interface ErrorTestCase {
 
 // モックストレージ実装
 export interface MockStorage extends Storage { 
-    __clear(): void;
-    __getStore(): { [key: string]: string };
-    __setStore(store: { [key: string]: string }): void;
+    _clear(): void;
+    _getStore(): { [key: string]: string };
+    _setStore(store: { [key: string]: string }): void;
 }
 
 // タイマーモック

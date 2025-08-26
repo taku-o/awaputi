@@ -427,7 +427,7 @@ class BrowserCompatibilityManager {
         // SVG フォールバックの実装
         if (canvasSupport.fallbackMethod === 'svg-generation' ||
             this.FALLBACK_CONFIG.canvas.enableSVGFallback) {
-            return await this._generateSVGFallback(size, config);
+            return await this.generateSVGFallback(size, config);
         }
 
         // 静的アイコン フォールバックの実装
@@ -476,7 +476,7 @@ class BrowserCompatibilityManager {
      * SVG ファビコン生成フォールバック
      * @private
      */
-    static async _generateSVGFallback(size: number, config: Record<string, any>): Promise<CanvasFallbackResult> {
+    static async generateSVGFallback(size: number, config: Record<string, any>): Promise<CanvasFallbackResult> {
         try {
             const svgContent = `
 

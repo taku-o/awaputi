@@ -156,7 +156,7 @@ export class LazyTranslationLoader {
             this.stats.cacheMisses++;
             
             // 読み込み処理
-            const loadPromise = this._performLazyLoad(language, {
+            const loadPromise = this.performLazyLoad(language, {
                 priority,
                 compress,
                 timeout
@@ -165,7 +165,7 @@ export class LazyTranslationLoader {
             this.loadingPromises.set(language, loadPromise);
             try {
                 const result = await loadPromise;
-                this._updateMemoryUsage();
+                this.updateMemoryUsage();
                 return result;
             } finally {
                 this.loadingPromises.delete(language);
@@ -183,12 +183,12 @@ export class LazyTranslationLoader {
     /**
      * 遅延読み込みの実行
      */
-    private async _performLazyLoad(language: string, options: any): Promise<TranslationNamespace> {
+    private async performLazyLoad(language: string, options: any): Promise<TranslationNamespace> {
         const { priority, preload, namespace } = options;
         
         // 同時読み込み数の制御
         if (this.performanceMonitor.currentLoads >= this.performanceMonitor.maxConcurrentLoads) {
-            return await this._queueLoad(language, options);
+            return await this.queueLoad(language, options);
         }
         
         this.performanceMonitor.currentLoads++;
@@ -207,16 +207,16 @@ export class LazyTranslationLoader {
             }
             // 遅延読み込みが有効な場合
             else if (this.lazyLoadingEnabled && priority !== 'high') {
-                filesToLoad = this._determineFilesToLoad(language);
+                filesToLoad = this.determineFilesToLoad(language);
             }
             
-            const translations = await this._loadLanguageFiles(language, filesToLoad);
+            const translations = await this.loadLanguageFiles(language, filesToLoad);
             
             // メモリ最適化
-            const optimizedTranslations = await this._optimizeTranslationData(translations);
+            const optimizedTranslations = await this.optimizeTranslationData(translations);
             
             // キャッシュに保存
-            this._cacheTranslations(language, optimizedTranslations);
+            this.cacheTranslations(language, optimizedTranslations);
             
             // 統計更新
             const loadTime = performance.now() - startTime;
@@ -235,25 +235,25 @@ export class LazyTranslationLoader {
     /**
      * キューに入れて順番に読み込み
      */
-    private async _queueLoad(language: string, options: any): Promise<TranslationNamespace> {
+    private async queueLoad(language: string, options: any): Promise<TranslationNamespace> {
         return new Promise((resolve, reject) => {
             const queuedLoad = async () => {
                 try {
-                    const result = await this._performLazyLoad(language, options);
+                    const result = await this.performLazyLoad(language, options);
                     resolve(result);
                 } catch (error) {
                     reject(error);
                 }
             };
             this.performanceMonitor.loadQueue.push(queuedLoad);
-            this._processLoadQueue();
+            this.processLoadQueue();
         });
     }
 
     /**
      * 読み込みキューの処理
      */
-    private _processLoadQueue(): void {
+    private processLoadQueue(): void {
         if (this.performanceMonitor.loadQueue.length > 0 && 
             this.performanceMonitor.currentLoads < this.performanceMonitor.maxConcurrentLoads) {
             const nextLoad = this.performanceMonitor.loadQueue.shift();
@@ -266,7 +266,7 @@ export class LazyTranslationLoader {
     /**
      * 読み込むファイルの決定
      */
-    private _determineFilesToLoad(_language: string): string[] {
+    private determineFilesToLoad(_language: string): string[] {
         // 言語固有の読み込み戦略
         const filesToLoad = [];
         
@@ -284,7 +284,7 @@ export class LazyTranslationLoader {
     /**
      * 言語ファイル群の読み込み
      */
-    private async _loadLanguageFiles(language: string, files: string[]): Promise<TranslationNamespace> {
+    private async loadLanguageFiles(language: string, files: string[]): Promise<TranslationNamespace> {
         const translations: TranslationNamespace = {};
         
         const loadPromises = files.map(async (file) => {
@@ -312,7 +312,7 @@ export class LazyTranslationLoader {
     /**
      * 翻訳データの最適化
      */
-    private async _optimizeTranslationData(translations: TranslationNamespace): Promise<TranslationNamespace> {
+    private async optimizeTranslationData(translations: TranslationNamespace): Promise<TranslationNamespace> {
         // データ圧縮や最適化を実行
         if (this.compressionEnabled) {
             // 実際の圧縮実装はここに追加
@@ -325,7 +325,7 @@ export class LazyTranslationLoader {
     /**
      * キャッシュへの保存
      */
-    private _cacheTranslations(language: string, translations: TranslationNamespace): void {
+    private cacheTranslations(language: string, translations: TranslationNamespace): void {
         const cacheItem: CacheItem = {
             data: translations,
             timestamp: Date.now(),
@@ -338,14 +338,14 @@ export class LazyTranslationLoader {
         
         // キャッシュサイズの制限
         if (this.memoryCache.size > this.maxCacheSize) {
-            this._cleanupOldCache();
+            this.cleanupOldCache();
         }
     }
 
     /**
      * 古いキャッシュのクリーンアップ
      */
-    private _cleanupOldCache(): void {
+    private cleanupOldCache(): void {
         const entries = Array.from(this.memoryCache.entries());
         
         // 最後のアクセス時間でソート
@@ -362,7 +362,7 @@ export class LazyTranslationLoader {
     /**
      * メモリ使用量の更新
      */
-    private _updateMemoryUsage(): void {
+    private updateMemoryUsage(): void {
         let totalSize = 0;
         for (const item of this.memoryCache.values()) {
             totalSize += item.size;
@@ -372,7 +372,7 @@ export class LazyTranslationLoader {
         // メモリ閾値チェック
         if (totalSize > this.memoryThreshold) {
             console.warn('Translation memory usage exceeds threshold');
-            this._cleanupOldCache();
+            this.cleanupOldCache();
         }
     }
 
@@ -381,15 +381,15 @@ export class LazyTranslationLoader {
      */
     private startPeriodicCleanup(): void {
         setInterval(() => {
-            this._cleanupUnusedData();
-            this._processLoadQueue();
+            this.cleanupUnusedData();
+            this.processLoadQueue();
         }, this.unusedDataCleanupInterval);
     }
 
     /**
      * 未使用データのクリーンアップ
      */
-    private _cleanupUnusedData(): void {
+    private cleanupUnusedData(): void {
         const now = Date.now();
         const toDelete: string[] = [];
         

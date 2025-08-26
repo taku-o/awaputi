@@ -192,7 +192,7 @@ export class MemoryUsageAnalyzer {
 
         // Start continuous analysis
         this.lastAnalysis = 0;
-        this._startContinuousAnalysis();
+        this.startContinuousAnalysis();
     }
     
     /**
@@ -222,7 +222,7 @@ export class MemoryUsageAnalyzer {
         
         // Update patterns immediately for critical situations
         if (pressure > 0.9) {
-            this._updatePatterns();
+            this.updatePatterns();
         }
     }
     
@@ -240,15 +240,15 @@ export class MemoryUsageAnalyzer {
         
         try {
             // Update all patterns
-            this._updatePatterns();
+            this.updatePatterns();
             // Perform trend analysis
-            const trends = this._analyzeTrends();
+            const trends = this.analyzeTrends();
             // Detect cycles
-            const cycles = this._detectCycles();
+            const cycles = this.detectCycles();
             // Generate predictions
-            const predictions = this._generatePredictions();
+            const predictions = this.generatePredictions();
             // Calculate risk assessment
-            const risk = this._assessRisk();
+            const risk = this.assessRisk();
 
             const analysis: AnalysisResult = {
                 timestamp: now,
@@ -258,7 +258,7 @@ export class MemoryUsageAnalyzer {
                 cycles,
                 predictions,
                 risk,
-                recommendations: this._generateRecommendations(risk)
+                recommendations: this.generateRecommendations(risk)
             };
             
             return analysis;
@@ -398,10 +398,10 @@ export class MemoryUsageAnalyzer {
     /**
      * Start continuous analysis
      */
-    private _startContinuousAnalysis(): void {
+    private startContinuousAnalysis(): void {
         setInterval(() => {
             if (Date.now() - this.lastAnalysis > this.analysisInterval) {
-                this._updatePatterns();
+                this.updatePatterns();
             }
         }, this.analysisInterval);
     }
@@ -409,7 +409,7 @@ export class MemoryUsageAnalyzer {
     /**
      * Update usage patterns
      */
-    private _updatePatterns(): void {
+    private updatePatterns(): void {
         if (this.usageHistory.length < 3) return;
         
         const recent = this.usageHistory.slice(-30); // Last 30 samples
@@ -439,7 +439,7 @@ export class MemoryUsageAnalyzer {
         }
         
         // Update trend direction
-        this._updateTrendDirection();
+        this.updateTrendDirection();
         
         this.patterns.lastTrendAnalysis = Date.now();
     }
@@ -447,7 +447,7 @@ export class MemoryUsageAnalyzer {
     /**
      * Update trend direction
      */
-    private _updateTrendDirection(): void {
+    private updateTrendDirection(): void {
         const rate = this.patterns.growthRate;
 
         if (Math.abs(rate) < 0.001) {
@@ -466,7 +466,7 @@ export class MemoryUsageAnalyzer {
     /**
      * Analyze trends for different timeframes
      */
-    private _analyzeTrends(): Record<string, TrendResult> {
+    private analyzeTrends(): Record<string, TrendResult> {
         const trends: Record<string, TrendResult> = {};
         
         for (const [timeframe, config] of Object.entries(this.trendAnalysis)) {
@@ -479,7 +479,7 @@ export class MemoryUsageAnalyzer {
     /**
      * Detect cyclical patterns
      */
-    private _detectCycles(): CycleDetection {
+    private detectCycles(): CycleDetection {
         if (this.usageHistory.length < 20) {
             return { detected: false };
         }
@@ -492,7 +492,7 @@ export class MemoryUsageAnalyzer {
         let bestCorrelation = 0;
         
         for (let lag = 5; lag < samples.length / 2; lag++) {
-            const correlation = this._calculateAutocorrelation(pressures, lag);
+            const correlation = this.calculateAutocorrelation(pressures, lag);
             if (correlation > bestCorrelation && correlation > 0.7) {
                 bestCorrelation = correlation;
                 bestCycleLength = lag * this.analysisInterval;
@@ -517,7 +517,7 @@ export class MemoryUsageAnalyzer {
     /**
      * Calculate autocorrelation for cycle detection
      */
-    private _calculateAutocorrelation(data: number[], lag: number): number {
+    private calculateAutocorrelation(data: number[], lag: number): number {
         if (lag >= data.length - 1) return 0;
         
         const n = data.length - lag;
@@ -540,7 +540,7 @@ export class MemoryUsageAnalyzer {
     /**
      * Generate predictions based on patterns
      */
-    private _generatePredictions(): Predictions {
+    private generatePredictions(): Predictions {
         const current = this.currentUsage.pressure;
         const rate = this.patterns.growthRate;
         
@@ -587,7 +587,7 @@ export class MemoryUsageAnalyzer {
     /**
      * Assess memory risk level
      */
-    private _assessRisk(): RiskAssessment {
+    private assessRisk(): RiskAssessment {
         const current = this.currentUsage.pressure;
         const rate = this.patterns.growthRate;
         const volatility = this.patterns.volatility;
@@ -635,7 +635,7 @@ export class MemoryUsageAnalyzer {
     /**
      * Generate recommendations based on risk assessment
      */
-    private _generateRecommendations(risk: RiskAssessment): string[] {
+    private generateRecommendations(risk: RiskAssessment): string[] {
         const recommendations: string[] = [];
 
         if (risk.level === 'critical') {

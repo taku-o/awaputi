@@ -40,7 +40,7 @@ export class Bubble implements BubbleInterface {
         this.clickCount = 0; // 硬い泡用のクリック回数
         
         // ユニークIDを生成（泡識別用）
-        this.id = this._generateUniqueId();
+        this.id = this.generateUniqueId();
         
         // 泡の種類別設定を適用
         this.applyTypeConfig();
@@ -49,7 +49,7 @@ export class Bubble implements BubbleInterface {
     /**
      * ユニークIDを生成
      */
-    private _generateUniqueId(): string {
+    private generateUniqueId(): string {
         return `bubble_${Date.now()}_${Math.floor(Math.random() * 1000)}`;
     }
     
@@ -89,7 +89,7 @@ export class Bubble implements BubbleInterface {
                 if (color !== undefined) config.color = color;
                 
                 // 特殊効果プロパティも取得
-                const specialEffects = this._getSpecialEffectsFromConfig(configManager);
+                const specialEffects = this.getSpecialEffectsFromConfig(configManager);
                 Object.assign(config, specialEffects);
                 
                 return config as BubbleConfig;
@@ -99,13 +99,13 @@ export class Bubble implements BubbleInterface {
         }
         
         // フォールバック: ハードコード設定
-        return this._getHardcodedConfig();
+        return this.getHardcodedConfig();
     }
     
     /**
      * ConfigurationManagerから特殊効果設定を取得
      */
-    private _getSpecialEffectsFromConfig(configManager: any): Partial<BubbleConfig> {
+    private getSpecialEffectsFromConfig(configManager: any): Partial<BubbleConfig> {
         const effects: Partial<BubbleConfig> = {};
         switch(this.type) {
             case 'pink':
@@ -159,7 +159,7 @@ export class Bubble implements BubbleInterface {
     /**
      * ハードコード設定を取得（フォールバック）
      */
-    private _getHardcodedConfig(): BubbleConfig {
+    private getHardcodedConfig(): BubbleConfig {
         const configs: { [key in BubbleType]: BubbleConfig } = {
             normal: {
                 health: 1,

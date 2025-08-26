@@ -109,7 +109,7 @@ export class ConfigurationMigrationUtility {
             
             for (const bubbleType of basicBubbleTypes) {
                 try {
-                    const migrated = await this._migrateBubbleType(bubbleType);
+                    const migrated = await this.migrateBubbleType(bubbleType);
                     if (migrated) {
                         migrationResults.migratedTypes.push(bubbleType);
                         migrationResults.totalMigrated++;
@@ -133,7 +133,7 @@ export class ConfigurationMigrationUtility {
             
             for (const bubbleType of newBubbleTypes) {
                 try {
-                    const migrated = await this._migrateBubbleType(bubbleType);
+                    const migrated = await this.migrateBubbleType(bubbleType);
                     if (migrated) {
                         migrationResults.migratedTypes.push(bubbleType);
                         migrationResults.totalMigrated++;
@@ -185,8 +185,8 @@ export class ConfigurationMigrationUtility {
      * @returns {Promise<boolean>} 移行成功フラグ
      * @private
      */
-    private async _migrateBubbleType(bubbleType: string): Promise<boolean> {
-        const bubbleConfig = this._getHardcodedBubbleConfig(bubbleType);
+    private async migrateBubbleType(bubbleType: string): Promise<boolean> {
+        const bubbleConfig = this.getHardcodedBubbleConfig(bubbleType);
         if (!bubbleConfig) {
             console.warn(`[ConfigurationMigrationUtility] 設定が見つかりません: ${bubbleType}`);
             return false;
@@ -221,7 +221,7 @@ export class ConfigurationMigrationUtility {
         }
         
         // 特殊効果の移行
-        const specialEffects = this._extractSpecialEffects(bubbleType, bubbleConfig);
+        const specialEffects = this.extractSpecialEffects(bubbleType, bubbleConfig);
         for (const [effectKey, effectValue] of Object.entries(specialEffects)) {
             this.configManager.set('game', `bubbles.${bubbleType}.${effectKey}`, effectValue);
             migrated = true;
@@ -240,7 +240,7 @@ export class ConfigurationMigrationUtility {
      * @returns {BubbleConfig|null} 泡設定
      * @private
      */
-    private _getHardcodedBubbleConfig(bubbleType: string): BubbleConfig | null {
+    private getHardcodedBubbleConfig(bubbleType: string): BubbleConfig | null {
         const configs: Record<string, BubbleConfig> = {
             normal: {
                 health: 1,
@@ -410,7 +410,7 @@ export class ConfigurationMigrationUtility {
      * @returns {Record<string, any>} 特殊効果設定
      * @private
      */
-    private _extractSpecialEffects(_bubbleType: string, config: BubbleConfig): Record<string, any> {
+    private extractSpecialEffects(_bubbleType: string, config: BubbleConfig): Record<string, any> {
         const effects: Record<string, any> = {};
         
         // 基本設定以外のプロパティを特殊効果として扱う

@@ -59,8 +59,8 @@ export class SEOErrorHandler {
             retryDelay: 1000,
             backoffMultiplier: 2
         };
-        this._registerDefaultHandlers();
-        this._registerDefaultFallbacks();
+        this.registerDefaultHandlers();
+        this.registerDefaultFallbacks();
     }
     
     /**
@@ -96,7 +96,7 @@ export class SEOErrorHandler {
         }
         
         // フォールバック戦略の実行
-        return this._executeFallback(context, data);
+        return this.executeFallback(context, data);
     }
     
     /**
@@ -127,7 +127,7 @@ export class SEOErrorHandler {
                         attempt: attempt + 1,
                         error: (error as Error).message
                     });
-                    await this._delay(delay);
+                    await this.delay(delay);
                 }
             }
         }
@@ -139,7 +139,7 @@ export class SEOErrorHandler {
     /**
      * フォールバックの実行
      */
-    private _executeFallback(context: string, data: any): any {
+    private executeFallback(context: string, data: any): any {
         const fallback = this.fallbackStrategies.get(context) ||
                         this.fallbackStrategies.get('default');
         
@@ -155,7 +155,7 @@ export class SEOErrorHandler {
     /**
      * デフォルトエラーハンドラーの登録
      */
-    private _registerDefaultHandlers(): void {
+    private registerDefaultHandlers(): void {
         // ネットワークエラー
         this.registerHandler('NetworkError', async (error: Error, context: string, data: ErrorHandlerData) => {
             seoLogger.warn('Network error detected, using cached data if available');
@@ -169,7 +169,7 @@ export class SEOErrorHandler {
                 message: error.message,
                 stack: error.stack
             });
-            return this._executeFallback(context, data);
+            return this.executeFallback(context, data);
         });
         
         // 参照エラー
@@ -178,7 +178,7 @@ export class SEOErrorHandler {
                 context,
                 message: error.message
             });
-            return this._executeFallback(context, data);
+            return this.executeFallback(context, data);
         });
         
         // デフォルトハンドラー
@@ -188,14 +188,14 @@ export class SEOErrorHandler {
                 errorType: error.constructor.name,
                 message: error.message
             });
-            return this._executeFallback(context, data);
+            return this.executeFallback(context, data);
         });
     }
     
     /**
      * デフォルトフォールバック戦略の登録
      */
-    private _registerDefaultFallbacks(): void {
+    private registerDefaultFallbacks(): void {
         // メタタグフォールバック
         this.registerFallback('metaTags', () => {
             return {
@@ -248,15 +248,15 @@ export class SEOErrorHandler {
         const errorSummary = seoLogger.getErrorSummary();
         return {
             ...errorSummary,
-            recoveryRate: this._calculateRecoveryRate(),
-            commonErrors: this._getCommonErrors()
+            recoveryRate: this.calculateRecoveryRate(),
+            commonErrors: this.getCommonErrors()
         };
     }
     
     /**
      * リカバリー率の計算
      */
-    private _calculateRecoveryRate(): number {
+    private calculateRecoveryRate(): number {
         const logs = seoLogger.export();
         const errors = logs.filter(log => log.level === 'error');
 
@@ -272,7 +272,7 @@ export class SEOErrorHandler {
     /**
      * 頻出エラーの取得
      */
-    private _getCommonErrors(): Record<string, number> {
+    private getCommonErrors(): Record<string, number> {
         const errorSummary = seoLogger.getErrorSummary();
         const sorted = Object.entries(errorSummary.errorTypes)
             .sort((a, b) => b[1] - a[1])
@@ -284,7 +284,7 @@ export class SEOErrorHandler {
     /**
      * 遅延処理
      */
-    private _delay(ms: number): Promise<void> {
+    private delay(ms: number): Promise<void> {
         return new Promise(resolve => setTimeout(resolve, ms));
     }
 }

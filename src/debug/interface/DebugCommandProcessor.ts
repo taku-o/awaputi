@@ -72,7 +72,7 @@ export class DebugCommandProcessor extends BaseComponent {
         this.suspendShortcuts = false;
     }
 
-    async _doInitialize(): Promise<void> {
+    async doInitialize(): Promise<void> {
         this.setupDefaultShortcuts();
         this.bindKeyboardEvents();
         this.initializeShortcutContexts();

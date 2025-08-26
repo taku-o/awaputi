@@ -73,16 +73,16 @@ export class ConfigurationErrorHandler {
         };
 
         this.logger = getLoggingSystem();
-        this._initialize();
+        this.initialize();
     }
 
-    private _initialize(): void {
-        this._setupRecoveryStrategies();
-        this._setupErrorMonitoring();
+    private initialize(): void {
+        this.setupRecoveryStrategies();
+        this.setupErrorMonitoring();
         this.logger.info('ConfigurationErrorHandler initialized', null, 'ConfigurationErrorHandler');
     }
 
-    private _setupRecoveryStrategies(): void {
+    private setupRecoveryStrategies(): void {
         // 設定アクセスエラーの復旧
         this.recoveryStrategies.set(ConfigErrorType.CONFIGURATION_ACCESS, {
             maxAttempts: 3,
@@ -102,7 +102,7 @@ export class ConfigurationErrorHandler {
                     };
                 }
                 
-                const fallbackValue = this._generateFallbackValue(category, key);
+                const fallbackValue = this.generateFallbackValue(category, key);
                 
                 this.logger.warn(`設定アクセスエラー、フォールバック値を生成: ${category}.${key}`, {
                     error: error.message,
@@ -203,14 +203,14 @@ export class ConfigurationErrorHandler {
         });
     }
 
-    private _setupErrorMonitoring(): void {
+    private setupErrorMonitoring(): void {
         // エラー監視の設定
         setInterval(() => {
-            this._checkErrorThresholds();
+            this.checkErrorThresholds();
         }, 60000); // 1分間隔でチェック
     }
 
-    private _checkErrorThresholds(): void {
+    private checkErrorThresholds(): void {
         const errorRate = this.errorStats.total > 0 ? this.errorStats.failed / this.errorStats.total : 0;
         
         if (errorRate > 0.5) { // 50%以上のエラー率
@@ -223,7 +223,7 @@ export class ConfigurationErrorHandler {
         }
     }
 
-    private _generateFallbackValue(_category: string, key: string): any {
+    private generateFallbackValue(_category: string, key: string): any {
         // 基本的なフォールバック値の生成
         if (key.includes('time') || key.includes('interval')) {
             return 1000; // 1秒

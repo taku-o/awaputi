@@ -142,22 +142,22 @@ export class BGMTransitionManager {
             
             // 遅延がある場合は待機
             if (delay > 0) {
-                await this._wait(delay);
+                await this.wait(delay);
             }
             
             // トランジションタイプに応じて実行
             switch(type) {
                 case this.transitionTypes.FADE_OUT_IN:
-                    await this._fadeOutInTransition(fromTrack, toTrack, options);
+                    await this.fadeOutInTransition(fromTrack, toTrack, options);
                     break;
                 case this.transitionTypes.CROSSFADE:
-                    await this._crossfadeTransition(fromTrack, toTrack, options);
+                    await this.crossfadeTransition(fromTrack, toTrack, options);
                     break;
                 case this.transitionTypes.CUT:
-                    await this._cutTransition(fromTrack, toTrack, options);
+                    await this.cutTransition(fromTrack, toTrack, options);
                     break;
                 case this.transitionTypes.SMART_CROSSFADE:
-                    await this._smartCrossfadeTransition(fromTrack, toTrack, options);
+                    await this.smartCrossfadeTransition(fromTrack, toTrack, options);
                     break;
                 default:
                     throw new Error(`Unknown transition type: ${type}`);
@@ -194,7 +194,7 @@ export class BGMTransitionManager {
      * @param toTrack - 次のトラック名
      * @param options - オプション
      */
-    private async _fadeOutInTransition(fromTrack: string, toTrack: string, options: TransitionOptions): Promise<void> {
+    private async fadeOutInTransition(fromTrack: string, toTrack: string, options: TransitionOptions): Promise<void> {
         const {
             fadeOutDuration = this.defaultFadeOutDuration,
             fadeInDuration = this.defaultFadeInDuration,
@@ -220,7 +220,7 @@ export class BGMTransitionManager {
      * @param toTrack - 次のトラック名
      * @param options - オプション
      */
-    private async _crossfadeTransition(fromTrack: string, toTrack: string, options: TransitionOptions): Promise<void> {
+    private async crossfadeTransition(fromTrack: string, toTrack: string, options: TransitionOptions): Promise<void> {
         const {
             duration = this.defaultCrossfadeDuration,
             curve = this.curveTypes.SMOOTH,
@@ -237,7 +237,7 @@ export class BGMTransitionManager {
         });
 
         // クロスフェードを実行
-        await this._performCrossfade(currentVolume, volume, duration, curve);
+        await this.performCrossfade(currentVolume, volume, duration, curve);
     }
     
     /**
@@ -246,7 +246,7 @@ export class BGMTransitionManager {
      * @param toTrack - 次のトラック名
      * @param options - オプション
      */
-    private async _cutTransition(fromTrack: string, toTrack: string, options: TransitionOptions): Promise<void> {
+    private async cutTransition(fromTrack: string, toTrack: string, options: TransitionOptions): Promise<void> {
         const { volume = 1.0 } = options;
         
         // 現在のBGMを即座に停止
@@ -267,7 +267,7 @@ export class BGMTransitionManager {
      * @param toTrack - 次のトラック名
      * @param options - オプション
      */
-    private async _smartCrossfadeTransition(fromTrack: string, toTrack: string, options: TransitionOptions): Promise<void> {
+    private async smartCrossfadeTransition(fromTrack: string, toTrack: string, options: TransitionOptions): Promise<void> {
         const {
             duration = this.defaultCrossfadeDuration,
             volume = 1.0
@@ -279,11 +279,11 @@ export class BGMTransitionManager {
         
         if (!fromTrackInfo || !toTrackInfo) {
             // 情報が不十分な場合は通常のクロスフェードにフォールバック
-            return this._crossfadeTransition(fromTrack, toTrack, options);
+            return this.crossfadeTransition(fromTrack, toTrack, options);
         }
         
         // 音楽的な調和度を計算
-        const harmonyScore = this._calculateHarmonyScore(fromTrackInfo, toTrackInfo);
+        const harmonyScore = this.calculateHarmonyScore(fromTrackInfo, toTrackInfo);
         
         // 調和度に基づいてトランジション調整
         let adjustedDuration = duration;
@@ -302,7 +302,7 @@ export class BGMTransitionManager {
         console.log(`Smart crossfade: harmony score ${harmonyScore.toFixed(2)}, duration ${adjustedDuration.toFixed(1)}s`);
         
         // 調整されたクロスフェードを実行
-        await this._crossfadeTransition(fromTrack, toTrack, {
+        await this.crossfadeTransition(fromTrack, toTrack, {
             ...options,
             duration: adjustedDuration,
             curve: curve
@@ -315,7 +315,7 @@ export class BGMTransitionManager {
      * @param toTrack - 次のトラック
      * @returns 調和度 (0-1)
      */
-    private _calculateHarmonyScore(fromTrack: TrackInfo, toTrack: TrackInfo): number {
+    private calculateHarmonyScore(fromTrack: TrackInfo, toTrack: TrackInfo): number {
         let score = 0;
         
         // テンポの調和度（差が小さいほど高い）
@@ -324,11 +324,11 @@ export class BGMTransitionManager {
         score += tempoScore * 0.4;
         
         // スタイルの調和度
-        const styleCompatibility = this._getStyleCompatibility(fromTrack.metadata.style, toTrack.metadata.style);
+        const styleCompatibility = this.getStyleCompatibility(fromTrack.metadata.style, toTrack.metadata.style);
         score += styleCompatibility * 0.3;
         
         // キーの調和度（音楽理論に基づく）
-        const keyCompatibility = this._getKeyCompatibility(fromTrack.metadata.key, toTrack.metadata.key);
+        const keyCompatibility = this.getKeyCompatibility(fromTrack.metadata.key, toTrack.metadata.key);
         score += keyCompatibility * 0.3;
         
         return Math.max(0, Math.min(1, score));
@@ -340,7 +340,7 @@ export class BGMTransitionManager {
      * @param style2 - スタイル2
      * @returns 相性度 (0-1)
      */
-    private _getStyleCompatibility(style1: string, style2: string): number {
+    private getStyleCompatibility(style1: string, style2: string): number {
         const compatibilityMatrix: Record<string, Record<string, number>> = {
             ambient: { ambient: 1.0, dramatic: 0.7, energetic: 0.3, exciting: 0.2 },
             dramatic: { dramatic: 1.0, ambient: 0.7, exciting: 0.6, energetic: 0.4 },
@@ -357,7 +357,7 @@ export class BGMTransitionManager {
      * @param key2 - キー2
      * @returns 調和度 (0-1)
      */
-    private _getKeyCompatibility(key1: string, key2: string): number {
+    private getKeyCompatibility(key1: string, key2: string): number {
         if(key1 === key2) return 1.0;
         
         // 簡単な調和度計算（完全5度、4度関係を重視）
@@ -385,13 +385,13 @@ export class BGMTransitionManager {
      * @param duration - 時間
      * @param curve - カーブタイプ
      */
-    private async _performCrossfade(fromVolume: number, toVolume: number, duration: number, curve: string): Promise<void> {
+    private async performCrossfade(fromVolume: number, toVolume: number, duration: number, curve: string): Promise<void> {
         const steps = Math.ceil(duration * 30); // 30fps相当
         const stepDuration = duration / steps;
         
         for(let i = 0; i <= steps; i++) {
             const progress = i / steps;
-            const easedProgress = this._applyCurve(progress, curve);
+            const easedProgress = this.applyCurve(progress, curve);
 
             // 現在のBGMを減衰
             const currentVolume = fromVolume * (1 - easedProgress);
@@ -403,7 +403,7 @@ export class BGMTransitionManager {
             this.bgmSystem.setVolume(newVolume, 0);
 
             if (i < steps) {
-                await this._wait(stepDuration);
+                await this.wait(stepDuration);
             }
         }
     }
@@ -414,7 +414,7 @@ export class BGMTransitionManager {
      * @param curveType - カーブタイプ
      * @returns 調整された進行度
      */
-    private _applyCurve(progress: number, curveType: string): number {
+    private applyCurve(progress: number, curveType: string): number {
         switch (curveType) {
             case this.curveTypes.LINEAR:
                 return progress;
@@ -447,12 +447,12 @@ export class BGMTransitionManager {
             
             for(let i = 0; i <= steps; i++) {
                 const progress = i / steps;
-                const easedProgress = this._applyCurve(progress, curve);
+                const easedProgress = this.applyCurve(progress, curve);
                 const volume = startVolume * (1 - easedProgress);
                 
                 this.bgmSystem.setVolume(volume, 0);
                 if (i < steps) {
-                    await this._wait(stepDuration);
+                    await this.wait(stepDuration);
                 }
             }
             
@@ -487,12 +487,12 @@ export class BGMTransitionManager {
             
             for(let i = 0; i <= steps; i++) {
                 const progress = i / steps;
-                const easedProgress = this._applyCurve(progress, curve);
+                const easedProgress = this.applyCurve(progress, curve);
                 const volume = targetVolume * easedProgress;
                 
                 this.bgmSystem.setVolume(volume, 0);
                 if (i < steps) {
-                    await this._wait(stepDuration);
+                    await this.wait(stepDuration);
                 }
             }
         } catch (error) {
@@ -555,7 +555,7 @@ export class BGMTransitionManager {
      * @param seconds - 秒数
      * @returns プロミス
      */
-    private _wait(seconds: number): Promise<void> {
+    private wait(seconds: number): Promise<void> {
         return new Promise(resolve => setTimeout(resolve, seconds * 1000));
     }
 

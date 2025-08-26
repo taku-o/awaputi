@@ -91,18 +91,18 @@ export class SitemapGenerator {
         this.staticUrls = [];
         this.dynamicUrlGenerators = new Map();
         this.lastGenerated = null;
-        this._initialize();
+        this.initialize();
     }
     
     /**
      * 初期化処理
      */
-    private _initialize(): void {
+    private initialize(): void {
         try {
             // 静的URLの登録
-            this._registerStaticUrls();
+            this.registerStaticUrls();
             // 動的URL生成関数の登録
-            this._registerDynamicGenerators();
+            this.registerDynamicGenerators();
             seoLogger.info('SitemapGenerator initialized successfully');
         } catch (error) {
             seoErrorHandler.handle(error as Error, 'sitemapGeneratorInit');
@@ -120,16 +120,16 @@ export class SitemapGenerator {
             this.urls.clear();
             
             // 静的URLの追加
-            await this._addStaticUrls();
+            await this.addStaticUrls();
             
             // 動的URLの追加
-            await this._addDynamicUrls(options);
+            await this.addDynamicUrls(options);
             
             // 多言語URLの追加
-            await this._addMultilingualUrls();
+            await this.addMultilingualUrls();
             
             // XMLの生成
-            const xml = this._generateXML();
+            const xml = this.generateXML();
             
             // 生成時刻の記録
             this.lastGenerated = new Date();
@@ -191,7 +191,7 @@ export class SitemapGenerator {
     /**
      * 静的URLの登録
      */
-    private _registerStaticUrls(): void {
+    private registerStaticUrls(): void {
         // 基本的なページ
         this.staticUrls = [
             {
@@ -229,7 +229,7 @@ export class SitemapGenerator {
     /**
      * 動的URL生成関数の登録
      */
-    private _registerDynamicGenerators(): void {
+    private registerDynamicGenerators(): void {
         // ヘルプページ
         this.registerDynamicGenerator('helpPages', async () => {
             const helpPages: UrlData[] = [];
@@ -284,7 +284,7 @@ export class SitemapGenerator {
     /**
      * 静的URLの追加
      */
-    private async _addStaticUrls(): Promise<void> {
+    private async addStaticUrls(): Promise<void> {
         this.staticUrls.forEach(urlData => {
             const fullUrl = normalizeUrl(`${this.baseUrl}${urlData.loc}`);
             this.urls.set(fullUrl, {
@@ -297,7 +297,7 @@ export class SitemapGenerator {
     /**
      * 動的URLの追加
      */
-    private async _addDynamicUrls(options: SitemapGenerationOptions): Promise<void> {
+    private async addDynamicUrls(options: SitemapGenerationOptions): Promise<void> {
         for (const [name, generator] of this.dynamicUrlGenerators) {
             try {
                 const urls = await generator(options);
@@ -319,7 +319,7 @@ export class SitemapGenerator {
     /**
      * 多言語URLの追加
      */
-    private async _addMultilingualUrls(): Promise<void> {
+    private async addMultilingualUrls(): Promise<void> {
         if (!this.localizationManager) {
             return;
         }
@@ -351,7 +351,7 @@ export class SitemapGenerator {
     /**
      * XMLの生成
      */
-    private _generateXML(): string {
+    private generateXML(): string {
         let xml = '<?xml version="1.0" encoding="UTF-8"?>\n';
         xml += '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"';
         xml += ' xmlns:xhtml="http://www.w3.org/1999/xhtml">\n';
@@ -366,7 +366,7 @@ export class SitemapGenerator {
         
         sortedUrls.forEach(urlData => {
             xml += '  <url>\n';
-            xml += `    <loc>${this._escapeXml(urlData.loc)}</loc>\n`;
+            xml += `    <loc>${this.escapeXml(urlData.loc)}</loc>\n`;
             
             if (urlData.lastmod) {
                 xml += `    <lastmod>${urlData.lastmod}</lastmod>\n`;
@@ -382,7 +382,7 @@ export class SitemapGenerator {
             
             // hreflang代替リンク
             if (urlData.hreflang) {
-                xml = this._addHreflangLinks(xml, urlData);
+                xml = this.addHreflangLinks(xml, urlData);
             }
             
             xml += '  </url>\n';
@@ -396,17 +396,17 @@ export class SitemapGenerator {
     /**
      * hreflangリンクの追加
      */
-    private _addHreflangLinks(xml: string, urlData: UrlData): string {
+    private addHreflangLinks(xml: string, urlData: UrlData): string {
         const path = urlData.loc.replace(this.baseUrl, '').replace(/^\/[a-z-]+/, '');
         
         SEOConfig.supportedLanguages.forEach(lang => {
             const hrefUrl = getLocalizedUrl(lang, path);
-            xml += `    <xhtml:link rel="alternate" hreflang="${lang}" href="${this._escapeXml(hrefUrl)}" />\n`;
+            xml += `    <xhtml:link rel="alternate" hreflang="${lang}" href="${this.escapeXml(hrefUrl)}" />\n`;
         });
         
         // x-default
         const defaultUrl = getLocalizedUrl(SEOConfig.defaultLanguage, path);
-        xml += `    <xhtml:link rel="alternate" hreflang="x-default" href="${this._escapeXml(defaultUrl)}" />\n`;
+        xml += `    <xhtml:link rel="alternate" hreflang="x-default" href="${this.escapeXml(defaultUrl)}" />\n`;
         
         return xml;
     }
@@ -414,7 +414,7 @@ export class SitemapGenerator {
     /**
      * XMLエスケープ
      */
-    private _escapeXml(text: string): string {
+    private escapeXml(text: string): string {
         return text
             .replace(/&/g, '&amp;')
             .replace(/</g, '&lt;')

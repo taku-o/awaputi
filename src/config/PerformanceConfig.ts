@@ -96,27 +96,27 @@ export class PerformanceConfig {
     constructor() {
         this.configManager = getConfigurationManager();
         this.errorHandler = getErrorHandler();
-        this._initialize();
+        this.initialize();
     }
 
     /**
      * 初期化処理 - デフォルト設定の登録
      * @private
      */
-    private _initialize(): void {
+    private initialize(): void {
         try {
             // 最適化設定の初期化
-            this._initializeOptimizationConfig();
+            this.initializeOptimizationConfig();
             // リソース制限設定の初期化
-            this._initializeResourceLimitConfig();
+            this.initializeResourceLimitConfig();
             // 品質設定の初期化
-            this._initializeQualityConfig();
+            this.initializeQualityConfig();
             // 検証ルールの設定
-            this._setupValidationRules();
+            this.setupValidationRules();
             console.log('[PerformanceConfig] 初期化完了');
         } catch (error) {
             this.errorHandler.handleError(error as Error, 'PERFORMANCE_CONFIG_INIT_ERROR', {
-                context: 'PerformanceConfig._initialize'
+                context: 'PerformanceConfig.initialize'
             });
         }
     }
@@ -125,7 +125,7 @@ export class PerformanceConfig {
      * 最適化設定の初期化
      * @private
      */
-    private _initializeOptimizationConfig(): void {
+    private initializeOptimizationConfig(): void {
         this.configManager.set('performance', 'optimization.targetFPS', 60);
         this.configManager.set('performance', 'optimization.adaptiveMode', true);
         this.configManager.set('performance', 'optimization.optimizationInterval', 1000);
@@ -148,7 +148,7 @@ export class PerformanceConfig {
      * リソース制限設定の初期化
      * @private
      */
-    private _initializeResourceLimitConfig(): void {
+    private initializeResourceLimitConfig(): void {
         this.configManager.set('performance', 'limits.memoryThreshold', 100); // MB
         this.configManager.set('performance', 'limits.fpsThreshold', 30);
         this.configManager.set('performance', 'limits.maxTextureSize', 2048);
@@ -165,7 +165,7 @@ export class PerformanceConfig {
      * 品質設定の初期化
      * @private
      */
-    private _initializeQualityConfig(): void {
+    private initializeQualityConfig(): void {
         this.configManager.set('performance', 'quality.renderQuality', 1.0); // 0.5 - 1.0
         this.configManager.set('performance', 'quality.particleQuality', 1.0); // 0.1 - 1.0
         this.configManager.set('performance', 'quality.effectQuality', 1.0); // 0.1 - 1.0
@@ -216,7 +216,7 @@ export class PerformanceConfig {
      * 検証ルールの設定
      * @private
      */
-    private _setupValidationRules(): void {
+    private setupValidationRules(): void {
         // 最適化設定の検証ルール
         this.configManager.setValidationRule('performance.optimization.targetFPS', {
             type: 'number',

@@ -286,7 +286,7 @@ export class RecoveryStrategies {
             // 軽度な破損の場合：フィールド単位で修復
             if (corruptionLevel < 0.3) {
                 for (const field of corruptedFields) {
-                    const repaired = await this._repairCorruptedField(field, recoveredData[field]);
+                    const repaired = await this.repairCorruptedField(field, recoveredData[field]);
                     if (repaired.success && repaired.data !== undefined) {
                         recoveredData[field] = repaired.data;
                         repairLog.push(`Repaired field: ${field}`);
@@ -295,7 +295,7 @@ export class RecoveryStrategies {
             }
             // 中度な破損の場合：統計的補間
             else if (corruptionLevel < 0.7) {
-                const interpolated = await this._interpolateCorruptedData(recoveredData, analysis);
+                const interpolated = await this.interpolateCorruptedData(recoveredData, analysis);
                 Object.assign(recoveredData, interpolated.data);
                 repairLog.push(...interpolated.log);
             }
@@ -348,13 +348,13 @@ export class RecoveryStrategies {
             // 優先度順に欠損フィールドを復旧
             for (const field of this.recoveryPriority) {
                 if (missingFields.includes(field)) {
-                    const recovered = await this._recoverMissingField(field, recoveredData);
+                    const recovered = await this.recoverMissingField(field, recoveredData);
                     if (recovered.success && recovered.data !== undefined) {
                         recoveredData[field] = recovered.data;
                         repairLog.push(`Recovered missing field: ${field}`);
                     } else {
                         // デフォルト値で初期化
-                        const defaultValue = this._getDefaultFieldValue(field);
+                        const defaultValue = this.getDefaultFieldValue(field);
                         recoveredData[field] = defaultValue;
                         repairLog.push(`Initialized field with default: ${field}`);
                     }
@@ -394,7 +394,7 @@ export class RecoveryStrategies {
             const migrationLog: string[] = [];
             
             // バージョン間マイグレーション
-            const migrationResult = await this._migrateDataToVersion(
+            const migrationResult = await this.migrateDataToVersion(
                 migratedData,
                 dataVersion || 'unknown',
                 currentVersion || 'latest'
@@ -406,7 +406,7 @@ export class RecoveryStrategies {
             } else {
                 // マイグレーション失敗時は構造を現在のバージョンに合わせて初期化
                 const currentStructure = this.statisticsManager.getDefaultStatistics();
-                const converted = this._convertToCurrentStructure(oldData, currentStructure);
+                const converted = this.convertToCurrentStructure(oldData, currentStructure);
                 Object.assign(migratedData, converted.data);
                 migrationLog.push(...converted.log);
             }
@@ -497,7 +497,7 @@ export class RecoveryStrategies {
             
             // 失われたフィールドをデフォルト値で補完
             for (const field of structureDamage?.missingFields || []) {
-                const defaultValue = this._getDefaultFieldValue(field);
+                const defaultValue = this.getDefaultFieldValue(field);
                 recoveredData[field] = defaultValue;
                 repairLog.push(`Added missing field with default: ${field}`);
             }
@@ -545,7 +545,7 @@ export class RecoveryStrategies {
             if (!recoveredData) {
                 const historyData = await this.statisticsManager.getHistoricalData();
                 if (historyData && historyData.length > 0) {
-                    recoveredData = this._reconstructFromHistory(historyData);
+                    recoveredData = this.reconstructFromHistory(historyData);
                     repairLog.push('Reconstructed from historical data');
                     dataSource = 'history';
                 }
@@ -582,20 +582,20 @@ export class RecoveryStrategies {
      * @returns 修復結果
      * @private
      */
-    private async _repairCorruptedField(fieldName: string, corruptedValue: any): Promise<FieldRepairResult> {
+    private async repairCorruptedField(fieldName: string, corruptedValue: any): Promise<FieldRepairResult> {
         try {
             // フィールドタイプに応じた修復戦略
-            const fieldType = this._getFieldType(fieldName);
+            const fieldType = this.getFieldType(fieldName);
             switch(fieldType) {
                 case 'number':
-                    const repaired = this._repairNumericField(corruptedValue);
+                    const repaired = this.repairNumericField(corruptedValue);
                     return { success: true, data: repaired };
                 case 'object':
-                    const template = this._getFieldTemplate(fieldName);
+                    const template = this.getFieldTemplate(fieldName);
                     const repairedObj = this.dataRecovery.repairObjectStructure(corruptedValue, template);
                     return { success: true, data: repairedObj };
                 case 'array':
-                    const repairedArray = this._repairArrayField(corruptedValue);
+                    const repairedArray = this.repairArrayField(corruptedValue);
                     return { success: true, data: repairedArray };
                 default:
                     return { success: false, error: `Unknown field type: ${fieldType}` };
@@ -612,7 +612,7 @@ export class RecoveryStrategies {
      * @returns 補間結果
      * @private
      */
-    private async _interpolateCorruptedData(data: any, analysis: RecoveryAnalysis): Promise<InterpolationResult> {
+    private async interpolateCorruptedData(data: any, analysis: RecoveryAnalysis): Promise<InterpolationResult> {
         // 簡単な統計的補間の実装
         const interpolatedData = { ...data };
         const log: string[] = [];
@@ -620,7 +620,7 @@ export class RecoveryStrategies {
         // 基本的な補間ロジック
         if (analysis.corruptedFields) {
             for (const field of analysis.corruptedFields) {
-                const defaultValue = this._getDefaultFieldValue(field);
+                const defaultValue = this.getDefaultFieldValue(field);
                 interpolatedData[field] = defaultValue;
                 log.push(`Interpolated field ${field} with default value`);
             }
@@ -637,7 +637,7 @@ export class RecoveryStrategies {
      * @returns マイグレーション結果
      * @private
      */
-    private async _migrateDataToVersion(data: any, fromVersion: string, toVersion: string): Promise<MigrationResult> {
+    private async migrateDataToVersion(data: any, fromVersion: string, toVersion: string): Promise<MigrationResult> {
         try {
             // 基本的なマイグレーションロジック
             const migratedData = { ...data };
@@ -668,7 +668,7 @@ export class RecoveryStrategies {
      * @returns 変換結果
      * @private
      */
-    private _convertToCurrentStructure(oldData: any, currentStructure: any): ConversionResult {
+    private convertToCurrentStructure(oldData: any, currentStructure: any): ConversionResult {
         const convertedData = { ...currentStructure };
         const log: string[] = [];
         
@@ -691,7 +691,7 @@ export class RecoveryStrategies {
      * @returns 再構築されたデータ
      * @private
      */
-    private _reconstructFromHistory(historyData: HistoricalDataEntry[]): any {
+    private reconstructFromHistory(historyData: HistoricalDataEntry[]): any {
         // 最新のデータから復元
         if (historyData.length > 0) {
             return { ...historyData[historyData.length - 1].data };
@@ -706,7 +706,7 @@ export class RecoveryStrategies {
      * @returns 修復された値
      * @private
      */
-    private _repairNumericField(value: any): number {
+    private repairNumericField(value: any): number {
         if (typeof value === 'number' && !isNaN(value)) {
             return Math.max(0, value); // 負の値は0に修正
         }
@@ -727,7 +727,7 @@ export class RecoveryStrategies {
      * @returns 修復された配列
      * @private
      */
-    private _repairArrayField(value: any): any[] {
+    private repairArrayField(value: any): any[] {
         if (Array.isArray(value)) {
             return value.filter(item => item !== null && item !== undefined);
         }
@@ -742,10 +742,10 @@ export class RecoveryStrategies {
      * @returns 復旧結果
      * @private
      */
-    private async _recoverMissingField(fieldName: string, existingData: any): Promise<FieldRepairResult> {
+    private async recoverMissingField(fieldName: string, existingData: any): Promise<FieldRepairResult> {
         try {
             // 関連するフィールドから推定
-            const estimatedValue = this._estimateFieldValue(fieldName, existingData);
+            const estimatedValue = this.estimateFieldValue(fieldName, existingData);
             return { success: true, data: estimatedValue };
         } catch (error) {
             return { success: false, error: (error as Error).message };
@@ -759,7 +759,7 @@ export class RecoveryStrategies {
      * @returns 推定値
      * @private
      */
-    private _estimateFieldValue(fieldName: string, existingData: any): any {
+    private estimateFieldValue(fieldName: string, existingData: any): any {
         // フィールドタイプに応じた推定ロジック
         switch(fieldName) {
             case 'totalGamesPlayed':
@@ -769,7 +769,7 @@ export class RecoveryStrategies {
             case 'playTime':
                 return (existingData.totalGamesPlayed || 1) * 300000; // 5分平均と仮定
             default:
-                return this._getDefaultFieldValue(fieldName);
+                return this.getDefaultFieldValue(fieldName);
         }
     }
     
@@ -779,9 +779,9 @@ export class RecoveryStrategies {
      * @returns デフォルト値
      * @private
      */
-    private _getDefaultFieldValue(fieldName: string): any {
+    private getDefaultFieldValue(fieldName: string): any {
         const defaults = this.statisticsManager.getDefaultStatistics();
-        return this._getNestedValue(defaults, fieldName) || 0;
+        return this.getNestedValue(defaults, fieldName) || 0;
     }
     
     /**
@@ -791,7 +791,7 @@ export class RecoveryStrategies {
      * @returns 値
      * @private
      */
-    private _getNestedValue(obj: any, path: string): any {
+    private getNestedValue(obj: any, path: string): any {
         return path.split('.').reduce((current, key) => current?.[key], obj);
     }
     
@@ -801,7 +801,7 @@ export class RecoveryStrategies {
      * @returns フィールドタイプ
      * @private
      */
-    private _getFieldType(fieldName: string): FieldType {
+    private getFieldType(fieldName: string): FieldType {
         const numericFields = ['totalScore', 'averageScore', 'playTime', 'totalGamesPlayed'];
         const objectFields = ['bubbleStats', 'comboStats', 'achievementStats'];
         const arrayFields = ['recentScores', 'sessionHistory'];
@@ -818,7 +818,7 @@ export class RecoveryStrategies {
      * @returns テンプレート
      * @private
      */
-    private _getFieldTemplate(fieldName: string): any {
+    private getFieldTemplate(fieldName: string): any {
         const templates: FieldTemplates = {
             bubbleStats: { normal: 0, electric: 0, diamond: 0, rainbow: 0 },
             comboStats: { maxCombo: 0, totalCombos: 0, averageCombo: 0 },

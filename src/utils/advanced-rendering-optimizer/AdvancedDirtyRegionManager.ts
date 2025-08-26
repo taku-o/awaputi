@@ -111,14 +111,14 @@ export class AdvancedDirtyRegionManager {
                 width: finalWidth,
                 height: finalHeight,
                 timestamp: Date.now(),
-                frame: this._getCurrentFrame()
+                frame: this.getCurrentFrame()
             };
             
             this.regions.add(region);
             this.stats.totalRegions++;
             
             // Track hotspots
-            this._trackHotspot(expandedX, expandedY, finalWidth, finalHeight);
+            this.trackHotspot(expandedX, expandedY, finalWidth, finalHeight);
 
         } catch (error) {
             this.errorHandler.logError('Failed to add dirty region', error);
@@ -147,12 +147,12 @@ export class AdvancedDirtyRegionManager {
                 for (let j = i + 1; j < regionsArray.length; j++) {
                     if (processed.has(j)) continue;
                     
-                    const overlap = this._calculateOverlap(currentRegion, regionsArray[j]);
-                    const unionArea = this._calculateUnionArea(currentRegion, regionsArray[j]);
+                    const overlap = this.calculateOverlap(currentRegion, regionsArray[j]);
+                    const unionArea = this.calculateUnionArea(currentRegion, regionsArray[j]);
                     const overlapRatio = overlap / unionArea;
                     
                     if (overlapRatio > this.mergeThreshold) {
-                        currentRegion = this._mergeRegions(currentRegion, regionsArray[j]);
+                        currentRegion = this.mergeRegions(currentRegion, regionsArray[j]);
                         processed.add(j);
                         this.stats.mergedRegions++;
                     }
@@ -183,7 +183,7 @@ export class AdvancedDirtyRegionManager {
             // Store regions in history
             if (this.regions.size > 0) {
                 this.regionHistory.push({
-                    frame: this._getCurrentFrame(),
+                    frame: this.getCurrentFrame(),
                     regions: Array.from(this.regions),
                     timestamp: Date.now()
                 });
@@ -264,7 +264,7 @@ export class AdvancedDirtyRegionManager {
     /**
      * Calculate overlap area between two regions
      */
-    private _calculateOverlap(region1: DirtyRegion, region2: DirtyRegion): number {
+    private calculateOverlap(region1: DirtyRegion, region2: DirtyRegion): number {
         const x1 = Math.max(region1.x, region2.x);
         const y1 = Math.max(region1.y, region2.y);
         const x2 = Math.min(region1.x + region1.width, region2.x + region2.width);
@@ -276,17 +276,17 @@ export class AdvancedDirtyRegionManager {
     /**
      * Calculate union area of two regions
      */
-    private _calculateUnionArea(region1: DirtyRegion, region2: DirtyRegion): number {
+    private calculateUnionArea(region1: DirtyRegion, region2: DirtyRegion): number {
         const area1 = region1.width * region1.height;
         const area2 = region2.width * region2.height;
-        const overlap = this._calculateOverlap(region1, region2);
+        const overlap = this.calculateOverlap(region1, region2);
         return area1 + area2 - overlap;
     }
     
     /**
      * Merge two regions into one
      */
-    private _mergeRegions(region1: DirtyRegion, region2: DirtyRegion): DirtyRegion {
+    private mergeRegions(region1: DirtyRegion, region2: DirtyRegion): DirtyRegion {
         const x = Math.min(region1.x, region2.x);
         const y = Math.min(region1.y, region2.y);
         const right = Math.max(region1.x + region1.width, region2.x + region2.width);
@@ -304,7 +304,7 @@ export class AdvancedDirtyRegionManager {
     /**
      * Track frequently dirty areas (hotspots)
      */
-    private _trackHotspot(x: number, y: number, _width: number, _height: number): void {
+    private trackHotspot(x: number, y: number, _width: number, _height: number): void {
         const gridSize = 64; // Grid size for hotspot tracking
         const gridX = Math.floor(x / gridSize) * gridSize;
         const gridY = Math.floor(y / gridSize) * gridSize;
@@ -316,7 +316,7 @@ export class AdvancedDirtyRegionManager {
     /**
      * Get current frame number
      */
-    private _getCurrentFrame(): number {
+    private getCurrentFrame(): number {
         // Simple frame counter
         return Math.floor(Date.now() / 16.67); // Approximate frame at 60fps
     }

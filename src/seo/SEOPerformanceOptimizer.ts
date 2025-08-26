@@ -68,15 +68,15 @@ export class SEOPerformanceOptimizer {
         this.performanceObserver = null;
         this.metrics = [];
         
-        this._initialize();
+        this.initialize();
     }
     
     /**
      * 初期化処理
      */
-    private _initialize(): void {
+    private initialize(): void {
         try {
-            this._setupPerformanceMonitoring();
+            this.setupPerformanceMonitoring();
             seoLogger.info('SEOPerformanceOptimizer initialized successfully');
         } catch (error) {
             seoErrorHandler.handle(error as Error, 'seoPerformanceOptimizerInit');
@@ -86,11 +86,11 @@ export class SEOPerformanceOptimizer {
     /**
      * パフォーマンス監視の設定
      */
-    private _setupPerformanceMonitoring(): void {
+    private setupPerformanceMonitoring(): void {
         if (typeof window !== 'undefined' && 'PerformanceObserver' in window) {
             this.performanceObserver = new PerformanceObserver((list) => {
                 const entries = list.getEntries();
-                this._processPerformanceEntries(entries);
+                this.processPerformanceEntries(entries);
             });
 
             this.performanceObserver.observe({ entryTypes: ['paint', 'layout-shift', 'first-input'] });
@@ -100,14 +100,14 @@ export class SEOPerformanceOptimizer {
     /**
      * パフォーマンスエントリーの処理
      */
-    private _processPerformanceEntries(entries: PerformanceEntry[]): void {
+    private processPerformanceEntries(entries: PerformanceEntry[]): void {
         entries.forEach(entry => {
             if (entry.entryType === 'paint') {
-                this._recordPaintMetric(entry);
+                this.recordPaintMetric(entry);
             } else if (entry.entryType === 'layout-shift') {
-                this._recordLayoutShift(entry);
+                this.recordLayoutShift(entry);
             } else if (entry.entryType === 'first-input') {
-                this._recordFirstInputDelay(entry);
+                this.recordFirstInputDelay(entry);
             }
         });
     }
@@ -115,21 +115,21 @@ export class SEOPerformanceOptimizer {
     /**
      * ペイントメトリクスの記録
      */
-    private _recordPaintMetric(entry: PerformanceEntry): void {
+    private recordPaintMetric(entry: PerformanceEntry): void {
         seoLogger.performance(`Paint: ${entry.name}`, entry.startTime);
     }
     
     /**
      * レイアウトシフトの記録
      */
-    private _recordLayoutShift(entry: PerformanceEntry): void {
+    private recordLayoutShift(entry: PerformanceEntry): void {
         seoLogger.performance('Layout Shift', (entry as any).value || 0);
     }
     
     /**
      * 初回入力遅延の記録
      */
-    private _recordFirstInputDelay(entry: PerformanceEntry): void {
+    private recordFirstInputDelay(entry: PerformanceEntry): void {
         seoLogger.performance('First Input Delay', entry.startTime);
     }
     
@@ -152,7 +152,7 @@ export class SEOPerformanceOptimizer {
             const originalSize = originalBlob.size;
             
             // Canvas を使用した最適化（簡易版）
-            const optimizedBlob = await this._processImageWithCanvas(originalBlob, options);
+            const optimizedBlob = await this.processImageWithCanvas(originalBlob, options);
             const optimizedSize = optimizedBlob.size;
             
             const result: OptimizationResult = {
@@ -182,7 +182,7 @@ export class SEOPerformanceOptimizer {
     /**
      * Canvas を使用した画像処理
      */
-    private async _processImageWithCanvas(blob: Blob, options: ImageOptimizationOptions): Promise<Blob> {
+    private async processImageWithCanvas(blob: Blob, options: ImageOptimizationOptions): Promise<Blob> {
         return new Promise((resolve, reject) => {
             const img = new Image();
             

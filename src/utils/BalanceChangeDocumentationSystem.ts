@@ -158,15 +158,15 @@ export class BalanceChangeDocumentationSystem {
             lastUpdate: null
         };
 
-        this._initializeStorage();
-        this._loadFromStorage();
+        this.initializeStorage();
+        this.loadFromStorage();
         console.log('[BalanceChangeDocumentationSystem] システムを初期化しました');
     }
     
     /**
      * ストレージシステムを初期化
      */
-    private _initializeStorage(): void {
+    private initializeStorage(): void {
         try {
             if (typeof localStorage !== 'undefined') {
                 this.storageAvailable = true;
@@ -183,7 +183,7 @@ export class BalanceChangeDocumentationSystem {
     /**
      * ストレージから変更履歴を読み込み
      */
-    private _loadFromStorage(): void {
+    private loadFromStorage(): void {
         try {
             if (!this.storageAvailable) return;
             
@@ -196,7 +196,7 @@ export class BalanceChangeDocumentationSystem {
             // 変更履歴を復元
             for (const changeData of data.changes) {
                 const change = new BalanceChange(changeData);
-                this._addChangeToIndexes(change);
+                this.addChangeToIndexes(change);
             }
             
             // 統計情報を復元
@@ -215,7 +215,7 @@ export class BalanceChangeDocumentationSystem {
     /**
      * ストレージに変更履歴を保存
      */
-    private _saveToStorage(): void {
+    private saveToStorage(): void {
         try {
             if (!this.storageAvailable || !this.autoSaveEnabled) return;
             
@@ -239,7 +239,7 @@ export class BalanceChangeDocumentationSystem {
     /**
      * 変更をインデックスに追加
      */
-    private _addChangeToIndexes(change: BalanceChange): void {
+    private addChangeToIndexes(change: BalanceChange): void {
         // メインインデックス
         this.changes.set(change.id, change);
 
@@ -283,7 +283,7 @@ export class BalanceChangeDocumentationSystem {
     /**
      * 変更をインデックスから削除
      */
-    private _removeChangeFromIndexes(change: BalanceChange): void {
+    private removeChangeFromIndexes(change: BalanceChange): void {
         // メインインデックス
         this.changes.delete(change.id);
 
@@ -333,7 +333,7 @@ export class BalanceChangeDocumentationSystem {
     /**
      * 統計情報を更新
      */
-    private _updateStatistics(): void {
+    private updateStatistics(): void {
         this.statistics.totalChanges = this.changes.size;
         this.statistics.appliedChanges = Array.from(this.changes.values())
             .filter(change => change.applied).length;
@@ -358,18 +358,18 @@ export class BalanceChangeDocumentationSystem {
             
             // 履歴サイズ制限
             if (this.changes.size >= this.maxHistorySize) {
-                this._cleanupOldChanges();
+                this.cleanupOldChanges();
             }
             
             // インデックスに追加
-            this._addChangeToIndexes(change);
+            this.addChangeToIndexes(change);
             
             // 統計更新
-            this._updateStatistics();
+            this.updateStatistics();
             
             // 自動保存
             if (this.autoSaveEnabled) {
-                this._saveToStorage();
+                this.saveToStorage();
             }
             
             console.log(`[BalanceChangeDocumentationSystem] 変更を記録: ${change.id}`);
@@ -386,7 +386,7 @@ export class BalanceChangeDocumentationSystem {
     /**
      * 古い変更履歴をクリーンアップ
      */
-    private _cleanupOldChanges(): void {
+    private cleanupOldChanges(): void {
         try {
             // 最古の変更から削除（時系列順の最初の10%を削除）
             const cleanupCount = Math.floor(this.maxHistorySize * 0.1);
@@ -395,7 +395,7 @@ export class BalanceChangeDocumentationSystem {
             for (const changeId of changesToRemove) {
                 const change = this.changes.get(changeId);
                 if (change) {
-                    this._removeChangeFromIndexes(change);
+                    this.removeChangeFromIndexes(change);
                 }
             }
             
@@ -479,7 +479,7 @@ export class BalanceChangeDocumentationSystem {
             let changes = changeIds.map(id => this.changes.get(id)).filter((change): change is BalanceChange => !!change);
             
             // 同様のフィルタリングとソート処理
-            return this._applyFiltersAndSort(changes, options);
+            return this.applyFiltersAndSort(changes, options);
 
         } catch (error) {
             this.errorHandler.handleError(error, 'DOCUMENTATION_GET_BY_PROPERTY', {
@@ -498,7 +498,7 @@ export class BalanceChangeDocumentationSystem {
             const changeIds = this.changesByAuthor.get(author) || [];
             let changes = changeIds.map(id => this.changes.get(id)).filter((change): change is BalanceChange => !!change);
             
-            return this._applyFiltersAndSort(changes, options);
+            return this.applyFiltersAndSort(changes, options);
 
         } catch (error) {
             this.errorHandler.handleError(error, 'DOCUMENTATION_GET_BY_AUTHOR', {
@@ -520,7 +520,7 @@ export class BalanceChangeDocumentationSystem {
                     change.timestamp >= fromDate && 
                     change.timestamp <= toDate);
             
-            return this._applyFiltersAndSort(changes, options);
+            return this.applyFiltersAndSort(changes, options);
 
         } catch (error) {
             this.errorHandler.handleError(error, 'DOCUMENTATION_GET_BY_DATE', {
@@ -535,7 +535,7 @@ export class BalanceChangeDocumentationSystem {
     /**
      * フィルタとソートを適用
      */
-    private _applyFiltersAndSort(changes: BalanceChange[], options: QueryOptions): BalanceChange[] {
+    private applyFiltersAndSort(changes: BalanceChange[], options: QueryOptions): BalanceChange[] {
         let filtered = [...changes];
         
         // フィルタリング
@@ -823,10 +823,10 @@ export class BalanceChangeDocumentationSystem {
 
             if (reportType === 'statistics') {
                 const report = this.generateStatisticsReport(options);
-                markdown = this._generateStatisticsMarkdown(report);
+                markdown = this.generateStatisticsMarkdown(report);
             } else if (reportType === 'impact' && options.changeId) {
                 const report = this.generateImpactReport(options.changeId);
-                markdown = this._generateImpactMarkdown(report);
+                markdown = this.generateImpactMarkdown(report);
             } else {
                 throw new Error(`Unknown report type: ${reportType}`);
             }
@@ -845,7 +845,7 @@ export class BalanceChangeDocumentationSystem {
     /**
      * 統計レポートのマークダウンを生成
      */
-    private _generateStatisticsMarkdown(report: StatisticsReport): string {
+    private generateStatisticsMarkdown(report: StatisticsReport): string {
         const date = new Date(report.generatedAt).toLocaleString('ja-JP');
         
         let markdown = `# ゲームバランス変更統計レポート\n\n`;
@@ -897,7 +897,7 @@ export class BalanceChangeDocumentationSystem {
     /**
      * 影響レポートのマークダウンを生成
      */
-    private _generateImpactMarkdown(report: ImpactReport): string {
+    private generateImpactMarkdown(report: ImpactReport): string {
         if (report.error) {
             return `# エラー\n\n${report.error}`;
         }
@@ -1003,7 +1003,7 @@ export class BalanceChangeDocumentationSystem {
      */
     public save(): boolean {
         try {
-            this._saveToStorage();
+            this.saveToStorage();
             console.log('[BalanceChangeDocumentationSystem] 手動保存完了');
             return true;
 

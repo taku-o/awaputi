@@ -315,28 +315,28 @@ export class RecoveryValidation {
             };
 
             // データ型チェック
-            const typeCheck = this._checkDataTypes(data);
+            const typeCheck = this.checkDataTypes(data);
             if (typeCheck.hasIssues) {
                 corruption.corruptedFields.push(...typeCheck.corruptedFields);
                 corruption.corruptionTypes.push('type_mismatch');
             }
             
             // 値範囲チェック
-            const rangeCheck = this._checkDataRanges(data);
+            const rangeCheck = this.checkDataRanges(data);
             if (rangeCheck.hasIssues) {
                 corruption.corruptedFields.push(...rangeCheck.corruptedFields);
                 corruption.corruptionTypes.push('range_violation');
             }
             
             // 構造整合性チェック
-            const structureCheck = this._checkDataStructure(data);
+            const structureCheck = this.checkDataStructure(data);
             if (structureCheck.hasIssues) {
                 corruption.corruptedFields.push(...structureCheck.corruptedFields);
                 corruption.corruptionTypes.push('structure_damage');
             }
             
             // 論理整合性チェック
-            const logicCheck = this._checkLogicalConsistency(data);
+            const logicCheck = this.checkLogicalConsistency(data);
             if (logicCheck.hasIssues) {
                 corruption.corruptedFields.push(...logicCheck.corruptedFields);
                 corruption.corruptionTypes.push('logical_inconsistency');
@@ -640,7 +640,7 @@ export class RecoveryValidation {
      * @returns チェック結果
      * @private
      */
-    private _checkDataTypes(data: Record<string, any>): DataTypeCheckResult {
+    private checkDataTypes(data: Record<string, any>): DataTypeCheckResult {
         const result: DataTypeCheckResult = {
             hasIssues: false,
             corruptedFields: []
@@ -671,7 +671,7 @@ export class RecoveryValidation {
      * @returns チェック結果
      * @private
      */
-    private _checkDataRanges(data: Record<string, any>): DataRangeCheckResult {
+    private checkDataRanges(data: Record<string, any>): DataRangeCheckResult {
         const result: DataRangeCheckResult = {
             hasIssues: false,
             corruptedFields: []
@@ -694,7 +694,7 @@ export class RecoveryValidation {
      * @returns チェック結果
      * @private
      */
-    private _checkDataStructure(data: Record<string, any>): DataStructureCheckResult {
+    private checkDataStructure(data: Record<string, any>): DataStructureCheckResult {
         const result: DataStructureCheckResult = {
             hasIssues: false,
             corruptedFields: []
@@ -717,7 +717,7 @@ export class RecoveryValidation {
      * @returns チェック結果
      * @private
      */
-    private _checkLogicalConsistency(data: Record<string, any>): LogicalConsistencyCheckResult {
+    private checkLogicalConsistency(data: Record<string, any>): LogicalConsistencyCheckResult {
         const result: LogicalConsistencyCheckResult = {
             hasIssues: false,
             corruptedFields: []

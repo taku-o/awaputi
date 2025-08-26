@@ -61,7 +61,7 @@ export class MemoryManager {
         this.trackedObjects = new WeakMap<object, TrackedObject>();
         
         // Initialize sub-components
-        this._initializeSubComponents(config);
+        this.initializeSubComponents(config);
         
         // Main statistics
         this.stats = {
@@ -96,7 +96,7 @@ export class MemoryManager {
     /**
      * Initialize sub-components
      */
-    private _initializeSubComponents(config: MemoryManagerConfig): void {
+    private initializeSubComponents(config: MemoryManagerConfig): void {
         try {
             // Leak detection component
             this.leakDetector = new LeakDetector({

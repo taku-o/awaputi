@@ -167,14 +167,14 @@ export class EffectQualityController {
     constructor() {
         this.configManager = getConfigurationManager();
         this.errorHandler = getErrorHandler();
-        this._initializeQualitySettings();
+        this.initializeQualitySettings();
     }
     
     /**
      * 品質設定の初期化
      * @private
      */
-    private _initializeQualitySettings(): void {
+    private initializeQualitySettings(): void {
         try {
             const savedQuality = this.configManager.get<QualityLevelType>('effects.quality.level', 'high');
             const autoAdjust = this.configManager.get<boolean>('effects.quality.autoAdjust', true);
@@ -192,7 +192,7 @@ export class EffectQualityController {
             });
         } catch (error) {
             this.errorHandler.handleError(error as Error, {
-                context: 'EffectQualityController._initializeQualitySettings'
+                context: 'EffectQualityController.initializeQualitySettings'
             });
         }
     }
@@ -222,7 +222,7 @@ export class EffectQualityController {
         this.currentQuality = level;
         
         // エフェクト制限の調整
-        this._adjustEffectLimits(level);
+        this.adjustEffectLimits(level);
         
         // 設定の保存
         this.configManager.set('effects.quality.level', level);
@@ -244,7 +244,7 @@ export class EffectQualityController {
      * @param qualityLevel - 品質レベル
      * @private
      */
-    private _adjustEffectLimits(qualityLevel: QualityLevelType): void {
+    private adjustEffectLimits(qualityLevel: QualityLevelType): void {
         const quality = this.qualityLevels[qualityLevel];
         
         this.effectLimits.maxActiveParticles = Math.floor(500 * quality.particleCountMultiplier);
@@ -325,7 +325,7 @@ export class EffectQualityController {
         
         // 自動品質調整
         if (this.autoAdjustEnabled) {
-            this._performAutoAdjustment(currentTime, frameRate, memoryUsage);
+            this.performAutoAdjustment(currentTime, frameRate, memoryUsage);
         }
     }
     
@@ -336,7 +336,7 @@ export class EffectQualityController {
      * @param memoryUsage - メモリ使用量
      * @private
      */
-    private _performAutoAdjustment(currentTime: number, frameRate: number, memoryUsage?: number): void {
+    private performAutoAdjustment(currentTime: number, frameRate: number, memoryUsage?: number): void {
         if (currentTime - this.lastAdjustTime < this.adjustmentCooldown) {
             return;
         }

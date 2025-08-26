@@ -176,7 +176,7 @@ export class AudioPlaybackController {
                 this.stopOldestSound();
             }
             
-            return this._playSound(buffer, options);
+            return this.playSound(buffer, options);
 
         } catch (error) {
             this.playbackStats.errors++;
@@ -194,7 +194,7 @@ export class AudioPlaybackController {
      * @param options - 再生オプション
      * @returns 音源ノード
      */
-    private _playSound(buffer: AudioBuffer, options: PlaybackOptions = {}): AudioBufferSourceNode | null {
+    private playSound(buffer: AudioBuffer, options: PlaybackOptions = {}): AudioBufferSourceNode | null {
         try {
             if (!this.audioContext || !this.sfxGainNode) {
                 return null as any;
@@ -283,7 +283,7 @@ export class AudioPlaybackController {
             this.playbackStats.errors++;
             getErrorHandler().handleError(error, 'AUDIO_ERROR', {
                 component: 'AudioPlaybackController',
-                operation: '_playSound'
+                operation: 'playSound'
             });
             return null as any;
         }

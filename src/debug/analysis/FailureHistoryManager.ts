@@ -112,7 +112,7 @@ export class FailureHistoryManager extends BaseComponent {
         this.storageKey = 'testFailureHistory';
     }
 
-    async _doInitialize(): Promise<void> {
+    async doInitialize(): Promise<void> {
         this.loadFailureHistory();
     }
 

@@ -99,9 +99,9 @@ export class EnvironmentalAudioSettings {
     initialize(): void {
         try {
             // 設定を読み込み
-            this._loadSettings();
+            this.loadSettings();
             // 設定変更の監視を開始
-            this._setupConfigWatchers();
+            this.setupConfigWatchers();
             console.log('EnvironmentalAudioSettings initialized successfully');
         } catch (error) {
             getErrorHandler().handleError(error, 'AUDIO_ERROR', {
@@ -115,7 +115,7 @@ export class EnvironmentalAudioSettings {
      * 設定を読み込み
      * @private
      */
-    private _loadSettings(): void {
+    private loadSettings(): void {
         try {
             const envSettings = this.configManager.get('audio', 'environmental') || {};
             
@@ -132,7 +132,7 @@ export class EnvironmentalAudioSettings {
             console.log('Environmental audio settings loaded:', this.settings);
         } catch (error) {
             getErrorHandler().handleError(error, 'AUDIO_ERROR', {
-                operation: '_loadSettings',
+                operation: 'loadSettings',
                 component: 'EnvironmentalAudioSettings'
             });
         }
@@ -142,7 +142,7 @@ export class EnvironmentalAudioSettings {
      * 設定変更の監視を設定
      * @private
      */
-    private _setupConfigWatchers(): void {
+    private setupConfigWatchers(): void {
         try {
             const enabledWatcher = this.configManager.watch('audio', 'environmental.enabled', (newValue) => {
                 this.setEnabled(newValue);
@@ -158,7 +158,7 @@ export class EnvironmentalAudioSettings {
             console.log('Environmental audio config watchers set up successfully');
         } catch (error) {
             getErrorHandler().handleError(error, 'AUDIO_ERROR', {
-                operation: '_setupConfigWatchers',
+                operation: 'setupConfigWatchers',
                 component: 'EnvironmentalAudioSettings'
             });
         }

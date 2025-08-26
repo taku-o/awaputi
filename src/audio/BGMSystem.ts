@@ -172,7 +172,7 @@ export class BGMSystem {
             this.transitionManager = new BGMTransitionManager(this.audioContext);
             
             // 設定変更の監視
-            this._setupConfigWatchers();
+            this.setupConfigWatchers();
             
             console.log('BGMSystem initialized successfully');
             return true;
@@ -189,7 +189,7 @@ export class BGMSystem {
      * 設定変更の監視を設定
      * @private
      */
-    private _setupConfigWatchers(): void {
+    private setupConfigWatchers(): void {
         // BGM音量の監視
         const bgmVolumeWatcher = this.configManager.watch('audio', 'volumes.bgm', (newValue: number) => {
             this.currentVolume = newValue;
@@ -238,7 +238,7 @@ export class BGMSystem {
                     tempo: trackConfig.tempo,
                     key: trackConfig.key,
                     timeSignature: '4/4',
-                    genre: this._getGenreForStyle(trackConfig.style)
+                    genre: this.getGenreForStyle(trackConfig.style)
                 }
             };
             
@@ -263,7 +263,7 @@ export class BGMSystem {
      * @returns ジャンル
      * @private
      */
-    private _getGenreForStyle(style: string): string {
+    private getGenreForStyle(style: string): string {
         const genreMap: Record<string, string> = {
             ambient: 'ambient',
             energetic: 'electronic',
@@ -302,7 +302,7 @@ export class BGMSystem {
             
             // バッファが未生成の場合は生成
             if (!track.buffer) {
-                track.buffer = await this._generateTrackBuffer(track);
+                track.buffer = await this.generateTrackBuffer(track);
                 if (!track.buffer) {
                     throw new Error(`Failed to generate buffer for track: ${trackName}`);
                 }
@@ -333,7 +333,7 @@ export class BGMSystem {
      * @returns 生成されたオーディオバッファ
      * @private
      */
-    private async _generateTrackBuffer(track: BGMTrack): Promise<AudioBuffer | null> {
+    private async generateTrackBuffer(track: BGMTrack): Promise<AudioBuffer | null> {
         try {
             if (!this.bgmGenerator) {
                 throw new Error('BGMGenerator is not initialized');
@@ -356,7 +356,7 @@ export class BGMSystem {
             return buffer;
         } catch (error) {
             getErrorHandler().handleError(error, 'BGM_ERROR', {
-                operation: '_generateTrackBuffer',
+                operation: 'generateTrackBuffer',
                 track: track.name
             });
             return null as any;
@@ -557,7 +557,7 @@ export class BGMSystem {
             
             // バッファが未生成の場合は生成
             if (!track.buffer) {
-                track.buffer = await this._generateTrackBuffer(track);
+                track.buffer = await this.generateTrackBuffer(track);
                 if (!track.buffer) {
                     throw new Error(`Failed to generate buffer for track: ${trackName}`);
                 }
@@ -642,7 +642,7 @@ export class BGMSystem {
             await this.transitionManager.fadeIn(trackName, duration, curve, targetVolume);
             
             // 状態を同期
-            this._syncStateFromPlayer();
+            this.syncStateFromPlayer();
         } catch (error) {
             getErrorHandler().handleError(error, 'BGM_ERROR', {
                 operation: 'fadeIn',
@@ -658,7 +658,7 @@ export class BGMSystem {
      * BGMPlayerから状態を同期
      * @private
      */
-    private _syncStateFromPlayer(): void {
+    private syncStateFromPlayer(): void {
         if (!this.bgmPlayer) return;
         
         const playerState = this.bgmPlayer.getState();

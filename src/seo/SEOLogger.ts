@@ -75,7 +75,7 @@ export class SEOLogger {
      * 情報ログ
      */
     info(message: string, data: any = {}): void {
-        this._log('info', message, data);
+        this.log('info', message, data);
         if (this.debugMode) {
             console.log(`[SEO Info] ${message}`, data);
         }
@@ -85,7 +85,7 @@ export class SEOLogger {
      * 警告ログ
      */
     warn(message: string, data: any = {}): void {
-        this._log('warn', message, data);
+        this.log('warn', message, data);
         console.warn(`[SEO Warning] ${message}`, data);
     }
     
@@ -93,12 +93,12 @@ export class SEOLogger {
      * エラーログ
      */
     error(message: string, error: Error | any = {}): void {
-        this._log('error', message, error);
+        this.log('error', message, error);
         console.error(`[SEO Error] ${message}`, error);
         
         // エラー詳細の記録
         if (error instanceof Error) {
-            this._log('error-detail', error.stack || '', {
+            this.log('error-detail', error.stack || '', {
                 name: error.name,
                 message: error.message
             });
@@ -109,7 +109,7 @@ export class SEOLogger {
      * パフォーマンスログ
      */
     performance(operation: string, duration: number, details: any = {}): void {
-        this._log('performance', `${operation} completed in ${duration}ms`, {
+        this.log('performance', `${operation} completed in ${duration}ms`, {
             ...details,
             duration
         });
@@ -130,7 +130,7 @@ export class SEOLogger {
             timestamp: new Date().toISOString()
         };
 
-        this._log('validation', `${component} validation: ${isValid ? 'PASSED' : 'FAILED'}`, data);
+        this.log('validation', `${component} validation: ${isValid ? 'PASSED' : 'FAILED'}`, data);
         
         if (!isValid) {
             issues.forEach(issue => {
@@ -142,7 +142,7 @@ export class SEOLogger {
     /**
      * 内部ログ記録
      */
-    private _log(level: LogLevel, message: string, data: any): void {
+    private log(level: LogLevel, message: string, data: any): void {
         const logEntry: LogEntry = {
             level,
             message,
@@ -239,14 +239,14 @@ export class SEOLogger {
             },
             componentHealth,
             recentIssues: [...errors, ...warnings].slice(-20),
-            healthScore: this._calculateHealthScore(validations, errors, warnings)
+            healthScore: this.calculateHealthScore(validations, errors, warnings)
         };
     }
     
     /**
      * ヘルススコアの計算
      */
-    private _calculateHealthScore(validations: LogEntry[], errors: LogEntry[], warnings: LogEntry[]): number {
+    private calculateHealthScore(validations: LogEntry[], errors: LogEntry[], warnings: LogEntry[]): number {
         const totalChecks = validations.length || 1;
         const passedChecks = validations.filter(v => (v.data as ValidationData).isValid).length;
         const baseScore = (passedChecks / totalChecks) * 100;

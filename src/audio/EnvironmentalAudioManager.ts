@@ -147,7 +147,7 @@ export class EnvironmentalAudioManager {
         this.settings?.setEnabled(enabled, (enabled: boolean, wasEnabled: boolean) => {
             if (enabled && !wasEnabled) {
                 // 環境音を開始
-                this._startCurrentEnvironment();
+                this.startCurrentEnvironment();
             } else if (!enabled && wasEnabled) {
                 // 環境音を停止
                 this.transitionController?.stopAllEnvironmental();
@@ -266,7 +266,7 @@ export class EnvironmentalAudioManager {
     /**
      * 現在の環境音を開始
      */
-    private _startCurrentEnvironment(): void {
+    private startCurrentEnvironment(): void {
         try {
             if (this.currentBiome) {
                 this.setBiome(this.currentBiome);
@@ -276,7 +276,7 @@ export class EnvironmentalAudioManager {
             }
         } catch (error) {
             this.errorHandler.handleError(error as Error, 'AUDIO_ERROR', {
-                operation: '_startCurrentEnvironment',
+                operation: 'startCurrentEnvironment',
                 component: 'EnvironmentalAudioManager'
             });
         }

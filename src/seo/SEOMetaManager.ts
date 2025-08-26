@@ -135,21 +135,21 @@ export class SEOMetaManager {
         this.initialized = false;
         
         // デバウンスされたメタタグ更新関数
-        this.debouncedUpdate = debounce(this._performUpdate.bind(this), 300);
+        this.debouncedUpdate = debounce(this.performUpdate.bind(this), 300);
         
-        this._initialize();
+        this.initialize();
     }
     
     /**
      * 初期化処理
      */
-    private _initialize(): void {
+    private initialize(): void {
         try {
             // 既存のメタタグを収集
-            this._collectExistingMetaTags();
+            this.collectExistingMetaTags();
             
             // 動的メタハンドラーの登録
-            this._registerDynamicHandlers();
+            this.registerDynamicHandlers();
             
             // 言語変更リスナーの設定
             if (this.localizationManager) {
@@ -206,14 +206,14 @@ export class SEOMetaManager {
             };
 
             // 動的メタデータ生成
-            const metadata = await this._generateDynamicMetadata(enhancedContext);
+            const metadata = await this.generateDynamicMetadata(enhancedContext);
 
             // メタタグ更新
             await this.updateMetaTags(metadata);
 
             // ソーシャルメディア用の画像URL更新
             if (dynamicContent.currentScore && dynamicContent.currentScore > 0) {
-                await this._updateSocialImageForScore(dynamicContent.currentScore);
+                await this.updateSocialImageForScore(dynamicContent.currentScore);
             }
 
             seoLogger.info('Dynamic content updated successfully', enhancedContext);
@@ -225,11 +225,11 @@ export class SEOMetaManager {
     /**
      * ゲーム状態に基づいた動的メタデータ生成
      */
-    private async _generateDynamicMetadata(context: MetadataContext): Promise<MetadataContext> {
+    private async generateDynamicMetadata(context: MetadataContext): Promise<MetadataContext> {
         const gameSession = context.gameState!;
         
         // 動的タイトル生成
-        let dynamicTitle = await this._getLocalizedTitle();
+        let dynamicTitle = await this.getLocalizedTitle();
         if (gameSession.score && gameSession.score > 0) {
             const scoreText = this.localizationManager ?
                 this.localizationManager.get('seo.titleWithScore', { score: gameSession.score.toLocaleString() }) :
@@ -238,7 +238,7 @@ export class SEOMetaManager {
         }
 
         // 動的説明文生成
-        let dynamicDescription = await this._getLocalizedDescription(context);
+        let dynamicDescription = await this.getLocalizedDescription(context);
         if (gameSession.scene === 'game' && gameSession.score && gameSession.score > 0) {
             const gameplayText = this.localizationManager ? 
                 this.localizationManager.get('seo.gameplayDescription', {
@@ -254,14 +254,14 @@ export class SEOMetaManager {
             title: dynamicTitle,
             description: dynamicDescription,
             gameState: gameSession,
-            path: this._generateUrl({})
+            path: this.generateUrl({})
         };
     }
 
     /**
      * スコアに基づいたソーシャル画像の更新
      */
-    private async _updateSocialImageForScore(score: number): Promise<void> {
+    private async updateSocialImageForScore(score: number): Promise<void> {
         try {
             // スコアランクに基づいて画像を選択
             let imageUrl = '/assets/social/og-image.png'; // デフォルト
@@ -275,12 +275,12 @@ export class SEOMetaManager {
             }
 
             // Open Graph画像の更新
-            this._updateMetaTag('property', 'og:image', imageUrl);
-            this._updateMetaTag('name', 'twitter:image', imageUrl);
+            this.updateMetaTag('property', 'og:image', imageUrl);
+            this.updateMetaTag('name', 'twitter:image', imageUrl);
 
             seoLogger.debug('Social image updated for score', { score, imageUrl });
         } catch (error) {
-            seoErrorHandler.handle(error as Error, '_updateSocialImageForScore', { score });
+            seoErrorHandler.handle(error as Error, 'updateSocialImageForScore', { score });
         }
     }
 
@@ -309,19 +309,19 @@ export class SEOMetaManager {
     async getLocalizedMetadata(context: MetadataContext = {}): Promise<LocalizedMetadata> {
         try {
             if (!this.localizationManager) {
-                return this._generateFallbackMetadata(context);
+                return this.generateFallbackMetadata(context);
             }
             
             const currentLang = this.localizationManager.getCurrentLanguage();
             
             return {
                 language: currentLang,
-                title: await this._getLocalizedTitle(context),
-                description: await this._getLocalizedDescription(context),
-                keywords: await this._getLocalizedKeywords(context),
-                siteName: await this._getLocalizedSiteName(),
-                locale: this._getOGLocale(),
-                direction: this._getTextDirection(),
+                title: await this.getLocalizedTitle(context),
+                description: await this.getLocalizedDescription(context),
+                keywords: await this.getLocalizedKeywords(context),
+                siteName: await this.getLocalizedSiteName(),
+                locale: this.getOGLocale(),
+                direction: this.getTextDirection(),
                 charset: 'UTF-8'
             };
         } catch (error) {
@@ -332,7 +332,7 @@ export class SEOMetaManager {
     /**
      * ローカライズされたタイトル生成
      */
-    private async _getLocalizedTitle(context: MetadataContext = {}): Promise<string> {
+    private async getLocalizedTitle(context: MetadataContext = {}): Promise<string> {
         if (!this.localizationManager) {
             return context.title || 'BubblePop - 泡割りゲーム';
         }
@@ -362,7 +362,7 @@ export class SEOMetaManager {
     /**
      * ローカライズされた説明文生成
      */
-    private async _getLocalizedDescription(context: MetadataContext = {}): Promise<string> {
+    private async getLocalizedDescription(context: MetadataContext = {}): Promise<string> {
         if (!this.localizationManager) {
             return context.description || 'HTML5 Canvas を使用したバブルポップゲーム。泡を割って高スコアを目指そう！';
         }
@@ -384,7 +384,7 @@ export class SEOMetaManager {
         
         // ゲーム状態による動的説明
         if (context.gameState) {
-            return await this._enhanceDescriptionWithGameState(context.gameState);
+            return await this.enhanceDescriptionWithGameState(context.gameState);
         }
         
         // デフォルト説明
@@ -395,7 +395,7 @@ export class SEOMetaManager {
     /**
      * ローカライズされたキーワード生成
      */
-    private async _getLocalizedKeywords(context: MetadataContext): Promise<string> {
+    private async getLocalizedKeywords(context: MetadataContext): Promise<string> {
         if (!this.localizationManager) {
             return context.keywords || 'バブルポップ,ゲーム,HTML5,ブラウザゲーム,無料';
         }
@@ -420,7 +420,7 @@ export class SEOMetaManager {
     /**
      * テキスト方向の取得
      */
-    private _getTextDirection(): string {
+    private getTextDirection(): string {
         if (!this.localizationManager) {
             return 'ltr';
         }
@@ -432,7 +432,7 @@ export class SEOMetaManager {
     /**
      * フォールバックメタデータの生成
      */
-    private _generateFallbackMetadata(context: MetadataContext): LocalizedMetadata {
+    private generateFallbackMetadata(context: MetadataContext): LocalizedMetadata {
         return {
             language: 'ja',
             title: context.title || 'BubblePop - 泡割りゲーム',
@@ -448,30 +448,30 @@ export class SEOMetaManager {
     /**
      * 実際のメタタグ更新処理
      */
-    private async _performUpdate(context: MetadataContext): Promise<void> {
+    private async performUpdate(context: MetadataContext): Promise<void> {
         try {
             const startTime = performance.now();
             
             // メタデータの生成
-            const metadata = await this._generateMetadata(context);
+            const metadata = await this.generateMetadata(context);
             
             // 基本メタタグの更新
-            this._updateBasicMetaTags(metadata);
+            this.updateBasicMetaTags(metadata);
             
             // Open Graphタグの更新
-            this._updateOpenGraphTags(metadata);
+            this.updateOpenGraphTags(metadata);
             
             // Twitter Cardタグの更新
-            this._updateTwitterCardTags(metadata);
+            this.updateTwitterCardTags(metadata);
             
             // Canonical URLの更新
-            this._updateCanonicalUrl(metadata);
+            this.updateCanonicalUrl(metadata);
             
             // hreflangタグの更新
-            this._updateHreflangTags(metadata);
+            this.updateHreflangTags(metadata);
             
             // キャッシュの更新
-            this._updateCache(metadata);
+            this.updateCache(metadata);
             
             const duration = performance.now() - startTime;
             seoLogger.performance('metaTagUpdate', duration, {
@@ -485,32 +485,32 @@ export class SEOMetaManager {
     /**
      * メタデータの生成
      */
-    private async _generateMetadata(context: MetadataContext): Promise<Metadata> {
+    private async generateMetadata(context: MetadataContext): Promise<Metadata> {
         const metadata: Metadata = {
             language: this.currentLang,
-            url: this._generateUrl(context),
+            url: this.generateUrl(context),
             timestamp: Date.now(),
             title: '',
             description: '',
             keywords: '',
             image: '',
             author: SEOConfig.metadata.author,
-            siteName: await this._getLocalizedSiteName(),
+            siteName: await this.getLocalizedSiteName(),
             type: context.type || 'website',
             path: context.path
         };
 
         // タイトルの生成
-        metadata.title = await this._generateTitle(context);
+        metadata.title = await this.generateTitle(context);
         
         // 説明文の生成
-        metadata.description = await this._generateDescription(context);
+        metadata.description = await this.generateDescription(context);
         
         // キーワードの生成
-        metadata.keywords = await this._generateKeywords(context);
+        metadata.keywords = await this.generateKeywords(context);
         
         // ソーシャル画像の選択
-        metadata.image = await this._selectSocialImage(context);
+        metadata.image = await this.selectSocialImage(context);
         
         return metadata;
     }
@@ -518,7 +518,7 @@ export class SEOMetaManager {
     /**
      * タイトルの生成
      */
-    private async _generateTitle(context: MetadataContext): Promise<string> {
+    private async generateTitle(context: MetadataContext): Promise<string> {
         let title = '';
         
         if (context.title) {
@@ -526,12 +526,12 @@ export class SEOMetaManager {
         } else if (context.pageKey && this.localizationManager) {
             title = this.localizationManager.t(`seo.titles.${context.pageKey}`);
         } else {
-            title = await this._getLocalizedSiteName();
+            title = await this.getLocalizedSiteName();
         }
         
         // タグラインの追加
         if (context.includeTagline !== false) {
-            const tagline = await this._getTagline();
+            const tagline = await this.getTagline();
             if (tagline) {
                 title = `${title} - ${tagline}`;
             }
@@ -544,7 +544,7 @@ export class SEOMetaManager {
     /**
      * 説明文の生成
      */
-    private async _generateDescription(context: MetadataContext): Promise<string> {
+    private async generateDescription(context: MetadataContext): Promise<string> {
         let description = '';
         
         if (context.description) {
@@ -559,7 +559,7 @@ export class SEOMetaManager {
         
         // ゲーム状態の情報を追加
         if (context.gameState) {
-            description = await this._enhanceDescriptionWithGameState(context.gameState);
+            description = await this.enhanceDescriptionWithGameState(context.gameState);
         }
         
         // 長さ制限（155文字推奨）
@@ -569,7 +569,7 @@ export class SEOMetaManager {
     /**
      * キーワードの生成
      */
-    private async _generateKeywords(context: MetadataContext): Promise<string> {
+    private async generateKeywords(context: MetadataContext): Promise<string> {
         const baseKeywords = SEOConfig.metadata.keywords[this.currentLang] || 
                            SEOConfig.metadata.keywords.ja;
 
@@ -583,7 +583,7 @@ export class SEOMetaManager {
     /**
      * ソーシャル画像の選択
      */
-    private async _selectSocialImage(context: MetadataContext): Promise<string> {
+    private async selectSocialImage(context: MetadataContext): Promise<string> {
         // カスタム画像が指定されている場合
         if (context.image) {
             return normalizeUrl(context.image);
@@ -606,28 +606,28 @@ export class SEOMetaManager {
     /**
      * 基本メタタグの更新
      */
-    private _updateBasicMetaTags(metadata: Metadata): void {
+    private updateBasicMetaTags(metadata: Metadata): void {
         // タイトル
         document.title = metadata.title || 'BubblePop - 泡を割って高スコアを目指そう！';
         
         // 説明
-        this._updateMetaTag('name', 'description', metadata.description);
+        this.updateMetaTag('name', 'description', metadata.description);
         
         // キーワード
-        this._updateMetaTag('name', 'keywords', metadata.keywords);
+        this.updateMetaTag('name', 'keywords', metadata.keywords);
         
         // 作者
-        this._updateMetaTag('name', 'author', metadata.author);
+        this.updateMetaTag('name', 'author', metadata.author);
         
         // 言語
         document.documentElement.lang = metadata.language;
-        this._updateMetaTag('name', 'language', metadata.language);
+        this.updateMetaTag('name', 'language', metadata.language);
     }
     
     /**
      * Open Graphタグの更新
      */
-    private _updateOpenGraphTags(metadata: Metadata): void {
+    private updateOpenGraphTags(metadata: Metadata): void {
         const ogTags: Record<string, string | string[] | number> = {
             'og:title': metadata.title,
             'og:description': metadata.description,
@@ -636,7 +636,7 @@ export class SEOMetaManager {
             'og:url': metadata.url,
             'og:type': metadata.type,
             'og:site_name': metadata.siteName,
-            'og:locale': this._getOGLocale()
+            'og:locale': this.getOGLocale()
         };
 
         if (metadata.image.includes('og-image')) {
@@ -647,7 +647,7 @@ export class SEOMetaManager {
         // 代替言語
         const altLocales = SEOConfig.supportedLanguages
             .filter(lang => lang !== this.currentLang)
-            .map(lang => this._getOGLocale(lang));
+            .map(lang => this.getOGLocale(lang));
 
         if (altLocales.length > 0) {
             ogTags['og:locale:alternate'] = altLocales;
@@ -657,12 +657,12 @@ export class SEOMetaManager {
         Object.entries(ogTags).forEach(([property, content]) => {
             if (Array.isArray(content)) {
                 // 複数値の場合は既存を削除して追加
-                this._removeMetaTags(property);
+                this.removeMetaTags(property);
                 content.forEach(value => {
-                    this._addMetaTag(property, String(value));
+                    this.addMetaTag(property, String(value));
                 });
             } else {
-                this._updateMetaTag('property', property, String(content));
+                this.updateMetaTag('property', property, String(content));
             }
         });
     }
@@ -670,12 +670,12 @@ export class SEOMetaManager {
     /**
      * Twitter Cardタグの更新
      */
-    private _updateTwitterCardTags(metadata: Metadata): void {
+    private updateTwitterCardTags(metadata: Metadata): void {
         const twitterTags: Record<string, string> = {
             'twitter:card': 'summary_large_image',
             'twitter:title': truncateText(metadata.title, 70), // Twitter制限
             'twitter:description': truncateText(metadata.description, 200), // Twitter制限
-            'twitter:image': this._getTwitterImage(metadata),
+            'twitter:image': this.getTwitterImage(metadata),
             'twitter:image:alt': `${metadata.siteName} - ${metadata.title}`
         };
         
@@ -686,14 +686,14 @@ export class SEOMetaManager {
         
         // タグの更新
         Object.entries(twitterTags).forEach(([property, content]) => {
-            this._updateMetaTag('name', property, content);
+            this.updateMetaTag('name', property, content);
         });
     }
     
     /**
      * Canonical URLの更新
      */
-    private _updateCanonicalUrl(metadata: Metadata): void {
+    private updateCanonicalUrl(metadata: Metadata): void {
         let canonical = document.querySelector('link[rel="canonical"]');
 
         if (!canonical) {
@@ -708,7 +708,7 @@ export class SEOMetaManager {
     /**
      * hreflangタグの更新
      */
-    private _updateHreflangTags(metadata: Metadata): void {
+    private updateHreflangTags(metadata: Metadata): void {
         // 既存のhreflangタグを削除
         const existing = document.querySelectorAll('link[rel="alternate"][hreflang]');
         existing.forEach(tag => tag.remove());
@@ -733,7 +733,7 @@ export class SEOMetaManager {
     /**
      * メタタグの更新
      */
-    private _updateMetaTag(attributeName: 'name' | 'property', property: string, content: string): void {
+    private updateMetaTag(attributeName: 'name' | 'property', property: string, content: string): void {
         if (!content) return;
         
         const selector = `meta[${attributeName}="${property}"]`;
@@ -753,7 +753,7 @@ export class SEOMetaManager {
     /**
      * メタタグの追加
      */
-    private _addMetaTag(property: string, content: string): void {
+    private addMetaTag(property: string, content: string): void {
         const meta = createMetaTag(property, content);
         if (meta) {
             document.head.appendChild(meta);
@@ -763,7 +763,7 @@ export class SEOMetaManager {
     /**
      * メタタグの削除
      */
-    private _removeMetaTags(property: string): void {
+    private removeMetaTags(property: string): void {
         const selector = property.startsWith('og:') || property.startsWith('article:')
             ? `meta[property="${property}"]`
             : `meta[name="${property}"]`;
@@ -775,7 +775,7 @@ export class SEOMetaManager {
     /**
      * 既存メタタグの収集
      */
-    private _collectExistingMetaTags(): void {
+    private collectExistingMetaTags(): void {
         const metaTags = document.querySelectorAll('meta[name], meta[property]');
 
         metaTags.forEach(tag => {
@@ -795,7 +795,7 @@ export class SEOMetaManager {
     /**
      * 動的メタハンドラーの登録
      */
-    private _registerDynamicHandlers(): void {
+    private registerDynamicHandlers(): void {
         this.registerDynamicHandler('socialImage', async (gameState: GameState) => {
             if (!gameState || !gameState.score) return null as any;
             
@@ -831,7 +831,7 @@ export class SEOMetaManager {
     /**
      * ローカライズされたサイト名の取得
      */
-    private async _getLocalizedSiteName(): Promise<string> {
+    private async getLocalizedSiteName(): Promise<string> {
         if (this.localizationManager) {
             return this.localizationManager.t('seo.siteName', SEOConfig.siteName);
         }
@@ -842,7 +842,7 @@ export class SEOMetaManager {
     /**
      * タグラインの取得
      */
-    private async _getTagline(): Promise<string> {
+    private async getTagline(): Promise<string> {
         if (this.localizationManager) {
             return this.localizationManager.t('seo.tagline');
         }
@@ -857,8 +857,8 @@ export class SEOMetaManager {
     /**
      * ゲーム状態で説明文を強化
      */
-    private async _enhanceDescriptionWithGameState(gameState: GameState): Promise<string> {
-        let description = await this._getLocalizedDescription({});
+    private async enhanceDescriptionWithGameState(gameState: GameState): Promise<string> {
+        let description = await this.getLocalizedDescription({});
         const additions: string[] = [];
         
         if (gameState.highScore) {
@@ -879,7 +879,7 @@ export class SEOMetaManager {
     /**
      * URLの生成
      */
-    private _generateUrl(context: MetadataContext = {}): string {
+    private generateUrl(context: MetadataContext = {}): string {
         const path = context.path || (typeof window !== 'undefined' ? window.location.pathname : '/');
         return getLocalizedUrl(this.currentLang, path);
     }
@@ -887,7 +887,7 @@ export class SEOMetaManager {
     /**
      * Open Graphロケールの取得
      */
-    private _getOGLocale(lang: LanguageCode = this.currentLang): string {
+    private getOGLocale(lang: LanguageCode = this.currentLang): string {
         const localeMap: Record<LanguageCode, string> = {
             'ja': 'ja_JP',
             'en': 'en_US',
@@ -902,7 +902,7 @@ export class SEOMetaManager {
     /**
      * Twitter用画像の取得
      */
-    private _getTwitterImage(metadata: Metadata): string {
+    private getTwitterImage(metadata: Metadata): string {
         // Twitter専用画像がある場合
         if (metadata.twitterImage) {
             return metadata.twitterImage;
@@ -918,7 +918,7 @@ export class SEOMetaManager {
     /**
      * キャッシュの更新
      */
-    private _updateCache(metadata: Metadata): void {
+    private updateCache(metadata: Metadata): void {
         Object.entries(metadata).forEach(([key, value]) => {
             if (typeof value === 'string') {
                 this.metaCache.set(key, value);

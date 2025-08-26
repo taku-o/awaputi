@@ -225,7 +225,7 @@ export class OptimizedTranslationLoader {
             
             // 優先度に基づく読み込み
             const priority = options.priority || this.getPriority(language);
-            const loadPromise = this._loadLanguageOptimized(language, priority, options);
+            const loadPromise = this.loadLanguageOptimized(language, priority, options);
             
             this.loadingPromises.set(language, loadPromise);
             
@@ -256,31 +256,31 @@ export class OptimizedTranslationLoader {
     /**
      * 最適化された言語読み込み（内部メソッド）
      */
-    private async _loadLanguageOptimized(language: string, priority: LoadPriority, options: LoadOptions): Promise<any> {
+    private async loadLanguageOptimized(language: string, priority: LoadPriority, options: LoadOptions): Promise<any> {
         const files = this.getLanguageFiles(language);
         const loadStrategy = this.determineLoadStrategy(priority, options);
         
         switch (loadStrategy) {
             case 'parallel':
-                return await this._loadParallel(language, files, options);
+                return await this.loadParallel(language, files, options);
             case 'sequential':
-                return await this._loadSequential(language, files, options);
+                return await this.loadSequential(language, files, options);
             case 'chunked':
-                return await this._loadChunked(language, files, options);
+                return await this.loadChunked(language, files, options);
             default:
-                return await this._loadParallel(language, files, options);
+                return await this.loadParallel(language, files, options);
         }
     }
     
     /**
      * 並列読み込み
      */
-    private async _loadParallel(language: string, files: string[], options: LoadOptions): Promise<any> {
+    private async loadParallel(language: string, files: string[], options: LoadOptions): Promise<any> {
         const translations: Record<string, any> = {};
         
         const loadPromises = files.map(async (file): Promise<FileLoadResult> => {
             try {
-                const data = await this._loadSingleFile(language, file, options);
+                const data = await this.loadSingleFile(language, file, options);
                 return { file, data };
             } catch (error) {
                 console.warn(`Failed to load ${file}.json for ${language}:`, error);
@@ -302,12 +302,12 @@ export class OptimizedTranslationLoader {
     /**
      * 順次読み込み
      */
-    private async _loadSequential(language: string, files: string[], options: LoadOptions): Promise<any> {
+    private async loadSequential(language: string, files: string[], options: LoadOptions): Promise<any> {
         const translations: Record<string, any> = {};
         
         for (const file of files) {
             try {
-                const data = await this._loadSingleFile(language, file, options);
+                const data = await this.loadSingleFile(language, file, options);
                 if (data) {
                     translations[file] = data.translations || data;
                 }
@@ -322,7 +322,7 @@ export class OptimizedTranslationLoader {
     /**
      * チャンク読み込み
      */
-    private async _loadChunked(language: string, files: string[], options: LoadOptions): Promise<any> {
+    private async loadChunked(language: string, files: string[], options: LoadOptions): Promise<any> {
         const chunkSize = options.chunkSize || 3;
         const translations: Record<string, any> = {};
         
@@ -330,7 +330,7 @@ export class OptimizedTranslationLoader {
             const chunk = files.slice(i, i + chunkSize);
             const chunkPromises = chunk.map(async (file): Promise<FileLoadResult> => {
                 try {
-                    const data = await this._loadSingleFile(language, file, options);
+                    const data = await this.loadSingleFile(language, file, options);
                     return { file, data };
                 } catch (error) {
                     console.warn(`Failed to load ${file}.json for ${language}:`, error);
@@ -358,7 +358,7 @@ export class OptimizedTranslationLoader {
     /**
      * 単一ファイルの読み込み
      */
-    private async _loadSingleFile(language: string, file: string, options: LoadOptions): Promise<TranslationData> {
+    private async loadSingleFile(language: string, file: string, options: LoadOptions): Promise<TranslationData> {
         const url = `/assets/i18n/${language}/${file}.json`;
         const startTime = performance.now();
         
@@ -478,7 +478,7 @@ export class OptimizedTranslationLoader {
         }
         
         try {
-            const data = await this._loadSingleFile(language, namespace, { priority: 'lazy' });
+            const data = await this.loadSingleFile(language, namespace, { priority: 'lazy' });
             
             if (data) {
                 this.cacheTranslation(cacheKey, data);

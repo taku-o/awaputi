@@ -122,19 +122,19 @@ export class FaviconManager {
         this.generatedFavicons = new Map();
         this.faviconSpecs = new Map();
 
-        this._initialize();
+        this.initialize();
     }
     
     /**
      * 初期化処理
      */
-    private _initialize(): void {
+    private initialize(): void {
         try {
             // ファビコン仕様の設定
-            this._setupFaviconSpecs();
+            this.setupFaviconSpecs();
 
             // Canvas要素の作成（ファビコン生成用）
-            this._setupCanvas();
+            this.setupCanvas();
 
             seoLogger.info('FaviconManager initialized successfully');
         } catch (error) {
@@ -145,7 +145,7 @@ export class FaviconManager {
     /**
      * ファビコン仕様の設定
      */
-    private _setupFaviconSpecs(): void {
+    private setupFaviconSpecs(): void {
         this.faviconSpecs.set('standard', [
             { size: 16, type: 'png', filename: 'favicon-16x16.png' },
             { size: 32, type: 'png', filename: 'favicon-32x32.png' },
@@ -207,7 +207,7 @@ export class FaviconManager {
     /**
      * Canvas要素の設定
      */
-    private _setupCanvas(): void {
+    private setupCanvas(): void {
         if (typeof document !== 'undefined') {
             this.canvas = document.createElement('canvas');
             this.ctx = this.canvas.getContext('2d');
@@ -234,7 +234,7 @@ export class FaviconManager {
             // 各カテゴリのファビコンを生成
             for (const [category, specs] of this.faviconSpecs) {
                 try {
-                    const categoryResults = await this._generateFaviconCategory(category, specs, options);
+                    const categoryResults = await this.generateFaviconCategory(category, specs, options);
                     results.generated.push(...categoryResults.generated);
                     results.errors.push(...categoryResults.errors);
                 } catch (error) {
@@ -244,7 +244,7 @@ export class FaviconManager {
             }
             
             // サマリーの生成
-            results.summary = this._generateFaviconSummary(results);
+            results.summary = this.generateFaviconSummary(results);
             
             seoLogger.info(`Generated ${results.generated.length} favicons with ${results.errors.length} errors`);
 
@@ -257,7 +257,7 @@ export class FaviconManager {
     /**
      * カテゴリ別ファビコン生成
      */
-    private async _generateFaviconCategory(
+    private async generateFaviconCategory(
         category: string,
         specs: FaviconSpec[],
         options: { forceRegenerate?: boolean }
@@ -269,7 +269,7 @@ export class FaviconManager {
 
         for (const spec of specs) {
             try {
-                const faviconData = await this._generateSingleFavicon(spec, options);
+                const faviconData = await this.generateSingleFavicon(spec, options);
                 if (faviconData) {
                     results.generated.push({
                         category,
@@ -295,7 +295,7 @@ export class FaviconManager {
     /**
      * 単一ファビコンの生成
      */
-    private async _generateSingleFavicon(spec: FaviconSpec, options: { forceRegenerate?: boolean }): Promise<string | null> {
+    private async generateSingleFavicon(spec: FaviconSpec, options: { forceRegenerate?: boolean }): Promise<string | null> {
         if (!this.canvas || !this.ctx) {
             seoLogger.warn('Canvas not available for favicon generation');
             return null as any;
@@ -312,11 +312,11 @@ export class FaviconManager {
             let faviconData: string;
 
             if (spec.type === 'svg') {
-                faviconData = await this._generateSVGFavicon(spec, options);
+                faviconData = await this.generateSVGFavicon(spec, options);
             } else if (spec.type === 'ico') {
-                faviconData = await this._generateICOFavicon(spec, options);
+                faviconData = await this.generateICOFavicon(spec, options);
             } else {
-                faviconData = await this._generatePNGFavicon(spec, options);
+                faviconData = await this.generatePNGFavicon(spec, options);
             }
             
             // キャッシュに保存
@@ -332,7 +332,7 @@ export class FaviconManager {
     /**
      * PNGファビコンの生成
      */
-    private async _generatePNGFavicon(spec: FaviconSpec, options: { forceRegenerate?: boolean }): Promise<string> {
+    private async generatePNGFavicon(spec: FaviconSpec, options: { forceRegenerate?: boolean }): Promise<string> {
         const size = spec.size || Math.max(spec.width || 0, spec.height || 0);
         const width = spec.width || size;
         const height = spec.height || size;
@@ -345,7 +345,7 @@ export class FaviconManager {
         this.ctx!.clearRect(0, 0, width, height);
 
         // ファビコンのデザインを描画
-        await this._drawFaviconDesign(width, height, spec);
+        await this.drawFaviconDesign(width, height, spec);
         
         // PNG形式で出力
         return this.canvas!.toDataURL('image/png');
@@ -354,7 +354,7 @@ export class FaviconManager {
     /**
      * SVGファビコンの生成
      */
-    private async _generateSVGFavicon(spec: FaviconSpec, options: { forceRegenerate?: boolean }): Promise<string> {
+    private async generateSVGFavicon(spec: FaviconSpec, options: { forceRegenerate?: boolean }): Promise<string> {
         const size = spec.size || 32;
         const isMonochrome = spec.monochrome || false;
         
@@ -387,7 +387,7 @@ export class FaviconManager {
     /**
      * ICOファビコンの生成
      */
-    private async _generateICOFavicon(spec: FaviconSpec, options: { forceRegenerate?: boolean }): Promise<string> {
+    private async generateICOFavicon(spec: FaviconSpec, options: { forceRegenerate?: boolean }): Promise<string> {
         // ICOは複数サイズを含むフォーマット
         const sizes = spec.multiSize || [16, 32, 48];
         
@@ -395,7 +395,7 @@ export class FaviconManager {
         const pngDataList: PngData[] = [];
         for (const size of sizes) {
             const pngSpec: FaviconSpec = { ...spec, size, type: 'png' };
-            const pngData = await this._generatePNGFavicon(pngSpec, options);
+            const pngData = await this.generatePNGFavicon(pngSpec, options);
             pngDataList.push({
                 size,
                 data: pngData
@@ -414,7 +414,7 @@ export class FaviconManager {
     /**
      * ファビコンデザインの描画
      */
-    private async _drawFaviconDesign(width: number, height: number, spec: FaviconSpec): Promise<void> {
+    private async drawFaviconDesign(width: number, height: number, spec: FaviconSpec): Promise<void> {
         const centerX = width / 2;
         const centerY = height / 2;
         const radius = Math.min(width, height) / 3;
@@ -446,19 +446,19 @@ export class FaviconManager {
 
         // Microsoft Tile用の特別デザイン
         if (spec.filename && spec.filename.includes('mstile')) {
-            this._drawMicrosoftTileDesign(width, height);
+            this.drawMicrosoftTileDesign(width, height);
         }
         
         // Apple Touch Icon用の丸角処理（視覚的効果）
         if (spec.filename && spec.filename.includes('apple-touch-icon')) {
-            this._applyRoundedCorners(width, height);
+            this.applyRoundedCorners(width, height);
         }
     }
     
     /**
      * Microsoft Tile用デザイン
      */
-    private _drawMicrosoftTileDesign(width: number, height: number): void {
+    private drawMicrosoftTileDesign(width: number, height: number): void {
         // Windows 10のフラットデザインスタイル
         this.ctx!.fillStyle = '#4CAF50';
         this.ctx!.fillRect(0, 0, width, height);
@@ -477,7 +477,7 @@ export class FaviconManager {
     /**
      * 丸角処理の適用
      */
-    private _applyRoundedCorners(width: number, height: number): void {
+    private applyRoundedCorners(width: number, height: number): void {
         // Apple Touch Iconは自動的にiOSによって丸角処理されるため、
         // ここでは視覚的な効果のみ適用
         const cornerRadius = width * 0.1;
@@ -497,7 +497,7 @@ export class FaviconManager {
             const extWindow = window as ExtendedWindow;
             if (typeof window === 'undefined' || !extWindow.showDirectoryPicker) {
                 seoLogger.warn('File System Access API not available');
-                return this._fallbackFaviconDownload(faviconList);
+                return this.fallbackFaviconDownload(faviconList);
             }
             
             // ディレクトリ選択
@@ -529,7 +529,7 @@ export class FaviconManager {
     /**
      * フォールバックダウンロード
      */
-    private async _fallbackFaviconDownload(faviconList: GeneratedFavicon[]): Promise<void> {
+    private async fallbackFaviconDownload(faviconList: GeneratedFavicon[]): Promise<void> {
         // ZIPファイルの作成（簡易版）
         for (const favicon of faviconList) {
             try {
@@ -591,7 +591,7 @@ export class FaviconManager {
     /**
      * ファビコンサマリーの生成
      */
-    private _generateFaviconSummary(results: FaviconGenerationResult): FaviconSummary {
+    private generateFaviconSummary(results: FaviconGenerationResult): FaviconSummary {
         const summary: FaviconSummary = {
             totalGenerated: results.generated.length,
             totalErrors: results.errors.length,

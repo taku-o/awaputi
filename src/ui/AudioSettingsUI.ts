@@ -85,7 +85,7 @@ export class AudioSettingsUI implements AudioSettingsUIState {
         this.audioTestPanel = new AudioTestPanel(audioManager);
         
         // サブコンポーネントの初期化
-        this._initializeSubComponents();
+        this.initializeSubComponents();
         
         // イベントリスナー
         this.eventListeners = new Map();
@@ -103,7 +103,7 @@ export class AudioSettingsUI implements AudioSettingsUIState {
     /**
      * サブコンポーネント初期化
      */
-    private _initializeSubComponents(): void {
+    private initializeSubComponents(): void {
         try {
             // タブマネージャー
             this.tabManager = new AudioSettingsTabManager(this.audioManager, this.configManager);
@@ -131,7 +131,7 @@ export class AudioSettingsUI implements AudioSettingsUIState {
         } catch (error) {
             console.error('AudioSettingsUI サブコンポーネント初期化に失敗:', error);
             this.errorHandler.handleError(error, {
-                context: 'AudioSettingsUI._initializeSubComponents'
+                context: 'AudioSettingsUI.initializeSubComponents'
             });
         }
     }

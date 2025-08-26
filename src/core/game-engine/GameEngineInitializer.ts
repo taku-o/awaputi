@@ -129,7 +129,7 @@ export class GameEngineInitializer {
      * SEOシステムとの統合機能を設定
      */
     // @ts-ignore - 将来の実装で使用予定
-    private __setupSEOIntegration(): void {
+    private _setupSEOIntegration(): void {
         try {
             // SEOシステムが利用可能な場合のみ統合
             if ((window as any).seoMetaManager && (window as any).structuredDataEngine) {

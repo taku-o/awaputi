@@ -54,13 +54,13 @@ export class SEOI18nManager {
         this.currentLanguage = SEOConfig.defaultLanguage;
         this.initialized = false;
         
-        this._initialize();
+        this.initialize();
     }
     
     /**
      * 初期化処理
      */
-    private _initialize(): void {
+    private initialize(): void {
         try {
             if (this.localizationManager) {
                 this.currentLanguage = this.localizationManager.getCurrentLanguage() as LanguageCode;

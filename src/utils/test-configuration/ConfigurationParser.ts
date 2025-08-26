@@ -74,7 +74,7 @@ export class ConfigurationParser extends BaseComponent {
         this.parsingStrategies = {};
     }
 
-    async _doInitialize(): Promise<void> {
+    async doInitialize(): Promise<void> {
         this.setupParsingStrategies();
     }
 

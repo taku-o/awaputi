@@ -25,7 +25,7 @@ const lastWarningTime = new Map();
  * @param {string} caller - 呼び出し元
  * @private
  */
-function _showDeprecationWarning(message: string, caller: string) {
+function showDeprecationWarning(message: string, caller: string) {
     if (!SHOW_DEPRECATION_WARNINGS) return;
     
     const now = Date.now();
@@ -50,7 +50,7 @@ function _showDeprecationWarning(message: string, caller: string) {
  * @returns {string} 呼び出し元情報
  * @private
  */
-function _getCallerInfo(): string {
+function getCallerInfo(): string {
     try {
         const err = new Error();
         const stack = err.stack?.split('\n') || [];
@@ -84,9 +84,9 @@ const BALANCE_CONFIG_PROXY = new Proxy({}, {
     get(_target, prop) {
         const gameConfig = getGameConfig();
         const configManager = getConfigurationManager();
-        const caller = _getCallerInfo();
+        const caller = getCallerInfo();
         
-        _showDeprecationWarning(`BALANCE_CONFIG.${String(prop)}へのアクセスは非推奨です`, caller);
+        showDeprecationWarning(`BALANCE_CONFIG.${String(prop)}へのアクセスは非推奨です`, caller);
         
         // カテゴリに基づいて適切な設定を返す
         switch(prop) {
@@ -109,9 +109,9 @@ const BALANCE_CONFIG_PROXY = new Proxy({}, {
     
     set(_target, prop, _value) {
         const _configManager = getConfigurationManager();
-        const caller = _getCallerInfo();
+        const caller = getCallerInfo();
         
-        _showDeprecationWarning(`BALANCE_CONFIG.${String(prop)}への直接設定は非推奨です`, caller);
+        showDeprecationWarning(`BALANCE_CONFIG.${String(prop)}への直接設定は非推奨です`, caller);
         
         // 設定の変更を許可しない（読み取り専用）
         console.error(`[互換性レイヤー] BALANCE_CONFIGへの直接設定は許可されていません。代わりにConfigurationManagerを使用してください。`);
@@ -134,8 +134,8 @@ class BalanceHelperCompatibility {
      */
     static calculateScore(bubbleType: string, ageRatio: number = 0): number {
         const gameConfig = getGameConfig();
-        const caller = _getCallerInfo();
-        _showDeprecationWarning('BalanceHelper.calculateScoreは非推奨です', caller);
+        const caller = getCallerInfo();
+        showDeprecationWarning('BalanceHelper.calculateScoreは非推奨です', caller);
         return gameConfig.calculateScore(bubbleType, ageRatio);
     }
     
@@ -146,8 +146,8 @@ class BalanceHelperCompatibility {
      */
     static calculateComboMultiplier(comboCount: number): number {
         const gameConfig = getGameConfig();
-        const caller = _getCallerInfo();
-        _showDeprecationWarning('BalanceHelper.calculateComboMultiplierは非推奨です', caller);
+        const caller = getCallerInfo();
+        showDeprecationWarning('BalanceHelper.calculateComboMultiplierは非推奨です', caller);
         return gameConfig.calculateComboMultiplier(comboCount);
     }
     
@@ -159,8 +159,8 @@ class BalanceHelperCompatibility {
      */
     static calculateItemCost(itemId: string, currentLevel: number): number {
         const gameConfig = getGameConfig();
-        const caller = _getCallerInfo();
-        _showDeprecationWarning('BalanceHelper.calculateItemCostは非推奨です', caller);
+        const caller = getCallerInfo();
+        showDeprecationWarning('BalanceHelper.calculateItemCostは非推奨です', caller);
         return gameConfig.calculateItemCost(itemId, currentLevel);
     }
     
@@ -172,8 +172,8 @@ class BalanceHelperCompatibility {
      */
     static isStageUnlocked(stageId: string, playerTAP: number): boolean {
         const gameConfig = getGameConfig();
-        const caller = _getCallerInfo();
-        _showDeprecationWarning('BalanceHelper.isStageUnlockedは非推奨です', caller);
+        const caller = getCallerInfo();
+        showDeprecationWarning('BalanceHelper.isStageUnlockedは非推奨です', caller);
         return gameConfig.isStageUnlocked(stageId, playerTAP);
     }
 }

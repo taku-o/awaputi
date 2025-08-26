@@ -160,9 +160,9 @@ export class BiomeDefinitionManager {
      */
     initialize(): void {
         try {
-            this._initializeBiomes();
-            this._initializeWeatherEffects();
-            this._initializeTimeVariations();
+            this.initializeBiomes();
+            this.initializeWeatherEffects();
+            this.initializeTimeVariations();
             console.log('BiomeDefinitionManager initialized successfully');
         } catch (error) {
             getErrorHandler().handleError(error as Error, 'AUDIO_ERROR', {
@@ -176,7 +176,7 @@ export class BiomeDefinitionManager {
      * バイオーム定義を初期化
      * @private
      */
-    private _initializeBiomes(): void {
+    private initializeBiomes(): void {
         try {
             // 森林バイオーム
             this.biomes.set('forest', {
@@ -356,7 +356,7 @@ export class BiomeDefinitionManager {
             console.log(`Initialized ${this.biomes.size} biome definitions`);
         } catch (error) {
             getErrorHandler().handleError(error as Error, 'AUDIO_ERROR', {
-                operation: '_initializeBiomes',
+                operation: 'initializeBiomes',
                 component: 'BiomeDefinitionManager'
             });
         }
@@ -366,7 +366,7 @@ export class BiomeDefinitionManager {
      * 天候効果を初期化
      * @private
      */
-    private _initializeWeatherEffects(): void {
+    private initializeWeatherEffects(): void {
         try {
             // 雨効果
             this.weatherEffects.set('rain', {
@@ -430,7 +430,7 @@ export class BiomeDefinitionManager {
             console.log(`Initialized ${this.weatherEffects.size} weather effects`);
         } catch (error) {
             getErrorHandler().handleError(error as Error, 'AUDIO_ERROR', {
-                operation: '_initializeWeatherEffects',
+                operation: 'initializeWeatherEffects',
                 component: 'BiomeDefinitionManager'
             });
         }
@@ -440,7 +440,7 @@ export class BiomeDefinitionManager {
      * 時間帯バリエーションを初期化
      * @private
      */
-    private _initializeTimeVariations(): void {
+    private initializeTimeVariations(): void {
         try {
             // 夜間バリエーション
             this.timeVariations.set('night', {
@@ -528,7 +528,7 @@ export class BiomeDefinitionManager {
             console.log(`Initialized ${this.timeVariations.size} time variations`);
         } catch (error) {
             getErrorHandler().handleError(error as Error, 'AUDIO_ERROR', {
-                operation: '_initializeTimeVariations',
+                operation: 'initializeTimeVariations',
                 component: 'BiomeDefinitionManager'
             });
         }

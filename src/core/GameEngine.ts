@@ -183,23 +183,23 @@ export class GameEngine {
             
             // サブコンポーネントの初期化
             console.log('[DEBUG] GameEngine: サブコンポーネント初期化開始');
-            this._initializeSubComponents();
+            this.initializeSubComponents();
             console.log('[DEBUG] GameEngine: サブコンポーネント初期化完了');
             
             // ブラウザ互換性チェック
             this.initializer.checkBrowserCompatibility();
             
             // Core managers initialization
-            this._initializeCoreManagers();
+            this.initializeCoreManagers();
             
             // Game systems initialization
-            this._initializeGameSystems();
+            this.initializeGameSystems();
             
             // Audio and effects initialization
-            this._initializeAudioAndEffects();
+            this.initializeAudioAndEffects();
             
             // Performance and debug initialization
-            this._initializePerformanceAndDebug();
+            this.initializePerformanceAndDebug();
             
             console.log('[DEBUG] GameEngine: 初期化完了');
 
@@ -215,7 +215,7 @@ export class GameEngine {
     /**
      * サブコンポーネントを初期化
      */
-    private _initializeSubComponents(): void { 
+    private initializeSubComponents(): void { 
         try {
             // 初期化コンポーネント
             this.initializer = new GameEngineInitializer(this);
@@ -240,14 +240,14 @@ export class GameEngine {
     /**
      * コア管理システムを初期化
      */
-    private _initializeCoreManagers(): void {
+    private initializeCoreManagers(): void {
         console.log('[GameEngine] Core managers initialized');
     }
     
     /**
      * ゲームシステムを初期化
      */
-    private _initializeGameSystems(): void { 
+    private initializeGameSystems(): void { 
         try {
             // Player data
             this.playerData = new PlayerData();
@@ -286,7 +286,7 @@ export class GameEngine {
     /**
      * オーディオとエフェクトシステムを初期化
      */
-    private _initializeAudioAndEffects(): void {
+    private initializeAudioAndEffects(): void {
         try {
             const audioConfig = {
                 quality: 'medium' as const,
@@ -318,7 +318,7 @@ export class GameEngine {
     /**
      * パフォーマンスとデバッグシステムを初期化
      */
-    private _initializePerformanceAndDebug(): void { 
+    private initializePerformanceAndDebug(): void { 
         try {
             // Performance systems
             this.renderOptimizer = new RenderOptimizer(this.canvas);
@@ -356,10 +356,10 @@ export class GameEngine {
             this.lastTime = performance.now();
             
             // Start game systems
-            this._startGameSystems();
+            this.startGameSystems();
             
             // Start game loop
-            this._gameLoop();
+            this.gameLoop();
             
             console.log('[GameEngine] Started successfully');
             this.emit('started');
@@ -388,7 +388,7 @@ export class GameEngine {
             this.gameState.isRunning = false;
             
             // Stop game systems
-            this._stopGameSystems();
+            this.stopGameSystems();
             
             console.log('[GameEngine] Stopped successfully');
             this.emit('stopped');
@@ -433,7 +433,7 @@ export class GameEngine {
     /**
      * メインゲームループ
      */
-    private _gameLoop(): void { 
+    private gameLoop(): void { 
         if (!this.isRunning) {
             return;
         }
@@ -461,7 +461,7 @@ export class GameEngine {
             }
             
             // Continue loop
-            requestAnimationFrame(() => this._gameLoop());
+            requestAnimationFrame(() => this.gameLoop());
 
         } catch (error) {
             this.errorHandler.handleError(error, 'GAME_LOOP_ERROR', {
@@ -470,7 +470,7 @@ export class GameEngine {
             });
             // Try to continue the loop unless its a critical error
             if (this.isRunning) { 
-                requestAnimationFrame(() => this._gameLoop());
+                requestAnimationFrame(() => this.gameLoop());
             }
         }
     }
@@ -537,7 +537,7 @@ export class GameEngine {
     /**
      * ゲームシステムを開始
      */
-    private _startGameSystems(): void {
+    private startGameSystems(): void {
         if (this.sceneManager && typeof this.sceneManager.start === 'function') {
             this.sceneManager.start();
         }
@@ -549,7 +549,7 @@ export class GameEngine {
     /**
      * ゲームシステムを停止
      */
-    private _stopGameSystems(): void {
+    private stopGameSystems(): void {
         if (this.sceneManager && typeof this.sceneManager.stop === 'function') {
             this.sceneManager.stop();
         }

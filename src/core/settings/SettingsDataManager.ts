@@ -466,7 +466,7 @@ export class SettingsDataManager {
      */
     getStats(): DataManagerStats {
         const defaultSettings = this.getDefaultSettings();
-        const settingsCount = this._countSettings(defaultSettings);
+        const settingsCount = this.countSettings(defaultSettings);
         return {
             totalSettings: settingsCount.total,
             categoriesCount: settingsCount.categories,
@@ -483,13 +483,13 @@ export class SettingsDataManager {
      * @returns カウント結果
      * @private
      */
-    private _countSettings(obj: Record<string, any>, categories: Set<string> = new Set()): SettingsCount {
+    private countSettings(obj: Record<string, any>, categories: Set<string> = new Set()): SettingsCount {
         let total = 0;
 
         for (const [key, value] of Object.entries(obj)) {
             if (typeof value === 'object' && value !== null && !Array.isArray(value)) {
                 categories.add(key);
-                const subCount = this._countSettings(value, categories);
+                const subCount = this.countSettings(value, categories);
                 total += subCount.total;
             } else {
                 total++;

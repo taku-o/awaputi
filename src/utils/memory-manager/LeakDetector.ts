@@ -205,7 +205,7 @@ export class LeakDetector {
         
         try {
             // Collect current memory snapshot
-            const snapshot = this._captureMemorySnapshot();
+            const snapshot = this.captureMemorySnapshot();
             this.memorySnapshots.push(snapshot);
             // Limit history size
             if (this.memorySnapshots.length > 100) {
@@ -215,23 +215,23 @@ export class LeakDetector {
             // Perform various leak detection algorithms
             const results: DetectionResults = {
                 timestamp: now,
-                growthAnalysis: this._analyzeMemoryGrowth(),
-                patternAnalysis: this._analyzeUsagePatterns(),
-                pressureAnalysis: this._analyzePressureEvents(),
-                suspectAnalysis: this._analyzeSuspectObjects(),
+                growthAnalysis: this.analyzeMemoryGrowth(),
+                patternAnalysis: this.analyzeUsagePatterns(),
+                pressureAnalysis: this.analyzePressureEvents(),
+                suspectAnalysis: this.analyzeSuspectObjects(),
                 overallRisk: 'low',
                 confidence: 0,
                 recommendations: []
             };
             // Calculate overall risk level
-            results.overallRisk = this._calculateOverallRisk(results);
-            results.confidence = this._calculateConfidence(results);
+            results.overallRisk = this.calculateOverallRisk(results);
+            results.confidence = this.calculateConfidence(results);
             
             // Generate recommendations
-            results.recommendations = this._generateRecommendations(results);
+            results.recommendations = this.generateRecommendations(results);
             
             // Update statistics
-            this._updateDetectionStats(results);
+            this.updateDetectionStats(results);
             
             return results;
 
@@ -279,7 +279,7 @@ export class LeakDetector {
         this.objectCreationPatterns.set(type, pattern);
         
         // Check for suspicious creation patterns
-        this._checkCreationPattern(type, pattern);
+        this.checkCreationPattern(type, pattern);
     }
     
     /**
@@ -305,7 +305,7 @@ export class LeakDetector {
         
         // Auto-verify high confidence suspects
         if (confidence >= this.thresholds.leakConfidence) {
-            this._verifySuspect(key, suspect);
+            this.verifySuspect(key, suspect);
         }
         
         console.warn(`[LeakDetector] Suspected leak: ${source} - ${description} (confidence: ${Math.round(confidence * 100)}%)`);
@@ -338,7 +338,7 @@ export class LeakDetector {
         }
         
         // Check for patterns in pressure events
-        this._analyzePressurePatterns();
+        this.analyzePressurePatterns();
     }
     
     /**
@@ -371,7 +371,7 @@ export class LeakDetector {
             growthRate: growthPerMinute,
             currentUsage: currentUsage.totalMemory,
             suspectedLeaks: this.leakSuspects.size,
-            confidence: this._calculateCurrentConfidence()
+            confidence: this.calculateCurrentConfidence()
         };
     }
     
@@ -414,7 +414,7 @@ export class LeakDetector {
      * Capture current memory snapshot
      * @private
      */
-    private _captureMemorySnapshot(): MemorySnapshot {
+    private captureMemorySnapshot(): MemorySnapshot {
         const timestamp = Date.now();
         let memoryInfo = { totalMemory: 0, usedMemory: 0, freeMemory: 0 };
         if ((performance as any).memory) {
@@ -437,7 +437,7 @@ export class LeakDetector {
      * Analyze memory growth patterns
      * @private
      */
-    private _analyzeMemoryGrowth(): GrowthAnalysis {
+    private analyzeMemoryGrowth(): GrowthAnalysis {
         if (this.memorySnapshots.length < 3) {
             return { analysis: 'insufficient_data', growthRate: 0 };
         }
@@ -477,7 +477,7 @@ export class LeakDetector {
      * Analyze usage patterns for anomalies
      * @private
      */
-    private _analyzeUsagePatterns(): PatternAnalysisResult {
+    private analyzeUsagePatterns(): PatternAnalysisResult {
         const patterns: Array<{
             type: "single" | "batch";
             objectType: string;
@@ -514,7 +514,7 @@ export class LeakDetector {
      * Analyze memory pressure events
      * @private
      */
-    private _analyzePressureEvents(): PressureAnalysis {
+    private analyzePressureEvents(): PressureAnalysis {
         const recent = this.memoryPressureEvents.slice(-10);
         const frequency = recent.length;
 
@@ -537,7 +537,7 @@ export class LeakDetector {
      * Analyze suspected leak objects
      * @private
      */
-    private _analyzeSuspectObjects(): SuspectAnalysis {
+    private analyzeSuspectObjects(): SuspectAnalysis {
         const suspects = Array.from(this.leakSuspects.values());
         const verified = suspects.filter(s => s.verified).length;
         const highConfidence = suspects.filter(s => s.confidence >= this.thresholds.leakConfidence).length;
@@ -555,7 +555,7 @@ export class LeakDetector {
      * Calculate overall risk level
      * @private
      */
-    private _calculateOverallRisk(results: DetectionResults): string {
+    private calculateOverallRisk(results: DetectionResults): string {
         let riskScore = 0;
         
         // Growth analysis contribution
@@ -582,7 +582,7 @@ export class LeakDetector {
      * Calculate confidence level
      * @private
      */
-    private _calculateConfidence(results: DetectionResults): number {
+    private calculateConfidence(results: DetectionResults): number {
         const dataPoints = this.memorySnapshots.length;
         const baseConfidence = Math.min(1.0, dataPoints / 10);
 
@@ -599,7 +599,7 @@ export class LeakDetector {
      * Generate recommendations based on analysis
      * @private
      */
-    private _generateRecommendations(results: DetectionResults): string[] {
+    private generateRecommendations(results: DetectionResults): string[] {
         const recommendations: string[] = [];
 
         if (results.growthAnalysis.analysis === 'critical_growth') {
@@ -625,7 +625,7 @@ export class LeakDetector {
      * Update detection statistics
      * @private
      */
-    private _updateDetectionStats(results: DetectionResults): void {
+    private updateDetectionStats(results: DetectionResults): void {
         if (results.overallRisk === 'critical' || results.overallRisk === 'high') {
             this.stats.leaksDetected++;
         }
@@ -638,7 +638,7 @@ export class LeakDetector {
      * Check object creation pattern for anomalies
      * @private
      */
-    private _checkCreationPattern(type: "single" | "batch", pattern: ObjectCreationPattern): void {
+    private checkCreationPattern(type: "single" | "batch", pattern: ObjectCreationPattern): void {
         // Check for rapid creation
         if (pattern.creationRate > 50) {
             // More than 50 per second
@@ -666,7 +666,7 @@ export class LeakDetector {
      * Verify suspected leak
      * @private
      */
-    private _verifySuspect(_key: string, suspect: LeakSuspect): void {
+    private verifySuspect(_key: string, suspect: LeakSuspect): void {
         // Simple verification based on confidence and evidence
         if (suspect.confidence >= this.thresholds.leakConfidence) {
             suspect.verified = true;
@@ -678,7 +678,7 @@ export class LeakDetector {
      * Analyze pressure event patterns
      * @private
      */
-    private _analyzePressurePatterns(): void {
+    private analyzePressurePatterns(): void {
         const recent = this.memoryPressureEvents.slice(-5);
         if (recent.length < 3) return;
         
@@ -705,7 +705,7 @@ export class LeakDetector {
      * Calculate current confidence based on available data
      * @private
      */
-    private _calculateCurrentConfidence(): number {
+    private calculateCurrentConfidence(): number {
         const factors = [
             this.memorySnapshots.length >= 5 ? 0.3 : this.memorySnapshots.length * 0.06,
             this.objectCreationPatterns.size >= 3 ? 0.2 : this.objectCreationPatterns.size * 0.067,

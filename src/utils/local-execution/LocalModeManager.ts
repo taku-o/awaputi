@@ -145,7 +145,7 @@ class LocalModeManager {
             return this.initializationPromise;
         }
         
-        this.initializationPromise = this._performInitialization();
+        this.initializationPromise = this.performInitialization();
         return this.initializationPromise;
     }
     
@@ -153,7 +153,7 @@ class LocalModeManager {
      * 初期化実行
      * @private
      */
-    private async _performInitialization(): Promise<boolean> {
+    private async performInitialization(): Promise<boolean> {
         try {
             const result: InitializationResult = this.config.enablePerformanceOptimizations
                 ? await LocalModeInitializer.performOptimizedInitialization(

@@ -160,14 +160,14 @@ export class AudioVisualSynchronizer {
         this.effectQueue = [];
         this.maxQueueSize = 50;
 
-        this._initializeAudioVisualSync();
-        this._setupEffectMappings();
+        this.initializeAudioVisualSync();
+        this.setupEffectMappings();
     }
     
     /**
      * オーディオビジュアル同期の初期化
      */
-    private _initializeAudioVisualSync(): void {
+    private initializeAudioVisualSync(): void {
         try {
             this.syncEnabled = this.configManager.get('effects.audio.enabled', true);
             this.visualFeedbackEnabled = this.configManager.get('effects.audio.visualFeedback', true);
@@ -176,19 +176,19 @@ export class AudioVisualSynchronizer {
             
             // Web Audio API の初期化（オプション）
             if (this.audioReactiveEffects && typeof AudioContext !== 'undefined') {
-                this._initializeAudioAnalysis();
+                this.initializeAudioAnalysis();
             }
 
             console.log('[AudioVisualSynchronizer] 初期化完了');
         } catch (error) {
-            this.errorHandler.handleError(error as Error, 'AudioVisualSynchronizer._initializeAudioVisualSync');
+            this.errorHandler.handleError(error as Error, 'AudioVisualSynchronizer.initializeAudioVisualSync');
         }
     }
     
     /**
      * オーディオ解析の初期化
      */
-    private _initializeAudioAnalysis(): void {
+    private initializeAudioAnalysis(): void {
         try {
             this.audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
             this.analyserNode = this.audioContext.createAnalyser();
@@ -207,7 +207,7 @@ export class AudioVisualSynchronizer {
     /**
      * エフェクトマッピングの設定
      */
-    private _setupEffectMappings(): void {
+    private setupEffectMappings(): void {
         // バブルポップエフェクトマッピング
         this.effectMappings.set('bubble_pop', {
             audioEvent: 'pop',
@@ -280,7 +280,7 @@ export class AudioVisualSynchronizer {
     public registerSystems(systems: Systems): void {
         if (systems.audioManager) {
             this.audioManager = systems.audioManager;
-            this._setupAudioManagerIntegration();
+            this.setupAudioManagerIntegration();
         }
         
         if (systems.particleManager) {
@@ -301,7 +301,7 @@ export class AudioVisualSynchronizer {
     /**
      * AudioManagerとの統合設定
      */
-    private _setupAudioManagerIntegration(): void {
+    private setupAudioManagerIntegration(): void {
         if (!this.audioManager) return;
         
         // AudioManagerにオーディオ解析ノードを接続（可能な場合）
@@ -333,7 +333,7 @@ export class AudioVisualSynchronizer {
             }
             
             // オーディオエフェクトの実行
-            this._executeAudioEffect(mapping.audioEvent, parameters);
+            this.executeAudioEffect(mapping.audioEvent, parameters);
             
             // 視覚エフェクトの実行（タイミング調整あり）
             if (this.visualFeedbackEnabled) {
@@ -341,10 +341,10 @@ export class AudioVisualSynchronizer {
                 
                 if (delay > 0) {
                     setTimeout(() => {
-                        this._executeVisualEffects(mapping, x, y, parameters);
+                        this.executeVisualEffects(mapping, x, y, parameters);
                     }, delay);
                 } else {
-                    this._executeVisualEffects(mapping, x, y, parameters);
+                    this.executeVisualEffects(mapping, x, y, parameters);
                 }
             }
             
@@ -366,7 +366,7 @@ export class AudioVisualSynchronizer {
      * @param audioEvent - オーディオイベント
      * @param parameters - パラメータ
      */
-    private _executeAudioEffect(audioEvent: string, parameters: any): void {
+    private executeAudioEffect(audioEvent: string, parameters: any): void {
         if (!this.audioManager) return;
         
         try {
@@ -397,11 +397,11 @@ export class AudioVisualSynchronizer {
      * @param y - Y座標
      * @param parameters - パラメータ
      */
-    private _executeVisualEffects(mapping: EffectMapping, x: number, y: number, parameters: any): void {
-        const resolvedParams = this._resolveParameters(mapping.parameters, parameters);
+    private executeVisualEffects(mapping: EffectMapping, x: number, y: number, parameters: any): void {
+        const resolvedParams = this.resolveParameters(mapping.parameters, parameters);
         
         for (const visualEffect of mapping.visualEffects) {
-            this._executeVisualEffect(visualEffect, x, y, resolvedParams);
+            this.executeVisualEffect(visualEffect, x, y, resolvedParams);
         }
     }
     
@@ -412,7 +412,7 @@ export class AudioVisualSynchronizer {
      * @param y - Y座標
      * @param parameters - パラメータ
      */
-    private _executeVisualEffect(effectType: string, x: number, y: number, parameters: any): void {
+    private executeVisualEffect(effectType: string, x: number, y: number, parameters: any): void {
         try {
             switch (effectType) {
                 case 'particle_burst':
@@ -493,22 +493,22 @@ export class AudioVisualSynchronizer {
      * @param inputParameters - 入力パラメータ
      * @returns 解決されたパラメータ
      */
-    private _resolveParameters(parameterMapping: Record<string, string>, inputParameters: any): any {
+    private resolveParameters(parameterMapping: Record<string, string>, inputParameters: any): any {
         const resolved = { ...inputParameters };
         
         for (const [param, source] of Object.entries(parameterMapping)) {
             switch (source as ParameterSource) {
                 case 'audio_volume':
-                    resolved[param] = this._getAudioVolume();
+                    resolved[param] = this.getAudioVolume();
                     break;
                 case 'audio_frequency':
-                    resolved[param] = this._getAudioFrequency();
+                    resolved[param] = this.getAudioFrequency();
                     break;
                 case 'audio_bass':
-                    resolved[param] = this._getAudioBass();
+                    resolved[param] = this.getAudioBass();
                     break;
                 case 'audio_treble':
-                    resolved[param] = this._getAudioTreble();
+                    resolved[param] = this.getAudioTreble();
                     break;
                 case 'combo_count':
                     resolved[param] = Math.min(inputParameters.comboCount || 1, 20);
@@ -526,7 +526,7 @@ export class AudioVisualSynchronizer {
      * オーディオボリュームの取得
      * @returns ボリュームレベル
      */
-    private _getAudioVolume(): number {
+    private getAudioVolume(): number {
         if (this.audioAnalysisEnabled && this.frequencyData && this.analyserNode) {
             this.analyserNode.getByteFrequencyData(this.frequencyData);
             const average = this.frequencyData.reduce((sum, value) => sum + value, 0) / this.frequencyData.length;
@@ -539,7 +539,7 @@ export class AudioVisualSynchronizer {
      * オーディオ周波数の取得
      * @returns 周波数レベル
      */
-    private _getAudioFrequency(): number {
+    private getAudioFrequency(): number {
         if (this.audioAnalysisEnabled && this.frequencyData && this.analyserNode) {
             this.analyserNode.getByteFrequencyData(this.frequencyData);
             // 中域周波数の平均
@@ -554,7 +554,7 @@ export class AudioVisualSynchronizer {
      * オーディオ低音の取得
      * @returns 低音レベル
      */
-    private _getAudioBass(): number {
+    private getAudioBass(): number {
         if (this.audioAnalysisEnabled && this.frequencyData && this.analyserNode) {
             this.analyserNode.getByteFrequencyData(this.frequencyData);
             // 低域周波数の平均
@@ -569,7 +569,7 @@ export class AudioVisualSynchronizer {
      * オーディオ高音の取得
      * @returns 高音レベル
      */
-    private _getAudioTreble(): number {
+    private getAudioTreble(): number {
         if (this.audioAnalysisEnabled && this.frequencyData && this.analyserNode) {
             this.analyserNode.getByteFrequencyData(this.frequencyData);
             // 高域周波数の平均
@@ -586,14 +586,14 @@ export class AudioVisualSynchronizer {
      */
     public update(deltaTime: number): void {
         // アクティブエフェクトの管理
-        this._updateActiveEffects(deltaTime);
+        this.updateActiveEffects(deltaTime);
         
         // スケジュールされたエフェクトの処理
-        this._processScheduledEffects();
+        this.processScheduledEffects();
         
         // オーディオ解析データの更新
         if (this.audioAnalysisEnabled) {
-            this._updateAudioAnalysis();
+            this.updateAudioAnalysis();
         }
     }
     
@@ -601,7 +601,7 @@ export class AudioVisualSynchronizer {
      * アクティブエフェクトの更新
      * @param deltaTime - 経過時間
      */
-    private _updateActiveEffects(deltaTime: number): void {
+    private updateActiveEffects(deltaTime: number): void {
         const currentTime = performance.now();
         const toRemove: string[] = [];
         
@@ -622,7 +622,7 @@ export class AudioVisualSynchronizer {
     /**
      * スケジュールされたエフェクトの処理
      */
-    private _processScheduledEffects(): void {
+    private processScheduledEffects(): void {
         const currentTime = performance.now();
         const toExecute: ScheduledEffect[] = [];
         
@@ -649,7 +649,7 @@ export class AudioVisualSynchronizer {
     /**
      * オーディオ解析データの更新
      */
-    private _updateAudioAnalysis(): void {
+    private updateAudioAnalysis(): void {
         if (this.analyserNode && this.frequencyData) {
             this.analyserNode.getByteFrequencyData(this.frequencyData);
         }
@@ -710,8 +710,8 @@ export class AudioVisualSynchronizer {
             activeEffects: this.activeAudioEffects.size,
             scheduledEffects: this.scheduledEffects.length,
             effectMappings: this.effectMappings.size,
-            currentVolume: this._getAudioVolume(),
-            currentFrequency: this._getAudioFrequency()
+            currentVolume: this.getAudioVolume(),
+            currentFrequency: this.getAudioFrequency()
         };
     }
     

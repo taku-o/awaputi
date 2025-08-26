@@ -130,27 +130,27 @@ export class AudioConfig {
     constructor() {
         this.configManager = getConfigurationManager();
         this.errorHandler = getErrorHandler();
-        this._initialize();
+        this.initialize();
     }
 
     /**
      * 初期化処理 - デフォルト設定の登録
      * @private
      */
-    private _initialize(): void {
+    private initialize(): void {
         try {
             // 音量設定の初期化
-            this._initializeVolumeConfig();
+            this.initializeVolumeConfig();
             // 音質設定の初期化
-            this._initializeQualityConfig();
+            this.initializeQualityConfig();
             // 音響効果設定の初期化
-            this._initializeEffectConfig();
+            this.initializeEffectConfig();
             // 検証ルールの設定
-            this._setupValidationRules();
+            this.setupValidationRules();
             console.log('[AudioConfig] 初期化完了');
         } catch (error) {
             this.errorHandler.handleError(error as Error, 'AUDIO_CONFIG_INIT_ERROR', {
-                context: 'AudioConfig._initialize'
+                context: 'AudioConfig.initialize'
             });
         }
     }
@@ -159,7 +159,7 @@ export class AudioConfig {
      * 音量設定の初期化
      * @private
      */
-    private _initializeVolumeConfig(): void {
+    private initializeVolumeConfig(): void {
         this.configManager.set('audio', 'volumes.master', 0.7);
         this.configManager.set('audio', 'volumes.sfx', 0.8);
         this.configManager.set('audio', 'volumes.bgm', 0.5);
@@ -170,7 +170,7 @@ export class AudioConfig {
      * 音質設定の初期化
      * @private
      */
-    private _initializeQualityConfig(): void {
+    private initializeQualityConfig(): void {
         this.configManager.set('audio', 'quality.sampleRate', 44100);
         this.configManager.set('audio', 'quality.bufferSize', 4096);
         this.configManager.set('audio', 'quality.channels', 1);
@@ -181,7 +181,7 @@ export class AudioConfig {
      * 音響効果設定の初期化
      * @private
      */
-    private _initializeEffectConfig(): void {
+    private initializeEffectConfig(): void {
         this.configManager.set('audio', 'effects.reverb', true);
         this.configManager.set('audio', 'effects.compression', true);
         
@@ -232,7 +232,7 @@ export class AudioConfig {
      * 検証ルールの設定
      * @private
      */
-    private _setupValidationRules(): void {
+    private setupValidationRules(): void {
         // 音量設定の検証ルール
         this.configManager.setValidationRule('audio.volumes.master', {
             type: 'number',

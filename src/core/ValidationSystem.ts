@@ -34,7 +34,7 @@ class ValidationSystem {
      * @param {Object} rule - 検証ルール
      */
     setRule(category: string, key: string, rule: any): void {
-        const ruleKey = this._getRuleKey(category, key);
+        const ruleKey = this.getRuleKey(category, key);
         this.rules.set(ruleKey, rule);
     }
     
@@ -56,7 +56,7 @@ class ValidationSystem {
      * @param {*} defaultValue - デフォルト値
      */
     setDefaultValue(category: string, key: string, defaultValue: any): void {
-        const defaultKey = this._getRuleKey(category, key);
+        const defaultKey = this.getRuleKey(category, key);
         this.defaultValues.set(defaultKey, defaultValue);
     }
     
@@ -80,7 +80,7 @@ class ValidationSystem {
      */
     validate(category: string, key: string, value: any): { isValid: boolean; value: any; message: string | null } {
         try {
-            const ruleKey = this._getRuleKey(category, key);
+            const ruleKey = this.getRuleKey(category, key);
             const rule = this.rules.get(ruleKey);
             
             // ルールが存在しない場合は検証成功とする
@@ -94,9 +94,9 @@ class ValidationSystem {
             
             // 型チェック
             if (rule.type && typeof value !== rule.type) {
-                const defaultValue = this._getDefaultValue(category, key);
+                const defaultValue = this.getDefaultValue(category, key);
                 const message = `型が不正: ${category}.${key} - 期待値: ${rule.type}, 実際: ${typeof value}`;
-                this._recordError(category, key, value, message);
+                this.recordError(category, key, value, message);
                 
                 return {
                     isValid: false,
@@ -109,7 +109,7 @@ class ValidationSystem {
             if (typeof value === 'number') {
                 if (rule.min !== undefined && value < rule.min) {
                     const message = `値が最小値を下回る: ${category}.${key} - 最小値: ${rule.min}, 実際: ${value}`;
-                    this._recordError(category, key, value, message);
+                    this.recordError(category, key, value, message);
                     
                     return {
                         isValid: false,
@@ -120,7 +120,7 @@ class ValidationSystem {
                 
                 if (rule.max !== undefined && value > rule.max) {
                     const message = `値が最大値を上回る: ${category}.${key} - 最大値: ${rule.max}, 実際: ${value}`;
-                    this._recordError(category, key, value, message);
+                    this.recordError(category, key, value, message);
                     
                     return {
                         isValid: false,
@@ -134,18 +134,18 @@ class ValidationSystem {
             if (typeof value === 'string') {
                 if (rule.minLength !== undefined && value.length < rule.minLength) {
                     const message = `文字列が短すぎる: ${category}.${key} - 最小長: ${rule.minLength}, 実際: ${value.length}`;
-                    this._recordError(category, key, value, message);
+                    this.recordError(category, key, value, message);
                     
                     return {
                         isValid: false,
-                        value: this._getDefaultValue(category, key),
+                        value: this.getDefaultValue(category, key),
                         message: message
                     };
                 }
                 
                 if (rule.maxLength !== undefined && value.length > rule.maxLength) {
                     const message = `文字列が長すぎる: ${category}.${key} - 最大長: ${rule.maxLength}, 実際: ${value.length}`;
-                    this._recordError(category, key, value, message);
+                    this.recordError(category, key, value, message);
                     
                     // 長すぎる場合は切り詰める
                     return {
@@ -158,11 +158,11 @@ class ValidationSystem {
                 // パターンチェック
                 if (rule.pattern && !rule.pattern.test(value)) {
                     const message = `パターンに一致しない: ${category}.${key}`;
-                    this._recordError(category, key, value, message);
+                    this.recordError(category, key, value, message);
                     
                     return {
                         isValid: false,
-                        value: this._getDefaultValue(category, key),
+                        value: this.getDefaultValue(category, key),
                         message: message
                     };
                 }
@@ -172,18 +172,18 @@ class ValidationSystem {
             if (Array.isArray(value)) {
                 if (rule.minLength !== undefined && value.length < rule.minLength) {
                     const message = `配列が短すぎる: ${category}.${key} - 最小長: ${rule.minLength}, 実際: ${value.length}`;
-                    this._recordError(category, key, value, message);
+                    this.recordError(category, key, value, message);
                     
                     return {
                         isValid: false,
-                        value: this._getDefaultValue(category, key),
+                        value: this.getDefaultValue(category, key),
                         message: message
                     };
                 }
                 
                 if (rule.maxLength !== undefined && value.length > rule.maxLength) {
                     const message = `配列が長すぎる: ${category}.${key} - 最大長: ${rule.maxLength}, 実際: ${value.length}`;
-                    this._recordError(category, key, value, message);
+                    this.recordError(category, key, value, message);
                     
                     // 長すぎる場合は切り詰める
                     return {
@@ -197,11 +197,11 @@ class ValidationSystem {
             // 列挙値チェック
             if (rule.enum && Array.isArray(rule.enum) && !rule.enum.includes(value)) {
                 const message = `列挙値に含まれない: ${category}.${key} - 許可値: ${rule.enum.join(', ')}, 実際: ${value}`;
-                this._recordError(category, key, value, message);
+                this.recordError(category, key, value, message);
 
                 return {
                     isValid: false,
-                    value: this._getDefaultValue(category, key),
+                    value: this.getDefaultValue(category, key),
                     message: message
                 };
             }
@@ -215,21 +215,21 @@ class ValidationSystem {
                             ? validatorResult
                             : `カスタム検証に失敗: ${category}.${key}`;
                         
-                        this._recordError(category, key, value, message);
+                        this.recordError(category, key, value, message);
                         
                         return {
                             isValid: false,
-                            value: this._getDefaultValue(category, key),
+                            value: this.getDefaultValue(category, key),
                             message: message
                         };
                     }
                 } catch (validatorError: any) {
                     const message = `カスタム検証でエラー: ${category}.${key} - ${validatorError.message}`;
-                    this._recordError(category, key, value, message);
+                    this.recordError(category, key, value, message);
                     
                     return {
                         isValid: false,
-                        value: this._getDefaultValue(category, key),
+                        value: this.getDefaultValue(category, key),
                         message: message
                     };
                 }
@@ -252,7 +252,7 @@ class ValidationSystem {
             
             return {
                 isValid: false,
-                value: this._getDefaultValue(category, key),
+                value: this.getDefaultValue(category, key),
                 message: `検証処理でエラー: ${error.message}`
             };
         }
@@ -296,8 +296,8 @@ class ValidationSystem {
      * @returns {*} デフォルト値
      * @private
      */
-    private _getDefaultValue(category: string, key: string): any {
-        const defaultKey = this._getRuleKey(category, key);
+    private getDefaultValue(category: string, key: string): any {
+        const defaultKey = this.getRuleKey(category, key);
         if (this.defaultValues.has(defaultKey)) {
             return this.defaultValues.get(defaultKey);
         }
@@ -326,7 +326,7 @@ class ValidationSystem {
      * @returns {string} ルールキー
      * @private
      */
-    private _getRuleKey(category: string, key: string): string {
+    private getRuleKey(category: string, key: string): string {
         return `${category}.${key}`;
     }
     
@@ -338,7 +338,7 @@ class ValidationSystem {
      * @param {string} message - エラーメッセージ
      * @private
      */
-    private _recordError(category: string, key: string, value: any, message: string): void {
+    private recordError(category: string, key: string, value: any, message: string): void {
         this.validationErrors.push({
             timestamp: Date.now(),
             category,

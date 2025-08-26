@@ -327,8 +327,8 @@ export class ThemeManager {
         return {
             seasonalThemes: Object.keys(this.seasonalThemes).length,
             eventThemes: Object.keys(this.eventThemes).length,
-            totalParticleTypes: this._countUniqueParticleTypes(),
-            totalColors: this._countUniqueColors()
+            totalParticleTypes: this.countUniqueParticleTypes(),
+            totalColors: this.countUniqueColors()
         };
     }
     
@@ -337,7 +337,7 @@ export class ThemeManager {
      * @returns パーティクルタイプ数
      * @private
      */
-    private _countUniqueParticleTypes(): number {
+    private countUniqueParticleTypes(): number {
         const allTypes = new Set<string>();
         
         Object.values(this.seasonalThemes).forEach(theme => {
@@ -356,7 +356,7 @@ export class ThemeManager {
      * @returns 色数
      * @private
      */
-    private _countUniqueColors(): number {
+    private countUniqueColors(): number {
         const allColors = new Set<string>();
         
         const addColors = (colorSet: ThemeColors): void => {

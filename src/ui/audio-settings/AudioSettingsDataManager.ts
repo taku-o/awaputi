@@ -123,7 +123,7 @@ export class AudioSettingsDataManager {
             this.audioManager.playSound('success', { volume: 0.5 });
             
             // 成功メッセージを表示
-            this._showNotification(
+            this.showNotification(
                 this.localizationManager.getText('audio.settings.export.success'),
                 'success'
             );
@@ -137,7 +137,7 @@ export class AudioSettingsDataManager {
             });
             
             this.audioManager.playSound('error', { volume: 0.5 });
-            this._showNotification(
+            this.showNotification(
                 this.localizationManager.getText('audio.settings.export.error'),
                 'error'
             );
@@ -190,7 +190,7 @@ export class AudioSettingsDataManager {
                         this.audioManager.playSound('success', { volume: 0.5 });
                         
                         // 成功メッセージを表示
-                        this._showNotification(
+                        this.showNotification(
                             this.localizationManager.getText('audio.settings.import.success'),
                             'success'
                         );
@@ -206,7 +206,7 @@ export class AudioSettingsDataManager {
                         });
                         
                         this.audioManager.playSound('error', { volume: 0.5 });
-                        this._showNotification(
+                        this.showNotification(
                             this.localizationManager.getText('audio.settings.import.parseError'),
                             'error'
                         );
@@ -378,14 +378,14 @@ export class AudioSettingsDataManager {
         const volumeWatchers = ['master', 'bgm', 'sfx'].map(type => {
             return this.configManager.watch('audio', `volumes.${type}`, (newValue: number) => {
                 // 設定変更の通知
-                this._onConfigChange('volume', type as ConfigChangeType, newValue);
+                this.onConfigChange('volume', type as ConfigChangeType, newValue);
             });
         });
         volumeWatchers.forEach(w => w && configWatchers.add(w));
         
         // ミュート状態の監視
         const muteWatcher = this.configManager.watch('audio', 'volumes.muted', (newValue: boolean) => {
-            this._onConfigChange('mute', 'all', newValue);
+            this.onConfigChange('mute', 'all', newValue);
         });
         if (muteWatcher) configWatchers.add(muteWatcher);
         
@@ -396,7 +396,7 @@ export class AudioSettingsDataManager {
      * 通知を表示
      * @private
      */
-    private _showNotification(message: string, type: 'success' | 'error' | 'info' = 'info'): void {
+    private showNotification(message: string, type: 'success' | 'error' | 'info' = 'info'): void {
         if (this.onNotification) {
             this.onNotification(message, type);
         }
@@ -406,7 +406,7 @@ export class AudioSettingsDataManager {
      * 設定変更通知
      * @private
      */
-    private _onConfigChange(category: ConfigChangeCategory, type: ConfigChangeType, value: number | boolean): void {
+    private onConfigChange(category: ConfigChangeCategory, type: ConfigChangeType, value: number | boolean): void {
         console.log(`Config changed: ${category}.${type} = ${value}`);
         // UIの更新が必要な場合の処理
     }

@@ -171,16 +171,16 @@ export class CalculationEngine {
         const cacheKey = this.generateCacheKey(type, method, params);
 
         // 頻繁な計算をトラッキング
-        this._trackCalculationFrequency(cacheKey);
+        this.trackCalculationFrequency(cacheKey);
 
         // バッチ処理が有効で、バッチ可能な計算の場合
         if (this.optimizationConfig.batchProcessing && options.batchable) {
-            return this._processBatch(type, method, params, options);
+            return this.processBatch(type, method, params, options);
         }
         
         // インテリジェントキャッシュから結果を取得
         if (!options.noCache) {
-            const cachedResult = this._getIntelligentCachedResult(cacheKey);
+            const cachedResult = this.getIntelligentCachedResult(cacheKey);
             if (cachedResult !== null) {
                 this.cacheStats.hits++;
                 return cachedResult;
@@ -203,17 +203,17 @@ export class CalculationEngine {
             const startTime = performance.now();
 
             // 計算実行（最適化版）
-            const result = this._executeOptimizedCalculation(calculator, method, params, options);
+            const result = this.executeOptimizedCalculation(calculator, method, params, options);
 
             const endTime = performance.now();
             const calculationTime = endTime - startTime;
             
             // パフォーマンス統計を更新
-            this._updatePerformanceStats(type, method, calculationTime);
+            this.updatePerformanceStats(type, method, calculationTime);
 
             // 結果をインテリジェントキャッシュに保存
             if (!options.noCache) {
-                this._setIntelligentCachedResult(cacheKey, result, calculationTime);
+                this.setIntelligentCachedResult(cacheKey, result, calculationTime);
             }
             
             this.cacheStats.misses++;
@@ -234,7 +234,7 @@ export class CalculationEngine {
      * @returns 計算結果
      * @private
      */
-    private _executeOptimizedCalculation(calculator: Calculator, method: string, params: any[], _options: CalculationOptions): any {
+    private executeOptimizedCalculation(calculator: Calculator, method: string, params: any[], _options: CalculationOptions): any {
         // メモ化が有効で、メモ化可能な計算の場合
         if (this.optimizationConfig.memoization && calculator._memoized) {
             if (!calculator._memoized[method]) {
@@ -269,7 +269,7 @@ export class CalculationEngine {
      * @returns 計算結果のPromise
      * @private
      */
-    private _processBatch(type: "single" | "batch", method: string, params: any[], options: CalculationOptions): Promise<any> {
+    private processBatch(type: "single" | "batch", method: string, params: any[], options: CalculationOptions): Promise<any> {
         const batchKey = `${type}:${method}`;
         
         return new Promise((resolve, reject) => {
@@ -287,7 +287,7 @@ export class CalculationEngine {
             // バッチ処理のタイマーを設定（まだ設定されていない場合）
             if (!batch.timeout) {
                 batch.timeout = setTimeout(() => {
-                    this._executeBatch(type, method, batchKey);
+                    this.executeBatch(type, method, batchKey);
                 }, 10); // 10ms後にバッチ実行
             }
         });
@@ -300,7 +300,7 @@ export class CalculationEngine {
      * @param batchKey - バッチキー
      * @private
      */
-    private _executeBatch(type: "single" | "batch", method: string, batchKey: string): void {
+    private executeBatch(type: "single" | "batch", method: string, batchKey: string): void {
         const batch = this.batchQueue.get(batchKey);
         if (!batch || batch.requests.length === 0) return;
         
@@ -518,7 +518,7 @@ export class CalculationEngine {
      * @returns キャッシュされた結果、または null
      * @private
      */
-    private _getIntelligentCachedResult(key: string): any | null {
+    private getIntelligentCachedResult(key: string): any | null {
         const cached = this.cache.get(key);
         if (!cached) {
             return null as any;
@@ -545,14 +545,14 @@ export class CalculationEngine {
      * @param calculationTime - 計算時間
      * @private
      */
-    private _setIntelligentCachedResult(key: string, result: any, calculationTime: number): void {
+    private setIntelligentCachedResult(key: string, result: any, calculationTime: number): void {
         // キャッシュサイズ制限チェック
         while (this.cache.size >= this.cacheConfig.maxSize) {
-            this._evictLeastValuableCache();
+            this.evictLeastValuableCache();
         }
         
         // 適応的TTLを計算
-        const adaptiveTtl = this._calculateAdaptiveTtl(key, calculationTime);
+        const adaptiveTtl = this.calculateAdaptiveTtl(key, calculationTime);
         
         const now = Date.now();
         this.cache.set(key, {
@@ -562,7 +562,7 @@ export class CalculationEngine {
             calculationTime,
             accessCount: 1,
             lastAccess: now,
-            priority: this._calculateCachePriority(key, calculationTime)
+            priority: this.calculateCachePriority(key, calculationTime)
         });
     }
     
@@ -573,7 +573,7 @@ export class CalculationEngine {
      * @returns TTL（ミリ秒）
      * @private
      */
-    private _calculateAdaptiveTtl(key: string, calculationTime: number): number {
+    private calculateAdaptiveTtl(key: string, calculationTime: number): number {
         let baseTtl = this.cacheConfig.ttl;
         
         // 重い計算は長時間キャッシュ
@@ -598,7 +598,7 @@ export class CalculationEngine {
      * @returns 優先度スコア
      * @private
      */
-    private _calculateCachePriority(key: string, calculationTime: number): number {
+    private calculateCachePriority(key: string, calculationTime: number): number {
         let priority = 0;
         
         // 計算時間による優先度（重い計算ほど高優先度）
@@ -615,7 +615,7 @@ export class CalculationEngine {
      * 最も価値の低いキャッシュを削除
      * @private
      */
-    private _evictLeastValuableCache(): void {
+    private evictLeastValuableCache(): void {
         let leastValuableKey: string | null = null;
         let lowestScore = Infinity;
         const now = Date.now();
@@ -645,7 +645,7 @@ export class CalculationEngine {
      * @param cacheKey - キャッシュキー
      * @private
      */
-    private _trackCalculationFrequency(cacheKey: string): void {
+    private trackCalculationFrequency(cacheKey: string): void {
         const currentCount = this.frequentCalculations.get(cacheKey) || 0;
         this.frequentCalculations.set(cacheKey, currentCount + 1);
 
@@ -667,7 +667,7 @@ export class CalculationEngine {
      * @param calculationTime - 計算時間
      * @private
      */
-    private _updatePerformanceStats(type: "single" | "batch", method: string, calculationTime: number): void {
+    private updatePerformanceStats(type: "single" | "batch", method: string, calculationTime: number): void {
         const key = `${type}.${method}`;
         
         if (!this.performanceStats.has(key)) {
@@ -699,7 +699,7 @@ export class CalculationEngine {
      */
     private startPerformanceOptimization(): void {
         this.optimizationInterval = setInterval(() => {
-            this._optimizePerformance();
+            this.optimizePerformance();
         }, 300000); // 5分間隔で最適化
     }
     
@@ -707,16 +707,16 @@ export class CalculationEngine {
      * パフォーマンス最適化を実行
      * @private
      */
-    private _optimizePerformance(): void {
+    private optimizePerformance(): void {
         try {
             // 頻繁にアクセスされる計算をプリロード
-            this._preloadFrequentCalculations();
+            this.preloadFrequentCalculations();
 
             // 重い計算の最適化
-            this._optimizeHeavyCalculations();
+            this.optimizeHeavyCalculations();
 
             // キャッシュ効率の最適化
-            this._optimizeCacheEfficiency();
+            this.optimizeCacheEfficiency();
 
             console.log('Performance optimization completed');
 
@@ -729,7 +729,7 @@ export class CalculationEngine {
      * 頻繁にアクセスされる計算をプリロード
      * @private
      */
-    private _preloadFrequentCalculations(): void {
+    private preloadFrequentCalculations(): void {
         const frequentEntries = Array.from(this.frequentCalculations.entries())
             .filter(([, count]) => count >= this.cacheConfig.preloadThreshold)
             .sort((a, b) => b[1] - a[1]) // 降順ソート
@@ -748,7 +748,7 @@ export class CalculationEngine {
      * 重い計算の最適化
      * @private
      */
-    private _optimizeHeavyCalculations(): void {
+    private optimizeHeavyCalculations(): void {
         // 重い計算を特定
         const heavyCalculations = Array.from(this.performanceStats.entries())
             .filter(([, stats]) => stats.avgTime > this.cacheConfig.heavyCalculationThreshold)
@@ -770,7 +770,7 @@ export class CalculationEngine {
      * キャッシュ効率の最適化
      * @private
      */
-    private _optimizeCacheEfficiency(): void {
+    private optimizeCacheEfficiency(): void {
         const stats = this.getCacheStats();
         const hitRate = parseFloat(stats.hitRate);
 

@@ -101,7 +101,7 @@ export class DataManagementUI {
         this.dataManager = dataManager;
         
         // Initialize sub-components
-        this._initializeSubComponents();
+        this.initializeSubComponents();
         this.initialize();
     }
     
@@ -109,7 +109,7 @@ export class DataManagementUI {
      * Initialize sub-component systems
      * @private
      */
-    private _initializeSubComponents(): void {
+    private initializeSubComponents(): void {
         try {
             // Initialize state managers
             this.uiState = new UIStateManager();

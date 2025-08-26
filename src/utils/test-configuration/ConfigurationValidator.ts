@@ -102,7 +102,7 @@ export class ConfigurationValidator extends BaseComponent {
             optional: []
         };
     }
-    async _doInitialize(): Promise<void> {
+    async doInitialize(): Promise<void> {
         this.setupValidationRules();
         this.setupValidationCategories();
     }

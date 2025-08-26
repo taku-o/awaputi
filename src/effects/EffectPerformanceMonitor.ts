@@ -163,20 +163,20 @@ export class EffectPerformanceMonitor {
     constructor() {
         this.errorHandler = getErrorHandler();
         this.qualityController = getEffectQualityController();
-        this._initializePerformanceAPI();
+        this.initializePerformanceAPI();
     }
     
     /**
      * Performance APIの初期化
      */
-    private _initializePerformanceAPI(): void {
+    private initializePerformanceAPI(): void {
         try {
             if (typeof PerformanceObserver !== 'undefined') {
                 this.performanceObserver = new PerformanceObserver((list) => {
                     const entries = list.getEntries();
                     for (const entry of entries) {
                         if (entry.entryType === 'measure' && entry.name.startsWith('effect-')) {
-                            this._recordEffectPerformance(entry as PerformanceMeasure);
+                            this.recordEffectPerformance(entry as PerformanceMeasure);
                         }
                     }
                 });
@@ -229,7 +229,7 @@ export class EffectPerformanceMonitor {
         if (!this.monitoringEnabled) return;
         
         // 品質コントローラーの更新
-        const memoryUsage = this._getCurrentMemoryUsage();
+        const memoryUsage = this.getCurrentMemoryUsage();
         this.qualityController.updatePerformanceMetrics(
             currentTime,
             this.currentFrameRate,
@@ -238,49 +238,49 @@ export class EffectPerformanceMonitor {
         
         // 定期監視
         if (currentTime - this.lastMonitoringTime > this.monitoringInterval) {
-            this._performPerformanceCheck(currentTime);
+            this.performPerformanceCheck(currentTime);
             this.lastMonitoringTime = currentTime;
         }
         
         // メモリチェック
         if (currentTime - this.lastMemoryCheck > this.memoryCheckInterval) {
-            this._checkMemoryUsage();
+            this.checkMemoryUsage();
             this.lastMemoryCheck = currentTime;
         }
         
         // 緊急最適化チェック
-        this._checkEmergencyOptimization();
+        this.checkEmergencyOptimization();
         
         // クリーンアップキューの処理
-        this._processCleanupQueue();
+        this.processCleanupQueue();
     }
     
     /**
      * パフォーマンスチェックの実行
      */
-    private _performPerformanceCheck(currentTime: number): void {
+    private performPerformanceCheck(currentTime: number): void {
         const stats = this.getPerformanceStats();
         // フレームレート警告
         if (stats.frameRate < this.warningThresholds.lowFrameRate) {
-            this._handleLowFrameRate(stats.frameRate);
+            this.handleLowFrameRate(stats.frameRate);
         }
         
         // ドローコール警告
         if (this.renderStats.drawCalls > this.warningThresholds.maxDrawCalls) {
-            this._handleHighDrawCalls(this.renderStats.drawCalls);
+            this.handleHighDrawCalls(this.renderStats.drawCalls);
         }
         
         // パーティクル数警告
         const activeParticles = this.qualityController.getActiveEffectCounts().particles;
         if (activeParticles > this.warningThresholds.maxActiveParticles) {
-            this._handleHighParticleCount(activeParticles);
+            this.handleHighParticleCount(activeParticles);
         }
     }
     
     /**
      * 低フレームレートの処理
      */
-    private _handleLowFrameRate(frameRate: number): void {
+    private handleLowFrameRate(frameRate: number): void {
         console.warn(`Low frame rate detected: ${frameRate.toFixed(1)} FPS`);
         
         // 品質低下の提案
@@ -296,28 +296,28 @@ export class EffectPerformanceMonitor {
     /**
      * 高ドローコール数の処理
      */
-    private _handleHighDrawCalls(drawCalls: number): void {
+    private handleHighDrawCalls(drawCalls: number): void {
         console.warn(`High draw calls detected: ${drawCalls}`);
         
         // バッチング最適化の提案
-        this._suggestBatchingOptimization();
+        this.suggestBatchingOptimization();
     }
     
     /**
      * 高パーティクル数の処理
      */
-    private _handleHighParticleCount(particleCount: number): void {
+    private handleHighParticleCount(particleCount: number): void {
         console.warn(`High particle count detected: ${particleCount}`);
         
         // パーティクル削減の実行
-        this._reduceParticleCount();
+        this.reduceParticleCount();
     }
     
     /**
      * メモリ使用量のチェック
      */
-    private _checkMemoryUsage(): void {
-        const memoryUsage = this._getCurrentMemoryUsage();
+    private checkMemoryUsage(): void {
+        const memoryUsage = this.getCurrentMemoryUsage();
         if (!memoryUsage) return;
         
         this.memoryUsageHistory.push({
@@ -331,35 +331,35 @@ export class EffectPerformanceMonitor {
         
         // メモリ警告
         if (memoryUsage > this.warningThresholds.highMemoryUsage) {
-            this._handleHighMemoryUsage(memoryUsage);
+            this.handleHighMemoryUsage(memoryUsage);
         }
     }
     
     /**
      * 高メモリ使用量の処理
      */
-    private _handleHighMemoryUsage(memoryUsage: number): void {
+    private handleHighMemoryUsage(memoryUsage: number): void {
         console.warn(`High memory usage detected: ${(memoryUsage / 1024 / 1024).toFixed(1)} MB`);
         
         // ガベージコレクションの提案
-        this._scheduleCleanup();
+        this.scheduleCleanup();
     }
     
     /**
      * 緊急最適化のチェック
      */
-    private _checkEmergencyOptimization(): void {
+    private checkEmergencyOptimization(): void {
         if (this.currentFrameRate < this.optimizationSettings.emergencyCleanupThreshold) {
 
             console.warn('Emergency optimization triggered due to extremely low frame rate');
-            this._performEmergencyCleanup();
+            this.performEmergencyCleanup();
         }
     }
     
     /**
      * 緊急クリーンアップの実行
      */
-    private _performEmergencyCleanup(): void {
+    private performEmergencyCleanup(): void {
         // すべての装飾的エフェクトを停止
         this.activeEffects.forEach((effect, id) => {
             if (effect.priority === 'decorative') {
@@ -391,12 +391,12 @@ export class EffectPerformanceMonitor {
         this.cullingStats.offScreenEffects = 0;
         
         for (const effect of effects) {
-            const inViewport = this._isEffectInViewport(effect, viewport, cullDistance);
+            const inViewport = this.isEffectInViewport(effect, viewport, cullDistance);
             if (inViewport) {
                 culledEffects.push(effect);
             } else {
                 this.cullingStats.culledEffects++;
-                if (this._isEffectOffScreen(effect, viewport)) {
+                if (this.isEffectOffScreen(effect, viewport)) {
                     this.cullingStats.offScreenEffects++;
                 }
             }
@@ -409,7 +409,7 @@ export class EffectPerformanceMonitor {
     /**
      * エフェクトがビューポート内かチェック
      */
-    private _isEffectInViewport(effect: Effect, viewport: Viewport, margin: number = 0): boolean {
+    private isEffectInViewport(effect: Effect, viewport: Viewport, margin: number = 0): boolean {
         return effect.x + effect.width >= viewport.x - margin &&
                effect.x <= viewport.x + viewport.width + margin &&
                effect.y + effect.height >= viewport.y - margin &&
@@ -419,7 +419,7 @@ export class EffectPerformanceMonitor {
     /**
      * エフェクトが画面外かチェック
      */
-    private _isEffectOffScreen(effect: Effect, viewport: Viewport): boolean {
+    private isEffectOffScreen(effect: Effect, viewport: Viewport): boolean {
         return effect.x + effect.width < viewport.x ||
                effect.x > viewport.x + viewport.width ||
                effect.y + effect.height < viewport.y ||
@@ -429,7 +429,7 @@ export class EffectPerformanceMonitor {
     /**
      * 現在のメモリ使用量を取得
      */
-    private _getCurrentMemoryUsage(): number | null {
+    private getCurrentMemoryUsage(): number | null {
         if (performance.memory) {
             return performance.memory.usedJSHeapSize;
         }
@@ -456,7 +456,7 @@ export class EffectPerformanceMonitor {
     /**
      * クリーンアップのスケジュール
      */
-    private _scheduleCleanup(effectId?: string): void {
+    private scheduleCleanup(effectId?: string): void {
         if (effectId) {
             this.cleanupQueue.push(effectId);
         } else {
@@ -473,18 +473,18 @@ export class EffectPerformanceMonitor {
     /**
      * クリーンアップキューの処理
      */
-    private _processCleanupQueue(): void {
+    private processCleanupQueue(): void {
         while (this.cleanupQueue.length > 0) {
             const effectId = this.cleanupQueue.shift();
             if (effectId) {
-                this._cleanupEffect(effectId);
+                this.cleanupEffect(effectId);
             }
         }
     }
     /**
      * エフェクトのクリーンアップ
      */
-    private _cleanupEffect(effectId: string): void {
+    private cleanupEffect(effectId: string): void {
         if (this.activeEffects.has(effectId)) {
             const effect = this.activeEffects.get(effectId)!;
             
@@ -500,7 +500,7 @@ export class EffectPerformanceMonitor {
     /**
      * バッチング最適化の提案
      */
-    private _suggestBatchingOptimization(): void {
+    private suggestBatchingOptimization(): void {
         console.log('Suggesting batching optimization for draw calls');
         // 実際のバッチング実装は各レンダラーで行う
     }
@@ -508,7 +508,7 @@ export class EffectPerformanceMonitor {
     /**
      * パーティクル数の削減
      */
-    private _reduceParticleCount(): void {
+    private reduceParticleCount(): void {
         // 優先度の低いパーティクルから削減
         const effects = Array.from(this.activeEffects.values());
         const decorativeEffects = effects.filter(e => e.priority === 'decorative');
@@ -527,7 +527,7 @@ export class EffectPerformanceMonitor {
     getPerformanceStats(): PerformanceStats {
         return {
             frameRate: this.currentFrameRate,
-            memoryUsage: this._getCurrentMemoryUsage(),
+            memoryUsage: this.getCurrentMemoryUsage(),
             renderStats: { ...this.renderStats },
             cullingStats: { ...this.cullingStats },
             activeEffects: this.activeEffects.size,
@@ -539,7 +539,7 @@ export class EffectPerformanceMonitor {
     /**
      * エフェクトパフォーマンスの記録
      */
-    private _recordEffectPerformance(entry: PerformanceMeasure): void {
+    private recordEffectPerformance(entry: PerformanceMeasure): void {
         // パフォーマンス測定結果の記録
         if (entry.duration > 16.67) { // 60FPS基準
             console.warn(`Slow effect detected: ${entry.name} took ${entry.duration.toFixed(2)}ms`);

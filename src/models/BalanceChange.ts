@@ -122,7 +122,7 @@ export class BalanceChange {
         this.errorHandler = getErrorHandler();
         
         // 必須フィールド
-        this.id = changeData.id || this._generateChangeId();
+        this.id = changeData.id || this.generateChangeId();
         this.timestamp = changeData.timestamp || Date.now();
         this.configType = changeData.configType || null;
         this.bubbleType = changeData.bubbleType || null;
@@ -131,7 +131,7 @@ export class BalanceChange {
         // 変更値
         this.oldValue = changeData.oldValue;
         this.newValue = changeData.newValue;
-        this.changeType = this._determineChangeType(changeData.oldValue, changeData.newValue);
+        this.changeType = this.determineChangeType(changeData.oldValue, changeData.newValue);
         
         // メタデータ
         this.author = changeData.author || 'system';
@@ -175,7 +175,7 @@ export class BalanceChange {
      * @returns 一意の変更ID
      * @private
      */
-    private _generateChangeId(): string {
+    private generateChangeId(): string {
         const timestamp = Date.now();
         const random = Math.random().toString(36).substr(2, 9);
         return `change_${timestamp}_${random}`;
@@ -188,7 +188,7 @@ export class BalanceChange {
      * @returns 変更タイプ
      * @private
      */
-    private _determineChangeType(oldValue: any, newValue: any): ChangeType {
+    private determineChangeType(oldValue: any, newValue: any): ChangeType {
         if (oldValue === undefined || oldValue === null) {
             return 'create';
         }

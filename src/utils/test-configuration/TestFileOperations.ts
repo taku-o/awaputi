@@ -100,7 +100,7 @@ export class TestFileOperations extends BaseComponent {
         this.operationHistory = [];
     }
 
-    async _doInitialize(): Promise<void> {
+    async doInitialize(): Promise<void> {
         this.setupFileOperations();
         this.ensureDirectoryStructure();
     }

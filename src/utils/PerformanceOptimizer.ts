@@ -207,7 +207,7 @@ export class PerformanceOptimizer {
             this.errorHandler = getErrorHandler();
             
             // 設定から初期値を取得
-            this._initializeFromConfig();
+            this.initializeFromConfig();
             // 基本フレーム処理データ
             this.frameTimeHistory = [];
             this.__lastFrameTime = null;
@@ -220,11 +220,11 @@ export class PerformanceOptimizer {
             this.frameStabilizer = getFrameStabilizer(this.targetFPS);
             
             // サブコンポーネント初期化
-            this._initializeSubComponents();
+            this.initializeSubComponents();
             // 基本統計（サブコンポーネントから集約）
-            this.stats = this._initializeStats();
+            this.stats = this.initializeStats();
             // 設定変更の監視
-            this._setupConfigWatchers();
+            this.setupConfigWatchers();
             console.log('[PerformanceOptimizer] サブコンポーネント統合版で初期化完了');
         } catch (error) {
             if (this.errorHandler && this.errorHandler.handleError) {
@@ -235,14 +235,14 @@ export class PerformanceOptimizer {
             } else {
                 console.error('[PerformanceOptimizer] Failed to initialize:', error);
             }
-            this._setFallbackSettings();
+            this.setFallbackSettings();
         }
     }
     
     /**
      * サブコンポーネントを初期化
      */
-    private _initializeSubComponents(): void {
+    private initializeSubComponents(): void {
         try {
             const _componentConfig: ComponentConfig = {
                 maxHistorySize: this.maxHistorySize,
@@ -273,7 +273,7 @@ export class PerformanceOptimizer {
     /**
      * 統計オブジェクトを初期化
      */
-    private _initializeStats(): PerformanceStats {
+    private initializeStats(): PerformanceStats {
         return {
             currentFPS: 60,
             averageFPS: 60,
@@ -299,7 +299,7 @@ export class PerformanceOptimizer {
     /**
      * 設定から初期値を設定
      */
-    private _initializeFromConfig(): void {
+    private initializeFromConfig(): void {
         try {
             const optimizationConfig = this.performanceConfig.getOptimizationConfig();
             const qualityConfig = this.performanceConfig.getQualityConfig();
@@ -327,14 +327,14 @@ export class PerformanceOptimizer {
                 component: 'PerformanceOptimizer',
                 operation: 'initializeFromConfig'
             });
-            this._setFallbackSettings();
+            this.setFallbackSettings();
         }
     }
     
     /**
      * フォールバック設定を適用
      */
-    private _setFallbackSettings(): void {
+    private setFallbackSettings(): void {
         this.targetFPS = 60;
         this.targetFrameTime = 16.67;
 
@@ -358,7 +358,7 @@ export class PerformanceOptimizer {
     /**
      * 設定変更の監視を設定
      */
-    private _setupConfigWatchers(): void {
+    private setupConfigWatchers(): void {
         // Configuration change monitoring implementation would go here
         // This is a placeholder for the actual implementation
         console.log('[PerformanceOptimizer] Config watchers set up (placeholder)');
@@ -405,7 +405,7 @@ export class PerformanceOptimizer {
             const adjustments = (this.adaptiveController as any).calculateAdjustments ? (this.adaptiveController as any).calculateAdjustments(analysis) : {};
             
             // 設定適用
-            this._applyAdjustments(adjustments);
+            this.applyAdjustments(adjustments);
             
             // Frame Stabilizer統合
             if ((this.stabilizerIntegrator as any).integrateWithStabilizer) {
@@ -428,7 +428,7 @@ export class PerformanceOptimizer {
     /**
      * 最適化調整を適用
      */
-    private _applyAdjustments(adjustments: any): void {
+    private applyAdjustments(adjustments: any): void {
         if (adjustments.settings) {
             Object.assign(this.settings, adjustments.settings);
         }

@@ -173,7 +173,7 @@ export default class FaviconPerformanceManager {
         
         for (const batch of batches) {
             const batchPromises = batch.map(request =>
-                this._processSingleRequest(request, renderCallback)
+                this.processSingleRequest(request, renderCallback)
             );
             const batchResults = await Promise.allSettled(batchPromises);
             results.push(...batchResults.map(result => ({
@@ -287,7 +287,7 @@ export default class FaviconPerformanceManager {
      * @param renderCallback - レンダリングコールバック
      * @returns 処理結果
      */
-    private static async _processSingleRequest(request: GenerationRequest, renderCallback: RenderCallback): Promise<BatchResult> {
+    private static async processSingleRequest(request: GenerationRequest, renderCallback: RenderCallback): Promise<BatchResult> {
         this._resourcePool.activeGenerations++;
         
         try {

@@ -339,7 +339,7 @@ export class BalanceAdjustmentValidationRules {
     /**
      * Get applicable rules based on context - delegated to engine
      */
-    public _getApplicableRules(context: ValidationContext): ValidationRule[] {
+    public getApplicableRules(context: ValidationContext): ValidationRule[] {
         const allRules = (this.ruleDefinitions as any).getRules();
         return (this.ruleEngine as any).getApplicableRules(allRules, context);
     }
@@ -347,21 +347,21 @@ export class BalanceAdjustmentValidationRules {
     /**
      * Get bubble health limits - delegated to rule definitions
      */
-    public _getBubbleHealthLimits(bubbleType: string): BubbleHealthLimits {
+    public getBubbleHealthLimits(bubbleType: string): BubbleHealthLimits {
         return (this.ruleDefinitions as any).getBubbleHealthLimits(bubbleType);
     }
     
     /**
      * Get score limits - delegated to rule definitions
      */
-    public _getScoreLimits(bubbleType: string): ScoreLimits {
+    public getScoreLimits(bubbleType: string): ScoreLimits {
         return (this.ruleDefinitions as any).getScoreLimits(bubbleType);
     }
     
     /**
      * Get change threshold - delegated to rule definitions
      */
-    public _getChangeThreshold(bubbleType: string, propertyType: string): number {
+    public getChangeThreshold(bubbleType: string, propertyType: string): number {
         return (this.ruleDefinitions as any).getChangeThreshold(bubbleType, propertyType);
     }
     
@@ -370,7 +370,7 @@ export class BalanceAdjustmentValidationRules {
     /**
      * Initialize rules - delegated to rule definitions
      */
-    public _initializeRules(): void {
+    public initializeRules(): void {
         (this.ruleDefinitions as any).initializeRules();
         this.syncLegacyProperties();
     }
@@ -378,7 +378,7 @@ export class BalanceAdjustmentValidationRules {
     /**
      * Add bubble health rules - delegated to rule definitions
      */
-    public _addBubbleHealthRules(): void {
+    public addBubbleHealthRules(): void {
         (this.ruleDefinitions as any).addBubbleHealthRules();
         this.syncLegacyProperties();
     }
@@ -386,7 +386,7 @@ export class BalanceAdjustmentValidationRules {
     /**
      * Add score rules - delegated to rule definitions
      */
-    public _addScoreRules(): void {
+    public addScoreRules(): void {
         (this.ruleDefinitions as any).addScoreRules();
         this.syncLegacyProperties();
     }
@@ -394,7 +394,7 @@ export class BalanceAdjustmentValidationRules {
     /**
      * Add size rules - delegated to rule definitions
      */
-    public _addSizeRules(): void {
+    public addSizeRules(): void {
         (this.ruleDefinitions as any).addSizeRules();
         this.syncLegacyProperties();
     }
@@ -402,7 +402,7 @@ export class BalanceAdjustmentValidationRules {
     /**
      * Add time rules - delegated to rule definitions
      */
-    public _addTimeRules(): void {
+    public addTimeRules(): void {
         (this.ruleDefinitions as any).addTimeRules();
         this.syncLegacyProperties();
     }
@@ -410,7 +410,7 @@ export class BalanceAdjustmentValidationRules {
     /**
      * Add special effect rules - delegated to rule definitions
      */
-    public _addSpecialEffectRules(): void {
+    public addSpecialEffectRules(): void {
         (this.ruleDefinitions as any).addSpecialEffectRules();
         this.syncLegacyProperties();
     }
@@ -418,7 +418,7 @@ export class BalanceAdjustmentValidationRules {
     /**
      * Add system rules - delegated to rule definitions
      */
-    public _addSystemRules(): void {
+    public addSystemRules(): void {
         (this.ruleDefinitions as any).addSystemRules();
         this.syncLegacyProperties();
     }

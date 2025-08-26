@@ -123,7 +123,7 @@ export class HelpScene extends Scene implements HelpSceneState {
         this.navigationContext = new NavigationContextManager(gameEngine);
         
         // Initialize sub-components
-        this._initializeSubComponents();
+        this.initializeSubComponents();
         
         // 初期化
         this.initialize();
@@ -133,8 +133,8 @@ export class HelpScene extends Scene implements HelpSceneState {
      * Initialize sub-component systems
      * @private
      */
-    private _initializeSubComponents(): void {
-        console.log('HelpScene: _initializeSubComponents() called');
+    private initializeSubComponents(): void {
+        console.log('HelpScene: initializeSubComponents() called');
         
         try {
             // アクセシビリティ管理

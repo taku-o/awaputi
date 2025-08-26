@@ -67,7 +67,7 @@ export class CoreComparisonEngine {
             if (difference > 0) trend = 'up';
             else if (difference < 0) trend = 'down';
 
-            const significance = this._calculateSignificance(Math.abs(percentage));
+            const significance = this.calculateSignificance(Math.abs(percentage));
 
             return {
                 compared: true,
@@ -78,7 +78,7 @@ export class CoreComparisonEngine {
                 details: {
                     absoluteDifference: Math.abs(difference),
                     relativeDifference: percentage,
-                    standardizedDifference: this._standardizeDifference(difference, a, b),
+                    standardizedDifference: this.standardizeDifference(difference, a, b),
                     confidence: this.config.confidenceLevel
                 }
             };
@@ -118,7 +118,7 @@ export class CoreComparisonEngine {
                         ...result,
                         details: {
                             ...result.details!,
-                            confidence: this._calculateConfidence(data1, data2)
+                            confidence: this.calculateConfidence(data1, data2)
                         }
                     });
                 } else {
@@ -147,8 +147,8 @@ export class CoreComparisonEngine {
      */
     compareStatistically(values1: number[], values2: number[]): ComparisonResult {
         try {
-            const stats1 = this._calculateStatistics(values1);
-            const stats2 = this._calculateStatistics(values2);
+            const stats1 = this.calculateStatistics(values1);
+            const stats2 = this.calculateStatistics(values2);
 
             const meanDiff = stats2.mean - stats1.mean;
             const percentage = stats1.mean !== 0 ? (meanDiff / Math.abs(stats1.mean)) * 100 : 0;
@@ -157,8 +157,8 @@ export class CoreComparisonEngine {
             if (meanDiff > 0) trend = 'up';
             else if (meanDiff < 0) trend = 'down';
 
-            const significance = this._calculateStatisticalSignificance(stats1, stats2);
-            const confidence = this._calculateStatisticalConfidence(stats1, stats2);
+            const significance = this.calculateStatisticalSignificance(stats1, stats2);
+            const confidence = this.calculateStatisticalConfidence(stats1, stats2);
 
             return {
                 compared: true,
@@ -193,7 +193,7 @@ export class CoreComparisonEngine {
     /**
      * 有意性を計算
      */
-    private _calculateSignificance(percentage: number): 'high' | 'medium' | 'low' {
+    private calculateSignificance(percentage: number): 'high' | 'medium' | 'low' {
         if (percentage >= 50) return 'high';
         if (percentage >= 10) return 'medium';
         return 'low';
@@ -202,7 +202,7 @@ export class CoreComparisonEngine {
     /**
      * 標準化差分を計算
      */
-    private _standardizeDifference(difference: number, a: number, b: number): number {
+    private standardizeDifference(difference: number, a: number, b: number): number {
         const mean = (a + b) / 2;
         const std = Math.sqrt(((a - mean) ** 2 + (b - mean) ** 2) / 2);
         return std !== 0 ? difference / std : 0;
@@ -211,7 +211,7 @@ export class CoreComparisonEngine {
     /**
      * 信頼度を計算
      */
-    private _calculateConfidence(data1: ComparisonData, data2: ComparisonData): number {
+    private calculateConfidence(data1: ComparisonData, data2: ComparisonData): number {
         // 基本的な信頼度計算
         let confidence = this.config.confidenceLevel;
 
@@ -227,7 +227,7 @@ export class CoreComparisonEngine {
     /**
      * 統計情報を計算
      */
-    private _calculateStatistics(values: number[]): any {
+    private calculateStatistics(values: number[]): any {
         if (values.length === 0) {
             return { mean: 0, variance: 0, stdDev: 0, count: 0 };
         }
@@ -252,7 +252,7 @@ export class CoreComparisonEngine {
     /**
      * 統計的有意性を計算
      */
-    private _calculateStatisticalSignificance(stats1: any, stats2: any): 'high' | 'medium' | 'low' {
+    private calculateStatisticalSignificance(stats1: any, stats2: any): 'high' | 'medium' | 'low' {
         // 簡易的なt検定の近似
         const pooledStd = Math.sqrt((stats1.variance + stats2.variance) / 2);
         if (pooledStd === 0) return 'low';
@@ -267,7 +267,7 @@ export class CoreComparisonEngine {
     /**
      * 統計的信頼度を計算
      */
-    private _calculateStatisticalConfidence(stats1: any, stats2: any): number {
+    private calculateStatisticalConfidence(stats1: any, stats2: any): number {
         // サンプルサイズと分散に基づく信頼度計算
         const minSampleSize = Math.min(stats1.count, stats2.count);
         const maxVariance = Math.max(stats1.variance, stats2.variance);
