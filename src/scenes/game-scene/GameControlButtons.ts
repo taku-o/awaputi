@@ -269,7 +269,7 @@ export class GameControlButtons {
      * @param gameState - ゲーム状態
      */
     public updateButtonVisibility(gameState: GameState): void {
-        const { isGameStarted = false, isGameOver = false, isPaused = false, isPreGame = false } = gameState;
+        const { isGameStarted = false, isGameOver = false, isPreGame = false } = gameState;
         
         // Give Upボタンの表示条件: (ゲーム進行中 OR ポーズ中) AND ゲームオーバーでない AND ゲーム開始前でない
         this.buttonVisibility.giveUp = (isGameStarted && !isGameOver && !isPreGame);

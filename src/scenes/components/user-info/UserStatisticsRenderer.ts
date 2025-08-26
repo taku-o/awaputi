@@ -92,13 +92,13 @@ export class UserStatisticsRenderer {
     // 表示設定
     // private statisticsViewMode: StatisticsViewMode = 'dashboard';
     private currentPeriodFilter: PeriodFilter = 'last7days';
-    private statisticsDisplaySettings: StatisticsDisplaySettings = {
-        showDashboard: true,
-        showCharts: true,
-        showDetailedStats: true,
-        enableAnimations: true,
-        compactMode: false
-    };
+    // private statisticsDisplaySettings: StatisticsDisplaySettings = {
+    //     showDashboard: true,
+    //     showCharts: true,
+    //     showDetailedStats: true,
+    //     enableAnimations: true,
+    //     compactMode: false
+    // };
     
     private readonly contentPadding: number = 20;
 

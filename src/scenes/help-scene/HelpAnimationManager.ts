@@ -499,7 +499,7 @@ export class HelpTransitionRenderer {
         ctx: CanvasRenderingContext2D,
         categories: any[],
         layout: any,
-        selectedCategory: string
+        _selectedCategory: string
     ): boolean {
         const transition = this.animationManager.getAnimationState('categoryTransition');
         if (!transition || !transition.isActive) {
@@ -510,7 +510,7 @@ export class HelpTransitionRenderer {
         
         // カテゴリ項目のハイライト遷移
         for(let i = 0; i < categories.length; i++) {
-            const category = categories[i];
+            const _category = categories[i];
             const isFrom = i === transition.fromIndex;
             const isTo = i === transition.toIndex;
             
@@ -544,7 +544,7 @@ export class HelpTransitionRenderer {
     /**
      * 検索遷移の描画効果
      */
-    public renderSearchTransition(ctx: CanvasRenderingContext2D, layout: any, isSearching: boolean): boolean {
+    public renderSearchTransition(ctx: CanvasRenderingContext2D, layout: any, _isSearching: boolean): boolean {
         const transition = this.animationManager.getAnimationState('searchTransition');
         if (!transition || !transition.isActive) {
             return false;

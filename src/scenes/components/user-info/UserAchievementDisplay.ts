@@ -41,7 +41,7 @@ interface AchievementsTabComponent {
 export class UserAchievementDisplay {
     private gameEngine: GameEngine;
     private eventBus: EventBus | null;
-    private sceneState: SceneState;
+    // private sceneState: SceneState;
     
     // 実績データ
     private achievementsData: Achievement[] | null = null;

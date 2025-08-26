@@ -10,7 +10,7 @@
 
 import { getLoggingSystem, LoggingSystem } from '../../core/LoggingSystem.js';
 import { GameEngine } from '../../core/GameEngine.js';
-import { SceneManager } from '../../core/SceneManager.js';
+// import { SceneManager } from '../../core/SceneManager.js';
 
 // ヘルプトリガー関連のインターフェース
 interface HelpTriggerCondition {
@@ -417,7 +417,7 @@ export class ContextualHelpManager {
     /**
      * エラーヘルプコンテンツの生成
      */
-    private generateErrorHelpContent(errorType: string): string {
+    private generateErrorHelpContent(_errorType: string): string {
         return `
             <div class="help-contextual-content">
                 <h4>エラーの解決方法</h4>

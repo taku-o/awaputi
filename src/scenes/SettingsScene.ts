@@ -1,7 +1,7 @@
 import { Scene } from '../core/Scene.js';
 import { NavigationContextManager } from '../core/navigation/NavigationContextManager.js';
 import { getLoggingSystem } from '../core/LoggingSystem.js';
-import { AccessibilitySettingsManager, type ExtendedStatistics } from './settings-scene/AccessibilitySettingsManager.js';
+import { AccessibilitySettingsManager } from './settings-scene/AccessibilitySettingsManager.js';
 import { VolumeControlComponent } from '../components/VolumeControlComponent.js';
 // import { AccessibilityProfileComponent } from '../components/AccessibilityProfileComponent.js';
 // import { SettingsImportExportComponent } from '../components/SettingsImportExportComponent.js';
@@ -377,7 +377,7 @@ export class SettingsScene extends Scene implements SettingsSceneState {
     /**
      * 更新処理
      */
-    update(deltaTime: number): void {
+    update(_deltaTime: number): void {
         // 設定画面は静的なので特別な更新処理は不要
     }
     
@@ -418,7 +418,7 @@ export class SettingsScene extends Scene implements SettingsSceneState {
         const y = this.layout.settingsPadding;
         const width = this.layout.categoryWidth;
         
-        this.categories.forEach((category, index) => {
+        this.categories.forEach((_category, index) => {
             const itemY = y + (index * this.layout.itemHeight);
             const isSelected = index === this.selectedCategoryIndex;
             

@@ -149,7 +149,7 @@ export class UsernameInputManager {
      */
     private calculateLayout(): Layout {
         try {
-            const canvasInfo = this.getCanvasInfo();
+            // const canvasInfo = this.getCanvasInfo();
             const baseCoords = this.getBaseCoordinates();
             
             return {

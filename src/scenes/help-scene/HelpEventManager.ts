@@ -7,7 +7,7 @@ import { GameEngine } from '../../core/GameEngine.js';
 import { HelpContentManager } from './HelpContentManager.js';
 import { HelpAccessibilityManager } from './HelpAccessibilityManager.js';
 import { HelpAnimationManager } from './HelpAnimationManager.js';
-import { HelpRenderer } from './HelpRenderer.js';
+// import { HelpRenderer } from './HelpRenderer.js';
 
 // コールバックインターフェース
 interface HelpEventCallbacks {
@@ -409,7 +409,7 @@ export class HelpEventManager {
     /**
      * マウスアップ処理
      */
-    private handleMouseUp(event: MouseEvent): void {
+    private handleMouseUp(_event: MouseEvent): void {
         // 必要に応じて実装
     }
     

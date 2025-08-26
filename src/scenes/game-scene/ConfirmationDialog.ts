@@ -260,7 +260,7 @@ export class ConfirmationDialog {
      * @param y - Y座標
      * @param event - 元のイベントオブジェクト（座標変換用、将来の拡張用）
      */
-    public updateMousePosition(x: number, y: number, event: Event | null = null): void {
+    public updateMousePosition(x: number, y: number, _event: Event | null = null): void {
         if (!this.dialogState.visible) {
             return;
         }

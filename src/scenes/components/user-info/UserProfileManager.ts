@@ -198,7 +198,7 @@ export class UserProfileManager {
         x: number,
         y: number,
         width: number,
-        height: number
+        _height: number
     ): void {
         // タイトル
         context.fillStyle = '#ffffff';

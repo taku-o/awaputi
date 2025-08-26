@@ -310,59 +310,59 @@ export class HelpRenderer {
     /**
      * 検索バー描画
      */
-    private renderSearchBar(ctx: CanvasRenderingContext2D, searchQuery: string, focused: boolean): void {
-        const searchBar = this.layout.searchBar;
-        
-        // 背景
-        ctx.fillStyle = focused ? this.colors.primary : this.colors.searchBackground;
-        this.roundRect(ctx, searchBar.x, searchBar.y, searchBar.width, searchBar.height, 8, true);
-        
-        // 境界線
-        ctx.strokeStyle = focused ? this.colors.secondary : this.colors.border;
-        ctx.lineWidth = focused ? 2 : 1;
-        this.roundRect(ctx, searchBar.x, searchBar.y, searchBar.width, searchBar.height, 8, false);
-        
-        // フォーカスインジケーター
-        if (focused) {
-            ctx.strokeStyle = this.colors.secondary;
-            ctx.lineWidth = 3;
-            ctx.setLineDash([5, 5]);
-            this.roundRect(ctx, searchBar.x - 2, searchBar.y - 2, searchBar.width + 4, searchBar.height + 4, 10, false);
-            ctx.setLineDash([]);
-        }
-        
-        // プレースホルダーまたは検索テキスト
-        ctx.fillStyle = this.colors.text;
-        ctx.font = `${this.fontSizes.normal}px Arial, sans-serif`;
-        ctx.textAlign = 'left';
-        ctx.textBaseline = 'middle';
-
-        const displayText = searchQuery || 'ヘルプを検索... (/)';
-        const textColor = searchQuery ? this.colors.text : this.colors.textSecondary;
-        
-        ctx.fillStyle = textColor;
-        const textX = searchBar.x + 15;
-        const textY = searchBar.y + searchBar.height / 2;
-        ctx.fillText(displayText, textX, textY);
-        
-        // フォーカス時のカーソル描画
-        if (focused && searchQuery) {
-            const textWidth = ctx.measureText(searchQuery).width;
-            const cursorX = textX + textWidth + 2;
-            
-            // 点滅カーソル（簡易実装）
-            ctx.strokeStyle = this.colors.text;
-            ctx.lineWidth = 1;
-            ctx.beginPath();
-            ctx.moveTo(cursorX, textY - 8);
-            ctx.lineTo(cursorX, textY + 8);
-            ctx.stroke();
-        }
-        
-        // 検索アイコン
-        ctx.textAlign = 'right';
-        ctx.fillText('🔍', searchBar.x + searchBar.width - 15, searchBar.y + searchBar.height / 2);
-    }
+    // private renderSearchBar(ctx: CanvasRenderingContext2D, searchQuery: string, focused: boolean): void {
+    //     const searchBar = this.layout.searchBar;
+    //     
+    //     // 背景
+    //     ctx.fillStyle = focused ? this.colors.primary : this.colors.searchBackground;
+    //     this.roundRect(ctx, searchBar.x, searchBar.y, searchBar.width, searchBar.height, 8, true);
+    //     
+    //     // 境界線
+    //     ctx.strokeStyle = focused ? this.colors.secondary : this.colors.border;
+    //     ctx.lineWidth = focused ? 2 : 1;
+    //     this.roundRect(ctx, searchBar.x, searchBar.y, searchBar.width, searchBar.height, 8, false);
+    //     
+    //     // フォーカスインジケーター
+    //     if (focused) {
+    //         ctx.strokeStyle = this.colors.secondary;
+    //         ctx.lineWidth = 3;
+    //         ctx.setLineDash([5, 5]);
+    //         this.roundRect(ctx, searchBar.x - 2, searchBar.y - 2, searchBar.width + 4, searchBar.height + 4, 10, false);
+    //         ctx.setLineDash([]);
+    //     }
+    //     
+    //     // プレースホルダーまたは検索テキスト
+    //     ctx.fillStyle = this.colors.text;
+    //     ctx.font = `${this.fontSizes.normal}px Arial, sans-serif`;
+    //     ctx.textAlign = 'left';
+    //     ctx.textBaseline = 'middle';
+    //
+    //     const displayText = searchQuery || 'ヘルプを検索... (/)';
+    //     const textColor = searchQuery ? this.colors.text : this.colors.textSecondary;
+    //     
+    //     ctx.fillStyle = textColor;
+    //     const textX = searchBar.x + 15;
+    //     const textY = searchBar.y + searchBar.height / 2;
+    //     ctx.fillText(displayText, textX, textY);
+    //     
+    //     // フォーカス時のカーソル描画
+    //     if (focused && searchQuery) {
+    //         const textWidth = ctx.measureText(searchQuery).width;
+    //         const cursorX = textX + textWidth + 2;
+    //         
+    //         // 点滅カーソル（簡易実装）
+    //         ctx.strokeStyle = this.colors.text;
+    //         ctx.lineWidth = 1;
+    //         ctx.beginPath();
+    //         ctx.moveTo(cursorX, textY - 8);
+    //         ctx.lineTo(cursorX, textY + 8);
+    //         ctx.stroke();
+    //     }
+    //     
+    //     // 検索アイコン
+    //     ctx.textAlign = 'right';
+    //     ctx.fillText('🔍', searchBar.x + searchBar.width - 15, searchBar.y + searchBar.height / 2);
+    // }
 
     /**
      * サイドバー描画

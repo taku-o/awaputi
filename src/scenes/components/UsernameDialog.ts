@@ -503,10 +503,10 @@ export class UsernameDialog extends ScenesBaseDialog {
      * ユーザー名が有効かチェック
      * @returns 有効な場合true
      */
-    private isValidUsername(): boolean {
-        const username = this.dialogData.newUsername?.trim();
-        return this.validateUsername(username);
-    }
+    // private isValidUsername(): boolean {
+    //     const username = this.dialogData.newUsername?.trim();
+    //     return this.validateUsername(username);
+    // }
     
     /**
      * エラーを設定

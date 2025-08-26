@@ -3,7 +3,7 @@
  * ヘルプシーンアクセシビリティ管理 - アクセシビリティ機能の統合管理
  */
 import { GameEngine } from '../../core/GameEngine.js';
-import { LocalizationManager } from '../../i18n/LocalizationManager.js';
+// import { LocalizationManager } from '../../i18n/LocalizationManager.js';
 import { AccessibilityManager } from '../../accessibility/AccessibilityManager.js';
 // フォーカス可能要素インターフェース
 interface FocusableElement {
@@ -215,7 +215,7 @@ export class HelpAccessibilityManager {
         selectedCategory: string,
         selectedTopicIndex: number,
         isSearching: boolean,
-        searchResults: any[]
+        _searchResults: any[]
     ): void {
         if (!this.announceNavigation) return;
         let message = '';
