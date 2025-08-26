@@ -120,10 +120,10 @@ interface FadeStatus {
 /**
  * ConfigurationManager インターフェース（型定義用）
  */
-interface ConfigurationManager {
-    get(category: string, path?: string): any;
-    set(category: string, path: string, value: any): void;
-}
+// interface ConfigurationManager {
+//     get(category: string, path?: string): any;
+//     set(category: string, path: string, value: any): void;
+// }
 
 /**
  * ErrorHandler インターフェース（型定義用）

@@ -78,9 +78,9 @@ interface ConfigurationManager {
 /**
  * ErrorHandler インターフェース（型定義用）
  */
-interface ErrorHandler {
-    handleError(error: any, errorType: string, context?: any): void;
-}
+// interface ErrorHandler {
+//     handleError(error: any, errorType: string, context?: any): void;
+// }
 
 /**
  * BGMシステム - 包括的なBGM管理・生成・再生システム
@@ -682,7 +682,7 @@ export class BGMSystem {
                 throw new Error('TransitionManager is not initialized');
             }
             
-            this.transitionManager.updateSetting(settings);
+            this.transitionManager.updateSettings(settings);
         } catch (error) {
             getErrorHandler().handleError(error, 'BGM_ERROR', {
                 operation: 'updateTransitionSettings',

@@ -12,10 +12,10 @@ interface ErrorHandler {
     handleError(error: Error, context: string): void;
 }
 
-interface ConfigurationManager {
-    get<T = any>(key: string, defaultValue?: T): T;
-    set<T = any>(key: string, value: T): void;
-}
+// interface ConfigurationManager {
+//     get<T = any>(key: string, defaultValue?: T): T;
+//     set<T = any>(key: string, value: T): void;
+// }
 
 interface WindowWithWebkitAudioContext extends Window {
     webkitAudioContext?: typeof AudioContext;

@@ -135,9 +135,9 @@ interface ConfigurationManager {
 /**
  * ErrorHandler インターフェース（型定義用）
  */
-interface ErrorHandler {
-    handleError(error: any, errorType: string, context?: any): void;
-}
+// interface ErrorHandler {
+//     handleError(error: any, errorType: string, context?: any): void;
+// }
 /**
  * パフォーマンスメトリクス収集クラス
  */

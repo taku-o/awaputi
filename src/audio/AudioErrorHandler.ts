@@ -13,9 +13,9 @@ interface ConfigurationManager {
 }
 
 // ローカライゼーション管理型定義
-interface LocalizationManager {
-    // Localization manager methods
-}
+// interface LocalizationManager {
+//     // Localization manager methods
+// }
 
 // オーディオマネージャー型定義
 interface AudioManager {

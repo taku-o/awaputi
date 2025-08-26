@@ -194,7 +194,7 @@ export class ComponentAudioAccessibilitySupport {
         
         // Legacy compatibility properties
         this.vibrationManager = this.legacyAdapter.getVibrationManager();
-        this.visualNotifications = [];
+        // this.visualNotifications = [];
         
         console.log('AudioAccessibilitySupport initialized with Main Controller Pattern');
     }
@@ -440,7 +440,7 @@ export class ComponentAudioAccessibilitySupport {
             },
             eventHistorySize: this.eventManager.getEventHistory().length,
             capabilities: this.getCapabilities(),
-            settings: this.getSetting()
+            settings: this.getSettings()
         };
     }
 
@@ -461,7 +461,7 @@ export class ComponentAudioAccessibilitySupport {
         return {
             ...eventStats,
             componentsActive: 6,
-            settingsConfigured: Object.keys(this.getSetting()).length
+            settingsConfigured: Object.keys(this.getSettings()).length
         };
     }
 

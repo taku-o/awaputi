@@ -110,9 +110,9 @@ type SoundCategory = 'bubble' | 'ui' | 'combo' | 'achievement' | 'gamestate';
 /**
  * ConfigurationManager インターフェース（型定義用）
  */
-interface ConfigurationManager {
-    get(category: string): any;
-}
+// interface ConfigurationManager {
+//     get(category: string): any;
+// }
 
 /**
  * ErrorHandler インターフェース（型定義用）

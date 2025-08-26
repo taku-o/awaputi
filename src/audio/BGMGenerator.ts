@@ -17,12 +17,12 @@ interface ChordProgressions {
 }
 
 // リズムパターン型定義
-interface RhythmPatterns {
-    simple: number[];
-    complex: number[];
-    syncopated: number[];
-    ambient: number[];
-}
+// interface RhythmPatterns {
+//     simple: number[];
+//     complex: number[];
+//     syncopated: number[];
+//     ambient: number[];
+// }
 
 // トラック設定型定義
 interface TrackConfig {

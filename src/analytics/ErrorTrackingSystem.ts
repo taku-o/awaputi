@@ -82,7 +82,7 @@ export class ErrorTrackingSystem {
         this.errors = new Map();
         this.errorGroups = new Map();
         this.errorCount = 0;
-        this.isInitialized = false;
+        // this.isInitialized = false;
         this.originalErrorHandler = null;
         this.originalUnhandledRejectionHandler = null;
 
@@ -96,7 +96,7 @@ export class ErrorTrackingSystem {
         try {
             this.setupGlobalErrorHandlers();
             this.loadStoredErrors();
-            this.isInitialized = true;
+            // this.isInitialized = true;
             console.log('ErrorTrackingSystem initialized');
         } catch (error) {
             console.error('Failed to initialize ErrorTrackingSystem:', error);

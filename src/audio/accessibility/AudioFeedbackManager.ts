@@ -15,17 +15,17 @@
  */
 
 // Types for color mappings
-interface ColorMapping {
-    color: string;
-    label: string;
-}
+// interface ColorMapping {
+//     color: string;
+//     label: string;
+// }
 
-interface ColorMappings {
-    low: ColorMapping;
-    medium: ColorMapping;
-    high: ColorMapping;
-    critical: ColorMapping;
-}
+// interface ColorMappings {
+//     low: ColorMapping;
+//     medium: ColorMapping;
+//     high: ColorMapping;
+//     critical: ColorMapping;
+// }
 
 // Types for haptic settings
 interface AudioToVibrationMapping {

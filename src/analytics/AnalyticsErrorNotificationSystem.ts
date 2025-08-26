@@ -30,7 +30,7 @@ export class AnalyticsErrorNotificationSystem {
         this.errorTypes = new Map();
         this.recoveryAttempts = new Map();
         this.notificationContainer = null;
-        this.isInitialized = false;
+        // this.isInitialized = false;
 
         this.initialize();
     }
@@ -42,7 +42,7 @@ export class AnalyticsErrorNotificationSystem {
         this.setupErrorTypes();
         this.createNotificationContainer();
         this.setupGlobalErrorHandlers();
-        this.isInitialized = true;
+        // this.isInitialized = true;
     }
 
     /**
