@@ -1,6 +1,6 @@
 import { describe, test, expect, beforeEach, afterEach } from '@jest/globals';
 import { PerformanceWarningSystem } from '../../src/analytics/PerformanceWarningSystem';
-import { RealtimeMonitor } from '../../src/analytics/RealtimeMonitor';
+// import { RealtimeMonitor } from '../../src/analytics/RealtimeMonitor';
 
 // Web Audio API のモック
 (global as any).AudioContext = jest.fn().mockImplementation(() => ({

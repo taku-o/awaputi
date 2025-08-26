@@ -1,4 +1,4 @@
-import { describe, test, expect, beforeEach, jest } from '@jest/globals';
+import { describe, test, expect, beforeEach } from '@jest/globals';
 import { ComparisonEngine } from '../../../src/analytics/ComparisonEngine';
 
 // モックStorageManager - 統合テスト用

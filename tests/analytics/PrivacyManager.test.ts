@@ -313,7 +313,8 @@ describe('PrivacyManager', () => {
                 }))
             };
             (global.document.createElement as any).mockReturnValue(mockElement);
-            const dialog = manager.createConsentDialog();
+            // const dialog = manager.createConsentDialog();
+            manager.createConsentDialog();
             expect(global.document.createElement).toHaveBeenCalledWith('div');
             expect(mockElement.className).toBe('analytics-consent-dialog');
             expect(mockElement.innerHTML).toContain('データ収集に関する同意');

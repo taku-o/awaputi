@@ -71,13 +71,15 @@ describe('NavigationContextManager', () => {
 
         test('should handle null game engine gracefully', () => {
             expect(() => {
-                const manager = new NavigationContextManager(null);
+                // const manager = new NavigationContextManager(null);
+                new NavigationContextManager(null);
             }).not.toThrow();
         });
 
         test('should handle undefined game engine gracefully', () => {
             expect(() => {
-                const manager = new NavigationContextManager(undefined);
+                // const manager = new NavigationContextManager(undefined);
+                new NavigationContextManager(undefined);
             }).not.toThrow();
         });
     });
@@ -237,7 +239,8 @@ describe('NavigationContextManager', () => {
 
                 expect(() => {
                     const context = contextManager.getCurrentContext();
-                    const isValid = contextManager.isContextValid(context);
+                    // const isValid = contextManager.isContextValid(context);
+                    contextManager.isContextValid(context);
                 }).not.toThrow();
             });
         });
@@ -248,7 +251,8 @@ describe('NavigationContextManager', () => {
             });
 
             expect(() => {
-                const context = contextManager.getCurrentContext();
+                // const context = contextManager.getCurrentContext();
+                contextManager.getCurrentContext();
             }).not.toThrow();
         });
 

@@ -172,7 +172,7 @@ class MockIDBTransaction {
 
 // IndexedDBのグローバルモック
 (global as any).indexedDB = {
-    open: jest.fn((name: string, version: number) => {
+    open: jest.fn((_name: string, _version: number) => {
         const request = {
             onsuccess: null,
             onerror: null,

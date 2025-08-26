@@ -34,7 +34,7 @@ class MockChartRenderer {
 
 // モックTrendAnalyzer
 class MockTrendAnalyzer {
-    detectAnomalies(data: any[], threshold = 2.0) {
+    detectAnomalies(data: any[], _threshold = 2.0) {
         // テスト用の簡単な異常検出
         return data.map((d, index) => ({
             index: index,
@@ -461,7 +461,8 @@ describe('TimeSeriesVisualizer', () => {
         ];
 
         test('チャート設定がエクスポートされる', () => {
-            const chart = visualizer.createSingleMetricChart(mockCanvas, sampleData, 'score');
+            // const chart = visualizer.createSingleMetricChart(mockCanvas, sampleData, 'score');
+            visualizer.createSingleMetricChart(mockCanvas, sampleData, 'score');
             const config = visualizer.exportChartConfig('test-canvas');
             
             expect(config).toBeDefined();

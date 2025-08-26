@@ -192,7 +192,8 @@ describe('リアルタイム監視システム統合テスト (Task 9.5)', () =>
             expect(typeof dashboard.exportData).toBe('function');
 
             // URL.createObjectURLがモックされているため、exportData()が正常に動作するかテスト
-            const exportData = dashboard.exportData();
+            // const exportData = dashboard.exportData();
+            dashboard.exportData();
             // RealtimeDashboard.jsのexportData()メソッドは実装されているが、
             // URL.createObjectURLのモッキングが原因でundefinedになる可能性がある
             // そのため、メソッドの存在のみテストする

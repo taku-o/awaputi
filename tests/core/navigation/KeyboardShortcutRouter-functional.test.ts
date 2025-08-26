@@ -250,7 +250,7 @@ describe('KeyboardShortcutRouter Functional Tests', () => {
                 { id: 'back', expectedScene: 'menu' }
             ];
 
-            routingTests.forEach(({ id, expectedScene }) => {
+            routingTests.forEach(({ id }) => {
                 gameEngine.sceneManager.switchScene.mockClear();
                 
                 const shortcutData = {

@@ -103,7 +103,7 @@ describe('KeyboardShortcutRouter Integration Tests', () => {
                 { scene: 'MainMenuScene', expectedBehavior: 'no action' }
             ];
 
-            contexts.forEach(({ scene, expectedBehavior }) => {
+            contexts.forEach(({ scene }) => {
                 const mockScene = {
                     constructor: { name: scene },
                     showPauseMenu: jest.fn(),

@@ -169,7 +169,7 @@ describe('CoreKeyboardShortcutManager - Removed Shortcuts (Issue #169)', () => {
 
             const switchSceneSpy = jest.spyOn(mockGameEngine.sceneManager, 'switchScene');
 
-            removedKeyEvents.forEach(({ code, key, description }) => {
+            removedKeyEvents.forEach(({ code, key }) => {
                 const event = new KeyboardEvent('keydown', { code, key });
                 
                 switchSceneSpy.mockClear();
