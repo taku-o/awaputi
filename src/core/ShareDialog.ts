@@ -1149,11 +1149,11 @@ export class ShareDialog {
      * ログ記録
      */
     log(message: string, data: any = null, level: string = 'info'): void {
-        const _logEntry = {
-            timestamp: Date.now(),
-            message,
-            data
-        };
+        // const _logEntry = {
+        //     timestamp: Date.now(),
+        //     message,
+        //     data
+        // };
 
         const consoleMethod = level === 'error' ? 'error' : 
                              level === 'warn' ? 'warn' : 'log';
