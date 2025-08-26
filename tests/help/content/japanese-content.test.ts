@@ -83,7 +83,7 @@ describe('Japanese Help Content', () => {
     });
     
     it('should have matching category field', () => {
-      for (const [category, data] of Object.entries(contentData)) {
+      for (const [, data] of Object.entries(contentData)) {
         expect(data.category).toBe(category);
       }
     });
@@ -91,7 +91,7 @@ describe('Japanese Help Content', () => {
     it('should have valid version format', () => {
       const versionRegex = /^\d+\.\d+\.\d+$/;
       
-      for (const [category, data] of Object.entries(contentData)) {
+      for (const [, data] of Object.entries(contentData)) {
         expect(data.version).toMatch(versionRegex);
       }
     });
@@ -99,16 +99,16 @@ describe('Japanese Help Content', () => {
     it('should have valid date format for lastUpdated', () => {
       const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
       
-      for (const [category, data] of Object.entries(contentData)) {
+      for (const [, data] of Object.entries(contentData)) {
         expect(data.lastUpdated).toMatch(dateRegex);
       }
     });
     
     it('should have topics array with required fields', () => {
-      for (const [category, data] of Object.entries(contentData)) {
+      for (const [, data] of Object.entries(contentData)) {
         expect(Array.isArray(data.topics)).toBe(true);
         expect(data.topics.length).toBeGreaterThan(0);
-        data.topics.forEach((topic: any, index: number) => {
+        data.topics.forEach((topic: any) => {
           for (const field of REQUIRED_TOPIC_FIELDS) {
             expect(topic).toHaveProperty(field);
           }
@@ -119,7 +119,7 @@ describe('Japanese Help Content', () => {
     it('should have valid difficulty levels', () => {
       const validDifficulties = ['beginner', 'intermediate', 'advanced'];
       
-      for (const [category, data] of Object.entries(contentData)) {
+      for (const [, data] of Object.entries(contentData)) {
         data.topics.forEach((topic: any) => {
           expect(validDifficulties).toContain(topic.difficulty);
         });
@@ -127,7 +127,7 @@ describe('Japanese Help Content', () => {
     });
     
     it('should have reasonable estimated reading times', () => {
-      for (const [category, data] of Object.entries(contentData)) {
+      for (const [, data] of Object.entries(contentData)) {
         data.topics.forEach((topic: any) => {
           expect(typeof topic.estimatedReadTime).toBe('number');
           expect(topic.estimatedReadTime).toBeGreaterThan(30); // At least 30 seconds
@@ -137,7 +137,7 @@ describe('Japanese Help Content', () => {
     });
     
     it('should have non-empty content objects', () => {
-      for (const [category, data] of Object.entries(contentData)) {
+      for (const [, data] of Object.entries(contentData)) {
         data.topics.forEach((topic: any) => {
           expect(typeof topic.content).toBe('object');
           expect(Object.keys(topic.content).length).toBeGreaterThan(0);
@@ -146,7 +146,7 @@ describe('Japanese Help Content', () => {
     });
     
     it('should have tags array for each topic', () => {
-      for (const [category, data] of Object.entries(contentData)) {
+      for (const [, data] of Object.entries(contentData)) {
         data.topics.forEach((topic: any) => {
           expect(Array.isArray(topic.tags)).toBe(true);
           expect(topic.tags.length).toBeGreaterThan(0);
@@ -170,7 +170,7 @@ describe('Japanese Help Content', () => {
     it('should contain Japanese characters (Hiragana, Katakana, or Kanji)', () => {
       const japaneseRegex = /[\u3040-\u309F\u30A0-\u30FF\u4E00-\u9FAF]/;
       
-      for (const [category, data] of Object.entries(contentData)) {
+      for (const [, data] of Object.entries(contentData)) {
         const contentString = JSON.stringify(data);
         expect(contentString).toMatch(japaneseRegex);
       }
@@ -179,7 +179,7 @@ describe('Japanese Help Content', () => {
     it('should have Japanese text in title and description', () => {
       const japaneseRegex = /[\u3040-\u309F\u30A0-\u30FF\u4E00-\u9FAF]/;
       
-      for (const [category, data] of Object.entries(contentData)) {
+      for (const [, data] of Object.entries(contentData)) {
         expect(data.title).toMatch(japaneseRegex);
         expect(data.description).toMatch(japaneseRegex);
       }
@@ -188,14 +188,14 @@ describe('Japanese Help Content', () => {
     it('should not contain placeholder English text', () => {
       const placeholderRegex = /TODO|PLACEHOLDER|Lorem ipsum/i;
       
-      for (const [category, data] of Object.entries(contentData)) {
+      for (const [, data] of Object.entries(contentData)) {
         const contentString = JSON.stringify(data);
         expect(contentString).not.toMatch(placeholderRegex);
       }
     });
     
     it('should use appropriate Japanese punctuation', () => {
-      for (const [category, data] of Object.entries(contentData)) {
+      for (const [, data] of Object.entries(contentData)) {
         const contentString = JSON.stringify(data);
         // Check for Japanese punctuation marks
         expect(contentString).toMatch(/[。、]/); // Japanese period and comma
@@ -217,7 +217,7 @@ describe('Japanese Help Content', () => {
     
     it('should have consistent formatting across all files', () => {
       const versions = new Set();
-      for (const [category, data] of Object.entries(contentData)) {
+      for (const [, data] of Object.entries(contentData)) {
         versions.add(data.version);
       }
       
@@ -226,7 +226,7 @@ describe('Japanese Help Content', () => {
     });
     
     it('should have meaningful content in each topic', () => {
-      for (const [category, data] of Object.entries(contentData)) {
+      for (const [, data] of Object.entries(contentData)) {
         data.topics.forEach((topic: any) => {
           // Title should be meaningful (more than 2 characters)
           expect(topic.title.length).toBeGreaterThan(2);
@@ -241,9 +241,9 @@ describe('Japanese Help Content', () => {
     
     it('should have appropriate tags in Japanese', () => {
       const japaneseRegex = /[\u3040-\u309F\u30A0-\u30FF\u4E00-\u9FAF]/;
-      const englishOnlyRegex = /^[A-Za-z0-9\s]+$/;
+      // const englishOnlyRegex = /^[A-Za-z0-9\s]+$/;
       
-      for (const [category, data] of Object.entries(contentData)) {
+      for (const [, data] of Object.entries(contentData)) {
         data.topics.forEach((topic: any) => {
           // At least some tags should be in Japanese
           const hasJapaneseTags = topic.tags.some((tag: string) => japaneseRegex.test(tag));

@@ -849,7 +849,7 @@ const E2ETestHelper = {
     /**
      * パフォーマンス測定
      */
-    async measurePerformance(page: any, action: () => Promise<void>) {
+    async measurePerformance(_page: any, action: () => Promise<void>) {
         const startTime = Date.now();
         await action();
         const endTime = Date.now();

@@ -7,7 +7,7 @@
  * - Content caching across languages
  * - Performance benchmarking
  */
-import { describe, it, expect, beforeEach, afterEach, jest } from '@jest/globals';
+import { describe, it, expect, beforeEach, afterEach } from '@jest/globals';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -168,8 +168,10 @@ describe('Multilingual Help System Integration', () => {
 
     it('should maintain separate cache entries for different languages', async () => {
       // Load same category in different languages
-      const enContent = await helpManager.loadHelpContent('en', 'bubbles');
-      const jaContent = await helpManager.loadHelpContent('ja', 'bubbles');
+      // const enContent = await helpManager.loadHelpContent('en', 'bubbles');
+      // const jaContent = await helpManager.loadHelpContent('ja', 'bubbles');
+      await helpManager.loadHelpContent('en', 'bubbles');
+      await helpManager.loadHelpContent('ja', 'bubbles');
       
       expect(helpManager.getCacheSize()).toBe(2);
       expect(helpManager.cache.has('en_bubbles')).toBe(true);
