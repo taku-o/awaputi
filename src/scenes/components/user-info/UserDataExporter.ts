@@ -597,7 +597,7 @@ export class UserDataExporter {
     /**
      * CSV形式でのエクスポート
      */
-    private exportToCSV(data: ExportData, options: ExportSettings): ProcessedExportData { 
+    private exportToCSV(data: ExportData, _options: ExportSettings): ProcessedExportData { 
         // プレイヤーデータをCSV形式に変換
         const csvLines: string[] = [];
         
@@ -636,7 +636,7 @@ export class UserDataExporter {
     /**
      * テキスト形式でのエクスポート
      */
-    private exportToText(data: ExportData, options: ExportSettings): ProcessedExportData { 
+    private exportToText(data: ExportData, _options: ExportSettings): ProcessedExportData { 
         const textLines: string[] = [];
 
         textLines.push('=== プレイヤーデータエクスポート ===');
@@ -682,7 +682,7 @@ export class UserDataExporter {
     /**
      * インポートデータの検証
      */
-    private async validateImportData(data: any, options: ImportSettings): Promise<ValidationResult> { 
+    private async validateImportData(data: any, _options: ImportSettings): Promise<ValidationResult> { 
         try {
             let parsedData: any;
             
@@ -1064,15 +1064,15 @@ export class UserDataExporter {
         }
     }
 
-    private getContentType(format: ExportFormat): string { 
-        const mimeTypes: Record<ExportFormat, string> = {
-            json: 'application/json',
-            csv: 'text/csv',
-            txt: 'text/plain'
-        };
-
-        return mimeTypes[format] || 'application/octet-stream';
-    }
+    // private getContentType(format: ExportFormat): string { 
+    //     const mimeTypes: Record<ExportFormat, string> = {
+    //         json: 'application/json',
+    //         csv: 'text/csv',
+    //         txt: 'text/plain'
+    //     };
+    //
+    //     return mimeTypes[format] || 'application/octet-stream';
+    // }
     
     private showError(message: string): void {
         if (this.eventBus) {

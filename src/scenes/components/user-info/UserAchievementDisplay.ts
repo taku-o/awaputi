@@ -530,7 +530,7 @@ export class UserAchievementDisplay {
     /**
      * 実績解除時の処理
      */
-    private handleAchievementUnlocked(achievementId: string): void {
+    private handleAchievementUnlocked(_achievementId: string): void {
         // データを再読み込みして最新状態を反映
         this.loadAchievementData();
         
@@ -584,9 +584,9 @@ export class UserAchievementDisplay {
     /**
      * 総タブ数を取得
      */
-    private getTotalTabCount(): number {
-        return this.sceneState.get('tabs')?.length || 5;
-    }
+    // private getTotalTabCount(): number {
+    //     return this.sceneState.get('tabs')?.length || 5;
+    // }
     
     /**
      * コンポーネントのクリーンアップ

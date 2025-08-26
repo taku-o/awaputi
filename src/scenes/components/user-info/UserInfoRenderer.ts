@@ -111,7 +111,7 @@ export class UserInfoRenderer {
     public render(
         context: CanvasRenderingContext2D,
         tabManager: TabManager,
-        profileManager: ProfileManager,
+        _profileManager: ProfileManager,
         helpSystem: HelpSystem,
         dialogManager: DialogManager
     ): void {

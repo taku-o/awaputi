@@ -141,7 +141,7 @@ export class UserInfoEventHandler {
     public handleInput(
         event: Event,
         tabManager?: TabManager,
-        profileManager?: ProfileManager,
+        _profileManager?: ProfileManager,
         helpSystem?: HelpSystem,
         dialogManager?: DialogManager,
         renderer?: Renderer
@@ -367,7 +367,7 @@ export class UserInfoEventHandler {
     /**
      * ホバー状態の更新
      */
-    private updateHoverStates(x: number, y: number, canvas: HTMLCanvasElement): void {
+    private updateHoverStates(x: number, y: number, _canvas: HTMLCanvasElement): void {
         // 戻るボタンのホバー
         const backButton = this.sceneState.get('backButton') as BackButton | null;
         if (backButton) {

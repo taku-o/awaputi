@@ -251,7 +251,7 @@ export class StatisticsTab extends TabComponent {
      * @param height - 描画高さ
      * @param error - エラーオブジェクト
      */
-    private renderErrorFallback(context: CanvasRenderingContext2D, x: number, y: number, width: number, height: number, error: Error): void {
+    private renderErrorFallback(context: CanvasRenderingContext2D, x: number, y: number, width: number, height: number, _error: Error): void {
         context.fillStyle = '#ff6666';
         context.fillRect(x, y, width, height);
         

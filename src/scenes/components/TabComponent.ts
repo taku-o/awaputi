@@ -86,7 +86,7 @@ export abstract class TabComponent {
      * @param y - クリックY座標
      * @returns イベントが処理された場合true
      */
-    handleClick(x: number, y: number): boolean {
+    handleClick(_x: number, _y: number): boolean {
         return false;
     }
     
@@ -95,7 +95,7 @@ export abstract class TabComponent {
      * @param event - 入力イベント
      * @returns イベントが処理された場合true
      */
-    handleInput(event: Event): boolean {
+    handleInput(_event: Event): boolean {
         return false;
     }
     
@@ -103,7 +103,7 @@ export abstract class TabComponent {
      * フレーム更新処理
      * @param deltaTime - 前フレームからの経過時間（ミリ秒）
      */
-    update(deltaTime: number): void {
+    update(_deltaTime: number): void {
         // 基本実装では何もしない
         // 必要に応じて子クラスでオーバーライド
     }

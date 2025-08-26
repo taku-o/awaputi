@@ -164,7 +164,7 @@ export class UserProfileManager {
         context: CanvasRenderingContext2D,
         x: number,
         y: number,
-        width: number,
+        _width: number,
         focusedElement: number,
         tabsLength: number
     ): number {

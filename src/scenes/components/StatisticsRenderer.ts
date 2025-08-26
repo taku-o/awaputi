@@ -622,7 +622,7 @@ export class StatisticsRenderer {
      * @param y - クリックY座標
      * @returns イベントが処理された場合true
      */
-    handleClick(x: number, y: number): boolean {
+    handleClick(_x: number, _y: number): boolean {
         // 現在の実装では特別なクリック処理は不要
         // 将来的にセクションの展開/折りたたみなどを実装する場合はここで処理
         return false;
@@ -632,7 +632,7 @@ export class StatisticsRenderer {
      * フレーム更新処理
      * @param deltaTime - 前フレームからの経過時間（ミリ秒）
      */
-    update(deltaTime: number): void {
+    update(_deltaTime: number): void {
         // アニメーション等が必要な場合はここで処理
         // 現在の実装では静的表示のため何もしない
     }

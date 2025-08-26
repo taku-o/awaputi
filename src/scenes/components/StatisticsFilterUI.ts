@@ -384,7 +384,7 @@ export class StatisticsFilterUI {
      * フレーム更新処理
      * @param deltaTime - 前フレームからの経過時間（ミリ秒）
      */
-    update(deltaTime: number): void {
+    update(_deltaTime: number): void {
         // 現在は特に処理なし
     }
     

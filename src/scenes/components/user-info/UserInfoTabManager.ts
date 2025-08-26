@@ -5,7 +5,7 @@
  */
 
 import { HelpTab } from '../HelpTab.js';
-import { HelpSectionSelector } from '../HelpSectionSelector.js';
+// import { HelpSectionSelector } from '../HelpSectionSelector.js';
 import { ManagementTab } from '../ManagementTab.js';
 import { AchievementsTab } from '../AchievementsTab.js';
 import { StatisticsTab } from '../StatisticsTab.js';
