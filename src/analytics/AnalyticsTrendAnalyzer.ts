@@ -349,7 +349,7 @@ export class AnalyticsTrendAnalyzer {
         const sumY = y.reduce((a, b) => a + b, 0);
         const sumXY = x.map((xi, i) => xi * y[i]).reduce((a, b) => a + b, 0);
         const sumXX = x.map(xi => xi * xi).reduce((a, b) => a + b, 0);
-        const _sumYY = y.map(yi => yi * yi).reduce((a, b) => a + b, 0);
+        // const _sumYY = y.map(yi => yi * yi).reduce((a, b) => a + b, 0);
 
         const slope = (n * sumXY - sumX * sumY) / (n * sumXX - sumX * sumX);
         const intercept = (sumY - slope * sumX) / n;

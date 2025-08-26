@@ -95,9 +95,9 @@ export class AnalyticsPerformanceOptimizer {
      * パフォーマンスメトリクスチェック
      */
     checkPerformanceMetrics() {
-        const _now = Date.now();
+        // const _now = Date.now();
         // FPS測定（近似値）
-        const _expectedFrameTime = 1000 / 60; // 60fps期待値
+        // const _expectedFrameTime = 1000 / 60; // 60fps期待値
         const actualFrameTime = this.performanceMetrics.frameTime;
         this.performanceMetrics.fps = Math.min(60, Math.round(1000 / actualFrameTime));
         // メモリ使用量チェック

@@ -11,7 +11,7 @@ export class PerformanceWarningSystem {
     private warningCategories: Map<string, any>;
     private acknowledgements: Set<string>;
     private warningContainer: HTMLElement | null;
-    private eventListeners: any[];
+    // private eventListeners: any[];
 
     constructor(realtimeMonitor: any, options: any = {}) {
         this.realtimeMonitor = realtimeMonitor;

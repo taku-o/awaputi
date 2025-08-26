@@ -162,7 +162,7 @@ export class AudioDescriptionManager {
             message,
             icon = '🔊',
             color = '#00ffff',
-            position = null,
+            // position = null,
             duration = 3000
         } = options;
         

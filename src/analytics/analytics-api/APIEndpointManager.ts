@@ -27,11 +27,11 @@ export class APIEndpointManager {
         maxRequestsPerHour: number,
         requestHistory: Map<string, any[]>;
     };
-    private accessControl: {
-        enabled: boolean,
-        allowedOrigins: string[],
-        requireAuthentication: boolean;
-    };
+    // private accessControl: {
+    //     enabled: boolean,
+    //     allowedOrigins: string[],
+    //     requireAuthentication: boolean;
+    // };
     private apiStats: {
         totalRequests: number,
         successfulRequests: number,

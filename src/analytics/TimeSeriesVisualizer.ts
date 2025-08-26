@@ -100,8 +100,8 @@ export class TimeSeriesVisualizer {
         const {
             title = `${this.getMetricDisplayName(metric)}の推移`,
             showTrend = true,
-            showSeasonalAdjusted = false,
-            period = 'weekly'
+            showSeasonalAdjusted = false
+            // period = 'weekly'
         } = options;
 
         // データ準備
@@ -246,8 +246,8 @@ export class TimeSeriesVisualizer {
     createTrendAnalysisChart(canvas: any, trendAnalysis: any, options: any = {}) {
         const {
             showConfidenceInterval = true,
-            showAnomalies = false,
-            highlightTrend = true
+            showAnomalies = false
+            // highlightTrend = true
         } = options;
 
         const { timeSeriesData, trend } = trendAnalysis;
@@ -365,7 +365,7 @@ export class TimeSeriesVisualizer {
     createDashboardChart(canvas: any, timeSeriesData: any, options: any = {}) {
         const {
             defaultMetric = 'averageScore',
-            showControls = true,
+            // showControls = true,
             enableZoom = true,
             enableAnnotations = true
         } = options;

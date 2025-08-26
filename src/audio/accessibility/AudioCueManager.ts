@@ -222,7 +222,7 @@ export class AudioCueManager {
      * @param event - イベントデータ
      */
     private handleBubblePopEvent(event: BubblePopEvent): void {
-        const { bubbleType, comboLevel, position } = event;
+        const { bubbleType, position } = event;
         
         // 視覚的通知
         this.mainController.audioDescriptionManager.showVisualNotification({

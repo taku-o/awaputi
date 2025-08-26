@@ -201,29 +201,29 @@ export class AudioAccessibilitySupport {
     /**
      * 音響イベントリスナーを設定
      */
-    private setupAudioEventListeners(): void {
-        // AudioManagerからのイベントを監視
-        if (this.audioManager.audioVisualizer) {
-            // 視覚化システムと連携してオーディオレベルを監視
-            this.monitorAudioLevels();
-        }
+    // private setupAudioEventListeners(): void {
+    //     // AudioManagerからのイベントを監視
+    //     if (this.audioManager.audioVisualizer) {
+    //         // 視覚化システムと連携してオーディオレベルを監視
+    //         this.monitorAudioLevels();
+    //     }
 
-        this.addAudioEventListener('bubblePop', (event: BubblePopEventData) => {
-            this.handleBubblePopEvent(event);
-        });
+    //     this.addAudioEventListener('bubblePop', (event: BubblePopEventData) => {
+    //         this.handleBubblePopEvent(event);
+    //     });
 
-        this.addAudioEventListener('comboAchieved', (event: ComboEventData) => {
-            this.handleComboEvent(event);
-        });
+    //     this.addAudioEventListener('comboAchieved', (event: ComboEventData) => {
+    //         this.handleComboEvent(event);
+    //     });
 
-        this.addAudioEventListener('achievementUnlocked', (event: AchievementEventData) => {
-            this.handleAchievementEvent(event);
-        });
+    //     this.addAudioEventListener('achievementUnlocked', (event: AchievementEventData) => {
+    //         this.handleAchievementEvent(event);
+    //     });
 
-        this.addAudioEventListener('gameStateChange', (event: GameStateEventData) => {
-            this.handleGameStateEvent(event);
-        });
-    }
+    //     this.addAudioEventListener('gameStateChange', (event: GameStateEventData) => {
+    //         this.handleGameStateEvent(event);
+    //     });
+    // }
     
     /**
      * 音響レベルを監視
@@ -317,7 +317,7 @@ export class AudioAccessibilitySupport {
      * @param event - イベントデータ
      */
     private handleBubblePopEvent(event: BubblePopEventData): void {
-        const { bubbleType, comboLevel, position } = event;
+        const { bubbleType, position } = event;
         
         // 視覚的通知
         this.showVisualNotification({

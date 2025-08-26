@@ -176,7 +176,7 @@ export class ComponentAudioAccessibilitySupport {
     private legacyAdapter: AudioLegacyAdapter;
     // Legacy compatibility properties
     // private vibrationManager: VibrationManager;
-    private visualNotifications: any[];
+    // private visualNotifications: any[];
     
     constructor(audioManager: AudioManager) {
         this.audioManager = audioManager;
