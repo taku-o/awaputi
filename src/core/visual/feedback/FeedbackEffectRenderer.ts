@@ -406,7 +406,7 @@ export function validateEffectOptions(options: Partial<EffectOptions>): EffectVa
 }
 
 export function getFrequencyColor(frequency: number): string {
-    for (const [range, config] of Object.entries(FREQUENCY_COLOR_MAPPING)) {
+    for (const [_range, config] of Object.entries(FREQUENCY_COLOR_MAPPING)) {
         if (frequency >= config.range[0] && frequency <= config.range[1]) {
             return config.color;
         }

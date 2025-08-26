@@ -410,7 +410,7 @@ export class DataCompressionManager {
     /**
      * オブジェクトのサマリー圧縮
      */
-    private compressObjectToSummary(data: any, options: CompressionOptions): any {
+    private compressObjectToSummary(data: any, _options: CompressionOptions): any {
         // 基本的なオブジェクトサマリー
         return {
             type: 'object_summary',
@@ -459,7 +459,7 @@ export class DataCompressionManager {
     /**
      * オブジェクト配列のサマリー
      */
-    private createObjectArraySummary(array: any[], options: CompressionOptions): ObjectArraySummary {
+    private createObjectArraySummary(array: any[], _options: CompressionOptions): ObjectArraySummary {
         const summary: ObjectArraySummary = {
             type: 'object_array_summary',
             count: array.length,
@@ -493,7 +493,7 @@ export class DataCompressionManager {
         });
         
         // フィールド統計の計算
-        for (const [key, fieldInfo] of fieldsMap) {
+        for (const [_key, fieldInfo] of fieldsMap) {
             if (fieldInfo.type === 'number' && fieldInfo.values.length > 0) {
                 fieldInfo.statistics = this.createNumericSummary(fieldInfo.values);
             } else if (fieldInfo.type === 'string') {
@@ -764,7 +764,7 @@ export class DataCompressionManager {
     /**
      * 辞書圧縮の作成
      */
-    private async createDictionaryCompression(data: any, options: CompressionOptions): Promise<any> {
+    private async createDictionaryCompression(data: any, _options: CompressionOptions): Promise<any> {
         const dictionary = new Map();
         const compressed: any = {};
         let nextId = 0;

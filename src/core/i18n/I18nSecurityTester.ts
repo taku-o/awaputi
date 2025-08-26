@@ -5,7 +5,7 @@
  * セキュリティ監査機能を提供
  */
 
-import { getErrorHandler } from '../../utils/ErrorHandler.js';
+import { _getErrorHandler } from '../../utils/ErrorHandler.js';
 
 // 型定義
 export interface SecurityTestConfig {
@@ -972,7 +972,7 @@ export class I18nSecurityTester {
         }
 
         // 全体的な推奨
-        if (this.testResults.successRate < 90) {
+        if ((this.testResults as any).successRate < 90) {
             recommendations.push({
                 priority: 'high',
                 message: 'セキュリティテストの成功率が低いです',

@@ -804,7 +804,7 @@ export class TranslationKeyManager {
         this.usageStats.unusedKeys = 0;
         this.usageStats.recentlyUsed = 0;
         
-        for (const [key, usage] of this.keyUsage) {
+        for (const [_key, usage] of this.keyUsage) {
             if (usage.count > 0) {
                 this.usageStats.usedKeys++;
                 
@@ -964,7 +964,7 @@ export class TranslationKeyManager {
         return Array.from(this.registeredKeys.keys());
     }
 
-    async getKeysByLanguage(language: string): Promise<string[]> {
+    async getKeysByLanguage(_language: string): Promise<string[]> {
         // 言語別のキー取得（モック実装）
         return this.getAllKeys();
     }

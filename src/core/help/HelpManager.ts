@@ -120,7 +120,7 @@ export class HelpManager {
     constructor(gameEngine: GameEngine) {
         this.gameEngine = gameEngine;
         this.localizationManager = getLocalizationManager();
-        this.cacheSystem = CacheSystem.getInstance ? CacheSystem.getInstance() : new CacheSystem();
+        this.cacheSystem = (CacheSystem as any).getInstance ? (CacheSystem as any).getInstance() : new CacheSystem();
         this.loggingSystem = LoggingSystem.getInstance ? LoggingSystem.getInstance() : new LoggingSystem();
         this.searchEngine = new SearchEngine();
         this.helpContent = new Map<string, HelpContent>();

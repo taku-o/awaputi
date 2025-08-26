@@ -6,7 +6,7 @@
  * リアルタイム監視と最適化提案を提供
  */
 
-import { getErrorHandler } from '../../utils/ErrorHandler.js';
+import { _getErrorHandler } from '../../utils/ErrorHandler.js';
 
 // 型定義
 export interface PerformanceMeasurement {
@@ -367,7 +367,7 @@ export class I18nPerformanceMonitor {
     async measureLanguageSwitch<T>(fromLanguage: string, toLanguage: string, callback: () => Promise<T>): Promise<LanguageSwitchResult> {
         return new Promise(async (resolve, reject) => {
             const startTime = performance.now();
-            const measurementId = `switch_${fromLanguage}_${toLanguage}_${Date.now()}`;
+            const __measurementId = `switch_${fromLanguage}_${toLanguage}_${Date.now()}`;
 
             try {
                 const result = await callback();
@@ -520,8 +520,8 @@ export class I18nPerformanceMonitor {
             const connection = navigator.connection;
             const networkInfo: NetworkInfo = {
                 effectiveType: connection.effectiveType,
-                downlink: connection.downlink,
-                rtt: connection.rtt,
+                downlink: (connection as any).downlink,
+                rtt: (connection as any).rtt,
                 timestamp: Date.now()
             };
 
@@ -531,8 +531,8 @@ export class I18nPerformanceMonitor {
             if (connection.effectiveType === 'slow-2g' || connection.effectiveType === '2g') {
                 this.recordPerformanceIssue('slowNetwork', {
                     effectiveType: connection.effectiveType,
-                    downlink: connection.downlink,
-                    rtt: connection.rtt
+                    downlink: (connection as any).downlink,
+                    rtt: (connection as any).rtt
                 });
             }
         }

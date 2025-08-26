@@ -345,7 +345,7 @@ export class QualityChecker {
     /**
      * パラメータ整合性チェック
      */
-    private checkParameterConsistency(key: string, translation: string, sourceLanguage: string, targetLanguage: string): ValidationResult {
+    private checkParameterConsistency(key: string, translation: string, sourceLanguage: string, _targetLanguage: string): ValidationResult {
         // 基準となる日本語翻訳を取得（実際の実装では翻訳データベースから取得）
         const sourceText = this.getSourceText(key, sourceLanguage);
         if (!sourceText) {
@@ -437,7 +437,7 @@ export class QualityChecker {
     /**
      * フォーマット検証
      */
-    private checkFormatValidation(key: string, translation: string, sourceLanguage: string, targetLanguage: string): ValidationResult {
+    private checkFormatValidation(key: string, translation: string, sourceLanguage: string, _targetLanguage: string): ValidationResult {
         const sourceText = this.getSourceText(key, sourceLanguage);
         if (!sourceText) {
             return {
@@ -480,7 +480,7 @@ export class QualityChecker {
     /**
      * 文化的適切性チェック
      */
-    private checkCulturalAppropriateness(key: string, translation: string, sourceLanguage: string, targetLanguage: string): ValidationResult {
+    private checkCulturalAppropriateness(_key: string, translation: string, _sourceLanguage: string, targetLanguage: string): ValidationResult {
         // 言語別の文化的配慮事項
         const culturalRules: Record<string, CulturalRules> = {
             'en': {
@@ -531,7 +531,7 @@ export class QualityChecker {
     /**
      * 翻訳完成度チェック
      */
-    private checkCompleteness(key: string, translation: string, sourceLanguage: string, targetLanguage: string): ValidationResult {
+    private checkCompleteness(key: string, translation: string, sourceLanguage: string, _targetLanguage: string): ValidationResult {
         if (!translation || translation.trim() === '') {
             return {
                 passed: false,
@@ -704,7 +704,7 @@ export class QualityChecker {
     /**
      * 元の翻訳文を取得（モック実装）
      */
-    private getSourceText(key: string, sourceLanguage: string): string | null {
+    private getSourceText(key: string, _sourceLanguage: string): string | null {
         // 実際の実装では翻訳データベースやファイルから取得
         // ここではモック実装
         const mockTranslations: Record<string, string> = {
@@ -863,7 +863,7 @@ export class QualityChecker {
     /**
      * 言語の品質をチェック
      */
-    async checkLanguageQuality(language: string, options: { rules?: string[] } = {}): Promise<{
+    async checkLanguageQuality(_language: string, _options: { rules?: string[] } = {}): Promise<{
         score: number;
         grade: string;
         errors: ValidationIssue[];

@@ -1048,7 +1048,7 @@ export class MobileAccessibilityValidator {
         return [];
     }
     
-    validateTouchTargetSpacing(element: HTMLElement, allElements: HTMLElement[]): TouchTargetSpacingResult {
+    validateTouchTargetSpacing(_element: HTMLElement, _allElements: HTMLElement[]): TouchTargetSpacingResult {
         return { hasProblems: false, issues: [] };
     }
     

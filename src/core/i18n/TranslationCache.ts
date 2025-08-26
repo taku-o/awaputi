@@ -429,7 +429,7 @@ export class TranslationCache {
         const languages = new Map<string, LanguageStats>();
         const keyPatterns = new Map<string, KeyPatternStats>();
         
-        for (const [cacheKey, entry] of this.cache.entries()) {
+        for (const [_cacheKey, entry] of this.cache.entries()) {
             // 言語別統計
             if (!languages.has(entry.language)) {
                 languages.set(entry.language, { count: 0, totalAccess: 0 });
@@ -526,7 +526,7 @@ export class TranslationCache {
      */
     getLanguageKeys(language: string): string[] {
         const keys: string[] = [];
-        for (const [cacheKey, entry] of this.cache.entries()) {
+        for (const [_cacheKey, entry] of this.cache.entries()) {
             if (entry.language === language) {
                 keys.push(entry.originalKey);
             }

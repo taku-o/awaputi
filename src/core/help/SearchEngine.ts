@@ -855,7 +855,7 @@ export class SearchEngine {
      * @param options - オプション
      * @returns サジェスト
      */
-    private generateSearchSuggestions(query: string, options: Required<SearchOptions>): string[] {
+    private generateSearchSuggestions(query: string, _options: Required<SearchOptions>): string[] {
         const suggestions: string[] = [];
         
         // 似たような語を探す

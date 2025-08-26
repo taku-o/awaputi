@@ -436,7 +436,7 @@ export class FocusAccessibilitySupport {
             return;
         }
 
-        const breadcrumbs = focusPath.map((element, index) => {
+        const breadcrumbs = focusPath.map((element, _index) => {
             const info = getElementAccessibilityInfo(element);
             let label = '';
 

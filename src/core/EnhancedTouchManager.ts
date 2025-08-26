@@ -169,7 +169,7 @@ export class EnhancedTouchManager {
      */
     applyDeviceOptimizations(): void {
         const deviceInfo = (getBrowserCompatibility() as any).deviceInfo;
-        const _browserInfo = getBrowserCompatibility();
+        const ___browserInfo = getBrowserCompatibility();
         
         if ((deviceInfo as any).platform === 'ios') {
             // iOS Safari のタッチ遅延を防ぐ

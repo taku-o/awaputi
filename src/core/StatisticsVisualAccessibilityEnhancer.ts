@@ -727,7 +727,7 @@ export class StatisticsVisualAccessibilityEnhancer {
         const ctx = magnifierCanvas.getContext('2d');
         if (!ctx) return;
 
-        const magnification = this.config.magnification.level;
+        const __magnification = this.config.magnification.level;
         
         // 元のCanvasから画像データを取得
         const sourceX = Math.max(0, x - 50);

@@ -357,7 +357,7 @@ export class DailyChallengeManager {
     async cleanupExpiredChallenges(): Promise<void> {
         const yesterday = this.getYesterdayString();
         const expiredChallenges = Array.from(this.challengeSystem.challenges.entries())
-            .filter(([id, challenge]) => 
+            .filter(([_id, challenge]) => 
                 challenge.type === 'daily' && 
                 challenge.metadata?.date === yesterday
             );

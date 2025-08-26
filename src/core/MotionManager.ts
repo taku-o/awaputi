@@ -206,9 +206,9 @@ export class MotionManager {
             await this.detectSystemMotionPreferences();
             
             // サブコンポーネントの初期化
-            await this.configManager.initialize();
-            await this.animationController.initialize();
-            await this.vestibularSafetyManager.initialize();
+            await (this.configManager as any).initialize();
+            await (this.animationController as any).initialize();
+            await (this.vestibularSafetyManager as any).initialize();
             
             // パフォーマンス監視を開始
             this.startPerformanceMonitoring();
@@ -314,7 +314,7 @@ export class MotionManager {
         }
         
         // 既存のアニメーションに適用
-        await this.animationController.applyIntensityChanges(intensityMultiplier);
+        await (this.animationController as any).applyIntensityChanges(intensityMultiplier);
         
         // CSS変数を更新
         this.updateCSSVariables();
@@ -419,7 +419,7 @@ export class MotionManager {
         
         // 前庭安全性チェック
         if (this.config.vestibularSafety) {
-            this.vestibularSafetyManager.validateAnimation(animation);
+            (this.vestibularSafetyManager as any).validateAnimation(animation);
         }
     }
 

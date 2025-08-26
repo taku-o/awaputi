@@ -453,7 +453,7 @@ export class GestureAdaptationSystem {
     /**
      * ジェスチャーパターンの学習
      */
-    private learnGesturePattern(gestureName: string, gestureData: GestureData, success: boolean): void {
+    private learnGesturePattern(gestureName: string, _gestureData: GestureData, success: boolean): void {
         // 成功したパターンを記録
         if (success) {
             // 閾値の微調整は上位で実行
@@ -493,7 +493,7 @@ export class GestureAdaptationSystem {
     /**
      * ユーザープロファイルの更新
      */
-    private updateUserProfileFromData(gestureData: GestureData, success: boolean): void {
+    private updateUserProfileFromData(gestureData: GestureData, _success: boolean): void {
         const profile = this.adaptationSystem.userProfile;
         
         // 精度の更新

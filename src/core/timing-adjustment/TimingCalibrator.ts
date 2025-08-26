@@ -453,7 +453,7 @@ export class TimingCalibrator {
      */
     private adjustForReducedMotion(): void {
         // アニメーション時間を延長
-        const currentProfile = this.manager.getCurrentProfile();
+        const __currentProfile = this.manager.getCurrentProfile();
         console.log('[TimingCalibrator] 動作軽減に対応したタイミング調整を適用');
     }
     

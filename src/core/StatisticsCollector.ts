@@ -404,7 +404,7 @@ export class StatisticsCollector {
     /**
      * パフォーマンス関連イベントの処理
      */
-    async processPerformanceEvents(events: any[]): Promise<void> {
+    async processPerformanceEvents(_events: any[]): Promise<void> {
         // パフォーマンス統計の更新
         // 将来的にパフォーマンス最適化で使用
     }

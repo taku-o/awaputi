@@ -381,7 +381,7 @@ export function findBestComplexityMatch(targetComplexity: number): Simplificatio
     return bestMatch;
 }
 
-export function generateModeRecommendation(context: AutoModeContext, currentMode: string, currentLevel: SimplificationLevel): ModeRecommendation | null {
+export function generateModeRecommendation(context: AutoModeContext, _currentMode: string, _currentLevel: SimplificationLevel): ModeRecommendation | null {
     const reasons: string[] = [];
     const benefits: string[] = [];
     const drawbacks: string[] = [];
@@ -512,7 +512,7 @@ export class SimplificationModeController {
     /**
      * レベルを変更
      */
-    changeLevel(newLevel: SimplificationLevel, reason: ModeTransitionType = 'manual'): ModeConfig {
+    changeLevel(newLevel: SimplificationLevel, _reason: ModeTransitionType = 'manual'): ModeConfig {
         if (!isValidSimplificationLevel(newLevel)) {
             throw new Error(`Unknown level: ${newLevel}`);
         }

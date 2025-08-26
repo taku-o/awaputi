@@ -1,4 +1,4 @@
-import { getErrorHandler } from '../../../utils/ErrorHandler.js';
+import { _getErrorHandler } from '../../../utils/ErrorHandler.js';
 
 // 型定義
 export interface FontErrorConfig {

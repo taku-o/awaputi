@@ -58,7 +58,7 @@ export class ShareContentGenerator {
     constructor(localizationManager: any, socialI18nManager: any = null) {
         this.localizationManager = localizationManager;
         this.socialI18nManager = socialI18nManager;
-        this.errorHandler = ErrorHandler.getInstance();
+        this.errorHandler = (ErrorHandler as any).getInstance();
         
         // メッセージテンプレート
         this.templates = this.initializeTemplates();
@@ -558,7 +558,7 @@ export class ShareContentGenerator {
     /**
      * フォールバックメッセージの取得
      */
-    private getFallbackMessage(messageType: string, platform: string): string {
+    private getFallbackMessage(messageType: string, _platform: string): string {
         const fallbacks: { [key: string]: string } = {
             'score': 'BubblePopで新しいスコアを達成しました！',
             'achievement': 'BubblePopで新しい実績を解除しました！',

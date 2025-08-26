@@ -4,7 +4,7 @@ import { TranslationCache } from './TranslationCache.js';
 import { TranslationLoader } from './TranslationLoader.js';
 import { FormatterEngine } from './FormatterEngine.js';
 import { getErrorHandler } from '../../utils/ErrorHandler.js';
-import type { ErrorHandler } from '../../utils/ErrorHandler.js';
+import type { _ErrorHandler } from '../../utils/ErrorHandler.js';
 
 /**
  * 拡張ローカライゼーション管理クラス - 高度な多言語対応システム

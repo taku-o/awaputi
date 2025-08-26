@@ -877,22 +877,22 @@ export class TranslationImportExport {
         return { translations: {} };
     }
 
-    private parseXML(content: string, options: any): any {
+    private parseXML(_content: string, _options: any): any {
         // Mock implementation
         return { translations: {} };
     }
 
-    private parseProperties(content: string, options: any): any {
+    private parseProperties(_content: string, _options: any): any {
         // Mock implementation
         return { translations: {} };
     }
 
-    private async validateImportData(data: any, options: any): Promise<ValidationResult> {
+    private async validateImportData(_data: any, _options: any): Promise<ValidationResult> {
         // Mock implementation
         return { valid: true, errors: [] };
     }
 
-    private async integrateTranslationData(data: any, language: string, options: any): Promise<IntegrationResult> {
+    private async integrateTranslationData(_data: any, _language: string, _options: any): Promise<IntegrationResult> {
         // Mock implementation
         return {
             totalKeys: 100,
@@ -910,7 +910,7 @@ export class TranslationImportExport {
         return value1 === value2;
     }
 
-    private generatePatch(differences: Differences, options: any): string {
+    private generatePatch(differences: Differences, _options: any): string {
         // Mock implementation
         return JSON.stringify(differences, null, 2);
     }

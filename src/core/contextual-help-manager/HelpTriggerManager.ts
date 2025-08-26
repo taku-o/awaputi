@@ -476,7 +476,7 @@ export class HelpTriggerManager {
      * ホバーリスナーを作成
      */
     private createHoverListener(element: HTMLElement, helpContent?: string): EventListener {
-        return (event: Event) => {
+        return (_event: Event) => {
             this.behaviorTracking.hoverTracking.currentElement = element;
             this.behaviorTracking.hoverTracking.hoverStartTime = Date.now();
 
@@ -497,7 +497,7 @@ export class HelpTriggerManager {
      * リーブリスナーを作成
      */
     private createLeaveListener(element: HTMLElement): EventListener {
-        return (event: Event) => {
+        return (_event: Event) => {
             if (this.behaviorTracking.hoverTracking.currentElement === element) {
                 this.behaviorTracking.hoverTracking.currentElement = null;
                 this.behaviorTracking.hoverTracking.hoverStartTime = null;
@@ -509,7 +509,7 @@ export class HelpTriggerManager {
      * フォーカスリスナーを作成
      */
     private createFocusListener(element: HTMLElement, helpContent?: string): EventListener {
-        return (event: Event) => {
+        return (_event: Event) => {
             this.triggerHelp('focus', {
                 targetElement: element,
                 triggerSource: 'focus',
@@ -522,7 +522,7 @@ export class HelpTriggerManager {
      * クリックリスナーを作成
      */
     private createClickListener(element: HTMLElement): EventListener {
-        return (event: Event) => {
+        return (_event: Event) => {
             const tracker = this.activeListeners.get(element);
             if (tracker) {
                 tracker.metadata.userInteractions++;

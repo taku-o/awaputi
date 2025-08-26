@@ -574,7 +574,7 @@ export class DeviceSpecificHandler {
         const passiveOptions = { passive: true };
 
         ['touchstart', 'touchmove'].forEach(eventType => {
-            canvas.addEventListener(eventType, (e) => {
+            canvas.addEventListener(eventType, (_e) => {
                 // パッシブイベント処理
             }, passiveOptions);
         });

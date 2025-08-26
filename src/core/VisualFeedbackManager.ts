@@ -181,7 +181,7 @@ export class VisualFeedbackManager {
             // オーディオ分析の設定（委任）
             this.configManager.setupAudioAnalysis();
             // イベントリスナーの設定（委任）
-            if ((this.triggerHandler as any).setupEventListeners) {
+            if (this.triggerHandler as any).setupEventListeners) {
                 (this.triggerHandler as any).setupEventListeners();
             }
 
@@ -197,7 +197,7 @@ export class VisualFeedbackManager {
      * ゲームイベントフィードバックのトリガー（委任）
      */
     triggerGameEventFeedback(eventType: string, eventData: any): void {
-        if ((this.triggerHandler as any).triggerGameEventFeedback) {
+        if (this.triggerHandler as any).triggerGameEventFeedback) {
             (this.triggerHandler as any).triggerGameEventFeedback(eventType, eventData);
         }
     }
@@ -270,7 +270,7 @@ export class VisualFeedbackManager {
      * オーディオ視覚化の開始（委任）
      */
     startAudioVisualization(): void {
-        if ((this.effectRenderer as any).startAudioVisualization) {
+        if (this.effectRenderer as any).startAudioVisualization) {
             (this.effectRenderer as any).startAudioVisualization();
         }
     }
@@ -286,7 +286,7 @@ export class VisualFeedbackManager {
      * 音量ベースフィードバックのトリガー（委任）
      */
     triggerVolumeBasedFeedback(volume: number): void {
-        if ((this.effectRenderer as any).triggerVolumeBasedFeedback) {
+        if (this.effectRenderer as any).triggerVolumeBasedFeedback) {
             (this.effectRenderer as any).triggerVolumeBasedFeedback(volume);
         }
     }
@@ -295,7 +295,7 @@ export class VisualFeedbackManager {
      * エッジフィードバックのトリガー（委任）
      */
     triggerEdgeFeedback(color: string, intensity: number): void {
-        if ((this.effectRenderer as any).triggerEdgeFeedback) {
+        if (this.effectRenderer as any).triggerEdgeFeedback) {
             (this.effectRenderer as any).triggerEdgeFeedback(color, intensity);
         }
     }
@@ -395,7 +395,7 @@ export class VisualFeedbackManager {
      * 手動フィードバックのトリガー（委任）
      */
     triggerManualFeedback(type: string, options: any = {}): void {
-        if ((this.triggerHandler as any).triggerManualFeedback) {
+        if (this.triggerHandler as any).triggerManualFeedback) {
             (this.triggerHandler as any).triggerManualFeedback(type, options);
         }
     }

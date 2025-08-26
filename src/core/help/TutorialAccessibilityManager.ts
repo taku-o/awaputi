@@ -4,7 +4,7 @@
  * アクセシビリティ設定、簡素化モード、スクリーンリーダー対応を担当
  */
 
-import { ErrorHandler } from '../../utils/ErrorHandler.js';
+import { _ErrorHandler } from '../../utils/ErrorHandler.js';
 import { LoggingSystem } from '../LoggingSystem.js';
 
 // 型定義

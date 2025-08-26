@@ -315,7 +315,7 @@ export class EventRankingManager {
     /**
      * ランキング報酬を付与
      */
-    grantRankingRewards(playerId: any, eventId: any, tierRewards: any, rank: any): any {
+    grantRankingRewards(_playerId: any, eventId: any, tierRewards: any, rank: any): any {
         const rewards = {
             ap: tierRewards.ap || 0,
             items: [...(tierRewards.items || [])],
@@ -347,7 +347,7 @@ export class EventRankingManager {
     /**
      * ランキング報酬通知を送信
      */
-    sendRankingRewardNotification(playerId: any, eventId: any, tier: any, rank: any, rewards: any): void {
+    sendRankingRewardNotification(_playerId: any, _eventId: any, tier: any, rank: any, rewards: any): void {
         if (!this.gameEngine.achievementNotificationSystem) return;
         const message = `${tier.name}ランク達成！ (${rank}位)`;
         const rewardText = [];

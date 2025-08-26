@@ -530,7 +530,7 @@ export class FeedbackAnimationManager {
             
             const originalBackground = options.target.style.background;
             const originalTransform = options.target.style.transform;
-            const pulseIntensity = 0.3 + (normalizeIntensity(options.intensity) * 0.7);
+            const __pulseIntensity = 0.3 + (normalizeIntensity(options.intensity) * 0.7);
             
             options.target.style.background = `radial-gradient(circle, ${options.color} 0%, transparent 70%)`;
             

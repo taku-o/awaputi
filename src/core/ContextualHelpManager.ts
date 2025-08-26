@@ -145,7 +145,7 @@ export class ContextualHelpManager {
         }
     }
 
-    private handleMouseOut(event: MouseEvent): void {
+    private handleMouseOut(_event: MouseEvent): void {
         if (this.showTimer) {
             clearTimeout(this.showTimer);
             this.showTimer = null;

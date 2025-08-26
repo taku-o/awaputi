@@ -621,7 +621,7 @@ export class CacheSystem {
             const beforeMemory = this._estimateMemoryUsage();
             
             // 1. 期限切れエントリの削除
-            const _expiredCount = this._cleanupExpiredEntries();
+            const ___expiredCount = this._cleanupExpiredEntries();
             
             // 2. 低優先度エントリの削除（メモリ使用量が高い場合）
             const memoryKB = parseInt(beforeMemory);

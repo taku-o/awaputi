@@ -486,7 +486,7 @@ export class NumberFormatter implements NumberFormatterInterface {
     /**
      * 地域設定を使用した数値フォーマット
      */
-    formatWithSettings(value: any, numberFormatSettings: NumberFormatSettings | null, format: string = 'default'): string {
+    formatWithSettings(value: any, numberFormatSettings: NumberFormatSettings | null, _format: string = 'default'): string {
         try {
             const number = Number(value);
             if (isNaN(number)) {
@@ -606,7 +606,7 @@ export class DateFormatter implements DateFormatterInterface {
     /**
      * 地域設定を使用した時刻フォーマット
      */
-    formatTimeWithSettings(value: any, timeFormatSettings: TimeFormatSettings | null, format: string = 'medium', regionInfo: RegionInfo = {}): string {
+    formatTimeWithSettings(value: any, timeFormatSettings: TimeFormatSettings | null, format: string = 'medium', _regionInfo: RegionInfo = {}): string {
         try {
             const date = new Date(value);
             if (isNaN(date.getTime())) {
@@ -640,7 +640,7 @@ export class DateFormatter implements DateFormatterInterface {
     /**
      * 月名を取得
      */
-    getMonthNames(regionInfo: RegionInfo): string[] {
+    getMonthNames(_regionInfo: RegionInfo): string[] {
         // 簡略化された月名マップ
         return [
             'January', 'February', 'March', 'April', 'May', 'June',
@@ -709,7 +709,7 @@ export class CurrencyFormatter implements CurrencyFormatterInterface {
     /**
      * 地域設定を使用した通貨フォーマット
      */
-    formatWithSettings(value: any, currencyFormatSettings: CurrencyFormatSettings | null, format: string = 'default'): string {
+    formatWithSettings(value: any, currencyFormatSettings: CurrencyFormatSettings | null, _format: string = 'default'): string {
         try {
             const number = Number(value);
             if (isNaN(number)) {
@@ -717,7 +717,7 @@ export class CurrencyFormatter implements CurrencyFormatterInterface {
             }
 
             const symbol = currencyFormatSettings?.symbol || '$';
-            const code = currencyFormatSettings?.code || 'USD';
+            const __code = currencyFormatSettings?.code || 'USD';
             const position = currencyFormatSettings?.position || 'before';
             const space = currencyFormatSettings?.space || false;
             
@@ -832,7 +832,7 @@ export class ListFormatter implements ListFormatterInterface {
                 ...options
             };
             
-            return new Intl.ListFormat(locale, formatOptions).format(value);
+            return new (Intl as any).ListFormat(locale, formatOptions).format(value);
         } catch (error) {
             console.warn(`List formatting failed for ${language}:`, error);
 

@@ -421,7 +421,7 @@ export class CompressionUtils {
     /**
      * 高度なパターンを検出
      */
-    private _detectAdvancedPatterns(text: string): Map<string, string> {
+    private _detectAdvancedPatterns(_text: string): Map<string, string> {
         const patterns = new Map<string, string>();
         
         // HTML-like tags
@@ -745,7 +745,7 @@ export class CompressionUtils {
     /**
      * データ構造を分析
      */
-    private _analyzeStructure(obj: any, depth: number = 0): StructureAnalysis {
+    private _analyzeStructure(obj: any, _depth: number = 0): StructureAnalysis {
         const analysis: StructureAnalysis = {
             depth: 0,
             totalKeys: 0,
@@ -771,7 +771,7 @@ export class CompressionUtils {
         traverse(obj, 0);
         
         // 重複キーを計算
-        for (const [key, frequency] of keyFrequency) {
+        for (const [_key, frequency] of keyFrequency) {
             if (frequency > 1) {
                 analysis.duplicateKeys += frequency - 1;
             }

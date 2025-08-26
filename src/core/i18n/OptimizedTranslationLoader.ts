@@ -606,7 +606,7 @@ export class OptimizedTranslationLoader {
     /**
      * 言語ファイルリストの取得
      */
-    private getLanguageFiles(language: string): string[] {
+    private getLanguageFiles(_language: string): string[] {
         return [
             'common',
             'menu',
@@ -657,7 +657,7 @@ export class OptimizedTranslationLoader {
     private flattenTranslations(translations: Record<string, any>): any {
         const flattened: Record<string, any> = {};
 
-        for (const [namespace, data] of Object.entries(translations)) {
+        for (const [_namespace, data] of Object.entries(translations)) {
             if (data && typeof data === 'object') {
                 Object.assign(flattened, data);
             }

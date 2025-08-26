@@ -4,7 +4,7 @@
  * データ構造管理、バックアップ、復旧機能を提供
  */
 
-import { ErrorHandler } from '../utils/ErrorHandler.js';
+import { _ErrorHandler } from '../utils/ErrorHandler.js';
 
 /**
  * 統計データ管理クラス

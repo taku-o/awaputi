@@ -76,7 +76,7 @@ export class MobileSystemIntegrator {
 
     constructor(gameEngine: any) {
         this.gameEngine = gameEngine;
-        this.errorHandler = ErrorHandler.getInstance();
+        this.errorHandler = (ErrorHandler as any).getInstance();
         
         // モバイルシステム構成
         this.integrationConfig = {
@@ -953,9 +953,9 @@ export class MobileSystemIntegrator {
         console.log('[MobileSystemIntegrator] 方向転換フォールバック有効化');
         
         // 方向固定モードの有効化
-        if (screen.orientation && screen.orientation.lock) {
+        if (screen.orientation && screen.(orientation as any).lock) {
             try {
-                await screen.orientation.lock('portrait-primary');
+                await screen.(orientation as any).lock('portrait-primary');
             } catch (lockError) {
                 console.warn('Screen orientation lock failed:', lockError);
             }
@@ -969,7 +969,7 @@ export class MobileSystemIntegrator {
         console.log('[MobileSystemIntegrator] 低パフォーマンスモード有効化');
         
         // 各コンポーネントに低パフォーマンスモードを通知
-        this.mobileComponents.forEach((componentInfo, name) => {
+        this.mobileComponents.forEach((componentInfo, _name) => {
             if (componentInfo.instance && typeof componentInfo.instance.enableLowPerformanceMode === 'function') {
                 componentInfo.instance.enableLowPerformanceMode();
             }
@@ -1030,7 +1030,7 @@ export class MobileSystemIntegrator {
     private handleOrientationChange(): void {
         setTimeout(() => {
             // 方向転換後の処理
-            this.mobileComponents.forEach((componentInfo, name) => {
+            this.mobileComponents.forEach((componentInfo, _name) => {
                 if (componentInfo.instance && typeof componentInfo.instance.onOrientationChange === 'function') {
                     componentInfo.instance.onOrientationChange();
                 }
@@ -1044,14 +1044,14 @@ export class MobileSystemIntegrator {
     private handleVisibilityChange(): void {
         if (document.hidden) {
             // バックグラウンドに移行
-            this.mobileComponents.forEach((componentInfo, name) => {
+            this.mobileComponents.forEach((componentInfo, _name) => {
                 if (componentInfo.instance && typeof componentInfo.instance.onPause === 'function') {
                     componentInfo.instance.onPause();
                 }
             });
         } else {
             // フォアグラウンドに復帰
-            this.mobileComponents.forEach((componentInfo, name) => {
+            this.mobileComponents.forEach((componentInfo, _name) => {
                 if (componentInfo.instance && typeof componentInfo.instance.onResume === 'function') {
                     componentInfo.instance.onResume();
                 }

@@ -853,7 +853,7 @@ export class QualityReporter {
     /**
      * CSV形式のレポートをレンダリング
      */
-    private renderCSVReport(data: ReportData, options: ReportOptions): string {
+    private renderCSVReport(data: ReportData, _options: ReportOptions): string {
         const rows: string[][] = [];
         
         // ヘッダー

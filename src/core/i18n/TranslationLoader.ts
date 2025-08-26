@@ -255,7 +255,7 @@ export class TranslationLoader {
      */
     private _flattenTranslations(categorizedTranslations: Record<string, any>): FlattenedTranslations {
         const flattened: FlattenedTranslations = {};
-        for (const [category, translations] of Object.entries(categorizedTranslations)) {
+        for (const [_category, translations] of Object.entries(categorizedTranslations)) {
             if (translations && typeof translations === 'object') {
                 // 各カテゴリのネストされた構造をフラット化
                 this._flattenNestedObject(translations, '', flattened);

@@ -762,7 +762,7 @@ export class ValidationCommands {
                 format: 'html',
                 includeDetails: true
             });
-            results.reportGenerated = reportResult.success;
+            results.reportGenerated = (reportResult as any).success;
         }
         
         return results;
@@ -1009,7 +1009,7 @@ export class ValidationCommands {
         let errorCount = 0;
         let warningCount = 0;
         
-        for (const [commandName, result] of this.lastValidationResults) {
+        for (const [_commandName, result] of this.lastValidationResults) {
             if (!result.result?.passed) {
                 hasErrors = true;
                 

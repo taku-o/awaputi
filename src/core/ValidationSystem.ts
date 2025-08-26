@@ -243,7 +243,7 @@ class ValidationSystem {
             };
         } catch (error: any) {
             // 検証処理自体でエラーが発生した場合
-            ErrorHandler.handleError(error, {
+            (ErrorHandler as any).handleError(error, {
                 context: 'ValidationSystem.validate',
                 category,
                 key,

@@ -175,7 +175,7 @@ export class DataStorage {
     /**
      * データの削除
      */
-    async remove(key: string, options: any = {}): Promise<any> {
+    async remove(key: string, _options: any = {}): Promise<any> {
         return await this.withRetry(async () => {
             if (!this.currentAdapter) {
                 throw new Error('No storage adapter available');
@@ -272,7 +272,7 @@ export class DataStorage {
     /**
      * データの後処理
      */
-    async postprocessData(data: any, options: any): Promise<any> {
+    async postprocessData(data: any, _options: any): Promise<any> {
         try {
             // メタデータの確認
             if (data._metadata) {

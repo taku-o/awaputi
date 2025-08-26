@@ -366,7 +366,7 @@ export class RTLLayoutManager {
         }
         
         // 数値の反転（transform: translateX など）
-        rtlCSS = rtlCSS.replace(/translateX\((-?\d+(?:\.\d+)?)([^)]*)\)/g, (match, value, unit) => {
+        rtlCSS = rtlCSS.replace(/translateX\((-?\d+(?:\.\d+)?)([^)]*)\)/g, (_match, value, unit) => {
             return `translateX(${-parseFloat(value)}${unit})`;
         });
         
@@ -385,7 +385,7 @@ export class RTLLayoutManager {
     /**
      * アニメーションをRTL用に調整
      */
-    adaptAnimationForRTL(animationName: string, keyframes: AnimationKeyframes): AnimationKeyframes {
+    adaptAnimationForRTL(_animationName: string, keyframes: AnimationKeyframes): AnimationKeyframes {
         const rtlKeyframes: AnimationKeyframes = {};
         
         Object.entries(keyframes).forEach(([percentage, rules]) => {
@@ -397,7 +397,7 @@ export class RTLLayoutManager {
                     rtlRules[flippedProperty] = value;
                 } else if (property === 'transform' && typeof value === 'string') {
                     // transform プロパティの調整
-                    rtlRules[property] = value.replace(/translateX\((-?\d+[^)]*)\)/g, (match, val) => {
+                    rtlRules[property] = value.replace(/translateX\((-?\d+[^)]*)\)/g, (_match, val) => {
                         const numericValue = parseFloat(val);
                         const unit = val.replace(/^-?\d+(?:\.\d+)?/, '');
                         return `translateX(${-numericValue}${unit})`;

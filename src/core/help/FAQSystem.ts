@@ -681,7 +681,7 @@ export class FAQSystem {
         this.usageStatistics.set(faqId, stats);
     }
 
-    private trackSearch(query: string): void {
+    private trackSearch(_query: string): void {
         // 検索クエリの統計追跡（実装は省略）
     }
 
@@ -729,7 +729,7 @@ export class FAQSystem {
         return stopWords.includes(word);
     }
 
-    private convertToCSV(data: any): string {
+    private convertToCSV(_data: any): string {
         // 簡易CSV変換（実装は省略）
         return 'CSV conversion not implemented';
     }

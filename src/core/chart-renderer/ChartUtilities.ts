@@ -939,7 +939,7 @@ export class AreaChartRenderer implements ChartRenderer {
         };
     }
 
-    private renderAxes(context: ChartContext, chartArea: ChartArea, scales: ChartScales, options: ChartOptions): void {
+    private renderAxes(context: ChartContext, chartArea: ChartArea, _scales: ChartScales, options: ChartOptions): void {
         context.strokeStyle = options.theme.colors.dark;
         context.lineWidth = 1;
         
@@ -956,7 +956,7 @@ export class AreaChartRenderer implements ChartRenderer {
         context.stroke();
     }
 
-    private renderGrid(context: ChartContext, chartArea: ChartArea, scales: ChartScales, options: ChartOptions): void {
+    private renderGrid(context: ChartContext, chartArea: ChartArea, _scales: ChartScales, _options: ChartOptions): void {
         context.strokeStyle = '#E5E7EB';
         context.lineWidth = 0.5;
         
@@ -1109,7 +1109,7 @@ export class ScatterChartRenderer implements ChartRenderer {
         };
     }
 
-    private renderAxes(context: ChartContext, chartArea: ChartArea, scales: ChartScales, options: ChartOptions): void {
+    private renderAxes(context: ChartContext, chartArea: ChartArea, _scales: ChartScales, options: ChartOptions): void {
         context.strokeStyle = options.theme.colors.dark;
         context.lineWidth = 1;
         
@@ -1126,7 +1126,7 @@ export class ScatterChartRenderer implements ChartRenderer {
         context.stroke();
     }
 
-    private renderGrid(context: ChartContext, chartArea: ChartArea, scales: ChartScales, options: ChartOptions): void {
+    private renderGrid(context: ChartContext, chartArea: ChartArea, _scales: ChartScales, _options: ChartOptions): void {
         context.strokeStyle = '#E5E7EB';
         context.lineWidth = 0.5;
         

@@ -164,7 +164,7 @@ export class ParameterConsistencyRule implements IValidationRule {
     /**
      * 検証実行
      */
-    validate(sourceText: string, translationText: string, context: ValidationContext = {}): ValidationResult {
+    validate(sourceText: string, translationText: string, _context: ValidationContext = {}): ValidationResult {
         if (!sourceText || !translationText) {
             return {
                 passed: false,
@@ -258,7 +258,7 @@ export class LengthValidationRule implements IValidationRule {
         const normalized = text.normalize('NFC');
         
         // 絵文字や結合文字を1文字として数える
-        const segmenter = new Intl.Segmenter('ja', { granularity: 'grapheme' });
+        const segmenter = new (Intl as any).Segmenter('ja', { granularity: 'grapheme' });
         const segments = Array.from(segmenter.segment(normalized));
         return segments.length;
     }
@@ -396,7 +396,7 @@ export class FormatValidationRule implements IValidationRule {
     /**
      * 検証実行
      */
-    validate(sourceText: string, translationText: string, context: ValidationContext = {}): ValidationResult {
+    validate(sourceText: string, translationText: string, _context: ValidationContext = {}): ValidationResult {
         if (!sourceText || !translationText) {
             return {
                 passed: false,
@@ -544,7 +544,7 @@ export class CulturalAppropriatenessRule implements IValidationRule {
     /**
      * 検証実行
      */
-    validate(sourceText: string, translationText: string, context: ValidationContext = {}): ValidationResult {
+    validate(_sourceText: string, translationText: string, context: ValidationContext = {}): ValidationResult {
         if (!translationText) {
             return {
                 passed: false,
@@ -663,7 +663,7 @@ export class CompletenessValidationRule implements IValidationRule {
     /**
      * 検証実行
      */
-    validate(sourceText: string, translationText: string, context: ValidationContext = {}): ValidationResult {
+    validate(sourceText: string, translationText: string, _context: ValidationContext = {}): ValidationResult {
         const issues: CompletenessIssue[] = [];
 
         // 空文字チェック

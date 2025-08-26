@@ -394,7 +394,7 @@ export class RenderingOptimizer {
      * 即座の要素更新
      */
     private async processImmediateUpdates(elements: HTMLElement[], language: string, options: BatchedUpdateOptions): Promise<void> {
-        const { animateTransition, cacheResults } = options;
+        const { animateTransition, __cacheResults } = options;
         
         // アニメーション準備
         if (animateTransition) {
@@ -502,7 +502,7 @@ export class RenderingOptimizer {
      * 要素の一括更新
      */
     private async batchUpdateElements(elements: HTMLElement[], language: string, measurements: Map<HTMLElement, ElementMeasurement>, options: BatchedUpdateOptions): Promise<void> {
-        const { animateTransition, cacheResults } = options;
+        const { __animateTransition, cacheResults } = options;
         
         // DOM書き込みの準備
         const updates: ElementUpdatePair[] = [];
@@ -566,7 +566,7 @@ export class RenderingOptimizer {
     /**
      * リフローが必要かチェック
      */
-    private needsReflow(originalText: string, translatedText: string, measurement: ElementMeasurement): boolean {
+    private needsReflow(originalText: string, translatedText: string, _measurement: ElementMeasurement): boolean {
         const lengthRatio = translatedText.length / originalText.length;
         
         // テキスト長が50%以上変わる場合はリフローが必要
@@ -605,7 +605,7 @@ export class RenderingOptimizer {
     /**
      * リフロー最適化
      */
-    private optimizeReflow(element: HTMLElement, update: ElementUpdate): void {
+    private optimizeReflow(element: HTMLElement, _update: ElementUpdate): void {
         // contain: layout を一時的に適用
         const originalContain = element.style.contain;
         element.style.contain = 'layout';
@@ -737,7 +737,7 @@ export class RenderingOptimizer {
     /**
      * トランジションアニメーション実行
      */
-    private async executeTransitionAnimation(elements: HTMLElement[]): Promise<void> {
+    private async executeTransitionAnimation(_elements: HTMLElement[]): Promise<void> {
         if (!this.animationOptimizer.enabled || this.animationOptimizer.reducedMotion) {
             return;
         }

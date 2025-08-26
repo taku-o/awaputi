@@ -4,7 +4,7 @@
  * ゲーム開始・終了、泡破壊、コンボ、ダメージなどの各種イベントハンドリング
  */
 
-import { ErrorHandler } from '../utils/ErrorHandler.js';
+import { _ErrorHandler } from '../utils/ErrorHandler.js';
 
 /**
  * 統計イベントハンドラークラス
@@ -145,7 +145,7 @@ export class StatisticsEventHandler {
      * @param {Object} bubbleData - 泡データ
      */
     onBubblePopped(bubbleData: any): void {
-        const { type, reactionTime, score, isSpecial } = bubbleData;
+        const { type, reactionTime, __score, isSpecial } = bubbleData;
         
         // 泡タイプ別統計更新
         if (this.statistics.bubbleTypeStats[type] !== undefined) {
@@ -262,7 +262,7 @@ export class StatisticsEventHandler {
      * @param {Object} effectData - 効果データ
      */
     onSpecialEffect(effectData: any): void {
-        const { type, duration, power } = effectData;
+        const { type, __duration, __power } = effectData;
 
         switch (type) {
             case 'bonusTime':
@@ -300,7 +300,7 @@ export class StatisticsEventHandler {
      * @param {Object} dragData - ドラッグデータ
      */
     onDragOperation(dragData: any): void {
-        const { distance, duration, accuracy } = dragData;
+        const { distance, __duration, accuracy } = dragData;
         
         const behavior = this.statistics.playerBehaviorStats;
         behavior.dragOperations++;
@@ -325,7 +325,7 @@ export class StatisticsEventHandler {
      * @param {Object} achievementData - 実績データ
      */
     onAchievementUnlocked(achievementData: any): void {
-        const { id, ap } = achievementData;
+        const { __id, ap } = achievementData;
         
         this.statistics.progressStats.achievementsUnlocked++;
         
@@ -356,7 +356,7 @@ export class StatisticsEventHandler {
      * @param {Object} itemData - アイテムデータ
      */
     onItemPurchased(itemData: any): void {
-        const { itemId, cost, currency } = itemData;
+        const { __itemId, cost, currency } = itemData;
         
         this.statistics.progressStats.itemsPurchased++;
         
@@ -410,7 +410,7 @@ export class StatisticsEventHandler {
     updateEfficiencyStats(bubblesPopped: number, playTime: number): void {
         const effStats = this.statistics.efficiencyStats;
         const playTimeMinutes = playTime / 60000;
-        const playTimeSeconds = playTime / 1000;
+        const __playTimeSeconds = playTime / 1000;
         
         if (playTimeMinutes > 0) {
             const currentEfficiency = bubblesPopped / playTimeMinutes;
@@ -539,7 +539,7 @@ export class StatisticsEventHandler {
      * @param {number} score - スコア
      * @param {boolean} completed - 完了フラグ
      */
-    updateStageDetailStats(stageId: string, playTime: number, score: number, completed: boolean): void {
+    updateStageDetailStats(stageId: string, playTime: number, _score: number, completed: boolean): void {
         const stageDetailStats = this.statistics.stageDetailStats;
         
         // 最速クリア時間更新
@@ -610,7 +610,7 @@ export class StatisticsEventHandler {
      * @param {number} score - スコア
      * @param {number} playTime - プレイ時間
      */
-    updateProgressDetailStats(score: number, playTime: number): void {
+    updateProgressDetailStats(score: number, _playTime: number): void {
         // 今回のプレイで新記録かチェック
         if (score > this.statistics.highestScore * 0.9) {
             // 90%以上のスコアは良いパフォーマンス

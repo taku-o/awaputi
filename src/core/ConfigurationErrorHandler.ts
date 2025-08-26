@@ -5,9 +5,9 @@
  * エラー復旧機能を提供します。
  */
 
-import { getErrorHandler } from '../utils/ErrorHandler';
+import { _getErrorHandler } from '../utils/ErrorHandler';
 import { getLoggingSystem } from './LoggingSystem';
-import { getValidationSystem } from './ValidationSystem';
+import { _getValidationSystem } from './ValidationSystem';
 
 export enum ConfigErrorType {
     CONFIGURATION_ACCESS = 'CONFIGURATION_ACCESS',
@@ -188,7 +188,7 @@ export class ConfigurationErrorHandler {
         // キャッシュエラーの復旧
         this.recoveryStrategies.set(ConfigErrorType.CACHE_ERROR, {
             maxAttempts: 1,
-            strategy: (error: Error, context: any) => {
+            strategy: (error: Error, _context: any) => {
                 this.logger.warn('キャッシュエラー、キャッシュを無効化', {
                     error: error.message
                 }, 'ConfigurationErrorHandler');
@@ -223,7 +223,7 @@ export class ConfigurationErrorHandler {
         }
     }
 
-    private _generateFallbackValue(category: string, key: string): any {
+    private _generateFallbackValue(_category: string, key: string): any {
         // 基本的なフォールバック値の生成
         if (key.includes('time') || key.includes('interval')) {
             return 1000; // 1秒

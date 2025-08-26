@@ -4,7 +4,7 @@
  * 翻訳データのメモリ効率的な管理と最適化を行う
  */
 
-import { getErrorHandler } from '../../utils/ErrorHandler.js';
+import { _getErrorHandler } from '../../utils/ErrorHandler.js';
 
 // 型定義
 export interface MemoryOptimizerOptions {
@@ -239,7 +239,7 @@ export class MemoryOptimizer {
     /**
      * 文字列重複排除
      */
-    private _deduplicateStrings(data: any, language: string): any {
+    private _deduplicateStrings(data: any, _language: string): any {
         const deduped: any = {};
         
         const processValue = (value: any): any => {
@@ -673,7 +673,7 @@ export class MemoryOptimizer {
     } {
         return {
             ...this.memoryUsage,
-            usagePercent: Math.round((this.memoryUsage.total / this.maxMemoryUsage) * 10000) / 100,
+            usagePercent: Math.round(this.memoryUsage.total / this.maxMemoryUsage) * 10000) / 100,
             maxMemoryMB: Math.round(this.maxMemoryUsage / 1024 / 1024),
             totalMB: Math.round(this.memoryUsage.total / 1024 / 1024),
             isUnderPressure: this.isUnderMemoryPressure,

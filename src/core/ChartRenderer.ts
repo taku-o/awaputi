@@ -283,7 +283,7 @@ export class ChartRenderer {
     /**
      * バーチャートの描画
      */
-    renderBarChart(data: ChartData, options: ChartOptions = {}): RenderResult {
+    renderBarChart(data: ChartData, _options: ChartOptions = {}): RenderResult {
         try {
             const startTime = performance.now();
             
@@ -345,7 +345,7 @@ export class ChartRenderer {
     /**
      * 線グラフの描画
      */
-    renderLineChart(data: ChartData, options: ChartOptions = {}): RenderResult {
+    renderLineChart(data: ChartData, _options: ChartOptions = {}): RenderResult {
         try {
             const startTime = performance.now();
             
@@ -365,7 +365,7 @@ export class ChartRenderer {
             
             this.ctx.beginPath();
             
-            data.labels.forEach((label, index) => {
+            data.labels.forEach((_label, index) => {
                 const value = data.datasets[0].data[index];
                 const x = chartArea.x + (index * scaleX);
                 const y = chartArea.y + chartArea.height - (value * scaleY);
@@ -412,7 +412,7 @@ export class ChartRenderer {
     /**
      * 円グラフの描画
      */
-    renderPieChart(data: ChartData, options: ChartOptions = {}): RenderResult {
+    renderPieChart(data: ChartData, _options: ChartOptions = {}): RenderResult {
         try {
             const startTime = performance.now();
             

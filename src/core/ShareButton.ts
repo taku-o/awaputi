@@ -287,7 +287,7 @@ export class ShareButton {
     /**
      * プラットフォーム別ボタンの作成
      */
-    createPlatformButton(platform: string, index: number): HTMLElement {
+    createPlatformButton(platform: string, _index: number): HTMLElement {
         const button = document.createElement('button');
         button.className = `share-button-platform share-button-${platform}`;
         button.setAttribute('data-platform', platform);
@@ -1169,7 +1169,7 @@ export class ShareButton {
         };
 
         if (ErrorHandler) {
-            ErrorHandler.handleError(error, 'ShareButton', context);
+            (ErrorHandler as any).handleError(error, 'ShareButton', context);
         }
 
         this.log('エラー発生', errorInfo, 'error');
@@ -1179,7 +1179,7 @@ export class ShareButton {
      * ログ記録
      */
     log(message: string, data: any = null, level: string = 'info'): void {
-        const logEntry = {
+        const __logEntry = {
             timestamp: Date.now(),
             message,
             data

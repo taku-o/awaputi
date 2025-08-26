@@ -383,7 +383,7 @@ export class DataArchiveManager {
     /**
      * アーカイブ戦略の決定
      */
-    determineArchiveStrategy(data: any, dataType: string): ArchiveStrategy {
+    determineArchiveStrategy(data: any, _dataType: string): ArchiveStrategy {
         // データ量に基づく戦略選択
         const dataSize = this.calculateDataSize(data);
         if (dataSize > 10 * 1024 * 1024) { // 10MB以上
@@ -431,7 +431,7 @@ export class DataArchiveManager {
     /**
      * アーカイブ用データの前処理
      */
-    async preprocessDataForArchive(data: any, dataType: string, options: Record<string, any>): Promise<any> {
+    async preprocessDataForArchive(data: any, _dataType: string, options: Record<string, any>): Promise<any> {
         let processed = data;
         
         // データクリーニング
@@ -848,7 +848,7 @@ export class DataArchiveManager {
     /**
      * アーカイブデータの解凍
      */
-    async decompressArchiveData(data: CompressedData, metadata: ArchiveMetadata): Promise<any> {
+    async decompressArchiveData(data: CompressedData, _metadata: ArchiveMetadata): Promise<any> {
         // 圧縮タイプに基づく解凍（簡略版）
         if (data.type === 'sampled_data') {
             return data.samples;
@@ -910,7 +910,7 @@ export class DataArchiveManager {
     /**
      * 年齢によるアーカイブ
      */
-    async archiveByAge(data: any, options: any): Promise<PartitionResult> {
+    async archiveByAge(data: any, _options: any): Promise<PartitionResult> {
         const cutoffDate = Date.now() - (this.config.retention.activeDays * 24 * 60 * 60 * 1000);
         
         if (Array.isArray(data)) {
@@ -978,7 +978,7 @@ export class DataArchiveManager {
     /**
      * 頻度によるアーカイブ（プレースホルダー実装）
      */
-    async archiveByFrequency(data: any, options: any): Promise<PartitionResult> {
+    async archiveByFrequency(data: any, _options: any): Promise<PartitionResult> {
         // 実装されていない戦略
         return { archive: null, keep: data };
     }
@@ -986,7 +986,7 @@ export class DataArchiveManager {
     /**
      * 重要度によるアーカイブ（プレースホルダー実装）
      */
-    async archiveByImportance(data: any, options: any): Promise<PartitionResult> {
+    async archiveByImportance(data: any, _options: any): Promise<PartitionResult> {
         // 実装されていない戦略
         return { archive: null, keep: data };
     }

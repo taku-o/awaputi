@@ -100,7 +100,7 @@ export class ScreenshotCapture {
 
     constructor(gameEngine: any) {
         this.gameEngine = gameEngine;
-        this.errorHandler = ErrorHandler.getInstance();
+        this.errorHandler = (ErrorHandler as any).getInstance();
         
         // 設定
         this.config = {
@@ -625,7 +625,7 @@ export class ScreenshotCapture {
     /**
      * 画像の最適化
      */
-    private async optimizeImage(imageData: ImageData, options: CaptureOptions): Promise<ImageData> {
+    private async optimizeImage(imageData: ImageData, _options: CaptureOptions): Promise<ImageData> {
         const targetSizeBytes = this.config.optimization.targetSizeKB * 1024;
         
         if (imageData.size <= targetSizeBytes) {

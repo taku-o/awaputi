@@ -3,7 +3,7 @@
  * 各種データ管理機能の統合と既存システムとの連携を提供
  */
 
-import { ErrorHandler } from '../utils/ErrorHandler.js';
+import { _ErrorHandler } from '../utils/ErrorHandler.js';
 import { DataStorageManager } from './data/DataStorageManager.js';
 
 interface DataManagerStatus {
@@ -199,7 +199,7 @@ export class DataManager {
      */
     private initializeAsyncQueue(): any {
         return {
-            executeBatch: async (operations: any[], options: any) => {
+            executeBatch: async (operations: any[], _options: any) => {
                 return Promise.all(operations.map(op => op()));
             },
             getStatus: () => ({ pending: 0, running: 0 })
@@ -211,7 +211,7 @@ export class DataManager {
      */
     private initializeChunkProcessor(): any {
         return {
-            processArray: async (data: any[], processor: Function, options: any) => {
+            processArray: async (data: any[], processor: Function, _options: any) => {
                 const results = [];
                 for (let i = 0; i < data.length; i++) {
                     const result = await processor(data[i], i, { processedItems: i, totalItems: data.length });
@@ -219,7 +219,7 @@ export class DataManager {
                 }
                 return results;
             },
-            processObject: async (data: any, processor: Function, options: any) => {
+            processObject: async (data: any, processor: Function, _options: any) => {
                 const keys = Object.keys(data);
                 const results = [];
                 for (let i = 0; i < keys.length; i++) {
@@ -239,7 +239,7 @@ export class DataManager {
     private initializeCache(): any {
         const cache = new Map();
         return {
-            getOrSet: async (key: string, getter: Function, options: any) => {
+            getOrSet: async (key: string, getter: Function, _options: any) => {
                 if (cache.has(key)) {
                     return cache.get(key);
                 }
@@ -256,7 +256,7 @@ export class DataManager {
                 return count;
             },
             keys: () => Array.from(cache.keys()),
-            invalidateByDependency: (dependency: string) => 0,
+            invalidateByDependency: (_dependency: string) => 0,
             getStats: () => ({ size: cache.size, hits: 0, misses: 0 })
         };
     }

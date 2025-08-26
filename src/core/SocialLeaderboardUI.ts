@@ -1349,7 +1349,7 @@ export class SocialLeaderboardUI {
     /**
      * リサイズイベントハンドラー
      */
-    private handleResize(event: Event): void {
+    private handleResize(_event: Event): void {
         // レスポンシブレイアウトの調整
         this.updateResponsiveLayout();
     }

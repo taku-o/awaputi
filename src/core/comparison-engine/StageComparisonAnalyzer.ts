@@ -336,7 +336,7 @@ export class StageComparisonAnalyzer {
     /**
      * ステージパフォーマンス比較を実行
      */
-    compareStagePerformance(stageData: StageData, options: Record<string, any> = {}): StageComparisonResult {
+    compareStagePerformance(stageData: StageData, _options: Record<string, any> = {}): StageComparisonResult {
         const results: StageComparisonResult = {
             timestamp: new Date().toISOString(),
             stageSummary: {},
@@ -463,7 +463,7 @@ export class StageComparisonAnalyzer {
     /**
      * 難易度調整済みメトリクスを計算
      */
-    calculateDifficultyAdjustedMetrics(stageData: StageData, stageStats: { [stageId: string]: StageStatistics }): DifficultyAdjustedMetrics {
+    calculateDifficultyAdjustedMetrics(_stageData: StageData, stageStats: { [stageId: string]: StageStatistics }): DifficultyAdjustedMetrics {
         const adjustedMetrics: DifficultyAdjustedMetrics = {};
 
         for (const [stageId, stats] of Object.entries(stageStats)) {
@@ -825,7 +825,7 @@ export class StageComparisonAnalyzer {
         return this.calculateImprovementTrend(recentPlays);
     }
 
-    private detectSeasonalPatterns(plays: PlayData[]): SeasonalPattern {
+    private detectSeasonalPatterns(_plays: PlayData[]): SeasonalPattern {
         // 簡易的な季節パターン検出（実装は要カスタマイズ）
         return { detected: false, pattern: 'none' };
     }
@@ -880,7 +880,7 @@ export class StageComparisonAnalyzer {
         return summary.length > 0 ? summary : ['有意な差は検出されませんでした'];
     }
     
-    private generatePairwiseRecommendations(stage1Id: string, stage2Id: string, stage1Stats: StageStatistics, stage2Stats: StageStatistics): string[] {
+    private generatePairwiseRecommendations(stage1Id: string, _stage2Id: string, stage1Stats: StageStatistics, stage2Stats: StageStatistics): string[] {
         const recommendations: string[] = [];
         
         // スコア比較による推奨
@@ -920,7 +920,7 @@ export class StageComparisonAnalyzer {
 
     private identifyWeakestStages(stageStats: { [stageId: string]: StageStatistics }): StageRanking[] {
         return Object.entries(stageStats)
-            .filter(([id, stats]) => stats.playCount >= this.stageConfig.minimumPlaysForAnalysis)
+            .filter(([_id, stats]) => stats.playCount >= this.stageConfig.minimumPlaysForAnalysis)
             .map(([id, stats]) => ({ 
                 id, 
                 rating: stats.performanceRating,
@@ -972,7 +972,7 @@ export class StageComparisonAnalyzer {
 
     private analyzeMasteryProgression(stageStats: { [stageId: string]: StageStatistics }): MasteryProgression {
         const masteryLevels = Object.entries(stageStats)
-            .filter(([id, stats]) => stats.playCount >= this.stageConfig.minimumPlaysForAnalysis)
+            .filter(([_id, stats]) => stats.playCount >= this.stageConfig.minimumPlaysForAnalysis)
             .map(([id, stats]) => ({
                 stage: id,
                 mastery: stats.masteryLevel || 0,

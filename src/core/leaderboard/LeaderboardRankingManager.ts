@@ -498,7 +498,7 @@ export class LeaderboardRankingManager {
         
         for (const period of periods) {
             if (data.periodLeaderboards[period]) {
-                for (const [key, board] of Object.entries(data.periodLeaderboards[period]!)) {
+                for (const [_key, board] of Object.entries(data.periodLeaderboards[period]!)) {
                     if (isValidLeaderboard(board)) {
                         this.sortLeaderboard(board);
                     }

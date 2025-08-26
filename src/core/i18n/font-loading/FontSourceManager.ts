@@ -338,7 +338,7 @@ export class SystemFontSource implements IFontSource {
         this.systemFonts = new Map<string, boolean>();
     }
 
-    async load(fontFamily: string, options: FontLoadOptions = {}): Promise<{ loaded: boolean; system: boolean }> {
+    async load(fontFamily: string, _options: FontLoadOptions = {}): Promise<{ loaded: boolean; system: boolean }> {
         if (!this._isFontAvailable(fontFamily)) {
             throw new Error(`System font not available: ${fontFamily}`);
         }

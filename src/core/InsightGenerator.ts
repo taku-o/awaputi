@@ -488,7 +488,7 @@ export class InsightGenerator {
         };
     }
 
-    private createRecommendationFromInsight(insight: Insight, data: StatisticsData): Recommendation | null {
+    private createRecommendationFromInsight(insight: Insight, _data: StatisticsData): Recommendation | null {
         // 洞察に基づいた推奨事項の生成ロジック
         const baseRecommendation = {
             id: this.generateId(),
@@ -518,7 +518,7 @@ export class InsightGenerator {
         }
     }
 
-    private generateGeneralRecommendations(data: StatisticsData): Recommendation[] {
+    private generateGeneralRecommendations(_data: StatisticsData): Recommendation[] {
         // 一般的な推奨事項の生成
         return [];
     }
@@ -541,7 +541,7 @@ export class InsightGenerator {
         };
     }
 
-    private assessDataQuality(data: StatisticsData): any {
+    private assessDataQuality(_data: StatisticsData): any {
         return { score: 0.8, completeness: 0.9, freshness: 0.8 };
     }
 
@@ -573,17 +573,17 @@ export class InsightGenerator {
         return { mean, standardDeviation: Math.sqrt(variance) };
     }
 
-    private analyzePlaystylePatterns(playstyle: any): Insight[] {
+    private analyzePlaystylePatterns(_playstyle: any): Insight[] {
         // プレイスタイルパターン分析の実装
         return [];
     }
 
-    private analyzeTimePatterns(timeStats: any): Insight[] {
+    private analyzeTimePatterns(_timeStats: any): Insight[] {
         // 時間パターン分析の実装
         return [];
     }
 
-    private checkMilestones(progress: any): Insight[] {
+    private checkMilestones(_progress: any): Insight[] {
         // マイルストーンチェックの実装
         return [];
     }

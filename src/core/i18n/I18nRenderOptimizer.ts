@@ -547,7 +547,7 @@ export class I18nRenderOptimizer {
      */
     private executeBatchDOMOperations(updates: RenderUpdate[]): void {
         // DocumentFragmentを使用した効率的な更新
-        const fragment = document.createDocumentFragment();
+        const __fragment = document.createDocumentFragment();
         
         for (const update of updates) {
             if (update.operation === 'textContent' && update.value) {
@@ -744,7 +744,7 @@ export class I18nRenderOptimizer {
         return lengths.reduce((sum, length) => sum + length, 0) / lengths.length;
     }
     
-    private calculateLayoutAdjustments(language: string, textDirection: string): LayoutAdjustments {
+    private calculateLayoutAdjustments(_language: string, textDirection: string): LayoutAdjustments {
         return {
             padding: { top: 4, right: 8, bottom: 4, left: 8 },
             margin: { top: 0, right: 0, bottom: 0, left: 0 },
@@ -797,7 +797,7 @@ export class I18nRenderOptimizer {
         return attrs;
     }
     
-    private calculateElementLayoutInfo(element: Element, newText: string, layoutInfo: LayoutInfo): ElementLayoutInfo {
+    private calculateElementLayoutInfo(_element: Element, newText: string, layoutInfo: LayoutInfo): ElementLayoutInfo {
         return {
             adjustments: layoutInfo.layoutAdjustments,
             textMetrics: {

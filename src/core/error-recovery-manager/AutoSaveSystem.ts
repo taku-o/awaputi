@@ -1014,7 +1014,7 @@ export class AutoSaveSystem {
         this.performSave('gameEnd');
     }
 
-    private handleGameError(error: any): void {
+    private handleGameError(_error: any): void {
         // エラー時の緊急保存
         this.performSave('emergency', { force: true });
         
@@ -1034,7 +1034,7 @@ export class AutoSaveSystem {
         });
     }
 
-    private handleBeforeUnload(event: BeforeUnloadEvent): void {
+    private handleBeforeUnload(_event: BeforeUnloadEvent): void {
         // ページ離脱前の最終保存
         this.performSave('beforeUnload');
     }

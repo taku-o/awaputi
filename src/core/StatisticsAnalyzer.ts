@@ -533,35 +533,35 @@ export class StatisticsAnalyzer {
     }
     
     // 簡略化されたヘルパーメソッド
-    summarizeTrendAnalysis(results: any): any {
+    summarizeTrendAnalysis(_results: any): any {
         return { summary: 'trend_analysis_complete' };
     }
     
-    generateTrendRecommendations(results: any): any[] {
+    generateTrendRecommendations(_results: any): any[] {
         return [];
     }
     
-    summarizeComparisonAnalysis(results: any): any {
+    summarizeComparisonAnalysis(_results: any): any {
         return { summary: 'comparison_complete' };
     }
     
-    identifySignificantChanges(results: any): any[] {
+    identifySignificantChanges(_results: any): any[] {
         return [];
     }
     
-    generateContextualInsights(data: any): any[] {
+    generateContextualInsights(_data: any): any[] {
         return [];
     }
     
-    generatePredictiveInsights(data: any): any[] {
+    generatePredictiveInsights(_data: any): any[] {
         return [];
     }
     
-    getWeeklyData(period: string): any {
+    getWeeklyData(_period: string): any {
         return null;
     }
     
-    getMonthlyData(period: string): any {
+    getMonthlyData(_period: string): any {
         return null;
     }
     
@@ -577,7 +577,7 @@ export class StatisticsAnalyzer {
         return Math.floor(stats.basic.totalGamesPlayed / 10) + 1;
     }
     
-    getRecentTrendSummary(result: any): string {
+    getRecentTrendSummary(_result: any): string {
         return 'stable';
     }
     

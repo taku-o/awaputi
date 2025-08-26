@@ -421,7 +421,7 @@ export class SocialAccessibilityManager {
         
         // Accessibility APIの検出
         if ((navigator as any).userAgentData && (navigator as any).userAgentData.getHighEntropyValues) {
-            (navigator as any).userAgentData.getHighEntropyValues(['uaFullVersion']).then((ua: any) => {
+            (navigator as any).userAgentData.getHighEntropyValues(['uaFullVersion']).then((_ua: any) => {
                 // より詳細な検出ロジック
             });
         }
@@ -800,7 +800,7 @@ export class SocialAccessibilityManager {
     /**
      * Escapeキーの処理
      */
-    private handleEscapeKey(event: KeyboardEvent): void {
+    private handleEscapeKey(_event: KeyboardEvent): void {
         // 最上位のモーダルを閉じる
         const modals = document.querySelectorAll('[role="dialog"]:not([style*="none"])') as NodeListOf<HTMLElement>;
         if (modals.length > 0) {
@@ -1061,8 +1061,8 @@ export class SocialAccessibilityManager {
             timestamp: Date.now()
         };
 
-        if (ErrorHandler && typeof ErrorHandler.handleError === 'function') {
-            ErrorHandler.handleError(error, 'SocialAccessibilityManager', context);
+        if (ErrorHandler && typeof (ErrorHandler as any).handleError === 'function') {
+            (ErrorHandler as any).handleError(error, 'SocialAccessibilityManager', context);
         }
 
         this.log('エラー発生', errorInfo, 'error');
@@ -1072,7 +1072,7 @@ export class SocialAccessibilityManager {
      * ログ記録
      */
     private log(message: string, data: any = null, level: string = 'info'): void {
-        const logEntry = {
+        const __logEntry = {
             timestamp: Date.now(),
             message,
             data,

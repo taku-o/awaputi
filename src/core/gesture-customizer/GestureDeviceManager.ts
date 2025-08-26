@@ -566,7 +566,7 @@ export class GestureDeviceManager {
     /**
      * タッチ終了処理
      */
-    private handleTouchEnd(event: TouchEvent): void {
+    private handleTouchEnd(_event: TouchEvent): void {
         if (!this.recognitionState.isRecognizing) return;
         
         const duration = Date.now() - this.recognitionState.startTime;
@@ -602,7 +602,7 @@ export class GestureDeviceManager {
     /**
      * タッチキャンセル処理
      */
-    private handleTouchCancel(event: TouchEvent): void {
+    private handleTouchCancel(_event: TouchEvent): void {
         this.resetRecognitionState();
         this.notifyGestureEvent('touchCancel', { type: 'touch' });
     }
@@ -650,7 +650,7 @@ export class GestureDeviceManager {
     /**
      * マウス解放処理
      */
-    private handleMouseUp(event: MouseEvent): void {
+    private handleMouseUp(_event: MouseEvent): void {
         if (!this.recognitionState.isRecognizing) return;
         
         const mouseTouch = {

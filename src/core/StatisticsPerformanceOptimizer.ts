@@ -1121,42 +1121,42 @@ export class StatisticsPerformanceOptimizer {
     }
 
     // 未実装メソッドの追加（呼び出される可能性があるメソッド）
-    private async renderChart(context: CanvasRenderingContext2D, data: any, options: any): Promise<void> {
+    private async renderChart(_context: CanvasRenderingContext2D, _data: any, _options: any): Promise<void> {
         // チャート描画の実装を将来的に追加
         console.warn('renderChart method not implemented');
     }
 
-    private async renderText(context: CanvasRenderingContext2D, data: any, options: any): Promise<void> {
+    private async renderText(_context: CanvasRenderingContext2D, _data: any, _options: any): Promise<void> {
         // テキスト描画の実装を将来的に追加
         console.warn('renderText method not implemented');
     }
 
-    private async renderBackground(context: CanvasRenderingContext2D, options: any): Promise<void> {
+    private async renderBackground(_context: CanvasRenderingContext2D, _options: any): Promise<void> {
         // 背景描画の実装を将来的に追加
         console.warn('renderBackground method not implemented');
     }
 
-    private cleanupCache(target: string): void {
+    private cleanupCache(_target: string): void {
         // キャッシュクリーンアップの実装を将来的に追加
         console.warn('cleanupCache method not implemented');
     }
 
-    private async performMemoryCleanup(target: string): Promise<void> {
+    private async performMemoryCleanup(_target: string): Promise<void> {
         // メモリクリーンアップの実装を将来的に追加
         console.warn('performMemoryCleanup method not implemented');
     }
 
-    private async compressOldData(target: string): Promise<void> {
+    private async compressOldData(_target: string): Promise<void> {
         // データ圧縮の実装を将来的に追加
         console.warn('compressOldData method not implemented');
     }
 
-    private async archiveOldData(target: string): Promise<void> {
+    private async archiveOldData(_target: string): Promise<void> {
         // データアーカイブの実装を将来的に追加
         console.warn('archiveOldData method not implemented');
     }
 
-    private async archiveData(data: any): Promise<void> {
+    private async archiveData(_data: any): Promise<void> {
         // データアーカイブの実装を将来的に追加
         console.warn('archiveData method not implemented');
     }

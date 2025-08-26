@@ -608,7 +608,7 @@ export class LeaderboardStorageManager {
             const retentionTime = DEFAULT_RETENTION_PERIODS[period as PeriodType] || DEFAULT_RETENTION_PERIODS.daily;
             
             for (const [key, board] of Object.entries(boards)) {
-                if (board && board.endDate && (now - board.endDate) > retentionTime) {
+                if (board && (board as any).endDate && (now - (board as any).endDate) > retentionTime) {
                     delete boards[key];
                     cleanedCount++;
                     console.log(`Cleaned up expired ${period} leaderboard: ${key}`);

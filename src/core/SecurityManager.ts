@@ -393,7 +393,7 @@ export class SecurityManager {
     /**
      * 暗号化の実行
      */
-    private async performEncryption(plaintext: string, options: any): Promise<any> {
+    private async performEncryption(plaintext: string, _options: any): Promise<any> {
         try {
             if (!window.crypto || !window.crypto.subtle) {
                 // フォールバック: 簡易暗号化

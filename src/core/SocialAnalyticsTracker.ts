@@ -381,7 +381,7 @@ export class SocialAnalyticsTracker {
      * @param action - アクション
      * @param data - データ
      */
-    updatePlatformStats(platform: string, action: string, data: ShareEventData): void {
+    updatePlatformStats(platform: string, action: string, _data: ShareEventData): void {
         if (!this.performanceStats.platformBreakdown[platform]) {
             this.performanceStats.platformBreakdown[platform] = {
                 requests: 0,

@@ -572,7 +572,7 @@ export class SystemIntegrationTester {
         
         // 翻訳メモリ管理テスト
         results.push(await this.runSingleTest('translation-memory-management', async () => {
-            const initialStats = this.formatterEngine.getStats();
+            const __initialStats = this.formatterEngine.getStats();
             // メモリクリア
             this.formatterEngine.clearMemory();
             const clearedStats = this.formatterEngine.getStats();
@@ -750,7 +750,7 @@ export class SystemIntegrationTester {
     private createSettingsManagerMock(): any {
         return {
             getSetting: (key: string) => key === 'language' ? 'ja' : null,
-            setSetting: (key: string, value: any) => true,
+            setSetting: (_key: string, _value: any) => true,
             getAllSettings: () => ({ language: 'ja', theme: 'default' })
         };
     }

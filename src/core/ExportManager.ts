@@ -479,7 +479,7 @@ class CompressedExporter {
         this.exportManager = exportManager;
     }
     
-    async export(exportData: any, options: any = {}): Promise<any> {
+    async export(exportData: any, _options: any = {}): Promise<any> {
         try {
             // 実際の実装では適切な圧縮ライブラリを使用
             // ここでは簡易的にJSON文字列を返す
@@ -518,7 +518,7 @@ class EncryptedExporter {
         this.exportManager = exportManager;
     }
     
-    async export(exportData: any, options: any = {}): Promise<any> {
+    async export(exportData: any, _options: any = {}): Promise<any> {
         try {
             // SecurityManagerと統合時に実装
             // 現在は基本的なエンコーディングのみ
@@ -558,7 +558,7 @@ class CSVExporter {
         this.exportManager = exportManager;
     }
 
-    async export(exportData: any, options: any = {}): Promise<any> {
+    async export(exportData: any, _options: any = {}): Promise<any> {
         try {
             let csvContent = '';
             
@@ -637,7 +637,7 @@ class TextExporter {
         this.exportManager = exportManager;
     }
     
-    async export(exportData: any, options: any = {}): Promise<any> {
+    async export(exportData: any, _options: any = {}): Promise<any> {
         try {
             let textContent = this.formatAsText(exportData);
             const filename = this.exportManager.generateFilename(

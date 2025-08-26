@@ -735,7 +735,7 @@ export class I18nSecurityManager {
     /**
      * セキュリティ対応の実行
      */
-    private triggerSecurityResponse(type: SecurityResponseType, details: any): void {
+    private triggerSecurityResponse(type: SecurityResponseType, _details: any): void {
         // 自動的なセキュリティ対応
         switch (type) {
             case 'script_injection':

@@ -310,14 +310,14 @@ export class FocusManager {
     /**
      * キーアップ処理
      */
-    handleKeyUp(event: any): void { 
+    handleKeyUp(_event: any): void { 
         // キーアップ時の処理（必要に応じて）
     }
     
     /**
      * マウスダウン処理
      */
-    handleMouseDown(event: any): void {
+    handleMouseDown(_event: any): void {
         this.state.isKeyboardMode = false;
         document.body.classList.remove('keyboard-mode');
     }
@@ -325,7 +325,7 @@ export class FocusManager {
     /**
      * タッチスタート処理
      */
-    handleTouchStart(event: any): void {
+    handleTouchStart(_event: any): void {
         this.state.isKeyboardMode = false;
         document.body.classList.remove('keyboard-mode');
     }
@@ -596,8 +596,8 @@ export class FocusManager {
      * コンテナ内のフォーカス可能要素を取得（ナビゲーションに委譲）
      */
     getFocusableElementsInContainer(container: any): any[] {
-        return this.navigation.getFocusableElementsInContainer ?
-               this.navigation.getFocusableElementsInContainer(container) : 
+        return (this.navigation as any).getFocusableElementsInContainer ?
+               (this.navigation as any).getFocusableElementsInContainer(container) : 
                [];
     }
     

@@ -324,7 +324,7 @@ export class UIUpdateOptimizer {
         const startTime = performance.now();
         
         try {
-            const { animateChanges, preserveState, deferHidden = [] } = options;
+            const { animateChanges, __preserveState, deferHidden = [] } = options;
             
             this.stats.immediateUpdates++;
             
@@ -376,7 +376,7 @@ export class UIUpdateOptimizer {
         const startTime = performance.now();
         
         try {
-            const { priority, animateChanges, deferHidden = [] } = options;
+            const { __priority, __animateChanges, deferHidden = [] } = options;
             
             this.stats.batchedUpdates++;
             
@@ -667,7 +667,7 @@ export class UIUpdateOptimizer {
      * Document Fragmentを使用したバッチ更新
      */
     private executeBatchUpdatesWithFragment(updates: ElementUpdateSpec[]): void {
-        const fragment = document.createDocumentFragment();
+        const __fragment = document.createDocumentFragment();
         
         for (const update of updates) {
             const { element, newText, preserveState } = update;
@@ -764,7 +764,7 @@ export class UIUpdateOptimizer {
         return element.textContent || element.innerText || '';
     }
     
-    private needsReflow(element: HTMLElement, currentText: string, newText: string, measurement: ElementMeasurement): boolean {
+    private needsReflow(_element: HTMLElement, currentText: string, newText: string, _measurement: ElementMeasurement): boolean {
         return currentText.length !== newText.length;
     }
     
@@ -802,7 +802,7 @@ export class UIUpdateOptimizer {
         }
     }
     
-    private prepareUpdateAnimations(elements: HTMLElement[], updates: ElementUpdateSpec[]): void {
+    private prepareUpdateAnimations(elements: HTMLElement[], _updates: ElementUpdateSpec[]): void {
         // アニメーション準備の実装
         elements.forEach(element => {
             element.style.transition = 'opacity 0.3s ease';

@@ -566,7 +566,7 @@ export class VibrationManager {
     /**
      * 振動トリガー判定
      */
-    shouldTriggerVibration(category: string, eventType: string): boolean {
+    shouldTriggerVibration(category: string, _eventType: string): boolean {
         if (!this.config.enabled || !this.hasVibrationCapability()) {
             return false;
         }
@@ -706,7 +706,7 @@ export class VibrationManager {
     /**
      * デバイス振動の実行
      */
-    executeDeviceVibration(pattern: number[], options: any): Promise<void> {
+    executeDeviceVibration(pattern: number[], _options: any): Promise<void> {
         return new Promise((resolve, reject) => {
             try {
                 const success = navigator.vibrate(pattern);
@@ -835,7 +835,7 @@ export class VibrationManager {
     /**
      * 視覚的フォールバック
      */
-    triggerVisualFallback(patternName: string, options: any): void {
+    triggerVisualFallback(_patternName: string, options: any): void {
         // VisualFeedbackManager との連携
         if (this.audioAccessibilityManager?.visualFeedbackManager) {
             this.audioAccessibilityManager.visualFeedbackManager.triggerManualFeedback('flash', {
@@ -849,7 +849,7 @@ export class VibrationManager {
     /**
      * 音響フォールバック
      */
-    triggerAudioFallback(patternName: string, options: any): void {
+    triggerAudioFallback(_patternName: string, options: any): void {
         // 簡単な音響効果でフィードバック
         if (this.gameEngine?.audioManager) {
             this.gameEngine.audioManager.playSound('vibrationFallback', {
@@ -887,7 +887,7 @@ export class VibrationManager {
         this.stats.vibrationsByEvent.set(eventType, count + 1);
     }
     
-    updateDurationStats(actualDuration: number): void {
+    updateDurationStats(_actualDuration: number): void {
         // 実際の振動時間の統計
     }
     

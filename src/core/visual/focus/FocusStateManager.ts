@@ -521,7 +521,7 @@ export class FocusStateManager {
     /**
      * フォーカス状態の更新
      */
-    private updateFocusState(element: HTMLElement, reason: FocusChangeReason): void {
+    private updateFocusState(element: HTMLElement, _reason: FocusChangeReason): void {
         this.state.previousFocusElement = this.state.currentFocusElement;
         this.state.currentFocusElement = element;
         this.state.lastFocusChangeTime = Date.now();

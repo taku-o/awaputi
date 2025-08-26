@@ -185,7 +185,7 @@ export class KeyboardShortcutRouter {
     constructor(gameEngine: ExtendedGameEngine) {
         this.gameEngine = gameEngine;
         this.loggingSystem = getLoggingSystem();
-        this.errorHandler = ErrorHandler.getInstance ? ErrorHandler.getInstance() : new ErrorHandler();
+        this.errorHandler = (ErrorHandler as any).getInstance ? (ErrorHandler as any).getInstance() : new ErrorHandler();
         
         // NavigationContextManagerのインスタンス
         this.navigationContext = new NavigationContextManager(gameEngine);
@@ -524,7 +524,7 @@ export class KeyboardShortcutRouter {
     /**
      * ゲーム一時停止の処理
      */
-    private handlePauseGame(context: ShortcutExecutionContext): boolean {
+    private handlePauseGame(_context: ShortcutExecutionContext): boolean {
         // ゲーム一時停止の実装は gameEngine に依存
         if (this.gameEngine && 'pauseGame' in this.gameEngine) {
             try {

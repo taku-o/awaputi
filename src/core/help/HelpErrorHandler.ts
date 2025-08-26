@@ -287,7 +287,7 @@ export class HelpErrorHandler {
     showUserFriendlyError(error: Error, suggestions: string[] = []): void {
         try {
             const userMessage = this.translateErrorToUserMessage(error);
-            const _errorData: UserErrorData = {
+            const ___errorData: UserErrorData = {
                 message: userMessage,
                 suggestions,
                 timestamp: Date.now(),
@@ -473,7 +473,7 @@ export class HelpErrorHandler {
         });
 
         // ユーザーインタラクションエラー戦略
-        this.fallbackStrategies.set(this.errorCategories.USER_INTERACTION, (error: Error, options: any): ErrorResult => {
+        this.fallbackStrategies.set(this.errorCategories.USER_INTERACTION, (_error: Error, _options: any): ErrorResult => {
             return {
                 success: true,
                 strategy: 'manual_mode',
@@ -601,7 +601,7 @@ export class HelpErrorHandler {
      * @param error - エラーオブジェクト
      * @returns ヘルプ利用可能フラグ
      */
-    private isHelpAvailable(error: Error): boolean {
+    private isHelpAvailable(_error: Error): boolean {
         // 基本的なヘルプは常に利用可能
         return true;
     }

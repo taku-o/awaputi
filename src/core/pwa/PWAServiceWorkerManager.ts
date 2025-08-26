@@ -215,7 +215,7 @@ export class PWAServiceWorkerManager {
      * オフライン準備完了の処理
      * @param {Object} data メッセージデータ
      */
-    private handleOfflineReady(data: any): void {
+    private handleOfflineReady(_data: any): void {
         console.log('[PWAServiceWorkerManager] Offline mode ready');
         this.pwaManager.offlineCapability = true;
     }
@@ -224,7 +224,7 @@ export class PWAServiceWorkerManager {
      * 同期利用可能の処理
      * @param {Object} data メッセージデータ
      */
-    private handleSyncAvailable(data: any): void {
+    private handleSyncAvailable(_data: any): void {
         console.log('[PWAServiceWorkerManager] Background sync available');
         // バックグラウンド同期の設定
         this.setupBackgroundSync();

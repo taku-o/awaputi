@@ -298,7 +298,7 @@ export class SocialErrorHandler {
     /**
      * ネットワークエラーからの復旧
      */
-    async recoverFromNetworkError(error: any, context: any): Promise<boolean> {
+    async recoverFromNetworkError(_error: any, context: any): Promise<boolean> {
         // ネットワーク状態の確認
         if (!navigator.onLine) {
             // オフライン時は復旧を延期
@@ -323,7 +323,7 @@ export class SocialErrorHandler {
     /**
      * スクリーンショットサイズエラーからの復旧
      */
-    async recoverFromLargeScreenshot(error: any, context: any): Promise<boolean> {
+    async recoverFromLargeScreenshot(_error: any, context: any): Promise<boolean> {
         try {
             if (context.canvas && context.reduceQuality) {
                 // 品質を下げて再試行
@@ -344,7 +344,7 @@ export class SocialErrorHandler {
     /**
      * ストレージ容量超過からの復旧
      */
-    async recoverFromStorageQuota(error: any, context: any): Promise<boolean> {
+    async recoverFromStorageQuota(_error: any, _context: any): Promise<boolean> {
         try {
             // 古いデータのクリーンアップを試行
             const cleaned = await this.cleanupOldData();
@@ -357,7 +357,7 @@ export class SocialErrorHandler {
     /**
      * メモリエラーからの復旧
      */
-    async recoverFromMemoryError(error: any, context: any): Promise<boolean> {
+    async recoverFromMemoryError(_error: any, context: any): Promise<boolean> {
         try {
             // ガベージコレクションのヒント
             if (typeof (window as any).gc === 'function') {
@@ -379,7 +379,7 @@ export class SocialErrorHandler {
     /**
      * Web Share API失敗からの復旧
      */
-    async recoverFromWebShareFailure(error: any, context: any): Promise<boolean> {
+    async recoverFromWebShareFailure(_error: any, context: any): Promise<boolean> {
         try {
             // フォールバック方法を試行
             if (context.fallbackShare && typeof context.fallbackShare === 'function') {

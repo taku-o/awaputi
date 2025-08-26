@@ -81,7 +81,7 @@ function _getCallerInfo(): string {
  * 非推奨警告を表示します。
  */
 const BALANCE_CONFIG_PROXY = new Proxy({}, {
-    get(target, prop) {
+    get(_target, prop) {
         const gameConfig = getGameConfig();
         const configManager = getConfigurationManager();
         const caller = _getCallerInfo();
@@ -107,8 +107,8 @@ const BALANCE_CONFIG_PROXY = new Proxy({}, {
         }
     },
     
-    set(target, prop, value) {
-        const configManager = getConfigurationManager();
+    set(_target, prop, _value) {
+        const __configManager = getConfigurationManager();
         const caller = _getCallerInfo();
         
         _showDeprecationWarning(`BALANCE_CONFIG.${String(prop)}への直接設定は非推奨です`, caller);

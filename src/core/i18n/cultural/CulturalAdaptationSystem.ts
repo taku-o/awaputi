@@ -395,7 +395,7 @@ export class CulturalAdaptationSystem {
         }
 
         try {
-            const colorSettings = this.currentCulture.settings.colors;
+            const __colorSettings = this.currentCulture.settings.colors;
             const computedStyle = window.getComputedStyle(element);
             
             // 現在の色を分析
@@ -739,7 +739,7 @@ export class CulturalAdaptationSystem {
         `;
     }
 
-    private isColorInappropriate(color: string, usage: string): boolean {
+    private isColorInappropriate(color: string, _usage: string): boolean {
         if (!color || !this.currentCulture) return false;
 
         const inappropriateColors = this.currentCulture.settings.colors.avoided || [];
@@ -754,7 +754,7 @@ export class CulturalAdaptationSystem {
         return color1.toLowerCase() === color2.toLowerCase();
     }
 
-    private suggestAppropriateColor(usage: string, context: string): string {
+    private suggestAppropriateColor(usage: string, _context: string): string {
         const colors = this.currentCulture!.settings.colors;
 
         switch (usage) {
@@ -833,7 +833,7 @@ export class CulturalAdaptationSystem {
         return `${taboo}に関する文化的背景情報`;
     }
 
-    private suggestAlternativeGesture(gestureType: string): string {
+    private suggestAlternativeGesture(_gestureType: string): string {
         // Mock implementation
         return 'alternative-gesture';
     }
@@ -843,15 +843,15 @@ export class CulturalAdaptationSystem {
         element.setAttribute('data-gesture', alternative);
     }
 
-    private softenDirectLanguage(element: HTMLElement): void {
+    private softenDirectLanguage(_element: HTMLElement): void {
         // Mock implementation
     }
 
-    private increasePolitenessLevel(element: HTMLElement): void {
+    private increasePolitenessLevel(_element: HTMLElement): void {
         // Mock implementation
     }
 
-    private addContextualInformation(element: HTMLElement): void {
+    private addContextualInformation(_element: HTMLElement): void {
         // Mock implementation
     }
 

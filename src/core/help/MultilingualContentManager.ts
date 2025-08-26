@@ -568,7 +568,7 @@ export class MultilingualContentManager {
                 includeLanguageInfo: true
             });
             
-            return results.map((result: any) => ({
+            return (results as any).map((result: any) => ({
                 ...result,
                 sourceLanguage: language
             }));

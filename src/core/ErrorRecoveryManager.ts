@@ -522,7 +522,7 @@ export class ErrorRecoveryManager {
     /**
      * エラーメッセージのフォーマット
      */
-    private formatErrorMessage(errorInfo: ErrorType, errorData: any): string {
+    private formatErrorMessage(errorInfo: ErrorType, _errorData: any): string {
         let html = `<div class="error-title">${errorInfo.name}</div>`;
         html += `<div class="error-message">${errorInfo.message}</div>`;
         
@@ -540,7 +540,7 @@ export class ErrorRecoveryManager {
     /**
      * 警告メッセージのフォーマット
      */
-    private formatWarningMessage(warningInfo: ErrorType, warningData: any): string {
+    private formatWarningMessage(warningInfo: ErrorType, _warningData: any): string {
         let html = `<div class="warning-title">⚠️ ${warningInfo.name}</div>`;
         html += `<div class="warning-prevention">${warningInfo.prevention}</div>`;
         return html;
@@ -549,7 +549,7 @@ export class ErrorRecoveryManager {
     /**
      * エラー回復の試行
      */
-    private attemptRecovery(errorType: string, errorData: any): void {
+    private attemptRecovery(errorType: string, _errorData: any): void {
         try {
             switch (errorType) {
                 case 'interface.accidentalReset':
@@ -693,7 +693,7 @@ export class ErrorRecoveryManager {
     /**
      * ページ終了前の処理
      */
-    private handleBeforeUnload(event: BeforeUnloadEvent): void {
+    private handleBeforeUnload(_event: BeforeUnloadEvent): void {
         if (this.autoSaveSystem) {
             (this.autoSaveSystem as any).save();
         }
@@ -715,15 +715,15 @@ export class ErrorRecoveryManager {
 
         // コンポーネントの破棄
         if (this.preventionHandler) {
-            this.preventionHandler.dispose();
+            (this.preventionHandler as any).dispose();
         }
         
         if (this.undoRedoSystem) {
-            this.undoRedoSystem.dispose();
+            (this.undoRedoSystem as any).dispose();
         }
         
         if (this.autoSaveSystem) {
-            this.autoSaveSystem.dispose();
+            (this.autoSaveSystem as any).dispose();
         }
 
         this.isInitialized = false;

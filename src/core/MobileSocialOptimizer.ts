@@ -801,35 +801,35 @@ export class MobileSocialOptimizer {
         // Implementation for sharing to mobile platform
     }
 
-    private async shareViaWebShareAPI(shareData: any): Promise<any> {
+    private async shareViaWebShareAPI(_shareData: any): Promise<any> {
         // Implementation for Web Share API
     }
 
-    private async showMobileOptimizedShareDialog(shareData: any): Promise<any> {
+    private async showMobileOptimizedShareDialog(_shareData: any): Promise<any> {
         // Implementation for mobile optimized share dialog
     }
 
-    private generateShareTitle(shareData: any): string {
+    private generateShareTitle(_shareData: any): string {
         // Implementation for generating share title
         return '';
     }
 
-    private generateShareText(shareData: any): string {
+    private generateShareText(_shareData: any): string {
         // Implementation for generating share text
         return '';
     }
 
-    private generateShareURL(shareData: any): string {
+    private generateShareURL(_shareData: any): string {
         // Implementation for generating share URL
         return '';
     }
 
-    private async convertScreenshotToFile(screenshot: any): Promise<File | null> {
+    private async convertScreenshotToFile(_screenshot: any): Promise<File | null> {
         // Implementation for converting screenshot to file
         return null;
     }
 
-    private adjustDialogForOrientation(dialog: HTMLElement): void {
+    private adjustDialogForOrientation(_dialog: HTMLElement): void {
         // Implementation for adjusting dialog for orientation
     }
 
@@ -837,7 +837,7 @@ export class MobileSocialOptimizer {
         // Implementation for recalculating touch targets
     }
 
-    private applyBreakpointOptimizations(breakpoint: string): void {
+    private applyBreakpointOptimizations(_breakpoint: string): void {
         // Implementation for applying breakpoint optimizations
     }
 

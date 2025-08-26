@@ -496,8 +496,8 @@ export class AnimationOptimizer {
         
         // 要素の現在状態を取得
         const computedStyle = window.getComputedStyle(element);
-        const currentTransform = computedStyle.transform;
-        const currentOpacity = computedStyle.opacity;
+        const __currentTransform = computedStyle.transform;
+        const __currentOpacity = computedStyle.opacity;
         
         // 最適化されたキーフレーム
         let optimizedKeyframes = [...preset.keyframes];
@@ -824,7 +824,7 @@ export class AnimationOptimizer {
      * 要素のアニメーションを一時停止
      */
     private pauseElementAnimations(element: HTMLElement): void {
-        for (const [id, data] of this.activeAnimations) {
+        for (const [_id, data] of this.activeAnimations) {
             if (data.element === element && data.animation.playState === 'running') {
                 data.animation.pause();
             }
@@ -835,7 +835,7 @@ export class AnimationOptimizer {
      * 要素のアニメーションを再開
      */
     private resumeElementAnimations(element: HTMLElement): void {
-        for (const [id, data] of this.activeAnimations) {
+        for (const [_id, data] of this.activeAnimations) {
             if (data.element === element && data.animation.playState === 'paused') {
                 data.animation.play();
             }
@@ -858,7 +858,7 @@ export class AnimationOptimizer {
     /**
      * アニメーション統計を更新
      */
-    private updateAnimationStats(totalTime: number, elementCount: number): void {
+    private updateAnimationStats(totalTime: number, _elementCount: number): void {
         this.stats.totalDuration += totalTime;
         this.stats.averageDuration = this.stats.totalDuration / this.stats.totalAnimations;
         this.performanceMetrics.animationCount = this.activeAnimations.size;

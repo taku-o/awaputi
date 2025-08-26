@@ -261,7 +261,7 @@ export function inferLearningStyle(interactions: InteractionEvent[]): LearningSt
     return Object.keys(styleCounts).find(style => styleCounts[style] === maxCount) as LearningStyle || 'multimodal';
 }
 
-export function detectUsagePattern(progressData: ProgressData, interactions: InteractionEvent[]): UsagePattern {
+export function detectUsagePattern(progressData: ProgressData, _interactions: InteractionEvent[]): UsagePattern {
     const helpRequestRatio = progressData.help_requests / Math.max(progressData.successful_interactions, 1);
     const explorationRatio = progressData.topics_viewed.size / Math.max(progressData.concepts_mastered.size, 1);
     
@@ -454,7 +454,7 @@ export class HelpPersonalizationEngine {
     /**
      * 学習パターンを更新
      */
-    private updateLearningPatterns(interaction: InteractionEvent): void {
+    private updateLearningPatterns(_interaction: InteractionEvent): void {
         // 学習スタイルの推論
         if (this.userProfile && this.interactionHistory.length >= 10) {
             const inferredStyle = inferLearningStyle(this.interactionHistory);
@@ -477,7 +477,7 @@ export class HelpPersonalizationEngine {
     /**
      * コンテンツを個人化
      */
-    personalizeContent(originalContent: any, context: Record<string, any> = {}): ContentAdaptation {
+    personalizeContent(originalContent: any, _context: Record<string, any> = {}): ContentAdaptation {
         if (!this.config.personalizeContent || !this.userProfile) {
             return {
                 original_content: originalContent,

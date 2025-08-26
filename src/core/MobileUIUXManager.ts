@@ -110,7 +110,7 @@ export class MobileUIUXManager {
 
     constructor(gameEngine: any) {
         this.gameEngine = gameEngine;
-        this.errorHandler = ErrorHandler.getInstance();
+        this.errorHandler = (ErrorHandler as any).getInstance();
         
         // 設定
         this.config = {

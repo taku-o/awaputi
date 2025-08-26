@@ -627,7 +627,7 @@ export class HelpMetricsCollector {
         let positiveCount = 0;
         let totalCount = 0;
         
-        interactions.forEach(([contentId, feedback]) => {
+        interactions.forEach(([_contentId, feedback]) => {
             if (feedback.helpful !== null) {
                 totalCount++;
                 if (feedback.helpful) {
@@ -688,7 +688,7 @@ export class HelpMetricsCollector {
         return patterns;
     }
     
-    private generateUsageInsights(summary: UsageSummary, details: UsageDetails): Insight[] {
+    private generateUsageInsights(summary: UsageSummary, _details: UsageDetails): Insight[] {
         const insights: Insight[] = [];
         
         if (summary.averageSessionDuration < 60) {
@@ -712,39 +712,39 @@ export class HelpMetricsCollector {
     
     // ========== スタブメソッド（詳細実装は必要に応じて） ==========
     
-    private analyzeTopicEngagement(sessions: AnalyticsSession[]): Record<string, any> {
+    private analyzeTopicEngagement(_sessions: AnalyticsSession[]): Record<string, any> {
         return {};
     }
     
-    private analyzeSearchBehavior(sessions: AnalyticsSession[]): Record<string, any> {
+    private analyzeSearchBehavior(_sessions: AnalyticsSession[]): Record<string, any> {
         return {};
     }
     
-    private analyzeNavigationPatterns(sessions: AnalyticsSession[]): Record<string, any> {
+    private analyzeNavigationPatterns(_sessions: AnalyticsSession[]): Record<string, any> {
         return {};
     }
     
-    private identifyDropoffPoints(sessions: AnalyticsSession[]): any[] {
+    private identifyDropoffPoints(_sessions: AnalyticsSession[]): any[] {
         return [];
     }
     
-    private analyzePeakUsageTimes(sessions: AnalyticsSession[]): Record<string, any> {
+    private analyzePeakUsageTimes(_sessions: AnalyticsSession[]): Record<string, any> {
         return {};
     }
     
-    private generateEngagementInsights(summary: EngagementSummary, details: EngagementDetails): Insight[] {
+    private generateEngagementInsights(_summary: EngagementSummary, _details: EngagementDetails): Insight[] {
         return [];
     }
     
-    private identifyImprovementAreas(interactions: [string, FeedbackData][]): any[] {
+    private identifyImprovementAreas(_interactions: [string, FeedbackData][]): any[] {
         return [];
     }
     
-    private analyzeUserSentiments(interactions: [string, FeedbackData][]): Record<string, any> {
+    private analyzeUserSentiments(_interactions: [string, FeedbackData][]): Record<string, any> {
         return {};
     }
     
-    private generateSatisfactionInsights(summary: SatisfactionSummary, details: SatisfactionDetails): Insight[] {
+    private generateSatisfactionInsights(_summary: SatisfactionSummary, _details: SatisfactionDetails): Insight[] {
         return [];
     }
     

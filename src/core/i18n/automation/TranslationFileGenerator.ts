@@ -697,7 +697,7 @@ export class TranslationFileGenerator {
             language: string;
         }
     ): ProcessedTranslationData {
-        const { includeEmpty, generateTemplate, preserveExisting, language } = options;
+        const { includeEmpty, generateTemplate, preserveExisting, __language } = options;
         const flattenedBase = this.flattenObject(categoryData);
         const flattenedExisting = existingTranslations ? this.flattenObject(existingTranslations) : {};
         
@@ -838,37 +838,37 @@ export class TranslationFileGenerator {
     }
     
     // These methods are referenced but not implemented in the original file
-    private async readSourceFile(filePath: string): Promise<string> {
+    private async readSourceFile(_filePath: string): Promise<string> {
         // Mock implementation
         return '';
     }
     
-    private getLineNumber(content: string, index: number): number {
+    private getLineNumber(_content: string, _index: number): number {
         // Mock implementation
         return 1;
     }
 
-    private extractContext(content: string, index: number): string {
+    private extractContext(_content: string, _index: number): string {
         // Mock implementation
         return '';
     }
     
-    private formatExtractionResults(extractedKeys: Map<string, ExtractedKeyInfo>, results: ExtractionResults, outputFormat: string): any {
+    private formatExtractionResults(extractedKeys: Map<string, ExtractedKeyInfo>, results: ExtractionResults, _outputFormat: string): any {
         // Mock implementation
         return { extractedKeys, results };
     }
     
-    private generateCategoryTemplate(categoryData: any, options: { includeExamples: boolean; language: string }): any {
+    private generateCategoryTemplate(_categoryData: any, _options: { includeExamples: boolean; language: string }): any {
         // Mock implementation
         return {};
     }
 
-    private convertToCSV(template: TranslationTemplate): string {
+    private convertToCSV(_template: TranslationTemplate): string {
         // Mock implementation
         return '';
     }
 
-    private convertToXLSX(template: TranslationTemplate): string {
+    private convertToXLSX(_template: TranslationTemplate): string {
         // Mock implementation
         return '';
     }

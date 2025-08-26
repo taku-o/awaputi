@@ -231,7 +231,7 @@ export type InputElementType = HTMLInputElement | HTMLTextAreaElement;
     /**
      * Composition 시작 처리
      */
-    private handleCompositionStart(event: CompositionEvent): void {
+    private handleCompositionStart(_event: CompositionEvent): void {
         this.isComposing = true;
         this.compositionText = '';
         console.log('Korean composition started');
@@ -292,7 +292,7 @@ export type InputElementType = HTMLInputElement | HTMLTextAreaElement;
     /**
      * 한국어 입력 처리
      */
-    private processKoreanInput(text: string, inputElement: HTMLElement): void {
+    private processKoreanInput(text: string, _inputElement: HTMLElement): void {
         try {
             // 입력된 텍스트 분석
             const analysis = this.analyzeKoreanText(text);
@@ -417,7 +417,7 @@ export type InputElementType = HTMLInputElement | HTMLTextAreaElement;
         // 한국어 띄어쓰기 규칙 적용
         const input = event.target as InputElementType;
         const text = input.value;
-        const cursorPos = input.selectionStart;
+        const __cursorPos = input.selectionStart;
         // 조사 앞 띄어쓰기 제거
         const particles = ['은', '는', '이', '가', '을', '를', '에', '에서', '으로', '로', '와', '과', '의', '도', '만', '까지'];
         
@@ -576,7 +576,7 @@ export type InputElementType = HTMLInputElement | HTMLTextAreaElement;
      */
     cleanup(): void {
         // 모든 입력 필드에서 핸들러 제거
-        this.inputListeners.forEach((handlers, element) => {
+        this.inputListeners.forEach((_handlers, element) => {
             this.detachFromInput(element);
         });
 

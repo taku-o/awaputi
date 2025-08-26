@@ -238,7 +238,7 @@ export class FontManager {
     /**
      * 個別フォントを読み込み
      */
-    async loadFont(fontConfig: FontSpec, key: string): Promise<boolean> {
+    async loadFont(fontConfig: FontSpec, _key: string): Promise<boolean> {
         try {
             // Google Fontsなど外部URLからの読み込み
             if (fontConfig.url) {
@@ -349,8 +349,8 @@ export class FontManager {
         const font = fontConfig[priority]!;
         const fontStack = [`"${font.family}"`];
 
-        if (font.fallback && Array.isArray(font.fallback)) {
-            fontStack.push(...font.fallback.map(f => f.includes(' ') ? `"${f}"` : f));
+        if ((font as any).fallback && Array.isArray((font as any).fallback)) {
+            fontStack.push(...(font as any).fallback.map(f => f.includes(' ') ? `"${f}"` : f));
         }
 
         return fontStack.join(', ');

@@ -86,7 +86,7 @@ export class MobileAccessibilityManager {
 
     constructor(gameEngine: any) {
         this.gameEngine = gameEngine;
-        this.errorHandler = ErrorHandler.getInstance();
+        this.errorHandler = (ErrorHandler as any).getInstance();
         
         // サブコンポーネントの初期化（依存性注入）
         this.validator = new MobileAccessibilityValidator(this);
@@ -411,7 +411,7 @@ export class MobileAccessibilityManager {
     /**
      * アクティベーション処理
      */
-    private handleActivation(event: KeyboardEvent): void {
+    private handleActivation(_event: KeyboardEvent): void {
         const activeElement = document.activeElement as HTMLElement;
         if (activeElement && typeof activeElement.click === 'function') {
             activeElement.click();
@@ -492,7 +492,7 @@ export class MobileAccessibilityManager {
     /**
      * フォーカス喪失の処理
      */
-    private handleFocusLoss(event: FocusEvent): void {
+    private handleFocusLoss(_event: FocusEvent): void {
         this.screenReaderState.currentFocus = null;
     }
 
@@ -555,7 +555,7 @@ export class MobileAccessibilityManager {
     /**
      * スクリーンリーダーの有効化
      */
-    private enableScreenReader(options: any = {}): void {
+    private enableScreenReader(_options: any = {}): void {
         this.accessibilityConfig.screenReader.enabled = true;
         this.screenReaderState.active = true;
         
@@ -580,7 +580,7 @@ export class MobileAccessibilityManager {
     /**
      * 高コントラストモードの有効化
      */
-    private enableHighContrast(options: any = {}): void {
+    private enableHighContrast(_options: any = {}): void {
         this.accessibilityConfig.visualSupport.highContrast = true;
         document.body.classList.add('high-contrast');
     }
@@ -620,7 +620,7 @@ export class MobileAccessibilityManager {
     /**
      * タッチ領域拡大の有効化
      */
-    private enableTouchAreaEnlargement(options: any = {}): void {
+    private enableTouchAreaEnlargement(_options: any = {}): void {
         this.accessibilityConfig.motorSupport.touchAreaEnlarged = true;
         document.body.classList.add('enlarged-touch-targets');
     }
@@ -636,7 +636,7 @@ export class MobileAccessibilityManager {
     /**
      * ハプティックフィードバックの有効化
      */
-    private enableHapticFeedback(options: any = {}): void {
+    private enableHapticFeedback(_options: any = {}): void {
         this.accessibilityConfig.auditorySupport.hapticFeedback = true;
     }
 

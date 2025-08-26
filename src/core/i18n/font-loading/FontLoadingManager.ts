@@ -255,7 +255,7 @@ export class FontLoadingManager {
             }
 
             try {
-                const result = await this.sourceManager.loadFromSource(sourceName, fontFamily, options);
+                const __result = await this.sourceManager.loadFromSource(sourceName, fontFamily, options);
                 return {
                     success: true,
                     fontFamily: fontFamily,
@@ -329,7 +329,7 @@ export class FontLoadingManager {
     /**
      * フォールバックフォントを取得
      */
-    getFallbackFont(fontFamily: string, language: string): string {
+    getFallbackFont(_fontFamily: string, language: string): string {
         return this.fallbackHandler.getSystemFontForLanguage(language);
     }
 
@@ -452,7 +452,7 @@ export class FontLoadingManager {
         this.config = this.mergeWithDefaults({ ...this.config, ...newConfig });
         
         // Update child components
-        this.sourceManager.updateConfig({
+        (this.sourceManager as any).updateConfig({
             enabledSources: this.config.enabledSources,
             timeouts: this.config.timeouts
         });

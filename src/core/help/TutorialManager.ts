@@ -256,7 +256,7 @@ export class TutorialManager {
         try {
             this.progressManager.pauseTutorial();
             if (this.tutorialOverlay) {
-                this.tutorialOverlay.pause();
+                (this.tutorialOverlay as any).pause();
             }
             this.loggingSystem.info('TutorialManager', 'Tutorial paused');
         } catch (error) {
@@ -271,7 +271,7 @@ export class TutorialManager {
         try {
             this.progressManager.resumeTutorial();
             if (this.tutorialOverlay) {
-                this.tutorialOverlay.resume();
+                (this.tutorialOverlay as any).resume();
             }
             this.loggingSystem.info('TutorialManager', 'Tutorial resumed');
         } catch (error) {
@@ -465,7 +465,7 @@ export class TutorialManager {
     showStepInstructions(step: TutorialStep): void {
         try {
             if (this.tutorialOverlay) {
-                this.tutorialOverlay.showStep(step);
+                (this.tutorialOverlay as any).showStep(step);
             }
         } catch (error) {
             this.loggingSystem.error('TutorialManager', 'Failed to show step instructions', error as string);
@@ -492,7 +492,7 @@ export class TutorialManager {
     async showTutorialOverlay(): Promise<void> {
         try {
             if (this.tutorialOverlay && this.currentTutorial) {
-                await this.tutorialOverlay.show(this.currentTutorial);
+                await (this.tutorialOverlay as any).show(this.currentTutorial);
             }
         } catch (error) {
             this.loggingSystem.error('TutorialManager', 'Failed to show tutorial overlay', error as string);
@@ -533,7 +533,7 @@ export class TutorialManager {
 
             // オーバーレイを非表示
             if (this.tutorialOverlay) {
-                this.tutorialOverlay.hide();
+                (this.tutorialOverlay as any).hide();
             }
             
             // ハイライトをクリア
@@ -551,7 +551,7 @@ export class TutorialManager {
     stopTutorial(): void {
         try {
             if (this.tutorialOverlay) {
-                this.tutorialOverlay.hide();
+                (this.tutorialOverlay as any).hide();
             }
 
             this.clearHighlight();
@@ -604,7 +604,7 @@ export class TutorialManager {
      */
     async loadGuidedTourData(): Promise<void> {
         try {
-            const guidedTours = await this.contentLoader.loadGuidedTours();
+            const guidedTours = await (this.contentLoader as any).loadGuidedTours();
             if (guidedTours) {
                 for (const [tourId, tourData] of Object.entries(guidedTours)) {
                     const tutorial = this.convertTourToTutorial(tourData);

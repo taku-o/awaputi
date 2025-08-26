@@ -448,7 +448,7 @@ export class StatisticsExporter {
     /**
      * プライバシーフィルターの適用
      */
-    applyPrivacyFilters(data: StatisticsData, options: Partial<ExportConfig>): StatisticsData {
+    applyPrivacyFilters(data: StatisticsData, _options: Partial<ExportConfig>): StatisticsData {
         if (!this.privacySettings.excludePersonalInfo) {
             return data;
         }
@@ -479,7 +479,7 @@ export class StatisticsExporter {
     /**
      * データのサニタイゼーション
      */
-    sanitizeData(data: any, options: Partial<ExportConfig>): any {
+    sanitizeData(data: any, _options: Partial<ExportConfig>): any {
         const sanitized = JSON.parse(JSON.stringify(data)); // Deep copy
         
         if (this.transformSettings.roundNumbers) {
@@ -541,7 +541,7 @@ export class StatisticsExporter {
     /**
      * テキストヘッダーの生成
      */
-    generateTextHeader(options: Partial<ExportConfig>): string {
+    generateTextHeader(_options: Partial<ExportConfig>): string {
         const lines = [
             'AWAPUTI BUBBLE POP GAME - 統計レポート',
             '='.repeat(50),
@@ -697,7 +697,7 @@ export class StatisticsExporter {
      */
     parseCSVData(csvString: string): any {
         // 簡単なCSV解析（実際の実装ではより堅牢な解析が必要）
-        const lines = csvString.split('\n');
+        const __lines = csvString.split('\n');
         const data = { statistics: {} };
         // CSV解析ロジック
         // 実装の詳細は省略
@@ -721,7 +721,7 @@ export class StatisticsExporter {
     /**
      * データ整合性の検証
      */
-    validateDataIntegrity(data: any): void {
+    validateDataIntegrity(_data: any): void {
         // データ整合性チェックのロジック
         // 実装の詳細は省略
     }
@@ -729,7 +729,7 @@ export class StatisticsExporter {
     /**
      * データのマージ
      */
-    async mergeImportData(parsedData: any, options: Partial<ImportConfig>): Promise<any> {
+    async mergeImportData(_parsedData: any, _options: Partial<ImportConfig>): Promise<any> {
         // データマージのロジック
         // 実装の詳細は省略
         return { conflicts: [] };
@@ -738,7 +738,7 @@ export class StatisticsExporter {
     /**
      * インポートデータの適用
      */
-    async applyImportedData(mergeResult: any): Promise<void> {
+    async applyImportedData(_mergeResult: any): Promise<void> {
         // データ適用のロジック
         // 実装の詳細は省略
     }
@@ -762,7 +762,7 @@ export class StatisticsExporter {
     /**
      * バックアップからの復元
      */
-    async restoreFromBackup(backupData: BackupData): Promise<void> {
+    async restoreFromBackup(_backupData: BackupData): Promise<void> {
         // バックアップ復元のロジック
         // 実装の詳細は省略
     }

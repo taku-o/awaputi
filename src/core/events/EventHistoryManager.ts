@@ -407,7 +407,7 @@ export class EventHistoryManager {
     /**
      * 統計データを更新
      */
-    private updateStatistics(event: Event, results: EventResults): void {
+    private updateStatistics(_event: Event, results: EventResults): void {
         // 平均スコアを更新
         const totalScore = this.statistics.averageScore * this.statistics.totalEventsCompleted + results.score;
         this.statistics.averageScore = totalScore / (this.statistics.totalEventsCompleted + 1);

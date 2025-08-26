@@ -395,7 +395,7 @@ export class HelpDataAnalyzer {
      * @param period - 分析期間
      * @returns トレンド分析結果
      */
-    async analyzeTrends(rawData: RawData, period: string): Promise<TrendAnalysis | null> {
+    async analyzeTrends(rawData: RawData, _period: string): Promise<TrendAnalysis | null> {
         try {
             const trends: TrendAnalysis = {
                 usage: this.calculateUsageTrends(rawData.sessions),
@@ -647,62 +647,62 @@ export class HelpDataAnalyzer {
     
     // ========== トレンド計算ヘルパーメソッド ==========
 
-    private calculateSessionGrowthTrend(sessions: SessionData[]): TrendData {
+    private calculateSessionGrowthTrend(_sessions: SessionData[]): TrendData {
         // セッション数の成長トレンドを計算
         return { trend: 'stable', rate: 0 };
     }
 
-    private calculateDurationTrend(sessions: SessionData[]): TrendData {
+    private calculateDurationTrend(_sessions: SessionData[]): TrendData {
         // セッション時間のトレンドを計算
         return { trend: 'stable', change: 0 };
     }
 
-    private calculateSearchTrend(sessions: SessionData[]): TrendData {
+    private calculateSearchTrend(_sessions: SessionData[]): TrendData {
         // 検索利用トレンドを計算
         return { trend: 'stable', change: 0 };
     }
 
-    private calculateRatingTrend(interactions: [string, InteractionData][]): TrendData {
+    private calculateRatingTrend(_interactions: [string, InteractionData][]): TrendData {
         // 評価トレンドを計算
         return { trend: 'stable', change: 0 };
     }
 
-    private calculateHelpfulnessTrend(interactions: [string, InteractionData][]): TrendData {
+    private calculateHelpfulnessTrend(_interactions: [string, InteractionData][]): TrendData {
         // 有用性トレンドを計算
         return { trend: 'stable', change: 0 };
     }
 
-    private calculateFeedbackVolumeTrend(interactions: [string, InteractionData][]): TrendData {
+    private calculateFeedbackVolumeTrend(_interactions: [string, InteractionData][]): TrendData {
         // フィードバック量トレンドを計算
         return { trend: 'stable', change: 0 };
     }
 
-    private calculateContentPopularityTrend(sessions: SessionData[]): TrendData {
+    private calculateContentPopularityTrend(_sessions: SessionData[]): TrendData {
         // コンテンツ人気度トレンドを計算
         return { trend: 'stable', changes: {} };
     }
 
-    private calculateAccessPatternTrend(sessions: SessionData[]): TrendData {
+    private calculateAccessPatternTrend(_sessions: SessionData[]): TrendData {
         // アクセスパターントレンドを計算
         return { trend: 'stable', patterns: {} };
     }
 
-    private calculateCompletionTrend(sessions: SessionData[]): TrendData {
+    private calculateCompletionTrend(_sessions: SessionData[]): TrendData {
         // 完了率トレンドを計算
         return { trend: 'stable', rate: 0 };
     }
 
-    private predictUsageTrend(sessions: SessionData[]): PredictionData {
+    private predictUsageTrend(_sessions: SessionData[]): PredictionData {
         // 使用率予測
         return { prediction: 'stable', confidence: 0.7 };
     }
 
-    private predictSatisfactionTrend(interactions: [string, InteractionData][]): PredictionData {
+    private predictSatisfactionTrend(_interactions: [string, InteractionData][]): PredictionData {
         // 満足度予測
         return { prediction: 'stable', confidence: 0.7 };
     }
 
-    private assessTrendRisks(rawData: RawData): RiskAssessment {
+    private assessTrendRisks(_rawData: RawData): RiskAssessment {
         // トレンドリスク評価
         return { level: 'low', factors: [] };
     }

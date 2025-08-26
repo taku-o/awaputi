@@ -1278,7 +1278,7 @@ export class HelpAnalytics {
         });
     }
     
-    private convertToCSV(data: any): string {
+    private convertToCSV(_data: any): string {
         // 簡易CSV変換（実装は省略）
         return 'CSV conversion not implemented';
     }
@@ -1296,7 +1296,7 @@ export class HelpAnalytics {
         }
     }
     
-    private restoreMapAndSetObjects(data: StoredAnalyticsData): void {
+    private restoreMapAndSetObjects(_data: StoredAnalyticsData): void {
         // Map and Set objects restoration logic would go here
         // This is a placeholder for the complex restoration process
     }
@@ -1310,7 +1310,7 @@ export class HelpAnalytics {
                 lastSaved: Date.now()
             };
             
-            localStorage.setItem('helpAnalytics', JSON.stringify(dataToStore, (key, value) => {
+            localStorage.setItem('helpAnalytics', JSON.stringify(dataToStore, (_key, value) => {
                 if (value instanceof Map) {
                     return Array.from(value.entries());
                 }

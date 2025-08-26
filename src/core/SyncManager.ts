@@ -261,7 +261,7 @@ export class SyncManager {
     /**
      * データ競合の処理
      */
-    async handleDataConflict(key: string, localData: any, cloudData: any, direction: string): Promise<any> {
+    async handleDataConflict(key: string, localData: any, cloudData: any, _direction: string): Promise<any> {
         // データの比較
         if (this.isDataEqual(localData, cloudData)) {
             return { action: 'skipped', message: 'Data is identical' };

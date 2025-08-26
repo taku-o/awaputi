@@ -395,7 +395,7 @@ export class StatisticsErrorHandler {
     /**
      * エラー状態の更新
      */
-    updateErrorState(errorDetails: any, severity: number): void {
+    updateErrorState(errorDetails: any, _severity: number): void {
         this.errorState.lastError = errorDetails;
         this.errorState.errorCount++;
         
@@ -465,7 +465,7 @@ export class StatisticsErrorHandler {
     /**
      * ユーザーアラートの表示
      */
-    showUserAlert(errorDetails: any, severity: number): void {
+    showUserAlert(_errorDetails: any, severity: number): void {
         const messages = {
             [this.config.severityLevels.HIGH]: '統計システムで問題が発生しました。自動復旧を試行中です。',
             [this.config.severityLevels.CRITICAL]: '統計システムで重大な問題が発生しました。セーフモードで動作します。'
@@ -536,7 +536,7 @@ export class StatisticsErrorHandler {
     /**
      * データ破損エラーの処理
      */
-    async handleDataCorruption(errorDetails: any): Promise<any> {
+    async handleDataCorruption(_errorDetails: any): Promise<any> {
         try {
             // バックアップからの復元
             const backupRestored = await this.restoreFromBackup();
@@ -555,7 +555,7 @@ export class StatisticsErrorHandler {
     /**
      * ストレージ不足エラーの処理
      */
-    async handleStorageFull(errorDetails: any): Promise<any> {
+    async handleStorageFull(_errorDetails: any): Promise<any> {
         try {
             // 古いデータの削除
             const cleaned = await this.cleanupOldData();
@@ -578,7 +578,7 @@ export class StatisticsErrorHandler {
     /**
      * 計算エラーの処理
      */
-    async handleCalculationError(errorDetails: any): Promise<any> {
+    async handleCalculationError(_errorDetails: any): Promise<any> {
         try {
             // 統計の再計算
             await this.recalculateStatistics();
@@ -593,7 +593,7 @@ export class StatisticsErrorHandler {
     /**
      * レンダリングエラーの処理
      */
-    async handleRenderingError(errorDetails: any): Promise<any> {
+    async handleRenderingError(_errorDetails: any): Promise<any> {
         try {
             // キャンバスのリセット
             await this.resetRenderingContext();
@@ -608,7 +608,7 @@ export class StatisticsErrorHandler {
     /**
      * ネットワークエラーの処理
      */
-    async handleNetworkError(errorDetails: any): Promise<any> {
+    async handleNetworkError(_errorDetails: any): Promise<any> {
         // リトライ処理（実装は外部システム依存）
         return { success: true, method: 'retry_scheduled' };
     }
@@ -616,7 +616,7 @@ export class StatisticsErrorHandler {
     /**
      * メモリエラーの処理
      */
-    async handleMemoryError(errorDetails: any): Promise<any> {
+    async handleMemoryError(_errorDetails: any): Promise<any> {
         try {
             // メモリクリーンアップ
             await this.performMemoryCleanup();
@@ -629,7 +629,7 @@ export class StatisticsErrorHandler {
     /**
      * 権限エラーの処理
      */
-    async handlePermissionError(errorDetails: any): Promise<any> {
+    async handlePermissionError(_errorDetails: any): Promise<any> {
         // 代替手段の提供（実装は環境依存）
         return { success: true, method: 'alternative_method' };
     }
@@ -637,7 +637,7 @@ export class StatisticsErrorHandler {
     /**
      * タイムアウトエラーの処理
      */
-    async handleTimeoutError(errorDetails: any): Promise<any> {
+    async handleTimeoutError(_errorDetails: any): Promise<any> {
         // タイムアウト時間の調整とリトライ
         return { success: true, method: 'timeout_adjusted' };
     }
@@ -724,7 +724,7 @@ export class StatisticsErrorHandler {
     /**
      * 緊急モードへの移行
      */
-    async enterEmergencyMode(originalError: any, safeModeError: any): Promise<void> {
+    async enterEmergencyMode(_originalError: any, _safeModeError: any): Promise<void> {
         console.error('Entering emergency mode - all error handling failed');
         
         // 最小限の機能のみ維持

@@ -502,7 +502,7 @@ export class AdaptiveSimplificationEngine {
     /**
      * エラーを記録
      */
-    private recordError(error: ErrorEvent): void {
+    private recordError(_error: ErrorEvent): void {
         this.behaviorTracker.errorCount++;
         this.updateBehaviorMetrics();
         this.evaluateAdaptationNeed();
@@ -692,7 +692,7 @@ export class AdaptiveSimplificationEngine {
     /**
      * 適応理由を取得
      */
-    private getAdaptationReason(score: number): string {
+    private getAdaptationReason(_score: number): string {
         const metrics = this.userBehaviorMetrics;
         const reasons: string[] = [];
 
@@ -718,7 +718,7 @@ export class AdaptiveSimplificationEngine {
     /**
      * 信頼度を計算
      */
-    private calculateConfidence(score: number): number {
+    private calculateConfidence(_score: number): number {
         const sessionTime = Date.now() - this.behaviorTracker.startTime;
         const timeFactor = Math.min(sessionTime / 300000, 1); // 5分で最大
         const interactionFactor = Math.min(this.behaviorTracker.interactionCount / 50, 1);

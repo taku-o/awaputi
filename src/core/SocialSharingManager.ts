@@ -4,7 +4,7 @@
  * 分割されたコンポーネントを統合管理するメインクラス
  */
 
-import { ErrorHandler } from '../utils/ErrorHandler.js';
+import { _ErrorHandler } from '../utils/ErrorHandler.js';
 import { ShareContentGenerator } from './ShareContentGenerator.js';
 import { SocialErrorHandler } from './SocialErrorHandler.js';
 import { SocialPlatformAdapters } from './SocialPlatformAdapters.js';
@@ -186,7 +186,7 @@ export class SocialSharingManager {
 
         // ShareContentGeneratorに依存関係を設定
         if (this.shareContentGenerator) {
-            this.shareContentGenerator.setupDependencies(dependencies);
+            (this.shareContentGenerator as any).setupDependencies(dependencies);
         }
     }
 
@@ -298,7 +298,7 @@ export class SocialSharingManager {
         this.analyticsTracker.trackUserBehavior('sharePromptView', { type: 'score' });
         
         if (this.shareContentGenerator) {
-            const shareData = await this.shareContentGenerator.generateScoreShareContent(gameData);
+            const shareData = await (this.shareContentGenerator as any).generateScoreShareContent(gameData);
             this.showShareDialog(shareData);
         }
     }
@@ -310,7 +310,7 @@ export class SocialSharingManager {
         this.analyticsTracker.trackUserBehavior('sharePromptView', { type: 'highScore' });
         
         if (this.shareContentGenerator) {
-            const shareData = await this.shareContentGenerator.generateHighScoreShareContent(scoreData);
+            const shareData = await (this.shareContentGenerator as any).generateHighScoreShareContent(scoreData);
             this.showShareDialog(shareData);
         }
     }
@@ -322,7 +322,7 @@ export class SocialSharingManager {
         this.analyticsTracker.trackUserBehavior('sharePromptView', { type: 'achievement' });
         
         if (this.shareContentGenerator) {
-            const shareData = await this.shareContentGenerator.generateAchievementShareContent(achievement);
+            const shareData = await (this.shareContentGenerator as any).generateAchievementShareContent(achievement);
             this.showShareDialog(shareData);
         }
     }
@@ -330,7 +330,7 @@ export class SocialSharingManager {
     /**
      * 統合共有メソッド（Web API優先、フォールバック対応）
      */
-    async share(shareData: ShareData, options: ShareOptions = {}): Promise<ShareResult> {
+    async share(shareData: ShareData, _options: ShareOptions = {}): Promise<ShareResult> {
         try {
             const startTime = Date.now();
             

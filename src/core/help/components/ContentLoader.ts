@@ -555,7 +555,7 @@ export class ContentLoader {
      */
     private cleanupCache(): void {
         // LRU方式でキャッシュをクリーンアップ
-        const _entries = Array.from(this.contentCache.entries());
+        const ___entries = Array.from(this.contentCache.entries());
         const expiries = Array.from(this.cacheExpiry.entries());
         
         // 有効期限順でソート

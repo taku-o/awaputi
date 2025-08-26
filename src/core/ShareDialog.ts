@@ -1139,7 +1139,7 @@ export class ShareDialog {
         };
 
         if (ErrorHandler) {
-            ErrorHandler.handleError(error, 'ShareDialog', context);
+            (ErrorHandler as any).handleError(error, 'ShareDialog', context);
         }
 
         this.log('エラー発生', errorInfo, 'error');
@@ -1149,7 +1149,7 @@ export class ShareDialog {
      * ログ記録
      */
     log(message: string, data: any = null, level: string = 'info'): void {
-        const logEntry = {
+        const __logEntry = {
             timestamp: Date.now(),
             message,
             data

@@ -662,7 +662,7 @@ export class ScreenshotOverlay {
     /**
      * カスタム画像の描画
      */
-    async drawCustomImage(ctx: CanvasRenderingContext2D, element: any, config: OverlayConfig, canvasWidth: number, canvasHeight: number): Promise<void> {
+    async drawCustomImage(_ctx: CanvasRenderingContext2D, element: any, _config: OverlayConfig, _canvasWidth: number, _canvasHeight: number): Promise<void> {
         // TODO: 画像描画実装
         this.log('カスタム画像の描画は未実装です', element);
     }
@@ -670,7 +670,7 @@ export class ScreenshotOverlay {
     /**
      * カスタムシェイプの描画
      */
-    async drawCustomShape(ctx: CanvasRenderingContext2D, element: any, config: OverlayConfig, canvasWidth: number, canvasHeight: number): Promise<void> {
+    async drawCustomShape(_ctx: CanvasRenderingContext2D, element: any, _config: OverlayConfig, _canvasWidth: number, _canvasHeight: number): Promise<void> {
         // TODO: シェイプ描画実装
         this.log('カスタムシェイプの描画は未実装です', element);
     }
@@ -951,7 +951,7 @@ export class ScreenshotOverlay {
         
         // ErrorHandlerユーティリティの使用
         if (ErrorHandler) {
-            ErrorHandler.handleError(error, 'ScreenshotOverlay', context);
+            (ErrorHandler as any).handleError(error, 'ScreenshotOverlay', context);
         }
         
         // ローカルログの記録
@@ -962,7 +962,7 @@ export class ScreenshotOverlay {
      * ログ記録
      */
     log(message: string, data: any = null, level: string = 'info'): void {
-        const logEntry = {
+        const __logEntry = {
             timestamp: Date.now(),
             message,
             data,

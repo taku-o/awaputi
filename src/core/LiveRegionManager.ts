@@ -624,7 +624,7 @@ export class LiveRegionManager {
     /**
      * ライブリージョンへの出力
      */
-    async outputToLiveRegion(region: HTMLElement, text: string, message: any): Promise<void> {
+    async outputToLiveRegion(region: HTMLElement, text: string, _message: any): Promise<void> {
         // 既存のコンテンツをクリア（atomicの場合）
         const isAtomic = region.getAttribute('aria-atomic') === 'true';
 

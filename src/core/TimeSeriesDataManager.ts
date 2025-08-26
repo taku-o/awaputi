@@ -565,7 +565,7 @@ export class TimeSeriesDataManager {
         const categories = new Set<string>();
         
         [this.dailyData, this.weeklyData, this.monthlyData].forEach(dataMap => {
-            for(const [key, value] of dataMap.entries()) {
+            for(const [_key, value] of dataMap.entries()) {
                 for (const category of value.categories.keys()) {
                     categories.add(category);
                 }

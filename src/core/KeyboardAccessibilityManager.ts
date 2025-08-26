@@ -496,7 +496,7 @@ export class KeyboardAccessibilityManager {
     /**
      * 競合解決の確認
      */
-    confirmConflictResolution(conflicts: ConflictInfo[], actionName: string, newKeys: string[]) {
+    confirmConflictResolution(conflicts: ConflictInfo[], _actionName: string, newKeys: string[]) {
         const conflictNames = conflicts.map(c => c.action).join(', ');
         const message = `ショートカット「${newKeys.join('+')}」は既に「${conflictNames}」で使用されています。続行しますか？`;
         
@@ -879,7 +879,7 @@ export class KeyboardAccessibilityManager {
     /**
      * 視覚的フィードバック
      */
-    showVisualFeedback(actionName: string) {
+    showVisualFeedback(_actionName: string) {
         // 簡易版：画面上部にフラッシュ表示
         const flashElement = document.createElement('div');
         flashElement.style.cssText = `
@@ -919,7 +919,7 @@ export class KeyboardAccessibilityManager {
     /**
      * 音声フィードバック
      */
-    playAudioFeedback(actionName: string) {
+    playAudioFeedback(_actionName: string) {
         // Web Audio APIを使用した簡易音声フィードバック
         try {
             const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
@@ -1019,7 +1019,7 @@ export class KeyboardAccessibilityManager {
         
         // 使用回数でソート
         const byUsage = shortcuts
-            .filter(([name, shortcut]) => shortcut.usageCount > 0)
+            .filter(([_name, shortcut]) => shortcut.usageCount > 0)
             .sort(([, a], [, b]) => (b.usageCount || 0) - (a.usageCount || 0));
         
         stats.mostUsed = byUsage.slice(0, 5).map(([name, shortcut]) => ({

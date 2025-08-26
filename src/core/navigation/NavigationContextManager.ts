@@ -153,7 +153,7 @@ export class NavigationContextManager {
     constructor(gameEngine: GameEngine) {
         this.gameEngine = gameEngine;
         this.loggingSystem = getLoggingSystem();
-        this.errorHandler = ErrorHandler.getInstance ? ErrorHandler.getInstance() : new ErrorHandler();
+        this.errorHandler = (ErrorHandler as any).getInstance ? (ErrorHandler as any).getInstance() : new ErrorHandler();
         
         // 設定の初期化
         this.config = { ...DEFAULT_CONFIG };

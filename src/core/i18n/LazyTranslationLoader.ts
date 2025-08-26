@@ -266,7 +266,7 @@ export class LazyTranslationLoader {
     /**
      * 読み込むファイルの決定
      */
-    private _determineFilesToLoad(language: string): string[] {
+    private _determineFilesToLoad(_language: string): string[] {
         // 言語固有の読み込み戦略
         const filesToLoad = [];
         

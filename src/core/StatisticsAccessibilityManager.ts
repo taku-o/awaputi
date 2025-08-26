@@ -573,7 +573,7 @@ export class StatisticsAccessibilityManager {
     /**
      * キーアップハンドラー
      */
-    handleKeyUp(event: KeyboardEvent): void {
+    handleKeyUp(_event: KeyboardEvent): void {
         // キーボード操作の終了処理
     }
     
@@ -837,7 +837,7 @@ export class StatisticsAccessibilityManager {
     /**
      * サマリーテキストの生成
      */
-    generateSummaryText(sectionId: string, data: any): string {
+    generateSummaryText(_sectionId: string, data: any): string {
         const parts: string[] = [];
         
         if (data.gamePlayStats) {
@@ -911,7 +911,7 @@ export class StatisticsAccessibilityManager {
     /**
      * グラフテキストの生成
      */
-    generateChartText(data: any): string {
+    generateChartText(_data: any): string {
         // グラフの種類に応じたテキスト生成
         return 'スコア推移グラフ: 時間軸に沿ってスコアの変化を表示しています。' +
                '最近のトレンドは上昇傾向を示しています。';
@@ -920,14 +920,14 @@ export class StatisticsAccessibilityManager {
     /**
      * トレンドテキストの生成
      */
-    generateTrendText(sectionId: string, data: any): string {
+    generateTrendText(_sectionId: string, _data: any): string {
         return 'トレンド分析: 過去7日間のパフォーマンスは向上しています。';
     }
     
     /**
      * 比較テキストの生成
      */
-    generateComparisonText(sectionId: string, data: any): string {
+    generateComparisonText(_sectionId: string, _data: any): string {
         return '期間比較: 今週は先週と比較してスコアが15%向上しています。';
     }
     

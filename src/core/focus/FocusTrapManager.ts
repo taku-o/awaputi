@@ -289,9 +289,9 @@ export class FocusTrapManager {
                 lastFocusableElement: null,
                 previouslyFocusedElement: document.activeElement as HTMLElement,
                 isActive: false,
-                handleKeyDown: (event: KeyboardEvent) => {},
-                handleFocusIn: (event: FocusEvent) => {},
-                handleFocusOut: (event: FocusEvent) => {}
+                handleKeyDown: (_event: KeyboardEvent) => {},
+                handleFocusIn: (_event: FocusEvent) => {},
+                handleFocusOut: (_event: FocusEvent) => {}
             };
             
             // ハンドラーをバインド
@@ -753,7 +753,7 @@ export class FocusTrapManager {
      * 要素のラベルを取得
      */
     getElementLabel(element: HTMLElement, options: ElementLabelOptions = {}): string {
-        const opts: Required<ElementLabelOptions> = {
+        const __opts: Required<ElementLabelOptions> = {
             includeAriaLabel: true,
             includeLabelElement: true,
             includeTextContent: true,

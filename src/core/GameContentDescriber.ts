@@ -646,7 +646,7 @@ export class GameContentDescriber {
     /**
      * コンテキスト依存指示の取得
      */
-    getContextualInstructions(phase: string): string {
+    getContextualInstructions(_phase: string): string {
         const base = this.templates.instructions.basic;
         if (this.config.includeShortcuts) {
             return `${base} ${this.templates.instructions.shortcuts}`;

@@ -754,7 +754,7 @@ export class AdvancedCacheManager {
      */
     getStats(): DetailedStats {
         const hitRate = this.stats.totalRequests > 0 
-            ? ((this.stats.totalRequests - this.stats.misses) / this.stats.totalRequests) * 100 
+            ? (this.stats.totalRequests - this.stats.misses) / this.stats.totalRequests) * 100 
             : 0;
             
         const memoryUsagePercent = (this.stats.currentMemoryUsage / this.maxMemorySize) * 100;

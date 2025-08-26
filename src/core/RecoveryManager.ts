@@ -783,7 +783,7 @@ class AutoRecoveryStrategy implements RecoveryStrategy {
         }
     }
     
-    async preview(dataType: string, options: any = {}): Promise<RecoveryPreview> {
+    async preview(dataType: string, _options: any = {}): Promise<RecoveryPreview> {
         const data = await (this.recoveryManager as any).storage.load(dataType);
         const fixes = this.identifyAutoFixes(dataType, data);
         
@@ -939,7 +939,7 @@ class PartialRecoveryStrategy implements RecoveryStrategy {
         }
     }
     
-    async preview(dataType: string, options: any = {}): Promise<RecoveryPreview> {
+    async preview(dataType: string, _options: any = {}): Promise<RecoveryPreview> {
         const data = await (this.recoveryManager as any).storage.load(dataType);
         const validParts = this.identifyValidParts(dataType, data);
         
@@ -1048,7 +1048,7 @@ class FactoryResetStrategy implements RecoveryStrategy {
         }
     }
 
-    async preview(dataType: string, options: any = {}): Promise<RecoveryPreview> {
+    async preview(dataType: string, _options: any = {}): Promise<RecoveryPreview> {
         return {
             strategy: 'factory',
             dataType,
@@ -1086,7 +1086,7 @@ class ManualRecoveryStrategy implements RecoveryStrategy {
         }
     }
 
-    async preview(dataType: string, options: any = {}): Promise<RecoveryPreview> {
+    async preview(dataType: string, _options: any = {}): Promise<RecoveryPreview> {
         return {
             strategy: 'manual',
             dataType,

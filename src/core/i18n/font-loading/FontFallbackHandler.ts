@@ -351,7 +351,7 @@ export class FontFallbackHandler {
         };
 
         // 言語別統計を計算
-        for (const [element, info] of this.appliedFallbacks.entries()) {
+        for (const [_element, info] of this.appliedFallbacks.entries()) {
             const lang = info.language;
             if (!stats.byLanguage[lang]) {
                 stats.byLanguage[lang] = 0;

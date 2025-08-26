@@ -381,7 +381,7 @@ export class StatisticsFilterManager {
     /**
      * カテゴリによるフィルタリング
      */
-    filterByCategories(stats: FilteredStatistics, categories: string[]): FilteredStatistics {
+    filterByCategories(stats: FilteredStatistics, _categories: string[]): FilteredStatistics {
         // カテゴリフィルターの実装（必要に応じて拡張）
         return stats;
     }

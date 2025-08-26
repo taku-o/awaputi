@@ -369,7 +369,7 @@ export class TimingAdjustmentAlgorithms {
         
         const warningThreshold = config.adjustedDuration * DEFAULT_WARNING_THRESHOLD;
         
-        const _warningTimeout = window.setTimeout(() => {
+        const ___warningTimeout = window.setTimeout(() => {
             if (this.timers.active.has(timerId)) {
                 this.manager.showTimeWarning(timerId);
                 // 警告情報を記録
@@ -409,7 +409,7 @@ export class TimingAdjustmentAlgorithms {
             return false;
         }
 
-        const _profile = this.getCurrentProfile();
+        const ___profile = this.getCurrentProfile();
         const extensionAmount = (timer as any).originalDuration * DEFAULT_EXTENSION_PERCENTAGE;
         
         // 延長を適用
@@ -482,7 +482,7 @@ export class TimingAdjustmentAlgorithms {
         const pauseTime = Date.now();
         let pausedCount = 0;
         
-        for(const [timerId, timer] of Array.from(this.timers.active)) {
+        for(const [timerId, _timer] of Array.from(this.timers.active)) {
             if (!this.timers.paused.has(timerId)) {
                 const pauseInfo: PauseInfo = {
                     pausedAt: pauseTime,
@@ -510,7 +510,7 @@ export class TimingAdjustmentAlgorithms {
         let resumedCount = 0;
 
         for(const [timerId, pauseInfo] of this.timers.paused) {
-            if(pauseInfo.reason === reason || reason === 'user') {
+            if((pauseInfo as any).reason === reason || reason === 'user') {
                 const timer = this.timers.active.get(timerId) as RegisteredTimer;
                 if (timer) {
                     timer.pausedTime += resumeTime - pauseInfo.pausedAt;
@@ -532,7 +532,7 @@ export class TimingAdjustmentAlgorithms {
         const profile = this.getCurrentProfile();
         let adjustedCount = 0;
         
-        for(const [timerId, timer] of Array.from(this.timers.active)) {
+        for(const [_timerId, timer] of Array.from(this.timers.active)) {
             // 基本調整の適用
             const baseAdjustment = multiplier !== 1.0 ? multiplier: 1.0;
             
@@ -566,11 +566,11 @@ export class TimingAdjustmentAlgorithms {
     scheduleAutoExtension(timerId: string): boolean {
         const timer = this.timers.active.get(timerId) as RegisteredTimer;
         const profile = this.getCurrentProfile();
-        if (!timer || !profile.preferences.autoExtend) {
+        if (!timer || !profile.(preferences as any).autoExtend) {
             return false;
         }
         
-        const gracePeriod = profile.preferences.gracePeriod || DEFAULT_GRACE_PERIOD;
+        const gracePeriod = profile.(preferences as any).gracePeriod || DEFAULT_GRACE_PERIOD;
         const remaining = timer.adjustedDuration - (Date.now() - timer.startTime - timer.pausedTime);
         
         if (remaining <= gracePeriod) {
@@ -665,7 +665,7 @@ export class TimingAdjustmentAlgorithms {
             
             // 長時間停止しているタイマーの最適化
             if (this.timers.paused.has(timerId)) {
-                const pausedTimer = this.timers.paused.get(timerId) as PausedTimer;
+                const __pausedTimer = this.timers.paused.get(timerId) as PausedTimer;
                 const pauseDuration = currentTime - pauseInfo.pausedAt;
                 
                 // 1時間以上停止している自動停止タイマーを削除
@@ -721,7 +721,7 @@ export class TimingAdjustmentAlgorithms {
     private getTimerTypeDistribution(): Record<string, number> {
         const distribution: Record<string, number> = {};
         
-        for (const [timerId, timer] of this.timers.active) {
+        for (const [_timerId, timer] of this.timers.active) {
             distribution[timer.type] = (distribution[timer.type] || 0) + 1;
         }
         
@@ -737,7 +737,7 @@ export class TimingAdjustmentAlgorithms {
         }
         
         let totalExtensions = 0;
-        for (const [timerId, extensionInfo] of this.timers.extensions) {
+        for (const [_timerId, extensionInfo] of this.timers.extensions) {
             totalExtensions += extensionInfo.count;
         }
         
@@ -830,7 +830,7 @@ export class TimingAdjustmentAlgorithms {
                         break;
                     case 'resume':
                         if (this.timers.paused.has(timerId)) {
-                            const pausedTimer = this.timers.paused.get(timerId) as PausedTimer;
+                            const __pausedTimer = this.timers.paused.get(timerId) as PausedTimer;
                             const timer = this.timers.active.get(timerId) as RegisteredTimer;
                             if (timer) {
                                 timer.pausedTime += Date.now() - pauseInfo.pausedAt;

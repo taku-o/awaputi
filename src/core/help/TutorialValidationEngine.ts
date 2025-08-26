@@ -250,7 +250,7 @@ export class TutorialValidationEngine {
         });
         
         // 設定変更バリデーション
-        this.validationFunctions.set('validateSettingsChange', async (actionResult, step, gameEngine) => {
+        this.validationFunctions.set('validateSettingsChange', async (_actionResult, step, gameEngine) => {
             const targetSetting = step.targetSetting;
             const targetValue = step.targetValue;
             

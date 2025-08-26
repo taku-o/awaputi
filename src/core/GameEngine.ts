@@ -553,8 +553,8 @@ export class GameEngine {
         if (this.sceneManager && typeof this.sceneManager.stop === 'function') {
             this.sceneManager.stop();
         }
-        if (this.audioManager && typeof this.audioManager.stop === 'function') {
-            this.audioManager.stop(); 
+        if (this.audioManager && typeof (this.audioManager as any).stop === 'function') {
+            (this.audioManager as any).stop(); 
         }
     }
     

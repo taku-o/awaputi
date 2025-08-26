@@ -79,7 +79,7 @@ export class SocialI18nManager {
 
     constructor(localizationManager: any, options: any = {}) {
         this.localizationManager = localizationManager;
-        this.errorHandler = ErrorHandler.getInstance();
+        this.errorHandler = (ErrorHandler as any).getInstance();
         
         // 設定
         this.config = {
@@ -639,7 +639,7 @@ export class SocialI18nManager {
     /**
      * タグの生成
      */
-    private generateTags(template: MessageTemplate, language: string): string[] {
+    private generateTags(template: MessageTemplate, _language: string): string[] {
         const baseTags = ['BubblePop', 'ゲーム', 'game'];
         
         // カテゴリ固有タグ

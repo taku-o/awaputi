@@ -499,7 +499,7 @@ export class TutorialActions {
      * バブルポップリスナーの設定
      * @param options - オプション設定
      */
-    setupBubblePopListener(options: ActionOptions): void {
+    setupBubblePopListener(_options: ActionOptions): void {
         // バブルマネージャーとの統合
         if (this.gameEngine.bubbleManager) {
             const originalPop = this.gameEngine.bubbleManager.popBubble;
@@ -522,7 +522,7 @@ export class TutorialActions {
      * バブルドラッグリスナーの設定
      * @param options - オプション設定
      */
-    setupBubbleDragListener(options: ActionOptions): void {
+    setupBubbleDragListener(_options: ActionOptions): void {
         // 入力マネージャーとの統合
         if (this.gameEngine.inputManager) {
             const inputManager = this.gameEngine.inputManager;

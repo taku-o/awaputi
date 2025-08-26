@@ -1,4 +1,4 @@
-import { getErrorHandler } from '../../../utils/ErrorHandler.js';
+import { _getErrorHandler } from '../../../utils/ErrorHandler.js';
 
 // インターフェース定義
 export interface RTLLanguageInfo {

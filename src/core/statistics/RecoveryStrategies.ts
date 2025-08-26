@@ -275,7 +275,7 @@ export class RecoveryStrategies {
      * @param options 復旧オプション
      * @returns 復旧結果
      */
-    async recoverFromCorruption(analysis: RecoveryAnalysis, options: RecoveryOptions = {}): Promise<RecoveryResult> {
+    async recoverFromCorruption(analysis: RecoveryAnalysis, _options: RecoveryOptions = {}): Promise<RecoveryResult> {
         console.log('[RecoveryStrategies] Starting corruption recovery');
         
         try {
@@ -337,7 +337,7 @@ export class RecoveryStrategies {
      * @param options 復旧オプション
      * @returns 復旧結果
      */
-    async recoverFromPartialLoss(analysis: RecoveryAnalysis, options: RecoveryOptions = {}): Promise<RecoveryResult> {
+    async recoverFromPartialLoss(analysis: RecoveryAnalysis, _options: RecoveryOptions = {}): Promise<RecoveryResult> {
         console.log('[RecoveryStrategies] Starting partial loss recovery');
         
         try {
@@ -385,7 +385,7 @@ export class RecoveryStrategies {
      * @param options 復旧オプション
      * @returns 復旧結果
      */
-    async recoverFromVersionMismatch(analysis: RecoveryAnalysis, options: RecoveryOptions = {}): Promise<RecoveryResult> {
+    async recoverFromVersionMismatch(analysis: RecoveryAnalysis, _options: RecoveryOptions = {}): Promise<RecoveryResult> {
         console.log('[RecoveryStrategies] Starting version mismatch recovery');
         
         try {
@@ -439,7 +439,7 @@ export class RecoveryStrategies {
         console.log('[RecoveryStrategies] Starting checksum failure recovery');
         
         try {
-            const { data, expectedChecksum, actualChecksum } = analysis;
+            const { data, expectedChecksum, __actualChecksum } = analysis;
             const recoveredData = { ...data };
             const repairLog: string[] = [];
             
@@ -482,7 +482,7 @@ export class RecoveryStrategies {
      * @param options 復旧オプション
      * @returns 復旧結果
      */
-    async recoverFromStructureDamage(analysis: RecoveryAnalysis, options: RecoveryOptions = {}): Promise<RecoveryResult> {
+    async recoverFromStructureDamage(analysis: RecoveryAnalysis, _options: RecoveryOptions = {}): Promise<RecoveryResult> {
         console.log('[RecoveryStrategies] Starting structure damage recovery');
         
         try {
@@ -525,7 +525,7 @@ export class RecoveryStrategies {
      * @param options 復旧オプション
      * @returns 復旧結果
      */
-    async recoverFromCompleteLoss(analysis: RecoveryAnalysis, options: RecoveryOptions = {}): Promise<RecoveryResult> {
+    async recoverFromCompleteLoss(_analysis: RecoveryAnalysis, _options: RecoveryOptions = {}): Promise<RecoveryResult> {
         console.log('[RecoveryStrategies] Starting complete loss recovery');
         
         try {

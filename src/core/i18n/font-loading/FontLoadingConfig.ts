@@ -381,7 +381,7 @@ export class FontLoadingConfig {
     /**
      * リスナーに通知
      */
-    private notifyListeners(path: string, newValue: any, oldValue: any): void {
+    private notifyListeners(_path: string, _newValue: any, _oldValue: any): void {
         for (const listener of this.listeners) {
             try {
                 listener(this.config);
@@ -419,7 +419,7 @@ export class FontLoadingConfig {
     validate(): { valid: boolean; errors: Array<{ path: string; value: any; error: string }> } {
         const errors: Array<{ path: string; value: any; error: string }> = [];
 
-        for (const [path, rule] of this.validationRules) {
+        for (const [path, _rule] of this.validationRules) {
             const value = this.getNestedValue(this.config, path);
             const validation = this.validateValue(path, value);
             

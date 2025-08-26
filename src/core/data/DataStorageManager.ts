@@ -517,7 +517,7 @@ export class DataStorageManager {
     /**
      * PlayerDataの保存
      */
-    private async savePlayerData(data: any, options: SaveOptions): Promise<SaveResult> {
+    private async savePlayerData(data: any, _options: SaveOptions): Promise<SaveResult> {
         if (!this.dataManager.playerData) {
             throw new Error('PlayerData system not available');
         }
@@ -534,7 +534,7 @@ export class DataStorageManager {
     /**
      * PlayerDataの読み込み
      */
-    private async loadPlayerData(options: LoadOptions): Promise<any> {
+    private async loadPlayerData(_options: LoadOptions): Promise<any> {
         if (!this.dataManager.playerData) {
             throw new Error('PlayerData system not available');
         }
@@ -548,7 +548,7 @@ export class DataStorageManager {
     /**
      * 設定データの保存
      */
-    private async saveSettings(data: any, options: SaveOptions): Promise<SaveResult> {
+    private async saveSettings(data: any, _options: SaveOptions): Promise<SaveResult> {
         if (!this.dataManager.settingsManager) {
             throw new Error('SettingsManager not available');
         }
@@ -567,7 +567,7 @@ export class DataStorageManager {
     /**
      * 設定データの読み込み
      */
-    private async loadSettings(options: LoadOptions): Promise<any> {
+    private async loadSettings(_options: LoadOptions): Promise<any> {
         if (!this.dataManager.settingsManager) {
             throw new Error('SettingsManager not available');
         }
@@ -581,7 +581,7 @@ export class DataStorageManager {
     /**
      * 統計データの保存
      */
-    private async saveStatistics(data: any, options: SaveOptions): Promise<SaveResult> {
+    private async saveStatistics(_data: any, _options: SaveOptions): Promise<SaveResult> {
         if (!this.dataManager.statisticsManager) {
             throw new Error('StatisticsManager not available');
         }
@@ -595,7 +595,7 @@ export class DataStorageManager {
     /**
      * 統計データの読み込み
      */
-    private async loadStatistics(options: LoadOptions): Promise<any> {
+    private async loadStatistics(_options: LoadOptions): Promise<any> {
         if (!this.dataManager.statisticsManager) {
             throw new Error('StatisticsManager not available');
         }

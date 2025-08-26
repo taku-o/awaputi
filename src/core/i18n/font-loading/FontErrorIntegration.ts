@@ -306,7 +306,7 @@ export class FontErrorIntegration {
     /**
      * フォールバックエラーハンドリング
      */
-    private fallbackErrorHandling(fontFamily: string, language: string, source: string, error: Error): boolean {
+    private fallbackErrorHandling(fontFamily: string, _language: string, source: string, error: Error): boolean {
         if (!this.options.enableFallbackHandling) {
             return false;
         }

@@ -478,7 +478,7 @@ export class WeeklyChallengeManager {
     /**
      * チャレンジ報酬の計算
      */
-    calculateChallengeRewards(challengeType: string, difficulty: string, target: number): any {
+    calculateChallengeRewards(challengeType: string, difficulty: string, _target: number): any {
         const baseRewards = {
             easy: { ap: 500, coins: 100, experience: 200 },
             normal: { ap: 1000, coins: 250, experience: 500 },

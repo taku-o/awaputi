@@ -449,7 +449,7 @@ export class RecoveryUserGuidance {
             
             // 分析結果に基づいてガイダンスを生成
             if (analysis.corruption) {
-                const { corruptionLevel, repairability } = analysis.corruption;
+                const { __corruptionLevel, repairability } = analysis.corruption;
 
                 if (repairability === 'high') {
                     guidance.recommended.push({
@@ -677,7 +677,7 @@ export class RecoveryUserGuidance {
      * @returns エラータイプ
      * @private
      */
-    private _categorizeError(error: Error, context: Record<string, any>): ErrorType {
+    private _categorizeError(error: Error, _context: Record<string, any>): ErrorType {
         const message = error.message.toLowerCase();
         
         if (message.includes('corruption') || message.includes('checksum')) {
@@ -704,7 +704,7 @@ export class RecoveryUserGuidance {
      * @returns ユーザーメッセージ
      * @private
      */
-    private _getUserFriendlyMessage(errorType: ErrorType, error: Error, context: Record<string, any>): UserFriendlyMessage {
+    private _getUserFriendlyMessage(errorType: ErrorType, _error: Error, _context: Record<string, any>): UserFriendlyMessage {
         const messages: Record<ErrorType, UserFriendlyMessage> = {
             data_corruption: {
                 title: 'データ破損エラー',

@@ -756,7 +756,7 @@ export class LineChartRenderer {
     /**
      * 軸の描画
      */
-    private renderAxes(context: LineChartContext, chartArea: LineChartArea, scales: LineChartScales, options: LineChartOptions): void {
+    private renderAxes(context: LineChartContext, chartArea: LineChartArea, _scales: LineChartScales, options: LineChartOptions): void {
         const axesOptions = options.axes || { x: {}, y: {} };
         const color = options.theme.colors.dark;
         const width = 1;
@@ -784,7 +784,7 @@ export class LineChartRenderer {
     /**
      * グリッドの描画
      */
-    private renderGrid(context: LineChartContext, chartArea: LineChartArea, scales: LineChartScales, options: LineChartOptions): void {
+    private renderGrid(context: LineChartContext, chartArea: LineChartArea, _scales: LineChartScales, options: LineChartOptions): void {
         const gridOptions = options.grid || {};
         const color = gridOptions.color || '#E5E7EB';
         const width = gridOptions.width || 0.5;
@@ -890,7 +890,7 @@ export class LineChartRenderer {
         
         const points: PointData[] = [];
         
-        data.forEach((item, index) => {
+        data.forEach((item, _index) => {
             const x = chartArea.x + (item.x - scales.xMin) * scales.xScale;
             const y = chartArea.y + chartArea.height - (item.value - scales.yMin) * scales.yScale;
             
