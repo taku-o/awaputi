@@ -135,7 +135,7 @@ describe('Canvas Scale UI Positioning Visual Tests', () => {
             const mockGameState = { score: 12345 };
             gameUIManager.renderAnimatedScore(context, mockGameState.score);
             
-            const scoreCall = context.fillText.mock.calls.find(call =>
+            const scoreCall = context.fillText.mock.calls.find((call: any) =>
                 call[0].includes('12345') || call[0].includes('Score')
             );
             expect(scoreCall).toBeDefined();
@@ -182,7 +182,7 @@ describe('Canvas Scale UI Positioning Visual Tests', () => {
             const mockGameState = { combo: 7 };
             gameUIManager.renderComboDisplay(context, mockGameState.combo);
             
-            const comboCall = context.fillText.mock.calls.find(call =>
+            const comboCall = context.fillText.mock.calls.find((call: any) =>
                 call[0].includes('7') || call[0].includes('コンボ')
             );
             expect(comboCall).toBeDefined();

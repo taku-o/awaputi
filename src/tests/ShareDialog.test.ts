@@ -171,7 +171,7 @@ describe('ShareDialog', () => {
 
         test('プラットフォームボタンが作成される', () => {
             expect((shareDialog as any).elements.platforms.length).toBeGreaterThan(0);
-            (shareDialog as any).elements.platforms.forEach(button => {
+            (shareDialog as any).elements.platforms.forEach((button: any) => {
                 expect(button.getAttribute('data-platform')).toBeDefined();
                 expect(button.getAttribute('aria-label')).toContain('で共有');
                 expect(button.getAttribute('type')).toBe('button');
@@ -272,7 +272,7 @@ describe('ShareDialog', () => {
 
         test('Web Share APIでの共有が動作する', async () => {
             const webShareButton = (shareDialog as any).elements.platforms.find(
-                btn => btn.getAttribute('data-platform') === 'web-share'
+                (btn: any) => btn.getAttribute('data-platform') === 'web-share'
             );
 
             if (webShareButton) {
@@ -285,7 +285,7 @@ describe('ShareDialog', () => {
 
         test('Twitterでの共有が動作する', async () => {
             const twitterButton = (shareDialog as any).elements.platforms.find(
-                btn => btn.getAttribute('data-platform') === 'twitter'
+                (btn: any) => btn.getAttribute('data-platform') === 'twitter'
             );
 
             if (twitterButton) {
@@ -297,7 +297,7 @@ describe('ShareDialog', () => {
 
         test('Facebookでの共有が動作する', async () => {
             const facebookButton = (shareDialog as any).elements.platforms.find(
-                btn => btn.getAttribute('data-platform') === 'facebook'
+                (btn: any) => btn.getAttribute('data-platform') === 'facebook'
             );
 
             if (facebookButton) {
@@ -321,7 +321,7 @@ describe('ShareDialog', () => {
             });
 
             const copyButton = (shareDialog as any).elements.platforms.find(
-                btn => btn.getAttribute('data-platform') === 'copy'
+                (btn: any) => btn.getAttribute('data-platform') === 'copy'
             );
 
             if (copyButton) {

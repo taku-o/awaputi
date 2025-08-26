@@ -376,7 +376,7 @@ export class MobileTestRunner {
         }
         
         const tests = suite.getTests();
-        const test = tests.find(t => t.name === testName);
+        const test = tests.find((t: any) => t.name === testName);
         if (!test) {
             throw new Error(`Test '${testName}' not found in suite '${suiteName}'`);
         }

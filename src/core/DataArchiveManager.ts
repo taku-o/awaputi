@@ -1158,7 +1158,7 @@ export class DataArchiveManager {
     removeFromSearchIndex(archiveId: string): void {
         for (const index of Object.values(this.searchIndex)) {
             for (const [key, archives] of index) {
-                const newArchives = archives.filter(id => id !== archiveId);
+                const newArchives = archives.filter((id: string) => id !== archiveId);
                 if (newArchives.length === 0) {
                     index.delete(key);
                 } else {

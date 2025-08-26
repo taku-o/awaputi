@@ -490,7 +490,7 @@ describe('StageSelectScene Event Integration Tests', () => {
             expect(fillRectCalls.length).toBeGreaterThan(0);
             // Events should be positioned below normal stages
             const eventSectionY = 400; // Expected Y position for events
-            const hasCorrectPositioning = fillRectCalls.some(call => call[1] >= eventSectionY);
+            const hasCorrectPositioning = fillRectCalls.some((call: any) => call[1] >= eventSectionY);
             expect(hasCorrectPositioning).toBe(true);
         });
 

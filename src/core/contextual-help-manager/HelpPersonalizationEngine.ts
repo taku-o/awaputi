@@ -553,7 +553,7 @@ export class HelpPersonalizationEngine {
         }
 
         if (content.steps && Array.isArray(content.steps)) {
-            content.steps = content.steps.map(step => ({
+            content.steps = content.steps.map((step: any) => ({
                 ...step,
                 tips: [...(step.tips || []), 'ゆっくりと進めましょう', '困ったときはヘルプを参照してください']
             }));

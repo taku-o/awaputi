@@ -283,11 +283,11 @@ describe('AdvancedPerformanceMonitor', () => {
             monitor.generateRecommendations();
             expect(monitor.analysis.recommendations.length).toBeGreaterThan(0);
 
-            const performanceRec = monitor.analysis.recommendations.find(r => r.type === 'performance');
+            const performanceRec = monitor.analysis.recommendations.find((r: any) => r.type === 'performance');
             expect(performanceRec).toBeDefined();
             expect(performanceRec.priority).toBe('high');
 
-            const memoryRec = monitor.analysis.recommendations.find(r => r.type === 'memory');
+            const memoryRec = monitor.analysis.recommendations.find((r: any) => r.type === 'memory');
             expect(memoryRec).toBeDefined();
             expect(memoryRec.priority).toBe('medium');
         });

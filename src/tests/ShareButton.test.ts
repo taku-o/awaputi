@@ -216,7 +216,7 @@ describe('ShareButton', () => {
 
         test('Web Share APIでの共有が動作する', async () => {
             const platformButton = (shareButton as any).elements.platformButtons.find(
-                btn => btn.getAttribute('data-platform') === 'web-share'
+                (btn: any) => btn.getAttribute('data-platform') === 'web-share'
             );
             if (platformButton) {
                 await platformButton.click();
@@ -228,7 +228,7 @@ describe('ShareButton', () => {
 
         test('Twitterでの共有が動作する', async () => {
             const platformButton = (shareButton as any).elements.platformButtons.find(
-                btn => btn.getAttribute('data-platform') === 'twitter'
+                (btn: any) => btn.getAttribute('data-platform') === 'twitter'
             );
             if (platformButton) {
                 await platformButton.click();
@@ -239,7 +239,7 @@ describe('ShareButton', () => {
 
         test('Facebookでの共有が動作する', async () => {
             const platformButton = (shareButton as any).elements.platformButtons.find(
-                btn => btn.getAttribute('data-platform') === 'facebook'
+                (btn: any) => btn.getAttribute('data-platform') === 'facebook'
             );
             if (platformButton) {
                 await platformButton.click();
@@ -260,7 +260,7 @@ describe('ShareButton', () => {
             shareButton.show();
             shareButton.expand();
             const platformButton = (shareButton as any).elements.platformButtons.find(
-                btn => btn.getAttribute('data-platform') === 'copy'
+                (btn: any) => btn.getAttribute('data-platform') === 'copy'
             );
             if (platformButton) {
                 await platformButton.click();
@@ -339,7 +339,7 @@ describe('ShareButton', () => {
         });
 
         test('プラットフォームボタンのARIA属性が設定される', () => {
-            (shareButton as any).elements.platformButtons.forEach(button => {
+            (shareButton as any).elements.platformButtons.forEach((button: any) => {
                 // const platform = button.getAttribute('data-platform');
                 expect(button.getAttribute('aria-label')).toContain('で共有');
                 expect(button.getAttribute('role')).toBe('menuitem');
@@ -480,7 +480,7 @@ describe('ShareButton', () => {
             shareButton.show();
             shareButton.expand();
             const twitterButton = (shareButton as any).elements.platformButtons.find(
-                btn => btn.getAttribute('data-platform') === 'twitter'
+                (btn: any) => btn.getAttribute('data-platform') === 'twitter'
             );
             if (twitterButton) {
                 await twitterButton.click();

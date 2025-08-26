@@ -350,7 +350,7 @@ export class FontManager {
         const fontStack = [`"${font.family}"`];
 
         if ((font as any).fallback && Array.isArray((font as any).fallback)) {
-            fontStack.push(...(font as any).fallback.map(f => f.includes(' ') ? `"${f}"` : f));
+            fontStack.push(...(font as any).fallback.map((f: string) => f.includes(' ') ? `"${f}"` : f));
         }
 
         return fontStack.join(', ');
