@@ -20,10 +20,10 @@ export interface AnalysisResult {
 
 export class GameBalanceAnalyzer {
     private balanceMetrics: any;
-    private _storageManager: any;
+    private storageManager: any;
 
     constructor(storageManager?: any) {
-        this._storageManager = storageManager;
+        this.storageManager = storageManager;
         this.balanceMetrics = {
             scoreDistribution: {},
             bubbleFrequency: {},

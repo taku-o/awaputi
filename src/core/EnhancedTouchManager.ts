@@ -15,7 +15,7 @@ export class EnhancedTouchManager {
     private config: BasicConfig = {};
     private canvas: any;
     private gameEngine: any;
-    private _configManager: any;
+    private configManager: any;
     private errorHandler: any;
     private touchSensitivity: number;
     private multiTouchEnabled: boolean;
@@ -24,12 +24,12 @@ export class EnhancedTouchManager {
     private touchPool: any;
     private accidentalTouchPrevention: any;
     private callbacks: any;
-    private _enable3DTouch: boolean = false;
+    private enable3DTouch: boolean = false;
 
     constructor(canvas: any, gameEngine: any) {
         this.canvas = canvas;
         this.gameEngine = gameEngine;
-        this._configManager = getConfigurationManager();
+        this.configManager = getConfigurationManager();
         this.errorHandler = getErrorHandler();
         
         // タッチ感度設定
@@ -179,7 +179,7 @@ export class EnhancedTouchManager {
             
             // 3D Touch / Force Touch対応
             if ('ontouchforcechange' in document) {
-                this._enable3DTouch = true;
+                this.enable3DTouch = true;
             }
         }
         

@@ -110,7 +110,7 @@ class LocalModeManager {
     // パフォーマンス最適化用のプライベートストレージ
     private _componentCache: Map<string, any>;
     private _initializationMetrics: InitializationMetrics;
-    private _resourcePreloadPromises: Map<string, Promise<any>>;
+    private resourcePreloadPromises: Map<string, Promise<any>>;
 
     /**
      * コンストラクター
@@ -131,7 +131,7 @@ class LocalModeManager {
             totalExecutionTime: 0,
             optimizationsApplied: []
         };
-        this._resourcePreloadPromises = new Map();
+        this.resourcePreloadPromises = new Map();
         
         this.log('LocalModeManager instance created');
     }

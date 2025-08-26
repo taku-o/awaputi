@@ -48,9 +48,9 @@ export interface TouchOptimization {
 
 export class MobileSocialOptimizer {
     private socialSharingManager: any;
-    private _touchManager: any;
+    private touchManager: any;
     private responsiveLayoutManager: any;
-    private _isInitialized: boolean;
+    private isInitialized: boolean;
     private deviceInfo: DeviceCapabilities | null;
     private touchOptimizations: Map<string, TouchOptimization>;
     private gestureHandlers: Map<string, any>;
@@ -59,10 +59,10 @@ export class MobileSocialOptimizer {
 
     constructor(socialSharingManager: any, touchManager: any, responsiveLayoutManager: any) {
         this.socialSharingManager = socialSharingManager;
-        this._touchManager = touchManager;
+        this.touchManager = touchManager;
         this.responsiveLayoutManager = responsiveLayoutManager;
         
-        this._isInitialized = false;
+        this.isInitialized = false;
         this.deviceInfo = null;
         this.touchOptimizations = new Map();
         this.gestureHandlers = new Map();

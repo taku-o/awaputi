@@ -132,7 +132,7 @@ export interface TutorialValidationEngine {
 export class TutorialManager {
     private gameEngine: GameEngine;
     private loggingSystem: LoggingSystem;
-    private _cacheSystem: CacheSystem;
+    private cacheSystem: CacheSystem;
     private contentLoader: ContentLoader;
     private tutorialOverlay: TutorialOverlay;
     
@@ -153,7 +153,7 @@ export class TutorialManager {
     constructor(gameEngine: GameEngine) {
         this.gameEngine = gameEngine;
         this.loggingSystem = LoggingSystem.getInstance ? LoggingSystem.getInstance() : new LoggingSystem();
-        this._cacheSystem = (CacheSystem as any).getInstance ? (CacheSystem as any).getInstance() : new CacheSystem();
+        this.cacheSystem = (CacheSystem as any).getInstance ? (CacheSystem as any).getInstance() : new CacheSystem();
         this.contentLoader = new ContentLoader(this.gameEngine);
         this.tutorialOverlay = getTutorialOverlay(gameEngine, gameEngine?.eventBus, gameEngine?.state);
         

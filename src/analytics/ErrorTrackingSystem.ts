@@ -61,7 +61,7 @@ export class ErrorTrackingSystem {
     private errors: Map<string, ErrorReport>;
     private errorGroups: Map<string, ErrorGroup>;
     private errorCount: number;
-    private _isInitialized: boolean;
+    private isInitialized: boolean;
     private originalErrorHandler: OnErrorEventHandler | null;
     private originalUnhandledRejectionHandler: ((this: WindowEventHandlers, ev: PromiseRejectionEvent) => any) | null;
 
@@ -82,7 +82,7 @@ export class ErrorTrackingSystem {
         this.errors = new Map();
         this.errorGroups = new Map();
         this.errorCount = 0;
-        this._isInitialized = false;
+        this.isInitialized = false;
         this.originalErrorHandler = null;
         this.originalUnhandledRejectionHandler = null;
 
@@ -96,7 +96,7 @@ export class ErrorTrackingSystem {
         try {
             this.setupGlobalErrorHandlers();
             this.loadStoredErrors();
-            this._isInitialized = true;
+            this.isInitialized = true;
             console.log('ErrorTrackingSystem initialized');
         } catch (error) {
             console.error('Failed to initialize ErrorTrackingSystem:', error);

@@ -146,14 +146,14 @@ export class AnimationOptimizer {
     // 基本設定
     private enabled: boolean;
     private optimizationLevel: OptimizationLevel;
-    private _maxConcurrentAnimations: number;
+    private maxConcurrentAnimations: number;
     private defaultDuration: number;
     private reducedMotionEnabled: boolean;
     
     // アニメーション管理
     private activeAnimations: Map<string, ActiveAnimationData>;
     private animationQueue: any[];
-    private _scheduledAnimations: Set<Animation>;
+    private scheduledAnimations: Set<Animation>;
     private runningAnimations: Set<Animation>;
     
     // フレーム管理
@@ -181,14 +181,14 @@ export class AnimationOptimizer {
     constructor() {
         this.enabled = true;
         this.optimizationLevel = 'balanced';
-        this._maxConcurrentAnimations = 10;
+        this.maxConcurrentAnimations = 10;
         this.defaultDuration = 300;
         this.reducedMotionEnabled = false;
         
         // アニメーション管理
         this.activeAnimations = new Map<string, ActiveAnimationData>();
         this.animationQueue = [];
-        this._scheduledAnimations = new Set<Animation>();
+        this.scheduledAnimations = new Set<Animation>();
         this.runningAnimations = new Set<Animation>();
         
         // フレーム管理

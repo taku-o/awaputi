@@ -90,11 +90,11 @@ export class ContentLoader {
     
     // キャッシュ管理
     private contentCache: Map<string, CachedContentItem>;
-    private _versionCache: Map<string, VersionInfo>;
+    private versionCache: Map<string, VersionInfo>;
     private loadingPromises: Map<string, Promise<any>>;
     
     // バージョン管理
-    private _contentVersions: Map<string, string>;
+    private contentVersions: Map<string, string>;
     private manifestCache: Map<string, ContentManifest>;
 
     constructor(localizationManager: LocalizationManager | null = null) {
@@ -114,11 +114,11 @@ export class ContentLoader {
         
         // キャッシュ管理
         this.contentCache = new Map<string, CachedContentItem>();
-        this._versionCache = new Map<string, VersionInfo>();
+        this.versionCache = new Map<string, VersionInfo>();
         this.loadingPromises = new Map<string, Promise<any>>();
         
         // バージョン管理
-        this._contentVersions = new Map<string, string>();
+        this.contentVersions = new Map<string, string>();
         this.manifestCache = new Map<string, ContentManifest>();
         
         this.initialize();

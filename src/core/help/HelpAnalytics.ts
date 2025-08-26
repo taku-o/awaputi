@@ -355,7 +355,7 @@ export type DataType = 'categoryId' | 'topicId' | 'searchQuery' | 'feedback' | '
  * ヘルプシステムの使用状況を追跡・分析するクラス
  */
 export class HelpAnalytics {
-    private _gameEngine: GameEngine;
+    private gameEngine: GameEngine;
     private loggingSystem: LoggingSystem;
     // 追跡対象イベント
     private events: Map<string, AnalyticsEvent>;
@@ -377,7 +377,7 @@ export class HelpAnalytics {
     private fallbackInterface?: FallbackInterface;
 
     constructor(gameEngine: GameEngine) {
-        this._gameEngine = gameEngine;
+        this.gameEngine = gameEngine;
         this.loggingSystem = LoggingSystem.getInstance ? LoggingSystem.getInstance() : new LoggingSystem();
         
         // 追跡対象イベント

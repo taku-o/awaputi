@@ -5,11 +5,11 @@
  */
 
 export class ComparisonResultRenderer {
-    private _renderConfig: any;
+    private renderConfig: any;
 
     constructor() {
         // レンダリング設定
-        this._renderConfig = {
+        this.renderConfig = {
             colors: {
                 improved: '#4CAF50',
                 declined: '#F44336',

@@ -27,7 +27,7 @@ export class APIEndpointManager {
         maxRequestsPerHour: number,
         requestHistory: Map<string, any[]>;
     };
-    private _accessControl: {
+    private accessControl: {
         enabled: boolean,
         allowedOrigins: string[],
         requireAuthentication: boolean;
@@ -57,7 +57,7 @@ export class APIEndpointManager {
         };
         
         // アクセス制御設定
-        this._accessControl = {
+        this.accessControl = {
             enabled: false, // 将来の機能拡張用
             allowedOrigins: ['*'],
             requireAuthentication: false

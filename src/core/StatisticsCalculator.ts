@@ -10,10 +10,10 @@ import { ErrorHandler } from '../utils/ErrorHandler.js';
  * 統計計算クラス
  */
 export class StatisticsCalculator {
-    private _trendPeriods: any;
+    private trendPeriods: any;
 
     constructor() {
-        this._trendPeriods = {
+        this.trendPeriods = {
             daily: 1,
             weekly: 7,
             monthly: 30

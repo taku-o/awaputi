@@ -140,7 +140,7 @@ export type NotificationPosition =
 export type RarityLevel = 'common' | 'rare' | 'epic' | 'legendary';
 
 export class AchievementNotificationSystem {
-    private _notifications: Notification[]; // Unused variable kept for compatibility
+    private notifications: Notification[]; // Unused variable kept for compatibility
     private notificationQueue: Notification[];
     private activeNotifications: Set<string>;
     private _audioManager: AudioManager | null;
@@ -154,7 +154,7 @@ export class AchievementNotificationSystem {
 
     constructor(gameEngineOrAudioManager: GameEngine | AudioManager | null = null) {
         // 通知管理
-        this._notifications = [];
+        this.notifications = [];
         this.notificationQueue = [];
         this.activeNotifications = new Set<string>();
         
@@ -996,7 +996,7 @@ export class AchievementNotificationSystem {
         }
         
         // データをクリア
-        this._notifications = [];
+        this.notifications = [];
         this.notificationQueue = [];
         this.activeNotifications.clear();
         this.history = [];

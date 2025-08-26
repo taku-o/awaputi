@@ -12,8 +12,8 @@ export class AnalyticsComparisonEngine {
     private dataComparator: DataComparator;
     private algorithms: ComparisonAlgorithms;
     private renderer: ComparisonResultRenderer;
-    private _comparisonPeriods: any;
-    private _metrics: any;
+    private comparisonPeriods: any;
+    private metrics: any;
     private cache: Map<string, any>;
     private cacheExpiry: number;
 
@@ -26,8 +26,8 @@ export class AnalyticsComparisonEngine {
         this.renderer = new ComparisonResultRenderer();
         
         // 比較期間設定をデータコンパレーターから取得
-        this._comparisonPeriods = (this.dataComparator as any).comparisonPeriods;
-        this._metrics = (this.dataComparator as any).metrics;
+        this.comparisonPeriods = (this.dataComparator as any).comparisonPeriods;
+        this.metrics = (this.dataComparator as any).metrics;
         
         // キャッシュ設定
         this.cache = new Map();

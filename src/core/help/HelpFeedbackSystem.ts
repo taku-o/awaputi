@@ -124,7 +124,7 @@ export class HelpFeedbackSystem {
     private loggingSystem: LoggingSystem;
     // フィードバックダイアログ
     private feedbackDialog: HelpFeedbackDialog | null;
-    private _currentContentId: string | null;
+    private currentContentId: string | null;
     // フィードバックデータ
     private feedbacks: Map<string, FeedbackData>;
     private pendingFeedbacks: PendingFeedback[];
@@ -139,7 +139,7 @@ export class HelpFeedbackSystem {
         
         // フィードバックダイアログ
         this.feedbackDialog = null;
-        this._currentContentId = null;
+        this.currentContentId = null;
         
         // フィードバックデータ
         this.feedbacks = new Map<string, FeedbackData>();
@@ -266,7 +266,7 @@ export class HelpFeedbackSystem {
                 (this.feedbackDialog as any).hide();
             }
             
-            this._currentContentId = contentId;
+            this.currentContentId = contentId;
             this.feedbackDialog = new HelpFeedbackDialog(this.gameEngine, this);
             this.feedbackDialog.show(contentId);
 

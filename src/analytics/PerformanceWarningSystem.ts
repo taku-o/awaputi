@@ -4,17 +4,17 @@
  */
 
 export class PerformanceWarningSystem {
-    private _realtimeMonitor: any;
+    private realtimeMonitor: any;
     private options: any;
     private activeWarnings: Map<string, any>;
     private warningHistory: any[];
     private warningCategories: Map<string, any>;
     private acknowledgements: Set<string>;
     private warningContainer: HTMLElement | null;
-    private _eventListeners: any[];
+    private eventListeners: any[];
 
     constructor(realtimeMonitor: any, options: any = {}) {
-        this._realtimeMonitor = realtimeMonitor;
+        this.realtimeMonitor = realtimeMonitor;
         this.options = {
             enableVisualWarnings: true,
             enableAudioWarnings: false,
@@ -31,7 +31,7 @@ export class PerformanceWarningSystem {
         this.warningCategories = new Map();
         this.acknowledgements = new Set();
         this.warningContainer = null;
-        this._eventListeners = [];
+        this.eventListeners = [];
 
         this.initialize();
     }

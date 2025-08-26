@@ -64,7 +64,7 @@ export class DataVisualizer {
     private svgElements: Map<string, any>;
     private scales: Map<string, any>;
     private d3: any;
-    private _useCanvasFallback: boolean;
+    private useCanvasFallback: boolean;
 
     constructor(options: DataVisualizerOptions = {}) {
         this.options = {
@@ -83,7 +83,7 @@ export class DataVisualizer {
         this.svgElements = new Map();
         this.scales = new Map();
         this.d3 = null;
-        this._useCanvasFallback = false;
+        this.useCanvasFallback = false;
 
         this.initialize();
     }
@@ -475,7 +475,7 @@ export class DataVisualizer {
      */
     private fallbackToCanvasRenderer(): void {
         console.warn('D3.js not available, using Canvas API fallback');
-        this._useCanvasFallback = true;
+        this.useCanvasFallback = true;
     }
 
     /**

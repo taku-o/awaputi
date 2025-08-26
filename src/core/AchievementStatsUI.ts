@@ -108,7 +108,7 @@ export class AchievementStatsUI {
     private statsCache: StatisticsData | null;
     private lastCacheUpdate: number;
     private cacheTimeout: number;
-    private _padding: number;
+    private padding: number;
     private sectionSpacing: number;
     private itemHeight: number;
     private colors: ColorScheme;
@@ -122,7 +122,7 @@ export class AchievementStatsUI {
         this.cacheTimeout = 5000; // 5秒キャッシュ
         
         // UI設定
-        this._padding = 20;
+        this.padding = 20;
         this.sectionSpacing = 30;
         this.itemHeight = 25;
         

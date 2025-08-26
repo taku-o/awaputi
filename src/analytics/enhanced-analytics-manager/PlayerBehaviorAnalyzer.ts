@@ -20,7 +20,7 @@ export interface AnalysisResult {
 export class PlayerBehaviorAnalyzer {
     private playerBehavior: any;
     private sessionStats: any;
-    private _longSessionMarked: boolean;
+    private longSessionMarked: boolean;
 
     constructor() {
         // プレイヤー行動分析
@@ -40,7 +40,7 @@ export class PlayerBehaviorAnalyzer {
         };
         
         this.sessionStats = null;
-        this._longSessionMarked = false;
+        this.longSessionMarked = false;
     }
     
     /**
@@ -589,6 +589,6 @@ export class PlayerBehaviorAnalyzer {
         this.sessionStats = null;
         this.playerBehavior.interactionPatterns = [];
         this.playerBehavior.sessionData = null;
-        this._longSessionMarked = false;
+        this.longSessionMarked = false;
     }
 }

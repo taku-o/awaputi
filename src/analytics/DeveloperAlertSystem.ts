@@ -4,8 +4,8 @@
  */
 
 export class DeveloperAlertSystem {
-    private _dataCollector: any;
-    private _trendAnalyzer: any;
+    private dataCollector: any;
+    private trendAnalyzer: any;
     private options: any;
     private alertHistory: any[];
     private alertCategories: Map<string, any>;
@@ -15,8 +15,8 @@ export class DeveloperAlertSystem {
     private rateLimitCounter: Map<string, any>;
 
     constructor(dataCollector: any, trendAnalyzer: any, options: any = {}) {
-        this._dataCollector = dataCollector;
-        this._trendAnalyzer = trendAnalyzer;
+        this.dataCollector = dataCollector;
+        this.trendAnalyzer = trendAnalyzer;
         this.options = {
             enableDeveloperAlerts: true,
             enableConsoleLogging: true,

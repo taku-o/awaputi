@@ -152,7 +152,7 @@ interface BreakpointConfig {
  * 高度なレスポンシブレイアウト管理システム
  */
 export class AdvancedResponsiveLayoutManager extends ResponsiveCanvasManager {
-    private _configManager: ConfigurationManager;
+    private configManager: ConfigurationManager;
     private errorHandler: ErrorHandler;
     private advancedBreakpoints: Record<string, Breakpoint>;
     private dynamicLayout: DynamicLayout;
@@ -160,12 +160,12 @@ export class AdvancedResponsiveLayoutManager extends ResponsiveCanvasManager {
     private orientationManager: OrientationManager;
     private uiScaling: UIScaling;
     private performance: Performance;
-    private _currentSize: any;
+    private currentSize: any;
 
     constructor(canvas: HTMLCanvasElement, gameEngine: GameEngine) {
         super(canvas, gameEngine);
         
-        this._configManager = getConfigurationManager() as any;
+        this.configManager = getConfigurationManager() as any;
         this.errorHandler = {
             logError: (error: Error, context?: any) => {
                 const handler = getErrorHandler();
@@ -274,7 +274,7 @@ export class AdvancedResponsiveLayoutManager extends ResponsiveCanvasManager {
             }
         };
         
-        this._currentSize = null;
+        this.currentSize = null;
         
         this.initialize();
     }

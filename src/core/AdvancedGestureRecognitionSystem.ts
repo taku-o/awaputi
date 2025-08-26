@@ -212,7 +212,7 @@ export class AdvancedGestureRecognitionSystem {
     private gesturePatterns: GesturePatterns;
     private gestureHistory: GestureHistory[];
     private maxHistoryLength: number;
-    private _learningData: LearningData;
+    private learningData: LearningData;
     private longPressTimer: ReturnType<typeof setTimeout> | null;
     private _gestureAnalyzer?: GestureAnalyzer;
 
@@ -295,7 +295,7 @@ export class AdvancedGestureRecognitionSystem {
         this.maxHistoryLength = 100;
         
         // 学習データ
-        this._learningData = {
+        this.learningData = {
             patterns: new Map<string, unknown>(),
             accuracy: new Map<string, number>(),
             adaptiveThresholds: new Map<string, number>()

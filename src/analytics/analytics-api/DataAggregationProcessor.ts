@@ -6,14 +6,14 @@
 export class DataAggregationProcessor {
     private storageManager: any;
     private aggregationCache: Map<string, any>;
-    private _maxCacheSize: number;
+    private maxCacheSize: number;
 
     constructor(storageManager: any) {
         this.storageManager = storageManager;
         
         // 集計キャッシュ（LRUキャッシュ）
         this.aggregationCache = new Map();
-        this._maxCacheSize = 100;
+        this.maxCacheSize = 100;
     }
     /**
      * 集計データ取得

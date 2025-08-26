@@ -65,7 +65,7 @@ export class CoreAccessibilityManager {
     private testingFramework: TestingFramework | null;
     private eventListeners: Map<string, Set<EventCallback>>;
     private isInitialized: boolean;
-    private _isEnabled: boolean; // Unused variable prefixed with underscore
+    private isEnabled: boolean; // Unused variable prefixed with underscore
     private pendingConfiguration: any;
     private managerRegistry: Map<string, Manager | null>;
     private managerDependencies: Map<string, string[]>;
@@ -82,7 +82,7 @@ export class CoreAccessibilityManager {
         
         // 初期化フラグ
         this.isInitialized = false;
-        this._isEnabled = true;
+        this.isEnabled = true;
         
         // Pending configuration for early calls
         this.pendingConfiguration = null;
@@ -742,7 +742,7 @@ export class CoreAccessibilityManager {
      * 有効状態の切り替え
      */
     setEnabled(enabled: boolean): void {
-        this._isEnabled = enabled;
+        this.isEnabled = enabled;
         // 各マネージャーに状態を通知
         for (const [_type, manager] of this.managers) {
             if (manager && typeof manager.setEnabled === 'function') {

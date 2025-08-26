@@ -8,9 +8,9 @@ export class PerformanceDataCollector {
     private isRunning: boolean;
     private sessionId: string;
     private performanceData: any;
-    private _frameCount: number;
-    private _lastFrameTime: number;
-    private _fpsTimer: any;
+    private frameCount: number;
+    private lastFrameTime: number;
+    private fpsTimer: any;
     private memoryTimer: any;
     private eventListeners: any[];
     private frameTracker: any;
@@ -40,9 +40,9 @@ export class PerformanceDataCollector {
         };
 
         // 測定用変数
-        this._frameCount = 0;
-        this._lastFrameTime = performance.now();
-        this._fpsTimer = null;
+        this.frameCount = 0;
+        this.lastFrameTime = performance.now();
+        this.fpsTimer = null;
         this.memoryTimer = null;
         
         // イベントリスナー

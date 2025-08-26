@@ -72,7 +72,7 @@ export class QualityTransitionController {
     private isTransitioning: boolean;
     private currentTransition: CurrentTransition | null;
     private transitionHistory: CurrentTransition[];
-    private _retryCount: number = 0;
+    private retryCount: number = 0;
     private transitionTimer: NodeJS.Timeout | null;
     private validationTimer: NodeJS.Timeout | null;
     private rollbackTimer: NodeJS.Timeout | null;

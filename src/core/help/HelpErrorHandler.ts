@@ -96,7 +96,7 @@ export type FallbackStrategy = (error: Error, options: any) => ErrorResult;
  * ヘルプシステム専用エラーハンドラー
  */
 export class HelpErrorHandler {
-    private _gameEngine: GameEngine;
+    private gameEngine: GameEngine;
     private loggingSystem: LoggingSystem;
     private errorCategories: Record<string, string>;
     private errorStats: Map<string, ErrorStatistics>;
@@ -105,7 +105,7 @@ export class HelpErrorHandler {
     private fallbackStrategies: Map<string, FallbackStrategy>;
 
     constructor(gameEngine: GameEngine) {
-        this._gameEngine = gameEngine;
+        this.gameEngine = gameEngine;
         this.loggingSystem = LoggingSystem.getInstance ? LoggingSystem.getInstance() : new LoggingSystem();
         
         // エラーカテゴリの定義
