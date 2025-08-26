@@ -144,11 +144,11 @@ export class AudioAccessibilitySupport {
     // オーディオイベントリスナー
     private audioEventListeners: Map<string, ((event: any) => void)[]> = new Map();
     // カラーインジケーター
-    private colorIndicator: HTMLElement | null = null;
+    // private colorIndicator: HTMLElement | null = null;
     // パターン認識
     private patternRecognition: PatternRecognition = { enabled: false };
     
-    constructor(audioManager: AudioManager) {
+    constructor(_audioManager: AudioManager) {
         // this.audioManager = audioManager;
         this.configManager = getConfigurationManager();
         this.localizationManager = getLocalizationManager();

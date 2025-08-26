@@ -277,7 +277,7 @@ export class AudioVisualizer {
         if (!this.canvas) return;
         
         // デフォルトサイズまたは親要素のサイズに合わせる
-        const rect = this.canvas.getBoundingClientRect();
+        // const rect = this.canvas.getBoundingClientRect();
         const dpr = window.devicePixelRatio || 1;
         
         this.canvas.width = this.width * dpr;

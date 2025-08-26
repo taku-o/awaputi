@@ -721,7 +721,7 @@ export class AudioManager {
     setQualityMode(mode: string): void {
         if (this.qualitySettings[mode]) {
             this.qualityMode = mode;
-            const settings = this.qualitySettings[mode];
+            const _settings = this.qualitySettings[mode];
             
             // 品質設定を適用
             try {

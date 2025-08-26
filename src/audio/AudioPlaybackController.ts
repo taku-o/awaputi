@@ -176,7 +176,7 @@ export class AudioPlaybackController {
                 this.stopOldestSound();
             }
             
-            return this.playSound(buffer, options);
+            return this.playSoundBuffer(buffer, options);
 
         } catch (error) {
             this.playbackStats.errors++;
@@ -194,7 +194,7 @@ export class AudioPlaybackController {
      * @param options - 再生オプション
      * @returns 音源ノード
      */
-    private playSound(buffer: AudioBuffer, options: PlaybackOptions = {}): AudioBufferSourceNode | null {
+    private playSoundBuffer(buffer: AudioBuffer, options: PlaybackOptions = {}): AudioBufferSourceNode | null {
         try {
             if (!this.audioContext || !this.sfxGainNode) {
                 return null as any;
@@ -295,7 +295,7 @@ export class AudioPlaybackController {
      * @param options - 再生オプション
      * @returns 音源ノード
      */
-    playBubbleSound(bubbleType: BubbleType, comboLevel: number = 0, options: PlaybackOptions = {}): AudioBufferSourceNode | null {
+    playBubbleSound(_bubbleType: BubbleType, comboLevel: number = 0, options: PlaybackOptions = {}): AudioBufferSourceNode | null {
         const soundName = comboLevel > 0 ? 'pop_combo' : 'pop';
         
         // コンボレベルに応じた音響調整
@@ -447,7 +447,7 @@ export class AudioPlaybackController {
      * カテゴリ別音響停止
      * @param category - カテゴリ
      */
-    stopSoundsByCategory(category: string): void {
+    stopSoundsByCategory(_category: string): void {
         // Note: より高度な実装では、各ソースにカテゴリ情報を付与して管理
         // 現在は簡易実装として全停止
         this.stopAllSounds();
@@ -457,7 +457,7 @@ export class AudioPlaybackController {
      * @param source - 音源ノード
      * @param effects - エフェクト設定
      */
-    applyAudioEffects(source: AudioBufferSourceNode, effects: AudioEffects = {}): void {
+    applyAudioEffects(_source: AudioBufferSourceNode, effects: AudioEffects = {}): void {
         try {
             const {
                 reverb = false,

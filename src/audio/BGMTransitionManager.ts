@@ -131,8 +131,8 @@ export class BGMTransitionManager {
                 type = this.transitionTypes.CROSSFADE,
                 duration = this.defaultCrossfadeDuration,
                 curve = this.curveTypes.SMOOTH,
-                delay = 0,
-                volume = 1.0
+                delay = 0
+                // volume = 1.0
             } = options;
             
             this.isTransitioning = true;
@@ -194,7 +194,7 @@ export class BGMTransitionManager {
      * @param toTrack - 次のトラック名
      * @param options - オプション
      */
-    private async fadeOutInTransition(fromTrack: string, toTrack: string, options: TransitionOptions): Promise<void> {
+    private async fadeOutInTransition(_fromTrack: string, toTrack: string, options: TransitionOptions): Promise<void> {
         const {
             fadeOutDuration = this.defaultFadeOutDuration,
             fadeInDuration = this.defaultFadeInDuration,
@@ -220,7 +220,7 @@ export class BGMTransitionManager {
      * @param toTrack - 次のトラック名
      * @param options - オプション
      */
-    private async crossfadeTransition(fromTrack: string, toTrack: string, options: TransitionOptions): Promise<void> {
+    private async crossfadeTransition(_fromTrack: string, toTrack: string, options: TransitionOptions): Promise<void> {
         const {
             duration = this.defaultCrossfadeDuration,
             curve = this.curveTypes.SMOOTH,
@@ -246,7 +246,7 @@ export class BGMTransitionManager {
      * @param toTrack - 次のトラック名
      * @param options - オプション
      */
-    private async cutTransition(fromTrack: string, toTrack: string, options: TransitionOptions): Promise<void> {
+    private async cutTransition(_fromTrack: string, toTrack: string, options: TransitionOptions): Promise<void> {
         const { volume = 1.0 } = options;
         
         // 現在のBGMを即座に停止

@@ -767,7 +767,7 @@ export class AudioErrorHandler {
     /**
      * ブラウザ互換性エラーの回復
      */
-    async recoverBrowserCompatibility(error: Error, context: any): Promise<boolean> {
+    async recoverBrowserCompatibility(_error: Error, _context: any): Promise<boolean> {
         try {
             // HTML5 Audio要素にフォールバック
             this.fallbackOptions.useHTMLAudio = true;
@@ -784,7 +784,7 @@ export class AudioErrorHandler {
     /**
      * フォールバック処理をトリガー
      */
-    triggerFallback(error: Error, errorType: string, context: any): void {
+    triggerFallback(_error: Error, errorType: string, context: any): void {
         this.errorStats.fallbacksTriggered++;
         this.errorState.fallbackMode = true;
         
@@ -900,7 +900,7 @@ export class AudioErrorHandler {
     /**
      * ユーザーに通知
      */
-    notifyUser(error: Error, errorType: string, severity: string): void {
+    notifyUser(_error: Error, _errorType: string, severity: string): void {
         if (!this.userNotificationSettings.showErrorMessages) {
             return;
         }

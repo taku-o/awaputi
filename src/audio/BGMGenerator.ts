@@ -118,8 +118,8 @@ export class BGMGenerator {
                 style = 'ambient',
                 duration = 30,
                 tempo = 120,
-                key = 'C',
-                timeSignature = '4/4'
+                key = 'C'
+                // timeSignature = '4/4'
             } = trackConfig;
             
             console.log(`Generating ${style} track: ${duration}s, ${tempo}BPM, key=${key}`);
@@ -280,7 +280,7 @@ export class BGMGenerator {
         
             const t = i / sampleRate;
             const beatPosition = (t % beatDuration) / beatDuration;
-            const measureProgress = (t % (beatDuration * 4)) / (beatDuration * 4);
+            // const measureProgress = (t % (beatDuration * 4)) / (beatDuration * 4);
             
             // 現在の和音
             const chordIndex = Math.floor(t / (beatDuration * 2)) % progression.length;
@@ -353,7 +353,7 @@ export class BGMGenerator {
             
             // 弦楽器風の和音（複数オクターブ）
             [1, 2, 4].forEach((octave, octaveIndex) => {
-                chord.forEach((freq, chordIndex) => {
+                chord.forEach((freq) => {
                     const harmonicFreq = freq * octave;
                     const amplitude = (0.2 / (octaveIndex + 1)) * intensity;
                     
