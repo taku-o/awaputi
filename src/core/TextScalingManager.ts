@@ -19,7 +19,7 @@ export class TextScalingManager {
     private viewportObserver: ResizeObserver | null;
     private stats: any;
     private userPreferences: any;
-    private scalingQueue: any[];
+    // private scalingQueue: any[];
     // private isProcessing: boolean;
     // private throttleDelay: number;
     private domObserver: MutationObserver | null;
@@ -459,7 +459,7 @@ export class TextScalingManager {
      * 要素の分類
      */
     categorizeElement(element: HTMLElement): void {
-        const _tagName = element.tagName.toLowerCase();
+        // const _tagName = element.tagName.toLowerCase();
         
         // テキストを含む要素かチェック
         if (!this.hasTextContent(element)) {
@@ -765,11 +765,11 @@ export class TextScalingManager {
      * 行間の調整
      */
     adjustLineHeight(adjustment: number): void {
-        const _newLineHeight = Math.max(
-            this.config.lineHeight.minimum,
-            Math.min(this.config.lineHeight.maximum,
-                this.config.lineHeight.base + adjustment)
-        );
+        // const _newLineHeight = Math.max(
+        //     this.config.lineHeight.minimum,
+        //     Math.min(this.config.lineHeight.maximum,
+        //         this.config.lineHeight.base + adjustment)
+        // );
         
         this.userPreferences.lineHeightAdjustment = adjustment;
         

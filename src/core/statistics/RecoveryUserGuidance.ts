@@ -449,7 +449,7 @@ export class RecoveryUserGuidance {
             
             // 分析結果に基づいてガイダンスを生成
             if (analysis.corruption) {
-                const { _corruptionLevel, repairability } = analysis.corruption;
+                const { repairability } = analysis.corruption;
 
                 if (repairability === 'high') {
                     guidance.recommended.push({

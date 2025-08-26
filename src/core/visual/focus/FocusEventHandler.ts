@@ -363,7 +363,7 @@ export class FocusEventHandler {
     /**
      * キーアップ処理
      */
-    private handleKeyUp(event: Event): void {
+    private handleKeyUp(_event: Event): void {
         // const _keyEvent = event as KeyboardEvent;
         // 特別な処理は不要（キーダウンで十分）
         
@@ -373,7 +373,7 @@ export class FocusEventHandler {
     /**
      * マウスダウン処理
      */
-    private handleMouseDown(event: Event): void {
+    private handleMouseDown(_event: Event): void {
         // const _mouseEvent = event as MouseEvent;
         
         // キーボードモードの無効化

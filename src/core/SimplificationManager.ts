@@ -17,7 +17,7 @@ import {
 } from './simplification-manager/UIComplexityAnalyzer.js';
 import { 
     InterfaceSimplifier, 
-    type SimplificationLevel as ISimplificationLevel,
+    // type SimplificationLevel as ISimplificationLevel,
     type SimplificationOptions as ISimplificationOptions 
 } from './simplification-manager/InterfaceSimplifier.js';
 import { AdaptiveSimplificationEngine } from './simplification-manager/AdaptiveSimplificationEngine.js';
@@ -310,7 +310,7 @@ export class SimplificationManager {
         
         if (highPriorityRecommendations.length > 0) {
             // 自動的により高い簡素化レベルを推奨
-            const _currentSettings = this.modeController.getCurrentModeConfig();
+            // const _currentSettings = this.modeController.getCurrentModeConfig();
             // Extract the current level key from the config - this is simplified for now
             const currentLevelKey = 'moderate'; // TODO: Extract actual current level key
             const nextLevel = this.getNextSimplificationLevel(currentLevelKey);

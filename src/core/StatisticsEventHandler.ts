@@ -145,7 +145,7 @@ export class StatisticsEventHandler {
      * @param {Object} bubbleData - 泡データ
      */
     onBubblePopped(bubbleData: any): void {
-        const { type, reactionTime, _score, isSpecial } = bubbleData;
+        const { type, reactionTime, isSpecial } = bubbleData;
         
         // 泡タイプ別統計更新
         if (this.statistics.bubbleTypeStats[type] !== undefined) {
@@ -262,7 +262,7 @@ export class StatisticsEventHandler {
      * @param {Object} effectData - 効果データ
      */
     onSpecialEffect(effectData: any): void {
-        const { type, _duration, _power } = effectData;
+        const { type } = effectData;
 
         switch (type) {
             case 'bonusTime':
@@ -300,7 +300,7 @@ export class StatisticsEventHandler {
      * @param {Object} dragData - ドラッグデータ
      */
     onDragOperation(dragData: any): void {
-        const { distance, _duration, accuracy } = dragData;
+        const { distance, accuracy } = dragData;
         
         const behavior = this.statistics.playerBehaviorStats;
         behavior.dragOperations++;
@@ -325,7 +325,7 @@ export class StatisticsEventHandler {
      * @param {Object} achievementData - 実績データ
      */
     onAchievementUnlocked(achievementData: any): void {
-        const { _id, ap } = achievementData;
+        const { ap } = achievementData;
         
         this.statistics.progressStats.achievementsUnlocked++;
         
@@ -356,7 +356,7 @@ export class StatisticsEventHandler {
      * @param {Object} itemData - アイテムデータ
      */
     onItemPurchased(itemData: any): void {
-        const { _itemId, cost, currency } = itemData;
+        const { cost, currency } = itemData;
         
         this.statistics.progressStats.itemsPurchased++;
         

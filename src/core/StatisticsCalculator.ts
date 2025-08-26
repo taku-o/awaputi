@@ -177,7 +177,7 @@ export class StatisticsCalculator {
      * @returns {Object} 行動分析
      */
     calculateBehaviorAnalysis(statistics: any): any {
-        const _behavior = statistics.playerBehaviorStats || {};
+        // const _behavior = statistics.playerBehaviorStats || {};
         
         return {
             playStyle: this.determinePlayStyle(statistics),

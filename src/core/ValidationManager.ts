@@ -14,7 +14,7 @@ export class ValidationManager {
     private customValidators: Map<string, (data: any) => any>;
     private statistics: any;
 
-    constructor(gameEngine: any) {
+    constructor(_gameEngine: any) {
         // 検証ルール
         this.validationRules = new Map();
         this.customValidators = new Map();

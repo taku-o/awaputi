@@ -281,7 +281,7 @@ export class SocialPlatformAdapters {
      */
     generateLineShareUrl(shareData: ShareData, options: LineShareOptions = {}): string {
         const config = this.platformConfig.line;
-        const { type = 'text' } = options;
+        // const { type = 'text' } = options;
 
         let text = shareData.text || '';
         if (shareData.url) {
