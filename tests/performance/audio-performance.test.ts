@@ -5,13 +5,13 @@
  * Issue #23で実装された音響システムのパフォーマンスを測定します。
  * 同時効果音再生、BGM生成時間、メモリ使用量などを検証します。
  */
-import { describe, test, expect, beforeEach, afterEach, beforeAll, afterAll, jest } from '@jest/globals';
+import { describe, test, expect, beforeEach } from '@jest/globals';
 import { AudioManager } from '../../src/audio/AudioManager';
 import { AudioDataOptimizer } from '../../src/audio/AudioDataOptimizer';
 import { AudioCacheManager } from '../../src/audio/AudioCacheManager';
 import { AudioPerformanceMonitor } from '../../src/audio/AudioPerformanceMonitor';
 
-interface MockFunction<T = any> extends Function {
+interface MockFunction extends Function {
     calls: any[][];
     executionTimes: number[];
     getAverageExecutionTime(): number;
@@ -484,7 +484,7 @@ describe('音響システムパフォーマンステスト', () => {
         });
 
         test('ガベージコレクション効果の測定', async () => {
-            const initialMemory = measureMemoryUsage();
+            // const initialMemory = measureMemoryUsage();
             
             // 大量の一時的な音響オブジェクトを作成
             for (let i = 0; i < 50; i++) {

@@ -1,4 +1,4 @@
-import { describe, test, expect, beforeEach, afterEach, beforeAll, afterAll, jest } from '@jest/globals';
+import { describe, test, expect, beforeEach } from '@jest/globals';
 /**
  * 計算処理のパフォーマンステスト
  * 
@@ -8,10 +8,10 @@ import { CalculationEngine } from '../../src/core/CalculationEngine';
 
 // テスト用の計算処理クラス
 class TestCalculator {
-    private memoized: Record<string, any> = {};
+    // private memoized: Record<string, any> = {};
 
     constructor() {
-        this.memoized = {};
+        // this.memoized = {};
     }
     
     // 軽い計算

@@ -1,4 +1,4 @@
-import { describe, test, expect, beforeEach, afterEach, beforeAll, afterAll, jest } from '@jest/globals';
+import { describe, test, expect, beforeEach } from '@jest/globals';
 /**
  * 設定アクセスのパフォーマンステスト
  * 
@@ -244,7 +244,7 @@ describe('Configuration Access Performance Tests', () => {
         // 様々なキーにアクセスしてアクセス統計を蓄積
         const testKeys: any[] = [];
         for (let i = 0; i < 50; i++) {
-            const key = `test.key${i}`;
+            // const key = `test.key${i}`;
             configManager.set('test', `key${i}`, `value${i}`);
             testKeys.push(['test', `key${i}`]);
         }

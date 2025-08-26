@@ -2,7 +2,7 @@
  * Canvas Scale UI Positioning Performance Tests
  * キャンバススケール UI配置システムのパフォーマンステスト
  */
-import { describe, test, expect, beforeEach, afterEach, beforeAll, afterAll, jest } from '@jest/globals';
+import { describe, test, expect, beforeEach } from '@jest/globals';
 import { JSDOM } from 'jsdom';
 
 describe('Canvas Scale UI Positioning Performance Tests', () => {
@@ -176,18 +176,18 @@ describe('Canvas Scale UI Positioning Performance Tests', () => {
 
     test('レスポンシブ・スケーリング計算パフォーマンス', () => {
         const scalingOperations = 500;
-        const testSizes = [
-            { width: 1920, height: 1080 },
-            { width: 1366, height: 768 },
-            { width: 768, height: 1024 },
-            { width: 375, height: 667 },
-            { width: 320, height: 568 }
-        ];
+        // const testSizes = [
+        //     { width: 1920, height: 1080 },
+        //     { width: 1366, height: 768 },
+        //     { width: 768, height: 1024 },
+        //     { width: 375, height: 667 },
+        //     { width: 320, height: 568 }
+        // ];
 
         performanceMonitor.mark('scaling-calc-start');
 
         for (let i = 0; i < scalingOperations; i++) {
-            const size = testSizes[i % testSizes.length];
+            // const size = testSizes[i % testSizes.length];
             
             // スケーリング計算をシミュレート
             responsiveCanvasManager.getCanvasScale();
@@ -264,10 +264,14 @@ describe('Canvas Scale UI Positioning Performance Tests', () => {
         for (let i = 0; i < highDPIOperations; i++) {
             // 高DPI対応の処理をシミュレート
             testElements.forEach(element => {
-                const scaledX = scaledCoordinateManager.adjustForScale(element.x);
-                const scaledY = scaledCoordinateManager.adjustForScale(element.y);
-                const scaledWidth = scaledCoordinateManager.adjustForScale(element.width);
-                const scaledHeight = scaledCoordinateManager.adjustForScale(element.height);
+                // const scaledX = scaledCoordinateManager.adjustForScale(element.x);
+                // const scaledY = scaledCoordinateManager.adjustForScale(element.y);
+                // const scaledWidth = scaledCoordinateManager.adjustForScale(element.width);
+                // const scaledHeight = scaledCoordinateManager.adjustForScale(element.height);
+                scaledCoordinateManager.adjustForScale(element.x);
+                scaledCoordinateManager.adjustForScale(element.y);
+                scaledCoordinateManager.adjustForScale(element.width);
+                scaledCoordinateManager.adjustForScale(element.height);
                 
                 // 実際の描画処理（モック）
                 responsiveCanvasManager.getPixelRatio();
@@ -309,7 +313,8 @@ describe('Canvas Scale UI Positioning Performance Tests', () => {
             
             // 一時的なオブジェクトを大量作成
             const screenCoord = scaledCoordinateManager.screenToCanvas(x, y);
-            const canvasCoord = scaledCoordinateManager.canvasToScreen(screenCoord.x, screenCoord.y);
+            // const canvasCoord = scaledCoordinateManager.canvasToScreen(screenCoord.x, screenCoord.y);
+            scaledCoordinateManager.canvasToScreen(screenCoord.x, screenCoord.y);
             
             // 不要な参照を削除（GC促進）
             if (i % 100 === 0) {

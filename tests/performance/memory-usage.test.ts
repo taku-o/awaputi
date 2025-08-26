@@ -4,7 +4,7 @@
  * 
  * キャッシュシステムのメモリ使用量、リーク検出、自動クリーンアップ機能を測定します。
  */
-import { describe, test, expect, beforeEach, afterEach, beforeAll, afterAll, jest } from '@jest/globals';
+import { describe, test, expect, beforeEach } from '@jest/globals';
 import { getCacheSystem } from '../../src/core/CacheSystem';
 
 interface CacheConfig {
@@ -234,7 +234,7 @@ describe('Memory Usage Performance Tests', () => {
         }
         
         // メモリ効率の分析
-        dataPoints.forEach((point, index) => {
+        dataPoints.forEach((point) => {
             const memoryPerItem = point.memory / point.operations;
             console.log(`${point.operations}操作後: メモリ=${(point.memory / 1024).toFixed(2)}KB, ` +
                        `キャッシュサイズ=${point.cacheSize}, アイテム当たり=${(memoryPerItem / 1024).toFixed(3)}KB`);

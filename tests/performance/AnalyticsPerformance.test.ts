@@ -1,12 +1,12 @@
-import { describe, test, expect, beforeEach, afterEach, beforeAll, afterAll, jest } from '@jest/globals';
+import { describe, test, expect, beforeEach } from '@jest/globals';
 /**
  * AnalyticsPerformance.test.ts
  * ゲーム分析システムの大量データ処理パフォーマンステスト
  */
-import { EnhancedAnalyticsManager } from '../../src/analytics/EnhancedAnalyticsManager';
+// import { EnhancedAnalyticsManager } from '../../src/analytics/EnhancedAnalyticsManager';
 import { AnalyticsPerformanceOptimizer } from '../../src/analytics/AnalyticsPerformanceOptimizer';
-import { DataCollector } from '../../src/analytics/DataCollector';
-import { IndexedDBStorageManager } from '../../src/analytics/IndexedDBStorageManager';
+// import { DataCollector } from '../../src/analytics/DataCollector';
+// import { IndexedDBStorageManager } from '../../src/analytics/IndexedDBStorageManager';
 
 // テスト用の大量データ生成ヘルパー
 class TestDataGenerator {
@@ -370,7 +370,7 @@ describe('Analytics Performance Tests', () => {
 
     describe('データ集計性能', () => {
         test('大量データ集計処理', () => {
-            const bubbleTypes = ['normal', 'stone', 'rainbow', 'pink', 'clock'];
+            // const bubbleTypes = ['normal', 'stone', 'rainbow', 'pink', 'clock'];
             const interactions = TestDataGenerator.generateBubbleInteractions(5000);
             
             profiler.start('data_aggregation');

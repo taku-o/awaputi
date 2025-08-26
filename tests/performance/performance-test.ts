@@ -3,7 +3,7 @@
  * TypeScript移行 - Task 26対応
  */
 
-import { describe, test, expect, beforeEach, afterEach, beforeAll, afterAll, jest } from '@jest/globals';
+import { describe, test, expect, beforeEach } from '@jest/globals';
 import { performance } from 'perf_hooks';
 
 interface MockDocument {
