@@ -185,7 +185,7 @@ export class ErrorScreenshotCapture {
         
         try {
             const canvas = this.gameEngine.canvas;
-            const ctx = canvas.getContext('2d');
+            // const ctx = canvas.getContext('2d');
             
             // Canvasのサイズを取得
             const originalWidth = canvas.width;

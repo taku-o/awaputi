@@ -158,7 +158,7 @@ export class GameStateCommands extends BaseComponent {
             this.components.set('undoManager', new UndoOperationManager(this) as any);
 
             // 各コンポーネントを初期化
-            for (const [name, component] of this.components) {
+            for (const [_name, component] of this.components) {
                 if (component.initialize) {
                     await component.initialize();
                 }
@@ -513,7 +513,7 @@ export class GameStateCommands extends BaseComponent {
     public destroy(): void {
         try {
             // 各コンポーネントのクリーンアップ
-            for (const [name, component] of this.components) {
+            for (const [_name, component] of this.components) {
                 if (component.cleanup) {
                     component.cleanup();
                 }

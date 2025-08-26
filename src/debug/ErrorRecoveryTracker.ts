@@ -377,7 +377,7 @@ export class ErrorRecoveryTracker {
     /**
      * 復旧戦略の適用可能性チェック
      */
-    private isStrategyApplicable(strategy: RecoveryStrategy, error: ErrorInfo, context: any): boolean {
+    private isStrategyApplicable(strategy: RecoveryStrategy, error: ErrorInfo, _context: any): boolean {
         // トリガーワードの確認
         const errorText = `${error.message} ${error.category}`.toLowerCase();
         
@@ -550,7 +550,7 @@ export class ErrorRecoveryTracker {
         }
     }
     
-    private async performCanvasReset(error: ErrorInfo, context: any): Promise<RecoveryResult> {
+    private async performCanvasReset(_error: ErrorInfo, _context: any): Promise<RecoveryResult> {
         try {
             const gameEngine = this.errorReporter.gameEngine;
             if (!gameEngine?.canvas) {
@@ -586,7 +586,7 @@ export class ErrorRecoveryTracker {
         }
     }
     
-    private async performAudioRestart(error: ErrorInfo, context: any): Promise<RecoveryResult> {
+    private async performAudioRestart(_error: ErrorInfo, _context: any): Promise<RecoveryResult> {
         try {
             const gameEngine = this.errorReporter.gameEngine;
             if (!gameEngine?.audioManager) {
@@ -614,7 +614,7 @@ export class ErrorRecoveryTracker {
         }
     }
     
-    private async performStorageFallback(error: ErrorInfo, context: any): Promise<RecoveryResult> {
+    private async performStorageFallback(_error: ErrorInfo, _context: any): Promise<RecoveryResult> {
         try {
             const gameEngine = this.errorReporter.gameEngine;
             
@@ -640,7 +640,7 @@ export class ErrorRecoveryTracker {
         }
     }
     
-    private async performSceneReload(error: ErrorInfo, context: any): Promise<RecoveryResult> {
+    private async performSceneReload(_error: ErrorInfo, _context: any): Promise<RecoveryResult> {
         try {
             const gameEngine = this.errorReporter.gameEngine;
             if (!gameEngine?.sceneManager) {
@@ -670,7 +670,7 @@ export class ErrorRecoveryTracker {
         }
     }
     
-    private async performSafeModeSwitch(error: ErrorInfo, context: any): Promise<RecoveryResult> {
+    private async performSafeModeSwitch(_error: ErrorInfo, _context: any): Promise<RecoveryResult> {
         try {
             const gameEngine = this.errorReporter.gameEngine;
             
@@ -739,7 +739,7 @@ export class ErrorRecoveryTracker {
     /**
      * ユーティリティメソッド群
      */
-    private identifyProblemComponent(error: ErrorInfo, context: any): string | null {
+    private identifyProblemComponent(error: ErrorInfo, _context: any): string | null {
         const message = error.message.toLowerCase();
         const category = error.category.toLowerCase();
         
@@ -812,7 +812,7 @@ export class ErrorRecoveryTracker {
         categoryStats.successes++;
     }
     
-    private recordStrategyFailure(strategyId: string, errorCategory: string, reason: string): void {
+    private recordStrategyFailure(strategyId: string, errorCategory: string, _reason: string): void {
         // 戦略別統計
         if (!this.recoveryStats.byStrategy.has(strategyId)) {
             this.recoveryStats.byStrategy.set(strategyId, {
@@ -841,7 +841,7 @@ export class ErrorRecoveryTracker {
         categoryStats.failures++;
     }
     
-    private getStrategyEffectiveness(strategyId: string, errorCategory: string): number {
+    private getStrategyEffectiveness(strategyId: string, _errorCategory: string): number {
         const strategyStats = this.recoveryStats.byStrategy.get(strategyId);
         if (!strategyStats || strategyStats.attempts === 0) {
             return 0.5; // デフォルト値

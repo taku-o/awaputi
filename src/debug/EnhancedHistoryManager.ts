@@ -134,7 +134,7 @@ export class EnhancedHistoryManager {
     /**
      * 履歴をナビゲート
      */
-    public navigate(direction: 'up' | 'down', filter: string | null = null): { command: string } | null {
+    public navigate(direction: 'up' | 'down', _filter: string | null = null): { command: string } | null {
         if (this.history.length === 0) return null as any;
 
         let newIndex = this.currentIndex;

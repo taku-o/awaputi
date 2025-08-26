@@ -983,7 +983,7 @@ class DocumentationSearchEngine {
         return sortedResults;
     }
 
-    generateExcerpt(docId: string, queryTokens: string[]): string {
+    generateExcerpt(_docId: string, queryTokens: string[]): string {
         // 簡単な抜粋生成（実際の実装ではより洗練された方法を使用）
         return 'Relevant documentation about ' + queryTokens.join(', ');
     }

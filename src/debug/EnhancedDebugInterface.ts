@@ -161,7 +161,7 @@ export class EnhancedDebugInterface extends EffectDebugInterface {
         }
     }
 
-    private createFallbackComponent(name: string): DebugComponent {
+    private createFallbackComponent(_name: string): DebugComponent {
         return {
             initialized: false,
             // 基本的なフォールバック実装

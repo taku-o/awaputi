@@ -219,7 +219,7 @@ export class EnhancedAutocompleteEngine {
     /**
      * コンテキスト対応候補を取得
      */
-    private getContextSuggestions(input: string, context: any): Suggestion[] {
+    private getContextSuggestions(input: string, _context: any): Suggestion[] {
         const suggestions: Suggestion[] = [];
         
         // ゲームエンジンのコンテキストを活用

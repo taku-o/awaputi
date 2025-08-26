@@ -82,7 +82,7 @@ export class DebugErrorAnalyzer {
         message: string;
         stack?: string;
         context?: any;
-    }, timestamp: number): AnalysisResult {
+    }, _timestamp: number): AnalysisResult {
         this.errorHistory.push(error);
         
         const matchedPatterns = this.patterns.filter(pattern =>

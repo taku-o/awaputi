@@ -769,15 +769,15 @@ export class DetailedMetricsCollector {
     private getAveragePhysicsStepTime(): number { return 0; }
     private getSpatialOptimizationStats(): Record<string, any> { return {}; }
     private collectAudioContextMetrics(_audioMetrics: AudioMetrics): void {}
-    private collectSoundPlaybackMetrics(audioMetrics: AudioMetrics): void {}
-    private collectAudioProcessingMetrics(audioMetrics: AudioMetrics): void {}
-    private collectResourceLoadingMetrics(networkMetrics: NetworkMetrics): void {}
-    private collectCacheMetrics(networkMetrics: NetworkMetrics): void {}
-    private collectObjectPoolMetrics(memoryMetrics: MemoryMetrics): void {}
-    private estimateGPUMemoryUsage(memoryMetrics: MemoryMetrics): void {}
-    private detectMemoryLeaks(memoryMetrics: MemoryMetrics): void {}
-    private analyzeRenderPipeline(renderMetrics: RenderingMetrics): void {}
-    private collectFramebufferMetrics(renderMetrics: RenderingMetrics): void {}
+    private collectSoundPlaybackMetrics(_audioMetrics: AudioMetrics): void {}
+    private collectAudioProcessingMetrics(_audioMetrics: AudioMetrics): void {}
+    private collectResourceLoadingMetrics(_networkMetrics: NetworkMetrics): void {}
+    private collectCacheMetrics(_networkMetrics: NetworkMetrics): void {}
+    private collectObjectPoolMetrics(_memoryMetrics: MemoryMetrics): void {}
+    private estimateGPUMemoryUsage(_memoryMetrics: MemoryMetrics): void {}
+    private detectMemoryLeaks(_memoryMetrics: MemoryMetrics): void {}
+    private analyzeRenderPipeline(_renderMetrics: RenderingMetrics): void {}
+    private collectFramebufferMetrics(_renderMetrics: RenderingMetrics): void {}
     private countTextureBindings(): number { return 0; }
     private estimateTextureMemory(): number { return 0; }
     private countTextureUploads(): number { return 0; }
@@ -795,14 +795,14 @@ export class DetailedMetricsCollector {
     private countTextOperations(): number { return 0; }
     private countTransformations(): number { return 0; }
     private countCompositeOperations(): number { return 0; }
-    private analyzeGameLoop(gameMetrics: GameMetrics): void {}
-    private collectScoringMetrics(gameMetrics: GameMetrics): void {}
-    private collectEventSystemMetrics(gameMetrics: GameMetrics): void {}
-    private proxyWebGLCalls(gl: WebGLRenderingContext): void {}
+    private analyzeGameLoop(_gameMetrics: GameMetrics): void {}
+    private collectScoringMetrics(_gameMetrics: GameMetrics): void {}
+    private collectEventSystemMetrics(_gameMetrics: GameMetrics): void {}
+    private proxyWebGLCalls(_gl: WebGLRenderingContext): void {}
     private setupMemoryAllocationTracking(): void {}
     private profileGameLoopStages(): void {}
-    private profileAudioProcessing(audioManager: AudioManager): void {}
-    private processResourceTiming(entry: PerformanceEntry): void {}
+    private profileAudioProcessing(_audioManager: AudioManager): void {}
+    private processResourceTiming(_entry: PerformanceEntry): void {}
 }
 
 /**

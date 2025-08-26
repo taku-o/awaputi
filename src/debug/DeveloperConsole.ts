@@ -527,7 +527,7 @@ export class DeveloperConsole {
     /**
      * 出力の通知
      */
-    notifyOutput(outputLine: OutputLine): void {
+    notifyOutput(_outputLine: OutputLine): void {
         // ConsolePanel が実装
     }
 
