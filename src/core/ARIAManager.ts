@@ -79,8 +79,8 @@ interface ARIAReport {
  * 動的ARIA属性管理システムとWCAG準拠のアクセシビリティ機能を提供
  */
 export class ARIAManager {
-    private screenReaderManager: ScreenReaderManager; // Used for accessibility
-    private gameEngine: unknown; // Used for state management
+    // private screenReaderManager: ScreenReaderManager; // Used for accessibility
+    // private gameEngine: unknown; // Used for state management
     private managedElements: Map<Element, ManagedElementInfo>;
     private ariaDescriptions: Map<string, string>;
     private ariaLiveRegions: Map<string, Element>;

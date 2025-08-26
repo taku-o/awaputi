@@ -65,7 +65,7 @@ export class CoreAccessibilityManager {
     private testingFramework: TestingFramework | null;
     private eventListeners: Map<string, Set<EventCallback>>;
     private isInitialized: boolean;
-    private isEnabled: boolean; // Unused variable prefixed with underscore
+    // private isEnabled: boolean; // Unused variable prefixed with underscore
     private pendingConfiguration: any;
     private managerRegistry: Map<string, Manager | null>;
     private managerDependencies: Map<string, string[]>;

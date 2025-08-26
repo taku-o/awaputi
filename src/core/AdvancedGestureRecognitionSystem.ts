@@ -439,7 +439,7 @@ export class AdvancedGestureRecognitionSystem {
      * マウスイベントをタッチイベントに変換
      */
     private mouseEventToTouch(e: MouseEvent): Touch {
-        const _rect = this.gameEngine.canvas.getBoundingClientRect();
+        // const _rect = this.gameEngine.canvas.getBoundingClientRect();
         return {
             identifier: 0,
             clientX: e.clientX,

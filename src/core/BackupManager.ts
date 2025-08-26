@@ -57,7 +57,7 @@ export class BackupManager {
     private validation: ValidationManager | null;
     private version: string;
     private config: BackupConfig;
-    private backupQueue: BackupJob[]; // Used for backup operations
+    // private backupQueue: BackupJob[]; // Used for backup operations
     private isBackupInProgress: boolean;
     private autoBackupTimer: ReturnType<typeof setInterval> | null;
     private lastBackupTime: number | null;

@@ -166,7 +166,7 @@ export class AlternativeInputManager {
     private stats: Statistics;
     private gamepadCheckInterval: ReturnType<typeof setInterval> | null = null;
 
-    constructor(motorAccessibilityManager: MotorAccessibilityManager) {
+    constructor(_motorAccessibilityManager: MotorAccessibilityManager) {
         // motorAccessibilityManager not used in current implementation
         
         // サブコンポーネントを初期化

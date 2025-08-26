@@ -90,7 +90,7 @@ export class AchievementPerformanceOptimizer {
     private cache: Map<string, CacheEntry>;
     private updateQueue: ThrottledEvent[];
     private throttleTimer: number | null;
-    private lastUpdateTime: number; // Used for performance tracking
+    // private lastUpdateTime: number; // Used for performance tracking
     private batchProcessor: number | null;
     private batchQueue: BatchEvent[];
     private performanceStats: PerformanceStats;

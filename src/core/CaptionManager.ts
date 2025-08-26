@@ -181,7 +181,7 @@ interface CaptionReport {
  * 音声コンテンツのリアルタイム字幕表示とカスタマイズ可能なスタイリング
  */
 export class CaptionManager {
-    private audioAccessibilityManager: AudioAccessibilityManager; // Used for audio integration
+    // private audioAccessibilityManager: AudioAccessibilityManager; // Used for audio integration
     private accessibilityManager?: AccessibilityManager;
     private gameEngine?: GameEngine;
     private config: CaptionConfig;
@@ -192,7 +192,7 @@ export class CaptionManager {
     private captionContainer: HTMLElement | null;
     private maxCaptionId: number;
     private dynamicStyleSheet: HTMLStyleElement | null;
-    private currentStyle: string; // Used for styling captions
+    // private currentStyle: string; // Used for styling captions
     private stats: CaptionStats;
     private userPreferences: UserPreferences;
     private languageSupport: Map<string, LanguageConfig>;

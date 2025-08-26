@@ -385,7 +385,7 @@ export class BGMTransitionManager {
      * @param duration - 時間
      * @param curve - カーブタイプ
      */
-    private async performCrossfade(fromVolume: number, toVolume: number, duration: number, curve: string): Promise<void> {
+    private async performCrossfade(_fromVolume: number, toVolume: number, duration: number, curve: string): Promise<void> {
         const steps = Math.ceil(duration * 30); // 30fps相当
         const stepDuration = duration / steps;
         

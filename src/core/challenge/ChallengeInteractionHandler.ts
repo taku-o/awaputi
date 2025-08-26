@@ -340,7 +340,7 @@ export class ChallengeInteractionHandler {
     private handlers: EventHandlers;
     private focusableElements: FocusableElement[];
     private focusHistory: FocusHistoryEntry[];
-    private touchState: TouchEvent | null; // Used for touch gesture detection
+    // private touchState: TouchEvent | null; // Used for touch gesture detection
     private navigationState: NavigationState;
     private preventDoubleClickHandlers: Map<HTMLElement, ClickPreventionHandler>;
 

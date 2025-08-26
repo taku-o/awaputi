@@ -127,19 +127,19 @@ export class AchievementManager implements IAchievementManager {
      * @deprecated ProgressTrackerクラスが実装されたため、このメソッドは使用されません
      * モックProgressTrackerオブジェクトを作成
      */
-    private createMockProgressTracker() {
-        console.warn('[AchievementManager] createMockProgressTracker is deprecated. Use ProgressTracker class instead.');
-        return new ProgressTracker();
-    }
+    // private createMockProgressTracker() {
+    //     console.warn('[AchievementManager] createMockProgressTracker is deprecated. Use ProgressTracker class instead.');
+    //     return new ProgressTracker();
+    // }
     
     /**
      * @deprecated PerformanceOptimizerクラスが実装されたため、このメソッドは使用されません
      * モックPerformanceOptimizerオブジェクトを作成
      */
-    private createMockPerformanceOptimizer() {
-        console.warn('[AchievementManager] createMockPerformanceOptimizer is deprecated. Use PerformanceOptimizer class instead.');
-        return new PerformanceOptimizer();
-    }
+    // private createMockPerformanceOptimizer() {
+    //     console.warn('[AchievementManager] createMockPerformanceOptimizer is deprecated. Use PerformanceOptimizer class instead.');
+    //     return new PerformanceOptimizer();
+    // }
     
     /**
      * イベントリスナーを設定

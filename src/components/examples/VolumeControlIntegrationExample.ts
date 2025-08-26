@@ -104,7 +104,7 @@ export class VolumeControlIntegrationExample {
     /**
      * 他のコンポーネントに音量変更を通知
      */
-    private notifyOtherComponents(volume: number): void {
+    private notifyOtherComponents(_volume: number): void {
         // 他の音響関連コンポーネントに通知
         // 例: BGMプレイヤー、効果音プレイヤーなど
     }
@@ -112,7 +112,7 @@ export class VolumeControlIntegrationExample {
     /**
      * 音量設定の保存
      */
-    private saveVolumeSettings(volume: number): void {
+    private saveVolumeSettings(_volume: number): void {
         // ゲーム設定に保存
         // this.gameEngine.settingsManager.set('masterVolume', volume);
     }

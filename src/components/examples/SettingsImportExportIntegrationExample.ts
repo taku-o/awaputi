@@ -72,7 +72,7 @@ export class SettingsImportExportIntegrationExample {
      * 
      * renderSettings()またはhandleCustomComponent()メソッドで呼び出す
      */
-    handleSettingsImportExportComponent(settingItem: SettingItem, parentElement: HTMLElement): HTMLElement | null {
+    handleSettingsImportExportComponent(_settingItem: SettingItem, parentElement: HTMLElement): HTMLElement | null {
         try {
             // コンポーネント初期化
             if (!this.settingsImportExportComponent) {

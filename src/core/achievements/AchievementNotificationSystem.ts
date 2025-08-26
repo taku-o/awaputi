@@ -140,7 +140,7 @@ export type NotificationPosition =
 export type RarityLevel = 'common' | 'rare' | 'epic' | 'legendary';
 
 export class AchievementNotificationSystem {
-    private notifications: Notification[]; // Unused variable kept for compatibility
+    // private notifications: Notification[]; // Unused variable kept for compatibility
     private notificationQueue: Notification[];
     private activeNotifications: Set<string>;
     private _audioManager: AudioManager | null;
