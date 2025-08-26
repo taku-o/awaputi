@@ -4,17 +4,17 @@
  */
 
 export class PerformanceWarningSystem {
-    private realtimeMonitor: any;
+    private _realtimeMonitor: any;
     private options: any;
     private activeWarnings: Map<string, any>;
     private warningHistory: any[];
     private warningCategories: Map<string, any>;
     private acknowledgements: Set<string>;
     private warningContainer: HTMLElement | null;
-    private eventListeners: any[];
+    private _eventListeners: any[];
 
     constructor(realtimeMonitor: any, options: any = {}) {
-        this.realtimeMonitor = realtimeMonitor;
+        this._realtimeMonitor = realtimeMonitor;
         this.options = {
             enableVisualWarnings: true,
             enableAudioWarnings: false,
@@ -31,7 +31,7 @@ export class PerformanceWarningSystem {
         this.warningCategories = new Map();
         this.acknowledgements = new Set();
         this.warningContainer = null;
-        this.eventListeners = [];
+        this._eventListeners = [];
 
         this.initialize();
     }
@@ -804,7 +804,7 @@ export class PerformanceWarningSystem {
     /**
      * 自動確認のスケジュール
      */
-    private scheduleAutoAcknowledge(warningId: string) {
+    private scheduleAutoAcknowledge(_warningId: string) {
         // 実装が必要な場合はここに追加
     }
 

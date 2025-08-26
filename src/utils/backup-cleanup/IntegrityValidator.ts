@@ -816,7 +816,7 @@ export class IntegrityValidator {
     /**
      * 整合性推奨事項の生成
      */
-    private generateIntegrityRecommendations(validationResults: ValidationResults, issues: IntegrityIssue[]): IntegrityRecommendation[] {
+    private generateIntegrityRecommendations(_validationResults: ValidationResults, issues: IntegrityIssue[]): IntegrityRecommendation[] {
         const recommendations: IntegrityRecommendation[] = [];
 
         if (issues.length === 0) {

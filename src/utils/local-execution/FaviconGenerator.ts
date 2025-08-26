@@ -119,7 +119,7 @@ class FaviconGenerator {
                 details: []
             };
             // 既存favicon検証
-            const validation = FaviconDOMManager.validateExistingFavicons();
+            const ___validation = FaviconDOMManager.validateExistingFavicons();
             
             // 設定ハッシュ生成
             const configHash = FaviconCacheManager.generateConfigHash(finalConfig);

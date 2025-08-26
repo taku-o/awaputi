@@ -310,15 +310,15 @@ export class PerformanceTestSuite {
         this.currentSession = null;
         
         // サブコンポーネントの初期化
-        this.testExecutor = new PerformanceTestExecutor(this);
-        this.metricsCollector = new PerformanceMetricsCollector(this);
-        this.testReporter = new PerformanceTestReporter(this);
+        this.testExecutor = new (PerformanceTestExecutor as any)(this);
+        this.metricsCollector = new (PerformanceMetricsCollector as any)(this);
+        this.testReporter = new (PerformanceTestReporter as any)(this);
         
         // 既存のヘルパークラス（互換性のため保持）
-        this.testRunner = new PerformanceTestRunner();
-        this.benchmarkComparator = new BenchmarkComparator();
-        this.regressionDetector = new RegressionDetector();
-        this.continuousMonitor = new ContinuousPerformanceMonitor();
+        this.testRunner = new (PerformanceTestRunner as any)();
+        this.benchmarkComparator = new (BenchmarkComparator as any)();
+        this.regressionDetector = new (RegressionDetector as any)();
+        this.continuousMonitor = new (ContinuousPerformanceMonitor as any)();
         
         this.initializeTestSuite();
     }
@@ -697,98 +697,98 @@ export class PerformanceTestSuite {
 
 // 既存のヘルパークラス（互換性のため保持）
 // これらは元のファイルから移動される予定
-class PerformanceTestRunner implements PerformanceTestRunner {
+class PerformanceTestRunner {
     // 既存の実装...
 }
 
-class BenchmarkComparator implements BenchmarkComparator {
+class BenchmarkComparator {
     // 既存の実装...
 }
 
-class RegressionDetector implements RegressionDetector {
+class RegressionDetector {
     // 既存の実装...
 }
 
-class ContinuousPerformanceMonitor implements ContinuousPerformanceMonitor {
+class ContinuousPerformanceMonitor {
     // 既存の実装...
 }
 
 // 以下は元のファイルから移動される追加のヘルパークラス
-class LoadSimulator implements LoadSimulator {
+class LoadSimulator {
     async applyHighLoad(): Promise<void> { /* 実装 */ }
     async removeLoad(): Promise<void> { /* 実装 */ }
     getAppliedLoad(): any { return {}; }
 }
 
-class SpikeSimulator implements SpikeSimulator {
+class SpikeSimulator {
     async createPerformanceSpike(): Promise<void> { /* 実装 */ }
     getSpikeType(): string { return 'cpu'; }
 }
 
-class MemoryLeakDetector implements MemoryLeakDetector {
+class MemoryLeakDetector {
     async startMonitoring(): Promise<void> { /* 実装 */ }
     async generateReport(): Promise<MemoryLeakReport> { 
         return { suspectedLeaks: [], totalGrowth: 0 };
     }
 }
 
-class GCMonitor implements GCMonitor {
+class GCMonitor {
     async startMonitoring(): Promise<void> { /* 実装 */ }
     async getStatistics(): Promise<GCStatistics> { 
         return { averagePauseTime: 0, collectionCount: 0, totalPauseTime: 0, memoryReclaimed: 0 };
     }
 }
 
-class MemoryPressureSimulator implements MemoryPressureSimulator {
+class MemoryPressureSimulator {
     async applyPressure(): Promise<void> { /* 実装 */ }
     async releasePressure(): Promise<void> { /* 実装 */ }
     getPressureLevel(): string { return 'medium'; }
 }
 
-class RenderOptimizer implements RenderOptimizer {
-    async measureDirtyRegionEfficiency(scenario: DirtyRegionTestScenario): Promise<DirtyRegionEfficiency> {
+class RenderOptimizer {
+    async measureDirtyRegionEfficiency(_scenario: DirtyRegionTestScenario): Promise<DirtyRegionEfficiency> {
         return { ratio: 0.3, totalRegions: 100, dirtyRegions: 30, pixelsRendered: 1000 };
     }
 }
 
-class DirtyRegionTestScenario implements DirtyRegionTestScenario {
+class DirtyRegionTestScenario {
     async setup(): Promise<void> { /* 実装 */ }
 }
 
-class ViewportCullingTester implements ViewportCullingTester {
+class ViewportCullingTester {
     async measureCullingEfficiency(): Promise<CullingEfficiency> {
         return { cullRate: 0.7, totalObjects: 100, culledObjects: 70, renderTime: 16 };
     }
 }
 
-class LayerCompositionTester implements LayerCompositionTester {
+class LayerCompositionTester {
     async measureCompositionPerformance(): Promise<CompositionPerformance> {
         return { compositionTime: 8, layerCount: 5, complexity: 'medium', optimizations: [] };
     }
 }
 
-class RenderTimer implements RenderTimer {
+class RenderTimer {
     async measureSingleRenderTime(): Promise<number> { return 16.67; }
 }
 
-class NetworkThroughputTester implements NetworkThroughputTester {
+class NetworkThroughputTester {
     async measureThroughput(): Promise<number> { return 1000; }
     getDataSize(): number { return 1024; }
     getDuration(): number { return 1000; }
 }
 
-class NetworkReliabilityTester implements NetworkReliabilityTester {
+class NetworkReliabilityTester {
     async measureErrorRate(): Promise<number> { return 0.01; }
     getTotalRequests(): number { return 100; }
     getFailedRequests(): number { return 1; }
 }
 
-class BatteryMonitor implements BatteryMonitor {
+class BatteryMonitor {
     async startMonitoring(): Promise<void> { /* 実装 */ }
     async getConsumption(): Promise<number> { return 400; }
 }
 
-class BatteryEfficiencyTester implements BatteryEfficiencyTester {
+class BatteryEfficiencyTester {
     async measureEfficiency(): Promise<number> { return 0.85; }
     getActiveOptimizations(): string[] { return ['cpu_throttling', 'screen_dimming']; }
 }

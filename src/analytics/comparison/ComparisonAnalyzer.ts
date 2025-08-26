@@ -278,7 +278,7 @@ export class ComparisonAnalyzer {
      * @param {number} timeHorizon - 期間
      * @returns {Array} アクションリスト
      */
-    generateMetricSpecificActions(area: any, metricInfo: any, difficultyPreference: string, timeHorizon: number): any[] {
+    generateMetricSpecificActions(area: any, _metricInfo: any, difficultyPreference: string, _timeHorizon: number): any[] {
         const actions: any[] = [];
         const template = this.suggestionTemplates[area.metric];
 
@@ -393,7 +393,7 @@ export class ComparisonAnalyzer {
      * @param {Object} comparisonResult - 比較結果
      * @returns {Object} モチベーション要素
      */
-    generateMotivationalElements(strongAreas: any[], targetAreas: any[], comparisonResult: any): any {
+    generateMotivationalElements(strongAreas: any[], targetAreas: any[], _comparisonResult: any): any {
         const elements: any = {
             achievements: [],
             encouragement: [],
@@ -552,7 +552,7 @@ export class ComparisonAnalyzer {
      * @param {string} difficultyPreference - 難易度設定
      * @returns {string} 練習頻度
      */
-    calculatePracticeFrequency(difficulty: string, difficultyPreference: string): string {
+    calculatePracticeFrequency(_difficulty: string, difficultyPreference: string): string {
         if (difficultyPreference === 'high') return '毎日';
         if (difficultyPreference === 'low') return '週2-3回';
         return '週4-5回';
@@ -564,7 +564,7 @@ export class ComparisonAnalyzer {
      * @param {number} timeHorizon - 期間
      * @returns {string} アクション期間
      */
-    calculateActionTimeframe(difficulty: string, timeHorizon: number): string {
+    calculateActionTimeframe(_difficulty: string, timeHorizon: number): string {
         if (timeHorizon <= 7) return '1週間';
         if (timeHorizon <= 14) return '2週間';
         return '1ヶ月';

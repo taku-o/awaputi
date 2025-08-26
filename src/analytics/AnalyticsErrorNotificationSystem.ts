@@ -459,9 +459,9 @@ export class AnalyticsErrorNotificationSystem {
                 viewport: `${window.innerWidth}x${window.innerHeight}`,
                 language: navigator.language,
                 online: navigator.onLine,
-                memory: performance.memory ? {
-                    used: Math.round(performance.memory.usedJSHeapSize / 1024 / 1024),
-                    total: Math.round(performance.memory.totalJSHeapSize / 1024 / 1024)
+                memory: (performance as any).memory ? {
+                    used: Math.round((performance as any).memory.usedJSHeapSize / 1024 / 1024),
+                    total: Math.round((performance as any).memory.totalJSHeapSize / 1024 / 1024)
                 } : null,
                 storage: this.getStorageInfo()
             };
@@ -483,8 +483,8 @@ export class AnalyticsErrorNotificationSystem {
 
             if (navigator.storage && navigator.storage.estimate) {
                 navigator.storage.estimate().then(estimate => {
-                    localStorage.quota = Math.round((estimate.quota || 0) / 1024 / 1024);
-                    localStorage.usage = Math.round((estimate.usage || 0) / 1024 / 1024);
+                    localStorage.quota = Math.round((estimate.quota || 0) / 1024 / 1024) as any;
+                    localStorage.usage = Math.round((estimate.usage || 0) / 1024 / 1024) as any;
                 });
             }
 
@@ -677,7 +677,7 @@ export class AnalyticsErrorNotificationSystem {
     /**
      * ネットワークエラーからの復旧
      */
-    async recoverFromNetworkError(errorData: any) {
+    async recoverFromNetworkError(_errorData: any) {
         // 簡単な接続テスト
         try {
             const response = await fetch('/', { method: 'HEAD' });
@@ -706,7 +706,7 @@ export class AnalyticsErrorNotificationSystem {
     /**
      * ストレージエラーからの復旧
      */
-    async recoverFromStorageError(errorData: any) {
+    async recoverFromStorageError(_errorData: any) {
         try {
             // ストレージテスト
             const testKey = '__storage_test__';
@@ -721,7 +721,7 @@ export class AnalyticsErrorNotificationSystem {
     /**
      * パフォーマンスエラーからの復旧
      */
-    async recoverFromPerformanceError(errorData: any) {
+    async recoverFromPerformanceError(_errorData: any) {
         // メモリクリーンアップの試行
         if (window.gc) {
             window.gc();
@@ -774,31 +774,31 @@ export class AnalyticsErrorNotificationSystem {
                 this.attemptAutoRecovery(errorData);
                 break;
             case 'オフラインモード':
-                this.enableOfflineMode();
+                (this as any).enableOfflineMode();
                 break;
             case 'キャッシュクリア':
-                this.clearCache();
+                (this as any).clearCache();
                 break;
             case '権限設定':
-                this.showPermissionGuide();
+                (this as any).showPermissionGuide();
                 break;
             case 'ストレージクリア':
-                this.clearStorage();
+                (this as any).clearStorage();
                 break;
             case 'データエクスポート':
-                this.exportUserData();
+                (this as any).exportUserData();
                 break;
             case '品質設定':
-                this.showQualitySettings();
+                (this as any).showQualitySettings();
                 break;
             case '最適化':
-                this.optimizePerformance();
+                (this as any).optimizePerformance();
                 break;
             case 'ヘルプ':
-                this.showHelp(errorData.type);
+                (this as any).showHelp(errorData.type);
                 break;
             case 'セキュリティヘルプ':
-                this.showSecurityHelp();
+                (this as any).showSecurityHelp();
                 break;
         }
     }
@@ -918,8 +918,8 @@ export class AnalyticsErrorNotificationSystem {
         }
         
         // グローバル参照を削除
-        if (window.errorNotificationSystem === this) {
-            delete window.errorNotificationSystem;
+        if ((window as any).errorNotificationSystem === this) {
+            delete (window as any).errorNotificationSystem;
         }
 
         this.errorHistory = [];
@@ -928,5 +928,8 @@ export class AnalyticsErrorNotificationSystem {
     }
 }
 
+// Export alias for backward compatibility
+export { AnalyticsErrorNotificationSystem as ErrorNotificationSystem };
+
 // グローバルアクセス用
-window.errorNotificationSystem = null;
+(window as any).errorNotificationSystem = null;

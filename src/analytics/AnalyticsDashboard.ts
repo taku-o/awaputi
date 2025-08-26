@@ -106,7 +106,7 @@ export class AnalyticsDashboard {
     private activeCharts: Map<string, any>;
     private dataCallbacks: Map<string, DataCallback>;
     private realtimeTimers: Map<string, number>;
-    private currentTimeRange?: string;
+    private _currentTimeRange?: string;
 
     constructor(containerId: string, options: DashboardOptions = {}) {
         this.containerId = containerId;
@@ -604,7 +604,7 @@ export class AnalyticsDashboard {
     /**
      * データ収集中メッセージの表示
      */
-    private showDataCollectingMessage(container: HTMLElement, sectionId: string): void {
+    private showDataCollectingMessage(container: HTMLElement, _sectionId: string): void {
         if(!this.options.showDataCollectingMessage) return;
         
         container.innerHTML = `
@@ -796,7 +796,7 @@ export class AnalyticsDashboard {
     refresh(): void {
         console.log('Refreshing dashboard...');
         
-        for (const sectionId of this.dataCallbacks.keys()) {
+        for (const sectionId of Array.from(this.dataCallbacks.keys())) {
             this.updateSection(sectionId);
         }
     }
@@ -810,7 +810,7 @@ export class AnalyticsDashboard {
             sections: {} as Record<string, any>
         };
 
-        for(const [sectionId, callback] of this.dataCallbacks) {
+        for(const [sectionId, callback] of Array.from(this.dataCallbacks.entries())) {
             try {
                 exportData.sections[sectionId] = callback();
             } catch (error) {
@@ -838,7 +838,7 @@ export class AnalyticsDashboard {
      */
     changeTimeRange(timeRange: string): void {
         console.log(`Time range changed to: ${timeRange}`);
-        this.currentTimeRange = timeRange;
+        this._currentTimeRange = timeRange;
         this.refresh();
     }
 
@@ -1054,7 +1054,7 @@ export class AnalyticsDashboard {
      */
     destroy(): void {
         // リアルタイム更新タイマーの停止
-        for (const timer of this.realtimeTimers.values()) {
+        for (const timer of Array.from(this.realtimeTimers.values())) {
             clearInterval(timer);
         }
         this.realtimeTimers.clear();

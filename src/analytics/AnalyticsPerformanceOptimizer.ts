@@ -95,9 +95,9 @@ export class AnalyticsPerformanceOptimizer {
      * パフォーマンスメトリクスチェック
      */
     checkPerformanceMetrics() {
-        const now = Date.now();
+        const _now = Date.now();
         // FPS測定（近似値）
-        const expectedFrameTime = 1000 / 60; // 60fps期待値
+        const _expectedFrameTime = 1000 / 60; // 60fps期待値
         const actualFrameTime = this.performanceMetrics.frameTime;
         this.performanceMetrics.fps = Math.min(60, Math.round(1000 / actualFrameTime));
         // メモリ使用量チェック
@@ -216,7 +216,7 @@ export class AnalyticsPerformanceOptimizer {
         const groupedEvents = this.groupEventsByType(events);
         // 各グループを並列処理
         const processingPromises = Object.entries(groupedEvents).map(([type, typeEvents]) => {
-            return this.processEventGroup(type, typeEvents);
+            return this.processEventGroup(type, typeEvents as any[]);
         });
         
         await Promise.allSettled(processingPromises);
@@ -310,7 +310,7 @@ export class AnalyticsPerformanceOptimizer {
         const now = Date.now();
         const keysToDelete = [];
         
-        for (const [key, timestamp] of this.cacheTimestamps.entries()) {
+        for (const [key, timestamp] of Array.from(this.cacheTimestamps.entries())) {
             if (now - timestamp > this.config.cacheTimeout) {
                 keysToDelete.push(key);
             }

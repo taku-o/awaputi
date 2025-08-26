@@ -233,7 +233,7 @@ export default class LocalModeErrorHandler {
      * @private
      */
     private static _handleErrorLocally(error: Error, context: string, metadata: ErrorMetadata): void {
-        const errorInfo: ErrorInfo = {
+        const ___errorInfo: ErrorInfo = {
             error: error.message,
             stack: error.stack,
             context,
@@ -318,7 +318,7 @@ export default class LocalModeErrorHandler {
      * 初期化フォールバック適用
      * @private
      */
-    private static _applyInitializationFallback(component: string, error: Error): void {
+    private static _applyInitializationFallback(component: string, _error: Error): void {
         const fallbacks: Record<string, () => void> = {
             'faviconGenerator': () => {
                 console.warn('Favicon generation failed, continuing without favicons');
@@ -341,7 +341,7 @@ export default class LocalModeErrorHandler {
      * 初期化提案取得
      * @private
      */
-    private static _getInitializationSuggestions(component: string, error: Error): string[] {
+    private static _getInitializationSuggestions(component: string, _error: Error): string[] {
         const suggestions: Record<string, string[]> = {
             'faviconGenerator': [
                 'Check if Canvas API is supported in this browser',

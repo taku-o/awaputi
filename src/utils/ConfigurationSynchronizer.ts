@@ -722,11 +722,11 @@ export class ConfigurationSynchronizer {
     }
     
     // バリデーション用のスタブメソッド（将来拡張用）
-    private _validateGameBalanceConfig(config: any): boolean { return true; }
-    private _validateBubbleImplementationConfig(config: any): boolean { return true; }
-    private _validateTestExpectationConfig(config: any): boolean { return true; }
-    private _validateConfigurationManagerConfig(config: any): boolean { return true; }
-    private _detectScoreConfigDiscrepancies(sourceConfigs: Map<string, SourceConfigData>): Discrepancy[] { return []; }
+    private _validateGameBalanceConfig(_config: any): boolean { return true; }
+    private _validateBubbleImplementationConfig(_config: any): boolean { return true; }
+    private _validateTestExpectationConfig(_config: any): boolean { return true; }
+    private _validateConfigurationManagerConfig(_config: any): boolean { return true; }
+    private _detectScoreConfigDiscrepancies(_sourceConfigs: Map<string, SourceConfigData>): Discrepancy[] { return []; }
     
     /**
      * 同期レポートを生成
@@ -756,7 +756,7 @@ export class ConfigurationSynchronizer {
      * @param fixes - 修正リスト
      * @returns 修正結果
      */
-    async applySyncFixes(fixes: any[] = []): Promise<SyncFixes> {
+    async applySyncFixes(_fixes: any[] = []): Promise<SyncFixes> {
         // TODO: 将来のバージョンで実装
         console.log('[ConfigurationSynchronizer] 自動修正機能は今後実装予定');
         return { applied: 0, failed: 0 };

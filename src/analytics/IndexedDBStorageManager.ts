@@ -280,7 +280,7 @@ export class IndexedDBStorageManager {
     /**
      * データの更新
      */
-    async updateData(storeName: string, key: any, data: any): Promise<boolean> {
+    async updateData(storeName: string, _key: any, data: any): Promise<boolean> {
         if (!this.db) {
             await this.openDatabase();
         }

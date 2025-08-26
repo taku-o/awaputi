@@ -125,11 +125,10 @@ export class TimeSeriesVisualizer {
                 data: trendData,
                 borderColor: this.colors.trend,
                 backgroundColor: 'transparent',
-                borderDash: [5, 5] as any,
                 fill: false,
-                pointRadius: 0,
-                tension: 0
-            });
+                tension: 0,
+                ...({ borderDash: [5, 5], pointRadius: 0 } as any)
+            } as any);
         }
 
         // 季節調整済みデータ追加
@@ -140,10 +139,10 @@ export class TimeSeriesVisualizer {
                 data: adjustedValues,
                 borderColor: this.colors[metric] + 'AA' || this.colors.score + 'AA',
                 backgroundColor: 'transparent',
-                borderDash: [3, 3] as any,
                 fill: false,
-                tension: 0.4
-            });
+                tension: 0.4,
+                ...({ borderDash: [3, 3] } as any)
+            } as any);
         }
 
         const config = {
@@ -184,7 +183,7 @@ export class TimeSeriesVisualizer {
         } = options;
 
         const labels = timeSeriesData.map((d: any) => d.period);
-        const datasets = [];
+        const datasets: any[] = [];
 
         metrics.forEach((metric: any) => {
             let values = timeSeriesData.map((d: any) => this.getMetricValue(d, metric));
@@ -248,7 +247,7 @@ export class TimeSeriesVisualizer {
         const {
             showConfidenceInterval = true,
             showAnomalies = false,
-            highlightTrend = true
+            _highlightTrend = true
         } = options;
 
         const { timeSeriesData, trend } = trendAnalysis;
@@ -273,11 +272,10 @@ export class TimeSeriesVisualizer {
                 data: trendData,
                 borderColor: trend.direction === 'increasing' ? '#10B981' : '#EF4444',
                 backgroundColor: 'transparent',
-                borderDash: [5, 5] as any,
                 fill: false,
-                pointRadius: 0,
-                tension: 0
-            });
+                tension: 0,
+                ...({ borderDash: [5, 5], pointRadius: 0 } as any)
+            } as any);
         }
         
         // 信頼区間（安定トレンドの場合は表示しない）
@@ -288,20 +286,18 @@ export class TimeSeriesVisualizer {
                 data: confidenceData.upper,
                 borderColor: this.colors.trend + '60',
                 backgroundColor: 'transparent',
-                borderDash: [2, 2] as any,
                 fill: false,
-                pointRadius: 0
-            });
+                ...({ borderDash: [2, 2], pointRadius: 0 } as any)
+            } as any);
             
             datasets.push({
                 label: '信頼区間 (下限)',
                 data: confidenceData.lower,
                 borderColor: this.colors.trend + '60',
                 backgroundColor: this.colors.trend + '10',
-                borderDash: [2, 2] as any,
-                fill: '-1', // 上限データセットまで塗りつぶし
-                pointRadius: 0
-            });
+                fill: '-1' as any, // 上限データセットまで塗りつぶし
+                ...({ borderDash: [2, 2], pointRadius: 0 } as any)
+            } as any);
         }
 
         // 異常値のハイライト
@@ -318,10 +314,14 @@ export class TimeSeriesVisualizer {
                     data: anomalyData,
                     borderColor: '#EF4444',
                     backgroundColor: '#EF4444',
-                    type: 'scatter',
-                    pointRadius: 8,
-                    pointHoverRadius: 10
-                });
+                    fill: false,
+                    tension: 0,
+                    ...({
+                        type: 'scatter',
+                        pointRadius: 8,
+                        pointHoverRadius: 10
+                    } as any)
+                } as any);
             }
         }
 
@@ -365,7 +365,7 @@ export class TimeSeriesVisualizer {
     createDashboardChart(canvas: any, timeSeriesData: any, options: any = {}) {
         const {
             defaultMetric = 'averageScore',
-            showControls = true,
+            _showControls = true,
             enableZoom = true,
             enableAnnotations = true
         } = options;
@@ -449,7 +449,7 @@ export class TimeSeriesVisualizer {
      * @param {Array} values - 値の配列
      * @returns {Object} 上限・下限の信頼区間
      */
-    calculateConfidenceInterval(values: any, confidence = 0.95) {
+    calculateConfidenceInterval(values: any, _confidence = 0.95) {
         const mean = values.reduce((a: any, b: any) => a + b, 0) / values.length;
         const variance = values.reduce((sum: any, val: any) => sum + Math.pow(val - mean, 2), 0) / values.length;
         const stdDev = Math.sqrt(variance);

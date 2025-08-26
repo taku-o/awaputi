@@ -244,7 +244,7 @@ export default class FaviconPerformanceManager {
         });
         
         // デバウンスタイマーをクリーンアップ
-        this._debounceTimers.forEach((timer, identifier) => {
+        this._debounceTimers.forEach((timer, _identifier) => {
             clearTimeout(timer as number);
         });
         this._debounceTimers.clear();

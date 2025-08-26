@@ -202,11 +202,11 @@ class DummyGracefulDegradationManager implements GracefulDegradationManager {
         console.log('[GracefulDegradationManager] Initialized');
     }
     
-    async initiateDegradation(error: ClassifiedError, attemptedRecovery: RecoveryResult): Promise<void> {
+    async initiateDegradation(error: ClassifiedError, _attemptedRecovery: RecoveryResult): Promise<void> {
         console.log('[GracefulDegradationManager] Initiating degradation for error:', error.type);
     }
 
-    async executeDegradation(error: ClassifiedError, recoveryResult: RecoveryResult): Promise<DegradationResult> {
+    async executeDegradation(_error: ClassifiedError, _recoveryResult: RecoveryResult): Promise<DegradationResult> {
         const previousLevel = this.currentLevel;
         this.currentLevel = Math.min(5, this.currentLevel + 1);
         return {
@@ -506,11 +506,11 @@ class PerformanceUserCommunicator {
         document.head.appendChild(style);
     }
 
-    async notifyRecoverySuccess(error: ClassifiedError, result: RecoveryResult): Promise<void> {
+    async notifyRecoverySuccess(error: ClassifiedError, _result: RecoveryResult): Promise<void> {
         this.showNotification('recovery_success', `${error.detector}の問題が解決されました`);
     }
 
-    async notifyDegradation(error: ClassifiedError, result: DegradationResult): Promise<void> {
+    async notifyDegradation(_error: ClassifiedError, result: DegradationResult): Promise<void> {
         this.showNotification('degradation', `性能調整中（レベル: ${result.currentLevel}）`);
     }
 
@@ -519,11 +519,11 @@ class PerformanceUserCommunicator {
         this.showNotification('critical_error', `重要なエラー: ${errorType}`);
     }
 
-    async notifySystemEmergency(error: Error): Promise<void> {
+    async notifySystemEmergency(_error: Error): Promise<void> {
         this.showNotification('critical_error', 'システム緊急事態が発生しました');
     }
 
-    async notifyPerformanceRestoration(result: DegradationResult): Promise<void> {
+    async notifyPerformanceRestoration(_result: DegradationResult): Promise<void> {
         this.showNotification('recovery_success', 'パフォーマンスが復旧されました');
     }
 

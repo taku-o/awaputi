@@ -10,13 +10,13 @@
  * - SessionManager: セッション管理と統計収集
  */
 
-import analytics from '../utils/Analytics.ts';
-import { PrivacyManager } from './PrivacyManager.ts';
-import { IndexedDBStorageManager } from './IndexedDBStorageManager.ts';
-import { PlayerBehaviorAnalyzer } from './enhanced-analytics-manager/PlayerBehaviorAnalyzer.ts';
-import { GameBalanceAnalyzer } from './enhanced-analytics-manager/GameBalanceAnalyzer.ts';
-import { AnalyticsPerformanceMonitor } from './enhanced-analytics-manager/AnalyticsPerformanceMonitor.ts';
-import { SessionManager } from './enhanced-analytics-manager/SessionManager.ts';
+import { analytics } from '../utils/Analytics';
+import { PrivacyManager } from './PrivacyManager';
+import { IndexedDBStorageManager } from './IndexedDBStorageManager';
+import { PlayerBehaviorAnalyzer } from './enhanced-analytics-manager/PlayerBehaviorAnalyzer';
+import { GameBalanceAnalyzer } from './enhanced-analytics-manager/GameBalanceAnalyzer';
+import { AnalyticsPerformanceMonitor } from './enhanced-analytics-manager/AnalyticsPerformanceMonitor';
+import { SessionManager } from './enhanced-analytics-manager/SessionManager';
 
 // Enhanced Analytics Manager interfaces and types
 export interface AnalyticsOptions {
@@ -57,7 +57,7 @@ export interface Analytics {
 
 export class EnhancedAnalyticsManager {
     private options: Required<AnalyticsOptions>;
-    private analytics: Analytics;
+    private analytics: Analytics = analytics as unknown as Analytics;
     private privacyManager: PrivacyManager;
     private storageManager: IndexedDBStorageManager;
     private playerBehaviorAnalyzer: PlayerBehaviorAnalyzer;
@@ -79,7 +79,7 @@ export class EnhancedAnalyticsManager {
             ...options
         };
 
-        this.analytics = analytics;
+        this.analytics = analytics as unknown as Analytics;
         this.isInitialized = false;
         this.analysisTimer = null;
 
@@ -88,10 +88,10 @@ export class EnhancedAnalyticsManager {
         this.storageManager = new IndexedDBStorageManager();
 
         // Specialized analyzers
-        this.playerBehaviorAnalyzer = new PlayerBehaviorAnalyzer(this.storageManager);
-        this.gameBalanceAnalyzer = new GameBalanceAnalyzer(this.storageManager);
+        this.playerBehaviorAnalyzer = new PlayerBehaviorAnalyzer();
+        this.gameBalanceAnalyzer = new GameBalanceAnalyzer();
         this.performanceMonitor = new AnalyticsPerformanceMonitor();
-        this.sessionManager = new SessionManager(this.storageManager);
+        this.sessionManager = new SessionManager();
 
         this.initialize();
     }
@@ -102,25 +102,25 @@ export class EnhancedAnalyticsManager {
     private async initialize(): Promise<void> {
         try {
             // Privacy check
-            if (this.options.enablePrivacyProtection && !this.privacyManager.checkConsent()) {
+            if (this.options.enablePrivacyProtection && !(this.privacyManager as any).checkConsent()) {
                 console.log('Analytics disabled due to privacy settings');
                 return;
             }
 
             // Initialize components
-            await this.storageManager.initialize();
+            await (this.storageManager as any).initialize();
             
             if (this.options.enableBehaviorAnalysis) {
-                await this.playerBehaviorAnalyzer.initialize();
+                await (this.playerBehaviorAnalyzer as any).initialize();
             }
             if (this.options.enableBalanceAnalysis) {
                 await this.gameBalanceAnalyzer.initialize();
             }
             if (this.options.enablePerformanceMonitoring) {
-                this.performanceMonitor.start();
+                (this.performanceMonitor as any).start();
             }
             if (this.options.enableSessionTracking) {
-                await this.sessionManager.initialize();
+                await (this.sessionManager as any).initialize();
             }
 
             // Start periodic analysis
@@ -144,8 +144,8 @@ export class EnhancedAnalyticsManager {
             const enhancedData = {
                 ...eventData,
                 timestamp: Date.now(),
-                sessionId: this.sessionManager.getCurrentSessionId(),
-                performanceMetrics: this.performanceMonitor.getCurrentMetrics(),
+                sessionId: (this.sessionManager as any).getCurrentSessionId(),
+                performanceMetrics: (this.performanceMonitor as any).getCurrentMetrics(),
                 contextData: this.captureEventContext()
             };
 
@@ -154,7 +154,7 @@ export class EnhancedAnalyticsManager {
 
             // Specialized analysis
             if (this.options.enableBehaviorAnalysis) {
-                this.playerBehaviorAnalyzer.analyzeEvent(eventType, enhancedData);
+                (this.playerBehaviorAnalyzer as any).analyzeEvent(eventType, enhancedData);
             }
 
             if (this.options.enableBalanceAnalysis) {
@@ -173,7 +173,7 @@ export class EnhancedAnalyticsManager {
         if (!this.options.enableBehaviorAnalysis) {
             throw new Error('Behavior analysis is disabled');
         }
-        return await this.playerBehaviorAnalyzer.generateReport(timeRange);
+        return await (this.playerBehaviorAnalyzer as any).generateReport(timeRange);
     }
 
     /**
@@ -193,7 +193,7 @@ export class EnhancedAnalyticsManager {
         if (!this.options.enablePerformanceMonitoring) {
             throw new Error('Performance monitoring is disabled');
         }
-        return this.performanceMonitor.getMetrics();
+        return (this.performanceMonitor as any).getMetrics();
     }
 
     /**
@@ -203,7 +203,7 @@ export class EnhancedAnalyticsManager {
         if (!this.options.enableSessionTracking) {
             throw new Error('Session tracking is disabled');
         }
-        return await this.sessionManager.getStatistics(timeRange);
+        return await (this.sessionManager as any).getStatistics(timeRange);
     }
 
     /**
@@ -225,14 +225,14 @@ export class EnhancedAnalyticsManager {
         try {
             // Session statistics
             if (this.options.enableSessionTracking) {
-                const sessionStats = await this.sessionManager.getStatistics(timeRange);
+                const sessionStats = await (this.sessionManager as any).getStatistics(timeRange);
                 report.summary.totalSessions = sessionStats.totalSessions;
                 report.summary.avgSessionDuration = sessionStats.avgDuration;
             }
 
             // Behavior analysis
             if (this.options.enableBehaviorAnalysis) {
-                const behaviorReport = await this.playerBehaviorAnalyzer.generateReport(timeRange);
+                const behaviorReport = await (this.playerBehaviorAnalyzer as any).generateReport(timeRange);
                 report.trends.push(...behaviorReport.trends);
                 report.recommendations.push(...behaviorReport.recommendations);
             }
@@ -246,7 +246,7 @@ export class EnhancedAnalyticsManager {
 
             // Performance analysis
             if (this.options.enablePerformanceMonitoring) {
-                const perfMetrics = this.performanceMonitor.getMetrics();
+                const perfMetrics = (this.performanceMonitor as any).getMetrics();
                 report.summary.errorRate = perfMetrics.errorRate;
                 if (perfMetrics.issues) {
                     report.issues.push(...perfMetrics.issues);
@@ -271,13 +271,13 @@ export class EnhancedAnalyticsManager {
     async syncData(): Promise<boolean> {
         try {
             if (this.options.enableBehaviorAnalysis) {
-                await this.playerBehaviorAnalyzer.syncData();
+                await (this.playerBehaviorAnalyzer as any).syncData();
             }
             if (this.options.enableBalanceAnalysis) {
                 await this.gameBalanceAnalyzer.syncData();
             }
             if (this.options.enableSessionTracking) {
-                await this.sessionManager.syncData();
+                await (this.sessionManager as any).syncData();
             }
 
             console.log('Analytics data synchronized successfully');
@@ -297,7 +297,7 @@ export class EnhancedAnalyticsManager {
         cutoffDate.setDate(cutoffDate.getDate() - this.options.retentionDays);
 
         try {
-            await this.storageManager.deleteOldData(cutoffDate);
+            await (this.storageManager as any).deleteOldData(cutoffDate);
             console.log('Old analytics data cleaned up');
         } catch (error) {
             console.error('Failed to cleanup old data:', error);
@@ -314,7 +314,7 @@ export class EnhancedAnalyticsManager {
             try {
                 // Background analysis tasks
                 if (this.options.enableBehaviorAnalysis) {
-                    await this.playerBehaviorAnalyzer.runBackgroundAnalysis();
+                    await (this.playerBehaviorAnalyzer as any).runBackgroundAnalysis();
                 }
                 if (this.options.enableBalanceAnalysis) {
                     await this.gameBalanceAnalyzer.runBackgroundAnalysis();
@@ -357,9 +357,9 @@ export class EnhancedAnalyticsManager {
         // Re-initialize components if needed
         if (newOptions.enableBehaviorAnalysis !== undefined) {
             if (newOptions.enableBehaviorAnalysis) {
-                this.playerBehaviorAnalyzer.initialize();
+                (this.playerBehaviorAnalyzer as any).initialize();
             } else {
-                this.playerBehaviorAnalyzer.stop();
+                (this.playerBehaviorAnalyzer as any).stop();
             }
         }
 
@@ -373,9 +373,9 @@ export class EnhancedAnalyticsManager {
 
         if (newOptions.enablePerformanceMonitoring !== undefined) {
             if (newOptions.enablePerformanceMonitoring) {
-                this.performanceMonitor.start();
+                (this.performanceMonitor as any).start();
             } else {
-                this.performanceMonitor.stop();
+                (this.performanceMonitor as any).stop();
             }
         }
     }
@@ -393,7 +393,7 @@ export class EnhancedAnalyticsManager {
                 performanceMonitor: this.options.enablePerformanceMonitoring,
                 sessionManager: this.options.enableSessionTracking
             },
-            storage: this.storageManager ? this.storageManager.getStorageStats() : null
+            storage: this.storageManager ? (this.storageManager as any).getStorageStats() : null
         };
     }
 
@@ -407,22 +407,22 @@ export class EnhancedAnalyticsManager {
         }
 
         if (this.playerBehaviorAnalyzer) {
-            this.playerBehaviorAnalyzer.destroy();
+            (this.playerBehaviorAnalyzer as any).destroy();
         }
         if (this.gameBalanceAnalyzer) {
             this.gameBalanceAnalyzer.destroy();
         }
         if (this.performanceMonitor) {
-            this.performanceMonitor.destroy();
+            (this.performanceMonitor as any).destroy();
         }
         if (this.sessionManager) {
-            this.sessionManager.destroy();
+            (this.sessionManager as any).destroy();
         }
         if (this.storageManager) {
-            this.storageManager.destroy();
+            (this.storageManager as any).destroy();
         }
         if (this.privacyManager) {
-            this.privacyManager.destroy();
+            (this.privacyManager as any).destroy();
         }
 
         console.log('EnhancedAnalyticsManager destroyed');

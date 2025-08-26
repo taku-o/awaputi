@@ -304,7 +304,7 @@ export class AdvancedDirtyRegionManager {
     /**
      * Track frequently dirty areas (hotspots)
      */
-    private _trackHotspot(x: number, y: number, width: number, height: number): void {
+    private _trackHotspot(x: number, y: number, _width: number, _height: number): void {
         const gridSize = 64; // Grid size for hotspot tracking
         const gridX = Math.floor(x / gridSize) * gridSize;
         const gridY = Math.floor(y / gridSize) * gridSize;

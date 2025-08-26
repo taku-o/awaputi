@@ -469,7 +469,7 @@ export class ProactiveCleanupManager {
     /**
      * Execute specific cleanup action
      */
-    private _executeCleanupAction(action: string, context: CleanupContext): ActionResult {
+    private _executeCleanupAction(action: string, _context: CleanupContext): ActionResult {
         const result: ActionResult = { action };
         
         switch(action) {
@@ -796,7 +796,7 @@ export class ProactiveCleanupManager {
     /**
      * Schedule next cleanup based on results
      */
-    private _scheduleNextCleanup(context: CleanupContext, results: CleanupResults): void {
+    private _scheduleNextCleanup(context: CleanupContext, _results: CleanupResults): void {
         const memoryPressure = context.memoryPressure || this._calculateMemoryPressure();
         let nextInterval = this.scheduling.baseInterval;
         

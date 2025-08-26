@@ -410,7 +410,7 @@ export class ConfigurationMigrationUtility {
      * @returns {Record<string, any>} 特殊効果設定
      * @private
      */
-    private _extractSpecialEffects(bubbleType: string, config: BubbleConfig): Record<string, any> {
+    private _extractSpecialEffects(_bubbleType: string, config: BubbleConfig): Record<string, any> {
         const effects: Record<string, any> = {};
         
         // 基本設定以外のプロパティを特殊効果として扱う

@@ -162,7 +162,7 @@ export class AnalyticsTrendAnalyzer {
                 accuracyChange: this.calculateAccuracyChange(timeSeriesData)
             },
             trend: {
-                direction: null, // 'increasing', 'decreasing', 'stable'
+                direction: 'stable' as string | null, // 'increasing', 'decreasing', 'stable'
                 strength: 0, // 0-1の値
                 confidence: 0 // 0-1の値
             },
@@ -186,7 +186,7 @@ export class AnalyticsTrendAnalyzer {
      * @param {string} dataType - データタイプ
      * @returns {Array} メトリクスデータ
      */
-    extractMetrics(data: any[], dataType: string) {
+    extractMetrics(data: any[], _dataType: string) {
         return data.map(session => {
             const duration = session.endTime ?
                 (session.endTime - session.startTime) / 1000 : session.duration || 0;
@@ -238,10 +238,10 @@ export class AnalyticsTrendAnalyzer {
         // 集計データ生成
         return Array.from(grouped.entries()).map(([key, values]) => {
             const totalSessions = values.length;
-            const avgScore = values.reduce((sum, v) => sum + v.score, 0) / totalSessions;
-            const avgPlayTime = values.reduce((sum, v) => sum + v.playTime, 0) / totalSessions;
-            const avgAccuracy = values.reduce((sum, v) => sum + v.accuracy, 0) / totalSessions;
-            const completionRate = values.filter(v => v.completed).length / totalSessions;
+            const avgScore = values.reduce((sum: number, v: any) => sum + v.score, 0) / totalSessions;
+            const avgPlayTime = values.reduce((sum: number, v: any) => sum + v.playTime, 0) / totalSessions;
+            const avgAccuracy = values.reduce((sum: number, v: any) => sum + v.accuracy, 0) / totalSessions;
+            const completionRate = values.filter((v: any) => v.completed).length / totalSessions;
 
             return {
                 period: key,
@@ -250,7 +250,7 @@ export class AnalyticsTrendAnalyzer {
                 averagePlayTime: avgPlayTime,
                 averageAccuracy: avgAccuracy,
                 completionRate: completionRate,
-                maxCombo: Math.max(...values.map(v => v.combo))
+                maxCombo: Math.max(...values.map((v: any) => v.combo))
             };
         }).sort((a, b) => a.period.localeCompare(b.period));
     }
@@ -349,7 +349,7 @@ export class AnalyticsTrendAnalyzer {
         const sumY = y.reduce((a, b) => a + b, 0);
         const sumXY = x.map((xi, i) => xi * y[i]).reduce((a, b) => a + b, 0);
         const sumXX = x.map(xi => xi * xi).reduce((a, b) => a + b, 0);
-        const sumYY = y.map(yi => yi * yi).reduce((a, b) => a + b, 0);
+        const _sumYY = y.map(yi => yi * yi).reduce((a, b) => a + b, 0);
 
         const slope = (n * sumXY - sumX * sumY) / (n * sumXX - sumX * sumX);
         const intercept = (sumY - slope * sumX) / n;
@@ -505,3 +505,6 @@ export class AnalyticsTrendAnalyzer {
         this.analysisCache.clear();
     }
 }
+
+// Export alias for backward compatibility
+export { AnalyticsTrendAnalyzer as TrendAnalyzer };

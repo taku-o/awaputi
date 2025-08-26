@@ -372,7 +372,7 @@ export class PerformanceRecoveryEngine {
         });
     }
     // Recovery strategy implementations
-    private async reduceRenderQuality(error: ClassifiedError): Promise<RecoveryResult> {
+    private async reduceRenderQuality(_error: ClassifiedError): Promise<RecoveryResult> {
         console.log('Reducing render quality to improve frame rate');
         
         return {
@@ -381,7 +381,7 @@ export class PerformanceRecoveryEngine {
         };
     }
 
-    private async disableVisualEffects(error: ClassifiedError): Promise<RecoveryResult> {
+    private async disableVisualEffects(_error: ClassifiedError): Promise<RecoveryResult> {
         console.log('Disabling visual effects to improve performance');
         
         return {
@@ -390,7 +390,7 @@ export class PerformanceRecoveryEngine {
         };
     }
 
-    private async emergencyOptimization(error: ClassifiedError): Promise<RecoveryResult> {
+    private async emergencyOptimization(_error: ClassifiedError): Promise<RecoveryResult> {
         console.log('Activating emergency optimization');
         
         return {
@@ -399,7 +399,7 @@ export class PerformanceRecoveryEngine {
         };
     }
 
-    private async forceGarbageCollection(error: ClassifiedError): Promise<RecoveryResult> {
+    private async forceGarbageCollection(_error: ClassifiedError): Promise<RecoveryResult> {
         console.log('Forcing garbage collection');
         
         if (window.gc) {
@@ -412,7 +412,7 @@ export class PerformanceRecoveryEngine {
         };
     }
 
-    private async cleanupCaches(error: ClassifiedError): Promise<RecoveryResult> {
+    private async cleanupCaches(_error: ClassifiedError): Promise<RecoveryResult> {
         console.log('Cleaning up caches to free memory');
         
         return {
@@ -421,7 +421,7 @@ export class PerformanceRecoveryEngine {
         };
     }
 
-    private async relieveMemoryPressure(error: ClassifiedError): Promise<RecoveryResult> {
+    private async relieveMemoryPressure(_error: ClassifiedError): Promise<RecoveryResult> {
         console.log('Relieving memory pressure');
         
         return {
@@ -430,7 +430,7 @@ export class PerformanceRecoveryEngine {
         };
     }
 
-    private async optimizeRendering(error: ClassifiedError): Promise<RecoveryResult> {
+    private async optimizeRendering(_error: ClassifiedError): Promise<RecoveryResult> {
         console.log('Optimizing rendering pipeline');
         
         return {
@@ -439,7 +439,7 @@ export class PerformanceRecoveryEngine {
         };
     }
 
-    private async activateFallbackRenderer(error: ClassifiedError): Promise<RecoveryResult> {
+    private async activateFallbackRenderer(_error: ClassifiedError): Promise<RecoveryResult> {
         console.log('Activating fallback renderer');
         
         return {
@@ -448,7 +448,7 @@ export class PerformanceRecoveryEngine {
         };
     }
 
-    private async retryNetworkRequest(error: ClassifiedError): Promise<RecoveryResult> {
+    private async retryNetworkRequest(_error: ClassifiedError): Promise<RecoveryResult> {
         console.log('Retrying network request');
         
         return {
@@ -457,7 +457,7 @@ export class PerformanceRecoveryEngine {
         };
     }
 
-    private async activateOfflineMode(error: ClassifiedError): Promise<RecoveryResult> {
+    private async activateOfflineMode(_error: ClassifiedError): Promise<RecoveryResult> {
         console.log('Activating offline mode');
         
         return {
@@ -466,7 +466,7 @@ export class PerformanceRecoveryEngine {
         };
     }
 
-    private async activateSafeMode(error: ClassifiedError): Promise<RecoveryResult> {
+    private async activateSafeMode(_error: ClassifiedError): Promise<RecoveryResult> {
         console.log('Activating safe mode');
         
         return {
@@ -475,7 +475,7 @@ export class PerformanceRecoveryEngine {
         };
     }
 
-    private async disableProblematicFeatures(error: ClassifiedError): Promise<RecoveryResult> {
+    private async disableProblematicFeatures(_error: ClassifiedError): Promise<RecoveryResult> {
         console.log('Disabling problematic features');
         
         return {
@@ -484,7 +484,7 @@ export class PerformanceRecoveryEngine {
         };
     }
 
-    private async reloadFailedResource(error: ClassifiedError): Promise<RecoveryResult> {
+    private async reloadFailedResource(_error: ClassifiedError): Promise<RecoveryResult> {
         console.log('Reloading failed resource');
         
         return {
@@ -493,7 +493,7 @@ export class PerformanceRecoveryEngine {
         };
     }
 
-    private async useFallbackResource(error: ClassifiedError): Promise<RecoveryResult> {
+    private async useFallbackResource(_error: ClassifiedError): Promise<RecoveryResult> {
         console.log('Using fallback resource');
         
         return {

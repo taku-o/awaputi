@@ -535,7 +535,7 @@ export class AdvancedRenderingOptimizer {
     /**
      * Perform final composition
      */
-    private performFinalComposition(renderResult: LayerRenderResult): void {
+    private performFinalComposition(_renderResult: LayerRenderResult): void {
         const stageStart = performance.now();
         
         // Apply any final composition effects

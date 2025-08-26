@@ -318,7 +318,7 @@ class BrowserCompatibilityManager {
 
             // 読み取りテスト
             try {
-                const testRead = localStorage.getItem('__compatibility_test__');
+                const ___testRead = localStorage.getItem('__compatibility_test__');
                 support.readable = true;
             } catch (e) {
                 support.errorMessage = 'localStorage read failed: ' + (e as Error).message;
@@ -512,7 +512,7 @@ class BrowserCompatibilityManager {
      * 静的アイコンフォールバック
      * @private
      */
-    static _generateStaticIconFallback(size: number, config: Record<string, any>): CanvasFallbackResult {
+    static _generateStaticIconFallback(size: number, _config: Record<string, any>): CanvasFallbackResult {
         // 基本的な単色アイコンのdata URL
         const staticIcon = `data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8/5+hHgAHggJ/PchI7wAAAABJRU5ErkJggg==`;
         
@@ -529,7 +529,7 @@ class BrowserCompatibilityManager {
      * テキストベースフォールバック
      * @private
      */
-    static _generateTextFallback(size: number, config: Record<string, any>): CanvasFallbackResult {
+    static _generateTextFallback(size: number, _config: Record<string, any>): CanvasFallbackResult {
         // テキストベースのdata URL（非常にシンプル）
         return {
             success: false,

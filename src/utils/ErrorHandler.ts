@@ -253,7 +253,7 @@ export class ErrorHandler {
                 context: context,
                 metadata: metadata,
                 timestamp: typeof normalizedError.timestamp === 'number' ? normalizedError.timestamp : Date.now(),
-                severity: normalizedError.severity
+                severity: (normalizedError as any).severity
             };
             
             // Add to error log using logger

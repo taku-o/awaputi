@@ -425,7 +425,7 @@ export class JavaScriptModuleValidator {
         return index - lastNewlineIndex;
     }
 
-    findErrorLine(error: Error, content: string): number {
+    findErrorLine(error: Error, _content: string): number {
         // エラーメッセージから行番号を抽出する試み
         const lineMatch = error.message.match(/line (\d+)/i);
         return lineMatch ? parseInt(lineMatch[1]) : 1;

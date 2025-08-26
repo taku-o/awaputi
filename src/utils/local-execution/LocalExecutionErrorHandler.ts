@@ -742,7 +742,7 @@ export class LocalExecutionErrorHandler {
                 });
             } else {
                 // StaticメソッドでErrorHandlerを呼び出し
-                ErrorHandler.handleError(error, context, {
+                (ErrorHandler as any).handleError(error, context, {
                     ...metadata,
                     localExecution: true,
                     handlerType: 'LocalExecutionErrorHandler',
@@ -793,7 +793,7 @@ export class LocalExecutionErrorHandler {
             };
 
             // メインのErrorHandlerに設定を適用
-            this.errorHandlerInstance.configure({ localExecution: localExecutionConfig });
+            (this.errorHandlerInstance as any).configure({ localExecution: localExecutionConfig });
         } catch (error) {
             this._log('Failed to register local execution error categories:', error);
         }
@@ -837,7 +837,7 @@ export class LocalExecutionErrorHandler {
             };
 
             // メインのErrorHandlerに設定を適用
-            this.errorHandlerInstance.configure({ messages: messageConfig });
+            (this.errorHandlerInstance as any).configure({ messages: messageConfig });
         } catch (error) {
             this._log('Failed to register local execution user messages:', error);
         }

@@ -5,11 +5,11 @@
  */
 
 export class ComparisonResultRenderer {
-    private renderConfig: any;
+    private _renderConfig: any;
 
     constructor() {
         // レンダリング設定
-        this.renderConfig = {
+        this._renderConfig = {
             colors: {
                 improved: '#4CAF50',
                 declined: '#F44336',
@@ -41,7 +41,7 @@ export class ComparisonResultRenderer {
      * @param {Array} metrics - 使用したメトリクス
      * @returns {Object} サマリー
      */
-    generateComparisonSummary(comparisons: any, metrics: any[]): any {
+    generateComparisonSummary(comparisons: any, _metrics: any[]): any {
         const availableComparisons = Object.values(comparisons).filter((c: any) => c.available);
         if (availableComparisons.length === 0) {
             return {
@@ -81,7 +81,7 @@ export class ComparisonResultRenderer {
      * @param {Array} metrics - 使用したメトリクス
      * @returns {Object} ベンチマークサマリー
      */
-    generateBenchmarkSummary(comparison: any, metrics: any[]): any {
+    generateBenchmarkSummary(comparison: any, _metrics: any[]): any {
         const { above_average, average, below_average } = comparison;
         const total = above_average + average + below_average;
 
@@ -113,7 +113,7 @@ export class ComparisonResultRenderer {
      * @param {Array} metrics - 使用したメトリクス
      * @returns {Object} ステージサマリー
      */
-    generateStageComparisonSummary(stageComparisons: any, metrics: any[]): any {
+    generateStageComparisonSummary(stageComparisons: any, _metrics: any[]): any {
         const availableComparisons = Object.values(stageComparisons)
             .filter((c: any) => c.comparison && c.comparison.available);
         
@@ -408,7 +408,7 @@ export class ComparisonResultRenderer {
      * @param {Object} metrics - メトリクス
      * @returns {Object} パフォーマンス評価
      */
-    assessStagePerformance(stageData: any, metrics: any): any {
+    assessStagePerformance(stageData: any, _metrics: any): any {
         let score = 0;
         let maxScore = 0;
 

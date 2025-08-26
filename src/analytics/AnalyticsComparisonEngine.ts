@@ -205,9 +205,9 @@ export class AnalyticsComparisonEngine {
      */
     clearCache(): void {
         this.cache.clear();
-        this.dataComparator.clearCache?.();
-        this.algorithms.clearCache?.();
-        this.renderer.clearCache?.();
+        (this.dataComparator as any).clearCache?.();
+        (this.algorithms as any).clearCache?.();
+        (this.renderer as any).clearCache?.();
     }
 
     /**
@@ -225,3 +225,6 @@ export class AnalyticsComparisonEngine {
         return this.renderer;
     }
 }
+
+// Export alias for backward compatibility
+export { AnalyticsComparisonEngine as ComparisonEngine };

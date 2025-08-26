@@ -392,7 +392,7 @@ export class PerformanceTestReporter {
     /**
      * 履歴セクション生成
      */
-    generateHistorySection(analysis: Analysis): any {
+    generateHistorySection(_analysis: Analysis): any {
         const history = this.performanceTestSuite.getTestHistory();
         
         return {
@@ -981,7 +981,7 @@ export class PerformanceTestReporter {
     /**
      * メトリクス相関計算
      */
-    calculateMetricCorrelations(results: Map<string, TestCategoryResults>): Record<string, number> {
+    calculateMetricCorrelations(_results: Map<string, TestCategoryResults>): Record<string, number> {
         return {
             'frameRate_memory': 0.3,
             'memory_rendering': 0.7,
@@ -1011,7 +1011,7 @@ export class PerformanceTestReporter {
     /**
      * リソース使用率分析
      */
-    analyzeResourceUtilization(analysis: Analysis): Record<string, any> {
+    analyzeResourceUtilization(_analysis: Analysis): Record<string, any> {
         return {
             cpu: 'moderate',
             memory: 'high',

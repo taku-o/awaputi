@@ -347,7 +347,7 @@ export class ValidationRuleEngine {
     /**
      * Record rule execution metrics
      */
-    private recordExecution(rule: Rule, executionTime: number, success: boolean, error: Error | null = null): void {
+    private recordExecution(rule: Rule, executionTime: number, _success: boolean, error: Error | null = null): void {
         this.performanceMetrics.totalExecutions++;
         this.performanceMetrics.totalExecutionTime += executionTime;
         this.performanceMetrics.averageExecutionTime = 

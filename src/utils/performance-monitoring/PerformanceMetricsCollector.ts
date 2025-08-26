@@ -188,7 +188,7 @@ export class PerformanceMetricsCollector {
         }
         
         let hasValidMetrics = false;
-        for (const [metricId, value] of metrics) {
+        for (const [_metricId, value] of metrics) {
             if (typeof value === 'number' && !isNaN(value)) {
                 hasValidMetrics = true;
                 break;

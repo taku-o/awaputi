@@ -561,7 +561,7 @@ export class GameBalanceCollector {
      * @param {string} scoreType - スコアタイプ
      * @returns {number}
      */
-    getExpectedScore(source: string, scoreType: string): number {
+    getExpectedScore(source: string, _scoreType: string): number {
         // 簡易実装：実際にはゲーム設定から取得
         const baseScores: Record<string, number> = {
             normal: 10,

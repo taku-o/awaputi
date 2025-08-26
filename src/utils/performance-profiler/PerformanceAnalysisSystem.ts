@@ -420,11 +420,11 @@ export class PerformanceAnalyzer {
         const performance = frameMetrics.performance || {};
 
         return {
-            currentFPS: current.fps || 0,
-            averageFPS: average.fps || 0,
+            currentFPS: (current as any).fps || 0,
+            averageFPS: (average as any).fps || 0,
             stability: this.calculateFrameStability(frameMetrics),
-            jankLevel: performance.jankPercentage || 0,
-            assessment: this.assessFramePerformance(average.fps, performance.jankPercentage),
+            jankLevel: (performance as any).jankPercentage || 0,
+            assessment: this.assessFramePerformance((average as any).fps, (performance as any).jankPercentage),
             trends: this.analyzeFrameTrends(frameMetrics.history)
         };
     }
@@ -447,11 +447,11 @@ export class PerformanceAnalyzer {
         const gc = memoryMetrics.gc || {};
 
         return {
-            currentUsage: current.used || 0,
-            pressureLevel: current.pressure || 0,
-            growthRate: trends.growthRate || 0,
-            gcEfficiency: gc.frequency > 0 ? gc.averageReclaimed / current.used : 1,
-            leakRisk: this.assessMemoryLeakRisk(trends.growthRate, gc.frequency),
+            currentUsage: (current as any).used || 0,
+            pressureLevel: (current as any).pressure || 0,
+            growthRate: (trends as any).growthRate || 0,
+            gcEfficiency: (gc as any).frequency && (gc as any).frequency > 0 && (current as any).used ? ((gc as any).averageReclaimed || 0) / (current as any).used : 1,
+            leakRisk: this.assessMemoryLeakRisk((trends as any).growthRate, (gc as any).frequency),
             recommendations: this.generateMemoryRecommendations(current, trends, gc)
         };
     }
@@ -471,11 +471,11 @@ export class PerformanceAnalyzer {
         const stats = renderMetrics.statistics || {};
 
         return {
-            averageRenderTime: stats.averageDuration || 0,
+            averageRenderTime: (stats as any).averageDuration || 0,
             renderEfficiency: this.calculateRenderEfficiency(stats),
             bottlenecks: this.identifyRenderBottlenecks(renderMetrics),
-            paintFrequency: stats.paintEvents || 0,
-            customMeasures: stats.customMeasures || 0
+            paintFrequency: (stats as any).paintEvents || 0,
+            customMeasures: (stats as any).customMeasures || 0
         };
     }
 
@@ -496,11 +496,11 @@ export class PerformanceAnalyzer {
         const timing = networkMetrics.timing || {};
 
         return {
-            totalRequests: summary.totalRequests || 0,
-            totalTransfer: summary.totalTransfer || 0,
-            averageLatency: summary.averageDuration || 0,
+            totalRequests: (summary as any).totalRequests || 0,
+            totalTransfer: (summary as any).totalTransfer || 0,
+            averageLatency: (summary as any).averageDuration || 0,
             networkEfficiency: this.calculateNetworkEfficiency(timing),
-            resourceBreakdown: summary.byType || {},
+            resourceBreakdown: (summary as any).byType || {},
             bottlenecks: this.identifyNetworkBottlenecks(timing)
         };
     }
@@ -520,11 +520,11 @@ export class PerformanceAnalyzer {
         const summary = interactionMetrics.summary || {};
 
         return {
-            totalInteractions: summary.totalInteractions || 0,
-            averageResponseTime: summary.averageResponseTime || 0,
-            responsiveness: this.assessResponsiveness(summary.averageResponseTime),
-            interactionTypes: summary.byType || {},
-            slowInteractions: summary.maxResponseTime > 100
+            totalInteractions: (summary as any).totalInteractions || 0,
+            averageResponseTime: (summary as any).averageResponseTime || 0,
+            responsiveness: this.assessResponsiveness((summary as any).averageResponseTime),
+            interactionTypes: (summary as any).byType || {},
+            slowInteractions: ((summary as any).maxResponseTime || 0) > 100
         };
     }
 
@@ -545,9 +545,9 @@ export class PerformanceAnalyzer {
 
         return {
             domComplexity: current.dom?.nodes || 0,
-            domGrowth: trends.domGrowth || 0,
+            domGrowth: (trends as any).domGrowth || 0,
             storageUsage: current.storage?.localStorage?.used || 0,
-            storageGrowth: trends.storageGrowth || 0,
+            storageGrowth: (trends as any).storageGrowth || 0,
             resourceHealth: this.assessResourceHealth(current, trends)
         };
     }
@@ -733,7 +733,8 @@ export class PerformanceAnalyzer {
         return Math.max(0, 1 - (standardDeviation / average));
     }
 
-    private assessFramePerformance(avgFPS: number, jankPercentage: number): string {
+    private assessFramePerformance(avgFPS: number | undefined, jankPercentage: number | undefined): string {
+        if (!avgFPS || !jankPercentage) return 'unknown';
         if (avgFPS >= 55 && jankPercentage < 5) return 'excellent';
         if (avgFPS >= 45 && jankPercentage < 10) return 'good';
         if (avgFPS >= 30 && jankPercentage < 20) return 'acceptable';
@@ -751,9 +752,11 @@ export class PerformanceAnalyzer {
         return 'stable';
     }
 
-    private assessMemoryLeakRisk(growthRate: number, gcFrequency: number): string {
-        if (growthRate > 1000 && gcFrequency < 2) return 'high';
-        if (growthRate > 500) return 'medium';
+    private assessMemoryLeakRisk(growthRate: number | undefined, gcFrequency: number | undefined): string {
+        const rate = growthRate || 0;
+        const freq = gcFrequency || 0;
+        if (rate > 1000 && freq < 2) return 'high';
+        if (rate > 500) return 'medium';
         return 'low';
     }
 
@@ -789,11 +792,11 @@ export class PerformanceAnalyzer {
         const bottlenecks: string[] = [];
         const stats = renderMetrics.statistics || {};
 
-        if (stats.averageDuration > 30) {
+        if ((stats as any).averageDuration > 30) {
             bottlenecks.push('Long average render time');
         }
 
-        if (stats.maxDuration > 100) {
+        if ((stats as any).maxDuration > 100) {
             bottlenecks.push('Render spikes detected');
         }
 
@@ -821,7 +824,8 @@ export class PerformanceAnalyzer {
         return bottlenecks;
     }
 
-    private assessResponsiveness(averageResponseTime: number): string {
+    private assessResponsiveness(averageResponseTime: number | undefined): string {
+        if (!averageResponseTime) return 'unknown';
         if (averageResponseTime <= 16) return 'excellent';
         if (averageResponseTime <= 50) return 'good';
         if (averageResponseTime <= 100) return 'acceptable';
@@ -921,7 +925,7 @@ export class PerformanceReporter {
         });
     }
 
-    generateReport(analysisData: PerformanceAnalysis, templateName: string = 'summary', options: Record<string, any> = {}): string {
+    generateReport(analysisData: PerformanceAnalysis, templateName: string = 'summary', _options: Record<string, any> = {}): string {
         const template = this.reportTemplates.get(templateName);
         if (!template) {
             throw new Error(`Unknown report template: ${templateName}`);
@@ -1237,7 +1241,7 @@ export class PerformanceDashboard {
 
         const html = `
             <div><strong>Performance Dashboard</strong></div>
-            <div>Overall: ${overall.grade || 'N/A'} (${(overall.score * 100).toFixed(0) || 0}%)</div>
+            <div>Overall: ${overall.grade || 'N/A'} (${overall.score ? (overall.score * 100).toFixed(0) : 0}%)</div>
             <div>FPS: ${frame.currentFPS?.toFixed(1) || 'N/A'}</div>
             <div>Memory: ${memory.currentUsage ? (memory.currentUsage / 1024 / 1024).toFixed(1) + ' MB' : 'N/A'}</div>
             <div>Pressure: ${memory.pressureLevel ? (memory.pressureLevel * 100).toFixed(0) + '%' : 'N/A'}</div>
@@ -1270,7 +1274,7 @@ export class PerformanceDashboard {
 
     stopAutoUpdate(): void {
         if (this.updateInterval) {
-            clearInterval(this.updateInterval);
+            clearInterval(this.updateInterval as any);
             this.updateInterval = null;
         }
     }

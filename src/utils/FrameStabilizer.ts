@@ -372,7 +372,7 @@ export class FrameStabilizer {
      * @param frameTime - Current frame time
      * @param timestamp - Current timestamp
      */
-    private updateFramePacing(frameTime: number, timestamp: number): void {
+    private updateFramePacing(frameTime: number, _timestamp: number): void {
         if (!this.framePacing.enabled) return;
         
         // Update actual interval

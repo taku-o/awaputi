@@ -309,7 +309,7 @@ export class ExportManager {
                     xmlContent += '    </record>\n';
                 }
             } else if (typeof records === 'object') {
-                for (const [key, value] of Object.entries(records)) {
+                for (const [key, value] of Object.entries(records as object)) {
                     const escapedValue = this.escapeXML(String(value ?? ''));
                     xmlContent += `    <${key}>${escapedValue}</${key}>\n`;
                 }
@@ -413,7 +413,7 @@ export class ExportManager {
      * @param {string} dataType - データタイプ
      * @returns {Object} クエリオブジェクト
      */
-    buildQuery(filters: any, dataType: string) {
+    buildQuery(filters: any, _dataType: string) {
         const query: any = {};
         
         // 日付範囲フィルター
@@ -451,7 +451,7 @@ export class ExportManager {
      * @param {string} dataType - データタイプ
      * @returns {Array} フィルター済みデータ
      */
-    applyFilters(data: any[], filters: any, dataType: string) {
+    applyFilters(data: any[], filters: any, _dataType: string) {
         let filteredData = [...data];
         
         // カスタムフィルター関数の適用
@@ -524,7 +524,7 @@ export class ExportManager {
      * @param {number} size - エクスポートサイズ
      * @param {number} duration - エクスポート時間
      */
-    updateExportStats(success: boolean, size: number, duration: number) {
+    updateExportStats(success: boolean, size: number, _duration: number) {
         this.exportStats.totalExports++;
         
         if (success) {

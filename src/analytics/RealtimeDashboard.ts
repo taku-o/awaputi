@@ -9,7 +9,7 @@ export class RealtimeDashboard {
     private monitor: any;
     private options: any;
     private charts: Map<string, any>;
-    private updateTimer: number | null;
+    private updateTimer: any;
     private dataHistory: {
         fps: number[];
         memory: number[];
@@ -504,7 +504,7 @@ export class RealtimeDashboard {
         
         Object.keys(this.dataHistory).forEach(key => {
             if (this.dataHistory[key as keyof typeof this.dataHistory].length > maxLength) {
-                this.dataHistory[key as keyof typeof this.dataHistory] = this.dataHistory[key as keyof typeof this.dataHistory].slice(-maxLength);
+                (this.dataHistory as any)[key] = (this.dataHistory as any)[key].slice(-maxLength);
             }
         });
     }

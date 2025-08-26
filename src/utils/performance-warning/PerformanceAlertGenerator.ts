@@ -309,7 +309,7 @@ export class PerformanceAlertGenerator {
             'zone': ['zone']
         };
         
-        for (const [category, types] of Object.entries(categories)) {
+        for (const [_category, types] of Object.entries(categories)) {
             if (types.some(type => baseType1.includes(type)) && 
                 types.some(type => baseType2.includes(type))) {
                 return 0.6;

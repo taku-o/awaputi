@@ -398,17 +398,17 @@ export class UtilsErrorAnalyzer {
             const gameEngine = window.gameEngine;
             
             metadata.gameState = {
-                scene: gameEngine.currentScene?.constructor.name,
-                fps: gameEngine.performanceOptimizer?.getCurrentFPS(),
-                memoryUsage: gameEngine.memoryManager?.getUsage()
+                scene: (gameEngine as any).currentScene?.constructor.name,
+                fps: (gameEngine.performanceOptimizer as any)?.getCurrentFPS(),
+                memoryUsage: (gameEngine.memoryManager as any)?.getUsage()
             };
             
             // Performance metrics
             if (gameEngine.performanceOptimizer) {
                 metadata.performance = {
-                    level: gameEngine.performanceOptimizer.currentLevel,
-                    quality: gameEngine.performanceOptimizer.currentQuality,
-                    optimizationsActive: gameEngine.performanceOptimizer.activeOptimizations
+                    level: (gameEngine.performanceOptimizer as any).currentLevel,
+                    quality: (gameEngine.performanceOptimizer as any).currentQuality,
+                    optimizationsActive: (gameEngine.performanceOptimizer as any).activeOptimizations
                 };
             }
         }
@@ -564,7 +564,7 @@ export class UtilsErrorAnalyzer {
      * @param severity - Error severity  
      * @returns Impact assessment
      */
-    private assessImpact(errorInfo: ErrorInfo, severity: string): ImpactAssessment {
+    private assessImpact(errorInfo: ErrorInfo, _severity: string): ImpactAssessment {
         const impact: ImpactAssessment = {
             userExperience: 'minimal',
             systemStability: 'stable',

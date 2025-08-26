@@ -407,7 +407,7 @@ export class ParticleQualityManager {
      * @param currentFPS - Current frame rate
      * @param frameTime - Frame processing time
      */
-    updatePerformanceMetrics(currentFPS: number, frameTime: number = 0): void {
+    updatePerformanceMetrics(currentFPS: number, _frameTime: number = 0): void {
         if (!this.performanceMonitor.enabled) return;
         
         // Update FPS history

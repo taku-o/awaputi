@@ -227,7 +227,7 @@ export class HTMLJavaScriptChecker {
             /\\[^\\'"ntrbfv0xu]/g    // 不正なエスケープ文字
         ];
 
-        badEscapePatterns.forEach((pattern, index) => {
+        badEscapePatterns.forEach((pattern, _index) => {
             const matches = content.match(pattern);
             if (matches) {
                 matches.forEach(match => {

@@ -456,7 +456,7 @@ export class AdvancedLayerManager {
      * Render cached layer
      * @private
      */
-    private _renderCachedLayer(mainContext: CanvasRenderingContext2D, layer: Layer, viewport: Viewport | null): void {
+    private _renderCachedLayer(mainContext: CanvasRenderingContext2D, layer: Layer, _viewport: Viewport | null): void {
         if (layer.canvas) {
             mainContext.drawImage(layer.canvas, 0, 0);
             layer.cacheHits++;
@@ -467,7 +467,7 @@ export class AdvancedLayerManager {
      * Render layer directly
      * @private
      */
-    private _renderLayerDirect(mainContext: CanvasRenderingContext2D, layer: Layer, viewport: Viewport | null): void {
+    private _renderLayerDirect(mainContext: CanvasRenderingContext2D, layer: Layer, _viewport: Viewport | null): void {
         const startTime = performance.now();
         // If layer is cacheable, render to layer canvas first
         const targetContext = (layer.cacheable && layer.context) ? layer.context : mainContext;

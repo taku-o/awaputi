@@ -246,7 +246,7 @@ export class PerformanceDataAnalyzer {
             await this.reportGenerator.generateInsights(timestamp, metrics);
 
         } catch (error) {
-            this.errorHandler.handleError?.(error as Error, {
+            (this.errorHandler as any).handleError?.(error as Error, {
                 context: 'PerformanceDataAnalyzer.analyzePerformanceData'
             }) || console.error('Analysis error:', error);
         }

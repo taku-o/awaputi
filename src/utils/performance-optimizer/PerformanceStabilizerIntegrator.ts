@@ -925,7 +925,7 @@ export class PerformanceStabilizerIntegrator {
      * 統合履歴を記録
      * @param result - 統合結果
      */
-    recordIntegrationHistory(result: IntegrationResult): void {
+    recordIntegrationHistory(_result: IntegrationResult): void {
         // 統合履歴記録の実装
     }
 
@@ -933,7 +933,7 @@ export class PerformanceStabilizerIntegrator {
      * 強制安定化履歴を記録
      * @param result - 強制安定化結果
      */
-    recordForcedStabilization(result: ForceStabilizationResult): void {
+    recordForcedStabilization(_result: ForceStabilizationResult): void {
         // 強制安定化履歴記録の実装
     }
 

@@ -123,7 +123,7 @@ export class ImportUpdater {
     /**
      * ファイル内容からインポート文を抽出
      */
-    extractImportsFromContent(content: string, filePath: string): ImportInfo[] {
+    extractImportsFromContent(content: string, _filePath: string): ImportInfo[] {
         const imports: ImportInfo[] = [];
         
         // 名前付きインポート
@@ -323,7 +323,7 @@ export class ImportUpdater {
             'g'
         );
 
-        return content.replace(namedImportPattern, (match, importList, fromClause) => {
+        return content.replace(namedImportPattern, (_match, importList, fromClause) => {
             const updatedImportList = importList.replace(
                 new RegExp(`\\b${oldName}\\b`, 'g'),
                 newName

@@ -314,8 +314,8 @@ export class MobileRenderOptimizer {
         }
 
         // Check GPU capabilities
-        const renderer = gl.getParameter(gl.RENDERER);
-        const vendor = gl.getParameter(gl.VENDOR);
+        const renderer = (gl as any).getParameter((gl as any).RENDERER);
+        const ___vendor = (gl as any).getParameter((gl as any).VENDOR);
 
         // Simple device classification (would be more sophisticated in practice)
         if (renderer.includes('Mali') || renderer.includes('Adreno')) {

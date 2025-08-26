@@ -3,7 +3,7 @@
  * Contains legacy classes maintained for backward compatibility
  */
 
-import { getErrorHandler } from '../../core/ErrorHandler.js';
+import { _getErrorHandler } from '../../core/ErrorHandler.js';
 
 // Type definitions
 interface MetricValue {
@@ -326,7 +326,7 @@ export class PerformanceAlertManager {
     }
 
     checkThresholds(metrics: Map<string, number>): void {
-        for (const [alertId, alert] of this.alerts) {
+        for (const [_alertId, alert] of this.alerts) {
             const value = metrics.get(alert.metricId);
             if (value === undefined) continue;
 

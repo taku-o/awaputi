@@ -123,7 +123,7 @@ export class UIPositionCalculator {
      * @param index - ボタンのインデックス
      * @returns ベース座標系の位置
      */
-    getButtonPosition(buttonType: string, index: number = 0): Position {
+    getButtonPosition(_buttonType: string, index: number = 0): Position {
         try {
             const canvasInfo = this.scaledCoordinateManager.getCanvasInfo();
             const margins = this.getResponsiveMargins();
@@ -144,7 +144,7 @@ export class UIPositionCalculator {
      * @param dialogType - ダイアログタイプ
      * @returns ベース座標系の位置（中央配置）
      */
-    getDialogPosition(dialogType: string): Position {
+    getDialogPosition(_dialogType: string): Position {
         try {
             const canvasInfo = this.scaledCoordinateManager.getCanvasInfo();
             // 中央配置（ベース座標系）
@@ -198,7 +198,7 @@ export class UIPositionCalculator {
      * @param containerBounds - コンテナの境界
      * @returns 計算された位置の配列
      */
-    calculateLayout(elements: UIElement[], containerBounds: Container): LayoutResult[] {
+    calculateLayout(elements: UIElement[], _containerBounds: Container): LayoutResult[] {
         try {
             const positions: LayoutResult[] = [];
             const margins = this.getResponsiveMargins();
@@ -239,7 +239,7 @@ export class UIPositionCalculator {
      * @param margin - マージン値
      * @returns ベース座標系の位置
      */
-    alignToEdge(element: UIElement, edge: Edge, margin: number = 20): Position {
+    alignToEdge(_element: UIElement, edge: Edge, margin: number = 20): Position {
         try {
             const canvasInfo = this.scaledCoordinateManager.getCanvasInfo();
             let baseX: number, baseY: number;
@@ -282,7 +282,7 @@ export class UIPositionCalculator {
      * @param container - コンテナ情報
      * @returns ベース座標系の位置
      */
-    centerElement(element: UIElement, container: Container | null = null): Position {
+    centerElement(_element: UIElement, container: Container | null = null): Position {
         try {
             const canvasInfo = this.scaledCoordinateManager.getCanvasInfo();
             // コンテナが指定されていない場合はキャンバス全体を使用

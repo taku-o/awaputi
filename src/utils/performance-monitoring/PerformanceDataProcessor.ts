@@ -290,7 +290,7 @@ export class PerformanceDataProcessor {
      * @param timestamp - Data timestamp
      * @param metrics - Performance metrics
      */
-    processStatisticalData(timestamp: number, metrics: Map<string, any>): void {
+    processStatisticalData(timestamp: number, _metrics: Map<string, any>): void {
         // Get recent data for statistical analysis
         const recentData = this.mainController.metricsCollector.getRecentAnalysisData(
             this.mainController.analysisConfig.statisticalWindow

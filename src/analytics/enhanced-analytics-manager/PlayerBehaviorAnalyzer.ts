@@ -20,7 +20,7 @@ export interface AnalysisResult {
 export class PlayerBehaviorAnalyzer {
     private playerBehavior: any;
     private sessionStats: any;
-    private longSessionMarked: boolean;
+    private _longSessionMarked: boolean;
 
     constructor() {
         // プレイヤー行動分析
@@ -40,7 +40,7 @@ export class PlayerBehaviorAnalyzer {
         };
         
         this.sessionStats = null;
-        this.longSessionMarked = false;
+        this._longSessionMarked = false;
     }
     
     /**
@@ -287,14 +287,20 @@ export class PlayerBehaviorAnalyzer {
      */
     getPlayStyleDistribution() {
         const total = Object.values(this.playerBehavior.playStyle)
-            .reduce((sum: number, count: any) => sum + count, 0);
+            .reduce((sum: number, count: any) => sum + Number(count), 0);
         
         if (total === 0) return { aggressive: 0, defensive: 0, strategic: 0 };
         
+        const playStyle = this.playerBehavior.playStyle as any;
+        const aggr = Number(playStyle.aggressive || 0);
+        const def = Number(playStyle.defensive || 0);
+        const strat = Number(playStyle.strategic || 0);
+        
+        const totalNum = Number(total);
         return {
-            aggressive: this.playerBehavior.playStyle.aggressive / total,
-            defensive: this.playerBehavior.playStyle.defensive / total,
-            strategic: this.playerBehavior.playStyle.strategic / total
+            aggressive: aggr / totalNum,
+            defensive: def / totalNum,
+            strategic: strat / totalNum
         };
     }
     
@@ -583,6 +589,6 @@ export class PlayerBehaviorAnalyzer {
         this.sessionStats = null;
         this.playerBehavior.interactionPatterns = [];
         this.playerBehavior.sessionData = null;
-        this.longSessionMarked = false;
+        this._longSessionMarked = false;
     }
 }

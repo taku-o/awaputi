@@ -785,7 +785,7 @@ export class CleanupReporter {
     /**
      * 緊急時手順の生成
      */
-    generateEmergencyProcedures(deletedFiles: DeletionDetail[]): EmergencyProcedure[] {
+    generateEmergencyProcedures(_deletedFiles: DeletionDetail[]): EmergencyProcedure[] {
         return [{
             scenario: 'システム全体が動作しなくなった場合',
             procedure: [

@@ -222,7 +222,8 @@ export class UtilsErrorReporter {
      * @returns User-friendly message
      */
     private getUserFriendlyMessage(errorInfo: ErrorInfo): string {
-        const { context, message } = errorInfo;
+        const { context } = errorInfo;
+        const message = (errorInfo as any).___message;
 
         if (context === 'CANVAS_ERROR') {
             return 'グラフィック機能に問題が発生しました。ブラウザを更新してください。';
@@ -413,7 +414,7 @@ export class UtilsErrorReporter {
      * @param notification - Notification element
      * @param errorInfo - Error information
      */
-    private displayNotification(notification: HTMLElement, errorInfo: ErrorInfo): void {
+    private displayNotification(notification: HTMLElement, _errorInfo: ErrorInfo): void {
         document.body.appendChild(notification);
         this.activeNotifications.add(notification);
         

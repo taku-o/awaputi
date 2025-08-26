@@ -431,7 +431,7 @@ export class PerformanceMonitoringSystem {
     /**
      * Handle real-time data from monitor
      */
-    onRealTimeData(timestamp: number, metrics: PerformanceMetrics): void {
+    onRealTimeData(_timestamp: number, metrics: PerformanceMetrics): void {
         // Process real-time data if needed
         console.log(`[PerformanceMonitoringSystem] Real-time data received: ${metrics.size} metrics`);
     }

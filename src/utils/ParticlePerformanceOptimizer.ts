@@ -218,7 +218,7 @@ class DummyParticleCullingSystem implements ParticleCullingSystem {
         return { cullingEfficiency: 0.8, particlesCulled: 0, visibleParticles: 0 };
     }
 
-    configure(config: any): void {
+    configure(_config: any): void {
         console.log('[ParticleCullingSystem] Configuration updated');
     }
 
@@ -246,7 +246,7 @@ class DummyParticleBatchRenderer implements ParticleBatchRenderer {
         return { batchCount: 0, averageBatchSize: 0, renderTime: 0 };
     }
 
-    configure(config: any): void {
+    configure(_config: any): void {
         console.log('[ParticleBatchRenderer] Configuration updated');
     }
 
@@ -285,7 +285,7 @@ class DummyParticleQualityManager implements ParticleQualityManager {
         return { qualityLevel: this.currentQuality, adjustmentCount: 0, lastAdjustment: Date.now() };
     }
 
-    configure(config: any): void {
+    configure(_config: any): void {
         console.log('[ParticleQualityManager] Configuration updated');
     }
 

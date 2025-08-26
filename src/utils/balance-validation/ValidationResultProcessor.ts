@@ -267,7 +267,7 @@ export class ValidationResultProcessor {
     /**
      * Process individual rule result
      */
-    private processRuleResult(ruleResult: RuleExecutionResult, processedResult: ProcessedResult, context: ValidationContext): void {
+    private processRuleResult(ruleResult: RuleExecutionResult, processedResult: ProcessedResult, _context: ValidationContext): void {
         // Record rule application
         processedResult.rulesApplied.push({
             name: ruleResult.ruleName,

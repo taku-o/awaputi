@@ -240,7 +240,7 @@ export class PerformanceMetricsCollector {
      * 全体テスト結果の判定
      */
     isOverallTestsPassed(testResults: Map<string, TestCategoryResults>): boolean {
-        for (const [category, results] of Array.from(testResults)) {
+        for (const [_category, results] of Array.from(testResults)) {
             if (!results.passed) {
                 return false;
             }
@@ -318,7 +318,7 @@ export class PerformanceMetricsCollector {
                 metrics: []
             };
             
-            for (const [testName, testResult] of Object.entries(results.tests) as [string, TestResult][]) {
+            for (const [_testName, testResult] of Object.entries(results.tests) as [string, TestResult][]) {
                 stats.totalTests++;
                 
                 if (testResult.passed) {

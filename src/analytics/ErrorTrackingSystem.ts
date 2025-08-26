@@ -61,7 +61,7 @@ export class ErrorTrackingSystem {
     private errors: Map<string, ErrorReport>;
     private errorGroups: Map<string, ErrorGroup>;
     private errorCount: number;
-    private isInitialized: boolean;
+    private _isInitialized: boolean;
     private originalErrorHandler: OnErrorEventHandler | null;
     private originalUnhandledRejectionHandler: ((this: WindowEventHandlers, ev: PromiseRejectionEvent) => any) | null;
 
@@ -82,7 +82,7 @@ export class ErrorTrackingSystem {
         this.errors = new Map();
         this.errorGroups = new Map();
         this.errorCount = 0;
-        this.isInitialized = false;
+        this._isInitialized = false;
         this.originalErrorHandler = null;
         this.originalUnhandledRejectionHandler = null;
 
@@ -96,7 +96,7 @@ export class ErrorTrackingSystem {
         try {
             this.setupGlobalErrorHandlers();
             this.loadStoredErrors();
-            this.isInitialized = true;
+            this._isInitialized = true;
             console.log('ErrorTrackingSystem initialized');
         } catch (error) {
             console.error('Failed to initialize ErrorTrackingSystem:', error);
@@ -110,15 +110,16 @@ export class ErrorTrackingSystem {
         // JavaScript エラーハンドラー
         this.originalErrorHandler = window.onerror;
         window.onerror = (message, source, line, column, error) => {
-            this.captureError({
+            const errorPayload: Partial<ErrorReport> = {
                 type: 'javascript',
                 message: String(message),
-                source: source,
-                line: line,
-                column: column,
-                stack: error?.stack,
                 severity: 'high'
-            });
+            };
+            if (source) errorPayload.source = source;
+            if (line) errorPayload.line = line;
+            if (column) errorPayload.column = column;
+            if (error?.stack) errorPayload.stack = error.stack;
+            this.captureError(errorPayload);
             
             // 元のハンドラーを呼び出し
             if (this.originalErrorHandler) {
@@ -156,10 +157,6 @@ export class ErrorTrackingSystem {
                 id: errorId,
                 type: errorData.type || 'custom',
                 message: errorData.message || 'Unknown error',
-                source: errorData.source,
-                line: errorData.line,
-                column: errorData.column,
-                stack: errorData.stack,
                 context: context,
                 severity: errorData.severity || 'medium',
                 occurrenceCount: 1,
@@ -167,6 +164,10 @@ export class ErrorTrackingSystem {
                 lastSeen: Date.now(),
                 resolved: false
             };
+            if (errorData.source) errorReport.source = errorData.source;
+            if (errorData.line) errorReport.line = errorData.line;
+            if (errorData.column) errorReport.column = errorData.column;
+            if (errorData.stack) errorReport.stack = errorData.stack;
             
             // エラーグルーピング
             if (this.options.enableErrorGrouping) {
@@ -236,7 +237,8 @@ export class ErrorTrackingSystem {
 
             // スクリーンショット（オプション）
             if (this.options.enableScreenshot) {
-                context.screenshot = await this.captureScreenshot();
+                const screenshot = await this.captureScreenshot();
+                if (screenshot) context.screenshot = screenshot;
             }
         } catch (error) {
             console.error('Failed to capture full context:', error);
@@ -383,7 +385,7 @@ export class ErrorTrackingSystem {
                 return {
                     timing: {
                         loadTime: navigation ? navigation.loadEventEnd - navigation.loadEventStart : null,
-                        domContentLoaded: navigation ? navigation.domContentLoadedEventEnd - navigation.navigationStart : null,
+                        domContentLoaded: navigation ? navigation.domContentLoadedEventEnd - (navigation as any).navigationStart : null,
                         firstPaint: this.getFirstPaintTime()
                     },
                     memory: memory ? {

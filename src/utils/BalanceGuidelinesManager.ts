@@ -367,7 +367,7 @@ export class BalanceGuidelinesManager {
             calculations: {
                 targetingImpact: (oldValue: number, newValue: number) => (oldValue - newValue) / oldValue,
                 clarityImpact: (oldValue: number, newValue: number) => newValue / oldValue,
-                accessibilityImpact: (oldValue: number, newValue: number) => newValue >= 45 ? 'compliant' : 'non-compliant'
+                accessibilityImpact: (_oldValue: number, newValue: number) => newValue >= 45 ? 'compliant' : 'non-compliant'
             },
             thresholds: {
                 minor: 0.1,

@@ -411,7 +411,7 @@ class DeveloperGuidanceSystem {
      * @param config - 設定
      * @private
      */
-    private static _setupEventListeners(guidance: HTMLElement, config: GuidanceConfig): void {
+    private static _setupEventListeners(guidance: HTMLElement, _config: GuidanceConfig): void {
         // 閉じるボタン
         const closeBtn = guidance.querySelector('.awaputi-guidance-close');
         closeBtn?.addEventListener('click', () => {

@@ -110,7 +110,7 @@ export class ConfigurationValidator {
             }
         });
 
-        this.validators.set('boolean', (value: any, constraints: ValidationConstraints) => {
+        this.validators.set('boolean', (value: any, _constraints: ValidationConstraints) => {
             if (typeof value !== 'boolean') throw new Error('Value must be a boolean');
         });
 

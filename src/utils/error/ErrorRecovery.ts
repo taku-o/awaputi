@@ -172,7 +172,7 @@ export class ErrorRecovery {
         this.recoveryStrategies.set('CANVAS_ERROR', {
             attempts: 0,
             maxAttempts: 2,
-            strategy: (error: ErrorInfo, context: string): RecoveryResult => {
+            strategy: (error: ErrorInfo, _context: string): RecoveryResult => {
                 console.warn('Canvas error detected, attempting recovery:', error.message);
                 
                 // Recreate canvas element
@@ -202,7 +202,7 @@ export class ErrorRecovery {
         this.recoveryStrategies.set('AUDIO_ERROR', {
             attempts: 0,
             maxAttempts: 1,
-            strategy: (error: ErrorInfo, context: string): RecoveryResult => {
+            strategy: (error: ErrorInfo, _context: string): RecoveryResult => {
                 console.warn('Audio error detected, disabling audio:', error.message);
 
                 this.fallbackState.audioDisabled = true;
@@ -220,7 +220,7 @@ export class ErrorRecovery {
         this.recoveryStrategies.set('STORAGE_ERROR', {
             attempts: 0,
             maxAttempts: 1,
-            strategy: (error: ErrorInfo, context: string): RecoveryResult => {
+            strategy: (error: ErrorInfo, _context: string): RecoveryResult => {
                 console.warn('Storage error detected, using memory storage:', error.message);
 
                 this.useMemoryStorage();
@@ -237,7 +237,7 @@ export class ErrorRecovery {
         this.recoveryStrategies.set('MEMORY_WARNING', {
             attempts: 0,
             maxAttempts: 1,
-            strategy: (error: ErrorInfo, context: string): RecoveryResult => {
+            strategy: (error: ErrorInfo, _context: string): RecoveryResult => {
                 console.warn('Memory warning detected, reducing effects:', error.message);
                 this.reduceEffects();
                 this.performGarbageCollection();
@@ -254,7 +254,7 @@ export class ErrorRecovery {
         this.recoveryStrategies.set('PERFORMANCE_WARNING', {
             attempts: 0,
             maxAttempts: 2,
-            strategy: (error: ErrorInfo, context: string): RecoveryResult => {
+            strategy: (error: ErrorInfo, _context: string): RecoveryResult => {
                 console.warn('Performance warning detected, optimizing:', error.message);
                 this.optimizePerformance();
 
@@ -270,7 +270,7 @@ export class ErrorRecovery {
         this.recoveryStrategies.set('NETWORK_ERROR', {
             attempts: 0,
             maxAttempts: 2,
-            strategy: (error: ErrorInfo, context: string): Promise<RecoveryResult> => {
+            strategy: (error: ErrorInfo, _context: string): Promise<RecoveryResult> => {
                 console.warn('Network error detected, attempting recovery:', error.message);
                 return this.attemptNetworkRecovery();
             },
@@ -283,7 +283,7 @@ export class ErrorRecovery {
         this.recoveryStrategies.set('WEBGL_ERROR', {
             attempts: 0,
             maxAttempts: 1,
-            strategy: (error: ErrorInfo, context: string): RecoveryResult => {
+            strategy: (error: ErrorInfo, _context: string): RecoveryResult => {
                 console.warn('WebGL error detected, falling back to 2D:', error.message);
                 return this.fallbackTo2DRendering();
             },

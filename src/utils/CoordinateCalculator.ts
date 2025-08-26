@@ -114,7 +114,7 @@ export class CoordinateCalculator {
      * @param {CanvasRenderingContext2D} context - Canvas 2Dコンテキスト
      * @param {string} text - 描画するテキスト
      */
-    getTextCenterX(context: CanvasRenderingContext2D, text: string): number {
+    getTextCenterX(context: CanvasRenderingContext2D, _text: string): number {
         // textAlign = 'center'の場合、Canvas表示領域の実際の中央座標を返す
         // transform scaleに関係なく、常に表示領域の中央を指定
         const canvas = context.canvas;

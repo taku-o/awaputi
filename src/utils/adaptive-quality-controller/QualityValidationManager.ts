@@ -162,7 +162,7 @@ export class QualityValidationManager {
             console.log('[QualityValidationManager] 品質検証開始');
             
             // 安定性監視を開始
-            const _monitoringResult = await this.monitorPerformanceStability();
+            const ____monitoringResult = await this.monitorPerformanceStability();
             // 検証評価を実行
             const evaluationResult = this.evaluateValidationResults();
             this.currentValidation.phase = 'completed';

@@ -64,7 +64,7 @@ export class DataVisualizer {
     private svgElements: Map<string, any>;
     private scales: Map<string, any>;
     private d3: any;
-    private useCanvasFallback: boolean;
+    private _useCanvasFallback: boolean;
 
     constructor(options: DataVisualizerOptions = {}) {
         this.options = {
@@ -83,7 +83,7 @@ export class DataVisualizer {
         this.svgElements = new Map();
         this.scales = new Map();
         this.d3 = null;
-        this.useCanvasFallback = false;
+        this._useCanvasFallback = false;
 
         this.initialize();
     }
@@ -201,7 +201,7 @@ export class DataVisualizer {
 
         // インタラクティブ機能
         if (this.options.enableInteractivity) {
-            dots.on('mouseover', function(event: any, d: ScatterPlotData) {
+            dots.on('mouseover', function(_event: any, d: ScatterPlotData) {
                 // ツールチップ表示など
                 console.log('Hovered:', d);
             });
@@ -236,8 +236,8 @@ export class DataVisualizer {
         const margin = config.margin || this.options.margin;
 
         // データの前処理
-        const xValues = [...new Set(data.map(d => d.x))].sort((a, b) => a - b);
-        const yValues = [...new Set(data.map(d => d.y))].sort((a, b) => a - b);
+        const xValues = Array.from(new Set(data.map(d => d.x))).sort((a, b) => a - b);
+        const yValues = Array.from(new Set(data.map(d => d.y))).sort((a, b) => a - b);
 
         const cellWidth = (width - margin.left - margin.right) / xValues.length;
         const cellHeight = (height - margin.top - margin.bottom) / yValues.length;
@@ -449,7 +449,7 @@ export class DataVisualizer {
     /**
      * ヒートマップの更新
      */
-    private updateHeatmap(containerId: string, newData: HeatmapData[]): boolean {
+    private updateHeatmap(_containerId: string, _newData: HeatmapData[]): boolean {
         // ヒートマップの更新実装
         return true;
     }
@@ -457,7 +457,7 @@ export class DataVisualizer {
     /**
      * ツリーマップの更新
      */
-    private updateTreemap(containerId: string, newData: TreeMapData): boolean {
+    private updateTreemap(_containerId: string, _newData: TreeMapData): boolean {
         // ツリーマップの更新実装
         return true;
     }
@@ -465,7 +465,7 @@ export class DataVisualizer {
     /**
      * 時系列チャートの更新
      */
-    private updateTimeSeries(containerId: string, newData: VisualizationData): boolean {
+    private updateTimeSeries(_containerId: string, _newData: VisualizationData): boolean {
         // 時系列チャートの更新実装
         return true;
     }
@@ -475,7 +475,7 @@ export class DataVisualizer {
      */
     private fallbackToCanvasRenderer(): void {
         console.warn('D3.js not available, using Canvas API fallback');
-        this.useCanvasFallback = true;
+        this._useCanvasFallback = true;
     }
 
     /**
@@ -497,7 +497,7 @@ export class DataVisualizer {
      */
     destroy(): void {
         // 全ての可視化を削除
-        for (const containerId of this.visualizations.keys()) {
+        for (const containerId of Array.from(this.visualizations.keys())) {
             this.removeVisualization(containerId);
         }
 

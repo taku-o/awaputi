@@ -100,7 +100,7 @@ class DummyPerformanceAdaptiveController implements PerformanceAdaptiveControlle
         console.log(`[PerformanceAdaptiveController] Adaptive mode: ${enabled ? 'enabled' : 'disabled'}`);
     }
 
-    calculateAdjustments(analysis: any): any {
+    calculateAdjustments(_analysis: any): any {
         return { settings: {}, performanceLevel: 'medium' };
     }
     
@@ -110,7 +110,7 @@ class DummyPerformanceAdaptiveController implements PerformanceAdaptiveControlle
 }
 
 class DummyPerformanceStabilizerIntegrator implements PerformanceStabilizerIntegrator {
-    integrateWithStabilizer(stabilizer: any, analysis: any): void {
+    integrateWithStabilizer(_stabilizer: any, _analysis: any): void {
         console.log('[PerformanceStabilizerIntegrator] Integration completed');
     }
 
@@ -244,7 +244,7 @@ export class PerformanceOptimizer {
      */
     private _initializeSubComponents(): void {
         try {
-            const componentConfig: ComponentConfig = {
+            const ___componentConfig: ComponentConfig = {
                 maxHistorySize: this.maxHistorySize,
                 targetFPS: this.targetFPS,
                 performanceLevel: this.performanceLevel
@@ -589,7 +589,7 @@ function getErrorHandler(): any {
     };
 }
 
-function getFrameStabilizer(targetFPS: number): any {
+function getFrameStabilizer(_targetFPS: number): any {
     // This should return the actual frame stabilizer instance
     return {
         getStabilizationStatus: () => ({

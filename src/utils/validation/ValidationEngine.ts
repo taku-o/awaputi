@@ -282,7 +282,7 @@ export class ValidationEngine {
     /**
      * 構文検証
      */
-    private async validateSyntax(filePath: string, content: string, result: FileValidationResult): Promise<void> {
+    private async validateSyntax(_filePath: string, content: string, result: FileValidationResult): Promise<void> {
         try {
             // 基本的な構文チェック（簡易版）
             const syntaxChecks = [
@@ -334,7 +334,7 @@ export class ValidationEngine {
     /**
      * エクスポート検証
      */
-    private async validateExports(filePath: string, content: string, result: FileValidationResult): Promise<void> {
+    private async validateExports(_filePath: string, content: string, result: FileValidationResult): Promise<void> {
         try {
             const exports = this.extractExports(content);
             const classes = this.extractClasses(content);
@@ -364,9 +364,9 @@ export class ValidationEngine {
     /**
      * 参照関係検証
      */
-    private async validateReferences(filePath: string, content: string, result: FileValidationResult): Promise<void> {
+    private async validateReferences(_filePath: string, content: string, result: FileValidationResult): Promise<void> {
         try {
-            const classes = this.extractClasses(content);
+            const ___classes = this.extractClasses(content);
             const imports = this.extractImports(content);
             const importedNames = imports.flatMap(imp => imp.names);
             

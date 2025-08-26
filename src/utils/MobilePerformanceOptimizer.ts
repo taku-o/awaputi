@@ -172,7 +172,7 @@ declare global {
 
 // Dummy implementations for missing dependencies (will be replaced when actual files are converted)
 class DummyMobileResourceManager implements MobileResourceManager {
-    handleMemoryPressureChange(id: string, pressure: string): void {
+    handleMemoryPressureChange(_id: string, pressure: string): void {
         console.log(`[MobileResourceManager] Memory pressure changed: ${pressure}`);
     }
 
@@ -208,7 +208,7 @@ class DummyMobileBatteryOptimizer implements MobileBatteryOptimizer {
         console.log(`[MobileBatteryOptimizer] Power mode set to: ${mode}`);
     }
 
-    setBatteryCallbacks(callbacks: BatteryCallbacks): void {
+    setBatteryCallbacks(_callbacks: BatteryCallbacks): void {
         console.log('[MobileBatteryOptimizer] Battery callbacks set');
     }
     
@@ -580,7 +580,7 @@ export class MobilePerformanceOptimizer {
             const maxTime = 100; // 100ms benchmark
             
             const benchmark = () => {
-                const localStart = performance.now();
+                const ___localStart = performance.now();
                 // CPU-intensive calculation
                 let result = 0;
                 for (let i = 0; i < 10000; i++) {
@@ -668,7 +668,7 @@ export class MobilePerformanceOptimizer {
      */
     private classifyDevicePerformance(): void {
         const benchmarks = this.deviceDetection.benchmarks;
-        const hardware = this.deviceDetection.hardware;
+        const ___hardware = this.deviceDetection.hardware;
         
         // Weight the scores
         const cpuWeight = 0.4;

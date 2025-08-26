@@ -51,7 +51,7 @@ export default class FaviconDOMManager {
     static addFaviconsToDOM(faviconData: FaviconData[]): void {
         const head = document.head;
 
-        faviconData.forEach(({ size, dataURL, type }) => {
+        faviconData.forEach(({ size, dataURL, ___type }) => {
             const link = document.createElement('link');
             
             if (size === 'ico') {

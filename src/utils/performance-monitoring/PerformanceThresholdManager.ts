@@ -213,7 +213,7 @@ export class PerformanceThresholdManager {
      * @param metricId - Metric identifier
      * @param currentValue - Current value
      */
-    private updateDynamicThresholds(metricId: string, currentValue: number): void {
+    private updateDynamicThresholds(metricId: string, _currentValue: number): void {
         const stats = this.baselineStats.get(metricId);
         if (!stats) return;
         
@@ -317,7 +317,7 @@ export class PerformanceThresholdManager {
      * @param staticThresholds - Static thresholds
      * @returns New thresholds
      */
-    private calculateGenericThresholds(stats: BaselineStats, staticThresholds: ThresholdValues): Partial<ThresholdValues> {
+    private calculateGenericThresholds(stats: BaselineStats, _staticThresholds: ThresholdValues): Partial<ThresholdValues> {
         return {
             target: stats.median,
             warning: stats.p75 + stats.std,

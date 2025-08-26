@@ -666,7 +666,7 @@ export class LeakDetector {
      * Verify suspected leak
      * @private
      */
-    private _verifySuspect(key: string, suspect: LeakSuspect): void {
+    private _verifySuspect(_key: string, suspect: LeakSuspect): void {
         // Simple verification based on confidence and evidence
         if (suspect.confidence >= this.thresholds.leakConfidence) {
             suspect.verified = true;

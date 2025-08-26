@@ -328,8 +328,8 @@ export class DiagnosticAnalyzer {
         ];
 
         components.forEach(component => {
-            if(component && typeof component.destroy === 'function') {
-                component.destroy();
+            if(component && typeof (component as any).destroy === 'function') {
+                (component as any).destroy();
             }
         });
 
@@ -360,7 +360,7 @@ class DiagnosticEngine {
         this.processors.set('interaction_analysis', new InteractionAnalysisProcessor());
 
         for (const processor of this.processors.values()) {
-            await processor.initialize();
+            await (processor as any).initialize();
         }
     }
 
@@ -370,7 +370,7 @@ class DiagnosticEngine {
             throw new Error(`Unknown analysis type: ${analysisType}`);
         }
 
-        return await processor.process(data);
+        return await (processor as any).process(data);
     }
 
     async applyRules(data: any, context: any): Promise<any> {
@@ -435,7 +435,7 @@ class BottleneckIdentifier {
 
         for(const [detectorName, detector] of this.detectors) {
             try {
-                const detected = await detector.detect(collectedData, this.thresholds);
+                const detected = await (detector as any).detect(collectedData, this.thresholds);
                 bottlenecks.push(...detected);
             } catch (error) {
                 console.error(`[BottleneckIdentifier] Detection failed for ${detectorName}:`, error);
@@ -474,7 +474,7 @@ class IssueAnalyzer {
 
         for(const [analyzerName, analyzer] of this.analyzers) {
             try {
-                const detected = await analyzer.analyze(data, context);
+                const detected = await (analyzer as any).analyze(data, context);
                 issues.push(...detected);
             } catch (error) {
                 console.error(`[IssueAnalyzer] Analysis failed for ${analyzerName}:`, error);
@@ -530,7 +530,7 @@ class AnomalyDetector {
 
         for(const [detectorName, detector] of this.detectors) {
             try {
-                const detected = await detector.detect(collectedData, this.baselines);
+                const detected = await (detector as any).detect(collectedData, this.baselines);
                 anomalies.push(...detected);
             } catch (error) {
                 console.error(`[AnomalyDetector] Detection failed for ${detectorName}:`, error);
@@ -585,7 +585,7 @@ class RootCauseAnalyzer {
         return rootCauses;
     }
 
-    private async identifyRootCause(issue: Bottleneck, correlations: any, causalities: any, dependencies: any): Promise<RootCause> {
+    private async identifyRootCause(issue: Bottleneck, _correlations: any, _causalities: any, _dependencies: any): Promise<RootCause> {
         // 簡易的な根本原因特定
         return {
             issue: issue.description,
@@ -662,8 +662,8 @@ class FrameRateBottleneckDetector {
                 const existing = grouped.get(key)!;
                 existing.occurrences = (existing.occurrences || 0) + 1;
                 existing.lastSeen = bottleneck.timestamp;
-                existing.minValue = Math.min(existing.minValue || bottleneck.value, bottleneck.value);
-                existing.maxValue = Math.max(existing.maxValue || bottleneck.value, bottleneck.value);
+                existing.minValue = Math.min(existing.minValue ?? bottleneck.value, bottleneck.value);
+                existing.maxValue = Math.max(existing.maxValue ?? bottleneck.value, bottleneck.value);
             }
         }
 
@@ -673,25 +673,25 @@ class FrameRateBottleneckDetector {
 
 // 基本的な分析器の実装（スタブ）
 class MemoryBottleneckDetector {
-    async detect(data: CollectedData, thresholds: Map<string, Threshold>): Promise<Bottleneck[]> {
+    async detect(_data: CollectedData, _thresholds: Map<string, Threshold>): Promise<Bottleneck[]> {
         return [];
     }
 }
 
 class RenderingBottleneckDetector {
-    async detect(data: CollectedData, thresholds: Map<string, Threshold>): Promise<Bottleneck[]> {
+    async detect(_data: CollectedData, _thresholds: Map<string, Threshold>): Promise<Bottleneck[]> {
         return [];
     }
 }
 
 class NetworkBottleneckDetector {
-    async detect(data: CollectedData, thresholds: Map<string, Threshold>): Promise<Bottleneck[]> {
+    async detect(_data: CollectedData, _thresholds: Map<string, Threshold>): Promise<Bottleneck[]> {
         return [];
     }
 }
 
 class ComputationBottleneckDetector {
-    async detect(data: CollectedData, thresholds: Map<string, Threshold>): Promise<Bottleneck[]> {
+    async detect(_data: CollectedData, _thresholds: Map<string, Threshold>): Promise<Bottleneck[]> {
         return [];
     }
 }
@@ -735,82 +735,82 @@ class InteractionAnalysisProcessor {
 // その他の基本クラス（スタブ）
 class DiagnosticRuleEngine {
     async initialize(): Promise<void> {}
-    async apply(data: any, context: any): Promise<any> {
+    async apply(data: any, _context: any): Promise<any> {
         return data;
     }
 }
 
 class PerformanceDegradationAnalyzer {
-    async analyze(data: any, context: any): Promise<any[]> {
+    async analyze(_data: any, _context: any): Promise<any[]> {
         return [];
     }
 }
 
 class ResourceContentionAnalyzer {
-    async analyze(data: any, context: any): Promise<any[]> {
+    async analyze(_data: any, _context: any): Promise<any[]> {
         return [];
     }
 }
 
 class InefficientAlgorithmAnalyzer {
-    async analyze(data: any, context: any): Promise<any[]> {
+    async analyze(_data: any, _context: any): Promise<any[]> {
         return [];
     }
 }
 
 class MemoryLeakAnalyzer {
-    async analyze(data: any, context: any): Promise<any[]> {
+    async analyze(_data: any, _context: any): Promise<any[]> {
         return [];
     }
 }
 
 class ExcessiveGCAnalyzer {
-    async analyze(data: any, context: any): Promise<any[]> {
+    async analyze(_data: any, _context: any): Promise<any[]> {
         return [];
     }
 }
 
 class StatisticalAnomalyDetector {
-    async detect(data: CollectedData, baselines: Map<string, Baseline>): Promise<Anomaly[]> {
+    async detect(_data: CollectedData, _baselines: Map<string, Baseline>): Promise<Anomaly[]> {
         return [];
     }
 }
 
 class ThresholdAnomalyDetector {
-    async detect(data: CollectedData, baselines: Map<string, Baseline>): Promise<Anomaly[]> {
+    async detect(_data: CollectedData, _baselines: Map<string, Baseline>): Promise<Anomaly[]> {
         return [];
     }
 }
 
 class PatternAnomalyDetector {
-    async detect(data: CollectedData, baselines: Map<string, Baseline>): Promise<Anomaly[]> {
+    async detect(_data: CollectedData, _baselines: Map<string, Baseline>): Promise<Anomaly[]> {
         return [];
     }
 }
 
 class TrendAnomalyDetector {
-    async detect(data: CollectedData, baselines: Map<string, Baseline>): Promise<Anomaly[]> {
+    async detect(_data: CollectedData, _baselines: Map<string, Baseline>): Promise<Anomaly[]> {
         return [];
     }
 }
 
 class CorrelationAnalyzer {
     async initialize(): Promise<void> {}
-    async analyze(data: CollectedData): Promise<any[]> {
+    async analyze(_data: CollectedData): Promise<any[]> {
         return [];
     }
 }
 
 class CausalityDetector {
     async initialize(): Promise<void> {}
-    async detect(data: CollectedData, results: AnalysisResults): Promise<any[]> {
+    async detect(_data: CollectedData, _results: AnalysisResults): Promise<any[]> {
         return [];
     }
 }
 
 class DependencyMapper {
     async initialize(): Promise<void> {}
-    async map(results: AnalysisResults): Promise<any[]> {
+    async map(_results: AnalysisResults): Promise<any[]> {
         return [];
     }
 }

@@ -201,7 +201,7 @@ class DummyDiagnosticDataCollector implements DiagnosticDataCollector {
         return { available: true, collectorsActive: 4 };
     }
 
-    configure(config: any): void {
+    configure(_config: any): void {
         console.log('[DiagnosticDataCollector] Configuration updated');
     }
 
@@ -215,7 +215,7 @@ class DummyDiagnosticAnalyzer implements DiagnosticAnalyzer {
         console.log('[DiagnosticAnalyzer] Initialized');
     }
 
-    async runAnalyses(collectedData: CollectedData, options: DiagnosticOptions): Promise<AnalysisResults> {
+    async runAnalyses(_collectedData: CollectedData, _options: DiagnosticOptions): Promise<AnalysisResults> {
         console.log('[DiagnosticAnalyzer] Running analyses');
 
         const bottlenecks: Bottleneck[] = [{
@@ -251,7 +251,7 @@ class DummyDiagnosticAnalyzer implements DiagnosticAnalyzer {
         return { bottlenecks, anomalies, rootCauses };
     }
 
-    async generateOverallAssessment(analysisResults: AnalysisResults): Promise<OverallAssessment> {
+    async generateOverallAssessment(_analysisResults: AnalysisResults): Promise<OverallAssessment> {
         const score = 75; // Calculate based on analysis results
 
         return {
@@ -264,7 +264,7 @@ class DummyDiagnosticAnalyzer implements DiagnosticAnalyzer {
         };
     }
 
-    async identifyBottlenecks(collectedData: CollectedData): Promise<Bottleneck[]> {
+    async identifyBottlenecks(_collectedData: CollectedData): Promise<Bottleneck[]> {
         return [{
             id: 'bottle_002',
             component: 'audio',
@@ -276,7 +276,7 @@ class DummyDiagnosticAnalyzer implements DiagnosticAnalyzer {
         }];
     }
 
-    async detectAnomalies(collectedData: CollectedData): Promise<Anomaly[]> {
+    async detectAnomalies(_collectedData: CollectedData): Promise<Anomaly[]> {
         return [{
             id: 'anom_002',
             type: 'fps_drop',
@@ -292,7 +292,7 @@ class DummyDiagnosticAnalyzer implements DiagnosticAnalyzer {
         return { available: true, analyzers: ['bottleneck', 'anomaly', 'root_cause'] };
     }
 
-    configure(config: any): void {
+    configure(_config: any): void {
         console.log('[DiagnosticAnalyzer] Configuration updated');
     }
 
@@ -306,7 +306,7 @@ class DummyDiagnosticReporter implements DiagnosticReporter {
         console.log('[DiagnosticReporter] Initialized');
     }
 
-    async generateRecommendations(analysisResults: AnalysisResults): Promise<Recommendation[]> {
+    async generateRecommendations(_analysisResults: AnalysisResults): Promise<Recommendation[]> {
         return [{
             id: 'rec_001',
             category: 'performance',
@@ -348,7 +348,7 @@ class DummyDiagnosticReporter implements DiagnosticReporter {
         return { available: true, formats: ['json', 'html', 'csv'] };
     }
 
-    configure(config: any): void {
+    configure(_config: any): void {
         console.log('[DiagnosticReporter] Configuration updated');
     }
 

@@ -106,7 +106,7 @@ export class AnomalyDetector {
      * @param {Object} options - 検出オプション
      * @returns {Promise<Object>} 検出結果
      */
-    async detectAnomalies(dataType = 'all', options: any = {}) {
+    async detectAnomalies(_dataType = 'all', options: any = {}) {
         try {
             const {
                 startDate = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000),
@@ -141,7 +141,7 @@ export class AnomalyDetector {
             // 異常検出実行
             const detectionResults = [];
             
-            for (const [type, rule] of this.detectionRules.entries()) {
+            for (const [type, rule] of Array.from(this.detectionRules.entries())) {
                 try {
                     const anomalies = await rule.detect({
                         sessions: sessionData,
@@ -194,7 +194,7 @@ export class AnomalyDetector {
             console.error('異常パターン検出エラー:', error);
             return {
                 success: false,
-                error: error.message,
+                error: (error as Error).message,
                 anomalies: []
             };
         }
@@ -213,8 +213,8 @@ export class AnomalyDetector {
         
         if (stdDev === 0) return [];
 
-        const outliers = [];
-        data.sessions.forEach((session: any, index: any) => {
+        const outliers: any[] = [];
+        data.sessions.forEach((session: any, _index: number) => {
             const zScore = Math.abs((session.finalScore - mean) / stdDev);
             if (zScore > this.thresholds.statistical) {
                 outliers.push({
@@ -280,8 +280,8 @@ export class AnomalyDetector {
 
         if (stdDev === 0) return [];
 
-        const anomalies = [];
-        data.sessions.forEach((session: any, index: any) => {
+        const anomalies: any[] = [];
+        data.sessions.forEach((session: any, index: number) => {
             const playTime = playTimes[index];
             const zScore = Math.abs((playTime - mean) / stdDev);
 
@@ -349,11 +349,11 @@ export class AnomalyDetector {
             if (!sessionGroups.has(interaction.sessionId)) {
                 sessionGroups.set(interaction.sessionId, []);
             }
-            sessionGroups.get(interaction.sessionId).push(interaction);
+            (sessionGroups.get(interaction.sessionId) as any[]).push(interaction);
         });
 
-        const anomalies = [];
-        sessionGroups.forEach((interactions, sessionId) => {
+        const anomalies: any[] = [];
+        sessionGroups.forEach((interactions: any[], sessionId: any) => {
             const reactionTimes = interactions
                 .filter((i: any) => i.reactionTime && i.reactionTime > 0)
                 .map((i: any) => i.reactionTime);
@@ -399,7 +399,7 @@ export class AnomalyDetector {
             dailySessions.set(date, (dailySessions.get(date) || 0) + 1);
         });
 
-        const sessionCounts = Array.from(dailySessions.values());
+        const sessionCounts = Array.from(dailySessions.values()) as number[];
         const mean = sessionCounts.reduce((a: any, b: any) => a + b, 0) / sessionCounts.length;
         const stdDev = Math.sqrt(
             sessionCounts.reduce((sum: any, count: any) => sum + Math.pow(count - mean, 2), 0) / sessionCounts.length
@@ -407,8 +407,8 @@ export class AnomalyDetector {
 
         if (stdDev === 0) return [];
 
-        const anomalies = [];
-        dailySessions.forEach((count, date) => {
+        const anomalies: any[] = [];
+        dailySessions.forEach((count: number, date: string) => {
             const zScore = Math.abs((count - mean) / stdDev);
             if (zScore > this.thresholds.statistical) {
                 anomalies.push({
@@ -520,7 +520,7 @@ export class AnomalyDetector {
         });
 
         const mostCommonType = Array.from(typeCount.entries())
-            .sort((a: any, b: any) => b[1] - a[1])[0];
+            .sort((a, b) => (b[1] as number) - (a[1] as number))[0];
 
         if (mostCommonType) {
             summary += ` 最も多い問題は「${this.getTypeDisplayName(mostCommonType[0])}」です。`;
@@ -533,7 +533,7 @@ export class AnomalyDetector {
      * 推奨事項を生成
      */
     generateRecommendations(results: any) {
-        const recommendations = [];
+        const recommendations: any[] = [];
         const typeCount = new Map();
         
         results.forEach((result: any) => {
@@ -541,8 +541,8 @@ export class AnomalyDetector {
         });
 
         // タイプ別の推奨事項
-        typeCount.forEach((count, type) => {
-            const recommendation = this.getRecommendationForType(type, count);
+        typeCount.forEach((count: number, type: string) => {
+            const recommendation = this.getRecommendationForType(type as string, count as number);
             if (recommendation) {
                 recommendations.push(recommendation);
             }
@@ -554,7 +554,7 @@ export class AnomalyDetector {
     /**
      * タイプ別の推奨事項を取得
      */
-    getRecommendationForType(type, count) {
+    getRecommendationForType(type: string, _count: number) {
         const recommendations = {
             [this.anomalyTypes.SCORE_OUTLIER]: 'スコアの変動が大きいです。ゲームバランスの調整を検討してください。',
             [this.anomalyTypes.ACCURACY_DROP]: '精度が低下しています。操作方法の確認や練習をお勧めします。',
@@ -566,13 +566,13 @@ export class AnomalyDetector {
             [this.anomalyTypes.UNUSUAL_QUIT_PATTERN]: '途中終了が多くなっています。ゲーム体験の改善を検討してください。'
         };
 
-        return recommendations[type] || null;
+        return (recommendations as any)[type] || null;
     }
 
     /**
      * タイプの表示名を取得
      */
-    getTypeDisplayName(type) {
+    getTypeDisplayName(type: string) {
         const displayNames = {
             [this.anomalyTypes.SCORE_OUTLIER]: 'スコア異常',
             [this.anomalyTypes.ACCURACY_DROP]: '精度低下',
@@ -584,15 +584,15 @@ export class AnomalyDetector {
             [this.anomalyTypes.UNUSUAL_QUIT_PATTERN]: '異常終了'
         };
 
-        return displayNames[type] || type;
+        return (displayNames as any)[type] || type;
     }
 
     /**
      * アラート履歴に保存
      */
-    saveToAlertHistory(results) {
+    saveToAlertHistory(results: any) {
         const timestamp = Date.now();
-        results.forEach(result => {
+        results.forEach((result: any) => {
             this.alertHistory.push({
                 ...result,
                 id: `alert_${timestamp}_${Math.random().toString(36).substr(2, 9)}`,
@@ -609,16 +609,16 @@ export class AnomalyDetector {
     /**
      * アラート履歴を取得
      */
-    getAlertHistory(limit = 50) {
+    getAlertHistory(limit = 50): any[] {
         return this.alertHistory
             .slice(-limit)
-            .sort((a, b) => b.timestamp - a.timestamp);
+            .sort((a: any, b: any) => b.timestamp - a.timestamp);
     }
 
     /**
      * 閾値を更新
      */
-    updateThresholds(newThresholds) {
+    updateThresholds(newThresholds: any) {
         this.thresholds = { ...this.thresholds, ...newThresholds };
     }
 

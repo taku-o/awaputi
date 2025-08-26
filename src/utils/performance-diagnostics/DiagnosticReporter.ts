@@ -501,7 +501,7 @@ class RecommendationEngine {
         }];
     }
 
-    async generateGeneralRecommendations(analysisResults: DiagnosticResults): Promise<Recommendation[]> {
+    async generateGeneralRecommendations(_analysisResults: DiagnosticResults): Promise<Recommendation[]> {
         return [{
             type: 'monitoring',
             priority: 'low',
@@ -533,7 +533,7 @@ class RecommendationEngine {
         );
     }
 
-    configure(config: Record<string, any>): void {
+    configure(_config: Record<string, any>): void {
         // Configure recommendation engine settings
         console.log('[RecommendationEngine] Configuration updated');
     }
@@ -590,7 +590,7 @@ class PerformanceKnowledgeBase {
 }
 
 class ComprehensiveReportTemplate implements ReportTemplate {
-    async generate(session: DiagnosticSession): Promise<Report> {
+    async generate(_session: DiagnosticSession): Promise<Report> {
         return {
             type: 'comprehensive',
             title: 'Comprehensive Performance Diagnostic Report',
@@ -600,7 +600,7 @@ class ComprehensiveReportTemplate implements ReportTemplate {
 }
 
 class SummaryReportTemplate implements ReportTemplate {
-    async generate(session: DiagnosticSession): Promise<Report> {
+    async generate(_session: DiagnosticSession): Promise<Report> {
         return {
             type: 'summary',
             title: 'Performance Diagnostic Summary',
@@ -610,7 +610,7 @@ class SummaryReportTemplate implements ReportTemplate {
 }
 
 class TechnicalReportTemplate implements ReportTemplate {
-    async generate(session: DiagnosticSession): Promise<Report> {
+    async generate(_session: DiagnosticSession): Promise<Report> {
         return {
             type: 'technical',
             title: 'Technical Performance Analysis Report',

@@ -316,7 +316,7 @@ export class ImportValidator {
     /**
      * グローバルなインポート構造を検証
      */
-    validateGlobalImportStructure(content: string, filePath: string | null): GlobalValidationResult {
+    validateGlobalImportStructure(content: string, _filePath: string | null): GlobalValidationResult {
         const result: GlobalValidationResult = {
             errors: [],
             warnings: [],
@@ -410,7 +410,7 @@ export class ImportValidator {
 
         const singleQuotes = (line.match(/'/g) || []).length;
         const doubleQuotes = (line.match(/"/g) || []).length;
-        const backticks = (line.match(/`/g) || []).length;
+        const ___backticks = (line.match(/`/g) || []).length;
 
         if (singleQuotes > 0 && doubleQuotes > 0) {
             issues.push({

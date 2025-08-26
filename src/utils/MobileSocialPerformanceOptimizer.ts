@@ -362,9 +362,9 @@ export class MobileSocialPerformanceOptimizer {
 
         return {
             effectiveType: connection.effectiveType || 'unknown',
-            downlink: connection.downlink || 0,
-            rtt: connection.rtt || 0,
-            saveData: connection.saveData || false
+            downlink: (connection as any).downlink || 0,
+            rtt: (connection as any).rtt || 0,
+            saveData: (connection as any).saveData || false
         };
     }
 

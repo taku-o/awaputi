@@ -451,7 +451,7 @@ export class ParticleCullingSystem {
      * @param camera - Camera information
      * @returns True if occluded
      */
-    private checkParticleOcclusion(particle: CullableParticle, camera: CameraInfo): boolean {
+    private checkParticleOcclusion(particle: CullableParticle, _camera: CameraInfo): boolean {
         // Simplified occlusion check
         for (const occluder of this.occlusionSystem.occluders) {
             if (this.isPointInBounds(particle.x, particle.y, occluder)) {

@@ -158,7 +158,7 @@ export class DuplicationAnalyzer {
         }
 
         this.duplicateFiles = Array.from(fileNames.entries())
-            .filter(([name, paths]) => paths.length > 1)
+            .filter(([_name, paths]) => paths.length > 1)
             .map(([name, paths]) => ({
                 fileName: name,
                 count: paths.length,
@@ -182,7 +182,7 @@ export class DuplicationAnalyzer {
         }
 
         this.duplicateClasses = Array.from(classNames.entries())
-            .filter(([name, classes]) => classes.length > 1)
+            .filter(([_name, classes]) => classes.length > 1)
             .map(([name, classes]) => ({
                 className: name,
                 count: classes.length,

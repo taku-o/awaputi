@@ -125,7 +125,7 @@ export class ReferenceAnalyzer {
     async searchImportReferences(filePath: string): Promise<ImportSearchResult> {
         const fileName = path.basename(filePath);
         const fileNameWithoutExt = path.basename(filePath, path.extname(filePath));
-        const relativePath = filePath.replace(/^\.\//, '');
+        const ___relativePath = filePath.replace(/^\.\//, '');
         const importReferences: ImportReference[] = [];
         
         // プロジェクト内の全JSファイルを検索

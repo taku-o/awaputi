@@ -510,7 +510,7 @@ export class MobileResourceManager {
     /**
      * Simulate asset loading (replace with actual implementation)
      */
-    async simulateAssetLoad(loadItem: LoadItem): Promise<void> {
+    async simulateAssetLoad(_loadItem: LoadItem): Promise<void> {
         return new Promise((resolve) => {
             setTimeout(resolve, Math.random() * 100 + 50); // 50-150ms
         });

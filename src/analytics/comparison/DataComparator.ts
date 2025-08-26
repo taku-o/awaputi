@@ -5,12 +5,12 @@
  */
 
 export class DataComparator {
-    private comparisonPeriods: any;
+    private _comparisonPeriods: any;
     private metrics: any;
 
     constructor() {
         // 比較期間設定
-        this.comparisonPeriods = {
+        this._comparisonPeriods = {
             week: 7 * 24 * 60 * 60 * 1000,      // 1週間
             month: 30 * 24 * 60 * 60 * 1000,    // 1ヶ月
             quarter: 90 * 24 * 60 * 60 * 1000   // 3ヶ月

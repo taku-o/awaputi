@@ -4,8 +4,8 @@
  */
 
 export class DeveloperAlertSystem {
-    private dataCollector: any;
-    private trendAnalyzer: any;
+    private _dataCollector: any;
+    private _trendAnalyzer: any;
     private options: any;
     private alertHistory: any[];
     private alertCategories: Map<string, any>;
@@ -15,8 +15,8 @@ export class DeveloperAlertSystem {
     private rateLimitCounter: Map<string, any>;
 
     constructor(dataCollector: any, trendAnalyzer: any, options: any = {}) {
-        this.dataCollector = dataCollector;
-        this.trendAnalyzer = trendAnalyzer;
+        this._dataCollector = dataCollector;
+        this._trendAnalyzer = trendAnalyzer;
         this.options = {
             enableDeveloperAlerts: true,
             enableConsoleLogging: true,
@@ -165,17 +165,17 @@ export class DeveloperAlertSystem {
      * イベントリスナーの設定
      */
     setupEventListeners() {
-        window.addEventListener('analytics-data-updated', (event) => {
+        (window as any).addEventListener('analytics-data-updated', (event: CustomEvent) => {
             this.analyzeData(event.detail);
         });
 
         // パフォーマンス警告イベント
-        window.addEventListener('performance-warning', (event) => {
+        (window as any).addEventListener('performance-warning', (event: CustomEvent) => {
             this.handlePerformanceWarning(event.detail);
         });
 
         // エラーイベント
-        window.addEventListener('error-notification-displayed', (event) => {
+        (window as any).addEventListener('error-notification-displayed', (event: CustomEvent) => {
             this.handleErrorEvent(event.detail);
         });
     }
@@ -186,7 +186,7 @@ export class DeveloperAlertSystem {
     analyzeData(data: any) {
         if (!this.options.enableDeveloperAlerts) return;
 
-        for (const [categoryName, category] of this.alertCategories.entries()) {
+        for (const [categoryName, category] of Array.from(this.alertCategories.entries())) {
             for (const checkType of category.checks) {
                 const result = this.runCheck(categoryName, checkType, data);
                 if (result.shouldAlert) {
@@ -685,7 +685,7 @@ export class DeveloperAlertSystem {
      * フィルターチェック
      */
     passesFilters(alert: any) {
-        for (const [name, filter] of this.alertFilters.entries()) {
+        for (const [_name, filter] of Array.from(this.alertFilters.entries())) {
             if (!filter(alert)) {
                 return false;
             }
@@ -811,7 +811,7 @@ export class DeveloperAlertSystem {
      * コールバック実行
      */
     executeCallbacks(alert: any) {
-        for (const [name, callback] of this.alertCallbacks.entries()) {
+        for (const [name, callback] of Array.from(this.alertCallbacks.entries())) {
             try {
                 callback(alert);
             } catch (error) {
@@ -891,7 +891,7 @@ export class DeveloperAlertSystem {
             error: '#f44336',
             critical: '#d32f2f'
         };
-        return colors[severity] || '#666';
+        return (colors as any)[severity] || '#666';
     }
 
     /**
@@ -938,21 +938,21 @@ export class DeveloperAlertSystem {
     /**
      * アラートコールバックの削除
      */
-    unregisterCallback(name) {
+    unregisterCallback(name: string) {
         this.alertCallbacks.delete(name);
     }
 
     /**
      * カスタムフィルターの追加
      */
-    addFilter(name, filterFunction) {
+    addFilter(name: string, filterFunction: (alert: any) => boolean) {
         this.alertFilters.set(name, filterFunction);
     }
 
     /**
      * カスタムフィルターの削除
      */
-    removeFilter(name) {
+    removeFilter(name: string) {
         this.alertFilters.delete(name);
     }
 
@@ -989,8 +989,8 @@ export class DeveloperAlertSystem {
         const now = Date.now();
         const currentHour = Math.floor(now / (60 * 60 * 1000)) * (60 * 60 * 1000);
         
-        for (const [key] of this.rateLimitCounter.entries()) {
-            const keyHour = parseInt(key.split('_').pop());
+        for (const [key] of Array.from(this.rateLimitCounter.entries())) {
+            const keyHour = parseInt(key.split('_').pop() || '0');
             if (keyHour < currentHour - (60 * 60 * 1000)) { // 1時間以上古い
                 this.rateLimitCounter.delete(key);
             }
@@ -1028,7 +1028,7 @@ export class DeveloperAlertSystem {
     /**
      * 配列のグループ化
      */
-    groupBy(array, key) {
+    groupBy(array: any[], key: string) {
         return array.reduce((groups, item) => {
             const group = item[key];
             groups[group] = (groups[group] || 0) + 1;
@@ -1039,7 +1039,7 @@ export class DeveloperAlertSystem {
     /**
      * 設定の更新
      */
-    updateOptions(newOptions) {
+    updateOptions(newOptions: any) {
         this.options = { ...this.options, ...newOptions };
     }
 
@@ -1047,9 +1047,9 @@ export class DeveloperAlertSystem {
      * リソースの解放
      */
     destroy() {
-        window.removeEventListener('analytics-data-updated', this.analyzeData);
-        window.removeEventListener('performance-warning', this.handlePerformanceWarning);
-        window.removeEventListener('error-notification-displayed', this.handleErrorEvent);
+        window.removeEventListener('analytics-data-updated', this.analyzeData as any);
+        window.removeEventListener('performance-warning', this.handlePerformanceWarning as any);
+        window.removeEventListener('error-notification-displayed', this.handleErrorEvent as any);
         
         // データクリア
         this.alertHistory = [];

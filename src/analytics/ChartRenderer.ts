@@ -543,7 +543,7 @@ export class AnalyticsChartRenderer {
     /**
      * Canvas APIを使用した簡単な線グラフの描画（フォールバック）
      */
-    drawSimpleLineChart(canvasId: string, data: ChartDataUpdate, config: ChartConfig = {}): boolean {
+    drawSimpleLineChart(canvasId: string, data: ChartDataUpdate, _config: ChartConfig = {}): boolean {
         if (!this.useCanvasFallback) return false;
 
         const canvas = this.getCanvas(canvasId);
@@ -610,7 +610,7 @@ export class AnalyticsChartRenderer {
      * 全チャートの更新
      */
     updateAllCharts(): void {
-        for (const [canvasId, callback] of this.dataSourceCallbacks) {
+        for (const [canvasId, callback] of Array.from(this.dataSourceCallbacks.entries())) {
             try {
                 const newData = callback();
                 if (newData) {
@@ -629,7 +629,7 @@ export class AnalyticsChartRenderer {
         return {
             totalCharts: this.charts.size,
             activeRealtimeCharts: this.updateTimers.size,
-            chartTypes: [...this.chartConfigs.values()].reduce((acc: Record<string, number>, config) => {
+            chartTypes: Array.from(this.chartConfigs.values()).reduce((acc: Record<string, number>, config) => {
                 acc[config.type] = (acc[config.type] || 0) + 1;
                 return acc;
             }, {}),
@@ -662,12 +662,12 @@ export class AnalyticsChartRenderer {
      */
     destroy(): void {
         // 全てのリアルタイム更新を停止
-        for (const canvasId of this.updateTimers.keys()) {
+        for (const canvasId of Array.from(this.updateTimers.keys())) {
             this.stopRealtimeUpdate(canvasId);
         }
 
         // 全てのチャートを削除
-        for (const canvasId of this.charts.keys()) {
+        for (const canvasId of Array.from(this.charts.keys())) {
             this.destroyChart(canvasId);
         }
 
@@ -679,3 +679,6 @@ export class AnalyticsChartRenderer {
         console.log('ChartRenderer destroyed');
     }
 }
+
+// Export alias for backward compatibility
+export { AnalyticsChartRenderer as ChartRenderer };

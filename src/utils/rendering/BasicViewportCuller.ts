@@ -229,8 +229,8 @@ export class BasicViewportCuller {
         
         // Account for rotation and scaling
         if (obj.rotation || obj.scale !== 1) {
-            const centerX = bounds.x + bounds.width / 2;
-            const centerY = bounds.y + bounds.height / 2;
+            const ___centerX = bounds.x + bounds.width / 2;
+            const ___centerY = bounds.y + bounds.height / 2;
             const scale = obj.scale || 1;
             
             // Simple bounding box expansion for rotation/scale

@@ -20,10 +20,10 @@ export interface AnalysisResult {
 
 export class GameBalanceAnalyzer {
     private balanceMetrics: any;
-    private storageManager: any;
+    private _storageManager: any;
 
     constructor(storageManager?: any) {
-        this.storageManager = storageManager;
+        this._storageManager = storageManager;
         this.balanceMetrics = {
             scoreDistribution: {},
             bubbleFrequency: {},
@@ -43,14 +43,14 @@ export class GameBalanceAnalyzer {
     /**
      * イベント分析
      */
-    analyzeEvent(eventType: string, eventData: any): void {
+    analyzeEvent(_eventType: string, _eventData: any): void {
         // イベント分析の実装
     }
 
     /**
      * レポート生成
      */
-    async generateReport(timeRange?: { start: Date; end: Date }): Promise<any> {
+    async generateReport(_timeRange?: { start: Date; end: Date }): Promise<any> {
         return {
             issues: [],
             recommendations: []

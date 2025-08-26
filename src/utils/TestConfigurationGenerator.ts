@@ -131,7 +131,7 @@ export class TestConfigurationGenerator {
         
         // 軽量ConfigurationManager（Node.js環境用）
         this.configurationManager = {
-            get: (namespace: string, path: string) => {
+            get: (_namespace: string, _path: string) => {
                 // Node.js環境では実際の設定ファイルから直接読み取る
                 console.warn('[TestConfigurationGenerator] ConfigurationManager.get() is not available in Node.js environment');
                 return undefined;
@@ -188,7 +188,7 @@ export class TestConfigurationGenerator {
     /**
      * フォールバック用のコンポーネントを作成
      */
-    createFallbackComponent(name: string): Component {
+    createFallbackComponent(_name: string): Component {
         return {
             initialized: false,
             // 基本的なフォールバック実装
