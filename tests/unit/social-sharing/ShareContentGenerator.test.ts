@@ -337,7 +337,7 @@ describe('ShareContentGenerator', () => {
         });
 
         it('メモリリークを防ぐ', () => {
-            const initialMemory = ((generator as any).getMemoryUsage ? (generator as any).getMemoryUsage() : 0);
+            // const initialMemory = ((generator as any).getMemoryUsage ? (generator as any).getMemoryUsage() : 0);
             
             // 大量のメッセージ生成
             for (let i = 0; i < 1000; i++) {

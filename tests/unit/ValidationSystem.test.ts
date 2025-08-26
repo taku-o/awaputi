@@ -1,7 +1,7 @@
 /**
  * ValidationSystem 単体テスト
  */
-import { jest, describe, test, expect, beforeEach } from '@jest/globals';
+import { describe, test, expect, beforeEach } from '@jest/globals';
 import { ValidationSystem, getValidationSystem } from '../../src/core/ValidationSystem.js';
 
 // 型定義

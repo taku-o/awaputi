@@ -44,7 +44,7 @@ describe('HelpScene Contextual Help Integration', () => {
             },
             localizationManager: {
                 getCurrentLanguage: jest.fn().mockReturnValue('ja'),
-                t: jest.fn().mockImplementation((key, defaultValue) => defaultValue)
+                t: jest.fn().mockImplementation((_key, defaultValue) => defaultValue)
             },
             accessibilityManager: {
                 announceToScreenReader: jest.fn()

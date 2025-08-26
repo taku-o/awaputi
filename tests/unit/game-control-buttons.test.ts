@@ -282,7 +282,8 @@ describe('GameControlButtons', () => {
             );
             
             const event = { offsetX: 1400, offsetY: 1000 };
-            const clicked = gameControlButtons.handleClick(event);
+            // const clicked = gameControlButtons.handleClick(event);
+            gameControlButtons.handleClick(event);
             
             expect(mockResponsiveCanvasManager.getScaledCoordinates).toHaveBeenCalled();
         });

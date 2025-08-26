@@ -89,7 +89,7 @@ class MockUsernameInputManager {
         return x >= 0 && x <= actualWidth && y >= 0 && y <= actualHeight;
     }
     
-    logCoordinateDebug(context: any, canvasInfo: CanvasInfo | null, transformedCoords: Coordinates): void {
+    logCoordinateDebug(_context: any, canvasInfo: CanvasInfo | null, transformedCoords: Coordinates): void {
         if (this.gameEngine.debug) {
             console.log('Username input coordinate debug:', {
                 canvasInfo: {

@@ -121,7 +121,7 @@ export class MockErrorHandler {
             
             // Image methods
             drawImage: jest.fn(),
-            getImageData: jest.fn((x, y, w, h) => ({
+            getImageData: jest.fn((_x, _y, w, h) => ({
               data: new Uint8ClampedArray(w * h * 4),
               width: w,
               height: h
@@ -533,7 +533,7 @@ export class MockErrorHandler {
    * @param {Object} options - Recovery options
    * @returns {Object} Recovery result
    */
-  handleJestFunctionError(options = {}) {
+  handleJestFunctionError(_options = {}) {
     console.log('MockErrorHandler: Handling Jest function mock error...');
     
     try {

@@ -1,7 +1,7 @@
 /**
  * CacheSystem 単体テスト
  */
-import { describe, test, beforeEach, afterEach, expect, jest } from '@jest/globals';
+import { describe, test, beforeEach, afterEach, expect } from '@jest/globals';
 import { CacheSystem, getCacheSystem } from '../../src/core/CacheSystem.js';
 
 // Type definitions for test objects

@@ -92,10 +92,10 @@ const mockGameEngine: MockGameEngine = {
     }
 };
 
-const mockContentLoader: MockContentLoader = {
-    loadTutorialData: jest.fn(),
-    getCachedContent: jest.fn()
-};
+// const mockContentLoader: MockContentLoader = {
+//     loadTutorialData: jest.fn(),
+//     getCachedContent: jest.fn()
+// };
 
 // Mock existing class
 jest.mock('../../../src/core/LocalizationManager', () => ({

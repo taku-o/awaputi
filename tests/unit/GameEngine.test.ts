@@ -2,7 +2,7 @@
  * Unit tests for GameEngine class
  */
 import { jest } from '@jest/globals';
-import { MockFactory } from '../mocks/MockFactory.js';
+// import { MockFactory } from '../mocks/MockFactory.js';
 import { GameEngine } from '../../src/core/GameEngine.js';
 
 // Types

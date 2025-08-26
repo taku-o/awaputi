@@ -1,10 +1,10 @@
 /**
  * PerformanceConfig クラスのユニットテスト
  */
-import { jest, describe, test, expect, beforeEach } from '@jest/globals';
+import { describe, test, expect, beforeEach } from '@jest/globals';
 import { PerformanceConfig, getPerformanceConfig } from '../../src/config/PerformanceConfig.js';
-import { ConfigurationManager, getConfigurationManager } from '../../src/core/ConfigurationManager.js';
-import { getErrorHandler } from '../../src/utils/ErrorHandler.js';
+// import { ConfigurationManager, getConfigurationManager } from '../../src/core/ConfigurationManager.js';
+// import { getErrorHandler } from '../../src/utils/ErrorHandler.js';
 
 // モックの型定義
 interface MockCall {
@@ -66,7 +66,7 @@ const mockGet = jest.fn<(category: string, key: string, defaultValue?: any) => a
     return defaultValue;
 });
 
-const mockSet = jest.fn<(category: string, key: string, value: any) => boolean>((category: string, key: string, value: any) => {
+const mockSet = jest.fn<(category: string, key: string, value: any) => boolean>((_category: string, _key: string, _value: any) => {
     return true;
 });
 

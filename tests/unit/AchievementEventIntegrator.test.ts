@@ -77,7 +77,7 @@ class MockBubbleManager {
         this.popBubbleOriginal = this.popBubble.bind(this);
     }
     
-    popBubble(bubble: BubbleObject): PopResult {
+    popBubble(_bubble: BubbleObject): PopResult {
         return { score: 10, combo: 1 };
     }
 }

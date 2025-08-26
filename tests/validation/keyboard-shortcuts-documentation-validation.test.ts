@@ -112,7 +112,7 @@ describe('Keyboard Shortcuts Documentation Validation (Issue #169)', () => {
 
             // Cross-reference with actual implementation
             const implementedKeys: any[] = [];
-            for (const [name, shortcut] of Object.entries(shortcuts)) {
+            for (const [, shortcut] of Object.entries(shortcuts)) {
                 if ((shortcut as any).keys) {
                     (shortcut as any).keys.forEach((key: string) => {
                         // Convert KeyboardEvent codes to documentation format
@@ -191,7 +191,7 @@ describe('Keyboard Shortcuts Documentation Validation (Issue #169)', () => {
 
             // Cross-reference with actual implementation
             const implementedKeys: any[] = [];
-            for (const [name, shortcut] of Object.entries(shortcuts)) {
+            for (const [, shortcut] of Object.entries(shortcuts)) {
                 if ((shortcut as any).keys) {
                     (shortcut as any).keys.forEach((key: string) => {
                         const docKey = convertKeyCodeToDocFormat(key);
@@ -300,7 +300,7 @@ describe('Keyboard Shortcuts Documentation Validation (Issue #169)', () => {
             expect(helpText['その他']).toBeDefined();
 
             // Each section should be an array with valid entries
-            Object.entries(helpText).forEach(([section, entries]) => {
+            Object.entries(helpText).forEach(([, entries]) => {
                 expect(Array.isArray(entries)).toBe(true);
                 (entries as any[]).forEach(entry => {
                     expect(typeof entry).toBe('string');

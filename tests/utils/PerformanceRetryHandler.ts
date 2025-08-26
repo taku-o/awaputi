@@ -3,7 +3,7 @@
  * Implements statistical validation, trend monitoring, and detailed error reporting
  */
 
-import { jest } from '@jest/globals';
+// import { jest } from '@jest/globals';
 import { getPerformanceThresholds, validatePerformanceResult } from '../config/performance-thresholds';
 
 export class PerformanceRetryHandler {
@@ -228,7 +228,7 @@ export class PerformanceRetryHandler {
   extractMetricsFromResults(results: any[]) {
     const metrics: Record<string, number[]> = {};
     
-    results.forEach((result, index) => {
+    results.forEach((result, _index) => {
       // Extract common performance metrics
       const extractableMetrics = {
         fps: result.fps,

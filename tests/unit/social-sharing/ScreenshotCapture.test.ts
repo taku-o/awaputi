@@ -257,7 +257,7 @@ describe('ScreenshotCapture', () => {
         (global.URL.createObjectURL as jest.Mock).mockClear();
         (global.URL.revokeObjectURL as jest.Mock).mockClear();
         // toBlobのデフォルトモック実装
-        mockCanvas.toBlob.mockImplementation((callback: (blob: Blob | null) => void, format?: string, quality?: number) => {
+        mockCanvas.toBlob.mockImplementation((callback: (blob: Blob | null) => void, format?: string, _quality?: number) => {
             const mockBlob = new Blob(['mock-image-data'], { type: format || 'image/png' });
             setTimeout(() => callback(mockBlob), 0);
         });
@@ -445,7 +445,8 @@ describe('ScreenshotCapture', () => {
                 url: 'blob:test-url',
                 size: 600 * 1024
             });
-            const result = await (screenshotCapture as any).optimizeImage({
+            // const result = await (screenshotCapture as any).optimizeImage({
+            await (screenshotCapture as any).optimizeImage({
                 data: new ArrayBuffer(600 * 1024),
                 blob: largeBlobMock,
                 url: 'blob:original-url',
@@ -465,7 +466,7 @@ describe('ScreenshotCapture', () => {
 
         it('Web Workerを使用した処理', async () => {
             const spy = jest.spyOn(screenshotCapture, 'captureWithWorker');
-            spy.mockImplementation((options: CaptureOptions, resolve: (value: CaptureResult) => void, reject: (reason: Error) => void) => {
+            spy.mockImplementation((_options: CaptureOptions, resolve: (value: CaptureResult) => void, _reject: (reason: Error) => void) => {
                 resolve({ blob: new Blob(['worker-result']), url: 'blob:worker-url', format: 'png', filename: 'test.png' });
             });
             const result = await (screenshotCapture as any).captureInBackground();
@@ -733,20 +734,20 @@ describe('ScreenshotCapture', () => {
 });
 
 // テストユーティリティ関数
-function createMockCanvas(width: number = 800, height: number = 600): MockCanvas {
-    return {
-        width,
-        height,
-        getContext: jest.fn(() => ({
-            drawImage: jest.fn(),
-            imageSmoothingEnabled: true,
-            imageSmoothingQuality: 'high'
-        })) as jest.Mock<MockCanvasContext | null>,
-        toBlob: jest.fn() as jest.Mock<void>,
-        remove: jest.fn() as jest.Mock<void>
-    };
-}
+// function createMockCanvas(width: number = 800, height: number = 600): MockCanvas {
+//     return {
+//         width,
+//         height,
+//         getContext: jest.fn(() => ({
+//             drawImage: jest.fn(),
+//             imageSmoothingEnabled: true,
+//             imageSmoothingQuality: 'high'
+//         })) as jest.Mock<MockCanvasContext | null>,
+//         toBlob: jest.fn() as jest.Mock<void>,
+//         remove: jest.fn() as jest.Mock<void>
+//     };
+// }
 
-function createMockBlob(size: number = 1024, type: string = 'image/png'): Blob {
-    return new Blob(['x'.repeat(size)], { type });
-}
+// function createMockBlob(size: number = 1024, type: string = 'image/png'): Blob {
+//     return new Blob(['x'.repeat(size)], { type });
+// }

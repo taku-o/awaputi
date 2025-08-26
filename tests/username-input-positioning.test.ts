@@ -389,7 +389,7 @@ describe('Username Input Positioning Visual Regression Tests', () => {
                 const screenshotPath = `/tmp/username-input-${config.name.toLowerCase().replace(/\s+/g, '-')}.png`;
                 page.screenshot.mockResolvedValue(screenshotPath);
                 
-                const _result = await page.screenshot({
+                await page.screenshot({
                     path: screenshotPath,
                     fullPage: false
                 });

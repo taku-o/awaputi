@@ -5,7 +5,7 @@
  * - UI表示品質テスト
  * - ユーザビリティテスト
  */
-import { jest } from '@jest/globals';
+// import { jest } from '@jest/globals';
 import fs from 'fs/promises';
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -138,7 +138,7 @@ describe('翻訳品質テスト', () => {
       let totalCount = 0;
       
       const checkPolite = (obj: any) => {
-        for (const [key, value] of Object.entries(obj)) {
+        for (const [, value] of Object.entries(obj)) {
           if (typeof value === 'string') {
             totalCount++;
             if(politePatterns.some(pattern => pattern.test(value))) {
@@ -190,7 +190,7 @@ describe('翻訳品質テスト', () => {
       const zhTWTranslations = translations['zh-TW'];
       
       // 簡体字・繁体字の基本的な違いをチェック
-      const traditionalChars = ['國', '華', '學', '時', '過', '來'];
+      // const traditionalChars = ['國', '華', '學', '時', '過', '來'];
       const simplifiedChars = ['国', '华', '学', '时', '过', '来'];
       
       for (const category of TRANSLATION_CATEGORIES) {
@@ -206,7 +206,7 @@ describe('翻訳品質テスト', () => {
           if (typeof cnValue === 'string' && typeof twValue === 'string') {
             // 簡体字に簡体字文字が含まれていることを確認
             const hasSimplified = simplifiedChars.some(char => cnValue.includes(char));
-            const hasTraditional = traditionalChars.some(char => twValue.includes(char));
+            // const hasTraditional = traditionalChars.some(char => twValue.includes(char));
             if (cnValue === twValue && hasSimplified) {
               console.warn(`${category}.${key}: 簡体字と繁体字が同じです - "${cnValue}"`);
             }

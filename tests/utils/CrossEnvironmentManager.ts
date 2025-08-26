@@ -219,7 +219,7 @@ export class CrossEnvironmentManager {
             
             // Image methods
             drawImage: jest.fn(),
-            getImageData: jest.fn((x: number, y: number, w: number, h: number) => ({
+            getImageData: jest.fn((_x: number, _y: number, w: number, h: number) => ({
               data: new Uint8ClampedArray(w * h * 4),
               width: w,
               height: h
@@ -369,7 +369,7 @@ export class CrossEnvironmentManager {
           };
         }
 
-        decodeAudioData(audioData: ArrayBuffer): Promise<any> {
+        decodeAudioData(_audioData: ArrayBuffer): Promise<any> {
           return Promise.resolve(this.createBuffer(2, 44100, 44100));
         }
 
@@ -651,11 +651,11 @@ export class CrossEnvironmentManager {
           this.onreadystatechange = null;
         }
 
-        open(method: string, url: string): void {
+        open(_method: string, _url: string): void {
           this.readyState = 1;
         }
 
-        send(data?: any): void {
+        send(_data?: any): void {
           this.readyState = 4;
           this.status = 200;
           if (this.onreadystatechange) {

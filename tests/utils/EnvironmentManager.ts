@@ -208,7 +208,7 @@ export class EnvironmentManager {
         // unhandled promise rejectionのハンドリング
         if (typeof process !== 'undefined') {
             const originalHandler = process.listeners('unhandledRejection');
-            process.on('unhandledRejection', (reason, promise) => {
+            process.on('unhandledRejection', (reason, _promise) => {
                 console.warn('[EnvironmentManager] Unhandled promise rejection:', reason);
                 // テスト環境では警告のみ、本番環境ではより厳密に処理
             });

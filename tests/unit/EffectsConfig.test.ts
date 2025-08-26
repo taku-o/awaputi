@@ -327,7 +327,7 @@ describe('EffectsConfig', () => {
         };
 
         // デフォルト値を返すようにmockを設定
-        mockConfigManager.get.mockImplementation((category: string, key: string, defaultValue: any) => defaultValue);
+        mockConfigManager.get.mockImplementation((_category: string, _key: string, defaultValue: any) => defaultValue);
 
         effectsConfig = new MockEffectsConfig(mockConfigManager);
     });

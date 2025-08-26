@@ -298,26 +298,26 @@ describe('LeaderboardManager', () => {
 });
 
 // テストユーティリティ関数
-function createMockScoreData(overrides: Partial<ScoreData> = {}): ScoreData {
-    return {
-        playerId: 'testPlayer',
-        playerName: 'Test Player',
-        score: 10000,
-        stage: 'normal',
-        timestamp: Date.now(),
-        ...overrides
-    };
-}
+// function createMockScoreData(overrides: Partial<ScoreData> = {}): ScoreData {
+//     return {
+//         playerId: 'testPlayer',
+//         playerName: 'Test Player',
+//         score: 10000,
+//         stage: 'normal',
+//         timestamp: Date.now(),
+//         ...overrides
+//     };
+// }
 
-function createMockLeaderboardData(count: number = 5): LeaderboardEntry[] {
-    const data: LeaderboardEntry[] = [];
-    for (let i = 0; i < count; i++) {
-        data.push({
-            playerId: `player${i}`,
-            playerName: `Player ${i}`,
-            score: 10000 - i * 1000,
-            timestamp: Date.now() + i
-        });
-    }
-    return data;
-}
+// function createMockLeaderboardData(count: number = 5): LeaderboardEntry[] {
+//     const data: LeaderboardEntry[] = [];
+//     for (let i = 0; i < count; i++) {
+//         data.push({
+//             playerId: `player${i}`,
+//             playerName: `Player ${i}`,
+//             score: 10000 - i * 1000,
+//             timestamp: Date.now() + i
+//         });
+//     }
+//     return data;
+// }

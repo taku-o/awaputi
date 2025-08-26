@@ -125,7 +125,7 @@ test('should have correct poison bubble base score', () => {
         });
 
         test('should have valid value ranges', () => {
-            for (const [bubbleType, config] of Object.entries(GameBalance.bubbles)) {
+            for (const [, config] of Object.entries(GameBalance.bubbles)) {
                 if (config.health !== undefined) {
                     expect(config.health).toBeGreaterThan(0);
                     expect(config.health).toBeLessThanOrEqual(100);

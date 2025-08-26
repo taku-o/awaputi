@@ -438,23 +438,23 @@ it('プロファイル変更イベントを発行する', async () => {
 });
 
 // テストユーティリティ関数
-function createMockProfile(overrides: Partial<AccessibilityProfile> = {}): AccessibilityProfile {
-    return {
-        name: 'test-profile',
-        displayName: 'Test Profile',
-        description: 'Test profile description',
-        ...overrides
-    };
-}
+// function createMockProfile(overrides: Partial<AccessibilityProfile> = {}): AccessibilityProfile {
+//     return {
+//         name: 'test-profile',
+//         displayName: 'Test Profile',
+//         description: 'Test profile description',
+//         ...overrides
+//     };
+// }
 
 
 
-function createMockStats(overrides: Partial<ComponentStats> = {}): ComponentStats {
-    return {
-        isInitialized: true,
-        currentProfile: 'default',
-        availableProfilesCount: 5,
-        profilesUsed: 3,
-        ...overrides
-    };
-}
+// // function createMockStats(overrides: Partial<ComponentStats> = {}): ComponentStats {
+//     return {
+//         isInitialized: true,
+//         currentProfile: 'default',
+//         availableProfilesCount: 5,
+//         profilesUsed: 3,
+//         ...overrides
+//     };
+// }

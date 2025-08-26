@@ -204,7 +204,8 @@ export class PerformanceTestUtils {
     } = options;
 
     const env = environment || this.detectEnvironment();
-    const thresholds = this.getEnvironmentThresholds(env as any);
+    // const thresholds = this.getEnvironmentThresholds(env as any);
+    this.getEnvironmentThresholds(env as any);
 
     return this.createStablePerformanceTest(
       'Frame Rate Measurement',

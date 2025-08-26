@@ -1,7 +1,7 @@
 /**
  * EffectsCalculator のテスト
  */
-import { jest, describe, test, expect, beforeEach } from '@jest/globals';
+import { describe, test, expect, beforeEach } from '@jest/globals';
 
 // Effects configuration interfaces
 interface EffectsConfig {

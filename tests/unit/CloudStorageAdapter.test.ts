@@ -378,7 +378,8 @@ test('ネットワークエラーが適切に処理される', async () => {
     describe('リソース管理', () => {
 
         test('destroy()でリソースが適切に解放される', () => {
-            const removeSpy = jest.spyOn(adapter, 'destroy');
+            // const removeSpy = jest.spyOn(adapter, 'destroy');
+            jest.spyOn(adapter, 'destroy');
             adapter.destroy();
             
             expect((adapter as any).syncQueue).toEqual([]);

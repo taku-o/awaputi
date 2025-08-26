@@ -3,8 +3,8 @@
  * Tests dialog display, interaction handling, keyboard navigation,
  * modal behavior, and callback execution
  */
-import { describe, test, it, expect, beforeEach, jest } from '@jest/globals';
-import { ConfirmationDialog } from '../../src/scenes/game-scene/ConfirmationDialog.js';
+import { describe, test, expect, beforeEach, jest } from '@jest/globals';
+// import { ConfirmationDialog } from '../../src/scenes/game-scene/ConfirmationDialog.js';
 
 // モック用の型定義
 interface MockCanvas { 

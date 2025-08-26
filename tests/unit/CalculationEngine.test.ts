@@ -1,7 +1,7 @@
 /**
  * CalculationEngine のテスト
  */
-import { jest, describe, test, expect, beforeEach, afterEach } from '@jest/globals';
+import { describe, test, expect, beforeEach, afterEach } from '@jest/globals';
 import { CalculationEngine } from '../../src/core/CalculationEngine.js';
 
 // Calculator interface

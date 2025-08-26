@@ -1,7 +1,7 @@
 /**
  * ScoreCalculator のテスト
  */
-import { jest, describe, test, expect, beforeEach } from '@jest/globals';
+import { describe, test, expect, beforeEach } from '@jest/globals';
 import { ScoreCalculator } from '../../src/core/ScoreCalculator.js';
 
 // Type definitions

@@ -246,7 +246,7 @@ export class InterfaceValidator {
    * @param {Array<string>} warnings - Validation warnings
    * @returns {string} Formatted report
    */
-  static generateStructureReport(obj: any, expectedStructure: any, errors: string[], warnings: string[]): string {
+  static generateStructureReport(_obj: any, _expectedStructure: any, errors: string[], warnings: string[]): string {
     let report = '\n=== Structure Validation Report ===\n';
     report += `Status: ${errors.length === 0 ? '✅ VALID' : '❌ INVALID'}\n\n`;
     

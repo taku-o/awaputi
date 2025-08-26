@@ -192,8 +192,8 @@ export class PWAFeatureTests {
             //     preventDefault: () => {},
             //     prompt: async () => ({ outcome: 'dismissed' }),
             //     platforms: ['web'],
-                userChoice: Promise.resolve({ outcome: 'dismissed' })
-            };
+            //     userChoice: Promise.resolve({ outcome: 'dismissed' })
+            // };
             
             // Check installable state from PWAManager
             if ((window as any).pwaManager) {

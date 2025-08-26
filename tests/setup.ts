@@ -11,7 +11,7 @@ import { ModuleLoadingOptimizer } from './utils/ModuleLoadingOptimizer';
 import 'jest-canvas-mock';
 
 // Import standardized MockFactory for consistent mocking
-import { MockFactory } from './mocks/MockFactory';
+// import { MockFactory } from './mocks/MockFactory';
 
 // Initialize environment manager for test stability
 try {
@@ -228,7 +228,7 @@ const mockIDBRequest = {
 };
 
 // Helper function to advance time in tests
-(global as any).advanceTime = (ms: number) => {
+(global as any).advanceTime = (_ms: number) => {
     // Timer advancement will be handled by individual test files
 };
 

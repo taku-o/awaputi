@@ -1,7 +1,7 @@
 /**
  * Unit tests for ConfigurationSynchronizer
  */
-import { jest, describe, test, expect, beforeEach } from '@jest/globals';
+import { describe, test, expect, beforeEach } from '@jest/globals';
 import { ConfigurationSynchronizer, getConfigurationSynchronizer } from '../../src/utils/ConfigurationSynchronizer.js';
 
 // Configuration interfaces
@@ -117,7 +117,7 @@ class MockConfigurationManager {
         return true;
     }
 
-    backup(name?: string): boolean {
+    backup(_name?: string): boolean {
         return true;
     }
 }

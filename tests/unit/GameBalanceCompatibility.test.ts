@@ -212,7 +212,7 @@ describe('GameBalanceCompatibility', () => {
             
             // スパイを設定
             const calculateScore = gameConfig.calculateScore;
-            gameConfig.calculateScore = jest.fn((bubbleType: string, ageRatio: number) => {
+            gameConfig.calculateScore = jest.fn((_bubbleType: string, ageRatio: number) => {
                 if (ageRatio < 0.1) return 30;
                 if (ageRatio > 0.9) return 45;
                 return 15;
@@ -264,7 +264,7 @@ describe('GameBalanceCompatibility', () => {
             
             // スパイを設定
             const calculateItemCost = gameConfig.calculateItemCost;
-            gameConfig.calculateItemCost = jest.fn((itemId: string, currentLevel: number) => {
+            gameConfig.calculateItemCost = jest.fn((_itemId: string, currentLevel: number) => {
                 const baseCost = 75;
                 const multiplier = 1.3;
                 return Math.floor(baseCost * Math.pow(multiplier, currentLevel));

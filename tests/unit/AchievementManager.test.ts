@@ -1,7 +1,7 @@
 /**
  * AchievementManager単体テスト
  */
-import { describe, test, beforeEach, expect, jest } from '@jest/globals';
+import { describe, test, beforeEach, expect } from '@jest/globals';
 import { AchievementManager } from '../../src/core/AchievementManager.js';
 
 // Type definitions for test objects
@@ -299,7 +299,8 @@ describe('AchievementManager', () => {
         });
 
         test('最大値を超える進捗でもターゲット値で制限される', () => {
-            const result = manager.updateProgress('first_bubble', 10);
+            // const result = manager.updateProgress('first_bubble', 10);
+            manager.updateProgress('first_bubble', 10);
             const achievement = manager.getAchievement('first_bubble');
             
             expect(achievement?.progress.current).toBe(1);

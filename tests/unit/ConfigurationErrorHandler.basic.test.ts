@@ -1,7 +1,7 @@
 /**
  * ConfigurationErrorHandler の基本テスト
  */
-import { jest, describe, test, expect, beforeAll } from '@jest/globals';
+import { describe, test, expect, beforeAll } from '@jest/globals';
 
 // Interfaces for Configuration Error Handler
 interface ErrorStats {

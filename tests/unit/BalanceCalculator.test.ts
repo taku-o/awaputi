@@ -273,9 +273,9 @@ class MockBalanceCalculator {
         return optimizedConfig;
     }
 
-    calculateEffectiveness(itemName: string, playerStats: PlayerStats, gameState: GameState): number {
+    calculateEffectiveness(itemName: string, playerStats: PlayerStats, _gameState: GameState): number {
         const itemLevel = playerStats.items[itemName] || 0;
-        const effect = this.config.items.effects[itemName] || 0;
+        // const effect = this.config.items.effects[itemName] || 0;
         const cost = this.calculateItemCost(itemName, itemLevel);
 
         if (cost === 0) return 0;

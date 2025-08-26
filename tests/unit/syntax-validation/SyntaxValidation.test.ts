@@ -2,7 +2,7 @@
  * Syntax Validation Tests
  * 構文検証機能のテストスイート
  */
-import { describe, test, expect, beforeEach, jest } from '@jest/globals';
+import { describe, test, expect, beforeEach } from '@jest/globals';
 import { HTMLJavaScriptChecker } from '../../../src/utils/syntax-validation/HTMLJavaScriptChecker.js';
 import { JavaScriptModuleValidator } from '../../../src/utils/syntax-validation/JavaScriptModuleValidator.js';
 

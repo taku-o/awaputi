@@ -1,7 +1,7 @@
 /**
  * Unit tests for ConfigurationMigrationUtility
  */
-import { jest, describe, test, expect, beforeEach } from '@jest/globals';
+import { describe, test, expect, beforeEach } from '@jest/globals';
 import { ConfigurationMigrationUtility, getConfigurationMigrationUtility } from '../../src/utils/ConfigurationMigrationUtility.js';
 
 // Configuration interfaces

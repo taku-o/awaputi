@@ -434,7 +434,8 @@ it('存在しないチャレンジの完了を試行する', () => {
         });
 
         it('AP報酬を正常に付与する', () => {
-            const result = challengeSystem.claimReward('reward_test');
+            // const result = challengeSystem.claimReward('reward_test');
+            challengeSystem.claimReward('reward_test');
             // リワードクレイム機能のテスト
         });
 
@@ -1046,26 +1047,26 @@ it('クリーンアップが正常に実行される', () => {
 });
 
 // テストユーティリティ関数
-function createMockChallengeData(overrides: Partial<ChallengeData> = {}): ChallengeData {
-    return {
-        id: 'test_challenge',
-        type: ChallengeType.DAILY,
-        title: 'テストチャレンジ',
-        description: 'テスト用のチャレンジです',
-        progressType: ProgressType.SCORE,
-        targetValue: 5000,
-        reward: { type: RewardType.AP, amount: 100 },
-        ...overrides
-    };
-}
+// function createMockChallengeData(overrides: Partial<ChallengeData> = {}): ChallengeData {
+//     return {
+//         id: 'test_challenge',
+//         type: ChallengeType.DAILY,
+//         title: 'テストチャレンジ',
+//         description: 'テスト用のチャレンジです',
+//         progressType: ProgressType.SCORE,
+//         targetValue: 5000,
+//         reward: { type: RewardType.AP, amount: 100 },
+//         ...overrides
+//     };
+// }
 
-function createMockGameData(overrides: Partial<GameData> = {}): GameData {
-    return {
-        score: 7500,
-        duration: 300000, // 5分
-        bubbleStats: { total: 200 },
-        maxCombo: 15,
-        accuracy: 0.85,
-        ...overrides
-    };
-}
+// function createMockGameData(overrides: Partial<GameData> = {}): GameData {
+//     return {
+//         score: 7500,
+//         duration: 300000, // 5分
+//         bubbleStats: { total: 200 },
+//         maxCombo: 15,
+//         accuracy: 0.85,
+//         ...overrides
+//     };
+// }

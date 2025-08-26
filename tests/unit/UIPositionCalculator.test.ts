@@ -2,7 +2,7 @@
  * UIPositionCalculator のテスト
  * Issue #177 Canvas Scale UI Positioning UI要素位置計算のテスト
  */
-import { jest, describe, test, expect, beforeEach } from '@jest/globals';
+import { describe, test, expect, beforeEach } from '@jest/globals';
 import { UIPositionCalculator } from '../../src/utils/UIPositionCalculator.js';
 
 // Canvas情報の型定義

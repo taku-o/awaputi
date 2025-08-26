@@ -101,7 +101,7 @@ class AIToolCompatibilityValidator {
     /**
      * Validate individual file against limits
      */
-    validateFile(filename: string, stats: { words: number; status: string }) {
+    validateFile(_filename: string, stats: { words: number; status: string }) {
         this.results.filesAnalyzed++;
         this.results.totalWordCount += stats.words;
 

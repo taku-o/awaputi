@@ -172,7 +172,7 @@ export class NodeEnvironmentSupport {
       
       // Element creation
       createElement: jest.fn((tagName) => this.createMockElement(tagName.toLowerCase())),
-      createElementNS: jest.fn((ns, tagName) => this.createMockElement(tagName.toLowerCase())),
+      createElementNS: jest.fn((_ns, tagName) => this.createMockElement(tagName.toLowerCase())),
       createTextNode: jest.fn((data) => ({
         nodeType: 3, // TEXT_NODE
         nodeName: '#text',
@@ -414,7 +414,7 @@ export class NodeEnvironmentSupport {
           this.onprogress = null;
         }
         
-        readAsText(file: any) {
+        readAsText(_file: any) {
           this.readyState = 1; // LOADING
           if (this.onloadstart) this.onloadstart();
           setTimeout(() => {
@@ -456,7 +456,7 @@ export class NodeEnvironmentSupport {
         search: string;
         hash: string;
 
-        constructor(url: string, base?: string) {
+        constructor(url: string, _base?: string) {
           this.href = url;
           this.origin = 'http://localhost:3000';
           this.protocol = 'http:';
@@ -468,11 +468,11 @@ export class NodeEnvironmentSupport {
           this.hash = '';
         }
         
-        static createObjectURL(object: any) {
+        static createObjectURL(_object: any) {
           return 'blob:http://localhost:3000/mock-object-url';
         }
         
-        static revokeObjectURL(url: string) {
+        static revokeObjectURL(_url: string) {
           // Mock implementation
         }
       };
@@ -529,7 +529,7 @@ export class NodeEnvironmentSupport {
     // Geolocation API
     if (typeof (global as any).navigator !== 'undefined' && !(global as any).navigator.geolocation) {
       (global as any).navigator.geolocation = {
-        getCurrentPosition: jest.fn((success, error) => {
+        getCurrentPosition: jest.fn((success, _error) => {
           if (success) {
             success({
               coords: {
