@@ -287,7 +287,7 @@ export class HelpErrorHandler {
     showUserFriendlyError(error: Error, suggestions: string[] = []): void {
         try {
             const userMessage = this.translateErrorToUserMessage(error);
-            const ___errorData: UserErrorData = {
+            const _errorData: UserErrorData = {
                 message: userMessage,
                 suggestions,
                 timestamp: Date.now(),

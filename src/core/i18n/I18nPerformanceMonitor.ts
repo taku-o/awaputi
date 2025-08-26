@@ -367,7 +367,7 @@ export class I18nPerformanceMonitor {
     async measureLanguageSwitch<T>(fromLanguage: string, toLanguage: string, callback: () => Promise<T>): Promise<LanguageSwitchResult> {
         return new Promise(async (resolve, reject) => {
             const startTime = performance.now();
-            const __measurementId = `switch_${fromLanguage}_${toLanguage}_${Date.now()}`;
+            const _measurementId = `switch_${fromLanguage}_${toLanguage}_${Date.now()}`;
 
             try {
                 const result = await callback();

@@ -145,7 +145,7 @@ export class StatisticsEventHandler {
      * @param {Object} bubbleData - 泡データ
      */
     onBubblePopped(bubbleData: any): void {
-        const { type, reactionTime, __score, isSpecial } = bubbleData;
+        const { type, reactionTime, _score, isSpecial } = bubbleData;
         
         // 泡タイプ別統計更新
         if (this.statistics.bubbleTypeStats[type] !== undefined) {
@@ -262,7 +262,7 @@ export class StatisticsEventHandler {
      * @param {Object} effectData - 効果データ
      */
     onSpecialEffect(effectData: any): void {
-        const { type, __duration, __power } = effectData;
+        const { type, _duration, _power } = effectData;
 
         switch (type) {
             case 'bonusTime':
@@ -300,7 +300,7 @@ export class StatisticsEventHandler {
      * @param {Object} dragData - ドラッグデータ
      */
     onDragOperation(dragData: any): void {
-        const { distance, __duration, accuracy } = dragData;
+        const { distance, _duration, accuracy } = dragData;
         
         const behavior = this.statistics.playerBehaviorStats;
         behavior.dragOperations++;
@@ -325,7 +325,7 @@ export class StatisticsEventHandler {
      * @param {Object} achievementData - 実績データ
      */
     onAchievementUnlocked(achievementData: any): void {
-        const { __id, ap } = achievementData;
+        const { _id, ap } = achievementData;
         
         this.statistics.progressStats.achievementsUnlocked++;
         
@@ -356,7 +356,7 @@ export class StatisticsEventHandler {
      * @param {Object} itemData - アイテムデータ
      */
     onItemPurchased(itemData: any): void {
-        const { __itemId, cost, currency } = itemData;
+        const { _itemId, cost, currency } = itemData;
         
         this.statistics.progressStats.itemsPurchased++;
         
@@ -410,7 +410,7 @@ export class StatisticsEventHandler {
     updateEfficiencyStats(bubblesPopped: number, playTime: number): void {
         const effStats = this.statistics.efficiencyStats;
         const playTimeMinutes = playTime / 60000;
-        const __playTimeSeconds = playTime / 1000;
+        const _playTimeSeconds = playTime / 1000;
         
         if (playTimeMinutes > 0) {
             const currentEfficiency = bubblesPopped / playTimeMinutes;

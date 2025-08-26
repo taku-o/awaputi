@@ -459,7 +459,7 @@ export class TextScalingManager {
      * 要素の分類
      */
     categorizeElement(element: HTMLElement): void {
-        const __tagName = element.tagName.toLowerCase();
+        const _tagName = element.tagName.toLowerCase();
         
         // テキストを含む要素かチェック
         if (!this.hasTextContent(element)) {
@@ -765,7 +765,7 @@ export class TextScalingManager {
      * 行間の調整
      */
     adjustLineHeight(adjustment: number): void {
-        const __newLineHeight = Math.max(
+        const _newLineHeight = Math.max(
             this.config.lineHeight.minimum,
             Math.min(this.config.lineHeight.maximum,
                 this.config.lineHeight.base + adjustment)

@@ -364,7 +364,7 @@ export function classifyElements(container: HTMLElement): ElementClassification 
 }
 
 export function isInteractiveElement(element: HTMLElement): boolean {
-    const __tagName = element.tagName.toLowerCase();
+    const _tagName = element.tagName.toLowerCase();
     return INTERACTIVE_SELECTORS.some(selector => {
         try {
             return element.matches(selector);

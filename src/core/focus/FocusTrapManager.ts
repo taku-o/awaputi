@@ -753,7 +753,7 @@ export class FocusTrapManager {
      * 要素のラベルを取得
      */
     getElementLabel(element: HTMLElement, options: ElementLabelOptions = {}): string {
-        const __opts: Required<ElementLabelOptions> = {
+        const _opts: Required<ElementLabelOptions> = {
             includeAriaLabel: true,
             includeLabelElement: true,
             includeTextContent: true,

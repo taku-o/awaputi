@@ -410,7 +410,7 @@ export class ImportValidator {
 
         const singleQuotes = (line.match(/'/g) || []).length;
         const doubleQuotes = (line.match(/"/g) || []).length;
-        const ___backticks = (line.match(/`/g) || []).length;
+        const _backticks = (line.match(/`/g) || []).length;
 
         if (singleQuotes > 0 && doubleQuotes > 0) {
             issues.push({

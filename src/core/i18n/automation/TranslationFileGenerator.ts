@@ -697,7 +697,7 @@ export class TranslationFileGenerator {
             language: string;
         }
     ): ProcessedTranslationData {
-        const { includeEmpty, generateTemplate, preserveExisting, __language } = options;
+        const { includeEmpty, generateTemplate, preserveExisting, _language } = options;
         const flattenedBase = this.flattenObject(categoryData);
         const flattenedExisting = existingTranslations ? this.flattenObject(existingTranslations) : {};
         

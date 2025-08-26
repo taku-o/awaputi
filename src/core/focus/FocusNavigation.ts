@@ -501,7 +501,7 @@ export class FocusNavigation {
     handleKeyboardNavigation(event: KeyboardEvent): boolean {
         if (!this.keyboardNavigation.enabled) return false;
         
-        const { key, __shiftKey, ctrlKey, altKey, metaKey } = event;
+        const { key, _shiftKey, ctrlKey, altKey, metaKey } = event;
         
         // 修飾キーが押されている場合はスキップ（Shiftは例外）
         if (ctrlKey || altKey || metaKey) return false;

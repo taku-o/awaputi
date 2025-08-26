@@ -851,7 +851,7 @@ class RenderDataCollector implements IDataCollector {
     }
 
     async collect(): Promise<Map<string, any>> {
-        const ___now = performance.now();
+        const _now = performance.now();
         const renderTime = Math.random() * 10 + 5; // Simulated
         
         return new Map([

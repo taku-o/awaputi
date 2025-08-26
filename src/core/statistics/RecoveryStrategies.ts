@@ -439,7 +439,7 @@ export class RecoveryStrategies {
         console.log('[RecoveryStrategies] Starting checksum failure recovery');
         
         try {
-            const { data, expectedChecksum, __actualChecksum } = analysis;
+            const { data, expectedChecksum, _actualChecksum } = analysis;
             const recoveredData = { ...data };
             const repairLog: string[] = [];
             

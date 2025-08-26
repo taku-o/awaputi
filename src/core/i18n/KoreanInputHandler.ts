@@ -417,7 +417,7 @@ export type InputElementType = HTMLInputElement | HTMLTextAreaElement;
         // 한국어 띄어쓰기 규칙 적용
         const input = event.target as InputElementType;
         const text = input.value;
-        const __cursorPos = input.selectionStart;
+        const _cursorPos = input.selectionStart;
         // 조사 앞 띄어쓰기 제거
         const particles = ['은', '는', '이', '가', '을', '를', '에', '에서', '으로', '로', '와', '과', '의', '도', '만', '까지'];
         

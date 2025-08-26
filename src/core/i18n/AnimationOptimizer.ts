@@ -496,8 +496,8 @@ export class AnimationOptimizer {
         
         // 要素の現在状態を取得
         const computedStyle = window.getComputedStyle(element);
-        const __currentTransform = computedStyle.transform;
-        const __currentOpacity = computedStyle.opacity;
+        const _currentTransform = computedStyle.transform;
+        const _currentOpacity = computedStyle.opacity;
         
         // 最適化されたキーフレーム
         let optimizedKeyframes = [...preset.keyframes];

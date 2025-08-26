@@ -394,7 +394,7 @@ export class RenderingOptimizer {
      * 即座の要素更新
      */
     private async processImmediateUpdates(elements: HTMLElement[], language: string, options: BatchedUpdateOptions): Promise<void> {
-        const { animateTransition, __cacheResults } = options;
+        const { animateTransition, _cacheResults } = options;
         
         // アニメーション準備
         if (animateTransition) {
@@ -502,7 +502,7 @@ export class RenderingOptimizer {
      * 要素の一括更新
      */
     private async batchUpdateElements(elements: HTMLElement[], language: string, measurements: Map<HTMLElement, ElementMeasurement>, options: BatchedUpdateOptions): Promise<void> {
-        const { __animateTransition, cacheResults } = options;
+        const { _animateTransition, cacheResults } = options;
         
         // DOM書き込みの準備
         const updates: ElementUpdatePair[] = [];

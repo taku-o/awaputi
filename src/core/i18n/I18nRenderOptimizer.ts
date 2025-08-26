@@ -547,7 +547,7 @@ export class I18nRenderOptimizer {
      */
     private executeBatchDOMOperations(updates: RenderUpdate[]): void {
         // DocumentFragmentを使用した効率的な更新
-        const __fragment = document.createDocumentFragment();
+        const _fragment = document.createDocumentFragment();
         
         for (const update of updates) {
             if (update.operation === 'textContent' && update.value) {

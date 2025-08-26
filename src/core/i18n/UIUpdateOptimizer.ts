@@ -324,7 +324,7 @@ export class UIUpdateOptimizer {
         const startTime = performance.now();
         
         try {
-            const { animateChanges, __preserveState, deferHidden = [] } = options;
+            const { animateChanges, _preserveState, deferHidden = [] } = options;
             
             this.stats.immediateUpdates++;
             
@@ -376,7 +376,7 @@ export class UIUpdateOptimizer {
         const startTime = performance.now();
         
         try {
-            const { __priority, __animateChanges, deferHidden = [] } = options;
+            const { _priority, _animateChanges, deferHidden = [] } = options;
             
             this.stats.batchedUpdates++;
             
@@ -667,7 +667,7 @@ export class UIUpdateOptimizer {
      * Document Fragmentを使用したバッチ更新
      */
     private executeBatchUpdatesWithFragment(updates: ElementUpdateSpec[]): void {
-        const __fragment = document.createDocumentFragment();
+        const _fragment = document.createDocumentFragment();
         
         for (const update of updates) {
             const { element, newText, preserveState } = update;

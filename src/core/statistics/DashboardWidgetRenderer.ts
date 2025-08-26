@@ -318,7 +318,7 @@ class RecentAchievementsWidget implements Widget {
     }
 
     async render(context: CanvasRenderingContext2D, _options: RenderOptions = {}): Promise<WidgetRenderResult> {
-        const __stats = await this.statisticsManager.getDetailedStatistics();
+        const _stats = await this.statisticsManager.getDetailedStatistics();
         const canvas = context.canvas;
 
         // 背景
@@ -384,7 +384,7 @@ class GrowthTrendsWidget implements Widget {
     }
 
     async render(context: CanvasRenderingContext2D, _options: RenderOptions = {}): Promise<WidgetRenderResult> {
-        const __stats = await this.statisticsManager.getDetailedStatistics();
+        const _stats = await this.statisticsManager.getDetailedStatistics();
         const canvas = context.canvas;
 
         // 背景
@@ -464,7 +464,7 @@ class PlayStyleWidget implements Widget {
     }
 
     async render(context: CanvasRenderingContext2D, _options: RenderOptions = {}): Promise<WidgetRenderResult> {
-        const __stats = await this.statisticsManager.getDetailedStatistics();
+        const _stats = await this.statisticsManager.getDetailedStatistics();
         const canvas = context.canvas;
 
         // 背景
@@ -532,7 +532,7 @@ class PerformanceChartWidget implements Widget {
     }
 
     async render(context: CanvasRenderingContext2D, _options: RenderOptions = {}): Promise<WidgetRenderResult> {
-        const __stats = await this.statisticsManager.getDetailedStatistics();
+        const _stats = await this.statisticsManager.getDetailedStatistics();
         const canvas = context.canvas;
 
         // 背景

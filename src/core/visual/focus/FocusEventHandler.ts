@@ -364,7 +364,7 @@ export class FocusEventHandler {
      * キーアップ処理
      */
     private handleKeyUp(event: Event): void {
-        const __keyEvent = event as KeyboardEvent;
+        const _keyEvent = event as KeyboardEvent;
         // 特別な処理は不要（キーダウンで十分）
         
         // 長時間のキー押下後のクリーンアップなど、必要に応じて実装
@@ -374,7 +374,7 @@ export class FocusEventHandler {
      * マウスダウン処理
      */
     private handleMouseDown(event: Event): void {
-        const __mouseEvent = event as MouseEvent;
+        const _mouseEvent = event as MouseEvent;
         
         // キーボードモードの無効化
         this.mainController.focusStateManager.setKeyboardMode(false);
@@ -393,7 +393,7 @@ export class FocusEventHandler {
      * マウス移動処理
      */
     private handleMouseMove(event: Event): void {
-        const __mouseEvent = event as MouseEvent;
+        const _mouseEvent = event as MouseEvent;
         
         // マウス使用時はキーボードヒントを非表示
         if (this.state.keyboardHintVisible && this.config.mouse.disableKeyboardHints) {

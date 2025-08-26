@@ -318,7 +318,7 @@ class BrowserCompatibilityManager {
 
             // 読み取りテスト
             try {
-                const ___testRead = localStorage.getItem('__compatibility_test__');
+                const _testRead = localStorage.getItem('__compatibility_test__');
                 support.readable = true;
             } catch (e) {
                 support.errorMessage = 'localStorage read failed: ' + (e as Error).message;

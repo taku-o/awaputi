@@ -108,7 +108,7 @@ const BALANCE_CONFIG_PROXY = new Proxy({}, {
     },
     
     set(_target, prop, _value) {
-        const __configManager = getConfigurationManager();
+        const _configManager = getConfigurationManager();
         const caller = _getCallerInfo();
         
         _showDeprecationWarning(`BALANCE_CONFIG.${String(prop)}への直接設定は非推奨です`, caller);

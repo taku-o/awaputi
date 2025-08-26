@@ -623,7 +623,7 @@ export class StatisticalAnalyzer {
      */
     getTCriticalValue(df: number, confidenceLevel: number): number {
         const alpha = 1 - confidenceLevel;
-        const __twoTailed = alpha / 2;
+        const _twoTailed = alpha / 2;
         
         if (df > 30) {
             // 標準正規分布で近似

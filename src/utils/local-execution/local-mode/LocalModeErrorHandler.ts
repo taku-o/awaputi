@@ -233,7 +233,7 @@ export default class LocalModeErrorHandler {
      * @private
      */
     private static _handleErrorLocally(error: Error, context: string, metadata: ErrorMetadata): void {
-        const ___errorInfo: ErrorInfo = {
+        const _errorInfo: ErrorInfo = {
             error: error.message,
             stack: error.stack,
             context,

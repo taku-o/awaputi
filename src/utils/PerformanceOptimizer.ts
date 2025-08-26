@@ -244,7 +244,7 @@ export class PerformanceOptimizer {
      */
     private _initializeSubComponents(): void {
         try {
-            const ___componentConfig: ComponentConfig = {
+            const _componentConfig: ComponentConfig = {
                 maxHistorySize: this.maxHistorySize,
                 targetFPS: this.targetFPS,
                 performanceLevel: this.performanceLevel

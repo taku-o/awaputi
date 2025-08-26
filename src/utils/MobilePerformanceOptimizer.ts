@@ -580,7 +580,7 @@ export class MobilePerformanceOptimizer {
             const maxTime = 100; // 100ms benchmark
             
             const benchmark = () => {
-                const ___localStart = performance.now();
+                const _localStart = performance.now();
                 // CPU-intensive calculation
                 let result = 0;
                 for (let i = 0; i < 10000; i++) {
@@ -668,7 +668,7 @@ export class MobilePerformanceOptimizer {
      */
     private classifyDevicePerformance(): void {
         const benchmarks = this.deviceDetection.benchmarks;
-        const ___hardware = this.deviceDetection.hardware;
+        const _hardware = this.deviceDetection.hardware;
         
         // Weight the scores
         const cpuWeight = 0.4;
