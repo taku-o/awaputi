@@ -109,7 +109,7 @@ test.describe('地域化機能E2Eテスト', () => {
         await page.waitForTimeout(500);
         
         // 各地域でのスコア表示を確認
-        for (const [lang, config] of Object.entries(REGIONAL_CONFIGS)) {
+        for (const [lang] of Object.entries(REGIONAL_CONFIGS)) {
             await setLanguage(page, lang);
             
             const scoreText = await page.evaluate(() => {

@@ -132,8 +132,8 @@ function saveReport(report: any) {
 }
 
 function generateHTMLReport(report: any) {
-    const passedTests = report.details.filter((r: any) => r.success);
-    const failedTests = report.details.filter((r: any) => !r.success);
+    // const passedTests = report.details.filter((r: any) => r.success);
+    // const failedTests = report.details.filter((r: any) => !r.success);
     
     return `
 <!DOCTYPE html>

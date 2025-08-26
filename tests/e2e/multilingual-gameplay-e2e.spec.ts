@@ -57,11 +57,11 @@ async function changeLanguageInGame(page: any, language: string) {
     await page.waitForTimeout(500);
 }
 
-async function getGameText(page: any, selector: string) {
-    const element = await page.$(selector);
-    if (!element) return null;
-    return await element.textContent();
-}
+// async function getGameText(page: any, selector: string) {
+//     const element = await page.$(selector);
+//     if (!element) return null;
+//     return await element.textContent();
+// }
 
 async function simulateGameOver(page: any) {
     // HPを0にしてゲームオーバーをシミュレート

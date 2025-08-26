@@ -7,7 +7,7 @@
  * - Japanese-specific formatting and encoding
  * - Error scenario testing
  */
-import { describe, it, expect, beforeEach, afterEach, jest } from '@jest/globals';
+import { describe, it, expect, beforeEach } from '@jest/globals';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -69,7 +69,7 @@ describe('Japanese Help Content', () => {
     });
     
     it('should have all required top-level fields', () => {
-      for (const [category, data] of Object.entries(contentData)) {
+      for (const [, data] of Object.entries(contentData)) {
         for (const field of REQUIRED_FIELDS) {
           expect(data).toHaveProperty(field);
         }
@@ -77,7 +77,7 @@ describe('Japanese Help Content', () => {
     });
     
     it('should have correct language field set to "ja"', () => {
-      for (const [category, data] of Object.entries(contentData)) {
+      for (const [, data] of Object.entries(contentData)) {
         expect(data.language).toBe('ja');
       }
     });

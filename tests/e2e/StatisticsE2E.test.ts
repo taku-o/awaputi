@@ -372,7 +372,7 @@ test.describe('統計機能E2Eテスト', () => {
             await GameplaySimulator.simulateBasicGameplay(page);
             
             await page.click('[data-testid="user-info-button"]');
-            const originalGames = await page.locator('[data-testid="total-games"]').textContent();
+            // const originalGames = await page.locator('[data-testid="total-games"]').textContent();
             
             // データをクリア
             await page.click('[data-testid="settings-button"]');
@@ -476,7 +476,7 @@ test.describe('統計機能E2Eテスト', () => {
             await GameplaySimulator.simulateBasicGameplay(page);
             await page.click('[data-testid="user-info-button"]');
             
-            await ResponsiveHelper.testResponsiveDisplay(page, async (page, device) => {
+            await ResponsiveHelper.testResponsiveDisplay(page, async (page) => {
                 const chart = page.locator('[data-testid="statistics-chart"]');
                 await expect(chart).toBeVisible();
                 
@@ -870,7 +870,7 @@ const E2ETestHelper = {
         }
         
         // 見出し階層チェック
-        const headings = await page.locator('h1, h2, h3, h4, h5, h6').all();
+        // const headings = await page.locator('h1, h2, h3, h4, h5, h6').all();
         // ... 見出し階層の検証ロジック ...
         
         return issues;

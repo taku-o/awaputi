@@ -229,7 +229,7 @@ describe('PerformanceDataCollector', () => {
 
     describe('カスタム測定', () => {
         test('カスタム測定を開始・終了できる', () => {
-            const _startMark = collector.startMeasure('test-operation');
+            /*const _startMark = */collector.startMeasure('test-operation');
             expect(mockPerformance.mark).toHaveBeenCalledWith('test-operation-start');
             
             const mockMeasure = {

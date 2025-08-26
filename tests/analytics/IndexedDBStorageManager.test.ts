@@ -347,7 +347,7 @@ describe('IndexedDBStorageManager', () => {
 
     describe('KeyRange作成', () => {
         test('bound範囲が正常に作成される', () => {
-            const _range = manager.createKeyRange({
+            /*const _range = */manager.createKeyRange({
                 lower: 100,
                 upper: 200
             });
@@ -355,7 +355,7 @@ describe('IndexedDBStorageManager', () => {
         });
 
         test('lowerBound範囲が正常に作成される', () => {
-            const _range = manager.createKeyRange({
+            /*const _range = */manager.createKeyRange({
                 lower: 100,
                 lowerExclusive: true
             });
@@ -363,7 +363,7 @@ describe('IndexedDBStorageManager', () => {
         });
 
         test('upperBound範囲が正常に作成される', () => {
-            const _range = manager.createKeyRange({
+            /*const _range = */manager.createKeyRange({
                 upper: 200,
                 upperExclusive: false
             });

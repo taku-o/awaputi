@@ -232,9 +232,9 @@ test.describe('Local File Execution E2E Tests', () => {
             await page.waitForSelector(TEST_CONFIG.expectedElements.gameCanvas);
             
             // Chromium-specific checks
-            const hasChromiumFeatures = await page.evaluate(() => {
-                return 'chrome' in window || 'opr' in window;
-            });
+            // const hasChromiumFeatures = await page.evaluate(() => {
+            //     return 'chrome' in window || 'opr' in window;
+            // });
             
             // Should work regardless of Chromium features
             await expect(page.locator(TEST_CONFIG.expectedElements.gameCanvas)).toBeVisible();
@@ -247,9 +247,9 @@ test.describe('Local File Execution E2E Tests', () => {
             await page.waitForSelector(TEST_CONFIG.expectedElements.gameCanvas);
             
             // Firefox-specific checks
-            const hasFirefoxFeatures = await page.evaluate(() => {
-                return 'InstallTrigger' in window;
-            });
+            // const hasFirefoxFeatures = await page.evaluate(() => {
+            //     return 'InstallTrigger' in window;
+            // });
             
             // Should work regardless of Firefox features
             await expect(page.locator(TEST_CONFIG.expectedElements.gameCanvas)).toBeVisible();
@@ -262,9 +262,9 @@ test.describe('Local File Execution E2E Tests', () => {
             await page.waitForSelector(TEST_CONFIG.expectedElements.gameCanvas);
             
             // WebKit-specific checks
-            const hasWebKitFeatures = await page.evaluate(() => {
-                return 'webkitRequestAnimationFrame' in window;
-            });
+            // const hasWebKitFeatures = await page.evaluate(() => {
+            //     return 'webkitRequestAnimationFrame' in window;
+            // });
             
             // Should work regardless of WebKit features
             await expect(page.locator(TEST_CONFIG.expectedElements.gameCanvas)).toBeVisible();

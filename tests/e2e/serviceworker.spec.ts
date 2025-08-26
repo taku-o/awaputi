@@ -53,7 +53,7 @@ test.describe('ServiceWorker postMessage Fix', () => {
     });
 
     test('should receive cache update notifications from ServiceWorker', async ({ page }) => {
-        const receivedMessages: any[] = [];
+        // const receivedMessages: any[] = [];
         
         // ServiceWorkerからのメッセージをキャプチャ
         await page.addInitScript(() => {

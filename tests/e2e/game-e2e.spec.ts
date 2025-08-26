@@ -214,9 +214,9 @@ test.describe('BubblePop Game E2E Tests', () => {
     await page.keyboard.press('p');
     await page.waitForTimeout(300);
     
-    const isUnpaused = await page.evaluate(() => {
-      return (window as any).gameEngine && !(window as any).gameEngine.isPaused;
-    });
+    // const isUnpaused = await page.evaluate(() => {
+    //   return (window as any).gameEngine && !(window as any).gameEngine.isPaused;
+    // });
     
     // Game might not support pause, so just check no errors occurred
     expect(true).toBe(true);
@@ -289,13 +289,13 @@ test.describe('BubblePop Game E2E Tests', () => {
 
   test('should handle responsive canvas', async ({ page }) => {
     // Get initial canvas size
-    const initialSize = await page.evaluate(() => {
-      const canvas = document.getElementById('gameCanvas') as HTMLCanvasElement;
-      return {
-        width: canvas.width,
-        height: canvas.height
-      };
-    });
+    // const initialSize = await page.evaluate(() => {
+    //   const canvas = document.getElementById('gameCanvas') as HTMLCanvasElement;
+    //   return {
+    //     width: canvas.width,
+    //     height: canvas.height
+    //   };
+    // });
     
     // Resize window
     await page.setViewportSize({ width: 800, height: 600 });

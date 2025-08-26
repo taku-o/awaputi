@@ -204,10 +204,10 @@ test.describe('Shop Button Main Menu E2E Tests', () => {
         await expect(canvas).toBeVisible();
 
         // 初期状態を記録（例：現在の選択メニュー項目）
-        const initialState = await page.evaluate(() => {
-            // ゲームの状態を取得（実装に依存）
-            return (window as any).gameState || {};
-        });
+        // const initialState = await page.evaluate(() => {
+        //     // ゲームの状態を取得（実装に依存）
+        //     return (window as any).gameState || {};
+        // });
 
         // ショップに移動
         await page.keyboard.press('ArrowDown');
@@ -220,9 +220,9 @@ test.describe('Shop Button Main Menu E2E Tests', () => {
         await page.waitForTimeout(1000);
 
         // 状態が保持されているか確認
-        const currentState = await page.evaluate(() => {
-            return (window as any).gameState || {};
-        });
+        // const currentState = await page.evaluate(() => {
+        //     return (window as any).gameState || {};
+        // });
 
         // メニュー選択位置などが保持されているか（実装による）
         expect(true).toBe(true); // 実際の実装に応じて適切なアサーションに変更
