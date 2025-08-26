@@ -228,30 +228,30 @@ export class AudioAccessibilitySupport {
     /**
      * 音響レベルを監視
      */
-    private monitorAudioLevels(): void {
-        const updateInterval = 100; // 100ms間隔
-        
-        const monitorLoop = () => {
-            if (!this.settings.visualFeedback && !this.settings.colorIndication) {
-                setTimeout(monitorLoop, updateInterval);
-                return;
-            }
-            
-            // AudioVisualizerから音響レベルを取得
-            const stats = this.audioManager.getVisualizationStatistics();
-            if (stats) {
-                this.updateColorIndicator(stats.averageLevel || 0);
-                // 音響レベルに基づく触覚フィードバック
-                if (this.settings.hapticFeedback) {
-                    this.triggerAudioLevelVibration(stats.averageLevel || 0, 'background');
-                }
-            }
-            
-            setTimeout(monitorLoop, updateInterval);
-        };
-        
-        monitorLoop();
-    }
+    // private monitorAudioLevels(): void {
+    //     const updateInterval = 100; // 100ms間隔
+    //     
+    //     const monitorLoop = () => {
+    //         if (!this.settings.visualFeedback && !this.settings.colorIndication) {
+    //             setTimeout(monitorLoop, updateInterval);
+    //             return;
+    //         }
+    //         
+    //         // AudioVisualizerから音響レベルを取得
+    //         const stats = this.audioManager.getVisualizationStatistics();
+    //         if (stats) {
+    //             this.updateColorIndicator(stats.averageLevel || 0);
+    //             // 音響レベルに基づく触覚フィードバック
+    //             if (this.settings.hapticFeedback) {
+    //                 this.triggerAudioLevelVibration(stats.averageLevel || 0, 'background');
+    //             }
+    //         }
+    //         
+    //         setTimeout(monitorLoop, updateInterval);
+    //     };
+    //     
+    //     monitorLoop();
+    // }
     
     /**
      * 色彩インジケーターを更新
@@ -316,124 +316,124 @@ export class AudioAccessibilitySupport {
      * 泡ポップイベントを処理
      * @param event - イベントデータ
      */
-    private handleBubblePopEvent(event: BubblePopEventData): void {
-        const { bubbleType, position } = event;
-        
-        // 視覚的通知
-        this.showVisualNotification({
-            type: 'bubblePop',
-            title: '泡破壊',
-            message: `${bubbleType}泡を破壊`,
-            icon: '🫧',
-            color: this.getBubbleColor(bubbleType),
-            position: position
-        });
-        
-        // 字幕
-        if (this.settings.captioning) {
-            this.showCaption(`${bubbleType}泡を破壊しました`);
-        }
-        
-        // 触覚フィードバック
-        if (this.settings.hapticFeedback) {
-            this.triggerHapticFeedback('bubblePop', event);
-        }
-    }
+    // private handleBubblePopEvent(event: BubblePopEventData): void {
+    //     const { bubbleType, position } = event;
+    //     
+    //     // 視覚的通知
+    //     this.showVisualNotification({
+    //         type: 'bubblePop',
+    //         title: '泡破壊',
+    //         message: `${bubbleType}泡を破壊`,
+    //         icon: '🫧',
+    //         color: this.getBubbleColor(bubbleType),
+    //         position: position
+    //     });
+    //     
+    //     // 字幕
+    //     if (this.settings.captioning) {
+    //         this.showCaption(`${bubbleType}泡を破壊しました`);
+    //     }
+    //     
+    //     // 触覚フィードバック
+    //     if (this.settings.hapticFeedback) {
+    //         this.triggerHapticFeedback('bubblePop', event);
+    //     }
+    // }
     
     /**
      * コンボイベントを処理
      * @param event - イベントデータ
      */
-    private handleComboEvent(event: ComboEventData): void {
-        const { comboLevel, comboCount } = event;
-        
-        // 視覚的通知
-        this.showVisualNotification({
-            type: 'combo',
-            title: `${comboLevel}連鎖`,
-            message: `${comboCount}コンボ達成！`,
-            icon: '🔥',
-            color: '#ff8000',
-            duration: 2000
-        });
-        
-        // 字幕
-        if (this.settings.captioning) {
-            this.showCaption(`${comboCount}コンボ達成！`);
-        }
-        
-        // 触覚フィードバック
-        if (this.settings.hapticFeedback) {
-            this.triggerHapticFeedback('comboAchieved', event);
-        }
-    }
+    // private handleComboEvent(event: ComboEventData): void {
+    //     const { comboLevel, comboCount } = event;
+    //     
+    //     // 視覚的通知
+    //     this.showVisualNotification({
+    //         type: 'combo',
+    //         title: `${comboLevel}連鎖`,
+    //         message: `${comboCount}コンボ達成！`,
+    //         icon: '🔥',
+    //         color: '#ff8000',
+    //         duration: 2000
+    //     });
+    //     
+    //     // 字幕
+    //     if (this.settings.captioning) {
+    //         this.showCaption(`${comboCount}コンボ達成！`);
+    //     }
+    //     
+    //     // 触覚フィードバック
+    //     if (this.settings.hapticFeedback) {
+    //         this.triggerHapticFeedback('comboAchieved', event);
+    //     }
+    // }
     
     /**
      * 実績イベントを処理
      * @param event - イベントデータ
      */
-    private handleAchievementEvent(event: AchievementEventData): void {
-        const { achievementName, rarity } = event;
-        
-        // 視覚的通知
-        this.showVisualNotification({
-            type: 'achievement',
-            title: '実績解除',
-            message: achievementName,
-            icon: '🏆',
-            color: this.getRarityColor(rarity),
-            duration: 4000
-        });
-        
-        // 字幕
-        if (this.settings.captioning) {
-            this.showCaption(`実績「${achievementName}」を解除しました！`);
-        }
-        
-        // 触覚フィードバック
-        if (this.settings.hapticFeedback) {
-            this.triggerHapticFeedback('achievementUnlocked', event);
-        }
-    }
+    // private handleAchievementEvent(event: AchievementEventData): void {
+    //     const { achievementName, rarity } = event;
+    //     
+    //     // 視覚的通知
+    //     this.showVisualNotification({
+    //         type: 'achievement',
+    //         title: '実績解除',
+    //         message: achievementName,
+    //         icon: '🏆',
+    //         color: this.getRarityColor(rarity),
+    //         duration: 4000
+    //     });
+    //     
+    //     // 字幕
+    //     if (this.settings.captioning) {
+    //         this.showCaption(`実績「${achievementName}」を解除しました！`);
+    //     }
+    //     
+    //     // 触覚フィードバック
+    //     if (this.settings.hapticFeedback) {
+    //         this.triggerHapticFeedback('achievementUnlocked', event);
+    //     }
+    // }
     
     /**
      * ゲーム状態イベントを処理
      * @param event - イベントデータ
      */
-    private handleGameStateEvent(event: GameStateEventData): void {
-        const { state, details } = event;
+    // private handleGameStateEvent(event: GameStateEventData): void {
+    //     const { state, details } = event;
 
-        const stateMessages: Record<string, { title: string, icon: string, color: string }> = {
-            gameStart: { title: 'ゲーム開始', icon: '🎮', color: '#00ff00' },
-            gameOver: { title: 'ゲームオーバー', icon: '💀', color: '#ff0000' },
-            levelUp: { title: 'レベルアップ', icon: '⭐', color: '#ffff00' },
-            warning: { title: '警告', icon: '⚠️', color: '#ff8000' },
-            bonusStart: { title: 'ボーナス開始', icon: '🌟', color: '#ff00ff' }
-        };
+    //     const stateMessages: Record<string, { title: string, icon: string, color: string }> = {
+    //         gameStart: { title: 'ゲーム開始', icon: '🎮', color: '#00ff00' },
+    //         gameOver: { title: 'ゲームオーバー', icon: '💀', color: '#ff0000' },
+    //         levelUp: { title: 'レベルアップ', icon: '⭐', color: '#ffff00' },
+    //         warning: { title: '警告', icon: '⚠️', color: '#ff8000' },
+    //         bonusStart: { title: 'ボーナス開始', icon: '🌟', color: '#ff00ff' }
+    //     };
 
-        const stateInfo = stateMessages[state];
-        if (stateInfo) {
-            // 視覚的通知
-            this.showVisualNotification({
-                type: 'gameState',
-                title: stateInfo.title,
-                message: details || '',
-                icon: stateInfo.icon,
-                color: stateInfo.color,
-                duration: 3000
-            });
+    //     const stateInfo = stateMessages[state];
+    //     if (stateInfo) {
+    //         // 視覚的通知
+    //         this.showVisualNotification({
+    //             type: 'gameState',
+    //             title: stateInfo.title,
+    //             message: details || '',
+    //             icon: stateInfo.icon,
+    //             color: stateInfo.color,
+    //             duration: 3000
+    //         });
 
-            // 字幕
-            if (this.settings.captioning) {
-                this.showCaption(`${stateInfo.title}${details ? ': ' + details : ''}`);
-            }
-            
-            // 触覚フィードバック
-            if (this.settings.hapticFeedback) {
-                this.triggerHapticFeedback('gameStateChange', { state, ...event });
-            }
-        }
-    }
+    //         // 字幕
+    //         if (this.settings.captioning) {
+    //             this.showCaption(`${stateInfo.title}${details ? ': ' + details : ''}`);
+    //         }
+    //         
+    //         // 触覚フィードバック
+    //         if (this.settings.hapticFeedback) {
+    //             this.triggerHapticFeedback('gameStateChange', { state, ...event });
+    //         }
+    //     }
+    // }
     
     /**
      * 視覚的通知を表示（AudioDescriptionManagerへ委託）

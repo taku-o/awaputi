@@ -554,7 +554,7 @@ export class AudioDataOptimizer {
      * @param settings - 圧縮設定
      * @returns 圧縮されたAudioBuffer
      */
-    private async losslessCompression(buffer: AudioBuffer, settings: any): Promise<AudioBuffer> {
+    private async losslessCompression(buffer: AudioBuffer, _settings: any): Promise<AudioBuffer> {
         try {
             // ロスレス圧縮（実際の実装では可逆圧縮アルゴリズムを使用）
             // ここでは無音部分の除去とピーク正規化を行う

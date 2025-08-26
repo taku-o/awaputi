@@ -450,7 +450,7 @@ export class AudioErrorHandler {
     /**
      * エラーの重要度を判定
      */
-    determineSeverity(error: Error, errorType: string): string {
+    determineSeverity(_error: Error, errorType: string): string {
         const criticalTypes = [
             this.errorTypes.WEB_AUDIO_INIT,
             this.errorTypes.MEMORY,
@@ -476,7 +476,7 @@ export class AudioErrorHandler {
     /**
      * エラーが回復可能かチェック
      */
-    isRecoverable(error: Error, errorType: string): boolean {
+    isRecoverable(_error: Error, errorType: string): boolean {
         return this.recoveryStrategies.has(errorType) && 
                this.errorStats.recoveryAttempts < this.errorThresholds.maxRecoveryAttempts;
     }
@@ -550,7 +550,7 @@ export class AudioErrorHandler {
     /**
      * Web Audio API初期化エラーの回復
      */
-    async recoverWebAudioInit(error: Error, context: any): Promise<boolean> {
+    async recoverWebAudioInit(_error: Error, _context: any): Promise<boolean> {
         try {
             // AudioContextの再作成を試行
             if (this.audioManager.audioContext) {
@@ -577,7 +577,7 @@ export class AudioErrorHandler {
     /**
      * Web Audio Contextエラーの回復
      */
-    async recoverWebAudioContext(error: Error, context: any): Promise<boolean> {
+    async recoverWebAudioContext(_error: Error, _context: any): Promise<boolean> {
         try {
             const audioContext = this.audioManager.audioContext;
             if (!audioContext) return false;
