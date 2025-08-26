@@ -65,8 +65,8 @@ export type TextureFiltering = 'linear' | 'nearest';
  * パーティクル描画処理エンジン - レンダリングメソッドと描画最適化
  */
 export class ParticleRenderingEngine {
-    private canvas: HTMLCanvasElement;
-    private particleManager: ParticleManager;
+    // private canvas: HTMLCanvasElement;
+    // private particleManager: ParticleManager;
     private errorHandler: ErrorHandler;
     // 拡張パーティクルタイプの定義
     private readonly extendedParticleTypes: ExtendedParticleTypes;

@@ -6,7 +6,7 @@ import { getErrorHandler } from '../utils/ErrorHandler.js';
  */
 export class WeeklyChallengeManager {
     private gameEngine: any;
-    private challengeSystem: any;
+    // private challengeSystem: any;
     private config: any;
     private challengeTemplates: any;
     private currentChallenges: any[];
@@ -15,7 +15,7 @@ export class WeeklyChallengeManager {
     private weekStartDate: Date;
     private nextResetTime: number;
     private stats: any;
-    private isInitialized: boolean;
+    // private isInitialized: boolean;
 
     constructor(gameEngine: any, challengeSystem: any) {
         this.gameEngine = gameEngine;

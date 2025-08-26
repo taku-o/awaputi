@@ -397,7 +397,7 @@ export class MobileAccessibilityValidator {
     // 検証結果
     private validationResults: ValidationResults;
     // 要素キャッシュ
-    private elementCache: Map<string, HTMLElement>;
+    // private elementCache: Map<string, HTMLElement>;
     private lastValidation: number | null;
 
     constructor(mobileAccessibilityManager: MobileAccessibilityManager) {

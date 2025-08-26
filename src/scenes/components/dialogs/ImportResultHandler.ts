@@ -72,7 +72,7 @@ export interface MainController {
 
 export class ImportResultHandler {
     private mainController: MainController;
-    private canvasContext: CanvasRenderingContext2D | null = null;
+    // private canvasContext: CanvasRenderingContext2D | null = null;
     
     // フィードバックアニメーション設定
     private feedbackAnimations: Record<string, FeedbackAnimation> = {

@@ -132,11 +132,11 @@ interface BatteryCallbacks {
 
 export class MobileBatteryOptimizer {
     private errorHandler: any;
-    private configManager: any;
+    // private configManager: any;
     private batteryConfig: BatteryConfig;
     private batteryMonitoring: BatteryMonitoring;
     private performanceTracking: PerformanceTracking;
-    private batteryCallbacks?: BatteryCallbacks;
+    // private batteryCallbacks?: BatteryCallbacks;
 
     constructor() {
         this.errorHandler = getErrorHandler();

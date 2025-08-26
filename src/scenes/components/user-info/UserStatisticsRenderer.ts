@@ -78,7 +78,7 @@ type ExportFormat = 'json' | 'csv' | 'pdf';
 export class UserStatisticsRenderer {
     private gameEngine: ExtendedGameEngine;
     private eventBus: EventBus | null;
-    private sceneState: SceneState;
+    // private sceneState: SceneState;
     
     // 統計データ
     private statisticsData: StatisticsData | null = null;
@@ -90,7 +90,7 @@ export class UserStatisticsRenderer {
     private statisticsExporter: StatisticsExporter | null = null;
     
     // 表示設定
-    private statisticsViewMode: StatisticsViewMode = 'dashboard';
+    // private statisticsViewMode: StatisticsViewMode = 'dashboard';
     private currentPeriodFilter: PeriodFilter = 'last7days';
     private statisticsDisplaySettings: StatisticsDisplaySettings = {
         showDashboard: true,

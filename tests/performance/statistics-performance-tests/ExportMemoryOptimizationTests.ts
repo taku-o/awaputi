@@ -10,8 +10,8 @@ import { PerformanceMeasurement, DataGenerator } from './PerformanceTestUtilitie
 
 export class ExportMemoryOptimizationTests {
     private mainTestSuite: any;
-    private performanceConfig: any;
-    private environmentThresholds: any;
+    // private performanceConfig: any;
+    // private environmentThresholds: any;
 
     constructor(mainTestSuite: any) {
         this.mainTestSuite = mainTestSuite;

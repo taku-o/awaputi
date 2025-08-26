@@ -182,12 +182,12 @@ declare global {
 export class RenderingOptimizer {
     // 基本設定
     private optimizationLevel: OptimizationLevel;
-    private batchUpdateThreshold: number;
+    // private batchUpdateThreshold: number;
     private maxBatchSize: number;
     
     // レンダリング状態管理
-    private isRenderingOptimized: boolean;
-    private pendingUpdates: Map<string, any>;
+    // private isRenderingOptimized: boolean;
+    // private pendingUpdates: Map<string, any>;
     private updateQueue: any[];
     private renderFrameId: number | null;
     private lastRenderTime: number;

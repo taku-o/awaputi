@@ -124,7 +124,7 @@ export class HelpFeedbackSystem {
     private loggingSystem: LoggingSystem;
     // フィードバックダイアログ
     private feedbackDialog: HelpFeedbackDialog | null;
-    private currentContentId: string | null;
+    // private currentContentId: string | null;
     // フィードバックデータ
     private feedbacks: Map<string, FeedbackData>;
     private pendingFeedbacks: PendingFeedback[];

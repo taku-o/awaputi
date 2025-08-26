@@ -153,7 +153,7 @@ export class AdvancedPerformanceMonitor {
     private charts: Map<string, Chart>;
     private chartUpdateInterval: number;
     private isMonitoring: boolean;
-    private isProfiling: boolean;
+    // private isProfiling: boolean;
     private updateTimer: number | null;
 
     constructor(gameEngine: GameEngine) {
@@ -504,10 +504,10 @@ export class AdvancedPerformanceMonitor {
  * メトリクス収集クラス
  */
 class MetricsCollector {
-    private monitor: AdvancedPerformanceMonitor;
+    // private monitor: AdvancedPerformanceMonitor;
     private gameEngine: GameEngine;
     private lastFrameTime: number;
-    private frameCount: number;
+    // private frameCount: number;
     private gcCount: number;
     private lastGCCheck: number;
 
@@ -651,7 +651,7 @@ class MetricsCollector {
  * パフォーマンス分析クラス
  */
 class PerformanceAnalyzer {
-    private monitor: AdvancedPerformanceMonitor;
+    // private monitor: AdvancedPerformanceMonitor;
     private analysisWindow: number;
     private trendThreshold: number;
 
@@ -947,7 +947,7 @@ interface TimelineBucket {
  * 詳細プロファイラークラス
  */
 class DetailedProfiler {
-    private monitor: AdvancedPerformanceMonitor;
+    // private monitor: AdvancedPerformanceMonitor;
     private gameEngine: GameEngine;
     private isRunning: boolean;
     private currentProfile: Profile | null;

@@ -12,7 +12,7 @@ import { _ErrorHandler } from '../utils/ErrorHandler.js';
 export class StatisticsDataManager {
     private dataVersion: string;
     private backupHistory: any[];
-    private maxBackupCount: number;
+    // private maxBackupCount: number;
 
     constructor() {
         this.dataVersion = '2.1.0';

@@ -12,8 +12,8 @@ export class AnalyticsComparisonEngine {
     private dataComparator: DataComparator;
     private algorithms: ComparisonAlgorithms;
     private renderer: ComparisonResultRenderer;
-    private comparisonPeriods: any;
-    private metrics: any;
+    // private comparisonPeriods: any;
+    // private metrics: any;
     private cache: Map<string, any>;
     private cacheExpiry: number;
 

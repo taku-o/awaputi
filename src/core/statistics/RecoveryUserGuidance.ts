@@ -194,8 +194,8 @@ export type WarningType = 'data_loss' | 'partial_recovery' | 'guidance_error' | 
 export type WarningSeverity = 'low' | 'medium' | 'high';
 
 export class RecoveryUserGuidance {
-    private dataRecovery: DataRecovery;
-    private statisticsManager: StatisticsManager;
+    // private dataRecovery: DataRecovery;
+    // private statisticsManager: StatisticsManager;
     private errorHandler: ErrorHandler;
     private notificationConfig: NotificationConfig;
     private notificationCallbacks: Set<NotificationCallback>;

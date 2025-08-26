@@ -162,7 +162,7 @@ interface UIElements {
 }
 
 export class LeaderboardUI {
-    private gameEngine: GameEngine;
+    // private gameEngine: GameEngine;
     private errorHandler: ErrorHandler;
     // コンポーネント
     private renderer: LeaderboardRenderer;

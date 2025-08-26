@@ -8,14 +8,14 @@ describe('Username Input Performance Tests', () => {
     let usernameInputManager: any;
     let mockGameEngine: any;
     let mockResponsiveCanvasManager: any;
-    let performanceObserver: any;
+    // let performanceObserver: any;
 
     // Enhanced UsernameInputManager with caching for performance testing
     class PerformanceOptimizedUsernameInputManager {
         private gameEngine: any;
-        private errorHandler: any;
-        private usernameInput: any;
-        private isEditingUsername: boolean;
+        // private errorHandler: any;
+        // private usernameInput: any;
+        // private isEditingUsername: boolean;
         private _canvasInfoCache: any;
         private _canvasInfoCacheTime: number;
         private _cacheValidDuration: number;

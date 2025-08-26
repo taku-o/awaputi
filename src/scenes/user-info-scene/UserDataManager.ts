@@ -169,9 +169,9 @@ interface ExtendedGameEngine extends GameEngine {
 }
 
 export class UserDataManager {
-    private gameEngine: ExtendedGameEngine;
+    // private gameEngine: ExtendedGameEngine;
     private eventBus: EventBus;
-    private sceneState: SceneState;
+    // private sceneState: SceneState;
     
     // データキャッシュ
     private dataCache: DataCache;

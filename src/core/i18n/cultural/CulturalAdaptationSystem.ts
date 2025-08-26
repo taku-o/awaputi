@@ -395,7 +395,7 @@ export class CulturalAdaptationSystem {
         }
 
         try {
-            const _colorSettings = this.currentCulture.settings.colors;
+            // const _colorSettings = this.currentCulture.settings.colors;
             const computedStyle = window.getComputedStyle(element);
             
             // 現在の色を分析

@@ -20,7 +20,7 @@ export interface AnalysisResult {
 export class PlayerBehaviorAnalyzer {
     private playerBehavior: any;
     private sessionStats: any;
-    private longSessionMarked: boolean;
+    // private longSessionMarked: boolean;
 
     constructor() {
         // プレイヤー行動分析

@@ -10,7 +10,7 @@ import { TimingFeedbackSystem } from './timing-adjustment/TimingFeedbackSystem.j
 
 export class TimingAdjustmentManager {
     private gameEngine: any;
-    private isInitialized: boolean;
+    // private isInitialized: boolean;
     private config: any;
     private state: any;
     private timers: any;

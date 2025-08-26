@@ -212,9 +212,9 @@ export class AdvancedGestureRecognitionSystem {
     private gesturePatterns: GesturePatterns;
     private gestureHistory: GestureHistory[];
     private maxHistoryLength: number;
-    private learningData: LearningData;
+    // private learningData: LearningData;
     private longPressTimer: ReturnType<typeof setTimeout> | null;
-    private gestureAnalyzer?: GestureAnalyzer;
+    // private gestureAnalyzer?: GestureAnalyzer;
 
     constructor(gameEngine: GameEngine) {
         this.gameEngine = gameEngine;

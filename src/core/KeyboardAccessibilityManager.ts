@@ -53,7 +53,7 @@ export interface KeyboardReport {
  */
 export class KeyboardAccessibilityManager {
     private accessibilityManager: any;
-    private gameEngine: any;
+    // private gameEngine: any;
     private keyboardManager: any;
     private customizations: KeyboardCustomization;
     private config: KeyboardConfig;

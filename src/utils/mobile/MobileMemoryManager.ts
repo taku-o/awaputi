@@ -190,7 +190,7 @@ interface MemoryStatistics {
 
 export class MobileMemoryManager {
     private errorHandler: ErrorHandler;
-    private configManager: ConfigurationManager;
+    // private configManager: ConfigurationManager;
     private memoryConfig: MemoryConfig;
     private memoryMonitoring: MemoryMonitoring;
 

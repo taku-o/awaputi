@@ -77,8 +77,8 @@ interface MainController {
 }
 
 export class PerformanceThresholdManager {
-    private mainController: MainController;
-    private errorHandler: any;
+    // private mainController: MainController;
+    // private errorHandler: any;
     private thresholdConfig: ThresholdConfig;
     private violations: ThresholdViolation[];
     private violationCounters: Map<string, number>;

@@ -127,7 +127,7 @@ interface ErrorHandler {
 type StabilizationMode = 'conservative' | 'balanced' | 'aggressive';
 export class FrameStabilizer {
     private errorHandler: ErrorHandler;
-    private targetFPS: number;
+    // private targetFPS: number;
     private targetFrameTime: number;
     private frameTimingAnalysis: FrameTimingAnalysis;
     private adaptiveTargeting: AdaptiveTargeting;

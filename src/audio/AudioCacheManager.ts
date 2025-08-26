@@ -126,7 +126,7 @@ interface AudioCacheManagerStatus {
 }
 
 export class AudioCacheManager {
-    private audioContext: AudioContext;
+    // private audioContext: AudioContext;
     private configManager: ConfigurationManager;
     private errorHandler: ErrorHandler;
     // キャッシュ設定

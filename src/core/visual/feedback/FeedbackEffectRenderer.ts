@@ -438,12 +438,12 @@ export function normalizeFrequencyData(data: Uint8Array): number[] {
 }
 
 export class FeedbackEffectRenderer {
-    private mainController: VisualFeedbackManager;
+    // private mainController: VisualFeedbackManager;
     private config: FeedbackRenderConfig;
     private userPreferences: UserRenderPreferences;
-    private dataArray: Uint8Array;
+    // private dataArray: Uint8Array;
     private analyser: AnalyserNode;
-    private canvasContext: CanvasRenderingContext2D;
+    // private canvasContext: CanvasRenderingContext2D;
     private visualCanvas: HTMLCanvasElement;
 
     // Performance tracking

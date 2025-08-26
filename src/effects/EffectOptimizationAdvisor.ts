@@ -133,7 +133,7 @@ interface GameEngineInterface {
 export class EffectOptimizationAdvisor {
     private gameEngine: GameEngineInterface;
     private optimizationHistory: OptimizationHistoryEntry[] = [];
-    private performanceBaseline: any = null;
+    // private performanceBaseline: any = null;
     private optimizationStrategies: Map<string, OptimizationStrategy> = new Map();
 
     constructor(gameEngine: GameEngineInterface) {

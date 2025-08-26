@@ -67,7 +67,7 @@ interface ImportDataFormat {
  */
 export class PerformanceMetricsCollector {
     private mainController: PerformanceDataAnalyzer;
-    private errorHandler: any;
+    // private errorHandler: any;
     private analysisHistory: DataPoint[];
     private calibrationSamples: Map<string, any>[];
 

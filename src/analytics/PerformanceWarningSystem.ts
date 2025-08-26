@@ -4,7 +4,7 @@
  */
 
 export class PerformanceWarningSystem {
-    private realtimeMonitor: any;
+    // private realtimeMonitor: any;
     private options: any;
     private activeWarnings: Map<string, any>;
     private warningHistory: any[];

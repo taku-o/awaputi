@@ -64,7 +64,7 @@ export class ConfigurationParser extends BaseComponent {
     private configSourceDir: string;
     private projectRoot: string;
     private parseCache: Map<string, any>;
-    private parsingStrategies: Record<string, ParsingStrategy>;
+    // private parsingStrategies: Record<string, ParsingStrategy>;
 
     constructor(mainController: MainController) {
         super(mainController, 'ConfigurationParser');

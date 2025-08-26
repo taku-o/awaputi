@@ -30,25 +30,25 @@ interface TouchInfo {
  * 入力管理クラス - ドラッグ操作を含む統一的な入力処理（クロスブラウザ・デバイス対応強化版）
  */
 export class InputManager {
-    private config: BasicConfig;
-    private state: any;
+    // private config: BasicConfig;
+    // private state: any;
     private canvas: HTMLCanvasElement;
     private isDragging: boolean;
     private dragStartPosition: Point;
     private dragCurrentPosition: Point;
-    private draggedBubble: any;
+    // private draggedBubble: any;
     private activeTouches: Map<number, TouchInfo>;
-    private maxTouches: number;
+    // private maxTouches: number;
     private gestureState: GestureState;
     private eventQueue: any[];
-    private isProcessingEvents: boolean;
+    // private isProcessingEvents: boolean;
     private dragThreshold: number = 5;
     private clickThreshold: number = 200;
-    private tapTimeout: number = 300;
-    private isMouseDown: boolean;
+    // private tapTimeout: number = 300;
+    // private isMouseDown: boolean;
     private mouseDownTime: number;
-    private lastTapTime: number;
-    private tapCount: number;
+    // private lastTapTime: number;
+    // private tapCount: number;
 
     constructor(canvas: HTMLCanvasElement) {
         this.canvas = canvas;

@@ -224,7 +224,7 @@ export function validateAccessibilityElement(element: HTMLElement): ElementValid
 }
 
 export class FocusAccessibilitySupport {
-    private mainController: MainController;
+    // private mainController: MainController;
     private config: MainControllerConfig;
     private state: MainControllerState;
     private elements: MainControllerElements;

@@ -355,7 +355,7 @@ export type DataType = 'categoryId' | 'topicId' | 'searchQuery' | 'feedback' | '
  * ヘルプシステムの使用状況を追跡・分析するクラス
  */
 export class HelpAnalytics {
-    private gameEngine: GameEngine;
+    // private gameEngine: GameEngine;
     private loggingSystem: LoggingSystem;
     // 追跡対象イベント
     private events: Map<string, AnalyticsEvent>;
@@ -368,7 +368,7 @@ export class HelpAnalytics {
     // キャッシュ関連
     private contentCache?: Map<string, CacheEntry>;
     private searchCache?: Map<string, CacheEntry>;
-    private cacheConfig?: CacheConfig;
+    // private cacheConfig?: CacheConfig;
     
     // パフォーマンス関連
     private performanceMetrics?: PerformanceMetrics;

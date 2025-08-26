@@ -110,7 +110,7 @@ export class RealTimePerformanceMonitor {
     // Performance event detection
     private eventDetectors: Map<string, EventDetector>;
     private detectedEvents: PerformanceEvent[];
-    private eventThresholds: Map<string, any>;
+    // private eventThresholds: Map<string, any>;
 
     constructor(performanceMonitoringSystem: PerformanceMonitoringSystem) {
         this.performanceMonitoringSystem = performanceMonitoringSystem;
@@ -844,7 +844,7 @@ class MemoryDataCollector implements IDataCollector {
 }
 
 class RenderDataCollector implements IDataCollector {
-    private lastRenderTime: number = 0;
+    // private lastRenderTime: number = 0;
     
     async initialize(): Promise<void> {
         this.lastRenderTime = performance.now();
@@ -882,7 +882,7 @@ class NetworkDataCollector implements IDataCollector {
 }
 
 class InteractionDataCollector implements IDataCollector {
-    private lastInputTime: number = 0;
+    // private lastInputTime: number = 0;
     
     async initialize(): Promise<void> {
         this.lastInputTime = Date.now();
@@ -900,7 +900,7 @@ class InteractionDataCollector implements IDataCollector {
 }
 
 class BatteryDataCollector implements IDataCollector {
-    private battery: any;
+    // private battery: any;
     
     async initialize(): Promise<void> {
         if (navigator.getBattery) {

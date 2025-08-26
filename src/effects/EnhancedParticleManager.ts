@@ -146,15 +146,15 @@ export class EnhancedParticleManager extends ParticleManager {
     private qualityManager: ParticleQualityManagerInterface;
     private physicsEngine: ParticlePhysicsEngineInterface;
     // 外部依存システム
-    private qualityController: EffectQualityController;
+    // private qualityController: EffectQualityController;
     private performanceMonitor: EffectPerformanceMonitor;
     // パフォーマンス監視用
     private lastPerformanceCheck: number | null = null;
     // 既存エフェクトレンダラー
-    private bubbleRenderer: EffectRenderer;
-    private comboRenderer: EffectRenderer;
-    private specialRenderer: EffectRenderer;
-    private seasonalRenderer: EffectRenderer;
+    // private bubbleRenderer: EffectRenderer;
+    // private comboRenderer: EffectRenderer;
+    // private specialRenderer: EffectRenderer;
+    // private seasonalRenderer: EffectRenderer;
     // Particles array (from base class, but typed)
     protected particles: Particle[] = [];
     

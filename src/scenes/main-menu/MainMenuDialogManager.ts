@@ -78,7 +78,7 @@ export class MainMenuDialogManager {
      */
     renderUserInfoContent(context: CanvasRenderingContext2D, playerData: PlayerData): void {
         try {
-            const canvas = this.gameEngine.canvas as HTMLCanvasElement;
+            // const canvas = this.gameEngine.canvas as HTMLCanvasElement;
 
             context.font = '20px Arial';
             context.textAlign = 'left';

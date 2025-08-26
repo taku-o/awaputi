@@ -13,7 +13,7 @@ import { BubbleType, Position, BubbleConfig } from '../../src/types/bubble.js';
 import { MockCanvasRenderingContext2D } from '../../src/types/test.js';
 
 describe('Bubble Class Tests', () => {
-    let mockGameEngine: any;
+    // let mockGameEngine: any;
     let mockContext: Partial<MockCanvasRenderingContext2D>;
     
     beforeEach(() => {

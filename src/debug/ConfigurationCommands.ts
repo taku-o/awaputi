@@ -74,7 +74,7 @@ interface ValidationResult {
 }
 
 export class ConfigurationCommands {
-    private gameEngine: GameEngine;
+    // private gameEngine: GameEngine;
     private configManager: ConfigurationManager;
     private originalValues: Map<string, any>;
     private changeHistory: ChangeHistoryEntry[];

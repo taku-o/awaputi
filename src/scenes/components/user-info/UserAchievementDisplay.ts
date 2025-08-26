@@ -52,7 +52,7 @@ export class UserAchievementDisplay {
     private achievementStatsUI: AchievementStatsUI | null = null;
     
     // 実績ヘルプシステム
-    private achievementHelpSystem: AchievementHelpSystem | null = null;
+    // private achievementHelpSystem: AchievementHelpSystem | null = null;
     
     // レイアウト設定
     private readonly contentPadding: number = 20;
@@ -299,7 +299,7 @@ export class UserAchievementDisplay {
             const progressBarX = iconX + iconSize + 15;
             const progressBarY = y + 50;
             const progressBarWidth = width - (progressBarX - x) - 100;
-            const progressBarHeight = 8;
+            // const progressBarHeight = 8;
             
             this.renderEnhancedProgressBar(context, progressBarX, progressBarY, progressBarWidth, achievement.progress || 0);
             

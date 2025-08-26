@@ -112,7 +112,7 @@ interface MainController {
 
 export class PerformanceReportGenerator {
     private mainController: MainController;
-    private errorHandler: any;
+    // private errorHandler: any;
     private insights: Insight[];
     private insightGenerators: Map<string, InsightGenerator>;
 

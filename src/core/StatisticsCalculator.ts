@@ -10,7 +10,7 @@ import { ErrorHandler } from '../utils/ErrorHandler.js';
  * 統計計算クラス
  */
 export class StatisticsCalculator {
-    private trendPeriods: any;
+    // private trendPeriods: any;
 
     constructor() {
         this.trendPeriods = {
@@ -125,7 +125,7 @@ export class StatisticsCalculator {
     calculateDetailedEfficiency(statistics: any): any {
         const effStats = statistics.efficiencyStats || {};
         const totalTime = statistics.totalPlayTime || 0;
-        const _totalBubbles = statistics.totalBubblesPopped || 0;
+        // const _totalBubbles = statistics.totalBubblesPopped || 0;
         
         return {
             bubblesPerMinute: effStats.bubblesPerMinute || 0,
@@ -307,7 +307,7 @@ export class StatisticsCalculator {
         }
         
         const sorted = [...values].sort((a, b) => a - b);
-        const _len = sorted.length;
+        // const _len = sorted.length;
         
         return {
             p25: this.getPercentile(sorted, 25),

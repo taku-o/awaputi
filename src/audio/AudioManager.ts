@@ -124,7 +124,7 @@ export class AudioManager {
     public accessibilitySupport: any;
     
     // シーン管理
-    private currentScene?: string;
+    // private currentScene?: string;
     
     // ログ制御用
     private lastLoggedDisableState: boolean | null;

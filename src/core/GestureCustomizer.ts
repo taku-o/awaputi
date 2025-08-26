@@ -16,7 +16,7 @@ import { GestureAdaptationSystem } from './gesture-customizer/GestureAdaptationS
  */
 export class GestureCustomizer {
     private config: BasicConfig;
-    private motorAccessibilityManager: any;
+    // private motorAccessibilityManager: any;
     private accessibilityManager: any;
     private gameEngine: any;
     private recognitionState: any;

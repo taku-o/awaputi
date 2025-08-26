@@ -5,7 +5,7 @@
 
 export class PWATestExecutor {
     private mainFramework: any;
-    private testSuite: Map<string, any>;
+    // private testSuite: Map<string, any>;
     private timeouts: Map<string, NodeJS.Timeout>;
     public state: {
         isRunning: boolean;

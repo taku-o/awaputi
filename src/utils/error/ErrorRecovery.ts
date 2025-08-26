@@ -128,7 +128,7 @@ declare global {
 
 export class ErrorRecovery {
     private mainController: MainController;
-    private maxRecoveryAttempts: number;
+    // private maxRecoveryAttempts: number;
     private recoveryAttempts: Map<string, number>;
     private recoveryStrategies: Map<string, RecoveryStrategy>;
     private fallbackState: FallbackState;

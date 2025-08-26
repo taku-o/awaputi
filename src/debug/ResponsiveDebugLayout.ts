@@ -35,7 +35,7 @@ export class ResponsiveDebugLayout {
     private debugInterface: DebugInterface;
     private currentBreakpoint: BreakpointName | null;
     private breakpoints: Breakpoints;
-    private orientationLock: boolean;
+    // private orientationLock: boolean;
     private touchDevice: boolean;
     private mediaQueries!: MediaQueries;
     private resizeHandler?: () => void;

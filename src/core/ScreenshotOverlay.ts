@@ -107,7 +107,7 @@ interface Position {
 }
 
 export class ScreenshotOverlay {
-    private gameEngine: any;
+    // private gameEngine: any;
     private config: OverlayConfig;
     private cache: {
         fonts: Map<string, any>;

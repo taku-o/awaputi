@@ -70,7 +70,7 @@ interface ContextStatistics {
 }
 
 export class AudioEffectContextManager {
-    private configManager: ConfigurationManager;
+    // private configManager: ConfigurationManager;
     private errorHandler: ErrorHandler;
     // オーディオコンテキスト管理
     private audioContext: AudioContext | null = null;

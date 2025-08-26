@@ -289,8 +289,8 @@ interface BatteryEfficiencyTester {
 }
 
 export class PerformanceTestSuite {
-    private testResults: Map<string, TestResult>;
-    private baselines: Map<string, BaselineConfig>;
+    // private testResults: Map<string, TestResult>;
+    // private baselines: Map<string, BaselineConfig>;
     private initialized: boolean;
     private currentSession: TestSession | null;
     // サブコンポーネント
@@ -298,10 +298,10 @@ export class PerformanceTestSuite {
     private metricsCollector: PerformanceMetricsCollector;
     private testReporter: PerformanceTestReporter;
     // 既存のヘルパークラス（互換性のため保持）
-    private testRunner: PerformanceTestRunner;
-    private benchmarkComparator: BenchmarkComparator;
-    private regressionDetector: RegressionDetector;
-    private continuousMonitor: ContinuousPerformanceMonitor;
+    // private testRunner: PerformanceTestRunner;
+    // private benchmarkComparator: BenchmarkComparator;
+    // private regressionDetector: RegressionDetector;
+    // private continuousMonitor: ContinuousPerformanceMonitor;
 
     constructor() {
         this.testResults = new Map();

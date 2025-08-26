@@ -134,7 +134,7 @@ interface ErrorHandler {
 
 export class AudioVolumeController {
     private audioContext: AudioContext;
-    private configManager: ConfigurationManager;
+    // private configManager: ConfigurationManager;
     private errorHandler: ErrorHandler;
     private loggingSystem: LoggingSystem;
     // フェード管理

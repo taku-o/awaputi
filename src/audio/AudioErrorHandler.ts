@@ -166,7 +166,7 @@ interface ErrorData {
 export class AudioErrorHandler {
     private audioManager: AudioManager;
     private configManager: ConfigurationManager;
-    private localizationManager: LocalizationManager;
+    // private localizationManager: LocalizationManager;
     private globalErrorHandler: ErrorHandler;
     
     // エラー統計

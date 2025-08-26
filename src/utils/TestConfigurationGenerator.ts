@@ -102,15 +102,15 @@ interface GenerationStatistics {
 
 export class TestConfigurationGenerator {
     private components: Map<string, Component>;
-    private initialized: boolean;
+    // private initialized: boolean;
     private errorHandler: ErrorHandler;
-    private configurationManager: ConfigurationManager;
+    // private configurationManager: ConfigurationManager;
     private projectRoot: string;
-    private testsDir: string;
-    private configSourceDir: string;
-    private backupEnabled: boolean;
-    private dryRun: boolean;
-    private testFilePatterns: TestFilePatterns;
+    // private testsDir: string;
+    // private configSourceDir: string;
+    // private backupEnabled: boolean;
+    // private dryRun: boolean;
+    // private testFilePatterns: TestFilePatterns;
     private generatedExpectations: Map<string, any>;
 
     constructor(options: TestConfigurationOptions = {}) {

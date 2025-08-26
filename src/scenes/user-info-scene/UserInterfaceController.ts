@@ -61,7 +61,7 @@ interface SceneState {
 export class UserInterfaceController {
     private gameEngine: GameEngine;
     private eventBus: EventBus;
-    private sceneState: SceneState;
+    // private sceneState: SceneState;
     
     // UI状態管理
     private uiState: UIState;

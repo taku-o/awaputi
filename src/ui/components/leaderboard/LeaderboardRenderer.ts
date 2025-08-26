@@ -146,8 +146,8 @@ interface EntryDetail {
 }
 
 export class LeaderboardRenderer {
-    private gameEngine: GameEngine;
-    private errorHandler: ErrorHandler;
+    // private gameEngine: GameEngine;
+    // private errorHandler: ErrorHandler;
     // レンダリング設定
     private renderConfig: RenderConfig = {
         colors: {

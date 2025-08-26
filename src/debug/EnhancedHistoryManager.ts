@@ -65,7 +65,7 @@ type ExportFormat = 'json' | 'csv' | 'text';
 type ImportFormat = 'json';
 
 export class EnhancedHistoryManager {
-    private console: Console;
+    // private console: Console;
     private history: HistoryEntry[];
     private currentIndex: number;
     private maxHistorySize: number;

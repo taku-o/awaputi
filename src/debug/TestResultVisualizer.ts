@@ -31,7 +31,7 @@ interface TestSummary {
 }
 
 export class TestResultVisualizer {
-    private testSupportTools: TestSupportTools;
+    // private testSupportTools: TestSupportTools;
     private chartGenerator: TestChartGenerator;
     private dataVisualizer: TestDataVisualizer;
     private container: HTMLElement | null = null;

@@ -9,7 +9,7 @@ export class AnalyticsErrorNotificationSystem {
     private errorTypes: Map<string, any>;
     private recoveryAttempts: Map<string, any>;
     private notificationContainer: HTMLElement | null;
-    private isInitialized: boolean;
+    // private isInitialized: boolean;
 
     constructor(options: any = {}) {
         this.options = {

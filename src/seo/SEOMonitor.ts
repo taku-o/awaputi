@@ -147,7 +147,7 @@ export class SEOMonitor {
     private config: MonitoringConfig;
     private alertCallbacks: AlertCallback[];
     private isMonitoring: boolean;
-    private lastHealthCheck: HealthCheckResult | null;
+    // private lastHealthCheck: HealthCheckResult | null;
     private thresholds: Thresholds;
     
     // 専門化されたコンポーネント

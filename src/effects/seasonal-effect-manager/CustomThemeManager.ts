@@ -68,7 +68,7 @@ export interface StorageData {
 }
 export class CustomThemeManager {
     private customThemes: Map<string, CustomTheme>;
-    private userThemes: Map<string, CustomTheme>;
+    // private userThemes: Map<string, CustomTheme>;
     private themeHistory: ThemeHistoryEntry[];
     private readonly maxHistorySize: number;
     private readonly storageKey: string;

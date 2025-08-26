@@ -425,7 +425,7 @@ export class FeedbackTriggerHandler {
     private eventListeners: EventListenerState;
     private statistics: TriggerStatistics;
     private performanceMetrics: TriggerPerformanceMetrics;
-    private activeTimestamp: number = 0;
+    // private activeTimestamp: number = 0;
 
     constructor(mainController: VisualFeedbackManager) {
         this.mainController = mainController;

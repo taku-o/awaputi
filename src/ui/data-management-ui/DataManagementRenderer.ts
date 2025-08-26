@@ -126,7 +126,7 @@ export class UILayoutManager {
     private layoutConfig: LayoutConfig;
     private colors: ColorTheme;
     private canvas: HTMLCanvasElement | null = null;
-    private ctx: CanvasRenderingContext2D | null = null;
+    // private ctx: CanvasRenderingContext2D | null = null;
 
     constructor() {
         this.layoutConfig = {
@@ -611,7 +611,7 @@ export class ViewRenderer {
 
         // Auto backup status
         const autoStatus = backupStatus.autoBackupEnabled ? 'Enabled' : 'Disabled';
-        const statusColor = backupStatus.autoBackupEnabled ? colors.success : colors.warning;
+        // const statusColor = backupStatus.autoBackupEnabled ? colors.success : colors.warning;
 
         this.uiRenderer.drawStatusIndicator(x + width - 120, y + padding + 25,
             backupStatus.autoBackupEnabled ? 'success' : 'warning',

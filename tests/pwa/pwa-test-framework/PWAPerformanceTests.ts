@@ -4,7 +4,7 @@
  */
 
 export class PWAPerformanceTests {
-    private mainFramework: any;
+    // private mainFramework: any;
     private executor: any;
 
     constructor(mainFramework: any) {

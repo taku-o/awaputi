@@ -456,7 +456,7 @@ class GrowthTrendsWidget implements Widget {
  */
 class PlayStyleWidget implements Widget {
     private statisticsManager: StatisticsManager;
-    private chartRenderer: ChartRenderer;
+    // private chartRenderer: ChartRenderer;
 
     constructor(statisticsManager: StatisticsManager, chartRenderer: ChartRenderer) {
         this.statisticsManager = statisticsManager;
@@ -597,7 +597,7 @@ class PerformanceChartWidget implements Widget {
  */
 class StatisticsBreakdownWidget implements Widget {
     private statisticsManager: StatisticsManager;
-    private chartRenderer: ChartRenderer;
+    // private chartRenderer: ChartRenderer;
 
     constructor(statisticsManager: StatisticsManager, chartRenderer: ChartRenderer) {
         this.statisticsManager = statisticsManager;

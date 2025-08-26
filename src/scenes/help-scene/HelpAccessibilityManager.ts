@@ -47,14 +47,14 @@ export class HelpAccessibilityManager {
     private highContrastMode: boolean;
     private largeTextMode: boolean;
     // 音声フィードバック
-    private audioFeedbackEnabled: boolean;
+    // private audioFeedbackEnabled: boolean;
     private announceNavigation: boolean;
     // IME対応
-    private isComposing: boolean = false;
+    // private isComposing: boolean = false;
     // 詳細設定
-    private enableDetailedDescriptions: boolean = false;
-    private enableNavigationAnnouncements: boolean = false;
-    private enableProgressAnnouncements: boolean = false;
+    // private enableDetailedDescriptions: boolean = false;
+    // private enableNavigationAnnouncements: boolean = false;
+    // private enableProgressAnnouncements: boolean = false;
     constructor(gameEngine: GameEngine, accessibilityManager?: AccessibilityManager) {
         this.gameEngine = gameEngine;
         this.accessibilityManager = accessibilityManager;

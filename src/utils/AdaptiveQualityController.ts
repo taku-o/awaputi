@@ -162,7 +162,7 @@ interface CurrentState {
  */
 export class AdaptiveQualityController {
     private errorHandler: ErrorHandler;
-    private configManager: any;
+    // private configManager: any;
     private decisionAnalyzer: QualityDecisionAnalyzer;
     private transitionController: QualityTransitionController;
     private validationManager: QualityValidationManager;

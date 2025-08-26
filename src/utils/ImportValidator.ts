@@ -111,7 +111,7 @@ interface ValidationSummary {
 }
 
 export class ImportValidator {
-    private cache: Map<string, any>;
+    // private cache: Map<string, any>;
     private validationRules: ValidationRules;
     
     constructor() {

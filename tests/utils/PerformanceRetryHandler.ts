@@ -9,7 +9,7 @@ import { getPerformanceThresholds, validatePerformanceResult } from '../config/p
 export class PerformanceRetryHandler {
   private options: any;
   private testHistory: Map<string, any[]>;
-  private performanceMetrics: Map<string, any>;
+  // private performanceMetrics: Map<string, any>;
   private failurePatterns: Map<string, any>;
 
   constructor(options: any = {}) {

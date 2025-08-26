@@ -47,8 +47,8 @@ interface HeadingStructure {
 }
 
 export class PerformanceValidator {
-    private mainController: MainController;
-    private baseUrl: string;
+    // private mainController: MainController;
+    // private baseUrl: string;
     
     constructor(mainController: MainController) {
         this.mainController = mainController;

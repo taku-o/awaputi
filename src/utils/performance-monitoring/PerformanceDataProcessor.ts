@@ -89,7 +89,7 @@ interface MainController {
 
 export class PerformanceDataProcessor {
     private mainController: MainController;
-    private errorHandler: any;
+    // private errorHandler: any;
     private trends: Map<string, TrendData>;
     private statisticalData: Map<string, StatisticalData>;
     private statisticalProcessors: Map<string, StatisticalProcessor>;

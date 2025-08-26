@@ -31,7 +31,7 @@ export interface GameEngineWithPlayerData extends GameEngine {
 }
 
 export class UsernameDialog extends ScenesBaseDialog {
-    private title: string;
+    // private title: string;
     private maxUsernameLength: number;
     private inputActive: boolean;
     private cursorPosition: number;

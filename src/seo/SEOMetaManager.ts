@@ -116,14 +116,14 @@ type DynamicMetaHandler = (gameState: GameState) => Promise<string | null>;
 
 export class SEOMetaManager {
     private localizationManager: LocalizationManager | null;
-    private gameConfig: GameConfig | null;
-    private baseUrl: string;
+    // private gameConfig: GameConfig | null;
+    // private baseUrl: string;
     private currentLang: LanguageCode;
     private metaCache: Map<string, string>;
     private dynamicMetaHandlers: Map<string, DynamicMetaHandler>;
     private initialized: boolean;
     private debouncedUpdate: (context: MetadataContext) => void;
-    private currentLanguage?: string;
+    // private currentLanguage?: string;
     
     constructor(localizationManager: LocalizationManager | null = null, gameConfig: GameConfig | null = null) {
         this.localizationManager = localizationManager;

@@ -95,7 +95,7 @@ export class BGMSystem {
     // 状態管理（BGMPlayerと同期）
     private isPlaying: boolean;
     private isPaused: boolean;
-    private currentVolume: number;
+    // private currentVolume: number;
     // 設定監視のID管理
     private configWatchers: Set<string>;
     // ログ制御用

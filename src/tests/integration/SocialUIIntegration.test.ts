@@ -279,8 +279,8 @@ class MockShareButton {
 }
 
 // Global mocks and variables
-let mockGameEngine: MockGameEngine;
-let mockStatisticsManager: MockStatisticsManager;
+// let mockGameEngine: MockGameEngine;
+// let mockStatisticsManager: MockStatisticsManager;
 let mockAchievementManager: MockAchievementManager;
 let mockSocialSharingManager: SocialSharingManager;
 let mockNavigator: MockNavigator;

@@ -112,7 +112,7 @@ interface Baseline {
     stdDev: number;
 }
 export class DiagnosticAnalyzer {
-    private mainController: MainController;
+    // private mainController: MainController;
     private diagnosticEngine: DiagnosticEngine;
     private bottleneckIdentifier: BottleneckIdentifier;
     private issueAnalyzer: IssueAnalyzer;

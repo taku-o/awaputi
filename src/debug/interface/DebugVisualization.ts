@@ -67,7 +67,7 @@ export class DebugVisualization extends BaseComponent {
     private currentTheme: string;
     private responsiveLayout: ResponsiveLayout | null;
     private breakpoints: Breakpoints;
-    private orientationData: OrientationData;
+    // private orientationData: OrientationData;
 
     constructor(mainController: MainController) {
         super(mainController, 'DebugVisualization');

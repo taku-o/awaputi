@@ -159,8 +159,8 @@ export class EnhancedLocalizationManager extends LocalizationManager {
     private performanceMetrics: PerformanceMetrics;
     
     // 設定
-    private translationMode: TranslationMode;
-    private loadingStrategy: LoadingStrategy;
+    // private translationMode: TranslationMode;
+    // private loadingStrategy: LoadingStrategy;
     
     // Protected properties from base class
     protected translations?: Map<string, any>;

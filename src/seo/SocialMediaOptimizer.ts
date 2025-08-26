@@ -167,7 +167,7 @@ type SupportedLanguage = 'ja' | 'en' | 'zh-CN' | 'zh-TW' | 'ko';
 
 export class SocialMediaOptimizer {
     private localizationManager: LocalizationManager | null;
-    private gameConfig: GameConfig | null;
+    // private gameConfig: GameConfig | null;
     private platformSpecs: Map<string, PlatformSpec>;
     private imageCache: Map<string, string>;
     private shareCache: Map<string, OptimizedContent>;

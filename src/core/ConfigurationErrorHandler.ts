@@ -49,8 +49,8 @@ export class ConfigurationErrorHandler {
     private errorTypes = ConfigErrorType;
     private recoveryStrategies: Map<ConfigErrorType, RecoveryStrategy>;
     private errorStats: ErrorStats;
-    private recoveryAttempts: Map<string, number>;
-    private maxRecoveryAttempts: number = 3;
+    // private recoveryAttempts: Map<string, number>;
+    // private maxRecoveryAttempts: number = 3;
     private fallbackState: FallbackState;
     private logger: any;
 

@@ -6,7 +6,7 @@ export class TimeSeriesDataManager {
     private dailyData: Map<string, any>;
     private weeklyData: Map<string, any>;
     private monthlyData: Map<string, any>;
-    private compressionManager: DataCompressionManager;
+    // private compressionManager: DataCompressionManager;
     private archiveManager: DataArchiveManager;
     private maxDataPoints: any;
     private currentPeriodKeys: any;
@@ -601,7 +601,7 @@ export class TimeSeriesDataManager {
  * データ圧縮管理クラス
  */
 class DataCompressionManager {
-    private compressionThreshold: number;
+    // private compressionThreshold: number;
 
     constructor() {
         this.compressionThreshold = 1000; // データポイント数

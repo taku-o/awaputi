@@ -10,7 +10,7 @@ import { test, expect } from '@playwright/test';
 // テスト設定
 const TEST_URL = 'http://localhost:8000';
 const GAME_LANGUAGES = ['ja', 'en'];
-const BUBBLE_SPAWN_WAIT = 2000;
+// const BUBBLE_SPAWN_WAIT = 2000;
 const GAME_OVER_WAIT = 3000;
 
 // ヘルパー関数

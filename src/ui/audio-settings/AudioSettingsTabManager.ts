@@ -35,7 +35,7 @@ interface TabRenderers {
  */
 export class AudioSettingsTabManager {
     private audioManager: AudioManager;
-    private configManager: ConfigurationManager;
+    // private configManager: ConfigurationManager;
     private localizationManager: LocalizationManager;
     private errorHandler: ErrorHandler;
     

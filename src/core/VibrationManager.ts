@@ -14,7 +14,7 @@ export class VibrationManager {
     private vibrationQueue: any[];
     private activePattern: any | null;
     private lastVibrationTime: number;
-    private vibrationController: any | null;
+    // private vibrationController: any | null;
     private gamepads: Map<number, any>;
     private gamepadVibrationSupport: Map<number, boolean>;
     private stats: any;

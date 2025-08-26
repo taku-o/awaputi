@@ -75,7 +75,7 @@ interface FeedbackSystems {
 }
 
 export class MobileAccessibilityManager {
-    private gameEngine: any;
+    // private gameEngine: any;
     private errorHandler: any;
     private validator: MobileAccessibilityValidator;
     private accessibilityConfig: AccessibilityConfig;

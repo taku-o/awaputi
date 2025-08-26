@@ -372,7 +372,7 @@ export class FeedbackConfigManager {
     private userPreferences: UserPreferences;
     private feedbackElements: Map<string, HTMLElement>;
     private gameEngine: GameEngine;
-    private audioAccessibilityManager: AudioAccessibilityManager;
+    // private audioAccessibilityManager: AudioAccessibilityManager;
 
     // DOM要素
     private feedbackContainer: HTMLElement | null = null;

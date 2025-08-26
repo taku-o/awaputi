@@ -73,8 +73,8 @@ export class BGMGenerator {
     private audioContext: AudioContext;
     private scales: Scales;
     private chordProgressions: ChordProgressions;
-    private rhythmPatterns: RhythmPatterns;
-    private baseFrequency: number;
+    // private rhythmPatterns: RhythmPatterns;
+    // private baseFrequency: number;
 
     constructor(audioContext: AudioContext) {
         this.audioContext = audioContext;

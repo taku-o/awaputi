@@ -100,7 +100,7 @@ export class AudioSettingsTabRenderers {
     private uiComponentFactory: UIComponentFactory;
     private audioTestPanel: AudioTestPanel;
     private localizationManager: LocalizationManager;
-    private errorHandler: ErrorHandler;
+    // private errorHandler: ErrorHandler;
     
     constructor(
         audioManager: AudioManager, 

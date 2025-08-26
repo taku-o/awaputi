@@ -97,7 +97,7 @@ export class AudioFeedbackManager {
     private errorHandler: any;
     private vibrationManager: VibrationManager | null;
     private colorIndicator: HTMLElement | null;
-    private colorMappings: ColorMappings;
+    // private colorMappings: ColorMappings;
     private hapticSettings: HapticSettings;
     
     constructor(mainController: MainController) {

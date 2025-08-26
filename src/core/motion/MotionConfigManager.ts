@@ -324,9 +324,9 @@ export function createDefaultLevelSettings(): Record<MotionLevel, LevelSettings>
 
 export class MotionConfigManager {
     private motionManager: MotionManager;
-    private visualAccessibilityManager: VisualAccessibilityManager;
-    private accessibilityManager: AccessibilityManager;
-    private gameEngine: GameEngine;
+    // private visualAccessibilityManager: VisualAccessibilityManager;
+    // private accessibilityManager: AccessibilityManager;
+    // private gameEngine: GameEngine;
     
     // 設定管理
     private config: MotionConfig;

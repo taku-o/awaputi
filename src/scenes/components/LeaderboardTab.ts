@@ -45,7 +45,7 @@ interface SceneState {
 export class LeaderboardTab {
     private gameEngine: GameEngine;
     private eventBus: EventBus;
-    private sceneState: SceneState;
+    // private sceneState: SceneState;
     
     // リーダーボードUIコンポーネント
     private leaderboardUI: LeaderboardUI | null = null;

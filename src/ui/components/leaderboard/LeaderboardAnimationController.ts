@@ -175,7 +175,7 @@ interface UpdateConfig {
 type EasingType = 'linear' | 'easeInQuad' | 'easeOutQuad' | 'easeInOutQuad' | 'easeInCubic' | 'easeOutCubic' | 'easeInOutCubic' | 'easeOutBounce' | 'easeOutQuart';
 
 export class LeaderboardAnimationController {
-    private gameEngine: GameEngine;
+    // private gameEngine: GameEngine;
     private errorHandler: ErrorHandler;
     // アニメーション設定
     private animationConfig: AnimationConfig = {

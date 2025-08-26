@@ -132,7 +132,7 @@ export interface TutorialValidationEngine {
 export class TutorialManager {
     private gameEngine: GameEngine;
     private loggingSystem: LoggingSystem;
-    private cacheSystem: CacheSystem;
+    // private cacheSystem: CacheSystem;
     private contentLoader: ContentLoader;
     private tutorialOverlay: TutorialOverlay;
     

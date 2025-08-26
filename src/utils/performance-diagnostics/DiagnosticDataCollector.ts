@@ -94,7 +94,7 @@ interface MainController {
 }
 
 export class DiagnosticDataCollector {
-    private mainController: MainController;
+    // private mainController: MainController;
     private collecting: boolean;
     private samples: DataSample[];
     private metrics: CollectionMetrics;
@@ -102,7 +102,7 @@ export class DiagnosticDataCollector {
     private endTime: number | null;
     private collectionInterval: NodeJS.Timeout | null;
     private lastFrameTime: number | null;
-    private maxSamples?: number;
+    // private maxSamples?: number;
 
     constructor(mainController: MainController) {
         this.mainController = mainController;

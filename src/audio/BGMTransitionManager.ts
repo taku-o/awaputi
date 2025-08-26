@@ -80,7 +80,7 @@ interface TransitionState {
  * BGMトランジション管理クラス - 高度なBGM遷移制御とフェード機能
  */
 export class BGMTransitionManager {
-    private audioContext: AudioContext;
+    // private audioContext: AudioContext;
     private bgmSystem: BGMSystem;
     // トランジション状態
     private isTransitioning: boolean = false;

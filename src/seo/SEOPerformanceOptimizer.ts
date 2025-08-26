@@ -51,7 +51,7 @@ interface LoadingTask {
 }
 
 export class SEOPerformanceOptimizer {
-    private baseUrl: string;
+    // private baseUrl: string;
     private imageCache: Map<string, string>;
     private metadataCache: Map<string, any>;
     private compressionCache: Map<string, OptimizationResult>;

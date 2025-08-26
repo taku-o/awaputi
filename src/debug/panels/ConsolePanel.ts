@@ -33,8 +33,8 @@ interface OutputEntry {
 }
 
 export class ConsolePanel {
-    private gameEngine: GameEngine;
-    private debugInterface: DebugInterface;
+    // private gameEngine: GameEngine;
+    // private debugInterface: DebugInterface;
     private element: HTMLElement | null;
     private developerConsole?: DeveloperConsole;
     private outputElement?: HTMLElement;

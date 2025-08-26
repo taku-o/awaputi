@@ -76,8 +76,8 @@ export class BGMPlayer {
     private fadeGainNode: GainNode | null = null;
     // ループ制御
     private loopEnabled: boolean = true;
-    private loopStartTime: number = 0;
-    private loopEndTime: number | null = null;
+    // private loopStartTime: number = 0;
+    // private loopEndTime: number | null = null;
     private crossfadeTime: number = 0.5; // ループ時のクロスフェード時間
     
     // 予約システム（次のトラック）

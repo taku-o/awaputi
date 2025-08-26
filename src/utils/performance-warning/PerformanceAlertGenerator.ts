@@ -100,7 +100,7 @@ interface PriorityDistribution {
 type Priority = 'critical' | 'high' | 'medium' | 'low';
 
 export class PerformanceAlertGenerator {
-    private performanceWarningSystem: any;
+    // private performanceWarningSystem: any;
     private errorHandler: any;
     private alertConfig: AlertConfig;
     private alertTemplates: Map<string, AlertTemplate>;

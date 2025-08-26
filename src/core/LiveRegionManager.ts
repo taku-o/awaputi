@@ -5,9 +5,9 @@ import { getErrorHandler } from '../utils/ErrorHandler.js';
  * リアルタイムスクリーンリーダー通知の包括的な管理を提供
  */
 export class LiveRegionManager {
-    private screenReaderManager: any;
+    // private screenReaderManager: any;
     private accessibilityManager: any;
-    private gameEngine: any;
+    // private gameEngine: any;
     private config: any;
     private liveRegions: Map<string, HTMLElement>;
     private messageQueue: any[];

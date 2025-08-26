@@ -108,7 +108,7 @@ declare const performance: ExtendedPerformance;
  * エフェクトカリングを行います。
  */
 export class EffectPerformanceMonitor {
-    private errorHandler: ErrorHandler;
+    // private errorHandler: ErrorHandler;
     private qualityController: EffectQualityController;
     // パフォーマンス監視設定
     private monitoringEnabled: boolean = true;

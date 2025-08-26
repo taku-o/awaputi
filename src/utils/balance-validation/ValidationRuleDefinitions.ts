@@ -84,7 +84,7 @@ interface RuleDefinitionOptions {
 }
 
 export class ValidationRuleDefinitions {
-    private mainController: MainController;
+    // private mainController: MainController;
     private rules: Map<string, RuleDefinition>;
     public ruleCategories: RuleCategories;
     

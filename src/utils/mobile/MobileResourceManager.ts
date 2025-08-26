@@ -123,7 +123,7 @@ interface ResourceUsageStats {
 
 export class MobileResourceManager {
     private errorHandler: ErrorHandler;
-    private configManager: ConfigurationManager;
+    // private configManager: ConfigurationManager;
     private resourceConfig: ResourceConfig;
     private resourceMonitoring: ResourceMonitoring;
 

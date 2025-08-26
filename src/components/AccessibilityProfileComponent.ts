@@ -68,7 +68,7 @@ interface ProfileInfo {
 export class AccessibilityProfileComponent {
     private gameEngine: GameEngine;
     private errorHandler: ErrorHandler;
-    private localizationManager: LocalizationManager;
+    // private localizationManager: LocalizationManager;
     private profiles: AccessibilityProfile[];
     private currentProfile: string;
     

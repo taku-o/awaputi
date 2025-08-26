@@ -109,7 +109,7 @@ interface StyleObject {
 export class SettingsImportExportComponent {
     private gameEngine: GameEngine;
     private errorHandler: ErrorHandler;
-    private localizationManager: LocalizationManager;
+    // private localizationManager: LocalizationManager;
     
     // ファイル操作設定
     private readonly SUPPORTED_FORMATS: string[];

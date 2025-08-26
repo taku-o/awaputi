@@ -250,7 +250,7 @@ class PerformanceMetrics {
     }
 }
 export class AudioPerformanceMonitor {
-    private audioContext: AudioContext;
+    // private audioContext: AudioContext;
     private audioManager: AudioManager;
     private configManager: ConfigurationManager;
     // 監視設定

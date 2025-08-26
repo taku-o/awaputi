@@ -15,7 +15,7 @@ export class EnhancedTouchManager {
     private config: BasicConfig = {};
     private canvas: any;
     private gameEngine: any;
-    private configManager: any;
+    // private configManager: any;
     private errorHandler: any;
     private touchSensitivity: number;
     private multiTouchEnabled: boolean;
@@ -24,7 +24,7 @@ export class EnhancedTouchManager {
     private touchPool: any;
     private accidentalTouchPrevention: any;
     private callbacks: any;
-    private enable3DTouch: boolean = false;
+    // private enable3DTouch: boolean = false;
 
     constructor(canvas: any, gameEngine: any) {
         this.canvas = canvas;

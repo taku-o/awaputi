@@ -541,7 +541,7 @@ class ErrorSeverityCalculator {
  */
 class ErrorPatternAnalyzer {
     private errorHistory: ErrorHistoryEntry[];
-    private patterns: Map<string, any>;
+    // private patterns: Map<string, any>;
     private maxHistorySize: number;
 
     constructor() {

@@ -11,7 +11,7 @@ export class StatisticsErrorHandler {
     private errorPatterns: Map<string, number>;
     private recoveryStrategies: Map<string, Function>;
     private safeModeFeatures: any;
-    private fallbackData: any;
+    // private fallbackData: any;
     private notificationCallbacks: Set<Function>;
     private alertSystem: any;
 

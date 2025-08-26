@@ -82,7 +82,7 @@ export class AudioPlaybackController {
     // AudioContext・ノード（外部から注入される）
     private audioContext: AudioContext | null;
     private sfxGainNode: GainNode | null;
-    private masterGainNode: GainNode | null;
+    // private masterGainNode: GainNode | null;
     // 音響バッファ（外部から注入される）
     private soundBuffers: Map<string, AudioBuffer> | null;
     

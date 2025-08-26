@@ -109,10 +109,10 @@ interface Themes {
 export class MobileShareUI {
     private mobileSocialOptimizer: MobileSocialOptimizer;
     private mobileWebShareHandler: MobileWebShareHandler;
-    private isInitialized: boolean = false;
+    // private isInitialized: boolean = false;
     private currentDialog: HTMLElement | null = null;
     private currentBottomSheet: HTMLElement | null = null;
-    private gestureState: any = null;
+    // private gestureState: any = null;
     
     // UI設定
     private config: Config = {
@@ -152,7 +152,7 @@ export class MobileShareUI {
         }
     };
     
-    private currentTheme: 'light' | 'dark' = 'light';
+    // private currentTheme: 'light' | 'dark' = 'light';
 
     constructor(mobileSocialOptimizer: MobileSocialOptimizer, mobileWebShareHandler: MobileWebShareHandler) {
         this.mobileSocialOptimizer = mobileSocialOptimizer;

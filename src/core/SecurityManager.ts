@@ -90,7 +90,7 @@ interface KeyManagerStatus {
  * - GDPR準拠機能
  */
 export class SecurityManager {
-    private version: string = '1.0.0';
+    // private version: string = '1.0.0';
     private encryptionConfig: EncryptionConfig;
     private config: SecurityConfig;
     private keyManager: KeyManager;
@@ -98,7 +98,7 @@ export class SecurityManager {
     private privacyManager: PrivacyManager;
     private statistics: SecurityStatistics;
     private sessionId?: string;
-    private errorHandler: any;
+    // private errorHandler: any;
 
     constructor() {
         this.encryptionConfig = {

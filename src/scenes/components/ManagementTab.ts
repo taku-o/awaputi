@@ -67,8 +67,8 @@ export class ManagementTab extends TabComponent {
     // レイアウト設定
     private sectionSpacing: number = 40;
     private contentPadding: number = 20;
-    private buttonHeight: number = 40;
-    private buttonSpacing: number = 15;
+    // private buttonHeight: number = 40;
+    // private buttonSpacing: number = 15;
     
     // データ
     private userData: UserData | null = null;
@@ -318,10 +318,10 @@ export class ManagementTab extends TabComponent {
  * ユーザー基本情報の描画を担当
  */
 class UserInfoRenderer {
-    private gameEngine: GameEngine;
-    private eventBus: EventBus;
+    // private gameEngine: GameEngine;
+    // private eventBus: EventBus;
     private state: TabState;
-    private isInitialized: boolean = false;
+    // private isInitialized: boolean = false;
     
     // レイアウト設定
     private readonly sectionPadding: number = 15;
@@ -480,7 +480,7 @@ class DataManagementRenderer {
     private gameEngine: GameEngine;
     private eventBus: EventBus;
     private state: TabState;
-    private isInitialized: boolean = false;
+    // private isInitialized: boolean = false;
     
     // レイアウト設定
     private readonly sectionPadding: number = 15;

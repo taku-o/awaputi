@@ -100,7 +100,7 @@ interface ColorBlindnessStats {
  * 色覚多様性に対応した包括的なビジュアル支援システム
  */
 export class ColorBlindnessSupport {
-    private visualAccessibilityManager: any;
+    // private visualAccessibilityManager: any;
     private accessibilityManager: any;
     private gameEngine: any;
     private config: ColorBlindnessSupportConfig;

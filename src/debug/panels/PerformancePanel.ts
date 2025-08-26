@@ -74,18 +74,18 @@ interface DebugInterface {
 }
 
 export class PerformancePanel {
-    private gameEngine: GameEngine;
-    private debugInterface: DebugInterface;
-    private options: PanelOptions;
+    // private gameEngine: GameEngine;
+    // private debugInterface: DebugInterface;
+    // private options: PanelOptions;
     private monitor: AdvancedPerformanceMonitor;
     private charts: Map<string, PerformanceChart>;
     private chartConfig: ChartConfigs;
-    private container: HTMLElement | null = null;
-    private statsContainer: HTMLElement | null = null;
-    private chartsContainer: HTMLElement | null = null;
+    // private container: HTMLElement | null = null;
+    // private statsContainer: HTMLElement | null = null;
+    // private chartsContainer: HTMLElement | null = null;
     private alertsContainer: HTMLElement | null = null;
     private profilingContainer: HTMLElement | null = null;
-    private isActive: boolean = false;
+    // private isActive: boolean = false;
     private updateInterval: NodeJS.Timeout | null = null;
 
     constructor(gameEngine: GameEngine, debugInterface: DebugInterface, options: PanelOptions = {}) {

@@ -129,7 +129,7 @@ type TestScenario = 'stress' | 'memory' | 'performance' | 'bubbles' | 'scoring';
 export class GameStateCommands extends BaseComponent {
     private gameEngine?: GameEngine;
     private console: DebugConsole;
-    private errorHandler: ErrorHandler | null;
+    // private errorHandler: ErrorHandler | null;
     private components: Map<string, ComponentWithInitialize & ComponentWithCleanup>;
     private initialized: boolean;
 

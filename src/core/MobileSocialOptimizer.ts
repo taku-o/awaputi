@@ -48,9 +48,9 @@ export interface TouchOptimization {
 
 export class MobileSocialOptimizer {
     private socialSharingManager: any;
-    private touchManager: any;
+    // private touchManager: any;
     private responsiveLayoutManager: any;
-    private isInitialized: boolean;
+    // private isInitialized: boolean;
     private deviceInfo: DeviceCapabilities | null;
     private touchOptimizations: Map<string, TouchOptimization>;
     private gestureHandlers: Map<string, any>;

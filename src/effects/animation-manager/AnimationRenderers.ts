@@ -439,7 +439,7 @@ export class ParticleEffectRenderer {
      */
     static renderExplosionParticles(context: CanvasRenderingContext2D, animation: ExplosionAnimation, progress: number): void {
         const particles = animation.particles || [];
-        const options = animation.options;
+        // const options = animation.options;
         
         context.save();
         particles.forEach(particle => {
@@ -463,7 +463,7 @@ export class ParticleEffectRenderer {
      */
     static renderTrailParticles(context: CanvasRenderingContext2D, animation: TrailAnimation, progress: number): void {
         const trail = animation.trail || [];
-        const options = animation.options;
+        // const options = animation.options;
         
         context.save();
         context.lineCap = 'round';
@@ -488,7 +488,7 @@ export class ParticleEffectRenderer {
      */
     static renderSparkleParticles(context: CanvasRenderingContext2D, animation: SparkleAnimation, progress: number): void {
         const sparkles = animation.sparkles || [];
-        const options = animation.options;
+        // const options = animation.options;
         
         context.save();
         sparkles.forEach(sparkle => {

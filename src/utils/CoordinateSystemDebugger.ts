@@ -46,7 +46,7 @@ type LogLevel = 'debug' | 'info' | 'warn' | 'error';
 export class CoordinateSystemDebugger {
     private scaledCoordinateManager: ScaledCoordinateManager;
     private uiPositionCalculator: UIPositionCalculator | null;
-    private inputCoordinateConverter: InputCoordinateConverter | null;
+    // private inputCoordinateConverter: InputCoordinateConverter | null;
     private debugPanel: HTMLElement | null;
     private overlayCanvas: HTMLCanvasElement | null;
     private overlayContext: CanvasRenderingContext2D | null;

@@ -41,10 +41,10 @@ interface LanguageUrlMapping {
 export class SEOI18nManager {
     private localizationManager: LocalizationManager | null;
     private seoMetaManager: SEOMetaManager | null;
-    private baseUrl: string;
+    // private baseUrl: string;
     private hreflangCache: Map<string, HreflangTag[]>;
     private currentLanguage: LanguageCode;
-    private initialized: boolean;
+    // private initialized: boolean;
 
     constructor(localizationManager: LocalizationManager | null = null, seoMetaManager: SEOMetaManager | null = null) {
         this.localizationManager = localizationManager;

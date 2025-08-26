@@ -132,8 +132,8 @@ interface DocumentChangeResult {
     error?: string;
 }
 export class BalanceGuidelinesManager {
-    private configManager: any;
-    private validator: any;
+    // private configManager: any;
+    // private validator: any;
     private errorHandler: ErrorHandler;
     private guidelines: Map<string, Guideline>;
     private changeHistory: ChangeRecord[];

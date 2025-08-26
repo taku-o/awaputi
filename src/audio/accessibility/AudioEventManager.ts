@@ -36,7 +36,7 @@ interface MainController {
 }
 
 export class AudioEventManager {
-    private mainController: MainController;
+    // private mainController: MainController;
     private eventHistory: AudioAccessibilityEvent[];
     private maxHistorySize: number;
     private initializationTime: number;

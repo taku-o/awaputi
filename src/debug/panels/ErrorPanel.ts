@@ -37,10 +37,10 @@ interface DebugInterface {
 }
 
 export class ErrorPanel {
-    private gameEngine: GameEngine;
-    private debugInterface: DebugInterface;
+    // private gameEngine: GameEngine;
+    // private debugInterface: DebugInterface;
     private element: HTMLElement | null = null;
-    private errorReporter: any;
+    // private errorReporter: any;
     private errors: ErrorEntry[] = [];
 
     constructor(gameEngine: GameEngine, debugInterface: DebugInterface) {

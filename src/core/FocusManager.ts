@@ -45,7 +45,7 @@ interface FocusState {
 
 export class FocusManager {
     private accessibilityManager: any;
-    private gameEngine: any;
+    // private gameEngine: any;
     private config: FocusConfig;
     private state: FocusState;
     private navigation: FocusNavigation;

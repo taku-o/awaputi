@@ -28,7 +28,7 @@ interface SocialEngagementTrend {
 }
 
 export class SocialEngagementAnalyzer {
-    private config: SEOConfig;
+    // private config: SEOConfig;
     private monitoringData: MonitoringData;
     
     constructor(config: SEOConfig, monitoringData: MonitoringData) {

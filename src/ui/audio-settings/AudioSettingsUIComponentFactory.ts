@@ -77,9 +77,9 @@ type SettingsChangeCallback = () => void;
  */
 export class AudioSettingsUIComponentFactory {
     private audioManager: AudioManager;
-    private configManager: ConfigurationManager;
+    // private configManager: ConfigurationManager;
     private localizationManager: LocalizationManager;
-    private errorHandler: ErrorHandler;
+    // private errorHandler: ErrorHandler;
     // スライダー管理
     private sliders: Map<string, HTMLInputElement> = new Map();
     // プレビュー音源

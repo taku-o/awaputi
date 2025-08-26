@@ -140,7 +140,7 @@ interface ComparisonResult {
 }
 
 export class SEOReportGenerator {
-    private mainController: MainController;
+    // private mainController: MainController;
     private baseUrl: string;
 
     constructor(mainController: MainController) {

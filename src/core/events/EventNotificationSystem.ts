@@ -72,7 +72,7 @@ interface RankingData {
 }
 
 export class EventNotificationSystem {
-    private gameEngine: any;
+    // private gameEngine: any;
     private notificationQueue: NotificationData[] = [];
     private activeNotifications: Map<string, NotificationData> = new Map();
     private notificationHistory: NotificationHistoryEntry[] = [];

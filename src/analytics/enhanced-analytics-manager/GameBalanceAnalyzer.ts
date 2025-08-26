@@ -20,7 +20,7 @@ export interface AnalysisResult {
 
 export class GameBalanceAnalyzer {
     private balanceMetrics: any;
-    private storageManager: any;
+    // private storageManager: any;
 
     constructor(storageManager?: any) {
         this.storageManager = storageManager;

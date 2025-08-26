@@ -69,7 +69,7 @@ interface NavigationEntry extends PerformanceEntry {
 }
 
 export class SEOMonitoringEngine {
-    private config: SEOConfig;
+    // private config: SEOConfig;
     private monitoringData: MonitoringData;
     private observerInstances: PerformanceObserver[];
     

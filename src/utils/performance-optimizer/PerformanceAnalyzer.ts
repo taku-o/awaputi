@@ -96,7 +96,7 @@ interface ErrorHandler {
 type PerformanceTrend = 'improving' | 'degrading' | 'stable' | 'insufficient_data' | 'unknown';
 
 export class PerformanceAnalyzer {
-    private config: AnalyzerConfig;
+    // private config: AnalyzerConfig;
     private errorHandler: ErrorHandler;
     private frameTimeHistory: number[];
     private maxHistorySize: number;

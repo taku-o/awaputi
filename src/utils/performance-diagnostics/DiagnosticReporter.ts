@@ -128,7 +128,7 @@ interface ReportTemplate {
 }
 
 export class DiagnosticReporter {
-    private mainController: MainController;
+    // private mainController: MainController;
     private reportGenerator: DiagnosticReportGenerator;
     private recommendationEngine: RecommendationEngine;
     

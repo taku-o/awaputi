@@ -215,7 +215,7 @@ export interface CollectionStats {
 
 export class HelpMetricsCollector {
     private helpEffectivenessAnalyzer: HelpEffectivenessAnalyzer;
-    private gameEngine: GameEngine;
+    // private gameEngine: GameEngine;
     private loggingSystem: LoggingSystem;
     private config: CollectorConfig;
     private collectionState: CollectionState;

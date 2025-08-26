@@ -66,7 +66,7 @@ interface MainController {
 
 export class AudioDescriptionManager {
     private mainController: MainController;
-    private errorHandler: any;
+    // private errorHandler: any;
     private visualNotifications: HTMLElement[];
     private notificationContainer: HTMLElement | null;
     private maxNotifications: number;

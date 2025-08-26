@@ -96,7 +96,7 @@ export type FallbackStrategy = (error: Error, options: any) => ErrorResult;
  * ヘルプシステム専用エラーハンドラー
  */
 export class HelpErrorHandler {
-    private gameEngine: GameEngine;
+    // private gameEngine: GameEngine;
     private loggingSystem: LoggingSystem;
     private errorCategories: Record<string, string>;
     private errorStats: Map<string, ErrorStatistics>;

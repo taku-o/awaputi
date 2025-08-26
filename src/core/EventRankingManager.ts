@@ -10,8 +10,8 @@ export class EventRankingManager {
     private gameEngine: any;
     private eventRankings: any;
     private playerRankings: any;
-    private leaderboards: any;
-    private maxLeaderboardSize: number;
+    // private leaderboards: any;
+    // private maxLeaderboardSize: number;
     private rankingUpdateInterval: number;
     private rankingTiers: any[];
     private leaderboardCache: Map<string, any>;

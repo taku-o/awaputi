@@ -109,11 +109,11 @@ export interface GameEngine {
  * ヘルプシステムの中央管理クラス
  */
 export class HelpManager {
-    private gameEngine: GameEngine;
+    // private gameEngine: GameEngine;
     private localizationManager: LocalizationManager;
     private cacheSystem: CacheSystem;
     private loggingSystem: LoggingSystem;
-    private searchEngine: SearchEngine;
+    // private searchEngine: SearchEngine;
     private helpContent: Map<string, HelpContent>;
     private userProgress: UserProgress;
 

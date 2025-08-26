@@ -127,7 +127,7 @@ describe('MainMenuRenderer', () => {
         
         test('プレイヤー名が未設定の場合は表示しない', () => {
             mockGameEngine.playerData.username = null;
-            const fillTextCallsBefore = mockContext.fillText.mock.calls.length;
+            // const fillTextCallsBefore = mockContext.fillText.mock.calls.length;
             
             renderer.renderMainMenu(mockContext, 0, mockMenuItems);
             
@@ -184,7 +184,7 @@ describe('MainMenuRenderer', () => {
             
             // fillStyleの呼び出しを確認
             const fillStyleCalls: any[] = [];
-            const originalFillStyle = mockContext.fillStyle;
+            // const originalFillStyle = mockContext.fillStyle;
             
             mockContext.fillStyle = '';
             Object.defineProperty(mockContext, 'fillStyle', {

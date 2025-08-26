@@ -133,7 +133,7 @@ interface RiskAssessment {
 }
 export class LeakDetector {
     private enabled: boolean;
-    private sensitivity: string;
+    // private sensitivity: string;
     private thresholds: DetectionThresholds;
     private analysisWindow: number;
     private lastAnalysis: number;
@@ -143,7 +143,7 @@ export class LeakDetector {
     private objectCreationPatterns: Map<string, ObjectCreationPattern>;
     private memorySnapshots: MemorySnapshot[];
     private stats: LeakDetectorStats;
-    private patterns: PatternRecognition;
+    // private patterns: PatternRecognition;
     
     constructor(config: LeakDetectorConfig = {}) {
 

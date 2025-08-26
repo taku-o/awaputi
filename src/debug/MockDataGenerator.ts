@@ -143,9 +143,9 @@ type DataType = 'bubble' | 'bubbles' | 'player' | 'gameState' | 'statistics' | '
 type Scenario = 'center' | 'corner' | 'edge' | 'random';
 
 export class MockDataGenerator {
-    private gameEngine: GameEngine;
+    // private gameEngine: GameEngine;
     private components: Map<string, MockComponent>;
-    private initialized: boolean;
+    // private initialized: boolean;
     private errorHandler: ErrorHandler;
 
     constructor(gameEngine: GameEngine) {

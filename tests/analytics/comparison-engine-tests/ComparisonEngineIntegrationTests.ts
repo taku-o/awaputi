@@ -48,7 +48,7 @@ describe('ComparisonEngine - Integration and System Tests', () => {
 
         test('ステージ別比較が正常に実行される場合', async () => {
             const currentDate = Date.now();
-            const _monthAgo = currentDate - 30 * 24 * 60 * 60 * 1000;
+            // const _monthAgo = currentDate - 30 * 24 * 60 * 60 * 1000;
             const twoMonthsAgo = currentDate - 60 * 24 * 60 * 60 * 1000;
 
             // 現在のステージ別データ

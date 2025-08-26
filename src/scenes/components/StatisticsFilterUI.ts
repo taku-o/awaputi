@@ -39,9 +39,9 @@ interface ButtonInfo {
 }
 
 export class StatisticsFilterUI {
-    private gameEngine: GameEngine;
+    // private gameEngine: GameEngine;
     private eventBus: EventBus;
-    private state: ComponentState;
+    // private state: ComponentState;
     
     // エラーハンドリング
     private errorHandler?: GameEngine['errorHandler'];
@@ -57,7 +57,7 @@ export class StatisticsFilterUI {
     private filterHeight: number = 50;
     private modeHeight: number = 40;
     private buttonSpacing: number = 10;
-    private contentPadding: number = 20;
+    // private contentPadding: number = 20;
     
     // ボタン位置情報（クリック判定用）
     private periodButtons: ButtonInfo[] = [];

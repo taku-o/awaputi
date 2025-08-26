@@ -7,7 +7,7 @@ import { JSDOM } from 'jsdom';
 
 describe('Canvas Scale UI Positioning Performance Tests', () => {
     let dom: any;
-    let canvas: any;
+    // let canvas: any;
     let responsiveCanvasManager: any;
     let scaledCoordinateManager: any;
     let gameUIManager: any;

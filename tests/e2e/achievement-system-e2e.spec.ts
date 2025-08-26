@@ -186,7 +186,7 @@ test.describe('Achievement System E2E Tests', () => {
         await expect(gameCanvas).toBeVisible();
 
         // 音響効果の再生を監視
-        let soundPlayed = false;
+        // let soundPlayed = false;
         page.on('console', msg => {
             if (msg.text().includes('Achievement sound played')) {
                 soundPlayed = true;

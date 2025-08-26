@@ -210,7 +210,7 @@ declare global {
 export class MobileSocialPerformanceOptimizer {
     private isInitialized: boolean;
     private deviceInfo: DeviceInfo | null;
-    private performanceMetrics: Map<string, any>;
+    // private performanceMetrics: Map<string, any>;
     private optimizationSettings: OptimizationSettings | null;
     private thresholds: DeviceThresholds;
     private optimizationLevels: OptimizationLevels;
@@ -219,7 +219,7 @@ export class MobileSocialPerformanceOptimizer {
     private fpsCounter?: FPSCounter;
     private supportsWebP?: boolean;
     private optimizeImageQuality?: (imageData: string, targetQuality?: number) => Promise<string> | string;
-    private throttledUpdate?: ThrottledFunction;
+    // private throttledUpdate?: ThrottledFunction;
 
     constructor() {
         this.isInitialized = false;

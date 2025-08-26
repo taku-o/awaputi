@@ -245,9 +245,9 @@ export function createMotionWarningStyle(): string {
 
 export class AnimationController {
     private motionManager: MotionManager;
-    private visualAccessibilityManager: VisualAccessibilityManager;
-    private accessibilityManager: AccessibilityManager;
-    private gameEngine: GameEngine;
+    // private visualAccessibilityManager: VisualAccessibilityManager;
+    // private accessibilityManager: AccessibilityManager;
+    // private gameEngine: GameEngine;
     
     // アニメーション状態管理
     private activeAnimations: Map<string, AnimationData>;

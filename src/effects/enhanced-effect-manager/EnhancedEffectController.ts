@@ -151,7 +151,7 @@ interface ErrorHandler {
  * 拡張効果の制御・管理ロジック - パフォーマンス監視、設定管理、効果生成
  */
 export class EnhancedEffectController {
-    private canvas: HTMLCanvasElement;
+    // private canvas: HTMLCanvasElement;
     private errorHandler: ErrorHandler;
     private transitionEffects: TransitionEffect[];
     private lightSources: LightSource[];

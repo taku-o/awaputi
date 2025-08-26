@@ -7,7 +7,7 @@ import { jest } from '@jest/globals';
 describe('Username Input Positioning Visual Regression Tests', () => {
     let browser: any;
     let page: any;
-    let _gameEngine: any;
+    // let _gameEngine: any;
 
     // Test configurations for different screen sizes and pixel ratios
     const testConfigurations = [

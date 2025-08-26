@@ -131,16 +131,16 @@ declare global {
 export class UIUpdateOptimizer {
     // 基本設定
     private enabled: boolean;
-    private batchMode: boolean;
-    private batchDelay: number;
+    // private batchMode: boolean;
+    // private batchDelay: number;
     private maxBatchSize: number;
     private priorityLevels: PriorityLevel[];
 
     // バッチ処理管理
-    private pendingUpdates: Map<string, any>;
+    // private pendingUpdates: Map<string, any>;
     private updateQueue: any[];
     private batchTimer: NodeJS.Timeout | null;
-    private processingBatch: boolean;
+    // private processingBatch: boolean;
 
     // DOM測定キャッシュ
     private measurementCache: Map<string, ElementMeasurement>;

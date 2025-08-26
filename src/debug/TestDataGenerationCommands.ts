@@ -100,7 +100,7 @@ interface DeveloperConsole {
     register(command: string, handler: Function, config: CommandRegistration): void;
 }
 export class TestDataGenerationCommands {
-    private gameEngine: GameEngine;
+    // private gameEngine: GameEngine;
     private components: Map<string, Component | FallbackComponent>;
     private generatedData: Map<string, any>;
     private initialized: boolean;

@@ -126,11 +126,11 @@ export class ContextualHelpManager {
     
     // インタラクティブガイド管理
     private interactiveGuides: Map<string, InteractiveGuide>;
-    private currentGuide: string | null;
-    private guideStep: number;
+    // private currentGuide: string | null;
+    // private guideStep: number;
     
     // 状態管理
-    private isMonitoring: boolean;
+    // private isMonitoring: boolean;
     private currentContext: HelpContext;
 
     constructor(gameEngine: GameEngine) {

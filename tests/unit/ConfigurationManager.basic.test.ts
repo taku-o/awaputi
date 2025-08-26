@@ -7,7 +7,7 @@ import { ConfigurationManager, getConfigurationManager } from '../../src/core/Co
 
 describe('ConfigurationManager', () => {
 
-    let configManager: ConfigurationManager;
+    // let configManager: ConfigurationManager;
 
     beforeEach(() => {
         configManager = new ConfigurationManager()

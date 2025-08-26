@@ -55,7 +55,7 @@ export class MainMenuRenderer {
     renderMainMenu(context: CanvasRenderingContext2D, selectedMenuIndex: number, menuItems: MenuItemWithLabel[]): void {
         try {
             this.updateCoordinateCalculator();
-            const canvas = this.gameEngine.canvas as HTMLCanvasElement;
+            // const canvas = this.gameEngine.canvas as HTMLCanvasElement;
             
             // 背景描画
             this.renderBackground(context);

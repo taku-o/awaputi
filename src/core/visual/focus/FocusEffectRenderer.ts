@@ -239,7 +239,7 @@ export function isGroupElement(element: HTMLElement): boolean {
 }
 
 export class FocusEffectRenderer {
-    private mainController: MainController;
+    // private mainController: MainController;
     private config: VisualFocusConfig;
     private state: VisualFocusState;
     private elements: VisualFocusElements;

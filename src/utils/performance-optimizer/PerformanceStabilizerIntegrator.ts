@@ -215,7 +215,7 @@ type FrameTargetAdjustment = 'dynamic' | 'adaptive' | 'static';
 type JitterTolerance = 'minimal' | 'normal' | 'relaxed';
 
 export class PerformanceStabilizerIntegrator {
-    private config: IntegratorConfig;
+    // private config: IntegratorConfig;
     private errorHandler: ErrorHandler;
     private stabilizerIntegration: StabilizerIntegrationSettings;
     private integrationStats: IntegrationStats;

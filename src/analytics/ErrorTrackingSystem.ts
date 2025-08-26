@@ -61,7 +61,7 @@ export class ErrorTrackingSystem {
     private errors: Map<string, ErrorReport>;
     private errorGroups: Map<string, ErrorGroup>;
     private errorCount: number;
-    private isInitialized: boolean;
+    // private isInitialized: boolean;
     private originalErrorHandler: OnErrorEventHandler | null;
     private originalUnhandledRejectionHandler: ((this: WindowEventHandlers, ev: PromiseRejectionEvent) => any) | null;
 

@@ -389,7 +389,7 @@ describe('Event Flow Integration Tests', () => {
 
             // 6. Complete with high score
             const playerId = 'test-player';
-            const score = 35000;
+            // const score = 35000;
             const stats: EventStats = {
                 bubblesPopped: 350,
                 specialBubblesPopped: 50,
@@ -659,7 +659,7 @@ describe('Event Flow Integration Tests', () => {
             expect(startResult).toBe(true);
 
             // 2. Mock error during completion
-            const originalCompleteMethod = eventStageManager.completeEvent;
+            // const originalCompleteMethod = eventStageManager.completeEvent;
             eventStageManager.completeEvent = jest.fn().mockImplementation(() => {
                 throw new Error('Completion error');
             }) as any;

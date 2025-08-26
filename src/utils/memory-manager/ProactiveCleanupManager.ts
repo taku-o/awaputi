@@ -141,8 +141,8 @@ export class ProactiveCleanupManager {
     private cleanupEfficiency: number;
     private scheduling: SchedulingConfig;
     private performanceHistory: any[];
-    private cleanupStrategies: Map<string, any>;
-    private lastPerformanceCheck: number;
+    // private cleanupStrategies: Map<string, any>;
+    // private lastPerformanceCheck: number;
     private cleanupTargets: CleanupTargets;
     private stats: CleanupStatistics;
     private limits: ResourceLimits;

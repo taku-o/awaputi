@@ -111,7 +111,7 @@ export class EffectPerformanceOptimizer {
     private enabled: boolean;
     private optimizationSettings: OptimizationSettings;
     private stats: OptimizationStats;
-    private lastFrameTime: number;
+    // private lastFrameTime: number;
     private frameTimeHistory: number[];
     private isOptimizing: boolean;
     

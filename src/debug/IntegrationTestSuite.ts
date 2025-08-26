@@ -260,7 +260,7 @@ export class IntegrationTestSuite {
         const category = this.testCategories.crossBrowserCompatibility;
 
         await this.runTest(category, 'Browser Feature Detection', async () => {
-            const debugInterface = this.gameEngine.enhancedDebugInterface;
+            // const debugInterface = this.gameEngine.enhancedDebugInterface;
             
             // 必須ブラウザ機能のチェック
             const requiredFeatures = {

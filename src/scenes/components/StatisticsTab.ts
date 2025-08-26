@@ -48,7 +48,7 @@ export class StatisticsTab extends TabComponent {
     private currentPeriodFilter: string = 'last7days';
     
     // 統計表示設定
-    private statisticsDisplaySettings: StatisticsDisplaySettings;
+    // private statisticsDisplaySettings: StatisticsDisplaySettings;
     
     // 子コンポーネント
     private filterUI: StatisticsFilterUI | null = null;

@@ -71,10 +71,10 @@ interface StreamConfig {
 // パフォーマンスダッシュボード
 export class PerformanceDashboard {
     private container: HTMLElement | null;
-    private widgets: Map<string, any>;
+    // private widgets: Map<string, any>;
     private visible: boolean;
     private updateInterval: NodeJS.Timeout | null;
-    private charts: Map<string, any>;
+    // private charts: Map<string, any>;
 
     constructor() {
         this.container = null;
@@ -168,8 +168,8 @@ export class PerformanceDashboard {
 
 // パフォーマンスデータ収集器
 export class PerformanceDataGatherer {
-    private collectors: Map<string, any>;
-    private collecting: boolean;
+    // private collectors: Map<string, any>;
+    // private collecting: boolean;
 
     constructor() {
         this.collectors = new Map();

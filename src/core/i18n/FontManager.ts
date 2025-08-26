@@ -35,7 +35,7 @@ export class FontManager {
     private loadedFonts: Map<string, LoadedFont>;
     private fontConfigs: Map<string, FontConfig>;
     private loadingPromises: Map<string, Promise<FontFace>>;
-    private fontLoadObserver: FontFaceSetLoadEvent | null;
+    // private fontLoadObserver: FontFaceSetLoadEvent | null;
 
     constructor() {
         this.loadedFonts = new Map<string, LoadedFont>();

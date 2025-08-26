@@ -63,7 +63,7 @@ interface SceneState {
 export class UserProfileManager {
     private gameEngine: GameEngine;
     private eventBus: EventBus;
-    private sceneState: SceneState;
+    // private sceneState: SceneState;
     // プロフィール関連の状態
     private userData: UserData | null = null;
     private lastDataUpdate: number = 0;

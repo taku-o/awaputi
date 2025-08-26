@@ -99,7 +99,7 @@ describe('Configuration Access Performance Tests', () => {
     });
 
     test('プリロードキーの効果測定', () => {
-        const testKey = 'game.test.preload';
+        // const testKey = 'game.test.preload';
         
         // プリロードキーとして登録
         configManager.set('game', 'test.preload', 'test-value');

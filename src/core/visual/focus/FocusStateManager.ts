@@ -296,7 +296,7 @@ export function detectSystemSettings(): SystemSettings {
 }
 export class FocusStateManager {
     private mainController: MainController;
-    private accessibilityManager: AccessibilityManager;
+    // private accessibilityManager: AccessibilityManager;
     private focusManager: FocusManager;
     private config: FocusStateConfig;
     private cssClasses: CSSClasses;

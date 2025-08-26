@@ -1,7 +1,7 @@
 import { describe, test, expect, beforeEach, afterEach, jest } from '@jest/globals';
 
 describe('unified-settings-screen-access.test Integration Test', () => {
-    let mockData: any;
+    // let mockData: any;
 
     beforeEach(() => {
         mockData = {};

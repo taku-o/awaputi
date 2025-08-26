@@ -81,8 +81,8 @@ export class SocialSharingManager {
     private achievementManager: any | null;
     private localizationManager: any | null;
     private screenshotCapture: any | null;
-    private leaderboardManager: any | null;
-    private challengeSystem: any | null;
+    // private leaderboardManager: any | null;
+    // private challengeSystem: any | null;
     private shareContentGenerator: ShareContentGenerator | null;
     private errorHandler: SocialErrorHandler;
     private platformAdapters: SocialPlatformAdapters;

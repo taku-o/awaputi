@@ -98,11 +98,11 @@ interface DeviceCapabilities {
 }
 
 export class MobileUIUXManager {
-    private gameEngine: any;
+    // private gameEngine: any;
     private errorHandler: any;
     private config: UIConfig;
     private layoutState: LayoutState;
-    private uiElements: UIElements;
+    // private uiElements: UIElements;
     private notificationQueue: NotificationData[];
     private activeNotifications: NotificationData[];
     private feedbackSystem: any;

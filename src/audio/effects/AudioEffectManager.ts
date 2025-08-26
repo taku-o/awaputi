@@ -190,7 +190,7 @@ interface ErrorHandler {
 export class AudioEffectManager {
     private audioContext: AudioContext;
     private sfxGainNode: GainNode;
-    private configManager: ConfigurationManager;
+    // private configManager: ConfigurationManager;
     private errorHandler: ErrorHandler;
     // エフェクト管理
     private effectNodes: Map<EffectType, EffectNode>;

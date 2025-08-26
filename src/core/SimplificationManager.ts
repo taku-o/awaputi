@@ -70,7 +70,7 @@ interface SimplificationState {
 }
 
 export class SimplificationManager {
-    private gameEngine: GameEngine;
+    // private gameEngine: GameEngine;
     private isInitialized: boolean = false;
     private modeController: SimplificationModeController;
     private complexityAnalyzer: UIComplexityAnalyzer;

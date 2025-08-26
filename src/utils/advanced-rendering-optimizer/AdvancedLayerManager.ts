@@ -81,8 +81,8 @@ export class AdvancedLayerManager {
     private cachingEnabled: boolean;
     private cachedLayers: Map<string, number>;
     private cacheInvalidation: Set<string>;
-    private globalAlpha: number;
-    private globalCompositeOperation: string;
+    // private globalAlpha: number;
+    // private globalCompositeOperation: string;
     private stats: LayerStats;
     private config: Required<Omit<LayerConfig, 'cachingEnabled' | 'globalAlpha' | 'globalCompositeOperation'>>;
     constructor(mainCanvas: HTMLCanvasElement, config: LayerConfig = {}) {

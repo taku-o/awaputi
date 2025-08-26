@@ -179,7 +179,7 @@ export type CorruptionType = 'type_mismatch' | 'range_violation' | 'structure_da
 export type RepairabilityLevel = 'low' | 'medium' | 'high';
 
 export class RecoveryValidation {
-    private dataRecovery: DataRecovery;
+    // private dataRecovery: DataRecovery;
     private statisticsManager: StatisticsManager;
     private errorHandler: ErrorHandler;
     private validationRules: Map<string, ValidationFunction>;

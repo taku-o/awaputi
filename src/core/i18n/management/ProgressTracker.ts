@@ -138,7 +138,7 @@ export class ProgressTracker {
     private languageProgress: Map<string, LanguageProgress>;
     private translationHistory: HistoryEntry[];
     private milestones: Map<string, Milestone[]>;
-    private goals: Map<string, ProgressGoal>;
+    // private goals: Map<string, ProgressGoal>;
     private lastUpdateTime: Date;
 
     constructor() {

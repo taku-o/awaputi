@@ -207,7 +207,7 @@ interface UpdateConfigOptions {
 }
 
 export class LeaderboardEventHandler {
-    private gameEngine: GameEngine;
+    // private gameEngine: GameEngine;
     private errorHandler: ErrorHandler;
     
     // イベント設定

@@ -572,8 +572,8 @@ export class HelpTab extends TabComponent {
  * ヘルプコンテンツの詳細描画を専門に担当
  */
 class HelpContentRenderer {
-    private gameEngine: GameEngine;
-    private eventBus: ComponentEventBus;
+    // private gameEngine: GameEngine;
+    // private eventBus: ComponentEventBus;
     private state: SceneState;
     
     // テキスト設定
@@ -587,7 +587,7 @@ class HelpContentRenderer {
         questionColor: '#DC3545',
         answerColor: '#28A745'
     };
-    private isInitialized: boolean = false;
+    // private isInitialized: boolean = false;
     
     constructor(gameEngine: GameEngine, eventBus: ComponentEventBus, state: SceneState) {
         this.gameEngine = gameEngine;

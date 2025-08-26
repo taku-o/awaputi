@@ -195,8 +195,8 @@ export function generateAnimationCSS(duration: string, easing: string): string {
 }
 
 export class FocusRingRenderer {
-    private focusManager: FocusManager;
-    private gameEngine: GameEngine;
+    // private focusManager: FocusManager;
+    // private gameEngine: GameEngine;
     
     // レンダリング設定
     private renderConfig: RenderConfig;

@@ -96,7 +96,7 @@ interface StatCard {
 export class StatisticsDashboardRenderer {
     private gameEngine: GameEngine;
     private eventBus: EventBus;
-    private state: ComponentState;
+    // private state: ComponentState;
     
     // エラーハンドリング
     private errorHandler?: GameEngine['errorHandler'];
@@ -105,7 +105,7 @@ export class StatisticsDashboardRenderer {
     private accessibilitySettings: AccessibilitySettings;
     
     // レイアウト設定
-    private contentPadding: number = 20;
+    // private contentPadding: number = 20;
     
     // 統計データ
     private statisticsData: StatisticsData | null = null;

@@ -327,7 +327,7 @@ export interface Canvas {
  * バブルアニメーション処理
  */
 export class BubbleAnimationHandler {
-    private typeSettings: TypeSettings;
+    // private typeSettings: TypeSettings;
 
     constructor() {
         this.typeSettings = {
@@ -622,7 +622,7 @@ export class BubbleAnimationHandler {
  * UIアニメーション処理
  */
 export class UIAnimationHandler {
-    private typeSettings: TypeSettings;
+    // private typeSettings: TypeSettings;
     constructor() {
         this.typeSettings = {
             enabled: true,
@@ -855,7 +855,7 @@ export class UIAnimationHandler {
  */
 export class MenuAnimationHandler {
     private canvas: Canvas;
-    private typeSettings: TypeSettings;
+    // private typeSettings: TypeSettings;
 
     constructor(canvas: Canvas) {
         this.canvas = canvas;
@@ -995,7 +995,7 @@ export class MenuAnimationHandler {
  */
 export class LoadingAnimationHandler {
     private canvas: Canvas;
-    private typeSettings: TypeSettings;
+    // private typeSettings: TypeSettings;
 
     constructor(canvas: Canvas) {
         this.canvas = canvas;

@@ -110,7 +110,7 @@ class LocalModeManager {
     // パフォーマンス最適化用のプライベートストレージ
     private _componentCache: Map<string, any>;
     private _initializationMetrics: InitializationMetrics;
-    private resourcePreloadPromises: Map<string, Promise<any>>;
+    // private resourcePreloadPromises: Map<string, Promise<any>>;
 
     /**
      * コンストラクター

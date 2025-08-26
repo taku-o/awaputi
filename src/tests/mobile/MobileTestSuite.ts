@@ -104,7 +104,7 @@ interface HealthCheckResult {
 
 // 既存のテストスイートクラス（変更なし）
 class TouchTestSuite implements TestSuiteInterface {
-    private mobileTestSuite: MobileTestSuite;
+    // private mobileTestSuite: MobileTestSuite;
 
     constructor(mobileTestSuite: MobileTestSuite) {
         this.mobileTestSuite = mobileTestSuite;
@@ -127,7 +127,7 @@ class TouchTestSuite implements TestSuiteInterface {
 }
 
 class GestureTestSuite implements TestSuiteInterface {
-    private mobileTestSuite: MobileTestSuite;
+    // private mobileTestSuite: MobileTestSuite;
 
     constructor(mobileTestSuite: MobileTestSuite) {
         this.mobileTestSuite = mobileTestSuite;
@@ -150,7 +150,7 @@ class GestureTestSuite implements TestSuiteInterface {
 }
 
 class ResponsiveTestSuite implements TestSuiteInterface {
-    private mobileTestSuite: MobileTestSuite;
+    // private mobileTestSuite: MobileTestSuite;
 
     constructor(mobileTestSuite: MobileTestSuite) {
         this.mobileTestSuite = mobileTestSuite;
@@ -173,7 +173,7 @@ class ResponsiveTestSuite implements TestSuiteInterface {
 }
 
 class PerformanceTestSuite implements TestSuiteInterface {
-    private mobileTestSuite: MobileTestSuite;
+    // private mobileTestSuite: MobileTestSuite;
 
     constructor(mobileTestSuite: MobileTestSuite) {
         this.mobileTestSuite = mobileTestSuite;
@@ -196,7 +196,7 @@ class PerformanceTestSuite implements TestSuiteInterface {
 }
 
 class PWATestSuite implements TestSuiteInterface {
-    private mobileTestSuite: MobileTestSuite;
+    // private mobileTestSuite: MobileTestSuite;
 
     constructor(mobileTestSuite: MobileTestSuite) {
         this.mobileTestSuite = mobileTestSuite;
@@ -219,7 +219,7 @@ class PWATestSuite implements TestSuiteInterface {
 }
 
 class AccessibilityTestSuite implements TestSuiteInterface {
-    private mobileTestSuite: MobileTestSuite;
+    // private mobileTestSuite: MobileTestSuite;
 
     constructor(mobileTestSuite: MobileTestSuite) {
         this.mobileTestSuite = mobileTestSuite;
@@ -242,7 +242,7 @@ class AccessibilityTestSuite implements TestSuiteInterface {
 }
 
 class CompatibilityTestSuite implements TestSuiteInterface {
-    private mobileTestSuite: MobileTestSuite;
+    // private mobileTestSuite: MobileTestSuite;
 
     constructor(mobileTestSuite: MobileTestSuite) {
         this.mobileTestSuite = mobileTestSuite;

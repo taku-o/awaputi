@@ -22,7 +22,7 @@ const dom = new JSDOM('<!DOCTYPE html><html><body><canvas id="gameCanvas"></canv
 (global as any).navigator = dom.window.navigator;
 describe('多言語対応ユーザビリティテスト', () => {
   let localizationManager: any;
-  let gameEngine: any;
+  // let gameEngine: any;
   
   beforeEach(async () => {
     // LocalizationManagerをモックまたは実際のインスタンスを使用

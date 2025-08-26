@@ -414,7 +414,7 @@ describe('AdvancedPerformanceMonitor', () => {
         });
 
         test('should update settings', () => {
-            const oldInterval = monitor.monitoring.interval;
+            // const oldInterval = monitor.monitoring.interval;
             const newSettings = {
                 interval: 200,
                 historySize: 500,

@@ -70,8 +70,8 @@ export class MobileSystemIntegrator {
     private errorHandlers: Map<string, Function>;
     private fallbackStrategies: Map<string, Function>;
     private debugMode: boolean;
-    private performanceMonitor: any | null;
-    private errorAnalyzer: any | null;
+    // private performanceMonitor: any | null;
+    // private errorAnalyzer: any | null;
     private healthCheckInterval: NodeJS.Timeout | null = null;
 
     constructor(gameEngine: any) {

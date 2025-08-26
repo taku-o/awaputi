@@ -66,7 +66,7 @@ declare global {
 }
 
 export class SearchConsoleIntegrator {
-    private config: SEOConfig;
+    // private config: SEOConfig;
     private monitoringData: MonitoringData;
     
     constructor(config: SEOConfig, monitoringData: MonitoringData) {

@@ -30,7 +30,7 @@ const mockDocument = {
 describe('MainMenuScene Shop Button Tests', () => {
     let mainMenuScene: any;
     let mockGameEngine: any;
-    let mockContext: any;
+    // let mockContext: any;
     let mockCanvas: any;
     
     beforeEach(() => {

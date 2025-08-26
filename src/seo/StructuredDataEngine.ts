@@ -138,7 +138,7 @@ type SchemaGenerator = (context?: any) => Promise<BaseSchema | null>;
 
 export class StructuredDataEngine {
     private localizationManager: LocalizationManager | null;
-    private gameConfig: GameConfig | null;
+    // private gameConfig: GameConfig | null;
     private baseUrl: string;
     private currentLang: LanguageCode;
     private schemas: Map<string, SchemaGenerator>;

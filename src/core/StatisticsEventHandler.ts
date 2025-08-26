@@ -410,7 +410,7 @@ export class StatisticsEventHandler {
     updateEfficiencyStats(bubblesPopped: number, playTime: number): void {
         const effStats = this.statistics.efficiencyStats;
         const playTimeMinutes = playTime / 60000;
-        const _playTimeSeconds = playTime / 1000;
+        // const _playTimeSeconds = playTime / 1000;
         
         if (playTimeMinutes > 0) {
             const currentEfficiency = bubblesPopped / playTimeMinutes;

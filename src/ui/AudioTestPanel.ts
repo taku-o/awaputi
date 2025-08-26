@@ -164,7 +164,7 @@ export class AudioTestPanel {
     
     // UI要素
     private panel: HTMLElement | null = null;
-    private isOpen: boolean = false;
+    // private isOpen: boolean = false;
 
     constructor(audioManager: AudioManager) {
         this.audioManager = audioManager;

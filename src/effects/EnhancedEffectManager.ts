@@ -147,7 +147,7 @@ export class EnhancedEffectManager extends EffectManager {
     private backgroundRenderer: BackgroundEffectRenderer;
     private postProcessingRenderer: PostProcessingRenderer;
     private accessibilityIntegrator: AccessibilityEffectIntegrator | null;
-    private accessibilityEnabled: boolean;
+    // private accessibilityEnabled: boolean;
     constructor(canvas: Canvas) {
         super(canvas);
         // サブコンポーネントの初期化

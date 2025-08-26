@@ -62,11 +62,11 @@ export class PerformanceConfigurationIntegration {
     private monitor: ConfigurationMonitor;
     private errorHandler: ConfigErrorHandler;
     // Legacy component references for backward compatibility
-    private configManager: ConfigurationApplier;
-    private validationEngine: ConfigurationValidator;
-    private backupManager: ConfigurationApplier;
+    // private configManager: ConfigurationApplier;
+    // private validationEngine: ConfigurationValidator;
+    // private backupManager: ConfigurationApplier;
     private syncManager: any;
-    private notificationSystem: any;
+    // private notificationSystem: any;
     private initialized: boolean;
     constructor() {
 

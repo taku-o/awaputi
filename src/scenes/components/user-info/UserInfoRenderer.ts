@@ -88,8 +88,8 @@ interface DialogManager {
 }
 
 export class UserInfoRenderer {
-    private gameEngine: GameEngine;
-    private eventBus: EventBus;
+    // private gameEngine: GameEngine;
+    // private eventBus: EventBus;
     private sceneState: SceneState;
     // レンダリング設定
     private tabHeight: number = 60;
@@ -97,7 +97,7 @@ export class UserInfoRenderer {
     private contentPadding: number = 20;
     // キャッシュ
     private cachedElements: Map<string, any> = new Map();
-    private lastRenderHash: string | null = null;
+    // private lastRenderHash: string | null = null;
 
     constructor(gameEngine: GameEngine, eventBus: EventBus, sceneState: SceneState) {
         this.gameEngine = gameEngine;
@@ -318,7 +318,7 @@ export class UserInfoRenderer {
      */
     public calculateLayout(canvas: HTMLCanvasElement): Layout {
         const width = canvas.width;
-        const height = canvas.height;
+        // const height = canvas.height;
         
         // モバイル判定
         const isMobile = width < 768;

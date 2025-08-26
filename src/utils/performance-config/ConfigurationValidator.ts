@@ -73,7 +73,7 @@ interface MainController {
 type ValidatorFunction = (value: any, constraints: ValidationConstraints) => void;
 
 export class ConfigurationValidator {
-    private mainController: MainController;
+    // private mainController: MainController;
     private validators: Map<string, ValidatorFunction>;
     private rules: Map<string, ValidationRule>;
     private strictMode: boolean;

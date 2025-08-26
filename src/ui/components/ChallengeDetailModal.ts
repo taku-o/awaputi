@@ -57,9 +57,9 @@ export class ChallengeDetailModal {
     private localizationManager: LocalizationManager;
     // 状態管理
     private isVisible: boolean = false;
-    private currentChallengeId: string | null = null;
+    // private currentChallengeId: string | null = null;
     private challengeData: ChallengeData | null = null;
-    private isLoading: boolean = false;
+    // private isLoading: boolean = false;
     private error: string | null = null;
     // DOM要素
     private container: HTMLDivElement | null = null;

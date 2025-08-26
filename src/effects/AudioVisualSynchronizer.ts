@@ -124,7 +124,7 @@ export class AudioVisualSynchronizer {
     private scheduledEffects: ScheduledEffect[];
     
     // タイミング管理
-    private lastEffectTime: number;
+    // private lastEffectTime: number;
     private effectQueue: any[];
     private maxQueueSize: number;
 

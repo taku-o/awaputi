@@ -96,10 +96,10 @@ export interface InsightResult {
  * 統計データから意味のある洞察、推奨事項、アクションアイテムを生成する
  */
 export class InsightGenerator {
-    private insightTypes: typeof InsightType;
-    private priorityLevels: typeof PriorityLevel;
+    // private insightTypes: typeof InsightType;
+    // private priorityLevels: typeof PriorityLevel;
     private insightConfigs: InsightConfig;
-    private insightTemplates: Record<string, any>;
+    // private insightTemplates: Record<string, any>;
 
     constructor() {
         this.insightTypes = InsightType;

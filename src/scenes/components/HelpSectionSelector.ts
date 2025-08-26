@@ -19,9 +19,9 @@ interface AccessibilitySettings {
  * ヘルプのセクション切り替えUI
  */
 export class HelpSectionSelector {
-    private gameEngine: GameEngine;
+    // private gameEngine: GameEngine;
     private eventBus: ComponentEventBus;
-    private state: SceneState;
+    // private state: SceneState;
     
     // セクション設定
     private readonly sections: string[] = ['overview', 'categories', 'progress', 'rewards', 'tips', 'faq'];

@@ -149,7 +149,7 @@ export class RecoveryManager {
     private storage: DataStorage;
     private backup: BackupManager;
     private validation: ValidationManager | null;
-    private version: string;
+    // private version: string;
     private recoveryStrategies: Map<string, RecoveryStrategy>;
     private config: RecoveryConfig;
     private statistics: RecoveryStatistics;

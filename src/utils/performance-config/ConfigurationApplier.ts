@@ -115,7 +115,7 @@ interface MainController {
 }
 
 export class ConfigurationApplier {
-    private mainController: MainController;
+    // private mainController: MainController;
     private config: Map<string, any>;
     private profiles: Map<string, ConfigProfile>;
     private listeners: Map<ConfigCategory, Set<ConfigChangeCallback>>;

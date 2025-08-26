@@ -145,7 +145,7 @@ export class I18nRenderOptimizer {
     
     // フォント管理
     private fontCache: Map<string, any>;
-    private fontLoadPromises: Map<string, Promise<any>>;
+    // private fontLoadPromises: Map<string, Promise<any>>;
     private preloadedFonts: Set<string>;
     
     // レイアウトキャッシュ
@@ -165,9 +165,9 @@ export class I18nRenderOptimizer {
     private fontLoadingManager: FontLoadingManager | null;
     
     // バッチ更新状態
-    private deferLayoutMeasurements: boolean;
-    private batchStartTime: number;
-    private animationDisabled: boolean;
+    // private deferLayoutMeasurements: boolean;
+    // private batchStartTime: number;
+    // private animationDisabled: boolean;
     private renderingPaused: boolean;
     private scheduleRender: () => void;
 

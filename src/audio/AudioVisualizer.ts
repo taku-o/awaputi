@@ -82,7 +82,7 @@ export class AudioVisualizer {
     // AnalyserNode
     private analyser: AnalyserNode | null;
     private bufferLength: number;
-    private dataArray: Uint8Array | null;
+    // private dataArray: Uint8Array | null;
     private frequencyData: Uint8Array | null;
     private timeDomainData: Uint8Array | null;
     // Canvas要素
@@ -112,7 +112,7 @@ export class AudioVisualizer {
     private accessibilityMode: boolean;
     private highContrast: boolean;
     private motionReduction: boolean;
-    private textualDescription: boolean;
+    // private textualDescription: boolean;
     constructor(audioManager: AudioManager) {
         this.audioManager = audioManager;
         this.configManager = getConfigurationManager();
@@ -610,7 +610,7 @@ export class AudioVisualizer {
         if (!this.ctx) return;
         
         const canvasWidth = this.width / window.devicePixelRatio;
-        const canvasHeight = this.height / window.devicePixelRatio;
+        // const canvasHeight = this.height / window.devicePixelRatio;
         
         // 簡易実装：左右チャンネルの視覚化
         this.renderWaveform();

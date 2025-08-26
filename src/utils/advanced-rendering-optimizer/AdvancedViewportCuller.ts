@@ -69,7 +69,7 @@ interface VisibleObjectData {
 export class AdvancedViewportCuller {
     private errorHandler: any;
     private enabled: boolean;
-    private viewport: Viewport;
+    // private viewport: Viewport;
     private cullingMargin: number;
     private spatialGrid: Map<string, Set<string>>;
     private gridSize: number;

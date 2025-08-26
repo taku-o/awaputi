@@ -126,7 +126,7 @@ export class ShareDialog {
     private elements: ShareDialogElements;
     private handlers: ShareDialogHandlers;
     private focusableElements: HTMLElement[] = [];
-    private currentFocusIndex: number = 0;
+    // private currentFocusIndex: number = 0;
     private stats: ShareDialogStats;
 
     constructor(socialSharingManager: any, options: ShareDialogOptions = {}) {

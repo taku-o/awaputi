@@ -180,8 +180,8 @@ export interface AnalysisStats {
 }
 
 export class HelpDataAnalyzer {
-    private helpEffectivenessAnalyzer: HelpEffectivenessAnalyzer;
-    private gameEngine: GameEngine;
+    // private helpEffectivenessAnalyzer: HelpEffectivenessAnalyzer;
+    // private gameEngine: GameEngine;
     private loggingSystem: LoggingSystem;
     private config: AnalyzerConfig;
     private analysisCache: Map<string, any>;

@@ -163,9 +163,9 @@ interface SettingsChangeEvent {
  * Main Controller Patternを採用し、各専門コンポーネントを統制
  */
 export class ComponentAudioAccessibilitySupport {
-    private audioManager: AudioManager;
-    private configManager: ConfigurationManager;
-    private localizationManager: LocalizationManager;
+    // private audioManager: AudioManager;
+    // private configManager: ConfigurationManager;
+    // private localizationManager: LocalizationManager;
     private errorHandler: ErrorHandler;
     // Sub-components
     private descriptionManager: AudioDescriptionManager;
@@ -175,7 +175,7 @@ export class ComponentAudioAccessibilitySupport {
     private eventManager: AudioEventManager;
     private legacyAdapter: AudioLegacyAdapter;
     // Legacy compatibility properties
-    private vibrationManager: VibrationManager;
+    // private vibrationManager: VibrationManager;
     private visualNotifications: any[];
     
     constructor(audioManager: AudioManager) {

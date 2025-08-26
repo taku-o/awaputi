@@ -215,7 +215,7 @@ export function getFocusableElementType(element: HTMLElement): FocusableElementT
 
 export class FocusNavigation {
     private focusManager: FocusManager;
-    private gameEngine: GameEngine;
+    // private gameEngine: GameEngine;
     
     // フォーカス可能要素とナビゲーション状態
     private focusableElements: HTMLElement[] = [];

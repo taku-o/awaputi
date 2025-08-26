@@ -17,7 +17,7 @@ export type DetectionMethod = () => string | null;
  * 言語検出システムクラス
  */
 export class LanguageDetector {
-    private localizationManager: LocalizationManager;
+    // private localizationManager: LocalizationManager;
     private detectionMethods: DetectionMethod[];
     private supportedLanguages: Set<string>;
 

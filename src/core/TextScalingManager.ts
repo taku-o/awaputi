@@ -5,9 +5,9 @@ import { getErrorHandler } from '../utils/ErrorHandler.js';
  * レスポンシブでアクセシブルなテキスト拡大縮小システム
  */
 export class TextScalingManager {
-    private visualAccessibilityManager: any;
+    // private visualAccessibilityManager: any;
     private accessibilityManager: any;
-    private gameEngine: any;
+    // private gameEngine: any;
     private config: any;
     private scaledElements: Map<HTMLElement, any>;
     private originalStyles: Map<HTMLElement, any>;
@@ -20,8 +20,8 @@ export class TextScalingManager {
     private stats: any;
     private userPreferences: any;
     private scalingQueue: any[];
-    private isProcessing: boolean;
-    private throttleDelay: number;
+    // private isProcessing: boolean;
+    // private throttleDelay: number;
     private domObserver: MutationObserver | null;
 
     constructor(visualAccessibilityManager: any) {

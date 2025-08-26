@@ -4,8 +4,8 @@
  */
 
 export class DeveloperAlertSystem {
-    private dataCollector: any;
-    private trendAnalyzer: any;
+    // private dataCollector: any;
+    // private trendAnalyzer: any;
     private options: any;
     private alertHistory: any[];
     private alertCategories: Map<string, any>;

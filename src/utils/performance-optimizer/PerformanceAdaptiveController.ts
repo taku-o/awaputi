@@ -125,9 +125,9 @@ type QualityLevel = 'high' | 'medium' | 'low' | 'minimal' | 'off';
 type OptimizationType = 'adaptive' | 'proactive' | 'emergency' | 'stabilization';
 
 export class PerformanceAdaptiveController {
-    private config: ControllerConfig;
+    // private config: ControllerConfig;
     private errorHandler: ErrorHandler;
-    private performanceConfig: PerformanceConfig;
+    // private performanceConfig: PerformanceConfig;
     private performanceLevel: PerformanceLevel;
     private adaptiveMode: boolean;
     private optimizationStats: OptimizationStats;

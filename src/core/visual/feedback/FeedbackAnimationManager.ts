@@ -379,7 +379,7 @@ export function shouldUseReducedMotion(): boolean {
 }
 
 export class FeedbackAnimationManager {
-    private mainController: VisualFeedbackManager;
+    // private mainController: VisualFeedbackManager;
     private activeAnimations: Map<string, AnimationEffect>;
     private animationConfig: AnimationConfig;
     private performanceMetrics: PerformanceMetrics;

@@ -124,7 +124,7 @@ interface ErrorHandler {
 export class SoundPoolManager {
     private audioContext: AudioContext;
     private sfxGainNode: GainNode;
-    private configManager: ConfigurationManager;
+    // private configManager: ConfigurationManager;
     private errorHandler: ErrorHandler;
     // サウンドプール管理
     private soundPools: Map<string, any>;

@@ -120,7 +120,7 @@ export class ReflectionRenderer {
     renderWaterReflection(context: CanvasRenderingContext2D, surface: ReflectionObject): void {
         try {
             const waterLevel = surface.surface.y || 0;
-            const reflectivity = surface.reflectivity;
+            // const reflectivity = surface.reflectivity;
 
             context.save();
             context.globalCompositeOperation = 'multiply';
@@ -153,7 +153,7 @@ export class ReflectionRenderer {
     renderMirrorReflection(context: CanvasRenderingContext2D, surface: ReflectionObject): void {
         try {
             const mirror = surface.surface;
-            const reflectivity = surface.reflectivity;
+            // const reflectivity = surface.reflectivity;
 
             context.save();
             context.globalCompositeOperation = 'screen';

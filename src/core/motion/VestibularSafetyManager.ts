@@ -295,13 +295,13 @@ export function generateSafetyId(): string {
 
 export class VestibularSafetyManager {
     private motionManager: MotionManager;
-    private visualAccessibilityManager: VisualAccessibilityManager;
-    private accessibilityManager: AccessibilityManager;
-    private gameEngine: GameEngine;
+    // private visualAccessibilityManager: VisualAccessibilityManager;
+    // private accessibilityManager: AccessibilityManager;
+    // private gameEngine: GameEngine;
     
     // 設定参照
     private config: MotionConfig;
-    private userPreferences: UserPreferences;
+    // private userPreferences: UserPreferences;
     private hazardPatterns: Record<string, HazardPattern>;
     
     // 統計情報

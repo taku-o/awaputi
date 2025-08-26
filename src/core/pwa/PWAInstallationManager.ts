@@ -25,7 +25,7 @@ interface InstallEvent {
 }
 
 export class PWAInstallationManager {
-    private pwaManager: any;
+    // private pwaManager: any;
     private deferredPrompt: BeforeInstallPromptEvent | null = null;
     private isInstallPromptShown: boolean = false;
     private installDismissed: boolean = false;

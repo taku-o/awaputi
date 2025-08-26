@@ -99,7 +99,7 @@ export interface FullSyncStats extends SyncStats {
 }
 
 export class SettingsStorageManager {
-    private settingsManager: SettingsManager;
+    // private settingsManager: SettingsManager;
     private errorHandler: ErrorHandler;
     private storageKeys: StorageKeys;
     private backupConfig: BackupConfig;

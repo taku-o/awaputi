@@ -154,9 +154,9 @@ export type ScreenshotQuality = 'low' | 'medium' | 'high';
 export type PrivacyLevel = 'public' | 'friends' | 'private';
 
 export class SettingsDataManager {
-    private settingsManager: SettingsManager;
+    // private settingsManager: SettingsManager;
     private configManager: ConfigManager;
-    private validationRules: ValidationRules;
+    // private validationRules: ValidationRules;
 
     constructor(settingsManager: SettingsManager) {
         this.settingsManager = settingsManager;

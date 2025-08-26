@@ -190,7 +190,7 @@ interface UpdateConfigOptions {
 type DataWatcherCallback = (viewType: string, data: RankingData) => void;
 
 export class LeaderboardDataManager {
-    private gameEngine: GameEngine;
+    // private gameEngine: GameEngine;
     private leaderboardManager: LeaderboardManager;
     private errorHandler: ErrorHandler;
     

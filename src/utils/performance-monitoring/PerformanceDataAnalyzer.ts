@@ -122,12 +122,12 @@ interface ConfigurationInput {
 }
 
 export class PerformanceDataAnalyzer {
-    private performanceMonitoringSystem: PerformanceMonitoringSystem;
+    // private performanceMonitoringSystem: PerformanceMonitoringSystem;
     private errorHandler: ErrorHandler | typeof console;
     private analysisConfig: AnalysisConfig;
     private performanceBaseline: Map<string, number>;
     private baselineCalibrated: boolean;
-    private calibrationTarget: number;
+    // private calibrationTarget: number;
     private anomalies: Anomaly[];
     private trendAnalyzers: Map<string, TrendAnalyzer>;
     private metricsCollector: PerformanceMetricsCollector;

@@ -623,7 +623,7 @@ export class GameUIManager {
      * @param context - 描画コンテキスト
      */
     public renderEnhancedUI(context: CanvasRenderingContext2D): void {
-        const canvas = this.gameEngine.canvas;
+        // const canvas = this.gameEngine.canvas;
         const playerData = this.gameEngine.playerData;
         
         context.save();

@@ -61,7 +61,7 @@ interface PerformanceStats {
     };
 }
 export class RenderOptimizer {
-    private canvas: HTMLCanvasElement;
+    // private canvas: HTMLCanvasElement;
     private context: CanvasRenderingContext2D;
     private width: number;
     private height: number;
@@ -79,7 +79,7 @@ export class RenderOptimizer {
     private stats: RenderStats;
     // オフスクリーンキャンバス
     private offscreenCanvas: HTMLCanvasElement;
-    private offscreenContext: CanvasRenderingContext2D;
+    // private offscreenContext: CanvasRenderingContext2D;
     constructor(canvas: HTMLCanvasElement) {
         this.canvas = canvas;
         const context = canvas.getContext('2d');

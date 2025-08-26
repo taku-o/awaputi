@@ -360,7 +360,7 @@ export class DetailedMetricsCollector {
      * メモリ配置パターン分析
      */
     private analyzeMemoryAllocationPatterns(memoryMetrics: MemoryMetrics): void {
-        const currentUsed = performance.memory?.usedJSHeapSize || 0;
+        // const currentUsed = performance.memory?.usedJSHeapSize || 0;
         const history = this.monitor.historyManager.data.memory.slice(-10);
         
         if (history.length >= 3) {

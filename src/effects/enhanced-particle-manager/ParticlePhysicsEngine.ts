@@ -103,7 +103,7 @@ export class ParticlePhysicsEngine {
     private backgroundDensity: number;
     private backgroundTheme: BackgroundTheme;
     // タイミングプロファイル
-    private timingProfiles?: TimingProfiles;
+    // private timingProfiles?: TimingProfiles;
 
     constructor() {
         this.errorHandler = getErrorHandler();

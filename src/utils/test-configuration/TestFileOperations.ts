@@ -83,7 +83,7 @@ interface DirectorySizeInfo {
  */
 export class TestFileOperations extends BaseComponent {
     private testsDir: string;
-    private projectRoot: string;
+    // private projectRoot: string;
     private backupEnabled: boolean;
     private dryRun: boolean;
     private testFilePatterns: Record<string, string>;

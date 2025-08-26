@@ -158,7 +158,7 @@ interface ErrorHandler {
 
 export class SoundEffectRenderer {
     private audioContext: AudioContext;
-    private configManager: ConfigurationManager;
+    // private configManager: ConfigurationManager;
     private errorHandler: ErrorHandler;
     // サウンド生成設定
     private generationConfig: GenerationConfig;

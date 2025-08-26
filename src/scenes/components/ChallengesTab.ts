@@ -34,7 +34,7 @@ interface ChallengeConfig {
 export class ChallengesTab {
     private gameEngine: GameEngine;
     private eventBus: ComponentEventBus;
-    private sceneState: SceneState;
+    // private sceneState: SceneState;
     
     // UI コンポーネント
     private challengeUI: ChallengeUI | null = null;
@@ -43,7 +43,7 @@ export class ChallengesTab {
     // 状態管理
     private isInitialized: boolean = false;
     private isVisible: boolean = false;
-    private currentChallengeId: string | null = null;
+    // private currentChallengeId: string | null = null;
     
     // 設定
     private config: ChallengeConfig = {

@@ -146,14 +146,14 @@ export class AnimationOptimizer {
     // 基本設定
     private enabled: boolean;
     private optimizationLevel: OptimizationLevel;
-    private maxConcurrentAnimations: number;
+    // private maxConcurrentAnimations: number;
     private defaultDuration: number;
     private reducedMotionEnabled: boolean;
     
     // アニメーション管理
     private activeAnimations: Map<string, ActiveAnimationData>;
     private animationQueue: any[];
-    private scheduledAnimations: Set<Animation>;
+    // private scheduledAnimations: Set<Animation>;
     private runningAnimations: Set<Animation>;
     
     // フレーム管理
@@ -496,8 +496,8 @@ export class AnimationOptimizer {
         
         // 要素の現在状態を取得
         const computedStyle = window.getComputedStyle(element);
-        const _currentTransform = computedStyle.transform;
-        const _currentOpacity = computedStyle.opacity;
+        // const _currentTransform = computedStyle.transform;
+        // const _currentOpacity = computedStyle.opacity;
         
         // 最適化されたキーフレーム
         let optimizedKeyframes = [...preset.keyframes];

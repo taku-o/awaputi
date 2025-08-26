@@ -77,7 +77,7 @@ export class ShopScene extends Scene {
      * プレイヤー情報を描画
      */
     private renderPlayerInfo(context: CanvasRenderingContext2D): void {
-        const canvas = this.gameEngine.canvas;
+        // const canvas = this.gameEngine.canvas;
         const playerData = this.gameEngine.playerData;
 
         context.save();
@@ -279,7 +279,7 @@ export class ShopScene extends Scene {
     private handleClick(event: MouseEvent): void {
         const canvas = this.gameEngine.canvas;
         const rect = canvas.getBoundingClientRect();
-        const x = event.clientX - rect.left;
+        // const x = event.clientX - rect.left;
         const y = event.clientY - rect.top;
         
         const startY = 150;

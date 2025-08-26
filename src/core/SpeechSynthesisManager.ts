@@ -100,9 +100,9 @@ interface ScreenReaderManager {
  * Web Speech API を使用した包括的な音声出力システム
  */
 export class SpeechSynthesisManager {
-    private screenReaderManager: ScreenReaderManager;
+    // private screenReaderManager: ScreenReaderManager;
     private accessibilityManager: any;
-    private gameEngine: any;
+    // private gameEngine: any;
     private isSupported: boolean;
     private speechSynthesis: SpeechSynthesis;
     private config: SpeechConfig;

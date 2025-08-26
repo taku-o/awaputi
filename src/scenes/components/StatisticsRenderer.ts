@@ -90,7 +90,7 @@ interface ResponsiveLayout {
 export class StatisticsRenderer {
     private gameEngine: GameEngine;
     private eventBus: EventBus;
-    private state: ComponentState;
+    // private state: ComponentState;
     
     // エラーハンドリング
     private errorHandler?: GameEngine['errorHandler'];
@@ -99,7 +99,7 @@ export class StatisticsRenderer {
     private accessibilitySettings: AccessibilitySettings;
     
     // レイアウト設定
-    private contentPadding: number = 20;
+    // private contentPadding: number = 20;
     private sectionHeight: number = 180;
     private lineHeight: number = 20;
     private scrollPosition: number = 0;

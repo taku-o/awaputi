@@ -66,7 +66,7 @@ export class LazyTranslationLoader {
     private cacheTimeout: number;
     // メモリ最適化
     private memoryThreshold: number;
-    private compressionThreshold: number;
+    // private compressionThreshold: number;
     private unusedDataCleanupInterval: number;
     // 統計とモニタリング
     private stats: LoadingStats;

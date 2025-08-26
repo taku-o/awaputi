@@ -96,7 +96,7 @@ type GameState = 'start' | 'pause' | 'resume' | 'gameover' | 'levelup';
 type SoundCategory = 'bubble' | 'ui' | 'achievement' | 'gamestate' | 'combo';
 
 export class SoundEffectSystem {
-    private audioManager: AudioManager;
+    // private audioManager: AudioManager;
     private audioContext: AudioContext | null;
     private sfxGainNode: GainNode | null;
     private configManager: ConfigurationManager;

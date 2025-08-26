@@ -318,7 +318,7 @@ function getConfigurationManager(): ConfigurationManager {
 
 export class ParticlePerformanceOptimizer {
     private errorHandler: ErrorHandler;
-    private configManager: ConfigurationManager;
+    // private configManager: ConfigurationManager;
     private particleConfig: ParticleConfiguration;
     private cullingSystem: ParticleCullingSystem;
     private batchRenderer: ParticleBatchRenderer;

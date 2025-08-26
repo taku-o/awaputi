@@ -21,9 +21,9 @@ interface TestEnvironment {
  * テスト実行と支援機能を提供する包括的システム
  */
 export class TestSupportTools extends BaseComponent {
-    private gameEngine: GameEngine;
+    // private gameEngine: GameEngine;
     private components = new Map<string, TestComponent>();
-    private testEnvironment: TestEnvironment | null = null;
+    // private testEnvironment: TestEnvironment | null = null;
     private isRunning = false;
     private initialized = false;
 

@@ -11,7 +11,7 @@ import { PerformanceMeasurement, DataGenerator } from './PerformanceTestUtilitie
 export class DataCollectionPerformanceTests {
     private mainTestSuite: any;
     private performanceConfig: any;
-    private environmentThresholds: any;
+    // private environmentThresholds: any;
 
     constructor(mainTestSuite: any) {
         this.mainTestSuite = mainTestSuite;

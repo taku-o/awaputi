@@ -145,7 +145,7 @@ declare global {
 export class HealthChecker {
     private config: HealthCheckerConfig;
     private monitoringData: MonitoringData;
-    private seoLogger: SEOLogger;
+    // private seoLogger: SEOLogger;
     private alertCallbacks: AlertCallback[];
     private lastHealthCheck: HealthCheck | null;
     

@@ -251,7 +251,7 @@ class DummyMobileMemoryManager implements MobileMemoryManager {
 
 export class MobilePerformanceOptimizer {
     private errorHandler: ErrorHandler;
-    private configManager: ConfigurationManager;
+    // private configManager: ConfigurationManager;
     private config: OptimizerConfig;
     private deviceDetection: DeviceDetection;
     private monitoring: PerformanceMonitoring;
@@ -668,7 +668,7 @@ export class MobilePerformanceOptimizer {
      */
     private classifyDevicePerformance(): void {
         const benchmarks = this.deviceDetection.benchmarks;
-        const _hardware = this.deviceDetection.hardware;
+        // const _hardware = this.deviceDetection.hardware;
         
         // Weight the scores
         const cpuWeight = 0.4;

@@ -717,7 +717,7 @@ export class CurrencyFormatter implements CurrencyFormatterInterface {
             }
 
             const symbol = currencyFormatSettings?.symbol || '$';
-            const _code = currencyFormatSettings?.code || 'USD';
+            // const _code = currencyFormatSettings?.code || 'USD';
             const position = currencyFormatSettings?.position || 'before';
             const space = currencyFormatSettings?.space || false;
             

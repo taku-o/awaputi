@@ -172,7 +172,7 @@ export class HelpRenderer {
         }
         
         // ResponsiveCanvasManagerのスケール情報も考慮
-        let scale = 1;
+        // let scale = 1;
         if (this.gameEngine && this.gameEngine.responsiveCanvasManager) {
             try {
                 const canvasInfo = this.gameEngine.responsiveCanvasManager.getCanvasInfo();

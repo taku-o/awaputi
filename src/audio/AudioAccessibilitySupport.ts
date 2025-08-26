@@ -131,8 +131,8 @@ interface PatternRecognition {
  */
 export class AudioAccessibilitySupport {
     private audioManager: AudioManager;
-    private configManager: ConfigurationManager;
-    private localizationManager: LocalizationManager;
+    // private configManager: ConfigurationManager;
+    // private localizationManager: LocalizationManager;
     private errorHandler: ErrorHandler;
     // Main Controller Pattern: サブコンポーネント管理
     private audioDescriptionManager: AudioDescriptionManager;

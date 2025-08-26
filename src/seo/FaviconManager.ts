@@ -107,8 +107,8 @@ interface FileSystemWritableFileStream {
 }
 
 export class FaviconManager {
-    private localizationManager: LocalizationManager | null;
-    private baseUrl: string;
+    // private localizationManager: LocalizationManager | null;
+    // private baseUrl: string;
     private canvas: HTMLCanvasElement | null;
     private ctx: CanvasRenderingContext2D | null;
     private generatedFavicons: Map<string, string>;

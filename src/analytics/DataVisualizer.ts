@@ -64,7 +64,7 @@ export class DataVisualizer {
     private svgElements: Map<string, any>;
     private scales: Map<string, any>;
     private d3: any;
-    private useCanvasFallback: boolean;
+    // private useCanvasFallback: boolean;
 
     constructor(options: DataVisualizerOptions = {}) {
         this.options = {

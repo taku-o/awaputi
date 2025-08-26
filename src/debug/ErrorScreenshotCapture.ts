@@ -67,7 +67,7 @@ interface StoredScreenshot {
 export class ErrorScreenshotCapture {
     private gameEngine?: GameEngine;
     private isEnabled: boolean;
-    private compressionQuality: number;
+    // private compressionQuality: number;
     private maxScreenshots: number;
     private storedScreenshots: Screenshot[];
     private captureSettings: CaptureSettings;

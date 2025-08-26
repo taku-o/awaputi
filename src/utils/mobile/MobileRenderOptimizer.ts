@@ -140,7 +140,7 @@ interface OptimizationConfig {
 
 export class MobileRenderOptimizer {
     private errorHandler: ErrorHandler;
-    private configManager: ConfigurationManager;
+    // private configManager: ConfigurationManager;
     private renderConfig: RenderConfig;
     private renderMonitoring: RenderMonitoring;
     private lastFrameTime: number = 0;

@@ -108,7 +108,7 @@ export class AchievementStatsUI {
     private statsCache: StatisticsData | null;
     private lastCacheUpdate: number;
     private cacheTimeout: number;
-    private padding: number;
+    // private padding: number;
     private sectionSpacing: number;
     private itemHeight: number;
     private colors: ColorScheme;

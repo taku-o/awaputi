@@ -417,7 +417,7 @@ export class AchievementsTab extends TabComponent {
  * 実績カテゴリの選択フィルタリング機能を担当
  */
 class AchievementCategoryFilter { 
-    private gameEngine: GameEngine;
+    // private gameEngine: GameEngine;
     private eventBus: ComponentEventBus;
     private state: SceneState;
     
@@ -438,7 +438,7 @@ class AchievementCategoryFilter {
         borderColor: '#DEE2E6',
         activeBorderColor: '#0056B3'
     };
-    private isInitialized: boolean = false;
+    // private isInitialized: boolean = false;
     
     constructor(gameEngine: GameEngine, eventBus: ComponentEventBus, state: SceneState) {
         this.gameEngine = gameEngine;
@@ -660,10 +660,10 @@ class AchievementCategoryFilter {
  * 進捗バーの描画を専門に担当
  */
 class AchievementProgressRenderer { 
-    private gameEngine: GameEngine;
-    private eventBus: ComponentEventBus;
-    private state: SceneState;
-    private isInitialized: boolean = false;
+    // private gameEngine: GameEngine;
+    // private eventBus: ComponentEventBus;
+    // private state: SceneState;
+    // private isInitialized: boolean = false;
     
     constructor(gameEngine: GameEngine, eventBus: ComponentEventBus, state: SceneState) {
         this.gameEngine = gameEngine;
@@ -814,7 +814,7 @@ class AchievementsRenderer {
         subTextColor: '#CCCCCC',
         disabledColor: '#999999'
     };
-    private isInitialized: boolean = false;
+    // private isInitialized: boolean = false;
     
     constructor(gameEngine: GameEngine, eventBus: ComponentEventBus, state: SceneState) {
         this.gameEngine = gameEngine;

@@ -81,7 +81,7 @@ export class SystemIntegrationTester {
     private testResults: Map<string, TestResult[]>;
     private testStats: TestStats;
     private testSuites: Map<string, TestFunction>;
-    private mockFactory: MockFactory;
+    // private mockFactory: MockFactory;
 
     constructor() {
         this.localizationManager = getEnhancedLocalizationManager();

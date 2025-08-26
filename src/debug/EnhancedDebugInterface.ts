@@ -91,12 +91,12 @@ interface PanelConfig {
 
 export class EnhancedDebugInterface extends EffectDebugInterface {
     private components: Map<string, DebugComponent>;
-    private initialized: boolean;
+    // private initialized: boolean;
     private errorHandler: ErrorHandler;
     private sessionId: string;
     public activePanel: string;
     private panelHistory: string[];
-    private layout: string;
+    // private layout: string;
     private position: Position;
     private size: Size;
     private settings: Settings;

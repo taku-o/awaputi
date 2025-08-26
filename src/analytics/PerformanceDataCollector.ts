@@ -8,9 +8,9 @@ export class PerformanceDataCollector {
     private isRunning: boolean;
     private sessionId: string;
     private performanceData: any;
-    private frameCount: number;
-    private lastFrameTime: number;
-    private fpsTimer: any;
+    // private frameCount: number;
+    // private lastFrameTime: number;
+    // private fpsTimer: any;
     private memoryTimer: any;
     private eventListeners: any[];
     private frameTracker: any;

@@ -226,7 +226,7 @@ export class FontSourceManager {
 }
 
 export class LocalFontSource implements IFontSource {
-    private config: FontSourceConfig;
+    // private config: FontSourceConfig;
     private fontDirectory: string;
     private formats: string[];
 
@@ -278,7 +278,7 @@ export class LocalFontSource implements IFontSource {
 }
 
 export class GoogleFontSource implements IFontSource {
-    private config: FontSourceConfig;
+    // private config: FontSourceConfig;
     private baseUrl: string;
     private weights: string[];
     private display: string;
@@ -330,7 +330,7 @@ export class GoogleFontSource implements IFontSource {
 }
 
 export class SystemFontSource implements IFontSource {
-    private config: FontSourceConfig;
+    // private config: FontSourceConfig;
     private systemFonts: Map<string, boolean>;
 
     constructor(config: FontSourceConfig = {}) {

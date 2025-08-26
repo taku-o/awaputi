@@ -82,7 +82,7 @@ export interface HazardPattern {
 export class MotionManager {
     private visualAccessibilityManager: any;
     private accessibilityManager: any;
-    private gameEngine: any;
+    // private gameEngine: any;
     private config: MotionConfig;
     private currentLevel: string;
     private activeAnimations: Map<string, any>;

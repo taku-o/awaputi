@@ -105,7 +105,7 @@ declare global {
 
 export class OptimizedTranslationLoader {
     // 基本設定
-    private loadedTranslations: Map<string, any>;
+    // private loadedTranslations: Map<string, any>;
     private loadingPromises: Map<string, Promise<any>>;
     private compressionEnabled: boolean;
     private lazyLoadEnabled: boolean;
@@ -127,7 +127,7 @@ export class OptimizedTranslationLoader {
     private preloadQueue: string[];
     
     // 圧縮設定
-    private compressionThreshold: number;
+    // private compressionThreshold: number;
     
     // システム情報
     private serviceWorkerSupported: boolean;

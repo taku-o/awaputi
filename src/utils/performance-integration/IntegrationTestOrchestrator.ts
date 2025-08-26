@@ -142,7 +142,7 @@ interface ErrorHandler {
 }
 
 export class IntegrationTestOrchestrator {
-    private performanceIntegrationTesting: any;
+    // private performanceIntegrationTesting: any;
     private errorHandler: ErrorHandler;
     private orchestrationConfig: OrchestrationConfig;
     private testSessions: Map<string, TestSession>;

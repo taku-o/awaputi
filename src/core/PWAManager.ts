@@ -67,15 +67,15 @@ interface GameEngine {
 
 export class PWAManager {
     private gameEngine: GameEngine | null;
-    private configManager: any;
+    // private configManager: any;
     private errorHandler: any;
-    private browserCompatibility: any;
+    // private browserCompatibility: any;
     private config: PWAConfig;
     private state: PWAState;
     private stats: PWAStats;
     private serviceWorkerManager: PWAServiceWorkerManager;
     private installationManager: PWAInstallationManager;
-    private networkInfo: NetworkInfo;
+    // private networkInfo: NetworkInfo;
 
     constructor(gameEngine?: GameEngine) {
         this.gameEngine = gameEngine || null;

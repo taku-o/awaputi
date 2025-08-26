@@ -227,7 +227,7 @@ export function validateSkipLinkConfig(config: SkipLinkConfig): boolean {
 
 export class FocusTrapManager {
     private focusManager: FocusManager;
-    private gameEngine: GameEngine;
+    // private gameEngine: GameEngine;
     
     // フォーカストラップ管理
     private activeTrap: FocusTrap | null = null;
