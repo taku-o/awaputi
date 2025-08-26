@@ -157,7 +157,7 @@ export class SEOErrorHandler {
      */
     private registerDefaultHandlers(): void {
         // ネットワークエラー
-        this.registerHandler('NetworkError', async (error: Error, context: string, data: ErrorHandlerData) => {
+        this.registerHandler('NetworkError', async (_error: Error, _context: string, data: ErrorHandlerData) => {
             seoLogger.warn('Network error detected, using cached data if available');
             return data.cached || null;
         });

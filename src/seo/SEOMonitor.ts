@@ -352,67 +352,67 @@ export class SEOMonitor {
     /**
      * 監視チェックの実行（レガシー互換性）
      */
-    private async performMonitoringCheck(options: MonitoringConfig): Promise<void> {
-        try {
-            const checkResults = {
-                timestamp: new Date().toISOString(),
-                lighthouse: null as LighthouseScore | null,
-                coreWebVitals: null as CoreWebVitalsData | null,
-                metaTags: null as any,
-                alerts: [] as Alert[]
-            };
-            
-            // Lighthouseスコア監視
-            if (options.includeLighthouse) {
-                checkResults.lighthouse = await this.monitoringEngine.checkLighthouseScore();
-                this.monitoringData.lighthouse = this.monitoringData.lighthouse || [];
-                this.monitoringData.lighthouse.push(checkResults.lighthouse);
-                
-                if (options.enableAlerts) {
-                    this.checkLighthouseAlerts(checkResults.lighthouse, checkResults.alerts);
-                }
-            }
-            
-            // Core Web Vitals監視
-            if (options.includeCoreWebVitals) {
-                checkResults.coreWebVitals = await this.monitoringEngine.checkCoreWebVitals();
-                this.monitoringData.coreWebVitals.push(checkResults.coreWebVitals);
-                
-                if (options.enableAlerts) {
-                    this.checkCoreWebVitalsAlerts(checkResults.coreWebVitals, checkResults.alerts);
-                }
-            }
-            
-            // メタタグ監視
-            if (options.includeMetaTags) {
-                checkResults.metaTags = await this.metaTagAnalyzer.checkMetaTags();
-                
-                if (options.enableAlerts) {
-                    this.metaTagAnalyzer.checkMetaTagAlerts(checkResults.metaTags, checkResults.alerts);
-                }
-            }
-            
-            // アラートの処理
-            if (checkResults.alerts.length > 0) {
-                this.monitoringData.alerts.push(...checkResults.alerts);
-                await this.processAlerts(checkResults.alerts);
-            }
-            
-            this.monitoringData.lastCheck = checkResults.timestamp;
-            
-            // データの保持期間制限（最大100エントリ）
-            this.limitDataRetention();
-            
-            seoLogger.info('SEO monitoring check completed', {
-                lighthouseScore: checkResults.lighthouse?.seo,
-                coreWebVitals: checkResults.coreWebVitals,
-                alertCount: checkResults.alerts.length
-            });
-            
-        } catch (error) {
-            seoErrorHandler.handle(error as Error, 'performMonitoringCheck', options);
-        }
-    }
+    // private async performMonitoringCheck(options: MonitoringConfig): Promise<void> {
+    //     try {
+    //        const checkResults = {
+    //            timestamp: new Date().toISOString(),
+    //            lighthouse: null as LighthouseScore | null,
+    //            coreWebVitals: null as CoreWebVitalsData | null,
+    //            metaTags: null as any,
+    //            alerts: [] as Alert[]
+    //        };
+    //        
+    //        // Lighthouseスコア監視
+    //        if (options.includeLighthouse) {
+    //            checkResults.lighthouse = await this.monitoringEngine.checkLighthouseScore();
+    //            this.monitoringData.lighthouse = this.monitoringData.lighthouse || [];
+    //            this.monitoringData.lighthouse.push(checkResults.lighthouse);
+    //            
+    //            if (options.enableAlerts) {
+    //                this.checkLighthouseAlerts(checkResults.lighthouse, checkResults.alerts);
+    //            }
+    //        }
+    //        
+    //        // Core Web Vitals監視
+    //        if (options.includeCoreWebVitals) {
+    //            checkResults.coreWebVitals = await this.monitoringEngine.checkCoreWebVitals();
+    //            this.monitoringData.coreWebVitals.push(checkResults.coreWebVitals);
+    //            
+    //            if (options.enableAlerts) {
+    //                this.checkCoreWebVitalsAlerts(checkResults.coreWebVitals, checkResults.alerts);
+    //            }
+    //        }
+    //        
+    //        // メタタグ監視
+    //        if (options.includeMetaTags) {
+    //            checkResults.metaTags = await this.metaTagAnalyzer.checkMetaTags();
+    //            
+    //            if (options.enableAlerts) {
+    //                this.metaTagAnalyzer.checkMetaTagAlerts(checkResults.metaTags, checkResults.alerts);
+    //            }
+    //        }
+    //        
+    //        // アラートの処理
+    //        if (checkResults.alerts.length > 0) {
+    //            this.monitoringData.alerts.push(...checkResults.alerts);
+    //            await this.processAlerts(checkResults.alerts);
+    //        }
+    //        
+    //        this.monitoringData.lastCheck = checkResults.timestamp;
+    //        
+    //        // データの保持期間制限（最大100エントリ）
+    //        this.limitDataRetention();
+    //        
+    //        seoLogger.info('SEO monitoring check completed', {
+    //            lighthouseScore: checkResults.lighthouse?.seo,
+    //            coreWebVitals: checkResults.coreWebVitals,
+    //            alertCount: checkResults.alerts.length
+    //        });
+    //        
+    //    } catch (error) {
+    //        seoErrorHandler.handle(error as Error, 'performMonitoringCheck', options);
+    //    }
+    //}
     
     /**
      * Lighthouseアラートのチェック

@@ -8,7 +8,6 @@ import { seoLogger } from './SEOLogger.js';
 import { seoErrorHandler } from './SEOErrorHandler.js';
 import { 
     normalizeUrl, 
-    measurePerformance,
     generateCacheKey
 } from './SEOUtils.js';
 

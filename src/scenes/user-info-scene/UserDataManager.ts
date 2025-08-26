@@ -643,7 +643,7 @@ export class UserDataManager {
     /**
      * キャッシュ時間を更新
      */
-    private updateCacheTime(type: keyof DataCache): void {
+    private updateCacheTime(_type: keyof DataCache): void {
         this.dataCache.lastUpdate = Date.now();
     }
     

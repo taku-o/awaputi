@@ -12,8 +12,7 @@ import {
     normalizeLanguageCode,
     truncateText,
     normalizeUrl,
-    debounce,
-    measurePerformance
+    debounce
 } from './SEOUtils.js';
 
 // メタデータコンテキストインターフェース

@@ -4,7 +4,7 @@
  * 全てのファビコンアセットを生成するスクリプト
  */
 import { FaviconManager } from '../FaviconManager.js';
-import { seoLogger } from '../SEOLogger.js';
+// import { seoLogger } from '../SEOLogger.js';
 
 interface FaviconResult {
     filename: string;

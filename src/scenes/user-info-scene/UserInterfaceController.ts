@@ -231,7 +231,7 @@ export class UserInterfaceController {
     /**
      * タブエリアのクリック判定
      */
-    private isTabAreaClick(x: number, y: number, canvas: HTMLCanvasElement): boolean {
+    private isTabAreaClick(_x: number, y: number, _canvas: HTMLCanvasElement): boolean {
         return y >= 0 && y <= this.layout.tabHeight;
     }
     
@@ -247,7 +247,7 @@ export class UserInterfaceController {
     /**
      * クリックされたタブを取得
      */
-    private getClickedTab(x: number, y: number, canvas: HTMLCanvasElement): Tab | null {
+    private getClickedTab(x: number, _y: number, canvas: HTMLCanvasElement): Tab | null {
         const tabWidth = canvas.width / this.tabs.length;
         const tabIndex = Math.floor(x / tabWidth);
         

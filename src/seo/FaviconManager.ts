@@ -3,12 +3,10 @@
  * 
  * 包括的なファビコン生成・管理機能を提供
  */
-import { SEOConfig, getBaseUrl } from './SEOConfig.js';
+import { getBaseUrl } from './SEOConfig.js';
 import { seoLogger } from './SEOLogger.js';
 import { seoErrorHandler } from './SEOErrorHandler.js';
 import {
-    optimizeImageUrl,
-    measurePerformance,
     generateCacheKey
 } from './SEOUtils.js';
 
@@ -332,7 +330,7 @@ export class FaviconManager {
     /**
      * PNGファビコンの生成
      */
-    private async generatePNGFavicon(spec: FaviconSpec, options: { forceRegenerate?: boolean }): Promise<string> {
+    private async generatePNGFavicon(spec: FaviconSpec, _options: { forceRegenerate?: boolean }): Promise<string> {
         const size = spec.size || Math.max(spec.width || 0, spec.height || 0);
         const width = spec.width || size;
         const height = spec.height || size;
@@ -354,7 +352,7 @@ export class FaviconManager {
     /**
      * SVGファビコンの生成
      */
-    private async generateSVGFavicon(spec: FaviconSpec, options: { forceRegenerate?: boolean }): Promise<string> {
+    private async generateSVGFavicon(spec: FaviconSpec, _options: { forceRegenerate?: boolean }): Promise<string> {
         const size = spec.size || 32;
         const isMonochrome = spec.monochrome || false;
         

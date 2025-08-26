@@ -3,7 +3,7 @@
  * 
  * SEO関連アセットの最適化とパフォーマンス監視機能を提供
  */
-import { SEOConfig, getBaseUrl } from './SEOConfig.js';
+import { getBaseUrl } from './SEOConfig.js';
 import { seoLogger } from './SEOLogger.js';
 import { seoErrorHandler } from './SEOErrorHandler.js';
 import { 

@@ -634,7 +634,7 @@ export class SettingsScene extends Scene implements SettingsSceneState {
     /**
      * プロファイルダイアログの描画
      */
-    private renderProfileDialog(context: CanvasRenderingContext2D, dialogData: ProfileDialogData): void {
+    private renderProfileDialog(_context: CanvasRenderingContext2D, _dialogData: ProfileDialogData): void {
         // プロファイル選択ダイアログの実装（省略）
     }
     
@@ -750,7 +750,7 @@ export class SettingsScene extends Scene implements SettingsSceneState {
     /**
      * コンテキストヘルプの設定
      */
-    private setupContextualHelp(contextData: ContextData): void {
+    private setupContextualHelp(_contextData: ContextData): void {
         this.hasContextualHelp = true;
         this.contextualHelpTitle = 'ヘルプ';
         this.contextualHelpContent = 'ここでゲームの各種設定を変更できます。';
