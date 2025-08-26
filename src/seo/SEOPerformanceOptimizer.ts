@@ -7,7 +7,6 @@ import { getBaseUrl } from './SEOConfig.js';
 import { seoLogger } from './SEOLogger.js';
 import { seoErrorHandler } from './SEOErrorHandler.js';
 import { 
-    measurePerformance,
     generateCacheKey
 } from './SEOUtils.js';
 
@@ -60,7 +59,7 @@ export class SEOPerformanceOptimizer {
     private metrics: PerformanceMetrics[];
 
     constructor() {
-        this.baseUrl = getBaseUrl();
+        // this.baseUrl = getBaseUrl();
         this.imageCache = new Map();
         this.metadataCache = new Map();
         this.compressionCache = new Map();

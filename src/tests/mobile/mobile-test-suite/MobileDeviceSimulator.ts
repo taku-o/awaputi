@@ -96,7 +96,7 @@ interface DebugInfo {
 }
 
 export class MobileDeviceSimulator {
-    private mobileTestSuite: any; // MobileTestSuite type would create circular dependency
+    // private mobileTestSuite: any; // MobileTestSuite type would create circular dependency
     private deviceConfig: DeviceConfig;
     private currentDevice: CurrentDevice;
     private simulationState: SimulationState;

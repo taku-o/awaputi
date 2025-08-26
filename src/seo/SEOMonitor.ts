@@ -155,7 +155,7 @@ export class SEOMonitor {
     private socialAnalyzer: SocialEngagementAnalyzer;
     private searchConsoleIntegrator: SearchConsoleIntegrator;
     private healthChecker: HealthChecker;
-    private metaTagAnalyzer: MetaTagAnalyzer;
+    // private metaTagAnalyzer: MetaTagAnalyzer;
     
     constructor() {
         this.monitoringData = {
@@ -179,7 +179,7 @@ export class SEOMonitor {
         
         this.alertCallbacks = [];
         this.isMonitoring = false;
-        this.lastHealthCheck = null;
+        // this.lastHealthCheck = null;
         
         // 既存実装との互換性のため
         this.thresholds = {
@@ -417,24 +417,24 @@ export class SEOMonitor {
     /**
      * Lighthouseアラートのチェック
      */
-    private checkLighthouseAlerts(lighthouseScore: LighthouseScore, alerts: Alert[]): void {
-        if (!lighthouseScore) return;
-        
-        Object.entries(this.thresholds.lighthouse).forEach(([metric, threshold]) => {
-            const score = lighthouseScore[metric as keyof LighthouseScore] as number;
-            if (score < threshold) {
-                alerts.push({
-                    type: 'lighthouse',
-                    severity: 'warning',
-                    metric: metric,
-                    current: score,
-                    threshold: threshold,
-                    message: `Lighthouse ${metric} score (${score}) is below threshold (${threshold})`,
-                    timestamp: new Date().toISOString()
-                });
-            }
-        });
-    }
+    // private checkLighthouseAlerts(lighthouseScore: LighthouseScore, alerts: Alert[]): void {
+    //    if (!lighthouseScore) return;
+    //    
+    //    Object.entries(this.thresholds.lighthouse).forEach(([metric, threshold]) => {
+    //        const score = lighthouseScore[metric as keyof LighthouseScore] as number;
+    //        if (score < threshold) {
+    //            alerts.push({
+    //                type: 'lighthouse',
+    //                severity: 'warning',
+    //                metric: metric,
+    //                current: score,
+    //                threshold: threshold,
+    //                message: `Lighthouse ${metric} score (${score}) is below threshold (${threshold})`,
+    //                timestamp: new Date().toISOString()
+    //            });
+    //        }
+    //    });
+    //}
     
     /**
      * Core Web Vitalsアラートのチェック
@@ -537,7 +537,7 @@ export class SEOMonitor {
      */
     async runHealthCheck(): Promise<HealthCheckResult> {
         const result = await this.healthChecker.runHealthCheck();
-        this.lastHealthCheck = result;
+        // this.lastHealthCheck = result;
         return result;
     }
     

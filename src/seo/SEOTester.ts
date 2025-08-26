@@ -48,7 +48,7 @@
 import { SEOConfig, getBaseUrl } from './SEOConfig.js';
 import { seoLogger } from './SEOLogger.js';
 import { seoErrorHandler } from './SEOErrorHandler.js';
-import { measurePerformance } from './SEOUtils.js';
+// import { measurePerformance } from './SEOUtils.js';
 
 // Import sub-components
 import { MetaTagValidator } from './testing/MetaTagValidator.js';
@@ -519,7 +519,7 @@ export class SEOTester {
             timestamp: new Date().toISOString()
         };
         
-        results.forEach((result, index) => {
+        results.forEach((result, _index) => {
             if (result.status === 'fulfilled' && result.value) {
                 const categoryResult = result.value;
                 aggregated.categories[categoryResult.category] = categoryResult;

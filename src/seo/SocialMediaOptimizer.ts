@@ -3,12 +3,11 @@
  * 
  * プラットフォーム別の最適化画像生成と共有コンテンツ管理
  */
-import { SEOConfig, getSocialImageUrl } from './SEOConfig.js';
+import { getSocialImageUrl } from './SEOConfig.js';
 import { seoLogger } from './SEOLogger.js';
 import { seoErrorHandler } from './SEOErrorHandler.js';
 import { optimizeImageUrl, 
     truncateText,
-    measurePerformance,
     generateCacheKey 
 } from './SEOUtils.js';
 
@@ -175,9 +174,9 @@ export class SocialMediaOptimizer {
     private ctx: CanvasRenderingContext2D | null;
     private initialized: boolean = false;
     
-    constructor(localizationManager: LocalizationManager | null = null, gameConfig: GameConfig | null = null) {
+    constructor(localizationManager: LocalizationManager | null = null, _gameConfig: GameConfig | null = null) {
         this.localizationManager = localizationManager;
-        this.gameConfig = gameConfig;
+        // this.gameConfig = _gameConfig;
         this.platformSpecs = new Map();
         this.imageCache = new Map();
         this.shareCache = new Map();
@@ -517,7 +516,7 @@ export class SocialMediaOptimizer {
     /**
      * フォールバック共有コンテンツ
      */
-    private getFallbackShareContent(platform: string): FallbackShareContent {
+    private getFallbackShareContent(_platform: string): FallbackShareContent {
         return {
             title: 'BubblePop - 泡割りゲーム',
             description: 'HTML5 Canvas を使用したバブルポップゲーム',
@@ -667,7 +666,7 @@ export class SocialMediaOptimizer {
     /**
      * プラットフォームメタデータの生成
      */
-    private generatePlatformMetadata(content: BaseContent, specs: PlatformSpec, platform: string): PlatformMetadata {
+    private generatePlatformMetadata(_content: BaseContent, specs: PlatformSpec, platform: string): PlatformMetadata {
         const metadata: PlatformMetadata = {
             imageWidth: specs.imageSize.width,
             imageHeight: specs.imageSize.height,
@@ -811,7 +810,7 @@ export class SocialMediaOptimizer {
     /**
      * オーバーレイの描画
      */
-    private async drawOverlay(gameState: GameState, platform: string): Promise<void> {
+    private async drawOverlay(_gameState: GameState, platform: string): Promise<void> {
         if(!this.ctx || !this.canvas) return;
         
         // タイトルの描画
@@ -836,7 +835,7 @@ export class SocialMediaOptimizer {
     /**
      * Pinterest用の詳細説明
      */
-    private expandDescriptionForPinterest(description: string, content: BaseContent): string {
+    private expandDescriptionForPinterest(description: string, _content: BaseContent): string {
         let expanded = description;
         
         // ゲーム機能の詳細を追加

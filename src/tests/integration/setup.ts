@@ -267,7 +267,7 @@ global.FileReader = class MockFileReaderClass implements MockFileReader {
     result: string | null = null;
     readyState = 0; // EMPTY
     
-    readAsDataURL(file: File): void {
+    readAsDataURL(_file: File): void {
         this.readyState = 1; // LOADING
         setTimeout(() => {
             this.readyState = 2; // DONE
@@ -278,7 +278,7 @@ global.FileReader = class MockFileReaderClass implements MockFileReader {
         }, 10);
     }
     
-    readAsText(file: File): void {
+    readAsText(_file: File): void {
         this.readyState = 1; // LOADING
         setTimeout(() => {
             this.readyState = 2; // DONE

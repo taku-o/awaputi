@@ -350,9 +350,9 @@ describe('ソーシャルUI統合テスト', () => {
 
         mockSocialSharingManager = {
             initialize: jest.fn(async () => {}),
-            handleGameEnd: jest.fn(async (data: GameEndData) => {}),
-            handleAchievementUnlocked: jest.fn(async (achievement: any) => {}),
-            handleChallengeCompleted: jest.fn(async (challenge: Challenge) => {}),
+            handleGameEnd: jest.fn(async (_data: GameEndData) => {}),
+            handleAchievementUnlocked: jest.fn(async (_achievement: any) => {}),
+            handleChallengeCompleted: jest.fn(async (_challenge: Challenge) => {}),
             createShareDialog: jest.fn(async (shareData: ShareData) => {
                 const dialog = new MockShareDialog();
                 dialog.setShareData(shareData);
@@ -380,8 +380,8 @@ describe('ソーシャルUI統合テスト', () => {
                 };
                 return data[key] || null;
             }),
-            setItem: jest.fn((key: string, value: string) => {}),
-            removeItem: jest.fn((key: string) => {}),
+            setItem: jest.fn((_key: string, _value: string) => {}),
+            removeItem: jest.fn((_key: string) => {}),
             clear: jest.fn(() => {})
         };
 
@@ -715,7 +715,7 @@ describe('ソーシャルUI統合テスト', () => {
             const dialog = await mockSocialSharingManager.createShareDialog(shareData);
             dialog.createShareButtons();
 
-            const buttons = dialog.element.querySelectorAll('.share-btn');
+            // const buttons = dialog.element.querySelectorAll('.share-btn');
             // Web Share APIボタンは表示されず、Twitter等の個別ボタンのみ
             const generalShareBtn = dialog.element.querySelector('.general-share-btn');
             expect(generalShareBtn).toBeNull();
@@ -737,11 +737,11 @@ describe('ソーシャルUI統合テスト', () => {
             }
 
             // エラー時のデフォルト設定使用
-            const defaultSettings = {
-                autoShare: false,
-                shareHighScores: false,
-                shareAchievements: false
-            };
+            // const defaultSettings = {
+            //     autoShare: false,
+            //     shareHighScores: false,
+            //     shareAchievements: false
+            // };
 
             const shareButton = await mockSocialSharingManager.createShareButton({
                 type: 'score',

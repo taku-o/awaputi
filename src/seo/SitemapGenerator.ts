@@ -3,10 +3,10 @@
  * 
  * 動的なsitemap.xml生成機能を提供
  */
-import { SEOConfig, getBaseUrl, getLocalizedUrl, LanguageCode } from './SEOConfig.js';
+import { SEOConfig, getBaseUrl, getLocalizedUrl } from './SEOConfig.js';
 import { seoLogger } from './SEOLogger.js';
 import { seoErrorHandler } from './SEOErrorHandler.js';
-import { normalizeUrl, measurePerformance } from './SEOUtils.js';
+import { normalizeUrl } from './SEOUtils.js';
 
 // URL情報インターフェース
 interface UrlData {
@@ -469,8 +469,8 @@ export class SitemapGenerator {
         });
         
         const duplicates = Array.from(urlCounts.entries())
-            .filter(([url, count]) => count > 1)
-            .map(([url]) => url);
+            .filter(([_url, count]) => count > 1)
+            .map(([_url]) => _url);
         
         if (duplicates.length > 0) {
             issues.push(`Duplicate URLs found: ${duplicates.length}`);

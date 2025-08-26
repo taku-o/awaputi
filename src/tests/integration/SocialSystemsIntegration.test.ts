@@ -287,23 +287,23 @@ describe('ソーシャル機能とシステム連携テスト', () => {
 
         mockSocialSharingManager = {
             shareContentGenerator: {
-                generateScoreMessage: jest.fn(async (shareData: any, platform: string) => 
+                generateScoreMessage: jest.fn(async (shareData: any, _platform: string) => 
                     `🎯 BubblePop で ${shareData.score} 点を獲得！ #BubblePop #HighScore`),
-                generateMilestoneMessage: jest.fn(async (milestoneData: any, platform: string) => 
+                generateMilestoneMessage: jest.fn(async (milestoneData: any, _platform: string) => 
                     `🎉 ${milestoneData.milestone} を達成！ #BubblePop #Milestone`),
-                generateAchievementMessage: jest.fn(async (achievement: Achievement, platform: string) => 
+                generateAchievementMessage: jest.fn(async (achievement: Achievement, _platform: string) => 
                     `🏆 実績「${achievement.name}」を解除！ ${achievement.description} #BubblePop #Achievement`)
             },
             leaderboardManager: {
-                updateScore: jest.fn(async (scoreData: any) => {
+                updateScore: jest.fn(async (_scoreData: any) => {
                     // Mock leaderboard update
                 }),
-                getLeaderboard: jest.fn(async (stage?: string) => [
+                getLeaderboard: jest.fn(async (_stage?: string) => [
                     { player: 'Player1', score: 95000, rank: 1 },
                     { player: 'Player2', score: 88000, rank: 2 },
                     { player: 'TestPlayer', score: 85000, rank: 3 }
                 ]),
-                submitScore: jest.fn(async (scoreData: any) => true)
+                submitScore: jest.fn(async (_scoreData: any) => true)
             },
             initialize: jest.fn(async () => {}),
             isEnabled: jest.fn(() => true)

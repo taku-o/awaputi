@@ -319,7 +319,7 @@ export class MobileTestReporter {
     /**
      * CSV形式でエクスポート
      */
-    private exportToCSV(report: TestReport, options: Record<string, any> = {}): string {
+    private exportToCSV(report: TestReport, _options: Record<string, any> = {}): string {
         const sections: string[] = [];
         
         // サマリー情報
@@ -361,7 +361,7 @@ export class MobileTestReporter {
     /**
      * XML形式でエクスポート
      */
-    private exportToXML(report: TestReport, options: Record<string, any> = {}): string {
+    private exportToXML(report: TestReport, _options: Record<string, any> = {}): string {
         const xml: string[] = [];
         xml.push('<?xml version="1.0" encoding="UTF-8"?>');
         xml.push('<testReport>');
