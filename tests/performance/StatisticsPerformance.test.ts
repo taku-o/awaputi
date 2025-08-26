@@ -9,7 +9,7 @@
 import { jest } from '@jest/globals';
 import { MockFactory } from '../mocks/MockFactory';
 import { PerformanceTestUtils } from '../utils/PerformanceTestUtils';
-import { performanceErrorRecovery } from '../utils/PerformanceErrorRecovery';
+// import { performanceErrorRecovery } from '../utils/PerformanceErrorRecovery';
 
 // Import sub-components
 import { DataCollectionPerformanceTests } from './statistics-performance-tests/DataCollectionPerformanceTests';

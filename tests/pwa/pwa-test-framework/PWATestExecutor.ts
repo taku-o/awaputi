@@ -192,7 +192,7 @@ export class PWATestExecutor {
         this.state.currentTest = null;
         
         // Clear any remaining timeouts
-        for (const [testName, timeoutId] of this.timeouts) {
+        for (const [, timeoutId] of this.timeouts) {
             clearTimeout(timeoutId);
         }
         this.timeouts.clear();
@@ -334,7 +334,7 @@ export class PWATestExecutor {
      */
     cleanup() {
         // Clear all timeouts
-        for (const [testName, timeoutId] of this.timeouts) {
+        for (const [, timeoutId] of this.timeouts) {
             clearTimeout(timeoutId);
         }
         this.timeouts.clear();

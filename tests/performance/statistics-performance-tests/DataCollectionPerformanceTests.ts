@@ -1,5 +1,4 @@
 import { describe, test, expect } from '@jest/globals';
-import { jest } from '@jest/globals';
 import { PerformanceTestUtils } from '../../utils/PerformanceTestUtils';
 import { PerformanceMeasurement, DataGenerator } from './PerformanceTestUtilities';
 
@@ -29,7 +28,7 @@ export class DataCollectionPerformanceTests {
             test('環境対応統計収集処理性能（要件確認）', async () => {
                 const testFunction = PerformanceTestUtils.createStablePerformanceTest(
                     'Single Event Collection',
-                    async (threshold: number, env: string, attempt: number) => {
+                    async (_threshold: number, env: string, attempt: number) => {
                         const measurement = new PerformanceMeasurement('single_event_collection');
                         const iterations = this.performanceConfig.measurementIterations;
                         const statisticsCollector = this.mainTestSuite.statisticsCollector;
@@ -95,7 +94,7 @@ export class DataCollectionPerformanceTests {
 
                 measurement.startMeasurement();
                 
-                const promises = Array.from({ length: concurrentTasks }, async (_, taskIndex) => {
+                const promises = Array.from({ length: concurrentTasks }, async (_) => {
                     const taskEvents = DataGenerator.generateGameplayEvents(eventsPerTask);
                     
                     if (statisticsCollector && typeof statisticsCollector.collectBatch === 'function') {

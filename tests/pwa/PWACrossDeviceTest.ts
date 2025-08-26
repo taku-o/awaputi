@@ -235,7 +235,7 @@ export class PWACrossDeviceTest {
     /**
      * レスポンシブデザインテスト
      */
-    async testResponsiveDesign(viewport: any, deviceProfile: DeviceProfile) {
+    async testResponsiveDesign(viewport: any, _deviceProfile: DeviceProfile) {
         const tests = {
             layoutAdaptation: false,
             imageScaling: false,
@@ -355,7 +355,7 @@ export class PWACrossDeviceTest {
     /**
      * PWA機能テスト
      */
-    async testPWAFeatures(deviceType: string, deviceProfile: DeviceProfile) {
+    async testPWAFeatures(_deviceType: string, deviceProfile: DeviceProfile) {
         const tests = {
             manifestSupported: false,
             serviceWorkerSupported: false,
@@ -395,7 +395,7 @@ export class PWACrossDeviceTest {
     /**
      * パフォーマンステスト
      */
-    async testPerformance(deviceType: string) {
+    async testPerformance(_deviceType: string) {
         const tests = {
             loadTime: 0,
             firstContentfulPaint: 0,
@@ -460,11 +460,11 @@ export class PWACrossDeviceTest {
     /**
      * 画面向き別レイアウトテスト
      */
-    private testLayoutForOrientation(orientation: string): boolean {
+    private testLayoutForOrientation(_orientation: string): boolean {
         try {
             // 基本的なレイアウト要素の確認
             const mainContent = document.querySelector('main, .main-content, #main');
-            const navigation = document.querySelector('nav, .navigation, .nav');
+            // const navigation = document.querySelector('nav, .navigation, .nav');
             
             // レイアウトが崩れていないかチェック
             if (mainContent) {
@@ -673,7 +673,7 @@ export class PWACrossDeviceTest {
         const deviceTypes = new Set();
         let totalIssues = 0;
         
-        for (const [key, result] of this.testResults) {
+        for (const [, result] of this.testResults) {
             deviceTypes.add(result.deviceType);
             
             // 問題のあるテストをカウント

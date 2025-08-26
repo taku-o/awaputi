@@ -1,4 +1,4 @@
-import { test } from '@jest/globals';
+// import { test } from '@jest/globals';
 /**
  * PWAFeatureTests - Basic PWA features, Service Worker, and installation tests
  * Part of the PWATestFramework split implementation
@@ -188,10 +188,10 @@ export class PWAFeatureTests {
         console.log('[PWAFeatureTests] Starting installation tests');
         await this.executor.runTest('install-prompt-detection', 'Install prompt detection', async () => {
             // beforeinstallprompt event simulation (for test environment)
-            const mockEvent = {
-                preventDefault: () => {},
-                prompt: async () => ({ outcome: 'dismissed' }),
-                platforms: ['web'],
+            // const mockEvent = {
+            //     preventDefault: () => {},
+            //     prompt: async () => ({ outcome: 'dismissed' }),
+            //     platforms: ['web'],
                 userChoice: Promise.resolve({ outcome: 'dismissed' })
             };
             

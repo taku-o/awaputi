@@ -372,7 +372,7 @@ describe('Username Input Performance Tests', () => {
 
     describe('Real-world Performance Scenarios', () => {
         test('should handle typical render loop performance (60fps)', () => {
-            const canvasInfo = { scale: 1.5, actualWidth: 1200, actualHeight: 900 };
+            // const canvasInfo = { scale: 1.5, actualWidth: 1200, actualHeight: 900 };
             const frameTime = 1000 / 60; // 16.67ms per frame
             
             const startTime = performance.now();

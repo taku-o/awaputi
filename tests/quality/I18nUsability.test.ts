@@ -66,7 +66,7 @@ describe('多言語対応ユーザビリティテスト', () => {
       expect(localizationManager.isLoading()).toBe(false);
     });
     test('無効な言語コードでフォールバックが動作する', async () => {
-      const initialLanguage = localizationManager.getCurrentLanguage();
+      // const initialLanguage = localizationManager.getCurrentLanguage();
       // 無効な言語コードを指定
       await localizationManager.setLanguage('invalid-lang');
       // フォールバック言語（英語または日本語）になることを確認
