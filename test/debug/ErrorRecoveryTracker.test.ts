@@ -287,7 +287,8 @@ describe('ErrorRecoveryTracker', () => {
             const error2 = new Error('Error 2');
 
             const record1 = recoveryTracker.trackError(error1);
-            const record2 = recoveryTracker.trackError(error2);
+            // const record2 = recoveryTracker.trackError(error2);
+            recoveryTracker.trackError(error2);
 
             await recoveryTracker.autoRecover(record1.id);
 
@@ -316,7 +317,8 @@ describe('ErrorRecoveryTracker', () => {
             const error2 = new Error('Error 2');
 
             const record1 = recoveryTracker.trackError(error1);
-            const record2 = recoveryTracker.trackError(error2);
+            // const record2 = recoveryTracker.trackError(error2);
+            recoveryTracker.trackError(error2);
             record1.recovered = true;
 
             expect(recoveryTracker.getErrorHistory()).toHaveLength(2);

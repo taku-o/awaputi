@@ -1,4 +1,4 @@
-import { describe, test, expect, beforeEach, afterEach, beforeAll, afterAll, jest, it } from '@jest/globals';
+import { describe, test, expect, beforeEach, afterEach, jest } from '@jest/globals';
 
 /**
  * Game State Commands Tests
@@ -256,7 +256,8 @@ describe('GameStateCommands', () => {
         });
         
         test('should handle negative addition', () => {
-            const result = addScoreCommand.execute(['-2000']);
+            // const result = addScoreCommand.execute(['-2000']);
+            addScoreCommand.execute(['-2000']);
             expect(mockGameEngine.scoreManager.setScore).toHaveBeenCalledWith(0); // Max(0, 1500 - 2000)
         });
         
@@ -432,7 +433,8 @@ describe('GameStateCommands', () => {
         
         test('should create backup when requested', () => {
             const setItemSpy = jest.spyOn(Storage.prototype, 'setItem').mockImplementation(() => {});
-            const result = resetPlayerCommand.execute(['--confirm', '--backup']);
+            // const result = resetPlayerCommand.execute(['--confirm', '--backup']);
+            resetPlayerCommand.execute(['--confirm', '--backup']);
             
             expect(setItemSpy).toHaveBeenCalled();
             expect(mockConsole.print).toHaveBeenCalledWith(
