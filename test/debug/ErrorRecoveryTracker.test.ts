@@ -1,4 +1,4 @@
-import { describe, test, expect, beforeEach, afterEach, beforeAll, afterAll, jest, it } from '@jest/globals';
+import { describe, test, expect, beforeEach, afterEach, jest } from '@jest/globals';
 
 /**
  * ErrorRecoveryTracker テストスイート
@@ -270,7 +270,8 @@ describe('ErrorRecoveryTracker', () => {
             const error2 = new Error('Error 2');
 
             const record1 = recoveryTracker.trackError(error1);
-            const record2 = recoveryTracker.trackError(error2);
+            // const record2 = recoveryTracker.trackError(error2);
+            recoveryTracker.trackError(error2);
             record1.recovered = true;
 
             const activeHistory = recoveryTracker.getErrorHistory({ includeRecovered: false });

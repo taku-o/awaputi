@@ -374,7 +374,7 @@ describe('AdvancedPerformanceMonitor', () => {
         });
 
         test('should get history data with time range', () => {
-            const now = Date.now();
+            // const now = Date.now();
             const recentHistory = monitor.getHistoryData('fps', 45000); // Last 45 seconds
             expect(recentHistory).toHaveLength(1);
         });

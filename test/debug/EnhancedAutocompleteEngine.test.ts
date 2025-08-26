@@ -1,4 +1,4 @@
-import { describe, test, expect, beforeEach, afterEach, beforeAll, afterAll, jest, it } from '@jest/globals';
+import { describe, test, expect, beforeEach, jest } from '@jest/globals';
 
 /**
  * Enhanced Autocomplete Engine Tests
@@ -204,7 +204,7 @@ describe('EnhancedAutocompleteEngine', () => {
             );
 
             // Create new instance to test loading
-            const newEngine = new EnhancedAutocompleteEngine(mockConsole, mockGameEngine);
+            // const newEngine = new EnhancedAutocompleteEngine(mockConsole, mockGameEngine);
             expect(localStorage.getItem).toHaveBeenCalledWith('debug-console-learning');
         });
     });
