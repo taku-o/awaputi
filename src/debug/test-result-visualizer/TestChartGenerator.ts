@@ -353,7 +353,7 @@ export class TestChartGenerator {
         return name.length > maxLength ? name.substring(0, maxLength) + '...' : name;
     }
 
-    private renderChart(type: string, data: ChartData, options: ChartOptions, containerId: string): void {
+    private renderChart(type: "single" | "batch", data: ChartData, options: ChartOptions, containerId: string): void {
         // This would use a charting library like Chart.js
         console.log(`Rendering ${type} chart in ${containerId}:`, { data, options });
         // Mock chart rendering

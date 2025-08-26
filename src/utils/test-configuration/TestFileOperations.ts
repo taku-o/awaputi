@@ -156,7 +156,7 @@ export class TestFileOperations extends BaseComponent {
                 if (!options.silent) {
                     console.warn(`[TestFileOperations] File not found: ${filePath}`);
                 }
-                return null;
+                return null as any;
             }
 
             const content = fs.readFileSync(filePath, options.encoding || 'utf8');
@@ -170,7 +170,7 @@ export class TestFileOperations extends BaseComponent {
 
         } catch (error) {
             this._handleError('file read', error);
-            return null;
+            return null as any;
         }
     }
 
@@ -228,7 +228,7 @@ export class TestFileOperations extends BaseComponent {
         try {
             if (!fs.existsSync(filePath)) {
                 console.warn(`[TestFileOperations] Cannot backup non-existent file: ${filePath}`);
-                return null;
+                return null as any;
             }
 
             const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
@@ -251,7 +251,7 @@ export class TestFileOperations extends BaseComponent {
 
         } catch (error) {
             this._handleError('backup creation', error);
-            return null;
+            return null as any;
         }
     }
 
@@ -445,7 +445,7 @@ export class TestFileOperations extends BaseComponent {
                 console.warn(`[TestFileOperations] Invalid backup date format: ${match[1]}`);
             }
         }
-        return null;
+        return null as any;
     }
 
     /**

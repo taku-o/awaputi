@@ -40,7 +40,7 @@ interface HelpTrigger {
 // コンテキスト関連のインターフェース
 interface HelpContext {
     error?: {
-        type: string;
+        type: "single" | "batch";
         message?: string;
         stack?: string;
     };
@@ -358,10 +358,10 @@ export class ContextualHelpManager {
                 return selectedHelp.content;
             }
 
-            return null;
+            return null as any;
         } catch (error) {
             this.loggingSystem.error('ContextualHelpManager', 'Context analysis error', error);
-            return null;
+            return null as any;
         }
     }
     
@@ -669,7 +669,7 @@ if (object && object.property) {
             return suggestions;
         } catch (error) {
             this.loggingSystem.error('ContextualHelpManager', 'Failed to suggest quality settings', error);
-            return null;
+            return null as any;
         }
     }
 

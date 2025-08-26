@@ -27,7 +27,7 @@ interface CalculatorConfig { wcagLevel: 'A' | 'AA' | 'AAA',
     interface LABColor { L: number,
     a: number,
     b: number;
-    interface ContrastRecommendation { type: string,
+    interface ContrastRecommendation { type: "single" | "batch",
     message: string,
     severity: 'low' | 'medium' | 'high' | 'critical,
     actionable: boolean;

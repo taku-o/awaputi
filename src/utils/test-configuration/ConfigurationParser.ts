@@ -104,7 +104,7 @@ export class ConfigurationParser extends BaseComponent {
         try {
             if (!fs.existsSync(filePath)) {
                 console.warn('[ConfigurationParser] GameBalance.js が見つかりません');
-                return null;
+                return null as any;
             }
 
             const content = fs.readFileSync(filePath, 'utf8');
@@ -177,7 +177,7 @@ export class ConfigurationParser extends BaseComponent {
 
         } catch (error) {
             this._handleError('GameBalance file parsing', error);
-            return null;
+            return null as any;
         }
     }
 
@@ -188,7 +188,7 @@ export class ConfigurationParser extends BaseComponent {
         try {
             if (!fs.existsSync(filePath)) {
                 console.warn('[ConfigurationParser] Bubble.js が見つかりません');
-                return null;
+                return null as any;
             }
 
             const content = fs.readFileSync(filePath, 'utf8');
@@ -229,7 +229,7 @@ export class ConfigurationParser extends BaseComponent {
 
         } catch (error) {
             this._handleError('Bubble file parsing', error);
-            return null;
+            return null as any;
         }
     }
 
@@ -300,7 +300,7 @@ export class ConfigurationParser extends BaseComponent {
 
         } catch (error) {
             this._handleError('ConfigurationManager parsing', error);
-            return null;
+            return null as any;
         }
     }
 
@@ -412,7 +412,7 @@ export class ConfigurationParser extends BaseComponent {
 
         } catch (error) {
             this._handleError('configuration parsing', error);
-            return null;
+            return null as any;
         }
     }
 

@@ -544,7 +544,7 @@ export class UserAchievementDisplay {
      * 実績の詳細情報を取得
      */
     public getAchievementDetails(achievementId: string): Achievement | null {
-        if (!this.achievementsData) return null;
+        if (!this.achievementsData) return null as any;
         
         return this.achievementsData.find(achievement => achievement.id === achievementId) || null;
     }

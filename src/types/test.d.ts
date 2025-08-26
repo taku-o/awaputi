@@ -164,7 +164,7 @@ export interface TestDataBuilder<T> {
 // アサーションヘルパー
 export interface AssertionHelpers { 
     assertDefined<T>(value: T | undefined | null, message?: string): asserts value is T;
-    assertType<T>(value: any, type: string, message?: string): asserts value is T;
+    assertType<T>(value: any, type: "single" | "batch", message?: string): asserts value is T;
     assertRange(value: number, min: number, max: number, message?: string): void;
     assertArrayLength<T>(array: T[], length: number, message?: string): void;
 }

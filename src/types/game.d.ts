@@ -143,7 +143,7 @@ export interface BubbleManager {
     offscreenTimer: Map<Bubble, number>;
     setStageConfig(config: any): any;
     spawnBubble(type?: string | null, position?: Position | null): Bubble | null;
-    spawnSpecificBubble(type: string, position?: Position | null): Bubble | null;
+    spawnSpecificBubble(type: "single" | "batch", position?: Position | null): Bubble | null;
     updateMousePosition(x: number, y: number): void;
     update(deltaTime: number): void;
     performCulling(): void;
@@ -172,7 +172,7 @@ export interface TestBubbleInfo {
     byType: Record<string, number>;
     positions: Array<{
         id: string;
-        type: string;
+        type: "single" | "batch";
         x: number;
         y: number;
         health?: number;
@@ -184,7 +184,7 @@ export interface BubbleSpawner {
     gameEngine: any;
     setStageConfig(config: any): any;
     spawnBubble(type?: string | null, position?: Position | null): Bubble | null;
-    spawnSpecificBubble(type: string, position?: Position | null): Bubble | null;
+    spawnSpecificBubble(type: "single" | "batch", position?: Position | null): Bubble | null;
     updateSpawnTimer(deltaTime: number, currentBubbleCount: number): boolean;
     setSpecialSpawnRate(bubbleType: string, rate: number): void;
     addTestBubble(bubbleData: any): Bubble | null;
@@ -331,7 +331,7 @@ export interface UnlockCondition {
 
 export interface BossEvent {
     time: number;
-    type: string;
+    type: "single" | "batch";
     count: number;
 }
 
@@ -561,7 +561,7 @@ export interface Achievement {
 }
 
 export interface AchievementReward {
-    type: string;
+    type: "single" | "batch";
     value: number;
     description: string;
 }

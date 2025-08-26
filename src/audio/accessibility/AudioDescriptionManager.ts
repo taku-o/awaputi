@@ -18,7 +18,7 @@
 
 // Types for visual notifications
 interface VisualNotificationOptions {
-    type: string;
+    type: "single" | "batch";
     title: string;
     message?: string;
     icon?: string;
@@ -40,7 +40,7 @@ interface AnnounceOptions {
 // Types for audio descriptions
 interface AudioDescription {
     category: string;
-    type: string;
+    type: "single" | "batch";
     params: Record<string, any>;
     priority: number;
     timestamp: number;
@@ -423,7 +423,7 @@ export class AudioDescriptionManager {
      * @param params - パラメータ
      * @param priority - 優先度
      */
-    public addDescription(category: string, type: string, params: Record<string, any> = {}, priority: number = 3): void {
+    public addDescription(category: string, type: "single" | "batch", params: Record<string, any> = {}, priority: number = 3): void {
         if (!this.enabled) return;
         
         const description: AudioDescription = {

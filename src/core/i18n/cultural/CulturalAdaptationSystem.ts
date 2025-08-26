@@ -69,7 +69,7 @@ export interface CurrentCulture {
 }
 
 export interface TabooWarning {
-    type: string;
+    type: "single" | "batch";
     severity: 'medium' | 'high';
     suggestion: string;
     culturalContext?: string;
@@ -796,7 +796,7 @@ export class CulturalAdaptationSystem {
         if (classList.includes('pointing') || content.includes('👉')) return 'pointing';
         if (classList.includes('beckoning') || content.includes('👋')) return 'beckoning';
 
-        return null;
+        return null as any;
     }
 
     private detectTabooViolation(content: string, taboo: string): boolean {

@@ -10,7 +10,7 @@ interface TestDetail {
 }
 
 interface TestResult {
-    type: string;
+    type: "single" | "batch";
     totalTests: number;
     passedTests: number;
     failedTests: number;
@@ -19,7 +19,7 @@ interface TestResult {
 }
 
 interface BenchmarkResult {
-    type: string;
+    type: "single" | "batch";
     duration: number;
     fps: number;
     memoryUsage: number;
@@ -91,7 +91,7 @@ interface FinalValidationResults {
 }
 
 interface TestSupportTools {
-    runTests(type: string): Promise<TestResult>;
+    runTests(type: "single" | "batch"): Promise<TestResult>;
     generateTestData(dataType: string, count: number): void;
 }
 
@@ -321,7 +321,7 @@ export class TestPanel {
     /**
      * テストを実行
      */
-    async runTests(type: string): Promise<void> {
+    async runTests(type: "single" | "batch"): Promise<void> {
         this.addTestResult(`${type}テストを開始中...`, 'info');
         
         try {
@@ -341,7 +341,7 @@ export class TestPanel {
     /**
      * 基本的なテストを実行
      */
-    private async runBasicTests(type: string): Promise<TestResult> {
+    private async runBasicTests(type: "single" | "batch"): Promise<TestResult> {
         await new Promise(resolve => setTimeout(resolve, 1000)); // シミュレーション
 
         const mockResults: TestResult = {
@@ -406,7 +406,7 @@ export class TestPanel {
     /**
      * モックプレイヤーデータを生成
      */
-    private generateMockPlayerData(type: string): void {
+    private generateMockPlayerData(type: "single" | "batch"): void {
         try {
             const mockData: Record<string, any> = {
                 beginner: { score: 1000, level: 1, playtime: 300 },
@@ -429,7 +429,7 @@ export class TestPanel {
     /**
      * モックゲーム状態を設定
      */
-    private setMockGameState(type: string): void {
+    private setMockGameState(type: "single" | "batch"): void {
         try {
             switch(type) {
                 case 'normal':
@@ -456,7 +456,7 @@ export class TestPanel {
     /**
      * ベンチマークを実行
      */
-    private async runBenchmark(type: string): Promise<void> {
+    private async runBenchmark(type: "single" | "batch"): Promise<void> {
         this.addBenchmarkResult(`${type}ベンチマークを開始中...`, 'info');
         
         try {
@@ -470,7 +470,7 @@ export class TestPanel {
     /**
      * ベンチマークテストを実行
      */
-    private async runBenchmarkTest(type: string): Promise<BenchmarkResult> {
+    private async runBenchmarkTest(type: "single" | "batch"): Promise<BenchmarkResult> {
         const startTime = performance.now();
         // シミュレーション
         await new Promise(resolve => setTimeout(resolve, 2000));

@@ -35,7 +35,7 @@ export interface TestResults {
 }
 
 export interface SecurityVulnerability {
-    type: string;
+    type: "single" | "batch";
     timestamp: number;
     severity: VulnerabilitySeverity;
     details: VulnerabilityDetails;
@@ -99,7 +99,7 @@ export interface ValidationResult {
 
 export interface ValidationViolation {
     severity: VulnerabilitySeverity;
-    type: string;
+    type: "single" | "batch";
     message: string;
 }
 

@@ -185,7 +185,7 @@ export class AnalyticsComparisonEngine {
         if (cached && (Date.now() - cached.timestamp) < this.cacheExpiry) {
             return cached.data;
         }
-        return null;
+        return null as any;
     }
 
     /**

@@ -102,7 +102,7 @@ export class SearchConsoleIntegrator {
             
         } catch (error) {
             console.error('Failed to prepare Search Console integration', error);
-            return null;
+            return null as any;
         }
     }
     

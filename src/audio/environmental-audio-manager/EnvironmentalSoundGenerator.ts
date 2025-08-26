@@ -128,7 +128,7 @@ export class EnvironmentalSoundGenerator {
                 component: 'EnvironmentalSoundGenerator',
                 soundType: soundType
             });
-            return null;
+            return null as any;
         }
     }
 
@@ -170,7 +170,7 @@ export class EnvironmentalSoundGenerator {
                 operation: '_generateWindSound',
                 component: 'EnvironmentalSoundGenerator'
             });
-            return null;
+            return null as any;
         }
     }
 
@@ -212,7 +212,7 @@ export class EnvironmentalSoundGenerator {
                 operation: '_generateWaveSound',
                 component: 'EnvironmentalSoundGenerator'
             });
-            return null;
+            return null as any;
         }
     }
 
@@ -252,7 +252,7 @@ export class EnvironmentalSoundGenerator {
                 operation: '_generateRainSound',
                 component: 'EnvironmentalSoundGenerator'
             });
-            return null;
+            return null as any;
         }
     }
 
@@ -293,7 +293,7 @@ export class EnvironmentalSoundGenerator {
                 operation: '_generateForestSound',
                 component: 'EnvironmentalSoundGenerator'
             });
-            return null;
+            return null as any;
         }
     }
 
@@ -337,7 +337,7 @@ export class EnvironmentalSoundGenerator {
                 operation: '_generateMachinerySound',
                 component: 'EnvironmentalSoundGenerator'
             });
-            return null;
+            return null as any;
         }
     }
 
@@ -381,7 +381,7 @@ export class EnvironmentalSoundGenerator {
                 operation: '_generateCaveResonanceSound',
                 component: 'EnvironmentalSoundGenerator'
             });
-            return null;
+            return null as any;
         }
     }
 
@@ -434,7 +434,7 @@ export class EnvironmentalSoundGenerator {
                 component: 'EnvironmentalSoundGenerator',
                 soundType: soundType
             });
-            return null;
+            return null as any;
         }
     }
 

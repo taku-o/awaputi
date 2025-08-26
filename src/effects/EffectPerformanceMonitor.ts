@@ -433,7 +433,7 @@ export class EffectPerformanceMonitor {
         if (performance.memory) {
             return performance.memory.usedJSHeapSize;
         }
-        return null;
+        return null as any;
     }
     
     /**

@@ -665,7 +665,7 @@ export class TranslationFileGenerator {
             return mockTranslations;
         } catch (error) {
             console.warn(`Failed to load base translations for ${baseLanguage}:`, error);
-            return null;
+            return null as any;
         }
     }
 
@@ -681,9 +681,9 @@ export class TranslationFileGenerator {
                     save: 'Save'
                 };
             }
-            return null;
+            return null as any;
         } catch (error) {
-            return null;
+            return null as any;
         }
     }
     

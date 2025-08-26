@@ -431,7 +431,7 @@ export class WeeklyChallengeManager {
     createWeeklyChallenge(challengeType: string, playerLevel: string): any | null {
         try {
             const template = this.challengeTemplates[challengeType];
-            if (!template) return null;
+            if (!template) return null as any;
             
             // タイトルと説明をランダム選択
             const titleIndex = Math.floor(Math.random() * template.titles.length);
@@ -471,7 +471,7 @@ export class WeeklyChallengeManager {
                 challengeType,
                 playerLevel
             });
-            return null;
+            return null as any;
         }
     }
     

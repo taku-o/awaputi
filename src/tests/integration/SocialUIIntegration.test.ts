@@ -62,7 +62,7 @@ interface MockAchievementManager {
 }
 
 interface ShareData {
-    type: string;
+    type: "single" | "batch";
     score?: number;
     stage?: string;
     isHighScore?: boolean;
@@ -92,7 +92,7 @@ interface Challenge {
     id: string;
     name: string;
     description?: string;
-    type: string;
+    type: "single" | "batch";
     completed?: boolean;
     completedAt?: number;
     reward?: { ap: number };

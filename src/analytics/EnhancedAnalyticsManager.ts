@@ -407,22 +407,22 @@ export class EnhancedAnalyticsManager {
         }
 
         if (this.playerBehaviorAnalyzer) {
-            (this.playerBehaviorAnalyzer as any).destroy();
+            (this.playerBehaviorAnalyzer as any)?.destroy?.();
         }
         if (this.gameBalanceAnalyzer) {
-            this.gameBalanceAnalyzer.destroy();
+            this.gameBalanceAnalyzer?.destroy?.();
         }
         if (this.performanceMonitor) {
-            (this.performanceMonitor as any).destroy();
+            (this.performanceMonitor as any)?.destroy?.();
         }
         if (this.sessionManager) {
-            (this.sessionManager as any).destroy();
+            (this.sessionManager as any)?.destroy?.();
         }
         if (this.storageManager) {
-            (this.storageManager as any).destroy();
+            (this.storageManager as any)?.destroy?.();
         }
         if (this.privacyManager) {
-            (this.privacyManager as any).destroy();
+            (this.privacyManager as any)?.destroy?.();
         }
 
         console.log('EnhancedAnalyticsManager destroyed');

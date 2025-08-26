@@ -654,7 +654,7 @@ export class StageComparisonAnalyzer {
     }
 
     private getLastPlayedDate(plays: PlayData[]): Date | null {
-        if (plays.length === 0) return null;
+        if (plays.length === 0) return null as any;
         const timestamps = plays.map(getPlayTimestamp);
         return new Date(Math.max(...timestamps));
     }

@@ -9,7 +9,7 @@ import { seoLogger } from '../SEOLogger.js';
 interface FaviconResult {
     filename: string;
     size: string;
-    type: string;
+    type: "single" | "batch";
     category: string;
     dataUrl: string;
 }

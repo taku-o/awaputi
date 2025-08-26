@@ -471,7 +471,7 @@ export class FeedbackEffectRenderer {
             const validation = validateEffectOptions(options);
             if (!validation.isValid) {
                 console.warn('Invalid parameters for color effect:', validation.errors);
-                return null;
+                return null as any;
             }
 
             const originalBackground = options.target.style.background;
@@ -505,7 +505,7 @@ export class FeedbackEffectRenderer {
             };
         } catch (error) {
             this.logError('createColorEffect', error as Error);
-            return null;
+            return null as any;
         }
     }
 
@@ -517,7 +517,7 @@ export class FeedbackEffectRenderer {
             const validation = validateEffectOptions(options);
             if (!validation.isValid) {
                 console.warn('Invalid parameters for border effect:', validation.errors);
-                return null;
+                return null as any;
             }
 
             const originalBorder = options.target.style.border;
@@ -552,7 +552,7 @@ export class FeedbackEffectRenderer {
             };
         } catch (error) {
             this.logError('createBorderEffect', error as Error);
-            return null;
+            return null as any;
         }
     }
 
@@ -564,7 +564,7 @@ export class FeedbackEffectRenderer {
             const validation = validateEffectOptions(options);
             if (!validation.isValid) {
                 console.warn('Invalid parameters for scale effect:', validation.errors);
-                return null;
+                return null as any;
             }
 
             const originalTransform = options.target.style.transform;
@@ -599,7 +599,7 @@ export class FeedbackEffectRenderer {
             };
         } catch (error) {
             this.logError('createScaleEffect', error as Error);
-            return null;
+            return null as any;
         }
     }
 

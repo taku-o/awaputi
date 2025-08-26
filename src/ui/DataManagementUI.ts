@@ -184,7 +184,7 @@ export class DataManagementUI {
      */
     setupStateChangeListeners(): void {
         // UI state changes
-        this.uiState.onStateChange((type: string, data: any) => {
+        this.uiState.onStateChange((type: "single" | "batch", data: any) => {
             if (type === 'view') {
                 console.log(`View changed to: ${data.view}`);
             }
@@ -698,7 +698,7 @@ export class DataManagementUI {
     // Cleanup
     destroy(): void {
         this.stopAutoRefresh();
-        this.backupStatus.destroy();
+        this.backupStatus?.destroy?.();
         this.uiState.reset();
         this.dialogState.reset();
         this.operationState.reset();

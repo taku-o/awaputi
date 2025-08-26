@@ -76,7 +76,7 @@ interface RecoverySession {
 }
 
 interface Issue {
-    type: string;
+    type: "single" | "batch";
     severity: 'LOW' | 'MEDIUM' | 'HIGH';
     message: string;
     error?: Error;

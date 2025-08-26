@@ -93,7 +93,7 @@ interface AchievementData {
 
 interface OverlayData {
     elements?: Array<{
-        type: string;
+        type: "single" | "batch";
         text?: string;
         position?: any;
         style?: any;
@@ -941,7 +941,7 @@ export class ScreenshotOverlay {
     /**
      * エラーハンドリング
      */
-    handleError(type: string, error: Error, context: any = {}): void {
+    handleError(type: "single" | "batch", error: Error, context: any = {}): void {
         const errorInfo = {
             type,
             error: error.message || error,

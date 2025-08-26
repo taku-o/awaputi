@@ -117,7 +117,7 @@ export interface AudioManagerStatus {
  * AudioManagerインターフェースの型定義
  */
 export interface AudioManager {
-    setVolume(type: string, volume: number): void;
+    setVolume(type: "single" | "batch", volume: number): void;
     isMuted: boolean;
     toggleMute(): void;
     getStatus(): AudioManagerStatus;
@@ -572,7 +572,7 @@ export class AudioConfig {
             }
             
             // AudioManagerの状態を取得
-            const status = audioManager.getStatus();
+            const status = audioManager?.getStatus?.();
             
             // 音量設定の同期
             this.setMasterVolume(status.masterVolume);

@@ -203,7 +203,7 @@ export class SettingsImportExportComponent {
             this.errorHandler.handleError(error as Error, 'SETTINGS_IMPORT_EXPORT_ERROR', {
                 operation: 'initialize'
             });
-            return null;
+            return null as any;
         }
     }
     

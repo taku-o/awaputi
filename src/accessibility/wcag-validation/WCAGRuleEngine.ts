@@ -498,7 +498,7 @@ interface TestResult { passed: boolean,
                 b: parseInt(hex.substr(4, 2), 16); }
             }
         
-        return null;
+        return null as any;
     }
 
     /**

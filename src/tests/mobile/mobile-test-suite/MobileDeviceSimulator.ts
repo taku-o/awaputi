@@ -28,7 +28,7 @@ interface CurrentDevice {
         charging: boolean;
     };
     connection: {
-        type: string;
+        type: "single" | "batch";
         effectiveType: string;
     };
 }
@@ -58,7 +58,7 @@ interface DeviceInfo {
 }
 
 interface DeviceUtils {
-    createTouchEvent: (type: string, touches: TouchPoint[]) => Event;
+    createTouchEvent: (type: "single" | "batch", touches: TouchPoint[]) => Event;
     createTouch: (x: number, y: number, id?: number) => TouchPoint;
     createDeviceInfo: (device: string) => DeviceInfo;
     measurePerformance: (testFunction: () => Promise<void>) => Promise<number>;
@@ -299,7 +299,7 @@ export class MobileDeviceSimulator {
     /**
      * ネットワーク状態を設定
      */
-    setNetworkCondition(type: string, effectiveType: string = '4g'): void {
+    setNetworkCondition(type: "single" | "batch", effectiveType: string = '4g'): void {
         this.currentDevice.connection.type = type;
         this.currentDevice.connection.effectiveType = effectiveType;
 
@@ -322,7 +322,7 @@ export class MobileDeviceSimulator {
     /**
      * タッチイベントをシミュレート
      */
-    simulateTouch(x: number, y: number, type: string = 'touchstart'): void {
+    simulateTouch(x: number, y: number, type: "single" | "batch" = 'touchstart'): void {
         const touch = this.createTouch(x, y);
         const event = this.createTouchEvent(type, [touch]);
         
@@ -603,7 +603,7 @@ export class MobileDeviceSimulator {
     /**
      * ユーティリティメソッド: タッチイベント作成
      */
-    private createTouchEvent(type: string, touches: TouchPoint[]): Event {
+    private createTouchEvent(type: "single" | "batch", touches: TouchPoint[]): Event {
         const event = new TouchEvent(type, {
             touches: touches as any,
             targetTouches: touches as any,

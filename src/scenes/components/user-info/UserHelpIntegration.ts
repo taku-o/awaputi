@@ -479,7 +479,7 @@ export class UserHelpIntegration {
      * ヘルプコンテンツを取得
      */
     public getHelpContent(sectionId?: string): HelpContent | HelpContentMap | null {
-        if (!this.helpContent) return null;
+        if (!this.helpContent) return null as any;
         
         if (sectionId) {
             return this.helpContent[sectionId] || null;

@@ -141,7 +141,7 @@ interface PerformanceHistoryEntry {
 }
 
 interface PerformanceIssue {
-    type: string;
+    type: "single" | "batch";
     data: any;
     timestamp: number;
 }
@@ -171,7 +171,7 @@ interface StabilityTrend {
 }
 
 interface ProblemArea {
-    type: string;
+    type: "single" | "batch";
     description: string;
     severity: SeverityLevel;
     count?: number;

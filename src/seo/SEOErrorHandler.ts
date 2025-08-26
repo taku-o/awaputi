@@ -149,7 +149,7 @@ export class SEOErrorHandler {
         }
         
         seoLogger.error(`No fallback available for ${context}`);
-        return null;
+        return null as any;
     }
     
     /**
@@ -237,7 +237,7 @@ export class SEOErrorHandler {
         // デフォルトフォールバック
         this.registerFallback('default', () => {
             seoLogger.warn('Using empty fallback');
-            return null;
+            return null as any;
         });
     }
     

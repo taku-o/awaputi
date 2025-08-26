@@ -75,7 +75,7 @@ export class SessionManager {
     endSession(endInfo: any): any {
         if (!this.currentSession) {
             console.warn('[SessionManager] No active session to end');
-            return null;
+            return null as any;
         }
         
         // セッション統計の更新
@@ -273,7 +273,7 @@ export class SessionManager {
     getStageStats(stageId: string): any {
         const stageSessions = this.sessionHistory.filter(s => s.stageId === stageId);
         if (stageSessions.length === 0) {
-            return null;
+            return null as any;
         }
         
         const stats = {

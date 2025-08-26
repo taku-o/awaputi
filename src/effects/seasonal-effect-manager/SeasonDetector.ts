@@ -109,7 +109,7 @@ export class SeasonDetector {
         }
         
         this.currentEvent = null;
-        return null;
+        return null as any;
     }
     
     /**

@@ -691,15 +691,15 @@ export class BenchmarkSuite {
         
         // Destroy sub-components
         if (this.benchmarkExecutor) {
-            this.benchmarkExecutor.destroy();
+            this.benchmarkExecutor?.destroy?.();
         }
         
         if (this.resultAnalyzer) {
-            this.resultAnalyzer.destroy();
+            this.resultAnalyzer?.destroy?.();
         }
         
         if (this.benchmarkReporter) {
-            this.benchmarkReporter.destroy();
+            this.benchmarkReporter?.destroy?.();
         }
         
         if (this.performanceObserver) {

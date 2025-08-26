@@ -34,7 +34,7 @@ interface ScaledCoordinateManager {
 }
 
 interface UIElement {
-    type: string;
+    type: "single" | "batch";
     name: string;
     offset?: Position;
 }

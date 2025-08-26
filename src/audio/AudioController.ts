@@ -260,7 +260,7 @@ export class AudioController {
      */
     getGainNode(channel: string): GainNode | null {
         if (!this.channelManager) {
-            return null;
+            return null as any;
         }
         return this.channelManager.getGainNode(channel);
     }
@@ -384,7 +384,7 @@ export class AudioController {
     saveCurrentAsPreset(name: string, description: string = '', tags: string[] = [], isTemporary: boolean = false): string | null {
         if (!this.formatHandler) {
             console.warn('FormatHandler is not initialized');
-            return null;
+            return null as any;
         }
         return this.formatHandler.saveCurrentAsPreset(name, description, tags, isTemporary);
     }
@@ -397,7 +397,7 @@ export class AudioController {
     getPreset(presetId: string): any | null {
         if (!this.formatHandler) {
             console.warn('FormatHandler is not initialized');
-            return null;
+            return null as any;
         }
         return this.formatHandler.getPreset(presetId);
     }
@@ -528,7 +528,7 @@ export class AudioController {
      */
     generatePerformanceReport(): any | null {
         if (!this.performanceMonitor) {
-            return null;
+            return null as any;
         }
         return this.performanceMonitor.generatePerformanceReport();
     }
@@ -546,8 +546,8 @@ export class AudioController {
             initialized: this.isInitialized,
             channels: this.channelManager ? this.channelManager.getManagerState() : null,
             volume: this.volumeController ? this.volumeController.getFadeStatus() : null,
-            format: this.formatHandler ? this.formatHandler.getStatus() : null,
-            performance: this.performanceMonitor ? this.performanceMonitor.getStatus() : null
+            format: this.formatHandler ? this.formatHandler?.getStatus?.() : null,
+            performance: this.performanceMonitor ? this.performanceMonitor?.getStatus?.() : null
         };
     }
     
@@ -557,7 +557,7 @@ export class AudioController {
      */
     getQualityPerformanceInfo(): QualityPerformanceInfo | null {
         if (!this.formatHandler) {
-            return null;
+            return null as any;
         }
         return this.formatHandler.getQualityPerformanceInfo();
     }
@@ -625,13 +625,13 @@ export class AudioController {
             this.configWatchers.clear();
             
             // 専用コンポーネントを破棄
-            this.channelManager?.dispose();
-            this.volumeController?.dispose();
-            this.formatHandler?.dispose();
-            this.performanceMonitor?.dispose();
+            this.channelManager?.dispose?.();
+            this.volumeController?.dispose?.();
+            this.formatHandler?.dispose?.();
+            this.performanceMonitor?.dispose?.();
             
             // レガシーシステムを破棄
-            this.equalizer?.dispose();
+            this.equalizer?.dispose?.();
             // アクティブトランジションをクリア
             this.activeTransitions.clear();
             

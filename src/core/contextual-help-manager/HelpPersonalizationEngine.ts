@@ -651,7 +651,7 @@ export class HelpPersonalizationEngine {
      * セッションを終了
      */
     endSession(satisfaction?: number): SessionData | null {
-        if (!this.sessionData) return null;
+        if (!this.sessionData) return null as any;
 
         this.sessionData.end_time = Date.now();
         if (satisfaction !== undefined) {

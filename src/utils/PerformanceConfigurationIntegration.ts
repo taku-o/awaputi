@@ -44,7 +44,7 @@ interface ErrorRecord {
     key: string;
     error: string;
     timestamp: number;
-    type: string;
+    type: "single" | "batch";
     recovery?: RecoveryResult;
     recoveryFailed?: string;
 }
@@ -255,19 +255,19 @@ export class PerformanceConfigurationIntegration {
         try {
             // Destroy sub-components
             if (this.validator && typeof (this.validator as any).destroy === 'function') {
-                (this.validator as any).destroy();
+                (this.validator as any)?.destroy?.();
             }
             
             if (this.applier && typeof (this.applier as any).destroy === 'function') {
-                (this.applier as any).destroy();
+                (this.applier as any)?.destroy?.();
             }
             
             if (this.monitor && typeof (this.monitor as any).destroy === 'function') {
-                (this.monitor as any).destroy();
+                (this.monitor as any)?.destroy?.();
             }
             
             if (this.errorHandler && typeof this.errorHandler.destroy === 'function') {
-                this.errorHandler.destroy();
+                this.errorHandler?.destroy?.();
             }
 
             console.log('[PerformanceConfigurationIntegration] Main controller destroyed');

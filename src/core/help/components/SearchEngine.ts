@@ -577,7 +577,7 @@ export class SearchEngine {
             this.searchCache.delete(key);
         }
         
-        return null;
+        return null as any;
     }
     
     /**

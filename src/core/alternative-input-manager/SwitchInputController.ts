@@ -63,7 +63,7 @@ export interface SwitchInputControllerConfig {
 export interface BubbleData {
     x: number;
     y: number;
-    type: string;
+    type: "single" | "batch";
 }
 
 export interface GameEngine {
@@ -75,7 +75,7 @@ export interface HIDDevice {
     productId: number;
     productName: string;
     open: () => Promise<void>;
-    addEventListener: (type: string, listener: EventListener) => void;
+    addEventListener: (type: "single" | "batch", listener: EventListener) => void;
 }
 
 export interface HIDInputReportEvent extends Event {

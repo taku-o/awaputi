@@ -118,7 +118,7 @@ export class CommonIssueDetector {
             };
         }
 
-        return null;
+        return null as any;
     }
 
     public getIssues(filter?: IssueFilter): Issue[] {
@@ -150,11 +150,11 @@ export class CommonIssueDetector {
 
     public getStatistics(): {
         total: number;
-        byType: { [type: string]: number };
+        byType: { [type: "single" | "batch"]: number };
         bySeverity: { [severity: string]: number };
         recent: number;
     } {
-        const byType: { [type: string]: number } = {};
+        const byType: { [type: "single" | "batch"]: number } = {};
         const bySeverity: { [severity: string]: number } = {};
         const oneHourAgo = Date.now() - 3600000;
         

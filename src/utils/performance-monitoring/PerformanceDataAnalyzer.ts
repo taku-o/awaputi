@@ -439,10 +439,10 @@ export class PerformanceDataAnalyzer {
      */
     destroy(): void {
         // Destroy sub-components
-        this.metricsCollector?.destroy();
-        this.dataProcessor?.destroy();
-        this.reportGenerator?.destroy();
-        this.thresholdManager?.destroy();
+        this.metricsCollector?.destroy?.();
+        this.dataProcessor?.destroy?.();
+        this.reportGenerator?.destroy?.();
+        this.thresholdManager?.destroy?.();
         
         // Clear local data
         this.anomalies = [];

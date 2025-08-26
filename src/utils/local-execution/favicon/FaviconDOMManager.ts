@@ -10,7 +10,7 @@
 interface FaviconData {
     size: number | 'ico';
     dataURL: string;
-    type: string;
+    type: "single" | "batch";
 }
 
 interface BrowserCompatibility {

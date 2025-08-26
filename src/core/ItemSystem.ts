@@ -255,7 +255,7 @@ export class ItemManager implements IItemManager {
      */
     getItemInfo(itemId: string): ItemInfo | null {
         const itemDef = ITEM_DEFINITIONS[itemId];
-        if (!itemDef) return null;
+        if (!itemDef) return null as any;
 
         const currentLevel = this.ownedItems.get(itemId) || 0;
         const nextLevel = currentLevel + 1;

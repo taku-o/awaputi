@@ -665,7 +665,7 @@ export class DeveloperAlertSystem {
         
         // フィルターチェック
         if (!this.passesFilters(alert)) {
-            return null;
+            return null as any;
         }
         
         // アラート履歴に追加

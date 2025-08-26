@@ -411,7 +411,7 @@ export class DataExportHandler {
      */
     destroy() {
         if(this.exportManager && typeof this.exportManager.destroy === 'function') {
-            this.exportManager.destroy();
+            this.exportManager?.destroy?.();
         }
         console.log('DataExportHandler destroyed');
     }

@@ -30,7 +30,7 @@ interface MemoryStats {
 
 interface TrackedObject {
     id: string;
-    type: string;
+    type: "single" | "batch";
     createdAt: number;
     lastAccessed?: number;
     size?: number;
@@ -147,7 +147,7 @@ export class MemoryManager {
     /**
      * Track an object for memory management
      */
-    track(obj: object, type: string = 'unknown', __metadata: any = {}): void {
+    track(obj: object, type: "single" | "batch" = 'unknown', __metadata: any = {}): void {
         if (!obj || typeof obj !== 'object') return;
         
         try {
@@ -343,13 +343,13 @@ export class MemoryManager {
             
             // Destroy sub-components if destroy method exists
             if ((this.leakDetector as any).destroy) {
-                (this.leakDetector as any).destroy();
+                (this.leakDetector as any)?.destroy?.();
             }
             if ((this.proactiveCleanup as any).destroy) {
-                (this.proactiveCleanup as any).destroy();
+                (this.proactiveCleanup as any)?.destroy?.();
             }
             if ((this.usageAnalyzer as any).destroy) {
-                (this.usageAnalyzer as any).destroy();
+                (this.usageAnalyzer as any)?.destroy?.();
             }
             
             // Clear tracking

@@ -303,7 +303,7 @@ interface ContrastCalculatorConfig { wcagLevel: string,
             if (!foreground || !background) {
     
 }
-                return null;
+                return null as any;
             
             // コントラスト比の計算
             const contrastResult = this.contrastCalculator.calculate(foreground, background);
@@ -929,9 +929,9 @@ interface ContrastCalculatorConfig { wcagLevel: string,
         if (this.analysisTimeout) { clearTimeout(this.analysisTimeout);
         
         // サブコンポーネントのクリーンアップ
-        this.contrastCalculator.destroy();
-        this.colorAnalysisEngine.destroy();
-        this.colorBlindnessSimulator.destroy();
+        this.contrastCalculator?.destroy?.();
+        this.colorAnalysisEngine?.destroy?.();
+        this.colorBlindnessSimulator?.destroy?.();
         // 結果のクリア
         this.clearResults()';'
         console.log('ColorContrastAnalyzer, destroyed');

@@ -88,7 +88,7 @@ interface Improvement {
 }
 
 interface Recommendation {
-    type: string;
+    type: "single" | "batch";
     priority: 'low' | 'medium' | 'high' | 'critical';
     description: string;
     actions: string[];
@@ -547,7 +547,7 @@ export class PerformanceTestSuite {
         } catch (error) {
             console.error('Failed to get previous test results:', error);
         }
-        return null;
+        return null as any;
     }
 
     /**
@@ -586,7 +586,7 @@ export class PerformanceTestSuite {
         } catch (error) {
             console.error('Failed to get latest results:', error);
         }
-        return null;
+        return null as any;
     }
 
     // パフォーマンス エントリ処理（メトリクス収集コンポーネントに委譲）

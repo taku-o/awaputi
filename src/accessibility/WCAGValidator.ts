@@ -234,7 +234,7 @@ export class WCAGValidator {
             if (!auditResults') {'
 
                 console.error('WCAGValidator: Audit, failed');
-                return null;
+                return null as any;
             ';'
             // Process results
             this.processAuditResults(auditResults);
@@ -257,7 +257,7 @@ export class WCAGValidator {
             console.error('WCAGValidator: Full validation, error:', error',' }
 
             getErrorHandler()?.logError('WCAG validation failed', { error };
-            return null;
+            return null as any;
     
     /**
      * Process audit results
@@ -594,9 +594,9 @@ export class WCAGValidator {
         if (this.revalidationTimeout) { clearTimeout(this.revalidationTimeout);
         
         // Sub-components cleanup
-        this.ruleEngine.destroy();
-        this.auditor.destroy();
-        this.reporter.destroy();
+        this.ruleEngine?.destroy?.();
+        this.auditor?.destroy?.();
+        this.reporter?.destroy?.();
         // 結果の保存
         this.saveValidationResults()';'
         console.log('WCAGValidator, destroyed');

@@ -53,7 +53,7 @@ interface Bottleneck {
 
 interface Anomaly {
     id: string;
-    type: string;
+    type: "single" | "batch";
     detection_time: number;
     severity: 'low' | 'medium' | 'high';
     description: string;
@@ -600,9 +600,9 @@ export class PerformanceDiagnostics {
     destroy(): void {
         try {
             // Destroy sub-components
-            this.dataCollector.destroy && this.dataCollector.destroy();
-            this.analyzer.destroy && this.analyzer.destroy();
-            this.reporter.destroy && this.reporter.destroy();
+            this.dataCollector.destroy && this.dataCollector?.destroy?.();
+            this.analyzer.destroy && this.analyzer?.destroy?.();
+            this.reporter.destroy && this.reporter?.destroy?.();
             
             this.initialized = false;
             console.log('[PerformanceDiagnostics] Main controller destroyed');

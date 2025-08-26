@@ -394,7 +394,7 @@ export class GameControlButtons {
      */
     public handleTouchStart(x: number, y: number, event: TouchEvent | null = null): 'giveUp' | 'restart' | null {
         if (!this.buttonState.enabled) {
-            return null;
+            return null as any;
         }
         
         try {
@@ -426,7 +426,7 @@ export class GameControlButtons {
             }
         }
         
-        return null;
+        return null as any;
     }
     
     /**
@@ -441,7 +441,7 @@ export class GameControlButtons {
         this.buttonState.activeButton = null;
         
         if (!this.buttonState.enabled || !activeButton) {
-            return null;
+            return null as any;
         }
         
         try {
@@ -465,7 +465,7 @@ export class GameControlButtons {
             }
         }
         
-        return null;
+        return null as any;
     }
     
     /**
@@ -531,7 +531,7 @@ export class GameControlButtons {
      */
     public handleClick(x: number, y: number, event: Event | null = null): 'giveUp' | 'restart' | null {
         if (!this.buttonState.enabled) {
-            return null;
+            return null as any;
         }
         
         try {
@@ -563,7 +563,7 @@ export class GameControlButtons {
             }
         }
         
-        return null;
+        return null as any;
     }
     
     /**

@@ -44,7 +44,7 @@ export interface InsightConfig {
 
 export interface Insight {
     id: string;
-    type: string;
+    type: "single" | "batch";
     title: string;
     description: string;
     priority: string;
@@ -55,7 +55,7 @@ export interface Insight {
 
 export interface Recommendation {
     id: string;
-    type: string;
+    type: "single" | "batch";
     title: string;
     description: string;
     actionItems: string[];
@@ -514,7 +514,7 @@ export class InsightGenerator {
                     actionItems: ['原因の特定', '修正アクションの実行', '進捗モニタリング']
                 };
             default:
-                return null;
+                return null as any;
         }
     }
 

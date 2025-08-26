@@ -384,7 +384,7 @@ export class FocusNavigation {
      * 次のフォーカス可能要素に移動
      */
     moveToNext(reverse: boolean = false): HTMLElement | null {
-        if (this.focusableElements.length === 0) return null;
+        if (this.focusableElements.length === 0) return null as any;
         
         try {
             let newIndex: number;
@@ -419,7 +419,7 @@ export class FocusNavigation {
             console.error('[FocusNavigation] Error moving to next element:', error);
         }
         
-        return null;
+        return null as any;
     }
     
     /**
@@ -433,7 +433,7 @@ export class FocusNavigation {
      * 最初のフォーカス可能要素に移動
      */
     moveToFirst(): HTMLElement | null {
-        if (this.focusableElements.length === 0) return null;
+        if (this.focusableElements.length === 0) return null as any;
         
         const firstElement = this.focusableElements[0];
         this.setFocus(firstElement);
@@ -444,7 +444,7 @@ export class FocusNavigation {
      * 最後のフォーカス可能要素に移動
      */
     moveToLast(): HTMLElement | null {
-        if (this.focusableElements.length === 0) return null;
+        if (this.focusableElements.length === 0) return null as any;
         
         const lastElement = this.focusableElements[this.focusableElements.length - 1];
         this.setFocus(lastElement);
@@ -626,7 +626,7 @@ export class FocusNavigation {
      */
     private find2DNavigationTarget(direction: NavigationDirection): HTMLElement | null {
         const currentElement = document.activeElement as HTMLElement;
-        if (!currentElement) return null;
+        if (!currentElement) return null as any;
         
         const currentRect = currentElement.getBoundingClientRect();
         const candidates = this.focusableElements.filter(el => el !== currentElement);
@@ -751,7 +751,7 @@ export class FocusNavigation {
         if (this.currentFocusIndex >= 0 && this.currentFocusIndex < this.focusableElements.length) {
             return this.focusableElements[this.currentFocusIndex];
         }
-        return null;
+        return null as any;
     }
     
     /**

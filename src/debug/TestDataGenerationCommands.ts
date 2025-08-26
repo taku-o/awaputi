@@ -74,7 +74,7 @@ interface CommandRegistration {
 
 interface Parameter { 
     name: string;
-    type: string;
+    type: "single" | "batch";
     required: boolean;
     description: string;
 }

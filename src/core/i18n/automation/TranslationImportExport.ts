@@ -647,7 +647,7 @@ export class TranslationImportExport {
             // ProgressTrackerから翻訳データを取得
             const languageProgress = this.progressTracker.getLanguageProgress(language);
             if (!languageProgress) {
-                return null;
+                return null as any;
             }
 
             const translationData: any = {
@@ -686,7 +686,7 @@ export class TranslationImportExport {
 
         } catch (error) {
             console.warn(`Failed to collect translation data for ${language}:`, error);
-            return null;
+            return null as any;
         }
     }
 
@@ -770,7 +770,7 @@ export class TranslationImportExport {
                 throw error;
             }
             console.warn(`Failed to parse ${format} content:`, error);
-            return null;
+            return null as any;
         }
     }
 

@@ -436,7 +436,7 @@ export class DebugSuggestionEngine extends BaseComponent {
      * @returns コンポーネント名
      */
     extractComponentName(testName: string): string | null {
-        if (!testName) return null;
+        if (!testName) return null as any;
 
         const componentPatterns: ComponentPattern[] = [
             { pattern: /bubblemanager/i, name: 'BubbleManager' },
@@ -455,7 +455,7 @@ export class DebugSuggestionEngine extends BaseComponent {
             }
         }
 
-        return null;
+        return null as any;
     }
 
     /**

@@ -5,7 +5,7 @@
 
 // Type definitions
 interface ValidationError {
-    type: string;
+    type: "single" | "batch";
     message: string;
     line?: number;
     column?: number;
@@ -17,7 +17,7 @@ interface ValidationError {
 }
 
 interface ValidationWarning {
-    type: string;
+    type: "single" | "batch";
     message: string;
     blockIndex?: number;
     pattern?: string;

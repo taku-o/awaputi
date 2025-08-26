@@ -9,7 +9,7 @@ import type { DeveloperConsole } from './DeveloperConsole';
 
 interface CommandParameter {
     name: string;
-    type: string;
+    type: "single" | "batch";
     required: boolean;
     description: string;
 }
@@ -650,7 +650,7 @@ export class ConfigurationCommands {
      */
     private convertValue(valueStr: string): any {
         // null, undefined
-        if (valueStr === 'null') return null;
+        if (valueStr === 'null') return null as any;
         if (valueStr === 'undefined') return undefined;
         
         // boolean

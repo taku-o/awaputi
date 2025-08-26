@@ -695,12 +695,12 @@ export class SocialI18nManager {
     private getCachedMessage(cacheKey: string): string | null {
         const entry = this.messageCache.get(cacheKey);
         
-        if (!entry) return null;
+        if (!entry) return null as any;
         
         const now = Date.now();
         if (now - entry.timestamp > this.config.cache.ttl) {
             this.messageCache.delete(cacheKey);
-            return null;
+            return null as any;
         }
 
         // ヒット回数を更新

@@ -248,7 +248,7 @@ export class ProgressTracker {
      * 実績条件を評価
      */
     evaluateAchievementCondition(achievement: Achievement): AchievementProgressResult | null {
-        if (!achievement.condition) return null;
+        if (!achievement.condition) return null as any;
 
         try {
             const result = this.evaluateCondition(achievement.condition);
@@ -259,7 +259,7 @@ export class ProgressTracker {
             };
         } catch (error) {
             console.error(`Error evaluating achievement ${achievement.id}:`, error);
-            return null;
+            return null as any;
         }
     }
 

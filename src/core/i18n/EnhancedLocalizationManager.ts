@@ -720,7 +720,7 @@ export class EnhancedLocalizationManager extends LocalizationManager {
         try {
             const normalized = (this.languageDetector as any).normalizeLanguageCode(language);
             if (!normalized) {
-                return null;
+                return null as any;
             }
             
             const isLoaded = this.translationLoader.isLanguageLoaded(normalized);
@@ -738,7 +738,7 @@ export class EnhancedLocalizationManager extends LocalizationManager {
             };
         } catch (error) {
             console.error(`Failed to get language metadata for ${language}:`, error);
-            return null;
+            return null as any;
         }
     }
     

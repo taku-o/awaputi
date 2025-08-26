@@ -484,7 +484,7 @@ export class GameContentDescriber {
         const template = this.templates.gameState[phase];
         
         if (!template) {
-            return null;
+            return null as any;
         }
         
         const variables = {
@@ -746,7 +746,7 @@ export class GameContentDescriber {
     /**
      * 最近のアクションに追加
      */
-    addToRecentActions(type: string, data: any): void {
+    addToRecentActions(type: "single" | "batch", data: any): void {
         this.state.recentActions.push({
             type: type,
             data: data,
@@ -786,7 +786,7 @@ export class GameContentDescriber {
             return helpText;
         }
         
-        return null;
+        return null as any;
     }
     
     /**

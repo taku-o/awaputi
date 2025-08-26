@@ -521,7 +521,7 @@ export class SeasonalEffectManager {
             this.clearAllEffects();
             
             if (this.particleRenderer && typeof this.particleRenderer.dispose === 'function') {
-                this.particleRenderer.dispose();
+                this.particleRenderer?.dispose?.();
             }
             
             console.debug('[SeasonalEffectManager] Successfully disposed');

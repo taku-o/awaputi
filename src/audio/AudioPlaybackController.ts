@@ -162,13 +162,13 @@ export class AudioPlaybackController {
     playSound(soundName: string, options: PlaybackOptions = {}): AudioBufferSourceNode | null {
         try {
             if (!this.audioContext || !this.soundBuffers) {
-                return null;
+                return null as any;
             }
 
             const buffer = this.soundBuffers.get(soundName);
             if (!buffer) {
                 console.warn(`Sound '${soundName}' not found`);
-                return null;
+                return null as any;
             }
 
             // 同時再生数制限チェック
@@ -185,7 +185,7 @@ export class AudioPlaybackController {
                 operation: 'playSound',
                 soundName
             });
-            return null;
+            return null as any;
         }
     }
     /**
@@ -197,7 +197,7 @@ export class AudioPlaybackController {
     private _playSound(buffer: AudioBuffer, options: PlaybackOptions = {}): AudioBufferSourceNode | null {
         try {
             if (!this.audioContext || !this.sfxGainNode) {
-                return null;
+                return null as any;
             }
             const {
                 volume = 1.0,
@@ -285,7 +285,7 @@ export class AudioPlaybackController {
                 component: 'AudioPlaybackController',
                 operation: '_playSound'
             });
-            return null;
+            return null as any;
         }
     }
     /**
@@ -602,7 +602,7 @@ export function getAudioPlaybackController(): AudioPlaybackController {
  */
 export function reinitializeAudioPlaybackController(): AudioPlaybackController {
     if (audioPlaybackControllerInstance) {
-        audioPlaybackControllerInstance.dispose();
+        audioPlaybackControllerInstance?.dispose?.();
     }
     audioPlaybackControllerInstance = new AudioPlaybackController();
     return audioPlaybackControllerInstance;

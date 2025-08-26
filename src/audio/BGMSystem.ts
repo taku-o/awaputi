@@ -253,7 +253,7 @@ export class BGMSystem {
                 trackName: trackName,
                 options: options
             });
-            return null;
+            return null as any;
         }
     }
     
@@ -359,7 +359,7 @@ export class BGMSystem {
                 operation: '_generateTrackBuffer',
                 track: track.name
             });
-            return null;
+            return null as any;
         }
     }
     
@@ -463,12 +463,12 @@ export class BGMSystem {
      */
     getCurrentBGMInfo(): any {
         if (!this.bgmPlayer) {
-            return null;
+            return null as any;
         }
         
         const playerState = this.bgmPlayer.getState();
         if (!playerState.currentTrack) {
-            return null;
+            return null as any;
         }
         
         return {
@@ -682,7 +682,7 @@ export class BGMSystem {
                 throw new Error('TransitionManager is not initialized');
             }
             
-            this.transitionManager.updateSettings(settings);
+            this.transitionManager.updateSetting(settings);
         } catch (error) {
             getErrorHandler().handleError(error, 'BGM_ERROR', {
                 operation: 'updateTransitionSettings',
@@ -718,13 +718,13 @@ export class BGMSystem {
         try {
             // BGMトランジション管理を破棄
             if (this.transitionManager) {
-                this.transitionManager.dispose();
+                this.transitionManager?.dispose?.();
                 this.transitionManager = null;
             }
             
             // BGMプレイヤーを破棄
             if (this.bgmPlayer) {
-                this.bgmPlayer.dispose();
+                this.bgmPlayer?.dispose?.();
                 this.bgmPlayer = null;
             }
             

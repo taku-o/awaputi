@@ -113,7 +113,7 @@ interface EnvironmentInfo {
 }
 
 interface ConnectionInfo {
-    effective_type: string;
+    effective_type: "single" | "batch";
     downlink: number;
 }
 

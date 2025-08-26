@@ -79,7 +79,7 @@ export interface CustomGesture {
 }
 
 export interface GesturePattern {
-    type: string;
+    type: "single" | "batch";
     points: TouchPoint[];
     duration: number;
     distance: number;

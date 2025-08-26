@@ -255,7 +255,7 @@ export class BubbleManager implements IBubbleManager {
             }
         }
         
-        return null;
+        return null as any;
     }
     
     /**

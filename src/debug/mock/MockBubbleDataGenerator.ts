@@ -9,7 +9,7 @@ interface BubbleData {
     y: number;
     radius: number;
     color: string;
-    type: string;
+    type: "single" | "batch";
     velocity: { x: number; y: number };
     timestamp: number;
 }

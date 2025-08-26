@@ -44,7 +44,7 @@ export interface AchievementReward {
 }
 
 export interface RewardItem {
-    type: string;
+    type: "single" | "batch";
     id: string;
     quantity: number;
 }

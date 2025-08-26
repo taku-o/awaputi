@@ -353,7 +353,7 @@ export class BalanceChangeDocumentationSystem {
             const validation = change.validate();
             if (!validation.isValid) {
                 console.warn('[BalanceChangeDocumentationSystem] 無効な変更データ:', validation.errors);
-                return null;
+                return null as any;
             }
             
             // 履歴サイズ制限
@@ -379,7 +379,7 @@ export class BalanceChangeDocumentationSystem {
             this.errorHandler.handleError(error, 'DOCUMENTATION_RECORD', {
                 changeData
             });
-            return null;
+            return null as any;
         }
     }
     

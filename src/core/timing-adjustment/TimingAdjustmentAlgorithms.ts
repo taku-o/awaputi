@@ -191,7 +191,7 @@ export function isPauseReason(reason: string): reason is PauseReason {
     return ['manual', 'auto', 'game_pause', 'window_blur', 'performance', 'user'].includes(reason);
 }
 
-export function isEntityType(type: string): type is EntityType {
+export function isEntityType(type: "single" | "batch"): type is EntityType {
     return ['bubble', 'powerup', 'obstacle', 'particle', 'ui'].includes(type);
 }
 
@@ -200,13 +200,13 @@ export function hasTimerExtensions(manager: ExtendedTimerManager): boolean {
 }
 export class TimingAdjustmentAlgorithms {
     private manager: AlgorithmTimingAdjustmentManager;
-    private _gameEngine: any;
+    // private _gameEngine: any; // Removed: unused variable
     private config: TimingConfiguration;
     private state: TimingState;
     private timers: ExtendedTimerManager;
     private adaptiveLearning: AdaptiveLearningConfig;
     // 最適化関連
-    private _lastOptimization: number = 0;
+    // private _lastOptimization: number = 0; // Removed: unused variable
     private optimizationStats: OptimizationStats = {
         lastOptimization: 0,
         timersRemoved: 0,
@@ -369,7 +369,7 @@ export class TimingAdjustmentAlgorithms {
         
         const warningThreshold = config.adjustedDuration * DEFAULT_WARNING_THRESHOLD;
         
-        const ___warningTimeout = window.setTimeout(() => {
+        window.setTimeout(() => {
             if (this.timers.active.has(timerId)) {
                 this.manager.showTimeWarning(timerId);
                 // 警告情報を記録
@@ -409,7 +409,7 @@ export class TimingAdjustmentAlgorithms {
             return false;
         }
 
-        const ___profile = this.getCurrentProfile();
+        // const ___profile = this.getCurrentProfile(); // Removed: unused variable
         const extensionAmount = (timer as any).originalDuration * DEFAULT_EXTENSION_PERCENTAGE;
         
         // 延長を適用
@@ -467,7 +467,7 @@ export class TimingAdjustmentAlgorithms {
             }
         }
 
-        return null;
+        return null as any;
     }
     
     /**
@@ -566,11 +566,11 @@ export class TimingAdjustmentAlgorithms {
     scheduleAutoExtension(timerId: string): boolean {
         const timer = this.timers.active.get(timerId) as RegisteredTimer;
         const profile = this.getCurrentProfile();
-        if (!timer || !profile.(preferences as any).autoExtend) {
+        if (!timer || !(profile.preferences as any).autoExtend) {
             return false;
         }
         
-        const gracePeriod = profile.(preferences as any).gracePeriod || DEFAULT_GRACE_PERIOD;
+        const gracePeriod = (profile.preferences as any).gracePeriod || DEFAULT_GRACE_PERIOD;
         const remaining = timer.adjustedDuration - (Date.now() - timer.startTime - timer.pausedTime);
         
         if (remaining <= gracePeriod) {
@@ -630,7 +630,7 @@ export class TimingAdjustmentAlgorithms {
      */
     getRemainingTime(timerId: string): RemainingTimeInfo | null {
         const timer = this.timers.active.get(timerId) as RegisteredTimer;
-        if (!timer) return null;
+        if (!timer) return null as any;
         
         const elapsed = Date.now() - timer.startTime - timer.pausedTime;
         const remaining = Math.max(0, timer.adjustedDuration - elapsed);
@@ -665,7 +665,7 @@ export class TimingAdjustmentAlgorithms {
             
             // 長時間停止しているタイマーの最適化
             if (this.timers.paused.has(timerId)) {
-                const __pausedTimer = this.timers.paused.get(timerId) as PausedTimer;
+                // const __pausedTimer = this.timers.paused.get(timerId) as PausedTimer; // Removed: unused variable
                 const pauseDuration = currentTime - pauseInfo.pausedAt;
                 
                 // 1時間以上停止している自動停止タイマーを削除
@@ -830,7 +830,7 @@ export class TimingAdjustmentAlgorithms {
                         break;
                     case 'resume':
                         if (this.timers.paused.has(timerId)) {
-                            const __pausedTimer = this.timers.paused.get(timerId) as PausedTimer;
+                            // const __pausedTimer = this.timers.paused.get(timerId) as PausedTimer; // Removed: unused variable
                             const timer = this.timers.active.get(timerId) as RegisteredTimer;
                             if (timer) {
                                 timer.pausedTime += Date.now() - pauseInfo.pausedAt;

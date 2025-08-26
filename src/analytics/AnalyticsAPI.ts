@@ -312,13 +312,13 @@ export class AnalyticsAPI {
      */
     destroy(): void {
         if (this.endpointManager) {
-            this.endpointManager.destroy();
+            this.endpointManager?.destroy?.();
         }
         if (this.aggregationProcessor) {
-            this.aggregationProcessor.destroy();
+            this.aggregationProcessor?.destroy?.();
         }
         if (this.exportHandler) {
-            this.exportHandler.destroy();
+            this.exportHandler?.destroy?.();
         }
         console.log('AnalyticsAPI destroyed');
     }

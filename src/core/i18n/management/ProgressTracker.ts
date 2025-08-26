@@ -255,7 +255,7 @@ export class ProgressTracker {
             const languageProgress = this.languageProgress.get(language);
             if (!languageProgress) {
                 console.warn(`No progress data found for language: ${language}`);
-                return null;
+                return null as any;
             }
 
             const report: ProgressReport = {
@@ -290,7 +290,7 @@ export class ProgressTracker {
                 operation: 'generateProgressReport',
                 language
             });
-            return null;
+            return null as any;
         }
     }
 

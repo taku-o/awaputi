@@ -46,7 +46,7 @@ export interface UIState {
 }
 
 export interface UserAction {
-    type: string;
+    type: "single" | "batch";
     data: any;
     timestamp: number;
 }
@@ -99,7 +99,7 @@ export interface BehaviorPatterns {
 }
 
 export interface SmartHelp {
-    type: string;
+    type: "single" | "batch";
     struggles: Struggle[];
     help: HelpContent;
     confidence: number;
@@ -134,7 +134,7 @@ export interface ActionSuggestion {
 }
 
 export interface Struggle {
-    type: string;
+    type: "single" | "batch";
     severity: 'low' | 'medium' | 'high';
     description: string;
 }
@@ -264,7 +264,7 @@ export class ContextManager {
             return context;
         } catch (error) {
             this.loggingSystem.error('Failed to detect current context', (error as Error).message, 'ContextManager');
-            return null;
+            return null as any;
         }
     }
 
@@ -384,7 +384,7 @@ export class ContextManager {
             return tooltipId;
         } catch (error) {
             this.loggingSystem.error('Failed to show contextual tooltip', (error as Error).message, 'ContextManager');
-            return null;
+            return null as any;
         }
     }
 
@@ -462,10 +462,10 @@ export class ContextManager {
                 };
             }
 
-            return null;
+            return null as any;
         } catch (error) {
             this.loggingSystem.error('Failed to get smart help', (error as Error).message, 'ContextManager');
-            return null;
+            return null as any;
         }
     }
 
@@ -477,7 +477,7 @@ export class ContextManager {
     private setupDefaultDetectors(): void {
         // ゲーム状態検出器
         this.contextDetectors.set('gameState', (_context: Context) => {
-            if (!this.gameEngine) return null;
+            if (!this.gameEngine) return null as any;
             
             return {
                 isPlaying: this.gameEngine.isRunning,
@@ -618,7 +618,7 @@ export class ContextManager {
      * @param type - アクションタイプ
      * @param data - アクションデータ
      */
-    private trackUserAction(type: string, data: any): void {
+    private trackUserAction(type: "single" | "batch", data: any): void {
         const action: UserAction = {
             type,
             data,
@@ -1042,7 +1042,7 @@ export function getContextManager(gameEngine: GameEngine): ContextManager {
  */
 export function reinitializeContextManager(gameEngine: GameEngine): ContextManager {
     if (contextManagerInstance) {
-        contextManagerInstance.destroy();
+        contextManagerInstance?.destroy?.();
     }
     contextManagerInstance = new ContextManager(gameEngine);
     return contextManagerInstance;

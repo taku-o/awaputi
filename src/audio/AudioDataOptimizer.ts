@@ -10,7 +10,7 @@ import { getConfigurationManager } from '../core/ConfigurationManager';
 
 // エラーハンドラー型定義
 interface ErrorHandler {
-    handleError(error: Error, type: string, context?: any): void;
+    handleError(error: Error, type: "single" | "batch", context?: any): void;
 }
 
 // 設定管理型定義

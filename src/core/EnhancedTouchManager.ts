@@ -456,7 +456,7 @@ export class EnhancedTouchManager {
             return touch;
         }
         
-        return null;
+        return null as any;
     }
     
     /**
@@ -797,7 +797,7 @@ export class EnhancedTouchManager {
     /**
      * ジェスチャー履歴に追加
      */
-    addToGestureHistory(type: string, data: any): void {
+    addToGestureHistory(type: "single" | "batch", data: any): void {
         this.touchState.gestureHistory.push({
             type,
             data,

@@ -22,7 +22,7 @@ interface Particle {
     alpha: number;
     life: number;
     maxLife: number;
-    type: string;
+    type: "single" | "batch";
     active: boolean;
     gravityAffected: boolean;
     hasTrail: boolean;
@@ -365,7 +365,7 @@ export class EnhancedParticleManager extends ParticleManager {
             getErrorHandler().handleError(error as Error, {
                 context: 'EnhancedParticleManager.createParticle'
             });
-            return null;
+            return null as any;
         }
     }
     

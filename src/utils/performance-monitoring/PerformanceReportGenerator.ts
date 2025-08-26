@@ -39,7 +39,7 @@ interface Anomaly {
     value: number;
     severity: 'low' | 'medium' | 'high' | 'critical';
     score: number;
-    type: string;
+    type: "single" | "batch";
 }
 
 interface StatisticalData {
@@ -507,7 +507,7 @@ export class PerformanceReportGenerator {
      * @param type - Insight type
      * @returns Filtered insights
      */
-    getInsightsByType(type: string): Insight[] {
+    getInsightsByType(type: "single" | "batch"): Insight[] {
         return this.insights.filter(insight => insight.type === type);
     }
     

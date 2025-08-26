@@ -193,7 +193,7 @@ export class EventRankingManager {
                 return tier;
             }
         }
-        return null;
+        return null as any;
     }
     
     /**
@@ -257,7 +257,7 @@ export class EventRankingManager {
     getPlayerEventRanking(playerId: any, eventId: any): any {
         const ranking = this.eventRankings[eventId];
         if (!ranking || !ranking.players[playerId]) {
-            return null;
+            return null as any;
         }
         
         const playerData = ranking.players[playerId];

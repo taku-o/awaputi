@@ -662,7 +662,7 @@ interface NavigationResult { success: boolean;
             nextStep++;
         }
 
-        return null;
+        return null as any;
     }
 
     private async shouldSkipStep(step: OnboardingStep): Promise<boolean> { // Check adaptive conditions to determine if step should be skipped

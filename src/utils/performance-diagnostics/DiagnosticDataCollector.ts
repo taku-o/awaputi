@@ -64,7 +64,7 @@ interface DataQuality {
 }
 
 interface DataQualityIssue {
-    type: string;
+    type: "single" | "batch";
     severity: 'low' | 'medium' | 'high';
     description: string;
     impact: string;

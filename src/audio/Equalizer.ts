@@ -625,7 +625,7 @@ export class Equalizer {
                 component: 'Equalizer',
                 samplePoints
             });
-            return null;
+            return null as any;
         }
     }
 

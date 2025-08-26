@@ -299,7 +299,7 @@ export class LazyLoadManager {
         const preloadPromises = preloadList.map(([name]) =>
             this.loadComponent(name).catch(error => {
                 console.warn(`Preload failed for ${name}:`, error);
-                return null;
+                return null as any;
             })
         );
 
@@ -335,7 +335,7 @@ export class LazyLoadManager {
         const loadPromises = names.map(name =>
             this.loadComponent(name).catch(error => {
                 console.warn(`Batch load failed for ${name}:`, error);
-                return null;
+                return null as any;
             })
         );
 
@@ -348,9 +348,9 @@ export class LazyLoadManager {
      */
     public async loadComponentIf(name: string, condition: boolean | (() => Promise<boolean>)): Promise<LoadedComponent | null> {
         if (typeof condition === 'function') {
-            if (!await condition()) return null;
+            if (!await condition()) return null as any;
         } else if (!condition) {
-            return null;
+            return null as any;
         }
 
         return this.loadComponent(name);
@@ -379,7 +379,7 @@ export class LazyLoadManager {
 
         const panelInfo = this.debugInterface.panelManager?.getPanelInfo(name);
         if (panelInfo && panelInfo.instance && typeof panelInfo.instance.destroy === 'function') {
-            panelInfo.instance.destroy();
+            panelInfo.instance?.destroy?.();
         }
 
         this.loadedComponents.delete(name);

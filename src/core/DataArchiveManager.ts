@@ -596,7 +596,7 @@ export class DataArchiveManager {
     extractDateRange(data: any): DateRange | null {
         const timestamps = this.extractTimestamps(data);
         if (timestamps.length === 0) {
-            return null;
+            return null as any;
         }
         
         return {

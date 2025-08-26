@@ -41,7 +41,7 @@ interface UpdateResult {
 }
 
 interface ValidationIssue {
-    type: string;
+    type: "single" | "batch";
     line: number;
     content: string;
     message: string;
@@ -50,7 +50,7 @@ interface ValidationIssue {
 interface ImportPathInfo {
     path: string;
     line: number;
-    type: string;
+    type: "single" | "batch";
 }
 export class ImportUpdater {
     private cache: Map<string, any>;
@@ -474,7 +474,7 @@ export class ImportUpdater {
             case 'requireCall':
                 return groups[0]; // 1番目のグループがパス
             default:
-                return null;
+                return null as any;
         }
     }
 

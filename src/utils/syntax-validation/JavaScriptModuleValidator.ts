@@ -5,14 +5,14 @@
 
 // Type definitions
 interface ValidationError {
-    type: string;
+    type: "single" | "batch";
     message: string;
     line: number;
     column: number;
 }
 
 interface ValidationWarning {
-    type: string;
+    type: "single" | "batch";
     message: string;
     line: number;
     column: number;

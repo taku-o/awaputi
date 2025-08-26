@@ -601,7 +601,7 @@ export class PerformanceVisualizer {
         // チャート設定更新
         this.charts.forEach(chart => {
             if ('updateSettings' in chart) {
-                chart.updateSettings(this.settings);
+                chart.updateSetting(this.settings);
             }
         });
 
@@ -823,7 +823,7 @@ class PerformanceChart {
     }
 
     public getDataPointAt(x: number, y: number): DataPoint | null {
-        if(!this.isPointInChart(x, y)) return null;
+        if(!this.isPointInChart(x, y)) return null as any;
         
         const pos = this.config.position;
         const relativeX = x - pos.x;

@@ -217,7 +217,7 @@ export function findElementBySelector(selector: string, container?: HTMLElement)
         return searchContainer.querySelector(selector);
     } catch (error) {
         console.warn(`Invalid selector: ${selector}`, error);
-        return null;
+        return null as any;
     }
 }
 
@@ -271,7 +271,7 @@ export class FocusTrapManager {
     createFocusTrap(container: HTMLElement, options: Partial<FocusTrapConfig> = {}): FocusTrap | null {
         if(!isValidHTMLElement(container)) {
             console.error('[FocusTrapManager] Container element is required and must be a valid HTML element');
-            return null;
+            return null as any;
         }
         
         try {
@@ -310,7 +310,7 @@ export class FocusTrapManager {
 
         } catch (error) {
             console.error('[FocusTrapManager] Error creating focus trap:', error);
-            return null;
+            return null as any;
         }
     }
     

@@ -213,7 +213,7 @@ export class AccessibilityProfileComponent {
             this.errorHandler.handleError(error as Error, 'ACCESSIBILITY_PROFILE_INIT_ERROR', {
                 operation: 'initialize'
             });
-            return null;
+            return null as any;
         }
     }
     

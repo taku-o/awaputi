@@ -463,7 +463,7 @@ export class PerformanceDataCollector {
     /**
      * パフォーマンス警告のトリガー
      */
-    triggerPerformanceWarning(type: string, details: any) {
+    triggerPerformanceWarning(type: "single" | "batch", details: any) {
         const warningEvent = new CustomEvent('performance-warning', {
             detail: {
                 type: type,
@@ -518,7 +518,7 @@ export class PerformanceDataCollector {
             performance.mark(markName);
             return markName;
         }
-        return null;
+        return null as any;
     }
 
     /**
@@ -543,7 +543,7 @@ export class PerformanceDataCollector {
                 };
             }
         }
-        return null;
+        return null as any;
     }
 
     /**
@@ -627,7 +627,7 @@ export class PerformanceDataCollector {
      */
     calculateFPSStatistics() {
         const fpsData = this.performanceData.fps;
-        if (fpsData.length === 0) return null;
+        if (fpsData.length === 0) return null as any;
 
         const values = fpsData.map((item: any) => item.fps);
         return {
@@ -645,7 +645,7 @@ export class PerformanceDataCollector {
      */
     calculateMemoryStatistics() {
         const memoryData = this.performanceData.memory;
-        if (memoryData.length === 0) return null;
+        if (memoryData.length === 0) return null as any;
 
         const usageValues = memoryData.map((item: any) => item.usagePercent);
         const current = memoryData[memoryData.length - 1];
@@ -668,7 +668,7 @@ export class PerformanceDataCollector {
      */
     calculateLoadTimeStatistics() {
         const loadData = this.performanceData.loadTimes;
-        if (loadData.length === 0) return null;
+        if (loadData.length === 0) return null as any;
 
         const durations = loadData.map((item: any) => item.duration || item.loadComplete || 0);
         return {
@@ -702,7 +702,7 @@ export class PerformanceDataCollector {
      */
     calculateNetworkStatistics() {
         const networkData = this.performanceData.networkRequests;
-        if (networkData.length === 0) return null;
+        if (networkData.length === 0) return null as any;
 
         const durations = networkData.map((item: any) => item.loadTime || item.duration || 0);
         const sizes = networkData.filter((item: any) => item.size).map((item: any) => item.size);

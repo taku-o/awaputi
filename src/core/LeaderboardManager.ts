@@ -33,7 +33,7 @@ export class LeaderboardManager {
     private rankingManager: LeaderboardRankingManager;
     private storageManager: LeaderboardStorageManager;
 
-    constructor(_gameEngine: any) {
+    constructor(gameEngine: any) {
         // Basic configuration handled by sub-components
         this.version = '1.0.0';
         
@@ -416,7 +416,7 @@ let leaderboardManagerInstance: LeaderboardManager | null = null;
 export function getLeaderboardManager(): LeaderboardManager | null {
     if (!leaderboardManagerInstance) {
         console.warn('[LeaderboardManager] Instance not initialized. Call initialize() first.');
-        return null;
+        return null as any;
     }
     return leaderboardManagerInstance;
 }

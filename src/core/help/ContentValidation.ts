@@ -628,7 +628,7 @@ export function getContentValidation(): ContentValidation {
  */
 export function reinitializeContentValidation(): ContentValidation {
     if (contentValidationInstance) {
-        contentValidationInstance.destroy();
+        contentValidationInstance?.destroy?.();
     }
     contentValidationInstance = new ContentValidation();
     return contentValidationInstance;

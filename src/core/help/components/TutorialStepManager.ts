@@ -228,7 +228,7 @@ export class TutorialStepManager {
             return this.currentStep;
         } catch (error) {
             this.errorHandler.handleError(error as Error, 'TutorialStepManager.loadStep');
-            return null;
+            return null as any;
         }
     }
 
@@ -425,12 +425,12 @@ export class TutorialStepManager {
             const progressKey = `tutorial_progress_${tutorialId}`;
             const savedProgress = localStorage.getItem(progressKey);
             
-            if (!savedProgress) return null;
+            if (!savedProgress) return null as any;
 
             return JSON.parse(savedProgress) as SavedProgress;
         } catch (error) {
             this.errorHandler.handleError(error as Error, 'TutorialStepManager.loadProgress');
-            return null;
+            return null as any;
         }
     }
 

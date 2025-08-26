@@ -69,7 +69,7 @@ export function normalizeUrl(url: string): string {
 export function createMetaTag(property: string, content: string): HTMLMetaElement | null {
     if (!property || !content) {
         seoLogger.warn('Invalid meta tag parameters', { property, content });
-        return null;
+        return null as any;
     }
 
     const meta = document.createElement('meta');

@@ -262,7 +262,7 @@ export class ComponentAudioAccessibilitySupport {
      * @param params - パラメータ
      * @param priority - 優先度
      */
-    addAudioDescription(category: string, type: string, params: any = {}, priority: number = 3): void {
+    addAudioDescription(category: string, type: "single" | "batch", params: any = {}, priority: number = 3): void {
         this.descriptionManager.addDescription(category, type, params, priority);
         this.eventManager.recordEvent('audio_description', { category, type, params, priority });
     }
@@ -292,7 +292,7 @@ export class ComponentAudioAccessibilitySupport {
      * 触覚フィードバックのトリガー（FeedbackManagerに委譲）
      * @param type - フィードバックタイプ
      */
-    triggerHapticFeedback(type: string): void {
+    triggerHapticFeedback(type: "single" | "batch"): void {
         this.feedbackManager.triggerVibration(type);
         this.eventManager.recordEvent('haptic_feedback', { type });
     }
@@ -306,7 +306,7 @@ export class ComponentAudioAccessibilitySupport {
      * @returns 現在の設定
      */
     getSettings(): any {
-        return this.settingsManager.getSettings();
+        return this.settingsManager.getSetting();
     }
 
     /**
@@ -314,7 +314,7 @@ export class ComponentAudioAccessibilitySupport {
      * @param newSettings - 新しい設定
      */
     async updateSettings(newSettings: any): Promise<void> {
-        await this.settingsManager.updateSettings(newSettings);
+        await this.settingsManager.updateSetting(newSettings);
     }
 
     /**
@@ -431,16 +431,16 @@ export class ComponentAudioAccessibilitySupport {
         return {
             initialized: true,
             components: {
-                descriptionManager: this.descriptionManager.getStatus(),
-                cueManager: this.cueManager.getStatus(),
-                feedbackManager: this.feedbackManager.getStatus(),
-                settingsManager: this.settingsManager.getStatus(),
-                eventManager: this.eventManager.getStatus(),
-                legacyAdapter: this.legacyAdapter.getStatus()
+                descriptionManager: this.descriptionManager?.getStatus?.(),
+                cueManager: this.cueManager?.getStatus?.(),
+                feedbackManager: this.feedbackManager?.getStatus?.(),
+                settingsManager: this.settingsManager?.getStatus?.(),
+                eventManager: this.eventManager?.getStatus?.(),
+                legacyAdapter: this.legacyAdapter?.getStatus?.()
             },
             eventHistorySize: this.eventManager.getEventHistory().length,
             capabilities: this.getCapabilities(),
-            settings: this.getSettings()
+            settings: this.getSetting()
         };
     }
 
@@ -461,7 +461,7 @@ export class ComponentAudioAccessibilitySupport {
         return {
             ...eventStats,
             componentsActive: 6,
-            settingsConfigured: Object.keys(this.getSettings()).length
+            settingsConfigured: Object.keys(this.getSetting()).length
         };
     }
 
@@ -476,27 +476,27 @@ export class ComponentAudioAccessibilitySupport {
     destroy(): void {
         // Sub-components cleanup
         if (this.descriptionManager) {
-            this.descriptionManager.destroy();
+            this.descriptionManager?.destroy?.();
         }
         
         if (this.cueManager) {
-            this.cueManager.destroy();
+            this.cueManager?.destroy?.();
         }
         
         if (this.feedbackManager) {
-            this.feedbackManager.destroy();
+            this.feedbackManager?.destroy?.();
         }
         
         if (this.settingsManager) {
-            this.settingsManager.destroy();
+            this.settingsManager?.destroy?.();
         }
         
         if (this.eventManager) {
-            this.eventManager.destroy();
+            this.eventManager?.destroy?.();
         }
         
         if (this.legacyAdapter) {
-            this.legacyAdapter.destroy();
+            this.legacyAdapter?.destroy?.();
         }
         
         console.log('AudioAccessibilitySupport destroyed');
@@ -506,7 +506,7 @@ export class ComponentAudioAccessibilitySupport {
      * 再初期化
      */
     async reinitialize(): Promise<void> {
-        this.destroy();
+        this?.destroy?.();
         await this.initialize();
     }
 }

@@ -159,7 +159,7 @@ export class ComparisonAlgorithms {
             .filter(s => s.completed)
             .sort((a, b) => a.startTime - b.startTime);
         
-        if (completedSessions.length === 0) return null;
+        if (completedSessions.length === 0) return null as any;
         
         const firstSession = completedSessions[0];
         return firstSession.endTime - firstSession.startTime;

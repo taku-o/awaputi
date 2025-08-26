@@ -132,7 +132,7 @@ export function destroyHelpSystem(): boolean {
         components.forEach(component => {
             if (component && typeof component.destroy === 'function') {
                 try {
-                    component.destroy();
+                    component?.destroy?.();
                 } catch (error) {
                     console.warn('Failed to destroy component:', error);
                 }

@@ -436,7 +436,7 @@ export class EffectProfiler {
 
     private analyzeFrameMetrics(): FrameAnalysis | null {
         const metrics = this.profilingData.frameMetrics;
-        if (metrics.length === 0) return null;
+        if (metrics.length === 0) return null as any;
 
         const fpsSamples = metrics.map(m => m.fps).filter(fps => fps > 0);
         const renderTimeSamples = metrics.map(m => m.renderTime).filter(rt => rt > 0);
@@ -456,7 +456,7 @@ export class EffectProfiler {
 
     private analyzeMemoryUsage(): MemoryAnalysis | null {
         const snapshots = this.profilingData.memorySnapshots;
-        if (snapshots.length === 0) return null;
+        if (snapshots.length === 0) return null as any;
 
         const usedMemorySamples = snapshots.map(s => s.used);
         const memoryDelta = usedMemorySamples[usedMemorySamples.length - 1] - usedMemorySamples[0];

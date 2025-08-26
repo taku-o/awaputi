@@ -66,7 +66,7 @@ interface MemoryMetricsData {
 // Render metrics types
 interface RenderMetrics {
     timestamp: number;
-    type: string;
+    type: "single" | "batch";
     name: string;
     startTime: number;
     endTime?: number;
@@ -98,7 +98,7 @@ interface NetworkTiming {
 interface NetworkMetrics {
     timestamp: number;
     name: string;
-    type: string;
+    type: "single" | "batch";
     startTime: number;
     duration: number;
     transferSize: number;
@@ -137,7 +137,7 @@ interface Coordinates {
 
 interface InteractionMetrics {
     timestamp: number;
-    type: string;
+    type: "single" | "batch";
     target: string;
     responseTime: number;
     coordinates: Coordinates | null;
@@ -226,7 +226,7 @@ interface CustomMetricsData {
 }
 
 // Callback types
-type MetricsCallback = (type: string, data: any) => void;
+type MetricsCallback = (type: "single" | "batch", data: any) => void;
 
 /**
  * Frame Metrics Collector
@@ -285,7 +285,7 @@ export class FrameMetricsCollector {
     }
 
     getMetrics(): FrameMetricsData | null {
-        if (this.frameHistory.length === 0) return null;
+        if (this.frameHistory.length === 0) return null as any;
 
         const recent = this.frameHistory.slice(-60); // Last second at 60fps
         const totalFrameTime = recent.reduce((sum, f) => sum + f.frameTime, 0);
@@ -317,7 +317,7 @@ export class FrameMetricsCollector {
         this.callbacks.push(callback);
     }
 
-    private notifyCallbacks(type: string, data: any): void {
+    private notifyCallbacks(type: "single" | "batch", data: any): void {
         this.callbacks.forEach(callback => {
             try {
                 callback(type, data);
@@ -376,7 +376,7 @@ export class MemoryMetricsCollector {
 
     private collectMemoryMetrics(): MemoryMetrics | null {
         if (!('memory' in performance) || !(performance as any).memory) {
-            return null;
+            return null as any;
         }
 
         const memory = (performance as any).memory;
@@ -410,7 +410,7 @@ export class MemoryMetricsCollector {
     }
 
     getMetrics(): MemoryMetricsData | null {
-        if (this.memoryHistory.length === 0) return null;
+        if (this.memoryHistory.length === 0) return null as any;
 
         const current = this.memoryHistory[this.memoryHistory.length - 1];
         const recent = this.memoryHistory.slice(-30); // Last 30 seconds
@@ -452,7 +452,7 @@ export class MemoryMetricsCollector {
         this.callbacks.push(callback);
     }
 
-    private notifyCallbacks(type: string, data: any): void {
+    private notifyCallbacks(type: "single" | "batch", data: any): void {
         this.callbacks.forEach(callback => {
             try {
                 callback(type, data);
@@ -561,7 +561,7 @@ export class RenderMetricsCollector {
     }
 
     getMetrics(): RenderMetricsData | null {
-        if (this.renderHistory.length === 0) return null;
+        if (this.renderHistory.length === 0) return null as any;
 
         const recent = this.renderHistory.slice(-50);
         const paintEvents = recent.filter(r => r.type === 'paint');
@@ -587,7 +587,7 @@ export class RenderMetricsCollector {
         this.callbacks.push(callback);
     }
 
-    private notifyCallbacks(type: string, data: any): void {
+    private notifyCallbacks(type: "single" | "batch", data: any): void {
         this.callbacks.forEach(callback => {
             try {
                 callback(type, data);
@@ -696,7 +696,7 @@ export class NetworkMetricsCollector {
     }
 
     getMetrics(): NetworkMetricsData | null {
-        if (this.networkHistory.length === 0) return null;
+        if (this.networkHistory.length === 0) return null as any;
 
         const recent = this.networkHistory.slice(-20);
         const totalTransfer = recent.reduce((sum, n) => sum + n.transferSize, 0);
@@ -734,7 +734,7 @@ export class NetworkMetricsCollector {
         this.callbacks.push(callback);
     }
 
-    private notifyCallbacks(type: string, data: any): void {
+    private notifyCallbacks(type: "single" | "batch", data: any): void {
         this.callbacks.forEach(callback => {
             try {
                 callback(type, data);
@@ -784,7 +784,7 @@ export class UserInteractionCollector {
         });
     }
 
-    private handleInteraction(type: string, event: Event): void {
+    private handleInteraction(type: "single" | "batch", event: Event): void {
         const timestamp = Date.now();
         const startTime = performance.now();
 
@@ -824,11 +824,11 @@ export class UserInteractionCollector {
             return { x: touchEvent.touches[0].clientX, y: touchEvent.touches[0].clientY };
         }
 
-        return null;
+        return null as any;
     }
 
     getMetrics(): InteractionMetricsData | null {
-        if (this.interactionHistory.length === 0) return null;
+        if (this.interactionHistory.length === 0) return null as any;
 
         const recent = this.interactionHistory.slice(-50);
         const totalResponseTime = recent.reduce((sum, i) => sum + i.responseTime, 0);
@@ -866,7 +866,7 @@ export class UserInteractionCollector {
         this.callbacks.push(callback);
     }
 
-    private notifyCallbacks(type: string, data: any): void {
+    private notifyCallbacks(type: "single" | "batch", data: any): void {
         this.callbacks.forEach(callback => {
             try {
                 callback(type, data);
@@ -975,7 +975,7 @@ export class ResourceMetricsCollector {
     }
 
     getMetrics(): ResourceMetricsData | null {
-        if (this.resourceHistory.length === 0) return null;
+        if (this.resourceHistory.length === 0) return null as any;
 
         const current = this.resourceHistory[this.resourceHistory.length - 1];
         const recent = this.resourceHistory.slice(-10);
@@ -998,7 +998,7 @@ export class ResourceMetricsCollector {
         this.callbacks.push(callback);
     }
 
-    private notifyCallbacks(type: string, data: any): void {
+    private notifyCallbacks(type: "single" | "batch", data: any): void {
         this.callbacks.forEach(callback => {
             try {
                 callback(type, data);
@@ -1109,7 +1109,7 @@ export class CustomMetricsCollector {
         this.callbacks.push(callback);
     }
 
-    private notifyCallbacks(type: string, data: any): void {
+    private notifyCallbacks(type: "single" | "batch", data: any): void {
         this.callbacks.forEach(callback => {
             try {
                 callback(type, data);

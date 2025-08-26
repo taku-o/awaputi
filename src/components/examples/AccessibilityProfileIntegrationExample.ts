@@ -16,7 +16,7 @@ interface GameEngine {
 interface SettingItem {
     key: string;
     label: string;
-    type: string;
+    type: "single" | "batch";
     component: string;
     description: string;
     category: string;
@@ -109,7 +109,7 @@ export class AccessibilityProfileIntegrationExample {
             
         } catch (error) {
             console.error('[AccessibilityProfileIntegration] Component creation error:', error);
-            return null;
+            return null as any;
         }
     }
     
@@ -184,7 +184,7 @@ export class AccessibilityProfileIntegrationExample {
      */
     destroy(): void {
         if (this.accessibilityProfileComponent) {
-            this.accessibilityProfileComponent.destroy();
+            this.accessibilityProfileComponent?.destroy?.();
             this.accessibilityProfileComponent = null;
         }
     }

@@ -22,7 +22,7 @@ interface LeaderboardManager {
     getStageRanking(stageId: string, options: any): StageRankingData | null;
     getPlayerHistory(playerId: string, options: any): PlayerHistoryData | null;
     getChallengeRanking(options: any): ChallengeRankingData | null;
-    getLeaderboard(type: string, options: any): LeaderboardData | null;
+    getLeaderboard(type: "single" | "batch", options: any): LeaderboardData | null;
 }
 
 /**
@@ -715,7 +715,7 @@ export class LeaderboardDataManager {
         const lastUpdate = this.lastUpdateTime.get(cacheKey);
         
         if (!lastUpdate || (now - lastUpdate) > this.refreshInterval) {
-            return null;
+            return null as any;
         }
         
         return this.dataCache.get(cacheKey) || null;

@@ -18,7 +18,7 @@ interface MetaTagThresholds {
 }
 
 interface MetaTagAlert {
-    type: string;
+    type: "single" | "batch";
     severity: 'info' | 'warning' | 'critical';
     metric: string;
     current?: number;
@@ -61,7 +61,7 @@ export class MetaTagAnalyzer {
             
         } catch (error) {
             console.error('Failed to check meta tags', error);
-            return null;
+            return null as any;
         }
     }
     

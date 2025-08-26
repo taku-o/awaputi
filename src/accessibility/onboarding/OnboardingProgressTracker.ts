@@ -91,7 +91,7 @@ interface StepStatus { ''
     conversionFunnels: Map<string, any>;
     dropoffPoints: Map<string, any> }
 
-interface UserJourneyEvent { type: string,
+interface UserJourneyEvent { type: "single" | "batch",
     timestamp: number;
     sessionId?: string | null;
     currentStep?: number;
@@ -877,7 +877,7 @@ interface UpdateCompletionResult { success: boolean;
     /**
      * Record user interaction
      */
-    private recordInteraction(type: string, event: Event): void { const now = Date.now();
+    private recordInteraction(type: "single" | "batch", event: Event): void { const now = Date.now();
         // Update interaction counters
         this.engagementData.totalInteractions++;
 

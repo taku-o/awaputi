@@ -188,7 +188,7 @@ export class BasicDirtyRegionManager {
      */
     getPreviousObjectBounds(obj: TrackedObject): DirtyRegionBounds | null {
         const tracking = this.objectTracking.get(obj.id);
-        if (!tracking) return null;
+        if (!tracking) return null as any;
 
         return {
             x: tracking.x,

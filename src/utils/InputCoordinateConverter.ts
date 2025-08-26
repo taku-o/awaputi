@@ -28,7 +28,7 @@ interface ConvertedCoordinates {
 }
 
 interface ScaledEvent {
-    type: string;
+    type: "single" | "batch";
     x: number;
     y: number;
     canvasX?: number;

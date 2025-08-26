@@ -243,7 +243,7 @@ export function isLoadStatus(status: string): status is LoadStatus {
     return ['low', 'medium', 'high', 'critical'].includes(status);
 }
 
-export function isFeedbackType(type: string): type is FeedbackType {
+export function isFeedbackType(type: "single" | "batch"): type is FeedbackType {
     return ['warning_shown', 'warning_dismissed', 'time_extended', 'profile_changed',
         'auto_extension', 'manual_extension', 'timer_expired', 'user_rating',
         'adaptation_accepted', 'adaptation_rejected', 'settings_opened'
@@ -303,7 +303,7 @@ export class TimingFeedbackSystem {
         }
         
         // 自動延長の確認
-        if (profile.(preferences as any).autoExtend) {
+        if ((profile.preferences as any).autoExtend) {
             this.manager.algorithms.scheduleAutoExtension(timerId);
         }
         
@@ -357,7 +357,7 @@ export class TimingFeedbackSystem {
         document.body.appendChild(warningElement);
         
         // 自動削除タイマー
-        const gracePeriod = profile.(preferences as any).gracePeriod || WARNING_AUTO_REMOVE_TIMEOUT;
+        const gracePeriod = (profile.preferences as any).gracePeriod || WARNING_AUTO_REMOVE_TIMEOUT;
         warningElement.autoRemoveTimeout = window.setTimeout(() => {
             if (warningElement.parentNode) {
                 warningElement.parentNode.removeChild(warningElement);
@@ -373,7 +373,7 @@ export class TimingFeedbackSystem {
      * 警告スタイルを適用
      */
     private applyWarningStyles(_element: HTMLDivElement, profile: TimingProfile): void {
-        const largeTimers = profile.(preferences as any).largeTimers || false;
+        const largeTimers = (profile.preferences as any).largeTimers || false;
         const iconSize = largeTimers ? '48px' : '32px';
         const titleSize = largeTimers ? '20px' : '16px';
         const textSize = largeTimers ? '16px' : '14px';
@@ -552,7 +552,7 @@ export class TimingFeedbackSystem {
      * 適応提案を表示
      */
     suggestAdaptation(type: 'increase' | 'decrease', averageResponseTime: number): void {
-        const __currentProfile = this.manager.getCurrentProfile();
+        // const __currentProfile = this.manager.getCurrentProfile(); // Removed: unused variable
         let suggestedProfile: ProfileType | null = null;
         
         if (type === 'increase') {

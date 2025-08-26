@@ -107,7 +107,7 @@ interface RenderOptions {
 }
 
 interface RenderResult {
-    type: string;
+    type: "single" | "batch";
     regionsUpdated?: number;
     totalArea?: number;
     layersRendered?: number;
@@ -118,7 +118,7 @@ interface RenderResult {
 
 interface PerformanceAlert {
     timestamp: number;
-    type: string;
+    type: "single" | "batch";
 }
 
 export class RenderingOptimizer {
@@ -797,7 +797,7 @@ export class RenderingOptimizer {
      * オフスクリーンキャンバスの取得
      */
     getOffscreenCanvas(width: number, height: number, id: string | null = null): HTMLCanvasElement | OffscreenCanvas | null {
-        if (!this.config.offscreenCanvas.enabled) return null;
+        if (!this.config.offscreenCanvas.enabled) return null as any;
 
         const key = id || `${width}x${height}`;
         

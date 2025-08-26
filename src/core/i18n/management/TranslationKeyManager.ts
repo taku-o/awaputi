@@ -911,7 +911,7 @@ export class TranslationKeyManager {
         const usage = this.keyUsage.get(key);
 
         if (!metadata) {
-            return null;
+            return null as any;
         }
         
         return {

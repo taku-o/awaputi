@@ -168,7 +168,7 @@ export class AudioConfigurationManager {
      * @param {string} type - 音量タイプ
      * @param {number} newValue - 新しい値
      */
-    onVolumeChange(type: string, newValue: number) {
+    onVolumeChange(type: "single" | "batch", newValue: number) {
         try {
             const validatedValue = Math.max(0, Math.min(1, newValue));
             this.currentConfig.volumes[type] = validatedValue;
@@ -288,7 +288,7 @@ export class AudioConfigurationManager {
      * @param {string} type - 音量タイプ ('master', 'sfx', 'bgm')
      * @param {number} volume - 音量 (0-1)
      */
-    setVolume(type: string, volume: number) {
+    setVolume(type: "single" | "batch", volume: number) {
         try {
             // 入力値の検証
             if (typeof volume !== 'number' || isNaN(volume)) {
@@ -335,7 +335,7 @@ export class AudioConfigurationManager {
      * @param {string} type - 音量タイプ ('master', 'sfx', 'bgm')
      * @returns {number} 音量 (0-1)
      */
-    getVolume(type: string): number {
+    getVolume(type: "single" | "batch"): number {
         try {
             if (this.audioConfig) {
                 switch(type) {
@@ -615,7 +615,7 @@ export class AudioConfigurationManager {
         this.configWatchers.forEach(watcher => {
             try {
                 if (watcher && typeof watcher.dispose === 'function') {
-                    watcher.dispose();
+                    watcher?.dispose?.();
                 }
             } catch (error) {
                 console.warn('Error disposing config watcher:', error);
@@ -662,7 +662,7 @@ export function getAudioConfigurationManager(): AudioConfigurationManager {
  */
 export function reinitializeAudioConfigurationManager(): AudioConfigurationManager {
     if (audioConfigurationManagerInstance) {
-        audioConfigurationManagerInstance.dispose();
+        audioConfigurationManagerInstance?.dispose?.();
     }
     audioConfigurationManagerInstance = new AudioConfigurationManager();
     return audioConfigurationManagerInstance;

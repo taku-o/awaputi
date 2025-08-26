@@ -239,7 +239,7 @@ export class SettingsUIController {
             
             // アニメーションマネージャーに通知
             if (this.gameEngine && this.gameEngine.animationManager) {
-                this.gameEngine.animationManager.updateSettings({
+                this.gameEngine.animationManager.updateSetting({
                     enabled: !enabled,  // When reduced motion is enabled, disable animations
                     globalSpeed: enabled ? 0.5 : 1.0  // Reduce animation speed when reduced motion is enabled
                 });

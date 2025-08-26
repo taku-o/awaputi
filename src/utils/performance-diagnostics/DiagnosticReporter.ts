@@ -16,7 +16,7 @@ interface DataCollection {
 }
 
 interface Bottleneck {
-    type: string;
+    type: "single" | "batch";
     severity: string;
     metric?: string;
     [key: string]: any;
@@ -89,7 +89,7 @@ interface TechnicalDetails {
 }
 
 interface Report {
-    type: string;
+    type: "single" | "batch";
     title: string;
     summary?: ReportSummary;
     technicalDetails?: TechnicalDetails;
@@ -98,7 +98,7 @@ interface Report {
 }
 
 interface Recommendation {
-    type: string;
+    type: "single" | "batch";
     priority: 'high' | 'medium' | 'low';
     category: string;
     title: string;
@@ -358,11 +358,11 @@ export class DiagnosticReporter {
      */
     destroy(): void {
         if (this.reportGenerator.destroy) {
-            this.reportGenerator.destroy();
+            this.reportGenerator?.destroy?.();
         }
         
         if (this.recommendationEngine.destroy) {
-            this.recommendationEngine.destroy();
+            this.recommendationEngine?.destroy?.();
         }
 
         console.log('[DiagnosticReporter] Reporter destroyed');

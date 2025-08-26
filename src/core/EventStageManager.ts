@@ -16,7 +16,7 @@ interface EventStage {
     name: string;
     description: string;
     icon: string;
-    type: string;
+    type: "single" | "batch";
     duration?: number;
     targetScore?: number;
     rewards?: {
@@ -473,7 +473,7 @@ export class EventStageManager {
      * 通知設定を更新
      */
     updateNotificationSettings(settings: any): void {
-        this.notificationSystem.updateSettings(settings);
+        this.notificationSystem.updateSetting(settings);
     }
     
     /**
@@ -564,10 +564,10 @@ export class EventStageManager {
     dispose(): void {
         try {
             // 各コンポーネントをクリーンアップ
-            this.seasonalEventManager?.dispose();
-            this.notificationSystem?.dispose();
-            this.historyManager?.dispose();
-            this.rankingSystem?.dispose();
+            this.seasonalEventManager?.dispose?.();
+            this.notificationSystem?.dispose?.();
+            this.historyManager?.dispose?.();
+            this.rankingSystem?.dispose?.();
             
             // アクティブイベントをクリア
             this.activeEvents.clear();

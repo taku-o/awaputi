@@ -86,7 +86,7 @@ interface MockGameEngine {
 }
 
 interface ShareData {
-    type: string;
+    type: "single" | "batch";
     score?: number;
     name?: string;
 }
@@ -105,7 +105,7 @@ interface AchievementOverlayData {
 
 interface CustomOverlayData {
     elements: Array<{
-        type: string;
+        type: "single" | "batch";
         text: string;
         position: { x: number; y: number };
     }>;
@@ -138,18 +138,18 @@ interface OverlayCapabilities {
 }
 
 interface PresetOverlayData {
-    type: string;
+    type: "single" | "batch";
     data: any;
 }
 
 interface SocialSharingManagerInstance {
     screenshotCapture: MockScreenshotCapture | null;
-    shareWithOverlayScreenshot(data: ShareData, type: string, overlayData: any, options?: ShareOptions): Promise<ShareResult>;
+    shareWithOverlayScreenshot(data: ShareData, type: "single" | "batch", overlayData: any, options?: ShareOptions): Promise<ShareResult>;
     shareScoreWithOverlay(scoreData: ScoreOverlayData, shareData?: ShareData): Promise<ShareResult>;
     shareAchievementWithOverlay(achievementData: AchievementOverlayData, shareData?: ShareData): Promise<ShareResult>;
     shareCustomOverlay(customData: CustomOverlayData, shareData?: ShareData): Promise<ShareResult>;
     shareWithPresetOverlay(preset: string, shareData: ShareData, overlayData: PresetOverlayData, options?: ShareOptions): Promise<ShareResult>;
-    shareWithResponsiveOverlay(shareData: ShareData, type: string, overlayData: any): Promise<ShareResult>;
+    shareWithResponsiveOverlay(shareData: ShareData, type: "single" | "batch", overlayData: any): Promise<ShareResult>;
     getOverlayCapabilities(): OverlayCapabilities;
     shareWithScreenshot?: jest.Mock<Promise<ShareResult>>;
     initialize(): Promise<void>;

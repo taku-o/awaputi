@@ -124,7 +124,7 @@ export interface TrendInfo {
  * Recommendation interface
  */
 export interface Recommendation {
-    type: string;
+    type: "single" | "batch";
     priority: 'high' | 'medium' | 'low';
     message: string;
 }
@@ -647,7 +647,7 @@ export class CacheStatistics {
                 format,
                 component: 'CacheStatistics'
             });
-            return null;
+            return null as any;
         }
     }
     

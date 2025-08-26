@@ -17,7 +17,7 @@ export interface SettingsManager {
 }
 
 export interface ValidationRule {
-    type: string;
+    type: "single" | "batch";
     min?: number;
     max?: number;
     values?: any[];

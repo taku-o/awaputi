@@ -350,7 +350,7 @@ export function parseRGBColor(color: string): ColorRGBValue | null {
         };
     }
     
-    return null;
+    return null as any;
 }
 
 export function calculateRelativeLuminance(rgb: ColorRGBValue): number {

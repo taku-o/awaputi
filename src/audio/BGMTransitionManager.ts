@@ -15,7 +15,7 @@ interface TransitionOptions {
 interface TransitionInfo {
     fromTrack: string;
     toTrack: string;
-    type: string;
+    type: "single" | "batch";
     duration: number;
     curve: string;
 }
@@ -54,7 +54,7 @@ interface BGMInfo {
 
 // エラーハンドラー型定義
 interface ErrorHandler {
-    handleError(error: Error, type: string, context?: any): void;
+    handleError(error: Error, type: "single" | "batch", context?: any): void;
 }
 
 // 設定型定義

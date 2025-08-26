@@ -646,7 +646,7 @@ export class AudioVolumeController {
             };
         } catch (error) {
             this.errorHandler.handleError(error, 'AudioVolumeController.getEqualizerFrequencyResponse');
-            return null;
+            return null as any;
         }
     }
     

@@ -46,7 +46,7 @@ interface RollbackResult {
 
 interface OperationHistoryItem {
     id: string;
-    type: string;
+    type: "single" | "batch";
     oldPath: string;
     newPath: string;
     status: string;

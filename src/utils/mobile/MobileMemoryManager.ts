@@ -574,7 +574,7 @@ export class MobileMemoryManager {
         const pool = poolConfig.objectPools.get(poolName);
         if (!pool) {
             console.warn(`[MobileMemoryManager] Pool not found: ${poolName}`);
-            return null;
+            return null as any;
         }
         
         let obj;

@@ -21,7 +21,7 @@ interface AnalysisResults {
 }
 
 interface Bottleneck { 
-    type: string;
+    type: "single" | "batch";
     severity: 'low' | 'medium' | 'high' | 'critical';
     component: string;
     description: string;
@@ -60,7 +60,7 @@ interface OverallAssessment {
 }
 
 interface CriticalIssue { 
-    type: string;
+    type: "single" | "batch";
     description: string;
     component?: string;
     impact?: string;
@@ -329,7 +329,7 @@ export class DiagnosticAnalyzer {
 
         components.forEach(component => {
             if(component && typeof (component as any).destroy === 'function') {
-                (component as any).destroy();
+                (component as any)?.destroy?.();
             }
         });
 

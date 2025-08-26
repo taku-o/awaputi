@@ -37,7 +37,7 @@ interface EventHandlerConfig { enabled: boolean,
     F10: number,
     F11: number,
     F12: number;
-    interface EventData { type: string;
+    interface EventData { type: "single" | "batch";
     key?: string;
     code?: string;
     keyCode?: number;
@@ -104,7 +104,7 @@ interface SimulationOptions { key: string,
     hasInlineHandlers?: boolean;
 ';'
 
-interface ValidationIssue { type: string,''
+interface ValidationIssue { type: "single" | "batch",''
     severity: 'error' | 'warning,
     message: string;
     suggestion?: string;
@@ -223,7 +223,7 @@ interface ValidationIssue { type: string,''
     /**
      * キーボードイベントハンドリング
      */
-    private handleKeyboardEvent(event: KeyboardEvent, type: string): void { if (!this.config.monitorEvents) return,
+    private handleKeyboardEvent(event: KeyboardEvent, type: "single" | "batch"): void { if (!this.config.monitorEvents) return,
         
         try {
             // イベント履歴の記録
@@ -263,7 +263,7 @@ interface ValidationIssue { type: string,''
     /**
      * フォーカスイベントハンドリング
      */
-    private handleFocusEvent(event: FocusEvent, type: string): void { if (!this.config.monitorEvents) return,
+    private handleFocusEvent(event: FocusEvent, type: "single" | "batch"): void { if (!this.config.monitorEvents) return,
         
         try {
             const eventData: EventData = {
@@ -285,7 +285,7 @@ interface ValidationIssue { type: string,''
     /**
      * 特定のキーイベントの追跡'
      */''
-    private trackSpecificKeyEvents(event: KeyboardEvent, type: string): void { // Tabキーの追跡
+    private trackSpecificKeyEvents(event: KeyboardEvent, type: "single" | "batch"): void { // Tabキーの追跡
         if(event.key === 'Tab' {', ' }
 
             this.trackTabNavigation(event); }
@@ -397,7 +397,7 @@ interface ValidationIssue { type: string,''
                 component: 'KeyboardEventHandler,
     element: element.tagName),
                 key: keyOptions.key  }';'
-            return null;
+            return null as any;
     
     /**
      * Tabキーシミュレーション'

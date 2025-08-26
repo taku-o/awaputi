@@ -576,7 +576,7 @@ export function reinitializeTutorialAccessibilityManager(
     loggingSystem?: LoggingSystem | null
 ): TutorialAccessibilityManager {
     if (tutorialAccessibilityManagerInstance) {
-        tutorialAccessibilityManagerInstance.destroy();
+        tutorialAccessibilityManagerInstance?.destroy?.();
     }
     tutorialAccessibilityManagerInstance = new TutorialAccessibilityManager(accessibilityManager, loggingSystem);
     return tutorialAccessibilityManagerInstance;

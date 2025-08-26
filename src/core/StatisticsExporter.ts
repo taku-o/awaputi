@@ -83,7 +83,7 @@ interface StatisticsData {
 interface StatisticsManager {
     getDetailedStatistics?: () => Promise<any>;
     timeSeriesDataManager?: {
-        getDataInRange: (type: string, startDate: Date, endDate: Date) => Promise<any>;
+        getDataInRange: (type: "single" | "batch", startDate: Date, endDate: Date) => Promise<any>;
     };
     getSessionHistory?: () => Promise<any>;
 }

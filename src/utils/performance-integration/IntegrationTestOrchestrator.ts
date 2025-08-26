@@ -103,7 +103,7 @@ interface ValidationIssue {
 }
 
 interface ValidationRecommendation {
-    type: string;
+    type: "single" | "batch";
     message: string;
     suggestion?: string;
 }
@@ -129,7 +129,7 @@ interface OrchestrationStats {
 }
 
 interface ExecutionRecommendation {
-    type: string;
+    type: "single" | "batch";
     priority?: 'low' | 'medium' | 'high' | 'critical';
     message: string;
     actions?: string[];
@@ -196,7 +196,7 @@ export class IntegrationTestOrchestrator {
             priority: 1,
             dependencies: [],
             execute: async (session: TestSession, testSuiteManager: TestSuiteManager): Promise<TestResult | null> => {
-                if (!session.options.includeComponentTests) return null;
+                if (!session.options.includeComponentTests) return null as any;
                 console.log('Phase 1: Running component integration tests...');
                 return await testSuiteManager.runComponentIntegrationTests();
             },
@@ -209,7 +209,7 @@ export class IntegrationTestOrchestrator {
             priority: 2,
             dependencies: ['componentTests'],
             execute: async (session: TestSession, systemIntegrationTester: SystemIntegrationTester): Promise<TestResult | null> => {
-                if (!session.options.includeSystemTests) return null;
+                if (!session.options.includeSystemTests) return null as any;
                 console.log('Phase 2: Running system integration tests...');
                 return await systemIntegrationTester.runSystemTests();
             },
@@ -222,7 +222,7 @@ export class IntegrationTestOrchestrator {
             priority: 3,
             dependencies: ['systemTests'],
             execute: async (session: TestSession, e2eValidator: E2EValidator): Promise<TestResult | null> => {
-                if (!session.options.includeE2ETests) return null;
+                if (!session.options.includeE2ETests) return null as any;
                 console.log('Phase 3: Running E2E performance tests...');
                 return await e2eValidator.runE2EValidation();
             },
@@ -235,7 +235,7 @@ export class IntegrationTestOrchestrator {
             priority: 4,
             dependencies: [],
             execute: async (session: TestSession, mobileCompatibilityTester: MobileCompatibilityTester): Promise<TestResult | null> => {
-                if (!session.options.includeMobileTests) return null;
+                if (!session.options.includeMobileTests) return null as any;
                 console.log('Phase 4: Running mobile compatibility tests...');
                 return await mobileCompatibilityTester.runCompatibilityTests();
             },
@@ -248,7 +248,7 @@ export class IntegrationTestOrchestrator {
             priority: 5,
             dependencies: ['e2eTests'],
             execute: async (session: TestSession, targetValidation: TargetValidation): Promise<TestResult | null> => {
-                if (!session.options.includePerformanceTargetValidation) return null;
+                if (!session.options.includePerformanceTargetValidation) return null as any;
                 console.log('Phase 5: Running performance target validation...');
                 return await targetValidation.validateTargets();
             },

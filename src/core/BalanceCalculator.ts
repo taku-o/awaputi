@@ -79,7 +79,7 @@ interface GameProgress {
 }
 
 interface BalanceAdjustment {
-    type: string;
+    type: "single" | "batch";
     reason: string;
     adjustment?: number;
     stageId?: string;

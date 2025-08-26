@@ -289,10 +289,10 @@ export class ContrastManager {
                 };
             }
 
-            return null;
+            return null as any;
         } catch (error) {
             this.handleError('parseColor', error, { colorString });
-            return null;
+            return null as any;
         }
     }
 
@@ -490,7 +490,7 @@ export function getContrastManager(config?: Partial<ContrastConfig>): ContrastMa
  */
 export function resetContrastManager(): void {
     if (instance) {
-        instance.destroy();
+        instance?.destroy?.();
         instance = null;
     }
 }

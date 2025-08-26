@@ -65,7 +65,7 @@ declare global {
 export class AnalyticsChartRenderer {
     private options: Required<ChartRendererOptions>;
     private charts: Map<string, any>;
-    private chartConfigs: Map<string, ChartConfig & { type: string }>;
+    private chartConfigs: Map<string, ChartConfig & { type: "single" | "batch" }>;
     private updateTimers: Map<string, number>;
     private dataSourceCallbacks: Map<string, DataSourceCallback>;
     private Chart: any;
@@ -200,7 +200,7 @@ export class AnalyticsChartRenderer {
      */
     createLineChart(canvasId: string, config: ChartConfig = {}): any | null {
         const canvas = this.getCanvas(canvasId);
-        if (!canvas || !this.Chart) return null;
+        if (!canvas || !this.Chart) return null as any;
 
         const defaultConfig = {
             type: 'line',
@@ -264,7 +264,7 @@ export class AnalyticsChartRenderer {
      */
     createBarChart(canvasId: string, config: ChartConfig = {}): any | null {
         const canvas = this.getCanvas(canvasId);
-        if (!canvas || !this.Chart) return null;
+        if (!canvas || !this.Chart) return null as any;
 
         const defaultConfig = {
             type: 'bar',
@@ -327,7 +327,7 @@ export class AnalyticsChartRenderer {
      */
     createPieChart(canvasId: string, config: ChartConfig = {}): any | null {
         const canvas = this.getCanvas(canvasId);
-        if (!canvas || !this.Chart) return null;
+        if (!canvas || !this.Chart) return null as any;
 
         const defaultConfig = {
             type: 'pie',
@@ -525,7 +525,7 @@ export class AnalyticsChartRenderer {
         
         const chart = this.charts.get(canvasId);
         if (chart) {
-            chart.destroy();
+            chart?.destroy?.();
             this.charts.delete(canvasId);
         }
         

@@ -66,7 +66,7 @@ interface Bottleneck {
  */
 interface Alert {
     id: string;
-    type: string;
+    type: "single" | "batch";
     severity: 'warning' | 'critical';
     value: number;
     message: string;
@@ -800,7 +800,7 @@ export class AudioComponentPerformanceMonitor {
      * @param value - 値
      * @param message - アラートメッセージ
      */
-    private checkMetricAlert(type: string, value: number, message: string): void {
+    private checkMetricAlert(type: "single" | "batch", value: number, message: string): void {
         const thresholds = this.performanceConfig.alertThresholds;
         const currentTime = Date.now();
         let severity: 'warning' | 'critical' | null = null;

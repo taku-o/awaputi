@@ -17,7 +17,7 @@ interface GameEngine {
 interface SettingItem {
     key: string;
     label: string;
-    type: string;
+    type: "single" | "batch";
     component?: string;
     description?: string;
     category?: string;
@@ -94,7 +94,7 @@ export class SettingsImportExportIntegrationExample {
             
         } catch (error) {
             console.error('[SettingsImportExportIntegration] Integration error:', error);
-            return null;
+            return null as any;
         }
     }
     
@@ -229,7 +229,7 @@ export class SettingsImportExportIntegrationExample {
     destroy(): void {
         try {
             if (this.settingsImportExportComponent) {
-                this.settingsImportExportComponent.destroy();
+                this.settingsImportExportComponent?.destroy?.();
                 this.settingsImportExportComponent = null;
             }
             

@@ -568,7 +568,7 @@ export class EffectConfigurationIntegrator {
             return settings;
         } catch (error) {
             this.errorHandler.handleError(error as Error, 'EffectConfigurationIntegrator.exportEffectSettings');
-            return null;
+            return null as any;
         }
     }
     

@@ -63,7 +63,7 @@ export interface Particle {
     maxLife: number;
     alpha: number;
     active: boolean;
-    type: string;
+    type: "single" | "batch";
     rotation?: number;
     rotationSpeed?: number;
     baseScale?: number;

@@ -70,7 +70,7 @@ export class ComponentErrorHandler {
             return { status: 'retry', message: 'Will retry operation' };
         }
         
-        return null;
+        return null as any;
     }
     
     /**

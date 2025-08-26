@@ -316,7 +316,7 @@ export class GestureRecognitionEngine {
                     }
                 }
                 
-                return null;
+                return null as any;
             }
         };
     }
@@ -342,7 +342,7 @@ export class GestureRecognitionEngine {
                     }
                 }
                 
-                return null;
+                return null as any;
             }
         };
     }
@@ -355,7 +355,7 @@ export class GestureRecognitionEngine {
             recognize: (gestureData: GestureData): RecognitionResult | null => {
                 const { __scale, fingers } = gestureData;
                 
-                if (fingers !== 2) return null;
+                if (fingers !== 2) return null as any;
                 
                 // ピンチパターンのマッチング
                 for (const [name, pattern] of this.gesturePatterns) {
@@ -370,7 +370,7 @@ export class GestureRecognitionEngine {
                     }
                 }
                 
-                return null;
+                return null as any;
             }
         };
     }
@@ -393,7 +393,7 @@ export class GestureRecognitionEngine {
                     }
                 }
                 
-                return null;
+                return null as any;
             }
         };
     }
@@ -419,7 +419,7 @@ export class GestureRecognitionEngine {
             return bestResult;
         }
         
-        return null;
+        return null as any;
     }
     
     /**
@@ -432,7 +432,7 @@ export class GestureRecognitionEngine {
             return prediction;
         }
         
-        return null;
+        return null as any;
     }
     
     /**
@@ -453,7 +453,7 @@ export class GestureRecognitionEngine {
             }
         }
         
-        return null;
+        return null as any;
     }
     
     /**
@@ -705,7 +705,7 @@ export class GestureRecognitionEngine {
      */
     recognizeGestureSequence(gestureSequence: GestureData[]): RecognitionResult | null {
         // ジェスチャーシーケンスの認識（複数のジェスチャーの組み合わせ）
-        if (gestureSequence.length < 2) return null;
+        if (gestureSequence.length < 2) return null as any;
         
         // シーケンスパターンのマッチング
         const sequenceString = gestureSequence.map(g => {
@@ -726,7 +726,7 @@ export class GestureRecognitionEngine {
             }
         }
         
-        return null;
+        return null as any;
     }
     
     /**

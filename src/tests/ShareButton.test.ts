@@ -21,7 +21,7 @@ interface MockSocialSharingManager extends Partial<SocialSharingManager> {
 }
 
 interface ShareData {
-    type: string;
+    type: "single" | "batch";
     score?: number;
     text?: string;
     url?: string;
@@ -93,7 +93,7 @@ describe('ShareButton', () => {
 
     afterEach(() => {
         if (shareButton) {
-            shareButton.destroy();
+            shareButton?.destroy?.();
         }
         jest.clearAllMocks();
         document.body.innerHTML = '';
@@ -123,7 +123,7 @@ describe('ShareButton', () => {
         });
 
         test('カスタム設定で初期化される', async () => {
-            shareButton.destroy();
+            shareButton?.destroy?.();
             const customOptions = {
                 position: 'top-left',
                 theme: 'gaming',
@@ -251,7 +251,7 @@ describe('ShareButton', () => {
         test('クリップボードコピーが動作する', async () => {
             // copyプラットフォームを追加
             (shareButton as any).config.platforms.push('copy');
-            shareButton.destroy();
+            shareButton?.destroy?.();
 
             const { ShareButton } = await import('../core/ShareButton.js');
             shareButton = new ShareButton(mockContainer, mockSocialSharingManager as any, {
@@ -355,7 +355,7 @@ describe('ShareButton', () => {
         });
 
         test('高コントラストモードが適用される', async () => {
-            shareButton.destroy();
+            shareButton?.destroy?.();
             const { ShareButton } = await import('../core/ShareButton.js');
             shareButton = new ShareButton(mockContainer, mockSocialSharingManager as any, {
                 accessibility: { highContrast: true }
@@ -374,7 +374,7 @@ describe('ShareButton', () => {
         });
 
         test('minimalテーマが適用される', async () => {
-            shareButton.destroy();
+            shareButton?.destroy?.();
             const { ShareButton } = await import('../core/ShareButton.js');
             shareButton = new ShareButton(mockContainer, mockSocialSharingManager as any, {
                 theme: 'minimal'
@@ -384,7 +384,7 @@ describe('ShareButton', () => {
         });
 
         test('gamingテーマが適用される', async () => {
-            shareButton.destroy();
+            shareButton?.destroy?.();
             const { ShareButton } = await import('../core/ShareButton.js');
             shareButton = new ShareButton(mockContainer, mockSocialSharingManager as any, {
                 theme: 'gaming'
@@ -394,7 +394,7 @@ describe('ShareButton', () => {
         });
 
         test('elegantテーマが適用される', async () => {
-            shareButton.destroy();
+            shareButton?.destroy?.();
             const { ShareButton } = await import('../core/ShareButton.js');
             shareButton = new ShareButton(mockContainer, mockSocialSharingManager as any, {
                 theme: 'elegant'
@@ -404,7 +404,7 @@ describe('ShareButton', () => {
         });
 
         test('カスタムスタイルが適用される', async () => {
-            shareButton.destroy();
+            shareButton?.destroy?.();
             const customStyles = {
                 backgroundColor: 'rgba(255, 0, 0, 0.8)',
                 textColor: '#FFFF00',
@@ -552,21 +552,21 @@ describe('ShareButton', () => {
     describe('クリーンアップ', () => {
         test('正常にクリーンアップされる', () => {
             shareButton.show();
-            shareButton.destroy();
+            shareButton?.destroy?.();
             expect((shareButton as any).elements.container.parentNode).toBeNull();
             expect((shareButton as any).hideTimer).toBeNull();
         });
 
         test('イベントリスナーが削除される', () => {
             const removeEventListenerSpy = jest.spyOn(window, 'removeEventListener');
-            shareButton.destroy();
+            shareButton?.destroy?.();
             expect(removeEventListenerSpy).toHaveBeenCalledWith('resize', (shareButton as any).handlers.resize);
         });
 
         test('タイマーがクリアされる', () => {
             shareButton.scheduleHide();
             expect((shareButton as any).hideTimer).not.toBeNull();
-            shareButton.destroy();
+            shareButton?.destroy?.();
             expect((shareButton as any).hideTimer).toBeNull();
         });
     });

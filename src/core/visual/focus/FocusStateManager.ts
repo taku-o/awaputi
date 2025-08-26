@@ -283,7 +283,7 @@ export function getElementPosition(element: HTMLElement, focusManager: FocusMana
         }
     }
     
-    return null;
+    return null as any;
 }
 
 export function detectSystemSettings(): SystemSettings {

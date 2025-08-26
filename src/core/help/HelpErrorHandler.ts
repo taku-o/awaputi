@@ -713,7 +713,7 @@ export function getHelpErrorHandler(gameEngine: GameEngine): HelpErrorHandler {
  */
 export function reinitializeHelpErrorHandler(gameEngine: GameEngine): HelpErrorHandler {
     if (helpErrorHandlerInstance) {
-        helpErrorHandlerInstance.destroy();
+        helpErrorHandlerInstance?.destroy?.();
     }
     helpErrorHandlerInstance = new HelpErrorHandler(gameEngine);
     return helpErrorHandlerInstance;

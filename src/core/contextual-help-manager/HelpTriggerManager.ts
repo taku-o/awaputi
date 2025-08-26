@@ -686,7 +686,7 @@ export class HelpTriggerManager {
                 return rule;
             }
         }
-        return null;
+        return null as any;
     }
 
     /**

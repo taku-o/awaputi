@@ -573,7 +573,7 @@ export class MobileSocialPerformanceOptimizer {
      */
     getPageTimings(): PageTimings | null {
         const navigation = performance.getEntriesByType('navigation')[0] as PerformanceNavigationTiming;
-        if (!navigation) return null;
+        if (!navigation) return null as any;
         
         return {
             domContentLoaded: navigation.domContentLoadedEventEnd - navigation.navigationStart,
@@ -929,7 +929,7 @@ export class MobileSocialPerformanceOptimizer {
      */
     generatePerformanceReport(): PerformanceReport | null {
         if (this.monitoring.metricsBuffer.length === 0 || !this.deviceInfo || !this.optimizationSettings) {
-            return null;
+            return null as any;
         }
         
         const report: PerformanceReport = {
@@ -1099,7 +1099,7 @@ export class MobileSocialPerformanceOptimizer {
         }
         
         this.memoryManager.misses = (this.memoryManager.misses || 0) + 1;
-        return null;
+        return null as any;
     }
 
     /**
@@ -1126,7 +1126,7 @@ export class MobileSocialPerformanceOptimizer {
      */
     getOptimizationInfo(): OptimizationInfo | null {
         if (!this.deviceInfo || !this.optimizationSettings) {
-            return null;
+            return null as any;
         }
 
         return {

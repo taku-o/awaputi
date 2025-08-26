@@ -618,15 +618,15 @@ export class UIUpdateOptimizer {
         try {
             // 翻訳キーを取得
             const translationKey = this.getTranslationKey(element);
-            if (!translationKey) return null;
+            if (!translationKey) return null as any;
             
             // 翻訳データを取得
             const translatedText = translationData[translationKey];
-            if (!translatedText) return null;
+            if (!translatedText) return null as any;
             
             // 現在のテキストと比較
             const currentText = this.getCurrentElementText(element);
-            if (currentText === translatedText) return null;
+            if (currentText === translatedText) return null as any;
             
             // 更新仕様を作成
             const updateSpec: ElementUpdateSpec = {
@@ -642,7 +642,7 @@ export class UIUpdateOptimizer {
 
         } catch (error) {
             console.warn('Failed to prepare element update:', error);
-            return null;
+            return null as any;
         }
     }
     

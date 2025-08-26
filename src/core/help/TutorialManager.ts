@@ -343,7 +343,7 @@ export class TutorialManager {
      */
     getCurrentStep(): TutorialStep | null {
         if (!this.currentTutorial || this.currentStep >= this.currentTutorial.steps.length) {
-            return null;
+            return null as any;
         }
         return this.currentTutorial.steps[this.currentStep];
     }
@@ -745,10 +745,10 @@ export class TutorialManager {
             this.stopTutorial();
             
             // 分割されたコンポーネントをクリーンアップ
-            this.accessibilityManager?.destroy();
-            this.statsManager?.destroy();
-            this.progressManager?.destroy();
-            this.validationEngine?.destroy();
+            this.accessibilityManager?.destroy?.();
+            this.statsManager?.destroy?.();
+            this.progressManager?.destroy?.();
+            this.validationEngine?.destroy?.();
             
             this.loggingSystem.info('TutorialManager', 'Tutorial manager destroyed');
         } catch (error) {
@@ -779,7 +779,7 @@ export function getTutorialManager(gameEngine: GameEngine): TutorialManager {
  */
 export function reinitializeTutorialManager(gameEngine: GameEngine): TutorialManager {
     if (tutorialManagerInstance) {
-        tutorialManagerInstance.destroy();
+        tutorialManagerInstance?.destroy?.();
     }
     tutorialManagerInstance = new TutorialManager(gameEngine);
     return tutorialManagerInstance;

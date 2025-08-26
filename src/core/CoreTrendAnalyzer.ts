@@ -79,7 +79,7 @@ export class CoreTrendAnalyzer {
 
         const data = this.dataHistory.get(seriesId);
         if (!data || data.length < 3) {
-            return null;
+            return null as any;
         }
 
         try {
@@ -91,7 +91,7 @@ export class CoreTrendAnalyzer {
                 context: 'CoreTrendAnalyzer.analyzeTrend',
                 seriesId
             });
-            return null;
+            return null as any;
         }
     }
 

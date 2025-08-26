@@ -342,7 +342,7 @@ export class EffectErrorHandler {
 
         // パーティクル数制限を厳しくする
         if (this.gameEngine.effectPerformanceOptimizer) {
-            this.gameEngine.effectPerformanceOptimizer.updateSettings({
+            this.gameEngine.effectPerformanceOptimizer.updateSetting({
                 maxParticlesPerFrame: 100
             });
         }

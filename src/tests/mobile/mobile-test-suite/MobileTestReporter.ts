@@ -115,7 +115,7 @@ interface TestTrends {
 }
 
 interface Recommendation {
-    type: string;
+    type: "single" | "batch";
     priority: string;
     message: string;
     action: string;
@@ -131,14 +131,14 @@ interface Risk {
 
 interface ChartData {
     summary: {
-        type: string;
+        type: "single" | "batch";
         data: {
             labels: string[];
             values: number[];
         };
     };
     performance: {
-        type: string;
+        type: "single" | "batch";
         data: {
             labels: string[];
             values: number[];

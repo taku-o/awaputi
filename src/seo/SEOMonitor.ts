@@ -61,7 +61,7 @@ interface SearchConsoleMetrics {
 
 // アラートインターフェース
 interface Alert {
-    type: string;
+    type: "single" | "batch";
     severity: 'critical' | 'warning' | 'info';
     metric?: string;
     current?: number;
@@ -551,7 +551,7 @@ export class SEOMonitor {
     /**
      * アラートの作成
      */
-    createAlert(type: string, severity: 'critical' | 'warning' | 'info', message: string, metadata: Record<string, any> = {}): Alert {
+    createAlert(type: "single" | "batch", severity: 'critical' | 'warning' | 'info', message: string, metadata: Record<string, any> = {}): Alert {
         return this.healthChecker.createAlert(type, severity, message, metadata);
     }
     
@@ -731,7 +731,7 @@ export class SEOMonitor {
         
         // 専門コンポーネントのクリーンアップ
         if (this.monitoringEngine) {
-            this.monitoringEngine.destroy();
+            this.monitoringEngine?.destroy?.();
         }
         
         seoLogger.info('SEOMonitor cleaned up');

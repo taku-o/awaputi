@@ -538,7 +538,7 @@ export class DebugVisualization extends BaseComponent {
      */
     createChart(id: string, title: string): HTMLElement | null {
         const chartsContainer = (this.mainController as MainController).container?.querySelector('.performance-charts');
-        if (!chartsContainer) return null;
+        if (!chartsContainer) return null as any;
 
         const chart = document.createElement('div');
         chart.className = 'chart';

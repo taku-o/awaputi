@@ -388,7 +388,7 @@ export class PanelManager {
         const panelInfo = this.panels.get(name);
         if (panelInfo && panelInfo.instance) {
             if (typeof panelInfo.instance.destroy === 'function') {
-                panelInfo.instance.destroy();
+                panelInfo.instance?.destroy?.();
             }
             panelInfo.instance = null;
             panelInfo.created = false;

@@ -19,7 +19,7 @@ export interface FontErrorContext {
 }
 
 export interface ErrorInfo {
-    type: string;
+    type: "single" | "batch";
     severity: 'info' | 'warn' | 'error';
 }
 

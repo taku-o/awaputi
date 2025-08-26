@@ -109,7 +109,7 @@ export interface RatingData {
 }
 
 export interface ImprovementSuggestion {
-    type: string;
+    type: "single" | "batch";
     contentId?: string;
     query?: string;
     suggestion: string;
@@ -142,7 +142,7 @@ export interface HelpSession {
 }
 
 export interface AnalyticsEvent {
-    type: string;
+    type: "single" | "batch";
     data: any;
     timestamp: number;
     sessionId: string | null;
@@ -1132,7 +1132,7 @@ export class HelpAnalytics {
     
     private generateImprovementSuggestion(
         contentId: string, 
-        type: string, 
+        type: "single" | "batch", 
         rating?: number, 
         feedback?: string
     ): void {
@@ -1146,7 +1146,7 @@ export class HelpAnalytics {
         this.analytics.effectiveness.improvementSuggestions.push(suggestion);
     }
     
-    private generateSuggestionText(type: string, rating?: number, feedback?: string): string {
+    private generateSuggestionText(type: "single" | "batch", rating?: number, feedback?: string): string {
         switch (type) {
             case 'low_rating':
                 return `コンテンツの改善が必要です（評価: ${rating}/5）。${feedback ? 'ユーザーフィードバック: ' + feedback.substring(0, 50) : ''}`;
@@ -1443,7 +1443,7 @@ export function getHelpAnalytics(gameEngine: GameEngine): HelpAnalytics {
  */
 export function reinitializeHelpAnalytics(gameEngine: GameEngine): HelpAnalytics {
     if (helpAnalyticsInstance) {
-        helpAnalyticsInstance.destroy();
+        helpAnalyticsInstance?.destroy?.();
     }
     helpAnalyticsInstance = new HelpAnalytics(gameEngine);
     return helpAnalyticsInstance;

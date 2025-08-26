@@ -69,7 +69,7 @@ interface PatternAnalysis {
         severity: string;
     }>;
     correlations: Array<{
-        type: string;
+        type: "single" | "batch";
         description: string;
         contexts: string[];
     }>;
@@ -102,7 +102,7 @@ interface ImpactAssessment {
 
 interface ErrorClassification {
     category: string;
-    type: string;
+    type: "single" | "batch";
     source: string;
     recoverable: boolean;
 }
@@ -434,7 +434,7 @@ export class UtilsErrorAnalyzer {
             byContext: new Map<string, number>(),
             bySeverity: new Map<string, number>(),
             timeline: [] as Array<{ timestamp: string; context: string; severity: string }>,
-            correlations: [] as Array<{ type: string; description: string; contexts: string[] }>
+            correlations: [] as Array<{ type: "single" | "batch"; description: string; contexts: string[] }>
         };
         
         // Analyze recurring patterns

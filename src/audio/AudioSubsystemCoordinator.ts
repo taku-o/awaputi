@@ -294,12 +294,12 @@ export class AudioSubsystemCoordinator {
         try {
             if (!this.bgmSystem || !this.subsystemStates.bgm.initialized) {
                 console.warn('BGMSystem is not available');
-                return null;
+                return null as any;
             }
             
             if (typeof this.bgmSystem[method] !== 'function') {
                 console.warn(`BGMSystem method '${method}' not found`);
-                return null;
+                return null as any;
             }
             
             this.performanceMetrics.delegatedCalls++;
@@ -313,7 +313,7 @@ export class AudioSubsystemCoordinator {
                 method,
                 args
             });
-            return null;
+            return null as any;
         }
     }
 
@@ -327,12 +327,12 @@ export class AudioSubsystemCoordinator {
         try {
             if (!this.soundEffectSystem || !this.subsystemStates.sfx.initialized) {
                 console.warn('SoundEffectSystem is not available');
-                return null;
+                return null as any;
             }
             
             if (typeof this.soundEffectSystem[method] !== 'function') {
                 console.warn(`SoundEffectSystem method '${method}' not found`);
-                return null;
+                return null as any;
             }
             
             this.performanceMetrics.delegatedCalls++;
@@ -346,7 +346,7 @@ export class AudioSubsystemCoordinator {
                 method,
                 args
             });
-            return null;
+            return null as any;
         }
     }
 
@@ -360,12 +360,12 @@ export class AudioSubsystemCoordinator {
         try {
             if (!this.audioController || !this.subsystemStates.controller.initialized) {
                 console.warn('AudioController is not available');
-                return null;
+                return null as any;
             }
             
             if (typeof this.audioController[method] !== 'function') {
                 console.warn(`AudioController method '${method}' not found`);
-                return null;
+                return null as any;
             }
             
             this.performanceMetrics.delegatedCalls++;
@@ -379,7 +379,7 @@ export class AudioSubsystemCoordinator {
                 method,
                 args
             });
-            return null;
+            return null as any;
         }
     }
 
@@ -394,18 +394,18 @@ export class AudioSubsystemCoordinator {
             // より厳密な初期化チェック
             if (!this.audioVisualizer) {
                 console.warn('[AudioSubsystemCoordinator] AudioVisualizer instance not available');
-                return null;
+                return null as any;
             }
             
             if (!this.subsystemStates.visualizer.initialized) {
                 console.warn('[AudioSubsystemCoordinator] AudioVisualizer not initialized');
-                return null;
+                return null as any;
             }
             
             // メソッドの存在確認
             if (!this.audioVisualizer[method] || typeof this.audioVisualizer[method] !== 'function') {
                 console.warn(`[AudioSubsystemCoordinator] AudioVisualizer method '${method}' not found or not a function`);
-                return null;
+                return null as any;
             }
             
             this.performanceMetrics.delegatedCalls++;
@@ -425,7 +425,7 @@ export class AudioSubsystemCoordinator {
                 visualizerAvailable: !!this.audioVisualizer,
                 visualizerInitialized: this.subsystemStates.visualizer.initialized
             });
-            return null;
+            return null as any;
         }
     }
 
@@ -439,12 +439,12 @@ export class AudioSubsystemCoordinator {
         try {
             if (!this.accessibilitySupport || !this.subsystemStates.accessibility.initialized) {
                 console.warn('AudioAccessibilitySupport is not available');
-                return null;
+                return null as any;
             }
             
             if (typeof this.accessibilitySupport[method] !== 'function') {
                 console.warn(`AudioAccessibilitySupport method '${method}' not found`);
-                return null;
+                return null as any;
             }
             
             this.performanceMetrics.delegatedCalls++;
@@ -458,7 +458,7 @@ export class AudioSubsystemCoordinator {
                 method,
                 args
             });
-            return null;
+            return null as any;
         }
     }
 
@@ -546,35 +546,35 @@ export class AudioSubsystemCoordinator {
             switch (subsystemName) {
                 case 'bgm':
                     if (this.bgmSystem) {
-                        this.bgmSystem.dispose();
+                        this.bgmSystem?.dispose?.();
                         this.bgmSystem = null;
                     }
                     this.subsystemStates.bgm.initialized = false;
                     break;
                 case 'sfx':
                     if (this.soundEffectSystem) {
-                        this.soundEffectSystem.dispose();
+                        this.soundEffectSystem?.dispose?.();
                         this.soundEffectSystem = null;
                     }
                     this.subsystemStates.sfx.initialized = false;
                     break;
                 case 'controller':
                     if (this.audioController) {
-                        this.audioController.dispose();
+                        this.audioController?.dispose?.();
                         this.audioController = null;
                     }
                     this.subsystemStates.controller.initialized = false;
                     break;
                 case 'visualizer':
                     if (this.audioVisualizer) {
-                        this.audioVisualizer.dispose();
+                        this.audioVisualizer?.dispose?.();
                         this.audioVisualizer = null;
                     }
                     this.subsystemStates.visualizer.initialized = false;
                     break;
                 case 'accessibility':
                     if (this.accessibilitySupport) {
-                        this.accessibilitySupport.dispose();
+                        this.accessibilitySupport?.dispose?.();
                         this.accessibilitySupport = null;
                     }
                     this.subsystemStates.accessibility.initialized = false;
@@ -593,31 +593,31 @@ export class AudioSubsystemCoordinator {
         
         // BGMシステムを破棄
         if (this.bgmSystem) {
-            this.bgmSystem.dispose();
+            this.bgmSystem?.dispose?.();
             this.bgmSystem = null;
         }
         
         // 効果音システムを破棄
         if (this.soundEffectSystem) {
-            this.soundEffectSystem.dispose();
+            this.soundEffectSystem?.dispose?.();
             this.soundEffectSystem = null;
         }
         
         // 音響制御システムを破棄
         if (this.audioController) {
-            this.audioController.dispose();
+            this.audioController?.dispose?.();
             this.audioController = null;
         }
         
         // 音響視覚化システムを破棄
         if (this.audioVisualizer) {
-            this.audioVisualizer.dispose();
+            this.audioVisualizer?.dispose?.();
             this.audioVisualizer = null;
         }
         
         // アクセシビリティ支援システムを破棄
         if (this.accessibilitySupport) {
-            this.accessibilitySupport.dispose();
+            this.accessibilitySupport?.dispose?.();
             this.accessibilitySupport = null;
         }
         
@@ -672,7 +672,7 @@ export function getAudioSubsystemCoordinator(): AudioSubsystemCoordinator {
  */
 export function reinitializeAudioSubsystemCoordinator(): AudioSubsystemCoordinator {
     if (audioSubsystemCoordinatorInstance) {
-        audioSubsystemCoordinatorInstance.dispose();
+        audioSubsystemCoordinatorInstance?.dispose?.();
     }
     audioSubsystemCoordinatorInstance = new AudioSubsystemCoordinator();
     return audioSubsystemCoordinatorInstance;

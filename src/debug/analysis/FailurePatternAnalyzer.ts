@@ -115,7 +115,7 @@ export class FailurePatternAnalyzer extends BaseComponent {
      */
     identifyPattern(error: string): IdentifiedPattern | null {
         if (!error || typeof error !== 'string') {
-            return null;
+            return null as any;
         }
 
         const errorText = error.toLowerCase();

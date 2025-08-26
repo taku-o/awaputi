@@ -53,7 +53,7 @@ export interface FormatIssue {
 }
 
 export interface MarkdownElement {
-    type: string;
+    type: "single" | "batch";
     content: string;
 }
 
@@ -84,7 +84,7 @@ export interface CompletenessIssue {
 }
 
 export interface ConsistencyIssue {
-    type: string;
+    type: "single" | "batch";
     message: string;
     examples?: string[];
     suggestion?: string;

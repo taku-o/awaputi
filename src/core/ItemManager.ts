@@ -28,7 +28,7 @@ export enum ItemType {
 }
 
 export interface ItemEffect {
-    type: string;
+    type: "single" | "batch";
     value: number;
     duration?: number;
 }

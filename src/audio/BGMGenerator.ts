@@ -144,7 +144,7 @@ export class BGMGenerator {
                 operation: 'generateTrack',
                 trackConfig: trackConfig
             });
-            return null;
+            return null as any;
         }
     }
     

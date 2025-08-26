@@ -12,7 +12,7 @@
 // Type definitions for Performance Error Recovery System
 interface DetectedError {
     detector: string;
-    type: string;
+    type: "single" | "batch";
     metrics: Record<string, any>;
     timestamp: number;
     external?: boolean;
@@ -24,7 +24,7 @@ interface ClassifiedError extends DetectedError {
     category: string;
     priority: number;
     classification: {
-        type: string;
+        type: "single" | "batch";
         subtype?: string;
         cause?: string;
     };
@@ -527,7 +527,7 @@ class PerformanceUserCommunicator {
         this.showNotification('recovery_success', 'パフォーマンスが復旧されました');
     }
 
-    showNotification(type: string, message: string): void {
+    showNotification(type: "single" | "batch", message: string): void {
         if (!this.notificationContainer) return;
 
         const template = this.messageTemplates.get(type);
@@ -663,7 +663,7 @@ export function getPerformanceErrorRecoverySystem(): PerformanceErrorRecoverySys
  */
 export function reinitializePerformanceErrorRecoverySystem(): PerformanceErrorRecoverySystem {
     if (performanceErrorRecoverySystemInstance) {
-        performanceErrorRecoverySystemInstance.destroy();
+        performanceErrorRecoverySystemInstance?.destroy?.();
     }
     performanceErrorRecoverySystemInstance = new PerformanceErrorRecoverySystem();
     return performanceErrorRecoverySystemInstance;

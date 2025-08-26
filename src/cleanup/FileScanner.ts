@@ -68,7 +68,7 @@ export class FileScanner {
             };
         } catch (error) {
             console.error(`Error getting file info for ${filePath}:`, error);
-            return null;
+            return null as any;
         }
     }
 

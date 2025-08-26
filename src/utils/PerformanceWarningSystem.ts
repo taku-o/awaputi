@@ -483,15 +483,15 @@ export class PerformanceWarningSystem {
         try {
             // Destroy sub-components
             if (this.thresholdMonitor) {
-                this.thresholdMonitor.destroy();
+                this.thresholdMonitor?.destroy?.();
             }
             
             if (this.notificationManager) {
-                this.notificationManager.destroy();
+                this.notificationManager?.destroy?.();
             }
             
             if (this.alertGenerator) {
-                this.alertGenerator.destroy();
+                this.alertGenerator?.destroy?.();
             }
             
             // Clear suggestion engine
@@ -529,7 +529,7 @@ export function getPerformanceWarningSystem(): PerformanceWarningSystem {
 export function reinitializePerformanceWarningSystem(): void {
     try {
         if (_performanceWarningSystem) {
-            _performanceWarningSystem.destroy();
+            _performanceWarningSystem?.destroy?.();
         }
         _performanceWarningSystem = new PerformanceWarningSystem();
         console.log('[PerformanceWarningSystem] 再初期化完了');

@@ -265,7 +265,7 @@ export class PerformanceHistoryTracker {
 
     getAggregated(metricId: string, timeRange: number, aggregation: 'average' | 'min' | 'max' | 'last'): number | null {
         const history = this.getHistory(metricId, timeRange);
-        if (history.length === 0) return null;
+        if (history.length === 0) return null as any;
         
         const values = history.map(h => h.value);
         switch (aggregation) {

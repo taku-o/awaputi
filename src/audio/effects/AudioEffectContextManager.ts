@@ -517,11 +517,11 @@ export class AudioEffectContextManager {
     public getAnalyserData(): AnalyserData | null { 
         if (this.disabled) {
             console.warn('[AudioContextManager] Audio context manager is disabled - getAnalyserData returning null');
-            return null;
+            return null as any;
         }
         
         if (!this.analyser) {
-            return null;
+            return null as any;
         }
         
         try {
@@ -536,7 +536,7 @@ export class AudioEffectContextManager {
             };
         } catch (error) {
             this.errorHandler.handleError(error as Error, 'AudioContextManager.getAnalyserData');
-            return null;
+            return null as any;
         }
     }
     
@@ -552,8 +552,8 @@ export class AudioEffectContextManager {
             currentTime: this.audioContext?.currentTime || 0,
             browserSupport: this.browserSupport,
             volumes: {
-                master: this.getVolume('master'),
-                music: this.getVolume('music'),
+                master: this.getVolume('master' as AudioChannel),
+                music: this.getVolume('music' as AudioChannel),
                 sfx: this.getVolume('sfx')
             },
             workletEnabled: this.workletConfig.enabled,

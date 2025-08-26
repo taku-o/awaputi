@@ -65,7 +65,7 @@ interface ChallengeData {
     id: string;
     name: string;
     description: string;
-    type: string;
+    type: "single" | "batch";
     completed: boolean;
     completedAt?: number;
     progress?: number;
@@ -304,7 +304,7 @@ class FullSystemMock {
                     achievement.unlockedAt = Date.now();
                     return achievement;
                 }
-                return null;
+                return null as any;
             },
             checkAndUnlockAchievements: (gameData: GameResult) => {
                 const newlyUnlocked: Achievement[] = [];

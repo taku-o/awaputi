@@ -25,7 +25,7 @@ interface VerificationSetupInstructions {
         code?: string;
         location?: string;
         record?: {
-            type: string;
+            type: "single" | "batch";
             name: string;
             value: string;
         };
@@ -621,7 +621,7 @@ export class SearchConsoleIntegration {
 
     private checkStructuredDataStatus(): { hasValidData: boolean; validCount: number; errorCount: number; types: string[]; errors: Array<{ index: number; error: string }> } {
         const scripts = document.querySelectorAll('script[type="application/ld+json"]');
-        const validData: Array<{ type: string; context: string }> = [];
+        const validData: Array<{ type: "single" | "batch"; context: string }> = [];
         const errors: Array<{ index: number; error: string }> = [];
 
         scripts.forEach((script, index) => {

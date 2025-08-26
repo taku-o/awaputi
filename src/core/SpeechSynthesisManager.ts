@@ -946,7 +946,7 @@ export class SpeechSynthesisManager {
                     this.stats.completedUtterances / this.stats.totalUtterances : 0,
                 utterancesPerMinute: this.stats.totalUtterances / (sessionDuration / 60000)
             },
-            currentStatus: this.getStatus(),
+            currentStatus: this?.getStatus?.(),
             userPreferences: this.userPreferences
         };
     }

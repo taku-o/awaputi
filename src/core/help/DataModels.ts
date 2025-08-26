@@ -322,7 +322,7 @@ export class TutorialModel {
      */
     getStepByIndex(index: number): TutorialStep | null {
         if (index < 0 || index >= this.steps.length) {
-            return null;
+            return null as any;
         }
         return this.steps[index];
     }
@@ -335,7 +335,7 @@ export class TutorialModel {
     getNextStep(currentStepId: string): TutorialStep | null {
         const currentIndex = this.steps.findIndex(step => step.id === currentStepId);
         if (currentIndex === -1 || currentIndex >= this.steps.length - 1) {
-            return null;
+            return null as any;
         }
         return this.steps[currentIndex + 1];
     }
@@ -348,7 +348,7 @@ export class TutorialModel {
     getPreviousStep(currentStepId: string): TutorialStep | null {
         const currentIndex = this.steps.findIndex(step => step.id === currentStepId);
         if (currentIndex <= 0) {
-            return null;
+            return null as any;
         }
         return this.steps[currentIndex - 1];
     }
@@ -849,7 +849,7 @@ export class DataModelFactory {
      * @param data - データ
      * @returns モデルインスタンス
      */
-    static create(type: string, data: any): HelpContentModel | TutorialModel | FAQModel | UserProgressModel {
+    static create(type: "single" | "batch", data: any): HelpContentModel | TutorialModel | FAQModel | UserProgressModel {
         switch(type) {
             case 'help':
             case 'helpContent':
@@ -871,7 +871,7 @@ export class DataModelFactory {
      * @param dataArray - データ配列
      * @returns モデルインスタンス配列
      */
-    static createBatch(type: string, dataArray: any[]): (HelpContentModel | TutorialModel | FAQModel | UserProgressModel)[] {
+    static createBatch(type: "single" | "batch", dataArray: any[]): (HelpContentModel | TutorialModel | FAQModel | UserProgressModel)[] {
         if (!Array.isArray(dataArray)) {
             throw new Error('Data must be an array for batch creation');
         }

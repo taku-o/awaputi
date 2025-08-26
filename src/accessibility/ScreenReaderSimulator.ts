@@ -275,7 +275,7 @@ export class ScreenReaderSimulator {
             getErrorHandler()?.handleError(error, 'SCREEN_READER_SIMULATION_ERROR', { : undefined''
                 operation: 'runFullSimulation');
                 readerType };
-            return null;
+            return null as any;
     
     /**
      * Run simulation for specific reader
@@ -529,9 +529,9 @@ export class ScreenReaderSimulator {
         this.saveSimulationResults();
         
         // Cleanup sub-components
-        this.screenReaderEngine.destroy();
-        this.ariaProcessor.destroy();
-        this.ttsController.destroy();
+        this.screenReaderEngine?.destroy?.();
+        this.ariaProcessor?.destroy?.();
+        this.ttsController?.destroy?.();
         
         // Clear data
         this.results = { screenReader: null,

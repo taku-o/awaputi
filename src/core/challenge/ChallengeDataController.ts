@@ -37,7 +37,7 @@ export interface ChallengeReward {
 }
 
 export interface RewardItem {
-    type: string;
+    type: "single" | "batch";
     id: string;
     quantity: number;
     name?: string;
@@ -291,7 +291,7 @@ export const VALIDATION_RULES = {
 } as const;
 
 // ユーティリティ関数
-export function isValidChallengeType(type: string): type is ChallengeType {
+export function isValidChallengeType(type: "single" | "batch"): type is ChallengeType {
     return CHALLENGE_TYPES.includes(type as ChallengeType);
 }
 

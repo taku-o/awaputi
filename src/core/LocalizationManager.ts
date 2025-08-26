@@ -302,7 +302,7 @@ export class LocalizationManager {
      * @param {string} language - 言語コード（省略時は現在の言語）
      * @returns {string} フォーマットされた数値文字列
      */
-    formatNumber(number: number, type: string = 'decimal', language: string | null = null): string {
+    formatNumber(number: number, type: "single" | "batch" = 'decimal', language: string | null = null): string {
         const lang = language || this.currentLanguage;
         return this.culturalAdaptationHandler.formatNumber(number, lang, type);
     }
@@ -457,15 +457,15 @@ export class LocalizationManager {
         
         // 各コンポーネントのリソースを解放
         if (this.translationDataManager) {
-            this.translationDataManager.destroy();
+            this.translationDataManager?.destroy?.();
         }
         
         if (this.culturalAdaptationHandler) {
-            this.culturalAdaptationHandler.destroy();
+            this.culturalAdaptationHandler?.destroy?.();
         }
         
         if (this.integrationController) {
-            this.integrationController.destroy();
+            this.integrationController?.destroy?.();
         }
         
         // イベントリスナーをクリア

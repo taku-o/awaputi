@@ -39,7 +39,7 @@ export interface SecurityStatistics {
 
 export interface ThreatInfo {
     timestamp: number;
-    type: string;
+    type: "single" | "batch";
     details: any;
 }
 

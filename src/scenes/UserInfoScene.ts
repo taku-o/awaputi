@@ -334,15 +334,15 @@ export class UserInfoScene extends Scene {
         try {
             // コンポーネントの解放
             if (this.eventHandler && typeof this.eventHandler.dispose === 'function') {
-                this.eventHandler.dispose();
+                this.eventHandler?.dispose?.();
             }
             
             if (this.tabManager && typeof this.tabManager.dispose === 'function') {
-                this.tabManager.dispose();
+                this.tabManager?.dispose?.();
             }
             
             if (this.dialogManager && typeof this.dialogManager.dispose === 'function') {
-                this.dialogManager.dispose();
+                this.dialogManager?.dispose?.();
             }
             
             if (this.userAchievementDisplay && typeof this.userAchievementDisplay.cleanup === 'function') {
@@ -351,7 +351,7 @@ export class UserInfoScene extends Scene {
             
             // イベントバスのクリーンアップ
             if (this.eventBus && typeof this.eventBus.dispose === 'function') {
-                this.eventBus.dispose();
+                this.eventBus?.dispose?.();
             }
             
             console.log('[UserInfoScene] クリーンアップ完了');

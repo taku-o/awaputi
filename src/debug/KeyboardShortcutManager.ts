@@ -471,7 +471,7 @@ export class DebugKeyboardShortcutManager {
             }
         }
 
-        return null;
+        return null as any;
     }
 
     /**

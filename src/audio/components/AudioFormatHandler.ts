@@ -342,13 +342,13 @@ export class AudioFormatHandler {
         try {
             if (!this.presetManager) {
                 this.loggingSystem.warn('AudioFormatHandler', 'PresetManager is not initialized');
-                return null;
+                return null as any;
             }
             
             return this.presetManager.saveCurrentAsPreset(name, description, tags, isTemporary);
         } catch (error) {
             this.errorHandler.handleError(error, 'AudioFormatHandler.saveCurrentAsPreset');
-            return null;
+            return null as any;
         }
     }
     
@@ -361,13 +361,13 @@ export class AudioFormatHandler {
         try {
             if (!this.presetManager) {
                 this.loggingSystem.warn('AudioFormatHandler', 'PresetManager is not initialized');
-                return null;
+                return null as any;
             }
             
             return this.presetManager.getPreset(presetId);
         } catch (error) {
             this.errorHandler.handleError(error, 'AudioFormatHandler.getPreset');
-            return null;
+            return null as any;
         }
     }
     
@@ -440,13 +440,13 @@ export class AudioFormatHandler {
         try {
             if (!this.presetManager) {
                 this.loggingSystem.warn('AudioFormatHandler', 'PresetManager is not initialized');
-                return null;
+                return null as any;
             }
             
             return this.presetManager.duplicatePreset(sourcePresetId, newName, isTemporary);
         } catch (error) {
             this.errorHandler.handleError(error, 'AudioFormatHandler.duplicatePreset');
-            return null;
+            return null as any;
         }
     }
     
@@ -476,13 +476,13 @@ export class AudioFormatHandler {
         try {
             if (!this.presetManager) {
                 this.loggingSystem.warn('AudioFormatHandler', 'PresetManager is not initialized');
-                return null;
+                return null as any;
             }
             
             return this.presetManager.getCurrentPreset();
         } catch (error) {
             this.errorHandler.handleError(error, 'AudioFormatHandler.getCurrentPreset');
-            return null;
+            return null as any;
         }
     }
     
@@ -495,13 +495,13 @@ export class AudioFormatHandler {
         try {
             if (!this.presetManager) {
                 this.loggingSystem.warn('AudioFormatHandler', 'PresetManager is not initialized');
-                return null;
+                return null as any;
             }
             
             return this.presetManager.exportPreset(presetId);
         } catch (error) {
             this.errorHandler.handleError(error, 'AudioFormatHandler.exportPreset');
-            return null;
+            return null as any;
         }
     }
     
@@ -515,13 +515,13 @@ export class AudioFormatHandler {
         try {
             if (!this.presetManager) {
                 this.loggingSystem.warn('AudioFormatHandler', 'PresetManager is not initialized');
-                return null;
+                return null as any;
             }
             
             return this.presetManager.importPreset(importData, newName);
         } catch (error) {
             this.errorHandler.handleError(error, 'AudioFormatHandler.importPreset');
-            return null;
+            return null as any;
         }
     }
     
@@ -540,10 +540,10 @@ export class AudioFormatHandler {
                 };
             }
             
-            return this.presetManager.getStatus();
+            return this.presetManager?.getStatus?.();
         } catch (error) {
             this.errorHandler.handleError(error, 'AudioFormatHandler.getPresetManagerStatus');
-            return null;
+            return null as any;
         }
     }
     
@@ -770,7 +770,7 @@ export class AudioFormatHandler {
             return this.environmentalAudioManager.getCurrentSettings();
         } catch (error) {
             this.errorHandler.handleError(error, 'AudioFormatHandler.getEnvironmentalAudioSettings');
-            return null;
+            return null as any;
         }
     }
     
@@ -1072,7 +1072,7 @@ export class AudioFormatHandler {
                 initialized: this.environmentalAudioManager !== null,
                 playing: this.isEnvironmentalAudioPlaying(),
                 settings: this.getEnvironmentalAudioSettings(),
-                ...(this.environmentalAudioManager ? this.environmentalAudioManager.getStatus() : {})
+                ...(this.environmentalAudioManager ? this.environmentalAudioManager?.getStatus?.() : {})
             },
             quality: this.getQualityPerformanceInfo()
         };
@@ -1085,13 +1085,13 @@ export class AudioFormatHandler {
         try {
             // プリセットマネージャーを破棄
             if (this.presetManager) {
-                this.presetManager.dispose();
+                this.presetManager?.dispose?.();
                 this.presetManager = null;
             }
             
             // 環境音響マネージャーを破棄
             if (this.environmentalAudioManager) {
-                this.environmentalAudioManager.dispose();
+                this.environmentalAudioManager?.dispose?.();
                 this.environmentalAudioManager = null;
             }
             

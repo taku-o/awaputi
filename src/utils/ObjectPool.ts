@@ -21,11 +21,11 @@ interface Particle {
     maxLife: number;
     size: number;
     color: string;
-    type: string;
+    type: "single" | "batch";
     isActive: boolean;
 }
 interface BubblePoolObject {
-    type: string;
+    type: "single" | "batch";
     position: { x: number; y: number };
     velocity: { x: number; y: number };
     size: number;

@@ -3,7 +3,7 @@ import { getConfigurationManager } from '../core/ConfigurationManager';
 
 // エラーハンドラー型定義
 interface ErrorHandler {
-    handleError(error: Error, type: string, context?: any): void;
+    handleError(error: Error, type: "single" | "batch", context?: any): void;
 }
 
 // 設定管理型定義
@@ -57,7 +57,7 @@ interface PresetData {
     id: string;
     name: string;
     description: string;
-    type: string;
+    type: "single" | "batch";
     settings: PresetSettings;
     tags: string[];
     createdAt: number;
@@ -68,7 +68,7 @@ interface PresetData {
 interface CurrentPreset {
     id: string;
     name: string;
-    type: string;
+    type: "single" | "batch";
     appliedAt: number;
 }
 
@@ -845,7 +845,7 @@ export class PresetManager {
                 component: 'PresetManager',
                 presetId
             });
-            return null;
+            return null as any;
         }
     }
     

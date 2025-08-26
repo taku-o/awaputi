@@ -619,7 +619,7 @@ export class ChartInteractionManager {
             });
         }
         
-        return null;
+        return null as any;
     }
 
     /**
@@ -703,7 +703,7 @@ export class ChartInteractionManager {
     /**
      * イベントリスナーの追加
      */
-    private addEventListener(element: HTMLElement, type: string, listener: EventListener): void {
+    private addEventListener(element: HTMLElement, type: "single" | "batch", listener: EventListener): void {
         if (!this.eventListeners.has(element)) {
             this.eventListeners.set(element, new Map());
         }

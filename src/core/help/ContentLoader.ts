@@ -322,13 +322,13 @@ export class ContentLoader {
             
             if (!tutorial) {
                 this.loggingSystem.warn('ContentLoader', `Tutorial not found: ${tutorialId}`);
-                return null;
+                return null as any;
             }
             
             return tutorial;
         } catch (error) {
             this.loggingSystem.error('ContentLoader', `Failed to load tutorial: ${tutorialId}`, error);
-            return null;
+            return null as any;
         }
     }
 
@@ -355,7 +355,7 @@ export class ContentLoader {
             return rawData;
         } catch (error) {
             this.loggingSystem.error('ContentLoader', `Failed to load guided tours: ${language}`, error);
-            return null;
+            return null as any;
         }
     }
 
@@ -378,10 +378,10 @@ export class ContentLoader {
                 return localCached.data;
             }
             
-            return null;
+            return null as any;
         } catch (error) {
             this.loggingSystem.error('ContentLoader', `Failed to get cached content: ${key}`, error);
-            return null;
+            return null as any;
         }
     }
 
@@ -625,7 +625,7 @@ export function getContentLoader(localizationManager?: LocalizationManager): Con
  */
 export function reinitializeContentLoader(localizationManager?: LocalizationManager): ContentLoader {
     if (contentLoaderInstance) {
-        contentLoaderInstance.destroy();
+        contentLoaderInstance?.destroy?.();
     }
     contentLoaderInstance = new ContentLoader(localizationManager || null);
     return contentLoaderInstance;

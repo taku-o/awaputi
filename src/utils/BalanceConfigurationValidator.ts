@@ -9,7 +9,7 @@ import { getErrorHandler, ErrorHandler  } from './ErrorHandler.js';
 
 // Type definitions
 interface ValidationRule {
-    type: string;
+    type: "single" | "batch";
     min?: number;
     max?: number;
     description: string;

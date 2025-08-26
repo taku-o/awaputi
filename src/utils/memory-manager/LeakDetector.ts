@@ -86,7 +86,7 @@ interface GrowthAnalysis {
 
 interface PatternAnalysisResult {
     patterns: Array<{
-        type: string;
+        type: "single" | "batch";
         objectType: string;
         rate?: number;
         count?: number;
@@ -247,7 +247,7 @@ export class LeakDetector {
      * @param {number} size - Estimated size in bytes
      * @param {object} metadata - Additional metadata
      */
-    trackObjectCreation(type: string, size: number = 0, metadata: any = {}): void {
+    trackObjectCreation(type: "single" | "batch", size: number = 0, metadata: any = {}): void {
         if (!this.enabled) return;
         
         const timestamp = Date.now();
@@ -479,7 +479,7 @@ export class LeakDetector {
      */
     private _analyzeUsagePatterns(): PatternAnalysisResult {
         const patterns: Array<{
-            type: string;
+            type: "single" | "batch";
             objectType: string;
             rate?: number;
             count?: number;
@@ -638,7 +638,7 @@ export class LeakDetector {
      * Check object creation pattern for anomalies
      * @private
      */
-    private _checkCreationPattern(type: string, pattern: ObjectCreationPattern): void {
+    private _checkCreationPattern(type: "single" | "batch", pattern: ObjectCreationPattern): void {
         // Check for rapid creation
         if (pattern.creationRate > 50) {
             // More than 50 per second

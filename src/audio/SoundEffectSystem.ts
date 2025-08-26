@@ -373,7 +373,7 @@ export class SoundEffectSystem {
      * 泡の効果音を作成
      */
     private async createBubbleSound(bubbleType: BubbleType, variation: number): Promise<any> {
-        if (!this.soundRenderer) return null;
+        if (!this.soundRenderer) return null as any;
         
         const soundParams = this.getBubbleSoundParams(bubbleType, variation);
         return await this.soundRenderer.createSound(soundParams);
@@ -452,7 +452,7 @@ export class SoundEffectSystem {
      * UI効果音を作成
      */
     private async createUISound(soundType: UISoundType): Promise<any> {
-        if (!this.soundRenderer) return null;
+        if (!this.soundRenderer) return null as any;
         
         const soundParams = this.getUISoundParams(soundType);
         return await this.soundRenderer.createSound(soundParams);
@@ -524,7 +524,7 @@ export class SoundEffectSystem {
      * 実績効果音を作成
      */
     private async createAchievementSound(rarity: AchievementRarity): Promise<any> {
-        if (!this.soundRenderer) return null;
+        if (!this.soundRenderer) return null as any;
         
         const soundParams = this.getAchievementSoundParams(rarity);
         return await this.soundRenderer.createSound(soundParams);
@@ -595,7 +595,7 @@ export class SoundEffectSystem {
      * ゲーム状態効果音を作成
      */
     private async createGameStateSound(state: GameState): Promise<any> {
-        if (!this.soundRenderer) return null;
+        if (!this.soundRenderer) return null as any;
         
         const soundParams = this.getGameStateSoundParams(state);
         return await this.soundRenderer.createSound(soundParams);
@@ -671,7 +671,7 @@ export class SoundEffectSystem {
      * コンボ効果音を作成
      */
     private async createComboSound(level: number): Promise<any> {
-        if (!this.soundRenderer) return null;
+        if (!this.soundRenderer) return null as any;
         
         const soundParams = this.getComboSoundParams(level);
         return await this.soundRenderer.createSound(soundParams);

@@ -106,7 +106,7 @@ interface LiveRegion {
 }
 
 interface AccessibilityViolation {
-    type: string;
+    type: "single" | "batch";
     element: Element;
     message: string;
 }
@@ -447,9 +447,9 @@ export class SocialAccessibilityManager {
      */
     private setupLiveRegions(): void {
         const liveRegions: LiveRegion[] = [
-            { id: 'social-urgent-announcements', priority: 'assertive', label: '緊急通知' },
-            { id: 'social-status-announcements', priority: 'polite', label: 'ステータス通知' },
-            { id: 'social-progress-announcements', priority: 'polite', label: '進捗通知' }
+            { id: 'social-urgent-announcements', priority: 'assertive' as 'polite' | 'assertive', label: '緊急通知' },
+            { id: 'social-status-announcements', priority: 'polite' as 'polite' | 'assertive', label: 'ステータス通知' },
+            { id: 'social-progress-announcements', priority: 'polite' as 'polite' | 'assertive', label: '進捗通知' }
         ];
 
         liveRegions.forEach(region => {
@@ -1053,7 +1053,7 @@ export class SocialAccessibilityManager {
     /**
      * エラーハンドリング
      */
-    private handleError(type: string, error: Error, context: any = {}): void {
+    private handleError(type: "single" | "batch", error: Error, context: any = {}): void {
         const errorInfo = {
             type,
             error: error.message || error,

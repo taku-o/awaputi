@@ -147,7 +147,7 @@ export class CalculationEngine {
      * @param type - 計算タイプ（'score', 'balance', 'effects'など）
      * @param calculator - 計算処理クラスのインスタンス
      */
-    registerCalculator(type: string, calculator: Calculator): void {
+    registerCalculator(type: "single" | "batch", calculator: Calculator): void {
         if (!type || !calculator) {
             throw new Error('計算タイプと計算処理クラスは必須です');
         }
@@ -164,7 +164,7 @@ export class CalculationEngine {
      * @param options - オプション
      * @returns 計算結果
      */
-    calculate(type: string, method: string, params: any[] = [], options: CalculationOptions = {}): any {
+    calculate(type: "single" | "batch", method: string, params: any[] = [], options: CalculationOptions = {}): any {
         this.cacheStats.totalRequests++;
         
         // キャッシュキーを生成
@@ -269,7 +269,7 @@ export class CalculationEngine {
      * @returns 計算結果のPromise
      * @private
      */
-    private _processBatch(type: string, method: string, params: any[], options: CalculationOptions): Promise<any> {
+    private _processBatch(type: "single" | "batch", method: string, params: any[], options: CalculationOptions): Promise<any> {
         const batchKey = `${type}:${method}`;
         
         return new Promise((resolve, reject) => {
@@ -300,7 +300,7 @@ export class CalculationEngine {
      * @param batchKey - バッチキー
      * @private
      */
-    private _executeBatch(type: string, method: string, batchKey: string): void {
+    private _executeBatch(type: "single" | "batch", method: string, batchKey: string): void {
         const batch = this.batchQueue.get(batchKey);
         if (!batch || batch.requests.length === 0) return;
         
@@ -344,7 +344,7 @@ export class CalculationEngine {
      * @param params - 計算パラメータ
      * @returns キャッシュキー
      */
-    generateCacheKey(type: string, method: string, params: any[]): string {
+    generateCacheKey(type: "single" | "batch", method: string, params: any[]): string {
         const paramString = JSON.stringify(params);
         return `${type}:${method}:${paramString}`;
     }
@@ -357,13 +357,13 @@ export class CalculationEngine {
     getCachedResult(key: string): any | null {
         const cached = this.cache.get(key);
         if (!cached) {
-            return null;
+            return null as any;
         }
         
         // TTLチェック
         if (Date.now() > cached.expiry) {
             this.cache.delete(key);
-            return null;
+            return null as any;
         }
         
         return cached.value;
@@ -440,7 +440,7 @@ export class CalculationEngine {
      * キャッシュをクリア
      * @param type - 特定のタイプのキャッシュのみクリア（省略時は全てクリア）
      */
-    clearCache(type: string | null = null): void {
+    clearCache(type: "single" | "batch" | null = null): void {
         if (type) {
             // 特定のタイプのキャッシュのみクリア
             const keysToDelete: string[] = [];
@@ -496,7 +496,7 @@ export class CalculationEngine {
      * @param type - 計算タイプ
      * @returns 登録されている場合 true
      */
-    hasCalculator(type: string): boolean {
+    hasCalculator(type: "single" | "batch"): boolean {
         return this.calculators.has(type);
     }
     
@@ -521,14 +521,14 @@ export class CalculationEngine {
     private _getIntelligentCachedResult(key: string): any | null {
         const cached = this.cache.get(key);
         if (!cached) {
-            return null;
+            return null as any;
         }
         
         // 適応的TTLチェック
         const now = Date.now();
         if (now > cached.expiry) {
             this.cache.delete(key);
-            return null;
+            return null as any;
         }
         
         // アクセス統計を更新
@@ -667,7 +667,7 @@ export class CalculationEngine {
      * @param calculationTime - 計算時間
      * @private
      */
-    private _updatePerformanceStats(type: string, method: string, calculationTime: number): void {
+    private _updatePerformanceStats(type: "single" | "batch", method: string, calculationTime: number): void {
         const key = `${type}.${method}`;
         
         if (!this.performanceStats.has(key)) {
@@ -792,7 +792,7 @@ export class CalculationEngine {
      * @param type - 計算タイプ
      * @param methods - メモ化するメソッド名の配列
      */
-    enableMemoization(type: string, methods: string[] = []): void {
+    enableMemoization(type: "single" | "batch", methods: string[] = []): void {
         const calculator = this.calculators.get(type);
 
         if (!calculator) {

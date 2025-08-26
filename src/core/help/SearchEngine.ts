@@ -25,7 +25,7 @@ export interface SearchStats {
 
 export interface IndexData {
     id: string;
-    type: string;
+    type: "single" | "batch";
     title: string;
     content: string;
     category: string;
@@ -1029,7 +1029,7 @@ export function getSearchEngine(): SearchEngine {
  */
 export function reinitializeSearchEngine(): SearchEngine {
     if (searchEngineInstance) {
-        searchEngineInstance.destroy();
+        searchEngineInstance?.destroy?.();
     }
     searchEngineInstance = new SearchEngine();
     return searchEngineInstance;

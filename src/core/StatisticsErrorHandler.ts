@@ -776,7 +776,7 @@ export class StatisticsErrorHandler {
         } catch (error) {
             // Memory API not available
         }
-        return null;
+        return null as any;
     }
     
     getStorageUsage(): any {
@@ -789,7 +789,7 @@ export class StatisticsErrorHandler {
             }
             return { used: totalSize };
         } catch (error) {
-            return null;
+            return null as any;
         }
     }
     

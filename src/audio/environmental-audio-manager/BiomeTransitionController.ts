@@ -42,7 +42,7 @@ export interface ActiveSource {
 export interface ActiveLayerInfo {
     id: string;
     name: string;
-    type: string;
+    type: "single" | "batch";
     volume: number;
     biomeId: string;
 }
@@ -235,7 +235,7 @@ export class BiomeTransitionController {
                 operation: '_prepareWeatherLayer',
                 component: 'BiomeTransitionController'
             });
-            return null;
+            return null as any;
         }
     }
     

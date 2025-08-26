@@ -582,7 +582,7 @@ export class TimeSeriesVisualizer {
     destroyChart(chartId: any) {
         const chart = this.activeCharts.get(chartId);
         if (chart) {
-            chart.destroy();
+            chart?.destroy?.();
             this.activeCharts.delete(chartId);
         }
     }
@@ -591,7 +591,7 @@ export class TimeSeriesVisualizer {
      * 全チャートを破棄
      */
     destroyAllCharts() {
-        this.activeCharts.forEach(chart => chart.destroy());
+        this.activeCharts.forEach(chart => chart?.destroy?.());
         this.activeCharts.clear();
     }
 
@@ -609,7 +609,7 @@ export class TimeSeriesVisualizer {
                 options: chart.options
             };
         }
-        return null;
+        return null as any;
     }
 
     /**

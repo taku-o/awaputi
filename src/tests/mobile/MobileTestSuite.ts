@@ -62,7 +62,7 @@ interface CompatibilityResult {
 }
 
 interface DeviceUtils {
-    createTouchEvent: (type: string, touches: any[]) => Event;
+    createTouchEvent: (type: "single" | "batch", touches: any[]) => Event;
     createTouch: (x: number, y: number, id?: number) => any;
     createDeviceInfo: (device: string) => any;
     measurePerformance: (testFunction: () => Promise<void>) => Promise<number>;

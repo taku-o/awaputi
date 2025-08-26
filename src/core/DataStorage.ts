@@ -164,7 +164,7 @@ export class DataStorage {
             const data = await this.currentAdapter.get(key);
             
             if (data === null || data === undefined) {
-                return null;
+                return null as any;
             }
             
             // データの後処理
@@ -379,7 +379,7 @@ export class DataStorage {
         try {
             this.adapters.forEach(adapter => {
                 if (typeof adapter.destroy === 'function') {
-                    adapter.destroy();
+                    adapter?.destroy?.();
                 }
             });
             
@@ -422,7 +422,7 @@ class LocalStorageAdapter implements StorageAdapter {
             return data ? JSON.parse(data) : null;
         } catch (error) {
             console.warn('LocalStorage get error:', error);
-            return null;
+            return null as any;
         }
     }
     

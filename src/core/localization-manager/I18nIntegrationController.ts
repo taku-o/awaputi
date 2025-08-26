@@ -386,7 +386,7 @@ export class I18nIntegrationController {
         }
         
         console.error(`No translation loaders available for ${language} after ${attempts} attempts`);
-        return null;
+        return null as any;
     }
     
     /**
@@ -694,31 +694,31 @@ export class I18nIntegrationController {
         this.stopPerformanceMonitoring();
         
         if (this.translationLoader && typeof this.translationLoader.destroy === 'function') {
-            this.translationLoader.destroy();
+            this.translationLoader?.destroy?.();
         }
         
         if (this.optimizedLoader && typeof this.optimizedLoader.destroy === 'function') {
-            this.optimizedLoader.destroy();
+            this.optimizedLoader?.destroy?.();
         }
         
         if (this.fontManager && typeof this.fontManager.destroy === 'function') {
-            this.fontManager.destroy();
+            this.fontManager?.destroy?.();
         }
         
         if (this.performanceMonitor && typeof this.performanceMonitor.destroy === 'function') {
-            this.performanceMonitor.destroy();
+            this.performanceMonitor?.destroy?.();
         }
         
         if (this.renderOptimizer && typeof this.renderOptimizer.destroy === 'function') {
-            this.renderOptimizer.destroy();
+            this.renderOptimizer?.destroy?.();
         }
         
         if (this.securityManager && typeof this.securityManager.destroy === 'function') {
-            this.securityManager.destroy();
+            this.securityManager?.destroy?.();
         }
         
         if (this.securityTester && typeof this.securityTester.destroy === 'function') {
-            this.securityTester.destroy();
+            this.securityTester?.destroy?.();
         }
         
         // 参照をクリア

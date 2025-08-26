@@ -464,7 +464,7 @@ export class ErrorRecoveryManager {
             const [category, type] = parts;
             return this.errorTypes[category as keyof ErrorTypes]?.[type as any] || null;
         }
-        return null;
+        return null as any;
     }
 
     /**
@@ -715,15 +715,15 @@ export class ErrorRecoveryManager {
 
         // コンポーネントの破棄
         if (this.preventionHandler) {
-            (this.preventionHandler as any).dispose();
+            (this.preventionHandler as any)?.dispose?.();
         }
         
         if (this.undoRedoSystem) {
-            (this.undoRedoSystem as any).dispose();
+            (this.undoRedoSystem as any)?.dispose?.();
         }
         
         if (this.autoSaveSystem) {
-            (this.autoSaveSystem as any).dispose();
+            (this.autoSaveSystem as any)?.dispose?.();
         }
 
         this.isInitialized = false;

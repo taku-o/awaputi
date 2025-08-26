@@ -255,10 +255,10 @@ export function parseDateKey(key: string, period: PeriodType): Date | null {
             case 'yearly':
                 return new Date(parseInt(parts[0]), 0, 1);
             default:
-                return null;
+                return null as any;
         }
     } catch (error) {
-        return null;
+        return null as any;
     }
 }
 
@@ -561,7 +561,7 @@ export class LeaderboardRankingManager {
      */
     getPeriodEndDate(key: string, period: PeriodType): Date | null {
         const startDate = this.getPeriodStartDate(key, period);
-        if (!startDate) return null;
+        if (!startDate) return null as any;
 
         switch (period) {
             case 'daily':

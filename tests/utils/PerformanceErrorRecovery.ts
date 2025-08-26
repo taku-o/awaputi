@@ -3,7 +3,7 @@
  * Provides error recovery utilities for performance-related test issues with intelligent analysis
  */
 
-import { jest } from '@jest/globals';
+import { _jest } from '@jest/globals';
 import { crossEnvironmentManager } from './CrossEnvironmentManager';
 
 export class PerformanceErrorRecovery {
@@ -200,7 +200,7 @@ export class PerformanceErrorRecovery {
    * @param {Object} context - Test context
    * @returns {Object} Analysis result
    */
-  analyzeMemoryUsageFailure(error: any, context: any = {}) {
+  analyzeMemoryUsageFailure(error: any, _context: any = {}) {
     const analysis = {
       type: 'memory_usage_failure',
       severity: 'medium',
@@ -254,7 +254,7 @@ export class PerformanceErrorRecovery {
    * @param {Object} context - Test context
    * @returns {Object} Analysis result
    */
-  analyzeRenderTimeFailure(error: any, context: any = {}) {
+  analyzeRenderTimeFailure(error: any, _context: any = {}) {
     const analysis = {
       type: 'render_time_failure',
       severity: 'medium',
@@ -296,7 +296,7 @@ export class PerformanceErrorRecovery {
    * @param {Object} context - Test context
    * @returns {Object} Analysis result
    */
-  analyzeThresholdFailure(error: any, context: any = {}) {
+  analyzeThresholdFailure(error: any, _context: any = {}) {
     const analysis = {
       type: 'threshold_failure',
       severity: 'low',
@@ -333,7 +333,7 @@ export class PerformanceErrorRecovery {
    * @param {Object} context - Test context
    * @returns {Object} Analysis result
    */
-  analyzeTimeoutFailure(error: any, context: any = {}) {
+  analyzeTimeoutFailure(error: any, _context: any = {}) {
     const analysis = {
       type: 'timeout_failure',
       severity: 'medium',
@@ -375,7 +375,7 @@ export class PerformanceErrorRecovery {
    * @param {Object} context - Test context
    * @returns {Object} Analysis result
    */
-  analyzeEnvironmentFailure(error: any, context: any = {}) {
+  analyzeEnvironmentFailure(_error: any, _context: any = {}) {
     const analysis = {
       type: 'environment_failure',
       severity: 'medium',

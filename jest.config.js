@@ -35,8 +35,8 @@ export default {
   
   // Setup files - add global Jest setup
   setupFilesAfterEnv: [
-    '<rootDir>/tests/jest-globals.js',
-    '<rootDir>/tests/setup.js'
+    '<rootDir>/tests/jest-globals.ts',
+    '<rootDir>/tests/setup.ts'
   ],
   
   // Enhanced module name mapping

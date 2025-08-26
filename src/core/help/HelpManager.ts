@@ -211,13 +211,13 @@ export class HelpManager {
             // HEADリクエストでファイル存在確認（404エラーを避ける）
             const headResponse = await fetch(contentPath, { method: 'HEAD' });
             if (!headResponse.ok) {
-                return null;
+                return null as any;
             }
             
             // ファイルが存在する場合のみGETリクエストを実行
             const response = await fetch(contentPath);
             if (!response.ok) {
-                return null;
+                return null as any;
             }
 
             const content = await response.json();
@@ -227,7 +227,7 @@ export class HelpManager {
             
         } catch (error) {
             // エラーを静かに処理（ログに出力しない）
-            return null;
+            return null as any;
         }
     }
 
@@ -275,17 +275,17 @@ export class HelpManager {
             const legacyPath = `./src/core/help/content/help/${category}.json`;
             const headResponse = await fetch(legacyPath, { method: 'HEAD' });
             if (!headResponse.ok) {
-                return null;
+                return null as any;
             }
             
             const response = await fetch(legacyPath);
             if (!response.ok) {
-                return null;
+                return null as any;
             }
             
             return await response.json() as HelpContent;
         } catch (error) {
-            return null;
+            return null as any;
         }
     }
 
@@ -353,7 +353,7 @@ export class HelpManager {
 
             if (!content || !content.topics) {
                 this.loggingSystem.warn('HelpManager', `Help content not found: ${contentKey}`);
-                return null;
+                return null as any;
             }
 
             const sectionData = content.topics.find(s => s.id === section);
@@ -363,10 +363,10 @@ export class HelpManager {
                 return sectionData;
             }
 
-            return null;
+            return null as any;
         } catch (error) {
             this.loggingSystem.error('HelpManager', `Failed to get help section: ${sectionId}`, error);
-            return null;
+            return null as any;
         }
     }
 
@@ -456,12 +456,12 @@ export class HelpManager {
 
             const mappedSectionId = contextMap[contextKey] || contextMap[currentScene];
             if (!mappedSectionId) {
-                return null;
+                return null as any;
             }
 
             const section = this.getHelpSection(mappedSectionId, language);
             if (!section) {
-                return null;
+                return null as any;
             }
 
             // 関連する提案を取得
@@ -475,7 +475,7 @@ export class HelpManager {
 
         } catch (error) {
             this.loggingSystem.error('HelpManager', 'Failed to get contextual help', error);
-            return null;
+            return null as any;
         }
     }
 
@@ -671,7 +671,7 @@ export function getHelpManager(gameEngine: GameEngine): HelpManager {
  */
 export function reinitializeHelpManager(gameEngine: GameEngine): HelpManager {
     if (helpManagerInstance) {
-        helpManagerInstance.destroy();
+        helpManagerInstance?.destroy?.();
     }
     helpManagerInstance = new HelpManager(gameEngine);
     return helpManagerInstance;

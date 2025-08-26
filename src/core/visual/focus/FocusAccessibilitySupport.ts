@@ -401,7 +401,7 @@ export class FocusAccessibilitySupport {
     /**
      * スクリーンリーダーアナウンス
      */
-    announceToScreenReader(message: string, options: ScreenReaderAnnouncementOptions = { priority: 'polite' }): void {
+    announceToScreenReader(message: string, options: ScreenReaderAnnouncementOptions = { priority: 'polite' as 'polite' | 'assertive' }): void {
         if (!this.config.announcements.enabled || !this.screenReader) {
             return;
         }

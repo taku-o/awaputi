@@ -188,7 +188,7 @@ export class FloatingTextManager {
     /**
      * 特殊効果表示用のフローティングテキスト
      */
-    public addEffectText(x: number, y: number, effect: string, type: string = 'normal'): number {
+    public addEffectText(x: number, y: number, effect: string, type: "single" | "batch" = 'normal'): number {
         const configs: AnimationConfigMap = {
             bonus: {
                 color: '#FFD700',

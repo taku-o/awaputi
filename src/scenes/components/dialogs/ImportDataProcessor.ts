@@ -7,7 +7,7 @@
 
 export interface ValidationRule {
     required: boolean;
-    type: string;
+    type: "single" | "batch";
     min?: number;
     max?: number;
 }

@@ -706,7 +706,7 @@ export class AccessibilitySettingsIntegrator {
         const base = this.accessibilityProfiles.get(baseProfile);
         if (!base) {
             console.warn(`Unknown base profile: ${baseProfile}`);
-            return null;
+            return null as any;
         }
         
         const customProfile = JSON.parse(JSON.stringify(base));
@@ -721,7 +721,7 @@ export class AccessibilitySettingsIntegrator {
      */
     exportProfile(profileName: string): ProfileExportData | null {
         const profile = this.accessibilityProfiles.get(profileName);
-        if (!profile) return null;
+        if (!profile) return null as any;
 
         return {
             name: profileName,

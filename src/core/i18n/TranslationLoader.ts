@@ -208,7 +208,7 @@ export class TranslationLoader {
             if (!response.ok) {
                 if (response.status === 404) {
                     console.warn(`Translation file not found: ${url}`);
-                    return null;
+                    return null as any;
                 }
                 throw new Error(`HTTP ${response.status}: ${response.statusText}`);
             }
@@ -229,7 +229,7 @@ export class TranslationLoader {
             return data;
         } catch (error) {
             console.warn(`Failed to load translation file ${language}/${filename}.json:`, error);
-            return null;
+            return null as any;
         }
     }
 

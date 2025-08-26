@@ -137,7 +137,7 @@ export interface RiskAssessment {
 }
 
 export interface Recommendation {
-    type: string;
+    type: "single" | "batch";
     category: string;
     priority: 'high' | 'medium' | 'low';
     title: string;
@@ -407,7 +407,7 @@ export class HelpDataAnalyzer {
             return trends;
         } catch (error) {
             this.loggingSystem.error('HelpDataAnalyzer', 'Failed to analyze trends', error);
-            return null;
+            return null as any;
         }
     }
     

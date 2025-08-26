@@ -432,7 +432,7 @@ export class MobileSocialOptimizer {
     /**
      * ハプティックフィードバックのトリガー
      */
-    triggerHapticFeedback(type: string = 'light'): void {
+    triggerHapticFeedback(type: "single" | "batch" = 'light'): void {
         if (this.deviceInfo?.vibrationSupport) {
             switch(type) {
                 case 'light':
@@ -826,7 +826,7 @@ export class MobileSocialOptimizer {
 
     private async convertScreenshotToFile(_screenshot: any): Promise<File | null> {
         // Implementation for converting screenshot to file
-        return null;
+        return null as any;
     }
 
     private adjustDialogForOrientation(_dialog: HTMLElement): void {

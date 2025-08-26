@@ -312,11 +312,11 @@ class ValidationSystem {
                 case 'object': return {};
                 case 'function': return () => {};
                 case 'undefined': return undefined;
-                default: return null;
+                default: return null as any;
             }
         }
         
-        return null;
+        return null as any;
     }
     
     /**

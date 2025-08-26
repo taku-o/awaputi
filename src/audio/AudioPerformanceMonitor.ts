@@ -73,7 +73,7 @@ interface Alert {
     id: string;
     timestamp: number;
     data: {
-        type: string;
+        type: "single" | "batch";
         level: string;
         value: number;
         threshold: number;
@@ -672,13 +672,13 @@ export class AudioPerformanceMonitor {
         try {
             // 実際の実装では、requestAnimationFrameを使用してフレームレートを測定
             // ここでは簡略化して固定値を返す
-            return null; // フレームレート測定は実装しない（ゲームエンジンに依存）
+            return null as any; // フレームレート測定は実装しない（ゲームエンジンに依存）
             
         } catch (error) {
             getErrorHandler().handleError(error, 'AUDIO_PERFORMANCE_ERROR', {
                 operation: '_measureFrameRate'
             });
-            return null;
+            return null as any;
         }
     }
     /**
@@ -1181,7 +1181,7 @@ export class AudioPerformanceMonitor {
             getErrorHandler().handleError(error, 'AUDIO_PERFORMANCE_ERROR', {
                 operation: 'getPerformanceStats'
             });
-            return null;
+            return null as any;
         }
     }
     /**

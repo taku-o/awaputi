@@ -11,7 +11,7 @@ interface ParticleManager {
 }
 
 interface Particle {
-    type: string;
+    type: "single" | "batch";
     life: number;
     maxLife: number;
     size: number;

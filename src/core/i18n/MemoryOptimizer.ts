@@ -340,7 +340,7 @@ export class MemoryOptimizer {
             }
         }
         
-        return null;
+        return null as any;
     }
     
     /**
@@ -673,7 +673,7 @@ export class MemoryOptimizer {
     } {
         return {
             ...this.memoryUsage,
-            usagePercent: Math.round(this.memoryUsage.total / this.maxMemoryUsage) * 10000) / 100,
+            usagePercent: Math.round((this.memoryUsage.total / this.maxMemoryUsage) * 10000) / 100,
             maxMemoryMB: Math.round(this.maxMemoryUsage / 1024 / 1024),
             totalMB: Math.round(this.memoryUsage.total / 1024 / 1024),
             isUnderPressure: this.isUnderMemoryPressure,

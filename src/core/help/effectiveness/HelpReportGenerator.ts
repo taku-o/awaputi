@@ -127,7 +127,7 @@ export interface SatisfactionDetails {
 }
 
 export interface Insight {
-    type: string;
+    type: "single" | "batch";
     message: string;
     severity: 'low' | 'medium' | 'high';
 }
@@ -368,7 +368,7 @@ export class HelpReportGenerator {
      * @returns エグゼクティブトレンド
      */
     private generateExecutiveTrends(trends?: TrendAnalysis): ExecutiveTrends | null {
-        if (!trends) return null;
+        if (!trends) return null as any;
         
         return {
             sessionGrowth: trends.usage.sessionGrowth?.trend || 'stable',

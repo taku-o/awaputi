@@ -456,7 +456,7 @@ export class MultilingualContentManager {
      */
     private getCachedContent(language: string, contentType: string): any {
         const languageContent = this.contentCache.get(language);
-        if (!languageContent) return null;
+        if (!languageContent) return null as any;
 
         switch (contentType) {
             case 'help':
@@ -466,7 +466,7 @@ export class MultilingualContentManager {
             case 'faq':
                 return languageContent.faqData;
             default:
-                return null;
+                return null as any;
         }
     }
 
@@ -546,7 +546,7 @@ export class MultilingualContentManager {
             }
         }
         
-        return null;
+        return null as any;
     }
 
     /**
@@ -654,7 +654,7 @@ export class MultilingualContentManager {
             case 'faq':
                 return this.extractFAQById(content, itemId);
             default:
-                return null;
+                return null as any;
         }
     }
 
@@ -671,7 +671,7 @@ export class MultilingualContentManager {
             return content.sections.find((section: any) => section.id === contentId);
         }
         
-        return null;
+        return null as any;
     }
 
     /**
@@ -681,7 +681,7 @@ export class MultilingualContentManager {
      * @returns 抽出されたチュートリアル
      */
     private extractTutorialById(tutorials: any[], tutorialId: string): any {
-        if (!Array.isArray(tutorials)) return null;
+        if (!Array.isArray(tutorials)) return null as any;
         return tutorials.find(tutorial => tutorial.id === tutorialId);
     }
 
@@ -692,7 +692,7 @@ export class MultilingualContentManager {
      * @returns 抽出されたFAQ
      */
     private extractFAQById(faqs: any[], faqId: string): any {
-        if (!Array.isArray(faqs)) return null;
+        if (!Array.isArray(faqs)) return null as any;
         return faqs.find(faq => faq.id === faqId);
     }
 
@@ -792,7 +792,7 @@ export function getMultilingualContentManager(localizationManager?: Localization
  */
 export function reinitializeMultilingualContentManager(localizationManager?: LocalizationManager): MultilingualContentManager {
     if (multilingualContentManagerInstance) {
-        multilingualContentManagerInstance.destroy();
+        multilingualContentManagerInstance?.destroy?.();
     }
     multilingualContentManagerInstance = new MultilingualContentManager(localizationManager || null);
     return multilingualContentManagerInstance;

@@ -354,7 +354,7 @@ export class StructuredDataEngine {
             return schema;
         } catch (error) {
             seoErrorHandler.handle(error as Error, 'generateVideoGameSchema', context);
-            return null;
+            return null as any;
         }
     }
     
@@ -375,7 +375,7 @@ export class StructuredDataEngine {
             return schema;
         } catch (error) {
             seoErrorHandler.handle(error as Error, 'generateOrganizationSchema', context);
-            return null;
+            return null as any;
         }
     }
     
@@ -398,7 +398,7 @@ export class StructuredDataEngine {
             return schema;
         } catch (error) {
             seoErrorHandler.handle(error as Error, 'generateWebApplicationSchema', context);
-            return null;
+            return null as any;
         }
     }
     
@@ -423,7 +423,7 @@ export class StructuredDataEngine {
             return schema;
         } catch (error) {
             seoErrorHandler.handle(error as Error, 'generateBreadcrumbSchema', breadcrumbs);
-            return null;
+            return null as any;
         }
     }
     
@@ -439,7 +439,7 @@ export class StructuredDataEngine {
     }): Promise<EventSchema | null> {
         try {
             const organizer = await this.generateOrganizationSchema();
-            if (!organizer) return null;
+            if (!organizer) return null as any;
 
             const schema: EventSchema = {
                 '@context': 'https://schema.org',
@@ -455,7 +455,7 @@ export class StructuredDataEngine {
             return schema;
         } catch (error) {
             seoErrorHandler.handle(error as Error, 'generateEventSchema', eventData);
-            return null;
+            return null as any;
         }
     }
     

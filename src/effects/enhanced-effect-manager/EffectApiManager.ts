@@ -123,7 +123,7 @@ export class EffectApiManager {
     /**
      * 画面遷移効果を追加
      */
-    addTransitionEffect(type: string, duration: number, options: TransitionOptions = {}): number {
+    addTransitionEffect(type: "single" | "batch", duration: number, options: TransitionOptions = {}): number {
         try {
             const effect: TransitionEffect = {
                 id: this.effectController.effectId++,

@@ -477,7 +477,7 @@ ${Object.keys(expectations.bubbleTypes || {}).map(bubbleType => `        test('s
 
         } catch (error) {
             this._handleError('test code generation', error);
-            return null;
+            return null as any;
         }
     }
 

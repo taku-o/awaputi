@@ -53,7 +53,7 @@ interface Particle {
     gravity: number;
     friction: number;
     bounce?: number;
-    type: string;
+    type: "single" | "batch";
     rotation?: number;
     rotationSpeed?: number;
     scale?: number;
@@ -193,7 +193,7 @@ export class ComboEffectRenderer {
                 return { ...tier, key };
             }
         }
-        return null;
+        return null as any;
     }
     
     /**

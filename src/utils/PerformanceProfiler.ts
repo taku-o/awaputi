@@ -361,7 +361,7 @@ export class PerformanceProfiler {
     async stopProfiling(reason: string = 'manual'): Promise<SessionSummary | null> {
         if (!this.profilingSession) {
             console.warn('No active profiling session to stop');
-            return null;
+            return null as any;
         }
 
         const endTime = performance.now();
@@ -425,7 +425,7 @@ export class PerformanceProfiler {
 
     // Public API methods
     getLatestMetrics(): MetricData | null {
-        if (this.metrics.size === 0) return null;
+        if (this.metrics.size === 0) return null as any;
         
         const timestamps = Array.from(this.metrics.keys()).sort((a, b) => b - a);
         return this.metrics.get(timestamps[0]) || null;
@@ -433,7 +433,7 @@ export class PerformanceProfiler {
 
     getLatestAnalysis(): PerformanceAnalysis | null {
         if (!this.profilingSession || this.profilingSession.analyses.length === 0) {
-            return null;
+            return null as any;
         }
         
         return this.profilingSession.analyses[this.profilingSession.analyses.length - 1];
@@ -551,7 +551,7 @@ export class PerformanceProfiler {
         }
 
         // Cleanup dashboard
-        this.dashboard.destroy();
+        this.dashboard?.destroy?.();
 
         // Clear data
         this.metrics.clear();
@@ -590,7 +590,7 @@ export function getPerformanceProfiler(): PerformanceProfiler | any {
 export function reinitializePerformanceProfiler(): void {
     try {
         if (_performanceProfiler && _performanceProfiler.destroy) {
-            _performanceProfiler.destroy();
+            _performanceProfiler?.destroy?.();
         }
         _performanceProfiler = new PerformanceProfiler();
         console.log('PerformanceProfiler reinitialized');

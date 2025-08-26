@@ -352,10 +352,10 @@ export class TutorialProgressManager {
                 return progress;
             }
             
-            return null;
+            return null as any;
         } catch (error) {
             (this.loggingSystem as any).log(`ツアー進捗読み込みエラー: ${(error as Error).message}`, 'error', 'TutorialProgressManager');
-            return null;
+            return null as any;
         }
     }
     
@@ -382,7 +382,7 @@ export class TutorialProgressManager {
             const saved = localStorage.getItem(storageKey);
             return saved ? parseInt(saved, 10) : null;
         } catch (error) {
-            return null;
+            return null as any;
         }
     }
     
@@ -725,7 +725,7 @@ export function getTutorialProgressManager(loggingSystem?: LoggingSystem | null)
  */
 export function reinitializeTutorialProgressManager(loggingSystem?: LoggingSystem | null): TutorialProgressManager {
     if (tutorialProgressManagerInstance) {
-        tutorialProgressManagerInstance.destroy();
+        tutorialProgressManagerInstance?.destroy?.();
     }
     tutorialProgressManagerInstance = new TutorialProgressManager(loggingSystem);
     return tutorialProgressManagerInstance;

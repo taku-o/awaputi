@@ -91,7 +91,7 @@ interface PhaseResult {
 }
 
 interface Recommendation {
-    type: string;
+    type: "single" | "batch";
     priority: 'low' | 'medium' | 'high' | 'critical';
     description?: string;
     message?: string;
@@ -505,7 +505,7 @@ export class PerformanceIntegrationTesting {
      */
     destroy(): void {
         if (this.testOrchestrator) {
-            this.testOrchestrator.destroy();
+            this.testOrchestrator?.destroy?.();
         }
         console.log('[PerformanceIntegrationTesting] Integration testing system destroyed');
     }

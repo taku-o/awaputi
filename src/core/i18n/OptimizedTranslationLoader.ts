@@ -467,7 +467,7 @@ export class OptimizedTranslationLoader {
      */
     async lazyLoadNamespace(language: string, namespace: string): Promise<any | null> {
         if (!this.lazyLoadEnabled) {
-            return null;
+            return null as any;
         }
         
         const cacheKey = `${language}:${namespace}`;
@@ -485,10 +485,10 @@ export class OptimizedTranslationLoader {
                 return data;
             }
             
-            return null;
+            return null as any;
         } catch (error) {
             console.warn(`Lazy load failed for ${namespace} in ${language}:`, error);
-            return null;
+            return null as any;
         }
     }
     

@@ -40,7 +40,7 @@ interface GameEngine {
 }
 
 // Simple validation for PlayerData (fallback implementation)
-function validateInput(value: any, type: string, constraints: any = {}): ValidationResult {
+function validateInput(value: any, type: "single" | "batch", constraints: any = {}): ValidationResult {
     const result: ValidationResult = {
         isValid: false,
         sanitizedValue: value,

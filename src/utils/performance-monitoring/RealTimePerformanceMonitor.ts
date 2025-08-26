@@ -36,7 +36,7 @@ interface HistoryEntry {
 
 // Performance event interfaces
 interface PerformanceEvent {
-    type: string;
+    type: "single" | "batch";
     detected: number;
     resolved?: number;
     duration?: number;

@@ -404,7 +404,7 @@ export function generateModeRecommendation(context: AutoModeContext, _currentMod
         benefits.push('適切な複雑度への調整');
     }
     
-    if (reasons.length === 0) return null;
+    if (reasons.length === 0) return null as any;
     
     const targetLevel = findBestComplexityMatch(context.userComplexityScore);
     const targetMode = findModeByLevel(targetLevel);
@@ -649,10 +649,10 @@ export class SimplificationModeController {
      * 自動モード評価
      */
     evaluateAutoMode(context: AutoModeContext): AutoModeEvaluation | null {
-        if (!this.autoMode) return null;
+        if (!this.autoMode) return null as any;
 
         const recommendation = generateModeRecommendation(context, this.currentMode, this.currentLevel);
-        if(!recommendation) return null;
+        if(!recommendation) return null as any;
 
         // 緊急度の判定
         let urgency: AutModeUrgency = 'low';

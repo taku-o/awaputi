@@ -65,7 +65,7 @@ interface SelectAnimation {
     duration: number;
     maxIntensity: number;
     currentIntensity: number;
-    type: string;
+    type: "single" | "batch";
 }
 
 /**

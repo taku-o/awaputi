@@ -720,7 +720,7 @@ export class CoreAccessibilityManager {
     /**
      * マネージャーの取得
      */
-    getManager(type: string): Manager | undefined {
+    getManager(type: "single" | "batch"): Manager | undefined {
         return this.managers.get(type);
     }
     
@@ -901,7 +901,7 @@ export class CoreAccessibilityManager {
         for (const [type, manager] of this.managers) {
             if (manager && typeof manager.destroy === 'function') {
                 try {
-                    manager.destroy();
+                    manager?.destroy?.();
                 } catch (error) {
                     console.warn(`Error destroying ${type} manager:`, error);
                 }
@@ -918,7 +918,7 @@ export class CoreAccessibilityManager {
         
         // テストフレームワークのクリーンアップ
         if (this.testingFramework && typeof this.testingFramework.destroy === 'function') {
-            this.testingFramework.destroy();
+            this.testingFramework?.destroy?.();
         }
         
         console.log('AccessibilityManager destroyed');

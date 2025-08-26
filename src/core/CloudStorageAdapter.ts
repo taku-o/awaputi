@@ -294,14 +294,14 @@ export class CloudStorageAdapter {
             const response = await this.makeRequest('GET', `/data/${encodeURIComponent(key)}`);
             
             if (!response.data) {
-                return null;
+                return null as any;
             }
             
             // データの後処理
             return await this.postprocessCloudData(response.data);
         } catch (error: any) {
             if (error.status === 404) {
-                return null; // データが存在しない場合
+                return null as any; // データが存在しない場合
             }
 
             getErrorHandler().handleError(error, 'CloudStorageAdapter.get');

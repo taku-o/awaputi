@@ -42,7 +42,7 @@ export interface ScoreDistribution {
 }
 
 export interface BubbleStats {
-    type: string;
+    type: "single" | "batch";
     successRate: number;
     frequency: number;
     avgScore: number;
@@ -1061,10 +1061,10 @@ export class AnalyticsDashboard {
 
         // チャートの削除
         if (this.chartRenderer) {
-            this.chartRenderer.destroy();
+            this.chartRenderer?.destroy?.();
         }
         if (this.dataVisualizer) {
-            this.dataVisualizer.destroy();
+            this.dataVisualizer?.destroy?.();
         }
 
         // コンテナのクリア

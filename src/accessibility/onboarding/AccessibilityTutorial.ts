@@ -34,7 +34,7 @@ interface TutorialConfig { enableInteractiveTutorials: boolean,
     userProgress: Map<string, any>;
     sessionStartTime: number | null,
     interactionHistory: InteractionRecord[];
-    interface InteractionRecord { type: string;
+    interface InteractionRecord { type: "single" | "batch";
     key?: string;
     timestamp: number,
     tutorial: string,

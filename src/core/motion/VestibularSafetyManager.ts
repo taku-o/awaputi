@@ -487,7 +487,7 @@ export class VestibularSafetyManager {
      */
     private checkAnimationSafety(animation: AnimationData): Partial<SafetyViolation> | null {
         if (!isHTMLElement(animation.element)) {
-            return null;
+            return null as any;
         }
 
         try {
@@ -514,7 +514,7 @@ export class VestibularSafetyManager {
             return violation.type!.length > 0 ? violation as SafetyViolation : null;
         } catch (error) {
             console.warn('[VestibularSafetyManager] Error checking animation safety:', error);
-            return null;
+            return null as any;
         }
     }
     

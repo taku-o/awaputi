@@ -371,7 +371,7 @@ export class FinalValidationSuite {
                 debugInterface.hide();
                 const testPanel = debugInterface.panelManager?.createPanel('test-panel-' + i);
                 if (testPanel && testPanel.destroy) {
-                    testPanel.destroy();
+                    testPanel?.destroy?.();
                 }
                 
                 if (i % 10 === 0) {

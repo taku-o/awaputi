@@ -68,7 +68,7 @@ export class SocialEngagementAnalyzer {
             
         } catch (error) {
             console.error('Failed to analyze social engagement', error);
-            return null;
+            return null as any;
         }
     }
     

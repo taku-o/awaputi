@@ -319,7 +319,7 @@ export class ConfigurationManager {
         } catch (error) {
             const keyForError = key ? `${keyOrNamespace}.${key}` : keyOrNamespace;
             this._handleError(error, 'get', { key: keyForError });
-            return null;
+            return null as any;
         }
     }
     
@@ -486,7 +486,7 @@ export class ConfigurationManager {
     private _getDefaultValue<T>(category: string, path: string): T | null {
         const defaultMap = this.defaultValues.get(category);
         if (!defaultMap) {
-            return null;
+            return null as any;
         }
         
         return (defaultMap.get(path) as T) || null;

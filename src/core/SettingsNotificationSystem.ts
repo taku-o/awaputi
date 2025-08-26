@@ -140,7 +140,7 @@ export class SettingsNotificationSystem {
                 settingKey,
                 options
             });
-            return null;
+            return null as any;
         }
     }
     
@@ -218,7 +218,7 @@ export class SettingsNotificationSystem {
                 componentName,
                 watchedSettings
             });
-            return null;
+            return null as any;
         }
     }
     

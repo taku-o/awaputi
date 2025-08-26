@@ -689,19 +689,19 @@ export class HelpScene extends Scene implements HelpSceneState {
         try {
             // サブコンポーネントのクリーンアップ
             if (this.helpEventManager) {
-                this.helpEventManager.destroy();
+                this.helpEventManager?.destroy?.();
             }
             
             if (this.helpAccessibilityManager) {
-                this.helpAccessibilityManager.destroy();
+                this.helpAccessibilityManager?.destroy?.();
             }
             
             if (this.helpContentManager) {
-                this.helpContentManager.destroy();
+                this.helpContentManager?.destroy?.();
             }
             
             if (this.helpAnimationManager) {
-                this.helpAnimationManager.destroy();
+                this.helpAnimationManager?.destroy?.();
             }
             
             if (this.navigationContext) {

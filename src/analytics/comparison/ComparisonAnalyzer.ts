@@ -457,7 +457,7 @@ export class ComparisonAnalyzer {
      * @returns {Object|null} 最悪のメトリック
      */
     findWorstStageMetric(stageData: any): any | null {
-        if (!stageData.current) return null;
+        if (!stageData.current) return null as any;
 
         const metrics = [
             { metric: 'completionRate', value: stageData.current.completionRate, threshold: 0.5 },

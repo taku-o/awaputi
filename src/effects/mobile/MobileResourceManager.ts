@@ -24,7 +24,7 @@ interface ParticleResource extends PooledResource {
     opacity: number;
     life: number;
     maxLife: number;
-    type: string;
+    type: "single" | "batch";
 }
 
 interface TextureResource extends PooledResource {
@@ -385,7 +385,7 @@ export class MobileResourceManager {
             case 'sounds':
                 return this.createSoundResource();
             default:
-                return null;
+                return null as any;
         }
     }
     
@@ -466,7 +466,7 @@ export class MobileResourceManager {
      */
     acquireResource(type: ResourceType, config: Record<string, any> = {}): PooledResource | null {
         const pool = this.resourcePools.get(type);
-        if (!pool) return null;
+        if (!pool) return null as any;
         
         // プールから利用可能なリソースを検索
         let resource = pool.pool.find(r => !r.active);
@@ -604,9 +604,9 @@ export class MobileResourceManager {
     /**
      * キャッシュからのリソース取得
      */
-    getCachedResource(type: string, key: string): CachedResource | null {
+    getCachedResource(type: "single" | "batch", key: string): CachedResource | null {
         const cache = this.caches.get(type);
-        if (!cache) return null;
+        if (!cache) return null as any;
         
         const resource = cache.get(key);
         if (resource) {
@@ -614,14 +614,14 @@ export class MobileResourceManager {
             return resource;
         } else {
             this.statistics.cacheMisses++;
-            return null;
+            return null as any;
         }
     }
     
     /**
      * リソースのキャッシュ
      */
-    setCachedResource(type: string, key: string, resource: any): void {
+    setCachedResource(type: "single" | "batch", key: string, resource: any): void {
         const cache = this.caches.get(type);
         if (!cache) return;
         
@@ -639,7 +639,7 @@ export class MobileResourceManager {
     /**
      * キャッシュサイズ制限の取得
      */
-    private getMaxCacheSize(type: string): number {
+    private getMaxCacheSize(type: "single" | "batch"): number {
         const limits: Record<string, number> = {
             textures: 20,
             sounds: 10,
@@ -815,7 +815,7 @@ export class MobileResourceManager {
     /**
      * ネットワーク対応リソース読み込み
      */
-    async loadNetworkResource(url: string, type: string, options: Record<string, any> = {}): Promise<CachedResource | null> {
+    async loadNetworkResource(url: string, type: "single" | "batch", options: Record<string, any> = {}): Promise<CachedResource | null> {
         if (!this.state.networkAware) {
             return this.loadResourceDirect(url, type, options);
         }
@@ -855,7 +855,7 @@ export class MobileResourceManager {
     /**
      * リソースURLの最適化
      */
-    private optimizeResourceUrl(url: string, type: string): string {
+    private optimizeResourceUrl(url: string, type: "single" | "batch"): string {
         if (!this.networkSettings.connection) return url;
         
         const connection = this.networkSettings.connection;
@@ -874,7 +874,7 @@ export class MobileResourceManager {
     /**
      * 直接リソース読み込み
      */
-    private async loadResourceDirect(url: string, type: string, options: Record<string, any>): Promise<CachedResource | null> {
+    private async loadResourceDirect(url: string, type: "single" | "batch", options: Record<string, any>): Promise<CachedResource | null> {
         // 実装は type に応じて分岐
         switch (type) {
             case 'texture':
@@ -991,7 +991,7 @@ export class MobileResourceManager {
         console.log('Page unloading, performing final cleanup');
         
         // 全リソースのクリーンアップ
-        this.destroy();
+        this?.destroy?.();
     }
     
     /**

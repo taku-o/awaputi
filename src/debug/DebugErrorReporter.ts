@@ -119,7 +119,7 @@ interface ErrorPattern {
 interface NotificationData {
     id: string;
     timestamp: number;
-    type: string;
+    type: "single" | "batch";
     error: EnhancedError;
     additionalInfo: any;
     sessionId: string;
@@ -362,7 +362,7 @@ export class DebugErrorReporter extends ErrorHandler {
      * ゲーム状態のキャプチャ
      */
     captureGameState(): GameState | null {
-        if (!this.gameEngine) return null;
+        if (!this.gameEngine) return null as any;
 
         try {
             if (!this.gameEngine) {
@@ -547,7 +547,7 @@ export class DebugErrorReporter extends ErrorHandler {
     /**
      * 開発者通知の送信
      */
-    private notifyDeveloper(error: EnhancedError, type: string = 'standard', additionalInfo: any = {}): void {
+    private notifyDeveloper(error: EnhancedError, type: "single" | "batch" = 'standard', additionalInfo: any = {}): void {
         if (!this.developerNotifications.enabled) return;
         
         // 新しい通知システムを使用
@@ -669,13 +669,13 @@ export class DebugErrorReporter extends ErrorHandler {
      */
     destroy(): void {
         this.saveSettings();
-        this.errorStorage?.destroy();
+        this.errorStorage?.destroy?.();
         this.errorCollector = null as any;
         this.errorAnalyzer = null as any;
-        this.submissionManager?.destroy();
-        this.screenshotCapture?.destroy();
-        this.notificationSystem?.destroy();
-        this.recoveryTracker?.destroy();
+        this.submissionManager?.destroy?.();
+        this.screenshotCapture?.destroy?.();
+        this.notificationSystem?.destroy?.();
+        this.recoveryTracker?.destroy?.();
         super.destroy?.();
     }
 }

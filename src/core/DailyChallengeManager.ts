@@ -440,7 +440,7 @@ export class DailyChallengeManager {
             return this.challengeSystem.createChallenge(challengeData);
         } catch (error) {
             getErrorHandler().handleError(error, 'CHALLENGE_TEMPLATE_CREATION_ERROR', { template, difficulty });
-            return null;
+            return null as any;
         }
     }
 

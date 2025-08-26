@@ -36,8 +36,8 @@ export interface EventListener<T = any> {
 }
 
 export interface EventEmitter {
-    addEventListener(type: string, listener: EventListener): void;
-    removeEventListener(type: string, listener: EventListener): void;
+    addEventListener(type: "single" | "batch", listener: EventListener): void;
+    removeEventListener(type: "single" | "batch", listener: EventListener): void;
     dispatchEvent(event: any): boolean;
 }
 

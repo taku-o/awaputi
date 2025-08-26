@@ -322,13 +322,13 @@ describe('ソーシャル機能とシステム連携テスト', () => {
             expect(mockPlayerData.getHighScore('normal')).toBe(85000);
 
             // ソーシャル設定確認
-            const settings = mockPlayerData.getSettings();
+            const settings = mockPlayerData.getSetting();
             expect(settings.shareSettings.autoShare).toBe(true);
             expect(settings.shareSettings.shareHighScores).toBe(true);
             expect(settings.privacy).toBe('friends');
 
             // 設定更新テスト
-            mockPlayerData.updateSettings({
+            mockPlayerData.updateSetting({
                 shareSettings: {
                     autoShare: false,
                     shareHighScores: true,
@@ -336,7 +336,7 @@ describe('ソーシャル機能とシステム連携テスト', () => {
                 }
             });
 
-            const updatedSettings = mockPlayerData.getSettings();
+            const updatedSettings = mockPlayerData.getSetting();
             expect(updatedSettings.shareSettings.autoShare).toBe(false);
             expect(mockPlayerData.save).toHaveBeenCalled();
         });
@@ -349,7 +349,7 @@ describe('ソーシャル機能とシステム連携テスト', () => {
             expect(mockPlayerData.getHighScore('normal')).toBe(newScore);
 
             // ソーシャル共有が有効な場合の確認
-            const settings = mockPlayerData.getSettings();
+            const settings = mockPlayerData.getSetting();
             if (settings.shareSettings.shareHighScores) {
                 // スコア共有メッセージ生成テスト
                 const shareMessage = await mockSocialSharingManager.shareContentGenerator.generateScoreMessage(
@@ -499,7 +499,7 @@ describe('ソーシャル機能とシステム連携テスト', () => {
             const newAchievements = mockAchievementManager.checkAndUnlockAchievements(gameData);
 
             // 5. ソーシャル共有（自動共有が有効な場合）
-            const settings = mockPlayerData.getSettings();
+            const settings = mockPlayerData.getSetting();
             if (settings.shareSettings.autoShare) {
                 if (isHighScore && settings.shareSettings.shareHighScores) {
                     const scoreMessage = await mockSocialSharingManager.shareContentGenerator.generateScoreMessage(
@@ -535,7 +535,7 @@ describe('ソーシャル機能とシステム連携テスト', () => {
 
         test('プライバシー設定とソーシャル機能', async () => {
             // プライバシー設定の確認
-            const settings = mockPlayerData.getSettings();
+            const settings = mockPlayerData.getSetting();
             expect(settings.privacy).toBeDefined();
 
             // プライバシー設定に基づく動作テスト
@@ -548,7 +548,7 @@ describe('ソーシャル機能とシステム連携テスト', () => {
             }
 
             // 設定変更テスト
-            mockPlayerData.updateSettings({
+            mockPlayerData.updateSetting({
                 privacy: 'private',
                 shareSettings: {
                     autoShare: false,
@@ -557,7 +557,7 @@ describe('ソーシャル機能とシステム連携テスト', () => {
                 }
             });
 
-            const updatedSettings = mockPlayerData.getSettings();
+            const updatedSettings = mockPlayerData.getSetting();
             expect(updatedSettings.privacy).toBe('private');
             expect(updatedSettings.shareSettings.autoShare).toBe(false);
         });

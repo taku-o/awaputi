@@ -83,7 +83,7 @@ interface ShareSuggestion {
     shouldSuggestShare: boolean;
     reason: string;
     shareData: {
-        type: string;
+        type: "single" | "batch";
         score: number;
         isHighScore: boolean;
     };
@@ -98,7 +98,7 @@ interface CaptureOptions {
 }
 
 interface AchievementShareData {
-    type: string;
+    type: "single" | "batch";
     achievement: {
         name: string;
     };

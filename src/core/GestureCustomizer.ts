@@ -551,7 +551,7 @@ export class GestureCustomizer {
             Object.assign(this.config, config.motor.gestureCustomizer);
             // 各コンポーネントに設定を反映
             this.recognitionEngine.updateConfig(this.config);
-            this.deviceManager.updateSettings(config.motor.gestureCustomizer.deviceSettings || {});
+            this.deviceManager.updateSetting(config.motor.gestureCustomizer.deviceSettings || {});
         }
         console.log('GestureCustomizer configuration applied');
     }
@@ -609,15 +609,15 @@ export class GestureCustomizer {
         
         // 各コンポーネントのリソースを解放
         if (this.recognitionEngine) {
-            this.recognitionEngine.destroy();
+            this.recognitionEngine?.destroy?.();
         }
         
         if (this.deviceManager) {
-            this.deviceManager.destroy();
+            this.deviceManager?.destroy?.();
         }
         
         if (this.adaptationSystem) {
-            this.adaptationSystem.destroy();
+            this.adaptationSystem?.destroy?.();
         }
 
         console.log('GestureCustomizer destroyed');

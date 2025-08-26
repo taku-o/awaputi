@@ -158,7 +158,7 @@ interface CategoryPerformance {
 }
 
 interface RecoveryRecommendation {
-    type: string;
+    type: "single" | "batch";
     priority: string;
     message: string;
     action: string;
@@ -759,14 +759,14 @@ export class ErrorRecoveryTracker {
             return 'renderOptimizer';
         }
         
-        return null;
+        return null as any;
     }
     
     private getMemoryUsage(): number | null {
         if ((performance as any).memory) {
             return (performance as any).memory.usedJSHeapSize;
         }
-        return null;
+        return null as any;
     }
     
     private createTimeoutPromise(duration: number): Promise<never> {

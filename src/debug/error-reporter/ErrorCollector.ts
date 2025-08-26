@@ -106,7 +106,7 @@ export class ErrorCollector {
         // フィルタリング
         if (!this.shouldCollect(error)) {
             this.collectionMetrics.filtered++;
-            return null;
+            return null as any;
         }
         
         // 統計の更新

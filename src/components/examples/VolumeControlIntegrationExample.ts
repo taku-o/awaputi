@@ -122,7 +122,7 @@ export class VolumeControlIntegrationExample {
      */
     getVolumeControlStatus(): any {
         if (!this.volumeControl) {
-            return null;
+            return null as any;
         }
         
         return {
@@ -175,7 +175,7 @@ export class VolumeControlIntegrationExample {
         try {
             // VolumeControlComponentを破棄
             if (this.volumeControl) {
-                this.volumeControl.dispose();
+                this.volumeControl?.dispose?.();
                 this.volumeControl = null;
             }
             
@@ -227,7 +227,7 @@ volumeControl.setVolume(0.8); // 80%
 const currentVolume = volumeControl.getCurrentVolume();
 
 // 5. コンポーネントの破棄
-volumeControl.dispose();
+volumeControl?.dispose?.();
         `.trim();
     }
 }

@@ -5,7 +5,7 @@ import { getErrorHandler } from '../../utils/ErrorHandler';
  */
 export interface SoundLayer {
     name: string;
-    type: string;
+    type: "single" | "batch";
     volume: number;
     frequency: number;
     modulation: {
@@ -19,7 +19,7 @@ export interface SoundLayer {
  */
 export interface AdditionalLayer {
     name: string;
-    type: string;
+    type: "single" | "batch";
     volume: number;
     biomes: string[];
 }
@@ -48,7 +48,7 @@ export interface BiomeDefinition {
  * Sound profile interface
  */
 export interface SoundProfile {
-    type: string;
+    type: "single" | "batch";
     volume: number;
     frequency: number;
     filterCutoff: number;

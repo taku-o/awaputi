@@ -529,7 +529,7 @@ export class RegionalSettingsManager {
         this.ensureInitialized();
         return {
             initialized: this.initialized,
-            supportedLanguages: this.formatSettings ? Object.keys(this.formatSettings as any).number || {}) : [],
+            supportedLanguages: this.formatSettings ? Object.keys((this.formatSettings as any).number || {}) : [],
             supportedRegions: this.regionSettings ? Object.keys(this.regionSettings) : [],
             formatCategories: this.formatSettings ? Object.keys(this.formatSettings) : []
         };

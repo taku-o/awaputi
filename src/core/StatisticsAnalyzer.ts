@@ -459,7 +459,7 @@ export class StatisticsAnalyzer {
      * 進歩サマリーの生成
      */
     generateProgressSummary(analysisResult: any): any {
-        if (!analysisResult.basicStatistics) return null;
+        if (!analysisResult.basicStatistics) return null as any;
         
         const stats = analysisResult.basicStatistics;
         
@@ -484,7 +484,7 @@ export class StatisticsAnalyzer {
         };
     }
     
-    generateCacheKey(type: string, options: any): string {
+    generateCacheKey(type: "single" | "batch", options: any): string {
         return `${type}_${JSON.stringify(options)}_${this.statisticsManager.statistics.totalGamesPlayed}`;
     }
     
@@ -558,19 +558,19 @@ export class StatisticsAnalyzer {
     }
     
     getWeeklyData(_period: string): any {
-        return null;
+        return null as any;
     }
     
     getMonthlyData(_period: string): any {
-        return null;
+        return null as any;
     }
     
     getCurrentPerformanceData(): any {
-        return null;
+        return null as any;
     }
     
     getBaselinePerformanceData(): any {
-        return null;
+        return null as any;
     }
     
     calculatePlayerLevel(stats: any): number {

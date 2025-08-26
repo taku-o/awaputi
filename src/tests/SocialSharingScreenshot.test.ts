@@ -81,7 +81,7 @@ interface MockGameEngine {
 }
 
 interface ShareData {
-    type: string;
+    type: "single" | "batch";
     score?: number;
     text?: string;
     name?: string;

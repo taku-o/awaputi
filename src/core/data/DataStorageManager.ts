@@ -642,7 +642,7 @@ export class DataStorageManager {
         const serializedData = await this.storageProvider.getItem(key);
         
         if (!serializedData) {
-            return null;
+            return null as any;
         }
         
         try {
@@ -655,7 +655,7 @@ export class DataStorageManager {
             return payload.data;
         } catch (error) {
             console.error(`[DataStorageManager] Failed to parse generic data for ${dataType}:`, error);
-            return null;
+            return null as any;
         }
     }
 
@@ -715,7 +715,7 @@ export class DataStorageManager {
             const serializedData = await this.storageProvider.getItem(key);
             
             if (!serializedData) {
-                return null;
+                return null as any;
             }
             
             const payload = JSON.parse(serializedData);
@@ -991,7 +991,7 @@ export class DataStorageManager {
             case 'statistics':
                 return {};
             default:
-                return null;
+                return null as any;
         }
     }
 

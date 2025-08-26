@@ -82,7 +82,7 @@ export class AudioSettingsDataManager {
                 version: '1.0',
                 timestamp: new Date().toISOString(),
                 volumes: {
-                    master: this.audioManager.getVolume('master'),
+                    master: this.audioManager.getVolume('master' as AudioChannel),
                     bgm: this.audioManager.getVolume('bgm'),
                     sfx: this.audioManager.getVolume('sfx'),
                     muted: this.configManager.get('audio.volumes.muted')

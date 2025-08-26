@@ -187,7 +187,7 @@ export class AdvancedLayerManager {
 
         } catch (error) {
             this.errorHandler.logError('Failed to create layer', error as Error);
-            return null;
+            return null as any;
         }
     }
     /**

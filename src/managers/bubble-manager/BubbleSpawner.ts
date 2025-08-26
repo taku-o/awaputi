@@ -79,7 +79,7 @@ export class BubbleSpawner implements IBubbleSpawner {
             const position = this.generateSafePosition(safeDistance);
             if (!position) {
                 console.warn('[BubbleSpawner] Could not find safe position for bubble spawn');
-                return null;
+                return null as any;
             }
             
             const bubbleType = this.selectRandomBubbleType();
@@ -90,7 +90,7 @@ export class BubbleSpawner implements IBubbleSpawner {
             
         } catch (error) {
             getErrorHandler().handleError(error as Error, 'BubbleSpawner.spawnRandomBubble');
-            return null;
+            return null as any;
         }
     }
     
@@ -140,7 +140,7 @@ export class BubbleSpawner implements IBubbleSpawner {
             }
         }
         
-        return null; // 安全な位置が見つからない
+        return null as any; // 安全な位置が見つからない
     }
     
     /**

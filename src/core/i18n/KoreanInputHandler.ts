@@ -517,7 +517,7 @@ export type InputElementType = HTMLInputElement | HTMLTextAreaElement;
         const jongsungIndex = jongsung ? this.jongsung.indexOf(jongsung) : 0;
         
         if (chosungIndex === -1 || jungsungIndex === -1 || jongsungIndex === -1) {
-            return null;
+            return null as any;
         }
         
         const code = this.HANGUL_START + 
@@ -534,7 +534,7 @@ export type InputElementType = HTMLInputElement | HTMLTextAreaElement;
     decomposeHangul(syllable: string): HangulDecomposition | null {
         const code = syllable.charCodeAt(0);
         if (code < this.HANGUL_START || code > this.HANGUL_END) {
-            return null;
+            return null as any;
         }
         
         const offset = code - this.HANGUL_START;

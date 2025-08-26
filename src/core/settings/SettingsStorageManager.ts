@@ -195,7 +195,7 @@ export class SettingsStorageManager {
             const settingsData = localStorage.getItem(this.storageKeys.settings);
             if (!settingsData) {
                 console.log('[SettingsStorageManager] No saved settings found');
-                return null;
+                return null as any;
             }
 
             const parsedSettings: SettingsWithMetadata = JSON.parse(settingsData);
@@ -268,7 +268,7 @@ export class SettingsStorageManager {
             const configData = localStorage.getItem(this.storageKeys.configManager);
             if (!configData) {
                 console.log('[SettingsStorageManager] No configuration data found');
-                return null;
+                return null as any;
             }
 
             const parsedConfig: SettingsWithMetadata = JSON.parse(configData);
@@ -287,7 +287,7 @@ export class SettingsStorageManager {
                 operation: 'loadConfigurationManagerData',
                 component: 'SettingsStorageManager'
             });
-            return null;
+            return null as any;
         }
     }
 
@@ -354,7 +354,7 @@ export class SettingsStorageManager {
             const backups = this.getExistingBackups();
             if (backups.length === 0) {
                 console.log('[SettingsStorageManager] No backups available');
-                return null;
+                return null as any;
             }
 
             // バックアップインデックスを正規化
@@ -371,7 +371,7 @@ export class SettingsStorageManager {
                 return backup.settings;
             }
             
-            return null;
+            return null as any;
 
         } catch (error) {
             this.syncStats.errorCount++;
@@ -380,7 +380,7 @@ export class SettingsStorageManager {
                 component: 'SettingsStorageManager',
                 backupIndex
             });
-            return null;
+            return null as any;
         }
     }
 
@@ -493,7 +493,7 @@ export class SettingsStorageManager {
                 operation: 'exportSettings',
                 component: 'SettingsStorageManager'
             });
-            return null;
+            return null as any;
         }
     }
 

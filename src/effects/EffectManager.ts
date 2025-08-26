@@ -188,7 +188,7 @@ export class EffectManager {
         try {
             // effectsConfigが無効な場合はnullを返す
             if (!this.effectsConfig) {
-                return null;
+                return null as any;
             }
 
             const screenConfig = this.effectsConfig.getScreenEffectConfig();
@@ -207,7 +207,7 @@ export class EffectManager {
                 context: 'EffectManager._getEffectParameters'
             });
             // エラーの場合もnullを返す
-            return null;
+            return null as any;
         }
     }
 
@@ -1176,13 +1176,13 @@ export class EffectManager {
                     return this.effectsConfig.isScreenEffectEnabled?.() || true;
                 default:
                     console.warn(`[EffectManager] 未知の設定キー: ${key}`);
-                    return null;
+                    return null as any;
             }
         } catch (error) {
             getErrorHandler().handleError(error, 'EFFECT_ERROR', {
                 context: 'EffectManager.getConfigValue'
             });
-            return null;
+            return null as any;
         }
     }
 
@@ -1282,7 +1282,7 @@ export class EffectManager {
      * リソースの破棄（destroy エイリアス）
      */
     public destroy(): void {
-        this.dispose();
+        this?.dispose?.();
     }
 
     // =======================

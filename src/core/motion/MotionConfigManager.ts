@@ -230,7 +230,7 @@ export function isAnimationParams(params: any): params is AnimationParams {
     return params && typeof params === 'object';
 }
 
-export function isValidViolationType(type: string): type is ViolationType {
+export function isValidViolationType(type: "single" | "batch"): type is ViolationType {
     return [
         'rotation_speed', 'scale_change', 'parallax_distance',
         'flashing_rate', 'intensity_too_high', 'duration_too_long'
@@ -507,7 +507,7 @@ export class MotionConfigManager {
      */
     getCategoryConfig(category: string): MotionCategoryConfig | null {
         if (!isValidCategory(category)) {
-            return null;
+            return null as any;
         }
         
         return this.config.motionCategories[category] || null;

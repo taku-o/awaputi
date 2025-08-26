@@ -75,7 +75,7 @@ interface SuggestionEngine {
 interface Suggestion {
     id: string;
     alert: string;
-    type: string;
+    type: "single" | "batch";
     priority: 'high' | 'medium' | 'low';
     title: string;
     description: string;
@@ -424,7 +424,7 @@ export class PerformanceThresholdMonitor {
             if (value && typeof value === 'object' && part in value) {
                 value = value[part];
             } else {
-                return null;
+                return null as any;
             }
         }
 

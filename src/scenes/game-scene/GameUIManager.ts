@@ -48,7 +48,7 @@ interface TimeWarnings {
 
 interface Item {
     effect: {
-        type: string;
+        type: "single" | "batch";
         value: number;
     };
 }

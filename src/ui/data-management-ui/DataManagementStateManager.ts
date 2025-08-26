@@ -6,7 +6,7 @@
 /**
  * State change callback type
  */
-type StateChangeCallback = (type: string, data: any) => void;
+type StateChangeCallback = (type: "single" | "batch", data: any) => void;
 
 /**
  * Dialog change callback type
@@ -38,7 +38,7 @@ interface UIState {
  * Dialog history entry interface
  */
 interface DialogHistoryEntry {
-    type: string;
+    type: "single" | "batch";
     data: any;
     timestamp: number;
 }
@@ -57,7 +57,7 @@ interface DialogState {
  * Operation history entry interface
  */
 interface OperationHistoryEntry {
-    type: string;
+    type: "single" | "batch";
     result: string;
     message: string;
     duration: number;
@@ -214,7 +214,7 @@ export class UIStateManager {
         this.stateChangeCallbacks.push(callback);
     }
 
-    private notifyStateChange(type: string, data: any): void {
+    private notifyStateChange(type: "single" | "batch", data: any): void {
         this.stateChangeCallbacks.forEach(callback => {
             try {
                 callback(type, data);
@@ -257,7 +257,7 @@ export class DialogStateManager {
     private dialogHistory: DialogHistoryEntry[] = [];
     private maxHistorySize: number = 10;
 
-    showDialog(type: string, data: any = {}): void {
+    showDialog(type: "single" | "batch", data: any = {}): void {
         if (this.showingDialog) {
             this.hideDialog();
         }
@@ -312,7 +312,7 @@ export class DialogStateManager {
         return this.showingDialog !== null;
     }
 
-    isSpecificDialogVisible(type: string): boolean {
+    isSpecificDialogVisible(type: "single" | "batch"): boolean {
         return this.showingDialog === type;
     }
 
@@ -373,7 +373,7 @@ export class OperationStateManager {
     // コールバック
     private operationCallbacks: OperationChangeCallback[] = [];
 
-    startOperation(type: string, message: string = '', timeout: number = 300000): void { // 5 minutes default
+    startOperation(type: "single" | "batch", message: string = '', timeout: number = 300000): void { // 5 minutes default
         if (this.operationInProgress) {
             this.endOperation('cancelled', 'New operation started');
         }
@@ -486,7 +486,7 @@ export class OperationStateManager {
         return this.operationHistory[this.operationHistory.length - 1] || null;
     }
 
-    getOperationsByType(type: string): OperationHistoryEntry[] {
+    getOperationsByType(type: "single" | "batch"): OperationHistoryEntry[] {
         return this.operationHistory.filter(op => op.type === type);
     }
 
@@ -562,7 +562,7 @@ export class BackupStatusManager {
             }
 
             // Get status from BackupManager
-            const status = await this.dataManager.backup.getStatus();
+            const status = await this.dataManager.backup?.getStatus?.();
             this.updateBackupStatus(status);
 
             this.notifyUpdate('loaded', this.backupStatus);

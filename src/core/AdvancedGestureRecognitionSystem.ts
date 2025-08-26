@@ -85,7 +85,7 @@ interface GestureConfig {
 
 interface GestureState {
     active: boolean;
-    type: string | null;
+    type: "single" | "batch" | null;
     startTime: number;
     startPosition: Position;
     currentPosition: Position;
@@ -127,7 +127,7 @@ interface RotationState {
 }
 
 interface GestureData {
-    type: string;
+    type: "single" | "batch";
     direction?: string;
     velocity?: number;
     distance?: number;
@@ -147,7 +147,7 @@ interface GestureData {
 }
 
 interface GesturePattern {
-    type: string;
+    type: "single" | "batch";
     direction?: string;
     scale?: string;
     count?: number;
@@ -161,7 +161,7 @@ interface GesturePatterns {
 }
 
 interface GestureHistory {
-    type: string | null;
+    type: "single" | "batch" | null;
     timestamp: number;
     duration: number;
     touches: number;
@@ -1085,7 +1085,7 @@ export class AdvancedGestureRecognitionSystem {
     /**
      * イベント送信
      */
-    private dispatchGestureEvent(type: string, gesture: GestureData): void {
+    private dispatchGestureEvent(type: "single" | "batch", gesture: GestureData): void {
         const event = new CustomEvent(`gesture:${type}`, { detail: gesture });
         this.gameEngine.canvas.dispatchEvent(event);
         console.log(`[AdvancedGestureRecognitionSystem] ジェスチャー認識: ${type}`, gesture);

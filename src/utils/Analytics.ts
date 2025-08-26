@@ -136,7 +136,7 @@ class Analytics {
                     if (event.exception) {
                         const error = event.exception.values[0];
                         if (error && error.type === 'ChunkLoadError') {
-                            return null; // Don't report chunk load errors
+                            return null as any; // Don't report chunk load errors
                         }
                     }
                     return event;

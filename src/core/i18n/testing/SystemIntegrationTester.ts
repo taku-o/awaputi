@@ -619,7 +619,7 @@ export class SystemIntegrationTester {
      * ヘルパー関数群
      */
     
-    private async setupTestEnvironment(): void {
+    private async setupTestEnvironment(): Promise<void> {
         if (!document.getElementById('test-container')) {
             const container = document.createElement('div');
             container.id = 'test-container';
@@ -633,7 +633,7 @@ export class SystemIntegrationTester {
         console.log('✅ Test environment setup complete');
     }
 
-    private async cleanupTestEnvironment(): void {
+    private async cleanupTestEnvironment(): Promise<void> {
         const container = document.getElementById('test-container');
         if (container) {
             container.remove();

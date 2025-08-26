@@ -370,34 +370,34 @@ export class MobileSystemIntegrator {
             switch (componentName) {
                 case 'DeviceSpecificHandler':
                     // return (await import('./mobile/DeviceSpecificHandler.js')).DeviceSpecificHandler;
-                    return null; // 一時的なモックアップ
+                    return null as any; // 一時的なモックアップ
                 case 'EnhancedTouchManager':
                     // return (await import('./mobile/EnhancedTouchManager.js')).EnhancedTouchManager;
-                    return null;
+                    return null as any;
                 case 'AdvancedResponsiveLayoutManager':
                     // return (await import('./mobile/AdvancedResponsiveLayoutManager.js')).AdvancedResponsiveLayoutManager;
-                    return null;
+                    return null as any;
                 case 'MobilePerformanceOptimizer':
                     // return (await import('./mobile/MobilePerformanceOptimizer.js')).MobilePerformanceOptimizer;
-                    return null;
+                    return null as any;
                 case 'AdvancedGestureRecognitionSystem':
                     // return (await import('./mobile/AdvancedGestureRecognitionSystem.js')).AdvancedGestureRecognitionSystem;
-                    return null;
+                    return null as any;
                 case 'MobileUIUXManager':
                     // return (await import('./MobileUIUXManager.js')).MobileUIUXManager;
-                    return null;
+                    return null as any;
                 case 'MobileAccessibilityManager':
                     // return (await import('./MobileAccessibilityManager.js')).MobileAccessibilityManager;
-                    return null;
+                    return null as any;
                 case 'PWAManager':
                     // return (await import('./mobile/PWAManager.js')).PWAManager;
-                    return null;
+                    return null as any;
                 default:
-                    return null;
+                    return null as any;
             }
         } catch (error) {
             console.error(`Failed to import ${componentName}:`, error);
-            return null;
+            return null as any;
         }
     }
     
@@ -823,7 +823,7 @@ export class MobileSystemIntegrator {
     /**
      * 方向転換エラーハンドリング
      */
-    private async handleOrientationError(error: Error, context?: string): Promise<boolean> {
+    private async handleOrientationError(error: Error, _context?: string): Promise<boolean> {
         console.warn('[MobileSystemIntegrator] Orientation error:', error);
         
         // 方向転換の強制処理
@@ -844,7 +844,7 @@ export class MobileSystemIntegrator {
     /**
      * タッチエラーハンドリング
      */
-    private async handleTouchError(error: Error, context?: string): Promise<boolean> {
+    private async handleTouchError(error: Error, _context?: string): Promise<boolean> {
         console.warn('[MobileSystemIntegrator] Touch error:', error);
         
         // タッチマネージャーのリセット
@@ -865,7 +865,7 @@ export class MobileSystemIntegrator {
     /**
      * ジェスチャー認識エラーハンドリング
      */
-    private async handleGestureError(error: Error, context?: string): Promise<boolean> {
+    private async handleGestureError(error: Error, _context?: string): Promise<boolean> {
         console.warn('[MobileSystemIntegrator] Gesture error:', error);
         
         // ジェスチャー認識システムの再初期化
@@ -886,7 +886,7 @@ export class MobileSystemIntegrator {
     /**
      * パフォーマンスエラーハンドリング
      */
-    private async handlePerformanceError(error: Error, context?: string): Promise<boolean> {
+    private async handlePerformanceError(error: Error, _context?: string): Promise<boolean> {
         console.warn('[MobileSystemIntegrator] Performance error:', error);
         
         // 低パフォーマンスモードの有効化
@@ -898,7 +898,7 @@ export class MobileSystemIntegrator {
     /**
      * ネットワークエラーハンドリング
      */
-    private async handleNetworkError(error: Error, context?: string): Promise<boolean> {
+    private async handleNetworkError(error: Error, _context?: string): Promise<boolean> {
         console.warn('[MobileSystemIntegrator] Network error:', error);
         
         // オフラインモードへの切り替え
@@ -953,9 +953,9 @@ export class MobileSystemIntegrator {
         console.log('[MobileSystemIntegrator] 方向転換フォールバック有効化');
         
         // 方向固定モードの有効化
-        if (screen.orientation && screen.(orientation as any).lock) {
+        if (screen.orientation && (screen.orientation as any).lock) {
             try {
-                await screen.(orientation as any).lock('portrait-primary');
+                await (screen.orientation as any).lock('portrait-primary');
             } catch (lockError) {
                 console.warn('Screen orientation lock failed:', lockError);
             }
@@ -1066,7 +1066,7 @@ export class MobileSystemIntegrator {
     /**
      * エラーの追加
      */
-    private addError(type: string, error: Error, context?: string): void {
+    private addError(type: "single" | "batch", error: Error, context?: string): void {
         const errorEntry = {
             timestamp: new Date(),
             type,
@@ -1088,7 +1088,7 @@ export class MobileSystemIntegrator {
     /**
      * 警告の追加
      */
-    private addWarning(type: string, message: string, context?: string): void {
+    private addWarning(type: "single" | "batch", message: string, context?: string): void {
         const warningEntry = {
             timestamp: new Date(),
             type,
@@ -1121,7 +1121,7 @@ export class MobileSystemIntegrator {
     /**
      * 重大エラーの処理
      */
-    private handleCriticalError(type: string, error: Error): void {
+    private handleCriticalError(type: "single" | "batch", error: Error): void {
         console.error(`[MobileSystemIntegrator] Critical Error (${type}):`, error);
         
         this.addError(type, error);
@@ -1199,7 +1199,7 @@ export class MobileSystemIntegrator {
         console.log('[MobileSystemIntegrator] システム再起動開始');
         
         // 既存コンポーネントのクリーンアップ
-        this.dispose();
+        this?.dispose?.();
         
         // 状態リセット
         this.systemState = {
@@ -1240,7 +1240,7 @@ export class MobileSystemIntegrator {
         this.mobileComponents.forEach((componentInfo, name) => {
             if (componentInfo.instance && typeof componentInfo.instance.dispose === 'function') {
                 try {
-                    componentInfo.instance.dispose();
+                    componentInfo.instance?.dispose?.();
                 } catch (error) {
                     console.error(`Disposal of ${name} failed:`, error);
                 }

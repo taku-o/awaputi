@@ -87,7 +87,7 @@ export interface QualityReport {
 
 export interface Recommendation {
     priority: 'high' | 'medium' | 'low';
-    type: string;
+    type: "single" | "batch";
     message: string;
     action: string;
 }

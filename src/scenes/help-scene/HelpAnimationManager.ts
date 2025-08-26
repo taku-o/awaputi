@@ -118,11 +118,11 @@ export class HelpAnimationManager {
      */
     public startContentTransition(newContent: any, transitionType: 'slide' | 'fade' | 'scale' = 'slide'): ContentTransitionState | null {
         if (!this.enableAnimations) {
-            return null;
+            return null as any;
         }
 
         if (this.animations.contentTransition.isActive) {
-            return null; // 既にアニメーション中
+            return null as any; // 既にアニメーション中
         }
 
         this.animations.contentTransition = {
@@ -143,11 +143,11 @@ export class HelpAnimationManager {
      */
     public startCategoryTransition(fromIndex: number, toIndex: number): CategoryTransitionState | null {
         if (!this.enableAnimations) {
-            return null;
+            return null as any;
         }
 
         if (this.animations.categoryTransition.isActive) {
-            return null;
+            return null as any;
         }
 
         this.animations.categoryTransition = {
@@ -167,7 +167,7 @@ export class HelpAnimationManager {
      */
     public startSearchTransition(isEntering: boolean): SearchTransitionState | null {
         if (!this.enableAnimations) {
-            return null;
+            return null as any;
         }
 
         this.animations.searchTransition = {
@@ -186,7 +186,7 @@ export class HelpAnimationManager {
      */
     public startFocusTransition(fromIndex: number, toIndex: number): FocusTransitionState | null {
         if (!this.enableAnimations) {
-            return null;
+            return null as any;
         }
 
         this.animations.focusTransition = {
@@ -339,7 +339,7 @@ export class HelpAnimationManager {
     // ヘルパーメソッド（継承用）
     protected getCurrentContent(): any {
         // オーバーライド用のプレースホルダー
-        return null;
+        return null as any;
     }
 
     /**

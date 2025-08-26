@@ -403,7 +403,7 @@ export class ErrorTrackingSystem {
             return { error: 'Performance metrics not available' };
         }
 
-        return null;
+        return null as any;
     }
 
     /**
@@ -415,7 +415,7 @@ export class ErrorTrackingSystem {
             const firstPaint = paintEntries.find(entry => entry.name === 'first-paint');
             return firstPaint ? firstPaint.startTime : null;
         } catch (error) {
-            return null;
+            return null as any;
         }
     }
 
@@ -437,7 +437,7 @@ export class ErrorTrackingSystem {
             console.error('Screenshot capture failed:', error);
         }
 
-        return null;
+        return null as any;
     }
 
     /**

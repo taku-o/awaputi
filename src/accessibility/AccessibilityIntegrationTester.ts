@@ -68,7 +68,7 @@ interface TestConfig { enabled: boolean,
     performanceMetrics: PerformanceMetrics,
     issues: TestIssue[];
     regression?: RegressionComparison;
-    interface TestIssue { type: string,
+    interface TestIssue { type: "single" | "batch",
     message: string;
     stack?: string;
     interface BrowserFeatures { speechSynthesis: boolean,
@@ -835,7 +835,7 @@ export class AccessibilityIntegrationTester {
                 b: parseInt(match[3]); 
     }
         
-        return null;
+        return null as any;
     }
     
     /**

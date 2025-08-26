@@ -26,7 +26,7 @@ interface CalculationContext {
 }
 
 interface EvaluationCondition {
-    type: string;
+    type: "single" | "batch";
     field?: string;
     target?: unknown;
     min?: number;
@@ -541,7 +541,7 @@ export class AchievementProgressEngine {
     /**
      * カスタム計算機を登録
      */
-    public registerCalculator(type: string, calculator: ProgressCalculator): void {
+    public registerCalculator(type: "single" | "batch", calculator: ProgressCalculator): void {
         if (!calculator.calculate || !calculator.getPercentage) {
             throw new Error('Calculator must have calculate and getPercentage methods');
         }
@@ -552,7 +552,7 @@ export class AchievementProgressEngine {
     /**
      * カスタム条件評価器を登録
      */
-    public registerConditionEvaluator(type: string, evaluator: ConditionEvaluator): void {
+    public registerConditionEvaluator(type: "single" | "batch", evaluator: ConditionEvaluator): void {
         if (typeof evaluator !== 'function') {
             throw new Error('Condition evaluator must be a function');
         }
@@ -563,7 +563,7 @@ export class AchievementProgressEngine {
     /**
      * カスタムバリデーターを登録
      */
-    public registerValidator(type: string, validator: Validator): void {
+    public registerValidator(type: "single" | "batch", validator: Validator): void {
         if (typeof validator !== 'function') {
             throw new Error('Validator must be a function');
         }

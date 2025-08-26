@@ -5,7 +5,7 @@ import { getErrorHandler } from '../../utils/ErrorHandler.js';
  */
 interface ParticleConfig {
     count: number;
-    type: string;
+    type: "single" | "batch";
 }
 
 /**
@@ -74,7 +74,7 @@ interface Particle {
     gravity: number;
     friction: number;
     bounce?: number;
-    type: string;
+    type: "single" | "batch";
     rotation?: number;
     rotationSpeed?: number;
     scale?: number;
@@ -582,7 +582,7 @@ export class SeasonalEffectRenderer {
      * @returns {Object|null} イベント
      */
     getHighestPriorityEvent(): ActiveEvent | null {
-        if (this.activeEvents.length === 0) return null;
+        if (this.activeEvents.length === 0) return null as any;
         
         return this.activeEvents.reduce((highest, current) =>
             current.priority > highest.priority ? current : highest);

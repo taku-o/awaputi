@@ -22,7 +22,7 @@ interface ARIAPattern {
 }
 
 interface ElementInfo {
-    type: string;
+    type: "single" | "batch";
     needsARIA: boolean;
     hasRole: boolean;
     hasLabel: boolean;
@@ -30,7 +30,7 @@ interface ElementInfo {
 }
 
 interface ManagedElementInfo {
-    type: string;
+    type: "single" | "batch";
     pattern?: ARIAPattern;
     role?: string;
     lastUpdate: number;
@@ -393,7 +393,7 @@ export class ARIAManager {
     /**
      * ARIAパターンの取得
      */
-    getARIAPattern(type: string): ARIAPattern | undefined {
+    getARIAPattern(type: "single" | "batch"): ARIAPattern | undefined {
         return this.ariaPatterns.get(type);
     }
     
@@ -444,13 +444,13 @@ export class ARIAManager {
                 if (elementInfo.type === 'score' || elementInfo.type === 'timer') {
                     return 'polite';
                 }
-                return null;
+                return null as any;
 
             case 'aria-valuenow':
                 if (elementInfo.type === 'progressbar') {
                     return element.getAttribute('value') || '0';
                 }
-                return null;
+                return null as any;
 
             case 'aria-valuemin':
                 return '0';
@@ -459,7 +459,7 @@ export class ARIAManager {
                 return '100';
                 
             default:
-                return null;
+                return null as any;
         }
     }
     
@@ -586,7 +586,7 @@ export class ARIAManager {
             }
         }
         
-        return null;
+        return null as any;
     }
     
     /**

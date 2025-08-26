@@ -139,14 +139,14 @@ export class CacheDataLoader {
             
             this.performanceStats.cacheMisses++;
             console.log(`Cache miss: ${key}`);
-            return null;
+            return null as any;
         } catch (error) {
             getErrorHandler().handleError(error, 'AUDIO_CACHE_ERROR', {
                 operation: 'getAudioBuffer',
                 key: key,
                 component: 'CacheDataLoader'
             });
-            return null;
+            return null as any;
         }
     }
 
@@ -187,7 +187,7 @@ export class CacheDataLoader {
                 key: key,
                 component: 'CacheDataLoader'
             });
-            return null;
+            return null as any;
         }
     }
 
@@ -227,7 +227,7 @@ export class CacheDataLoader {
                 key: key,
                 component: 'CacheDataLoader'
             });
-            return null;
+            return null as any;
         }
     }
 
@@ -310,7 +310,7 @@ export class CacheDataLoader {
                 key: key,
                 component: 'CacheDataLoader'
             });
-            return null;
+            return null as any;
         }
     }
 
@@ -327,7 +327,7 @@ export class CacheDataLoader {
             // ここでは簡略化して全体を読み込んでメタデータを取得
             const buffer = await loadFunction();
             if (!buffer) {
-                return null;
+                return null as any;
             }
             
             return {
@@ -341,7 +341,7 @@ export class CacheDataLoader {
                 operation: 'loadAudioMetadata',
                 component: 'CacheDataLoader'
             });
-            return null;
+            return null as any;
         }
     }
 
@@ -364,7 +364,7 @@ export class CacheDataLoader {
             // ここでは全体を読み込んで指定範囲を抽出
             const fullBuffer = await loadFunction();
             if (!fullBuffer) {
-                return null;
+                return null as any;
             }
             
             const channels: Float32Array[] = [];
@@ -382,7 +382,7 @@ export class CacheDataLoader {
                 sampleCount: sampleCount,
                 component: 'CacheDataLoader'
             });
-            return null;
+            return null as any;
         }
     }
 

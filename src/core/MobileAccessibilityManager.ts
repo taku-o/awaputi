@@ -717,7 +717,7 @@ export class MobileAccessibilityManager {
     /**
      * オーディオビープの再生
      */
-    private playAudioBeep(type: string): void {
+    private playAudioBeep(type: "single" | "batch"): void {
         const audio = this.feedbackSystems.audioBeeps.get(type);
         if (audio && audio.play) {
             audio.play().catch(error => {

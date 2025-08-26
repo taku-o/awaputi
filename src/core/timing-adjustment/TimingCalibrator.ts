@@ -236,7 +236,7 @@ export function isAccessibilitySettings(settings: any): settings is Accessibilit
            typeof settings.seniorFriendly === 'boolean';
 }
 
-export function isValidProfileType(type: string): type is ProfileType {
+export function isValidProfileType(type: "single" | "batch"): type is ProfileType {
     return ['standard', 'motor', 'cognitive', 'senior', 'custom'].includes(type);
 }
 

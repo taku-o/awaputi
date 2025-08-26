@@ -315,7 +315,7 @@ export class TutorialStatsManager {
     ): TutorialProgressDetails | null {
         try {
             if (!tutorial) {
-                return null;
+                return null as any;
             }
             
             const isCompleted = completedTutorials.has(tutorialId);
@@ -338,7 +338,7 @@ export class TutorialStatsManager {
             };
         } catch (error) {
             this.loggingSystem.error(`進捗詳細取得エラー: ${(error as Error).message}`, null, 'TutorialStatsManager');
-            return null;
+            return null as any;
         }
     }
     
@@ -546,7 +546,7 @@ export function getTutorialStatsManager(loggingSystem?: LoggingSystem): Tutorial
  */
 export function reinitializeTutorialStatsManager(loggingSystem?: LoggingSystem): TutorialStatsManager {
     if (tutorialStatsManagerInstance) {
-        tutorialStatsManagerInstance.destroy();
+        tutorialStatsManagerInstance?.destroy?.();
     }
     tutorialStatsManagerInstance = new TutorialStatsManager(loggingSystem);
     return tutorialStatsManagerInstance;

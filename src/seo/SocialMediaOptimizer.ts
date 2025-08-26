@@ -92,7 +92,7 @@ interface TwitterCardData {
 // Facebook固有データインターフェース
 interface FacebookData {
     appId?: string;
-    type: string;
+    type: "single" | "batch";
     locale: string;
 }
 

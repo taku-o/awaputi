@@ -49,7 +49,7 @@ export interface Scene {
 
 export interface Bubble {
     id: string;
-    type: string;
+    type: "single" | "batch";
     x: number;
     y: number;
     score?: number;
@@ -655,7 +655,7 @@ export class TutorialActions {
             }
         }
         
-        return null;
+        return null as any;
     }
 
     /**
@@ -781,7 +781,7 @@ export function getTutorialActions(gameEngine: GameEngine): TutorialActions {
  */
 export function reinitializeTutorialActions(gameEngine: GameEngine): TutorialActions {
     if (tutorialActionsInstance) {
-        tutorialActionsInstance.destroy();
+        tutorialActionsInstance?.destroy?.();
     }
     tutorialActionsInstance = new TutorialActions(gameEngine);
     return tutorialActionsInstance;

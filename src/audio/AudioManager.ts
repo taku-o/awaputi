@@ -284,7 +284,7 @@ export class AudioManager {
      * @returns 音源ノード
      */
     playSound(soundName: string, options: PlayOptions = {}): AudioBufferSourceNode | null {
-        if (!this.isEnabled || this._isMuted) return null;
+        if (!this.isEnabled || this._isMuted) return null as any;
         return this.playbackController.playSound(soundName, options);
     }
     /**
@@ -412,7 +412,7 @@ export class AudioManager {
      * @param type - 音量タイプ ('master', 'sfx', 'bgm')
      * @param volume - 音量 (0-1)
      */
-    setVolume(type: string, volume: number): void {
+    setVolume(type: "single" | "batch", volume: number): void {
         this.configurationManager.setVolume(type, volume);
         
         // ローカルキャッシュ更新（互換性のため）
@@ -434,7 +434,7 @@ export class AudioManager {
      * @param type - 音量タイプ ('master', 'sfx', 'bgm')
      * @returns 音量 (0-1)
      */
-    getVolume(type: string = 'master'): number {
+    getVolume(type: "single" | "batch" = 'master'): number {
         switch(type.toLowerCase()) {
             case 'master':
                 return this.masterVolume;
@@ -673,16 +673,16 @@ export class AudioManager {
         this.subsystemCoordinator.disposeSubsystems();
         
         // 設定管理の破棄
-        this.configurationManager.dispose();
+        this.configurationManager?.dispose?.();
         
         // 再生制御の破棄
-        this.playbackController.dispose();
+        this.playbackController?.dispose?.();
         
         // 音響生成の破棄
-        this.soundGenerator.dispose();
+        this.soundGenerator?.dispose?.();
         
         // コンテキスト管理の破棄
-        this.contextManager.dispose();
+        this.contextManager?.dispose?.();
         
         // ローカル状態のリセット
         this.isInitialized = false;
@@ -819,7 +819,7 @@ export function getAudioManager(configManager: ConfigManager, audioConfig: Audio
  */
 export function reinitializeAudioManager(configManager: ConfigManager, audioConfig: AudioConfig): AudioManager {
     if (audioManagerInstance) {
-        audioManagerInstance.dispose();
+        audioManagerInstance?.dispose?.();
     }
     audioManagerInstance = new AudioManager(configManager, audioConfig);
     return audioManagerInstance;

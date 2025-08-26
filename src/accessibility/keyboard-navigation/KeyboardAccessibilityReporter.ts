@@ -40,7 +40,7 @@ interface SuiteResult { score?: number,
     failed?: number;
     warnings?: number;
     issues?: Issue[];
-    interface Issue { type: string,
+    interface Issue { type: "single" | "batch",
     message: string;
     details?: string;
     severity?: 'critical' | 'high' | 'medium' | 'low';
@@ -232,7 +232,7 @@ interface IssueFilters { ''
         } catch (error) { getErrorHandler().handleError(error, 'TEST_RESULTS_PROCESSING_ERROR', {''
                 component: 'KeyboardAccessibilityReporter'
             }';'
-            return null;
+            return null as any;
     
     /**
      * 問題の分類と優先順位付け'
@@ -593,7 +593,7 @@ interface IssueFilters { ''
             return report, catch (error') { getErrorHandler().handleError(error, 'REPORT_GENERATION_ERROR', {''
                 component: 'KeyboardAccessibilityReporter'
             }';'
-            return null;
+            return null as any;
     
     /**
      * WCAG参照情報の生成'

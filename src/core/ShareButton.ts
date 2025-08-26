@@ -1160,7 +1160,7 @@ export class ShareButton {
     /**
      * エラーハンドリング
      */
-    handleError(type: string, error: any, context: any = {}): void {
+    handleError(type: "single" | "batch", error: any, context: any = {}): void {
         const errorInfo = {
             type,
             error: error.message || error,

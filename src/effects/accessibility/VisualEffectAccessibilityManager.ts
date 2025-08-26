@@ -82,7 +82,7 @@ interface ParticleOptions {
     count?: number;
     lifetime?: number;
     movement?: {
-        type: string;
+        type: "single" | "batch";
         speed: number;
     };
     speed?: number;
@@ -297,7 +297,7 @@ export class VisualEffectAccessibilityManager {
             if (originalCreateParticle) {
                 return originalCreateParticle(x, y, accessibleOptions);
             }
-            return null;
+            return null as any;
         };
         
         particleManager.renderParticle = (context: CanvasRenderingContext2D, particle: Particle): void => {
@@ -324,7 +324,7 @@ export class VisualEffectAccessibilityManager {
             if (originalAddEffect) {
                 return originalAddEffect(effectType, accessibleOptions);
             }
-            return null;
+            return null as any;
         };
         
         effectManager.renderEffect = (context: CanvasRenderingContext2D, effect: Effect): void => {
@@ -350,7 +350,7 @@ export class VisualEffectAccessibilityManager {
             if (originalCreateAnimation) {
                 return originalCreateAnimation(element, animationType, accessibleOptions.duration, accessibleOptions);
             }
-            return null;
+            return null as any;
         };
     }
     
@@ -671,7 +671,7 @@ export class VisualEffectAccessibilityManager {
                 };
             }
         }
-        return null;
+        return null as any;
     }
     
     /**

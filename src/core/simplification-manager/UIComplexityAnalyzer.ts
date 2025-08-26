@@ -509,7 +509,7 @@ export class UIComplexityAnalyzer {
      * UI複雑度を分析
      */
     analyzeComplexity(container: HTMLElement = document.body): AnalysisResult | null {
-        if (!container) return null;
+        if (!container) return null as any;
         
         const startTime = performance.now();
         try {
@@ -545,7 +545,7 @@ export class UIComplexityAnalyzer {
 
         } catch (error) {
             console.error('Complexity analysis failed:', error);
-            return null;
+            return null as any;
         }
     }
 

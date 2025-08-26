@@ -385,7 +385,7 @@ export class BalanceGuidelinesManager {
             const guideline = this.guidelines.get(configType);
             if (!guideline) {
                 console.warn(`[BalanceGuidelinesManager] ガイドラインが見つかりません: ${configType}`);
-                return null;
+                return null as any;
             }
             
             return {
@@ -397,7 +397,7 @@ export class BalanceGuidelinesManager {
                 context: 'BalanceGuidelinesManager.getAdjustmentGuidelines',
                 configType
             });
-            return null;
+            return null as any;
         }
     }
     /**

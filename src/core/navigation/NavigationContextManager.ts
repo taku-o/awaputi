@@ -254,7 +254,7 @@ export class NavigationContextManager {
                 if (this.config.enableLogging) {
                     this.loggingSystem.debug('NavigationContextManager', 'No navigation context to pop - using default fallback');
                 }
-                return null;
+                return null as any;
             }
             
             const poppedContext = this.navigationStack.pop();
@@ -271,7 +271,7 @@ export class NavigationContextManager {
         } catch (error) {
             const err = error instanceof Error ? error : new Error(String(error));
             this.errorHandler.handleError(err, 'NavigationContextManager.popContext');
-            return null;
+            return null as any;
         }
     }
     
@@ -463,7 +463,7 @@ export class NavigationContextManager {
         if (this.currentContext) {
             return this.currentContext.method;
         }
-        return null;
+        return null as any;
     }
 
     /**

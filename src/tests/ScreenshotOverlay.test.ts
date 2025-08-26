@@ -65,7 +65,7 @@ interface AchievementData {
 }
 
 interface CustomElement {
-    type: string;
+    type: "single" | "batch";
     text?: string;
     position: { x: number; y: number };
     style?: {

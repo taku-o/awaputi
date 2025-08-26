@@ -54,7 +54,7 @@ interface QualitySettings {
 }
 
 interface ApplyStep {
-    type: string;
+    type: "single" | "batch";
     value: number | boolean;
     priority: number;
 }

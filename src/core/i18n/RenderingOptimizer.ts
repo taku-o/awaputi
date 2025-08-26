@@ -171,7 +171,7 @@ declare global {
     }
     interface FontFaceSet extends EventTarget {
         load(font: string): Promise<FontFace[]>;
-        addEventListener(type: string, listener: EventListener): void;
+        addEventListener(type: "single" | "batch", listener: EventListener): void;
     }
     interface FontFace {
         family: string;
@@ -551,7 +551,7 @@ export class RenderingOptimizer {
             return update;
         } catch (error) {
             console.warn('Failed to prepare element update:', error);
-            return null;
+            return null as any;
         }
     }
     

@@ -332,7 +332,7 @@ export class SimplificationManager {
             return levelOrder[currentIndex + 1];
         }
         
-        return null;
+        return null as any;
     }
 
     /**
@@ -577,7 +577,7 @@ export class SimplificationManager {
     /**
      * イベントをログ
      */
-    private logEvent(type: string, data: any = {}): void {
+    private logEvent(type: "single" | "batch", data: any = {}): void {
         if (console && console.log) {
             console.log(`[SimplificationManager] ${type}:`, data);
         }
@@ -596,9 +596,9 @@ export class SimplificationManager {
      */
     destroy(): void {
         this.stopAutoAnalysis();
-        this.interfaceSimplifier.destroy();
-        this.complexityAnalyzer.destroy();
-        this.adaptiveEngine.destroy();
+        this.interfaceSimplifier?.destroy?.();
+        this.complexityAnalyzer?.destroy?.();
+        this.adaptiveEngine?.destroy?.();
         this.isInitialized = false;
         
         this.state = {

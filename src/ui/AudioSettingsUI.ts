@@ -125,7 +125,7 @@ export class AudioSettingsUI implements AudioSettingsUIState {
             // 相互連携の設定
             this.tabManager.setTabRenderers(this.tabRenderers);
             this.uiComponentFactory.setSettingsChangeCallback(() => this.showSaveStatus());
-            this.dataManager.setNotificationCallback((message: string, type: string) => this.showNotification(message, type));
+            this.dataManager.setNotificationCallback((message: string, type: "single" | "batch") => this.showNotification(message, type));
 
             console.log('[AudioSettingsUI] サブコンポーネントを初期化しました');
         } catch (error) {
@@ -433,7 +433,7 @@ export class AudioSettingsUI implements AudioSettingsUIState {
      * @param {string} message - メッセージ
      * @param {string} type - タイプ ('success', 'error', 'info')
      */
-    private showNotification(message: string, type: string = 'info'): void {
+    private showNotification(message: string, type: "single" | "batch" = 'info'): void {
         // 既存の通知があれば削除
         const existingNotification = document.querySelector('.audio-settings-notification');
         if (existingNotification) {
@@ -588,7 +588,7 @@ export class AudioSettingsUI implements AudioSettingsUIState {
     public dispose(): void {
         // サブコンポーネントのクリーンアップ
         if (this.uiComponentFactory) {
-            this.uiComponentFactory.dispose();
+            this.uiComponentFactory?.dispose?.();
         }
         
         // 設定監視を解除
@@ -609,7 +609,7 @@ export class AudioSettingsUI implements AudioSettingsUIState {
         
         // 音響テストパネルを破棄
         if (this.audioTestPanel) {
-            this.audioTestPanel.dispose();
+            this.audioTestPanel?.dispose?.();
         }
         
         this.container = null;

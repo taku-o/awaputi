@@ -4,7 +4,7 @@
  */
 
 interface ServiceWorkerMessage {
-    type: string;
+    type: "single" | "batch";
     action?: string;
     options?: any;
     resources?: string[];
@@ -41,7 +41,7 @@ interface AppManifestConfig {
     icons?: Array<{
         src: string;
         sizes: string;
-        type: string;
+        type: "single" | "batch";
     }>;
     categories?: string[];
     lang?: string;

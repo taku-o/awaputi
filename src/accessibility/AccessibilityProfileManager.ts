@@ -289,7 +289,7 @@ export class AccessibilityProfileManager {
         if (this.userProfiles.size >= this.config.maxProfiles) {
 
             console.warn('Maximum number of profiles reached');
-            return null;
+            return null as any;
 
         const profileId = this.generateProfileId();
         const profile = {
@@ -310,7 +310,7 @@ export class AccessibilityProfileManager {
         if (!validation.isValid) {
 
             console.error('Profile validation failed:', validation.errors }
-            return null;
+            return null as any;
         
         this.userProfiles.set(profileId, profile);
         this.saveProfiles();
@@ -557,7 +557,7 @@ export class AccessibilityProfileManager {
         if (!profile) { }'
 
             console.error(`Profile, not found: ${profileId}`}';'
-            return null;
+            return null as any;
         }
         ';'
 

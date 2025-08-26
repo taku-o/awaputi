@@ -281,7 +281,7 @@ export class AchievementPerformanceOptimizer {
             case 'scoreUpdate':
                 return this.optimizeScoreEvents(events);
             default:
-                return null; // 最適化なし
+                return null as any; // 最適化なし
         }
     }
 
@@ -410,19 +410,19 @@ export class AchievementPerformanceOptimizer {
      * @returns キャッシュされた値
      */
     getFromCache<T = any>(key: string): T | null {
-        if (!this.config.enableCaching) return null;
+        if (!this.config.enableCaching) return null as any;
         
         const cached = this.cache.get(key);
         if (!cached) {
             this.performanceStats.cacheMisses++;
-            return null;
+            return null as any;
         }
         
         // タイムアウトチェック
         if (Date.now() - cached.timestamp > this.config.cacheTimeout) {
             this.cache.delete(key);
             this.performanceStats.cacheMisses++;
-            return null;
+            return null as any;
         }
         
         this.performanceStats.cacheHits++;

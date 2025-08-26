@@ -86,7 +86,7 @@ interface ExtractedFunction {
 }
 
 interface Recommendation {
-    type: string;
+    type: "single" | "batch";
     priority: string;
     message: string;
     action: string;

@@ -418,7 +418,7 @@ export class RegionalFormattingTest {
                 totalTests: this.testResults.length,
                 passedTests: this.testResults.filter(r => r.passed).length,
                 failedTests: this.testResults.filter(r => !r.passed).length,
-                successRate: (this.testResults.filter(r => r.passed).length / this.testResults.length) * 100).toFixed(1) + '%'
+                successRate: ((this.testResults.filter(r => r.passed).length / this.testResults.length) * 100).toFixed(1) + '%'
             },
             categories: {},
             timestamp: new Date()

@@ -17,7 +17,7 @@ interface HealthCheck {
 // アラートインターフェース
 interface Alert {
     id: string;
-    type: string;
+    type: "single" | "batch";
     severity: 'info' | 'warning' | 'critical';
     message: string;
     metadata: Record<string, any>;
@@ -119,7 +119,7 @@ interface AlertsData {
 interface SEOError {
     timestamp: number;
     message: string;
-    type: string;
+    type: "single" | "batch";
     severity: string;
 }
 
@@ -320,7 +320,7 @@ export class HealthChecker {
     /**
      * アラートの作成
      */
-    createAlert(type: string, severity: 'info' | 'warning' | 'critical', message: string, metadata: Record<string, any> = {}): Alert {
+    createAlert(type: "single" | "batch", severity: 'info' | 'warning' | 'critical', message: string, metadata: Record<string, any> = {}): Alert {
         const alert: Alert = {
             id: `alert_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
             type,

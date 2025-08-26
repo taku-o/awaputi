@@ -25,7 +25,7 @@ interface PriorityConfig {
 interface NotificationAction {
     label: string;
     action: () => void;
-    type: string;
+    type: "single" | "batch";
 }
 
 interface NotificationConfig {
@@ -650,7 +650,7 @@ export class WarningNotificationManager {
         if (this.performanceWarningSystem && this.performanceWarningSystem.getSuggestion) {
             return this.performanceWarningSystem.getSuggestion(suggestionId);
         }
-        return null;
+        return null as any;
     }
     
     /**

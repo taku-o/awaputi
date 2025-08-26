@@ -25,7 +25,7 @@ interface MockComponent {
     generateBubbles?: (count: number, options?: any) => MockBubble[];
     generatePlayerData?: (options?: any) => MockPlayerData;
     generateGameState?: (options?: any) => MockGameState;
-    validateData?: (data: any, type: string) => ValidationResult;
+    validateData?: (data: any, type: "single" | "batch") => ValidationResult;
     setErrorHandler?: (handler: ErrorHandler['handleComponentError']) => void;
     initialize?: () => Promise<void> | void;
     cleanup?: () => void;
@@ -62,7 +62,7 @@ interface ComponentDefinition {
 
 interface MockBubble { 
     id: string;
-    type: string;
+    type: "single" | "batch";
     size: number;
     position: { x: number; y: number };
     color: string;
@@ -263,7 +263,7 @@ export class MockDataGenerator {
         return generator?.generateBubbleProperties ? generator.generateBubbleProperties(template) : {};
     }
 
-    public getBubbleColor(type: string | null = null): string {
+    public getBubbleColor(type: "single" | "batch" | null = null): string {
         const generator = this.getComponent('bubbleGenerator');
         return generator?.getBubbleColor ? generator.getBubbleColor(type) : '#4ECDC4';
     }
@@ -430,7 +430,7 @@ export class MockDataGenerator {
 
     // === データ検証 ===
 
-    public validateData(data: any, type: string): ValidationResult {
+    public validateData(data: any, type: "single" | "batch"): ValidationResult {
         const validator = this.getComponent('validator');
         return validator?.validateData ? validator.validateData(data, type) : { valid: true, errors: [], warnings: [] };
     }

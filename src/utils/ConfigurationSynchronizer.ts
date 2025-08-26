@@ -53,7 +53,7 @@ interface ConfigurationData {
 }
 
 interface Discrepancy {
-    type: string;
+    type: "single" | "batch";
     bubbleType?: string;
     key: string;
     values: Array<[string, SourceValue]>;

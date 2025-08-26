@@ -342,7 +342,7 @@ export class TimingAdjustmentManager {
     /**
      * 適応提案を表示（フィードバックシステムに委譲）
      */
-    suggestAdaptation(type: string, averageResponseTime: number): void {
+    suggestAdaptation(type: "single" | "batch", averageResponseTime: number): void {
         return this.feedback.suggestAdaptation(type, averageResponseTime);
     }
     
@@ -551,15 +551,15 @@ export class TimingAdjustmentManager {
     destroy(): void {
         // サブコンポーネントのクリーンアップ
         if (this.calibrator) {
-            this.calibrator.destroy();
+            this.calibrator?.destroy?.();
         }
         
         if (this.algorithms) {
-            this.algorithms.destroy();
+            this.algorithms?.destroy?.();
         }
         
         if (this.feedback) {
-            this.feedback.destroy();
+            this.feedback?.destroy?.();
         }
         
         // イベントリスナーの削除

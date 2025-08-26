@@ -9,7 +9,7 @@ export class GameBalanceCollector {
         typeDistribution: Record<string, number>;
         spawnTimings: Array<{
             time: number;
-            type: string;
+            type: "single" | "batch";
             stageProgress: number;
         }>;
         difficultyProgression: Array<{

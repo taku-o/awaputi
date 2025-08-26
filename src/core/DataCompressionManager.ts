@@ -120,7 +120,7 @@ interface ObjectArraySummary {
 }
 
 interface FieldInfo {
-    type: string;
+    type: "single" | "batch";
     count: number;
     values?: any[];
     statistics?: NumericSummary;

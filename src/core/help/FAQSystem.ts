@@ -364,10 +364,10 @@ export class FAQSystem {
                 this.trackView(faqId);
                 return faq;
             }
-            return null;
+            return null as any;
         } catch (error) {
             this.loggingSystem.error('FAQSystem', `Failed to get FAQ: ${faqId}`, error);
-            return null;
+            return null as any;
         }
     }
 
@@ -519,7 +519,7 @@ export class FAQSystem {
             return this.usageStatistics.get(faqId) || null;
         } catch (error) {
             this.loggingSystem.error('FAQSystem', `Failed to get statistics for FAQ: ${faqId}`, error);
-            return null;
+            return null as any;
         }
     }
 
@@ -757,7 +757,7 @@ export function getFAQSystem(gameEngine: GameEngine): FAQSystem {
  */
 export function reinitializeFAQSystem(gameEngine: GameEngine): FAQSystem {
     if (faqSystemInstance) {
-        faqSystemInstance.destroy();
+        faqSystemInstance?.destroy?.();
     }
     faqSystemInstance = new FAQSystem(gameEngine);
     return faqSystemInstance;

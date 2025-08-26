@@ -541,7 +541,7 @@ export class AnomalyDetector {
         });
 
         // タイプ別の推奨事項
-        typeCount.forEach((count: number, type: string) => {
+        typeCount.forEach((count: number, type: "single" | "batch") => {
             const recommendation = this.getRecommendationForType(type as string, count as number);
             if (recommendation) {
                 recommendations.push(recommendation);
@@ -554,7 +554,7 @@ export class AnomalyDetector {
     /**
      * タイプ別の推奨事項を取得
      */
-    getRecommendationForType(type: string, _count: number) {
+    getRecommendationForType(type: "single" | "batch", _count: number) {
         const recommendations = {
             [this.anomalyTypes.SCORE_OUTLIER]: 'スコアの変動が大きいです。ゲームバランスの調整を検討してください。',
             [this.anomalyTypes.ACCURACY_DROP]: '精度が低下しています。操作方法の確認や練習をお勧めします。',
@@ -572,7 +572,7 @@ export class AnomalyDetector {
     /**
      * タイプの表示名を取得
      */
-    getTypeDisplayName(type: string) {
+    getTypeDisplayName(type: "single" | "batch") {
         const displayNames = {
             [this.anomalyTypes.SCORE_OUTLIER]: 'スコア異常',
             [this.anomalyTypes.ACCURACY_DROP]: '精度低下',

@@ -14,7 +14,7 @@ import type { GameEngine } from '../core/GameEngine';
 
 interface CommandParameter {
     name: string;
-    type: string;
+    type: "single" | "batch";
     required: boolean;
     description: string;
 }
@@ -51,7 +51,7 @@ interface ParsedCommand {
 
 interface OutputLine {
     message: string;
-    type: string;
+    type: "single" | "batch";
     timestamp: string;
     id: number;
 }
@@ -73,7 +73,7 @@ interface HistoryEntry {
 
 interface AutocompleteSuggestion {
     suggestion: string;
-    type: string;
+    type: "single" | "batch";
     description?: string;
 }
 
@@ -383,7 +383,7 @@ export class DeveloperConsole {
     /**
      * パラメータ型のバリデーション
      */
-    private validateParameterType(value: string, type: string): boolean {
+    private validateParameterType(value: string, type: "single" | "batch"): boolean {
         switch (type) {
             case 'number':
                 return !isNaN(parseFloat(value));
@@ -399,7 +399,7 @@ export class DeveloperConsole {
     /**
      * 出力
      */
-    output(message: string, type: string = 'info'): void {
+    output(message: string, type: "single" | "batch" = 'info'): void {
         const timestamp = new Date().toISOString().substr(11, 8);
         const outputLine: OutputLine = {
             message,
@@ -510,7 +510,7 @@ export class DeveloperConsole {
      */
     updateAutocompleteSettings(settings: any): void {
         if (this.enhancedAutocomplete) {
-            this.enhancedAutocomplete.updateSettings(settings);
+            this.enhancedAutocomplete.updateSetting(settings);
         }
     }
 
@@ -952,15 +952,15 @@ export class DeveloperConsole {
         
         // 拡張機能のクリーンアップ
         if (this.configurationCommands) {
-            this.configurationCommands.destroy();
+            this.configurationCommands?.destroy?.();
         }
         
         if (this.enhancedAutocomplete) {
-            this.enhancedAutocomplete.destroy();
+            this.enhancedAutocomplete?.destroy?.();
         }
         
         if (this.historyManager) {
-            this.historyManager.destroy();
+            this.historyManager?.destroy?.();
         }
         
         this.commands.clear();

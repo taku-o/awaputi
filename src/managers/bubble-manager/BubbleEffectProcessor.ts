@@ -309,7 +309,7 @@ export class BubbleEffectProcessor implements IBubbleEffectProcessor {
     /**
      * チェーンボーナスを設定
      */
-    setChainBonus(type: string, bonus: number): void {
+    setChainBonus(type: "single" | "batch", bonus: number): void {
         try {
             if (!type || typeof type !== 'string') {
                 console.warn('[BubbleEffectProcessor] setChainBonus: typeは文字列である必要があります');

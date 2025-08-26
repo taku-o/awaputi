@@ -14,7 +14,7 @@ import { EnvironmentalAudioSettings } from './environmental-audio-manager/Enviro
 
 // エラーハンドラー型定義
 interface ErrorHandler {
-    handleError(error: Error, type: string, context?: any): void;
+    handleError(error: Error, type: "single" | "batch", context?: any): void;
 }
 
 // 設定管理型定義
@@ -233,7 +233,7 @@ export class EnvironmentalAudioManager {
                 throw new Error(`Unknown biome: ${biomeId}`);
             }
             
-            const settings = this.settings?.getSettings();
+            const settings = this.settings?.getSetting();
             const {
                 fadeTime = settings?.fadeTime || 2.0,
                 weather = null,
@@ -411,7 +411,7 @@ export class EnvironmentalAudioManager {
             };
         }
         
-        return this.settings?.getSettings() || {
+        return this.settings?.getSetting() || {
             enabled: false,
             volume: 0,
             fadeTime: 0,
@@ -473,7 +473,7 @@ export class EnvironmentalAudioManager {
         try {
             if (!this.disabled) {
                 // 設定監視の解除
-                this.settings?.dispose();
+                this.settings?.dispose?.();
                 // アクティブな環境音を停止
                 this.transitionController?.stopAllEnvironmental();
                 // バッファをクリア

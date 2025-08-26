@@ -297,7 +297,7 @@ export class ChallengeSystem {
             return challenge;
         } catch (error) {
             getErrorHandler().handleError(error as Error, 'ChallengeSystem.createChallenge');
-            return null;
+            return null as any;
         }
     }
 

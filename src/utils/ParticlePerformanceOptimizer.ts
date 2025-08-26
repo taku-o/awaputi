@@ -40,7 +40,7 @@ interface ParticlePool {
     available: any[];
     inUse: Set<any>;
     maxSize: number;
-    type: string;
+    type: "single" | "batch";
 }
 
 interface ParticleManager {
@@ -494,7 +494,7 @@ export class ParticlePerformanceOptimizer {
      * @param type - Particle type name
      * @param config - Particle configuration
      */
-    registerParticleType(type: string, config: ParticleTypeConfig): void {
+    registerParticleType(type: "single" | "batch", config: ParticleTypeConfig): void {
         this.effectSystem.registeredEffects.set(type, {
             ...config,
             createdCount: 0,
@@ -763,7 +763,7 @@ export function getParticlePerformanceOptimizer(): ParticlePerformanceOptimizer 
 export function reinitializeParticlePerformanceOptimizer(): void {
     try {
         if (_particlePerformanceOptimizer) {
-            _particlePerformanceOptimizer.destroy();
+            _particlePerformanceOptimizer?.destroy?.();
         }
         _particlePerformanceOptimizer = new ParticlePerformanceOptimizer();
         console.log('[ParticlePerformanceOptimizer] 再初期化完了');

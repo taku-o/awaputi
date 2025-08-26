@@ -599,7 +599,7 @@ export class Bubble implements BubbleInterface {
         
         if (this.health <= 0) {
         
-            this.destroy();
+            this?.destroy?.();
             return true; // 破壊された
         }
         return false; // まだ生きている

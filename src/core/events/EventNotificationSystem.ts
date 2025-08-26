@@ -23,7 +23,7 @@ interface NotificationAction {
 
 interface NotificationData {
     id: string;
-    type: string;
+    type: "single" | "batch";
     title: string;
     message: string;
     icon: string;

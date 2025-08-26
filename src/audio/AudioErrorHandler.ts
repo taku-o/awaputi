@@ -4,7 +4,7 @@ import { getLocalizationManager } from '../core/LocalizationManager';
 
 // エラーハンドラー型定義
 interface ErrorHandler {
-    handleError(error: Error, type: string, context?: any): void;
+    handleError(error: Error, type: "single" | "batch", context?: any): void;
 }
 
 // 設定管理型定義
@@ -148,7 +148,7 @@ interface ErrorReport {
 // エラーデータ型定義
 interface ErrorData {
     timestamp: string;
-    type: string;
+    type: "single" | "batch";
     severity: string;
     message: string;
     stack?: string;
@@ -916,7 +916,7 @@ export class AudioErrorHandler {
     /**
      * ユーザー通知を表示
      */
-    showUserNotification(message: string, type: string = 'info'): void {
+    showUserNotification(message: string, type: "single" | "batch" = 'info'): void {
         // DOM通知の作成（簡単な実装）
         const notification = document.createElement('div');
         notification.className = `audio-error-notification ${type}`;
@@ -1034,7 +1034,7 @@ export class AudioErrorHandler {
                 limit: memory.jsHeapSizeLimit
             };
         }
-        return null;
+        return null as any;
     }
     
     /**
@@ -1048,7 +1048,7 @@ export class AudioErrorHandler {
         if (originalUrl.endsWith('.ogg')) {
             return originalUrl.replace('.ogg', '.wav');
         }
-        return null;
+        return null as any;
     }
     
     /**

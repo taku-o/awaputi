@@ -23,7 +23,7 @@ export interface LoggingSystem {
 
 export interface HelpAnalytics {
     sessions: Map<string, AnalyticsSession>;
-    generateReport(type: string, options?: any): AnalyticsReport;
+    generateReport(type: "single" | "batch", options?: any): AnalyticsReport;
 }
 
 export interface HelpFeedbackSystem {
@@ -195,7 +195,7 @@ export interface UsagePatterns {
 }
 
 export interface Insight {
-    type: string;
+    type: "single" | "batch";
     message: string;
     severity: 'low' | 'medium' | 'high';
 }

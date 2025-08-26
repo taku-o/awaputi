@@ -266,12 +266,12 @@ export class SoundPoolManager {
             const pool = this.categoryPools[category];
             if (!pool || !pool.sounds.has(soundKey)) {
                 console.warn(`[SoundPoolManager] Sound not found: ${category}/${soundKey}`);
-                return null;
+                return null as any;
             }
             
             const soundEntry = pool.sounds.get(soundKey);
             if (!soundEntry) {
-                return null;
+                return null as any;
             }
             
             let selectedBuffer = soundEntry.buffer;
@@ -288,7 +288,7 @@ export class SoundPoolManager {
             return selectedBuffer;
         } catch (error) {
             this.errorHandler.handleError(error, 'SoundPoolManager.getFromPool');
-            return null;
+            return null as any;
         }
     }
     
@@ -344,7 +344,7 @@ export class SoundPoolManager {
             return sourceWrapper;
         } catch (error) {
             this.errorHandler.handleError(error, 'SoundPoolManager.getAudioSource');
-            return null;
+            return null as any;
         }
     }
     
@@ -390,19 +390,19 @@ export class SoundPoolManager {
             // アクティブソース数をチェック
             if (this.activeSources.size >= this.poolConfig.maxActiveSources) {
                 console.warn('[SoundPoolManager] Maximum active sources reached');
-                return null;
+                return null as any;
             }
             
             // サウンドバッファを取得
             const audioBuffer = this.getFromPool(category, soundKey, options.useVariation !== false);
             if (!audioBuffer) {
-                return null;
+                return null as any;
             }
             
             // オーディオソースを取得
             const sourceWrapper = this.getAudioSource();
             if (!sourceWrapper || !sourceWrapper.source) {
-                return null;
+                return null as any;
             }
             
             // オーディオを設定
@@ -432,7 +432,7 @@ export class SoundPoolManager {
             };
         } catch (error) {
             this.errorHandler.handleError(error, 'SoundPoolManager.playSound');
-            return null;
+            return null as any;
         }
     }
     

@@ -420,7 +420,7 @@ export class UserDataExporter {
     async exportData(options: Partial<ExportSettings> = {}): Promise<ProcessedExportData | null> {
         if (this.isExporting) {
             console.warn('Export already in progress');
-            return null;
+            return null as any;
         }
         
         this.isExporting = true;

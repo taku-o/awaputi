@@ -26,13 +26,13 @@ interface PerformanceStats {
 
 interface ErrorStats {
     total: number;
-    byType: { [type: string]: number };
+    byType: { [type: "single" | "batch"]: number };
     byPlatform: { [platform: string]: number };
     recent: ErrorRecord[];
 }
 
 interface ErrorRecord {
-    type: string;
+    type: "single" | "batch";
     timestamp: number;
     data: any;
 }
@@ -95,7 +95,7 @@ interface PerformanceReport {
 
 interface ErrorReport {
     total: number;
-    byType: { [type: string]: number };
+    byType: { [type: "single" | "batch"]: number };
     byPlatform: { [platform: string]: number };
     recent: ErrorRecord[];
     errorRate: number;

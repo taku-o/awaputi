@@ -22,7 +22,7 @@ export interface BubbleManager {
 
 export interface Bubble {
     id: string;
-    type: string;
+    type: "single" | "batch";
     isPopped: boolean;
 }
 
@@ -50,7 +50,7 @@ export interface EventBus {
 }
 
 export interface StepAction {
-    type: string;
+    type: "single" | "batch";
 }
 
 export interface TutorialStep {
@@ -324,7 +324,7 @@ export class TutorialValidationEngine {
             
             // アクションタイプに基づいて自動決定
             const actionType = step.action?.type;
-            if (!actionType) return null;
+            if (!actionType) return null as any;
             
             const actionToValidation: Record<string, string> = {
                 'click_bubble': 'validateBubblePop',
@@ -339,7 +339,7 @@ export class TutorialValidationEngine {
             return actionToValidation[actionType] || null;
         } catch (error) {
             this.loggingSystem.log(`バリデーション関数決定エラー: ${(error as Error).message}`, 'error', 'TutorialValidationEngine');
-            return null;
+            return null as any;
         }
     }
     
@@ -548,7 +548,7 @@ export function getTutorialValidationEngine(gameEngine: GameEngine, loggingSyste
  */
 export function reinitializeTutorialValidationEngine(gameEngine: GameEngine, loggingSystem?: LoggingSystem): TutorialValidationEngine {
     if (tutorialValidationEngineInstance) {
-        tutorialValidationEngineInstance.destroy();
+        tutorialValidationEngineInstance?.destroy?.();
     }
     tutorialValidationEngineInstance = new TutorialValidationEngine(gameEngine, loggingSystem);
     return tutorialValidationEngineInstance;

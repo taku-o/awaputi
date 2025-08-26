@@ -39,7 +39,7 @@ interface MockWindow {
 }
 
 interface ShareData {
-    type: string;
+    type: "single" | "batch";
     score?: number;
     text?: string;
     url?: string;

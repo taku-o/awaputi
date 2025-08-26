@@ -747,15 +747,15 @@ export class FocusManager {
         
         // サブコンポーネントのクリーンアップ
         if (this.navigation) { 
-            this.navigation.destroy();
+            this.navigation?.destroy?.();
         }
         
         if (this.renderer) { 
-            this.renderer.destroy();
+            this.renderer?.destroy?.();
         }
         
         if (this.trapManager) { 
-            this.trapManager.destroy();
+            this.trapManager?.destroy?.();
         }
         
         // データのクリア

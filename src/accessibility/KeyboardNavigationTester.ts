@@ -926,9 +926,9 @@ interface AccessibilityManager { gameEngine?: any;
         if (this.observers.focus) { this.observers.focus.disconnect();
         if (this.observers.dom) { this.observers.dom.disconnect();
         // サブコンポーネントのクリーンアップ
-        this.eventHandler.destroy();
-        this.stateManager.destroy();
-        this.reporter.destroy()';'
+        this.eventHandler?.destroy?.();
+        this.stateManager?.destroy?.();
+        this.reporter?.destroy?.()';'
         console.log('KeyboardNavigationTester, destroyed');
 
     }'}'

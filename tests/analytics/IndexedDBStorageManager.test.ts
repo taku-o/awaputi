@@ -127,9 +127,9 @@ class MockIDBIndex {
     keyPath: string;
     unique: boolean;
 
-    constructor(_name: string, _keyPath: string, options: any) {
-        this.name = _name;
-        this.keyPath = _keyPath;
+    constructor(name: string, keyPath: string, options: any) {
+        this.name = name;
+        this.keyPath = keyPath;
         this.unique = options.unique || false;
     }
     

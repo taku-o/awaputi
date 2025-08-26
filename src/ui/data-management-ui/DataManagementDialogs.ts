@@ -142,7 +142,7 @@ export class DialogManager {
         this.dialogs.set('alert', new AlertDialog(this.renderer, this.layoutManager));
     }
 
-    renderDialog(type: string, data: any = {}): void {
+    renderDialog(type: "single" | "batch", data: any = {}): void {
         const dialog = this.dialogs.get(type);
         if (dialog) {
             // Draw overlay
@@ -154,11 +154,11 @@ export class DialogManager {
         }
     }
 
-    getDialog(type: string): Dialog | undefined {
+    getDialog(type: "single" | "batch"): Dialog | undefined {
         return this.dialogs.get(type);
     }
 
-    registerDialog(type: string, dialog: Dialog): void {
+    registerDialog(type: "single" | "batch", dialog: Dialog): void {
         this.dialogs.set(type, dialog);
     }
 }

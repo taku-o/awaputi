@@ -418,7 +418,7 @@ export class LeaderboardTab {
      * データ取得
      */
     getData(): LeaderboardData | null {
-        if (!this.leaderboardUI) return null;
+        if (!this.leaderboardUI) return null as any;
         
         return {
             currentView: this.leaderboardUI.currentView,

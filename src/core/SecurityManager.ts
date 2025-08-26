@@ -28,7 +28,7 @@ interface SecurityStatistics {
 }
 
 interface SecurityEvent {
-    type: string;
+    type: "single" | "batch";
     timestamp: number;
     details: any;
     userAgent: string;
@@ -641,7 +641,7 @@ export class SecurityManager {
             isEncryptionAvailable: !!(window.crypto && window.crypto.subtle),
             config: { ...this.config },
             statistics: { ...this.statistics },
-            keyManagerStatus: this.keyManager.getStatus(),
+            keyManagerStatus: this.keyManager?.getStatus?.(),
             lastSecurityEvent: this.statistics.lastSecurityEvent
         };
     }
@@ -651,7 +651,7 @@ export class SecurityManager {
      */
     destroy(): void {
         try {
-            this.keyManager.destroy();
+            this.keyManager?.destroy?.();
             console.log('SecurityManager destroyed');
         } catch (error) {
             getErrorHandler().handleError(error as Error, 'SECURITY_MANAGER_DESTROY_ERROR', {

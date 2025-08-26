@@ -17,7 +17,7 @@ interface BeforeInstallPromptEvent extends Event {
 }
 
 interface InstallEvent {
-    type: string;
+    type: "single" | "batch";
     timestamp: number;
     userAgent: string;
     referrer: string;

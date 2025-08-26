@@ -71,7 +71,7 @@ interface ParticleEffectOptions {
     count?: number;
     lifetime?: number;
     movement?: {
-        type: string;
+        type: "single" | "batch";
         speed: number;
         [key: string]: any;
     };
@@ -375,7 +375,7 @@ export class AccessibilityEffectIntegrator {
             if (originalCreateBubbleEffect) {
                 return originalCreateBubbleEffect(x, y, bubbleType, bubbleSize, accessibleOptions);
             }
-            return null;
+            return null as any;
         };
 
         particleManager.createEnhancedComboEffect = (x: number, y: number, comboCount: number, comboType: string): any => {
@@ -395,7 +395,7 @@ export class AccessibilityEffectIntegrator {
             if (originalCreateComboEffect) {
                 return originalCreateComboEffect(x, y, comboCount, comboType);
             }
-            return null;
+            return null as any;
         };
     }
     
@@ -422,7 +422,7 @@ export class AccessibilityEffectIntegrator {
             if (originalAddScreenEffect) {
                 return originalAddScreenEffect(effectType, accessibleOptions);
             }
-            return null;
+            return null as any;
         };
         
         effectManager.addLightingEffect = (x: number, y: number, intensity: number, color: string, radius: number): any => {
@@ -438,7 +438,7 @@ export class AccessibilityEffectIntegrator {
                     accessibleOptions.radius
                 );
             }
-            return null;
+            return null as any;
         };
     }
     
@@ -460,7 +460,7 @@ export class AccessibilityEffectIntegrator {
             if (originalAnimateUIElement) {
                 return originalAnimateUIElement(element, animationType, accessibleOptions.duration, accessibleOptions);
             }
-            return null;
+            return null as any;
         };
         
         animationManager.animateBubbleSpawn = (bubble: any, spawnType: string): any => {
@@ -470,7 +470,7 @@ export class AccessibilityEffectIntegrator {
             if (originalAnimateBubbleSpawn) {
                 return originalAnimateBubbleSpawn(bubble, accessibleSpawnType);
             }
-            return null;
+            return null as any;
         };
     }
     
@@ -494,7 +494,7 @@ export class AccessibilityEffectIntegrator {
             if (originalApplySeasonalTheme) {
                 return originalApplySeasonalTheme(accessibleTheme);
             }
-            return null;
+            return null as any;
         };
     }
     
@@ -900,12 +900,12 @@ export class AccessibilityEffectIntegrator {
         
         // マネージャーのクリーンアップ
         if (this.visualAccessibilityManager) {
-            this.visualAccessibilityManager.destroy();
+            this.visualAccessibilityManager?.destroy?.();
             this.visualAccessibilityManager = null;
         }
         
         if (this.alternativeFeedbackManager) {
-            this.alternativeFeedbackManager.destroy();
+            this.alternativeFeedbackManager?.destroy?.();
             this.alternativeFeedbackManager = null;
         }
 

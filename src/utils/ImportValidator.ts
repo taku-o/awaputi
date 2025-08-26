@@ -17,21 +17,21 @@ interface ValidationRules {
 }
 
 interface ValidationError {
-    type: string;
+    type: "single" | "batch";
     line: number;
     message: string;
     code: string;
 }
 
 interface ValidationWarning {
-    type: string;
+    type: "single" | "batch";
     line: number;
     message: string;
     code: string;
 }
 
 interface ValidationSuggestion {
-    type: string;
+    type: "single" | "batch";
     line: number;
     message: string;
     code: string;
@@ -64,13 +64,13 @@ interface GlobalValidationResult {
 }
 
 interface BraceIssue {
-    type: string;
+    type: "single" | "batch";
     message: string;
     code: string;
 }
 
 interface QuoteIssue {
-    type: string;
+    type: "single" | "batch";
     message: string;
     code: string;
 }

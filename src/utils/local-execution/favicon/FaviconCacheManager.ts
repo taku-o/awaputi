@@ -55,14 +55,14 @@ export default class FaviconCacheManager {
      */
     static get(size: number, configHash: string): string | null {
         if (!this._isLocalStorageAvailable()) {
-            return null;
+            return null as any;
         }
         
         try {
             const key = this._generateCacheKey(size, configHash);
             const cached = localStorage.getItem(key);
             if (!cached) {
-                return null;
+                return null as any;
             }
             
             const data: CacheData = JSON.parse(cached);
@@ -70,13 +70,13 @@ export default class FaviconCacheManager {
             // 期限切れチェック
             if (this._isExpired(data.timestamp)) {
                 localStorage.removeItem(key);
-                return null;
+                return null as any;
             }
 
             return data.dataURL;
         } catch (error) {
             console.warn('Error reading favicon from cache:', error);
-            return null;
+            return null as any;
         }
     }
     

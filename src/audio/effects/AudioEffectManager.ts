@@ -158,7 +158,7 @@ type EffectNode = ReverbEffectNode | DelayEffectNode | FilterEffectNode |
 interface ActiveEffectInstance {
     id: number;
     nodes: EffectNode[];
-    type: string;
+    type: "single" | "batch";
     startTime: number;
 }
 
@@ -584,7 +584,7 @@ export class AudioEffectManager {
             this.errorHandler.handleError(error, 'AudioEffectManager.applyEffect');
             // フォールバック: 直接接続
             sourceNode.connect(this.sfxGainNode);
-            return null;
+            return null as any;
         }
     }
     
@@ -641,7 +641,7 @@ export class AudioEffectManager {
     /**
      * エフェクトバリエーションを取得
      */
-    getEffectVariation(category: keyof EffectVariations, type: string): EffectParameters {
+    getEffectVariation(category: keyof EffectVariations, type: "single" | "batch"): EffectParameters {
         const categoryVariations = this.effectVariations[category];
         if (categoryVariations && type in categoryVariations) {
             return (categoryVariations as any)[type];

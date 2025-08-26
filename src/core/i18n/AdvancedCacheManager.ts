@@ -104,7 +104,7 @@ export type SerializationFormat = 'json' | 'msgpack';
 
 export class AdvancedCacheManager {
     private maxMemorySize: number;
-    private _maxEntries: number;
+    // private _maxEntries: number; // Removed: unused variable
     private defaultTTL: number;
     private cleanupInterval: number;
 
@@ -119,8 +119,8 @@ export class AdvancedCacheManager {
     // パフォーマンス設定
     private performanceMode: PerformanceMode;
     private compressionThreshold: number;
-    private _hotCacheRatio: number;
-    private _warmCacheRatio: number;
+    // private _hotCacheRatio: number; // Removed: unused variable
+    // private _warmCacheRatio: number; // Removed: unused variable
 
     // 統計情報
     private stats: CacheStats;
@@ -266,14 +266,14 @@ export class AdvancedCacheManager {
             const metadata = this.metadata.get(key);
             if (!metadata) {
                 this.stats.misses++;
-                return null;
+                return null as any;
             }
             
             // TTLチェック
             if (this._isExpired(metadata)) {
                 await this.delete(key);
                 this.stats.misses++;
-                return null;
+                return null as any;
             }
             
             // レイヤーから取得
@@ -284,7 +284,7 @@ export class AdvancedCacheManager {
                 this.stats.misses++;
                 this.metadata.delete(key);
                 this.sizeTracker.delete(key);
-                return null;
+                return null as any;
             }
             
             // 展開処理
@@ -313,7 +313,7 @@ export class AdvancedCacheManager {
         } catch (error) {
             console.error('Cache get failed:', error);
             this.stats.misses++;
-            return null;
+            return null as any;
         }
     }
     
@@ -754,7 +754,7 @@ export class AdvancedCacheManager {
      */
     getStats(): DetailedStats {
         const hitRate = this.stats.totalRequests > 0 
-            ? (this.stats.totalRequests - this.stats.misses) / this.stats.totalRequests) * 100 
+            ? ((this.stats.totalRequests - this.stats.misses) / this.stats.totalRequests) * 100 
             : 0;
             
         const memoryUsagePercent = (this.stats.currentMemoryUsage / this.maxMemorySize) * 100;

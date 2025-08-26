@@ -57,7 +57,7 @@ export interface EventParticipationRecord {
 }
 
 export interface NotificationData {
-    type: string;
+    type: "single" | "batch";
     title: string;
     message: string;
     icon: string;

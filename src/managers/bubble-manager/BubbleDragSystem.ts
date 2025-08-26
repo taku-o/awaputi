@@ -48,7 +48,7 @@ export class BubbleDragSystem implements IBubbleDragSystem {
             }
         }
         
-        return null;
+        return null as any;
     }
     
     /**

@@ -28,7 +28,7 @@ interface ShareResult {
 }
 
 interface ShareData {
-    type: string;
+    type: "single" | "batch";
     score?: number;
     text?: string;
     name?: string;
@@ -144,10 +144,10 @@ describe('ShareUI Integration Tests', () => {
 
     afterEach(() => {
         if (shareButton) {
-            shareButton.destroy();
+            shareButton?.destroy?.();
         }
         if (shareDialog) {
-            shareDialog.destroy();
+            shareDialog?.destroy?.();
         }
         jest.clearAllMocks();
         document.body.innerHTML = '';
@@ -169,7 +169,7 @@ describe('ShareUI Integration Tests', () => {
         });
 
         test('カスタム設定で初期化される', async () => {
-            shareButton.destroy();
+            shareButton?.destroy?.();
             const { ShareButton } = await import('../core/ShareButton.js') as { ShareButton: ShareButtonConstructor };
             
             const customConfig = {
@@ -200,7 +200,7 @@ describe('ShareUI Integration Tests', () => {
         });
 
         test('カスタム設定で初期化される', async () => {
-            shareDialog.destroy();
+            shareDialog?.destroy?.();
             const { ShareDialog } = await import('../core/ShareDialog.js') as { ShareDialog: ShareDialogConstructor };
             
             const customConfig = {
@@ -315,8 +315,8 @@ describe('ShareUI Integration Tests', () => {
 
     describe('テーマとレスポンシブ対応', () => {
         test('統一されたテーマが適用される', async () => {
-            shareButton.destroy();
-            shareDialog.destroy();
+            shareButton?.destroy?.();
+            shareDialog?.destroy?.();
             
             const { ShareButton } = await import('../core/ShareButton.js') as { ShareButton: ShareButtonConstructor };
             const { ShareDialog } = await import('../core/ShareDialog.js') as { ShareDialog: ShareDialogConstructor };
@@ -421,7 +421,7 @@ describe('ShareUI Integration Tests', () => {
     describe('クリーンアップ', () => {
         test('ShareButtonが正常にクリーンアップされる', () => {
             shareButton.show();
-            shareButton.destroy();
+            shareButton?.destroy?.();
             
             expect(shareButton.elements.container.parentNode).toBeNull();
         });
@@ -429,7 +429,7 @@ describe('ShareUI Integration Tests', () => {
         test('ShareDialogが正常にクリーンアップされる', async () => {
             const shareData: ShareData = { type: 'score', score: 1000 };
             await shareDialog.show(shareData);
-            shareDialog.destroy();
+            shareDialog?.destroy?.();
             
             expect(shareDialog.elements.backdrop.parentNode).toBeNull();
         });
@@ -438,8 +438,8 @@ describe('ShareUI Integration Tests', () => {
             shareButton.show();
             await shareDialog.show({ type: 'score', score: 1000 });
             
-            shareButton.destroy();
-            shareDialog.destroy();
+            shareButton?.destroy?.();
+            shareDialog?.destroy?.();
             
             expect(shareButton.elements.container.parentNode).toBeNull();
             expect(shareDialog.elements.backdrop.parentNode).toBeNull();

@@ -304,7 +304,7 @@ export class RTLLanguageDetector {
             return { ...this.rtlSettings.get(primaryLanguage)! };
         }
         
-        return null;
+        return null as any;
     }
     
     /**
@@ -321,7 +321,7 @@ export class RTLLanguageDetector {
             return { ...this.rtlLanguages.get(primaryLanguage)! };
         }
         
-        return null;
+        return null as any;
     }
     
     /**

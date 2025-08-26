@@ -111,7 +111,7 @@ export class ErrorScreenshotCapture {
      * クリティカルエラー時のスクリーンショット自動キャプチャ
      */
     public async captureOnCriticalError(error: Error, context: CaptureContext = {}): Promise<Screenshot | null> {
-        if (!this.isEnabled) return null;
+        if (!this.isEnabled) return null as any;
         
         try {
             const screenshot = await this.captureScreenshot({
@@ -129,7 +129,7 @@ export class ErrorScreenshotCapture {
             console.warn('Failed to capture error screenshot:', (captureError as Error).message);
         }
         
-        return null;
+        return null as any;
     }
     
     /**
@@ -147,7 +147,7 @@ export class ErrorScreenshotCapture {
                 screenshotData = await this.captureDOMScreenshot();
             }
             
-            if (!screenshotData) return null;
+            if (!screenshotData) return null as any;
             
             const screenshot: Screenshot = {
                 id: this.generateScreenshotId(),
@@ -171,7 +171,7 @@ export class ErrorScreenshotCapture {
 
         } catch (error) {
             console.warn('Screenshot capture failed:', (error as Error).message);
-            return null;
+            return null as any;
         }
     }
     
@@ -438,7 +438,7 @@ export class ErrorScreenshotCapture {
             console.log(`Screenshot deleted: ${id}`);
             return removed;
         }
-        return null;
+        return null as any;
     }
     
     /**

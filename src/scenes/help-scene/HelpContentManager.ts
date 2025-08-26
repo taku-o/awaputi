@@ -367,7 +367,7 @@ export class HelpContentManager {
 
         const category = this.categories.find(c => c.id === this.selectedCategory);
         if (!category || index < 0 || index >= category.topics.length) {
-            return null;
+            return null as any;
         }
         
         // 前のコンテンツのフィードバック記録
@@ -407,7 +407,7 @@ export class HelpContentManager {
             return { newContent, currentContent: this.currentContent };
         } catch (error) {
             console.error('Failed to select topic:', error);
-            return null;
+            return null as any;
         }
     }
 
@@ -416,7 +416,7 @@ export class HelpContentManager {
      */
     async selectSearchResult(index: number): Promise<any> {
         if (!this.isSearching || index < 0 || index >= this.searchResults.length) {
-            return null;
+            return null as any;
         }
 
         const result = this.searchResults[index];
@@ -446,7 +446,7 @@ export class HelpContentManager {
 
                 console.error('Invalid search result structure - missing categoryId or topicId:', result);
                 console.log('Extracted categoryId:', categoryId, 'topicId:', topicId);
-                return null;
+                return null as any;
             }
             
             // 検索モードを終了
@@ -463,7 +463,7 @@ export class HelpContentManager {
             return await this.selectTopic(topicIndex, true); // fromSearchResult = true
         }
         
-        return null;
+        return null as any;
     }
 
     /**
@@ -481,14 +481,14 @@ export class HelpContentManager {
     
     async getEffectivenessReport(): Promise<any> {
         if (!this.helpEffectivenessAnalyzer) {
-            return null;
+            return null as any;
         }
 
         try {
             return await this.helpEffectivenessAnalyzer.generateReport();
         } catch (error) {
             console.error('Failed to generate effectiveness report:', error);
-            return null;
+            return null as any;
         }
     }
 
@@ -633,13 +633,13 @@ export class HelpContentManager {
         
         // アナリティクスのクリーンアップ
         if (this.helpAnalytics && this.helpAnalytics.destroy) {
-            this.helpAnalytics.destroy();
+            this.helpAnalytics?.destroy?.();
         }
         if (this.helpFeedbackSystem && this.helpFeedbackSystem.destroy) {
-            this.helpFeedbackSystem.destroy();
+            this.helpFeedbackSystem?.destroy?.();
         }
         if (this.helpEffectivenessAnalyzer && this.helpEffectivenessAnalyzer.destroy) {
-            this.helpEffectivenessAnalyzer.destroy();
+            this.helpEffectivenessAnalyzer?.destroy?.();
         }
         
         console.log('HelpContentManager destroyed');

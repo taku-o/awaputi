@@ -183,7 +183,7 @@ export class AnimationManager {
                     const easedProgress = this.ease(progress, animation.easing);
                     return { progress, easedProgress };
                 },
-                ease: (t: number, type: string) => this.ease(t, type),
+                ease: (t: number, type: "single" | "batch") => this.ease(t, type),
                 completeAnimation: (animation: Animation) => {
                     if (animation.onComplete) {
                         animation.onComplete();
@@ -250,7 +250,7 @@ export class AnimationManager {
             };
 
             this.loadingHandler = {
-                createLoadingAnimation: (type: string, position: Position | null, size: number, options: AnimationOptions): Animation => {
+                createLoadingAnimation: (type: "single" | "batch", position: Position | null, size: number, options: AnimationOptions): Animation => {
                     const target = {
                         x: position?.x || this.canvas.width / 2,
                         y: position?.y || this.canvas.height / 2,
@@ -393,7 +393,7 @@ export class AnimationManager {
                     globalSpeed: animationConfig.globalSpeed || 1.0,
                     quality: animationConfig.quality || 'high'
                 };
-                this.engineCore.updateSettings(settings);
+                this.engineCore.updateSetting(settings);
             }
         } catch (error) {
             getErrorHandler().handleError(error, 'ANIMATION_CONFIG_ERROR', {
@@ -574,7 +574,7 @@ export class AnimationManager {
     /**
      * ローディングアニメーション作成
      */
-    public createLoadingAnimation(type: string = 'spinner', position: Position | null = null, size: number = 50, options: AnimationOptions = {}): number {
+    public createLoadingAnimation(type: "single" | "batch" = 'spinner', position: Position | null = null, size: number = 50, options: AnimationOptions = {}): number {
         if (!this.engineCore.settings.enabled || !this.typeSettings.loading.enabled) {
             return -1;
         }
@@ -686,7 +686,7 @@ export class AnimationManager {
     /**
      * イージング関数（エンジンコアに委譲）
      */
-    public ease(t: number, type: string): number {
+    public ease(t: number, type: "single" | "batch"): number {
         // Custom easing functions
         if (this.easingFunctions[type]) {
             return this.easingFunctions[type](t);
@@ -856,14 +856,14 @@ export class AnimationManager {
      * アニメーション設定を更新
      */
     public updateSettings(newSettings: Partial<AnimationConfig>): void {
-        this.engineCore.updateSettings(newSettings);
+        this.engineCore.updateSetting(newSettings);
         console.log('[AnimationManager] 設定を更新しました:', newSettings);
     }
 
     /**
      * タイプ別設定を更新
      */
-    public updateTypeSettings(type: string, settings: Partial<TypeSettings>): void {
+    public updateTypeSettings(type: "single" | "batch", settings: Partial<TypeSettings>): void {
         if (this.typeSettings[type]) {
             Object.assign(this.typeSettings[type], settings);
             console.log(`[AnimationManager] タイプ設定を更新しました (${type}:`, settings);
@@ -907,7 +907,7 @@ export class AnimationManager {
         
         // サブコンポーネントのクリーンアップ
         if (this.engineCore) {
-            this.engineCore.dispose();
+            this.engineCore?.dispose?.();
         }
 
         console.log('[AnimationManager] リソースをクリーンアップしました');

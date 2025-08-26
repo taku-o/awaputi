@@ -744,7 +744,7 @@ export class RealtimeDashboard {
         
         // チャートの破棄
         this.charts.forEach(chart => {
-            chart.destroy();
+            chart?.destroy?.();
         });
         this.charts.clear();
         

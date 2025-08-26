@@ -595,13 +595,13 @@ export class MotionManager {
         
         // サブコンポーネントをクリーンアップ
         if (this.configManager) {
-            this.configManager.destroy();
+            this.configManager?.destroy?.();
         }
         if (this.animationController) {
-            this.animationController.destroy();
+            this.animationController?.destroy?.();
         }
         if (this.vestibularSafetyManager) {
-            this.vestibularSafetyManager.destroy();
+            this.vestibularSafetyManager?.destroy?.();
         }
         
         // データをクリア

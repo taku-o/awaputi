@@ -74,8 +74,8 @@ export interface AudioContextManager {
     reconnectReverb(): void;
     bypassReverb(): void;
     resumeAudioContext(): Promise<void>;
-    setGainNodeVolume(type: string, volume: number): void;
-    getGainNodeVolume(type: string): number;
+    setGainNodeVolume(type: "single" | "batch", volume: number): void;
+    getGainNodeVolume(type: "single" | "batch"): number;
     isCompressionEnabled(): boolean;
     isReverbEnabled(): boolean;
     getContextStatus(): AudioContextStatus;
@@ -228,7 +228,7 @@ export interface BGMMetadata {
 
 export interface BGMGenerator {
     audioContext: AudioContext;
-    generateBGM(type: string, options?: BGMGenerationOptions): Promise<AudioBuffer>;
+    generateBGM(type: "single" | "batch", options?: BGMGenerationOptions): Promise<AudioBuffer>;
     generateTrack(config: BGMTrackConfig): Promise<AudioBuffer>;
     dispose(): void;
 }
@@ -353,8 +353,8 @@ export interface AudioConfigurationManager {
     ): void;
     setupConfigWatchers(): void;
     syncWithConfig(): void;
-    setVolume(type: string, volume: number): void;
-    getVolume(type: string): number;
+    setVolume(type: "single" | "batch", volume: number): void;
+    getVolume(type: "single" | "batch"): number;
     toggleMute(): boolean;
     setMuted(muted: boolean): void;
     setAudioEffect(effectType: string, enabled: boolean): void;
@@ -428,7 +428,7 @@ export interface AudioManager {
     playPopSound(): AudioBufferSourceNode | null;
     playGameOverSound(): AudioBufferSourceNode | null;
     stopAllSounds(): void;
-    setVolume(type: string, volume: number): void;
+    setVolume(type: "single" | "batch", volume: number): void;
     getVolume(type?: string): number;
     toggleMute(): boolean;
     setMuted(muted: boolean): void;

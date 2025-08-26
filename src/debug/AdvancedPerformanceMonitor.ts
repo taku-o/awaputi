@@ -90,14 +90,14 @@ interface Chart {
 }
 
 interface PerformanceIssue {
-    type: string;
+    type: "single" | "batch";
     severity: 'warning' | 'critical';
     description: string;
     autoFix?: string;
 }
 
 interface PerformanceSuggestion {
-    type: string;
+    type: "single" | "batch";
     description: string;
     impact: 'low' | 'medium' | 'high';
 }
@@ -109,13 +109,13 @@ interface TrendData {
 }
 
 interface PerformanceBottleneck {
-    type: string;
+    type: "single" | "batch";
     ratio: number;
     description: string;
 }
 
 interface PerformancePattern {
-    type: string;
+    type: "single" | "batch";
     period?: number;
     description: string;
 }
@@ -868,7 +868,7 @@ class PerformanceAnalyzer {
     private detectPeriodicPattern(values: number[]): { period: number } | null {
         // 簡単な周期検出アルゴリズム
         // 実装は後で詳細化
-        return null;
+        return null as any;
     }
 
     /**
@@ -1002,7 +1002,7 @@ class DetailedProfiler {
      */
     stop(): ProfileResult | null {
         if (!this.isRunning) {
-            return null;
+            return null as any;
         }
         
         this.isRunning = false;
@@ -1024,7 +1024,7 @@ class DetailedProfiler {
             return results;
         }
         
-        return null;
+        return null as any;
     }
 
     /**

@@ -13,7 +13,7 @@ interface GameEngine {
     canvas?: HTMLCanvasElement;
     getLayoutAdjustments?: (layout: any) => any;
     handleVisibilityChange?: (isVisible: boolean) => void;
-    onLayoutEvent?: (type: string, detail: any) => void;
+    onLayoutEvent?: (type: "single" | "batch", detail: any) => void;
     onCanvasResize?: (size: any) => void;
     [key: string]: unknown;
 }
@@ -961,7 +961,7 @@ export class AdvancedResponsiveLayoutManager extends ResponsiveCanvasManager {
     /**
      * レイアウトイベント発火
      */
-    dispatchLayoutEvent(type: string, detail: any) {
+    dispatchLayoutEvent(type: "single" | "batch", detail: any) {
         const event = new CustomEvent(`layout-${type}`, {
             detail: {
                 ...detail,

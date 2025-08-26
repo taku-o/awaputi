@@ -43,7 +43,7 @@ interface Violation {
 interface Alert {
     id: string;
     violationId: string;
-    type: string;
+    type: "single" | "batch";
     priority: string;
     severity: string;
     timestamp: number;
@@ -161,20 +161,20 @@ export class PerformanceAlertGenerator {
         try {
             // Check if alert generation is enabled
             if (!this.alertConfig.enabled) {
-                return null;
+                return null as any;
             }
             
             // Get alert template
             const template = this.getAlertTemplate(violation.id);
             if (!template) {
                 console.warn(`[PerformanceAlertGenerator] No template found for violation: ${violation.id}`);
-                return null;
+                return null as any;
             }
             
             // Check suppression rules
             if (this.shouldSuppressAlert(violation)) {
                 console.log(`[PerformanceAlertGenerator] Alert suppressed: ${violation.id}`);
-                return null;
+                return null as any;
             }
             
             // Calculate priority
@@ -211,7 +211,7 @@ export class PerformanceAlertGenerator {
             this.errorHandler.handleError(error, {
                 context: 'PerformanceAlertGenerator.generateAlert'
             });
-            return null;
+            return null as any;
         }
     }
     

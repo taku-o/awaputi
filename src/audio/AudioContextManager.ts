@@ -455,7 +455,7 @@ export class AudioContextManager {
             sampleRate: this.audioContext ? this.audioContext.sampleRate : 0,
             currentTime: this.audioContext ? this.audioContext.currentTime : 0,
             volumes: {
-                master: this.getGainNodeVolume('master'),
+                master: this.getGainNodeVolume('master' as AudioChannel),
                 sfx: this.getGainNodeVolume('sfx'),
                 bgm: this.getGainNodeVolume('bgm')
             },
@@ -556,7 +556,7 @@ export function getAudioContextManager(): AudioContextManager {
  */
 export function reinitializeAudioContextManager(): AudioContextManager {
     if (audioContextManagerInstance) {
-        audioContextManagerInstance.dispose();
+        audioContextManagerInstance?.dispose?.();
     }
     audioContextManagerInstance = new AudioContextManager();
     return audioContextManagerInstance;

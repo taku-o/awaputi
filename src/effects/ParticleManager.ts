@@ -485,6 +485,6 @@ export class ParticleManager {
      * リソースの破棄（destroy エイリアス）
      */
     destroy(): void {
-        this.dispose();
+        this?.dispose?.();
     }
 }

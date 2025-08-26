@@ -255,7 +255,7 @@ export class UserInterfaceController {
             return this.tabs[tabIndex];
         }
         
-        return null;
+        return null as any;
     }
     
     /**

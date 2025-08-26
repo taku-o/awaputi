@@ -47,7 +47,7 @@ interface SetOptions {
 }
 
 interface MemoryLeak {
-    type: string;
+    type: "single" | "batch";
     count?: number;
     usage?: string;
     currentSize?: number;
@@ -211,7 +211,7 @@ export class CacheSystem {
             // キャッシュの存在確認
             if (!this.cache.has(key)) {
                 this.stats.misses++;
-                return null;
+                return null as any;
             }
             
             const entry = this.cache.get(key)!;
@@ -223,7 +223,7 @@ export class CacheSystem {
                 this.stats.expirations++;
                 this.stats.misses++;
                 this.stats.size--;
-                return null;
+                return null as any;
             }
             
             // アクセス統計を更新
@@ -237,7 +237,7 @@ export class CacheSystem {
                 context: 'CacheSystem.get',
                 key
             });
-            return null;
+            return null as any;
         }
     }
     

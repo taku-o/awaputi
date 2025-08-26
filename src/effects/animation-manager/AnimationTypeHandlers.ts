@@ -357,7 +357,7 @@ export class BubbleAnimationHandler {
             getErrorHandler().handle(error, {
                 context: 'BubbleAnimationHandler.createBubbleSpawnAnimation'
             });
-            return null;
+            return null as any;
         }
     }
     
@@ -385,7 +385,7 @@ export class BubbleAnimationHandler {
             getErrorHandler().handle(error, {
                 context: 'BubbleAnimationHandler.createBubbleDestroyAnimation'
             });
-            return null;
+            return null as any;
         }
     }
     
@@ -413,7 +413,7 @@ export class BubbleAnimationHandler {
             getErrorHandler().handle(error, {
                 context: 'BubbleAnimationHandler.createBubbleMovementAnimation'
             });
-            return null;
+            return null as any;
         }
     }
     
@@ -655,7 +655,7 @@ export class UIAnimationHandler {
             getErrorHandler().handle(error, {
                 context: 'UIAnimationHandler.createUIElementAnimation'
             });
-            return null;
+            return null as any;
         }
     }
     
@@ -686,7 +686,7 @@ export class UIAnimationHandler {
             getErrorHandler().handle(error, {
                 context: 'UIAnimationHandler.createScoreChangeAnimation'
             });
-            return null;
+            return null as any;
         }
     }
     
@@ -1033,7 +1033,7 @@ export class LoadingAnimationHandler {
             getErrorHandler().handle(error, {
                 context: 'LoadingAnimationHandler.createLoadingAnimation'
             });
-            return null;
+            return null as any;
         }
     }
     

@@ -62,7 +62,7 @@ interface AchievementData {
 }
 
 interface ShareResult {
-    type: string;
+    type: "single" | "batch";
     content: {
         score?: number;
         message: string;
@@ -225,7 +225,7 @@ describe('SocialSharingManager', () => {
 
         test('設定の更新', () => {
             const newSettings: Partial<ShareSettings> = { shareOnHighScore: false };
-            socialSharingManager.updateSettings(newSettings);
+            socialSharingManager.updateSetting(newSettings);
             expect(socialSharingManager.settings.shareOnHighScore).toBe(false);
         });
     });

@@ -22,7 +22,7 @@ interface StateManagerConfig { enabled: boolean,
     focusStack: Element[],
     trapAttempts: number;
     interface FocusEvent { element: Element,
-    type: string,
+    type: "single" | "batch",
     timestamp: number,
     tagName: string,
     id: string | null,
@@ -40,7 +40,7 @@ interface TabElement { element: Element,
     isVisible: boolean,
     rect: DOMRect;
     interface TabOrderIssue { element?: Element,
-    type: string,
+    type: "single" | "batch",
     severity: 'error' | 'warning,
     message: string;
     suggestion?: string;
@@ -180,7 +180,7 @@ export class NavigationStateManager {
     /**
      * フォーカス変更の処理
      */
-    private handleFocusChange(element: Element, type: string): void { if (!this.config.trackFocusHistory) return,
+    private handleFocusChange(element: Element, type: "single" | "batch"): void { if (!this.config.trackFocusHistory) return,
         ','
 
         try {'
@@ -371,7 +371,7 @@ export class NavigationStateManager {
     }
         } catch (error) { // 視覚的チェックのエラーは無視（測定できない場合がある） }
         
-        return null;
+        return null as any;
     }
     
     /**

@@ -54,7 +54,7 @@ interface PanelData {
     timestamp: number;
     sessionId: string;
     version: string;
-    type: string;
+    type: "single" | "batch";
     [key: string]: any;
 }
 

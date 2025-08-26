@@ -6,7 +6,7 @@
 
 // Type definitions
 interface ErrorHandler {
-    handleError(error: any, type: string, context?: any): void;
+    handleError(error: any, type: "single" | "batch", context?: any): void;
 }
 
 interface PerformanceConfig {
@@ -583,7 +583,7 @@ function getPerformanceConfig(): any {
 function getErrorHandler(): any {
     // This should return the actual error handler instance
     return {
-        handleError: (error: any, type: string, context?: any) => {
+        handleError: (error: any, type: "single" | "batch", context?: any) => {
             console.error(`[${type}] Error in ${context?.component}.${context?.operation}:`, error);
         }
     };

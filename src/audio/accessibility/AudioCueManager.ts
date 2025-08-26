@@ -17,12 +17,12 @@
 // Types for audio cue management
 interface AudioEvent {
     timestamp: number;
-    type: string;
+    type: "single" | "batch";
     data: any;
 }
 
 interface AudioEventData {
-    type: string;
+    type: "single" | "batch";
     [key: string]: any;
 }
 

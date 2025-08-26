@@ -365,13 +365,13 @@ export class ShareContentGenerator {
     private getTemplate(messageType: string, platform: string, language: string): string | null {
         try {
             const messageTemplates = this.templates[messageType];
-            if (!messageTemplates) return null;
+            if (!messageTemplates) return null as any;
             
             const platformTemplates = messageTemplates[platform];
             if (!platformTemplates) {
                 // プラットフォームが見つからない場合はgenericを試行
                 const genericTemplates = messageTemplates['generic'];
-                if (!genericTemplates) return null;
+                if (!genericTemplates) return null as any;
                 return genericTemplates[language] || genericTemplates['ja'] || genericTemplates['en'] || null;
             }
             
@@ -383,7 +383,7 @@ export class ShareContentGenerator {
                    
         } catch (error) {
             this.errorHandler.handleError(error, 'ShareContentGenerator.getTemplate');
-            return null;
+            return null as any;
         }
     }
     

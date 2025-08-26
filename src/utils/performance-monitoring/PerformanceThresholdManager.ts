@@ -333,7 +333,7 @@ export class PerformanceThresholdManager {
      */
     checkThresholdViolation(metricId: string, value: number): ThresholdViolation | null {
         const thresholds = this.thresholdConfig.dynamicThresholds.get(metricId);
-        if (!thresholds || typeof value !== 'number') return null;
+        if (!thresholds || typeof value !== 'number') return null as any;
 
         let violationType: ThresholdViolation['type'] | null = null;
         let violationSeverity: ThresholdViolation['severity'] = 'low';
@@ -378,7 +378,7 @@ export class PerformanceThresholdManager {
             return violation;
         }
         
-        return null;
+        return null as any;
     }
     
     /**

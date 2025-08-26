@@ -15,7 +15,7 @@ export interface CommandDefinition {
 
 export interface CommandOptions {
     [key: string]: {
-        type: string;
+        type: "single" | "batch";
         default?: any;
         description?: string;
     };

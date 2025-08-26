@@ -238,14 +238,14 @@ export class VisualFocusManager {
     /**
      * ビジュアルキューの追加（Effect Rendererに委任）
      */
-    addVisualCue(type: string, element: HTMLElement, options?: any): void {
+    addVisualCue(type: "single" | "batch", element: HTMLElement, options?: any): void {
         (this.focusEffectRenderer as any).addVisualCue(type, element, options);
     }
     
     /**
      * ビジュアルキューの削除（Effect Rendererに委任）
      */
-    removeVisualCue(type: string, element?: HTMLElement): void {
+    removeVisualCue(type: "single" | "batch", element?: HTMLElement): void {
         (this.focusEffectRenderer as any).removeVisualCue(type, element);
     }
     
@@ -259,14 +259,14 @@ export class VisualFocusManager {
     /**
      * アニメーション開始（Effect Rendererに委任）
      */
-    startAnimation(type: string, element: HTMLElement, options?: any): void {
+    startAnimation(type: "single" | "batch", element: HTMLElement, options?: any): void {
         (this.focusEffectRenderer as any).startAnimation(type, element, options);
     }
     
     /**
      * アニメーション停止（Effect Rendererに委任）
      */
-    stopAnimation(type: string, element?: HTMLElement): void {
+    stopAnimation(type: "single" | "batch", element?: HTMLElement): void {
         (this.focusEffectRenderer as any).stopAnimation(type, element);
     }
     

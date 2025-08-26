@@ -40,7 +40,7 @@ interface ItemManager {
 interface Item {
     id: string;
     effect: {
-        type: string;
+        type: "single" | "batch";
         value: number;
     };
 }
@@ -76,7 +76,7 @@ interface DebugInfo {
 }
 
 interface Bubble {
-    type: string;
+    type: "single" | "batch";
     x: number;
     y: number;
 }

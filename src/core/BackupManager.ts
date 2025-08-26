@@ -9,7 +9,7 @@ interface DataStorage {
 
 interface ValidationManager {
     [key: string]: unknown;
-    validate(type: string, data: any): Promise<{ isValid: boolean; errors: string[]; checksum?: string }>;
+    validate(type: "single" | "batch", data: any): Promise<{ isValid: boolean; errors: string[]; checksum?: string }>;
 }
 
 interface BackupConfig {
@@ -599,7 +599,7 @@ export class BackupManager {
                 backupId
             });
             
-            return null;
+            return null as any;
         }
     }
     

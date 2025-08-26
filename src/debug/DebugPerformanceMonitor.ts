@@ -228,7 +228,7 @@ export class DebugPerformanceMonitor {
     /**
      * メトリクスを追加
      */
-    private addMetric(type: string, value: number): void {
+    private addMetric(type: "single" | "batch", value: number): void {
         if (!this.metrics[type]) {
             this.metrics[type] = [];
         }
@@ -359,7 +359,7 @@ export class DebugPerformanceMonitor {
     /**
      * メトリクス履歴を取得
      */
-    getMetricsHistory(type: string, count: number = 50): PerformanceMetric[] {
+    getMetricsHistory(type: "single" | "batch", count: number = 50): PerformanceMetric[] {
         const metrics = this.metrics[type] as PerformanceMetric[];
         if (!metrics) return [];
         

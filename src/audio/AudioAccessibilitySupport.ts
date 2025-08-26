@@ -8,7 +8,7 @@ import { AudioSettingsManager } from './accessibility/AudioSettingsManager';
 
 // エラーハンドラー型定義
 interface ErrorHandler {
-    handleError(error: Error, type: string, context?: any): void;
+    handleError(error: Error, type: "single" | "batch", context?: any): void;
 }
 
 // 設定管理型定義
@@ -34,7 +34,7 @@ interface AudioVisualizationStats {
 
 // 視覚通知オプション型定義
 interface VisualNotificationOptions {
-    type: string;
+    type: "single" | "batch";
     title?: string;
     message?: string;
     icon?: string;
@@ -545,19 +545,19 @@ export class AudioAccessibilitySupport {
     dispose(): void {
         // コンポーネントの解放
         if (this.audioDescriptionManager) {
-            this.audioDescriptionManager.dispose();
+            this.audioDescriptionManager?.dispose?.();
         }
         
         if (this.audioCueManager) {
-            this.audioCueManager.dispose();
+            this.audioCueManager?.dispose?.();
         }
         
         if (this.audioFeedbackManager) {
-            this.audioFeedbackManager.dispose();
+            this.audioFeedbackManager?.dispose?.();
         }
         
         if (this.audioSettingsManager) {
-            this.audioSettingsManager.dispose();
+            this.audioSettingsManager?.dispose?.();
         }
 
         console.log('AudioAccessibilitySupport disposed with component architecture');

@@ -769,7 +769,7 @@ export class ChallengeUI {
     /**
      * エラーハンドリング
      */
-    private handleError(type: string, error: Error, context: Record<string, any> = {}): void {
+    private handleError(type: "single" | "batch", error: Error, context: Record<string, any> = {}): void {
         const errorInfo = {
             type,
             error: error.message || error,

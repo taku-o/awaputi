@@ -816,11 +816,11 @@ export class ChallengeInteractionHandler {
                     confidence: 0.9
                 };
             }
-            return null;
+            return null as any;
         }
         
         if (duration > this.config.touch.maxSwipeTime) {
-            return null;
+            return null as any;
         }
 
         const direction = determineGestureDirection(start.x, start.y, end.x, end.y);

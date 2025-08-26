@@ -43,7 +43,7 @@ interface LightSource {
     intensity: number;
     color: string;
     radius: number;
-    type: string;
+    type: "single" | "batch";
 }
 
 interface ReflectionObject {
@@ -77,7 +77,7 @@ interface EnhancedTransform {
 
 interface TransitionEffect {
     id: string;
-    type: string;
+    type: "single" | "batch";
     duration: number;
     startTime: number;
     options: TransitionOptions;
@@ -110,7 +110,7 @@ interface WaterRipple {
 
 interface BackgroundEffect {
     id: string;
-    type: string;
+    type: "single" | "batch";
     options: BackgroundEffectOptions;
 }
 
@@ -197,7 +197,7 @@ export class EnhancedEffectManager extends EffectManager {
     // 公開API - API Managerにデリゲート
     // ========================================
     
-    public addTransitionEffect(type: string, duration: number, options: TransitionOptions = {}): string {
+    public addTransitionEffect(type: "single" | "batch", duration: number, options: TransitionOptions = {}): string {
         return this.apiManager.addTransitionEffect(type, duration, options);
     }
     
@@ -237,11 +237,11 @@ export class EnhancedEffectManager extends EffectManager {
         return this.effectController.addWaterRipple(x, y, maxRadius, speed, intensity);
     }
     
-    public addLightSource(x: number, y: number, intensity: number, color: string, radius: number, type: string = 'point'): string {
+    public addLightSource(x: number, y: number, intensity: number, color: string, radius: number, type: "single" | "batch" = 'point'): string {
         return this.effectController.addLightSource(x, y, intensity, color, radius, type);
     }
     
-    public addBackgroundEffect(type: string, options: BackgroundEffectOptions = {}): string {
+    public addBackgroundEffect(type: "single" | "batch", options: BackgroundEffectOptions = {}): string {
         return this.effectController.addBackgroundEffect(type, options);
     }
     

@@ -92,7 +92,7 @@ interface StorageFallback {
 }
 
 interface Recommendation {
-    type: string;
+    type: "single" | "batch";
     message: string;
     priority: 'high' | 'medium' | 'low';
 }
@@ -558,9 +558,9 @@ class BrowserCompatibilityManager {
                             return cookie.substring(name.length);
                         }
                     }
-                    return null;
+                    return null as any;
                 } catch (e) {
-                    return null;
+                    return null as any;
                 }
             },
             

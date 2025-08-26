@@ -28,7 +28,7 @@ interface PerformanceBaseline {
 }
 
 interface DetectedError {
-    type: string;
+    type: "single" | "batch";
     level: 'critical' | 'warning' | 'info';
     metrics: Record<string, any>;
     timestamp: number;
@@ -79,7 +79,7 @@ interface ErrorSeverity {
 
 interface ErrorPatterns {
     recognized: boolean;
-    type: string;
+    type: "single" | "batch";
     confidence: number;
     trend: 'increasing' | 'decreasing' | 'stable' | 'insufficient_data';
     clustering: { clustered: boolean; dominantDetector?: string };
@@ -280,7 +280,7 @@ export class PerformanceErrorDetector {
         };
 
         for (const [name, detector] of Array.from(this.detectors.entries())) {
-            status.detectors[name] = detector.getStatus();
+            status.detectors[name] = detector?.getStatus?.();
         }
 
         return status;

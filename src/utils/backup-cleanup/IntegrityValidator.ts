@@ -150,7 +150,7 @@ interface IntegrityIssue {
 }
 
 interface IntegrityRecommendation {
-    type: string;
+    type: "single" | "batch";
     message: string;
     priority: string;
     issues?: IntegrityIssue[];
@@ -676,9 +676,9 @@ export class IntegrityValidator {
                 return resolved;
             }
             // node_modulesやその他のパッケージは無視
-            return null;
+            return null as any;
         } catch {
-            return null;
+            return null as any;
         }
     }
 

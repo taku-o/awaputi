@@ -21,7 +21,7 @@ interface MockSocialSharingManager extends Partial<SocialSharingManager> {
 }
 
 interface ShareData {
-    type: string;
+    type: "single" | "batch";
     score?: number;
     text?: string;
     url?: string;
@@ -93,7 +93,7 @@ describe('ShareDialog', () => {
 
     afterEach(() => {
         if (shareDialog) {
-            shareDialog.destroy();
+            shareDialog?.destroy?.();
         }
         jest.clearAllMocks();
         document.body.innerHTML = '';
@@ -127,7 +127,7 @@ describe('ShareDialog', () => {
         });
 
         test('カスタム設定で初期化される', async () => {
-            shareDialog.destroy();
+            shareDialog?.destroy?.();
             const customOptions = {
                 title: 'カスタム共有',
                 width: 600,
@@ -179,7 +179,7 @@ describe('ShareDialog', () => {
         });
 
         test('メッセージエディターが条件付きで作成される', async () => {
-            shareDialog.destroy();
+            shareDialog?.destroy?.();
             const { ShareDialog } = await import('../core/ShareDialog.js');
             shareDialog = new ShareDialog(mockSocialSharingManager as any, {
                 allowMessageEdit: true
@@ -190,7 +190,7 @@ describe('ShareDialog', () => {
         });
 
         test('スクリーンショットプレビューが条件付きで作成される', async () => {
-            shareDialog.destroy();
+            shareDialog?.destroy?.();
             const { ShareDialog } = await import('../core/ShareDialog.js');
             shareDialog = new ShareDialog(mockSocialSharingManager as any, {
                 showScreenshotPreview: true
@@ -230,7 +230,7 @@ describe('ShareDialog', () => {
         });
 
         test('スクリーンショット付きで表示される', async () => {
-            shareDialog.destroy();
+            shareDialog?.destroy?.();
             const { ShareDialog } = await import('../core/ShareDialog.js');
             shareDialog = new ShareDialog(mockSocialSharingManager as any, { showScreenshotPreview: true });
 
@@ -250,7 +250,7 @@ describe('ShareDialog', () => {
         });
 
         test('アニメーション無効時は即座に表示される', async () => {
-            shareDialog.destroy();
+            shareDialog?.destroy?.();
             const { ShareDialog } = await import('../core/ShareDialog.js');
             shareDialog = new ShareDialog(mockSocialSharingManager as any, { animation: false });
 
@@ -308,7 +308,7 @@ describe('ShareDialog', () => {
         });
 
         test('クリップボードコピーが動作する', async () => {
-            shareDialog.destroy();
+            shareDialog?.destroy?.();
             const { ShareDialog } = await import('../core/ShareDialog.js');
             shareDialog = new ShareDialog(mockSocialSharingManager as any, {
                 platforms: ['copy']
@@ -343,7 +343,7 @@ describe('ShareDialog', () => {
 
     describe('メッセージ編集機能', () => {
         beforeEach(async () => {
-            shareDialog.destroy();
+            shareDialog?.destroy?.();
             const { ShareDialog } = await import('../core/ShareDialog.js');
             shareDialog = new ShareDialog(mockSocialSharingManager as any, { allowMessageEdit: true });
 
@@ -434,7 +434,7 @@ describe('ShareDialog', () => {
         });
 
         test('バックドロップクリック無効時は閉じない', async () => {
-            shareDialog.destroy();
+            shareDialog?.destroy?.();
             const { ShareDialog } = await import('../core/ShareDialog.js');
             shareDialog = new ShareDialog(mockSocialSharingManager as any, { closeOnBackdrop: false });
 
@@ -522,7 +522,7 @@ describe('ShareDialog', () => {
         });
 
         test('高コントラストモードが適用される', async () => {
-            shareDialog.destroy();
+            shareDialog?.destroy?.();
             const { ShareDialog } = await import('../core/ShareDialog.js');
             shareDialog = new ShareDialog(mockSocialSharingManager as any, {
                 accessibility: { highContrast: true }
@@ -542,7 +542,7 @@ describe('ShareDialog', () => {
         });
 
         test('minimalテーマが適用される', async () => {
-            shareDialog.destroy();
+            shareDialog?.destroy?.();
             const { ShareDialog } = await import('../core/ShareDialog.js');
             shareDialog = new ShareDialog(mockSocialSharingManager as any, {
                 theme: 'minimal'
@@ -553,7 +553,7 @@ describe('ShareDialog', () => {
         });
 
         test('elegantテーマが適用される', async () => {
-            shareDialog.destroy();
+            shareDialog?.destroy?.();
             const { ShareDialog } = await import('../core/ShareDialog.js');
             shareDialog = new ShareDialog(mockSocialSharingManager as any, {
                 theme: 'elegant'
@@ -564,7 +564,7 @@ describe('ShareDialog', () => {
         });
 
         test('gamingテーマが適用される', async () => {
-            shareDialog.destroy();
+            shareDialog?.destroy?.();
             const { ShareDialog } = await import('../core/ShareDialog.js');
             shareDialog = new ShareDialog(mockSocialSharingManager as any, {
                 theme: 'gaming'
@@ -615,7 +615,7 @@ describe('ShareDialog', () => {
         });
 
         test('メッセージ編集統計が記録される', async () => {
-            shareDialog.destroy();
+            shareDialog?.destroy?.();
             const { ShareDialog } = await import('../core/ShareDialog.js');
             shareDialog = new ShareDialog(mockSocialSharingManager as any, { allowMessageEdit: true });
 
@@ -685,14 +685,14 @@ describe('ShareDialog', () => {
     describe('クリーンアップ', () => {
         test('正常にクリーンアップされる', async () => {
             await shareDialog.show({ type: 'score', score: 1000 });
-            shareDialog.destroy();
+            shareDialog?.destroy?.();
             expect((shareDialog as any).elements.backdrop.parentNode).toBeNull();
         });
 
         test('表示中でもクリーンアップされる', async () => {
             await shareDialog.show({ type: 'score', score: 1000 });
             expect((shareDialog as any).state.visible).toBe(true);
-            shareDialog.destroy();
+            shareDialog?.destroy?.();
             expect((shareDialog as any).elements.backdrop.parentNode).toBeNull();
         });
 
@@ -700,7 +700,7 @@ describe('ShareDialog', () => {
             const removeEventListenerSpy = jest.spyOn(document, 'removeEventListener');
             const windowRemoveEventListenerSpy = jest.spyOn(window, 'removeEventListener');
 
-            shareDialog.destroy();
+            shareDialog?.destroy?.();
 
             expect(removeEventListenerSpy).toHaveBeenCalled();
             expect(windowRemoveEventListenerSpy).toHaveBeenCalled();

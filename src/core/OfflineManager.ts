@@ -31,7 +31,7 @@ interface OfflineState {
 
 interface OfflineOperation {
     id: number;
-    type: string;
+    type: "single" | "batch";
     key: string;
     data: any;
     timestamp: number;
@@ -215,7 +215,7 @@ export class OfflineManager {
     /**
      * オフライン操作の記録
      */
-    async recordOfflineOperation(operation: { type: string; key: string; data: any }): Promise<number> {
+    async recordOfflineOperation(operation: { type: "single" | "batch"; key: string; data: any }): Promise<number> {
         if (!this.config.enableOfflineMode) {
             throw new Error('Offline mode is disabled');
         }

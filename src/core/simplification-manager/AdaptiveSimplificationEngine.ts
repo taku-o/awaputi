@@ -104,7 +104,7 @@ export interface HesitationEvent {
 
 export interface BacktrackEvent {
     timestamp: number;
-    type: string;
+    type: "single" | "batch";
     context: ContextSnapshot;
 }
 
@@ -187,7 +187,7 @@ export interface AdaptationStats {
 }
 
 export interface InteractionEvent {
-    type: string;
+    type: "single" | "batch";
     timestamp: number;
     target?: HTMLElement;
     key?: string;
@@ -459,7 +459,7 @@ export class AdaptiveSimplificationEngine {
     /**
      * インタラクションを記録
      */
-    private recordInteraction(type: string, event: Event): void {
+    private recordInteraction(type: "single" | "batch", event: Event): void {
         const now = Date.now();
         const timeSinceLastInteraction = now - this.behaviorTracker.lastInteraction;
 

@@ -526,7 +526,7 @@ export class ConfigurationDebugger {
      */
     getKeyDetails(fullKey: string): KeyDetails | null {
         const accessCount = this.usageTracking.accessCount.get(fullKey) || 0;
-        if (accessCount === 0) return null;
+        if (accessCount === 0) return null as any;
         
         const lastAccess = this.usageTracking.lastAccess.get(fullKey);
         const isHotKey = this.usageTracking.hotKeys.has(fullKey);

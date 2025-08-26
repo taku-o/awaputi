@@ -742,7 +742,7 @@ export function getTutorialAnimationController(): TutorialAnimationController {
  */
 export function reinitializeTutorialAnimationController(): TutorialAnimationController {
     if (tutorialAnimationControllerInstance) {
-        tutorialAnimationControllerInstance.dispose();
+        tutorialAnimationControllerInstance?.dispose?.();
     }
     tutorialAnimationControllerInstance = new TutorialAnimationController();
     return tutorialAnimationControllerInstance;

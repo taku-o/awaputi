@@ -454,7 +454,7 @@ export class FeedbackAnimationManager {
                 operation: 'createFlashEffect',
                 effectId: options.id
             });
-            return null;
+            return null as any;
         }
     }
 
@@ -514,7 +514,7 @@ export class FeedbackAnimationManager {
                 operation: 'createGlowEffect',
                 effectId: options.id
             });
-            return null;
+            return null as any;
         }
     }
 
@@ -578,7 +578,7 @@ export class FeedbackAnimationManager {
                 operation: 'createPulseEffect',
                 effectId: options.id
             });
-            return null;
+            return null as any;
         }
     }
 
@@ -665,7 +665,7 @@ export class FeedbackAnimationManager {
                 operation: 'createRippleEffect',
                 effectId: options.id
             });
-            return null;
+            return null as any;
         }
     }
 
@@ -731,7 +731,7 @@ export class FeedbackAnimationManager {
                 operation: 'createShakeEffect',
                 effectId: options.id
             });
-            return null;
+            return null as any;
         }
     }
 

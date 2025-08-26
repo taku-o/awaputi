@@ -67,7 +67,7 @@ interface SafetyWarning {
 }
 
 interface SafetyRecommendation {
-    type: string;
+    type: "single" | "batch";
     message: string;
     priority?: string;
 }

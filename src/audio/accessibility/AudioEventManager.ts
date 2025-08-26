@@ -8,7 +8,7 @@
 // Types for audio events
 interface AudioAccessibilityEvent {
     id: string;
-    type: string;
+    type: "single" | "batch";
     data: Record<string, any>;
     timestamp: number;
 }

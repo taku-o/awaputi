@@ -85,7 +85,7 @@ interface Operation {
 }
 
 interface RenderOperation {
-    type: string;
+    type: "single" | "batch";
     context: CanvasRenderingContext2D;
     data: any;
     options: any;
@@ -110,7 +110,7 @@ interface RenderOperation {
 }
 
 interface CleanupOperation {
-    type: string;
+    type: "single" | "batch";
     target: string;
     reason?: string;
     timestamp: number;

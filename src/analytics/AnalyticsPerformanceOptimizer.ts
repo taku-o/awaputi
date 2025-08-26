@@ -238,7 +238,7 @@ export class AnalyticsPerformanceOptimizer {
     /**
      * イベントグループ処理
      */
-    async processEventGroup(type: string, events: any[]) {
+    async processEventGroup(type: "single" | "batch", events: any[]) {
         // 同種のイベントを効率的に処理
         const batchData = events.map(event => event.data);
         // 最初のイベントのハンドラーを使用
@@ -287,7 +287,7 @@ export class AnalyticsPerformanceOptimizer {
         }
         
         this.optimizationStats.cacheMisses++;
-        return null;
+        return null as any;
     }
     
     /**

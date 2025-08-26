@@ -15,7 +15,7 @@ interface ErrorCategory {
 
 interface ErrorInfo {
     id: string;
-    type: string;
+    type: "single" | "batch";
     category: ErrorCategory;
     error: any;
     context: any;
@@ -48,7 +48,7 @@ interface ErrorStats {
     totalErrors: number;
     recoveredErrors: number;
     failedRecoveries: number;
-    errorsByType: { [type: string]: number };
+    errorsByType: { [type: "single" | "batch"]: number };
     errorsByComponent: { [component: string]: number };
 }
 
@@ -485,7 +485,7 @@ export class SocialErrorHandler {
     /**
      * エラートーストの表示
      */
-    showErrorToast(message: string, type: string = 'error', duration: number = 3000): void {
+    showErrorToast(message: string, type: "single" | "batch" = 'error', duration: number = 3000): void {
         // トーストコンテナの作成または取得
         let toastContainer = document.getElementById('social-error-toast-container');
         if (!toastContainer) {
@@ -802,7 +802,7 @@ export class SocialErrorHandler {
                 jsHeapSizeLimit: Math.round((performance as any).memory.jsHeapSizeLimit / 1048576) + 'MB'
             };
         }
-        return null;
+        return null as any;
     }
     
     /**
@@ -1053,7 +1053,7 @@ export class SocialErrorHandler {
     /**
      * 復旧試行回数のリセット
      */
-    getTopErrors(limit: number = 5): Array<{type: string, count: number}> {
+    getTopErrors(limit: number = 5): Array<{type: "single" | "batch", count: number}> {
         return Object.entries(this.errorStats.errorsByType)
             .sort((a, b) => b[1] - a[1])
             .slice(0, limit)

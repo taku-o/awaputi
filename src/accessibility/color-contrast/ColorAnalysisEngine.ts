@@ -57,7 +57,7 @@ interface AccessibilityResults { compliantElements: ElementAnalysis[],
     warnings: Warning[];
     recommendations?: string[];
     timestamp: number;
-    interface Warning { type: string,
+    interface Warning { type: "single" | "batch",
     message: string,
     severity: 'info' | 'warning' | 'error' | 'critical'
             }
@@ -80,7 +80,7 @@ interface Recommendation { category: string,''
     semanticUsage: Map<string, any>;
     inconsistencies: any[],
     recommendations: any[];
-    interface AnalysisHistoryEntry { type: string,
+    interface AnalysisHistoryEntry { type: "single" | "batch",
     results: any,
     timestamp: number,
     duration: number;
@@ -457,7 +457,7 @@ interface ColorSuggestion { foreground?: string,
     }
 ';'
 
-            return null;} catch (error) {
+            return null as any;} catch (error) {
             console.warn('Color parsing failed:', colorStr, error','
             return null,
 

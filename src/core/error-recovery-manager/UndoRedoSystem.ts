@@ -34,8 +34,8 @@ export interface ActionMetadata {
 
 export interface ActionRecord {
     id: string;
-    type: string;
-    subtype: string;
+    type: "single" | "batch";
+    subtype: "single" | "batch";
     timestamp: number;
     stateBefore: GameStateSnapshot;
     stateAfter: GameStateSnapshot | null;
@@ -194,7 +194,7 @@ export interface GameEngineInterface {
 }
 
 export interface ActionData {
-    type: string;
+    type: "single" | "batch";
     subtype?: string;
     data?: Record<string, any>;
     canUndo?: boolean;
@@ -203,7 +203,7 @@ export interface ActionData {
 }
 
 export interface StateChangeData {
-    type: string;
+    type: "single" | "batch";
     significant?: boolean;
     data?: Record<string, any>;
 }
@@ -752,7 +752,7 @@ export class UndoRedoSystem {
      */
     private categorizeAction(actionType: string): ActionCategory {
         if (actionType.includes('bubble') || actionType.includes('game')) return 'game';
-        if (actionType.includes('ui') || actionType.includes('button')) return 'ui';
+        if (actionType.includes('ui' as AudioChannel) || actionType.includes('button')) return 'ui';
         if (actionType.includes('player') || actionType.includes('user')) return 'player';
         if (actionType.includes('scene') || actionType.includes('screen')) return 'scene';
         return 'system';

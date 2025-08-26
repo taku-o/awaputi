@@ -77,7 +77,7 @@ interface Alert {
 }
 
 interface PerformanceEvent {
-    type: string;
+    type: "single" | "batch";
     timestamp: number;
     [key: string]: any;
 }
@@ -633,11 +633,11 @@ export class PerformanceMonitoringSystem {
         
         // Destroy sub-components
         if (this.realTimeMonitor) {
-            this.realTimeMonitor.destroy();
+            this.realTimeMonitor?.destroy?.();
         }
         
         if (this.dataAnalyzer) {
-            this.dataAnalyzer.destroy();
+            this.dataAnalyzer?.destroy?.();
         }
 
         console.log('[PerformanceMonitoringSystem] Monitoring system destroyed');

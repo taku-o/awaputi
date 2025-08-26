@@ -93,7 +93,7 @@ interface ChartArea {
  * レンダリング結果インターフェース
  */
 export interface RenderResult {
-    type: string;
+    type: "single" | "batch";
     dataPoints?: number;
     min?: number;
     max?: number;

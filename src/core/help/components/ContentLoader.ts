@@ -14,7 +14,7 @@ export interface HitRatio {
 }
 
 export interface LoadQueueItem {
-    type: string;
+    type: "single" | "batch";
     category: string;
     language: string;
     priority: number;
@@ -302,7 +302,7 @@ export class ContentLoader {
             if (Date.now() > expiry) {
                 this.contentCache.delete(key);
                 this.cacheExpiry.delete(key);
-                return null;
+                return null as any;
             }
         }
         
@@ -368,7 +368,7 @@ export class ContentLoader {
      * @param language - 言語
      * @returns 読み込み完了Promise
      */
-    queueLoad(type: string, category: string, language: string): Promise<any> {
+    queueLoad(type: "single" | "batch", category: string, language: string): Promise<any> {
         return new Promise((resolve, reject) => {
             this.loadingQueue.push({
                 type,
@@ -532,7 +532,7 @@ export class ContentLoader {
             }
         }
         
-        return null;
+        return null as any;
     }
     
     /**

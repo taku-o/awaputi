@@ -95,7 +95,7 @@ interface MockFileReader {
 
 interface MockBlob {
     size: number;
-    type: string;
+    type: "single" | "batch";
     parts: any[];
     slice: (start?: number, end?: number, contentType?: string) => MockBlob;
     stream: () => ReadableStream;
@@ -199,7 +199,7 @@ global.HTMLCanvasElement.prototype.getContext = jest.fn((contextType: string): M
             putImageData: jest.fn()
         };
     }
-    return null;
+    return null as any;
 });
 
 global.HTMLCanvasElement.prototype.toDataURL = jest.fn(() =>
@@ -247,7 +247,7 @@ global.Image = class MockImageClass implements MockImage {
 global.File = class MockFileClass {
     bits: any[];
     name: string;
-    type: string;
+    type: "single" | "batch";
     size: number;
     lastModified: number;
 
@@ -293,7 +293,7 @@ global.FileReader = class MockFileReaderClass implements MockFileReader {
 // Blob API モック
 global.Blob = class MockBlobClass implements MockBlob {
     size: number;
-    type: string;
+    type: "single" | "batch";
     parts: any[];
 
     constructor(parts: any[] = [], options: BlobPropertyBag = {}) {

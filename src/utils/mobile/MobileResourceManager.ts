@@ -395,7 +395,7 @@ export class MobileResourceManager {
             
             // Dispose texture if it has a dispose method
             if(texture && typeof texture.dispose === 'function') {
-                texture.dispose();
+                texture?.dispose?.();
             }
             
             pool.pool.delete(key);
@@ -422,12 +422,12 @@ export class MobileResourceManager {
         const streaming = this.resourceConfig.streaming;
         const queue = this.resourceMonitoring.loadingQueue;
         
-        if (!streaming.enabled) return null;
+        if (!streaming.enabled) return null as any;
         
         // Check if already loading or loaded
         if (queue.loading.some(item => item.assetId === assetId) ||
             queue.completed.some(item => item.assetId === assetId)) {
-            return null;
+            return null as any;
         }
         
         // Add to pending queue

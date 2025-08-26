@@ -20,7 +20,7 @@ interface GameEngine {
 }
 
 interface EnhancedEffectManager {
-    addTransitionEffect?: (type: string, duration: number, options?: TransitionEffectOptions) => any;
+    addTransitionEffect?: (type: "single" | "batch", duration: number, options?: TransitionEffectOptions) => any;
     addLightingEffect?: (x: number, y: number, intensity: number, color: string, radius: number) => any;
 }
 
@@ -165,7 +165,7 @@ interface ResourceSettings {
 }
 
 interface OptimizedAnimation {
-    type: string;
+    type: "single" | "batch";
     duration: number;
     options: UIAnimationOptions;
 }
@@ -358,7 +358,7 @@ export class MobileEffectIntegrator {
                 compressionLevel: deviceInfo.profile === 'ultra-low' ? 0.6 : 0.8
             }
         };
-        this.resourceManager.updateSettings(resourceSettings);
+        this.resourceManager.updateSetting(resourceSettings);
     }
     
     /**
@@ -409,13 +409,13 @@ export class MobileEffectIntegrator {
         const originalAddLightingEffect = effectManager.addLightingEffect?.bind(effectManager);
         
         // モバイル最適化版に置き換え
-        effectManager.addTransitionEffect = (type: string, duration: number, options: TransitionEffectOptions = {}): any => {
+        effectManager.addTransitionEffect = (type: "single" | "batch", duration: number, options: TransitionEffectOptions = {}): any => {
             // モバイル最適化を適用
             const optimizedOptions = this.optimizeTransitionEffect(type, duration, options);
             if (originalAddTransitionEffect) {
                 return originalAddTransitionEffect(type, optimizedOptions.duration, optimizedOptions);
             }
-            return null;
+            return null as any;
         };
         
         effectManager.addLightingEffect = (x: number, y: number, intensity: number, color: string, radius: number): any => {
@@ -428,7 +428,7 @@ export class MobileEffectIntegrator {
                     optimized.color, optimized.radius
                 );
             }
-            return null;
+            return null as any;
         };
     }
     
@@ -455,7 +455,7 @@ export class MobileEffectIntegrator {
             if (originalCreateAdvancedBubbleEffect) {
                 return originalCreateAdvancedBubbleEffect(x, y, bubbleType, bubbleSize, optimizedOptions);
             }
-            return null;
+            return null as any;
         };
     }
     
@@ -476,14 +476,14 @@ export class MobileEffectIntegrator {
             if (originalAnimateUIElement) {
                 return originalAnimateUIElement(element, optimized.type, optimized.duration, optimized.options);
             }
-            return null;
+            return null as any;
         };
     }
     
     /**
      * 遷移効果の最適化
      */
-    private optimizeTransitionEffect(type: string, duration: number, options: TransitionEffectOptions): TransitionEffectOptions & { duration: number } {
+    private optimizeTransitionEffect(type: "single" | "batch", duration: number, options: TransitionEffectOptions): TransitionEffectOptions & { duration: number } {
         if (!this.state.mobileMode) return { duration, ...options };
         
         const strategy = this.adaptationStrategies.get(this.state.performanceMode);
@@ -587,7 +587,7 @@ export class MobileEffectIntegrator {
      * プールされたパーティクルの取得
      */
     private acquirePooledParticles(count: number): any[] | null {
-        if (!this.resourceManager) return null;
+        if (!this.resourceManager) return null as any;
 
         const particles: any[] = [];
         for (let i = 0; i < count; i++) {
@@ -700,7 +700,7 @@ export class MobileEffectIntegrator {
             gcThreshold: strategy.priority === 'performance' ? 0.6 : 0.7,
             cleanupInterval: strategy.priority === 'performance' ? 3000 : 5000
         };
-        this.resourceManager.updateSettings({ memory: memorySettings });
+        this.resourceManager.updateSetting({ memory: memorySettings });
     }
     
     /**
@@ -790,7 +790,7 @@ export class MobileEffectIntegrator {
             
             if (isSlowConnection) {
                 // 低速接続時はリソース読み込みを制限
-                this.resourceManager.updateSettings({
+                this.resourceManager.updateSetting({
                     network: {
                         dataUsageLimit: 1 * 1024 * 1024, // 1MB
                         compressionLevel: 0.6
@@ -1006,12 +1006,12 @@ export class MobileEffectIntegrator {
         
         // 子システムのクリーンアップ
         if (this.mobileOptimizer) {
-            this.mobileOptimizer.destroy();
+            this.mobileOptimizer?.destroy?.();
             this.mobileOptimizer = null;
         }
         
         if (this.resourceManager) {
-            this.resourceManager.destroy();
+            this.resourceManager?.destroy?.();
             this.resourceManager = null;
         }
         

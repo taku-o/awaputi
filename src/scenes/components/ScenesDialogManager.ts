@@ -11,12 +11,12 @@ export interface DialogClass {
 }
 
 export interface DialogStackItem {
-    type: string;
+    type: "single" | "batch";
     data: DialogData;
 }
 
 export interface DialogInfo {
-    type: string;
+    type: "single" | "batch";
     data: DialogData;
     DialogClass: DialogClass;
 }
@@ -124,7 +124,7 @@ export class ScenesDialogManager {
      * @param type - ダイアログタイプ
      * @param DialogClass - ダイアログクラス
      */
-    registerDialog(type: string, DialogClass: DialogClass): void {
+    registerDialog(type: "single" | "batch", DialogClass: DialogClass): void {
         this.dialogs.set(type, DialogClass);
     }
     
@@ -134,7 +134,7 @@ export class ScenesDialogManager {
      * @param options - ダイアログオプション
      * @returns ダイアログの結果
      */
-    async showDialog(type: string, options: DialogData = {}): Promise<unknown> {
+    async showDialog(type: "single" | "batch", options: DialogData = {}): Promise<unknown> {
         try {
             // ダイアログクラスが登録されているかチェック
             if (!this.dialogs.has(type)) {
@@ -234,7 +234,7 @@ export class ScenesDialogManager {
     getCurrentDialog(): DialogInfo | null {
         const type = this.state.showingDialog;
         if (!type || !this.dialogs.has(type)) {
-            return null;
+            return null as any;
         }
         
         return {

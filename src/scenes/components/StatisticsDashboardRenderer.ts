@@ -11,7 +11,7 @@ interface GameEngine {
         render(context: CanvasRenderingContext2D, options: RenderOptions): Promise<void>;
     };
     chartRenderer?: {
-        render(context: CanvasRenderingContext2D, type: string, data: any, options: any): Promise<void>;
+        render(context: CanvasRenderingContext2D, type: "single" | "batch", data: any, options: any): Promise<void>;
     };
     debugMode?: boolean;
 }
@@ -67,7 +67,7 @@ interface StatisticsData {
         accuracy?: string;
         averageReactionTime?: string;
         favoriteType?: {
-            type: string;
+            type: "single" | "batch";
         };
         typeBreakdown?: Record<string, { count: number }>;
     };
@@ -390,7 +390,7 @@ export class StatisticsDashboardRenderer {
      * @param data - データ
      * @param options - オプション
      */
-    private async renderFallbackChart(context: CanvasRenderingContext2D, type: string, data: any, options: { width?: number; height?: number; lineColor?: string; showAxes?: boolean; showGrid?: boolean }): Promise<void> {
+    private async renderFallbackChart(context: CanvasRenderingContext2D, type: "single" | "batch", data: any, options: { width?: number; height?: number; lineColor?: string; showAxes?: boolean; showGrid?: boolean }): Promise<void> {
         const { width, height } = options;
         
         // 背景

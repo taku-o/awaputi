@@ -42,7 +42,7 @@ interface ScoreData {
 
 interface Achievement {
     id: string;
-    type: string;
+    type: "single" | "batch";
     name: string;
     description: string;
 }

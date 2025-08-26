@@ -632,10 +632,10 @@ export class GameEngine {
             this.stop();
             
             // Cleanup sub-components
-            if (this.initializer?.destroy) this.initializer.destroy();
-            if (this.eventManager?.destroy) this.eventManager.destroy();
-            if (this.renderer?.destroy) this.renderer.destroy();
-            if (this.utilities?.destroy) this.utilities.destroy();
+            if (this.initializer?.destroy) this.initializer?.destroy?.();
+            if (this.eventManager?.destroy) this.eventManager?.destroy?.();
+            if (this.renderer?.destroy) this.renderer?.destroy?.();
+            if (this.utilities?.destroy) this.utilities?.destroy?.();
             
             // Cleanup systems
             this.memoryManager?.destroy?.();
@@ -643,8 +643,8 @@ export class GameEngine {
                 this.performanceOptimizer.cleanup(); 
             }
             this.audioManager?.destroy?.();
-            if (this.particleManager?.destroy) this.particleManager.destroy();
-            if (this.effectManager?.destroy) this.effectManager.destroy();
+            if (this.particleManager?.destroy) this.particleManager?.destroy?.();
+            if (this.effectManager?.destroy) this.effectManager?.destroy?.();
             
             // Clear event listeners
             this.eventListeners.clear();

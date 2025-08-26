@@ -685,7 +685,7 @@ export class AdvancedRenderingOptimizer {
      */
     destroy(): void {
         // Stop performance monitoring
-        this.performanceMonitor.destroy();
+        this.performanceMonitor?.destroy?.();
         
         // Clear event listeners
         // (ResizeObserver automatically disconnects when element is removed)
@@ -720,7 +720,7 @@ export function getAdvancedRenderingOptimizer(canvas?: HTMLCanvasElement, contex
 export function reinitializeAdvancedRenderingOptimizer(canvas: HTMLCanvasElement, context: CanvasRenderingContext2D): void {
     try {
         if (_advancedRenderingOptimizer) {
-            _advancedRenderingOptimizer.destroy();
+            _advancedRenderingOptimizer?.destroy?.();
         }
         _advancedRenderingOptimizer = new AdvancedRenderingOptimizer(canvas, context);
         console.log('[AdvancedRenderingOptimizer] 再初期化完了');

@@ -234,7 +234,7 @@ export class ConfigurationErrorHandler {
         if (key.includes('enabled')) {
             return false;
         }
-        return null;
+        return null as any;
     }
 
     handleError(errorType: ConfigErrorType, error: Error, context: any = {}): RecoveryResult {

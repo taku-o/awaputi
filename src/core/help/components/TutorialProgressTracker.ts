@@ -35,7 +35,7 @@ export interface StepTiming {
 }
 
 export interface UserAction {
-    type: string;
+    type: "single" | "batch";
     timestamp: number;
     stepIndex: number;
     data: any;
@@ -50,7 +50,7 @@ export interface ErrorRecord {
 }
 
 export interface HelpRequest {
-    type: string;
+    type: "single" | "batch";
     timestamp: number;
     stepIndex: number;
     query?: string;
@@ -664,7 +664,7 @@ export class TutorialProgressTracker {
             return report;
         } catch (error) {
             // Error handled by logging system
-            return null;
+            return null as any;
         }
     }
     

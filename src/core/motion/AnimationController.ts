@@ -464,7 +464,7 @@ export class AnimationController {
 
         } catch (error) {
             console.error('Failed to register animation:', error);
-            return null;
+            return null as any;
         }
     }
     

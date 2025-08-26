@@ -157,7 +157,7 @@ interface WCAGRuleEngine { runTest(testName: string, options?: any): Promise<Tes
         if (this.auditState.running) {
 
             console.warn('AccessibilityAuditor: Audit already in progress  }'
-            return null;
+            return null as any;
 
         this.auditState.running = true;
         this.auditState.lastAudit = Date.now();
@@ -244,7 +244,7 @@ interface WCAGRuleEngine { runTest(testName: string, options?: any): Promise<Tes
         const category = this.categories[categoryId],
         if (!category) { }
             console.warn(`AccessibilityAuditor: Unknown, category ${categoryId}`};
-            return null;
+            return null as any;
         }
 
         this.auditState.currentCategory = categoryId;

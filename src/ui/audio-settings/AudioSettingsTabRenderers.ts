@@ -131,7 +131,7 @@ export class AudioSettingsTabRenderers {
             label: 'audio.settings.volume.master',
             icon: '🎵',
             category: 'master',
-            defaultValue: this.audioManager.getVolume('master'),
+            defaultValue: this.audioManager.getVolume('master' as AudioChannel),
             previewSound: 'success'
         });
         

@@ -107,14 +107,14 @@ export class TranslationCache {
                     this.cache.delete(cacheKey);
                     this.removeFromAccessOrder(cacheKey);
                     this.missCount++;
-                    return null;
+                    return null as any;
                 }
                 
                 return cached.value;
             }
             
             this.missCount++;
-            return null;
+            return null as any;
         } catch (error) {
             getErrorHandler().handleError(error as Error, 'TRANSLATION_CACHE_ERROR', {
                 operation: 'get',
@@ -122,7 +122,7 @@ export class TranslationCache {
                 language: language
             });
             this.missCount++;
-            return null;
+            return null as any;
         }
     }
 

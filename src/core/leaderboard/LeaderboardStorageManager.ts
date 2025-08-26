@@ -646,7 +646,7 @@ export class LeaderboardStorageManager {
         if (!cached) {
             this.cacheStatistics.totalMisses++;
             this.updateCacheStatistics();
-            return null;
+            return null as any;
         }
 
         const maxAge = cached.ttl || this.leaderboardManager.config.cacheMaxAge || DEFAULT_CACHE_MAX_AGE;
@@ -655,7 +655,7 @@ export class LeaderboardStorageManager {
             this.cache.delete(key);
             this.cacheStatistics.totalMisses++;
             this.updateCacheStatistics();
-            return null;
+            return null as any;
         }
 
         // アクセス統計の更新

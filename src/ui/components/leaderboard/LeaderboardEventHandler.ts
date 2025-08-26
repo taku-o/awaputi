@@ -878,7 +878,7 @@ export class LeaderboardEventHandler {
             return { type: 'scrollbar', ...this.uiElements.scrollbar };
         }
         
-        return null;
+        return null as any;
     }
     
     /**

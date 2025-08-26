@@ -117,7 +117,7 @@ export class LRUCache<T = any> {
         }
         
         this.stats.misses++;
-        return null;
+        return null as any;
     }
     
     /**

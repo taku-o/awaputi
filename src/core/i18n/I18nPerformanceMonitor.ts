@@ -65,7 +65,7 @@ export interface PerformanceThresholds {
 }
 
 export interface PerformanceAlert {
-    type: string;
+    type: "single" | "batch";
     details: any;
     timestamp: number;
     severity: AlertSeverity;
@@ -869,7 +869,7 @@ export class I18nPerformanceMonitor {
     /**
      * パフォーマンス問題の記録
      */
-    private recordPerformanceIssue(type: string, details: PerformanceIssueDetails): void {
+    private recordPerformanceIssue(type: "single" | "batch", details: PerformanceIssueDetails): void {
         const issue: PerformanceAlert = {
             type,
             details,
@@ -894,7 +894,7 @@ export class I18nPerformanceMonitor {
     /**
      * 重要度の計算
      */
-    private calculateSeverity(type: string, details: PerformanceIssueDetails): AlertSeverity {
+    private calculateSeverity(type: "single" | "batch", details: PerformanceIssueDetails): AlertSeverity {
         switch (type) {
             case 'languageSwitch':
                 return details.duration && details.duration > this.thresholds.languageSwitchTime * 2 ? 'high' : 'medium';

@@ -617,7 +617,7 @@ export class SoundEffectRenderer {
             return buffer;
         } catch (error) {
             console.error('[SoundEffectRenderer] Failed to generate fallback sound:', error);
-            return null;
+            return null as any;
         }
     }
     

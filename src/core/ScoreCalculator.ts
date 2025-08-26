@@ -76,7 +76,7 @@ interface ScoreStatistics {
 interface GameState {
     currentCombo?: number;
     availableBubbles?: Array<{
-        type: string;
+        type: "single" | "batch";
         ageRatio?: number;
         [key: string]: any;
     }>;

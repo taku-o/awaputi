@@ -42,7 +42,7 @@ export class PrivacyManager {
     private setupDefaultAnonymizationRules(): void {
         // IPアドレスの匿名化
         this.anonymizationRules.set('ipAddress', (value: string): string | null => {
-            if(!value) return null;
+            if(!value) return null as any;
             const parts = value.split('.');
             if (parts.length === 4) {
                 // 最後のオクテットを0に置換
@@ -53,7 +53,7 @@ export class PrivacyManager {
         
         // ユーザーエージェントの匿名化
         this.anonymizationRules.set('userAgent', (value: string): string | null => {
-            if(!value) return null;
+            if(!value) return null as any;
             
             // バージョン番号を除去
             return value.replace(/\d+\.\d+[\.\d]*/g, 'X.X');
@@ -61,7 +61,7 @@ export class PrivacyManager {
         
         // セッションIDの匿名化
         this.anonymizationRules.set('sessionId', (value: string): string | null => {
-            if (!value) return null;
+            if (!value) return null as any;
             // セッションIDをハッシュ化
             return this.hashValue(value);
         });
@@ -74,7 +74,7 @@ export class PrivacyManager {
         
         // 座標の曖昧化
         this.anonymizationRules.set('coordinates', (value: { x: number; y: number }): { x: number; y: number } | null => {
-            if(!value || typeof value.x !== 'number' || typeof value.y !== 'number') return null;
+            if(!value || typeof value.x !== 'number' || typeof value.y !== 'number') return null as any;
             // 10ピクセル単位に丸める
             return {
                 x: Math.round(value.x / 10) * 10,

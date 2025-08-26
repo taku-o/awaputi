@@ -20,7 +20,7 @@ interface ScoreManager {
 
 interface BubbleManager {
     getActiveBubbleCount?: () => number;
-    spawnBubble?: (type: string) => void;
+    spawnBubble?: (type: "single" | "batch") => void;
 }
 
 interface PlayerData {
@@ -340,7 +340,7 @@ export class GameStateCommands extends BaseComponent {
      */
     public capturePlayerData(): PlayerDataSnapshot | null {
         const playerData = this.getPlayerData();
-        if (!playerData) return null;
+        if (!playerData) return null as any;
 
         return {
             name: playerData.getName ? playerData.getName() : '',
@@ -530,7 +530,7 @@ export class GameStateCommands extends BaseComponent {
      * クリーンアップ（BaseComponent互換）
      */
     public cleanup(): void {
-        this.destroy();
+        this?.destroy?.();
         super.cleanup();
     }
 }

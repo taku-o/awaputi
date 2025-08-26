@@ -57,7 +57,7 @@ import { CacheStatistics } from './cache/CacheStatistics';
 
 // エラーハンドラー型定義
 interface ErrorHandler {
-    handleError(error: Error, type: string, context?: any): void;
+    handleError(error: Error, type: "single" | "batch", context?: any): void;
 }
 
 // 設定管理型定義
@@ -307,7 +307,7 @@ export class AudioCacheManager {
         };
     }
     
-    clearCache(type: string = 'all'): void {
+    clearCache(type: "single" | "batch" = 'all'): void {
         try {
             switch(type) {
                 case 'audio':
@@ -471,15 +471,15 @@ export class AudioCacheManager {
         try {
             // サブコンポーネントの解放
             if (this.memoryManager) {
-                this.memoryManager.dispose();
+                this.memoryManager?.dispose?.();
             }
             
             if (this.dataLoader) {
-                this.dataLoader.dispose();
+                this.dataLoader?.dispose?.();
             }
             
             if (this.statistics) {
-                this.statistics.dispose();
+                this.statistics?.dispose?.();
             }
             
             // 全キャッシュをクリア

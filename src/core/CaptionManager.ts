@@ -868,7 +868,7 @@ export class CaptionManager {
         const duration = this.config.captionDuration.persistent;
 
         this.createCaptionElement(captionId, description, duration, options);
-        this.updateCaptionStats('music');
+        this.updateCaptionStats('music' as AudioChannel);
     }
     
     /**

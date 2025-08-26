@@ -34,7 +34,7 @@ interface Particle {
     gravity: number;
     friction: number;
     bounce?: number;
-    type: string;
+    type: "single" | "batch";
     rotationSpeed?: number;
     scaleSpeed?: number;
     maxTrailLength?: number;

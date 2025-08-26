@@ -1045,10 +1045,10 @@ export class MobilePerformanceOptimizer {
             console.log('[MobilePerformanceOptimizer] Disposing mobile performance optimizer...');
             
             // Dispose specialized components
-            this.resourceManager?.dispose();
-            this.renderOptimizer?.dispose();
-            this.batteryOptimizer?.dispose();
-            this.memoryManager?.dispose();
+            this.resourceManager?.dispose?.();
+            this.renderOptimizer?.dispose?.();
+            this.batteryOptimizer?.dispose?.();
+            this.memoryManager?.dispose?.();
             
             console.log('[MobilePerformanceOptimizer] Mobile performance optimizer disposed');
         } catch (error) {
@@ -1075,7 +1075,7 @@ export function getMobilePerformanceOptimizer(): MobilePerformanceOptimizer {
  */
 export function reinitializeMobilePerformanceOptimizer(): MobilePerformanceOptimizer {
     if (mobilePerformanceOptimizerInstance) {
-        mobilePerformanceOptimizerInstance.dispose();
+        mobilePerformanceOptimizerInstance?.dispose?.();
     }
     mobilePerformanceOptimizerInstance = new MobilePerformanceOptimizer();
     return mobilePerformanceOptimizerInstance;

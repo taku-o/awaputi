@@ -618,7 +618,7 @@ export class LocalExecutionErrorHandler {
     /**
      * ガイダンスが既に表示されたかチェック
      */
-    private static _isGuidanceShown(type: string): boolean {
+    private static _isGuidanceShown(type: "single" | "batch"): boolean {
         try {
             return sessionStorage.getItem(`guidance_shown_${type}`) === 'true';
         } catch {
@@ -629,7 +629,7 @@ export class LocalExecutionErrorHandler {
     /**
      * ガイダンス表示状態をマーク
      */
-    private static _markGuidanceShown(type: string): void {
+    private static _markGuidanceShown(type: "single" | "batch"): void {
         try {
             sessionStorage.setItem(`guidance_shown_${type}`, 'true');
         } catch {

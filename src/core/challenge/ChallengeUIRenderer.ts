@@ -112,7 +112,7 @@ export interface ChallengeReward {
 }
 
 export interface RewardItem {
-    type: string;
+    type: "single" | "batch";
     id: string;
     quantity: number;
     name?: string;

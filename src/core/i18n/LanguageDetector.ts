@@ -76,10 +76,10 @@ export class LanguageDetector {
                 return normalized;
             }
 
-            return null;
+            return null as any;
         } catch (error) {
             console.warn('Failed to detect language from URL:', error);
-            return null;
+            return null as any;
         }
     }
     
@@ -96,10 +96,10 @@ export class LanguageDetector {
                 return normalized;
             }
 
-            return null;
+            return null as any;
         } catch (error) {
             console.warn('Failed to detect language from storage:', error);
-            return null;
+            return null as any;
         }
     }
     
@@ -139,10 +139,10 @@ export class LanguageDetector {
                 }
             }
 
-            return null;
+            return null as any;
         } catch (error) {
             console.warn('Failed to detect language from browser:', error);
-            return null;
+            return null as any;
         }
     }
     
@@ -159,7 +159,7 @@ export class LanguageDetector {
      */
     private normalizeLanguageCode(langCode: string | null): string | null {
         if (!langCode || typeof langCode !== 'string') {
-            return null;
+            return null as any;
         }
         
         // 小文字に変換し、地域コードを除去

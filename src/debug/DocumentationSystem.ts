@@ -449,7 +449,7 @@ class TestSupportTools {
     runBenchmarks(names?: string[]): BenchmarkResults;
     
     // モックデータ
-    generateMockData(type: string, count: number): any[];
+    generateMockData(type: "single" | "batch", count: number): any[];
     createScenario(name: string): Scenario;
     
     // 分析
@@ -868,8 +868,8 @@ class TestSupportTools {
             this.helpPanel.parentNode.removeChild(this.helpPanel);
         }
         this.docs.clear();
-        this.searchEngine.destroy();
-        this.contextualHelp.destroy();
+        this.searchEngine?.destroy?.();
+        this.contextualHelp?.destroy?.();
     }
 }
 

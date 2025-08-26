@@ -536,7 +536,7 @@ export class RealtimeMonitor {
     /**
      * アラート履歴の取得
      */
-    getAlertHistory(limit: number | null = null, severity: string | null = null, type: string | null = null): any[] {
+    getAlertHistory(limit: number | null = null, severity: string | null = null, type: "single" | "batch" | null = null): any[] {
         let alerts = [...this.alerts];
 
         // フィルタリング

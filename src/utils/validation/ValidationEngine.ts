@@ -568,10 +568,10 @@ export class ValidationEngine {
                 return fs.existsSync(resolved) ? resolved : null;
             } else {
                 // 絶対パスまたはnode_modules
-                return null; // node_modulesは検証しない
+                return null as any; // node_modulesは検証しない
             }
         } catch (error) {
-            return null;
+            return null as any;
         }
     }
     

@@ -703,14 +703,14 @@ export class PerformancePanel {
         // チャートのクリーンアップ
         for (const chart of this.charts.values()) {
             if ((chart as any).destroy) {
-                (chart as any).destroy();
+                (chart as any)?.destroy?.();
             }
         }
         this.charts.clear();
         
         // モニターのクリーンアップ
         if (this.monitor) {
-            this.monitor.destroy();
+            this.monitor?.destroy?.();
         }
 
         // スタイルの削除

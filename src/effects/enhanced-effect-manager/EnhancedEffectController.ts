@@ -125,7 +125,7 @@ interface BackgroundEffect {
  */
 interface TransitionEffect {
     id: number;
-    type: string;
+    type: "single" | "batch";
     [key: string]: any;
 }
 

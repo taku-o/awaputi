@@ -6,7 +6,7 @@
 
 // Type definitions
 interface BubbleData {
-    type: string;
+    type: "single" | "batch";
     score: number;
     position?: { x: number; y: number };
     size?: number;
@@ -29,7 +29,7 @@ interface HealData {
 }
 
 interface EffectData {
-    type: string;
+    type: "single" | "batch";
     duration?: number;
     intensity?: number;
 }

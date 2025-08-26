@@ -189,7 +189,7 @@ export class SEOMonitoringEngine {
             return score;
         } catch (error) {
             console.error('Failed to check Lighthouse score', error);
-            return null;
+            return null as any;
         }
     }
     
@@ -218,7 +218,7 @@ export class SEOMonitoringEngine {
             return vitals;
         } catch (error) {
             console.error('Failed to check Core Web Vitals', error);
-            return null;
+            return null as any;
         }
     }
     
@@ -356,7 +356,7 @@ export class SEOMonitoringEngine {
             return vitals;
         } catch (error) {
             console.error('Failed to track Core Web Vitals', error);
-            return null;
+            return null as any;
         }
     }
     

@@ -68,7 +68,7 @@ export class PerformanceOptimizer {
     /**
      * 更新処理を最適化して実行
      */
-    processUpdate(eventType: string, data: any, callback: (type: string, data: any) => any): any {
+    processUpdate(eventType: string, data: any, callback: (type: "single" | "batch", data: any) => any): any {
         const startTime = performance.now();
 
         // キャッシュチェック
@@ -87,14 +87,14 @@ export class PerformanceOptimizer {
         if (this.shouldThrottle(eventType)) {
             this.stats.throttledEvents++;
             this.scheduleThrottledUpdate(eventType, data, callback);
-            return null;
+            return null as any;
         }
 
         // バッチ処理
         if (this.shouldBatch(eventType)) {
             this.addToBatch(eventType, data, callback);
             this.processBatchIfNeeded();
-            return null;
+            return null as any;
         }
 
         // 即座に処理
@@ -117,12 +117,12 @@ export class PerformanceOptimizer {
      */
     getFromCache(key: string): any {
         const entry = this.cache.get(key);
-        if (!entry) return null;
+        if (!entry) return null as any;
 
         // TTLチェック
         if (Date.now() - entry.timestamp > this.config.cacheTTL) {
             this.cache.delete(key);
-            return null;
+            return null as any;
         }
 
         return entry.value;

@@ -96,7 +96,7 @@ export class AchievementManager implements IAchievementManager {
             },
             getAchievement: (id: string) => {
                 console.log('Mock getAchievement called with:', id);
-                return null;
+                return null as any;
             },
             getStatistics: () => ({ total: 0, byCategory: {} })
         };
@@ -186,7 +186,7 @@ export class AchievementManager implements IAchievementManager {
     updateProgress(eventType: string, data: any): void {
         if (this.config.persistProgress && this.performanceOptimizer) {
             // パフォーマンス最適化ありで処理
-            this.performanceOptimizer.processUpdate(eventType, data, (type: string, eventData: any) => {
+            this.performanceOptimizer.processUpdate(eventType, data, (type: "single" | "batch", eventData: any) => {
                 return this.processUpdateEvent(type, eventData);
             });
         } else {
@@ -276,7 +276,7 @@ export class AchievementManager implements IAchievementManager {
      * 実績進捗を高度に更新（既存メソッドとの互換性）
      */
     updateAchievementProgressAdvanced(achievement: Achievement, _eventType: string, _data: any): AchievementProgressResult | null {
-        if (!this.progressTracker) return null;
+        if (!this.progressTracker) return null as any;
         
         const progressResult = this.progressTracker.evaluateAchievementCondition(achievement);
         if (progressResult && progressResult.isComplete) {
@@ -316,10 +316,10 @@ export class AchievementManager implements IAchievementManager {
      * 実績進捗を取得
      */
     getAchievementProgress(achievementId: string): AchievementProgressResult | null {
-        if (!this.definitions || !this.progressTracker) return null;
+        if (!this.definitions || !this.progressTracker) return null as any;
         
         const achievement = this.definitions.getAchievement(achievementId);
-        if (!achievement) return null;
+        if (!achievement) return null as any;
         
         return this.progressTracker.evaluateAchievementCondition(achievement);
     }
@@ -469,11 +469,11 @@ export class AchievementManager implements IAchievementManager {
      */
     destroy(): void {
         if (this.performanceOptimizer) {
-            this.performanceOptimizer.destroy();
+            this.performanceOptimizer?.destroy?.();
         }
 
         if (this.notificationSystem) {
-            this.notificationSystem.destroy();
+            this.notificationSystem?.destroy?.();
         }
 
         console.log('[AchievementManager] Achievement management system destroyed');

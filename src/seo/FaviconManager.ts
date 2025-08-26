@@ -30,7 +30,7 @@ interface GeneratedFavicon {
     category: string;
     filename: string;
     size: number | string;
-    type: string;
+    type: "single" | "batch";
     dataUrl: string;
     spec: FaviconSpec;
 }
@@ -298,7 +298,7 @@ export class FaviconManager {
     private async _generateSingleFavicon(spec: FaviconSpec, options: { forceRegenerate?: boolean }): Promise<string | null> {
         if (!this.canvas || !this.ctx) {
             seoLogger.warn('Canvas not available for favicon generation');
-            return null;
+            return null as any;
         }
 
         // 生成キャッシュをチェック

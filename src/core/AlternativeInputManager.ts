@@ -166,7 +166,7 @@ export class AlternativeInputManager {
     private stats: Statistics;
     private gamepadCheckInterval: ReturnType<typeof setInterval> | null = null;
 
-    constructor(_motorAccessibilityManager: MotorAccessibilityManager) {
+    constructor(motorAccessibilityManager: MotorAccessibilityManager) {
         // motorAccessibilityManager not used in current implementation
         
         // サブコンポーネントを初期化
@@ -812,7 +812,7 @@ export class AlternativeInputManager {
         } else if (element.classList.contains('ui-element')) {
             return `UI要素: ${element.textContent || 'インタラクティブ要素'}`;
         }
-        return null;
+        return null as any;
     }
     
     /**

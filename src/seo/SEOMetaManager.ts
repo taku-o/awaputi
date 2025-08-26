@@ -71,7 +71,7 @@ interface Metadata {
     image: string;
     author: string;
     siteName: string;
-    type: string;
+    type: "single" | "batch";
     twitterImage?: string;
     path?: string;
 }
@@ -797,7 +797,7 @@ export class SEOMetaManager {
      */
     private _registerDynamicHandlers(): void {
         this.registerDynamicHandler('socialImage', async (gameState: GameState) => {
-            if (!gameState || !gameState.score) return null;
+            if (!gameState || !gameState.score) return null as any;
             
             // スコアに基づく画像選択のロジック
             if (gameState.score > 100000) {
@@ -806,25 +806,25 @@ export class SEOMetaManager {
                 return getSocialImageUrl('openGraph', 'default');
             }
 
-            return null;
+            return null as any;
         });
         
         // タイトルの動的生成ハンドラー
         this.registerDynamicHandler('title', async (gameState: GameState) => {
-            if (!gameState) return null;
+            if (!gameState) return null as any;
             
             if (gameState.achievement) {
                 return `${gameState.achievement} 達成！`;
             }
             
-            return null;
+            return null as any;
         });
     }
     
     /**
      * 動的ハンドラーの登録
      */
-    registerDynamicHandler(type: string, handler: DynamicMetaHandler): void {
+    registerDynamicHandler(type: "single" | "batch", handler: DynamicMetaHandler): void {
         this.dynamicMetaHandlers.set(type, handler);
     }
     

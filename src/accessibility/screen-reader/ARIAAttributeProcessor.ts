@@ -36,7 +36,7 @@ interface ValidationResults { passed: ValidationPass[],
     atomic: boolean,
     relevant: string,
     mutations: MutationInfo[];
-    interface MutationInfo { type: string,
+    interface MutationInfo { type: "single" | "batch",
     target: string;
     interface PerformanceMetrics { validationTime: number[],
     processedElements: number,

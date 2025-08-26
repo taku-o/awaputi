@@ -74,7 +74,7 @@ interface RenderMetricsData {
 
 interface RenderMetric {
     timestamp: number;
-    type: string;
+    type: "single" | "batch";
     name: string;
     startTime: number;
     endTime?: number;
@@ -106,7 +106,7 @@ interface NetworkResourceType {
 interface NetworkMetric {
     timestamp: number;
     name: string;
-    type: string;
+    type: "single" | "batch";
     startTime: number;
     duration: number;
     transferSize: number;
@@ -143,7 +143,7 @@ interface InteractionTypeStats {
 
 interface InteractionMetric {
     timestamp: number;
-    type: string;
+    type: "single" | "batch";
     target: string;
     responseTime: number;
     coordinates: { x: number; y: number; } | null;
@@ -284,7 +284,7 @@ interface CustomAnalysis {
 }
 
 interface PerformanceBottleneck {
-    type: string;
+    type: "single" | "batch";
     severity: string;
     description: string;
     impact: string;

@@ -403,7 +403,7 @@ export class AdvancedFormatterEngine {
     /**
      * 動的翻訳生成
      */
-    generateDynamicTranslation(type: string, data: any, language: string, options: FormatOptions = {}): string {
+    generateDynamicTranslation(type: "single" | "batch", data: any, language: string, options: FormatOptions = {}): string {
         try {
             const {
                 templateOverride = null,
@@ -620,7 +620,7 @@ export class AdvancedFormatterEngine {
             }
         }
         
-        return null;
+        return null as any;
     }
 
     private resolveDynamicContext(dynamicContext: any, parameters: Record<string, any>): string {
@@ -718,7 +718,7 @@ export class AdvancedFormatterEngine {
         return translation;
     }
 
-    private postProcessGeneration(translation: string, _type: string, _language: string): string {
+    private postProcessGeneration(translation: string, _type: "single" | "batch", _language: string): string {
         // 実装プレースホルダー
         return translation;
     }
@@ -807,14 +807,14 @@ export class AdvancedFormatterEngine {
         const entry = this.translationMemory.get(key);
         if (!entry) {
             this.statistics.memoryMisses++;
-            return null;
+            return null as any;
         }
 
         // 期限チェック
         if (Date.now() - entry.timestamp > this.memoryConfig.expirationTime) {
             this.translationMemory.delete(key);
             this.statistics.memoryMisses++;
-            return null;
+            return null as any;
         }
 
         // 使用回数を増加
@@ -880,7 +880,7 @@ export class AdvancedFormatterEngine {
     /**
      * 生成ルールを追加
      */
-    addGenerationRule(type: string, rule: GenerationRule): void {
+    addGenerationRule(type: "single" | "batch", rule: GenerationRule): void {
         this.generationRules.set(type, rule);
         console.log(`Generation rule added: ${type}`);
     }

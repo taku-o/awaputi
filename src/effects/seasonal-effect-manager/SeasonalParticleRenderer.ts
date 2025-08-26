@@ -14,7 +14,7 @@ export interface SeasonalParticle {
     color: string;
     life: number;
     decay: number;
-    type: string;
+    type: "single" | "batch";
     rotation?: number;
     rotationSpeed?: number;
     gravity?: number;
@@ -39,7 +39,7 @@ export interface SeasonalParticle {
 // エフェクトの型定義
 export interface SeasonalEffect {
     id: string;
-    type: string;
+    type: "single" | "batch";
     x: number;
     y: number;
     config: EffectConfig;

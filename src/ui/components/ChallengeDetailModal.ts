@@ -8,7 +8,7 @@
  * Challenge reward interface
  */
 interface ChallengeReward {
-    type: string;
+    type: "single" | "batch";
     amount: number;
     description: string;
 }
@@ -464,7 +464,7 @@ export class ChallengeDetailModal {
     /**
      * ユーティリティメソッド
      */
-    private getTypeDisplayName(type: string): string {
+    private getTypeDisplayName(type: "single" | "batch"): string {
         const types: Record<string, string> = {
             daily: 'デイリー',
             weekly: 'ウィークリー',

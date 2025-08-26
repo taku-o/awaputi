@@ -549,13 +549,13 @@ export class HelpEffectivenessAnalyzer {
         try {
             // サブコンポーネントのクリーンアップ
             if (this.metricsCollector && typeof this.metricsCollector.destroy === 'function') {
-                this.metricsCollector.destroy();
+                this.metricsCollector?.destroy?.();
             }
             if (this.dataAnalyzer && typeof this.dataAnalyzer.destroy === 'function') {
-                this.dataAnalyzer.destroy();
+                this.dataAnalyzer?.destroy?.();
             }
             if (this.reportGenerator && typeof (this.reportGenerator as any).destroy === 'function') {
-                (this.reportGenerator as any).destroy();
+                (this.reportGenerator as any)?.destroy?.();
             }
 
             this.loggingSystem.info('HelpEffectivenessAnalyzer', 'Help effectiveness analyzer cleaned up');

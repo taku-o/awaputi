@@ -419,7 +419,7 @@ export function getContextualHelpManager(config?: Partial<HelpManagerConfig>): C
  */
 export function resetContextualHelpManager(): void {
     if (instance) {
-        instance.destroy();
+        instance?.destroy?.();
         instance = null;
     }
 }

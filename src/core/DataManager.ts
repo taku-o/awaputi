@@ -745,7 +745,7 @@ export class DataManager {
      * 非同期操作キューの状態を取得
      */
     public getAsyncQueueStatus(): any {
-        return this.asyncQueue.getStatus();
+        return this.asyncQueue?.getStatus?.();
     }
     
     /**
@@ -928,19 +928,19 @@ export class DataManager {
             this.listeners.clear();
             
             if (this.storage && typeof this.storage.destroy === 'function') {
-                this.storage.destroy();
+                this.storage?.destroy?.();
             }
             
             if (this.offlineManager && typeof this.offlineManager.destroy === 'function') {
-                this.offlineManager.destroy();
+                this.offlineManager?.destroy?.();
             }
             
             if (this.syncManager && typeof this.syncManager.destroy === 'function') {
-                this.syncManager.destroy();
+                this.syncManager?.destroy?.();
             }
             
             if (this.cloudStorage && typeof this.cloudStorage.destroy === 'function') {
-                this.cloudStorage.destroy();
+                this.cloudStorage?.destroy?.();
             }
             
             console.log('DataManager destroyed');

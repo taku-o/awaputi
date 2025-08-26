@@ -53,7 +53,7 @@ interface ExtendedGameEngine {
     };
     achievementNotificationSystem?: AchievementNotificationSystem & {
         queueNotification(notification: {
-            type: string;
+            type: "single" | "batch";
             title: string;
             message: string;
             icon: string;
@@ -261,7 +261,7 @@ export class StageSelectDataManager {
      */
     public getSelectedStage(): UnlockedStageInfo | null {
         if (this.selectedStageIndex < 0 || this.selectedStageIndex >= this.unlockedStages.length) {
-            return null;
+            return null as any;
         }
         return this.unlockedStages[this.selectedStageIndex];
     }

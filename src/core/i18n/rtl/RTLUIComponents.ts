@@ -23,7 +23,7 @@ export interface DefaultRTLStyles {
 
 export interface RegisteredComponent {
     id: string;
-    type: string;
+    type: "single" | "batch";
     element: HTMLElement;
     options: any;
     createdAt: string;
@@ -164,7 +164,7 @@ export interface ComponentStats {
     registeredComponentsCount: number;
     registeredComponents: {
         id: string;
-        type: string;
+        type: "single" | "batch";
         createdAt: string;
     }[];
 }
@@ -227,7 +227,7 @@ export class RTLUIComponents {
     /**
      * RTL対応コンポーネントを作成
      */
-    createRTLComponent(type: string, options: any = {}): CreateComponentResult | null {
+    createRTLComponent(type: "single" | "batch", options: any = {}): CreateComponentResult | null {
         try {
             const factory = this.componentFactories.get(type);
             if (!factory) {
@@ -261,7 +261,7 @@ export class RTLUIComponents {
                 type: type,
                 options: options
             });
-            return null;
+            return null as any;
         }
     }
     
@@ -811,7 +811,7 @@ export class RTLUIComponents {
      * ヘルパー関数群
      */
     
-    private createPaginationItem(text: string, page: number, type: string): HTMLLIElement {
+    private createPaginationItem(text: string, page: number, type: "single" | "batch"): HTMLLIElement {
         const li = document.createElement('li');
         li.className = `rtl-pagination-item rtl-pagination-${type}`;
 
@@ -835,7 +835,7 @@ export class RTLUIComponents {
         return li;
     }
     
-    private generateComponentId(type: string): string {
+    private generateComponentId(type: "single" | "batch"): string {
         return `rtl-${type}-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
     }
     
@@ -880,7 +880,7 @@ export class RTLUIComponents {
     /**
      * コンポーネントファクトリを追加
      */
-    addComponentFactory(type: string, factory: ComponentFactory): void {
+    addComponentFactory(type: "single" | "batch", factory: ComponentFactory): void {
         this.componentFactories.set(type, factory);
         console.log(`Component factory added: ${type}`);
     }

@@ -58,7 +58,7 @@ interface CommitPattern {
 }
 
 interface Recommendation { 
-    type: string;
+    type: "single" | "batch";
     priority: string;
     message: string;
     files?: string[];
@@ -200,7 +200,7 @@ interface RecoveryOverview {
 
 interface RecoveryMethod { 
     filePath: string;
-    type: string;
+    type: "single" | "batch";
     instructions: string[];
     confidence: string;
 }

@@ -81,7 +81,7 @@ interface NotificationError {
 interface Notification {
     id: string;
     timestamp: number;
-    type: string;
+    type: "single" | "batch";
     error: NotificationError;
     additionalInfo?: any;
     channels: string[];
@@ -102,13 +102,13 @@ interface UINotificationData {
 interface StoredNotification {
     id: string;
     timestamp: number;
-    type: string;
+    type: "single" | "batch";
     error: NotificationError;
 }
 
 interface WebhookPayload {
     timestamp: number;
-    type: string;
+    type: "single" | "batch";
     error: NotificationError;
     gameInfo: {
         sessionId: string;
@@ -194,7 +194,7 @@ export class DebugErrorNotificationSystem {
     /**
      * エラー通知の処理
      */
-    processErrorNotification(error: NotificationError, type: string = 'standard', additionalInfo: any = {}): boolean {
+    processErrorNotification(error: NotificationError, type: "single" | "batch" = 'standard', additionalInfo: any = {}): boolean {
         if (!this.notificationConfig.enabled) return false;
         
         // フィルタリング
@@ -225,7 +225,7 @@ export class DebugErrorNotificationSystem {
     /**
      * 通知すべきかどうかの判定
      */
-    private shouldNotify(error: NotificationError, type: string): boolean {
+    private shouldNotify(error: NotificationError, type: "single" | "batch"): boolean {
         const config = this.notificationConfig;
         
         // 重要度フィルタ
@@ -259,7 +259,7 @@ export class DebugErrorNotificationSystem {
     /**
      * 閾値チェック
      */
-    private checkThreshold(error: NotificationError, type: string): boolean {
+    private checkThreshold(error: NotificationError, type: "single" | "batch"): boolean {
         const threshold = this.notificationConfig.thresholds[error.severity as keyof NotificationThresholds];
         if (!threshold) return true;
         
@@ -307,7 +307,7 @@ export class DebugErrorNotificationSystem {
     /**
      * 通知オブジェクトの作成
      */
-    private createNotification(error: NotificationError, type: string, additionalInfo: any): Notification {
+    private createNotification(error: NotificationError, type: "single" | "batch", additionalInfo: any): Notification {
         const notification: Notification = {
             id: this.generateNotificationId(),
             timestamp: Date.now(),
@@ -338,7 +338,7 @@ export class DebugErrorNotificationSystem {
     /**
      * 通知チャンネルの決定
      */
-    private determineChannels(error: NotificationError, type: string): string[] {
+    private determineChannels(error: NotificationError, type: "single" | "batch"): string[] {
         const channels: string[] = [];
         const config = this.notificationConfig.channels;
         
@@ -358,7 +358,7 @@ export class DebugErrorNotificationSystem {
     /**
      * チャンネル使用判定
      */
-    private shouldUseChannel(channel: string, settings: NotificationChannel, error: NotificationError, type: string): boolean {
+    private shouldUseChannel(channel: string, settings: NotificationChannel, error: NotificationError, type: "single" | "batch"): boolean {
         const level = settings.level;
 
         if (level === 'all') return true;

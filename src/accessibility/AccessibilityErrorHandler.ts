@@ -237,7 +237,7 @@ export class AccessibilityErrorHandler {
     /**
      * グローバルエラーの処理
      */
-    private handleGlobalError(error: any, type: string, context: GlobalErrorContext): void { // アクセシビリティ関連エラーの場合のみ処理
+    private handleGlobalError(error: any, type: "single" | "batch", context: GlobalErrorContext): void { // アクセシビリティ関連エラーの場合のみ処理
         if (this.isAccessibilityRelatedError(error, context) {
     
 }

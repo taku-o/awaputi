@@ -35,7 +35,7 @@ interface FileValidationResult {
 }
 
 interface ValidationIssue {
-    type: string;
+    type: "single" | "batch";
     message: string;
     severity?: 'error' | 'warning';
 }

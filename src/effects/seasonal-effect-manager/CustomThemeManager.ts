@@ -159,13 +159,13 @@ export class CustomThemeManager {
      */
     exportTheme(name: string): string | null {
         const theme = this.customThemes.get(name);
-        if (!theme) return null;
+        if (!theme) return null as any;
         
         try {
             return JSON.stringify(theme, null, 2);
         } catch (error) {
             console.error('Failed to export theme:', error);
-            return null;
+            return null as any;
         }
     }
     

@@ -250,7 +250,7 @@ export class UserInfoTabManager {
             const factory = this.componentFactory.get(tabId);
             if (!factory) {
                 console.error(`No factory found for tab: ${tabId}`);
-                return null;
+                return null as any;
             }
 
             const component = factory();
@@ -258,7 +258,7 @@ export class UserInfoTabManager {
             return component;
         } catch (error) {
             console.error(`Error loading tab component ${tabId}:`, error);
-            return null;
+            return null as any;
         }
     }
     
@@ -270,7 +270,7 @@ export class UserInfoTabManager {
             // キャッシュをクリアして再読み込み
             const component = this.componentCache.get(tabId);
             if (component && component.dispose) {
-                component.dispose();
+                component?.dispose?.();
             }
             this.componentCache.delete(tabId);
             
@@ -292,7 +292,7 @@ export class UserInfoTabManager {
      */
     public getTabComponent(tabId: string): TabComponent | null {
         if (!this.isValidTab(tabId)) {
-            return null;
+            return null as any;
         }
         
         return this.tabComponents.get(tabId) || this.loadTabComponent(tabId);
@@ -454,7 +454,7 @@ export class UserInfoTabManager {
         this.componentCache.forEach((component, tabId) => {
             if (component.dispose) {
                 try {
-                    component.dispose();
+                    component?.dispose?.();
                 } catch (error) {
                     console.error(`Error disposing tab component ${tabId}:`, error);
                 }

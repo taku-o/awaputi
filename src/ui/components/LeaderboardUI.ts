@@ -605,10 +605,10 @@ export class LeaderboardUI {
      * リソースを破棄
      */
     dispose(): void {
-        this.renderer.dispose();
-        this.dataManager.dispose();
-        this.animationController.dispose();
-        this.eventHandler.dispose();
+        this.renderer?.dispose?.();
+        this.dataManager?.dispose?.();
+        this.animationController?.dispose?.();
+        this.eventHandler?.dispose?.();
         console.log('[LeaderboardUI] All components disposed');
     }
 }

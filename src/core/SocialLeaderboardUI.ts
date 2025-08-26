@@ -39,8 +39,8 @@ interface LeaderboardOptions {
 }
 
 interface LeaderboardManager {
-    getLeaderboard?: (type: string, options?: any) => Promise<LeaderboardEntry[]>;
-    getRanking?: (period: string, type: string, options: { limit: number; search: string }) => Promise<{ entries: LeaderboardEntry[]; total: number; hasMore: boolean }>;
+    getLeaderboard?: (type: "single" | "batch", options?: any) => Promise<LeaderboardEntry[]>;
+    getRanking?: (period: string, type: "single" | "batch", options: { limit: number; search: string }) => Promise<{ entries: LeaderboardEntry[]; total: number; hasMore: boolean }>;
     refreshData?: () => Promise<void>;
     [key: string]: any;
 }
@@ -1451,7 +1451,7 @@ export class SocialLeaderboardUI {
     /**
      * イベントの発火
      */
-    private dispatchEvent(type: string, data: any): void {
+    private dispatchEvent(type: "single" | "batch", data: any): void {
         if (!this.elements.container) return;
         
         const event = new CustomEvent(`leaderboard-${type}`, {
@@ -1464,7 +1464,7 @@ export class SocialLeaderboardUI {
     /**
      * エラーハンドリング
      */
-    private handleError(type: string, error: any, context: any = {}): void {
+    private handleError(type: "single" | "batch", error: any, context: any = {}): void {
         console.error(`[SocialLeaderboardUI] ${type}:`, error, context);
         
         // エラー表示

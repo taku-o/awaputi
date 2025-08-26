@@ -97,7 +97,7 @@ export interface WebGazerInstance {
     showPredictionPoints: (show: boolean) => WebGazerInstance;
     setRegression: (regression: RegressionType) => WebGazerInstance;
     setTracker: (tracker: TrackerType) => WebGazerInstance;
-    recordScreenPosition: (x: number, y: number, type: string) => WebGazerInstance;
+    recordScreenPosition: (x: number, y: number, type: "single" | "batch") => WebGazerInstance;
     params: {
         imgWidth: number;
         imgHeight: number;

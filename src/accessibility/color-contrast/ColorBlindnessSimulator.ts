@@ -487,7 +487,7 @@ export class ColorBlindnessSimulator {
     /**
      * Generate cache key
      */
-    private generateCacheKey(color: RGB | RGBA | string, type: string): string { const normalizedColor = this.normalizeColor(color);
+    private generateCacheKey(color: RGB | RGBA | string, type: "single" | "batch"): string { const normalizedColor = this.normalizeColor(color);
         return `${normalizedColor.r},${normalizedColor.g},${normalizedColor.b},${normalizedColor.a}:${type}`;
     }
 

@@ -535,9 +535,9 @@ export class BalanceAdjustmentValidationRules {
     public destroy(): void {
         try {
             // Destroy sub-components
-            (this.ruleEngine as any).destroy();
-            (this.ruleDefinitions as any).destroy();
-            (this.resultProcessor as any).destroy();
+            (this.ruleEngine as any)?.destroy?.();
+            (this.ruleDefinitions as any)?.destroy?.();
+            (this.resultProcessor as any)?.destroy?.();
             // Clear legacy properties
             this.rules.clear();
             console.log('[BalanceAdjustmentValidationRules] Main controller destroyed');

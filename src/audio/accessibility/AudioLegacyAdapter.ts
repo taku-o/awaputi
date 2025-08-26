@@ -128,7 +128,7 @@ export class AudioLegacyAdapter {
             hapticFeedback: enabled && 'vibrate' in navigator,
             descriptionEnabled: enabled && 'speechSynthesis' in window
         };
-        await this.mainController.feedbackManager.updateSettings(settings);
+        await this.mainController.feedbackManager.updateSetting(settings);
     }
 
     /**

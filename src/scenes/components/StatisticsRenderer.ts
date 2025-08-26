@@ -57,7 +57,7 @@ interface StatisticsData {
         accuracy?: string;
         averageReactionTime?: string;
         favoriteType?: {
-            type: string;
+            type: "single" | "batch";
         };
         typeBreakdown?: Record<string, { count: number }>;
     };

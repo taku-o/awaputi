@@ -145,7 +145,7 @@ interface NavigationElements { links: NodeListOf<Element>,
 
             console.warn('ScreenReaderEngine: Simulation, already running'
             }
-            return null;
+            return null as any;
 
         const startTime = performance.now()';'
             const readers: ReaderType[] = readerType === 'all' ? undefined : undefined);
@@ -422,7 +422,7 @@ interface NavigationElements { links: NodeListOf<Element>,
     /**
      * Generate quick navigation announcement
      */
-    private generateQuickNavAnnouncement(element: Element, type: string, readerType: ReaderType): string { const announcement = this.generateAnnouncement(element, readerType);
+    private generateQuickNavAnnouncement(element: Element, type: "single" | "batch", readerType: ReaderType): string { const announcement = this.generateAnnouncement(element, readerType);
         return `${type}: ${announcement}`;
     }
 

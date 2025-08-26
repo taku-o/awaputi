@@ -859,9 +859,9 @@ export class TutorialOverlay extends ScenesBaseDialog {
             this.closeTutorial();
 
             // 専用コンポーネントを破棄
-            this.animationController?.dispose();
-            this.interactionHandler?.dispose();
-            this.progressTracker?.dispose();
+            this.animationController?.dispose?.();
+            this.interactionHandler?.dispose?.();
+            this.progressTracker?.dispose?.();
             this.stepManager?.reset();
 
             const style = document.getElementById('tutorial-overlay-styles');
@@ -869,7 +869,9 @@ export class TutorialOverlay extends ScenesBaseDialog {
                 style.remove();
             }
 
-            super.dispose();
+            if (super.dispose) {
+                super.dispose();
+            }
             this.loggingSystem.info('TutorialOverlay', 'Tutorial overlay disposed');
         } catch (error) {
             this.errorHandler.handleError(error, 'TutorialOverlay.dispose');
@@ -903,7 +905,7 @@ export function getTutorialOverlay(gameEngine: GameEngine, eventBus?: any, state
  */
 export function reinitializeTutorialOverlay(gameEngine: GameEngine, eventBus?: any, state?: any): TutorialOverlay {
     if (tutorialOverlayInstance) {
-        tutorialOverlayInstance.dispose();
+        tutorialOverlayInstance?.dispose?.();
     }
     tutorialOverlayInstance = new TutorialOverlay(gameEngine, eventBus, state);
     return tutorialOverlayInstance;

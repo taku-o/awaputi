@@ -376,7 +376,7 @@ export class ParticleRenderer {
      * @param {string} type パーティクルタイプ
      * @param {DrawFunction} drawFunction 描画関数
      */
-    public registerCustomDrawFunction(type: string, drawFunction: DrawFunction): void {
+    public registerCustomDrawFunction(type: "single" | "batch", drawFunction: DrawFunction): void {
         if (typeof drawFunction !== 'function') {
             throw new Error('Draw function must be a function');
         }
@@ -491,7 +491,7 @@ export class ParticleRenderer {
      * @param {CanvasRenderingContext2D} context レンダリングコンテキスト
      * @param {string} type パーティクルタイプ
      */
-    private prepareRenderingStateForType(context: CanvasRenderingContext2D, type: string): void {
+    private prepareRenderingStateForType(context: CanvasRenderingContext2D, type: "single" | "batch"): void {
         // タイプ別の最適化された描画状態設定
         switch(type) {
             case 'lightning':

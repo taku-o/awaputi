@@ -295,7 +295,7 @@ export class SettingsValidator {
             case 'array':
                 return [];
             default:
-                return null;
+                return null as any;
         }
     }
 
@@ -563,7 +563,7 @@ export class SettingsValidator {
      * @param type ボリュームタイプ
      * @returns 検証結果
      */
-    validateVolume(volume: number, type: string = 'volume'): ValidationResult {
+    validateVolume(volume: number, type: "single" | "batch" = 'volume'): ValidationResult {
         if (typeof volume !== 'number' || isNaN(volume)) {
             return {
                 isValid: false,

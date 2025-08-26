@@ -9,7 +9,7 @@ import { EventBus } from '../../../types/eventBus';
 
 // イベント関連の型定義
 interface DialogData {
-    type: string;
+    type: "single" | "batch";
     [key: string]: any;
 }
 

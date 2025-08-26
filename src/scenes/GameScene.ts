@@ -609,7 +609,7 @@ export class GameScene extends Scene implements GameSceneState {
      */
     updateSettings(settings: { performance?: PerformanceSettings }): void {
         if (settings.performance) {
-            this.performanceMonitor.updateSettings(settings.performance);
+            this.performanceMonitor.updateSetting(settings.performance);
         }
 
         console.log('[GameScene] Settings updated');

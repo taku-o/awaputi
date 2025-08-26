@@ -30,7 +30,7 @@ interface ReporterConfig { enabled: boolean,
 
 interface Report { id: string,
     timestamp: number,
-    type: string,
+    type: "single" | "batch",
     score: ComplianceScore,
     summary: ReportSummary,
     details: ReportDetails | null,

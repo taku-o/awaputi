@@ -60,7 +60,7 @@ interface GameElementMapping {
  */
 interface ElementEnhancement {
     element: HTMLElement;
-    type: string;
+    type: "single" | "batch";
     originalStyle: {
         backgroundColor: string;
         border: string;
@@ -622,7 +622,7 @@ export class ColorBlindnessSupport {
             return colorRole;
         }
         
-        return null;
+        return null as any;
     }
     
     /**

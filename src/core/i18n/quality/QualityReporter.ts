@@ -73,7 +73,7 @@ export interface CategorizedIssues {
 
 export interface Recommendation {
     priority: 'critical' | 'high' | 'medium' | 'low';
-    type: string;
+    type: "single" | "batch";
     title: string;
     description: string;
     actions: string[];

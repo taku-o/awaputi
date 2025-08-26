@@ -490,7 +490,7 @@ export class ProceduralSoundGenerator {
         const baseBuffer = this.soundBuffers.get(baseSoundName);
         if (!baseBuffer) {
             console.warn(`Base sound '${baseSoundName}' not found`);
-            return null;
+            return null as any;
         }
 
         const {
@@ -601,7 +601,7 @@ export function getProceduralSoundGenerator(): ProceduralSoundGenerator {
  */
 export function reinitializeProceduralSoundGenerator(): ProceduralSoundGenerator {
     if (proceduralSoundGeneratorInstance) {
-        proceduralSoundGeneratorInstance.dispose();
+        proceduralSoundGeneratorInstance?.dispose?.();
     }
     proceduralSoundGeneratorInstance = new ProceduralSoundGenerator();
     return proceduralSoundGeneratorInstance;

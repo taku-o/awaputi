@@ -406,7 +406,7 @@ export class AudioFeedbackManager {
         
         // VibrationManagerの解放
         if (this.vibrationManager && typeof this.vibrationManager.destroy === 'function') {
-            this.vibrationManager.destroy();
+            this.vibrationManager?.destroy?.();
         }
     }
 }

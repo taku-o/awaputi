@@ -78,7 +78,7 @@ export interface PlayerSaveData {
 
 export interface InventoryItem {
     id: string;
-    type: string;
+    type: "single" | "batch";
     quantity: number;
     metadata?: Record<string, any>;
 }
@@ -94,7 +94,7 @@ export interface TransitionSaveData {
     to: string;
     progress: number;
     startTime: number;
-    type: string;
+    type: "single" | "batch";
 }
 
 export interface SceneSaveData {
@@ -163,7 +163,7 @@ export interface BubbleSaveData {
 }
 
 export interface ScoreBonus {
-    type: string;
+    type: "single" | "batch";
     value: number;
     timestamp: number;
     duration?: number;

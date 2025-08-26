@@ -63,7 +63,7 @@ interface EffectMapping {
 }
 
 interface ActiveAudioEffect {
-    type: string;
+    type: "single" | "batch";
     startTime: number;
     duration: number;
     parameters: any;
