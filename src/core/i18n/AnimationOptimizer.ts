@@ -298,7 +298,7 @@ export class AnimationOptimizer {
             duration = this.defaultDuration,
             staggerDelay = 50,
             batchSize = 10,
-            priority = 'normal'
+            // priority = 'normal'
         } = options;
 
         try {
@@ -495,7 +495,7 @@ export class AnimationOptimizer {
         const preset = this.presets[animationType] || this.presets.textChange;
         
         // 要素の現在状態を取得
-        const computedStyle = window.getComputedStyle(element);
+        // const computedStyle = window.getComputedStyle(element);
         // const _currentTransform = computedStyle.transform;
         // const _currentOpacity = computedStyle.opacity;
         

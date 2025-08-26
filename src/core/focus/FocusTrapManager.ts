@@ -752,7 +752,7 @@ export class FocusTrapManager {
     /**
      * 要素のラベルを取得
      */
-    getElementLabel(element: HTMLElement, options: ElementLabelOptions = {}): string {
+    getElementLabel(element: HTMLElement, _options: ElementLabelOptions = {}): string {
         const _opts: Required<ElementLabelOptions> = {
             includeAriaLabel: true,
             includeLabelElement: true,
@@ -769,9 +769,11 @@ export class FocusTrapManager {
     /**
      * トラップIDを生成
      */
+    /*
     private generateTrapId(): string {
         return generateUniqueId('focus-trap');
     }
+    */
     
     /**
      * フォーカストラップ設定を更新

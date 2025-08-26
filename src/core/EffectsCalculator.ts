@@ -463,7 +463,7 @@ export class EffectsCalculator {
     calculatePerformanceOptimization(performanceState: PerformanceState): PerformanceOptimization {
         const {
             fps = 60,
-            particleCount = 0,
+            // particleCount = 0,
             memoryUsage = 0.5,
             cpuUsage = 0.5
         } = performanceState;

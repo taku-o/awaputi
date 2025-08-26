@@ -353,7 +353,7 @@ export class GestureRecognitionEngine {
     private createPinchRecognizer(): GestureRecognizer {
         return {
             recognize: (gestureData: GestureData): RecognitionResult | null => {
-                const { _scale, fingers } = gestureData;
+                const { fingers } = gestureData;
                 
                 if (fingers !== 2) return null as any;
                 

@@ -112,7 +112,7 @@ export class FAQSystem {
     private userPreferences: Map<string, any>;
     
     // 検索・フィルタリング
-    private searchEngine: any; // 将来の拡張用
+    // private searchEngine: any; // 将来の拡張用
     private activeFilters: Set<string>;
     private sortOrder: SortOrder;
     

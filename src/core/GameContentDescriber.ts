@@ -479,7 +479,7 @@ export class GameContentDescriber {
     /**
      * ゲーム状態説明の生成
      */
-    generateGameStateDescription(newState: any, oldState?: any): string | null {
+    generateGameStateDescription(newState: any, _oldState?: any): string | null {
         const phase = newState.phase || newState;
         const template = this.templates.gameState[phase];
         

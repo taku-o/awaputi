@@ -186,7 +186,7 @@ export class GestureCustomizer {
      */
     processGamepadGesture(gamepadGesture: any): void {
         // スティック入力をスワイプとして解釈
-        const { leftStick, _rightStick } = gamepadGesture;
+        const { leftStick } = gamepadGesture;
 
         if (Math.abs(leftStick.x) > 0.5 || Math.abs(leftStick.y) > 0.5) {
             const gestureData = {

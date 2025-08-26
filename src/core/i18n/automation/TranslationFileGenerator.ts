@@ -538,7 +538,7 @@ export class TranslationFileGenerator {
         const {
             addMissingKeys = true,
             removeObsoleteKeys = false,
-            updateMetadata = true,
+            // updateMetadata = true,
             preserveTranslations = true,
             generateReport = true
         } = options;
@@ -697,7 +697,7 @@ export class TranslationFileGenerator {
             language: string;
         }
     ): ProcessedTranslationData {
-        const { includeEmpty, generateTemplate, preserveExisting, _language } = options;
+        const { includeEmpty, generateTemplate, preserveExisting } = options;
         const flattenedBase = this.flattenObject(categoryData);
         const flattenedExisting = existingTranslations ? this.flattenObject(existingTranslations) : {};
         
@@ -874,7 +874,7 @@ export class TranslationFileGenerator {
     }
     
     private async synchronizeCategoryFile(
-        baseCategoryData: any,
+        _baseCategoryData: any,
         targetCategoryData: any,
         options: any
     ): Promise<CategorySyncResult> {

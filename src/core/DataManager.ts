@@ -559,7 +559,7 @@ export class DataManager {
     /**
      * 統計データの保存
      */
-    public async saveStatistics(data: any, options?: SaveOptions): Promise<any> {
+    public async saveStatistics(data: any, _options?: SaveOptions): Promise<any> {
         if (this.statisticsManager) {
             return await this.statisticsManager.save();
         }
@@ -571,7 +571,7 @@ export class DataManager {
     /**
      * 統計データの読み込み
      */
-    public async loadStatistics(options?: LoadOptions): Promise<any> {
+    public async loadStatistics(_options?: LoadOptions): Promise<any> {
         if (this.statisticsManager) {
             return {
                 statistics: this.statisticsManager.statistics,
@@ -586,7 +586,7 @@ export class DataManager {
     /**
      * 汎用データの保存
      */
-    public async saveGenericData(dataType: string, data: any, options?: SaveOptions): Promise<any> {
+    public async saveGenericData(dataType: string, data: any, _options?: SaveOptions): Promise<any> {
         const key = `bubblePop_${dataType}`;
         return await this.storage!.save(key, data);
     }
@@ -594,7 +594,7 @@ export class DataManager {
     /**
      * 汎用データの読み込み
      */
-    public async loadGenericData(dataType: string, options?: LoadOptions): Promise<any> {
+    public async loadGenericData(dataType: string, _options?: LoadOptions): Promise<any> {
         const key = `bubblePop_${dataType}`;
         return await this.storage!.load(key);
     }

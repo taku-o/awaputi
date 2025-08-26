@@ -274,7 +274,7 @@ export class FocusRingRenderer {
             focusRingWidth, 
             focusRingStyle, 
             focusRingOffset,
-            highContrastColor, 
+            // highContrastColor, 
             animationDuration, 
             animationEasing,
             highContrastMode, 
@@ -673,7 +673,7 @@ export class FocusRingRenderer {
      * メディアクエリリスナーをクリア
      */
     private clearMediaQueryListeners(): void {
-        this.mediaQueryListeners.forEach(query => {
+        this.mediaQueryListeners.forEach(_query => {
             // リスナーを削除（実際の実装では適切なリスナー参照が必要）
         });
         this.mediaQueryListeners = [];

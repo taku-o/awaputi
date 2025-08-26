@@ -12,7 +12,7 @@ import { getBrowserCompatibility } from '../utils/BrowserCompatibility.js';
  * 高度なタッチ操作管理システム - マルチタッチ、ジェスチャー検出、感度調整
  */
 export class EnhancedTouchManager {
-    private config: BasicConfig = {};
+    // private config: BasicConfig = {};
     private canvas: any;
     private gameEngine: any;
     // private configManager: any;
@@ -169,7 +169,7 @@ export class EnhancedTouchManager {
      */
     applyDeviceOptimizations(): void {
         const deviceInfo = (getBrowserCompatibility() as any).deviceInfo;
-        const _browserInfo = getBrowserCompatibility();
+        // const _browserInfo = getBrowserCompatibility();
         
         if ((deviceInfo as any).platform === 'ios') {
             // iOS Safari のタッチ遅延を防ぐ

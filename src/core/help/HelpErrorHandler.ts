@@ -287,13 +287,13 @@ export class HelpErrorHandler {
     showUserFriendlyError(error: Error, suggestions: string[] = []): void {
         try {
             const userMessage = this.translateErrorToUserMessage(error);
-            const _errorData: UserErrorData = {
-                message: userMessage,
-                suggestions,
-                timestamp: Date.now(),
-                canRetry: this.canRetryError(error),
-                helpAvailable: this.isHelpAvailable(error)
-            };
+            // const _errorData: UserErrorData = {
+            //     message: userMessage,
+            //     suggestions,
+            //     timestamp: Date.now(),
+            //     canRetry: this.canRetryError(error),
+            //     helpAvailable: this.isHelpAvailable(error)
+            // };
             
             // エラー表示UI（後続のタスクで実装）
             (this.loggingSystem as any).info('HelpErrorHandler', `User-friendly error: ${userMessage}`);
