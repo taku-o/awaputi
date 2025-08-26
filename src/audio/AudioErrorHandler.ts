@@ -618,7 +618,7 @@ export class AudioErrorHandler {
     /**
      * 音響デコードエラーの回復
      */
-    async recoverAudioDecode(error: Error, context: any): Promise<boolean> {
+    async recoverAudioDecode(_error: Error, context: any): Promise<boolean> {
         try {
             // 異なる音響フォーマットで再試行
             const { audioData, originalFormat } = context;
@@ -645,7 +645,7 @@ export class AudioErrorHandler {
     /**
      * 音響読み込みエラーの回復
      */
-    async recoverAudioLoad(error: Error, context: any): Promise<boolean> {
+    async recoverAudioLoad(_error: Error, context: any): Promise<boolean> {
         try {
             const { url, retryCount = 0 } = context;
             
@@ -677,7 +677,7 @@ export class AudioErrorHandler {
     /**
      * 音響再生エラーの回復
      */
-    async recoverAudioPlay(error: Error, context: any): Promise<boolean> {
+    async recoverAudioPlay(_error: Error, context: any): Promise<boolean> {
         try {
             // AudioContextの状態を確認
             if (this.audioManager.audioContext?.state !== 'running') {
@@ -699,7 +699,7 @@ export class AudioErrorHandler {
     /**
      * BGM生成エラーの回復
      */
-    async recoverBGMGeneration(error: Error, context: any): Promise<boolean> {
+    async recoverBGMGeneration(_error: Error, context: any): Promise<boolean> {
         try {
             // より簡単な生成パラメータで再試行
             const { config } = context;
@@ -722,7 +722,7 @@ export class AudioErrorHandler {
     /**
      * メモリエラーの回復
      */
-    async recoverMemoryError(error: Error, context: any): Promise<boolean> {
+    async recoverMemoryError(_error: Error, _context: any): Promise<boolean> {
         try {
             // キャッシュをクリア
             await this.audioManager.clearAudioCache?.();
@@ -746,7 +746,7 @@ export class AudioErrorHandler {
     /**
      * パフォーマンスエラーの回復
      */
-    async recoverPerformanceError(error: Error, context: any): Promise<boolean> {
+    async recoverPerformanceError(_error: Error, _context: any): Promise<boolean> {
         try {
             // パフォーマンス設定を調整
             this.audioManager.setMaxConcurrentSounds?.(10);

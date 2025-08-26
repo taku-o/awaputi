@@ -130,7 +130,7 @@ interface PatternRecognition {
  * @since Original implementation - Enhanced with component architecture
  */
 export class AudioAccessibilitySupport {
-    private audioManager: AudioManager;
+    // private audioManager: AudioManager;
     // private configManager: ConfigurationManager;
     // private localizationManager: LocalizationManager;
     private errorHandler: ErrorHandler;
@@ -149,7 +149,7 @@ export class AudioAccessibilitySupport {
     private patternRecognition: PatternRecognition = { enabled: false };
     
     constructor(audioManager: AudioManager) {
-        this.audioManager = audioManager;
+        // this.audioManager = audioManager;
         this.configManager = getConfigurationManager();
         this.localizationManager = getLocalizationManager();
         this.errorHandler = getErrorHandler();
@@ -257,19 +257,19 @@ export class AudioAccessibilitySupport {
      * 色彩インジケーターを更新
      * @param level - 音響レベル (0-1)
      */
-    private updateColorIndicator(level: number): void {
-        if (!this.colorIndicator || !this.settings.colorIndication) return;
+    // private updateColorIndicator(level: number): void {
+    //     if (!this.colorIndicator || !this.settings.colorIndication) return;
 
-        const levelMarker = this.colorIndicator.querySelector('.level-marker') as HTMLElement;
-        if (levelMarker) {
-            const position = level * 196; // 200px - 4px (marker height)
-            levelMarker.style.bottom = `${position}px`;
-        }
-        
-        // アクセシビリティ属性を更新
-        this.colorIndicator.setAttribute('aria-valuenow', Math.round(level * 100).toString());
-        this.colorIndicator.setAttribute('aria-valuetext', `音響レベル ${Math.round(level * 100)}%`);
-    }
+    //     const levelMarker = this.colorIndicator.querySelector('.level-marker') as HTMLElement;
+    //     if (levelMarker) {
+    //         const position = level * 196; // 200px - 4px (marker height)
+    //         levelMarker.style.bottom = `${position}px`;
+    //     }
+    //     
+    //     // アクセシビリティ属性を更新
+    //     this.colorIndicator.setAttribute('aria-valuenow', Math.round(level * 100).toString());
+    //     this.colorIndicator.setAttribute('aria-valuetext', `音響レベル ${Math.round(level * 100)}%`);
+    // }
     
     /**
      * 音響イベントリスナーを追加
