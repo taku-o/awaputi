@@ -695,7 +695,7 @@ export class StatisticsExporter {
     /**
      * CSVデータの解析
      */
-    parseCSVData(csvString: string): any {
+    parseCSVData(_csvString: string): any {
         // 簡単なCSV解析（実際の実装ではより堅牢な解析が必要）
         // const _lines = csvString.split('\n');
         const data = { statistics: {} };

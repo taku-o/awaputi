@@ -279,7 +279,7 @@ export class SocialPlatformAdapters {
      * @param options - オプション
      * @returns LINEシェアURL
      */
-    generateLineShareUrl(shareData: ShareData, options: LineShareOptions = {}): string {
+    generateLineShareUrl(shareData: ShareData, _options: LineShareOptions = {}): string {
         const config = this.platformConfig.line;
         // const { type = 'text' } = options;
 

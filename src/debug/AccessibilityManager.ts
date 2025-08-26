@@ -86,7 +86,7 @@ export class DebugAccessibilityManager {
      * キーボードナビゲーションを処理
      */
     private handleKeyboardNavigation(event: KeyboardEvent): void {
-        const { key, ctrlKey, altKey, shiftKey } = event;
+        const { key, ctrlKey, shiftKey } = event;
 
         // ESCキーでフォーカスを外す
         if (key === 'Escape') {

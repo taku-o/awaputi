@@ -214,8 +214,8 @@ class KeyMetricsWidget implements Widget {
     private statisticsManager: StatisticsManager;
     private metrics: MetricData[];
 
-    constructor(statisticsManager: StatisticsManager) {
-        this.statisticsManager = statisticsManager;
+    constructor(_statisticsManager: StatisticsManager) {
+        this.statisticsManager = _statisticsManager;
         this.metrics = [
             { key: 'totalScore', label: 'トータルスコア', format: 'number' },
             { key: 'accuracy', label: '精度', format: 'percentage' },
@@ -311,10 +311,10 @@ class KeyMetricsWidget implements Widget {
  * 最近の実績ウィジェット
  */
 class RecentAchievementsWidget implements Widget {
-    private statisticsManager: StatisticsManager;
+    // private statisticsManager: StatisticsManager;
 
-    constructor(statisticsManager: StatisticsManager) {
-        this.statisticsManager = statisticsManager;
+    constructor(_statisticsManager: StatisticsManager) {
+        // this.statisticsManager = _statisticsManager;
     }
 
     async render(context: CanvasRenderingContext2D, _options: RenderOptions = {}): Promise<WidgetRenderResult> {
@@ -375,12 +375,12 @@ class RecentAchievementsWidget implements Widget {
  * 成長トレンドウィジェット
  */
 class GrowthTrendsWidget implements Widget {
-    private statisticsManager: StatisticsManager;
+    // private statisticsManager: StatisticsManager;
     private chartRenderer: ChartRenderer;
 
-    constructor(statisticsManager: StatisticsManager, chartRenderer: ChartRenderer) {
-        this.statisticsManager = statisticsManager;
-        this.chartRenderer = chartRenderer;
+    constructor(_statisticsManager: StatisticsManager, _chartRenderer: ChartRenderer) {
+        // this.statisticsManager = _statisticsManager;
+        this.chartRenderer = _chartRenderer;
     }
 
     async render(context: CanvasRenderingContext2D, _options: RenderOptions = {}): Promise<WidgetRenderResult> {
@@ -455,12 +455,12 @@ class GrowthTrendsWidget implements Widget {
  * プレイスタイルウィジェット
  */
 class PlayStyleWidget implements Widget {
-    private statisticsManager: StatisticsManager;
+    // private statisticsManager: StatisticsManager;
     // private chartRenderer: ChartRenderer;
 
-    constructor(statisticsManager: StatisticsManager, chartRenderer: ChartRenderer) {
-        this.statisticsManager = statisticsManager;
-        this.chartRenderer = chartRenderer;
+    constructor(_statisticsManager: StatisticsManager, _chartRenderer: ChartRenderer) {
+        // this.statisticsManager = _statisticsManager;
+        // this.chartRenderer = _chartRenderer;
     }
 
     async render(context: CanvasRenderingContext2D, _options: RenderOptions = {}): Promise<WidgetRenderResult> {
@@ -523,12 +523,12 @@ class PlayStyleWidget implements Widget {
  * パフォーマンスチャートウィジェット
  */
 class PerformanceChartWidget implements Widget {
-    private statisticsManager: StatisticsManager;
+    // private statisticsManager: StatisticsManager;
     private chartRenderer: ChartRenderer;
 
-    constructor(statisticsManager: StatisticsManager, chartRenderer: ChartRenderer) {
-        this.statisticsManager = statisticsManager;
-        this.chartRenderer = chartRenderer;
+    constructor(_statisticsManager: StatisticsManager, _chartRenderer: ChartRenderer) {
+        // this.statisticsManager = _statisticsManager;
+        this.chartRenderer = _chartRenderer;
     }
 
     async render(context: CanvasRenderingContext2D, _options: RenderOptions = {}): Promise<WidgetRenderResult> {
@@ -599,9 +599,9 @@ class StatisticsBreakdownWidget implements Widget {
     private statisticsManager: StatisticsManager;
     // private chartRenderer: ChartRenderer;
 
-    constructor(statisticsManager: StatisticsManager, chartRenderer: ChartRenderer) {
-        this.statisticsManager = statisticsManager;
-        this.chartRenderer = chartRenderer;
+    constructor(_statisticsManager: StatisticsManager, _chartRenderer: ChartRenderer) {
+        this.statisticsManager = _statisticsManager;
+        // this.chartRenderer = _chartRenderer;
     }
 
     async render(context: CanvasRenderingContext2D, _options: RenderOptions = {}): Promise<WidgetRenderResult> {

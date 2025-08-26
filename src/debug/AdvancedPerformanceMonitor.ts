@@ -350,7 +350,7 @@ export class AdvancedPerformanceMonitor {
      * チャートの更新
      */
     private updateCharts(metrics: Metrics): void {
-        Array.from(this.charts).forEach(([name, chart]) => {
+        Array.from(this.charts).forEach(([_name, chart]) => {
             if (chart.update) {
                 chart.update(metrics);
             }
@@ -865,7 +865,7 @@ class PerformanceAnalyzer {
     /**
      * 周期的パターンの検出
      */
-    private detectPeriodicPattern(values: number[]): { period: number } | null {
+    private detectPeriodicPattern(_values: number[]): { period: number } | null {
         // 簡単な周期検出アルゴリズム
         // 実装は後で詳細化
         return null as any;
@@ -1053,7 +1053,7 @@ class DetailedProfiler {
     /**
      * プロファイリングフックの削除
      */
-    private removeProfilingHooks(component: string): void {
+    private removeProfilingHooks(_component: string): void {
         // フックの削除処理
         // 実装は各フック関数で行う
     }
@@ -1086,7 +1086,7 @@ class DetailedProfiler {
         // Collision functions hook implementation
     }
 
-    private hookGenericFunctions(component: string): void {
+    private hookGenericFunctions(_component: string): void {
         // Generic functions hook implementation
     }
 

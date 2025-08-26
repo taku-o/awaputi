@@ -322,7 +322,7 @@ export class FocusStateManager {
     /**
      * 視覚的フォーカス表示の更新
      */
-    updateFocusVisuals(element: HTMLElement, index?: number): void {
+    updateFocusVisuals(element: HTMLElement, _index?: number): void {
         if (!this.config.focusRing.enabled) return;
         
         // 要素にフォーカスクラスを追加
@@ -605,7 +605,7 @@ export class FocusStateManager {
         this.state.navigationPath = [];
         
         // メディアクエリリスナーを削除
-        this.mediaQueryListeners.forEach(listener => {
+        this.mediaQueryListeners.forEach(_listener => {
             // 実際の削除は各リスナーの実装に依存
             // listener.removeEventListener('change', handler);
         });

@@ -91,7 +91,7 @@ export class BenchmarkExecutor {
     private executionConfig: ExecutionConfig;
     private isExecuting: boolean = false;
     private currentExecution: ExecutionSession | null = null;
-    private executionQueue: any[] = [];
+    // private executionQueue: any[] = [];
     private executionHistory: ExecutionHistoryEntry[] = [];
     
     constructor(benchmarkSuite: BenchmarkSuite) {
@@ -267,7 +267,7 @@ export class BenchmarkExecutor {
      * Execute benchmark with retry logic
      */
     private async executeWithRetry(executionSession: ExecutionSession): Promise<BenchmarkResult> {
-        const { name, benchmark, options } = executionSession;
+        const { name } = executionSession;
         const maxAttempts = executionSession.maxAttempts;
         
         let lastError: Error | null = null;

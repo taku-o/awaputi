@@ -392,7 +392,7 @@ export class FocusEventHandler {
     /**
      * マウス移動処理
      */
-    private handleMouseMove(event: Event): void {
+    private handleMouseMove(_event: Event): void {
         // const _mouseEvent = event as MouseEvent;
         
         // マウス使用時はキーボードヒントを非表示

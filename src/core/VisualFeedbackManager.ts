@@ -55,7 +55,7 @@ export class VisualFeedbackManager {
     private effectPatterns: Map<string, (options: any) => any>;
     private feedbackContainer: HTMLElement | undefined;
 
-    constructor(audioAccessibilityManager: any) {
+    constructor(_audioAccessibilityManager: any) {
         // this._audioAccessibilityManager = audioAccessibilityManager;
         // this.accessibilityManager = audioAccessibilityManager.accessibilityManager;
         // this._gameEngine = this.accessibilityManager?.gameEngine;

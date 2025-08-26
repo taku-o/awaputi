@@ -412,7 +412,7 @@ export class DebugSuggestionEngine extends BaseComponent {
      * @param test - テスト情報
      * @returns スコア
      */
-    calculateSuggestionScore(suggestion: Suggestion, pattern: Pattern, test: Test): number {
+    calculateSuggestionScore(suggestion: Suggestion, pattern: Pattern, _test: Test): number {
         let score = 0;
 
         // 基本スコア
