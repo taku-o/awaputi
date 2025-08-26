@@ -483,7 +483,7 @@ export class MobileEffectIntegrator {
     /**
      * 遷移効果の最適化
      */
-    private optimizeTransitionEffect(type: "single" | "batch", duration: number, options: TransitionEffectOptions): TransitionEffectOptions & { duration: number } {
+    private optimizeTransitionEffect(_type: "single" | "batch", duration: number, options: TransitionEffectOptions): TransitionEffectOptions & { duration: number } {
         if (!this.state.mobileMode) return { duration, ...options };
         
         const strategy = this.adaptationStrategies.get(this.state.performanceMode);

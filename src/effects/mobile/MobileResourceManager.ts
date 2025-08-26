@@ -890,7 +890,7 @@ export class MobileResourceManager {
     /**
      * 画像リソースの読み込み
      */
-    private async loadImageResource(url: string, options: Record<string, any>): Promise<LoadedImageResource> {
+    private async loadImageResource(url: string, _options: Record<string, any>): Promise<LoadedImageResource> {
         return new Promise((resolve, reject) => {
             const img = new Image();
             img.onload = () => {
@@ -928,7 +928,7 @@ export class MobileResourceManager {
     /**
      * 音声リソースの読み込み
      */
-    private async loadAudioResource(url: string, options: Record<string, any>): Promise<LoadedAudioResource> {
+    private async loadAudioResource(url: string, _options: Record<string, any>): Promise<LoadedAudioResource> {
         if (!window.AudioContext && !window.webkitAudioContext) {
             throw new Error('Web Audio API not supported');
         }
@@ -978,7 +978,7 @@ export class MobileResourceManager {
         console.log('Page hidden, releasing non-essential resources');
         
         // 非必須リソースの解放
-        for (const [type, pool] of this.resourcePools) {
+        for (const [type, _pool] of this.resourcePools) {
             if (type !== 'particles') { // パーティクル以外を解放
                 this.cleanupInactiveResources(type);
             }
@@ -1061,7 +1061,7 @@ export class MobileResourceManager {
         console.log('Destroying MobileResourceManager...');
         
         // 全リソースのクリーンアップ
-        for (const [type, pool] of this.resourcePools) {
+        for (const [_type, pool] of this.resourcePools) {
             pool.pool.forEach(resource => this.cleanupResource(resource));
             pool.pool.length = 0;
             pool.active = 0;

@@ -519,10 +519,10 @@ export class MobileEffectOptimizer {
         }
         
         // Canvas の最適化属性設定
-        const context = canvas.getContext('2d', {
-            alpha: false, // 透明度が不要な場合
-            desynchronized: true // 描画の最適化
-        });
+        // const context = canvas.getContext('2d', {
+        //     alpha: false, // 透明度が不要な場合
+        //     desynchronized: true // 描画の最適化
+        // });
     }
     
     /**

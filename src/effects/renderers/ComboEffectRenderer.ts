@@ -149,7 +149,7 @@ export class ComboEffectRenderer {
      * @param {number} comboCount - コンボ数
      * @param {string} comboType - コンボタイプ
      */
-    createEnhancedComboEffect(x: number, y: number, comboCount: number, comboType: string = 'normal'): void {
+    createEnhancedComboEffect(x: number, y: number, comboCount: number, _comboType: string = 'normal'): void {
         try {
             const tier = this.getComboTier(comboCount);
             if(!tier) return;
@@ -203,7 +203,7 @@ export class ComboEffectRenderer {
      * @param {number} comboCount - コンボ数
      * @param {Object} tier - コンボ段階
      */
-    createMainComboParticles(x: number, y: number, comboCount: number, tier: ComboTierWithKey): void {
+    createMainComboParticles(x: number, y: number, _comboCount: number, tier: ComboTierWithKey): void {
         const adjustedCount = this.particleManager.adjustParticleCount(tier.particleCount);
         const intensityMultiplier = this.particleManager.getEffectIntensityMultiplier();
         
@@ -312,7 +312,7 @@ export class ComboEffectRenderer {
      * @param {number} comboCount - コンボ数
      * @param {Object} tier - コンボ段階
      */
-    createComboSpecialEffect(x: number, y: number, effectType: string, comboCount: number, tier: ComboTierWithKey): void {
+    createComboSpecialEffect(x: number, y: number, effectType: string, comboCount: number, _tier: ComboTierWithKey): void {
         switch(effectType) {
             case 'golden_particles':
                 this.createGoldenParticles(x, y, comboCount);

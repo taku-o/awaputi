@@ -308,7 +308,7 @@ export class QualityScalingSystem {
         
         try {
             const { fps, memoryUsage, particleCount } = performanceData;
-            const currentSettings = this.qualityLevels[this.currentQuality];
+            // const currentSettings = this.qualityLevels[this.currentQuality];
             
             // パフォーマンス評価
             let adjustmentDirection = 0; // -1: 下げる, 0: 維持, 1: 上げる

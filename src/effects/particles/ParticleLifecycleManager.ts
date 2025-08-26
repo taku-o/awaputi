@@ -394,7 +394,7 @@ export class ParticleLifecycleManager {
     /**
      * 電気スパークパーティクルを生成
      */
-    createElectricSparks(x: number, y: number, size: number): Particle[] {
+    createElectricSparks(x: number, y: number, _size: number): Particle[] {
         const particles: Particle[] = [];
         const sparkCount = 20;
         
@@ -420,7 +420,7 @@ export class ParticleLifecycleManager {
     /**
      * スパイク爆発パーティクルを生成
      */
-    createSpikeExplosion(x: number, y: number, size: number): Particle[] {
+    createSpikeExplosion(x: number, y: number, _size: number): Particle[] {
         const particles: Particle[] = [];
         const spikeCount = 8;
         

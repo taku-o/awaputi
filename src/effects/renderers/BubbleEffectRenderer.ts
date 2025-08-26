@@ -175,7 +175,7 @@ export class BubbleEffectRenderer {
      * @param {number} bubbleSize - バブルサイズ
      * @param {Object} options - オプション
      */
-    createMainBubbleParticles(x: number, y: number, config: BubbleEffectConfig, bubbleSize: number, options: BubbleEffectOptions): void {
+    createMainBubbleParticles(x: number, y: number, config: BubbleEffectConfig, bubbleSize: number, _options: BubbleEffectOptions): void {
         const baseCount = Math.floor(bubbleSize / 3) + config.baseParticleCount;
         const adjustedCount = this.particleManager.adjustParticleCount(baseCount);
         const intensityMultiplier = this.particleManager.getEffectIntensityMultiplier();
@@ -230,7 +230,7 @@ export class BubbleEffectRenderer {
      * @param {number} totalCount - 総数
      * @returns {string} パーティクルタイプ
      */
-    selectParticleType(config: BubbleEffectConfig, index: number, totalCount: number): string {
+    selectParticleType(_config: BubbleEffectConfig, index: number, totalCount: number): string {
         const ratio = index / totalCount;
         const qualitySettings = this.particleManager.getCurrentQualitySettings();
         
@@ -312,7 +312,7 @@ export class BubbleEffectRenderer {
      * @param {number} bubbleSize - バブルサイズ
      * @param {Object} config - 設定
      */
-    createSparkleEffect(x: number, y: number, bubbleSize: number, config: BubbleEffectConfig): void {
+    createSparkleEffect(x: number, y: number, bubbleSize: number, _config: BubbleEffectConfig): void {
         const sparkleCount = this.particleManager.adjustParticleCount(8);
         
         for (let i = 0; i < sparkleCount; i++) {
@@ -441,7 +441,7 @@ export class BubbleEffectRenderer {
     /**
      * カラーバースト効果（未実装）
      */
-    createColorBurstEffect(x: number, y: number, bubbleSize: number, config: BubbleEffectConfig): void {
+    createColorBurstEffect(x: number, y: number, bubbleSize: number, _config: BubbleEffectConfig): void {
         // TODO: 将来実装予定
         this.createRainbowSpiral(x, y, bubbleSize);
     }
@@ -477,13 +477,13 @@ export class BubbleEffectRenderer {
      * @param {number} bubbleSize - バブルサイズ
      * @param {Object} config - 設定
      */
-    createElectricArcsEffect(x: number, y: number, bubbleSize: number, config: BubbleEffectConfig): void {
+    createElectricArcsEffect(x: number, y: number, bubbleSize: number, _config: BubbleEffectConfig): void {
         const arcCount = this.particleManager.adjustParticleCount(6);
         
         for (let i = 0; i < arcCount; i++) {
             const particle = this.particleManager.getParticleFromPool();
             const angle = (Math.PI * 2 * i) / arcCount;
-            const distance = bubbleSize * (1 + Math.random());
+            // const distance = bubbleSize * (1 + Math.random());
             
             particle.x = x;
             particle.y = y;
@@ -548,7 +548,7 @@ export class BubbleEffectRenderer {
      * @param {number} bubbleSize - バブルサイズ
      * @param {Object} options - オプション
      */
-    createTypeSpecificEffect(x: number, y: number, bubbleType: string, bubbleSize: number, options: BubbleEffectOptions): void {
+    createTypeSpecificEffect(x: number, y: number, bubbleType: string, bubbleSize: number, _options: BubbleEffectOptions): void {
         switch (bubbleType) {
             case 'diamond':
                 this.createDiamondRefraction(x, y, bubbleSize);
@@ -652,7 +652,7 @@ export class BubbleEffectRenderer {
      * @param {string} bubbleType - バブルタイプ
      * @param {number} bubbleSize - バブルサイズ
      */
-    createSimplifiedBubbleEffect(x: number, y: number, bubbleType: string, bubbleSize: number): void {
+    createSimplifiedBubbleEffect(x: number, y: number, bubbleType: string, _bubbleSize: number): void {
         const config = this.bubbleEffectConfigs[bubbleType] || this.bubbleEffectConfigs.normal;
         const simpleCount = Math.max(3, Math.floor(config.baseParticleCount * 0.3));
         
