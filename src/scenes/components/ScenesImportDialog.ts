@@ -233,7 +233,7 @@ export class ScenesImportDialog extends ScenesBaseDialog {
      * @param y - Y座標
      * @param width - 幅
      */
-    private renderImportTypeSelection(context: CanvasRenderingContext2D, x: number, y: number, width: number): void {
+    private renderImportTypeSelection(context: CanvasRenderingContext2D, x: number, y: number, _width: number): void {
         context.fillStyle = '#333333';
         context.font = '14px Arial, sans-serif';
         context.textAlign = 'left';
@@ -294,7 +294,7 @@ export class ScenesImportDialog extends ScenesBaseDialog {
      * @param y - Y座標
      * @param width - 幅
      */
-    private renderValidationResult(context: CanvasRenderingContext2D, x: number, y: number, width: number): void {
+    private renderValidationResult(context: CanvasRenderingContext2D, x: number, y: number, _width: number): void {
         const result = this.validationResult!;
         const isValid = result.isValid;
 
@@ -327,7 +327,7 @@ export class ScenesImportDialog extends ScenesBaseDialog {
      * @param y - Y座標
      * @param width - 幅
      */
-    private renderDataPreview(context: CanvasRenderingContext2D, x: number, y: number, width: number): void {
+    private renderDataPreview(context: CanvasRenderingContext2D, x: number, y: number, _width: number): void {
         context.fillStyle = '#333333';
         context.font = 'bold 14px Arial, sans-serif';
         context.textAlign = 'left';

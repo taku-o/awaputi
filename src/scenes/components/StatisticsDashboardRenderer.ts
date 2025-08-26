@@ -115,7 +115,7 @@ export class StatisticsDashboardRenderer {
     
     // 統計システム参照
     private statisticsDashboard: GameEngine['statisticsDashboard'] | null = null;
-    private chartRenderer: GameEngine['chartRenderer'] | null = null;
+    // private chartRenderer: GameEngine['chartRenderer'] | null = null;
 
     constructor(gameEngine: GameEngine, eventBus: EventBus, state: ComponentState) {
         this.gameEngine = gameEngine;
@@ -300,7 +300,7 @@ export class StatisticsDashboardRenderer {
      * @param height - 描画高さ
      * @param options - レンダリングオプション
      */
-    private renderSimpleStatsCards(context: CanvasRenderingContext2D, x: number, y: number, width: number, height: number, options: RenderOptions): void {
+    private renderSimpleStatsCards(context: CanvasRenderingContext2D, x: number, y: number, width: number, _height: number, options: RenderOptions): void {
         const { textColor, accentColor } = options;
         
         // 統計データの準備
@@ -390,7 +390,7 @@ export class StatisticsDashboardRenderer {
      * @param data - データ
      * @param options - オプション
      */
-    private async renderFallbackChart(context: CanvasRenderingContext2D, type: "single" | "batch", data: any, options: { width?: number; height?: number; lineColor?: string; showAxes?: boolean; showGrid?: boolean }): Promise<void> {
+    private async renderFallbackChart(context: CanvasRenderingContext2D, type: "single" | "batch", _data: any, options: { width?: number; height?: number; lineColor?: string; showAxes?: boolean; showGrid?: boolean }): Promise<void> {
         const { width, height } = options;
         
         // 背景
@@ -475,7 +475,7 @@ export class StatisticsDashboardRenderer {
      * フレーム更新処理
      * @param deltaTime - 前フレームからの経過時間（ミリ秒）
      */
-    update(deltaTime: number): void {
+    update(_deltaTime: number): void {
         try {
             // アニメーション等が必要な場合はここで処理
             // 現在の実装では静的表示のため何もしない

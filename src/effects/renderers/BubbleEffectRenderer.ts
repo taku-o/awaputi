@@ -477,7 +477,7 @@ export class BubbleEffectRenderer {
      * @param {number} bubbleSize - バブルサイズ
      * @param {Object} config - 設定
      */
-    createElectricArcsEffect(x: number, y: number, bubbleSize: number, _config: BubbleEffectConfig): void {
+    createElectricArcsEffect(x: number, y: number, _bubbleSize: number, _config: BubbleEffectConfig): void {
         const arcCount = this.particleManager.adjustParticleCount(6);
         
         for (let i = 0; i < arcCount; i++) {

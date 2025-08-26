@@ -199,7 +199,7 @@ export class ScenesBaseDialog {
      * コンテンツをレンダリング（オーバーライド用）
      * @param context - Canvas描画コンテキスト
      */
-    protected renderContent(context: CanvasRenderingContext2D): void {
+    protected renderContent(_context: CanvasRenderingContext2D): void {
         // サブクラスでオーバーライド
     }
     
@@ -356,7 +356,7 @@ export class ScenesBaseDialog {
      * @param y - クリックY座標
      * @returns 処理されたかどうか
      */
-    protected handleContentClick(x: number, y: number): boolean {
+    protected handleContentClick(_x: number, _y: number): boolean {
         return false;
     }
     
@@ -365,7 +365,7 @@ export class ScenesBaseDialog {
      * @param event - キーボードイベント
      * @returns 処理されたかどうか
      */
-    protected handleContentKeyboard(event: KeyboardEvent): boolean {
+    protected handleContentKeyboard(_event: KeyboardEvent): boolean {
         return false;
     }
     

@@ -107,7 +107,7 @@ export class SeasonalParticleRenderer {
      * @param bubbleSize - バブルサイズ
      * @param theme - アクティブテーマ
      */
-    createSeasonalBubbleEffect(x: number, y: number, bubbleType: string, bubbleSize: number, theme: ThemeConfig | null): void {
+    createSeasonalBubbleEffect(x: number, y: number, _bubbleType: string, bubbleSize: number, theme: ThemeConfig | null): void {
         if (!theme) return;
         
         // エフェクト実行可否のチェック
@@ -522,7 +522,7 @@ export class SeasonalParticleRenderer {
      * @param deltaTime - 経過時間
      * @private
      */
-    private updateSpecialEffects(particle: SeasonalParticle, deltaTime: number): void {
+    private updateSpecialEffects(particle: SeasonalParticle, _deltaTime: number): void {
         const time = performance.now() * 0.001;
         
         // パルス効果

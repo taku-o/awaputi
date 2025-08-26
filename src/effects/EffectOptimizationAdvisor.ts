@@ -197,7 +197,7 @@ export class EffectOptimizationAdvisor {
 
     private analyzePerformanceIssues(profilingData: ProfilingDataInput): AnalysisResult {
         const issues: PerformanceIssue[] = [];
-        const { frame, memory, particles, _effects } = profilingData;
+        const { frame, memory, particles, _effects: __effects } = profilingData;
 
         // FPS問題の分析
         if (frame && frame.averageFPS < 30) {

@@ -284,7 +284,7 @@ export class ManagementTab extends TabComponent {
     /**
      * フレーム更新処理
      */
-    update(deltaTime: number): void {
+    update(_deltaTime: number): void {
         super.update(deltaTime);
         if (this.isActive) {
             // サブコンポーネントの更新
@@ -460,7 +460,7 @@ class UserInfoRenderer {
     /**
      * フレーム更新処理
      */
-    update(deltaTime: number): void {
+    update(_deltaTime: number): void {
         // 現在は特に処理なし
     }
     
@@ -705,7 +705,7 @@ class DataManagementRenderer {
     /**
      * フレーム更新処理
      */
-    update(deltaTime: number): void {
+    update(_deltaTime: number): void {
         // 現在は特に処理なし
     }
     

@@ -200,7 +200,7 @@ export class ImportMethodSelector {
     /**
      * 複数行テキストを描画
      */
-    renderMultilineText(context: CanvasRenderingContext2D, text: string, x: number, y: number, maxWidth: number, maxHeight: number): void {
+    renderMultilineText(context: CanvasRenderingContext2D, text: string, x: number, y: number, _maxWidth: number, maxHeight: number): void {
         const lines = text.split('\n');
         const lineHeight = 15;
         let currentY = y;
@@ -238,7 +238,7 @@ export class ImportMethodSelector {
     /**
      * 選択ステップのクリック処理
      */
-    handleSelectStepClick(x: number, y: number, layout: Layout): boolean {
+    handleSelectStepClick(_x: number, y: number, layout: Layout): boolean {
         const contentY = layout.contentY + 50;
         
         // インポート方法の選択

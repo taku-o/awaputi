@@ -384,7 +384,7 @@ export class ComboEffectRenderer {
      * @param {number} y - Y座標
      * @param {number} comboCount - コンボ数
      */
-    createRainbowBurst(x: number, y: number, comboCount: number): void {
+    createRainbowBurst(x: number, y: number, _comboCount: number): void {
         const rainbowCount = this.particleManager.adjustParticleCount(20);
         const colors = ['#FF0000', '#FF7F00', '#FFFF00', '#00FF00', '#0000FF', '#4B0082', '#9400D3'];
         
@@ -419,7 +419,7 @@ export class ComboEffectRenderer {
      * @param {number} y - Y座標
      * @param {number} comboCount - コンボ数
      */
-    createMagicalExplosion(x: number, y: number, comboCount: number): void {
+    createMagicalExplosion(x: number, y: number, _comboCount: number): void {
         const explosionCount = this.particleManager.adjustParticleCount(15);
         // 内側から外側への波状展開
         for(let wave = 0; wave < 3; wave++) {

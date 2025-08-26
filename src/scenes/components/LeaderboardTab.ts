@@ -389,7 +389,7 @@ export class LeaderboardTab {
     /**
      * 更新処理
      */
-    update(deltaTime: number): void {
+    update(_deltaTime: number): void {
         try {
             if (!this.isInitialized || !this.isVisible) {
                 return;

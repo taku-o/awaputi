@@ -94,7 +94,7 @@ export class BubbleManager implements IBubbleManager {
     /**
      * デバッグタイミングの更新
      */
-    updateDebugTiming(deltaTime: number): void {
+    updateDebugTiming(_deltaTime: number): void {
         const now = Date.now();
         if (!this.lastUpdateDebugTime) {
             this.lastUpdateDebugTime = now;
@@ -174,7 +174,7 @@ export class BubbleManager implements IBubbleManager {
     /**
      * 死んだ泡を削除
      */
-    cullDeadBubbles(deltaTime: number): void {
+    cullDeadBubbles(_deltaTime: number): void {
         const now = Date.now();
         
         if (now - this.lastCullTime < this.cullInterval) {
@@ -195,7 +195,7 @@ export class BubbleManager implements IBubbleManager {
     /**
      * オフスクリーン泡の管理
      */
-    manageOffscreenBubbles(deltaTime: number): void {
+    manageOffscreenBubbles(_deltaTime: number): void {
         const canvas = this.gameEngine.canvasManager.canvas;
         const margin = 50;
         
@@ -391,7 +391,7 @@ export class BubbleManager implements IBubbleManager {
     getPerformanceStats(): { updateTime: number; renderTime: number; bubbleCount: number } {
         try {
             const stats = this.getStats();
-            const physicsStats = this.physicsEngine.getPerformanceStats();
+            // const physicsStats = this.physicsEngine.getPerformanceStats();
             
             return {
                 updateTime: 0, // 実際の測定は複雑なので仮値

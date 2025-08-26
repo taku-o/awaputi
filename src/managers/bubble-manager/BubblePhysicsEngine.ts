@@ -274,7 +274,7 @@ export class BubblePhysicsEngine implements IBubblePhysicsEngine {
     /**
      * 氷効果を適用
      */
-    applyFrozenEffect(frozenBubble: Bubble, deltaSeconds: number): void {
+    applyFrozenEffect(frozenBubble: Bubble, _deltaSeconds: number): void {
         const bubbles = this.gameEngine.bubbleManager.bubbles;
         const frozenRange = 100;
         const slowFactor = 0.3;

@@ -297,7 +297,7 @@ export class SeasonalEffectManager {
      * @param {number} deltaTime - 経過時間
      * @private
      */
-    private updateBackgroundEffects(deltaTime: number): void {
+    private updateBackgroundEffects(_deltaTime: number): void {
         // 背景エフェクトの実装（簡略化）
         // 季節に応じた背景パーティクルの管理
     }
@@ -307,7 +307,7 @@ export class SeasonalEffectManager {
      * @param {CanvasRenderingContext2D} context - 描画コンテキスト
      * @private
      */
-    private renderBackgroundEffects(context: CanvasRenderingContext2D): void {
+    private renderBackgroundEffects(_context: CanvasRenderingContext2D): void {
         // 背景エフェクトの描画実装（簡略化）
         // 季節に応じた背景パターンの描画
     }

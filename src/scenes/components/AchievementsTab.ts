@@ -55,8 +55,8 @@ export class AchievementsTab extends TabComponent {
     // レイアウト設定
     private readonly contentPadding: number = 20;
     private readonly sectionSpacing: number = 20;
-    private readonly achievementHeight: number = 80;
-    private readonly achievementSpacing: number = 10;
+    // private readonly achievementHeight: number = 80;
+    // private readonly achievementSpacing: number = 10;
     
     // フィルター設定
     private readonly categories: string[] = ['all', 'score', 'play', 'technique', 'collection', 'special'];
@@ -375,7 +375,7 @@ export class AchievementsTab extends TabComponent {
     /**
      * フレーム更新処理
      */
-    update(deltaTime: number): void { 
+    update(_deltaTime: number): void { 
         super.update(deltaTime);
         if (this.isActive) {
             // サブコンポーネントの更新
@@ -642,7 +642,7 @@ class AchievementCategoryFilter {
     /**
      * フレーム更新処理
      */
-    update(deltaTime: number): void { 
+    update(_deltaTime: number): void { 
         // 現在は特に処理なし
     }
     
@@ -775,7 +775,7 @@ class AchievementProgressRenderer {
     /**
      * フレーム更新処理
      */
-    update(deltaTime: number): void { 
+    update(_deltaTime: number): void { 
         // アニメーション処理（将来の拡張）
     }
     
@@ -1017,7 +1017,7 @@ class AchievementsRenderer {
     /**
      * フレーム更新処理
      */
-    update(deltaTime: number): void { 
+    update(_deltaTime: number): void { 
         if (this.progressRenderer) {
             this.progressRenderer.update(deltaTime);
         }

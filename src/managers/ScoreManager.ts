@@ -258,7 +258,7 @@ export class ScoreManager implements IScoreManager {
      * スコア倍率を設定（アイテム効果など）
      */
     setMultiplier(multiplier: number, duration: number): void {
-        const endTime = Date.now() + duration;
+        // const endTime = Date.now() + duration;
         // TODO: 時限つきの倍率管理システムを実装
         console.log(`Score multiplier x${multiplier} active for ${duration}ms`);
     }

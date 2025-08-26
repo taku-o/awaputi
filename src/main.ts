@@ -290,7 +290,7 @@ async function initGame(): Promise<void> {
         
         // ステップ2: ConfigurationManager初期化
         debugLogger.log('⚙️ ステップ2: ConfigurationManager初期化開始');
-        const configManager: ConfigurationManager = getConfigurationManager();
+        // const configManager: ConfigurationManager = getConfigurationManager();
         debugLogger.log('✅ ConfigurationManager初期化成功');
         
         // ステップ3: ゲームエンジン初期化

@@ -570,7 +570,7 @@ export class SeasonalEffectRenderer {
         const currentDate = `${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
         
         return Object.entries(this.eventThemes)
-            .filter(([key, event]) => {
+            .filter(([_key, event]) => {
                 if (!event.duration) return false;
                 return currentDate >= event.duration.start && currentDate <= event.duration.end;
             })
@@ -591,7 +591,7 @@ export class SeasonalEffectRenderer {
     /**
      * 汎用季節効果
      */
-    createGenericSeasonalEffect(x: number, y: number, theme: SeasonalTheme): void {
+    createGenericSeasonalEffect(x: number, y: number, _theme: SeasonalTheme): void {
         this.createDefaultSeasonalEffect(x, y);
     }
     
@@ -669,28 +669,28 @@ export class SeasonalEffectRenderer {
     /**
      * 花粉の輝き（未実装）
      */
-    createPollenSparkles(x: number, y: number, theme: SeasonalTheme): void {
+    createPollenSparkles(_x: number, _y: number, _theme: SeasonalTheme): void {
         // TODO: 将来実装予定
     }
     
     /**
      * 熱の揺らめき（未実装）
      */
-    createHeatShimmer(x: number, y: number, theme: SeasonalTheme): void {
+    createHeatShimmer(_x: number, _y: number, _theme: SeasonalTheme): void {
         // TODO: 将来実装予定
     }
     
     /**
      * 秋の霧（未実装）
      */
-    createAutumnMist(x: number, y: number, theme: SeasonalTheme): void {
+    createAutumnMist(_x: number, _y: number, _theme: SeasonalTheme): void {
         // TODO: 将来実装予定
     }
     
     /**
      * 氷の輝き（未実装）
      */
-    createIceSparkles(x: number, y: number, theme: SeasonalTheme): void {
+    createIceSparkles(_x: number, _y: number, _theme: SeasonalTheme): void {
         // TODO: 将来実装予定
     }
     

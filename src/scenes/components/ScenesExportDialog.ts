@@ -186,7 +186,7 @@ export class ScenesExportDialog extends ScenesBaseDialog {
      * @param y - Y座標
      * @param width - 幅
      */
-    private renderExportTypeSelection(context: CanvasRenderingContext2D, x: number, y: number, width: number): void {
+    private renderExportTypeSelection(context: CanvasRenderingContext2D, x: number, y: number, _width: number): void {
         context.fillStyle = '#333333';
         context.font = 'bold 14px Arial, sans-serif';
         context.textAlign = 'left';
@@ -222,7 +222,7 @@ export class ScenesExportDialog extends ScenesBaseDialog {
      * @param y - Y座標
      * @param width - 幅
      */
-    private renderFormatSelection(context: CanvasRenderingContext2D, x: number, y: number, width: number): void {
+    private renderFormatSelection(context: CanvasRenderingContext2D, x: number, y: number, _width: number): void {
         context.fillStyle = '#333333';
         context.font = 'bold 14px Arial, sans-serif';
         context.textAlign = 'left';
@@ -285,7 +285,7 @@ export class ScenesExportDialog extends ScenesBaseDialog {
      * @param y - Y座標
      * @param width - 幅
      */
-    private renderTypeSpecificOptions(context: CanvasRenderingContext2D, x: number, y: number, width: number): void {
+    private renderTypeSpecificOptions(context: CanvasRenderingContext2D, x: number, y: number, _width: number): void {
         const options = this.exportOptions[this.exportType as keyof ExportOptions];
         if (!options) return;
         

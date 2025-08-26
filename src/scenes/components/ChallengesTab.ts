@@ -46,10 +46,10 @@ export class ChallengesTab {
     // private currentChallengeId: string | null = null;
     
     // 設定
-    private config: ChallengeConfig = {
-        refreshInterval: 30000, // 30秒
-        animationEnabled: true
-    };
+    // private config: ChallengeConfig = {
+    //     refreshInterval: 30000, // 30秒
+    //     animationEnabled: true
+    // };
     
     // イベントハンドラー
     private boundHandlers: BoundHandlers;
@@ -165,7 +165,7 @@ export class ChallengesTab {
     /**
      * チャレンジ進捗更新時の処理
      */
-    private onChallengeProgress(data: any): void {
+    private onChallengeProgress(_data: any): void {
         if (this.challengeUI && this.isVisible) {
             // リアルタイム進捗更新は ChallengeUI が自動的に処理
         }

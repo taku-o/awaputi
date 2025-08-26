@@ -313,7 +313,7 @@ export class BubbleSpawner implements IBubbleSpawner {
      */
     spawnBurstBubbles(centerPosition: Position, burstType: string, count: number): Bubble[] {
         const spawnedBubbles: Bubble[] = [];
-        const radius = 100; // バーストの影響範囲
+        // const radius = 100; // バーストの影響範囲
         
         for (let i = 0; i < count; i++) {
             const angle = (Math.PI * 2 * i) / count;
@@ -349,7 +349,7 @@ export class BubbleSpawner implements IBubbleSpawner {
     /**
      * バースト時の泡タイプを選択
      */
-    selectBurstBubbleType(originalType: string): string {
+    selectBurstBubbleType(_originalType: string): string {
         // バースト時は小さな泡が多く生成される
         const burstTypes = ['normal', 'normal', 'normal', 'pink', 'clock'];
         return burstTypes[Math.floor(Math.random() * burstTypes.length)];

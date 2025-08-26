@@ -549,7 +549,7 @@ export class SpecialEffectRenderer {
      * @param {number} intensity - 強度
      * @param {Object} config - 設定
      */
-    createGenericSpecialEffect(x: number, y: number, effectType: string, intensity: number, config: SpecialEffectConfig): void {
+    createGenericSpecialEffect(x: number, y: number, _effectType: string, intensity: number, config: SpecialEffectConfig): void {
         const adjustedCount = this.particleManager.adjustParticleCount(config.particleCount * intensity);
         
         for (let i = 0; i < adjustedCount; i++) {
