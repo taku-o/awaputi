@@ -125,7 +125,7 @@ export class StatisticsCalculator {
     calculateDetailedEfficiency(statistics: any): any {
         const effStats = statistics.efficiencyStats || {};
         const totalTime = statistics.totalPlayTime || 0;
-        const ___totalBubbles = statistics.totalBubblesPopped || 0;
+        const _totalBubbles = statistics.totalBubblesPopped || 0;
         
         return {
             bubblesPerMinute: effStats.bubblesPerMinute || 0,
@@ -177,7 +177,7 @@ export class StatisticsCalculator {
      * @returns {Object} 行動分析
      */
     calculateBehaviorAnalysis(statistics: any): any {
-        const ___behavior = statistics.playerBehaviorStats || {};
+        const _behavior = statistics.playerBehaviorStats || {};
         
         return {
             playStyle: this.determinePlayStyle(statistics),
@@ -307,7 +307,7 @@ export class StatisticsCalculator {
         }
         
         const sorted = [...values].sort((a, b) => a - b);
-        const ___len = sorted.length;
+        const _len = sorted.length;
         
         return {
             p25: this.getPercentile(sorted, 25),

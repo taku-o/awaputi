@@ -127,7 +127,7 @@ export class AchievementManager implements IAchievementManager {
      * @deprecated ProgressTrackerクラスが実装されたため、このメソッドは使用されません
      * モックProgressTrackerオブジェクトを作成
      */
-    private _createMockProgressTracker() {
+    private createMockProgressTracker() {
         console.warn('[AchievementManager] createMockProgressTracker is deprecated. Use ProgressTracker class instead.');
         return new ProgressTracker();
     }
@@ -136,7 +136,7 @@ export class AchievementManager implements IAchievementManager {
      * @deprecated PerformanceOptimizerクラスが実装されたため、このメソッドは使用されません
      * モックPerformanceOptimizerオブジェクトを作成
      */
-    private _createMockPerformanceOptimizer() {
+    private createMockPerformanceOptimizer() {
         console.warn('[AchievementManager] createMockPerformanceOptimizer is deprecated. Use PerformanceOptimizer class instead.');
         return new PerformanceOptimizer();
     }

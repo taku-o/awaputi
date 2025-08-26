@@ -106,7 +106,7 @@ export class AnalyticsDashboard {
     private activeCharts: Map<string, any>;
     private dataCallbacks: Map<string, DataCallback>;
     private realtimeTimers: Map<string, number>;
-    private _currentTimeRange?: string;
+    private currentTimeRange?: string;
 
     constructor(containerId: string, options: DashboardOptions = {}) {
         this.containerId = containerId;
@@ -838,7 +838,7 @@ export class AnalyticsDashboard {
      */
     changeTimeRange(timeRange: string): void {
         console.log(`Time range changed to: ${timeRange}`);
-        this._currentTimeRange = timeRange;
+        this.currentTimeRange = timeRange;
         this.refresh();
     }
 

@@ -430,7 +430,7 @@ export class RenderingOptimizer {
                 if (processed.has(j)) continue;
                 
                 const overlap = this.calculateOverlap(currentRegion, regions[j]);
-                const __mergedArea = this.calculateMergedArea(currentRegion, regions[j]);
+                const _mergedArea = this.calculateMergedArea(currentRegion, regions[j]);
                 const totalArea = (currentRegion.width * currentRegion.height) + (regions[j].width * regions[j].height);
                 
                 // マージ判定

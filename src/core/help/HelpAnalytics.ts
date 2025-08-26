@@ -368,7 +368,7 @@ export class HelpAnalytics {
     // キャッシュ関連
     private contentCache?: Map<string, CacheEntry>;
     private searchCache?: Map<string, CacheEntry>;
-    private _cacheConfig?: CacheConfig;
+    private cacheConfig?: CacheConfig;
     
     // パフォーマンス関連
     private performanceMetrics?: PerformanceMetrics;
@@ -1343,7 +1343,7 @@ export class HelpAnalytics {
     }
     
     private initializeContentCaching(): void {
-        this._cacheConfig = {
+        this.cacheConfig = {
             maxContentCacheSize: 100,
             maxSearchCacheSize: 50,
             cacheExpiryTime: 30 * 60 * 1000, // 30分

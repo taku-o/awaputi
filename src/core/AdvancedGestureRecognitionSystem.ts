@@ -214,7 +214,7 @@ export class AdvancedGestureRecognitionSystem {
     private maxHistoryLength: number;
     private learningData: LearningData;
     private longPressTimer: ReturnType<typeof setTimeout> | null;
-    private _gestureAnalyzer?: GestureAnalyzer;
+    private gestureAnalyzer?: GestureAnalyzer;
 
     constructor(gameEngine: GameEngine) {
         this.gameEngine = gameEngine;
@@ -439,7 +439,7 @@ export class AdvancedGestureRecognitionSystem {
      * マウスイベントをタッチイベントに変換
      */
     private mouseEventToTouch(e: MouseEvent): Touch {
-        const ___rect = this.gameEngine.canvas.getBoundingClientRect();
+        const _rect = this.gameEngine.canvas.getBoundingClientRect();
         return {
             identifier: 0,
             clientX: e.clientX,
@@ -1151,7 +1151,7 @@ export class AdvancedGestureRecognitionSystem {
      */
     private initializeGestureAnalysis(): void {
         // 分析エンジン初期化
-        this._gestureAnalyzer = {
+        this.gestureAnalyzer = {
             pathAnalyzer: new PathAnalyzer(),
             patternMatcher: new PatternMatcher(),
             learningEngine: new LearningEngine()

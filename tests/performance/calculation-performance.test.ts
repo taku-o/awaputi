@@ -8,10 +8,10 @@ import { CalculationEngine } from '../../src/core/CalculationEngine';
 
 // テスト用の計算処理クラス
 class TestCalculator {
-    private _memoized: Record<string, any> = {};
+    private memoized: Record<string, any> = {};
 
     constructor() {
-        this._memoized = {};
+        this.memoized = {};
     }
     
     // 軽い計算

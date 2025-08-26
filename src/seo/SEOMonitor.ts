@@ -352,7 +352,7 @@ export class SEOMonitor {
     /**
      * 監視チェックの実行（レガシー互換性）
      */
-    private async _performMonitoringCheck(options: MonitoringConfig): Promise<void> {
+    private async performMonitoringCheck(options: MonitoringConfig): Promise<void> {
         try {
             const checkResults = {
                 timestamp: new Date().toISOString(),
@@ -410,7 +410,7 @@ export class SEOMonitor {
             });
             
         } catch (error) {
-            seoErrorHandler.handle(error as Error, '_performMonitoringCheck', options);
+            seoErrorHandler.handle(error as Error, 'performMonitoringCheck', options);
         }
     }
     

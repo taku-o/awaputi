@@ -1072,7 +1072,7 @@ export class SocialAccessibilityManager {
      * ログ記録
      */
     private log(message: string, data: any = null, level: string = 'info'): void {
-        const __logEntry = {
+        const _logEntry = {
             timestamp: Date.now(),
             message,
             data,

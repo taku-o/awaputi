@@ -310,7 +310,7 @@ export class SimplificationManager {
         
         if (highPriorityRecommendations.length > 0) {
             // 自動的により高い簡素化レベルを推奨
-            const __currentSettings = this.modeController.getCurrentModeConfig();
+            const _currentSettings = this.modeController.getCurrentModeConfig();
             // Extract the current level key from the config - this is simplified for now
             const currentLevelKey = 'moderate'; // TODO: Extract actual current level key
             const nextLevel = this.getNextSimplificationLevel(currentLevelKey);

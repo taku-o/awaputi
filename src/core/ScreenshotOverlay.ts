@@ -962,7 +962,7 @@ export class ScreenshotOverlay {
      * ログ記録
      */
     log(message: string, data: any = null, level: string = 'info'): void {
-        const __logEntry = {
+        const _logEntry = {
             timestamp: Date.now(),
             message,
             data,

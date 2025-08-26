@@ -438,7 +438,7 @@ it('プロファイル変更イベントを発行する', async () => {
 });
 
 // テストユーティリティ関数
-function _createMockProfile(overrides: Partial<AccessibilityProfile> = {}): AccessibilityProfile {
+function createMockProfile(overrides: Partial<AccessibilityProfile> = {}): AccessibilityProfile {
     return {
         name: 'test-profile',
         displayName: 'Test Profile',
@@ -449,7 +449,7 @@ function _createMockProfile(overrides: Partial<AccessibilityProfile> = {}): Acce
 
 
 
-function _createMockStats(overrides: Partial<ComponentStats> = {}): ComponentStats {
+function createMockStats(overrides: Partial<ComponentStats> = {}): ComponentStats {
     return {
         isInitialized: true,
         currentProfile: 'default',
