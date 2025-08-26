@@ -194,7 +194,7 @@ test.describe('Game Control Buttons Cross-Browser Compatibility', () => {
   });
 
   test.describe('Canvas Rendering Compatibility', () => {
-    test('should render canvas content correctly', async ({ page, browserName }) => {
+    test('should render canvas content correctly', async ({ page }) => {
       const canvas = page.locator('canvas');
       // Verify canvas is rendered
       await expect(canvas).toBeVisible();

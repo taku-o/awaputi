@@ -395,7 +395,7 @@ test.describe('Achievement System Error Handling', () => {
         await expect(gameCanvas).toBeVisible();
         
         // エラーメッセージが適切に表示されることを確認
-        const errorMessage = page.locator('.error-message, .warning-message');
+        // const errorMessage = page.locator('.error-message, .warning-message');
         // エラーハンドリングにより graceful degradation が動作することを確認
     });
 });

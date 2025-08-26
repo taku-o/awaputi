@@ -15,7 +15,7 @@ test.describe('データ管理 - クラウド対応E2Eテスト', () => {
             }));
             
             // モックされたfetchを設定
-            (window as any).fetch = function(url: string, options?: any) {
+            (window as any).fetch = function(url: string, _options?: any) {
                 if (url.includes('/auth/login')) {
                     return Promise.resolve({
                         ok: true,

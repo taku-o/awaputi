@@ -264,7 +264,8 @@ describe('NavigationContextManager', () => {
             const manager = new NavigationContextManager(brokenGameEngine);
 
             expect(() => {
-                const context = manager.getCurrentContext();
+                // const context = manager.getCurrentContext();
+                manager.getCurrentContext();
             }).not.toThrow();
         });
     });
@@ -278,8 +279,10 @@ describe('NavigationContextManager', () => {
             const manager = new NavigationContextManager(incompleteGameEngine);
 
             expect(() => {
-                const context = manager.getCurrentContext();
-                const isValid = (manager as any).isContextValid('global');
+                // const context = manager.getCurrentContext();
+                manager.getCurrentContext();
+                // const isValid = (manager as any).isContextValid('global');
+                (manager as any).isContextValid('global');
             }).not.toThrow();
         });
 
@@ -299,7 +302,8 @@ describe('NavigationContextManager', () => {
 
                 expect(() => {
                     const context = contextManager.getCurrentContext();
-                    const isValid = contextManager.isContextValid(context);
+                    // const isValid = contextManager.isContextValid(context);
+                    contextManager.isContextValid(context);
                 }).not.toThrow();
             });
         });
@@ -418,8 +422,10 @@ describe('NavigationContextManager', () => {
             contextManager.cleanup();
 
             expect(() => {
-                const context = contextManager.getCurrentContext();
-                const isValid = contextManager.isContextValid('global');
+                // const context = contextManager.getCurrentContext();
+                contextManager.getCurrentContext();
+                // const isValid = contextManager.isContextValid('global');
+                contextManager.isContextValid('global');
             }).not.toThrow();
         });
     });
@@ -464,7 +470,8 @@ describe('NavigationContextManager', () => {
 
                 expect(() => {
                     const context = contextManager.getCurrentContext();
-                    const isValid = contextManager.isContextValid(context);
+                    // const isValid = contextManager.isContextValid(context);
+                    contextManager.isContextValid(context);
                 }).not.toThrow();
             });
         });

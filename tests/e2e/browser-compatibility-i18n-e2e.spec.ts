@@ -6,7 +6,7 @@
 import { test, expect } from '@playwright/test';
 
 // Test across different browsers if configured
-const browsers = ['chromium', 'firefox', 'webkit'];
+// const browsers = ['chromium', 'firefox', 'webkit'];
 
 test.describe('Browser Compatibility I18n E2E Tests', () => {
   test.beforeEach(async ({ page }) => {

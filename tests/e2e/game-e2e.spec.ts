@@ -121,22 +121,22 @@ test.describe('BubblePop Game E2E Tests', () => {
     await page.waitForTimeout(2000);
     
     // Get initial score
-    const initialScore = await page.evaluate(() => {
-      return (window as any).gameEngine && (window as any).gameEngine.scoreManager
-             ? (window as any).gameEngine.scoreManager.score 
-             : 0;
-    });
+    // const initialScore = await page.evaluate(() => {
+    //   return (window as any).gameEngine && (window as any).gameEngine.scoreManager
+    //          ? (window as any).gameEngine.scoreManager.score 
+    //          : 0;
+    // });
     
     // Click on bubble (simulate bubble pop)
     await page.click('#gameCanvas', { position: { x: 200, y: 200 } });
     await page.waitForTimeout(500);
     
     // Check if score increased
-    const newScore = await page.evaluate(() => {
-      return (window as any).gameEngine && (window as any).gameEngine.scoreManager
-             ? (window as any).gameEngine.scoreManager.score 
-             : 0;
-    });
+    // const newScore = await page.evaluate(() => {
+    //   return (window as any).gameEngine && (window as any).gameEngine.scoreManager
+    //          ? (window as any).gameEngine.scoreManager.score 
+    //          : 0;
+    // });
     
     // Score might not increase if we didn't hit a bubble, so check game is still running
     const gameRunning = await page.evaluate(() => {
@@ -206,9 +206,9 @@ test.describe('BubblePop Game E2E Tests', () => {
     await page.waitForTimeout(300);
     
     // Check if game is paused
-    const isPaused = await page.evaluate(() => {
-      return (window as any).gameEngine && (window as any).gameEngine.isPaused;
-    });
+    // const isPaused = await page.evaluate(() => {
+    //   return (window as any).gameEngine && (window as any).gameEngine.isPaused;
+    // });
     
     // Unpause
     await page.keyboard.press('p');

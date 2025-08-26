@@ -89,7 +89,8 @@ describe('KeyboardShortcutRouter', () => {
 
         test('should handle null context manager gracefully', () => {
             expect(() => {
-                const router = new KeyboardShortcutRouter(null, mockGameEngine);
+                // const router = new KeyboardShortcutRouter(null, mockGameEngine);
+                new KeyboardShortcutRouter(null, mockGameEngine);
             }).not.toThrow();
         });
 
@@ -101,7 +102,8 @@ describe('KeyboardShortcutRouter', () => {
             };
 
             expect(() => {
-                const router = new KeyboardShortcutRouter(mockContextManager, null);
+                // const router = new KeyboardShortcutRouter(mockContextManager, null);
+                new KeyboardShortcutRouter(mockContextManager, null);
             }).not.toThrow();
         });
     });
