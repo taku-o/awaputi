@@ -4,7 +4,7 @@
  */
 import { describe, test, expect, beforeEach, afterEach, jest } from '@jest/globals';
 import { StageSelectScene } from '../../src/scenes/StageSelectScene.js';
-import { EventStageManager } from '../../src/core/EventStageManager.js';
+// import { EventStageManager } from '../../src/core/EventStageManager.js';
 import { EventRankingManager } from '../../src/core/EventRankingManager.js';
 
 describe('StageSelectScene Event Integration Tests', () => {

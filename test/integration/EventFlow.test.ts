@@ -390,6 +390,7 @@ describe('Event Flow Integration Tests', () => {
             // 6. Complete with high score
             const playerId = 'test-player';
             // const score = 35000;
+            /*
             const stats: EventStats = {
                 bubblesPopped: 350,
                 specialBubblesPopped: 50,
@@ -397,6 +398,7 @@ describe('Event Flow Integration Tests', () => {
                 timeRemaining: 30000,
                 goldenBubblesPopped: 15
             };
+            */
 
             const completeResult: boolean = eventStageManager.completeEvent(eventId, playerId);
             expect(completeResult).toBe(true);

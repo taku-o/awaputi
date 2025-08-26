@@ -244,7 +244,7 @@ playwrightTest.describe('Visual Effects Performance Tests', () => {
             }
             
             // すべての画面サイズで最低限のパフォーマンスを確保
-            for (const [resolution, fps] of Object.entries(performanceResults)) {
+            for (const [_resolution, fps] of Object.entries(performanceResults)) {
                 playwrightExpect(fps).toBeGreaterThan(20);
             }
             

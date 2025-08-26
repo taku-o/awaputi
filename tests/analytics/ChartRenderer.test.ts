@@ -256,7 +256,8 @@ describe('ChartRenderer', () => {
 
     describe('データ更新', () => {
         test('チャートデータを更新できる', () => {
-            const chart = chartRenderer.createLineChart('test-canvas-update');
+            // const chart = chartRenderer.createLineChart('test-canvas-update');
+            chartRenderer.createLineChart('test-canvas-update');
             const newData = {
                 labels: ['A', 'B', 'C'],
                 data: [10, 20, 15]

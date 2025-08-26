@@ -6,12 +6,15 @@ import { HelpScene } from '../../src/scenes/HelpScene';
 // Unused imports removed - TutorialOverlay and TooltipSystem are tested but not imported
 
 // ARIA属性検証ヘルパー
+/*
 const _validateARIA = (element: any) => {
     const requiredAttrs = ['role', 'aria-label', 'aria-describedby'];
     return requiredAttrs.every(attr => element.hasAttribute && element.hasAttribute(attr));
 };
+*/
 
 // キーボード操作シミュレーター
+/*
 const _simulateKeyPress = (key: string, target = document) => {
     const event = new KeyboardEvent('keydown', {
         key: key,
@@ -23,6 +26,7 @@ const _simulateKeyPress = (key: string, target = document) => {
     target.dispatchEvent(event);
     return event;
 };
+*/
 
 // モック作成
 const mockGameEngine = {
@@ -313,7 +317,7 @@ describe('Help System Accessibility Tests', () => {
             const content = { title: 'テスト', description: 'テスト説明' };
             
             // フォーカス時にツールチップ表示
-            const _focusEvent = { type: 'focus' };
+            // const _focusEvent = { type: 'focus' };
             tooltipSystem.show(100, 100, content);
             expect(tooltipSystem.currentTooltip).toBeDefined();
 

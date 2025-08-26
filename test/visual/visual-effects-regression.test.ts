@@ -4,7 +4,7 @@ import { describe, test, expect, beforeEach, afterEach, beforeAll, afterAll, jes
  * 視覚効果の外観一貫性テスト
  */
 import { test as playwrightTest, expect as playwrightExpect } from '@playwright/test';
-import path from 'path';
+// import path from 'path';
 
 playwrightTest.describe('Visual Effects Regression Tests', () => {
     playwrightTest.beforeEach(async ({ page }) => {

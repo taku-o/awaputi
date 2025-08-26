@@ -105,7 +105,7 @@ describe('Canvas Scale UI Positioning Performance Tests', () => {
     beforeEach(async () => {
         // 各テスト前にコンポーネントを初期化
         const { ResponsiveCanvasManager } = await import('../../src/ui/managers/ResponsiveCanvasManager.js');
-        const { ScaledCoordinateManager } = await import('../../src/utils/ScaledCoordinateManager.js');
+        // const { ScaledCoordinateManager } = await import('../../src/utils/ScaledCoordinateManager.js');
         const { GameUIManager } = await import('../../src/ui/managers/GameUIManager.js');
 
         responsiveCanvasManager = new ResponsiveCanvasManager(canvas);
