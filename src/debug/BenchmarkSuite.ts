@@ -12,33 +12,33 @@
 
 // Temporary stub implementations until the actual modules are converted
 class BenchmarkExecutor {
-    constructor(suite: any) {}
-    async executeBenchmark(name: string, benchmark: any, options: any): Promise<any> { 
+    constructor(_suite: any) {}
+    async executeBenchmark(_name: string, benchmark: any, options: any): Promise<any> { 
         return benchmark.test(options); 
     }
     getExecutionStats(): any { return {}; }
-    configure(config: any): void {}
+    configure(_config: any): void {}
     destroy(): void {}
 }
 
 class BenchmarkResultAnalyzer {
-    constructor(suite: any) {}
-    compareWithBaseline(name: string, result: any, baseline: any): any {
+    constructor(_suite: any) {}
+    compareWithBaseline(_name: string, _result: any, _baseline: any): any {
         return { status: 'pass', overallScore: 100 };
     }
-    analyzeResults(results: any): any { return {}; }
-    getAnalysisHistory(limit: number): any { return []; }
-    configure(config: any): void {}
+    analyzeResults(_results: any): any { return {}; }
+    getAnalysisHistory(_limit: number): any { return []; }
+    configure(_config: any): void {}
     destroy(): void {}
 }
 
 class BenchmarkReporter {
-    constructor(suite: any) {}
-    generateBenchmarkReport(results: any, analysis: any, options: any): any { return {}; }
-    visualizeResults(results: any, options: any): any { return {}; }
-    exportBenchmarks(results: any, format: string, options: any): any { return {}; }
-    getReportHistory(limit: number): any { return []; }
-    configure(config: any): void {}
+    constructor(_suite: any) {}
+    generateBenchmarkReport(_results: any, _analysis: any, _options: any): any { return {}; }
+    visualizeResults(_results: any, _options: any): any { return {}; }
+    exportBenchmarks(_results: any, _format: string, _options: any): any { return {}; }
+    getReportHistory(_limit: number): any { return []; }
+    configure(_config: any): void {}
     destroy(): void {}
 }
 
@@ -543,11 +543,11 @@ export class BenchmarkSuite {
     }
 
     // 個別ベンチマークメソッド（簡略化版）
-    private async benchmarkParticleEffects(options: BenchmarkOptions = {}): Promise<BenchmarkResult> {
+    private async benchmarkParticleEffects(_options: BenchmarkOptions = {}): Promise<BenchmarkResult> {
         return { avgUpdateTime: 2.0, maxParticles: 300, success: true };
     }
 
-    private async benchmarkMemoryAllocation(options: BenchmarkOptions = {}): Promise<BenchmarkResult> {
+    private async benchmarkMemoryAllocation(_options: BenchmarkOptions = {}): Promise<BenchmarkResult> {
         if (!(performance as any).memory) {
             return { success: false, error: 'Memory API not available' };
         }
@@ -559,15 +559,15 @@ export class BenchmarkSuite {
         return { initialMemory: initial, finalMemory: final, allocationRate: 1000, success: true };
     }
 
-    private async benchmarkAudioProcessing(options: BenchmarkOptions = {}): Promise<BenchmarkResult> {
+    private async benchmarkAudioProcessing(_options: BenchmarkOptions = {}): Promise<BenchmarkResult> {
         return { avgProcessingTime: 50, successRate: 1.0, latency: 50, success: true };
     }
 
-    private async benchmarkInputLatency(options: BenchmarkOptions = {}): Promise<BenchmarkResult> {
+    private async benchmarkInputLatency(_options: BenchmarkOptions = {}): Promise<BenchmarkResult> {
         return { avgLatency: 25, maxLatency: 50, responseRate: 1.0, success: true };
     }
 
-    private async benchmarkSceneTransition(options: BenchmarkOptions = {}): Promise<BenchmarkResult> {
+    private async benchmarkSceneTransition(_options: BenchmarkOptions = {}): Promise<BenchmarkResult> {
         return { avgTransitionTime: 300, memoryEfficiency: true, success: true };
     }
 
@@ -584,13 +584,13 @@ export class BenchmarkSuite {
 
     private async benchmarkStressTest(options: BenchmarkOptions = {}): Promise<BenchmarkResult> {
         const duration = Math.min(options.duration || 5000, 10000); // 最大10秒
-        const startTime = performance.now();
+        // const startTime = performance.now();
         // 簡単なストレステスト
         await new Promise(resolve => setTimeout(resolve, duration));
         return { duration, stabilityScore: 95, avgFPS: 58, success: true };
     }
 
-    private async benchmarkMemoryStress(options: BenchmarkOptions = {}): Promise<BenchmarkResult> {
+    private async benchmarkMemoryStress(_options: BenchmarkOptions = {}): Promise<BenchmarkResult> {
         if (!(performance as any).memory) {
             return { success: false, error: 'Memory API not available' };
         }

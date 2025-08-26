@@ -39,7 +39,7 @@ export class ComponentErrorHandler {
      * @param {string} component - コンポーネント名
      * @returns {boolean}
      */
-    static canRecover(error: Error | RecoverableError, component: string): boolean {
+    static canRecover(error: Error | RecoverableError, _component: string): boolean {
         // ネットワークエラーや一時的な問題は回復可能
         const recoverableError = error as RecoverableError;
         if (recoverableError.recoverable !== false &&

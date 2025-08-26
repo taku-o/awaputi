@@ -303,12 +303,12 @@ export class DebugPerformanceMonitor {
      * パフォーマンス問題を報告
      */
     private reportPerformanceIssue(level: 'warning' | 'critical', message: string): void {
-        const issue = {
-            level,
-            message,
-            timestamp: Date.now(),
-            uptime: performance.now()
-        };
+        // const issue = {
+        //     level,
+        //     message,
+        //     timestamp: Date.now(),
+        //     uptime: performance.now()
+        // };
         
         if (level === 'critical') {
             console.error(`[Debug Performance Critical] ${message}`);

@@ -4,7 +4,7 @@
  */
 
 export class BenchmarkResultAnalyzer {
-    constructor(parent?: any) {
+    constructor(_parent?: any) {
         // TypeScript implementation
         console.log('[BenchmarkResultAnalyzer] Initialized');
     }

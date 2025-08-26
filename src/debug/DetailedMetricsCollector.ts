@@ -279,7 +279,7 @@ export class DetailedMetricsCollector {
     /**
      * WebGLメトリクス収集
      */
-    private collectWebGLMetrics(gl: WebGLRenderingContext, renderMetrics: RenderingMetrics): void {
+    private collectWebGLMetrics(_gl: WebGLRenderingContext, renderMetrics: RenderingMetrics): void {
         // 描画統計
         renderMetrics.drawCalls = this.estimateDrawCalls();
         renderMetrics.triangles = this.estimateTriangleCount();
@@ -310,7 +310,7 @@ export class DetailedMetricsCollector {
     /**
      * Canvas 2Dメトリクス収集
      */
-    private collectCanvas2DMetrics(ctx: CanvasRenderingContext2D, renderMetrics: RenderingMetrics): void {
+    private collectCanvas2DMetrics(_ctx: CanvasRenderingContext2D, renderMetrics: RenderingMetrics): void {
         // 2D描画統計
         renderMetrics.canvas2D = {
             operations: this.count2DOperations(),
@@ -751,15 +751,15 @@ export class DetailedMetricsCollector {
     }
 
     // プレースホルダーメソッド（実装は各ゲーム固有システムに依存）
-    private getBubbleCountByType(bubbleManager?: BubbleManager): Record<string, number> { return {}; }
+    private getBubbleCountByType(_bubbleManager?: BubbleManager): Record<string, number> { return {}; }
     private getBubblesSpawnedThisFrame(): number { return 0; }
     private getBubblesDestroyedThisFrame(): number { return 0; }
     private getAverageBubbleLifetime(): number { return 0; }
-    private getParticleCountBySystem(particleManager?: ParticleManager): Record<string, number> { return {}; }
+    private getParticleCountBySystem(_particleManager?: ParticleManager): Record<string, number> { return {}; }
     private getParticlesSpawnedThisFrame(): number { return 0; }
     private getParticlesDestroyedThisFrame(): number { return 0; }
-    private getParticlePoolUtilization(particleManager?: ParticleManager): number { return 0; }
-    private getEffectCountByType(effectManager?: EffectManager): Record<string, number> { return {}; }
+    private getParticlePoolUtilization(_particleManager?: ParticleManager): number { return 0; }
+    private getEffectCountByType(_effectManager?: EffectManager): Record<string, number> { return {}; }
     private getActiveEffects(): number { return 0; }
     private getQueuedEffects(): number { return 0; }
     private getCollisionChecksPerFrame(): number { return 0; }
@@ -768,7 +768,7 @@ export class DetailedMetricsCollector {
     private getPhysicsStepsPerFrame(): number { return 0; }
     private getAveragePhysicsStepTime(): number { return 0; }
     private getSpatialOptimizationStats(): Record<string, any> { return {}; }
-    private collectAudioContextMetrics(audioMetrics: AudioMetrics): void {}
+    private collectAudioContextMetrics(_audioMetrics: AudioMetrics): void {}
     private collectSoundPlaybackMetrics(audioMetrics: AudioMetrics): void {}
     private collectAudioProcessingMetrics(audioMetrics: AudioMetrics): void {}
     private collectResourceLoadingMetrics(networkMetrics: NetworkMetrics): void {}

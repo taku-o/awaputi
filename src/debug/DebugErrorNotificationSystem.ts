@@ -259,7 +259,7 @@ export class DebugErrorNotificationSystem {
     /**
      * 閾値チェック
      */
-    private checkThreshold(error: NotificationError, type: "single" | "batch"): boolean {
+    private checkThreshold(error: NotificationError, _type: "single" | "batch"): boolean {
         const threshold = this.notificationConfig.thresholds[error.severity as keyof NotificationThresholds];
         if (!threshold) return true;
         
@@ -358,7 +358,7 @@ export class DebugErrorNotificationSystem {
     /**
      * チャンネル使用判定
      */
-    private shouldUseChannel(channel: string, settings: NotificationChannel, error: NotificationError, type: "single" | "batch"): boolean {
+    private shouldUseChannel(_channel: string, settings: NotificationChannel, error: NotificationError, type: "single" | "batch"): boolean {
         const level = settings.level;
 
         if (level === 'all') return true;
@@ -399,7 +399,7 @@ export class DebugErrorNotificationSystem {
      * 集約された通知の送信
      */
     private flushAggregatedNotifications(): void {
-        for (const [key, group] of this.pendingNotifications.entries()) {
+        for (const [_key, group] of this.pendingNotifications.entries()) {
             if (group.notifications.length === 1) {
                 // 単一通知はそのまま送信
                 this.sendNotification(group.notifications[0]);
@@ -794,7 +794,7 @@ export class DebugErrorNotificationSystem {
         }, 10000); // 10秒ごとにチェック
     }
     
-    private handleRateLimitExceeded(error: NotificationError): void {
+    private handleRateLimitExceeded(_error: NotificationError): void {
         // レート制限超過時の処理
         if (this.rateLimitExceededNotificationSent) return;
 
