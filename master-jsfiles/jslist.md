@@ -56,8 +56,8 @@
 - [x] src/analytics/enhanced-analytics-manager/AnalyticsPerformanceMonitor.js - TypeScript版でaddToHistoryメソッドの型定義を修正（"single"|"batch"→string）
 - [x] src/analytics/enhanced-analytics-manager/GameBalanceAnalyzer.js - TypeScript版でstorageManager変数のコメントアウトを修正。TS版は拡張実装（追加メソッドあり）
 - [x] src/analytics/enhanced-analytics-manager/PlayerBehaviorAnalyzer.js - TypeScript版でlongSessionMarked変数のコメントアウトを修正
-- [] src/analytics/enhanced-analytics-manager/SessionManager.js
-- [] src/audio/AudioAccessibilitySupport.js
+- [x] src/analytics/enhanced-analytics-manager/SessionManager.js - 処理ロジックの違いなし（インターフェース追加のみ）
+- [x] src/audio/AudioAccessibilitySupport.js - TypeScript版でコメントアウトされた変数（audioManager等）を修正、ErrorHandler型定義を修正
 - [] src/audio/AudioCacheManager.js
 - [] src/audio/AudioConfigurationManager.js
 - [] src/audio/AudioContextManager.js

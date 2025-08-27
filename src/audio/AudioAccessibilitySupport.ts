@@ -8,7 +8,7 @@ import { AudioSettingsManager } from './accessibility/AudioSettingsManager';
 
 // エラーハンドラー型定義
 interface ErrorHandler {
-    handleError(error: Error, type: "single" | "batch", context?: any): void;
+    handleError(error: Error, type: string, context?: any): void;
 }
 
 // 設定管理型定義
@@ -130,9 +130,9 @@ interface PatternRecognition {
  * @since Original implementation - Enhanced with component architecture
  */
 export class AudioAccessibilitySupport {
-    // private audioManager: AudioManager;
-    // private configManager: ConfigurationManager;
-    // private localizationManager: LocalizationManager;
+    private audioManager: AudioManager;
+    private configManager: ConfigurationManager;
+    private localizationManager: LocalizationManager;
     private errorHandler: ErrorHandler;
     // Main Controller Pattern: サブコンポーネント管理
     private audioDescriptionManager: AudioDescriptionManager;
@@ -144,12 +144,12 @@ export class AudioAccessibilitySupport {
     // オーディオイベントリスナー
     private audioEventListeners: Map<string, ((event: any) => void)[]> = new Map();
     // カラーインジケーター
-    // private colorIndicator: HTMLElement | null = null;
+    private colorIndicator: HTMLElement | null = null;
     // パターン認識
     private patternRecognition: PatternRecognition = { enabled: false };
     
-    constructor(_audioManager: AudioManager) {
-        // this.audioManager = audioManager;
+    constructor(audioManager: AudioManager) {
+        this.audioManager = audioManager;
         this.configManager = getConfigurationManager();
         this.localizationManager = getLocalizationManager();
         this.errorHandler = getErrorHandler();
