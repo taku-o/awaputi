@@ -119,16 +119,16 @@
 - [] src/config/EffectsConfig.js
 - [] src/config/FontPreloadConfig.js
 - [] src/config/GameBalance.js
-- [] src/config/GameConfig.js
+- [x] src/config/GameConfig.js - ✅ **完全作り直し済み** JavaScript版から完全に再実装
 - [] src/config/I18nPerformanceConfig.js
-- [] src/config/PerformanceConfig.js
+- [x] src/config/PerformanceConfig.js - ✅ **完全作り直し済み** JavaScript版から完全に再実装
 - [x] src/core/ARIAManager.js - TypeScript版は正常（coreディレクトリ確認済み）
 - [x] src/core/AccessibilityManager.js - TypeScript版は正常（coreディレクトリ確認済み）
-- [] src/core/AchievementEventIntegrator.js
-- [] src/core/AchievementManager.js
-- [] src/core/AchievementProgressEngine.js
-- [] src/core/AchievementStatsUI.js
-- [] src/core/AdvancedGestureRecognitionSystem.js
+- [x] src/core/AchievementEventIntegrator.js - ✅ **差異なし** TypeScript版とJavaScript版は処理ロジック同一
+- [x] src/core/AchievementManager.js - ⚠️ **差異あり、要対応** TypeScript版で一部メソッドの実装が異なる
+- [x] src/core/AchievementProgressEngine.js - ✅ **軽微な差異** 型安全性向上のみ、処理ロジックは同一
+- [x] src/core/AchievementStatsUI.js - ✅ **差異なし** TypeScript版とJavaScript版は処理ロジック同一
+- [x] src/core/AdvancedGestureRecognitionSystem.js - ✅ **完全作り直し済み** JavaScript版から完全に再実装
 - [] src/core/AdvancedResponsiveLayoutManager.js
 - [] src/core/AlternativeInputManager.js
 - [] src/core/AsyncOperationQueue.js

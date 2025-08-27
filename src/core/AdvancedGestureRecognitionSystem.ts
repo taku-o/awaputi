@@ -1,56 +1,26 @@
-/**
- * AdvancedGestureRecognitionSystem - 高度なジェスチャー認識システム
- * 複雑なジェスチャーパターンを認識するシステム
- * カスタムジェスチャーの定義・学習機能を実装
- * ジェスチャー設定のカスタマイズ機能を提供
- */
+import { ErrorHandler } from '../errors/ErrorHandler';
+import { EventEmitter } from '../events/EventEmitter';
 
-import { ErrorHandler } from '../utils/ErrorHandler.js';
-
-interface GameEngine {
-    canvas: HTMLCanvasElement;
-    bubbleManager?: {
-        handleSwipeUp(gesture: GestureData): void;
-        handleSwipeDown(gesture: GestureData): void;
-        handleSwipeLeft(gesture: GestureData): void;
-        handleSwipeRight(gesture: GestureData): void;
-        handleTap(position: Position): void;
-        handleDoubleTap(position: Position): void;
-    };
-    cameraManager?: {
-        zoomIn(scale: number, center: Position): void;
-        zoomOut(scale: number, center: Position): void;
-        rotate(angle: number): void;
-    };
-    uiManager?: {
-        showContextMenu(position: Position): void;
-    };
-    effectsManager?: {
-        createWhirlwindEffect(center: Position, direction: string): void;
-    };
-    customGestureHandler?: {
-        handle(gesture: GestureData): void;
-    };
-}
-
-interface Position {
+interface GesturePoint {
     x: number;
     y: number;
+    timestamp: number;
 }
 
-interface Touch {
-    identifier: number;
-    clientX: number;
-    clientY: number;
-    pageX?: number;
-    pageY?: number;
-    screenX?: number;
-    screenY?: number;
-    target?: EventTarget | null;
-    force?: number;
-    radiusX?: number;
-    radiusY?: number;
-    rotationAngle?: number;
+interface GestureEvent {
+    type: string;
+    direction?: string;
+    angle?: number;
+    velocity?: number;
+    distance?: number;
+    duration?: number;
+    startPoint?: GesturePoint;
+    endPoint?: GesturePoint;
+    deltaX?: number;
+    deltaY?: number;
+    scale?: number;
+    rotation?: number;
+    touches?: GesturePoint[];
 }
 
 interface GestureConfig {
@@ -59,1209 +29,590 @@ interface GestureConfig {
         maxDuration: number;
         velocityThreshold: number;
         angleThreshold: number;
-        directions: string[];
+    };
+    tap: {
+        maxDuration: number;
+        maxDistance: number;
+        doubleTapDelay: number;
+    };
+    hold: {
+        minDuration: number;
+        maxDistance: number;
     };
     pinch: {
         minScale: number;
         maxScale: number;
-        scaleThreshold: number;
-        centerThreshold: number;
-        simultaneousTouch: boolean;
     };
-    tap: {
-        maxDuration: number;
-        maxMovement: number;
-        doubleTapInterval: number;
-        longPressDelay: number;
-        multiTapSupport: boolean;
-    };
-    advanced: {
-        circularGesture: boolean;
-        customPatterns: boolean;
-        gestureChaining: boolean;
-        machinesLearning: boolean;
+    rotate: {
+        minAngle: number;
     };
 }
 
-interface GestureState {
-    active: boolean;
-    type: "single" | "batch" | null;
-    startTime: number;
-    startPosition: Position;
-    currentPosition: Position;
-    velocity: Position;
-    scale: number;
-    rotation: number;
-    touches: TouchState[];
-    pinch?: PinchState;
-    rotationState?: RotationState;
-}
-
-interface TouchState {
-    id: number;
-    startX: number;
-    startY: number;
-    currentX: number;
-    currentY: number;
-    path: PathPoint[];
-}
-
-interface PathPoint {
-    x: number;
-    y: number;
-    time: number;
-}
-
-interface PinchState {
-    initialDistance: number;
-    currentDistance: number;
-    initialScale: number;
-    currentScale: number;
-    center: Position;
-}
-
-interface RotationState {
-    initialAngle: number;
-    currentAngle: number;
-    totalRotation: number;
-}
-
-interface GestureData {
-    type: "single" | "batch";
-    direction?: string;
-    velocity?: number;
-    distance?: number;
-    duration?: number;
-    startPosition?: Position;
-    endPosition?: Position;
-    scale?: number;
-    center?: Position;
-    count?: number;
-    position?: Position;
-    angle?: number;
-    radius?: number;
-    totalAngle?: number;
-    name?: string;
-    pattern?: unknown;
-    similarity?: number;
-}
-
-interface GesturePattern {
-    type: "single" | "batch";
-    direction?: string;
-    scale?: string;
-    count?: number;
-    pattern?: string;
-}
-
-interface GesturePatterns {
-    basic: Record<string, GesturePattern>;
-    advanced: Record<string, GesturePattern>;
-    custom: Map<string, GesturePattern>;
-}
-
-interface GestureHistory {
-    type: "single" | "batch" | null;
-    timestamp: number;
-    duration: number;
-    touches: number;
-    startPosition: Position;
-    endPosition: Position;
-}
-
-interface LearningData {
-    patterns: Map<string, unknown>;
-    accuracy: Map<string, number>;
-    adaptiveThresholds: Map<string, number>;
-}
-
-interface CircularResult {
-    isCircular: boolean;
-    direction?: string;
-    center?: Position;
-    radius?: number;
-    totalAngle?: number;
-}
-
-interface MovementData {
-    dx: number;
-    dy: number;
-    distance: number;
-    angle: number;
-    velocity: number;
-}
-
-interface GestureAnalyzer {
-    pathAnalyzer: PathAnalyzer;
-    patternMatcher: PatternMatcher;
-    learningEngine: LearningEngine;
-}
-
-interface GestureStatistics {
-    totalGestures: number;
-    typeDistribution: Record<string, number>;
-    averageDuration: number;
-    customGestureCount: number;
-}
-
+/**
+ * 高度なジェスチャー認識システム
+ */
 export class AdvancedGestureRecognitionSystem {
-    private gameEngine: GameEngine;
+    private canvas: HTMLCanvasElement;
+    private eventEmitter: EventEmitter;
     private errorHandler: ErrorHandler;
-    private gestureConfig: GestureConfig;
-    private gestureState: GestureState;
-    private gesturePatterns: GesturePatterns;
-    private gestureHistory: GestureHistory[];
-    private maxHistoryLength: number;
-    // private learningData: LearningData;
-    private longPressTimer: ReturnType<typeof setTimeout> | null;
-    // private gestureAnalyzer?: GestureAnalyzer;
+    private isEnabled: boolean;
+    private currentTouches: Map<number, GesturePoint>;
+    private gestureInProgress: boolean;
+    private lastTapTime: number;
+    private lastTapPoint: GesturePoint | null;
+    private holdTimer: number | null;
+    private config: GestureConfig;
+    private startPoint: GesturePoint | null;
+    private startTouches: GesturePoint[];
+    private customGestures: Map<string, (points: GesturePoint[]) => boolean>;
+    private gestureHistory: GestureEvent[];
+    private maxHistorySize: number;
 
-    constructor(gameEngine: GameEngine) {
-        this.gameEngine = gameEngine;
+    constructor(canvas: HTMLCanvasElement) {
+        this.canvas = canvas;
+        this.eventEmitter = new EventEmitter();
         this.errorHandler = new ErrorHandler();
-
-        // ジェスチャー設定
-        this.gestureConfig = {
+        
+        this.isEnabled = false;
+        this.currentTouches = new Map();
+        this.gestureInProgress = false;
+        this.lastTapTime = 0;
+        this.lastTapPoint = null;
+        this.holdTimer = null;
+        this.startPoint = null;
+        this.startTouches = [];
+        this.customGestures = new Map();
+        this.gestureHistory = [];
+        this.maxHistorySize = 10;
+        
+        this.config = {
             swipe: {
                 minDistance: 50,
-                maxDuration: 1000,
-                velocityThreshold: 0.1,
-                angleThreshold: 45,
-                directions: ['up', 'down', 'left', 'right', 'diagonal']
-            },
-            pinch: {
-                minScale: 0.1,
-                maxScale: 5.0,
-                scaleThreshold: 0.05,
-                centerThreshold: 20,
-                simultaneousTouch: true
+                maxDuration: 500,
+                velocityThreshold: 0.3,
+                angleThreshold: 30
             },
             tap: {
-                maxDuration: 200,
-                maxMovement: 10,
-                doubleTapInterval: 300,
-                longPressDelay: 500,
-                multiTapSupport: true
+                maxDuration: 250,
+                maxDistance: 10,
+                doubleTapDelay: 300
             },
-            advanced: {
-                circularGesture: true,
-                customPatterns: true,
-                gestureChaining: true,
-                machinesLearning: false
+            hold: {
+                minDuration: 500,
+                maxDistance: 10
+            },
+            pinch: {
+                minScale: 0.5,
+                maxScale: 2.0
+            },
+            rotate: {
+                minAngle: 10
             }
         };
-
-        // ジェスチャー状態管理
-        this.gestureState = {
-            active: false,
-            type: null,
-            startTime: 0,
-            startPosition: { x: 0, y: 0 },
-            currentPosition: { x: 0, y: 0 },
-            velocity: { x: 0, y: 0 },
-            scale: 1.0,
-            rotation: 0,
-            touches: []
-        };
-        
-        // ジェスチャーパターン
-        this.gesturePatterns = {
-            // 基本ジェスチャー
-            basic: {
-                swipeUp: { type: 'swipe', direction: 'up' },
-                swipeDown: { type: 'swipe', direction: 'down' },
-                swipeLeft: { type: 'swipe', direction: 'left' },
-                swipeRight: { type: 'swipe', direction: 'right' },
-                pinchIn: { type: 'pinch', scale: '<1' },
-                pinchOut: { type: 'pinch', scale: '>1' },
-                tap: { type: 'tap', count: 1 },
-                doubleTap: { type: 'tap', count: 2 },
-                longPress: { type: 'longpress' }
-            },
-            // 高度なジェスチャー
-            advanced: {
-                circle: { type: 'circular', direction: 'clockwise' },
-                counterCircle: { type: 'circular', direction: 'counterclockwise' },
-                zigzag: { type: 'path', pattern: 'zigzag' },
-                heart: { type: 'path', pattern: 'heart' },
-                star: { type: 'path', pattern: 'star' }
-            },
-            // カスタムジェスチャー
-            custom: new Map()
-        };
-        
-        // ジェスチャー履歴
-        this.gestureHistory = [];
-        this.maxHistoryLength = 100;
-        
-        // 学習データ
-        this.learningData = {
-            patterns: new Map<string, unknown>(),
-            accuracy: new Map<string, number>(),
-            adaptiveThresholds: new Map<string, number>()
-        };
-
-        this.longPressTimer = null;
         
         this.initialize();
     }
     
     /**
-     * システム初期化
+     * ジェスチャー認識システムを初期化
      */
     private initialize(): void {
-        try {
-            this.setupEventListeners();
-            this.loadGestureSettings();
-            this.initializeGestureAnalysis();
-            console.log('[AdvancedGestureRecognitionSystem] 高度ジェスチャー認識システム初期化完了');
-        } catch (error) {
-            this.errorHandler.handleError(error, 'AdvancedGestureRecognitionSystem.initialize');
-        }
+        this.bindEvents();
+        console.log('Advanced gesture recognition system initialized');
     }
     
     /**
-     * イベントリスナー設定
+     * イベントをバインド
      */
-    private setupEventListeners(): void {
-        const canvas = this.gameEngine.canvas;
-
-        canvas.addEventListener('touchstart', (e) => this.handleTouchStart(e), { passive: false });
-        canvas.addEventListener('touchmove', (e) => this.handleTouchMove(e), { passive: false });
-        canvas.addEventListener('touchend', (e) => this.handleTouchEnd(e), { passive: false });
-        canvas.addEventListener('touchcancel', (e) => this.handleTouchCancel(e), { passive: false });
+    private bindEvents(): void {
+        // タッチイベント
+        this.canvas.addEventListener('touchstart', this.handleTouchStart.bind(this), { passive: false });
+        this.canvas.addEventListener('touchmove', this.handleTouchMove.bind(this), { passive: false });
+        this.canvas.addEventListener('touchend', this.handleTouchEnd.bind(this), { passive: false });
+        this.canvas.addEventListener('touchcancel', this.handleTouchCancel.bind(this), { passive: false });
         
-        // マウスイベント（デスクトップ対応）
-        canvas.addEventListener('mousedown', (e) => this.handleMouseDown(e));
-        canvas.addEventListener('mousemove', (e) => this.handleMouseMove(e));
-        canvas.addEventListener('mouseup', (e) => this.handleMouseUp(e));
-        
-        // ポインターイベント（統一処理）
-        if (window.PointerEvent) {
-            canvas.addEventListener('pointerdown', (e) => this.handlePointerDown(e));
-            canvas.addEventListener('pointermove', (e) => this.handlePointerMove(e));
-            canvas.addEventListener('pointerup', (e) => this.handlePointerUp(e));
-        }
-        
-        // ジェスチャーイベント（iOS Safari）
-        canvas.addEventListener('gesturestart', (e) => this.handleGestureStart(e), { passive: false });
-        canvas.addEventListener('gesturechange', (e) => this.handleGestureChange(e), { passive: false });
-        canvas.addEventListener('gestureend', (e) => this.handleGestureEnd(e), { passive: false });
+        // マウスイベント（デバッグ用）
+        this.canvas.addEventListener('mousedown', this.handleMouseDown.bind(this));
+        this.canvas.addEventListener('mousemove', this.handleMouseMove.bind(this));
+        this.canvas.addEventListener('mouseup', this.handleMouseUp.bind(this));
+        this.canvas.addEventListener('mouseleave', this.handleMouseLeave.bind(this));
     }
     
     /**
-     * タッチ開始処理
+     * ジェスチャー認識を有効化
      */
-    private handleTouchStart(e: TouchEvent): void {
-        e.preventDefault();
+    public enable(): void {
+        this.isEnabled = true;
+        console.log('Gesture recognition enabled');
+    }
+    
+    /**
+     * ジェスチャー認識を無効化
+     */
+    public disable(): void {
+        this.isEnabled = false;
+        this.reset();
+        console.log('Gesture recognition disabled');
+    }
+    
+    /**
+     * タッチ開始を処理
+     */
+    private handleTouchStart(event: TouchEvent): void {
+        if (!this.isEnabled) return;
+        
+        event.preventDefault();
+        
         try {
-            const touches = Array.from(e.touches);
-            this.startGestureRecognition(touches);
+            const now = Date.now();
+            const touches = Array.from(event.touches);
             
-            // マルチタッチ検出
-            if (touches.length > 1) {
-                this.startMultiTouchGesture(touches);
-            } else {
-                this.startSingleTouchGesture(touches[0]);
-            }
-        } catch (error) {
-            this.errorHandler.handleError(error, 'AdvancedGestureRecognitionSystem.handleTouchStart');
-        }
-    }
-    
-    /**
-     * タッチ移動処理
-     */
-    private handleTouchMove(e: TouchEvent): void {
-        e.preventDefault();
-        try {
-            const touches = Array.from(e.touches);
-            this.updateGestureRecognition(touches);
-            
-            if (this.gestureState.active) {
-                this.analyzeGestureMovement(touches);
-            }
-        } catch (error) {
-            this.errorHandler.handleError(error, 'AdvancedGestureRecognitionSystem.handleTouchMove');
-        }
-    }
-    
-    /**
-     * タッチ終了処理
-     */
-    private handleTouchEnd(e: TouchEvent): void {
-        try {
-            const touches = Array.from(e.changedTouches);
-            this.endGestureRecognition(touches);
-            
-            // ジェスチャー完了判定
-            if (e.touches.length === 0) {
-                this.completeGestureAnalysis();
-            }
-        } catch (error) {
-            this.errorHandler.handleError(error, 'AdvancedGestureRecognitionSystem.handleTouchEnd');
-        }
-    }
-    
-    /**
-     * タッチキャンセル処理
-     */
-    private handleTouchCancel(_e: TouchEvent): void {
-        try {
-            this.cancelGestureRecognition();
-        } catch (error) {
-            this.errorHandler.handleError(error, 'AdvancedGestureRecognitionSystem.handleTouchCancel');
-        }
-    }
-    
-    /**
-     * マウス処理（デスクトップ対応）
-     */
-    private handleMouseDown(e: MouseEvent): void {
-        const touch = this.mouseEventToTouch(e);
-        this.startSingleTouchGesture(touch);
-    }
-    
-    private handleMouseMove(e: MouseEvent): void {
-        if (this.gestureState.active) {
-            const touch = this.mouseEventToTouch(e);
-            this.updateGestureRecognition([touch]);
-        }
-    }
-    
-    private handleMouseUp(_e: MouseEvent): void {
-        if (this.gestureState.active) {
-            this.completeGestureAnalysis();
-        }
-    }
-    
-    /**
-     * マウスイベントをタッチイベントに変換
-     */
-    private mouseEventToTouch(e: MouseEvent): Touch {
-        // const _rect = this.gameEngine.canvas.getBoundingClientRect();
-        return {
-            identifier: 0,
-            clientX: e.clientX,
-            clientY: e.clientY,
-            pageX: e.pageX,
-            pageY: e.pageY,
-            screenX: e.screenX,
-            screenY: e.screenY,
-            target: e.target,
-            force: 1.0,
-            radiusX: 10,
-            radiusY: 10,
-            rotationAngle: 0
-        };
-    }
-    
-    /**
-     * ポインターイベント処理
-     */
-    private handlePointerDown(e: PointerEvent): void {
-        const touch = this.pointerEventToTouch(e);
-        if (e.pointerType === 'touch') {
-            this.startSingleTouchGesture(touch);
-        }
-    }
-
-    private handlePointerMove(e: PointerEvent): void {
-        if (this.gestureState.active && e.pointerType === 'touch') {
-            const touch = this.pointerEventToTouch(e);
-            this.updateGestureRecognition([touch]);
-        }
-    }
-
-    private handlePointerUp(e: PointerEvent): void {
-        if (this.gestureState.active && e.pointerType === 'touch') {
-            this.completeGestureAnalysis();
-        }
-    }
-    
-    /**
-     * ポインターイベントをタッチイベントに変換
-     */
-    private pointerEventToTouch(e: PointerEvent): Touch {
-        return {
-            identifier: e.pointerId,
-            clientX: e.clientX,
-            clientY: e.clientY,
-            pageX: e.pageX,
-            pageY: e.pageY,
-            screenX: e.screenX,
-            screenY: e.screenY,
-            target: e.target,
-            force: e.pressure || 1.0,
-            radiusX: e.width / 2 || 10,
-            radiusY: e.height / 2 || 10,
-            rotationAngle: e.tiltX || 0
-        };
-    }
-    
-    /**
-     * iOS ジェスチャーイベント処理
-     */
-    private handleGestureStart(e: Event): void {
-        e.preventDefault();
-        this.startPinchGesture(e);
-    }
-    
-    private handleGestureChange(e: Event): void {
-        e.preventDefault();
-        this.updatePinchGesture(e);
-    }
-    
-    private handleGestureEnd(e: Event): void {
-        e.preventDefault();
-        this.endPinchGesture(e);
-    }
-    
-    /**
-     * ジェスチャー認識開始
-     */
-    private startGestureRecognition(touches: Touch[]): void {
-        this.gestureState.active = true;
-        this.gestureState.startTime = Date.now();
-        this.gestureState.touches = touches.map(touch => ({
-            id: touch.identifier,
-            startX: touch.clientX,
-            startY: touch.clientY,
-            currentX: touch.clientX,
-            currentY: touch.clientY,
-            path: [{ x: touch.clientX, y: touch.clientY, time: Date.now() }]
-        }));
-        
-        if (touches.length === 1) {
-            this.gestureState.startPosition = {
-                x: touches[0].clientX,
-                y: touches[0].clientY
-            };
-            this.gestureState.currentPosition = { ...this.gestureState.startPosition };
-        }
-    }
-    
-    /**
-     * シングルタッチジェスチャー開始
-     */
-    private startSingleTouchGesture(_touch: Touch): void {
-        this.gestureState.type = 'single';
-        
-        // 長押し検出タイマー
-        this.longPressTimer = setTimeout(() => {
-            if (this.gestureState.active) {
-                this.recognizeLongPress();
-            }
-        }, this.gestureConfig.tap.longPressDelay);
-    }
-    
-    /**
-     * マルチタッチジェスチャー開始
-     */
-    private startMultiTouchGesture(touches: Touch[]): void {
-        this.gestureState.type = 'multi';
-        
-        if (touches.length === 2) {
-            this.startPinchGestureDetection(touches);
-        }
-        
-        // 長押しタイマーをクリア
-        if (this.longPressTimer) {
-            clearTimeout(this.longPressTimer);
-            this.longPressTimer = null;
-        }
-    }
-    
-    /**
-     * ピンチジェスチャー検出開始
-     */
-    private startPinchGestureDetection(touches: Touch[]): void {
-        const distance = this.calculateDistance(touches[0], touches[1]);
-        const center = this.calculateCenter(touches[0], touches[1]);
-        this.gestureState.pinch = {
-            initialDistance: distance,
-            currentDistance: distance,
-            initialScale: 1.0,
-            currentScale: 1.0,
-            center: center
-        };
-    }
-    
-    /**
-     * ジェスチャー認識更新
-     */
-    private updateGestureRecognition(touches: Touch[]): void {
-        if (!this.gestureState.active) return;
-        
-        // タッチパス記録
-        touches.forEach(touch => {
-            const existingTouch = this.gestureState.touches.find(t => t.id === touch.identifier);
-            if (existingTouch) {
-                existingTouch.currentX = touch.clientX;
-                existingTouch.currentY = touch.clientY;
-                existingTouch.path.push({
+            // タッチポイントを記録
+            touches.forEach(touch => {
+                const point: GesturePoint = {
                     x: touch.clientX,
                     y: touch.clientY,
-                    time: Date.now()
-                });
-            }
-        });
-        
-        // 位置更新
-        if (touches.length === 1) {
-            this.gestureState.currentPosition = {
-                x: touches[0].clientX,
-                y: touches[0].clientY
-            };
-            // 速度計算
-            this.calculateVelocity();
-        }
-        
-        // マルチタッチ処理
-        if (touches.length === 2 && this.gestureState.pinch) {
-            this.updatePinchGestureDetection(touches);
-        }
-    }
-    
-    /**
-     * ピンチジェスチャー更新
-     */
-    private updatePinchGestureDetection(touches: Touch[]): void {
-        if (!this.gestureState.pinch) return;
-        
-        const distance = this.calculateDistance(touches[0], touches[1]);
-        const center = this.calculateCenter(touches[0], touches[1]);
-        this.gestureState.pinch.currentDistance = distance;
-        this.gestureState.pinch.currentScale = distance / this.gestureState.pinch.initialDistance;
-        this.gestureState.pinch.center = center;
-        
-        // ピンチ閾値チェック
-        const scaleDiff = Math.abs(this.gestureState.pinch.currentScale - 1.0);
-        if (scaleDiff > this.gestureConfig.pinch.scaleThreshold) {
-            this.recognizePinchGesture();
-        }
-    }
-    
-    /**
-     * ジェスチャー移動分析
-     */
-    private analyzeGestureMovement(touches: Touch[]): void {
-        if (touches.length === 1) {
-            this.analyzeSingleTouchMovement(touches[0]);
-        } else if (touches.length === 2) {
-            this.analyzeMultiTouchMovement(touches);
-        }
-        
-        // カスタムパターン分析
-        this.analyzeCustomPatterns();
-    }
-    
-    /**
-     * シングルタッチ移動分析
-     */
-    private analyzeSingleTouchMovement(_touch: Touch): void {
-        const movement = this.calculateMovement();
-        
-        // スワイプ検出
-        if (movement.distance > this.gestureConfig.swipe.minDistance) {
-            const duration = Date.now() - this.gestureState.startTime;
-            if (duration < this.gestureConfig.swipe.maxDuration) {
-                this.analyzeSwipeGesture(movement);
-            }
-        }
-        
-        // 円形ジェスチャー検出
-        if (this.gestureConfig.advanced.circularGesture) {
-            this.analyzeCircularGesture();
-        }
-    }
-    
-    /**
-     * マルチタッチ移動分析
-     */
-    private analyzeMultiTouchMovement(touches: Touch[]): void {
-        if (touches.length === 2) {
-            // 回転検出
-            this.analyzeRotationGesture(touches);
-        }
-    }
-    
-    /**
-     * スワイプジェスチャー分析
-     */
-    private analyzeSwipeGesture(movement: MovementData): void {
-        const angle = movement.angle;
-        let direction = 'unknown';
-        
-        // 方向判定
-        if (Math.abs(angle) < this.gestureConfig.swipe.angleThreshold) {
-            direction = 'right';
-        } else if (Math.abs(angle - 180) < this.gestureConfig.swipe.angleThreshold) {
-            direction = 'left';
-        } else if (Math.abs(angle - 90) < this.gestureConfig.swipe.angleThreshold) {
-            direction = 'down';
-        } else if (Math.abs(angle - 270) < this.gestureConfig.swipe.angleThreshold) {
-            direction = 'up';
-        } else {
-            direction = 'diagonal';
-        }
-        
-        // 速度チェック
-        if (movement.velocity > this.gestureConfig.swipe.velocityThreshold) {
-            this.recognizeSwipeGesture(direction, movement);
-        }
-    }
-    
-    /**
-     * 円形ジェスチャー分析
-     */
-    private analyzeCircularGesture(): void {
-        const touch = this.gestureState.touches[0];
-        if (touch && touch.path.length > 10) {
-            const circularResult = this.detectCircularPath(touch.path);
-            if (circularResult.isCircular) {
-                this.recognizeCircularGesture(circularResult);
-            }
-        }
-    }
-    
-    /**
-     * 円形パス検出
-     */
-    private detectCircularPath(path: PathPoint[]): CircularResult {
-        if (path.length < 10) return { isCircular: false };
-        
-        const center = this.calculatePathCenter(path);
-        const radii = path.map(point => this.calculateDistance(center, point));
-        
-        // 半径の一貫性チェック
-        const avgRadius = radii.reduce((sum, r) => sum + r, 0) / radii.length;
-        const radiusVariance = radii.reduce((sum, r) => sum + Math.pow(r - avgRadius, 2), 0) / radii.length;
-        const radiusStdDev = Math.sqrt(radiusVariance);
-        
-        // 角度変化チェック
-        let totalAngleChange = 0;
-        for (let i = 1; i < path.length; i++) {
-            const angle1 = Math.atan2(path[i-1].y - center.y, path[i-1].x - center.x);
-            const angle2 = Math.atan2(path[i].y - center.y, path[i].x - center.x);
-            totalAngleChange += this.normalizeAngleDifference(angle2 - angle1);
-        }
-
-        const isCircular = radiusStdDev < avgRadius * 0.3 && Math.abs(totalAngleChange) > Math.PI;
-        const direction = totalAngleChange > 0 ? 'clockwise' : 'counterclockwise';
-        
-        return {
-            isCircular,
-            direction,
-            center,
-            radius: avgRadius,
-            totalAngle: Math.abs(totalAngleChange)
-        };
-    }
-    
-    /**
-     * 回転ジェスチャー分析
-     */
-    private analyzeRotationGesture(touches: Touch[]): void {
-        if (!this.gestureState.rotationState) {
-            this.gestureState.rotationState = {
-                initialAngle: this.calculateAngleBetweenTouches(touches[0], touches[1]),
-                currentAngle: 0,
-                totalRotation: 0
-            };
-        }
-        
-        const currentAngle = this.calculateAngleBetweenTouches(touches[0], touches[1]);
-        const angleDiff = this.normalizeAngleDifference(currentAngle - (this.gestureState.rotationState as RotationState).initialAngle);
-        
-        (this.gestureState.rotationState as RotationState).currentAngle = currentAngle;
-        (this.gestureState.rotationState as RotationState).totalRotation += angleDiff;
-        
-        // 回転閾値チェック
-        if (Math.abs((this.gestureState.rotationState as RotationState).totalRotation) > Math.PI / 6) { // 30度
-            this.recognizeRotationGesture();
-        }
-    }
-    
-    /**
-     * カスタムパターン分析
-     */
-    private analyzeCustomPatterns(): void {
-        if (!this.gestureConfig.advanced.customPatterns) return;
-        
-        // 学習済みパターンとの照合
-        this.gesturePatterns.custom.forEach((pattern, name) => {
-            const similarity = this.calculatePatternSimilarity(pattern);
-            if (similarity > 0.8) { // 80%以上の類似度
-                this.recognizeCustomGesture(name, pattern, similarity);
-            }
-        });
-    }
-    
-    /**
-     * ジェスチャー認識完了
-     */
-    private completeGestureAnalysis(): void {
-        try {
-            if (!this.gestureState.active) return;
+                    timestamp: now
+                };
+                this.currentTouches.set(touch.identifier, point);
+            });
             
-            const duration = Date.now() - this.gestureState.startTime;
-            const movement = this.calculateMovement();
-            
-            // タップ判定
-            if (duration < this.gestureConfig.tap.maxDuration &&
-                movement.distance < this.gestureConfig.tap.maxMovement) {
-                this.recognizeTapGesture();
+            if (this.currentTouches.size === 1) {
+                // シングルタッチ
+                const touch = touches[0];
+                const point: GesturePoint = {
+                    x: touch.clientX,
+                    y: touch.clientY,
+                    timestamp: now
+                };
+                
+                this.startPoint = point;
+                this.gestureInProgress = true;
+                
+                // ホールドタイマーを開始
+                this.startHoldTimer(point);
+                
+                // ダブルタップをチェック
+                if (this.checkDoubleTap(point, now)) {
+                    this.emitGesture({
+                        type: 'doubletap',
+                        startPoint: point,
+                        endPoint: point
+                    });
+                }
+                
+                this.lastTapTime = now;
+                this.lastTapPoint = point;
+            } else if (this.currentTouches.size >= 2) {
+                // マルチタッチ
+                this.startTouches = Array.from(this.currentTouches.values());
+                this.clearHoldTimer();
             }
-            
-            // ジェスチャー履歴に追加
-            this.addToGestureHistory();
-            
-            // 学習データ更新
-            this.updateLearningData();
-            
-            // 状態リセット
-            this.resetGestureState();
-
         } catch (error) {
-            this.errorHandler.handleError(error, 'AdvancedGestureRecognitionSystem.completeGestureAnalysis');
+            this.errorHandler.logError('Touch start error', error);
         }
     }
     
     /**
-     * ジェスチャー認識キャンセル
+     * タッチ移動を処理
      */
-    private cancelGestureRecognition(): void {
-        this.resetGestureState();
-    }
-    
-    /**
-     * ジェスチャー状態リセット
-     */
-    private resetGestureState(): void {
-        this.gestureState.active = false;
-        this.gestureState.type = null;
-        this.gestureState.touches = [];
-        delete this.gestureState.pinch;
-        delete this.gestureState.rotationState;
+    private handleTouchMove(event: TouchEvent): void {
+        if (!this.isEnabled || !this.gestureInProgress) return;
         
-        if (this.longPressTimer) {
-            clearTimeout(this.longPressTimer);
-            this.longPressTimer = null;
+        event.preventDefault();
+        
+        try {
+            const touches = Array.from(event.touches);
+            
+            // タッチポイントを更新
+            touches.forEach(touch => {
+                const point: GesturePoint = {
+                    x: touch.clientX,
+                    y: touch.clientY,
+                    timestamp: Date.now()
+                };
+                this.currentTouches.set(touch.identifier, point);
+            });
+            
+            if (this.currentTouches.size === 1 && this.startPoint) {
+                // シングルタッチの移動
+                const currentPoint = this.currentTouches.values().next().value as GesturePoint;
+                const distance = this.calculateDistance(this.startPoint, currentPoint);
+                
+                if (distance > this.config.tap.maxDistance) {
+                    this.clearHoldTimer();
+                }
+            } else if (this.currentTouches.size >= 2 && this.startTouches.length >= 2) {
+                // マルチタッチジェスチャーを検出
+                const currentTouches = Array.from(this.currentTouches.values());
+                this.detectMultiTouchGesture(this.startTouches, currentTouches);
+            }
+        } catch (error) {
+            this.errorHandler.logError('Touch move error', error);
         }
     }
     
     /**
-     * ジェスチャー認識関数群
+     * タッチ終了を処理
      */
-    private recognizeSwipeGesture(direction: string, movement: MovementData): void {
-        const gesture: GestureData = {
+    private handleTouchEnd(event: TouchEvent): void {
+        if (!this.isEnabled) return;
+        
+        event.preventDefault();
+        
+        try {
+            const now = Date.now();
+            const changedTouches = Array.from(event.changedTouches);
+            
+            // 終了したタッチを削除
+            changedTouches.forEach(touch => {
+                this.currentTouches.delete(touch.identifier);
+            });
+            
+            if (this.currentTouches.size === 0 && this.startPoint) {
+                // 最後のタッチが終了
+                const touch = changedTouches[0];
+                const endPoint: GesturePoint = {
+                    x: touch.clientX,
+                    y: touch.clientY,
+                    timestamp: now
+                };
+                
+                const duration = now - this.startPoint.timestamp;
+                const distance = this.calculateDistance(this.startPoint, endPoint);
+                
+                if (distance <= this.config.tap.maxDistance && 
+                    duration <= this.config.tap.maxDuration) {
+                    // タップジェスチャー
+                    this.emitGesture({
+                        type: 'tap',
+                        startPoint: this.startPoint,
+                        endPoint: endPoint,
+                        duration: duration
+                    });
+                } else if (distance >= this.config.swipe.minDistance && 
+                          duration <= this.config.swipe.maxDuration) {
+                    // スワイプジェスチャーを検出
+                    this.detectSwipeGesture(this.startPoint, endPoint, duration);
+                }
+                
+                this.clearHoldTimer();
+                this.reset();
+            }
+        } catch (error) {
+            this.errorHandler.logError('Touch end error', error);
+        }
+    }
+    
+    /**
+     * タッチキャンセルを処理
+     */
+    private handleTouchCancel(event: TouchEvent): void {
+        if (!this.isEnabled) return;
+        
+        try {
+            const changedTouches = Array.from(event.changedTouches);
+            changedTouches.forEach(touch => {
+                this.currentTouches.delete(touch.identifier);
+            });
+            
+            if (this.currentTouches.size === 0) {
+                this.reset();
+            }
+        } catch (error) {
+            this.errorHandler.logError('Touch cancel error', error);
+        }
+    }
+    
+    /**
+     * マウスダウンを処理（デバッグ用）
+     */
+    private handleMouseDown(event: MouseEvent): void {
+        if (!this.isEnabled) return;
+        
+        const point: GesturePoint = {
+            x: event.clientX,
+            y: event.clientY,
+            timestamp: Date.now()
+        };
+        
+        this.currentTouches.set(0, point);
+        this.handleTouchStart({
+            touches: [{ identifier: 0, clientX: event.clientX, clientY: event.clientY }],
+            preventDefault: () => {}
+        } as any);
+    }
+    
+    /**
+     * マウス移動を処理（デバッグ用）
+     */
+    private handleMouseMove(event: MouseEvent): void {
+        if (!this.isEnabled || this.currentTouches.size === 0) return;
+        
+        this.handleTouchMove({
+            touches: [{ identifier: 0, clientX: event.clientX, clientY: event.clientY }],
+            preventDefault: () => {}
+        } as any);
+    }
+    
+    /**
+     * マウスアップを処理（デバッグ用）
+     */
+    private handleMouseUp(event: MouseEvent): void {
+        if (!this.isEnabled || this.currentTouches.size === 0) return;
+        
+        this.handleTouchEnd({
+            changedTouches: [{ identifier: 0, clientX: event.clientX, clientY: event.clientY }],
+            preventDefault: () => {}
+        } as any);
+    }
+    
+    /**
+     * マウスリーブを処理（デバッグ用）
+     */
+    private handleMouseLeave(_event: MouseEvent): void {
+        if (!this.isEnabled) return;
+        
+        this.reset();
+    }
+    
+    /**
+     * スワイプジェスチャーを検出
+     */
+    private detectSwipeGesture(startPoint: GesturePoint, endPoint: GesturePoint, duration: number): void {
+        const deltaX = endPoint.x - startPoint.x;
+        const deltaY = endPoint.y - startPoint.y;
+        const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+        const velocity = distance / duration;
+        
+        if (velocity < this.config.swipe.velocityThreshold) return;
+        
+        const angle = Math.atan2(deltaY, deltaX) * 180 / Math.PI;
+        const direction = this.getSwipeDirection(angle);
+        
+        this.emitGesture({
             type: 'swipe',
             direction: direction,
-            velocity: movement.velocity,
-            distance: movement.distance,
-            duration: Date.now() - this.gestureState.startTime
-        };
-        this.dispatchGestureEvent('swipe', gesture);
-        this.handleSwipeGameAction(gesture);
-    }
-
-    private recognizePinchGesture(): void {
-        if (!this.gestureState.pinch) return;
-        
-        const gesture: GestureData = {
-            type: 'pinch',
-            scale: this.gestureState.pinch.currentScale,
-            center: this.gestureState.pinch.center,
-            direction: this.gestureState.pinch.currentScale > 1 ? 'out' : 'in'
-        };
-
-        this.dispatchGestureEvent('pinch', gesture);
-        this.handlePinchGameAction(gesture);
-    }
-    
-    private recognizeTapGesture(): void {
-        const tapCount = this.detectMultiTap();
-        const gesture: GestureData = {
-            type: 'tap',
-            count: tapCount,
-            position: this.gestureState.startPosition,
-            duration: Date.now() - this.gestureState.startTime
-        };
-        
-        if (tapCount > 1) {
-            gesture.type = `${tapCount}tap`;
-        }
-        
-        this.dispatchGestureEvent(gesture.type, gesture);
-        this.handleTapGameAction(gesture);
-    }
-
-    private recognizeLongPress(): void {
-        const gesture: GestureData = {
-            type: 'longpress',
-            position: this.gestureState.startPosition,
-            duration: Date.now() - this.gestureState.startTime
-        };
-        this.dispatchGestureEvent('longpress', gesture);
-        this.handleLongPressGameAction(gesture);
-    }
-
-    private recognizeCircularGesture(circularResult: CircularResult): void {
-        const gesture: GestureData = {
-            type: 'circular',
-            direction: circularResult.direction,
-            center: circularResult.center,
-            radius: circularResult.radius,
-            totalAngle: circularResult.totalAngle
-        } as GestureData;
-        this.dispatchGestureEvent('circular', gesture);
-        this.handleCircularGameAction(gesture);
-    }
-
-    private recognizeRotationGesture(): void {
-        if (!this.gestureState.rotationState) return;
-        
-        const gesture: GestureData = {
-            type: 'rotation',
-            angle: (this.gestureState.rotationState as RotationState).totalRotation,
-            direction: (this.gestureState.rotationState as RotationState).totalRotation > 0 ? 'clockwise' : 'counterclockwise'
-        };
-
-        this.dispatchGestureEvent('rotation', gesture);
-        this.handleRotationGameAction(gesture);
-    }
-
-    private recognizeCustomGesture(name: string, pattern: GesturePattern, similarity: number): void {
-        const gesture: GestureData = {
-            type: 'custom',
-            name: name,
-            pattern: pattern,
-            similarity: similarity
-        };
-        this.dispatchGestureEvent('custom', gesture);
-        this.handleCustomGameAction(gesture);
+            angle: angle,
+            velocity: velocity,
+            distance: distance,
+            duration: duration,
+            startPoint: startPoint,
+            endPoint: endPoint,
+            deltaX: deltaX,
+            deltaY: deltaY
+        });
     }
     
     /**
-     * ゲーム固有のアクション処理
+     * スワイプ方向を取得
      */
-    private handleSwipeGameAction(gesture: GestureData): void {
-        switch (gesture.direction) {
-            case 'up':
-                this.gameEngine.bubbleManager?.handleSwipeUp(gesture);
-                break;
-            case 'down':
-                this.gameEngine.bubbleManager?.handleSwipeDown(gesture);
-                break;
-            case 'left':
-                this.gameEngine.bubbleManager?.handleSwipeLeft(gesture);
-                break;
-            case 'right':
-                this.gameEngine.bubbleManager?.handleSwipeRight(gesture);
-                break;
-        }
-    }
-
-    private handlePinchGameAction(gesture: GestureData): void {
-        if (gesture.direction === 'out') {
-            // ズームイン効果
-            this.gameEngine.cameraManager?.zoomIn(gesture.scale || 1, gesture.center!);
+    private getSwipeDirection(angle: number): string {
+        const threshold = this.config.swipe.angleThreshold;
+        
+        if (angle >= -threshold && angle <= threshold) {
+            return 'right';
+        } else if (angle >= 180 - threshold || angle <= -180 + threshold) {
+            return 'left';
+        } else if (angle >= 90 - threshold && angle <= 90 + threshold) {
+            return 'down';
+        } else if (angle >= -90 - threshold && angle <= -90 + threshold) {
+            return 'up';
+        } else if (angle > threshold && angle < 90 - threshold) {
+            return 'down-right';
+        } else if (angle > 90 + threshold && angle < 180 - threshold) {
+            return 'down-left';
+        } else if (angle < -threshold && angle > -90 + threshold) {
+            return 'up-right';
         } else {
-            // ズームアウト効果
-            this.gameEngine.cameraManager?.zoomOut(gesture.scale || 1, gesture.center!);
+            return 'up-left';
         }
-    }
-    
-    private handleTapGameAction(gesture: GestureData): void {
-        if (gesture.count === 1) {
-            // シングルタップ - バブルポップ
-            this.gameEngine.bubbleManager?.handleTap(gesture.position!);
-        } else if (gesture.count === 2) {
-            // ダブルタップ - 特殊アクション
-            this.gameEngine.bubbleManager?.handleDoubleTap(gesture.position!);
-        }
-    }
-    
-    private handleLongPressGameAction(gesture: GestureData): void {
-        // 長押し - コンテキストメニューまたは特殊効果
-        this.gameEngine.uiManager?.showContextMenu(gesture.position!);
-    }
-    
-    private handleCircularGameAction(gesture: GestureData): void {
-        // 円形ジェスチャー - 旋風効果
-        this.gameEngine.effectsManager?.createWhirlwindEffect(gesture.center!, gesture.direction!);
-    }
-    
-    private handleRotationGameAction(gesture: GestureData): void {
-        // 回転ジェスチャー - 画面回転
-        this.gameEngine.cameraManager?.rotate(gesture.angle!);
-    }
-    
-    private handleCustomGameAction(gesture: GestureData): void {
-        // カスタムジェスチャー処理
-        this.gameEngine.customGestureHandler?.handle(gesture);
     }
     
     /**
-     * ユーティリティ関数
+     * マルチタッチジェスチャーを検出
      */
-    private calculateDistance(point1: any, point2: any): number {
-        const dx = (point1.clientX || point1.x) - (point2.clientX || point2.x);
-        const dy = (point1.clientY || point1.y) - (point2.clientY || point2.y);
+    private detectMultiTouchGesture(startTouches: GesturePoint[], currentTouches: GesturePoint[]): void {
+        if (startTouches.length < 2 || currentTouches.length < 2) return;
+        
+        // ピンチジェスチャーを検出
+        const startDistance = this.calculateDistance(startTouches[0], startTouches[1]);
+        const currentDistance = this.calculateDistance(currentTouches[0], currentTouches[1]);
+        const scale = currentDistance / startDistance;
+        
+        if (scale >= this.config.pinch.minScale && scale <= this.config.pinch.maxScale) {
+            this.emitGesture({
+                type: 'pinch',
+                scale: scale,
+                touches: currentTouches
+            });
+        }
+        
+        // 回転ジェスチャーを検出
+        const startAngle = this.calculateAngle(startTouches[0], startTouches[1]);
+        const currentAngle = this.calculateAngle(currentTouches[0], currentTouches[1]);
+        const rotation = currentAngle - startAngle;
+        
+        if (Math.abs(rotation) >= this.config.rotate.minAngle) {
+            this.emitGesture({
+                type: 'rotate',
+                rotation: rotation,
+                touches: currentTouches
+            });
+        }
+    }
+    
+    /**
+     * ホールドタイマーを開始
+     */
+    private startHoldTimer(point: GesturePoint): void {
+        this.clearHoldTimer();
+        
+        this.holdTimer = window.setTimeout(() => {
+            if (this.gestureInProgress && this.currentTouches.size === 1) {
+                this.emitGesture({
+                    type: 'hold',
+                    startPoint: point,
+                    duration: this.config.hold.minDuration
+                });
+            }
+        }, this.config.hold.minDuration);
+    }
+    
+    /**
+     * ホールドタイマーをクリア
+     */
+    private clearHoldTimer(): void {
+        if (this.holdTimer !== null) {
+            clearTimeout(this.holdTimer);
+            this.holdTimer = null;
+        }
+    }
+    
+    /**
+     * ダブルタップをチェック
+     */
+    private checkDoubleTap(point: GesturePoint, timestamp: number): boolean {
+        if (!this.lastTapPoint || !this.lastTapTime) return false;
+        
+        const timeDelta = timestamp - this.lastTapTime;
+        const distance = this.calculateDistance(this.lastTapPoint, point);
+        
+        return timeDelta <= this.config.tap.doubleTapDelay && 
+               distance <= this.config.tap.maxDistance;
+    }
+    
+    /**
+     * 2点間の距離を計算
+     */
+    private calculateDistance(p1: GesturePoint, p2: GesturePoint): number {
+        const dx = p2.x - p1.x;
+        const dy = p2.y - p1.y;
         return Math.sqrt(dx * dx + dy * dy);
     }
     
-    private calculateCenter(point1: any, point2: any): Position {
-        return {
-            x: ((point1.clientX || point1.x) + (point2.clientX || point2.x)) / 2,
-            y: ((point1.clientY || point1.y) + (point2.clientY || point2.y)) / 2
-        };
-    }
-    
-    private calculateMovement(): MovementData {
-        const dx = this.gestureState.currentPosition.x - this.gestureState.startPosition.x;
-        const dy = this.gestureState.currentPosition.y - this.gestureState.startPosition.y;
-        const distance = Math.sqrt(dx * dx + dy * dy);
-        const angle = Math.atan2(dy, dx) * (180 / Math.PI);
-        const duration = Date.now() - this.gestureState.startTime;
-        const velocity = duration > 0 ? distance / duration : 0;
-        
-        return { dx, dy, distance, angle, velocity };
-    }
-    
-    private calculateVelocity(): void {
-        const touch = this.gestureState.touches[0];
-        if (touch && touch.path.length > 1) {
-            const last = touch.path[touch.path.length - 1];
-            const prev = touch.path[touch.path.length - 2];
-            const dt = last.time - prev.time;
-            
-            if (dt > 0) {
-                this.gestureState.velocity = {
-                    x: (last.x - prev.x) / dt,
-                    y: (last.y - prev.y) / dt
-                };
-            }
-        }
-    }
-    
-    private calculateAngleBetweenTouches(touch1: Touch, touch2: Touch): number {
-        const dx = touch2.clientX - touch1.clientX;
-        const dy = touch2.clientY - touch1.clientY;
-        return Math.atan2(dy, dx);
-    }
-    
-    private normalizeAngleDifference(angle: number): number {
-        while (angle > Math.PI) angle -= 2 * Math.PI;
-        while (angle < -Math.PI) angle += 2 * Math.PI;
-        return angle;
-    }
-    
-    private calculatePathCenter(path: PathPoint[]): Position {
-        const sumX = path.reduce((sum, point) => sum + point.x, 0);
-        const sumY = path.reduce((sum, point) => sum + point.y, 0);
-        return {
-            x: sumX / path.length,
-            y: sumY / path.length
-        };
-    }
-    
-    private detectMultiTap(): number {
-        // 直近のタップ履歴をチェック
-        const now = Date.now();
-        const recentTaps = this.gestureHistory.filter(g =>
-            g.type === 'tap' &&
-            now - g.timestamp < this.gestureConfig.tap.doubleTapInterval);
-        return recentTaps.length + 1;
-    }
-    
-    private calculatePatternSimilarity(_pattern: GesturePattern): number {
-        // パターンマッチングアルゴリズム実装
-        // 現在のジェスチャーパスと学習済みパターンの類似度を計算
-        return 0.5; // プレースホルダー
+    /**
+     * 2点間の角度を計算
+     */
+    private calculateAngle(p1: GesturePoint, p2: GesturePoint): number {
+        return Math.atan2(p2.y - p1.y, p2.x - p1.x) * 180 / Math.PI;
     }
     
     /**
-     * イベント送信
+     * ジェスチャーイベントを発行
      */
-    private dispatchGestureEvent(type: "single" | "batch", gesture: GestureData): void {
-        const event = new CustomEvent(`gesture:${type}`, { detail: gesture });
-        this.gameEngine.canvas.dispatchEvent(event);
-        console.log(`[AdvancedGestureRecognitionSystem] ジェスチャー認識: ${type}`, gesture);
-    }
-    
-    /**
-     * ジェスチャー履歴管理
-     */
-    private addToGestureHistory(): void {
-        const gestureRecord: GestureHistory = {
-            type: this.gestureState.type,
-            timestamp: Date.now(),
-            duration: Date.now() - this.gestureState.startTime,
-            touches: this.gestureState.touches.length,
-            startPosition: this.gestureState.startPosition,
-            endPosition: this.gestureState.currentPosition
-        };
-        this.gestureHistory.push(gestureRecord);
-        
-        // 履歴サイズ制限
-        if (this.gestureHistory.length > this.maxHistoryLength) {
+    private emitGesture(event: GestureEvent): void {
+        this.gestureHistory.push(event);
+        if (this.gestureHistory.length > this.maxHistorySize) {
             this.gestureHistory.shift();
         }
-    }
-    
-    /**
-     * 学習データ更新
-     */
-    private updateLearningData(): void {
-        if (this.gestureConfig.advanced.machinesLearning) {
-            // 機械学習データ更新（今後の機能）
-        }
-    }
-    
-    /**
-     * ジェスチャー設定読み込み
-     */
-    private loadGestureSettings(): void {
-        try {
-            const savedSettings = localStorage.getItem('bubblepop_gesture_settings');
-            if (savedSettings) {
-                const settings = JSON.parse(savedSettings);
-                this.gestureConfig = { ...this.gestureConfig, ...settings };
-            }
-        } catch (error) {
-            console.warn('[AdvancedGestureRecognitionSystem] ジェスチャー設定読み込みエラー:', error);
-        }
-    }
-    
-    /**
-     * ジェスチャー設定保存
-     */
-    private saveGestureSettings(): void {
-        try {
-            localStorage.setItem('bubblepop_gesture_settings', JSON.stringify(this.gestureConfig));
-        } catch (error) {
-            this.errorHandler.handleError(error, 'AdvancedGestureRecognitionSystem.saveGestureSettings');
-        }
-    }
-    
-    /**
-     * ジェスチャー分析初期化
-     */
-    private initializeGestureAnalysis(): void {
-        // 分析エンジン初期化
-        this.gestureAnalyzer = {
-            pathAnalyzer: new PathAnalyzer(),
-            patternMatcher: new PatternMatcher(),
-            learningEngine: new LearningEngine()
-        };
-    }
-
-    // iOS ジェスチャーイベント処理用のスタブメソッド
-    private startPinchGesture(_e: Event): void {
-        // iOS ピンチ開始処理
-    }
-
-    private updatePinchGesture(_e: Event): void {
-        // iOS ピンチ更新処理
-    }
-
-    private endPinchGesture(_e: Event): void {
-        // iOS ピンチ終了処理
-    }
-
-    // ジェスチャー認識終了処理用のスタブメソッド
-    private endGestureRecognition(_touches: Touch[]): void {
-        // ジェスチャー認識終了処理
-    }
-    
-    /**
-     * カスタムジェスチャー追加
-     */
-    public addCustomGesture(name: string, pattern: GesturePattern): void {
-        this.gesturePatterns.custom.set(name, pattern);
-        this.saveGestureSettings();
-    }
-    
-    /**
-     * カスタムジェスチャー削除
-     */
-    public removeCustomGesture(name: string): void {
-        this.gesturePatterns.custom.delete(name);
-        this.saveGestureSettings();
-    }
-    
-    /**
-     * ジェスチャー統計取得
-     */
-    public getGestureStatistics(): GestureStatistics {
-        const typeCount: Record<string, number> = {};
-        this.gestureHistory.forEach(gesture => {
-            if (gesture.type) {
-                typeCount[gesture.type] = (typeCount[gesture.type] || 0) + 1;
-            }
-        });
         
-        return {
-            totalGestures: this.gestureHistory.length,
-            typeDistribution: typeCount,
-            averageDuration: this.gestureHistory.reduce((sum, g) => sum + g.duration, 0) / this.gestureHistory.length || 0,
-            customGestureCount: this.gesturePatterns.custom.size
-        };
+        this.eventEmitter.emit('gesture', event);
+        this.eventEmitter.emit(`gesture:${event.type}`, event);
+        
+        console.log(`Gesture detected: ${event.type}`, event);
+    }
+    
+    /**
+     * カスタムジェスチャーを登録
+     */
+    public registerCustomGesture(name: string, detector: (points: GesturePoint[]) => boolean): void {
+        this.customGestures.set(name, detector);
+        console.log(`Custom gesture registered: ${name}`);
+    }
+    
+    /**
+     * カスタムジェスチャーを削除
+     */
+    public unregisterCustomGesture(name: string): void {
+        this.customGestures.delete(name);
+        console.log(`Custom gesture unregistered: ${name}`);
+    }
+    
+    /**
+     * ジェスチャーイベントをリッスン
+     */
+    public on(event: string, callback: (event: GestureEvent) => void): void {
+        this.eventEmitter.on(event, callback);
+    }
+    
+    /**
+     * ジェスチャーイベントのリッスンを解除
+     */
+    public off(event: string, callback: (event: GestureEvent) => void): void {
+        this.eventEmitter.off(event, callback);
+    }
+    
+    /**
+     * 設定を更新
+     */
+    public updateConfig(config: Partial<GestureConfig>): void {
+        this.config = { ...this.config, ...config };
+        console.log('Gesture config updated', this.config);
+    }
+    
+    /**
+     * ジェスチャー履歴を取得
+     */
+    public getGestureHistory(): GestureEvent[] {
+        return [...this.gestureHistory];
+    }
+    
+    /**
+     * ジェスチャー履歴をクリア
+     */
+    public clearHistory(): void {
+        this.gestureHistory = [];
+    }
+    
+    /**
+     * 状態をリセット
+     */
+    private reset(): void {
+        this.gestureInProgress = false;
+        this.startPoint = null;
+        this.startTouches = [];
+        this.currentTouches.clear();
+        this.clearHoldTimer();
     }
     
     /**
      * クリーンアップ
      */
     public cleanup(): void {
-        try {
-            this.resetGestureState();
-            this.saveGestureSettings();
-            console.log('[AdvancedGestureRecognitionSystem] クリーンアップ完了');
-        } catch (error) {
-            this.errorHandler.handleError(error, 'AdvancedGestureRecognitionSystem.cleanup');
-        }
+        this.disable();
+        
+        // イベントリスナーを削除
+        this.canvas.removeEventListener('touchstart', this.handleTouchStart.bind(this));
+        this.canvas.removeEventListener('touchmove', this.handleTouchMove.bind(this));
+        this.canvas.removeEventListener('touchend', this.handleTouchEnd.bind(this));
+        this.canvas.removeEventListener('touchcancel', this.handleTouchCancel.bind(this));
+        this.canvas.removeEventListener('mousedown', this.handleMouseDown.bind(this));
+        this.canvas.removeEventListener('mousemove', this.handleMouseMove.bind(this));
+        this.canvas.removeEventListener('mouseup', this.handleMouseUp.bind(this));
+        this.canvas.removeEventListener('mouseleave', this.handleMouseLeave.bind(this));
+        
+        this.eventEmitter.removeAllListeners();
+        console.log('Gesture recognition system cleaned up');
     }
 }
-
-/**
- * パス分析クラス（プレースホルダー）
- */
-class PathAnalyzer {
-    analyze(_path: PathPoint[]): Record<string, unknown> {
-        // パス分析ロジック
-        return {};
-    }
-}
-
-/**
- * パターンマッチングクラス（プレースホルダー）
- */
-class PatternMatcher {
-    match(_pattern1: unknown, _pattern2: unknown): number {
-        // パターンマッチングロジック
-        return 0.5;
-    }
-}
-
-/**
- * 学習エンジンクラス（プレースホルダー）
- */
-class LearningEngine {
-    learn(_data: unknown): void {
-        // 機械学習ロジック
-    }
-}
-
-// シングルトンインスタンス
-let advancedGestureRecognitionSystemInstance: AdvancedGestureRecognitionSystem | null = null;
-
-export function getAdvancedGestureRecognitionSystem(gameEngine: GameEngine | null = null): AdvancedGestureRecognitionSystem | null {
-    if (!advancedGestureRecognitionSystemInstance && gameEngine) {
-        advancedGestureRecognitionSystemInstance = new AdvancedGestureRecognitionSystem(gameEngine);
-    }
-    return advancedGestureRecognitionSystemInstance;
-}
-
-// Already exported as default export

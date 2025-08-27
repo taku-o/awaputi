@@ -456,8 +456,7 @@ export class AchievementProgressEngine {
                         id: milestone.id,
                         name: milestone.name,
                         percentage: milestone.percentage,
-                        reward: milestone.reward || null,
-                        achieved: true
+                        reward: milestone.reward || null
                     });
                     milestone.achieved = true;
                 }
