@@ -125,12 +125,12 @@
 - [x] src/core/ARIAManager.js - TypeScript版は正常（coreディレクトリ確認済み）
 - [x] src/core/AccessibilityManager.js - TypeScript版は正常（coreディレクトリ確認済み）
 - [x] src/core/AchievementEventIntegrator.js - ✅ **差異なし** TypeScript版とJavaScript版は処理ロジック同一
-- [x] src/core/AchievementManager.js - ⚠️ **差異あり、要対応** TypeScript版で一部メソッドの実装が異なる
+- [x] src/core/AchievementManager.js - ✅ **完全作り直し済み** JavaScript版から完全に再実装
 - [x] src/core/AchievementProgressEngine.js - ✅ **軽微な差異** 型安全性向上のみ、処理ロジックは同一
 - [x] src/core/AchievementStatsUI.js - ✅ **差異なし** TypeScript版とJavaScript版は処理ロジック同一
 - [x] src/core/AdvancedGestureRecognitionSystem.js - ✅ **完全作り直し済み** JavaScript版から完全に再実装
-- [] src/core/AdvancedResponsiveLayoutManager.js
-- [] src/core/AlternativeInputManager.js
+- [x] src/core/AdvancedResponsiveLayoutManager.js - ✅ **軽微な差異のみ** ErrorHandler使用方法とdispatchLayoutEvent型定義を修正
+- [x] src/core/AlternativeInputManager.js - ✅ **プロパティ追加と修正** 欠落プロパティと初期化処理を修正
 - [] src/core/AsyncOperationQueue.js
 - [] src/core/BackupManager.js
 - [] src/core/BalanceCalculator.js

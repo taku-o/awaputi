@@ -23,6 +23,17 @@ interface InputConfig {
     };
     keyboardShortcuts?: boolean;
     singleKeyMode?: boolean;
+    scanning?: boolean;
+    dwellTime?: number;
+    activationMethod?: string;
+    supportedMethods?: {
+        switch: boolean;
+        eyeTracking: boolean;
+        voiceControl: boolean;
+        headTracking: boolean;
+        singleKey: boolean;
+        scanning: boolean;
+    };
     switchInput: {
         enabled: boolean;
         scanSpeed: number;
@@ -143,12 +154,16 @@ interface Statistics {
 
 
 export class AlternativeInputManager {
+    private motorAccessibilityManager: MotorAccessibilityManager;
+    private accessibilityManager: any;
+    private gameEngine: any;
     private switchController: SwitchInputController;
     private eyeTrackingController: EyeTrackingController;
     private voiceController: VoiceInputController;
     private headTrackingController: HeadTrackingController;
     private config: InputConfig;
     private state: InputState;
+    private activeMethod: string | null;
     private inputState: {
         switch: SwitchState;
         eyeTracking: EyeTrackingState;
@@ -158,16 +173,54 @@ export class AlternativeInputManager {
         scanning: ScanningState;
     };
     private interactiveElements: Map<string, Element>;
+    private focusableElements: Element[];
+    private scanningGroups: Element[][];
+    private currentFocusIndex: number;
     private feedbackElements: Map<string, Element>;
     private scanHighlight: Element | null;
     private gazePointer: Element | null;
-    private externalDevices: Map<string, number>;
+    private externalDevices: Map<string, unknown>;
+    private deviceAPIs: {
+        eyeTracker: any | null;
+        headTracker: any | null;
+        switchAdapter: any | null;
+    };
     private statistics: Statistics;
     private stats: Statistics;
+    private userPreferences: {
+        preferredMethod: string;
+        switchSettings: {
+            scanSpeed: number;
+            activationSound: boolean;
+            visualFeedback: boolean;
+        };
+        eyeTrackingSettings: {
+            dwellTime: number;
+            showGazeCursor: boolean;
+            calibrationReminder: boolean;
+        };
+        voiceSettings: {
+            customCommands: Map<string, string>;
+            voiceEngine: string;
+            feedbackVoice: boolean;
+        };
+        headTrackingSettings: {
+            invertX: boolean;
+            invertY: boolean;
+            gestureEnabled: boolean;
+        };
+        generalSettings: {
+            audioFeedback: boolean;
+            hapticFeedback: boolean;
+            confirmActions: boolean;
+        };
+    };
     private gamepadCheckInterval: ReturnType<typeof setInterval> | null = null;
 
-    constructor(_motorAccessibilityManager: MotorAccessibilityManager) {
-        // motorAccessibilityManager not used in current implementation
+    constructor(motorAccessibilityManager: MotorAccessibilityManager) {
+        this.motorAccessibilityManager = motorAccessibilityManager;
+        this.accessibilityManager = motorAccessibilityManager.accessibilityManager;
+        this.gameEngine = this.accessibilityManager?.gameEngine;
         
         // サブコンポーネントを初期化
         this.switchController = new SwitchInputController();
@@ -175,23 +228,27 @@ export class AlternativeInputManager {
         this.voiceController = new VoiceInputController();
         this.headTrackingController = new HeadTrackingController();
 
-        // 設定の初期化
+        // 統合設定
         this.config = {
-            enabled: true,
-            activationMethod: 'dwell',
-            supportedMethods: {
-                switch: true,
-                eyeTracking: true,
-                voiceControl: true,
-                headTracking: true,
-                singleKey: true,
-                scanning: true
-            },
+            enabled: false,
             inputMethods: {
                 switchInput: false,
                 eyeTracking: false,
                 voiceControl: false,
                 headTracking: false
+            },
+            keyboardShortcuts: true,
+            singleKeyMode: false,
+            scanning: false,
+            dwellTime: 1000,
+            activationMethod: 'dwell',
+            supportedMethods: {
+                switch: true,      // スイッチ入力
+                eyeTracking: true, // 視線追跡
+                voiceControl: true,// 音声制御
+                headTracking: true,// 頭部追跡
+                singleKey: true,   // 単一キー操作
+                scanning: true     // スキャニング入力
             },
             switchInput: {
                 enabled: false,
@@ -315,37 +372,55 @@ export class AlternativeInputManager {
         
         // 要素管理（サブコントローラーに委譲予定）
         this.interactiveElements = new Map();
+        this.focusableElements = [];
+        this.scanningGroups = [];
+        this.currentFocusIndex = -1;
         
         // フィードバック要素
         this.feedbackElements = new Map();
         this.scanHighlight = null;
         this.gazePointer = null;
-
+        
         // 外部デバイス連携
-        this.externalDevices = new Map([
-            ['switchInput', 0],
-            ['eyeTracking', 0],
-            ['voiceControl', 0],
-            ['headTracking', 0],
-            ['keyboard', 0]
-        ]);
+        this.externalDevices = new Map();
+        this.deviceAPIs = { eyeTracker: null, headTracker: null, switchAdapter: null };
 
+        // 統計
         this.statistics = {
+            totalInputs: 0,
+            inputMethodUsage: new Map([
+                ['switchInput', 0],
+                ['eyeTracking', 0],
+                ['voiceControl', 0],
+                ['headTracking', 0],
+                ['keyboard', 0]
+            ]),
+            sessionStart: Date.now(),
+            averageResponseTime: 0
+        } as any;
+        
+        this.stats = {
             inputsProcessed: 0,
             inputsByMethod: new Map(),
             successfulActivations: 0,
             missedActivations: 0,
             averageActivationTime: 0,
             calibrationAttempts: 0,
-            sessionStart: Date.now(),
-            preferredMethod: 'switch',
-            totalInputs: 0,
-            inputMethodUsage: new Map()
+            sessionStart: Date.now()
         } as any;
         
-        this.stats = { ...this.statistics };
-
-        // User settings initialization complete
+        // ユーザー設定（簡略化）
+        this.userPreferences = {
+            preferredMethod: 'switch',
+            switchSettings: { scanSpeed: 2000, activationSound: true, visualFeedback: true },
+            eyeTrackingSettings: { dwellTime: 800, showGazeCursor: true, calibrationReminder: true },
+            voiceSettings: { customCommands: new Map(), voiceEngine: 'default', feedbackVoice: true },
+            headTrackingSettings: { invertX: false, invertY: false, gestureEnabled: true },
+            generalSettings: { audioFeedback: true, hapticFeedback: true, confirmActions: true }
+        };
+        
+        // 入力状態管理（従来互換性のため保持）
+        this.activeMethod = null;
         
         console.log('[AlternativeInputManager] Initialized with sub-controllers');
         this.initialize();
@@ -376,6 +451,8 @@ export class AlternativeInputManager {
             
             this.setupKeyboardShortcuts();
             this.setupAccessibilityFeatures();
+            
+            this.state.initialized = true;
             console.log('[AlternativeInputManager] All input methods initialized');
         } catch (error) {
             console.error('[AlternativeInputManager] Initialization failed:', error);
@@ -812,7 +889,7 @@ export class AlternativeInputManager {
         } else if (element.classList.contains('ui-element')) {
             return `UI要素: ${element.textContent || 'インタラクティブ要素'}`;
         }
-        return null as any;
+        return null;
     }
     
     /**

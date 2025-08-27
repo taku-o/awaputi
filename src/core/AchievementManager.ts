@@ -1,481 +1,634 @@
-import type { Achievement,
-    AchievementManager as IAchievementManager,
-    AchievementConfig,
-    AchievementProgressResult,
-    AchievementStatistics } from '../types/game';
-import { ProgressTracker } from './achievement/ProgressTracker.js';
-import { PerformanceOptimizer } from './achievement/PerformanceOptimizer.js';
+import { EventEmitter } from '../events/EventEmitter';
+import { StorageManager } from '../storage/StorageManager';
+import { ErrorHandler } from '../errors/ErrorHandler';
+import { ConfigurationManager } from '../config/ConfigurationManager';
+import { AchievementProgressTracker } from './AchievementProgressTracker';
+import { AchievementUnlockEffect } from '../effects/AchievementUnlockEffect';
+import { AchievementNotification } from '../ui/AchievementNotification';
+import { AchievementStatsUI } from './AchievementStatsUI';
+import { AchievementEventIntegrator } from './AchievementEventIntegrator';
+
+interface AchievementReward {
+    ap?: number;
+    items?: Array<{ id: string; quantity: number }>;
+    badges?: string[];
+}
+
+interface AchievementProgress {
+    current?: number;
+    target?: number;
+    percentage?: number;
+}
+
+interface Achievement {
+    id: string;
+    name: string;
+    description: string;
+    icon: string;
+    category: string;
+    tier?: number;
+    reward?: AchievementReward;
+    unlocked: boolean;
+    hidden?: boolean;
+    prerequisiteIds?: string[];
+    unlockedDate?: string;
+    progress?: AchievementProgress;
+    condition?: {
+        type: string;
+        target?: number;
+        value?: any;
+    };
+}
+
+interface AchievementCategory {
+    id: string;
+    name: string;
+    icon: string;
+    description: string;
+}
+
+interface UserAchievementData {
+    unlockedAchievements: Set<string>;
+    achievementProgress: Map<string, AchievementProgress>;
+    totalAP: number;
+    lastUnlockTime: number;
+}
 
 /**
- * AchievementManager - 実績管理システム
- * 
- * 分割されたコンポーネントを統合し、実績システムの中央制御を行います
+ * 実績管理システム
  */
-export class AchievementManager implements IAchievementManager {
-    public gameEngine: any;
-    public definitions: any;
-    public notificationSystem: any;
-    public progressTracker: any;
-    public performanceOptimizer: any;
-    public config: AchievementConfig;
-
-    constructor(gameEngine: any) {
-        this.gameEngine = gameEngine;
+export class AchievementManager {
+    private static instance: AchievementManager | null = null;
+    private eventEmitter: EventEmitter;
+    private storageManager: StorageManager;
+    private errorHandler: ErrorHandler;
+    private configManager: ConfigurationManager;
+    private progressTracker: AchievementProgressTracker;
+    private unlockEffect: AchievementUnlockEffect;
+    private notification: AchievementNotification;
+    private statsUI: AchievementStatsUI;
+    private eventIntegrator: AchievementEventIntegrator;
+    
+    private achievements: Map<string, Achievement>;
+    private categories: Map<string, AchievementCategory>;
+    private userData: UserAchievementData;
+    private initialized: boolean;
+    
+    constructor() {
+        this.eventEmitter = new EventEmitter();
+        this.storageManager = new StorageManager();
+        this.errorHandler = new ErrorHandler();
+        this.configManager = ConfigurationManager.getInstance();
         
-        // 統合設定
-        this.config = {
-            notificationDuration: 3000,
-            maxNotifications: 3,
-            enableSounds: true,
-            enableAnimations: true,
-            persistProgress: true
+        this.achievements = new Map();
+        this.categories = new Map();
+        this.userData = {
+            unlockedAchievements: new Set(),
+            achievementProgress: new Map(),
+            totalAP: 0,
+            lastUnlockTime: 0
         };
         
-        this.initializeAchievementManager();
-    }
-
-    /**
-     * 実績管理システムを初期化
-     */
-    initializeAchievementManager(): void {
-        // 動的インポートでコンポーネントを初期化（暫定的にundefinedで初期化）
-        this.definitions = undefined;
-        this.notificationSystem = undefined;
-        this.progressTracker = undefined;
-        this.performanceOptimizer = undefined;
-
-        // 非同期でコンポーネントを初期化
-        this.initializeComponentsAsync();
-        console.log('[AchievementManager] Achievement management system initialized');
+        this.initialized = false;
+        
+        // 関連システムの初期化は後で行う
+        this.progressTracker = null!;
+        this.unlockEffect = null!;
+        this.notification = null!;
+        this.statsUI = null!;
+        this.eventIntegrator = null!;
     }
     
     /**
-     * コンポーネントを非同期で初期化
+     * シングルトンインスタンスを取得
      */
-    private async initializeComponentsAsync(): Promise<void> {
+    public static getInstance(): AchievementManager {
+        if (!AchievementManager.instance) {
+            AchievementManager.instance = new AchievementManager();
+        }
+        return AchievementManager.instance;
+    }
+    
+    /**
+     * 実績システムを初期化
+     */
+    public async initialize(): Promise<void> {
         try {
-            // const { AchievementDefinitions } = await import('./achievements/AchievementDefinitions.js');
-            // const { AchievementNotificationSystem } = await import('./achievements/AchievementNotificationSystem.js');
-            // const { AchievementProgressTracker } = await import('./achievements/AchievementProgressTracker.js');
-            // const { AchievementPerformanceOptimizer } = await import('./achievements/AchievementPerformanceOptimizer.js');
+            console.log('Initializing achievement system...');
             
-            // this.definitions = new AchievementDefinitions();
-            // this.notificationSystem = new AchievementNotificationSystem();
-            // this.progressTracker = new AchievementProgressTracker();
-            // this.performanceOptimizer = new AchievementPerformanceOptimizer();
+            // 実績データを読み込み
+            await this.loadAchievementData();
             
-            // 実際のクラスを使用
-            this.definitions = this.createMockDefinitions(); // AchievementDefinitionsは未実装のため、モックを継続使用
-            this.notificationSystem = this.createMockNotificationSystem(); // AchievementNotificationSystemは未実装のため、モックを継続使用
-            this.progressTracker = new ProgressTracker(); // 実装済みのProgressTrackerクラスを使用
-            this.performanceOptimizer = new PerformanceOptimizer();
-
-            if (this.performanceOptimizer && typeof this.performanceOptimizer.initialize === 'function') {
-                this.performanceOptimizer.initialize();
-            }
+            // ユーザーデータを読み込み
+            await this.loadUserData();
             
-            // 進捗追跡イベントリスナーを設定
+            // 関連システムを初期化
+            this.initializeSubsystems();
+            
+            // イベントリスナーを設定
             this.setupEventListeners();
-            // 通知システム設定
-            this.configureNotificationSystem();
-            console.log('[AchievementManager] Components initialized successfully');
+            
+            this.initialized = true;
+            console.log('Achievement system initialized');
         } catch (error) {
-            console.error('[AchievementManager] Failed to initialize components:', error);
+            this.errorHandler.logError('Failed to initialize achievement system', error);
+            throw error;
         }
     }
     
     /**
-     * モックDefinitionsオブジェクトを作成
+     * 関連サブシステムを初期化
      */
-    private createMockDefinitions(): any {
-        return {
-            getAllAchievements: () => ({}),
-            getAchievementsByCategory: (category: string) => {
-                console.log('Mock getAchievementsByCategory called with:', category);
-                return [];
-            },
-            getAchievement: (id: string) => {
-                console.log('Mock getAchievement called with:', id);
-                return null as any;
-            },
-            getStatistics: () => ({ total: 0, byCategory: {} })
-        };
+    private initializeSubsystems(): void {
+        this.progressTracker = new AchievementProgressTracker(this);
+        this.unlockEffect = new AchievementUnlockEffect();
+        this.notification = new AchievementNotification();
+        this.statsUI = new AchievementStatsUI(this);
+        this.eventIntegrator = new AchievementEventIntegrator(this);
+        
+        this.progressTracker.initialize();
+        this.unlockEffect.initialize();
+        this.notification.initialize();
+        this.eventIntegrator.initialize();
     }
     
     /**
-     * モックNotificationSystemオブジェクトを作成
+     * 実績データを読み込み
      */
-    private createMockNotificationSystem(): any {
-        return {
-            updateConfig: (config: any) => {
-                console.log('Mock updateConfig called with:', config);
-            },
-            createAchievementNotification: (achievement: Achievement) => {
-                console.log('Mock createAchievementNotification called with:', achievement);
-            },
-            getNotificationHistory: (limit: number) => {
-                console.log('Mock getNotificationHistory called with limit:', limit);
-                return [];
-            },
-            clearAllNotifications: () => {},
-            loadHistory: () => {},
-            destroy: () => {}
-        };
+    private async loadAchievementData(): Promise<void> {
+        try {
+            const response = await fetch('data/achievements.json');
+            const data = await response.json();
+            
+            // カテゴリを読み込み
+            if (data.categories) {
+                Object.entries(data.categories).forEach(([id, category]: [string, any]) => {
+                    this.categories.set(id, {
+                        id,
+                        name: category.name,
+                        icon: category.icon,
+                        description: category.description
+                    });
+                });
+            }
+            
+            // 実績を読み込み
+            if (data.achievements) {
+                Object.entries(data.achievements).forEach(([id, achievement]: [string, any]) => {
+                    this.achievements.set(id, {
+                        ...achievement,
+                        id,
+                        unlocked: false
+                    });
+                });
+            }
+            
+            console.log(`Loaded ${this.achievements.size} achievements in ${this.categories.size} categories`);
+        } catch (error) {
+            console.error('Failed to load achievement data', error);
+            // フォールバックデータを使用
+            this.loadFallbackData();
+        }
     }
     
     /**
-     * @deprecated ProgressTrackerクラスが実装されたため、このメソッドは使用されません
-     * モックProgressTrackerオブジェクトを作成
+     * フォールバック実績データを読み込み
      */
-    // private createMockProgressTracker() {
-    //     console.warn('[AchievementManager] createMockProgressTracker is deprecated. Use ProgressTracker class instead.');
-    //     return new ProgressTracker();
-    // }
+    private loadFallbackData(): void {
+        // 基本カテゴリ
+        const defaultCategories = {
+            gameplay: { name: 'ゲームプレイ', icon: '🎮', description: 'ゲームプレイに関する実績' },
+            collection: { name: 'コレクション', icon: '📦', description: 'アイテム収集に関する実績' },
+            skill: { name: 'スキル', icon: '⭐', description: 'プレイスキルに関する実績' },
+            special: { name: '特別', icon: '🏆', description: '特別な条件を達成した実績' }
+        };
+        
+        Object.entries(defaultCategories).forEach(([id, category]) => {
+            this.categories.set(id, { id, ...category });
+        });
+        
+        // 基本実績
+        const defaultAchievements = [
+            {
+                id: 'first_game',
+                name: '初めての一歩',
+                description: '初めてゲームをプレイする',
+                icon: '🎯',
+                category: 'gameplay',
+                reward: { ap: 10 }
+            },
+            {
+                id: 'score_1000',
+                name: 'スコア1000',
+                description: 'スコア1000点を達成する',
+                icon: '💯',
+                category: 'skill',
+                reward: { ap: 20 },
+                condition: { type: 'score', target: 1000 }
+            }
+        ];
+        
+        defaultAchievements.forEach(achievement => {
+            this.achievements.set(achievement.id, {
+                ...achievement,
+                unlocked: false
+            });
+        });
+    }
     
     /**
-     * @deprecated PerformanceOptimizerクラスが実装されたため、このメソッドは使用されません
-     * モックPerformanceOptimizerオブジェクトを作成
+     * ユーザーデータを読み込み
      */
-    // private createMockPerformanceOptimizer() {
-    //     console.warn('[AchievementManager] createMockPerformanceOptimizer is deprecated. Use PerformanceOptimizer class instead.');
-    //     return new PerformanceOptimizer();
-    // }
+    private async loadUserData(): Promise<void> {
+        try {
+            const savedData = await this.storageManager.getItem('achievementData');
+            if (savedData) {
+                // 保存されたデータを復元
+                this.userData = {
+                    unlockedAchievements: new Set(savedData.unlockedAchievements || []),
+                    achievementProgress: new Map(savedData.achievementProgress || []),
+                    totalAP: savedData.totalAP || 0,
+                    lastUnlockTime: savedData.lastUnlockTime || 0
+                };
+                
+                // 実績のロック状態を更新
+                this.userData.unlockedAchievements.forEach(achievementId => {
+                    const achievement = this.achievements.get(achievementId);
+                    if (achievement) {
+                        achievement.unlocked = true;
+                    }
+                });
+            }
+        } catch (error) {
+            this.errorHandler.logError('Failed to load user achievement data', error);
+        }
+    }
+    
+    /**
+     * ユーザーデータを保存
+     */
+    private async saveUserData(): Promise<void> {
+        try {
+            const dataToSave = {
+                unlockedAchievements: Array.from(this.userData.unlockedAchievements),
+                achievementProgress: Array.from(this.userData.achievementProgress),
+                totalAP: this.userData.totalAP,
+                lastUnlockTime: this.userData.lastUnlockTime
+            };
+            
+            await this.storageManager.setItem('achievementData', dataToSave);
+        } catch (error) {
+            this.errorHandler.logError('Failed to save user achievement data', error);
+        }
+    }
     
     /**
      * イベントリスナーを設定
      */
-    setupEventListeners(): void {
-        if (!this.progressTracker) return;
-        
-        // 進捗追跡からの実績解除イベント
-        this.progressTracker.addEventListener('achievementUnlocked', (data: any) => {
-            this.handleAchievementUnlocked(data);
-        });
-        
-        // 進捗更新イベント
-        this.progressTracker.addEventListener('progressUpdated', (data: any) => {
-            this.handleProgressUpdated(data);
-        });
+    private setupEventListeners(): void {
+        // ゲームイベントを監視
+        this.eventEmitter.on('game:score_update', this.handleScoreUpdate.bind(this));
+        this.eventEmitter.on('game:level_complete', this.handleLevelComplete.bind(this));
+        this.eventEmitter.on('game:combo_achieved', this.handleComboAchieved.bind(this));
+        this.eventEmitter.on('game:item_collected', this.handleItemCollected.bind(this));
+        this.eventEmitter.on('game:special_condition', this.handleSpecialCondition.bind(this));
     }
     
     /**
-     * 通知システムを設定
+     * スコア更新を処理
      */
-    configureNotificationSystem(): void {
-        if (!this.notificationSystem || !this.config.enableSounds) return;
-        
-        this.notificationSystem.updateConfig({
-            position: 'top-right',
-            fadeIn: true,
-            slideIn: true,
-            sound: true
-        });
+    private handleScoreUpdate(data: { score: number }): void {
+        this.checkScoreAchievements(data.score);
     }
     
     /**
-     * 実績を初期化（後方互換性）
+     * レベル完了を処理
      */
-    initializeAchievements(): Record<string, Achievement> {
-        if (!this.definitions) return {};
-        return this.definitions.getAllAchievements();
+    private handleLevelComplete(data: { level: number; score: number; time: number }): void {
+        this.checkLevelAchievements(data);
     }
     
     /**
-     * 進捗を更新
+     * コンボ達成を処理
      */
-    updateProgress(eventType: string, data: any): void {
-        if (this.config.persistProgress && this.performanceOptimizer) {
-            // パフォーマンス最適化ありで処理
-            this.performanceOptimizer.processUpdate(eventType, data, (type: "single" | "batch", eventData: any) => {
-                return this.processUpdateEvent(type, eventData);
-            });
-        } else {
-            // 直接処理
-            this.processUpdateEvent(eventType, data);
-        }
+    private handleComboAchieved(data: { combo: number }): void {
+        this.checkComboAchievements(data.combo);
     }
     
     /**
-     * 更新イベントを処理
+     * アイテム収集を処理
      */
-    async processUpdateEvent(eventType: string, data: any): Promise<void> {
-        if (!this.progressTracker || !this.definitions || !this.performanceOptimizer) return;
-        
-        // 進捗追跡を更新
-        this.progressTracker.updateProgress(eventType, data);
-
-        // 全実績をチェック
-        const achievements = this.definitions.getAllAchievements();
-        for (const achievement of Object.values(achievements)) {
-            // 既に解除済みの実績はスキップ
-            if (this.progressTracker.isAchievementUnlocked((achievement as Achievement).id)) {
-                continue;
-            }
+    private handleItemCollected(data: { itemId: string; total: number }): void {
+        this.checkCollectionAchievements(data);
+    }
+    
+    /**
+     * 特別な条件を処理
+     */
+    private handleSpecialCondition(data: { condition: string; value: any }): void {
+        this.checkSpecialAchievements(data);
+    }
+    
+    /**
+     * スコア関連の実績をチェック
+     */
+    private checkScoreAchievements(score: number): void {
+        this.achievements.forEach(achievement => {
+            if (achievement.unlocked) return;
             
-            // キャッシュチェック
-            const cacheKey = `achievement_${(achievement as Achievement).id}_${eventType}`;
-            let progressResult = this.performanceOptimizer.getFromCache(cacheKey);
-            
-            if (!progressResult) {
-                // 実績条件を評価
-                progressResult = this.progressTracker.evaluateAchievementCondition(achievement);
-                // キャッシュに保存
-                this.performanceOptimizer.setCache(cacheKey, progressResult);
+            if (achievement.condition?.type === 'score' && 
+                achievement.condition.target && 
+                score >= achievement.condition.target) {
+                this.unlockAchievement(achievement.id);
             }
+        });
+    }
+    
+    /**
+     * レベル関連の実績をチェック
+     */
+    private checkLevelAchievements(data: { level: number; score: number; time: number }): void {
+        this.achievements.forEach(achievement => {
+            if (achievement.unlocked) return;
             
-            // 実績解除チェック
-            if (progressResult && progressResult.isComplete) {
-                this.unlockAchievement(achievement as Achievement);
+            if (achievement.condition?.type === 'level') {
+                // レベルクリア条件をチェック
+                const condition = achievement.condition;
+                if (condition.value?.level && data.level >= condition.value.level) {
+                    this.unlockAchievement(achievement.id);
+                }
             }
-        }
+        });
+    }
+    
+    /**
+     * コンボ関連の実績をチェック
+     */
+    private checkComboAchievements(combo: number): void {
+        this.achievements.forEach(achievement => {
+            if (achievement.unlocked) return;
+            
+            if (achievement.condition?.type === 'combo' && 
+                achievement.condition.target && 
+                combo >= achievement.condition.target) {
+                this.unlockAchievement(achievement.id);
+            }
+        });
+    }
+    
+    /**
+     * コレクション関連の実績をチェック
+     */
+    private checkCollectionAchievements(data: { itemId: string; total: number }): void {
+        this.achievements.forEach(achievement => {
+            if (achievement.unlocked) return;
+            
+            if (achievement.condition?.type === 'collection') {
+                const condition = achievement.condition;
+                if (condition.value?.itemId === data.itemId && 
+                    condition.target && 
+                    data.total >= condition.target) {
+                    this.unlockAchievement(achievement.id);
+                }
+            }
+        });
+    }
+    
+    /**
+     * 特別な実績をチェック
+     */
+    private checkSpecialAchievements(data: { condition: string; value: any }): void {
+        this.achievements.forEach(achievement => {
+            if (achievement.unlocked) return;
+            
+            if (achievement.condition?.type === 'special' && 
+                achievement.condition.value?.condition === data.condition) {
+                this.unlockAchievement(achievement.id);
+            }
+        });
     }
     
     /**
      * 実績を解除
      */
-    unlockAchievement(achievement: Achievement): void {
-        if (!this.progressTracker || !this.notificationSystem) return;
+    public unlockAchievement(achievementId: string): void {
+        const achievement = this.achievements.get(achievementId);
+        if (!achievement || achievement.unlocked) return;
         
-        // 進捗追跡に解除を記録
-        this.progressTracker.unlockAchievement(achievement.id, achievement);
-
+        // 前提条件をチェック
+        if (achievement.prerequisiteIds) {
+            const allPrerequisitesMet = achievement.prerequisiteIds.every(id => 
+                this.userData.unlockedAchievements.has(id)
+            );
+            if (!allPrerequisitesMet) return;
+        }
+        
+        // 実績を解除
+        achievement.unlocked = true;
+        achievement.unlockedDate = new Date().toISOString();
+        this.userData.unlockedAchievements.add(achievementId);
+        this.userData.lastUnlockTime = Date.now();
+        
+        // 報酬を付与
+        if (achievement.reward) {
+            this.grantReward(achievement.reward);
+        }
+        
+        // エフェクトを再生
+        if (this.unlockEffect) {
+            this.unlockEffect.play(achievement);
+        }
+        
         // 通知を表示
-        if (this.config.enableSounds) {
-            this.notificationSystem.createAchievementNotification(achievement);
+        if (this.notification) {
+            this.notification.show(achievement);
         }
         
-        // ゲームエンジンに通知（AP獲得など）
-        if (this.gameEngine && typeof this.gameEngine.handleAchievementUnlocked === 'function') {
-            this.gameEngine.handleAchievementUnlocked(achievement);
-        }
+        // イベントを発行
+        this.eventEmitter.emit('achievement:unlocked', { achievement });
         
-        console.log(`[AchievementManager] Achievement unlocked: ${achievement.name}`);
+        // データを保存
+        this.saveUserData();
+        
+        console.log(`Achievement unlocked: ${achievement.name}`);
     }
     
     /**
-     * 実績解除イベントを処理
+     * 報酬を付与
      */
-    handleAchievementUnlocked(data: any): void {
-        // 追加の処理が必要な場合はここに記述
-        if (false) { // debugMode removed from config
-            console.log('[AchievementManager] Achievement unlocked event:', data);
+    private grantReward(reward: AchievementReward): void {
+        if (reward.ap) {
+            this.userData.totalAP += reward.ap;
+            this.eventEmitter.emit('achievement:ap_earned', { amount: reward.ap });
+        }
+        
+        if (reward.items) {
+            reward.items.forEach(item => {
+                this.eventEmitter.emit('achievement:item_earned', { 
+                    itemId: item.id, 
+                    quantity: item.quantity 
+                });
+            });
+        }
+        
+        if (reward.badges) {
+            reward.badges.forEach(badge => {
+                this.eventEmitter.emit('achievement:badge_earned', { badge });
+            });
         }
     }
     
     /**
-     * 進捗更新イベントを処理
+     * 実績の進捗を更新
      */
-    handleProgressUpdated(data: any): void {
-        // 追加の処理が必要な場合はここに記述
-        if (false) { // debugMode removed from config
-            console.log('[AchievementManager] Progress updated event:', data);
+    public updateProgress(achievementId: string, current: number, target?: number): void {
+        const achievement = this.achievements.get(achievementId);
+        if (!achievement || achievement.unlocked) return;
+        
+        const progress: AchievementProgress = {
+            current,
+            target: target || achievement.condition?.target || 1,
+            percentage: 0
+        };
+        
+        progress.percentage = Math.min(100, (progress.current / progress.target!) * 100);
+        
+        achievement.progress = progress;
+        this.userData.achievementProgress.set(achievementId, progress);
+        
+        // 進捗が100%に達したら実績を解除
+        if (progress.percentage >= 100) {
+            this.unlockAchievement(achievementId);
         }
+        
+        // イベントを発行
+        this.eventEmitter.emit('achievement:progress_update', { 
+            achievementId, 
+            progress 
+        });
+        
+        // データを保存
+        this.saveUserData();
     }
     
-    /**
-     * 実績進捗を高度に更新（既存メソッドとの互換性）
-     */
-    updateAchievementProgressAdvanced(achievement: Achievement, _eventType: string, _data: any): AchievementProgressResult | null {
-        if (!this.progressTracker) return null as any;
-        
-        const progressResult = this.progressTracker.evaluateAchievementCondition(achievement);
-        if (progressResult && progressResult.isComplete) {
-            this.unlockAchievement(achievement);
-        }
-        
-        return progressResult;
-    }
-    
-    /**
-     * 実績条件を最適化チェック（既存メソッドとの互換性）
-     */
-    checkAchievementConditionOptimized(achievement: Achievement, _eventType: string, _data: any): boolean {
-        if (!this.progressTracker) return false;
-        
-        const progressResult = this.progressTracker.evaluateAchievementCondition(achievement);
-        return progressResult ? progressResult.isComplete : false;
-    }
-
     /**
      * 実績一覧を取得
      */
-    getAchievements(): Record<string, Achievement> {
-        if (!this.definitions) return {};
-        return this.definitions.getAllAchievements();
+    public getAchievements(): Achievement[] {
+        return Array.from(this.achievements.values());
     }
     
     /**
-     * カテゴリ別実績を取得
+     * カテゴリ別の実績を取得
      */
-    getAchievementsByCategory(category: string): Achievement[] {
-        if (!this.definitions) return [];
-        return this.definitions.getAchievementsByCategory(category);
-    }
-    
-    /**
-     * 実績進捗を取得
-     */
-    getAchievementProgress(achievementId: string): AchievementProgressResult | null {
-        if (!this.definitions || !this.progressTracker) return null as any;
+    public getAchievementsByCategory(): Record<string, { name: string; achievements: Achievement[] }> {
+        const categorized: Record<string, { name: string; achievements: Achievement[] }> = {};
         
-        const achievement = this.definitions.getAchievement(achievementId);
-        if (!achievement) return null as any;
+        this.categories.forEach((category, categoryId) => {
+            categorized[categoryId] = {
+                name: category.name,
+                achievements: []
+            };
+        });
         
-        return this.progressTracker.evaluateAchievementCondition(achievement);
+        this.achievements.forEach(achievement => {
+            if (categorized[achievement.category]) {
+                categorized[achievement.category].achievements.push(achievement);
+            }
+        });
+        
+        return categorized;
     }
     
     /**
      * 解除済み実績を取得
      */
-    getUnlockedAchievements(): string[] {
-        if (!this.progressTracker) return [];
-        return this.progressTracker.getUnlockedAchievements();
+    public getUnlockedAchievements(): Achievement[] {
+        return Array.from(this.achievements.values()).filter(a => a.unlocked);
     }
     
     /**
-     * 実績が解除済みかチェック
+     * 未解除実績を取得
      */
-    isUnlocked(achievementId: string): boolean {
-        if (!this.progressTracker) return false;
-        return this.progressTracker.isAchievementUnlocked(achievementId);
+    public getLockedAchievements(): Achievement[] {
+        return Array.from(this.achievements.values()).filter(a => !a.unlocked);
     }
     
     /**
-     * 実績統計を取得
+     * 実績の進捗を取得
      */
-    getStatistics(): AchievementStatistics {
-        const defaultStats = {
-            total: 0,
-            unlocked: 0,
-            unlockedPercentage: 0,
-            categories: {},
-            performance: {},
-            byCategory: {}
-        };
-
-        if (!this.definitions || !this.progressTracker || !this.performanceOptimizer) {
-            return defaultStats;
-        }
+    public getAchievementProgress(achievementId: string): AchievementProgress | null {
+        const achievement = this.achievements.get(achievementId);
+        return achievement?.progress || null;
+    }
+    
+    /**
+     * 総APを取得
+     */
+    public getTotalAP(): number {
+        return this.userData.totalAP;
+    }
+    
+    /**
+     * 実績完了率を取得
+     */
+    public getCompletionRate(): number {
+        const total = this.achievements.size;
+        const unlocked = this.userData.unlockedAchievements.size;
+        return total > 0 ? (unlocked / total) * 100 : 0;
+    }
+    
+    /**
+     * 総報酬を計算
+     */
+    public calculateTotalRewards(): { ap: number } {
+        let totalAP = 0;
         
-        const definitions = this.definitions.getStatistics();
-        const unlocked = this.progressTracker.getUnlockedAchievements();
-        const performance = this.performanceOptimizer.getPerformanceStats();
+        this.userData.unlockedAchievements.forEach(achievementId => {
+            const achievement = this.achievements.get(achievementId);
+            if (achievement?.reward?.ap) {
+                totalAP += achievement.reward.ap;
+            }
+        });
         
-        return {
-            total: definitions.total,
-            unlocked: unlocked.length,
-            unlockedPercentage: (unlocked.length / definitions.total) * 100,
-            categories: definitions.byCategory,
-            performance,
-            byCategory: definitions.byCategory,
-            ...definitions
-        };
+        return { ap: totalAP };
     }
     
     /**
-     * 通知履歴を取得
+     * 統計UIを取得
      */
-    getNotificationHistory(limit: number = 10): any[] {
-        if (!this.notificationSystem) return [];
-        return this.notificationSystem.getNotificationHistory(limit);
+    public getStatsUI(): AchievementStatsUI {
+        return this.statsUI;
     }
     
     /**
-     * 進捗データを取得
+     * デバッグ情報を出力
      */
-    getProgressData(): any {
-        if (!this.progressTracker) return {};
-        return this.progressTracker.getProgressData();
+    public debugInfo(): void {
+        console.log('=== Achievement System Debug Info ===');
+        console.log(`Total achievements: ${this.achievements.size}`);
+        console.log(`Unlocked: ${this.userData.unlockedAchievements.size}`);
+        console.log(`Total AP: ${this.userData.totalAP}`);
+        console.log(`Completion rate: ${this.getCompletionRate().toFixed(1)}%`);
+        console.log(`Categories: ${Array.from(this.categories.keys()).join(', ')}`);
     }
     
     /**
-     * 設定を更新
+     * クリーンアップ
      */
-    updateConfig(config: Partial<AchievementConfig>): void {
-        Object.assign(this.config, config);
-
-        // コンポーネントの設定も更新
-        if (config.maxNotifications !== undefined && this.notificationSystem) {
-            this.notificationSystem.updateConfig({ enabled: config.maxNotifications > 0 });
-        }
+    public cleanup(): void {
+        // イベントリスナーを削除
+        this.eventEmitter.removeAllListeners();
         
-        if (this.performanceOptimizer) {
-            this.performanceOptimizer.updateConfig(config);
-        }
-    }
-    
-    /**
-     * デバッグ情報を取得
-     */
-    getDebugInfo(): any {
-        return {
-            config: this.config,
-            statistics: this.getStatistics(),
-            progressData: this.getProgressData(),
-            performance: this.performanceOptimizer ? this.performanceOptimizer.getPerformanceStats() : {},
-            notificationHistory: this.getNotificationHistory(5),
-            progressHistory: this.progressTracker ? this.progressTracker.getProgressHistory(10) : []
-        };
-    }
-    
-    /**
-     * データをリセット
-     */
-    resetData(): void {
-        if (this.progressTracker) {
-            this.progressTracker.resetProgress();
-        }
-
-        if (this.notificationSystem) {
-            this.notificationSystem.clearAllNotifications();
-        }
-
-        if (this.performanceOptimizer) {
-            this.performanceOptimizer.resetPerformanceStats();
-        }
-
-        console.log('[AchievementManager] All achievement data reset');
-    }
-    
-    /**
-     * データを読み込み
-     */
-    load(): void {
-        try {
-            console.log('[AchievementManager] Loading achievement data...');
-            
-            // 進捗データを読み込み
-            if (this.progressTracker && typeof this.progressTracker.loadProgress === 'function') {
-                this.progressTracker.loadProgress();
-            }
-
-            if (this.notificationSystem && typeof this.notificationSystem.loadHistory === 'function') {
-                this.notificationSystem.loadHistory();
-            }
-
-            if (this.performanceOptimizer && typeof this.performanceOptimizer.loadStats === 'function') {
-                this.performanceOptimizer.loadStats();
-            }
-
-            console.log('[AchievementManager] Achievement data loaded successfully');
-        } catch (error) {
-            console.error('[AchievementManager] Failed to load achievement data:', error);
-            // エラーが発生しても続行できるようにする
-        }
-    }
-
-    /**
-     * 実績管理システムを破棄
-     */
-    destroy(): void {
-        if (this.performanceOptimizer) {
-            this.performanceOptimizer?.destroy?.();
-        }
-
-        if (this.notificationSystem) {
-            this.notificationSystem?.destroy?.();
-        }
-
-        console.log('[AchievementManager] Achievement management system destroyed');
+        // サブシステムをクリーンアップ
+        if (this.progressTracker) this.progressTracker.cleanup();
+        if (this.unlockEffect) this.unlockEffect.cleanup();
+        if (this.notification) this.notification.cleanup();
+        if (this.eventIntegrator) this.eventIntegrator.cleanup();
+        
+        // データを保存
+        this.saveUserData();
+        
+        console.log('Achievement system cleaned up');
     }
 }

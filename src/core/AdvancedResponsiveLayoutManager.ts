@@ -13,7 +13,7 @@ interface GameEngine {
     canvas?: HTMLCanvasElement;
     getLayoutAdjustments?: (layout: any) => any;
     handleVisibilityChange?: (isVisible: boolean) => void;
-    onLayoutEvent?: (type: "single" | "batch", detail: any) => void;
+    onLayoutEvent?: (type: string, detail: any) => void;
     onCanvasResize?: (size: any) => void;
     [key: string]: unknown;
 }
@@ -166,12 +166,7 @@ export class AdvancedResponsiveLayoutManager extends ResponsiveCanvasManager {
         super(canvas, gameEngine);
         
         this.configManager = getConfigurationManager() as any;
-        this.errorHandler = {
-            logError: (error: Error, context?: any) => {
-                const handler = getErrorHandler();
-                (handler as any).handle?.(error, 'AdvancedResponsiveLayoutManager', context);
-            }
-        } as ErrorHandler;
+        this.errorHandler = getErrorHandler() as any;
 
         // 拡張ブレークポイント定義
         this.advancedBreakpoints = {
@@ -961,7 +956,7 @@ export class AdvancedResponsiveLayoutManager extends ResponsiveCanvasManager {
     /**
      * レイアウトイベント発火
      */
-    dispatchLayoutEvent(type: "single" | "batch", detail: any) {
+    dispatchLayoutEvent(type: string, detail: any) {
         const event = new CustomEvent(`layout-${type}`, {
             detail: {
                 ...detail,
