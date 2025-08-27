@@ -14,7 +14,7 @@ import { EnvironmentalAudioSettings } from './environmental-audio-manager/Enviro
 
 // エラーハンドラー型定義
 interface ErrorHandler {
-    handleError(error: Error, type: "single" | "batch", context?: any): void;
+    handleError(error: Error, type: string, context?: any): void;
 }
 
 // 設定管理型定義

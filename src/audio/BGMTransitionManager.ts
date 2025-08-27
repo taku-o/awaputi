@@ -15,7 +15,7 @@ interface TransitionOptions {
 interface TransitionInfo {
     fromTrack: string;
     toTrack: string;
-    type: "single" | "batch";
+    type: string;
     duration: number;
     curve: string;
 }
@@ -54,7 +54,7 @@ interface BGMInfo {
 
 // エラーハンドラー型定義
 interface ErrorHandler {
-    handleError(error: Error, type: "single" | "batch", context?: any): void;
+    handleError(error: Error, type: string, context?: any): void;
 }
 
 // 設定型定義
@@ -80,7 +80,7 @@ interface TransitionState {
  * BGMトランジション管理クラス - 高度なBGM遷移制御とフェード機能
  */
 export class BGMTransitionManager {
-    // private audioContext: AudioContext;
+    private audioContext: AudioContext;
     private bgmSystem: BGMSystem;
     // トランジション状態
     private isTransitioning: boolean = false;

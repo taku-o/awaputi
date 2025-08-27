@@ -490,7 +490,7 @@ export class ProceduralSoundGenerator {
         const baseBuffer = this.soundBuffers.get(baseSoundName);
         if (!baseBuffer) {
             console.warn(`Base sound '${baseSoundName}' not found`);
-            return null as any;
+            return null;
         }
 
         const {

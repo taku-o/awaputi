@@ -72,12 +72,12 @@
 - [x] src/audio/BGMGenerator.js - rhythmPatterns・baseFrequencyコメントアウト修正完了
 - [x] src/audio/BGMPlayer.js - ErrorHandler型定義修正完了
 - [x] src/audio/BGMSystem.js - currentVolumeコメントアウト修正完了
-- [] src/audio/BGMTransitionManager.js
-- [] src/audio/EnvironmentalAudioManager.js
-- [] src/audio/Equalizer.js
-- [] src/audio/PresetManager.js
-- [] src/audio/ProceduralSoundGenerator.js
-- [] src/audio/SoundEffectSystem.js
+- [x] src/audio/BGMTransitionManager.js - audioContextコメントアウト、ErrorHandler型定義修正完了
+- [x] src/audio/EnvironmentalAudioManager.js - ErrorHandler型定義修正完了
+- [x] src/audio/Equalizer.js - 処理ロジックの違いなし
+- [⚠️] src/audio/PresetManager.js - 重大：完全に異なる実装（TypeScript版とJavaScript版が別物）
+- [x] src/audio/ProceduralSoundGenerator.js - 型キャスト修正完了
+- [⚠️] src/audio/SoundEffectSystem.js - 重大：完全に異なる実装（TypeScript版とJavaScript版が別物）
 - [] src/audio/accessibility/AudioAccessibilitySupport.js
 - [] src/audio/accessibility/AudioCueManager.js
 - [] src/audio/accessibility/AudioDescriptionManager.js
