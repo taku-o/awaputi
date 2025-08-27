@@ -329,10 +329,8 @@ export class SettingsImportExportComponent {
         progressFill.style.cssText = `
             height: 100%;
             background: linear-gradient(90deg, #4CAF50, #45a049);
-            border-radius: 4px;
-            transition: width 0.3s ease;
-            position: relative;
             width: 0%;
+            transition: width 0.3s ease;
         `;
 
         this.progressBar.appendChild(progressFill);
@@ -659,7 +657,7 @@ export class SettingsImportExportComponent {
     private generateExportFilename(): string {
         const now = new Date();
         const dateStr = now.toISOString().split('T')[0]; // YYYY-MM-DD
-        const timeStr = now.toTimeString().split(' ')[0].replace(/:/g, '-'); // HH-MM-SS
+        const timeStr = now.toTimeString().split(' ')[0].replace(/:/g, ''); // HHMMSS
         return `${this.EXPORT_FILENAME_PREFIX}-${dateStr}-${timeStr}.json`;
     }
     

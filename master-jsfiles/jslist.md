@@ -107,14 +107,14 @@
 - [x] src/cleanup/FileScanner.js ✅ 処理同一
 - [x] src/cleanup/ReferenceChecker.js ✅ 処理同一（未使用変数のコメントアウト、アクセス修飾子追加）
 - [x] src/cleanup/ReportGenerator.js ✅ 処理同一（型安全性追加、非同期処理の軽微な違い）
-- [] src/cleanup/SafetyValidator.js
-- [] src/cleanup/index.js
-- [] src/components/AccessibilityProfileComponent.js
-- [] src/components/SettingsImportExportComponent.js
-- [] src/components/VolumeControlComponent.js
-- [] src/components/examples/AccessibilityProfileIntegrationExample.js
-- [] src/components/examples/SettingsImportExportIntegrationExample.js
-- [] src/components/examples/VolumeControlIntegrationExample.js
+- [x] src/cleanup/SafetyValidator.js ✅ 処理同一（型安全性追加、戻り値に追加フィールド）
+- [x] src/cleanup/index.js ✅ 処理同一（型安全性追加、エラーハンドリング改善）
+- [x] src/components/AccessibilityProfileComponent.js ✅ 処理同一（型安全性追加、nullチェック強化）
+- [x] src/components/SettingsImportExportComponent.js ✅ 処理同一（型安全性追加、フォーマット差異修正済み）
+- [x] src/components/VolumeControlComponent.js ✅ 処理ロジックに差異なし
+- [x] src/components/examples/AccessibilityProfileIntegrationExample.js ⚠️ 大幅な実装差異（TS版が簡略化）
+- [x] src/components/examples/SettingsImportExportIntegrationExample.js ⚠️ 大幅な実装差異（TS版が簡略化）
+- [x] src/components/examples/VolumeControlIntegrationExample.js ⚠️ 大幅な実装差異（TS版が簡略化）
 - [] src/config/AudioConfig.js
 - [] src/config/EffectsConfig.js
 - [] src/config/FontPreloadConfig.js
