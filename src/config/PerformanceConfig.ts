@@ -91,32 +91,34 @@ export interface PerformanceOptimizer {
 
 export class PerformanceConfig {
     private configManager: ConfigurationManager;
-    private errorHandler: any;
 
     constructor() {
         this.configManager = getConfigurationManager();
-        this.errorHandler = getErrorHandler();
-        this.initialize();
+        this._initialize();
     }
 
     /**
      * 初期化処理 - デフォルト設定の登録
      * @private
      */
-    private initialize(): void {
+    private _initialize(): void {
         try {
             // 最適化設定の初期化
-            this.initializeOptimizationConfig();
+            this._initializeOptimizationConfig();
+            
             // リソース制限設定の初期化
-            this.initializeResourceLimitConfig();
+            this._initializeResourceLimitConfig();
+            
             // 品質設定の初期化
-            this.initializeQualityConfig();
+            this._initializeQualityConfig();
+            
             // 検証ルールの設定
-            this.setupValidationRules();
+            this._setupValidationRules();
+            
             console.log('[PerformanceConfig] 初期化完了');
         } catch (error) {
-            this.errorHandler.handleError(error as Error, 'PERFORMANCE_CONFIG_INIT_ERROR', {
-                context: 'PerformanceConfig.initialize'
+            getErrorHandler().handleError(error as Error, {
+                context: 'PerformanceConfig._initialize'
             });
         }
     }
@@ -125,7 +127,8 @@ export class PerformanceConfig {
      * 最適化設定の初期化
      * @private
      */
-    private initializeOptimizationConfig(): void {
+    private _initializeOptimizationConfig(): void {
+        // デフォルト最適化設定
         this.configManager.set('performance', 'optimization.targetFPS', 60);
         this.configManager.set('performance', 'optimization.adaptiveMode', true);
         this.configManager.set('performance', 'optimization.optimizationInterval', 1000);
@@ -148,7 +151,8 @@ export class PerformanceConfig {
      * リソース制限設定の初期化
      * @private
      */
-    private initializeResourceLimitConfig(): void {
+    private _initializeResourceLimitConfig(): void {
+        // デフォルトリソース制限設定
         this.configManager.set('performance', 'limits.memoryThreshold', 100); // MB
         this.configManager.set('performance', 'limits.fpsThreshold', 30);
         this.configManager.set('performance', 'limits.maxTextureSize', 2048);
@@ -165,7 +169,8 @@ export class PerformanceConfig {
      * 品質設定の初期化
      * @private
      */
-    private initializeQualityConfig(): void {
+    private _initializeQualityConfig(): void {
+        // デフォルト品質設定
         this.configManager.set('performance', 'quality.renderQuality', 1.0); // 0.5 - 1.0
         this.configManager.set('performance', 'quality.particleQuality', 1.0); // 0.1 - 1.0
         this.configManager.set('performance', 'quality.effectQuality', 1.0); // 0.1 - 1.0
@@ -188,7 +193,7 @@ export class PerformanceConfig {
             enableAntiAliasing: false,
             enableReflections: false
         });
-
+        
         this.configManager.set('performance', 'quality.presets.medium', {
             renderQuality: 0.85,
             particleQuality: 0.6,
@@ -199,7 +204,7 @@ export class PerformanceConfig {
             enableAntiAliasing: false,
             enableReflections: false
         });
-
+        
         this.configManager.set('performance', 'quality.presets.high', {
             renderQuality: 1.0,
             particleQuality: 1.0,
@@ -216,104 +221,111 @@ export class PerformanceConfig {
      * 検証ルールの設定
      * @private
      */
-    private setupValidationRules(): void {
+    private _setupValidationRules(): void {
         // 最適化設定の検証ルール
-        this.configManager.setValidationRule('performance.optimization.targetFPS', {
+        this.configManager.setValidationRule('performance', 'optimization.targetFPS', {
             type: 'number',
-            validate: (value: any) => typeof value === 'number' && value >= 30 && value <= 144
+            min: 30,
+            max: 144
         });
-
-        this.configManager.setValidationRule('performance.optimization.adaptiveMode', {
-            type: 'boolean',
-            validate: (value: any) => typeof value === 'boolean'
+        
+        this.configManager.setValidationRule('performance', 'optimization.adaptiveMode', {
+            type: 'boolean'
         });
-
-        this.configManager.setValidationRule('performance.optimization.optimizationInterval', {
+        
+        this.configManager.setValidationRule('performance', 'optimization.optimizationInterval', {
             type: 'number',
-            validate: (value: any) => typeof value === 'number' && value >= 100 && value <= 10000
+            min: 100,
+            max: 10000
         });
-
-        this.configManager.setValidationRule('performance.optimization.maxHistorySize', {
+        
+        this.configManager.setValidationRule('performance', 'optimization.maxHistorySize', {
             type: 'number',
-            validate: (value: any) => typeof value === 'number' && value >= 10 && value <= 100
+            min: 10,
+            max: 100
         });
-
-        this.configManager.setValidationRule('performance.optimization.performanceLevel', {
+        
+        this.configManager.setValidationRule('performance', 'optimization.performanceLevel', {
             type: 'string',
-            validate: (value: any) => ['low', 'medium', 'high'].includes(value)
+            validator: (value: string) => ['low', 'medium', 'high'].includes(value)
         });
-
-        this.configManager.setValidationRule('performance.optimization.maxBubbles', {
+        
+        this.configManager.setValidationRule('performance', 'optimization.maxBubbles', {
             type: 'number',
-            validate: (value: any) => typeof value === 'number' && value >= 5 && value <= 50
+            min: 5,
+            max: 50
         });
-
-        this.configManager.setValidationRule('performance.optimization.maxParticles', {
+        
+        this.configManager.setValidationRule('performance', 'optimization.maxParticles', {
             type: 'number',
-            validate: (value: any) => typeof value === 'number' && value >= 50 && value <= 2000
+            min: 50,
+            max: 2000
         });
         
         // リソース制限設定の検証ルール
-        this.configManager.setValidationRule('performance.limits.memoryThreshold', {
+        this.configManager.setValidationRule('performance', 'limits.memoryThreshold', {
             type: 'number',
-            validate: (value: any) => typeof value === 'number' && value >= 50 && value <= 500
+            min: 50,
+            max: 500
         });
-
-        this.configManager.setValidationRule('performance.limits.fpsThreshold', {
+        
+        this.configManager.setValidationRule('performance', 'limits.fpsThreshold', {
             type: 'number',
-            validate: (value: any) => typeof value === 'number' && value >= 15 && value <= 60
+            min: 15,
+            max: 60
         });
-
-        this.configManager.setValidationRule('performance.limits.maxTextureSize', {
+        
+        this.configManager.setValidationRule('performance', 'limits.maxTextureSize', {
             type: 'number',
-            validate: (value: any) => typeof value === 'number' && value >= 512 && value <= 4096
+            min: 512,
+            max: 4096
         });
         
         // 品質設定の検証ルール
-        this.configManager.setValidationRule('performance.quality.renderQuality', {
+        this.configManager.setValidationRule('performance', 'quality.renderQuality', {
             type: 'number',
-            validate: (value: any) => typeof value === 'number' && value >= 0.5 && value <= 1.0
+            min: 0.5,
+            max: 1.0
         });
-
-        this.configManager.setValidationRule('performance.quality.particleQuality', {
+        
+        this.configManager.setValidationRule('performance', 'quality.particleQuality', {
             type: 'number',
-            validate: (value: any) => typeof value === 'number' && value >= 0.1 && value <= 1.0
+            min: 0.1,
+            max: 1.0
         });
-
-        this.configManager.setValidationRule('performance.quality.effectQuality', {
+        
+        this.configManager.setValidationRule('performance', 'quality.effectQuality', {
             type: 'number',
-            validate: (value: any) => typeof value === 'number' && value >= 0.1 && value <= 1.0
+            min: 0.1,
+            max: 1.0
         });
-
-        this.configManager.setValidationRule('performance.quality.audioQuality', {
+        
+        this.configManager.setValidationRule('performance', 'quality.audioQuality', {
             type: 'number',
-            validate: (value: any) => typeof value === 'number' && value >= 0.1 && value <= 1.0
+            min: 0.1,
+            max: 1.0
         });
-
-        this.configManager.setValidationRule('performance.quality.enableShadows', {
-            type: 'boolean',
-            validate: (value: any) => typeof value === 'boolean'
+        
+        this.configManager.setValidationRule('performance', 'quality.enableShadows', {
+            type: 'boolean'
         });
-
-        this.configManager.setValidationRule('performance.quality.enableBlur', {
-            type: 'boolean',
-            validate: (value: any) => typeof value === 'boolean'
+        
+        this.configManager.setValidationRule('performance', 'quality.enableBlur', {
+            type: 'boolean'
         });
-
-        this.configManager.setValidationRule('performance.quality.enableAntiAliasing', {
-            type: 'boolean',
-            validate: (value: any) => typeof value === 'boolean'
+        
+        this.configManager.setValidationRule('performance', 'quality.enableAntiAliasing', {
+            type: 'boolean'
         });
-
-        this.configManager.setValidationRule('performance.quality.enableReflections', {
-            type: 'boolean',
-            validate: (value: any) => typeof value === 'boolean'
+        
+        this.configManager.setValidationRule('performance', 'quality.enableReflections', {
+            type: 'boolean'
         });
     }
 
     /**
      * 最適化設定を取得
-     * @returns 最適化設定
+     * @returns {Object} 最適化設定
      */
     getOptimizationConfig(): OptimizationConfig {
         // Emergency null safety check
@@ -331,18 +343,18 @@ export class PerformanceConfig {
                 maxTimePerFrame: 8
             };
         }
-
+        
         try {
             return {
-                targetFPS: this.configManager.get('performance', 'optimization.targetFPS') ?? 60,
-                adaptiveMode: this.configManager.get('performance', 'optimization.adaptiveMode') ?? true,
-                optimizationInterval: this.configManager.get('performance', 'optimization.optimizationInterval') ?? 1000,
-                maxHistorySize: this.configManager.get('performance', 'optimization.maxHistorySize') ?? 30,
-                performanceLevel: (this.configManager.get('performance', 'optimization.performanceLevel') ?? 'high') as 'low' | 'medium' | 'high',
-                maxBubbles: this.configManager.get('performance', 'optimization.maxBubbles') ?? 20,
-                maxParticles: this.configManager.get('performance', 'optimization.maxParticles') ?? 500,
-                workloadDistribution: this.configManager.get('performance', 'optimization.workloadDistribution') ?? true,
-                maxTimePerFrame: this.configManager.get('performance', 'optimization.maxTimePerFrame') ?? 8
+                targetFPS: this.configManager.get('performance', 'optimization.targetFPS', 60),
+                adaptiveMode: this.configManager.get('performance', 'optimization.adaptiveMode', true),
+                optimizationInterval: this.configManager.get('performance', 'optimization.optimizationInterval', 1000),
+                maxHistorySize: this.configManager.get('performance', 'optimization.maxHistorySize', 30),
+                performanceLevel: this.configManager.get('performance', 'optimization.performanceLevel', 'high') as 'low' | 'medium' | 'high',
+                maxBubbles: this.configManager.get('performance', 'optimization.maxBubbles', 20),
+                maxParticles: this.configManager.get('performance', 'optimization.maxParticles', 500),
+                workloadDistribution: this.configManager.get('performance', 'optimization.workloadDistribution', true),
+                maxTimePerFrame: this.configManager.get('performance', 'optimization.maxTimePerFrame', 8)
             };
         } catch (error) {
             console.error("[PerformanceConfig] Error getting optimization config:", error);
@@ -362,16 +374,15 @@ export class PerformanceConfig {
 
     /**
      * 目標FPSを取得
-     * @returns 目標FPS
+     * @returns {number} 目標FPS
      */
     getTargetFPS(): number {
         if (!this.configManager) {
             console.warn("[PerformanceConfig] ConfigurationManager not initialized, returning fallback targetFPS");
             return 60;
         }
-
         try {
-            return this.configManager.get("performance", "optimization.targetFPS") ?? 60;
+            return this.configManager.get("performance", "optimization.targetFPS", 60);
         } catch (error) {
             console.error("[PerformanceConfig] Error getting targetFPS:", error);
             return 60;
@@ -380,40 +391,40 @@ export class PerformanceConfig {
 
     /**
      * 適応モードの有効状態を取得
-     * @returns 適応モードの有効状態
+     * @returns {boolean} 適応モードの有効状態
      */
     isAdaptiveModeEnabled(): boolean {
-        return this.configManager.get('performance', 'optimization.adaptiveMode') ?? true;
+        return this.configManager.get('performance', 'optimization.adaptiveMode', true);
     }
 
     /**
      * パフォーマンスレベルを取得
-     * @returns パフォーマンスレベル ('low', 'medium', 'high')
+     * @returns {string} パフォーマンスレベル ('low', 'medium', 'high')
      */
     getPerformanceLevel(): 'low' | 'medium' | 'high' {
-        return (this.configManager.get('performance', 'optimization.performanceLevel') ?? 'high') as 'low' | 'medium' | 'high';
+        return this.configManager.get('performance', 'optimization.performanceLevel', 'high') as 'low' | 'medium' | 'high';
     }
 
     /**
      * 最大バブル数を取得
-     * @returns 最大バブル数
+     * @returns {number} 最大バブル数
      */
     getMaxBubbles(): number {
-        return this.configManager.get('performance', 'optimization.maxBubbles') ?? 20;
+        return this.configManager.get('performance', 'optimization.maxBubbles', 20);
     }
 
     /**
      * 最大パーティクル数を取得
-     * @returns 最大パーティクル数
+     * @returns {number} 最大パーティクル数
      */
     getMaxParticles(): number {
-        return this.configManager.get('performance', 'optimization.maxParticles') ?? 500;
+        return this.configManager.get('performance', 'optimization.maxParticles', 500);
     }
 
     /**
      * 目標FPSを設定
-     * @param fps - 目標FPS
-     * @returns 設定成功フラグ
+     * @param {number} fps - 目標FPS
+     * @returns {boolean} 設定成功フラグ
      */
     setTargetFPS(fps: number): boolean {
         return this.configManager.set('performance', 'optimization.targetFPS', fps);
@@ -421,8 +432,8 @@ export class PerformanceConfig {
 
     /**
      * 適応モードの有効状態を設定
-     * @param enabled - 適応モードの有効状態
-     * @returns 設定成功フラグ
+     * @param {boolean} enabled - 適応モードの有効状態
+     * @returns {boolean} 設定成功フラグ
      */
     setAdaptiveModeEnabled(enabled: boolean): boolean {
         return this.configManager.set('performance', 'optimization.adaptiveMode', enabled);
@@ -430,8 +441,8 @@ export class PerformanceConfig {
 
     /**
      * パフォーマンスレベルを設定
-     * @param level - パフォーマンスレベル ('low', 'medium', 'high')
-     * @returns 設定成功フラグ
+     * @param {string} level - パフォーマンスレベル ('low', 'medium', 'high')
+     * @returns {boolean} 設定成功フラグ
      */
     setPerformanceLevel(level: 'low' | 'medium' | 'high'): boolean {
         return this.configManager.set('performance', 'optimization.performanceLevel', level);
@@ -439,8 +450,8 @@ export class PerformanceConfig {
 
     /**
      * 最大バブル数を設定
-     * @param count - 最大バブル数
-     * @returns 設定成功フラグ
+     * @param {number} count - 最大バブル数
+     * @returns {boolean} 設定成功フラグ
      */
     setMaxBubbles(count: number): boolean {
         return this.configManager.set('performance', 'optimization.maxBubbles', count);
@@ -448,8 +459,8 @@ export class PerformanceConfig {
 
     /**
      * 最大パーティクル数を設定
-     * @param count - 最大パーティクル数
-     * @returns 設定成功フラグ
+     * @param {number} count - 最大パーティクル数
+     * @returns {boolean} 設定成功フラグ
      */
     setMaxParticles(count: number): boolean {
         return this.configManager.set('performance', 'optimization.maxParticles', count);
@@ -457,57 +468,57 @@ export class PerformanceConfig {
 
     /**
      * リソース制限設定を取得
-     * @returns リソース制限設定
+     * @returns {Object} リソース制限設定
      */
     getResourceLimitConfig(): ResourceLimitConfig {
         return {
-            memoryThreshold: this.configManager.get('performance', 'limits.memoryThreshold') ?? 100,
-            fpsThreshold: this.configManager.get('performance', 'limits.fpsThreshold') ?? 30,
-            maxTextureSize: this.configManager.get('performance', 'limits.maxTextureSize') ?? 2048,
-            maxAssetSize: this.configManager.get('performance', 'limits.maxAssetSize') ?? 5,
-            autoAdjust: this.configManager.get('performance', 'limits.autoAdjust') ?? true,
-            warningThreshold: this.configManager.get('performance', 'limits.warningThreshold') ?? 0.8,
-            criticalThreshold: this.configManager.get('performance', 'limits.criticalThreshold') ?? 0.95,
-            cleanupInterval: this.configManager.get('performance', 'limits.cleanupInterval') ?? 30000
+            memoryThreshold: this.configManager.get('performance', 'limits.memoryThreshold', 100),
+            fpsThreshold: this.configManager.get('performance', 'limits.fpsThreshold', 30),
+            maxTextureSize: this.configManager.get('performance', 'limits.maxTextureSize', 2048),
+            maxAssetSize: this.configManager.get('performance', 'limits.maxAssetSize', 5),
+            autoAdjust: this.configManager.get('performance', 'limits.autoAdjust', true),
+            warningThreshold: this.configManager.get('performance', 'limits.warningThreshold', 0.8),
+            criticalThreshold: this.configManager.get('performance', 'limits.criticalThreshold', 0.95),
+            cleanupInterval: this.configManager.get('performance', 'limits.cleanupInterval', 30000)
         };
     }
 
     /**
      * メモリ閾値を取得
-     * @returns メモリ閾値 (MB)
+     * @returns {number} メモリ閾値 (MB)
      */
     getMemoryThreshold(): number {
-        return this.configManager.get('performance', 'limits.memoryThreshold') ?? 100;
+        return this.configManager.get('performance', 'limits.memoryThreshold', 100);
     }
 
     /**
      * FPS閾値を取得
-     * @returns FPS閾値
+     * @returns {number} FPS閾値
      */
     getFPSThreshold(): number {
-        return this.configManager.get('performance', 'limits.fpsThreshold') ?? 30;
+        return this.configManager.get('performance', 'limits.fpsThreshold', 30);
     }
 
     /**
      * 最大テクスチャサイズを取得
-     * @returns 最大テクスチャサイズ
+     * @returns {number} 最大テクスチャサイズ
      */
     getMaxTextureSize(): number {
-        return this.configManager.get('performance', 'limits.maxTextureSize') ?? 2048;
+        return this.configManager.get('performance', 'limits.maxTextureSize', 2048);
     }
 
     /**
      * 自動調整の有効状態を取得
-     * @returns 自動調整の有効状態
+     * @returns {boolean} 自動調整の有効状態
      */
     isAutoAdjustEnabled(): boolean {
-        return this.configManager.get('performance', 'limits.autoAdjust') ?? true;
+        return this.configManager.get('performance', 'limits.autoAdjust', true);
     }
 
     /**
      * メモリ閾値を設定
-     * @param threshold - メモリ閾値 (MB)
-     * @returns 設定成功フラグ
+     * @param {number} threshold - メモリ閾値 (MB)
+     * @returns {boolean} 設定成功フラグ
      */
     setMemoryThreshold(threshold: number): boolean {
         return this.configManager.set('performance', 'limits.memoryThreshold', threshold);
@@ -515,8 +526,8 @@ export class PerformanceConfig {
 
     /**
      * FPS閾値を設定
-     * @param threshold - FPS閾値
-     * @returns 設定成功フラグ
+     * @param {number} threshold - FPS閾値
+     * @returns {boolean} 設定成功フラグ
      */
     setFPSThreshold(threshold: number): boolean {
         return this.configManager.set('performance', 'limits.fpsThreshold', threshold);
@@ -524,8 +535,8 @@ export class PerformanceConfig {
 
     /**
      * 最大テクスチャサイズを設定
-     * @param size - 最大テクスチャサイズ
-     * @returns 設定成功フラグ
+     * @param {number} size - 最大テクスチャサイズ
+     * @returns {boolean} 設定成功フラグ
      */
     setMaxTextureSize(size: number): boolean {
         return this.configManager.set('performance', 'limits.maxTextureSize', size);
@@ -533,8 +544,8 @@ export class PerformanceConfig {
 
     /**
      * 自動調整の有効状態を設定
-     * @param enabled - 自動調整の有効状態
-     * @returns 設定成功フラグ
+     * @param {boolean} enabled - 自動調整の有効状態
+     * @returns {boolean} 設定成功フラグ
      */
     setAutoAdjustEnabled(enabled: boolean): boolean {
         return this.configManager.set('performance', 'limits.autoAdjust', enabled);
@@ -542,89 +553,89 @@ export class PerformanceConfig {
 
     /**
      * 品質設定を取得
-     * @returns 品質設定
+     * @returns {Object} 品質設定
      */
     getQualityConfig(): QualityConfig {
         return {
-            renderQuality: this.configManager.get('performance', 'quality.renderQuality') ?? 1.0,
-            particleQuality: this.configManager.get('performance', 'quality.particleQuality') ?? 1.0,
-            effectQuality: this.configManager.get('performance', 'quality.effectQuality') ?? 1.0,
-            audioQuality: this.configManager.get('performance', 'quality.audioQuality') ?? 1.0,
-            enableShadows: this.configManager.get('performance', 'quality.enableShadows') ?? true,
-            enableBlur: this.configManager.get('performance', 'quality.enableBlur') ?? true,
-            enableAntiAliasing: this.configManager.get('performance', 'quality.enableAntiAliasing') ?? true,
-            enableReflections: this.configManager.get('performance', 'quality.enableReflections') ?? true
+            renderQuality: this.configManager.get('performance', 'quality.renderQuality', 1.0),
+            particleQuality: this.configManager.get('performance', 'quality.particleQuality', 1.0),
+            effectQuality: this.configManager.get('performance', 'quality.effectQuality', 1.0),
+            audioQuality: this.configManager.get('performance', 'quality.audioQuality', 1.0),
+            enableShadows: this.configManager.get('performance', 'quality.enableShadows', true),
+            enableBlur: this.configManager.get('performance', 'quality.enableBlur', true),
+            enableAntiAliasing: this.configManager.get('performance', 'quality.enableAntiAliasing', true),
+            enableReflections: this.configManager.get('performance', 'quality.enableReflections', true)
         };
     }
 
     /**
      * レンダリング品質を取得
-     * @returns レンダリング品質 (0.5-1.0)
+     * @returns {number} レンダリング品質 (0.5-1.0)
      */
     getRenderQuality(): number {
-        return this.configManager.get('performance', 'quality.renderQuality') ?? 1.0;
+        return this.configManager.get('performance', 'quality.renderQuality', 1.0);
     }
 
     /**
      * パーティクル品質を取得
-     * @returns パーティクル品質 (0.1-1.0)
+     * @returns {number} パーティクル品質 (0.1-1.0)
      */
     getParticleQuality(): number {
-        return this.configManager.get('performance', 'quality.particleQuality') ?? 1.0;
+        return this.configManager.get('performance', 'quality.particleQuality', 1.0);
     }
 
     /**
      * エフェクト品質を取得
-     * @returns エフェクト品質 (0.1-1.0)
+     * @returns {number} エフェクト品質 (0.1-1.0)
      */
     getEffectQuality(): number {
-        return this.configManager.get('performance', 'quality.effectQuality') ?? 1.0;
+        return this.configManager.get('performance', 'quality.effectQuality', 1.0);
     }
 
     /**
      * 音声品質を取得
-     * @returns 音声品質 (0.1-1.0)
+     * @returns {number} 音声品質 (0.1-1.0)
      */
     getAudioQuality(): number {
-        return this.configManager.get('performance', 'quality.audioQuality') ?? 1.0;
+        return this.configManager.get('performance', 'quality.audioQuality', 1.0);
     }
 
     /**
      * 影エフェクトの有効状態を取得
-     * @returns 影エフェクトの有効状態
+     * @returns {boolean} 影エフェクトの有効状態
      */
     areShadowsEnabled(): boolean {
-        return this.configManager.get('performance', 'quality.enableShadows') ?? true;
+        return this.configManager.get('performance', 'quality.enableShadows', true);
     }
 
     /**
      * ブラーエフェクトの有効状態を取得
-     * @returns ブラーエフェクトの有効状態
+     * @returns {boolean} ブラーエフェクトの有効状態
      */
     isBlurEnabled(): boolean {
-        return this.configManager.get('performance', 'quality.enableBlur') ?? true;
+        return this.configManager.get('performance', 'quality.enableBlur', true);
     }
 
     /**
      * アンチエイリアシングの有効状態を取得
-     * @returns アンチエイリアシングの有効状態
+     * @returns {boolean} アンチエイリアシングの有効状態
      */
     isAntiAliasingEnabled(): boolean {
-        return this.configManager.get('performance', 'quality.enableAntiAliasing') ?? true;
+        return this.configManager.get('performance', 'quality.enableAntiAliasing', true);
     }
 
     /**
      * 反射エフェクトの有効状態を取得
-     * @returns 反射エフェクトの有効状態
+     * @returns {boolean} 反射エフェクトの有効状態
      */
     areReflectionsEnabled(): boolean {
-        return this.configManager.get('performance', 'quality.enableReflections') ?? true;
+        return this.configManager.get('performance', 'quality.enableReflections', true);
     }
 
     /**
      * レンダリング品質を設定
-     * @param quality - レンダリング品質 (0.5-1.0)
-     * @returns 設定成功フラグ
+     * @param {number} quality - レンダリング品質 (0.5-1.0)
+     * @returns {boolean} 設定成功フラグ
      */
     setRenderQuality(quality: number): boolean {
         return this.configManager.set('performance', 'quality.renderQuality', quality);
@@ -632,8 +643,8 @@ export class PerformanceConfig {
 
     /**
      * パーティクル品質を設定
-     * @param quality - パーティクル品質 (0.1-1.0)
-     * @returns 設定成功フラグ
+     * @param {number} quality - パーティクル品質 (0.1-1.0)
+     * @returns {boolean} 設定成功フラグ
      */
     setParticleQuality(quality: number): boolean {
         return this.configManager.set('performance', 'quality.particleQuality', quality);
@@ -641,8 +652,8 @@ export class PerformanceConfig {
 
     /**
      * エフェクト品質を設定
-     * @param quality - エフェクト品質 (0.1-1.0)
-     * @returns 設定成功フラグ
+     * @param {number} quality - エフェクト品質 (0.1-1.0)
+     * @returns {boolean} 設定成功フラグ
      */
     setEffectQuality(quality: number): boolean {
         return this.configManager.set('performance', 'quality.effectQuality', quality);
@@ -650,8 +661,8 @@ export class PerformanceConfig {
 
     /**
      * 音声品質を設定
-     * @param quality - 音声品質 (0.1-1.0)
-     * @returns 設定成功フラグ
+     * @param {number} quality - 音声品質 (0.1-1.0)
+     * @returns {boolean} 設定成功フラグ
      */
     setAudioQuality(quality: number): boolean {
         return this.configManager.set('performance', 'quality.audioQuality', quality);
@@ -659,8 +670,8 @@ export class PerformanceConfig {
 
     /**
      * 影エフェクトの有効状態を設定
-     * @param enabled - 影エフェクトの有効状態
-     * @returns 設定成功フラグ
+     * @param {boolean} enabled - 影エフェクトの有効状態
+     * @returns {boolean} 設定成功フラグ
      */
     setShadowsEnabled(enabled: boolean): boolean {
         return this.configManager.set('performance', 'quality.enableShadows', enabled);
@@ -668,8 +679,8 @@ export class PerformanceConfig {
 
     /**
      * ブラーエフェクトの有効状態を設定
-     * @param enabled - ブラーエフェクトの有効状態
-     * @returns 設定成功フラグ
+     * @param {boolean} enabled - ブラーエフェクトの有効状態
+     * @returns {boolean} 設定成功フラグ
      */
     setBlurEnabled(enabled: boolean): boolean {
         return this.configManager.set('performance', 'quality.enableBlur', enabled);
@@ -677,8 +688,8 @@ export class PerformanceConfig {
 
     /**
      * アンチエイリアシングの有効状態を設定
-     * @param enabled - アンチエイリアシングの有効状態
-     * @returns 設定成功フラグ
+     * @param {boolean} enabled - アンチエイリアシングの有効状態
+     * @returns {boolean} 設定成功フラグ
      */
     setAntiAliasingEnabled(enabled: boolean): boolean {
         return this.configManager.set('performance', 'quality.enableAntiAliasing', enabled);
@@ -686,8 +697,8 @@ export class PerformanceConfig {
 
     /**
      * 反射エフェクトの有効状態を設定
-     * @param enabled - 反射エフェクトの有効状態
-     * @returns 設定成功フラグ
+     * @param {boolean} enabled - 反射エフェクトの有効状態
+     * @returns {boolean} 設定成功フラグ
      */
     setReflectionsEnabled(enabled: boolean): boolean {
         return this.configManager.set('performance', 'quality.enableReflections', enabled);
@@ -695,8 +706,8 @@ export class PerformanceConfig {
 
     /**
      * 品質プリセットを適用
-     * @param presetName - プリセット名 ('low', 'medium', 'high')
-     * @returns 適用成功フラグ
+     * @param {string} presetName - プリセット名 ('low', 'medium', 'high')
+     * @returns {boolean} 適用成功フラグ
      */
     applyQualityPreset(presetName: 'low' | 'medium' | 'high'): boolean {
         try {
@@ -720,9 +731,9 @@ export class PerformanceConfig {
             this.setBlurEnabled(preset.enableBlur);
             this.setAntiAliasingEnabled(preset.enableAntiAliasing);
             this.setReflectionsEnabled(preset.enableReflections);
-
+            
             // パフォーマンスレベル別の最適化設定を適用
-            switch(presetName) {
+            switch (presetName) {
                 case 'low':
                     this.setMaxBubbles(10);
                     this.setMaxParticles(100);
@@ -739,11 +750,11 @@ export class PerformanceConfig {
             
             // パフォーマンスレベルも更新
             this.setPerformanceLevel(presetName);
-
+            
             console.log(`[PerformanceConfig] 品質プリセット "${presetName}" を適用しました`);
             return true;
         } catch (error) {
-            this.errorHandler.handleError(error as Error, 'PERFORMANCE_CONFIG_PRESET_ERROR', {
+            getErrorHandler().handleError(error as Error, {
                 context: 'PerformanceConfig.applyQualityPreset'
             });
             return false;
@@ -753,7 +764,7 @@ export class PerformanceConfig {
     /**
      * PerformanceOptimizerとの連携インターフェース
      * PerformanceOptimizerに現在の設定を適用する
-     * @param optimizer - PerformanceOptimizerインスタンス
+     * @param {PerformanceOptimizer} optimizer - PerformanceOptimizerインスタンス
      */
     applyToPerformanceOptimizer(optimizer: PerformanceOptimizer): void {
         try {
@@ -768,20 +779,24 @@ export class PerformanceConfig {
             optimizer.setAdaptiveMode(optimizationConfig.adaptiveMode);
             optimizer.optimizationInterval = optimizationConfig.optimizationInterval;
             optimizer.setPerformanceLevel(optimizationConfig.performanceLevel);
-
+            
             // 品質設定の適用
             const qualityConfig = this.getQualityConfig();
-            optimizer.settings.renderQuality = qualityConfig.renderQuality;
-            optimizer.settings.particleQuality = qualityConfig.particleQuality;
-            optimizer.settings.effectQuality = qualityConfig.effectQuality;
-            optimizer.settings.audioQuality = qualityConfig.audioQuality;
-            optimizer.settings.enableShadows = qualityConfig.enableShadows;
-            optimizer.settings.enableBlur = qualityConfig.enableBlur;
-            optimizer.settings.enableAntiAliasing = qualityConfig.enableAntiAliasing;
-
+            optimizer.settings = {
+                maxBubbles: optimizationConfig.maxBubbles,
+                maxParticles: optimizationConfig.maxParticles,
+                renderQuality: qualityConfig.renderQuality,
+                particleQuality: qualityConfig.particleQuality,
+                effectQuality: qualityConfig.effectQuality,
+                audioQuality: qualityConfig.audioQuality,
+                enableShadows: qualityConfig.enableShadows,
+                enableBlur: qualityConfig.enableBlur,
+                enableAntiAliasing: qualityConfig.enableAntiAliasing
+            };
+            
             console.log('[PerformanceConfig] PerformanceOptimizerに設定を適用しました');
         } catch (error) {
-            this.errorHandler.handleError(error as Error, 'PERFORMANCE_CONFIG_APPLY_ERROR', {
+            getErrorHandler().handleError(error as Error, {
                 context: 'PerformanceConfig.applyToPerformanceOptimizer'
             });
         }
@@ -789,7 +804,7 @@ export class PerformanceConfig {
 
     /**
      * PerformanceOptimizerから設定を同期
-     * @param optimizer - PerformanceOptimizerインスタンス
+     * @param {PerformanceOptimizer} optimizer - PerformanceOptimizerインスタンス
      */
     syncFromPerformanceOptimizer(optimizer: PerformanceOptimizer): void {
         try {
@@ -812,10 +827,10 @@ export class PerformanceConfig {
             this.setShadowsEnabled(optimizer.settings.enableShadows);
             this.setBlurEnabled(optimizer.settings.enableBlur);
             this.setAntiAliasingEnabled(optimizer.settings.enableAntiAliasing);
-
+            
             console.log('[PerformanceConfig] PerformanceOptimizerから設定を同期しました');
         } catch (error) {
-            this.errorHandler.handleError(error as Error, 'PERFORMANCE_CONFIG_SYNC_ERROR', {
+            getErrorHandler().handleError(error as Error, {
                 context: 'PerformanceConfig.syncFromPerformanceOptimizer'
             });
         }
@@ -827,7 +842,7 @@ let instance: PerformanceConfig | null = null;
 
 /**
  * PerformanceConfigのシングルトンインスタンスを取得
- * @returns インスタンス
+ * @returns {PerformanceConfig} インスタンス
  */
 export function getPerformanceConfig(): PerformanceConfig {
     if (!instance) {
@@ -835,3 +850,7 @@ export function getPerformanceConfig(): PerformanceConfig {
     }
     return instance;
 }
+
+export {
+    PerformanceConfig
+};

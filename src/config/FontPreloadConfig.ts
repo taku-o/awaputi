@@ -54,16 +54,7 @@ export const fontPreloadConfig: FontPreloadConfig = {
     }
 };
 
-/**
- * 指定言語のプリロードリンクを生成
- * @param language - 言語コード
- * @returns プリロードリンクの配列
- */
 export const generatePreloadLinks = (language: string): string[] => {
     const fonts = fontPreloadConfig.fallbacks[language] || fontPreloadConfig.fallbacks.en;
-    return fonts.map(font => 
-        `<link rel="preload" href="/fonts/${font.replace(' ', '-').toLowerCase()}.woff2" as="font" type="font/woff2" crossorigin>`
-    );
+    return fonts.map(font => `<link rel="preload" href="/fonts/${font.replace(' ', '-').toLowerCase()}.woff2" as="font" type="font/woff2" crossorigin>`);
 };
-
-export default fontPreloadConfig;

@@ -7,7 +7,7 @@
 
 import { getConfigurationManager, ConfigurationManager } from '../core/ConfigurationManager.js';
 import { ORIGINAL_BALANCE_CONFIG } from './GameBalance.js';
-import { getErrorHandler } from '../utils/ErrorHandler.js';
+import { ErrorHandler } from '../utils/ErrorHandler.js';
 
 /**
  * スコア設定の型定義
@@ -57,59 +57,52 @@ export interface StageDifficultyConfig {
 export interface ItemConfig {
     baseCosts: Record<string, number>;
     costMultiplier: number;
-    effects: Record<string, number | object>;
+    effects: Record<string, number>;
     maxLevels: Record<string, number>;
 }
 
 /**
- * バブル設定の型定義
+ * 泡設定の型定義
  */
 export interface BubbleConfig {
     maxAge: Record<string, number>;
     health: Record<string, number>;
-    specialEffects: Record<string, Record<string, any>>;
-}
-
-/**
- * 設定検証ルールの型定義
- */
-export interface ValidationRule {
-    type: 'number' | 'string' | 'boolean' | 'object';
-    min?: number;
-    max?: number;
-    validator?: (value: any) => boolean;
+    specialEffects: Record<string, Record<string, number>>;
 }
 
 export class GameConfig {
     private configManager: ConfigurationManager;
-    private errorHandler: any;
 
     constructor() {
         this.configManager = getConfigurationManager();
-        this.errorHandler = getErrorHandler();
-        this.initialize();
+        this._initialize();
     }
 
     /**
      * 初期化処理 - BALANCE_CONFIGからの設定移行
      * @private
      */
-    private initialize(): void {
+    private _initialize(): void {
         try {
             // スコア設定の移行
-            this.migrateScoreConfig();
+            this._migrateScoreConfig();
+            
             // ステージ設定の移行
-            this.migrateStageConfig();
+            this._migrateStageConfig();
+            
             // アイテム設定の移行
-            this.migrateItemConfig();
+            this._migrateItemConfig();
+            
             // 泡設定の移行
-            this.migrateBubbleConfig();
+            this._migrateBubbleConfig();
+            
             // 検証ルールの設定
-            this.setupValidationRules();
+            this._setupValidationRules();
+            
             console.log('[GameConfig] 初期化完了');
         } catch (error) {
-            this.errorHandler.handleError(error as Error, 'GAME_CONFIG_INIT_ERROR', {
-                context: 'GameConfig.initialize'
+            ErrorHandler.handleError(error as Error, {
+                context: 'GameConfig._initialize'
             });
         }
     }
@@ -118,7 +111,7 @@ export class GameConfig {
      * スコア設定の移行
      * @private
      */
-    private migrateScoreConfig(): void {
+    private _migrateScoreConfig(): void {
         const scoring = ORIGINAL_BALANCE_CONFIG.scoring;
         
         // 基本スコア
@@ -141,7 +134,7 @@ export class GameConfig {
      * ステージ設定の移行
      * @private
      */
-    private migrateStageConfig(): void {
+    private _migrateStageConfig(): void {
         const stages = ORIGINAL_BALANCE_CONFIG.stages;
         
         // 開放条件
@@ -160,7 +153,7 @@ export class GameConfig {
      * アイテム設定の移行
      * @private
      */
-    private migrateItemConfig(): void {
+    private _migrateItemConfig(): void {
         const items = ORIGINAL_BALANCE_CONFIG.items;
         
         // 基本コスト
@@ -186,7 +179,7 @@ export class GameConfig {
      * 泡設定の移行
      * @private
      */
-    private migrateBubbleConfig(): void {
+    private _migrateBubbleConfig(): void {
         const bubbles = ORIGINAL_BALANCE_CONFIG.bubbles;
         
         // 生存時間
@@ -211,194 +204,199 @@ export class GameConfig {
      * 検証ルールの設定
      * @private
      */
-    private setupValidationRules(): void {
+    private _setupValidationRules(): void {
         // スコア設定の検証ルール
-        this.configManager.setValidationRule('game.scoring.combo.multiplierIncrement', {
+        this.configManager.setValidationRule('game', 'scoring.combo.multiplierIncrement', {
             type: 'number',
-            validate: (value: any) => typeof value === 'number' && value >= 0.01 && value <= 0.5
+            min: 0.01,
+            max: 0.5
         });
-
-        this.configManager.setValidationRule('game.scoring.combo.maxMultiplier', {
+        
+        this.configManager.setValidationRule('game', 'scoring.combo.maxMultiplier', {
             type: 'number',
-            validate: (value: any) => typeof value === 'number' && value >= 1 && value <= 10
+            min: 1,
+            max: 10
         });
         
         // ステージ設定の検証ルール
-        this.configManager.setValidationRule('game.stages.difficulty.*.spawnRate', {
+        this.configManager.setValidationRule('game', 'stages.difficulty.*.spawnRate', {
             type: 'number',
-            validate: (value: any) => typeof value === 'number' && value >= 0.5 && value <= 5.0
+            min: 0.5,
+            max: 5.0
         });
-
-        this.configManager.setValidationRule('game.stages.difficulty.*.maxBubbles', {
+        
+        this.configManager.setValidationRule('game', 'stages.difficulty.*.maxBubbles', {
             type: 'number',
-            validate: (value: any) => typeof value === 'number' && value >= 5 && value <= 100
+            min: 5,
+            max: 100
         });
         
         // アイテム設定の検証ルール
-        this.configManager.setValidationRule('game.items.costMultiplier', {
+        this.configManager.setValidationRule('game', 'items.costMultiplier', {
             type: 'number',
-            validate: (value: any) => typeof value === 'number' && value >= 1.0 && value <= 3.0
+            min: 1.0,
+            max: 3.0
         });
     }
 
     /**
      * スコア設定を取得
-     * @returns スコア設定
+     * @returns {Object} スコア設定
      */
     getScoreConfig(): ScoreConfig {
         return {
-            baseScores: this.getConfigObject('game', 'scoring.baseScores'),
-            combo: this.getConfigObject('game', 'scoring.combo') as ComboConfig,
-            ageBonus: this.getConfigObject('game', 'scoring.ageBonus') as AgeBonusConfig
+            baseScores: this._getConfigObject('game', 'scoring.baseScores'),
+            combo: this._getConfigObject('game', 'scoring.combo'),
+            ageBonus: this._getConfigObject('game', 'scoring.ageBonus')
         };
     }
 
     /**
      * 特定の泡タイプの基本スコアを取得
-     * @param bubbleType - 泡タイプ
-     * @returns 基本スコア
+     * @param {string} bubbleType - 泡タイプ
+     * @returns {number} 基本スコア
      */
     getBubbleBaseScore(bubbleType: string): number {
-        return this.configManager.get('game', `scoring.baseScores.${bubbleType}`) ?? 15;
+        return this.configManager.get('game', `scoring.baseScores.${bubbleType}`, 15);
     }
 
     /**
      * コンボ設定を取得
-     * @returns コンボ設定
+     * @returns {Object} コンボ設定
      */
     getComboConfig(): ComboConfig {
-        return this.getConfigObject('game', 'scoring.combo') as ComboConfig;
+        return this._getConfigObject('game', 'scoring.combo');
     }
 
     /**
      * 年齢ボーナス設定を取得
-     * @returns 年齢ボーナス設定
+     * @returns {Object} 年齢ボーナス設定
      */
     getAgeBonusConfig(): AgeBonusConfig {
-        return this.getConfigObject('game', 'scoring.ageBonus') as AgeBonusConfig;
+        return this._getConfigObject('game', 'scoring.ageBonus');
     }
 
     /**
      * ステージ設定を取得
-     * @returns ステージ設定
+     * @returns {Object} ステージ設定
      */
     getStageConfig(): StageConfig {
         return {
-            unlockRequirements: this.getConfigObject('game', 'stages.unlockRequirements'),
-            difficulty: this.getConfigObject('game', 'stages.difficulty') as Record<string, StageDifficultyConfig>
+            unlockRequirements: this._getConfigObject('game', 'stages.unlockRequirements'),
+            difficulty: this._getConfigObject('game', 'stages.difficulty')
         };
     }
 
     /**
      * 特定のステージの難易度設定を取得
-     * @param stageId - ステージID
-     * @returns 難易度設定
+     * @param {string} stageId - ステージID
+     * @returns {Object} 難易度設定
      */
     getStageDifficulty(stageId: string): StageDifficultyConfig {
         return {
-            spawnRate: this.configManager.get('game', `stages.difficulty.${stageId}.spawnRate`) ?? 1.5,
-            maxBubbles: this.configManager.get('game', `stages.difficulty.${stageId}.maxBubbles`) ?? 20
+            spawnRate: this.configManager.get('game', `stages.difficulty.${stageId}.spawnRate`, 1.5),
+            maxBubbles: this.configManager.get('game', `stages.difficulty.${stageId}.maxBubbles`, 20)
         };
     }
 
     /**
      * ステージの開放条件を取得
-     * @param stageId - ステージID
-     * @returns 開放条件（必要TAP）
+     * @param {string} stageId - ステージID
+     * @returns {number} 開放条件（必要TAP）
      */
     getStageUnlockRequirement(stageId: string): number {
-        return this.configManager.get('game', `stages.unlockRequirements.${stageId}`) ?? 0;
+        return this.configManager.get('game', `stages.unlockRequirements.${stageId}`, 0);
     }
 
     /**
      * アイテム設定を取得
-     * @returns アイテム設定
+     * @returns {Object} アイテム設定
      */
     getItemConfig(): ItemConfig {
         return {
-            baseCosts: this.getConfigObject('game', 'items.baseCosts'),
-            costMultiplier: this.configManager.get('game', 'items.costMultiplier') ?? 1.3,
-            effects: this.getConfigObject('game', 'items.effects'),
-            maxLevels: this.getConfigObject('game', 'items.maxLevels')
+            baseCosts: this._getConfigObject('game', 'items.baseCosts'),
+            costMultiplier: this.configManager.get('game', 'items.costMultiplier', 1.3),
+            effects: this._getConfigObject('game', 'items.effects'),
+            maxLevels: this._getConfigObject('game', 'items.maxLevels')
         };
     }
 
     /**
      * 特定のアイテムの基本コストを取得
-     * @param itemId - アイテムID
-     * @returns 基本コスト
+     * @param {string} itemId - アイテムID
+     * @returns {number} 基本コスト
      */
     getItemBaseCost(itemId: string): number {
-        return this.configManager.get('game', `items.baseCosts.${itemId}`) ?? 100;
+        return this.configManager.get('game', `items.baseCosts.${itemId}`, 100);
     }
 
     /**
      * 特定のアイテムの効果値を取得
-     * @param itemId - アイテムID
-     * @returns 効果値
+     * @param {string} itemId - アイテムID
+     * @returns {number|Object} 効果値
      */
-    getItemEffect(itemId: string): number | object {
-        return this.configManager.get('game', `items.effects.${itemId}`) ?? 1;
+    getItemEffect(itemId: string): number | Record<string, any> {
+        return this.configManager.get('game', `items.effects.${itemId}`, 1);
     }
 
     /**
      * 特定のアイテムの最大レベルを取得
-     * @param itemId - アイテムID
-     * @returns 最大レベル
+     * @param {string} itemId - アイテムID
+     * @returns {number} 最大レベル
      */
     getItemMaxLevel(itemId: string): number {
-        return this.configManager.get('game', `items.maxLevels.${itemId}`) ?? 1;
+        return this.configManager.get('game', `items.maxLevels.${itemId}`, 1);
     }
 
     /**
      * 泡設定を取得
-     * @returns 泡設定
+     * @returns {Object} 泡設定
      */
     getBubbleConfig(): BubbleConfig {
         return {
-            maxAge: this.getConfigObject('game', 'bubbles.maxAge'),
-            health: this.getConfigObject('game', 'bubbles.health'),
-            specialEffects: this.getConfigObject('game', 'bubbles.specialEffects')
+            maxAge: this._getConfigObject('game', 'bubbles.maxAge'),
+            health: this._getConfigObject('game', 'bubbles.health'),
+            specialEffects: this._getConfigObject('game', 'bubbles.specialEffects')
         };
     }
 
     /**
      * 特定の泡タイプの生存時間を取得
-     * @param bubbleType - 泡タイプ
-     * @returns 生存時間（ミリ秒）
+     * @param {string} bubbleType - 泡タイプ
+     * @returns {number} 生存時間（ミリ秒）
      */
     getBubbleMaxAge(bubbleType: string): number {
-        return this.configManager.get('game', `bubbles.maxAge.${bubbleType}`) ?? 12000;
+        return this.configManager.get('game', `bubbles.maxAge.${bubbleType}`, 12000);
     }
 
     /**
      * 特定の泡タイプの耐久値を取得
-     * @param bubbleType - 泡タイプ
-     * @returns 耐久値
+     * @param {string} bubbleType - 泡タイプ
+     * @returns {number} 耐久値
      */
     getBubbleHealth(bubbleType: string): number {
-        return this.configManager.get('game', `bubbles.health.${bubbleType}`) ?? 1;
+        return this.configManager.get('game', `bubbles.health.${bubbleType}`, 1);
     }
 
     /**
      * 特定の泡タイプの特殊効果を取得
-     * @param bubbleType - 泡タイプ
-     * @returns 特殊効果
+     * @param {string} bubbleType - 泡タイプ
+     * @returns {Object} 特殊効果
      */
     getBubbleSpecialEffects(bubbleType: string): Record<string, any> {
-        return this.getConfigObject('game', `bubbles.specialEffects.${bubbleType}`);
+        return this._getConfigObject('game', `bubbles.specialEffects.${bubbleType}`);
     }
 
     /**
      * 設定オブジェクトを取得するヘルパーメソッド
      * @private
-     * @param category - 設定カテゴリ
-     * @param prefix - 設定キープレフィックス
-     * @returns 設定オブジェクト
+     * @param {string} category - 設定カテゴリ
+     * @param {string} prefix - 設定キープレフィックス
+     * @returns {Object} 設定オブジェクト
      */
-    private getConfigObject(category: string, prefix: string): Record<string, any> {
+    private _getConfigObject(category: string, prefix: string): any {
         try {
-            const result: Record<string, any> = {};
+            const result: any = {};
             const allSettings = this.configManager.getCategory(category);
             
             for (const [key, value] of Object.entries(allSettings)) {
@@ -423,11 +421,11 @@ export class GameConfig {
                     }
                 }
             }
-
+            
             return result;
         } catch (error) {
-            this.errorHandler.handleError(error as Error, 'GAME_CONFIG_GET_OBJECT_ERROR', {
-                context: 'GameConfig.getConfigObject',
+            ErrorHandler.handleError(error as Error, {
+                context: 'GameConfig._getConfigObject',
                 category,
                 prefix
             });
@@ -437,9 +435,9 @@ export class GameConfig {
 
     /**
      * スコア計算（BalanceHelperからの移行）
-     * @param bubbleType - 泡タイプ
-     * @param ageRatio - 年齢比率（0-1）
-     * @returns 計算されたスコア
+     * @param {string} bubbleType - 泡タイプ
+     * @param {number} ageRatio - 年齢比率（0-1）
+     * @returns {number} 計算されたスコア
      */
     calculateScore(bubbleType: string, ageRatio: number = 0): number {
         try {
@@ -458,7 +456,7 @@ export class GameConfig {
             
             return Math.floor(baseScore * multiplier);
         } catch (error) {
-            this.errorHandler.handleError(error as Error, 'GAME_CONFIG_CALCULATE_SCORE_ERROR', {
+            ErrorHandler.handleError(error as Error, {
                 context: 'GameConfig.calculateScore',
                 bubbleType,
                 ageRatio
@@ -469,8 +467,8 @@ export class GameConfig {
 
     /**
      * コンボ倍率計算（BalanceHelperからの移行）
-     * @param comboCount - コンボ数
-     * @returns コンボ倍率
+     * @param {number} comboCount - コンボ数
+     * @returns {number} コンボ倍率
      */
     calculateComboMultiplier(comboCount: number): number {
         try {
@@ -482,7 +480,7 @@ export class GameConfig {
                 comboConfig.maxMultiplier || 2.5
             );
         } catch (error) {
-            this.errorHandler.handleError(error as Error, 'GAME_CONFIG_CALCULATE_COMBO_ERROR', {
+            ErrorHandler.handleError(error as Error, {
                 context: 'GameConfig.calculateComboMultiplier',
                 comboCount
             });
@@ -492,17 +490,17 @@ export class GameConfig {
 
     /**
      * アイテムコスト計算（BalanceHelperからの移行）
-     * @param itemId - アイテムID
-     * @param currentLevel - 現在のレベル
-     * @returns 計算されたコスト
+     * @param {string} itemId - アイテムID
+     * @param {number} currentLevel - 現在のレベル
+     * @returns {number} 計算されたコスト
      */
     calculateItemCost(itemId: string, currentLevel: number): number {
         try {
             const baseCost = this.getItemBaseCost(itemId);
-            const multiplier = this.configManager.get('game', 'items.costMultiplier') ?? 1.3;
-            return Math.floor(baseCost * Math.pow(multiplier as number, currentLevel));
+            const multiplier = this.configManager.get('game', 'items.costMultiplier', 1.3);
+            return Math.floor(baseCost * Math.pow(multiplier, currentLevel));
         } catch (error) {
-            this.errorHandler.handleError(error as Error, 'GAME_CONFIG_CALCULATE_COST_ERROR', {
+            ErrorHandler.handleError(error as Error, {
                 context: 'GameConfig.calculateItemCost',
                 itemId,
                 currentLevel
@@ -513,16 +511,16 @@ export class GameConfig {
 
     /**
      * ステージ開放チェック（BalanceHelperからの移行）
-     * @param stageId - ステージID
-     * @param playerTAP - プレイヤーのTAP値
-     * @returns 開放状態
+     * @param {string} stageId - ステージID
+     * @param {number} playerTAP - プレイヤーのTAP値
+     * @returns {boolean} 開放状態
      */
     isStageUnlocked(stageId: string, playerTAP: number): boolean {
         try {
             const requirement = this.getStageUnlockRequirement(stageId);
             return !requirement || playerTAP >= requirement;
         } catch (error) {
-            this.errorHandler.handleError(error as Error, 'GAME_CONFIG_STAGE_UNLOCK_ERROR', {
+            ErrorHandler.handleError(error as Error, {
                 context: 'GameConfig.isStageUnlocked',
                 stageId,
                 playerTAP
@@ -537,7 +535,7 @@ let instance: GameConfig | null = null;
 
 /**
  * GameConfigのシングルトンインスタンスを取得
- * @returns インスタンス
+ * @returns {GameConfig} インスタンス
  */
 export function getGameConfig(): GameConfig {
     if (!instance) {
@@ -545,3 +543,7 @@ export function getGameConfig(): GameConfig {
     }
     return instance;
 }
+
+export {
+    GameConfig
+};
