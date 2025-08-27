@@ -222,6 +222,9 @@ export class RealtimeDashboard {
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
+                animation: {
+                    duration: 0 // リアルタイム更新のためアニメーションは無効
+                },
                 scales: {
                     x: {
                         type: 'time',

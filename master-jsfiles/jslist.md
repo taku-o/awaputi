@@ -43,9 +43,9 @@
 - [x] src/analytics/PerformanceDataCollector.js - TypeScript版でコメントアウトされていた変数宣言とtriggerPerformanceWarningの型エラーを修正。処理ロジックは同一
 - [x] src/analytics/PerformanceWarningSystem.js - TypeScript版でコメントアウトされていた変数宣言を修正済み。プライベートメソッドが6つ追加されている（TypeScript版の拡張）。処理ロジックは同一
 - [x] src/analytics/PrivacyManager.js - **実装が大きく異なる**: JS版は同意ダイアログUI実装、TS版はプログラム的な同意管理のみ。匿名化ルール、ストレージキー、メソッド名も異なる。用途に応じた選択が必要
-- [] src/analytics/RealtimeDashboard.js
-- [] src/analytics/RealtimeMonitor.js
-- [] src/analytics/TimeSeriesVisualizer.js
+- [x] src/analytics/RealtimeDashboard.js - TypeScript版でChart.js初期化時のanimation設定が欠落（duration: 0）→ 修正済み
+- [x] src/analytics/RealtimeMonitor.js - TypeScript版でgetAlertHistory()のtype引数が"single"|"batch"に制限（実際は任意のタイプ）→ 修正済み
+- [x] src/analytics/TimeSeriesVisualizer.js - TypeScript版は処理同一（未使用パラメータのコメントアウトのみ）
 - [] src/analytics/analytics-api/APIEndpointManager.js
 - [] src/analytics/analytics-api/DataAggregationProcessor.js
 - [] src/analytics/analytics-api/DataExportHandler.js
