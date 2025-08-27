@@ -10,7 +10,7 @@ import { getConfigurationManager } from '../core/ConfigurationManager';
 
 // エラーハンドラー型定義
 interface ErrorHandler {
-    handleError(error: Error, type: "single" | "batch", context?: any): void;
+    handleError(error: Error, type: string, context?: any): void;
 }
 
 // 設定管理型定義
@@ -140,9 +140,9 @@ export class AudioDataOptimizer {
         };
         // 圧縮アルゴリズム定義
         this.compressionAlgorithms = new Map([
-            ['lossless', this.losslessCompression.bind(this)],
-            ['lossy', this.lossyCompression.bind(this)],
-            ['adaptive', this.adaptiveCompression.bind(this)]
+            ['lossless', this._losslessCompression.bind(this)],
+            ['lossy', this._lossyCompression.bind(this)],
+            ['adaptive', this._adaptiveCompression.bind(this)]
         ]);
         
         // 最適化統計
@@ -554,7 +554,7 @@ export class AudioDataOptimizer {
      * @param settings - 圧縮設定
      * @returns 圧縮されたAudioBuffer
      */
-    private async losslessCompression(buffer: AudioBuffer, _settings: any): Promise<AudioBuffer> {
+    private async _losslessCompression(buffer: AudioBuffer, _settings: any): Promise<AudioBuffer> {
         try {
             // ロスレス圧縮（実際の実装では可逆圧縮アルゴリズムを使用）
             // ここでは無音部分の除去とピーク正規化を行う
@@ -577,7 +577,7 @@ export class AudioDataOptimizer {
      * @param settings - 圧縮設定
      * @returns 圧縮されたAudioBuffer
      */
-    private async lossyCompression(buffer: AudioBuffer, settings: any): Promise<AudioBuffer> {
+    private async _lossyCompression(buffer: AudioBuffer, settings: any): Promise<AudioBuffer> {
         try {
             console.log('Applying lossy compression (dynamic range compression)');
             
@@ -598,7 +598,7 @@ export class AudioDataOptimizer {
      * @param settings - 圧縮設定
      * @returns 圧縮されたAudioBuffer
      */
-    private async adaptiveCompression(buffer: AudioBuffer, settings: any): Promise<AudioBuffer> {
+    private async _adaptiveCompression(buffer: AudioBuffer, settings: any): Promise<AudioBuffer> {
         try {
             console.log('Applying adaptive compression');
             
@@ -606,10 +606,10 @@ export class AudioDataOptimizer {
             const audioCharacteristics = this.analyzeAudioCharacteristics(buffer);
             if (audioCharacteristics.dynamicRange > 0.7) {
                 // 動的レンジが大きい場合はロッシー圧縮
-                return this.lossyCompression(buffer, settings);
+                return this._lossyCompression(buffer, settings);
             } else {
                 // 動的レンジが小さい場合はロスレス圧縮
-                return this.losslessCompression(buffer, settings);
+                return this._losslessCompression(buffer, settings);
             }
 
         } catch (error) {

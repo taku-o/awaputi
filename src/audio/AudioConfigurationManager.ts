@@ -168,7 +168,7 @@ export class AudioConfigurationManager {
      * @param {string} type - 音量タイプ
      * @param {number} newValue - 新しい値
      */
-    onVolumeChange(type: "single" | "batch", newValue: number) {
+    onVolumeChange(type: string, newValue: number) {
         try {
             const validatedValue = Math.max(0, Math.min(1, newValue));
             this.currentConfig.volumes[type] = validatedValue;
@@ -288,7 +288,7 @@ export class AudioConfigurationManager {
      * @param {string} type - 音量タイプ ('master', 'sfx', 'bgm')
      * @param {number} volume - 音量 (0-1)
      */
-    setVolume(type: "single" | "batch", volume: number) {
+    setVolume(type: string, volume: number) {
         try {
             // 入力値の検証
             if (typeof volume !== 'number' || isNaN(volume)) {
@@ -335,7 +335,7 @@ export class AudioConfigurationManager {
      * @param {string} type - 音量タイプ ('master', 'sfx', 'bgm')
      * @returns {number} 音量 (0-1)
      */
-    getVolume(type: "single" | "batch"): number {
+    getVolume(type: string): number {
         try {
             if (this.audioConfig) {
                 switch(type) {

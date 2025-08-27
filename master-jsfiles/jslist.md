@@ -58,12 +58,12 @@
 - [x] src/analytics/enhanced-analytics-manager/PlayerBehaviorAnalyzer.js - TypeScript版でlongSessionMarked変数のコメントアウトを修正
 - [x] src/analytics/enhanced-analytics-manager/SessionManager.js - 処理ロジックの違いなし（インターフェース追加のみ）
 - [x] src/audio/AudioAccessibilitySupport.js - TypeScript版でコメントアウトされた変数（audioManager等）を修正、ErrorHandler型定義を修正
-- [] src/audio/AudioCacheManager.js
-- [] src/audio/AudioConfigurationManager.js
-- [] src/audio/AudioContextManager.js
-- [] src/audio/AudioController.js
-- [] src/audio/AudioDataOptimizer.js
-- [] src/audio/AudioErrorHandler.js
+- [x] src/audio/AudioCacheManager.js - TypeScript版でaudioContext変数のコメントアウトを修正、ErrorHandler型定義を修正
+- [x] src/audio/AudioConfigurationManager.js - 型制限エラー（type: "single"|"batch" → string）修正完了
+- [x] src/audio/AudioContextManager.js - 処理ロジックの違いなし。型定義追加のみ
+- [x] src/audio/AudioController.js - メソッド名の違い（_performInitialization）修正完了
+- [x] src/audio/AudioDataOptimizer.js - ErrorHandler型定義とメソッド名（_losslessCompression等）修正完了
+- [x] src/audio/AudioErrorHandler.js - ErrorHandler型定義修正、localizationManager宣言追加完了
 - [] src/audio/AudioManager.js
 - [] src/audio/AudioPerformanceMonitor.js
 - [] src/audio/AudioPlaybackController.js

@@ -4,7 +4,7 @@ import { getLocalizationManager } from '../core/LocalizationManager';
 
 // エラーハンドラー型定義
 interface ErrorHandler {
-    handleError(error: Error, type: "single" | "batch", context?: any): void;
+    handleError(error: Error, type: string, context?: any): void;
 }
 
 // 設定管理型定義
@@ -13,9 +13,9 @@ interface ConfigurationManager {
 }
 
 // ローカライゼーション管理型定義
-// interface LocalizationManager {
-//     // Localization manager methods
-// }
+interface LocalizationManager {
+    // Localization manager methods
+}
 
 // オーディオマネージャー型定義
 interface AudioManager {
@@ -148,7 +148,7 @@ interface ErrorReport {
 // エラーデータ型定義
 interface ErrorData {
     timestamp: string;
-    type: "single" | "batch";
+    type: string;
     severity: string;
     message: string;
     stack?: string;
@@ -166,7 +166,7 @@ interface ErrorData {
 export class AudioErrorHandler {
     private audioManager: AudioManager;
     private configManager: ConfigurationManager;
-    // private localizationManager: LocalizationManager;
+    private localizationManager: LocalizationManager;
     private globalErrorHandler: ErrorHandler;
     
     // エラー統計

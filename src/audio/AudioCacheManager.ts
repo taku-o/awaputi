@@ -57,7 +57,7 @@ import { CacheStatistics } from './cache/CacheStatistics';
 
 // エラーハンドラー型定義
 interface ErrorHandler {
-    handleError(error: Error, type: "single" | "batch", context?: any): void;
+    handleError(error: Error, type: string, context?: any): void;
 }
 
 // 設定管理型定義
@@ -126,7 +126,7 @@ interface AudioCacheManagerStatus {
 }
 
 export class AudioCacheManager {
-    // private audioContext: AudioContext;
+    private audioContext: AudioContext;
     private configManager: ConfigurationManager;
     private errorHandler: ErrorHandler;
     // キャッシュ設定
