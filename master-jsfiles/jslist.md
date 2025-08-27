@@ -78,13 +78,13 @@
 - [⚠️] src/audio/PresetManager.js - 重大：完全に異なる実装（TypeScript版とJavaScript版が別物）
 - [x] src/audio/ProceduralSoundGenerator.js - 型キャスト修正完了
 - [⚠️] src/audio/SoundEffectSystem.js - 重大：完全に異なる実装（TypeScript版とJavaScript版が別物）
-- [] src/audio/accessibility/AudioAccessibilitySupport.js
-- [] src/audio/accessibility/AudioCueManager.js
-- [] src/audio/accessibility/AudioDescriptionManager.js
-- [] src/audio/accessibility/AudioEventManager.js
-- [] src/audio/accessibility/AudioFeedbackManager.js
-- [] src/audio/accessibility/AudioLegacyAdapter.js
-- [] src/audio/accessibility/AudioSettingsManager.js
+- [x] src/audio/accessibility/AudioAccessibilitySupport.js - コメントアウト変数・型定義修正完了
+- [x] src/audio/accessibility/AudioCueManager.js - 型定義修正完了
+- [x] src/audio/accessibility/AudioDescriptionManager.js - errorHandlerコメントアウト・型定義修正完了
+- [x] src/audio/accessibility/AudioEventManager.js - mainControllerコメントアウト・型定義修正完了
+- [x] src/audio/accessibility/AudioFeedbackManager.js - ColorMappingコメントアウト修正完了
+- [⚠️] src/audio/accessibility/AudioLegacyAdapter.js - 処理ロジックの違い（メソッド呼び出し方法が異なる）
+- [x] src/audio/accessibility/AudioSettingsManager.js - 処理ロジックの違いなし
 - [] src/audio/cache/CacheDataLoader.js
 - [] src/audio/cache/CacheMemoryManager.js
 - [] src/audio/cache/CacheStatistics.js

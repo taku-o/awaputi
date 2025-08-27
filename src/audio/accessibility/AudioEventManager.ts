@@ -8,7 +8,7 @@
 // Types for audio events
 interface AudioAccessibilityEvent {
     id: string;
-    type: "single" | "batch";
+    type: string;
     data: Record<string, any>;
     timestamp: number;
 }
@@ -36,7 +36,7 @@ interface MainController {
 }
 
 export class AudioEventManager {
-    // private mainController: MainController;
+    private mainController: MainController;
     private eventHistory: AudioAccessibilityEvent[];
     private maxHistorySize: number;
     private initializationTime: number;

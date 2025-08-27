@@ -163,9 +163,9 @@ interface SettingsChangeEvent {
  * Main Controller Patternを採用し、各専門コンポーネントを統制
  */
 export class ComponentAudioAccessibilitySupport {
-    // private audioManager: AudioManager;
-    // private configManager: ConfigurationManager;
-    // private localizationManager: LocalizationManager;
+    private audioManager: AudioManager;
+    private configManager: ConfigurationManager;
+    private localizationManager: LocalizationManager;
     private errorHandler: ErrorHandler;
     // Sub-components
     private descriptionManager: AudioDescriptionManager;
@@ -176,7 +176,7 @@ export class ComponentAudioAccessibilitySupport {
     private legacyAdapter: AudioLegacyAdapter;
     // Legacy compatibility properties
     // private vibrationManager: VibrationManager;
-    // private visualNotifications: any[];
+    private visualNotifications: any[];
     
     constructor(audioManager: AudioManager) {
         this.audioManager = audioManager;
@@ -262,7 +262,7 @@ export class ComponentAudioAccessibilitySupport {
      * @param params - パラメータ
      * @param priority - 優先度
      */
-    addAudioDescription(category: string, type: "single" | "batch", params: any = {}, priority: number = 3): void {
+    addAudioDescription(category: string, type: string, params: any = {}, priority: number = 3): void {
         this.descriptionManager.addDescription(category, type, params, priority);
         this.eventManager.recordEvent('audio_description', { category, type, params, priority });
     }
@@ -292,7 +292,7 @@ export class ComponentAudioAccessibilitySupport {
      * 触覚フィードバックのトリガー（FeedbackManagerに委譲）
      * @param type - フィードバックタイプ
      */
-    triggerHapticFeedback(type: "single" | "batch"): void {
+    triggerHapticFeedback(type: string): void {
         this.feedbackManager.triggerVibration(type);
         this.eventManager.recordEvent('haptic_feedback', { type });
     }
