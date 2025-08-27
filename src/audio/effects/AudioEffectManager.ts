@@ -314,7 +314,10 @@ export class AudioEffectManager {
             const wetGain = this.audioContext.createGain();
             const dryGain = this.audioContext.createGain();
             const outputGain = this.audioContext.createGain();
-
+            
+            wetGain.gain.value = 0.3;
+            dryGain.gain.value = 0.7;
+            
             this.effectNodes.set('reverb', {
                 input: this.audioContext.createGain(),
                 convolver,
@@ -405,7 +408,12 @@ export class AudioEffectManager {
         const wetGain = this.audioContext.createGain();
         const dryGain = this.audioContext.createGain();
         const outputGain = this.audioContext.createGain();
-
+        
+        delay.delayTime.value = 0.3;
+        feedback.gain.value = 0.4;
+        wetGain.gain.value = 0.3;
+        dryGain.gain.value = 0.7;
+        
         this.effectNodes.set('delay', {
             input: this.audioContext.createGain(),
             delay,
@@ -491,7 +499,13 @@ export class AudioEffectManager {
         const wetGain = this.audioContext.createGain();
         const dryGain = this.audioContext.createGain();
         const outputGain = this.audioContext.createGain();
-
+        
+        lfo.frequency.value = 0.5;
+        lfoGain.gain.value = 0.01;
+        delay.delayTime.value = 0.02;
+        wetGain.gain.value = 0.5;
+        dryGain.gain.value = 0.5;
+        
         this.effectNodes.set('chorus', {
             input: this.audioContext.createGain(),
             delay,
@@ -521,6 +535,12 @@ export class AudioEffectManager {
      */
     private createCompressorEffect(): void {
         const compressor = this.audioContext.createDynamicsCompressor();
+        compressor.threshold.value = -24;
+        compressor.knee.value = 30;
+        compressor.ratio.value = 12;
+        compressor.attack.value = 0.003;
+        compressor.release.value = 0.25;
+        
         this.effectNodes.set('compressor', {
             input: compressor,
             compressor,
@@ -533,7 +553,7 @@ export class AudioEffectManager {
      * エフェクトチェーンを設定
      */
     private setupEffectChains(): void {
-        // バブル音用チェーン
+        // 泡破壊音用チェーン
         this.effectChains.set('bubble', ['filter', 'reverb']);
         // UI音用チェーン
         this.effectChains.set('ui', ['filter', 'compressor']);

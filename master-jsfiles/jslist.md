@@ -94,9 +94,9 @@
 - [x] src/audio/components/AudioFormatHandler.js - ✅ **処理同一** TypeScript版は正常、包括的な型定義・インターフェース追加、オプショナルチェーン・型キャスト適用
 - [x] src/audio/components/AudioVolumeController.js - ✅ **処理同一** TypeScript版は正常、包括的なインターフェース・型定義追加、適切な型安全性確保
 - [x] src/audio/effects/AudioEffectContextManager.js - ✅ **処理ロジック改良・機能拡張** TypeScript版は正常、包括的なインターフェース・型定義追加、軽微なバグ修正とロジック改良
-- [] src/audio/effects/AudioEffectManager.js
-- [] src/audio/effects/SoundEffectRenderer.js
-- [] src/audio/effects/SoundPoolManager.js
+- [❌] src/audio/effects/AudioEffectManager.js - **重大な型制限問題**: ActiveEffectInstanceのtype型が"single"|"batch"に制限されているが実際はエフェクトタイプ文字列が必要、getEffectVariationの引数型も同様に制限、コンプレッサー設定・ゲインノード初期値の軽微な省略
+- [✅] src/audio/effects/SoundEffectRenderer.js - **処理同一** TypeScript版は正常、設定値の軽微な調整（デフォルト値、周波数等）があるが処理ロジックは同一、詳細な型定義追加
+- [✅] src/audio/effects/SoundPoolManager.js - **処理同一・改良** TypeScript版は正常、null安全性とタイマー管理が改善、詳細な型定義追加、基本処理ロジックは同一
 - [] src/audio/environmental-audio-manager/BiomeDefinitionManager.js
 - [] src/audio/environmental-audio-manager/BiomeTransitionController.js
 - [] src/audio/environmental-audio-manager/EnvironmentalAudioSettings.js
