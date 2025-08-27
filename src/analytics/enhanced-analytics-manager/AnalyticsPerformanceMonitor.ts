@@ -181,7 +181,7 @@ export class AnalyticsPerformanceMonitor {
      * @param {string} type - メトリクスタイプ
      * @param {any} value - 値
      */
-    addToHistory(type: "single" | "batch", value: any): void {
+    addToHistory(type: string, value: any): void {
         this.performanceHistory.push({
             type,
             value,
