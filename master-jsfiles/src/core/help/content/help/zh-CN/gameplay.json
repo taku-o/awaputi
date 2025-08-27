@@ -1,0 +1,243 @@
+{
+  "category": "gameplay",
+  "title": "游戏指南",
+  "description": "awaputi的基本游戏方法和规则",
+  "language": "zh-CN",
+  "version": "1.0.0",
+  "lastUpdated": "2025-01-27",
+  "topics": [
+    {
+      "id": "basics",
+      "title": "游戏基础",
+      "description": "游戏目标和基本规则",
+      "content": {
+        "overview": "awaputi是一个动作游戏，通过戳破出现在屏幕上的泡泡来获得高分。",
+        "objective": "在限定时间内戳破尽可能多的泡泡以获得高分。",
+        "basic_rules": [
+          "泡泡会随时间自然破裂并对HP造成伤害",
+          "HP归零时游戏结束",
+          "连续戳破泡泡会产生连击并获得分数奖励",
+          "特殊泡泡具有各自不同的效果"
+        ],
+        "tips": [
+          "优先处理危险泡泡（红色闪烁）",
+          "战略性使用特殊泡泡的效果",
+          "保持连击以最大化分数"
+        ]
+      },
+      "difficulty": "beginner",
+      "estimatedReadTime": 120,
+      "tags": ["基础", "规则", "目标"]
+    },
+    {
+      "id": "controls_guide",
+      "title": "操作方法",
+      "description": "鼠标・键盘操作的详细指南",
+      "content": {
+        "mouse_controls": {
+          "left_click": "点击泡泡将其戳破",
+          "drag": "拖拽泡泡将其推开",
+          "double_click": "硬化泡泡（石头泡泡・铁质泡泡）的连续点击"
+        },
+        "keyboard_shortcuts": {
+          "esc": "打开/关闭菜单",
+          "h": "显示帮助",
+          "p": "游戏暂停",
+          "space": "游戏暂停（仅游戏中）",
+          "ctrl_shift_d": "切换调试模式",
+          "f": "切换全屏",
+          "m": "音乐静音切换"
+        },
+        "advanced_techniques": [
+          "用拖拽操作将泡泡移动到安全位置",
+          "为同时处理多个泡泡而调整配置",
+          "考虑特殊泡泡效果范围的战略配置"
+        ]
+      },
+      "difficulty": "beginner",
+      "estimatedReadTime": 180,
+      "tags": ["操作", "鼠标", "键盘", "快捷键"]
+    },
+    {
+      "id": "game_mechanics",
+      "title": "游戏机制",
+      "description": "包含HP、计时器、难度的系统详情",
+      "content": {
+        "hp_system": {
+          "description": "玩家HP（生命值）系统",
+          "mechanics": [
+            "初始HP：100",
+            "泡泡自然破裂时受到伤害",
+            "伤害量因泡泡类型而异",
+            "粉色泡泡可以恢复HP",
+            "HP归零时游戏结束"
+          ]
+        },
+        "timer_system": {
+          "description": "时间限制和计时器系统",
+          "mechanics": [
+            "每个阶段设定时间限制",
+            "在时间限制内获得尽可能多的分数",
+            "时钟泡泡触发时间停止效果",
+            "基于剩余时间的奖励分数"
+          ]
+        },
+        "difficulty_scaling": {
+          "description": "难度逐步增加",
+          "mechanics": [
+            "泡泡出现频率随时间增加",
+            "特殊泡泡出现率变化",
+            "泡泡移动速度逐渐加快",
+            "新泡泡类型逐步解锁"
+          ]
+        }
+      },
+      "difficulty": "intermediate",
+      "estimatedReadTime": 240,
+      "tags": ["HP", "计时器", "难度", "系统"]
+    },
+    {
+      "id": "scoring_system",
+      "title": "得分系统",
+      "description": "分数计算和连击系统的详细说明",
+      "content": {
+        "base_scoring": {
+          "description": "基本分数计算",
+          "normal_bubble": 15,
+          "special_bubbles": {
+            "rainbow": 50,
+            "pink": 25,
+            "clock": 30,
+            "golden": 75,
+            "stone": 30,
+            "iron": 45,
+            "diamond": 60
+          }
+        },
+        "combo_system": {
+          "description": "连击系统详情",
+          "mechanics": [
+            "连续戳破泡泡时连击数增加",
+            "基于连击数的分数倍率上升",
+            "无操作一定时间后连击重置",
+            "基于最大连击数的特别奖励"
+          ],
+          "multipliers": {
+            "2-5连击": "1.2倍",
+            "6-10连击": "1.5倍",
+            "11-20连击": "2.0倍",
+            "21+连击": "2.5倍"
+          }
+        },
+        "bonus_scoring": {
+          "perfect_timing": "破裂前瞬间戳破的完美时机奖励1.5倍",
+          "chain_reaction": "连锁反应的额外奖励",
+          "time_bonus": "基于剩余时间的清关奖励",
+          "hp_bonus": "基于剩余HP的奖励"
+        }
+      },
+      "difficulty": "intermediate",
+      "estimatedReadTime": 300,
+      "tags": ["分数", "连击", "奖励", "计算"]
+    },
+    {
+      "id": "game_strategies",
+      "title": "游戏策略",
+      "description": "获得高分的策略和技巧",
+      "content": {
+        "priority_management": {
+          "description": "泡泡处理优先级",
+          "high_priority": [
+            "即将破裂的危险泡泡（红色闪烁）",
+            "毒泡泡（提前处理避免HP减少）",
+            "电气泡泡（最小化屏幕震动的干扰）"
+          ],
+          "medium_priority": [
+            "彩虹泡泡（触发奖励时间）",
+            "黄金泡泡（获得高分）",
+            "时钟泡泡（时间停止效果）"
+          ],
+          "low_priority": [
+            "普通泡泡（基本分数）",
+            "石头泡泡・铁质泡泡（有时间余裕时）"
+          ]
+        },
+        "combo_strategies": {
+          "description": "高效的连击维持策略",
+          "techniques": [
+            "从泡泡密集的区域开始处理",
+            "利用特殊泡泡效果进行连锁",
+            "用拖拽聚集泡泡后一起处理",
+            "用爆炸泡泡进行批量处理"
+          ]
+        },
+        "special_bubble_tactics": {
+          "description": "特殊泡泡的战略性使用",
+          "tactics": [
+            "彩虹泡泡：高分泡泡较多时使用",
+            "时钟泡泡：画面混乱时用于清理",
+            "磁性泡泡：聚集泡泡准备连击",
+            "爆炸泡泡：批量处理危险泡泡",
+            "冰冻泡泡：争取时间制定策略"
+          ]
+        },
+        "advanced_techniques": [
+          "利用画面边缘引导泡泡",
+          "特殊效果的组合产生协同效应",
+          "风险管理（HP保存 vs 高分追求）",
+          "终局策略（剩余时间的利用）"
+        ]
+      },
+      "difficulty": "advanced",
+      "estimatedReadTime": 420,
+      "tags": ["策略", "技巧", "高分", "优先级"]
+    }
+  ],
+  "quick_reference": {
+    "essential_controls": {
+      "click": "戳破泡泡",
+      "drag": "移动泡泡",
+      "esc": "菜单",
+      "h": "帮助",
+      "p": "暂停"
+    },
+    "danger_signs": [
+      "红色闪烁的泡泡（即将破裂）",
+      "毒泡泡的紫色光环",
+      "HP减少警告音"
+    ],
+    "high_value_targets": [
+      "彩虹泡泡（奖励时间）",
+      "黄金泡泡（高分）",
+      "特殊效果泡泡（战略价值）"
+    ]
+  },
+  "troubleshooting": {
+    "common_problems": [
+      {
+        "problem": "泡泡对点击无反应",
+        "solutions": [
+          "确认鼠标是否准确定位在泡泡上",
+          "浏览器缩放设为100%",
+          "检查其他应用是否阻止输入"
+        ]
+      },
+      {
+        "problem": "游戏缓慢或卡顿",
+        "solutions": [
+          "在设置中降低视觉效果",
+          "关闭其他浏览器标签页",
+          "更改设置减少粒子数量"
+        ]
+      },
+      {
+        "problem": "无法获得高分",
+        "solutions": [
+          "活用连击系统",
+          "理解并使用特殊泡泡效果",
+          "提前处理危险泡泡保存HP"
+        ]
+      }
+    ]
+  }
+}

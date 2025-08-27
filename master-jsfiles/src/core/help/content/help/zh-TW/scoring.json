@@ -1,0 +1,127 @@
+{
+  "category": "scoring",
+  "title": "得分指南",
+  "description": "得分系統和積分計算的完整指南",
+  "language": "zh-TW",
+  "version": "1.0.0",
+  "lastUpdated": "2025-01-27",
+  "topics": [
+    {
+      "id": "scoring_system",
+      "title": "得分系統",
+      "description": "得分計算和連擊系統的詳細資訊",
+      "content": {
+        "base_scoring": {
+          "description": "基本得分計算",
+          "normal_bubble": 15,
+          "special_bubbles": {
+            "rainbow": 50,
+            "pink": 25,
+            "clock": 30,
+            "golden": 75,
+            "stone": 30,
+            "iron": 45,
+            "diamond": 60
+          }
+        },
+        "combo_system": {
+          "description": "連擊系統詳細資訊",
+          "mechanics": [
+            "連續戳破泡泡時連擊數增加",
+            "根據連擊數提高得分倍率",
+            "停止操作後連擊重置",
+            "根據最大連擊數獲得特別獎勵"
+          ],
+          "multipliers": {
+            "2-5 combo": "1.2倍",
+            "6-10 combo": "1.5倍",
+            "11-20 combo": "2.0倍",
+            "21+ combo": "2.5倍"
+          }
+        },
+        "bonus_scoring": {
+          "perfect_timing": "爆破前瞬間戳破獲得1.5倍獎勵",
+          "chain_reaction": "連鎖反應產生的額外獎勵",
+          "time_bonus": "基於剩餘時間的通關獎勵",
+          "hp_bonus": "基於剩餘生命值的獎勵"
+        }
+      },
+      "difficulty": "intermediate",
+      "estimatedReadTime": 300,
+      "tags": ["得分", "連擊", "獎勵", "計算"]
+    },
+    {
+      "id": "high_score_strategies",
+      "title": "高分策略",
+      "description": "達成最高分數的高級技巧",
+      "content": {
+        "combo_maintenance": {
+          "description": "維持長連擊的技巧",
+          "strategies": [
+            "提前規劃泡泡處理順序",
+            "使用特殊泡泡延長連擊鏈",
+            "優先處理密集泡泡便於連續操作",
+            "避免操作中斷以保持節奏"
+          ]
+        },
+        "multiplier_optimization": {
+          "description": "得分倍率最大化",
+          "techniques": [
+            "瞄準21+連擊獲得最大2.5倍倍率",
+            "在高連擊期間使用時間停止泡泡",
+            "結合完美時機和高連擊倍率",
+            "在連擊峰值期使用高分泡泡"
+          ]
+        },
+        "bonus_maximization": {
+          "description": "獎勵得分最大化",
+          "methods": [
+            "在自然爆破前處理危險泡泡",
+            "用爆炸泡泡製造連鎖反應",
+            "保持生命值獲得終局獎勵",
+            "優化剩餘時間獲得最大時間獎勵"
+          ]
+        }
+      },
+      "difficulty": "advanced",
+      "estimatedReadTime": 240,
+      "tags": ["策略", "高分", "優化", "高級"]
+    },
+    {
+      "id": "score_calculation",
+      "title": "得分計算詳情",
+      "description": "得分計算的數學分析",
+      "content": {
+        "formula_breakdown": {
+          "base_formula": "得分 = (基礎積分 × 連擊倍率) + 獎勵",
+          "combo_multiplier_formula": "倍率 = min(2.5, 1.0 + (連擊數 / 10))",
+          "time_bonus_formula": "時間獎勵 = 剩餘秒數 × 10",
+          "hp_bonus_formula": "生命值獎勵 = 剩餘生命值 × 5"
+        },
+        "example_calculations": [
+          {
+            "scenario": "金色泡泡(75分) + 15連擊",
+            "calculation": "75 × 2.0 + 獎勵 = 150+分"
+          },
+          {
+            "scenario": "完美時機彩虹泡泡(50分) + 25連擊",
+            "calculation": "50 × 1.5 × 2.5 + 獎勵 = 187.5+分"
+          },
+          {
+            "scenario": "連鎖反應(5個泡泡，平均30分) + 10連擊",
+            "calculation": "150 × 1.5 + 連鎖獎勵 = 225+分"
+          }
+        ],
+        "scoring_tips": [
+          "連擊倍率上限為2.5倍（21+連擊）",
+          "完美時機在連擊倍率前增加50%",
+          "連鎖反應根據連鎖中泡泡數量增加獎勵",
+          "時間和生命值獎勵在所有倍率後添加"
+        ]
+      },
+      "difficulty": "advanced",
+      "estimatedReadTime": 360,
+      "tags": ["計算", "公式", "數學", "詳細"]
+    }
+  ]
+}

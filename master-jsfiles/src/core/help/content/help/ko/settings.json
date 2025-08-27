@@ -1,0 +1,468 @@
+{
+  "category": "settings",
+  "title": "설정 가이드",
+  "description": "게임 설정과 커스터마이징 옵션",
+  "language": "ko",
+  "version": "1.0.0",
+  "lastUpdated": "2025-01-27",
+  "topics": [
+    {
+      "id": "audio_settings",
+      "title": "음성 설정",
+      "description": "BGM, 효과음, 음량의 세부 설정",
+      "content": {
+        "volume_controls": {
+          "master_volume": {
+            "description": "전체 음량 조정",
+            "range": "0% - 100%",
+            "default": "80%",
+            "note": "다른 음량 설정의 기준이 됩니다"
+          },
+          "bgm_volume": {
+            "description": "배경 음악 음량",
+            "range": "0% - 100%",
+            "default": "60%",
+            "tracks": [
+              "메인 메뉴 BGM",
+              "게임플레이 BGM",
+              "보너스 타임 BGM",
+              "게임 오버 BGM"
+            ]
+          },
+          "sfx_volume": {
+            "description": "효과음 음량",
+            "range": "0% - 100%",
+            "default": "70%",
+            "sound_types": [
+              "버블이 터지는 소리",
+              "특수 효과음",
+              "경고음",
+              "UI 조작음"
+            ]
+          }
+        },
+        "audio_quality": {
+          "sample_rate": {
+            "description": "음성 샘플링 레이트",
+            "options": ["22kHz", "44kHz", "48kHz"],
+            "default": "44kHz",
+            "impact": "고품질일수록 CPU 사용량 증가"
+          },
+          "audio_buffer": {
+            "description": "음성 버퍼 크기",
+            "options": ["작게 (저지연)", "보통 (표준)", "크게 (안정)"],
+            "default": "보통",
+            "recommendation": "음성이 끊어질 경우 '크게'를 선택"
+          }
+        },
+        "accessibility_audio": {
+          "visual_audio_cues": {
+            "description": "음성 시각화",
+            "features": [
+              "음량에 따른 화면 플래시",
+              "중요한 소리의 자막 표시",
+              "진동 피드백 (지원 기기)"
+            ]
+          },
+          "audio_descriptions": {
+            "description": "음성 해설 기능",
+            "content": "화면 상황의 음성 설명",
+            "activation": "설정 → 접근성 → 음성 해설"
+          }
+        }
+      },
+      "difficulty": "beginner",
+      "estimatedReadTime": 180,
+      "tags": ["음성", "음량", "BGM", "효과음"]
+    },
+    {
+      "id": "display_settings",
+      "title": "화면 설정",
+      "description": "화면 표시와 시각 효과 설정",
+      "content": {
+        "resolution_settings": {
+          "canvas_resolution": {
+            "description": "게임 화면 해상도",
+            "options": [
+              "800x600 (4:3)",
+              "1024x768 (4:3)",
+              "1280x720 (16:9)",
+              "1920x1080 (16:9)",
+              "자동 조정"
+            ],
+            "default": "자동 조정",
+            "note": "브라우저 창 크기에 맞춰서 조정"
+          },
+          "ui_scaling": {
+            "description": "UI 표시 스케일",
+            "range": "50% - 200%",
+            "default": "100%",
+            "impact": "텍스트와 버튼의 크기 변경"
+          }
+        },
+        "visual_effects": {
+          "particle_effects": {
+            "description": "파티클 효과 설정",
+            "quality_levels": {
+              "off": "파티클 효과 비활성화",
+              "low": "최소한의 파티클",
+              "medium": "표준 파티클",
+              "high": "풍부한 파티클 효과",
+              "ultra": "최고 품질 파티클"
+            },
+            "default": "medium",
+            "performance_impact": "고품질일수록 GPU 사용량 증가"
+          },
+          "animation_quality": {
+            "description": "애니메이션 품질",
+            "options": ["간단", "표준", "부드럽게", "최대"],
+            "default": "표준",
+            "features": [
+              "버블 움직임의 부드러움",
+              "UI 전환의 아름다움",
+              "특수 효과의 세밀함"
+            ]
+          },
+          "screen_effects": {
+            "description": "화면 효과",
+            "options": {
+              "screen_shake": "화면 흔들림 효과",
+              "flash_effects": "플래시 효과",
+              "blur_effects": "블러 효과",
+              "glow_effects": "글로우 효과"
+            },
+            "customization": "개별적으로 활성/비활성 설정 가능"
+          }
+        },
+        "color_settings": {
+          "color_theme": {
+            "description": "컬러 테마",
+            "options": [
+              "표준 (컬러풀)",
+              "파스텔 (부드러운 색조)",
+              "다크 (어두운 색)",
+              "고대비 (명료)",
+              "색각 이상자 대응"
+            ],
+            "default": "표준"
+          },
+          "brightness": {
+            "description": "화면 밝기",
+            "range": "50% - 150%",
+            "default": "100%",
+            "note": "어두운 환경에서 플레이 시 조정"
+          },
+          "contrast": {
+            "description": "대비 조정",
+            "range": "50% - 200%",
+            "default": "100%",
+            "benefit": "버블과 배경의 명확한 구분"
+          }
+        }
+      },
+      "difficulty": "beginner",
+      "estimatedReadTime": 240,
+      "tags": ["화면", "시각", "해상도", "효과"]
+    },
+    {
+      "id": "performance_settings",
+      "title": "성능 설정",
+      "description": "게임 속도와 안정성의 최적화",
+      "content": {
+        "frame_rate": {
+          "target_fps": {
+            "description": "목표 프레임 레이트",
+            "options": ["30 FPS", "60 FPS", "120 FPS", "무제한"],
+            "default": "60 FPS",
+            "recommendation": "표준 디스플레이에는 60 FPS가 최적"
+          },
+          "vsync": {
+            "description": "수직 동기화",
+            "options": ["끄기", "켜기", "적응형"],
+            "default": "적응형",
+            "benefits": "화면 티어링 방지, 프레임 레이트 안정화"
+          },
+          "frame_skip": {
+            "description": "프레임 스킵",
+            "options": ["끄기", "가볍게", "적극적"],
+            "default": "가볍게",
+            "usage": "저성능 기기에서 성능 개선"
+          }
+        },
+        "memory_management": {
+          "texture_quality": {
+            "description": "텍스처 품질",
+            "options": ["낮음", "보통", "높음", "최대"],
+            "default": "높음",
+            "memory_usage": "고품질일수록 VRAM 사용량 증가"
+          },
+          "memory_cleanup": {
+            "description": "메모리 정리",
+            "frequency": ["없음", "가볍게", "표준", "적극적"],
+            "default": "표준",
+            "effect": "정기적으로 사용하지 않는 메모리 해제"
+          },
+          "preload_assets": {
+            "description": "에셋 사전 로딩",
+            "options": ["최소한", "표준", "모두"],
+            "default": "표준",
+            "tradeoff": "로딩 시간 vs 게임 중 편안함"
+          }
+        },
+        "cpu_optimization": {
+          "background_processing": {
+            "description": "백그라운드 처리",
+            "options": ["최소한", "표준", "완전"],
+            "default": "표준",
+            "includes": [
+              "통계 계산",
+              "AI 처리",
+              "네트워크 통신",
+              "파일 저장"
+            ]
+          },
+          "multithreading": {
+            "description": "멀티스레딩",
+            "options": ["단일", "듀얼", "멀티", "자동"],
+            "default": "자동",
+            "benefit": "여러 CPU 코어의 효율적 활용"
+          }
+        },
+        "battery_optimization": {
+          "power_saving": {
+            "description": "절전 모드",
+            "activation": "배터리 잔량에 따라 자동 활성화",
+            "adjustments": [
+              "프레임 레이트를 30 FPS로 제한",
+              "파티클 효과 경감",
+              "백그라운드 처리 최소화",
+              "화면 밝기 자동 조정"
+            ]
+          },
+          "thermal_management": {
+            "description": "열 관리",
+            "monitoring": "CPU・GPU 온도 모니터링",
+            "throttling": "과열 시 자동 성능 제한",
+            "alert": "고온 경고와 쿨다운 권장"
+          }
+        }
+      },
+      "difficulty": "intermediate",
+      "estimatedReadTime": 300,
+      "tags": ["성능", "FPS", "최적화", "메모리"]
+    },
+    {
+      "id": "gameplay_settings",
+      "title": "게임플레이 설정",
+      "description": "게임 경험을 커스터마이징하는 설정",
+      "content": {
+        "difficulty_settings": {
+          "game_speed": {
+            "description": "게임 속도",
+            "range": "50% - 150%",
+            "default": "100%",
+            "effect": "버블 출현 빈도와 이동 속도에 영향"
+          },
+          "bubble_density": {
+            "description": "버블 밀도",
+            "options": ["희소", "표준", "조밀", "초조밀"],
+            "default": "표준",
+            "impact": "동시에 표시되는 버블의 최대 수"
+          },
+          "special_bubble_rate": {
+            "description": "특수 버블 출현율",
+            "range": "0% - 200%",
+            "default": "100%",
+            "note": "0%로 특수 버블을 완전 비활성화"
+          }
+        },
+        "assistance_settings": {
+          "auto_pause": {
+            "description": "자동 일시정지",
+            "triggers": [
+              "창이 포커스를 잃었을 때",
+              "일정 시간 조작이 없을 때",
+              "배터리 부족 시",
+              "전화 수신 시 (모바일)"
+            ],
+            "customization": "각 트리거를 개별 설정 가능"
+          },
+          "hint_system": {
+            "description": "힌트 시스템",
+            "types": [
+              "다음에 처리할 버블 하이라이트",
+              "위험한 상황에 대한 경고",
+              "특수 버블의 효과 설명",
+              "전략적 조언"
+            ],
+            "frequency": ["끄기", "드물게", "표준", "자주"]
+          },
+          "difficulty_adjustment": {
+            "description": "동적 난이도 조정",
+            "modes": [
+              "고정 (선택한 난이도 유지)",
+              "적응 (플레이어 스킬에 따라 조정)",
+              "학습 (플레이 기록으로부터 최적화)"
+            ],
+            "default": "적응"
+          }
+        },
+        "scoring_preferences": {
+          "score_display": {
+            "description": "점수 표시 옵션",
+            "elements": [
+              "현재 점수",
+              "콤보 카운터",
+              "점수 증가 애니메이션",
+              "최고 점수 비교",
+              "실시간 랭킹"
+            ]
+          },
+          "achievement_notifications": {
+            "description": "업적 알림",
+            "styles": ["팝업", "배너", "소리만", "끄기"],
+            "default": "팝업",
+            "timing": "즉시 / 게임 종료 시 / 다음 시작 시"
+          }
+        }
+      },
+      "difficulty": "intermediate",
+      "estimatedReadTime": 240,
+      "tags": ["게임플레이", "난이도", "지원", "커스터마이징"]
+    },
+    {
+      "id": "data_privacy_settings",
+      "title": "데이터와 개인정보 설정",
+      "description": "개인 데이터 관리와 개인정보 보호",
+      "content": {
+        "data_storage": {
+          "local_storage": {
+            "description": "로컬 데이터 저장",
+            "stored_data": [
+              "게임 진행 상황",
+              "설정 정보",
+              "통계 데이터",
+              "업적 기록",
+              "최고 점수"
+            ],
+            "management": "데이터 조회, 내보내기, 삭제가 가능"
+          },
+          "cloud_sync": {
+            "description": "클라우드 동기화 (향후 구현 예정)",
+            "benefits": [
+              "여러 기기 간 데이터 동기화",
+              "데이터 백업",
+              "기기 변경 시 데이터 이전"
+            ],
+            "privacy": "암호화된 데이터만 전송"
+          }
+        },
+        "analytics_settings": {
+          "usage_analytics": {
+            "description": "사용 현황 분석",
+            "collected_data": [
+              "플레이 시간",
+              "게임 진행 상황",
+              "기능 사용 빈도",
+              "성능 지표"
+            ],
+            "purpose": "게임 개선과 버그 수정을 위해",
+            "opt_out": "언제든 비활성화 가능"
+          },
+          "error_reporting": {
+            "description": "오류 보고",
+            "automatic": "크래시 시 자동 전송",
+            "manual": "수동 버그 보고 전송",
+            "anonymization": "개인정보는 전송되지 않음"
+          }
+        },
+        "privacy_controls": {
+          "data_minimization": {
+            "description": "데이터 최소화",
+            "principle": "필요 최소한의 데이터만 수집",
+            "user_control": "수집 항목의 개별 선택"
+          },
+          "data_retention": {
+            "description": "데이터 보관 기간",
+            "local_data": "사용자 삭제 시까지 보관",
+            "analytics_data": "익명화 데이터로 최대 1년",
+            "user_rights": "데이터 삭제 요구 권리"
+          },
+          "third_party_services": {
+            "description": "제3자 서비스",
+            "used_services": "현재 사용하지 않음",
+            "future_integration": "통합 시 사전 통지",
+            "opt_in_basis": "모두 옵트인 기준"
+          }
+        }
+      },
+      "difficulty": "beginner",
+      "estimatedReadTime": 200,
+      "tags": ["데이터", "개인정보", "설정", "관리"]
+    }
+  ],
+  "settings_optimization_guide": {
+    "device_specific_recommendations": {
+      "high_end_pc": {
+        "display": "울트라 품질, 60+ FPS",
+        "audio": "48kHz, 큰 버퍼",
+        "effects": "모든 효과 활성화"
+      },
+      "standard_pc": {
+        "display": "높은 품질, 60 FPS",
+        "audio": "44kHz, 보통 버퍼",
+        "effects": "표준 효과"
+      },
+      "low_end_pc": {
+        "display": "보통 품질, 30 FPS",
+        "audio": "22kHz, 작은 버퍼",
+        "effects": "가벼운 효과만"
+      },
+      "mobile_device": {
+        "display": "낮은 품질, 30 FPS",
+        "audio": "22kHz, 절전 모드",
+        "effects": "최소 효과"
+      }
+    },
+    "troubleshooting_settings": {
+      "performance_issues": [
+        "프레임 레이트를 30 FPS로 제한",
+        "파티클 효과를 '낮음'으로 설정",
+        "애니메이션 품질을 '간단'으로 변경",
+        "메모리 정리를 '적극적'으로 설정"
+      ],
+      "audio_problems": [
+        "음성 버퍼를 '크게'로 변경",
+        "샘플링 레이트 낮추기",
+        "다른 앱의 음성 정지",
+        "음성 드라이버 업데이트"
+      ],
+      "display_issues": [
+        "해상도 낮추기",
+        "브라우저 하드웨어 가속 확인",
+        "전체화면 모드 시도",
+        "줌을 100%로 리셋"
+      ]
+    }
+  },
+  "backup_and_restore": {
+    "creating_backups": {
+      "automatic": "게임 종료 시 자동 백업",
+      "manual": "설정 → 데이터 관리 → 백업 생성",
+      "scheduled": "지정 간격의 자동 백업"
+    },
+    "restoring_data": {
+      "from_backup": "백업 파일로부터 복원",
+      "selective_restore": "특정 데이터만 복원",
+      "merge_option": "기존 데이터와 병합"
+    },
+    "export_import": {
+      "formats": ["JSON", "CSV", "일반 텍스트"],
+      "use_cases": [
+        "다른 기기로의 이전",
+        "데이터 분석",
+        "장기 보관"
+      ]
+    }
+  }
+}

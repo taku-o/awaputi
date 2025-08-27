@@ -1,0 +1,55 @@
+{
+  "meta": {
+    "language": "en",
+    "region": "US",
+    "version": "1.0.0",
+    "lastUpdated": "2025-01-28T00:00:00Z",
+    "completeness": 100,
+    "quality": 95,
+    "size": 1200
+  },
+  "translations": {
+    "help": {
+      "title": "Controls",
+      "basicControls": "Basic Controls",
+      "gameTips": "Game Tips",
+      "bubbleTypes": "Bubble Types",
+      "controls": [
+        "Click/Tap: Pop bubbles",
+        "Drag: Blow bubbles away",
+        "↑↓ Keys: Menu selection",
+        "Enter: Confirm",
+        "ESC: Back/Exit"
+      ],
+      "gameControls": [
+        "Give Up Button: Top-right button displayed during gameplay",
+        "Restart Game Button: Top-right button displayed during gameplay and game over",
+        "Keyboard Navigation: Tab to select, Enter to execute, Escape to cancel",
+        "Touch Operation: Tap buttons directly to operate"
+      ],
+      "tips": [
+        "Bubbles become dangerous over time",
+        "Pop consecutively for combo bonus",
+        "Pink bubbles restore HP",
+        "Avoid poison bubbles",
+        "Hard bubbles need multiple clicks",
+        "Special bubbles can be dragged off-screen"
+      ],
+      "bubbles": "Normal(blue) Stone(gray) Iron(brown) Diamond(white) Pink(heal) Poison(green) Spike(chain) Rainbow(bonus) Clock(timestop) S(score) Electric(stun) Escape(moving)",
+      "accessibility": {
+        "searchBar": "Search help content",
+        "searchBarDesc": "Enter keywords to search help content",
+        "categoryList": "Help category list",
+        "categoryListDesc": "Navigate with arrow keys, Enter to select",
+        "topicList": "Topic list",
+        "topicListDesc": "Topics in selected category",
+        "contentArea": "Help content display area",
+        "contentAreaDesc": "Detailed information for selected topic",
+        "backButton": "Back button",
+        "backButtonDesc": "Return to main menu",
+        "screenReaderEnabled": "Screen reader support enabled",
+        "sceneEntered": "Entered help scene. Press F1 for keyboard shortcuts."
+      }
+    }
+  }
+}

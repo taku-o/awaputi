@@ -1,0 +1,382 @@
+{
+  "category": "controls",
+  "title": "操作指南",
+  "description": "awaputi的操作方法和键盘快捷键",
+  "language": "zh-CN",
+  "version": "1.0.0",
+  "lastUpdated": "2025-01-27",
+  "topics": [
+    {
+      "id": "mouse_controls",
+      "title": "鼠标操作",
+      "description": "使用鼠标的基本操作",
+      "content": {
+        "left_click": {
+          "action": "点击泡泡将其戳破",
+          "description": "最基本的操作。左键点击泡泡将其戳破。",
+          "tips": [
+            "调整鼠标灵敏度以实现精确点击",
+            "连续点击瞄准连击",
+            "硬化泡泡需要多次点击"
+          ]
+        },
+        "drag_action": {
+          "action": "拖拽泡泡进行移动",
+          "description": "可以通过拖拽将泡泡移动到安全的地方。",
+          "how_to": [
+            "在泡泡上按住鼠标按键",
+            "按住按键的同时移动鼠标",
+            "在目标位置松开鼠标按键"
+          ],
+          "strategy": [
+            "将危险泡泡移动到屏幕边缘",
+            "将有益泡泡存放在安全地点",
+            "聚集泡泡准备连击"
+          ]
+        },
+        "right_click": {
+          "action": "未使用",
+          "description": "在awaputi中右键没有特殊功能。",
+          "note": "如果意外出现右键菜单，请用Esc键关闭。"
+        },
+        "mouse_wheel": {
+          "action": "缩放（仅调试模式）",
+          "description": "调试模式激活时，可用鼠标滚轮进行缩放。",
+          "usage": "先用Ctrl+Shift+D激活调试模式"
+        }
+      },
+      "difficulty": "beginner",
+      "estimatedReadTime": 120,
+      "tags": ["鼠标", "点击", "拖拽", "基本操作"]
+    },
+    {
+      "id": "keyboard_shortcuts",
+      "title": "键盘快捷键",
+      "description": "高效游戏的键盘操作",
+      "content": {
+        "game_controls": {
+          "esc": {
+            "action": "打开/关闭菜单",
+            "description": "游戏中返回主菜单，或关闭当前菜单。",
+            "context": "所有场景都可使用"
+          },
+          "space": {
+            "action": "游戏暂停",
+            "description": "游戏进行中切换暂停/继续。",
+            "context": "仅游戏进行中"
+          },
+          "p": {
+            "action": "暂停",
+            "description": "与Space键相同，暂停游戏。",
+            "context": "仅游戏进行中"
+          },
+          "r": {
+            "action": "游戏继续",
+            "description": "从暂停状态继续游戏。",
+            "context": "仅暂停中"
+          }
+        },
+        "help_and_info": {
+          "h": {
+            "action": "显示帮助",
+            "description": "显示符合情况的帮助。",
+            "context": "所有场景都可使用"
+          },
+          "f1": {
+            "action": "快速帮助",
+            "description": "显示当前画面的简单操作指南。",
+            "context": "所有场景都可使用"
+          },
+          "i": {
+            "action": "用户信息画面",
+            "description": "打开用户信息、统计、成就画面。",
+            "context": "菜单画面中可使用"
+          }
+        },
+        "display_controls": {
+          "f": {
+            "action": "切换全屏",
+            "description": "在全屏模式和窗口模式间切换。",
+            "note": "部分浏览器可能无法使用"
+          },
+          "ctrl_shift_d": {
+            "action": "切换调试模式",
+            "description": "显示/隐藏开发者调试信息。",
+            "features": [
+              "FPS显示",
+              "内存使用量",
+              "泡泡详细信息",
+              "碰撞检测可视化"
+            ]
+          }
+        },
+        "audio_controls": {
+          "m": {
+            "action": "BGM静音切换",
+            "description": "切换BGM的开/关。",
+            "note": "音效请在设置中单独调整"
+          },
+          "ctrl_m": {
+            "action": "所有音频静音",
+            "description": "BGM和音效一起静音/取消静音。",
+            "shortcut": "紧急音频停止时很有用"
+          }
+        },
+        "navigation": {
+          "tab": {
+            "action": "移动焦点",
+            "description": "在菜单项目间移动焦点。",
+            "context": "菜单画面中使用"
+          },
+          "shift_tab": {
+            "action": "反向移动焦点",
+            "description": "将焦点移动到上一个菜单项目。",
+            "context": "菜单画面中使用"
+          },
+          "enter": {
+            "action": "确认/选择",
+            "description": "选择有焦点的项目。",
+            "context": "菜单画面中使用"
+          },
+          "arrow_keys": {
+            "action": "菜单导航",
+            "description": "用方向键移动菜单项目。",
+            "details": {
+              "up_down": "菜单项目的上下移动",
+              "left_right": "标签切换，数值增减"
+            }
+          }
+        }
+      },
+      "difficulty": "intermediate",
+      "estimatedReadTime": 300,
+      "tags": ["键盘", "快捷键", "效率", "导航"]
+    },
+    {
+      "id": "advanced_techniques",
+      "title": "高级技巧",
+      "description": "高效游戏的高级操作技巧",
+      "content": {
+        "mouse_techniques": {
+          "rapid_clicking": {
+            "name": "高速点击",
+            "description": "连续快速点击泡泡构成连击的技巧",
+            "tips": [
+              "固定手腕，仅用手指进行高速点击",
+              "保持一定节奏",
+              "适度休息避免疲劳"
+            ],
+            "practice": "普通泡泡密集时练习"
+          },
+          "precision_dragging": {
+            "name": "精密拖拽",
+            "description": "将泡泡移动到精确位置的技巧",
+            "techniques": [
+              "微调时进行小幅移动",
+              "明确想象目标位置",
+              "利用画面边缘和角落进行配置"
+            ],
+            "applications": [
+              "将危险泡泡移动到安全区域",
+              "调整特殊泡泡的效果范围",
+              "聚集泡泡进行连击"
+            ]
+          },
+          "multi_target_selection": {
+            "name": "多目标处理",
+            "description": "高效处理多个泡泡的程序",
+            "strategy": [
+              "预先规划处理顺序",
+              "最小化鼠标移动距离",
+              "考虑连锁反应来决定顺序"
+            ]
+          }
+        },
+        "keyboard_mastery": {
+          "hotkey_combinations": {
+            "name": "快捷键组合",
+            "combinations": [
+              "H → I：从帮助快速切换到信息画面",
+              "Esc → Space：从菜单返回游戏",
+              "Ctrl+Shift+D → F：调试模式下全屏"
+            ]
+          },
+          "context_switching": {
+            "name": "上下文切换",
+            "description": "根据画面选择最佳键操作",
+            "guidelines": [
+              "游戏中：经常用Space/P暂停",
+              "菜单中：方向键和Enter快速导航",
+              "设置中：Tab键跳过项目"
+            ]
+          }
+        },
+        "hybrid_techniques": {
+          "mouse_keyboard_combo": {
+            "name": "鼠标-键盘组合",
+            "description": "同时使用鼠标和键盘的高效操作",
+            "examples": [
+              "鼠标游戏 + H键快速查看帮助",
+              "拖拽中用Space暂停思考策略",
+              "点击连击中用M键调整音乐"
+            ]
+          },
+          "situational_adaptation": {
+            "name": "情况适应",
+            "description": "根据游戏情况改变操作方法",
+            "scenarios": [
+              "高密度：主要用拖拽整理",
+              "低密度：精密点击追求高分",
+              "紧急时：快捷键立即暂停"
+            ]
+          }
+        }
+      },
+      "difficulty": "advanced",
+      "estimatedReadTime": 240,
+      "tags": ["高级", "技巧", "效率", "掌握"]
+    },
+    {
+      "id": "accessibility_options",
+      "title": "无障碍选项",
+      "description": "让各种玩家都能舒适游戏的设置",
+      "content": {
+        "visual_assistance": {
+          "high_contrast": {
+            "description": "高对比度模式提高可视性",
+            "activation": "设置 → 无障碍 → 高对比度",
+            "effects": "强化泡泡边框，改善背景对比度"
+          },
+          "text_scaling": {
+            "description": "调整UI文字大小",
+            "options": ["小（90%）", "标准（100%）", "大（120%）", "超大（150%）"],
+            "note": "应用于菜单文字和分数显示"
+          },
+          "color_blind_support": {
+            "description": "色盲患者的考虑",
+            "features": [
+              "颜色以外添加识别要素（形状、图案）",
+              "替代色彩调色板选项",
+              "文字标签显示选项"
+            ]
+          }
+        },
+        "motor_assistance": {
+          "click_hold_duration": {
+            "description": "调整点击识别时间",
+            "range": "50ms ～ 500ms",
+            "benefit": "为难以快速点击的用户的考虑"
+          },
+          "drag_sensitivity": {
+            "description": "调整拖拽操作敏感度",
+            "options": ["低敏感度", "标准", "高敏感度"],
+            "recommendation": "有手抖的用户推荐低敏感度"
+          },
+          "pause_assistance": {
+            "description": "自动暂停功能",
+            "trigger": "一定时间无操作时自动暂停",
+            "timing": "可选择：5秒、10秒、30秒"
+          }
+        },
+        "cognitive_assistance": {
+          "simplified_ui": {
+            "description": "UI简化选项",
+            "features": [
+              "去除不必要的装饰",
+              "只显示重要信息",
+              "使用易懂的图标"
+            ]
+          },
+          "tutorial_replay": {
+            "description": "教程重复播放",
+            "access": "帮助菜单中随时可访问",
+            "benefit": "可多次确认操作方法"
+          },
+          "context_help": {
+            "description": "情况别帮助显示",
+            "activation": "F1键或?按钮",
+            "content": "显示对当前情况最适合的建议"
+          }
+        }
+      },
+      "difficulty": "beginner",
+      "estimatedReadTime": 180,
+      "tags": ["无障碍", "设置", "支援", "通用"]
+    }
+  ],
+  "quick_reference_card": {
+    "essential_shortcuts": {
+      "Esc": "菜单",
+      "Space/P": "暂停",
+      "H": "帮助",
+      "F": "全屏",
+      "M": "音乐静音"
+    },
+    "mouse_actions": {
+      "左键": "戳破泡泡",
+      "拖拽": "移动泡泡",
+      "滚轮": "缩放（调试模式）"
+    },
+    "emergency_controls": {
+      "Ctrl+M": "停止所有音频",
+      "Esc": "立即访问菜单",
+      "Space": "紧急暂停"
+    }
+  },
+  "troubleshooting": {
+    "common_issues": [
+      {
+        "problem": "点击没有反应",
+        "causes": [
+          "鼠标敏感度过低",
+          "浏览器缩放设置",
+          "其他应用程序的干扰"
+        ],
+        "solutions": [
+          "检查鼠标设置",
+          "将浏览器缩放设为100%",
+          "关闭其他应用程序"
+        ]
+      },
+      {
+        "problem": "拖拽操作无法正常工作",
+        "causes": [
+          "拖拽距离过短",
+          "过早松开鼠标按键",
+          "敏感度设置不当"
+        ],
+        "solutions": [
+          "确保足够的拖拽距离",
+          "确实拖拽到目标位置",
+          "在设置中调整拖拽敏感度"
+        ]
+      },
+      {
+        "problem": "键盘快捷键无效",
+        "causes": [
+          "其他应用占用按键",
+          "浏览器设置",
+          "输入法问题"
+        ],
+        "solutions": [
+          "将焦点对准游戏",
+          "用F5刷新页面",
+          "关闭中文输入法"
+        ]
+      }
+    ]
+  },
+  "customization_guide": {
+    "personal_optimization": [
+      "根据惯用手调整鼠标设置",
+      "根据游戏风格更改键位绑定",
+      "根据屏幕分辨率调整UI比例",
+      "根据反应速度设置敏感度"
+    ],
+    "performance_tuning": [
+      "维持高帧率的设置",
+      "最小化输入延迟的设置",
+      "减少CPU负载的显示设置"
+    ]
+  }
+}

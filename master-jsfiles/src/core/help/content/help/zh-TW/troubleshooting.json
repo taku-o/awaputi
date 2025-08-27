@@ -1,0 +1,563 @@
+{
+  "category": "troubleshooting",
+  "title": "故障排除指南",
+  "description": "常見問題的解決方案和支援資訊",
+  "language": "zh-TW",
+  "version": "1.0.0",
+  "lastUpdated": "2025-01-27",
+  "topics": [
+    {
+      "id": "loading_issues",
+      "title": "載入問題",
+      "description": "遊戲無法正常載入時的解決方案",
+      "content": {
+        "game_not_loading": {
+          "symptoms": [
+            "白色畫面保持不變",
+            "卡在「載入中...」",
+            "顯示錯誤訊息"
+          ],
+          "common_causes": [
+            "JavaScript被停用",
+            "瀏覽器快取問題",
+            "網路連線問題",
+            "瀏覽器相容性問題"
+          ],
+          "solutions": [
+            {
+              "step": 1,
+              "action": "重新整理瀏覽器",
+              "description": "按F5或Ctrl+R重新整理頁面"
+            },
+            {
+              "step": 2,
+              "action": "檢查JavaScript",
+              "description": "在瀏覽器設定中確認JavaScript已啟用"
+            },
+            {
+              "step": 3,
+              "action": "清除快取",
+              "description": "用Ctrl+Shift+R強制重新整理或清除快取"
+            },
+            {
+              "step": 4,
+              "action": "嘗試其他瀏覽器",
+              "description": "用Chrome、Firefox、Safari、Edge測試"
+            },
+            {
+              "step": 5,
+              "action": "檢查擴充套件",
+              "description": "暫時停用廣告攔截器和安全擴充套件"
+            }
+          ]
+        },
+        "slow_loading": {
+          "symptoms": [
+            "載入花費異常長時間",
+            "資源載入過程中凍結",
+            "進度條中途停止"
+          ],
+          "optimization_steps": [
+            "關閉其他分頁釋放記憶體",
+            "結束背景應用程式",
+            "檢查網路連線穩定性",
+            "重新啟動瀏覽器",
+            "重新啟動電腦"
+          ]
+        },
+        "partial_loading": {
+          "symptoms": [
+            "圖片無法顯示",
+            "音效無法播放",
+            "某些功能無法使用"
+          ],
+          "solutions": [
+            "檢查安全軟體設定",
+            "確認防火牆設定",
+            "檢查代理伺服器設定",
+            "重設DNS設定"
+          ]
+        }
+      },
+      "difficulty": "beginner",
+      "estimatedReadTime": 240,
+      "tags": ["載入", "啟動", "錯誤", "初始化"]
+    },
+    {
+      "id": "performance_issues",
+      "title": "效能問題",
+      "description": "遊戲運行緩慢或卡頓時的解決方案",
+      "content": {
+        "low_fps": {
+          "symptoms": [
+            "幀率低於30 FPS",
+            "動作不流暢",
+            "輸入反應緩慢"
+          ],
+          "diagnostic_steps": [
+            "在調試模式下檢查FPS（Ctrl+Shift+D）",
+            "檢查CPU/GPU使用率",
+            "檢查記憶體使用情況",
+            "檢查其他運行的應用程式"
+          ],
+          "optimization_solutions": [
+            {
+              "category": "遊戲設定",
+              "actions": [
+                "粒子效果設為「低」",
+                "動畫品質改為「簡單」",
+                "目標FPS限制為30",
+                "停用畫面效果"
+              ]
+            },
+            {
+              "category": "瀏覽器設定",
+              "actions": [
+                "啟用硬體加速",
+                "關閉其他分頁",
+                "停用不必要的擴充套件",
+                "檢查瀏覽器記憶體使用"
+              ]
+            },
+            {
+              "category": "系統設定",
+              "actions": [
+                "電源設定改為「高效能」",
+                "關閉背景應用程式",
+                "暫停病毒掃描",
+                "更新顯示卡驅動程式"
+              ]
+            }
+          ]
+        },
+        "memory_issues": {
+          "symptoms": [
+            "遊戲中瀏覽器當機",
+            "「記憶體不足」錯誤",
+            "效能逐漸下降"
+          ],
+          "prevention_measures": [
+            "記憶體清理設為「積極」",
+            "降低紋理品質",
+            "長時間遊戲期間定期重新啟動瀏覽器",
+            "考慮RAM升級（如果低於4GB）"
+          ]
+        },
+        "input_lag": {
+          "symptoms": [
+            "點擊和回應之間有延遲",
+            "滑鼠移動偏移",
+            "鍵盤反應差"
+          ],
+          "solutions": [
+            "切換到全螢幕模式",
+            "在設定中提高滑鼠輪詢率",
+            "調整垂直同步設定",
+            "瀏覽器縮放重設為100%"
+          ]
+        }
+      },
+      "difficulty": "intermediate",
+      "estimatedReadTime": 300,
+      "tags": ["效能", "FPS", "延遲", "最佳化"]
+    },
+    {
+      "id": "audio_issues",
+      "title": "音效問題",
+      "description": "無聲音或音質不佳時的解決方案",
+      "content": {
+        "no_sound": {
+          "symptoms": [
+            "BGM不播放",
+            "音效聽不見",
+            "完全靜音"
+          ],
+          "basic_checks": [
+            "檢查系統音量",
+            "檢查瀏覽器音量設定",
+            "檢查遊戲內音量設定",
+            "檢查靜音狀態"
+          ],
+          "advanced_solutions": [
+            "更新音效驅動程式",
+            "檢查Windows音效設定",
+            "確認音效裝置選擇",
+            "檢查瀏覽器音效權限",
+            "檢查與其他應用程式的衝突"
+          ]
+        },
+        "distorted_audio": {
+          "symptoms": [
+            "音效中斷",
+            "雜訊干擾",
+            "聲音失真"
+          ],
+          "solutions": [
+            "音效緩衝區改為「大」",
+            "降低採樣率",
+            "關閉其他音效應用程式",
+            "停用獨占模式",
+            "重新安裝音效驅動程式"
+          ]
+        },
+        "sync_issues": {
+          "symptoms": [
+            "音效和影像不同步",
+            "音效時機偏差",
+            "BGM中斷"
+          ],
+          "fixes": [
+            "調整音效延遲設定",
+            "檢查幀率設定",
+            "改變音效處理優先順序",
+            "啟用即時音效處理"
+          ]
+        }
+      },
+      "difficulty": "intermediate",
+      "estimatedReadTime": 180,
+      "tags": ["音效", "音量", "雜訊", "同步"]
+    },
+    {
+      "id": "input_problems",
+      "title": "輸入問題",
+      "description": "滑鼠和鍵盤操作的問題",
+      "content": {
+        "mouse_issues": {
+          "click_not_working": {
+            "description": "滑鼠點擊沒有反應",
+            "solutions": [
+              "檢查滑鼠按鍵物理狀態",
+              "更新滑鼠驅動程式",
+              "用其他滑鼠測試",
+              "檢查瀏覽器設定",
+              "檢查安全軟體干擾"
+            ]
+          },
+          "cursor_offset": {
+            "description": "點擊位置和游標位置不對齊",
+            "causes": [
+              "瀏覽器縮放設定",
+              "DPI設定問題",
+              "多螢幕環境",
+              "高解析度顯示"
+            ],
+            "solutions": [
+              "瀏覽器縮放設為100%",
+              "Windows顯示比例改為100%",
+              "切換到全螢幕模式",
+              "在設定中調整滑鼠DPI"
+            ]
+          },
+          "drag_problems": {
+            "description": "拖曳操作無法正常運作",
+            "troubleshooting": [
+              "調整拖曳敏感度設定",
+              "檢查滑鼠按鍵按法",
+              "拖曳足夠距離",
+              "在遊戲設定中調整拖曳閾值"
+            ]
+          }
+        },
+        "keyboard_issues": {
+          "shortcuts_not_working": {
+            "description": "鍵盤快捷鍵無效",
+            "solutions": [
+              "將焦點對準遊戲視窗",
+              "關閉中文輸入法",
+              "檢查與其他應用程式的熱鍵衝突",
+              "檢查瀏覽器快捷鍵設定",
+              "停用相黏鍵等類似功能"
+            ]
+          },
+          "key_repeat": {
+            "description": "按鍵重複或無回應",
+            "fixes": [
+              "更新鍵盤驅動程式",
+              "物理清潔鍵盤",
+              "用其他鍵盤測試",
+              "檢查Windows鍵盤設定"
+            ]
+          }
+        },
+        "touch_issues": {
+          "touch_not_responsive": {
+            "description": "觸控操作無回應（手機）",
+            "solutions": [
+              "清潔螢幕",
+              "重新啟動瀏覽器",
+              "用不同手指測試",
+              "檢查觸控敏感度設定",
+              "檢查螢幕保護貼"
+            ]
+          },
+          "multi_touch_problems": {
+            "description": "多點觸控運作不正常",
+            "troubleshooting": [
+              "檢查同時觸控限制",
+              "確認瀏覽器觸控支援",
+              "檢查裝置多點觸控能力"
+            ]
+          }
+        }
+      },
+      "difficulty": "intermediate",
+      "estimatedReadTime": 240,
+      "tags": ["輸入", "滑鼠", "鍵盤", "觸控"]
+    },
+    {
+      "id": "data_issues",
+      "title": "資料問題",
+      "description": "存檔資料遺失或損壞的問題",
+      "content": {
+        "data_loss": {
+          "symptoms": [
+            "遊戲進度消失",
+            "設定重置",
+            "成就記錄遺失"
+          ],
+          "common_causes": [
+            "使用瀏覽器私人模式",
+            "刪除Cookie/本機儲存",
+            "瀏覽器重置",
+            "安全軟體刪除",
+            "儲存空間不足"
+          ],
+          "recovery_methods": [
+            {
+              "method": "從自動備份還原",
+              "steps": [
+                "設定 → 資料管理 → 備份清單",
+                "選擇最新備份",
+                "點擊「還原」按鍵",
+                "驗證資料完整性"
+              ]
+            },
+            {
+              "method": "使用手動備份檔案",
+              "steps": [
+                "準備匯出的JSON檔案",
+                "設定 → 資料管理 → 匯入",
+                "選擇並上傳檔案",
+                "選擇資料合併或覆蓋"
+              ]
+            }
+          ],
+          "prevention": [
+            "定期建立手動備份",
+            "儲存資料到雲端儲存",
+            "在多個瀏覽器中複製資料",
+            "避免使用私人模式"
+          ]
+        },
+        "data_corruption": {
+          "symptoms": [
+            "遊戲啟動錯誤",
+            "設定無法正常載入",
+            "分數值顯示異常"
+          ],
+          "diagnostic_tools": [
+            "調試模式下的資料驗證",
+            "在瀏覽器開發者工具中檢查儲存",
+            "使用資料完整性檢查功能"
+          ],
+          "repair_options": [
+            "自動損壞資料修復",
+            "替換為預設值",
+            "從備份選擇性還原",
+            "完全資料重置（最後手段）"
+          ]
+        },
+        "sync_problems": {
+          "description": "裝置間資料同步問題",
+          "issues": [
+            "裝置間分數不同",
+            "設定未同步",
+            "成就重複或缺失"
+          ],
+          "solutions": [
+            "執行手動強制同步",
+            "手動解決衝突資料",
+            "選擇並同步主資料",
+            "停用同步手動管理"
+          ]
+        }
+      },
+      "difficulty": "intermediate",
+      "estimatedReadTime": 280,
+      "tags": ["資料", "備份", "還原", "同步"]
+    },
+    {
+      "id": "browser_compatibility",
+      "title": "瀏覽器相容性",
+      "description": "瀏覽器特定問題和解決方案",
+      "content": {
+        "supported_browsers": {
+          "recommended": [
+            {
+              "name": "Google Chrome",
+              "version": "90+",
+              "performance": "優秀",
+              "notes": "最穩定的效能"
+            },
+            {
+              "name": "Mozilla Firefox",
+              "version": "88+",
+              "performance": "很好",
+              "notes": "出色的音效處理"
+            },
+            {
+              "name": "Microsoft Edge",
+              "version": "90+",
+              "performance": "良好",
+              "notes": "Windows環境最佳"
+            },
+            {
+              "name": "Safari",
+              "version": "14+",
+              "performance": "良好",
+              "notes": "macOS/iOS環境使用"
+            }
+          ],
+          "limited_support": [
+            "Internet Explorer（已停止支援）",
+            "舊版本瀏覽器",
+            "手機輕量級瀏覽器"
+          ]
+        },
+        "chrome_issues": {
+          "common_problems": [
+            "停用硬體加速時效能下降",
+            "擴充套件干擾",
+            "自動更新導致設定重置"
+          ],
+          "solutions": [
+            "在chrome://settings/system啟用硬體加速",
+            "在無痕模式下測試",
+            "最佳化Chrome flags設定"
+          ]
+        },
+        "firefox_issues": {
+          "common_problems": [
+            "音效延遲發生",
+            "WebGL效能限制",
+            "隱私設定導致的功能限制"
+          ],
+          "solutions": [
+            "在about:config中調整音效設定",
+            "檢查並啟用WebGL設定",
+            "調整增強追蹤保護"
+          ]
+        },
+        "safari_issues": {
+          "common_problems": [
+            "Web Audio API限制",
+            "全螢幕模式限制",
+            "觸控事件處理差異"
+          ],
+          "solutions": [
+            "Safari特定的音效初始化程序",
+            "使用替代全螢幕方法",
+            "調整觸控事件處理器"
+          ]
+        },
+        "mobile_browsers": {
+          "optimization_tips": [
+            "螢幕觸控最佳化",
+            "直橫向方向支援",
+            "最小化電池消耗",
+            "減少網路使用"
+          ]
+        }
+      },
+      "difficulty": "advanced",
+      "estimatedReadTime": 200,
+      "tags": ["瀏覽器", "相容性", "Chrome", "Firefox", "Safari"]
+    }
+  ],
+  "emergency_procedures": {
+    "game_crash": {
+      "immediate_actions": [
+        "重新載入瀏覽器分頁（F5）",
+        "完全重新啟動瀏覽器",
+        "關閉其他應用程式釋放記憶體",
+        "重新啟動電腦（如有必要）"
+      ],
+      "data_protection": [
+        "檢查自動備份",
+        "使用匯出功能手動備份",
+        "在多個位置分散式儲存"
+      ]
+    },
+    "performance_emergency": {
+      "quick_fixes": [
+        "在調試模式下識別問題",
+        "暫時將設定改為最低品質",
+        "結束不必要的背景程序",
+        "清除瀏覽器快取"
+      ]
+    },
+    "data_emergency": {
+      "backup_recovery": [
+        "確認最新備份檔案位置",
+        "從備份緊急還原程序",
+        "手動部分資料重建方法"
+      ]
+    }
+  },
+  "contact_support": {
+    "before_contacting": {
+      "information_to_gather": [
+        "使用的瀏覽器和版本",
+        "作業系統",
+        "詳細問題描述",
+        "重現問題的步驟",
+        "錯誤訊息截圖"
+      ]
+    },
+    "support_channels": {
+      "github_issues": {
+        "url": "https://github.com/taku-o/awaputi/issues",
+        "description": "錯誤報告和功能請求的最佳選擇",
+        "response_time": "1-3個工作日"
+      },
+      "community_forum": {
+        "description": "使用者間資訊交流",
+        "topics": [
+          "策略資訊",
+          "技術問題",
+          "改進建議"
+        ]
+      }
+    },
+    "bug_report_template": {
+      "required_fields": [
+        "問題摘要",
+        "重現步驟",
+        "預期行為",
+        "實際行為",
+        "環境資訊",
+        "附件（如需要）"
+      ]
+    }
+  },
+  "diagnostic_tools": {
+    "built_in_tools": [
+      "調試模式（Ctrl+Shift+D）",
+      "效能監控界面",
+      "資料完整性檢查",
+      "系統資訊顯示"
+    ],
+    "browser_tools": [
+      "開發者工具（F12）",
+      "控制台日誌檢查",
+      "網路分頁通訊檢查",
+      "效能分析器"
+    ],
+    "external_tools": [
+      "系統資源監控工具",
+      "網路診斷工具",
+      "瀏覽器基準測試工具"
+    ]
+  }
+}

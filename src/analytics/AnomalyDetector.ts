@@ -114,6 +114,7 @@ export class AnomalyDetector {
                 includeMinor = false
             } = options;
             
+            // データ取得
             const sessionData = await this.storageManager.getData('sessions', {
                 startDate,
                 endDate
@@ -440,11 +441,11 @@ export class AnomalyDetector {
         if (degradationRatio > 0.3) { // 30%以上が低フレームレート
             return [{
                 timestamp: Date.now(),
-                severity: degradationRatio > 0.5 ? 'critical' : 'warning',
-                degradationRatio: degradationRatio,
-                averageFps: mean,
+                averageFPS: mean,
+                lowPerformanceRatio: degradationRatio,
                 lowPerformanceCount: lowPerformanceCount,
-                totalMeasurements: fpsData.length
+                totalMeasurements: fpsData.length,
+                severity: degradationRatio > 0.5 ? 'critical' : 'warning'
             }];
         }
 
@@ -474,11 +475,11 @@ export class AnomalyDetector {
 
             return [{
                 timestamp: Date.now(),
-                pattern: averageQuitTime < 60 ? 'early_quit' : 'mid_game_quit',
                 quitRatio: quitRatio,
+                quitSessionCount: quitSessions.length,
+                totalSessions: totalSessions,
                 averageQuitTime: averageQuitTime,
-                quitCount: quitSessions.length,
-                totalSessions: totalSessions
+                pattern: averageQuitTime < 60 ? 'early_quit' : 'mid_game_quit'
             }];
         }
 

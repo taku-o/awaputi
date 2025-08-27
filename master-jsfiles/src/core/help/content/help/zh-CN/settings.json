@@ -1,0 +1,468 @@
+{
+  "category": "settings",
+  "title": "设置指南",
+  "description": "游戏设置和自定义选项",
+  "language": "zh-CN",
+  "version": "1.0.0",
+  "lastUpdated": "2025-01-27",
+  "topics": [
+    {
+      "id": "audio_settings",
+      "title": "音频设置",
+      "description": "BGM、音效、音量的详细设置",
+      "content": {
+        "volume_controls": {
+          "master_volume": {
+            "description": "整体音量调节",
+            "range": "0% - 100%",
+            "default": "80%",
+            "note": "作为其他音量设置的基准"
+          },
+          "bgm_volume": {
+            "description": "背景音乐音量",
+            "range": "0% - 100%",
+            "default": "60%",
+            "tracks": [
+              "主菜单BGM",
+              "游戏BGM",
+              "奖励时间BGM",
+              "游戏结束BGM"
+            ]
+          },
+          "sfx_volume": {
+            "description": "音效音量",
+            "range": "0% - 100%",
+            "default": "70%",
+            "sound_types": [
+              "泡泡破裂声",
+              "特殊效果音",
+              "警告音",
+              "UI操作音"
+            ]
+          }
+        },
+        "audio_quality": {
+          "sample_rate": {
+            "description": "音频采样率",
+            "options": ["22kHz", "44kHz", "48kHz"],
+            "default": "44kHz",
+            "impact": "高品质会增加CPU使用量"
+          },
+          "audio_buffer": {
+            "description": "音频缓冲区大小",
+            "options": ["小（低延迟）", "中等（标准）", "大（稳定）"],
+            "default": "中等",
+            "recommendation": "如果音频跳跃请选择\"大\""
+          }
+        },
+        "accessibility_audio": {
+          "visual_audio_cues": {
+            "description": "音频可视化",
+            "features": [
+              "根据音量的屏幕闪烁",
+              "重要声音的字幕显示",
+              "震动反馈（支持设备）"
+            ]
+          },
+          "audio_descriptions": {
+            "description": "音频描述功能",
+            "content": "屏幕状况的语音描述",
+            "activation": "设置 → 无障碍 → 音频描述"
+          }
+        }
+      },
+      "difficulty": "beginner",
+      "estimatedReadTime": 180,
+      "tags": ["音频", "音量", "BGM", "音效"]
+    },
+    {
+      "id": "display_settings",
+      "title": "显示设置",
+      "description": "屏幕显示和视觉效果设置",
+      "content": {
+        "resolution_settings": {
+          "canvas_resolution": {
+            "description": "游戏屏幕分辨率",
+            "options": [
+              "800x600 (4:3)",
+              "1024x768 (4:3)",
+              "1280x720 (16:9)",
+              "1920x1080 (16:9)",
+              "自动调整"
+            ],
+            "default": "自动调整",
+            "note": "根据浏览器窗口大小调整"
+          },
+          "ui_scaling": {
+            "description": "UI显示比例",
+            "range": "50% - 200%",
+            "default": "100%",
+            "impact": "改变文字和按钮的大小"
+          }
+        },
+        "visual_effects": {
+          "particle_effects": {
+            "description": "粒子效果设置",
+            "quality_levels": {
+              "off": "禁用粒子效果",
+              "low": "最少粒子",
+              "medium": "标准粒子",
+              "high": "丰富的粒子效果",
+              "ultra": "最高品质粒子"
+            },
+            "default": "medium",
+            "performance_impact": "高品质会增加GPU使用量"
+          },
+          "animation_quality": {
+            "description": "动画品质",
+            "options": ["简单", "标准", "流畅", "最高"],
+            "default": "标准",
+            "features": [
+              "泡泡移动的流畅度",
+              "UI切换的美观度",
+              "特殊效果的细致度"
+            ]
+          },
+          "screen_effects": {
+            "description": "屏幕效果",
+            "options": {
+              "screen_shake": "屏幕震动效果",
+              "flash_effects": "闪光效果",
+              "blur_effects": "模糊效果",
+              "glow_effects": "发光效果"
+            },
+            "customization": "可以单独启用/禁用"
+          }
+        },
+        "color_settings": {
+          "color_theme": {
+            "description": "颜色主题",
+            "options": [
+              "标准（彩色）",
+              "柔和（淡色调）",
+              "深色（暗色）",
+              "高对比度（清晰）",
+              "色盲友好"
+            ],
+            "default": "标准"
+          },
+          "brightness": {
+            "description": "屏幕亮度",
+            "range": "50% - 150%",
+            "default": "100%",
+            "note": "在昏暗环境游戏时调整"
+          },
+          "contrast": {
+            "description": "对比度调整",
+            "range": "50% - 200%",
+            "default": "100%",
+            "benefit": "泡泡与背景的清晰区分"
+          }
+        }
+      },
+      "difficulty": "beginner",
+      "estimatedReadTime": 240,
+      "tags": ["显示", "视觉", "分辨率", "效果"]
+    },
+    {
+      "id": "performance_settings",
+      "title": "性能设置",
+      "description": "游戏速度和稳定性的优化",
+      "content": {
+        "frame_rate": {
+          "target_fps": {
+            "description": "目标帧率",
+            "options": ["30 FPS", "60 FPS", "120 FPS", "无限制"],
+            "default": "60 FPS",
+            "recommendation": "标准显示器60 FPS最佳"
+          },
+          "vsync": {
+            "description": "垂直同步",
+            "options": ["关闭", "开启", "自适应"],
+            "default": "自适应",
+            "benefits": "防止屏幕撕裂，稳定帧率"
+          },
+          "frame_skip": {
+            "description": "跳帧",
+            "options": ["关闭", "轻微", "积极"],
+            "default": "轻微",
+            "usage": "在低性能设备上改善性能"
+          }
+        },
+        "memory_management": {
+          "texture_quality": {
+            "description": "纹理品质",
+            "options": ["低", "中等", "高", "最高"],
+            "default": "高",
+            "memory_usage": "高品质会增加显存使用量"
+          },
+          "memory_cleanup": {
+            "description": "内存清理",
+            "frequency": ["无", "轻微", "标准", "积极"],
+            "default": "标准",
+            "effect": "定期释放未使用的内存"
+          },
+          "preload_assets": {
+            "description": "资源预加载",
+            "options": ["最少", "标准", "全部"],
+            "default": "标准",
+            "tradeoff": "加载时间 vs 游戏中的舒适度"
+          }
+        },
+        "cpu_optimization": {
+          "background_processing": {
+            "description": "后台处理",
+            "options": ["最少", "标准", "完整"],
+            "default": "标准",
+            "includes": [
+              "统计计算",
+              "AI处理",
+              "网络通信",
+              "文件保存"
+            ]
+          },
+          "multithreading": {
+            "description": "多线程",
+            "options": ["单线程", "双线程", "多线程", "自动"],
+            "default": "自动",
+            "benefit": "有效利用多CPU核心"
+          }
+        },
+        "battery_optimization": {
+          "power_saving": {
+            "description": "省电模式",
+            "activation": "根据电池电量自动启用",
+            "adjustments": [
+              "帧率限制为30 FPS",
+              "减少粒子效果",
+              "最小化后台处理",
+              "自动调整屏幕亮度"
+            ]
+          },
+          "thermal_management": {
+            "description": "热管理",
+            "monitoring": "CPU/GPU温度监控",
+            "throttling": "过热时自动性能限制",
+            "alert": "高温警告和冷却建议"
+          }
+        }
+      },
+      "difficulty": "intermediate",
+      "estimatedReadTime": 300,
+      "tags": ["性能", "FPS", "优化", "内存"]
+    },
+    {
+      "id": "gameplay_settings",
+      "title": "游戏设置",
+      "description": "自定义游戏体验的设置",
+      "content": {
+        "difficulty_settings": {
+          "game_speed": {
+            "description": "游戏速度",
+            "range": "50% - 150%",
+            "default": "100%",
+            "effect": "影响泡泡出现频率和移动速度"
+          },
+          "bubble_density": {
+            "description": "泡泡密度",
+            "options": ["稀疏", "标准", "密集", "超密集"],
+            "default": "标准",
+            "impact": "同时显示的泡泡最大数量"
+          },
+          "special_bubble_rate": {
+            "description": "特殊泡泡出现率",
+            "range": "0% - 200%",
+            "default": "100%",
+            "note": "0%完全禁用特殊泡泡"
+          }
+        },
+        "assistance_settings": {
+          "auto_pause": {
+            "description": "自动暂停",
+            "triggers": [
+              "窗口失去焦点时",
+              "一定时间无操作时",
+              "电池不足时",
+              "来电时（手机）"
+            ],
+            "customization": "每个触发器都可以单独设置"
+          },
+          "hint_system": {
+            "description": "提示系统",
+            "types": [
+              "突出显示下一个要处理的泡泡",
+              "危险情况的警告",
+              "特殊泡泡的效果说明",
+              "战略建议"
+            ],
+            "frequency": ["关闭", "很少", "标准", "频繁"]
+          },
+          "difficulty_adjustment": {
+            "description": "动态难度调整",
+            "modes": [
+              "固定（保持选择的难度）",
+              "自适应（根据玩家技能调整）",
+              "学习（从游戏记录优化）"
+            ],
+            "default": "自适应"
+          }
+        },
+        "scoring_preferences": {
+          "score_display": {
+            "description": "分数显示选项",
+            "elements": [
+              "当前分数",
+              "连击计数器",
+              "分数增加动画",
+              "最高分数比较",
+              "实时排名"
+            ]
+          },
+          "achievement_notifications": {
+            "description": "成就通知",
+            "styles": ["弹窗", "横幅", "仅声音", "关闭"],
+            "default": "弹窗",
+            "timing": "立即 / 游戏结束时 / 下次启动时"
+          }
+        }
+      },
+      "difficulty": "intermediate",
+      "estimatedReadTime": 240,
+      "tags": ["游戏", "难度", "辅助", "自定义"]
+    },
+    {
+      "id": "data_privacy_settings",
+      "title": "数据和隐私设置",
+      "description": "个人数据管理和隐私保护",
+      "content": {
+        "data_storage": {
+          "local_storage": {
+            "description": "本地数据存储",
+            "stored_data": [
+              "游戏进度",
+              "设置信息",
+              "统计数据",
+              "成就记录",
+              "最高分数"
+            ],
+            "management": "可以查看、导出和删除数据"
+          },
+          "cloud_sync": {
+            "description": "云同步（计划实现）",
+            "benefits": [
+              "多设备间数据同步",
+              "数据备份",
+              "更换设备时数据迁移"
+            ],
+            "privacy": "仅传输加密数据"
+          }
+        },
+        "analytics_settings": {
+          "usage_analytics": {
+            "description": "使用情况分析",
+            "collected_data": [
+              "游戏时间",
+              "游戏进度",
+              "功能使用频率",
+              "性能指标"
+            ],
+            "purpose": "用于游戏改进和错误修复",
+            "opt_out": "可以随时禁用"
+          },
+          "error_reporting": {
+            "description": "错误报告",
+            "automatic": "崩溃时自动发送",
+            "manual": "手动错误报告提交",
+            "anonymization": "不发送个人信息"
+          }
+        },
+        "privacy_controls": {
+          "data_minimization": {
+            "description": "数据最小化",
+            "principle": "仅收集必要的最少数据",
+            "user_control": "收集项目的单独选择"
+          },
+          "data_retention": {
+            "description": "数据保留期",
+            "local_data": "保留到用户删除为止",
+            "analytics_data": "匿名数据最多1年",
+            "user_rights": "数据删除请求权"
+          },
+          "third_party_services": {
+            "description": "第三方服务",
+            "used_services": "目前未使用任何服务",
+            "future_integration": "集成时事先通知",
+            "opt_in_basis": "全部基于选择加入"
+          }
+        }
+      },
+      "difficulty": "beginner",
+      "estimatedReadTime": 200,
+      "tags": ["数据", "隐私", "设置", "管理"]
+    }
+  ],
+  "settings_optimization_guide": {
+    "device_specific_recommendations": {
+      "high_end_pc": {
+        "display": "超高品质，60+ FPS",
+        "audio": "48kHz，大缓冲",
+        "effects": "所有效果启用"
+      },
+      "standard_pc": {
+        "display": "高品质，60 FPS",
+        "audio": "44kHz，中等缓冲",
+        "effects": "标准效果"
+      },
+      "low_end_pc": {
+        "display": "中等品质，30 FPS",
+        "audio": "22kHz，小缓冲",
+        "effects": "仅轻微效果"
+      },
+      "mobile_device": {
+        "display": "低品质，30 FPS",
+        "audio": "22kHz，省电模式",
+        "effects": "最少效果"
+      }
+    },
+    "troubleshooting_settings": {
+      "performance_issues": [
+        "帧率限制为30 FPS",
+        "粒子效果设为\"低\"",
+        "动画品质改为\"简单\"",
+        "内存清理设为\"积极\""
+      ],
+      "audio_problems": [
+        "音频缓冲改为\"大\"",
+        "降低采样率",
+        "停止其他应用的音频",
+        "更新音频驱动"
+      ],
+      "display_issues": [
+        "降低分辨率",
+        "检查浏览器硬件加速",
+        "尝试全屏模式",
+        "缩放重置为100%"
+      ]
+    }
+  },
+  "backup_and_restore": {
+    "creating_backups": {
+      "automatic": "游戏退出时自动备份",
+      "manual": "设置 → 数据管理 → 创建备份",
+      "scheduled": "指定间隔的自动备份"
+    },
+    "restoring_data": {
+      "from_backup": "从备份文件恢复",
+      "selective_restore": "仅恢复特定数据",
+      "merge_option": "与现有数据合并"
+    },
+    "export_import": {
+      "formats": ["JSON", "CSV", "纯文本"],
+      "use_cases": [
+        "迁移到其他设备",
+        "数据分析",
+        "长期保存"
+      ]
+    }
+  }
+}

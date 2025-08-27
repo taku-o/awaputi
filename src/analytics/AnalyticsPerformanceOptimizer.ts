@@ -384,6 +384,11 @@ export class AnalyticsPerformanceOptimizer {
         this.cacheTimestamps.clear();
         // 即座にバッチ処理を実行
         this.processBatch();
+
+        // イベントキューをクリア（重要でないイベントのみ）
+        this.eventQueue = this.eventQueue.filter(event => 
+            event.type === 'error' || event.type === 'critical'
+        );
         
         this.optimizationStats.performanceWarnings++;
     }
