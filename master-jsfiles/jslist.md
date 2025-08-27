@@ -137,8 +137,8 @@
 - [] src/core/CacheSystem.js
 - [] src/core/CalculationEngine.js
 - [] src/core/CaptionManager.js
-- [] src/core/ChallengeSystem.js
-- [] src/core/ChallengeUI.js
+- [x] src/core/ChallengeSystem.js
+- [x] src/core/ChallengeUI.js
 - [] src/core/ChartRenderer.js
 - [] src/core/ChunkProcessor.js
 - [] src/core/CloudStorageAdapter.js

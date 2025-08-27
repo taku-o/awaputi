@@ -1,170 +1,40 @@
 /**
- * ChallengeUI (Main, Controller)
+ * ChallengeUI (Main Controller)
  * チャレンジUI管理システムの軽量オーケストレーター
  * Main Controller Patternによる軽量化実装
  */
 
-import { getErrorHandler } from '../utils/ErrorHandler';
-import { ChallengeSystem, Challenge } from './ChallengeSystem';
-
-/**
- * チャレンジUI設定インターフェース
- */
-export interface ChallengeUIConfig {
-    // 表示設定
-    maxVisibleChallenges?: number;
-    autoRefresh?: boolean;
-    refreshInterval?: number;
-    showProgress?: boolean;
-    showRewards?: boolean;
-    showDifficulty?: boolean;
-    
-    // アニメーション設定
-    animations?: boolean;
-    animationDuration?: number;
-    animationEasing?: string;
-    
-    // アクセシビリティ設定
-    accessibility?: boolean;
-    announcements?: boolean;
-    keyboardNavigation?: boolean;
-    highContrast?: boolean;
-    reducedMotion?: boolean;
-    progressAnnouncements?: boolean;
-    rewardAnnouncements?: boolean;
-    screenReaderOptimized?: boolean;
-    
-    // スタイル設定
-    backgroundColor?: string;
-    textColor?: string;
-    accentColor?: string;
-    borderRadius?: string;
-    fontSize?: string;
-    fontFamily?: string;
-}
-
-/**
- * UI状態インターフェース
- */
-interface UIState {
-    visible: boolean;
-    challenges: Challenge[];
-    selectedChallenge: Challenge | null;
-    focusedIndex: number;
-    sortBy: 'priority' | 'difficulty' | 'progress' | 'deadline';
-    filterBy: 'all' | 'daily' | 'weekly' | 'completed' | 'active';
-    loading: boolean;
-    error: string | null;
-}
-
-/**
- * UI統計インターフェース
- */
-interface UIStats {
-    views: number;
-    challengeViews: number;
-    completions: number;
-    filterChanges: number;
-    sortChanges: number;
-    keyboardInteractions: number;
-    announcementsMade: number;
-}
-
-/**
- * DOM要素インターフェース
- */
-interface UIElements {
-    container: HTMLElement | null;
-    header: HTMLElement | null;
-    filterControls: HTMLElement | null;
-    sortControls: HTMLElement | null;
-    challengeList: HTMLElement | null;
-    challengeItems: HTMLElement[];
-    progressSection: HTMLElement | null;
-    footer: HTMLElement | null;
-    announcer: HTMLElement | null;
-    loadingIndicator: HTMLElement | null;
-    errorMessage: HTMLElement | null;
-}
-
-/**
- * チャレンジ表示設定
- */
-interface DisplayConfig {
-    maxVisibleChallenges: number;
-    autoRefresh: boolean;
-    refreshInterval: number;
-    showProgress: boolean;
-    showRewards: boolean;
-    showDifficulty: boolean;
-}
-
-/**
- * アニメーション設定
- */
-interface AnimationConfig {
-    enabled: boolean;
-    duration: number;
-    easing: string;
-}
-
-/**
- * アクセシビリティ設定
- */
-interface AccessibilityConfig {
-    enabled: boolean;
-    announcements: boolean;
-    keyboardNavigation: boolean;
-    highContrast: boolean;
-    reducedMotion: boolean;
-    progressAnnouncements: boolean;
-    rewardAnnouncements: boolean;
-    screenReaderOptimized: boolean;
-}
-
-/**
- * スタイル設定
- */
-interface StyleConfig {
-    backgroundColor: string;
-    textColor: string;
-    accentColor: string;
-    borderRadius: string;
-    fontSize: string;
-    fontFamily: string;
-}
+import { getErrorHandler } from '../utils/ErrorHandler.js';
 
 export class ChallengeUI {
-    private challengeSystem: ChallengeSystem;
-    private config: {
-        display: DisplayConfig;
-        animations: AnimationConfig;
-        accessibility: AccessibilityConfig;
-        styles: StyleConfig;
-    };
-    private state: UIState;
-    private elements: UIElements;
-    private stats: UIStats;
-    private autoRefreshTimer: NodeJS.Timeout | null = null;
+    private challengeSystem: any;
+    private config: any;
+    private state: any;
+    private elements: any;
+    private stats: any;
+    private autoRefreshTimer: NodeJS.Timeout | null;
 
-    constructor(challengeSystem: ChallengeSystem, options: ChallengeUIConfig = {}) {
+    constructor(challengeSystem: any, options: any = {}) {
         this.challengeSystem = challengeSystem;
         
-        // 設定の初期化
+        // 設定
         this.config = {
-            display: {
-                maxVisibleChallenges: options.maxVisibleChallenges || 5,
-                autoRefresh: options.autoRefresh !== false,
-                refreshInterval: options.refreshInterval || 60000, // 1分
-                showProgress: options.showProgress !== false,
-                showRewards: options.showRewards !== false,
-                showDifficulty: options.showDifficulty !== false
-            },
+            // 表示設定
+            maxVisibleChallenges: options.maxVisibleChallenges || 5,
+            autoRefresh: options.autoRefresh !== false,
+            refreshInterval: options.refreshInterval || 60000, // 1分
+            showProgress: options.showProgress !== false,
+            showRewards: options.showRewards !== false,
+            showDifficulty: options.showDifficulty !== false,
+            
+            // アニメーション設定
             animations: {
                 enabled: options.animations !== false,
                 duration: options.animationDuration || 300,
                 easing: options.animationEasing || 'ease-in-out'
             },
+            
+            // アクセシビリティ設定
             accessibility: {
                 enabled: options.accessibility !== false,
                 announcements: options.announcements !== false,
@@ -175,6 +45,8 @@ export class ChallengeUI {
                 rewardAnnouncements: options.rewardAnnouncements !== false,
                 screenReaderOptimized: options.screenReaderOptimized !== false
             },
+            
+            // スタイル設定
             styles: {
                 backgroundColor: options.backgroundColor || '#FFFFFF',
                 textColor: options.textColor || '#333333',
@@ -185,19 +57,19 @@ export class ChallengeUI {
             }
         };
         
-        // 状態の初期化
+        // 状态管理
         this.state = {
             visible: false,
             challenges: [],
             selectedChallenge: null,
             focusedIndex: 0,
-            sortBy: 'priority',
-            filterBy: 'all',
+            sortBy: 'priority', // priority, difficulty, progress, deadline
+            filterBy: 'all', // all, daily, weekly, completed, active
             loading: false,
             error: null
         };
-
-        // DOM要素の初期化
+        
+        // DOM要素
         this.elements = {
             container: null,
             header: null,
@@ -211,8 +83,8 @@ export class ChallengeUI {
             loadingIndicator: null,
             errorMessage: null
         };
-
-        // 統計の初期化
+        
+        // 統計
         this.stats = {
             views: 0,
             challengeViews: 0,
@@ -222,15 +94,18 @@ export class ChallengeUI {
             keyboardInteractions: 0,
             announcementsMade: 0
         };
-
+        
+        this.autoRefreshTimer = null;
+        
         console.log('[ChallengeUI] Main Controller initialized');
         this.initialize();
+        this.log('ChallengeUI初期化完了');
     }
     
     /**
      * 初期化
      */
-    private initialize(): void {
+    initialize(): void {
         try {
             // DOM要素の作成
             this.createElements();
@@ -247,11 +122,10 @@ export class ChallengeUI {
             }
             
             // 自動更新の設定
-            if (this.config.display.autoRefresh) {
+            if (this.config.autoRefresh) {
                 this.startAutoRefresh();
             }
             
-            this.log('ChallengeUI初期化完了');
         } catch (error) {
             this.handleError('CHALLENGE_UI_INITIALIZATION_FAILED', error as Error);
         }
@@ -266,6 +140,7 @@ export class ChallengeUI {
         this.elements.container.className = 'challenge-ui-container';
         this.elements.container.setAttribute('role', 'region');
         this.elements.container.setAttribute('aria-label', 'チャレンジ一覧');
+        this.elements.container.style.display = 'none';
 
         // ヘッダー
         this.elements.header = document.createElement('header');
@@ -275,7 +150,7 @@ export class ChallengeUI {
         // フィルターコントロール
         this.elements.filterControls = document.createElement('div');
         this.elements.filterControls.className = 'challenge-ui-filters';
-        
+
         // ソートコントロール
         this.elements.sortControls = document.createElement('div');
         this.elements.sortControls.className = 'challenge-ui-sort';
@@ -305,11 +180,13 @@ export class ChallengeUI {
         this.elements.loadingIndicator = document.createElement('div');
         this.elements.loadingIndicator.className = 'challenge-ui-loading';
         this.elements.loadingIndicator.innerHTML = '<span>読み込み中...</span>';
+        this.elements.loadingIndicator.style.display = 'none';
 
         // エラーメッセージ
         this.elements.errorMessage = document.createElement('div');
         this.elements.errorMessage.className = 'challenge-ui-error';
         this.elements.errorMessage.setAttribute('role', 'alert');
+        this.elements.errorMessage.style.display = 'none';
 
         // 要素の組み立て
         this.elements.container.appendChild(this.elements.header);
@@ -353,8 +230,10 @@ export class ChallengeUI {
         }
 
         // チャレンジシステムのイベント
-        (this.challengeSystem as any).on?.('challengeCompleted', this.handleChallengeCompleted.bind(this));
-        (this.challengeSystem as any).on?.('challengeProgress', this.handleChallengeProgress.bind(this));
+        if (this.challengeSystem.on) {
+            this.challengeSystem.on('challengeCompleted', this.handleChallengeCompleted.bind(this));
+            this.challengeSystem.on('challengeProgress', this.handleChallengeProgress.bind(this));
+        }
     }
 
     /**
@@ -431,7 +310,7 @@ export class ChallengeUI {
      */
     private updateFocus(): void {
         const items = this.elements.challengeItems;
-        items.forEach((item, index) => {
+        items.forEach((item: HTMLElement, index: number) => {
             if (index === this.state.focusedIndex) {
                 item.setAttribute('tabindex', '0');
                 item.focus();
@@ -476,7 +355,7 @@ export class ChallengeUI {
         
         this.updateChallengeDisplay();
     }
-
+    
     /**
      * チャレンジの表示
      */
@@ -491,15 +370,16 @@ export class ChallengeUI {
             await this.loadChallenges();
             
             // コンテナの表示
-            if (this.elements.container) {
-                this.elements.container.style.display = 'flex';
-            }
+            this.elements.container.style.display = 'flex';
             
             // 初期フォーカスの設定
             this.setInitialFocus();
             
+            // アナウンス
             this.announce('チャレンジ一覧を表示しました');
+            
             this.log('ChallengeUI表示');
+            
         } catch (error) {
             this.handleError('CHALLENGE_UI_SHOW_FAILED', error as Error);
         }
@@ -512,10 +392,7 @@ export class ChallengeUI {
         if (!this.state.visible) return;
         
         this.state.visible = false;
-        
-        if (this.elements.container) {
-            this.elements.container.style.display = 'none';
-        }
+        this.elements.container.style.display = 'none';
         
         this.log('ChallengeUI非表示');
     }
@@ -537,18 +414,24 @@ export class ChallengeUI {
         try {
             this.state.loading = true;
             this.state.error = null;
+            this.elements.loadingIndicator.style.display = 'block';
             
             // チャレンジシステムからデータを取得
             const challenges = this.challengeSystem.getActiveChallenges();
-            this.state.challenges = challenges.slice(0, this.config.display.maxVisibleChallenges);
+            this.state.challenges = challenges.slice(0, this.config.maxVisibleChallenges);
             
             // 表示の更新
             this.updateChallengeDisplay();
             
             this.state.loading = false;
+            this.elements.loadingIndicator.style.display = 'none';
+            
         } catch (error) {
             this.state.loading = false;
             this.state.error = (error as Error).message;
+            this.elements.loadingIndicator.style.display = 'none';
+            this.elements.errorMessage.style.display = 'block';
+            this.elements.errorMessage.textContent = this.state.error;
             this.handleError('CHALLENGE_LOAD_FAILED', error as Error);
         }
     }
@@ -564,23 +447,23 @@ export class ChallengeUI {
         this.elements.challengeItems = [];
 
         // チャレンジ項目の作成
-        this.state.challenges.forEach((challenge, index) => {
+        this.state.challenges.forEach((challenge: any, index: number) => {
             const item = this.createChallengeItem(challenge, index);
             this.elements.challengeItems.push(item);
-            this.elements.challengeList!.appendChild(item);
+            this.elements.challengeList.appendChild(item);
         });
     }
 
     /**
      * チャレンジ項目の作成
      */
-    private createChallengeItem(challenge: Challenge, index: number): HTMLElement {
+    private createChallengeItem(challenge: any, index: number): HTMLElement {
         const item = document.createElement('div');
         item.className = 'challenge-item';
         item.setAttribute('role', 'listitem');
         item.setAttribute('tabindex', index === 0 ? '0' : '-1');
 
-        const progress = (challenge as any).progress || { current: 0, target: 1, percentage: 0 };
+        const progress = challenge.progress || { current: 0, target: 1, percentage: 0 };
         
         item.innerHTML = `
             <div class="challenge-header">
@@ -612,7 +495,7 @@ export class ChallengeUI {
         
         this.autoRefreshTimer = setInterval(() => {
             this.loadChallenges();
-        }, this.config.display.refreshInterval);
+        }, this.config.refreshInterval);
     }
 
     /**
@@ -624,46 +507,97 @@ export class ChallengeUI {
             this.autoRefreshTimer = null;
         }
     }
-
+    
+    /**
+     * チャレンジの進捗更新
+     */
+    updateChallengeProgress(challengeId: string, newProgress: any): void {
+        const challenge = this.state.challenges.find((c: any) => c.id === challengeId);
+        if (challenge) {
+            challenge.progress = newProgress;
+            this.updateChallengeDisplay();
+        }
+    }
+    
+    /**
+     * チャレンジの検索
+     */
+    searchChallenges(query: string): any[] {
+        if (!query) return this.state.challenges;
+        
+        return this.state.challenges.filter((challenge: any) => 
+            challenge.title.toLowerCase().includes(query.toLowerCase()) ||
+            challenge.description.toLowerCase().includes(query.toLowerCase())
+        );
+    }
+    
+    /**
+     * チャレンジ統計の取得
+     */
+    getChallengeStatistics(): any {
+        return this.challengeSystem.getChallengeStats();
+    }
+    
+    /**
+     * チャレンジデータのエクスポート
+     */
+    exportChallengeData(): any {
+        return {
+            challenges: this.state.challenges,
+            stats: this.stats,
+            timestamp: Date.now()
+        };
+    }
+    
+    /**
+     * チャレンジデータのインポート
+     */
+    importChallengeData(jsonData: any): boolean {
+        try {
+            if (jsonData.challenges) {
+                this.state.challenges = jsonData.challenges;
+                this.updateChallengeDisplay();
+                return true;
+            }
+            return false;
+        } catch (error) {
+            this.handleError('CHALLENGE_IMPORT_FAILED', error as Error);
+            return false;
+        }
+    }
+    
+    // ========== アナウンス機能 ==========
+    
     /**
      * アナウンス
      */
-    private announce(message: string, priority: 'polite' | 'assertive' = 'polite'): void {
+    announce(message: string, priority: string = 'polite'): void {
         if (!this.config.accessibility.announcements || !this.elements.announcer) return;
         
         this.stats.announcementsMade++;
         
-        // aria-live属性を更新
-        this.elements.announcer.setAttribute('aria-live', priority);
-        
         // 一度クリアしてから新しいメッセージを設定
         this.elements.announcer.textContent = '';
         setTimeout(() => {
-            if (this.elements.announcer) {
-                this.elements.announcer.textContent = message;
-            }
+            this.elements.announcer.textContent = message;
         }, 100);
         
         this.log('アナウンス', { message, priority });
     }
-
+    
+    // ========== 設定管理 ==========
+    
     /**
      * 設定の更新
      */
-    updateConfig(newConfig: Partial<ChallengeUIConfig>): void {
-        // 設定の更新
-        if (newConfig.maxVisibleChallenges !== undefined) {
-            this.config.display.maxVisibleChallenges = newConfig.maxVisibleChallenges;
-        }
-        if (newConfig.autoRefresh !== undefined) {
-            this.config.display.autoRefresh = newConfig.autoRefresh;
-        }
+    updateConfig(newConfig: any): void {
+        this.config = { ...this.config, ...newConfig };
         
         // スタイルの再適用
         this.applyStyles();
         
         // 自動更新の再設定
-        if (this.config.display.autoRefresh) {
+        if (this.config.autoRefresh) {
             this.startAutoRefresh();
         } else {
             this.stopAutoRefresh();
@@ -671,19 +605,13 @@ export class ChallengeUI {
         
         this.log('ChallengeUI設定更新', newConfig);
     }
-
+    
+    // ========== 状態取得 ==========
+    
     /**
      * 現在の状態取得
      */
-    getCurrentState(): {
-        visible: boolean;
-        challenges: number;
-        selectedChallenge: string | null;
-        loading: boolean;
-        error: string | null;
-        sortBy: string;
-        filterBy: string;
-    } {
+    getCurrentState(): any {
         return {
             visible: this.state.visible,
             challenges: this.state.challenges.length,
@@ -694,23 +622,26 @@ export class ChallengeUI {
             filterBy: this.state.filterBy
         };
     }
-
+    
     /**
      * 統計の取得
      */
-    getStats(): { main: UIStats } {
+    getStats(): any {
         return {
-            main: { ...this.stats }
+            main: { ...this.stats },
+            challenge: this.getChallengeStatistics()
         };
     }
-
+    
+    // ========== DOM要素アクセス ==========
+    
     /**
      * コンテナ要素の取得
      */
-    getContainer(): HTMLElement | null {
+    getContainer(): HTMLElement {
         return this.elements.container;
     }
-
+    
     /**
      * DOM要素を親要素に追加
      */
@@ -719,37 +650,68 @@ export class ChallengeUI {
             parentElement.appendChild(this.elements.container);
         }
     }
-
+    
+    // ========== データ整合性 ==========
+    
+    /**
+     * データ整合性チェック
+     */
+    validateDataIntegrity(): boolean {
+        try {
+            // チャレンジデータの整合性確認
+            for (const challenge of this.state.challenges) {
+                if (!challenge.id || !challenge.title || !challenge.reward) {
+                    return false;
+                }
+            }
+            return true;
+        } catch (error) {
+            return false;
+        }
+    }
+    
+    /**
+     * 期限切れチャレンジの確認
+     */
+    checkExpiredChallenges(): any[] {
+        const now = Date.now();
+        return this.state.challenges.filter((challenge: any) => 
+            challenge.endTime && now > challenge.endTime
+        );
+    }
+    
+    // ========== ユーティリティ ==========
+    
     /**
      * 要素の可視性チェック
      */
     isVisible(): boolean {
-        return this.state.visible && 
-               this.elements.container !== null && 
-               this.elements.container.style.display !== 'none';
+        return this.state.visible && this.elements.container.style.display !== 'none';
     }
-
+    
     /**
      * ロード状態チェック
      */
     isLoading(): boolean {
         return this.state.loading;
     }
-
+    
     /**
      * チャレンジ数の取得
      */
     getChallengeCount(): number {
         return this.state.challenges.length;
     }
-
+    
     /**
      * 選択中チャレンジの取得
      */
-    getSelectedChallenge(): Challenge | null {
+    getSelectedChallenge(): any {
         return this.state.selectedChallenge;
     }
-
+    
+    // ========== クリーンアップ ==========
+    
     /**
      * クリーンアップ
      */
@@ -765,11 +727,13 @@ export class ChallengeUI {
         console.log('[ChallengeUI] Main Controller cleaned up successfully');
         this.log('ChallengeUI破棄完了');
     }
-
+    
+    // ========== エラーハンドリング・ログ ==========
+    
     /**
      * エラーハンドリング
      */
-    private handleError(type: "single" | "batch", error: Error, context: Record<string, any> = {}): void {
+    handleError(type: string, error: Error, context: any = {}): void {
         const errorInfo = {
             type,
             error: error.message || error,
@@ -777,22 +741,24 @@ export class ChallengeUI {
             timestamp: Date.now()
         };
         
-        getErrorHandler().handleError(error as any, {
-            context: 'ChallengeUI',
-            type,
-            ...context
-        } as any);
+        getErrorHandler().handleError(error, 'ChallengeUI', context);
         
         this.log('エラー発生', errorInfo, 'error');
     }
-
+    
     /**
      * ログ記録
      */
-    private log(message: string, data: any = null, level: 'info' | 'warn' | 'error' = 'info'): void {
+    log(message: string, data: any = null, level: string = 'info'): void {
+        const logEntry = {
+            timestamp: Date.now(),
+            level,
+            message,
+            data
+        };
+        
         const consoleMethod = level === 'error' ? 'error' : 
                             level === 'warn' ? 'warn' : 'log';
-        
         console[consoleMethod](`[ChallengeUI] ${message}`, data || '');
     }
 }
