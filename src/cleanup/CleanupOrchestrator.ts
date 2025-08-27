@@ -94,7 +94,7 @@ export class CleanupOrchestrator {
             await this.validateSafety();
             // Step 4: Execute deletion (if not dry run)
             if (!this.options.dryRun) {
-                await this.executeDeletion();
+                await this.executeDelection();
             } else {
                 this.log('Dry run mode: Skipping actual file deletion', 'info');
             }
@@ -203,7 +203,7 @@ export class CleanupOrchestrator {
         return safetyResults;
     }
 
-    async executeDeletion(): Promise<DeletionResults> {
+    async executeDelection(): Promise<DeletionResults> {
         this.log('Executing file deletion...', 'info');
 
         if (!this.results.safetyReport) {

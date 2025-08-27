@@ -73,11 +73,11 @@ export class Bubble implements BubbleInterface {
             const configManager = getConfigurationManager();
             
             // ConfigurationManagerから設定を取得を試行
-            const health = configManager.get(`game.bubbles.${this.type}.health`) as number | undefined;
-            const size = configManager.get(`game.bubbles.${this.type}.size`) as number | undefined;
-            const maxAge = configManager.get(`game.bubbles.${this.type}.maxAge`) as number | undefined;
-            const score = configManager.get(`game.bubbles.${this.type}.score`) as number | undefined;
-            const color = configManager.get(`game.bubbles.${this.type}.color`) as string | undefined;
+            const health = configManager.get('game', `bubbles.${this.type}.health`) as number | undefined;
+            const size = configManager.get('game', `bubbles.${this.type}.size`) as number | undefined;
+            const maxAge = configManager.get('game', `bubbles.${this.type}.maxAge`) as number | undefined;
+            const score = configManager.get('game', `bubbles.${this.type}.score`) as number | undefined;
+            const color = configManager.get('game', `bubbles.${this.type}.color`) as string | undefined;
             
             // 設定が見つかった場合はそれを使用
             if (health !== undefined || size !== undefined || maxAge !== undefined || score !== undefined || color !== undefined) {
@@ -109,45 +109,45 @@ export class Bubble implements BubbleInterface {
         const effects: Partial<BubbleConfig> = {};
         switch(this.type) {
             case 'pink':
-                const healAmount = configManager.get('game.bubbles.pink.healAmount');
+                const healAmount = configManager.get('game', 'bubbles.pink.healAmount');
                 if(healAmount !== null) effects.healAmount = healAmount;
                 break;
 
             case 'poison':
-                const damageAmount = configManager.get('game.bubbles.poison.damageAmount');
+                const damageAmount = configManager.get('game', 'bubbles.poison.damageAmount');
                 if(damageAmount !== null) effects.damageAmount = damageAmount;
                 break;
 
             case 'electric':
-                const shakeIntensity = configManager.get('game.bubbles.electric.shakeIntensity');
-                const disableDuration = configManager.get('game.bubbles.electric.disableDuration');
+                const shakeIntensity = configManager.get('game', 'bubbles.electric.shakeIntensity');
+                const disableDuration = configManager.get('game', 'bubbles.electric.disableDuration');
                 if (shakeIntensity !== null) effects.shakeIntensity = shakeIntensity;
                 if(disableDuration !== null) effects.disableDuration = disableDuration;
                 break;
 
             case 'rainbow':
-                const bonusTimeMs = configManager.get('game.bubbles.rainbow.bonusTimeMs');
+                const bonusTimeMs = configManager.get('game', 'bubbles.rainbow.bonusTimeMs');
                 if(bonusTimeMs !== null) effects.bonusTimeMs = bonusTimeMs;
                 break;
 
             case 'clock':
-                const timeStopMs = configManager.get('game.bubbles.clock.timeStopMs');
+                const timeStopMs = configManager.get('game', 'bubbles.clock.timeStopMs');
                 if(timeStopMs !== null) effects.timeStopMs = timeStopMs;
                 break;
 
             case 'score':
-                const bonusScore = configManager.get('game.bubbles.score.bonusScore');
+                const bonusScore = configManager.get('game', 'bubbles.score.bonusScore');
                 if(bonusScore !== null) effects.bonusScore = bonusScore;
                 break;
 
             case 'spiky':
-                const chainRadius = configManager.get('game.bubbles.spiky.chainRadius');
+                const chainRadius = configManager.get('game', 'bubbles.spiky.chainRadius');
                 if(chainRadius !== null) effects.chainRadius = chainRadius;
                 break;
 
             case 'escaping':
-                const escapeSpeed = configManager.get('game.bubbles.escaping.escapeSpeed');
-                const escapeRadius = configManager.get('game.bubbles.escaping.escapeRadius');
+                const escapeSpeed = configManager.get('game', 'bubbles.escaping.escapeSpeed');
+                const escapeRadius = configManager.get('game', 'bubbles.escaping.escapeRadius');
                 if (escapeSpeed !== null) effects.escapeSpeed = escapeSpeed;
                 if (escapeRadius !== null) effects.escapeRadius = escapeRadius;
                 break;
@@ -585,10 +585,8 @@ export class Bubble implements BubbleInterface {
      * 色をブレンド
      */
     public blendColors(color1: string, color2: string, ratio: number): string {
-        // 色ブレンド実装（将来的にはより詳細な補間を行う予定）
-        console.log('Color blending:', { color1, color2, ratio });
-        // 現在は簡略化だが、ratioに基づく補間を将来実装
-        return ratio > 0.5 ? color2 : color1;
+        // 簡単な色ブレンド実装
+        return color2; // 簡略化
     }
     /**
      * ダメージを受ける

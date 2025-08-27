@@ -97,12 +97,12 @@
 - [❌] src/audio/effects/AudioEffectManager.js - **重大な型制限問題**: ActiveEffectInstanceのtype型が"single"|"batch"に制限されているが実際はエフェクトタイプ文字列が必要、getEffectVariationの引数型も同様に制限、コンプレッサー設定・ゲインノード初期値の軽微な省略
 - [✅] src/audio/effects/SoundEffectRenderer.js - **処理同一** TypeScript版は正常、設定値の軽微な調整（デフォルト値、周波数等）があるが処理ロジックは同一、詳細な型定義追加
 - [✅] src/audio/effects/SoundPoolManager.js - **処理同一・改良** TypeScript版は正常、null安全性とタイマー管理が改善、詳細な型定義追加、基本処理ロジックは同一
-- [] src/audio/environmental-audio-manager/BiomeDefinitionManager.js
-- [] src/audio/environmental-audio-manager/BiomeTransitionController.js
-- [] src/audio/environmental-audio-manager/EnvironmentalAudioSettings.js
-- [] src/audio/environmental-audio-manager/EnvironmentalSoundGenerator.js
-- [] src/bubbles/Bubble.js
-- [] src/cleanup/CleanupOrchestrator.js
+- [❌] src/audio/environmental-audio-manager/BiomeDefinitionManager.js - **重大な型制限問題**: SoundLayer、AdditionalLayer、SoundProfileのtype型が"single"|"batch"に制限されているが実際は多様なサウンドタイプ文字列（'wind', 'leaves', 'rain', 'night_insects'等）が必要、メソッド名のアンダースコア削除（軽微）
+- [x] src/audio/environmental-audio-manager/BiomeTransitionController.js ✓ 時間帯レイヤーの固定値問題を修正
+- [x] src/audio/environmental-audio-manager/EnvironmentalAudioSettings.js ✅ 処理同一（括弧位置のバグ修正のみ）
+- [x] src/audio/environmental-audio-manager/EnvironmentalSoundGenerator.js ✅ 処理同一（型安全性向上のみ）
+- [x] src/bubbles/Bubble.js ⚠️ blendColorsメソッドの実装差異（TS版が改善）、ConfigManager呼び出し方法の違い
+- [x] src/cleanup/CleanupOrchestrator.js ✅ 処理同一（スペルミス修正、エラーチェック追加）
 - [] src/cleanup/FileRemover.js
 - [] src/cleanup/FileScanner.js
 - [] src/cleanup/ReferenceChecker.js

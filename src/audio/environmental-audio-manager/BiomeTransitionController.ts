@@ -178,11 +178,7 @@ export class BiomeTransitionController {
                     for (const timeLayer of timeVariation.additionalLayers) {
                         if (timeLayer.biomes.includes('all') || timeLayer.biomes.includes(biome.id)) {
                             const layerData: PreparedLayer = {
-                                name: timeLayer.name,
-                                type: timeLayer.type,
-                                volume: timeLayer.volume,
-                                frequency: 1.0,
-                                modulation: { rate: 0.1, depth: 0.2 },
+                                ...timeLayer,
                                 biomeId: biome.id,
                                 timeOfDay: timeOfDay,
                                 audioBuffer: this.soundGenerator.getOrGenerateSound(timeLayer.type)
