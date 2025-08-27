@@ -103,10 +103,10 @@
 - [x] src/audio/environmental-audio-manager/EnvironmentalSoundGenerator.js ✅ 処理同一（型安全性向上のみ）
 - [x] src/bubbles/Bubble.js ⚠️ blendColorsメソッドの実装差異（TS版が改善）、ConfigManager呼び出し方法の違い
 - [x] src/cleanup/CleanupOrchestrator.js ✅ 処理同一（スペルミス修正、エラーチェック追加）
-- [] src/cleanup/FileRemover.js
-- [] src/cleanup/FileScanner.js
-- [] src/cleanup/ReferenceChecker.js
-- [] src/cleanup/ReportGenerator.js
+- [x] src/cleanup/FileRemover.js ✅ 処理同一（型安全性向上のみ）
+- [x] src/cleanup/FileScanner.js ✅ 処理同一
+- [x] src/cleanup/ReferenceChecker.js ✅ 処理同一（未使用変数のコメントアウト、アクセス修飾子追加）
+- [x] src/cleanup/ReportGenerator.js ✅ 処理同一（型安全性追加、非同期処理の軽微な違い）
 - [] src/cleanup/SafetyValidator.js
 - [] src/cleanup/index.js
 - [] src/components/AccessibilityProfileComponent.js
