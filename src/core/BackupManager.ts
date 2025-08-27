@@ -57,7 +57,7 @@ export class BackupManager {
     private validation: ValidationManager | null;
     private version: string;
     private config: BackupConfig;
-    // private backupQueue: BackupJob[]; // Used for backup operations
+    private backupQueue: BackupJob[];
     private isBackupInProgress: boolean;
     private autoBackupTimer: ReturnType<typeof setInterval> | null;
     private lastBackupTime: number | null;
@@ -141,8 +141,8 @@ export class BackupManager {
             // 検証の実行
             if (this.validation && options.validate !== false) {
                 const validationResult = await this.validation.validate('backup', {
-                    data: backupData,
-                    metadata
+                    metadata,
+                    data: backupData
                 });
                 
                 if (!validationResult.isValid) {
@@ -609,7 +609,11 @@ export class BackupManager {
     destroy() {
         try {
             this.stopAutoBackup();
+            this.backupQueue = [];
+            this.isBackupInProgress = false;
+            
             console.log('BackupManager destroyed');
+            
         } catch (error) {
             getErrorHandler().handleError(error, 'BACKUP_MANAGER_DESTROY_ERROR', {
                 operation: 'destroy'

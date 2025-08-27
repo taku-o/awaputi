@@ -158,10 +158,13 @@ export class AsyncOperationQueue {
      * @returns {Promise<Array>} - 全操作の結果
      */
     async executeBatch(operations: (() => Promise<unknown>)[], options: any = {}) {
+        const batchId = this.generateOperationId();
+        const batchOptions = {
+            ...options,
+            metadata: { ...options.metadata, batchId, batchSize: operations.length }
+        };
+        
         try {
-            const batchId = this.generateOperationId();
-            const batchOptions = { ...options, batchId };
-            
             this.emit('batchStarted', { batchId, size: operations.length });
             
             // 並列実行か順次実行かを選択
@@ -187,7 +190,7 @@ export class AsyncOperationQueue {
             return results;
 
         } catch (error) {
-            this.emit('batchFailed', { batchId: this.generateOperationId(), error });
+            this.emit('batchFailed', { batchId, error });
             throw error;
         }
     }
@@ -452,7 +455,7 @@ export class AsyncOperationQueue {
         }
         
         this.stats.currentQueueSize = 0;
-        this.emit('queueCleared', {});
+        this.emit('queueCleared');
     }
     
     /**

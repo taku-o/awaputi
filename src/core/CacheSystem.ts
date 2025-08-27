@@ -117,7 +117,7 @@ export class CacheSystem {
     private config: CacheConfig;
     private stats: CacheStats;
     private accessHistory: Map<string, number>;
-    // private lastCleanup: number; // Timestamp of last cleanup
+    private lastCleanup: number;
     private cleanupTimer: NodeJS.Timeout | null = null;
     private memoryMonitorTimer: NodeJS.Timeout | null = null;
     

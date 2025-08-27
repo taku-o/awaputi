@@ -204,6 +204,7 @@ export class BalanceCalculator {
     
     /**
      * バランス設定を取得
+     * @returns {Object} バランス設定
      */
     getBalanceConfig(): BalanceConfig {
         if (this.gameConfig && typeof this.gameConfig.getBalanceConfig === 'function') {
@@ -214,6 +215,9 @@ export class BalanceCalculator {
     
     /**
      * 難易度調整を計算
+     * @param {string} stageId - ステージID
+     * @param {number} playerLevel - プレイヤーレベル（省略可）
+     * @returns {Object} 難易度設定
      */
     calculateDifficulty(stageId: string, playerLevel: number = 1): CalculatedDifficulty {
         const config = this.getBalanceConfig();
@@ -243,6 +247,8 @@ export class BalanceCalculator {
     
     /**
      * プレイヤーレベルに基づく調整値を計算
+     * @param {number} playerLevel - プレイヤーレベル
+     * @returns {Object} レベル調整値
      */
     calculateLevelAdjustment(playerLevel: number): LevelAdjustment {
         // レベル1を基準とした調整
@@ -260,6 +266,9 @@ export class BalanceCalculator {
     
     /**
      * アイテムコストを計算
+     * @param {string} itemId - アイテムID
+     * @param {number} currentLevel - 現在のレベル
+     * @returns {number} アイテムコスト
      */
     calculateItemCost(itemId: string, currentLevel: number = 0): number {
         const config = this.getBalanceConfig();
@@ -276,6 +285,8 @@ export class BalanceCalculator {
     
     /**
      * アイテムの最大レベルを取得
+     * @param {string} itemId - アイテムID
+     * @returns {number} 最大レベル
      */
     getItemMaxLevel(itemId: string): number {
         const config = this.getBalanceConfig();
@@ -284,6 +295,9 @@ export class BalanceCalculator {
     
     /**
      * アイテム効果値を計算
+     * @param {string} itemId - アイテムID
+     * @param {number} level - アイテムレベル
+     * @returns {number} 効果値
      */
     calculateItemEffect(itemId: string, level: number = 1): number {
         const config = this.getBalanceConfig();
@@ -317,6 +331,9 @@ export class BalanceCalculator {
     
     /**
      * ステージ開放条件をチェック
+     * @param {string} stageId - ステージID
+     * @param {number} playerTAP - プレイヤーのTAP値
+     * @returns {boolean} 開放されている場合 true
      */
     isStageUnlocked(stageId: string, playerTAP: number): boolean {
         const config = this.getBalanceConfig();
@@ -332,6 +349,8 @@ export class BalanceCalculator {
     
     /**
      * ステージ開放に必要なTAP値を取得
+     * @param {string} stageId - ステージID
+     * @returns {number} 必要TAP値（開放済みの場合は0）
      */
     getStageUnlockRequirement(stageId: string): number {
         const config = this.getBalanceConfig();
@@ -340,6 +359,9 @@ export class BalanceCalculator {
     
     /**
      * 泡の生存時間を計算
+     * @param {string} bubbleType - 泡タイプ
+     * @param {Object} modifiers - 修正値（省略可）
+     * @returns {number} 生存時間（ミリ秒）
      */
     calculateBubbleLifetime(bubbleType: string, modifiers: BubbleModifiers = {}): number {
         const config = this.getBalanceConfig();
@@ -366,6 +388,9 @@ export class BalanceCalculator {
     
     /**
      * 泡の耐久値を計算
+     * @param {string} bubbleType - 泡タイプ
+     * @param {Object} modifiers - 修正値（省略可）
+     * @returns {number} 耐久値
      */
     calculateBubbleHealth(bubbleType: string, modifiers: BubbleModifiers = {}): number {
         const config = this.getBalanceConfig();
@@ -391,6 +416,8 @@ export class BalanceCalculator {
     
     /**
      * 推奨アイテム購入順序を計算
+     * @param {Object} playerState - プレイヤー状態
+     * @returns {Array} 推奨アイテムリスト
      */
     calculateRecommendedItemOrder(playerState: PlayerState): ItemRecommendation[] {
         const {
@@ -432,6 +459,8 @@ export class BalanceCalculator {
     
     /**
      * ゲーム進行度を計算
+     * @param {Object} playerState - プレイヤー状態
+     * @returns {Object} 進行度情報
      */
     calculateGameProgress(playerState: PlayerState): GameProgress {
         const {
@@ -480,11 +509,13 @@ export class BalanceCalculator {
     
     /**
      * バランス調整の提案を生成
+     * @param {Object} gameData - ゲームデータ
+     * @returns {Object} バランス調整提案
      */
     suggestBalanceAdjustments(gameData: GameData): BalanceSuggestions {
         const {
             averagePlayTime = 0,
-            averageScore: _averageScore = 0,
+            averageScore = 0,
             stageCompletionRates = {},
             itemUsageRates = {}
         } = gameData;
@@ -517,9 +548,9 @@ export class BalanceCalculator {
         Object.entries(stageCompletionRates).forEach(([stageId, rate]) => {
             if (rate < 0.3) { // 30%未満
                 suggestions.stages.push({
+                    stageId,
                     type: 'reduce_difficulty',
                     reason: `${stageId}のクリア率が低すぎます (${Math.floor(rate * 100)}%)`,
-                    stageId,
                     currentRate: rate
                 });
             }
@@ -529,9 +560,9 @@ export class BalanceCalculator {
         Object.entries(itemUsageRates).forEach(([itemId, rate]) => {
             if (rate < 0.1) { // 10%未満
                 suggestions.items.push({
+                    itemId,
                     type: 'reduce_cost',
                     reason: `${itemId}の使用率が低すぎます (${Math.floor(rate * 100)}%)`,
-                    itemId,
                     currentRate: rate
                 });
             }
@@ -542,6 +573,7 @@ export class BalanceCalculator {
     
     /**
      * デバッグ情報を取得
+     * @returns {Object} デバッグ情報
      */
     getDebugInfo(): DebugInfo {
         return {
@@ -557,6 +589,7 @@ let balanceCalculatorInstance: BalanceCalculator | null = null;
 
 /**
  * BalanceCalculatorのシングルトンインスタンスを取得
+ * @returns {BalanceCalculator} BalanceCalculatorインスタンス
  */
 export function getBalanceCalculator(): BalanceCalculator {
     if (!balanceCalculatorInstance) {

@@ -181,7 +181,7 @@ interface CaptionReport {
  * 音声コンテンツのリアルタイム字幕表示とカスタマイズ可能なスタイリング
  */
 export class CaptionManager {
-    // private audioAccessibilityManager: AudioAccessibilityManager; // Used for audio integration
+    private audioAccessibilityManager: AudioAccessibilityManager; // Used for audio integration
     private accessibilityManager?: AccessibilityManager;
     private gameEngine?: GameEngine;
     private config: CaptionConfig;
@@ -192,7 +192,7 @@ export class CaptionManager {
     private captionContainer: HTMLElement | null;
     private maxCaptionId: number;
     private dynamicStyleSheet: HTMLStyleElement | null;
-    // private currentStyle: string; // Used for styling captions
+    private currentStyle: string;
     private stats: CaptionStats;
     private userPreferences: UserPreferences;
     private languageSupport: Map<string, LanguageConfig>;
@@ -288,10 +288,12 @@ export class CaptionManager {
         // キャプション表示管理
         this.activeCaptions = new Map();
         this.captionQueue = [];
-        this.maxCaptionId = 0;
-        this.currentStyle = 'default';
         this.captionContainer = null;
+        this.maxCaptionId = 0;
+        
+        // スタイル管理
         this.dynamicStyleSheet = null;
+        this.currentStyle = 'default';
         
         // 統計情報
         this.stats = {
@@ -402,7 +404,9 @@ export class CaptionManager {
                 ...this.userPreferences,
                 customDescriptions: Array.from(this.userPreferences.customDescriptions.entries())
             };
-            localStorage.setItem('captionManager_preferences', JSON.stringify(preferences));
+            
+            localStorage.setItem('captionManager_preferences', 
+                JSON.stringify(preferences));
         } catch (error) {
             console.warn('Failed to save caption manager preferences:', error);
         }
@@ -861,13 +865,15 @@ export class CaptionManager {
         const description: SoundDescription = {
             text,
             category: 'music',
-            duration: musicDescription.tempo
+            mood: musicDescription.mood,
+            tempo: musicDescription.tempo
         };
         
         const captionId = this.generateCaptionId();
         const duration = this.config.captionDuration.persistent;
 
         this.createCaptionElement(captionId, description, duration, options);
+
         this.updateCaptionStats('music' as AudioChannel);
     }
     
@@ -1232,8 +1238,9 @@ export class CaptionManager {
         if (config.audio?.captions) {
             Object.assign(this.config, config.audio.captions);
             this.updateStyleFromPreferences();
-            console.log('CaptionManager configuration applied');
         }
+        
+        console.log('CaptionManager configuration applied');
     }
     
     /**
