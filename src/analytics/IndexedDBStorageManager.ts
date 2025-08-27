@@ -6,7 +6,7 @@
 // IndexedDB Storage Manager interfaces and types
 export interface StoreDefinition {
     name: string;
-    keyPath: string;
+    keyPath: string | string[];
     autoIncrement?: boolean;
     indexes: IndexDefinition[];
 }
@@ -18,23 +18,49 @@ export interface IndexDefinition {
 }
 
 export interface QueryOptions {
-    limit?: number;
-    offset?: number;
-    orderBy?: string;
-    direction?: 'asc' | 'desc';
-    filters?: QueryFilter[];
+    key?: any;
+    index?: string;
+    value?: any;
+    range?: RangeOptions;
 }
 
-export interface QueryFilter {
-    field: string;
-    operator: 'equals' | 'greaterThan' | 'lessThan' | 'between' | 'in';
-    value: any;
+export interface RangeOptions {
+    lower?: any;
+    upper?: any;
+    lowerExclusive?: boolean;
+    upperExclusive?: boolean;
 }
 
-export interface StorageStats {
-    totalRecords: number;
-    storageSize: number;
-    stores: Record<string, number>;
+export interface AggregationRule {
+    type: 'sum' | 'avg' | 'min' | 'max' | 'count' | 'group';
+    alias?: string;
+    condition?: (value: any) => boolean;
+}
+
+export interface AggregationRules {
+    query?: QueryOptions;
+    fields?: Record<string, AggregationRule>;
+    initialValues?: Record<string, any>;
+}
+
+export interface CleanupResults {
+    sessions: {
+        count: number;
+        sessionIds: string[];
+    };
+    aggregatedData: {
+        count: number;
+    };
+}
+
+export interface DatabaseSize {
+    supported: boolean;
+    usage?: number;
+    quota?: number;
+    usageInMB?: string;
+    quotaInMB?: string;
+    percentUsed?: string;
+    error?: string;
 }
 
 export class IndexedDBStorageManager {
@@ -59,7 +85,6 @@ export class IndexedDBStorageManager {
                     { name: 'completed', keyPath: 'completed', unique: false }
                 ]
             },
-
             bubbleInteractions: {
                 name: 'bubbleInteractions',
                 keyPath: 'id',
@@ -71,7 +96,6 @@ export class IndexedDBStorageManager {
                     { name: 'action', keyPath: 'action', unique: false }
                 ]
             },
-
             performance: {
                 name: 'performance',
                 keyPath: 'id',
@@ -82,51 +106,25 @@ export class IndexedDBStorageManager {
                     { name: 'fps', keyPath: 'fps', unique: false }
                 ]
             },
-
-            gameBalance: {
-                name: 'gameBalance',
-                keyPath: 'id',
-                autoIncrement: true,
+            aggregatedData: {
+                name: 'aggregatedData',
+                keyPath: ['period', 'startDate'],
                 indexes: [
-                    { name: 'sessionId', keyPath: 'sessionId', unique: false },
-                    { name: 'timestamp', keyPath: 'timestamp', unique: false },
-                    { name: 'difficulty', keyPath: 'difficulty', unique: false }
-                ]
-            },
-
-            userBehavior: {
-                name: 'userBehavior',
-                keyPath: 'id',
-                autoIncrement: true,
-                indexes: [
-                    { name: 'sessionId', keyPath: 'sessionId', unique: false },
-                    { name: 'timestamp', keyPath: 'timestamp', unique: false },
-                    { name: 'eventType', keyPath: 'eventType', unique: false }
+                    { name: 'period', keyPath: 'period', unique: false },
+                    { name: 'endDate', keyPath: 'endDate', unique: false }
                 ]
             }
         };
-        
-        this.initialize();
     }
     
     /**
-     * データベースの初期化
+     * データベース初期化
+     * @returns {Promise<IDBDatabase>}
      */
-    private async initialize(): Promise<void> {
-        try {
-            await this.openDatabase();
-            console.log('IndexedDB initialized successfully');
-        } catch (error) {
-            console.error('Failed to initialize IndexedDB:', error);
-        }
-    }
-    
-    /**
-     * データベースのオープン
-     */
-    private openDatabase(): Promise<IDBDatabase> {
+    async initialize(): Promise<IDBDatabase> {
         return new Promise((resolve, reject) => {
-            if (!window.indexedDB) {
+            // IndexedDBサポートチェック
+            if (!('indexedDB' in window)) {
                 reject(new Error('IndexedDB is not supported'));
                 return;
             }
@@ -139,415 +137,390 @@ export class IndexedDBStorageManager {
             
             request.onsuccess = () => {
                 this.db = request.result;
-                resolve(request.result);
+                this.setupEventHandlers();
+                resolve(this.db);
             };
             
             request.onupgradeneeded = (event) => {
                 const db = (event.target as IDBOpenDBRequest).result;
-                this.setupStores(db);
+                
+                // 既存ストアの削除（バージョンアップ時）
+                for (const storeName of db.objectStoreNames) {
+                    if (!Object.keys(this.stores).includes(storeName)) {
+                        db.deleteObjectStore(storeName);
+                    }
+                }
+                
+                // ストアの作成
+                for (const [key, storeConfig] of Object.entries(this.stores)) {
+                    let store: IDBObjectStore;
+                    
+                    if (!Array.from(db.objectStoreNames).includes(storeConfig.name)) {
+                        const options: IDBObjectStoreParameters = { keyPath: storeConfig.keyPath };
+                        if (storeConfig.autoIncrement) {
+                            options.autoIncrement = true;
+                        }
+                        store = db.createObjectStore(storeConfig.name, options);
+                    } else {
+                        const transaction = (event.target as IDBOpenDBRequest).transaction;
+                        store = transaction!.objectStore(storeConfig.name);
+                    }
+                    
+                    // インデックスの作成
+                    if (storeConfig.indexes) {
+                        for (const index of storeConfig.indexes) {
+                            if (!Array.from(store.indexNames).includes(index.name)) {
+                                store.createIndex(index.name, index.keyPath, { unique: index.unique });
+                            }
+                        }
+                    }
+                }
             };
-        });
-    }
-
-    /**
-     * ストアとインデックスの設定
-     */
-    private setupStores(db: IDBDatabase): void {
-        Object.values(this.stores).forEach(store => {
-            // 既存のストアを削除
-            if (db.objectStoreNames.contains(store.name)) {
-                db.deleteObjectStore(store.name);
-            }
-            
-            // ストアの作成
-            const objectStore = db.createObjectStore(store.name, {
-                keyPath: store.keyPath,
-                autoIncrement: store.autoIncrement || false
-            });
-            
-            // インデックスの作成
-            store.indexes.forEach(index => {
-                objectStore.createIndex(index.name, index.keyPath, {
-                    unique: index.unique
-                });
-            });
         });
     }
     
     /**
-     * データの保存
+     * イベントハンドラーの設定
      */
-    async saveData(storeName: string, data: any[]): Promise<boolean> {
+    setupEventHandlers(): void {
+        if (!this.db) return;
+        
+        this.db.onerror = (event) => {
+            console.error('Database error:', event);
+        };
+        
+        this.db.onabort = (event) => {
+            console.error('Database transaction aborted:', event);
+        };
+        
+        this.db.onversionchange = () => {
+            this.db!.close();
+            console.warn('Database version changed, connection closed');
+        };
+    }
+    
+    /**
+     * データ保存
+     * @param {string} storeName - ストア名
+     * @param {Object|Array} data - 保存するデータ
+     * @returns {Promise<void>}
+     */
+    async saveData(storeName: string, data: any | any[]): Promise<void> {
         if (!this.db) {
-            await this.openDatabase();
+            throw new Error('Database not initialized');
         }
-
+        
         return new Promise((resolve, reject) => {
-            if (!this.db) {
-                reject(new Error('Database not available'));
-                return;
-            }
-
-            const transaction = this.db.transaction([storeName], 'readwrite');
+            const transaction = this.db!.transaction([storeName], 'readwrite');
             const store = transaction.objectStore(storeName);
             
-            transaction.oncomplete = () => {
-                resolve(true);
-            };
+            transaction.oncomplete = () => resolve();
+            transaction.onerror = () => reject(transaction.error);
             
-            transaction.onerror = () => {
-                reject(new Error(`Transaction failed: ${transaction.error}`));
-            };
-            
-            // バッチ保存
-            data.forEach(item => {
-                const request = store.add(item);
-                request.onerror = () => {
-                    console.error(`Failed to save item:`, request.error);
-                };
-            });
+            // 配列の場合は一括保存
+            if (Array.isArray(data)) {
+                data.forEach(item => store.put(item));
+            } else {
+                store.put(data);
+            }
         });
     }
-
+    
     /**
-     * データの取得
+     * データ取得
+     * @param {string} storeName - ストア名
+     * @param {Object} query - クエリ条件
+     * @returns {Promise<Array>}
      */
-    async getData(storeName: string, options: QueryOptions = {}): Promise<any[]> {
+    async getData(storeName: string, query: QueryOptions = {}): Promise<any[]> {
         if (!this.db) {
-            await this.openDatabase();
+            throw new Error('Database not initialized');
         }
-
+        
         return new Promise((resolve, reject) => {
-            if (!this.db) {
-                reject(new Error('Database not available'));
-                return;
-            }
-
-            const transaction = this.db.transaction([storeName], 'readonly');
+            const transaction = this.db!.transaction([storeName], 'readonly');
             const store = transaction.objectStore(storeName);
             const results: any[] = [];
             
             let request: IDBRequest;
             
-            // フィルターがある場合はインデックスを使用
-            if (options.filters && options.filters.length > 0) {
-                const filter = options.filters[0]; // 最初のフィルターのみ使用
-                const index = store.index(filter.field);
+            // クエリタイプに応じた処理
+            if (query.key) {
+                // 単一キー検索
+                request = store.get(query.key);
+                request.onsuccess = () => {
+                    resolve(request.result ? [request.result] : []);
+                };
+                request.onerror = () => reject(request.error);
+            } else if (query.index && query.value) {
+                // インデックス検索
+                const index = store.index(query.index);
+                request = index.openCursor(IDBKeyRange.only(query.value));
                 
-                switch(filter.operator) {
-                    case 'equals':
-                        request = index.openCursor(IDBKeyRange.only(filter.value));
-                        break;
-                    case 'greaterThan':
-                        request = index.openCursor(IDBKeyRange.lowerBound(filter.value, true));
-                        break;
-                    case 'lessThan':
-                        request = index.openCursor(IDBKeyRange.upperBound(filter.value, true));
-                        break;
-                    case 'between':
-                        request = index.openCursor(IDBKeyRange.bound(filter.value[0], filter.value[1]));
-                        break;
-                    default:
-                        request = store.openCursor();
-                }
-            } else {
-                request = store.openCursor();
-            }
-            
-            let count = 0;
-            const offset = options.offset || 0;
-            const limit = options.limit || Infinity;
-            
-            request.onsuccess = () => {
-                const cursor = request.result;
-                if (cursor) {
-                    if (count >= offset && results.length < limit) {
+                request.onsuccess = (event) => {
+                    const cursor = (event.target as IDBRequest).result;
+                    if (cursor) {
                         results.push(cursor.value);
+                        cursor.continue();
+                    } else {
+                        resolve(results);
                     }
-                    count++;
-                    cursor.continue();
-                } else {
-                    resolve(results);
-                }
-            };
-            
-            request.onerror = () => {
-                reject(new Error(`Query failed: ${request.error}`));
-            };
-        });
-    }
-    
-    /**
-     * データの更新
-     */
-    async updateData(storeName: string, _key: any, data: any): Promise<boolean> {
-        if (!this.db) {
-            await this.openDatabase();
-        }
-
-        return new Promise((resolve, reject) => {
-            if (!this.db) {
-                reject(new Error('Database not available'));
-                return;
-            }
-
-            const transaction = this.db.transaction([storeName], 'readwrite');
-            const store = transaction.objectStore(storeName);
-            
-            const request = store.put(data);
-            
-            request.onsuccess = () => {
-                resolve(true);
-            };
-            
-            request.onerror = () => {
-                reject(new Error(`Update failed: ${request.error}`));
-            };
-        });
-    }
-    
-    /**
-     * データの削除
-     */
-    async deleteData(storeName: string, key: any): Promise<boolean> {
-        if (!this.db) {
-            await this.openDatabase();
-        }
-
-        return new Promise((resolve, reject) => {
-            if (!this.db) {
-                reject(new Error('Database not available'));
-                return;
-            }
-
-            const transaction = this.db.transaction([storeName], 'readwrite');
-            const store = transaction.objectStore(storeName);
-            
-            const request = store.delete(key);
-            
-            request.onsuccess = () => {
-                resolve(true);
-            };
-            
-            request.onerror = () => {
-                reject(new Error(`Delete failed: ${request.error}`));
-            };
-        });
-    }
-    
-    /**
-     * ストアのクリア
-     */
-    async clearStore(storeName: string): Promise<boolean> {
-        if (!this.db) {
-            await this.openDatabase();
-        }
-
-        return new Promise((resolve, reject) => {
-            if (!this.db) {
-                reject(new Error('Database not available'));
-                return;
-            }
-
-            const transaction = this.db.transaction([storeName], 'readwrite');
-            const store = transaction.objectStore(storeName);
-            
-            const request = store.clear();
-            
-            request.onsuccess = () => {
-                resolve(true);
-            };
-            
-            request.onerror = () => {
-                reject(new Error(`Clear failed: ${request.error}`));
-            };
-        });
-    }
-    
-    /**
-     * データ数の取得
-     */
-    async getCount(storeName: string, filters?: QueryFilter[]): Promise<number> {
-        if (!this.db) {
-            await this.openDatabase();
-        }
-
-        return new Promise((resolve, reject) => {
-            if (!this.db) {
-                reject(new Error('Database not available'));
-                return;
-            }
-
-            const transaction = this.db.transaction([storeName], 'readonly');
-            const store = transaction.objectStore(storeName);
-            
-            let request: IDBRequest;
-            
-            if (filters && filters.length > 0) {
-                const filter = filters[0];
-                const index = store.index(filter.field);
+                };
+                request.onerror = () => reject(request.error);
+            } else if (query.range) {
+                // 範囲検索
+                const range = this.createKeyRange(query.range);
+                const index = query.index ? store.index(query.index) : store;
+                request = index.openCursor(range!);
                 
-                switch(filter.operator) {
-                    case 'equals':
-                        request = index.count(IDBKeyRange.only(filter.value));
-                        break;
-                    case 'greaterThan':
-                        request = index.count(IDBKeyRange.lowerBound(filter.value, true));
-                        break;
-                    case 'lessThan':
-                        request = index.count(IDBKeyRange.upperBound(filter.value, true));
-                        break;
-                    case 'between':
-                        request = index.count(IDBKeyRange.bound(filter.value[0], filter.value[1]));
-                        break;
-                    default:
-                        request = store.count();
-                }
+                request.onsuccess = (event) => {
+                    const cursor = (event.target as IDBRequest).result;
+                    if (cursor) {
+                        results.push(cursor.value);
+                        cursor.continue();
+                    } else {
+                        resolve(results);
+                    }
+                };
+                request.onerror = () => reject(request.error);
             } else {
-                request = store.count();
+                // 全件取得
+                request = store.getAll();
+                request.onsuccess = () => resolve(request.result);
+                request.onerror = () => reject(request.error);
             }
-            
-            request.onsuccess = () => {
-                resolve(request.result);
-            };
-            
-            request.onerror = () => {
-                reject(new Error(`Count failed: ${request.error}`));
-            };
         });
     }
     
     /**
-     * ストレージ統計の取得
+     * KeyRange作成
+     * @param {Object} range - 範囲条件
+     * @returns {IDBKeyRange}
      */
-    async getStorageStats(): Promise<StorageStats> {
-        const stats: StorageStats = {
-            totalRecords: 0,
-            storageSize: 0,
-            stores: {}
-        };
-        
-        try {
-            if ('storage' in navigator && 'estimate' in navigator.storage) {
-                const estimate = await navigator.storage.estimate();
-                stats.storageSize = estimate.usage || 0;
-            }
-            
-            for (const storeName of Object.keys(this.stores)) {
-                const count = await this.getCount(storeName);
-                stats.stores[storeName] = count;
-                stats.totalRecords += count;
-            }
-        } catch (error) {
-            console.error('Failed to get storage stats:', error);
+    createKeyRange(range: RangeOptions): IDBKeyRange | null {
+        if (range.lower && range.upper) {
+            return IDBKeyRange.bound(
+                range.lower,
+                range.upper,
+                range.lowerExclusive || false,
+                range.upperExclusive || false
+            );
+        } else if (range.lower) {
+            return IDBKeyRange.lowerBound(range.lower, range.lowerExclusive || false);
+        } else if (range.upper) {
+            return IDBKeyRange.upperBound(range.upper, range.upperExclusive || false);
         }
-        
-        return stats;
+        return null;
     }
     
     /**
-     * データベースの最適化
+     * データ集計
+     * @param {string} storeName - ストア名
+     * @param {Object} aggregationRules - 集計ルール
+     * @returns {Promise<Object>}
      */
-    async optimizeDatabase(): Promise<boolean> {
-        try {
-            // 古いデータの削除（30日以上前）
-            const cutoffTime = Date.now() - (30 * 24 * 60 * 60 * 1000);
-
-            for (const storeName of Object.keys(this.stores)) {
-                const oldData = await this.getData(storeName, {
-                    filters: [{
-                        field: 'timestamp',
-                        operator: 'lessThan',
-                        value: cutoffTime
-                    }]
-                });
+    async aggregateData(storeName: string, aggregationRules: AggregationRules): Promise<Record<string, any>> {
+        const data = await this.getData(storeName, aggregationRules.query || {});
+        
+        const result: Record<string, any> = {
+            count: data.length,
+            ...aggregationRules.initialValues || {}
+        };
+        
+        // 集計処理
+        data.forEach(item => {
+            for (const [field, rule] of Object.entries(aggregationRules.fields || {})) {
+                const value = this.getNestedValue(item, field);
                 
-                for (const item of oldData) {
-                    const keyPath = this.stores[storeName].keyPath;
-                    await this.deleteData(storeName, item[keyPath]);
+                switch (rule.type) {
+                    case 'sum':
+                        result[rule.alias || field] = (result[rule.alias || field] || 0) + (value || 0);
+                        break;
+                    case 'avg':
+                        if (!result[`_sum_${field}`]) result[`_sum_${field}`] = 0;
+                        result[`_sum_${field}`] += (value || 0);
+                        result[rule.alias || field] = result[`_sum_${field}`] / result.count;
+                        break;
+                    case 'min':
+                        if (result[rule.alias || field] === undefined || value < result[rule.alias || field]) {
+                            result[rule.alias || field] = value;
+                        }
+                        break;
+                    case 'max':
+                        if (result[rule.alias || field] === undefined || value > result[rule.alias || field]) {
+                            result[rule.alias || field] = value;
+                        }
+                        break;
+                    case 'count':
+                        if (rule.condition && rule.condition(value)) {
+                            result[rule.alias || field] = (result[rule.alias || field] || 0) + 1;
+                        }
+                        break;
+                    case 'group':
+                        if (!result[rule.alias || field]) result[rule.alias || field] = {};
+                        const groupKey = value || 'unknown';
+                        result[rule.alias || field][groupKey] = (result[rule.alias || field][groupKey] || 0) + 1;
+                        break;
                 }
             }
-
-            console.log('Database optimization completed');
-            return true;
-        } catch (error) {
-            console.error('Database optimization failed:', error);
-            return false;
-        }
+        });
+        
+        // 平均値の最終計算用の一時フィールドを削除
+        Object.keys(result).forEach(key => {
+            if (key.startsWith('_sum_')) {
+                delete result[key];
+            }
+        });
+        
+        return result;
     }
     
     /**
-     * データのエクスポート
+     * ネストされたオブジェクトから値を取得
+     * @param {Object} obj - オブジェクト
+     * @param {string} path - パス（ドット区切り）
+     * @returns {*}
      */
-    async exportData(storeName?: string): Promise<any> {
-        const exportData: any = {
-            exportDate: new Date().toISOString(),
-            version: this.version,
-            stores: {}
+    getNestedValue(obj: any, path: string): any {
+        return path.split('.').reduce((current, key) => current?.[key], obj);
+    }
+    
+    /**
+     * データクリーンアップ
+     * @param {number} retentionDays - 保持日数
+     * @returns {Promise<Object>}
+     */
+    async cleanupOldData(retentionDays: number): Promise<CleanupResults> {
+        const cutoffTime = Date.now() - (retentionDays * 24 * 60 * 60 * 1000);
+        const results: CleanupResults = {
+            sessions: {
+                count: 0,
+                sessionIds: []
+            },
+            aggregatedData: {
+                count: 0
+            }
         };
         
-        try {
-            const storeNames = storeName ? [storeName] : Object.keys(this.stores);
+        // セッションデータのクリーンアップ
+        const oldSessions = await this.getData('sessions', {
+            range: {
+                upper: cutoffTime
+            },
+            index: 'startTime'
+        });
+        
+        results.sessions = {
+            count: oldSessions.length,
+            sessionIds: oldSessions.map(s => s.sessionId)
+        };
+        
+        // 関連データの削除
+        for (const sessionId of results.sessions.sessionIds) {
+            // バブルインタラクションデータ削除
+            await this.deleteData('bubbleInteractions', {
+                index: 'sessionId',
+                value: sessionId
+            });
             
-            for (const name of storeNames) {
-                exportData.stores[name] = await this.getData(name);
-            }
-        } catch (error) {
-            console.error('Data export failed:', error);
+            // パフォーマンスデータ削除
+            await this.deleteData('performance', {
+                index: 'sessionId',
+                value: sessionId
+            });
+            
+            // セッションデータ削除
+            await this.deleteData('sessions', { key: sessionId });
         }
         
-        return exportData;
-    }
-    
-    /**
-     * データのインポート
-     */
-    async importData(importData: any): Promise<boolean> {
-        try {
-            for (const [storeName, data] of Object.entries(importData.stores)) {
-                if (Array.isArray(data)) {
-                    await this.clearStore(storeName);
-                    await this.saveData(storeName, data as any[]);
-                }
-            }
-
-            console.log('Data import completed');
-            return true;
-        } catch (error) {
-            console.error('Data import failed:', error);
-            return false;
+        // 古い集計データの削除
+        const oldAggregated = await this.getData('aggregatedData', {
+            range: {
+                upper: cutoffTime
+            },
+            index: 'endDate'
+        });
+        
+        results.aggregatedData = {
+            count: oldAggregated.length
+        };
+        
+        for (const data of oldAggregated) {
+            await this.deleteData('aggregatedData', {
+                key: [data.period, data.startDate]
+            });
         }
+        
+        return results;
     }
     
     /**
-     * データベースの健全性チェック
+     * データ削除
+     * @param {string} storeName - ストア名
+     * @param {Object} query - 削除条件
+     * @returns {Promise<void>}
      */
-    async healthCheck(): Promise<boolean> {
-        try {
-            if (!this.db) {
-                await this.openDatabase();
-            }
+    async deleteData(storeName: string, query: QueryOptions): Promise<void> {
+        if (!this.db) {
+            throw new Error('Database not initialized');
+        }
+        
+        return new Promise((resolve, reject) => {
+            const transaction = this.db!.transaction([storeName], 'readwrite');
+            const store = transaction.objectStore(storeName);
             
-            // 各ストアへのアクセステスト
-            for (const storeName of Object.keys(this.stores)) {
-                await this.getCount(storeName);
+            transaction.oncomplete = () => resolve();
+            transaction.onerror = () => reject(transaction.error);
+            
+            if (query.key) {
+                store.delete(query.key);
+            } else if (query.index && query.value) {
+                const index = store.index(query.index);
+                const request = index.openCursor(IDBKeyRange.only(query.value));
+                
+                request.onsuccess = (event) => {
+                    const cursor = (event.target as IDBRequest).result;
+                    if (cursor) {
+                        cursor.delete();
+                        cursor.continue();
+                    }
+                };
             }
-
-            return true;
-        } catch (error) {
-            console.error('Health check failed:', error);
-            return false;
+        });
+    }
+    
+    /**
+     * データベースのサイズ取得
+     * @returns {Promise<Object>}
+     */
+    async getDatabaseSize(): Promise<DatabaseSize> {
+        if (!navigator.storage?.estimate) {
+            return { supported: false };
+        }
+        
+        try {
+            const estimate = await navigator.storage.estimate();
+            return {
+                supported: true,
+                usage: estimate.usage || 0,
+                quota: estimate.quota || 0,
+                usageInMB: ((estimate.usage || 0) / (1024 * 1024)).toFixed(2),
+                quotaInMB: ((estimate.quota || 0) / (1024 * 1024)).toFixed(2),
+                percentUsed: estimate.quota ? ((estimate.usage! / estimate.quota) * 100).toFixed(2) : '0'
+            };
+        } catch (error: any) {
+            console.error('Failed to estimate storage:', error);
+            return { supported: false, error: error.message };
         }
     }
     
     /**
-     * リソースの解放
+     * データベースのクローズ
      */
-    destroy(): void {
+    close(): void {
         if (this.db) {
             this.db.close();
             this.db = null;
         }
-        console.log('IndexedDBStorageManager destroyed');
     }
 }
