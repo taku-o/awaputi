@@ -5,22 +5,26 @@
 
 // Privacy Manager interfaces and types
 export interface ConsentStatus {
-    hasConsented: boolean;
-    consentDate: string;
+    status: boolean;
+}
+
+export interface ConsentData {
+    status: ConsentStatus | null;
     version: string;
-    features: Record<string, boolean>;
+    timestamp: number;
+    optOutFeatures: string[];
 }
 
 export interface AnonymizationRule {
     (value: any): any;
 }
 
-export type PrivacyFeature = 'sessionTracking' | 'behaviorAnalysis' | 'performanceTracking' | 'analytics' | 'cookies';
+export type PrivacyFeature = 'sessionTracking' | 'behaviorAnalysis' | 'performanceTracking';
 
 export class PrivacyManager {
-    private consentStatus: ConsentStatus | null;
+    private consentStatus: boolean | null;
     private anonymizationRules: Map<string, AnonymizationRule>;
-    private optOutFeatures: Set<PrivacyFeature>;
+    private optOutFeatures: Set<string>;
     private consentVersion: string;
 
     constructor() {
@@ -39,285 +43,56 @@ export class PrivacyManager {
     /**
      * デフォルトの匿名化ルール設定
      */
-    private setupDefaultAnonymizationRules(): void {
+    setupDefaultAnonymizationRules(): void {
         // IPアドレスの匿名化
         this.anonymizationRules.set('ipAddress', (value: string): string | null => {
-            if(!value) return null as any;
+            if (!value) return null;
             const parts = value.split('.');
             if (parts.length === 4) {
                 // 最後のオクテットを0に置換
                 return `${parts[0]}.${parts[1]}.${parts[2]}.0`;
             }
-            return value;
+            return null;
         });
         
-        // ユーザーエージェントの匿名化
-        this.anonymizationRules.set('userAgent', (value: string): string | null => {
-            if(!value) return null as any;
-            
-            // バージョン番号を除去
-            return value.replace(/\d+\.\d+[\.\d]*/g, 'X.X');
+        // タイムスタンプの丸め（5分単位）
+        this.anonymizationRules.set('timestamp', (value: number): number | null => {
+            if (!value) return null;
+            const date = new Date(value);
+            const minutes = Math.floor(date.getMinutes() / 5) * 5;
+            date.setMinutes(minutes);
+            date.setSeconds(0);
+            date.setMilliseconds(0);
+            return date.getTime();
         });
         
-        // セッションIDの匿名化
-        this.anonymizationRules.set('sessionId', (value: string): string | null => {
-            if (!value) return null as any;
-            // セッションIDをハッシュ化
-            return this.hashValue(value);
-        });
-        
-        // タイムスタンプの曖昧化（分単位に丸める）
-        this.anonymizationRules.set('timestamp', (value: number): number => {
-            if (!value) return 0;
-            return Math.floor(value / 60000) * 60000; // 分単位に丸める
-        });
-        
-        // 座標の曖昧化
-        this.anonymizationRules.set('coordinates', (value: { x: number; y: number }): { x: number; y: number } | null => {
-            if(!value || typeof value.x !== 'number' || typeof value.y !== 'number') return null as any;
-            // 10ピクセル単位に丸める
+        // 位置情報の精度低下
+        this.anonymizationRules.set('position', (value: { x: number; y: number }): { x: number; y: number } | null => {
+            if (!value || !value.x || !value.y) return null;
             return {
-                x: Math.round(value.x / 10) * 10,
-                y: Math.round(value.y / 10) * 10
+                x: Math.round(value.x / 50) * 50,
+                y: Math.round(value.y / 50) * 50
             };
         });
-    }
-    
-    /**
-     * 同意状態の確認
-     */
-    checkConsent(): boolean {
-        if (!this.consentStatus) return false;
-        return this.consentStatus.hasConsented;
-    }
-    
-    /**
-     * 機能のオプトアウト確認
-     */
-    isOptedOut(feature: PrivacyFeature): boolean {
-        return this.optOutFeatures.has(feature);
-    }
-    
-    /**
-     * 同意の設定
-     */
-    setConsent(consent: boolean, features: Record<string, boolean> = {}): void {
-        this.consentStatus = {
-            hasConsented: consent,
-            consentDate: new Date().toISOString(),
-            version: this.consentVersion,
-            features: features
-        };
         
-        // オプトアウト機能の更新
-        this.optOutFeatures.clear();
-        Object.entries(features).forEach(([feature, enabled]) => {
-            if (!enabled) {
-                this.optOutFeatures.add(feature as PrivacyFeature);
-            }
+        // セッションIDのハッシュ化
+        this.anonymizationRules.set('sessionId', (value: string): string | null => {
+            if (!value) return null;
+            return this.hashString(value);
         });
-        
-        this.saveConsentStatus();
-    }
-    
-    /**
-     * データの匿名化
-     */
-    anonymizeData(data: any): any {
-        if(!data || typeof data !== 'object') return data;
-        
-        const anonymized = JSON.parse(JSON.stringify(data)); // ディープコピー
-        
-        return this.applyAnonymizationRules(anonymized);
-    }
-    
-    /**
-     * 匿名化ルールの適用
-     */
-    private applyAnonymizationRules(obj: any, path: string = ''): any {
-        if (obj === null || obj === undefined) return obj;
-        
-        if (Array.isArray(obj)) {
-            return obj.map((item, index) =>
-                this.applyAnonymizationRules(item, `${path}[${index}]`)
-            );
-        }
-        
-        if(typeof obj === 'object') {
-            const result: any = {};
-            Object.keys(obj).forEach(key => {
-                const currentPath = path ? `${path}.${key}` : key;
-                let value = obj[key];
-                
-                // 特定のフィールドに対する匿名化ルール適用
-                if(this.anonymizationRules.has(key)) {
-                    const rule = this.anonymizationRules.get(key)!;
-                    value = rule(value);
-                }
-                
-                // 再帰的に匿名化ルールを適用
-                if (typeof value === 'object' && value !== null) {
-                    value = this.applyAnonymizationRules(value, currentPath);
-                }
-                
-                result[key] = value;
-            });
-            
-            return result;
-        }
-        
-        return obj;
-    }
-    
-    /**
-     * 匿名化ルールの追加
-     */
-    addAnonymizationRule(field: string, rule: AnonymizationRule): void {
-        this.anonymizationRules.set(field, rule);
-    }
-    
-    /**
-     * 匿名化ルールの削除
-     */
-    removeAnonymizationRule(field: string): void {
-        this.anonymizationRules.delete(field);
-    }
-    
-    /**
-     * 機能のオプトアウト
-     */
-    optOutFeature(feature: PrivacyFeature): void {
-        this.optOutFeatures.add(feature);
-        // 同意状態の更新
-        if (this.consentStatus) {
-            this.consentStatus.features[feature] = false;
-            this.saveConsentStatus();
-        }
-    }
-    
-    /**
-     * 機能のオプトイン
-     */
-    optInFeature(feature: PrivacyFeature): void {
-        this.optOutFeatures.delete(feature);
-        // 同意状態の更新
-        if (this.consentStatus) {
-            this.consentStatus.features[feature] = true;
-            this.saveConsentStatus();
-        }
-    }
-    
-    /**
-     * データ削除要求の処理
-     */
-    requestDataDeletion(): Promise<boolean> {
-        return new Promise((resolve) => {
-            try {
-                // LocalStorageからデータを削除
-                const keysToDelete = [];
-                for(let i = 0; i < localStorage.length; i++) {
-                    const key = localStorage.key(i);
-                    if (key && (key.startsWith('analytics_') || key.startsWith('game_data_'))) {
-                        keysToDelete.push(key);
-                    }
-                }
-                
-                keysToDelete.forEach(key => localStorage.removeItem(key));
-                
-                // IndexedDBからデータを削除（実装は環境に依存）
-                this.clearIndexedDBData().then(() => {
-                    console.log('User data deletion completed');
-                    resolve(true);
-                }).catch(() => {
-                    resolve(false);
-                });
-                
-            } catch (error) {
-                console.error('Data deletion failed:', error);
-                resolve(false);
-            }
-        });
-    }
-    
-    /**
-     * データエクスポート要求の処理
-     */
-    requestDataExport(): Promise<any> {
-        return new Promise((resolve) => {
-            try {
-                const exportData: any = {
-                    exportDate: new Date().toISOString(),
-                    consentStatus: this.consentStatus,
-                    localStorage: {},
-                    indexedDB: {}
-                };
-                
-                // LocalStorageデータの収集
-                for(let i = 0; i < localStorage.length; i++) {
-                    const key = localStorage.key(i);
-                    if (key && (key.startsWith('analytics_') || key.startsWith('game_data_'))) {
-                        try {
-                            exportData.localStorage[key] = JSON.parse(localStorage.getItem(key) || '{}');
-                        } catch {
-                            exportData.localStorage[key] = localStorage.getItem(key);
-                        }
-                    }
-                }
-                
-                // IndexedDBデータの収集
-                this.exportIndexedDBData().then(indexedDBData => {
-                    exportData.indexedDB = indexedDBData;
-                    resolve(exportData);
-                }).catch(() => {
-                    resolve(exportData);
-                });
-                
-            } catch (error) {
-                console.error('Data export failed:', error);
-                resolve(null);
-            }
-        });
-    }
-    
-    /**
-     * プライバシー設定の取得
-     */
-    getPrivacySettings(): any {
-        return {
-            consentStatus: this.consentStatus,
-            optOutFeatures: Array.from(this.optOutFeatures),
-            anonymizationRules: Array.from(this.anonymizationRules.keys()),
-            consentVersion: this.consentVersion
-        };
-    }
-    
-    /**
-     * 同意状態の保存
-     */
-    private saveConsentStatus(): void {
-        try {
-            localStorage.setItem('privacy_consent', JSON.stringify(this.consentStatus));
-        } catch (error) {
-            console.error('Failed to save consent status:', error);
-        }
     }
     
     /**
      * 同意状態の読み込み
      */
-    private loadConsentStatus(): void {
+    loadConsentStatus(): void {
         try {
-            const saved = localStorage.getItem('privacy_consent');
-            if (saved) {
-                this.consentStatus = JSON.parse(saved);
-                
-                // オプトアウト機能の復元
-                if (this.consentStatus?.features) {
-                    Object.entries(this.consentStatus.features).forEach(([feature, enabled]) => {
-                        if (!enabled) {
-                            this.optOutFeatures.add(feature as PrivacyFeature);
-                        }
-                    });
+            const stored = localStorage.getItem('bubblePopAnalyticsConsent');
+            if (stored) {
+                const parsed: ConsentData = JSON.parse(stored);
+                if (parsed.version === this.consentVersion) {
+                    this.consentStatus = parsed.status ? parsed.status.status : null;
+                    this.optOutFeatures = new Set(parsed.optOutFeatures || []);
                 }
             }
         } catch (error) {
@@ -326,82 +101,484 @@ export class PrivacyManager {
     }
     
     /**
-     * ハッシュ値の生成（簡易実装）
+     * 同意状態の保存
      */
-    private hashValue(value: string): string {
+    saveConsentStatus(): void {
+        try {
+            const data: ConsentData = {
+                status: this.consentStatus !== null ? { status: this.consentStatus } : null,
+                version: this.consentVersion,
+                timestamp: Date.now(),
+                optOutFeatures: Array.from(this.optOutFeatures)
+            };
+            localStorage.setItem('bubblePopAnalyticsConsent', JSON.stringify(data));
+        } catch (error) {
+            console.error('Failed to save consent status:', error);
+        }
+    }
+    
+    /**
+     * 同意要求
+     * @returns {Promise<boolean>}
+     */
+    async requestConsent(): Promise<boolean> {
+        // 既に同意がある場合はスキップ
+        if (this.consentStatus !== null) {
+            return this.consentStatus;
+        }
+        
+        return new Promise((resolve) => {
+            // 同意ダイアログの作成
+            const dialog = this.createConsentDialog();
+            document.body.appendChild(dialog);
+            
+            // ボタンイベントハンドラー
+            const acceptBtn = dialog.querySelector('.consent-accept') as HTMLButtonElement;
+            const declineBtn = dialog.querySelector('.consent-decline') as HTMLButtonElement;
+            const customizeBtn = dialog.querySelector('.consent-customize') as HTMLButtonElement;
+            
+            const handleResponse = (accepted: boolean, customized = false) => {
+                this.consentStatus = accepted;
+                if (!customized && !accepted) {
+                    // 完全拒否の場合、全機能をオプトアウト
+                    this.optOutFeatures.add('sessionTracking');
+                    this.optOutFeatures.add('performanceTracking');
+                    this.optOutFeatures.add('behaviorAnalysis');
+                }
+                this.saveConsentStatus();
+                dialog.remove();
+                resolve(accepted);
+            };
+            
+            acceptBtn.addEventListener('click', () => handleResponse(true));
+            declineBtn.addEventListener('click', () => handleResponse(false));
+            customizeBtn.addEventListener('click', () => {
+                this.showCustomizationDialog(dialog, handleResponse);
+            });
+        });
+    }
+    
+    /**
+     * 同意ダイアログの作成
+     * @returns {HTMLElement}
+     */
+    createConsentDialog(): HTMLElement {
+        const dialog = document.createElement('div');
+        dialog.className = 'analytics-consent-dialog';
+        dialog.innerHTML = `
+            <div class="consent-overlay"></div>
+            <div class="consent-content">
+                <h2>データ収集に関する同意</h2>
+                <p>
+                    このゲームでは、ゲーム体験の改善のために、プレイデータを収集・分析します。
+                    収集されるデータは匿名化され、個人を特定することはできません。
+                </p>
+                <div class="consent-details">
+                    <h3>収集される情報：</h3>
+                    <ul>
+                        <li>プレイ時間とセッション情報</li>
+                        <li>ゲーム内の行動（クリック、スコアなど）</li>
+                        <li>パフォーマンス情報（フレームレート、エラーなど）</li>
+                    </ul>
+                    <h3>収集されない情報：</h3>
+                    <ul>
+                        <li>個人情報（名前、メールアドレスなど）</li>
+                        <li>正確な位置情報</li>
+                        <li>他のウェブサイトの閲覧履歴</li>
+                    </ul>
+                </div>
+                <div class="consent-buttons">
+                    <button class="consent-accept">同意する</button>
+                    <button class="consent-customize">カスタマイズ</button>
+                    <button class="consent-decline">同意しない</button>
+                </div>
+                <p class="consent-note">
+                    この設定は後から変更できます。詳細は
+                    <a href="#privacy-policy" target="_blank">プライバシーポリシー</a>
+                    をご覧ください。
+                </p>
+            </div>
+        `;
+        
+        // スタイルの追加
+        this.addConsentDialogStyles();
+        
+        return dialog;
+    }
+    
+    /**
+     * カスタマイズダイアログの表示
+     * @param {HTMLElement} mainDialog - メインダイアログ
+     * @param {Function} callback - コールバック関数
+     */
+    showCustomizationDialog(mainDialog: HTMLElement, callback: (accepted: boolean, customized?: boolean) => void): void {
+        const content = mainDialog.querySelector('.consent-content') as HTMLElement;
+        content.innerHTML = `
+            <h2>データ収集のカスタマイズ</h2>
+            <p>収集する情報を選択してください：</p>
+            <div class="consent-options">
+                <label>
+                    <input type="checkbox" id="consent-session" checked>
+                    <span>セッション情報（プレイ時間、ステージ進行）</span>
+                </label>
+                <label>
+                    <input type="checkbox" id="consent-performance" checked>
+                    <span>パフォーマンス情報（FPS、エラー、ロード時間）</span>
+                </label>
+                <label>
+                    <input type="checkbox" id="consent-behavior" checked>
+                    <span>行動分析（クリック、スコア、バブル情報）</span>
+                </label>
+            </div>
+            <div class="consent-buttons">
+                <button class="consent-save">保存して続行</button>
+                <button class="consent-cancel">キャンセル</button>
+            </div>
+        `;
+        
+        const saveBtn = content.querySelector('.consent-save') as HTMLButtonElement;
+        const cancelBtn = content.querySelector('.consent-cancel') as HTMLButtonElement;
+        
+        saveBtn.addEventListener('click', () => {
+            const sessionChecked = (content.querySelector('#consent-session') as HTMLInputElement).checked;
+            const performanceChecked = (content.querySelector('#consent-performance') as HTMLInputElement).checked;
+            const behaviorChecked = (content.querySelector('#consent-behavior') as HTMLInputElement).checked;
+            
+            // オプトアウト設定
+            this.optOutFeatures.clear();
+            if (!sessionChecked) this.optOutFeatures.add('sessionTracking');
+            if (!performanceChecked) this.optOutFeatures.add('performanceTracking');
+            if (!behaviorChecked) this.optOutFeatures.add('behaviorAnalysis');
+            
+            // 少なくとも1つが選択されていれば同意とする
+            const accepted = sessionChecked || performanceChecked || behaviorChecked;
+            callback(accepted, true);
+        });
+        
+        cancelBtn.addEventListener('click', () => {
+            // メインダイアログに戻る
+            mainDialog.remove();
+            const newDialog = this.createConsentDialog();
+            document.body.appendChild(newDialog);
+            
+            // イベントハンドラーの再設定
+            const acceptBtn = newDialog.querySelector('.consent-accept') as HTMLButtonElement;
+            const declineBtn = newDialog.querySelector('.consent-decline') as HTMLButtonElement;
+            const customizeBtn = newDialog.querySelector('.consent-customize') as HTMLButtonElement;
+            
+            acceptBtn.addEventListener('click', () => callback(true));
+            declineBtn.addEventListener('click', () => callback(false));
+            customizeBtn.addEventListener('click', () => {
+                this.showCustomizationDialog(newDialog, callback);
+            });
+        });
+    }
+    
+    /**
+     * 同意ダイアログのスタイル追加
+     */
+    addConsentDialogStyles(): void {
+        if (document.getElementById('analytics-consent-styles')) return;
+        
+        const style = document.createElement('style');
+        style.id = 'analytics-consent-styles';
+        style.textContent = `
+            .analytics-consent-dialog {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                z-index: 10000;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+            
+            .consent-overlay {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.7);
+            }
+            
+            .consent-content {
+                position: relative;
+                background: white;
+                border-radius: 10px;
+                padding: 30px;
+                max-width: 500px;
+                max-height: 80vh;
+                overflow-y: auto;
+                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            }
+            
+            .consent-content h2 {
+                margin: 0 0 20px;
+                color: #333;
+                font-size: 24px;
+            }
+            
+            .consent-content h3 {
+                margin: 15px 0 10px;
+                color: #555;
+                font-size: 18px;
+            }
+            
+            .consent-content p {
+                margin: 15px 0;
+                color: #666;
+                line-height: 1.6;
+            }
+            
+            .consent-details {
+                background: #f5f5f5;
+                border-radius: 5px;
+                padding: 15px;
+                margin: 20px 0;
+            }
+            
+            .consent-details ul {
+                margin: 5px 0;
+                padding-left: 20px;
+            }
+            
+            .consent-details li {
+                margin: 5px 0;
+                color: #666;
+            }
+            
+            .consent-buttons {
+                display: flex;
+                gap: 10px;
+                margin: 25px 0;
+                justify-content: center;
+            }
+            
+            .consent-buttons button {
+                padding: 10px 20px;
+                border: none;
+                border-radius: 5px;
+                font-size: 16px;
+                cursor: pointer;
+                transition: all 0.3s;
+            }
+            
+            .consent-accept {
+                background: #4CAF50;
+                color: white;
+            }
+            
+            .consent-accept:hover {
+                background: #45a049;
+            }
+            
+            .consent-customize {
+                background: #2196F3;
+                color: white;
+            }
+            
+            .consent-customize:hover {
+                background: #1976D2;
+            }
+            
+            .consent-decline {
+                background: #f44336;
+                color: white;
+            }
+            
+            .consent-decline:hover {
+                background: #d32f2f;
+            }
+            
+            .consent-save {
+                background: #4CAF50;
+                color: white;
+            }
+            
+            .consent-save:hover {
+                background: #45a049;
+            }
+            
+            .consent-cancel {
+                background: #757575;
+                color: white;
+            }
+            
+            .consent-cancel:hover {
+                background: #616161;
+            }
+            
+            .consent-note {
+                font-size: 14px;
+                color: #888;
+                text-align: center;
+                margin-top: 20px;
+            }
+            
+            .consent-note a {
+                color: #2196F3;
+                text-decoration: none;
+            }
+            
+            .consent-note a:hover {
+                text-decoration: underline;
+            }
+            
+            .consent-options {
+                margin: 20px 0;
+            }
+            
+            .consent-options label {
+                display: block;
+                margin: 15px 0;
+                padding: 10px;
+                background: #f5f5f5;
+                border-radius: 5px;
+                cursor: pointer;
+                transition: background 0.3s;
+            }
+            
+            .consent-options label:hover {
+                background: #eeeeee;
+            }
+            
+            .consent-options input[type="checkbox"] {
+                margin-right: 10px;
+                width: 18px;
+                height: 18px;
+                vertical-align: middle;
+            }
+            
+            .consent-options span {
+                color: #666;
+                font-size: 16px;
+            }
+        `;
+        document.head.appendChild(style);
+    }
+    
+    /**
+     * 同意チェック
+     * @returns {boolean}
+     */
+    checkConsent(): boolean {
+        return this.consentStatus === true;
+    }
+    
+    /**
+     * 特定機能のオプトアウトチェック
+     * @param {string} feature - 機能名
+     * @returns {boolean}
+     */
+    isOptedOut(feature: string): boolean {
+        return this.optOutFeatures.has(feature);
+    }
+    
+    /**
+     * オプトアウト設定
+     * @param {string} feature - 機能名
+     * @param {boolean} status - オプトアウト状態
+     */
+    setOptOut(feature: string, status: boolean): void {
+        if (status) {
+            this.optOutFeatures.add(feature);
+        } else {
+            this.optOutFeatures.delete(feature);
+        }
+        this.saveConsentStatus();
+    }
+    
+    /**
+     * データ匿名化
+     * @param {Object} data - 匿名化するデータ
+     * @returns {Object}
+     */
+    anonymizeData(data: any): any {
+        if (!data || typeof data !== 'object') return data;
+        
+        const anonymized: any = Array.isArray(data) ? [] : {};
+        
+        for (const [key, value] of Object.entries(data)) {
+            if (this.anonymizationRules.has(key)) {
+                // 匿名化ルールがある場合は適用
+                anonymized[key] = this.anonymizationRules.get(key)!(value);
+            } else if (typeof value === 'object' && value !== null) {
+                // ネストされたオブジェクトは再帰的に処理
+                anonymized[key] = this.anonymizeData(value);
+            } else {
+                // その他はそのままコピー
+                anonymized[key] = value;
+            }
+        }
+        
+        return anonymized;
+    }
+    
+    /**
+     * 文字列のハッシュ化（簡易版）
+     * @param {string} str - ハッシュ化する文字列
+     * @returns {string}
+     */
+    hashString(str: string): string {
         let hash = 0;
-        for(let i = 0; i < value.length; i++) {
-            const char = value.charCodeAt(i);
+        for (let i = 0; i < str.length; i++) {
+            const char = str.charCodeAt(i);
             hash = ((hash << 5) - hash) + char;
-            hash = hash & hash; // 32bit整数に変換
+            hash = hash & hash; // Convert to 32bit integer
         }
         return Math.abs(hash).toString(36);
     }
     
     /**
-     * IndexedDBデータのクリア
+     * GDPR準拠のデータエクスポート
+     * @param {Function} dataProvider - データ提供関数
+     * @returns {Promise<Object>}
      */
-    private async clearIndexedDBData(): Promise<void> {
-        try {
-            if ('indexedDB' in window) {
-                // ゲーム関連のデータベースを削除
-                const deleteDB = (dbName: string) => {
-                    return new Promise<void>((resolve, reject) => {
-                        const deleteRequest = indexedDB.deleteDatabase(dbName);
-                        deleteRequest.onsuccess = () => resolve();
-                        deleteRequest.onerror = () => reject(deleteRequest.error);
-                    });
-                };
-                
-                await deleteDB('gameAnalytics');
-                await deleteDB('bubblePopData');
-            }
-        } catch (error) {
-            console.error('IndexedDB cleanup failed:', error);
-            throw error;
+    async exportUserData(dataProvider: () => Promise<any>): Promise<any> {
+        if (!this.checkConsent()) {
+            throw new Error('No consent given for data export');
         }
+        
+        const data = await dataProvider();
+        
+        // 匿名化されていないユーザーデータをエクスポート用に整形
+        return {
+            exportDate: new Date().toISOString(),
+            consentStatus: this.consentStatus,
+            optOutFeatures: Array.from(this.optOutFeatures),
+            data: data
+        };
     }
     
     /**
-     * IndexedDBデータのエクスポート
+     * データ削除要求の処理
+     * @param {Function} dataDeleter - データ削除関数
+     * @returns {Promise<void>}
      */
-    private async exportIndexedDBData(): Promise<any> {
-        try {
-            // 実装は省略（複雑なため）
-            return {};
-        } catch (error) {
-            console.error('IndexedDB export failed:', error);
-            return {};
-        }
-    }
-    
-    /**
-     * GDPR準拠チェック
-     */
-    isGDPRCompliant(): boolean {
-        return !!(this.consentStatus && this.consentStatus.hasConsented);
-    }
-    
-    /**
-     * Cookie同意の確認
-     */
-    hasCookieConsent(): boolean {
-        return this.checkConsent() && !this.isOptedOut('cookies');
-    }
-    
-    /**
-     * アナリティクス同意の確認
-     */
-    hasAnalyticsConsent(): boolean {
-        return this.checkConsent() && !this.isOptedOut('analytics');
-    }
-    
-    /**
-     * リソースの解放
-     */
-    destroy(): void {
-        this.anonymizationRules.clear();
+    async deleteUserData(dataDeleter: () => Promise<void>): Promise<void> {
+        // データ削除
+        await dataDeleter();
+        
+        // 同意状態もリセット
+        this.consentStatus = null;
         this.optOutFeatures.clear();
-        console.log('PrivacyManager destroyed');
+        localStorage.removeItem('bubblePopAnalyticsConsent');
+    }
+    
+    /**
+     * 地域に基づくGDPR適用チェック
+     * @returns {boolean}
+     */
+    isGDPRApplicable(): boolean {
+        // タイムゾーンベースの簡易チェック
+        const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+        const euTimezones = [
+            'Europe/', 'Atlantic/Azores', 'Atlantic/Canary', 'Atlantic/Madeira'
+        ];
+        
+        return euTimezones.some(tz => timezone.startsWith(tz));
     }
 }

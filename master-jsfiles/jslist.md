@@ -41,8 +41,8 @@
 - [x] src/analytics/GameBalanceCollector.js - TypeScript版でspawnTimingsのtype型が誤って"single"|"batch"に制限（実際はバブルタイプ文字列）→ 修正済み
 - [x] src/analytics/IndexedDBStorageManager.js - **重要な機能欠落**: aggregateData()、高度なクエリ機能、カスケード削除、イベントハンドラー等が削除。ストア定義も異なる（aggregatedData→gameBalance/userBehavior）。JS版からの再作成推奨
 - [x] src/analytics/PerformanceDataCollector.js - TypeScript版でコメントアウトされていた変数宣言とtriggerPerformanceWarningの型エラーを修正。処理ロジックは同一
-- [] src/analytics/PerformanceWarningSystem.js
-- [] src/analytics/PrivacyManager.js
+- [x] src/analytics/PerformanceWarningSystem.js - TypeScript版でコメントアウトされていた変数宣言を修正済み。プライベートメソッドが6つ追加されている（TypeScript版の拡張）。処理ロジックは同一
+- [x] src/analytics/PrivacyManager.js - **実装が大きく異なる**: JS版は同意ダイアログUI実装、TS版はプログラム的な同意管理のみ。匿名化ルール、ストレージキー、メソッド名も異なる。用途に応じた選択が必要
 - [] src/analytics/RealtimeDashboard.js
 - [] src/analytics/RealtimeMonitor.js
 - [] src/analytics/TimeSeriesVisualizer.js
