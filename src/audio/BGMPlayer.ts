@@ -56,7 +56,7 @@ interface BGMPlayerState {
 
 // エラーハンドラー型定義
 interface ErrorHandler {
-    handleError(error: Error, type: "single" | "batch", context?: any): void;
+    handleError(error: Error, type: string, context?: any): void;
 }
 
 /**

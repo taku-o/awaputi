@@ -67,11 +67,11 @@
 - [x] src/audio/AudioManager.js - インデント修正のみ。処理ロジック同一
 - [x] src/audio/AudioPerformanceMonitor.js - Alert型定義修正、audioContextコメントアウト修正完了
 - [x] src/audio/AudioPlaybackController.js - masterGainNodeコメントアウト修正、エラーログメソッド名修正完了
-- [] src/audio/AudioSubsystemCoordinator.js
-- [] src/audio/AudioVisualizer.js
-- [] src/audio/BGMGenerator.js
-- [] src/audio/BGMPlayer.js
-- [] src/audio/BGMSystem.js
+- [x] src/audio/AudioSubsystemCoordinator.js - 処理ロジックの違いあり。インポート・クラス名不整合（要注意）
+- [x] src/audio/AudioVisualizer.js - dataArray・textualDescriptionコメントアウト修正完了
+- [x] src/audio/BGMGenerator.js - rhythmPatterns・baseFrequencyコメントアウト修正完了
+- [x] src/audio/BGMPlayer.js - ErrorHandler型定義修正完了
+- [x] src/audio/BGMSystem.js - currentVolumeコメントアウト修正完了
 - [] src/audio/BGMTransitionManager.js
 - [] src/audio/EnvironmentalAudioManager.js
 - [] src/audio/Equalizer.js
