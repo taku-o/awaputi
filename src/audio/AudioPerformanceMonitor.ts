@@ -73,7 +73,7 @@ interface Alert {
     id: string;
     timestamp: number;
     data: {
-        type: "single" | "batch";
+        type: string;
         level: string;
         value: number;
         threshold: number;
@@ -250,7 +250,7 @@ class PerformanceMetrics {
     }
 }
 export class AudioPerformanceMonitor {
-    // private audioContext: AudioContext;
+    private audioContext: AudioContext;
     private audioManager: AudioManager;
     private configManager: ConfigurationManager;
     // 監視設定

@@ -64,9 +64,9 @@
 - [x] src/audio/AudioController.js - メソッド名の違い（_performInitialization）修正完了
 - [x] src/audio/AudioDataOptimizer.js - ErrorHandler型定義とメソッド名（_losslessCompression等）修正完了
 - [x] src/audio/AudioErrorHandler.js - ErrorHandler型定義修正、localizationManager宣言追加完了
-- [] src/audio/AudioManager.js
-- [] src/audio/AudioPerformanceMonitor.js
-- [] src/audio/AudioPlaybackController.js
+- [x] src/audio/AudioManager.js - インデント修正のみ。処理ロジック同一
+- [x] src/audio/AudioPerformanceMonitor.js - Alert型定義修正、audioContextコメントアウト修正完了
+- [x] src/audio/AudioPlaybackController.js - masterGainNodeコメントアウト修正、エラーログメソッド名修正完了
 - [] src/audio/AudioSubsystemCoordinator.js
 - [] src/audio/AudioVisualizer.js
 - [] src/audio/BGMGenerator.js

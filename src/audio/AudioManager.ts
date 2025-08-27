@@ -129,33 +129,32 @@ export class AudioManager {
     // ログ制御用
     private lastLoggedDisableState: boolean | null;
     constructor(configManager: ConfigManager, audioConfig: AudioConfig) {
-
         this.configManager = configManager;
-    this.audioConfig = audioConfig;
+        this.audioConfig = audioConfig;
         
         // 分割されたコンポーネントを初期化
         this.contextManager = getAudioContextManager();
-    this.soundGenerator = getProceduralSoundGenerator();
-    this.playbackController = getAudioPlaybackController();
-    this.configurationManager = getAudioConfigurationManager();
-    this.subsystemCoordinator = getAudioSubsystemCoordinator();
+        this.soundGenerator = getProceduralSoundGenerator();
+        this.playbackController = getAudioPlaybackController();
+        this.configurationManager = getAudioConfigurationManager();
+        this.subsystemCoordinator = getAudioSubsystemCoordinator();
         
         // 初期化状態
         this.isInitialized = false;
-    this.isEnabled = true;
+        this.isEnabled = true;
         
         // 設定値（キャッシュ）
         this.masterVolume = 0.8;
-    this.sfxVolume = 0.7;
-    this.bgmVolume = 0.5;
-    this._isMuted = false;
+        this.sfxVolume = 0.7;
+        this.bgmVolume = 0.5;
+        this._isMuted = false;
         
         // 従来のプロパティとの互換性維持
         this.audioContext = null;
-    this.masterGainNode = null;
-    this.sfxGainNode = null;
-    this.bgmGainNode = null;
-    this.soundBuffers = new Map();
+        this.masterGainNode = null;
+        this.sfxGainNode = null;
+        this.bgmGainNode = null;
+        this.soundBuffers = new Map();
         this.activeSources = new Set();
         this.qualityMode = 'high'; // 'low', 'medium', 'high', 'ultra'
         this.qualitySettings = {
