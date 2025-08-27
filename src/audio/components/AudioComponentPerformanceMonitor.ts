@@ -223,8 +223,8 @@ export class AudioComponentPerformanceMonitor {
                 droppedFramesHigh: 5
             },
             maxHistorySize: 100,
-            analysisWindow: 60000, // 1分
-            stabilityWindow: 30000 // 30秒
+            analysisWindow: 30000, // 30秒
+            stabilityWindow: 5000 // 5秒
         };
         
         // 現在のメトリクス
@@ -236,7 +236,7 @@ export class AudioComponentPerformanceMonitor {
             bufferUnderruns: 0,
             latency: 0,
             droppedFrames: 0,
-            frameRate: 60
+            frameRate: 0
         };
         
         // 分析データ
@@ -332,6 +332,7 @@ export class AudioComponentPerformanceMonitor {
      */
     private setupConfigWatchers(): void {
         try {
+            // パフォーマンス設定の監視
             this.configManager.watch('performance', 'optimization.optimizationInterval', (newValue: number) => {
                 if (newValue !== undefined) {
                     this.performanceMonitor.updateInterval = newValue;
@@ -889,10 +890,12 @@ export class AudioComponentPerformanceMonitor {
      */
     private optimizeCPUUsage(): void {
         try {
+            // 音質を下げる
             if (this.audioManager && typeof this.audioManager.reduceQuality === 'function') {
                 this.audioManager.reduceQuality();
             }
             
+            // 同時再生数を制限
             if (this.audioManager && typeof this.audioManager.limitConcurrentSounds === 'function') {
                 this.audioManager.limitConcurrentSounds(5);
             }
@@ -910,6 +913,7 @@ export class AudioComponentPerformanceMonitor {
                 this.audioManager.cleanupUnusedBuffers();
             }
             
+            // ガベージコレクションを促進
             if (typeof window !== 'undefined' && (window as WindowWithGC).gc) {
                 (window as WindowWithGC).gc!();
             }
@@ -923,6 +927,7 @@ export class AudioComponentPerformanceMonitor {
      */
     private optimizeLatency(): void {
         try {
+            // バッファーサイズを調整
             if (this.audioManager && typeof this.audioManager.adjustBufferSize === 'function') {
                 this.audioManager.adjustBufferSize('low_latency');
             }
