@@ -106,7 +106,7 @@ export class AnalyticsDashboard {
     private activeCharts: Map<string, any>;
     private dataCallbacks: Map<string, DataCallback>;
     private realtimeTimers: Map<string, number>;
-    // private currentTimeRange?: string;
+    private currentTimeRange?: string;
 
     constructor(containerId: string, options: DashboardOptions = {}) {
         this.containerId = containerId;
