@@ -6,7 +6,7 @@
 export class DataAggregationProcessor {
     private storageManager: any;
     private aggregationCache: Map<string, any>;
-    // private maxCacheSize: number;
+    private maxCacheSize: number;
 
     constructor(storageManager: any) {
         this.storageManager = storageManager;

@@ -46,9 +46,9 @@
 - [x] src/analytics/RealtimeDashboard.js - TypeScript版でChart.js初期化時のanimation設定が欠落（duration: 0）→ 修正済み
 - [x] src/analytics/RealtimeMonitor.js - TypeScript版でgetAlertHistory()のtype引数が"single"|"batch"に制限（実際は任意のタイプ）→ 修正済み
 - [x] src/analytics/TimeSeriesVisualizer.js - TypeScript版は処理同一（未使用パラメータのコメントアウトのみ）
-- [] src/analytics/analytics-api/APIEndpointManager.js
-- [] src/analytics/analytics-api/DataAggregationProcessor.js
-- [] src/analytics/analytics-api/DataExportHandler.js
+- [x] src/analytics/analytics-api/APIEndpointManager.js - TypeScript版でaccessControl変数のコメントアウトとtotalRequests++の処理位置の違いを修正
+- [x] src/analytics/analytics-api/DataAggregationProcessor.js - TypeScript版でmaxCacheSize変数のコメントアウトを修正
+- [x] src/analytics/analytics-api/DataExportHandler.js - 処理ロジックの違いなし
 - [] src/analytics/comparison/ComparisonAlgorithms.js
 - [] src/analytics/comparison/ComparisonAnalyzer.js
 - [] src/analytics/comparison/ComparisonResultRenderer.js

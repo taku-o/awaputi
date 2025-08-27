@@ -27,11 +27,11 @@ export class APIEndpointManager {
         maxRequestsPerHour: number,
         requestHistory: Map<string, any[]>;
     };
-    // private accessControl: {
-    //     enabled: boolean,
-    //     allowedOrigins: string[],
-    //     requireAuthentication: boolean;
-    // };
+    private accessControl: {
+        enabled: boolean,
+        allowedOrigins: string[],
+        requireAuthentication: boolean;
+    };
     private apiStats: {
         totalRequests: number,
         successfulRequests: number,
@@ -166,6 +166,8 @@ export class APIEndpointManager {
         const startTime = performance.now();
         const requestId = this.generateRequestId();
         try {
+            this.apiStats.totalRequests++;
+            
             const requestOptions = {
                 clientId: 'default',
                 skipRateLimit: false,
@@ -393,7 +395,6 @@ export class APIEndpointManager {
      * @param {number} responseTime - レスポンス時間
      */
     updateAPIStats(success: boolean, responseTime: number) {
-        this.apiStats.totalRequests++;
         if (success) {
             this.apiStats.successfulRequests++;
         } else {
