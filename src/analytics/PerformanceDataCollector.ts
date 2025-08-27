@@ -8,9 +8,9 @@ export class PerformanceDataCollector {
     private isRunning: boolean;
     private sessionId: string;
     private performanceData: any;
-    // private frameCount: number;
-    // private lastFrameTime: number;
-    // private fpsTimer: any;
+    private frameCount: number;
+    private lastFrameTime: number;
+    private fpsTimer: any;
     private memoryTimer: any;
     private eventListeners: any[];
     private frameTracker: any;
@@ -463,7 +463,7 @@ export class PerformanceDataCollector {
     /**
      * パフォーマンス警告のトリガー
      */
-    triggerPerformanceWarning(type: "single" | "batch", details: any) {
+    triggerPerformanceWarning(type: string, details: any) {
         const warningEvent = new CustomEvent('performance-warning', {
             detail: {
                 type: type,
@@ -518,7 +518,7 @@ export class PerformanceDataCollector {
             performance.mark(markName);
             return markName;
         }
-        return null as any;
+        return null;
     }
 
     /**
@@ -543,7 +543,7 @@ export class PerformanceDataCollector {
                 };
             }
         }
-        return null as any;
+        return null;
     }
 
     /**

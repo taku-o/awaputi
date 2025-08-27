@@ -40,7 +40,7 @@
 - [x] src/analytics/ExportManager.js - TypeScript版は処理同一
 - [x] src/analytics/GameBalanceCollector.js - TypeScript版でspawnTimingsのtype型が誤って"single"|"batch"に制限（実際はバブルタイプ文字列）→ 修正済み
 - [x] src/analytics/IndexedDBStorageManager.js - **重要な機能欠落**: aggregateData()、高度なクエリ機能、カスケード削除、イベントハンドラー等が削除。ストア定義も異なる（aggregatedData→gameBalance/userBehavior）。JS版からの再作成推奨
-- [] src/analytics/PerformanceDataCollector.js
+- [x] src/analytics/PerformanceDataCollector.js - TypeScript版でコメントアウトされていた変数宣言とtriggerPerformanceWarningの型エラーを修正。処理ロジックは同一
 - [] src/analytics/PerformanceWarningSystem.js
 - [] src/analytics/PrivacyManager.js
 - [] src/analytics/RealtimeDashboard.js
