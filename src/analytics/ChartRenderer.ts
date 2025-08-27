@@ -129,7 +129,7 @@ export class AnalyticsChartRenderer {
             }
 
             const script = document.createElement('script');
-            script.src = 'https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js';
+            script.src = 'https://cdnjs.cloudflare.com/ajax/libs/chart.js/4.4.1/chart.umd.js';
             script.onload = () => {
                 this.Chart = window.Chart;
                 resolve();
@@ -525,7 +525,7 @@ export class AnalyticsChartRenderer {
         
         const chart = this.charts.get(canvasId);
         if (chart) {
-            chart?.destroy?.();
+            chart.destroy();
             this.charts.delete(canvasId);
         }
         

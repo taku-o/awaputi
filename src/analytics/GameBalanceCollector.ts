@@ -9,7 +9,7 @@ export class GameBalanceCollector {
         typeDistribution: Record<string, number>;
         spawnTimings: Array<{
             time: number;
-            type: "single" | "batch";
+            type: string; // バブルタイプ（"normal", "stone", "iron"など）
             stageProgress: number;
         }>;
         difficultyProgression: Array<{

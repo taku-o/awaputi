@@ -107,6 +107,9 @@ export class ExportManager {
         const startTime = performance.now();
         
         try {
+            this.exportStats.totalExports++;
+            
+            // デフォルトオプションの設定
             const exportOptions = {
                 dataTypes: 'all',
                 format: this.config.defaultFormat,
@@ -525,8 +528,6 @@ export class ExportManager {
      * @param {number} duration - エクスポート時間
      */
     updateExportStats(success: boolean, size: number, _duration: number) {
-        this.exportStats.totalExports++;
-        
         if (success) {
             this.exportStats.successfulExports++;
             

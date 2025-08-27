@@ -31,14 +31,14 @@
 - [x] src/analytics/AnalyticsPerformanceOptimizer.js - TypeScript版でメモリ警告時のイベントキューフィルタリング処理が削除、processEventGroupの型制限に問題
 - [x] src/analytics/AnalyticsTrendAnalyzer.js - TypeScript版は処理同一、後方互換エイリアスを追加
 - [x] src/analytics/AnomalyDetector.js - TypeScript版で型パラメータの不一致（"single"|"batch"と実際の異常タイプ）、プロパティ名の不整合
-- [] src/analytics/ChartRenderer.js
-- [] src/analytics/DataCollector.js
-- [] src/analytics/DataVisualizer.js
-- [] src/analytics/DeveloperAlertSystem.js
-- [] src/analytics/EnhancedAnalyticsManager.js
+- [x] src/analytics/ChartRenderer.js - TypeScript版でchartConfigs型に誤った"single"|"batch"制限（実際は'line','bar','pie','doughnut'）
+- [x] src/analytics/DataCollector.js - TypeScript版は処理同一、destroyメソッドの軽微な実装差異のみ
+- [x] src/analytics/DataVisualizer.js - **重大**: TypeScript版で多数の機能削除（ネットワーク図、インタラクティブ機能、統計情報取得等）
+- [x] src/analytics/DeveloperAlertSystem.js - TypeScript版は処理同一
+- [x] src/analytics/EnhancedAnalyticsManager.js - **重大**: TypeScript版で18個の重要なゲーム追跡メソッドが削除
 - [x] src/analytics/ErrorTrackingSystem.js - TypeScript版は正常
-- [] src/analytics/ExportManager.js
-- [] src/analytics/GameBalanceCollector.js
+- [x] src/analytics/ExportManager.js - TypeScript版は処理同一
+- [x] src/analytics/GameBalanceCollector.js - TypeScript版でspawnTimingsのtype型が誤って"single"|"batch"に制限（実際はバブルタイプ文字列）→ 修正済み
 - [] src/analytics/IndexedDBStorageManager.js
 - [] src/analytics/PerformanceDataCollector.js
 - [] src/analytics/PerformanceWarningSystem.js
