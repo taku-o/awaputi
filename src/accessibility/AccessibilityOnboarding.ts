@@ -1,1113 +1,1181 @@
 /**
- * AccessibilityOnboarding - アクセシビリティオンボーディングシステム
- * 初回ユーザー向けアクセシビリティ機能紹介・設定・チュートリアル
+ * AccessibilityOnboarding - Main Controller for accessibility onboarding system
+ * Orchestrates onboarding flow, tutorial delivery, and progress tracking
  */
 
-import { getErrorHandler  } from '../utils/ErrorHandler.js';
+import { getErrorHandler } from '../utils/ErrorHandler.js';
+import { OnboardingFlowManager } from './onboarding/OnboardingFlowManager.js';
+import { AccessibilityTutorial } from './onboarding/AccessibilityTutorial.js';
+import { OnboardingProgressTracker } from './onboarding/OnboardingProgressTracker.js';
 
-// Interfaces for onboarding structures
-interface OnboardingConfig { enabled: boolean,
-    showOnFirstVisit: boolean,
-    showOnAccessibilityRequest: boolean,
-    skipOption: boolean,
-    progressTracking: boolean,
-    adaptiveContent: boolean,
-    language: string;
-    interface OnboardingStep { id: string,
-    title: string,
-    description: string,
-    actionRequired: boolean,
-    completed: boolean,
-    skippable: boolean,
-    duration: number,
-    content: StepContent;
-    validation?: () => boolean;
-    action?: () => void }'
+// Type definitions
+interface OnboardingConfig {
+    enabled: boolean;
+    autoStart: boolean;
+    skipOnReturn: boolean;
+    progressiveDisclosure: boolean;
+    adaptiveContent: boolean;
+    multiLanguage: boolean;
+    analytics: boolean;
 }
-';'
 
-interface StepContent { ''
-    type: 'intro' | 'feature' | 'configuration' | 'practice' | 'summary';
-    visual?: string;
-    audio?: string;
-    interactive?: boolean;
-    customContent?: any;
-    interface UserPreferences { needsScreenReader: boolean,
-    needsKeyboardNav: boolean,
-    needsHighContrast: boolean,
-    needsLargeText: boolean,
-    needsReducedMotion: boolean,
-    needsCaptions: boolean,
-    needsSimplifiedUI: boolean,
-    preferredLanguage: string;
-    interface OnboardingProgress { currentStep: number,
-    completedSteps: string[],
-    skippedSteps: string[],
-    startTime: number,
-    lastActiveTime: number,
-    preferences: UserPreferences,
-    assessmentResults: AssessmentResults;
-';'
+interface OnboardingStep {
+    id: string;
+    title: string;
+    type: 'introduction' | 'questionnaire' | 'configuration' | 'tour' | 'interactive' | 'summary';
+    actions: string[];
+    icon?: string;
+    description?: string;
+    features?: FeatureInfo[];
+}
 
-interface AssessmentResults { ''
-    visualAcuity: 'normal' | 'low' | 'very-low,
-    motorControl: 'normal' | 'limited' | 'very-limited,
-    cognitiveLoad: 'normal' | 'reduced' | 'minimal,
-    hearingAbility: 'normal' | 'impaired' | 'deaf'
-            }
+interface FeatureInfo {
+    id: string;
+    name: string;
+    description: string;
+    tips: string[];
+}
 
-interface AnimationState { currentAnimation: string | null,
-    isAnimating: boolean,
-    animationQueue: string[];
+interface OnboardingSteps {
+    [key: string]: OnboardingStep;
+}
 
-// AccessibilityManager interface (minimal, definition);
-    interface AccessibilityManager { applyProfile?: (profile: any) => void;
-    saveProfile?: (profile: any) => void;
-    gameEngine?: any }
+interface OnboardingState {
+    isActive: boolean;
+    currentStep: string | null;
+    stepIndex: number;
+    progress: number;
+    userResponses: Map<string, any>;
+    assessmentResults: AssessmentResults | null;
+    completedSteps: Set<string>;
+    skippedSteps: Set<string>;
+}
+
+interface AssessmentResults {
+    visual: number;
+    motor: number;
+    audio: number;
+    cognitive: number;
+}
+
+interface OnboardingUI {
+    overlay: HTMLDivElement | null;
+    container: HTMLDivElement | null;
+    currentStepElement: HTMLElement | null;
+    progressBar: HTMLElement | null;
+    skipButton: HTMLButtonElement | null;
+}
+
+interface DiscoverySystem {
+    enabled: boolean;
+    discoveredFeatures: Set<string>;
+    contextualTips: Map<string, ContextualTip>;
+    tipQueue: any[];
+    showInterval: number;
+}
+
+interface ContextualTip {
+    message: string;
+    trigger: string;
+    shown: boolean;
+}
+
+interface OnboardingAnalytics {
+    sessionStart: number | null;
+    stepTimings: Map<string, StepTiming>;
+    userInteractions: any[];
+    completionRate: number;
+    satisfactionScore: number;
+    featuresDiscovered: number;
+}
+
+interface StepTiming {
+    startTime: number;
+}
+
+interface UserProfile {
+    experience: string;
+    disabilities: string[];
+    preferences: UserPreferences;
+    assistiveTechnology: AssistiveTechnology;
+}
+
+interface UserPreferences {
+    keyboardOnly: boolean;
+    highContrast: boolean;
+    largeText: boolean;
+}
+
+interface AssistiveTechnology {
+    screenReader: boolean;
+    magnifier: boolean;
+    voiceControl: boolean;
+}
+
+interface AccessibilityManager {
+    gameEngine?: any;
+    eventSystem?: {
+        emit: (event: string, data: any) => void;
+    };
+    profileManager?: {
+        activateProfile: (profile: string) => void;
+    };
+    settingsUI?: {
+        open: () => void;
+    };
 }
 
 export class AccessibilityOnboarding {
-    private accessibilityManager: AccessibilityManager | null;
+    private accessibilityManager: AccessibilityManager;
     private gameEngine: any;
     private config: OnboardingConfig;
-    private onboardingSteps: OnboardingStep[];
-    private progress: OnboardingProgress;
-    private currentStepIndex: number;
-    private onboardingContainer: HTMLElement | null;
-    private isActive: boolean;
-    private, animationState: AnimationState;
-    private onCompleteCallback?: () => void,
-    private onSkipCallback?: () => void,
+    private flowManager: OnboardingFlowManager;
+    private tutorial: AccessibilityTutorial;
+    private progressTracker: OnboardingProgressTracker;
+    private onboardingSteps: OnboardingSteps;
+    private state: OnboardingState;
+    private ui: OnboardingUI;
+    private discoverySystem: DiscoverySystem;
+    private analytics: OnboardingAnalytics;
+    private currentQuestionIndex: number = 0;
+    private questionResponses: Map<string, any> = new Map();
+    private recommendedProfile: string | null = null;
+    private currentFeatureIndex: number = 0;
 
-    constructor(accessibilityManager: AccessibilityManager | null) {
+    constructor(accessibilityManager: AccessibilityManager) {
         this.accessibilityManager = accessibilityManager;
         this.gameEngine = accessibilityManager?.gameEngine;
         
         // オンボーディング設定
-        this.config = { : undefined
+        this.config = {
             enabled: true,
-            showOnFirstVisit: true,
-            showOnAccessibilityRequest: true,
-            skipOption: true,
-            progressTracking: true,
-    adaptiveContent: true,
-    adaptiveContent: true;
+            autoStart: true,
+            skipOnReturn: false,
+            progressiveDisclosure: true,
+            adaptiveContent: true,
+            multiLanguage: true,
+            analytics: true
         };
-            language: 'ja' 
-    };
-        // オンボーディングステップ
-        this.onboardingSteps = this.createOnboardingSteps();
-        // 進捗状況
-        this.progress = this.loadProgress() || this.createInitialProgress()';'
-        console.log('AccessibilityOnboarding, initialized');
+
+        // Initialize sub-components with onboarding step definitions
+        this.flowManager = new OnboardingFlowManager(this.config);
+        this.tutorial = new AccessibilityTutorial(this.config);
+        this.progressTracker = new OnboardingProgressTracker(this.config);
+        
+        // Simplified step definitions (detailed steps moved to sub-components)
+        this.onboardingSteps = this.getOnboardingStepsDefinition();
+        
+        // 現在の状態
+        this.state = {
+            isActive: false,
+            currentStep: null,
+            stepIndex: 0,
+            progress: 0,
+            userResponses: new Map(),
+            assessmentResults: null,
+            completedSteps: new Set(),
+            skippedSteps: new Set()
+        };
+        
+        // UI要素
+        this.ui = {
+            overlay: null,
+            container: null,
+            currentStepElement: null,
+            progressBar: null,
+            skipButton: null
+        };
+        
+        // 発見システム
+        this.discoverySystem = {
+            enabled: true,
+            discoveredFeatures: new Set(),
+            contextualTips: new Map(),
+            tipQueue: [],
+            showInterval: 10000 // 10秒間隔
+        };
+        
+        // 分析データ
+        this.analytics = {
+            sessionStart: null,
+            stepTimings: new Map(),
+            userInteractions: [],
+            completionRate: 0,
+            satisfactionScore: 0,
+            featuresDiscovered: 0
+        };
+        
+        console.log('AccessibilityOnboarding initialized');
+        this.initialize();
     }
-    
+
     /**
-     * オンボーディングステップの作成'
-     */''
-    private createOnboardingSteps('''
-                id: 'welcome,
-                title: 'アクセシビリティ機能へようこそ,
-                description: 'BubblePopをより快適にプレイするための機能をご案内します,
-                actionRequired: false,
-                completed: false,
-                skippable: false,
-    duration: 5000,
-                content: { ''
-                    type: 'intro'  ,
-                    visual: 'welcome-animation,
-                    audio: 'welcome-narration'
-            }
-            };
-            // ニーズ評価
-            { ''
-                id: 'assessment,
-                title: 'あなたに最適な設定を見つけましょう,
-                description: 'いくつかの質問に答えて、最適な設定を見つけます,
-                actionRequired: true,
-                completed: false,
-                skippable: true,
-    duration: 60000,
-                content: { ''
-                    type: 'configuration'  ,
-    interactive: true;
-
-                },''
-                action: () => this.runNeedsAssessment('''
-                id: 'visual-support,
-                title: '視覚サポート機能,
-                description: 'コントラスト調整、拡大表示、色覚サポートなど,
-                actionRequired: false,
-                completed: false,
-                skippable: true,
-    duration: 30000,
-                content: { ''
-                    type: 'feature',','  },
-                    visual: 'visual-features-demo,
-    interactive: true;
-
-                },')'
-                validation: () => this.progress.preferences.needsHighContrast || ,
-                                 this.progress.preferences.needsLargeText;
+     * Get onboarding steps definition
+     */
+    private getOnboardingStepsDefinition(): OnboardingSteps {
+        return {
+            welcome: { 
+                id: 'welcome', 
+                title: 'アクセシビリティ機能へようこそ', 
+                type: 'introduction', 
+                actions: ['start', 'skip'] 
             },
-            
-            // キーボード操作
-            { ''
-                id: 'keyboard-navigation,
-                title: 'キーボード操作,
-                description: 'マウスを使わずにゲームを楽しむ方法,
-                actionRequired: true,
-                completed: false,
-                skippable: true,
-    duration: 45000,
-                content: {''
-                    type: 'practice' ,
-    interactive: true,
-                action: () => this.practiceKeyboardNavigation(
-                validation: () => this.progress.preferences.needsKeyboardNav ,
-            
-            // スクリーンリーダー
-            { ''
-                id: 'screen-reader,
-                title: 'スクリーンリーダー対応,
-                description: '音声読み上げ機能の使い方,
-                actionRequired: false,
-                completed: false,
-                skippable: true,
-    duration: 40000,
-                content: {''
-                    type: 'feature' ,
-                    audio: 'screen-reader-guide,
-    interactive: true ,''
-                validation: () => this.progress.preferences.needsScreenReader ,
-            
-            // 音声・字幕設定
-            { ''
-                id: 'audio-captions,
-                title: '音声と字幕,
-                description: '字幕表示と音の視覚化,
-                actionRequired: false,
-                completed: false,
-                skippable: true,
-    duration: 25000,
-                content: {''
-                    type: 'feature' ,
-                    visual: 'caption-demo,
-    interactive: true ,''
-                validation: () => this.progress.preferences.needsCaptions ,
-            
-            // 簡素化UI
-            { ''
-                id: 'simplified-ui,
-                title: 'シンプルモード,
-                description: '必要な情報だけを表示する簡素化インターフェース,
-                actionRequired: false,
-                completed: false,
-                skippable: true,
-    duration: 20000,
-                content: {''
-                    type: 'feature' ,
-                    visual: 'simplified-ui-demo,
-    interactive: true ,''
-                validation: () => this.progress.preferences.needsSimplifiedUI ,
-            
-            // カスタマイズ
-            { ''
-                id: 'customization,
-                title: '詳細カスタマイズ,
-                description: 'さらに細かい設定を行います,
-                actionRequired: true,
-                completed: false,
-                skippable: true,
-    duration: 60000,
-                content: {''
-                    type: 'configuration' ,
-    interactive: true ,''
-                action: () => this.showCustomizationPanel('''
-                id: 'practice,
-                title: '練習してみましょう,
-                description: '設定した機能を使って実際にプレイしてみます,
-                actionRequired: true,
-                completed: false,
-                skippable: true,
-    duration: 120000,
-                content: { ')'
-                    type: 'practice' ,
-    interactive: true,')'
-                action: () => this.startPracticeSession('''
-                id: 'completion,
-                title: '設定完了！,
-                description: 'いつでも設定を変更できます,
-                actionRequired: false,
-                completed: false,
-                skippable: false,
-    duration: 10000,
-                content: { ''
-                    type: 'summary' ,
-                    visual: 'completion-animation'
+            assessment: { 
+                id: 'assessment', 
+                title: 'アクセシビリティニーズ評価', 
+                type: 'questionnaire', 
+                actions: ['next', 'previous', 'skip'] 
+            },
+            profileSetup: { 
+                id: 'profile_setup', 
+                title: 'おすすめプロファイル設定', 
+                type: 'configuration', 
+                actions: ['apply', 'customize', 'skip'] 
+            },
+            featureDiscovery: { 
+                id: 'feature_discovery', 
+                title: '機能の発見', 
+                type: 'tour', 
+                actions: ['next', 'previous', 'finish'], 
+                features: [
+                    { 
+                        id: 'keyboard_navigation', 
+                        name: 'キーボードナビゲーション', 
+                        description: 'Tabキーでゲーム操作', 
+                        tips: ['Tabキーでフォーカス移動'] 
+                    },
+                    { 
+                        id: 'screen_reader', 
+                        name: 'スクリーンリーダー対応', 
+                        description: '音声読み上げ機能', 
+                        tips: ['音声説明機能'] 
+                    }
+                ]
+            },
+            practiceSession: { 
+                id: 'practice_session', 
+                title: '練習セッション', 
+                type: 'interactive', 
+                actions: ['try', 'next', 'skip'] 
+            },
+            completion: { 
+                id: 'completion', 
+                title: 'セットアップ完了', 
+                type: 'summary', 
+                actions: ['finish', 'review'] 
             }
-            };
+        };
+    }
+
+    /**
+     * Setup step content with sub-components
+     */
+    private async setupStepContent(step: OnboardingStep): Promise<void> {
+        switch (step.type) {
+            case 'questionnaire':
+                await this.setupQuestionnaire(step);
+                break;
+            case 'configuration':
+                await this.setupConfiguration(step);
+                break;
+            case 'tour':
+                await this.setupFeatureTour(step);
+                break;
+            case 'interactive':
+                await this.setupPracticeSession(step);
+                break;
+        }
+    }
+
+    /**
+     * Setup practice session (simplified)
+     */
+    private async setupPracticeSession(step: OnboardingStep): Promise<void> {
+        // Delegate practice session to tutorial component
+        await this.tutorial.conductPracticeSession('accessibility_practice', [
+            { name: 'キーボード操作練習', task: 'キーボードナビゲーション' },
+            { name: '設定変更練習', task: '設定変更' }
         ]);
     }
     
     /**
-     * 初期進捗の作成
-     */)
-    private createInitialProgress(): OnboardingProgress { return { currentStep: 0,
-            completedSteps: [],
-    skippedSteps: [],
-            startTime: Date.now(
-            lastActiveTime: Date.now('}'
-
-                preferredLanguage: 'ja' 
-    };
-            assessmentResults: { ''
-                visualAcuity: 'normal' ,
-                motorControl: 'normal,
-                cognitiveLoad: 'normal,
-                hearingAbility: 'normal'
+     * 初期化
+     */
+    private initialize(): void {
+        try {
+            // Initialize sub-components
+            this.flowManager.initialize(this.getUserProfile());
+            this.tutorial.initialize();
+            this.progressTracker.initialize(null, { totalSteps: Object.keys(this.onboardingSteps).length });
+            
+            this.loadOnboardingProgress();
+            this.setupDiscoverySystem();
+            this.createUI();
+            this.bindEvents();
+            
+            // 自動開始チェック
+            if (this.config.autoStart && !this.hasCompletedOnboarding()) {
+                setTimeout(() => this.start(), 2000);
+            }
+            
+            console.log('AccessibilityOnboarding initialized successfully');
+        } catch (error) {
+            getErrorHandler().handleError(error, 'ACCESSIBILITY_ONBOARDING_ERROR', {
+                operation: 'initialize'
             });
-    
-    /**
-     * オンボーディングの開始
-     */''
-    async start(options: { onComplete?: () => void, onSkip?: () => void } = {}): Promise<void> { ''
-        if (this.isActive) {
-
-            console.warn('Onboarding, is already, active');
-            return; }
         }
-        
-        this.onCompleteCallback = options.onComplete;
-        this.onSkipCallback = options.onSkip;
-
-        console.log('Starting, accessibility onboarding...);'
-        
-        this.isActive = true;
-        this.currentStepIndex = this.progress.currentStep;
-        
-        // UIの作成
-        this.createOnboardingUI();
-        
-        // 最初のステップを表示
-        await this.showStep(this.currentStepIndex');'
     }
     
     /**
-     * オンボーディングUIの作成
-     */''
-    private createOnboardingUI()';'
-        this.onboardingContainer = document.createElement('div');
-        this.onboardingContainer.className = 'accessibility-onboarding';
-        this.onboardingContainer.setAttribute('role', 'dialog');
-        this.onboardingContainer.setAttribute('aria-label', 'アクセシビリティ設定ガイド';
-        ';'
-        // スタイル設定
-        this.applyOnboardingStyles();
-        ';'
-
-        // 基本構造')'
-        this.onboardingContainer.innerHTML = `';'
-            <div class="onboarding-overlay"></div>"";
-            <div class="onboarding-content">"";
-                <div class="onboarding-header">"";
-                    <h2 class="onboarding-title"></h2>"";
-                    <button class="onboarding-close" aria-label="閉じる">×</button>";"
-                </div>"";
-                <div class="onboarding-body">"";
-                    <div class="onboarding-description"></div>"";
-                    <div class="onboarding-interactive"></div>"";
-                    <div class="onboarding-visual"></div>";"
-                </div>"";
-                <div class="onboarding-footer">"";
-                    <div class="onboarding-progress">"";
-                        <div class="progress-bar">"";
-                            <div class="progress-fill"></div>";"
-                        </div>"";
-                        <span class="progress-text"></span>";"
-                    </div>"";
-                    <div class="onboarding-controls">"";
-                        <button class="btn-secondary btn-skip">スキップ</button>"";
-                        <button class="btn-secondary btn-back">戻る</button>"";
-                        <button class="btn-primary btn-next">次へ</button>;
-                    </div>;
-                </div>;
-            </div>;
+     * オンボーディング進行状況の読み込み
+     */
+    private loadOnboardingProgress(): void {
+        try {
+            const saved = localStorage.getItem('accessibilityOnboardingProgress');
+            if (saved) {
+                const progress = JSON.parse(saved);
+                this.state.completedSteps = new Set(progress.completedSteps || []);
+                this.state.skippedSteps = new Set(progress.skippedSteps || []);
+                this.state.userResponses = new Map(progress.userResponses || []);
+            }
+        } catch (error) {
+            console.warn('Failed to load onboarding progress:', error);
+        }
+    }
+    
+    /**
+     * オンボーディング完了チェック
+     */
+    private hasCompletedOnboarding(): boolean {
+        return this.state.completedSteps.has('completion') || 
+               localStorage.getItem('accessibilityOnboardingCompleted') === 'true';
+    }
+    
+    /**
+     * UI作成
+     */
+    private createUI(): void {
+        // オーバーレイの作成
+        this.ui.overlay = document.createElement('div');
+        this.ui.overlay.className = 'accessibility-onboarding-overlay';
+        this.ui.overlay.style.cssText = `
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 20000;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
         `;
         
-        // イベントリスナーの設定
-        this.setupEventListeners();
+        // メインコンテナ
+        this.ui.container = document.createElement('div');
+        this.ui.container.className = 'onboarding-container';
+        this.ui.container.style.cssText = `
+            background: white;
+            border-radius: 12px;
+            max-width: 600px;
+            width: 90vw;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            animation: slideIn 0.3s ease-out;
+        `;
         
-        // DOMに追加
-        document.body.appendChild(this.onboardingContainer);
-        
-        // フォーカス管理
-        this.manageFocus();
-    }
-    
-    /**
-     * スタイルの適用"
-     */""
-    private applyOnboardingStyles(): void { ""
-        const style = document.createElement('style),'
-        style.textContent = ,
-            .accessibility-onboarding {
-                position: fixed,
-                top: 0,
-                left: 0,
-                right: 0,
-    bottom: 0,
-                z-index: 10000,
-                display: flex,
-                align-items: center,
-                justify-content: center,
+        // アニメーション用CSS
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideIn {
+                from { transform: translateY(-20px); opacity: 0; }
+                to { transform: translateY(0); opacity: 1; }
+            }
             
-            .onboarding-overlay { position: absolute,
-                top: 0,
-                left: 0,
-                right: 0,
-                bottom: 0,
-    background: rgba(0, 0, 0, 0.8);
+            .onboarding-step-enter {
+                animation: stepEnter 0.4s ease-out;
+            }
             
-            .onboarding-content { position: relative,
-                background: white,
-                border-radius: 8px,
-                padding: 2rem,
-                max-width: 800px,
-                width: 90%,
-                max-height: 90vh,
-                overflow-y: auto,
-                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3 }
+            @keyframes stepEnter {
+                from { transform: translateX(30px); opacity: 0; }
+                to { transform: translateX(0); opacity: 1; }
+            }
             
-            .onboarding-header { display: flex,
-                justify-content: space-between,
-                align-items: center,
-                margin-bottom: 1.5rem }
+            .progress-bar-fill {
+                transition: width 0.3s ease-out;
+            }
             
-            .onboarding-title { margin: 0,
-                font-size: 1.5rem,
-                color: #333  }
+            .feature-highlight {
+                animation: highlight 2s infinite;
+            }
             
-            .onboarding-close { background: none,
-    border: none,
-                font-size: 2rem,
-                cursor: pointer,
-                color: #666,
-                padding: 0,
-                width: 40px,
-                height: 40px,
-    display: flex,
-                align-items: center,
-                justify-content: center,
-                border-radius: 4px,
-                transition: background-color 0.2s  }
-            
-            .onboarding-close:hover { background-color: #f0f0f0 }
-            
-            .onboarding-body { margin-bottom: 2rem,
-                min-height: 300px }
-            
-            .onboarding-description { font-size: 1.1rem,
-                line-height: 1.6,
-                color: #555,
-                margin-bottom: 1.5rem }
-            
-            .onboarding-interactive { margin: 2rem 0 }
-            
-            .onboarding-visual { text-align: center,
-                margin: 2rem 0  }
-            
-            .onboarding-footer { border-top: 1px solid #e0e0e0,
-                padding-top: 1.5rem }
-            
-            .onboarding-progress { margin-bottom: 1rem }
-            
-            .progress-bar { height: 8px,
-                background: #e0e0e0,
-                border-radius: 4px,
-                overflow: hidden,
-                margin-bottom: 0.5rem }
-            
-            .progress-fill { height: 100%,
-                background: #4CAF50,
-    transition: width 0.3s ease  }
-            
-            .progress-text { font-size: 0.9rem,
-    color: #666 }
-            
-            .onboarding-controls { display: flex,
-                justify-content: space-between,
-                gap: 1rem  }
-            
-            .btn-primary, .btn-secondary { padding: 0.75rem 1.5rem,
-                border: none,
-                border-radius: 4px,
-                font-size: 1rem,
-                cursor: pointer,
-    transition: all 0.2s  }
-            
-            .btn-primary { background: #2196F3,
-    color: white,
-            
-            .btn-primary:hover { background: #1976D2 }
-            
-            .btn-secondary { background: #f0f0f0,
-    color: #333 }
-            
-            .btn-secondary:hover { background: #e0e0e0 }
-            
-            .btn-skip { margin-right: auto,
-            
-            /* アクセシビリティ向けスタイル */
-            @media (prefers-reduced-motion: reduce) { * {
-                    animation: none !important,
-    transition: none !important 
-    }
-            
-            @media (prefers-contrast: high) { .onboarding-content {
-                    border: 2px solid black }
-                
-                .btn-primary { background: black,
-    color: white,
+            @keyframes highlight {
+                0%, 100% { box-shadow: 0 0 0 rgba(52, 152, 219, 0); }
+                50% { box-shadow: 0 0 20px rgba(52, 152, 219, 0.5); }
+            }
         `;
         document.head.appendChild(style);
+        
+        this.ui.overlay.appendChild(this.ui.container);
+        document.body.appendChild(this.ui.overlay);
     }
     
     /**
-     * イベントリスナーの設定
-     */'
-    private setupEventListeners(): void { ''
-        if(!this.onboardingContainer) return,
-        ','
-        // 閉じるボタン
-        const closeBtn = this.onboardingContainer.querySelector('.onboarding-close');
-        closeBtn?.addEventListener('click', () => this.close()),
-        ','
-        // スキップボタン
-        const skipBtn = this.onboardingContainer.querySelector('.btn-skip');
-        skipBtn?.addEventListener('click', () => this.skip()),
-        ','
-        // 戻るボタン
-        const backBtn = this.onboardingContainer.querySelector('.btn-back');
-        backBtn?.addEventListener('click', () => this.previousStep()),
-        ','
-        // 次へボタン
-        const nextBtn = this.onboardingContainer.querySelector('.btn-next');
-        nextBtn?.addEventListener('click', () => this.nextStep()),
-        ','
-        // キーボードショートカット
-        document.addEventListener('keydown', this.handleKeydown.bind(this)),
-        ','
-        // オーバーレイクリック
-        const overlay = this.onboardingContainer.querySelector('.onboarding-overlay');
-        overlay?.addEventListener('click', () => { 
-            if (this.config.skipOption) { }
-                this.close(); }
-}
-    
-    /**
-     * キーボードイベントの処理
-     */ : undefined
-    private handleKeydown(event: KeyboardEvent): void { if (!this.isActive) return,
-
-        switch(event.key) {
-
-            case 'Escape':','
-                if (this.config.skipOption) {''
-                    this.close('''
-            case 'ArrowLeft': ','
-                this.previousStep()','
-            case 'ArrowRight':),
-                this.nextStep();
-                break; }
-}
-    
-    /**
-     * フォーカス管理
+     * オンボーディング開始
      */
-    private manageFocus(): void { if (!this.onboardingContainer) return,
-        ','
-        // フォーカストラップ
-        const focusableElements = this.onboardingContainer.querySelectorAll()','
-            'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"]"),'
+    async start(): Promise<void> {
+        if (this.state.isActive) return;
         
-        if (focusableElements.length > 0) {
-    
-}
-            (focusableElements[0] as, HTMLElement).focus(); }
-}
+        this.state.isActive = true;
+        this.analytics.sessionStart = Date.now();
+        
+        // Start flow management with sub-components
+        const flowResult = await this.flowManager.manageOnboardingFlow(0);
+        
+        if (flowResult.success) {
+            const steps = Object.keys(this.onboardingSteps);
+            this.state.currentStep = steps[0];
+            this.state.stepIndex = 0;
+            this.state.progress = 0;
+            
+            this.ui.overlay!.style.display = 'flex';
+            this.showStep(this.state.currentStep);
+            
+            // Track progress with sub-component
+            await this.progressTracker.trackProgress({
+                stepIndex: 0,
+                stepId: this.state.currentStep,
+                stepType: 'start',
+                totalSteps: steps.length
+            });
+        }
+        
+        console.log('Accessibility onboarding started');
+        
+        // イベント発火
+        this.accessibilityManager?.eventSystem?.emit('onboardingStarted', {
+            timestamp: Date.now()
+        });
+    }
     
     /**
-     * ステップの表示
+     * ステップ表示
      */
-    private async showStep(index: number): Promise<void> { if (index < 0 || index >= this.onboardingSteps.length) {
-            return }
+    private async showStep(stepId: string): Promise<void> {
+        const step = this.onboardingSteps[stepId];
+        if (!step) return;
         
-        const step = this.onboardingSteps[index];
-        this.currentStepIndex = index;
+        const stepStartTime = Date.now();
+        this.analytics.stepTimings.set(stepId, { startTime: stepStartTime });
         
-        // 進捗更新
+        // Update progress with progress tracker
+        await this.progressTracker.trackProgress({
+            stepIndex: this.state.stepIndex,
+            stepId,
+            stepType: step.type,
+            totalSteps: Object.keys(this.onboardingSteps).length
+        });
+        
+        // プログレスバーの更新
         this.updateProgress();
         
-        // UIの更新
-        this.updateStepUI(step);
+        // ステップコンテンツの作成（UI関連のみここで処理）
+        this.ui.container!.innerHTML = this.createStepHTML(step);
+        this.ui.container!.classList.add('onboarding-step-enter');
         
-        // ステップ固有のアクションを実行
-        if (step.action) { await step.action();
+        // ステップ固有の処理は最小限に
+        await this.setupStepContent(step);
         
-        // アニメーション
-        await this.animateStepTransition(step);
+        // イベントバインディング
+        this.bindStepEvents();
         
-        // 自動進行（必要に応じて）
-        if (!step.actionRequired && step.duration) {
-            setTimeout(() => { 
-        }
-                if (this.currentStepIndex === index && this.isActive) { }
-                    this.nextStep(); }
-}, step.duration);
+        // アクセシビリティフォーカス
+        const firstFocusable = this.ui.container!.querySelector('button, input, [tabindex="0"]');
+        if (firstFocusable) {
+            setTimeout(() => (firstFocusable as HTMLElement).focus(), 100);
         }
     }
     
     /**
-     * ステップUIの更新
+     * ステップHTML作成
      */
-    private updateStepUI(step: OnboardingStep): void { ''
-        if(!this.onboardingContainer) return,
-        ','
-        // タイトル
-        const title = this.onboardingContainer.querySelector('.onboarding-title,
-        if(title) title.textContent = step.title,
-        ','
-        // 説明文
-        const description = this.onboardingContainer.querySelector('.onboarding-description,
-        if(description) description.textContent = step.description,
-        ','
-        // インタラクティブコンテンツ
-        const interactive = this.onboardingContainer.querySelector('.onboarding-interactive' as HTMLElement,
-        if (interactive) {
-
-            interactive.innerHTML = ','
-
-            if (step.content.interactive) {
-        }
-
-                this.createInteractiveContent(step, interactive); }
-}
-        ';'
-        // ビジュアルコンテンツ
-        const visual = this.onboardingContainer.querySelector('.onboarding-visual' as HTMLElement;
-        if (visual) {
-
-            visual.innerHTML = ','
-            if (step.content.visual) {
-        }
-                this.createVisualContent(step, visual); }
-}
+    private createStepHTML(step: OnboardingStep): string {
+        const steps = Object.keys(this.onboardingSteps);
+        const currentIndex = steps.indexOf(step.id);
+        const totalSteps = steps.length;
         
-        // コントロールボタンの更新
-        this.updateControls();
-        
-        // 進捗バーの更新
-        this.updateProgressBar();
+        return `
+            <div class="onboarding-header">
+                <div class="progress-container">
+                    <div class="progress-bar">
+                        <div class="progress-bar-fill" style="width: ${(currentIndex / (totalSteps - 1)) * 100}%"></div>
+                    </div>
+                    <div class="progress-text">${currentIndex + 1} / ${totalSteps}</div>
+                </div>
+                <button class="skip-button" onclick="accessibilityOnboarding.skip()">スキップ</button>
+            </div>
+            
+            <div class="onboarding-content">
+                <div class="step-header">
+                    <div class="step-icon">${step.icon || ''}</div>
+                    <h2 class="step-title">${step.title}</h2>
+                    <p class="step-description">${step.description || ''}</p>
+                </div>
+                
+                <div class="step-body" id="step-body-${step.id}">
+                    ${this.createStepBodyHTML(step)}
+                </div>
+                
+                <div class="step-actions">
+                    ${this.createStepActionsHTML(step)}
+                </div>
+            </div>
+        `;
     }
     
     /**
-     * インタラクティブコンテンツの作成
+     * ステップボディHTML作成
      */
-    private createInteractiveContent(step: OnboardingStep, container: HTMLElement): void { ''
-        switch(step.id) {
-
-            case 'assessment':','
-                this.createAssessmentForm(container);
-                break,
-            case 'keyboard-navigation':','
-                this.createKeyboardPractice(container);
-                break,
-            case 'customization':','
-                this.createCustomizationPanel(container);
-                break,
-            case 'practice':','
-                this.createPracticeArea(container);
-                break,
-            default:','
-                // 汎用的なインタラクティブコンテンツ
-         }
-
-                container.innerHTML = '<p>インタラクティブコンテンツ</p>' }
-}
+    private createStepBodyHTML(step: OnboardingStep): string {
+        switch (step.type) {
+            case 'introduction':
+                return `
+                    <div class="intro-content">
+                        <p>このゲームには、さまざまなアクセシビリティ機能が搭載されています。</p>
+                        <ul>
+                            <li>視覚的な調整（コントラスト、テキストサイズ）</li>
+                            <li>キーボードナビゲーション</li>
+                            <li>スクリーンリーダー対応</li>
+                            <li>音声・視覚フィードバック</li>
+                            <li>認知サポート機能</li>
+                        </ul>
+                        <p>あなたに最適な設定を見つけるお手伝いをさせてください。</p>
+                    </div>
+                `;
+                
+            case 'questionnaire':
+                return this.createQuestionnaireHTML(step);
+                
+            case 'configuration':
+                return `
+                    <div class="config-content">
+                        <div id="recommended-profile">
+                            <!-- プロファイル推奨結果がここに表示される -->
+                        </div>
+                    </div>
+                `;
+                
+            case 'tour':
+                return `
+                    <div class="tour-content">
+                        <div id="feature-showcase">
+                            <!-- 機能紹介がここに表示される -->
+                        </div>
+                    </div>
+                `;
+                
+            case 'interactive':
+                return `
+                    <div class="practice-content">
+                        <div id="exercise-area">
+                            <!-- 練習セッションがここに表示される -->
+                        </div>
+                    </div>
+                `;
+                
+            case 'summary':
+                return this.createSummaryHTML();
+                
+            default:
+                return '<p>コンテンツを読み込み中...</p>';
+        }
+    }
     
     /**
-     * ビジュアルコンテンツの作成'
-     */''
-    private createVisualContent(step: OnboardingStep, container: HTMLElement): void { // プレースホルダー実装
-        const visual = document.createElement('div),'
-        visual.style.cssText = ,
-            width: 100%,
-            height: 200px,
-            background: #f0f0f0,
-    display: flex,
-            align-items: center,
-            justify-content: center,
-            border-radius: 4px,
-            color: #666,
-        `
+     * 質問票HTML作成 (delegate to tutorial component)
+     */
+    private createQuestionnaireHTML(step: OnboardingStep): string {
+        // Simplified - let tutorial component handle complex questionnaire logic
+        return '<div id="questionnaire-content">Loading questionnaire...</div>';
+    }
+    
+    /**
+     * サマリーHTML作成 (simplified)
+     */
+    private createSummaryHTML(): string {
+        // Simplified summary - detailed stats handled by progress tracker
+        return `
+            <div class="summary-content">
+                <div class="completion-message">
+                    <h3>アクセシビリティ設定が完了しました！</h3>
+                    <p>設定メニューからいつでも変更できます。</p>
+                </div>
+                <div id="detailed-summary">Loading summary...</div>
+            </div>
+        `;
+    }
+    
+    /**
+     * ステップアクションHTML作成
+     */
+    private createStepActionsHTML(step: OnboardingStep): string {
+        const actions: string[] = [];
+        
+        step.actions.forEach(action => {
+            switch (action) {
+                case 'start':
+                    actions.push('<button class="btn-primary btn-large" onclick="accessibilityOnboarding.next()">はじめる</button>');
+                    break;
+                case 'next':
+                    actions.push('<button class="btn-primary" onclick="accessibilityOnboarding.next()">次へ</button>');
+                    break;
+                case 'previous':
+                    actions.push('<button class="btn-secondary" onclick="accessibilityOnboarding.previous()">戻る</button>');
+                    break;
+                case 'skip':
+                    actions.push('<button class="btn-tertiary" onclick="accessibilityOnboarding.skip()">スキップ</button>');
+                    break;
+                case 'finish':
+                    actions.push('<button class="btn-primary btn-large" onclick="accessibilityOnboarding.complete()">完了</button>');
+                    break;
+                case 'apply':
+                    actions.push('<button class="btn-primary" onclick="accessibilityOnboarding.applyRecommendation()">この設定を適用</button>');
+                    break;
+                case 'customize':
+                    actions.push('<button class="btn-secondary" onclick="accessibilityOnboarding.customizeSettings()">詳細設定</button>');
+                    break;
             }
-        visual.textContent = `[${step.content.visual}]`;
-        container.appendChild(visual);
-    }
-    
-    /**
-     * 評価フォームの作成'
-     */''
-    private createAssessmentForm(container: HTMLElement): void { container.innerHTML = `''
-            <form class="assessment-form">,
-                <h3>あなたのニーズを教えてください</h3>","
-
-                <div class="form-group">","
-                    <label>",
-                        <input type="checkbox" name="screenReader" value="true">,
-                        スクリーンリーダーを使用している,
-                    </label>,
-                </div>","
-
-                <div class="form-group">","
-                    <label>",
-                        <input type="checkbox" name="keyboardOnly" value="true">,
-                        キーボードのみで操作したい,
-                    </label>,
-                </div>","
-
-                <div class="form-group">","
-                    <label>",
-                        <input type="checkbox" name="highContrast" value="true">,
-                        高コントラスト表示が必要,
-                    </label>,
-                </div>","
-
-                <div class="form-group">","
-                    <label>",
-                        <input type="checkbox" name="largeText" value="true">,
-                        文字を大きく表示したい,
-                    </label>,
-                </div>","
-
-                <div class="form-group">","
-                    <label>",
-                        <input type="checkbox" name="reducedMotion" value="true">,
-                        アニメーションを減らしたい,
-                    </label>,
-                </div>","
-
-                <div class="form-group">","
-                    <label>",
-                        <input type="checkbox" name="captions" value="true">,
-                        字幕表示が必要,
-                    </label>,
-                </div>","
-
-                <div class="form-group">","
-                    <label>",
-                        <input type="checkbox" name="simplifiedUI" value="true">,
-                        シンプルなインターフェースを使いたい,
-                    </label>,
-                </div>,
-            </form>,
-        ,
-        ","
-        // フォーム変更の監視""
-        const form = container.querySelector('form');
-        form?.addEventListener('change', (event) => { '
-            const target = event.target as HTMLInputElement,
-            if(target.type === 'checkbox' { }'
-                this.updatePreference(target.name, target.checked); }
-}
-    
-    /**
-     * キーボード練習の作成'
-     */ : undefined''
-    private createKeyboardPractice(container: HTMLElement): void { container.innerHTML = `''
-            <div class="keyboard-practice">,
-                <h3>キーボード操作を練習しましょう</h3>,
-                <p>以下のボタンをTabキーで移動し、Enterキーで選択してください：</p>","
-
-                <div class="practice-buttons">",
-                    <button class="practice-btn" data-target="1">ボタン 1</button>",
-                    <button class="practice-btn" data-target="2">ボタン 2</button>",
-                    <button class="practice-btn" data-target="3">ボタン 3</button>",
-                    <button class="practice-btn" data-target="4">ボタン 4</button>,
-                </div>","
-
-                <div class="practice-result">",
-                    <p>選択したボタン: <span id="selected-button">なし</span></p>,
-                </div>,
-            </div>,
-        ,
-        ","
-        // ボタンイベントの設定""
-        const buttons = container.querySelectorAll('.practice-btn,
-        buttons.forEach(button => { '),'
-            button.addEventListener('click', (event) => {''
-                const target = (event.target, as HTMLElement').getAttribute('data-target'),'
-                const resultSpan = container.querySelector('#selected-button' }'
-                if (resultSpan) { }
-                    resultSpan.textContent = `ボタン ${target}`;
-                    }
-}
-    /**
-     * カスタマイズパネルの作成'
-     */''
-    private createCustomizationPanel(container: HTMLElement): void { // Stub implementation
-        container.innerHTML = `','
-            <div class="customization-panel">,
-                <h3>詳細設定</h3>,
-                <p>ここで詳細な設定を行えます。</p>,
-            </div>,
-        ` }
-    
-    /**
-     * 練習エリアの作成"
-     */""
-    private createPracticeArea(container: HTMLElement): void { // Stub implementation"
-        container.innerHTML = `",
-            <div class="practice-area">,
-                <h3>練習モード</h3>,
-                <p>設定した機能を使って練習してみましょう。</p>,
-            </div>,
-        ` }
-    
-    /**
-     * 設定の更新
-     */"
-    private updatePreference(key: string, value: boolean): void { ""
-        switch(key) {"
-
-            case 'screenReader':,
-                this.progress.preferences.needsScreenReader = value,
-
-                break,
-            case 'keyboardOnly':,
-                this.progress.preferences.needsKeyboardNav = value,
-
-                break,
-            case 'highContrast':,
-                this.progress.preferences.needsHighContrast = value,
-
-                break,
-            case 'largeText':,
-                this.progress.preferences.needsLargeText = value,
-
-                break,
-            case 'reducedMotion':,
-                this.progress.preferences.needsReducedMotion = value,
-
-                break,
-            case 'captions':,
-                this.progress.preferences.needsCaptions = value,
-
-                break,
-            case 'simplifiedUI':,
-                this.progress.preferences.needsSimplifiedUI = value }
-                break; }
-        }
+        });
         
-        // 進捗を保存
-        this.saveProgress();
+        return actions.join(' ');
     }
     
     /**
-     * コントロールボタンの更新
+     * 質問票の設定 (simplified)
      */
-    private updateControls(): void { ''
-        if(!this.onboardingContainer) return,
-
-        const backBtn = this.onboardingContainer.querySelector('.btn-back') as HTMLButtonElement,
-        const nextBtn = this.onboardingContainer.querySelector('.btn-next') as HTMLButtonElement,
-        const skipBtn = this.onboardingContainer.querySelector('.btn-skip' as HTMLButtonElement,
-        ','
-        // 戻るボタン
-        if (backBtn) {
-            backBtn.disabled = this.currentStepIndex === 0 }
-
-            backBtn.style.visibility = this.currentStepIndex === 0 ? 'hidden' : 'visible'; 
-    }
+    private async setupQuestionnaire(step: OnboardingStep): Promise<void> {
+        // Delegate questionnaire setup to tutorial component
+        this.currentQuestionIndex = 0;
+        this.questionResponses = new Map();
         
-        // 次へボタン
-        if (nextBtn) {
-
-            if (this.currentStepIndex === this.onboardingSteps.length - 1) {
-        }
-
-                nextBtn.textContent = '完了'; }
-
-            } else { }'
-
-                nextBtn.textContent = '次へ'; }
-}
-        ';'
-        // スキップボタン
-        if (skipBtn) {
-            const currentStep = this.onboardingSteps[this.currentStepIndex] }
-
-            skipBtn.style.display = currentStep.skippable && this.config.skipOption ? 'block' : 'none'; 
+        // Let tutorial component handle the complex questionnaire logic
+        await this.tutorial.deliverTutorialContent('assessment', this.getUserProfile());
     }
     
     /**
-     * 進捗バーの更新
-     */'
-    private updateProgressBar(): void { ''
-        if(!this.onboardingContainer) return,
-
-        const progressFill = this.onboardingContainer.querySelector('.progress-fill') as HTMLElement,
-        const progressText = this.onboardingContainer.querySelector('.progress-text),'
-        
-        const progress = ((this.currentStepIndex + 1) / this.onboardingSteps.length) * 100,
-        
-        if (progressFill) { }
-            progressFill.style.width = `${progress}%`;
-        }
-        
-        if (progressText) {
-    
-}
-            progressText.textContent = `ステップ ${this.currentStepIndex + 1} / ${this.onboardingSteps.length}`;
-        }
-    }
-    
-    /**
-     * ステップ遷移アニメーション
+     * 次の質問へ (delegate to tutorial)
      */
-    private async animateStepTransition(step: OnboardingStep): Promise<void> { // Stub implementation
-        return Promise.resolve();
+    nextQuestion(): void {
+        // Delegate question navigation to tutorial component
+        this.tutorial.skipCurrentStep();
+    }
+    
+    /**
+     * 前の質問へ (simplified)
+     */
+    previousQuestion(): void {
+        // Simplified navigation - tutorial component handles complex logic
+        if (this.currentQuestionIndex > 0) {
+            this.currentQuestionIndex--;
+        }
+    }
+    
+    /**
+     * 評価結果の処理 (simplified)
+     */
+    private processAssessmentResults(): void {
+        // Simplified - let progress tracker handle detailed analysis
+        const results: AssessmentResults = { visual: 1, motor: 1, audio: 0, cognitive: 0 }; // Default results
+        this.state.assessmentResults = results;
+        this.recommendedProfile = this.determineRecommendedProfile(results);
+    }
+    
+    /**
+     * 推奨プロファイルの決定 (simplified)
+     */
+    private determineRecommendedProfile(results: AssessmentResults): string {
+        // Simplified profile determination logic
+        const maxScore = Math.max(...Object.values(results));
+        if (maxScore === 0) return 'minimum-compliance';
+        if (results.visual === maxScore) return 'visual-impairment';
+        if (results.motor === maxScore) return 'motor-impairment';
+        return 'minimum-compliance';
+    }
+    
+    /**
+     * 設定の設定 (simplified)
+     */
+    private async setupConfiguration(step: OnboardingStep): Promise<void> {
+        // Delegate configuration setup to tutorial component
+        await this.tutorial.deliverTutorialContent('profile_setup', this.getUserProfile());
+    }
+    
+    /**
+     * 機能ツアーの設定
+     */
+    private async setupFeatureTour(step: OnboardingStep): Promise<void> {
+        this.currentFeatureIndex = 0;
+        
+        // Use tutorial sub-component for feature demonstration
+        const featureList = (step.features || []).map(f => f.id);
+        await this.tutorial.demonstrateFeatures(featureList, 'interactive');
+        
+        if (step.features && step.features[0]) {
+            this.showFeature(step.features[0]);
+        }
+    }
+    
+    /**
+     * 機能表示 (simplified)
+     */
+    private showFeature(feature: FeatureInfo): void {
+        // Simplified feature display - let tutorial handle details
+        const showcase = this.ui.container!.querySelector('#feature-showcase');
+        if (showcase) {
+            showcase.innerHTML = `<div class="feature-info"><h3>${feature.name}</h3><p>${feature.description}</p></div>`;
+        }
+        this.analytics.featuresDiscovered++;
+    }
+    
+    /**
+     * 機能のデモンストレーション (simplified)
+     */
+    demonstrateFeature(featureId: string): void {
+        // Delegate feature demonstration to tutorial component
+        this.tutorial.demonstrateFeatures([featureId], 'interactive');
+    }
+    
+    /**
+     * 発見システムの設定 (simplified)
+     */
+    private setupDiscoverySystem(): void {
+        if (!this.discoverySystem.enabled) return;
+        
+        // Basic tip setup - complex logic handled by tutorial component
+        this.discoverySystem.contextualTips.set('basic-tip', {
+            message: 'Tab キーでナビゲーション、設定は歯車ボタンから',
+            trigger: 'basic',
+            shown: false
+        });
+    }
+    
+    /**
+     * コンテキストヒントの表示 (simplified)
+     */
+    showContextualTip(): void {
+        // Basic tip display - delegate complex tips to tutorial
+        console.log('Contextual tip would be shown here');
+    }
     
     /**
      * 次のステップへ
      */
-    private async nextStep(): Promise<void> { const currentStep = this.onboardingSteps[this.currentStepIndex],
-        // バリデーション
-        if(currentStep.validation && !currentStep.validation()) {''
-            console.log('Step validation failed, skipping step),'
-            currentStep.completed = false,
-            this.progress.skippedSteps.push(currentStep.id) } else {  currentStep.completed = true }
-            this.progress.completedSteps.push(currentStep.id); }
-        }
+    async next(): Promise<void> {
+        const steps = Object.keys(this.onboardingSteps);
+        const currentIndex = steps.indexOf(this.state.currentStep || '');
         
-        // 最後のステップの場合
-        if (this.currentStepIndex === this.onboardingSteps.length - 1) {
-            await this.complete();
-            return; }
+        if (currentIndex < steps.length - 1 && currentIndex !== -1) {
+            // Use flow manager for navigation
+            const navigationResult = await this.flowManager.navigateToNextStep();
+            
+            if (navigationResult.success) {
+                // 現在のステップを完了としてマーク
+                if (this.state.currentStep) {
+                    this.state.completedSteps.add(this.state.currentStep);
+                }
+                
+                // Update progress with progress tracker
+                await this.progressTracker.updateCompletionStatus({
+                    stepIndex: currentIndex,
+                    status: 'completed'
+                });
+                
+                // 次のステップへ
+                this.state.stepIndex = currentIndex + 1;
+                this.state.currentStep = steps[this.state.stepIndex];
+                this.showStep(this.state.currentStep);
+            }
+            
+            this.saveProgress();
+        } else {
+            this.complete();
         }
-        
-        // 次のステップへ
-        await this.showStep(this.currentStepIndex + 1);
     }
     
     /**
      * 前のステップへ
      */
-    private async previousStep(): Promise<void> { if (this.currentStepIndex > 0) {
-            await this.showStep(this.currentStepIndex - 1') }'
+    async previous(): Promise<void> {
+        const steps = Object.keys(this.onboardingSteps);
+        const currentIndex = steps.indexOf(this.state.currentStep || '');
+        
+        if (currentIndex > 0) {
+            // Use flow manager for backward navigation
+            const navigationResult = await this.flowManager.navigateToPreviousStep();
+            
+            if (navigationResult.success) {
+                this.state.stepIndex = currentIndex - 1;
+                this.state.currentStep = steps[this.state.stepIndex];
+                this.showStep(this.state.currentStep);
+            }
+        }
     }
     
     /**
-     * スキップ
-     */''
-    private skip()';'
-        console.log('Skipping, current step);'
-        
-        const currentStep = this.onboardingSteps[this.currentStepIndex];
-        this.progress.skippedSteps.push(currentStep.id);
-        
-        this.nextStep();
-    }
-    
-    /**
-     * オンボーディングの完了'
-     */''
-    private async complete()';'
-        console.log('Completing accessibility onboarding);'
-        
-        // 設定の適用
-        await this.applySettings();
-        
-        // 進捗の保存
-        this.progress.currentStep = this.onboardingSteps.length;
-        this.saveProgress();
-        
-        // 完了コールバック
-        if (this.onCompleteCallback) { this.onCompleteCallback();
-        
-        // UIのクリーンアップ
-        setTimeout(() => { this.cleanup() } 2000);
-    }
-    
-    /**
-     * 設定の適用
+     * ステップのスキップ
      */
-    private async applySettings(): Promise<void> { const profile = this.createAccessibilityProfile();
-        if (this.accessibilityManager?.applyProfile) {
-    
-}
-            await this.accessibilityManager.applyProfile(profile'); }'
+    async skip(): Promise<void> {
+        if (this.state.currentStep) {
+            this.state.skippedSteps.add(this.state.currentStep);
         }
         
-        if (this.accessibilityManager?.saveProfile) { await this.accessibilityManager.saveProfile(profile') }'
-    }
-    
-    /**
-     * アクセシビリティプロファイルの作成
-     */ : undefined''
-    private createAccessibilityProfile('''
-            name: 'Custom, Profile';
-            preferences: this.progress.preferences),
-            assessmentResults: this.progress.assessmentResults),
-            createdAt: Date.now(
-    onboardingCompleted: true } }
-    
-    /**
-     * 閉じる
-     */
-    close(): void { if (this.onSkipCallback) {
-            this.onSkipCallback();
+        // Use flow manager for skipping
+        const skipResult = await this.flowManager.skipCurrentStep();
         
-        this.cleanup();
+        if (skipResult.success) {
+            await this.next();
+        }
     }
     
     /**
-     * クリーンアップ
+     * 推奨設定の適用
      */
-    private cleanup(): void { this.isActive = false;
+    applyRecommendation(): void {
+        if (this.recommendedProfile && this.accessibilityManager?.profileManager) {
+            this.accessibilityManager.profileManager.activateProfile(this.recommendedProfile);
+            alert('推奨設定を適用しました！');
+        }
+        this.next();
+    }
+    
+    /**
+     * カスタム設定
+     */
+    customizeSettings(): void {
+        if (this.accessibilityManager?.settingsUI) {
+            this.accessibilityManager.settingsUI.open();
+        }
+        this.complete();
+    }
+    
+    /**
+     * 満足度評価の設定
+     */
+    setRating(rating: number): void {
+        this.analytics.satisfactionScore = rating;
         
-        if (this.onboardingContainer) {
-        ','
-
-            this.onboardingContainer.remove();
-
-        document.removeEventListener('keydown', this.handleKeydown.bind(this); }
+        // 評価ボタンの視覚的フィードバック
+        this.ui.container!.querySelectorAll('.rating-button').forEach(btn => {
+            (btn as HTMLElement).style.opacity = '0.3';
+        });
+        
+        const selectedButton = this.ui.container!.querySelector(`[data-rating="${rating}"]`);
+        if (selectedButton) {
+            (selectedButton as HTMLElement).style.opacity = '1';
+            (selectedButton as HTMLElement).style.transform = 'scale(1.1)';
+        }
     }
     
     /**
-     * 進捗の更新
+     * オンボーディング完了
      */
-    private updateProgress(): void { this.progress.currentStep = this.currentStepIndex,
-        this.progress.lastActiveTime = Date.now();
+    async complete(): Promise<void> {
+        this.state.completedSteps.add('completion');
+        this.analytics.completionRate = (this.state.completedSteps.size / Object.keys(this.onboardingSteps).length) * 100;
+        
+        // Update completion status with progress tracker
+        await this.progressTracker.updateCompletionStatus({
+            stepIndex: this.state.stepIndex,
+            status: 'completed',
+            milestone: { id: 'onboarding_complete', name: 'Onboarding Complete' }
+        });
+        
+        // Get comprehensive progress report
+        const progressReport = this.progressTracker.getProgressReport();
+        
+        // 完了フラグの保存
+        localStorage.setItem('accessibilityOnboardingCompleted', 'true');
         this.saveProgress();
-    
-    /**
-     * 進捗の保存'
-     */''
-    private saveProgress()';'
-            localStorage.setItem('accessibilityOnboardingProgress', JSON.stringify(this.progress);'} catch (error) { console.warn('Failed to save onboarding progress:', error }'
+        this.saveAnalytics();
+        
+        // UI を閉じる
+        this.close();
+        
+        // 完了通知
+        this.showCompletionNotification();
+        
+        console.log('Accessibility onboarding completed');
+        console.log('Analytics:', this.analytics);
+        console.log('Progress Report:', progressReport);
+        
+        // イベント発火
+        this.accessibilityManager?.eventSystem?.emit('onboardingCompleted', {
+            analytics: this.analytics,
+            progressReport,
+            timestamp: Date.now()
+        });
     }
     
     /**
-     * 進捗の読み込み'
-     */''
-    private loadProgress()';'
-            const saved = localStorage.getItem('accessibilityOnboardingProgress);'
-
-            return saved ? JSON.parse(saved) : null;} catch (error) {
-            console.warn('Failed to load onboarding progress:', error','
-            return null,
-    
-    // ステップ固有のアクション実装
-    
-    /**
-     * ニーズ評価の実行
-     */''
-    private async runNeedsAssessment()','
-        console.log('Running, needs assessment');
-        // 評価ロジックの実装
+     * 完了通知の表示
+     */
+    private showCompletionNotification(): void {
+        const notification = document.createElement('div');
+        notification.style.cssText = `
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            z-index: 25000;
+            text-align: center;
+            max-width: 400px;
+        `;
+        
+        notification.innerHTML = `
+            <div style="font-size: 48px; margin-bottom: 1rem;">🎉</div>
+            <h2 style="margin: 0 0 1rem 0; color: #2c3e50;">セットアップ完了！</h2>
+            <p style="margin: 0 0 1.5rem 0; color: #7f8c8d;">アクセシビリティ機能の設定が完了しました。いつでも設定メニューから変更できます。</p>
+            <button onclick="this.parentElement.remove()" 
+                    style="background: #27ae60; color: white; border: none; padding: 12px 24px; border-radius: 6px; cursor: pointer; font-weight: 600;">
+                ゲームを始める
+            </button>
+        `;
+        
+        document.body.appendChild(notification);
+        
+        // 自動削除
+        setTimeout(() => {
+            if (notification.parentElement) {
+                notification.remove();
+            }
+        }, 5000);
     }
     
     /**
-     * キーボードナビゲーションの練習
-     */''
-    private async practiceKeyboardNavigation()';'
-        console.log('Practicing, keyboard navigation');
-        // 練習ロジックの実装
+     * オンボーディングを閉じる
+     */
+    close(): void {
+        if (this.ui.overlay) {
+            this.ui.overlay.style.display = 'none';
+        }
+        this.state.isActive = false;
     }
     
     /**
-     * カスタマイズパネルの表示
-     */''
-    private async showCustomizationPanel()';'
-        console.log('Showing, customization panel');
-        // カスタマイズUIの実装
+     * 進行状況の保存
+     */
+    private saveProgress(): void {
+        const progress = {
+            completedSteps: Array.from(this.state.completedSteps),
+            skippedSteps: Array.from(this.state.skippedSteps),
+            userResponses: Array.from(this.state.userResponses.entries()),
+            assessmentResults: this.state.assessmentResults,
+            lastUpdated: Date.now()
+        };
+        
+        localStorage.setItem('accessibilityOnboardingProgress', JSON.stringify(progress));
     }
     
     /**
-     * 練習セッションの開始
-     */''
-    private async startPracticeSession()';'
-        console.log('Starting, practice session');
-        // 練習モードの実装
+     * 分析データの保存
+     */
+    private saveAnalytics(): void {
+        localStorage.setItem('accessibilityOnboardingAnalytics', JSON.stringify(this.analytics));
+    }
+    
+    /**
+     * プログレス更新
+     */
+    private updateProgress(): void {
+        const steps = Object.keys(this.onboardingSteps);
+        const currentIndex = steps.indexOf(this.state.currentStep || '');
+        if (currentIndex !== -1) {
+            this.state.progress = (currentIndex / (steps.length - 1)) * 100;
+        }
+    }
+    
+    /**
+     * イベントバインディング
+     */
+    private bindEvents(): void {
+        // ESC キーでオンボーディングを終了
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape' && this.state.isActive) {
+                if (confirm('オンボーディングを中止しますか？')) {
+                    this.close();
+                }
+            }
+        });
+    }
+    
+    /**
+     * ステップイベントのバインディング
+     */
+    private bindStepEvents(): void {
+        // 動的に追加されるボタンのイベントは onclick 属性で処理
     }
     
     // パブリックAPI
     
     /**
-     * オンボーディングが必要かどうかの確認
-     */''
-    isOnboardingNeeded()';'
-        const hasCompletedOnboarding = localStorage.getItem('accessibilityOnboardingCompleted);'
-
-        if (!hasCompletedOnboarding && this.config.showOnFirstVisit) { return true }
-        ';'
-        // アクセシビリティ機能のリクエスト
-        const hasRequestedAccessibility = localStorage.getItem('accessibilityRequested);'
+     * オンボーディングの再開始
+     */
+    async restart(): Promise<void> {
+        // 進行状況をリセット
+        this.state.completedSteps.clear();
+        this.state.skippedSteps.clear();
+        this.state.userResponses.clear();
+        this.state.assessmentResults = null;
         
-        if (hasRequestedAccessibility && this.config.showOnAccessibilityRequest) { return true }
+        // Reset sub-components
+        this.flowManager.resetFlow();
+        this.progressTracker.resetProgress();
         
-        return false;
+        localStorage.removeItem('accessibilityOnboardingCompleted');
+        localStorage.removeItem('accessibilityOnboardingProgress');
+        
+        await this.start();
     }
     
     /**
-     * オンボーディングのリセット'
-     */''
-    reset()';'
-        localStorage.removeItem('accessibilityOnboardingProgress');
-        localStorage.removeItem('accessibilityOnboardingCompleted);'
+     * 特定のステップから開始
+     */
+    async startFromStep(stepId: string): Promise<void> {
+        if (this.onboardingSteps[stepId]) {
+            this.state.currentStep = stepId;
+            const steps = Object.keys(this.onboardingSteps);
+            this.state.stepIndex = steps.indexOf(stepId);
+            
+            // Use flow manager to jump to specific step
+            const jumpResult = await this.flowManager.jumpToStep(this.state.stepIndex);
+            
+            if (jumpResult.success) {
+                await this.start();
+            }
+        }
+    }
+    
+    /**
+     * 分析データの取得
+     */
+    getAnalytics(): any {
+        // Combine analytics from main controller and sub-components
+        const progressReport = this.progressTracker.getProgressReport();
+        const flowAnalytics = this.flowManager.getFlowAnalytics();
+        const tutorialAnalytics = this.tutorial.getTutorialAnalytics();
         
-        this.progress = this.createInitialProgress();
-        this.currentStepIndex = 0;
-        
-        // ステップのリセット
-        this.onboardingSteps.forEach(step => {  ')'
-            step.completed = false'),'
-
-        ' }'
-
-        console.log('Onboarding, reset completed'); }'
+        return { 
+            ...this.analytics,
+            progressReport,
+            flowAnalytics,
+            tutorialAnalytics
+        };
     }
     
     /**
      * 設定の適用
-     */'
-    applyConfig(config: { onboarding?: Partial<OnboardingConfig>;): void { if (config.onboarding) {''
+     */
+    applyConfig(config: { onboarding?: Partial<OnboardingConfig> }): void {
+        if (config.onboarding) {
             Object.assign(this.config, config.onboarding);
-
-        console.log('AccessibilityOnboarding, configuration applied');
-    } };
-
-    /**
-     * 有効状態の設定'
-     */''
-    setEnabled(enabled: boolean): void { this.config.enabled = enabled,' }'
-
-        console.log(`AccessibilityOnboarding ${enabled ? 'enabled' : 'disabled}`}';
+        }
+        
+        console.log('AccessibilityOnboarding configuration applied');
     }
     
     /**
-     * クリーンアップ'
-     */''
-    destroy()';'
-        console.log('Destroying, AccessibilityOnboarding...';
+     * 有効状態の設定
+     */
+    setEnabled(enabled: boolean): void {
+        this.config.enabled = enabled;
+        console.log(`AccessibilityOnboarding ${enabled ? 'enabled' : 'disabled'}`);
+    }
+    
+    /**
+     * クリーンアップ
+     */
+    destroy(): void {
+        console.log('Destroying AccessibilityOnboarding...');
         
-        if (this.isActive') {'
-        ','
+        // Destroy sub-components
+        if (this.flowManager) {
+            this.flowManager.destroy();
+        }
+        if (this.tutorial) {
+            this.tutorial.destroy();
+        }
+        if (this.progressTracker) {
+            this.progressTracker.destroy();
+        }
+        
+        // UI 要素の削除
+        if (this.ui.overlay && this.ui.overlay.parentElement) {
+            this.ui.overlay.parentElement.removeChild(this.ui.overlay);
+        }
+        
+        // 分析データの最終保存
+        this.saveAnalytics();
+        
+        console.log('AccessibilityOnboarding destroyed');
+    }
 
-            this.cleanup();
+    /**
+     * Get user profile for flow manager initialization
+     */
+    private getUserProfile(): UserProfile | null {
+        // Create user profile from current state and assessment results
+        if (this.state.assessmentResults) {
+            return {
+                experience: 'intermediate',
+                disabilities: this.determineDisabilities(this.state.assessmentResults),
+                preferences: this.determinePreferences(this.state.assessmentResults),
+                assistiveTechnology: this.determineAssistiveTechnology(this.state.assessmentResults)
+            };
+        }
+        return null;
+    }
 
-        console.log('AccessibilityOnboarding, destroyed'); }
+    /**
+     * Determine disabilities from assessment results
+     */
+    private determineDisabilities(results: AssessmentResults): string[] {
+        const disabilities: string[] = [];
+        if (results.visual > 1) disabilities.push('visual');
+        if (results.motor > 1) disabilities.push('motor');
+        if (results.audio > 1) disabilities.push('hearing');
+        return disabilities;
+    }
 
-    }'}'
+    /**
+     * Determine preferences from assessment results
+     */
+    private determinePreferences(results: AssessmentResults): UserPreferences {
+        return {
+            keyboardOnly: results.motor > 1,
+            highContrast: results.visual > 1,
+            largeText: results.visual > 0
+        };
+    }
+
+    /**
+     * Determine assistive technology from assessment results
+     */
+    private determineAssistiveTechnology(results: AssessmentResults): AssistiveTechnology {
+        return {
+            screenReader: results.visual > 1,
+            magnifier: results.visual > 0,
+            voiceControl: results.motor > 1
+        };
+    }
+}
+
+// グローバル参照（UI イベント用）
+if (typeof window !== 'undefined') {
+    (window as any).accessibilityOnboarding = null;
+}

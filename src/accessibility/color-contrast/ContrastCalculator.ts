@@ -4,123 +4,166 @@
  */
 
 // Interfaces for contrast calculation
-interface CalculatorConfig { wcagLevel: 'A' | 'AA' | 'AAA',
-    enableCache: boolean,
+interface CalculatorConfig {
+    wcagLevel: 'A' | 'AA' | 'AAA';
+    enableCache: boolean;
     highPrecision: boolean;
-    interface RGB { r: number,
-    g: number,
+}
+
+interface RGB {
+    r: number;
+    g: number;
     b: number;
-    interface WCAGStandards { A: WCAGLevel,
-    AA: WCAGLevel,
+}
+
+interface WCAGStandards {
+    A: WCAGLevel;
+    AA: WCAGLevel;
     AAA: WCAGLevel;
-    interface WCAGLevel { normalText: number,
+}
+
+interface WCAGLevel {
+    normalText: number;
     largeText: number;
-    interface PerformanceMetrics { calculationTimes: number[],
-    cacheHitRate: number,
+}
+
+interface PerformanceMetrics {
+    calculationTimes: number[];
+    cacheHitRate: number;
     totalCalculations: number;
-    interface WCAGValidation { passes: boolean,
-    ratio: number,
-    requirement: number,
-    level: string,
-    isLargeText: boolean,
+}
+
+interface WCAGValidation {
+    passes: boolean;
+    ratio: number;
+    requirement: number;
+    level: string;
+    isLargeText: boolean;
     grade: string;
-    interface LABColor { L: number,
-    a: number,
+}
+
+interface LABColor {
+    L: number;
+    a: number;
     b: number;
-    interface ContrastRecommendation { type: "single" | "batch",
-    message: string,
-    severity: 'low' | 'medium' | 'high' | 'critical,
+}
+
+interface ContrastRecommendation {
+    type: string;
+    message: string;
+    severity: 'low' | 'medium' | 'high' | 'critical';
     actionable: boolean;
-    interface ContrastAnalysis { contrastRatio: number,
-    colorDifference: number,
-    wcagValidation: WCAGValidation,
+}
+
+interface ContrastAnalysis {
+    contrastRatio: number;
+    colorDifference: number;
+    wcagValidation: WCAGValidation;
     textProperties: {
-        fontSiz,e: number;
-    },
-        fontWeight: number,
-    isLargeText: boolean,
-    recommendations: ContrastRecommendation[],
+        fontSize: number;
+        fontWeight: number;
+        isLargeText: boolean;
+    };
+    recommendations: ContrastRecommendation[];
     timestamp: number;
 }
 
-interface PerformanceReport { totalCalculations: number,
-    averageCalculationTime: number,
-    cacheHitRate: number,
-    cacheSize: number,
-    fastestCalculation: number,
+interface PerformanceReport {
+    totalCalculations: number;
+    averageCalculationTime: number;
+    cacheHitRate: number;
+    cacheSize: number;
+    fastestCalculation: number;
     slowestCalculation: number;
+}
 
-// Type for contrast result (for, compatibility with, ColorContrastAnalyzer);
-    interface ContrastResult {
+// Type for contrast result (for compatibility with ColorContrastAnalyzer)
+interface ContrastResult {
     ratio: number;
-    export class ContrastCalculator {
+}
+
+export class ContrastCalculator {
     private config: CalculatorConfig;
     private wcagStandards: WCAGStandards;
-    private, calculationCache: Map<string, number>,
+    private calculationCache: Map<string, number>;
     private cacheHits: number;
     private cacheMisses: number;
     private performanceMetrics: PerformanceMetrics;
-    private, initialized: boolean;
-    constructor(config: Partial<CalculatorConfig> = {) {
-        this.config = {''
-            wcagLevel: 'AA,
-    enableCache: true,
-    highPrecision: false;
-            ...config,
+    private initialized: boolean;
+
+    constructor(config: Partial<CalculatorConfig> = {}) {
+        this.config = {
+            wcagLevel: 'AA',
+            enableCache: true,
+            highPrecision: false,
+            ...config
+        };
 
         // WCAGコントラスト基準
-        this.wcagStandards = { A: {
+        this.wcagStandards = {
+            A: {
                 normalText: 3.0,
-    largeText: 3.0  } };
-            AA: { normalText: 4.5,
-    largeText: 3.0  ,
-            AAA: { normalText: 7.0,
-    largeText: 4.5 
-     ,
+                largeText: 3.0
+            },
+            AA: {
+                normalText: 4.5,
+                largeText: 3.0
+            },
+            AAA: {
+                normalText: 7.0,
+                largeText: 4.5
+            }
+        };
+
         // 計算結果キャッシュ
         this.calculationCache = new Map();
         this.cacheHits = 0;
         this.cacheMisses = 0;
 
         // パフォーマンス測定
-        this.performanceMetrics = { calculationTimes: [],
+        this.performanceMetrics = {
+            calculationTimes: [],
             cacheHitRate: 0,
-    totalCalculations: 0  };
+            totalCalculations: 0
+        };
+
         this.initialized = false;
     }
 
     /**
      * Initialize calculator
      */
-    initialize(): boolean { ''
-        if(this.initialized) return true,
+    initialize(): boolean {
+        if (this.initialized) return true;
 
-        console.log('ContrastCalculator: Initializing...';
+        console.log('ContrastCalculator: Initializing...');
         
         try {
             // キャッシュの初期化
             this.calculationCache.clear();
-            this.resetPerformanceMetrics()','
-            console.log('ContrastCalculator: Initialized, successfully');
-            return true,' }'
-
+            this.resetPerformanceMetrics();
+            
+            this.initialized = true;
+            console.log('ContrastCalculator: Initialized successfully');
+            return true;
         } catch (error) {
-            console.error('ContrastCalculator: Initialization, error:', error','
-            return false,
+            console.error('ContrastCalculator: Initialization error:', error);
+            return false;
+        }
+    }
 
     /**
      * Calculate contrast ratio between two colors
-     */'
-    calculateContrastRatio(color1: RGB | string, color2: RGB | string): number { ''
-        if (!this.initialized) {', '
-}
-
-            throw new Error('ContrastCalculator, must be, initialized first'; }'
+     */
+    calculateContrastRatio(color1: RGB | string, color2: RGB | string): number {
+        if (!this.initialized) {
+            throw new Error('ContrastCalculator must be initialized first');
         }
 
         const startTime = performance.now();
 
-        try { // キャッシュチェック
+        try {
+            // キャッシュチェック
             if (this.config.enableCache) {
                 const cacheKey = this.generateCacheKey(color1, color2);
                 const cachedResult = this.calculationCache.get(cacheKey);
@@ -128,6 +171,7 @@ interface PerformanceReport { totalCalculations: number,
                     this.cacheHits++;
                     this.updatePerformanceMetrics(performance.now() - startTime, true);
                     return cachedResult;
+                }
                 this.cacheMisses++;
             }
 
@@ -141,30 +185,33 @@ interface PerformanceReport { totalCalculations: number,
             const contrastRatio = (lighter + 0.05) / (darker + 0.05);
 
             // 高精度モードでの補正
-            const finalRatio = this.config.highPrecision ;
-                ? this.applyHighPrecisionCorrection(contrastRatio, color1, color2);
+            const finalRatio = this.config.highPrecision
+                ? this.applyHighPrecisionCorrection(contrastRatio, color1, color2)
                 : contrastRatio;
 
             // キャッシュに保存
             if (this.config.enableCache) {
                 const cacheKey = this.generateCacheKey(color1, color2);
-                this.calculationCache.set(cacheKey, finalRatio); }
+                this.calculationCache.set(cacheKey, finalRatio);
             }
 
             this.updatePerformanceMetrics(performance.now() - startTime, false);
             return finalRatio;
 
         } catch (error) {
-            console.error('ContrastCalculator: Contrast calculation, error:', error);
-            throw error }
+            console.error('ContrastCalculator: Contrast calculation error:', error);
+            throw error;
+        }
     }
 
     /**
-     * Calculate contrast (compatibility, method for, ColorContrastAnalyzer)
+     * Calculate contrast (compatibility method for ColorContrastAnalyzer)
      */
-    calculate(foreground: RGB | string, background: RGB | string): ContrastResult { return {  },
-            ratio: this.calculateContrastRatio(foreground, background); }
-        }
+    calculate(foreground: RGB | string, background: RGB | string): ContrastResult {
+        return {
+            ratio: this.calculateContrastRatio(foreground, background)
+        };
+    }
 
     /**
      * Get relative luminance of a color
@@ -187,107 +234,130 @@ interface PerformanceReport { totalCalculations: number,
 
     /**
      * Validate against WCAG standards
-     */''
-    validateWCAGStandards(contrastRatio: number, isLargeText: boolean = false, wcagLevel: CalculatorConfig['wcagLevel] | null = null): WCAGValidation { const level = wcagLevel || this.config.wcagLevel,'
+     */
+    validateWCAGStandards(contrastRatio: number, isLargeText: boolean = false, wcagLevel: CalculatorConfig['wcagLevel'] | null = null): WCAGValidation {
+        const level = wcagLevel || this.config.wcagLevel;
         const requirement = this.getWcagRequirement(isLargeText, level);
-        return { passes: contrastRatio >= requirement,
-            ratio: contrastRatio;
+        
+        return {
+            passes: contrastRatio >= requirement,
+            ratio: contrastRatio,
             requirement,
             level,
-            isLargeText,' };'
-
-            grade: this.getContrastGrade(contrastRatio, isLargeText); }
-        }
+            isLargeText,
+            grade: this.getContrastGrade(contrastRatio, isLargeText)
+        };
+    }
 
     /**
-     * Get WCAG requirement for given text size and level'
-     */''
-    getWcagRequirement(isLargeText: boolean, wcagLevel: CalculatorConfig['wcagLevel] | null = null): number { const level = wcagLevel || this.config.wcagLevel,'
-        const standard = this.wcagStandards[level],
+     * Get WCAG requirement for given text size and level
+     */
+    getWcagRequirement(isLargeText: boolean, wcagLevel: CalculatorConfig['wcagLevel'] | null = null): number {
+        const level = wcagLevel || this.config.wcagLevel;
+        const standard = this.wcagStandards[level];
         
-        if (!standard) { }
-            throw new Error(`Invalid, WCAG level: ${level}`}
+        if (!standard) {
+            throw new Error(`Invalid WCAG level: ${level}`);
         }
         
-        return isLargeText ? standard.largeText: standard.normalText,
-    
+        return isLargeText ? standard.largeText : standard.normalText;
+    }
+
     /**
      * Determine if text is considered large by WCAG standards
      */
-    isLargeText(fontSize: number, fontWeight: number): boolean { // WCAG: 18.5px以上、または14px以上かつ太字（700以上）
-        return fontSize >= 18.5 || (fontSize >= 14 && fontWeight >= 700 }
+    isLargeText(fontSize: number, fontWeight: number): boolean {
+        // WCAG: 18.5px以上、または14px以上かつ太字（700以上）
+        return fontSize >= 18.5 || (fontSize >= 14 && fontWeight >= 700);
+    }
 
     /**
      * Calculate color difference using Delta E formula
      */
-    calculateColorDifference(color1: RGB | string, color2: RGB | string): number { // CIE76 Delta E計算
+    calculateColorDifference(color1: RGB | string, color2: RGB | string): number {
+        // CIE76 Delta E計算
         const lab1 = this.rgbToLab(color1);
         const lab2 = this.rgbToLab(color2);
-        const deltaL = lab1.L - lab2.L,
-        const deltaA = lab1.a - lab2.a,
-        const deltaB = lab1.b - lab2.b,
+        
+        const deltaL = lab1.L - lab2.L;
+        const deltaA = lab1.a - lab2.a;
+        const deltaB = lab1.b - lab2.b;
         
         return Math.sqrt(deltaL * deltaL + deltaA * deltaA + deltaB * deltaB);
+    }
 
     /**
      * Get comprehensive analysis of color pair
      */
-    analyzeColorPair(foreground: RGB | string, background: RGB | string, fontSize: number = 16, fontWeight: number = 400): ContrastAnalysis { const contrastRatio = this.calculateContrastRatio(foreground, background);
+    analyzeColorPair(foreground: RGB | string, background: RGB | string, fontSize: number = 16, fontWeight: number = 400): ContrastAnalysis {
+        const contrastRatio = this.calculateContrastRatio(foreground, background);
         const isLarge = this.isLargeText(fontSize, fontWeight);
         const wcagValidation = this.validateWCAGStandards(contrastRatio, isLarge);
         const colorDifference = this.calculateColorDifference(foreground, background);
-        return { contrastRatio,
+        
+        return {
+            contrastRatio,
             colorDifference,
             wcagValidation,
-            textProperties: { fontSize,
-                fontWeight  },
-                isLargeText: isLarge,
-            recommendations: this.generateContrastRecommendations(wcagValidation,
-    timestamp: Date.now();
-        }
+            textProperties: {
+                fontSize,
+                fontWeight,
+                isLargeText: isLarge
+            },
+            recommendations: this.generateContrastRecommendations(wcagValidation),
+            timestamp: Date.now()
+        };
+    }
 
     // Private helper methods
 
     /**
      * Normalize color to RGB object
-     */''
-    private normalizeColor(color: RGB | string): RGB { ''
-        if(typeof, color === 'object' && 'r' in, color' { }'
-            return { r: color.r, g: color.g, b: color.b  }
-
-        }''
-        if(typeof, color === 'string' {', ' }
-
+     */
+    private normalizeColor(color: RGB | string): RGB {
+        if (typeof color === 'object' && 'r' in color) {
+            return { r: color.r, g: color.g, b: color.b };
+        }
+        
+        if (typeof color === 'string') {
             return this.parseColorString(color);
-        throw new Error('Invalid, color format';
+        }
+        
+        throw new Error('Invalid color format');
     }
 
     /**
-     * Parse color string to RGB'
-     */''
-    private parseColorString(colorStr: string): RGB { // 簡略化された色文字列パーサー
-        const hex = colorStr.replace('#', '),'
+     * Parse color string to RGB
+     */
+    private parseColorString(colorStr: string): RGB {
+        // 簡略化された色文字列パーサー
+        const hex = colorStr.replace('#', '');
         if (hex.length === 6) {
-            return { r: parseInt(hex.substr(0, 2), 16);
-                g: parseInt(hex.substr(2, 2), 16) };
-                b: parseInt(hex.substr(4, 2), 16); }
-            }
+            return {
+                r: parseInt(hex.substr(0, 2), 16),
+                g: parseInt(hex.substr(2, 2), 16),
+                b: parseInt(hex.substr(4, 2), 16)
+            };
+        }
         
         // rgb(r,g,b)形式の処理
         const rgbMatch = colorStr.match(/rgb\((\d+),\s*(\d+),\s*(\d+)\)/);
         if (rgbMatch) {
-            return { r: parseInt(rgbMatch[1] }
-                g: parseInt(rgbMatch[2]) };
-                b: parseInt(rgbMatch[3]); 
-    }
+            return {
+                r: parseInt(rgbMatch[1]),
+                g: parseInt(rgbMatch[2]),
+                b: parseInt(rgbMatch[3])
+            };
+        }
         
-        throw new Error(`Unsupported, color format: ${colorStr}`}
+        throw new Error(`Unsupported color format: ${colorStr}`);
     }
 
     /**
      * Convert RGB to LAB color space
      */
-    private rgbToLab(rgb: RGB | string): LABColor { // RGB → XYZ → LAB変換（簡略版） }
+    private rgbToLab(rgb: RGB | string): LABColor {
+        // RGB → XYZ → LAB変換（簡略版）
         let { r, g, b } = this.normalizeColor(rgb);
         
         // sRGB → Linear RGB
@@ -313,15 +383,18 @@ interface PerformanceReport { totalCalculations: number,
         y = y > 0.008856 ? Math.pow(y, 1/3) : (7.787 * y + 16/116);
         z = z > 0.008856 ? Math.pow(z, 1/3) : (7.787 * z + 16/116);
         
-        return { L: (116 * y) - 16,
-            a: 500 * (x - y) };
-            b: 200 * (y - z); 
+        return {
+            L: (116 * y) - 16,
+            a: 500 * (x - y),
+            b: 200 * (y - z)
+        };
     }
 
     /**
      * Generate cache key for calculation results
      */
-    private generateCacheKey(color1: RGB | string, color2: RGB | string): string { const c1 = this.normalizeColor(color1);
+    private generateCacheKey(color1: RGB | string, color2: RGB | string): string {
+        const c1 = this.normalizeColor(color1);
         const c2 = this.normalizeColor(color2);
         return `${c1.r},${c1.g},${c1.b}:${c2.r},${c2.g},${c2.b}`;
     }
@@ -329,44 +402,48 @@ interface PerformanceReport { totalCalculations: number,
     /**
      * Apply high precision correction
      */
-    private applyHighPrecisionCorrection(ratio: number, color1: RGB | string, color2: RGB | string): number { // 高精度モードでの補正処理（デモ実装）
-        const correction = 1.0, // 実際の補正係数
-        return ratio * correction }
+    private applyHighPrecisionCorrection(ratio: number, color1: RGB | string, color2: RGB | string): number {
+        // 高精度モードでの補正処理（デモ実装）
+        const correction = 1.0; // 実際の補正係数
+        return ratio * correction;
+    }
 
     /**
      * Get contrast grade
      */
-    private getContrastGrade(ratio: number, isLargeText: boolean): string { ''
-        if(ratio >= 7.0) return 'AAA,
-        if(ratio >= 4.5) return 'AA,
-        if(ratio >= 3.0 && isLargeText) return 'AA-Large,
-        if(ratio >= 3.0) return 'A,
-        return 'Fail' }
+    private getContrastGrade(ratio: number, isLargeText: boolean): string {
+        if (ratio >= 7.0) return 'AAA';
+        if (ratio >= 4.5) return 'AA';
+        if (ratio >= 3.0 && isLargeText) return 'AA-Large';
+        if (ratio >= 3.0) return 'A';
+        return 'Fail';
+    }
 
     /**
      * Generate contrast recommendations
      */
-    private generateContrastRecommendations(validation: WCAGValidation): ContrastRecommendation[] { const recommendations: ContrastRecommendation[] = [],
+    private generateContrastRecommendations(validation: WCAGValidation): ContrastRecommendation[] {
+        const recommendations: ContrastRecommendation[] = [];
 
         if (!validation.passes) {
-            const improvement = validation.requirement / validation.ratio,
+            const improvement = validation.requirement / validation.ratio;
 
-            recommendations.push({ }
+            recommendations.push({
+                type: 'contrast_improvement',
+                message: `コントラスト比を${improvement.toFixed(1)}倍改善する必要があります`,
+                severity: 'high',
+                actionable: true
+            });
 
-                type: 'contrast_improvement',' }'
-
-                message: `コントラスト比を${improvement.toFixed(1'}'倍改善する必要があります`,''
-                severity: 'high,
-    actionable: true;
-            };
             if (validation.ratio < 3.0) {
-                recommendations.push({''
-                    type: 'critical_issue,
-                    message: '非常に低いコントラスト比です。緊急の改善が必要です',','
-                    severity: 'critical'
+                recommendations.push({
+                    type: 'critical_issue',
+                    message: '非常に低いコントラスト比です。緊急の改善が必要です',
+                    severity: 'critical',
+                    actionable: true
+                });
             }
-                    actionable: true); 
-    }
+        }
         
         return recommendations;
     }
@@ -374,28 +451,29 @@ interface PerformanceReport { totalCalculations: number,
     /**
      * Update performance metrics
      */
-    private updatePerformanceMetrics(calculationTime: number, fromCache: boolean): void { this.performanceMetrics.totalCalculations++;
+    private updatePerformanceMetrics(calculationTime: number, fromCache: boolean): void {
+        this.performanceMetrics.totalCalculations++;
         
         if (!fromCache) {
-    
-}
-            this.performanceMetrics.calculationTimes.push(calculationTime); }
+            this.performanceMetrics.calculationTimes.push(calculationTime);
         }
         
         // キャッシュヒット率を更新
         const totalRequests = this.cacheHits + this.cacheMisses;
-        this.performanceMetrics.cacheHitRate = totalRequests > 0 ;
-            ? (this.cacheHits / totalRequests) * 100 ;
+        this.performanceMetrics.cacheHitRate = totalRequests > 0
+            ? (this.cacheHits / totalRequests) * 100
             : 0;
     }
 
     /**
      * Reset performance metrics
      */
-    private resetPerformanceMetrics(): void { this.performanceMetrics = {
+    private resetPerformanceMetrics(): void {
+        this.performanceMetrics = {
             calculationTimes: [],
             cacheHitRate: 0,
-    totalCalculations: 0 ,
+            totalCalculations: 0
+        };
         this.cacheHits = 0;
         this.cacheMisses = 0;
     }
@@ -403,39 +481,48 @@ interface PerformanceReport { totalCalculations: number,
     /**
      * Get performance report
      */
-    getPerformanceReport(): PerformanceReport { const times = this.performanceMetrics.calculationTimes,
-        const avgTime = times.length > 0 ,
-            ? times.reduce((a, b) => a + b, 0) / times.length: 0,
+    getPerformanceReport(): PerformanceReport {
+        const times = this.performanceMetrics.calculationTimes;
+        const avgTime = times.length > 0
+            ? times.reduce((a, b) => a + b, 0) / times.length
+            : 0;
         
-        return { totalCalculations: this.performanceMetrics.totalCalculations,
+        return {
+            totalCalculations: this.performanceMetrics.totalCalculations,
             averageCalculationTime: avgTime,
             cacheHitRate: this.performanceMetrics.cacheHitRate,
             cacheSize: this.calculationCache.size,
-    fastestCalculation: times.length > 0 ? Math.min(...times) : 0 ,
-            slowestCalculation: times.length > 0 ? Math.max(...times) : 0 
-        }
+            fastestCalculation: times.length > 0 ? Math.min(...times) : 0,
+            slowestCalculation: times.length > 0 ? Math.max(...times) : 0
+        };
+    }
 
     /**
      * Clear calculation cache
      */
-    clearCache(): void { ''
-        this.calculationCache.clear()','
-        console.log('ContrastCalculator: Cache, cleared') }'
+    clearCache(): void {
+        this.calculationCache.clear();
+        console.log('ContrastCalculator: Cache cleared');
+    }
 
     /**
-     * Update configuration'
-     */''
-    updateConfig(newConfig: Partial<CalculatorConfig>): void { this.config = {
-            ...this.config;
-            ...newConfig,
-
-        console.log('ContrastCalculator: Configuration, updated');
+     * Update configuration
+     */
+    updateConfig(newConfig: Partial<CalculatorConfig>): void {
+        this.config = {
+            ...this.config,
+            ...newConfig
+        };
+        console.log('ContrastCalculator: Configuration updated');
+    }
 
     /**
      * Destroy and cleanup
-     */'
-    destroy(): void { this.clearCache();
-        this.resetPerformanceMetrics()','
+     */
+    destroy(): void {
+        this.clearCache();
+        this.resetPerformanceMetrics();
+        this.initialized = false;
         console.log('ContrastCalculator: Destroyed');
-
-    }'}'
+    }
+}

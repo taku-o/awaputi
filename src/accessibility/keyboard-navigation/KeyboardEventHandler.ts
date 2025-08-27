@@ -7,37 +7,46 @@
  * - イベント伝播テスト
  */
 
-import { getErrorHandler  } from '../../core/ErrorHandler.js';
+import { getErrorHandler } from '../../utils/ErrorHandler.js';
 
 // Interfaces for keyboard event handling
-interface EventHandlerConfig { enabled: boolean,
-    monitorEvents: boolean,
+interface EventHandlerConfig {
+    enabled: boolean;
+    monitorEvents: boolean;
     trackShortcuts: boolean;
-    interface KeyCodes { TAB: number,
-    ENTER: number,
-    ESC: number,
-    SPACE: number,
-    ARROW_LEFT: number,
-    ARROW_UP: number,
-    ARROW_RIGHT: number,
-    ARROW_DOWN: number,
-    HOME: number,
-    END: number,
-    PAGE_UP: number,
-    PAGE_DOWN: number,
-    F1: number,
-    F2: number,
-    F3: number,
-    F4: number,
-    F5: number,
-    F6: number,
-    F7: number,
-    F8: number,
-    F9: number,
-    F10: number,
-    F11: number,
+    logEvents: boolean;
+    simulateEvents: boolean;
+}
+
+interface KeyCodes {
+    TAB: number;
+    ENTER: number;
+    ESC: number;
+    SPACE: number;
+    ARROW_LEFT: number;
+    ARROW_UP: number;
+    ARROW_RIGHT: number;
+    ARROW_DOWN: number;
+    HOME: number;
+    END: number;
+    PAGE_UP: number;
+    PAGE_DOWN: number;
+    F1: number;
+    F2: number;
+    F3: number;
+    F4: number;
+    F5: number;
+    F6: number;
+    F7: number;
+    F8: number;
+    F9: number;
+    F10: number;
+    F11: number;
     F12: number;
-    interface EventData { type: "single" | "batch";
+}
+
+interface EventData {
+    type: "single" | "batch";
     key?: string;
     code?: string;
     keyCode?: number;
@@ -45,190 +54,239 @@ interface EventHandlerConfig { enabled: boolean,
     altKey?: boolean;
     shiftKey?: boolean;
     metaKey?: boolean;
-    target: EventTarget | null,
+    target: EventTarget | null;
     timestamp: number;
-    relatedTarget?: EventTarget | null }
-';'
+    relatedTarget?: EventTarget | null;
+}
 
-interface NavigationData { ''
-    type: 'tab-navigation,
-    shiftKey: boolean,
-    target: EventTarget | null,
+interface NavigationData {
+    type: 'tab-navigation';
+    shiftKey: boolean;
+    target: EventTarget | null;
     timestamp: number;
-';'
+}
 
-interface EscapeData { ''
-    type: 'escape-key,
-    target: EventTarget | null,
+interface EscapeData {
+    type: 'escape-key';
+    target: EventTarget | null;
     timestamp: number;
-';'
+}
 
-interface ArrowData { ''
-    type: 'arrow-key,
-    key: string,
-    target: EventTarget | null,
+interface ArrowData {
+    type: 'arrow-key';
+    key: string;
+    target: EventTarget | null;
     timestamp: number;
-    interface ShortcutData { shortcut: string,
-    target: EventTarget | null,
-    timestamp: number,
+}
+
+interface ShortcutData {
+    shortcut: string;
+    target: EventTarget | null;
+    timestamp: number;
     isBrowserShortcut: boolean;
-    interface Monitoring { keydownListener: ((event: KeyboardEvent) => void) | null,
-    keyupListener: ((event: KeyboardEvent) => void) | null,
-    focusListener: ((event: FocusEvent) => void) | null,
-    blurListener: ((event: FocusEvent) => void) | null,
-    eventHistory: (EventData | NavigationData | EscapeData | ArrowData')[];'
+}
+
+interface Monitoring {
+    keydownListener: ((event: KeyboardEvent) => void) | null;
+    keyupListener: ((event: KeyboardEvent) => void) | null;
+    focusListener: ((event: FocusEvent) => void) | null;
+    blurListener: ((event: FocusEvent) => void) | null;
+    eventHistory: (EventData | NavigationData | EscapeData | ArrowData)[];
     shortcutHistory: ShortcutData[];
 }
 
-interface SimulationOptions { key: string,
-    code: string,
+interface EventSimulation {
+    target: HTMLElement;
+    eventType: 'keydown' | 'keyup' | 'keypress';
+    key: string;
+    code: string;
     keyCode: number;
-    ctrlKey?: boolean;
-    altKey?: boolean;
-    shiftKey?: boolean;
-    metaKey?: boolean;
-    bubbles?: boolean;
-    cancelable?: boolean;
-    interface SimulationResult { keydown: boolean,
-    keyup: boolean,
-    element: Element,
-    options: SimulationOptions;
-    interface EventDetection { hasKeydownHandler: boolean,
-    hasKeyupHandler: boolean,
-    hasKeypressHandler: boolean,
-    hasAccessKey: boolean,
-    hasTabIndex: boolean,
-    eventHandlers: string[];
-    accessKey?: string;
-    tabIndex?: string;
-    hasInlineHandlers?: boolean;
-';'
+    modifiers?: {
+        ctrlKey?: boolean;
+        altKey?: boolean;
+        shiftKey?: boolean;
+        metaKey?: boolean;
+    };
+}
 
-interface ValidationIssue { type: "single" | "batch",''
-    severity: 'error' | 'warning,
-    message: string;
-    suggestion?: string;
-    interface ValidationResult { passed: boolean,
-    issues: ValidationIssue[],
-    warnings: ValidationIssue[];
-    interface EventStatistics { totalEvents: number,
-    keydownEvents: number,
-    tabEvents: number,
-    escapeEvents: number,
-    shortcutEvents: number,
-    browserShortcutConflicts: number;
-    export class KeyboardEventHandler {
+interface EventStatistics {
+    totalEvents: number;
+    keydownEvents: number;
+    keyupEvents: number;
+    navigationEvents: number;
+    shortcutEvents: number;
+    focusEvents: number;
+    blurEvents: number;
+    mostUsedKeys: Record<string, number>;
+    shortcutUsage: Record<string, number>;
+}
+
+export class KeyboardEventHandler {
     private config: EventHandlerConfig;
     private keyCodes: KeyCodes;
-    private, browserShortcuts: Record<string, string>,
-    private monitoring: Monitoring';'
+    private monitoring: Monitoring;
+    private initialized: boolean;
+    private eventCallbacks: Map<string, Set<Function>>;
+    private shortcuts: Map<string, Function>;
+    private statistics: EventStatistics;
 
-    constructor(config: Partial<EventHandlerConfig> = {) {
+    constructor(config: Partial<EventHandlerConfig> = {}) {
         this.config = {
             enabled: true,
-    monitorEvents: true,
-    trackShortcuts: true;
-            ...config,
-        
+            monitorEvents: true,
+            trackShortcuts: true,
+            logEvents: false,
+            simulateEvents: true,
+            ...config
+        };
+
         // キーコード定義
-        this.keyCodes = { TAB: 9,
+        this.keyCodes = {
+            TAB: 9,
             ENTER: 13,
-    ESC: 27,
-    SPACE: 32,
-    ARROW_LEFT: 37,
-    ARROW_UP: 38,
-    ARROW_RIGHT: 39,
-    ARROW_DOWN: 40,
-    HOME: 36,
-    END: 35,
-    PAGE_UP: 33,
-    PAGE_DOWN: 34,
-    F1: 112,
-    F2: 113,
-    F3: 114,
-    F4: 115,
-    F5: 116,
-    F6: 117,
-    F7: 118,
-    F8: 119,
-    F9: 120,
-    F10: 121,
-    F11: 122,
-    F12: 123  };
-        // 標準ブラウザショートカット
-        this.browserShortcuts = {;
-            'Ctrl+Tab': 'タブ切り替え,
-            'Ctrl+Shift+Tab': 'タブ逆順切り替え,
-            'Ctrl+T': '新しいタブ,
-            'Ctrl+W': 'タブを閉じる,
-            'Ctrl+R': 'リロード,
-            'Ctrl+F': 'ページ内検索,
-            'Ctrl+L': 'アドレスバーにフォーカス,
-            'F5': 'リロード,
-            'F11': 'フルスクリーン,
-            'F12': 'デベロッパーツール' };
-        
-        // イベント監視
-        this.monitoring = { keydownListener: null,
+            ESC: 27,
+            SPACE: 32,
+            ARROW_LEFT: 37,
+            ARROW_UP: 38,
+            ARROW_RIGHT: 39,
+            ARROW_DOWN: 40,
+            HOME: 36,
+            END: 35,
+            PAGE_UP: 33,
+            PAGE_DOWN: 34,
+            F1: 112,
+            F2: 113,
+            F3: 114,
+            F4: 115,
+            F5: 116,
+            F6: 117,
+            F7: 118,
+            F8: 119,
+            F9: 120,
+            F10: 121,
+            F11: 122,
+            F12: 123
+        };
+
+        // 監視システム
+        this.monitoring = {
+            keydownListener: null,
             keyupListener: null,
             focusListener: null,
             blurListener: null,
             eventHistory: [],
-    shortcutHistory: []  };
-        console.log('KeyboardEventHandler, initialized);'
+            shortcutHistory: []
+        };
+
+        this.initialized = false;
+        this.eventCallbacks = new Map();
+        this.shortcuts = new Map();
+        
+        // 統計データ
+        this.statistics = {
+            totalEvents: 0,
+            keydownEvents: 0,
+            keyupEvents: 0,
+            navigationEvents: 0,
+            shortcutEvents: 0,
+            focusEvents: 0,
+            blurEvents: 0,
+            mostUsedKeys: {},
+            shortcutUsage: {}
+        };
+
+        this.initialize();
     }
-    
+
     /**
-     * イベントリスナーの設定
+     * Initialize the event handler
      */
-    setupEventListeners(): void { if (!this.config.enabled') return,'
-        
+    private initialize(): void {
         try {
-            // キーボードイベントの監視
-            this.monitoring.keydownListener = (event: KeyboardEvent') => { }'
+            if (!this.config.enabled) {
+                console.log('KeyboardEventHandler is disabled');
+                return;
+            }
 
-                this.handleKeyboardEvent(event, 'keydown'; }'
-            };
+            this.setupEventListeners();
+            this.setupDefaultShortcuts();
+            this.initialized = true;
+            
+            console.log('KeyboardEventHandler initialized successfully');
+        } catch (error) {
+            getErrorHandler().handleError(error, 'KEYBOARD_EVENT_HANDLER_ERROR', {
+                operation: 'initialize'
+            });
+        }
+    }
 
-            this.monitoring.keyupListener = (event: KeyboardEvent') => { }'
-
-                this.handleKeyboardEvent(event, 'keyup'; }'
-            };
-            ';'
-            // フォーカスイベントの監視
-            this.monitoring.focusListener = (event: FocusEvent') => { }'
-
-                this.handleFocusEvent(event, 'focus'; }'
-            };
-
-            this.monitoring.blurListener = (event: FocusEvent') => { }'
-
-                this.handleFocusEvent(event, 'blur'); }
-            };
-            ';'
-            // イベントリスナーの登録
-            document.addEventListener('keydown', this.monitoring.keydownListener, true';'
-            document.addEventListener('keyup', this.monitoring.keyupListener, true';'
-            document.addEventListener('focus', this.monitoring.focusListener, true';'
-            document.addEventListener('blur', this.monitoring.blurListener, true';'
-
-            console.log('Event, listeners set, up successfully');
-            ';'
-
-        } catch (error) { getErrorHandler().handleError(error, 'KEYBOARD_EVENT_SETUP_ERROR', {''
-                component: 'KeyboardEventHandler,')',
-                operation: 'setupEventListeners'
-                }
-}
     /**
-     * キーボードイベントハンドリング
+     * Setup event listeners for keyboard monitoring
      */
-    private handleKeyboardEvent(event: KeyboardEvent, type: "single" | "batch"): void { if (!this.config.monitorEvents) return,
+    private setupEventListeners(): void {
+        if (!this.config.monitorEvents) return;
+
+        // Keydown listener
+        this.monitoring.keydownListener = (event: KeyboardEvent) => {
+            this.handleKeydownEvent(event);
+        };
+
+        // Keyup listener
+        this.monitoring.keyupListener = (event: KeyboardEvent) => {
+            this.handleKeyupEvent(event);
+        };
+
+        // Focus listener
+        this.monitoring.focusListener = (event: FocusEvent) => {
+            this.handleFocusEvent(event);
+        };
+
+        // Blur listener
+        this.monitoring.blurListener = (event: FocusEvent) => {
+            this.handleBlurEvent(event);
+        };
+
+        // Attach listeners to document
+        document.addEventListener('keydown', this.monitoring.keydownListener, true);
+        document.addEventListener('keyup', this.monitoring.keyupListener, true);
+        document.addEventListener('focus', this.monitoring.focusListener, true);
+        document.addEventListener('blur', this.monitoring.blurListener, true);
+    }
+
+    /**
+     * Setup default keyboard shortcuts
+     */
+    private setupDefaultShortcuts(): void {
+        if (!this.config.trackShortcuts) return;
+
+        // Common accessibility shortcuts
+        this.registerShortcut('Tab', (event) => this.handleTabNavigation(event));
+        this.registerShortcut('Shift+Tab', (event) => this.handleShiftTabNavigation(event));
+        this.registerShortcut('Escape', (event) => this.handleEscapeKey(event));
+        this.registerShortcut('Enter', (event) => this.handleEnterKey(event));
+        this.registerShortcut('Space', (event) => this.handleSpaceKey(event));
         
+        // Arrow keys
+        this.registerShortcut('ArrowUp', (event) => this.handleArrowKey(event, 'up'));
+        this.registerShortcut('ArrowDown', (event) => this.handleArrowKey(event, 'down'));
+        this.registerShortcut('ArrowLeft', (event) => this.handleArrowKey(event, 'left'));
+        this.registerShortcut('ArrowRight', (event) => this.handleArrowKey(event, 'right'));
+
+        // Home/End keys
+        this.registerShortcut('Home', (event) => this.handleHomeKey(event));
+        this.registerShortcut('End', (event) => this.handleEndKey(event));
+    }
+
+    /**
+     * Handle keydown events
+     */
+    private handleKeydownEvent(event: KeyboardEvent): void {
         try {
-            // イベント履歴の記録
+            this.statistics.totalEvents++;
+            this.statistics.keydownEvents++;
+
             const eventData: EventData = {
-                type,
+                type: "single",
                 key: event.key,
                 code: event.code,
                 keyCode: event.keyCode,
@@ -237,416 +295,508 @@ interface ValidationIssue { type: "single" | "batch",''
                 shiftKey: event.shiftKey,
                 metaKey: event.metaKey,
                 target: event.target,
-    timestamp: Date.now(  };
-            
-            this.monitoring.eventHistory.push(eventData);
-            
-            // 履歴を最新1000件に制限
-            if (this.monitoring.eventHistory.length > 1000) { this.monitoring.eventHistory.shift();
-            
-            // ショートカットキーの検出
-            if (this.config.trackShortcuts && (event.ctrlKey || event.altKey || event.metaKey) {
-                const shortcut = this.buildShortcutString(event);
-                this.recordShortcutUsage(shortcut, event); }
+                timestamp: Date.now()
+            };
+
+            // Record event
+            this.recordEvent(eventData);
+
+            // Update key usage statistics
+            this.updateKeyStatistics(event.key);
+
+            // Check for shortcuts
+            if (this.config.trackShortcuts) {
+                this.checkForShortcuts(event);
             }
-            
-            // 特定のキーイベントの追跡
-            this.trackSpecificKeyEvents(event, type);
-            ';'
 
+            // Trigger callbacks
+            this.triggerCallbacks('keydown', event);
+
+            // Log if enabled
+            if (this.config.logEvents) {
+                console.log('KeyboardEventHandler: Keydown event', eventData);
+            }
         } catch (error) {
-            getErrorHandler().handleError(error, 'KEYBOARD_EVENT_HANDLING_ERROR', {''
-                component: 'KeyboardEventHandler,
-    event: event.key);
-                type     }
-}
+            getErrorHandler().handleError(error, 'KEYBOARD_EVENT_HANDLER_ERROR', {
+                operation: 'handleKeydownEvent'
+            });
+        }
+    }
+
     /**
-     * フォーカスイベントハンドリング
+     * Handle keyup events
      */
-    private handleFocusEvent(event: FocusEvent, type: "single" | "batch"): void { if (!this.config.monitorEvents) return,
-        
+    private handleKeyupEvent(event: KeyboardEvent): void {
         try {
+            this.statistics.totalEvents++;
+            this.statistics.keyupEvents++;
+
             const eventData: EventData = {
-                type,
+                type: "single",
+                key: event.key,
+                code: event.code,
+                keyCode: event.keyCode,
+                ctrlKey: event.ctrlKey,
+                altKey: event.altKey,
+                shiftKey: event.shiftKey,
+                metaKey: event.metaKey,
                 target: event.target,
-                relatedTarget: event.relatedTarget,
-    timestamp: Date.now(  };
-            
-            this.monitoring.eventHistory.push(eventData);
-            ';'
+                timestamp: Date.now()
+            };
 
+            this.recordEvent(eventData);
+            this.triggerCallbacks('keyup', event);
+
+            if (this.config.logEvents) {
+                console.log('KeyboardEventHandler: Keyup event', eventData);
+            }
         } catch (error) {
-            getErrorHandler().handleError(error, 'FOCUS_EVENT_HANDLING_ERROR', {''
-                component: 'KeyboardEventHandler');
-                type }';'
+            getErrorHandler().handleError(error, 'KEYBOARD_EVENT_HANDLER_ERROR', {
+                operation: 'handleKeyupEvent'
+            });
         }
     }
-    
+
     /**
-     * 特定のキーイベントの追跡'
-     */''
-    private trackSpecificKeyEvents(event: KeyboardEvent, type: "single" | "batch"): void { // Tabキーの追跡
-        if(event.key === 'Tab' {', ' }
+     * Handle focus events
+     */
+    private handleFocusEvent(event: FocusEvent): void {
+        try {
+            this.statistics.focusEvents++;
+            this.triggerCallbacks('focus', event);
 
-            this.trackTabNavigation(event); }
+            if (this.config.logEvents) {
+                console.log('KeyboardEventHandler: Focus event', {
+                    target: event.target,
+                    timestamp: Date.now()
+                });
+            }
+        } catch (error) {
+            getErrorHandler().handleError(error, 'KEYBOARD_EVENT_HANDLER_ERROR', {
+                operation: 'handleFocusEvent'
+            });
         }
-        ';'
-        // Escapeキーの追跡
-        if(event.key === 'Escape' {', ' }
-
-            this.trackEscapeKeyUsage(event); }
-        }
-        ';'
-        // 矢印キーの追跡
-        if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight].includes(event.key) { this.trackArrowKeyUsage(event) }'
     }
-    
+
     /**
-     * Tabナビゲーションの追跡'
-     */''
-    private trackTabNavigation(event: KeyboardEvent): void { const navigationData: NavigationData = {''
-            type: 'tab-navigation,
+     * Handle blur events
+     */
+    private handleBlurEvent(event: FocusEvent): void {
+        try {
+            this.statistics.blurEvents++;
+            this.triggerCallbacks('blur', event);
+
+            if (this.config.logEvents) {
+                console.log('KeyboardEventHandler: Blur event', {
+                    target: event.target,
+                    timestamp: Date.now()
+                });
+            }
+        } catch (error) {
+            getErrorHandler().handleError(error, 'KEYBOARD_EVENT_HANDLER_ERROR', {
+                operation: 'handleBlurEvent'
+            });
+        }
+    }
+
+    /**
+     * Handle Tab navigation
+     */
+    private handleTabNavigation(event: KeyboardEvent): void {
+        this.statistics.navigationEvents++;
+
+        const navigationData: NavigationData = {
+            type: 'tab-navigation',
             shiftKey: event.shiftKey,
             target: event.target,
-    timestamp: Date.now( };
-        
-        this.monitoring.eventHistory.push(navigationData);
+            timestamp: Date.now()
+        };
+
+        this.recordEvent(navigationData);
+        this.triggerCallbacks('tab-navigation', event);
     }
-    
+
     /**
-     * Escapeキー使用の追跡'
-     */''
-    private trackEscapeKeyUsage(event: KeyboardEvent): void { const escapeData: EscapeData = {''
-            type: 'escape-key,
-            target: event.target,
-    timestamp: Date.now( };
-        
-        this.monitoring.eventHistory.push(escapeData);
-    }
-    
-    /**
-     * 矢印キー使用の追跡'
-     */''
-    private trackArrowKeyUsage(event: KeyboardEvent): void { const arrowData: ArrowData = {''
-            type: 'arrow-key,
-            key: event.key,
-            target: event.target,
-    timestamp: Date.now( };
-        
-        this.monitoring.eventHistory.push(arrowData);
-    }
-    
-    /**
-     * ショートカット使用の記録
+     * Handle Shift+Tab navigation
      */
-    private recordShortcutUsage(shortcut: string, event: KeyboardEvent): void { const shortcutData: ShortcutData = {
-            shortcut,
+    private handleShiftTabNavigation(event: KeyboardEvent): void {
+        this.statistics.navigationEvents++;
+
+        const navigationData: NavigationData = {
+            type: 'tab-navigation',
+            shiftKey: true,
             target: event.target,
-            timestamp: Date.now(
-    isBrowserShortcut: this.browserShortcuts.hasOwnProperty(shortcut  };
+            timestamp: Date.now()
+        };
+
+        this.recordEvent(navigationData);
+        this.triggerCallbacks('shift-tab-navigation', event);
+    }
+
+    /**
+     * Handle Escape key
+     */
+    private handleEscapeKey(event: KeyboardEvent): void {
+        const escapeData: EscapeData = {
+            type: 'escape-key',
+            target: event.target,
+            timestamp: Date.now()
+        };
+
+        this.recordEvent(escapeData);
+        this.triggerCallbacks('escape', event);
+    }
+
+    /**
+     * Handle Enter key
+     */
+    private handleEnterKey(event: KeyboardEvent): void {
+        this.triggerCallbacks('enter', event);
+    }
+
+    /**
+     * Handle Space key
+     */
+    private handleSpaceKey(event: KeyboardEvent): void {
+        this.triggerCallbacks('space', event);
+    }
+
+    /**
+     * Handle arrow keys
+     */
+    private handleArrowKey(event: KeyboardEvent, direction: string): void {
+        const arrowData: ArrowData = {
+            type: 'arrow-key',
+            key: direction,
+            target: event.target,
+            timestamp: Date.now()
+        };
+
+        this.recordEvent(arrowData);
+        this.triggerCallbacks(`arrow-${direction}`, event);
+    }
+
+    /**
+     * Handle Home key
+     */
+    private handleHomeKey(event: KeyboardEvent): void {
+        this.triggerCallbacks('home', event);
+    }
+
+    /**
+     * Handle End key
+     */
+    private handleEndKey(event: KeyboardEvent): void {
+        this.triggerCallbacks('end', event);
+    }
+
+    /**
+     * Check for keyboard shortcuts
+     */
+    private checkForShortcuts(event: KeyboardEvent): void {
+        const shortcut = this.buildShortcutString(event);
+        const handler = this.shortcuts.get(shortcut);
+
+        if (handler) {
+            this.statistics.shortcutEvents++;
+            
+            const shortcutData: ShortcutData = {
+                shortcut: shortcut,
+                target: event.target,
+                timestamp: Date.now(),
+                isBrowserShortcut: this.isBrowserShortcut(shortcut)
+            };
+
+            this.recordShortcut(shortcutData);
+            this.updateShortcutStatistics(shortcut);
+
+            try {
+                handler(event);
+            } catch (error) {
+                getErrorHandler().handleError(error, 'KEYBOARD_EVENT_HANDLER_ERROR', {
+                    operation: 'executeShortcut',
+                    shortcut: shortcut
+                });
+            }
+        }
+    }
+
+    /**
+     * Build shortcut string from keyboard event
+     */
+    private buildShortcutString(event: KeyboardEvent): string {
+        const parts: string[] = [];
         
+        if (event.ctrlKey) parts.push('Ctrl');
+        if (event.altKey) parts.push('Alt');
+        if (event.shiftKey && event.key !== 'Tab') parts.push('Shift');
+        if (event.metaKey) parts.push('Meta');
+        
+        parts.push(event.key);
+        
+        return parts.join('+');
+    }
+
+    /**
+     * Check if shortcut is a browser shortcut
+     */
+    private isBrowserShortcut(shortcut: string): boolean {
+        const browserShortcuts = [
+            'Ctrl+T', 'Ctrl+W', 'Ctrl+R', 'Ctrl+L', 'Ctrl+D',
+            'Ctrl+Shift+T', 'Ctrl+Tab', 'Ctrl+Shift+Tab',
+            'F5', 'Ctrl+F5', 'F12'
+        ];
+        
+        return browserShortcuts.includes(shortcut);
+    }
+
+    /**
+     * Register a keyboard shortcut
+     */
+    registerShortcut(shortcut: string, handler: (event: KeyboardEvent) => void): void {
+        this.shortcuts.set(shortcut, handler);
+        
+        if (this.config.logEvents) {
+            console.log(`KeyboardEventHandler: Shortcut registered - ${shortcut}`);
+        }
+    }
+
+    /**
+     * Unregister a keyboard shortcut
+     */
+    unregisterShortcut(shortcut: string): void {
+        this.shortcuts.delete(shortcut);
+        
+        if (this.config.logEvents) {
+            console.log(`KeyboardEventHandler: Shortcut unregistered - ${shortcut}`);
+        }
+    }
+
+    /**
+     * Register event callback
+     */
+    on(eventType: string, callback: Function): void {
+        if (!this.eventCallbacks.has(eventType)) {
+            this.eventCallbacks.set(eventType, new Set());
+        }
+        
+        this.eventCallbacks.get(eventType)!.add(callback);
+    }
+
+    /**
+     * Unregister event callback
+     */
+    off(eventType: string, callback: Function): void {
+        const callbacks = this.eventCallbacks.get(eventType);
+        if (callbacks) {
+            callbacks.delete(callback);
+        }
+    }
+
+    /**
+     * Trigger callbacks for event type
+     */
+    private triggerCallbacks(eventType: string, event: Event): void {
+        const callbacks = this.eventCallbacks.get(eventType);
+        if (callbacks) {
+            callbacks.forEach(callback => {
+                try {
+                    callback(event);
+                } catch (error) {
+                    getErrorHandler().handleError(error, 'KEYBOARD_EVENT_HANDLER_ERROR', {
+                        operation: 'triggerCallback',
+                        eventType: eventType
+                    });
+                }
+            });
+        }
+    }
+
+    /**
+     * Simulate keyboard event
+     */
+    simulateKeyboardEvent(simulation: EventSimulation): boolean {
+        try {
+            if (!this.config.simulateEvents) {
+                console.warn('Event simulation is disabled');
+                return false;
+            }
+
+            const event = new KeyboardEvent(simulation.eventType, {
+                key: simulation.key,
+                code: simulation.code,
+                keyCode: simulation.keyCode,
+                ctrlKey: simulation.modifiers?.ctrlKey || false,
+                altKey: simulation.modifiers?.altKey || false,
+                shiftKey: simulation.modifiers?.shiftKey || false,
+                metaKey: simulation.modifiers?.metaKey || false,
+                bubbles: true,
+                cancelable: true
+            });
+
+            return simulation.target.dispatchEvent(event);
+        } catch (error) {
+            getErrorHandler().handleError(error, 'KEYBOARD_EVENT_HANDLER_ERROR', {
+                operation: 'simulateKeyboardEvent'
+            });
+            return false;
+        }
+    }
+
+    /**
+     * Record event in history
+     */
+    private recordEvent(eventData: EventData | NavigationData | EscapeData | ArrowData): void {
+        this.monitoring.eventHistory.push(eventData);
+        
+        // Keep history size reasonable
+        if (this.monitoring.eventHistory.length > 1000) {
+            this.monitoring.eventHistory = this.monitoring.eventHistory.slice(-500);
+        }
+    }
+
+    /**
+     * Record shortcut usage
+     */
+    private recordShortcut(shortcutData: ShortcutData): void {
         this.monitoring.shortcutHistory.push(shortcutData);
         
-        // ショートカット履歴を最新500件に制限
-        if (this.monitoring.shortcutHistory.length > 500) { this.monitoring.shortcutHistory.shift();
-    }
-    
-    /**
-     * ショートカット文字列の構築
-     */
-    private buildShortcutString(event: KeyboardEvent): string { const parts: string[] = [],
-
-        if(event.ctrlKey) parts.push('Ctrl,
-        if(event.altKey) parts.push('Alt,
-        if(event.shiftKey) parts.push('Shift,
-        if(event.metaKey) parts.push('Meta),'
-
-        parts.push(event.key);
-        return parts.join('+' }'
-    
-    /**
-     * キーボードイベントのシミュレーション'
-     */''
-    simulateKeyPress(element: Element, keyOptions: Partial<SimulationOptions>): SimulationResult | null { try {
-            const defaultOptions: SimulationOptions = {''
-                key: ','
-                code: ','
-                keyCode: 0,
-                ctrlKey: false,
-                altKey: false,
-                shiftKey: false,
-                metaKey: false,
-                bubbles: true,
-    cancelable: true;
-            const options = { ...defaultOptions, ...keyOptions as SimulationOptions,
-            ','
-            // KeyboardEventの作成
-            const keydownEvent = new KeyboardEvent('keydown', options','
-            const keyupEvent = new KeyboardEvent('keyup', options);
-            // イベントの発火
-            const keydownResult = element.dispatchEvent(keydownEvent);
-            const keyupResult = element.dispatchEvent(keyupEvent);
-            return { keydown: keydownResult,
-                keyup: keyupResult;
-                element };
-                options }
-            };
-            ';'
-
-        } catch (error) { getErrorHandler().handleError(error, 'KEY_SIMULATION_ERROR', {''
-                component: 'KeyboardEventHandler,
-    element: element.tagName),
-                key: keyOptions.key  }';'
-            return null as any;
-    
-    /**
-     * Tabキーシミュレーション'
-     */''
-    simulateTabKey(element: Element, shiftKey: boolean = false): SimulationResult | null { return this.simulateKeyPress(element, {''
-            key: 'Tab',','
-            code: 'Tab,
-    keyCode: this.keyCodes.TAB);
-            shiftKey' }'
-    
-    /**
-     * Escapeキーシミュレーション'
-     */''
-    simulateEscapeKey(element: Element): SimulationResult | null { return this.simulateKeyPress(element, {''
-            key: 'Escape',','
-            code: 'Escape',','
-            keyCode: this.keyCodes.ESC  }
-    
-    /**
-     * Enterキーシミュレーション'
-     */''
-    simulateEnterKey(element: Element): SimulationResult | null { return this.simulateKeyPress(element, {''
-            key: 'Enter',','
-            code: 'Enter'),
-            keyCode: this.keyCodes.ENTER  }
-    
-    /**
-     * キーボードイベントの検出
-     */
-    detectKeyboardEvents(element: HTMLElement): EventDetection { const events: EventDetection = {
-            hasKeydownHandler: false,
-            hasKeyupHandler: false,
-            hasKeypressHandler: false,
-            hasAccessKey: false,
-            hasTabIndex: false,
-    eventHandlers: [] };
-        ';'
-        try { // onXXX属性の検出
-            if ((element, as any).onkeydown) {
-                events.hasKeydownHandler = true,
-                events.eventHandlers.push('onkeydown' }'
-
-            if ((element, as any).onkeyup) { events.hasKeyupHandler = true,
-                events.eventHandlers.push('onkeyup' }'
-
-            if ((element, as any).onkeypress) { events.hasKeypressHandler = true,
-                events.eventHandlers.push('onkeypress');
-            ';'
-            // accesskey属性の検出
-            if(element.hasAttribute('accesskey)' { events.hasAccessKey = true,
-                events.accessKey = element.getAttribute('accesskey') || undefined }
-            ';'
-            // tabindex属性の検出
-            if(element.hasAttribute('tabindex)' { events.hasTabIndex = true,
-                events.tabIndex = element.getAttribute('tabindex' || undefined }', ';
-            // HTML内容からイベントハンドラーの推測
-            const elementHTML = element.outerHTML.toLowerCase()';'
-            if (elementHTML.includes('keydown') || ';'
-                elementHTML.includes('keyup') || ';'
-                elementHTML.includes('keyboard' { events.hasInlineHandlers = true }'
-
-            } catch (error) { getErrorHandler().handleError(error, 'EVENT_DETECTION_ERROR', {''
-                component: 'KeyboardEventHandler'),
-                element: element.tagName  };
+        // Keep history size reasonable
+        if (this.monitoring.shortcutHistory.length > 1000) {
+            this.monitoring.shortcutHistory = this.monitoring.shortcutHistory.slice(-500);
         }
-        
-        return events;
     }
-    
+
     /**
-     * イベントハンドラーの検証
+     * Update key usage statistics
      */
-    validateEventHandlers(element: HTMLElement): ValidationResult { const validation: ValidationResult = {
-            passed: true,
-            issues: [],
-    warnings: [] };
-        try { const events = this.detectKeyboardEvents(element);
-            // インタラクティブ要素のキーボード対応チェック
-            if (this.isInteractiveElement(element) {
-                const hasKeyboardSupport = events.hasKeydownHandler || ,
-                                         events.hasKeyupHandler || ,
-                                         this.isNativelyKeyboardAccessible(element);
-                if (!hasKeyboardSupport) {
-                    validation.passed = false,
-
-                    validation.issues.push({''
-                        type: 'missing-keyboard-handler,
-                        severity: 'error',','
-                        message: 'Interactive element missing keyboard event handlers',' }'
-
-                        suggestion: 'Add keydown or keyup event handlers'); 
+    private updateKeyStatistics(key: string): void {
+        this.statistics.mostUsedKeys[key] = (this.statistics.mostUsedKeys[key] || 0) + 1;
     }
-            
-            // アクセスキーの競合チェック
-            if (events.hasAccessKey && events.accessKey) {
-    
-}
-                const shortcut = `Alt+${events.accessKey.toUpperCase(}`;
-                if (this.browserShortcuts[shortcut]) {
-                    validation.warnings.push({''
-                        type: 'accesskey-conflict' }
 
-                        severity: 'warning'
-            }''
-                        message: `Access key may conflict with browser, shortcut: ${shortcut}`,')'
-                        suggestion: 'Consider using different access key');
-    }
-            
-            // tabindexの適切性チェック
-            if (events.hasTabIndex && events.tabIndex) {
-                const tabIndex = parseInt(events.tabIndex);
-                if (tabIndex > 0) {
-                    validation.warnings.push({''
-                        type: 'positive-tabindex' }
-
-                        severity: 'warning'
-            }''
-                        message: `Positive tabindex, found: ${tabIndex}`,')'
-                        suggestion: 'Use tabindex="0" or rely on natural tab order' }'} catch (error) { validation.passed = false,'
-
-            validation.issues.push({)'
-                type: 'validation-error,')',
-                severity: 'error'),
-                message: `Event handler validation, failed: ${(error, as, Error}.message}`
-            }
-        }
-        
-        return validation;
-    }
-    
     /**
-     * インタラクティブ要素の判定
-     */'
-    private isInteractiveElement(element: HTMLElement): boolean { // クリックハンドラーがある
-        if ((element, as any).onclick) {
-            return true }
-        ';'
-        // インタラクティブな役割
-        const interactiveRoles = ['button', 'link', 'tab', 'menuitem', 'option'];
-        const role = element.getAttribute('role);'
-        
-        if (role && interactiveRoles.includes(role) { return true }
-        ';'
-        // カーソルスタイル
-        const styles = window.getComputedStyle(element);
-        if (styles.cursor === 'pointer') { return true }
-        ';'
-        // ゲーム固有の要素
-        const gameInteractiveClasses = ['game-control', 'game-button', 'bubble', 'clickable'];
-        return gameInteractiveClasses.some(className => );
-            element.classList.contains(className) || ;
-            element.className.includes(className);
-    }
-    
-    /**
-     * ネイティブキーボードアクセシブル要素の判定'
-     */''
-    private isNativelyKeyboardAccessible(element: HTMLElement): boolean { ''
-        const nativelyAccessible = ['button', 'a', 'input', 'textarea', 'select'],
-        return nativelyAccessible.includes(element.tagName.toLowerCase();
-    
-    /**
-     * イベント履歴の取得
+     * Update shortcut usage statistics
      */
-    getEventHistory(limit: number = 100): (EventData | NavigationData | EscapeData | ArrowData)[] { return this.monitoring.eventHistory.slice(-limit);
-    
-    /**
-     * ショートカット履歴の取得
-     */
-    getShortcutHistory(limit: number = 50): ShortcutData[] { return this.monitoring.shortcutHistory.slice(-limit);
-    
-    /**
-     * 統計情報の取得'
-     */''
-    getStatistics()';'
-        const keydownEvents = this.monitoring.eventHistory.filter(e => e.type === 'keydown').length;
-        const tabEvents = this.monitoring.eventHistory.filter(e => 'key' in, e && e.key === 'Tab').length;
-        const escapeEvents = this.monitoring.eventHistory.filter(e => 'key' in, e && e.key === 'Escape).length;'
-        const shortcutEvents = this.monitoring.shortcutHistory.length;
-        
-        return { totalEvents: this.monitoring.eventHistory.length,
-            keydownEvents,
-            tabEvents,
-            escapeEvents,
-            shortcutEvents };
-            browserShortcutConflicts: this.monitoring.shortcutHistory.filter(s => s.isBrowserShortcut).length; 
+    private updateShortcutStatistics(shortcut: string): void {
+        this.statistics.shortcutUsage[shortcut] = (this.statistics.shortcutUsage[shortcut] || 0) + 1;
     }
-    
+
     /**
-     * 設定の更新'
-     */''
+     * Get event history
+     */
+    getEventHistory(limit?: number): (EventData | NavigationData | EscapeData | ArrowData)[] {
+        const history = this.monitoring.eventHistory;
+        return limit ? history.slice(-limit) : history;
+    }
+
+    /**
+     * Get shortcut history
+     */
+    getShortcutHistory(limit?: number): ShortcutData[] {
+        const history = this.monitoring.shortcutHistory;
+        return limit ? history.slice(-limit) : history;
+    }
+
+    /**
+     * Get statistics
+     */
+    getStatistics(): EventStatistics {
+        return { ...this.statistics };
+    }
+
+    /**
+     * Get key codes
+     */
+    getKeyCodes(): KeyCodes {
+        return { ...this.keyCodes };
+    }
+
+    /**
+     * Clear event history
+     */
+    clearHistory(): void {
+        this.monitoring.eventHistory = [];
+        this.monitoring.shortcutHistory = [];
+        console.log('Event history cleared');
+    }
+
+    /**
+     * Clear statistics
+     */
+    clearStatistics(): void {
+        this.statistics = {
+            totalEvents: 0,
+            keydownEvents: 0,
+            keyupEvents: 0,
+            navigationEvents: 0,
+            shortcutEvents: 0,
+            focusEvents: 0,
+            blurEvents: 0,
+            mostUsedKeys: {},
+            shortcutUsage: {}
+        };
+        console.log('Statistics cleared');
+    }
+
+    /**
+     * Update configuration
+     */
     updateConfig(newConfig: Partial<EventHandlerConfig>): void {
-        this.config = { ...this.config, ...newConfig,
-        ','
-        // 設定変更に応じた再初期化
-        if (newConfig.hasOwnProperty('enabled''
-            if (newConfig.enabled && !this.monitoring.keydownListener) {
+        this.config = { ...this.config, ...newConfig };
+        
+        // If monitoring was disabled, remove listeners
+        if (!this.config.monitorEvents) {
+            this.removeEventListeners();
+        } else if (!this.monitoring.keydownListener) {
+            // If monitoring was re-enabled, setup listeners
+            this.setupEventListeners();
         }
-                this.setupEventListeners(); }
+        
+        console.log('KeyboardEventHandler configuration updated');
+    }
 
-            } else if (!newConfig.enabled) { ''
-                this.removeEventListeners()','
-        console.log('KeyboardEventHandler, configuration updated') }'
-    
     /**
-     * イベントリスナーの削除
-     */'
-    private removeEventListeners(): void { try {'
-            if (this.monitoring.keydownListener) {
+     * Check if handler is ready
+     */
+    isReady(): boolean {
+        return this.initialized;
+    }
 
-                document.removeEventListener('keydown', this.monitoring.keydownListener, true);
-                this.monitoring.keydownListener = null; }
-            }
-
-            if (this.monitoring.keyupListener) {
-
-                document.removeEventListener('keyup', this.monitoring.keyupListener, true);
-                this.monitoring.keyupListener = null; }
-            }
-
-            if (this.monitoring.focusListener) {
-
-                document.removeEventListener('focus', this.monitoring.focusListener, true);
-                this.monitoring.focusListener = null; }
-            }
-
-            if (this.monitoring.blurListener) {
-
-                document.removeEventListener('blur', this.monitoring.blurListener, true' }'
-                this.monitoring.blurListener = null; }
-            }
-
-            console.log('Event, listeners removed');
-            ';'
-
-        } catch (error) { getErrorHandler().handleError(error, 'EVENT_LISTENER_REMOVAL_ERROR', {''
-                component: 'KeyboardEventHandler'
-            }';'
+    /**
+     * Remove event listeners
+     */
+    private removeEventListeners(): void {
+        if (this.monitoring.keydownListener) {
+            document.removeEventListener('keydown', this.monitoring.keydownListener, true);
+            this.monitoring.keydownListener = null;
+        }
+        
+        if (this.monitoring.keyupListener) {
+            document.removeEventListener('keyup', this.monitoring.keyupListener, true);
+            this.monitoring.keyupListener = null;
+        }
+        
+        if (this.monitoring.focusListener) {
+            document.removeEventListener('focus', this.monitoring.focusListener, true);
+            this.monitoring.focusListener = null;
+        }
+        
+        if (this.monitoring.blurListener) {
+            document.removeEventListener('blur', this.monitoring.blurListener, true);
+            this.monitoring.blurListener = null;
         }
     }
-    
-    /**
-     * クリーンアップ'
-     */''
-    destroy()';'
-        console.log('Destroying, KeyboardEventHandler...');
-        ';'
-        // イベントリスナーの削除
-        this.removeEventListeners()';'
-        console.log('KeyboardEventHandler, destroyed');
 
-    }'}'
+    /**
+     * Destroy handler and cleanup resources
+     */
+    destroy(): void {
+        this.removeEventListeners();
+        this.clearHistory();
+        this.eventCallbacks.clear();
+        this.shortcuts.clear();
+        this.initialized = false;
+        
+        console.log('KeyboardEventHandler destroyed');
+    }
+}
