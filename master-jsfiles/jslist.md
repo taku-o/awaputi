@@ -49,10 +49,10 @@
 - [x] src/analytics/analytics-api/APIEndpointManager.js - TypeScript版でaccessControl変数のコメントアウトとtotalRequests++の処理位置の違いを修正
 - [x] src/analytics/analytics-api/DataAggregationProcessor.js - TypeScript版でmaxCacheSize変数のコメントアウトを修正
 - [x] src/analytics/analytics-api/DataExportHandler.js - 処理ロジックの違いなし
-- [] src/analytics/comparison/ComparisonAlgorithms.js
-- [] src/analytics/comparison/ComparisonAnalyzer.js
-- [] src/analytics/comparison/ComparisonResultRenderer.js
-- [] src/analytics/comparison/DataComparator.js
+- [x] src/analytics/comparison/ComparisonAlgorithms.js - TypeScript版の不必要な型キャスト`null as any`を修正
+- [x] src/analytics/comparison/ComparisonAnalyzer.js - 処理ロジックの違いなし（インターフェース追加のみ）
+- [x] src/analytics/comparison/ComparisonResultRenderer.js - TypeScript版でrenderConfig変数のコメントアウトを修正
+- [x] src/analytics/comparison/DataComparator.js - TypeScript版でcomparisonPeriods変数のコメントアウトを修正
 - [] src/analytics/enhanced-analytics-manager/AnalyticsPerformanceMonitor.js
 - [] src/analytics/enhanced-analytics-manager/GameBalanceAnalyzer.js
 - [] src/analytics/enhanced-analytics-manager/PlayerBehaviorAnalyzer.js

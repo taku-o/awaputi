@@ -5,7 +5,7 @@
  */
 
 export class ComparisonResultRenderer {
-    // private renderConfig: any;
+    private renderConfig: any;
 
     constructor() {
         // レンダリング設定

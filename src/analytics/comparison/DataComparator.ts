@@ -5,7 +5,7 @@
  */
 
 export class DataComparator {
-    // private comparisonPeriods: any;
+    private comparisonPeriods: any;
     private metrics: any;
 
     constructor() {
